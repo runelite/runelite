@@ -30,8 +30,8 @@ import lombok.Data;
 @Data
 public class HealthBarOverride
 {
-	public final SpritePixels frontSprite;
-	public final SpritePixels backSprite;
-	public final SpritePixels frontSpriteLarge;
-	public final SpritePixels backSpriteLarge;
+	public final Sprite frontSprite;
+	public final Sprite backSprite;
+	public final Sprite frontSpriteLarge;
+	public final Sprite backSpriteLarge;
 }

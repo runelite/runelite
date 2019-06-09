@@ -54,7 +54,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
@@ -396,12 +396,12 @@ public class CoxPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGraphicChanged(GraphicChanged graphicChanged)
+	public void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
 	{
 		if (inRaid())
 		{
 			Actor actor = graphicChanged.getActor();
-			if (actor.getGraphic() == GraphicID.OLM_BURN)
+			if (actor.getSpotAnimation() == GraphicID.OLM_BURN)
 			{
 				burnTarget.add(actor);
 			}

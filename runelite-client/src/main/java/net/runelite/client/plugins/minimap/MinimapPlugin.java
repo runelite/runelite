@@ -30,7 +30,7 @@ import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.SpritePixels;
+import net.runelite.api.Sprite;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
@@ -56,7 +56,7 @@ public class MinimapPlugin extends Plugin
 	@Inject
 	private MinimapConfig config;
 
-	private SpritePixels[] originalDotSprites;
+	private Sprite[] originalDotSprites;
 
 	@Provides
 	private MinimapConfig provideConfig(ConfigManager configManager)
@@ -138,7 +138,7 @@ public class MinimapPlugin extends Plugin
 
 	private void replaceMapDots()
 	{
-		SpritePixels[] mapDots = client.getMapDots();
+		Sprite[] mapDots = client.getMapDots();
 
 		if (mapDots == null)
 		{
@@ -166,7 +166,7 @@ public class MinimapPlugin extends Plugin
 
 	private void storeOriginalDots()
 	{
-		SpritePixels[] originalDots = client.getMapDots();
+		Sprite[] originalDots = client.getMapDots();
 
 		if (originalDots == null)
 		{
@@ -178,7 +178,7 @@ public class MinimapPlugin extends Plugin
 
 	private void restoreOriginalDots()
 	{
-		SpritePixels[] mapDots = client.getMapDots();
+		Sprite[] mapDots = client.getMapDots();
 
 		if (originalDotSprites == null || mapDots == null)
 		{

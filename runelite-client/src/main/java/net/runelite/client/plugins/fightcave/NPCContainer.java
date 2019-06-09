@@ -29,7 +29,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 
 class NPCContainer
 {
@@ -67,7 +67,7 @@ class NPCContainer
 		this.npcInteracting = npc.getInteracting();
 		this.npcSpeed = 0;
 		this.TicksUntilAttack = 0;
-		final NPCComposition composition = npc.getTransformedComposition();
+		final NPCDefinition composition = npc.getTransformedDefinition();
 
 		if (composition != null)
 		{

@@ -55,7 +55,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
@@ -810,7 +810,7 @@ public class SlayerPlugin extends Plugin
 		return false;
 	}
 
-	private boolean isValidComposition(NPCComposition composition)
+	private boolean isValidComposition(NPCDefinition composition)
 	{
 		if (composition != null)
 		{
@@ -851,7 +851,7 @@ public class SlayerPlugin extends Plugin
 		{
 			if (!checkAsTokens)
 			{
-				if (name.contains(target) && isValidComposition(npc.getTransformedComposition()))
+				if (name.contains(target) && isValidComposition(npc.getTransformedDefinition()))
 				{
 					return true;
 				}
@@ -859,7 +859,7 @@ public class SlayerPlugin extends Plugin
 			else
 			{
 				String[] nameTokens = name.split(" ");
-				if (contiguousSubsequenceMatches(nameTokens, target) && isValidComposition(npc.getTransformedComposition()))
+				if (contiguousSubsequenceMatches(nameTokens, target) && isValidComposition(npc.getTransformedDefinition()))
 				{
 					return true;
 				}
@@ -874,7 +874,7 @@ public class SlayerPlugin extends Plugin
 
 		for (int target : targetIds)
 		{
-			if (id == target && isValidComposition(npc.getTransformedComposition()))
+			if (id == target && isValidComposition(npc.getTransformedDefinition()))
 			{
 				return true;
 			}

@@ -15,7 +15,7 @@ import java.util.TreeMap;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
@@ -90,7 +90,7 @@ public class PvPUtil
 		{
 			int value = (itemManager.getItemPrice(i.getId()) * i.getQuantity());
 
-			final ItemComposition itemComposition = itemManager.getItemComposition(i.getId());
+			final ItemDefinition itemComposition = itemManager.getItemDefinition(i.getId());
 			if (!itemComposition.isTradeable() && value == 0)
 			{
 				value = itemComposition.getPrice() * i.getQuantity();

@@ -37,7 +37,7 @@ import net.runelite.rs.api.RSModel;
 @Mixin(RSDynamicObject.class)
 public abstract class RSDynamicObjectMixin implements RSDynamicObject
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Copy("getModel")
@@ -67,7 +67,7 @@ public abstract class RSDynamicObjectMixin implements RSDynamicObject
 		}
 	}
 
-	@FieldHook("animCycleCount")
+	@FieldHook("cycleStart")
 	@Inject
 	public void onAnimCycleCountChanged(int idx)
 	{

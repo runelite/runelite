@@ -24,9 +24,9 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
 import net.runelite.api.Projectile;
 import net.runelite.api.coords.LocalPoint;
+import lombok.Data;
 
 /**
  * An event called whenever a {@link Projectile} has moved towards a point.

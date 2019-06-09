@@ -24,8 +24,8 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
 import net.runelite.api.Script;
+import lombok.Data;
 
 /**
  * A callback from a runelite_callback opcode in a cs2

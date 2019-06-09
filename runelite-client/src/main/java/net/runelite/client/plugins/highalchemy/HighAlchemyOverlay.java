@@ -33,7 +33,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
@@ -119,7 +119,7 @@ public class HighAlchemyOverlay extends WidgetItemOverlay
 	private int getNotedId(int id)
 	{
 		int noteID = id;
-		ItemComposition itemComposition = itemManager.getItemComposition(noteID);
+		ItemDefinition itemComposition = itemManager.getItemDefinition(noteID);
 		if (itemComposition.getNote() != -1)
 		{
 			noteID = itemComposition.getLinkedNoteId();

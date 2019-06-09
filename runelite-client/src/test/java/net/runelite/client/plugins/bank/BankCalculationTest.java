@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
@@ -99,12 +99,12 @@ public class BankCalculationTest
 		when(client.getItemContainer(InventoryID.BANK))
 			.thenReturn(bankContainer);
 
-		ItemComposition whipComp = mock(ItemComposition.class);
+		ItemDefinition whipComp = mock(ItemDefinition.class);
 		when(whipComp.getId())
 			.thenReturn(ItemID.ABYSSAL_WHIP);
 		when(whipComp.getPrice())
 			.thenReturn(7); // 7 * .6 = 4, 4 * 1m overflows
-		when(itemManager.getItemComposition(ItemID.ABYSSAL_WHIP))
+		when(itemManager.getItemDefinition(ItemID.ABYSSAL_WHIP))
 			.thenReturn(whipComp);
 
 		bankCalculation.calculate();

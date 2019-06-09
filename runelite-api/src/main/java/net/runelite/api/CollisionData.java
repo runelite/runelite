@@ -40,7 +40,7 @@ public interface CollisionData
 	 * values can be obtained and used with the {@link CollisionDataFlag} class.
 	 *
 	 * @return all collision flags for the tiles in the scene
-	 * @see Constants#SCENE_SIZE
+	 * @see net.runelite.api.Constants#SCENE_SIZE
 	 */
 	int[][] getFlags();
 }

@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumDefinition;
 import net.runelite.api.EnumID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameStateChanged;
@@ -153,7 +153,7 @@ public class MusicIndicatorPlugin extends Plugin
 			return;
 		}
 
-		final EnumComposition names = client.getEnum(EnumID.MUSIC_TRACK_NAMES);
+		final EnumDefinition names = client.getEnum(EnumID.MUSIC_TRACK_NAMES);
 		final int varpId = MUSIC_TRACK_VARPS.indexOf(varPlayer) + 1;
 
 		for (int bit = 0; bit < Integer.SIZE; ++bit)
@@ -180,7 +180,7 @@ public class MusicIndicatorPlugin extends Plugin
 	{
 		// values are packed into a coordgrid
 		int packed = (variableId << 14) | bit;
-		EnumComposition ids = client.getEnum(EnumID.MUSIC_TRACK_IDS);
+		EnumDefinition ids = client.getEnum(EnumID.MUSIC_TRACK_IDS);
 		for (int key : ids.getKeys())
 		{
 			int value = ids.getIntValue(key);

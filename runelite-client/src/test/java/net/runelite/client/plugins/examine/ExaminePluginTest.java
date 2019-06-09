@@ -97,7 +97,7 @@ public class ExaminePluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.ITEM_EXAMINE, "", "A weapon from the abyss.", "", 0);
 		examinePlugin.onChatMessage(chatMessage);
 
-		// This passes due to not mocking the ItemComposition for the whip
+		// This passes due to not mocking the ItemDefinition for the whip
 		verify(examineClient).submitItem(anyInt(), anyString());
 	}
 

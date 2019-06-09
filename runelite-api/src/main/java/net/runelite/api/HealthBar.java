@@ -26,9 +26,9 @@ package net.runelite.api;
 
 public interface HealthBar
 {
-	SpritePixels getHealthBarFrontSprite();
+	Sprite getHealthBarFrontSprite();
 
-	SpritePixels getHealthBarBackSprite();
+	Sprite getHealthBarBackSprite();
 
 	void setPadding(int padding);
 }

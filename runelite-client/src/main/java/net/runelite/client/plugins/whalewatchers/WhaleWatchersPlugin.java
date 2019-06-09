@@ -149,7 +149,7 @@ public class WhaleWatchersPlugin extends Plugin
 		if (config.gloryWarning() && event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
 			final int amuletID = ObjectUtils.defaultIfNull(client.getLocalPlayer()
-				.getPlayerComposition().getEquipmentId(KitType.AMULET), 0);
+				.getPlayerAppearance().getEquipmentId(KitType.AMULET), 0);
 			displayGloryOverlay = amuletID == ItemID.AMULET_OF_GLORY;
 		}
 		else

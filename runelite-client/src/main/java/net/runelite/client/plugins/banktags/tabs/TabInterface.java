@@ -52,7 +52,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -577,7 +577,7 @@ public class TabInterface
 		{
 			if (event.getMenuOption().startsWith(CHANGE_ICON + " ("))
 			{
-				ItemComposition item = getItem(event.getActionParam());
+				ItemDefinition item = getItem(event.getActionParam());
 				int itemId = itemManager.canonicalize(item.getId());
 				iconToSet.setIconItemId(itemId);
 				iconToSet.getIcon().setItemId(itemId);
@@ -611,7 +611,7 @@ public class TabInterface
 		{
 			// Add "remove" menu entry to all items in bank while tab is selected
 			event.consume();
-			final ItemComposition item = getItem(event.getActionParam());
+			final ItemDefinition item = getItem(event.getActionParam());
 			final int itemId = item.getId();
 			tagManager.removeTag(itemId, activeTab.getTag());
 			bankSearch.search(InputType.SEARCH, TAG_SEARCH + activeTab.getTag(), true);
@@ -1000,11 +1000,11 @@ public class TabInterface
 	}
 
 
-	private ItemComposition getItem(int idx)
+	private ItemDefinition getItem(int idx)
 	{
 		ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
 		Item item = bankContainer.getItems()[idx];
-		return itemManager.getItemComposition(item.getId());
+		return itemManager.getItemDefinition(item.getId());
 	}
 
 	private void openTag(final String tag)

@@ -51,7 +51,7 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.MenuAction;
@@ -316,10 +316,10 @@ public class GroundItemsPlugin extends Plugin
 
 	private void lootNotifier(Collection<ItemStack> items)
 	{
-		ItemComposition composition;
+		ItemDefinition composition;
 		for (ItemStack is : items)
 		{
-			composition = itemManager.getItemComposition(is.getId());
+			composition = itemManager.getItemDefinition(is.getId());
 			Color itemColor = getHighlighted(composition.getName(), itemManager.getItemPrice(is.getId()) * is.getQuantity(), itemManager.getAlchValue(is.getId()) * is.getQuantity());
 			if (itemColor != null)
 			{
@@ -479,7 +479,7 @@ public class GroundItemsPlugin extends Plugin
 	{
 		// Collect the data for the item
 		final int itemId = item.getId();
-		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = itemManager.getAlchValue(realItemId);
 		int durationMillis;
@@ -608,7 +608,7 @@ public class GroundItemsPlugin extends Plugin
 				current = current.getNext();
 			}
 
-			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+			final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
 			final int itemPrice = itemManager.getItemPrice(realItemId);
 			final int price = itemPrice <= 0 ? itemComposition.getPrice() : itemPrice;
@@ -755,7 +755,7 @@ public class GroundItemsPlugin extends Plugin
 
 	private int getGePriceFromItemId(int itemId)
 	{
-		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 
 		return itemManager.getItemPrice(realItemId);
@@ -763,7 +763,7 @@ public class GroundItemsPlugin extends Plugin
 
 	private boolean isItemIdHidden(int itemId)
 	{
-		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = itemManager.getAlchValue(realItemId);
 		final int gePrice = itemManager.getItemPrice(realItemId);
@@ -773,7 +773,7 @@ public class GroundItemsPlugin extends Plugin
 
 	private int getCollapsedItemQuantity(int itemId, String item)
 	{
-		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 		final boolean itemNameIncludesQuantity = Pattern.compile("\\(\\d+\\)").matcher(itemComposition.getName()).find();
 
 		Matcher matcher = Pattern.compile("\\((\\d+)\\)").matcher(item);

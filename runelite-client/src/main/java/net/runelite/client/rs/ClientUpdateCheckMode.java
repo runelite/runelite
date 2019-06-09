@@ -29,5 +29,6 @@ public enum ClientUpdateCheckMode
 	AUTO,
 	NONE,
 	VANILLA,
-	CUSTOM
+	CUSTOM,
+	PATCH
 }

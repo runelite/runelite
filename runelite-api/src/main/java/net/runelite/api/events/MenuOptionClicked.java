@@ -64,7 +64,7 @@ public class MenuOptionClicked
 	/**
 	 * The ID of the widget where the menu was clicked.
 	 *
-	 * @see net.runelite.api.widgets.WidgetID
+	 * @see net.runelite.api.WidgetID
 	 */
 	private int widgetId;
 	/**

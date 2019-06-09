@@ -208,8 +208,8 @@ public class KeptOnDeathPlugin extends Plugin
 			{
 				int o1ID = ItemVariationMapping.map(itemManager.canonicalize(o1.getId()));
 				int o2ID = ItemVariationMapping.map(itemManager.canonicalize(o2.getId()));
-				ItemComposition c1 = itemManager.getItemComposition(o1ID);
-				ItemComposition c2 = itemManager.getItemComposition(o2ID);
+				ItemDefinition c1 = itemManager.getItemDefinition(o1ID);
+				ItemDefinition c2 = itemManager.getItemDefinition(o2ID);
 				int exchangePrice1 = c1.isTradeable() ? itemManager.getItemPrice(c1.getId()) : c1.getPrice();
 				int exchangePrice2 = c2.isTradeable() ? itemManager.getItemPrice(c2.getId()) : c2.getPrice();
 				return exchangePrice2 - exchangePrice1;
@@ -227,7 +227,7 @@ public class KeptOnDeathPlugin extends Plugin
 					continue;
 				}
 
-				ItemComposition c = itemManager.getItemComposition(i.getId());
+				ItemDefinition c = itemManager.getItemDefinition(i.getId());
 				Widget itemWidget = createItemWidget(i.getQuantity(), c);
 
 				// Bonds are always kept and do not count towards the limit.
@@ -425,7 +425,7 @@ public class KeptOnDeathPlugin extends Plugin
 			if (price == 0)
 			{
 				// Default to alch price
-				price = itemManager.getItemComposition(w.getItemId()).getPrice() * HIGH_ALCH;
+				price = itemManager.getItemDefinition(w.getItemId()).getPrice() * HIGH_ALCH;
 			}
 			total += price;
 		}
@@ -439,12 +439,12 @@ public class KeptOnDeathPlugin extends Plugin
 	}
 
 	// isTradeable checks if they are traded on the grand exchange, some items are trade-able but not via GE
-	private boolean checkTradeable(int id, ItemComposition c)
+	private boolean checkTradeable(int id, ItemDefinition c)
 	{
 		// If the item is a note check the unnoted variants trade ability
 		if (c.getNote() != -1)
 		{
-			return checkTradeable(c.getLinkedNoteId(), itemManager.getItemComposition(c.getLinkedNoteId()));
+			return checkTradeable(c.getLinkedNoteId(), itemManager.getItemDefinition(c.getLinkedNoteId()));
 		}
 
 		switch (id)
@@ -572,7 +572,7 @@ public class KeptOnDeathPlugin extends Plugin
  * @return
  *//*
 
-	private Widget createItemWidget(int qty, ItemComposition c)
+	private Widget createItemWidget(int qty, ItemDefinition c)
 	{
 		Widget itemWidget = client.createWidget();
 		itemWidget.setType(WidgetType.GRAPHIC);
