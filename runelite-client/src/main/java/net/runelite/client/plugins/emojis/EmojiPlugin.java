@@ -26,6 +26,7 @@ package net.runelite.client.plugins.emojis;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
@@ -61,6 +62,7 @@ public class EmojiPlugin extends Plugin
 	private ChatMessageManager chatMessageManager;
 
 	private int modIconsStart = -1;
+	private static final Pattern whitespace = Pattern.compile("[\\s\\u00A0]");
 
 	@Override
 	protected void startUp()
@@ -167,7 +169,7 @@ public class EmojiPlugin extends Plugin
 	@VisibleForTesting
 	String updateMessage(final String message)
 	{
-		final String[] messageWords = message.split("[\\s\\u00A0]");
+		final String[] messageWords = whitespace.split(message);
 
 		boolean editedMessage = false;
 		for (int i = 0; i < messageWords.length; i++)
