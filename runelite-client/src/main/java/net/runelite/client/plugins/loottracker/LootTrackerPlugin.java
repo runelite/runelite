@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -184,7 +185,8 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerClient lootTrackerClient;
 	private BufferedReader bufferedReader;
 	private JsonStreamParser jsonStreamParser;
-	private Collection<LootRecord> lootRecords = new ArrayList<>();
+	@VisibleForTesting
+	public Collection<LootRecord> lootRecords = new ArrayList<>();
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -736,6 +738,7 @@ public class LootTrackerPlugin extends Plugin
 		return ignoredItems.contains(name);
 	}
 
+	@VisibleForTesting
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)
 	{
 		final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
@@ -765,7 +768,7 @@ public class LootTrackerPlugin extends Plugin
 			.collect(Collectors.toList());
 	}
 
-	private Collection<LootTrackerRecord> convertToLootTrackerRecord(final Collection<LootRecord> records)
+	public Collection<LootTrackerRecord> convertToLootTrackerRecord(final Collection<LootRecord> records)
 	{
 		Collection<LootTrackerRecord> trackerRecords = new ArrayList<>();
 		for (LootRecord record : records)
