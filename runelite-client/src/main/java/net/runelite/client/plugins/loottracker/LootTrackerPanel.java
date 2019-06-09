@@ -44,6 +44,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameState;
 import net.runelite.client.game.ItemManager;
@@ -136,6 +138,9 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	private final JPanel displaySelector;
+
+	@Getter @Setter
+	private LootRecordSortType lootRecordSortType = LootRecordSortType.TIMESTAMP;
 
 	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config)
 	{
@@ -423,6 +428,7 @@ class LootTrackerPanel extends PluginPanel
 		logsContainer.removeAll();
 		boxes.clear();
 		int start = 0;
+		records.sort(lootRecordSortType);
 		if (!groupLoot && records.size() > MAX_LOOT_BOXES)
 		{
 			start = records.size() - MAX_LOOT_BOXES;

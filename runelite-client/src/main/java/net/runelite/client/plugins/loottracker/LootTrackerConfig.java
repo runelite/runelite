@@ -91,5 +91,14 @@ public interface LootTrackerConfig extends Config
 	{
 		return true;
 	}
+	@ConfigItem(
+		keyName = "sortType",
+		name = "Sorting",
+		description = "The method for sorting Loot Tracker entries"
+	)
+	default LootRecordSortType sortType()
+	{
+		return LootRecordSortType.TIMESTAMP;
+	}
 
 }
