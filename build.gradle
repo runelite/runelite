@@ -1,0 +1,53 @@
+ext {
+    lombokVersion = '1.18.4'
+    checkstyleVersion = '8.3'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'checkstyle'
+
+    repositories {
+        jcenter()
+        mavenLocal()
+
+        maven {
+            url = 'http://repo.runelite.net'
+        }
+    }
+    
+    dependencies {
+        compileOnly "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+        implementation 'com.google.guava:guava:23.2-jre'
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    }
+
+    javadoc {
+        options.setEncoding('UTF-8')
+    }
+    
+    task javadocJar(type: Jar) {
+        dependsOn javadoc
+        archiveClassifier = 'javadoc'
+        from(javadoc.destinationDir)
+    }
+
+    sourceCompatibility = '1.8'
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+                artifact javadocJar
+            }
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+}

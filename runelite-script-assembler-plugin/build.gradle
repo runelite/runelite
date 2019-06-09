@@ -1,0 +1,16 @@
+dependencies {
+    implementation project(':cache')
+    implementation project(':runelite-api')
+    implementation 'org.apache.maven:maven-plugin-api:3.0.5'
+    implementation 'org.apache.maven.plugin-tools:maven-plugin-annotations:3.4'
+}
+
+processResources {
+    expand(project.properties)
+}
+
+processTestResources {
+    expand(project.properties)
+}
+
+description = 'Script Assembler Plugin'

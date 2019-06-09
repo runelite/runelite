@@ -1,0 +1,22 @@
+dependencies {
+    implementation project(':cache')
+    implementation project(':cache-client')
+    implementation project(':http-api')
+    implementation project(':protocol-api')
+    implementation 'org.springframework.boot:spring-boot-starter:1.5.6.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc:1.5.6.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-devtools:1.5.6.RELEASE'
+    implementation 'mysql:mysql-connector-java:5.1.45'
+    implementation 'org.sql2o:sql2o:1.5.4'
+    implementation 'io.minio:minio:3.0.6'
+}
+
+processResources {
+    expand(project.properties)
+}
+
+processTestResources {
+    expand(project.properties)
+}
+
+description = 'Cache Updater'

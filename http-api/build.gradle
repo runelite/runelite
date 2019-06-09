@@ -1,0 +1,28 @@
+plugins {
+    id 'java-library'
+    id 'com.palantir.git-version' version '0.11.0'
+}
+
+ext {
+    gitDescribe = gitVersion()
+}
+
+dependencies {
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    compile 'com.google.code.gson:gson:2.8.5'
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'org.apache.commons:commons-csv:1.4'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.slf4j:slf4j-simple:1.7.12'
+    testCompile 'com.squareup.okhttp3:mockwebserver:3.7.0'
+}
+
+processResources {
+    expand(project.properties)
+}
+
+processTestResources {
+    expand(project.properties)
+}
+
+description = 'Web API'

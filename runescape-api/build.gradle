@@ -1,0 +1,14 @@
+dependencies {
+    implementation project(':runelite-api')
+}
+
+processResources {
+    expand(project.properties)
+}
+
+processTestResources {
+    expand(project.properties)
+}
+
+group = 'net.runelite.rs'
+description = 'RuneScape API'

@@ -23,6 +23,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 grammar rs2asm;
+@header {
+    package net.runelite.cache.script.assembler;
+}
 
 prog: NEWLINE* (header NEWLINE+)* (line NEWLINE+)+ ;
 

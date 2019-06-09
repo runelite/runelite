@@ -1,0 +1,39 @@
+dependencies {
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'net.sf.jopt-simple:jopt-simple:5.0.1'
+    implementation 'com.google.inject:guice:4.1.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'net.runelite.pushingpixels:substance:8.0.02'
+    implementation 'org.apache.commons:commons-text:1.2'
+    implementation 'org.jogamp.jogl:jogl-all:2.3.2'
+    implementation 'org.jogamp.gluegen:gluegen-rt:2.3.2'
+    implementation 'io.sigpipe:jbsdiff:1.0'
+    implementation 'net.java.dev.jna:jna:4.5.1'
+    implementation 'net.java.dev.jna:jna-platform:4.5.1'
+    implementation project(':runelite-api')
+    implementation project(':http-api')
+    implementation 'net.runelite:discord:1.1'
+    runtimeOnly 'net.runelite.pushingpixels:trident:1.5.00'
+    runtimeOnly 'org.jogamp.jogl:jogl-all:2.3.2'
+    runtimeOnly 'org.jogamp.gluegen:gluegen-rt:2.3.2'
+    runtimeOnly 'net.runelite:client-patch:1.5.26-SNAPSHOT'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.hamcrest:hamcrest-library:1.3'
+    testImplementation 'org.mockito:mockito-all:1.10.19'
+    testImplementation 'com.google.inject.extensions:guice-testlib:4.1.0'
+    testImplementation 'com.google.inject.extensions:guice-grapher:4.1.0'
+    compileOnly 'net.runelite:orange-extensions:1.0'
+}
+
+processResources {
+    filesMatching('**/*.properties') {
+        expand(project.properties)
+    }
+}
+
+processTestResources {
+    expand(project.properties)
+}
+
+description = 'RuneLite Client'

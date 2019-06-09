@@ -1,0 +1,19 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    implementation project(':runelite-api')
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    testImplementation 'junit:junit:4.12'
+}
+
+processResources {
+    expand(project.properties)
+}
+
+processTestResources {
+    expand(project.properties)
+}
+
+description = 'Protocol API'

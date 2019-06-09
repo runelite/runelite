@@ -1,0 +1,18 @@
+dependencies {
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-all:1.10.19'
+    compileOnly 'org.slf4j:slf4j-api:1.7.25'
+    compileOnly 'javax.inject:javax.inject:1'
+    implementation project(':runelite-api')
+    implementation project(':runescape-api')
+}
+
+processResources {
+    expand(project.properties)
+}
+
+processTestResources {
+    expand(project.properties)
+}
+
+description = 'RuneLite Mixins'
