@@ -824,7 +824,6 @@ public class MenuManager
 		hiddenEntries.add(entry);
 	}
 
-
 	public void removeHiddenEntry(String option, String target, boolean strictOption, boolean strictTarget)
 	{
 		option = Text.standardize(option);
