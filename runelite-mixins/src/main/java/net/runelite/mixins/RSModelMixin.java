@@ -54,6 +54,10 @@ public abstract class RSModelMixin implements RSModel
 	@Inject
 	private int rl$sceneId;
 
+
+	@Inject
+	private boolean isClickable;
+
 	@Inject
 	private int rl$bufferOffset;
 
@@ -71,6 +75,11 @@ public abstract class RSModelMixin implements RSModel
 	{
 		rl$init((RSModel[]) models, length);
 	}
+
+	@Inject
+	public boolean isClickable() {
+		return isClickable;
+	};
 
 	@MethodHook(value = "<init>", end = true)
 	@Inject
