@@ -28,6 +28,8 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+
+import com.google.common.annotations.VisibleForTesting;
 import joptsimple.internal.Strings;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -162,7 +164,8 @@ public class EmojiPlugin extends Plugin
 	}
 
 	@Nullable
-	private String updateMessage(final String message)
+	@VisibleForTesting
+	String updateMessage(final String message)
 	{
 		final String[] messageWords = message.split("[\\s\\u00A0]");
 
