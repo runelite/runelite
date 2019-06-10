@@ -24,32 +24,48 @@
  */
 package net.runelite.client.plugins.inferno;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
-@ConfigGroup("inferno")
-public interface InfernoConfig extends Config
+public class InfernoNibblerOverlay extends Overlay
 {
-	@ConfigItem(
-		position = 0,
-		keyName = "Nibbler Overlay",
-		name = "Nibbler Overlay",
-		description = "Shows if there are any Nibblers left"
-	)
-	default boolean displayNibblerOverlay()
+	private final Client client;
+	private final InfernoPlugin plugin;
+	private final InfernoConfig config;
+
+	private final PanelComponent panelComponent = new PanelComponent();
+
+	@Inject
+	public InfernoNibblerOverlay(Client client, InfernoConfig config, InfernoPlugin plugin)
 	{
-		return false;
+		this.client = client;
+		this.config = config;
+		this.plugin = plugin;
+		setPosition(OverlayPosition.TOP_LEFT);
 	}
 
-	@ConfigItem(
-		position = 1,
-		keyName = "Prayer Helper",
-		name = "Prayer Helper",
-		description = "Tells you what to flick in how many ticks"
-	)
-	default boolean showPrayerHelp()
+
+	@Override
+	public Dimension render(Graphics2D graphics)
 	{
-		return false;
+		if (!config.displayNibblerOverlay() || plugin.getNibblers().size() == 0 || client.getMapRegions()[0] != 9043)
+		return null;
+
+		panelComponent.getChildren().clear();
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
+		tableComponent.addRow("Nibblers Left: ", Integer.toString(plugin.getNibblers().size()));
+
+		panelComponent.getChildren().add(tableComponent);
+
+		return panelComponent.render(graphics);
 	}
 }

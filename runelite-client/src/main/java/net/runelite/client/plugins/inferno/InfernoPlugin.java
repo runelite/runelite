@@ -95,7 +95,7 @@ public class InfernoPlugin extends Plugin
 	{
 		overlayManager.add(infernoOverlay);
 		overlayManager.add(infernoInfobox);
-		overlayManager.add(nibblerlOverlay);
+		overlayManager.add(nibblerOverlay);
 		monsters = new HashMap<>();
 		monsterCurrentAttackMap = new HashMap<>(6);
 		for (int i = 1; i <= 6; i++)
