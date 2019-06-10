@@ -43,6 +43,8 @@ import static net.runelite.api.ObjectID.ROCKS_11374;
 import static net.runelite.api.ObjectID.ROCKS_11375;
 import static net.runelite.api.ObjectID.ROCKS_11376;
 import static net.runelite.api.ObjectID.ROCKS_11377;
+import static net.runelite.api.ObjectID.ROCKS_11386;
+import static net.runelite.api.ObjectID.ROCKS_11387;
 
 enum Rock
 {
@@ -65,7 +67,9 @@ enum Rock
 			}
 		},
 	SILVER(Duration.ofMinutes(1), ROCKS_11369),
+	SANDSTONE(Duration.ofMillis(5400), ROCKS_11386),
 	GOLD(Duration.ofMinutes(1), ROCKS_11370, ROCKS_11371),
+	GRANITE(Duration.ofMillis(5400), ROCKS_11387),
 	MITHRIL(Duration.ofMinutes(2), ROCKS_11372, ROCKS_11373)
 		{
 			@Override
