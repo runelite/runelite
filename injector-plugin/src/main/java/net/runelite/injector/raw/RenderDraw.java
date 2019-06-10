@@ -2,7 +2,6 @@ package net.runelite.injector.raw;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.asm.ClassFile;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
@@ -10,8 +9,8 @@ import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.Method;
 import net.runelite.asm.signature.Signature;
-import net.runelite.deob.DeobAnnotations;
 import net.runelite.injector.Inject;
+import static net.runelite.injector.InjectUtil.findMethod;
 import net.runelite.injector.InjectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +37,8 @@ public class RenderDraw
 
 	private void injectColorBufferHooks() throws InjectionException
 	{
-		net.runelite.asm.Method obmethod = findObMethod("drawTile");
-		Method renderDraw = findObMethod("renderDraw").getPoolMethod();
+		net.runelite.asm.Method obmethod = findMethod(inject, "drawTile");
+		Method renderDraw = findMethod(inject, "renderDraw").getPoolMethod();
 		Instructions ins = obmethod.getCode().getInstructions();
 		replace(ins, renderDraw);
 	}
@@ -68,25 +67,5 @@ public class RenderDraw
 			Instruction invoke = new InvokeStatic(ins, renderDraw);
 			ins.replace(i, invoke);
 		}
-	}
-
-	private net.runelite.asm.Method findObMethod(String name) throws InjectionException
-	{
-		for (ClassFile cf : inject.getDeobfuscated().getClasses())
-		{
-			for (net.runelite.asm.Method m : cf.getMethods())
-			{
-				if (!m.getName().equals(name))
-				{
-					continue;
-				}
-				String obfuscatedName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
-
-				ClassFile c2 = inject.toObClass(cf);
-				return c2.findMethod(obfuscatedName);
-			}
-		}
-
-		throw new InjectionException(String.format("Method \"%s\" could not be found.", name));
 	}
 }

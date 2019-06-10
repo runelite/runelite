@@ -53,12 +53,12 @@ public class InjectHookMethod
 	private static final Logger logger = LoggerFactory.getLogger(InjectHookMethod.class);
 	private final Inject inject;
 
-	public InjectHookMethod(Inject inject)
+	InjectHookMethod(Inject inject)
 	{
 		this.inject = inject;
 	}
 
-	public void process(Method method) throws InjectionException
+	void process(Method method) throws InjectionException
 	{
 		Annotations an = method.getAnnotations();
 		if (an == null)

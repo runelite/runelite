@@ -87,7 +87,7 @@ public class MixinInjector
 	// Use net.runelite.asm.pool.Field instead of Field because the pool version has hashcode implemented
 	private final Map<net.runelite.asm.pool.Field, Field> shadowFields = new HashMap<>();
 
-	public MixinInjector(Inject inject)
+	MixinInjector(Inject inject)
 	{
 		this.inject = inject;
 	}
@@ -165,9 +165,6 @@ public class MixinInjector
 
 	/**
 	 * Finds fields that are marked @Inject and inject them into the target
-	 *
-	 * @param mixinClasses
-	 * @throws InjectionException
 	 */
 	private void injectFields(Map<Class<?>, List<ClassFile>> mixinClasses) throws InjectionException
 	{
@@ -245,9 +242,6 @@ public class MixinInjector
 
 	/**
 	 * Find fields which are marked @Shadow, and what they shadow
-	 *
-	 * @param mixinClasses
-	 * @throws InjectionException
 	 */
 	private void findShadowFields(Map<Class<?>, List<ClassFile>> mixinClasses) throws InjectionException
 	{
@@ -287,7 +281,7 @@ public class MixinInjector
 					else
 					{
 						// Shadow a field already in the gamepack
-						Field shadowField = findDeobField(shadowName);
+						Field shadowField = InjectUtil.findDeobFieldButUseless(inject, shadowName);
 
 						if (shadowField == null)
 						{
@@ -314,21 +308,6 @@ public class MixinInjector
 
 			return cv.getClassFile();
 		}
-	}
-
-	private Field findDeobField(String name)
-	{
-		for (ClassFile cf : inject.getDeobfuscated().getClasses())
-		{
-			for (Field f : cf.getFields())
-			{
-				if (f.getName().equals(name) && f.isStatic())
-				{
-					return f;
-				}
-			}
-		}
-		return null;
 	}
 
 	private void injectMethods(ClassFile mixinCf, ClassFile cf, Map<net.runelite.asm.pool.Field, Field> shadowFields)
@@ -901,7 +880,7 @@ public class MixinInjector
 						if (targetField == null)
 						{
 							// first try non static fields, then static
-							targetField = findDeobField(hookName);
+							targetField = InjectUtil.findDeobFieldButUseless(inject, hookName);
 						}
 
 						if (targetField == null)

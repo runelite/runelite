@@ -26,19 +26,24 @@ package net.runelite.deob.updater;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Field;
+import net.runelite.asm.Method;
+import net.runelite.deob.deobfuscators.Renamer;
 import net.runelite.deob.deobfuscators.mapping.AnnotationIntegrityChecker;
 import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
 import net.runelite.deob.deobfuscators.mapping.Mapper;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 import net.runelite.deob.util.JarUtil;
+import net.runelite.deob.util.NameMappings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UpdateMappings
 {
 	private static final Logger logger = LoggerFactory.getLogger(UpdateMappings.class);
-
+	private static boolean renameRL = true;
 	private final ClassGroup group1, group2;
 
 	public UpdateMappings(ClassGroup group1, ClassGroup group2)
@@ -74,6 +79,32 @@ public class UpdateMappings
 		pr.run();
 	}
 
+	public void updateRL()
+	{
+		Mapper mapper = new Mapper(group1, group2);
+		mapper.run();
+		ParallelExecutorMapping mapping = mapper.getMapping();
+		NameMappings names = new NameMappings();
+
+		for (Map.Entry<Object, Object> e : mapping.getMap().entrySet())
+		{
+			Object k = e.getKey();
+			Object v = e.getValue();
+
+			if (k instanceof Field)
+			{
+				names.map(((Field) v).getPoolField(), ((Field) k).getName());
+			}
+			else if (k instanceof Method)
+			{
+				names.map(((Method) v).getPoolMethod(), ((Method) k).getName());
+			}
+		}
+
+		Renamer renamer = new Renamer(names);
+		renamer.run(group2);
+	}
+
 	public void save(File out) throws IOException
 	{
 		JarUtil.saveJar(group2, out);
@@ -90,7 +121,14 @@ public class UpdateMappings
 			JarUtil.loadJar(new File(args[0])),
 			JarUtil.loadJar(new File(args[1]))
 		);
-		u.update();
+		if (renameRL)
+		{
+			u.updateRL();
+		}
+		else
+		{
+			u.update();
+		}
 		u.save(new File(args[2]));
 	}
 }

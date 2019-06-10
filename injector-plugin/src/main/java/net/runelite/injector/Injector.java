@@ -67,7 +67,7 @@ public class Injector
 		instance.run();
 	}
 
-	public void save(File out) throws IOException
+	private void save(File out) throws IOException
 	{
 		JarUtil.saveJar(vanilla, out);
 	}
