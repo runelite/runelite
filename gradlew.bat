@@ -1,17 +1,26 @@
 @rem
-@rem Copyright 2015 the original author or authors.
+@rem Copyright (c) 2019, Mark Koester <mark.koester1@gmail.com>
+@rem All rights reserved.
 @rem
-@rem Licensed under the Apache License, Version 2.0 (the "License");
-@rem you may not use this file except in compliance with the License.
-@rem You may obtain a copy of the License at
+@rem Redistribution and use in source and binary forms, with or without
+@rem modification, are permitted provided that the following conditions are met:
 @rem
-@rem      http://www.apache.org/licenses/LICENSE-2.0
+@rem 1. Redistributions of source code must retain the above copyright notice, this
+@rem    list of conditions and the following disclaimer.
+@rem 2. Redistributions in binary form must reproduce the above copyright notice,
+@rem    this list of conditions and the following disclaimer in the documentation
+@rem    and/or other materials provided with the distribution.
 @rem
-@rem Unless required by applicable law or agreed to in writing, software
-@rem distributed under the License is distributed on an "AS IS" BASIS,
-@rem WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-@rem See the License for the specific language governing permissions and
-@rem limitations under the License.
+@rem THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+@rem ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+@rem WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+@rem DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+@rem ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+@rem (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+@rem LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+@rem ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+@rem (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+@rem SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @rem
 
 @if "%DEBUG%" == "" @echo off
