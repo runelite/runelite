@@ -365,7 +365,7 @@ public class InfernoPlugin extends Plugin
 	
 	boolean inInferno()
 	{
-		if (client.getMapRegions()[0] = 9043) return;;
+		if (client.getMapRegions()[0] = 9043) return;
 	}
 
 	static String formatMonsterQuantity(final InfernoWaveMonster monster, final int quantity)
