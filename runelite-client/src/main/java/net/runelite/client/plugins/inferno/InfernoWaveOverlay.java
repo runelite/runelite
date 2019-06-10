@@ -49,7 +49,7 @@ class InfernoWaveOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private WaveOverlay(InfernoConfig config, InfernoPlugin plugin)
+	private InfernoWaveOverlay(InfernoConfig config, InfernoPlugin plugin)
 	{
 		setPosition(OverlayPosition.TOP_RIGHT);
 		this.config = config;
