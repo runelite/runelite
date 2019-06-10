@@ -33,11 +33,11 @@ public interface InfernoConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "Player Overlay",
-		name = "Player Overlay",
-		description = "Shows if there are any players left"
+		keyName = "Nibbler Overlay",
+		name = "Nibbler Overlay",
+		description = "Shows if there are any Nibblers left"
 	)
-	default boolean displayNibbaOverlay()
+	default boolean displayNibblerOverlay()
 	{
 		return false;
 	}

@@ -67,7 +67,7 @@ public class InfernoPlugin extends Plugin
 	private InfernoInfobox infernoInfobox;
 
 	@Inject
-	private InfernoNibberOverlay nibberOverlay;
+	private InfernoNibblerOverlay nibblerOverlay;
 
 	@Inject
 	private InfernoConfig config;
@@ -79,7 +79,7 @@ public class InfernoPlugin extends Plugin
 	private Map<Integer, ArrayList<InfernoNPC>> monsterCurrentAttackMap;
 
 	@Getter
-	private List<NPC> nibbers;
+	private List<NPC> nibblers;
 
 	@Getter
 	private InfernoNPC[] priorityNPC;
@@ -95,14 +95,14 @@ public class InfernoPlugin extends Plugin
 	{
 		overlayManager.add(infernoOverlay);
 		overlayManager.add(infernoInfobox);
-		overlayManager.add(nibberOverlay);
+		overlayManager.add(nibblerOverlay);
 		monsters = new HashMap<>();
 		monsterCurrentAttackMap = new HashMap<>(6);
 		for (int i = 1; i <= 6; i++)
 		{
 			monsterCurrentAttackMap.put(i, new ArrayList<>());
 		}
-		nibbers = new ArrayList<>();
+		nibblers = new ArrayList<>();
 		priorityNPC = new InfernoNPC[4];
 	}
 
@@ -111,7 +111,7 @@ public class InfernoPlugin extends Plugin
 	{
 		overlayManager.remove(infernoInfobox);
 		overlayManager.remove(infernoOverlay);
-		overlayManager.remove(nibberOverlay);
+		overlayManager.remove(nibblerOverlay);
 	}
 
 	@Subscribe
@@ -127,7 +127,7 @@ public class InfernoPlugin extends Plugin
 		}
 		if (npc.getId() == NpcID.JALNIB)
 		{
-			nibbers.add(npc);
+			nibblers.add(npc);
 		}
 	}
 
@@ -145,7 +145,7 @@ public class InfernoPlugin extends Plugin
 
 		if (npc.getId() == NpcID.JALNIB)
 		{
-			nibbers.remove(npc);
+			nibblers.remove(npc);
 		}
 	}
 
