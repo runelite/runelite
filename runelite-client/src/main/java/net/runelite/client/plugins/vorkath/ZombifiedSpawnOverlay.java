@@ -48,10 +48,9 @@ public class ZombifiedSpawnOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.getSpawn() != null)
+		if (plugin.getZombifiedSpawn() != null)
 		{
-			ZombifiedSpawn spawn = plugin.getSpawn();
-			OverlayUtil.renderActorOverlayImage(graphics, spawn.getNpc(), VorkathPlugin.ICE, Color.green, 10);
+			OverlayUtil.renderActorOverlayImage(graphics, plugin.getZombifiedSpawn(), VorkathPlugin.SPAWN, Color.green, 10);
 		}
 
 		return null;

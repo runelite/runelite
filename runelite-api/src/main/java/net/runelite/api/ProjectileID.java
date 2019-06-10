@@ -93,7 +93,7 @@ public class ProjectileID
 	public static final int VORKATH_MAGIC = 1479;
 	public static final int VORKATH_PRAYER_DISABLE = 1471;
 	public static final int VORKATH_VENOM = 1470;
-	public static final int VORKATH_ICE = 350;
+	public static final int VORKATH_ICE = 395;
 
 	public static final int HYDRA_MAGIC = 1662;
 	public static final int HYDRA_RANGED = 1663;
