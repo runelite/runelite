@@ -36,6 +36,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -111,14 +112,12 @@ public class ImplingsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcSpawned(NpcSpawned npcSpawned)
+	public void onGameTick(GameTick event)
 	{
-		NPC npc = npcSpawned.getNpc();
-		Impling impling = Impling.findImpling(npc.getId());
-
-		if (impling != null)
+		implingCounterMap.clear();
+		for (NPC npc : implings)
 		{
-			implings.add(npc);
+			Impling impling = Impling.findImpling(npc.getId());
 
 			ImplingType type = impling.getImplingType();
 			if (implingCounterMap.containsKey(type))
@@ -129,6 +128,18 @@ public class ImplingsPlugin extends Plugin
 			{
 				implingCounterMap.put(type, 1);
 			}
+		}
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned npcSpawned)
+	{
+		NPC npc = npcSpawned.getNpc();
+		Impling impling = Impling.findImpling(npc.getId());
+
+		if (impling != null)
+		{
+			implings.add(npc);
 		}
 	}
 
@@ -153,8 +164,6 @@ public class ImplingsPlugin extends Plugin
 		NPC npc = npcDespawned.getNpc();
 		implings.remove(npc);
 
-		Impling impling = Impling.findImpling(npc.getId());
-		if (impling != null) implingCounterMap.put(impling.getImplingType(), implingCounterMap.get(impling.getImplingType()) - 1);
 	}
 
 	boolean showNpc(NPC npc)
