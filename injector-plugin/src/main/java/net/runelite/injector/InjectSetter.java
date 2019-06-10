@@ -45,7 +45,7 @@ import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InjectSetter
+class InjectSetter
 {
 	private static final Logger logger = LoggerFactory.getLogger(InjectSetter.class);
 
@@ -53,7 +53,7 @@ public class InjectSetter
 
 	private int injectedSetters;
 
-	public InjectSetter(Inject inject)
+	InjectSetter(Inject inject)
 	{
 		this.inject = inject;
 	}
@@ -67,9 +67,8 @@ public class InjectSetter
 	 *                       setter declared
 	 * @param field          Field of vanilla that will be set
 	 * @param exportedName   exported name of field
-	 * @param setter
 	 */
-	public void injectSetter(ClassFile targetClass, Class<?> targetApiClass, Field field, String exportedName, Number setter)
+	void injectSetter(ClassFile targetClass, Class<?> targetApiClass, Field field, String exportedName, Number setter)
 	{
 		java.lang.reflect.Method method = inject.findImportMethodOnApi(targetApiClass, exportedName, true);
 		if (method == null)
@@ -152,7 +151,7 @@ public class InjectSetter
 		ins.add(new VReturn(instructions));
 	}
 
-	public int getInjectedSetters()
+	int getInjectedSetters()
 	{
 		return injectedSetters;
 	}

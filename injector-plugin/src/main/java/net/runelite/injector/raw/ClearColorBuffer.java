@@ -11,8 +11,8 @@ import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
-import net.runelite.deob.DeobAnnotations;
 import net.runelite.injector.Inject;
+import net.runelite.injector.InjectUtil;
 import net.runelite.injector.InjectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class ClearColorBuffer
 
 	private void injectColorBufferHooks() throws InjectionException
 	{
-		net.runelite.asm.pool.Method fillRectangle = findStaticMethod("Rasterizer2D_fillRectangle").getPoolMethod();
+		net.runelite.asm.pool.Method fillRectangle = InjectUtil.findStaticMethod(inject, "Rasterizer2D_fillRectangle").getPoolMethod();
 
 		int count = 0;
 		int replaced = 0;
@@ -119,28 +119,4 @@ public class ClearColorBuffer
 			}
 		}
 	}
-
-	private Method findStaticMethod(String name) throws InjectionException
-	{
-		for (ClassFile c : inject.getDeobfuscated().getClasses())
-		{
-			for (Method m : c.getMethods())
-			{
-				if (!m.getName().equals(name))
-				{
-					continue;
-				}
-
-				String obfuscatedName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
-				Signature obfuscatedSignature = DeobAnnotations.getObfuscatedSignature(m);
-
-				ClassFile c2 = inject.toObClass(c);
-
-				return c2.findMethod(obfuscatedName, (obfuscatedSignature != null) ? obfuscatedSignature : m.getDescriptor());
-			}
-		}
-
-		throw new InjectionException("Couldn't find static method " + name);
-	}
-
 }

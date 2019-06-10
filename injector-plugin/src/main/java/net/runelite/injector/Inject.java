@@ -47,6 +47,7 @@ import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import net.runelite.injector.raw.ClearColorBuffer;
 import net.runelite.injector.raw.DrawAfterWidgets;
+import net.runelite.injector.raw.DrawMenu;
 import net.runelite.injector.raw.RasterizerHook;
 import net.runelite.injector.raw.RenderDraw;
 import net.runelite.injector.raw.ScriptVM;
@@ -68,6 +69,7 @@ public class Inject
 	private final InjectInvoker invokes = new InjectInvoker(this);
 	private final InjectConstruct construct = new InjectConstruct(this);
 
+	private final DrawMenu drawMenu = new DrawMenu(this);
 	private final RasterizerHook rasterizerHook = new RasterizerHook(this);
 	private final MixinInjector mixinInjector = new MixinInjector(this);
 	private final DrawAfterWidgets drawAfterWidgets = new DrawAfterWidgets(this);
@@ -331,6 +333,7 @@ public class Inject
 		scriptVM.inject();
 		clearColorBuffer.inject();
 		renderDraw.inject();
+		drawMenu.inject();
 	}
 
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)

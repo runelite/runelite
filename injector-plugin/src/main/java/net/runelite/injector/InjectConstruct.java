@@ -54,7 +54,7 @@ public class InjectConstruct
 
 	private final Inject inject;
 
-	public InjectConstruct(Inject inject)
+	InjectConstruct(Inject inject)
 	{
 		this.inject = inject;
 	}
@@ -99,7 +99,7 @@ public class InjectConstruct
 		}
 	}
 
-	public void injectConstruct(ClassFile targetClass, java.lang.reflect.Method apiMethod) throws InjectionException
+	void injectConstruct(ClassFile targetClass, java.lang.reflect.Method apiMethod) throws InjectionException
 	{
 		logger.info("Injecting construct for {}", apiMethod);
 

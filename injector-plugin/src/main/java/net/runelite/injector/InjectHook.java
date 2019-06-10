@@ -55,7 +55,7 @@ import net.runelite.asm.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InjectHook
+class InjectHook
 {
 	private static final Logger logger = LoggerFactory.getLogger(InjectHook.class);
 	private static final String HOOK_METHOD_SIGNATURE = "(I)V";
@@ -64,7 +64,7 @@ public class InjectHook
 	private final Map<Field, HookInfo> hooked = new HashMap<>();
 	private int injectedHooks;
 
-	public InjectHook(Inject inject)
+	InjectHook(Inject inject)
 	{
 		this.inject = inject;
 	}
@@ -74,7 +74,7 @@ public class InjectHook
 		hooked.put(field, hookInfo);
 	}
 
-	public void run()
+	void run()
 	{
 		Execution e = new Execution(inject.getVanilla());
 		e.populateInitialMethods();
@@ -129,8 +129,7 @@ public class InjectHook
 			StackContext objectStackContext = null;
 			if (sfi instanceof PutField)
 			{
-				StackContext objectStack = ic.getPops().get(1); // Object being set on
-				objectStackContext = objectStack;
+				objectStackContext = ic.getPops().get(1);
 			}
 
 			int idx = ins.getInstructions().indexOf(sfi);
@@ -206,8 +205,7 @@ public class InjectHook
 			StackContext objectStackContext = null;
 			if (arrayReferencePushed.getInstruction().getType() == InstructionType.GETFIELD)
 			{
-				StackContext objectReference = arrayReferencePushed.getPops().get(0);
-				objectStackContext = objectReference;
+				objectStackContext = arrayReferencePushed.getPops().get(0);
 			}
 
 			// inject hook after 'i'
@@ -382,7 +380,7 @@ public class InjectHook
 		}
 	}
 
-	public int getInjectedHooks()
+	int getInjectedHooks()
 	{
 		return injectedHooks;
 	}

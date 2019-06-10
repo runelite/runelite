@@ -60,7 +60,7 @@ public class OpcodesTransformer implements Transformer
 		if (clinit == null)
 		{
 			clinit = new Method(runeliteOpcodes, "<clinit>", new Signature("()V"));
-			clinit.setStatic();
+			clinit.setStatic(true);
 			Code code = new Code(clinit);
 			code.setMaxStack(1);
 			clinit.setCode(code);

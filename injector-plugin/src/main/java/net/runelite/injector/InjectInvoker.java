@@ -51,7 +51,7 @@ import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InjectInvoker
+class InjectInvoker
 {
 	private static final Logger logger = LoggerFactory.getLogger(InjectInvoker.class);
 
@@ -59,7 +59,7 @@ public class InjectInvoker
 
 	private int injectedInvokers;
 
-	public InjectInvoker(Inject inject)
+	InjectInvoker(Inject inject)
 	{
 		this.inject = inject;
 	}
@@ -73,7 +73,7 @@ public class InjectInvoker
 	 * @param implementingClass Java class for the API interface the class
 	 *                          will implement
 	 */
-	public void process(Method m, ClassFile other, java.lang.Class<?> implementingClass)
+	void process(Method m, ClassFile other, java.lang.Class<?> implementingClass)
 	{
 		Annotations an = m.getAnnotations();
 
@@ -284,7 +284,7 @@ public class InjectInvoker
 		clazz.addMethod(invokerMethodSignature);
 	}
 
-	public int getInjectedInvokers()
+	int getInjectedInvokers()
 	{
 		return injectedInvokers;
 	}
