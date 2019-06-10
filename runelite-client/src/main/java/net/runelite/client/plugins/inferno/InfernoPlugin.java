@@ -51,6 +51,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Inferno",
@@ -63,6 +64,7 @@ public class InfernoPlugin extends Plugin
 	
 	private static final Pattern WAVE_PATTERN = Pattern.compile(".*Wave: (\\d+).*");
 	private static final int MAX_MONSTERS_OF_TYPE_PER_WAVE = 6;
+	private static final int INFERNO_REGION = 9043;
 	static final int MAX_WAVE = 69;
 
 	@Inject
@@ -365,7 +367,7 @@ public class InfernoPlugin extends Plugin
 	
 	boolean inInferno()
 	{
-		if (client.getMapRegions()[0] = 9043) return;
+		return ArrayUtils.contains(client.getMapRegions(), INFERNO_REGION);
 	}
 
 	static String formatMonsterQuantity(final InfernoWaveMonster monster, final int quantity)
