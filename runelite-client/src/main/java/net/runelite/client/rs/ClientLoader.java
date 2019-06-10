@@ -79,7 +79,6 @@ public class ClientLoader
 
 	public Applet load()
 	{
-		updateCheckMode = CUSTOM;
 		try
 		{
 			Manifest manifest = new Manifest();
@@ -140,61 +139,63 @@ public class ClientLoader
 					}
 				}
 			}
+			URL url = new URL("https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/injected-client.jar");
+			ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
+			File LOCAL_INJECTED_CLIENT = new File("./injected-client/target/injected-client-" + RuneLiteAPI.getVersion() + ".jar");
+			File INJECTED_CLIENT = new File(RUNELITE_DIR + "/injected-client.jar");
+			INJECTED_CLIENT.mkdirs();
+			if (INJECTED_CLIENT.exists())
+			{
+				if (getFileSize(INJECTED_CLIENT.toURI().toURL()) != getFileSize(url))
+				{
+					INJECTED_CLIENT.delete();
+					INJECTED_CLIENT.createNewFile();
+					System.out.println("Updating Injected Client");
+					updateInjectedClient(readableByteChannel);
+				}
+			}
+			else
+			{
+				INJECTED_CLIENT.createNewFile();
+				System.out.println("Initializing Inject Client");
+				updateInjectedClient(readableByteChannel);
+			}
+
+			JarInputStream fis;
 
 			if (updateCheckMode == CUSTOM)
 			{
-				URL url = new URL("https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/injected-client.jar");
-				ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
-				File LOCAL_INJECTED_CLIENT = new File("./injected-client/target/injected-client-" + RuneLiteAPI.getVersion() + ".jar");
-				File INJECTED_CLIENT = new File(RUNELITE_DIR + "/injected-client.jar");
-				INJECTED_CLIENT.mkdirs();
-				if (INJECTED_CLIENT.exists())
+				System.out.println("Using local injected client");
+				fis = new JarInputStream(new FileInputStream(LOCAL_INJECTED_CLIENT));
+			}
+			else
+			{
+				System.out.println("Using live injected client");
+				fis = new JarInputStream(new FileInputStream(INJECTED_CLIENT));
+			}
+
+
+			byte[] tmp = new byte[4096];
+			ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
+			for (; ; )
+			{
+				JarEntry metadata = fis.getNextJarEntry();
+				if (metadata == null)
 				{
-					if (getFileSize(INJECTED_CLIENT.toURI().toURL()) != getFileSize(url))
-					{
-						INJECTED_CLIENT.delete();
-						INJECTED_CLIENT.createNewFile();
-						System.out.println("Updating Injected Client");
-						updateInjectedClient(readableByteChannel);
-					}
+					break;
 				}
-				else 
-				{
-					INJECTED_CLIENT.createNewFile();
-					System.out.println("Initializing Inject Client");
-					updateInjectedClient(readableByteChannel);
-				}
-				JarInputStream fis;
-				if (useLocalInjected)
-				{
-					fis = new JarInputStream(new FileInputStream(LOCAL_INJECTED_CLIENT));
-				}
-				else 
-				{
-					fis = new JarInputStream(new FileInputStream(INJECTED_CLIENT));
-				}
-				byte[] tmp = new byte[4096];
-				ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
+
+				buffer.reset();
 				for (; ; )
 				{
-					JarEntry metadata = fis.getNextJarEntry();
-					if (metadata == null)
+					int n = fis.read(tmp);
+					if (n <= -1)
 					{
 						break;
 					}
-
-					buffer.reset();
-					for (; ; )
-					{
-						int n = fis.read(tmp);
-						if (n <= -1)
-						{
-							break;
-						}
-						buffer.write(tmp, 0, n);
-					}
-					zipFile.replace(metadata.getName(), buffer.toByteArray());
+					buffer.write(tmp, 0, n);
 				}
+				zipFile.replace(metadata.getName(), buffer.toByteArray());
 			}
 
 			String initialClass = config.getInitialClass();
