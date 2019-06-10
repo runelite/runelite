@@ -61,7 +61,7 @@ public class Skills {
             var1.__g_428(getItemDefinition(var1.placeholderTemplate), getItemDefinition(var1.placeholder));
          }
 
-         if(!class30.__ar_l && var1.isMembersOnly) {
+         if(!class30.inMembersWorld && var1.isMembersOnly) {
             var1.name = "Members object";
             var1.isTradable = false;
             var1.groundActions = null;
