@@ -194,9 +194,9 @@ public class InfernoPlugin extends Plugin
 	{
 		for (int i = 0; i < priorityNPC.length; i++)
 		{
-			ArrayList<InfernoNPC> monsters = monsterCurrentAttackMap.get(i+1);
+			ArrayList<InfernoNPC> monsters = monsterCurrentAttackMap.get(i + 1);
 
-			if (monsters.size() == 0) continue;
+			if ( monsters.size() == 0) continue;
 
 			int priority = monsters.get(0).getPriority();
 

@@ -1,14 +1,14 @@
 package net.runelite.client.plugins.inferno;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 public class InfernoNibberOverlay extends Overlay
 {
@@ -35,12 +35,12 @@ public class InfernoNibberOverlay extends Overlay
 		return null;
 
 		panelComponent.getChildren().clear();
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Nibbas Left: ")
-			.right(Integer.toString(plugin.getNibbers().size()))
-			.leftColor(Color.BLUE)
-			.build());
+		tableComponent.addRow("Players Left: ", Integer.toString(plugin.getNibbers().size()));
+
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

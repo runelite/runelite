@@ -6,7 +6,8 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class InfernoInfobox extends Overlay
@@ -32,26 +33,22 @@ public class InfernoInfobox extends Overlay
 		if (!config.showPrayerHelp() || client.getMapRegions()[0] != 9043) return null;
 
 		panelComponent.getChildren().clear();
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
 		for (int i = plugin.getPriorityNPC().length; i > 0; i--)
 		{
-			if (plugin.getPriorityNPC()[i-1] == null)
+			if (plugin.getPriorityNPC()[i - 1] == null)
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left(Integer.toString(i))
-					.right("-")
-					.build());
+				tableComponent.addRow(Integer.toString(i), "-");
 			}
 			else
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left(plugin.getPriorityNPC()[i-1].getName())
-					.right(plugin.getPriorityNPC()[i-1].getAttackstyle().getName())
-					.rightColor(plugin.getPriorityNPC()[i-1].getAttackstyle().getColor())
-					.build());
+				tableComponent.addRow(plugin.getPriorityNPC()[i - 1].getName(), plugin.getPriorityNPC()[i - 1 ].getAttackstyle().getName());
 			}
 		}
 
+		panelComponent.getChildren().add(tableComponent);
 		return panelComponent.render(graphics);
 	}
 }
