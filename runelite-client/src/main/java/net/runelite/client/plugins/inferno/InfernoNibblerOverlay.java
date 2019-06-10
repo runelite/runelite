@@ -34,7 +34,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
-public class InfernoNibberOverlay extends Overlay
+public class InfernoNibblerOverlay extends Overlay
 {
 	private final Client client;
 	private final InfernoPlugin plugin;
@@ -43,7 +43,7 @@ public class InfernoNibberOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	public InfernoNibberOverlay(Client client, InfernoConfig config, InfernoPlugin plugin)
+	public InfernoNibblerOverlay(Client client, InfernoConfig config, InfernoPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;
@@ -55,14 +55,14 @@ public class InfernoNibberOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.displayNibbaOverlay() || plugin.getNibbers().size() == 0 || client.getMapRegions()[0] != 9043)
+		if (!config.displayNibblerOverlay() || plugin.getNibblers().size() == 0 || client.getMapRegions()[0] != 9043)
 		return null;
 
 		panelComponent.getChildren().clear();
 		TableComponent tableComponent = new TableComponent();
 		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
-		tableComponent.addRow("Nibblers Left: ", Integer.toString(plugin.getNibbers().size()));
+		tableComponent.addRow("Nibblers Left: ", Integer.toString(plugin.getNibblers().size()));
 
 		panelComponent.getChildren().add(tableComponent);
 
