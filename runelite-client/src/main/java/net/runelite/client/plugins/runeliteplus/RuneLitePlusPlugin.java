@@ -267,7 +267,6 @@ public class RuneLitePlusPlugin extends Plugin
 		{
 			return;
 		}
-		log.debug(c + " " + enterIdx + " " + entered);
 
 		int num = Character.getNumericValue(c);
 
