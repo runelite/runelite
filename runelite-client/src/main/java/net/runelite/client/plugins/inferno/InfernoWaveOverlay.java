@@ -70,19 +70,19 @@ class InfernoWaveOverlay extends Overlay
 		final int currentWave = plugin.getCurrentWave();
 		final int waveIndex = currentWave - 1;
 
-		if (config.waveDisplay() == WaveDisplayMode.CURRENT
-			|| config.waveDisplay() == WaveDisplayMode.BOTH)
+		if (config.waveDisplay() == InfernoWaveDisplayMode.CURRENT
+			|| config.waveDisplay() == InfernoWaveDisplayMode.BOTH)
 		{
-			final Map<WaveMonster, Integer> waveContents = InfernoPlugin.getWAVES().get(waveIndex);
+			final Map<InfernoWaveMonster, Integer> waveContents = InfernoPlugin.getWAVES().get(waveIndex);
 
 			addWaveInfo("Wave " + plugin.getCurrentWave(), waveContents);
 		}
 
-		if ((config.waveDisplay() == WaveDisplayMode.NEXT
-			|| config.waveDisplay() == WaveDisplayMode.BOTH)
+		if ((config.waveDisplay() == InfernoWaveDisplayMode.NEXT
+			|| config.waveDisplay() == InfernoWaveDisplayMode.BOTH)
 			&& currentWave != InfernoPlugin.MAX_WAVE)
 		{
-			final Map<WaveMonster, Integer> waveContents = InfernoPlugin.getWAVES().get(waveIndex + 1);
+			final Map<InfernoWaveMonster, Integer> waveContents = InfernoPlugin.getWAVES().get(waveIndex + 1);
 
 			addWaveInfo("Next wave", waveContents);
 		}
@@ -90,7 +90,7 @@ class InfernoWaveOverlay extends Overlay
 		return panelComponent.render(graphics);
 	}
 
-	private void addWaveInfo(final String headerText, final Map<WaveMonster, Integer> waveContents)
+	private void addWaveInfo(final String headerText, final Map<InfernoWaveMonster, Integer> waveContents)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text(headerText)
@@ -107,15 +107,15 @@ class InfernoWaveOverlay extends Overlay
 		panelComponent.getChildren().add(tableComponent);
 	}
 
-	private static Collection<String> buildWaveLines(final Map<WaveMonster, Integer> wave)
+	private static Collection<String> buildWaveLines(final Map<InfernoWaveMonster, Integer> wave)
 	{
-		final List<Map.Entry<WaveMonster, Integer>> monsters = new ArrayList<>(wave.entrySet());
+		final List<Map.Entry<InfernoWaveMonster, Integer>> monsters = new ArrayList<>(wave.entrySet());
 		monsters.sort(Map.Entry.comparingByKey());
 		final List<String> outputLines = new ArrayList<>();
 
-		for (Map.Entry<WaveMonster, Integer> monsterEntry : monsters)
+		for (Map.Entry<InfernoWaveMonster, Integer> monsterEntry : monsters)
 		{
-			final WaveMonster monster = monsterEntry.getKey();
+			final InfernoWaveMonster monster = monsterEntry.getKey();
 			final int quantity = monsterEntry.getValue();
 			final String line = InfernoPlugin.formatMonsterQuantity(monster, quantity);
 
