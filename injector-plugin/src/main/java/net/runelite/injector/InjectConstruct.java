@@ -54,7 +54,7 @@ public class InjectConstruct
 
 	private final Inject inject;
 
-	public InjectConstruct(Inject inject)
+	InjectConstruct(Inject inject)
 	{
 		this.inject = inject;
 	}
@@ -99,7 +99,7 @@ public class InjectConstruct
 		}
 	}
 
-	public void injectConstruct(ClassFile targetClass, java.lang.reflect.Method apiMethod) throws InjectionException
+	void injectConstruct(ClassFile targetClass, java.lang.reflect.Method apiMethod) throws InjectionException
 	{
 		logger.info("Injecting construct for {}", apiMethod);
 
@@ -115,19 +115,19 @@ public class InjectConstruct
 		Signature sig = inject.javaMethodToSignature(apiMethod);
 
 		Signature constructorSig = new Signature.Builder()
-				.addArguments(Stream.of(apiMethod.getParameterTypes())
-						.map(arg ->
-						{
-							ClassFile vanilla = inject.findVanillaForInterface(arg);
-							if (vanilla != null)
-							{
-								return new Type("L" + vanilla.getName() + ";");
-							}
-							return Inject.classToType(arg);
-						})
-						.collect(Collectors.toList()))
-				.setReturnType(Type.VOID)
-				.build();
+			.addArguments(Stream.of(apiMethod.getParameterTypes())
+				.map(arg ->
+				{
+					ClassFile vanilla = inject.findVanillaForInterface(arg);
+					if (vanilla != null)
+					{
+						return new Type("L" + vanilla.getName() + ";");
+					}
+					return Inject.classToType(arg);
+				})
+				.collect(Collectors.toList()))
+			.setReturnType(Type.VOID)
+			.build();
 		Method vanillaConstructor = vanillaClass.findMethod("<init>", constructorSig);
 		if (vanillaConstructor == null)
 		{

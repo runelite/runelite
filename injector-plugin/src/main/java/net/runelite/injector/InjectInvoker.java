@@ -51,7 +51,7 @@ import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InjectInvoker
+class InjectInvoker
 {
 	private static final Logger logger = LoggerFactory.getLogger(InjectInvoker.class);
 
@@ -59,7 +59,7 @@ public class InjectInvoker
 
 	private int injectedInvokers;
 
-	public InjectInvoker(Inject inject)
+	InjectInvoker(Inject inject)
 	{
 		this.inject = inject;
 	}
@@ -67,13 +67,13 @@ public class InjectInvoker
 	/**
 	 * Inject an invoker for a method
 	 *
-	 * @param m Method in the deobfuscated client to inject an invoker for
-	 * @param other Class in the vanilla client of the same class m is a
-	 * member of
+	 * @param m                 Method in the deobfuscated client to inject an invoker for
+	 * @param other             Class in the vanilla client of the same class m is a
+	 *                          member of
 	 * @param implementingClass Java class for the API interface the class
-	 * will implement
+	 *                          will implement
 	 */
-	public void process(Method m, ClassFile other, java.lang.Class<?> implementingClass)
+	void process(Method m, ClassFile other, java.lang.Class<?> implementingClass)
 	{
 		Annotations an = m.getAnnotations();
 
@@ -108,14 +108,14 @@ public class InjectInvoker
 			assert !m.isStatic();
 
 			// non static exported method on non exported interface, weird.
-	//		logger.debug("Non static exported method {} on non exported interface", exportedName);
+			//		logger.debug("Non static exported method {} on non exported interface", exportedName);
 			return;
 		}
 
 		java.lang.reflect.Method apiMethod = inject.findImportMethodOnApi(targetClassJava, exportedName, null); // api method to invoke 'otherm'
 		if (apiMethod == null)
 		{
-	//		logger.debug("Unable to find api method on {} with imported name {}, not injecting invoker", targetClassJava, exportedName);
+			//		logger.debug("Unable to find api method on {} with imported name {}, not injecting invoker", targetClassJava, exportedName);
 			return;
 		}
 
@@ -284,7 +284,7 @@ public class InjectInvoker
 		clazz.addMethod(invokerMethodSignature);
 	}
 
-	public int getInjectedInvokers()
+	int getInjectedInvokers()
 	{
 		return injectedInvokers;
 	}

@@ -40,9 +40,9 @@ public class class31 {
       if(var0.__e_144() != Client.isMembersWorld) {
          Client.isMembersWorld = var0.__e_144();
          boolean var1 = var0.__e_144();
-         if(var1 != class30.__ar_l) {
+         if(var1 != class30.inMembersWorld) {
             class72.method1780();
-            class30.__ar_l = var1;
+            class30.inMembersWorld = var1;
          }
       }
 

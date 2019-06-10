@@ -320,4 +320,15 @@ public interface ImplingsConfig extends Config
 	{
 		return Color.WHITE;
 	}
+
+	@ConfigItem(
+			position = 26,
+			keyName = "showCounter",
+			name = "Show impling counter overlay",
+			description = "Shows how many of each impling there is nearby"
+	)
+	default boolean showCounter()
+	{
+		return false;
+	}
 }

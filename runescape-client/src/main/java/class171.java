@@ -251,7 +251,7 @@ public class class171 {
                   Font var6 = ScriptEvent.fontPlain11;
                   ItemDefinition.ItemDefinition_indexCache = var3;
                   ItemDefinition.ItemDefinition_modelIndexCache = var4;
-                  class30.__ar_l = var5;
+                  class30.inMembersWorld = var5;
                   class83.__cm_e = ItemDefinition.ItemDefinition_indexCache.__s_396(10);
                   class204.__gx_n = var6;
                   IndexCache var7 = ObjectSound.indexCache2;

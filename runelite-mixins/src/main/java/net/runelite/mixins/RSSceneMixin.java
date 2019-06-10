@@ -29,7 +29,6 @@ import net.runelite.api.Renderable;
 import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
@@ -702,26 +701,7 @@ public abstract class RSSceneMixin implements RSScene
 	@Inject
 	static void setTargetTile(int targetX, int targetY)
 	{
-		final LocalPoint current = client.getLocalPlayer().getLocalLocation();
-
-		// Limit walk distance - https://math.stackexchange.com/a/85582
-		final int a = current.getSceneX();
-		final int b = current.getSceneY();
-		final int c = targetX;
-		final int d = targetY;
-
-		final int r = MAX_TARGET_DISTANCE;
-		final int t = (int) Math.hypot(a - c, b - d) - r;
-		int x = targetX;
-		int y = targetY;
-
-		if (t > 0)
-		{
-			x = (r * c + t * a) / (r + t);
-			y = (r * d + t * b) / (r + t);
-		}
-
-		client.setSelectedSceneTileX(x);
-		client.setSelectedSceneTileY(y);
+		client.setSelectedSceneTileX(targetX);
+		client.setSelectedSceneTileY(targetY);
 	}
 }

@@ -166,6 +166,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3380, 3963, 0), "Wilderness. North of Volcano.")
 		.put(new WorldPoint(3051, 3736, 0), "East of the Wilderness Obelisk in 28 Wilderness.")
 		.put(new WorldPoint(2316, 3814, 0), "West of Neitiznot, near the bridge.")
+		.put(new WorldPoint(2872, 3937, 0), "Weiss.")
 		// Master
 		.put(new WorldPoint(2178, 3209, 0), "South of Elf Camp.")
 		.put(new WorldPoint(2155, 3100, 0), "South of Port Tyras (BJS).")
@@ -181,7 +182,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3085, 3569, 0), "Wilderness. Obelisk of Air.")
 		.put(new WorldPoint(2934, 2727, 0), "Eastern shore of Crash Island.")
 		.put(new WorldPoint(1451, 3695, 0), "West side of Lizardman Canyon with Lizardman shaman.")
-		.put(new WorldPoint(2538, 3739, 0), "Waterbirth Island.")
+		.put(new WorldPoint(2538, 3739, 0), "Waterbirth Island. Bring a pet rock and rune thrownaxe.")
 		.put(new WorldPoint(1698, 3792, 0), "Arceuus church.")
 		.put(new WorldPoint(2951, 3820, 0), "Wilderness. Chaos Temple (level 38).")
 		.put(new WorldPoint(2202, 3825, 0), "Pirates' Cove, between Lunar Isle and Rellekka.")

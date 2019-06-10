@@ -39,7 +39,7 @@ public class ClassGroupFactory
 	private static void addVoidMethod(ClassFile cf, String name)
 	{
 		Method method = new Method(cf, name, new Signature("()V"));
-		method.setStatic();
+		method.setStatic(true);
 		cf.addMethod(method);
 
 		Code code = new Code(method);
@@ -63,7 +63,7 @@ public class ClassGroupFactory
 		cf.addField(field);
 
 		Method method = new Method(cf, "func", new Signature("()V"));
-		method.setStatic();
+		method.setStatic(true);
 		cf.addMethod(method);
 
 		Code code = new Code(method);
@@ -71,7 +71,7 @@ public class ClassGroupFactory
 
 		{
 			method = new Method(cf, "func2", new Signature("(III)V"));
-			method.setStatic();
+			method.setStatic(true);
 			cf.addMethod(method);
 
 			code = new Code(method);

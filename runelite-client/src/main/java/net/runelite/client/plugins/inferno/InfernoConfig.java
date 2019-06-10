@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Jacky <liangj97@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache;
+package net.runelite.client.plugins.inferno;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public class CacheProperties
+@ConfigGroup("inferno")
+public interface InfernoConfig extends Config
 {
-	private static Properties getProperties() throws IOException
+	@ConfigItem(
+		position = 0,
+		keyName = "Nibbler Overlay",
+		name = "Nibbler Overlay",
+		description = "Shows if there are any Nibblers left"
+	)
+	default boolean displayNibblerOverlay()
 	{
-		Properties properties = new Properties();
-		InputStream resourceAsStream = StoreLocation.class.getResourceAsStream("/cache.properties");
-		properties.load(resourceAsStream);
-		return properties;
+		return false;
 	}
 
-	public static int getRsVersion() throws IOException
+	@ConfigItem(
+		position = 1,
+		keyName = "Prayer Helper",
+		name = "Prayer Helper",
+		description = "Tells you what to flick in how many ticks"
+	)
+	default boolean showPrayerHelp()
 	{
-		return Integer.parseInt(getProperties().getProperty("rs.version"));
-	}
-
-	public static int getCacheVersion() throws IOException
-	{
-		return Integer.parseInt(getProperties().getProperty("cache.version"));
+		return false;
 	}
 }

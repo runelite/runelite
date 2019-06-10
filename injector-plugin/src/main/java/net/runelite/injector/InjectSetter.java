@@ -45,15 +45,15 @@ import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InjectSetter
+class InjectSetter
 {
 	private static final Logger logger = LoggerFactory.getLogger(InjectSetter.class);
 
 	private final Inject inject;
-	
+
 	private int injectedSetters;
 
-	public InjectSetter(Inject inject)
+	InjectSetter(Inject inject)
 	{
 		this.inject = inject;
 	}
@@ -61,15 +61,14 @@ public class InjectSetter
 	/**
 	 * inject a setter into the vanilla classgroup
 	 *
-	 * @param targetClass Class where to inject the setter (field's class,
-	 * or client)
+	 * @param targetClass    Class where to inject the setter (field's class,
+	 *                       or client)
 	 * @param targetApiClass API targetClass implements, which may have the
-	 * setter declared
-	 * @param field Field of vanilla that will be set
-	 * @param exportedName exported name of field
-	 * @param setter
+	 *                       setter declared
+	 * @param field          Field of vanilla that will be set
+	 * @param exportedName   exported name of field
 	 */
-	public void injectSetter(ClassFile targetClass, Class<?> targetApiClass, Field field, String exportedName, Number setter)
+	void injectSetter(ClassFile targetClass, Class<?> targetApiClass, Field field, String exportedName, Number setter)
 	{
 		java.lang.reflect.Method method = inject.findImportMethodOnApi(targetApiClass, exportedName, true);
 		if (method == null)
@@ -114,7 +113,7 @@ public class InjectSetter
 		// load argument
 		Type argumentType = sig.getTypeOfArg(0);
 		ins.add(inject.createLoadForTypeIndex(instructions, argumentType, 1));
-		
+
 		// cast argument to field type
 		Type fieldType = field.getType();
 		if (!argumentType.equals(fieldType))
@@ -152,7 +151,7 @@ public class InjectSetter
 		ins.add(new VReturn(instructions));
 	}
 
-	public int getInjectedSetters()
+	int getInjectedSetters()
 	{
 		return injectedSetters;
 	}
