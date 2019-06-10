@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Jacky <liangj97@gmail.com>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,43 +24,20 @@
  */
 package net.runelite.client.plugins.inferno;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup("inferno")
-public interface InfernoConfig extends Config
+@RequiredArgsConstructor
+public enum InfernoWaveDisplayMode
 {
-	@ConfigItem(
-		position = 0,
-		keyName = "Nibbler Overlay",
-		name = "Nibbler Overlay",
-		description = "Shows if there are any Nibblers left"
-	)
-	default boolean displayNibblerOverlay()
-	{
-		return false;
-	}
+	CURRENT("Current wave"),
+	NEXT("Next wave"),
+	BOTH("Both");
 
-	@ConfigItem(
-		position = 1,
-		keyName = "Prayer Helper",
-		name = "Prayer Helper",
-		description = "Tells you what to flick in how many ticks"
-	)
-	default boolean showPrayerHelp()
+	private final String name;
+
+	@Override
+	public String toString()
 	{
-		return false;
-	}
-	
-	@ConfigItem(
-		position = 2,
-		keyName = "Wave Display",
-		name = "Wave display",
-		description = "Shows monsters that will spawn on the selected wave(s)."
-	)
-	default InfernoWaveDisplayMode waveDisplay()
-	{
-		return InfernoWaveDisplayMode.BOTH;
+		return name;
 	}
 }

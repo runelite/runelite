@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Jacky <liangj97@gmail.com>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,43 +24,27 @@
  */
 package net.runelite.client.plugins.inferno;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.AllArgsConstructor;
 
-@ConfigGroup("inferno")
-public interface InfernoConfig extends Config
+@AllArgsConstructor
+enum InfernoWaveMonster
 {
-	@ConfigItem(
-		position = 0,
-		keyName = "Nibbler Overlay",
-		name = "Nibbler Overlay",
-		description = "Shows if there are any Nibblers left"
-	)
-	default boolean displayNibblerOverlay()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 1,
-		keyName = "Prayer Helper",
-		name = "Prayer Helper",
-		description = "Tells you what to flick in how many ticks"
-	)
-	default boolean showPrayerHelp()
-	{
-		return false;
-	}
 	
-	@ConfigItem(
-		position = 2,
-		keyName = "Wave Display",
-		name = "Wave display",
-		description = "Shows monsters that will spawn on the selected wave(s)."
-	)
-	default InfernoWaveDisplayMode waveDisplay()
+	JAL_NIB("Jal-Nib", 32),
+	JAL_MEJRAH("Jal-MejRah", 85),
+	JAL_AK("Jal-Ak", 165),
+	JAL_IMKOT("Jal-ImKot", 240),
+	JAL_XIL("Jal-XIL", 370),
+	JAL_ZEK("Jal-Zek", 490),
+	JALTOK_JAD("JalTok-Jad", 900),
+	TZKAL_ZUK("TzKal-Zuk", 1400);
+
+	private final String name;
+	private final int level;
+
+	@Override
+	public String toString()
 	{
-		return InfernoWaveDisplayMode.BOTH;
+		return String.format("%s - Level %s", name, level);
 	}
 }

@@ -26,15 +26,22 @@ package net.runelite.client.plugins.inferno;
 
 import com.google.inject.Provides;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.Getter;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.HeadIcon;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -53,6 +60,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class InfernoPlugin extends Plugin
 {
+	
+	private static final Pattern WAVE_PATTERN = Pattern.compile(".*Wave: (\\d+).*");
+	private static final int MAX_MONSTERS_OF_TYPE_PER_WAVE = 6;
+	static final int MAX_WAVE = 69;
 
 	@Inject
 	private Client client;
@@ -62,6 +73,9 @@ public class InfernoPlugin extends Plugin
 
 	@Inject
 	private InfernoOverlay infernoOverlay;
+	
+	@Inject
+	private InfernoWaveOverlay waveOverlay;
 
 	@Inject
 	private InfernoInfobox infernoInfobox;
@@ -71,6 +85,12 @@ public class InfernoPlugin extends Plugin
 
 	@Inject
 	private InfernoConfig config;
+	
+	@Getter
+	static final List<EnumMap<InfernoWaveMonster, Integer>> WAVES = new ArrayList<>();
+	
+	@Getter
+	private int currentWave = -1;
 
 	@Getter
 	private Map<NPC, InfernoNPC> monsters;
@@ -83,6 +103,46 @@ public class InfernoPlugin extends Plugin
 
 	@Getter
 	private InfernoNPC[] priorityNPC;
+	
+	static
+	{
+		final InfernoWaveMonster[] waveMonsters = InfernoWaveMonster.values();
+
+		// Add wave 1, future waves are derived from its contents
+		final EnumMap<InfernoWaveMonster, Integer> waveOne = new EnumMap<>(InfernoWaveMonster.class);
+		waveOne.put(waveMonsters[0], 1);
+		WAVES.add(waveOne);
+
+		for (int wave = 1; wave < MAX_WAVE; wave++)
+		{
+			final EnumMap<InfernoWaveMonster, Integer> prevWave = WAVES.get(wave - 1).clone();
+			int maxMonsterOrdinal = -1;
+
+			for (int i = 0; i < waveMonsters.length; i++)
+			{
+				final int ordinalMonsterQuantity = prevWave.getOrDefault(waveMonsters[i], 0);
+
+				if (ordinalMonsterQuantity == MAX_MONSTERS_OF_TYPE_PER_WAVE)
+				{
+					maxMonsterOrdinal = i;
+					break;
+				}
+			}
+
+			if (maxMonsterOrdinal >= 0)
+			{
+				prevWave.remove(waveMonsters[maxMonsterOrdinal]);
+			}
+
+			final int addedMonsterOrdinal = maxMonsterOrdinal >= 0 ? maxMonsterOrdinal + 1 : 0;
+			final InfernoWaveMonster addedMonster = waveMonsters[addedMonsterOrdinal];
+			final int addedMonsterQuantity = prevWave.getOrDefault(addedMonster, 0);
+
+			prevWave.put(addedMonster, addedMonsterQuantity + 1);
+
+			WAVES.add(prevWave);
+		}
+	}
 
 	@Provides
 	InfernoConfig provideConfig(ConfigManager configManager)
@@ -96,6 +156,7 @@ public class InfernoPlugin extends Plugin
 		overlayManager.add(infernoOverlay);
 		overlayManager.add(infernoInfobox);
 		overlayManager.add(nibblerOverlay);
+		overlayManager.add(waveOverlay);
 		monsters = new HashMap<>();
 		monsterCurrentAttackMap = new HashMap<>(6);
 		for (int i = 1; i <= 6; i++)
@@ -112,6 +173,7 @@ public class InfernoPlugin extends Plugin
 		overlayManager.remove(infernoInfobox);
 		overlayManager.remove(infernoOverlay);
 		overlayManager.remove(nibblerOverlay);
+		overlayManager.remove(waveOverlay);
 	}
 
 	@Subscribe
@@ -147,6 +209,35 @@ public class InfernoPlugin extends Plugin
 		{
 			nibblers.remove(npc);
 		}
+	}
+	
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		if (!inInferno())
+		{
+			currentWave = -1;
+		}
+	}
+	
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		final Matcher waveMatcher = WAVE_PATTERN.matcher(event.getMessage());
+
+		if (event.getType() != ChatMessageType.GAMEMESSAGE
+			|| !inInferno()
+			|| !waveMatcher.matches())
+		{
+			return;
+		}
+
+		currentWave = Integer.parseInt(waveMatcher.group(1));
 	}
 
 	@Subscribe
@@ -271,5 +362,15 @@ public class InfernoPlugin extends Plugin
 
 		return false;
 	}
+	
+	boolean inInferno()
+	{
+		if (client.getMapRegions()[0] = 9043) return;;
+	}
 
+	static String formatMonsterQuantity(final InfernoWaveMonster monster, final int quantity)
+	{
+		return String.format("%dx %s", quantity, monster);
+	}
+	
 }
