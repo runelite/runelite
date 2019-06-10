@@ -4,10 +4,14 @@ dist: xenial
 cache:
   directories:
     - $HOME/.m2
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
 jdk:
-- oraclejdk8
 - oraclejdk11
 install: true
 script: ./travis/build.sh
 before_install:
 - chmod +x ./travis/build.sh
+
