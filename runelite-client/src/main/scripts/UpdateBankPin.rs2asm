@@ -4,6 +4,8 @@
 .int_var_count      22
 .string_var_count   0
    iload                  0
+   sconst                 "bankpin"
+   runelite_callback
    iconst                 3
    if_icmpeq              LABEL4
    jump                   LABEL20
