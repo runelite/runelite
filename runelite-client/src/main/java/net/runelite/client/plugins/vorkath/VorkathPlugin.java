@@ -25,8 +25,6 @@
 package net.runelite.client.plugins.vorkath;
 
 import com.google.inject.Inject;
-import com.google.inject.Provides;
-import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +36,6 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -61,9 +58,6 @@ public class VorkathPlugin extends Plugin
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private VorkathConfig config;
 
 	@Inject
 	private Notifier notifier;
@@ -106,12 +100,6 @@ public class VorkathPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(SpawnOverlay);
-	}
-
-	@Provides
-	VorkathConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(VorkathConfig.class);
 	}
 
 	@Override
@@ -173,10 +161,6 @@ public class VorkathPlugin extends Plugin
 			if (VorkathAttack.isBasicAttack(vorkathAttack.getProjectileID()) && vorkath.getAttacksLeft() > 0)
 			{
 				vorkath.setAttacksLeft(vorkath.getAttacksLeft() - 1);
-				if (config.shouldNotifyOnFireBomb() && vorkathAttack == VorkathAttack.FIRE_BOMB)
-				{
-					notifier.notify("Vorkath used it's fire bomb attack!", TrayIcon.MessageType.WARNING);
-				}
 			}
 			else if (vorkathAttack == VorkathAttack.ACID)
 			{
