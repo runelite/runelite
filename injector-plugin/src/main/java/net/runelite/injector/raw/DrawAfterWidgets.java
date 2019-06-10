@@ -166,7 +166,7 @@ public class DrawAfterWidgets
 				{
 					// If we get here, we're either in the wrong method
 					// or Jagex has removed the "if (535573958 * kl != -1)"
-				//	logger.debug("Could not find the label for jumping to the " + noClip + " call in " + m);
+					//	logger.debug("Could not find the label for jumping to the " + noClip + " call in " + m);
 					continue;
 				}
 

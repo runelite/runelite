@@ -115,19 +115,19 @@ public class InjectConstruct
 		Signature sig = inject.javaMethodToSignature(apiMethod);
 
 		Signature constructorSig = new Signature.Builder()
-				.addArguments(Stream.of(apiMethod.getParameterTypes())
-						.map(arg ->
-						{
-							ClassFile vanilla = inject.findVanillaForInterface(arg);
-							if (vanilla != null)
-							{
-								return new Type("L" + vanilla.getName() + ";");
-							}
-							return Inject.classToType(arg);
-						})
-						.collect(Collectors.toList()))
-				.setReturnType(Type.VOID)
-				.build();
+			.addArguments(Stream.of(apiMethod.getParameterTypes())
+				.map(arg ->
+				{
+					ClassFile vanilla = inject.findVanillaForInterface(arg);
+					if (vanilla != null)
+					{
+						return new Type("L" + vanilla.getName() + ";");
+					}
+					return Inject.classToType(arg);
+				})
+				.collect(Collectors.toList()))
+			.setReturnType(Type.VOID)
+			.build();
 		Method vanillaConstructor = vanillaClass.findMethod("<init>", constructorSig);
 		if (vanillaConstructor == null)
 		{

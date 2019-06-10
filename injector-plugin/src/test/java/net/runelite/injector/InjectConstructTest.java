@@ -35,11 +35,6 @@ import static org.mockito.Mockito.when;
 
 public class InjectConstructTest
 {
-	interface APIClass
-	{
-		APIClass create();
-	}
-
 	@Test
 	public void testInjectConstruct() throws Exception
 	{
@@ -58,6 +53,11 @@ public class InjectConstructTest
 		injectConstruct.injectConstruct(targetClass, APIClass.class.getDeclaredMethod("create"));
 
 		assertNotNull(targetClass.findMethod("create"));
+	}
+
+	interface APIClass
+	{
+		APIClass create();
 	}
 
 }

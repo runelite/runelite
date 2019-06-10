@@ -58,23 +58,10 @@ import org.slf4j.LoggerFactory;
 public class InjectHook
 {
 	private static final Logger logger = LoggerFactory.getLogger(InjectHook.class);
-
-	static class HookInfo
-	{
-		String fieldName;
-		String clazz;
-		Method method;
-		boolean before;
-		Number getter;
-	}
-
 	private static final String HOOK_METHOD_SIGNATURE = "(I)V";
-
 	private static final String CLINIT = "<clinit>";
-
 	private final Inject inject;
 	private final Map<Field, HookInfo> hooked = new HashMap<>();
-
 	private int injectedHooks;
 
 	public InjectHook(Inject inject)
@@ -272,7 +259,7 @@ public class InjectHook
 				if (hookInfo.getter instanceof Integer)
 				{
 					ins.getInstructions().add(idx++, new LDC(ins, (int) hookInfo.getter));
-					ins.getInstructions().add(idx++,new IMul(ins));
+					ins.getInstructions().add(idx++, new IMul(ins));
 				}
 				else
 				{
@@ -398,5 +385,14 @@ public class InjectHook
 	public int getInjectedHooks()
 	{
 		return injectedHooks;
+	}
+
+	static class HookInfo
+	{
+		String fieldName;
+		String clazz;
+		Method method;
+		boolean before;
+		Number getter;
 	}
 }

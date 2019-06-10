@@ -49,10 +49,8 @@ import org.slf4j.LoggerFactory;
 
 public class InjectHookMethod
 {
-	private static final Logger logger = LoggerFactory.getLogger(InjectHookMethod.class);
-
 	public static final String HOOKS = "net/runelite/client/callback/Hooks";
-
+	private static final Logger logger = LoggerFactory.getLogger(InjectHookMethod.class);
 	private final Inject inject;
 
 	public InjectHookMethod(Inject inject)
@@ -115,7 +113,7 @@ public class InjectHookMethod
 		Instructions instructions = vanillaMethod.getCode().getInstructions();
 
 		Signature.Builder builder = new Signature.Builder()
-				.setReturnType(Type.VOID); // Hooks always return void
+			.setReturnType(Type.VOID); // Hooks always return void
 
 		for (Type type : deobMethod.getDescriptor().getArguments())
 		{
@@ -164,11 +162,11 @@ public class InjectHookMethod
 			{
 				// Invoke callback
 				invoke = new InvokeStatic(instructions,
-						new net.runelite.asm.pool.Method(
-								new net.runelite.asm.pool.Class(HOOKS),
-								hookName,
-								signature
-						)
+					new net.runelite.asm.pool.Method(
+						new net.runelite.asm.pool.Class(HOOKS),
+						hookName,
+						signature
+					)
 				);
 			}
 			else
@@ -179,11 +177,11 @@ public class InjectHookMethod
 				if (vanillaMethod.isStatic())
 				{
 					invoke = new InvokeStatic(instructions,
-							new net.runelite.asm.pool.Method(
-									new net.runelite.asm.pool.Class("client"), // Static methods are in client
-									hookMethod.getName(),
-									signature
-							)
+						new net.runelite.asm.pool.Method(
+							new net.runelite.asm.pool.Class("client"), // Static methods are in client
+							hookMethod.getName(),
+							signature
+						)
 					);
 				}
 				else
@@ -191,11 +189,11 @@ public class InjectHookMethod
 					// otherwise invoke member function
 					//instructions.addInstruction(insertPos++, new ALoad(instructions, 0));
 					invoke = new InvokeVirtual(instructions,
-							new net.runelite.asm.pool.Method(
-									new net.runelite.asm.pool.Class(vanillaMethod.getClassFile().getName()),
-									hookMethod.getName(),
-									signature
-							)
+						new net.runelite.asm.pool.Method(
+							new net.runelite.asm.pool.Class(vanillaMethod.getClassFile().getName()),
+							hookMethod.getName(),
+							signature
+						)
 					);
 				}
 			}

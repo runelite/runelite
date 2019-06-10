@@ -79,7 +79,7 @@ public class ClearColorBuffer
 						if (current instanceof LDC && ((LDC) current).getConstantAsInt() == 0)
 						{
 							int varIdx = 0;
-							for (; ;)
+							for (; ; )
 							{
 								current = it.previous();
 								if (current instanceof ILoad && ((ILoad) current).getVariableIndex() == 3 - varIdx)

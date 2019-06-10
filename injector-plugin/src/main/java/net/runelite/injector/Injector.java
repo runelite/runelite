@@ -39,17 +39,6 @@ public class Injector
 		this.vanilla = vanilla;
 	}
 
-	public void inject() throws InjectionException
-	{
-		Inject instance = new Inject(deobfuscated, vanilla);
-		instance.run();
-	}
-
-	public void save(File out) throws IOException
-	{
-		JarUtil.saveJar(vanilla, out);
-	}
-
 	public static void main(String[] args) throws IOException, InjectionException
 	{
 		if (args.length < 3)
@@ -70,6 +59,17 @@ public class Injector
 		iv.validate();
 
 		u.save(new File(args[2]));
+	}
+
+	public void inject() throws InjectionException
+	{
+		Inject instance = new Inject(deobfuscated, vanilla);
+		instance.run();
+	}
+
+	public void save(File out) throws IOException
+	{
+		JarUtil.saveJar(vanilla, out);
 	}
 
 

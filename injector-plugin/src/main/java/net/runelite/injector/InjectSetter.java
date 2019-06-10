@@ -50,7 +50,7 @@ public class InjectSetter
 	private static final Logger logger = LoggerFactory.getLogger(InjectSetter.class);
 
 	private final Inject inject;
-	
+
 	private int injectedSetters;
 
 	public InjectSetter(Inject inject)
@@ -61,12 +61,12 @@ public class InjectSetter
 	/**
 	 * inject a setter into the vanilla classgroup
 	 *
-	 * @param targetClass Class where to inject the setter (field's class,
-	 * or client)
+	 * @param targetClass    Class where to inject the setter (field's class,
+	 *                       or client)
 	 * @param targetApiClass API targetClass implements, which may have the
-	 * setter declared
-	 * @param field Field of vanilla that will be set
-	 * @param exportedName exported name of field
+	 *                       setter declared
+	 * @param field          Field of vanilla that will be set
+	 * @param exportedName   exported name of field
 	 * @param setter
 	 */
 	public void injectSetter(ClassFile targetClass, Class<?> targetApiClass, Field field, String exportedName, Number setter)
@@ -114,7 +114,7 @@ public class InjectSetter
 		// load argument
 		Type argumentType = sig.getTypeOfArg(0);
 		ins.add(inject.createLoadForTypeIndex(instructions, argumentType, 1));
-		
+
 		// cast argument to field type
 		Type fieldType = field.getType();
 		if (!argumentType.equals(fieldType))
