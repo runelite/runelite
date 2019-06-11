@@ -82,7 +82,7 @@ public class MiningPlugin extends Plugin
 	private static final Pattern COAL_BAG_AMOUNT_MESSAGE = Pattern.compile("^The coal bag contains (\\d+) pieces of coal\\.$");
 
 	static final int MAX_INVENTORY_SPACE = 28;
-	private static final int FULL_BAG_AMOUNT = 27;
+	private static final int FULL_COAL_BAG_AMOUNT = 27;
 
 	static final String FILL_OPTION = "fill";
 	static final String EMPTY_OPTION = "empty";
@@ -216,11 +216,11 @@ public class MiningPlugin extends Plugin
 		switch (event.getMenuOption().toLowerCase())
 		{
 			case FILL_OPTION:
-				update((int) Arrays.stream(inventoryItemContainer.getItems()).filter(i -> i.getId() == ItemID.COAL).count());
+				updateAmountOfCoalInBag((int) Arrays.stream(inventoryItemContainer.getItems()).filter(i -> i.getId() == ItemID.COAL).count());
 				break;
 			case EMPTY_OPTION:
 				int amt = MAX_INVENTORY_SPACE - (int) Arrays.stream(inventoryItemContainer.getItems()).filter(i -> i.getId() != -1).count();
-				update(-amt);
+				updateAmountOfCoalInBag(-amt);
 				break;
 		}
 	}
@@ -236,18 +236,18 @@ public class MiningPlugin extends Plugin
 		String chatMsg = Text.removeTags(event.getMessage());
 		if (COAL_BAG_EMPTY_MESSAGE.matcher(chatMsg).find())
 		{
-			update(-getAmountOfCoalInBag());
+			setAmountOfCoalInBag(0);
 		}
 		else if (COAL_BAG_ONE_MESSAGE.matcher(chatMsg).find())
 		{
-			update(-getAmountOfCoalInBag() + 1);
+			setAmountOfCoalInBag(1);
 		}
 		else
 		{
 			Matcher matcher = COAL_BAG_AMOUNT_MESSAGE.matcher(chatMsg);
 			if (matcher.find())
 			{
-				update(Integer.parseInt(matcher.group(1)) - getAmountOfCoalInBag());
+				updateAmountOfCoalInBag(Integer.parseInt(matcher.group(1)) - getAmountOfCoalInBag());
 			}
 		}
 	}
@@ -258,11 +258,11 @@ public class MiningPlugin extends Plugin
 	 * @param delta How much to add/subtract from the amount.
 	 *              Supply a negative number to subtract, or positive number to add.
 	 */
-	protected void update(int delta)
+	protected void updateAmountOfCoalInBag(int delta)
 	{
 		// check for upper/lower bounds of amount of coal in a bag
 		// 0 <= X <= 27
-		setAmountOfCoalInBag(Math.max(0, Math.min(FULL_BAG_AMOUNT, getAmountOfCoalInBag() + delta)));
+		setAmountOfCoalInBag(Math.max(0, Math.min(FULL_COAL_BAG_AMOUNT, getAmountOfCoalInBag() + delta)));
 	}
 
 	private boolean inMiningGuild()
