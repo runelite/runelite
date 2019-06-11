@@ -67,10 +67,10 @@ import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
-		name = "Mining",
-		description = "Show ore respawn timers and coal bag overlay",
-		tags = {"overlay", "skilling", "timers", "coal", "coalbag", "coal bag"},
-		enabledByDefault = false
+	name = "Mining",
+	description = "Show ore respawn timers and coal bag overlay",
+	tags = {"overlay", "skilling", "timers", "coal", "coalbag", "coal bag"},
+	enabledByDefault = false
 )
 public class MiningPlugin extends Plugin
 {
@@ -81,7 +81,7 @@ public class MiningPlugin extends Plugin
 	private static final Pattern COAL_BAG_ONE_MESSAGE = Pattern.compile("^The coal bag contains one piece of coal\\.$");
 	private static final Pattern COAL_BAG_AMOUNT_MESSAGE = Pattern.compile("^The coal bag contains (\\d+) pieces of coal\\.$");
 
-	static final int MAX_INVY_SPACE = 28;
+	static final int MAX_INVENTORY_SPACE = 28;
 	private static final int FULL_BAG_AMOUNT = 27;
 
 	static final String FILL_OPTION = "fill";
@@ -219,7 +219,7 @@ public class MiningPlugin extends Plugin
 				update((int) Arrays.stream(inventoryItemContainer.getItems()).filter(i -> i.getId() == ItemID.COAL).count());
 				break;
 			case EMPTY_OPTION:
-				int amt = MAX_INVY_SPACE - (int) Arrays.stream(inventoryItemContainer.getItems()).filter(i -> i.getId() != -1).count();
+				int amt = MAX_INVENTORY_SPACE - (int) Arrays.stream(inventoryItemContainer.getItems()).filter(i -> i.getId() != -1).count();
 				update(-amt);
 				break;
 		}
