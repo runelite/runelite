@@ -205,7 +205,7 @@ public class MiningPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getWidgetId() != WidgetInfo.INVENTORY.getId())
+		if (event.getWidgetId() != WidgetInfo.INVENTORY.getId() || event.getMenuAction() == MenuAction.RUNELITE)
 		{
 			return;
 		}
