@@ -1,5 +1,7 @@
 /*
  * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, Infinitay <https://github.com/Infinitay>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -95,20 +97,6 @@ public class VorkathPlugin extends Plugin
 		SPAWN = ImageUtil.getResourceStreamFromClass(VorkathPlugin.class, "ice.png");
 	}
 
-	@Override
-	protected void startUp()
-	{
-		overlayManager.add(overlay);
-		overlayManager.add(SpawnOverlay);
-	}
-
-	@Override
-	protected void shutDown()
-	{
-		overlayManager.remove(overlay);
-		overlayManager.remove(SpawnOverlay);
-	}
-
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
@@ -118,10 +106,12 @@ public class VorkathPlugin extends Plugin
 			{
 				vorkath = new Vorkath(event.getNpc());
 				lastProjectileCycle = -1;
+				overlayManager.add(overlay);
 			}
 			else if (isZombifiedSpawn(event.getNpc().getId()))
 			{
 				zombifiedSpawn = event.getNpc();
+				overlayManager.add(SpawnOverlay);
 			}
 		}
 	}
@@ -135,10 +125,12 @@ public class VorkathPlugin extends Plugin
 			{
 				vorkath = null;
 				lastProjectileCycle = -1;
+				overlayManager.remove(overlay);
 			}
 			else if (isZombifiedSpawn(event.getNpc().getId()))
 			{
 				zombifiedSpawn = null;
+				overlayManager.remove(SpawnOverlay);
 			}
 		}
 	}

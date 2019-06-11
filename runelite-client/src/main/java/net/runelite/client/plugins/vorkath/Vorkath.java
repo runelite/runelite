@@ -1,5 +1,7 @@
 /*
  * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, Infinitay <https://github.com/Infinitay>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,6 +67,7 @@ public class Vorkath
 
 	/**
 	 * Updates the existing Vorkath object depending on the new phase it is currently on
+	 *
 	 * @param newPhase the new phase Vorkath is current on
 	 */
 	public void updatePhase(Phase newPhase)
