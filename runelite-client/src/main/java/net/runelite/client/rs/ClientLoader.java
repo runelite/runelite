@@ -54,7 +54,9 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.client.RuneLite.RUNELITE_DIR;
+import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.CUSTOM;
+import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -63,7 +65,8 @@ import okhttp3.Response;
 @Singleton
 public class ClientLoader
 {
-	private static final File CUSTOMFILE = new File("./injected-client/target/injected-client-1.0-SNAPSHOT.jar");
+	private static final File LOCAL_INJECTED_CLIENT = new File("./injected-client/target/injected-client-" + RuneLiteAPI.getVersion() + ".jar");
+	private static final File INJECTED_CLIENT = new File(RUNELITE_DIR + "/injected-client.jar");
 	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
 	public static boolean useLocalInjected = false;
@@ -86,6 +89,8 @@ public class ClientLoader
 			RSConfig config = clientConfigLoader.fetch();
 
 			Map<String, byte[]> zipFile = new HashMap<>();
+
+			if (updateCheckMode == VANILLA)
 			{
 				Certificate[] jagexCertificateChain = getJagexCertificateChain();
 				String codebase = config.getCodeBase();
@@ -139,63 +144,27 @@ public class ClientLoader
 					}
 				}
 			}
-			URL url = new URL("https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/injected-client.jar");
-			ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
-			File LOCAL_INJECTED_CLIENT = new File("./injected-client/target/injected-client-" + RuneLiteAPI.getVersion() + ".jar");
-			File INJECTED_CLIENT = new File(RUNELITE_DIR + "/injected-client.jar");
-			INJECTED_CLIENT.mkdirs();
-			if (INJECTED_CLIENT.exists())
+			else if (updateCheckMode == CUSTOM || useLocalInjected)
 			{
-				if (getFileSize(INJECTED_CLIENT.toURI().toURL()) != getFileSize(url))
+				log.info("Loading injected client from {}", LOCAL_INJECTED_CLIENT.getAbsolutePath());
+				loadJar(zipFile, LOCAL_INJECTED_CLIENT);
+			}
+			else if (updateCheckMode == AUTO)
+			{
+				URL url = new URL("https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/injected-client.jar");
+				ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
+				INJECTED_CLIENT.mkdirs();
+
+				if (!INJECTED_CLIENT.exists() || getFileSize(INJECTED_CLIENT.toURI().toURL()) != getFileSize(url))
 				{
+					log.info("{} injected client", INJECTED_CLIENT.exists() ? "Updating" : "Initializing");
 					INJECTED_CLIENT.delete();
 					INJECTED_CLIENT.createNewFile();
-					System.out.println("Updating Injected Client");
 					updateInjectedClient(readableByteChannel);
 				}
-			}
-			else
-			{
-				INJECTED_CLIENT.createNewFile();
-				System.out.println("Initializing Inject Client");
-				updateInjectedClient(readableByteChannel);
-			}
 
-			JarInputStream fis;
-
-			if (updateCheckMode == CUSTOM)
-			{
-				System.out.println("Using local injected client");
-				fis = new JarInputStream(new FileInputStream(LOCAL_INJECTED_CLIENT));
-			}
-			else
-			{
-				System.out.println("Using live injected client");
-				fis = new JarInputStream(new FileInputStream(INJECTED_CLIENT));
-			}
-
-
-			byte[] tmp = new byte[4096];
-			ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
-			for (; ; )
-			{
-				JarEntry metadata = fis.getNextJarEntry();
-				if (metadata == null)
-				{
-					break;
-				}
-
-				buffer.reset();
-				for (; ; )
-				{
-					int n = fis.read(tmp);
-					if (n <= -1)
-					{
-						break;
-					}
-					buffer.write(tmp, 0, n);
-				}
-				zipFile.replace(metadata.getName(), buffer.toByteArray());
+				log.info("Loading injected client from {}", INJECTED_CLIENT.getAbsolutePath());
+				loadJar(zipFile, INJECTED_CLIENT);
 			}
 
 			String initialClass = config.getInitialClass();
@@ -242,7 +211,7 @@ public class ClientLoader
 		}
 	}
 
-	private static int getFileSize(URL url)
+	private static int getFileSize(URL url) throws IOException
 	{
 		URLConnection conn = null;
 		try
@@ -255,10 +224,6 @@ public class ClientLoader
 			conn.getInputStream();
 			return conn.getContentLength();
 		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
 		finally
 		{
 			if (conn instanceof HttpURLConnection)
@@ -268,19 +233,11 @@ public class ClientLoader
 		}
 	}
 
-	private void updateInjectedClient(ReadableByteChannel readableByteChannel)
+	private void updateInjectedClient(ReadableByteChannel readableByteChannel) throws IOException
 	{
-		File INJECTED_CLIENT = new File(RUNELITE_DIR,  "injected-client.jar");
-		try
-		{
-			FileOutputStream fileOutputStream = new FileOutputStream(INJECTED_CLIENT);
-			fileOutputStream.getChannel()
-					.transferFrom(readableByteChannel, 0, Integer.MAX_VALUE);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		FileOutputStream fileOutputStream = new FileOutputStream(INJECTED_CLIENT);
+		fileOutputStream.getChannel()
+				.transferFrom(readableByteChannel, 0, Integer.MAX_VALUE);
 	}
 
 	private static Certificate[] getJagexCertificateChain() throws CertificateException
@@ -288,5 +245,32 @@ public class ClientLoader
 		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
 		Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
 		return certificates.toArray(new Certificate[0]);
+	}
+
+	private static void loadJar(Map<String, byte[]> toMap, File fromFile) throws IOException
+	{
+		JarInputStream fis = new JarInputStream(new FileInputStream(fromFile));
+		byte[] tmp = new byte[4096];
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
+		for (; ; )
+		{
+			JarEntry metadata = fis.getNextJarEntry();
+			if (metadata == null)
+			{
+				break;
+			}
+
+			buffer.reset();
+			for (; ; )
+			{
+				int n = fis.read(tmp);
+				if (n <= -1)
+				{
+					break;
+				}
+				buffer.write(tmp, 0, n);
+			}
+			toMap.put(metadata.getName(), buffer.toByteArray());
+		}
 	}
 }

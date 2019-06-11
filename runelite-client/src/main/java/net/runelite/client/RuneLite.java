@@ -243,7 +243,7 @@ public class RuneLite
 			System.exit(0);
 		}
 
-		final boolean developerMode = true;
+		final boolean developerMode = options.has("developer-mode");
 
 		if (developerMode)
 		{
@@ -290,7 +290,7 @@ public class RuneLite
 
 		injector = Guice.createInjector(new RuneLiteModule(
 			options.valueOf(updateMode),
-			developerMode));
+			true));
 
 		injector.getInstance(RuneLite.class).start();
 		splashScreen.setProgress(1, 5);
