@@ -54,7 +54,7 @@ public class MiningCoalBagOverlay extends WidgetItemOverlay
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
-		graphics.setColor(Color.YELLOW);
+		graphics.setColor(Color.WHITE);
 		Point location = itemWidget.getCanvasLocation();
 
 		graphics.drawString(plugin.getAmountOfCoalInBag() + "", location.getX(), location.getY() + 14);
