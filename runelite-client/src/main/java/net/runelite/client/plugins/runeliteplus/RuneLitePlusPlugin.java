@@ -46,7 +46,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientUI;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	loadWhenOutdated = true, // prevent users from disabling
@@ -66,7 +65,7 @@ public class RuneLitePlusPlugin extends Plugin
 		@Override
 		public void keyTyped(KeyEvent keyEvent)
 		{
-			if (!isNumber(keyEvent))
+			if (!Character.isDigit(keyEvent.getKeyChar()))
 			{
 				return;
 			}
@@ -91,12 +90,6 @@ public class RuneLitePlusPlugin extends Plugin
 		@Override
 		public void keyReleased(KeyEvent keyEvent)
 		{
-		}
-
-		private boolean isNumber(KeyEvent keyEvent)
-		{
-			char character = keyEvent.getKeyChar();
-			return ArrayUtils.contains(numbers, character);
 		}
 	}
 
@@ -126,7 +119,6 @@ public class RuneLitePlusPlugin extends Plugin
 	public static boolean customPresenceEnabled = false;
 	public static final String rlPlusDiscordApp = "560644885250572289";
 	public static final String rlDiscordApp = "409416265891971072";
-	private static final char[] numbers = "0123456789".toCharArray();
 
 	@Inject
 	public RuneLitePlusConfig config;

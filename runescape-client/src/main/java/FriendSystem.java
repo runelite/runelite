@@ -327,7 +327,8 @@ public class FriendSystem {
       signature = "(B)Z",
       garbageValue = "0"
    )
-   public static boolean method1868() {
+   @Export("jmodCheck")
+   public static boolean jmodCheck() {
       return Client.rights >= 2;
    }
 }
