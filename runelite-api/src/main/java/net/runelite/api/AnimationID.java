@@ -261,7 +261,7 @@ public final class AnimationID
 	public static final int JAL_IMKOT = 7597;
 	public static final int JAL_XIL_MELEE_ATTACK = 7604;
 	public static final int JAL_XIL_RANGE_ATTACK = 7605;
-	public static final int JAL_ZEK MAGE_ATTACK = 7610;
+	public static final int JAL_ZEK_MAGE_ATTACK = 7610;
 	public static final int JAL_ZEK_MELEE_ATTACK = 7612;
 	public static final int JALTOK_JAD_MELEE_ATTACK = 7590;
 	public static final int JALTOK_JAD_MAGE_ATTACK = 7592;
