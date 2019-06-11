@@ -995,4 +995,10 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("mouseRecorder")
 	RSMouseRecorder getMouseRecorder();
+		
+	@Import("selectedSpellName")
+	String getSelectedSpellName();
+	
+	@Import("isSpellSelected")
+	boolean getIsSpellSelected();
 }
