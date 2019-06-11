@@ -28,8 +28,8 @@ public class class30 {
    @Export("musicTrackArchiveId")
    public static int musicTrackArchiveId;
    @ObfuscatedName("l")
-   @Export("__ar_l")
-   public static boolean __ar_l;
+   @Export("inMembersWorld")
+   public static boolean inMembersWorld;
    @ObfuscatedName("bd")
    @ObfuscatedSignature(
       signature = "[Lln;"

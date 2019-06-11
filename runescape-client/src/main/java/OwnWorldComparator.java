@@ -76,10 +76,10 @@ public class OwnWorldComparator implements Comparator {
             var3 = 0;
          }
 
-         Client.__client_ho = var3;
+         Client.cameraFollowHeight = var3;
          return 1;
       } else if(var0 == 5531) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.__client_ho;
+         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.cameraFollowHeight;
          return 1;
       } else {
          return 2;

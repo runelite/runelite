@@ -1,12 +1,9 @@
 package net.runelite.mixins;
 
-import net.runelite.api.Model;
-import net.runelite.api.Perspective;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSModel;
 
 /**
  * Class to check clickboxes of models. Mostly refactored code from the client.
@@ -14,19 +11,40 @@ import net.runelite.rs.api.RSModel;
 @Mixin(RSClient.class)
 public abstract class ClickboxMixin implements RSClient
 {
-	@Shadow("client")
-	private static RSClient client;
-
 	private static final int MAX_ENTITES_AT_MOUSE = 1000;
 	private static final int CLICKBOX_CLOSE = 50;
 	private static final int CLICKBOX_FAR = 10000;
 	private static final int OBJECT_INTERACTION_FAR = 100; // Max distance, in tiles, from camera
-
 	@Inject
 	private static final int[] rl$modelViewportXs = new int[4700];
-
 	@Inject
 	private static final int[] rl$modelViewportYs = new int[4700];
+	@Shadow("client")
+	private static RSClient client;
+
+	@Inject
+	private static int rl$rot1(int var0, int var1, int var2, int var3)
+	{
+		return var0 * var2 + var3 * var1 >> 16;
+	}
+
+	@Inject
+	private static int rl$rot2(int var0, int var1, int var2, int var3)
+	{
+		return var2 * var1 - var3 * var0 >> 16;
+	}
+
+	@Inject
+	private static int rl$rot3(int var0, int var1, int var2, int var3)
+	{
+		return var0 * var2 - var3 * var1 >> 16;
+	}
+
+	@Inject
+	private static int rl$rot4(int var0, int var1, int var2, int var3)
+	{
+		return var3 * var0 + var2 * var1 >> 16;
+	}
 
 	@Inject
 	public void checkClickbox(net.runelite.api.Model model, int n2, int n3, int n4, int n5, int n6, int n7, int n8, int n9, long l2)
@@ -118,11 +136,8 @@ public abstract class ClickboxMixin implements RSClient
 				int n28 = rl$modelViewportXs[n12];
 				int n29 = rl$modelViewportXs[n10];
 				int n30 = rl$modelViewportXs[n24];
-				if (n25 != -5000 && n26 != -5000 && n27 != -5000 && (bl5 = (n23 = (n22 = rSModel.isClickable() ? 20
-						: 5) + n11) < n28 && n23 < n29 && n23 < n30 ? false
-						: ((n23 = n11 - n22) > n28 && n23 > n29 && n23 > n30 ? false
-						: ((n23 = n22 + n14) < n25 && n23 < n26 && n23 < n27 ? false
-						: (n23 = n14 - n22) <= n25 || n23 <= n26 || n23 <= n27))))
+				if (n25 != -5000 && n26 != -5000 && n27 != -5000 && (bl5 = ((n23 = (n22 = rSModel.isClickable() ? 20
+					: 5) + n11) >= n28 || n23 >= n29 || n23 >= n30) && (((n23 = n11 - n22) <= n28 || n23 <= n29 || n23 <= n30) && (((n23 = n22 + n14) >= n25 || n23 >= n26 || n23 >= n27) && ((n23 = n14 - n22) <= n25 || n23 <= n26 || n23 <= n27)))))
 				{
 					this.addHashAtMouse(l2);
 					return;
@@ -211,34 +226,6 @@ public abstract class ClickboxMixin implements RSClient
 		{
 			return false;
 		}
-		if (Math.abs(n39 * n23 - n38 * n24) <= n33 * n26 + n32 * n27)
-		{
-			return true;
-		}
-		return false;
-	}
-
-	@Inject
-	private static int rl$rot1(int var0, int var1, int var2, int var3)
-	{
-		return var0 * var2 + var3 * var1 >> 16;
-	}
-
-	@Inject
-	private static int rl$rot2(int var0, int var1, int var2, int var3)
-	{
-		return var2 * var1 - var3 * var0 >> 16;
-	}
-
-	@Inject
-	private static int rl$rot3(int var0, int var1, int var2, int var3)
-	{
-		return var0 * var2 - var3 * var1 >> 16;
-	}
-
-	@Inject
-	private static int rl$rot4(int var0, int var1, int var2, int var3)
-	{
-		return var3 * var0 + var2 * var1 >> 16;
+		return Math.abs(n39 * n23 - n38 * n24) <= n33 * n26 + n32 * n27;
 	}
 }

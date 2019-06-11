@@ -17,7 +17,7 @@ public interface RSItemDefinition extends ItemDefinition
 	@Override
 	int getNote();
 
-	@Import("notedId")
+	@Import("note")
 	@Override
 	int getLinkedNoteId();
 

@@ -12,19 +12,19 @@ public interface RSMessage extends MessageNode
 	@Import("type")
 	int getRSType();
 
-	@Import("prefix")
+	@Import("sender")
 	@Override
 	String getName();
 
-	@Import("prefix")
+	@Import("sender")
 	@Override
 	void setName(String name);
 
-	@Import("sender")
+	@Import("prefix")
 	@Override
 	String getSender();
 
-	@Import("sender")
+	@Import("prefix")
 	@Override
 	void setSender(String sender);
 

@@ -18,7 +18,7 @@ public interface RSGroundItemPile extends ItemLayer
 	@Import("height")
 	int getHeight();
 
-	@Import("third")
+	@Import("first")
 	@Override
 	RSEntity getBottom();
 
@@ -26,7 +26,7 @@ public interface RSGroundItemPile extends ItemLayer
 	@Override
 	RSEntity getMiddle();
 
-	@Import("first")
+	@Import("third")
 	@Override
 	RSEntity getTop();
 

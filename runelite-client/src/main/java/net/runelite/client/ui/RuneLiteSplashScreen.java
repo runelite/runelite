@@ -130,7 +130,7 @@ public class RuneLiteSplashScreen
 		panel.add(version, versionConstraints);
 
 		// version
-		final JLabel litVersion = new JLabel("Plus Version : PRE-" + RuneLite.RUNELIT_VERSION);
+		final JLabel litVersion = new JLabel("Plus Version : " + RuneLite.RUNELIT_VERSION);
 		litVersion.setForeground(Color.GREEN);
 		litVersion.setFont(FontManager.getRunescapeSmallFont());
 		litVersion.setForeground(litVersion.getForeground().darker());

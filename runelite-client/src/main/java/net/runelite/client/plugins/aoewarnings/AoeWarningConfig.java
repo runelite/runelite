@@ -818,4 +818,41 @@ public interface AoeWarningConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "demonicGorillaStub",
+		name = "Demonic Gorilla",
+		description = "",
+		position = 64,
+		parent = "npcStub"
+	)
+	default Stub demonicGorillaStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		keyName = "demonicGorilla",
+		name = "Demonic Gorilla",
+		description = "Configures if Demonic Gorilla boulder tile markers are displayed",
+		parent = "demonicGorillaStub",
+		position = 65
+	)
+	default boolean isDemonicGorillaEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "demonicGorillaNotify",
+		name = "Demonic Gorilla Notify",
+		description = "Configures whether or not AoE Projectile Warnings for Demonic Gorilla boulders should trigger a notification",
+		parent = "demonicGorillaStub",
+		position = 66,
+		hide = "aoeNotifyAll"
+	)
+	default boolean isDemonicGorillaNotifyEnabled()
+	{
+		return false;
+	}
 }

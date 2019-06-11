@@ -203,9 +203,16 @@ public class Method
 		return (accessFlags & ACC_STATIC) != 0;
 	}
 
-	public void setStatic()
+	public void setStatic(boolean s)
 	{
-		accessFlags |= ACC_STATIC;
+		if (s)
+		{
+			accessFlags |= ACC_STATIC;
+		}
+		else
+		{
+			accessFlags &= ~ACC_STATIC;
+		}
 	}
 
 	public boolean isSynchronized()

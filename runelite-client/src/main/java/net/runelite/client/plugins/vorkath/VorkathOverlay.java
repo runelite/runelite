@@ -1,5 +1,7 @@
 /*
  * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, Infinitay <https://github.com/Infinitay>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,20 +61,6 @@ public class VorkathOverlay extends Overlay
 		this.plugin = plugin;
 	}
 
-	private BufferedImage getIcon(Vorkath.AttackStyle attackStyle)
-	{
-		switch (attackStyle)
-		{
-			case MAGERANGE:
-				return VorkathPlugin.MAGERANGE;
-			case ICE:
-				return VorkathPlugin.ICE;
-			case ACID:
-				return VorkathPlugin.ACID;
-		}
-		return null;
-	}
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -80,29 +68,17 @@ public class VorkathOverlay extends Overlay
 		{
 			Vorkath vorkath = plugin.getVorkath();
 
-			LocalPoint localLocation = vorkath.getNpc().getLocalLocation();
+			LocalPoint localLocation = vorkath.getVorkath().getLocalLocation();
 			if (localLocation != null)
 			{
-				Point point = Perspective.localToCanvas(client, localLocation, client.getPlane(), vorkath.getNpc().getLogicalHeight() + 16);
+				Point point = Perspective.localToCanvas(client, localLocation, client.getPlane(), vorkath.getVorkath().getLogicalHeight() + 16);
 				if (point != null)
 				{
 					point = new Point(point.getX(), point.getY());
 
-					BufferedImage icon = null;
-					if (vorkath.getPhase() == 0)
-					{
-						icon = getIcon(Vorkath.AttackStyle.MAGERANGE);
-					}
-					else if (vorkath.getPhase() == 1)
-					{
-						icon = getIcon(Vorkath.AttackStyle.ACID);
-					}
-					else if (vorkath.getPhase() == 2)
-					{
-						icon = getIcon(Vorkath.AttackStyle.ICE);
-					}
+					BufferedImage currentPhaseIcon = getIcon(vorkath);
 
-					int totalWidth = icon.getWidth() * OVERLAY_ICON_MARGIN;
+					int totalWidth = currentPhaseIcon.getWidth() * OVERLAY_ICON_MARGIN;
 					int bgPadding = 8;
 					int currentPosX = 0;
 
@@ -110,32 +86,31 @@ public class VorkathOverlay extends Overlay
 					graphics.setColor(COLOR_ICON_BACKGROUND);
 					graphics.fillOval(
 						point.getX() - totalWidth / 2 + currentPosX - bgPadding,
-						point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
-						icon.getWidth() + bgPadding * 2,
-						icon.getHeight() + bgPadding * 2);
+						point.getY() - currentPhaseIcon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
+						currentPhaseIcon.getWidth() + bgPadding * 2,
+						currentPhaseIcon.getHeight() + bgPadding * 2);
 
 					graphics.setColor(COLOR_ICON_BORDER);
 					graphics.drawOval(
 						point.getX() - totalWidth / 2 + currentPosX - bgPadding,
-						point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
-						icon.getWidth() + bgPadding * 2,
-						icon.getHeight() + bgPadding * 2);
+						point.getY() - currentPhaseIcon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
+						currentPhaseIcon.getWidth() + bgPadding * 2,
+						currentPhaseIcon.getHeight() + bgPadding * 2);
 
 					graphics.drawImage(
-						icon,
+						currentPhaseIcon,
 						point.getX() - totalWidth / 2 + currentPosX,
-						point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE,
+						point.getY() - currentPhaseIcon.getHeight() / 2 - OVERLAY_ICON_DISTANCE,
 						null);
 
 					graphics.setColor(COLOR_ICON_BORDER_FILL);
 					Arc2D.Double arc = new Arc2D.Double(
 						point.getX() - totalWidth / 2 + currentPosX - bgPadding,
-						point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
-						icon.getWidth() + bgPadding * 2,
-						icon.getHeight() + bgPadding * 2,
+						point.getY() - currentPhaseIcon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
+						currentPhaseIcon.getWidth() + bgPadding * 2,
+						currentPhaseIcon.getHeight() + bgPadding * 2,
 						90.0,
-						-360.0 * (Vorkath.ATTACKS_PER_SWITCH -
-							vorkath.getAttacksUntilSwitch()) / Vorkath.ATTACKS_PER_SWITCH,
+						-360.0 * getAttacksLeftProgress(),
 						Arc2D.OPEN);
 					graphics.draw(arc);
 				}
@@ -143,5 +118,40 @@ public class VorkathOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param vorkath Vorkath object
+	 * @return image of the current phase Vorkath is on
+	 */
+	private BufferedImage getIcon(Vorkath vorkath)
+	{
+		switch (vorkath.getCurrentPhase())
+		{
+			case UNKNOWN:
+				return VorkathPlugin.UNKNOWN;
+			case ACID:
+				return VorkathPlugin.ACID;
+			case FIRE_BALL:
+				return VorkathPlugin.FIRE_BALL;
+			case SPAWN:
+				return VorkathPlugin.SPAWN;
+		}
+		return null;
+	}
+
+	/**
+	 * @return number of attacks Vorkath has left in the current phase
+	 */
+	private double getAttacksLeftProgress()
+	{
+		if (plugin.getVorkath().getCurrentPhase() != Vorkath.Phase.FIRE_BALL)
+		{
+			return (double) (Vorkath.ATTACKS_PER_SWITCH - plugin.getVorkath().getAttacksLeft()) / Vorkath.ATTACKS_PER_SWITCH;
+		}
+		else
+		{
+			return (double) (Vorkath.FIRE_BALL_ATTACKS - plugin.getVorkath().getAttacksLeft()) / Vorkath.FIRE_BALL_ATTACKS;
+		}
 	}
 }
