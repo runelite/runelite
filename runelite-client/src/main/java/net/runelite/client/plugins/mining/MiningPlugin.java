@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Anthony <cvballa3g0@gmail.com>
  * Copyright (c) 2019, Jarred Vardy <jarred.vardy@gmail.com>
  * All rights reserved.
  *
