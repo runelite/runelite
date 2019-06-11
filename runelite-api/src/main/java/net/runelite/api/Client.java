@@ -1652,5 +1652,8 @@ public interface Client extends GameShell
 	MouseRecorder getMouseRecorder();
 
 	void setPrintMenuActions(boolean b);
-
+	
+	String getSelectedSpellName();
+	
+	boolean getIsSpellSelected();
 }
