@@ -32,7 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -40,6 +42,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.HeadIcon;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -80,6 +83,9 @@ public class InfernoPlugin extends Plugin
 	private InfernoWaveOverlay waveOverlay;
 
 	@Inject
+	private InfernoJadOverlay jadOverlay;
+
+	@Inject
 	private InfernoInfobox infernoInfobox;
 
 	@Inject
@@ -105,6 +111,14 @@ public class InfernoPlugin extends Plugin
 
 	@Getter
 	private InfernoNPC[] priorityNPC;
+
+
+	@Getter(AccessLevel.PACKAGE)
+	@Nullable
+	private InfernoJadAttack attack;
+
+	private NPC jad;
+
 	
 	static
 	{
@@ -159,6 +173,7 @@ public class InfernoPlugin extends Plugin
 		overlayManager.add(infernoInfobox);
 		overlayManager.add(nibblerOverlay);
 		overlayManager.add(waveOverlay);
+		overlayManager.add(jadOverlay);
 		monsters = new HashMap<>();
 		monsterCurrentAttackMap = new HashMap<>(6);
 		for (int i = 1; i <= 6; i++)
@@ -176,6 +191,9 @@ public class InfernoPlugin extends Plugin
 		overlayManager.remove(infernoOverlay);
 		overlayManager.remove(nibblerOverlay);
 		overlayManager.remove(waveOverlay);
+		overlayManager.remove(jadOverlay);
+		jad = null;
+		attack = null;
 	}
 
 	@Subscribe
@@ -192,6 +210,13 @@ public class InfernoPlugin extends Plugin
 		if (npc.getId() == NpcID.JALNIB)
 		{
 			nibblers.add(npc);
+		}
+
+		final int id = event.getNpc().getId();
+
+		if (id == NpcID.JALTOKJAD || id == NpcID.JALTOKJAD_7704)
+		{
+			jad = event.getNpc();
 		}
 	}
 
@@ -210,6 +235,12 @@ public class InfernoPlugin extends Plugin
 		if (npc.getId() == NpcID.JALNIB)
 		{
 			nibblers.remove(npc);
+		}
+
+		if (jad == event.getNpc())
+		{
+			jad = null;
+			attack = null;
 		}
 	}
 	
@@ -307,6 +338,24 @@ public class InfernoPlugin extends Plugin
 		}
 
 		calculatePriorityNPC();
+	}
+
+	@Subscribe
+	public void onAnimationChanged(final AnimationChanged event)
+	{
+		if (event.getActor() != jad)
+		{
+			return;
+		}
+
+		if (jad.getAnimation() == InfernoJadAttack.MAGIC.getAnimation())
+		{
+			attack = InfernoJadAttack.MAGIC;
+		}
+		else if (jad.getAnimation() == InfernoJadAttack.RANGE.getAnimation())
+		{
+			attack = InfernoJadAttack.RANGE;
+		}
 	}
 
 	private void calculatePriorityNPC()
