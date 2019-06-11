@@ -41,8 +41,6 @@ public class MiningCoalBagOverlay extends WidgetItemOverlay
 	@Inject
 	MiningCoalBagOverlay(MiningPlugin plugin, MiningConfig config)
 	{
-		showOnInventory();
-		showOnInterfaces();
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -50,12 +48,7 @@ public class MiningCoalBagOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		if (!config.showCoalBagOverlay())
-		{
-			return;
-		}
-
-		if (itemId != ItemID.COAL_BAG && itemId != ItemID.COAL_BAG_12019)
+		if (!config.showCoalBagOverlay() || (itemId != ItemID.COAL_BAG && itemId != ItemID.COAL_BAG_12019))
 		{
 			return;
 		}
