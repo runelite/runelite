@@ -83,7 +83,7 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class RuneLite
 {
-	public static final String RUNELIT_VERSION = "0.1.2";
+	public static final String RUNELIT_VERSION = "2.0.0";
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
@@ -243,7 +243,7 @@ public class RuneLite
 			System.exit(0);
 		}
 
-		final boolean developerMode = true;
+		final boolean developerMode = options.has("developer-mode");
 
 		if (developerMode)
 		{
@@ -290,7 +290,7 @@ public class RuneLite
 
 		injector = Guice.createInjector(new RuneLiteModule(
 			options.valueOf(updateMode),
-			developerMode));
+			true));
 
 		injector.getInstance(RuneLite.class).start();
 		splashScreen.setProgress(1, 5);

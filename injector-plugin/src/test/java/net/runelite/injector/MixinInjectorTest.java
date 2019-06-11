@@ -53,6 +53,9 @@ import static org.objectweb.asm.Opcodes.ACC_STATIC;
 @ObfuscatedName("net/runelite/injector/VanillaTarget")
 class DeobTarget
 {
+	@ObfuscatedName("ob_foo4")
+	private static int foo4;
+
 	@ObfuscatedName("ob_foo3")
 	@ObfuscatedSignature(
 		signature = "(I)V",
@@ -63,13 +66,12 @@ class DeobTarget
 		// De-obfuscated foo3
 		System.out.println("foo3");
 	}
-
-	@ObfuscatedName("ob_foo4")
-	private static int foo4;
 }
 
 class VanillaTarget
 {
+	private static int ob_foo4;
+
 	private void ob_foo3(int garbageValue)
 	{
 		// Obfuscated foo3
@@ -79,14 +81,14 @@ class VanillaTarget
 		}
 		System.out.println("foo3");
 	}
-
-	private static int ob_foo4;
 }
 
 abstract class Source
 {
 	@net.runelite.api.mixins.Inject
 	private static int foo;
+	@Shadow("foo4")
+	private static int foo4;
 
 	@net.runelite.api.mixins.Inject
 	private void foo2()
@@ -103,9 +105,6 @@ abstract class Source
 		System.out.println(foo4);
 		foo3();
 	}
-
-	@Shadow("foo4")
-	private static int foo4;
 }
 
 // Test shadowing the "foo" field injected by Source

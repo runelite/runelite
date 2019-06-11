@@ -1065,14 +1065,14 @@ public final class class54 {
             Client.__client_ik += (var6 - Client.__client_ik) / 80;
          }
 
-         MouseRecorder.__bu_hy = class32.getTileHeight(Canvas.localPlayer.x, Canvas.localPlayer.y, SoundSystem.plane) - Client.__client_ho;
+         MouseRecorder.__bu_hy = class32.getTileHeight(Canvas.localPlayer.x, Canvas.localPlayer.y, SoundSystem.plane) - Client.cameraFollowHeight;
       } else if(Client.oculusOrbState == 1) {
          if(Client.__client_ij && Canvas.localPlayer != null) {
             var0 = Canvas.localPlayer.pathX[0];
             var1 = Canvas.localPlayer.pathY[0];
             if(var0 >= 0 && var1 >= 0 && var0 < 104 && var1 < 104) {
                MouseHandler.oculusOrbFocalPointX = Canvas.localPlayer.x;
-               var2 = class32.getTileHeight(Canvas.localPlayer.x, Canvas.localPlayer.y, SoundSystem.plane) - Client.__client_ho;
+               var2 = class32.getTileHeight(Canvas.localPlayer.x, Canvas.localPlayer.y, SoundSystem.plane) - Client.cameraFollowHeight;
                if(var2 < MouseRecorder.__bu_hy) {
                   MouseRecorder.__bu_hy = var2;
                }

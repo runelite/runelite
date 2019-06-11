@@ -29,7 +29,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -93,6 +92,7 @@ public class MenuManager
 
 	private final Set<ComparableEntry> priorityEntries = new HashSet<>();
 	private final Set<MenuEntry> currentPriorityEntries = new HashSet<>();
+	private final Set<ComparableEntry> hiddenEntries = new HashSet<>();
 
 	private final Map<ComparableEntry, ComparableEntry> swaps = new HashMap<>();
 	private final Set<MenuEntry> originalTypes = new HashSet<>();
@@ -192,7 +192,7 @@ public class MenuManager
 		}
 
 		// Make a copy of the menu entries, cause you can't remove from Arrays.asList()
-		List<MenuEntry> copy = new ArrayList<>(Arrays.asList(menuEntries));
+		List<MenuEntry> copy = Lists.newArrayList(menuEntries);
 
 		// If there are entries we want to prioritize, we have to remove the rest
 		if (!currentPriorityEntries.isEmpty())
@@ -251,6 +251,21 @@ public class MenuManager
 				copy.set(index, newestEntry);
 				copy.set(newIndex, foundSwap);
 			}
+		}
+
+		boolean isHidden = false;
+		for (ComparableEntry p : hiddenEntries)
+		{
+			if (p.matches(newestEntry))
+			{
+				isHidden = true;
+				break;
+			}
+		}
+
+		if (isHidden)
+		{
+			copy.remove(newestEntry);
 		}
 
 		client.setMenuEntries(copy.toArray(new MenuEntry[0]));
@@ -599,19 +614,7 @@ public class MenuManager
 
 		ComparableEntry entry = new ComparableEntry(option, target);
 
-		Set<ComparableEntry> toRemove = new HashSet<>();
-		for (ComparableEntry priorityEntry : priorityEntries)
-		{
-			if (entry.equals(priorityEntry))
-			{
-				toRemove.add(entry);
-			}
-		}
-
-		for (ComparableEntry e : toRemove)
-		{
-			priorityEntries.remove(e);
-		}
+		priorityEntries.removeIf(entry::equals);
 	}
 
 
@@ -634,19 +637,7 @@ public class MenuManager
 
 		ComparableEntry entry = new ComparableEntry(option, "", false);
 
-		Set<ComparableEntry> toRemove = new HashSet<>();
-		for (ComparableEntry priorityEntry : priorityEntries)
-		{
-			if (entry.equals(priorityEntry))
-			{
-				toRemove.add(entry);
-			}
-		}
-
-		for (ComparableEntry e : toRemove)
-		{
-			priorityEntries.remove(e);
-		}
+		priorityEntries.removeIf(entry::equals);
 	}
 
 	/**
@@ -757,36 +748,12 @@ public class MenuManager
 		ComparableEntry swapFrom = new ComparableEntry(option, target, id, type, false, false);
 		ComparableEntry swapTo = new ComparableEntry(option2, target2, id2, type2, false, false);
 
-		Set<ComparableEntry> toRemove = new HashSet<>();
-		for (Map.Entry<ComparableEntry, ComparableEntry> e : swaps.entrySet())
-		{
-			if (e.getKey().equals(swapFrom) && e.getValue().equals(swapTo))
-			{
-				toRemove.add(e.getKey());
-			}
-		}
-
-		for (ComparableEntry entry : toRemove)
-		{
-			swaps.remove(entry);
-		}
+		swaps.entrySet().removeIf(e -> e.getKey().equals(swapFrom) && e.getValue().equals(swapTo));
 	}
 
 	public void removeSwap(ComparableEntry swapFrom, ComparableEntry swapTo)
 	{
-		Set<ComparableEntry> toRemove = new HashSet<>();
-		for (Map.Entry<ComparableEntry, ComparableEntry> e : swaps.entrySet())
-		{
-			if (e.getKey().equals(swapFrom) && e.getValue().equals(swapTo))
-			{
-				toRemove.add(e.getKey());
-			}
-		}
-
-		for (ComparableEntry entry : toRemove)
-		{
-			swaps.remove(entry);
-		}
+		swaps.entrySet().removeIf(e -> e.getKey().equals(swapFrom) && e.getValue().equals(swapTo));
 	}
 
 	/**
@@ -794,21 +761,89 @@ public class MenuManager
 	 */
 	public void removeSwaps(String withTarget)
 	{
-		withTarget = Text.standardize(withTarget);
+		final String target = Text.standardize(withTarget);
 
-		Set<ComparableEntry> toRemove = new HashSet<>();
+		swaps.keySet().removeIf(e -> e.getTarget().equals(target));
+	}
 
-		for (ComparableEntry e : swaps.keySet())
-		{
-			if (e.getTarget().equals(withTarget))
-			{
-				toRemove.add(e);
-			}
-		}
+	/**
+	 * Adds to the set of menu entries which when present, will be hidden from the menu
+	 */
+	public void addHiddenEntry(String option, String target)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
 
-		for (ComparableEntry entry : toRemove)
-		{
-			swaps.remove(entry);
-		}
+		ComparableEntry entry = new ComparableEntry(option, target);
+
+		hiddenEntries.add(entry);
+	}
+
+	public void removeHiddenEntry(String option, String target)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
+
+		ComparableEntry entry = new ComparableEntry(option, target);
+
+		hiddenEntries.removeIf(entry::equals);
+	}
+
+	/**
+	 * Adds to the set of menu entries which when present, will be hidden from the menu
+	 * This method will add one with strict option, but not-strict target (contains for target, equals for option)
+	 */
+	public void addHiddenEntry(String option)
+	{
+		option = Text.standardize(option);
+
+		ComparableEntry entry = new ComparableEntry(option, "", false);
+
+		hiddenEntries.add(entry);
+	}
+
+	public void removeHiddenEntry(String option)
+	{
+		option = Text.standardize(option);
+
+		ComparableEntry entry = new ComparableEntry(option, "", false);
+
+		hiddenEntries.removeIf(entry::equals);
+	}
+
+	/**
+	 * Adds to the set of hidden entries.
+	 */
+	public void addHiddenEntry(String option, String target, boolean strictOption, boolean strictTarget)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
+
+		ComparableEntry entry = new ComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+
+		hiddenEntries.add(entry);
+	}
+
+	public void removeHiddenEntry(String option, String target, boolean strictOption, boolean strictTarget)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
+
+		ComparableEntry entry = new ComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+
+		hiddenEntries.remove(entry);
+	}
+
+	/**
+	 * Adds to the set of hidden entries - Pre-baked Abstract entry
+	 */
+	public void addHiddenEntry(ComparableEntry entry)
+	{
+		hiddenEntries.add(entry);
+	}
+
+	public void removeHiddenEntry(ComparableEntry entry)
+	{
+		hiddenEntries.remove(entry);
 	}
 }

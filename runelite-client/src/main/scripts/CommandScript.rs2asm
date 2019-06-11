@@ -322,8 +322,11 @@ LABEL241:
    iconst                 0                 ;
    sconst                 "blockChatInput"  ;
    runelite_callback     ;
-   if_icmpeq              LABEL247          ; don't add to input varcstr
+   if_icmpeq              SKIPSETVARC       ; skip setting varc with input
    set_varc_string        335
+   jump                   LABEL247          ; jump over SKIPSETVARC
+SKIPSETVARC:
+   pop_string                               ; pop message
 LABEL247:
    invoke                 223
    return                

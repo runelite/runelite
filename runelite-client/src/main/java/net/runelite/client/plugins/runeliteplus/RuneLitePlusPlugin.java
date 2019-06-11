@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLiteProperties;
@@ -46,7 +46,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientUI;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	loadWhenOutdated = true, // prevent users from disabling
@@ -66,7 +65,7 @@ public class RuneLitePlusPlugin extends Plugin
 		@Override
 		public void keyTyped(KeyEvent keyEvent)
 		{
-			if (!isNumber(keyEvent))
+			if (!Character.isDigit(keyEvent.getKeyChar()))
 			{
 				return;
 			}
@@ -91,12 +90,6 @@ public class RuneLitePlusPlugin extends Plugin
 		@Override
 		public void keyReleased(KeyEvent keyEvent)
 		{
-		}
-
-		private boolean isNumber(KeyEvent keyEvent)
-		{
-			char character = keyEvent.getKeyChar();
-			return ArrayUtils.contains(numbers, character);
 		}
 	}
 
@@ -126,7 +119,6 @@ public class RuneLitePlusPlugin extends Plugin
 	public static boolean customPresenceEnabled = false;
 	public static final String rlPlusDiscordApp = "560644885250572289";
 	public static final String rlDiscordApp = "409416265891971072";
-	private static final char[] numbers = "0123456789".toCharArray();
 
 	@Inject
 	public RuneLitePlusConfig config;
@@ -155,6 +147,7 @@ public class RuneLitePlusPlugin extends Plugin
 	private RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
 	private int entered = -1;
 	private int enterIdx;
+	private boolean expectInput;
 
 	@Override
 	protected void startUp() throws Exception
@@ -170,6 +163,7 @@ public class RuneLitePlusPlugin extends Plugin
 
 		entered = -1;
 		enterIdx = 0;
+		expectInput = false;
 	}
 
 	@Subscribe
@@ -202,8 +196,9 @@ public class RuneLitePlusPlugin extends Plugin
 
 		else if (!config.keyboardPin())
 		{
-			entered = -1;
+			entered = 0;
 			enterIdx = 0;
+			expectInput = false;
 			keyManager.unregisterKeyListener(keyListener);
 		}
 	}
@@ -211,33 +206,41 @@ public class RuneLitePlusPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		entered = -1;
+		entered = 0;
 		enterIdx = 0;
+		expectInput = false;
 		keyManager.unregisterKeyListener(keyListener);
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
-		if (!config.keyboardPin())
+		if (e.getEventName().equals("bankpin"))
 		{
-			return;
-		}
+			int[] intStack = client.getIntStack();
+			int intStackSize = client.getIntStackSize();
 
-		if (event.getGroupId() == WidgetID.BANK_GROUP_ID)
-		{
-			// log.debug("Bank opened, removing key listener");
-			keyManager.unregisterKeyListener(keyListener);
-			return;
-		}
-		else if (event.getGroupId() != WidgetID.BANK_PIN_GROUP_ID)
-			//|| !Text.standardize(client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText()).equals("bank of gielinor"))
-		{
-			return;
-		}
+			// This'll be anywhere from -1 to 3
+			// 0 = first number, 1 second, etc
+			// Anything other than 0123 means the bankpin interface closes
+			int enterIdx = intStack[intStackSize - 1];
 
-		// log.debug("Registering key listener");
-		keyManager.registerKeyListener(keyListener);
+			if (enterIdx < 0 || enterIdx > 3)
+			{
+				keyManager.unregisterKeyListener(keyListener);
+				this.enterIdx = 0;
+				this.entered = 0;
+				expectInput = false;
+				return;
+			}
+			else if (enterIdx == 0)
+			{
+				keyManager.registerKeyListener(keyListener);
+			}
+
+			this.enterIdx = enterIdx;
+			expectInput = true;
+		}
 	}
 
 	private void handleKey(char c)
@@ -245,37 +248,38 @@ public class RuneLitePlusPlugin extends Plugin
 		if (client.getWidget(WidgetID.BANK_PIN_GROUP_ID, 0) == null
 			|| !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Bank of Gielinor"))
 		{
-			// log.debug("Key was pressed, but widget wasn't open");
-			entered = -1;
+			entered = 0;
 			enterIdx = 0;
+			expectInput = false;
 			keyManager.unregisterKeyListener(keyListener);
+			return;
+		}
+
+		if (!expectInput)
+		{
 			return;
 		}
 
 		int num = Character.getNumericValue(c);
 
-	client.runScript(685, num, enterIdx, entered, 13959181, 13959183, 13959184, 13959186, 13959188, 13959190, 13959192, 13959194, 13959196, 13959198, 13959200, 13959202, 13959171, 13959172, 13959173, 13959174, 13959178);
+		// We gotta copy this cause enteridx changes while the script is executing
+		int oldEnterIdx = enterIdx;
 
-		if (enterIdx == 0)
+		// Script 685 will call 653, which in turn will set expectInput to true
+		expectInput = false;
+		client.runScript(685, num, enterIdx, entered, 13959181, 13959183, 13959184, 13959186, 13959188, 13959190, 13959192, 13959194, 13959196, 13959198, 13959200, 13959202, 13959171, 13959172, 13959173, 13959174, 13959178);
+
+		if (oldEnterIdx == 0)
 		{
 			entered = num * 1000;
-			enterIdx++;
 		}
-		else if (enterIdx == 1)
+		else if (oldEnterIdx == 1)
 		{
 			entered += num * 100;
-			enterIdx++;
 		}
-		else if (enterIdx == 2)
+		else if (oldEnterIdx == 2)
 		{
 			entered += num * 10;
-			enterIdx++;
-		}
-		else if (enterIdx == 3)
-		{
-			entered = -1;
-			enterIdx = 0;
-			keyManager.unregisterKeyListener(keyListener);
 		}
 	}
 }

@@ -529,11 +529,11 @@ public interface RSClient extends RSGameShell, Client
 	@Import("mapDotSprites")
 	RSSprite[] getMapDots();
 
-	@Import("modIconSprites")
+	@Import("AbstractFont_modIconSprites")
 	@Override
 	RSIndexedSprite[] getModIcons();
 
-	@Import("modIconSprites")
+	@Import("AbstractFont_modIconSprites")
 	void setRSModIcons(RSIndexedSprite[] modIcons);
 
 	@Construct
@@ -995,4 +995,10 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("mouseRecorder")
 	RSMouseRecorder getMouseRecorder();
+		
+	@Import("selectedSpellName")
+	String getSelectedSpellName();
+	
+	@Import("isSpellSelected")
+	boolean getIsSpellSelected();
 }

@@ -767,7 +767,8 @@ public class class39 extends class21 {
       signature = "(IIB)V",
       garbageValue = "3"
    )
-   static final void method741(int var0, int var1) {
+   @Export("drawMenuActionTextAt")
+   static final void drawMenuActionTextAt(int var0, int var1) {
       if(Client.menuOptionsCount >= 2 || Client.isItemSelected != 0 || Client.isSpellSelected) {
          if(Client.showMouseOverText) {
             int var2 = Client.menuOptionsCount - 1;
@@ -790,10 +791,10 @@ public class class39 extends class21 {
             }
 
             if(Client.menuOptionsCount > 2) {
-               var4 = var4 + BufferedFile.colorStartTag(16777215) + " " + '/' + " " + (Client.menuOptionsCount - 2) + " more options";
+               var4 = var4 + BufferedFile.colorStartTag(0xffffff) + " " + '/' + " " + (Client.menuOptionsCount - 2) + " more options";
             }
 
-            class2.fontBold12.drawRandomAlphaAndSpacing(var4, var0 + 4, var1 + 15, 16777215, 0, Client.cycle / 1000);
+            class2.fontBold12.drawRandomAlphaAndSpacing(var4, var0 + 4, var1 + 15, 0xffffff, 0, Client.cycle / 1000);
          }
       }
    }

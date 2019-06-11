@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, Jacky <liangj97@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.vorkath;
+package net.runelite.client.plugins.inferno;
 
-import lombok.Getter;
-import net.runelite.api.NPC;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-class ZombifiedSpawn
+@ConfigGroup("inferno")
+public interface InfernoConfig extends Config
 {
-	@Getter
-	private NPC npc;
-
-	ZombifiedSpawn(NPC npc)
+	@ConfigItem(
+		position = 0,
+		keyName = "Nibbler Overlay",
+		name = "Nibbler Overlay",
+		description = "Shows if there are any Nibblers left"
+	)
+	default boolean displayNibblerOverlay()
 	{
-		this.npc = npc;
+		return false;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "Prayer Helper",
+		name = "Prayer Helper",
+		description = "Tells you what to flick in how many ticks"
+	)
+	default boolean showPrayerHelp()
+	{
+		return false;
 	}
 }

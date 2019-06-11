@@ -44,13 +44,6 @@ import static org.mockito.Mockito.when;
 
 public class InjectSetterTest
 {
-	interface APIClass
-	{
-		void setTest(int i);
-
-		void setTestObject(Object str);
-	}
-
 	@Test
 	public void testInjectSetterInt() throws NoSuchMethodException
 	{
@@ -111,6 +104,13 @@ public class InjectSetterTest
 			.filter(i -> i.getType() == CHECKCAST)
 			.findAny()
 			.isPresent());
+	}
+
+	interface APIClass
+	{
+		void setTest(int i);
+
+		void setTestObject(Object str);
 	}
 
 }
