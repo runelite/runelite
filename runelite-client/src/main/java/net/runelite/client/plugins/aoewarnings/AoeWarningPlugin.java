@@ -330,6 +330,8 @@ public class AoeWarningPlugin extends Plugin
 				return notify ? config.isDrakeNotifyEnabled() : config.isDrakeEnabled();
 			case CERB_FIRE:
 				return notify ? config.isCerbFireNotifyEnabled() : config.isCerbFireEnabled();
+			case DEMONIC_GORILLA_BOULDER:
+				return notify ? config.isDemonicGorillaNotifyEnabled() : config.isDemonicGorillaEnabled();
 		}
 
 		return false;
