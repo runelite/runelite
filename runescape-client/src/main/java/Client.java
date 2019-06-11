@@ -994,8 +994,8 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 1005832199
    )
-   @Export("__client_ho")
-   static int __client_ho;
+   @Export("cameraFollowHeight")
+   static int cameraFollowHeight;
    @ObfuscatedName("hc")
    @ObfuscatedGetter(
       intValue = -441913785
@@ -1442,7 +1442,7 @@ public final class Client extends GameShell implements Usernamed {
       __client_hi = 0;
       __client_ht = 0;
       oculusOrbState = 0;
-      __client_ho = 50;
+      cameraFollowHeight = 50;
       __client_hc = 0;
       __client_hk = 0;
       __client_if = 0;
@@ -4281,7 +4281,7 @@ public final class Client extends GameShell implements Usernamed {
                      }
                   }
 
-                  if(FriendSystem.method1868() && KeyHandler.KeyHandler_pressedKeys[82] && KeyHandler.KeyHandler_pressedKeys[81] && mouseWheelRotation != 0) {
+                  if(FriendSystem.jmodCheck() && KeyHandler.KeyHandler_pressedKeys[82] && KeyHandler.KeyHandler_pressedKeys[81] && mouseWheelRotation != 0) {
                      var3 = Canvas.localPlayer.plane - mouseWheelRotation;
                      if(var3 < 0) {
                         var3 = 0;

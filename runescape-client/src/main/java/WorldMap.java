@@ -266,8 +266,8 @@ public class WorldMap {
    @Export("mouseCoord")
    TileLocation mouseCoord;
    @ObfuscatedName("bc")
-   @Export("__bc")
-   public boolean __bc;
+   @Export("showCoord")
+   public boolean showCoord;
    @ObfuscatedName("bo")
    @ObfuscatedSignature(
       signature = "Lln;"
@@ -332,7 +332,7 @@ public class WorldMap {
       this.__bs = new int[]{1008, 1009, 1010, 1011, 1012};
       this.__bk = new HashSet();
       this.mouseCoord = null;
-      this.__bc = false;
+      this.showCoord = false;
       this.__by = -1;
       this.__bu = -1;
       this.__bm = -1;
@@ -478,7 +478,7 @@ public class WorldMap {
          if(this.mouseCoord != null && var3) {
             int var9;
             int var10;
-            if(FriendSystem.method1868() && KeyHandler.KeyHandler_pressedKeys[82] && KeyHandler.KeyHandler_pressedKeys[81]) {
+            if(FriendSystem.jmodCheck() && KeyHandler.KeyHandler_pressedKeys[82] && KeyHandler.KeyHandler_pressedKeys[81]) {
                int var13 = this.mouseCoord.x;
                var9 = this.mouseCoord.y;
                var10 = this.mouseCoord.plane;
@@ -801,7 +801,7 @@ public class WorldMap {
          }
 
          this.__v_528(var1, var2, var3, var4, var8, var9);
-         if(FriendSystem.method1868() && this.__bc && this.mouseCoord != null) {
+         if(FriendSystem.jmodCheck() && this.showCoord && this.mouseCoord != null) {
             this.font.draw("Coord: " + this.mouseCoord, Rasterizer2D.Rasterizer2D_xClipStart + 10, Rasterizer2D.Rasterizer2D_yClipStart + 20, 16776960, -1);
          }
 
