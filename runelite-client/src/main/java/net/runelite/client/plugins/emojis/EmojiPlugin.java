@@ -43,6 +43,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Emojis",
@@ -128,7 +129,7 @@ public class EmojiPlugin extends Plugin
 				return;
 		}
 
-		final String message = chatMessage.getMessage();
+		final String message = chatMessage.getMessageNode().getValue();
 		final String updatedMessage = updateMessage(message);
 
 		if (updatedMessage == null)
@@ -169,7 +170,7 @@ public class EmojiPlugin extends Plugin
 		boolean editedMessage = false;
 		for (int i = 0; i < messageWords.length; i++)
 		{
-			final Emoji emoji = Emoji.getEmoji(messageWords[i]);
+			final Emoji emoji = Emoji.getEmoji(Text.removeTags(messageWords[i]));
 
 			if (emoji == null)
 			{
@@ -178,7 +179,7 @@ public class EmojiPlugin extends Plugin
 
 			final int emojiId = modIconsStart + emoji.ordinal();
 
-			messageWords[i] = "<img=" + emojiId + ">";
+			messageWords[i] = messageWords[i].replace(emoji.getTrigger(), "<img=" + emojiId + ">");
 			editedMessage = true;
 		}
 

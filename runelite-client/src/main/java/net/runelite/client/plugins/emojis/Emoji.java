@@ -27,6 +27,7 @@ package net.runelite.client.plugins.emojis;
 import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
 import java.util.Map;
+import lombok.Getter;
 import net.runelite.client.util.ImageUtil;
 
 enum Emoji
@@ -83,6 +84,7 @@ enum Emoji
 
 	private static final Map<String, Emoji> emojiMap;
 
+	@Getter
 	private final String trigger;
 
 	static
