@@ -149,8 +149,8 @@ public class WorldMap {
    @ObfuscatedGetter(
       intValue = -298919797
    )
-   @Export("worldMapDisplaY")
-   int worldMapDisplaY;
+   @Export("worldMapDisplayY")
+   int worldMapDisplayY;
    @ObfuscatedName("ac")
    @ObfuscatedGetter(
       intValue = -1653084915
@@ -311,7 +311,7 @@ public class WorldMap {
       this.worldMapDisplayWidth = -1;
       this.worldMapDisplayHeight = -1;
       this.worldMapDisplayX = -1;
-      this.worldMapDisplaY = -1;
+      this.worldMapDisplayY = -1;
       this.__ac = 3;
       this.__ay = 50;
       this.perpetualFlash0 = false;
@@ -473,7 +473,7 @@ public class WorldMap {
    void __o_520(int var1, int var2, boolean var3, long var4) {
       if(this.currentMapArea0 != null) {
          int var6 = (int)((float)this.worldMapX + ((float)(var1 - this.worldMapDisplayX) - (float)this.__ap_537() * this.zoom / 2.0F) / this.zoom);
-         int var7 = (int)((float)this.worldMapY - ((float)(var2 - this.worldMapDisplaY) - (float)this.__as_538() * this.zoom / 2.0F) / this.zoom);
+         int var7 = (int)((float)this.worldMapY - ((float)(var2 - this.worldMapDisplayY) - (float)this.__as_538() * this.zoom / 2.0F) / this.zoom);
          this.mouseCoord = this.currentMapArea0.coord(var6 + this.currentMapArea0.minX() * 64, var7 + this.currentMapArea0.minY() * 64);
          if(this.mouseCoord != null && var3) {
             int var9;
@@ -808,7 +808,7 @@ public class WorldMap {
          this.worldMapDisplayWidth = var8;
          this.worldMapDisplayHeight = var9;
          this.worldMapDisplayX = var1;
-         this.worldMapDisplaY = var2;
+         this.worldMapDisplayY = var2;
          Rasterizer2D.Rasterizer2D_setClipArray(var6);
       }
    }
