@@ -48,7 +48,8 @@ public interface IdleNotifierConfig extends Config
 			description = "Plays a custom sound accompanying Idle Animation notifications",
 			position = 2
 	)
-	default boolean animationIdleSound() {
+	default boolean animationIdleSound() 
+	{
 		return false;
 	}
 
@@ -69,7 +70,8 @@ public interface IdleNotifierConfig extends Config
 			description = "Plays a custom sound accompanying Idle Interaction notifications",
 			position = 4
 	)
-	default boolean interactionIdleSound() {
+	default boolean interactionIdleSound() 
+	{
 		return false;
 	}
 
@@ -90,7 +92,8 @@ public interface IdleNotifierConfig extends Config
 			description = "Plays a custom sound whenever you leave combat",
 			position = 6
 	)
-	default boolean outOfCombatSound() {
+	default boolean outOfCombatSound() 
+	{
 		return false;
 	}
 
@@ -144,7 +147,8 @@ public interface IdleNotifierConfig extends Config
 			description = "Will play a sound for every Low Health notification sent",
 			position = 12
 	)
-	default boolean getPlayHealthSound() {
+	default boolean getPlayHealthSound() 
+	{
 		return false;
 	}
 
@@ -165,7 +169,8 @@ public interface IdleNotifierConfig extends Config
 			description = "Will play a sound for every Low Prayer notification sent",
 			position = 13
 	)
-	default boolean getPlayPrayerSound() {
+	default boolean getPlayPrayerSound() 
+	{
 		return false;
 	}
 
@@ -197,7 +202,8 @@ public interface IdleNotifierConfig extends Config
 			description = "Plays a custom sound accompanying Special Attack energy notifications",
 			position = 16
 	)
-	default boolean getSpecSound() {
+	default boolean getSpecSound() 
+	{
 		return false;
 	}
 
@@ -207,7 +213,8 @@ public interface IdleNotifierConfig extends Config
 			description = "Will repeat notifications for any value over the special energy threshold",
 			position = 17
 	)
-	default boolean getOverSpecEnergy() {
+	default boolean getOverSpecEnergy() 
+	{
 		return false;
 	}
 
