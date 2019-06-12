@@ -28,7 +28,7 @@ public class SoundManager
 		this.runeliteConfig = runeLiteConfig;
 	}
 
-	public void playSound(final Sound sound) throws UnsupportedAudioFileException, IOException, LineUnavailableException
+	public void playSound(final Sound sound)
 	{
 		new Thread(new Runnable()
 		{

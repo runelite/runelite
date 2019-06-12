@@ -44,4 +44,14 @@ public interface ZulrahConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "sounds",
+			name = "Sounds Enabled",
+			description = "Configures whether client sounds are enabled for zulrah"
+	)
+	default boolean sounds()
+	{
+		return true;
+	}
 }

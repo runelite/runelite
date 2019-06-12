@@ -38,6 +38,8 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.Sound;
+import net.runelite.client.game.SoundManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -50,7 +52,9 @@ import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternA;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternB;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternC;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
+import net.runelite.client.plugins.zulrah.phase.StandLocation;
 import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
+import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -78,6 +82,9 @@ public class ZulrahPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private SoundManager soundManager;
 
 	@Inject
 	private ZulrahCurrentPhaseOverlay currentPhaseOverlay;
@@ -108,6 +115,8 @@ public class ZulrahPlugin extends Plugin
 
 	private ZulrahInstance instance;
 
+	private ZulrahPhase phase;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -126,6 +135,7 @@ public class ZulrahPlugin extends Plugin
 		overlayManager.remove(zulrahOverlay);
 		zulrah = null;
 		instance = null;
+		phase = null;
 	}
 
 	@Subscribe
@@ -153,6 +163,22 @@ public class ZulrahPlugin extends Plugin
 		}
 
 		ZulrahPhase currentPhase = ZulrahPhase.valueOf(zulrah, instance.getStartLocation());
+		ZulrahType type = phase.getType();
+
+
+		if (config.sounds())
+		{
+			if (type == ZulrahType.RANGE)
+			{
+				soundManager.playSound(Sound.PRAY_RANGED);
+			}
+			if (type == ZulrahType.MAGIC)
+			{
+				soundManager.playSound(Sound.PRAY_MAGIC);
+			}
+		}
+
+
 		if (instance.getPhase() == null)
 		{
 			instance.setPhase(currentPhase);

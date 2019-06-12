@@ -69,12 +69,12 @@ public class ZulrahPhase
 	public String toString()
 	{
 		return "ZulrahPhase{" +
-			"zulrahLocation=" + zulrahLocation +
-			", type=" + type +
-			", jad=" + jad +
-			", standLocation=" + standLocation +
-			", prayer=" + prayer +
-			'}';
+				"zulrahLocation=" + zulrahLocation +
+				", type=" + type +
+				", jad=" + jad +
+				", standLocation=" + standLocation +
+				", prayer=" + prayer +
+				'}';
 	}
 
 	// world location
