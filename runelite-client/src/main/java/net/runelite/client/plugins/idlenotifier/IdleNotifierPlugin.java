@@ -27,15 +27,15 @@ package net.runelite.client.plugins.idlenotifier;
 
 import com.google.inject.Provides;
 import java.awt.TrayIcon;
-import java.io.IOException;
+//import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import javax.inject.Inject;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+//import javax.sound.sampled.LineUnavailableException;
+//import javax.sound.sampled.UnsupportedAudioFileException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
