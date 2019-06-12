@@ -28,8 +28,8 @@ package net.runelite.client.plugins.zulrah;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+//import javax.sound.sampled.LineUnavailableException;
+//import javax.sound.sampled.UnsupportedAudioFileException;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +59,7 @@ import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
 import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import java.io.IOException;
+//import java.io.IOException;
 
 @PluginDescriptor(
 	name = "Zulrah Helper",
