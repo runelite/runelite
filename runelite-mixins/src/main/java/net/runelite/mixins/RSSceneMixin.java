@@ -286,6 +286,7 @@ public abstract class RSSceneMixin implements RSScene
 
 						if (client.getTileUpdateCount() == 0)
 						{
+							client.setCheckClick(false);
 							client.getCallbacks().drawScene();
 							return;
 						}
@@ -352,6 +353,7 @@ public abstract class RSSceneMixin implements RSScene
 
 						if (client.getTileUpdateCount() == 0)
 						{
+							client.setCheckClick(false);
 							client.getCallbacks().drawScene();
 							return;
 						}
@@ -360,6 +362,7 @@ public abstract class RSSceneMixin implements RSScene
 			}
 		}
 
+		client.setCheckClick(false);
 		client.getCallbacks().drawScene();
 	}
 
