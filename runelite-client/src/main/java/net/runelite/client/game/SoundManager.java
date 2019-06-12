@@ -2,20 +2,17 @@ package net.runelite.client.game;
 
 import com.google.inject.Inject;
 import java.io.IOException;
-import java.net.URL;
 import javax.inject.Singleton;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.BooleanControl;
-import javax.sound.sampled.Control;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.game.Sound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +23,8 @@ public class SoundManager
 	private final RuneLiteConfig runeliteConfig;
 
 	@Inject
-	private SoundManager(RuneLiteConfig runeLiteConfig) {
+	private SoundManager(RuneLiteConfig runeLiteConfig)
+	{
 		this.runeliteConfig = runeLiteConfig;
 	}
 
