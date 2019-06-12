@@ -330,14 +330,16 @@ public class LootTrackerPlugin extends Plugin
 							lootRecords.addAll(RuneLiteAPI.GSON.fromJson(new FileReader(LOOT_RECORDS_FILE),
 								new TypeToken<ArrayList<LootRecord>>()
 								{ }.getType()));
-
 						}
-						catch (IOException e)
+						catch (IOException | NullPointerException e)
 						{
-							e.printStackTrace();
+							log.info("Couldn't load any locally stored loots.");
+						}
+						if (lootRecords.size() > 0)
+						{
+							log.info("Loaded {} locally stored loot records", lootRecords.size());
 						}
 					}
-
 
 					Collection<LootRecord> finalLootRecords = lootRecords;
 					clientThread.invokeLater(() ->
