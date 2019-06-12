@@ -428,11 +428,11 @@ public class PvpToolsPlugin extends Plugin
 				{
 					swap(pOptionToReplace);
 				}
-				if (config.attackOptionsClan() && player.isClanMember())
+				else if (config.attackOptionsClan() && player.isClanMember())
 				{
 					swap(pOptionToReplace);
 				}
-				if (config.levelRangeAttackOptions() && !PvPUtil.isAttackable(client, player))
+				else if (config.levelRangeAttackOptions() && !PvPUtil.isAttackable(client, player))
 				{
 					swap(pOptionToReplace);
 				}
