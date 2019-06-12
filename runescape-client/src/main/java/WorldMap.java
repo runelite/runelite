@@ -857,7 +857,7 @@ public class WorldMap {
             var14 = var2 - this.worldMapManager.__z * (var7 - (var12 - this.__bu));
          }
 
-         Rasterizer2D.Rasterizer2D_moreAlpha(var1, var2, var3, var4, 0, 128);
+         Rasterizer2D.Rasterizer2D_fillRectangleAlpha(var1, var2, var3, var4, 0, 128);
          if(1.0F == var10) {
             this.sprite.__v_510(var13, var14, 192);
          } else {

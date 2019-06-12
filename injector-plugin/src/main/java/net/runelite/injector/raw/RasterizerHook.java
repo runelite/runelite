@@ -42,7 +42,7 @@ public class RasterizerHook
 	private static final String circle_alpha = "Rasterizer2D_drawCircleAlpha";
 	private static final String line_alpha = "Rasterizer2D_drawHorizontalLineAlpha";
 	private static final String line_alpha2 = "Rasterizer2D_drawVerticalLineAlpha";
-	private static final String more_alpha = "Rasterizer2D_moreAlpha";
+	private static final String fill_rect_alpha = "Rasterizer2D_fillRectangleAlpha";
 	private static final String r3d_vert = "Rasterizer3D_vertAlpha";
 	private static final String r3d_horiz = "Rasterizer3D_horizAlpha";
 	private static final String r3d_field = "Rasterizer3D_alpha";
@@ -94,7 +94,7 @@ public class RasterizerHook
 		runAlpha(circle_alpha, 2, 4);
 		runAlpha(line_alpha, 1, 4);
 		runAlpha(line_alpha2, 1, 4);
-		runAlpha(more_alpha, 1, 5);
+		runAlpha(fill_rect_alpha, 1, 5);
 		runAlpha(sprite_alpha1, 1, 9, 0);
 		runAlpha(sprite_alpha2, 1, 12, 0);
 	}

@@ -4762,9 +4762,9 @@ public final class Client extends GameShell implements Usernamed {
       if(gameDrawingMode == 3) {
          for(var1 = 0; var1 < rootWidgetCount; ++var1) {
             if(__client_oq[var1]) {
-               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff00ff, 128);
+               Rasterizer2D.Rasterizer2D_fillRectangleAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff00ff, 128);
             } else if(__client_ot[var1]) {
-               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff0000, 128);
+               Rasterizer2D.Rasterizer2D_fillRectangleAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff0000, 128);
             }
          }
       }

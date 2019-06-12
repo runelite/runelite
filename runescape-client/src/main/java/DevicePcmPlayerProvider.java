@@ -474,7 +474,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                  if(var14 == 0) {
                                     Rasterizer2D.Rasterizer2D_fillRectangle(var12, var13, var10.width, var10.height, var30);
                                  } else {
-                                    Rasterizer2D.Rasterizer2D_moreAlpha(var12, var13, var10.width, var10.height, var30, 256 - (var14 & 255));
+                                    Rasterizer2D.Rasterizer2D_fillRectangleAlpha(var12, var13, var10.width, var10.height, var30, 256 - (var14 & 255));
                                  }
                               }
                            } else if(var14 == 0) {
