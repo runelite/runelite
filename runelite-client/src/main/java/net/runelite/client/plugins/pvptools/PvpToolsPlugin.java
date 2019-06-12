@@ -110,7 +110,7 @@ public class PvpToolsPlugin extends Plugin
 	public static final HashSet<String> ATTACK_OPTIONS_KEYWORDS = new HashSet<>();
 		static
 		{
-			ATTACK_OPTIONS_KEYWORDS.add(CAST),
+			ATTACK_OPTIONS_KEYWORDS.add(CAST);
 			ATTACK_OPTIONS_KEYWORDS.add(ATTACK_OPTIONS_ATTACK);
 		}
 
