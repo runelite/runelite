@@ -198,7 +198,7 @@ final class UnitPriceComparator implements Comparator {
       if(Client.hintArrowType == 2) {
          WorldMapLabel.worldToScreen((Client.hintArrowX - class50.baseX << 7) + Client.hintArrowSubX, (Client.hintArrowY - GraphicsObject.baseY << 7) + Client.hintArrowSubY, Client.hintArrowHeight * 2);
          if(Client.viewportTempX > -1 && Client.cycle % 20 < 10) {
-            Player.headIconHintSprites[0].__a_505(var0 + Client.viewportTempX - 12, Client.viewportTempY + var1 - 28);
+            Player.headIconHintSprites[0].drawAt2(var0 + Client.viewportTempX - 12, Client.viewportTempY + var1 - 28);
          }
 
       }

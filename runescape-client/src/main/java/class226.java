@@ -95,7 +95,7 @@ public class class226 {
          Rasterizer3D.method2989(16, 16);
          Rasterizer3D.__et_w = false;
          if(var9.placeholderTemplate != -1) {
-            var20.__a_505(0, 0);
+            var20.drawAt2(0, 0);
          }
 
          int var16 = var9.zoom2d;
@@ -110,7 +110,7 @@ public class class226 {
          var19.calculateBoundsCylinder();
          var19.__c_234(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var19.height / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
          if(var9.notedId != -1) {
-            var20.__a_505(0, 0);
+            var20.drawAt2(0, 0);
          }
 
          if(var2 >= 1) {
@@ -127,7 +127,7 @@ public class class226 {
 
          Rasterizer2D.Rasterizer2D_replace(var8.pixels, 36, 32);
          if(var9.noteTemplate != -1) {
-            var20.__a_505(0, 0);
+            var20.drawAt2(0, 0);
          }
 
          if(var4 == 1 || var4 == 2 && var9.isStackable == 1) {

@@ -4694,11 +4694,11 @@ public final class Client extends GameShell implements Usernamed {
       Rasterizer2D.Rasterizer2D_resetClip();
       if(showMouseCross) {
          if(mouseCrossColor == 1) {
-            KeyHandler.crossSprites[mouseCrossState / 100].__a_505(mouseCrossX - 8, mouseCrossY - 8);
+            KeyHandler.crossSprites[mouseCrossState / 100].drawAt2(mouseCrossX - 8, mouseCrossY - 8);
          }
 
          if(mouseCrossColor == 2) {
-            KeyHandler.crossSprites[mouseCrossState / 100 + 4].__a_505(mouseCrossX - 8, mouseCrossY - 8);
+            KeyHandler.crossSprites[mouseCrossState / 100 + 4].drawAt2(mouseCrossX - 8, mouseCrossY - 8);
          }
       }
 

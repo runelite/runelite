@@ -811,7 +811,7 @@ public class WorldMapRegion {
    void __av_50(WorldMapElement var1, int var2, int var3, int var4, int var5) {
       Sprite var6 = var1.getSprite(false);
       if(var6 != null) {
-         var6.__a_505(var2 - var6.subWidth / 2, var3 - var6.subHeight / 2);
+         var6.drawAt2(var2 - var6.subWidth / 2, var3 - var6.subHeight / 2);
          if(var4 % var5 < var5 / 2) {
             Rasterizer2D.Rasterizer2D_drawCircleAlpha(var2, var3, 15, 16776960, 128);
             Rasterizer2D.Rasterizer2D_drawCircleAlpha(var2, var3, 7, 16777215, 256);
@@ -843,7 +843,7 @@ public class WorldMapRegion {
       if(var4 != null) {
          int var5 = this.method473(var4, var1.field3287);
          int var6 = this.method474(var4, var1.field3301);
-         var4.__a_505(var5 + var2, var3 + var6);
+         var4.drawAt2(var5 + var2, var3 + var6);
       }
 
    }

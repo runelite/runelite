@@ -271,8 +271,8 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("a")
-   @Export("__a_505")
-   public void __a_505(int var1, int var2) {
+   @Export("drawAt2")
+   public void drawAt2(int var1, int var2) {
       var1 += this.yOffset;
       var2 += this.xOffset;
       int var3 = var1 + var2 * Rasterizer2D.Rasterizer2D_width;
@@ -385,7 +385,7 @@ public final class Sprite extends Rasterizer2D {
    @Export("__t_507")
    public void __t_507(int var1, int var2, int var3, int var4) {
       if(var3 == 256) {
-         this.__a_505(var1, var2);
+         this.drawAt2(var1, var2);
       } else {
          var1 += this.yOffset;
          var2 += this.xOffset;
