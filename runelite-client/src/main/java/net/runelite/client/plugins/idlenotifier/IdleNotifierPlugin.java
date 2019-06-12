@@ -532,21 +532,37 @@ public class IdleNotifierPlugin extends Plugin
 			if (lastInteractWasCombat)
 			{
 				notifier.notify("[" + local.getName() + "] is now out of combat!");
+				if (config.outOfCombatSound())
+				{
+					soundManager.playSound(Sound.OUT_OF_COMBAT);
+				}
 			}
 			else
 			{
 				notifier.notify("[" + local.getName() + "] is now idle!");
+				if (config.interactionIdleSound())
+				{
+					soundManager.playSound(Sound.IDLE);
+				}
 			}
 		}
 
 		if (checkLowHitpoints())
 		{
 			notifier.notify("[" + local.getName() + "] has low hitpoints!");
+			if (config.getPlayHealthSound())
+			{
+				soundManager.playSound(Sound.LOW_HEATLH);
+			}
 		}
 
 		if (checkLowPrayer())
 		{
 			notifier.notify("[" + local.getName() + "] has low prayer!");
+			if (config.getPlayPrayerSound())
+			{
+				soundManager.playSound(Sound.LOW_PRAYER);
+			}
 		}
 
 		if (checkLowOxygen())
@@ -557,6 +573,10 @@ public class IdleNotifierPlugin extends Plugin
 		if (checkFullSpecEnergy())
 		{
 			notifier.notify("[" + local.getName() + "] has restored spec energy!");
+			if (config.getSpecSound())
+			{
+				soundManager.playSound(Sound.RESTORED_SPECIAL_ATTACK);
+			}
 		}
 	}
 
