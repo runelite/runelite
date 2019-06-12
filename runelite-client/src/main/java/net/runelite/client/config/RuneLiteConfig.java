@@ -283,4 +283,14 @@ public interface RuneLiteConfig extends Config
 	{
 		return 35;
 	}
+
+	@Range(max=100, min=0)
+	@ConfigItem(
+			keyName="volume",
+			name="Runelite Volume",
+			description="Sets the volume of custom Runelite sounds (not the client sounds)",
+			position=43
+	)
+	default int volume() { return 100; }
+
 }
