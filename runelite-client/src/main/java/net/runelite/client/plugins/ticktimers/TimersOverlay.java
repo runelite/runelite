@@ -172,7 +172,7 @@ public class TimersOverlay extends Overlay
 		}
 	}
 
-	private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize,int fontStyle, Color fontColor, Point canvasPoint)
+	private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)
 	{
 		graphics.setFont(new Font("Arial", fontStyle, fontSize));
 		if (canvasPoint != null)
