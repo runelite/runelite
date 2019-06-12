@@ -38,7 +38,7 @@ import org.apache.commons.text.WordUtils;
  */
 public class Text
 {
-	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
+	private static final Pattern TAG_REGEXP = Pattern.compile("<(?!gt|lt).*?>");
 	private static final Splitter COMMA_SPLITTER = Splitter
 		.on(",")
 		.omitEmptyStrings()
@@ -69,7 +69,7 @@ public class Text
 	}
 
 	/**
-	 * Removes all tags from the given string.
+	 * Removes all tags from the given string except for `gt` and `lt`, as these are encoded characters.
 	 *
 	 * @param str The string to remove tags from.
 	 * @return The given string with all tags removed from it.
