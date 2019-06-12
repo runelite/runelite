@@ -80,4 +80,25 @@ public interface LootTrackerConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "localPersistence",
+		name = "Local Record Persistence",
+		description = "Stores/syncs loot records locally in the JSON format. Note: records will not be saved locally" +
+			" if they are successfully saved online. "
+	)
+	default boolean localPersistence()
+	{
+		return true;
+	}
+	@ConfigItem(
+		keyName = "sortType",
+		name = "Sorting",
+		description = "The method for sorting Loot Tracker entries"
+	)
+	default LootRecordSortType sortType()
+	{
+		return LootRecordSortType.TIMESTAMP;
+	}
+
 }

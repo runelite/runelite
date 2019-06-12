@@ -120,7 +120,8 @@ class LootTrackerBox extends JPanel
 	private long getTotalKills()
 	{
 		return hideIgnoredItems
-			? records.stream().filter(r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored)).count()
+			? records.stream().filter(
+				r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored)).count()
 			: records.size();
 	}
 
@@ -229,7 +230,7 @@ class LootTrackerBox extends JPanel
 				}
 			}
 
-			if (quantity > 0)
+			if (quantity != 0)
 			{
 				int newQuantity = entry.getQuantity() + quantity;
 				long pricePerItem = entry.getPrice() == 0 ? 0 : (entry.getPrice() / entry.getQuantity());
@@ -263,7 +264,7 @@ class LootTrackerBox extends JPanel
 				imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 				imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-				AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1);
+				AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), Math.abs(item.getQuantity()), Math.abs(item.getQuantity()) > 1);
 
 				if (item.isIgnored())
 				{

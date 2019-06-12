@@ -26,8 +26,10 @@ package net.runelite.http.api.loottracker;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -36,7 +38,26 @@ import lombok.NoArgsConstructor;
 public class LootRecord
 {
 	private String eventId;
+	@Getter
+	private String username;
 	private LootRecordType type;
 	private Collection<GameItem> drops;
 	private Instant time;
+
+	/**
+	 * constructor for lootRecords retrieved by http api (doesn't store/retrieve username)
+	 * @param eventId - the eventID or the name/title of the LootRecord
+	 * @param type - The LootRecordType
+	 * @param gameItems - the list of items/quantities
+	 * @param time - the Instant that the Loot Record was received
+	 */
+	public LootRecord(String eventId, LootRecordType type, List<GameItem> gameItems, Instant time)
+	{
+		// Insert blank username
+		this.username = "";
+		this.eventId = eventId;
+		this.type = type;
+		this.drops = gameItems;
+		this.time = time;
+	}
 }
