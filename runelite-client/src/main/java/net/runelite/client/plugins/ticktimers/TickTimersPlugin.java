@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -141,19 +142,15 @@ public class TickTimersPlugin extends Plugin
 		{
 			case NpcID.SERGEANT_STRONGSTACK:
 				Strongstack.put(npc, new NPCContainer(npc));
-				log.info("StrongStack Detected");
 				break;
 			case NpcID.SERGEANT_STEELWILL:
 				Steelwill.put(npc, new NPCContainer(npc));
-				log.info("StellWill Detected");
 				break;
 			case NpcID.SERGEANT_GRIMSPIKE:
 				Grimspike.put(npc, new NPCContainer(npc));
-				log.info("GrimSpike Detected");
 				break;
 			case NpcID.GENERAL_GRAARDOR:
 			case NpcID.GENERAL_GRAARDOR_6494:
-				log.info("General Detected");
 				General.put(npc, new NPCContainer(npc));
 				break;
 		}
@@ -196,9 +193,9 @@ public class TickTimersPlugin extends Plugin
 			grimspike.setTicksUntilAttack(grimspike.getTicksUntilAttack() - 1);
 			switch (grimspike.getNpc().getAnimation())
 			{
-				case 6154:
-				case 6156:
-				case 7073:
+				case AnimationID.MINION_AUTO1:
+				case AnimationID.MINION_AUTO2:
+				case AnimationID.MINION_AUTO4:
 					if (grimspike.getTicksUntilAttack() < 1)
 					{
 						grimspike.setTicksUntilAttack(5);
@@ -212,8 +209,8 @@ public class TickTimersPlugin extends Plugin
 			strongstack.setTicksUntilAttack(strongstack.getTicksUntilAttack() - 1);
 			switch (strongstack.getNpc().getAnimation())
 			{
-				case 6154:
-				case 6156:
+				case AnimationID.MINION_AUTO1:
+				case AnimationID.MINION_AUTO2:
 					if (strongstack.getTicksUntilAttack() < 1)
 					{
 						strongstack.setTicksUntilAttack(5);
@@ -227,9 +224,9 @@ public class TickTimersPlugin extends Plugin
 			steelwill.setTicksUntilAttack(steelwill.getTicksUntilAttack() - 1);
 			switch (steelwill.getNpc().getAnimation())
 			{
-				case 6154:
-				case 6156:
-				case 7071:
+				case AnimationID.MINION_AUTO1:
+				case AnimationID.MINION_AUTO2:
+				case AnimationID.MINION_AUTO3:
 					if (steelwill.getTicksUntilAttack() < 1)
 					{
 						steelwill.setTicksUntilAttack(5);
@@ -243,9 +240,9 @@ public class TickTimersPlugin extends Plugin
 			boss.setTicksUntilAttack(boss.getTicksUntilAttack() - 1);
 			switch (boss.getNpc().getAnimation())
 			{
-				case 7018:
-				case 7020:
-				case 7021:
+				case AnimationID.GENERAL_AUTO1:
+				case AnimationID.GENERAL_AUTO2:
+				case AnimationID.GENERAL_AUTO3:
 					if (boss.getTicksUntilAttack() < 1)
 					{
 						boss.setTicksUntilAttack(6);

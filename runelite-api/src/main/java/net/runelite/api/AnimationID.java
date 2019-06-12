@@ -268,4 +268,13 @@ public final class AnimationID
 	public static final int JALTOK_JAD_RANGE_ATTACK = 7593;
 	public static final int TZKAL_ZUK = 7566;
 	public static final int JAL_MEJJAK = 2858;
+
+	//General Graardor
+	public static final int MINION_AUTO1 = 6154;
+	public static final int MINION_AUTO2 = 6156;
+	public static final int MINION_AUTO3 = 7071;
+	public static final int MINION_AUTO4 = 7073;
+	public static final int GENERAL_AUTO1 = 7018;
+	public static final int GENERAL_AUTO2 = 7020;
+	public static final int GENERAL_AUTO3 = 7021;
 }
