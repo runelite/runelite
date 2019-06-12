@@ -21,7 +21,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "countPlayers",
 		name = "Count Players",
 		description = "When in PvP zones, counts the attackable players in and not in player's CC",
-		position = 3
+		position = 0
 	)
 	default boolean countPlayers()
 	{
@@ -32,7 +32,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "countOverHeads",
 		name = "Count Enemy Overheads",
 		description = "Counts the number of each protection prayer attackable targets not in your CC are currently using",
-		position = 4
+		position = 1
 	)
 	default boolean countOverHeads()
 	{
@@ -43,7 +43,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "fallInHelper",
 		name = "Fall In Helper",
 		description = "Hides all non-friendly player entities other than the one that is attacking you.",
-		position = 5
+		position = 2
 	)
 	default boolean fallInHelper()
 	{
@@ -54,7 +54,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "hotkey",
 		name = "Fall In Hotkey",
 		description = "Turns the fall in helper on or off when you press this hotkey",
-		position = 6
+		position = 3
 	)
 	default Keybind hotkey()
 	{
@@ -65,7 +65,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "renderSelfHotkey",
 		name = "Render Self Hotkey",
 		description = "Toggles renderself when you press the hotkey",
-		position = 7
+		position = 4
 	)
 	default Keybind renderSelf()
 	{
@@ -73,10 +73,76 @@ public interface PvpToolsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideAttack",
+		name = "Hide attack",
+		description = "Hides the attack option for clanmates, friends, or both",
+		position = 5,
+		group = "Right-Click Attack Options"
+	)
+	default boolean hideAttack()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideAttackMode",
+		name = "Mode",
+		description = "",
+		position = 6,
+		group = "Right-Click Attack Options",
+		hidden = true,
+		unhide = "hideAttack"
+	)
+	default AttackMode hideAttackMode()
+	{
+		return AttackMode.FRIENDS;
+	}
+
+	@ConfigItem(
+		keyName = "hideCast",
+		name = "Hide cast",
+		description = "Hides the cast option for clanmates, friends, or both",
+		position = 7,
+		group = "Right-Click Attack Options"
+	)
+	default boolean hideCast()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideCastMode",
+		name = "Mode",
+		description = "",
+		position = 8,
+		group = "Right-Click Attack Options",
+		hidden = true,
+		unhide = "hideCast"
+	)
+	default AttackMode hideCastMode()
+	{
+		return AttackMode.FRIENDS;
+	}
+
+	@ConfigItem(
+		keyName = "hideCastIgnored",
+		name = "Ignored spells",
+		description = "Spells that should not be hidden from being cast, separated by a comma",
+		position = 9,
+		group = "Right-Click Attack Options",
+		hidden = true,
+		unhide = "hideCast"
+	)
+	default String hideCastIgnored()
+	{
+		return "cure other, energy transfer, heal other, vengeance other";
+	}
+
+	@ConfigItem(
 		keyName = "attackOptionsClan",
 		name = "Move CC Attack Option",
 		description = "Moves the attack option for people in the same CC",
-		position = 8,
+		position = 10,
 		group = "Right-Click Attack Options"
 	)
 	default boolean attackOptionsClan()
@@ -88,7 +154,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "attackOptionsFriend",
 		name = "Move Friend Attack Options",
 		description = "Moves the attack option for people on your friends list",
-		position = 9,
+		position = 11,
 		group = "Right-Click Attack Options"
 	)
 	default boolean attackOptionsFriend()
@@ -100,7 +166,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "levelRangeAttackOptions",
 		name = "Moves Other Attack Options",
 		description = "Moves the attack option for people that are outside your level range",
-		position = 10,
+		position = 12,
 		group = "Right-Click Attack Options"
 	)
 	default boolean levelRangeAttackOptions()
@@ -112,7 +178,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "riskCalculator",
 		name = "Risk Calculator",
 		description = "Enables a panel in the PvP Tools Panel that shows the players current risk",
-		position = 14
+		position = 13
 	)
 	default boolean riskCalculatorEnabled()
 	{
@@ -123,7 +189,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "missingPlayers",
 		name = "Missing CC Players",
 		description = "Adds a button to the PvP Tools panel that opens a window showing which CC members are not at the current players location",
-		position = 15
+		position = 14
 	)
 	default boolean missingPlayersEnabled()
 	{
@@ -134,7 +200,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "currentPlayers",
 		name = "Current CC Players",
 		description = "Adds a button to the PvP Tools panel that opens a window showing which CC members currently at the players location",
-		position = 16
+		position = 15
 	)
 	default boolean currentPlayersEnabled()
 	{

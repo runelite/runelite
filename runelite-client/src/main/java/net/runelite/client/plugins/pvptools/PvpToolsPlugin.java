@@ -13,6 +13,7 @@ import com.google.inject.Provides;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -40,6 +41,7 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.client.config.ConfigManager;
@@ -61,6 +63,7 @@ import net.runelite.client.util.PvPUtil;
 import static net.runelite.client.util.StackFormatter.quantityToRSDecimalStack;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "PvP Tools",
@@ -179,6 +182,8 @@ public class PvpToolsPlugin extends Plugin
 
 	private int[] overheadCount = new int[]{0, 0, 0};
 
+	private List ignoredSpells = new ArrayList();
+
 	private List<String> getMissingMembers()
 	{
 		CopyOnWriteArrayList<Player> ccMembers = ClanChatPlugin.getClanMembers();
@@ -263,6 +268,8 @@ public class PvpToolsPlugin extends Plugin
 		{
 			panel.currentPlayers.setVisible(true);
 		}
+
+		ignoredSpells = Arrays.asList(config.hideCastIgnored().toLowerCase().split("\\s*,\\s*"));
 	}
 
 	@Override
@@ -322,6 +329,9 @@ public class PvpToolsPlugin extends Plugin
 					{
 						panel.currentPlayers.setVisible(true);
 					}
+					break;
+				case "hideCastIgnored":
+					ignoredSpells = Arrays.asList(config.hideCastIgnored().toLowerCase().split("\\s*,\\s*"));
 					break;
 				default:
 					break;
@@ -418,16 +428,66 @@ public class PvpToolsPlugin extends Plugin
 				{
 					swap(pOptionToReplace);
 				}
-				if (config.attackOptionsClan() && player.isClanMember())
+				else if (config.attackOptionsClan() && player.isClanMember())
 				{
 					swap(pOptionToReplace);
 				}
-				if (config.levelRangeAttackOptions() && !PvPUtil.isAttackable(client, player))
+				else if (config.levelRangeAttackOptions() && !PvPUtil.isAttackable(client, player))
 				{
 					swap(pOptionToReplace);
 				}
 			}
 		}
+	}
+
+	@Subscribe
+	public void onMenuOpened(MenuOpened event)
+	{
+		Player localPlayer = client.getLocalPlayer();
+
+		if (localPlayer == null)
+		{
+			return;
+		}
+
+		List<MenuEntry> menu = new ArrayList<>();
+
+		for (MenuEntry entry : event.getMenuEntries())
+		{
+			String option = Text.removeTags(entry.getOption()).toLowerCase();
+			String target = Text.removeTags(entry.getTarget()).toLowerCase();
+
+			int identifier = entry.getIdentifier();
+
+			Player[] players = client.getCachedPlayers();
+			Player player = null;
+
+			if (identifier >= 0 && identifier < players.length)
+			{
+				player = players[identifier];
+			}
+
+			if (player == null)
+			{
+				menu.add(entry);
+				continue;
+			}
+
+			if (option.contains("attack") && config.hideAttack() && shouldHide(config.hideAttackMode(), player))
+			{
+				continue;
+			}
+
+			else if (option.contains("cast") && config.hideCast() && shouldHide(config.hideCastMode(), player)
+					&& !ignoredSpells.contains(StringUtils.substringBefore(target, " ->")))
+			{
+				continue;
+			}
+
+			menu.add(entry);
+		}
+
+		client.setMenuEntries(menu.toArray(new MenuEntry[0]));
 	}
 
 	@Subscribe
@@ -668,6 +728,39 @@ public class PvpToolsPlugin extends Plugin
 			indexLocation++;
 		}
 		return null;
+	}
+
+	/**
+	 * Given an AttackMode, checks whether or not a player should be hidden.
+	 * @param mode The {@link AttackMode} the player should be checked against.
+	 * @param player The player that should be checked.
+	 * @return True if the player should be hidden, false otherwise.
+	 */
+	private boolean shouldHide(AttackMode mode, Player player)
+	{
+		switch (mode)
+		{
+			case CLAN:
+				if (player.isClanMember())
+				{
+					return true;
+				}
+				break;
+			case FRIENDS:
+				if (player.isFriend())
+				{
+					return true;
+				}
+				break;
+			case BOTH:
+				if (player.isClanMember() || player.isFriend())
+				{
+					return true;
+				}
+				break;
+		}
+
+		return false;
 	}
 
 }
