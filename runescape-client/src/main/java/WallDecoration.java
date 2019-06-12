@@ -35,8 +35,8 @@ public final class WallDecoration {
    @ObfuscatedGetter(
       intValue = -303827911
    )
-   @Export("int7")
-   int int7;
+   @Export("orientation2")
+   int orientation2;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1927462659

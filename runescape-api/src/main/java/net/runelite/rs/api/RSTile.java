@@ -57,8 +57,8 @@ public interface RSTile extends Tile
 	@Import("minPlane")
 	int getPhysicalLevel();
 
-	//@Import("flags")
-	//int getFlags(); ---- unused, think it's gameobjectedgemask
+	@Import("gameObjectsEdgeMask")
+	int getFlags();
 
 	@Import("linkedBelowTile")
 	@Override

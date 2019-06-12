@@ -106,7 +106,7 @@ public class NetFileRequest extends DualNode {
             if(var7 > 2500) {
                var4.__ac_512(var10 + var5.width / 2 - var4.width / 2, var5.height / 2 - var11 - var4.height / 2, var0, var1, var5.width, var5.height, var5.xStarts, var5.xWidths);
             } else {
-               var4.__a_505(var0 + var10 + var5.width / 2 - var4.width / 2, var5.height / 2 + var1 - var11 - var4.height / 2);
+               var4.drawAt2(var0 + var10 + var5.width / 2 - var4.width / 2, var5.height / 2 + var1 - var11 - var4.height / 2);
             }
 
          }

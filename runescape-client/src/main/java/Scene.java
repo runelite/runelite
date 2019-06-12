@@ -466,7 +466,7 @@ public class Scene {
          var14.entity1 = var5;
          var14.entity2 = var6;
          var14.orientation = var7;
-         var14.int7 = var8;
+         var14.orientation2 = var8;
          var14.xOffset = var9;
          var14.yOffset = var10;
 
@@ -1467,7 +1467,7 @@ public class Scene {
                                        var14 = var13.x - Scene_cameraX;
                                        var15 = var13.tileHeight - Scene_cameraY;
                                        var16 = var13.y - Scene_cameraZ;
-                                       var17 = var13.int7;
+                                       var17 = var13.orientation2;
                                        if(var17 != 1 && var17 != 2) {
                                           var18 = var14;
                                        } else {
@@ -1737,7 +1737,7 @@ public class Scene {
                   var11 = var29.x - Scene_cameraX;
                   var25 = var29.tileHeight - Scene_cameraY;
                   var24 = var29.y - Scene_cameraZ;
-                  var14 = var29.int7;
+                  var14 = var29.orientation2;
                   if(var14 != 1 && var14 != 2) {
                      var15 = var11;
                   } else {

@@ -367,7 +367,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                     if(var10.inventorySprites != null && var30 < 20) {
                                        Sprite var42 = var10.getInventorySprite(var30);
                                        if(var42 != null) {
-                                          var42.__a_505(var22, var23);
+                                          var42.drawAt2(var22, var23);
                                        } else if(Widget.__ho_j) {
                                           class22.method295(var10);
                                        }
@@ -438,7 +438,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                           } else if(var10 == BoundaryObject.__ej_jv && var30 == Client.__client_jz) {
                                              var27.__h_508(var22, var23, 128);
                                           } else {
-                                             var27.__a_505(var22, var23);
+                                             var27.drawAt2(var22, var23);
                                           }
                                        } else {
                                           class22.method295(var10);
@@ -474,7 +474,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                  if(var14 == 0) {
                                     Rasterizer2D.Rasterizer2D_fillRectangle(var12, var13, var10.width, var10.height, var30);
                                  } else {
-                                    Rasterizer2D.Rasterizer2D_moreAlpha(var12, var13, var10.width, var10.height, var30, 256 - (var14 & 255));
+                                    Rasterizer2D.Rasterizer2D_fillRectangleAlpha(var12, var13, var10.width, var10.height, var30, 256 - (var14 & 255));
                                  }
                               }
                            } else if(var14 == 0) {
@@ -536,7 +536,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                               if(!var10.isIf3) {
                                  var37 = var10.getSprite(class238.runCs1(var10));
                                  if(var37 != null) {
-                                    var37.__a_505(var12, var13);
+                                    var37.drawAt2(var12, var13);
                                  } else if(Widget.__ho_j) {
                                     class22.method295(var10);
                                  }
@@ -561,7 +561,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                        } else if(var14 != 0) {
                                           var37.__c_509(var12, var13, var10.width, var10.height, 256 - (var14 & 255));
                                        } else if(var20 == var10.width && var21 == var10.height) {
-                                          var37.__a_505(var12, var13);
+                                          var37.drawAt2(var12, var13);
                                        } else {
                                           var37.__j_506(var12, var13, var10.width, var10.height);
                                        }
@@ -577,7 +577,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                              } else if(var14 != 0) {
                                                 var37.__h_508(var12 + var20 * var24, var13 + var21 * var25, 256 - (var14 & 255));
                                              } else {
-                                                var37.__a_505(var12 + var20 * var24, var13 + var25 * var21);
+                                                var37.drawAt2(var12 + var20 * var24, var13 + var25 * var21);
                                              }
                                           }
                                        }

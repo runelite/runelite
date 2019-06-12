@@ -266,9 +266,9 @@ public class class39 extends class21 {
                         Rasterizer2D.Rasterizer2D_expandClip(var22, var23, var22 + var93, var23 + var21);
                         var14.__h_508(var22, var23, var17);
                      } else {
-                        var76.__a_505(var22, var23);
+                        var76.drawAt2(var22, var23);
                         Rasterizer2D.Rasterizer2D_expandClip(var22, var23, var93 + var22, var21 + var23);
-                        var14.__a_505(var22, var23);
+                        var14.drawAt2(var22, var23);
                      }
 
                      Rasterizer2D.Rasterizer2D_setClip(var2, var3, var2 + var4, var3 + var5);
@@ -304,12 +304,12 @@ public class class39 extends class21 {
                if(Client.viewportTempX > -1) {
                   if(var10.headIconPk != -1) {
                      var87 += 25;
-                     class15.headIconPkSprites[var10.headIconPk].__a_505(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - var87);
+                     class15.headIconPkSprites[var10.headIconPk].drawAt2(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - var87);
                   }
 
                   if(var10.headIconPrayer != -1) {
                      var87 += 25;
-                     ClientPreferences.headIconPrayerSprites[var10.headIconPrayer].__a_505(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - var87);
+                     ClientPreferences.headIconPrayerSprites[var10.headIconPrayer].drawAt2(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - var87);
                   }
                }
             }
@@ -318,7 +318,7 @@ public class class39 extends class21 {
                DevicePcmPlayerProvider.method840(var0, var0.defaultHeight + 15);
                if(Client.viewportTempX > -1) {
                   var87 += Player.headIconHintSprites[1].subHeight;
-                  Player.headIconHintSprites[1].__a_505(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - var87);
+                  Player.headIconHintSprites[1].drawAt2(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - var87);
                }
             }
          } else {
@@ -330,14 +330,14 @@ public class class39 extends class21 {
             if(var90.headIconPrayer >= 0 && var90.headIconPrayer < ClientPreferences.headIconPrayerSprites.length) {
                DevicePcmPlayerProvider.method840(var0, var0.defaultHeight + 15);
                if(Client.viewportTempX > -1) {
-                  ClientPreferences.headIconPrayerSprites[var90.headIconPrayer].__a_505(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - 30);
+                  ClientPreferences.headIconPrayerSprites[var90.headIconPrayer].drawAt2(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - 30);
                }
             }
 
             if(Client.hintArrowType == 1 && Client.npcIndices[var1 - var75] == Client.hintArrowNpcIndex && Client.cycle % 20 < 10) {
                DevicePcmPlayerProvider.method840(var0, var0.defaultHeight + 15);
                if(Client.viewportTempX > -1) {
-                  Player.headIconHintSprites[0].__a_505(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - 28);
+                  Player.headIconHintSprites[0].drawAt2(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - 28);
                }
             }
          }
@@ -714,41 +714,41 @@ public class class39 extends class21 {
                         }
                      } else {
                         if(var82 != null) {
-                           var82.__a_505(var52 + var65 - var26, var66);
+                           var82.drawAt2(var52 + var65 - var26, var66);
                         }
 
                         if(var84 != null) {
-                           var84.__a_505(var65 + var53 - var28, var66);
+                           var84.drawAt2(var65 + var53 - var28, var66);
                         }
 
                         if(var83 != null) {
                            for(var74 = 0; var74 < var49; ++var74) {
-                              var83.__a_505(var23 * var74 + (var54 + var65 - var27), var66);
+                              var83.drawAt2(var23 * var74 + (var54 + var65 - var27), var66);
                            }
                         }
 
                         if(var85 != null) {
-                           var85.__a_505(var56 + var65 - var29, var66);
+                           var85.drawAt2(var56 + var65 - var29, var66);
                         }
 
                         var86.draw(var45, var55 + var65, var69, var95.__n | -16777216, 0);
                         if(var81 != null) {
                            if(var30 != null) {
-                              var30.__a_505(var65 + var57 - var38, var66);
+                              var30.drawAt2(var65 + var57 - var38, var66);
                            }
 
                            if(var32 != null) {
-                              var32.__a_505(var58 + var65 - var40, var66);
+                              var32.drawAt2(var58 + var65 - var40, var66);
                            }
 
                            if(var31 != null) {
                               for(var74 = 0; var74 < var50; ++var74) {
-                                 var31.__a_505(var74 * var35 + (var65 + var59 - var39), var66);
+                                 var31.drawAt2(var74 * var35 + (var65 + var59 - var39), var66);
                               }
                            }
 
                            if(var33 != null) {
-                              var33.__a_505(var60 + var65 - var41, var66);
+                              var33.drawAt2(var60 + var65 - var41, var66);
                            }
 
                            var44.draw(var46, var61 + var65, var72, var81.__n | -16777216, 0);

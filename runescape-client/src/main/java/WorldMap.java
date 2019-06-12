@@ -131,26 +131,26 @@ public class WorldMap {
    @ObfuscatedGetter(
       intValue = -1469654441
    )
-   @Export("__aq")
-   int __aq;
+   @Export("worldMapDisplayWidth")
+   int worldMapDisplayWidth;
    @ObfuscatedName("aj")
    @ObfuscatedGetter(
       intValue = -1140942239
    )
-   @Export("__aj")
-   int __aj;
+   @Export("worldMapDisplayHeight")
+   int worldMapDisplayHeight;
    @ObfuscatedName("av")
    @ObfuscatedGetter(
       intValue = -1301477687
    )
-   @Export("__av")
-   int __av;
+   @Export("worldMapDisplayX")
+   int worldMapDisplayX;
    @ObfuscatedName("ar")
    @ObfuscatedGetter(
       intValue = -298919797
    )
-   @Export("__ar")
-   int __ar;
+   @Export("worldMapDisplayY")
+   int worldMapDisplayY;
    @ObfuscatedName("ac")
    @ObfuscatedGetter(
       intValue = -1653084915
@@ -308,10 +308,10 @@ public class WorldMap {
    public WorldMap() {
       this.worldMapTargetX = -1;
       this.worldMapTargetY = -1;
-      this.__aq = -1;
-      this.__aj = -1;
-      this.__av = -1;
-      this.__ar = -1;
+      this.worldMapDisplayWidth = -1;
+      this.worldMapDisplayHeight = -1;
+      this.worldMapDisplayX = -1;
+      this.worldMapDisplayY = -1;
       this.__ac = 3;
       this.__ay = 50;
       this.perpetualFlash0 = false;
@@ -472,8 +472,8 @@ public class WorldMap {
    @Export("__o_520")
    void __o_520(int var1, int var2, boolean var3, long var4) {
       if(this.currentMapArea0 != null) {
-         int var6 = (int)((float)this.worldMapX + ((float)(var1 - this.__av) - (float)this.__ap_537() * this.zoom / 2.0F) / this.zoom);
-         int var7 = (int)((float)this.worldMapY - ((float)(var2 - this.__ar) - (float)this.__as_538() * this.zoom / 2.0F) / this.zoom);
+         int var6 = (int)((float)this.worldMapX + ((float)(var1 - this.worldMapDisplayX) - (float)this.__ap_537() * this.zoom / 2.0F) / this.zoom);
+         int var7 = (int)((float)this.worldMapY - ((float)(var2 - this.worldMapDisplayY) - (float)this.__as_538() * this.zoom / 2.0F) / this.zoom);
          this.mouseCoord = this.currentMapArea0.coord(var6 + this.currentMapArea0.minX() * 64, var7 + this.currentMapArea0.minY() * 64);
          if(this.mouseCoord != null && var3) {
             int var9;
@@ -805,10 +805,10 @@ public class WorldMap {
             this.font.draw("Coord: " + this.mouseCoord, Rasterizer2D.Rasterizer2D_xClipStart + 10, Rasterizer2D.Rasterizer2D_yClipStart + 20, 16776960, -1);
          }
 
-         this.__aq = var8;
-         this.__aj = var9;
-         this.__av = var1;
-         this.__ar = var2;
+         this.worldMapDisplayWidth = var8;
+         this.worldMapDisplayHeight = var9;
+         this.worldMapDisplayX = var1;
+         this.worldMapDisplayY = var2;
          Rasterizer2D.Rasterizer2D_setClipArray(var6);
       }
    }
@@ -857,7 +857,7 @@ public class WorldMap {
             var14 = var2 - this.worldMapManager.__z * (var7 - (var12 - this.__bu));
          }
 
-         Rasterizer2D.Rasterizer2D_moreAlpha(var1, var2, var3, var4, 0, 128);
+         Rasterizer2D.Rasterizer2D_fillRectangleAlpha(var1, var2, var3, var4, 0, 128);
          if(1.0F == var10) {
             this.sprite.__v_510(var13, var14, 192);
          } else {
@@ -1069,7 +1069,7 @@ public class WorldMap {
    )
    @Export("__ap_537")
    public int __ap_537() {
-      return this.__aq;
+      return this.worldMapDisplayWidth;
    }
 
    @ObfuscatedName("as")
@@ -1079,7 +1079,7 @@ public class WorldMap {
    )
    @Export("__as_538")
    public int __as_538() {
-      return this.__aj;
+      return this.worldMapDisplayHeight;
    }
 
    @ObfuscatedName("am")

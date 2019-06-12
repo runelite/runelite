@@ -976,7 +976,7 @@ public interface RSClient extends RSGameShell, Client
 	@Import("drawGradient")
 	void rasterizerDrawGradient(int x, int y, int w, int h, int rgbTop, int rgbBottom);
 
-	@Import("Rasterizer2D_drawRectangleAlpha")
+	@Import("Rasterizer2D_fillRectangleAlpha")
 	void rasterizerFillRectangleAlpha(int x, int y, int w, int h, int rgb, int a);
 
 	@Import("Rasterizer2D_drawRectangle")

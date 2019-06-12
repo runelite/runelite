@@ -4694,11 +4694,11 @@ public final class Client extends GameShell implements Usernamed {
       Rasterizer2D.Rasterizer2D_resetClip();
       if(showMouseCross) {
          if(mouseCrossColor == 1) {
-            KeyHandler.crossSprites[mouseCrossState / 100].__a_505(mouseCrossX - 8, mouseCrossY - 8);
+            KeyHandler.crossSprites[mouseCrossState / 100].drawAt2(mouseCrossX - 8, mouseCrossY - 8);
          }
 
          if(mouseCrossColor == 2) {
-            KeyHandler.crossSprites[mouseCrossState / 100 + 4].__a_505(mouseCrossX - 8, mouseCrossY - 8);
+            KeyHandler.crossSprites[mouseCrossState / 100 + 4].drawAt2(mouseCrossX - 8, mouseCrossY - 8);
          }
       }
 
@@ -4762,9 +4762,9 @@ public final class Client extends GameShell implements Usernamed {
       if(gameDrawingMode == 3) {
          for(var1 = 0; var1 < rootWidgetCount; ++var1) {
             if(__client_oq[var1]) {
-               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff00ff, 128);
+               Rasterizer2D.Rasterizer2D_fillRectangleAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff00ff, 128);
             } else if(__client_ot[var1]) {
-               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff0000, 128);
+               Rasterizer2D.Rasterizer2D_fillRectangleAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff0000, 128);
             }
          }
       }

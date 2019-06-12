@@ -348,8 +348,8 @@ public class Rasterizer2D extends DualNode {
    }
 
    @ObfuscatedName("dl")
-   @Export("Rasterizer2D_moreAlpha")
-   public static void Rasterizer2D_moreAlpha(int var0, int var1, int var2, int var3, int var4, int var5) {
+   @Export("Rasterizer2D_fillRectangleAlpha")
+   public static void Rasterizer2D_fillRectangleAlpha(int var0, int var1, int var2, int var3, int var4, int var5) {
       if(var0 < Rasterizer2D_xClipStart) {
          var2 -= Rasterizer2D_xClipStart - var0;
          var0 = Rasterizer2D_xClipStart;

@@ -12,7 +12,7 @@ public interface RSWorldMap extends RenderOverview
 	@Import("worldMapY")
 	int getWorldMapY();
 
-	@Import("zoomTarget")
+	@Import("zoom")
 	float getWorldMapZoom();
 
 	@Import("worldMapTargetX")
@@ -21,17 +21,17 @@ public interface RSWorldMap extends RenderOverview
 	@Import("worldMapTargetY")
 	int getWorldMapTargetY();
 
-	//@Import("worldMapDisplayWidth")
-	//int getWorldMapDisplayWidth();
-//Both unused
-	//@Import("worldMapDisplayHeight")
-	//int getWorldMapDisplayHeight();
+	@Import("worldMapDisplayWidth")
+	int getWorldMapDisplayWidth();
 
-	//@Import("worldMapDisplayX")
-	//int getWorldMapDisplayX();
+	@Import("worldMapDisplayHeight")
+	int getWorldMapDisplayHeight();
 
-	//@Import("worldMapDisplayY")
-	//int getWorldMapDisplayY();
+	@Import("worldMapDisplayX")
+	int getWorldMapDisplayX();
+
+	@Import("worldMapDisplayY")
+	int getWorldMapDisplayY();
 
 	@Import("setWorldMapPosition")
 	void setWorldMapPosition(int worldMapX, int worldMapY, boolean changedSurface);
@@ -47,7 +47,7 @@ public interface RSWorldMap extends RenderOverview
 	@Override
 	void initializeWorldMap(WorldMapData var1);
 
-	@Import("mainMapArea")
+	@Import("getCurrentMapArea")
 	@Override
 	RSWorldMapArea getWorldMapData();
 }
