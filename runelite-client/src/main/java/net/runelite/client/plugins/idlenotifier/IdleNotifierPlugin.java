@@ -522,17 +522,9 @@ public class IdleNotifierPlugin extends Plugin
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
 			notifier.notify("[" + local.getName() + "] is now idle!");
-			if (this.config.animationIdleSound())
+			if (config.animationIdleSound())
 			{
-				try
-				{
-					this.soundManager.playSound(Sound.IDLE);
-				}
-				catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
-				{
-					logger.info("Failed to play Idle sound: {}", e);
-					e.printStackTrace();
-				}
+				soundManager.playSound(Sound.IDLE);
 			}
 		}
 		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))

@@ -172,31 +172,16 @@ public class ZulrahPlugin extends Plugin
 
 		if (config.sounds())
 		{
-			if (type == ZulrahType.RANGE) {
-				try
-				{
-					soundManager.playSound(Sound.PRAY_RANGED);
-				}
-				catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
-				{
-					log.info("Failed to play Idle sound: {}", e);
-					e.printStackTrace();
-				}
+			if (type == ZulrahType.RANGE)
+			{
+				soundManager.playSound(Sound.PRAY_RANGED);
 			}
-			if (type == ZulrahType.MAGIC) {
-				try
-				{
+
+			if (type == ZulrahType.MAGIC)
+			{
 					soundManager.playSound(Sound.PRAY_MAGIC);
-				}
-				catch (UnsupportedAudioFileException|IOException|LineUnavailableException e)
-				{
-					log.info("Failed to play Idle sound: {}", e);
-					e.printStackTrace();
-				}
 			}
-
 		}
-
 
 		if (instance.getPhase() == null)
 		{
