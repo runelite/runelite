@@ -73,11 +73,11 @@ public interface PvpToolsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideAttack",
-			name = "Hide attack",
-			description = "Hides the attack option for clanmates, friends, or both",
-			position = 5,
-			group = "Right-Click Attack Options"
+		keyName = "hideAttack",
+		name = "Hide attack",
+		description = "Hides the attack option for clanmates, friends, or both",
+		position = 5,
+		group = "Right-Click Attack Options"
 	)
 	default boolean hideAttack()
 	{
@@ -85,13 +85,13 @@ public interface PvpToolsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideAttackMode",
-			name = "Mode",
-			description = "",
-			position = 6,
-			group = "Right-Click Attack Options",
-			hidden = true,
-			unhide = "hideAttack"
+		keyName = "hideAttackMode",
+		name = "Mode",
+		description = "",
+		position = 6,
+		group = "Right-Click Attack Options",
+		hidden = true,
+		unhide = "hideAttack"
 	)
 	default AttackMode hideAttackMode()
 	{
@@ -99,11 +99,11 @@ public interface PvpToolsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideCast",
-			name = "Hide cast",
-			description = "Hides the cast option for clanmates, friends, or both",
-			position = 7,
-			group = "Right-Click Attack Options"
+		keyName = "hideCast",
+		name = "Hide cast",
+		description = "Hides the cast option for clanmates, friends, or both",
+		position = 7,
+		group = "Right-Click Attack Options"
 	)
 	default boolean hideCast()
 	{
@@ -111,13 +111,13 @@ public interface PvpToolsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideCastMode",
-			name = "Mode",
-			description = "",
-			position = 8,
-			group = "Right-Click Attack Options",
-			hidden = true,
-			unhide = "hideCast"
+		keyName = "hideCastMode",
+		name = "Mode",
+		description = "",
+		position = 8,
+		group = "Right-Click Attack Options",
+		hidden = true,
+		unhide = "hideCast"
 	)
 	default AttackMode hideCastMode()
 	{
@@ -125,13 +125,13 @@ public interface PvpToolsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideCastIgnored",
-			name = "Ignored spells",
-			description = "Spells that should not be hidden from being cast, separated by a comma",
-			position = 9,
-			group = "Right-Click Attack Options",
-			hidden = true,
-			unhide = "hideCast"
+		keyName = "hideCastIgnored",
+		name = "Ignored spells",
+		description = "Spells that should not be hidden from being cast, separated by a comma",
+		position = 9,
+		group = "Right-Click Attack Options",
+		hidden = true,
+		unhide = "hideCast"
 	)
 	default String hideCastIgnored()
 	{
