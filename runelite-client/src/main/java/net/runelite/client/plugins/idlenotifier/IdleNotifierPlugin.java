@@ -27,12 +27,18 @@ package net.runelite.client.plugins.idlenotifier;
 
 import com.google.inject.Provides;
 import java.awt.TrayIcon;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import javax.inject.Inject;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import static net.runelite.api.AnimationID.COOKING_FIRE;
@@ -145,6 +151,8 @@ import net.runelite.api.events.PlayerSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.Sound;
+import net.runelite.client.game.SoundManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.PvPUtil;
@@ -156,6 +164,8 @@ import net.runelite.client.util.PvPUtil;
 )
 public class IdleNotifierPlugin extends Plugin
 {
+	private static final Logger logger = LoggerFactory.getLogger(IdleNotifierPlugin.class);
+
 	// This must be more than 500 client ticks (10 seconds) before you get AFK kicked
 	private static final int LOGOUT_WARNING_MILLIS = (4 * 60 + 40) * 1000; // 4 minutes and 40 seconds
 	private static final int COMBAT_WARNING_MILLIS = 19 * 60 * 1000; // 19 minutes
@@ -172,6 +182,9 @@ public class IdleNotifierPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private SoundManager soundManager;
 
 	@Inject
 	private IdleNotifierConfig config;
@@ -509,8 +522,19 @@ public class IdleNotifierPlugin extends Plugin
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
 			notifier.notify("[" + local.getName() + "] is now idle!");
+			if (this.config.animationIdleSound())
+			{
+				try
+				{
+					this.soundManager.playSound(Sound.IDLE);
+				}
+				catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
+				{
+					logger.info("Failed to play Idle sound: {}", e);
+					e.printStackTrace();
+				}
+			}
 		}
-
 		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
 		{
 			if (lastInteractWasCombat)
@@ -557,8 +581,10 @@ public class IdleNotifierPlugin extends Plugin
 
 		// Check if we have regenerated over the threshold, and that the
 		// regen was small enough.
-		boolean notify = lastSpecEnergy < threshold && currentSpecEnergy >= threshold
-			&& currentSpecEnergy - lastSpecEnergy <= 100;
+		boolean notify = lastSpecEnergy < threshold && currentSpecEnergy >= threshold && currentSpecEnergy - lastSpecEnergy <= 100;
+
+		notify = (notify) || ((config.getOverSpecEnergy()) && (currentSpecEnergy >= threshold) && (currentSpecEnergy != lastSpecEnergy) && (currentSpecEnergy - lastSpecEnergy <= 100));
+
 		lastSpecEnergy = currentSpecEnergy;
 		return notify;
 	}

@@ -28,6 +28,9 @@ package net.runelite.client.plugins.zulrah;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -55,6 +58,8 @@ import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
 import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
 import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 import net.runelite.client.ui.overlay.OverlayManager;
+
+import java.io.IOException;
 
 @PluginDescriptor(
 	name = "Zulrah Helper",
@@ -167,14 +172,29 @@ public class ZulrahPlugin extends Plugin
 
 		if (config.sounds())
 		{
-			if (type == ZulrahType.RANGE)
-			{
-				soundManager.playSound(Sound.PRAY_RANGED);
+			if (type == ZulrahType.RANGE) {
+				try
+				{
+					soundManager.playSound(Sound.PRAY_RANGED);
+				}
+				catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
+				{
+					log.info("Failed to play Idle sound: {}", e);
+					e.printStackTrace();
+				}
 			}
-			if (type == ZulrahType.MAGIC)
-			{
-				soundManager.playSound(Sound.PRAY_MAGIC);
+			if (type == ZulrahType.MAGIC) {
+				try
+				{
+					soundManager.playSound(Sound.PRAY_MAGIC);
+				}
+				catch (UnsupportedAudioFileException|IOException|LineUnavailableException e)
+				{
+					log.info("Failed to play Idle sound: {}", e);
+					e.printStackTrace();
+				}
 			}
+
 		}
 
 

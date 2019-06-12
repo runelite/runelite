@@ -29,6 +29,7 @@ public class SoundManager
 	}
 
 	public void playSound(final Sound sound)
+			throws UnsupportedAudioFileException, IOException, LineUnavailableException
 	{
 		new Thread(new Runnable()
 		{
