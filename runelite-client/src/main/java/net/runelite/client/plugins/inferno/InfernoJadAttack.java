@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2019, Jacky <liangj97@gmail.com>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -24,43 +24,30 @@
  */
 package net.runelite.client.plugins.inferno;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.api.AnimationID;
+import net.runelite.api.Prayer;
 
-@ConfigGroup("inferno")
-public interface InfernoConfig extends Config
-{
-	@ConfigItem(
-		position = 0,
-		keyName = "Nibbler Overlay",
-		name = "Nibbler Overlay",
-		description = "Shows if there are any Nibblers left"
-	)
-	default boolean displayNibblerOverlay()
+public enum InfernoJadAttack
 	{
-		return false;
-	}
+		MAGIC(AnimationID.JALTOK_JAD_MAGE_ATTACK, Prayer.PROTECT_FROM_MAGIC),
+		RANGE(AnimationID.JALTOK_JAD_RANGE_ATTACK, Prayer.PROTECT_FROM_MISSILES);
 
-	@ConfigItem(
-		position = 1,
-		keyName = "Prayer Helper",
-		name = "Prayer Helper",
-		description = "Tells you what to flick in how many ticks"
-	)
-	default boolean showPrayerHelp()
-	{
-		return false;
+	private final int animation;
+	private final Prayer prayer;
+
+	InfernoJadAttack(int animation, Prayer prayer)
+		{
+			this.animation = animation;
+			this.prayer = prayer;
+		}
+
+	public int getAnimation()
+		{
+			return animation;
+		}
+
+	public Prayer getPrayer()
+		{
+			return prayer;
+		}
 	}
-	
-	@ConfigItem(
-		position = 2,
-		keyName = "Wave Display",
-		name = "Wave display",
-		description = "Shows monsters that will spawn on the selected wave(s)."
-	)
-	default InfernoWaveDisplayMode waveDisplay()
-	{
-		return InfernoWaveDisplayMode.BOTH;
-	}
-}
