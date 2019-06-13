@@ -77,6 +77,9 @@ public abstract class RSTileMixin implements RSTile
 	private static RSClient client;
 
 	@Inject
+	private static RSGameObject lastGameObject;
+
+	@Inject
 	private static RSDeque[][][] lastGroundItems = new RSDeque[Constants.MAX_Z][Constants.SCENE_SIZE][Constants.SCENE_SIZE];
 
 	@Inject
@@ -234,9 +237,23 @@ public abstract class RSTileMixin implements RSTile
 		// Update previous object to current
 		previousGameObjects[idx] = current;
 
+		// Last game object
+		RSGameObject last = lastGameObject;
+
+		// Update last game object
+		lastGameObject = current;
+
 		// Duplicate event, return
 		if (current == previous)
 		{
+			return;
+		}
+
+		if (current != null && current == last)
+		{
+			// When >1 tile objects are added to the scene, the same GameObject is added to
+			// multiple tiles. We keep lastGameObject to prevent duplicate spawn events from
+			// firing for these objects.
 			return;
 		}
 

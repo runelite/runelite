@@ -112,7 +112,7 @@ public enum HotColdLocation
 	KARAMJA_BRIMHAVEN_FRUIT_TREE(new WorldPoint(2783, 3214, 0), KARAMJA, "Brimhaven, east of the fruit tree patch."),
 	KARAMJA_WEST_BRIMHAVEN(new WorldPoint(2721, 3169, 0), KARAMJA, "West of Brimhaven."),
 	KARAMJA_GLIDER(new WorldPoint(2966, 2975, 0), KARAMJA, "West of the gnome glider."),
-	KARAMJA_KHARAZI_NE(new WorldPoint(2908, 2922, 0), KARAMJA, "North-eastern part of Kharazi Jungle."),
+	KARAMJA_KHARAZI_NE(new WorldPoint(2904, 2925, 0), KARAMJA, "North-eastern part of Kharazi Jungle."),
 	KARAMJA_KHARAZI_SW(new WorldPoint(2783, 2898, 0), KARAMJA, "South-western part of Kharazi Jungle."),
 	KARAMJA_CRASH_ISLAND(new WorldPoint(2910, 2737, 0), KARAMJA, "Northern part of Crash Island."),
 	MISTHALIN_VARROCK_STONE_CIRCLE(new WorldPoint(3225, 3355, 0), MISTHALIN, "South of the stone circle near Varrock's entrance."),
