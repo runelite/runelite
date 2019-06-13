@@ -28,20 +28,33 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Map;
 import javax.inject.Inject;
+
 import net.runelite.api.Client;
 import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.CLOSED_DOOR;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.OPENED_DOOR;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.TRAP;
+
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.util.ColorUtil;
 
 public class PyramidPlunderOverlay extends Overlay
 {
@@ -50,13 +63,26 @@ public class PyramidPlunderOverlay extends Overlay
 	private static final Color COLOR_SPEAR_TRAP = Color.ORANGE;
 
 	private final Client client;
+	private final PyramidPlunderConfig config;
 	private final PyramidPlunderPlugin plugin;
+	private final PanelComponent panelComponent = new PanelComponent();
+
+	private static final int MAX_TICK_COUNT = 500;
+	private static final double TICK_LENGTH = 0.6;
+
+	private static final NumberFormat TIME_LEFT_FORMATTER = DecimalFormat.getInstance(Locale.US);
+
+	static
+	{
+		((DecimalFormat) TIME_LEFT_FORMATTER).applyPattern("#0.0");
+	}
 
 	@Inject
-	private PyramidPlunderOverlay(Client client, PyramidPlunderPlugin plugin)
+	private PyramidPlunderOverlay(Client client, PyramidPlunderConfig config, PyramidPlunderPlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
@@ -78,7 +104,7 @@ public class PyramidPlunderOverlay extends Overlay
 			Tile tile = entry.getValue();
 
 			if (tile.getPlane() == client.getPlane() &&
-				object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+					object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
 				int objectID = object.getId();
 				if (object.getId() == CLOSED_DOOR || object.getId() == OPENED_DOOR)
@@ -125,6 +151,65 @@ public class PyramidPlunderOverlay extends Overlay
 			}
 		}
 
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
+		if (config.showPlunderStatus())
+		{
+				final Widget widget = client.getWidget(WidgetInfo.PYRAMID_PLUNDER_DATA);
+				if (widget == null)
+				{
+					return null;
+				}
+
+				toggleDefaultWidget(config.hideWidget());
+
+				panelComponent.getChildren().clear();
+
+				panelComponent.getChildren().add(TitleComponent.builder()
+						.text("Pyramid Plunder")
+						.build());
+
+				//Calculate time based on current pp timer tick
+				final int currentTick = client.getVar(Varbits.PYRAMID_PLUNDER_TIMER);
+				final double baseTick = (MAX_TICK_COUNT - currentTick) * TICK_LENGTH;
+				final double timeLeft = Math.max(0.0, baseTick);
+				final String timeLeftStr = TIME_LEFT_FORMATTER.format(timeLeft);
+
+				tableComponent.addRow("Time left:", ColorUtil.prependColorTag(timeLeftStr, getColor(currentTick)));
+				tableComponent.addRow("Room:", client.getVar(Varbits.PYRAMID_PLUNDER_ROOM) + "/8");
+
+				panelComponent.getChildren().add(tableComponent);
+
+				return panelComponent.render(graphics);
+			}
 		return null;
 	}
+
+	void toggleDefaultWidget(boolean hide)
+	{
+		final Widget widget = client.getWidget(WidgetInfo.PYRAMID_PLUNDER_DATA);
+
+		if (widget == null)
+		{
+			return;
+		}
+
+		widget.setHidden(hide);
+	}
+
+	private Color getColor(int timeLeft)
+	{
+		if (timeLeft < config.secondWarningTime())
+		{
+			return Color.RED;
+		}
+		else if (timeLeft < config.firstWarningTime())
+		{
+			return Color.YELLOW;
+		}
+
+		return Color.WHITE;
+	}
+
 }

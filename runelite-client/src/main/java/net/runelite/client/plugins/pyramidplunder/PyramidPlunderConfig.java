@@ -31,8 +31,20 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("pyramidplunder")
 public interface PyramidPlunderConfig extends Config
 {
+
 	@ConfigItem(
-		position = 1,
+			position = 1,
+			keyName = "showPlunderStatus",
+			name = "Show session stats",
+			description = "Configures whether to display pyramid plunder session stats"
+	)
+	default boolean showPlunderStatus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
 		keyName = "highlightDoors",
 		name = "Highlights doors",
 		description = "Highlights the four doors in each room"
@@ -43,7 +55,7 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 3,
 		keyName = "highlightSpearTrap",
 		name = "Highlights spear traps",
 		description = "Highlights the spear traps in each room"
@@ -54,7 +66,7 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "showTimer",
 		name = "Display numerical timer",
 		description = "Displays a numerical timer instead of the default timer"
@@ -63,4 +75,38 @@ public interface PyramidPlunderConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 5,
+			keyName = "hideWidget",
+			name = "Hide default widget",
+			description = "Hide the default widget"
+	)
+	default boolean hideWidget()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 6,
+			keyName = "firstWarningTime",
+			name = "First warning time",
+			description = "Recolor time left(s)"
+	)
+	default int firstWarningTime()
+	{
+		return 90;
+	}
+
+	@ConfigItem(
+			position = 7,
+			keyName = "secondWarningTime",
+			name = "Second warning time",
+			description = "Recolor time left(s)"
+	)
+	default int secondWarningTime()
+	{
+		return 30;
+	}
+
 }
