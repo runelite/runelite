@@ -1334,10 +1334,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					{
 						int var21 = (pitchCos * modelHeight >> 16) + var19;
 						int var22 = (var18 - var21) * zoom;
-						if (var22 / var14 < Rasterizer3D_clipMidY2)
-						{
-							return true;
-						}
+						return var22 / var14 < Rasterizer3D_clipMidY2;
 					}
 				}
 			}

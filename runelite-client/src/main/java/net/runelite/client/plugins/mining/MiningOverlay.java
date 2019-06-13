@@ -77,7 +77,7 @@ class MiningOverlay extends Overlay
 				continue;
 			}
 
-			Point point = Perspective.localToCanvas(client, loc, client.getPlane());
+			Point point = Perspective.localToCanvas(client, loc, client.getPlane(), rockRespawn.getZOffset());
 			if (point == null)
 			{
 				it.remove();

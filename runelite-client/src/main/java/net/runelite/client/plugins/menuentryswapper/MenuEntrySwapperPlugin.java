@@ -940,8 +940,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			if (config.swapTrade())
 			{
-				swap(client, "trade", option, target, true);
-				swap(client, "trade-with", option, target, true);
+				swap("trade", option, target, true);
+				swap("trade-with", option, target, true);
+				swap("shop", option, target, true);
 			}
 
 			if (config.claimSlime() && target.equals("robin"))
