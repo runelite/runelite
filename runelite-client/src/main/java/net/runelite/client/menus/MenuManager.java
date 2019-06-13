@@ -484,8 +484,8 @@ public class MenuManager
 				{
 					continue;
 				}
-//todo once bytecodes work again, re-enable
-/*				event.consume();
+
+				event.consume();
 
 				client.invokeMenuAction(
 					event.getActionParam(),
@@ -496,7 +496,7 @@ public class MenuManager
 					"do not edit",
 					client.getMouseCanvasPosition().getX(),
 					client.getMouseCanvasPosition().getY()
-				);*/
+				);
 
 				break;
 			}
@@ -504,17 +504,14 @@ public class MenuManager
 
 		if (!event.getMenuTarget().equals("do not edit") &&
 			!leftClickObjects.isEmpty() &&
-			event.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION &&
-			(
-				leftClickObjects.contains(event.getId())
-					||
+			event.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION && (
+				leftClickObjects.contains(event.getId()) ||
 					client.getObjectDefinition(event.getId()) != null &&
-						client.getObjectDefinition(event.getId()).getImpostorIds() != null &&
-						client.getObjectDefinition(event.getId()).getImpostor() != null &&
-						client.getObjectDefinition(event.getId()).getImpostor().getId() == event.getId()))
+					client.getObjectDefinition(event.getId()).getImpostorIds() != null &&
+					client.getObjectDefinition(event.getId()).getImpostor() != null &&
+					client.getObjectDefinition(event.getId()).getImpostor().getId() == event.getId()))
 		{
-//todo once bytecodes work again, re-enable
-/*			event.consume();
+			event.consume();
 
 			client.invokeMenuAction(
 				event.getActionParam(),
@@ -525,7 +522,7 @@ public class MenuManager
 				"do not edit",
 				client.getMouseCanvasPosition().getX(),
 				client.getMouseCanvasPosition().getY()
-			);*/
+			);
 		}
 
 		if (event.getMenuAction() != MenuAction.RUNELITE)
@@ -646,6 +643,11 @@ public class MenuManager
 	public void addSwap(String option, String target, String option2)
 	{
 		addSwap(option, target, option2, target, true, false);
+	}
+
+	public void removeSwap(String option, String target, String option2)
+	{
+		removeSwap(option, target, option2, target, true, false);
 	}
 
 	/**
@@ -835,7 +837,7 @@ public class MenuManager
 	}
 
 	/**
-	 * Adds to the set of hidden entries - Pre-baked Abstract entry
+	 * Adds to the set of hidden entries - Pre-baked Comparable entry
 	 */
 	public void addHiddenEntry(ComparableEntry entry)
 	{

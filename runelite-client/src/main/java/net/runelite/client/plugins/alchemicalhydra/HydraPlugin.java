@@ -38,12 +38,10 @@ import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Projectile;
-import net.runelite.api.ProjectileID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.eventbus.Subscribe;
@@ -59,7 +57,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
-
 @Slf4j
 public class HydraPlugin extends Plugin
 {
@@ -108,57 +105,6 @@ public class HydraPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onGameTick(GameTick event)
-	{
-		if (!inHydraInstance || hydra == null)
-		{
-			return;
-		}
-
-		NPC hydraNpc = hydra.getNpc();
-
-		for (NPC npc : client.getNpcs())
-		{
-			if (!HydraPhase.getIdSet().contains(npc.getId()))
-			{
-				continue;
-			}
-
-			HydraPhase phase = HydraPhase.getFromId(npc.getId());
-
-			if (hydra.getPhase() != phase)
-			{
-				log.debug("Hydra phase changed!");
-				changePhase(phase);
-			}
-
-			if (hydraNpc != npc)
-			{
-				log.debug("Hydra npc changed!");
-				hydra.setNpc(npc);
-			}
-
-			return;
-		}
-
-		if (!poisonProjectiles.isEmpty())
-		{
-			Set<LocalPoint> exPoisonProjectiles = new HashSet<>();
-			for (Map.Entry<LocalPoint, Projectile> entry : poisonProjectiles.entrySet())
-			{
-				if (entry.getValue().getEndCycle() < client.getGameCycle())
-				{
-					exPoisonProjectiles.add(entry.getKey());
-				}
-			}
-			for (LocalPoint toRemove : exPoisonProjectiles)
-			{
-				poisonProjectiles.remove(toRemove);
-			}
-		}
-	}
-
-	@Subscribe
 	private void onGameStateChanged(GameStateChanged state)
 	{
 		if (state.getGameState() != GameState.LOGGED_IN)
@@ -201,7 +147,6 @@ public class HydraPlugin extends Plugin
 			return;
 		}
 
-		log.debug("Hydra spawned");
 		hydra = new Hydra(event.getNpc());
 		addOverlays();
 	}
@@ -216,7 +161,6 @@ public class HydraPlugin extends Plugin
 			return;
 		}
 
-		log.debug("Animation changed: {}, {}", actor.getName(), actor.getAnimation());
 		HydraPhase phase = hydra.getPhase();
 
 		if (actor.getAnimation() == phase.getDeathAnim2() &&
@@ -250,6 +194,24 @@ public class HydraPlugin extends Plugin
 		{
 			hydra.setNextSpecial(hydra.getNextSpecial() + 9);
 		}
+
+		if (poisonProjectiles.isEmpty())
+		{
+			return;
+		}
+
+		Set<LocalPoint> exPoisonProjectiles = new HashSet<>();
+		for (Map.Entry<LocalPoint, Projectile> entry : poisonProjectiles.entrySet())
+		{
+			if (entry.getValue().getEndCycle() < client.getGameCycle())
+			{
+				exPoisonProjectiles.add(entry.getKey());
+			}
+		}
+		for (LocalPoint toRemove : exPoisonProjectiles)
+		{
+			poisonProjectiles.remove(toRemove);
+		}
 	}
 
 	@Subscribe
@@ -272,10 +234,7 @@ public class HydraPlugin extends Plugin
 				hydra.setNextSpecial(hydra.getNextSpecial() + 9);
 			}
 
-			if (id == ProjectileID.HYDRA_POISON)
-			{
-				poisonProjectiles.put(event.getPosition(), projectile);
-			}
+			poisonProjectiles.put(event.getPosition(), projectile);
 		}
 		else if (client.getTickCount() != lastAttackTick
 			&& (id == Hydra.AttackStyle.MAGIC.getProjId() || id == Hydra.AttackStyle.RANGED.getProjId()))
@@ -288,16 +247,12 @@ public class HydraPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getMessage().equals("The chemicals neutralise the Alchemical Hydra's defences!"))
+		if (!event.getMessage().equals("The chemicals neutralise the Alchemical Hydra's defences!"))
 		{
-			hydra.setWeakened(true);
+			return;
 		}
-		else if (event.getMessage().startsWith("Your Alchemical Hydra kill count is"))
-		{
-			hydra = null;
-			poisonProjectiles.clear();
-			removeOverlays();
-		}
+
+		hydra.setWeakened(true);
 	}
 
 	private boolean checkArea()

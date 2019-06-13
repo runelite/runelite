@@ -53,7 +53,6 @@ class Hydra
 	}
 
 	@Getter
-	@Setter
 	private NPC npc;
 
 	@Getter
