@@ -26,7 +26,6 @@
  */
 package net.runelite.client.plugins.mining;
 
-import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayList;
