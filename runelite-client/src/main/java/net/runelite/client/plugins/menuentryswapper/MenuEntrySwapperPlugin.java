@@ -25,8 +25,10 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -73,6 +75,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
+
+	public static final ImmutableList<Integer> MTA_ITEMS = ImmutableList.of(6893, 6894, 6895, 6897); //item id's of mage training arena alchemy room items
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
@@ -362,7 +366,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final int eventId = event.getIdentifier();
 		final String option = Text.removeTags(event.getOption()).toLowerCase();
 		final String target = Text.removeTags(event.getTarget()).toLowerCase();
-		final NPC hintArrowNpc  = client.getHintArrowNpc();
+		final NPC hintArrowNpc = client.getHintArrowNpc();
 
 		if (hintArrowNpc != null
 			&& hintArrowNpc.getIndex() == eventId
@@ -568,6 +572,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
+		}
+		else if (config.swapMtaItems() && MTA_ITEMS.contains(eventId) && Arrays.asList("wield", "wear").contains(option))
+		{
+			swap("use", option, target, true);
 		}
 		else if (option.equals("wield"))
 		{
