@@ -446,7 +446,6 @@ class LootTrackerPanel extends PluginPanel
 				}
 			}
 			buildBox(records.get(i));
-			log.info(String.valueOf(Arrays.stream(records.get(i).getItems()).flatMapToInt(a -> IntStream.of(a.getQuantity() * (int) a.getPrice())).sum()));
 
 		}
 		boxes.forEach(LootTrackerBox::rebuild);
