@@ -33,9 +33,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
-import javax.inject.Inject;
 import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
@@ -55,7 +53,7 @@ import net.runelite.client.plugins.statusbars.renderer.PrayerRenderer;
 import net.runelite.client.plugins.statusbars.renderer.SpecialAttackRenderer;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import java.util.HashMap;
+
 import java.util.Map;
 
 @PluginDescriptor(
