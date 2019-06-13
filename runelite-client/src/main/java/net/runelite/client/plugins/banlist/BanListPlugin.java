@@ -27,10 +27,12 @@
 package net.runelite.client.plugins.banlist;
 
 import com.google.inject.Provides;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.inject.Inject;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
@@ -60,12 +62,12 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 @PluginDescriptor(
-	name = "Ban List",
-	description = "Displays warning in chat when you join a" +
-	"clan chat/new member join your clan chat and he is in a WDR/RuneWatch/Manual List",
-	tags = {"PVM", "WDR", "RuneWatch"},
-	type = PluginType.UTILITY,
-	enabledByDefault = false
+		name = "Ban List",
+		description = "Displays warning in chat when you join a" +
+				"clan chat/new member join your clan chat and he is in a WDR/RuneWatch/Manual List",
+		tags = {"PVM", "WDR", "RuneWatch"},
+		type = PluginType.UTILITY,
+		enabledByDefault = false
 )
 
 @Slf4j
@@ -83,7 +85,8 @@ public class BanListPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private ArrayList<String> wdrArrayList = new ArrayList<>();
+	private ArrayList<String> wdrScamArrayList = new ArrayList<>();
+	private ArrayList<String> wdrToxicArrayList = new ArrayList<>();
 	private ArrayList<String> runeWatchArrayList = new ArrayList<>();
 	private ArrayList<String> manualBans = new ArrayList<>();
 
@@ -103,7 +106,8 @@ public class BanListPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		wdrArrayList.clear();
+		wdrScamArrayList.clear();
+		wdrToxicArrayList.clear();
 		runeWatchArrayList.clear();
 		manualBans.clear();
 	}
@@ -133,9 +137,10 @@ public class BanListPlugin extends Plugin
 	public void onWidgetHiddenChanged(WidgetHiddenChanged widgetHiddenChanged)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
-			|| client.getViewportWidget() == null
-			|| !config.highlightInClan())
+				|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
+				|| client.getViewportWidget() == null
+				|| client.getWidget(WidgetInfo.CLAN_CHAT) == null
+				|| !config.highlightInClan())
 		{
 			return;
 		}
@@ -148,7 +153,6 @@ public class BanListPlugin extends Plugin
 			}
 		});
 	}
-
 
 
 	@Subscribe
@@ -194,11 +198,19 @@ public class BanListPlugin extends Plugin
 	 */
 	private ListType checkBanList(String nameToBeChecked)
 	{
-		if (wdrArrayList.size() > 0 && config.enableWDR())
+		if (wdrScamArrayList.size() > 0 && config.enableWDR())
 		{
-			if (wdrArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
+			if (wdrScamArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
 			{
-				return ListType.WEDORAIDS_LIST;
+				return ListType.WEDORAIDSSCAM_LIST;
+			}
+		}
+
+		if (wdrToxicArrayList.size() > 0 && config.enableWDR())
+		{
+			if (wdrToxicArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
+			{
+				return ListType.WEDORAIDSTOXIC_LIST;
 			}
 		}
 
@@ -228,8 +240,8 @@ public class BanListPlugin extends Plugin
 	{
 		switch (listType)
 		{
-			case WEDORAIDS_LIST:
-				final String wdr_message = new ChatMessageBuilder()
+			case WEDORAIDSSCAM_LIST:
+				final String wdr__scam_message = new ChatMessageBuilder()
 						.append(ChatColorType.HIGHLIGHT)
 						.append("Warning! " + playerName + " is on WeDoRaids\' scammer list!")
 						.build();
@@ -237,9 +249,23 @@ public class BanListPlugin extends Plugin
 				chatMessageManager.queue(
 						QueuedMessage.builder()
 								.type(ChatMessageType.CONSOLE)
-								.runeLiteFormattedMessage(wdr_message)
+								.runeLiteFormattedMessage(wdr__scam_message)
 								.build());
 				break;
+
+			case WEDORAIDSTOXIC_LIST:
+				final String wdr__toxic_message = new ChatMessageBuilder()
+						.append(ChatColorType.HIGHLIGHT)
+						.append("Warning! " + playerName + " is on WeDoRaids\' toxic list!")
+						.build();
+
+				chatMessageManager.queue(
+						QueuedMessage.builder()
+								.type(ChatMessageType.CONSOLE)
+								.runeLiteFormattedMessage(wdr__toxic_message)
+								.build());
+				break;
+
 			case RUNEWATCH_LIST:
 				final String rw_message = new ChatMessageBuilder()
 						.append(ChatColorType.HIGHLIGHT)
@@ -295,7 +321,7 @@ public class BanListPlugin extends Plugin
 				ArrayList<String> wdrList2 = new ArrayList<>();
 				wdrList.forEach((name) -> wdrList2.add(Text.standardize(name)));
 
-				wdrArrayList.addAll(wdrList2);
+				wdrScamArrayList.addAll(wdrList2);
 			}
 		});
 
@@ -326,6 +352,33 @@ public class BanListPlugin extends Plugin
 						runeWatchArrayList.add(Text.standardize(x));
 					}
 				}
+			}
+		});
+
+		Request thirdRequest = new Request.Builder()
+				.url("https://wdrdev.github.io/toxic")
+				.build();
+		RuneLiteAPI.CLIENT.newCall(thirdRequest).enqueue(new Callback()
+		{
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+				log.debug("error retrieving names from wdr");
+			}
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException
+			{
+				String text = response.body().string();
+				text = text.substring(text.indexOf("<p>") + 3, text.indexOf("</p>"));
+				text = text.replace("/", ",");
+				text = text.replace(", $", "");
+
+				ArrayList<String> wdrToxicList = new ArrayList<>(Arrays.asList(text.split(",")));
+				ArrayList<String> wdrToxicList2 = new ArrayList<>();
+				wdrToxicList.forEach((name) -> wdrToxicList2.add(Text.standardize(name)));
+
+				wdrToxicArrayList.addAll(wdrToxicList2);
 			}
 		});
 	}
