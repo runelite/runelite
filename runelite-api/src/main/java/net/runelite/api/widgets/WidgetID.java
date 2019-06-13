@@ -145,6 +145,7 @@ public class WidgetID
 	public static final int BEGINNER_CLUE_MAP_DRAYNOR = 348;
 	public static final int BEGINNER_CLUE_MAP_NORTH_OF_FALADOR = 351;
 	public static final int BEGINNER_CLUE_MAP_WIZARDS_TOWER = 356;
+	public static final int SEED_BOX_GROUP_ID = 128;
 
 	static class WorldMap
 	{

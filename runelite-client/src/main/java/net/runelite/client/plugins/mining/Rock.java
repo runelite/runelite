@@ -27,6 +27,9 @@ package net.runelite.client.plugins.mining;
 import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import java.util.Map;
+import lombok.AccessLevel;
+import lombok.Getter;
+import static net.runelite.api.ObjectID.ROCKS_10943;
 import static net.runelite.api.ObjectID.ROCKS_11161;
 import static net.runelite.api.ObjectID.ROCKS_11360;
 import static net.runelite.api.ObjectID.ROCKS_11361;
@@ -34,6 +37,7 @@ import static net.runelite.api.ObjectID.ROCKS_11364;
 import static net.runelite.api.ObjectID.ROCKS_11365;
 import static net.runelite.api.ObjectID.ROCKS_11366;
 import static net.runelite.api.ObjectID.ROCKS_11367;
+import static net.runelite.api.ObjectID.ROCKS_11368;
 import static net.runelite.api.ObjectID.ROCKS_11369;
 import static net.runelite.api.ObjectID.ROCKS_11370;
 import static net.runelite.api.ObjectID.ROCKS_11371;
@@ -48,29 +52,29 @@ import static net.runelite.api.ObjectID.ROCKS_11387;
 
 enum Rock
 {
-	TIN(Duration.ofMillis(2300), ROCKS_11360, ROCKS_11361),
-	COPPER(Duration.ofMillis(2200), ROCKS_11161),
-	IRON(Duration.ofMillis(5300), ROCKS_11364, ROCKS_11365)
+	TIN(Duration.ofMillis(2400), 0, ROCKS_11360, ROCKS_11361),
+	COPPER(Duration.ofMillis(2400), 0, ROCKS_10943, ROCKS_11161),
+	IRON(Duration.ofMillis(5400), 0, ROCKS_11364, ROCKS_11365)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
 			{
-				return inMiningGuild ? Duration.ofMillis(2200) : super.respawnTime;
+				return inMiningGuild ? Duration.ofMillis(2400) : super.respawnTime;
 			}
 		},
-	COAL(Duration.ofSeconds(40), ROCKS_11366, ROCKS_11367)
+	COAL(Duration.ofMillis(29400), 0, ROCKS_11366, ROCKS_11367)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
 			{
-				return inMiningGuild ? Duration.ofMillis(14_500) : super.respawnTime;
+				return inMiningGuild ? Duration.ofMillis(14400) : super.respawnTime;
 			}
 		},
-	SILVER(Duration.ofMinutes(1), ROCKS_11369),
-	SANDSTONE(Duration.ofMillis(5400), ROCKS_11386),
-	GOLD(Duration.ofMinutes(1), ROCKS_11370, ROCKS_11371),
-	GRANITE(Duration.ofMillis(5400), ROCKS_11387),
-	MITHRIL(Duration.ofMinutes(2), ROCKS_11372, ROCKS_11373)
+	SILVER(Duration.ofMinutes(1), 0, ROCKS_11368, ROCKS_11369),
+	SANDSTONE(Duration.ofMillis(5400), 0, ROCKS_11386),
+	GOLD(Duration.ofMinutes(1), 0, ROCKS_11370, ROCKS_11371),
+	GRANITE(Duration.ofMillis(5400), 0, ROCKS_11387),
+	MITHRIL(Duration.ofMinutes(2), 0, ROCKS_11372, ROCKS_11373)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
@@ -78,7 +82,7 @@ enum Rock
 				return inMiningGuild ? Duration.ofMinutes(1) : super.respawnTime;
 			}
 		},
-	ADAMANTITE(Duration.ofMinutes(4), ROCKS_11374, ROCKS_11375)
+	ADAMANTITE(Duration.ofMinutes(4), 0, ROCKS_11374, ROCKS_11375)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
@@ -86,7 +90,7 @@ enum Rock
 				return inMiningGuild ? Duration.ofMinutes(2) : super.respawnTime;
 			}
 		},
-	RUNITE(Duration.ofMinutes(12), ROCKS_11376, ROCKS_11377)
+	RUNITE(Duration.ofMinutes(12), 0, ROCKS_11376, ROCKS_11377)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
@@ -94,8 +98,8 @@ enum Rock
 				return inMiningGuild ? Duration.ofMinutes(6) : super.respawnTime;
 			}
 		},
-	ORE_VEIN(Duration.ofSeconds(108)),
-	AMETHYST(Duration.ofSeconds(75));
+	ORE_VEIN(Duration.ofSeconds(108), 150),
+	AMETHYST(Duration.ofSeconds(75), 120);
 
 	private static final Map<Integer, Rock> ROCKS;
 
@@ -113,11 +117,14 @@ enum Rock
 	}
 
 	private final Duration respawnTime;
+	@Getter(AccessLevel.PACKAGE)
+	private final int zOffset;
 	private final int[] ids;
 
-	Rock(Duration respawnTime, int... ids)
+	Rock(Duration respawnTime, int zOffset, int... ids)
 	{
 		this.respawnTime = respawnTime;
+		this.zOffset = zOffset;
 		this.ids = ids;
 	}
 

@@ -216,6 +216,5 @@ public class PuzzleState
 		}
 
 		return y1 == y2 && absX == 1;
-
 	}
 }
