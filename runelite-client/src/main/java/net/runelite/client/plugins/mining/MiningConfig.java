@@ -41,4 +41,23 @@ public interface MiningConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "amountOfCoalInCoalBag",
+			name = "",
+			description = "To store coal amount between sessions",
+			hidden = true
+	)
+	default int amountOfCoalInCoalBag()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+			keyName = "amountOfCoalInCoalBag",
+			name = "",
+			description = "Overload to set coal amount",
+			hidden = true
+	)
+	void amountOfCoalInCoalBag(int amount);
 }
