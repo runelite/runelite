@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.mining;
 
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -36,12 +37,13 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
@@ -63,7 +65,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
@@ -81,11 +82,11 @@ public class MiningPlugin extends Plugin
 	private static final Pattern COAL_BAG_ONE_MESSAGE = Pattern.compile("^The coal bag contains one piece of coal\\.$");
 	private static final Pattern COAL_BAG_AMOUNT_MESSAGE = Pattern.compile("^The coal bag contains (\\d+) pieces of coal\\.$");
 
-	static final int MAX_INVENTORY_SPACE = 28;
+	private static final int MAX_INVENTORY_SPACE = 28;
 	private static final int FULL_COAL_BAG_AMOUNT = 27;
 
-	static final String FILL_OPTION = "fill";
-	static final String EMPTY_OPTION = "empty";
+	private static final String FILL_OPTION = "fill";
+	private static final String EMPTY_OPTION = "empty";
 
 
 	@Inject
@@ -100,9 +101,8 @@ public class MiningPlugin extends Plugin
 	@Inject
 	private MiningCoalBagOverlay coalBagOverlay;
 
-	@Getter
-	@Setter
-	private int amountOfCoalInBag;
+	@Inject
+	private MiningConfig config;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<RockRespawn> respawns = new ArrayList<>();
@@ -212,42 +212,46 @@ public class MiningPlugin extends Plugin
 		}
 
 		ItemContainer inventoryItemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		Item[] inventoryItems = inventoryItemContainer.getItems();
 
 		switch (event.getMenuOption().toLowerCase())
 		{
 			case FILL_OPTION:
-				updateAmountOfCoalInBag((int) Arrays.stream(inventoryItemContainer.getItems()).filter(i -> i.getId() == ItemID.COAL).count());
+				int coalInInventoryCount = (int) Arrays.stream(inventoryItems).filter(i -> i.getId() == ItemID.COAL).count();
+				updateAmountOfCoalInBag(coalInInventoryCount);
 				break;
+
 			case EMPTY_OPTION:
-				int amt = MAX_INVENTORY_SPACE - (int) Arrays.stream(inventoryItemContainer.getItems()).filter(i -> i.getId() != -1).count();
-				updateAmountOfCoalInBag(-amt);
+				int emptyInventorySpaceCount = (int) Arrays.stream(inventoryItems).filter(i -> i.getId() != -1).count();
+				int difference = MAX_INVENTORY_SPACE - emptyInventorySpaceCount;
+				updateAmountOfCoalInBag(-difference);
 				break;
 		}
 	}
 
-	/**
-	 * Use onChatMessage when a player chooses the `Check` menu option on coal bags.
-	 *
-	 * @param event
-	 */
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		String chatMsg = Text.removeTags(event.getMessage());
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
+		{
+			return;
+		}
+
+		String chatMsg = event.getMessage();
 		if (COAL_BAG_EMPTY_MESSAGE.matcher(chatMsg).find())
 		{
-			setAmountOfCoalInBag(0);
+			updateAmountOfCoalInBag(0);
 		}
 		else if (COAL_BAG_ONE_MESSAGE.matcher(chatMsg).find())
 		{
-			setAmountOfCoalInBag(1);
+			updateAmountOfCoalInBag(1);
 		}
 		else
 		{
 			Matcher matcher = COAL_BAG_AMOUNT_MESSAGE.matcher(chatMsg);
 			if (matcher.find())
 			{
-				updateAmountOfCoalInBag(Integer.parseInt(matcher.group(1)) - getAmountOfCoalInBag());
+				updateAmountOfCoalInBag(Integer.parseInt(matcher.group(1)) - config.amountOfCoalInCoalBag());
 			}
 		}
 	}
@@ -262,7 +266,7 @@ public class MiningPlugin extends Plugin
 	{
 		// check for upper/lower bounds of amount of coal in a bag
 		// 0 <= X <= 27
-		setAmountOfCoalInBag(Math.max(0, Math.min(FULL_COAL_BAG_AMOUNT, getAmountOfCoalInBag() + delta)));
+		config.amountOfCoalInCoalBag(Math.max(0, Math.min(FULL_COAL_BAG_AMOUNT, config.amountOfCoalInCoalBag() + delta)));
 	}
 
 	private boolean inMiningGuild()
