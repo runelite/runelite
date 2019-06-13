@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
@@ -180,7 +179,7 @@ public enum HotColdLocation
 	private final HotColdArea hotColdArea;
 	private final String area;
 
-	public Rectangle2D getRect()
+	public Rectangle getRect()
 	{
 		return new Rectangle(worldPoint.getX() - 4, worldPoint.getY() - 4, 9, 9);
 	}
