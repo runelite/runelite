@@ -37,6 +37,7 @@ import static net.runelite.api.ObjectID.ROCKS_11364;
 import static net.runelite.api.ObjectID.ROCKS_11365;
 import static net.runelite.api.ObjectID.ROCKS_11366;
 import static net.runelite.api.ObjectID.ROCKS_11367;
+import static net.runelite.api.ObjectID.ROCKS_11368;
 import static net.runelite.api.ObjectID.ROCKS_11369;
 import static net.runelite.api.ObjectID.ROCKS_11370;
 import static net.runelite.api.ObjectID.ROCKS_11371;
@@ -69,7 +70,7 @@ enum Rock
 				return inMiningGuild ? Duration.ofMillis(14400) : super.respawnTime;
 			}
 		},
-	SILVER(Duration.ofMinutes(1), 0, ROCKS_11369),
+	SILVER(Duration.ofMinutes(1), 0, ROCKS_11368, ROCKS_11369),
 	SANDSTONE(Duration.ofMillis(5400), 0, ROCKS_11386),
 	GOLD(Duration.ofMinutes(1), 0, ROCKS_11370, ROCKS_11371),
 	GRANITE(Duration.ofMillis(5400), 0, ROCKS_11387),
