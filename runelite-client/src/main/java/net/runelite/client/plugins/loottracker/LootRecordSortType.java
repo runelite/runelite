@@ -39,8 +39,6 @@ public enum LootRecordSortType implements Comparator<LootTrackerRecord>
 				}
 				int sum = Arrays.stream(o1.getItems()).flatMapToInt(lootTrackerItem ->
 					IntStream.of((int) lootTrackerItem.getPrice() * lootTrackerItem.getQuantity())).sum();
-				log.info(String.valueOf(sum + Arrays.stream(o2.getItems()).flatMapToInt(lootTrackerItem ->
-					IntStream.of((int) lootTrackerItem.getPrice() * lootTrackerItem.getQuantity())).sum()));
 				return sum + Arrays.stream(o2.getItems()).flatMapToInt(lootTrackerItem ->
 					IntStream.of((int) lootTrackerItem.getPrice() * lootTrackerItem.getQuantity())).sum();
 			}

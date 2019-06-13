@@ -33,11 +33,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.IntStream;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -446,7 +444,6 @@ class LootTrackerPanel extends PluginPanel
 				}
 			}
 			buildBox(records.get(i));
-			log.info(String.valueOf(Arrays.stream(records.get(i).getItems()).flatMapToInt(a -> IntStream.of(a.getQuantity() * (int) a.getPrice())).sum()));
 
 		}
 		boxes.forEach(LootTrackerBox::rebuild);
