@@ -42,6 +42,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicsObject;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Projectile;
 import net.runelite.api.Tile;
@@ -183,7 +184,8 @@ public class AoeWarningPlugin extends Plugin
 				//todo
 				CrystalSpike.add(bombLocation);
 				break;
-			case 26690: //Wintertodt SnowFall
+			case NullObjectID.NULL_26690:
+				//Wintertodt Snowfall
 				if (config.isWintertodtEnabled())
 				{
 					WintertodtSnowFall.add(bombLocation);
@@ -215,7 +217,8 @@ public class AoeWarningPlugin extends Plugin
 				//todo
 				CrystalSpike.remove(bombLocation);
 				break;
-			case 26690: //Wintertodt SnowFall
+			case NullObjectID.NULL_26690:
+				//Wintertodt Snowfall
 				if (config.isWintertodtEnabled())
 				{
 					WintertodtSnowFall.remove(bombLocation);
