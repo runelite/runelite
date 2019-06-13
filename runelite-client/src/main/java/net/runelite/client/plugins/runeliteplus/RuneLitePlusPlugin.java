@@ -215,6 +215,11 @@ public class RuneLitePlusPlugin extends Plugin
 	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
+		if (!config.keyboardPin())
+		{
+			return;
+		}
+
 		if (e.getEventName().equals("bankpin"))
 		{
 			int[] intStack = client.getIntStack();
