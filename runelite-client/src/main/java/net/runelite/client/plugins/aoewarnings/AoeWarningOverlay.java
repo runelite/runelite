@@ -85,6 +85,11 @@ public class AoeWarningOverlay extends Overlay
 			drawTile(graphics, point, new Color(255, 0, 84), 2, 150, 50);
 		}
 
+		for (WorldPoint point : plugin.getWintertodtSnowFall())
+		{
+			drawTile(graphics, point, new Color(255, 0, 84), 2, 150, 50);
+		}
+
 		Instant now = Instant.now();
 		Map<Projectile, AoeProjectile> projectiles = plugin.getProjectiles();
 		for (Iterator<AoeProjectile> it = projectiles.values().iterator(); it.hasNext(); )
