@@ -24,21 +24,18 @@
  */
 package net.runelite.client.plugins.alchemicalhydra;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
 import net.runelite.api.AnimationID;
-import net.runelite.api.NpcID;
 import net.runelite.api.ProjectileID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 
 enum HydraPhase
 { // Sorry for the autism
-	ONE(3, AnimationID.HYDRA_1_1, AnimationID.HYDRA_1_2, ProjectileID.HYDRA_POISON, 0, SpriteID.BIG_ASS_GUTHIX_SPELL, new WorldPoint(1371, 10263, 0), NpcID.ALCHEMICAL_HYDRA),
-	TWO(3, AnimationID.HYDRA_2_1, AnimationID.HYDRA_2_2, ProjectileID.HYDRA_LIGHTNING, AnimationID.HYDRA_LIGHTNING, SpriteID.BIG_SPEC_TRANSFER, new WorldPoint(1371, 10272, 0), NpcID.ALCHEMICAL_HYDRA_8619),
-	THREE(3, AnimationID.HYDRA_3_1, AnimationID.HYDRA_3_2, 0, AnimationID.HYDRA_FIRE, SpriteID.BIG_SUPERHEAT, new WorldPoint(1362, 10272, 0), NpcID.ALCHEMICAL_HYDRA_8620),
-	FOUR(1, AnimationID.HYDRA_4_1, AnimationID.HYDRA_4_2, ProjectileID.HYDRA_POISON, 0, SpriteID.BIG_ASS_GUTHIX_SPELL, null, NpcID.ALCHEMICAL_HYDRA_8621);
+	ONE(3, AnimationID.HYDRA_1_1, AnimationID.HYDRA_1_2, ProjectileID.HYDRA_POISON, 0, SpriteID.BIG_ASS_GUTHIX_SPELL, new WorldPoint(1371, 10263, 0)),
+	TWO(3, AnimationID.HYDRA_2_1, AnimationID.HYDRA_2_2, 0, AnimationID.HYDRA_LIGHTNING, SpriteID.BIG_SPEC_TRANSFER, new WorldPoint(1371, 10272, 0)),
+	THREE(3, AnimationID.HYDRA_3_1, AnimationID.HYDRA_3_2, 0, AnimationID.HYDRA_FIRE, SpriteID.BIG_SUPERHEAT, new WorldPoint(1362, 10272, 0)),
+	FOUR(1, AnimationID.HYDRA_4_1, AnimationID.HYDRA_4_2, ProjectileID.HYDRA_POISON, 0, SpriteID.BIG_ASS_GUTHIX_SPELL, null);
 
 	@Getter
 	private final int attacksPerSwitch;
@@ -61,30 +58,7 @@ enum HydraPhase
 	@Getter
 	private WorldPoint fountain;
 
-	@Getter
-	private int npcID;
-
-	@Getter
-	private static final ImmutableSet<Integer> idSet;
-
-	private static final ImmutableMap<Integer, HydraPhase> idMap;
-
-	static
-	{
-		ImmutableMap.Builder<Integer, HydraPhase> mapBuilder = new ImmutableMap.Builder<>();
-		ImmutableSet.Builder<Integer> setBuilder = new ImmutableSet.Builder<>();
-
-		for (HydraPhase p : values())
-		{
-			mapBuilder.put(p.getNpcID(), p);
-			setBuilder.add(p.getNpcID());
-		}
-
-		idMap = mapBuilder.build();
-		idSet = setBuilder.build();
-	}
-
-	HydraPhase(int attacksPerSwitch, int deathAnim1, int deathAnim2, int specProjectileId, int specAnimationId, int specImage, WorldPoint fountain, int npcID)
+	HydraPhase(int attacksPerSwitch, int deathAnim1, int deathAnim2, int specProjectileId, int specAnimationId, int specImage, WorldPoint fountain)
 	{
 		this.attacksPerSwitch = attacksPerSwitch;
 		this.deathAnim1 = deathAnim1;
@@ -93,11 +67,5 @@ enum HydraPhase
 		this.specAnimationId = specAnimationId;
 		this.specImage = specImage;
 		this.fountain = fountain;
-		this.npcID = npcID;
-	}
-
-	static HydraPhase getFromId(int ID)
-	{
-		return idMap.get(ID);
 	}
 }
