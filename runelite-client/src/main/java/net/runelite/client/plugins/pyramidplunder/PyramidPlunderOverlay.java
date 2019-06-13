@@ -34,7 +34,12 @@ import java.util.Locale;
 import java.util.Map;
 import javax.inject.Inject;
 
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.ObjectDefinition;
+import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.CLOSED_DOOR;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.OPENED_DOOR;
