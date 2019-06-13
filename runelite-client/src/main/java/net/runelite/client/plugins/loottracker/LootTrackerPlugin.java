@@ -749,11 +749,11 @@ public class LootTrackerPlugin extends Plugin
 		// If it's a death we want to get a coin value for untradeables lost
 		if (!itemDefinition.isTradeable() && quantity < 0)
 		{
-			price = (long) itemDefinition.getPrice() *(long) quantity;
+			price = (long) itemDefinition.getPrice() * (long) quantity;
 		}
 		else
 		{
-			price =(long) itemManager.getItemPrice(realItemId) * (long) quantity;
+			price = (long) itemManager.getItemPrice(realItemId) * (long) quantity;
 		}
 		final boolean ignored = ignoredItems.contains(itemDefinition.getName());
 
