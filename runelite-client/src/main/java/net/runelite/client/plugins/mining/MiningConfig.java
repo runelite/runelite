@@ -34,8 +34,7 @@ public interface MiningConfig extends Config
 	@ConfigItem(
 			keyName = "showCoalBagOverlay",
 			name = "Show coal bag overlay",
-			description = "Overlays how much coal is inside of your coal bag",
-			position = 1
+			description = "Overlays how much coal is inside of your coal bag"
 	)
 	default boolean showCoalBagOverlay()
 	{
