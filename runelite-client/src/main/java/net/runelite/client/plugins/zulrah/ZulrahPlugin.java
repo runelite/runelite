@@ -28,9 +28,6 @@ package net.runelite.client.plugins.zulrah;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
-//import javax.sound.sampled.LineUnavailableException;
-//import javax.sound.sampled.UnsupportedAudioFileException;
-
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -59,8 +56,6 @@ import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
 import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-//import java.io.IOException;
-
 @PluginDescriptor(
 	name = "Zulrah Helper",
 	description = "Shows tiles on where to stand during the phases and what prayer to use.",
@@ -68,7 +63,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
-
 @Slf4j
 public class ZulrahPlugin extends Plugin
 {
@@ -80,9 +74,6 @@ public class ZulrahPlugin extends Plugin
 
 	@Inject
 	private ZulrahConfig config;
-
-	@Inject
-	private ZulrahOverlay overlay;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -102,24 +93,21 @@ public class ZulrahPlugin extends Plugin
 	@Inject
 	private ZulrahOverlay zulrahOverlay;
 
-
 	@Provides
 	ZulrahConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ZulrahConfig.class);
 	}
 
-	private final ZulrahPattern[] patterns = new ZulrahPattern[]
-		{
-			new ZulrahPatternA(),
-			new ZulrahPatternB(),
-			new ZulrahPatternC(),
-			new ZulrahPatternD()
-		};
+	private static final ZulrahPattern[] patterns = new ZulrahPattern[]
+	{
+		new ZulrahPatternA(),
+		new ZulrahPatternB(),
+		new ZulrahPatternC(),
+		new ZulrahPatternD()
+	};
 
 	private ZulrahInstance instance;
-
-	private ZulrahPhase phase;
 
 	@Override
 	protected void startUp() throws Exception
@@ -139,7 +127,6 @@ public class ZulrahPlugin extends Plugin
 		overlayManager.remove(zulrahOverlay);
 		zulrah = null;
 		instance = null;
-		phase = null;
 	}
 
 	@Subscribe
@@ -167,21 +154,6 @@ public class ZulrahPlugin extends Plugin
 		}
 
 		ZulrahPhase currentPhase = ZulrahPhase.valueOf(zulrah, instance.getStartLocation());
-		ZulrahType type = phase.getType();
-
-
-		if (config.sounds())
-		{
-			if (type == ZulrahType.RANGE)
-			{
-				soundManager.playSound(Sound.PRAY_RANGED);
-			}
-
-			if (type == ZulrahType.MAGIC)
-			{
-					soundManager.playSound(Sound.PRAY_MAGIC);
-			}
-		}
 
 		if (instance.getPhase() == null)
 		{
@@ -194,6 +166,21 @@ public class ZulrahPlugin extends Plugin
 			instance.nextStage();
 
 			log.debug("Zulrah phase has moved from {} -> {}, stage: {}", previousPhase, currentPhase, instance.getStage());
+		}
+
+		ZulrahType type = instance.getPhase().getType();
+
+		if (config.sounds())
+		{
+			if (type == ZulrahType.RANGE)
+			{
+				soundManager.playSound(Sound.PRAY_RANGED);
+			}
+
+			if (type == ZulrahType.MAGIC)
+			{
+				soundManager.playSound(Sound.PRAY_MAGIC);
+			}
 		}
 
 		ZulrahPattern pattern = instance.getPattern();
@@ -229,34 +216,22 @@ public class ZulrahPlugin extends Plugin
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		try
+		NPC npc = event.getNpc();
+		if (npc != null && npc.getName() != null &&
+			npc.getName().toLowerCase().contains("zulrah"))
 		{
-			NPC npc = event.getNpc();
-			if (npc != null && npc.getName().toLowerCase().contains("zulrah"))
-			{
-				zulrah = npc;
-			}
-		}
-		catch (Exception e)
-		{
-
+			zulrah = npc;
 		}
 	}
 
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		try
+		NPC npc = event.getNpc();
+		if (npc != null && npc.getName() != null &&
+			npc.getName().toLowerCase().contains("zulrah"))
 		{
-			NPC npc = event.getNpc();
-			if (npc != null && npc.getName().toLowerCase().contains("zulrah"))
-			{
-				zulrah = null;
-			}
-		}
-		catch (Exception e)
-		{
-
+			zulrah = null;
 		}
 	}
 
