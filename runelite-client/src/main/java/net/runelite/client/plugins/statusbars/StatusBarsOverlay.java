@@ -151,7 +151,7 @@ public class StatusBarsOverlay extends Overlay
 				for (final StatChange c : statsChanges.getStatChanges())
 				{
 					//final String strVar = c.getTheoretical(); this was erroring
-					final String strVar = String.valueOf(c.getTheoretical()); // not sure if wrapping in string.valueof will work?
+					final String strVar = String.valueOf(c.getTheoretical());
 
 					if (Strings.isNullOrEmpty(strVar))
 					{
