@@ -41,6 +41,7 @@ public class MiningCoalBagOverlay extends WidgetItemOverlay
 	@Inject
 	MiningCoalBagOverlay(MiningPlugin plugin, MiningConfig config)
 	{
+		showOnInventory();
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -57,6 +58,6 @@ public class MiningCoalBagOverlay extends WidgetItemOverlay
 		graphics.setColor(Color.WHITE);
 		Point location = itemWidget.getCanvasLocation();
 
-		graphics.drawString(plugin.getAmountOfCoalInBag() + "", location.getX(), location.getY() + 14);
+		graphics.drawString(config.amountOfCoalInCoalBag() + "", location.getX(), location.getY() + 14);
 	}
 }
