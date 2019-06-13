@@ -28,6 +28,9 @@ package net.runelite.client.plugins.zulrah;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+//import javax.sound.sampled.LineUnavailableException;
+//import javax.sound.sampled.UnsupportedAudioFileException;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -38,6 +41,8 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.Sound;
+import net.runelite.client.game.SoundManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -51,7 +56,10 @@ import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternB;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternC;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
 import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
+import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 import net.runelite.client.ui.overlay.OverlayManager;
+
+//import java.io.IOException;
 
 @PluginDescriptor(
 	name = "Zulrah Helper",
@@ -78,6 +86,9 @@ public class ZulrahPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private SoundManager soundManager;
 
 	@Inject
 	private ZulrahCurrentPhaseOverlay currentPhaseOverlay;
@@ -108,6 +119,8 @@ public class ZulrahPlugin extends Plugin
 
 	private ZulrahInstance instance;
 
+	private ZulrahPhase phase;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -126,6 +139,7 @@ public class ZulrahPlugin extends Plugin
 		overlayManager.remove(zulrahOverlay);
 		zulrah = null;
 		instance = null;
+		phase = null;
 	}
 
 	@Subscribe
@@ -153,6 +167,22 @@ public class ZulrahPlugin extends Plugin
 		}
 
 		ZulrahPhase currentPhase = ZulrahPhase.valueOf(zulrah, instance.getStartLocation());
+		ZulrahType type = phase.getType();
+
+
+		if (config.sounds())
+		{
+			if (type == ZulrahType.RANGE)
+			{
+				soundManager.playSound(Sound.PRAY_RANGED);
+			}
+
+			if (type == ZulrahType.MAGIC)
+			{
+					soundManager.playSound(Sound.PRAY_MAGIC);
+			}
+		}
+
 		if (instance.getPhase() == null)
 		{
 			instance.setPhase(currentPhase);
