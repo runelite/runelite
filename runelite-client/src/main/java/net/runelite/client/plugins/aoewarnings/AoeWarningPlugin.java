@@ -103,6 +103,9 @@ public class AoeWarningPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> CrystalSpike = new ArrayList<>();
 
+	@Getter(AccessLevel.PACKAGE)
+	private List<WorldPoint> WintertodtSnowFall = new ArrayList<>();
+
 	@Provides
 	AoeWarningConfig getConfig(ConfigManager configManager)
 	{
@@ -122,6 +125,7 @@ public class AoeWarningPlugin extends Plugin
 		LightningTrail.clear();
 		AcidTrail.clear();
 		CrystalSpike.clear();
+		WintertodtSnowFall.clear();
 	}
 
 	@Override
@@ -132,6 +136,7 @@ public class AoeWarningPlugin extends Plugin
 		LightningTrail.clear();
 		AcidTrail.clear();
 		CrystalSpike.clear();
+		WintertodtSnowFall.clear();
 	}
 
 	@Subscribe
@@ -178,6 +183,17 @@ public class AoeWarningPlugin extends Plugin
 				//todo
 				CrystalSpike.add(bombLocation);
 				break;
+			case 26690: //Wintertodt SnowFall
+				if (config.isWintertodtEnabled())
+				{
+					WintertodtSnowFall.add(bombLocation);
+
+					if (config.aoeNotifyAll() || config.isWintertodtNotifyEnabled())
+					{
+						notifier.notify("Snow Fall!");
+					}
+				}
+				break;
 		}
 	}
 
@@ -198,6 +214,12 @@ public class AoeWarningPlugin extends Plugin
 			case ObjectID.SMALL_CRYSTALS:
 				//todo
 				CrystalSpike.remove(bombLocation);
+				break;
+			case 26690: //Wintertodt SnowFall
+				if (config.isWintertodtEnabled())
+				{
+					WintertodtSnowFall.remove(bombLocation);
+				}
 				break;
 		}
 	}
@@ -320,8 +342,6 @@ public class AoeWarningPlugin extends Plugin
 			case CORPOREAL_BEAST:
 			case CORPOREAL_BEAST_DARK_CORE:
 				return notify ? config.isCorpNotifyEnabled() : config.isCorpEnabled();
-			case WINTERTODT_SNOW_FALL:
-				return notify ? config.isWintertodtNotifyEnabled() : config.isWintertodtEnabled();
 			case XARPUS_POISON_AOE:
 				return notify ? config.isXarpusNotifyEnabled() : config.isXarpusEnabled();
 			case ADDY_DRAG_POISON:
