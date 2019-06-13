@@ -24,9 +24,12 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
+import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -40,8 +43,31 @@ public enum HotColdTemperature
 	WARM("warm", 100, 149),
 	HOT("hot", 70, 99),
 	VERY_HOT("very hot", 30, 69),
-	INCREDIBLY_HOT("incredibly hot", 5, 29),
-	VISIBLY_SHAKING("visibly shaking", 0, 4);
+	BEGINNER_INCREDIBLY_HOT("incredibly hot", 4, 29),
+	BEGINNER_VISIBLY_SHAKING("visibly shaking", 0, 3),
+	MASTER_INCREDIBLY_HOT("incredibly hot", 5, 29),
+	MASTER_VISIBLY_SHAKING("visibly shaking", 0, 4);
+
+	public static final Set<HotColdTemperature> BEGINNER_HOT_COLD_TEMPERATURES = Sets.immutableEnumSet(
+		ICE_COLD,
+		VERY_COLD,
+		COLD,
+		WARM,
+		HOT,
+		VERY_HOT,
+		BEGINNER_INCREDIBLY_HOT,
+		BEGINNER_VISIBLY_SHAKING
+	);
+	public static final Set<HotColdTemperature> MASTER_HOT_COLD_TEMPERATURES = Sets.immutableEnumSet(
+		ICE_COLD,
+		VERY_COLD,
+		COLD,
+		WARM,
+		HOT,
+		VERY_HOT,
+		MASTER_INCREDIBLY_HOT,
+		MASTER_VISIBLY_SHAKING
+	);
 
 	private final String text;
 	private final int minDistance;
@@ -50,24 +76,26 @@ public enum HotColdTemperature
 	private static final String DEVICE_USED_START_TEXT = "The device is ";
 
 	/**
-	 * Gets the temperature corresponding to the passed string.
+	 * Gets the temperature from a set of temperatures corresponding to the passed string.
 	 *
-	 * @param message A string containing a temperature value
-	 * @return The corresponding enum for the passed string.
+	 * @param temperatureSet A set of temperature values to select from
+	 * @param message        A string containing a temperature value
+	 * @return The corresponding enum from the given temperature set.
 	 *         <p>
-	 *         Note that in cases where two temperature enums are equally likely to be the given temperature (say, two
-	 *         temperatures with identical text values), the behavior is undefined.
+	 *         Note that in cases where two temperature values in the given set are equally likely to be the given
+	 *         temperature (say, two temperatures with identical text values), the behavior is undefined.
 	 */
-	public static HotColdTemperature of(final String message)
+	@Nullable
+	public static HotColdTemperature getFromTemperatureSet(final Set<HotColdTemperature> temperatureSet, final String message)
 	{
-		if (!message.startsWith(DEVICE_USED_START_TEXT))
+		if (!message.startsWith(DEVICE_USED_START_TEXT) || temperatureSet == null)
 		{
 			return null;
 		}
 
 		final List<HotColdTemperature> possibleTemperatures = new ArrayList<>();
 
-		for (final HotColdTemperature temperature : values())
+		for (final HotColdTemperature temperature : temperatureSet)
 		{
 			if (message.contains(temperature.getText()))
 			{

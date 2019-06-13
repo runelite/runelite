@@ -26,6 +26,7 @@ package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
 import com.google.common.collect.Sets;
 import java.awt.Rectangle;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import static junit.framework.TestCase.assertTrue;
@@ -207,7 +208,7 @@ public class HotColdSolverTest
 	 */
 	private static void testSolver(final HotColdSolver solver, final WorldPoint testPoint, final String deviceResponse, final Set<HotColdLocation> expectedRemainingPossibleLocations)
 	{
-		final HotColdTemperature temperature = HotColdTemperature.of(deviceResponse);
+		final HotColdTemperature temperature = HotColdTemperature.getFromTemperatureSet(HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES, deviceResponse);
 		final HotColdTemperatureChange temperatureChange = HotColdTemperatureChange.of(deviceResponse);
 
 		assertNotNull(temperature);
@@ -221,7 +222,7 @@ public class HotColdSolverTest
 	 */
 	private static HotColdSolver createHotColdSolver()
 	{
-		final Set<HotColdLocation> hotColdLocations = Sets.immutableEnumSet(
+		final Set<HotColdLocation> hotColdLocations = EnumSet.of(
 			HotColdLocation.KARAMJA_KHARAZI_NE,
 			HotColdLocation.KARAMJA_KHARAZI_SW,
 			HotColdLocation.KARAMJA_GLIDER,

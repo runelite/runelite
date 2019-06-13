@@ -52,7 +52,8 @@ public class HotColdTemperatureTest
 	{
 		for (final String message : VALID_MESSAGES)
 		{
-			assertNotNull(message, HotColdTemperature.of(message));
+			assertNotNull(message, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.BEGINNER_HOT_COLD_TEMPERATURES, message));
+			assertNotNull(message, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES, message));
 		}
 	}
 
@@ -61,15 +62,16 @@ public class HotColdTemperatureTest
 	{
 		for (final String message : INVALID_MESSAGES)
 		{
-			assertNull(message, HotColdTemperature.of(message));
+			assertNull(message, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.BEGINNER_HOT_COLD_TEMPERATURES, message));
+			assertNull(message, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES, message));
 		}
 	}
 
 	@Test
 	public void testAmbiguousTemperatureMessages()
 	{
-		assertEquals(HotColdTemperature.ICE_COLD, HotColdTemperature.of("The device is ice cold."));
-		assertEquals(HotColdTemperature.VERY_COLD, HotColdTemperature.of("The device is very cold."));
-		assertEquals(HotColdTemperature.VERY_HOT, HotColdTemperature.of("The device is very hot."));
+		assertEquals(HotColdTemperature.ICE_COLD, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES, "The device is ice cold."));
+		assertEquals(HotColdTemperature.VERY_COLD, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES, "The device is very cold."));
+		assertEquals(HotColdTemperature.VERY_HOT, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES, "The device is very hot."));
 	}
 }
