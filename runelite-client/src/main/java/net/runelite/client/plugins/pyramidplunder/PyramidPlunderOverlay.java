@@ -156,37 +156,34 @@ public class PyramidPlunderOverlay extends Overlay
 
 		if (config.showPlunderStatus())
 		{
-			final Widget widget = client.getWidget(WidgetInfo.PYRAMID_PLUNDER_DATA);
-			if (widget == null)
-			{
-				return null;
+				final Widget widget = client.getWidget(WidgetInfo.PYRAMID_PLUNDER_DATA);
+				if (widget == null)
+				{
+					return null;
+				}
+
+				toggleDefaultWidget(config.hideWidget());
+
+				panelComponent.getChildren().clear();
+
+				panelComponent.getChildren().add(TitleComponent.builder()
+						.text("Pyramid Plunder")
+						.build());
+
+				//Calculate time based on current pp timer tick
+				final int currentTick = client.getVar(Varbits.PYRAMID_PLUNDER_TIMER);
+				final double baseTick = (MAX_TICK_COUNT - currentTick) * TICK_LENGTH;
+				final double timeLeft = Math.max(0.0, baseTick);
+				final String timeLeftStr = TIME_LEFT_FORMATTER.format(timeLeft);
+
+				tableComponent.addRow("Time left:", ColorUtil.prependColorTag(timeLeftStr, getColor(currentTick)));
+				tableComponent.addRow("Room:", client.getVar(Varbits.PYRAMID_PLUNDER_ROOM) + "/8");
+
+				panelComponent.getChildren().add(tableComponent);
+
+				return panelComponent.render(graphics);
 			}
-
-			toggleDefaultWidget(config.hideWidget());
-
-			panelComponent.getChildren().clear();
-
-			panelComponent.getChildren().add(TitleComponent.builder()
-					.text("Pyramid Plunder")
-					.build());
-
-			//Calculate time based on current pp timer tick
-			final int currentTick = client.getVar(Varbits.PYRAMID_PLUNDER_TIMER);
-			final double baseTick = (MAX_TICK_COUNT - currentTick) * TICK_LENGTH;
-			final double timeLeft = Math.max(0.0, baseTick);
-			final String timeLeftStr = TIME_LEFT_FORMATTER.format(timeLeft);
-
-			tableComponent.addRow("Time left:", ColorUtil.prependColorTag(timeLeftStr, getColor(currentTick)));
-			tableComponent.addRow("Room:", client.getVar(Varbits.PYRAMID_PLUNDER_ROOM) + "/8");
-
-			panelComponent.getChildren().add(tableComponent);
-
-			return panelComponent.render(graphics);
-		}
-		else
-		{
-			return null;
-		}
+		return null;
 	}
 
 	void toggleDefaultWidget(boolean hide)
