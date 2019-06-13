@@ -29,6 +29,7 @@ import java.time.Duration;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
+import static net.runelite.api.ObjectID.ROCKS_10943;
 import static net.runelite.api.ObjectID.ROCKS_11161;
 import static net.runelite.api.ObjectID.ROCKS_11360;
 import static net.runelite.api.ObjectID.ROCKS_11361;
@@ -50,22 +51,22 @@ import static net.runelite.api.ObjectID.ROCKS_11387;
 
 enum Rock
 {
-	TIN(Duration.ofMillis(2300), 0, ROCKS_11360, ROCKS_11361),
-	COPPER(Duration.ofMillis(2200), 0, ROCKS_11161),
-	IRON(Duration.ofMillis(5300), 0, ROCKS_11364, ROCKS_11365)
+	TIN(Duration.ofMillis(2400), 0, ROCKS_11360, ROCKS_11361),
+	COPPER(Duration.ofMillis(2400), 0, ROCKS_10943, ROCKS_11161),
+	IRON(Duration.ofMillis(5400), 0, ROCKS_11364, ROCKS_11365)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
 			{
-				return inMiningGuild ? Duration.ofMillis(2200) : super.respawnTime;
+				return inMiningGuild ? Duration.ofMillis(2400) : super.respawnTime;
 			}
 		},
-	COAL(Duration.ofSeconds(40), 0, ROCKS_11366, ROCKS_11367)
+	COAL(Duration.ofMillis(29400), 0, ROCKS_11366, ROCKS_11367)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
 			{
-				return inMiningGuild ? Duration.ofMillis(14_500) : super.respawnTime;
+				return inMiningGuild ? Duration.ofMillis(14400) : super.respawnTime;
 			}
 		},
 	SILVER(Duration.ofMinutes(1), 0, ROCKS_11369),
