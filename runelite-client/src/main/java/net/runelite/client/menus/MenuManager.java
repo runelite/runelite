@@ -39,13 +39,12 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import joptsimple.internal.Strings;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
+import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPCDefinition;
-import net.runelite.api.ObjectDefinition;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcActionChanged;
@@ -95,8 +94,7 @@ public class MenuManager
 	private final Set<ComparableEntry> hiddenEntries = new HashSet<>();
 
 	private final Map<ComparableEntry, ComparableEntry> swaps = new HashMap<>();
-	private final Set<MenuEntry> originalTypes = new HashSet<>();
-	private final Set<Integer> leftClickObjects = new HashSet<>();
+	private final Map<MenuEntry, Integer> originalTypes = new HashMap<>();
 
 	@Inject
 	private MenuManager(Client client, EventBus eventBus)
@@ -230,18 +228,49 @@ public class MenuManager
 
 			if (foundSwap != null)
 			{
-				// This is the menu entry added last's type
-				final int otherType = foundSwap.getType();
+				// This is the type for the entry we're swapping the newest with
+				final int foundType = foundSwap.getType();
+				// This is the type for the newest entry
+				final int lastType = newestEntry.getType();
 
 				// MenuActions with an id of over 1000 get shifted to the back of the menu entry array
 				// They have different id's in the packet buffer though, so we got to modify them back on click
 				// I couldn't get this to work with objects, so we're using modified objectcomposition for that
-				final boolean shouldModifyType = otherType == MenuAction.EXAMINE_ITEM_BANK_EQ.getId();
+				final boolean shouldModifyFoundType = foundType >= 1000;
 
-				if (shouldModifyType)
+				final boolean shouldModifyLastType = lastType >= 1000;
+
+				// Bitwise or so we don't end up making things left click when they shouldn't
+				if (shouldModifyFoundType ^ shouldModifyLastType)
 				{
-					foundSwap.setType(MenuAction.WIDGET_DEFAULT.getId());
-					originalTypes.add(foundSwap);
+					int typeToSet;
+					switch (MenuAction.of(shouldModifyFoundType ? foundType : lastType))
+					{
+						case EXAMINE_ITEM_BANK_EQ:
+							typeToSet = MenuAction.WIDGET_DEFAULT.getId();
+							break;
+						case GAME_OBJECT_FIFTH_OPTION:
+							typeToSet = MenuAction.GAME_OBJECT_FIRST_OPTION.getId();
+							break;
+						default:
+							typeToSet = shouldModifyFoundType ? foundType : lastType;
+							break;
+					}
+
+					if (shouldModifyFoundType)
+					{
+						foundSwap.setType(typeToSet);
+						originalTypes.put(foundSwap, foundType);
+					}
+					else
+					{
+						newestEntry.setType(typeToSet);
+						originalTypes.put(newestEntry, lastType);
+
+						// We're probably trying to make something left click, so just slap on
+						// the menu action deprioritize 2000-inator++
+						foundSwap.setType(foundType + MENU_ACTION_DEPRIORITIZE_OFFSET);
+					}
 				}
 
 				// Swap
@@ -295,86 +324,6 @@ public class MenuManager
 				break;
 			}
 		}
-	}
-
-	public boolean toggleLeftClick(String menuText, int objectID, boolean reset)
-	{
-		Preconditions.checkNotNull(menuText);
-
-		if (client == null)
-		{
-			return false;
-		}
-
-		ObjectDefinition oc = client.getObjectDefinition(objectID);
-
-		if (oc == null)
-		{
-			return false;
-		}
-
-		ObjectDefinition impostor = oc.getImpostorIds() != null ? oc.getImpostor() : null;
-
-		if (impostor != null)
-		{
-			if (toggleLeftClick(menuText, impostor.getId(), reset))
-			{
-				// Sorry about this
-				leftClickObjects.remove(impostor.getId());
-
-				if (reset)
-				{
-					leftClickObjects.remove(objectID);
-				}
-				else
-				{
-					leftClickObjects.add(objectID);
-				}
-
-				return true;
-			}
-		}
-
-		String[] options = oc.getActions();
-
-		if (options == null)
-		{
-			return false;
-		}
-
-		boolean hasOption5 = !Strings.isNullOrEmpty(options[options.length - 1]);
-		boolean hasOption1 = !Strings.isNullOrEmpty(options[0]);
-
-		if (hasOption5 || hasOption1)
-		{
-			String option1 = options[0];
-			String option5 = options[options.length - 1];
-
-			if (reset && !hasOption1 // Won't have to reset anything cause
-				|| reset && !menuText.equalsIgnoreCase(option1) // theres nothing to reset
-				|| hasOption5 && !menuText.equalsIgnoreCase(option5))
-			{
-				return false;
-			}
-
-			options[0] = option5;
-			options[options.length - 1] = option1;
-		}
-		else
-		{
-			return false;
-		}
-
-		if (reset)
-		{
-			leftClickObjects.remove(objectID);
-		}
-		else
-		{
-			leftClickObjects.add(objectID);
-		}
-
-		return true;
 	}
 
 	@Subscribe
@@ -455,11 +404,26 @@ public class MenuManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
+		// if (originalTypes.get(event.ge
+		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		// This right here. That's the moment I realized once again that
+		// this event still is one of the worst fucking things that has
+		// ever happened to this project. MenuOptionClicked right? What
+		// do you expect the data in the event object to be?
+		// A FUCKING MENU ENTRY. Honestly I originally forgot why I wrote
+		// the rant below this, but the hate is coming back to me once again.
+		// What the fuck do you expect me to do? Make another MenuEntry from
+		// all the info WHICH WOULD HAVE BEEN INSIDE THE FUCKING MENUENTRY TO
+		// BEGIN WITH??? I am legit still perplexed over why someone would do
+		// it like this, and I don't want them to take this lightly cause they
+		// should really really really feel terrible about this.
+
 		if (!event.getMenuTarget().equals("do not edit") &&
 			!originalTypes.isEmpty() &&
-			event.getMenuAction() == MenuAction.WIDGET_DEFAULT)
+			event.getMenuAction() == MenuAction.WIDGET_DEFAULT ||
+			event.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION)
 		{
-			for (MenuEntry e : originalTypes)
+			for (Map.Entry<MenuEntry, Integer> ent : originalTypes.entrySet())
 			{
 				// Honestly, I was about to write a huge ass rant about
 				// how I hate whoever wrote the menuoptionclicked class
@@ -478,6 +442,9 @@ public class MenuManager
 				// 100% terrible. If they aren't depressed, I really wish
 				// they become depressed very, very soon. What the fuck
 				// were they even thinking.
+
+				MenuEntry e = ent.getKey();
+
 				if (event.getMenuAction().getId() != e.getType()
 					|| event.getId() != e.getIdentifier()
 					|| !event.getMenuOption().equals(e.getOption()))
@@ -490,7 +457,7 @@ public class MenuManager
 				client.invokeMenuAction(
 					event.getActionParam(),
 					event.getWidgetId(),
-					MenuAction.EXAMINE_ITEM_BANK_EQ.getId(),
+					ent.getValue(),
 					event.getId(),
 					event.getMenuOption(),
 					"do not edit",
@@ -500,29 +467,6 @@ public class MenuManager
 
 				break;
 			}
-		}
-
-		if (!event.getMenuTarget().equals("do not edit") &&
-			!leftClickObjects.isEmpty() &&
-			event.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION && (
-				leftClickObjects.contains(event.getId()) ||
-					client.getObjectDefinition(event.getId()) != null &&
-					client.getObjectDefinition(event.getId()).getImpostorIds() != null &&
-					client.getObjectDefinition(event.getId()).getImpostor() != null &&
-					client.getObjectDefinition(event.getId()).getImpostor().getId() == event.getId()))
-		{
-			event.consume();
-
-			client.invokeMenuAction(
-				event.getActionParam(),
-				event.getWidgetId(),
-				MenuAction.GAME_OBJECT_FIFTH_OPTION.getId(),
-				event.getId(),
-				event.getMenuOption(),
-				"do not edit",
-				client.getMouseCanvasPosition().getX(),
-				client.getMouseCanvasPosition().getY()
-			);
 		}
 
 		if (event.getMenuAction() != MenuAction.RUNELITE)
