@@ -98,7 +98,7 @@ enum Rock
 				return inMiningGuild ? Duration.ofMinutes(6) : super.respawnTime;
 			}
 		},
-	ORE_VEIN(Duration.ofSeconds(108), 150),
+	ORE_VEIN(Duration.ofSeconds(MiningOverlay.getORE_VEIN_MAX_RESPAWN_TIME()), 150),
 	AMETHYST(Duration.ofSeconds(75), 120);
 
 	private static final Map<Integer, Rock> ROCKS;
