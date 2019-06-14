@@ -52,6 +52,7 @@ public class RaidsPartyOverlay extends Overlay
 {
 	public static final String PARTY_OVERLAY_RESET = "Reset missing";
 	public static final String PARTY_OVERLAY_REFRESH = "Refresh party";
+	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private Client client;
@@ -188,6 +189,8 @@ public class RaidsPartyOverlay extends Overlay
 				}
 			}
 		}
+
+		panelComponent.getChildren().add(tableComponent);
 
 		return panel.render(graphics);
 	}
