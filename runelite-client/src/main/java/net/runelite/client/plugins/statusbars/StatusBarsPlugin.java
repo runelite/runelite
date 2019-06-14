@@ -24,14 +24,16 @@
  */
 package net.runelite.client.plugins.statusbars;
 
+import javax.inject.Inject;
+
+import com.google.common.collect.Maps;
 import com.google.inject.Provides;
+import lombok.Getter;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
-import javax.inject.Inject;
 import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
@@ -43,11 +45,20 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.itemstats.ItemStatPlugin;
+import net.runelite.client.plugins.statusbars.config.BarMode;
+import net.runelite.client.plugins.statusbars.renderer.BarRenderer;
+import net.runelite.client.plugins.statusbars.renderer.EnergyRenderer;
+import net.runelite.client.plugins.statusbars.renderer.HitPointsRenderer;
+import net.runelite.client.plugins.statusbars.renderer.PrayerRenderer;
+import net.runelite.client.plugins.statusbars.renderer.SpecialAttackRenderer;
 import net.runelite.client.ui.overlay.OverlayManager;
+
+
+import java.util.Map;
 
 @PluginDescriptor(
 	name = "Status Bars",
-	description = "Draws status bars next to players inventory showing current HP & Prayer and healing amounts",
+	description = "Draws status bars next to players inventory showing currentValue and restore amounts",
 	enabledByDefault = false
 )
 @PluginDependency(ItemStatPlugin.class)
@@ -58,6 +69,21 @@ public class StatusBarsPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private HitPointsRenderer hitPointsRenderer;
+
+	@Inject
+	private PrayerRenderer prayerRenderer;
+
+	@Inject
+	private EnergyRenderer energyRenderer;
+
+	@Inject
+	private SpecialAttackRenderer specialAttackRenderer;
+
+	@Getter
+	private final Map<BarMode, BarRenderer> barRenderers = Maps.newEnumMap(BarMode.class);
 
 	@Inject
 	private Client client;
@@ -71,6 +97,12 @@ public class StatusBarsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		barRenderers.put(BarMode.DISABLED, null);
+		barRenderers.put(BarMode.HITPOINTS, hitPointsRenderer);
+		barRenderers.put(BarMode.PRAYER, prayerRenderer);
+		barRenderers.put(BarMode.RUN_ENERGY, energyRenderer);
+		barRenderers.put(BarMode.SPECIAL_ATTACK, specialAttackRenderer);
 	}
 
 	void updateLastCombatAction()
@@ -122,6 +154,7 @@ public class StatusBarsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		barRenderers.clear();
 	}
 
 	@Provides
