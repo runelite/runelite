@@ -9,6 +9,7 @@ import net.runelite.api.HeadIcon;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.coords.WorldArea;
+import net.runelite.api.ProjectileID;
 
 public class OlmHead
 {
@@ -16,18 +17,19 @@ public class OlmHead
     static final int RANGE_AUTO = 1;
     static final int MAGE_AUTO = 0;
 
-    enum Attack
-    {
-        MAGE,
-        RANGE,
-        BURN,
-        FIREWALL,
-        BOMB,
-        FALLINGCRYSTALS,
-        ACIDSPRAY,
-        ACIDDRIP,
-        SMITE,
-    }
+    public static final int[] ALL_ATTACK_STYLES =
+        {
+            ProjectileID.OLM_RANGE_AUTO,
+            ProjectileID.OLM_MAGE_AUTO,
+            ProjectileID.OLM_ACID_SPREAD,
+            ProjectileID.OLM_FALLING_CRYSTALS,
+            ProjectileID.OLM_CRYSTAL_BOMB,
+            ProjectileID.OLM_BURN,
+            ProjectileID.OLM_FLAME_WALL,
+            ProjectileID.OLM_MELEE_SMITE,
+            ProjectileID.OLM_RANGE_SMITE,
+            ProjectileID.OLM_MAGE_SMITE
+        };
 
     @Getter
     private NPC npc;

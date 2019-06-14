@@ -80,12 +80,85 @@ public class OlmAttackCounterPlugin extends Plugin
 
 
 
- /*   @Subscribe
+    @Subscribe
     public void onGameTick(GameTick gameTick)
     {
-        olmHead.setLastAutoID(-1);
-    } */
+        List<Projectile> projectiles = client.getProjectiles();
 
+        List<Integer> attackStyles = new ArrayList();
+
+        for (int attack : OlmHead.ALL_ATTACK_STYLES)
+        {
+            attackStyles.add(attack);
+        }
+
+        for (Projectile projectile : client.getProjectiles())
+        {
+            int projectileId = projectile.getId();
+
+            if (attackStyles.contains(projectileId))
+            {
+                System.out.println(projectileId);
+
+                switch (projectileId)
+                {
+                    case ProjectileID.OLM_RANGE_AUTO:
+                        session.increaseRangeAmount();
+                        olmHead.setLastAutoID(OlmHead.RANGE_AUTO);
+                        break;
+
+                    case ProjectileID.OLM_MAGE_AUTO:
+                        session.increaseMageAmount();
+                        olmHead.setLastAutoID(OlmHead.MAGE_AUTO);
+                        break;
+
+                    case ProjectileID.OLM_ACID_DRIP:
+                        session.increaseDripAmount();
+                        break;
+
+            /*case ProjectileID.OLM_ACID_SPREAD:
+                session.increaseSprayAmount();*/
+
+                    case ProjectileID.OLM_FLAME_WALL:
+                        session.increaseWallAmount();
+                        break;
+
+                    case ProjectileID.OLM_BURN:
+                        session.increaseBurnAmount();
+                        break;
+
+                    case ProjectileID.OLM_FALLING_CRYSTALS:
+                        session.increaseFallAmount();
+                        break;
+
+                    case ProjectileID.OLM_CRYSTAL_BOMB:
+                        session.increaseBombAmount();
+                        break;
+
+                    case ProjectileID.OLM_MAGE_SMITE:
+                        session.increaseSmiteAmount();
+                        break;
+
+                    case ProjectileID.OLM_RANGE_SMITE:
+                        session.increaseSmiteAmount();
+                        break;
+
+                    case ProjectileID.OLM_MELEE_SMITE:
+                        session.increaseSmiteAmount();
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+                return;
+            }
+        }
+
+    }
+
+/*
     @Subscribe
     public void onProjectileMoved(ProjectileMoved event)
     {
@@ -117,8 +190,8 @@ public class OlmAttackCounterPlugin extends Plugin
                session.increaseDripAmount();
                 break;
 
-            /*case ProjectileID.OLM_ACID_SPREAD:
-                session.increaseSprayAmount();*/
+            case ProjectileID.OLM_ACID_SPREAD:
+                session.increaseSprayAmount();
 
             case ProjectileID.OLM_FLAME_WALL:
                session.increaseWallAmount();
@@ -156,6 +229,7 @@ public class OlmAttackCounterPlugin extends Plugin
 
 
     }
+    */
 
     @Subscribe
     public void onNpcSpawned(NpcSpawned event)
