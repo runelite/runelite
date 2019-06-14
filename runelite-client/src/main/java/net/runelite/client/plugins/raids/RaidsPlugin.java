@@ -566,7 +566,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void checkRaidPresence(boolean force)
+	public void checkRaidPresence(boolean force)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
