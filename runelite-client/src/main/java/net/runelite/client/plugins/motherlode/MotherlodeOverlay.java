@@ -24,15 +24,12 @@
  */
 package net.runelite.client.plugins.motherlode;
 
-import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Set;
 import javax.inject.Inject;
-import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -43,13 +40,6 @@ import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 class MotherlodeOverlay extends Overlay
 {
-	private static final Set<Integer> MINING_ANIMATION_IDS = ImmutableSet.of(
-		MINING_MOTHERLODE_BRONZE, MINING_MOTHERLODE_IRON, MINING_MOTHERLODE_STEEL,
-		MINING_MOTHERLODE_BLACK, MINING_MOTHERLODE_MITHRIL, MINING_MOTHERLODE_ADAMANT,
-		MINING_MOTHERLODE_RUNE, MINING_MOTHERLODE_DRAGON, MINING_MOTHERLODE_DRAGON_ORN,
-		MINING_MOTHERLODE_INFERNAL
-	);
-
 	private final Client client;
 	private final MotherlodePlugin plugin;
 	private final MotherlodeSession motherlodeSession;
@@ -94,7 +84,7 @@ class MotherlodeOverlay extends Overlay
 
 		if (config.showMiningState())
 		{
-			if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
+			if (plugin.isMining())
 			{
 				panelComponent.getChildren().add(TitleComponent.builder()
 					.text("Mining")

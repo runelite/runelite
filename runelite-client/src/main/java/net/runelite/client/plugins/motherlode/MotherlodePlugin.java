@@ -40,6 +40,19 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.AnimationID;
+import static net.runelite.api.AnimationID.IDLE;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_3A;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_ADAMANT;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BLACK;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BRONZE;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_ORN;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_INFERNAL;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -48,6 +61,11 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
+import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
+import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
+import static net.runelite.api.ObjectID.DEPLETED_VEIN_26667;
+import static net.runelite.api.ObjectID.DEPLETED_VEIN_26668;
 import static net.runelite.api.ObjectID.ORE_VEIN_26661;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
 import static net.runelite.api.ObjectID.ORE_VEIN_26663;
@@ -55,21 +73,29 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import static net.runelite.api.ObjectID.ROCKFALL;
 import static net.runelite.api.ObjectID.ROCKFALL_26680;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -88,6 +114,7 @@ public class MotherlodePlugin extends Plugin
 {
 	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
 	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ORE_VEIN_26661, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
+	private static final Set<Integer> DEPLETED_SPOTS = ImmutableSet.of(DEPLETED_VEIN_26665, DEPLETED_VEIN_26666, DEPLETED_VEIN_26667, DEPLETED_VEIN_26668);
 	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
 		ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
 	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
@@ -98,6 +125,10 @@ public class MotherlodePlugin extends Plugin
 	private static final int SACK_SIZE = 81;
 
 	private static final int UPPER_FLOOR_HEIGHT = -500;
+
+	// The motherlode mining animation has gaps in it during which the animation switches to IDLE
+	// so a minimum threshold is required before the idle animation will be registered as not mining
+	private static final Duration ANIMATION_IDLE_DELAY = Duration.ofMillis(1800);
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -126,6 +157,9 @@ public class MotherlodePlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private Notifier notifier;
+
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
 
@@ -145,6 +179,14 @@ public class MotherlodePlugin extends Plugin
 	private final Set<WallObject> veins = new HashSet<>();
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> rocks = new HashSet<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean isMining;
+	@Getter(AccessLevel.PACKAGE)
+	private WorldPoint targetVeinLocation = null;
+	private boolean playerHasReachedTargetVein;
+	private int lastAnimation = AnimationID.IDLE;
+	private Instant lastAnimating;
 
 	@Provides
 	MotherlodeConfig getConfig(ConfigManager configManager)
@@ -279,6 +321,161 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked menu)
+	{
+		if (!inMlm)
+		{
+			return;
+		}
+
+		if (MINE_SPOTS.contains(menu.getId()) &&  menu.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION)
+		{
+			resetIdleChecks();
+			int veinX = menu.getActionParam();
+			int veinY = menu.getWidgetId();
+			targetVeinLocation = WorldPoint.fromScene(client, veinX, veinY, client.getPlane());
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!inMlm)
+		{
+			return;
+		}
+
+		checkDistanceToTargetVein();
+		checkAnimationIdle();
+	}
+
+	private void checkDistanceToTargetVein()
+	{
+		if (targetVeinLocation == null)
+		{
+			return;
+		}
+
+		float distanceFromTargetVein = client.getLocalPlayer().getWorldLocation().distanceToHypotenuse(targetVeinLocation);
+		// Player must reach the target vein first before we begin checking for the player moving away from it
+		if (!playerHasReachedTargetVein && distanceFromTargetVein == 1)
+		{
+			isMining = true;
+			playerHasReachedTargetVein = true;
+		}
+		else if (playerHasReachedTargetVein && distanceFromTargetVein > 1)
+		{
+			isMining = false;
+			resetIdleChecks();
+		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged (AnimationChanged event)
+	{
+		if (!inMlm)
+		{
+			return;
+		}
+
+		Player localPlayer = client.getLocalPlayer();
+		if (localPlayer != event.getActor())
+		{
+			return;
+		}
+
+		int animation = localPlayer.getAnimation();
+
+		switch (animation)
+		{
+			case MINING_MOTHERLODE_BRONZE:
+			case MINING_MOTHERLODE_IRON:
+			case MINING_MOTHERLODE_STEEL:
+			case MINING_MOTHERLODE_BLACK:
+			case MINING_MOTHERLODE_MITHRIL:
+			case MINING_MOTHERLODE_ADAMANT:
+			case MINING_MOTHERLODE_RUNE:
+			case MINING_MOTHERLODE_DRAGON:
+			case MINING_MOTHERLODE_DRAGON_ORN:
+			case MINING_MOTHERLODE_INFERNAL:
+			case MINING_MOTHERLODE_3A:
+				lastAnimation = animation;
+				lastAnimating = Instant.now();
+				break;
+			case IDLE:
+				lastAnimating = Instant.now();
+				break;
+			default:
+				// On unknown animation simply assume the animation is invalid
+				lastAnimation = IDLE;
+				lastAnimating = null;
+		}
+	}
+
+	private void checkAnimationIdle()
+	{
+		if (lastAnimation == IDLE)
+		{
+			return;
+		}
+
+		final int animation = client.getLocalPlayer().getAnimation();
+
+		if (animation == IDLE)
+		{
+			if (lastAnimating != null && Instant.now().compareTo(lastAnimating.plus(ANIMATION_IDLE_DELAY)) >= 0)
+			{
+				lastAnimation = IDLE;
+				lastAnimating = null;
+				isMining = false;
+				resetIdleChecks();
+				sendIdleNotification();
+			}
+		}
+		else
+		{
+			lastAnimating = Instant.now();
+		}
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (!inMlm || targetVeinLocation == null)
+		{
+			return;
+		}
+
+		int widgetID = event.getGroupId();
+
+		if (widgetID == WidgetID.MOTHERLODE_MINE_FULL_INVENTORY_GROUP_ID || widgetID == WidgetID.LEVEL_UP_GROUP_ID)
+		{
+			isMining = false;
+			resetIdleChecks();
+			sendIdleNotification();
+		}
+	}
+
+	private void resetIdleChecks()
+	{
+		isMining = false;
+		lastAnimation = IDLE;
+		lastAnimating = null;
+		playerHasReachedTargetVein = false;
+		targetVeinLocation = null;
+	}
+
+	private void sendIdleNotification()
+	{
+		if (!config.notifyOnIdle())
+		{
+			return;
+		}
+
+		notifier.notify(client.getLocalPlayer().getName() + " has stopped mining!");
+	}
+
+	@Subscribe
 	public void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		if (!inMlm)
@@ -287,9 +484,16 @@ public class MotherlodePlugin extends Plugin
 		}
 
 		WallObject wallObject = event.getWallObject();
-		if (MINE_SPOTS.contains(wallObject.getId()))
+		int wallObjectId = wallObject.getId();
+		if (MINE_SPOTS.contains(wallObjectId))
 		{
 			veins.add(wallObject);
+		}
+		else if (DEPLETED_SPOTS.contains(wallObjectId) && wallObject.getWorldLocation().equals(targetVeinLocation))
+		{
+			isMining = false;
+			resetIdleChecks();
+			sendIdleNotification();
 		}
 	}
 
