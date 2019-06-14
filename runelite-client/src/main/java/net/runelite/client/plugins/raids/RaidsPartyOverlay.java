@@ -30,8 +30,12 @@ import java.awt.Color;
 import java.util.Set;
 import javax.inject.Inject;
 
-import net.runelite.api.*;
 
+import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
+import net.runelite.api.ClanMember;
 import net.runelite.client.ui.overlay.Overlay;
 
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -39,8 +43,10 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 
 public class RaidsPartyOverlay extends Overlay
 {
@@ -86,6 +92,11 @@ public class RaidsPartyOverlay extends Overlay
 
 		int playerCount = client.getPlayers().size();
 
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
+
+
 		String partyCountString;
 
 		Color countColor = Color.WHITE;
@@ -114,12 +125,7 @@ public class RaidsPartyOverlay extends Overlay
 
 		panel.getChildren().clear();
 
-		// Show amount of people currently in raid vs total in the party
-		panel.getChildren().add(LineComponent.builder()
-				.left("Party size:")
-				.right(partyCountString)
-				.rightColor(countColor)
-				.build());
+		tableComponent.addRow("Party size:", ColorUtil.prependColorTag(partyCountString, countColor));
 
 		if (inLobby)
 		{
@@ -150,11 +156,8 @@ public class RaidsPartyOverlay extends Overlay
 				notInPartyColor = Color.WHITE;
 			}
 
-			panel.getChildren().add(LineComponent.builder()
-					.left("Not at raids:")
-					.right(String.valueOf(notInParty))
-					.rightColor(notInPartyColor)
-					.build());
+			tableComponent.addRow("Not at raids:", ColorUtil.prependColorTag(String.valueOf(notInParty), notInPartyColor));
+
 
 			// Show amount of clan members that are not in the right world.
 			Color wrongWorldColor;
@@ -167,11 +170,7 @@ public class RaidsPartyOverlay extends Overlay
 				wrongWorldColor = Color.WHITE;
 			}
 
-			panel.getChildren().add(LineComponent.builder()
-					.left("Wrong world:")
-					.right(String.valueOf(wrongWorldClanMembers))
-					.rightColor(wrongWorldColor)
-					.build());
+			tableComponent.addRow("Wrong world:", ColorUtil.prependColorTag(String.valueOf(wrongWorldClanMembers), wrongWorldColor));
 
 		}
 		else
@@ -179,16 +178,13 @@ public class RaidsPartyOverlay extends Overlay
 			Set<String> missingPartyMembers = plugin.getMissingPartyMembers();
 			if (missingPartyMembers.size() > 0)
 			{
-				panel.getChildren().add(LineComponent.builder()
-						.left("Missing players:")
-						.build());
+
+
+				tableComponent.addRow("Missing players:", "");
 
 				for (String member : missingPartyMembers)
 				{
-					panel.getChildren().add(LineComponent.builder()
-							.left(member)
-							.leftColor(Color.RED)
-							.build());
+					tableComponent.addRow(ColorUtil.prependColorTag(member, Color.RED), "");
 				}
 			}
 		}
