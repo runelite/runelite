@@ -62,7 +62,7 @@ public interface TileIndicatorsConfig extends Config
 	)
 	default Color highlightCurrentColor()
 	{
-		return Color.cyan;
+		return Color.CYAN;
 	}
 
 	@ConfigItem(
