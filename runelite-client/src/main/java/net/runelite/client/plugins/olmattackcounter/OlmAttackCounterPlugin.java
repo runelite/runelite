@@ -63,11 +63,17 @@ public class OlmAttackCounterPlugin extends Plugin
     @Getter(AccessLevel.PACKAGE)
     private OlmSession session;
 
+    private List<Integer> attackStyles = new ArrayList();
 
     @Override
     protected void startUp() throws Exception {
         overlayManager.add(overlay);
         session = new OlmSession();
+
+         for (int attack : OlmHead.ALL_ATTACK_STYLES)
+         {
+             attackStyles.add(attack);
+         }
     }
 
     @Override
@@ -75,22 +81,22 @@ public class OlmAttackCounterPlugin extends Plugin
     {
         overlayManager.remove(overlay);
         session = null;
+        attackStyles = null;
     }
-
-
 
 
     @Subscribe
     public void onGameTick(GameTick gameTick)
     {
-        List<Projectile> projectiles = client.getProjectiles();
 
-        List<Integer> attackStyles = new ArrayList();
 
-        for (int attack : OlmHead.ALL_ATTACK_STYLES)
+
+        if (olmHead == null) // intermission, crystal bomb and ceiling crystals have the same ID
         {
-            attackStyles.add(attack);
+            return;
         }
+
+
 
         for (Projectile projectile : client.getProjectiles())
         {
@@ -235,7 +241,6 @@ public class OlmAttackCounterPlugin extends Plugin
     public void onNpcSpawned(NpcSpawned event)
     {
         NPC npc = event.getNpc();
-        System.out.println(npc.getName());
         if (isOlmHead(npc.getId()))
         {
             olmHead = new OlmHead(npc);
