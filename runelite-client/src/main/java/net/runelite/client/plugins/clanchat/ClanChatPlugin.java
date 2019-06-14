@@ -68,6 +68,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
@@ -111,6 +112,9 @@ public class ClanChatPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+	
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	private List<String> chats = new ArrayList<>();
 
@@ -266,6 +270,8 @@ public class ClanChatPlugin extends Plugin
 		{
 			return;
 		}
+
+		client.setVar(VarClientStr.RECENT_CLAN_CHAT, config.clanname());
 
 		Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
 		if (clanChatTitleWidget != null)
