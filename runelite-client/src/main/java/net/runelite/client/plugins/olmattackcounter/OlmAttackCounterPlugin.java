@@ -69,11 +69,10 @@ public class OlmAttackCounterPlugin extends Plugin
     protected void startUp() throws Exception {
         overlayManager.add(overlay);
         session = new OlmSession();
-
-         for (int attack : OlmHead.ALL_ATTACK_STYLES)
-         {
-             attackStyles.add(attack);
-         }
+        for (int attack : OlmHead.ALL_ATTACK_STYLES)
+        {
+            attackStyles.add(attack);
+        }
     }
 
     @Override
@@ -88,8 +87,8 @@ public class OlmAttackCounterPlugin extends Plugin
     @Subscribe
     public void onGameTick(GameTick gameTick)
     {
-
-
+        int currentTick = client.getTickCount();
+        System.out.println(currentTick);
 
         if (olmHead == null) // intermission, crystal bomb and ceiling crystals have the same ID
         {
@@ -244,6 +243,8 @@ public class OlmAttackCounterPlugin extends Plugin
         if (isOlmHead(npc.getId()))
         {
             olmHead = new OlmHead(npc);
+            olmHead.setLastAutoID(-1);
+            olmHead.setLastAutoTick(-1);
         }
     }
 
