@@ -61,7 +61,6 @@ public class OlmAttackCounterPlugin extends Plugin
     protected void startUp() throws Exception {
         overlayManager.add(overlay);
         session = new OlmSession();
-        olmHead = new OlmHead();
         for (int attack : OlmHead.ALL_ATTACK_STYLES)
         {
             attackStyles.add(attack);
@@ -189,14 +188,12 @@ public class OlmAttackCounterPlugin extends Plugin
                         break;
 
                 }
-
-                return; // Need to move this return statement, get ALL projectiles
             }
         }
 
         System.out.println("There were " + numOlmAttacks + " Olm attack projectiles");
 
-        return; // Should never reach
+        return;
     }
 
     @Subscribe
@@ -229,14 +226,10 @@ public class OlmAttackCounterPlugin extends Plugin
     {
         final String message = event.getMessage();
 
-        /*
         if (message.startsWith("As you pass through the barrier, a sense of dread washes over you."))
         {
             olmHead = new OlmHead();
-            olmHead.setLastAutoID(-1);
-            olmHead.setLastAutoTick(-1);
         }
-        */
 
         // Falling crystals
         if (message.startsWith("The Great Olm sounds a cry..."))

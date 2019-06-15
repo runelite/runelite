@@ -9,12 +9,9 @@ import java.time.Duration;
 import javax.inject.Inject;
 import javax.sound.sampled.Line;
 
-import static net.runelite.api.AnimationID.COOKING_FIRE;
-import static net.runelite.api.AnimationID.COOKING_RANGE;
+
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.api.Skill;
-import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -30,6 +27,8 @@ class OlmAttackCounterOverlay extends Overlay
     private final PanelComponent panelComponent = new PanelComponent();
     private final OlmAttackCounterPlugin plugin;
     private static final int OLM_PLANE = 0;
+
+    private static final DecimalFormat FORMAT = new DecimalFormat("#.#");
 
     @Inject
     private OlmAttackCounterOverlay(Client client, OlmAttackCounterPlugin plugin)
@@ -108,7 +107,8 @@ class OlmAttackCounterOverlay extends Overlay
                 .right(session.getPoolCounter() + "")
                 .build());
 
-            /* Replace above lines with this code block before release
+             //Replace above lines with this code block before release
+            /*
             panelComponent.getChildren().add(LineComponent.builder()
                 .left("Special Counter:")
                 .right(session.specialCount()+ "")
@@ -116,9 +116,9 @@ class OlmAttackCounterOverlay extends Overlay
 
             panelComponent.getChildren().add(LineComponent.builder()
                 .left("Switch %:")
-                .right(session.getSwitchCounter() + "")
+                .right(session.getSwitchCounter() + (session.getSwitchCounter() >= 1 ? " (" + FORMAT.format(session.getSwitchCounter()) + "%)" : ""))
                 .build());
-             */
+            */
 
             /* Counting number of phases, not needed
             panelComponent.getChildren().add(LineComponent.builder()
