@@ -164,9 +164,9 @@ public abstract class EntityHiderMixin implements RSScene
 				}
 			}
 
-			for(String name: names)
+			for (String name: names)
 			{
-				if(names.equals(npc.getName()))
+				if (names.equals(npc.getName()))
 				{
 					return false;
 				}
