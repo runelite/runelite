@@ -13,7 +13,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.Ignore;
 import java.util.LinkedList;
 import java.util.List;
 import net.runelite.api.events.*;
@@ -279,7 +278,7 @@ public class TheatrePlugin extends Plugin
 
 				if (dChildsApplied.length > 2)
 				{
-					for (int i = 1; i < dChildsApplied.length; i+=11)
+					for (int i = 1; i < dChildsApplied.length; i += 11)
 					{
 						if (!dChildsApplied[i].getText().equals("-"))
 						{
@@ -301,7 +300,7 @@ public class TheatrePlugin extends Plugin
 			for (int i = 0; i < client.getIgnoreCount(); i++)
 			{
 				String name = client.getIgnores()[i].getName();
-				if (name.replace('\u00A0',' ').equals(wtext))
+				if (name.replace('\u00A0', ' ').equals(wtext))
 				{
 					w.setTextColor(Color.red.getRGB());
 					break;
