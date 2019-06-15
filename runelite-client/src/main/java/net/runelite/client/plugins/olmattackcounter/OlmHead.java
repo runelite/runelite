@@ -61,11 +61,9 @@ public class OlmHead
     private int phase; // -1 == NONE, 1 = ACID, 2 = CRYSTAL, 3 = FLAME, 4 = HEAD
 
 
-    public OlmHead(NPC npc)
+    public OlmHead()
     {
-        this.npc = npc;
         this.attackSide = -1;
-        this.lastAutoID = -1;
         this.phase = PHASE_NONE;
 
     }

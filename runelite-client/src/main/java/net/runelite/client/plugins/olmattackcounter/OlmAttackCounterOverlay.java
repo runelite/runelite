@@ -7,6 +7,8 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.Duration;
 import javax.inject.Inject;
+import javax.sound.sampled.Line;
+
 import static net.runelite.api.AnimationID.COOKING_FIRE;
 import static net.runelite.api.AnimationID.COOKING_RANGE;
 import net.runelite.api.Client;
@@ -100,6 +102,28 @@ class OlmAttackCounterOverlay extends Overlay
                 .left("Smite Counter:")
                 .right(session.getSmiteCounter() + "")
                 .build());
+
+            panelComponent.getChildren().add(LineComponent.builder()
+                .left("Pool Counter:")
+                .right(session.getPoolCounter() + "")
+                .build());
+
+            panelComponent.getChildren().add(LineComponent.builder()
+                .left("Acid Phase:")
+                .right(session.getAcidPhaseCounter() + "")
+                .build());
+
+            panelComponent.getChildren().add(LineComponent.builder()
+                .left("Flame Phase:")
+                .right(session.getFlamePhaseCounter() + "")
+                .build());
+
+            panelComponent.getChildren().add(LineComponent.builder()
+                .left("Crystal Phase:")
+                .right(session.getCrystalPhaseCounter() + "")
+                .build());
+
+
         //}
 
         return panelComponent.render(graphics);

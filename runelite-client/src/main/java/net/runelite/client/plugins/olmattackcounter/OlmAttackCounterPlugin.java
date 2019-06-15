@@ -79,7 +79,7 @@ public class OlmAttackCounterPlugin extends Plugin
     @Subscribe
     public void onGameTick(GameTick gameTick)
     {
-        int currentTick = client.getTickCount();
+        final int currentTick = client.getTickCount();
         // System.out.println("current tick: " + currentTick);
 
         if (olmHead == null) // intermission, crystal bomb and ceiling crystals have the same ID
@@ -87,7 +87,7 @@ public class OlmAttackCounterPlugin extends Plugin
             return;
         }
 
-        if (olmHead.getLastAutoTick() != -1 && olmHead.getLastAutoTick() + 3 > currentTick)
+        if (olmHead.getLastAutoTick() != -1 && olmHead.getLastAutoTick() + 8 > currentTick)
         {
             return;
         }
@@ -98,34 +98,29 @@ public class OlmAttackCounterPlugin extends Plugin
         {
             int projectileId = projectile.getId();
 
-            // Only new projectiles considered
-            if (projectile.getStartMovementCycle() - projectile.getEndHeight() != projectile.getRemainingCycles())
-            {
-                continue;
-            }
-
             olmHead.setLastAutoTick(currentTick);
 
             if (attackStyles.contains(projectileId))
             {
                 System.out.println("Olm Attacks!");
                 System.out.println("tick:       " + currentTick);
-                System.out.println("projectile: " + projectileId);
-                System.out.println("");
 
                 switch (projectileId)
                 {
                     case ProjectileID.OLM_RANGE_AUTO:
                         session.increaseRangeAmount();
+                        System.out.println("Ranged Attack");
                         olmHead.setLastAutoID(OlmHead.RANGE_AUTO);
                         break;
 
                     case ProjectileID.OLM_MAGE_AUTO:
                         session.increaseMageAmount();
+                        System.out.println("Mage Attack");
                         olmHead.setLastAutoID(OlmHead.MAGE_AUTO);
                         break;
 
                     case ProjectileID.OLM_ACID_DRIP:
+                        System.out.println("Acid Attack");
                         session.increaseDripAmount();
                         break;
 
@@ -133,30 +128,32 @@ public class OlmAttackCounterPlugin extends Plugin
                 session.increaseSprayAmount();*/
 
                     case ProjectileID.OLM_FLAME_WALL:
+                        System.out.println("Flame Wall");
                         session.increaseWallAmount();
                         break;
 
                     case ProjectileID.OLM_BURN:
+                        System.out.println("Burn Attack");
                         session.increaseBurnAmount();
                         break;
 
-                    case ProjectileID.OLM_FALLING_CRYSTALS:
-                        session.increaseFallAmount();
-                        break;
-
                     case ProjectileID.OLM_CRYSTAL_BOMB:
+                        System.out.println("Crystal Bomb");
                         session.increaseBombAmount();
                         break;
 
                     case ProjectileID.OLM_MAGE_SMITE:
+                        System.out.println("Mage Smite");
                         session.increaseSmiteAmount();
                         break;
 
                     case ProjectileID.OLM_RANGE_SMITE:
+                        System.out.println("Range Smite");
                         session.increaseSmiteAmount();
                         break;
 
                     case ProjectileID.OLM_MELEE_SMITE:
+                        System.out.println("Melee Smite");
                         session.increaseSmiteAmount();
                         break;
 
@@ -250,9 +247,8 @@ public class OlmAttackCounterPlugin extends Plugin
         NPC npc = event.getNpc();
         if (isOlmHead(npc.getId()))
         {
-            olmHead = new OlmHead(npc);
-            olmHead.setLastAutoID(-1);
-            olmHead.setLastAutoTick(-1);
+            System.out.println("Olm Head Spawned");
+            System.out.println("Tick Spawned: " + client.getTickCount());
         }
     }
 
@@ -260,10 +256,7 @@ public class OlmAttackCounterPlugin extends Plugin
     public void onNpcDespawned(NpcDespawned event)
     {
         NPC npc = event.getNpc();
-        if (isOlmHead(npc.getId()))
-        {
-            olmHead = null;
-        }
+        System.out.println("NPC despawned: " + npc.getName());
     }
 
 
@@ -271,6 +264,13 @@ public class OlmAttackCounterPlugin extends Plugin
     public void onChatMessage(ChatMessage event)
     {
         final String message = event.getMessage();
+
+        if (message.startsWith("As you pass through the barrier, a sense of dread washes over you."))
+        {
+            olmHead = new OlmHead();
+            olmHead.setLastAutoID(-1);
+            olmHead.setLastAutoTick(-1);
+        }
 
         // Falling crystals
         if (message.startsWith("The Great Olm sounds a cry..."))
@@ -293,24 +293,32 @@ public class OlmAttackCounterPlugin extends Plugin
             System.out.println("Head Phase");
         }
 
-        if (message.startsWith("The Great Olm rises with the power of acid"))
+        if (message.startsWith("The Great Olm rises with the power of") &&
+            message.contains("acid"))
         {
             olmHead.setPhase(olmHead.PHASE_ACID);
+            session.increaseAcidPhaseCount();
             System.out.println("Acid Phase");
         }
 
-        if (message.startsWith("The Great Olm rises with the power of crystal"))
+        if (message.startsWith("The Great Olm rises with the power of") &&
+            message.contains("crystal"))
         {
             olmHead.setPhase(olmHead.PHASE_CRYSTAL);
+            session.increaseCrystalPhaseCount();
             System.out.println("Crystal Phase");
         }
 
-        if (message.startsWith("The Great Olm rises with the power of flame"))
+        if (message.startsWith("The Great Olm rises with the power of") &&
+            message.contains("flame"))
         {
             olmHead.setPhase(olmHead.PHASE_FLAME);
+            session.increaseFlamePhaseCount();
             System.out.println("Flame Phase");
         }
     }
+
+
 
     public static boolean isOlmHead(int npcID)
     {

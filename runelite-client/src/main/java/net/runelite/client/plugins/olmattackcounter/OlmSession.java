@@ -26,6 +26,12 @@ public class OlmSession {
     private int switchCounter;
     @Getter(AccessLevel.PACKAGE)
     private int poolCounter;
+    @Getter(AccessLevel.PACKAGE)
+    private int acidPhaseCounter;
+    @Getter(AccessLevel.PACKAGE)
+    private int flamePhaseCounter;
+    @Getter(AccessLevel.PACKAGE)
+    private int crystalPhaseCounter;
 
     void increaseRangeAmount()
     {
@@ -82,5 +88,18 @@ public class OlmSession {
         this.poolCounter++;
     }
 
+    void increaseAcidPhaseCount()
+    {
+        this.acidPhaseCounter++;
+    }
 
+    void increaseFlamePhaseCount()
+    {
+        this.flamePhaseCounter++;
+    }
+
+    void increaseCrystalPhaseCount()
+    {
+        this.crystalPhaseCounter++;
+    }
 }
