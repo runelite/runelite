@@ -32,7 +32,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.HealthBar;
-import net.runelite.api.HealthBarOverride;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.BeforeMenuRender;
