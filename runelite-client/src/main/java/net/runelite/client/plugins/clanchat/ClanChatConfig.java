@@ -137,4 +137,15 @@ public interface ClanChatConfig extends Config
 	{
 		return false;
 	}
+	
+	@ConfigItem(
+		position = 9,
+		keyName = "clanname",
+		name = "Default Clan Name",
+		description = "Clan name to always remember"
+	)
+	default String clanname()
+	{
+		return "";
+	}
 }
