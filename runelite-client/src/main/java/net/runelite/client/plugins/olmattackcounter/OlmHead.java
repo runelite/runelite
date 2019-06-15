@@ -13,9 +13,16 @@ import net.runelite.api.ProjectileID;
 
 public class OlmHead
 {
-    static final int EVENT_RATE = 4; //  4 ticks between each event, an event can be an auto attack/melee special
     static final int RANGE_AUTO = 1;
     static final int MAGE_AUTO = 0;
+
+    static final int OLM_HEAD_ACTIVE = 1;
+    static final int OLM_INTERMISSION = 0;
+    static final int OLM_NOT_SPAWNED = -1;
+
+    static final int AUTO_RATE = 8;
+    static final int SKIPPED_CYCLE_RATE = 12;
+    static final int EVENT_RATE = 4;
 
     static final int PHASE_NONE = 0;
     static final int PHASE_ACID = 1;
@@ -46,6 +53,10 @@ public class OlmHead
 
     @Getter
     @Setter
+    private int active;
+
+    @Getter
+    @Setter
     private int lastAutoID; // 0 = mage, 1 = range
 
     @Getter
@@ -65,7 +76,9 @@ public class OlmHead
     {
         this.attackSide = -1;
         this.phase = PHASE_NONE;
-
+        this.lastAutoTick = -1;
+        this.nextAttackTick = -1;
+        this.active = OLM_NOT_SPAWNED;
     }
 
 

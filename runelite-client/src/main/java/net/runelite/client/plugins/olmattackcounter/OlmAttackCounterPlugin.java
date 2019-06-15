@@ -74,6 +74,7 @@ public class OlmAttackCounterPlugin extends Plugin
         overlayManager.remove(overlay);
         session = null;
         attackStyles = null;
+        olmHead = null;
     }
 
 
@@ -81,25 +82,32 @@ public class OlmAttackCounterPlugin extends Plugin
     public void onGameTick(GameTick gameTick)
     {
         final int currentTick = client.getTickCount();
-        // System.out.println("current tick: " + currentTick);
 
         if (olmHead == null) // intermission, crystal bomb and ceiling crystals have the same ID
         {
             return;
         }
 
-        if (olmHead.getLastAutoTick() != -1 && olmHead.getLastAutoTick() + 4 > currentTick)
+        if (olmHead.getLastAutoTick() != -1 &&
+            olmHead.getLastAutoTick() + olmHead.AUTO_RATE > currentTick)
         {
             return;
         }
 
 
-
         for (Projectile projectile : client.getProjectiles())
         {
             int projectileId = projectile.getId();
+            // Account for a skipped 3rd cycle
+            if (olmHead.getLastAutoTick() + olmHead.SKIPPED_CYCLE_RATE == currentTick)
+            {
+                olmHead.setLastAutoTick(currentTick - olmHead.EVENT_RATE);
+            }
+            else
+            {
+                olmHead.setLastAutoTick(currentTick);
+            }
 
-            olmHead.setLastAutoTick(currentTick);
 
             if (attackStyles.contains(projectileId))
             {
@@ -143,15 +151,12 @@ public class OlmAttackCounterPlugin extends Plugin
                         session.increaseBombAmount();
                         break;
 
+                    // Only count smites once
                     case ProjectileID.OLM_MAGE_SMITE:
                         System.out.println("Mage Smite");
-                        session.increaseSmiteAmount();
-                        break;
 
                     case ProjectileID.OLM_RANGE_SMITE:
                         System.out.println("Range Smite");
-                        session.increaseSmiteAmount();
-                        break;
 
                     case ProjectileID.OLM_MELEE_SMITE:
                         System.out.println("Melee Smite");
@@ -248,6 +253,7 @@ public class OlmAttackCounterPlugin extends Plugin
         NPC npc = event.getNpc();
         if (isOlmHead(npc.getId()))
         {
+            olmHead.setActive(OlmHead.OLM_HEAD_ACTIVE);
             System.out.println("Olm Head Spawned");
             System.out.println("Tick Spawned: " + client.getTickCount());
         }
@@ -257,7 +263,12 @@ public class OlmAttackCounterPlugin extends Plugin
     public void onNpcDespawned(NpcDespawned event)
     {
         NPC npc = event.getNpc();
-        System.out.println("NPC despawned: " + npc.getName());
+        if (npc.getId() == NpcID.GREAT_OLM_7554)
+        {
+            olmHead.setActive(OlmHead.OLM_INTERMISSION);
+            System.out.println("NPC despawned: " + npc.getName());
+        }
+
     }
 
 
@@ -266,12 +277,15 @@ public class OlmAttackCounterPlugin extends Plugin
     {
         final String message = event.getMessage();
 
+        /*
         if (message.startsWith("As you pass through the barrier, a sense of dread washes over you."))
         {
             olmHead = new OlmHead();
             olmHead.setLastAutoID(-1);
             olmHead.setLastAutoTick(-1);
         }
+        */
+
 
         // Falling crystals
         if (message.startsWith("The Great Olm sounds a cry..."))
@@ -316,6 +330,11 @@ public class OlmAttackCounterPlugin extends Plugin
             olmHead.setPhase(olmHead.PHASE_FLAME);
             session.increaseFlamePhaseCount();
             System.out.println("Flame Phase");
+        }
+
+        if (message.startsWith("As the Great Olm collapses, the crystal blocking your exit has been shattered."))
+        {
+            olmHead.setActive(OlmHead.OLM_NOT_SPAWNED);
         }
     }
 
