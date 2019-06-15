@@ -126,7 +126,7 @@ class DiscordState
 		{
 			// If we aren't showing the elapsed time within Discord then
 			// We null out the event start property
-			event = new EventWithTime(eventType, config.hideElapsedTime() ? null : Instant.now());
+			event = new EventWithTime(eventType, Instant.now());
 
 			events.add(event);
 		}
@@ -179,7 +179,7 @@ class DiscordState
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
 			.largeImageText(properties.getTitle() + " v" + versionShortHand)
-			.startTimestamp(event.getStart())
+			.startTimestamp(config.hideElapsedTime() ? null : event.getStart())
 			.smallImageKey(imageKey)
 			.partyMax(PARTY_MAX)
 			.partySize(party.getMembers().size());
@@ -208,5 +208,12 @@ class DiscordState
 		final Duration actionTimeout = Duration.ofMinutes(config.actionTimeout());
 		final Instant now = Instant.now();
 		events.removeIf(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)));
+	}
+
+	public void checkForMenuTimeout() {
+		EventWithTime event = events.get(0);
+		if (event.getType().getState() == DiscordGameEventType.IN_MENU.getState())
+			if (event.start.plusSeconds(900).isBefore(Instant.now()))
+				this.reset();
 	}
 }
