@@ -83,7 +83,8 @@ public class OlmAttackCounterPlugin extends Plugin
     {
         final int currentTick = client.getTickCount();
 
-        if (olmHead == null) // intermission, crystal bomb and ceiling crystals have the same ID
+        // intermission, crystal bomb and ceiling crystals have the same ID
+        if (olmHead.getActive() == OlmHead.OLM_INTERMISSION || olmHead.getActive() == OlmHead.OLM_NOT_SPAWNED)
         {
             return;
         }
@@ -174,79 +175,6 @@ public class OlmAttackCounterPlugin extends Plugin
 
     }
 
-/*
-    @Subscribe
-    public void onProjectileMoved(ProjectileMoved event)
-    {
-        Projectile projectile = event.getProjectile();
-        int projectileId = projectile.getId();
-        switch (projectileId)
-        {
-
-            case ProjectileID.OLM_RANGE_AUTO:
-                if (olmHead.getLastAutoID() == OlmHead.MAGE_AUTO)
-                {
-                    session.increaseSwitchAmount();
-                }
-                session.increaseRangeAmount();
-                olmHead.setLastAutoID(OlmHead.RANGE_AUTO);
-                break;
-
-            case ProjectileID.OLM_MAGE_AUTO:
-               session.increaseMageAmount();
-                if (olmHead.getLastAutoID() == OlmHead.RANGE_AUTO)
-                {
-                    session.increaseSwitchAmount();
-                }
-                session.increaseMageAmount();
-                olmHead.setLastAutoID(OlmHead.MAGE_AUTO);
-                break;
-
-            case ProjectileID.OLM_ACID_DRIP:
-               session.increaseDripAmount();
-                break;
-
-            case ProjectileID.OLM_ACID_SPREAD:
-                session.increaseSprayAmount();
-
-            case ProjectileID.OLM_FLAME_WALL:
-               session.increaseWallAmount();
-                break;
-
-            case ProjectileID.OLM_BURN:
-               session.increaseBurnAmount();
-                break;
-
-            case ProjectileID.OLM_FALLING_CRYSTALS:
-               session.increaseFallAmount();
-                break;
-
-            case ProjectileID.OLM_CRYSTAL_BOMB:
-               session.increaseBombAmount();
-                break;
-
-            case ProjectileID.OLM_MAGE_SMITE:
-               session.increaseSmiteAmount();
-                break;
-
-            case ProjectileID.OLM_RANGE_SMITE:
-               session.increaseSmiteAmount();
-                break;
-
-            case ProjectileID.OLM_MELEE_SMITE:
-               session.increaseSmiteAmount();
-                break;
-
-            default:
-                return;
-
-        }
-        return;
-
-
-    }
-    */
-
     @Subscribe
     public void onNpcSpawned(NpcSpawned event)
     {
@@ -285,7 +213,6 @@ public class OlmAttackCounterPlugin extends Plugin
             olmHead.setLastAutoTick(-1);
         }
         */
-
 
         // Falling crystals
         if (message.startsWith("The Great Olm sounds a cry..."))
