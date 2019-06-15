@@ -97,7 +97,7 @@ class DiscordState
 			.startTimestamp(lastPresence.getStartTimestamp())
 			.smallImageKey(lastPresence.getSmallImageKey())
 			.partyMax(lastPresence.getPartyMax())
-			.partySize(party.getMembers().size());
+			.partySize(Math.max(config.alwaysShowParty() ? 1 : 0, party.getMembers().size()));
 
 		if (party.isOwner())
 		{
