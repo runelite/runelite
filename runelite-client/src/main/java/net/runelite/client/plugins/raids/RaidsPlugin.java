@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.raids;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -49,11 +50,13 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
+import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.MenuAction;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
@@ -69,6 +72,7 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -82,12 +86,15 @@ import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.WidgetOverlay;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
+import java.util.HashSet;
+import java.util.Set;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
@@ -143,6 +150,9 @@ public class RaidsPlugin extends Plugin
 	private RaidsPointsOverlay pointsOverlay;
 
 	@Inject
+	private RaidsPartyOverlay partyOverlay;
+
+	@Inject
 	private LayoutSolver layoutSolver;
 
 	@Inject
@@ -191,6 +201,18 @@ public class RaidsPlugin extends Plugin
 	private NavigationButton navButton;
 	private RaidsTimer timer;
 
+	@Getter
+	private int startPlayerCount;
+
+	@Getter
+	private List<String> partyMembers = new ArrayList<>();
+
+	@Getter
+	private List<String> startingPartyMembers = new ArrayList<>();
+
+	@Getter
+	private Set<String> missingPartyMembers = new HashSet<>();
+
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
 	{
@@ -208,6 +230,10 @@ public class RaidsPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(pointsOverlay);
+		if (config.partyDisplay())
+		{
+			overlayManager.add(partyOverlay);
+		}
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 		widgetOverlay = overlayManager.getWidgetOverlay(WidgetInfo.RAIDS_POINTS_INFOBOX);
@@ -229,6 +255,10 @@ public class RaidsPlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(pointsOverlay);
 		clientToolbar.removeNavigation(navButton);
+		if (config.partyDisplay())
+		{
+			overlayManager.remove(partyOverlay);
+		}
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		widgetOverlay = null;
@@ -257,6 +287,18 @@ public class RaidsPlugin extends Plugin
 			return;
 		}
 
+		if (event.getKey().equals("partyDisplay"))
+		{
+			if (config.partyDisplay())
+			{
+				overlayManager.add(partyOverlay);
+			}
+			else
+			{
+				overlayManager.remove(partyOverlay);
+			}
+		}
+
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
@@ -281,6 +323,10 @@ public class RaidsPlugin extends Plugin
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		checkRaidPresence(false);
+		if (config.partyDisplay())
+		{
+			updatePartyMembers(false);
+		}
 	}
 
 	@Subscribe
@@ -291,10 +337,27 @@ public class RaidsPlugin extends Plugin
 			String message = Text.removeTags(event.getMessage());
 			Matcher matcher;
 
-			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
+			if (message.startsWith(RAID_START_MESSAGE))
 			{
-				timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
-				infoBoxManager.addInfoBox(timer);
+				if (config.raidsTimer())
+				{
+					timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
+					infoBoxManager.addInfoBox(timer);
+				}
+				if (config.partyDisplay())
+				{
+					// Base this on visible players since party size shows people outside the lobby
+					// and they did not get to come on the raid
+					List<Player> players = client.getPlayers();
+					startPlayerCount = players.size();
+
+					partyMembers.clear();
+					startingPartyMembers.clear();
+					missingPartyMembers.clear();
+
+					startingPartyMembers.addAll(Lists.transform(players, Player::getName));
+					partyMembers.addAll(startingPartyMembers);
+				}
 			}
 
 			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
@@ -412,6 +475,94 @@ public class RaidsPlugin extends Plugin
 		if (widgetOverlay.getBounds().contains(mousePosition.getX(), mousePosition.getY()))
 		{
 			tooltipManager.add(new Tooltip(tooltip));
+		}
+	}
+
+
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked event)
+	{
+		OverlayMenuEntry entry = event.getEntry();
+		if (entry.getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
+				entry.getTarget().equals("Raids party overlay"))
+		{
+			switch (entry.getOption())
+			{
+				case RaidsPartyOverlay.PARTY_OVERLAY_RESET:
+					startingPartyMembers.clear();
+					updatePartyMembers(true);
+					missingPartyMembers.clear();
+					break;
+				case RaidsPartyOverlay.PARTY_OVERLAY_REFRESH:
+					updatePartyMembers(true);
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	private void updatePartyMembers(boolean force)
+	{
+		int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
+		if (partySize <= 0)
+		{
+			return;
+		}
+
+		if (startingPartyMembers.size() == partySize && !force)
+		{
+			// Skip update if the part is as big as when we started
+			missingPartyMembers.clear(); // Clear missing members in case someone came back
+			return;
+		}
+
+		// Only update while in raid
+		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 || force)
+		{
+			Widget[] widgets;
+			try
+			{
+				widgets = client.getWidget(WidgetInfo.RAIDING_PARTY).getStaticChildren()[2].getStaticChildren()[3].getDynamicChildren();
+			}
+			catch (NullPointerException e)
+			{
+				return; // Raid widget not loaded
+			}
+
+			partyMembers.clear();
+			for (int i = 0; i < widgets.length; i++)
+			{
+				if (widgets[i] != null)
+				{
+					// Party members names can be found as a color tagged string in every fourth(ish) of these children
+					String name = widgets[i].getName();
+					if (name.length() > 1)
+					{
+						// Clean away tag
+						partyMembers.add(name.substring(name.indexOf('>') + 1, name.indexOf('<', 1)));
+					}
+				}
+			}
+
+			// If we don't have any starting members, update starting members
+			if (startingPartyMembers.size() == 0 || force)
+			{
+				missingPartyMembers.clear();
+				startingPartyMembers.clear();
+				startingPartyMembers.addAll(partyMembers);
+			}
+			else
+			{
+
+				// Check if anyone left
+				if (startingPartyMembers.size() > partyMembers.size())
+				{
+					missingPartyMembers.clear();
+					missingPartyMembers.addAll(startingPartyMembers);
+					missingPartyMembers.removeAll(partyMembers);
+				}
+			}
 		}
 	}
 
