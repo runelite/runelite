@@ -36,11 +36,13 @@ import net.runelite.api.NPC;
 import javax.annotation.Nullable;
 import net.runelite.api.Client;
 
+import static net.runelite.api.NpcID.DUSK_7888;
+
 
 @PluginDescriptor(
 	name = "Grotesque Guardians",
 	description = "Show various helpful utitiles during the Grotesque Gaurdians (Gargoyles) fight",
-	tags = { "bosses", "combat", "minigame", "overlay", "prayer", "pve", "pvm" },
+	tags = { "bosses", "combat", "gargs", "overlay", "grotesque", "pve", "pvm" },
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
@@ -54,8 +56,6 @@ public class GrotesqueGuardiansPlugin extends Plugin
 	private OverlayManager overlayManager;
 	@Inject
 	private GrotesqueGuardiansPrayerOverlay prayerOverlay;
-	@Inject
-	private GrotesqueGuardiansTextOverlay textOverlay;
 	@Nullable
 	private DuskAttack prayAgainst;
 	@Nullable
@@ -77,7 +77,6 @@ public class GrotesqueGuardiansPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(prayerOverlay);
-		overlayManager.add(textOverlay);
 		dusk = null;
 		prayAgainst = null;
 	}
@@ -86,7 +85,6 @@ public class GrotesqueGuardiansPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		overlayManager.remove(textOverlay);
 		overlayManager.remove(prayerOverlay);
 		dusk = null;
 		prayAgainst = null;
@@ -100,7 +98,7 @@ public class GrotesqueGuardiansPlugin extends Plugin
 		{
 			regions.add(intValue);
 		}
-		if (regions.contains(6727))
+		if (regions.contains(GARGOYLES_REGION))
 		{
 			dusk = null;
 			inGargs = true;
@@ -113,7 +111,7 @@ public class GrotesqueGuardiansPlugin extends Plugin
 			}
 			if (inGargs && dusk != null)
 			{
-				if (dusk.getId() == 7888)
+				if (dusk.getId() == DUSK_7888)
 				{
 					if (dusk.getAnimation() == DuskAttack.MELEE.getAnimation())
 					{
