@@ -1380,7 +1380,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (config.getGlory())
 		{
-			menuManager.addSwap("remove", "amulet of glory (", config.getGloryMode().toString());
+			menuManager.addSwap("remove", "amulet of glory", config.getGloryMode().toString());
 			menuManager.addSwap("remove", "amulet of eternal glory", config.getGloryMode().toString());
 		}
 
@@ -1412,7 +1412,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (config.getRingofWealth())
 		{
-			menuManager.addSwap("remove", "ring of wealth (", config.getRingofWealthMode().toString());
+			menuManager.addSwap("remove", "ring of wealth", config.getRingofWealthMode().toString());
 		}
 
 		if (config.swapMax())
@@ -1427,14 +1427,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removeSwaps("combat bracelet");
 		menuManager.removeSwaps("games necklace");
 		menuManager.removeSwaps("ring of dueling");
-		menuManager.removeSwaps("amulet of glory (");
+		menuManager.removeSwaps("amulet of glory");
 		menuManager.removeSwaps("amulet of eternal glory");
 		menuManager.removeSwaps("skills necklace");
 		menuManager.removeSwaps("necklace of passage");
 		menuManager.removeSwaps("digsite pendant");
 		menuManager.removeSwaps("slayer ring");
 		menuManager.removeSwaps("xeric's talisman");
-		menuManager.removeSwaps("ring of wealth (");
+		menuManager.removeSwaps("ring of wealth");
 	}
 
 	private void delete(int target)
