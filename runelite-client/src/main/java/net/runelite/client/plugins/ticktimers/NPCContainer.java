@@ -25,6 +25,8 @@
  */
 package net.runelite.client.plugins.ticktimers;
 
+import java.awt.Color;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Actor;
@@ -33,31 +35,26 @@ import net.runelite.api.NPCDefinition;
 
 class NPCContainer
 {
-
 	@Getter
 	private NPC npc;
-
 	@Getter
 	private int npcIndex;
-
 	@Getter
 	private String npcName;
-
 	@Getter
 	private int npcSize;
-
 	@Setter
 	@Getter
 	private int TicksUntilAttack;
-
 	@Setter
 	@Getter
 	private int npcSpeed;
-
 	@Setter
 	@Getter
 	private Actor npcInteracting;
-
+	@Setter
+	@Getter
+	private Attackstyle attackStyle;
 
 	NPCContainer(NPC npc)
 	{
@@ -66,6 +63,7 @@ class NPCContainer
 		this.npcIndex = npc.getIndex();
 		this.npcInteracting = npc.getInteracting();
 		this.npcSpeed = 0;
+		this.attackStyle = Attackstyle.UNKNOWN;
 		this.TicksUntilAttack = 0;
 		final NPCDefinition composition = npc.getTransformedDefinition();
 
@@ -73,5 +71,19 @@ class NPCContainer
 		{
 			this.npcSize = composition.getSize();
 		}
+	}
+
+
+	@AllArgsConstructor
+	@Getter
+	public enum Attackstyle
+	{
+		MAGE("Mage", Color.CYAN),
+		RANGE("Range", Color.GREEN),
+		MELEE("Melee", Color.RED),
+		UNKNOWN("Unknown", Color.WHITE);
+
+		private String name = "";
+		private Color color;
 	}
 }

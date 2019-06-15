@@ -65,89 +65,25 @@ public class TimersOverlay extends Overlay
 	{
 		Color tickcolor;
 
-		for (NPCContainer npc : plugin.getStrongstack().values())
+		for (NPCContainer npcs : plugin.getNpcContainer().values())
 		{
-			renderNpcOverlay(graphics, npc.getNpc(), Color.RED, 100, 10);
-			final int ticksLeft = npc.getTicksUntilAttack();
+			renderNpcOverlay(graphics, npcs.getNpc(), npcs.getAttackStyle().getColor(), 100, 10);
+			final int ticksLeft = npcs.getTicksUntilAttack();
 			if (ticksLeft > 0)
 			{
 				if (ticksLeft == 1)
 				{
-					tickcolor = Color.RED;
+					tickcolor = npcs.getAttackStyle().getColor();
 				}
 				else
 				{
 					tickcolor = Color.WHITE;
 				}
 				final String ticksLeftStr = String.valueOf(ticksLeft);
-				Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
+				Point canvasPoint = npcs.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
 				renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), tickcolor, canvasPoint);
 			}
 		}
-
-		for (NPCContainer npc : plugin.getSteelwill().values())
-		{
-			renderNpcOverlay(graphics, npc.getNpc(), Color.CYAN, 100, 10);
-			final int ticksLeft = npc.getTicksUntilAttack();
-			if (ticksLeft > 0)
-			{
-				if (ticksLeft == 1)
-				{
-					tickcolor = Color.CYAN;
-				}
-				else
-				{
-
-					tickcolor = Color.WHITE;
-				}
-				final String ticksLeftStr = String.valueOf(ticksLeft);
-				Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
-				renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), tickcolor, canvasPoint);
-			}
-		}
-
-		for (NPCContainer npc : plugin.getGrimspike().values())
-		{
-			renderNpcOverlay(graphics, npc.getNpc(), Color.GREEN, 100, 10);
-			final int ticksLeft = npc.getTicksUntilAttack();
-			if (ticksLeft > 0)
-			{
-				if (ticksLeft == 1)
-				{
-					tickcolor = Color.GREEN;
-				}
-				else
-				{
-
-					tickcolor = Color.WHITE;
-				}
-				final String ticksLeftStr = String.valueOf(ticksLeft);
-				Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
-				renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), tickcolor, canvasPoint);
-			}
-		}
-
-		for (NPCContainer npc : plugin.getGeneral().values())
-		{
-			renderNpcOverlay(graphics, npc.getNpc(), Color.RED, 100, 10);
-			final int ticksLeft = npc.getTicksUntilAttack();
-			if (ticksLeft > 0)
-			{
-				if (ticksLeft == 1)
-				{
-					tickcolor = Color.RED;
-				}
-				else
-				{
-
-					tickcolor = Color.WHITE;
-				}
-				final String ticksLeftStr = String.valueOf(ticksLeft);
-				Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
-				renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), tickcolor, canvasPoint);
-			}
-		}
-
 		return null;
 	}
 

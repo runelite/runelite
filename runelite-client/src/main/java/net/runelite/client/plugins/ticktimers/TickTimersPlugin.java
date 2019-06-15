@@ -73,16 +73,7 @@ public class TickTimersPlugin extends Plugin
 	private TickTimersConfig config;
 
 	@Getter(AccessLevel.PACKAGE)
-	private Map<NPC, NPCContainer> Strongstack = new HashMap<>();
-
-	@Getter(AccessLevel.PACKAGE)
-	private Map<NPC, NPCContainer> Steelwill = new HashMap<>();
-
-	@Getter(AccessLevel.PACKAGE)
-	private Map<NPC, NPCContainer> Grimspike = new HashMap<>();
-
-	@Getter(AccessLevel.PACKAGE)
-	private Map<NPC, NPCContainer> General = new HashMap<>();
+	private Map<NPC, NPCContainer> npcContainer = new HashMap<>();
 
 	@Provides
 	TickTimersConfig getConfig(ConfigManager configManager)
@@ -93,19 +84,13 @@ public class TickTimersPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		Strongstack.clear();
-		Steelwill.clear();
-		Grimspike.clear();
-		General.clear();
+		npcContainer.clear();
 	}
 
 	@Override
 	public void shutDown()
 	{
-		Strongstack.clear();
-		Steelwill.clear();
-		Grimspike.clear();
-		General.clear();
+		npcContainer.clear();
 	}
 
 	@Subscribe
@@ -126,11 +111,7 @@ public class TickTimersPlugin extends Plugin
 		{
 			return;
 		}
-		Strongstack.clear();
-		Steelwill.clear();
-		Grimspike.clear();
-		General.clear();
-
+		npcContainer.clear();
 	}
 
 	@Subscribe
@@ -140,17 +121,11 @@ public class TickTimersPlugin extends Plugin
 		switch (npc.getId())
 		{
 			case NpcID.SERGEANT_STRONGSTACK:
-				Strongstack.put(npc, new NPCContainer(npc));
-				break;
 			case NpcID.SERGEANT_STEELWILL:
-				Steelwill.put(npc, new NPCContainer(npc));
-				break;
 			case NpcID.SERGEANT_GRIMSPIKE:
-				Grimspike.put(npc, new NPCContainer(npc));
-				break;
 			case NpcID.GENERAL_GRAARDOR:
 			case NpcID.GENERAL_GRAARDOR_6494:
-				General.put(npc, new NPCContainer(npc));
+				npcContainer.put(npc, new NPCContainer(npc));
 				break;
 		}
 	}
@@ -158,21 +133,9 @@ public class TickTimersPlugin extends Plugin
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		if (Grimspike.remove(event.getNpc()) != null && !Grimspike.isEmpty())
+		if (npcContainer.remove(event.getNpc()) != null && !npcContainer.isEmpty())
 		{
-			Grimspike.clear();
-		}
-		if (Steelwill.remove(event.getNpc()) != null && !Steelwill.isEmpty())
-		{
-			Steelwill.clear();
-		}
-		if (Strongstack.remove(event.getNpc()) != null && !Strongstack.isEmpty())
-		{
-			Strongstack.clear();
-		}
-		if (General.remove(event.getNpc()) != null && !General.isEmpty())
-		{
-			General.clear();
+			npcContainer.remove(event.getNpc());
 		}
 	}
 
@@ -187,64 +150,67 @@ public class TickTimersPlugin extends Plugin
 
 	private void graardorHandler()
 	{
-		for (NPCContainer grimspike : getGrimspike().values())
+		for (NPCContainer npcs : getNpcContainer().values())
 		{
-			grimspike.setTicksUntilAttack(grimspike.getTicksUntilAttack() - 1);
-			switch (grimspike.getNpc().getAnimation())
+			switch (npcs.getNpc().getId())
 			{
-				case AnimationID.MINION_AUTO1:
-				case AnimationID.MINION_AUTO2:
-				case AnimationID.MINION_AUTO4:
-					if (grimspike.getTicksUntilAttack() < 1)
+				case NpcID.SERGEANT_STRONGSTACK:
+					npcs.setTicksUntilAttack(npcs.getTicksUntilAttack() - 1);
+					npcs.setAttackStyle(NPCContainer.Attackstyle.MELEE);
+					switch (npcs.getNpc().getAnimation())
 					{
-						grimspike.setTicksUntilAttack(5);
+						case AnimationID.MINION_AUTO1:
+						case AnimationID.MINION_AUTO2:
+							if (npcs.getTicksUntilAttack() < 1)
+							{
+								npcs.setTicksUntilAttack(5);
+							}
+							break;
 					}
 					break;
-			}
-		}
-
-		for (NPCContainer strongstack : getStrongstack().values())
-		{
-			strongstack.setTicksUntilAttack(strongstack.getTicksUntilAttack() - 1);
-			switch (strongstack.getNpc().getAnimation())
-			{
-				case AnimationID.MINION_AUTO1:
-				case AnimationID.MINION_AUTO2:
-					if (strongstack.getTicksUntilAttack() < 1)
+				case NpcID.SERGEANT_STEELWILL:
+					npcs.setTicksUntilAttack(npcs.getTicksUntilAttack() - 1);
+					npcs.setAttackStyle(NPCContainer.Attackstyle.MAGE);
+					switch (npcs.getNpc().getAnimation())
 					{
-						strongstack.setTicksUntilAttack(5);
+						case AnimationID.MINION_AUTO1:
+						case AnimationID.MINION_AUTO2:
+						case AnimationID.MINION_AUTO3:
+							if (npcs.getTicksUntilAttack() < 1)
+							{
+								npcs.setTicksUntilAttack(5);
+							}
+							break;
+					}
+				case NpcID.SERGEANT_GRIMSPIKE:
+					npcs.setTicksUntilAttack(npcs.getTicksUntilAttack() - 1);
+					npcs.setAttackStyle(NPCContainer.Attackstyle.RANGE);
+					switch (npcs.getNpc().getAnimation())
+					{
+						case AnimationID.MINION_AUTO1:
+						case AnimationID.MINION_AUTO2:
+						case AnimationID.MINION_AUTO4:
+							if (npcs.getTicksUntilAttack() < 1)
+							{
+								npcs.setTicksUntilAttack(5);
+							}
+							break;
 					}
 					break;
-			}
-		}
-
-		for (NPCContainer steelwill : getSteelwill().values())
-		{
-			steelwill.setTicksUntilAttack(steelwill.getTicksUntilAttack() - 1);
-			switch (steelwill.getNpc().getAnimation())
-			{
-				case AnimationID.MINION_AUTO1:
-				case AnimationID.MINION_AUTO2:
-				case AnimationID.MINION_AUTO3:
-					if (steelwill.getTicksUntilAttack() < 1)
+				case NpcID.GENERAL_GRAARDOR:
+				case NpcID.GENERAL_GRAARDOR_6494:
+					npcs.setTicksUntilAttack(npcs.getTicksUntilAttack() - 1);
+					npcs.setAttackStyle(NPCContainer.Attackstyle.MELEE);
+					switch (npcs.getNpc().getAnimation())
 					{
-						steelwill.setTicksUntilAttack(5);
-					}
-					break;
-			}
-		}
-
-		for (NPCContainer boss : getGeneral().values())
-		{
-			boss.setTicksUntilAttack(boss.getTicksUntilAttack() - 1);
-			switch (boss.getNpc().getAnimation())
-			{
-				case AnimationID.GENERAL_AUTO1:
-				case AnimationID.GENERAL_AUTO2:
-				case AnimationID.GENERAL_AUTO3:
-					if (boss.getTicksUntilAttack() < 1)
-					{
-						boss.setTicksUntilAttack(6);
+						case AnimationID.GENERAL_AUTO1:
+						case AnimationID.GENERAL_AUTO2:
+						case AnimationID.GENERAL_AUTO3:
+							if (npcs.getTicksUntilAttack() < 1)
+							{
+								npcs.setTicksUntilAttack(6);
+							}
+							break;
 					}
 					break;
 			}
