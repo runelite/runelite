@@ -39,6 +39,9 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.Notifier;
+import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.config.RuneLiteConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -86,6 +89,18 @@ public class MotherlodePluginTest
 	@Mock
 	@Bind
 	private ScheduledExecutorService scheduledExecutorService;
+
+	@Mock
+	@Bind
+	private ChatColorConfig chatColorConfig;
+
+	@Mock
+	@Bind
+	private RuneLiteConfig runeliteConfig;
+
+	@Mock
+	@Bind
+	private Notifier notifier;
 
 	@Before
 	public void before()

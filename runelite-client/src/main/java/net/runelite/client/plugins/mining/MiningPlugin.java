@@ -39,7 +39,12 @@ import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26667;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26668;
 import static net.runelite.api.ObjectID.EMPTY_WALL;
+import static net.runelite.api.ObjectID.ORE_VEIN_26661;
+import static net.runelite.api.ObjectID.ORE_VEIN_26662;
+import static net.runelite.api.ObjectID.ORE_VEIN_26663;
+import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -156,6 +161,15 @@ public class MiningPlugin extends Plugin
 				Rock rock = Rock.ORE_VEIN;
 				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
 				respawns.add(rockRespawn);
+				break;
+			}
+			case ORE_VEIN_26661: // Motherlode vein
+			case ORE_VEIN_26662: // Motherlode vein
+			case ORE_VEIN_26663: // Motherlode vein
+			case ORE_VEIN_26664: // Motherlode vein
+			{
+				final WorldPoint point = object.getWorldLocation();
+				respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
 				break;
 			}
 		}

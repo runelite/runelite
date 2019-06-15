@@ -99,17 +99,6 @@ import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_ORN;
 import static net.runelite.api.AnimationID.MINING_INFERNAL_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_IRON_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_MITHRIL_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_3A;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_ADAMANT;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BLACK;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BRONZE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_ORN;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_INFERNAL;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
 import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
 import static net.runelite.api.AnimationID.PISCARILIUS_CRANE_REPAIR;
@@ -295,19 +284,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_3A_PICKAXE:
 			case DENSE_ESSENCE_CHIPPING:
 			case DENSE_ESSENCE_CHISELING:
-				/* Mining(Motherlode) */
-			case MINING_MOTHERLODE_BRONZE:
-			case MINING_MOTHERLODE_IRON:
-			case MINING_MOTHERLODE_STEEL:
-			case MINING_MOTHERLODE_BLACK:
-			case MINING_MOTHERLODE_MITHRIL:
-			case MINING_MOTHERLODE_ADAMANT:
-			case MINING_MOTHERLODE_RUNE:
-			case MINING_MOTHERLODE_DRAGON:
-			case MINING_MOTHERLODE_DRAGON_ORN:
-			case MINING_MOTHERLODE_INFERNAL:
-			case MINING_MOTHERLODE_3A:
-				/* Herblore */
+			/* Herblore */
 			case HERBLORE_PESTLE_AND_MORTAR:
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
