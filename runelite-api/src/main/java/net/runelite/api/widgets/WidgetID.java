@@ -114,7 +114,7 @@ public class WidgetID
 	public static final int VARROCK_MUSEUM_QUIZ_GROUP_ID = 533;
 	public static final int KILL_LOGS_GROUP_ID = 549;
 	public static final int DIARY_QUEST_GROUP_ID = 119;
-	public static final int THEATRE_OF_BLOOD_GROUP_ID = 23;
+	public static final int THEATRE_OF_BLOOD_GROUP_ID = 28;
 	public static final int WORLD_SWITCHER_GROUP_ID = 69;
 	public static final int DIALOG_OPTION_GROUP_ID = 219;
 	public static final int DIALOG_PLAYER_GROUP_ID = 217;
@@ -122,6 +122,8 @@ public class WidgetID
 	public static final int MINIGAME_TAB_ID = 76;
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
+	public static final int PERFORMERS_FOR_THE_THEATRE_GROUPS_GROUP_ID = 364;
+	public static final int PERFORMERS_FOR_THE_THEATRE_PLAYERS_GROUP_ID = 50;
 	public static final int FISHING_TRAWLER_GROUP_ID = 366;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
 	public static final int KOUREND_FAVOUR_GROUP_ID = 246;
@@ -648,6 +650,12 @@ public class WidgetID
 	static class Raids
 	{
 		static final int POINTS_INFOBOX = 6;
+	}
+
+	static class TheatreOfBlood
+	{
+		static final int ORB_BOX = 10;
+		static final int BOSS_HEALTH_BAR = 35;
 	}
 
 	static class ExperienceDrop

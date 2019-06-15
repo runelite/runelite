@@ -293,7 +293,7 @@ public class StonedLootTrackerPlugin extends Plugin
 				eventType = "Chambers of Xeric";
 				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
 				break;
-			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
+			case (WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID):
 				int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
 				if (region != THEATRE_OF_BLOOD_REGION)
 				{

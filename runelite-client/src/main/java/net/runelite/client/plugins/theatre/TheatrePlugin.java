@@ -13,10 +13,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import java.util.LinkedList;
+import java.util.List;
 import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.theatre.rooms.BloatHandler;
@@ -28,6 +33,7 @@ import net.runelite.client.plugins.theatre.rooms.nylocas.NyloHandler;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
+import java.awt.*;
 
 @PluginDescriptor(
 	name = "Theatre of Blood",
@@ -64,6 +70,8 @@ public class TheatrePlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	private Widget widget = null;
 
 	@Getter(AccessLevel.PUBLIC)
 	@Inject
@@ -174,6 +182,25 @@ public class TheatrePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() != WidgetID.PERFORMERS_FOR_THE_THEATRE_GROUPS_GROUP_ID && event.getGroupId() != WidgetID.PERFORMERS_FOR_THE_THEATRE_PLAYERS_GROUP_ID)
+		{
+			return;
+		}
+
+		if (event.getGroupId() == WidgetID.PERFORMERS_FOR_THE_THEATRE_GROUPS_GROUP_ID)
+		{
+			widget = client.getWidget(WidgetID.PERFORMERS_FOR_THE_THEATRE_GROUPS_GROUP_ID, 0);
+		}
+
+		if (event.getGroupId() == WidgetID.PERFORMERS_FOR_THE_THEATRE_PLAYERS_GROUP_ID)
+		{
+			widget = client.getWidget(WidgetID.PERFORMERS_FOR_THE_THEATRE_PLAYERS_GROUP_ID, 0);
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		if (maidenHandler != null)
@@ -193,6 +220,95 @@ public class TheatrePlugin extends Plugin
 
 		if (verzikHandler != null)
 			verzikHandler.onGameTick();
+
+		if (widget == null)
+		{
+			return;
+		}
+
+		// recheck if the widget is still active
+		int p_id = WidgetInfo.TO_GROUP(widget.getId());
+
+		List<Widget> widgetList = new LinkedList<>();
+
+		if (p_id == WidgetID.PERFORMERS_FOR_THE_THEATRE_GROUPS_GROUP_ID)
+		{
+			Widget w = client.getWidget(p_id, 16);
+			if (w == null)
+			{
+				return;
+			}
+
+			Widget[] ws = w.getStaticChildren();
+			for (Widget widget : ws)
+			{
+				Widget[] widgets = widget.getDynamicChildren();
+				if (widgets.length > 3)
+				{
+					widgetList.add(widgets[3]);
+				}
+			}
+
+		}
+		else if (p_id == WidgetID.PERFORMERS_FOR_THE_THEATRE_PLAYERS_GROUP_ID)
+		{
+			Widget w1 = client.getWidget(p_id, 26);
+
+			if (w1 != null)
+			{
+				Widget[] dChildsAccepted = w1.getDynamicChildren();
+
+				if (dChildsAccepted.length > 2)
+				{
+					for (int i = 1; i < dChildsAccepted.length; i += 11)
+					{
+						if (!dChildsAccepted[i].getText().equals("-"))
+						{
+							widgetList.add(dChildsAccepted[i]);
+						}
+					}
+				}
+			}
+
+			Widget w2 = client.getWidget(p_id, 41);
+
+			if (w2 != null)
+			{
+				Widget[] dChildsApplied = w2.getDynamicChildren();
+
+				if (dChildsApplied.length > 2)
+				{
+					for (int i = 1; i < dChildsApplied.length; i += 11)
+					{
+						if (!dChildsApplied[i].getText().equals("-"))
+						{
+							widgetList.add(dChildsApplied[i]);
+						}
+					}
+				}
+			}
+		}
+
+		for (Widget w : widgetList)
+		{
+			String wtext = w.getText();
+			if (client.isFriended(wtext, false))
+			{
+				w.setTextColor(Color.green.getRGB());
+				continue;
+			}
+			for (int i = 0; i < client.getIgnoreCount(); i++)
+			{
+				String name = client.getIgnores()[i].getName();
+				if (name.replace('\u00A0', ' ').equals(wtext))
+				{
+					w.setTextColor(Color.red.getRGB());
+					break;
+				}
+			}
+		}
+
+		widget = null;
 	}
 
 	@Subscribe
