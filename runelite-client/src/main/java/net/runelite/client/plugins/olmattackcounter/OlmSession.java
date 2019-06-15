@@ -24,6 +24,8 @@ public class OlmSession {
     private int smiteCounter;
     @Getter(AccessLevel.PACKAGE)
     private int switchCounter;
+    @Getter(AccessLevel.PACKAGE)
+    private int poolCounter;
 
     void increaseRangeAmount()
     {
@@ -75,6 +77,10 @@ public class OlmSession {
         this.switchCounter++;
     }
 
+    void increasePoolCount()
+    {
+        this.poolCounter++;
+    }
 
 
 }

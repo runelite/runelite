@@ -11,16 +11,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.AccessLevel;
-import net.runelite.api.AnimationID;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.HeadIcon;
-import net.runelite.api.Hitsplat;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.Player;
-import net.runelite.api.Projectile;
-import net.runelite.api.ProjectileID;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
@@ -36,6 +27,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.api.events.ChatMessage;
 
 @PluginDescriptor(
         name = "Olm Attack Counter",
@@ -88,9 +80,14 @@ public class OlmAttackCounterPlugin extends Plugin
     public void onGameTick(GameTick gameTick)
     {
         int currentTick = client.getTickCount();
-        System.out.println(currentTick);
+        // System.out.println("current tick: " + currentTick);
 
         if (olmHead == null) // intermission, crystal bomb and ceiling crystals have the same ID
+        {
+            return;
+        }
+
+        if (olmHead.getLastAutoTick() != -1 && olmHead.getLastAutoTick() + 3 > currentTick)
         {
             return;
         }
@@ -101,9 +98,20 @@ public class OlmAttackCounterPlugin extends Plugin
         {
             int projectileId = projectile.getId();
 
+            // Only new projectiles considered
+            if (projectile.getStartMovementCycle() - projectile.getEndHeight() != projectile.getRemainingCycles())
+            {
+                continue;
+            }
+
+            olmHead.setLastAutoTick(currentTick);
+
             if (attackStyles.contains(projectileId))
             {
-                System.out.println(projectileId);
+                System.out.println("Olm Attacks!");
+                System.out.println("tick:       " + currentTick);
+                System.out.println("projectile: " + projectileId);
+                System.out.println("");
 
                 switch (projectileId)
                 {
@@ -255,6 +263,52 @@ public class OlmAttackCounterPlugin extends Plugin
         if (isOlmHead(npc.getId()))
         {
             olmHead = null;
+        }
+    }
+
+
+    @Subscribe
+    public void onChatMessage(ChatMessage event)
+    {
+        final String message = event.getMessage();
+
+        // Falling crystals
+        if (message.startsWith("The Great Olm sounds a cry..."))
+        {
+            session.increaseFallAmount();
+            System.out.println("Falling Crystals");
+        }
+
+        // Pools
+        if (message.startsWith("The Great Olm prepares to absorb energy from anyone unprotected..."))
+        {
+            session.increasePoolCount();
+            System.out.println("Healing Pool");
+        }
+
+        // Head Phase
+        if (message.startsWith("The Great Olm is giving its all. This is its final stand."))
+        {
+            olmHead.setPhase(olmHead.PHASE_HEAD);
+            System.out.println("Head Phase");
+        }
+
+        if (message.startsWith("The Great Olm rises with the power of acid"))
+        {
+            olmHead.setPhase(olmHead.PHASE_ACID);
+            System.out.println("Acid Phase");
+        }
+
+        if (message.startsWith("The Great Olm rises with the power of crystal"))
+        {
+            olmHead.setPhase(olmHead.PHASE_CRYSTAL);
+            System.out.println("Crystal Phase");
+        }
+
+        if (message.startsWith("The Great Olm rises with the power of flame"))
+        {
+            olmHead.setPhase(olmHead.PHASE_FLAME);
+            System.out.println("Flame Phase");
         }
     }
 

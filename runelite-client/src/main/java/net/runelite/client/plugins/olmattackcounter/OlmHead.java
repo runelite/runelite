@@ -17,6 +17,12 @@ public class OlmHead
     static final int RANGE_AUTO = 1;
     static final int MAGE_AUTO = 0;
 
+    static final int PHASE_NONE = 0;
+    static final int PHASE_ACID = 1;
+    static final int PHASE_CRYSTAL = 2;
+    static final int PHASE_FLAME = 3;
+    static final int PHASE_HEAD = 4;
+
     public static final int[] ALL_ATTACK_STYLES =
         {
             ProjectileID.OLM_RANGE_AUTO,
@@ -51,14 +57,8 @@ public class OlmHead
     private int attackSide; // left = 0, right = 1
 
     @Getter
-    enum phase
-    {
-        NONE,
-        ACID,
-        CRYSTAL,
-        FLAME,
-        HEAD,
-    }
+    @Setter
+    private int phase; // -1 == NONE, 1 = ACID, 2 = CRYSTAL, 3 = FLAME, 4 = HEAD
 
 
     public OlmHead(NPC npc)
@@ -66,6 +66,7 @@ public class OlmHead
         this.npc = npc;
         this.attackSide = -1;
         this.lastAutoID = -1;
+        this.phase = PHASE_NONE;
 
     }
 
