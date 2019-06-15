@@ -33,7 +33,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.HealthBar;
 import net.runelite.api.HealthBarOverride;
-import net.runelite.api.NodeCache;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.BeforeMenuRender;
@@ -94,8 +93,7 @@ public class InterfaceStylesPlugin extends Plugin
 			removeGameframe();
 			healthBarOverride = null;
 			client.setHealthBarOverride(null);
-			NodeCache heathBarCache = client.getHealthBarCache();
-			heathBarCache.reset(); // invalidate healthbar cache so padding resets
+			client.resetHealthBarCaches(); // invalidate healthbar cache so padding resets
 		});
 	}
 
@@ -273,8 +271,7 @@ public class InterfaceStylesPlugin extends Plugin
 	private void overrideHealthBars()
 	{
 		// Reset health bar cache to reset applied padding
-		NodeCache healthBarCache = client.getHealthBarCache();
-		healthBarCache.reset();
+		client.resetHealthBarCaches();
 
 		if (config.hdHealthBars())
 		{

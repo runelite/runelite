@@ -1550,4 +1550,12 @@ public abstract class RSClientMixin implements RSClient
 		enumCache.put(id, rsEnum);
 		return rsEnum;
 	}
+
+	@Inject
+	@Override
+	public void resetHealthBarCaches()
+	{
+		getHealthBarCache().reset();
+		getHealthBarSpriteCache().reset();
+	}
 }
