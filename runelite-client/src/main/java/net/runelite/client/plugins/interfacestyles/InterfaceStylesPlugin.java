@@ -69,8 +69,6 @@ public class InterfaceStylesPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
-	private HealthBarOverride healthBarOverride;
-
 	@Provides
 	InterfaceStylesConfig provideConfig(ConfigManager configManager)
 	{
@@ -90,9 +88,7 @@ public class InterfaceStylesPlugin extends Plugin
 		{
 			restoreWidgetDimensions();
 			removeGameframe();
-			healthBarOverride = null;
-			client.setHealthBarOverride(null);
-			client.resetHealthBarCaches(); // invalidate healthbar cache so padding resets
+			restoreHealthBars();
 		});
 	}
 
@@ -114,19 +110,19 @@ public class InterfaceStylesPlugin extends Plugin
 	@Subscribe
 	public void onPostHealthBar(PostHealthBar postHealthBar)
 	{
-		if (healthBarOverride == null || !config.hdHealthBars())
+		if (!config.hdHealthBars())
 		{
 			return;
 		}
 
 		HealthBar healthBar = postHealthBar.getHealthBar();
-		SpritePixels frontSprite = healthBar.getHealthBarFrontSprite();
+		HealthbarOverride override = HealthbarOverride.get(healthBar.getHealthBarFrontSpriteId());
 
 		// Check if this is the health bar we are replacing
-		if (frontSprite == healthBarOverride.getFrontSprite() || frontSprite == healthBarOverride.getFrontSpriteLarge())
+		if (override != null)
 		{
 			// Increase padding to show some more green at very low hp percentages
-			healthBar.setPadding(1);
+			healthBar.setPadding(override.getPadding());
 		}
 	}
 
@@ -269,28 +265,22 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void overrideHealthBars()
 	{
-		// Reset health bar cache to reset applied padding
-		client.resetHealthBarCaches();
-
 		if (config.hdHealthBars())
 		{
-			String fileBase = Skin.AROUND_2010.toString() + "/healthbar/";
-
-			SpritePixels frontSprite = getFileSpritePixels(fileBase + "front.png");
-			SpritePixels backSprite = getFileSpritePixels(fileBase + "back.png");
-
-			SpritePixels frontSpriteLarge = getFileSpritePixels(fileBase + "front_large.png");
-			SpritePixels backSpriteLarge = getFileSpritePixels(fileBase + "back_large.png");
-
-			HealthBarOverride override = new HealthBarOverride(frontSprite, backSprite, frontSpriteLarge, backSpriteLarge);
-			healthBarOverride = override;
-			client.setHealthBarOverride(override);
+			spriteManager.addSpriteOverrides(HealthbarOverride.values());
+			// Reset health bar caches to apply the override
+			clientThread.invokeLater(client::resetHealthBarCaches);
 		}
 		else
 		{
-			healthBarOverride = null;
-			client.setHealthBarOverride(null);
+			restoreHealthBars();
 		}
+	}
+
+	private void restoreHealthBars()
+	{
+		spriteManager.removeSpriteOverrides(HealthbarOverride.values());
+		clientThread.invokeLater(client::resetHealthBarCaches);
 	}
 
 	private void restoreWidgetDimensions()
