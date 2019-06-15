@@ -202,13 +202,14 @@ class ItemPricesOverlay extends Overlay
 		{
 			gePrice = itemManager.getItemPrice(id);
 		}
-		if (config.showHAValue())
+		if (config.showHAValue() || config.showAlchProfit())
 		{
 			haPrice = Math.round(itemDef.getPrice() * HIGH_ALCHEMY_CONSTANT);
 		}
 		if (gePrice > 0 && haPrice > 0 && config.showAlchProfit())
 		{
 			haProfit = calculateHAProfit(haPrice, gePrice);
+			if (!config.showHAValue()) haPrice = 0;
 		}
 
 		if (gePrice > 0 || haPrice > 0)
