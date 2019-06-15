@@ -96,6 +96,8 @@ public class OlmAttackCounterPlugin extends Plugin
             return;
         }
 
+        int numOlmAttacks = 0;
+
         for (Projectile projectile : client.getProjectiles())
         {
             int projectileId = projectile.getId();
@@ -110,10 +112,21 @@ public class OlmAttackCounterPlugin extends Plugin
                 olmHead.setLastAutoTick(currentTick);
             }
 
+            // Bomb on head phase have no x, y velocity
+            if (olmHead.getPhase() == OlmHead.PHASE_HEAD)
+            {
+                if (projectile.getVelocityX() == 0 && projectile.getVelocityY() == 0)
+                {
+                    return;
+                }
+            }
+
+
             if (attackStyles.contains(projectileId))
             {
                 System.out.println("Olm Attacks!");
                 System.out.println("tick:       " + currentTick);
+                numOlmAttacks++;
 
                 switch (projectileId)
                 {
@@ -177,10 +190,13 @@ public class OlmAttackCounterPlugin extends Plugin
 
                 }
 
-                return;
+                return; // Need to move this return statement, get ALL projectiles
             }
         }
 
+        System.out.println("There were " + numOlmAttacks + " Olm attack projectiles");
+
+        return; // Should never reach
     }
 
     @Subscribe
