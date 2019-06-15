@@ -558,6 +558,7 @@ public class CoxPlugin extends Plugin
 			OlmPhase = 0;
 			sleepcount = 0;
 			Olm_Heal.clear();
+			burnTarget.clear();
 			prayAgainstOlm = null;
 			return;
 		}
