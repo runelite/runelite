@@ -188,7 +188,7 @@ public class ClientLoader
 			Class<?> clientClass = rsClassLoader.loadClass(initialClass);
 
 			Applet rs = (Applet) clientClass.newInstance();
-			rs.setStub(new RSAppletStub(config));
+			rs.setStub(new Launcher());
 
 			if (rs instanceof Client)
 			{
