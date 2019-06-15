@@ -108,6 +108,19 @@ class OlmAttackCounterOverlay extends Overlay
                 .right(session.getPoolCounter() + "")
                 .build());
 
+            /* Replace above lines with this code block before release
+            panelComponent.getChildren().add(LineComponent.builder()
+                .left("Special Counter:")
+                .right(session.specialCount()+ "")
+                .build());
+
+            panelComponent.getChildren().add(LineComponent.builder()
+                .left("Switch %:")
+                .right(session.getSwitchCounter() + "")
+                .build());
+             */
+
+            /* Counting number of phases, not needed
             panelComponent.getChildren().add(LineComponent.builder()
                 .left("Acid Phase:")
                 .right(session.getAcidPhaseCounter() + "")
@@ -122,6 +135,7 @@ class OlmAttackCounterOverlay extends Overlay
                 .left("Crystal Phase:")
                 .right(session.getCrystalPhaseCounter() + "")
                 .build());
+            */
 
 
         //}

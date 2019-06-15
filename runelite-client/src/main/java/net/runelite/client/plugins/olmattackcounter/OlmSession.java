@@ -102,4 +102,15 @@ public class OlmSession {
     {
         this.crystalPhaseCounter++;
     }
+
+    int specialCount()
+    {
+        return this.acidSprayCounter + this.flameWallCounter + this.burnCounter +
+               this.fallingCrystalCounter + this.bombCounter;
+    }
+
+    double getSwitchPercentage()
+    {
+        return ((double) getSwitchCounter() / (getRangeCounter() + getMageCounter())) * 100;
+    }
 }

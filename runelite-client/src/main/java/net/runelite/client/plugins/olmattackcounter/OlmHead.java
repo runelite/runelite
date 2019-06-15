@@ -35,7 +35,6 @@ public class OlmHead
             ProjectileID.OLM_RANGE_AUTO,
             ProjectileID.OLM_MAGE_AUTO,
             ProjectileID.OLM_ACID_SPREAD,
-            ProjectileID.OLM_FALLING_CRYSTALS,
             ProjectileID.OLM_CRYSTAL_BOMB,
             ProjectileID.OLM_BURN,
             ProjectileID.OLM_FLAME_WALL,

@@ -89,16 +89,17 @@ public class OlmAttackCounterPlugin extends Plugin
             return;
         }
 
+        // Do not check too early
         if (olmHead.getLastAutoTick() != -1 &&
             olmHead.getLastAutoTick() + olmHead.AUTO_RATE > currentTick)
         {
             return;
         }
 
-
         for (Projectile projectile : client.getProjectiles())
         {
             int projectileId = projectile.getId();
+
             // Account for a skipped 3rd cycle
             if (olmHead.getLastAutoTick() + olmHead.SKIPPED_CYCLE_RATE == currentTick)
             {
@@ -108,7 +109,6 @@ public class OlmAttackCounterPlugin extends Plugin
             {
                 olmHead.setLastAutoTick(currentTick);
             }
-
 
             if (attackStyles.contains(projectileId))
             {
@@ -120,12 +120,20 @@ public class OlmAttackCounterPlugin extends Plugin
                     case ProjectileID.OLM_RANGE_AUTO:
                         session.increaseRangeAmount();
                         System.out.println("Ranged Attack");
+                        if (olmHead.getLastAutoID() == OlmHead.MAGE_AUTO)
+                        {
+                            session.increaseSwitchAmount();
+                        }
                         olmHead.setLastAutoID(OlmHead.RANGE_AUTO);
                         break;
 
                     case ProjectileID.OLM_MAGE_AUTO:
                         session.increaseMageAmount();
                         System.out.println("Mage Attack");
+                        if (olmHead.getLastAutoID() == OlmHead.RANGE_AUTO)
+                        {
+                            session.increaseSwitchAmount();
+                        }
                         olmHead.setLastAutoID(OlmHead.MAGE_AUTO);
                         break;
 
