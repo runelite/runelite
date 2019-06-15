@@ -61,6 +61,7 @@ public class OlmAttackCounterPlugin extends Plugin
     protected void startUp() throws Exception {
         overlayManager.add(overlay);
         session = new OlmSession();
+        olmHead = new OlmHead();
         for (int attack : OlmHead.ALL_ATTACK_STYLES)
         {
             attackStyles.add(attack);
@@ -87,7 +88,7 @@ public class OlmAttackCounterPlugin extends Plugin
             return;
         }
 
-        if (olmHead.getLastAutoTick() != -1 && olmHead.getLastAutoTick() + 8 > currentTick)
+        if (olmHead.getLastAutoTick() != -1 && olmHead.getLastAutoTick() + 4 > currentTick)
         {
             return;
         }
