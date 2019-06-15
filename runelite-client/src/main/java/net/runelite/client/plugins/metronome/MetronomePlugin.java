@@ -27,8 +27,16 @@ package net.runelite.client.plugins.metronome;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.FloatControl;
+import java.io.File;
 import net.runelite.api.Client;
 import net.runelite.api.SoundEffectID;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -37,7 +45,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Metronome",
-	description = "Play a sound on a specified tick to aid in efficient skilling",
+	description = "Play sounds in a customisable pattern",
 	tags = {"skilling", "tick", "timers"},
 	enabledByDefault = false
 )
@@ -50,12 +58,96 @@ public class MetronomePlugin extends Plugin
 	private MetronomePluginConfiguration config;
 
 	private int tickCounter = 0;
-	private boolean shouldTock = false;
+	private int tockCounter = 0;
+	private Clip tickClip;
+	private Clip tockClip;
 
 	@Provides
 	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(MetronomePluginConfiguration.class);
+	}
+
+	private Clip GetAudioClip(String path)
+	{
+		File audioFile = new File(path);
+		if (audioFile.exists())
+		{
+			AudioInputStream audioStream = null;
+			try
+			{
+				audioStream = AudioSystem.getAudioInputStream(audioFile);
+			}
+			catch (Exception e)
+			{
+				return null;
+			}
+			AudioFormat audioFormat = audioStream.getFormat();
+			DataLine.Info audioInfo = new DataLine.Info(Clip.class, audioFormat);
+			try
+			{
+				Clip audioClip = AudioSystem.getClip();
+				audioClip.open(audioStream);
+				FloatControl gainControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
+				float gainValue = (((float) config.volume()) * 40f / 100f) - 35f;
+				gainControl.setValue(gainValue);
+				return audioClip;
+			}
+			catch (Exception e)
+			{
+				return null;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	protected void startUp()
+	{
+		tickClip = GetAudioClip(config.tickPath());
+		tockClip = GetAudioClip(config.tockPath());
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		if (tickClip != null)
+		{
+			tickClip.close();
+		}
+		if (tockClip != null)
+		{
+			tockClip.close();
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getKey().equals("volume"))
+		{
+			float gainValue = (((float) config.volume()) * 40f / 100f) - 35f;
+			FloatControl gainControlTick = (FloatControl) tickClip.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControlTick.setValue(gainValue);
+			FloatControl gainControlTock = (FloatControl) tockClip.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControlTock.setValue(gainValue);
+		}
+		if (event.getKey().equals("tickSoundFilePath"))
+		{
+			if (tickClip != null)
+			{
+				tickClip.close();
+			}
+			tickClip = GetAudioClip(config.tickPath());
+		}
+		if (event.getKey().equals("tockSoundFilePath"))
+		{
+			if (tockClip != null)
+			{
+				tockClip.close();
+			}
+			tockClip = GetAudioClip(config.tockPath());
+		}
 	}
 
 	@Subscribe
@@ -66,17 +158,40 @@ public class MetronomePlugin extends Plugin
 			return;
 		}
 
-		if (++tickCounter % config.tickCount() == 0)
+		if ((++tickCounter + config.tickOffset()) % config.tickCount() == 0)
 		{
-			if (config.enableTock() && shouldTock)
+			if (++tockCounter % config.tockNumber() == 0 & config.enableTock())
 			{
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP);
+				if (tockClip == null)
+				{
+					client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
+				}
+				else
+				{
+					if (tockClip.isRunning())
+					{
+						tockClip.stop();
+					}
+					tockClip.setFramePosition(0);
+					tockClip.start();
+				}
 			}
 			else
 			{
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
+				if (tickClip == null)
+				{
+					client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP);
+				}
+				else
+				{
+					if (tickClip.isRunning())
+					{
+						tickClip.stop();
+					}
+					tickClip.setFramePosition(0);
+					tickClip.start();
+				}
 			}
-			shouldTock = !shouldTock;
 		}
 	}
 }
