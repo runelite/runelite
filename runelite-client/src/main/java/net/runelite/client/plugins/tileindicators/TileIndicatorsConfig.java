@@ -35,9 +35,9 @@ public interface TileIndicatorsConfig extends Config
 {
 	@Alpha
 	@ConfigItem(
-		keyName = "highlightDestinationColor",
-		name = "Color of current destination highlighting",
-		description = "Configures the highlight color of current destination"
+			keyName = "highlightDestinationColor",
+			name = "Color of current destination highlighting",
+			description = "Configures the highlight color of current destination"
 	)
 	default Color highlightDestinationColor()
 	{
@@ -45,9 +45,9 @@ public interface TileIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightDestinationTile",
-		name = "Highlight destination tile",
-		description = "Highlights tile player is walking to"
+			keyName = "highlightDestinationTile",
+			name = "Highlight destination tile",
+			description = "Highlights tile player is walking to"
 	)
 	default boolean highlightDestinationTile()
 	{
@@ -56,9 +56,30 @@ public interface TileIndicatorsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		keyName = "highlightHoveredColor",
-		name = "Color of current hovered highlighting",
-		description = "Configures the highlight color of hovered tile"
+			keyName = "highlightCurrentColor",
+			name = "Color of current tile highlighting",
+			description = "Configures the highlight color of current tile position"
+	)
+	default Color highlightCurrentColor()
+	{
+		return Color.CYAN;
+	}
+
+	@ConfigItem(
+			keyName = "highlightCurrentTile",
+			name = "Highlight current tile",
+			description = "Highlights tile player is on"
+	)
+	default boolean highlightCurrentTile()
+	{
+		return false;
+	}
+
+	@Alpha
+	@ConfigItem(
+			keyName = "highlightHoveredColor",
+			name = "Color of current hovered highlighting",
+			description = "Configures the highlight color of hovered tile"
 	)
 	default Color highlightHoveredColor()
 	{
@@ -66,9 +87,9 @@ public interface TileIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightHoveredTile",
-		name = "Highlight hovered tile",
-		description = "Highlights tile player is hovering with mouse"
+			keyName = "highlightHoveredTile",
+			name = "Highlight hovered tile",
+			description = "Highlights tile player is hovering with mouse"
 	)
 	default boolean highlightHoveredTile()
 	{
