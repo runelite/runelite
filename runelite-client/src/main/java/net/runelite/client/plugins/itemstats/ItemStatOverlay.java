@@ -191,8 +191,8 @@ public class ItemStatOverlay extends Overlay
 
 		final StringBuilder b = new StringBuilder();
 
-		if(config.weight()){
-
+		if (config.weight())
+		{
 			b.append(getChangeString("Weight", s.getWeight(), true, false));
 		}
 
