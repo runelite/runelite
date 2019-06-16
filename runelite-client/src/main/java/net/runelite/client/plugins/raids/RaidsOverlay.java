@@ -80,7 +80,7 @@ public class RaidsOverlay extends Overlay
 	@Setter
 	private boolean sharable = false;
 
-	@Setter
+	@Getter @Setter
 	private boolean scoutOverlayShown = false;
 
 	@Getter
