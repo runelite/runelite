@@ -53,6 +53,8 @@ class DiscordState
 		private Instant updated;
 	}
 
+	private static final long MENU_TIMEOUT = 900;
+
 	private final UUID partyId = UUID.randomUUID();
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
@@ -210,10 +212,15 @@ class DiscordState
 		events.removeIf(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)));
 	}
 
-	public void checkForMenuTimeout() {
+	public void checkForMenuTimeout()
+	{
 		EventWithTime event = events.get(0);
-		if (event.getType().getState() == DiscordGameEventType.IN_MENU.getState())
-			if (event.start.plusSeconds(900).isBefore(Instant.now()))
+		if (event.getType().getState().equals(DiscordGameEventType.IN_MENU.getState()))
+		{
+			if (event.start.plusSeconds(MENU_TIMEOUT).isBefore(Instant.now()))
+			{
 				this.reset();
+			}
+		}
 	}
 }
