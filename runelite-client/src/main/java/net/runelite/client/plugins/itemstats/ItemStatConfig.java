@@ -93,9 +93,9 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "weight",
-			name = "Show Item Weight",
-			description = "Show the weight of an item in tooltip"
+		keyName = "weight",
+		name = "Show Item Weight",
+		description = "Show the weight of an item in tooltip"
 	)
 	default boolean weight(){ return true; }
 
