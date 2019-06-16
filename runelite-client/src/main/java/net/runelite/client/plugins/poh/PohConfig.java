@@ -114,7 +114,7 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "showJewelleryBox",
 		name = "Show Jewellery Box",
-		description = "Configures whether or not the Jewllery box is displayed"
+		description = "Configures whether or not the jewellery box is displayed"
 	)
 	default boolean showJewelleryBox()
 	{
