@@ -727,8 +727,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			if (event.getType() == WALK.getId())
 			{
-				MenuEntry menuEntry = entries[entries.length - 1];
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
 				menuEntry.setType(MenuAction.WALK.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
+				client.setMenuEntries(menuEntries);
 			}
 			else if (option.equalsIgnoreCase("examine"))
 			{
