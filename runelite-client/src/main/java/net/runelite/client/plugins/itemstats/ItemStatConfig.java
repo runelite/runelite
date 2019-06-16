@@ -93,6 +93,13 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "weight",
+			name = "Show Item Weight",
+			description = "Show the weight of an item in tooltip"
+	)
+	default boolean weight(){return true;}
+
+	@ConfigItem(
 		keyName = "colorBetterUncapped",
 		name = "Better (Uncapped)",
 		description = "Color to show when the stat change is fully consumed",
