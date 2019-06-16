@@ -130,10 +130,9 @@ public class OlmAttackCounterPlugin extends Plugin
 
             if (attackStyles.contains(projectileId))
             {
-                System.out.println("Olm Attacks!");
-                System.out.println("tick:       " + currentTick);
-
                 numProjectiles++;
+
+                olmHead.setLastAutoTick(currentTick);
 
                 // Don't double count on the same tick
                 if (olmHead.getThisAttackID() == projectileId)
@@ -144,6 +143,9 @@ public class OlmAttackCounterPlugin extends Plugin
                 olmHead.setThisAttackID(projectileId);
            }
         }
+
+        System.out.println("Olm Attacks!");
+        System.out.println("tick:       " + currentTick);
 
         switch (olmHead.getThisAttackID())
         {
