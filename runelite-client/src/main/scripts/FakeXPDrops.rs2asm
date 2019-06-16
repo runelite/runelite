@@ -7,6 +7,8 @@
    iload                  1
    sconst				  "fakeXpDrop"
    runelite_callback	  ;
+   pop_int
+   pop_int
    iconst                 105
    iconst                 83
    iconst                 681
