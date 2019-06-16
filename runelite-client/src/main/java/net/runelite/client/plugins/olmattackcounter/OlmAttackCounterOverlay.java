@@ -108,7 +108,7 @@ class OlmAttackCounterOverlay extends Overlay
                 .build());
 
              //Replace above lines with this code block before release
-            /*
+            
             panelComponent.getChildren().add(LineComponent.builder()
                 .left("Special Counter:")
                 .right(session.specialCount()+ "")
@@ -118,7 +118,7 @@ class OlmAttackCounterOverlay extends Overlay
                 .left("Switch %:")
                 .right(session.getSwitchCounter() + (session.getSwitchCounter() >= 1 ? " (" + FORMAT.format(session.getSwitchCounter()) + "%)" : ""))
                 .build());
-            */
+
 
             /* Counting number of phases, not needed
             panelComponent.getChildren().add(LineComponent.builder()

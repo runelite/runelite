@@ -64,6 +64,10 @@ public class OlmHead
 
     @Getter
     @Setter
+    private int thisAttackID;
+
+    @Getter
+    @Setter
     private int attackSide; // left = 0, right = 1
 
     @Getter

@@ -82,6 +82,11 @@ public class OlmAttackCounterPlugin extends Plugin
     {
         final int currentTick = client.getTickCount();
 
+        if (olmHead == null)
+        {
+            return;
+        }
+
         // intermission, crystal bomb and ceiling crystals have the same ID
         if (olmHead.getActive() == OlmHead.OLM_INTERMISSION || olmHead.getActive() == OlmHead.OLM_NOT_SPAWNED)
         {
@@ -95,12 +100,14 @@ public class OlmAttackCounterPlugin extends Plugin
             return;
         }
 
-        int numOlmAttacks = 0;
+        int numProjectiles = 0;
+        olmHead.setThisAttackID(-1);
 
         for (Projectile projectile : client.getProjectiles())
         {
             int projectileId = projectile.getId();
 
+            /*
             // Account for a skipped 3rd cycle
             if (olmHead.getLastAutoTick() + olmHead.SKIPPED_CYCLE_RATE == currentTick)
             {
@@ -110,89 +117,100 @@ public class OlmAttackCounterPlugin extends Plugin
             {
                 olmHead.setLastAutoTick(currentTick);
             }
+            */
 
             // Bomb on head phase have no x, y velocity
             if (olmHead.getPhase() == OlmHead.PHASE_HEAD)
             {
                 if (projectile.getVelocityX() == 0 && projectile.getVelocityY() == 0)
                 {
-                    return;
+                    continue;
                 }
             }
-
 
             if (attackStyles.contains(projectileId))
             {
                 System.out.println("Olm Attacks!");
                 System.out.println("tick:       " + currentTick);
-                numOlmAttacks++;
 
-                switch (projectileId)
+                numProjectiles++;
+
+                // Don't double count on the same tick
+                if (olmHead.getThisAttackID() == projectileId)
                 {
-                    case ProjectileID.OLM_RANGE_AUTO:
-                        session.increaseRangeAmount();
-                        System.out.println("Ranged Attack");
-                        if (olmHead.getLastAutoID() == OlmHead.MAGE_AUTO)
-                        {
-                            session.increaseSwitchAmount();
-                        }
-                        olmHead.setLastAutoID(OlmHead.RANGE_AUTO);
-                        break;
-
-                    case ProjectileID.OLM_MAGE_AUTO:
-                        session.increaseMageAmount();
-                        System.out.println("Mage Attack");
-                        if (olmHead.getLastAutoID() == OlmHead.RANGE_AUTO)
-                        {
-                            session.increaseSwitchAmount();
-                        }
-                        olmHead.setLastAutoID(OlmHead.MAGE_AUTO);
-                        break;
-
-                    case ProjectileID.OLM_ACID_DRIP:
-                        System.out.println("Acid Attack");
-                        session.increaseDripAmount();
-                        break;
-
-            /*case ProjectileID.OLM_ACID_SPREAD:
-                session.increaseSprayAmount();*/
-
-                    case ProjectileID.OLM_FLAME_WALL:
-                        System.out.println("Flame Wall");
-                        session.increaseWallAmount();
-                        break;
-
-                    case ProjectileID.OLM_BURN:
-                        System.out.println("Burn Attack");
-                        session.increaseBurnAmount();
-                        break;
-
-                    case ProjectileID.OLM_CRYSTAL_BOMB:
-                        System.out.println("Crystal Bomb");
-                        session.increaseBombAmount();
-                        break;
-
-                    // Only count smites once
-                    case ProjectileID.OLM_MAGE_SMITE:
-                        System.out.println("Mage Smite");
-
-                    case ProjectileID.OLM_RANGE_SMITE:
-                        System.out.println("Range Smite");
-
-                    case ProjectileID.OLM_MELEE_SMITE:
-                        System.out.println("Melee Smite");
-                        session.increaseSmiteAmount();
-                        break;
-
-                    default:
-                        break;
-
+                    continue;
                 }
-            }
+
+                olmHead.setThisAttackID(projectileId);
+           }
         }
 
-        System.out.println("There were " + numOlmAttacks + " Olm attack projectiles");
+        switch (olmHead.getThisAttackID())
+        {
+            case ProjectileID.OLM_RANGE_AUTO:
+                session.increaseRangeAmount();
+                System.out.println("Ranged Attack");
+                if (olmHead.getLastAutoID() == OlmHead.MAGE_AUTO)
+                {
+                    session.increaseSwitchAmount();
+                }
+                olmHead.setLastAutoID(OlmHead.RANGE_AUTO);
+                break;
 
+            case ProjectileID.OLM_MAGE_AUTO:
+                session.increaseMageAmount();
+                System.out.println("Mage Attack");
+                if (olmHead.getLastAutoID() == OlmHead.RANGE_AUTO)
+                {
+                    session.increaseSwitchAmount();
+                }
+                olmHead.setLastAutoID(OlmHead.MAGE_AUTO);
+                break;
+
+            case ProjectileID.OLM_ACID_DRIP:
+                if (numProjectiles > 1)
+                {
+                    System.out.println("Acid Spread");
+                    session.increaseSprayAmount();
+                }
+                if (numProjectiles == 1)
+                {
+                    System.out.println("Acid Drip");
+                    session.increaseDripAmount();
+                }
+                break;
+
+            case ProjectileID.OLM_FLAME_WALL:
+                System.out.println("Flame Wall");
+                session.increaseWallAmount();
+                break;
+
+            case ProjectileID.OLM_BURN:
+                System.out.println("Burn Attack");
+                session.increaseBurnAmount();
+                break;
+
+            case ProjectileID.OLM_CRYSTAL_BOMB:
+                System.out.println("Crystal Bomb");
+                session.increaseBombAmount();
+                break;
+
+            // Only count smites once
+            case ProjectileID.OLM_MAGE_SMITE:
+                System.out.println("Mage Smite");
+
+            case ProjectileID.OLM_RANGE_SMITE:
+                System.out.println("Range Smite");
+
+            case ProjectileID.OLM_MELEE_SMITE:
+                System.out.println("Melee Smite");
+                session.increaseSmiteAmount();
+                break;
+
+            default:
+                break;
+
+        }
         return;
     }
 
