@@ -55,6 +55,7 @@ import net.runelite.client.events.PartyChanged;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 import net.runelite.client.ws.PartyMember;
@@ -67,6 +68,7 @@ import net.runelite.http.api.ws.messages.party.UserSync;
 	name = "Performance Stats",
 	description = "Displays your current performance stats",
 	tags = {"performance", "stats", "dps", "damage", "combat"},
+	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
 @Slf4j
