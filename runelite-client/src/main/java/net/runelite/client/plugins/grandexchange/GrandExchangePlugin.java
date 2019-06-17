@@ -30,6 +30,7 @@ package net.runelite.client.plugins.grandexchange;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.inject.Provides;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,6 +70,7 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
@@ -153,6 +155,8 @@ public class GrandExchangePlugin extends Plugin
 
 	private GrandExchangeClient grandExchangeClient;
 
+	private boolean shiftPressed = false;
+
 	private SavedOffer getOffer(int slot)
 	{
 		String offer = configManager.getConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot));
@@ -179,12 +183,41 @@ public class GrandExchangePlugin extends Plugin
 		return configManager.getConfig(GrandExchangeConfig.class);
 	}
 
+	KeyListener kl = new KeyListener()
+	{
+		@Override
+		public void keyTyped(KeyEvent e)
+		{
+
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e)
+		{
+			if (e.getKeyCode() == 16)
+			{
+				shiftPressed = true;
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e)
+		{
+			if (e.getKeyCode() == 16)
+			{
+				shiftPressed = false;
+			}
+		}
+	};
+
 	@Override
 	protected void startUp()
 	{
 		itemGELimits = loadGELimits();
 		panel = injector.getInstance(GrandExchangePanel.class);
 		panel.setGELimits(itemGELimits);
+
+		keyManager.registerKeyListener(kl);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "ge_icon.png");
 
@@ -220,6 +253,7 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeItem = null;
 		itemGELimits = null;
 		grandExchangeClient = null;
+		keyManager.unregisterKeyListener(kl);
 	}
 
 	@Subscribe
@@ -372,6 +406,18 @@ public class GrandExchangePlugin extends Plugin
 		// At the moment, if the user disables quick lookup, the input listener gets disabled. Thus, isHotKeyPressed()
 		// should always return false when quick lookup is disabled.
 		// Replace the default option with "Search ..." when holding alt
+		final String option = Text.removeTags(event.getOption()).toLowerCase();
+		final String target = Text.removeTags(event.getTarget()).toLowerCase();
+
+		//if shift key is pressed, primary menu option is changed from 'view offer' to 'abort offer'
+		if (shiftPressed)
+		{
+			if (option.equals("view offer"))
+			{
+				swap("abort offer", option, target, true);
+			}
+		}
+
 		if (client.getGameState() != GameState.LOGGED_IN || !hotKeyPressed)
 		{
 			return;
@@ -493,5 +539,49 @@ public class GrandExchangePlugin extends Plugin
 		final Map<Integer, Integer> itemGELimits = GSON.fromJson(new InputStreamReader(geLimitData), BUY_LIMIT_TOKEN.getType());
 		log.debug("Loaded {} limits", itemGELimits.size());
 		return itemGELimits;
+	}
+
+	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
+	{
+		for (int i = entries.length - 1; i >= 0; i--)
+		{
+			MenuEntry entry = entries[i];
+			String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
+			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
+
+			if (strict)
+			{
+				if (entryOption.equals(option) && entryTarget.equals(target))
+				{
+					return i;
+				}
+			}
+			else
+			{
+				if (entryOption.contains(option.toLowerCase()) && entryTarget.equals(target))
+				{
+					return i;
+				}
+			}
+		}
+
+		return -1;
+	}
+
+	private void swap(String optionA, String optionB, String target, boolean strict)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+
+		int idxA = searchIndex(entries, optionA, target, strict);
+		int idxB = searchIndex(entries, optionB, target, strict);
+
+		if (idxA >= 0 && idxB >= 0)
+		{
+			MenuEntry entry = entries[idxA];
+			entries[idxA] = entries[idxB];
+			entries[idxB] = entry;
+
+			client.setMenuEntries(entries);
+		}
 	}
 }
