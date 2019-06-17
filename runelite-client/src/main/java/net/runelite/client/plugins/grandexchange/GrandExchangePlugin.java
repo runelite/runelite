@@ -194,7 +194,7 @@ public class GrandExchangePlugin extends Plugin
 		@Override
 		public void keyPressed(KeyEvent e)
 		{
-			if (e.getKeyCode() == 16)
+			if (e.getKeyCode() == KeyEvent.VK_SHIFT)
 			{
 				shiftPressed = true;
 			}
