@@ -1,0 +1,634 @@
+.id                 1601
+.int_stack_count    4
+.string_stack_count 2
+.int_var_count      14
+.string_var_count   3
+; callback "itemsKeptOnDeath"
+; 	Used by the ItemsKepthOnDeath plugin to edit the interface
+; 	Put a rune pouch in your inventory and it shouldn't have a white outline
+; 	in the Items kept on death screen
+   sload                  1
+   iconst                 262167
+   if_settext            
+   iconst                 0
+   istore                 4
+   iconst                 0
+   istore                 5
+   iconst                 -1
+   istore                 6
+   iconst                 0
+   istore                 7
+   sconst                 ""
+   sstore                 2
+   iconst                 0
+   istore                 8
+   iconst                 0
+   istore                 9
+   iconst                 0
+   istore                 10
+   iconst                 0
+   istore                 11
+   iload                  1
+   define_array           111
+   iconst                 0
+   istore                 12
+   iconst                 0
+   istore                 13
+   iload                  0
+   iconst                 0
+   if_icmpeq              LABEL31
+   jump                   LABEL525
+LABEL31:
+   iconst                 93
+   iconst                 13190
+   inv_total             
+   iconst                 0
+   if_icmpgt              LABEL42
+   iconst                 93
+   iconst                 13192
+   inv_total             
+   iconst                 0
+   if_icmpgt              LABEL42
+   jump                   LABEL44
+LABEL42:
+   iconst                 1
+   istore                 9
+LABEL44:
+   iload                  10
+   iload                  1
+   if_icmplt              LABEL48
+   jump                   LABEL88
+LABEL48:
+   iconst                 584
+   iload                  11
+   inv_getobj            
+   istore                 6
+   iload                  6
+   iconst                 -1
+   if_icmpne              LABEL56
+   jump                   LABEL85
+LABEL56:
+   iconst                 584
+   iload                  11
+   inv_getnum            
+   istore                 7
+LABEL60:
+   iload                  10
+   iload                  1
+   if_icmplt              LABEL64
+   jump                   LABEL80
+LABEL64:
+   iload                  7
+   iconst                 0
+   if_icmpgt              LABEL68
+   jump                   LABEL80
+LABEL68:
+   iload                  10
+   iload                  6
+   set_array_int         
+   iload                  7
+   iconst                 1
+   sub                   
+   istore                 7
+   iload                  10
+   iconst                 1
+   add                   
+   istore                 10
+   jump                   LABEL60
+LABEL80:
+   iload                  11
+   iconst                 1
+   add                   
+   istore                 11
+   jump                   LABEL87
+LABEL85:
+   iload                  1
+   istore                 10
+LABEL87:
+   jump                   LABEL44
+LABEL88:
+   iload                  4
+   iload                  1
+   if_icmplt              LABEL92
+   jump                   LABEL147
+LABEL92:
+   iconst                 262162
+   iconst                 5
+   iload                  4
+   cc_create             
+   iconst                 36
+   iconst                 32
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 5
+   iload                  4
+   iconst                 40
+   multiply              
+   add                   
+   iconst                 25
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iload                  4
+   get_array_int         
+   istore                 6
+   iload                  6
+   iconst                 -1
+   if_icmpne              LABEL117
+   jump                   LABEL144
+LABEL117:
+   iload                  6
+   iconst                 1
+   cc_setobject          
+   sconst                 "<col=ff981f>"
+   iload                  6
+   oc_name               
+   join_string            2
+   cc_setopbase          
+   iconst                 1
+   sconst                 "Item:"
+   cc_setop              
+   iconst                 1603
+   iconst                 1
+   iconst                 1
+   iload                  6
+   oc_name               
+   sconst                 "1is"
+   cc_setonop            
+   iconst                 1118481
+   cc_setgraphicshadow   
+   iconst                 1
+   cc_setoutline         
+   iload                  4
+   iconst                 1
+   add                   
+   istore                 4
+   jump                   LABEL146
+LABEL144:
+   iload                  1
+   istore                 4
+LABEL146:
+   jump                   LABEL88
+LABEL147:
+   iconst                 0
+   istore                 4
+LABEL149:
+   iload                  4
+   iconst                 468
+   inv_size              
+   if_icmplt              LABEL154
+   jump                   LABEL350
+LABEL154:
+   iconst                 468
+   iload                  4
+   inv_getobj            
+   istore                 6
+   iload                  6
+   iconst                 -1
+   if_icmpne              LABEL162
+   jump                   LABEL345
+LABEL162:
+   iconst                 262165
+   iconst                 5
+   iload                  5
+   cc_create             
+   iconst                 36
+   iconst                 32
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 5
+   iload                  5
+   iconst                 8
+   mod                   
+   iconst                 38
+   multiply              
+   add                   
+   iconst                 25
+   iconst                 38
+   iload                  5
+   iconst                 8
+   div                   
+   multiply              
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iload                  6
+   iconst                 468
+   iload                  4
+   inv_getnum            
+   cc_setobject          
+   sconst                 "<col=ff981f>"
+   iload                  6
+   oc_name               
+   join_string            2
+   cc_setopbase          
+   iconst                 1
+   sconst                 "Item:"
+   cc_setop              
+   iconst                 1603
+   iconst                 0
+   iconst                 468
+   iload                  4
+   inv_getnum            
+   iload                  6
+   oc_name               
+   sconst                 "1is"
+   cc_setonop            
+   iconst                 1118481
+   cc_setgraphicshadow   
+   iconst                 111
+   iconst                 49
+   iconst                 879
+   iload                  6
+   oc_uncert             
+   enum                  
+   iconst                 1
+   if_icmpeq              LABEL221
+   jump                   LABEL226
+LABEL221:
+   iconst                 2
+   cc_setoutline         
+   iconst                 1
+   istore                 8
+   jump                   LABEL228
+LABEL226:
+   iconst                 1
+   cc_setoutline         
+LABEL228:
+   iload                  5
+   iconst                 1
+   add                   
+   istore                 5
+   iload                  6
+   oc_stackable          
+   iconst                 1
+   if_icmpeq              LABEL237
+   jump                   LABEL345
+LABEL237:
+   iconst                 0
+   istore                 10
+   iconst                 0
+   istore                 13
+LABEL241:
+   iload                  10
+   iload                  1
+   if_icmplt              LABEL245
+   jump                   LABEL259
+LABEL245:
+   iload                  10
+   get_array_int         
+   iload                  6
+   if_icmpeq              LABEL250
+   jump                   LABEL254
+LABEL250:
+   iload                  13
+   iconst                 1
+   add                   
+   istore                 13
+LABEL254:
+   iload                  10
+   iconst                 1
+   add                   
+   istore                 10
+   jump                   LABEL241
+LABEL259:
+   iconst                 2147483647
+   iconst                 94
+   iload                  6
+   inv_total             
+   sub                   
+   iconst                 93
+   iload                  6
+   inv_total             
+   sub                   
+   iload                  13
+   add                   
+   istore                 12
+   iconst                 0
+   iload                  12
+   sub                   
+   istore                 12
+   iload                  12
+   iconst                 0
+   if_icmpgt              LABEL279
+   jump                   LABEL345
+LABEL279:
+   iconst                 262165
+   iconst                 5
+   iload                  5
+   cc_create             
+   iconst                 36
+   iconst                 32
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 5
+   iload                  5
+   iconst                 8
+   mod                   
+   iconst                 38
+   multiply              
+   add                   
+   iconst                 25
+   iconst                 38
+   iload                  5
+   iconst                 8
+   div                   
+   multiply              
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iload                  6
+   iload                  12
+   cc_setobject          
+   sconst                 "<col=ff981f>"
+   iload                  6
+   oc_name               
+   join_string            2
+   cc_setopbase          
+   iconst                 1
+   sconst                 "Item:"
+   cc_setop              
+   iconst                 1603
+   iconst                 0
+   iload                  12
+   iload                  6
+   oc_name               
+   sconst                 "1is"
+   cc_setonop            
+   iconst                 1118481
+   cc_setgraphicshadow   
+   iconst                 111
+   iconst                 49
+   iconst                 879
+   iload                  6
+   oc_uncert             
+   enum                  
+   iconst                 1
+   if_icmpeq              LABEL334
+   jump                   LABEL339
+LABEL334:
+   iconst                 2
+   cc_setoutline         
+   iconst                 1
+   istore                 8
+   jump                   LABEL341
+LABEL339:
+   iconst                 1
+   cc_setoutline         
+LABEL341:
+   iload                  5
+   iconst                 1
+   add                   
+   istore                 5
+LABEL345:
+   iload                  4
+   iconst                 1
+   add                   
+   istore                 4
+   jump                   LABEL149
+LABEL350:
+   sconst                 "The normal amount of items kept is "
+   sconst                 "three"
+   sconst                 "."
+   sconst                 "<br>"
+   sconst                 "<br>"
+   join_string            5
+   sstore                 2
+   iload                  3
+   iconst                 1
+   if_icmpeq              LABEL361
+   jump                   LABEL371
+LABEL361:
+   sload                  2
+   sconst                 "You're an "
+   sconst                 "<col=ff3333>"
+   sconst                 "Ultimate Iron Man"
+   sconst                 "<col=ff981f>"
+   sconst                 ", so you will always keep zero items."
+   join_string            5
+   append                
+   sstore                 2
+   jump                   LABEL434
+LABEL371:
+   iload                  1
+   iconst                 0
+   if_icmpeq              LABEL375
+   jump                   LABEL387
+LABEL375:
+   sload                  2
+   sconst                 "You're marked with a "
+   sconst                 "<col=ff3333>"
+   sconst                 "PK skull"
+   sconst                 "<col=ff981f>"
+   sconst                 ". This reduces the items you keep from "
+   sconst                 "three"
+   sconst                 " to zero!"
+   join_string            7
+   append                
+   sstore                 2
+   jump                   LABEL434
+LABEL387:
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL391
+   jump                   LABEL410
+LABEL391:
+   sload                  2
+   sconst                 "You're marked with a "
+   sconst                 "<col=ff3333>"
+   sconst                 "PK skull"
+   sconst                 "<col=ff981f>"
+   sconst                 ". This reduces the items you keep from "
+   sconst                 "three"
+   sconst                 " to zero!"
+   sconst                 "<br>"
+   sconst                 "<br>"
+   sconst                 "However, you also have the "
+   sconst                 "<col=ff3333>"
+   sconst                 "Protect Items"
+   sconst                 "<col=ff981f>"
+   sconst                 " prayer active, which saves you one extra item!"
+   join_string            14
+   append                
+   sstore                 2
+   jump                   LABEL434
+LABEL410:
+   iload                  1
+   iconst                 3
+   if_icmpeq              LABEL414
+   jump                   LABEL419
+LABEL414:
+   sload                  2
+   sconst                 "You have no factors affecting the items you keep."
+   append                
+   sstore                 2
+   jump                   LABEL434
+LABEL419:
+   iload                  1
+   iconst                 3
+   iconst                 1
+   add                   
+   if_icmpeq              LABEL425
+   jump                   LABEL434
+LABEL425:
+   sload                  2
+   sconst                 "You have the "
+   sconst                 "<col=ff3333>"
+   sconst                 "Protect Items"
+   sconst                 "<col=ff981f>"
+   sconst                 " prayer active, which saves you one extra item!"
+   join_string            5
+   append                
+   sstore                 2
+LABEL434:
+   iload                  8
+   iconst                 1
+   if_icmpeq              LABEL441
+   iload                  9
+   iconst                 1
+   if_icmpeq              LABEL441
+   jump                   LABEL492
+LABEL441:
+   iload                  8
+   iconst                 1
+   if_icmpeq              LABEL445
+   jump                   LABEL466
+LABEL445:
+   iload                  9
+   iconst                 1
+   if_icmpeq              LABEL449
+   jump                   LABEL466
+LABEL449:
+   sload                  2
+   sconst                 "<br>"
+   sconst                 "<br>"
+   sconst                 "Items with a "
+   sconst                 "<col=ffffff>"
+   sconst                 "white outline"
+   sconst                 "<col=ff981f>"
+   sconst                 " will always be lost."
+   sconst                 "<br>"
+   sconst                 "<col=00ff00>"
+   sconst                 "Bonds"
+   sconst                 "</col>"
+   sconst                 " are always protected."
+   join_string            12
+   append                
+   sstore                 2
+   jump                   LABEL492
+LABEL466:
+   iload                  8
+   iconst                 1
+   if_icmpeq              LABEL470
+   jump                   LABEL482
+LABEL470:
+   sload                  2
+   sconst                 "<br>"
+   sconst                 "<br>"
+   sconst                 "Items with a "
+   sconst                 "<col=ffffff>"
+   sconst                 "white outline"
+   sconst                 "<col=ff981f>"
+   sconst                 " will always be lost."
+   join_string            7
+   append                
+   sstore                 2
+   jump                   LABEL492
+LABEL482:
+   sload                  2
+   sconst                 "<br>"
+   sconst                 "<br>"
+   sconst                 "<col=00ff00>"
+   sconst                 "Bonds"
+   sconst                 "</col>"
+   sconst                 " are always protected, so are not shown here."
+   join_string            6
+   append                
+   sstore                 2
+LABEL492:
+   sload                  2
+   iconst                 262173
+   if_settext            
+   sconst                 "<col=ffcc33>"
+   sconst                 "Max items kept on death :"
+   sconst                 "<br>"
+   sconst                 "<br>"
+   sconst                 "<col=ffcc33>"
+   sconst                 "~ "
+   iload                  1
+   tostring              
+   sconst                 " ~"
+   join_string            8
+   iconst                 262174
+   if_settext            
+   iload                  2
+   iconst                 0
+   if_icmpgt              LABEL511
+   jump                   LABEL518
+LABEL511:
+   sconst                 "Items you will keep on death:"
+   iconst                 262161
+   if_settext            
+   sconst                 "Items you will lose on death:"
+   iconst                 262164
+   if_settext            
+   jump                   LABEL524
+LABEL518:
+   sconst                 "Items you will keep on death if not skulled:"
+   iconst                 262161
+   if_settext            
+   sconst                 "Items you will lose on death if not skulled:"
+   iconst                 262164
+   if_settext            
+LABEL524:
+   jump                   LABEL565
+LABEL525:
+   iconst                 1
+   iconst                 262165
+   if_sethide            
+   iconst                 1
+   iconst                 262162
+   if_sethide            
+   iconst                 0
+   iconst                 262175
+   if_sethide            
+   sload                  0
+   iconst                 262176
+   if_settext            
+   sconst                 "The normal amount of items kept is "
+   sconst                 "three"
+   sconst                 "."
+   sconst                 "<br>"
+   sconst                 "<br>"
+   join_string            5
+   sstore                 2
+   sload                  2
+   sconst                 "You're in a "
+   sconst                 "<col=ff3333>"
+   sconst                 "safe area"
+   sconst                 "<col=ff981f>"
+   sconst                 ". See information to the left for a more detailed description."
+   join_string            5
+   append                
+   sstore                 2
+   sload                  2
+   iconst                 262173
+   if_settext            
+   sconst                 "<col=ffcc33>"
+   sconst                 "Max items kept on death :"
+   sconst                 "<br>"
+   sconst                 "<br>"
+   sconst                 "<col=ffcc33>"
+   sconst                 "All items!"
+   join_string            6
+   iconst                 262174
+   if_settext            
+LABEL565:
+   sconst                 "itemsKeptOnDeath" ; push event name
+   runelite_callback                         ; invoke callback
+   return                
