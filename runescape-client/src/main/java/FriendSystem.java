@@ -139,39 +139,40 @@ public class FriendSystem {
       if(var1 != null) {
          Username var2 = new Username(var1, this.loginType);
          if(var2.hasCleanName()) {
-            StringBuilder var10000;
+            StringBuilder var3;
             String var4;
             if(this.__e_158()) {
-               var10000 = null;
+               var3 = null;
                var4 = "Your friend list is full. Max of 200 for free users, and 400 for members";
                WorldMapIcon1.method219(30, "", var4);
             } else if(Canvas.localPlayer.username.__equals_466(var2)) {
-               var10000 = null;
+               var3 = null;
                var4 = "You can\'t add yourself to your own friend list";
                WorldMapIcon1.method219(30, "", var4);
             } else {
-               Object var10001;
+               Object var5;
                if(this.isFriended(var2, false)) {
-                  var10000 = (new StringBuilder()).append(var1);
-                  var10001 = null;
-                  var4 = var10000.append(" is already on your friend list").toString();
+                  var3 = (new StringBuilder()).append(var1);
+                  var5 = null;
+                  var4 = var3.append(" is already on your friend list").toString();
                   WorldMapIcon1.method219(30, "", var4);
                } else if(this.isIgnored(var2)) {
-                  var10000 = new StringBuilder();
-                  var10001 = null;
-                  var10000 = var10000.append("Please remove ").append(var1);
-                  var10001 = null;
-                  var4 = var10000.append(" from your ignore list first").toString();
+                  var3 = new StringBuilder();
+                  var5 = null;
+                  var3 = var3.append("Please remove ").append(var1);
+                  var5 = null;
+                  var4 = var3.append(" from your ignore list first").toString();
                   WorldMapIcon1.method219(30, "", var4);
                } else {
-                  PacketBufferNode var3 = Interpreter.method1915(ClientPacket.__gs_cn, Client.packetWriter.isaacCipher);
-                  var3.packetBuffer.writeByte(WorldMapRegion.method550(var1));
-                  var3.packetBuffer.writeStringCp1252NullTerminated(var1);
-                  Client.packetWriter.__q_167(var3);
+                  PacketBufferNode var6 = Interpreter.method1915(ClientPacket.__gs_cn, Client.packetWriter.isaacCipher);
+                  var6.packetBuffer.writeByte(WorldMapRegion.method550(var1));
+                  var6.packetBuffer.writeStringCp1252NullTerminated(var1);
+                  Client.packetWriter.__q_167(var6);
                }
             }
          }
       }
+
    }
 
    @ObfuscatedName("e")
@@ -194,33 +195,37 @@ public class FriendSystem {
       if(var1 != null) {
          Username var2 = new Username(var1, this.loginType);
          if(var2.hasCleanName()) {
-            StringBuilder var10000;
+            StringBuilder var3;
             String var4;
             if(this.__a_160()) {
-               var10000 = null;
+               var3 = null;
                var4 = "Your ignore list is full. Max of 100 for free users, and 400 for members";
                WorldMapIcon1.method219(30, "", var4);
             } else if(Canvas.localPlayer.username.__equals_466(var2)) {
-               var10000 = null;
+               var3 = null;
                var4 = "You can\'t add yourself to your own ignore list";
                WorldMapIcon1.method219(30, "", var4);
             } else if(this.isIgnored(var2)) {
                class22.method294(var1);
-            } else if(this.isFriended(var2, false)) {
-               var10000 = new StringBuilder();
-               Object var10001 = null;
-               var10000 = var10000.append("Please remove ").append(var1);
-               var10001 = null;
-               var4 = var10000.append(" from your friend list first").toString();
-               WorldMapIcon1.method219(30, "", var4);
             } else {
-               PacketBufferNode var3 = Interpreter.method1915(ClientPacket.__gs_ch, Client.packetWriter.isaacCipher);
-               var3.packetBuffer.writeByte(WorldMapRegion.method550(var1));
-               var3.packetBuffer.writeStringCp1252NullTerminated(var1);
-               Client.packetWriter.__q_167(var3);
+               PacketBufferNode var5;
+               if(this.isFriended(var2, false)) {
+                  var3 = new StringBuilder();
+                  var5 = null;
+                  var3 = var3.append("Please remove ").append(var1);
+                  var5 = null;
+                  var4 = var3.append(" from your friend list first").toString();
+                  WorldMapIcon1.method219(30, "", var4);
+               } else {
+                  var5 = Interpreter.method1915(ClientPacket.__gs_ch, Client.packetWriter.isaacCipher);
+                  var5.packetBuffer.writeByte(WorldMapRegion.method550(var1));
+                  var5.packetBuffer.writeStringCp1252NullTerminated(var1);
+                  Client.packetWriter.__q_167(var5);
+               }
             }
          }
       }
+
    }
 
    @ObfuscatedName("a")
@@ -254,6 +259,7 @@ public class FriendSystem {
             GrandExchangeOffer.method121();
          }
       }
+
    }
 
    @ObfuscatedName("j")
@@ -277,6 +283,7 @@ public class FriendSystem {
             class229.method4512();
          }
       }
+
    }
 
    @ObfuscatedName("t")

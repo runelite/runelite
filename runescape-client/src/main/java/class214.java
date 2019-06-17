@@ -45,10 +45,6 @@ public class class214 {
    @Export("menuWidth")
    static int menuWidth;
 
-   static {
-      __hf_o = 0;
-   }
-
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/CharSequence;IZI)Z",
@@ -74,33 +70,33 @@ public class class214 {
                }
             }
 
-            int var10;
+            int var9;
             if(var8 >= '0' && var8 <= '9') {
-               var10 = var8 - '0';
+               var9 = var8 - '0';
             } else if(var8 >= 'A' && var8 <= 'Z') {
-               var10 = var8 - '7';
+               var9 = var8 - '7';
             } else {
                if(var8 < 'a' || var8 > 'z') {
                   return false;
                }
 
-               var10 = var8 - 'W';
+               var9 = var8 - 'W';
             }
 
-            if(var10 >= var1) {
+            if(var9 >= var1) {
                return false;
             }
 
             if(var3) {
-               var10 = -var10;
+               var9 = -var9;
             }
 
-            int var9 = var5 * var1 + var10;
-            if(var9 / var1 != var5) {
+            int var10 = var5 * var1 + var9;
+            if(var10 / var1 != var5) {
                return false;
             }
 
-            var5 = var9;
+            var5 = var10;
             var4 = true;
          }
 
@@ -117,5 +113,9 @@ public class class214 {
    )
    public static int method4157(CharSequence var0, int var1) {
       return IgnoreList.method5438(var0, var1, true);
+   }
+
+   static {
+      __hf_o = 0;
    }
 }

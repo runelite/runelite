@@ -90,60 +90,60 @@ public class WorldMapLabel {
                      var0.writeInt(var6);
                   }
 
-                  Method var25;
+                  Method var7;
                   if(var4 != 3) {
                      if(var4 == 4) {
-                        var25 = var1.methods[var3];
-                        var6 = var25.getModifiers();
+                        var7 = var1.methods[var3];
+                        var6 = var7.getModifiers();
                         var0.writeByte(0);
                         var0.writeInt(var6);
                      }
                   } else {
-                     var25 = var1.methods[var3];
-                     byte[][] var10 = var1.arguments[var3];
-                     Object[] var7 = new Object[var10.length];
+                     var7 = var1.methods[var3];
+                     byte[][] var8 = var1.arguments[var3];
+                     Object[] var9 = new Object[var8.length];
 
-                     for(int var8 = 0; var8 < var10.length; ++var8) {
-                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var10[var8]));
-                        var7[var8] = var9.readObject();
+                     for(int var10 = 0; var10 < var8.length; ++var10) {
+                        ObjectInputStream var11 = new ObjectInputStream(new ByteArrayInputStream(var8[var10]));
+                        var9[var10] = var11.readObject();
                      }
 
-                     Object var11 = Reflection.invoke(var25, (Object)null, var7);
-                     if(var11 == null) {
+                     Object var24 = Reflection.invoke(var7, (Object)null, var9);
+                     if(var24 == null) {
                         var0.writeByte(0);
-                     } else if(var11 instanceof Number) {
+                     } else if(var24 instanceof Number) {
                         var0.writeByte(1);
-                        var0.writeLong(((Number)var11).longValue());
-                     } else if(var11 instanceof String) {
+                        var0.writeLong(((Number)var24).longValue());
+                     } else if(var24 instanceof String) {
                         var0.writeByte(2);
-                        var0.writeStringCp1252NullTerminated((String)var11);
+                        var0.writeStringCp1252NullTerminated((String)var24);
                      } else {
                         var0.writeByte(4);
                      }
                   }
-               } catch (ClassNotFoundException var13) {
+               } catch (ClassNotFoundException var12) {
                   var0.writeByte(-10);
-               } catch (InvalidClassException var14) {
+               } catch (InvalidClassException var13) {
                   var0.writeByte(-11);
-               } catch (StreamCorruptedException var15) {
+               } catch (StreamCorruptedException var14) {
                   var0.writeByte(-12);
-               } catch (OptionalDataException var16) {
+               } catch (OptionalDataException var15) {
                   var0.writeByte(-13);
-               } catch (IllegalAccessException var17) {
+               } catch (IllegalAccessException var16) {
                   var0.writeByte(-14);
-               } catch (IllegalArgumentException var18) {
+               } catch (IllegalArgumentException var17) {
                   var0.writeByte(-15);
-               } catch (InvocationTargetException var19) {
+               } catch (InvocationTargetException var18) {
                   var0.writeByte(-16);
-               } catch (SecurityException var20) {
+               } catch (SecurityException var19) {
                   var0.writeByte(-17);
-               } catch (IOException var21) {
+               } catch (IOException var20) {
                   var0.writeByte(-18);
-               } catch (NullPointerException var22) {
+               } catch (NullPointerException var21) {
                   var0.writeByte(-19);
-               } catch (Exception var23) {
+               } catch (Exception var22) {
                   var0.writeByte(-20);
-               } catch (Throwable var24) {
+               } catch (Throwable var23) {
                   var0.writeByte(-21);
                }
             }
@@ -152,6 +152,7 @@ public class WorldMapLabel {
          var0.__aa_312(var2);
          var1.remove();
       }
+
    }
 
    @ObfuscatedName("f")
@@ -189,7 +190,7 @@ public class WorldMapLabel {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.spritePixels = null;
+      class328.spritePixels = (byte[][])null;
       return var0;
    }
 
@@ -225,8 +226,8 @@ public class WorldMapLabel {
       garbageValue = "60"
    )
    public static void method440() {
-      NpcDefinition.NpcDefinition_cached.clear();
-      NpcDefinition.NpcDefinition_cachedModels.clear();
+      NPCDefinition.NpcDefinition_cached.clear();
+      NPCDefinition.NpcDefinition_cachedModels.clear();
    }
 
    @ObfuscatedName("gx")
@@ -257,10 +258,10 @@ public class WorldMapLabel {
             Client.viewportTempX = -1;
             Client.viewportTempY = -1;
          }
-
       } else {
          Client.viewportTempX = -1;
          Client.viewportTempY = -1;
       }
+
    }
 }

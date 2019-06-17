@@ -50,10 +50,6 @@ public class UnderlayDefinition extends DualNode {
    @Export("hueMultiplier")
    public int hueMultiplier;
 
-   static {
-      UnderlayDefinition_cached = new EvictingDualNodeHashTable(64);
-   }
-
    UnderlayDefinition() {
       this.rgb = 0;
    }
@@ -182,5 +178,9 @@ public class UnderlayDefinition extends DualNode {
    )
    static class249[] method4839() {
       return new class249[]{class249.field3277, class249.field3273, class249.field3274};
+   }
+
+   static {
+      UnderlayDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

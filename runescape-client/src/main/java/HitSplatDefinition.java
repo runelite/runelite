@@ -54,7 +54,7 @@ public class HitSplatDefinition extends DualNode {
       intValue = -1151968735
    )
    @Export("surfaceOffsetY")
-   public int __n;
+   public int surfaceOffsetY;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -102270561
@@ -134,15 +134,9 @@ public class HitSplatDefinition extends DualNode {
    @Export("transformVarp")
    int transformVarp;
 
-   static {
-      HitSplatDefinition_cached = new EvictingDualNodeHashTable(64);
-      __jm_o = new EvictingDualNodeHashTable(64);
-      HitSplatDefinition_cachedFonts = new EvictingDualNodeHashTable(20);
-   }
-
    HitSplatDefinition() {
       this.fontId = -1;
-      this.__n = 16777215;
+      this.surfaceOffsetY = 16777215;
       this.__i = 70;
       this.__a = -1;
       this.__z = -1;
@@ -185,7 +179,7 @@ public class HitSplatDefinition extends DualNode {
       if(var2 == 1) {
          this.fontId = var1.__ap_310();
       } else if(var2 == 2) {
-         this.__n = var1.readMedium();
+         this.surfaceOffsetY = var1.readMedium();
       } else if(var2 == 3) {
          this.__a = var1.__ap_310();
       } else if(var2 == 4) {
@@ -410,5 +404,11 @@ public class HitSplatDefinition extends DualNode {
    @ObfuscatedName("o")
    public static int method4972(long var0) {
       return (int)(var0 >>> 17 & 4294967295L);
+   }
+
+   static {
+      HitSplatDefinition_cached = new EvictingDualNodeHashTable(64);
+      __jm_o = new EvictingDualNodeHashTable(64);
+      HitSplatDefinition_cachedFonts = new EvictingDualNodeHashTable(20);
    }
 }

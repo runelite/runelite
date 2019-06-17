@@ -11,7 +11,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jz")
 @Implements("NPCDefinition")
-public class NpcDefinition extends DualNode {
+public class NPCDefinition extends DualNode {
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lir;"
@@ -193,12 +193,7 @@ public class NpcDefinition extends DualNode {
    @Export("params")
    IterableNodeHashTable params;
 
-   static {
-      NpcDefinition_cached = new EvictingDualNodeHashTable(64);
-      NpcDefinition_cachedModels = new EvictingDualNodeHashTable(50);
-   }
-
-   NpcDefinition() {
+   NPCDefinition() {
       this.name = "null";
       this.size = 1;
       this.idleSequence = -1;
@@ -384,8 +379,8 @@ public class NpcDefinition extends DualNode {
    @Export("getModel")
    public final Model getModel(SequenceDefinition var1, int var2, SequenceDefinition var3, int var4) {
       if(this.transforms != null) {
-         NpcDefinition var12 = this.transform();
-         return var12 == null?null:var12.getModel(var1, var2, var3, var4);
+         NPCDefinition var11 = this.transform();
+         return var11 == null?null:var11.getModel(var1, var2, var3, var4);
       } else {
          Model var5 = (Model)NpcDefinition_cachedModels.get((long)this.id);
          if(var5 == null) {
@@ -401,33 +396,33 @@ public class NpcDefinition extends DualNode {
                return null;
             }
 
-            ModelData[] var8 = new ModelData[this.archives.length];
+            ModelData[] var12 = new ModelData[this.archives.length];
 
-            int var9;
-            for(var9 = 0; var9 < this.archives.length; ++var9) {
-               var8[var9] = ModelData.method2788(NpcDefinition_modelIndexCache, this.archives[var9], 0);
+            int var8;
+            for(var8 = 0; var8 < this.archives.length; ++var8) {
+               var12[var8] = ModelData.method2788(NpcDefinition_modelIndexCache, this.archives[var8], 0);
             }
 
-            ModelData var11;
-            if(var8.length == 1) {
-               var11 = var8[0];
+            ModelData var9;
+            if(var12.length == 1) {
+               var9 = var12[0];
             } else {
-               var11 = new ModelData(var8, var8.length);
+               var9 = new ModelData(var12, var12.length);
             }
 
             if(this.recolorFrom != null) {
-               for(var9 = 0; var9 < this.recolorFrom.length; ++var9) {
-                  var11.recolor(this.recolorFrom[var9], this.recolorTo[var9]);
+               for(var8 = 0; var8 < this.recolorFrom.length; ++var8) {
+                  var9.recolor(this.recolorFrom[var8], this.recolorTo[var8]);
                }
             }
 
             if(this.retextureFrom != null) {
-               for(var9 = 0; var9 < this.retextureFrom.length; ++var9) {
-                  var11.retexture(this.retextureFrom[var9], this.retextureTo[var9]);
+               for(var8 = 0; var8 < this.retextureFrom.length; ++var8) {
+                  var9.retexture(this.retextureFrom[var8], this.retextureTo[var8]);
                }
             }
 
-            var5 = var11.toModel(this.__ag + 64, this.__aq * 5 + 850, -30, -50, -30);
+            var5 = var9.toModel(this.__ag + 64, this.__aq * 5 + 850, -30, -50, -30);
             NpcDefinition_cachedModels.put(var5, (long)this.id);
          }
 
@@ -458,20 +453,20 @@ public class NpcDefinition extends DualNode {
    @Export("getModelData")
    public final ModelData getModelData() {
       if(this.transforms != null) {
-         NpcDefinition var1 = this.transform();
-         return var1 == null?null:var1.getModelData();
+         NPCDefinition var5 = this.transform();
+         return var5 == null?null:var5.getModelData();
       } else if(this.__e == null) {
          return null;
       } else {
-         boolean var5 = false;
+         boolean var1 = false;
 
          for(int var2 = 0; var2 < this.__e.length; ++var2) {
             if(!NpcDefinition_modelIndexCache.tryLoadRecord(this.__e[var2], 0)) {
-               var5 = true;
+               var1 = true;
             }
          }
 
-         if(var5) {
+         if(var1) {
             return null;
          } else {
             ModelData[] var6 = new ModelData[this.__e.length];
@@ -511,7 +506,7 @@ public class NpcDefinition extends DualNode {
       garbageValue = "-113"
    )
    @Export("transform")
-   public final NpcDefinition transform() {
+   public final NPCDefinition transform() {
       int var1 = -1;
       if(this.transformVarbit != -1) {
          var1 = WorldMapSection2.getVarbit(this.transformVarbit);
@@ -557,20 +552,20 @@ public class NpcDefinition extends DualNode {
    )
    @Export("getIntParam")
    public int getIntParam(int var1, int var2) {
-      IterableNodeHashTable var4 = this.params;
-      int var3;
-      if(var4 == null) {
-         var3 = var2;
+      IterableNodeHashTable var3 = this.params;
+      int var4;
+      if(var3 == null) {
+         var4 = var2;
       } else {
-         IntegerNode var5 = (IntegerNode)var4.get((long)var1);
+         IntegerNode var5 = (IntegerNode)var3.get((long)var1);
          if(var5 == null) {
-            var3 = var2;
+            var4 = var2;
          } else {
-            var3 = var5.integer;
+            var4 = var5.integer;
          }
       }
 
-      return var3;
+      return var4;
    }
 
    @ObfuscatedName("d")
@@ -623,8 +618,8 @@ public class NpcDefinition extends DualNode {
          } catch (Exception var5) {
             ;
          }
-
       }
+
    }
 
    @ObfuscatedName("e")
@@ -662,47 +657,47 @@ public class NpcDefinition extends DualNode {
       if(Login.Login_username.length() == 0) {
          class54.method1089("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         long var1;
+         long var0;
          try {
-            URL var3 = new URL(Message.method1227("services", false) + "m=accountappeal/login.ws");
-            URLConnection var4 = var3.openConnection();
-            var4.setRequestProperty("connection", "close");
-            var4.setDoInput(true);
-            var4.setDoOutput(true);
-            var4.setConnectTimeout(5000);
-            OutputStreamWriter var5 = new OutputStreamWriter(var4.getOutputStream());
-            var5.write("data1=req");
-            var5.flush();
-            InputStream var6 = var4.getInputStream();
-            Buffer var7 = new Buffer(new byte[1000]);
+            URL var2 = new URL(Message.method1227("services", false) + "m=accountappeal/login.ws");
+            URLConnection var3 = var2.openConnection();
+            var3.setRequestProperty("connection", "close");
+            var3.setDoInput(true);
+            var3.setDoOutput(true);
+            var3.setConnectTimeout(5000);
+            OutputStreamWriter var4 = new OutputStreamWriter(var3.getOutputStream());
+            var4.write("data1=req");
+            var4.flush();
+            InputStream var5 = var3.getInputStream();
+            Buffer var6 = new Buffer(new byte[1000]);
 
             while(true) {
-               int var8 = var6.read(var7.array, var7.index, 1000 - var7.index);
-               if(var8 == -1) {
-                  var7.index = 0;
-                  long var10 = var7.readLong();
-                  var1 = var10;
+               int var7 = var5.read(var6.array, var6.index, 1000 - var6.index);
+               if(var7 == -1) {
+                  var6.index = 0;
+                  long var8 = var6.readLong();
+                  var0 = var8;
                   break;
                }
 
-               var7.index += var8;
-               if(var7.index >= 1000) {
-                  var1 = 0L;
+               var6.index += var7;
+               if(var6.index >= 1000) {
+                  var0 = 0L;
                   break;
                }
             }
-         } catch (Exception var14) {
-            var1 = 0L;
+         } catch (Exception var10) {
+            var0 = 0L;
          }
 
-         int var0;
-         if(var1 == 0L) {
-            var0 = 5;
+         int var11;
+         if(var0 == 0L) {
+            var11 = 5;
          } else {
-            var0 = class72.method1778(var1, Login.Login_username);
+            var11 = class72.method1778(var0, Login.Login_username);
          }
 
-         switch(var0) {
+         switch(var11) {
          case 2:
             class54.method1089(Strings.__id_jr, Strings.__id_jv, Strings.__id_ju);
             Login.loginIndex = 6;
@@ -722,8 +717,8 @@ public class NpcDefinition extends DualNode {
          case 7:
             class54.method1089("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
          }
-
       }
+
    }
 
    @ObfuscatedName("kw")
@@ -743,5 +738,10 @@ public class NpcDefinition extends DualNode {
       }
 
       return var0;
+   }
+
+   static {
+      NpcDefinition_cached = new EvictingDualNodeHashTable(64);
+      NpcDefinition_cachedModels = new EvictingDualNodeHashTable(50);
    }
 }

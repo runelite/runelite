@@ -61,7 +61,6 @@ final class class2 implements class0 {
          if(var3 == 4) {
             Login.loginIndex = 4;
          }
-
       } else {
          Login.loginIndex = var3;
          Rasterizer2D.Rasterizer2D_clear();
@@ -76,20 +75,20 @@ final class class2 implements class0 {
 
          Login.__cu_o = MenuAction.method2025(var1, "titlebox", "");
          IndexCacheLoader.__bd_u = MenuAction.method2025(var1, "titlebutton", "");
-         int var6 = var1.getArchiveId("runes");
-         int var7 = var1.getRecordId(var6, "");
-         IndexedSprite[] var8;
-         if(!SpriteMask.method4392(var1, var6, var7)) {
-            var8 = null;
+         int var5 = var1.getArchiveId("runes");
+         int var6 = var1.getRecordId(var5, "");
+         IndexedSprite[] var7;
+         if(!SpriteMask.method4392(var1, var5, var6)) {
+            var7 = null;
          } else {
-            var8 = WorldMapLabel.method444();
+            var7 = WorldMapLabel.method444();
          }
 
-         WorldMapEvent.__ap_w = var8;
-         var7 = var1.getArchiveId("title_mute");
-         int var10 = var1.getRecordId(var7, "");
+         WorldMapEvent.__ap_w = var7;
+         var6 = var1.getArchiveId("title_mute");
+         int var8 = var1.getRecordId(var6, "");
          IndexedSprite[] var9;
-         if(!SpriteMask.method4392(var1, var7, var10)) {
+         if(!SpriteMask.method4392(var1, var6, var8)) {
             var9 = null;
          } else {
             var9 = WorldMapLabel.method444();
@@ -127,6 +126,7 @@ final class class2 implements class0 {
          Fonts.__kz_l.drawAt(Login.__cu_q + 382, 0);
          WorldMapSectionType.__h_e.__q_496(Login.__cu_q + 382 - WorldMapSectionType.__h_e.subWidth / 2, 18);
       }
+
    }
 
    @ObfuscatedName("w")

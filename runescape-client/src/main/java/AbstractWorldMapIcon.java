@@ -115,10 +115,11 @@ public abstract class AbstractWorldMapIcon {
          int var5 = this.__w_18();
          switch(var3.field3287.field3528) {
          case 0:
-            if(var1 < this.__e - var4 / 2 || var1 > var4 / 2 + this.__e) {
-               return false;
+            if(var1 >= this.__e - var4 / 2 && var1 <= var4 / 2 + this.__e) {
+               break;
             }
-            break;
+
+            return false;
          case 1:
             if(var1 >= this.__e && var1 < var4 + this.__e) {
                break;

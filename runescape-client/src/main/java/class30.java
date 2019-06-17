@@ -42,11 +42,6 @@ public class class30 {
    )
    final int field248;
 
-   static {
-      field246 = new class30(0);
-      field247 = new class30(1);
-   }
-
    class30(int var1) {
       this.field248 = var1;
    }
@@ -95,29 +90,34 @@ public class class30 {
                }
             }
 
-            ScriptEvent var5;
+            ScriptEvent var6;
             if(var1 == 0 && var3.onDialogAbortListener != null) {
-               var5 = new ScriptEvent();
-               var5.widget = var3;
-               var5.args0 = var3.onDialogAbortListener;
-               AbstractIndexCache.runScript(var5);
+               var6 = new ScriptEvent();
+               var6.widget = var3;
+               var6.args0 = var3.onDialogAbortListener;
+               AbstractIndexCache.runScript(var6);
             }
 
             if(var1 == 1 && var3.__ei != null) {
                if(var3.childIndex >= 0) {
-                  Widget var6 = Huffman.getWidget(var3.id);
-                  if(var6 == null || var6.children == null || var3.childIndex >= var6.children.length || var3 != var6.children[var3.childIndex]) {
+                  Widget var5 = Huffman.getWidget(var3.id);
+                  if(var5 == null || var5.children == null || var3.childIndex >= var5.children.length || var3 != var5.children[var3.childIndex]) {
                      continue;
                   }
                }
 
-               var5 = new ScriptEvent();
-               var5.widget = var3;
-               var5.args0 = var3.__ei;
-               AbstractIndexCache.runScript(var5);
+               var6 = new ScriptEvent();
+               var6.widget = var3;
+               var6.args0 = var3.__ei;
+               AbstractIndexCache.runScript(var6);
             }
          }
       }
 
+   }
+
+   static {
+      field246 = new class30(0);
+      field247 = new class30(1);
    }
 }

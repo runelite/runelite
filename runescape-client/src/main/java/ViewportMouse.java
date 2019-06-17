@@ -59,15 +59,6 @@ public class ViewportMouse {
    @Export("ViewportMouse_entityTags")
    public static long[] ViewportMouse_entityTags;
 
-   static {
-      ViewportMouse_isInViewport = false;
-      ViewportMouse_x = 0;
-      ViewportMouse_y = 0;
-      ViewportMouse_false0 = false;
-      ViewportMouse_entityCount = 0;
-      ViewportMouse_entityTags = new long[1000];
-   }
-
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(IB)Lic;",
@@ -150,5 +141,14 @@ public class ViewportMouse {
             return false;
          }
       }
+   }
+
+   static {
+      ViewportMouse_isInViewport = false;
+      ViewportMouse_x = 0;
+      ViewportMouse_y = 0;
+      ViewportMouse_false0 = false;
+      ViewportMouse_entityCount = 0;
+      ViewportMouse_entityTags = new long[1000];
    }
 }

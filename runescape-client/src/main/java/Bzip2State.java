@@ -59,7 +59,7 @@ public final class Bzip2State {
       intValue = 1860254567
    )
    @Export("surfaceOffsetY")
-   int __n;
+   int surfaceOffsetY;
    @ObfuscatedName("i")
    @Export("__i")
    byte __i;

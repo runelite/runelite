@@ -54,13 +54,14 @@ public class RunException extends RuntimeException {
    )
    public static void method3431() {
       Object var0 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
+      Object var1 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
       synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
          if(IndexStoreActionHandler.__iv_q != 0) {
             IndexStoreActionHandler.__iv_q = 1;
 
             try {
                IndexStoreActionHandler.IndexStoreActionHandler_lock.wait();
-            } catch (InterruptedException var3) {
+            } catch (InterruptedException var4) {
                ;
             }
          }
