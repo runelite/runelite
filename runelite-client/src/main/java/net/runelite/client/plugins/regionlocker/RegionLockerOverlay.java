@@ -26,20 +26,15 @@
 package net.runelite.client.plugins.regionlocker;
 
 import com.google.inject.Inject;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import net.runelite.api.Client;
-import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
