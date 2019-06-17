@@ -43,6 +43,12 @@ import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
 class MiningOverlay extends Overlay
 {
+	// Range of Motherlode vein respawn time - not 100% confirmed but based on observation
+	static final int ORE_VEIN_MAX_RESPAWN_TIME = 123;
+	private static final int ORE_VEIN_MIN_RESPAWN_TIME = 90;
+	private static final float ORE_VEIN_RANDOM_PERCENT_THRESHOLD = (float) ORE_VEIN_MIN_RESPAWN_TIME / ORE_VEIN_MAX_RESPAWN_TIME;
+	private static final Color DARK_GREEN = new Color(0, 100, 0);
+
 	private final Client client;
 	private final MiningPlugin plugin;
 
@@ -67,6 +73,8 @@ class MiningOverlay extends Overlay
 		Instant now = Instant.now();
 		for (Iterator<RockRespawn> it = respawns.iterator(); it.hasNext();)
 		{
+			Color pieFillColor = Color.YELLOW;
+			Color pieBorderColor = Color.ORANGE;
 			RockRespawn rockRespawn = it.next();
 			float percent = (now.toEpochMilli() - rockRespawn.getStartTime().toEpochMilli()) / (float) rockRespawn.getRespawnTime();
 			WorldPoint worldPoint = rockRespawn.getWorldPoint();
@@ -77,16 +85,23 @@ class MiningOverlay extends Overlay
 				continue;
 			}
 
-			Point point = Perspective.localToCanvas(client, loc, client.getPlane());
+			Point point = Perspective.localToCanvas(client, loc, client.getPlane(), rockRespawn.getZOffset());
 			if (point == null)
 			{
 				it.remove();
 				continue;
 			}
 
+			// Recolour pie on motherlode veins during the portion of the timer where they may respawn
+			if (rockRespawn.getRock() == Rock.ORE_VEIN && percent > ORE_VEIN_RANDOM_PERCENT_THRESHOLD)
+			{
+				pieFillColor = Color.GREEN;
+				pieBorderColor = DARK_GREEN;
+			}
+
 			ProgressPieComponent ppc = new ProgressPieComponent();
-			ppc.setBorderColor(Color.ORANGE);
-			ppc.setFill(Color.YELLOW);
+			ppc.setBorderColor(pieBorderColor);
+			ppc.setFill(pieFillColor);
 			ppc.setPosition(point);
 			ppc.setProgress(percent);
 			ppc.render(graphics);

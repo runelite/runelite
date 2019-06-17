@@ -30,6 +30,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import static net.runelite.api.widgets.WidgetID.GUIDE_PRICE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KEPT_ON_DEATH_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.LOOTING_BAG_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.SEED_BOX_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -45,7 +48,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 		this.config = config;
 		showOnInventory();
 		showOnBank();
-		showOnInterfaces(KEPT_ON_DEATH_GROUP_ID, GUIDE_PRICE_GROUP_ID);
+		showOnInterfaces(KEPT_ON_DEATH_GROUP_ID, GUIDE_PRICE_GROUP_ID, LOOTING_BAG_GROUP_ID, SEED_BOX_GROUP_ID, KINGDOM_GROUP_ID);
 	}
 
 	@Override

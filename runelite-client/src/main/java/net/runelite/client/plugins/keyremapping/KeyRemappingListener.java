@@ -107,7 +107,10 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 				}
 			}
 
-			if (config.fkeyRemap())
+			// In addition to the above checks, the F-key remapping shouldn't
+			// activate when dialogs are open which listen for number keys
+			// to select options
+			if (config.fkeyRemap() && !plugin.isDialogOpen())
 			{
 				if (ONE.matches(e))
 				{
@@ -188,23 +191,18 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 			switch (e.getKeyCode())
 			{
 				case KeyEvent.VK_ENTER:
+				case KeyEvent.VK_ESCAPE:
 					plugin.setTyping(false);
 					clientThread.invoke(plugin::lockChat);
 					break;
-				case KeyEvent.VK_ESCAPE:
-					plugin.setTyping(false);
-					clientThread.invoke(() ->
-					{
-						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
-						plugin.lockChat();
-					});
-					break;
 				case KeyEvent.VK_BACK_SPACE:
+					// Only lock chat on backspace when the typed text is now empty
 					if (Strings.isNullOrEmpty(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT)))
 					{
 						plugin.setTyping(false);
 						clientThread.invoke(plugin::lockChat);
 					}
+					break;
 			}
 		}
 	}
