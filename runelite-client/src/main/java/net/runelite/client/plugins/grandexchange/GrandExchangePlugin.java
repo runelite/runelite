@@ -410,13 +410,17 @@ public class GrandExchangePlugin extends Plugin
 		final String target = Text.removeTags(event.getTarget()).toLowerCase();
 
 		//if shift key is pressed, primary menu option is changed from 'view offer' to 'abort offer'
-		if (shiftPressed)
+		if (config.enableShiftAbort())
 		{
-			if (option.equals("view offer"))
+			if (shiftPressed)
 			{
-				swap("abort offer", option, target, true);
+				if (option.equals("view offer"))
+				{
+					swap("abort offer", option, target, true);
+				}
 			}
 		}
+
 
 		if (client.getGameState() != GameState.LOGGED_IN || !hotKeyPressed)
 		{
