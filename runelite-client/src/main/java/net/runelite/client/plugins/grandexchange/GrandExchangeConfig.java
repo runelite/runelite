@@ -74,4 +74,15 @@ public interface GrandExchangeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "enableShiftAbort",
+		name = "Shift Click Abort Offer",
+		description = "Enables the option to shift-click abort offers in the GE"
+	)
+	default boolean enableShiftAbort()
+	{
+		return false;
+	}
 }
