@@ -102,7 +102,7 @@ public abstract class RSGameShellMixin implements RSGameShell
 	@Replace("checkHost")
 	protected final boolean checkHost()
 	{
-		//ALways allow host.
+		//Always allow host.
 		return true;
 	}
 }

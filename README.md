@@ -11,7 +11,10 @@ https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-180
 
 To setup your rsa keys, navigate to runelite-mixins and go to RSBufferMixin and set modulus and exponent
 
-After that it's ran much like RuneLite or RuneLitePlus, install then run RuneLite.main()  
+After that it's ran much like RuneLite or RuneLitePlus, install then run RuneLite.main()
+
+Be sure to add either -rs=CUSTOM or -local-injected while working on it in intelliJ
+To release the built jar publicly, you'd have to host your injected client remotely and redirect it to your source in rs.ClientLoader
 
 ## License
 
