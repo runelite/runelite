@@ -158,89 +158,86 @@ public class RaidsOverlay extends Overlay
 		boolean unknownCombat = false;
 		String puzzles = "";
 		String roomName = "";
-		if (config.enhanceScouterTitle() || config.scavsBeforeIce() || sharable)
+		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
 		{
-			for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
-			{
-				int position = layoutRoom.getPosition();
-				RaidRoom room = plugin.getRaid().getRoom(position);
+			int position = layoutRoom.getPosition();
+			RaidRoom room = plugin.getRaid().getRoom(position);
 
-				if (room == null)
-				{
-					continue;
-				}
-
-				switch (room.getType())
-				{
-					case COMBAT:
-						combatCount++;
-						roomName = room.getBoss().getName();
-						switch (RaidRoom.Boss.fromString(roomName))
-						{
-							case VANGUARDS:
-								vanguards = true;
-								break;
-							case UNKNOWN:
-								unknownCombat = true;
-								break;
-						}
-						break;
-					case PUZZLE:
-						roomName = room.getPuzzle().getName();
-						switch (RaidRoom.Puzzle.fromString(roomName))
-						{
-							case CRABS:
-								crabs = true;
-								break;
-							case ICE_DEMON:
-								iceDemon = true;
-								iceRooms.add(roomCount);
-								break;
-							case THIEVING:
-								thieving = true;
-								break;
-							case TIGHTROPE:
-								tightrope = true;
-								break;
-						}
-						break;
-					case SCAVENGERS:
-						scavRooms.add(roomCount);
-						break;
-				}
-				roomCount++;
-			}
-			if (tightrope)
+			if (room == null)
 			{
-				puzzles = crabs ? "cr" : iceDemon ? "ri" : thieving ? "tr" : "?r";
+				continue;
 			}
 
-			if ((config.hideVanguards() && vanguards) || (config.hideRopeless() && !tightrope) || (config.hideUnknownCombat() && unknownCombat))
+			switch (room.getType())
 			{
-				panelComponent.getChildren().add(TitleComponent.builder()
-					.text("Bad Raid!")
-					.color(Color.RED)
-					.build());
-
-				return panelComponent.render(graphics);
-			}
-
-			scouterActive = true;
-			displayLayout = (config.enhanceScouterTitle() ? "" + combatCount + "c " + puzzles + " " : "") + displayLayout;
-
-			for (Integer i : iceRooms)
-			{
-				int prev = 0;
-				for (Integer s : scavRooms)
-				{
-					if (s > i)
+				case COMBAT:
+					combatCount++;
+					roomName = room.getBoss().getName();
+					switch (RaidRoom.Boss.fromString(roomName))
 					{
-						break;
+						case VANGUARDS:
+							vanguards = true;
+							break;
+						case UNKNOWN:
+							unknownCombat = true;
+							break;
 					}
-					prev = s;
-				}
-				scavsBeforeIceRooms.add(prev);
+					break;
+				case PUZZLE:
+					roomName = room.getPuzzle().getName();
+					switch (RaidRoom.Puzzle.fromString(roomName))
+					{
+						case CRABS:
+							crabs = true;
+							break;
+						case ICE_DEMON:
+							iceDemon = true;
+							iceRooms.add(roomCount);
+							break;
+						case THIEVING:
+							thieving = true;
+							break;
+						case TIGHTROPE:
+							tightrope = true;
+							break;
+					}
+					break;
+				case SCAVENGERS:
+					scavRooms.add(roomCount);
+					break;
 			}
+			roomCount++;
+		}
+		if (tightrope)
+		{
+			puzzles = crabs ? "cr" : iceDemon ? "ri" : thieving ? "tr" : "?r";
+		}
+
+		if ((config.hideVanguards() && vanguards) || (config.hideRopeless() && !tightrope) || (config.hideUnknownCombat() && unknownCombat))
+		{
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Bad Raid!")
+				.color(Color.RED)
+				.build());
+
+			return panelComponent.render(graphics);
+		}
+
+		scouterActive = true;
+		displayLayout = (config.enhanceScouterTitle() ? "" + combatCount + "c " + puzzles + " " : "") + displayLayout;
+
+		for (Integer i : iceRooms)
+		{
+			int prev = 0;
+			for (Integer s : scavRooms)
+			{
+				if (s > i)
+				{
+					break;
+				}
+				prev = s;
+			}
+			scavsBeforeIceRooms.add(prev);
 		}
 		int lastScavs = scavRooms.get(scavRooms.size() - 1);
 		panelComponent.getChildren().add(TitleComponent.builder()

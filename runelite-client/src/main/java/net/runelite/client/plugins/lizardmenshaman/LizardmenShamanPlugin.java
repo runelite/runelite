@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.lizardmenshaman;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,8 +35,10 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -95,6 +96,18 @@ public class LizardmenShamanPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (config.notifyOnSpawn())
+		{
+			if (event.getMessage().contains(MESSAGE))
+			{
+				notifier.notify(MESSAGE);
+			}
+		}
+	}
+
+	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
 		Actor actor = event.getActor();
@@ -102,16 +115,12 @@ public class LizardmenShamanPlugin extends Plugin
 		{
 			return;
 		}
-		else if (actor.getName().equals(SHAMAN) && actor.getAnimation() == 7157)
+
+		if (actor.getName().equals(SHAMAN) && actor.getAnimation() == 7157)
 		{
 			if (config.showTimer())
 			{
 				spawns.put(event.getActor().getLocalLocation(), new LizardmenShamanSpawn(8.4, null));
-			}
-
-			if (config.notifyOnSpawn())
-			{
-				notifier.notify(MESSAGE);
 			}
 		}
 	}

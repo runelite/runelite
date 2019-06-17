@@ -727,8 +727,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			if (event.getType() == WALK.getId())
 			{
-				MenuEntry menuEntry = entries[entries.length - 1];
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
 				menuEntry.setType(MenuAction.WALK.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
+				client.setMenuEntries(menuEntries);
 			}
 			else if (option.equalsIgnoreCase("examine"))
 			{
@@ -938,6 +940,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "buy-plank", option, target, true);
 			}
 
+			if (config.claimDynamite() && target.equals("thirus"))
+			{
+				swap(client, "claim", option, target, true);
+			}
+
 			if (config.swapTrade())
 			{
 				swap(client, "trade", option, target, true);
@@ -948,11 +955,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.claimSlime() && target.equals("robin"))
 			{
 				swap(client, "claim-slime", option, target, true);
-			}
-
-			if (config.claimDynamite() && target.contains("Thirus"))
-			{
-				swap(client, "claim-dynamite", option, target, true);
 			}
 
 			if (config.swapTravel())

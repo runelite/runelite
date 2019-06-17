@@ -62,10 +62,12 @@ public class ClanManModePlugin extends Plugin
 	@Inject
 	private ClanManager clanManager;
 
+	private static final String CAST = "CAST";
 	private static final String ATTACK_OPTIONS_ATTACK = "ATTACK";
 	public static final HashSet<String> ATTACK_OPTIONS_KEYWORDS = new HashSet<>();
 		static
 		{
+			ATTACK_OPTIONS_KEYWORDS.add(CAST);
 			ATTACK_OPTIONS_KEYWORDS.add(ATTACK_OPTIONS_ATTACK);
 		}
 

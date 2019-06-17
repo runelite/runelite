@@ -39,7 +39,7 @@ import net.runelite.client.plugins.PluginType;
  * Shift Walker Plugin. Credit to MenuEntrySwapperPlugin for code some code structure used here.
  */
 @PluginDescriptor(
-	name = "Shift To Walk",
+	name = "Shift Walk Under",
 	description = "Use Shift to toggle the Walk Here menu option. While pressed you will Walk rather than interact with objects.",
 	tags = {"npcs", "items", "objects"},
 	type = PluginType.UTILITY,
