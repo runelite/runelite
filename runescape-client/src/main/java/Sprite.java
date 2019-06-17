@@ -105,6 +105,7 @@ public final class Sprite extends Rasterizer2D {
          this.yOffset = 0;
          this.xOffset = 0;
       }
+
    }
 
    @ObfuscatedName("o")
@@ -147,6 +148,7 @@ public final class Sprite extends Rasterizer2D {
          this.yOffset -= var2;
          this.xOffset -= var4;
       }
+
    }
 
    @ObfuscatedName("u")
@@ -268,6 +270,7 @@ public final class Sprite extends Rasterizer2D {
       if(var6 > 0 && var5 > 0) {
          Sprite_something(Rasterizer2D.Rasterizer2D_pixels, this.pixels, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("a")
@@ -314,6 +317,7 @@ public final class Sprite extends Rasterizer2D {
       if(var6 > 0 && var5 > 0) {
          Sprite_andAnotherOne(Rasterizer2D.Rasterizer2D_pixels, this.pixels, 0, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("j")
@@ -379,6 +383,7 @@ public final class Sprite extends Rasterizer2D {
 
          Sprite_somethingElse(Rasterizer2D.Rasterizer2D_pixels, this.pixels, 0, var7, var8, var13, var14, var3, var4, var11, var12, var5);
       }
+
    }
 
    @ObfuscatedName("t")
@@ -429,6 +434,7 @@ public final class Sprite extends Rasterizer2D {
             Sprite_anotherOne(Rasterizer2D.Rasterizer2D_pixels, this.pixels, 0, var6, var5, var8, var7, var9, var10, var3, var4);
          }
       }
+
    }
 
    @ObfuscatedName("h")
@@ -475,6 +481,7 @@ public final class Sprite extends Rasterizer2D {
       if(var7 > 0 && var6 > 0) {
          Sprite_alpha1(Rasterizer2D.Rasterizer2D_pixels, this.pixels, 0, var5, var4, var7, var6, var8, var9, var3);
       }
+
    }
 
    @ObfuscatedName("c")
@@ -540,6 +547,7 @@ public final class Sprite extends Rasterizer2D {
 
          Sprite_alpha2(Rasterizer2D.Rasterizer2D_pixels, this.pixels, 0, var8, var9, var14, var15, var3, var4, var12, var13, var6, var5);
       }
+
    }
 
    @ObfuscatedName("v")
@@ -589,8 +597,8 @@ public final class Sprite extends Rasterizer2D {
          } else {
             method6075(0, 0, 0, Rasterizer2D.Rasterizer2D_pixels, this.pixels, var5, 0, var4, 0, var7, var6, var8, var9, var3);
          }
-
       }
+
    }
 
    @ObfuscatedName("aj")
@@ -659,8 +667,8 @@ public final class Sprite extends Rasterizer2D {
          } else {
             method6078(0, 0, 0, var8, this.pixels, Rasterizer2D.Rasterizer2D_pixels, 0, 0, -var4, var9, var14, var15, var3, var12, var13, var6, var5);
          }
-
       }
+
    }
 
    @ObfuscatedName("ac")
@@ -669,11 +677,10 @@ public final class Sprite extends Rasterizer2D {
       int var9 = var2 < 0?-var2:0;
       int var10 = var2 + this.subHeight <= var6?this.subHeight:var6 - var2;
       int var11 = var1 < 0?-var1:0;
-      int var10000;
       if(this.subWidth + var1 <= var5) {
-         var10000 = this.subWidth;
+         int var12 = this.subWidth;
       } else {
-         var10000 = var5 - var1;
+         int var10000 = var5 - var1;
       }
 
       int var13 = var3 + var11 + (var9 + var2 + var4) * Rasterizer2D.Rasterizer2D_width + var1;
@@ -691,17 +698,17 @@ public final class Sprite extends Rasterizer2D {
             var19 = var11;
          }
 
-         int var12;
+         int var20;
          if(this.subWidth + var1 <= var16 + var17) {
-            var12 = this.subWidth;
+            var20 = this.subWidth;
          } else {
-            var12 = var16 + var17 - var1;
+            var20 = var16 + var17 - var1;
          }
 
-         for(int var20 = var19; var20 < var12; ++var20) {
-            int var21 = this.pixels[var20 + var15 * this.subWidth];
-            if(var21 != 0) {
-               Rasterizer2D.Rasterizer2D_pixels[var18++] = var21;
+         for(int var21 = var19; var21 < var20; ++var21) {
+            int var22 = this.pixels[var21 + var15 * this.subWidth];
+            if(var22 != 0) {
+               Rasterizer2D.Rasterizer2D_pixels[var18++] = var22;
             } else {
                ++var18;
             }
@@ -742,7 +749,7 @@ public final class Sprite extends Rasterizer2D {
             var16 += var14;
             var17 += Rasterizer2D.Rasterizer2D_width;
          }
-      } catch (Exception var23) {
+      } catch (Exception var22) {
          ;
       }
 
@@ -783,7 +790,7 @@ public final class Sprite extends Rasterizer2D {
             var15 += var13;
             var16 += Rasterizer2D.Rasterizer2D_width;
          }
-      } catch (Exception var22) {
+      } catch (Exception var21) {
          ;
       }
 
@@ -1259,10 +1266,10 @@ public final class Sprite extends Rasterizer2D {
                      var31 += var27;
                   }
                }
-
             }
          }
       }
+
    }
 
    @ObfuscatedName("al")
@@ -1380,9 +1387,9 @@ public final class Sprite extends Rasterizer2D {
 
                   var9 += var10;
                }
-
             }
          }
+
       } else {
          throw new IllegalArgumentException();
       }

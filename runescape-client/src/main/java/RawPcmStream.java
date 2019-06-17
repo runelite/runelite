@@ -41,7 +41,7 @@ public class RawPcmStream extends PcmStream {
    boolean __k;
    @ObfuscatedName("n")
    @Export("surfaceOffsetY")
-   int __n;
+   int surfaceOffsetY;
    @ObfuscatedName("i")
    @Export("__i")
    int __i;
@@ -108,12 +108,12 @@ public class RawPcmStream extends PcmStream {
 
    @ObfuscatedName("l")
    protected int __l_171() {
-      return this.__q == 0 && this.__n == 0?0:1;
+      return this.__q == 0 && this.surfaceOffsetY == 0?0:1;
    }
 
    @ObfuscatedName("e")
    public synchronized void __e_172(int[] var1, int var2, int var3) {
-      if(this.__q == 0 && this.__n == 0) {
+      if(this.__q == 0 && this.surfaceOffsetY == 0) {
          this.__d_173(var3);
       } else {
          RawSound var4 = (RawSound)super.sound;
@@ -175,7 +175,9 @@ public class RawPcmStream extends PcmStream {
                   this.__m = var5 + var5 - 1 - this.__m;
                   this.__f = -this.__f;
                }
-            } else if(this.__f < 0) {
+            }
+
+            if(this.__f < 0) {
                while(true) {
                   var9 = this.__ap_203(var1, var9, var5, var3, var4.samples[this.end - 1]);
                   if(this.__m >= var5) {
@@ -184,112 +186,112 @@ public class RawPcmStream extends PcmStream {
 
                   this.__m = var6 - 1 - (var6 - 1 - this.__m) % var8;
                }
-            } else {
-               while(true) {
-                  var9 = this.__ad_202(var1, var9, var6, var3, var4.samples[this.start]);
-                  if(this.__m < var6) {
-                     return;
-                  }
-
-                  this.__m = var5 + (this.__m - var5) % var8;
-               }
             }
-         } else {
-            if(this.__e > 0) {
-               if(this.__k) {
-                  label140: {
-                     if(this.__f < 0) {
-                        var9 = this.__ap_203(var1, var2, var5, var3, var4.samples[this.start]);
-                        if(this.__m >= var5) {
-                           return;
-                        }
 
-                        this.__m = var5 + var5 - 1 - this.__m;
-                        this.__f = -this.__f;
-                        if(--this.__e == 0) {
-                           break label140;
-                        }
+            while(true) {
+               var9 = this.__ad_202(var1, var9, var6, var3, var4.samples[this.start]);
+               if(this.__m < var6) {
+                  return;
+               }
+
+               this.__m = var5 + (this.__m - var5) % var8;
+            }
+         }
+
+         if(this.__e > 0) {
+            if(this.__k) {
+               label118: {
+                  if(this.__f < 0) {
+                     var9 = this.__ap_203(var1, var2, var5, var3, var4.samples[this.start]);
+                     if(this.__m >= var5) {
+                        return;
                      }
 
-                     do {
-                        var9 = this.__ad_202(var1, var9, var6, var3, var4.samples[this.end - 1]);
-                        if(this.__m < var6) {
-                           return;
-                        }
+                     this.__m = var5 + var5 - 1 - this.__m;
+                     this.__f = -this.__f;
+                     if(--this.__e == 0) {
+                        break label118;
+                     }
+                  }
 
-                        this.__m = var6 + var6 - 1 - this.__m;
-                        this.__f = -this.__f;
-                        if(--this.__e == 0) {
-                           break;
-                        }
+                  do {
+                     var9 = this.__ad_202(var1, var9, var6, var3, var4.samples[this.end - 1]);
+                     if(this.__m < var6) {
+                        return;
+                     }
 
-                        var9 = this.__ap_203(var1, var9, var5, var3, var4.samples[this.start]);
-                        if(this.__m >= var5) {
-                           return;
-                        }
+                     this.__m = var6 + var6 - 1 - this.__m;
+                     this.__f = -this.__f;
+                     if(--this.__e == 0) {
+                        break;
+                     }
 
-                        this.__m = var5 + var5 - 1 - this.__m;
-                        this.__f = -this.__f;
-                     } while(--this.__e != 0);
+                     var9 = this.__ap_203(var1, var9, var5, var3, var4.samples[this.start]);
+                     if(this.__m >= var5) {
+                        return;
+                     }
+
+                     this.__m = var5 + var5 - 1 - this.__m;
+                     this.__f = -this.__f;
+                  } while(--this.__e != 0);
+               }
+            } else {
+               int var10;
+               if(this.__f < 0) {
+                  while(true) {
+                     var9 = this.__ap_203(var1, var9, var5, var3, var4.samples[this.end - 1]);
+                     if(this.__m >= var5) {
+                        return;
+                     }
+
+                     var10 = (var6 - 1 - this.__m) / var8;
+                     if(var10 >= this.__e) {
+                        this.__m += var8 * this.__e;
+                        this.__e = 0;
+                        break;
+                     }
+
+                     this.__m += var8 * var10;
+                     this.__e -= var10;
                   }
                } else {
-                  int var10;
-                  if(this.__f < 0) {
-                     while(true) {
-                        var9 = this.__ap_203(var1, var9, var5, var3, var4.samples[this.end - 1]);
-                        if(this.__m >= var5) {
-                           return;
-                        }
-
-                        var10 = (var6 - 1 - this.__m) / var8;
-                        if(var10 >= this.__e) {
-                           this.__m += var8 * this.__e;
-                           this.__e = 0;
-                           break;
-                        }
-
-                        this.__m += var8 * var10;
-                        this.__e -= var10;
+                  while(true) {
+                     var9 = this.__ad_202(var1, var9, var6, var3, var4.samples[this.start]);
+                     if(this.__m < var6) {
+                        return;
                      }
-                  } else {
-                     while(true) {
-                        var9 = this.__ad_202(var1, var9, var6, var3, var4.samples[this.start]);
-                        if(this.__m < var6) {
-                           return;
-                        }
 
-                        var10 = (this.__m - var5) / var8;
-                        if(var10 >= this.__e) {
-                           this.__m -= var8 * this.__e;
-                           this.__e = 0;
-                           break;
-                        }
-
-                        this.__m -= var8 * var10;
-                        this.__e -= var10;
+                     var10 = (this.__m - var5) / var8;
+                     if(var10 >= this.__e) {
+                        this.__m -= var8 * this.__e;
+                        this.__e = 0;
+                        break;
                      }
+
+                     this.__m -= var8 * var10;
+                     this.__e -= var10;
                   }
                }
             }
+         }
 
-            if(this.__f < 0) {
-               this.__ap_203(var1, var9, 0, var3, 0);
-               if(this.__m < 0) {
-                  this.__m = -1;
-                  this.__b_189();
-                  this.remove();
-               }
-            } else {
-               this.__ad_202(var1, var9, var7, var3, 0);
-               if(this.__m >= var7) {
-                  this.__m = var7;
-                  this.__b_189();
-                  this.remove();
-               }
+         if(this.__f < 0) {
+            this.__ap_203(var1, var9, 0, var3, 0);
+            if(this.__m < 0) {
+               this.__m = -1;
+               this.__b_189();
+               this.remove();
             }
-
+         } else {
+            this.__ad_202(var1, var9, var7, var3, 0);
+            if(this.__m >= var7) {
+               this.__m = var7;
+               this.__b_189();
+               this.remove();
+            }
          }
       }
+
    }
 
    @ObfuscatedName("x")
@@ -300,24 +302,24 @@ public class RawPcmStream extends PcmStream {
 
    @ObfuscatedName("d")
    public synchronized void __d_173(int var1) {
-      if(this.__n > 0) {
-         if(var1 >= this.__n) {
+      if(this.surfaceOffsetY > 0) {
+         if(var1 >= this.surfaceOffsetY) {
             if(this.__q == Integer.MIN_VALUE) {
                this.__q = 0;
                this.__l = 0;
                this.__g = 0;
                this.__u = 0;
                this.remove();
-               var1 = this.__n;
+               var1 = this.surfaceOffsetY;
             }
 
-            this.__n = 0;
+            this.surfaceOffsetY = 0;
             this.__o_180();
          } else {
             this.__u += this.__i * var1;
             this.__g += this.__a * var1;
             this.__l += this.__z * var1;
-            this.__n -= var1;
+            this.surfaceOffsetY -= var1;
          }
       }
 
@@ -366,7 +368,6 @@ public class RawPcmStream extends PcmStream {
 
                this.__m = var3 + (this.__m - var3) % var6;
             }
-
          } else {
             if(this.__f < 0) {
                if(this.__m >= var3) {
@@ -387,12 +388,11 @@ public class RawPcmStream extends PcmStream {
                this.__m = var3 + var3 - 1 - this.__m;
                this.__f = -this.__f;
             }
-
          }
       } else {
          if(this.__e > 0) {
             if(this.__k) {
-               label123: {
+               label113: {
                   if(this.__f < 0) {
                      if(this.__m >= var3) {
                         return;
@@ -401,7 +401,7 @@ public class RawPcmStream extends PcmStream {
                      this.__m = var3 + var3 - 1 - this.__m;
                      this.__f = -this.__f;
                      if(--this.__e == 0) {
-                        break label123;
+                        break label113;
                      }
                   }
 
@@ -469,8 +469,8 @@ public class RawPcmStream extends PcmStream {
             this.__b_189();
             this.remove();
          }
-
       }
+
    }
 
    @ObfuscatedName("a")
@@ -490,7 +490,7 @@ public class RawPcmStream extends PcmStream {
    synchronized void __j_184(int var1, int var2) {
       this.__q = var1;
       this.__o = var2;
-      this.__n = 0;
+      this.surfaceOffsetY = 0;
       this.__o_180();
    }
 
@@ -535,12 +535,12 @@ public class RawPcmStream extends PcmStream {
    @ObfuscatedName("b")
    @Export("__b_189")
    void __b_189() {
-      if(this.__n != 0) {
+      if(this.surfaceOffsetY != 0) {
          if(this.__q == Integer.MIN_VALUE) {
             this.__q = 0;
          }
 
-         this.__n = 0;
+         this.surfaceOffsetY = 0;
          this.__o_180();
       }
 
@@ -561,7 +561,7 @@ public class RawPcmStream extends PcmStream {
          int var4 = method2603(var2, var3);
          int var5 = method2494(var2, var3);
          if(var4 == this.__g && var5 == this.__l) {
-            this.__n = 0;
+            this.surfaceOffsetY = 0;
          } else {
             int var6 = var2 - this.__u;
             if(this.__u - var2 > var6) {
@@ -588,7 +588,7 @@ public class RawPcmStream extends PcmStream {
                var1 = var6;
             }
 
-            this.__n = var1;
+            this.surfaceOffsetY = var1;
             this.__q = var2;
             this.__o = var3;
             this.__i = (var2 - this.__u) / var1;
@@ -596,6 +596,7 @@ public class RawPcmStream extends PcmStream {
             this.__z = (var5 - this.__l) / var1;
          }
       }
+
    }
 
    @ObfuscatedName("v")
@@ -605,7 +606,7 @@ public class RawPcmStream extends PcmStream {
          this.__z_183(0);
          this.remove();
       } else if(this.__g == 0 && this.__l == 0) {
-         this.__n = 0;
+         this.surfaceOffsetY = 0;
          this.__q = 0;
          this.__u = 0;
          this.remove();
@@ -635,12 +636,13 @@ public class RawPcmStream extends PcmStream {
             var1 = var2;
          }
 
-         this.__n = var1;
+         this.surfaceOffsetY = var1;
          this.__q = Integer.MIN_VALUE;
          this.__i = -this.__u / var1;
          this.__a = -this.__g / var1;
          this.__z = -this.__l / var1;
       }
+
    }
 
    @ObfuscatedName("ah")
@@ -669,20 +671,20 @@ public class RawPcmStream extends PcmStream {
    @ObfuscatedName("at")
    @Export("__at_196")
    public boolean __at_196() {
-      return this.__n != 0;
+      return this.surfaceOffsetY != 0;
    }
 
    @ObfuscatedName("ad")
    @Export("__ad_202")
    int __ad_202(int[] var1, int var2, int var3, int var4, int var5) {
       while(true) {
-         if(this.__n > 0) {
-            int var6 = var2 + this.__n;
+         if(this.surfaceOffsetY > 0) {
+            int var6 = var2 + this.surfaceOffsetY;
             if(var6 > var4) {
                var6 = var4;
             }
 
-            this.__n += var2;
+            this.surfaceOffsetY += var2;
             if(this.__f == 256 && (this.__m & 255) == 0) {
                if(PcmPlayer.isStereo) {
                   var2 = method2533(0, ((RawSound)super.sound).samples, var1, this.__m, var2, this.__g, this.__l, this.__a, this.__z, 0, var6, var3, this);
@@ -695,8 +697,8 @@ public class RawPcmStream extends PcmStream {
                var2 = method2536(0, 0, ((RawSound)super.sound).samples, var1, this.__m, var2, this.__u, this.__i, 0, var6, var3, this, this.__f, var5);
             }
 
-            this.__n -= var2;
-            if(this.__n != 0) {
+            this.surfaceOffsetY -= var2;
+            if(this.surfaceOffsetY != 0) {
                return var2;
             }
 
@@ -727,13 +729,13 @@ public class RawPcmStream extends PcmStream {
    @Export("__ap_203")
    int __ap_203(int[] var1, int var2, int var3, int var4, int var5) {
       while(true) {
-         if(this.__n > 0) {
-            int var6 = var2 + this.__n;
+         if(this.surfaceOffsetY > 0) {
+            int var6 = var2 + this.surfaceOffsetY;
             if(var6 > var4) {
                var6 = var4;
             }
 
-            this.__n += var2;
+            this.surfaceOffsetY += var2;
             if(this.__f == -256 && (this.__m & 255) == 0) {
                if(PcmPlayer.isStereo) {
                   var2 = method2547(0, ((RawSound)super.sound).samples, var1, this.__m, var2, this.__g, this.__l, this.__a, this.__z, 0, var6, var3, this);
@@ -746,8 +748,8 @@ public class RawPcmStream extends PcmStream {
                var2 = method2538(0, 0, ((RawSound)super.sound).samples, var1, this.__m, var2, this.__u, this.__i, 0, var6, var3, this, this.__f, var5);
             }
 
-            this.__n -= var2;
-            if(this.__n != 0) {
+            this.surfaceOffsetY -= var2;
+            if(this.surfaceOffsetY != 0) {
                return var2;
             }
 
@@ -818,23 +820,23 @@ public class RawPcmStream extends PcmStream {
       } else {
          if(this.__u < var1) {
             this.__i = 1;
-            this.__n = var1 - this.__u;
+            this.surfaceOffsetY = var1 - this.__u;
          } else if(this.__u > var1) {
             this.__i = -1;
-            this.__n = this.__u - var1;
+            this.surfaceOffsetY = this.__u - var1;
          } else {
             this.__i = 0;
          }
 
          if(this.__g < var2) {
             this.__a = 1;
-            if(this.__n == 0 || this.__n > var2 - this.__g) {
-               this.__n = var2 - this.__g;
+            if(this.surfaceOffsetY == 0 || this.surfaceOffsetY > var2 - this.__g) {
+               this.surfaceOffsetY = var2 - this.__g;
             }
          } else if(this.__g > var2) {
             this.__a = -1;
-            if(this.__n == 0 || this.__n > this.__g - var2) {
-               this.__n = this.__g - var2;
+            if(this.surfaceOffsetY == 0 || this.surfaceOffsetY > this.__g - var2) {
+               this.surfaceOffsetY = this.__g - var2;
             }
          } else {
             this.__a = 0;
@@ -842,13 +844,13 @@ public class RawPcmStream extends PcmStream {
 
          if(this.__l < var3) {
             this.__z = 1;
-            if(this.__n == 0 || this.__n > var3 - this.__l) {
-               this.__n = var3 - this.__l;
+            if(this.surfaceOffsetY == 0 || this.surfaceOffsetY > var3 - this.__l) {
+               this.surfaceOffsetY = var3 - this.__l;
             }
          } else if(this.__l > var3) {
             this.__z = -1;
-            if(this.__n == 0 || this.__n > this.__l - var3) {
-               this.__n = this.__l - var3;
+            if(this.surfaceOffsetY == 0 || this.surfaceOffsetY > this.__l - var3) {
+               this.surfaceOffsetY = this.__l - var3;
             }
          } else {
             this.__z = 0;
@@ -896,19 +898,19 @@ public class RawPcmStream extends PcmStream {
          var5 = var6;
       }
 
-      int var10001;
-      for(var5 -= 3; var3 < var5; var1[var10001] += var0[var2++] * var4) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
-         var10001 = var3++;
+      int var9;
+      for(var5 -= 3; var3 < var5; var1[var9] += var0[var2++] * var4) {
+         var9 = var3++;
+         var1[var9] += var0[var2++] * var4;
+         var9 = var3++;
+         var1[var9] += var0[var2++] * var4;
+         var9 = var3++;
+         var1[var9] += var0[var2++] * var4;
+         var9 = var3++;
       }
 
-      for(var5 += 3; var3 < var5; var1[var10001] += var0[var2++] * var4) {
-         var10001 = var3++;
+      for(var5 += 3; var3 < var5; var1[var9] += var0[var2++] * var4) {
+         var9 = var3++;
       }
 
       var8.__m = var2 << 8;
@@ -931,35 +933,35 @@ public class RawPcmStream extends PcmStream {
       var4 <<= 1;
       var7 <<= 1;
 
-      int var10001;
-      byte var11;
-      for(var7 -= 6; var4 < var7; var2[var10001] += var11 * var6) {
-         var11 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
+      int var11;
+      byte var12;
+      for(var7 -= 6; var4 < var7; var2[var11] += var12 * var6) {
+         var12 = var1[var3++];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3++];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3++];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3++];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
       }
 
-      for(var7 += 6; var4 < var7; var2[var10001] += var11 * var6) {
-         var11 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
+      for(var7 += 6; var4 < var7; var2[var11] += var12 * var6) {
+         var12 = var1[var3++];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
       }
 
       var10.__m = var3 << 8;
@@ -978,19 +980,19 @@ public class RawPcmStream extends PcmStream {
          var5 = var6;
       }
 
-      int var10001;
-      for(var5 -= 3; var3 < var5; var1[var10001] += var0[var2--] * var4) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
-         var10001 = var3++;
+      int var9;
+      for(var5 -= 3; var3 < var5; var1[var9] += var0[var2--] * var4) {
+         var9 = var3++;
+         var1[var9] += var0[var2--] * var4;
+         var9 = var3++;
+         var1[var9] += var0[var2--] * var4;
+         var9 = var3++;
+         var1[var9] += var0[var2--] * var4;
+         var9 = var3++;
       }
 
-      for(var5 += 3; var3 < var5; var1[var10001] += var0[var2--] * var4) {
-         var10001 = var3++;
+      for(var5 += 3; var3 < var5; var1[var9] += var0[var2--] * var4) {
+         var9 = var3++;
       }
 
       var8.__m = var2 << 8;
@@ -1013,35 +1015,35 @@ public class RawPcmStream extends PcmStream {
       var4 <<= 1;
       var7 <<= 1;
 
-      int var10001;
-      byte var11;
-      for(var7 -= 6; var4 < var7; var2[var10001] += var11 * var6) {
-         var11 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
+      int var11;
+      byte var12;
+      for(var7 -= 6; var4 < var7; var2[var11] += var12 * var6) {
+         var12 = var1[var3--];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3--];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3--];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3--];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
       }
 
-      for(var7 += 6; var4 < var7; var2[var10001] += var11 * var6) {
-         var11 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
+      for(var7 += 6; var4 < var7; var2[var11] += var12 * var6) {
+         var12 = var1[var3--];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
       }
 
       var10.__m = var3 << 8;
@@ -1058,12 +1060,12 @@ public class RawPcmStream extends PcmStream {
       }
 
       byte var13;
-      int var10001;
+      int var14;
       while(var5 < var7) {
          var1 = var4 >> 8;
          var13 = var2[var1];
-         var10001 = var5++;
-         var3[var10001] += ((var13 << 8) + (var2[var1 + 1] - var13) * (var4 & 255)) * var6 >> 6;
+         var14 = var5++;
+         var3[var14] += ((var13 << 8) + (var2[var1 + 1] - var13) * (var4 & 255)) * var6 >> 6;
          var4 += var11;
       }
 
@@ -1073,8 +1075,8 @@ public class RawPcmStream extends PcmStream {
 
       for(var1 = var12; var5 < var7; var4 += var11) {
          var13 = var2[var4 >> 8];
-         var10001 = var5++;
-         var3[var10001] += ((var13 << 8) + (var1 - var13) * (var4 & 255)) * var6 >> 6;
+         var14 = var5++;
+         var3[var14] += ((var13 << 8) + (var1 - var13) * (var4 & 255)) * var6 >> 6;
       }
 
       var10.__m = var4;
@@ -1093,15 +1095,15 @@ public class RawPcmStream extends PcmStream {
       var5 <<= 1;
 
       byte var14;
-      int var10001;
+      int var15;
       for(var8 <<= 1; var5 < var8; var4 += var12) {
          var1 = var4 >> 8;
          var14 = var2[var1];
          var0 = (var14 << 8) + (var4 & 255) * (var2[var1 + 1] - var14);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var15 = var5++;
+         var3[var15] += var0 * var6 >> 6;
+         var15 = var5++;
+         var3[var15] += var0 * var7 >> 6;
       }
 
       if(var12 == 0 || (var8 = (var5 >> 1) + (var10 - var4 + var12 - 1) / var12) > var9) {
@@ -1113,10 +1115,10 @@ public class RawPcmStream extends PcmStream {
       for(var1 = var13; var5 < var8; var4 += var12) {
          var14 = var2[var4 >> 8];
          var0 = (var14 << 8) + (var1 - var14) * (var4 & 255);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var15 = var5++;
+         var3[var15] += var0 * var6 >> 6;
+         var15 = var5++;
+         var3[var15] += var0 * var7 >> 6;
       }
 
       var11.__m = var4;
@@ -1132,12 +1134,12 @@ public class RawPcmStream extends PcmStream {
          var7 = var8;
       }
 
-      int var10001;
+      int var13;
       while(var5 < var7) {
          var1 = var4 >> 8;
-         byte var13 = var2[var1 - 1];
-         var10001 = var5++;
-         var3[var10001] += ((var13 << 8) + (var2[var1] - var13) * (var4 & 255)) * var6 >> 6;
+         byte var14 = var2[var1 - 1];
+         var13 = var5++;
+         var3[var13] += ((var14 << 8) + (var2[var1] - var14) * (var4 & 255)) * var6 >> 6;
          var4 += var11;
       }
 
@@ -1148,8 +1150,8 @@ public class RawPcmStream extends PcmStream {
       var0 = var12;
 
       for(var1 = var11; var5 < var7; var4 += var1) {
-         var10001 = var5++;
-         var3[var10001] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
+         var13 = var5++;
+         var3[var13] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
       }
 
       var10.__m = var4;
@@ -1167,15 +1169,15 @@ public class RawPcmStream extends PcmStream {
 
       var5 <<= 1;
 
-      int var10001;
+      int var14;
       for(var8 <<= 1; var5 < var8; var4 += var12) {
          var1 = var4 >> 8;
-         byte var14 = var2[var1 - 1];
-         var0 = (var2[var1] - var14) * (var4 & 255) + (var14 << 8);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         byte var15 = var2[var1 - 1];
+         var0 = (var2[var1] - var15) * (var4 & 255) + (var15 << 8);
+         var14 = var5++;
+         var3[var14] += var0 * var6 >> 6;
+         var14 = var5++;
+         var3[var14] += var0 * var7 >> 6;
       }
 
       if(var12 == 0 || (var8 = (var5 >> 1) + (var10 - var4 + var12) / var12) > var9) {
@@ -1186,10 +1188,10 @@ public class RawPcmStream extends PcmStream {
 
       for(var1 = var13; var5 < var8; var4 += var12) {
          var0 = (var1 << 8) + (var4 & 255) * (var2[var4 >> 8] - var1);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var14 = var5++;
+         var3[var14] += var0 * var6 >> 6;
+         var14 = var5++;
+         var3[var14] += var0 * var7 >> 6;
       }
 
       var11.__m = var4;
@@ -1212,24 +1214,24 @@ public class RawPcmStream extends PcmStream {
       var9.__g += var9.__a * (var6 - var3);
       var9.__l += var9.__z * (var6 - var3);
 
-      int var10001;
+      int var10;
       for(var6 -= 3; var3 < var6; var4 += var5) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2++] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2++] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2++] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2++] * var4;
       }
 
       for(var6 += 3; var3 < var6; var4 += var5) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2++] * var4;
       }
 
       var9.__u = var4 >> 2;
@@ -1257,44 +1259,44 @@ public class RawPcmStream extends PcmStream {
       var9 <<= 1;
 
       byte var13;
-      int var10001;
+      int var14;
       for(var9 -= 6; var4 < var9; var6 += var8) {
          var13 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
       }
 
       for(var9 += 6; var4 < var9; var6 += var8) {
          var13 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
       }
 
       var12.__g = var5 >> 2;
@@ -1319,24 +1321,24 @@ public class RawPcmStream extends PcmStream {
       var9.__g += var9.__a * (var6 - var3);
       var9.__l += var9.__z * (var6 - var3);
 
-      int var10001;
+      int var10;
       for(var6 -= 3; var3 < var6; var4 += var5) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2--] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2--] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2--] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2--] * var4;
       }
 
       for(var6 += 3; var3 < var6; var4 += var5) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2--] * var4;
       }
 
       var9.__u = var4 >> 2;
@@ -1364,44 +1366,44 @@ public class RawPcmStream extends PcmStream {
       var9 <<= 1;
 
       byte var13;
-      int var10001;
+      int var14;
       for(var9 -= 6; var4 < var9; var6 += var8) {
          var13 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
       }
 
       for(var9 += 6; var4 < var9; var6 += var8) {
          var13 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
       }
 
       var12.__g = var5 >> 2;
@@ -1422,12 +1424,12 @@ public class RawPcmStream extends PcmStream {
       }
 
       byte var14;
-      int var10001;
+      int var15;
       while(var5 < var8) {
          var1 = var4 >> 8;
          var14 = var2[var1];
-         var10001 = var5++;
-         var3[var10001] += ((var14 << 8) + (var2[var1 + 1] - var14) * (var4 & 255)) * var6 >> 6;
+         var15 = var5++;
+         var3[var15] += ((var14 << 8) + (var2[var1 + 1] - var14) * (var4 & 255)) * var6 >> 6;
          var6 += var7;
          var4 += var12;
       }
@@ -1438,8 +1440,8 @@ public class RawPcmStream extends PcmStream {
 
       for(var1 = var13; var5 < var8; var4 += var12) {
          var14 = var2[var4 >> 8];
-         var10001 = var5++;
-         var3[var10001] += ((var14 << 8) + (var1 - var14) * (var4 & 255)) * var6 >> 6;
+         var15 = var5++;
+         var3[var15] += ((var14 << 8) + (var1 - var14) * (var4 & 255)) * var6 >> 6;
          var6 += var7;
       }
 
@@ -1463,16 +1465,16 @@ public class RawPcmStream extends PcmStream {
       var5 <<= 1;
 
       byte var16;
-      int var10001;
+      int var17;
       for(var10 <<= 1; var5 < var10; var4 += var14) {
          var1 = var4 >> 8;
          var16 = var2[var1];
          var0 = (var16 << 8) + (var4 & 255) * (var2[var1 + 1] - var16);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
+         var17 = var5++;
+         var3[var17] += var0 * var6 >> 6;
          var6 += var8;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var17 = var5++;
+         var3[var17] += var0 * var7 >> 6;
          var7 += var9;
       }
 
@@ -1485,11 +1487,11 @@ public class RawPcmStream extends PcmStream {
       for(var1 = var15; var5 < var10; var4 += var14) {
          var16 = var2[var4 >> 8];
          var0 = (var16 << 8) + (var1 - var16) * (var4 & 255);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
+         var17 = var5++;
+         var3[var17] += var0 * var6 >> 6;
          var6 += var8;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var17 = var5++;
+         var3[var17] += var0 * var7 >> 6;
          var7 += var9;
       }
 
@@ -1512,12 +1514,12 @@ public class RawPcmStream extends PcmStream {
          var8 = var9;
       }
 
-      int var10001;
+      int var14;
       while(var5 < var8) {
          var1 = var4 >> 8;
-         byte var14 = var2[var1 - 1];
-         var10001 = var5++;
-         var3[var10001] += ((var14 << 8) + (var2[var1] - var14) * (var4 & 255)) * var6 >> 6;
+         byte var15 = var2[var1 - 1];
+         var14 = var5++;
+         var3[var14] += ((var15 << 8) + (var2[var1] - var15) * (var4 & 255)) * var6 >> 6;
          var6 += var7;
          var4 += var12;
       }
@@ -1529,8 +1531,8 @@ public class RawPcmStream extends PcmStream {
       var0 = var13;
 
       for(var1 = var12; var5 < var8; var4 += var1) {
-         var10001 = var5++;
-         var3[var10001] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
+         var14 = var5++;
+         var3[var14] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
          var6 += var7;
       }
 
@@ -1553,16 +1555,16 @@ public class RawPcmStream extends PcmStream {
 
       var5 <<= 1;
 
-      int var10001;
+      int var16;
       for(var10 <<= 1; var5 < var10; var4 += var14) {
          var1 = var4 >> 8;
-         byte var16 = var2[var1 - 1];
-         var0 = (var2[var1] - var16) * (var4 & 255) + (var16 << 8);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
+         byte var17 = var2[var1 - 1];
+         var0 = (var2[var1] - var17) * (var4 & 255) + (var17 << 8);
+         var16 = var5++;
+         var3[var16] += var0 * var6 >> 6;
          var6 += var8;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var16 = var5++;
+         var3[var16] += var0 * var7 >> 6;
          var7 += var9;
       }
 
@@ -1574,11 +1576,11 @@ public class RawPcmStream extends PcmStream {
 
       for(var1 = var15; var5 < var10; var4 += var14) {
          var0 = (var1 << 8) + (var4 & 255) * (var2[var4 >> 8] - var1);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
+         var16 = var5++;
+         var3[var16] += var0 * var6 >> 6;
          var6 += var8;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var16 = var5++;
+         var3[var16] += var0 * var7 >> 6;
          var7 += var9;
       }
 

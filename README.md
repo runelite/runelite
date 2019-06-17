@@ -2,23 +2,20 @@
 
 
 
-# RuneLitePlus [![Build Status](https://travis-ci.org/runelite-extended/runelite.svg?branch=master)](https://travis-ci.org/runelite-extended/runelite) [![Discord](https://img.shields.io/discord/373382904769675265.svg)](https://discord.gg/HN5gf3m)
+# RuneLitePlus-PS [![Build Status](https://travis-ci.org/runelite-extended/runelite.svg?branch=master)](https://travis-ci.org/runelite-extended/runelite) [![Discord](https://img.shields.io/discord/373382904769675265.svg)](https://discord.gg/HN5gf3m)
 
-[RuneLitePlus](https://runelitepl.us)  is a fork of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying open source. This is meant to directly compete with 3rd party RL clients that are trying to sell their code.
+[RuneLitePlus-PS](https://runelitepl.us)  is a fork of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying open source. This is specific version meant for rs-mod which can be found here:  
+https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-180-rs-mod-release.html
 
-## Project Layout
+## Usage
 
-- [cache](cache/src/main/java/net/runelite/cache) - Libraries used for reading/writing cache files, as well as the data in it
-- [http-api](http-api/src/main/java/net/runelite/http/api) - API for api.runelite.net
-- [http-service](http-service/src/main/java/net/runelite/http/service) - Service for api.runelite.net
-- [runelite-api](runelite-api/src/main/java/net/runelite/api) - RuneLite API, interfaces for accessing the client
-- [runelite-mixins](runelite-mixins/src/main/java/net/runelite) - Mixins which are injected into the injected client's classes
-- [runescape-api](runescape-api/src/main/java/net/runelite) - Mappings correspond to these interfaces, runelite-api is a subset of this
-- [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
+It's ran much like RuneLite or RuneLitePlus, install then run RuneLite.main()  
+
+First you will want to use [Recaf](https://github.com/Col-E/Recaf/releases) to modify the RSA class (currently cm.class for 180) <clinit> instructions for the server keys you use in the vanilla-RSVERSION.jar in the root of the project. I will implement mixins but this works for now. 
 
 ## License
 
-RuneLitePlus is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
+RuneLitePlus-PS is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
 
 ## Contribute and Develop
 

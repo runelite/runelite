@@ -111,33 +111,33 @@ public class IgnoreList extends UserList {
                }
             }
 
-            int var10;
+            int var9;
             if(var8 >= '0' && var8 <= '9') {
-               var10 = var8 - '0';
+               var9 = var8 - '0';
             } else if(var8 >= 'A' && var8 <= 'Z') {
-               var10 = var8 - '7';
+               var9 = var8 - '7';
             } else {
                if(var8 < 'a' || var8 > 'z') {
                   throw new NumberFormatException();
                }
 
-               var10 = var8 - 'W';
+               var9 = var8 - 'W';
             }
 
-            if(var10 >= var1) {
+            if(var9 >= var1) {
                throw new NumberFormatException();
             }
 
             if(var3) {
-               var10 = -var10;
+               var9 = -var9;
             }
 
-            int var9 = var10 + var5 * var1;
-            if(var9 / var1 != var5) {
+            int var10 = var9 + var5 * var1;
+            if(var10 / var1 != var5) {
                throw new NumberFormatException();
             }
 
-            var5 = var9;
+            var5 = var10;
             var4 = true;
          }
 

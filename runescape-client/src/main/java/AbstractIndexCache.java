@@ -99,11 +99,6 @@ public abstract class AbstractIndexCache {
    @Export("shallowRecords")
    boolean shallowRecords;
 
-   static {
-      gzipDecompressor = new GzipDecompressor();
-      __ir_s = 0;
-   }
-
    AbstractIndexCache(boolean var1, boolean var2) {
       this.releaseArchives = var1;
       this.shallowRecords = var2;
@@ -549,63 +544,63 @@ public abstract class AbstractIndexCache {
                var8.xteaDecrypt(var2, 5, var8.array.length);
             }
 
-            byte[] var20 = Strings.decompressBytes(var18);
+            byte[] var19 = Strings.decompressBytes(var18);
             if(this.releaseArchives) {
                this.archives[var1] = null;
             }
 
             if(var3 > 1) {
-               int var9 = var20.length;
+               int var9 = var19.length;
                --var9;
-               int var10 = var20[var9] & 255;
+               int var10 = var19[var9] & 255;
                var9 -= var10 * var3 * 4;
-               Buffer var11 = new Buffer(var20);
+               Buffer var11 = new Buffer(var19);
                int[] var12 = new int[var3];
                var11.index = var9;
 
+               int var13;
                int var14;
-               int var15;
-               for(int var13 = 0; var13 < var10; ++var13) {
-                  var14 = 0;
+               for(int var15 = 0; var15 < var10; ++var15) {
+                  var13 = 0;
 
-                  for(var15 = 0; var15 < var3; ++var15) {
-                     var14 += var11.readInt();
-                     var12[var15] += var14;
+                  for(var14 = 0; var14 < var3; ++var14) {
+                     var13 += var11.readInt();
+                     var12[var14] += var13;
                   }
                }
 
-               byte[][] var19 = new byte[var3][];
+               byte[][] var20 = new byte[var3][];
 
-               for(var14 = 0; var14 < var3; ++var14) {
-                  var19[var14] = new byte[var12[var14]];
-                  var12[var14] = 0;
+               for(var13 = 0; var13 < var3; ++var13) {
+                  var20[var13] = new byte[var12[var13]];
+                  var12[var13] = 0;
                }
 
                var11.index = var9;
-               var14 = 0;
+               var13 = 0;
 
-               for(var15 = 0; var15 < var10; ++var15) {
+               for(var14 = 0; var14 < var10; ++var14) {
                   int var16 = 0;
 
                   for(int var17 = 0; var17 < var3; ++var17) {
                      var16 += var11.readInt();
-                     System.arraycopy(var20, var14, var19[var17], var12[var17], var16);
+                     System.arraycopy(var19, var13, var20[var17], var12[var17], var16);
                      var12[var17] += var16;
-                     var14 += var16;
+                     var13 += var16;
                   }
                }
 
-               for(var15 = 0; var15 < var3; ++var15) {
+               for(var14 = 0; var14 < var3; ++var14) {
                   if(!this.shallowRecords) {
-                     var5[var4[var15]] = Projectile.byteArrayToObject(var19[var15], false);
+                     var5[var4[var14]] = Projectile.byteArrayToObject(var20[var14], false);
                   } else {
-                     var5[var4[var15]] = var19[var15];
+                     var5[var4[var14]] = var20[var14];
                   }
                }
             } else if(!this.shallowRecords) {
-               var5[var4[0]] = Projectile.byteArrayToObject(var20, false);
+               var5[var4[0]] = Projectile.byteArrayToObject(var19, false);
             } else {
-               var5[var4[0]] = var20;
+               var5[var4[0]] = var19;
             }
 
             return true;
@@ -705,6 +700,7 @@ public abstract class AbstractIndexCache {
       if(var2 >= 0) {
          this.__f_392(var2);
       }
+
    }
 
    @ObfuscatedName("ac")
@@ -779,5 +775,10 @@ public abstract class AbstractIndexCache {
       } else {
          return true;
       }
+   }
+
+   static {
+      gzipDecompressor = new GzipDecompressor();
+      __ir_s = 0;
    }
 }

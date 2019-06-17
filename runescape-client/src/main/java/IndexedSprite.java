@@ -49,6 +49,7 @@ public final class IndexedSprite extends Rasterizer2D {
          this.xOffset = 0;
          this.yOffset = 0;
       }
+
    }
 
    @ObfuscatedName("f")
@@ -128,6 +129,7 @@ public final class IndexedSprite extends Rasterizer2D {
       if(var6 > 0 && var5 > 0) {
          IndexedSprite_two(Rasterizer2D.Rasterizer2D_pixels, this.pixels, this.palette, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("o")

@@ -26,14 +26,14 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
       String var2;
       try {
          var2 = System.getProperty("os.arch").toLowerCase();
-      } catch (Exception var35) {
+      } catch (Exception var25) {
          var2 = "";
       }
 
       String var3;
       try {
          var3 = System.getProperty("os.version").toLowerCase();
-      } catch (Exception var34) {
+      } catch (Exception var24) {
          var3 = "";
       }
 
@@ -43,15 +43,15 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
       try {
          var4 = System.getProperty("java.vendor");
          var5 = System.getProperty("java.version");
-      } catch (Exception var33) {
+      } catch (Exception var23) {
          ;
       }
 
-      boolean var29;
+      boolean var6;
       if(!var2.startsWith("amd64") && !var2.startsWith("x86_64")) {
-         var29 = false;
+         var6 = false;
       } else {
-         var29 = true;
+         var6 = true;
       }
 
       byte var7 = 0;
@@ -129,11 +129,11 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
             var10 = var10 * 10 + (var11 - '0');
             ++var9;
          }
-      } catch (Exception var38) {
+      } catch (Exception var28) {
          ;
       }
 
-      int var39 = var10;
+      int var29 = var10;
       var9 = var5.indexOf(46, 2) + 1;
       var10 = 0;
 
@@ -147,11 +147,11 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
             var10 = var12 - '0' + var10 * 10;
             ++var9;
          }
-      } catch (Exception var37) {
+      } catch (Exception var27) {
          ;
       }
 
-      int var40 = var10;
+      int var30 = var10;
       var9 = var5.indexOf(95, 4) + 1;
       var10 = 0;
 
@@ -165,27 +165,27 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
             var10 = var13 - '0' + var10 * 10;
             ++var9;
          }
-      } catch (Exception var36) {
+      } catch (Exception var26) {
          ;
       }
 
       Runtime.getRuntime();
-      int var15 = (int)((long)((new Random()).nextInt(31457280) + 230686720) / 1048576L) + 1;
-      int var16;
-      if(var39 > 3) {
-         var16 = Runtime.getRuntime().availableProcessors();
+      int var31 = (int)((long)((new Random()).nextInt(31457280) + 230686720) / 1048576L) + 1;
+      int var14;
+      if(var29 > 3) {
+         var14 = Runtime.getRuntime().availableProcessors();
       } else {
-         var16 = 0;
+         var14 = 0;
       }
 
-      byte var17 = 0;
+      byte var15 = 0;
+      String var16 = "";
+      String var17 = "";
       String var18 = "";
       String var19 = "";
       String var20 = "";
       String var21 = "";
-      String var22 = "";
-      String var23 = "";
-      int[] var28 = new int[3];
-      return new PlatformInfo(var1, var29, var7, var8, var39, var40, var10, false, var15, var16, var17, 0, var18, var19, var20, var21, 0, 0, 0, 0, var22, var23, var28, 0, "");
+      int[] var22 = new int[3];
+      return new PlatformInfo(var1, var6, var7, var8, var29, var30, var10, false, var31, var14, var15, 0, var16, var17, var18, var19, 0, 0, 0, 0, var20, var21, var22, 0, "");
    }
 }

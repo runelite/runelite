@@ -98,11 +98,6 @@ public class HealthBarDefinition extends DualNode {
    @Export("widthPadding")
    public int widthPadding;
 
-   static {
-      HealthBarDefinition_cached = new EvictingDualNodeHashTable(64);
-      HealthBarDefinition_cachedSprites = new EvictingDualNodeHashTable(64);
-   }
-
    public HealthBarDefinition() {
       this.int1 = 255;
       this.int2 = 255;
@@ -211,5 +206,10 @@ public class HealthBarDefinition extends DualNode {
             return var1;
          }
       }
+   }
+
+   static {
+      HealthBarDefinition_cached = new EvictingDualNodeHashTable(64);
+      HealthBarDefinition_cachedSprites = new EvictingDualNodeHashTable(64);
    }
 }

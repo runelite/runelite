@@ -100,49 +100,49 @@ public class ClanChat extends UserList {
    public final void readUpdate(Buffer var1) {
       this.__x_473(var1.readStringCp1252NullTerminated());
       long var2 = var1.readLong();
-      long var5 = var2;
-      String var4;
+      long var4 = var2;
+      String var6;
       int var7;
       if(var2 > 0L && var2 < 6582952005840035281L) {
          if(var2 % 37L == 0L) {
-            var4 = null;
+            var6 = null;
          } else {
             var7 = 0;
 
-            for(long var13 = var2; var13 != 0L; var13 /= 37L) {
+            for(long var8 = var2; var8 != 0L; var8 /= 37L) {
                ++var7;
             }
 
-            StringBuilder var15 = new StringBuilder(var7);
+            StringBuilder var11 = new StringBuilder(var7);
 
-            while(var5 != 0L) {
-               long var11 = var5;
-               var5 /= 37L;
-               var15.append(class306.base37Table[(int)(var11 - 37L * var5)]);
+            while(var4 != 0L) {
+               long var9 = var4;
+               var4 /= 37L;
+               var11.append(class306.base37Table[(int)(var9 - 37L * var4)]);
             }
 
-            var4 = var15.reverse().toString();
+            var6 = var11.reverse().toString();
          }
       } else {
-         var4 = null;
+         var6 = null;
       }
 
-      this.__q_472(var4);
+      this.__q_472(var6);
       this.__k = var1.readByte();
       var7 = var1.readUnsignedByte();
       if(var7 != 255) {
          this.clear();
 
-         for(int var8 = 0; var8 < var7; ++var8) {
-            ClanMate var9 = (ClanMate)this.addLastNoPreviousUsername(new Username(var1.readStringCp1252NullTerminated(), this.loginType));
+         for(int var12 = 0; var12 < var7; ++var12) {
+            ClanMate var13 = (ClanMate)this.addLastNoPreviousUsername(new Username(var1.readStringCp1252NullTerminated(), this.loginType));
             int var10 = var1.__ag_302();
-            var9.set(var10, ++this.__i - 1);
-            var9.rank = var1.readByte();
+            var13.set(var10, ++this.__i - 1);
+            var13.rank = var1.readByte();
             var1.readStringCp1252NullTerminated();
-            this.__cp_475(var9);
+            this.__cp_475(var13);
          }
-
       }
+
    }
 
    @ObfuscatedName("a")

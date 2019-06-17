@@ -59,14 +59,7 @@ public class Username implements Comparable {
    public boolean __equals_466(Object var1) {
       if(var1 instanceof Username) {
          Username var2 = (Username)var1;
-		  if (this.cleanName == null)
-		  {
-			  return var2.cleanName == null;
-		  }
-		  else
-		  {
-			  return var2.cleanName != null && (this.__hashCode_467() == var2.__hashCode_467() && this.cleanName.equals(var2.cleanName));
-		  }
+         return this.cleanName == null?var2.cleanName == null:var2.cleanName != null && this.__hashCode_467() == var2.__hashCode_467() && this.cleanName.equals(var2.cleanName);
       } else {
          return false;
       }

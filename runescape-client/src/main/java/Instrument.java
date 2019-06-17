@@ -113,29 +113,6 @@ public class Instrument {
    @Export("offset")
    int offset;
 
-   static {
-      Instrument_noise = new int['耀'];
-      Random var0 = new Random(0L);
-
-      int var1;
-      for(var1 = 0; var1 < 32768; ++var1) {
-         Instrument_noise[var1] = (var0.nextInt() & 2) - 1;
-      }
-
-      Instrument_sine = new int['耀'];
-
-      for(var1 = 0; var1 < 32768; ++var1) {
-         Instrument_sine[var1] = (int)(Math.sin((double)var1 / 5215.1903D) * 16384.0D);
-      }
-
-      Instrument_samples = new int[220500];
-      Instrument_phases = new int[5];
-      Instrument_delays = new int[5];
-      Instrument_volumeSteps = new int[5];
-      Instrument_pitchSteps = new int[5];
-      Instrument_pitchBaseSteps = new int[5];
-   }
-
    Instrument() {
       this.oscillatorVolume = new int[]{0, 0, 0, 0, 0};
       this.oscillatorPitch = new int[]{0, 0, 0, 0, 0};
@@ -224,13 +201,13 @@ public class Instrument {
             this.__g.reset();
             this.__l.reset();
             var11 = 0;
-            boolean var19 = false;
-            boolean var20 = true;
+            boolean var17 = false;
+            boolean var18 = true;
 
             for(var14 = 0; var14 < var1; ++var14) {
                var15 = this.__g.doStep(var1);
                var16 = this.__l.doStep(var1);
-               if(var20) {
+               if(var18) {
                   var12 = (var15 * (this.__g.end - this.__g.start) >> 8) + this.__g.start;
                } else {
                   var12 = (var16 * (this.__g.end - this.__g.start) >> 8) + this.__g.start;
@@ -239,10 +216,10 @@ public class Instrument {
                var11 += 256;
                if(var11 >= var12) {
                   var11 = 0;
-                  var20 = !var20;
+                  var18 = !var18;
                }
 
-               if(var20) {
+               if(var18) {
                   Instrument_samples[var14] = 0;
                }
             }
@@ -268,16 +245,16 @@ public class Instrument {
                   var15 = var1 - var12;
                }
 
-               int var17;
+               int var19;
                while(var14 < var15) {
                   var16 = (int)((long)Instrument_samples[var14 + var12] * (long)AudioFilter.__di_e >> 16);
 
-                  for(var17 = 0; var17 < var12; ++var17) {
-                     var16 += (int)((long)Instrument_samples[var14 + var12 - 1 - var17] * (long)AudioFilter.__di_g[0][var17] >> 16);
+                  for(var19 = 0; var19 < var12; ++var19) {
+                     var16 += (int)((long)Instrument_samples[var14 + var12 - 1 - var19] * (long)AudioFilter.__di_g[0][var19] >> 16);
                   }
 
-                  for(var17 = 0; var17 < var14; ++var17) {
-                     var16 -= (int)((long)Instrument_samples[var14 - 1 - var17] * (long)AudioFilter.__di_g[1][var17] >> 16);
+                  for(var19 = 0; var19 < var14; ++var19) {
+                     var16 -= (int)((long)Instrument_samples[var14 - 1 - var19] * (long)AudioFilter.__di_g[1][var19] >> 16);
                   }
 
                   Instrument_samples[var14] = var16;
@@ -292,36 +269,36 @@ public class Instrument {
                      var15 = var1 - var12;
                   }
 
-                  int var18;
+                  int var20;
                   while(var14 < var15) {
-                     var17 = (int)((long)Instrument_samples[var14 + var12] * (long)AudioFilter.__di_e >> 16);
+                     var19 = (int)((long)Instrument_samples[var14 + var12] * (long)AudioFilter.__di_e >> 16);
 
-                     for(var18 = 0; var18 < var12; ++var18) {
-                        var17 += (int)((long)Instrument_samples[var14 + var12 - 1 - var18] * (long)AudioFilter.__di_g[0][var18] >> 16);
+                     for(var20 = 0; var20 < var12; ++var20) {
+                        var19 += (int)((long)Instrument_samples[var14 + var12 - 1 - var20] * (long)AudioFilter.__di_g[0][var20] >> 16);
                      }
 
-                     for(var18 = 0; var18 < var13; ++var18) {
-                        var17 -= (int)((long)Instrument_samples[var14 - 1 - var18] * (long)AudioFilter.__di_g[1][var18] >> 16);
+                     for(var20 = 0; var20 < var13; ++var20) {
+                        var19 -= (int)((long)Instrument_samples[var14 - 1 - var20] * (long)AudioFilter.__di_g[1][var20] >> 16);
                      }
 
-                     Instrument_samples[var14] = var17;
+                     Instrument_samples[var14] = var19;
                      var11 = this.__a.doStep(var1 + 1);
                      ++var14;
                   }
 
                   if(var14 >= var1 - var12) {
                      while(var14 < var1) {
-                        var17 = 0;
+                        var19 = 0;
 
-                        for(var18 = var14 + var12 - var1; var18 < var12; ++var18) {
-                           var17 += (int)((long)Instrument_samples[var14 + var12 - 1 - var18] * (long)AudioFilter.__di_g[0][var18] >> 16);
+                        for(var20 = var14 + var12 - var1; var20 < var12; ++var20) {
+                           var19 += (int)((long)Instrument_samples[var14 + var12 - 1 - var20] * (long)AudioFilter.__di_g[0][var20] >> 16);
                         }
 
-                        for(var18 = 0; var18 < var13; ++var18) {
-                           var17 -= (int)((long)Instrument_samples[var14 - 1 - var18] * (long)AudioFilter.__di_g[1][var18] >> 16);
+                        for(var20 = 0; var20 < var13; ++var20) {
+                           var19 -= (int)((long)Instrument_samples[var14 - 1 - var20] * (long)AudioFilter.__di_g[1][var20] >> 16);
                         }
 
-                        Instrument_samples[var14] = var17;
+                        Instrument_samples[var14] = var19;
                         this.__a.doStep(var1 + 1);
                         ++var14;
                      }
@@ -410,5 +387,28 @@ public class Instrument {
       this.filter = new AudioFilter();
       this.__a = new SoundEnvelope();
       this.filter.__o_208(var1, this.__a);
+   }
+
+   static {
+      Instrument_noise = new int[32768];
+      Random var0 = new Random(0L);
+
+      int var1;
+      for(var1 = 0; var1 < 32768; ++var1) {
+         Instrument_noise[var1] = (var0.nextInt() & 2) - 1;
+      }
+
+      Instrument_sine = new int[32768];
+
+      for(var1 = 0; var1 < 32768; ++var1) {
+         Instrument_sine[var1] = (int)(Math.sin((double)var1 / 5215.1903D) * 16384.0D);
+      }
+
+      Instrument_samples = new int[220500];
+      Instrument_phases = new int[5];
+      Instrument_delays = new int[5];
+      Instrument_volumeSteps = new int[5];
+      Instrument_pitchSteps = new int[5];
+      Instrument_pitchBaseSteps = new int[5];
    }
 }

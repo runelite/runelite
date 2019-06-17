@@ -62,12 +62,6 @@ public class WorldMapLabelSize {
    @Export("__u")
    final int __u;
 
-   static {
-      WorldMapLabelSize_small = new WorldMapLabelSize(0, 0, 4);
-      WorldMapLabelSize_medium = new WorldMapLabelSize(2, 1, 2);
-      WorldMapLabelSize_large = new WorldMapLabelSize(1, 2, 0);
-   }
-
    WorldMapLabelSize(int var1, int var2, int var3) {
       this.__w = var1;
       this.__o = var2;
@@ -131,5 +125,11 @@ public class WorldMapLabelSize {
          Client.__client_mo = null;
       }
 
+   }
+
+   static {
+      WorldMapLabelSize_small = new WorldMapLabelSize(0, 0, 4);
+      WorldMapLabelSize_medium = new WorldMapLabelSize(2, 1, 2);
+      WorldMapLabelSize_large = new WorldMapLabelSize(1, 2, 0);
    }
 }

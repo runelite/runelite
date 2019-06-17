@@ -129,7 +129,7 @@ public final class WorldMapManager {
 
          try {
             this.mapAreaData.__ce_76(var6, var7, var5, var3);
-         } catch (IllegalStateException var19) {
+         } catch (IllegalStateException var16) {
             return;
          }
 
@@ -140,17 +140,18 @@ public final class WorldMapManager {
          this.surfaceOffsetY = this.mapAreaData.minY() * 64;
          this.__i = (this.mapAreaData.maxX() - this.mapAreaData.minX() + 1) * 64;
          this.__a = (this.mapAreaData.maxY() - this.mapAreaData.minY() + 1) * 64;
-         int var16 = this.mapAreaData.maxX() - this.mapAreaData.minX() + 1;
+         int var8 = this.mapAreaData.maxX() - this.mapAreaData.minX() + 1;
          int var9 = this.mapAreaData.maxY() - this.mapAreaData.minY() + 1;
          System.nanoTime();
          System.nanoTime();
          SoundSystem.method2456();
-         this.regions = new WorldMapRegion[var16][var9];
-         Iterator var10 = this.mapAreaData.__n.iterator();
+         this.regions = new WorldMapRegion[var8][var9];
+         Iterator var10 = this.mapAreaData.surfaceOffsetY.iterator();
 
+         int var12;
          while(var10.hasNext()) {
             class15 var11 = (class15)var10.next();
-            int var12 = var11.field149;
+            var12 = var11.field149;
             int var13 = var11.field146;
             int var14 = var12 - this.mapAreaData.minX();
             int var15 = var13 - this.mapAreaData.minY();
@@ -158,11 +159,11 @@ public final class WorldMapManager {
             this.regions[var14][var15].method447(var11, this.mapAreaData.__a);
          }
 
-         for(int var17 = 0; var17 < var16; ++var17) {
-            for(int var18 = 0; var18 < var9; ++var18) {
-               if(this.regions[var17][var18] == null) {
-                  this.regions[var17][var18] = new WorldMapRegion(this.mapAreaData.minX() + var17, this.mapAreaData.minY() + var18, this.mapAreaData.__a_39(), this.fonts);
-                  this.regions[var17][var18].__u_41(this.mapAreaData.__i, this.mapAreaData.__a);
+         for(int var17 = 0; var17 < var8; ++var17) {
+            for(var12 = 0; var12 < var9; ++var12) {
+               if(this.regions[var17][var12] == null) {
+                  this.regions[var17][var12] = new WorldMapRegion(this.mapAreaData.minX() + var17, this.mapAreaData.minY() + var12, this.mapAreaData.__a_39(), this.fonts);
+                  this.regions[var17][var12].__u_41(this.mapAreaData.__i, this.mapAreaData.__a);
                }
             }
          }
@@ -170,8 +171,8 @@ public final class WorldMapManager {
          System.nanoTime();
          System.nanoTime();
          if(var1.__ag_401(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, var2)) {
-            byte[] var20 = var1.takeRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, var2);
-            this.overviewSprite = class27.method438(var20);
+            byte[] var18 = var1.takeRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, var2);
+            this.overviewSprite = class27.method438(var18);
          }
 
          System.nanoTime();
@@ -179,6 +180,7 @@ public final class WorldMapManager {
          var1.__b_400();
          this.isLoaded0 = true;
       }
+
    }
 
    @ObfuscatedName("f")
@@ -290,27 +292,28 @@ public final class WorldMapManager {
             Iterator var8 = var5.iterator();
 
             while(true) {
-               List var10;
+               List var9;
                do {
                   if(!var8.hasNext()) {
                      return;
                   }
 
-                  int var9 = ((Integer)var8.next()).intValue();
-                  var10 = (List)this.icons.get(Integer.valueOf(var9));
-               } while(var10 == null);
+                  int var10 = ((Integer)var8.next()).intValue();
+                  var9 = (List)this.icons.get(Integer.valueOf(var10));
+               } while(var9 == null);
 
-               Iterator var11 = var10.iterator();
+               Iterator var14 = var9.iterator();
 
-               while(var11.hasNext()) {
-                  AbstractWorldMapIcon var12 = (AbstractWorldMapIcon)var11.next();
-                  int var13 = var3 * (var12.coord2.x - this.surfaceOffsetX) / this.__i;
-                  int var14 = var4 - (var12.coord2.y - this.surfaceOffsetY) * var4 / this.__a;
-                  Rasterizer2D.Rasterizer2D_drawCircleAlpha(var13 + var1, var14 + var2, 2, 16776960, 256);
+               while(var14.hasNext()) {
+                  AbstractWorldMapIcon var11 = (AbstractWorldMapIcon)var14.next();
+                  int var12 = var3 * (var11.coord2.x - this.surfaceOffsetX) / this.__i;
+                  int var13 = var4 - (var11.coord2.y - this.surfaceOffsetY) * var4 / this.__a;
+                  Rasterizer2D.Rasterizer2D_drawCircleAlpha(var12 + var1, var13 + var2, 2, 16776960, 256);
                }
             }
          }
       }
+
    }
 
    @ObfuscatedName("u")
