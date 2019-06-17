@@ -97,4 +97,15 @@ public class Constants
 	 * All game-play actions operate within multiples of this duration.
 	 */
 	public static final int GAME_TICK_LENGTH = 600;
+
+	/**
+	 * Width of a standard item sprite
+	 */
+	public static final int ITEM_SPRITE_WIDTH = 36;
+
+	/**
+	 * Height of a standard item sprite
+	 */
+	public static final int ITEM_SPRITE_HEIGHT = 32;
+
 }
