@@ -9,9 +9,9 @@ https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-180
 
 ## Usage
 
-It's ran much like RuneLite or RuneLitePlus, install then run RuneLite.main()  
+To setup your rsa keys, navigate to runelite-mixins and go to RSBufferMixin and set modulus and exponent
 
-First you will want to use [Recaf](https://github.com/Col-E/Recaf/releases) to modify the RSA class (currently cm.class for 180) <clinit> instructions for the server keys you use in the vanilla-RSVERSION.jar in the root of the project. I will implement mixins but this works for now. 
+After that it's ran much like RuneLite or RuneLitePlus, install then run RuneLite.main()  
 
 ## License
 
