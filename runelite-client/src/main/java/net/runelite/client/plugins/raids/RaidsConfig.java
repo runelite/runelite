@@ -30,6 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Stub;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup("raids")
 public interface RaidsConfig extends Config
@@ -416,5 +417,16 @@ public interface RaidsConfig extends Config
 	default boolean partyDisplay()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hotkey",
+			name = "Toggle scout overlay",
+			description = "When pressed the scout overlay will be toggled. Must enable show scout overlay in raid",
+			position = 31
+	)
+	default Keybind hotkey()
+	{
+		return Keybind.NOT_SET;
 	}
 }

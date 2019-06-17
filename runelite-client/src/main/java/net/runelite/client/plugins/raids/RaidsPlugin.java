@@ -91,6 +91,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 import java.util.HashSet;
@@ -156,13 +157,13 @@ public class RaidsPlugin extends Plugin
 	private LayoutSolver layoutSolver;
 
 	@Inject
+	private KeyManager keyManager;
+
+	@Inject
 	private SpriteManager spriteManager;
 
 	@Inject
 	private ClientThread clientThread;
-
-	@Inject
-	private KeyManager keyManager;
 
 	@Inject
 	private TooltipManager tooltipManager;
@@ -199,6 +200,8 @@ public class RaidsPlugin extends Plugin
 	private String tooltip;
 	public boolean canShow;
 	private NavigationButton navButton;
+	private boolean raidStarted;
+
 	private RaidsTimer timer;
 
 	@Getter
@@ -234,6 +237,7 @@ public class RaidsPlugin extends Plugin
 		{
 			overlayManager.add(partyOverlay);
 		}
+		keyManager.registerKeyListener(hotkeyListener);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 		widgetOverlay = overlayManager.getWidgetOverlay(WidgetInfo.RAIDS_POINTS_INFOBOX);
@@ -260,8 +264,10 @@ public class RaidsPlugin extends Plugin
 			overlayManager.remove(partyOverlay);
 		}
 		infoBoxManager.removeInfoBox(timer);
+		keyManager.unregisterKeyListener(hotkeyListener);
 		inRaidChambers = false;
 		widgetOverlay = null;
+		raidStarted = false;
 		raid = null;
 		timer = null;
 
@@ -343,6 +349,7 @@ public class RaidsPlugin extends Plugin
 				{
 					timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
 					infoBoxManager.addInfoBox(timer);
+					raidStarted = true;
 				}
 				if (config.partyDisplay())
 				{
@@ -613,6 +620,7 @@ public class RaidsPlugin extends Plugin
 		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 && (!inRaidChambers || !config.scoutOverlayInRaid()))
 		{
 			overlay.setScoutOverlayShown(false);
+			raidStarted = false;
 		}
 	}
 
@@ -1064,4 +1072,24 @@ public class RaidsPlugin extends Plugin
 		builder.append("</br>Olm: ").append(secondsToTime(raidTime - lowerTime));
 		tooltip = builder.toString();
 	}
+
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			if (config.scoutOverlayInRaid() && raidStarted)
+			{
+				if (overlay.isScoutOverlayShown())
+				{
+					overlay.setScoutOverlayShown(false);
+				}
+				else
+				{
+					overlay.setScoutOverlayShown(true);
+				}
+			}
+		}
+	};
+
 }
