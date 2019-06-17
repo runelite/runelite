@@ -80,7 +80,7 @@ enum Emoji
 	EYES("O.O"),
 	SWEAT(";;"),
 	PILE_OF_POO("~@~"),
-	FIRE("/\\"),
+	FIRE("(/\\)"),
 	ALIEN("(@.@)"),
 	EGGPLANT("8=D"),
 	WAVE("(^_^)/"),
