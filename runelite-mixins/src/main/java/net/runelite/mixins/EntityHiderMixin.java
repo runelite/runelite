@@ -67,6 +67,9 @@ public abstract class EntityHiderMixin implements RSScene
 	@Shadow("hideNPCs")
 	private static boolean hideNPCs;
 
+	@Shadow("hideNPCsNames")
+	private  static String hideNPCsNames;
+
 	@Shadow("hideNPCs2D")
 	private static boolean hideNPCs2D;
 
@@ -151,12 +154,21 @@ public abstract class EntityHiderMixin implements RSScene
 		else if (renderable instanceof RSNPC)
 		{
 			RSNPC npc = (RSNPC) renderable;
+			String[] names = hideNPCsNames.split(",");
 
 			if (!hideAttackers)
 			{
 				if (npc.getInteracting() == client.getLocalPlayer())
 				{
 					return true;
+				}
+			}
+
+			for (String name: names)
+			{
+				if (names.equals(npc.getName()))
+				{
+					return false;
 				}
 			}
 
