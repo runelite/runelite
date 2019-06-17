@@ -2401,6 +2401,70 @@
     "crushDef": 10,
     "rangeDef": 10
   },
+  "397": {
+    "name": "Town Guard",
+    "hitpoints": 22,
+    "combatLevel": 22,
+    "attackLevel": 15,
+    "strengthLevel": 15,
+    "defenceLevel": 16,
+    "rangeLevel": 26,
+    "magicLevel": 1,
+    "stabDef": 5,
+    "slashDef": 5,
+    "crushDef": 5,
+    "rangeDef": 5,
+    "bonusAttack": 6,
+    "bonusStrength": 10
+  },
+  "398": {
+    "name": "Town Guard",
+    "hitpoints": 22,
+    "combatLevel": 22,
+    "attackLevel": 15,
+    "strengthLevel": 15,
+    "defenceLevel": 16,
+    "rangeLevel": 26,
+    "magicLevel": 1,
+    "stabDef": 5,
+    "slashDef": 5,
+    "crushDef": 5,
+    "rangeDef": 5,
+    "bonusAttack": 6,
+    "bonusStrength": 10
+  },
+  "399": {
+    "name": "Town Guard",
+    "hitpoints": 22,
+    "combatLevel": 19,
+    "attackLevel": 15,
+    "strengthLevel": 15,
+    "defenceLevel": 16,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "stabDef": 5,
+    "slashDef": 5,
+    "crushDef": 5,
+    "rangeDef": 5,
+    "bonusAttack": 6,
+    "bonusStrength": 10
+  },
+  "400": {
+    "name": "Town Guard",
+    "hitpoints": 22,
+    "combatLevel": 19,
+    "attackLevel": 15,
+    "strengthLevel": 15,
+    "defenceLevel": 16,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "stabDef": 5,
+    "slashDef": 5,
+    "crushDef": 5,
+    "rangeDef": 5,
+    "bonusAttack": 6,
+    "bonusStrength": 10
+  },
   "406": {
     "name": "Cave crawler",
     "hitpoints": 22,
@@ -3129,6 +3193,40 @@
     "defenceLevel": 40,
     "rangeLevel": 67,
     "magicLevel": 67,
+    "stabDef": 10,
+    "slashDef": 10,
+    "crushDef": 10,
+    "rangeDef": 20,
+    "magicDef": 20,
+    "bonusAttack": 30
+  },
+  "473": {
+    "name": "Zygomite",
+    "hitpoints": 65,
+    "combatLevel": 74,
+    "slayerLevel": 57,
+    "attackLevel": 65,
+    "strengthLevel": 65,
+    "defenceLevel": 65,
+    "rangeLevel": 65,
+    "magicLevel": 65,
+    "stabDef": 10,
+    "slashDef": 10,
+    "crushDef": 10,
+    "rangeDef": 20,
+    "magicDef": 20,
+    "bonusAttack": 30
+  },
+  "474": {
+    "name": "Zygomite",
+    "hitpoints": 75,
+    "combatLevel": 86,
+    "slayerLevel": 57,
+    "attackLevel": 75,
+    "strengthLevel": 75,
+    "defenceLevel": 75,
+    "rangeLevel": 75,
+    "magicLevel": 75,
     "stabDef": 10,
     "slashDef": 10,
     "crushDef": 10,
@@ -4685,21 +4783,25 @@
   },
   "720": {
     "name": "Mummy",
+    "hitpoints": 68,
     "combatLevel": 103,
     "undead": true
   },
   "721": {
     "name": "Mummy",
+    "hitpoints": 68,
     "combatLevel": 103,
     "undead": true
   },
   "722": {
     "name": "Mummy",
+    "hitpoints": 68,
     "combatLevel": 103,
     "undead": true
   },
   "723": {
     "name": "Mummy",
+    "hitpoints": 68,
     "combatLevel": 103,
     "undead": true
   },
@@ -4710,21 +4812,25 @@
   },
   "725": {
     "name": "Mummy",
+    "hitpoints": 68,
     "combatLevel": 103,
     "undead": true
   },
   "726": {
     "name": "Mummy",
+    "hitpoints": 68,
     "combatLevel": 103,
     "undead": true
   },
   "727": {
     "name": "Mummy",
+    "hitpoints": 68,
     "combatLevel": 103,
     "undead": true
   },
   "728": {
     "name": "Mummy",
+    "hitpoints": 68,
     "combatLevel": 103,
     "undead": true
   },
@@ -5006,6 +5112,22 @@
     "rangeDef": 50,
     "magicDef": 90
   },
+  "794": {
+    "name": "Scarab mage",
+    "hitpoints": 50,
+    "combatLevel": 93,
+    "slayerLevel": 1,
+    "attackLevel": 90,
+    "strengthLevel": 90,
+    "defenceLevel": 90,
+    "rangeLevel": 1,
+    "magicLevel": 70,
+    "magic": 70,
+    "stabDef": 40,
+    "slashDef": 90,
+    "crushDef": 90,
+    "magicDef": 34
+  },
   "795": {
     "name": "Locust rider",
     "hitpoints": 90,
@@ -5070,8 +5192,25 @@
     "rangeDef": 149,
     "magicDef": 159
   },
+  "799": {
+    "name": "Scarab mage",
+    "hitpoints": 50,
+    "combatLevel": 66,
+    "slayerLevel": 1,
+    "attackLevel": 90,
+    "strengthLevel": 90,
+    "defenceLevel": 90,
+    "rangeLevel": 1,
+    "magicLevel": 70,
+    "magic": 70,
+    "stabDef": 40,
+    "slashDef": 90,
+    "crushDef": 90,
+    "magicDef": 34
+  },
   "800": {
     "name": "Locust rider",
+    "hitpoints": 90,
     "combatLevel": 68,
     "slayerLevel": 1,
     "attackLevel": 100,
@@ -5085,6 +5224,7 @@
   },
   "801": {
     "name": "Locust rider",
+    "hitpoints": 90,
     "combatLevel": 68,
     "slayerLevel": 1,
     "attackLevel": 105,
@@ -5432,6 +5572,22 @@
   },
   "927": {
     "name": "Pee Hat",
+    "hitpoints": 120,
+    "combatLevel": 91,
+    "slayerLevel": 1,
+    "attackLevel": 50,
+    "strengthLevel": 100,
+    "defenceLevel": 50,
+    "stabDef": 25,
+    "slashDef": 25,
+    "crushDef": 40,
+    "rangeDef": 200,
+    "magicDef": 200,
+    "bonusAttack": 40,
+    "bonusStrength": 70
+  },
+  "928": {
+    "name": "Kraka",
     "hitpoints": 120,
     "combatLevel": 91,
     "slayerLevel": 1,
@@ -6112,42 +6268,102 @@
   "1066": {
     "name": "Fear reaper",
     "hitpoints": 25,
-    "combatLevel": 42
+    "combatLevel": 42,
+    "attackLevel": 39,
+    "strengthLevel": 41,
+    "defenceLevel": 40,
+    "rangeLevel": 1,
+    "magicLevel": 1
   },
   "1067": {
     "name": "Confusion beast",
-    "combatLevel": 43
+    "hitpoints": 28,
+    "combatLevel": 43,
+    "attackLevel": 42,
+    "strengthLevel": 41,
+    "defenceLevel": 40,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "1068": {
     "name": "Confusion beast",
-    "combatLevel": 43
+    "hitpoints": 28,
+    "combatLevel": 43,
+    "attackLevel": 42,
+    "strengthLevel": 41,
+    "defenceLevel": 40,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "1069": {
     "name": "Confusion beast",
-    "combatLevel": 43
+    "hitpoints": 28,
+    "combatLevel": 43,
+    "attackLevel": 42,
+    "strengthLevel": 41,
+    "defenceLevel": 40,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "1070": {
     "name": "Confusion beast",
-    "combatLevel": 43
+    "hitpoints": 28,
+    "combatLevel": 43,
+    "attackLevel": 42,
+    "strengthLevel": 41,
+    "defenceLevel": 40,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "1071": {
     "name": "Confusion beast",
-    "combatLevel": 43
+    "hitpoints": 28,
+    "combatLevel": 43,
+    "attackLevel": 42,
+    "strengthLevel": 41,
+    "defenceLevel": 40,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "1072": {
     "name": "Hopeless creature",
     "hitpoints": 25,
-    "combatLevel": 40
+    "combatLevel": 40,
+    "attackLevel": 38,
+    "strengthLevel": 36,
+    "defenceLevel": 39,
+    "rangeLevel": 1,
+    "magicLevel": 1
   },
   "1073": {
     "name": "Hopeless creature",
     "hitpoints": 25,
-    "combatLevel": 40
+    "combatLevel": 40,
+    "attackLevel": 38,
+    "strengthLevel": 36,
+    "defenceLevel": 39,
+    "rangeLevel": 1,
+    "magicLevel": 1
   },
   "1074": {
     "name": "Hopeless creature",
     "hitpoints": 25,
-    "combatLevel": 40
+    "combatLevel": 40,
+    "attackLevel": 38,
+    "strengthLevel": 36,
+    "defenceLevel": 39,
+    "rangeLevel": 1,
+    "magicLevel": 1
   },
   "1075": {
     "name": "Tolna",
@@ -6856,7 +7072,7 @@
   "1282": {
     "name": "Riyl Shade",
     "hitpoints": 76,
-    "combatLevel": 76,
+    "combatLevel": 80,
     "slayerLevel": 1,
     "attackLevel": 88,
     "strengthLevel": 55,
@@ -8064,6 +8280,7 @@
   },
   "1713": {
     "name": "Spinner",
+    "hitpoints": 33,
     "combatLevel": 88
   },
   "1714": {
@@ -8165,6 +8382,31 @@
     "name": "Defiler",
     "hitpoints": 97,
     "combatLevel": 92
+  },
+  "1734": {
+    "name": "Brawler",
+    "hitpoints": 53,
+    "combatLevel": 51
+  },
+  "1735": {
+    "name": "Brawler",
+    "hitpoints": 83,
+    "combatLevel": 76
+  },
+  "1736": {
+    "name": "Brawler",
+    "hitpoints": 97,
+    "combatLevel": 101
+  },
+  "1737": {
+    "name": "Brawler",
+    "hitpoints": 113,
+    "combatLevel": 129
+  },
+  "1738": {
+    "name": "Brawler",
+    "hitpoints": 143,
+    "combatLevel": 158
   },
   "1777": {
     "name": "Double agent",
@@ -8446,6 +8688,7 @@
   },
   "1863": {
     "name": "Tree spirit",
+    "hitpoints": 60,
     "combatLevel": 49,
     "attackLevel": 48,
     "strengthLevel": 48,
@@ -11116,6 +11359,7 @@
   },
   "2507": {
     "name": "Zombie",
+    "hitpoints": 71,
     "combatLevel": 53,
     "slayerLevel": 1,
     "attackLevel": 19,
@@ -11134,6 +11378,7 @@
   },
   "2508": {
     "name": "Zombie",
+    "hitpoints": 71,
     "combatLevel": 53,
     "slayerLevel": 1,
     "attackLevel": 19,
@@ -11152,6 +11397,7 @@
   },
   "2509": {
     "name": "Zombie",
+    "hitpoints": 71,
     "combatLevel": 53,
     "slayerLevel": 1,
     "attackLevel": 19,
@@ -11399,134 +11645,114 @@
   },
   "2527": {
     "name": "Ghost",
-    "hitpoints": 80,
-    "combatLevel": 77,
+    "hitpoints": 75,
+    "combatLevel": 76,
     "slayerLevel": 1,
     "attackLevel": 63,
     "strengthLevel": 63,
     "defenceLevel": 68,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "stabDef": 55,
-    "slashDef": 55,
+    "stabDef": 45,
+    "slashDef": 45,
     "crushDef": 5,
-    "rangeDef": 55,
-    "magicDef": 55,
+    "rangeDef": 45,
     "undead": true
   },
   "2528": {
     "name": "Ghost",
-    "hitpoints": 80,
-    "combatLevel": 77,
+    "hitpoints": 75,
+    "combatLevel": 76,
     "slayerLevel": 1,
     "attackLevel": 63,
     "strengthLevel": 63,
     "defenceLevel": 68,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "stabDef": 55,
-    "slashDef": 55,
+    "stabDef": 45,
+    "slashDef": 45,
     "crushDef": 5,
-    "rangeDef": 55,
-    "magicDef": 55,
+    "rangeDef": 45,
     "undead": true
   },
   "2529": {
     "name": "Ghost",
-    "hitpoints": 80,
-    "combatLevel": 77,
+    "hitpoints": 75,
+    "combatLevel": 76,
     "slayerLevel": 1,
     "attackLevel": 63,
     "strengthLevel": 63,
     "defenceLevel": 68,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "stabDef": 55,
-    "slashDef": 55,
+    "stabDef": 45,
+    "slashDef": 45,
     "crushDef": 5,
-    "rangeDef": 55,
-    "magicDef": 55,
+    "rangeDef": 45,
     "undead": true
   },
   "2530": {
     "name": "Ghost",
-    "hitpoints": 80,
-    "combatLevel": 77,
+    "hitpoints": 75,
+    "combatLevel": 76,
     "slayerLevel": 1,
     "attackLevel": 63,
     "strengthLevel": 63,
     "defenceLevel": 68,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "stabDef": 55,
-    "slashDef": 55,
+    "stabDef": 45,
+    "slashDef": 45,
     "crushDef": 5,
-    "rangeDef": 55,
-    "magicDef": 55,
+    "rangeDef": 45,
     "undead": true
   },
   "2531": {
     "name": "Ghost",
-    "hitpoints": 75,
-    "combatLevel": 76,
+    "hitpoints": 30,
+    "combatLevel": 24,
     "slayerLevel": 1,
-    "attackLevel": 63,
-    "strengthLevel": 63,
-    "defenceLevel": 68,
+    "attackLevel": 23,
+    "strengthLevel": 23,
+    "defenceLevel": 20,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "stabDef": 45,
-    "slashDef": 45,
-    "crushDef": 5,
-    "rangeDef": 45,
     "undead": true
   },
   "2532": {
     "name": "Ghost",
-    "hitpoints": 75,
-    "combatLevel": 76,
+    "hitpoints": 30,
+    "combatLevel": 24,
     "slayerLevel": 1,
-    "attackLevel": 63,
-    "strengthLevel": 63,
-    "defenceLevel": 68,
+    "attackLevel": 23,
+    "strengthLevel": 23,
+    "defenceLevel": 20,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "stabDef": 45,
-    "slashDef": 45,
-    "crushDef": 5,
-    "rangeDef": 45,
     "undead": true
   },
   "2533": {
     "name": "Ghost",
-    "hitpoints": 75,
-    "combatLevel": 76,
+    "hitpoints": 30,
+    "combatLevel": 24,
     "slayerLevel": 1,
-    "attackLevel": 63,
-    "strengthLevel": 63,
-    "defenceLevel": 68,
+    "attackLevel": 23,
+    "strengthLevel": 23,
+    "defenceLevel": 20,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "stabDef": 45,
-    "slashDef": 45,
-    "crushDef": 5,
-    "rangeDef": 45,
     "undead": true
   },
   "2534": {
     "name": "Ghost",
-    "hitpoints": 75,
-    "combatLevel": 76,
+    "hitpoints": 30,
+    "combatLevel": 24,
     "slayerLevel": 1,
-    "attackLevel": 63,
-    "strengthLevel": 63,
-    "defenceLevel": 68,
+    "attackLevel": 23,
+    "strengthLevel": 23,
+    "defenceLevel": 20,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "stabDef": 45,
-    "slashDef": 45,
-    "crushDef": 5,
-    "rangeDef": 45,
     "undead": true
   },
   "2536": {
@@ -12790,7 +13016,6 @@
     "defenceLevel": 4,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "stab": 6,
     "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
@@ -12806,7 +13031,6 @@
     "defenceLevel": 4,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "stab": 6,
     "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
@@ -13755,13 +13979,12 @@
     "name": "Barbarian",
     "hitpoints": 24,
     "combatLevel": 17,
-    "attackLevel": 8,
-    "strengthLevel": 7,
-    "defenceLevel": 3,
+    "attackLevel": 15,
+    "strengthLevel": 14,
+    "defenceLevel": 10,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13776,8 +13999,7 @@
     "defenceLevel": 3,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13787,13 +14009,12 @@
     "name": "Barbarian",
     "hitpoints": 24,
     "combatLevel": 17,
-    "attackLevel": 8,
-    "strengthLevel": 7,
-    "defenceLevel": 3,
+    "attackLevel": 15,
+    "strengthLevel": 14,
+    "defenceLevel": 10,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13803,13 +14024,12 @@
     "name": "Barbarian",
     "hitpoints": 24,
     "combatLevel": 17,
-    "attackLevel": 8,
-    "strengthLevel": 7,
-    "defenceLevel": 3,
+    "attackLevel": 15,
+    "strengthLevel": 14,
+    "defenceLevel": 10,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13824,8 +14044,7 @@
     "defenceLevel": 3,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13840,8 +14059,7 @@
     "defenceLevel": 3,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13856,8 +14074,7 @@
     "defenceLevel": 3,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13867,13 +14084,12 @@
     "name": "Barbarian",
     "hitpoints": 24,
     "combatLevel": 17,
-    "attackLevel": 8,
-    "strengthLevel": 7,
-    "defenceLevel": 3,
+    "attackLevel": 15,
+    "strengthLevel": 14,
+    "defenceLevel": 10,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13888,8 +14104,7 @@
     "defenceLevel": 3,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13904,8 +14119,7 @@
     "defenceLevel": 3,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13920,8 +14134,7 @@
     "defenceLevel": 3,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13936,8 +14149,7 @@
     "defenceLevel": 3,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13947,13 +14159,12 @@
     "name": "Barbarian",
     "hitpoints": 24,
     "combatLevel": 15,
-    "attackLevel": 8,
-    "strengthLevel": 7,
-    "defenceLevel": 3,
-    "rangeLevel": 1,
+    "attackLevel": 15,
+    "strengthLevel": 3,
+    "defenceLevel": 10,
+    "rangeLevel": 15,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13963,13 +14174,12 @@
     "name": "Barbarian",
     "hitpoints": 24,
     "combatLevel": 17,
-    "attackLevel": 8,
-    "strengthLevel": 7,
-    "defenceLevel": 3,
+    "attackLevel": 15,
+    "strengthLevel": 14,
+    "defenceLevel": 10,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -13984,8 +14194,7 @@
     "defenceLevel": 3,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -14000,8 +14209,7 @@
     "defenceLevel": 3,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
+    "slashDef": 3,
     "crushDef": 2,
     "rangeDef": 2,
     "bonusAttack": 9,
@@ -14009,19 +14217,19 @@
   },
   "3072": {
     "name": "Barbarian",
-    "hitpoints": 18,
+    "hitpoints": 20,
     "combatLevel": 9,
-    "attackLevel": 8,
+    "attackLevel": 6,
     "strengthLevel": 7,
     "defenceLevel": 3,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
-    "crushDef": 2,
-    "rangeDef": 2,
+    "stabDef": 9,
+    "slashDef": 10,
+    "crushDef": 10,
+    "rangeDef": 5,
     "bonusAttack": 9,
-    "bonusStrength": 15
+    "bonusStrength": 16
   },
   "3073": {
     "name": "Goblin",
@@ -14273,17 +14481,15 @@
     "name": "Barbarian",
     "hitpoints": 14,
     "combatLevel": 8,
-    "attackLevel": 8,
-    "strengthLevel": 7,
-    "defenceLevel": 3,
+    "attackLevel": 6,
+    "strengthLevel": 5,
+    "defenceLevel": 5,
     "rangeLevel": 1,
     "magicLevel": 1,
-    "crush": 9,
-    "slashDef": 2,
-    "crushDef": 2,
-    "rangeDef": 2,
-    "bonusAttack": 9,
-    "bonusStrength": 15
+    "stabDef": 1,
+    "slashDef": 1,
+    "bonusAttack": 8,
+    "bonusStrength": 10
   },
   "3103": {
     "name": "Al-Kharid warrior",
@@ -14360,7 +14566,7 @@
     "combatLevel": 46,
     "attackLevel": 38,
     "strengthLevel": 40,
-    "defenceLevel": 41,
+    "defenceLevel": 31,
     "rangeLevel": 1,
     "magicLevel": 1,
     "stabDef": 39,
@@ -14396,7 +14602,7 @@
     "combatLevel": 46,
     "attackLevel": 38,
     "strengthLevel": 40,
-    "defenceLevel": 41,
+    "defenceLevel": 31,
     "rangeLevel": 1,
     "magicLevel": 1,
     "stabDef": 39,
@@ -14694,6 +14900,21 @@
     "defenceLevel": 30,
     "rangeLevel": 1,
     "magicLevel": 1
+  },
+  "3139": {
+    "name": "Pyrefiend",
+    "hitpoints": 48,
+    "combatLevel": 48,
+    "slayerLevel": 30,
+    "attackLevel": 60,
+    "strengthLevel": 36,
+    "defenceLevel": 22,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "stabDef": 10,
+    "slashDef": 10,
+    "crushDef": 10,
+    "rangeDef": 10
   },
   "3140": {
     "name": "Icefiend",
@@ -17917,6 +18138,46 @@
     "rangeDef": 50,
     "magicDef": 60
   },
+  "4043": {
+    "name": "Pirate",
+    "hitpoints": 20
+  },
+  "4044": {
+    "name": "Pirate",
+    "hitpoints": 20
+  },
+  "4045": {
+    "name": "Pirate",
+    "hitpoints": 20
+  },
+  "4046": {
+    "name": "Pirate",
+    "hitpoints": 20
+  },
+  "4047": {
+    "name": "Pirate",
+    "hitpoints": 20
+  },
+  "4048": {
+    "name": "Pirate",
+    "hitpoints": 20
+  },
+  "4049": {
+    "name": "Pirate",
+    "hitpoints": 20
+  },
+  "4050": {
+    "name": "Pirate",
+    "hitpoints": 20
+  },
+  "4051": {
+    "name": "Pirate",
+    "hitpoints": 20
+  },
+  "4052": {
+    "name": "Pirate",
+    "hitpoints": 20
+  },
   "4067": {
     "name": "Black Knight Titan",
     "hitpoints": 142,
@@ -18248,7 +18509,7 @@
     "hitpoints": 120,
     "combatLevel": 101,
     "slayerLevel": 1,
-    "attackLevel": 120,
+    "attackLevel": 60,
     "strengthLevel": 120,
     "defenceLevel": 50,
     "stabDef": 25,
@@ -21648,6 +21909,7 @@
   },
   "5242": {
     "name": "Scorpion",
+    "hitpoints": 15,
     "combatLevel": 38,
     "slayerLevel": 1
   },
@@ -23866,8 +24128,6 @@
     "rangeDef": 60,
     "magicDef": 20,
     "bonusAttack": 65,
-    "poisonImmune": true,
-    "venomImmune": true,
     "demon": true
   },
   "5887": {
@@ -23886,8 +24146,6 @@
     "rangeDef": 60,
     "magicDef": 20,
     "bonusAttack": 65,
-    "poisonImmune": true,
-    "venomImmune": true,
     "demon": true
   },
   "5888": {
@@ -23906,8 +24164,6 @@
     "rangeDef": 60,
     "magicDef": 20,
     "bonusAttack": 65,
-    "poisonImmune": true,
-    "venomImmune": true,
     "demon": true
   },
   "5889": {
@@ -23926,8 +24182,6 @@
     "rangeDef": 60,
     "magicDef": 20,
     "bonusAttack": 65,
-    "poisonImmune": true,
-    "venomImmune": true,
     "demon": true
   },
   "5890": {
@@ -23946,8 +24200,6 @@
     "rangeDef": 60,
     "magicDef": 20,
     "bonusAttack": 65,
-    "poisonImmune": true,
-    "venomImmune": true,
     "demon": true
   },
   "5891": {
@@ -23966,8 +24218,6 @@
     "rangeDef": 60,
     "magicDef": 20,
     "bonusAttack": 65,
-    "poisonImmune": true,
-    "venomImmune": true,
     "demon": true
   },
   "5908": {
@@ -23986,8 +24236,6 @@
     "rangeDef": 60,
     "magicDef": 20,
     "bonusAttack": 65,
-    "poisonImmune": true,
-    "venomImmune": true,
     "demon": true
   },
   "5916": {
@@ -25017,18 +25265,19 @@
   },
   "6309": {
     "name": "Flambeed (hard)",
-    "hitpoints": 240,
-    "combatLevel": 201,
-    "attackLevel": 186,
-    "strengthLevel": 186,
-    "defenceLevel": 81,
-    "rangeLevel": 120,
+    "hitpoints": 255,
+    "combatLevel": 238,
+    "attackLevel": 240,
+    "strengthLevel": 240,
+    "defenceLevel": 75,
+    "rangeLevel": 1,
     "magicLevel": 1,
-    "stabDef": 150,
-    "slashDef": 150,
-    "crushDef": 150,
+    "stabDef": 50,
+    "slashDef": 50,
+    "crushDef": 5,
     "rangeDef": 50,
-    "magicDef": 50
+    "magicDef": 5,
+    "bonusAttack": 100
   },
   "6310": {
     "name": "Karamel (hard)",
@@ -25064,6 +25313,96 @@
     "crushDef": 150,
     "bonusAttack": 50,
     "bonusStrength": 50
+  },
+  "6312": {
+    "name": "Gelatinnoth Mother (hard)",
+    "hitpoints": 240,
+    "combatLevel": 201,
+    "attackLevel": 186,
+    "strengthLevel": 186,
+    "defenceLevel": 81,
+    "rangeLevel": 120,
+    "magicLevel": 1,
+    "stabDef": 150,
+    "slashDef": 150,
+    "crushDef": 150,
+    "rangeDef": 50,
+    "magicDef": 50
+  },
+  "6313": {
+    "name": "Gelatinnoth Mother (hard)",
+    "hitpoints": 240,
+    "combatLevel": 201,
+    "attackLevel": 186,
+    "strengthLevel": 186,
+    "defenceLevel": 81,
+    "rangeLevel": 120,
+    "magicLevel": 1,
+    "stabDef": 150,
+    "slashDef": 150,
+    "crushDef": 150,
+    "rangeDef": 50,
+    "magicDef": 50
+  },
+  "6314": {
+    "name": "Gelatinnoth Mother (hard)",
+    "hitpoints": 240,
+    "combatLevel": 201,
+    "attackLevel": 186,
+    "strengthLevel": 186,
+    "defenceLevel": 81,
+    "rangeLevel": 120,
+    "magicLevel": 1,
+    "stabDef": 150,
+    "slashDef": 150,
+    "crushDef": 150,
+    "rangeDef": 50,
+    "magicDef": 50
+  },
+  "6315": {
+    "name": "Gelatinnoth Mother (hard)",
+    "hitpoints": 240,
+    "combatLevel": 201,
+    "attackLevel": 186,
+    "strengthLevel": 186,
+    "defenceLevel": 81,
+    "rangeLevel": 120,
+    "magicLevel": 1,
+    "stabDef": 150,
+    "slashDef": 150,
+    "crushDef": 150,
+    "rangeDef": 50,
+    "magicDef": 50
+  },
+  "6316": {
+    "name": "Gelatinnoth Mother (hard)",
+    "hitpoints": 240,
+    "combatLevel": 201,
+    "attackLevel": 186,
+    "strengthLevel": 186,
+    "defenceLevel": 81,
+    "rangeLevel": 120,
+    "magicLevel": 1,
+    "stabDef": 150,
+    "slashDef": 150,
+    "crushDef": 150,
+    "rangeDef": 50,
+    "magicDef": 50
+  },
+  "6317": {
+    "name": "Gelatinnoth Mother (hard)",
+    "hitpoints": 240,
+    "combatLevel": 201,
+    "attackLevel": 186,
+    "strengthLevel": 186,
+    "defenceLevel": 81,
+    "rangeLevel": 120,
+    "magicLevel": 1,
+    "stabDef": 150,
+    "slashDef": 150,
+    "crushDef": 150,
+    "rangeDef": 50,
+    "magicDef": 50
   },
   "6318": {
     "name": "Nezikchened (hard)",
@@ -25344,6 +25683,7 @@
   },
   "6340": {
     "name": "Cow (hard)",
+    "hitpoints": 8,
     "combatLevel": 170,
     "slayerLevel": 1
   },
@@ -26022,7 +26362,7 @@
     "hitpoints": 120,
     "combatLevel": 101,
     "slayerLevel": 1,
-    "attackLevel": 120,
+    "attackLevel": 60,
     "strengthLevel": 120,
     "defenceLevel": 50,
     "stabDef": 25,
@@ -27110,17 +27450,6 @@
     "rangeLevel": 960,
     "magicLevel": 480,
     "magic": 60
-  },
-  "6529": {
-    "name": "Feral Vampyre",
-    "hitpoints": 50,
-    "combatLevel": 72,
-    "slayerLevel": 1,
-    "attackLevel": 65,
-    "strengthLevel": 70,
-    "defenceLevel": 65,
-    "rangeLevel": 1,
-    "magicLevel": 50
   },
   "6574": {
     "name": "Gnome guard",
@@ -28586,16 +28915,7 @@
   "7033": {
     "name": "Reanimated dagannoth",
     "hitpoints": 35,
-    "slayerLevel": 1,
-    "strengthLevel": 1000,
-    "defenceLevel": 140,
-    "rangeLevel": 1,
-    "magicLevel": 480,
-    "stab": 1,
-    "slash": 1,
-    "crush": 2,
-    "range": 48,
-    "magic": 100000
+    "slayerLevel": 1
   },
   "7034": {
     "name": "Reanimated bloodveld",
@@ -29610,6 +29930,26 @@
     "magicLevel": 1,
     "demon": true
   },
+  "7288": {
+    "name": "Awakened Altar",
+    "hitpoints": 100,
+    "demon": true
+  },
+  "7290": {
+    "name": "Awakened Altar",
+    "hitpoints": 100,
+    "demon": true
+  },
+  "7292": {
+    "name": "Awakened Altar",
+    "hitpoints": 100,
+    "demon": true
+  },
+  "7294": {
+    "name": "Awakened Altar",
+    "hitpoints": 100,
+    "demon": true
+  },
   "7296": {
     "name": "Dark Ankou",
     "hitpoints": 60,
@@ -29718,6 +30058,24 @@
     "crushDef": 5,
     "rangeDef": 10,
     "magicDef": 5
+  },
+  "7390": {
+    "name": "Screaming banshee",
+    "hitpoints": 61,
+    "combatLevel": 70,
+    "slayerLevel": 15,
+    "attackLevel": 65,
+    "strengthLevel": 61,
+    "defenceLevel": 56,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "stabDef": 13,
+    "slashDef": 13,
+    "crushDef": 13,
+    "rangeDef": 13,
+    "poisonImmune": true,
+    "venomImmune": true,
+    "undead": true
   },
   "7391": {
     "name": "Screaming twisted banshee",
@@ -30291,21 +30649,25 @@
   },
   "7530": {
     "name": "Vespula",
+    "hitpoints": 200,
     "rangeDef": 60,
     "magicDef": 70
   },
   "7531": {
     "name": "Vespula",
+    "hitpoints": 200,
     "rangeDef": 60,
     "magicDef": 70
   },
   "7532": {
     "name": "Vespula",
+    "hitpoints": 200,
     "rangeDef": 60,
     "magicDef": 70
   },
   "7533": {
     "name": "Abyssal portal",
+    "hitpoints": 250,
     "attackLevel": 1,
     "strengthLevel": 1,
     "rangeLevel": 1,
@@ -30314,11 +30676,13 @@
   },
   "7538": {
     "name": "Vespine soldier",
+    "hitpoints": 100,
     "rangeLevel": 1,
     "magicDef": 30
   },
   "7539": {
     "name": "Vespine soldier",
+    "hitpoints": 100,
     "rangeLevel": 1,
     "magicDef": 30
   },
@@ -30528,6 +30892,7 @@
   },
   "7559": {
     "name": "Deathly ranger",
+    "hitpoints": 120,
     "attackLevel": 1,
     "strengthLevel": 1,
     "range": 120,
@@ -30535,13 +30900,27 @@
   },
   "7560": {
     "name": "Deathly mage",
+    "hitpoints": 120,
     "attackLevel": 1,
     "strengthLevel": 1,
     "rangeLevel": 1,
     "magic": 120
   },
+  "7561": {
+    "name": "Muttadile",
+    "hitpoints": 250
+  },
+  "7562": {
+    "name": "Muttadile",
+    "hitpoints": 250
+  },
+  "7563": {
+    "name": "Muttadile",
+    "hitpoints": 250
+  },
   "7566": {
     "name": "Vasa Nistirio",
+    "hitpoints": 300,
     "attackLevel": 1,
     "strengthLevel": 1,
     "range": 100,
@@ -30553,6 +30932,7 @@
   },
   "7567": {
     "name": "Vasa Nistirio",
+    "hitpoints": 300,
     "attackLevel": 1,
     "strengthLevel": 1,
     "range": 100,
@@ -30564,6 +30944,7 @@
   },
   "7568": {
     "name": "Glowing crystal",
+    "hitpoints": 120,
     "attackLevel": 1,
     "strengthLevel": 1,
     "rangeLevel": 1,
@@ -30572,6 +30953,7 @@
   },
   "7573": {
     "name": "Lizardman shaman",
+    "hitpoints": 190,
     "slayerLevel": 1,
     "range": 56,
     "stabDef": 102,
@@ -30584,6 +30966,7 @@
   },
   "7574": {
     "name": "Lizardman shaman",
+    "hitpoints": 190,
     "slayerLevel": 1,
     "range": 56,
     "stabDef": 102,
@@ -30626,6 +31009,7 @@
   },
   "7604": {
     "name": "Skeletal Mystic",
+    "hitpoints": 160,
     "slayerLevel": 1,
     "rangeLevel": 1,
     "magic": 40,
@@ -30640,6 +31024,7 @@
   },
   "7605": {
     "name": "Skeletal Mystic",
+    "hitpoints": 160,
     "slayerLevel": 1,
     "rangeLevel": 1,
     "magic": 40,
@@ -30654,6 +31039,7 @@
   },
   "7606": {
     "name": "Skeletal Mystic",
+    "hitpoints": 160,
     "slayerLevel": 1,
     "rangeLevel": 1,
     "magic": 40,
@@ -31248,16 +31634,6 @@
   },
   "7799": {
     "name": "Ammonite Crab",
-    "hitpoints": 100,
-    "combatLevel": 25,
-    "attackLevel": 1,
-    "strengthLevel": 1,
-    "defenceLevel": 1,
-    "rangeLevel": 1,
-    "magicLevel": 1
-  },
-  "7800": {
-    "name": "Fossil Rock",
     "hitpoints": 100,
     "combatLevel": 25,
     "attackLevel": 1,
@@ -32499,6 +32875,60 @@
     "rangeLevel": 1,
     "magicLevel": 128
   },
+  "8067": {
+    "name": "Zombie",
+    "hitpoints": 54,
+    "combatLevel": 132,
+    "slayerLevel": 1,
+    "attackLevel": 160,
+    "strengthLevel": 180,
+    "defenceLevel": 62,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "stabDef": 25,
+    "slashDef": 20,
+    "crushDef": 25,
+    "rangeDef": 30,
+    "magicDef": 10,
+    "bonusAttack": 30,
+    "undead": true
+  },
+  "8068": {
+    "name": "Zombie",
+    "hitpoints": 54,
+    "combatLevel": 132,
+    "slayerLevel": 1,
+    "attackLevel": 160,
+    "strengthLevel": 1,
+    "defenceLevel": 62,
+    "rangeLevel": 180,
+    "magicLevel": 1,
+    "range": 20,
+    "stabDef": 15,
+    "slashDef": 10,
+    "crushDef": 15,
+    "rangeDef": 20,
+    "magicDef": 30,
+    "undead": true
+  },
+  "8069": {
+    "name": "Zombie",
+    "hitpoints": 54,
+    "combatLevel": 132,
+    "slayerLevel": 1,
+    "attackLevel": 160,
+    "strengthLevel": 1,
+    "defenceLevel": 62,
+    "rangeLevel": 1,
+    "magicLevel": 180,
+    "magic": 20,
+    "stabDef": 35,
+    "slashDef": 30,
+    "crushDef": 35,
+    "rangeDef": 10,
+    "magicDef": 20,
+    "undead": true
+  },
   "8070": {
     "name": "Skeleton",
     "hitpoints": 54,
@@ -32570,23 +33000,6 @@
     "magicDef": 30,
     "dragon": true
   },
-  "8074": {
-    "name": "Blue dragon",
-    "hitpoints": 105,
-    "combatLevel": 111,
-    "slayerLevel": 1,
-    "attackLevel": 95,
-    "strengthLevel": 95,
-    "defenceLevel": 95,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 50,
-    "slashDef": 70,
-    "crushDef": 70,
-    "rangeDef": 50,
-    "magicDef": 60,
-    "dragon": true
-  },
   "8075": {
     "name": "Red dragon",
     "hitpoints": 140,
@@ -32619,23 +33032,6 @@
     "crushDef": 40,
     "rangeDef": 20,
     "magicDef": 30,
-    "dragon": true
-  },
-  "8077": {
-    "name": "Blue dragon",
-    "hitpoints": 105,
-    "combatLevel": 111,
-    "slayerLevel": 1,
-    "attackLevel": 95,
-    "strengthLevel": 95,
-    "defenceLevel": 95,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 50,
-    "slashDef": 70,
-    "crushDef": 70,
-    "rangeDef": 50,
-    "magicDef": 60,
     "dragon": true
   },
   "8078": {
@@ -34278,7 +34674,7 @@
   },
   "8514": {
     "name": "Trapped Soul",
-    "hitpoints": 22,
+    "hitpoints": 30,
     "combatLevel": 30,
     "attackLevel": 25,
     "strengthLevel": 29,
@@ -34288,7 +34684,7 @@
   },
   "8528": {
     "name": "Trapped Soul",
-    "hitpoints": 22,
+    "hitpoints": 30,
     "combatLevel": 30,
     "attackLevel": 25,
     "strengthLevel": 29,
@@ -34667,5 +35063,83 @@
     "bonusRangeStrength": 20,
     "bonusMagicDamage": 20,
     "dragon": true
+  },
+  "8633": {
+    "name": "The Mimic",
+    "hitpoints": 230,
+    "combatLevel": 186,
+    "attackLevel": 185,
+    "strengthLevel": 120,
+    "defenceLevel": 120,
+    "rangeLevel": 1,
+    "magicLevel": 60,
+    "magic": 180,
+    "stabDef": 160,
+    "slashDef": 165,
+    "crushDef": 150,
+    "rangeDef": 145,
+    "magicDef": 30,
+    "bonusAttack": 135,
+    "bonusStrength": 48
+  },
+  "8635": {
+    "name": "Third Age Warrior",
+    "hitpoints": 40,
+    "combatLevel": 83,
+    "attackLevel": 90,
+    "strengthLevel": 75,
+    "defenceLevel": 80,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "stabDef": 96,
+    "slashDef": 108,
+    "crushDef": 113,
+    "rangeDef": 97,
+    "bonusAttack": 105,
+    "bonusStrength": 75
+  },
+  "8636": {
+    "name": "Third Age Ranger",
+    "hitpoints": 40,
+    "combatLevel": 76,
+    "attackLevel": 1,
+    "strengthLevel": 1,
+    "defenceLevel": 80,
+    "rangeLevel": 95,
+    "magicLevel": 1,
+    "range": 140,
+    "stabDef": 55,
+    "slashDef": 47,
+    "crushDef": 60,
+    "rangeDef": 55,
+    "magicDef": 60,
+    "bonusRangeStrength": 7
+  },
+  "8637": {
+    "name": "Third Age Mage",
+    "hitpoints": 40,
+    "combatLevel": 83,
+    "attackLevel": 1,
+    "strengthLevel": 1,
+    "defenceLevel": 80,
+    "rangeLevel": 1,
+    "magicLevel": 110,
+    "magic": 145,
+    "stabDef": 5,
+    "slashDef": 6,
+    "crushDef": 5,
+    "magicDef": 65,
+    "bonusMagicDamage": 24
+  },
+  "8678": {
+    "name": "Feral Vampyre",
+    "hitpoints": 50,
+    "combatLevel": 72,
+    "slayerLevel": 1,
+    "attackLevel": 65,
+    "strengthLevel": 70,
+    "defenceLevel": 65,
+    "rangeLevel": 1,
+    "magicLevel": 50
   }
 }

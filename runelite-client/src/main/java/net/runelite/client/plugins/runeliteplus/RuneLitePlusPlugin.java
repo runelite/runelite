@@ -252,6 +252,7 @@ public class RuneLitePlusPlugin extends Plugin
 	{
 		if (client.getWidget(WidgetID.BANK_PIN_GROUP_ID, 0) == null
 			|| !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Bank of Gielinor")
+			&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Chambers of Xeric")
 			&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Grand Exchange")
 			&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Housing Security System"))
 		{
