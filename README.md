@@ -13,7 +13,9 @@ To setup your rsa keys, navigate to runelite-mixins and go to RSBufferMixin and 
 
 After that it's ran much like RuneLite or RuneLitePlus, install then run RuneLite.main()
 
-Be sure to add either -rs=CUSTOM or -local-injected while working on it in intelliJ
+Be sure to add either -rs=CUSTOM or -local-injected while working on it in intelliJ  (Both args achieve the same goal)   
+[](https://media.discordapp.net/attachments/557733761589051452/590312770772271131/unknown.png)  
+  
 To release the built jar publicly, you'd have to host your injected client remotely and redirect it to your source in rs.ClientLoader
 
 ## License
