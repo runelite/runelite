@@ -80,9 +80,9 @@ public class RaidsOverlay extends Overlay
 		"SCPFC.CSPCF - #NEEESW#WWNEEE",
 		"SCSPF.CCSPF - #ESWWNW#ESENES",
 		"SPCFC.CSPCF - #WWNEEE#WSWNWS",
-		"SCPFC.PCSCF - #WNEEES#NWSWNW",
-		"SFCCPC.PCSCPF - #WSEENES#WWWNEEE",
-		"SCPFC.CCSSF - #NEESEN#WSWWNE"
+		"SCPFC.PCSCF - #WNEEES#NWSWNW", //rare crabs first bad crabs second
+		"SFCCPC.PCSCPF - #WSEENES#WWWNEEE", //good crabs first rare crabs second rare crabs third
+		"SCPFC.CCSSF - #NEESEN#WSWWNE" //good crabs
 	);
 	private static final ImmutableList<String> goodCrabsSecond = ImmutableList.of(
 		"FSCCP.PCSCF - #WNWSWN#ESEENW",
@@ -101,10 +101,10 @@ public class RaidsOverlay extends Overlay
 		"SFCCS.PCPSF - #ENWWSW#ENESEN",
 		"SPCFC.CSPCF - #WWNEEE#WSWNWS",
 		"SPCFC.SCCPF - #ESENES#WWWNEE",
-		"SPSFP.CCCSF - #NWSWWN#ESEENW",
-		"SFCCPC.PCSCPF - #WSEENES#WWWNEEE",
-		"FSCCP.PCSCF - #ENWWWS#NEESEN",
-		"SCPFC.CCSSF - #NEESEN#WSWWNE"
+		"SPSFP.CCCSF - #NWSWWN#ESEENW", //bad crabs first good crabs second
+		"SFCCPC.PCSCPF - #WSEENES#WWWNEEE", //good crabs first rare crabs second rare crabs third
+		"FSCCP.PCSCF - #ENWWWS#NEESEN", //bad crabs first good crabs second
+		"SCPFC.CCSSF - #NEESEN#WSWWNE" //good crabs
 	);
 	private final PanelComponent panelComponent = new PanelComponent();
 	private final ItemManager itemManager;
@@ -163,6 +163,8 @@ public class RaidsOverlay extends Overlay
 
 			return panelComponent.render(graphics);
 		}
+
+		System.out.println(plugin.getRaid().getRotationString());
 
 		Color color = Color.WHITE;
 		String layout = plugin.getRaid().getLayout().toCodeString();
@@ -279,10 +281,20 @@ public class RaidsOverlay extends Overlay
 			scavsBeforeIceRooms.add(prev);
 		}
 		int lastScavs = scavRooms.get(scavRooms.size() - 1);
-		panelComponent.getChildren().add(TitleComponent.builder()
-			.text(displayLayout)
-			.color(color)
-			.build());
+		if (!recordRaid())
+		{
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text(displayLayout)
+				.color(color)
+				.build());
+		}
+		else
+		{
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Record Raid")
+				.color(Color.GREEN)
+				.build());
+		}
 
 		TableComponent tableComponent = new TableComponent();
 		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
@@ -480,16 +492,23 @@ public class RaidsOverlay extends Overlay
 
 	private boolean crabHandler(String firstHalf, String secondHalf)
 	{
-		if (firstHalf.contains("Crabs") && goodCrabsFirst.contains(plugin.getLayoutFullCode()))
-		{
-			return true;
-		}
+		return (firstHalf.contains("Crabs") && goodCrabsFirst.contains(plugin.getLayoutFullCode()))
+			|| (secondHalf.contains("Crabs") && goodCrabsSecond.contains(plugin.getLayoutFullCode()));
+	}
 
-		if (secondHalf.contains("Crabs") && goodCrabsSecond.contains(plugin.getLayoutFullCode()))
+	boolean recordRaid()
+	{
+		Matcher firstMatcher = FIRST_HALF.matcher(plugin.getRaid().getFullRotationString());
+		Matcher secondMatcher = SECOND_HALF.matcher(plugin.getRaid().getFullRotationString());
+		if (plugin.getRaid().getRotationString().toLowerCase().equals("vasa,tekton,vespula")
+			&& plugin.getRaid().getFullRotationString().toLowerCase().contains("crabs")
+			&& plugin.getRaid().getFullRotationString().toLowerCase().contains("tightrope"))
 		{
-			return true;
+			if (firstMatcher.find() && secondMatcher.find())
+			{
+				return (crabHandler(firstMatcher.group(1), secondMatcher.group(1)));
+			}
 		}
-
 		return false;
 	}
 }
