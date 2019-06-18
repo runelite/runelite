@@ -66,7 +66,7 @@ public class Launcher implements AppletStub
 					break;
 				}
 			}
-			codebase = new URL("http://127.0.0.1");
+			codebase = new URL("http://thatgamerblue.com/");
 			params.put(worldListKey, "http://" + codebase.getHost());
 		}
 		catch (IOException e)
