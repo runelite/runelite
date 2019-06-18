@@ -702,20 +702,26 @@ public class ConfigPanel extends PluginPanel
 
 					if (max < Integer.MAX_VALUE)
 					{
+						JLabel sliderValueLabel = new JLabel();
 						JSlider slider = new JSlider(min, max, value);
-						configEntryName.setText(name.concat(": ").concat(String.valueOf(slider.getValue())));
+						sliderValueLabel.setText(String.valueOf(slider.getValue()));
 						slider.setPreferredSize(new Dimension(85, 25));
-						String finalName = name;
 						slider.addChangeListener((l) ->
 							{
-								configEntryName.setText(finalName.concat(": ").concat(String.valueOf(slider.getValue())));
+								sliderValueLabel.setText(String.valueOf(slider.getValue()));
 								if (!slider.getValueIsAdjusting())
 								{
 									changeConfiguration(listItem, config, slider, cd, cid);
 								}
 							}
 						);
-						item.add(slider, BorderLayout.EAST);
+
+						JPanel subPanel = new JPanel();
+
+						subPanel.add( sliderValueLabel);
+						subPanel.add( slider);
+
+						item.add(subPanel, BorderLayout.EAST);
 					}
 					else
 					{
