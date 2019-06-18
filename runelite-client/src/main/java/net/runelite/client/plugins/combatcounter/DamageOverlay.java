@@ -24,20 +24,21 @@
  */
 package net.runelite.client.plugins.combatcounter;
 
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.util.Map;
+import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Player;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import javax.inject.Inject;
-import java.awt.*;
-import java.util.Map;
-
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 
 class DamageOverlay extends Overlay
 {
@@ -79,9 +80,11 @@ class DamageOverlay extends Overlay
 			panelComponent.setBackgroundColor(config.bgColor());
 			panelComponent.getChildren().add(TitleComponent.builder().text("Damage Counter").color(config.titleColor()).build());
 
+			TableComponent tableComponent = new TableComponent();
+
 			if (plugin.getCounter().isEmpty())
 			{
-				panelComponent.getChildren().add(LineComponent.builder().left(local.getName()).right("0").build());
+				tableComponent.addRow(local.getName(), "0");
 			}
 			else
 			{
@@ -94,18 +97,23 @@ class DamageOverlay extends Overlay
 					String val = String.format("%.1f", map.get(name));
 					if (client.getLocalPlayer().getName().contains(name))
 					{
-						panelComponent.getChildren().add(1, LineComponent.builder().left(name).right(val).leftColor(config.selfColor()).rightColor(config.selfColor()).build());
+						tableComponent.addRow(ColorUtil.prependColorTag(name, config.selfColor()), ColorUtil.prependColorTag(val, config.selfColor()));
 					}
 					else
 					{
-						panelComponent.getChildren().add(1, LineComponent.builder().left(name).right(val).leftColor(config.otherColor()).rightColor(config.otherColor()).build());
+						tableComponent.addRow(ColorUtil.prependColorTag(name, config.otherColor()), ColorUtil.prependColorTag(val, config.otherColor()));
 					}
 				}
 
 				if (!map.containsKey(local.getName()))
 				{
-					panelComponent.getChildren().add(LineComponent.builder().left(local.getName()).right("0").leftColor(config.selfColor()).rightColor(config.selfColor()).build());
+					tableComponent.addRow(ColorUtil.prependColorTag(local.getName(), config.selfColor()), ColorUtil.prependColorTag("0", config.selfColor()));
 				}
+			}
+
+			if (!tableComponent.isEmpty())
+			{
+				panelComponent.getChildren().add(tableComponent);
 			}
 
 			return panelComponent.render(graphics);
