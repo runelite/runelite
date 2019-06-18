@@ -60,13 +60,13 @@ class BlastFurnaceCofferOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		TableComponent tableComponent = new TableComponent();
-		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
-
 		if (plugin.getConveyorBelt() == null)
 		{
 			return null;
 		}
+
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
 		Widget sack = client.getWidget(WidgetInfo.BLAST_FURNACE_COFFER);
 
@@ -77,9 +77,13 @@ class BlastFurnaceCofferOverlay extends Overlay
 			sack.setHidden(true);
 
 			tableComponent.addRow("Coffer:", StackFormatter.quantityToStackSize(client.getVar(BLAST_FURNACE_COFFER)) + " gp");
-
 		}
-		panelComponent.getChildren().add(tableComponent);
+
+		if (!tableComponent.isEmpty())
+		{
+			panelComponent.getChildren().add(tableComponent);
+		}
+
 		return panelComponent.render(graphics);
 	}
 }
