@@ -84,6 +84,7 @@ public class ClientLoader
 	{
 		try
 		{
+			updateCheckMode = CUSTOM;
 			Manifest manifest = new Manifest();
 			manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
 			RSConfig config = clientConfigLoader.fetch();
