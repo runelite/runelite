@@ -34,6 +34,7 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
+import static net.runelite.api.ItemID.DWARVEN_ROCK_CAKE_7510;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -455,6 +456,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("quick-travel", option, target, true);
 			}
+		}
+		else if (config.swapGuzzle() && eventId == DWARVEN_ROCK_CAKE_7510 && option.equals("eat"))
+		{
+			swap("guzzle", option, target, true);
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
