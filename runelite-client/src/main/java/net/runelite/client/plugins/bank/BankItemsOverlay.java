@@ -96,7 +96,8 @@ class BankItemsOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
-		if (expensiveItems == null || bankCalculation.isBankDifferent(bankItems)) {
+		if (expensiveItems == null || bankCalculation.isBankDifferent(bankItems)) 
+		{
 			expensiveItems = getExpensiveItems(bankItems);
 			Arrays.sort(expensiveItems, Comparator.comparing(ItemPrice::getPrice).reversed());
 		}
