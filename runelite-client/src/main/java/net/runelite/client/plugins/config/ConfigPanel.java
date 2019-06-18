@@ -716,10 +716,38 @@ public class ConfigPanel extends PluginPanel
 							}
 						);
 
+						SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
+						JSpinner spinner = new JSpinner(model);
+						Component editor = spinner.getEditor();
+						JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
+						spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
+						spinner.addChangeListener((ce) ->
+						{
+							changeConfiguration(listItem, config, spinner, cd, cid);
+							spinner.setVisible(false);
+							sliderValueLabel.setText(String.valueOf(spinner.getValue()));
+							sliderValueLabel.setVisible(true);
+							slider.setValue((Integer) spinner.getValue());
+							slider.setVisible(true);
+						});
+						spinner.setVisible(false);
+
+						sliderValueLabel.addMouseListener(new MouseAdapter()
+						{
+							public void mouseClicked(MouseEvent e)
+							{
+								spinner.setValue(slider.getValue());
+								spinner.setVisible(true);
+								sliderValueLabel.setVisible(false);
+								slider.setVisible(false);
+							}
+						});
+
 						JPanel subPanel = new JPanel();
 
-						subPanel.add( sliderValueLabel);
-						subPanel.add( slider);
+						subPanel.add(spinner);
+						subPanel.add(sliderValueLabel);
+						subPanel.add(slider);
 
 						item.add(subPanel, BorderLayout.EAST);
 					}
