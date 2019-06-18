@@ -129,24 +129,6 @@ public class RaidsPlugin extends Plugin
 	private final ArrayList<String> layoutWhitelist = new ArrayList<>();
 	@Getter
 	private final Map<String, List<Integer>> recommendedItemsList = new HashMap<>();
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
-	{
-		@Override
-		public void hotkeyPressed()
-		{
-			if (config.scoutOverlayInRaid() && raidStarted)
-			{
-				if (overlay.isScoutOverlayShown())
-				{
-					overlay.setScoutOverlayShown(false);
-				}
-				else
-				{
-					overlay.setScoutOverlayShown(true);
-				}
-			}
-		}
-	};
 	public boolean canShow;
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -1064,4 +1046,22 @@ public class RaidsPlugin extends Plugin
 		tooltip = builder.toString();
 	}
 
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			if (config.scoutOverlayInRaid() && raidStarted)
+			{
+				if (overlay.isScoutOverlayShown())
+				{
+					overlay.setScoutOverlayShown(false);
+				}
+				else
+				{
+					overlay.setScoutOverlayShown(true);
+				}
+			}
+		}
+	};
 }
