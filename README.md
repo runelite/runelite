@@ -11,8 +11,8 @@ https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-180
 
 By default, this connects to our sandbox server, which is for client testing.
 
-To setup your rsa keys, navigate to runelite-mixins and go to RSBufferMixin and set modulus and exponent
-To setup your codebase, navigate to runelite-client/rs and go to Launcher and set codebase = new URL("http://IP_OR_URL_HERE/");
+To setup your rsa keys, navigate to runelite-mixins and go to RSBufferMixin and set modulus and exponent  
+To setup your codebase, navigate to runelite-client/rs and go to Launcher and set codebase = new URL("http://IP_OR_URL_HERE/");  
 
 After that it's ran much like RuneLite or RuneLitePlus, install then run RuneLite.main()
   
