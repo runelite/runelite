@@ -24,22 +24,22 @@
  */
 package net.runelite.client.plugins.combatcounter;
 
-import net.runelite.api.Client;
-import net.runelite.api.Player;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
-
-import javax.inject.Inject;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
-
+import javax.inject.Inject;
+import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.Player;
+import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 
 class CombatOverlay extends Overlay
 {
@@ -81,9 +81,12 @@ class CombatOverlay extends Overlay
 			panelComponent.setBackgroundColor(config.bgColor());
 			panelComponent.getChildren().add(TitleComponent.builder().text("Tick Counter").color(config.titleColor()).build());
 			int total = 0;
+
+			TableComponent tableComponent = new TableComponent();
+
 			if (plugin.getCounter().isEmpty())
 			{
-				panelComponent.getChildren().add(LineComponent.builder().left(local.getName()).right("0").build());
+				tableComponent.addRow(local.getName(), "0");
 			}
 			else
 			{
@@ -95,21 +98,28 @@ class CombatOverlay extends Overlay
 				{
 					if (client.getLocalPlayer().getName().contains(name))
 					{
-						panelComponent.getChildren().add(1, LineComponent.builder().left(name).right(Long.toString(map.get(name))).leftColor(config.selfColor()).rightColor(config.selfColor()).build());
+						tableComponent.addRow(ColorUtil.prependColorTag(name, config.selfColor()), ColorUtil.prependColorTag(Long.toString(map.get(name)), config.selfColor()));
 					}
 					else
 					{
-						panelComponent.getChildren().add(1, LineComponent.builder().left(name).right(Long.toString(map.get(name))).leftColor(config.otherColor()).rightColor(config.otherColor()).build());
+						tableComponent.addRow(ColorUtil.prependColorTag(name, config.otherColor()), ColorUtil.prependColorTag(Long.toString(map.get(name)), config.otherColor()));
 					}
 					total += map.get(name);
 				}
 
 				if (!map.containsKey(local.getName()))
 				{
-					panelComponent.getChildren().add(LineComponent.builder().left(local.getName()).right("0").leftColor(config.selfColor()).rightColor(config.selfColor()).build());
+					tableComponent.addRow(ColorUtil.prependColorTag(local.getName(), config.selfColor()), ColorUtil.prependColorTag("0", config.selfColor()));
 				}
 			}
-			panelComponent.getChildren().add(LineComponent.builder().left("Total").leftColor(config.totalColor()).rightColor(config.totalColor()).right(String.valueOf(total)).build());
+
+			tableComponent.addRow(ColorUtil.prependColorTag("Total:", config.totalColor()), ColorUtil.prependColorTag(String.valueOf(total), config.totalColor()));
+
+			if (!tableComponent.isEmpty())
+			{
+				panelComponent.getChildren().add(tableComponent);
+			}
+
 			return panelComponent.render(graphics);
 		}
 		else
