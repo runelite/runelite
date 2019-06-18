@@ -1,16 +1,15 @@
 /*
- * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Ron Young <https://github.com/raiyni>
  * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *     list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -23,11 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.bank;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Constants;
@@ -35,43 +34,32 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 
-class ContainerCalculation
+public class HeatmapCalculation
 {
 	private final ItemManager itemManager;
 
-	private int hash;
-	private ContainerPrices containerPrices;
-
 	@Getter
-	private boolean changed = true;
+	private final Map<Integer, HeatmapItem> heatmapItems = new HashMap<>();
 
 	@Inject
-	private ContainerCalculation(ItemManager itemManager)
+	private HeatmapCalculation(ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
 	}
 
-	@Nullable
-	ContainerPrices calculate(Item[] items)
+	void calculate(Item[] items)
 	{
-		// Returns last calculation if inventory hasn't changed
-		final int newHash = hashItems(items);
-		if (containerPrices != null && hash == newHash)
-		{
-			changed = false;
-			return containerPrices;
-		}
-
-		changed = true;
-		hash = newHash;
-
-		long ge = 0;
-		long alch = 0;
+		heatmapItems.clear();
 
 		for (final Item item : items)
 		{
 			final int qty = item.getQuantity();
 			final int id = item.getId();
+
+			final HeatmapItem hItem = new HeatmapItem();
+			hItem.setId(id);
+			hItem.setQuantity(qty);
+			heatmapItems.put(item.getId(), hItem);
 
 			if (id <= 0 || qty == 0)
 			{
@@ -81,38 +69,49 @@ class ContainerCalculation
 			switch (id)
 			{
 				case ItemID.COINS_995:
-					ge += qty;
-					alch += qty;
+					hItem.setAlchPrice(qty);
+					hItem.setGePrice(qty);
 					break;
 				case ItemID.PLATINUM_TOKEN:
-					ge += qty * 1000L;
-					alch += qty * 1000L;
+					hItem.setGePrice(qty * 1000L);
+					hItem.setAlchPrice(qty * 1000L);
 					break;
 				default:
 					final long storePrice = itemManager.getItemComposition(id).getPrice();
 					final long alchPrice = (long) (storePrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
 
-					alch += alchPrice * qty;
-					ge += itemManager.getItemPrice(id) * qty;
+					hItem.setGePrice(itemManager.getItemPrice(id) * qty);
+					hItem.setAlchPrice(alchPrice * qty);
 					break;
 			}
-
 		}
 
-		ContainerPrices prices = new ContainerPrices(ge, alch);
-		containerPrices = prices;
-
-		return prices;
+		normalizeItems();
 	}
 
-	private int hashItems(final Item[] items)
+	private void normalizeItems()
 	{
-		final Map<Integer, Integer> mapCheck = new HashMap<>(items.length);
-		for (Item item : items)
+		long minAlch = Long.MAX_VALUE, minGe = Long.MAX_VALUE;
+		long maxAlch = Long.MIN_VALUE, maxGe = Long.MIN_VALUE;
+
+		for (HeatmapItem hItem : heatmapItems.values())
 		{
-			mapCheck.put(item.getId(), item.getQuantity());
+			minGe = Math.min(minGe, hItem.getGePrice());
+			minAlch = Math.min(minAlch, hItem.getAlchPrice());
+
+			maxGe = Math.max(maxGe, hItem.getGePrice());
+			maxAlch = Math.max(maxAlch, hItem.getAlchPrice());
 		}
 
-		return mapCheck.hashCode();
+		for (HeatmapItem hItem : heatmapItems.values())
+		{
+			hItem.setAlchFactor(normalize(0, 1, minAlch, maxAlch, hItem.getAlchPrice()));
+			hItem.setGeFactor(normalize(0, 1, minGe, maxGe, hItem.getGePrice()));
+		}
+	}
+
+	private static float normalize(int a, int b, long min, long max, long x)
+	{
+		return (b - a) * ((float) (x - min) / (max - min)) + a;
 	}
 }

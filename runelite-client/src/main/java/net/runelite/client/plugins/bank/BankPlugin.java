@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.HIGH_ALCHEMY_MULTIPLIER;
 import net.runelite.api.InventoryID;
@@ -44,10 +45,12 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetLoaded;
@@ -61,6 +64,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
@@ -70,6 +74,13 @@ import net.runelite.client.util.StackFormatter;
 )
 public class BankPlugin extends Plugin
 {
+	enum HEATMAP_MODE
+	{
+		NULL,
+		HA,
+		GE
+	}
+
 	private static final List<Varbits> TAB_VARBITS = ImmutableList.of(
 		Varbits.BANK_TAB_ONE_COUNT,
 		Varbits.BANK_TAB_TWO_COUNT,
@@ -108,13 +119,25 @@ public class BankPlugin extends Plugin
 	private BankSearch bankSearch;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private HeatmapItemOverlay heatmapItemOverlay;
+
+	@Inject
 	private ContainerCalculation bankCalculation;
 
 	@Inject
 	private ContainerCalculation seedVaultCalculation;
 
+	@Inject
+	private HeatmapCalculation heatmapCalculation;
+
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
+
+	@Getter
+	private HEATMAP_MODE heatmapMode = HEATMAP_MODE.NULL;
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -123,11 +146,19 @@ public class BankPlugin extends Plugin
 	}
 
 	@Override
+	protected void startUp()
+	{
+		overlayManager.add(heatmapItemOverlay);
+	}
+
+	@Override
 	protected void shutDown()
 	{
+		overlayManager.remove(heatmapItemOverlay);
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
 		itemQuantities = null;
+		heatmapMode = HEATMAP_MODE.NULL;
 	}
 
 	@Subscribe
@@ -161,6 +192,57 @@ public class BankPlugin extends Plugin
 		{
 			forceRightClickFlag = true;
 		}
+
+		if (event.getType() != MenuAction.WIDGET_DEFAULT.getId() || !event.getOption().equals("Show menu")
+			|| event.getActionParam1() != WidgetInfo.BANK_MENU_BUTTON.getId())
+		{
+			return;
+		}
+
+		MenuEntry[] entries = client.getMenuEntries();
+		entries = Arrays.copyOf(entries, entries.length + 2);
+
+		MenuEntry geHeatmap = new MenuEntry();
+		geHeatmap.setOption("Toggle GE Heatmap");
+		geHeatmap.setTarget("");
+		geHeatmap.setType(MenuAction.WIDGET_FOURTH_OPTION.getId() + 2000);
+		geHeatmap.setIdentifier(event.getIdentifier());
+		geHeatmap.setParam0(event.getActionParam0());
+		geHeatmap.setParam1(event.getActionParam1());
+
+		MenuEntry haHeatmap = new MenuEntry();
+		haHeatmap.setOption("Toggle HA Heatmap");
+		haHeatmap.setTarget("");
+		haHeatmap.setType(MenuAction.WIDGET_FIFTH_OPTION.getId() + 2000);
+		haHeatmap.setIdentifier(event.getIdentifier());
+		haHeatmap.setParam0(event.getActionParam0());
+		haHeatmap.setParam1(event.getActionParam1());
+
+		entries[entries.length - 2] = haHeatmap;
+		entries[entries.length - 1] = geHeatmap;
+
+		client.setMenuEntries(entries);
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if ((event.getMenuAction() != MenuAction.WIDGET_FOURTH_OPTION && event.getMenuAction() != MenuAction.WIDGET_FIFTH_OPTION)
+			|| event.getWidgetId() != WidgetInfo.BANK_MENU_BUTTON.getId() || !event.getMenuOption().startsWith("Toggle"))
+		{
+			return;
+		}
+
+		HEATMAP_MODE mode = event.getMenuOption().equals("Toggle GE Heatmap") ? HEATMAP_MODE.GE : HEATMAP_MODE.HA;
+		if (mode == heatmapMode)
+		{
+			heatmapMode = HEATMAP_MODE.NULL;
+		}
+		else
+		{
+			heatmapItemOverlay.getHeatmapImages().invalidateAll();
+			heatmapMode = mode;
+		}
 	}
 
 	@Subscribe
@@ -174,10 +256,17 @@ public class BankPlugin extends Plugin
 		switch (event.getEventName())
 		{
 			case "setBankTitle":
-				final ContainerPrices prices = bankCalculation.calculate(getBankTabItems());
+				Item[] items = getBankTabItems();
+				final ContainerPrices prices = bankCalculation.calculate(items);
 				if (prices == null)
 				{
 					return;
+				}
+
+				if (bankCalculation.isChanged())
+				{
+					heatmapItemOverlay.getHeatmapImages().invalidateAll();
+					heatmapCalculation.calculate(items);
 				}
 
 				final String strCurrentTab = createValueText(prices);
@@ -429,5 +518,10 @@ public class BankPlugin extends Plugin
 			}
 		}
 		return set;
+	}
+
+	HeatmapItem getHeatmapItem(int id)
+	{
+		return heatmapCalculation.getHeatmapItems().get(id);
 	}
 }
