@@ -164,8 +164,6 @@ public class RaidsOverlay extends Overlay
 			return panelComponent.render(graphics);
 		}
 
-		System.out.println(plugin.getRaid().getRotationString());
-
 		Color color = Color.WHITE;
 		String layout = plugin.getRaid().getLayout().toCodeString();
 		String displayLayout;
