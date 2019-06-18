@@ -38,6 +38,7 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.util.StackFormatter;
 
 class BlastFurnaceCofferOverlay extends Overlay
@@ -59,6 +60,9 @@ class BlastFurnaceCofferOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
 		if (plugin.getConveyorBelt() == null)
 		{
 			return null;
@@ -72,12 +76,10 @@ class BlastFurnaceCofferOverlay extends Overlay
 		{
 			sack.setHidden(true);
 
-			TableComponent tableComponent = new TableComponent();
 			tableComponent.addRow("Coffer:", StackFormatter.quantityToStackSize(client.getVar(BLAST_FURNACE_COFFER)) + " gp");
 
-			panelComponent.getChildren().add(tableComponent);
 		}
-
+		panelComponent.getChildren().add(tableComponent);
 		return panelComponent.render(graphics);
 	}
 }

@@ -35,6 +35,8 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 class ItemRecoilOverlay extends Overlay
 {
@@ -55,6 +57,9 @@ class ItemRecoilOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
 		this.imagePanelComponent.getChildren().clear();
 		if (config.showrecoil())
 		{
@@ -64,6 +69,8 @@ class ItemRecoilOverlay extends Overlay
 				imagePanelComponent.setBackgroundColor(plugin
 						.isRingOfRecoilEquipped() ? ACTIVATED_BACKGROUND_COLOR : NOT_ACTIVATED_BACKGROUND_COLOR);
 				imagePanelComponent.getChildren().add(new ImageComponent(recoilImage));
+
+				imagePanelComponent.getChildren().add(tableComponent);
 				return imagePanelComponent.render(graphics);
 			}
 		}
