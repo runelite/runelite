@@ -66,7 +66,7 @@ public class TitleComponent implements LayoutableRenderableEntity
 			baseX + ((preferredSize.width - metrics.stringWidth(text)) / 2),
 			baseY + metrics.getHeight()));
 		final Dimension rendered = titleComponent.render(graphics);
-		final Dimension dimension = new Dimension(preferredSize.width, rendered.height);
+		final Dimension dimension = new Dimension(preferredSize.width, Math.max(rendered.height, preferredSize.height));
 		bounds.setLocation(preferredLocation);
 		bounds.setSize(dimension);
 		return dimension;

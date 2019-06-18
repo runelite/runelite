@@ -39,6 +39,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
@@ -67,6 +68,12 @@ public class BankPlugin extends Plugin
 	@Inject
 	private BankSearch bankSearch;
 
+	@Inject
+	private BankItemsOverlay overlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
 	private boolean forceRightClickFlag;
 
 	@Provides
@@ -76,8 +83,15 @@ public class BankPlugin extends Plugin
 	}
 
 	@Override
+	public void startUp()
+	{
+		overlayManager.add(overlay);
+	}
+
+	@Override
 	protected void shutDown()
 	{
+		overlayManager.remove(overlay);
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
 	}
