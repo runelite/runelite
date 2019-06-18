@@ -40,7 +40,7 @@ public class Raid
 	@Getter
 	private Layout layout;
 
-	public void updateLayout(Layout layout)
+	void updateLayout(Layout layout)
 	{
 		if (layout == null)
 		{
@@ -83,7 +83,7 @@ public class Raid
 		return rooms[position];
 	}
 
-	public void setRoom(RaidRoom room, int position)
+	void setRoom(RaidRoom room, int position)
 	{
 		if (position < rooms.length)
 		{
@@ -91,7 +91,7 @@ public class Raid
 		}
 	}
 
-	public RaidRoom[] getCombatRooms()
+	RaidRoom[] getCombatRooms()
 	{
 		List<RaidRoom> combatRooms = new ArrayList<>();
 
@@ -111,12 +111,34 @@ public class Raid
 		return combatRooms.toArray(new RaidRoom[combatRooms.size()]);
 	}
 
-	public String getRotationString()
+	String getRotationString()
 	{
 		return Joiner.on(",").join(Arrays.stream(getCombatRooms()).map(r -> r.getBoss().getName()).toArray());
 	}
 
-	public String toCode()
+	private RaidRoom[] getAllRooms()
+	{
+		List<RaidRoom> getAllRooms = new ArrayList<>();
+
+		for (Room room : layout.getRooms())
+		{
+			if (room == null)
+			{
+				continue;
+			}
+
+			getAllRooms.add(rooms[room.getPosition()]);
+		}
+
+		return getAllRooms.toArray(new RaidRoom[0]);
+	}
+
+	String getFullRotationString()
+	{
+		return Joiner.on(",").join(Arrays.stream(getAllRooms()).toArray());
+	}
+
+	String toCode()
 	{
 		StringBuilder builder = new StringBuilder();
 
@@ -135,7 +157,7 @@ public class Raid
 		return builder.toString();
 	}
 
-	public String toRoomString()
+	String toRoomString()
 	{
 		final StringBuilder sb = new StringBuilder();
 
