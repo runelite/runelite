@@ -9,14 +9,14 @@ https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-180
 
 ## Usage
 
+By default, this connects to our sandbox server, which is for client testing.
+
 To setup your rsa keys, navigate to runelite-mixins and go to RSBufferMixin and set modulus and exponent
+To setup your codebase, navigate to runelite-client/rs and go to Launcher and set codebase = new URL("http://IP_OR_URL_HERE/");
 
 After that it's ran much like RuneLite or RuneLitePlus, install then run RuneLite.main()
-
-Be sure to add either -rs=CUSTOM or -local-injected while working on it in intelliJ  (Both args achieve the same goal)   
-[](https://media.discordapp.net/attachments/557733761589051452/590312770772271131/unknown.png)  
   
-To release the built jar publicly, you'd have to host your injected client remotely and redirect it to your source in rs.ClientLoader
+To release the built jar publicly, you'd have to host your injected client remotely and make some small modifications to rs.ClientLoader
 
 ## License
 
