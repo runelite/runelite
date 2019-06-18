@@ -294,6 +294,7 @@ public class RaidsOverlay extends Overlay
 				.text("Record Raid")
 				.color(Color.GREEN)
 				.build());
+			panelComponent.setBackgroundColor(new Color(0,255,0,10));
 		}
 
 		TableComponent tableComponent = new TableComponent();
