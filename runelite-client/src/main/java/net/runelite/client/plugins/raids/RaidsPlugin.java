@@ -632,7 +632,7 @@ public class RaidsPlugin extends Plugin
 				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 				.runeLiteFormattedMessage(new ChatMessageBuilder()
 					.append(ChatColorType.HIGHLIGHT)
-					.append("The following are some places you can sell this raid: Scout Trading in We do Raids discord, and Buying Cox Rotations in Oblivion discord")
+					.append("The following are some places you can sell this raid: Scout Trading in We do Raids discord, and Buying Cox Rotations in Oblivion discord.")
 					.build())
 				.build());
 		}
