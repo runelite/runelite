@@ -722,12 +722,15 @@ public class ConfigPanel extends PluginPanel
 						Component editor = spinner.getEditor();
 						JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
 						spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
-						spinner.setUI(new BasicSpinnerUI() {
-							protected Component createNextButton() {
+						spinner.setUI(new BasicSpinnerUI()
+						{
+							protected Component createNextButton()
+							{
 								return null;
 							}
 
-							protected Component createPreviousButton() {
+							protected Component createPreviousButton()
+							{
 								return null;
 							}
 						});
