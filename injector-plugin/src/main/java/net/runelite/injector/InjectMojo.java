@@ -50,7 +50,7 @@ public class InjectMojo extends AbstractMojo
 	private File outputDirectory;
 	@Parameter(defaultValue = "./runescape-client/target/rs-client-${project.version}.jar", readonly = true, required = true)
 	private String rsClientPath;
-	@Parameter(defaultValue = "./vanilla-180.jar", readonly = true, required = true)
+	@Parameter(defaultValue = "${net.runelite.rs:vanilla:jar}", readonly = true, required = true)
 	private String vanillaPath;
 
 	@Override
