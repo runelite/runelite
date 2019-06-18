@@ -75,6 +75,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.basic.BasicSpinnerUI;
 import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ChatColorConfig;
@@ -721,6 +722,15 @@ public class ConfigPanel extends PluginPanel
 						Component editor = spinner.getEditor();
 						JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
 						spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
+						spinner.setUI(new BasicSpinnerUI() {
+							protected Component createNextButton() {
+								return null;
+							}
+
+							protected Component createPreviousButton() {
+								return null;
+							}
+						});
 						spinner.addChangeListener((ce) ->
 						{
 							changeConfiguration(listItem, config, spinner, cd, cid);
