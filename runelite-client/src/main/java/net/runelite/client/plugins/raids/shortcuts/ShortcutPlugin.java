@@ -26,16 +26,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class ShortcutPlugin extends Plugin
 {
+	private final List<TileObject> shortcut = new ArrayList<>();
 	@Inject
 	private Client client;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private ShortcutOverlay overlay;
-
-	private final List<TileObject> shortcut = new ArrayList<>();
 
 	List<TileObject> getShortcut()
 	{
