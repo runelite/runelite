@@ -281,7 +281,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				color = config.getTeamMemberColor();
 			}
-			else if (!player.isClanMember() && !player.isFriend() && !PvPUtil.isAttackable(client, player))
+			else if (config.highlightNonClanMembers() && !player.isClanMember() && !player.isFriend() && !PvPUtil.isAttackable(client, player))
 			{
 				color = config.getNonClanMemberColor();
 			}
