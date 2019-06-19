@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Twiglet1022 <https://github.com/Twiglet1022>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.config;
 
-public interface HealthBar
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum FlashNotification
 {
-	SpritePixels getHealthBarFrontSprite();
+	DISABLED("Off"),
+	FLASH_TWO_SECONDS("Flash for 2 seconds"),
+	SOLID_TWO_SECONDS("Solid for 2 seconds"),
+	FLASH_UNTIL_CANCELLED("Flash until cancelled"),
+	SOLID_UNTIL_CANCELLED("Solid until cancelled");
 
-	SpritePixels getHealthBarBackSprite();
+	private final String type;
 
-	int getHealthBarFrontSpriteId();
-
-	void setPadding(int padding);
+	@Override
+	public String toString()
+	{
+		return type;
+	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.itemskeptondeath;
 
-public interface HealthBar
+import com.google.common.collect.ImmutableMap;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.ItemID;
+
+/**
+ * Certain Items receive a white outline by Jagex as they are always lost on death. This is sometimes incorrectly
+ * added to Items by Jagex as the item is actually kept in non-pvp areas of the game, such as the Rune Pouch.
+ *
+ * The white outline will be added to these items when they are lost on death.
+ */
+@AllArgsConstructor
+@Getter
+enum AlwaysLostItem
 {
-	SpritePixels getHealthBarFrontSprite();
+	RUNE_POUCH(ItemID.RUNE_POUCH, true),
+	LOOTING_BAG(ItemID.LOOTING_BAG, false),
+	CLUE_BOX(ItemID.CLUE_BOX, false);
 
-	SpritePixels getHealthBarBackSprite();
+	private final int itemID;
+	private final boolean keptOutsideOfWilderness;
 
-	int getHealthBarFrontSpriteId();
+	private static final ImmutableMap<Integer, AlwaysLostItem> ID_MAP;
 
-	void setPadding(int padding);
+	static
+	{
+		final ImmutableMap.Builder<Integer, AlwaysLostItem> map = ImmutableMap.builder();
+		for (final AlwaysLostItem p : values())
+		{
+			map.put(p.itemID, p);
+		}
+		ID_MAP = map.build();
+	}
+
+	static AlwaysLostItem getByItemID(final int itemID)
+	{
+		return ID_MAP.get(itemID);
+	}
 }
