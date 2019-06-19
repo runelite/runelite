@@ -37,6 +37,7 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
 
@@ -76,11 +77,14 @@ class DamageOverlay extends Overlay
 
 			Player local = client.getLocalPlayer();
 			if (local == null || local.getName() == null)
+			{
 				return null;
+			}
 			panelComponent.setBackgroundColor(config.bgColor());
 			panelComponent.getChildren().add(TitleComponent.builder().text("Damage Counter").color(config.titleColor()).build());
 
 			TableComponent tableComponent = new TableComponent();
+			tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
 			if (plugin.getCounter().isEmpty())
 			{
@@ -90,7 +94,9 @@ class DamageOverlay extends Overlay
 			{
 				Map<String, Double> map = this.plugin.playerDamage;
 				if (map == null)
+				{
 					return null;
+				}
 
 				for (String name : map.keySet())
 				{

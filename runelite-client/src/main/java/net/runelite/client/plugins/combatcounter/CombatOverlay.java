@@ -38,6 +38,7 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
 
@@ -66,8 +67,6 @@ class CombatOverlay extends Overlay
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Tick Counter"));
 	}
 
-
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -77,12 +76,15 @@ class CombatOverlay extends Overlay
 
 			Player local = client.getLocalPlayer();
 			if (local == null || local.getName() == null)
+			{
 				return null;
+			}
 			panelComponent.setBackgroundColor(config.bgColor());
 			panelComponent.getChildren().add(TitleComponent.builder().text("Tick Counter").color(config.titleColor()).build());
 			int total = 0;
 
 			TableComponent tableComponent = new TableComponent();
+			tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
 			if (plugin.getCounter().isEmpty())
 			{
@@ -92,7 +94,9 @@ class CombatOverlay extends Overlay
 			{
 				Map<String, Long> map = this.plugin.getCounter();
 				if (map == null)
+				{
 					return null;
+				}
 
 				for (String name : map.keySet())
 				{
