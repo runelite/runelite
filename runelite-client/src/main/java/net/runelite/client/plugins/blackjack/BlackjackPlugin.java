@@ -40,6 +40,7 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+import net.runelite.client.util.MenuUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.RandomUtils;
 
@@ -58,13 +59,11 @@ import org.apache.commons.lang3.RandomUtils;
 @Slf4j
 public class BlackjackPlugin extends Plugin
 {
+	private static final int POLLNIVNEACH_REGION = 13358;
 	@Inject
 	private Client client;
-
 	@Inject
 	private MenuManager menuManager;
-
-	private static final int POLLNIVNEACH_REGION = 13358;
 	private boolean isKnockedOut = false;
 	private long nextKnockOutTick = 0;
 
@@ -82,11 +81,11 @@ public class BlackjackPlugin extends Plugin
 		String target = Text.removeTags(event.getTarget().toLowerCase());
 		if (isKnockedOut && nextKnockOutTick >= client.getTickCount())
 		{
-			menuManager.addSwap("", target, "pickpocket", target, false, false);
+			MenuUtil.swap(client, "pickpocket", option, target);
 		}
 		else
 		{
-			menuManager.addSwap("", target, "knock-out", target, false, false);
+			MenuUtil.swap(client, "knock-out", option, target);
 		}
 	}
 

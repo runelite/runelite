@@ -14,6 +14,8 @@ import net.runelite.http.api.RuneLiteAPI;
 
 public class Bootstrap
 {
+
+	String buildCommit = "c554ab2400dc04a619b36695da2107648c9c87b3";
 	Artifact[] artifacts = getArtifacts();
 	Client client = new Client();
 	String[] clientJvm9Arguments = new String[]{
