@@ -27,14 +27,36 @@
 package net.runelite.client.plugins.aoewarnings;
 
 import java.awt.Color;
+import java.awt.Font;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 import net.runelite.client.config.Stub;
 
 @ConfigGroup("aoe")
 public interface AoeWarningConfig extends Config
 {
+	@Getter
+	@AllArgsConstructor
+	public enum FontStyle
+	{
+		BOLD("Bold", Font.BOLD),
+		ITALIC("Italic", Font.ITALIC),
+		PLAIN("Plain", Font.PLAIN);
+
+		private String name;
+		private int font;
+
+		@Override
+		public String toString()
+		{
+			return getName();
+		}
+	}
+
 	@ConfigItem(
 		keyName = "aoeNotifyAll",
 		name = "Notify for all AoE warnings",
@@ -106,10 +128,81 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "tickTimers",
+		name = "Tick Timers",
+		description = "Configures whether or not AoE Projectile Warnings has tick timers overlaid as well.",
+		parent = "overlayStub",
+		position = 6
+	)
+	default boolean tickTimers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "text",
+		name = "Text",
+		description = "",
+		hidden = true,
+		unhide = "tickTimers"
+	)
+	default Stub text()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "fontStyle",
+		name = "Font Style",
+		description = "Bold/Italics/Plain",
+		parent = "text",
+		hidden = true,
+		unhide = "tickTimers"
+	)
+	default FontStyle fontStyle()
+	{
+		return FontStyle.BOLD;
+	}
+
+	@Range(
+		min = 20,
+		max = 40
+	)
+	@ConfigItem(
+		position = 9,
+		keyName = "textSize",
+		name = "Text Size",
+		description = "Text Size for Timers.",
+		parent = "text",
+		hidden = true,
+		unhide = "tickTimers"
+	)
+	default int textSize()
+	{
+		return 32;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "shadows",
+		name = "Shadows",
+		description = "Adds Shadows to text.",
+		parent = "text",
+		hidden = true,
+		unhide = "tickTimers"
+	)
+	default boolean shadows()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "npcStub",
 		name = "NPC's",
 		description = "",
-		position = 6
+		position = 11
 	)
 	default Stub npcStub()
 	{
@@ -120,7 +213,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "lizardmanaoeStub",
 		name = "Lizardman Shamans",
 		description = "",
-		position = 7,
+		position = 12,
 		parent = "npcStub"
 	)
 	default Stub lizardmanaoeStub()
@@ -133,7 +226,7 @@ public interface AoeWarningConfig extends Config
 		name = "Lizardman Shamans",
 		description = "Configures whether or not AoE Projectile Warnings for Lizardman Shamans is displayed",
 		parent = "lizardmanaoeStub",
-		position = 8
+		position = 13
 	)
 	default boolean isShamansEnabled()
 	{
@@ -145,7 +238,7 @@ public interface AoeWarningConfig extends Config
 		name = "Lizardman Shamans Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Lizardman Shamans should trigger a notification",
 		parent = "lizardmanaoeStub",
-		position = 9,
+		position = 14,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isShamansNotifyEnabled()
@@ -157,7 +250,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "archaeologistaoeStub",
 		name = "Crazy Archaeologist",
 		description = "",
-		position = 10,
+		position = 15,
 		parent = "npcStub"
 	)
 	default Stub archaeologistaoeStub()
@@ -170,7 +263,7 @@ public interface AoeWarningConfig extends Config
 		name = "Crazy Archaeologist",
 		description = "Configures whether or not AoE Projectile Warnings for Archaeologist is displayed",
 		parent = "archaeologistaoeStub",
-		position = 11
+		position = 16
 	)
 	default boolean isArchaeologistEnabled()
 	{
@@ -182,7 +275,7 @@ public interface AoeWarningConfig extends Config
 		name = "Crazy Archaeologist Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Crazy Archaeologist should trigger a notification",
 		parent = "archaeologistaoeStub",
-		position = 12,
+		position = 17,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isArchaeologistNotifyEnabled()
@@ -194,7 +287,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "icedemonStub",
 		name = "Ice Demon",
 		description = "",
-		position = 13,
+		position = 18,
 		parent = "npcStub"
 	)
 	default Stub icedemonStub()
@@ -207,7 +300,7 @@ public interface AoeWarningConfig extends Config
 		name = "Ice Demon",
 		description = "Configures whether or not AoE Projectile Warnings for Ice Demon is displayed",
 		parent = "icedemonStub",
-		position = 14
+		position = 19
 	)
 	default boolean isIceDemonEnabled()
 	{
@@ -219,7 +312,7 @@ public interface AoeWarningConfig extends Config
 		name = "Ice Demon Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Ice Demon should trigger a notification",
 		parent = "icedemonStub",
-		position = 15,
+		position = 20,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isIceDemonNotifyEnabled()
@@ -231,7 +324,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "vasaStub",
 		name = "Vasa",
 		description = "",
-		position = 16,
+		position = 21,
 		parent = "npcStub"
 	)
 	default Stub vasaStub()
@@ -244,7 +337,7 @@ public interface AoeWarningConfig extends Config
 		name = "Vasa",
 		description = "Configures whether or not AoE Projectile Warnings for Vasa is displayed",
 		parent = "vasaStub",
-		position = 17
+		position = 22
 	)
 	default boolean isVasaEnabled()
 	{
@@ -256,7 +349,7 @@ public interface AoeWarningConfig extends Config
 		name = "Vasa Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Vasa should trigger a notification",
 		parent = "vasaStub",
-		position = 18,
+		position = 23,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isVasaNotifyEnabled()
@@ -268,7 +361,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "tektonStub",
 		name = "Tekton",
 		description = "",
-		position = 19,
+		position = 24,
 		parent = "npcStub"
 	)
 	default Stub tektonStub()
@@ -281,7 +374,7 @@ public interface AoeWarningConfig extends Config
 		name = "Tekton",
 		description = "Configures whether or not AoE Projectile Warnings for Tekton is displayed",
 		parent = "tektonStub",
-		position = 20
+		position = 25
 	)
 	default boolean isTektonEnabled()
 	{
@@ -293,7 +386,7 @@ public interface AoeWarningConfig extends Config
 		name = "Tekton Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Tekton should trigger a notification",
 		parent = "tektonStub",
-		position = 21,
+		position = 26,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isTektonNotifyEnabled()
@@ -305,7 +398,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "vorkathStub",
 		name = "Vorkath",
 		description = "",
-		position = 22,
+		position = 27,
 		parent = "npcStub"
 	)
 	default Stub vorkathStub()
@@ -318,7 +411,7 @@ public interface AoeWarningConfig extends Config
 		name = "Vorkath",
 		description = "Configures whether or not AoE Projectile Warnings for Vorkath are displayed",
 		parent = "vorkathStub",
-		position = 23
+		position = 28
 	)
 	default boolean isVorkathEnabled()
 	{
@@ -330,7 +423,7 @@ public interface AoeWarningConfig extends Config
 		name = "Vorkath Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Vorkath should trigger a notification",
 		parent = "vorkathStub",
-		position = 24,
+		position = 29,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isVorkathNotifyEnabled()
@@ -342,7 +435,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "galvekStub",
 		name = "Galvek",
 		description = "",
-		position = 25,
+		position = 30,
 		parent = "npcStub"
 	)
 	default Stub galvekStub()
@@ -355,7 +448,7 @@ public interface AoeWarningConfig extends Config
 		name = "Galvek",
 		description = "Configures whether or not AoE Projectile Warnings for Galvek are displayed",
 		parent = "galvekStub",
-		position = 26
+		position = 31
 	)
 	default boolean isGalvekEnabled()
 	{
@@ -367,7 +460,7 @@ public interface AoeWarningConfig extends Config
 		name = "Galvek Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Galvek should trigger a notification",
 		parent = "galvekStub",
-		position = 27,
+		position = 32,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isGalvekNotifyEnabled()
@@ -379,7 +472,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "gargbossStub",
 		name = "Gargoyle Boss",
 		description = "",
-		position = 28,
+		position = 33,
 		parent = "npcStub"
 	)
 	default Stub gargbossStub()
@@ -392,7 +485,7 @@ public interface AoeWarningConfig extends Config
 		name = "Gargoyle Boss",
 		description = "Configs whether or not AoE Projectile Warnings for Dawn/Dusk are displayed",
 		parent = "gargbossStub",
-		position = 29
+		position = 34
 	)
 	default boolean isGargBossEnabled()
 	{
@@ -404,7 +497,7 @@ public interface AoeWarningConfig extends Config
 		name = "Gargoyle Boss Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Gargoyle Bosses should trigger a notification",
 		parent = "gargbossStub",
-		position = 30,
+		position = 35,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isGargBossNotifyEnabled()
@@ -416,7 +509,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "vetionStub",
 		name = "Vet'ion",
 		description = "",
-		position = 31,
+		position = 36,
 		parent = "npcStub"
 	)
 	default Stub vetionStub()
@@ -429,7 +522,7 @@ public interface AoeWarningConfig extends Config
 		name = "Vet'ion",
 		description = "Configures whether or not AoE Projectile Warnings for Vet'ion are displayed",
 		parent = "vetionStub",
-		position = 32
+		position = 37
 	)
 	default boolean isVetionEnabled()
 	{
@@ -441,7 +534,7 @@ public interface AoeWarningConfig extends Config
 		name = "Vet'ion Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Vet'ion should trigger a notification",
 		parent = "vetionStub",
-		position = 33,
+		position = 38,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isVetionNotifyEnabled()
@@ -453,7 +546,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "chaosfanaticStub",
 		name = "Chaos Fanatic",
 		description = "",
-		position = 34,
+		position = 39,
 		parent = "npcStub"
 	)
 	default Stub chaosfanaticStub()
@@ -466,7 +559,7 @@ public interface AoeWarningConfig extends Config
 		name = "Chaos Fanatic",
 		description = "Configures whether or not AoE Projectile Warnings for Chaos Fanatic are displayed",
 		parent = "chaosfanaticStub",
-		position = 35
+		position = 40
 	)
 	default boolean isChaosFanaticEnabled()
 	{
@@ -478,7 +571,7 @@ public interface AoeWarningConfig extends Config
 		name = "Chaos Fanatic Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Chaos Fanatic should trigger a notification",
 		parent = "chaosfanaticStub",
-		position = 36,
+		position = 41,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isChaosFanaticNotifyEnabled()
@@ -490,7 +583,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "olmStub",
 		name = "Olm",
 		description = "",
-		position = 37,
+		position = 42,
 		parent = "npcStub"
 	)
 	default Stub olmStub()
@@ -503,7 +596,7 @@ public interface AoeWarningConfig extends Config
 		name = "Olm",
 		description = "Configures whether or not AoE Projectile Warnings for The Great Olm are displayed",
 		parent = "olmStub",
-		position = 38
+		position = 43
 	)
 	default boolean isOlmEnabled()
 	{
@@ -515,7 +608,7 @@ public interface AoeWarningConfig extends Config
 		name = "Olm Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Olm should trigger a notification",
 		parent = "olmStub",
-		position = 39,
+		position = 44,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isOlmNotifyEnabled()
@@ -527,7 +620,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "olmBombStub",
 		name = "Bombs",
 		description = "",
-		position = 40,
+		position = 45,
 		parent = "olmStub"
 	)
 	default Stub olmBombsStub()
@@ -540,7 +633,7 @@ public interface AoeWarningConfig extends Config
 		name = "Olm Bombs",
 		description = "Display a timer and colour-coded AoE for Olm's crystal-phase bombs.",
 		parent = "olmBombStub",
-		position = 41
+		position = 46
 	)
 	default boolean bombDisplay()
 	{
@@ -552,7 +645,7 @@ public interface AoeWarningConfig extends Config
 		name = "Olm Bombs Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Olm Bombs should trigger a notification",
 		parent = "olmBombStub",
-		position = 42,
+		position = 47,
 		hide = "aoeNotifyAll"
 	)
 	default boolean bombDisplayNotifyEnabled()
@@ -564,7 +657,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "olmlightningStub",
 		name = "Lightning Trails",
 		description = "",
-		position = 43,
+		position = 48,
 		parent = "olmStub"
 	)
 	default Stub olmlightningStub()
@@ -577,7 +670,7 @@ public interface AoeWarningConfig extends Config
 		name = "Olm Lightning Trails",
 		description = "Show Lightning Trails",
 		parent = "olmlightningStub",
-		position = 44
+		position = 49
 	)
 	default boolean LightningTrail()
 	{
@@ -589,7 +682,7 @@ public interface AoeWarningConfig extends Config
 		name = "Olm Lightning Trails Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Olm Lightning Trails should trigger a notification",
 		parent = "olmlightningStub",
-		position = 45,
+		position = 50,
 		hide = "aoeNotifyAll"
 	)
 	default boolean LightningTrailNotifyEnabled()
@@ -601,7 +694,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "corpStub",
 		name = "Corporeal Beast",
 		description = "",
-		position = 46,
+		position = 51,
 		parent = "npcStub"
 	)
 	default Stub corpStub()
@@ -614,7 +707,7 @@ public interface AoeWarningConfig extends Config
 		name = "Corporeal Beast",
 		description = "Configures whether or not AoE Projectile Warnings for the Corporeal Beast are displayed",
 		parent = "corpStub",
-		position = 47
+		position = 52
 	)
 	default boolean isCorpEnabled()
 	{
@@ -626,7 +719,7 @@ public interface AoeWarningConfig extends Config
 		name = "Corporeal Beast Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Corporeal Beast should trigger a notification",
 		parent = "corpStub",
-		position = 48,
+		position = 53,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isCorpNotifyEnabled()
@@ -638,7 +731,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "wintertodtStub",
 		name = "Wintertodt",
 		description = "",
-		position = 49,
+		position = 54,
 		parent = "npcStub"
 	)
 	default Stub wintertodtStub()
@@ -651,7 +744,7 @@ public interface AoeWarningConfig extends Config
 		name = "Wintertodt Snow Fall",
 		description = "Configures whether or not AOE Projectile Warnings for the Wintertodt snow fall are displayed",
 		parent = "wintertodtStub",
-		position = 50
+		position = 55
 	)
 	default boolean isWintertodtEnabled()
 	{
@@ -663,7 +756,7 @@ public interface AoeWarningConfig extends Config
 		name = "Wintertodt Snow Fall Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Wintertodt Snow Fall Notify should trigger a notification",
 		parent = "wintertodtStub",
-		position = 51,
+		position = 56,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isWintertodtNotifyEnabled()
@@ -675,7 +768,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "xarpusStub",
 		name = "Xarpus",
 		description = "",
-		position = 52,
+		position = 57,
 		parent = "npcStub"
 	)
 	default Stub xarpusStub()
@@ -688,7 +781,7 @@ public interface AoeWarningConfig extends Config
 		name = "Xarpus",
 		description = "Configures whether or not AOE Projectile Warnings for Xarpus are displayed",
 		parent = "xarpusStub",
-		position = 53
+		position = 58
 	)
 	default boolean isXarpusEnabled()
 	{
@@ -700,7 +793,7 @@ public interface AoeWarningConfig extends Config
 		name = "Xarpus Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Xarpus should trigger a notification",
 		parent = "xarpusStub",
-		position = 54,
+		position = 59,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isXarpusNotifyEnabled()
@@ -712,7 +805,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "addyDragsStub",
 		name = "Addy Drags",
 		description = "",
-		position = 55,
+		position = 60,
 		parent = "npcStub"
 	)
 	default Stub addyDragsStub()
@@ -725,7 +818,7 @@ public interface AoeWarningConfig extends Config
 		name = "Addy Drags",
 		description = "Show Bad Areas",
 		parent = "addyDragsStub",
-		position = 56
+		position = 61
 	)
 	default boolean addyDrags()
 	{
@@ -737,7 +830,7 @@ public interface AoeWarningConfig extends Config
 		name = "Addy Drags Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Addy Dragons should trigger a notification",
 		parent = "addyDragsStub",
-		position = 57,
+		position = 62,
 		hide = "aoeNotifyAll"
 	)
 	default boolean addyDragsNotifyEnabled()
@@ -749,7 +842,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "drakeStub",
 		name = "Drakes",
 		description = "",
-		position = 58,
+		position = 63,
 		parent = "npcStub"
 	)
 	default Stub drakeStub()
@@ -762,7 +855,7 @@ public interface AoeWarningConfig extends Config
 		name = "Drakes Breath",
 		description = "Configures if Drakes Breath tile markers are displayed",
 		parent = "drakeStub",
-		position = 59
+		position = 64
 	)
 	default boolean isDrakeEnabled()
 	{
@@ -774,7 +867,7 @@ public interface AoeWarningConfig extends Config
 		name = "Drakes Breath Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Drakes Breath should trigger a notification",
 		parent = "drakeStub",
-		position = 60,
+		position = 65,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isDrakeNotifyEnabled()
@@ -786,7 +879,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "cerberusStub",
 		name = "Cerberus",
 		description = "",
-		position = 61,
+		position = 66,
 		parent = "npcStub"
 	)
 	default Stub cerberusStub()
@@ -799,7 +892,7 @@ public interface AoeWarningConfig extends Config
 		name = "Cerberus Fire",
 		description = "Configures if Cerberus fire tile markers are displayed",
 		parent = "cerberusStub",
-		position = 62
+		position = 67
 	)
 	default boolean isCerbFireEnabled()
 	{
@@ -811,7 +904,7 @@ public interface AoeWarningConfig extends Config
 		name = "Cerberus Fire Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Cerberus his fire should trigger a notification",
 		parent = "cerberusStub",
-		position = 63,
+		position = 68,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isCerbFireNotifyEnabled()
@@ -823,7 +916,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "demonicGorillaStub",
 		name = "Demonic Gorilla",
 		description = "",
-		position = 64,
+		position = 69,
 		parent = "npcStub"
 	)
 	default Stub demonicGorillaStub()
@@ -836,7 +929,7 @@ public interface AoeWarningConfig extends Config
 		name = "Demonic Gorilla",
 		description = "Configures if Demonic Gorilla boulder tile markers are displayed",
 		parent = "demonicGorillaStub",
-		position = 65
+		position = 70
 	)
 	default boolean isDemonicGorillaEnabled()
 	{
@@ -848,7 +941,7 @@ public interface AoeWarningConfig extends Config
 		name = "Demonic Gorilla Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Demonic Gorilla boulders should trigger a notification",
 		parent = "demonicGorillaStub",
-		position = 66,
+		position = 71,
 		hide = "aoeNotifyAll"
 	)
 	default boolean isDemonicGorillaNotifyEnabled()

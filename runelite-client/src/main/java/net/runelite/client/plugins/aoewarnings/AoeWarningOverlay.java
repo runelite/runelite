@@ -30,8 +30,10 @@ package net.runelite.client.plugins.aoewarnings;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Iterator;
@@ -40,12 +42,14 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import static net.runelite.client.util.ColorUtil.setAlphaComponent;
 
 public class AoeWarningOverlay extends Overlay
@@ -95,7 +99,7 @@ public class AoeWarningOverlay extends Overlay
 		for (Iterator<AoeProjectile> it = projectiles.values().iterator(); it.hasNext(); )
 		{
 			AoeProjectile aoeProjectile = it.next();
-
+			Color color;
 			if (now.isAfter(aoeProjectile.getStartTime().plus(Duration.ofMillis(aoeProjectile.getProjectileLifetime()))))
 			{
 				it.remove();
@@ -111,6 +115,8 @@ public class AoeWarningOverlay extends Overlay
 			// how far through the projectiles lifetime between 0-1.
 			double progress = (System.currentTimeMillis() - aoeProjectile.getStartTime().toEpochMilli()) / (double) aoeProjectile.getProjectileLifetime();
 
+			int tickProgress = aoeProjectile.getFinalTick() - client.getTickCount();
+
 			int fillAlpha, outlineAlpha;
 			if (config.isFadeEnabled())
 			{
@@ -121,6 +127,14 @@ public class AoeWarningOverlay extends Overlay
 			{
 				fillAlpha = FILL_START_ALPHA;
 				outlineAlpha = OUTLINE_START_ALPHA;
+			}
+			if (tickProgress == 0)
+			{
+				color = Color.RED;
+			}
+			else
+			{
+				color = Color.WHITE;
 			}
 
 			if (fillAlpha < 0)
@@ -138,7 +152,7 @@ public class AoeWarningOverlay extends Overlay
 			}
 			if (outlineAlpha > 255)
 			{
-				outlineAlpha = 255;//Make sure we don't pass in an invalid alpha
+				outlineAlpha = 255;
 			}
 
 			if (config.isOutlineEnabled())
@@ -146,7 +160,13 @@ public class AoeWarningOverlay extends Overlay
 				graphics.setColor(new Color(setAlphaComponent(config.overlayColor().getRGB(), outlineAlpha), true));
 				graphics.drawPolygon(tilePoly);
 			}
-
+			if (config.tickTimers())
+			{
+				if (tickProgress >= 0)
+				{
+					renderTextLocation(graphics, Integer.toString(tickProgress), config.textSize(), config.fontStyle().getFont(), color, centerPoint(tilePoly.getBounds()));
+				}
+			}
 			graphics.setColor(new Color(setAlphaComponent(config.overlayColor().getRGB(), fillAlpha), true));
 			graphics.fillPolygon(tilePoly);
 		}
@@ -171,11 +191,36 @@ public class AoeWarningOverlay extends Overlay
 		{
 			return;
 		}
-		//OverlayUtil.renderPolygon(graphics, poly, color);
 		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
 		graphics.setStroke(new BasicStroke(strokeWidth));
 		graphics.draw(poly);
 		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
 		graphics.fill(poly);
+	}
+
+	private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)
+	{
+		graphics.setFont(new Font("Arial", fontStyle, fontSize));
+		if (canvasPoint != null)
+		{
+			final Point canvasCenterPoint = new Point(
+				canvasPoint.getX(),
+				canvasPoint.getY());
+			final Point canvasCenterPoint_shadow = new Point(
+				canvasPoint.getX() + 1,
+				canvasPoint.getY() + 1);
+			if (config.shadows())
+			{
+				OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
+			}
+			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
+		}
+	}
+
+	private Point centerPoint(Rectangle rect)
+	{
+		int x = (int) (rect.getX() + rect.getWidth() / 2);
+		int y = (int) (rect.getY() + rect.getHeight() / 2);
+		return new Point(x, y);
 	}
 }
