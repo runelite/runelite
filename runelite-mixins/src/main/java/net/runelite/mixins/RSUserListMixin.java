@@ -1,6 +1,5 @@
 package net.runelite.mixins;
 
-import net.runelite.api.Nameable;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
@@ -13,6 +12,7 @@ public abstract class RSUserListMixin implements RSUserList
 {
 	/**
 	 * Default implementation of rl$add
+	 *
 	 * @param name
 	 * @param prevName
 	 */
@@ -24,16 +24,12 @@ public abstract class RSUserListMixin implements RSUserList
 
 	/**
 	 * Default implementation of rl$del
+	 *
 	 * @param nameable
 	 */
 	@Inject
 	@Override
 	public void rl$remove(RSUser nameable)
-	{
-	}
-
-	@Inject
-	public void remove(Nameable nameable)
 	{
 	}
 
@@ -49,5 +45,5 @@ public abstract class RSUserListMixin implements RSUserList
 	public void remove(RSUser nameable)
 	{
 		rl$remove(nameable);
-	}	
+	}
 }
