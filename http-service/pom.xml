@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.27-SNAPSHOT</version>
+		<version>1.5.28-SNAPSHOT</version>
 	</parent>
 
 	<name>Web Service</name>
@@ -38,12 +38,6 @@
 	<properties>
 		<spring.boot.version>1.5.6.RELEASE</spring.boot.version>
 		<mapstruct.version>1.2.0.Final</mapstruct.version>
-		<maria.java.client.version>2.2.3</maria.java.client.version>
-		<mongodb.driver.version>3.10.1</mongodb.driver.version>
-		<scribejava.apis.version>4.1.0</scribejava.apis.version>
-		<swagger.maven.plugin.version>3.1.8</swagger.maven.plugin.version>
-		<redis.clients.version>2.10.0</redis.clients.version>
-		<jaxb.api.version>2.3.1</jaxb.api.version>
 	</properties>
 
 	<dependencies>
@@ -91,12 +85,13 @@
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
-			<version>${maria.java.client.version}</version>
+			<version>2.2.3</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.sql2o</groupId>
 			<artifactId>sql2o</artifactId>
+			<version>1.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -109,16 +104,17 @@
 		<dependency>
 			<groupId>com.github.scribejava</groupId>
 			<artifactId>scribejava-apis</artifactId>
-			<version>${scribejava.apis.version}</version>
+			<version>4.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.minio</groupId>
 			<artifactId>minio</artifactId>
+			<version>3.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
-			<version>${redis.clients.version}</version>
+			<version>2.10.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.commons</groupId>
@@ -129,7 +125,7 @@
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongodb-driver-sync</artifactId>
-			<version>${mongodb.driver.version}</version>
+			<version>3.10.1</version>
 		</dependency>
 
 		<dependency>
@@ -140,6 +136,8 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>mockwebserver</artifactId>
+			<version>3.7.0</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -190,13 +188,13 @@
 			<plugin>
 				<groupId>com.github.kongchen</groupId>
 				<artifactId>swagger-maven-plugin</artifactId>
-				<version>${swagger.maven.plugin.version}</version>
+				<version>3.1.8</version>
 				<dependencies>
 					<!-- Java 11+ does not include this anymore -->
 					<dependency>
 						<groupId>javax.xml.bind</groupId>
 						<artifactId>jaxb-api</artifactId>
-						<version>${jaxb.api.version}</version>
+						<version>2.3.1</version>
 					</dependency>
 				</dependencies>
 				<configuration>

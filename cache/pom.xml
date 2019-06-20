@@ -29,18 +29,16 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.27-SNAPSHOT</version>
+		<version>1.5.28-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>cache</artifactId>
 	<name>Cache</name>
 
 	<properties>
-		<commons.cli.version>1.3.1</commons.cli.version>
-		<commons.compress.version>1.10</commons.compress.version>
-		<antlr4.version>4.6</antlr4.version>
-
 		<cache.version>165</cache.version>
+
+		<antlr4.version>4.6</antlr4.version>
 	</properties>
 
 	<dependencies>
@@ -61,7 +59,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-compress</artifactId>
-			<version>${commons.compress.version}</version>
+			<version>1.10</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -70,6 +68,7 @@
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-buffer</artifactId>
+			<version>4.1.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
@@ -79,7 +78,7 @@
 		<dependency>
 			<groupId>commons-cli</groupId>
 			<artifactId>commons-cli</artifactId>
-			<version>${commons.cli.version}</version>
+			<version>1.3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -90,10 +89,14 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.12</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
