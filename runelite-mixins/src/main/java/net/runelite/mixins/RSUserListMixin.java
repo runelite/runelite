@@ -33,11 +33,6 @@ public abstract class RSUserListMixin implements RSUserList
 	}
 
 	@Inject
-	public void remove(Nameable nameable)
-	{
-	}
-
-	@Inject
 	@MethodHook(value = "addLast", end = true)
 	public void add(RSUsername name, RSUsername prevName)
 	{
@@ -49,5 +44,11 @@ public abstract class RSUserListMixin implements RSUserList
 	public void remove(RSUser nameable)
 	{
 		rl$remove(nameable);
-	}	
+	}
+
+	@Inject
+	public void remove(Nameable nameable)
+	{
+		rl$remove((RSUser) nameable);
+	}
 }
