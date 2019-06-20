@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Lucas C <lucas1757@gmail.com>
+ * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cooking;
+package net.runelite.client.plugins.inventorygrid;
 
-import java.time.Instant;
-import lombok.AccessLevel;
-import lombok.Getter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
-class FermentTimerSession
+@ConfigGroup("inventorygrid")
+public interface InventoryGridConfig extends Config
 {
-	@Getter(AccessLevel.PACKAGE)
-	private Instant lastWineMakingAction;
-
-	void updateLastWineMakingAction()
+	@ConfigItem(
+		keyName = "showItem",
+		name = "Show item",
+		description = "Show a preview of the item in the new slot"
+	)
+	default boolean showItem()
 	{
-		this.lastWineMakingAction = Instant.now();
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showGrid",
+		name = "Show grid",
+		description = "Show a grid on the inventory while dragging"
+	)
+	default boolean showGrid()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showHighlight",
+		name = "Highlight background",
+		description = "Show a green background highlight on the new slot"
+	)
+	default boolean showHighlight()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "dragDelay",
+		name = "Drag Delay",
+		description = "Time in ms to wait after item press before showing grid"
+	)
+	@Range(min = 100)
+	default int dragDelay()
+	{
+		return 100;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,58 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wasdcamera;
+package net.runelite.client.plugins.itemskeptondeath;
 
-import java.awt.event.KeyEvent;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.ModifierlessKeybind;
+import com.google.common.collect.ImmutableMap;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.ItemID;
 
-@ConfigGroup("wasdcamera")
-public interface WASDCameraConfig extends Config
+/**
+ * Certain Items receive a white outline by Jagex as they are always lost on death. This is sometimes incorrectly
+ * added to Items by Jagex as the item is actually kept in non-pvp areas of the game, such as the Rune Pouch.
+ *
+ * The white outline will be added to these items when they are lost on death.
+ */
+@AllArgsConstructor
+@Getter
+enum AlwaysLostItem
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "up",
-		name = "Up key",
-		description = "The key which will replace up."
-	)
-	default ModifierlessKeybind up()
+	RUNE_POUCH(ItemID.RUNE_POUCH, true),
+	LOOTING_BAG(ItemID.LOOTING_BAG, false),
+	CLUE_BOX(ItemID.CLUE_BOX, false);
+
+	private final int itemID;
+	private final boolean keptOutsideOfWilderness;
+
+	private static final ImmutableMap<Integer, AlwaysLostItem> ID_MAP;
+
+	static
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_W, 0);
+		final ImmutableMap.Builder<Integer, AlwaysLostItem> map = ImmutableMap.builder();
+		for (final AlwaysLostItem p : values())
+		{
+			map.put(p.itemID, p);
+		}
+		ID_MAP = map.build();
 	}
 
-	@ConfigItem(
-		position = 2,
-		keyName = "down",
-		name = "Down key",
-		description = "The key which will replace down."
-	)
-	default ModifierlessKeybind down()
+	static AlwaysLostItem getByItemID(final int itemID)
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_S, 0);
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "left",
-		name = "Left key",
-		description = "The key which will replace left."
-	)
-	default ModifierlessKeybind left()
-	{
-		return new ModifierlessKeybind(KeyEvent.VK_A, 0);
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "right",
-		name = "Right key",
-		description = "The key which will replace right."
-	)
-	default ModifierlessKeybind right()
-	{
-		return new ModifierlessKeybind(KeyEvent.VK_D, 0);
+		return ID_MAP.get(itemID);
 	}
 }

@@ -32,6 +32,10 @@ public interface RSHealthBar extends RSCacheableNode, HealthBar
 	@Import("healthScale")
 	int getHealthScale();
 
+	@Import("healthBarFrontSpriteId")
+	@Override
+	int getHealthBarFrontSpriteId();
+
 	@Import("getHealthBarFrontSprite")
 	@Override
 	RSSpritePixels getHealthBarFrontSprite();

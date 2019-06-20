@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -48,9 +49,6 @@ import net.runelite.client.util.StackFormatter;
 
 class ItemPricesOverlay extends Overlay
 {
-	// Used when getting High Alchemy value - multiplied by general store price.
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-
 	private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
 	private static final int BANK_INVENTORY_ITEM_WIDGETID = WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId();
 	private static final int BANK_ITEM_WIDGETID = WidgetInfo.BANK_ITEM_CONTAINER.getPackedId();
@@ -197,6 +195,7 @@ class ItemPricesOverlay extends Overlay
 		int gePrice = 0;
 		int haPrice = 0;
 		int haProfit = 0;
+		final int itemHaPrice = Math.round(itemDef.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
 
 		if (config.showGEPrice())
 		{
@@ -204,11 +203,11 @@ class ItemPricesOverlay extends Overlay
 		}
 		if (config.showHAValue())
 		{
-			haPrice = Math.round(itemDef.getPrice() * HIGH_ALCHEMY_CONSTANT);
+			haPrice = itemHaPrice;
 		}
-		if (gePrice > 0 && haPrice > 0 && config.showAlchProfit())
+		if (gePrice > 0 && itemHaPrice > 0 && config.showAlchProfit())
 		{
-			haProfit = calculateHAProfit(haPrice, gePrice);
+			haProfit = calculateHAProfit(itemHaPrice, gePrice);
 		}
 
 		if (gePrice > 0 || haPrice > 0)

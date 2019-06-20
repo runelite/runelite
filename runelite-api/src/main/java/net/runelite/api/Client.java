@@ -152,11 +152,25 @@ public interface Client extends GameEngine
 	void setPassword(String password);
 
 	/**
+	 * Sets the 6 digit pin used for authenticator on login screen.
+	 *
+	 * @param otp one time password
+	 */
+	void setOtp(String otp);
+
+	/**
 	 * Gets currently selected login field. 0 is username, and 1 is password.
 	 *
 	 * @return currently selected login field
 	 */
 	int getCurrentLoginField();
+
+	/**
+	 * Gets index of current login state. 2 is username/password form, 4 is authenticator form
+	 *
+	 * @return current login state index
+	 */
+	int getLoginIndex();
 
 	/**
 	 * Gets the account type of the logged in player.
@@ -1347,6 +1361,13 @@ public interface Client extends GameEngine
 	boolean isInInstancedRegion();
 
 	/**
+	 * Get the number of client ticks an item has been pressed
+	 *
+	 * @return the number of client ticks an item has been pressed
+	 */
+	int getItemPressedDuration();
+
+	/**
 	 * Sets whether the client is hiding entities.
 	 * <p>
 	 * This method does not itself hide any entities. It behaves as a master
@@ -1483,14 +1504,6 @@ public interface Client extends GameEngine
 	NodeCache getWidgetSpriteCache();
 
 	/**
-	 * Overrides health bar sprites with the sprites from the specified override.
-	 * Pass in {@code null} to revert the health bars back to their default.
-	 *
-	 * @param override the health bar override
-	 */
-	void setHealthBarOverride(HealthBarOverride override);
-
-	/**
 	 * Gets the current server tick count.
 	 *
 	 * @return the tick count
@@ -1592,6 +1605,19 @@ public interface Client extends GameEngine
 	void checkClickbox(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
 
 	/**
+	 * Get the if1 widget whose item is being dragged
+	 *
+	 * @return
+	 */
+	Widget getIf1DraggedWidget();
+
+	/**
+	 * Get the item index of the item being dragged on an if1 widget
+	 * @return
+	 */
+	int getIf1DraggedItemIndex();
+
+	/**
 	 * Sets if a widget is in target mode
 	 */
 	void setSpellSelected(boolean selected);
@@ -1605,5 +1631,5 @@ public interface Client extends GameEngine
 
 	void draw2010Menu();
 
-	NodeCache getHealthBarCache();
+	void resetHealthBarCaches();
 }
