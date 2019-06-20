@@ -382,6 +382,7 @@ public class CoxPlugin extends Plugin
 			sleepcount = 0;
 			Olm_Heal.clear();
 			npcContainer.clear();
+			burnTarget.clear();
 			Olm_NPC = null;
 			hand = null;
 			prayAgainstOlm = null;
