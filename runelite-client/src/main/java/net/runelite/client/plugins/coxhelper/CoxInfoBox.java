@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
+ * Copyright (c) 2019, lyzrds <https://discord.gg/5eb9Fe>
  * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
@@ -33,70 +33,114 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.NpcID;
 import net.runelite.api.SpriteID;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
-import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 
-class OlmPrayAgainstOverlay extends Overlay
+public class CoxInfoBox extends Overlay
 {
 	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
 	private final CoxPlugin plugin;
 	private final CoxConfig config;
 	private final Client client;
 	private final SpriteManager spriteManager;
+	private final PanelComponent prayAgainstPanel = new PanelComponent();
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	OlmPrayAgainstOverlay(CoxPlugin plugin, CoxConfig config, Client client, SpriteManager spriteManager)
+	CoxInfoBox(CoxPlugin plugin, CoxConfig config, Client client, SpriteManager spriteManager)
 	{
 		this.plugin = plugin;
 		this.config = config;
 		this.client = client;
 		this.spriteManager = spriteManager;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		panelComponent.setOrientation(ComponentOrientation.VERTICAL);
+		setPosition(OverlayPosition.DETACHED);
 	}
 
-	public Dimension render(Graphics2D graphics2D)
+	@Override
+	public Dimension render(Graphics2D graphics)
 	{
 		panelComponent.getChildren().clear();
-
-		final PrayAgainst prayAgainst = plugin.getPrayAgainstOlm();
-		if (plugin.getPrayAgainstOlm() == null && !config.prayAgainstOlm())
+		if (plugin.inRaid())
 		{
-			return null;
-		}
+			prayAgainstPanel.getChildren().clear();
 
-		if (System.currentTimeMillis() < (plugin.getLastPrayTime() + 120000) && plugin.getPrayAgainstOlm() != null)
-		{
-			InfoBoxComponent prayComponent = new InfoBoxComponent();
-			Image prayImg = scaleImg(getPrayerImage(plugin.prayAgainstOlm));
-			prayComponent.setImage(prayImg);
-			prayComponent.setColor(Color.WHITE);
-			prayComponent.setBackgroundColor(client.isPrayerActive(prayAgainst.getPrayer())
-				? ComponentConstants.STANDARD_BACKGROUND_COLOR
-				: NOT_ACTIVATED_BACKGROUND_COLOR);
-			prayComponent.setPreferredSize(new Dimension(40, 40));
-			panelComponent.getChildren().add(prayComponent);
+			final PrayAgainst prayAgainst = plugin.getPrayAgainstOlm();
 
-			panelComponent.setPreferredSize(new Dimension(40, 40));
-			panelComponent.setBorder(new Rectangle(0, 0, 0, 0));
-			return panelComponent.render(graphics2D);
-		}
-		else
-		{
-			plugin.setPrayAgainstOlm(null);
+			if (plugin.getPrayAgainstOlm() == null && !config.prayAgainstOlm())
+			{
+				return null;
+			}
+
+			if (System.currentTimeMillis() < (plugin.getLastPrayTime() + 120000) && plugin.getPrayAgainstOlm() != null)
+			{
+				InfoBoxComponent prayComponent = new InfoBoxComponent();
+				Image prayImg = scaleImg(getPrayerImage(plugin.prayAgainstOlm));
+				prayComponent.setImage(prayImg);
+				prayComponent.setColor(Color.WHITE);
+				prayComponent.setBackgroundColor(client.isPrayerActive(prayAgainst.getPrayer())
+					? ComponentConstants.STANDARD_BACKGROUND_COLOR
+					: NOT_ACTIVATED_BACKGROUND_COLOR);
+				prayComponent.setPreferredSize(new Dimension(40, 40));
+				prayAgainstPanel.getChildren().add(prayComponent);
+
+				prayAgainstPanel.setPreferredSize(new Dimension(40, 40));
+				prayAgainstPanel.setBorder(new Rectangle(0, 0, 0, 0));
+				return prayAgainstPanel.render(graphics);
+			}
+			else
+			{
+				plugin.setPrayAgainstOlm(null);
+			}
+
+			if (config.vangHealth() && plugin.isRunVanguard())
+			{
+				panelComponent.getChildren().add(TitleComponent.builder()
+					.text("Vanguards")
+					.color(Color.pink)
+					.build());
+
+				TableComponent tableComponent = new TableComponent();
+				tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+				for (NPCContainer npcs : plugin.getNpcContainer().values())
+				{
+					float percent = (float) npcs.getNpc().getHealthRatio() / npcs.getNpc().getHealth() * 100;
+					switch (npcs.getNpc().getId())
+					{
+						case NpcID.VANGUARD_7527:
+							tableComponent.addRow(ColorUtil.prependColorTag("Melee", npcs.getAttackStyle().getColor()),
+								Integer.toString((int) percent));
+							break;
+						case NpcID.VANGUARD_7528:
+							tableComponent.addRow(ColorUtil.prependColorTag("Range", npcs.getAttackStyle().getColor()),
+								Integer.toString((int) percent));
+							break;
+						case NpcID.VANGUARD_7529:
+							tableComponent.addRow(ColorUtil.prependColorTag("Mage", npcs.getAttackStyle().getColor()),
+								Integer.toString((int) percent));
+							break;
+					}
+				}
+
+				panelComponent.getChildren().add(tableComponent);
+
+				return panelComponent.render(graphics);
+			}
 		}
 		if (client.getLocalPlayer().getWorldLocation().getRegionID() == 4919)
 		{
 			plugin.setPrayAgainstOlm(null);
 		}
-
 		return null;
 	}
 
@@ -134,6 +178,4 @@ class OlmPrayAgainstOverlay extends Overlay
 		g.dispose();
 		return scaledImage;
 	}
-
-
 }

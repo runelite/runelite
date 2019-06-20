@@ -34,9 +34,11 @@ import java.awt.Polygon;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
+import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -51,8 +53,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class CoxOverlay extends Overlay
 {
 	private final Client client;
-
-
 	private final CoxPlugin plugin;
 	private final CoxConfig config;
 
@@ -72,7 +72,6 @@ public class CoxOverlay extends Overlay
 	{
 		for (WorldPoint point : plugin.getOlm_Heal())
 		{
-			client.setHintArrow(point);
 			drawTile(graphics, point, config.tpColor(), 2, 150, 50);
 		}
 
@@ -82,156 +81,260 @@ public class CoxOverlay extends Overlay
 			drawTile(graphics, point, config.tpColor(), 2, 150, 50);
 		}
 
-		if (plugin.isRunMutta())
+		if (plugin.inRaid())
 		{
-			if (config.Muttadile())
+			for (NPCContainer npcs : plugin.getNpcContainer().values())
 			{
-				NPC boss = plugin.getMomma_NPC();
-				NPC baby = plugin.getMutta_NPC();
-				if (boss != null)
+				Color color;
+				List<WorldPoint> hitSquares;
+				int ticksLeft;
+				switch (npcs.getNpc().getId())
 				{
-					int size = 1;
-					NPCDefinition composition = boss.getTransformedDefinition();
-					{
-						size = composition.getSize();
-					}
-					List<WorldPoint> meleeRangeMom = getHitSquares(boss.getWorldLocation(), size, 1, false);
-					for (WorldPoint p : meleeRangeMom)
-					{
-						drawTile(graphics, p, config.muttaColor(), 0, 0, 50);
-					}
-				}
-				if (baby != null)
-				{
-					int size = 1;
-					NPCDefinition compositionbaby = baby.getTransformedDefinition();
-					{
-						size = compositionbaby.getSize();
-					}
-					List<WorldPoint> meleeRange = getHitSquares(baby.getWorldLocation(), size, 1, false);
-					for (WorldPoint p : meleeRange)
-					{
-						drawTile(graphics, p, config.muttaColor(), 0, 0, 50);
-					}
-				}
-			}
-		}
-
-		if (plugin.isRunGuard())
-		{
-			if (config.Guardians())
-			{
-				NPC G1 = plugin.getGuard1_NPC();
-				NPC G2 = plugin.getGuard2_NPC();
-				int tick = plugin.getGuardTick();
-				if (tick == 5)
-				{
-					if (G1 != null)
-					{
-						int size = 1;
-						NPCDefinition composition = G1.getTransformedDefinition();
+					case NpcID.TEKTON:
+					case NpcID.TEKTON_7541:
+					case NpcID.TEKTON_7542:
+					case NpcID.TEKTON_7545:
+					case NpcID.TEKTON_ENRAGED:
+					case NpcID.TEKTON_ENRAGED_7544:
+						if (config.tekton())
 						{
-							size = composition.getSize();
-						}
-						List<WorldPoint> meleeRange = getHitSquares(G1.getWorldLocation(), size, 1, true);
-						for (WorldPoint p : meleeRange)
-						{
-							drawTile(graphics, p, config.guardColor(), 0, 0, 50);
-						}
-					}
-					if (G2 != null)
-					{
-						int size = 1;
-						NPCDefinition composition = G2.getTransformedDefinition();
-						{
-							size = composition.getSize();
-						}
-						List<WorldPoint> meleeRange = getHitSquares(G2.getWorldLocation(), size, 1, true);
-						for (WorldPoint p : meleeRange)
-						{
-							drawTile(graphics, p, config.guardColor(), 0, 0, 50);
-						}
-					}
-				}
-			}
-		}
-
-
-		if (plugin.isRunTekton())
-		{
-			if (config.Tekton())
-			{
-				NPC boss = plugin.getTekton_NPC();
-				if (boss != null)
-				{
-					int size = 1;
-					NPCDefinition composition = boss.getTransformedDefinition();
-					{
-						size = composition.getSize();
-					}
-					List<WorldPoint> meleeRange = getHitSquares(boss.getWorldLocation(), size, 1, false);
-					for (WorldPoint p : meleeRange)
-					{
-						drawTile(graphics, p, config.tektonColor(), 0, 0, 50);
-					}
-				}
-			}
-		}
-
-		if (plugin.isRunOlm())
-		{
-			NPC boss = plugin.getOlm_NPC();
-
-			if (config.OlmTick())
-			{
-				if (boss != null)
-				{
-					int tick = plugin.getOlm_TicksUntilAction();
-					int cycle = plugin.getOlm_ActionCycle();
-					int spec = plugin.getOlm_NextSpec();
-					final String tickStr = String.valueOf(tick);
-					String cycleStr = "?";
-					switch (cycle)
-					{
-						case 1:
-							switch (spec)
+							hitSquares = getHitSquares(npcs.getNpc().getWorldLocation(), npcs.getNpcSize(), 1, false);
+							for (WorldPoint p : hitSquares)
 							{
-								case 1:
-									cycleStr = "Portals";
-									break;
-								case 2:
-									cycleStr = "lightning";
-									break;
-								case 3:
-									cycleStr = "Crystals";
-									break;
-								case 4:
-									cycleStr = "Heal";
-									break;
-								case -1:
-									cycleStr = "??";
-									break;
+								drawTile(graphics, p, config.tektonColor(), 0, 0, 50);
 							}
-							break;
-						case 2:
-							cycleStr = "Sauto";
-							break;
-						case 3:
-							cycleStr = "Null";
-							break;
-						case 4:
-							cycleStr = "Nauto";
-							break;
-						case -1:
-							cycleStr = "??";
-							break;
+							if (config.tektonTickCounter())
+							{
+								ticksLeft = npcs.getTicksUntilAttack();
+								int attackTicksleft = plugin.getTektonAttackTicks();
+								if (ticksLeft > 0)
+								{
+									if (ticksLeft == 1)
+									{
+										color = npcs.getAttackStyle().getColor();
+									}
+									else
+									{
+										color = Color.WHITE;
+									}
+									final String ticksLeftStr = String.valueOf(ticksLeft);
+									Point canvasPoint = npcs.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
+									renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), color, canvasPoint);
+								}
+							}
+							if (config.tektonTickCounter())
+							{
+								final int attackTicksleft = plugin.getTektonAttackTicks();
+								String attacksLeftStr;
+								Color attackcolor;
+								if (attackTicksleft >= 0 && plugin.isTektonActive())
+								{
+									if (attackTicksleft <= 1)
+									{
+										attackcolor = new Color(255, 0, 0, 255);
+										attacksLeftStr = "Phase Over";
+									}
+									else
+									{
+										attackcolor = new Color(255, 255, 255, 255);
+										attacksLeftStr = String.valueOf(attackTicksleft);
+									}
+
+									if (npcs.getNpc() != null)
+									{
+										Point canvasPoint = npcs.getNpc().getCanvasTextLocation(graphics, attacksLeftStr, 0);
+										renderTextLocationAbove(graphics, attacksLeftStr, config.textSize(), config.fontStyle().getFont(), attackcolor, canvasPoint);
+									}
+								}
+							}
+						}
+						break;
+					case NpcID.MUTTADILE:
+					case NpcID.MUTTADILE_7562:
+					case NpcID.MUTTADILE_7563:
+						if (config.muttadile())
+						{
+							hitSquares = getHitSquares(npcs.getNpc().getWorldLocation(), npcs.getNpcSize(), 1, false);
+							for (WorldPoint p : hitSquares)
+							{
+								drawTile(graphics, p, config.muttaColor(), 0, 0, 50);
+							}
+						}
+						break;
+					case NpcID.GUARDIAN:
+					case NpcID.GUARDIAN_7570:
+					case NpcID.GUARDIAN_7571:
+					case NpcID.GUARDIAN_7572:
+						if (config.guardians())
+						{
+							hitSquares = getHitSquares(npcs.getNpc().getWorldLocation(), npcs.getNpcSize(), 2, true);
+							for (WorldPoint p : hitSquares)
+							{
+								drawTile(graphics, p, config.guardColor(), 0, 0, 50);
+							}
+						}
+						if (config.guardinTickCounter())
+						{
+							ticksLeft = npcs.getTicksUntilAttack();
+							if (ticksLeft > 0)
+							{
+								if (ticksLeft == 1)
+								{
+									color = npcs.getAttackStyle().getColor();
+								}
+								else
+								{
+									color = Color.WHITE;
+								}
+								final String ticksLeftStr = String.valueOf(ticksLeft);
+								Point canvasPoint = npcs.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
+								renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), color, canvasPoint);
+							}
+						}
+						break;
+					case NpcID.VANGUARD_7526:
+					case NpcID.VANGUARD_7527:
+					case NpcID.VANGUARD_7528:
+					case NpcID.VANGUARD_7529:
+						if (config.vangHighlight())
+						{
+							OverlayUtil.renderPolygon(graphics, npcs.getNpc().getConvexHull(), npcs.getAttackStyle().getColor());
+						}
+						break;
+				}
+			}
+
+			if (plugin.isHandCripple())
+			{
+				int tick = plugin.getTimer();
+				NPC olmHand = plugin.getHand();
+				final String tickStr = String.valueOf(tick);
+				Point canvasPoint = olmHand.getCanvasTextLocation(graphics, tickStr, 50);
+				renderTextLocation(graphics, tickStr, config.textSize(), config.fontStyle().getFont(), Color.GRAY, canvasPoint);
+			}
+
+			if (config.timers())
+			{
+				if (plugin.getBurnTarget().size() > 0)
+				{
+					for (Actor actor : plugin.getBurnTarget())
+					{
+						final int ticksLeft = plugin.getBurnTicks();
+						String ticksLeftStr = String.valueOf(ticksLeft);
+						Color tickcolor = new Color(255, 255, 255, 255);
+						if (ticksLeft >= 0)
+						{
+							if (ticksLeft == 34 ||
+								ticksLeft == 33 ||
+								ticksLeft == 26 ||
+								ticksLeft == 25 ||
+								ticksLeft == 18 ||
+								ticksLeft == 17 ||
+								ticksLeft == 10 ||
+								ticksLeft == 9 ||
+								ticksLeft == 2 ||
+								ticksLeft == 1)
+							{
+								tickcolor = new Color(255, 0, 0, 255);
+								ticksLeftStr = "GAP";
+							}
+							else
+							{
+								tickcolor = new Color(255, 255, 255, 255);
+							}
+							Point canvasPoint = actor.getCanvasTextLocation(graphics, ticksLeftStr, 0);
+							renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), tickcolor, canvasPoint);
+						}
 					}
-					final String combinedStr = cycleStr + ":" + tickStr;
-					Point canvasPoint = boss.getCanvasTextLocation(graphics, combinedStr, 130);
-					renderTextLocation(graphics, combinedStr, config.textSize(), config.fontStyle().getFont(), Color.WHITE, canvasPoint);
+				}
+
+				if (plugin.getAcidTarget() != null)
+				{
+					Actor actor = plugin.getAcidTarget();
+					renderActorOverlay(graphics, actor, config.acidColor(), 2, 100, 10);
+					final int ticksLeft = plugin.getAcidTicks();
+					Color tickcolor = new Color(255, 255, 255, 255);
+					if (ticksLeft > 0)
+					{
+						if (ticksLeft > 1)
+						{
+							tickcolor = new Color(69, 241, 44, 255);
+						}
+						else
+						{
+							tickcolor = new Color(255, 255, 255, 255);
+						}
+						final String ticksLeftStr = String.valueOf(ticksLeft);
+						Point canvasPoint = actor.getCanvasTextLocation(graphics, ticksLeftStr, 0);
+						renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), tickcolor, canvasPoint);
+					}
+				}
+			}
+
+			if (config.tpOverlay())
+			{
+				if (plugin.getTeleportTarget() != null)
+				{
+					renderActorOverlay(graphics, plugin.getTeleportTarget(), new Color(193, 255, 245, 255), 2, 100, 10);
+				}
+			}
+
+			if (plugin.isRunOlm())
+			{
+				NPC boss = plugin.getOlm_NPC();
+
+				if (config.olmTick())
+				{
+					if (boss != null)
+					{
+						int tick = plugin.getOlm_TicksUntilAction();
+						int cycle = plugin.getOlm_ActionCycle();
+						int spec = plugin.getOlm_NextSpec();
+						final String tickStr = String.valueOf(tick);
+						String cycleStr = "?";
+						switch (cycle)
+						{
+							case 1:
+								switch (spec)
+								{
+									case 1:
+										cycleStr = "Portals";
+										break;
+									case 2:
+										cycleStr = "lightning";
+										break;
+									case 3:
+										cycleStr = "Crystals";
+										break;
+									case 4:
+										cycleStr = "Heal";
+										break;
+									case -1:
+										cycleStr = "??";
+										break;
+								}
+								break;
+							case 2:
+								cycleStr = "Sauto";
+								break;
+							case 3:
+								cycleStr = "Null";
+								break;
+							case 4:
+								cycleStr = "Nauto";
+								break;
+							case -1:
+								cycleStr = "??";
+								break;
+						}
+						final String combinedStr = cycleStr + ":" + tickStr;
+						Point canvasPoint = boss.getCanvasTextLocation(graphics, combinedStr, 130);
+						renderTextLocation(graphics, combinedStr, config.textSize(), config.fontStyle().getFont(), Color.WHITE, canvasPoint);
+					}
 				}
 			}
 		}
+
 		return null;
 	}
 
@@ -282,6 +385,22 @@ public class CoxOverlay extends Overlay
 		}
 	}
 
+	private void renderActorOverlay(Graphics2D graphics, Actor actor, Color color, int outlineWidth, int outlineAlpha, int fillAlpha)
+	{
+		int size = 1;
+		LocalPoint lp = actor.getLocalLocation();
+		Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+
+		if (tilePoly != null)
+		{
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
+			graphics.setStroke(new BasicStroke(outlineWidth));
+			graphics.draw(tilePoly);
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
+			graphics.fill(tilePoly);
+		}
+	}
+
 	private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)
 	{
 		graphics.setFont(new Font("Arial", fontStyle, fontSize));
@@ -293,6 +412,25 @@ public class CoxOverlay extends Overlay
 			final Point canvasCenterPoint_shadow = new Point(
 				canvasPoint.getX() + 1,
 				canvasPoint.getY() + 1);
+			if (config.shadows())
+			{
+				OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
+			}
+			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
+		}
+	}
+
+	private void renderTextLocationAbove(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)
+	{
+		graphics.setFont(new Font("Arial", fontStyle, fontSize));
+		if (canvasPoint != null)
+		{
+			final Point canvasCenterPoint = new Point(
+				canvasPoint.getX(),
+				canvasPoint.getY() + 20);
+			final Point canvasCenterPoint_shadow = new Point(
+				canvasPoint.getX() + 1,
+				canvasPoint.getY() + 21);
 			if (config.shadows())
 			{
 				OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
@@ -317,17 +455,5 @@ public class CoxOverlay extends Overlay
 			}
 		}
 		return big;
-	}
-
-	private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
-	{
-		if (polygon != null)
-		{
-			graphics.setColor(color);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(polygon);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-			graphics.fill(polygon);
-		}
 	}
 }
