@@ -732,11 +732,11 @@ public class WidgetID
 
 	static class Pvp
 	{
-		static final int BOUNTY_HUNTER_INFO = 19;
+		static final int BOUNTY_HUNTER_INFO = 18;
 		static final int KILLDEATH_RATIO = 15;
-		static final int SKULL_CONTAINER = 62;
-		static final int SAFE_ZONE = 64;
-		static final int WILDERNESS_LEVEL = 67; // this can also be the Deadman Mode "Protection" text
+		static final int SKULL_CONTAINER = 61;
+		static final int SAFE_ZONE = 63;
+		static final int WILDERNESS_LEVEL = 66; // this can also be the Deadman Mode "Protection" text
 	}
 
 	static class KourendFavour
