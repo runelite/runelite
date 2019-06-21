@@ -934,7 +934,7 @@ public interface Client extends GameShell
 	 *
 	 * @return all projectiles
 	 */
-	java.util.List<Projectile> getProjectiles();
+	List<Projectile> getProjectiles();
 
 	/**
 	 * Gets a list of all graphics objects currently drawn.
@@ -1631,7 +1631,7 @@ public interface Client extends GameShell
 
 	void draw2010Menu();
 
-	NodeCache getHealthBarCache();
+	void resetHealthBarCaches();
 
 	void setRenderSelf(boolean enabled);
 
@@ -1655,6 +1655,4 @@ public interface Client extends GameShell
 	String getSelectedSpellName();
 	
 	boolean getIsSpellSelected();
-	
-	void resetHealthBarCaches();
 }
