@@ -108,7 +108,7 @@ public class CoxPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private boolean runOlm;
 	@Getter(AccessLevel.PACKAGE)
-	private boolean runVanguard;
+	private int vanguards;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean tektonActive;
 	@Getter(AccessLevel.PACKAGE)
@@ -165,13 +165,6 @@ public class CoxPlugin extends Plugin
 	{
 		overlayManager.add(coxOverlay);
 		overlayManager.add(coxInfoBox);
-	}
-
-	@Override
-	protected void shutDown()
-	{
-		overlayManager.remove(coxOverlay);
-		overlayManager.remove(coxInfoBox);
 		HandCripple = false;
 		hand = null;
 		acidTarget = null;
@@ -183,6 +176,14 @@ public class CoxPlugin extends Plugin
 		burnTicks = 40;
 		acidTicks = 25;
 		teleportTicks = 10;
+		vanguards = 0;
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		overlayManager.remove(coxOverlay);
+		overlayManager.remove(coxInfoBox);
 	}
 
 	@Subscribe
@@ -316,7 +317,7 @@ public class CoxPlugin extends Plugin
 				case NpcID.VANGUARD_7527:
 				case NpcID.VANGUARD_7528:
 				case NpcID.VANGUARD_7529:
-					runVanguard = true;
+					vanguards++;
 					npcContainer.put(npc, new NPCContainer(npc));
 					break;
 				case NpcID.GREAT_OLM_LEFT_CLAW:
@@ -362,7 +363,7 @@ public class CoxPlugin extends Plugin
 					{
 						npcContainer.remove(event.getNpc());
 					}
-					runVanguard = false;
+					vanguards--;
 					break;
 				case NpcID.GREAT_OLM_RIGHT_CLAW_7553:
 				case NpcID.GREAT_OLM_RIGHT_CLAW:
@@ -513,16 +514,22 @@ public class CoxPlugin extends Plugin
 					}
 					break;
 				case NpcID.VANGUARD_7529:
-					npcs.setAttackStyle(NPCContainer.Attackstyle.MAGE);
+					if (npcs.getAttackStyle() == NPCContainer.Attackstyle.UNKNOWN)
+					{
+						npcs.setAttackStyle(NPCContainer.Attackstyle.MAGE);
+					}
 					break;
 				case NpcID.VANGUARD_7528:
-					npcs.setAttackStyle(NPCContainer.Attackstyle.RANGE);
+					if (npcs.getAttackStyle() == NPCContainer.Attackstyle.UNKNOWN)
+					{
+						npcs.setAttackStyle(NPCContainer.Attackstyle.RANGE);
+					}
 					break;
 				case NpcID.VANGUARD_7527:
-					npcs.setAttackStyle(NPCContainer.Attackstyle.MELEE);
-					break;
-				case NpcID.VANGUARD_7526:
-					npcs.setAttackStyle(NPCContainer.Attackstyle.UNKNOWN);
+					if (npcs.getAttackStyle() == NPCContainer.Attackstyle.UNKNOWN)
+					{
+						npcs.setAttackStyle(NPCContainer.Attackstyle.MELEE);
+					}
 					break;
 			}
 		}

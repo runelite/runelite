@@ -103,7 +103,7 @@ public class CoxInfoBox extends Overlay
 				plugin.setPrayAgainstOlm(null);
 			}
 
-			if (config.vangHealth() && plugin.isRunVanguard())
+			if (config.vangHealth() && plugin.getVanguards() > 0)
 			{
 				panelComponent.getChildren().add(TitleComponent.builder()
 					.text("Vanguards")
