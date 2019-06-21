@@ -657,6 +657,19 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	public void deleteLocalRecords()
+	{
+		try
+		{
+			Files.deleteIfExists(LOOT_RECORDS_FILE.toPath());
+		}
+		catch (IOException e)
+		{
+			log.debug("Error deleting local loot records file.");
+			log.debug(Arrays.toString(e.getStackTrace()));
+		}
+	}
+
 	/**
 	 * Takes a snapshot of the local player's inventory and equipment right before respawn.
 	 */

@@ -75,6 +75,10 @@ class LootTrackerPanel extends PluginPanel
 	private static final ImageIcon VISIBLE_ICON_HOVER;
 	private static final ImageIcon INVISIBLE_ICON;
 	private static final ImageIcon INVISIBLE_ICON_HOVER;
+	private static final ImageIcon RESET_ICON;
+	private static final ImageIcon RESET_ICON_FADED;
+	private static final ImageIcon RESET_ICON_HOVER;
+
 
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -98,6 +102,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel viewHiddenBtn = new JLabel();
 	private final JLabel singleLootBtn = new JLabel();
 	private final JLabel groupedLootBtn = new JLabel();
+	private final JLabel resetIcon = new JLabel();
 
 	// Log collection
 	private final List<LootTrackerRecord> records = new ArrayList<>();
@@ -118,10 +123,16 @@ class LootTrackerPanel extends PluginPanel
 		final BufferedImage backArrowImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "back_icon.png");
 		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "visible_icon.png");
 		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "invisible_icon.png");
+		final BufferedImage resetImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "reset.png");
 
 		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
 		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -180));
 		SINGLE_LOOT_VIEW_HOVER = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -220));
+
+		RESET_ICON = new ImageIcon(resetImg);
+		RESET_ICON_FADED = new ImageIcon(ImageUtil.alphaOffset(resetImg, -180));
+		RESET_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(resetImg, -220));
+
 
 		GROUPED_LOOT_VIEW = new ImageIcon(groupedLootImg);
 		GROUPED_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(groupedLootImg, -180));
@@ -164,7 +175,7 @@ class LootTrackerPanel extends PluginPanel
 		actionsContainer.setBorder(new EmptyBorder(5, 5, 5, 10));
 		actionsContainer.setVisible(false);
 
-		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
+		final JPanel viewControls = new JPanel(new GridLayout(1, 4, 10, 0));
 		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		singleLootBtn.setIcon(SINGLE_LOOT_VIEW);
@@ -236,6 +247,30 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
+		resetIcon.setIcon(RESET_ICON);
+		resetIcon.setToolTipText("Resets all locally saved data (cannot be undone)");
+		resetIcon.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				resetRecords();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				resetIcon.setIcon(RESET_ICON_HOVER);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				resetIcon.setIcon(records.isEmpty() ? RESET_ICON_FADED : RESET_ICON);
+			}
+		});
+
+		viewControls.add(resetIcon);
 		viewControls.add(groupedLootBtn);
 		viewControls.add(singleLootBtn);
 		viewControls.add(viewHiddenBtn);
@@ -397,6 +432,21 @@ class LootTrackerPanel extends PluginPanel
 		hideIgnoredItems = hide;
 		rebuild();
 		viewHiddenBtn.setIcon(hideIgnoredItems ? VISIBLE_ICON : INVISIBLE_ICON);
+	}
+
+	/**
+	 * Clears all loaded records. This will also attempt to delete the local storage file
+	 */
+	private void resetRecords()
+	{
+		records.clear();
+		boxes.clear();
+		logsContainer.removeAll();
+		logsContainer.repaint();
+		if (config.localPersistence())
+		{
+			plugin.deleteLocalRecords();
+		}
 	}
 
 	/**
