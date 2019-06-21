@@ -80,6 +80,7 @@ class DevToolsOverlay extends Overlay
 	private static final Font FONT = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
 	private static final Color RED = new Color(221, 44, 0);
 	private static final Color GREEN = new Color(0, 200, 83);
+	private static final Color TURQOISE = new Color(0, 200, 157);
 	private static final Color ORANGE = new Color(255, 109, 0);
 	private static final Color YELLOW = new Color(255, 214, 0);
 	private static final Color CYAN = new Color(0, 184, 212);
@@ -312,7 +313,11 @@ class DevToolsOverlay extends Overlay
 						Renderable renderable = gameObject.getRenderable();
 						if (renderable instanceof DynamicObject)
 						{
-							OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId() + " Anim: " + ((DynamicObject) renderable).getAnimationID(), GREEN);
+							OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId() + " Anim: " + ((DynamicObject) renderable).getAnimationID(), TURQOISE);
+						}
+						else
+						{
+							OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
 						}
 					}
 
