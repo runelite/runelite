@@ -87,11 +87,11 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 		new FaloTheBardClue("A shiny helmet of flight, to obtain this with melee, struggle you might.", item(ARMADYL_HELMET)),
 		// The wiki doesn't specify whether the trimmed dragon defender will work so I've assumed that it doesn't
 		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", item(DRAGON_DEFENDER)),
-		new FaloTheBardClue("A token used to kill mythical beasts, in hope of a blade or just for an xp feast.", item(WARRIOR_GUILD_TOKEN)),
+		new FaloTheBardClue("A token used to kill mythical beasts, in hopes of a blade or just for an xp feast.", item(WARRIOR_GUILD_TOKEN)),
 		new FaloTheBardClue("Green is my favorite, mature ale I do love, this takes your herblore above.", item(GREENMANS_ALEM)),
 		new FaloTheBardClue("It can hold down a boat or crush a goat, this object, you see, is quite heavy.", item(BARRELCHEST_ANCHOR)),
 		new FaloTheBardClue("It comes from the ground, underneath the snowy plain. Trolls aplenty, with what looks like a mane.", item(BASALT)),
-		new FaloTheBardClue("No attack to wield, only strength is required, made of obsidian but with no room for a shield.", item(TZHAARKETOM)),
+		new FaloTheBardClue("No attack to wield, only strength is required, made of obsidian, but with no room for a shield.", item(TZHAARKETOM)),
 		new FaloTheBardClue("Penance healers runners and more, obtaining this body often gives much deplore.", item(FIGHTER_TORSO)),
 		new FaloTheBardClue("Strangely found in a chest, many believe these gloves are the best.", item(BARROWS_GLOVES)),
 		new FaloTheBardClue("These gloves of white won't help you fight, but aid in cooking, they just might.", item(COOKING_GAUNTLETS)),

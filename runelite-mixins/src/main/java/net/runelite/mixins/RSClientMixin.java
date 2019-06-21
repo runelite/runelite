@@ -42,7 +42,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.HashTable;
-import net.runelite.api.HealthBarOverride;
 import net.runelite.api.HintArrowType;
 import net.runelite.api.Ignore;
 import net.runelite.api.IndexDataBase;
@@ -189,9 +188,6 @@ public abstract class RSClientMixin implements RSClient
 	private final Cache<Integer, RSEnum> enumCache = CacheBuilder.newBuilder()
 		.maximumSize(64)
 		.build();
-
-	@Inject
-	private static HealthBarOverride healthBarOverride;
 
 	@Inject
 	public RSClientMixin()
@@ -1253,13 +1249,6 @@ public abstract class RSClientMixin implements RSClient
 		client.getCallbacks().post(new UsernameChanged());
 	}
 
-	@Inject
-	@Override
-	public void setHealthBarOverride(HealthBarOverride override)
-	{
-		healthBarOverride = override;
-	}
-
 	@Override
 	@Inject
 	public int getTickCount()
@@ -1549,5 +1538,13 @@ public abstract class RSClientMixin implements RSClient
 		rsEnum = getRsEnum(id);
 		enumCache.put(id, rsEnum);
 		return rsEnum;
+	}
+
+	@Inject
+	@Override
+	public void resetHealthBarCaches()
+	{
+		getHealthBarCache().reset();
+		getHealthBarSpriteCache().reset();
 	}
 }
