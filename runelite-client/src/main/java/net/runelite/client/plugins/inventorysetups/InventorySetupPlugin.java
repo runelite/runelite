@@ -288,7 +288,6 @@ public class InventorySetupPlugin extends Plugin
 			panel.addInventorySetup(key);
 		}
 
-		highlightDifference = false;
 	}
 
 	@Subscribe
@@ -333,17 +332,20 @@ public class InventorySetupPlugin extends Plugin
 			// set the highlighting off if login screen shows up
 			case LOGIN_SCREEN:
 				highlightDifference = false;
-				final String setupName = panel.getSelectedInventorySetup();
-				if (!setupName.isEmpty())
-				{
-					panel.setCurrentInventorySetup(setupName);
-				}
 				break;
 
 			// set highlighting
 			case LOGGED_IN:
 				highlightDifference = config.getHighlightDifferences();
 				break;
+
+			default:
+				return;
+		}
+		final String setupName = panel.getSelectedInventorySetup();
+		if (!setupName.isEmpty())
+		{
+			panel.setCurrentInventorySetup(setupName);
 		}
 	}
 
