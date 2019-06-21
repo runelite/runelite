@@ -1001,4 +1001,5 @@ public interface RSClient extends RSGameShell, Client
 	
 	@Import("isSpellSelected")
 	boolean getIsSpellSelected();
+
 }

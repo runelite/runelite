@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
+ * Copyright (c) 2019, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.inventorygrid;
+package net.runelite.mixins;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
+import net.runelite.api.events.PostHealthBar;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSBuffer;
+import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSHealthBar;
 
-@ConfigGroup("inventorygrid")
-public interface InventoryGridConfig extends Config
+@Mixin(RSHealthBar.class)
+public abstract class RSHealthBarMixin implements RSHealthBar
 {
-	@ConfigItem(
-		keyName = "showItem",
-		name = "Show item",
-		description = "Show a preview of the item in the new slot"
-	)
-	default boolean showItem()
-	{
-		return true;
-	}
+	@Shadow("client")
+	private static RSClient client;
 
-	@ConfigItem(
-		keyName = "showGrid",
-		name = "Show grid",
-		description = "Show a grid on the inventory while dragging"
-	)
-	default boolean showGrid()
+	@MethodHook(value = "get", end = true)
+	@Inject
+	public void onRead(RSBuffer buffer)
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showHighlight",
-		name = "Highlight background",
-		description = "Show a green background highlight on the new slot"
-	)
-	default boolean showHighlight()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "dragDelay",
-		name = "Drag Delay",
-		description = "Time in ms to wait after item press before showing grid"
-	)
-	@Range(min = 100)
-	default int dragDelay()
-	{
-		return 100;
+		PostHealthBar postHealthBar = new PostHealthBar();
+		postHealthBar.setHealthBar(this);
+		client.getCallbacks().post(postHealthBar);
 	}
 }

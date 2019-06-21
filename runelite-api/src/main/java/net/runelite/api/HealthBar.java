@@ -30,5 +30,7 @@ public interface HealthBar
 
 	Sprite getHealthBarBackSprite();
 
+	int getHealthBarFrontSpriteId();
+
 	void setPadding(int padding);
 }

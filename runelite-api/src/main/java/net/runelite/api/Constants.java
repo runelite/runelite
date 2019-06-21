@@ -102,4 +102,21 @@ public class Constants
 	 * Used when getting High Alchemy value - multiplied by general store price.
 	 */
 	public static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+
+	/**
+	 * Width of a standard item sprite
+	 */
+	public static final int ITEM_SPRITE_WIDTH = 36;
+
+	/**
+	 * Height of a standard item sprite
+	 */
+	public static final int ITEM_SPRITE_HEIGHT = 32;
+
+	/**
+	 * High alchemy = shop price * HIGH_ALCHEMY_MULTIPLIER
+	 *
+	 * @see ItemComposition#getPrice
+	 */
+	public static final float HIGH_ALCHEMY_MULTIPLIER = .6f;
 }

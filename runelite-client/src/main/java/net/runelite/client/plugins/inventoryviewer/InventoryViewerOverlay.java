@@ -34,6 +34,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemDefinition;
@@ -51,9 +52,8 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 class InventoryViewerOverlay extends Overlay
 {
 	private static final int INVENTORY_SIZE = 28;
-	private static final int PLACEHOLDER_WIDTH = 36;
-	private static final int PLACEHOLDER_HEIGHT = 32;
-	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(new BufferedImage(PLACEHOLDER_WIDTH, PLACEHOLDER_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
+	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(
+		new BufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 
 	private final Client client;
 	private final ItemManager itemManager;
