@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 import javax.swing.JOptionPane;
@@ -102,7 +103,7 @@ public class InventorySetupPlugin extends Plugin
 
 	private InventorySetupPluginPanel panel;
 
-	private HashMap<String, InventorySetup> inventorySetups;
+	private Map<String, InventorySetup> inventorySetups = new HashMap<>();
 
 	private NavigationButton navButton;
 
@@ -270,7 +271,7 @@ public class InventorySetupPlugin extends Plugin
 		final String json = configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY);
 		if (json == null || json.isEmpty())
 		{
-			inventorySetups = new HashMap<>();
+			inventorySetups.clear();
 		}
 		else
 		{
@@ -280,7 +281,8 @@ public class InventorySetupPlugin extends Plugin
 			{
 
 			}.getType();
-			inventorySetups = gson.fromJson(json, type);
+			inventorySetups.clear();
+			inventorySetups.putAll(gson.fromJson(json, type));
 		}
 
 		for (final String key : inventorySetups.keySet())
@@ -288,7 +290,6 @@ public class InventorySetupPlugin extends Plugin
 			panel.addInventorySetup(key);
 		}
 
-		highlightDifference = false;
 	}
 
 	@Subscribe
@@ -333,17 +334,20 @@ public class InventorySetupPlugin extends Plugin
 			// set the highlighting off if login screen shows up
 			case LOGIN_SCREEN:
 				highlightDifference = false;
-				final String setupName = panel.getSelectedInventorySetup();
-				if (!setupName.isEmpty())
-				{
-					panel.setCurrentInventorySetup(setupName);
-				}
 				break;
 
 			// set highlighting
 			case LOGGED_IN:
 				highlightDifference = config.getHighlightDifferences();
 				break;
+
+			default:
+				return;
+		}
+		final String setupName = panel.getSelectedInventorySetup();
+		if (!setupName.isEmpty())
+		{
+			panel.setCurrentInventorySetup(setupName);
 		}
 	}
 

@@ -192,7 +192,7 @@ public class InjectHookMethod
 						new net.runelite.asm.pool.Method(
 							new net.runelite.asm.pool.Class(vanillaMethod.getClassFile().getName()),
 							hookMethod.getName(),
-							signature
+							hookMethod.getDescriptor()
 						)
 					);
 				}

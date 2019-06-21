@@ -153,7 +153,7 @@ public final class class238 {
                         }
 
                         if(!Client.isMenuOpen) {
-                           class30.method569();
+                           class30.resetMenuEntries();
                         }
                      }
                   } else if(var9.noScrollThrough && MouseHandler.MouseHandler_x >= var12 && MouseHandler.MouseHandler_y >= var13 && MouseHandler.MouseHandler_x < var14 && MouseHandler.MouseHandler_y < var15) {
@@ -582,7 +582,7 @@ public final class class238 {
                            }
 
                            if(!Client.isMenuOpen) {
-                              class30.method569();
+                              class30.resetMenuEntries();
                            }
                         }
 

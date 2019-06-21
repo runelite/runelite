@@ -168,6 +168,7 @@ public class MiningPlugin extends Plugin
 			case ORE_VEIN_26663: // Motherlode vein
 			case ORE_VEIN_26664: // Motherlode vein
 			{
+				// If the vein respawns before the timer is up, remove it
 				final WorldPoint point = object.getWorldLocation();
 				respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
 				break;

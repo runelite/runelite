@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.27-SNAPSHOT</version>
+		<version>1.5.28-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -232,11 +232,6 @@
 			<version>${runelite.orange.extensions.version}</version>
 			<scope>provided</scope>
 		</dependency>
-			<dependency>
-				<groupId>net.runelite.rs</groupId>
-				<artifactId>runescape-api</artifactId>
-				<version>${project.version}</version>
-			</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

@@ -199,26 +199,26 @@ public class ExaminePlugin extends Plugin
 		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
 		// If it is an item, show the price of it
-		final ItemDefinition itemComposition;
+		final ItemDefinition Itemdefinition;
 		if (pendingExamine.getType() == ExamineType.ITEM || pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
 		{
 			final int itemId = pendingExamine.getId();
 			final int itemQuantity = pendingExamine.getQuantity();
-			itemComposition = itemManager.getItemDefinition(itemId);
+			Itemdefinition = itemManager.getItemDefinition(itemId);
 
-			if (itemComposition != null)
+			if (Itemdefinition != null)
 			{
-				final int id = itemManager.canonicalize(itemComposition.getId());
-				executor.submit(() -> getItemPrice(id, itemComposition, itemQuantity));
+				final int id = itemManager.canonicalize(Itemdefinition.getId());
+				executor.submit(() -> getItemPrice(id, Itemdefinition, itemQuantity));
 			}
 		}
 		else
 		{
-			itemComposition = null;
+			Itemdefinition = null;
 		}
 
 		// Don't submit examine info for tradeable items, which we already have from the RS item api
-		if (itemComposition != null && itemComposition.isTradeable())
+		if (Itemdefinition != null && Itemdefinition.isTradeable())
 		{
 			return;
 		}

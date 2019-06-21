@@ -29,18 +29,12 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.27-SNAPSHOT</version>
+		<version>1.5.28-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>script-assembler-plugin</artifactId>
 	<name>Script Assembler Plugin</name>
 	<packaging>maven-plugin</packaging>
-
-	<properties>
-		<maven.plugin.api.version>3.0.5</maven.plugin.api.version>
-		<maven.plugin.annotations.version>3.4</maven.plugin.annotations.version>
-		<maven.plugin.plugin.version>3.4</maven.plugin.plugin.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -57,12 +51,12 @@
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-plugin-api</artifactId>
-			<version>${maven.plugin.api.version}</version>
+			<version>3.0.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
-			<version>${maven.plugin.annotations.version}</version>
+			<version>3.4</version>
 		</dependency>
 	</dependencies>
 
@@ -71,7 +65,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
-				<version>${maven.plugin.plugin.version}</version>
+				<version>3.4</version>
 				<executions>
 					<execution>
 						<id>default-descriptor</id>

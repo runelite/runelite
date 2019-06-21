@@ -1,9 +1,12 @@
 package net.runelite.mixins;
 
+import net.runelite.api.Model;
+import net.runelite.api.Perspective;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSModel;
 
 /**
  * Class to check clickboxes of models. Mostly refactored code from the client.
@@ -11,16 +14,285 @@ import net.runelite.rs.api.RSClient;
 @Mixin(RSClient.class)
 public abstract class ClickboxMixin implements RSClient
 {
+	@Shadow("client")
+	private static RSClient client;
+
 	private static final int MAX_ENTITES_AT_MOUSE = 1000;
 	private static final int CLICKBOX_CLOSE = 50;
 	private static final int CLICKBOX_FAR = 10000;
 	private static final int OBJECT_INTERACTION_FAR = 100; // Max distance, in tiles, from camera
+
 	@Inject
 	private static final int[] rl$modelViewportXs = new int[4700];
+
 	@Inject
 	private static final int[] rl$modelViewportYs = new int[4700];
-	@Shadow("client")
-	private static RSClient client;
+
+	@Inject
+	public void checkClickbox(Model rlModel, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int _x, int _y, int _z, long hash)
+	{
+		RSModel model = (RSModel) rlModel;
+		boolean hasFlag = hash != 0L && (int) (hash >>> 16 & 1L) != 1;
+		boolean viewportContainsMouse = client.getViewportContainsMouse();
+
+		if (!hasFlag || !viewportContainsMouse)
+		{
+			return;
+		}
+
+		boolean bb = boundingboxCheck(model, _x, _y, _z);
+		if (!bb)
+		{
+			return;
+		}
+
+		if (Math.sqrt(_x * _x + _z * _z) > OBJECT_INTERACTION_FAR * Perspective.LOCAL_TILE_SIZE)
+		{
+			return;
+		}
+
+		// only need a boundingbox check?
+		if (model.isClickable())
+		{
+			addHashAtMouse(hash);
+			return;
+		}
+
+		// otherwise we must check if the mouse is in a triangle
+		final int vertexCount = model.getVerticesCount();
+		final int triangleCount = model.getTrianglesCount();
+
+		final int[] vertexX = model.getVerticesX();
+		final int[] vertexY = model.getVerticesY();
+		final int[] vertexZ = model.getVerticesZ();
+
+		final int[] triangleX = model.getTrianglesX();
+		final int[] triangleY = model.getTrianglesY();
+		final int[] triangleZ = model.getTrianglesZ();
+
+		final int[] color3 = model.getFaceColors3();
+
+		final int zoom = client.get3dZoom();
+
+		final int centerX = client.getCenterX();
+		final int centerY = client.getCenterY();
+
+		int sin = 0;
+		int cos = 0;
+		if (orientation != 0)
+		{
+			sin = Perspective.SINE[orientation];
+			cos = Perspective.COSINE[orientation];
+		}
+
+		for (int i = 0; i < vertexCount; ++i)
+		{
+			int x = vertexX[i];
+			int y = vertexY[i];
+			int z = vertexZ[i];
+
+			int var42;
+			if (orientation != 0)
+			{
+				var42 = z * sin + x * cos >> 16;
+				z = z * cos - x * sin >> 16;
+				x = var42;
+			}
+
+			x += _x;
+			y += _y;
+			z += _z;
+
+			var42 = z * yawSin + yawCos * x >> 16;
+			z = yawCos * z - x * yawSin >> 16;
+			x = var42;
+			var42 = pitchCos * y - z * pitchSin >> 16;
+			z = y * pitchSin + pitchCos * z >> 16;
+
+			if (z >= 50)
+			{
+				rl$modelViewportYs[i] = x * zoom / z + centerX;
+				rl$modelViewportXs[i] = var42 * zoom / z + centerY;
+			}
+			else
+			{
+				rl$modelViewportYs[i] = -5000;
+			}
+		}
+
+		final int viewportMouseX = client.getViewportMouseX();
+		final int viewportMouseY = client.getViewportMouseY();
+
+		for (int i = 0; i < triangleCount; ++i)
+		{
+			if (color3[i] == -2)
+			{
+				continue;
+			}
+
+			final int vA = triangleX[i];
+			final int vB = triangleY[i];
+			final int vC = triangleZ[i];
+
+			int y1 = rl$modelViewportYs[vA];
+			int y2 = rl$modelViewportYs[vB];
+			int y3 = rl$modelViewportYs[vC];
+
+			int x1 = rl$modelViewportXs[vA];
+			int x2 = rl$modelViewportXs[vB];
+			int x3 = rl$modelViewportXs[vC];
+
+			if (y1 == -5000 || y2 == -5000 || y3 == -5000)
+			{
+				continue;
+			}
+
+			final int radius = model.isClickable() ? 20 : 5;
+
+			int var18 = radius + viewportMouseY;
+			boolean var34;
+			if (var18 < x1 && var18 < x2 && var18 < x3)
+			{
+				var34 = false;
+			}
+			else
+			{
+				var18 = viewportMouseY - radius;
+				if (var18 > x1 && var18 > x2 && var18 > x3)
+				{
+					var34 = false;
+				}
+				else
+				{
+					var18 = radius + viewportMouseX;
+					if (var18 < y1 && var18 < y2 && var18 < y3)
+					{
+						var34 = false;
+					}
+					else
+					{
+						var18 = viewportMouseX - radius;
+						if (var18 > y1 && var18 > y2 && var18 > y3)
+						{
+							var34 = false;
+						}
+						else
+						{
+							var34 = true;
+						}
+					}
+				}
+			}
+
+			if (var34)
+			{
+				addHashAtMouse(hash);
+				break;
+			}
+		}
+	}
+
+	@Inject
+	private void addHashAtMouse(long hash)
+	{
+		long[] entitiesAtMouse = client.getEntitiesAtMouse();
+		int count = client.getEntitiesAtMouseCount();
+		if (count < MAX_ENTITES_AT_MOUSE)
+		{
+			entitiesAtMouse[count] = hash;
+			client.setEntitiesAtMouseCount(count + 1);
+		}
+	}
+
+	@Inject
+	private boolean boundingboxCheck(Model model, int x, int y, int z)
+	{
+		final int cameraPitch = client.getCameraPitch();
+		final int cameraYaw = client.getCameraYaw();
+
+		final int pitchSin = Perspective.SINE[cameraPitch];
+		final int pitchCos = Perspective.COSINE[cameraPitch];
+
+		final int yawSin = Perspective.SINE[cameraYaw];
+		final int yawCos = Perspective.COSINE[cameraYaw];
+
+		final int centerX = client.getCenterX();
+		final int centerY = client.getCenterY();
+
+		final int viewportMouseX = client.getViewportMouseX();
+		final int viewportMouseY = client.getViewportMouseY();
+
+		final int Rasterizer3D_zoom = client.get3dZoom();
+
+		int var6 = (viewportMouseX - centerX) * CLICKBOX_CLOSE / Rasterizer3D_zoom;
+		int var7 = (viewportMouseY - centerY) * CLICKBOX_CLOSE / Rasterizer3D_zoom;
+		int var8 = (viewportMouseX - centerX) * CLICKBOX_FAR / Rasterizer3D_zoom;
+		int var9 = (viewportMouseY - centerY) * CLICKBOX_FAR / Rasterizer3D_zoom;
+		int var10 = rl$rot1(var7, CLICKBOX_CLOSE, pitchCos, pitchSin);
+		int var11 = rl$rot2(var7, CLICKBOX_CLOSE, pitchCos, pitchSin);
+		var7 = var10;
+		var10 = rl$rot1(var9, CLICKBOX_FAR, pitchCos, pitchSin);
+		int var12 = rl$rot2(var9, CLICKBOX_FAR, pitchCos, pitchSin);
+		var9 = var10;
+		var10 = rl$rot3(var6, var11, yawCos, yawSin);
+		var11 = rl$rot4(var6, var11, yawCos, yawSin);
+		var6 = var10;
+		var10 = rl$rot3(var8, var12, yawCos, yawSin);
+		var12 = rl$rot4(var8, var12, yawCos, yawSin);
+		int field1720 = (var10 - var6) / 2;
+		int field638 = (var9 - var7) / 2;
+		int field1846 = (var12 - var11) / 2;
+		int field1722 = Math.abs(field1720);
+		int field601 = Math.abs(field638);
+		int field38 = Math.abs(field1846);
+
+		int var38 = x + model.getCenterX();
+		int var39 = y + model.getCenterY();
+		int var40 = z + model.getCenterZ();
+		int var41 = model.getExtremeX();
+		int var42 = model.getExtremeY();
+		int var43 = model.getExtremeZ();
+
+		int field1861 = (var6 + var10) / 2;
+		int field2317 = (var7 + var9) / 2;
+		int field528 = (var12 + var11) / 2;
+
+		int var44 = field1861 - var38;
+		int var45 = field2317 - var39;
+		int var46 = field528 - var40;
+
+		boolean passes;
+		if (Math.abs(var44) > var41 + field1722)
+		{
+			passes = false;
+		}
+		else if (Math.abs(var45) > var42 + field601)
+		{
+			passes = false;
+		}
+		else if (Math.abs(var46) > var43 + field38)
+		{
+			passes = false;
+		}
+		else if (Math.abs(var46 * field638 - var45 * field1846) > var42 * field38 + var43 * field601)
+		{
+			passes = false;
+		}
+		else if (Math.abs(var44 * field1846 - var46 * field1720) > var43 * field1722 + var41 * field38)
+		{
+			passes = false;
+		}
+		else if (Math.abs(var45 * field1720 - var44 * field638) > var42 * field1722 + var41 * field601)
+		{
+			passes = false;
+		}
+		else
+		{
+			passes = true;
+		}
+
+		return passes;
+	}
 
 	@Inject
 	private static int rl$rot1(int var0, int var1, int var2, int var3)
@@ -44,188 +316,5 @@ public abstract class ClickboxMixin implements RSClient
 	private static int rl$rot4(int var0, int var1, int var2, int var3)
 	{
 		return var3 * var0 + var2 * var1 >> 16;
-	}
-
-	@Inject
-	public void checkClickbox(net.runelite.api.Model model, int n2, int n3, int n4, int n5, int n6, int n7, int n8, int n9, long l2)
-	{
-		int n10;
-		int n11;
-		int n12;
-		int n13;
-		int n14;
-		net.runelite.rs.api.RSModel rSModel = (net.runelite.rs.api.RSModel) model;
-		boolean bl2 = l2 != 0L && (int) (l2 >>> 16 & 1L) != 1;
-		boolean bl3 = client.getViewportContainsMouse();
-		if (!bl2)
-		{
-			return;
-		}
-		if (!bl3)
-		{
-			return;
-		}
-		boolean bl4 = this.boundingboxCheck(rSModel, n7, n8, n9);
-		if (!bl4)
-		{
-			return;
-		}
-		if (rSModel.isClickable())
-		{
-			this.addHashAtMouse(l2);
-			return;
-		}
-		int n15 = rSModel.getVerticesCount();
-		int n16 = rSModel.getTrianglesCount();
-		int[] arrn = rSModel.getVerticesX();
-		int[] arrn2 = rSModel.getVerticesY();
-		int[] arrn3 = rSModel.getVerticesZ();
-		int[] arrn4 = rSModel.getTrianglesX();
-		int[] arrn5 = rSModel.getTrianglesY();
-		int[] arrn6 = rSModel.getTrianglesZ();
-		int[] arrn7 = rSModel.getFaceColors3();
-		int n17 = client.get3dZoom();
-		int n18 = client.getCenterX();
-		int n19 = client.getCenterY();
-		int n20 = 0;
-		int n21 = 0;
-		if (n2 != 0)
-		{
-			n20 = net.runelite.api.Perspective.SINE[n2];
-			n21 = net.runelite.api.Perspective.COSINE[n2];
-		}
-		for (n14 = 0; n14 < n15; ++n14)
-		{
-			n11 = arrn[n14];
-			n13 = arrn2[n14];
-			n12 = arrn3[n14];
-			if (n2 != 0)
-			{
-				n10 = n12 * n20 + n11 * n21 >> 16;
-				n12 = n12 * n21 - n11 * n20 >> 16;
-				n11 = n10;
-			}
-			n10 = (n12 += n9) * n5 + n6 * (n11 += n7) >> 16;
-			n12 = n6 * n12 - n11 * n5 >> 16;
-			n11 = n10;
-			n10 = n4 * (n13 += n8) - n12 * n3 >> 16;
-			if ((n12 = n13 * n3 + n4 * n12 >> 16) >= 50)
-			{
-				rl$modelViewportYs[n14] = n11 * n17 / n12 + n18;
-				rl$modelViewportXs[n14] = n10 * n17 / n12 + n19;
-				continue;
-			}
-			rl$modelViewportYs[n14] = -5000;
-		}
-		n14 = client.getViewportMouseX();
-		n11 = client.getViewportMouseY();
-		n13 = 0;
-		while (n13 < n16)
-		{
-			if (arrn7[n13] != -2)
-			{
-				int n22;
-				boolean bl5;
-				int n23;
-				n12 = arrn4[n13];
-				n10 = arrn5[n13];
-				int n24 = arrn6[n13];
-				int n25 = rl$modelViewportYs[n12];
-				int n26 = rl$modelViewportYs[n10];
-				int n27 = rl$modelViewportYs[n24];
-				int n28 = rl$modelViewportXs[n12];
-				int n29 = rl$modelViewportXs[n10];
-				int n30 = rl$modelViewportXs[n24];
-				if (n25 != -5000 && n26 != -5000 && n27 != -5000 && (bl5 = ((n23 = (n22 = rSModel.isClickable() ? 20
-					: 5) + n11) >= n28 || n23 >= n29 || n23 >= n30) && (((n23 = n11 - n22) <= n28 || n23 <= n29 || n23 <= n30) && (((n23 = n22 + n14) >= n25 || n23 >= n26 || n23 >= n27) && ((n23 = n14 - n22) <= n25 || n23 <= n26 || n23 <= n27)))))
-				{
-					this.addHashAtMouse(l2);
-					return;
-				}
-			}
-			++n13;
-		}
-	}
-
-	@Inject
-	private void addHashAtMouse(long hash)
-	{
-		long[] entitiesAtMouse = client.getEntitiesAtMouse();
-		int count = client.getEntitiesAtMouseCount();
-		if (count < MAX_ENTITES_AT_MOUSE)
-		{
-			entitiesAtMouse[count] = hash;
-			client.setEntitiesAtMouseCount(count + 1);
-		}
-	}
-
-	@Inject
-	public boolean boundingboxCheck(net.runelite.api.Model model, int n2, int n3, int n4)
-	{
-		int n5 = client.getCameraPitch();
-		int n6 = client.getCameraYaw();
-		int n7 = net.runelite.api.Perspective.SINE[n5];
-		int n8 = net.runelite.api.Perspective.COSINE[n5];
-		int n9 = net.runelite.api.Perspective.SINE[n6];
-		int n10 = net.runelite.api.Perspective.COSINE[n6];
-		int n11 = client.getCenterX();
-		int n12 = client.getCenterY();
-		int n13 = client.getViewportMouseX();
-		int n14 = client.getViewportMouseY();
-		int n15 = client.get3dZoom();
-		int n16 = (n13 - n11) * 50 / n15;
-		int n17 = (n14 - n12) * 50 / n15;
-		int n18 = (n13 - n11) * 10000 / n15;
-		int n19 = (n14 - n12) * 10000 / n15;
-		int n20 = rl$rot1(n17, 50, n8, n7);
-		int n21 = rl$rot2(n17, 50, n8, n7);
-		n17 = n20;
-		n20 = rl$rot1(n19, 10000, n8, n7);
-		int n22 = rl$rot2(n19, 10000, n8, n7);
-		n19 = n20;
-		n20 = rl$rot3(n16, n21, n10, n9);
-		n21 = rl$rot4(n16, n21, n10, n9);
-		n16 = n20;
-		n20 = rl$rot3(n18, n22, n10, n9);
-		n22 = rl$rot4(n18, n22, n10, n9);
-		int n23 = (n20 - n16) / 2;
-		int n24 = (n19 - n17) / 2;
-		int n25 = (n22 - n21) / 2;
-		int n26 = Math.abs(n23);
-		int n27 = Math.abs(n24);
-		int n28 = Math.abs(n25);
-		int n29 = n2 + model.getCenterX();
-		int n30 = n3 + model.getCenterY();
-		int n31 = n4 + model.getCenterZ();
-		int n32 = model.getExtremeX();
-		int n33 = model.getExtremeY();
-		int n34 = model.getExtremeZ();
-		int n35 = (n16 + n20) / 2;
-		int n36 = (n17 + n19) / 2;
-		int n37 = (n22 + n21) / 2;
-		int n38 = n35 - n29;
-		int n39 = n36 - n30;
-		int n40 = n37 - n31;
-		if (Math.abs(n38) > n32 + n26)
-		{
-			return false;
-		}
-		if (Math.abs(n39) > n33 + n27)
-		{
-			return false;
-		}
-		if (Math.abs(n40) > n34 + n28)
-		{
-			return false;
-		}
-		if (Math.abs(n40 * n24 - n39 * n25) > n33 * n28 + n34 * n27)
-		{
-			return false;
-		}
-		if (Math.abs(n38 * n25 - n40 * n23) > n34 * n26 + n32 * n28)
-		{
-			return false;
-		}
-		return Math.abs(n39 * n23 - n38 * n24) <= n33 * n26 + n32 * n27;
 	}
 }

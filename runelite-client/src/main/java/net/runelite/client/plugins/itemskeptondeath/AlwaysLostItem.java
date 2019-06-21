@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, ganom <https://github.com/Ganom>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,6 +10,7 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -21,26 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.coxhelper;
+package net.runelite.client.plugins.itemskeptondeath;
 
-import java.awt.Font;
+import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.ItemID;
 
-@Getter
+/**
+ * Certain Items receive a white outline by Jagex as they are always lost on death. This is sometimes incorrectly
+ * added to Items by Jagex as the item is actually kept in non-pvp areas of the game, such as the Rune Pouch.
+ *
+ * The white outline will be added to these items when they are lost on death.
+ */
 @AllArgsConstructor
-public enum FontStyle
+@Getter
+enum AlwaysLostItem
 {
-	BOLD("Bold", Font.BOLD),
-	ITALIC("Italic", Font.ITALIC),
-	PLAIN("Plain", Font.PLAIN);
+	RUNE_POUCH(ItemID.RUNE_POUCH, true),
+	LOOTING_BAG(ItemID.LOOTING_BAG, false),
+	CLUE_BOX(ItemID.CLUE_BOX, false);
 
-	private String name;
-	private int font;
+	private final int itemID;
+	private final boolean keptOutsideOfWilderness;
 
-	@Override
-	public String toString()
+	private static final ImmutableMap<Integer, AlwaysLostItem> ID_MAP;
+
+	static
 	{
-		return getName();
+		final ImmutableMap.Builder<Integer, AlwaysLostItem> map = ImmutableMap.builder();
+		for (final AlwaysLostItem p : values())
+		{
+			map.put(p.itemID, p);
+		}
+		ID_MAP = map.build();
+	}
+
+	static AlwaysLostItem getByItemID(final int itemID)
+	{
+		return ID_MAP.get(itemID);
 	}
 }

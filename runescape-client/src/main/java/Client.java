@@ -3983,7 +3983,7 @@ public final class Client extends GameShell implements Usernamed {
          class48.method868();
       } else {
          if(!isMenuOpen) {
-            class30.method569();
+            class30.resetMenuEntries();
          }
 
          int var1;

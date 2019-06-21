@@ -986,8 +986,10 @@ public interface RSClient extends RSGameShell, Client
 	void rasterizerDrawCircle(int x, int y, int r, int rgb);
 
 	@Import("HealthBarDefinition_cached")
-	@Override
 	RSEvictingDualNodeHashTable getHealthBarCache();
+
+	@Import("HealthBarDefinition_cachedSprites")
+	RSEvictingDualNodeHashTable getHealthBarSpriteCache();
 
 	@Import("renderSelf")
 	@Override
@@ -1001,4 +1003,5 @@ public interface RSClient extends RSGameShell, Client
 	
 	@Import("isSpellSelected")
 	boolean getIsSpellSelected();
+
 }

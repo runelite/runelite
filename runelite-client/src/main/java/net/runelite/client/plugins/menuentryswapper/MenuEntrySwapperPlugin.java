@@ -1428,6 +1428,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			menuManager.addSwap("remove", "max cape", config.maxMode().toString());
 		}
+		if (config.swapQuestCape())
+		{
+			menuManager.addSwap("remove", "quest point cape", config.questCapeMode().toString());
+		}
 	}
 
 	private void removeSwaps()
@@ -1444,6 +1448,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removeSwaps("slayer ring");
 		menuManager.removeSwaps("xeric's talisman");
 		menuManager.removeSwaps("ring of wealth");
+		menuManager.removeSwaps("max cape");
+		menuManager.removeSwaps("quest point cape");
+		
 	}
 
 	private void delete(int target)

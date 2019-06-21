@@ -26,6 +26,9 @@
 package net.runelite.client.plugins.coxhelper;
 
 import java.awt.Color;
+import java.awt.Font;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -36,6 +39,24 @@ import net.runelite.client.config.Stub;
 
 public interface CoxConfig extends Config
 {
+	@Getter
+	@AllArgsConstructor
+	public enum FontStyle
+	{
+		BOLD("Bold", Font.BOLD),
+		ITALIC("Italic", Font.ITALIC),
+		PLAIN("Plain", Font.PLAIN);
+
+		private String name;
+		private int font;
+
+		@Override
+		public String toString()
+		{
+			return getName();
+		}
+	}
+
 	@ConfigItem(
 		position = 1,
 		keyName = "muttadileStub",
@@ -48,12 +69,12 @@ public interface CoxConfig extends Config
 	}
 	@ConfigItem(
 		position = 2,
-		keyName = "Muttadile",
+		keyName = "muttadile",
 		name = "Muttadile Marker",
 		description = "Places an overlay around muttadiles showing their melee range.",
 		parent = "muttadileStub"
 	)
-	default boolean Muttadile()
+	default boolean muttadile()
 	{
 		return true;
 	}
@@ -71,12 +92,12 @@ public interface CoxConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "Tekton",
+		keyName = "tekton",
 		name = "Tekton Marker",
 		description = "Places an overlay around Tekton showing his melee range.",
 		parent = "tektonStub"
 	)
-	default boolean Tekton()
+	default boolean tekton()
 	{
 		return true;
 	}
@@ -106,12 +127,24 @@ public interface CoxConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "Guardians",
-		name = "Guardians timing",
+		keyName = "guardians",
+		name = "Guardians Overlay",
 		description = "Places an overlay near Guardians showing safespot.",
 		parent = "guardiansStub"
 	)
-	default boolean Guardians()
+	default boolean guardians()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "guardinTickCounter",
+		name = "Guardians Tick Timing",
+		description = "Places an overlay on Guardians showing attack tick timers.",
+		parent = "guardiansStub"
+	)
+	default boolean guardinTickCounter()
 	{
 		return true;
 	}
@@ -200,12 +233,12 @@ public interface CoxConfig extends Config
 
 	@ConfigItem(
 		position = 14,
-		keyName = "OlmTick",
+		keyName = "olmTick",
 		name = "Olm Tick Counter",
 		description = "Show Tick Counter on Olm",
 		parent = "olmStub"
 	)
-	default boolean OlmTick()
+	default boolean olmTick()
 	{
 		return true;
 	}
