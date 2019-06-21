@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
+ * Copyright (c) 2019, Twiglet1022 <https://github.com/Twiglet1022>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.inventorygrid;
+package net.runelite.client.config;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup("inventorygrid")
-public interface InventoryGridConfig extends Config
+@Getter
+@RequiredArgsConstructor
+public enum FlashNotification
 {
-	@ConfigItem(
-		keyName = "showItem",
-		name = "Show item",
-		description = "Show a preview of the item in the new slot"
-	)
-	default boolean showItem()
-	{
-		return true;
-	}
+	DISABLED("Off"),
+	FLASH_TWO_SECONDS("Flash for 2 seconds"),
+	SOLID_TWO_SECONDS("Solid for 2 seconds"),
+	FLASH_UNTIL_CANCELLED("Flash until cancelled"),
+	SOLID_UNTIL_CANCELLED("Solid until cancelled");
 
-	@ConfigItem(
-		keyName = "showGrid",
-		name = "Show grid",
-		description = "Show a grid on the inventory while dragging"
-	)
-	default boolean showGrid()
-	{
-		return true;
-	}
+	private final String type;
 
-	@ConfigItem(
-		keyName = "showHighlight",
-		name = "Highlight background",
-		description = "Show a green background highlight on the new slot"
-	)
-	default boolean showHighlight()
+	@Override
+	public String toString()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "dragDelay",
-		name = "Drag Delay",
-		description = "Time in ms to wait after item press before showing grid"
-	)
-	@Range(min = 100)
-	default int dragDelay()
-	{
-		return 100;
+		return type;
 	}
 }

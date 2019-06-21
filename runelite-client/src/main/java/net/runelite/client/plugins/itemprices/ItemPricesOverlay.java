@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemDefinition;
@@ -194,6 +195,7 @@ class ItemPricesOverlay extends Overlay
 		int gePrice = 0;
 		int haPrice = 0;
 		int haProfit = 0;
+		final int itemHaPrice = Math.round(itemDef.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
 
 		if (config.showGEPrice())
 		{
@@ -203,9 +205,9 @@ class ItemPricesOverlay extends Overlay
 		{
 			haPrice = itemManager.getAlchValue(id);
 		}
-		if (gePrice > 0 && haPrice > 0 && config.showAlchProfit())
+		if (gePrice > 0 && itemHaPrice > 0 && config.showAlchProfit())
 		{
-			haProfit = calculateHAProfit(haPrice, gePrice);
+			haProfit = calculateHAProfit(itemHaPrice, gePrice);
 		}
 
 		if (gePrice > 0 || haPrice > 0)

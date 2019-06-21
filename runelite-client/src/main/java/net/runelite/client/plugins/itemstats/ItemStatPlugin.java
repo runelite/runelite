@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.FontID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -232,8 +233,8 @@ public class ItemStatPlugin extends Plugin
 		Widget icon = invContainer.createChild(-1, WidgetType.GRAPHIC);
 		icon.setOriginalX(8);
 		icon.setOriginalY(yPos);
-		icon.setOriginalWidth(36);
-		icon.setOriginalHeight(32);
+		icon.setOriginalWidth(Constants.ITEM_SPRITE_WIDTH);
+		icon.setOriginalHeight(Constants.ITEM_SPRITE_HEIGHT);
 		icon.setItemId(id);
 		icon.setItemQuantityMode(0);
 		icon.setBorderType(1);
