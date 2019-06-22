@@ -58,18 +58,6 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.drawPileHull())
-		{
-			playerIndicatorsService.forEachPlayer((player, color) ->
-			{
-				if (playerIndicatorsPlugin.isPile(player))
-				{
-					Polygon objectClickbox = player.getConvexHull();
-
-					renderPoly(graphics, config.pileColor(), objectClickbox);
-				}
-			});
-		}
 		if (!config.drawTiles() /*&& !config.drawPlayerHull()*/)
 		{
 			return null;
@@ -89,15 +77,4 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 		return null;
 	}
 
-	private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
-	{
-		if (polygon != null)
-		{
-			graphics.setColor(color);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(polygon);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-			graphics.fill(polygon);
-		}
-	}
 }

@@ -129,35 +129,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
-	{
-		if (config.highlightPile() && callers != null)
-		{
-			for (Player p : client.getPlayers())
-			{
-				for (String name : callers)
-				{
-					Actor pile;
-					String finalName = name.toLowerCase().replace("_", " ");
-					if (p.getName().toLowerCase().replace("_", " ").equals(finalName))
-					{
-						pile = p.getInteracting();
-						if (pile != null)
-						{
-							pileList.set(callers.indexOf(name), pile.getName());
-							//pileList.add(pile.getName());
-						}
-						else
-						{
-							pileList.set(callers.indexOf(name), "");
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@Subscribe
 	public void onClanMemberJoined(ClanMemberJoined event)
 	{
 		getCallerList();
@@ -213,14 +184,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 		return false;
 	}
 
-	boolean isPile(Player player)
-	{
-		if (Objects.nonNull(pileList) && pileList.size() > 0)
-		{
-			return pileList.contains(player.getName());
-		}
-		return false;
-	}
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
@@ -327,10 +290,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 			if (config.colorPlayerMenu() && config.highlightCallers() && this.isCaller(player))
 			{
 				color = config.callerColor();
-			}
-			if (config.colorPlayerMenu() && config.highlightPile() && this.isPile(player))
-			{
-				color = config.pileColor();
 			}
 			if (image != -1 || color != null)
 			{
