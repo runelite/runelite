@@ -249,7 +249,7 @@ public class InfernoPlugin extends Plugin
 				{
 				message = message.substring(message.indexOf(": ") + 2);
 				currentWaveNumber = Integer.parseInt(message.substring(0, message.indexOf("<")));
-				nextWaveNumber = ((currentWaveNumber < 63) ? (currentWaveNumber + 1) : -1);
+				nextWaveNumber = ((currentWaveNumber < 69) ? (currentWaveNumber + 1) : -1);
 				}
 
 		}
