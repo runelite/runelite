@@ -1,6 +1,5 @@
 package net.runelite.client.plugins.inferno;
 
-import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Map;
 import com.google.inject.Inject;
