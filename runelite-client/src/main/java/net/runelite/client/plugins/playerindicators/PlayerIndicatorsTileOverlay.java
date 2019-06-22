@@ -25,8 +25,6 @@
 
 package net.runelite.client.plugins.playerindicators;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
