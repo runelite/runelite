@@ -56,19 +56,19 @@ public class DrawAfterWidgetsTest
 	}
 
 	@Test
-	public void testInjectDrawWidgetsRev153() throws Exception
+	public void testInjectDrawWidgetsRev180() throws Exception
 	{
-		// Rev 153 has the drawWidgets call inlined
+		// Rev 180 has the drawWidgets call inlined
 
-		ClassFile deobClient = ClassUtil.loadClass(getClass().getResourceAsStream("/drawafterwidgets/Client_deob153.class"));
-		ClassFile deobRasterizer = ClassUtil.loadClass(getClass().getResourceAsStream("/drawafterwidgets/Rasterizer2D_deob153.class"));
+		ClassFile deobClient = ClassUtil.loadClass(getClass().getResourceAsStream("/drawafterwidgets/Client_deob180.class"));
+		ClassFile deobRasterizer = ClassUtil.loadClass(getClass().getResourceAsStream("/drawafterwidgets/Rasterizer2D_deob180.class"));
 
 		ClassGroup deob = new ClassGroup();
 		deob.addClass(deobClient);
 		deob.addClass(deobRasterizer);
 
-		ClassFile obClient = ClassUtil.loadClass(getClass().getResourceAsStream("/drawafterwidgets/Client_ob153.class"));
-		ClassFile obRasterizer = ClassUtil.loadClass(getClass().getResourceAsStream("/drawafterwidgets/Rasterizer2D_ob153.class"));
+		ClassFile obClient = ClassUtil.loadClass(getClass().getResourceAsStream("/drawafterwidgets/Client_ob180.class"));
+		ClassFile obRasterizer = ClassUtil.loadClass(getClass().getResourceAsStream("/drawafterwidgets/Rasterizer2D_ob180.class"));
 
 		ClassGroup vanilla = new ClassGroup();
 		vanilla.addClass(obClient);
