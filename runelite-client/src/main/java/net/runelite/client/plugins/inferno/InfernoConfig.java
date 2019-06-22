@@ -27,7 +27,7 @@ package net.runelite.client.plugins.inferno;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import java.awt.color;
+import java.awt.Color;
 
 @ConfigGroup("inferno")
 public interface InfernoConfig extends Config
