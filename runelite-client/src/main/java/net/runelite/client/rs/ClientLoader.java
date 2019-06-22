@@ -26,55 +26,27 @@
  */
 package net.runelite.client.rs;
 
-import net.runelite.api.Client;
+import java.net.URLClassLoader;
 import java.applet.Applet;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.jar.Attributes;
-import java.util.jar.JarEntry;
-import java.util.jar.JarInputStream;
-import java.util.jar.Manifest;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import static net.runelite.client.RuneLite.RUNELITE_DIR;
-import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
-import static net.runelite.client.rs.ClientUpdateCheckMode.CUSTOM;
-import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Request;
-import okhttp3.Response;
 
 @Slf4j
 @Singleton
 public class ClientLoader
 {
-	private static final File LOCAL_INJECTED_CLIENT = new File("./injected-client/target/injected-client-" + RuneLiteAPI.getVersion() + ".jar");
-	private static final File INJECTED_CLIENT = new File(RUNELITE_DIR + "/injected-client.jar");
 	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
 	public static boolean useLocalInjected = false;
 
 	@Inject
 	private ClientLoader(
-			@Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode,
-			final ClientConfigLoader clientConfigLoader)
+		@Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode,
+		final ClientConfigLoader clientConfigLoader)
 	{
 		this.updateCheckMode = updateCheckMode;
 		this.clientConfigLoader = clientConfigLoader;
@@ -84,126 +56,27 @@ public class ClientLoader
 	{
 		try
 		{
-			Manifest manifest = new Manifest();
-			manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
-			RSConfig config = clientConfigLoader.fetch();
+			final RSConfig config = clientConfigLoader.fetch();
 
-			Map<String, byte[]> zipFile = new HashMap<>();
-
-			if (updateCheckMode == VANILLA)
+			switch (updateCheckMode)
 			{
-				Certificate[] jagexCertificateChain = getJagexCertificateChain();
-				String codebase = config.getCodeBase();
-				String initialJar = config.getInitialJar();
-				URL url = new URL(codebase + initialJar);
-				Request request = new Request.Builder()
-						.url(url)
-						.build();
-
-				try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-				{
-					JarInputStream jis;
-
-					jis = new JarInputStream(response.body().byteStream());
-					byte[] tmp = new byte[4096];
-					ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
-					for (; ; )
-					{
-						JarEntry metadata = jis.getNextJarEntry();
-						if (metadata == null)
-						{
-							break;
-						}
-
-						buffer.reset();
-						for (; ; )
-						{
-							int n = jis.read(tmp);
-							if (n <= -1)
-							{
-								break;
-							}
-							buffer.write(tmp, 0, n);
-						}
-
-						if (!Arrays.equals(metadata.getCertificates(), jagexCertificateChain))
-						{
-							if (metadata.getName().startsWith("META-INF/"))
-							{
-								// META-INF/JAGEXLTD.SF and META-INF/JAGEXLTD.RSA are not signed, but we don't need
-								// anything in META-INF anyway.
-								continue;
-							}
-							else
-							{
-								throw new VerificationException("Unable to verify jar entry: " + metadata.getName());
-							}
-						}
-
-						zipFile.put(metadata.getName(), buffer.toByteArray());
-					}
-				}
+				case AUTO:
+				case CUSTOM:
+					return loadRLPlus(config);
+				default:
+				case VANILLA:
+					return loadVanilla(config);
+				case NONE:
+					return null;
 			}
-			else if (updateCheckMode == CUSTOM || useLocalInjected)
-			{
-				log.info("Loading injected client from {}", LOCAL_INJECTED_CLIENT.getAbsolutePath());
-				loadJar(zipFile, LOCAL_INJECTED_CLIENT);
-			}
-			else if (updateCheckMode == AUTO)
-			{
-				URL url = new URL("https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/injected-client.jar");
-				ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
-				INJECTED_CLIENT.mkdirs();
-
-				if (!INJECTED_CLIENT.exists() || getFileSize(INJECTED_CLIENT.toURI().toURL()) != getFileSize(url))
-				{
-					log.info("{} injected client", INJECTED_CLIENT.exists() ? "Updating" : "Initializing");
-					INJECTED_CLIENT.delete();
-					INJECTED_CLIENT.createNewFile();
-					updateInjectedClient(readableByteChannel);
-				}
-
-				log.info("Loading injected client from {}", INJECTED_CLIENT.getAbsolutePath());
-				loadJar(zipFile, INJECTED_CLIENT);
-			}
-
-			String initialClass = config.getInitialClass();
-
-			ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
-			{
-				@Override
-				protected Class<?> findClass(String name) throws ClassNotFoundException
-				{
-					String path = name.replace('.', '/').concat(".class");
-					byte[] data = zipFile.get(path);
-					if (data == null)
-					{
-						throw new ClassNotFoundException(name);
-					}
-
-					return defineClass(name, data, 0, data.length);
-				}
-			};
-
-			Class<?> clientClass = rsClassLoader.loadClass(initialClass);
-
-			Applet rs = (Applet) clientClass.newInstance();
-			rs.setStub(new RSAppletStub(config));
-
-			if (rs instanceof Client)
-			{
-				log.info("client-patch 420 blaze it RL pricks");
-			}
-
-			return rs;
 		}
-		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | SecurityException | VerificationException | CertificateException e)
+		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
 		{
 			if (e instanceof ClassNotFoundException)
 			{
 				log.error("Unable to load client - class not found. This means you"
-						+ " are not running RuneLite with Maven as the client patch"
-						+ " is not in your classpath.");
+					+ " are not running RuneLite with Maven as the injected client"
+					+ " is not in your classpath.");
 			}
 
 			log.error("Error loading RS!", e);
@@ -211,66 +84,31 @@ public class ClientLoader
 		}
 	}
 
-	private static int getFileSize(URL url) throws IOException
+	private static Applet loadRLPlus(final RSConfig config) throws ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		URLConnection conn = null;
-		try
-		{
-			conn = url.openConnection();
-			if (conn instanceof HttpURLConnection)
-			{
-				((HttpURLConnection) conn).setRequestMethod("HEAD");
-			}
-			conn.getInputStream();
-			return conn.getContentLength();
-		}
-		finally
-		{
-			if (conn instanceof HttpURLConnection)
-			{
-				((HttpURLConnection) conn).disconnect();
-			}
-		}
+		// the injected client is a runtime scoped dependency
+		final Class<?> clientClass = ClientLoader.class.getClassLoader().loadClass(config.getInitialClass());
+		return loadFromClass(config, clientClass);
 	}
 
-	private void updateInjectedClient(ReadableByteChannel readableByteChannel) throws IOException
+	private static Applet loadVanilla(final RSConfig config) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		FileOutputStream fileOutputStream = new FileOutputStream(INJECTED_CLIENT);
-		fileOutputStream.getChannel()
-				.transferFrom(readableByteChannel, 0, Integer.MAX_VALUE);
+		final String codebase = config.getCodeBase();
+		final String initialJar = config.getInitialJar();
+		final String initialClass = config.getInitialClass();
+		final URL url = new URL(codebase + initialJar);
+
+		// Must set parent classloader to null, or it will pull from
+		// this class's classloader first
+		final URLClassLoader classloader = new URLClassLoader(new URL[]{url}, null);
+		final Class<?> clientClass = classloader.loadClass(initialClass);
+		return loadFromClass(config, clientClass);
 	}
 
-	private static Certificate[] getJagexCertificateChain() throws CertificateException
+	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass) throws IllegalAccessException, InstantiationException
 	{
-		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-		Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
-		return certificates.toArray(new Certificate[0]);
-	}
-
-	private static void loadJar(Map<String, byte[]> toMap, File fromFile) throws IOException
-	{
-		JarInputStream fis = new JarInputStream(new FileInputStream(fromFile));
-		byte[] tmp = new byte[4096];
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
-		for (; ; )
-		{
-			JarEntry metadata = fis.getNextJarEntry();
-			if (metadata == null)
-			{
-				break;
-			}
-
-			buffer.reset();
-			for (; ; )
-			{
-				int n = fis.read(tmp);
-				if (n <= -1)
-				{
-					break;
-				}
-				buffer.write(tmp, 0, n);
-			}
-			toMap.put(metadata.getName(), buffer.toByteArray());
-		}
+		final Applet rs = (Applet) clientClass.newInstance();
+		rs.setStub(new RSAppletStub(config));
+		return rs;
 	}
 }
