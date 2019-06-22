@@ -158,6 +158,7 @@ public class InfernoPlugin extends Plugin
 			jad = null;
 			attack = null;
 			monster = null;
+			monsters = null;
 			waves = null;
 			currentWaveNumber = -1;
 			nextWaveNumber = -1;
