@@ -116,7 +116,7 @@ public class InfernoWaveOverlay extends Overlay
 					|| config.waveDisplay() == InfernoWaveDisplayMode.BOTH)
 					&& plugin.isNotFinalWave())
 				{
-				renderWave("Next Wave (Wave " + plugin.getNextWaveNumber()  + ")", plugin.getCurrentWaveNumber());
+				renderWave("Next Wave (Wave " + plugin.getNextWaveNumber()  + ")", plugin.getNextWaveNumber());
 				}
 			return panelComponent.render(graphics);
 		}
