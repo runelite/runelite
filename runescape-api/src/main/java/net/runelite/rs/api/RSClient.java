@@ -986,4 +986,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("healthBarSpriteCache")
 	RSNodeCache getHealthBarSpriteCache();
+
+	@Import("viewportWalking")
+	void setViewportWalking(boolean walking);
 }

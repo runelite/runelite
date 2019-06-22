@@ -1632,4 +1632,6 @@ public interface Client extends GameEngine
 	void draw2010Menu();
 
 	void resetHealthBarCaches();
+
+	void setViewportWalking(boolean walking);
 }

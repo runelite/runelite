@@ -76,6 +76,10 @@ public class TileIndicatorsOverlay extends Overlay
 			{
 				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), config.highlightHoveredColor());
 			}
+			else
+			{
+				client.setViewportWalking(false);
+			}
 		}
 
 		if (config.highlightDestinationTile())
