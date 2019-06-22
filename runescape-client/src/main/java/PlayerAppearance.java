@@ -47,6 +47,11 @@ public class PlayerAppearance {
    @Export("__u")
    long __u;
 
+   static {
+      __hi_d = new int[]{8, 11, 4, 6, 9, 7, 10};
+      PlayerAppearance_cachedModels = new EvictingDualNodeHashTable(260);
+   }
+
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "([I[IZII)V",
@@ -89,30 +94,25 @@ public class PlayerAppearance {
 
             KitDefinition var4;
             do {
-               do {
-                  do {
-                     if(!var2) {
-                        --var3;
-                        if(var3 < 0) {
-                           var3 = KitDefinition.__im_q - 1;
-                        }
-                     } else {
-                        ++var3;
-                        if(var3 >= KitDefinition.__im_q) {
-                           var3 = 0;
-                        }
-                     }
+               if(!var2) {
+                  --var3;
+                  if(var3 < 0) {
+                     var3 = KitDefinition.__im_q - 1;
+                  }
+               } else {
+                  ++var3;
+                  if(var3 >= KitDefinition.__im_q) {
+                     var3 = 0;
+                  }
+               }
 
-                     var4 = WorldMapSection1.getKitDefinition(var3);
-                  } while(var4 == null);
-               } while(var4.__k);
-            } while(var1 + (this.isFemale?7:0) != var4.__o);
+               var4 = WorldMapSection1.getKitDefinition(var3);
+            } while(var4 == null || var4.__k || var1 + (this.isFemale?7:0) != var4.__o);
 
             this.equipment[__hi_d[var1]] = var3 + 256;
             this.setHash();
          }
       }
-
    }
 
    @ObfuscatedName("q")
@@ -153,7 +153,6 @@ public class PlayerAppearance {
       if(this.isFemale != var1) {
          this.__m_385((int[])null, this.bodyColors, var1, -1);
       }
-
    }
 
    @ObfuscatedName("o")
@@ -241,8 +240,8 @@ public class PlayerAppearance {
          if(var1 != null && (var1.shield >= 0 || var1.weapon >= 0)) {
             var7 = new int[12];
 
-            for(int var8 = 0; var8 < 12; ++var8) {
-               var7[var8] = this.equipment[var8];
+            for(int var15 = 0; var15 < 12; ++var15) {
+               var7[var15] = this.equipment[var15];
             }
 
             if(var1.shield >= 0) {
@@ -256,86 +255,86 @@ public class PlayerAppearance {
             }
          }
 
-         Model var15 = (Model)PlayerAppearance_cachedModels.get(var5);
-         if(var15 == null) {
+         Model var8 = (Model)PlayerAppearance_cachedModels.get(var5);
+         if(var8 == null) {
             boolean var9 = false;
 
-            int var10;
-            for(int var11 = 0; var11 < 12; ++var11) {
-               var10 = var7[var11];
-               if(var10 >= 256 && var10 < 512 && !WorldMapSection1.getKitDefinition(var10 - 256).__w_413()) {
+            int var11;
+            for(int var10 = 0; var10 < 12; ++var10) {
+               var11 = var7[var10];
+               if(var11 >= 256 && var11 < 512 && !WorldMapSection1.getKitDefinition(var11 - 256).__w_413()) {
                   var9 = true;
                }
 
-               if(var10 >= 512 && !Skills.getItemDefinition(var10 - 512).__z_431(this.isFemale)) {
+               if(var11 >= 512 && !Skills.getItemDefinition(var11 - 512).__z_431(this.isFemale)) {
                   var9 = true;
                }
             }
 
             if(var9) {
                if(this.__u != -1L) {
-                  var15 = (Model)PlayerAppearance_cachedModels.get(this.__u);
+                  var8 = (Model)PlayerAppearance_cachedModels.get(this.__u);
                }
 
-               if(var15 == null) {
+               if(var8 == null) {
                   return null;
                }
             }
 
-            if(var15 == null) {
-               ModelData[] var17 = new ModelData[12];
-               var10 = 0;
+            if(var8 == null) {
+               ModelData[] var16 = new ModelData[12];
+               var11 = 0;
 
-               int var12;
-               for(int var13 = 0; var13 < 12; ++var13) {
-                  var12 = var7[var13];
+               int var13;
+               for(int var12 = 0; var12 < 12; ++var12) {
+                  var13 = var7[var12];
                   ModelData var14;
-                  if(var12 >= 256 && var12 < 512) {
-                     var14 = WorldMapSection1.getKitDefinition(var12 - 256).__o_414();
+                  if(var13 >= 256 && var13 < 512) {
+                     var14 = WorldMapSection1.getKitDefinition(var13 - 256).__o_414();
                      if(var14 != null) {
-                        var17[var10++] = var14;
+                        var16[var11++] = var14;
                      }
                   }
 
-                  if(var12 >= 512) {
-                     var14 = Skills.getItemDefinition(var12 - 512).__j_432(this.isFemale);
+                  if(var13 >= 512) {
+                     var14 = Skills.getItemDefinition(var13 - 512).__j_432(this.isFemale);
                      if(var14 != null) {
-                        var17[var10++] = var14;
+                        var16[var11++] = var14;
                      }
                   }
                }
 
-               ModelData var18 = new ModelData(var17, var10);
+               ModelData var18 = new ModelData(var16, var11);
 
-               for(var12 = 0; var12 < 5; ++var12) {
-                  if(this.bodyColors[var12] < class229.__hz_l[var12].length) {
-                     var18.recolor(__hi_g[var12], class229.__hz_l[var12][this.bodyColors[var12]]);
+               for(var13 = 0; var13 < 5; ++var13) {
+                  if(this.bodyColors[var13] < class229.__hz_l[var13].length) {
+                     var18.recolor(__hi_g[var13], class229.__hz_l[var13][this.bodyColors[var13]]);
                   }
 
-                  if(this.bodyColors[var12] < IndexCacheLoader.__bd_x[var12].length) {
-                     var18.recolor(class227.__hj_e[var12], IndexCacheLoader.__bd_x[var12][this.bodyColors[var12]]);
+                  if(this.bodyColors[var13] < IndexCacheLoader.__bd_x[var13].length) {
+                     var18.recolor(class227.__hj_e[var13], IndexCacheLoader.__bd_x[var13][this.bodyColors[var13]]);
                   }
                }
 
-               var15 = var18.toModel(64, 850, -30, -50, -30);
-               PlayerAppearance_cachedModels.put(var15, var5);
+               var8 = var18.toModel(64, 850, -30, -50, -30);
+               PlayerAppearance_cachedModels.put(var8, var5);
                this.__u = var5;
             }
          }
 
          if(var1 == null && var3 == null) {
-            return var15;
+            return var8;
          } else {
-            Model var16;
+            Model var17;
             if(var1 != null && var3 != null) {
-               var16 = var1.animateSequence2(var15, var2, var3, var4);
+               var17 = var1.animateSequence2(var8, var2, var3, var4);
             } else if(var1 != null) {
-               var16 = var1.animateSequence(var15, var2);
+               var17 = var1.animateSequence(var8, var2);
             } else {
-               var16 = var3.animateSequence(var15, var4);
+               var17 = var3.animateSequence(var8, var4);
             }
 
-            return var16;
+            return var17;
          }
       }
    }
@@ -352,14 +351,14 @@ public class PlayerAppearance {
       } else {
          boolean var1 = false;
 
-         int var2;
-         for(int var3 = 0; var3 < 12; ++var3) {
-            var2 = this.equipment[var3];
-            if(var2 >= 256 && var2 < 512 && !WorldMapSection1.getKitDefinition(var2 - 256).__u_415()) {
+         int var3;
+         for(int var2 = 0; var2 < 12; ++var2) {
+            var3 = this.equipment[var2];
+            if(var3 >= 256 && var3 < 512 && !WorldMapSection1.getKitDefinition(var3 - 256).__u_415()) {
                var1 = true;
             }
 
-            if(var2 >= 512 && !Skills.getItemDefinition(var2 - 512).__s_433(this.isFemale)) {
+            if(var3 >= 512 && !Skills.getItemDefinition(var3 - 512).__s_433(this.isFemale)) {
                var1 = true;
             }
          }
@@ -368,36 +367,36 @@ public class PlayerAppearance {
             return null;
          } else {
             ModelData[] var7 = new ModelData[12];
-            var2 = 0;
+            var3 = 0;
 
-            int var4;
-            for(int var5 = 0; var5 < 12; ++var5) {
-               var4 = this.equipment[var5];
+            int var5;
+            for(int var4 = 0; var4 < 12; ++var4) {
+               var5 = this.equipment[var4];
                ModelData var6;
-               if(var4 >= 256 && var4 < 512) {
-                  var6 = WorldMapSection1.getKitDefinition(var4 - 256).__g_416();
+               if(var5 >= 256 && var5 < 512) {
+                  var6 = WorldMapSection1.getKitDefinition(var5 - 256).__g_416();
                   if(var6 != null) {
-                     var7[var2++] = var6;
+                     var7[var3++] = var6;
                   }
                }
 
-               if(var4 >= 512) {
-                  var6 = Skills.getItemDefinition(var4 - 512).__t_434(this.isFemale);
+               if(var5 >= 512) {
+                  var6 = Skills.getItemDefinition(var5 - 512).__t_434(this.isFemale);
                   if(var6 != null) {
-                     var7[var2++] = var6;
+                     var7[var3++] = var6;
                   }
                }
             }
 
-            ModelData var8 = new ModelData(var7, var2);
+            ModelData var8 = new ModelData(var7, var3);
 
-            for(var4 = 0; var4 < 5; ++var4) {
-               if(this.bodyColors[var4] < class229.__hz_l[var4].length) {
-                  var8.recolor(__hi_g[var4], class229.__hz_l[var4][this.bodyColors[var4]]);
+            for(var5 = 0; var5 < 5; ++var5) {
+               if(this.bodyColors[var5] < class229.__hz_l[var5].length) {
+                  var8.recolor(__hi_g[var5], class229.__hz_l[var5][this.bodyColors[var5]]);
                }
 
-               if(this.bodyColors[var4] < IndexCacheLoader.__bd_x[var4].length) {
-                  var8.recolor(class227.__hj_e[var4], IndexCacheLoader.__bd_x[var4][this.bodyColors[var4]]);
+               if(this.bodyColors[var5] < IndexCacheLoader.__bd_x[var5].length) {
+                  var8.recolor(class227.__hj_e[var5], IndexCacheLoader.__bd_x[var5][this.bodyColors[var5]]);
                }
             }
 
@@ -414,10 +413,5 @@ public class PlayerAppearance {
    @Export("getChatHeadId")
    public int getChatHeadId() {
       return this.npcTransformId == -1?(this.equipment[0] << 15) + this.equipment[1] + (this.equipment[11] << 5) + (this.equipment[8] << 10) + (this.bodyColors[0] << 25) + (this.bodyColors[4] << 20):305419896 + ObjectDefinition.getNpcDefinition(this.npcTransformId).id;
-   }
-
-   static {
-      __hi_d = new int[]{8, 11, 4, 6, 9, 7, 10};
-      PlayerAppearance_cachedModels = new EvictingDualNodeHashTable(260);
    }
 }

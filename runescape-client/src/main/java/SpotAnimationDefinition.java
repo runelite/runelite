@@ -92,6 +92,11 @@ public class SpotAnimationDefinition extends DualNode {
    @Export("__z")
    int __z;
 
+   static {
+      SpotAnimationDefinition_cached = new EvictingDualNodeHashTable(64);
+      SpotAnimationDefinition_cachedModels = new EvictingDualNodeHashTable(30);
+   }
+
    SpotAnimationDefinition() {
       this.sequence = -1;
       this.widthScale = 128;
@@ -234,10 +239,5 @@ public class SpotAnimationDefinition extends DualNode {
    )
    static int method4822() {
       return Client.isResizable?2:1;
-   }
-
-   static {
-      SpotAnimationDefinition_cached = new EvictingDualNodeHashTable(64);
-      SpotAnimationDefinition_cachedModels = new EvictingDualNodeHashTable(30);
    }
 }

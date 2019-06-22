@@ -237,14 +237,14 @@ public class TextureProvider implements TextureLoader {
       if(var0 == null) {
          return null;
       } else if(var0 instanceof byte[]) {
-         byte[] var5 = (byte[])((byte[])((byte[])var0));
+         byte[] var6 = (byte[])((byte[])var0);
          if(var1) {
-            int var3 = var5.length;
-            byte[] var4 = new byte[var3];
-            System.arraycopy(var5, 0, var4, 0, var3);
-            return var4;
-         } else {
+            int var4 = var6.length;
+            byte[] var5 = new byte[var4];
+            System.arraycopy(var6, 0, var5, 0, var4);
             return var5;
+         } else {
+            return var6;
          }
       } else if(var0 instanceof AbstractByteArrayCopier) {
          AbstractByteArrayCopier var2 = (AbstractByteArrayCopier)var0;
@@ -264,7 +264,7 @@ public class TextureProvider implements TextureLoader {
       Buffer var4 = new Buffer(var0);
       int var5 = -1;
 
-      label71:
+      label69:
       while(true) {
          int var6 = var4.__at_308();
          if(var6 == 0) {
@@ -276,50 +276,38 @@ public class TextureProvider implements TextureLoader {
          boolean var8 = false;
 
          while(true) {
-            int var12;
-            ObjectDefinition var15;
-            do {
-               int var13;
-               int var14;
-               do {
-                  do {
-                     do {
-                        do {
-                           int var9;
-                           while(var8) {
-                              var9 = var4.__ae_307();
-                              if(var9 == 0) {
-                                 continue label71;
-                              }
+            int var9;
+            while(!var8) {
+               var9 = var4.__ae_307();
+               if(var9 == 0) {
+                  continue label69;
+               }
 
-                              var4.readUnsignedByte();
-                           }
+               var7 += var9 - 1;
+               int var10 = var7 & 63;
+               int var11 = var7 >> 6 & 63;
+               int var12 = var4.readUnsignedByte() >> 2;
+               int var13 = var11 + var1;
+               int var14 = var10 + var2;
+               if(var13 > 0 && var14 > 0 && var13 < 103 && var14 < 103) {
+                  ObjectDefinition var15 = class50.getObjectDefinition(var5);
+                  if(var12 != 22 || !Client.isLowDetail || var15.int1 != 0 || var15.interactType == 1 || var15.boolean2) {
+                     if(!var15.__g_422()) {
+                        ++Client.__client_fk;
+                        var3 = false;
+                     }
 
-                           var9 = var4.__ae_307();
-                           if(var9 == 0) {
-                              continue label71;
-                           }
-
-                           var7 += var9 - 1;
-                           int var10 = var7 & 63;
-                           int var11 = var7 >> 6 & 63;
-                           var12 = var4.readUnsignedByte() >> 2;
-                           var13 = var11 + var1;
-                           var14 = var10 + var2;
-                        } while(var13 <= 0);
-                     } while(var14 <= 0);
-                  } while(var13 >= 103);
-               } while(var14 >= 103);
-
-               var15 = class50.getObjectDefinition(var5);
-            } while(var12 == 22 && Client.isLowDetail && var15.int1 == 0 && var15.interactType != 1 && !var15.boolean2);
-
-            if(!var15.__g_422()) {
-               ++Client.__client_fk;
-               var3 = false;
+                     var8 = true;
+                  }
+               }
             }
 
-            var8 = true;
+            var9 = var4.__ae_307();
+            if(var9 == 0) {
+               break;
+            }
+
+            var4.readUnsignedByte();
          }
       }
    }
@@ -368,10 +356,10 @@ public class TextureProvider implements TextureLoader {
          class179.Interpreter_intStackSize -= 5;
          var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         int var11 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
+         int var5 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
          int var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 3];
-         int var12 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 4];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 + (var12 - var11) * (var4 - var3) / (var6 - var11);
+         int var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 4];
+         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 + (var7 - var5) * (var4 - var3) / (var6 - var5);
          return 1;
       } else if(var0 == 4007) {
          class179.Interpreter_intStackSize -= 2;
@@ -458,10 +446,10 @@ public class TextureProvider implements TextureLoader {
          return 1;
       } else if(var0 == 4018) {
          class179.Interpreter_intStackSize -= 3;
-         long var5 = (long)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         long var7 = (long)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         long var9 = (long)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (int)(var9 * var5 / var7);
+         long var9 = (long)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+         long var11 = (long)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+         long var13 = (long)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
+         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (int)(var13 * var9 / var11);
          return 1;
       } else {
          return 2;

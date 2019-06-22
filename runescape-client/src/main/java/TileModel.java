@@ -72,6 +72,16 @@ public final class TileModel {
    @Export("overlayRgb")
    int overlayRgb;
 
+   static {
+      __dv_z = new int[6];
+      __dv_j = new int[6];
+      __dv_s = new int[6];
+      __dv_t = new int[6];
+      __dv_y = new int[6];
+      __dv_h = new int[][]{{1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 2, 6}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 13, 14}};
+      __dv_b = new int[][]{{0, 1, 2, 3, 0, 0, 1, 3}, {1, 1, 2, 3, 1, 0, 1, 3}, {0, 1, 2, 3, 1, 0, 1, 3}, {0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3}, {0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4}, {0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4}, {0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3}, {0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3}, {0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5}, {0, 0, 4, 5, 1, 4, 1, 2, 1, 4, 2, 3, 1, 4, 3, 5}, {0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4, 2, 3}, {1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3}, {1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5}};
+   }
+
    TileModel(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18, int var19) {
       this.isFlat = true;
       if(var7 != var6 || var8 != var6 || var9 != var6) {
@@ -96,220 +106,210 @@ public final class TileModel {
       int var28 = var20 * var4;
       int var29 = var5 * var20;
 
-      int var30;
       int var31;
       int var32;
       int var33;
       int var34;
       int var35;
-      for(int var36 = 0; var36 < var25; ++var36) {
-         var30 = var24[var36];
-         if((var30 & 1) == 0 && var30 <= 8) {
-            var30 = (var30 - var2 - var2 - 1 & 7) + 1;
+      int var36;
+      for(int var30 = 0; var30 < var25; ++var30) {
+         var31 = var24[var30];
+         if((var31 & 1) == 0 && var31 <= 8) {
+            var31 = (var31 - var2 - var2 - 1 & 7) + 1;
          }
 
-         if(var30 > 8 && var30 <= 12) {
-            var30 = (var30 - 9 - var2 & 3) + 9;
+         if(var31 > 8 && var31 <= 12) {
+            var31 = (var31 - 9 - var2 & 3) + 9;
          }
 
-         if(var30 > 12 && var30 <= 16) {
-            var30 = (var30 - 13 - var2 & 3) + 13;
+         if(var31 > 12 && var31 <= 16) {
+            var31 = (var31 - 13 - var2 & 3) + 13;
          }
 
-         if(var30 == 1) {
-            var31 = var28;
-            var32 = var29;
-            var33 = var6;
-            var34 = var10;
-            var35 = var14;
-         } else if(var30 == 2) {
-            var31 = var28 + var21;
-            var32 = var29;
-            var33 = var7 + var6 >> 1;
-            var34 = var11 + var10 >> 1;
-            var35 = var15 + var14 >> 1;
-         } else if(var30 == 3) {
-            var31 = var28 + var20;
-            var32 = var29;
-            var33 = var7;
-            var34 = var11;
-            var35 = var15;
-         } else if(var30 == 4) {
-            var31 = var28 + var20;
-            var32 = var29 + var21;
-            var33 = var8 + var7 >> 1;
-            var34 = var11 + var12 >> 1;
-            var35 = var15 + var16 >> 1;
-         } else if(var30 == 5) {
-            var31 = var28 + var20;
-            var32 = var29 + var20;
-            var33 = var8;
-            var34 = var12;
-            var35 = var16;
-         } else if(var30 == 6) {
-            var31 = var28 + var21;
-            var32 = var29 + var20;
-            var33 = var8 + var9 >> 1;
-            var34 = var13 + var12 >> 1;
-            var35 = var17 + var16 >> 1;
-         } else if(var30 == 7) {
-            var31 = var28;
-            var32 = var29 + var20;
-            var33 = var9;
-            var34 = var13;
-            var35 = var17;
-         } else if(var30 == 8) {
-            var31 = var28;
-            var32 = var29 + var21;
-            var33 = var9 + var6 >> 1;
-            var34 = var13 + var10 >> 1;
-            var35 = var17 + var14 >> 1;
-         } else if(var30 == 9) {
-            var31 = var28 + var21;
-            var32 = var29 + var22;
-            var33 = var7 + var6 >> 1;
-            var34 = var11 + var10 >> 1;
-            var35 = var15 + var14 >> 1;
-         } else if(var30 == 10) {
-            var31 = var28 + var23;
-            var32 = var29 + var21;
-            var33 = var8 + var7 >> 1;
-            var34 = var11 + var12 >> 1;
-            var35 = var15 + var16 >> 1;
-         } else if(var30 == 11) {
-            var31 = var28 + var21;
-            var32 = var29 + var23;
-            var33 = var8 + var9 >> 1;
-            var34 = var13 + var12 >> 1;
-            var35 = var17 + var16 >> 1;
-         } else if(var30 == 12) {
-            var31 = var28 + var22;
-            var32 = var29 + var21;
-            var33 = var9 + var6 >> 1;
-            var34 = var13 + var10 >> 1;
-            var35 = var17 + var14 >> 1;
-         } else if(var30 == 13) {
-            var31 = var28 + var22;
-            var32 = var29 + var22;
-            var33 = var6;
-            var34 = var10;
-            var35 = var14;
-         } else if(var30 == 14) {
-            var31 = var28 + var23;
-            var32 = var29 + var22;
-            var33 = var7;
-            var34 = var11;
-            var35 = var15;
-         } else if(var30 == 15) {
-            var31 = var28 + var23;
-            var32 = var29 + var23;
-            var33 = var8;
-            var34 = var12;
-            var35 = var16;
+         if(var31 == 1) {
+            var32 = var28;
+            var33 = var29;
+            var34 = var6;
+            var35 = var10;
+            var36 = var14;
+         } else if(var31 == 2) {
+            var32 = var28 + var21;
+            var33 = var29;
+            var34 = var7 + var6 >> 1;
+            var35 = var11 + var10 >> 1;
+            var36 = var15 + var14 >> 1;
+         } else if(var31 == 3) {
+            var32 = var28 + var20;
+            var33 = var29;
+            var34 = var7;
+            var35 = var11;
+            var36 = var15;
+         } else if(var31 == 4) {
+            var32 = var28 + var20;
+            var33 = var29 + var21;
+            var34 = var8 + var7 >> 1;
+            var35 = var11 + var12 >> 1;
+            var36 = var15 + var16 >> 1;
+         } else if(var31 == 5) {
+            var32 = var28 + var20;
+            var33 = var29 + var20;
+            var34 = var8;
+            var35 = var12;
+            var36 = var16;
+         } else if(var31 == 6) {
+            var32 = var28 + var21;
+            var33 = var29 + var20;
+            var34 = var8 + var9 >> 1;
+            var35 = var13 + var12 >> 1;
+            var36 = var17 + var16 >> 1;
+         } else if(var31 == 7) {
+            var32 = var28;
+            var33 = var29 + var20;
+            var34 = var9;
+            var35 = var13;
+            var36 = var17;
+         } else if(var31 == 8) {
+            var32 = var28;
+            var33 = var29 + var21;
+            var34 = var9 + var6 >> 1;
+            var35 = var13 + var10 >> 1;
+            var36 = var17 + var14 >> 1;
+         } else if(var31 == 9) {
+            var32 = var28 + var21;
+            var33 = var29 + var22;
+            var34 = var7 + var6 >> 1;
+            var35 = var11 + var10 >> 1;
+            var36 = var15 + var14 >> 1;
+         } else if(var31 == 10) {
+            var32 = var28 + var23;
+            var33 = var29 + var21;
+            var34 = var8 + var7 >> 1;
+            var35 = var11 + var12 >> 1;
+            var36 = var15 + var16 >> 1;
+         } else if(var31 == 11) {
+            var32 = var28 + var21;
+            var33 = var29 + var23;
+            var34 = var8 + var9 >> 1;
+            var35 = var13 + var12 >> 1;
+            var36 = var17 + var16 >> 1;
+         } else if(var31 == 12) {
+            var32 = var28 + var22;
+            var33 = var29 + var21;
+            var34 = var9 + var6 >> 1;
+            var35 = var13 + var10 >> 1;
+            var36 = var17 + var14 >> 1;
+         } else if(var31 == 13) {
+            var32 = var28 + var22;
+            var33 = var29 + var22;
+            var34 = var6;
+            var35 = var10;
+            var36 = var14;
+         } else if(var31 == 14) {
+            var32 = var28 + var23;
+            var33 = var29 + var22;
+            var34 = var7;
+            var35 = var11;
+            var36 = var15;
+         } else if(var31 == 15) {
+            var32 = var28 + var23;
+            var33 = var29 + var23;
+            var34 = var8;
+            var35 = var12;
+            var36 = var16;
          } else {
-            var31 = var28 + var22;
-            var32 = var29 + var23;
-            var33 = var9;
-            var34 = var13;
-            var35 = var17;
+            var32 = var28 + var22;
+            var33 = var29 + var23;
+            var34 = var9;
+            var35 = var13;
+            var36 = var17;
          }
 
-         this.vertexX[var36] = var31;
-         this.vertexY[var36] = var33;
-         this.vertexZ[var36] = var32;
-         var26[var36] = var34;
-         var27[var36] = var35;
+         this.vertexX[var30] = var32;
+         this.vertexY[var30] = var34;
+         this.vertexZ[var30] = var33;
+         var26[var30] = var35;
+         var27[var30] = var36;
       }
 
       int[] var38 = __dv_b[var1];
-      var30 = var38.length / 4;
-      this.faceX = new int[var30];
-      this.faceY = new int[var30];
-      this.faceZ = new int[var30];
-      this.triangleColorA = new int[var30];
-      this.triangleColorB = new int[var30];
-      this.triangleColorC = new int[var30];
+      var31 = var38.length / 4;
+      this.faceX = new int[var31];
+      this.faceY = new int[var31];
+      this.faceZ = new int[var31];
+      this.triangleColorA = new int[var31];
+      this.triangleColorB = new int[var31];
+      this.triangleColorC = new int[var31];
       if(var3 != -1) {
-         this.triangleTextureId = new int[var30];
+         this.triangleTextureId = new int[var31];
       }
 
-      var31 = 0;
+      var32 = 0;
 
-      for(var32 = 0; var32 < var30; ++var32) {
-         var33 = var38[var31];
-         var34 = var38[var31 + 1];
-         var35 = var38[var31 + 2];
-         int var37 = var38[var31 + 3];
-         var31 += 4;
-         if(var34 < 4) {
-            var34 = var34 - var2 & 3;
-         }
-
+      for(var33 = 0; var33 < var31; ++var33) {
+         var34 = var38[var32];
+         var35 = var38[var32 + 1];
+         var36 = var38[var32 + 2];
+         int var37 = var38[var32 + 3];
+         var32 += 4;
          if(var35 < 4) {
             var35 = var35 - var2 & 3;
+         }
+
+         if(var36 < 4) {
+            var36 = var36 - var2 & 3;
          }
 
          if(var37 < 4) {
             var37 = var37 - var2 & 3;
          }
 
-         this.faceX[var32] = var34;
-         this.faceY[var32] = var35;
-         this.faceZ[var32] = var37;
-         if(var33 == 0) {
-            this.triangleColorA[var32] = var26[var34];
-            this.triangleColorB[var32] = var26[var35];
-            this.triangleColorC[var32] = var26[var37];
+         this.faceX[var33] = var35;
+         this.faceY[var33] = var36;
+         this.faceZ[var33] = var37;
+         if(var34 == 0) {
+            this.triangleColorA[var33] = var26[var35];
+            this.triangleColorB[var33] = var26[var36];
+            this.triangleColorC[var33] = var26[var37];
             if(this.triangleTextureId != null) {
-               this.triangleTextureId[var32] = -1;
+               this.triangleTextureId[var33] = -1;
             }
          } else {
-            this.triangleColorA[var32] = var27[var34];
-            this.triangleColorB[var32] = var27[var35];
-            this.triangleColorC[var32] = var27[var37];
+            this.triangleColorA[var33] = var27[var35];
+            this.triangleColorB[var33] = var27[var36];
+            this.triangleColorC[var33] = var27[var37];
             if(this.triangleTextureId != null) {
-               this.triangleTextureId[var32] = var3;
+               this.triangleTextureId[var33] = var3;
             }
          }
       }
 
-      var32 = var6;
-      var33 = var7;
+      var33 = var6;
+      var34 = var7;
       if(var7 < var6) {
-         var32 = var7;
-      }
-
-      if(var7 > var7) {
          var33 = var7;
       }
 
-      if(var8 < var32) {
-         var32 = var8;
+      if(var7 > var7) {
+         var34 = var7;
       }
 
-      if(var8 > var33) {
+      if(var8 < var33) {
          var33 = var8;
       }
 
-      if(var9 < var32) {
-         var32 = var9;
+      if(var8 > var34) {
+         var34 = var8;
       }
 
-      if(var9 > var33) {
+      if(var9 < var33) {
          var33 = var9;
       }
 
-      var32 /= 14;
-      var33 /= 14;
-   }
+      if(var9 > var34) {
+         var34 = var9;
+      }
 
-   static {
-      __dv_z = new int[6];
-      __dv_j = new int[6];
-      __dv_s = new int[6];
-      __dv_t = new int[6];
-      __dv_y = new int[6];
-      __dv_h = new int[][]{{1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 2, 6}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 13, 14}};
-      __dv_b = new int[][]{{0, 1, 2, 3, 0, 0, 1, 3}, {1, 1, 2, 3, 1, 0, 1, 3}, {0, 1, 2, 3, 1, 0, 1, 3}, {0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3}, {0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4}, {0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4}, {0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3}, {0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3}, {0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5}, {0, 0, 4, 5, 1, 4, 1, 2, 1, 4, 2, 3, 1, 4, 3, 5}, {0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4, 2, 3}, {1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3}, {1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5}};
+      var33 /= 14;
+      var34 /= 14;
    }
 }

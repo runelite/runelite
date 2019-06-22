@@ -31,6 +31,11 @@ public class AudioFilter {
    @Export("__o")
    int[] __o;
 
+   static {
+      __di_u = new float[2][8];
+      __di_g = new int[2][8];
+   }
+
    AudioFilter() {
       this.__m = new int[2];
       this.__q = new int[2][2][4];
@@ -152,10 +157,5 @@ public class AudioFilter {
    static float method2646(float var0) {
       float var1 = 32.703197F * (float)Math.pow(2.0D, (double)var0);
       return var1 * 3.1415927F / 11025.0F;
-   }
-
-   static {
-      __di_u = new float[2][8];
-      __di_g = new int[2][8];
    }
 }

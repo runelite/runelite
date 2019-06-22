@@ -150,6 +150,34 @@ public class Login {
    @Export("indexCache11")
    static IndexCache indexCache11;
 
+   static {
+      __cu_q = 0;
+      __cu_y = __cu_q + 202;
+      Login_loadingPercent = 10;
+      Login_loadingText = "";
+      __cu_aj = -1;
+      __cu_ac = 1;
+      loginIndex = 0;
+      Login_response0 = "";
+      Login_response1 = "";
+      Login_response2 = "";
+      Login_response3 = "";
+      Login_username = "";
+      Login_password = "";
+      __cu_aa = false;
+      __cu_ax = false;
+      __cu_ba = true;
+      currentLoginField = 0;
+      __cu_bk = false;
+      __cu_bl = -1;
+      __cu_br = 0;
+      __cu_bj = 0;
+      new DecimalFormat("##0.00");
+      new class161();
+      __cu_bi = -1L;
+      __cu_bz = -1L;
+   }
+
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(Lir;II)Lhl;",
@@ -170,19 +198,19 @@ public class Login {
       int var0 = 0;
       int var1 = 240;
 
-      int var2;
-      for(byte var3 = 12; var0 < 16; var1 -= var3) {
-         var2 = class277.method5355((double)((float)var1 / 360.0F), 0.9998999834060669D, (double)((float)var0 * 0.425F / 16.0F + 0.075F));
-         class248.__iu_e[var0] = var2;
+      int var3;
+      for(byte var2 = 12; var0 < 16; var1 -= var2) {
+         var3 = class277.method5355((double)((float)var1 / 360.0F), 0.9998999834060669D, (double)((float)var0 * 0.425F / 16.0F + 0.075F));
+         class248.__iu_e[var0] = var3;
          ++var0;
       }
 
       var1 = 48;
 
       for(int var5 = var1 / 6; var0 < class248.__iu_e.length; var1 -= var5) {
-         var2 = var0 * 2;
+         var3 = var0 * 2;
 
-         for(int var4 = class277.method5355((double)((float)var1 / 360.0F), 0.9998999834060669D, 0.5D); var0 < var2 && var0 < class248.__iu_e.length; ++var0) {
+         for(int var4 = class277.method5355((double)((float)var1 / 360.0F), 0.9998999834060669D, 0.5D); var0 < var3 && var0 < class248.__iu_e.length; ++var0) {
             class248.__iu_e[var0] = var4;
          }
       }
@@ -216,33 +244,5 @@ public class Login {
          int var0 = class32.getTileHeight(WorldMapSection1.cameraX, class11.cameraZ, SoundSystem.plane);
          return var0 - GrandExchangeEvents.cameraY < 800 && (Tiles.Tiles_renderFlags[SoundSystem.plane][WorldMapSection1.cameraX >> 7][class11.cameraZ >> 7] & 4) != 0?SoundSystem.plane:3;
       }
-   }
-
-   static {
-      __cu_q = 0;
-      __cu_y = __cu_q + 202;
-      Login_loadingPercent = 10;
-      Login_loadingText = "";
-      __cu_aj = -1;
-      __cu_ac = 1;
-      loginIndex = 0;
-      Login_response0 = "";
-      Login_response1 = "";
-      Login_response2 = "";
-      Login_response3 = "";
-      Login_username = "";
-      Login_password = "";
-      __cu_aa = false;
-      __cu_ax = false;
-      __cu_ba = true;
-      currentLoginField = 0;
-      __cu_bk = false;
-      __cu_bl = -1;
-      __cu_br = 0;
-      __cu_bj = 0;
-      new DecimalFormat("##0.00");
-      new class161();
-      __cu_bi = -1L;
-      __cu_bz = -1L;
    }
 }

@@ -27,11 +27,9 @@ public class class210 {
       if(var3 == 0) {
          if(var2) {
             var4.__ag = false;
+         } else if(Client.localPlayerIndex == var1) {
+            throw new RuntimeException();
          } else {
-            if(Client.localPlayerIndex == var1) {
-               throw new RuntimeException();
-            }
-
             Players.Players_regions[var1] = (var4.plane << 28) + (GraphicsObject.baseY + var4.pathY[0] >> 13) + (class50.baseX + var4.pathX[0] >> 13 << 14);
             if(var4.__bc != -1) {
                Players.Players_orientations[var1] = var4.__bc;
@@ -44,6 +42,7 @@ public class class210 {
             if(var0.readBits(1) != 0) {
                class236.updateExternalPlayer(var0, var1);
             }
+
          }
       } else {
          int var5;
@@ -75,19 +74,18 @@ public class class210 {
                ++var7;
             }
 
-            if(Client.localPlayerIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-               if(var2) {
-                  var4.__ag = true;
-                  var4.tileX = var6;
-                  var4.tileY = var7;
-               } else {
-                  var4.__ag = false;
-                  var4.__x_130(var6, var7, Players.__cq_w[var1]);
-               }
-            } else {
+            if(Client.localPlayerIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
                var4.resetPath(var6, var7);
                var4.__ag = false;
+            } else if(var2) {
+               var4.__ag = true;
+               var4.tileX = var6;
+               var4.tileY = var7;
+            } else {
+               var4.__ag = false;
+               var4.__x_130(var6, var7, Players.__cq_w[var1]);
             }
+
          } else if(var3 == 2) {
             var5 = var0.readBits(4);
             var6 = var4.pathX[0];
@@ -138,19 +136,18 @@ public class class210 {
                var7 += 2;
             }
 
-            if(Client.localPlayerIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-               if(var2) {
-                  var4.__ag = true;
-                  var4.tileX = var6;
-                  var4.tileY = var7;
-               } else {
-                  var4.__ag = false;
-                  var4.__x_130(var6, var7, Players.__cq_w[var1]);
-               }
-            } else {
+            if(Client.localPlayerIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
                var4.resetPath(var6, var7);
                var4.__ag = false;
+            } else if(var2) {
+               var4.__ag = true;
+               var4.tileX = var6;
+               var4.tileY = var7;
+            } else {
+               var4.__ag = false;
+               var4.__x_130(var6, var7, Players.__cq_w[var1]);
             }
+
          } else {
             var5 = var0.readBits(1);
             int var8;
@@ -190,6 +187,7 @@ public class class210 {
                if(Client.localPlayerIndex == var1) {
                   SoundSystem.plane = var4.plane;
                }
+
             } else {
                var6 = var0.readBits(30);
                var7 = var6 >> 28;
@@ -213,9 +211,9 @@ public class class210 {
                if(Client.localPlayerIndex == var1) {
                   SoundSystem.plane = var4.plane;
                }
+
             }
          }
       }
-
    }
 }

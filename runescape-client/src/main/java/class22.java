@@ -43,6 +43,7 @@ public final class class22 {
       intValue = 2138505015
    )
    int field167;
+   // $FF: synthetic field
    @ObfuscatedSignature(
       signature = "Lal;"
    )
@@ -70,10 +71,10 @@ public final class class22 {
       garbageValue = "61"
    )
    static final void method294(String var0) {
-      StringBuilder var1 = (new StringBuilder()).append(var0);
-      Object var2 = null;
-      String var3 = var1.append(" is already on your ignore list").toString();
-      WorldMapIcon1.method219(30, "", var3);
+      StringBuilder var10000 = (new StringBuilder()).append(var0);
+      Object var10001 = null;
+      String var1 = var10000.append(" is already on your ignore list").toString();
+      WorldMapIcon1.method219(30, "", var1);
    }
 
    @ObfuscatedName("fw")
@@ -116,7 +117,7 @@ public final class class22 {
          } else {
             Rasterizer2D.method5948(var1, var2, 0, var4.xStarts, var4.xWidths);
          }
-      }
 
+      }
    }
 }

@@ -154,7 +154,7 @@ public class ScriptEvent extends Node {
          Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.color2;
          return 1;
       } else if(var0 == 1613) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.rectangleMode.ordinal();
+         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
          return 1;
       } else if(var0 == 1614) {
          Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.__bv?1:0;
@@ -311,9 +311,9 @@ public class ScriptEvent extends Node {
       for(int var3 = 0; var3 < var2.length; ++var3) {
          int var4 = var3 * 32 + 15 + 128;
          int var5 = var4 * 3 + 600;
-         int var6 = Rasterizer3D.Rasterizer3D_sine[var4];
-         int var7 = method1176(var5, var1);
-         var2[var3] = var7 * var6 >> 16;
+         int var7 = Rasterizer3D.Rasterizer3D_sine[var4];
+         int var6 = method1176(var5, var1);
+         var2[var3] = var6 * var7 >> 16;
       }
 
       Scene.Scene_buildVisiblityMap(var2, 500, 800, var0 * 334 / var1, 334);

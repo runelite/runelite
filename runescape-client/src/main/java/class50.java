@@ -22,6 +22,11 @@ public class class50 {
    @Export("baseX")
    static int baseX;
 
+   static {
+      __af_m = null;
+      __af_f = "";
+   }
+
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(IB)Lio;",
@@ -84,73 +89,14 @@ public class class50 {
       Client.isInInstance = var0;
       int var2;
       int var3;
-      int var4;
       int var5;
       int var6;
       int var7;
+      int var8;
       if(!Client.isInInstance) {
          var2 = var1.__bm_326();
          var3 = var1.__bu_325();
-         int var8 = var1.__ag_302();
-         class190.xteaKeys = new int[var8][4];
-
-         for(var4 = 0; var4 < var8; ++var4) {
-            for(var5 = 0; var5 < 4; ++var5) {
-               class190.xteaKeys[var4][var5] = var1.readInt();
-            }
-         }
-
-         class308.regions = new int[var8];
-         IndexCacheLoader.regionMapArchiveIds = new int[var8];
-         MouseHandler.regionLandArchiveIds = new int[var8];
-         class40.regionLandArchives = new byte[var8][];
-         HealthBarUpdate.regionMapArchives = new byte[var8][];
-         boolean var9 = false;
-         if((var3 / 8 == 48 || var3 / 8 == 49) && var2 / 8 == 48) {
-            var9 = true;
-         }
-
-         if(var3 / 8 == 48 && var2 / 8 == 148) {
-            var9 = true;
-         }
-
-         var8 = 0;
-
-         for(var5 = (var3 - 6) / 8; var5 <= (var3 + 6) / 8; ++var5) {
-            for(var6 = (var2 - 6) / 8; var6 <= (var2 + 6) / 8; ++var6) {
-               var7 = var6 + (var5 << 8);
-               if(!var9 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
-                  class308.regions[var8] = var7;
-                  IndexCacheLoader.regionMapArchiveIds[var8] = SecureRandomFuture.indexCache5.getArchiveId("m" + var5 + "_" + var6);
-                  MouseHandler.regionLandArchiveIds[var8] = SecureRandomFuture.indexCache5.getArchiveId("l" + var5 + "_" + var6);
-                  ++var8;
-               }
-            }
-         }
-
-         DynamicObject.method2224(var3, var2, true);
-      } else {
-         var2 = var1.__bu_325();
-         var3 = var1.__bm_326();
-         boolean var15 = var1.readUnsignedByte() == 1;
-         var4 = var1.__ag_302();
-         var1.importIndex();
-
-         int var16;
-         for(var5 = 0; var5 < 4; ++var5) {
-            for(var6 = 0; var6 < 13; ++var6) {
-               for(var7 = 0; var7 < 13; ++var7) {
-                  var16 = var1.readBits(1);
-                  if(var16 == 1) {
-                     Client.instanceChunkTemplates[var5][var6][var7] = var1.readBits(26);
-                  } else {
-                     Client.instanceChunkTemplates[var5][var6][var7] = -1;
-                  }
-               }
-            }
-         }
-
-         var1.exportIndex();
+         int var4 = var1.__ag_302();
          class190.xteaKeys = new int[var4][4];
 
          for(var5 = 0; var5 < var4; ++var5) {
@@ -164,19 +110,78 @@ public class class50 {
          MouseHandler.regionLandArchiveIds = new int[var4];
          class40.regionLandArchives = new byte[var4][];
          HealthBarUpdate.regionMapArchives = new byte[var4][];
+         boolean var16 = false;
+         if((var3 / 8 == 48 || var3 / 8 == 49) && var2 / 8 == 48) {
+            var16 = true;
+         }
+
+         if(var3 / 8 == 48 && var2 / 8 == 148) {
+            var16 = true;
+         }
+
          var4 = 0;
 
-         for(var5 = 0; var5 < 4; ++var5) {
-            for(var6 = 0; var6 < 13; ++var6) {
-               for(var7 = 0; var7 < 13; ++var7) {
-                  var16 = Client.instanceChunkTemplates[var5][var6][var7];
-                  if(var16 != -1) {
-                     int var10 = var16 >> 14 & 1023;
-                     int var11 = var16 >> 3 & 2047;
+         for(var6 = (var3 - 6) / 8; var6 <= (var3 + 6) / 8; ++var6) {
+            for(var7 = (var2 - 6) / 8; var7 <= (var2 + 6) / 8; ++var7) {
+               var8 = var7 + (var6 << 8);
+               if(!var16 || var7 != 49 && var7 != 149 && var7 != 147 && var6 != 50 && (var6 != 49 || var7 != 47)) {
+                  class308.regions[var4] = var8;
+                  IndexCacheLoader.regionMapArchiveIds[var4] = SecureRandomFuture.indexCache5.getArchiveId("m" + var6 + "_" + var7);
+                  MouseHandler.regionLandArchiveIds[var4] = SecureRandomFuture.indexCache5.getArchiveId("l" + var6 + "_" + var7);
+                  ++var4;
+               }
+            }
+         }
+
+         DynamicObject.method2224(var3, var2, true);
+      } else {
+         var2 = var1.__bu_325();
+         var3 = var1.__bm_326();
+         boolean var15 = var1.readUnsignedByte() == 1;
+         var5 = var1.__ag_302();
+         var1.importIndex();
+
+         int var9;
+         for(var6 = 0; var6 < 4; ++var6) {
+            for(var7 = 0; var7 < 13; ++var7) {
+               for(var8 = 0; var8 < 13; ++var8) {
+                  var9 = var1.readBits(1);
+                  if(var9 == 1) {
+                     Client.instanceChunkTemplates[var6][var7][var8] = var1.readBits(26);
+                  } else {
+                     Client.instanceChunkTemplates[var6][var7][var8] = -1;
+                  }
+               }
+            }
+         }
+
+         var1.exportIndex();
+         class190.xteaKeys = new int[var5][4];
+
+         for(var6 = 0; var6 < var5; ++var6) {
+            for(var7 = 0; var7 < 4; ++var7) {
+               class190.xteaKeys[var6][var7] = var1.readInt();
+            }
+         }
+
+         class308.regions = new int[var5];
+         IndexCacheLoader.regionMapArchiveIds = new int[var5];
+         MouseHandler.regionLandArchiveIds = new int[var5];
+         class40.regionLandArchives = new byte[var5][];
+         HealthBarUpdate.regionMapArchives = new byte[var5][];
+         var5 = 0;
+
+         for(var6 = 0; var6 < 4; ++var6) {
+            for(var7 = 0; var7 < 13; ++var7) {
+               for(var8 = 0; var8 < 13; ++var8) {
+                  var9 = Client.instanceChunkTemplates[var6][var7][var8];
+                  if(var9 != -1) {
+                     int var10 = var9 >> 14 & 1023;
+                     int var11 = var9 >> 3 & 2047;
                      int var12 = (var10 / 8 << 8) + var11 / 8;
 
                      int var13;
-                     for(var13 = 0; var13 < var4; ++var13) {
+                     for(var13 = 0; var13 < var5; ++var13) {
                         if(class308.regions[var13] == var12) {
                            var12 = -1;
                            break;
@@ -184,12 +189,12 @@ public class class50 {
                      }
 
                      if(var12 != -1) {
-                        class308.regions[var4] = var12;
+                        class308.regions[var5] = var12;
                         var13 = var12 >> 8 & 255;
                         int var14 = var12 & 255;
-                        IndexCacheLoader.regionMapArchiveIds[var4] = SecureRandomFuture.indexCache5.getArchiveId("m" + var13 + "_" + var14);
-                        MouseHandler.regionLandArchiveIds[var4] = SecureRandomFuture.indexCache5.getArchiveId("l" + var13 + "_" + var14);
-                        ++var4;
+                        IndexCacheLoader.regionMapArchiveIds[var5] = SecureRandomFuture.indexCache5.getArchiveId("m" + var13 + "_" + var14);
+                        MouseHandler.regionLandArchiveIds[var5] = SecureRandomFuture.indexCache5.getArchiveId("l" + var13 + "_" + var14);
+                        ++var5;
                      }
                   }
                }
@@ -257,10 +262,5 @@ public class class50 {
       }
 
       class212.method4109(var0, var1, Client.__client_ev, 0, 24);
-   }
-
-   static {
-      __af_m = null;
-      __af_f = "";
    }
 }

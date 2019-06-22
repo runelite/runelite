@@ -31,6 +31,12 @@ public class TriBool {
    @Export("urlRequester")
    static UrlRequester urlRequester;
 
+   static {
+      TriBool_unknown = new TriBool();
+      TriBool_true = new TriBool();
+      TriBool_false = new TriBool();
+   }
+
    @ObfuscatedName("go")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -41,11 +47,5 @@ public class TriBool {
          WorldMapCacheName.addPlayerToScene(Client.players[Client.combatTargetPlayerIndex], false);
       }
 
-   }
-
-   static {
-      TriBool_unknown = new TriBool();
-      TriBool_true = new TriBool();
-      TriBool_false = new TriBool();
    }
 }

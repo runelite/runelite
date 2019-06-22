@@ -1,8 +1,8 @@
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
-import javax.sound.sampled.DataLine.Info;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
@@ -53,20 +53,19 @@ public class DevicePcmPlayer extends PcmPlayer {
          this.line.start();
          this.capacity2 = var1;
       } catch (LineUnavailableException var5) {
-         int var3 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
-         var3 = (var3 >>> 2 & 858993459) + (var3 & 858993459);
-         var3 = (var3 >>> 4) + var3 & 252645135;
-         var3 += var3 >>> 8;
-         var3 += var3 >>> 16;
-         int var4 = var3 & 255;
-         if(var4 == 1) {
+         int var4 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
+         var4 = (var4 >>> 2 & 858993459) + (var4 & 858993459);
+         var4 = (var4 >>> 4) + var4 & 252645135;
+         var4 += var4 >>> 8;
+         var4 += var4 >>> 16;
+         int var3 = var4 & 255;
+         if(var3 != 1) {
+            this.open(World.method1759(var1));
+         } else {
             this.line = null;
             throw var5;
          }
-
-         this.open(World.method1759(var1));
       }
-
    }
 
    @ObfuscatedName("q")

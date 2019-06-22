@@ -4,6 +4,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aa")
 public class class48 {
+   static {
+      ImageIO.setUseCache(false);
+   }
+
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I)[Lij;",
@@ -27,7 +31,6 @@ public class class48 {
          ClientParameter.__ji_fp = Client.packetWriter.getSocket();
          Client.packetWriter.removeSocket();
       }
-
    }
 
    @ObfuscatedName("je")
@@ -36,34 +39,35 @@ public class class48 {
       garbageValue = "-1926681563"
    )
    static Widget method869(Widget var0) {
-      Widget var1 = var0;
-      int var2 = WorldMapRegion.method568(class1.getWidgetClickMask(var0));
-      Widget var3;
-      if(var2 == 0) {
-         var3 = null;
+      Widget var2 = var0;
+      int var3 = WorldMapRegion.method568(class1.getWidgetClickMask(var0));
+      Widget var1;
+      if(var3 == 0) {
+         var1 = null;
       } else {
-         label29: {
-            for(int var4 = 0; var4 < var2; ++var4) {
-               var1 = Huffman.getWidget(var1.parentId);
-               if(var1 == null) {
-                  var3 = null;
-                  break label29;
-               }
+         int var4 = 0;
+
+         while(true) {
+            if(var4 >= var3) {
+               var1 = var2;
+               break;
             }
 
-            var3 = var1;
+            var2 = Huffman.getWidget(var2.parentId);
+            if(var2 == null) {
+               var1 = null;
+               break;
+            }
+
+            ++var4;
          }
       }
 
-      Widget var5 = var3;
-      if(var3 == null) {
+      Widget var5 = var1;
+      if(var1 == null) {
          var5 = var0.parent;
       }
 
       return var5;
-   }
-
-   static {
-      ImageIO.setUseCache(false);
    }
 }

@@ -181,7 +181,6 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
          this.task = null;
       }
-
    }
 
    @ObfuscatedName("ay")
@@ -195,29 +194,28 @@ public final class NetSocket extends AbstractSocket implements Runnable {
          if(this.exceptionWriting) {
             this.exceptionWriting = false;
             throw new IOException();
-         }
+         } else {
+            if(this.array == null) {
+               this.array = new byte[this.__d];
+            }
 
-         if(this.array == null) {
-            this.array = new byte[this.__d];
-         }
-
-         synchronized(this) {
-            for(int var5 = 0; var5 < var3; ++var5) {
-               this.array[this.__e] = var1[var5 + var2];
-               this.__e = (this.__e + 1) % this.__d;
-               if((this.__k + this.__l) % this.__d == this.__e) {
-                  throw new IOException();
+            synchronized(this) {
+               for(int var5 = 0; var5 < var3; ++var5) {
+                  this.array[this.__e] = var1[var5 + var2];
+                  this.__e = (this.__e + 1) % this.__d;
+                  if((this.__k + this.__l) % this.__d == this.__e) {
+                     throw new IOException();
+                  }
                }
-            }
 
-            if(this.task == null) {
-               this.task = this.taskHandler.newThreadTask(this, 3);
-            }
+               if(this.task == null) {
+                  this.task = this.taskHandler.newThreadTask(this, 3);
+               }
 
-            this.notifyAll();
+               this.notifyAll();
+            }
          }
       }
-
    }
 
    @Export("run")
@@ -236,7 +234,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
                      try {
                         this.wait();
-                     } catch (InterruptedException var9) {
+                     } catch (InterruptedException var10) {
                         ;
                      }
                   }
@@ -255,7 +253,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
                try {
                   this.outputStream.write(this.array, var2, var1);
-               } catch (IOException var8) {
+               } catch (IOException var9) {
                   this.exceptionWriting = true;
                }
 
@@ -265,7 +263,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
                   if(this.__e == this.__l) {
                      this.outputStream.flush();
                   }
-               } catch (IOException var7) {
+               } catch (IOException var8) {
                   this.exceptionWriting = true;
                }
                continue;
@@ -283,15 +281,15 @@ public final class NetSocket extends AbstractSocket implements Runnable {
                if(this.socket != null) {
                   this.socket.close();
                }
-            } catch (IOException var6) {
+            } catch (IOException var7) {
                ;
             }
 
             this.array = null;
             break;
          }
-      } catch (Exception var11) {
-         NPCDefinition.sendStackTrace((String)null, var11);
+      } catch (Exception var12) {
+         NpcDefinition.sendStackTrace((String)null, var12);
       }
 
    }
@@ -308,226 +306,226 @@ public final class NetSocket extends AbstractSocket implements Runnable {
       garbageValue = "-98"
    )
    public static int method3571(int var0, int var1, int var2, class179 var3, CollisionMap var4, boolean var5, int[] var6, int[] var7) {
-      int var8;
       int var9;
-      for(var9 = 0; var9 < 128; ++var9) {
-         for(var8 = 0; var8 < 128; ++var8) {
-            class178.__fi_q[var9][var8] = 0;
-            class178.__fi_w[var9][var8] = 99999999;
+      for(int var8 = 0; var8 < 128; ++var8) {
+         for(var9 = 0; var9 < 128; ++var9) {
+            class178.__fi_q[var8][var9] = 0;
+            class178.__fi_w[var8][var9] = 99999999;
          }
       }
 
       int var10;
-      byte var11;
-      int var12;
-      int var13;
+      int var11;
+      byte var13;
       int var14;
       int var15;
-      int var16;
       int var17;
-      boolean var18;
       int var19;
       int var20;
       int var21;
-      byte var22;
+      boolean var28;
+      int var30;
+      int var31;
+      int var33;
       if(var2 == 1) {
-         var9 = var0;
-         var10 = var1;
-         var22 = 64;
-         var11 = 64;
-         var12 = var0 - var22;
-         var13 = var1 - var11;
-         class178.__fi_q[var22][var11] = 99;
-         class178.__fi_w[var22][var11] = 0;
-         byte var23 = 0;
-         var14 = 0;
-         class178.__fi_l[var23] = var0;
-         var21 = var23 + 1;
-         class178.__fi_e[var23] = var1;
-         int[][] var24 = var4.flags;
+         var10 = var0;
+         var11 = var1;
+         byte var12 = 64;
+         var13 = 64;
+         var14 = var0 - var12;
+         var15 = var1 - var13;
+         class178.__fi_q[var12][var13] = 99;
+         class178.__fi_w[var12][var13] = 0;
+         byte var16 = 0;
+         var17 = 0;
+         class178.__fi_l[var16] = var0;
+         var33 = var16 + 1;
+         class178.__fi_e[var16] = var1;
+         int[][] var18 = var4.flags;
 
-         boolean var25;
-         label226: {
-            while(var21 != var14) {
-               var9 = class178.__fi_l[var14];
-               var10 = class178.__fi_e[var14];
-               var14 = var14 + 1 & 4095;
-               var19 = var9 - var12;
-               var20 = var10 - var13;
-               var15 = var9 - var4.xInset;
-               var16 = var10 - var4.yInset;
-               if(var3.vmethod3644(1, var9, var10, var4)) {
-                  WidgetGroupParent.__bx_o = var9;
-                  UrlRequester.__eo_u = var10;
-                  var25 = true;
-                  break label226;
-               }
-
-               var17 = class178.__fi_w[var19][var20] + 1;
-               if(var19 > 0 && class178.__fi_q[var19 - 1][var20] == 0 && (var24[var15 - 1][var16] & 19136776) == 0) {
-                  class178.__fi_l[var21] = var9 - 1;
-                  class178.__fi_e[var21] = var10;
-                  var21 = var21 + 1 & 4095;
-                  class178.__fi_q[var19 - 1][var20] = 2;
-                  class178.__fi_w[var19 - 1][var20] = var17;
-               }
-
-               if(var19 < 127 && class178.__fi_q[var19 + 1][var20] == 0 && (var24[var15 + 1][var16] & 19136896) == 0) {
-                  class178.__fi_l[var21] = var9 + 1;
-                  class178.__fi_e[var21] = var10;
-                  var21 = var21 + 1 & 4095;
-                  class178.__fi_q[var19 + 1][var20] = 8;
-                  class178.__fi_w[var19 + 1][var20] = var17;
-               }
-
-               if(var20 > 0 && class178.__fi_q[var19][var20 - 1] == 0 && (var24[var15][var16 - 1] & 19136770) == 0) {
-                  class178.__fi_l[var21] = var9;
-                  class178.__fi_e[var21] = var10 - 1;
-                  var21 = var21 + 1 & 4095;
-                  class178.__fi_q[var19][var20 - 1] = 1;
-                  class178.__fi_w[var19][var20 - 1] = var17;
-               }
-
-               if(var20 < 127 && class178.__fi_q[var19][var20 + 1] == 0 && (var24[var15][var16 + 1] & 19136800) == 0) {
-                  class178.__fi_l[var21] = var9;
-                  class178.__fi_e[var21] = var10 + 1;
-                  var21 = var21 + 1 & 4095;
-                  class178.__fi_q[var19][var20 + 1] = 4;
-                  class178.__fi_w[var19][var20 + 1] = var17;
-               }
-
-               if(var19 > 0 && var20 > 0 && class178.__fi_q[var19 - 1][var20 - 1] == 0 && (var24[var15 - 1][var16 - 1] & 19136782) == 0 && (var24[var15 - 1][var16] & 19136776) == 0 && (var24[var15][var16 - 1] & 19136770) == 0) {
-                  class178.__fi_l[var21] = var9 - 1;
-                  class178.__fi_e[var21] = var10 - 1;
-                  var21 = var21 + 1 & 4095;
-                  class178.__fi_q[var19 - 1][var20 - 1] = 3;
-                  class178.__fi_w[var19 - 1][var20 - 1] = var17;
-               }
-
-               if(var19 < 127 && var20 > 0 && class178.__fi_q[var19 + 1][var20 - 1] == 0 && (var24[var15 + 1][var16 - 1] & 19136899) == 0 && (var24[var15 + 1][var16] & 19136896) == 0 && (var24[var15][var16 - 1] & 19136770) == 0) {
-                  class178.__fi_l[var21] = var9 + 1;
-                  class178.__fi_e[var21] = var10 - 1;
-                  var21 = var21 + 1 & 4095;
-                  class178.__fi_q[var19 + 1][var20 - 1] = 9;
-                  class178.__fi_w[var19 + 1][var20 - 1] = var17;
-               }
-
-               if(var19 > 0 && var20 < 127 && class178.__fi_q[var19 - 1][var20 + 1] == 0 && (var24[var15 - 1][var16 + 1] & 19136824) == 0 && (var24[var15 - 1][var16] & 19136776) == 0 && (var24[var15][var16 + 1] & 19136800) == 0) {
-                  class178.__fi_l[var21] = var9 - 1;
-                  class178.__fi_e[var21] = var10 + 1;
-                  var21 = var21 + 1 & 4095;
-                  class178.__fi_q[var19 - 1][var20 + 1] = 6;
-                  class178.__fi_w[var19 - 1][var20 + 1] = var17;
-               }
-
-               if(var19 < 127 && var20 < 127 && class178.__fi_q[var19 + 1][var20 + 1] == 0 && (var24[var15 + 1][var16 + 1] & 19136992) == 0 && (var24[var15 + 1][var16] & 19136896) == 0 && (var24[var15][var16 + 1] & 19136800) == 0) {
-                  class178.__fi_l[var21] = var9 + 1;
-                  class178.__fi_e[var21] = var10 + 1;
-                  var21 = var21 + 1 & 4095;
-                  class178.__fi_q[var19 + 1][var20 + 1] = 12;
-                  class178.__fi_w[var19 + 1][var20 + 1] = var17;
-               }
+         boolean var29;
+         while(true) {
+            if(var33 == var17) {
+               WidgetGroupParent.__bx_o = var10;
+               UrlRequester.__eo_u = var11;
+               var29 = false;
+               break;
             }
 
-            WidgetGroupParent.__bx_o = var9;
-            UrlRequester.__eo_u = var10;
-            var25 = false;
+            var10 = class178.__fi_l[var17];
+            var11 = class178.__fi_e[var17];
+            var17 = var17 + 1 & 4095;
+            var30 = var10 - var14;
+            var31 = var11 - var15;
+            var19 = var10 - var4.xInset;
+            var20 = var11 - var4.yInset;
+            if(var3.vmethod3644(1, var10, var11, var4)) {
+               WidgetGroupParent.__bx_o = var10;
+               UrlRequester.__eo_u = var11;
+               var29 = true;
+               break;
+            }
+
+            var21 = class178.__fi_w[var30][var31] + 1;
+            if(var30 > 0 && class178.__fi_q[var30 - 1][var31] == 0 && (var18[var19 - 1][var20] & 19136776) == 0) {
+               class178.__fi_l[var33] = var10 - 1;
+               class178.__fi_e[var33] = var11;
+               var33 = var33 + 1 & 4095;
+               class178.__fi_q[var30 - 1][var31] = 2;
+               class178.__fi_w[var30 - 1][var31] = var21;
+            }
+
+            if(var30 < 127 && class178.__fi_q[var30 + 1][var31] == 0 && (var18[var19 + 1][var20] & 19136896) == 0) {
+               class178.__fi_l[var33] = var10 + 1;
+               class178.__fi_e[var33] = var11;
+               var33 = var33 + 1 & 4095;
+               class178.__fi_q[var30 + 1][var31] = 8;
+               class178.__fi_w[var30 + 1][var31] = var21;
+            }
+
+            if(var31 > 0 && class178.__fi_q[var30][var31 - 1] == 0 && (var18[var19][var20 - 1] & 19136770) == 0) {
+               class178.__fi_l[var33] = var10;
+               class178.__fi_e[var33] = var11 - 1;
+               var33 = var33 + 1 & 4095;
+               class178.__fi_q[var30][var31 - 1] = 1;
+               class178.__fi_w[var30][var31 - 1] = var21;
+            }
+
+            if(var31 < 127 && class178.__fi_q[var30][var31 + 1] == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
+               class178.__fi_l[var33] = var10;
+               class178.__fi_e[var33] = var11 + 1;
+               var33 = var33 + 1 & 4095;
+               class178.__fi_q[var30][var31 + 1] = 4;
+               class178.__fi_w[var30][var31 + 1] = var21;
+            }
+
+            if(var30 > 0 && var31 > 0 && class178.__fi_q[var30 - 1][var31 - 1] == 0 && (var18[var19 - 1][var20 - 1] & 19136782) == 0 && (var18[var19 - 1][var20] & 19136776) == 0 && (var18[var19][var20 - 1] & 19136770) == 0) {
+               class178.__fi_l[var33] = var10 - 1;
+               class178.__fi_e[var33] = var11 - 1;
+               var33 = var33 + 1 & 4095;
+               class178.__fi_q[var30 - 1][var31 - 1] = 3;
+               class178.__fi_w[var30 - 1][var31 - 1] = var21;
+            }
+
+            if(var30 < 127 && var31 > 0 && class178.__fi_q[var30 + 1][var31 - 1] == 0 && (var18[var19 + 1][var20 - 1] & 19136899) == 0 && (var18[var19 + 1][var20] & 19136896) == 0 && (var18[var19][var20 - 1] & 19136770) == 0) {
+               class178.__fi_l[var33] = var10 + 1;
+               class178.__fi_e[var33] = var11 - 1;
+               var33 = var33 + 1 & 4095;
+               class178.__fi_q[var30 + 1][var31 - 1] = 9;
+               class178.__fi_w[var30 + 1][var31 - 1] = var21;
+            }
+
+            if(var30 > 0 && var31 < 127 && class178.__fi_q[var30 - 1][var31 + 1] == 0 && (var18[var19 - 1][var20 + 1] & 19136824) == 0 && (var18[var19 - 1][var20] & 19136776) == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
+               class178.__fi_l[var33] = var10 - 1;
+               class178.__fi_e[var33] = var11 + 1;
+               var33 = var33 + 1 & 4095;
+               class178.__fi_q[var30 - 1][var31 + 1] = 6;
+               class178.__fi_w[var30 - 1][var31 + 1] = var21;
+            }
+
+            if(var30 < 127 && var31 < 127 && class178.__fi_q[var30 + 1][var31 + 1] == 0 && (var18[var19 + 1][var20 + 1] & 19136992) == 0 && (var18[var19 + 1][var20] & 19136896) == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
+               class178.__fi_l[var33] = var10 + 1;
+               class178.__fi_e[var33] = var11 + 1;
+               var33 = var33 + 1 & 4095;
+               class178.__fi_q[var30 + 1][var31 + 1] = 12;
+               class178.__fi_w[var30 + 1][var31 + 1] = var21;
+            }
          }
 
-         var18 = var25;
+         var28 = var29;
       } else if(var2 == 2) {
-         var18 = WorldMapSection2.method593(var0, var1, var3, var4);
+         var28 = WorldMapSection2.method593(var0, var1, var3, var4);
       } else {
-         var18 = IndexStore.method3585(var0, var1, var2, var3, var4);
+         var28 = IndexStore.method3585(var0, var1, var2, var3, var4);
       }
 
-      var8 = var0 - 64;
-      var9 = var1 - 64;
-      var10 = WidgetGroupParent.__bx_o;
-      var19 = UrlRequester.__eo_u;
-      if(!var18) {
-         var20 = Integer.MAX_VALUE;
-         var12 = Integer.MAX_VALUE;
-         var22 = 10;
-         var21 = var3.field2120;
-         var14 = var3.field2121;
-         int var29 = var3.field2122;
-         var15 = var3.field2123;
+      var9 = var0 - 64;
+      var10 = var1 - 64;
+      var11 = WidgetGroupParent.__bx_o;
+      var30 = UrlRequester.__eo_u;
+      if(!var28) {
+         var31 = Integer.MAX_VALUE;
+         var14 = Integer.MAX_VALUE;
+         byte var32 = 10;
+         var33 = var3.field2120;
+         var17 = var3.field2121;
+         int var27 = var3.field2122;
+         var19 = var3.field2123;
 
-         for(var16 = var21 - var22; var16 <= var22 + var21; ++var16) {
-            for(var17 = var14 - var22; var17 <= var14 + var22; ++var17) {
-               int var30 = var16 - var8;
-               int var31 = var17 - var9;
-               if(var30 >= 0 && var31 >= 0 && var30 < 128 && var31 < 128 && class178.__fi_w[var30][var31] < 100) {
-                  int var26 = 0;
-                  if(var16 < var21) {
-                     var26 = var21 - var16;
-                  } else if(var16 > var29 + var21 - 1) {
-                     var26 = var16 - (var29 + var21 - 1);
+         for(var20 = var33 - var32; var20 <= var32 + var33; ++var20) {
+            for(var21 = var17 - var32; var21 <= var17 + var32; ++var21) {
+               int var22 = var20 - var9;
+               int var23 = var21 - var10;
+               if(var22 >= 0 && var23 >= 0 && var22 < 128 && var23 < 128 && class178.__fi_w[var22][var23] < 100) {
+                  int var24 = 0;
+                  if(var20 < var33) {
+                     var24 = var33 - var20;
+                  } else if(var20 > var27 + var33 - 1) {
+                     var24 = var20 - (var27 + var33 - 1);
                   }
 
-                  int var27 = 0;
-                  if(var17 < var14) {
-                     var27 = var14 - var17;
-                  } else if(var17 > var15 + var14 - 1) {
-                     var27 = var17 - (var15 + var14 - 1);
+                  int var25 = 0;
+                  if(var21 < var17) {
+                     var25 = var17 - var21;
+                  } else if(var21 > var19 + var17 - 1) {
+                     var25 = var21 - (var19 + var17 - 1);
                   }
 
-                  int var28 = var27 * var27 + var26 * var26;
-                  if(var28 < var20 || var28 == var20 && class178.__fi_w[var30][var31] < var12) {
-                     var20 = var28;
-                     var12 = class178.__fi_w[var30][var31];
-                     var10 = var16;
-                     var19 = var17;
+                  int var26 = var25 * var25 + var24 * var24;
+                  if(var26 < var31 || var26 == var31 && class178.__fi_w[var22][var23] < var14) {
+                     var31 = var26;
+                     var14 = class178.__fi_w[var22][var23];
+                     var11 = var20;
+                     var30 = var21;
                   }
                }
             }
          }
 
-         if(var20 == Integer.MAX_VALUE) {
+         if(var31 == Integer.MAX_VALUE) {
             return -1;
          }
       }
 
-      if(var0 == var10 && var19 == var1) {
+      if(var0 == var11 && var30 == var1) {
          return 0;
       } else {
-         var11 = 0;
-         class178.__fi_l[var11] = var10;
-         var20 = var11 + 1;
-         class178.__fi_e[var11] = var19;
+         var13 = 0;
+         class178.__fi_l[var13] = var11;
+         var31 = var13 + 1;
+         class178.__fi_e[var13] = var30;
 
-         for(var12 = var13 = class178.__fi_q[var10 - var8][var19 - var9]; var0 != var10 || var19 != var1; var12 = class178.__fi_q[var10 - var8][var19 - var9]) {
-            if(var12 != var13) {
-               var13 = var12;
-               class178.__fi_l[var20] = var10;
-               class178.__fi_e[var20++] = var19;
+         for(var14 = var15 = class178.__fi_q[var11 - var9][var30 - var10]; var0 != var11 || var30 != var1; var14 = class178.__fi_q[var11 - var9][var30 - var10]) {
+            if(var14 != var15) {
+               var15 = var14;
+               class178.__fi_l[var31] = var11;
+               class178.__fi_e[var31++] = var30;
             }
 
-            if((var12 & 2) != 0) {
-               ++var10;
-            } else if((var12 & 8) != 0) {
-               --var10;
+            if((var14 & 2) != 0) {
+               ++var11;
+            } else if((var14 & 8) != 0) {
+               --var11;
             }
 
-            if((var12 & 1) != 0) {
-               ++var19;
-            } else if((var12 & 4) != 0) {
-               --var19;
+            if((var14 & 1) != 0) {
+               ++var30;
+            } else if((var14 & 4) != 0) {
+               --var30;
             }
          }
 
-         var21 = 0;
+         var33 = 0;
 
-         while(var20-- > 0) {
-            var6[var21] = class178.__fi_l[var20];
-            var7[var21++] = class178.__fi_e[var20];
-            if(var21 >= var6.length) {
+         while(var31-- > 0) {
+            var6[var33] = class178.__fi_l[var31];
+            var7[var33++] = class178.__fi_e[var31];
+            if(var33 >= var6.length) {
                break;
             }
          }
 
-         return var21;
+         return var33;
       }
    }
 

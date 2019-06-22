@@ -39,6 +39,14 @@ public class GrandExchangeEvents {
    @Export("events")
    public final List events;
 
+   static {
+      __g_f = new class12();
+      new WorldComparator();
+      __g_q = new UnitPriceComparator();
+      __g_w = new class11();
+      __g_o = new TotalQuantityComparator();
+   }
+
    @ObfuscatedSignature(
       signature = "(Lgr;Z)V",
       garbageValue = "1"
@@ -154,7 +162,7 @@ public class GrandExchangeEvents {
          Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.color2;
          return 1;
       } else if(var0 == 2613) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.rectangleMode.ordinal();
+         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
          return 1;
       } else if(var0 == 2614) {
          Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.__bv?1:0;
@@ -173,14 +181,5 @@ public class GrandExchangeEvents {
       if(GroundItemPile.loadWidgetGroup(var0)) {
          class30.method570(Widget.widgets[var0], var1);
       }
-
-   }
-
-   static {
-      __g_f = new class12();
-      new WorldComparator();
-      __g_q = new UnitPriceComparator();
-      __g_w = new class11();
-      __g_o = new TotalQuantityComparator();
    }
 }

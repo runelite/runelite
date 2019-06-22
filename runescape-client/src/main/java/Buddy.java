@@ -82,7 +82,7 @@ public class Buddy extends User {
 
       for(var1 = 0; var1 < Client.npcCount; ++var1) {
          int var4 = Client.npcIndices[var1];
-         NPC var3 = Client.npcs[var4];
+         Npc var3 = Client.npcs[var4];
          if(var3 != null && var3.overheadTextCyclesRemaining > 0) {
             --var3.overheadTextCyclesRemaining;
             if(var3.overheadTextCyclesRemaining == 0) {

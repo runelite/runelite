@@ -206,22 +206,22 @@ public final class Player extends Actor {
       this.team = 0;
       int[] var4 = new int[12];
 
-      int var5;
       int var6;
-      for(int var7 = 0; var7 < 12; ++var7) {
-         var5 = var1.readUnsignedByte();
-         if(var5 == 0) {
-            var4[var7] = 0;
+      int var7;
+      for(int var5 = 0; var5 < 12; ++var5) {
+         var6 = var1.readUnsignedByte();
+         if(var6 == 0) {
+            var4[var5] = 0;
          } else {
-            var6 = var1.readUnsignedByte();
-            var4[var7] = var6 + (var5 << 8);
-            if(var7 == 0 && var4[0] == 65535) {
+            var7 = var1.readUnsignedByte();
+            var4[var5] = var7 + (var6 << 8);
+            if(var5 == 0 && var4[0] == 65535) {
                var3 = var1.__ag_302();
                break;
             }
 
-            if(var4[var7] >= 512) {
-               int var8 = Skills.getItemDefinition(var4[var7] - 512).int1;
+            if(var4[var5] >= 512) {
+               int var8 = Skills.getItemDefinition(var4[var5] - 512).int1;
                if(var8 != 0) {
                   this.team = var8;
                }
@@ -231,13 +231,13 @@ public final class Player extends Actor {
 
       int[] var9 = new int[5];
 
-      for(var5 = 0; var5 < 5; ++var5) {
-         var6 = var1.readUnsignedByte();
-         if(var6 < 0 || var6 >= class229.__hz_l[var5].length) {
-            var6 = 0;
+      for(var6 = 0; var6 < 5; ++var6) {
+         var7 = var1.readUnsignedByte();
+         if(var7 < 0 || var7 >= class229.__hz_l[var6].length) {
+            var7 = 0;
          }
 
-         var9[var5] = var6;
+         var9[var6] = var7;
       }
 
       super.idleSequence = var1.__ag_302();
@@ -386,7 +386,7 @@ public final class Player extends Actor {
          return null;
       } else {
          SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0?WorldMapAreaData.getSequenceDefinition(super.sequence):null;
-         SequenceDefinition var2 = super.movementSequence != -1 && !this.isUnanimated && (super.idleSequence != super.movementSequence || var1 == null)?WorldMapAreaData.getSequenceDefinition(super.movementSequence):null;
+         SequenceDefinition var2 = super.movementSequence == -1 || this.isUnanimated || super.idleSequence == super.movementSequence && var1 != null?null:WorldMapAreaData.getSequenceDefinition(super.movementSequence);
          Model var3 = this.appearance.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
          if(var3 == null) {
             return null;
@@ -541,6 +541,5 @@ public final class Player extends Actor {
          Client.isSpellSelected = false;
          class22.method295(var0);
       }
-
    }
 }

@@ -31,7 +31,6 @@ public class Node {
          this.previous = null;
          this.next = null;
       }
-
    }
 
    @ObfuscatedName("eg")

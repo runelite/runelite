@@ -66,48 +66,48 @@ public class UserComparator7 extends AbstractUserComparator {
                      var8[var9] = var0.readStringCp1252NullTerminated();
                   }
 
-                  String var26 = var0.readStringCp1252NullTerminated();
+                  String var20 = var0.readStringCp1252NullTerminated();
                   byte[][] var10 = new byte[var7][];
-                  int var11;
+                  int var12;
                   if(var4 == 3) {
-                     for(int var12 = 0; var12 < var7; ++var12) {
-                        var11 = var0.readInt();
-                        var10[var12] = new byte[var11];
-                        var0.__al_305(var10[var12], 0, var11);
+                     for(int var11 = 0; var11 < var7; ++var11) {
+                        var12 = var0.readInt();
+                        var10[var11] = new byte[var12];
+                        var0.__al_305(var10[var11], 0, var12);
                      }
                   }
 
                   var2.operations[var3] = var4;
-                  Class[] var27 = new Class[var7];
+                  Class[] var21 = new Class[var7];
 
-                  for(var11 = 0; var11 < var7; ++var11) {
-                     var27[var11] = VarcInt.loadClassFromDescriptor(var8[var11]);
+                  for(var12 = 0; var12 < var7; ++var12) {
+                     var21[var12] = VarcInt.loadClassFromDescriptor(var8[var12]);
                   }
 
-                  Class var13 = VarcInt.loadClassFromDescriptor(var26);
+                  Class var22 = VarcInt.loadClassFromDescriptor(var20);
                   if(VarcInt.loadClassFromDescriptor(var5).getClassLoader() == null) {
                      throw new SecurityException();
                   }
 
-                  Method[] var14 = VarcInt.loadClassFromDescriptor(var5).getDeclaredMethods();
-                  Method[] var15 = var14;
+                  Method[] var13 = VarcInt.loadClassFromDescriptor(var5).getDeclaredMethods();
+                  Method[] var14 = var13;
 
-                  for(int var16 = 0; var16 < var15.length; ++var16) {
-                     Method var17 = var15[var16];
-                     if(Reflection.getMethodName(var17).equals(var6)) {
-                        Class[] var18 = Reflection.getParameterTypes(var17);
-                        if(var27.length == var18.length) {
-                           boolean var19 = true;
+                  for(int var15 = 0; var15 < var14.length; ++var15) {
+                     Method var16 = var14[var15];
+                     if(Reflection.getMethodName(var16).equals(var6)) {
+                        Class[] var17 = Reflection.getParameterTypes(var16);
+                        if(var21.length == var17.length) {
+                           boolean var18 = true;
 
-                           for(int var20 = 0; var20 < var27.length; ++var20) {
-                              if(var27[var20] != var18[var20]) {
-                                 var19 = false;
+                           for(int var19 = 0; var19 < var21.length; ++var19) {
+                              if(var21[var19] != var17[var19]) {
+                                 var18 = false;
                                  break;
                               }
                            }
 
-                           if(var19 && var13 == var17.getReturnType()) {
-                              var2.methods[var3] = var17;
+                           if(var18 && var22 == var16.getReturnType()) {
+                              var2.methods[var3] = var16;
                            }
                         }
                      }
@@ -131,15 +131,15 @@ public class UserComparator7 extends AbstractUserComparator {
 
                var2.fields[var3] = Reflection.findField(VarcInt.loadClassFromDescriptor(var5), var6);
             }
-         } catch (ClassNotFoundException var21) {
+         } catch (ClassNotFoundException var24) {
             var2.creationErrors[var3] = -1;
-         } catch (SecurityException var22) {
+         } catch (SecurityException var25) {
             var2.creationErrors[var3] = -2;
-         } catch (NullPointerException var23) {
+         } catch (NullPointerException var26) {
             var2.creationErrors[var3] = -3;
-         } catch (Exception var24) {
+         } catch (Exception var27) {
             var2.creationErrors[var3] = -4;
-         } catch (Throwable var25) {
+         } catch (Throwable var28) {
             var2.creationErrors[var3] = -5;
          }
       }

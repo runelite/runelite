@@ -131,20 +131,20 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       for(int var0 = 0; var0 < Client.soundEffectCount; ++var0) {
          --Client.queuedSoundEffectDelays[var0];
          if(Client.queuedSoundEffectDelays[var0] >= -10) {
-            SoundEffect var10 = Client.soundEffects[var0];
-            if(var10 == null) {
-               Object var2 = null;
-               var10 = SoundEffect.readSoundEffect(class25.indexCache4, Client.soundEffectIds[var0], 0);
-               if(var10 == null) {
+            SoundEffect var9 = Client.soundEffects[var0];
+            if(var9 == null) {
+               Object var10000 = null;
+               var9 = SoundEffect.readSoundEffect(class25.indexCache4, Client.soundEffectIds[var0], 0);
+               if(var9 == null) {
                   continue;
                }
 
-               Client.queuedSoundEffectDelays[var0] += var10.__q_174();
-               Client.soundEffects[var0] = var10;
+               Client.queuedSoundEffectDelays[var0] += var9.__q_174();
+               Client.soundEffects[var0] = var9;
             }
 
             if(Client.queuedSoundEffectDelays[var0] < 0) {
-               int var11;
+               int var2;
                if(Client.soundLocations[var0] != 0) {
                   int var3 = (Client.soundLocations[var0] & 255) * 128;
                   int var4 = Client.soundLocations[var0] >> 16 & 255;
@@ -169,16 +169,16 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
                      var8 = 0;
                   }
 
-                  var11 = (var3 - var8) * Client.__client_qc / var3;
+                  var2 = (var3 - var8) * Client.__client_qc / var3;
                } else {
-                  var11 = Client.__client_qp;
+                  var2 = Client.__client_qp;
                }
 
-               if(var11 > 0) {
-                  RawSound var12 = var10.toRawSound().resample(MilliClock.decimator);
-                  RawPcmStream var13 = RawPcmStream.method2497(var12, 100, var11);
-                  var13.__x_181(Client.unknownSoundValues1[var0] - 1);
-                  TaskHandler.pcmStreamMixer.addSubStream(var13);
+               if(var2 > 0) {
+                  RawSound var10 = var9.toRawSound().resample(MilliClock.decimator);
+                  RawPcmStream var11 = RawPcmStream.method2497(var10, 100, var2);
+                  var11.__x_181(Client.unknownSoundValues1[var0] - 1);
+                  TaskHandler.pcmStreamMixer.addSubStream(var11);
                }
 
                Client.queuedSoundEffectDelays[var0] = -100;
@@ -199,14 +199,14 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       }
 
       if(Client.__client_qq) {
-         boolean var9;
+         boolean var12;
          if(class214.__hf_o != 0) {
-            var9 = true;
+            var12 = true;
          } else {
-            var9 = class214.midiPcmStream.isReady();
+            var12 = class214.midiPcmStream.isReady();
          }
 
-         if(!var9) {
+         if(!var12) {
             if(Client.__client_qf != 0 && Client.__client_qy != -1) {
                Login.method2076(UserComparator3.indexCache6, Client.__client_qy, 0, Client.__client_qf, false);
             }

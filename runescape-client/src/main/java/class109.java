@@ -87,21 +87,21 @@ public class class109 {
                      if(this.field1409 == 0) {
                         var15 = this.field1408 / var14.field1306;
 
-                        for(int var19 = 0; var19 < var15; ++var19) {
-                           float[] var20 = var14.method2307();
+                        for(int var16 = 0; var16 < var15; ++var16) {
+                           float[] var17 = var14.method2307();
 
                            for(int var18 = 0; var18 < var14.field1306; ++var18) {
-                              var1[var13 + var19 + var18 * var15] += var20[var18];
+                              var1[var13 + var16 + var18 * var15] += var17[var18];
                            }
                         }
                      } else {
                         var15 = 0;
 
                         while(var15 < this.field1408) {
-                           float[] var16 = var14.method2307();
+                           float[] var19 = var14.method2307();
 
-                           for(int var17 = 0; var17 < var14.field1306; ++var17) {
-                              var1[var13 + var15] += var16[var17];
+                           for(int var20 = 0; var20 < var14.field1306; ++var20) {
+                              var1[var13 + var15] += var19[var20];
                               ++var15;
                            }
                         }
@@ -115,7 +115,7 @@ public class class109 {
                }
             }
          }
-      }
 
+      }
    }
 }

@@ -136,6 +136,14 @@ public class ModelData extends Entity {
    @Export("__ak")
    int __ak;
 
+   static {
+      __dw_aw = new int[10000];
+      __dw_al = new int[10000];
+      __dw_ab = 0;
+      ModelData_sine = Rasterizer3D.Rasterizer3D_sine;
+      ModelData_cosine = Rasterizer3D.Rasterizer3D_cosine;
+   }
+
    ModelData() {
       this.verticesCount = 0;
       this.faceCount = 0;
@@ -431,61 +439,61 @@ public class ModelData extends Entity {
       }
 
       var26 = var11 + var9;
-      int var56 = var26;
+      int var28 = var26;
       if(var12 == 1) {
          var26 += var10;
       }
 
-      int var28 = var26;
-      var26 += var10;
       int var29 = var26;
+      var26 += var10;
+      int var30 = var26;
       if(var13 == 255) {
          var26 += var10;
       }
 
-      int var30 = var26;
+      int var31 = var26;
       if(var15 == 1) {
          var26 += var10;
       }
 
-      int var31 = var26;
+      int var32 = var26;
       if(var17 == 1) {
          var26 += var9;
       }
 
-      int var32 = var26;
+      int var33 = var26;
       if(var14 == 1) {
          var26 += var10;
       }
 
-      int var33 = var26;
-      var26 += var21;
       int var34 = var26;
+      var26 += var21;
+      int var35 = var26;
       if(var16 == 1) {
          var26 += var10 * 2;
       }
 
-      int var35 = var26;
-      var26 += var22;
       int var36 = var26;
-      var26 += var10 * 2;
+      var26 += var22;
       int var37 = var26;
-      var26 += var18;
+      var26 += var10 * 2;
       int var38 = var26;
-      var26 += var19;
+      var26 += var18;
       int var39 = var26;
-      var26 += var20;
+      var26 += var19;
       int var40 = var26;
-      var26 += var23 * 6;
+      var26 += var20;
       int var41 = var26;
-      var26 += var24 * 6;
+      var26 += var23 * 6;
       int var42 = var26;
       var26 += var24 * 6;
       int var43 = var26;
-      var26 += var24 * 2;
+      var26 += var24 * 6;
       int var44 = var26;
-      var26 += var24;
+      var26 += var24 * 2;
       int var45 = var26;
+      var26 += var24;
+      int var46 = var26;
       var26 += var24 * 2 + var25 * 2;
       this.verticesCount = var9;
       this.faceCount = var10;
@@ -534,151 +542,151 @@ public class ModelData extends Entity {
       }
 
       var2.index = var11;
-      var3.index = var37;
-      var4.index = var38;
-      var5.index = var39;
-      var6.index = var31;
-      int var46 = 0;
-      int var47 = 0;
+      var3.index = var38;
+      var4.index = var39;
+      var5.index = var40;
+      var6.index = var32;
       int var48 = 0;
+      int var49 = 0;
+      int var50 = 0;
 
-      int var49;
-      int var50;
       int var51;
       int var52;
       int var53;
-      for(var49 = 0; var49 < var9; ++var49) {
-         var50 = var2.readUnsignedByte();
-         var51 = 0;
-         if((var50 & 1) != 0) {
-            var51 = var3.__ab_306();
-         }
-
-         var52 = 0;
-         if((var50 & 2) != 0) {
-            var52 = var4.__ab_306();
-         }
-
+      int var54;
+      int var55;
+      for(var51 = 0; var51 < var9; ++var51) {
+         var52 = var2.readUnsignedByte();
          var53 = 0;
-         if((var50 & 4) != 0) {
-            var53 = var5.__ab_306();
+         if((var52 & 1) != 0) {
+            var53 = var3.__ab_306();
          }
 
-         this.verticesX[var49] = var46 + var51;
-         this.verticesY[var49] = var47 + var52;
-         this.verticesZ[var49] = var48 + var53;
-         var46 = this.verticesX[var49];
-         var47 = this.verticesY[var49];
-         var48 = this.verticesZ[var49];
+         var54 = 0;
+         if((var52 & 2) != 0) {
+            var54 = var4.__ab_306();
+         }
+
+         var55 = 0;
+         if((var52 & 4) != 0) {
+            var55 = var5.__ab_306();
+         }
+
+         this.verticesX[var51] = var48 + var53;
+         this.verticesY[var51] = var49 + var54;
+         this.verticesZ[var51] = var50 + var55;
+         var48 = this.verticesX[var51];
+         var49 = this.verticesY[var51];
+         var50 = this.verticesZ[var51];
          if(var17 == 1) {
-            this.__h[var49] = var6.readUnsignedByte();
+            this.__h[var51] = var6.readUnsignedByte();
          }
       }
 
-      var2.index = var36;
-      var3.index = var56;
-      var4.index = var29;
-      var5.index = var32;
-      var6.index = var30;
-      var7.index = var34;
-      var8.index = var35;
+      var2.index = var37;
+      var3.index = var28;
+      var4.index = var30;
+      var5.index = var33;
+      var6.index = var31;
+      var7.index = var35;
+      var8.index = var36;
 
-      for(var49 = 0; var49 < var10; ++var49) {
-         this.faceColors[var49] = (short)var2.__ag_302();
+      for(var51 = 0; var51 < var10; ++var51) {
+         this.faceColors[var51] = (short)var2.__ag_302();
          if(var12 == 1) {
-            this.__e[var49] = var3.readByte();
+            this.__e[var51] = var3.readByte();
          }
 
          if(var13 == 255) {
-            this.__x[var49] = var4.readByte();
+            this.__x[var51] = var4.readByte();
          }
 
          if(var14 == 1) {
-            this.faceAlphas[var49] = var5.readByte();
+            this.faceAlphas[var51] = var5.readByte();
          }
 
          if(var15 == 1) {
-            this.__b[var49] = var6.readUnsignedByte();
+            this.__b[var51] = var6.readUnsignedByte();
          }
 
          if(var16 == 1) {
-            this.faceTextures[var49] = (short)(var7.__ag_302() - 1);
+            this.faceTextures[var51] = (short)(var7.__ag_302() - 1);
          }
 
-         if(this.textureCoords != null && this.faceTextures[var49] != -1) {
-            this.textureCoords[var49] = (byte)(var8.readUnsignedByte() - 1);
+         if(this.textureCoords != null && this.faceTextures[var51] != -1) {
+            this.textureCoords[var51] = (byte)(var8.readUnsignedByte() - 1);
          }
       }
 
-      var2.index = var33;
-      var3.index = var28;
-      var49 = 0;
-      var50 = 0;
+      var2.index = var34;
+      var3.index = var29;
       var51 = 0;
       var52 = 0;
+      var53 = 0;
+      var54 = 0;
 
-      int var54;
-      for(var53 = 0; var53 < var10; ++var53) {
-         var54 = var3.readUnsignedByte();
-         if(var54 == 1) {
-            var49 = var2.__ab_306() + var52;
-            var50 = var2.__ab_306() + var49;
-            var51 = var2.__ab_306() + var50;
-            var52 = var51;
-            this.indices1[var53] = var49;
-            this.indices2[var53] = var50;
-            this.indices3[var53] = var51;
+      int var56;
+      for(var55 = 0; var55 < var10; ++var55) {
+         var56 = var3.readUnsignedByte();
+         if(var56 == 1) {
+            var51 = var2.__ab_306() + var54;
+            var52 = var2.__ab_306() + var51;
+            var53 = var2.__ab_306() + var52;
+            var54 = var53;
+            this.indices1[var55] = var51;
+            this.indices2[var55] = var52;
+            this.indices3[var55] = var53;
          }
 
-         if(var54 == 2) {
-            var50 = var51;
-            var51 = var2.__ab_306() + var52;
-            var52 = var51;
-            this.indices1[var53] = var49;
-            this.indices2[var53] = var50;
-            this.indices3[var53] = var51;
+         if(var56 == 2) {
+            var52 = var53;
+            var53 = var2.__ab_306() + var54;
+            var54 = var53;
+            this.indices1[var55] = var51;
+            this.indices2[var55] = var52;
+            this.indices3[var55] = var53;
          }
 
-         if(var54 == 3) {
-            var49 = var51;
-            var51 = var2.__ab_306() + var52;
-            var52 = var51;
-            this.indices1[var53] = var49;
-            this.indices2[var53] = var50;
-            this.indices3[var53] = var51;
+         if(var56 == 3) {
+            var51 = var53;
+            var53 = var2.__ab_306() + var54;
+            var54 = var53;
+            this.indices1[var55] = var51;
+            this.indices2[var55] = var52;
+            this.indices3[var55] = var53;
          }
 
-         if(var54 == 4) {
-            int var55 = var49;
-            var49 = var50;
-            var50 = var55;
-            var51 = var2.__ab_306() + var52;
-            var52 = var51;
-            this.indices1[var53] = var49;
-            this.indices2[var53] = var55;
-            this.indices3[var53] = var51;
+         if(var56 == 4) {
+            int var57 = var51;
+            var51 = var52;
+            var52 = var57;
+            var53 = var2.__ab_306() + var54;
+            var54 = var53;
+            this.indices1[var55] = var51;
+            this.indices2[var55] = var57;
+            this.indices3[var55] = var53;
          }
       }
 
-      var2.index = var40;
-      var3.index = var41;
-      var4.index = var42;
-      var5.index = var43;
-      var6.index = var44;
-      var7.index = var45;
+      var2.index = var41;
+      var3.index = var42;
+      var4.index = var43;
+      var5.index = var44;
+      var6.index = var45;
+      var7.index = var46;
 
-      for(var53 = 0; var53 < var11; ++var53) {
-         var54 = this.textureRenderTypes[var53] & 255;
-         if(var54 == 0) {
-            this.texTriangleX[var53] = (short)var2.__ag_302();
-            this.texTriangleY[var53] = (short)var2.__ag_302();
-            this.texTriangleZ[var53] = (short)var2.__ag_302();
+      for(var55 = 0; var55 < var11; ++var55) {
+         var56 = this.textureRenderTypes[var55] & 255;
+         if(var56 == 0) {
+            this.texTriangleX[var55] = (short)var2.__ag_302();
+            this.texTriangleY[var55] = (short)var2.__ag_302();
+            this.texTriangleZ[var55] = (short)var2.__ag_302();
          }
       }
 
       var2.index = var26;
-      var53 = var2.readUnsignedByte();
-      if(var53 != 0) {
+      var55 = var2.readUnsignedByte();
+      if(var55 != 0) {
          new ModelData0();
          var2.__ag_302();
          var2.__ag_302();
@@ -712,45 +720,45 @@ public class ModelData extends Entity {
       int var19 = var4.__ag_302();
       int var20 = var4.__ag_302();
       byte var21 = 0;
-      int var22 = var21 + var9;
-      int var23 = var22;
-      var22 += var10;
-      int var24 = var22;
+      int var45 = var21 + var9;
+      int var23 = var45;
+      var45 += var10;
+      int var24 = var45;
       if(var13 == 255) {
-         var22 += var10;
+         var45 += var10;
       }
 
-      int var25 = var22;
+      int var25 = var45;
       if(var15 == 1) {
-         var22 += var10;
+         var45 += var10;
       }
 
-      int var26 = var22;
+      int var26 = var45;
       if(var12 == 1) {
-         var22 += var10;
+         var45 += var10;
       }
 
-      int var27 = var22;
+      int var27 = var45;
       if(var16 == 1) {
-         var22 += var9;
+         var45 += var9;
       }
 
-      int var28 = var22;
+      int var28 = var45;
       if(var14 == 1) {
-         var22 += var10;
+         var45 += var10;
       }
 
-      int var29 = var22;
-      var22 += var20;
-      int var30 = var22;
-      var22 += var10 * 2;
-      int var31 = var22;
-      var22 += var11 * 6;
-      int var32 = var22;
-      var22 += var17;
-      int var33 = var22;
-      var22 += var18;
-      int var10000 = var22 + var19;
+      int var29 = var45;
+      var45 += var20;
+      int var30 = var45;
+      var45 += var10 * 2;
+      int var31 = var45;
+      var45 += var11 * 6;
+      int var32 = var45;
+      var45 += var17;
+      int var33 = var45;
+      var45 += var18;
+      int var10000 = var45 + var19;
       this.verticesCount = var9;
       this.faceCount = var10;
       this.__z = var11;
@@ -795,7 +803,7 @@ public class ModelData extends Entity {
       var4.index = var21;
       var5.index = var32;
       var6.index = var33;
-      var7.index = var22;
+      var7.index = var45;
       var8.index = var27;
       int var35 = 0;
       int var36 = 0;
@@ -938,7 +946,7 @@ public class ModelData extends Entity {
       }
 
       if(this.textureCoords != null) {
-         boolean var45 = false;
+         boolean var46 = false;
 
          for(var43 = 0; var43 < var10; ++var43) {
             var44 = this.textureCoords[var43] & 255;
@@ -946,12 +954,12 @@ public class ModelData extends Entity {
                if(this.indices1[var43] == (this.texTriangleX[var44] & '\uffff') && this.indices2[var43] == (this.texTriangleY[var44] & '\uffff') && this.indices3[var43] == (this.texTriangleZ[var44] & '\uffff')) {
                   this.textureCoords[var43] = -1;
                } else {
-                  var45 = true;
+                  var46 = true;
                }
             }
          }
 
-         if(!var45) {
+         if(!var46) {
             this.textureCoords = null;
          }
       }
@@ -1281,8 +1289,8 @@ public class ModelData extends Entity {
                this.faceTextures[var3] = var2;
             }
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("t")
@@ -1386,8 +1394,8 @@ public class ModelData extends Entity {
                var17.__q = var13;
             }
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("b")
@@ -1441,7 +1449,6 @@ public class ModelData extends Entity {
 
          this.isBoundsCalculated = true;
       }
-
    }
 
    @ObfuscatedName("v")
@@ -1503,113 +1510,113 @@ public class ModelData extends Entity {
          }
       }
 
-      for(int var17 = 0; var17 < this.faceCount; ++var17) {
-         byte var18;
+      for(int var16 = 0; var16 < this.faceCount; ++var16) {
+         byte var17;
          if(this.__e == null) {
-            var18 = 0;
+            var17 = 0;
          } else {
-            var18 = this.__e[var17];
+            var17 = this.__e[var16];
          }
 
-         byte var19;
+         byte var18;
          if(this.faceAlphas == null) {
-            var19 = 0;
+            var18 = 0;
          } else {
-            var19 = this.faceAlphas[var17];
+            var18 = this.faceAlphas[var16];
          }
 
          short var12;
          if(this.faceTextures == null) {
             var12 = -1;
          } else {
-            var12 = this.faceTextures[var17];
+            var12 = this.faceTextures[var16];
          }
 
-         if(var19 == -2) {
-            var18 = 3;
+         if(var18 == -2) {
+            var17 = 3;
          }
 
-         if(var19 == -1) {
-            var18 = 2;
+         if(var18 == -1) {
+            var17 = 2;
          }
 
          VertexNormal var13;
          int var14;
-         FaceNormal var15;
+         FaceNormal var19;
          if(var12 == -1) {
-            if(var18 != 0) {
-               if(var18 == 1) {
-                  var15 = this.faceNormals[var17];
-                  var14 = (var4 * var15.__f + var5 * var15.__q + var3 * var15.__m) / (var7 / 2 + var7) + var1;
-                  var8.faceColors1[var17] = method2802(this.faceColors[var17] & '\uffff', var14);
-                  var8.faceColors3[var17] = -1;
-               } else if(var18 == 3) {
-                  var8.faceColors1[var17] = 128;
-                  var8.faceColors3[var17] = -1;
+            if(var17 != 0) {
+               if(var17 == 1) {
+                  var19 = this.faceNormals[var16];
+                  var14 = (var4 * var19.__f + var5 * var19.__q + var3 * var19.__m) / (var7 / 2 + var7) + var1;
+                  var8.faceColors1[var16] = method2802(this.faceColors[var16] & '\uffff', var14);
+                  var8.faceColors3[var16] = -1;
+               } else if(var17 == 3) {
+                  var8.faceColors1[var16] = 128;
+                  var8.faceColors3[var16] = -1;
                } else {
-                  var8.faceColors3[var17] = -2;
+                  var8.faceColors3[var16] = -2;
                }
             } else {
-               int var16 = this.faceColors[var17] & '\uffff';
-               if(this.__ag != null && this.__ag[this.indices1[var17]] != null) {
-                  var13 = this.__ag[this.indices1[var17]];
+               int var15 = this.faceColors[var16] & '\uffff';
+               if(this.__ag != null && this.__ag[this.indices1[var16]] != null) {
+                  var13 = this.__ag[this.indices1[var16]];
                } else {
-                  var13 = this.__v[this.indices1[var17]];
+                  var13 = this.__v[this.indices1[var16]];
                }
 
                var14 = (var4 * var13.__f + var5 * var13.__q + var3 * var13.__m) / (var7 * var13.__w) + var1;
-               var8.faceColors1[var17] = method2802(var16, var14);
-               if(this.__ag != null && this.__ag[this.indices2[var17]] != null) {
-                  var13 = this.__ag[this.indices2[var17]];
+               var8.faceColors1[var16] = method2802(var15, var14);
+               if(this.__ag != null && this.__ag[this.indices2[var16]] != null) {
+                  var13 = this.__ag[this.indices2[var16]];
                } else {
-                  var13 = this.__v[this.indices2[var17]];
+                  var13 = this.__v[this.indices2[var16]];
                }
 
                var14 = (var4 * var13.__f + var5 * var13.__q + var3 * var13.__m) / (var7 * var13.__w) + var1;
-               var8.faceColors2[var17] = method2802(var16, var14);
-               if(this.__ag != null && this.__ag[this.indices3[var17]] != null) {
-                  var13 = this.__ag[this.indices3[var17]];
+               var8.faceColors2[var16] = method2802(var15, var14);
+               if(this.__ag != null && this.__ag[this.indices3[var16]] != null) {
+                  var13 = this.__ag[this.indices3[var16]];
                } else {
-                  var13 = this.__v[this.indices3[var17]];
+                  var13 = this.__v[this.indices3[var16]];
                }
 
                var14 = (var4 * var13.__f + var5 * var13.__q + var3 * var13.__m) / (var7 * var13.__w) + var1;
-               var8.faceColors3[var17] = method2802(var16, var14);
+               var8.faceColors3[var16] = method2802(var15, var14);
             }
-         } else if(var18 != 0) {
-            if(var18 == 1) {
-               var15 = this.faceNormals[var17];
-               var14 = (var4 * var15.__f + var5 * var15.__q + var3 * var15.__m) / (var7 / 2 + var7) + var1;
-               var8.faceColors1[var17] = method2803(var14);
-               var8.faceColors3[var17] = -1;
+         } else if(var17 != 0) {
+            if(var17 == 1) {
+               var19 = this.faceNormals[var16];
+               var14 = (var4 * var19.__f + var5 * var19.__q + var3 * var19.__m) / (var7 / 2 + var7) + var1;
+               var8.faceColors1[var16] = method2803(var14);
+               var8.faceColors3[var16] = -1;
             } else {
-               var8.faceColors3[var17] = -2;
+               var8.faceColors3[var16] = -2;
             }
          } else {
-            if(this.__ag != null && this.__ag[this.indices1[var17]] != null) {
-               var13 = this.__ag[this.indices1[var17]];
+            if(this.__ag != null && this.__ag[this.indices1[var16]] != null) {
+               var13 = this.__ag[this.indices1[var16]];
             } else {
-               var13 = this.__v[this.indices1[var17]];
+               var13 = this.__v[this.indices1[var16]];
             }
 
             var14 = (var4 * var13.__f + var5 * var13.__q + var3 * var13.__m) / (var7 * var13.__w) + var1;
-            var8.faceColors1[var17] = method2803(var14);
-            if(this.__ag != null && this.__ag[this.indices2[var17]] != null) {
-               var13 = this.__ag[this.indices2[var17]];
+            var8.faceColors1[var16] = method2803(var14);
+            if(this.__ag != null && this.__ag[this.indices2[var16]] != null) {
+               var13 = this.__ag[this.indices2[var16]];
             } else {
-               var13 = this.__v[this.indices2[var17]];
+               var13 = this.__v[this.indices2[var16]];
             }
 
             var14 = (var4 * var13.__f + var5 * var13.__q + var3 * var13.__m) / (var7 * var13.__w) + var1;
-            var8.faceColors2[var17] = method2803(var14);
-            if(this.__ag != null && this.__ag[this.indices3[var17]] != null) {
-               var13 = this.__ag[this.indices3[var17]];
+            var8.faceColors2[var16] = method2803(var14);
+            if(this.__ag != null && this.__ag[this.indices3[var16]] != null) {
+               var13 = this.__ag[this.indices3[var16]];
             } else {
-               var13 = this.__v[this.indices3[var17]];
+               var13 = this.__v[this.indices3[var16]];
             }
 
             var14 = (var4 * var13.__f + var5 * var13.__q + var3 * var13.__m) / (var7 * var13.__w) + var1;
-            var8.faceColors3[var17] = method2803(var14);
+            var8.faceColors3[var16] = method2803(var14);
          }
       }
 
@@ -1724,8 +1731,8 @@ public class ModelData extends Entity {
                var1.__e[var9] = 2;
             }
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("ag")
@@ -1749,13 +1756,5 @@ public class ModelData extends Entity {
       }
 
       return var0;
-   }
-
-   static {
-      __dw_aw = new int[10000];
-      __dw_al = new int[10000];
-      __dw_ab = 0;
-      ModelData_sine = Rasterizer3D.Rasterizer3D_sine;
-      ModelData_cosine = Rasterizer3D.Rasterizer3D_cosine;
    }
 }

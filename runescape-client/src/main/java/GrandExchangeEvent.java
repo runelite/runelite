@@ -81,39 +81,39 @@ public class GrandExchangeEvent {
    static void runScript0(ScriptEvent var0, int var1) {
       Object[] var2 = var0.args0;
       Script var3;
-      int var4;
+      int var17;
       if(class12.method162(var0.type0)) {
          class15.worldMapEvent = (WorldMapEvent)var2[0];
-         WorldMapElement var5 = ViewportMouse.getWorldMapElement(class15.worldMapEvent.mapElement);
-         var3 = FaceNormal.method3236(var0.type0, var5.__o, var5.category);
+         WorldMapElement var4 = ViewportMouse.getWorldMapElement(class15.worldMapEvent.mapElement);
+         var3 = FaceNormal.method3236(var0.type0, var4.__o, var4.category);
       } else {
-         var4 = ((Integer)var2[0]).intValue();
-         var3 = SoundSystem.method2451(var4);
+         var17 = ((Integer)var2[0]).intValue();
+         var3 = SoundSystem.method2451(var17);
       }
 
       if(var3 != null) {
          class179.Interpreter_intStackSize = 0;
          Interpreter.Interpreter_stringStackSize = 0;
-         var4 = -1;
-         int[] var25 = var3.opcodes;
+         var17 = -1;
+         int[] var5 = var3.opcodes;
          int[] var6 = var3.intOperands;
          byte var7 = -1;
          Interpreter.Interpreter_frameDepth = 0;
          Interpreter.__bv_s = false;
 
          try {
-            int var8;
+            int var10;
             try {
                Username.Interpreter_intLocals = new int[var3.localIntCount];
-               int var9 = 0;
+               int var8 = 0;
                Interpreter.Interpreter_stringLocals = new String[var3.localStringCount];
-               int var26 = 0;
+               int var9 = 0;
 
                int var11;
-               String var12;
-               for(var8 = 1; var8 < var2.length; ++var8) {
-                  if(var2[var8] instanceof Integer) {
-                     var11 = ((Integer)var2[var8]).intValue();
+               String var18;
+               for(var10 = 1; var10 < var2.length; ++var10) {
+                  if(var2[var10] instanceof Integer) {
+                     var11 = ((Integer)var2[var10]).intValue();
                      if(var11 == -2147483647) {
                         var11 = var0.mouseX;
                      }
@@ -150,39 +150,39 @@ public class GrandExchangeEvent {
                         var11 = var0.keyPressed;
                      }
 
-                     Username.Interpreter_intLocals[var9++] = var11;
-                  } else if(var2[var8] instanceof String) {
-                     var12 = (String)var2[var8];
-                     if(var12.equals("event_opbase")) {
-                        var12 = var0.targetName;
+                     Username.Interpreter_intLocals[var8++] = var11;
+                  } else if(var2[var10] instanceof String) {
+                     var18 = (String)var2[var10];
+                     if(var18.equals("event_opbase")) {
+                        var18 = var0.targetName;
                      }
 
-                     Interpreter.Interpreter_stringLocals[var26++] = var12;
+                     Interpreter.Interpreter_stringLocals[var9++] = var18;
                   }
                }
 
-               var8 = 0;
+               var10 = 0;
                Interpreter.__bv_y = var0.__d;
 
                while(true) {
-                  ++var8;
-                  if(var8 > var1) {
+                  ++var10;
+                  if(var10 > var1) {
                      throw new RuntimeException();
                   }
 
-                  ++var4;
-                  int var13 = var25[var4];
-                  int var14;
-                  if(var13 >= 100) {
+                  ++var17;
+                  int var29 = var5[var17];
+                  int var20;
+                  if(var29 >= 100) {
                      boolean var32;
-                     if(var3.intOperands[var4] == 1) {
+                     if(var3.intOperands[var17] == 1) {
                         var32 = true;
                      } else {
                         var32 = false;
                      }
 
-                     var14 = class196.method3736(var13, var3, var32);
-                     switch(var14) {
+                     var20 = class196.method3736(var29, var3, var32);
+                     switch(var20) {
                      case 0:
                         return;
                      case 1:
@@ -191,191 +191,191 @@ public class GrandExchangeEvent {
                      case 2:
                         throw new IllegalStateException();
                      }
-                  } else if(var13 == 0) {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6[var4];
-                  } else if(var13 == 1) {
-                     var11 = var6[var4];
+                  } else if(var29 == 0) {
+                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6[var17];
+                  } else if(var29 == 1) {
+                     var11 = var6[var17];
                      Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Varps.Varps_main[var11];
-                  } else if(var13 == 2) {
-                     var11 = var6[var4];
+                  } else if(var29 == 2) {
+                     var11 = var6[var17];
                      Varps.Varps_main[var11] = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
                      IndexCache.method4703(var11);
-                  } else if(var13 == 3) {
-                     Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.stringOperands[var4];
-                  } else if(var13 == 6) {
-                     var4 += var6[var4];
-                  } else if(var13 == 7) {
+                  } else if(var29 == 3) {
+                     Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.stringOperands[var17];
+                  } else if(var29 == 6) {
+                     var17 += var6[var17];
+                  } else if(var29 == 7) {
                      class179.Interpreter_intStackSize -= 2;
                      if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] != Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
-                        var4 += var6[var4];
+                        var17 += var6[var17];
                      }
-                  } else if(var13 == 8) {
+                  } else if(var29 == 8) {
                      class179.Interpreter_intStackSize -= 2;
                      if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] == Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
-                        var4 += var6[var4];
+                        var17 += var6[var17];
                      }
-                  } else if(var13 == 9) {
+                  } else if(var29 == 9) {
                      class179.Interpreter_intStackSize -= 2;
                      if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] < Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
-                        var4 += var6[var4];
+                        var17 += var6[var17];
                      }
-                  } else if(var13 == 10) {
+                  } else if(var29 == 10) {
                      class179.Interpreter_intStackSize -= 2;
                      if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] > Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
-                        var4 += var6[var4];
+                        var17 += var6[var17];
                      }
-                  } else if(var13 == 21) {
+                  } else if(var29 == 21) {
                      if(Interpreter.Interpreter_frameDepth == 0) {
                         return;
                      }
 
-                     ScriptFrame var30 = Interpreter.Interpreter_frames[--Interpreter.Interpreter_frameDepth];
-                     var3 = var30.script;
-                     var25 = var3.opcodes;
+                     ScriptFrame var34 = Interpreter.Interpreter_frames[--Interpreter.Interpreter_frameDepth];
+                     var3 = var34.script;
+                     var5 = var3.opcodes;
                      var6 = var3.intOperands;
-                     var4 = var30.pc;
-                     Username.Interpreter_intLocals = var30.intLocals;
-                     Interpreter.Interpreter_stringLocals = var30.stringLocals;
-                  } else if(var13 == 25) {
-                     var11 = var6[var4];
+                     var17 = var34.pc;
+                     Username.Interpreter_intLocals = var34.intLocals;
+                     Interpreter.Interpreter_stringLocals = var34.stringLocals;
+                  } else if(var29 == 25) {
+                     var11 = var6[var17];
                      Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = WorldMapSection2.getVarbit(var11);
-                  } else if(var13 == 27) {
-                     var11 = var6[var4];
+                  } else if(var29 == 27) {
+                     var11 = var6[var17];
                      class68.method1695(var11, Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
-                  } else if(var13 == 31) {
+                  } else if(var29 == 31) {
                      class179.Interpreter_intStackSize -= 2;
                      if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] <= Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
-                        var4 += var6[var4];
+                        var17 += var6[var17];
                      }
-                  } else if(var13 == 32) {
+                  } else if(var29 == 32) {
                      class179.Interpreter_intStackSize -= 2;
                      if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] >= Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
-                        var4 += var6[var4];
+                        var17 += var6[var17];
                      }
-                  } else if(var13 == 33) {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Username.Interpreter_intLocals[var6[var4]];
-                  } else if(var13 == 34) {
-                     Username.Interpreter_intLocals[var6[var4]] = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                  } else if(var13 == 35) {
-                     Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Interpreter.Interpreter_stringLocals[var6[var4]];
-                  } else if(var13 == 36) {
-                     Interpreter.Interpreter_stringLocals[var6[var4]] = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-                  } else if(var13 == 37) {
-                     var11 = var6[var4];
+                  } else if(var29 == 33) {
+                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Username.Interpreter_intLocals[var6[var17]];
+                  } else if(var29 == 34) {
+                     Username.Interpreter_intLocals[var6[var17]] = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                  } else if(var29 == 35) {
+                     Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Interpreter.Interpreter_stringLocals[var6[var17]];
+                  } else if(var29 == 36) {
+                     Interpreter.Interpreter_stringLocals[var6[var17]] = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
+                  } else if(var29 == 37) {
+                     var11 = var6[var17];
                      Interpreter.Interpreter_stringStackSize -= var11;
-                     String var29 = class277.method5356(Interpreter.Interpreter_stringStack, Interpreter.Interpreter_stringStackSize, var11);
-                     Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var29;
-                  } else if(var13 == 38) {
+                     String var31 = class277.method5356(Interpreter.Interpreter_stringStack, Interpreter.Interpreter_stringStackSize, var11);
+                     Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var31;
+                  } else if(var29 == 38) {
                      --class179.Interpreter_intStackSize;
-                  } else if(var13 == 39) {
+                  } else if(var29 == 39) {
                      --Interpreter.Interpreter_stringStackSize;
                   } else {
                      int var15;
-                     if(var13 != 40) {
-                        if(var13 == 42) {
-                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = class196.varcs.getInt(var6[var4]);
-                        } else if(var13 == 43) {
-                           class196.varcs.setInt(var6[var4], Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
-                        } else if(var13 == 44) {
-                           var11 = var6[var4] >> 16;
-                           var14 = var6[var4] & 65535;
-                           int var28 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                           if(var28 < 0 || var28 > 5000) {
+                     if(var29 != 40) {
+                        if(var29 == 42) {
+                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = class196.varcs.getInt(var6[var17]);
+                        } else if(var29 == 43) {
+                           class196.varcs.setInt(var6[var17], Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+                        } else if(var29 == 44) {
+                           var11 = var6[var17] >> 16;
+                           var20 = var6[var17] & 65535;
+                           int var21 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                           if(var21 < 0 || var21 > 5000) {
                               throw new RuntimeException();
                            }
 
-                           Interpreter.Interpreter_arrayLengths[var11] = var28;
-                           byte var33 = -1;
-                           if(var14 == 105) {
-                              var33 = 0;
+                           Interpreter.Interpreter_arrayLengths[var11] = var21;
+                           byte var22 = -1;
+                           if(var20 == 105) {
+                              var22 = 0;
                            }
 
-                           for(var15 = 0; var15 < var28; ++var15) {
-                              Interpreter.Interpreter_arrays[var11][var15] = var33;
+                           for(var15 = 0; var15 < var21; ++var15) {
+                              Interpreter.Interpreter_arrays[var11][var15] = var22;
                            }
-                        } else if(var13 == 45) {
-                           var11 = var6[var4];
-                           var14 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                           if(var14 < 0 || var14 >= Interpreter.Interpreter_arrayLengths[var11]) {
+                        } else if(var29 == 45) {
+                           var11 = var6[var17];
+                           var20 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                           if(var20 < 0 || var20 >= Interpreter.Interpreter_arrayLengths[var11]) {
                               throw new RuntimeException();
                            }
 
-                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Interpreter.Interpreter_arrays[var11][var14];
-                        } else if(var13 == 46) {
-                           var11 = var6[var4];
+                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Interpreter.Interpreter_arrays[var11][var20];
+                        } else if(var29 == 46) {
+                           var11 = var6[var17];
                            class179.Interpreter_intStackSize -= 2;
-                           var14 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-                           if(var14 < 0 || var14 >= Interpreter.Interpreter_arrayLengths[var11]) {
+                           var20 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+                           if(var20 < 0 || var20 >= Interpreter.Interpreter_arrayLengths[var11]) {
                               throw new RuntimeException();
                            }
 
-                           Interpreter.Interpreter_arrays[var11][var14] = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-                        } else if(var13 == 47) {
-                           var12 = class196.varcs.getStringOld(var6[var4]);
-                           if(var12 == null) {
-                              var12 = "null";
+                           Interpreter.Interpreter_arrays[var11][var20] = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+                        } else if(var29 == 47) {
+                           var18 = class196.varcs.getStringOld(var6[var17]);
+                           if(var18 == null) {
+                              var18 = "null";
                            }
 
-                           Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var12;
-                        } else if(var13 == 48) {
-                           class196.varcs.setStringOld(var6[var4], Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize]);
-                        } else if(var13 == 49) {
-                           var12 = class196.varcs.getString(var6[var4]);
-                           Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var12;
-                        } else if(var13 == 50) {
-                           class196.varcs.setString(var6[var4], Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize]);
+                           Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var18;
+                        } else if(var29 == 48) {
+                           class196.varcs.setStringOld(var6[var17], Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize]);
+                        } else if(var29 == 49) {
+                           var18 = class196.varcs.getString(var6[var17]);
+                           Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var18;
+                        } else if(var29 == 50) {
+                           class196.varcs.setString(var6[var17], Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize]);
                         } else {
-                           if(var13 != 60) {
+                           if(var29 != 60) {
                               throw new IllegalStateException();
                            }
 
-                           IterableNodeHashTable var27 = var3.switches[var6[var4]];
-                           IntegerNode var31 = (IntegerNode)var27.get((long)Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
-                           if(var31 != null) {
-                              var4 += var31.integer;
+                           IterableNodeHashTable var33 = var3.switches[var6[var17]];
+                           IntegerNode var30 = (IntegerNode)var33.get((long)Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+                           if(var30 != null) {
+                              var17 += var30.integer;
                            }
                         }
                      } else {
-                        var11 = var6[var4];
-                        Script var16 = SoundSystem.method2451(var11);
-                        int[] var17 = new int[var16.localIntCount];
-                        String[] var18 = new String[var16.localStringCount];
+                        var11 = var6[var17];
+                        Script var12 = SoundSystem.method2451(var11);
+                        int[] var13 = new int[var12.localIntCount];
+                        String[] var14 = new String[var12.localStringCount];
 
-                        for(var15 = 0; var15 < var16.intArgumentCount; ++var15) {
-                           var17[var15] = Interpreter.Interpreter_intStack[var15 + (class179.Interpreter_intStackSize - var16.intArgumentCount)];
+                        for(var15 = 0; var15 < var12.intArgumentCount; ++var15) {
+                           var13[var15] = Interpreter.Interpreter_intStack[var15 + (class179.Interpreter_intStackSize - var12.intArgumentCount)];
                         }
 
-                        for(var15 = 0; var15 < var16.stringArgumentCount; ++var15) {
-                           var18[var15] = Interpreter.Interpreter_stringStack[var15 + (Interpreter.Interpreter_stringStackSize - var16.stringArgumentCount)];
+                        for(var15 = 0; var15 < var12.stringArgumentCount; ++var15) {
+                           var14[var15] = Interpreter.Interpreter_stringStack[var15 + (Interpreter.Interpreter_stringStackSize - var12.stringArgumentCount)];
                         }
 
-                        class179.Interpreter_intStackSize -= var16.intArgumentCount;
-                        Interpreter.Interpreter_stringStackSize -= var16.stringArgumentCount;
+                        class179.Interpreter_intStackSize -= var12.intArgumentCount;
+                        Interpreter.Interpreter_stringStackSize -= var12.stringArgumentCount;
                         ScriptFrame var19 = new ScriptFrame();
                         var19.script = var3;
-                        var19.pc = var4;
+                        var19.pc = var17;
                         var19.intLocals = Username.Interpreter_intLocals;
                         var19.stringLocals = Interpreter.Interpreter_stringLocals;
                         Interpreter.Interpreter_frames[++Interpreter.Interpreter_frameDepth - 1] = var19;
-                        var3 = var16;
-                        var25 = var16.opcodes;
-                        var6 = var16.intOperands;
-                        var4 = -1;
-                        Username.Interpreter_intLocals = var17;
-                        Interpreter.Interpreter_stringLocals = var18;
+                        var3 = var12;
+                        var5 = var12.opcodes;
+                        var6 = var12.intOperands;
+                        var17 = -1;
+                        Username.Interpreter_intLocals = var13;
+                        Interpreter.Interpreter_stringLocals = var14;
                      }
                   }
                }
-            } catch (Exception var23) {
-               StringBuilder var10 = new StringBuilder(30);
-               var10.append("").append(var3.key).append(" ");
+            } catch (Exception var27) {
+               StringBuilder var24 = new StringBuilder(30);
+               var24.append("").append(var3.key).append(" ");
 
-               for(var8 = Interpreter.Interpreter_frameDepth - 1; var8 >= 0; --var8) {
-                  var10.append("").append(Interpreter.Interpreter_frames[var8].script.key).append(" ");
+               for(var10 = Interpreter.Interpreter_frameDepth - 1; var10 >= 0; --var10) {
+                  var24.append("").append(Interpreter.Interpreter_frames[var10].script.key).append(" ");
                }
 
-               var10.append("").append(var7);
-               NPCDefinition.sendStackTrace(var10.toString(), var23);
+               var24.append("").append(var7);
+               NpcDefinition.sendStackTrace(var24.toString(), var27);
             }
          } finally {
             if(Interpreter.__bv_s) {
@@ -395,9 +395,9 @@ public class GrandExchangeEvent {
       garbageValue = "1404"
    )
    public static int method80(int var0) {
-      long var1 = ViewportMouse.ViewportMouse_entityTags[var0];
-      int var3 = (int)(var1 >>> 14 & 3L);
-      return var3;
+      long var2 = ViewportMouse.ViewportMouse_entityTags[var0];
+      int var1 = (int)(var2 >>> 14 & 3L);
+      return var1;
    }
 
    @ObfuscatedName("w")
@@ -427,6 +427,6 @@ public class GrandExchangeEvent {
          var1 = var1.substring(0, var2) + "," + var1.substring(var2);
       }
 
-      return var1.length() > 9?" " + BufferedFile.colorStartTag(65408) + var1.substring(0, var1.length() - 8) + "M  (" + var1 + ")</col>":(var1.length() > 6?" " + BufferedFile.colorStartTag(16777215) + var1.substring(0, var1.length() - 4) + "K  (" + var1 + ")</col>":" " + BufferedFile.colorStartTag(16776960) + var1 + "</col>");
+      return var1.length() > 9?" " + BufferedFile.colorStartTag(65408) + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + BufferedFile.colorStartTag(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + BufferedFile.colorStartTag(16776960) + var1 + "</col>");
    }
 }

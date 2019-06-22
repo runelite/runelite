@@ -130,6 +130,27 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
    @Export("oculusOrbFocalPointX")
    static int oculusOrbFocalPointX;
 
+   static {
+      MouseHandler_instance = new MouseHandler();
+      MouseHandler_idleCycles = 0;
+      MouseHandler_currentButton0 = 0;
+      MouseHandler_x0 = -1;
+      MouseHandler_y0 = -1;
+      MouseHandler_millis0 = -1L;
+      MouseHandler_currentButton = 0;
+      MouseHandler_x = 0;
+      MouseHandler_y = 0;
+      MouseHandler_millis = 0L;
+      MouseHandler_lastButton0 = 0;
+      MouseHandler_lastPressedX0 = 0;
+      MouseHandler_lastPressedY0 = 0;
+      MouseHandler_lastPressedTimeMillis0 = 0L;
+      MouseHandler_lastButton = 0;
+      MouseHandler_lastPressedX = 0;
+      MouseHandler_lastPressedY = 0;
+      MouseHandler_lastPressedTimeMillis = 0L;
+   }
+
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/event/MouseEvent;I)I",
@@ -268,26 +289,5 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 
       Messages.method2200();
       class196.method3740();
-   }
-
-   static {
-      MouseHandler_instance = new MouseHandler();
-      MouseHandler_idleCycles = 0;
-      MouseHandler_currentButton0 = 0;
-      MouseHandler_x0 = -1;
-      MouseHandler_y0 = -1;
-      MouseHandler_millis0 = -1L;
-      MouseHandler_currentButton = 0;
-      MouseHandler_x = 0;
-      MouseHandler_y = 0;
-      MouseHandler_millis = 0L;
-      MouseHandler_lastButton0 = 0;
-      MouseHandler_lastPressedX0 = 0;
-      MouseHandler_lastPressedY0 = 0;
-      MouseHandler_lastPressedTimeMillis0 = 0L;
-      MouseHandler_lastButton = 0;
-      MouseHandler_lastPressedX = 0;
-      MouseHandler_lastPressedY = 0;
-      MouseHandler_lastPressedTimeMillis = 0L;
    }
 }

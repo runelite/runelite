@@ -44,6 +44,10 @@ public class ClientPreferences {
    @Export("parameters")
    LinkedHashMap parameters;
 
+   static {
+      __bf_m = 6;
+   }
+
    ClientPreferences() {
       this.windowMode = 1;
       this.rememberedUsername = null;
@@ -154,10 +158,5 @@ public class ClientPreferences {
       if(GroundItemPile.loadWidgetGroup(var0)) {
          NetFileRequest.method4555(Widget.widgets[var0], -1);
       }
-
-   }
-
-   static {
-      __bf_m = 6;
    }
 }

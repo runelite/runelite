@@ -71,10 +71,10 @@ public class FaceNormal {
             } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
                throw new Exception();
             } else {
-               String var11 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
+               String var13 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
 
-               for(int var12 = 0; var12 < var0.length(); ++var12) {
-                  if(var11.indexOf(var0.charAt(var12)) == -1) {
+               for(int var4 = 0; var4 < var0.length(); ++var4) {
+                  if(var13.indexOf(var0.charAt(var4)) == -1) {
                      throw new Exception();
                   }
                }
@@ -82,36 +82,36 @@ public class FaceNormal {
                Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
                return true;
             }
-         } catch (Throwable var6) {
+         } catch (Throwable var8) {
             return false;
          }
       } else if(var1 == 1) {
          try {
-            Applet var3 = class50.__af_m;
-            Object[] var4 = new Object[]{(new URL(class50.__af_m.getCodeBase(), var0)).toString()};
-            Object var5 = JSObject.getWindow(var3).call(var2, var4);
-            return var5 != null;
-         } catch (Throwable var7) {
+            Applet var7 = class50.__af_m;
+            Object[] var5 = new Object[]{(new URL(class50.__af_m.getCodeBase(), var0)).toString()};
+            Object var3 = JSObject.getWindow(var7).call(var2, var5);
+            return var3 != null;
+         } catch (Throwable var9) {
             return false;
          }
       } else if(var1 == 2) {
          try {
             class50.__af_m.getAppletContext().showDocument(new URL(class50.__af_m.getCodeBase(), var0), "_blank");
             return true;
-         } catch (Exception var8) {
+         } catch (Exception var10) {
             return false;
          }
       } else if(var1 == 3) {
          try {
             class46.method851(class50.__af_m, "loggedout");
-         } catch (Throwable var10) {
+         } catch (Throwable var12) {
             ;
          }
 
          try {
             class50.__af_m.getAppletContext().showDocument(new URL(class50.__af_m.getCodeBase(), var0), "_top");
             return true;
-         } catch (Exception var9) {
+         } catch (Exception var11) {
             return false;
          }
       } else {

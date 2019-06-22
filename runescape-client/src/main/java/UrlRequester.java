@@ -90,7 +90,7 @@ public class UrlRequester implements Runnable {
                if(var1 == null) {
                   try {
                      this.wait();
-                  } catch (InterruptedException var12) {
+                  } catch (InterruptedException var13) {
                      ;
                   }
                   continue;
@@ -106,16 +106,16 @@ public class UrlRequester implements Runnable {
                var3.setReadTimeout(5000);
                var3.setUseCaches(false);
                var3.setRequestProperty("Connection", "close");
-               int var4 = var3.getContentLength();
-               if(var4 >= 0) {
-                  byte[] var5 = new byte[var4];
+               int var7 = var3.getContentLength();
+               if(var7 >= 0) {
+                  byte[] var5 = new byte[var7];
                   var2 = new DataInputStream(var3.getInputStream());
                   var2.readFully(var5);
                   var1.response0 = var5;
                }
 
                var1.isDone0 = true;
-            } catch (IOException var13) {
+            } catch (IOException var14) {
                var1.isDone0 = true;
             } finally {
                if(var2 != null) {
@@ -127,8 +127,8 @@ public class UrlRequester implements Runnable {
                }
 
             }
-         } catch (Exception var16) {
-            NPCDefinition.sendStackTrace((String)null, var16);
+         } catch (Exception var17) {
+            NpcDefinition.sendStackTrace((String)null, var17);
          }
       }
 

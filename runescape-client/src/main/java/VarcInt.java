@@ -23,6 +23,10 @@ public class VarcInt extends DualNode {
    @Export("persist")
    public boolean persist;
 
+   static {
+      __iw_f = new EvictingDualNodeHashTable(64);
+   }
+
    VarcInt() {
       this.persist = false;
    }
@@ -74,9 +78,5 @@ public class VarcInt extends DualNode {
    )
    public static boolean method4807(char var0) {
       return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
-   }
-
-   static {
-      __iw_f = new EvictingDualNodeHashTable(64);
    }
 }

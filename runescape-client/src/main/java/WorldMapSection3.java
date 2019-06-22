@@ -206,20 +206,22 @@ public class WorldMapSection3 implements WorldMapSection {
    )
    @Export("runWidgetOnLoadListener")
    static void runWidgetOnLoadListener(int var0) {
-      if(var0 != -1 && GroundItemPile.loadWidgetGroup(var0)) {
-         Widget[] var1 = Widget.widgets[var0];
+      if(var0 != -1) {
+         if(GroundItemPile.loadWidgetGroup(var0)) {
+            Widget[] var1 = Widget.widgets[var0];
 
-         for(int var2 = 0; var2 < var1.length; ++var2) {
-            Widget var3 = var1[var2];
-            if(var3.onLoad != null) {
-               ScriptEvent var4 = new ScriptEvent();
-               var4.widget = var3;
-               var4.args0 = var3.onLoad;
-               GrandExchangeEvent.runScript0(var4, 5000000);
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               Widget var3 = var1[var2];
+               if(var3.onLoad != null) {
+                  ScriptEvent var4 = new ScriptEvent();
+                  var4.widget = var3;
+                  var4.args0 = var3.onLoad;
+                  GrandExchangeEvent.runScript0(var4, 5000000);
+               }
             }
+
          }
       }
-
    }
 
    @ObfuscatedName("ic")

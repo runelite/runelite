@@ -50,6 +50,10 @@ public class EnumDefinition extends DualNode {
    @Export("stringVals")
    public String[] stringVals;
 
+   static {
+      EnumDefinition_cached = new EvictingDualNodeHashTable(64);
+   }
+
    EnumDefinition() {
       this.defaultString = "null";
       this.size0 = 0;
@@ -120,9 +124,5 @@ public class EnumDefinition extends DualNode {
    @Export("size")
    public int size() {
       return this.size0;
-   }
-
-   static {
-      EnumDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

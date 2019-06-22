@@ -95,26 +95,25 @@ public final class TilePaint {
             class65.scene.removeGroundItemPile(SoundSystem.plane, var0, var1);
          } else {
             var2.addLast(var5);
-            GroundItem var11 = null;
             GroundItem var12 = null;
+            GroundItem var11 = null;
 
             for(var6 = (GroundItem)var2.last(); var6 != null; var6 = (GroundItem)var2.previous()) {
                if(var5.id != var6.id) {
-                  if(var11 == null) {
-                     var11 = var6;
+                  if(var12 == null) {
+                     var12 = var6;
                   }
 
-                  if(var11.id != var6.id && var12 == null) {
-                     var12 = var6;
+                  if(var12.id != var6.id && var11 == null) {
+                     var11 = var6;
                   }
                }
             }
 
             long var9 = FontName.method5637(var0, var1, 3, false, 0);
-            class65.scene.newGroundItemPile(SoundSystem.plane, var0, var1, class32.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, SoundSystem.plane), var5, var9, var11, var12);
+            class65.scene.newGroundItemPile(SoundSystem.plane, var0, var1, class32.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, SoundSystem.plane), var5, var9, var12, var11);
          }
       }
-
    }
 
    @ObfuscatedName("id")

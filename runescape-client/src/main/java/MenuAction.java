@@ -79,9 +79,9 @@ public class MenuAction {
          }
       }
 
-      Widget var12 = Huffman.getWidget(var3);
-      if(var12 != null) {
-         class22.method295(var12);
+      Widget var14 = Huffman.getWidget(var3);
+      if(var14 != null) {
+         class22.method295(var14);
       }
 
       int var5;
@@ -129,26 +129,26 @@ public class MenuAction {
 
       var7 += 8;
       var8 = Client.menuOptionsCount * 15 + 22;
-      int var13 = var5 - var7 / 2;
-      if(var7 + var13 > SoundCache.canvasWidth) {
-         var13 = SoundCache.canvasWidth - var7;
+      int var12 = var5 - var7 / 2;
+      if(var7 + var12 > SoundCache.canvasWidth) {
+         var12 = SoundCache.canvasWidth - var7;
+      }
+
+      if(var12 < 0) {
+         var12 = 0;
+      }
+
+      int var13 = var6;
+      if(var6 + var8 > Huffman.canvasHeight) {
+         var13 = Huffman.canvasHeight - var8;
       }
 
       if(var13 < 0) {
          var13 = 0;
       }
 
-      int var14 = var6;
-      if(var6 + var8 > Huffman.canvasHeight) {
-         var14 = Huffman.canvasHeight - var8;
-      }
-
-      if(var14 < 0) {
-         var14 = 0;
-      }
-
-      class25.menuX = var13;
-      GameShell.menuY = var14;
+      class25.menuX = var12;
+      GameShell.menuY = var13;
       class214.menuWidth = var7;
       AbstractWorldMapIcon.menuHeight = Client.menuOptionsCount * 15 + 22;
       if(Client.rootWidgetGroup != -1) {

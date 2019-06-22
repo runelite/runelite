@@ -157,7 +157,7 @@ public class Message extends DualNode {
    @Export("fillSenderUsername")
    final void fillSenderUsername() {
       if(this.sender != null) {
-         this.senderUsername = new Username(NPCDefinition.method5161(this.sender), KeyHandler.loginType);
+         this.senderUsername = new Username(NpcDefinition.method5161(this.sender), KeyHandler.loginType);
       } else {
          this.senderUsername = null;
       }
@@ -196,78 +196,76 @@ public class Message extends DualNode {
             --var3;
          }
 
-         int var6 = var3 - var2;
-         if(var6 >= 1) {
-            byte var7;
+         int var14 = var3 - var2;
+         if(var14 >= 1) {
+            byte var6;
             if(var1 == null) {
-               var7 = 12;
+               var6 = 12;
             } else {
                switch(var1.__x) {
                case 7:
-                  var7 = 20;
+                  var6 = 20;
                   break;
                default:
-                  var7 = 12;
+                  var6 = 12;
                }
             }
 
-            if(var6 <= var7) {
-               StringBuilder var8 = new StringBuilder(var6);
+            if(var14 <= var6) {
+               StringBuilder var12 = new StringBuilder(var14);
 
-               for(int var9 = var2; var9 < var3; ++var9) {
-                  char var10 = var0.charAt(var9);
-                  boolean var11;
-                  if(Character.isISOControl(var10)) {
-                     var11 = false;
-                  } else if(VarcInt.method4807(var10)) {
-                     var11 = true;
+               for(int var15 = var2; var15 < var3; ++var15) {
+                  char var7 = var0.charAt(var15);
+                  boolean var8;
+                  if(Character.isISOControl(var7)) {
+                     var8 = false;
+                  } else if(VarcInt.method4807(var7)) {
+                     var8 = true;
                   } else {
-                     label149: {
-                        char[] var12 = class305.__kb_q;
+                     char[] var13 = class305.__kb_q;
+                     int var10 = 0;
 
-                        int var13;
-                        char var14;
-                        for(var13 = 0; var13 < var12.length; ++var13) {
-                           var14 = var12[var13];
-                           if(var10 == var14) {
-                              var11 = true;
-                              break label149;
+                     label118:
+                     while(true) {
+                        char var11;
+                        if(var10 >= var13.length) {
+                           var13 = class305.__kb_w;
+
+                           for(var10 = 0; var10 < var13.length; ++var10) {
+                              var11 = var13[var10];
+                              if(var7 == var11) {
+                                 var8 = true;
+                                 break label118;
+                              }
                            }
+
+                           var8 = false;
+                           break;
                         }
 
-                        var12 = class305.__kb_w;
-                        var13 = 0;
-
-                        while(true) {
-                           if(var13 >= var12.length) {
-                              var11 = false;
-                              break;
-                           }
-
-                           var14 = var12[var13];
-                           if(var10 == var14) {
-                              var11 = true;
-                              break;
-                           }
-
-                           ++var13;
+                        var11 = var13[var10];
+                        if(var7 == var11) {
+                           var8 = true;
+                           break;
                         }
+
+                        ++var10;
                      }
                   }
 
-                  if(var11) {
-                     char var15;
-                     switch(var10) {
+                  if(var8) {
+                     char var9;
+                     switch(var7) {
                      case ' ':
                      case '-':
                      case '_':
                      case ' ':
-                        var15 = '_';
+                        var9 = '_';
                         break;
                      case '#':
                      case '[':
                      case ']':
-                        var15 = var10;
+                        var9 = var7;
                         break;
                      case 'À':
                      case 'Á':
@@ -279,11 +277,11 @@ public class Message extends DualNode {
                      case 'â':
                      case 'ã':
                      case 'ä':
-                        var15 = 'a';
+                        var9 = 'a';
                         break;
                      case 'Ç':
                      case 'ç':
-                        var15 = 'c';
+                        var9 = 'c';
                         break;
                      case 'È':
                      case 'É':
@@ -293,7 +291,7 @@ public class Message extends DualNode {
                      case 'é':
                      case 'ê':
                      case 'ë':
-                        var15 = 'e';
+                        var9 = 'e';
                         break;
                      case 'Í':
                      case 'Î':
@@ -301,11 +299,11 @@ public class Message extends DualNode {
                      case 'í':
                      case 'î':
                      case 'ï':
-                        var15 = 'i';
+                        var9 = 'i';
                         break;
                      case 'Ñ':
                      case 'ñ':
-                        var15 = 'n';
+                        var9 = 'n';
                         break;
                      case 'Ò':
                      case 'Ó':
@@ -317,7 +315,7 @@ public class Message extends DualNode {
                      case 'ô':
                      case 'õ':
                      case 'ö':
-                        var15 = 'o';
+                        var9 = 'o';
                         break;
                      case 'Ù':
                      case 'Ú':
@@ -327,30 +325,30 @@ public class Message extends DualNode {
                      case 'ú':
                      case 'û':
                      case 'ü':
-                        var15 = 'u';
+                        var9 = 'u';
                         break;
                      case 'ß':
-                        var15 = 'b';
+                        var9 = 'b';
                         break;
                      case 'ÿ':
                      case 'Ÿ':
-                        var15 = 'y';
+                        var9 = 'y';
                         break;
                      default:
-                        var15 = Character.toLowerCase(var10);
+                        var9 = Character.toLowerCase(var7);
                      }
 
-                     if(var15 != 0) {
-                        var8.append(var15);
+                     if(var9 != 0) {
+                        var12.append(var9);
                      }
                   }
                }
 
-               if(var8.length() == 0) {
+               if(var12.length() == 0) {
                   return null;
                }
 
-               return var8.toString();
+               return var12.toString();
             }
          }
 

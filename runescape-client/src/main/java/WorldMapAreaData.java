@@ -11,7 +11,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class WorldMapAreaData extends WorldMapArea {
    @ObfuscatedName("n")
    @Export("surfaceOffsetY")
-   HashSet surfaceOffsetY;
+   HashSet __n;
    @ObfuscatedName("i")
    @Export("__i")
    HashSet __i;
@@ -28,7 +28,7 @@ public class WorldMapAreaData extends WorldMapArea {
    void __ce_76(Buffer var1, Buffer var2, int var3, boolean var4) {
       this.read(var1, var3);
       int var5 = var2.__ag_302();
-      this.surfaceOffsetY = new HashSet(var5);
+      this.__n = new HashSet(var5);
 
       int var6;
       for(var6 = 0; var6 < var5; ++var6) {
@@ -36,22 +36,22 @@ public class WorldMapAreaData extends WorldMapArea {
 
          try {
             var7.method173(var2);
-         } catch (IllegalStateException var11) {
+         } catch (IllegalStateException var12) {
             continue;
          }
 
-         this.surfaceOffsetY.add(var7);
+         this.__n.add(var7);
       }
 
       var6 = var2.__ag_302();
       this.__i = new HashSet(var6);
 
-      for(int var12 = 0; var12 < var6; ++var12) {
+      for(int var10 = 0; var10 < var6; ++var10) {
          class39 var8 = new class39();
 
          try {
             var8.method714(var2);
-         } catch (IllegalStateException var10) {
+         } catch (IllegalStateException var11) {
             continue;
          }
 
@@ -139,11 +139,11 @@ public class WorldMapAreaData extends WorldMapArea {
          var4 = var2?WorldMapIcon1.__t_i:class12.__n_n;
       }
 
-      int var5;
+      int var11;
       if(var0 == 1300) {
-         var5 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] - 1;
-         if(var5 >= 0 && var5 <= 9) {
-            var4.setAction(var5, Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize]);
+         var11 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] - 1;
+         if(var11 >= 0 && var11 <= 9) {
+            var4.setAction(var11, Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize]);
             return 1;
          } else {
             --Interpreter.Interpreter_stringStackSize;
@@ -153,9 +153,9 @@ public class WorldMapAreaData extends WorldMapArea {
          int var6;
          if(var0 == 1301) {
             class179.Interpreter_intStackSize -= 2;
-            var5 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+            var11 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
             var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-            var4.parent = class204.getWidgetChild(var5, var6);
+            var4.parent = class204.getWidgetChild(var11, var6);
             return 1;
          } else if(var0 == 1302) {
             var4.isScrollBar = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
@@ -180,52 +180,52 @@ public class WorldMapAreaData extends WorldMapArea {
             return 1;
          } else {
             int var7;
-            byte[] var8;
+            byte[] var9;
             if(var0 != 1350) {
-               byte var11;
+               byte var5;
                if(var0 == 1351) {
                   class179.Interpreter_intStackSize -= 2;
-                  var11 = 10;
-                  var8 = new byte[]{(byte)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize]};
+                  var5 = 10;
+                  var9 = new byte[]{(byte)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize]};
                   byte[] var10 = new byte[]{(byte)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]};
-                  BufferedSink.method3595(var4, var11, var8, var10);
+                  BufferedSink.method3595(var4, var5, var9, var10);
                   return 1;
                } else if(var0 == 1352) {
                   class179.Interpreter_intStackSize -= 3;
-                  var5 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] - 1;
+                  var11 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] - 1;
                   var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
                   var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
-                  if(var5 >= 0 && var5 <= 9) {
-                     Varcs.method2168(var4, var5, var6, var7);
+                  if(var11 >= 0 && var11 <= 9) {
+                     Varcs.method2168(var4, var11, var6, var7);
                      return 1;
                   } else {
                      throw new RuntimeException();
                   }
                } else if(var0 == 1353) {
-                  var11 = 10;
+                  var5 = 10;
                   var6 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
                   var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                  Varcs.method2168(var4, var11, var6, var7);
+                  Varcs.method2168(var4, var5, var6, var7);
                   return 1;
                } else if(var0 == 1354) {
                   --class179.Interpreter_intStackSize;
-                  var5 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] - 1;
-                  if(var5 >= 0 && var5 <= 9) {
-                     WorldMapSection3.method345(var4, var5);
+                  var11 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] - 1;
+                  if(var11 >= 0 && var11 <= 9) {
+                     WorldMapSection3.method345(var4, var11);
                      return 1;
                   } else {
                      throw new RuntimeException();
                   }
                } else if(var0 == 1355) {
-                  var11 = 10;
-                  WorldMapSection3.method345(var4, var11);
+                  var5 = 10;
+                  WorldMapSection3.method345(var4, var5);
                   return 1;
                } else {
                   return 2;
                }
             } else {
-               byte[] var9 = null;
-               var8 = null;
+               byte[] var8 = null;
+               var9 = null;
                if(var3) {
                   class179.Interpreter_intStackSize -= 10;
 
@@ -234,23 +234,23 @@ public class WorldMapAreaData extends WorldMapArea {
                   }
 
                   if(var7 > 0) {
-                     var9 = new byte[var7 / 2];
                      var8 = new byte[var7 / 2];
+                     var9 = new byte[var7 / 2];
 
                      for(var7 -= 2; var7 >= 0; var7 -= 2) {
-                        var9[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + class179.Interpreter_intStackSize];
-                        var8[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + class179.Interpreter_intStackSize + 1];
+                        var8[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + class179.Interpreter_intStackSize];
+                        var9[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + class179.Interpreter_intStackSize + 1];
                      }
                   }
                } else {
                   class179.Interpreter_intStackSize -= 2;
-                  var9 = new byte[]{(byte)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize]};
-                  var8 = new byte[]{(byte)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]};
+                  var8 = new byte[]{(byte)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize]};
+                  var9 = new byte[]{(byte)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]};
                }
 
                var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] - 1;
                if(var7 >= 0 && var7 <= 9) {
-                  BufferedSink.method3595(var4, var7, var9, var8);
+                  BufferedSink.method3595(var4, var7, var8, var9);
                   return 1;
                } else {
                   throw new RuntimeException();

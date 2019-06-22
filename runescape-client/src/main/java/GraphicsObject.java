@@ -121,8 +121,8 @@ public final class GraphicsObject extends Entity {
                break;
             }
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("e")

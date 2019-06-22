@@ -119,22 +119,21 @@ public final class Canvas extends java.awt.Canvas {
    static int method861(int var0, Script var1, boolean var2) {
       int var3;
       int var4;
-      Widget var6;
       if(var0 == 100) {
          class179.Interpreter_intStackSize -= 3;
          var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         int var9 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
+         int var5 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
          if(var4 == 0) {
             throw new RuntimeException();
          } else {
-            var6 = Huffman.getWidget(var3);
+            Widget var6 = Huffman.getWidget(var3);
             if(var6.children == null) {
-               var6.children = new Widget[var9 + 1];
+               var6.children = new Widget[var5 + 1];
             }
 
-            if(var6.children.length <= var9) {
-               Widget[] var7 = new Widget[var9 + 1];
+            if(var6.children.length <= var5) {
+               Widget[] var7 = new Widget[var5 + 1];
 
                for(int var8 = 0; var8 < var6.children.length; ++var8) {
                   var7[var8] = var6.children[var8];
@@ -143,19 +142,19 @@ public final class Canvas extends java.awt.Canvas {
                var6.children = var7;
             }
 
-            if(var9 > 0 && var6.children[var9 - 1] == null) {
-               throw new RuntimeException("" + (var9 - 1));
+            if(var5 > 0 && var6.children[var5 - 1] == null) {
+               throw new RuntimeException("" + (var5 - 1));
             } else {
-               Widget var10 = new Widget();
-               var10.type = var4;
-               var10.parentId = var10.id = var6.id;
-               var10.childIndex = var9;
-               var10.isIf3 = true;
-               var6.children[var9] = var10;
+               Widget var12 = new Widget();
+               var12.type = var4;
+               var12.parentId = var12.id = var6.id;
+               var12.childIndex = var5;
+               var12.isIf3 = true;
+               var6.children[var5] = var12;
                if(var2) {
-                  WorldMapIcon1.__t_i = var10;
+                  WorldMapIcon1.__t_i = var12;
                } else {
-                  class12.__n_n = var10;
+                  class12.__n_n = var12;
                }
 
                class22.method295(var6);
@@ -163,27 +162,27 @@ public final class Canvas extends java.awt.Canvas {
             }
          }
       } else {
-         Widget var5;
+         Widget var9;
          if(var0 == 101) {
-            var5 = var2?WorldMapIcon1.__t_i:class12.__n_n;
-            var6 = Huffman.getWidget(var5.id);
-            var6.children[var5.childIndex] = null;
-            class22.method295(var6);
+            var9 = var2?WorldMapIcon1.__t_i:class12.__n_n;
+            Widget var10 = Huffman.getWidget(var9.id);
+            var10.children[var9.childIndex] = null;
+            class22.method295(var10);
             return 1;
          } else if(var0 == 102) {
-            var5 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
-            var5.children = null;
-            class22.method295(var5);
+            var9 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+            var9.children = null;
+            class22.method295(var9);
             return 1;
          } else if(var0 != 200) {
             if(var0 == 201) {
-               var5 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
-               if(var5 != null) {
+               var9 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+               if(var9 != null) {
                   Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 1;
                   if(var2) {
-                     WorldMapIcon1.__t_i = var5;
+                     WorldMapIcon1.__t_i = var9;
                   } else {
-                     class12.__n_n = var5;
+                     class12.__n_n = var9;
                   }
                } else {
                   Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
@@ -197,13 +196,13 @@ public final class Canvas extends java.awt.Canvas {
             class179.Interpreter_intStackSize -= 2;
             var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
             var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-            var6 = class204.getWidgetChild(var3, var4);
-            if(var6 != null && var4 != -1) {
+            Widget var11 = class204.getWidgetChild(var3, var4);
+            if(var11 != null && var4 != -1) {
                Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 1;
                if(var2) {
-                  WorldMapIcon1.__t_i = var6;
+                  WorldMapIcon1.__t_i = var11;
                } else {
-                  class12.__n_n = var6;
+                  class12.__n_n = var11;
                }
             } else {
                Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;

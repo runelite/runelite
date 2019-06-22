@@ -87,16 +87,16 @@ public class IndexStoreAction extends Node {
 
          if(var4 != 0) {
             ++var0.__cm;
-            boolean var5;
+            boolean var6;
             if(var4 > 1024) {
                var0.__ac -= var0.__cj;
-               var5 = true;
+               var6 = true;
                if(var4 < var0.__cj || var4 > 2048 - var0.__cj) {
                   var0.__ac = var0.orientation;
-                  var5 = false;
+                  var6 = false;
                }
 
-               if(var0.movementSequence == var0.idleSequence && (var0.__cm > 25 || var5)) {
+               if(var0.movementSequence == var0.idleSequence && (var0.__cm > 25 || var6)) {
                   if(var0.turnLeftSequence != -1) {
                      var0.movementSequence = var0.turnLeftSequence;
                   } else {
@@ -105,13 +105,13 @@ public class IndexStoreAction extends Node {
                }
             } else {
                var0.__ac += var0.__cj;
-               var5 = true;
+               var6 = true;
                if(var4 < var0.__cj || var4 > 2048 - var0.__cj) {
                   var0.__ac = var0.orientation;
-                  var5 = false;
+                  var6 = false;
                }
 
-               if(var0.movementSequence == var0.idleSequence && (var0.__cm > 25 || var5)) {
+               if(var0.movementSequence == var0.idleSequence && (var0.__cm > 25 || var6)) {
                   if(var0.turnRightSequence != -1) {
                      var0.movementSequence = var0.turnRightSequence;
                   } else {
@@ -124,7 +124,7 @@ public class IndexStoreAction extends Node {
          } else {
             var0.__cm = 0;
          }
-      }
 
+      }
    }
 }

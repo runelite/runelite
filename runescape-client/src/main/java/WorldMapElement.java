@@ -114,6 +114,10 @@ public class WorldMapElement extends DualNode {
    @Export("category")
    public int category;
 
+   static {
+      WorldMapElement_cachedSprites = new EvictingDualNodeHashTable(256);
+   }
+
    public WorldMapElement(int var1) {
       this.sprite1 = -1;
       this.sprite2 = -1;
@@ -323,9 +327,5 @@ public class WorldMapElement extends DualNode {
       }
 
       return null;
-   }
-
-   static {
-      WorldMapElement_cachedSprites = new EvictingDualNodeHashTable(256);
    }
 }

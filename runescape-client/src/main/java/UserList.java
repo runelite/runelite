@@ -165,7 +165,6 @@ public abstract class UserList {
          this.arrayRemove(var2);
          this.mapRemove(var1);
       }
-
    }
 
    @ObfuscatedName("v")

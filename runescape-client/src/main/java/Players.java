@@ -70,6 +70,22 @@ public class Players {
    @Export("NetCache_reference")
    public static Buffer NetCache_reference;
 
+   static {
+      __cq_q = new byte[2048];
+      __cq_w = new byte[2048];
+      __cq_o = new Buffer[2048];
+      Players_count = 0;
+      Players_indices = new int[2048];
+      __cq_l = 0;
+      __cq_e = new int[2048];
+      Players_regions = new int[2048];
+      Players_orientations = new int[2048];
+      Players_targetIndices = new int[2048];
+      __cq_n = 0;
+      __cq_i = new int[2048];
+      __cq_a = new Buffer(new byte[5000]);
+   }
+
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/Throwable;Ljava/lang/String;)Lfx;"
@@ -153,39 +169,25 @@ public class Players {
    )
    @Export("clickWidget")
    static final void clickWidget(Widget var0, int var1, int var2) {
-      if(Client.clickedWidget == null && !Client.isMenuOpen && var0 != null && class48.method869(var0) != null) {
-         Client.clickedWidget = var0;
-         Client.clickedWidgetParent = class48.method869(var0);
-         Client.widgetClickX = var1;
-         Client.widgetClickY = var2;
-         MouseRecorder.widgetDragDuration = 0;
-         Client.isDraggingWidget = false;
-         int var3 = Client.menuOptionsCount - 1;
-         if(var3 != -1) {
-            UnitPriceComparator.tempMenuAction = new MenuAction();
-            UnitPriceComparator.tempMenuAction.argument1 = Client.menuArguments1[var3];
-            UnitPriceComparator.tempMenuAction.argument2 = Client.menuArguments2[var3];
-            UnitPriceComparator.tempMenuAction.opcode = Client.menuOpcodes[var3];
-            UnitPriceComparator.tempMenuAction.argument0 = Client.menuArguments0[var3];
-            UnitPriceComparator.tempMenuAction.action = Client.menuActions[var3];
+      if(Client.clickedWidget == null && !Client.isMenuOpen) {
+         if(var0 != null && class48.method869(var0) != null) {
+            Client.clickedWidget = var0;
+            Client.clickedWidgetParent = class48.method869(var0);
+            Client.widgetClickX = var1;
+            Client.widgetClickY = var2;
+            MouseRecorder.widgetDragDuration = 0;
+            Client.isDraggingWidget = false;
+            int var3 = Client.menuOptionsCount - 1;
+            if(var3 != -1) {
+               UnitPriceComparator.tempMenuAction = new MenuAction();
+               UnitPriceComparator.tempMenuAction.argument1 = Client.menuArguments1[var3];
+               UnitPriceComparator.tempMenuAction.argument2 = Client.menuArguments2[var3];
+               UnitPriceComparator.tempMenuAction.opcode = Client.menuOpcodes[var3];
+               UnitPriceComparator.tempMenuAction.argument0 = Client.menuArguments0[var3];
+               UnitPriceComparator.tempMenuAction.action = Client.menuActions[var3];
+            }
+
          }
       }
-
-   }
-
-   static {
-      __cq_q = new byte[2048];
-      __cq_w = new byte[2048];
-      __cq_o = new Buffer[2048];
-      Players_count = 0;
-      Players_indices = new int[2048];
-      __cq_l = 0;
-      __cq_e = new int[2048];
-      Players_regions = new int[2048];
-      Players_orientations = new int[2048];
-      Players_targetIndices = new int[2048];
-      __cq_n = 0;
-      __cq_i = new int[2048];
-      __cq_a = new Buffer(new byte[5000]);
    }
 }

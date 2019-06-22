@@ -22,6 +22,14 @@ public class Strings {
    @Export("__id_ju")
    public static String __id_ju;
 
+   static {
+      __id_bq = "Please visit the support page for assistance.";
+      __id_cp = "Please visit the support page for assistance.";
+      __id_jr = "";
+      __id_jv = "Page has opened in a new window.";
+      __id_ju = "(Please check your popup blocker.)";
+   }
+
    @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "([BI)[B",
@@ -32,36 +40,26 @@ public class Strings {
       Buffer var1 = new Buffer(var0);
       int var2 = var1.readUnsignedByte();
       int var3 = var1.readInt();
-      if(var3 >= 0 && (AbstractIndexCache.__ir_s == 0 || var3 <= AbstractIndexCache.__ir_s)) {
-         if(var2 == 0) {
-            byte[] var6 = new byte[var3];
-            var1.__al_305(var6, 0, var3);
-            return var6;
-         } else {
-            int var4 = var1.readInt();
-            if(var4 < 0 || AbstractIndexCache.__ir_s != 0 && var4 > AbstractIndexCache.__ir_s) {
-               throw new RuntimeException();
-            } else {
-               byte[] var5 = new byte[var4];
-               if(var2 == 1) {
-                  Bzip2Decompressor.Bzip2Decompressor_decompress(var5, var4, var0, var3, 9);
-               } else {
-                  AbstractIndexCache.gzipDecompressor.decompress(var1, var5);
-               }
-
-               return var5;
-            }
-         }
-      } else {
+      if(var3 < 0 || AbstractIndexCache.__ir_s != 0 && var3 > AbstractIndexCache.__ir_s) {
          throw new RuntimeException();
-      }
-   }
+      } else if(var2 == 0) {
+         byte[] var4 = new byte[var3];
+         var1.__al_305(var4, 0, var3);
+         return var4;
+      } else {
+         int var6 = var1.readInt();
+         if(var6 < 0 || AbstractIndexCache.__ir_s != 0 && var6 > AbstractIndexCache.__ir_s) {
+            throw new RuntimeException();
+         } else {
+            byte[] var5 = new byte[var6];
+            if(var2 == 1) {
+               Bzip2Decompressor.Bzip2Decompressor_decompress(var5, var6, var0, var3, 9);
+            } else {
+               AbstractIndexCache.gzipDecompressor.decompress(var1, var5);
+            }
 
-   static {
-      __id_bq = "Please visit the support page for assistance.";
-      __id_cp = "Please visit the support page for assistance.";
-      __id_jr = "";
-      __id_jv = "Page has opened in a new window.";
-      __id_ju = "(Please check your popup blocker.)";
+            return var5;
+         }
+      }
    }
 }

@@ -200,7 +200,7 @@ final class UnitPriceComparator implements Comparator {
          if(Client.viewportTempX > -1 && Client.cycle % 20 < 10) {
             Player.headIconHintSprites[0].drawAt2(var0 + Client.viewportTempX - 12, Client.viewportTempY + var1 - 28);
          }
-      }
 
+      }
    }
 }

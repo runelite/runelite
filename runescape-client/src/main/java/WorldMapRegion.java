@@ -61,6 +61,10 @@ public class WorldMapRegion {
    @Export("fonts")
    final HashMap fonts;
 
+   static {
+      __av_o = new DemotingHashTable(37748736, 256);
+   }
+
    WorldMapRegion(int var1, int var2, int var3, HashMap var4) {
       this.x = var1;
       this.y = var2;
@@ -85,8 +89,8 @@ public class WorldMapRegion {
          } else {
             var4.__al_517(var1, var2, var3, var3);
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("o")
@@ -129,7 +133,7 @@ public class WorldMapRegion {
       this.iconsMap.clear();
 
       for(int var6 = var1; var6 < var3 + var1; ++var6) {
-         label66:
+         label75:
          for(int var7 = var2; var7 < var2 + var4; ++var7) {
             for(int var8 = 0; var8 < var5.field156; ++var8) {
                class25[] var9 = var5.field144[var8][var6][var7];
@@ -137,33 +141,33 @@ public class WorldMapRegion {
                   class25[] var10 = var9;
 
                   for(int var11 = 0; var11 < var10.length; ++var11) {
-                     ObjectDefinition var12;
-                     boolean var13;
-                     label57: {
-                        class25 var14 = var10[var11];
-                        var12 = class50.getObjectDefinition(var14.field199);
-                        if(var12.transforms != null) {
-                           int[] var15 = var12.transforms;
+                     ObjectDefinition var13;
+                     boolean var14;
+                     label66: {
+                        class25 var12 = var10[var11];
+                        var13 = class50.getObjectDefinition(var12.field199);
+                        if(var13.transforms != null) {
+                           int[] var15 = var13.transforms;
 
                            for(int var16 = 0; var16 < var15.length; ++var16) {
                               int var17 = var15[var16];
                               ObjectDefinition var18 = class50.getObjectDefinition(var17);
                               if(var18.mapIconId != -1) {
-                                 var13 = true;
-                                 break label57;
+                                 var14 = true;
+                                 break label66;
                               }
                            }
-                        } else if(var12.mapIconId != -1) {
-                           var13 = true;
-                           break label57;
+                        } else if(var13.mapIconId != -1) {
+                           var14 = true;
+                           break label66;
                         }
 
-                        var13 = false;
+                        var14 = false;
                      }
 
-                     if(var13) {
-                        this.method479(var12, var8, var6, var7, var5);
-                        continue label66;
+                     if(var14) {
+                        this.method479(var13, var8, var6, var7, var5);
+                        continue label75;
                      }
                   }
                }
@@ -301,36 +305,37 @@ public class WorldMapRegion {
    )
    void method455(int var1, class40 var2, IndexedSprite[] var3, AbstractIndexCache var4, AbstractIndexCache var5) {
       this.__d = var1;
-      if((this.field239 != null || !this.__e.isEmpty()) && class13.method164(this.x, this.y, var1) == null) {
-         boolean var6 = true;
-         var6 &= this.__a_45(var4);
-         int var7;
-         if(this.field239 != null) {
-            var7 = this.field239.field150;
-         } else {
-            var7 = ((class21)this.__e.getFirst()).field150;
-         }
-
-         var6 &= var5.tryLoadArchive(var7);
-         if(var6) {
-            byte[] var8 = var5.takeRecordFlat(var7);
-            class27 var9 = SecureRandomCallable.method1145(var8);
-            Sprite var10 = new Sprite(this.__d * 64, this.__d * 64);
-            var10.setRaster();
+      if(this.field239 != null || !this.__e.isEmpty()) {
+         if(class13.method164(this.x, this.y, var1) == null) {
+            boolean var6 = true;
+            var6 &= this.__a_45(var4);
+            int var8;
             if(this.field239 != null) {
-               this.method546(var2, var3, var9);
+               var8 = this.field239.field150;
             } else {
-               this.method459(var2, var3, var9);
+               var8 = ((class21)this.__e.getFirst()).field150;
             }
 
-            int var11 = this.x;
-            int var12 = this.y;
-            int var13 = this.__d;
-            __av_o.put(var10, MouseHandler.method1083(var11, var12, var13), var10.pixels.length * 4);
-            this.__d_44();
+            var6 &= var5.tryLoadArchive(var8);
+            if(var6) {
+               byte[] var7 = var5.takeRecordFlat(var8);
+               class27 var9 = SecureRandomCallable.method1145(var7);
+               Sprite var10 = new Sprite(this.__d * 64, this.__d * 64);
+               var10.setRaster();
+               if(this.field239 != null) {
+                  this.method546(var2, var3, var9);
+               } else {
+                  this.method459(var2, var3, var9);
+               }
+
+               int var11 = this.x;
+               int var12 = this.y;
+               int var13 = this.__d;
+               __av_o.put(var10, MouseHandler.method1083(var11, var12, var13), var10.pixels.length * 4);
+               this.__d_44();
+            }
          }
       }
-
    }
 
    @ObfuscatedName("j")
@@ -456,83 +461,80 @@ public class WorldMapRegion {
       int var9;
       if(var7 != -1) {
          int var10 = this.__x;
-         OverlayDefinition var11 = (OverlayDefinition)OverlayDefinition.__jf_f.get((long)var7);
-         OverlayDefinition var12;
-         if(var11 != null) {
-            var12 = var11;
+         OverlayDefinition var12 = (OverlayDefinition)OverlayDefinition.__jf_f.get((long)var7);
+         OverlayDefinition var11;
+         if(var12 != null) {
+            var11 = var12;
          } else {
             byte[] var13 = OverlayDefinition.__jf_m.takeRecord(4, var7);
-            var11 = new OverlayDefinition();
+            var12 = new OverlayDefinition();
             if(var13 != null) {
-               var11.read(new Buffer(var13), var7);
+               var12.read(new Buffer(var13), var7);
             }
 
-            var11.init();
-            OverlayDefinition.__jf_f.put(var11, (long)var7);
-            var12 = var11;
+            var12.init();
+            OverlayDefinition.__jf_f.put(var12, (long)var7);
+            var11 = var12;
          }
 
-         if(var12 == null) {
+         if(var11 == null) {
             var9 = var10;
-         } else if(var12.rgb2 >= 0) {
-            var9 = var12.rgb2 | -16777216;
+         } else if(var11.rgb2 >= 0) {
+            var9 = var11.rgb2 | -16777216;
+         } else if(var11.texture >= 0) {
+            int var21 = WorldMapArea.method427(Rasterizer3D.Rasterizer3D_textureLoader.__w_213(var11.texture), 96);
+            var9 = Rasterizer3D.Rasterizer3D_colorPalette[var21] | -16777216;
+         } else if(var11.rgb == 16711935) {
+            var9 = var10;
          } else {
-            int var20;
-            if(var12.texture >= 0) {
-               var20 = WorldMapArea.method427(Rasterizer3D.Rasterizer3D_textureLoader.__w_213(var12.texture), 96);
-               var9 = Rasterizer3D.Rasterizer3D_colorPalette[var20] | -16777216;
-            } else if(var12.rgb == 16711935) {
-               var9 = var10;
-            } else {
-               var20 = var12.hue;
-               int var14 = var12.saturation;
-               int var15 = var12.lightness;
-               if(var15 > 179) {
-                  var14 /= 2;
-               }
-
-               if(var15 > 192) {
-                  var14 /= 2;
-               }
-
-               if(var15 > 217) {
-                  var14 /= 2;
-               }
-
-               if(var15 > 243) {
-                  var14 /= 2;
-               }
-
-               int var16 = (var14 / 32 << 7) + var15 / 2 + (var20 / 4 << 10);
-               byte var17 = 96;
-               int var18;
-               if(var16 == -2) {
-                  var18 = 12345678;
-               } else {
-                  int var19;
-                  if(var16 == -1) {
-                     if(var17 < 0) {
-                        var17 = 0;
-                     } else if(var17 > 127) {
-                        var17 = 127;
-                     }
-
-                     var19 = 127 - var17;
-                     var18 = var19;
-                  } else {
-                     var19 = var17 * (var16 & 127) / 128;
-                     if(var19 < 2) {
-                        var19 = 2;
-                     } else if(var19 > 126) {
-                        var19 = 126;
-                     }
-
-                     var18 = var19 + (var16 & 65408);
-                  }
-               }
-
-               var9 = Rasterizer3D.Rasterizer3D_colorPalette[var18] | -16777216;
+            int var14 = var11.hue;
+            int var15 = var11.saturation;
+            int var16 = var11.lightness;
+            if(var16 > 179) {
+               var15 /= 2;
             }
+
+            if(var16 > 192) {
+               var15 /= 2;
+            }
+
+            if(var16 > 217) {
+               var15 /= 2;
+            }
+
+            if(var16 > 243) {
+               var15 /= 2;
+            }
+
+            int var17 = (var15 / 32 << 7) + var16 / 2 + (var14 / 4 << 10);
+            byte var19 = 96;
+            int var18;
+            if(var17 == -2) {
+               var18 = 12345678;
+            } else {
+               int var22;
+               if(var17 == -1) {
+                  if(var19 < 0) {
+                     var19 = 0;
+                  } else if(var19 > 127) {
+                     var19 = 127;
+                  }
+
+                  var22 = 127 - var19;
+                  var18 = var22;
+               } else {
+                  var22 = var19 * (var17 & 127) / 128;
+                  if(var22 < 2) {
+                     var22 = 2;
+                  } else if(var22 > 126) {
+                     var22 = 126;
+                  }
+
+                  var18 = var22 + (var17 & 65408);
+               }
+            }
+
+            var9 = Rasterizer3D.Rasterizer3D_colorPalette[var18] | -16777216;
          }
 
          var8 = var9;
@@ -548,7 +550,6 @@ public class WorldMapRegion {
             var4.method743(this.__d * var1, this.__d * (63 - var2), var9, var8, this.__d, this.__d, var3.field154[0][var1][var2], var3.field155[0][var1][var2]);
          }
       }
-
    }
 
    @ObfuscatedName("c")
@@ -560,91 +561,88 @@ public class WorldMapRegion {
       for(int var5 = 1; var5 < var3.field156; ++var5) {
          int var6 = var3.field145[var5][var1][var2] - 1;
          if(var6 > -1) {
-            int var7 = this.__x;
-            OverlayDefinition var8 = (OverlayDefinition)OverlayDefinition.__jf_f.get((long)var6);
+            int var8 = this.__x;
+            OverlayDefinition var10 = (OverlayDefinition)OverlayDefinition.__jf_f.get((long)var6);
             OverlayDefinition var9;
-            if(var8 != null) {
-               var9 = var8;
+            if(var10 != null) {
+               var9 = var10;
             } else {
-               byte[] var10 = OverlayDefinition.__jf_m.takeRecord(4, var6);
-               var8 = new OverlayDefinition();
-               if(var10 != null) {
-                  var8.read(new Buffer(var10), var6);
+               byte[] var11 = OverlayDefinition.__jf_m.takeRecord(4, var6);
+               var10 = new OverlayDefinition();
+               if(var11 != null) {
+                  var10.read(new Buffer(var11), var6);
                }
 
-               var8.init();
-               OverlayDefinition.__jf_f.put(var8, (long)var6);
-               var9 = var8;
+               var10.init();
+               OverlayDefinition.__jf_f.put(var10, (long)var6);
+               var9 = var10;
             }
 
-            int var18;
+            int var7;
             if(var9 == null) {
-               var18 = var7;
+               var7 = var8;
             } else if(var9.rgb2 >= 0) {
-               var18 = var9.rgb2 | -16777216;
+               var7 = var9.rgb2 | -16777216;
+            } else if(var9.texture >= 0) {
+               int var20 = WorldMapArea.method427(Rasterizer3D.Rasterizer3D_textureLoader.__w_213(var9.texture), 96);
+               var7 = Rasterizer3D.Rasterizer3D_colorPalette[var20] | -16777216;
+            } else if(var9.rgb == 16711935) {
+               var7 = var8;
             } else {
-               int var11;
-               if(var9.texture >= 0) {
-                  var11 = WorldMapArea.method427(Rasterizer3D.Rasterizer3D_textureLoader.__w_213(var9.texture), 96);
-                  var18 = Rasterizer3D.Rasterizer3D_colorPalette[var11] | -16777216;
-               } else if(var9.rgb == 16711935) {
-                  var18 = var7;
-               } else {
-                  var11 = var9.hue;
-                  int var12 = var9.saturation;
-                  int var13 = var9.lightness;
-                  if(var13 > 179) {
-                     var12 /= 2;
-                  }
-
-                  if(var13 > 192) {
-                     var12 /= 2;
-                  }
-
-                  if(var13 > 217) {
-                     var12 /= 2;
-                  }
-
-                  if(var13 > 243) {
-                     var12 /= 2;
-                  }
-
-                  int var14 = (var12 / 32 << 7) + var13 / 2 + (var11 / 4 << 10);
-                  byte var15 = 96;
-                  int var16;
-                  if(var14 == -2) {
-                     var16 = 12345678;
-                  } else {
-                     int var17;
-                     if(var14 == -1) {
-                        if(var15 < 0) {
-                           var15 = 0;
-                        } else if(var15 > 127) {
-                           var15 = 127;
-                        }
-
-                        var17 = 127 - var15;
-                        var16 = var17;
-                     } else {
-                        var17 = var15 * (var14 & 127) / 128;
-                        if(var17 < 2) {
-                           var17 = 2;
-                        } else if(var17 > 126) {
-                           var17 = 126;
-                        }
-
-                        var16 = var17 + (var14 & 65408);
-                     }
-                  }
-
-                  var18 = Rasterizer3D.Rasterizer3D_colorPalette[var16] | -16777216;
+               int var12 = var9.hue;
+               int var13 = var9.saturation;
+               int var14 = var9.lightness;
+               if(var14 > 179) {
+                  var13 /= 2;
                }
+
+               if(var14 > 192) {
+                  var13 /= 2;
+               }
+
+               if(var14 > 217) {
+                  var13 /= 2;
+               }
+
+               if(var14 > 243) {
+                  var13 /= 2;
+               }
+
+               int var15 = (var13 / 32 << 7) + var14 / 2 + (var12 / 4 << 10);
+               byte var17 = 96;
+               int var16;
+               if(var15 == -2) {
+                  var16 = 12345678;
+               } else {
+                  int var21;
+                  if(var15 == -1) {
+                     if(var17 < 0) {
+                        var17 = 0;
+                     } else if(var17 > 127) {
+                        var17 = 127;
+                     }
+
+                     var21 = 127 - var17;
+                     var16 = var21;
+                  } else {
+                     var21 = var17 * (var15 & 127) / 128;
+                     if(var21 < 2) {
+                        var21 = 2;
+                     } else if(var21 > 126) {
+                        var21 = 126;
+                     }
+
+                     var16 = var21 + (var15 & 65408);
+                  }
+               }
+
+               var7 = Rasterizer3D.Rasterizer3D_colorPalette[var16] | -16777216;
             }
 
             if(var3.field154[var5][var1][var2] == 0) {
-               Rasterizer2D.Rasterizer2D_fillRectangle(this.__d * var1, this.__d * (63 - var2), this.__d, this.__d, var18);
+               Rasterizer2D.Rasterizer2D_fillRectangle(this.__d * var1, this.__d * (63 - var2), this.__d, this.__d, var7);
             } else {
-               var4.method743(this.__d * var1, this.__d * (63 - var2), 0, var18, this.__d, this.__d, var3.field154[var5][var1][var2], var3.field155[var5][var1][var2]);
+               var4.method743(this.__d * var1, this.__d * (63 - var2), 0, var7, this.__d, this.__d, var3.field154[var5][var1][var2], var3.field155[var5][var1][var2]);
             }
          }
       }
@@ -702,9 +700,9 @@ public class WorldMapRegion {
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
                class25 var8 = var6[var7];
-               int var9 = var8.field198;
-               boolean var10 = var9 >= class231.field2805.field2820 && var9 <= class231.field2804.field2820 || var9 == class231.field2806.field2820;
-               if(var10) {
+               int var10 = var8.field198;
+               boolean var9 = var10 >= class231.field2805.field2820 && var10 <= class231.field2804.field2820 || var10 == class231.field2806.field2820;
+               if(var9) {
                   ObjectDefinition var11 = class50.getObjectDefinition(var8.field199);
                   int var12 = var11.int1 != 0?-3407872:-3355444;
                   if(var8.field198 == class231.field2805.field2820) {
@@ -818,8 +816,8 @@ public class WorldMapRegion {
             Rasterizer2D.Rasterizer2D_drawCircleAlpha(var2, var3, 15, 16776960, 128);
             Rasterizer2D.Rasterizer2D_drawCircleAlpha(var2, var3, 7, 16777215, 256);
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("ar")
@@ -858,11 +856,12 @@ public class WorldMapRegion {
    @Export("__ay_53")
    void __ay_53(AbstractWorldMapIcon var1, WorldMapElement var2, int var3, int var4, float var5) {
       WorldMapLabel var6 = var1.__f_16();
-      if(var6 != null && var6.size.__f_14(var5)) {
-         Font var7 = (Font)this.fonts.get(var6.size);
-         var7.drawLines(var6.text, var3 - var6.width / 2, var4, var6.width, var6.height, -16777216 | var2.__e, 0, 1, 0, var7.ascent / 2);
+      if(var6 != null) {
+         if(var6.size.__f_14(var5)) {
+            Font var7 = (Font)this.fonts.get(var6.size);
+            var7.drawLines(var6.text, var3 - var6.width / 2, var4, var6.width, var6.height, -16777216 | var2.__e, 0, 1, 0, var7.ascent / 2);
+         }
       }
-
    }
 
    @ObfuscatedName("ah")
@@ -1073,45 +1072,47 @@ public class WorldMapRegion {
       garbageValue = "597"
    )
    static final void method567(Widget var0, int var1, int var2) {
-      if((Client.minimapState == 0 || Client.minimapState == 3) && !Client.isMenuOpen && (MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.__lp_ca && MouseHandler.MouseHandler_lastButton == 4)) {
-         SpriteMask var3 = var0.getSpriteMask(true);
-         if(var3 == null) {
-            return;
+      if(Client.minimapState == 0 || Client.minimapState == 3) {
+         if(!Client.isMenuOpen && (MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.__lp_ca && MouseHandler.MouseHandler_lastButton == 4)) {
+            SpriteMask var3 = var0.getSpriteMask(true);
+            if(var3 == null) {
+               return;
+            }
+
+            int var4 = MouseHandler.MouseHandler_lastPressedX - var1;
+            int var5 = MouseHandler.MouseHandler_lastPressedY - var2;
+            if(var3.contains(var4, var5)) {
+               var4 -= var3.width / 2;
+               var5 -= var3.height / 2;
+               int var6 = Client.minimapOrientation & 2047;
+               int var7 = Rasterizer3D.Rasterizer3D_sine[var6];
+               int var8 = Rasterizer3D.Rasterizer3D_cosine[var6];
+               int var9 = var4 * var8 + var7 * var5 >> 11;
+               int var10 = var5 * var8 - var4 * var7 >> 11;
+               int var11 = var9 + Canvas.localPlayer.x >> 7;
+               int var12 = Canvas.localPlayer.y - var10 >> 7;
+               PacketBufferNode var13 = Interpreter.method1915(ClientPacket.__gs_ba, Client.packetWriter.isaacCipher);
+               var13.packetBuffer.writeByte(18);
+               var13.packetBuffer.__bo_322(var12 + GraphicsObject.baseY);
+               var13.packetBuffer.__bo_322(var11 + class50.baseX);
+               var13.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?(KeyHandler.KeyHandler_pressedKeys[81]?2:1):0);
+               var13.packetBuffer.writeByte(var4);
+               var13.packetBuffer.writeByte(var5);
+               var13.packetBuffer.writeShort(Client.minimapOrientation);
+               var13.packetBuffer.writeByte(57);
+               var13.packetBuffer.writeByte(0);
+               var13.packetBuffer.writeByte(0);
+               var13.packetBuffer.writeByte(89);
+               var13.packetBuffer.writeShort(Canvas.localPlayer.x);
+               var13.packetBuffer.writeShort(Canvas.localPlayer.y);
+               var13.packetBuffer.writeByte(63);
+               Client.packetWriter.__q_167(var13);
+               Client.destinationX = var11;
+               Client.destinationY = var12;
+            }
          }
 
-         int var4 = MouseHandler.MouseHandler_lastPressedX - var1;
-         int var5 = MouseHandler.MouseHandler_lastPressedY - var2;
-         if(var3.contains(var4, var5)) {
-            var4 -= var3.width / 2;
-            var5 -= var3.height / 2;
-            int var6 = Client.minimapOrientation & 2047;
-            int var7 = Rasterizer3D.Rasterizer3D_sine[var6];
-            int var8 = Rasterizer3D.Rasterizer3D_cosine[var6];
-            int var9 = var4 * var8 + var7 * var5 >> 11;
-            int var10 = var5 * var8 - var4 * var7 >> 11;
-            int var11 = var9 + Canvas.localPlayer.x >> 7;
-            int var12 = Canvas.localPlayer.y - var10 >> 7;
-            PacketBufferNode var13 = Interpreter.method1915(ClientPacket.__gs_ba, Client.packetWriter.isaacCipher);
-            var13.packetBuffer.writeByte(18);
-            var13.packetBuffer.__bo_322(var12 + GraphicsObject.baseY);
-            var13.packetBuffer.__bo_322(var11 + class50.baseX);
-            var13.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?(KeyHandler.KeyHandler_pressedKeys[81]?2:1):0);
-            var13.packetBuffer.writeByte(var4);
-            var13.packetBuffer.writeByte(var5);
-            var13.packetBuffer.writeShort(Client.minimapOrientation);
-            var13.packetBuffer.writeByte(57);
-            var13.packetBuffer.writeByte(0);
-            var13.packetBuffer.writeByte(0);
-            var13.packetBuffer.writeByte(89);
-            var13.packetBuffer.writeShort(Canvas.localPlayer.x);
-            var13.packetBuffer.writeShort(Canvas.localPlayer.y);
-            var13.packetBuffer.writeByte(63);
-            Client.packetWriter.__q_167(var13);
-            Client.destinationX = var11;
-            Client.destinationY = var12;
-         }
       }
-
    }
 
    @ObfuscatedName("ix")
@@ -1148,9 +1149,5 @@ public class WorldMapRegion {
          }
       }
 
-   }
-
-   static {
-      __av_o = new DemotingHashTable(37748736, 256);
    }
 }

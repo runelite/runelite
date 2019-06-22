@@ -133,22 +133,22 @@ public class SpriteIds {
       if(!SpriteMask.method4392(var0, var2, var3)) {
          return null;
       } else {
-         byte[] var4 = var1.takeRecord(var2, var3);
-         Font var5;
-         if(var4 == null) {
-            var5 = null;
+         byte[] var5 = var1.takeRecord(var2, var3);
+         Font var4;
+         if(var5 == null) {
+            var4 = null;
          } else {
-            Font var6 = new Font(var4, class328.indexedSpriteOffsetXs, class328.indexedSpriteOffsetYs, VarbitDefinition.indexedSpriteWidths, SecureRandomCallable.indexedSpriteHeights, class328.indexedSpritePalette, class328.spritePixels);
+            Font var6 = new Font(var5, class328.indexedSpriteOffsetXs, class328.indexedSpriteOffsetYs, VarbitDefinition.indexedSpriteWidths, SecureRandomCallable.indexedSpriteHeights, class328.indexedSpritePalette, class328.spritePixels);
             class328.indexedSpriteOffsetXs = null;
             class328.indexedSpriteOffsetYs = null;
             VarbitDefinition.indexedSpriteWidths = null;
             SecureRandomCallable.indexedSpriteHeights = null;
             class328.indexedSpritePalette = null;
-            class328.spritePixels = (byte[][])null;
-            var5 = var6;
+            class328.spritePixels = null;
+            var4 = var6;
          }
 
-         return var5;
+         return var4;
       }
    }
 

@@ -53,8 +53,8 @@ public class UserComparator9 extends AbstractUserComparator {
             ++NetCache.NetCache_ioExceptions;
             NetCache.NetCache_socket = null;
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("l")
@@ -87,7 +87,7 @@ public class UserComparator9 extends AbstractUserComparator {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.spritePixels = (byte[][])null;
+      class328.spritePixels = null;
       return var0;
    }
 }

@@ -66,14 +66,16 @@ public class VertexNormal {
          ByteArrayPool.ByteArrayPool_medium[++ByteArrayPool.ByteArrayPool_mediumCount - 1] = var0;
       } else if(var0.length == 30000 && ByteArrayPool.ByteArrayPool_largeCount < 50) {
          ByteArrayPool.ByteArrayPool_large[++ByteArrayPool.ByteArrayPool_largeCount - 1] = var0;
-      } else if(class179.__fe_e != null) {
-         for(int var1 = 0; var1 < ByteArrayPool.__gi_g.length; ++var1) {
-            if(var0.length == ByteArrayPool.__gi_g[var1] && WorldMapSection2.__ah_l[var1] < class179.__fe_e[var1].length) {
-               class179.__fe_e[var1][WorldMapSection2.__ah_l[var1]++] = var0;
-               return;
+      } else {
+         if(class179.__fe_e != null) {
+            for(int var1 = 0; var1 < ByteArrayPool.__gi_g.length; ++var1) {
+               if(var0.length == ByteArrayPool.__gi_g[var1] && WorldMapSection2.__ah_l[var1] < class179.__fe_e[var1].length) {
+                  class179.__fe_e[var1][WorldMapSection2.__ah_l[var1]++] = var0;
+                  return;
+               }
             }
          }
-      }
 
+      }
    }
 }

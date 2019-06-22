@@ -28,6 +28,5 @@ public class Link {
          this.__m = null;
          this.__f = null;
       }
-
    }
 }

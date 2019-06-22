@@ -22,6 +22,10 @@ public class class311 {
    )
    final int field3809;
 
+   static {
+      field3810 = new class311(3);
+   }
+
    class311(int var1) {
       this.field3809 = var1;
    }
@@ -33,9 +37,5 @@ public class class311 {
    )
    public static RectangleMode[] method5822() {
       return new RectangleMode[]{RectangleMode.__lj_f, RectangleMode.__lj_m, RectangleMode.__lj_q};
-   }
-
-   static {
-      field3810 = new class311(3);
    }
 }

@@ -72,7 +72,7 @@ final class WorldComparator implements Comparator {
    static final void method67(PacketBuffer var0) {
       for(int var1 = 0; var1 < Client.__client_fw; ++var1) {
          int var2 = Client.__client_fg[var1];
-         NPC var3 = Client.npcs[var2];
+         Npc var3 = Client.npcs[var2];
          int var4 = var0.readUnsignedByte();
          if((var4 & 1) != 0) {
             var3.targetIndex = var0.__by_324();

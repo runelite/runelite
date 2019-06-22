@@ -16,6 +16,10 @@ public abstract class AbstractByteArrayCopier {
    @Export("__gu_et")
    static IndexCache __gu_et;
 
+   static {
+      directBufferUnavailable = false;
+   }
+
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I)[B",
@@ -59,29 +63,30 @@ public abstract class AbstractByteArrayCopier {
       garbageValue = "-1941491045"
    )
    public static void method4023(int var0) {
-      if(var0 != -1 && Widget.loadedWidgetGroups[var0]) {
-         Widget.Widget_indexCache.__h_399(var0);
-         if(Widget.widgets[var0] != null) {
-            boolean var1 = true;
+      if(var0 != -1) {
+         if(Widget.loadedWidgetGroups[var0]) {
+            Widget.Widget_indexCache.__h_399(var0);
+            if(Widget.widgets[var0] != null) {
+               boolean var1 = true;
 
-            for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
-               if(Widget.widgets[var0][var2] != null) {
-                  if(Widget.widgets[var0][var2].type != 2) {
-                     Widget.widgets[var0][var2] = null;
-                  } else {
-                     var1 = false;
+               for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
+                  if(Widget.widgets[var0][var2] != null) {
+                     if(Widget.widgets[var0][var2].type != 2) {
+                        Widget.widgets[var0][var2] = null;
+                     } else {
+                        var1 = false;
+                     }
                   }
                }
-            }
 
-            if(var1) {
-               Widget.widgets[var0] = null;
-            }
+               if(var1) {
+                  Widget.widgets[var0] = null;
+               }
 
-            Widget.loadedWidgetGroups[var0] = false;
+               Widget.loadedWidgetGroups[var0] = false;
+            }
          }
       }
-
    }
 
    @ObfuscatedName("gb")
@@ -95,9 +100,5 @@ public abstract class AbstractByteArrayCopier {
       var0.packetBuffer.writeShort(SoundCache.canvasWidth);
       var0.packetBuffer.writeShort(Huffman.canvasHeight);
       Client.packetWriter.__q_167(var0);
-   }
-
-   static {
-      directBufferUnavailable = false;
    }
 }

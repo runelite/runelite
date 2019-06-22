@@ -84,7 +84,7 @@ public final class Occluder {
       intValue = -407777817
    )
    @Export("surfaceOffsetY")
-   int surfaceOffsetY;
+   int __n;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1324959981

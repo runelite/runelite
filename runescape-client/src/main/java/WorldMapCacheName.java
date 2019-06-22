@@ -49,6 +49,14 @@ public class WorldMapCacheName {
    @Export("name")
    public final String name;
 
+   static {
+      WorldMapCacheName_details = new WorldMapCacheName("details");
+      WorldMapCacheName_compositeMap = new WorldMapCacheName("compositemap");
+      WorldMapCacheName_compositeTexture = new WorldMapCacheName("compositetexture");
+      WorldMapCacheName_area = new WorldMapCacheName("area");
+      WorldMapCacheName_labels = new WorldMapCacheName("labels");
+   }
+
    WorldMapCacheName(String var1) {
       this.name = var1;
    }
@@ -67,12 +75,12 @@ public class WorldMapCacheName {
          for(int var2 = 0; var2 < ByteArrayPool.__gi_g.length; ++var2) {
             class179.__fe_e[var2] = new byte[var1[var2]][];
          }
+
       } else {
          ByteArrayPool.__gi_g = null;
          WorldMapSection2.__ah_l = null;
-         class179.__fe_e = (byte[][][])null;
+         class179.__fe_e = null;
       }
-
    }
 
    @ObfuscatedName("m")
@@ -177,13 +185,5 @@ public class WorldMapCacheName {
          }
       }
 
-   }
-
-   static {
-      WorldMapCacheName_details = new WorldMapCacheName("details");
-      WorldMapCacheName_compositeMap = new WorldMapCacheName("compositemap");
-      WorldMapCacheName_compositeTexture = new WorldMapCacheName("compositetexture");
-      WorldMapCacheName_area = new WorldMapCacheName("area");
-      WorldMapCacheName_labels = new WorldMapCacheName("labels");
    }
 }

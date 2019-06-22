@@ -30,9 +30,9 @@ public class class277 {
             --var16;
          }
 
-         double var18 = var0 - 0.3333333333333333D;
-         if(var18 < 0.0D) {
-            ++var18;
+         double var20 = var0 - 0.3333333333333333D;
+         if(var20 < 0.0D) {
+            ++var20;
          }
 
          if(6.0D * var16 < 1.0D) {
@@ -55,21 +55,21 @@ public class class277 {
             var8 = var14;
          }
 
-         if(var18 * 6.0D < 1.0D) {
-            var10 = var18 * 6.0D * (var12 - var14) + var14;
-         } else if(2.0D * var18 < 1.0D) {
+         if(var20 * 6.0D < 1.0D) {
+            var10 = var20 * 6.0D * (var12 - var14) + var14;
+         } else if(2.0D * var20 < 1.0D) {
             var10 = var12;
-         } else if(var18 * 3.0D < 2.0D) {
-            var10 = var14 + 6.0D * (0.6666666666666666D - var18) * (var12 - var14);
+         } else if(var20 * 3.0D < 2.0D) {
+            var10 = var14 + 6.0D * (0.6666666666666666D - var20) * (var12 - var14);
          } else {
             var10 = var14;
          }
       }
 
-      int var20 = (int)(256.0D * var6);
+      int var22 = (int)(256.0D * var6);
       int var13 = (int)(var8 * 256.0D);
-      int var21 = (int)(var10 * 256.0D);
-      int var15 = var21 + (var13 << 8) + (var20 << 16);
+      int var23 = (int)(var10 * 256.0D);
+      int var15 = var23 + (var13 << 8) + (var22 << 16);
       return var15;
    }
 
@@ -82,13 +82,13 @@ public class class277 {
       if(var2 == 0) {
          return "";
       } else if(var2 == 1) {
-         CharSequence var8 = var0[var1];
-         return var8 == null?"null":var8.toString();
+         CharSequence var3 = var0[var1];
+         return var3 == null?"null":var3.toString();
       } else {
-         int var3 = var2 + var1;
+         int var8 = var2 + var1;
          int var4 = 0;
 
-         for(int var5 = var1; var5 < var3; ++var5) {
+         for(int var5 = var1; var5 < var8; ++var5) {
             CharSequence var6 = var0[var5];
             if(var6 == null) {
                var4 += 4;
@@ -99,7 +99,7 @@ public class class277 {
 
          StringBuilder var9 = new StringBuilder(var4);
 
-         for(int var10 = var1; var10 < var3; ++var10) {
+         for(int var10 = var1; var10 < var8; ++var10) {
             CharSequence var7 = var0[var10];
             if(var7 == null) {
                var9.append("null");

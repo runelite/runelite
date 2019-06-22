@@ -87,7 +87,7 @@ public final class ObjectSound extends Node {
       intValue = -1041508847
    )
    @Export("surfaceOffsetY")
-   int surfaceOffsetY;
+   int __n;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lds;"
@@ -100,6 +100,10 @@ public final class ObjectSound extends Node {
    )
    @Export("obj")
    ObjectDefinition obj;
+
+   static {
+      objectSounds = new NodeDeque();
+   }
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
@@ -129,9 +133,5 @@ public final class ObjectSound extends Node {
          this.stream1 = null;
       }
 
-   }
-
-   static {
-      objectSounds = new NodeDeque();
    }
 }

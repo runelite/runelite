@@ -31,6 +31,5 @@ public class DualNode extends Node {
          this.previousDual = null;
          this.nextDual = null;
       }
-
    }
 }

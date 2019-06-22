@@ -53,6 +53,10 @@ public class Script extends DualNode {
    @Export("switches")
    IterableNodeHashTable[] switches;
 
+   static {
+      Script_cached = new EvictingDualNodeHashTable(128);
+   }
+
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(II)[Llh;",
@@ -73,7 +77,6 @@ public class Script extends DualNode {
       if(var1 != null) {
          var1.remove();
       }
-
    }
 
    @ObfuscatedName("e")
@@ -113,26 +116,23 @@ public class Script extends DualNode {
       garbageValue = "-1584807244"
    )
    static void method2201(SequenceDefinition var0, int var1, int var2, int var3) {
-      if(Client.soundEffectCount < 50 && Client.__client_qc != 0 && var0.__e != null && var1 < var0.__e.length) {
-         int var4 = var0.__e[var1];
-         if(var4 != 0) {
-            int var5 = var4 >> 8;
-            int var6 = var4 >> 4 & 7;
-            int var7 = var4 & 15;
-            Client.soundEffectIds[Client.soundEffectCount] = var5;
-            Client.unknownSoundValues1[Client.soundEffectCount] = var6;
-            Client.queuedSoundEffectDelays[Client.soundEffectCount] = 0;
-            Client.soundEffects[Client.soundEffectCount] = null;
-            int var8 = (var2 - 64) / 128;
-            int var9 = (var3 - 64) / 128;
-            Client.soundLocations[Client.soundEffectCount] = var7 + (var9 << 8) + (var8 << 16);
-            ++Client.soundEffectCount;
+      if(Client.soundEffectCount < 50 && Client.__client_qc != 0) {
+         if(var0.__e != null && var1 < var0.__e.length) {
+            int var4 = var0.__e[var1];
+            if(var4 != 0) {
+               int var5 = var4 >> 8;
+               int var6 = var4 >> 4 & 7;
+               int var7 = var4 & 15;
+               Client.soundEffectIds[Client.soundEffectCount] = var5;
+               Client.unknownSoundValues1[Client.soundEffectCount] = var6;
+               Client.queuedSoundEffectDelays[Client.soundEffectCount] = 0;
+               Client.soundEffects[Client.soundEffectCount] = null;
+               int var8 = (var2 - 64) / 128;
+               int var9 = (var3 - 64) / 128;
+               Client.soundLocations[Client.soundEffectCount] = var7 + (var9 << 8) + (var8 << 16);
+               ++Client.soundEffectCount;
+            }
          }
       }
-
-   }
-
-   static {
-      Script_cached = new EvictingDualNodeHashTable(128);
    }
 }

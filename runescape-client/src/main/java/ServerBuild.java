@@ -50,15 +50,15 @@ public class ServerBuild {
    @Export("id")
    public final int id;
 
-   ServerBuild(String var1, int var2) {
-      this.name = var1;
-      this.id = var2;
-   }
-
    static {
       __iy_m = new ServerBuild("LIVE", 0);
       __iy_f = new ServerBuild("BUILDLIVE", 3);
       __iy_q = new ServerBuild("RC", 1);
       __iy_w = new ServerBuild("WIP", 2);
+   }
+
+   ServerBuild(String var1, int var2) {
+      this.name = var1;
+      this.id = var2;
    }
 }

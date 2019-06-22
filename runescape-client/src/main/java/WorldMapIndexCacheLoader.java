@@ -42,13 +42,14 @@ public class WorldMapIndexCacheLoader {
    )
    @Export("reset")
    void reset(String var1) {
-      if(var1 != null && !var1.isEmpty() && var1 != this.cacheName) {
-         this.cacheName = var1;
-         this.percentLoaded0 = 0;
-         this.isLoaded0 = false;
-         this.load();
+      if(var1 != null && !var1.isEmpty()) {
+         if(var1 != this.cacheName) {
+            this.cacheName = var1;
+            this.percentLoaded0 = 0;
+            this.isLoaded0 = false;
+            this.load();
+         }
       }
-
    }
 
    @ObfuscatedName("f")

@@ -20,6 +20,10 @@ public class InvDefinition extends DualNode {
    @Export("size")
    public int size;
 
+   static {
+      __ib_f = new EvictingDualNodeHashTable(64);
+   }
+
    InvDefinition() {
       this.size = 0;
    }
@@ -61,9 +65,5 @@ public class InvDefinition extends DualNode {
    )
    public static void method4754() {
       ParamKeyDefinition.ParamKeyDefinition_cached.clear();
-   }
-
-   static {
-      __ib_f = new EvictingDualNodeHashTable(64);
    }
 }

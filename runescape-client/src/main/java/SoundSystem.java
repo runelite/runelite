@@ -34,8 +34,8 @@ public class SoundSystem implements Runnable {
                var2.run();
             }
          }
-      } catch (Exception var3) {
-         NPCDefinition.sendStackTrace((String)null, var3);
+      } catch (Exception var4) {
+         NpcDefinition.sendStackTrace((String)null, var4);
       }
 
    }

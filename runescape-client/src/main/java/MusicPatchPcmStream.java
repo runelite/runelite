@@ -156,22 +156,22 @@ public class MusicPatchPcmStream extends PcmStream {
    protected void __e_172(int[] var1, int var2, int var3) {
       this.mixer.__e_172(var1, var2, var3);
 
-      for(MusicPatchNode var4 = (MusicPatchNode)this.queue.last(); var4 != null; var4 = (MusicPatchNode)this.queue.previous()) {
-         if(!this.superStream.__ba_368(var4)) {
-            int var5 = var2;
-            int var6 = var3;
+      for(MusicPatchNode var6 = (MusicPatchNode)this.queue.last(); var6 != null; var6 = (MusicPatchNode)this.queue.previous()) {
+         if(!this.superStream.__ba_368(var6)) {
+            int var4 = var2;
+            int var5 = var3;
 
             do {
-               if(var6 <= var4.__y) {
-                  this.__m_379(var4, var1, var5, var6, var6 + var5);
-                  var4.__y -= var6;
+               if(var5 <= var6.__y) {
+                  this.__m_379(var6, var1, var4, var5, var5 + var4);
+                  var6.__y -= var5;
                   break;
                }
 
-               this.__m_379(var4, var1, var5, var4.__y, var6 + var5);
-               var5 += var4.__y;
-               var6 -= var4.__y;
-            } while(!this.superStream.__bb_369(var4, var1, var5, var6));
+               this.__m_379(var6, var1, var4, var6.__y, var5 + var4);
+               var4 += var6.__y;
+               var5 -= var6.__y;
+            } while(!this.superStream.__bb_369(var6, var1, var4, var5));
          }
       }
 
@@ -181,20 +181,20 @@ public class MusicPatchPcmStream extends PcmStream {
    protected void __d_173(int var1) {
       this.mixer.__d_173(var1);
 
-      for(MusicPatchNode var2 = (MusicPatchNode)this.queue.last(); var2 != null; var2 = (MusicPatchNode)this.queue.previous()) {
-         if(!this.superStream.__ba_368(var2)) {
-            int var3 = var1;
+      for(MusicPatchNode var3 = (MusicPatchNode)this.queue.last(); var3 != null; var3 = (MusicPatchNode)this.queue.previous()) {
+         if(!this.superStream.__ba_368(var3)) {
+            int var2 = var1;
 
             do {
-               if(var3 <= var2.__y) {
-                  this.__f_380(var2, var3);
-                  var2.__y -= var3;
+               if(var2 <= var3.__y) {
+                  this.__f_380(var3, var2);
+                  var3.__y -= var2;
                   break;
                }
 
-               this.__f_380(var2, var2.__y);
-               var3 -= var2.__y;
-            } while(!this.superStream.__bb_369(var2, (int[])null, 0, var3));
+               this.__f_380(var3, var3.__y);
+               var2 -= var3.__y;
+            } while(!this.superStream.__bb_369(var3, (int[])null, 0, var2));
          }
       }
 

@@ -159,10 +159,10 @@ public class Bounds {
       int var7 = -var4;
 
       for(int var8 = 0; var7 <= var4; ++var8) {
-         double var9 = ((double)var7 - var0) / var2;
-         double var11 = Math.exp(-var9 * var9 / 2.0D) / Math.sqrt(6.283185307179586D);
-         double var13 = var11 / var2;
-         var6[var8] = var13;
+         double var15 = ((double)var7 - var0) / var2;
+         double var13 = Math.exp(-var15 * var15 / 2.0D) / Math.sqrt(6.283185307179586D);
+         double var11 = var13 / var2;
+         var6[var8] = var11;
          ++var7;
       }
 

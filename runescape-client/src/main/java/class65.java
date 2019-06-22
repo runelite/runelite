@@ -39,17 +39,17 @@ public class class65 extends class179 {
          int var3;
          int var4;
          int var5;
-         int var6;
+         int var7;
          if(var0.__cr >= Client.cycle) {
             if(var0.__cr == Client.cycle || var0.sequence == -1 || var0.sequenceDelay != 0 || var0.sequenceFrameCycle + 1 > WorldMapAreaData.getSequenceDefinition(var0.sequence).frameLengths[var0.sequenceFrame]) {
                var2 = var0.__cr - var0.__bw;
                var3 = Client.cycle - var0.__bw;
                var4 = var0.__bf * 128 + var0.size * 64;
                var5 = var0.__be * 128 + var0.size * 64;
-               int var7 = var0.__bh * 128 + var0.size * 64;
-               var6 = var0.__bv * 128 + var0.size * 64;
-               var0.x = (var3 * var7 + var4 * (var2 - var3)) / var2;
-               var0.y = (var3 * var6 + var5 * (var2 - var3)) / var2;
+               int var6 = var0.__bh * 128 + var0.size * 64;
+               var7 = var0.__bv * 128 + var0.size * 64;
+               var0.x = (var3 * var6 + var4 * (var2 - var3)) / var2;
+               var0.y = (var3 * var7 + var5 * (var2 - var3)) / var2;
             }
 
             var0.__cq = 0;
@@ -60,17 +60,17 @@ public class class65 extends class179 {
             if(var0.pathLength == 0) {
                var0.__cq = 0;
             } else {
-               label225: {
+               label310: {
                   if(var0.sequence != -1 && var0.sequenceDelay == 0) {
                      SequenceDefinition var11 = WorldMapAreaData.getSequenceDefinition(var0.sequence);
                      if(var0.__ch > 0 && var11.__j == 0) {
                         ++var0.__cq;
-                        break label225;
+                        break label310;
                      }
 
                      if(var0.__ch <= 0 && var11.__s == 0) {
                         ++var0.__cq;
-                        break label225;
+                        break label310;
                      }
                   }
 
@@ -102,17 +102,17 @@ public class class65 extends class179 {
 
                   byte var12 = var0.pathTraversed[var0.pathLength - 1];
                   if(var4 - var2 <= 256 && var4 - var2 >= -256 && var5 - var3 <= 256 && var5 - var3 >= -256) {
-                     var6 = var0.orientation - var0.__ac & 2047;
-                     if(var6 > 1024) {
-                        var6 -= 2048;
+                     var7 = var0.orientation - var0.__ac & 2047;
+                     if(var7 > 1024) {
+                        var7 -= 2048;
                      }
 
                      int var8 = var0.walkTurnSequence;
-                     if(var6 >= -256 && var6 <= 256) {
+                     if(var7 >= -256 && var7 <= 256) {
                         var8 = var0.walkSequence;
-                     } else if(var6 >= 256 && var6 < 768) {
+                     } else if(var7 >= 256 && var7 < 768) {
                         var8 = var0.walkTurnRightSequence;
-                     } else if(var6 >= -768 && var6 <= -256) {
+                     } else if(var7 >= -768 && var7 <= -256) {
                         var8 = var0.walkTurnLeftSequence;
                      }
 
@@ -123,8 +123,8 @@ public class class65 extends class179 {
                      var0.movementSequence = var8;
                      int var9 = 4;
                      boolean var10 = true;
-                     if(var0 instanceof NPC) {
-                        var10 = ((NPC)var0).definition.isClickable;
+                     if(var0 instanceof Npc) {
+                        var10 = ((Npc)var0).definition.isClickable;
                      }
 
                      if(var10) {

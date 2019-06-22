@@ -93,7 +93,7 @@ public class WorldMapSection0 implements WorldMapSection {
       intValue = -1657956317
    )
    @Export("surfaceOffsetY")
-   int surfaceOffsetY;
+   int __n;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1345061881
@@ -140,7 +140,7 @@ public class WorldMapSection0 implements WorldMapSection {
       garbageValue = "4"
    )
    public boolean containsPosition(int var1, int var2) {
-      return var1 >= (this.__o << 6) + (this.__d << 3) && var1 <= (this.__o << 6) + (this.surfaceOffsetY << 3) + 7 && var2 >= (this.__u << 6) + (this.__k << 3) && var2 <= (this.__u << 6) + (this.__i << 3) + 7;
+      return var1 >= (this.__o << 6) + (this.__d << 3) && var1 <= (this.__o << 6) + (this.__n << 3) + 7 && var2 >= (this.__u << 6) + (this.__k << 3) && var2 <= (this.__u << 6) + (this.__i << 3) + 7;
    }
 
    @ObfuscatedName("w")
@@ -188,7 +188,7 @@ public class WorldMapSection0 implements WorldMapSection {
       this.__x = var1.readUnsignedByte();
       this.__o = var1.__ag_302();
       this.__d = var1.readUnsignedByte();
-      this.surfaceOffsetY = var1.readUnsignedByte();
+      this.__n = var1.readUnsignedByte();
       this.__u = var1.__ag_302();
       this.__k = var1.readUnsignedByte();
       this.__i = var1.readUnsignedByte();
@@ -245,7 +245,6 @@ public class WorldMapSection0 implements WorldMapSection {
          String var6 = Client.menuTargetNames[var0];
          Actor.menuAction(var1, var2, var3, var4, var5, var6, MouseHandler.MouseHandler_lastPressedX, MouseHandler.MouseHandler_lastPressedY);
       }
-
    }
 
    @ObfuscatedName("io")

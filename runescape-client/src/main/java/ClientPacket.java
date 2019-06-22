@@ -626,29 +626,6 @@ public class ClientPacket implements ClientPacketMarker {
    @Export("length")
    final int length;
 
-   ClientPacket(int var1, int var2) {
-      this.id = var1;
-      this.length = var2;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(B)[Lis;",
-      garbageValue = "-26"
-   )
-   public static StudioGame[] method3664() {
-      return new StudioGame[]{StudioGame.__is_q, StudioGame.__is_m, StudioGame.__is_o, StudioGame.__is_u, StudioGame.__is_f, StudioGame.__is_w};
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(B)[Lcj;",
-      garbageValue = "-43"
-   )
-   static AttackOption[] method3665() {
-      return new AttackOption[]{AttackOption.AttackOption_hidden, AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_dependsOnCombatLevels};
-   }
-
    static {
       __gs_m = new ClientPacket(0, 8);
       __gs_f = new ClientPacket(1, 3);
@@ -750,5 +727,28 @@ public class ClientPacket implements ClientPacketMarker {
       __gs_cz = new ClientPacket(97, -1);
       __gs_cc = new ClientPacket(98, 8);
       __gs_ci = new ClientPacket(99, 7);
+   }
+
+   ClientPacket(int var1, int var2) {
+      this.id = var1;
+      this.length = var2;
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(B)[Lis;",
+      garbageValue = "-26"
+   )
+   public static StudioGame[] method3664() {
+      return new StudioGame[]{StudioGame.__is_q, StudioGame.__is_m, StudioGame.__is_o, StudioGame.__is_u, StudioGame.__is_f, StudioGame.__is_w};
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(B)[Lcj;",
+      garbageValue = "-43"
+   )
+   static AttackOption[] method3665() {
+      return new AttackOption[]{AttackOption.AttackOption_hidden, AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_dependsOnCombatLevels};
    }
 }

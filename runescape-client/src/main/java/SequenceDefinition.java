@@ -104,6 +104,11 @@ public class SequenceDefinition extends DualNode {
    @Export("__t")
    public int __t;
 
+   static {
+      SequenceDefinition_cached = new EvictingDualNodeHashTable(64);
+      __jh_o = new EvictingDualNodeHashTable(100);
+   }
+
    SequenceDefinition() {
       this.frameCount = -1;
       this.__k = false;
@@ -369,10 +374,5 @@ public class SequenceDefinition extends DualNode {
             return var7;
          }
       }
-   }
-
-   static {
-      SequenceDefinition_cached = new EvictingDualNodeHashTable(64);
-      __jh_o = new EvictingDualNodeHashTable(100);
    }
 }

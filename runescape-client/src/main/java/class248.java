@@ -90,7 +90,6 @@ public class class248 {
          this.field3262[this.field3266] = var2;
          ++this.field3266;
       }
-
    }
 
    @ObfuscatedName("o")
@@ -175,15 +174,15 @@ public class class248 {
 
          for(int var8 = 0; var8 < var3.__w; ++var8) {
             for(int var9 = 0; var9 < var3.__q; ++var9) {
-               int var10 = var7++;
-               var2.pixels[var10] += var1.pixels[var6++];
+               int var10001 = var7++;
+               var2.pixels[var10001] += var1.pixels[var6++];
             }
 
             var6 += var1.subWidth - var3.__q;
             var7 += var2.subWidth - var3.__q;
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("ar")
@@ -218,64 +217,64 @@ public class class248 {
          Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.grandExchangeOffers[var3].currentPrice;
          return 1;
       } else {
-         int var4;
+         int var12;
          if(var0 == 3910) {
             var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-            var4 = Client.grandExchangeOffers[var3].status();
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var4 == 0?1:0;
+            var12 = Client.grandExchangeOffers[var3].status();
+            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var12 == 0?1:0;
             return 1;
          } else if(var0 == 3911) {
             var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-            var4 = Client.grandExchangeOffers[var3].status();
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var4 == 2?1:0;
+            var12 = Client.grandExchangeOffers[var3].status();
+            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var12 == 2?1:0;
             return 1;
          } else if(var0 == 3912) {
             var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-            var4 = Client.grandExchangeOffers[var3].status();
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var4 == 5?1:0;
+            var12 = Client.grandExchangeOffers[var3].status();
+            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var12 == 5?1:0;
             return 1;
          } else if(var0 == 3913) {
             var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-            var4 = Client.grandExchangeOffers[var3].status();
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var4 == 1?1:0;
+            var12 = Client.grandExchangeOffers[var3].status();
+            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var12 == 1?1:0;
             return 1;
          } else {
-            boolean var5;
+            boolean var13;
             if(var0 == 3914) {
-               var5 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+               var13 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
                if(FloorDecoration.grandExchangeEvents != null) {
-                  FloorDecoration.grandExchangeEvents.sort(GrandExchangeEvents.__g_w, var5);
+                  FloorDecoration.grandExchangeEvents.sort(GrandExchangeEvents.__g_w, var13);
                }
 
                return 1;
             } else if(var0 == 3915) {
-               var5 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+               var13 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
                if(FloorDecoration.grandExchangeEvents != null) {
-                  FloorDecoration.grandExchangeEvents.sort(GrandExchangeEvents.__g_q, var5);
+                  FloorDecoration.grandExchangeEvents.sort(GrandExchangeEvents.__g_q, var13);
                }
 
                return 1;
             } else if(var0 == 3916) {
                class179.Interpreter_intStackSize -= 2;
-               var5 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] == 1;
-               boolean var13 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1] == 1;
+               var13 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] == 1;
+               boolean var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1] == 1;
                if(FloorDecoration.grandExchangeEvents != null) {
-                  Client.__client_sj.__m = var13;
-                  FloorDecoration.grandExchangeEvents.sort(Client.__client_sj, var5);
+                  Client.__client_sj.__m = var4;
+                  FloorDecoration.grandExchangeEvents.sort(Client.__client_sj, var13);
                }
 
                return 1;
             } else if(var0 == 3917) {
-               var5 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+               var13 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
                if(FloorDecoration.grandExchangeEvents != null) {
-                  FloorDecoration.grandExchangeEvents.sort(GrandExchangeEvents.__g_f, var5);
+                  FloorDecoration.grandExchangeEvents.sort(GrandExchangeEvents.__g_f, var13);
                }
 
                return 1;
             } else if(var0 == 3918) {
-               var5 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+               var13 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
                if(FloorDecoration.grandExchangeEvents != null) {
-                  FloorDecoration.grandExchangeEvents.sort(GrandExchangeEvents.__g_o, var5);
+                  FloorDecoration.grandExchangeEvents.sort(GrandExchangeEvents.__g_o, var13);
                }
 
                return 1;
@@ -283,46 +282,46 @@ public class class248 {
                Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = FloorDecoration.grandExchangeEvents == null?0:FloorDecoration.grandExchangeEvents.events.size();
                return 1;
             } else {
-               GrandExchangeEvent var6;
+               GrandExchangeEvent var11;
                if(var0 == 3920) {
                   var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                  var6 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6.world;
+                  var11 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
+                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var11.world;
                   return 1;
                } else if(var0 == 3921) {
                   var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                  var6 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.__m_3();
+                  var11 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var11.__m_3();
                   return 1;
                } else if(var0 == 3922) {
                   var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                  var6 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.__f_4();
+                  var11 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var11.__f_4();
                   return 1;
                } else if(var0 == 3923) {
                   var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                  var6 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
-                  long var7 = class203.currentTimeMs() - class15.__z_si - var6.__f;
-                  int var9 = (int)(var7 / 3600000L);
-                  int var10 = (int)((var7 - (long)(var9 * 3600000)) / 60000L);
-                  int var11 = (int)((var7 - (long)(var9 * 3600000) - (long)(var10 * 60000)) / 1000L);
-                  String var12 = var9 + ":" + var10 / 10 + var10 % 10 + ":" + var11 / 10 + var11 % 10;
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var12;
+                  var11 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
+                  long var5 = class203.currentTimeMs() - class15.__z_si - var11.__f;
+                  int var7 = (int)(var5 / 3600000L);
+                  int var8 = (int)((var5 - (long)(var7 * 3600000)) / 60000L);
+                  int var9 = (int)((var5 - (long)(var7 * 3600000) - (long)(var8 * 60000)) / 1000L);
+                  String var10 = var7 + ":" + var8 / 10 + var8 % 10 + ":" + var9 / 10 + var9 % 10;
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var10;
                   return 1;
                } else if(var0 == 3924) {
                   var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                  var6 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6.grandExchangeOffer.totalQuantity;
+                  var11 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
+                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var11.grandExchangeOffer.totalQuantity;
                   return 1;
                } else if(var0 == 3925) {
                   var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                  var6 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6.grandExchangeOffer.unitPrice;
+                  var11 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
+                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var11.grandExchangeOffer.unitPrice;
                   return 1;
                } else if(var0 == 3926) {
                   var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                  var6 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6.grandExchangeOffer.id;
+                  var11 = (GrandExchangeEvent)FloorDecoration.grandExchangeEvents.events.get(var3);
+                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var11.grandExchangeOffer.id;
                   return 1;
                } else {
                   return 2;
