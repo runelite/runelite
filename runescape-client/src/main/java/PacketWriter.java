@@ -88,7 +88,7 @@ public class PacketWriter {
       signature = "Lge;"
    )
    @Export("surfaceOffsetY")
-   ServerPacket __n;
+   ServerPacket surfaceOffsetY;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lge;"

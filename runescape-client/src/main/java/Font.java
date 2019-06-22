@@ -51,6 +51,7 @@ public final class Font extends AbstractFont {
       if(var4 > 0 && var5 > 0) {
          AbstractFont.AbstractFont_placeGlyph(Rasterizer2D.Rasterizer2D_pixels, var1, var6, var10, var7, var4, var5, var8, var9);
       }
+
    }
 
    @ObfuscatedName("f")
@@ -92,5 +93,6 @@ public final class Font extends AbstractFont {
       if(var4 > 0 && var5 > 0) {
          AbstractFont.AbstractFont_placeGlyphAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, var11, var8, var4, var5, var9, var10, var7);
       }
+
    }
 }

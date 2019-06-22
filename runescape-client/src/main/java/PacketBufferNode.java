@@ -44,11 +44,6 @@ public class PacketBufferNode extends Node {
    @Export("__w")
    public int __w;
 
-   static {
-      packetBufferNodes = new PacketBufferNode[300];
-      __gg_u = 0;
-   }
-
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -59,6 +54,7 @@ public class PacketBufferNode extends Node {
       if(__gg_u < packetBufferNodes.length) {
          packetBufferNodes[++__gg_u - 1] = this;
       }
+
    }
 
    @ObfuscatedName("kq")
@@ -68,5 +64,10 @@ public class PacketBufferNode extends Node {
    )
    static boolean method3673(Widget var0) {
       return var0.isHidden;
+   }
+
+   static {
+      packetBufferNodes = new PacketBufferNode[300];
+      __gg_u = 0;
    }
 }

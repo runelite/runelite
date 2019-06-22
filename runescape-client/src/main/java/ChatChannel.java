@@ -117,18 +117,18 @@ public class ChatChannel {
             var0.spotAnimationFrame = 0;
          }
 
-         int var3 = class50.getSpotAnimationDefinition(var0.spotAnimation).sequence;
-         if(var3 != -1) {
-            SequenceDefinition var2 = WorldMapAreaData.getSequenceDefinition(var3);
-            if(var2 != null && var2.frameIds != null) {
+         int var2 = class50.getSpotAnimationDefinition(var0.spotAnimation).sequence;
+         if(var2 != -1) {
+            SequenceDefinition var3 = WorldMapAreaData.getSequenceDefinition(var2);
+            if(var3 != null && var3.frameIds != null) {
                ++var0.spotAnimationFrameCycle;
-               if(var0.spotAnimationFrame < var2.frameIds.length && var0.spotAnimationFrameCycle > var2.frameLengths[var0.spotAnimationFrame]) {
+               if(var0.spotAnimationFrame < var3.frameIds.length && var0.spotAnimationFrameCycle > var3.frameLengths[var0.spotAnimationFrame]) {
                   var0.spotAnimationFrameCycle = 1;
                   ++var0.spotAnimationFrame;
-                  Script.method2201(var2, var0.spotAnimationFrame, var0.x, var0.y);
+                  Script.method2201(var3, var0.spotAnimationFrame, var0.x, var0.y);
                }
 
-               if(var0.spotAnimationFrame >= var2.frameIds.length && (var0.spotAnimationFrame < 0 || var0.spotAnimationFrame >= var2.frameIds.length)) {
+               if(var0.spotAnimationFrame >= var3.frameIds.length && (var0.spotAnimationFrame < 0 || var0.spotAnimationFrame >= var3.frameIds.length)) {
                   var0.spotAnimation = -1;
                }
             } else {
@@ -217,100 +217,100 @@ public class ChatChannel {
 
       int var4;
       int var5;
-      int var13;
+      int var6;
       if(var0.type == 2) {
-         var13 = 0;
+         var6 = 0;
 
          for(var4 = 0; var4 < var0.height; ++var4) {
             for(var5 = 0; var5 < var0.width; ++var5) {
-               int var6 = (var0.paddingX + 32) * var5;
-               int var7 = (var0.paddingY + 32) * var4;
-               if(var13 < 20) {
-                  var6 += var0.inventoryXOffsets[var13];
-                  var7 += var0.inventoryYOffsets[var13];
+               int var7 = (var0.paddingX + 32) * var5;
+               int var8 = (var0.paddingY + 32) * var4;
+               if(var6 < 20) {
+                  var7 += var0.inventoryXOffsets[var6];
+                  var8 += var0.inventoryYOffsets[var6];
                }
 
-               if(var1 >= var6 && var2 >= var7 && var1 < var6 + 32 && var2 < var7 + 32) {
-                  Client.dragItemSlotDestination = var13;
+               if(var1 >= var7 && var2 >= var8 && var1 < var7 + 32 && var2 < var8 + 32) {
+                  Client.dragItemSlotDestination = var6;
                   UserComparator6.__fg_jh = var0;
-                  if(var0.itemIds[var13] > 0) {
-                     ItemDefinition var8 = Skills.getItemDefinition(var0.itemIds[var13] - 1);
+                  if(var0.itemIds[var6] > 0) {
+                     ItemDefinition var9 = Skills.getItemDefinition(var0.itemIds[var6] - 1);
                      if(Client.isItemSelected == 1 && WorldMapAreaData.method708(class1.getWidgetClickMask(var0))) {
-                        if(var0.id != ServerPacket.selectedItemWidget || var13 != HealthBarDefinition.selectedItemSlot) {
-                           Tiles.method1106("Use", Client.selectedItemName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var8.name, 31, var8.id, var13, var0.id);
+                        if(var0.id != ServerPacket.selectedItemWidget || var6 != HealthBarDefinition.selectedItemSlot) {
+                           Tiles.method1106("Use", Client.selectedItemName + " -> " + BufferedFile.colorStartTag(16748608) + var9.name, 31, var9.id, var6, var0.id);
                         }
                      } else if(Client.isSpellSelected && WorldMapAreaData.method708(class1.getWidgetClickMask(var0))) {
                         if((FloorDecoration.selectedSpellFlags & 16) == 16) {
-                           Tiles.method1106(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var8.name, 32, var8.id, var13, var0.id);
+                           Tiles.method1106(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + BufferedFile.colorStartTag(16748608) + var9.name, 32, var9.id, var6, var0.id);
                         }
                      } else {
-                        String[] var9 = var8.inventoryActions;
-                        int var10 = -1;
+                        String[] var10 = var9.inventoryActions;
+                        int var11 = -1;
                         if(Client.shiftClickDrop && WorldMapEvent.method779()) {
-                           var10 = var8.getShiftClickIndex();
+                           var11 = var9.getShiftClickIndex();
                         }
 
-                        int var11;
+                        int var12;
                         if(WorldMapAreaData.method708(class1.getWidgetClickMask(var0))) {
-                           for(var11 = 4; var11 >= 3; --var11) {
-                              if(var10 != var11) {
-                                 AccessFile.method2726(var0, var8, var13, var11, false);
+                           for(var12 = 4; var12 >= 3; --var12) {
+                              if(var11 != var12) {
+                                 AccessFile.method2726(var0, var9, var6, var12, false);
                               }
                            }
                         }
 
                         if(SecureRandomFuture.method2101(class1.getWidgetClickMask(var0))) {
-                           Tiles.method1106("Use", BufferedFile.colorStartTag(16748608) + var8.name, 38, var8.id, var13, var0.id);
+                           Tiles.method1106("Use", BufferedFile.colorStartTag(16748608) + var9.name, 38, var9.id, var6, var0.id);
                         }
 
                         if(WorldMapAreaData.method708(class1.getWidgetClickMask(var0))) {
-                           for(var11 = 2; var11 >= 0; --var11) {
-                              if(var11 != var10) {
-                                 AccessFile.method2726(var0, var8, var13, var11, false);
+                           for(var12 = 2; var12 >= 0; --var12) {
+                              if(var12 != var11) {
+                                 AccessFile.method2726(var0, var9, var6, var12, false);
                               }
                            }
 
-                           if(var10 >= 0) {
-                              AccessFile.method2726(var0, var8, var13, var10, true);
+                           if(var11 >= 0) {
+                              AccessFile.method2726(var0, var9, var6, var11, true);
                            }
                         }
 
-                        var9 = var0.itemActions;
-                        if(var9 != null) {
-                           for(var11 = 4; var11 >= 0; --var11) {
-                              if(var9[var11] != null) {
-                                 byte var12 = 0;
-                                 if(var11 == 0) {
-                                    var12 = 39;
+                        var10 = var0.itemActions;
+                        if(var10 != null) {
+                           for(var12 = 4; var12 >= 0; --var12) {
+                              if(var10[var12] != null) {
+                                 byte var13 = 0;
+                                 if(var12 == 0) {
+                                    var13 = 39;
                                  }
 
-                                 if(var11 == 1) {
-                                    var12 = 40;
+                                 if(var12 == 1) {
+                                    var13 = 40;
                                  }
 
-                                 if(var11 == 2) {
-                                    var12 = 41;
+                                 if(var12 == 2) {
+                                    var13 = 41;
                                  }
 
-                                 if(var11 == 3) {
-                                    var12 = 42;
+                                 if(var12 == 3) {
+                                    var13 = 42;
                                  }
 
-                                 if(var11 == 4) {
-                                    var12 = 43;
+                                 if(var12 == 4) {
+                                    var13 = 43;
                                  }
 
-                                 Tiles.method1106(var9[var11], BufferedFile.colorStartTag(16748608) + var8.name, var12, var8.id, var13, var0.id);
+                                 Tiles.method1106(var10[var12], BufferedFile.colorStartTag(16748608) + var9.name, var13, var9.id, var6, var0.id);
                               }
                            }
                         }
 
-                        Tiles.method1106("Examine", BufferedFile.colorStartTag(16748608) + var8.name, 1005, var8.id, var13, var0.id);
+                        Tiles.method1106("Examine", BufferedFile.colorStartTag(16748608) + var9.name, 1005, var9.id, var6, var0.id);
                      }
                   }
                }
 
-               ++var13;
+               ++var6;
             }
          }
       }
@@ -318,13 +318,14 @@ public class ChatChannel {
       if(var0.isIf3) {
          if(Client.isSpellSelected) {
             if(WorldComparator.method58(class1.getWidgetClickMask(var0)) && (FloorDecoration.selectedSpellFlags & 32) == 32) {
-               Tiles.method1106(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + var0.dataText, 58, 0, var0.childIndex, var0.id);
+               Tiles.method1106(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + var0.dataText, 58, 0, var0.childIndex, var0.id);
             }
          } else {
-            for(var13 = 9; var13 >= 5; --var13) {
-               String var14 = GameShell.method1060(var0, var13);
+            String var14;
+            for(var6 = 9; var6 >= 5; --var6) {
+               var14 = GameShell.method1060(var0, var6);
                if(var14 != null) {
-                  Tiles.method1106(var14, var0.dataText, 1007, var13 + 1, var0.childIndex, var0.id);
+                  Tiles.method1106(var14, var0.dataText, 1007, var6 + 1, var0.childIndex, var0.id);
                }
             }
 
@@ -334,15 +335,15 @@ public class ChatChannel {
             }
 
             for(var4 = 4; var4 >= 0; --var4) {
-               String var15 = GameShell.method1060(var0, var4);
-               if(var15 != null) {
-                  class16.insertMenuItem(var15, var0.dataText, 57, var4 + 1, var0.childIndex, var0.id, var0.__fz);
+               var14 = GameShell.method1060(var0, var4);
+               if(var14 != null) {
+                  class16.insertMenuItem(var14, var0.dataText, 57, var4 + 1, var0.childIndex, var0.id, var0.__fz);
                }
             }
 
             var5 = class1.getWidgetClickMask(var0);
-            boolean var16 = (var5 & 1) != 0;
-            if(var16) {
+            boolean var15 = (var5 & 1) != 0;
+            if(var15) {
                Tiles.method1106("Continue", "", 30, 0, var0.childIndex, var0.id);
             }
          }

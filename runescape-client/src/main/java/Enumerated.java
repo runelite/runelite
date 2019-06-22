@@ -10,5 +10,5 @@ public interface Enumerated {
       signature = "(B)I",
       garbageValue = "83"
    )
-   int rsOrdinal();
+   int ordinal();
 }

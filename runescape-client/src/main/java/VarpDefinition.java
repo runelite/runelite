@@ -32,10 +32,6 @@ public class VarpDefinition extends DualNode {
    @Export("type")
    public int type;
 
-   static {
-      VarpDefinition_cached = new EvictingDualNodeHashTable(64);
-   }
-
    VarpDefinition() {
       this.type = 0;
    }
@@ -68,5 +64,9 @@ public class VarpDefinition extends DualNode {
          this.type = var1.__ag_302();
       }
 
+   }
+
+   static {
+      VarpDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

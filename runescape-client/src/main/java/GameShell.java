@@ -202,22 +202,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
    @Export("eventQueue")
    final EventQueue eventQueue;
 
-   static {
-      gameShell = null;
-      __ba_q = 0;
-      stopTimeMs = 0L;
-      isKilled = false;
-      __ba_e = 20;
-      __ba_d = 1;
-      fps = 0;
-      __ba_a = new long[32];
-      __ba_j = new long[32];
-      __ba_aw = 500;
-      hasFocus = true;
-      garbageCollectorLastCollectionTime = -1L;
-      garbageCollectorLastCheckTimeMs = -1L;
-   }
-
    protected GameShell() {
       this.hasErrored = false;
       this.canvasX = 0;
@@ -269,8 +253,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
          if(var1 != null) {
             this.eventQueue.postEvent(new ActionEvent(var1, 1001, "dummy"));
          }
-
       }
+
    }
 
    @ObfuscatedName("l")
@@ -398,6 +382,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
          this.__ah = true;
          this.__j_113();
       }
+
    }
 
    @ObfuscatedName("j")
@@ -520,7 +505,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
          taskHandler.newThreadTask(this, 1);
       } catch (Exception var5) {
-         NpcDefinition.sendStackTrace((String)null, var5);
+         NPCDefinition.sendStackTrace((String)null, var5);
          this.error("crash");
       }
 
@@ -738,6 +723,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
          this.__au_110();
       }
+
    }
 
    @ObfuscatedName("aw")
@@ -856,8 +842,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
          } catch (Exception var3) {
             ;
          }
-
       }
+
    }
 
    @ObfuscatedName("as")
@@ -915,6 +901,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
          class203.method4010(5000L);
          this.kill();
       }
+
    }
 
    @Export("paint")
@@ -928,8 +915,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
                this.isCanvasInvalid = true;
             }
          }
-
       }
+
    }
 
    @Export("run")
@@ -966,27 +953,27 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
          this.addCanvas();
          this.setUp();
 
-         Object var8;
+         Object var7;
          try {
-            var8 = new NanoClock();
-         } catch (Throwable var6) {
-            var8 = new MilliClock();
+            var7 = new NanoClock();
+         } catch (Throwable var5) {
+            var7 = new MilliClock();
          }
 
-         UserComparator6.clock = (Clock)var8;
+         UserComparator6.clock = (Clock)var7;
 
          while(0L == stopTimeMs || class203.currentTimeMs() < stopTimeMs) {
             __ba_l = UserComparator6.clock.wait(__ba_e, __ba_d);
 
-            for(int var5 = 0; var5 < __ba_l; ++var5) {
+            for(int var8 = 0; var8 < __ba_l; ++var8) {
                this.__av_93();
             }
 
             this.__ar_94();
             this.post(this.canvas);
          }
-      } catch (Exception var7) {
-         NpcDefinition.sendStackTrace((String)null, var7);
+      } catch (Exception var6) {
+         NPCDefinition.sendStackTrace((String)null, var6);
          this.error("crash");
       }
 
@@ -999,6 +986,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       if(this == gameShell && !isKilled) {
          stopTimeMs = 0L;
       }
+
    }
 
    @Export("update")
@@ -1050,6 +1038,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       if(this == gameShell && !isKilled) {
          stopTimeMs = class203.currentTimeMs() + 4000L;
       }
+
    }
 
    @Export("windowIconified")
@@ -1117,6 +1106,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
          Client.gameState = var0;
       }
+
    }
 
    @ObfuscatedName("kv")
@@ -1125,8 +1115,24 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       garbageValue = "2016931356"
    )
    static String method1060(Widget var0, int var1) {
-      int var3 = class1.getWidgetClickMask(var0);
-      boolean var2 = (var3 >> var1 + 1 & 1) != 0;
-      return !var2 && var0.onOp == null?null:(var0.actions != null && var0.actions.length > var1 && var0.actions[var1] != null && var0.actions[var1].trim().length() != 0?var0.actions[var1]:null);
+      int var2 = class1.getWidgetClickMask(var0);
+      boolean var3 = (var2 >> var1 + 1 & 1) != 0;
+      return !var3 && var0.onOp == null?null:(var0.actions != null && var0.actions.length > var1 && var0.actions[var1] != null && var0.actions[var1].trim().length() != 0?var0.actions[var1]:null);
+   }
+
+   static {
+      gameShell = null;
+      __ba_q = 0;
+      stopTimeMs = 0L;
+      isKilled = false;
+      __ba_e = 20;
+      __ba_d = 1;
+      fps = 0;
+      __ba_a = new long[32];
+      __ba_j = new long[32];
+      __ba_aw = 500;
+      hasFocus = true;
+      garbageCollectorLastCollectionTime = -1L;
+      garbageCollectorLastCheckTimeMs = -1L;
    }
 }

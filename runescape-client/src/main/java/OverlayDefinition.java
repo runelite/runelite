@@ -77,10 +77,6 @@ public class OverlayDefinition extends DualNode {
    @Export("lightness2")
    public int lightness2;
 
-   static {
-      __jf_f = new EvictingDualNodeHashTable(64);
-   }
-
    public OverlayDefinition() {
       this.rgb = 0;
       this.texture = -1;
@@ -245,5 +241,9 @@ public class OverlayDefinition extends DualNode {
          var0.y = var2 - var0.height - (var2 * var0.rawY >> 14);
       }
 
+   }
+
+   static {
+      __jf_f = new EvictingDualNodeHashTable(64);
    }
 }
