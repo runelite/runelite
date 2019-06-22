@@ -62,6 +62,18 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 2,
 		parent = "scouterConfig",
+		keyName = "hideBackground",
+		name = "Hide Scouter Background",
+		description = "Removes the scouter background, and makes it transparent."
+	)
+	default boolean hideBackground()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		parent = "scouterConfig",
 		keyName = "raidsTimer",
 		name = "Display elapsed raid time",
 		description = "Display elapsed raid time"

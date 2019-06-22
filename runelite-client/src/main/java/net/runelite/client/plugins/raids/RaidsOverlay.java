@@ -52,6 +52,7 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -153,6 +154,15 @@ public class RaidsOverlay extends Overlay
 
 		scouterActive = false;
 		panelComponent.getChildren().clear();
+
+		if (config.hideBackground())
+		{
+			panelComponent.setBackgroundColor(null);
+		}
+		else
+		{
+			panelComponent.setBackgroundColor(ComponentConstants.STANDARD_BACKGROUND_COLOR);
+		}
 
 		if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
 		{
@@ -279,20 +289,30 @@ public class RaidsOverlay extends Overlay
 			scavsBeforeIceRooms.add(prev);
 		}
 		int lastScavs = scavRooms.get(scavRooms.size() - 1);
-		if (!recordRaid())
-		{
-			panelComponent.getChildren().add(TitleComponent.builder()
-				.text(displayLayout)
-				.color(color)
-				.build());
-		}
-		else
+
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text(displayLayout)
+			.color(color)
+			.build());
+
+		if (recordRaid())
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Record Raid")
 				.color(Color.GREEN)
 				.build());
 			panelComponent.setBackgroundColor(new Color(0, 255, 0, 10));
+		}
+		else
+		{
+			if (config.hideBackground())
+			{
+				panelComponent.setBackgroundColor(null);
+			}
+			else
+			{
+				panelComponent.setBackgroundColor(ComponentConstants.STANDARD_BACKGROUND_COLOR);
+			}
 		}
 
 		TableComponent tableComponent = new TableComponent();
@@ -304,7 +324,7 @@ public class RaidsOverlay extends Overlay
 			String clanOwner = Text.removeTags(client.getWidget(WidgetInfo.CLAN_CHAT_OWNER).getText());
 			if (clanOwner.equals("None"))
 			{
-				clanOwner = "Open CC tab...";
+				clanOwner = "Open CC Tab";
 				color = Color.RED;
 			}
 
