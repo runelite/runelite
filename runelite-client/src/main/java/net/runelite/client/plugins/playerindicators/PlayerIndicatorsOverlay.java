@@ -37,8 +37,12 @@ import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
+
 
 @Singleton
 public class PlayerIndicatorsOverlay extends Overlay

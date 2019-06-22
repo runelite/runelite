@@ -26,35 +26,30 @@ package net.runelite.client.plugins.playerindicators;
 
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.client.plugins.Plugin;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.awt.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.awt.Color;
 
-@Singleton
 public class PlayerIndicatorsService
 {
 	private final Client client;
-	private final Plugin plugin;
 	private final PlayerIndicatorsConfig config;
 
 	@Inject
-	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config, PlayerIndicatorsPlugin plugin)
+	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config)
 	{
 		this.config = config;
 		this.client = client;
-		this.plugin = plugin;
 	}
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
-		if (!config.highlightOwnPlayer() && !config.drawClanMemberNames()
+		if (!config.highlightSpecificNames() && !config.highlightOwnPlayer() && !config.drawClanMemberNames()
 			&& !config.highlightFriends() && !config.highlightNonClanMembers())
 		{
 			return;
@@ -68,8 +63,6 @@ public class PlayerIndicatorsService
 			{
 				continue;
 			}
-
-			boolean isClanMember = player.isClanMember();
 
 			if (player == localPlayer)
 			{

@@ -28,7 +28,14 @@ package net.runelite.client.plugins.playerindicators;
 import net.runelite.client.ui.overlay.*;
 
 import javax.inject.Inject;
-import java.awt.*;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.Overlay;
+import java.awt.Polygon;
+import java.awt.Graphics2D;
+import java.awt.Dimension;
 
 public class PlayerIndicatorsTileOverlay extends Overlay
 {

@@ -44,13 +44,15 @@ import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import java.awt.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.awt.Color;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
 import static net.runelite.api.MenuAction.*;
+
+
 
 @PluginDescriptor(
 	name = "Player Indicators",
