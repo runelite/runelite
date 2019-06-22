@@ -38,6 +38,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
 
 class WaveOverlay extends Overlay
 {
@@ -97,14 +98,19 @@ class WaveOverlay extends Overlay
 			.color(HEADER_COLOR)
 			.build());
 
+
 		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.CENTER);
 
 		for (String line : buildWaveLines(waveContents))
 		{
 			tableComponent.addRow(line);
 		}
 
-		panelComponent.getChildren().add(tableComponent);
+		if (!tableComponent.isEmpty())
+			{
+			panelComponent.getChildren().add(tableComponent);
+			}
 	}
 
 	private static Collection<String> buildWaveLines(final Map<WaveMonster, Integer> wave)

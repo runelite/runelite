@@ -27,40 +27,63 @@ package net.runelite.client.plugins.inferno;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
 
 @ConfigGroup("inferno")
 public interface InfernoConfig extends Config
-{
+	{
 	@ConfigItem(
-		position = 0,
-		keyName = "Nibbler Overlay",
-		name = "Nibbler Overlay",
-		description = "Shows if there are any Nibblers left"
+			position = 0,
+			keyName = "Nibbler Overlay",
+			name = "Nibbler Overlay",
+			description = "Shows if there are any Nibblers left"
 	)
 	default boolean displayNibblerOverlay()
-	{
-		return false;
-	}
+		{
+			return false;
+		}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "Prayer Helper",
-		name = "Prayer Helper",
-		description = "Tells you what to flick in how many ticks"
+			position = 1,
+			keyName = "Prayer Helper",
+			name = "Prayer Helper",
+			description = "Tells you what to flick in how many ticks"
 	)
 	default boolean showPrayerHelp()
-	{
-		return false;
-	}
-	
+		{
+			return false;
+		}
+
 	@ConfigItem(
-		position = 2,
-		keyName = "Wave Display",
-		name = "Wave display",
-		description = "Shows monsters that will spawn on the selected wave(s)."
+			position = 2,
+			keyName = "Wave Display",
+			name = "Wave display",
+			description = "Shows monsters that will spawn on the selected wave(s)."
 	)
 	default InfernoWaveDisplayMode waveDisplay()
-	{
-		return InfernoWaveDisplayMode.BOTH;
+		{
+			return InfernoWaveDisplayMode.BOTH;
+		}
+
+	@ConfigItem(
+			position = 3,
+			keyName = "getWaveOverlayHeaderColor",
+			name = "Wave Header",
+			description = "Color for Wave Header"
+	)
+	default Color getWaveOverlayHeaderColor()
+		{
+			return Color.ORANGE;
+		}
+
+	@ConfigItem(
+			position = 4,
+			keyName = "getWaveTextColor",
+			name = "Wave Text Color",
+			description = "Color for Wave Texts"
+	)
+	default Color getWaveTextColor()
+		{
+			return Color.WHITE;
+		}
 	}
-}
