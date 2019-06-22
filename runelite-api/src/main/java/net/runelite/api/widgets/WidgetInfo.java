@@ -739,7 +739,10 @@ public enum WidgetInfo
 	XP_DROP_4(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_4),
 	XP_DROP_5(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_5),
 	XP_DROP_6(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_6),
-	XP_DROP_7(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_7);
+	XP_DROP_7(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_7),
+
+	ITEMS_KEPT_ON_DEATH_TEXT(WidgetID.ITEMS_KEPT_ON_DEATH_GROUP_ID, WidgetID.KeptOnDeath.KEPT_ITEMS_TEXT),
+	ITEMS_LOST_ON_DEATH_TEXT(WidgetID.ITEMS_KEPT_ON_DEATH_GROUP_ID, WidgetID.KeptOnDeath.LOST_ITEMS_TEXT);
 
 	private final int groupId;
 	private final int childId;

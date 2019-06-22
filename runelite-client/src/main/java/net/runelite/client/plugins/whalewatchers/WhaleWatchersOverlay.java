@@ -47,8 +47,8 @@ public class WhaleWatchersOverlay extends Overlay
 		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGHEST);
-		setPosition(OverlayPosition.DYNAMIC);
-		this.setPreferredPosition(OverlayPosition.TOP_CENTER);
+		setPosition(OverlayPosition.TOP_LEFT);
+		this.setPreferredPosition(OverlayPosition.TOP_LEFT);
 		panelComponent = new PanelComponent();
 	}
 

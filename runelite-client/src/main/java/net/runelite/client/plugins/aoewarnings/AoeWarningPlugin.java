@@ -147,11 +147,18 @@ public class AoeWarningPlugin extends Plugin
 
 		int projectileId = projectile.getId();
 		int projectileLifetime = config.delay() + (projectile.getRemainingCycles() * 20);
+		int ticksRemaining = projectile.getRemainingCycles() / 30;
+		if (!isTickTimersEnabledForProjectileID(projectileId))
+		{
+			ticksRemaining = 0;
+		}
+		int tickCycle = client.getTickCount() + ticksRemaining;
 		AoeProjectileInfo aoeProjectileInfo = AoeProjectileInfo.getById(projectileId);
-		if (aoeProjectileInfo != null && isConfigEnabledForProjectileId(projectileId, false))
+		if (aoeProjectileInfo != null
+			&& isConfigEnabledForProjectileId(projectileId, false))
 		{
 			LocalPoint targetPoint = event.getPosition();
-			AoeProjectile aoeProjectile = new AoeProjectile(Instant.now(), targetPoint, aoeProjectileInfo, projectileLifetime);
+			AoeProjectile aoeProjectile = new AoeProjectile(Instant.now(), targetPoint, aoeProjectileInfo, projectileLifetime, tickCycle);
 			projectiles.put(projectile, aoeProjectile);
 
 			if (config.aoeNotifyAll() || isConfigEnabledForProjectileId(projectileId, true))
@@ -292,6 +299,31 @@ public class AoeWarningPlugin extends Plugin
 			}
 
 		}
+	}
+
+	private boolean isTickTimersEnabledForProjectileID(int projectileId)
+	{
+		AoeProjectileInfo projectileInfo = AoeProjectileInfo.getById(projectileId);
+
+		if (projectileInfo == null)
+		{
+			return false;
+		}
+
+		switch (projectileInfo)
+		{
+			case VASA_RANGED_AOE:
+			case VORKATH_POISON_POOL:
+			case VORKATH_SPAWN:
+			case VORKATH_TICK_FIRE:
+			case OLM_BURNING:
+			case OLM_FALLING_CRYSTAL_TRAIL:
+			case OLM_ACID_TRAIL:
+			case OLM_FIRE_LINE:
+				return false;
+		}
+
+		return true;
 	}
 
 	private boolean isConfigEnabledForProjectileId(int projectileId, boolean notify)

@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.27-SNAPSHOT</version>
+		<version>1.5.28-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>injected-client</artifactId>
@@ -37,22 +37,10 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>client</artifactId>
+			<groupId>net.runelite.rs</groupId>
+			<artifactId>rs-client</artifactId>
 			<version>${project.version}</version>
 			<optional>true</optional> <!-- to prevent the dependency on this from runelite-client -->
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.rs</groupId>
-			<artifactId>runescape-api</artifactId>
-			<version>${project.version}</version>
-			<optional>false</optional> <!-- to prevent the dependency on this from runelite-client -->
-		</dependency>
-		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>runelite-api</artifactId>
-			<version>${project.version}</version>
-			<optional>false</optional> <!-- to prevent the dependency on this from runelite-client -->
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>

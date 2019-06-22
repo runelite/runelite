@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.5.27-SNAPSHOT</version>
+	<version>1.5.28-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -302,9 +302,7 @@
 				<configuration>
 					<configLocation>checkstyle.xml</configLocation>
 					<!-- exclude generated sources from checkstyle https://stackoverflow.com/a/30406454/7189686 -->
-					<sourceDirectories>
 						<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
-					</sourceDirectories>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 				</configuration>
 			</plugin>

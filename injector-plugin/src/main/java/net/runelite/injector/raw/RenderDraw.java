@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class RenderDraw
 {
-	private static final Logger log = LoggerFactory.getLogger(ClearColorBuffer.class);
+	private static final Logger log = LoggerFactory.getLogger(RenderDraw.class);
 	private static final net.runelite.asm.pool.Method renderDraw = new net.runelite.asm.pool.Method(
 		new Class("net.runelite.client.callback.Hooks"),
 		"renderDraw",

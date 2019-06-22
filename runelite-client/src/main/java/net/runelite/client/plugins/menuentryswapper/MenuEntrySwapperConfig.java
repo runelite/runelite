@@ -41,10 +41,12 @@ import net.runelite.client.plugins.menuentryswapper.util.MaxCapeMode;
 import net.runelite.client.plugins.menuentryswapper.util.NecklaceOfPassageMode;
 import net.runelite.client.plugins.menuentryswapper.util.ObeliskMode;
 import net.runelite.client.plugins.menuentryswapper.util.OccultAltarMode;
+import net.runelite.client.plugins.menuentryswapper.util.QuestCapeMode;
 import net.runelite.client.plugins.menuentryswapper.util.RingOfWealthMode;
 import net.runelite.client.plugins.menuentryswapper.util.SkillsNecklaceMode;
 import net.runelite.client.plugins.menuentryswapper.util.SlayerRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.XericsTalismanMode;
+
 
 
 @ConfigGroup("menuentryswapper")
@@ -292,6 +294,32 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapAdmire()
 	{
 		return true;
+	}
+	
+	@ConfigItem(
+		keyName = "swapQuestCape",
+		name = "Swap Quest Cape",
+		description = "Enables swapping Quest cape options in worn interface.",
+		position = 19,
+		group = "Equipment swapper"
+	)
+	default boolean swapQuestCape()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "questCapeMode",
+		name = "Mode",
+		description = "",
+		position = 20,
+		group = "Equipment swapper",
+		hidden = true,
+		unhide = "swapQuestCape"
+	)
+	default QuestCapeMode questCapeMode()
+	{
+		return QuestCapeMode.TELEPORT;
 	}
 
 	//------------------------------------------------------------//

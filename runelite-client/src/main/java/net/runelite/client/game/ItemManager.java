@@ -44,8 +44,9 @@ import javax.inject.Singleton;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
-import static net.runelite.api.Constants.HIGH_ALCHEMY_CONSTANT;
+import static net.runelite.api.Constants.HIGH_ALCHEMY_MULTIPLIER;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
@@ -423,7 +424,7 @@ public class ItemManager
 			return 1000;
 		}
 
-		return (int) Math.max(1, composition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+		return (int) Math.max(1, composition.getPrice() * HIGH_ALCHEMY_MULTIPLIER);
 	}
 
 	public int getAlchValue(int itemID)
@@ -437,7 +438,7 @@ public class ItemManager
 			return 1000;
 		}
 
-		return (int) Math.max(1, getItemDefinition(itemID).getPrice() * HIGH_ALCHEMY_CONSTANT);
+		return (int) Math.max(1, getItemDefinition(itemID).getPrice() * HIGH_ALCHEMY_MULTIPLIER);
 	}
 
 	/**
@@ -521,7 +522,7 @@ public class ItemManager
 	 */
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		AsyncBufferedImage img = new AsyncBufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
+		AsyncBufferedImage img = new AsyncBufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		clientThread.invoke(() ->
 		{
 			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())

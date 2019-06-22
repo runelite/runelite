@@ -32,6 +32,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -604,7 +605,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 
-		if (option.contains("buy"))
+		if ((option.contains("buy") || option.contains("value")) && Arrays.stream(entries).anyMatch(menuEntry ->
+		{
+			return menuEntry.getOption().toLowerCase().contains("buy");
+		}))
 		{
 			if (config.getSwapBuyOne() && !config.getBuyOneItems().equals(""))
 			{
@@ -650,7 +654,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 			}
 		}
-		else if (option.contains("sell"))
+		else if ((option.contains("sell") || option.contains("value")) && Arrays.stream(entries).anyMatch(menuEntry ->
+		{
+			return menuEntry.getOption().toLowerCase().contains("sell");
+		}))
 		{
 			if (config.getSwapSellOne() && !config.getSellOneItems().equals(""))
 			{
@@ -1421,6 +1428,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			menuManager.addSwap("remove", "max cape", config.maxMode().toString());
 		}
+		if (config.swapQuestCape())
+		{
+			menuManager.addSwap("remove", "quest point cape", config.questCapeMode().toString());
+		}
 	}
 
 	private void removeSwaps()
@@ -1437,6 +1448,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removeSwaps("slayer ring");
 		menuManager.removeSwaps("xeric's talisman");
 		menuManager.removeSwaps("ring of wealth");
+		menuManager.removeSwaps("max cape");
+		menuManager.removeSwaps("quest point cape");
+		
 	}
 
 	private void delete(int target)

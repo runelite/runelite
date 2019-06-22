@@ -60,7 +60,7 @@ public class class30 {
       signature = "(B)V",
       garbageValue = "49"
    )
-   static void method569() {
+   static void resetMenuEntries() {
       Client.menuOptionsCount = 0;
       Client.isMenuOpen = false;
       Client.menuActions[0] = "Cancel";

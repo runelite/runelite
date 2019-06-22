@@ -113,4 +113,14 @@ public enum WorldType
 	{
 		return worldTypes.stream().anyMatch(PVP_WORLD_TYPES::contains);
 	}
+
+	/**
+	 * Checks to see if a collection of WorlTypes is a Deadman Mode World
+	 * @param worldTypes The List of world types for a world
+	 * @return true if it is deadman, false otherwise
+	 */
+	public static boolean isDeadmanWorld(final Collection<WorldType> worldTypes)
+	{
+		return worldTypes.stream().anyMatch(EnumSet.of(DEADMAN, DEADMAN_TOURNAMENT, SEASONAL_DEADMAN)::contains);
+	}
 }

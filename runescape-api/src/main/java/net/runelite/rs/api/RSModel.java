@@ -118,9 +118,6 @@ public interface RSModel extends RSEntity, Model
 	@Import("rotateY270Ccw")
 	void rotateY270Ccw();
 
-	@Import("isSingleTile")
-	boolean isSingleTile();
-
 	@Import("radius")
 	@Override
 	int getRadius();
@@ -157,7 +154,7 @@ public interface RSModel extends RSEntity, Model
 	@Override
 	int getXYZMag();
 
-	@Import("__du_bx")
+	@Import("isSingleTile")
 	@Override
 	boolean isClickable();
 

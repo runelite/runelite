@@ -50,6 +50,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemDefinition;
@@ -730,7 +731,13 @@ public class TabInterface
 
 		if (tagTab.getIcon() == null)
 		{
-			Widget icon = createGraphic(ColorUtil.wrapWithColorTag(tagTab.getTag(), HILIGHT_COLOR), -1, tagTab.getIconItemId(), 36, 32, bounds.x + 3, 1, false);
+			Widget icon = createGraphic(
+				ColorUtil.wrapWithColorTag(tagTab.getTag(), HILIGHT_COLOR),
+				-1,
+				tagTab.getIconItemId(),
+				Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT,
+				bounds.x + 3, 1,
+				false);
 			int clickmask = icon.getClickMask();
 			clickmask |= WidgetConfig.DRAG;
 			clickmask |= WidgetConfig.DRAG_ON;

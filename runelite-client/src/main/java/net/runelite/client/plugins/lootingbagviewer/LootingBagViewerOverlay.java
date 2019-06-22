@@ -41,10 +41,10 @@ import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-class LootingBagViewerOverlay extends Overlay
+public class LootingBagViewerOverlay extends Overlay
 {
 	private static final int INVENTORY_SIZE = 28;
-	private static final int PLACEHOLDER_WIDTH = 36;
+	public static final int PLACEHOLDER_WIDTH = 36;
 	private static final int PLACEHOLDER_HEIGHT = 32;
 	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(new BufferedImage(PLACEHOLDER_WIDTH, PLACEHOLDER_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 

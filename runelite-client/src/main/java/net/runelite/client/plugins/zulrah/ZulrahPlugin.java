@@ -2,6 +2,7 @@
  * Copyright (c) 2017, Aria <aria@ar1as.space>
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2019, Ganom <https://github.com/ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,9 +31,13 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.Prayer;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -53,7 +58,6 @@ import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternB;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternC;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
 import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
-import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -66,48 +70,38 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class ZulrahPlugin extends Plugin
 {
+	private static final ZulrahPattern[] patterns = new ZulrahPattern[]
+		{
+			new ZulrahPatternA(),
+			new ZulrahPatternB(),
+			new ZulrahPatternC(),
+			new ZulrahPatternD()
+		};
 	@Getter
 	private NPC zulrah;
-
 	@Inject
 	private Client client;
-
 	@Inject
 	private ZulrahConfig config;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private SoundManager soundManager;
-
 	@Inject
 	private ZulrahCurrentPhaseOverlay currentPhaseOverlay;
-
 	@Inject
 	private ZulrahNextPhaseOverlay nextPhaseOverlay;
-
 	@Inject
 	private ZulrahPrayerOverlay zulrahPrayerOverlay;
-
 	@Inject
 	private ZulrahOverlay zulrahOverlay;
+	private ZulrahInstance instance;
 
 	@Provides
 	ZulrahConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ZulrahConfig.class);
 	}
-
-	private static final ZulrahPattern[] patterns = new ZulrahPattern[]
-	{
-		new ZulrahPatternA(),
-		new ZulrahPatternB(),
-		new ZulrahPatternC(),
-		new ZulrahPatternD()
-	};
-
-	private ZulrahInstance instance;
 
 	@Override
 	protected void startUp() throws Exception
@@ -168,22 +162,8 @@ public class ZulrahPlugin extends Plugin
 			log.debug("Zulrah phase has moved from {} -> {}, stage: {}", previousPhase, currentPhase, instance.getStage());
 		}
 
-		ZulrahType type = instance.getPhase().getType();
-
-		if (config.sounds())
-		{
-			if (type == ZulrahType.RANGE)
-			{
-				soundManager.playSound(Sound.PRAY_RANGED);
-			}
-
-			if (type == ZulrahType.MAGIC)
-			{
-				soundManager.playSound(Sound.PRAY_MAGIC);
-			}
-		}
-
 		ZulrahPattern pattern = instance.getPattern();
+
 		if (pattern == null)
 		{
 			int potential = 0;
@@ -210,6 +190,47 @@ public class ZulrahPlugin extends Plugin
 			log.debug("Zulrah pattern has reset.");
 
 			instance.reset();
+		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
+	{
+		if (instance == null)
+		{
+			return;
+		}
+
+		ZulrahPhase currentPhase = instance.getPhase();
+
+		if (currentPhase == null)
+		{
+			return;
+		}
+
+		Actor actor = event.getActor();
+		if (config.sounds())
+		{
+			if (zulrah == actor)
+			{
+				if (zulrah.getAnimation() == AnimationID.ZULRAH_PHASE)
+				{
+					Prayer prayer = instance.getNextPhase().getPrayer();
+
+					if (prayer != null)
+					{
+						switch (prayer)
+						{
+							case PROTECT_FROM_MAGIC:
+								soundManager.playSound(Sound.PRAY_MAGIC);
+								break;
+							case PROTECT_FROM_MISSILES:
+								soundManager.playSound(Sound.PRAY_RANGED);
+								break;
+						}
+					}
+				}
+			}
 		}
 	}
 

@@ -25,17 +25,16 @@
 package net.runelite.client.plugins.inferno;
 
 import com.google.inject.Provides;
+
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -57,18 +56,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Inferno",
-	description = "Inferno helper",
-	tags = {"combat", "overlay", "pve", "pvm"},
-	type = PluginType.PVM
+		name = "Inferno",
+		description = "Inferno helper",
+		tags = {"combat", "overlay", "pve", "pvm"},
+		type = PluginType.PVM
 )
 public class InfernoPlugin extends Plugin
-{
-	
-	private static final Pattern WAVE_PATTERN = Pattern.compile(".*Wave: (\\d+).*");
-	private static final int MAX_MONSTERS_OF_TYPE_PER_WAVE = 6;
-	private static final int INFERNO_REGION = 9043;
-	static final int MAX_WAVE = 69;
+	{
 
 	@Inject
 	private Client client;
@@ -78,7 +72,7 @@ public class InfernoPlugin extends Plugin
 
 	@Inject
 	private InfernoOverlay infernoOverlay;
-	
+
 	@Inject
 	private InfernoWaveOverlay waveOverlay;
 
@@ -93,10 +87,7 @@ public class InfernoPlugin extends Plugin
 
 	@Inject
 	private InfernoConfig config;
-	
-	@Getter
-	static final List<EnumMap<InfernoWaveMonster, Integer>> WAVES = new ArrayList<>();
-	
+
 	@Getter
 	private int currentWave = -1;
 
@@ -118,310 +109,331 @@ public class InfernoPlugin extends Plugin
 	private InfernoJadAttack attack;
 
 	private NPC jad;
+	private static final int INFERNO_REGION = 9043;
+	private int currentWaveNumber;
+	private int nextWaveNumber;
+	private Map<Integer, String> monster;
+	private Map<Integer, int[]> waves;
+	private List<Actor> waveMonsters;
 
-	
-	static
-	{
-		final InfernoWaveMonster[] waveMonsters = InfernoWaveMonster.values();
-
-		// Add wave 1, future waves are derived from its contents
-		final EnumMap<InfernoWaveMonster, Integer> waveOne = new EnumMap<>(InfernoWaveMonster.class);
-		waveOne.put(waveMonsters[0], 1);
-		WAVES.add(waveOne);
-
-		for (int wave = 1; wave < MAX_WAVE; wave++)
+	public InfernoPlugin()
 		{
-			final EnumMap<InfernoWaveMonster, Integer> prevWave = WAVES.get(wave - 1).clone();
-			int maxMonsterOrdinal = -1;
-
-			for (int i = 0; i < waveMonsters.length; i++)
-			{
-				final int ordinalMonsterQuantity = prevWave.getOrDefault(waveMonsters[i], 0);
-
-				if (ordinalMonsterQuantity == MAX_MONSTERS_OF_TYPE_PER_WAVE)
-				{
-					maxMonsterOrdinal = i;
-					break;
-				}
-			}
-
-			if (maxMonsterOrdinal >= 0)
-			{
-				prevWave.remove(waveMonsters[maxMonsterOrdinal]);
-			}
-
-			final int addedMonsterOrdinal = maxMonsterOrdinal >= 0 ? maxMonsterOrdinal + 1 : 0;
-			final InfernoWaveMonster addedMonster = waveMonsters[addedMonsterOrdinal];
-			final int addedMonsterQuantity = prevWave.getOrDefault(addedMonster, 0);
-
-			prevWave.put(addedMonster, addedMonsterQuantity + 1);
-
-			WAVES.add(prevWave);
+			waveMonsters = new ArrayList<Actor>();
 		}
-	}
 
 	@Provides
 	InfernoConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(InfernoConfig.class);
-	}
+		{
+			return configManager.getConfig(InfernoConfig.class);
+		}
 
 	@Override
 	protected void startUp() throws Exception
-	{
-		overlayManager.add(infernoOverlay);
-		overlayManager.add(infernoInfobox);
-		overlayManager.add(nibblerOverlay);
-		overlayManager.add(waveOverlay);
-		overlayManager.add(jadOverlay);
-		monsters = new HashMap<>();
-		monsterCurrentAttackMap = new HashMap<>(6);
-		for (int i = 1; i <= 6; i++)
 		{
-			monsterCurrentAttackMap.put(i, new ArrayList<>());
+			overlayManager.add(infernoOverlay);
+			overlayManager.add(infernoInfobox);
+			overlayManager.add(nibblerOverlay);
+			overlayManager.add(waveOverlay);
+			overlayManager.add(jadOverlay);
+			monster = InfernoWaveMappings.npcNameMapping();
+			waves = InfernoWaveMappings.waveMapping();
+			monsters = new HashMap<>();
+			monsterCurrentAttackMap = new HashMap<>(6);
+			for (int i = 1; i <= 6; i++)
+				{
+				monsterCurrentAttackMap.put(i, new ArrayList<>());
+				}
+			nibblers = new ArrayList<>();
+			priorityNPC = new InfernoNPC[4];
 		}
-		nibblers = new ArrayList<>();
-		priorityNPC = new InfernoNPC[4];
-	}
 
 	@Override
 	protected void shutDown() throws Exception
-	{
-		overlayManager.remove(infernoInfobox);
-		overlayManager.remove(infernoOverlay);
-		overlayManager.remove(nibblerOverlay);
-		overlayManager.remove(waveOverlay);
-		overlayManager.remove(jadOverlay);
-		jad = null;
-		attack = null;
-	}
+		{
+			overlayManager.remove(infernoInfobox);
+			overlayManager.remove(infernoOverlay);
+			overlayManager.remove(nibblerOverlay);
+			overlayManager.remove(waveOverlay);
+			overlayManager.remove(jadOverlay);
+			jad = null;
+			attack = null;
+			monster = null;
+			monsters = null;
+			waves = null;
+			currentWaveNumber = -1;
+			nextWaveNumber = -1;
+		}
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
-	{
-		if (client.getMapRegions()[0] != 9043) return;
-
-		NPC npc = event.getNpc();
-		if (isValidInfernoMob(npc))
 		{
-			monsters.put(npc, new InfernoNPC(npc));
-			System.out.println(monsters.size());
-		}
-		if (npc.getId() == NpcID.JALNIB)
-		{
-			nibblers.add(npc);
-		}
+			if (client.getMapRegions()[0] != 9043) return;
 
-		final int id = event.getNpc().getId();
+			NPC npc = event.getNpc();
+			if (isValidInfernoMob(npc))
+				{
+				monsters.put(npc, new InfernoNPC(npc));
+				System.out.println(monsters.size());
+				}
+			if (npc.getId() == NpcID.JALNIB)
+				{
+				nibblers.add(npc);
+				}
 
-		if (id == NpcID.JALTOKJAD || id == NpcID.JALTOKJAD_7704)
-		{
-			jad = event.getNpc();
+			final int id = event.getNpc().getId();
+
+			if (id == NpcID.JALTOKJAD || id == NpcID.JALTOKJAD_7704)
+				{
+				jad = event.getNpc();
+				}
+			final Actor actor = event.getActor();
+			if (actor != null)
+				{
+				waveMonsters.add(actor);
+				}
 		}
-	}
 
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
-	{
-		if (client.getMapRegions()[0] != 9043) return;
-
-		NPC npc = event.getNpc();
-		if (monsters.containsKey(npc))
 		{
-			monsters.remove(npc);
-			System.out.println(monsters.size());
+			if (client.getMapRegions()[0] != 9043) return;
+
+			NPC npc = event.getNpc();
+			if (monsters.containsKey(npc))
+				{
+				monsters.remove(npc);
+				System.out.println(monsters.size());
+				}
+
+			if (npc.getId() == NpcID.JALNIB)
+				{
+				nibblers.remove(npc);
+				}
+
+			if (jad == event.getNpc())
+				{
+				jad = null;
+				attack = null;
+				}
+			final Actor actor = event.getActor();
+			if (actor != null)
+				{
+				waveMonsters.remove(actor);
+				}
 		}
 
-		if (npc.getId() == NpcID.JALNIB)
-		{
-			nibblers.remove(npc);
-		}
-
-		if (jad == event.getNpc())
-		{
-			jad = null;
-			attack = null;
-		}
-	}
-	
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() != GameState.LOGGED_IN)
 		{
-			return;
+			if (event.getGameState() != GameState.LOGGED_IN)
+				{
+				return;
+				}
+
+			if (!inInferno())
+				{
+				currentWave = -1;
+				}
 		}
 
-		if (!inInferno())
-		{
-			currentWave = -1;
-		}
-	}
-	
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
-	{
-		final Matcher waveMatcher = WAVE_PATTERN.matcher(event.getMessage());
-
-		if (event.getType() != ChatMessageType.GAMEMESSAGE
-			|| !inInferno()
-			|| !waveMatcher.matches())
 		{
-			return;
-		}
 
-		currentWave = Integer.parseInt(waveMatcher.group(1));
-	}
+			if (event.getType() != ChatMessageType.GAMEMESSAGE || !inInferno())
+				{
+				return;
+				}
+			String message = event.getMessage();
+			if (event.getMessage().contains("Wave:"))
+				{
+				message = message.substring(message.indexOf(": ") + 2);
+				currentWaveNumber = Integer.parseInt(message.substring(0, message.indexOf("<")));
+				nextWaveNumber = ((currentWaveNumber < 63) ? (currentWaveNumber + 1) : -1);
+				}
+
+		}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
-	{
-		if (client.getMapRegions()[0] != 9043) return;
-
-		clearMapAndPriority();
-
-		for (InfernoNPC monster : monsters.values())
 		{
-			calculateDistanceToPlayer(monster);
+			if (client.getMapRegions()[0] != 9043) return;
 
-			NPC npc = monster.getNpc();
+			clearMapAndPriority();
 
-			// if they are not attacking but are still attacking
-			if (monster.isAttacking())
-			{
-				monster.setTicksTillAttack(monster.getTicksTillAttack() - 1);
-
-				// sets the blobs attack style
-				if (monster.getName().equals("blob") && monster.getTicksTillAttack() == 3 && monster.getDistanceToPlayer() <= 15)
+			for (InfernoNPC monster : monsters.values())
 				{
-					if (client.getLocalPlayer().getOverheadIcon() == null)
-					{
-						monster.setAttackstyle(InfernoNPC.Attackstyle.RANDOM);
-					}
-					else if (client.getLocalPlayer().getOverheadIcon().equals(HeadIcon.MAGIC))
-					{
-						monster.setAttackstyle(InfernoNPC.Attackstyle.RANGE);
-					}
-					else if (client.getLocalPlayer().getOverheadIcon().equals(HeadIcon.RANGED))
-					{
-						monster.setAttackstyle(InfernoNPC.Attackstyle.MAGE);
-					}
-				}
+				calculateDistanceToPlayer(monster);
 
-				// we know the monster is not attacking because it should have attacked and is idling
-				if (monster.getTicksTillAttack() == 0)
-				{
-					if (npc.getAnimation() == -1)
+				NPC npc = monster.getNpc();
+
+				// if they are not attacking but are still attacking
+				if (monster.isAttacking())
 					{
-						monster.setAttacking(false);
+					monster.setTicksTillAttack(monster.getTicksTillAttack() - 1);
+
+					// sets the blobs attack style
+					if (monster.getName().equals("blob") && monster.getTicksTillAttack() == 3 && monster.getDistanceToPlayer() <= 15)
+						{
+						if (client.getLocalPlayer().getOverheadIcon() == null)
+							{
+							monster.setAttackstyle(InfernoNPC.Attackstyle.RANDOM);
+							}
+						else if (client.getLocalPlayer().getOverheadIcon().equals(HeadIcon.MAGIC))
+							{
+							monster.setAttackstyle(InfernoNPC.Attackstyle.RANGE);
+							}
+						else if (client.getLocalPlayer().getOverheadIcon().equals(HeadIcon.RANGED))
+							{
+							monster.setAttackstyle(InfernoNPC.Attackstyle.MAGE);
+							}
+						}
+
+					// we know the monster is not attacking because it should have attacked and is idling
+					if (monster.getTicksTillAttack() == 0)
+						{
+						if (npc.getAnimation() == -1)
+							{
+							monster.setAttacking(false);
+							}
+						else
+							{
+							// want to reset the monsters attack back to attacking
+							monster.attacked();
+							}
+						}
 					}
-					else
+				else
 					{
-						// want to reset the monsters attack back to attacking
+					// they've just attacked
+					if (npc.getAnimation() == monster.getAttackAnimation() || npc.getAnimation() == 7581) // special case for blob
+						{
 						monster.attacked();
+						}
+					}
+
+				if (monster.getTicksTillAttack() >= 1)
+					{
+					monsterCurrentAttackMap.get(monster.getTicksTillAttack()).add(monster);
 					}
 				}
-			}
-			else
-			{
-				// they've just attacked
-				if (npc.getAnimation() == monster.getAttackAnimation() || npc.getAnimation() == 7581) // special case for blob
-				{
-					monster.attacked();
-				}
-			}
 
-			if (monster.getTicksTillAttack() >= 1)
-			{
-				monsterCurrentAttackMap.get(monster.getTicksTillAttack()).add(monster);
-			}
+			calculatePriorityNPC();
 		}
-
-		calculatePriorityNPC();
-	}
 
 	@Subscribe
 	public void onAnimationChanged(final AnimationChanged event)
-	{
-		if (event.getActor() != jad)
 		{
-			return;
-		}
+			if (event.getActor() != jad)
+				{
+				return;
+				}
 
-		if (jad.getAnimation() == InfernoJadAttack.MAGIC.getAnimation())
-		{
-			attack = InfernoJadAttack.MAGIC;
+			if (jad.getAnimation() == InfernoJadAttack.MAGIC.getAnimation())
+				{
+				attack = InfernoJadAttack.MAGIC;
+				}
+			else if (jad.getAnimation() == InfernoJadAttack.RANGE.getAnimation())
+				{
+				attack = InfernoJadAttack.RANGE;
+				}
 		}
-		else if (jad.getAnimation() == InfernoJadAttack.RANGE.getAnimation())
-		{
-			attack = InfernoJadAttack.RANGE;
-		}
-	}
 
 	private void calculatePriorityNPC()
-	{
-		for (int i = 0; i < priorityNPC.length; i++)
 		{
-			ArrayList<InfernoNPC> monsters = monsterCurrentAttackMap.get(i + 1);
-
-			if ( monsters.size() == 0) continue;
-
-			int priority = monsters.get(0).getPriority();
-
-			InfernoNPC infernoNPC = monsters.get(0);
-
-			for (InfernoNPC npc : monsters)
-			{
-				if (npc.getPriority() < priority)
+			for (int i = 0; i < priorityNPC.length; i++)
 				{
-					priority = npc.getPriority();
-					infernoNPC = npc;
+				ArrayList<InfernoNPC> monsters = monsterCurrentAttackMap.get(i + 1);
+
+				if (monsters.size() == 0) continue;
+
+				int priority = monsters.get(0).getPriority();
+
+				InfernoNPC infernoNPC = monsters.get(0);
+
+				for (InfernoNPC npc : monsters)
+					{
+					if (npc.getPriority() < priority)
+						{
+						priority = npc.getPriority();
+						infernoNPC = npc;
+						}
+					}
+				priorityNPC[i] = infernoNPC;
+				System.out.println("i: " + i + " " + infernoNPC.getName());
 				}
-			}
-			priorityNPC[i] = infernoNPC;
-			System.out.println("i: " + i + " " + infernoNPC.getName());
 		}
-	}
 
 	// TODO: blob calculator
 	private void calculateDistanceToPlayer(InfernoNPC monster)
-	{
-		monster.setDistanceToPlayer(client.getLocalPlayer().getWorldLocation().distanceTo(monster.getNpc().getWorldArea()));
-	}
+		{
+			monster.setDistanceToPlayer(client.getLocalPlayer().getWorldLocation().distanceTo(monster.getNpc().getWorldArea()));
+		}
 
 	private void clearMapAndPriority()
-	{
-		for (List<InfernoNPC> l : monsterCurrentAttackMap.values())
 		{
-			l.clear();
-		}
+			for (List<InfernoNPC> l : monsterCurrentAttackMap.values())
+				{
+				l.clear();
+				}
 
-		for (int i = 0; i < priorityNPC.length; i++)
-		{
-			priorityNPC[i] = null;
+			for (int i = 0; i < priorityNPC.length; i++)
+				{
+				priorityNPC[i] = null;
+				}
 		}
-	}
 
 	public boolean isValidInfernoMob(NPC npc)
-	{
-		// we only want the bat, blob, melee, ranger and mager
-		if (npc.getId() == NpcID.JALMEJRAH ||
-			npc.getId() == NpcID.JALAK ||
-			npc.getId() == NpcID.JALIMKOT ||
-			npc.getId() == NpcID.JALXIL ||
-			npc.getId() == NpcID.JALZEK) return true;
+		{
+			// we only want the bat, blob, melee, ranger and mager
+			if (npc.getId() == NpcID.JALMEJRAH ||
+					npc.getId() == NpcID.JALAK ||
+					npc.getId() == NpcID.JALIMKOT ||
+					npc.getId() == NpcID.JALXIL ||
+					npc.getId() == NpcID.JALZEK) return true;
 
-		return false;
-	}
-	
+			return false;
+		}
+
 	boolean inInferno()
-	{
-		return ArrayUtils.contains(client.getMapRegions(), INFERNO_REGION);
-	}
+		{
+			return ArrayUtils.contains(client.getMapRegions(), INFERNO_REGION);
+		}
 
-	static String formatMonsterQuantity(final InfernoWaveMonster monster, final int quantity)
-	{
-		return String.format("%dx %s", quantity, monster);
+	public boolean isNotFinalWave()
+		{
+			return currentWaveNumber <= 68;
+		}
+
+	@Nullable
+	InfernoJadAttack getAttack()
+		{
+			return attack;
+		}
+
+	int getCurrentWaveNumber()
+		{
+			return currentWaveNumber;
+		}
+
+	int getNextWaveNumber()
+		{
+			return nextWaveNumber;
+		}
+
+	Map<Integer, String> getMonster()
+		{
+			return monster;
+		}
+
+	Map<Integer, int[]> getWaves()
+		{
+			return waves;
+		}
+
+	List<Actor> getWaveMonsters()
+		{
+			return waveMonsters;
+		}
+
 	}
-	
-}

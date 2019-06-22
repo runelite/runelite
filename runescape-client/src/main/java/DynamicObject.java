@@ -74,15 +74,15 @@ public class DynamicObject extends Entity {
    @ObfuscatedSignature(
       signature = "(IIIIIIIZLex;)V"
    )
-   DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Entity var9) {
+   DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int animationID, boolean var8, Entity var9) {
       this.id = var1;
       this.type = var2;
       this.orientation = var3;
       this.plane = var4;
       this.x = var5;
       this.y = var6;
-      if(var7 != -1) {
-         this.sequenceDefinition = WorldMapAreaData.getSequenceDefinition(var7);
+      if(animationID != -1) {
+         this.sequenceDefinition = WorldMapAreaData.getSequenceDefinition(animationID);
          this.frame = 0;
          this.cycleStart = Client.cycle - 1;
          if(this.sequenceDefinition.__t == 0 && var9 != null && var9 instanceof DynamicObject) {

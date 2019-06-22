@@ -27,8 +27,10 @@
 package net.runelite.client.plugins.runeliteplus;
 
 import com.google.inject.Provides;
+
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
@@ -48,11 +50,11 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientUI;
 
 @PluginDescriptor(
-	loadWhenOutdated = true, // prevent users from disabling
-	hidden = true, // prevent users from disabling
-	name = "RuneLitePlus",
-	description = "Configures various aspects of RuneLitePlus",
-	type = PluginType.EXTERNAL
+		loadWhenOutdated = true, // prevent users from disabling
+		hidden = true, // prevent users from disabling
+		name = "RuneLitePlus",
+		description = "Configures various aspects of RuneLitePlus",
+		type = PluginType.EXTERNAL
 )
 
 @Slf4j
@@ -251,10 +253,13 @@ public class RuneLitePlusPlugin extends Plugin
 	private void handleKey(char c)
 	{
 		if (client.getWidget(WidgetID.BANK_PIN_GROUP_ID, 0) == null
-			|| !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Bank of Gielinor")
-			&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Chambers of Xeric")
-			&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Grand Exchange")
-			&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Housing Security System"))
+				|| !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Bank of Gielinor")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Chambers of Xeric")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Grand Exchange")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Housing Security System")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Dominic's Coffer")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Dominic's Reward Shop"))
+
 		{
 			entered = 0;
 			enterIdx = 0;

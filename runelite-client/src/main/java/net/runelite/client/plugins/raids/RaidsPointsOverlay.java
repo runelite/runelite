@@ -44,14 +44,6 @@ import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 public class RaidsPointsOverlay extends Overlay
 {
-	@Inject
-	private Client client;
-
-	@Inject
-	private RaidsPlugin plugin;
-
-	private final PanelComponent panel = new PanelComponent();
-
 	private static final NumberFormat UNIQUE_FORMAT = NumberFormat.getPercentInstance(Locale.ENGLISH);
 
 	static
@@ -59,6 +51,12 @@ public class RaidsPointsOverlay extends Overlay
 		UNIQUE_FORMAT.setMaximumFractionDigits(2);
 		UNIQUE_FORMAT.setMinimumFractionDigits(2);
 	}
+
+	private final PanelComponent panel = new PanelComponent();
+	@Inject
+	private Client client;
+	@Inject
+	private RaidsPlugin plugin;
 
 	@Inject
 	private RaidsPointsOverlay(RaidsPlugin plugin)
@@ -96,17 +94,6 @@ public class RaidsPointsOverlay extends Overlay
 		}
 
 		tableComponent.addRow("Unique:", UNIQUE_FORMAT.format(uniqueChance));
-		//TODO this is annoyingly bugged, personalpoints returns null for some reason
-/*
-		if (partySize > 1)
-		{
-				double personalChance = uniqueChance * (double)(personalPoints / totalPoints);
-
-				panel.getChildren().add(LineComponent.builder()
-					.left("Personal:")
-					.right(UNIQUE_FORMAT.format(personalChance))
-					.build());
-		}*/
 
 		panel.getChildren().add(tableComponent);
 

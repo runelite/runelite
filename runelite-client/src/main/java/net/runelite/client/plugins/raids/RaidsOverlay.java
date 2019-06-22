@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.raids;
 
+import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -34,6 +35,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,6 +52,7 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -65,21 +69,55 @@ public class RaidsOverlay extends Overlay
 	private static final int BORDER_OFFSET = 2;
 	private static final int ICON_SIZE = 32;
 	private static final int SMALL_ICON_SIZE = 21;
-	//might need to edit these if they are not standard
 	private static final int TITLE_COMPONENT_HEIGHT = 20;
 	private static final int LINE_COMPONENT_HEIGHT = 16;
-
-	private Client client;
-	private RaidsPlugin plugin;
-	private RaidsConfig config;
+	private static final Pattern FIRST_HALF = Pattern.compile("Start, (.*), End,");
+	private static final Pattern SECOND_HALF = Pattern.compile(", Start, (.*), End");
+	private static final ImmutableList<String> goodCrabsFirst = ImmutableList.of(
+		"FSCCP.PCSCF - #WNWSWN#ESEENW",
+		"SCFCP.CSCFS - #ENEESW#ENWWSW",
+		"SCFPC.CSPCF - #WSWWNE#WSEENE",
+		"SCPFC.CCPSF - #NWWWSE#WNEESE",
+		"SCPFC.CSPCF - #NEEESW#WWNEEE",
+		"SCSPF.CCSPF - #ESWWNW#ESENES",
+		"SPCFC.CSPCF - #WWNEEE#WSWNWS",
+		"SCPFC.PCSCF - #WNEEES#NWSWNW", //rare crabs first bad crabs second
+		"SFCCPC.PCSCPF - #WSEENES#WWWNEEE", //good crabs first rare crabs second rare crabs third
+		"SCPFC.CCSSF - #NEESEN#WSWWNE" //good crabs
+	);
+	private static final ImmutableList<String> goodCrabsSecond = ImmutableList.of(
+		"FSCCP.PCSCF - #WNWSWN#ESEENW",
+		"FSCCS.PCPSF - #WSEEEN#WSWNWS",
+		"FSCPC.CSCPF - #WNWWSE#EENWWW",
+		"SCFCP.CCSPF - #ESEENW#ESWWNW",
+		"SCFCP.CSCFS - #ENEESW#ENWWSW",
+		"SCFPC.CSPCF - #WSWWNE#WSEENE",
+		"SCFPC.PCCSF - #WSEENE#WWWSEE",
+		"SCFPC.SCPCF - #NESENE#WSWWNE",
+		"SCPFC.CCPSF - #NWWWSE#WNEESE",
+		"SCPFC.CSPCF - #NEEESW#WWNEEE",
+		"SCPFC.CSPSF - #WWSEEE#NWSWWN",
+		"SCSPF.CCSPF - #ESWWNW#ESENES",
+		"SFCCP.CSCPF - #WNEESE#NWSWWN",
+		"SFCCS.PCPSF - #ENWWSW#ENESEN",
+		"SPCFC.CSPCF - #WWNEEE#WSWNWS",
+		"SPCFC.SCCPF - #ESENES#WWWNEE",
+		"SPSFP.CCCSF - #NWSWWN#ESEENW", //bad crabs first good crabs second
+		"SFCCPC.PCSCPF - #WSEENES#WWWNEEE", //good crabs first rare crabs second rare crabs third
+		"FSCCP.PCSCF - #ENWWWS#NEESEN", //bad crabs first good crabs second
+		"SCPFC.CCSSF - #NEESEN#WSWWNE" //good crabs
+	);
 	private final PanelComponent panelComponent = new PanelComponent();
 	private final ItemManager itemManager;
 	private final SpriteManager spriteManager;
 	private final PanelComponent panelImages = new PanelComponent();
-
+	private Client client;
+	private RaidsPlugin plugin;
+	private RaidsConfig config;
 	@Setter
 	private boolean sharable = false;
 
+	@Getter
 	@Setter
 	private boolean scoutOverlayShown = false;
 
@@ -117,6 +155,15 @@ public class RaidsOverlay extends Overlay
 		scouterActive = false;
 		panelComponent.getChildren().clear();
 
+		if (config.hideBackground())
+		{
+			panelComponent.setBackgroundColor(null);
+		}
+		else
+		{
+			panelComponent.setBackgroundColor(ComponentConstants.STANDARD_BACKGROUND_COLOR);
+		}
+
 		if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
@@ -145,6 +192,8 @@ public class RaidsOverlay extends Overlay
 			color = Color.RED;
 		}
 
+		Matcher firstMatcher = FIRST_HALF.matcher(plugin.getRaid().getFullRotationString());
+		Matcher secondMatcher = SECOND_HALF.matcher(plugin.getRaid().getFullRotationString());
 		int combatCount = 0;
 		int roomCount = 0;
 		List<Integer> iceRooms = new ArrayList<>();
@@ -240,10 +289,31 @@ public class RaidsOverlay extends Overlay
 			scavsBeforeIceRooms.add(prev);
 		}
 		int lastScavs = scavRooms.get(scavRooms.size() - 1);
+
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text(displayLayout)
 			.color(color)
 			.build());
+
+		if (recordRaid())
+		{
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Record Raid")
+				.color(Color.GREEN)
+				.build());
+			panelComponent.setBackgroundColor(new Color(0, 255, 0, 10));
+		}
+		else
+		{
+			if (config.hideBackground())
+			{
+				panelComponent.setBackgroundColor(null);
+			}
+			else
+			{
+				panelComponent.setBackgroundColor(ComponentConstants.STANDARD_BACKGROUND_COLOR);
+			}
+		}
 
 		TableComponent tableComponent = new TableComponent();
 		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
@@ -254,7 +324,7 @@ public class RaidsOverlay extends Overlay
 			String clanOwner = Text.removeTags(client.getWidget(WidgetInfo.CLAN_CHAT_OWNER).getText());
 			if (clanOwner.equals("None"))
 			{
-				clanOwner = "Open CC tab...";
+				clanOwner = "Open CC Tab";
 				color = Color.RED;
 			}
 
@@ -330,9 +400,22 @@ public class RaidsOverlay extends Overlay
 					{
 						color = config.tightropeColor();
 					}
+					if (config.crabHandler() && puzzleNameLC.equals("crabs"))
+					{
+						if (firstMatcher.find() && secondMatcher.find())
+						{
+							if (crabHandler(firstMatcher.group(1), secondMatcher.group(1)))
+							{
+								color = config.crabColor();
+							}
+							else
+							{
+								color = Color.RED;
+							}
+						}
+					}
 
 					tableComponent.addRow(config.showRecommendedItems() ? "" : room.getType().getName(), ColorUtil.prependColorTag(puzzleName, color));
-
 					break;
 				case FARMING:
 					if (config.showScavsFarms())
@@ -424,5 +507,27 @@ public class RaidsOverlay extends Overlay
 			return ImageUtil.resizeImage(bim, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
 		}
 		return ImageUtil.resizeCanvas(bim, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
+	}
+
+	private boolean crabHandler(String firstHalf, String secondHalf)
+	{
+		return (firstHalf.contains("Crabs") && goodCrabsFirst.contains(plugin.getLayoutFullCode()))
+			|| (secondHalf.contains("Crabs") && goodCrabsSecond.contains(plugin.getLayoutFullCode()));
+	}
+
+	boolean recordRaid()
+	{
+		Matcher firstMatcher = FIRST_HALF.matcher(plugin.getRaid().getFullRotationString());
+		Matcher secondMatcher = SECOND_HALF.matcher(plugin.getRaid().getFullRotationString());
+		if (plugin.getRaid().getRotationString().toLowerCase().equals("vasa,tekton,vespula")
+			&& plugin.getRaid().getFullRotationString().toLowerCase().contains("crabs")
+			&& plugin.getRaid().getFullRotationString().toLowerCase().contains("tightrope"))
+		{
+			if (firstMatcher.find() && secondMatcher.find())
+			{
+				return (crabHandler(firstMatcher.group(1), secondMatcher.group(1)));
+			}
+		}
+		return false;
 	}
 }

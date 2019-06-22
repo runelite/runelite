@@ -74,4 +74,15 @@ public interface LearnToClickConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "hideOrbs",
+		name = "Hide Orbs",
+		description = "Completely hides the world map and special attack orbs"
+	)
+	default boolean hideOrbs()
+	{
+		return false;
+	}
 }

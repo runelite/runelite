@@ -75,6 +75,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.basic.BasicSpinnerUI;
 import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ChatColorConfig;
@@ -702,20 +703,66 @@ public class ConfigPanel extends PluginPanel
 
 					if (max < Integer.MAX_VALUE)
 					{
+						JLabel sliderValueLabel = new JLabel();
 						JSlider slider = new JSlider(min, max, value);
-						configEntryName.setText(name.concat(": ").concat(String.valueOf(slider.getValue())));
+						sliderValueLabel.setText(String.valueOf(slider.getValue()));
 						slider.setPreferredSize(new Dimension(85, 25));
-						String finalName = name;
 						slider.addChangeListener((l) ->
 							{
-								configEntryName.setText(finalName.concat(": ").concat(String.valueOf(slider.getValue())));
+								sliderValueLabel.setText(String.valueOf(slider.getValue()));
 								if (!slider.getValueIsAdjusting())
 								{
 									changeConfiguration(listItem, config, slider, cd, cid);
 								}
 							}
 						);
-						item.add(slider, BorderLayout.EAST);
+
+						SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
+						JSpinner spinner = new JSpinner(model);
+						Component editor = spinner.getEditor();
+						JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
+						spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
+						spinner.setUI(new BasicSpinnerUI()
+						{
+							protected Component createNextButton()
+							{
+								return null;
+							}
+
+							protected Component createPreviousButton()
+							{
+								return null;
+							}
+						});
+						spinner.addChangeListener((ce) ->
+						{
+							changeConfiguration(listItem, config, spinner, cd, cid);
+							spinner.setVisible(false);
+							sliderValueLabel.setText(String.valueOf(spinner.getValue()));
+							sliderValueLabel.setVisible(true);
+							slider.setValue((Integer) spinner.getValue());
+							slider.setVisible(true);
+						});
+						spinner.setVisible(false);
+
+						sliderValueLabel.addMouseListener(new MouseAdapter()
+						{
+							public void mouseClicked(MouseEvent e)
+							{
+								spinner.setValue(slider.getValue());
+								spinner.setVisible(true);
+								sliderValueLabel.setVisible(false);
+								slider.setVisible(false);
+							}
+						});
+
+						JPanel subPanel = new JPanel();
+
+						subPanel.add(spinner);
+						subPanel.add(sliderValueLabel);
+						subPanel.add(slider);
+
+						item.add(subPanel, BorderLayout.EAST);
 					}
 					else
 					{

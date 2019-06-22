@@ -39,7 +39,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
-public class RaidsPanel extends PluginPanel
+class RaidsPanel extends PluginPanel
 {
 	@Inject
 	private Client client;
@@ -94,10 +94,6 @@ public class RaidsPanel extends PluginPanel
 				{
 					throw new RuntimeException(f);
 				}
-			}
-			else
-			{
-				//TODO: User is still in a dc, or not logged in. Possibly provide a meaningful message somewhere.
 			}
 		});
 		reloadScouter.addActionListener((ActionEvent e) ->

@@ -42,6 +42,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
+import net.runelite.api.DynamicObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.GroundObject;
@@ -54,6 +55,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
+import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
@@ -78,6 +80,7 @@ class DevToolsOverlay extends Overlay
 	private static final Font FONT = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
 	private static final Color RED = new Color(221, 44, 0);
 	private static final Color GREEN = new Color(0, 200, 83);
+	private static final Color TURQOISE = new Color(0, 200, 157);
 	private static final Color ORANGE = new Color(255, 109, 0);
 	private static final Color YELLOW = new Color(255, 214, 0);
 	private static final Color CYAN = new Color(0, 184, 212);
@@ -307,7 +310,15 @@ class DevToolsOverlay extends Overlay
 				{
 					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
 					{
-						OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
+						Renderable renderable = gameObject.getRenderable();
+						if (renderable instanceof DynamicObject)
+						{
+							OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId() + " Anim: " + ((DynamicObject) renderable).getAnimationID(), TURQOISE);
+						}
+						else
+						{
+							OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
+						}
 					}
 
 					// Draw a polygon around the convex hull
@@ -417,7 +428,7 @@ class DevToolsOverlay extends Overlay
 			}
 
 			int projectileId = projectile.getId();
-			Actor projectileInteracting = null;
+			Actor projectileInteracting = projectile.getInteracting();
 
 			String infoString = "";
 

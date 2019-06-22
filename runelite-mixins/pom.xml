@@ -29,15 +29,11 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.27-SNAPSHOT</version>
+		<version>1.5.28-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>mixins</artifactId>
 	<name>RuneLite Mixins</name>
-
-	<properties>
-		<javax.inject.version>1</javax.inject.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -59,7 +55,7 @@
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
-			<version>${javax.inject.version}</version>
+			<version>1</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -82,8 +78,8 @@
 					<!-- RuneScape classes do not verify
 					 under Java 7+ due to the obfuscation
 					 -->
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>

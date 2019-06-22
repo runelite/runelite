@@ -934,7 +934,7 @@ public interface Client extends GameShell
 	 *
 	 * @return all projectiles
 	 */
-	java.util.List<Projectile> getProjectiles();
+	List<Projectile> getProjectiles();
 
 	/**
 	 * Gets a list of all graphics objects currently drawn.
@@ -1427,6 +1427,13 @@ public interface Client extends GameShell
 	void setNPCsHidden(boolean state);
 
 	/**
+	 * Sets which NPCs are hidden
+	 *
+	 * @param names the names of the npcs seperated by ','
+	 */
+	void setNPCsNames(String names);
+
+	/**
 	 * Sets whether 2D sprites (ie. overhead prayers) related to
 	 * the NPCs are hidden.
 	 *
@@ -1495,14 +1502,6 @@ public interface Client extends GameShell
 	 * @return the cache
 	 */
 	NodeCache getWidgetSpriteCache();
-
-	/**
-	 * Overrides health bar sprites with the sprites from the specified override.
-	 * Pass in {@code null} to revert the health bars back to their default.
-	 *
-	 * @param override the health bar override
-	 */
-	void setHealthBarOverride(HealthBarOverride override);
 
 	/**
 	 * Gets the current server tick count.
@@ -1632,7 +1631,7 @@ public interface Client extends GameShell
 
 	void draw2010Menu();
 
-	NodeCache getHealthBarCache();
+	void resetHealthBarCaches();
 
 	void setRenderSelf(boolean enabled);
 

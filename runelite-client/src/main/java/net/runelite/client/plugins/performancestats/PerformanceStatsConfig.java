@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.inferno;
+package net.runelite.client.plugins.performancestats;
 
-import lombok.AllArgsConstructor;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@AllArgsConstructor
-enum InfernoWaveMonster
+@ConfigGroup("performancestats")
+public interface PerformanceStatsConfig extends Config
 {
-	
-	JAL_NIB("Jal-Nib", 32),
-	JAL_MEJRAH("Jal-MejRah", 85),
-	JAL_AK("Jal-Ak", 165),
-	JAL_IMKOT("Jal-ImKot", 240),
-	JAL_XIL("Jal-XIL", 370),
-	JAL_ZEK("Jal-Zek", 490),
-	JALTOK_JAD("JalTok-Jad", 900),
-	TZKAL_ZUK("TzKal-Zuk", 1400);
-
-	private final String name;
-	private final int level;
-
-	@Override
-	public String toString()
+	@ConfigItem(
+		position = 0,
+		keyName = "submitTimeout",
+		name = "Submit Timeout (seconds)",
+		description = "Submits after this many seconds of inactivity"
+	)
+	default int submitTimeout()
 	{
-		return String.format("%s - Level %s", name, level);
+		return 30;
 	}
 }
