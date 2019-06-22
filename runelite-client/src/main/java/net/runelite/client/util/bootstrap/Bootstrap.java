@@ -22,7 +22,7 @@ public class Bootstrap
 		String size;
 	}
 
-	String buildCommit = "c554ab2400dc04a619b36695da2107648c9c87b3";
+	String buildCommit = "2d0c2b8eb66a8088b41b29d42ec2a58ead460581";
 	private Artifact[] artifacts = getArtifacts();
 	Client client = new Client();
 	String[] clientJvm9Arguments = new String[]{
