@@ -26,121 +26,143 @@
  */
 package net.runelite.client.plugins.inferno;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.common.collect.ImmutableMap;
+import java.awt.Color;
+import lombok.Getter;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public class InfernoWaveMappings
+class InfernoWaveMappings
+{
+	@Getter
+	private static final ImmutableMap<Integer, int[]> waveMapping;
+
+	@Getter
+	private static final ImmutableMap<Integer, String> npcNameMapping;
+
+	static
 	{
-	static Map<Integer, int[]> waveMapping()
-		{
-			return new HashMap<Integer, int[]>()
-			{
-				{
-				put(1, new int[]{32, 32, 32, 85});
-				put(2, new int[]{32, 32, 32, 85, 85});
-				put(3, new int[]{32, 32, 32, 32, 32, 32});
-				put(4, new int[]{32, 32, 32, 165});
-				put(5, new int[]{32, 32, 32, 85, 165});
-				put(6, new int[]{32, 32, 32, 85, 85, 165});
-				put(7, new int[]{32, 32, 32, 165, 165});
-				put(8, new int[]{32, 32, 32, 32, 32, 32});
-				put(9, new int[]{32, 32, 32, 240});
-				put(10, new int[]{32, 32, 32, 85, 240});
-				put(11, new int[]{32, 32, 32, 85, 85, 240});
-				put(12, new int[]{32, 32, 32, 165, 240});
-				put(13, new int[]{32, 32, 32, 85, 165, 240});
-				put(14, new int[]{32, 32, 32, 85, 85, 165, 240});
-				put(15, new int[]{32, 32, 32, 165, 165, 240});
-				put(16, new int[]{32, 32, 32, 240, 240});
-				put(17, new int[]{32, 32, 32, 32, 32, 32});
-				put(18, new int[]{32, 32, 32, 370});
-				put(19, new int[]{32, 32, 32, 85, 370});
-				put(20, new int[]{32, 32, 32, 85, 85, 370});
-				put(21, new int[]{32, 32, 32, 165, 370});
-				put(22, new int[]{32, 32, 32, 85, 165, 370});
-				put(23, new int[]{32, 32, 32, 85, 85, 165, 370});
-				put(24, new int[]{32, 32, 32, 165, 165, 370});
-				put(25, new int[]{32, 32, 32, 240, 370});
-				put(26, new int[]{32, 32, 32, 85, 240, 370});
-				put(27, new int[]{32, 32, 32, 85, 85, 240, 370});
-				put(28, new int[]{32, 32, 32, 165, 240, 370});
-				put(29, new int[]{32, 32, 32, 85, 165, 240, 370});
-				put(30, new int[]{32, 32, 32, 85, 85, 165, 240, 370});
-				put(31, new int[]{32, 32, 32, 165, 165, 240, 370});
-				put(32, new int[]{32, 32, 32, 240, 240, 370});
-				put(33, new int[]{32, 32, 32, 370, 370});
-				put(34, new int[]{32, 32, 32, 32, 32, 32});
-				put(35, new int[]{32, 32, 32, 490});
-				put(36, new int[]{32, 32, 32, 85, 490});
-				put(37, new int[]{32, 32, 32, 85, 85, 490});
-				put(38, new int[]{32, 32, 32, 165, 490});
-				put(39, new int[]{32, 32, 32, 85, 165, 490});
-				put(40, new int[]{32, 32, 32, 85, 85, 165, 490});
-				put(41, new int[]{32, 32, 32, 165, 165, 490});
-				put(42, new int[]{32, 32, 32, 240, 490});
-				put(43, new int[]{32, 32, 32, 85, 240, 490});
-				put(44, new int[]{32, 32, 32, 85, 85, 240, 490});
-				put(45, new int[]{32, 32, 32, 165, 240, 490 });
-				put(46, new int[]{32, 32, 32, 85, 165, 240, 490});
-				put(47, new int[]{32, 32, 32, 85, 85, 165, 240, 490});
-				put(48, new int[]{32, 32, 32, 165, 165, 240, 490});
-				put(49, new int[]{32, 32, 32, 240, 240, 490});
-				put(50, new int[]{32, 32, 32, 370, 490});
-				put(51, new int[]{32, 32, 32, 85, 370, 490});
-				put(52, new int[]{32, 32, 32, 85, 85, 370, 490});
-				put(53, new int[]{32, 32, 32, 165, 370, 490});
-				put(54, new int[]{32, 32, 32, 85, 165, 370, 490});
-				put(55, new int[]{32, 32, 32, 85, 85, 165, 370, 490});
-				put(56, new int[]{32, 32, 32, 165, 165, 370, 490});
-				put(57, new int[]{32, 32, 32, 240, 370, 490});
-				put(58, new int[]{32, 32, 32, 85, 240, 370, 490});
-				put(59, new int[]{32, 32, 32, 85, 85, 240, 370, 490});
-				put(60, new int[]{32, 32, 32, 165, 240, 370, 490});
-				put(61, new int[]{32, 32, 32, 85, 165, 240, 370, 490});
-				put(62, new int[]{32, 32, 32, 85, 85, 165, 240, 370, 490});
-				put(63, new int[]{32, 32, 32, 165, 165, 240, 370, 490});
-				put(64, new int[]{32, 32, 32, 85, 240, 240, 370, 490});
-				put(65, new int[]{32, 32, 32, 85, 370, 370, 490});
-				put(66, new int[]{32, 32, 32, 85, 490, 490});
-				put(67, new int[]{900});
-				put(68, new int[]{900, 900, 900});
-				put(69, new int[]{1400});
+		ImmutableMap.Builder<Integer, int[]> waveMapBuilder = new ImmutableMap.Builder<>();
 
-				}
-			};
+		waveMapBuilder.put(1, new int[]{32, 32, 32, 85});
+		waveMapBuilder.put(2, new int[]{32, 32, 32, 85, 85});
+		waveMapBuilder.put(3, new int[]{32, 32, 32, 32, 32, 32});
+		waveMapBuilder.put(4, new int[]{32, 32, 32, 165});
+		waveMapBuilder.put(5, new int[]{32, 32, 32, 85, 165});
+		waveMapBuilder.put(6, new int[]{32, 32, 32, 85, 85, 165});
+		waveMapBuilder.put(7, new int[]{32, 32, 32, 165, 165});
+		waveMapBuilder.put(8, new int[]{32, 32, 32, 32, 32, 32});
+		waveMapBuilder.put(9, new int[]{32, 32, 32, 240});
+		waveMapBuilder.put(10, new int[]{32, 32, 32, 85, 240});
+		waveMapBuilder.put(11, new int[]{32, 32, 32, 85, 85, 240});
+		waveMapBuilder.put(12, new int[]{32, 32, 32, 165, 240});
+		waveMapBuilder.put(13, new int[]{32, 32, 32, 85, 165, 240});
+		waveMapBuilder.put(14, new int[]{32, 32, 32, 85, 85, 165, 240});
+		waveMapBuilder.put(15, new int[]{32, 32, 32, 165, 165, 240});
+		waveMapBuilder.put(16, new int[]{32, 32, 32, 240, 240});
+		waveMapBuilder.put(17, new int[]{32, 32, 32, 32, 32, 32});
+		waveMapBuilder.put(18, new int[]{32, 32, 32, 370});
+		waveMapBuilder.put(19, new int[]{32, 32, 32, 85, 370});
+		waveMapBuilder.put(20, new int[]{32, 32, 32, 85, 85, 370});
+		waveMapBuilder.put(21, new int[]{32, 32, 32, 165, 370});
+		waveMapBuilder.put(22, new int[]{32, 32, 32, 85, 165, 370});
+		waveMapBuilder.put(23, new int[]{32, 32, 32, 85, 85, 165, 370});
+		waveMapBuilder.put(24, new int[]{32, 32, 32, 165, 165, 370});
+		waveMapBuilder.put(25, new int[]{32, 32, 32, 240, 370});
+		waveMapBuilder.put(26, new int[]{32, 32, 32, 85, 240, 370});
+		waveMapBuilder.put(27, new int[]{32, 32, 32, 85, 85, 240, 370});
+		waveMapBuilder.put(28, new int[]{32, 32, 32, 165, 240, 370});
+		waveMapBuilder.put(29, new int[]{32, 32, 32, 85, 165, 240, 370});
+		waveMapBuilder.put(30, new int[]{32, 32, 32, 85, 85, 165, 240, 370});
+		waveMapBuilder.put(31, new int[]{32, 32, 32, 165, 165, 240, 370});
+		waveMapBuilder.put(32, new int[]{32, 32, 32, 240, 240, 370});
+		waveMapBuilder.put(33, new int[]{32, 32, 32, 370, 370});
+		waveMapBuilder.put(34, new int[]{32, 32, 32, 32, 32, 32});
+		waveMapBuilder.put(35, new int[]{32, 32, 32, 490});
+		waveMapBuilder.put(36, new int[]{32, 32, 32, 85, 490});
+		waveMapBuilder.put(37, new int[]{32, 32, 32, 85, 85, 490});
+		waveMapBuilder.put(38, new int[]{32, 32, 32, 165, 490});
+		waveMapBuilder.put(39, new int[]{32, 32, 32, 85, 165, 490});
+		waveMapBuilder.put(40, new int[]{32, 32, 32, 85, 85, 165, 490});
+		waveMapBuilder.put(41, new int[]{32, 32, 32, 165, 165, 490});
+		waveMapBuilder.put(42, new int[]{32, 32, 32, 240, 490});
+		waveMapBuilder.put(43, new int[]{32, 32, 32, 85, 240, 490});
+		waveMapBuilder.put(44, new int[]{32, 32, 32, 85, 85, 240, 490});
+		waveMapBuilder.put(45, new int[]{32, 32, 32, 165, 240, 490 });
+		waveMapBuilder.put(46, new int[]{32, 32, 32, 85, 165, 240, 490});
+		waveMapBuilder.put(47, new int[]{32, 32, 32, 85, 85, 165, 240, 490});
+		waveMapBuilder.put(48, new int[]{32, 32, 32, 165, 165, 240, 490});
+		waveMapBuilder.put(49, new int[]{32, 32, 32, 240, 240, 490});
+		waveMapBuilder.put(50, new int[]{32, 32, 32, 370, 490});
+		waveMapBuilder.put(51, new int[]{32, 32, 32, 85, 370, 490});
+		waveMapBuilder.put(52, new int[]{32, 32, 32, 85, 85, 370, 490});
+		waveMapBuilder.put(53, new int[]{32, 32, 32, 165, 370, 490});
+		waveMapBuilder.put(54, new int[]{32, 32, 32, 85, 165, 370, 490});
+		waveMapBuilder.put(55, new int[]{32, 32, 32, 85, 85, 165, 370, 490});
+		waveMapBuilder.put(56, new int[]{32, 32, 32, 165, 165, 370, 490});
+		waveMapBuilder.put(57, new int[]{32, 32, 32, 240, 370, 490});
+		waveMapBuilder.put(58, new int[]{32, 32, 32, 85, 240, 370, 490});
+		waveMapBuilder.put(59, new int[]{32, 32, 32, 85, 85, 240, 370, 490});
+		waveMapBuilder.put(60, new int[]{32, 32, 32, 165, 240, 370, 490});
+		waveMapBuilder.put(61, new int[]{32, 32, 32, 85, 165, 240, 370, 490});
+		waveMapBuilder.put(62, new int[]{32, 32, 32, 85, 85, 165, 240, 370, 490});
+		waveMapBuilder.put(63, new int[]{32, 32, 32, 165, 165, 240, 370, 490});
+		waveMapBuilder.put(64, new int[]{32, 32, 32, 85, 240, 240, 370, 490});
+		waveMapBuilder.put(65, new int[]{32, 32, 32, 85, 370, 370, 490});
+		waveMapBuilder.put(66, new int[]{32, 32, 32, 85, 490, 490});
+		waveMapBuilder.put(67, new int[]{900});
+		waveMapBuilder.put(68, new int[]{900, 900, 900});
+		waveMapBuilder.put(69, new int[]{1400});
+
+		waveMapping = waveMapBuilder.build();
+
+		ImmutableMap.Builder<Integer, String> nameMapBuilder = new ImmutableMap.Builder<>();
+
+		nameMapBuilder.put(32, "Jal-Nib - Level 32");
+		nameMapBuilder.put(85, "Jal-MejRah - Level 85");
+		nameMapBuilder.put(165, "Jal-Ak - Level 165");
+		nameMapBuilder.put(240, "Jal-ImKot - Level 240");
+		nameMapBuilder.put(370, "Jal-Xil - Level 370");
+		nameMapBuilder.put(490, "Jal-Zek - Level 490");
+		nameMapBuilder.put(900, "JalTok-Jad - Level 900");
+		nameMapBuilder.put(1400, "TzKal-Zuk - Level 1400");
+
+		npcNameMapping = nameMapBuilder.build();
+	}
+
+	static void addWaveComponent(PanelComponent panelComponent, String header, int wave, Color titleColor, Color color)
+	{
+		int[] monsters = waveMapping.get(wave);
+
+		if (monsters == null)
+		{
+			return;
 		}
 
-	static Map<Integer, String> npcNameMapping()
-		{
-			return new HashMap<Integer, String>()
-			{
-				{
-				put(32, "Jal-Nib - Level 32");
-				put(85, " Jal-MejRah - Level 85");
-				put(165, "Jal-Ak - Level 165");
-				put(240, "Jal-ImKot - Level 240");
-				put(370, "Jal-Xil - Level 370");
-				put(490, "Jal-Zek - Level 490");
-				put(900, "JalTok-Jad - Level 900");
-				put(1400, "TzKal-Zuk - Level 1400");
-				}
-			};
-		}
+		panelComponent.getChildren()
+			.add(TitleComponent.builder()
+				.text(header)
+				.color(titleColor)
+				.build()
+			);
 
-	static HashMap intArrayToHashmap(int inputArray[])
+
+		for (int i = 0; i < monsters.length; i++)
 		{
-			HashMap<Integer, Integer> elementCountMap = new HashMap<Integer, Integer>();
-			for (int i : inputArray)
-				{
-				if (elementCountMap.containsKey(i))
-					{
-					elementCountMap.put(i, elementCountMap.get(i) + 1);
-					}
-				else
-					{
-					elementCountMap.put(i, 1);
-					}
-				}
-			return elementCountMap;
+			int monsterType = monsters[i];
+			int count = 1;
+
+			for (; i < monsters.length - 1 && monsters[i + 1] == monsterType; i++)
+			{
+				count++;
+			}
+
+			TitleComponent.TitleComponentBuilder builder = TitleComponent.builder();
+
+			builder.text(count + "x " + npcNameMapping.get(monsterType));
+			builder.color(color);
+
+			panelComponent.getChildren().add(builder.build());
 		}
 	}
+}
