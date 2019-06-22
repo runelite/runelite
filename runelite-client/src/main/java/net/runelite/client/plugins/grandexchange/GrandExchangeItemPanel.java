@@ -157,7 +157,7 @@ class GrandExchangeItemPanel extends JPanel
 		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
 		alchAndProfitPanel.add(haPriceLabel, BorderLayout.WEST);
 
-        // Determine Profit Margin, assumes both Nature Runes and item are bought, then high alched
+		// Determine Profit Margin, assumes both Nature Runes and item are bought, then high alched
 		int profitMargin = haPrice.intValue() - (natRunePrice + gePrice);
 		JLabel profitLabel = new JLabel();
 		// Too long a string will push past the boundaries of the panel. Solve by using the same numbering RS does with coins
