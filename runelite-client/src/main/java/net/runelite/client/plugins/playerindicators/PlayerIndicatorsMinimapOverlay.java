@@ -24,17 +24,12 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import net.runelite.api.Player;
+import net.runelite.client.ui.overlay.*;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.Player;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import java.awt.*;
 
 @Singleton
 public class PlayerIndicatorsMinimapOverlay extends Overlay

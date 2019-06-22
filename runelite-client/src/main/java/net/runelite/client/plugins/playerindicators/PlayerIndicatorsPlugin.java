@@ -24,23 +24,33 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
-import java.awt.Color;
-import javax.inject.Inject;
-import net.runelite.api.ClanMemberRank;
-import static net.runelite.api.ClanMemberRank.UNRANKED;
-import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.*;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Player;
+import lombok.AccessLevel;
+import lombok.Setter;
+import net.runelite.api.*;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import static net.runelite.api.ClanMemberRank.UNRANKED;
+import static net.runelite.api.MenuAction.*;
 
 @PluginDescriptor(
 	name = "Player Indicators",
@@ -49,6 +59,15 @@ import net.runelite.client.util.ColorUtil;
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
+
+	// Option added to Player menu
+	private static final String TAG = "Tag";
+	private static final String KICK_OPTION = "Kick";
+	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", KICK_OPTION);
+
+	@Inject
+	private Provider<MenuManager> menuManager;
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -70,8 +89,19 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Inject
 	private ClanManager clanManager;
 
+	@Inject
+	private PlayerIndicatorsInput inputListener;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hotKeyPressed = false;
+
+	static final Set<String> highlightedPlayersNames = new HashSet<>();
+
 	@Provides
-	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
+    PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PlayerIndicatorsConfig.class);
 	}
@@ -82,6 +112,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.add(playerIndicatorsOverlay);
 		overlayManager.add(playerIndicatorsTileOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
+		keyManager.registerKeyListener(inputListener);
+		highlightedPlayersNames.clear();
+
 	}
 
 	@Override
@@ -90,91 +123,109 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.remove(playerIndicatorsOverlay);
 		overlayManager.remove(playerIndicatorsTileOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
+		keyManager.unregisterKeyListener(inputListener);
+		highlightedPlayersNames.clear();
+
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked playerMenuOptionClicked)
 	{
+		if(playerMenuOptionClicked.getMenuOption().equals(TAG))
+		{
+			if(highlightedPlayersNames.contains(Text.sanitize(playerMenuOptionClicked.getMenuTarget())))
+			{
+				highlightedPlayersNames.remove(Text.sanitize(playerMenuOptionClicked.getMenuTarget()));
+			}
+			else
+			{
+				highlightedPlayersNames.add(Text.sanitize(playerMenuOptionClicked.getMenuTarget()));
+
+			}
+
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded) {
+
 		int type = menuEntryAdded.getType();
 
-		if (type >= 2000)
+		if (type == MenuAction.TRADE.getId() && hotKeyPressed && config.highlightSpecificNames())
 		{
+			// Add tag option
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			tagEntry.setOption(TAG);
+			tagEntry.setTarget(menuEntryAdded.getTarget());
+			tagEntry.setIdentifier(menuEntryAdded.getIdentifier());
+			tagEntry.setType(MenuAction.RUNELITE.getId());
+			client.setMenuEntries(menuEntries);
+		}
+
+		if (type >= 2000) {
 			type -= 2000;
 		}
 
 		int identifier = menuEntryAdded.getIdentifier();
 		if (type == FOLLOW.getId() || type == TRADE.getId()
-			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
-			|| type == PLAYER_FIRST_OPTION.getId()
-			|| type == PLAYER_SECOND_OPTION.getId()
-			|| type == PLAYER_THIRD_OPTION.getId()
-			|| type == PLAYER_FOURTH_OPTION.getId()
-			|| type == PLAYER_FIFTH_OPTION.getId()
-			|| type == PLAYER_SIXTH_OPTION.getId()
-			|| type == PLAYER_SEVENTH_OPTION.getId()
-			|| type == PLAYER_EIGTH_OPTION.getId()
-			|| type == RUNELITE.getId())
-		{
+				|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
+				|| type == PLAYER_FIRST_OPTION.getId()
+				|| type == PLAYER_SECOND_OPTION.getId()
+				|| type == PLAYER_THIRD_OPTION.getId()
+				|| type == PLAYER_FOURTH_OPTION.getId()
+				|| type == PLAYER_FIFTH_OPTION.getId()
+				|| type == PLAYER_SIXTH_OPTION.getId()
+				|| type == PLAYER_SEVENTH_OPTION.getId()
+				|| type == PLAYER_EIGTH_OPTION.getId()
+				|| type == RUNELITE.getId()) {
 			final Player localPlayer = client.getLocalPlayer();
 			Player[] players = client.getCachedPlayers();
 			Player player = null;
 
-			if (identifier >= 0 && identifier < players.length)
-			{
+			if (identifier >= 0 && identifier < players.length) {
 				player = players[identifier];
 			}
 
-			if (player == null)
-			{
+			if (player == null) {
 				return;
 			}
 
 			int image = -1;
 			Color color = null;
 
-			if (config.highlightFriends() && player.isFriend())
-			{
+			if (config.highlightFriends() && player.isFriend()) {
 				color = config.getFriendColor();
-			}
-			else if (config.drawClanMemberNames() && player.isClanMember())
-			{
+			} else if (config.drawClanMemberNames() && player.isClanMember()) {
 				color = config.getClanMemberColor();
 
 				ClanMemberRank rank = clanManager.getRank(player.getName());
-				if (rank != UNRANKED)
-				{
+				if (rank != UNRANKED) {
 					image = clanManager.getIconNumber(rank);
 				}
-			}
-			else if (config.highlightTeamMembers() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
-			{
+			} else if (config.highlightTeamMembers() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam()) {
 				color = config.getTeamMemberColor();
-			}
-			else if (config.highlightNonClanMembers() && !player.isClanMember())
-			{
+			} else if (config.highlightNonClanMembers() && !player.isClanMember()) {
 				color = config.getNonClanMemberColor();
 			}
 
-			if (image != -1 || color != null)
-			{
+			if (image != -1 || color != null) {
 				MenuEntry[] menuEntries = client.getMenuEntries();
 				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 
-				if (color != null && config.colorPlayerMenu())
-				{
+				if (color != null && config.colorPlayerMenu()) {
 					// strip out existing <col...
 					String target = lastEntry.getTarget();
 					int idx = target.indexOf('>');
-					if (idx != -1)
-					{
+					if (idx != -1) {
 						target = target.substring(idx + 1);
 					}
 
 					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
 
-				if (image != -1 && config.showClanRanks())
-				{
+				if (image != -1 && config.showClanRanks()) {
 					lastEntry.setTarget("<img=" + image + ">" + lastEntry.getTarget());
 				}
 

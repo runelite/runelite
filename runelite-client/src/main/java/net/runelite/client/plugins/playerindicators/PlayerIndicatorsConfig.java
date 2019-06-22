@@ -24,10 +24,11 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
-import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+
+import java.awt.*;
 
 @ConfigGroup("playerindicators")
 public interface PlayerIndicatorsConfig extends Config
@@ -56,6 +57,30 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
+		keyName = "drawSpecificNames",
+		name = "Tag/Highlight Specific Players",
+		description = "Configures whether or not the names entered in the below box/tagged players should be highlighted"
+	)
+	default boolean highlightSpecificNames() { return false; }
+
+	@ConfigItem(
+		position = 3,
+		keyName = "specificPlayerNames",
+		name = "Specific player names",
+		description = "Specific Player names to highlight"
+	)
+	default String getSpecificPlayerNames() { return ""; }
+
+	@ConfigItem(
+		position = 4,
+		keyName = "specificPlayerColor",
+		name = "Specific Player color",
+		description = "Color of specific player names"
+	)
+	default Color getSpecificPlayerColor() { return new Color(255,157,100); }
+
+	@ConfigItem(
+		position = 5,
 		keyName = "drawFriendNames",
 		name = "Highlight friends",
 		description = "Configures whether or not friends should be highlighted"
@@ -66,7 +91,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 6,
 		keyName = "friendNameColor",
 		name = "Friend color",
 		description = "Color of friend names"
@@ -77,7 +102,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 7,
 		keyName = "drawClanMemberNames",
 		name = "Highlight clan members",
 		description = "Configures whether or clan members should be highlighted"
@@ -88,7 +113,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 8,
 		keyName = "clanMemberColor",
 		name = "Clan member color",
 		description = "Color of clan members"
@@ -99,7 +124,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 9,
 		keyName = "drawTeamMemberNames",
 		name = "Highlight team members",
 		description = "Configures whether or not team members should be highlighted"
@@ -110,7 +135,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 10,
 		keyName = "teamMemberColor",
 		name = "Team member color",
 		description = "Color of team members"
@@ -121,7 +146,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 11,
 		keyName = "drawNonClanMemberNames",
 		name = "Highlight non-clan members",
 		description = "Configures whether or not non-clan members should be highlighted"
@@ -132,7 +157,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 12,
 		keyName = "nonClanMemberColor",
 		name = "Non-clan member color",
 		description = "Color of non-clan member names"
@@ -143,7 +168,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 13,
 		keyName = "drawPlayerTiles",
 		name = "Draw tiles under players",
 		description = "Configures whether or not tiles under highlighted players should be drawn"
@@ -154,7 +179,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 14,
 		keyName = "playerNamePosition",
 		name = "Name position",
 		description = "Configures the position of drawn player names, or if they should be disabled"
@@ -165,7 +190,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 15,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not minimap names for players with rendered names should be drawn"
@@ -176,7 +201,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 16,
 		keyName = "colorPlayerMenu",
 		name = "Colorize player menu",
 		description = "Color right click menu for players"
@@ -187,7 +212,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 17,
 		keyName = "clanMenuIcons",
 		name = "Show clan ranks",
 		description = "Add clan rank to right click menu and next to player names"
