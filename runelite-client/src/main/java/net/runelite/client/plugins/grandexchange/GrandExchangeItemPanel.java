@@ -53,7 +53,7 @@ class GrandExchangeItemPanel extends JPanel
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
 	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, Double
-		haPrice, int geItemLimit)
+		haPrice, int geItemLimit, int natRunePrice)
 	{
 		BorderLayout layout = new BorderLayout();
 		layout.setHgap(5);
@@ -121,6 +121,9 @@ class GrandExchangeItemPanel extends JPanel
 		rightPanel.add(itemName);
 
 		// Ge price
+		JPanel gePriceAndLimitPanel = new JPanel(new BorderLayout());
+		panels.add(gePriceAndLimitPanel);
+		gePriceAndLimitPanel.setBackground(background);
 		JLabel gePriceLabel = new JLabel();
 		if (gePrice > 0)
 		{
@@ -131,17 +134,7 @@ class GrandExchangeItemPanel extends JPanel
 			gePriceLabel.setText("N/A");
 		}
 		gePriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_PRICE);
-		rightPanel.add(gePriceLabel);
-
-		JPanel alchAndLimitPanel = new JPanel(new BorderLayout());
-		panels.add(alchAndLimitPanel);
-		alchAndLimitPanel.setBackground(background);
-
-		// Alch price
-		JLabel haPriceLabel = new JLabel();
-		haPriceLabel.setText(StackFormatter.formatNumber(haPrice.intValue()) + " alch");
-		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
-		alchAndLimitPanel.add(haPriceLabel, BorderLayout.WEST);
+		gePriceAndLimitPanel.add(gePriceLabel, BorderLayout.WEST);
 
 		// GE Limit
 		JLabel geLimitLabel = new JLabel();
@@ -149,9 +142,32 @@ class GrandExchangeItemPanel extends JPanel
 		geLimitLabel.setText(limitLabelText);
 		geLimitLabel.setForeground(ColorScheme.GRAND_EXCHANGE_LIMIT);
 		geLimitLabel.setBorder(new CompoundBorder(geLimitLabel.getBorder(), new EmptyBorder(0, 0, 0, 7)));
-		alchAndLimitPanel.add(geLimitLabel, BorderLayout.EAST);
+		gePriceAndLimitPanel.add(geLimitLabel, BorderLayout.EAST);
 
-		rightPanel.add(alchAndLimitPanel);
+		rightPanel.add(gePriceAndLimitPanel);
+
+		// Alch and Profit
+		JPanel alchAndProfitPanel = new JPanel(new BorderLayout());
+		panels.add(alchAndProfitPanel);
+		alchAndProfitPanel.setBackground(background);
+
+		// Alch price
+		JLabel haPriceLabel = new JLabel();
+		haPriceLabel.setText(StackFormatter.quantityToStackSize(haPrice.intValue()) + " alch");
+		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
+		alchAndProfitPanel.add(haPriceLabel, BorderLayout.WEST);
+
+        // Determine Profit Margin, assumes both Nature Runes and item are bought, then high alched
+		int profitMargin = haPrice.intValue() - (natRunePrice + gePrice);
+		JLabel profitLabel = new JLabel();
+		// Too long a string will push past the boundaries of the panel. Solve by using the same numbering RS does with coins
+		String profitMarginLabelText = "Profit: " + StackFormatter.quantityToStackSize(profitMargin);
+		profitLabel.setText(profitMarginLabelText);
+		profitLabel.setForeground(profitMargin > 0 ? ColorScheme.GRAND_EXCHANGE_PRICE : ColorScheme.PROGRESS_ERROR_COLOR);
+		profitLabel.setBorder(new CompoundBorder(profitLabel.getBorder(), new EmptyBorder(0, 0, 0, 7)));
+		alchAndProfitPanel.add(profitLabel, BorderLayout.EAST);
+
+		rightPanel.add(alchAndProfitPanel);
 
 		add(rightPanel, BorderLayout.CENTER);
 	}
