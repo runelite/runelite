@@ -159,7 +159,7 @@ class SkillCalculator extends JPanel
 		else
 		{
 			combinedActionSlot.setTitle("No action selected");
-			combinedActionSlot.setText("SHFT/CTRL-click to select multiple");
+			combinedActionSlot.setText("Shift-click to select multiple");
 			return;
 		}
 
@@ -274,31 +274,21 @@ class SkillCalculator extends JPanel
 				@Override
 				public void mousePressed(MouseEvent e)
 				{
-					//remove all slots when a selection is chosen without shift or control
-					if (!e.isShiftDown() && !e.isControlDown())
+					if (!e.isShiftDown())
 					{
 						clearCombinedSlots();
 					}
 
-					//If control is pressed, want to add, even if it has already been added
-					if (slot.isSelected() && !e.isControlDown())
+					if (slot.isSelected())
 					{
 						combinedActionSlots.remove(slot);
-						slot.setSelected(false);
 					}
 					else
 					{
 						combinedActionSlots.add(slot);
 					}
 
-					// Loop through the array and set the slot to selected if any element matches
-					for (UIActionSlot list : combinedActionSlots)
-					{
-						if(list == slot)
-						{
-							slot.setSelected(true);
-						}
-					}
+					slot.setSelected(!slot.isSelected());
 					updateCombinedAction();
 				}
 			});
