@@ -25,8 +25,6 @@
 
 package net.runelite.client.plugins.playerindicators;
 
-import net.runelite.client.ui.overlay.*;
-
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
