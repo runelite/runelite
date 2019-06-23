@@ -24,48 +24,46 @@
  */
 package net.runelite.client.plugins.alchemicalhydra;
 
+import java.awt.image.BufferedImage;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ProjectileID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.game.SpriteManager;
+import net.runelite.client.util.ImageUtil;
 
+@Getter(AccessLevel.PACKAGE)
+@RequiredArgsConstructor
 enum HydraPhase
-{ // Sorry for the autism
+{
 	ONE(3, AnimationID.HYDRA_1_1, AnimationID.HYDRA_1_2, ProjectileID.HYDRA_POISON, 0, SpriteID.BIG_ASS_GUTHIX_SPELL, new WorldPoint(1371, 10263, 0)),
 	TWO(3, AnimationID.HYDRA_2_1, AnimationID.HYDRA_2_2, 0, AnimationID.HYDRA_LIGHTNING, SpriteID.BIG_SPEC_TRANSFER, new WorldPoint(1371, 10272, 0)),
 	THREE(3, AnimationID.HYDRA_3_1, AnimationID.HYDRA_3_2, 0, AnimationID.HYDRA_FIRE, SpriteID.BIG_SUPERHEAT, new WorldPoint(1362, 10272, 0)),
 	FOUR(1, AnimationID.HYDRA_4_1, AnimationID.HYDRA_4_2, ProjectileID.HYDRA_POISON, 0, SpriteID.BIG_ASS_GUTHIX_SPELL, null);
 
-	@Getter
 	private final int attacksPerSwitch;
-
-	@Getter
 	private final int deathAnim1;
-
-	@Getter
 	private final int deathAnim2;
-
-	@Getter
 	private final int specProjectileId;
-
-	@Getter
 	private final int specAnimationId;
 
-	@Getter
-	private final int specImage;
+	@Getter(AccessLevel.NONE)
+	private final int specImageID;
+	private final WorldPoint fountain;
 
-	@Getter
-	private WorldPoint fountain;
+	private BufferedImage specImage;
 
-	HydraPhase(int attacksPerSwitch, int deathAnim1, int deathAnim2, int specProjectileId, int specAnimationId, int specImage, WorldPoint fountain)
+	BufferedImage getSpecImage(SpriteManager spriteManager)
 	{
-		this.attacksPerSwitch = attacksPerSwitch;
-		this.deathAnim1 = deathAnim1;
-		this.deathAnim2 = deathAnim2;
-		this.specProjectileId = specProjectileId;
-		this.specAnimationId = specAnimationId;
-		this.specImage = specImage;
-		this.fountain = fountain;
+		if (specImage == null)
+		{
+			BufferedImage tmp = spriteManager.getSprite(specImageID, 0);
+			specImage = tmp == null ? null : ImageUtil.resizeImage(tmp, HydraOverlay.IMGSIZE, HydraOverlay.IMGSIZE);
+		}
+
+		return specImage;
 	}
 }
