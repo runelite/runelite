@@ -26,12 +26,15 @@ package net.runelite.client.plugins.pileindicators;
 
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.client.plugins.playerindicators.PlayerIndicatorsService;
-import net.runelite.client.ui.overlay.*;
 
 import javax.inject.Inject;
 import java.awt.*;
 import java.util.ArrayList;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class PileIndicatorsOverlay extends Overlay
 {
@@ -39,16 +42,14 @@ public class PileIndicatorsOverlay extends Overlay
 	private final Client client;
 	private final PileIndicatorsPlugin plugin;
 	private final PileIndicatorsConfig config;
-	private final PlayerIndicatorsService playerIndicatorsService;
 
 	@Inject
-	PileIndicatorsOverlay(final Client client, final PileIndicatorsPlugin plugin, final PileIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
+	PileIndicatorsOverlay(final Client client, final PileIndicatorsPlugin plugin, final PileIndicatorsConfig config)
 	{
 		super(plugin);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
-		this.playerIndicatorsService = playerIndicatorsService;
 
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -60,18 +61,7 @@ public class PileIndicatorsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		ArrayList<ArrayList<Actor>> stackList = plugin.getStacks();
-		if (config.drawPileHull())
-		{
-			playerIndicatorsService.forEachPlayer((player, color) ->
-			{
-				if (plugin.isPile(player))
-				{
-					Polygon objectClickbox = player.getConvexHull();
 
-					renderPoly(graphics, config.playerPileColor(), objectClickbox);
-				}
-			});
-		}
 		if (stackList != null)
 		{
 			for (ArrayList<Actor> actorArrayList : stackList)
@@ -79,22 +69,21 @@ public class PileIndicatorsOverlay extends Overlay
 				PileType pileType = plugin.getPileType(actorArrayList);
 				Color pileColor = plugin.getColorByPileType(pileType);
 
-				try 
+				try
 				{
 					Actor actorToRender = actorArrayList.get(0); //guaranteed to have at least two players
-					final String text;
-					if (config.numberOnly())
+					final String pileTypeStr = pileType == PileType.PLAYER_PILE ? "PLAYER" : pileType == PileType.NPC_PILE ? "NPC" : pileType == PileType.MIXED_PILE ? "MIXED" : "";
+					final String text = config.numberOnly() ? "" + actorArrayList.size() : (pileTypeStr + " PILE SIZE: " + actorArrayList.size());
+					if (config.drawPileTile())
 					{
-						text = "" + actorArrayList.size();
+						OverlayUtil.renderPolygon(graphics, actorToRender.getCanvasTilePoly(), pileColor);
 					}
-					else
+					if (config.drawPileHull())
 					{
-						text = "PILE SIZE: " + actorArrayList.size();
+						OverlayUtil.renderPolygon(graphics, actorToRender.getConvexHull(), pileColor);
 					}
-
-					OverlayUtil.renderPolygon(graphics, actorToRender.getCanvasTilePoly(), pileColor);
 					OverlayUtil.renderTextLocation(graphics, actorToRender.getCanvasTextLocation(graphics, text, 40), text, pileColor);
-				} 
+				}
 				catch (Exception ignored)
 				{
 				}
@@ -102,18 +91,6 @@ public class PileIndicatorsOverlay extends Overlay
 		}
 
 		return null;
-	}
-
-	private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
-	{
-		if (polygon != null)
-		{
-			graphics.setColor(color);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(polygon);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-			graphics.fill(polygon);
-		}
 	}
 
 }
