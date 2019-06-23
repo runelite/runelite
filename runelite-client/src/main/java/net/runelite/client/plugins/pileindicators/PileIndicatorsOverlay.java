@@ -26,6 +26,7 @@ package net.runelite.client.plugins.pileindicators;
 
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.client.plugins.playerindicators.PlayerIndicatorsService;
 import net.runelite.client.ui.overlay.*;
 
 import javax.inject.Inject;
@@ -38,14 +39,16 @@ public class PileIndicatorsOverlay extends Overlay
 	private final Client client;
 	private final PileIndicatorsPlugin plugin;
 	private final PileIndicatorsConfig config;
+	private final PlayerIndicatorsService playerIndicatorsService;
 
 	@Inject
-	PileIndicatorsOverlay(final Client client, final PileIndicatorsPlugin plugin, final PileIndicatorsConfig config)
+	PileIndicatorsOverlay(final Client client, final PileIndicatorsPlugin plugin, final PileIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
 	{
 		super(plugin);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.playerIndicatorsService = playerIndicatorsService;
 
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -57,7 +60,18 @@ public class PileIndicatorsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		ArrayList<ArrayList<Actor>> stackList = plugin.getStacks();
+		if (config.drawPileHull())
+		{
+			playerIndicatorsService.forEachPlayer((player, color) ->
+			{
+				if (plugin.isPile(player))
+				{
+					Polygon objectClickbox = player.getConvexHull();
 
+					renderPoly(graphics, config.playerPileColor(), objectClickbox);
+				}
+			});
+		}
 		if (stackList != null)
 		{
 			for (ArrayList<Actor> actorArrayList : stackList)
@@ -89,4 +103,17 @@ public class PileIndicatorsOverlay extends Overlay
 
 		return null;
 	}
+
+	private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
+	{
+		if (polygon != null)
+		{
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.draw(polygon);
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+			graphics.fill(polygon);
+		}
+	}
+
 }

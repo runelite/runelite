@@ -172,10 +172,6 @@ public class PlayerIndicatorsOverlay extends Overlay
 		{
 			name = "[C] " + name;
 		}
-		if (config.highlightPile() && playerIndicatorsPlugin.isPile(actor))
-		{
-			name = "[P] " + name;
-		}
 		if (config.showCombatLevel())
 		{
 

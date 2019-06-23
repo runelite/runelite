@@ -28,7 +28,9 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -38,6 +40,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @PluginDescriptor(
 	name = "Pile Indicators",
@@ -64,6 +68,9 @@ public class PileIndicatorsPlugin extends Plugin
 	@Inject
 	private PileIndicatorsOverlay overlay;
 
+	private List<String> pileList;
+	private ArrayList<String> callers = new ArrayList<>();
+
 	@Provides
 	PileIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
@@ -85,6 +92,35 @@ public class PileIndicatorsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (config.highlightPile() && callers != null)
+		{
+			for (Player p : client.getPlayers())
+			{
+				for (String name : callers)
+				{
+					Actor pile;
+					String finalName = name.toLowerCase().replace("_", " ");
+					if (p.getName().toLowerCase().replace("_", " ").equals(finalName))
+					{
+						pile = p.getInteracting();
+						if (pile != null)
+						{
+							pileList.set(callers.indexOf(name), pile.getName());
+							//pileList.add(pile.getName());
+						}
+						else
+						{
+							pileList.set(callers.indexOf(name), "");
+						}
+					}
+				}
+			}
+		}
 	}
 
 	protected ArrayList<ArrayList<Actor>> getStacks()
@@ -157,6 +193,15 @@ public class PileIndicatorsPlugin extends Plugin
 				return config.mixedPileColor();
 		}
 		return null;
+	}
+
+	boolean isPile(Player player)
+	{
+		if (Objects.nonNull(pileList) && pileList.size() > 0)
+		{
+			return pileList.contains(player.getName());
+		}
+		return false;
 	}
 
 	protected PileType getPileType(ArrayList<Actor> pile)

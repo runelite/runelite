@@ -187,4 +187,27 @@ public interface PileIndicatorsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 13,
+			keyName = "drawPileHull",
+			name = "Draws the hull of the pile.",
+			description = "Draws the hull of the pile for best visibility."
+	)
+	default boolean drawPileHull()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 14,
+			keyName = "highlightPile",
+			name = "Highlight Pile",
+			description = "Highlights Pile Onscreen"
+	)
+	default boolean highlightPile()
+	{
+		return false;
+	}
+
 }
