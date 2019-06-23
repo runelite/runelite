@@ -40,21 +40,18 @@ import org.slf4j.LoggerFactory;
 
 public class RuneLiteAPI
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneLiteAPI.class);
-
 	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
-
 	public static final OkHttpClient CLIENT;
 	public static final OkHttpClient RLP_CLIENT;
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-	public static String userAgent;
-
+	private static final Logger logger = LoggerFactory.getLogger(RuneLiteAPI.class);
 	private static final String BASE = "https://api.runelite.net";
 	private static final String PLUS_BASE = "https://api.runelitepl.us";
 	private static final String RLPLUS = "https://session.runelitepl.us";
 	private static final String WSBASE = "https://api.runelite.net/ws";
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final Properties properties = new Properties();
+	public static String userAgent;
 	private static String version;
 	private static int rsVersion;
 
@@ -99,7 +96,7 @@ public class RuneLiteAPI
 			.build();
 
 
-		RLP_CLIENT= new OkHttpClient.Builder()
+		RLP_CLIENT = new OkHttpClient.Builder()
 			.pingInterval(30, TimeUnit.SECONDS)
 			.addNetworkInterceptor(new Interceptor()
 			{
