@@ -26,10 +26,6 @@ package net.runelite.http.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -37,132 +33,203 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class RuneLiteAPI
 {
 	private static final Logger logger = LoggerFactory.getLogger(RuneLiteAPI.class);
-
+	
 	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
-
+	
 	public static final OkHttpClient CLIENT;
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	public static String userAgent;
-
-	private static final String BASE = "https://api.runelitepl.us";
-	private static final String RLPLUS = "https://session.runelitepl.us";
-	private static final String WSBASE = "https://api.runelitepl.us/ws";
+	
+	private static final String BASE = "https://api.runelite.net";
+	private static final String RLP_BASE = "https://api.runelitepl.us";
+	private static final String MAVEN_METADATA =
+			"http://repo.runelite.net/net/runelite/runelite-parent/maven-metadata.xml";
+	private static final String RLPLUS_SESSION = "https://session.runelitepl.us";
+	private static final String WSBASE = "https://api.runelite.net/ws";
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final Properties properties = new Properties();
 	private static String version;
+	private static String xteaVersion;
 	private static int rsVersion;
-
+	
 	static
 	{
 		try
 		{
 			InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties");
 			properties.load(in);
-
-			version = properties.getProperty("runelite.version");
+			
+			try (ByteArrayInputStream fis = new ByteArrayInputStream(downloadUrl(new URL(MAVEN_METADATA))))
+			{
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				factory.setValidating(false);
+				factory.setIgnoringElementContentWhitespace(true);
+				DocumentBuilder builder = factory.newDocumentBuilder();
+				Document doc = builder.parse(fis);
+				NodeList versionList = doc.getElementsByTagName("version");
+				for (int i = 0; i != versionList.getLength(); i++)
+				{
+					Node node = versionList.item(i);
+					if (node.getTextContent() != null)
+					{
+						version = node.getTextContent();
+					}
+				}
+			}
+			
+			xteaVersion = properties.getProperty("runelite.version");
 			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
 			String commit = properties.getProperty("runelite.commit");
 			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
-
+			
 			userAgent = "RuneLite/" + version + "-" + commit + (dirty ? "+" : "");
 		}
 		catch (NumberFormatException e)
 		{
 			throw new RuntimeException("Version string has not been substituted; Re-run maven");
 		}
-		catch (IOException ex)
+		catch (IOException | ParserConfigurationException | SAXException ex)
 		{
 			logger.error(null, ex);
 		}
-
+		
 		CLIENT = new OkHttpClient.Builder()
-			.pingInterval(30, TimeUnit.SECONDS)
-			.addNetworkInterceptor(new Interceptor()
-			{
-
-				@Override
-				public Response intercept(Chain chain) throws IOException
+				.pingInterval(30, TimeUnit.SECONDS)
+				.addNetworkInterceptor(new Interceptor()
 				{
-					Request userAgentRequest = chain.request()
-						.newBuilder()
-						.header("User-Agent", userAgent)
-						.build();
-					return chain.proceed(userAgentRequest);
-				}
-			})
-			.build();
+					
+					@Override
+					public Response intercept(Chain chain) throws IOException
+					{
+						Request userAgentRequest = chain.request()
+								.newBuilder()
+								.header("User-Agent", userAgent)
+								.build();
+						return chain.proceed(userAgentRequest);
+					}
+				})
+				.build();
 	}
-
+	
 	public static HttpUrl getSessionBase()
 	{
 		final String prop = System.getProperty("runelite.session.url");
-
+		
 		if (prop != null && !prop.isEmpty())
 		{
 			return HttpUrl.parse(prop);
 		}
-
+		
 		return HttpUrl.parse(BASE + "/session");
 	}
-
+	
 	public static HttpUrl getRuneLitePlusSessionBase()
 	{
-		return HttpUrl.parse(RLPLUS);
+		return HttpUrl.parse(RLPLUS_SESSION);
 	}
-
+	
 	public static HttpUrl getApiBase()
 	{
 		final String prop = System.getProperty("runelite.http-service.url");
-
+		
 		if (prop != null && !prop.isEmpty())
 		{
 			return HttpUrl.parse(prop);
 		}
-
+		
 		return HttpUrl.parse(BASE + "/runelite-" + getVersion());
 	}
-
+	
+	public static HttpUrl getRlpBase()
+	{
+		return HttpUrl.parse(RLP_BASE + "/runelite-" + getXteaVersion());
+	}
+	
 	public static HttpUrl getStaticBase()
 	{
 		final String prop = System.getProperty("runelite.static.url");
-
+		
 		if (prop != null && !prop.isEmpty())
 		{
 			return HttpUrl.parse(prop);
 		}
-
+		
 		return HttpUrl.parse(STATICBASE);
 	}
-
+	
 	public static HttpUrl getWsEndpoint()
 	{
 		final String prop = System.getProperty("runelite.ws.url");
-
+		
 		if (prop != null && !prop.isEmpty())
 		{
 			return HttpUrl.parse(prop);
 		}
-
+		
 		return HttpUrl.parse(WSBASE);
 	}
-
+	
 	public static String getVersion()
 	{
 		return version;
 	}
-
+	
 	public static void setVersion(String version)
 	{
 		RuneLiteAPI.version = version;
 	}
-
+	
 	public static int getRsVersion()
 	{
 		return rsVersion;
 	}
-
+	
+	private static byte[] downloadUrl(URL toDownload)
+	{
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		InputStream stream = null;
+		try
+		{
+			byte[] chunk = new byte[4096];
+			int bytesRead;
+			stream = toDownload.openStream();
+			
+			while ((bytesRead = stream.read(chunk)) > 0)
+			{
+				outputStream.write(chunk, 0, bytesRead);
+			}
+			stream.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		
+		return outputStream.toByteArray();
+	}
+	
+	public static String getXteaVersion()
+	{
+		return xteaVersion;
+	}
 }
