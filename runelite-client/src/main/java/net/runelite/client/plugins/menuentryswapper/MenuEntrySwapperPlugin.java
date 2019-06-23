@@ -862,7 +862,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					}
 				}
 			}
-			else if (target.equals("magpie impling jar") || (target.equals("nature impling jar")))
+			else if (target.equals("magpie impling jar") || (target.equals("nature impling jar")) || (target.equals("ninja impling jar")))
 			{
 				if (client.getItemContainer(InventoryID.INVENTORY) != null)
 				{
