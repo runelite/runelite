@@ -66,7 +66,7 @@ public class XteaClient
 		{
 			try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
 			{
-				logger.info("xtea response " + response.code());
+				logger.debug("xtea response " + response.code());
 			}
 		}
 		catch (IOException e)
