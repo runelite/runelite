@@ -25,6 +25,7 @@
 package net.runelite.http.api;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -44,12 +45,12 @@ public class RuneLiteAPI
 	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
 
 	public static final OkHttpClient CLIENT;
-	public static final Gson GSON = new Gson();
+	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	public static String userAgent;
 
-	private static final String BASE = "https://api.runelite.net";
+	private static final String BASE = "https://api.runelitepl.us";
 	private static final String RLPLUS = "https://session.runelitepl.us";
-	private static final String WSBASE = "https://api.runelite.net/ws";
+	private static final String WSBASE = "https://api.runelitepl.us/ws";
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final Properties properties = new Properties();
 	private static String version;

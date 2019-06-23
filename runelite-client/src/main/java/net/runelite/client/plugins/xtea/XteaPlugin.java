@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -48,17 +49,20 @@ public class XteaPlugin extends Plugin
 	private final XteaClient xteaClient = new XteaClient();
 
 	private final Set<Integer> sentRegions = new HashSet<>();
+	private int[][] xteaKeys;
 
 	@Inject
 	private Client client;
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	public void onGameTick(GameTick gameTick)
 	{
-		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		// Only send when keys are updated
+		if (xteaKeys == client.getXteaKeys())
 		{
 			return;
 		}
+		xteaKeys = client.getXteaKeys();
 
 		int revision = client.getRevision();
 		int[] regions = client.getMapRegions();
