@@ -84,6 +84,16 @@ public abstract class RSSceneMixin implements RSScene
 		}
 
 		final boolean isGpu = client.isGpu();
+		final boolean checkClick = client.isCheckClick();
+		if (!client.isMenuOpen())
+		{
+			// Force check click to update the selected tile
+			client.setCheckClick(true);
+			final int mouseX = client.getMouseX();
+			final int mouseY = client.getMouseY();
+			client.setMouseCanvasHoverPositionX(mouseX - client.getViewportXOffset());
+			client.setMouseCanvasHoverPositionY(mouseY - client.getViewportYOffset());
+		}
 
 		if (!isGpu)
 		{
@@ -292,6 +302,10 @@ public abstract class RSSceneMixin implements RSScene
 								client.setEntitiesAtMouseCount(0);
 							}
 							client.setCheckClick(false);
+							if (!checkClick)
+							{
+								client.setViewportWalking(false);
+							}
 							client.getCallbacks().drawScene();
 							return;
 						}
@@ -363,6 +377,10 @@ public abstract class RSSceneMixin implements RSScene
 								client.setEntitiesAtMouseCount(0);
 							}
 							client.setCheckClick(false);
+							if (!checkClick)
+							{
+								client.setViewportWalking(false);
+							}
 							client.getCallbacks().drawScene();
 							return;
 						}
@@ -376,6 +394,12 @@ public abstract class RSSceneMixin implements RSScene
 			client.setEntitiesAtMouseCount(0);
 		}
 		client.setCheckClick(false);
+		if (!checkClick)
+		{
+			// If checkClick was false, then the selected tile wouldn't have existed next tick,
+			// so clear viewport walking in order to prevent it triggering a walk
+			client.setViewportWalking(false);
+		}
 		client.getCallbacks().drawScene();
 	}
 
