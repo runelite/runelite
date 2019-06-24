@@ -31,6 +31,7 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
@@ -54,8 +55,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
  * TODO: Remember current looting bag value when client restarts
  * TODO: Write an event for picking up an item (with opened looting bag) and add its price to the current looting bag value
  * TODO: Write something to capture adding items to a looting bag and add its price to the current looting bag value
- * TODO: Make if check for empty looting bag so it doesn't throw any errors
  */
+@Slf4j
 public class LootingBagViewerPlugin extends Plugin
 {
 	@Inject
@@ -112,7 +113,7 @@ public class LootingBagViewerPlugin extends Plugin
 	{
 		if (configChanged.getKey().equals("renderViewer"))
 		{
-			if (Boolean.parseBoolean(configChanged.getNewValue()) == true)
+			if (Boolean.parseBoolean(configChanged.getNewValue()))
 			{
 				overlayManager.add(overlay);
 			}
@@ -123,7 +124,7 @@ public class LootingBagViewerPlugin extends Plugin
 		}
 		if (configChanged.getKey().equals("renderLootingBag"))
 		{
-			if (Boolean.parseBoolean(configChanged.getNewValue()) == true)
+			if (Boolean.parseBoolean(configChanged.getNewValue()))
 			{
 				overlayManager.add(widgetOverlay);
 			}
@@ -147,16 +148,22 @@ public class LootingBagViewerPlugin extends Plugin
 			clientThread.invokeLater(() ->
 			{
 				Widget value = client.getWidget(81, 6);
+				log.debug("val: {}", value.getText());
+
 				if (!Strings.isNullOrEmpty(value.getText()))
 				{
-					String str = value.getText();
-					str = str.replace("Bag value: ", "")
-							.replace("Value: ", "")
-							.replace(" coins", "")
-							.replace(",", "");
+					if (value.getText().equals("Value: -")) {
+						setValueToShow(-1);
+					} else {
+						String str = value.getText();
+						str = str.replace("Bag value: ", "")
+								.replace("Value: ", "")
+								.replace(" coins", "")
+								.replace(",", "");
 
-					int val = Integer.parseInt(str);
-					setValueToShow(Math.round(val) / 1000);
+						int val = Integer.parseInt(str);
+						setValueToShow(Math.round(val) / 1000);
+					}
 				}
 			});
 		}
