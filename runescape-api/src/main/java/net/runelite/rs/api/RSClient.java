@@ -552,8 +552,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("soundLocations")
 	int[] getSoundLocations();
 
-	@Import("unknownSoundValues1")
-	int[] getUnknownSoundValues1();
+	@Import("queuedSoundEffectLoops")
+	int[] getQueuedSoundEffectLoops();
 
 	@Import("queuedSoundEffectDelays")
 	int[] getQueuedSoundEffectDelays();
