@@ -32,12 +32,22 @@ public class Parse
 	{
 		try
 		{
+			StringBuilder sb = new StringBuilder();
+
+			for (String str : value.split("\n"))
+			{
+				if (!str.startsWith("//"))
+				{
+					sb.append(str + "\n");
+				}
+			}
+
 			Splitter NEWLINE_SPLITTER = Splitter
 				.on("\n")
 				.omitEmptyStrings()
 				.trimResults();
 
-			NEWLINE_SPLITTER.withKeyValueSeparator(':').split(value);
+			NEWLINE_SPLITTER.withKeyValueSeparator(':').split(sb);
 			return true;
 		}
 		catch (IllegalArgumentException ex)
