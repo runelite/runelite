@@ -28,6 +28,7 @@ package net.runelite.client.plugins.raids;
 import com.google.common.collect.Lists;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.io.IOException;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
@@ -70,11 +71,13 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -96,6 +99,8 @@ import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
+import static net.runelite.client.util.Text.sanitize;
+import net.runelite.http.api.chat.ChatClient;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
@@ -115,6 +120,7 @@ public class RaidsPlugin extends Plugin
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
+	private static final String LAYOUT_COMMAND_STRING = "!layout";
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 	private static final int LINE_COMPONENT_HEIGHT = 16;
 	private static final Pattern LEVEL_COMPLETE_REGEX = Pattern.compile("(.+) level complete! Duration: ([0-9:]+)");
@@ -138,6 +144,10 @@ public class RaidsPlugin extends Plugin
 	private Client client;
 	@Inject
 	private DrawManager drawManager;
+	@Inject
+	private ChatCommandManager chatCommandManager;
+	@Inject
+	private ChatClient chatClient;
 	@Inject
 	private ScheduledExecutorService executor;
 	@Inject
@@ -212,6 +222,7 @@ public class RaidsPlugin extends Plugin
 		keyManager.registerKeyListener(hotkeyListener);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
+		chatCommandManager.registerCommandAsync(LAYOUT_COMMAND_STRING, this::lookupRaid, this::submitRaidLookup);
 		widgetOverlay = overlayManager.getWidgetOverlay(WidgetInfo.RAIDS_POINTS_INFOBOX);
 		RaidsPanel panel = injector.getInstance(RaidsPanel.class);
 		panel.init(config);
@@ -242,6 +253,7 @@ public class RaidsPlugin extends Plugin
 		raidStarted = false;
 		raid = null;
 		timer = null;
+		chatCommandManager.unregisterCommand(LAYOUT_COMMAND_STRING);
 
 		final Widget widget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX);
 		if (widget != null)
@@ -478,6 +490,72 @@ public class RaidsPlugin extends Plugin
 					break;
 			}
 		}
+	}
+
+	private void lookupRaid(final ChatMessage chatmessage, final String message)
+	{
+		final String player;
+		if (chatmessage.getType().equals(ChatMessageType.PRIVATECHATOUT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = sanitize(chatmessage.getName());
+		}
+
+		final String layout;
+		try
+		{
+			layout = chatClient.getLayout(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup raids layout", ex);
+			return;
+		}
+
+		chatmessage.getMessageNode().setRuneLiteFormatMessage(new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Layout: ")
+				.append(ChatColorType.NORMAL)
+				.append(layout)
+				.build());
+
+		chatMessageManager.update(chatmessage.getMessageNode());
+		client.refreshChat();
+	}
+
+	private boolean submitRaidLookup(final ChatInput chatInput, final String value)
+	{
+		if (!inRaidChambers)
+		{
+			return true;
+		}
+
+		final String playerName = sanitize(client.getLocalPlayer().getName());
+		final String layout = getRaid().getLayout().toCodeString();
+		final String rooms = getRaid().toRoomString();
+		final String raidData = "[" + layout + "]: " + rooms;
+		log.debug("Submitting raids layout {} for {}", raidData, playerName);
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitLayout(playerName, raidData);
+			}
+			catch (IOException e)
+			{
+				log.warn("unable to submit raids layout", e);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
 	}
 
 	private void updatePartyMembers(boolean force)
