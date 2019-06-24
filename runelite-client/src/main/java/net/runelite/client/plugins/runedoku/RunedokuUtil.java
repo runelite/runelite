@@ -180,4 +180,41 @@ class RunedokuUtil
 		return myArr;
 	}
 
+	/**
+	 * @param client
+	 * @return
+	 */
+	int getSelectedPiece(Client client)
+	{
+		for (int i = 91; i < 100; i++)
+		{
+			Widget selectedPieceWidget = client.getWidget(288, i);
+			if (!selectedPieceWidget.isHidden())
+			{
+				switch (i)
+				{
+					case 91:
+						return 8;
+					case 92:
+						return 6;
+					case 93:
+						return 4;
+					case 94:
+						return 2;
+					case 95:
+						return 1;
+					case 96:
+						return 3;
+					case 97:
+						return 5;
+					case 98:
+						return 7;
+					case 99:
+						return 9;
+				}
+			}
+		}
+		return -1;
+	}
+
 }
