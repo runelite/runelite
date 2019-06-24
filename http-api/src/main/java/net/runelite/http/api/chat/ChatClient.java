@@ -324,4 +324,90 @@ public class ChatClient
 	{
 		return LAYOUT_VALIDATOR.test(layout);
 	}
+
+	public House[] getHosts(int world, String location) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+				.addPathSegment("chat")
+				.addPathSegment("hosts")
+				.addQueryParameter("world", Integer.toString(world))
+				.addQueryParameter("location", location)
+				.build();
+
+		Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unable to look up hosts!");
+			}
+
+			InputStream in = response.body().byteStream();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), House[].class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
+	}
+
+	public boolean submitHost(int world, String location, House house) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+				.addPathSegment("chat")
+				.addPathSegment("hosts")
+				.addQueryParameter("world", Integer.toString(world))
+				.addQueryParameter("location", location)
+				.addQueryParameter("owner", house.getOwner())
+				.addQueryParameter("guildedAltar", Boolean.toString(house.isGuildedAltarPresent()))
+				.addQueryParameter("occultAltar", Boolean.toString(house.isOccultAltarPresent()))
+				.addQueryParameter("spiritTree", Boolean.toString(house.isSpiritTreePresent()))
+				.addQueryParameter("fairyRing", Boolean.toString(house.isFairyRingPresent()))
+				.addQueryParameter("wildernessObelisk", Boolean.toString(house.isWildernessObeliskPresent()))
+				.addQueryParameter("repairStand", Boolean.toString(house.isRepairStandPresent()))
+				.addQueryParameter("combatDummy", Boolean.toString(house.isCombatDummyPresent()))
+				.build();
+
+		Request request = new Request.Builder()
+				.post(RequestBody.create(null, new byte[0]))
+				.url(url)
+				.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+	}
+
+	public boolean removeHost(int world, String location, House house) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+				.addPathSegment("chat")
+				.addPathSegment("hosts")
+				.addQueryParameter("world", Integer.toString(world))
+				.addQueryParameter("location", location)
+				.addQueryParameter("owner", house.getOwner())
+				.addQueryParameter("guildedAltar", Boolean.toString(house.isGuildedAltarPresent()))
+				.addQueryParameter("occultAltar", Boolean.toString(house.isOccultAltarPresent()))
+				.addQueryParameter("spiritTree", Boolean.toString(house.isSpiritTreePresent()))
+				.addQueryParameter("fairyRing", Boolean.toString(house.isFairyRingPresent()))
+				.addQueryParameter("wildernessObelisk", Boolean.toString(house.isWildernessObeliskPresent()))
+				.addQueryParameter("repairStand", Boolean.toString(house.isRepairStandPresent()))
+				.addQueryParameter("combatDummy", Boolean.toString(house.isCombatDummyPresent()))
+				.addQueryParameter("remove", Boolean.toString(true))
+				.build();
+
+		Request request = new Request.Builder()
+				.post(RequestBody.create(null, new byte[0]))
+				.url(url)
+				.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+	}
 }
