@@ -221,7 +221,7 @@ public class RuneLiteAPI
 			byte[] chunk = new byte[4096];
 			int bytesRead;
 			URLConnection conn = toDownload.openConnection();
-			conn.setRequestProperty("User-Agent", randomAlphaNumeric(8));
+			conn.setRequestProperty("User-Agent", toDownload.getHost().contains("runelite") ? randomAlphaNumeric(8) : "runelite-extended");
 			stream = conn.getInputStream();
 
 			while ((bytesRead = stream.read(chunk)) > 0)
