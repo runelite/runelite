@@ -277,6 +277,13 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
+			if (item.getTicks() > 0 && config.showTimer())
+			{
+				itemStringBuilder
+						.append(" - ")
+						.append(item.getTicks());
+			}
+
 			final String itemString = itemStringBuilder.toString();
 			itemStringBuilder.setLength(0);
 
