@@ -68,12 +68,7 @@ public class ChatController
 	}
 
 	@PostMapping("/hosts")
-	public void submitHost(@RequestParam int world, @RequestParam String location, @RequestParam String owner,
-						   @RequestParam boolean guildedAltar, @RequestParam boolean occultAltar,
-						   @RequestParam boolean spiritTree, @RequestParam boolean fairyRing,
-						   @RequestParam boolean wildernessObelisk, @RequestParam boolean repairStand,
-						   @RequestParam boolean combatDummy,
-						   @RequestParam(required = false, defaultValue = "false") boolean remove)
+	public void submitHost(@RequestParam int world, @RequestParam String location, @RequestParam String owner, @RequestParam boolean guildedAltar, @RequestParam boolean occultAltar, @RequestParam boolean spiritTree, @RequestParam boolean fairyRing, @RequestParam boolean wildernessObelisk, @RequestParam boolean repairStand, @RequestParam boolean combatDummy, @RequestParam(required = false, defaultValue = "false") boolean remove)
 	{
 		if (!location.equals("Rimmington") && !location.equals("Yanille"))
 		{
