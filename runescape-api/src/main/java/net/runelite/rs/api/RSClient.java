@@ -140,7 +140,6 @@ public interface RSClient extends RSGameEngine, Client
 	int getRSGameState();
 
 	@Import("checkClick")
-	@Override
 	void setCheckClick(boolean checkClick);
 
 	@Import("mouseX2")
@@ -1007,4 +1006,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("soundEffectVolume")
 	int getSoundEffectVolume();
+
+	@Import("viewportWalking")
+	void setViewportWalking(boolean viewportWalking);
 }
