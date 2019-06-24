@@ -45,6 +45,7 @@ public class FpsDrawListener implements Runnable
 	private static final int SAMPLE_SIZE = 4;
 
 	private final FpsConfig config;
+	private final FpsPlugin plugin;
 
 	private long targetDelay = 0;
 
@@ -58,9 +59,10 @@ public class FpsDrawListener implements Runnable
 	private long sleepDelay = 0;
 
 	@Inject
-	private FpsDrawListener(FpsConfig config)
+	private FpsDrawListener(FpsConfig config, FpsPlugin plugin)
 	{
 		this.config = config;
+		this.plugin = plugin;
 		reloadConfig();
 	}
 
@@ -83,8 +85,8 @@ public class FpsDrawListener implements Runnable
 
 	private boolean isEnforced()
 	{
-		return FpsLimitMode.ALWAYS == config.limitMode()
-			|| (FpsLimitMode.UNFOCUSED == config.limitMode() && !isFocused);
+		return FpsLimitMode.ALWAYS == plugin.getLimitMode()
+			|| (FpsLimitMode.UNFOCUSED == plugin.getLimitMode() && !isFocused);
 	}
 
 	@Override
