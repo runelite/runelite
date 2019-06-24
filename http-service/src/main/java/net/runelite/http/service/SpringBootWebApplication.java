@@ -129,7 +129,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		return getDataSource(dataSourceProperties);
 	}
 
-	@Bean(value = "runelite-cache", destroyMethod = "")
+	@Bean(value = "runelite-cache2", destroyMethod = "")
 	public DataSource runeliteCache2DataSource(@Qualifier("dataSourceRuneLiteCache") DataSourceProperties dataSourceProperties)
 	{
 		return getDataSource(dataSourceProperties);
@@ -148,7 +148,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	}
 
 	@Bean("Runelite Cache SQL2O")
-	public Sql2o cacheSql2o(@Qualifier("runelite-cache") DataSource dataSource)
+	public Sql2o cacheSql2o(@Qualifier("runelite-cache2") DataSource dataSource)
 	{
 		return createSql2oFromDataSource(dataSource);
 	}

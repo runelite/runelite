@@ -26,17 +26,9 @@ package net.runelite.http.service.xtea;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import java.io.IOException;
 import java.util.List;
-import net.runelite.cache.IndexType;
-import net.runelite.cache.fs.Container;
-import net.runelite.cache.util.Djb2;
 import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
-import net.runelite.http.service.cache.CacheService;
-import net.runelite.http.service.cache.beans.ArchiveEntry;
-import net.runelite.http.service.cache.beans.CacheEntry;
-import net.runelite.http.service.util.exception.InternalServerErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -61,7 +53,6 @@ public class XteaService
 		+ ") ENGINE=InnoDB";
 
 	private final Sql2o sql2o;
-	private final CacheService cacheService;
 
 	private final Cache<Integer, XteaCache> keyCache = CacheBuilder.newBuilder()
 		.maximumSize(1024)
@@ -69,12 +60,10 @@ public class XteaService
 
 	@Autowired
 	public XteaService(
-		@Qualifier("Runelite SQL2O") Sql2o sql2o,
-		CacheService cacheService
+		@Qualifier("Runelite SQL2O") Sql2o sql2o
 	)
 	{
 		this.sql2o = sql2o;
-		this.cacheService = cacheService;
 
 		try (Connection con = sql2o.beginTransaction())
 		{
@@ -120,13 +109,6 @@ public class XteaService
 
 		try (Connection con = sql2o.beginTransaction())
 		{
-			CacheEntry cache = cacheService.findMostRecent();
-
-			if (cache == null)
-			{
-				throw new InternalServerErrorException("No most recent cache");
-			}
-
 			Query query = null;
 
 			for (XteaKey key : xteaRequest.getKeys())
@@ -142,6 +124,7 @@ public class XteaService
 				}
 
 				// already have these?
+				// TODO : check if useful / works should check with findLatestXtea
 				if (xteaEntry != null
 					&& xteaEntry.getKey1() == keys[0]
 					&& xteaEntry.getKey2() == keys[1]
@@ -151,10 +134,6 @@ public class XteaService
 					continue;
 				}
 
-				if (!checkKeys(cache, region, keys))
-				{
-					continue;
-				}
 
 				if (query == null)
 				{
@@ -199,42 +178,6 @@ public class XteaService
 				+ "where region = :region order by time desc limit 1")
 				.addParameter("region", region)
 				.executeAndFetchFirst(XteaEntry.class);
-		}
-	}
-
-	private boolean checkKeys(CacheEntry cache, int regionId, int[] keys)
-	{
-		int x = regionId >>> 8;
-		int y = regionId & 0xFF;
-
-		String archiveName = new StringBuilder()
-			.append('l')
-			.append(x)
-			.append('_')
-			.append(y)
-			.toString();
-		int archiveNameHash = Djb2.hash(archiveName);
-
-		ArchiveEntry archiveEntry = cacheService.findArchiveForTypeAndName(cache, IndexType.MAPS, archiveNameHash);
-		if (archiveEntry == null)
-		{
-			throw new InternalServerErrorException("Unable to find archive for region");
-		}
-
-		byte[] data = cacheService.getArchive(archiveEntry);
-		if (data == null)
-		{
-			throw new InternalServerErrorException("Unable to get archive data");
-		}
-
-		try
-		{
-			Container.decompress(data, keys);
-			return true;
-		}
-		catch (IOException ex)
-		{
-			return false;
 		}
 	}
 }
