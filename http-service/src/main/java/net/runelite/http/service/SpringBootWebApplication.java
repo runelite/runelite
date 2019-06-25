@@ -73,7 +73,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 			@Override
 			public void contextInitialized(ServletContextEvent sce)
 			{
-				log.info("RuneLite API started");
+				log.info("RuneLitePlus API started");
 			}
 
 			@Override
