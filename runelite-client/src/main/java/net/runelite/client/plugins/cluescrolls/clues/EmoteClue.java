@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.Set;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -214,6 +215,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	}
 
 	private final String text;
+	@Nullable
 	private final STASHUnit stashUnit;
 	private final WorldPoint location;
 	private final Emote firstEmote;
@@ -256,15 +258,19 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		if (itemRequirements.length > 0)
 		{
 			Client client = plugin.getClient();
-			client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getObjectId(), 0, 0, 0);
-			int[] intStack = client.getIntStack();
-			boolean stashUnitBuilt = intStack[0] == 1;
 
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("STASH Unit:")
-				.right(stashUnitBuilt ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
-				.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
-				.build());
+			if (stashUnit != null)
+			{
+				client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getObjectId(), 0, 0, 0);
+				int[] intStack = client.getIntStack();
+				boolean stashUnitBuilt = intStack[0] == 1;
+
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("STASH Unit:")
+					.right(stashUnitBuilt ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
+					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
+					.build());
+			}
 
 			panelComponent.getChildren().add(LineComponent.builder().left("Equip:").build());
 
@@ -312,18 +318,21 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localPoint, plugin.getEmoteImage(), Color.ORANGE);
 		}
 
-		final WorldPoint[] worldPoints = stashUnit.getWorldPoints();
-
-		for (final WorldPoint worldPoint : worldPoints)
+		if (stashUnit != null)
 		{
-			final LocalPoint stashUnitLocalPoint = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
+			final WorldPoint[] worldPoints = stashUnit.getWorldPoints();
 
-			if (stashUnitLocalPoint != null)
+			for (final WorldPoint worldPoint : worldPoints)
 			{
-				final Polygon poly = Perspective.getCanvasTilePoly(plugin.getClient(), stashUnitLocalPoint);
-				if (poly != null)
+				final LocalPoint stashUnitLocalPoint = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
+
+				if (stashUnitLocalPoint != null)
 				{
-					OverlayUtil.renderPolygon(graphics, poly, Color.RED);
+					final Polygon poly = Perspective.getCanvasTilePoly(plugin.getClient(), stashUnitLocalPoint);
+					if (poly != null)
+					{
+						OverlayUtil.renderPolygon(graphics, poly, Color.RED);
+					}
 				}
 			}
 		}

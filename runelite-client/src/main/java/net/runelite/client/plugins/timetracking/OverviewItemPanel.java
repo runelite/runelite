@@ -35,6 +35,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import net.runelite.api.Constants;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -60,7 +61,7 @@ class OverviewItemPanel extends JPanel
 		setBorder(new EmptyBorder(7, 7, 7, 7));
 
 		JLabel iconLabel = new JLabel();
-		iconLabel.setMinimumSize(new Dimension(36, 32));
+		iconLabel.setMinimumSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
 		itemManager.getImage(tab.getItemID()).addTo(iconLabel);
 		add(iconLabel, BorderLayout.WEST);
 
