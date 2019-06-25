@@ -31,6 +31,7 @@ import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSGameShell;
@@ -96,5 +97,12 @@ public abstract class RSGameShellMixin implements RSGameShell
 			setReplaceCanvasNextFrame(false);
 			setResizeCanvasNextFrame(true);
 		}
+	}
+
+	@Replace("checkHost")
+	protected final boolean checkHost()
+	{
+		//Always allow host.
+		return true;
 	}
 }
