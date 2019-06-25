@@ -87,7 +87,7 @@ public class MenuAction {
       int var5;
       int var6;
       for(var5 = 0; var5 < Client.menuOptionsCount; ++var5) {
-         if(WorldMapManager.method672(Client.menuOpcodes[var5])) {
+         if(WorldMapManager.isWidgetMenuOpcode(Client.menuOpcodes[var5])) {
             if(var5 < Client.menuOptionsCount - 1) {
                for(var6 = var5; var6 < Client.menuOptionsCount - 1; ++var6) {
                   Client.menuActions[var6] = Client.menuActions[var6 + 1];

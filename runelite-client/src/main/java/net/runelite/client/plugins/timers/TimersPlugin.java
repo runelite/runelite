@@ -396,9 +396,9 @@ public class TimersPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (config.showStamina()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.STAMINA_MIX1
-			|| event.getId() == ItemID.STAMINA_MIX2))
+			&& event.getOption().contains("Drink")
+			&& (event.getIdentifier() == ItemID.STAMINA_MIX1
+			|| event.getIdentifier() == ItemID.STAMINA_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(STAMINA);
@@ -406,9 +406,9 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIFIRE_MIX1
-			|| event.getId() == ItemID.ANTIFIRE_MIX2))
+			&& event.getOption().contains("Drink")
+			&& (event.getIdentifier() == ItemID.ANTIFIRE_MIX1
+			|| event.getIdentifier() == ItemID.ANTIFIRE_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(ANTIFIRE);
@@ -416,9 +416,9 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX1
-			|| event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX2))
+			&& event.getOption().contains("Drink")
+			&& (event.getIdentifier() == ItemID.EXTENDED_ANTIFIRE_MIX1
+			|| event.getIdentifier() == ItemID.EXTENDED_ANTIFIRE_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(EXANTIFIRE);
@@ -426,9 +426,9 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.SUPER_ANTIFIRE_MIX1
-			|| event.getId() == ItemID.SUPER_ANTIFIRE_MIX2))
+			&& event.getOption().contains("Drink")
+			&& (event.getIdentifier() == ItemID.SUPER_ANTIFIRE_MIX1
+			|| event.getIdentifier() == ItemID.SUPER_ANTIFIRE_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(SUPERANTIFIRE);
@@ -436,23 +436,23 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX1
-			|| event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX2))
+			&& event.getOption().contains("Drink")
+			&& (event.getIdentifier() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX1
+			|| event.getIdentifier() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(EXSUPERANTIFIRE);
 			return;
 		}
 
-		TeleportWidget teleportWidget = TeleportWidget.of(event.getWidgetId());
+		TeleportWidget teleportWidget = TeleportWidget.of(event.getActionParam1());
 		if (teleportWidget != null)
 		{
 			lastTeleportClicked = teleportWidget;
 		}
 
 		if (config.showImbuedHeart()
-			&& event.getMenuOption().contains("Invigorate"))
+			&& event.getOption().contains("Invigorate"))
 		{
 			// Needs a hook as there's a few cases where potions boost the same amount as the heart
 			imbuedHeartClicked = true;

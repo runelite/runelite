@@ -70,50 +70,52 @@ public class ClearColorBuffer
 						continue;
 					}
 
-					if (((InvokeStatic) i).getMethod().equals(fillRectangle))
+					if (!((InvokeStatic) i).getMethod().equals(fillRectangle))
 					{
-						int indexToReturnTo = it.nextIndex();
-						count++;
-						it.previous();
-						Instruction current = it.previous();
-						if (current instanceof LDC && ((LDC) current).getConstantAsInt() == 0)
+						continue;
+					}
+
+					int indexToReturnTo = it.nextIndex();
+					count++;
+					it.previous();
+					Instruction current = it.previous();
+					if (current instanceof LDC && ((LDC) current).getConstantAsInt() == 0)
+					{
+						int varIdx = 0;
+						for (; ; )
 						{
-							int varIdx = 0;
-							for (; ; )
+							current = it.previous();
+							if (current instanceof ILoad && ((ILoad) current).getVariableIndex() == 3 - varIdx)
 							{
-								current = it.previous();
-								if (current instanceof ILoad && ((ILoad) current).getVariableIndex() == 3 - varIdx)
-								{
-									varIdx++;
-									log.debug(varIdx + " we can count yay");
-									continue;
-								}
-
-								break;
+								varIdx++;
+								log.debug(varIdx + " we can count yay");
+								continue;
 							}
 
-							if (varIdx == 4)
-							{
-								for (; !(current instanceof InvokeStatic); )
-								{
-									current = it.next();
-								}
-								assert it.nextIndex() == indexToReturnTo;
-
-								it.set(new InvokeStatic(ins, clearBuffer));
-								replaced++;
-								log.debug("Found drawRectangle at {}. Found: {}, replaced {}", m.getName(), count, replaced);
-							}
-							else
-							{
-								log.debug("Welp, guess this wasn't it chief " + m);
-							}
+							break;
 						}
 
-						while (it.nextIndex() != indexToReturnTo)
+						if (varIdx == 4)
 						{
-							it.next();
+							for (; !(current instanceof InvokeStatic); )
+							{
+								current = it.next();
+							}
+							assert it.nextIndex() == indexToReturnTo;
+
+							it.set(new InvokeStatic(ins, clearBuffer));
+							replaced++;
+							log.debug("Found drawRectangle at {}. Found: {}, replaced {}", m.getName(), count, replaced);
 						}
+						else
+						{
+							log.debug("Welp, guess this wasn't it chief " + m);
+						}
+					}
+
+					while (it.nextIndex() != indexToReturnTo)
+					{
+						it.next();
 					}
 				}
 			}

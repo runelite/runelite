@@ -168,7 +168,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		String menuOption = event.getMenuOption();
+		String menuOption = event.getOption();
 
 		if (menuOption.contains(CLEAR_HISTORY))
 		{

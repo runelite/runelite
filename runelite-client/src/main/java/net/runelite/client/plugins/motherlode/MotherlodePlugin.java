@@ -328,11 +328,11 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
-		if (MINE_SPOTS.contains(menu.getId()) &&  menu.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION)
+		if (MINE_SPOTS.contains(menu.getIdentifier()) &&  menu.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION)
 		{
 			resetIdleChecks();
-			int veinX = menu.getActionParam();
-			int veinY = menu.getWidgetId();
+			int veinX = menu.getActionParam0();
+			int veinY = menu.getActionParam1();
 			targetVeinLocation = WorldPoint.fromScene(client, veinX, veinY, client.getPlane());
 		}
 	}

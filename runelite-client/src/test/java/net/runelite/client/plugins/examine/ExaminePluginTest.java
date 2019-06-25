@@ -33,6 +33,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
@@ -88,10 +89,15 @@ public class ExaminePluginTest
 	{
 		when(client.getWidget(anyInt(), anyInt())).thenReturn(mock(Widget.class));
 
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setMenuOption("Examine");
-		menuOptionClicked.setMenuAction(MenuAction.EXAMINE_ITEM);
-		menuOptionClicked.setId(ItemID.ABYSSAL_WHIP);
+		MenuOptionClicked menuOptionClicked = new MenuOptionClicked(new MenuEntry(
+			"Examine",
+			"Something",
+			ItemID.ABYSSAL_WHIP,
+			MenuAction.EXAMINE_ITEM.getId(),
+			123,
+			456,
+			false
+		));
 		examinePlugin.onMenuOptionClicked(menuOptionClicked);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.ITEM_EXAMINE, "", "A weapon from the abyss.", "", 0);
@@ -106,10 +112,17 @@ public class ExaminePluginTest
 	{
 		when(client.getWidget(anyInt(), anyInt())).thenReturn(mock(Widget.class));
 
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setMenuOption("Examine");
-		menuOptionClicked.setMenuAction(MenuAction.EXAMINE_ITEM);
-		menuOptionClicked.setId(ItemID.ABYSSAL_WHIP);
+		MenuOptionClicked menuOptionClicked = new MenuOptionClicked(new MenuEntry(
+			"Examine",
+			"Something",
+			ItemID.ABYSSAL_WHIP,
+			MenuAction.EXAMINE_ITEM.getId(),
+			123,
+			456,
+			false
+		));
+
+
 		examinePlugin.onMenuOptionClicked(menuOptionClicked);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.ITEM_EXAMINE, "", "100000 x Abyssal whip", "", 0);

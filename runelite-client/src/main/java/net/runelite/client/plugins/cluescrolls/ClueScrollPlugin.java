@@ -225,9 +225,9 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked event)
 	{
-		if (event.getMenuOption() != null && event.getMenuOption().equals("Read"))
+		if (event.getOption() != null && event.getOption().equals("Read"))
 		{
-			final ItemDefinition itemComposition = itemManager.getItemDefinition(event.getId());
+			final ItemDefinition itemComposition = itemManager.getItemDefinition(event.getIdentifier());
 
 			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
 			{

@@ -26,6 +26,7 @@ package net.runelite.api.events;
 
 import lombok.Data;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 
 /**
  * An event where a menu option has been clicked.
@@ -42,31 +43,71 @@ import net.runelite.api.MenuAction;
 public class MenuOptionClicked
 {
 	/**
-	 * The action parameter used in the click.
+	 * The actual MenuEntry object representing what was clicked
 	 */
-	private int actionParam;
+	private final MenuEntry menuEntry;
+
 	/**
 	 * The option text added to the menu.
 	 */
-	private String menuOption;
+	public String getOption()
+	{
+		return menuEntry.getOption();
+	}
+
 	/**
 	 * The target of the action.
 	 */
-	private String menuTarget;
+	public String getTarget()
+	{
+		return menuEntry.getTarget();
+	}
+
 	/**
-	 * The action performed.
+	 * MenuAction but int-ish
 	 */
-	private MenuAction menuAction;
+	public int getType()
+	{
+		return menuEntry.getType();
+	}
+
 	/**
 	 * The ID of the object, actor, or item that the interaction targets.
 	 */
-	private int id;
+	public int getIdentifier()
+	{
+		return menuEntry.getIdentifier();
+	}
+
 	/**
-	 * The ID of the widget where the menu was clicked.
-	 *
-	 * @see net.runelite.api.WidgetID
+	 * The action parameter used in the click.
 	 */
-	private int widgetId;
+	public int getActionParam0()
+	{
+		return menuEntry.getParam0();
+	}
+
+	/**
+	 * shit docs
+	 */
+	public int getActionParam1()
+	{
+		return menuEntry.getParam1();
+	}
+
+	public boolean isForceLeftClick()
+	{
+		return menuEntry.isForceLeftClick();
+	}
+
+	/**
+	 * The action performed.
+	 */
+	public MenuAction getMenuAction()
+	{
+		return MenuAction.of(getType());
+	}
+
 	/**
 	 * Whether or not the event has been consumed by a subscriber.
 	 */

@@ -603,23 +603,23 @@ public class SuppliesTrackerPlugin extends Plugin
 		// Create pattern to find eat/drink at beginning
 		Pattern eatPattern = Pattern.compile(EAT_PATTERN);
 		Pattern drinkPattern = Pattern.compile(DRINK_PATTERN);
-		if (eatPattern.matcher(event.getMenuTarget().toLowerCase()).find() || drinkPattern.matcher(event.getMenuTarget().toLowerCase()).find())
+		if (eatPattern.matcher(event.getTarget().toLowerCase()).find() || drinkPattern.matcher(event.getTarget().toLowerCase()).find())
 		{
 			if (actionStack.stream().noneMatch(a ->
 			{
 				if (a instanceof MenuAction.ItemAction)
 				{
 					MenuAction.ItemAction i = (MenuAction.ItemAction) a;
-					return i.getItemID() == event.getId();
+					return i.getItemID() == event.getIdentifier();
 				}
 				return false;
 			}))
 			{
 				old = client.getItemContainer(InventoryID.INVENTORY);
-				int slot = event.getActionParam();
+				int slot = event.getActionParam0();
 				if (old.getItems() != null)
 				{
-					int pushItem = old.getItems()[event.getActionParam()].getId();
+					int pushItem = old.getItems()[event.getActionParam0()].getId();
 					MenuAction newAction = new MenuAction.ItemAction(CONSUMABLE, old.getItems(), pushItem, slot);
 					actionStack.push(newAction);
 				}
@@ -629,8 +629,8 @@ public class SuppliesTrackerPlugin extends Plugin
 		// Create pattern for teleport scrolls and tabs
 		Pattern teleportPattern = Pattern.compile(TELEPORT_PATTERN);
 		Pattern teletabPattern = Pattern.compile(TELETAB_PATTERN);
-		if (teleportPattern.matcher(event.getMenuTarget().toLowerCase()).find() ||
-			teletabPattern.matcher(event.getMenuTarget().toLowerCase()).find())
+		if (teleportPattern.matcher(event.getTarget().toLowerCase()).find() ||
+			teletabPattern.matcher(event.getTarget().toLowerCase()).find())
 		{
 			old = client.getItemContainer(InventoryID.INVENTORY);
 
@@ -638,17 +638,17 @@ public class SuppliesTrackerPlugin extends Plugin
 			if (old != null && old.getItems() != null && actionStack.stream().noneMatch(a ->
 				a.getType() == TELEPORT))
 			{
-				int teleid = event.getId();
-				MenuAction newAction = new MenuAction.ItemAction(TELEPORT, old.getItems(), teleid, event.getActionParam());
+				int teleid = event.getIdentifier();
+				MenuAction newAction = new MenuAction.ItemAction(TELEPORT, old.getItems(), teleid, event.getActionParam0());
 				actionStack.push(newAction);
 			}
 		}
 
 		// Create pattern for spell cast
 		Pattern spellPattern = Pattern.compile(SPELL_PATTERN);
-		// note that here we look at the menuOption not menuTarget b/c the option for all spells is cast
+		// note that here we look at the option not target b/c the option for all spells is cast
 		// but the target differs based on each spell name
-		if (spellPattern.matcher(event.getMenuOption().toLowerCase()).find())
+		if (spellPattern.matcher(event.getOption().toLowerCase()).find())
 		{
 			old = client.getItemContainer(InventoryID.INVENTORY);
 

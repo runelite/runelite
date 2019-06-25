@@ -162,16 +162,16 @@ public class FriendTaggingPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (WidgetInfo.TO_GROUP(event.getWidgetId()) == WidgetInfo.FRIENDS_LIST.getGroupId())
+		if (WidgetInfo.TO_GROUP(event.getActionParam1()) == WidgetInfo.FRIENDS_LIST.getGroupId())
 		{
-			if (Strings.isNullOrEmpty(event.getMenuTarget()))
+			if (Strings.isNullOrEmpty(event.getTarget()))
 			{
 				return;
 			}
 
-			final String sanitizedTarget = Text.removeTags(event.getMenuTarget());
+			final String sanitizedTarget = Text.removeTags(event.getTarget());
 
-			if (event.getMenuOption().equals(ADD_TAG))
+			if (event.getOption().equals(ADD_TAG))
 			{
 				event.consume();
 				final ChatboxTextInput build = chatboxPanelManager.openTextInput("Enter the tag").value("")
@@ -185,7 +185,7 @@ public class FriendTaggingPlugin extends Plugin
 						setTag(sanitizedTarget, content);
 					}).build();
 			}
-			if (event.getMenuOption().equals(DELETE_TAG))
+			if (event.getOption().equals(DELETE_TAG))
 			{
 				event.consume();
 				client.getLogger().info(sanitizedTarget);

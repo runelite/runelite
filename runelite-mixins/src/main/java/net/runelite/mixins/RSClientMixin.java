@@ -1243,13 +1243,18 @@ public abstract class RSClientMixin implements RSClient
 			menuAction -= 2000;
 		}
 
-		final MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setActionParam(actionParam);
-		menuOptionClicked.setMenuOption(menuOption);
-		menuOptionClicked.setMenuTarget(menuTarget);
-		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
-		menuOptionClicked.setId(id);
-		menuOptionClicked.setWidgetId(widgetId);
+		final MenuOptionClicked menuOptionClicked = new MenuOptionClicked(
+			new MenuEntry(
+				menuOption,
+				menuTarget,
+				id,
+				menuAction,
+				actionParam,
+				widgetId,
+				false
+			)
+		);
+
 		client.getCallbacks().post(menuOptionClicked);
 
 		if (menuOptionClicked.isConsumed())

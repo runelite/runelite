@@ -272,20 +272,20 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE
-			|| (!event.getMenuOption().equals(MARK)
-			&& !event.getMenuOption().equals(UNMARK)))
+			|| (!event.getOption().equals(MARK)
+			&& !event.getOption().equals(UNMARK)))
 		{
 			return;
 		}
 
 		Scene scene = client.getScene();
 		Tile[][][] tiles = scene.getTiles();
-		final int x = event.getActionParam();
-		final int y = event.getWidgetId();
+		final int x = event.getActionParam0();
+		final int y = event.getActionParam1();
 		final int z = client.getPlane();
 		final Tile tile = tiles[z][x][y];
 
-		TileObject object = findTileObject(tile, event.getId());
+		TileObject object = findTileObject(tile, event.getIdentifier());
 		if (object == null)
 		{
 			return;

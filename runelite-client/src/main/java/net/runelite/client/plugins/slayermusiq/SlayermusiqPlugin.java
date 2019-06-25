@@ -126,10 +126,10 @@ public class SlayermusiqPlugin extends Plugin
 	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked ev)
 	{
-		if (ev.getMenuAction() == MenuAction.RUNELITE && ev.getMenuOption().equals(MENUOP_SLAYERMUSIQ))
+		if (ev.getMenuAction() == MenuAction.RUNELITE && ev.getOption().equals(MENUOP_SLAYERMUSIQ))
 		{
 			ev.consume();
-			String quest = Text.removeTags(ev.getMenuTarget());
+			String quest = Text.removeTags(ev.getTarget());
 			QuestGuideLinks.tryOpenGuide(quest, chatMessageManager);
 		}
 	}

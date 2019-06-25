@@ -321,12 +321,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+		if (event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.RUNELITE
-			&& event.getMenuOption().startsWith(EDIT_TAGS_MENU_OPTION))
+			&& event.getOption().startsWith(EDIT_TAGS_MENU_OPTION))
 		{
 			event.consume();
-			int inventoryIndex = event.getActionParam();
+			int inventoryIndex = event.getActionParam0();
 			ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
 			if (bankContainer == null)
 			{

@@ -231,9 +231,9 @@ public class TabInterface
 			.filter(id -> id != -1)
 			.collect(Collectors.toList());
 
-		if (!Strings.isNullOrEmpty(event.getMenuTarget()))
+		if (!Strings.isNullOrEmpty(event.getTarget()))
 		{
-			if (activeTab != null && Text.removeTags(event.getMenuTarget()).equals(activeTab.getTag()))
+			if (activeTab != null && Text.removeTags(event.getTarget()).equals(activeTab.getTag()))
 			{
 				for (Integer item : items)
 				{
@@ -565,9 +565,9 @@ public class TabInterface
 			return;
 		}
 
-		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+		if (event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ
-			&& event.getMenuOption().equalsIgnoreCase("withdraw-x"))
+			&& event.getOption().equalsIgnoreCase("withdraw-x"))
 		{
 			waitSearchTick = true;
 			rememberedSearch = client.getVar(VarClientStr.INPUT_TEXT);
@@ -576,9 +576,9 @@ public class TabInterface
 
 		if (iconToSet != null)
 		{
-			if (event.getMenuOption().startsWith(CHANGE_ICON + " ("))
+			if (event.getOption().startsWith(CHANGE_ICON + " ("))
 			{
-				ItemDefinition item = getItem(event.getActionParam());
+				ItemDefinition item = getItem(event.getActionParam0());
 				int itemId = itemManager.canonicalize(item.getId());
 				iconToSet.setIconItemId(itemId);
 				iconToSet.getIcon().setItemId(itemId);
@@ -591,7 +591,7 @@ public class TabInterface
 		}
 
 		if (activeTab != null
-			&& event.getMenuOption().equals("Search")
+			&& event.getOption().equals("Search")
 			&& client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND).getSpriteId() != SpriteID.EQUIPMENT_SLOT_SELECTED)
 		{
 			activateTab(null);
@@ -601,27 +601,27 @@ public class TabInterface
 			client.setVar(VarClientInt.INPUT_TYPE, 0);
 		}
 		else if (activeTab != null
-			&& event.getMenuOption().startsWith("View tab"))
+			&& event.getOption().startsWith("View tab"))
 		{
 			activateTab(null);
 		}
 		else if (activeTab != null
-			&& event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.RUNELITE
-			&& event.getMenuOption().startsWith(REMOVE_TAG))
+			&& event.getOption().startsWith(REMOVE_TAG))
 		{
 			// Add "remove" menu entry to all items in bank while tab is selected
 			event.consume();
-			final ItemDefinition item = getItem(event.getActionParam());
+			final ItemDefinition item = getItem(event.getActionParam0());
 			final int itemId = item.getId();
 			tagManager.removeTag(itemId, activeTab.getTag());
 			bankSearch.search(InputType.SEARCH, TAG_SEARCH + activeTab.getTag(), true);
 		}
 		else if (event.getMenuAction() == MenuAction.RUNELITE
-			&& ((event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getMenuOption().equals(TAG_INVENTORY))
-			|| (event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId() && event.getMenuOption().equals(TAG_GEAR))))
+			&& ((event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getOption().equals(TAG_INVENTORY))
+			|| (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId() && event.getOption().equals(TAG_GEAR))))
 		{
-			handleDeposit(event, event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
+			handleDeposit(event, event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
 		}
 	}
 

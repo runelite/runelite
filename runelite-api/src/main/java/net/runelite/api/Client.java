@@ -1669,4 +1669,10 @@ public interface Client extends GameShell
 	String getSelectedSpellName();
 	
 	boolean getIsSpellSelected();
+
+	/**
+	 * Sorts the current menu entries in the same way the client does this.
+	 * The last entry will be the left click one after this.
+	 */
+	void sortMenuEntries();
 }

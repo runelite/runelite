@@ -10,11 +10,9 @@ public class Bootstrapper
 	public static void main(String[] args)
 	{
 		Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-		try
+		try (FileWriter fw = new FileWriter("./bootstrap.json"))
 		{
-			FileWriter fw = new FileWriter("./bootstrap.json");
 			gson.toJson(new Bootstrap(), fw);
-			fw.close();
 		}
 		catch (Exception e)
 		{

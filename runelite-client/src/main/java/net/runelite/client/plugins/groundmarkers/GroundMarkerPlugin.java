@@ -315,13 +315,13 @@ public class GroundMarkerPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().contains(MARK) && !event.getMenuOption().contains(UNMARK))
+		if (!event.getOption().contains(MARK) && !event.getOption().contains(UNMARK))
 		{
 			return;
 		}
 
 		int group = 1;
-		Matcher m = GROUP_MATCHER.matcher(event.getMenuOption());
+		Matcher m = GROUP_MATCHER.matcher(event.getOption());
 		if (m.matches())
 		{
 			group = Integer.parseInt(m.group(1));

@@ -514,7 +514,7 @@ public final class WorldMapManager {
       signature = "(II)Z",
       garbageValue = "-1344882321"
    )
-   static boolean method672(int var0) {
+   static boolean isWidgetMenuOpcode(int var0) {
       return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
    }
 

@@ -61,9 +61,8 @@ public class ClientLoader
 			switch (updateCheckMode)
 			{
 				case AUTO:
-				case CUSTOM:
-					return loadRLPlus(config);
 				default:
+					return loadRLPlus(config);
 				case VANILLA:
 					return loadVanilla(config);
 				case NONE:
