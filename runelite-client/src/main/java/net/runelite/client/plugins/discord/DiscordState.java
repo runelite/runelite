@@ -214,6 +214,10 @@ class DiscordState
 
 	public void checkForMenuTimeout()
 	{
+		if (events.isEmpty())
+		{
+			return;
+		}
 		EventWithTime event = events.get(0);
 		if (event.getType().getState().equals(DiscordGameEventType.IN_MENU.getState()))
 		{
