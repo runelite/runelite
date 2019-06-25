@@ -60,14 +60,8 @@ public class ClientLoader
 
 			switch (updateCheckMode)
 			{
-				case AUTO:
-				case CUSTOM:
-					return loadRLPlus(config);
 				default:
-				case VANILLA:
-					return loadVanilla(config);
-				case NONE:
-					return null;
+					return loadRLPlus(config);
 			}
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
