@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2019, Enza-Denino <https://github.com/Enza-Denino>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,14 +67,14 @@ public interface MultiIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "collisionDetection",
-		name = "Collision detection",
-		description = "Only show lines where they can be walked through",
+		keyName = "wildernessLevelLines",
+		name = "Wilderness level lines",
+		description = "Show wilderness level lines",
 		position = 4
 	)
-	default boolean collisionDetection()
+	default boolean showWildernessLevelLines()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -108,4 +109,16 @@ public interface MultiIndicatorsConfig extends Config
 	{
 		return Color.GREEN;
 	}
+
+	@ConfigItem(
+		keyName = "wildernessLevelLinesColor",
+		name = "Wilderness level lines color",
+		description = "Choose color to use for marking wilderness level lines",
+		position = 8
+	)
+	default Color wildernessLevelLinesColor()
+	{
+		return Color.WHITE;
+	}
+
 }

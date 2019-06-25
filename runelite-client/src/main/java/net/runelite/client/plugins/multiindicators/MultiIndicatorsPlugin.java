@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2019, Enza-Denino <https://github.com/Enza-Denino>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,6 +28,7 @@ package net.runelite.client.plugins.multiindicators;
 import com.google.inject.Provides;
 import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -50,6 +52,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -87,6 +90,9 @@ public class MultiIndicatorsPlugin extends Plugin
 	private GeneralPath[] pvpPathToDisplay;
 
 	@Getter
+	private GeneralPath[] wildernessLevelLinesPathToDisplay;
+
+	@Getter
 	private boolean inPvp;
 
 	@Getter
@@ -106,8 +112,7 @@ public class MultiIndicatorsPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
 
-		multicombatPathToDisplay = new GeneralPath[Constants.MAX_Z];
-		pvpPathToDisplay = new GeneralPath[Constants.MAX_Z];
+		initializePaths();
 
 		clientThread.invokeLater(() ->
 		{
@@ -124,8 +129,37 @@ public class MultiIndicatorsPlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
 
+		uninitializePaths();
+	}
+
+	private void initializePaths()
+	{
+		multicombatPathToDisplay = new GeneralPath[Constants.MAX_Z];
+		pvpPathToDisplay = new GeneralPath[Constants.MAX_Z];
+		wildernessLevelLinesPathToDisplay = new GeneralPath[Constants.MAX_Z];
+	}
+
+	private void uninitializePaths()
+	{
 		multicombatPathToDisplay = null;
 		pvpPathToDisplay = null;
+		wildernessLevelLinesPathToDisplay = null;
+	}
+
+	// sometimes the lines get offset (seems to happen when there is a delay
+	// due to map reloading when walking/running "Loading - please wait")
+	// resetting the lines generation logic fixes this
+	@Schedule(
+		period = 1800,
+		unit = ChronoUnit.MILLIS
+	)
+	public void update()
+	{
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			findLinesInScene();
+		}
+
 	}
 
 	private void transformWorldToLocal(float[] coords)
@@ -134,7 +168,6 @@ public class MultiIndicatorsPlugin extends Plugin
 		coords[0] = lp.getX() - Perspective.LOCAL_TILE_SIZE / 2;
 		coords[1] = lp.getY() - Perspective.LOCAL_TILE_SIZE / 2;
 	}
-
 	private boolean isOpenableAt(WorldPoint wp)
 	{
 		int sceneX = wp.getX() - client.getBaseX();
@@ -153,6 +186,7 @@ public class MultiIndicatorsPlugin extends Plugin
 		}
 
 		ObjectDefinition objectComposition = client.getObjectDefinition(wallObject.getId());
+
 		if (objectComposition == null)
 		{
 			return false;
@@ -240,7 +274,7 @@ public class MultiIndicatorsPlugin extends Plugin
 					lines = Geometry.clipPath(lines, MapLocations.getRoughWilderness(i));
 				}
 				lines = Geometry.splitIntoSegments(lines, 1);
-				if (config.collisionDetection())
+				if (useCollisionLogic())
 				{
 					lines = Geometry.filterPath(lines, this::collisionFilter);
 				}
@@ -267,7 +301,7 @@ public class MultiIndicatorsPlugin extends Plugin
 			{
 				safeZonePath = Geometry.clipPath(safeZonePath, sceneRect);
 				safeZonePath = Geometry.splitIntoSegments(safeZonePath, 1);
-				if (config.collisionDetection())
+				if (useCollisionLogic())
 				{
 					safeZonePath = Geometry.filterPath(safeZonePath, this::collisionFilter);
 				}
@@ -275,6 +309,35 @@ public class MultiIndicatorsPlugin extends Plugin
 			}
 			pvpPathToDisplay[i] = safeZonePath;
 		}
+
+		// Generate wilderness level lines
+		for (int i = 0; i < wildernessLevelLinesPathToDisplay.length; i++)
+		{
+			currentPlane = i;
+
+			GeneralPath wildernessLevelLinesPath = null;
+			if (config.showWildernessLevelLines())
+			{
+				wildernessLevelLinesPath = new GeneralPath(MapLocations.getWildernessLevelLines(sceneRect, i));
+			}
+			if (wildernessLevelLinesPath != null)
+			{
+				wildernessLevelLinesPath = Geometry.clipPath(wildernessLevelLinesPath, sceneRect);
+				wildernessLevelLinesPath = Geometry.splitIntoSegments(wildernessLevelLinesPath, 1);
+				if (useCollisionLogic())
+				{
+					wildernessLevelLinesPath = Geometry.filterPath(wildernessLevelLinesPath, this::collisionFilter);
+				}
+				wildernessLevelLinesPath = Geometry.transformPath(wildernessLevelLinesPath, this::transformWorldToLocal);
+			}
+			wildernessLevelLinesPathToDisplay[i] = wildernessLevelLinesPath;
+		}
+	}
+
+	private boolean useCollisionLogic()
+	{
+		// currently prevents overlay lines from showing up if this is ever enabled right now
+		return false;
 	}
 
 	@Subscribe
@@ -283,7 +346,8 @@ public class MultiIndicatorsPlugin extends Plugin
 		if (event.getKey().equals("collisionDetection") ||
 			event.getKey().equals("multicombatZoneVisibility") ||
 			event.getKey().equals("deadmanSafeZones") ||
-			event.getKey().equals("pvpSafeZones"))
+			event.getKey().equals("pvpSafeZones") ||
+			event.getKey().equals("wildernessLevelLines"))
 		{
 			findLinesInScene();
 		}

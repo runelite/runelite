@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2019, Enza-Denino <https://github.com/Enza-Denino>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -102,6 +103,7 @@ public class MultiIndicatorsMinimapOverlay extends Overlay
 
 		GeneralPath multicombatPath = plugin.getMulticombatPathToDisplay()[client.getPlane()];
 		GeneralPath pvpPath = plugin.getPvpPathToDisplay()[client.getPlane()];
+		GeneralPath wildernessLevelLinesPath = plugin.getWildernessLevelLinesPathToDisplay()[client.getPlane()];
 
 		if (config.multicombatZoneVisibility() != ZoneVisibility.HIDE && multicombatPath != null)
 		{
@@ -110,6 +112,10 @@ public class MultiIndicatorsMinimapOverlay extends Overlay
 		if ((config.showPvpSafeZones() || config.showDeadmanSafeZones()) && pvpPath != null)
 		{
 			renderPath(graphics, pvpPath, getTransparentColorVersion(config.safeZoneColor()));
+		}
+		if (config.showWildernessLevelLines() && wildernessLevelLinesPath != null)
+		{
+			renderPath(graphics, wildernessLevelLinesPath, getTransparentColorVersion(config.wildernessLevelLinesColor()));
 		}
 
 		return null;
