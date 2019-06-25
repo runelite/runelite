@@ -173,17 +173,13 @@ public class NpcSceneOverlay extends Overlay
 				break;
 		}
 
-		if (config.drawNames())
-		{
+		if (config.drawNames() && actor.getName() != null)
 			String npcName = Text.removeTags(actor.getName());
-			if (npcName != null)
+			Point textLocation = actor.getCanvasTextLocation(graphics, npcName, actor.getLogicalHeight() + 40);
+
+			if (textLocation != null)
 			{
-				Point textLocation = actor.getCanvasTextLocation(graphics, npcName, actor.getLogicalHeight() + 40);
-			
-				if (textLocation != null)
-				{
-					OverlayUtil.renderTextLocation(graphics, textLocation, npcName, color);
-				}
+				OverlayUtil.renderTextLocation(graphics, textLocation, npcName, color);
 			}
 		}
 	}
