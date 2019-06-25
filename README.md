@@ -2,23 +2,25 @@
 
 
 
-# RuneLitePlus [![Build Status](https://travis-ci.org/runelite-extended/runelite.svg?branch=master)](https://travis-ci.org/runelite-extended/runelite) [![Discord](https://img.shields.io/discord/373382904769675265.svg)](https://discord.gg/HN5gf3m)
+# RuneLitePlus-PS rev180 [![Build Status](https://travis-ci.org/zeruth/runeliteplus-ps.svg?branch=master)](https://travis-ci.org/zeruth/runeliteplus-ps) [![Discord](https://img.shields.io/discord/373382904769675265.svg)](https://discord.gg/HN5gf3m)
 
-[RuneLitePlus](https://runelitepl.us)  is a fork of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying open source. This is meant to directly compete with 3rd party RL clients that are trying to sell their code.
+[RuneLitePlus-PS](https://runelitepl.us)  is a fork of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying open source. This is a specific version meant for rs-mod which can be found here:
+https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-180-rs-mod-release.html
 
-## Project Layout
+## Usage
 
-- [cache](cache/src/main/java/net/runelite/cache) - Libraries used for reading/writing cache files, as well as the data in it
-- [http-api](http-api/src/main/java/net/runelite/http/api) - API for api.runelite.net
-- [http-service](http-service/src/main/java/net/runelite/http/service) - Service for api.runelite.net
-- [runelite-api](runelite-api/src/main/java/net/runelite/api) - RuneLite API, interfaces for accessing the client
-- [runelite-mixins](runelite-mixins/src/main/java/net/runelite) - Mixins which are injected into the injected client's classes
-- [runescape-api](runescape-api/src/main/java/net/runelite) - Mappings correspond to these interfaces, runelite-api is a subset of this
-- [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
+By default, this connects to our sandbox server, which is for client testing.
+
+To setup your rsa keys, navigate to runelite-mixins and go to RSBufferMixin and set modulus and exponent
+To setup your codebase, navigate to runelite-client/rs and go to Launcher and set codebase = new URL("http://IP_OR_URL_HERE/");
+
+After that it's ran much like RuneLite or RuneLitePlus, install then run RuneLite.main()
+
+To release the built jar publicly, you'd have to host your injected client remotely and make some small modifications to rs.ClientLoader
 
 ## License
 
-RuneLitePlus is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
+RuneLitePlus-PS is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
 
 ## Contribute and Develop
 
