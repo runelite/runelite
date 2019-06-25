@@ -227,11 +227,11 @@ public class CoxPlugin extends Plugin
 						needOlm = true;
 						Olm_NextSpec = -1;
 						break;
-					case "the great olm's left claw clenches to protect itself temporarily.":
-						HandCripple = true;
-						timer = 45;
-						break;
 					case "the great olm fires a sphere of aggression your way. your prayers have been sapped.":
+						prayAgainstOlm = PrayAgainst.MELEE;
+						lastPrayTime = System.currentTimeMillis();
+						break;
+					case "the great olm fires a sphere of aggression your way.":
 						prayAgainstOlm = PrayAgainst.MELEE;
 						lastPrayTime = System.currentTimeMillis();
 						break;
@@ -239,7 +239,15 @@ public class CoxPlugin extends Plugin
 						prayAgainstOlm = PrayAgainst.MAGIC;
 						lastPrayTime = System.currentTimeMillis();
 						break;
+					case "the great olm fires a sphere of magical power your way.":
+						prayAgainstOlm = PrayAgainst.MAGIC;
+						lastPrayTime = System.currentTimeMillis();
+						break;
 					case "the great olm fires a sphere of accuracy and dexterity your way. your prayers have been sapped.":
+						prayAgainstOlm = PrayAgainst.RANGED;
+						lastPrayTime = System.currentTimeMillis();
+						break;
+					case "the great olm fires a sphere of accuracy and dexterity your way.":
 						prayAgainstOlm = PrayAgainst.RANGED;
 						lastPrayTime = System.currentTimeMillis();
 						break;
