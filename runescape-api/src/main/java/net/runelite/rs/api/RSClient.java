@@ -997,6 +997,10 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("renderSelf")
 	@Override
+	boolean getRenderSelf();
+
+	@Import("renderSelf")
+	@Override
 	void setRenderSelf(boolean enabled);
 
 	@Import("mouseRecorder")

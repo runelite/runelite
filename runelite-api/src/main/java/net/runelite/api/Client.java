@@ -1645,6 +1645,8 @@ public interface Client extends GameShell
 
 	void resetHealthBarCaches();
 
+	boolean getRenderSelf();
+
 	void setRenderSelf(boolean enabled);
 
 	/**
