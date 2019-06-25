@@ -54,9 +54,9 @@ public class Username implements Comparable {
       return this.cleanName == null?(var1.cleanName == null?0:1):(var1.cleanName == null?-1:this.cleanName.compareTo(var1.cleanName));
    }
 
-   @Export("__equals_466")
+   @Export("equals")
    @ObfuscatedName("equals")
-   public boolean __equals_466(Object var1) {
+   public boolean equals(Object var1) {
       if(var1 instanceof Username) {
          Username var2 = (Username)var1;
 		  if (this.cleanName == null)

@@ -92,7 +92,7 @@ public class GrandExchangeEvent {
       }
 
       if(var3 != null) {
-         class179.Interpreter_intStackSize = 0;
+         RouteStrategy.Interpreter_intStackSize = 0;
          Interpreter.Interpreter_stringStackSize = 0;
          var17 = -1;
          int[] var5 = var3.opcodes;
@@ -192,36 +192,36 @@ public class GrandExchangeEvent {
                         throw new IllegalStateException();
                      }
                   } else if(var29 == 0) {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6[var17];
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6[var17];
                   } else if(var29 == 1) {
                      var11 = var6[var17];
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Varps.Varps_main[var11];
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Varps.Varps_main[var11];
                   } else if(var29 == 2) {
                      var11 = var6[var17];
-                     Varps.Varps_main[var11] = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                     Varps.Varps_main[var11] = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                      IndexCache.method4703(var11);
                   } else if(var29 == 3) {
                      Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.stringOperands[var17];
                   } else if(var29 == 6) {
                      var17 += var6[var17];
                   } else if(var29 == 7) {
-                     class179.Interpreter_intStackSize -= 2;
-                     if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] != Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
+                     RouteStrategy.Interpreter_intStackSize -= 2;
+                     if(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] != Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]) {
                         var17 += var6[var17];
                      }
                   } else if(var29 == 8) {
-                     class179.Interpreter_intStackSize -= 2;
-                     if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] == Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
+                     RouteStrategy.Interpreter_intStackSize -= 2;
+                     if(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] == Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]) {
                         var17 += var6[var17];
                      }
                   } else if(var29 == 9) {
-                     class179.Interpreter_intStackSize -= 2;
-                     if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] < Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
+                     RouteStrategy.Interpreter_intStackSize -= 2;
+                     if(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] < Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]) {
                         var17 += var6[var17];
                      }
                   } else if(var29 == 10) {
-                     class179.Interpreter_intStackSize -= 2;
-                     if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] > Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
+                     RouteStrategy.Interpreter_intStackSize -= 2;
+                     if(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] > Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]) {
                         var17 += var6[var17];
                      }
                   } else if(var29 == 21) {
@@ -238,24 +238,24 @@ public class GrandExchangeEvent {
                      Interpreter.Interpreter_stringLocals = var34.stringLocals;
                   } else if(var29 == 25) {
                      var11 = var6[var17];
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = WorldMapSection2.getVarbit(var11);
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapSection2.getVarbit(var11);
                   } else if(var29 == 27) {
                      var11 = var6[var17];
-                     class68.method1695(var11, Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+                     class68.method1695(var11, Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                   } else if(var29 == 31) {
-                     class179.Interpreter_intStackSize -= 2;
-                     if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] <= Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
+                     RouteStrategy.Interpreter_intStackSize -= 2;
+                     if(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] <= Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]) {
                         var17 += var6[var17];
                      }
                   } else if(var29 == 32) {
-                     class179.Interpreter_intStackSize -= 2;
-                     if(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] >= Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]) {
+                     RouteStrategy.Interpreter_intStackSize -= 2;
+                     if(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] >= Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]) {
                         var17 += var6[var17];
                      }
                   } else if(var29 == 33) {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Username.Interpreter_intLocals[var6[var17]];
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Username.Interpreter_intLocals[var6[var17]];
                   } else if(var29 == 34) {
-                     Username.Interpreter_intLocals[var6[var17]] = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                     Username.Interpreter_intLocals[var6[var17]] = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   } else if(var29 == 35) {
                      Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Interpreter.Interpreter_stringLocals[var6[var17]];
                   } else if(var29 == 36) {
@@ -266,20 +266,20 @@ public class GrandExchangeEvent {
                      String var31 = class277.method5356(Interpreter.Interpreter_stringStack, Interpreter.Interpreter_stringStackSize, var11);
                      Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var31;
                   } else if(var29 == 38) {
-                     --class179.Interpreter_intStackSize;
+                     --RouteStrategy.Interpreter_intStackSize;
                   } else if(var29 == 39) {
                      --Interpreter.Interpreter_stringStackSize;
                   } else {
                      int var15;
                      if(var29 != 40) {
                         if(var29 == 42) {
-                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = class196.varcs.getInt(var6[var17]);
+                           Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class196.varcs.getInt(var6[var17]);
                         } else if(var29 == 43) {
-                           class196.varcs.setInt(var6[var17], Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+                           class196.varcs.setInt(var6[var17], Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                         } else if(var29 == 44) {
                            var11 = var6[var17] >> 16;
                            var20 = var6[var17] & 65535;
-                           int var21 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                           int var21 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                            if(var21 < 0 || var21 > 5000) {
                               throw new RuntimeException();
                            }
@@ -295,21 +295,21 @@ public class GrandExchangeEvent {
                            }
                         } else if(var29 == 45) {
                            var11 = var6[var17];
-                           var20 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                           var20 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                            if(var20 < 0 || var20 >= Interpreter.Interpreter_arrayLengths[var11]) {
                               throw new RuntimeException();
                            }
 
-                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Interpreter.Interpreter_arrays[var11][var20];
+                           Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Interpreter.Interpreter_arrays[var11][var20];
                         } else if(var29 == 46) {
                            var11 = var6[var17];
-                           class179.Interpreter_intStackSize -= 2;
-                           var20 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+                           RouteStrategy.Interpreter_intStackSize -= 2;
+                           var20 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                            if(var20 < 0 || var20 >= Interpreter.Interpreter_arrayLengths[var11]) {
                               throw new RuntimeException();
                            }
 
-                           Interpreter.Interpreter_arrays[var11][var20] = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+                           Interpreter.Interpreter_arrays[var11][var20] = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
                         } else if(var29 == 47) {
                            var18 = class196.varcs.getStringOld(var6[var17]);
                            if(var18 == null) {
@@ -330,7 +330,7 @@ public class GrandExchangeEvent {
                            }
 
                            IterableNodeHashTable var33 = var3.switches[var6[var17]];
-                           IntegerNode var30 = (IntegerNode)var33.get((long)Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+                           IntegerNode var30 = (IntegerNode)var33.get((long)Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                            if(var30 != null) {
                               var17 += var30.integer;
                            }
@@ -342,14 +342,14 @@ public class GrandExchangeEvent {
                         String[] var14 = new String[var12.localStringCount];
 
                         for(var15 = 0; var15 < var12.intArgumentCount; ++var15) {
-                           var13[var15] = Interpreter.Interpreter_intStack[var15 + (class179.Interpreter_intStackSize - var12.intArgumentCount)];
+                           var13[var15] = Interpreter.Interpreter_intStack[var15 + (RouteStrategy.Interpreter_intStackSize - var12.intArgumentCount)];
                         }
 
                         for(var15 = 0; var15 < var12.stringArgumentCount; ++var15) {
                            var14[var15] = Interpreter.Interpreter_stringStack[var15 + (Interpreter.Interpreter_stringStackSize - var12.stringArgumentCount)];
                         }
 
-                        class179.Interpreter_intStackSize -= var12.intArgumentCount;
+                        RouteStrategy.Interpreter_intStackSize -= var12.intArgumentCount;
                         Interpreter.Interpreter_stringStackSize -= var12.stringArgumentCount;
                         ScriptFrame var19 = new ScriptFrame();
                         var19.script = var3;

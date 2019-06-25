@@ -424,7 +424,7 @@ public abstract class Actor extends Entity {
       int var10 = -1;
       int var11 = 0;
       if(var1 >= 0) {
-         HitSplatDefinition var12 = class72.getHitSplatDefinition(var1);
+         HitSplatDefinition var12 = LoginScreenAnimation.getHitSplatDefinition(var1);
          var10 = var12.__c;
          var11 = var12.__i;
       }

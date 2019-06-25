@@ -308,7 +308,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                      }
 
                      if(var10.contentType == 1402) {
-                        class16.field85.method1782(var12, Client.cycle);
+                        class16.loginScreenRunesAnimation.method1782(var12, Client.cycle);
                      }
                   }
 

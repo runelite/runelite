@@ -78,11 +78,11 @@ public class FontName {
       signature = "(I)V",
       garbageValue = "-1587423260"
    )
-   static void method5636() {
-      Login.__cu_bk = false;
-      Login.__cu_g.drawAt(Login.__cu_q, 0);
-      Fonts.__kz_l.drawAt(Login.__cu_q + 382, 0);
-      WorldMapSectionType.__h_e.__q_496(Login.__cu_q + 382 - WorldMapSectionType.__h_e.subWidth / 2, 18);
+   static void closeWorldSelect() {
+      Login.worldSelectOpen = false;
+      Login.leftTitleSprite.drawAt(Login.xPadding, 0);
+      Fonts.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
+      WorldMapSectionType.logoSprite.drawAt(Login.xPadding + 382 - WorldMapSectionType.logoSprite.subWidth / 2, 18);
    }
 
    @ObfuscatedName("s")
@@ -106,18 +106,18 @@ public class FontName {
    static int method5639(int var0, Script var1, boolean var2) {
       if(var0 == 3600) {
          if(WorldMapArea.friendSystem.__g == 0) {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -2;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -2;
          } else if(WorldMapArea.friendSystem.__g == 1) {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
          } else {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = WorldMapArea.friendSystem.friendsList.size();
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapArea.friendSystem.friendsList.size();
          }
 
          return 1;
       } else {
          int var3;
          if(var0 == 3601) {
-            var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             if(WorldMapArea.friendSystem.__m_151() && var3 >= 0 && var3 < WorldMapArea.friendSystem.friendsList.size()) {
                Friend var8 = (Friend)WorldMapArea.friendSystem.friendsList.get(var3);
                Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var8.name();
@@ -129,20 +129,20 @@ public class FontName {
 
             return 1;
          } else if(var0 == 3602) {
-            var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             if(WorldMapArea.friendSystem.__m_151() && var3 >= 0 && var3 < WorldMapArea.friendSystem.friendsList.size()) {
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ((Buddy)WorldMapArea.friendSystem.friendsList.get(var3)).world0;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ((Buddy)WorldMapArea.friendSystem.friendsList.get(var3)).world0;
             } else {
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
             }
 
             return 1;
          } else if(var0 == 3603) {
-            var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             if(WorldMapArea.friendSystem.__m_151() && var3 >= 0 && var3 < WorldMapArea.friendSystem.friendsList.size()) {
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ((Buddy)WorldMapArea.friendSystem.friendsList.get(var3)).rank;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ((Buddy)WorldMapArea.friendSystem.friendsList.get(var3)).rank;
             } else {
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
             }
 
             return 1;
@@ -150,7 +150,7 @@ public class FontName {
             String var5;
             if(var0 == 3604) {
                var5 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-               int var6 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               int var6 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                method5638(var5, var6);
                return 1;
             } else if(var0 == 3605) {
@@ -172,7 +172,7 @@ public class FontName {
             } else if(var0 == 3609) {
                var5 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                var5 = NpcDefinition.method5161(var5);
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = WorldMapArea.friendSystem.isFriended(new Username(var5, KeyHandler.loginType), false)?1:0;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapArea.friendSystem.isFriended(new Username(var5, KeyHandler.loginType), false)?1:0;
                return 1;
             } else if(var0 == 3611) {
                if(PacketWriter.clanChat != null) {
@@ -184,14 +184,14 @@ public class FontName {
                return 1;
             } else if(var0 == 3612) {
                if(PacketWriter.clanChat != null) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = PacketWriter.clanChat.size();
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = PacketWriter.clanChat.size();
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                }
 
                return 1;
             } else if(var0 == 3613) {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                if(PacketWriter.clanChat != null && var3 < PacketWriter.clanChat.size()) {
                   Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = PacketWriter.clanChat.get(var3).username().getName();
                } else {
@@ -200,32 +200,32 @@ public class FontName {
 
                return 1;
             } else if(var0 == 3614) {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                if(PacketWriter.clanChat != null && var3 < PacketWriter.clanChat.size()) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ((Buddy)PacketWriter.clanChat.get(var3)).world();
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ((Buddy)PacketWriter.clanChat.get(var3)).world();
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                }
 
                return 1;
             } else if(var0 == 3615) {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                if(PacketWriter.clanChat != null && var3 < PacketWriter.clanChat.size()) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ((Buddy)PacketWriter.clanChat.get(var3)).rank;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ((Buddy)PacketWriter.clanChat.get(var3)).rank;
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                }
 
                return 1;
             } else if(var0 == 3616) {
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = PacketWriter.clanChat != null?PacketWriter.clanChat.__k:0;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = PacketWriter.clanChat != null?PacketWriter.clanChat.__k:0;
                return 1;
             } else if(var0 == 3617) {
                var5 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                IndexStoreActionHandler.method4655(var5);
                return 1;
             } else if(var0 == 3618) {
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = PacketWriter.clanChat != null?PacketWriter.clanChat.rank:0;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = PacketWriter.clanChat != null?PacketWriter.clanChat.rank:0;
                return 1;
             } else if(var0 == 3619) {
                var5 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
@@ -236,14 +236,14 @@ public class FontName {
                return 1;
             } else if(var0 == 3621) {
                if(!WorldMapArea.friendSystem.__m_151()) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = WorldMapArea.friendSystem.ignoreList.size();
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapArea.friendSystem.ignoreList.size();
                }
 
                return 1;
             } else if(var0 == 3622) {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                if(WorldMapArea.friendSystem.__m_151() && var3 >= 0 && var3 < WorldMapArea.friendSystem.ignoreList.size()) {
                   Ignored var4 = (Ignored)WorldMapArea.friendSystem.ignoreList.get(var3);
                   Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var4.name();
@@ -257,14 +257,14 @@ public class FontName {
             } else if(var0 == 3623) {
                var5 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                var5 = NpcDefinition.method5161(var5);
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = WorldMapArea.friendSystem.isIgnored(new Username(var5, KeyHandler.loginType))?1:0;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapArea.friendSystem.isIgnored(new Username(var5, KeyHandler.loginType))?1:0;
                return 1;
             } else if(var0 == 3624) {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-               if(PacketWriter.clanChat != null && var3 < PacketWriter.clanChat.size() && PacketWriter.clanChat.get(var3).username().__equals_466(Canvas.localPlayer.username)) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 1;
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
+               if(PacketWriter.clanChat != null && var3 < PacketWriter.clanChat.size() && PacketWriter.clanChat.get(var3).username().equals(Canvas.localPlayer.username)) {
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                }
 
                return 1;
@@ -277,11 +277,11 @@ public class FontName {
 
                return 1;
             } else if(var0 == 3626) {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                if(PacketWriter.clanChat != null && var3 < PacketWriter.clanChat.size() && ((ClanMate)PacketWriter.clanChat.get(var3)).isFriend()) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 1;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                }
 
                return 1;
@@ -292,43 +292,43 @@ public class FontName {
                } else {
                   boolean var7;
                   if(var0 == 3629) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.friendsList.addComparator(new UserComparator1(var7));
                      return 1;
                   } else if(var0 == 3630) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.friendsList.addComparator(new UserComparator2(var7));
                      return 1;
                   } else if(var0 == 3631) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.friendsList.addComparator(new UserComparator3(var7));
                      return 1;
                   } else if(var0 == 3632) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.friendsList.addComparator(new UserComparator4(var7));
                      return 1;
                   } else if(var0 == 3633) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.friendsList.addComparator(new UserComparator5(var7));
                      return 1;
                   } else if(var0 == 3634) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.friendsList.addComparator(new UserComparator6(var7));
                      return 1;
                   } else if(var0 == 3635) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.friendsList.addComparator(new UserComparator7(var7));
                      return 1;
                   } else if(var0 == 3636) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.friendsList.addComparator(new UserComparator8(var7));
                      return 1;
                   } else if(var0 == 3637) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.friendsList.addComparator(new UserComparator9(var7));
                      return 1;
                   } else if(var0 == 3638) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.friendsList.addComparator(new UserComparator10(var7));
                      return 1;
                   } else if(var0 == 3639) {
@@ -338,11 +338,11 @@ public class FontName {
                      WorldMapArea.friendSystem.ignoreList.removeComparator();
                      return 1;
                   } else if(var0 == 3641) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.ignoreList.addComparator(new UserComparator1(var7));
                      return 1;
                   } else if(var0 == 3642) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.ignoreList.addComparator(new UserComparator2(var7));
                      return 1;
                   } else if(var0 == 3643) {
@@ -355,70 +355,70 @@ public class FontName {
 
                      return 1;
                   } else if(var0 == 3645) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if(PacketWriter.clanChat != null) {
                         PacketWriter.clanChat.addComparator(new UserComparator1(var7));
                      }
 
                      return 1;
                   } else if(var0 == 3646) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if(PacketWriter.clanChat != null) {
                         PacketWriter.clanChat.addComparator(new UserComparator2(var7));
                      }
 
                      return 1;
                   } else if(var0 == 3647) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if(PacketWriter.clanChat != null) {
                         PacketWriter.clanChat.addComparator(new UserComparator3(var7));
                      }
 
                      return 1;
                   } else if(var0 == 3648) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if(PacketWriter.clanChat != null) {
                         PacketWriter.clanChat.addComparator(new UserComparator4(var7));
                      }
 
                      return 1;
                   } else if(var0 == 3649) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if(PacketWriter.clanChat != null) {
                         PacketWriter.clanChat.addComparator(new UserComparator5(var7));
                      }
 
                      return 1;
                   } else if(var0 == 3650) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if(PacketWriter.clanChat != null) {
                         PacketWriter.clanChat.addComparator(new UserComparator6(var7));
                      }
 
                      return 1;
                   } else if(var0 == 3651) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if(PacketWriter.clanChat != null) {
                         PacketWriter.clanChat.addComparator(new UserComparator7(var7));
                      }
 
                      return 1;
                   } else if(var0 == 3652) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if(PacketWriter.clanChat != null) {
                         PacketWriter.clanChat.addComparator(new UserComparator8(var7));
                      }
 
                      return 1;
                   } else if(var0 == 3653) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if(PacketWriter.clanChat != null) {
                         PacketWriter.clanChat.addComparator(new UserComparator9(var7));
                      }
 
                      return 1;
                   } else if(var0 == 3654) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if(PacketWriter.clanChat != null) {
                         PacketWriter.clanChat.addComparator(new UserComparator10(var7));
                      }
@@ -431,11 +431,11 @@ public class FontName {
 
                      return 1;
                   } else if(var0 == 3656) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      WorldMapArea.friendSystem.friendsList.addComparator(new class157(var7));
                      return 1;
                   } else if(var0 == 3657) {
-                     var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if(PacketWriter.clanChat != null) {
                         PacketWriter.clanChat.addComparator(new class157(var7));
                      }
@@ -446,11 +446,11 @@ public class FontName {
                   }
                }
             } else {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                if(PacketWriter.clanChat != null && var3 < PacketWriter.clanChat.size() && ((ClanMate)PacketWriter.clanChat.get(var3)).isIgnored()) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 1;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                }
 
                return 1;
@@ -470,14 +470,14 @@ public class FontName {
       DevicePcmPlayerProvider.method841();
       WorldMapManager.method673();
       WorldMapLabel.method440();
-      class72.method1780();
+      LoginScreenAnimation.method1780();
       SequenceDefinition.SequenceDefinition_cached.clear();
       SequenceDefinition.__jh_o.clear();
       UserComparator3.method3379();
       VarbitDefinition.VarbitDefinition_cached.clear();
       VarpDefinition.VarpDefinition_cached.clear();
       GrandExchangeEvents.method69();
-      Buffer.method3915();
+      Buffer.clearHealthbarCaches();
       StructDefinition.__jq_f.clear();
       InvDefinition.method4754();
       Projectile.method2089();

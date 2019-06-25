@@ -199,14 +199,14 @@ public final class Tile extends Node {
                   }
 
                   if(var0.isFollower && Client.followerOpsLowPriority) {
-                     Tiles.method1106("Examine", BufferedFile.colorStartTag(16776960) + var4, 1003, var1, var2, var3);
+                     Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(16776960) + var4, 1003, var1, var2, var3);
                   }
 
                   if(Client.isItemSelected == 1) {
-                     Tiles.method1106("Use", Client.selectedItemName + " " + "->" + " " + BufferedFile.colorStartTag(16776960) + var4, 7, var1, var2, var3);
+                     Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + BufferedFile.colorStartTag(16776960) + var4, 7, var1, var2, var3);
                   } else if(Client.isSpellSelected) {
                      if((FloorDecoration.selectedSpellFlags & 2) == 2) {
-                        Tiles.method1106(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + BufferedFile.colorStartTag(16776960) + var4, 8, var1, var2, var3);
+                        Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + BufferedFile.colorStartTag(16776960) + var4, 8, var1, var2, var3);
                      }
                   } else {
                      int var10 = var0.isFollower && Client.followerOpsLowPriority?2000:0;
@@ -235,7 +235,7 @@ public final class Tile extends Node {
                                  var8 = var10 + 13;
                               }
 
-                              Tiles.method1106(var11[var7], BufferedFile.colorStartTag(16776960) + var4, var8, var1, var2, var3);
+                              Tiles.insertMenuItemNoShift(var11[var7], BufferedFile.colorStartTag(16776960) + var4, var8, var1, var2, var3);
                            }
                         }
                      }
@@ -270,14 +270,14 @@ public final class Tile extends Node {
                                     var8 = var12 + 13;
                                  }
 
-                                 Tiles.method1106(var11[var7], BufferedFile.colorStartTag(16776960) + var4, var8, var1, var2, var3);
+                                 Tiles.insertMenuItemNoShift(var11[var7], BufferedFile.colorStartTag(16776960) + var4, var8, var1, var2, var3);
                               }
                            }
                         }
                      }
 
                      if(!var0.isFollower || !Client.followerOpsLowPriority) {
-                        Tiles.method1106("Examine", BufferedFile.colorStartTag(16776960) + var4, 1003, var1, var2, var3);
+                        Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(16776960) + var4, 1003, var1, var2, var3);
                      }
                   }
 

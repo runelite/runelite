@@ -200,6 +200,16 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
+	private static boolean hideFriendAttackOptions;
+
+	@Inject
+	@Override
+	public void setHideFriendAttackOptions(boolean yes)
+	{
+		hideFriendAttackOptions = yes;
+	}
+
+	@Inject
 	public RSClientMixin()
 	{
 	}
@@ -1569,5 +1579,11 @@ public abstract class RSClientMixin implements RSClient
 	{
 		getHealthBarCache().reset();
 		getHealthBarSpriteCache().reset();
+	}
+
+	@Inject
+	static boolean shouldHideAttackOptionFor(RSPlayer p)
+	{
+		return hideFriendAttackOptions && p.isFriended() || p.isClanMember();
 	}
 }

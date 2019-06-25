@@ -23,7 +23,7 @@ public class SecureRandomCallable implements Callable {
       garbageValue = "64"
    )
    static class27 method1145(byte[] var0) {
-      return var0 == null?new class27():new class27(class27.method438(var0).pixels);
+      return var0 == null?new class27():new class27(class27.convertJpgToSprite(var0).pixels);
    }
 
    @ObfuscatedName("m")

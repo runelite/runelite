@@ -8,8 +8,8 @@ public final class class308 {
    @ObfuscatedSignature(
       signature = "Llq;"
    )
-   @Export("__kw_n")
-   static IndexedSprite __kw_n;
+   @Export("options_buttons_2Sprite")
+   static IndexedSprite options_buttons_2Sprite;
    @ObfuscatedName("gn")
    @Export("regions")
    static int[] regions;

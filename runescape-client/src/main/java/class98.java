@@ -219,7 +219,7 @@ public class class98 {
    @ObfuscatedName("m")
    static int method2310(int var0, int var1) {
       int var2;
-      for(var2 = (int)Math.pow((double)var0, 1.0D / (double)var1) + 1; class179.method3642(var2, var1) > var0; --var2) {
+      for(var2 = (int)Math.pow((double)var0, 1.0D / (double)var1) + 1; RouteStrategy.method3642(var2, var1) > var0; --var2) {
          ;
       }
 

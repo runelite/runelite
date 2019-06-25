@@ -328,7 +328,7 @@ public final class Player extends Actor {
    )
    @Export("checkIsFriend")
    void checkIsFriend() {
-      this.isFriendTriBool = WorldMapArea.friendSystem.__t_161(this.username)?TriBool.TriBool_true:TriBool.TriBool_false;
+      this.isFriendTriBool = WorldMapArea.friendSystem.isFriendAndHasWorld(this.username)?TriBool.TriBool_true:TriBool.TriBool_false;
    }
 
    @ObfuscatedName("o")

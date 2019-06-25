@@ -221,7 +221,7 @@ public class ClanChat extends UserList {
    )
    @Export("__cp_475")
    final void __cp_475(ClanMate var1) {
-      if(var1.username().__equals_466(this.localUser.username())) {
+      if(var1.username().equals(this.localUser.username())) {
          this.rank = var1.rank;
       }
 

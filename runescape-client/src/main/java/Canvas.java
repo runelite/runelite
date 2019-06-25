@@ -120,10 +120,10 @@ public final class Canvas extends java.awt.Canvas {
       int var3;
       int var4;
       if(var0 == 100) {
-         class179.Interpreter_intStackSize -= 3;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         int var5 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
+         RouteStrategy.Interpreter_intStackSize -= 3;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         int var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
          if(var4 == 0) {
             throw new RuntimeException();
          } else {
@@ -170,22 +170,22 @@ public final class Canvas extends java.awt.Canvas {
             class22.method295(var10);
             return 1;
          } else if(var0 == 102) {
-            var9 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+            var9 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
             var9.children = null;
             class22.method295(var9);
             return 1;
          } else if(var0 != 200) {
             if(var0 == 201) {
-               var9 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+               var9 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                if(var9 != null) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 1;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                   if(var2) {
                      WorldMapIcon1.__t_i = var9;
                   } else {
                      class12.__n_n = var9;
                   }
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                }
 
                return 1;
@@ -193,19 +193,19 @@ public final class Canvas extends java.awt.Canvas {
                return 2;
             }
          } else {
-            class179.Interpreter_intStackSize -= 2;
-            var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-            var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+            RouteStrategy.Interpreter_intStackSize -= 2;
+            var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+            var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
             Widget var11 = class204.getWidgetChild(var3, var4);
             if(var11 != null && var4 != -1) {
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 1;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                if(var2) {
                   WorldMapIcon1.__t_i = var11;
                } else {
                   class12.__n_n = var11;
                }
             } else {
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
             }
 
             return 1;

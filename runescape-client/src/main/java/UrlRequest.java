@@ -11,8 +11,8 @@ public class UrlRequest {
    @ObfuscatedSignature(
       signature = "[Llq;"
    )
-   @Export("__ey_bx")
-   static IndexedSprite[] __ey_bx;
+   @Export("worldSelectStars")
+   static IndexedSprite[] worldSelectStars;
    @ObfuscatedName("m")
    @Export("url")
    final URL url;

@@ -87,7 +87,7 @@ public enum PlayerType implements Enumerated {
       signature = "(II)V",
       garbageValue = "300731074"
    )
-   static void method4547(int var0) {
+   static void clearItemContainer(int var0) {
       ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
       if(var1 != null) {
          for(int var2 = 0; var2 < var1.ids.length; ++var2) {

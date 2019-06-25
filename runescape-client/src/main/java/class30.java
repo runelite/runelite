@@ -34,8 +34,8 @@ public class class30 {
    @ObfuscatedSignature(
       signature = "[Lln;"
    )
-   @Export("__ar_bd")
-   static Sprite[] __ar_bd;
+   @Export("worldSelectBackSprites")
+   static Sprite[] worldSelectBackSprites;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1474464623

@@ -268,12 +268,12 @@ public final class class238 {
                      }
 
                      boolean var34 = false;
-                     if((MouseHandler.MouseHandler_currentButton == 1 || !AbstractRasterProvider.__lp_ca && MouseHandler.MouseHandler_currentButton == 4) && var33) {
+                     if((MouseHandler.MouseHandler_currentButton == 1 || !AbstractRasterProvider.mouseCam && MouseHandler.MouseHandler_currentButton == 4) && var33) {
                         var34 = true;
                      }
 
                      var21 = false;
-                     if((MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.__lp_ca && MouseHandler.MouseHandler_lastButton == 4) && MouseHandler.MouseHandler_lastPressedX >= var12 && MouseHandler.MouseHandler_lastPressedY >= var13 && MouseHandler.MouseHandler_lastPressedX < var14 && MouseHandler.MouseHandler_lastPressedY < var15) {
+                     if((MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.mouseCam && MouseHandler.MouseHandler_lastButton == 4) && MouseHandler.MouseHandler_lastPressedX >= var12 && MouseHandler.MouseHandler_lastPressedY >= var13 && MouseHandler.MouseHandler_lastPressedX < var14 && MouseHandler.MouseHandler_lastPressedY < var15) {
                         var21 = true;
                      }
 

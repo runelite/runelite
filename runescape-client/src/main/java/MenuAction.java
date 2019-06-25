@@ -46,14 +46,14 @@ public class MenuAction {
       signature = "(Lir;Ljava/lang/String;Ljava/lang/String;B)Llq;",
       garbageValue = "0"
    )
-   public static IndexedSprite method2025(AbstractIndexCache var0, String var1, String var2) {
+   public static IndexedSprite loadIndexedSpriteByName(AbstractIndexCache var0, String var1, String var2) {
       int var3 = var0.getArchiveId(var1);
       int var4 = var0.getRecordId(var3, var2);
       IndexedSprite var5;
-      if(!SpriteMask.method4392(var0, var3, var4)) {
+      if(!SpriteMask.loadSprite(var0, var3, var4)) {
          var5 = null;
       } else {
-         var5 = ServerPacket.method3663();
+         var5 = ServerPacket.createIndexedSprite();
       }
 
       return var5;
@@ -70,7 +70,7 @@ public class MenuAction {
       int var3 = (int)var0.key;
       var0.remove();
       if(var1) {
-         AbstractByteArrayCopier.method4023(var2);
+         AbstractByteArrayCopier.unloadWidgetGroup(var2);
       }
 
       for(IntegerNode var4 = (IntegerNode)Client.widgetClickMasks.first(); var4 != null; var4 = (IntegerNode)Client.widgetClickMasks.next()) {

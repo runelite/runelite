@@ -157,31 +157,31 @@ public final class AccessFile {
       signature = "(Lho;Ljv;IIZI)V",
       garbageValue = "-728558316"
    )
-   static final void method2726(Widget var0, ItemDefinition var1, int var2, int var3, boolean var4) {
-      String[] var5 = var1.inventoryActions;
-      byte var6 = -1;
-      String var7 = null;
-      if(var5 != null && var5[var3] != null) {
-         if(var3 == 0) {
-            var6 = 33;
-         } else if(var3 == 1) {
-            var6 = 34;
-         } else if(var3 == 2) {
-            var6 = 35;
-         } else if(var3 == 3) {
-            var6 = 36;
+   static final void addWidgetItemMenuItem(Widget widget, ItemDefinition definition, int var2, int actionIndex, boolean shiftClick) {
+      String[] var5 = definition.inventoryActions;
+      byte opcode = -1;
+      String action = null;
+      if(var5 != null && var5[actionIndex] != null) {
+         if(actionIndex == 0) {
+            opcode = 33;
+         } else if(actionIndex == 1) {
+            opcode = 34;
+         } else if(actionIndex == 2) {
+            opcode = 35;
+         } else if(actionIndex == 3) {
+            opcode = 36;
          } else {
-            var6 = 37;
+            opcode = 37;
          }
 
-         var7 = var5[var3];
-      } else if(var3 == 4) {
-         var6 = 37;
-         var7 = "Drop";
+         action = var5[actionIndex];
+      } else if(actionIndex == 4) {
+         opcode = 37;
+         action = "Drop";
       }
 
-      if(var6 != -1 && var7 != null) {
-         class16.insertMenuItem(var7, BufferedFile.colorStartTag(16748608) + var1.name, var6, var1.id, var2, var0.id, var4);
+      if(opcode != -1 && action != null) {
+         class16.insertMenuItem(action, BufferedFile.colorStartTag(0xff9040) + definition.name, opcode, definition.id, var2, widget.id, shiftClick);
       }
 
    }

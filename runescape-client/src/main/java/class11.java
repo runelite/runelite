@@ -85,7 +85,7 @@ final class class11 implements Comparator {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+         var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
       } else {
          var3 = var2?WorldMapIcon1.__t_i:class12.__n_n;
       }
@@ -93,9 +93,9 @@ final class class11 implements Comparator {
       String var4 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
       int[] var5 = null;
       if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 'Y') {
-         int var6 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+         int var6 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          if(var6 > 0) {
-            for(var5 = new int[var6]; var6-- > 0; var5[var6] = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]) {
+            for(var5 = new int[var6]; var6-- > 0; var5[var6] = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]) {
                ;
             }
          }
@@ -110,11 +110,11 @@ final class class11 implements Comparator {
          if(var4.charAt(var7 - 1) == 's') {
             var8[var7] = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
          } else {
-            var8[var7] = new Integer(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+            var8[var7] = new Integer(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
          }
       }
 
-      var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+      var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
       if(var7 != -1) {
          var8[0] = new Integer(var7);
       } else {
@@ -196,30 +196,30 @@ final class class11 implements Comparator {
    static int method146(int var0, Script var1, boolean var2) {
       Widget var3;
       if(var0 == 2700) {
-         var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.itemId;
+         var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.itemId;
          return 1;
       } else if(var0 == 2701) {
-         var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+         var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
          if(var3.itemId != -1) {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.itemQuantity;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.itemQuantity;
          } else {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
          }
 
          return 1;
       } else if(var0 == 2702) {
-         int var5 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+         int var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          WidgetGroupParent var4 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var5);
          if(var4 != null) {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 1;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
          } else {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
          }
 
          return 1;
       } else if(var0 == 2706) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.rootWidgetGroup;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.rootWidgetGroup;
          return 1;
       } else {
          return 2;
@@ -252,8 +252,8 @@ final class class11 implements Comparator {
       garbageValue = "-1292134247"
    )
    static final void method148(int var0, int var1, int var2, int var3, int var4) {
-      class32.scrollBarSprites[0].__q_496(var0, var1);
-      class32.scrollBarSprites[1].__q_496(var0, var3 + var1 - 16);
+      class32.scrollBarSprites[0].drawAt(var0, var1);
+      class32.scrollBarSprites[1].drawAt(var0, var3 + var1 - 16);
       Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1 + 16, 16, var3 - 32, Client.__client_hx);
       int var5 = var3 * (var3 - 32) / var4;
       if(var5 < 8) {

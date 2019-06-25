@@ -8,8 +8,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("AbstractRasterProvider")
 public abstract class AbstractRasterProvider {
    @ObfuscatedName("ca")
-   @Export("__lp_ca")
-   static boolean __lp_ca;
+   @Export("mouseCam")
+   static boolean mouseCam;
    @ObfuscatedName("q")
    @Export("pixels")
    public int[] pixels;

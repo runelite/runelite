@@ -70,16 +70,16 @@ public class WorldMapCacheName {
       if(var0 != null && var1 != null) {
          ByteArrayPool.__gi_g = var0;
          WorldMapSection2.__ah_l = new int[var0.length];
-         class179.__fe_e = new byte[var0.length][][];
+         RouteStrategy.__fe_e = new byte[var0.length][][];
 
          for(int var2 = 0; var2 < ByteArrayPool.__gi_g.length; ++var2) {
-            class179.__fe_e[var2] = new byte[var1[var2]][];
+            RouteStrategy.__fe_e[var2] = new byte[var1[var2]][];
          }
 
       } else {
          ByteArrayPool.__gi_g = null;
          WorldMapSection2.__ah_l = null;
-         class179.__fe_e = null;
+         RouteStrategy.__fe_e = null;
       }
    }
 

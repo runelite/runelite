@@ -1301,7 +1301,7 @@ public class WorldMap {
 
                for(int var14 = this.__bs.length - 1; var14 >= 0; --var14) {
                   if(var12.strings[var14] != null) {
-                     Tiles.method1106(var12.strings[var14], var12.string1, this.__bs[var14], var11.__m_15(), var11.coord1.packed(), var11.coord2.packed());
+                     Tiles.insertMenuItemNoShift(var12.strings[var14], var12.string1, this.__bs[var14], var11.__m_15(), var11.coord1.packed(), var11.coord2.packed());
                      var13 = true;
                   }
                }

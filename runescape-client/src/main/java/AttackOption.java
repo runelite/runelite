@@ -43,8 +43,8 @@ public enum AttackOption implements Enumerated {
    @ObfuscatedSignature(
       signature = "[Llq;"
    )
-   @Export("__cj_bo")
-   static IndexedSprite[] __cj_bo;
+   @Export("worldSelectArrows")
+   static IndexedSprite[] worldSelectArrows;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1461217963

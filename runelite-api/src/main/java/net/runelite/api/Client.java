@@ -1671,8 +1671,14 @@ public interface Client extends GameShell
 	boolean getIsSpellSelected();
 
 	/**
+	 * Set whether or not player attack options will be hidden for clanmembers/friends
+	 */
+	void setHideFriendAttackOptions(boolean yes);
+	
+	/**
 	 * Sorts the current menu entries in the same way the client does this.
 	 * The last entry will be the left click one after this.
 	 */
 	void sortMenuEntries();
+
 }

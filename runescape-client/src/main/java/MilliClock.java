@@ -166,8 +166,8 @@ public class MilliClock extends Clock {
                         var12 = 2001;
                      }
                   } else if(var3[var10] == 3) {
-                     var11 = var0[var6].__e_144()?1:0;
-                     var12 = var8.__e_144()?1:0;
+                     var11 = var0[var6].isMembersOnly()?1:0;
+                     var12 = var8.isMembersOnly()?1:0;
                   } else {
                      var11 = var0[var6].id;
                      var12 = var8.id;
@@ -206,8 +206,8 @@ public class MilliClock extends Clock {
                         var12 = 2001;
                      }
                   } else if(var3[var10] == 3) {
-                     var11 = var0[var5].__e_144()?1:0;
-                     var12 = var8.__e_144()?1:0;
+                     var11 = var0[var5].isMembersOnly()?1:0;
+                     var12 = var8.isMembersOnly()?1:0;
                   } else {
                      var11 = var0[var5].id;
                      var12 = var8.id;

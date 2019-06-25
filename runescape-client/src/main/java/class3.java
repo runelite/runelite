@@ -35,7 +35,7 @@ public class class3 implements Enumerated {
    @ObfuscatedGetter(
       intValue = -393250053
    )
-   public final int field17;
+   public final int id;
    @ObfuscatedName("u")
    public final Class field18;
    @ObfuscatedName("g")
@@ -55,7 +55,7 @@ public class class3 implements Enumerated {
    )
    class3(int var1, int var2, Class var3, class0 var4) {
       this.field13 = var1;
-      this.field17 = var2;
+      this.id = var2;
       this.field18 = var3;
       this.field19 = var4;
    }
@@ -66,7 +66,7 @@ public class class3 implements Enumerated {
       garbageValue = "83"
    )
    public int rsOrdinal() {
-      return this.field17;
+      return this.id;
    }
 
    @ObfuscatedName("q")

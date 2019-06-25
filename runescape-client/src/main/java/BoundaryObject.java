@@ -78,10 +78,10 @@ public final class BoundaryObject {
       signature = "(Ljava/lang/String;B)V",
       garbageValue = "103"
    )
-   static final void method3235(String var0) {
+   static final void doCheat(String var0) {
       if(var0.equalsIgnoreCase("toggleroof")) {
          ReflectionCheck.clientPreferences.roofsHidden = !ReflectionCheck.clientPreferences.roofsHidden;
-         WorldMapSection0.method247();
+         WorldMapSection0.savePreferences();
          if(ReflectionCheck.clientPreferences.roofsHidden) {
             WorldMapIcon1.method219(99, "", "Roofs are now all hidden");
          } else {

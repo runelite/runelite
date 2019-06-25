@@ -43,6 +43,7 @@ import static net.runelite.api.SkullIcon.DEAD_MAN_TWO;
 import static net.runelite.api.SkullIcon.SKULL;
 import static net.runelite.api.SkullIcon.SKULL_FIGHT_PIT;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
 import java.awt.Polygon;
@@ -63,6 +64,9 @@ public abstract class RSPlayerMixin implements RSPlayer
 {
 	@Shadow("client")
 	private static RSClient client;
+
+	@Inject
+	private boolean friended;
 
 	@Inject
 	@Override
@@ -254,5 +258,18 @@ public abstract class RSPlayerMixin implements RSPlayer
 			setPoseFrame(poseFrame);
 			setSpotAnimationFrame(spotAnimFrame);
 		}
+	}
+
+	@Inject
+	public boolean isFriended()
+	{
+		return isFriend() || friended;
+	}
+
+	@Inject
+	@MethodHook(value = "checkIsFriend", end = true)
+	void updateFriended()
+	{
+		friended = client.getFriendManager().isFriended(getRsName(), false);
 	}
 }

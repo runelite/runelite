@@ -121,9 +121,9 @@ public class class15 extends class21 {
       garbageValue = "2139921057"
    )
    static int method182(int var0, Script var1, boolean var2) {
-      Widget var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+      Widget var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
       if(var0 == 2800) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = class211.method4107(class1.getWidgetClickMask(var3));
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class211.method4107(class1.getWidgetClickMask(var3));
          return 1;
       } else if(var0 != 2801) {
          if(var0 == 2802) {
@@ -138,7 +138,7 @@ public class class15 extends class21 {
             return 2;
          }
       } else {
-         int var4 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+         int var4 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          --var4;
          if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
             Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.actions[var4];

@@ -85,41 +85,41 @@ public final class IndexedSprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("q")
-   @Export("__q_496")
-   public void __q_496(int var1, int var2) {
-      var1 += this.xOffset;
-      var2 += this.yOffset;
-      int var3 = var1 + var2 * Rasterizer2D.Rasterizer2D_width;
+   @Export("drawAt")
+   public void drawAt(int x, int y) {
+      x += this.xOffset;
+      y += this.yOffset;
+      int var3 = x + y * Rasterizer2D.Rasterizer2D_width;
       int var4 = 0;
       int var5 = this.subHeight;
       int var6 = this.subWidth;
       int var7 = Rasterizer2D.Rasterizer2D_width - var6;
       int var8 = 0;
       int var9;
-      if(var2 < Rasterizer2D.Rasterizer2D_yClipStart) {
-         var9 = Rasterizer2D.Rasterizer2D_yClipStart - var2;
+      if(y < Rasterizer2D.Rasterizer2D_yClipStart) {
+         var9 = Rasterizer2D.Rasterizer2D_yClipStart - y;
          var5 -= var9;
-         var2 = Rasterizer2D.Rasterizer2D_yClipStart;
+         y = Rasterizer2D.Rasterizer2D_yClipStart;
          var4 += var9 * var6;
          var3 += var9 * Rasterizer2D.Rasterizer2D_width;
       }
 
-      if(var5 + var2 > Rasterizer2D.Rasterizer2D_yClipEnd) {
-         var5 -= var5 + var2 - Rasterizer2D.Rasterizer2D_yClipEnd;
+      if(var5 + y > Rasterizer2D.Rasterizer2D_yClipEnd) {
+         var5 -= var5 + y - Rasterizer2D.Rasterizer2D_yClipEnd;
       }
 
-      if(var1 < Rasterizer2D.Rasterizer2D_xClipStart) {
-         var9 = Rasterizer2D.Rasterizer2D_xClipStart - var1;
+      if(x < Rasterizer2D.Rasterizer2D_xClipStart) {
+         var9 = Rasterizer2D.Rasterizer2D_xClipStart - x;
          var6 -= var9;
-         var1 = Rasterizer2D.Rasterizer2D_xClipStart;
+         x = Rasterizer2D.Rasterizer2D_xClipStart;
          var4 += var9;
          var3 += var9;
          var8 += var9;
          var7 += var9;
       }
 
-      if(var6 + var1 > Rasterizer2D.Rasterizer2D_xClipEnd) {
-         var9 = var6 + var1 - Rasterizer2D.Rasterizer2D_xClipEnd;
+      if(var6 + x > Rasterizer2D.Rasterizer2D_xClipEnd) {
+         var9 = var6 + x - Rasterizer2D.Rasterizer2D_xClipEnd;
          var6 -= var9;
          var8 += var9;
          var7 += var9;

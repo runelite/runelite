@@ -141,7 +141,7 @@ public class Interpreter {
       signature = "(IIB)V",
       garbageValue = "76"
    )
-   static void method1975(int var0, int var1) {
+   static void changeWorldSelectSorting(int var0, int var1) {
       int[] var2 = new int[4];
       int[] var3 = new int[4];
       var2[0] = var0;
@@ -149,16 +149,16 @@ public class Interpreter {
       int var4 = 1;
 
       for(int var5 = 0; var5 < 4; ++var5) {
-         if(World.__bt_e[var5] != var0) {
-            var2[var4] = World.__bt_e[var5];
-            var3[var4] = World.__bt_l[var5];
+         if(World.sortOption1[var5] != var0) {
+            var2[var4] = World.sortOption1[var5];
+            var3[var4] = World.sortOption2[var5];
             ++var4;
          }
       }
 
-      World.__bt_e = var2;
-      World.__bt_l = var3;
-      MilliClock.method3400(ItemContainer.worlds, 0, ItemContainer.worlds.length - 1, World.__bt_e, World.__bt_l);
+      World.sortOption1 = var2;
+      World.sortOption2 = var3;
+      MilliClock.method3400(ItemContainer.worlds, 0, ItemContainer.worlds.length - 1, World.sortOption1, World.sortOption2);
    }
 
    @ObfuscatedName("w")

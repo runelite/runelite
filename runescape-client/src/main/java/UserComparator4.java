@@ -60,32 +60,32 @@ public class UserComparator4 implements Comparator {
    )
    static int method3335(int var0, Script var1, boolean var2) {
       if(var0 == 5306) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = SpotAnimationDefinition.method4822();
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = SpotAnimationDefinition.method4822();
          return 1;
       } else {
          int var3;
          if(var0 == 5307) {
-            var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             if(var3 == 1 || var3 == 2) {
                GroundItem.method2095(var3);
             }
 
             return 1;
          } else if(var0 == 5308) {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.windowMode;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.windowMode;
             return 1;
          } else if(var0 != 5309) {
             if(var0 == 5310) {
-               --class179.Interpreter_intStackSize;
+               --RouteStrategy.Interpreter_intStackSize;
                return 1;
             } else {
                return 2;
             }
          } else {
-            var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             if(var3 == 1 || var3 == 2) {
                ReflectionCheck.clientPreferences.windowMode = var3;
-               WorldMapSection0.method247();
+               WorldMapSection0.savePreferences();
             }
 
             return 1;

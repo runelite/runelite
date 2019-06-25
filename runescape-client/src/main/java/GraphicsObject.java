@@ -17,8 +17,8 @@ public final class GraphicsObject extends Entity {
    @ObfuscatedSignature(
       signature = "Llq;"
    )
-   @Export("__bw_k")
-   static IndexedSprite __bw_k;
+   @Export("options_buttons_4Sprite")
+   static IndexedSprite options_buttons_4Sprite;
    @ObfuscatedName("fr")
    @ObfuscatedGetter(
       intValue = -438288575

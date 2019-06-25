@@ -108,7 +108,7 @@ public class FriendsList extends UserList {
                      boolean var14 = true;
 
                      for(FriendLoginUpdate var13 = (FriendLoginUpdate)this.friendLoginUpdates.__f_438(); var13 != null; var13 = (FriendLoginUpdate)this.friendLoginUpdates.__q_439()) {
-                        if(var13.username.__equals_466(var4)) {
+                        if(var13.username.equals(var4)) {
                            if(var6 != 0 && var13.world == 0) {
                               var13.remove();
                               var14 = false;

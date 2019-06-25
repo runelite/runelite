@@ -292,7 +292,7 @@ public class WorldMapSection1 implements WorldMapSection {
       class196.varcs.clearTransient();
       Client.followerIndex = -1;
       if(Client.rootWidgetGroup != -1) {
-         AbstractByteArrayCopier.method4023(Client.rootWidgetGroup);
+         AbstractByteArrayCopier.unloadWidgetGroup(Client.rootWidgetGroup);
       }
 
       for(WidgetGroupParent var4 = (WidgetGroupParent)Client.widgetGroupParents.first(); var4 != null; var4 = (WidgetGroupParent)Client.widgetGroupParents.next()) {

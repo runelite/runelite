@@ -49,15 +49,15 @@ final class WorldComparator implements Comparator {
    )
    static int method68(int var0, Script var1, boolean var2) {
       if(var0 == 3200) {
-         class179.Interpreter_intStackSize -= 3;
-         Ignored.queueSoundEffect(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize], Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2]);
+         RouteStrategy.Interpreter_intStackSize -= 3;
+         Ignored.queueSoundEffect(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2]);
          return 1;
       } else if(var0 == 3201) {
-         AbstractUserComparator.method5437(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+         AbstractUserComparator.method5437(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
          return 1;
       } else if(var0 == 3202) {
-         class179.Interpreter_intStackSize -= 2;
-         HealthBar.method1994(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize], Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]);
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         HealthBar.method1994(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
          return 1;
       } else {
          return 2;

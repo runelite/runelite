@@ -1073,7 +1073,7 @@ public class WorldMapRegion {
    )
    static final void method567(Widget var0, int var1, int var2) {
       if(Client.minimapState == 0 || Client.minimapState == 3) {
-         if(!Client.isMenuOpen && (MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.__lp_ca && MouseHandler.MouseHandler_lastButton == 4)) {
+         if(!Client.isMenuOpen && (MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.mouseCam && MouseHandler.MouseHandler_lastButton == 4)) {
             SpriteMask var3 = var0.getSpriteMask(true);
             if(var3 == null) {
                return;

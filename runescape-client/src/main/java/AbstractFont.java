@@ -667,7 +667,7 @@ public abstract class AbstractFont extends Rasterizer2D {
                            try {
                               var9 = MouseHandler.method1085(var8.substring(4));
                               IndexedSprite var10 = AbstractFont_modIconSprites[var9];
-                              var10.__q_496(var2, var3 + this.ascent - var10.height);
+                              var10.drawAt(var2, var3 + this.ascent - var10.height);
                               var2 += var10.width;
                               var5 = -1;
                            } catch (Exception var14) {
@@ -773,7 +773,7 @@ public abstract class AbstractFont extends Rasterizer2D {
                               ++var8;
                               var14 = MouseHandler.method1085(var11.substring(4));
                               IndexedSprite var15 = AbstractFont_modIconSprites[var14];
-                              var15.__q_496(var12 + var2, var13 + (var3 + this.ascent - var15.height));
+                              var15.drawAt(var12 + var2, var13 + (var3 + this.ascent - var15.height));
                               var2 += var15.width;
                               var7 = -1;
                            } catch (Exception var19) {

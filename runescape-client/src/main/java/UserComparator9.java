@@ -62,7 +62,7 @@ public class UserComparator9 extends AbstractUserComparator {
       signature = "(I)[Lln;",
       garbageValue = "-1724028611"
    )
-   public static Sprite[] method3344() {
+   public static Sprite[] createSpriteArray() {
       Sprite[] var0 = new Sprite[class328.indexedSpriteCount];
 
       for(int var1 = 0; var1 < class328.indexedSpriteCount; ++var1) {

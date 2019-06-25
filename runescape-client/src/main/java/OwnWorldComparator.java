@@ -55,9 +55,9 @@ public class OwnWorldComparator implements Comparator {
    static int method1285(int var0, Script var1, boolean var2) {
       int var3;
       if(var0 == 5504) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         int var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         int var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          if(!Client.isCameraLocked) {
             Client.cameraPitchTarget = var3;
             Client.minimapOrientation = var4;
@@ -65,13 +65,13 @@ public class OwnWorldComparator implements Comparator {
 
          return 1;
       } else if(var0 == 5505) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.cameraPitchTarget;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.cameraPitchTarget;
          return 1;
       } else if(var0 == 5506) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.minimapOrientation;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.minimapOrientation;
          return 1;
       } else if(var0 == 5530) {
-         var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+         var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          if(var3 < 0) {
             var3 = 0;
          }
@@ -79,7 +79,7 @@ public class OwnWorldComparator implements Comparator {
          Client.cameraFollowHeight = var3;
          return 1;
       } else if(var0 == 5531) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.cameraFollowHeight;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.cameraFollowHeight;
          return 1;
       } else {
          return 2;

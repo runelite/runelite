@@ -66,52 +66,52 @@ final class class2 implements class0 {
          Login.loginIndex = var3;
          Rasterizer2D.Rasterizer2D_clear();
          byte[] var4 = var0.takeRecordByNames("title.jpg", "");
-         Login.__cu_g = class27.method438(var4);
-         Fonts.__kz_l = Login.__cu_g.copy();
-         if((Client.worldProperties & 536870912) != 0) {
-            WorldMapSectionType.__h_e = MenuAction.method2025(var1, "logo_deadman_mode", "");
+         Login.leftTitleSprite = class27.convertJpgToSprite(var4);
+         Fonts.rightTitleSprite = Login.leftTitleSprite.copy();
+         if((Client.worldProperties & 0x20000000) != 0) {
+            WorldMapSectionType.logoSprite = MenuAction.loadIndexedSpriteByName(var1, "logo_deadman_mode", "");
          } else {
-            WorldMapSectionType.__h_e = MenuAction.method2025(var1, "logo", "");
+            WorldMapSectionType.logoSprite = MenuAction.loadIndexedSpriteByName(var1, "logo", "");
          }
 
-         Login.__cu_o = MenuAction.method2025(var1, "titlebox", "");
-         IndexCacheLoader.__bd_u = MenuAction.method2025(var1, "titlebutton", "");
+         Login.titleboxSprite = MenuAction.loadIndexedSpriteByName(var1, "titlebox", "");
+         IndexCacheLoader.titlebuttonSprite = MenuAction.loadIndexedSpriteByName(var1, "titlebutton", "");
          int var6 = var1.getArchiveId("runes");
          int var7 = var1.getRecordId(var6, "");
          IndexedSprite[] var8;
-         if(!SpriteMask.method4392(var1, var6, var7)) {
+         if(!SpriteMask.loadSprite(var1, var6, var7)) {
             var8 = null;
          } else {
-            var8 = WorldMapLabel.method444();
+            var8 = WorldMapLabel.createIndexedSpriteArray();
          }
 
-         WorldMapEvent.__ap_w = var8;
+         WorldMapEvent.runesSprite = var8;
          var7 = var1.getArchiveId("title_mute");
          int var10 = var1.getRecordId(var7, "");
          IndexedSprite[] var9;
-         if(!SpriteMask.method4392(var1, var7, var10)) {
+         if(!SpriteMask.loadSprite(var1, var7, var10)) {
             var9 = null;
          } else {
-            var9 = WorldMapLabel.method444();
+            var9 = WorldMapLabel.createIndexedSpriteArray();
          }
 
-         KeyHandler.__an_x = var9;
-         Login.__cu_d = MenuAction.method2025(var1, "options_radio_buttons,0", "");
-         GraphicsObject.__bw_k = MenuAction.method2025(var1, "options_radio_buttons,4", "");
-         class308.__kw_n = MenuAction.method2025(var1, "options_radio_buttons,2", "");
-         KeyHandler.__an_i = MenuAction.method2025(var1, "options_radio_buttons,6", "");
-         class168.__fs_au = Login.__cu_d.subWidth;
-         GroundItemPile.__dr_ao = Login.__cu_d.subHeight;
-         class16.field85 = new class72(WorldMapEvent.__ap_w);
+         KeyHandler.title_muteSprite = var9;
+         Login.options_buttons_0Sprite = MenuAction.loadIndexedSpriteByName(var1, "options_radio_buttons,0", "");
+         GraphicsObject.options_buttons_4Sprite = MenuAction.loadIndexedSpriteByName(var1, "options_radio_buttons,4", "");
+         class308.options_buttons_2Sprite = MenuAction.loadIndexedSpriteByName(var1, "options_radio_buttons,2", "");
+         KeyHandler.options_buttons_6Sprite = MenuAction.loadIndexedSpriteByName(var1, "options_radio_buttons,6", "");
+         class168.optionButtonSpriteSubWidth = Login.options_buttons_0Sprite.subWidth;
+         GroundItemPile.optionButtonSpriteSubHeight = Login.options_buttons_0Sprite.subHeight;
+         class16.loginScreenRunesAnimation = new LoginScreenAnimation(WorldMapEvent.runesSprite);
          if(var2) {
             Login.Login_username = "";
             Login.Login_password = "";
          }
 
-         class13.__i_af = 0;
+         class13.otpInt = 0;
          Login.otp = "";
          Login.__cu_ba = true;
-         Login.__cu_bk = false;
+         Login.worldSelectOpen = false;
          if(!ReflectionCheck.clientPreferences.titleMusicDisabled) {
             Canvas.method858(2, UserComparator3.indexCache6, "scape main", "", 255, false);
          } else {
@@ -120,12 +120,12 @@ final class class2 implements class0 {
 
          UserComparator9.method3343(false);
          Login.__cu_f = true;
-         Login.__cu_q = (SoundCache.canvasWidth - 765) / 2;
-         Login.__cu_y = Login.__cu_q + 202;
-         Varps.__hv_h = Login.__cu_y + 180;
-         Login.__cu_g.drawAt(Login.__cu_q, 0);
-         Fonts.__kz_l.drawAt(Login.__cu_q + 382, 0);
-         WorldMapSectionType.__h_e.__q_496(Login.__cu_q + 382 - WorldMapSectionType.__h_e.subWidth / 2, 18);
+         Login.xPadding = (SoundCache.canvasWidth - 765) / 2;
+         Login.loginBoxX = Login.xPadding + 202;
+         Varps.loginBoxCenter = Login.loginBoxX + 180;
+         Login.leftTitleSprite.drawAt(Login.xPadding, 0);
+         Fonts.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
+         WorldMapSectionType.logoSprite.drawAt(Login.xPadding + 382 - WorldMapSectionType.logoSprite.subWidth / 2, 18);
       }
    }
 
@@ -138,10 +138,10 @@ final class class2 implements class0 {
       int var3 = var0.getArchiveId(var1);
       int var4 = var0.getRecordId(var3, var2);
       Sprite[] var5;
-      if(!SpriteMask.method4392(var0, var3, var4)) {
+      if(!SpriteMask.loadSprite(var0, var3, var4)) {
          var5 = null;
       } else {
-         var5 = UserComparator9.method3344();
+         var5 = UserComparator9.createSpriteArray();
       }
 
       return var5;

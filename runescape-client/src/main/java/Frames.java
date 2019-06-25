@@ -13,8 +13,8 @@ public class Frames extends DualNode {
    @ObfuscatedSignature(
       signature = "[Llq;"
    )
-   @Export("__en_bc")
-   static IndexedSprite[] __en_bc;
+   @Export("worldSelectFlagSprites")
+   static IndexedSprite[] worldSelectFlagSprites;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "[Ldz;"

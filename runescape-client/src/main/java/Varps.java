@@ -20,8 +20,8 @@ public class Varps {
    @ObfuscatedGetter(
       intValue = 120772859
    )
-   @Export("__hv_h")
-   static int __hv_h;
+   @Export("loginBoxCenter")
+   static int loginBoxCenter;
 
    static {
       Varps_masks = new int[32];

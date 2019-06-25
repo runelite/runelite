@@ -11,8 +11,8 @@ public class WorldMapEvent {
    @ObfuscatedSignature(
       signature = "[Llq;"
    )
-   @Export("__ap_w")
-   static IndexedSprite[] __ap_w;
+   @Export("runesSprite")
+   static IndexedSprite[] runesSprite;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 264384233
@@ -57,7 +57,7 @@ public class WorldMapEvent {
    )
    static final void method781(int var0, int var1, int var2, int var3) {
       if(Client.isItemSelected == 0 && !Client.isSpellSelected) {
-         Tiles.method1106("Walk here", "", 23, 0, var0 - var2, var1 - var3);
+         Tiles.insertMenuItemNoShift("Walk here", "", 23, 0, var0 - var2, var1 - var3);
       }
 
       long var4 = -1L;
@@ -98,10 +98,10 @@ public class WorldMapEvent {
                   }
 
                   if(Client.isItemSelected == 1) {
-                     Tiles.method1106("Use", Client.selectedItemName + " " + "->" + " " + BufferedFile.colorStartTag(65535) + var20.name, 1, var19, var15, var17);
+                     Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + BufferedFile.colorStartTag(65535) + var20.name, 1, var19, var15, var17);
                   } else if(Client.isSpellSelected) {
                      if((FloorDecoration.selectedSpellFlags & 4) == 4) {
-                        Tiles.method1106(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + BufferedFile.colorStartTag(65535) + var20.name, 2, var19, var15, var17);
+                        Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + BufferedFile.colorStartTag(65535) + var20.name, 2, var19, var15, var17);
                      }
                   } else {
                      String[] var29 = var20.actions;
@@ -129,12 +129,12 @@ public class WorldMapEvent {
                                  var23 = 1001;
                               }
 
-                              Tiles.method1106(var29[var30], BufferedFile.colorStartTag(65535) + var20.name, var23, var19, var15, var17);
+                              Tiles.insertMenuItemNoShift(var29[var30], BufferedFile.colorStartTag(65535) + var20.name, var23, var19, var15, var17);
                            }
                         }
                      }
 
-                     Tiles.method1106("Examine", BufferedFile.colorStartTag(65535) + var20.name, 1002, var20.id, var15, var17);
+                     Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(65535) + var20.name, 1002, var20.id, var15, var17);
                   }
                }
 
@@ -209,10 +209,10 @@ public class WorldMapEvent {
                      for(GroundItem var39 = (GroundItem)var35.first(); var39 != null; var39 = (GroundItem)var35.next()) {
                         ItemDefinition var37 = Skills.getItemDefinition(var39.id);
                         if(Client.isItemSelected == 1) {
-                           Tiles.method1106("Use", Client.selectedItemName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var37.name, 16, var39.id, var15, var17);
+                           Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var37.name, 16, var39.id, var15, var17);
                         } else if(Client.isSpellSelected) {
                            if((FloorDecoration.selectedSpellFlags & 1) == 1) {
-                              Tiles.method1106(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var37.name, 17, var39.id, var15, var17);
+                              Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var37.name, 17, var39.id, var15, var17);
                            }
                         } else {
                            String[] var31 = var37.groundActions;
@@ -240,13 +240,13 @@ public class WorldMapEvent {
                                     var25 = 22;
                                  }
 
-                                 Tiles.method1106(var31[var32], BufferedFile.colorStartTag(16748608) + var37.name, var25, var39.id, var15, var17);
+                                 Tiles.insertMenuItemNoShift(var31[var32], BufferedFile.colorStartTag(16748608) + var37.name, var25, var39.id, var15, var17);
                               } else if(var32 == 2) {
-                                 Tiles.method1106("Take", BufferedFile.colorStartTag(16748608) + var37.name, 20, var39.id, var15, var17);
+                                 Tiles.insertMenuItemNoShift("Take", BufferedFile.colorStartTag(16748608) + var37.name, 20, var39.id, var15, var17);
                               }
                            }
 
-                           Tiles.method1106("Examine", BufferedFile.colorStartTag(16748608) + var37.name, 1004, var39.id, var15, var17);
+                           Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(16748608) + var37.name, 1004, var39.id, var15, var17);
                         }
                      }
                   }

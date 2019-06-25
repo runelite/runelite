@@ -4,22 +4,22 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("fi")
 public class class178 {
    @ObfuscatedName("q")
-   @Export("__fi_q")
-   static int[][] __fi_q;
+   @Export("directions")
+   static int[][] directions;
    @ObfuscatedName("w")
-   @Export("__fi_w")
-   static int[][] __fi_w;
+   @Export("distances")
+   static int[][] distances;
    @ObfuscatedName("l")
-   @Export("__fi_l")
-   static int[] __fi_l;
+   @Export("bufferX")
+   static int[] bufferX;
    @ObfuscatedName("e")
-   @Export("__fi_e")
-   static int[] __fi_e;
+   @Export("bufferY")
+   static int[] bufferY;
 
    static {
-      __fi_q = new int[128][128];
-      __fi_w = new int[128][128];
-      __fi_l = new int[4096];
-      __fi_e = new int[4096];
+      directions = new int[128][128];
+      distances = new int[128][128];
+      bufferX = new int[4096];
+      bufferY = new int[4096];
    }
 }

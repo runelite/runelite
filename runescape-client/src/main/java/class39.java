@@ -278,8 +278,8 @@ public class class39 extends class21 {
                      if(Client.viewportTempX > -1) {
                         var21 = var2 + Client.viewportTempX - (var15 >> 1);
                         var22 = var3 + Client.viewportTempY - var87;
-                        Rasterizer2D.Rasterizer2D_fillRectangle(var21, var22, var93, 5, 65280);
-                        Rasterizer2D.Rasterizer2D_fillRectangle(var21 + var93, var22, var15 - var93, 5, 16711680);
+                        Rasterizer2D.Rasterizer2D_fillRectangle(var21, var22, var93, 5, 0xff00);
+                        Rasterizer2D.Rasterizer2D_fillRectangle(var21 + var93, var22, var15 - var93, 5, 0xff0000);
                      }
 
                      var87 += 2;
@@ -367,7 +367,7 @@ public class class39 extends class21 {
                   continue;
                }
 
-               var95 = class72.getHitSplatDefinition(var0.hitSplatTypes[var80]);
+               var95 = LoginScreenAnimation.getHitSplatDefinition(var0.hitSplatTypes[var80]);
                var98 = var95.__i;
                if(var95 != null && var95.transforms != null) {
                   var95 = var95.transform();
@@ -383,7 +383,7 @@ public class class39 extends class21 {
             var15 = var0.hitSplatTypes2[var80];
             HitSplatDefinition var81 = null;
             if(var15 >= 0) {
-               var81 = class72.getHitSplatDefinition(var15);
+               var81 = LoginScreenAnimation.getHitSplatDefinition(var15);
                if(var81 != null && var81.transforms != null) {
                   var81 = var81.transform();
                }

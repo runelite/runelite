@@ -11,8 +11,8 @@ public final class GroundItemPile {
    @ObfuscatedGetter(
       intValue = -704675849
    )
-   @Export("__dr_ao")
-   static int __dr_ao;
+   @Export("optionButtonSpriteSubHeight")
+   static int optionButtonSpriteSubHeight;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lex;"

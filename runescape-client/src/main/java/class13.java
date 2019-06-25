@@ -18,8 +18,8 @@ public class class13 {
    @ObfuscatedGetter(
       intValue = -1810047523
    )
-   @Export("__i_af")
-   static int __i_af;
+   @Export("otpInt")
+   static int otpInt;
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(

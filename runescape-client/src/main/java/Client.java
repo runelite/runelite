@@ -3641,7 +3641,7 @@ public final class Client extends GameShell implements Usernamed {
                switch(field658.field1984) {
                case 0:
                case 3:
-                  var3.writeMedium(class13.__i_af);
+                  var3.writeMedium(class13.otpInt);
                   ++var3.index;
                   break;
                case 1:
@@ -3808,7 +3808,7 @@ public final class Client extends GameShell implements Usernamed {
                   ReflectionCheck.clientPreferences.rememberedUsername = null;
                }
 
-               WorldMapSection0.method247();
+               WorldMapSection0.savePreferences();
                rights = ((AbstractSocket)var1).readUnsignedByte();
                __client_mn = ((AbstractSocket)var1).readUnsignedByte() == 1;
                localPlayerIndex = ((AbstractSocket)var1).readUnsignedByte();
@@ -4127,7 +4127,7 @@ public final class Client extends GameShell implements Usernamed {
                   }
 
                   PacketBufferNode var18;
-                  if(MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.__lp_ca && MouseHandler.MouseHandler_lastButton == 4 || MouseHandler.MouseHandler_lastButton == 2) {
+                  if(MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.mouseCam && MouseHandler.MouseHandler_lastButton == 4 || MouseHandler.MouseHandler_lastButton == 2) {
                      long var16 = (MouseHandler.MouseHandler_lastPressedTimeMillis - mouseLastLastPressedTimeMillis * -1L) / 50L;
                      if(var16 > 4095L) {
                         var16 = 4095L;
@@ -4244,7 +4244,7 @@ public final class Client extends GameShell implements Usernamed {
                      }
                   }
 
-                  Buddy.method5554();
+                  Buddy.processOverheadText();
                   ++__client_gy;
                   if(mouseCrossColor != 0) {
                      mouseCrossState += 20;
@@ -5054,7 +5054,7 @@ public final class Client extends GameShell implements Usernamed {
                   }
                }
 
-               PlayerType.method4547(var5);
+               PlayerType.clearItemContainer(var5);
                var7 = var3.__ag_302();
 
                for(var8 = 0; var8 < var7; ++var8) {
@@ -6269,7 +6269,7 @@ public final class Client extends GameShell implements Usernamed {
                int var13;
                if(isMenuOpen) {
                   int var12;
-                  if(var15 != 1 && (AbstractRasterProvider.__lp_ca || var15 != 4)) {
+                  if(var15 != 1 && (AbstractRasterProvider.mouseCam || var15 != 4)) {
                      var2 = MouseHandler.MouseHandler_x;
                      var12 = MouseHandler.MouseHandler_y;
                      if(var2 < class25.menuX - 10 || var2 > class25.menuX + class214.menuWidth + 10 || var12 < GameShell.menuY - 10 || var12 > AbstractWorldMapIcon.menuHeight + GameShell.menuY + 10) {
@@ -6278,7 +6278,7 @@ public final class Client extends GameShell implements Usernamed {
                      }
                   }
 
-                  if(var15 == 1 || !AbstractRasterProvider.__lp_ca && var15 == 4) {
+                  if(var15 == 1 || !AbstractRasterProvider.mouseCam && var15 == 4) {
                      var2 = class25.menuX;
                      var12 = GameShell.menuY;
                      var13 = class214.menuWidth;
@@ -6302,7 +6302,7 @@ public final class Client extends GameShell implements Usernamed {
                   }
                } else {
                   var2 = menuOptionsCount - 1;
-                  if((var15 == 1 || !AbstractRasterProvider.__lp_ca && var15 == 4) && var2 >= 0) {
+                  if((var15 == 1 || !AbstractRasterProvider.mouseCam && var15 == 4) && var2 >= 0) {
                      var13 = menuOpcodes[var2];
                      if(var13 == 39 || var13 == 40 || var13 == 41 || var13 == 42 || var13 == 43 || var13 == 33 || var13 == 34 || var13 == 35 || var13 == 36 || var13 == 37 || var13 == 38 || var13 == 1005) {
                         var5 = menuArguments1[var2];
@@ -6321,11 +6321,11 @@ public final class Client extends GameShell implements Usernamed {
                      }
                   }
 
-                  if((var15 == 1 || !AbstractRasterProvider.__lp_ca && var15 == 4) && this.shouldLeftClickOpenMenu()) {
+                  if((var15 == 1 || !AbstractRasterProvider.mouseCam && var15 == 4) && this.shouldLeftClickOpenMenu()) {
                      var15 = 2;
                   }
 
-                  if((var15 == 1 || !AbstractRasterProvider.__lp_ca && var15 == 4) && menuOptionsCount > 0) {
+                  if((var15 == 1 || !AbstractRasterProvider.mouseCam && var15 == 4) && menuOptionsCount > 0) {
                      WorldMapSection0.method245(var2);
                   }
 

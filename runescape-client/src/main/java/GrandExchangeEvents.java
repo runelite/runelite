@@ -121,51 +121,51 @@ public class GrandExchangeEvents {
       garbageValue = "620886402"
    )
    static int method75(int var0, Script var1, boolean var2) {
-      Widget var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+      Widget var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
       if(var0 == 2600) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.scrollX;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollX;
          return 1;
       } else if(var0 == 2601) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.scrollY;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollY;
          return 1;
       } else if(var0 == 2602) {
          Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.text;
          return 1;
       } else if(var0 == 2603) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.scrollWidth;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollWidth;
          return 1;
       } else if(var0 == 2604) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.scrollHeight;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollHeight;
          return 1;
       } else if(var0 == 2605) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.modelZoom;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelZoom;
          return 1;
       } else if(var0 == 2606) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.modelAngleX;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleX;
          return 1;
       } else if(var0 == 2607) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.modelAngleZ;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleZ;
          return 1;
       } else if(var0 == 2608) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.modelAngleY;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleY;
          return 1;
       } else if(var0 == 2609) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.transparency;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.transparency;
          return 1;
       } else if(var0 == 2610) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.__af;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.__af;
          return 1;
       } else if(var0 == 2611) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.color;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.color;
          return 1;
       } else if(var0 == 2612) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.color2;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.color2;
          return 1;
       } else if(var0 == 2613) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
          return 1;
       } else if(var0 == 2614) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.__bv?1:0;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.__bv?1:0;
          return 1;
       } else {
          return 2;

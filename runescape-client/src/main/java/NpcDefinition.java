@@ -699,7 +699,7 @@ public class NpcDefinition extends DualNode {
          if(var1 == 0L) {
             var0 = 5;
          } else {
-            var0 = class72.method1778(var1, Login.Login_username);
+            var0 = LoginScreenAnimation.method1778(var1, Login.Login_username);
          }
 
          switch(var0) {

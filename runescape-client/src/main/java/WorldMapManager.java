@@ -171,7 +171,7 @@ public final class WorldMapManager {
          System.nanoTime();
          if(var1.__ag_401(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, var2)) {
             byte[] var20 = var1.takeRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, var2);
-            this.overviewSprite = class27.method438(var20);
+            this.overviewSprite = class27.convertJpgToSprite(var20);
          }
 
          System.nanoTime();

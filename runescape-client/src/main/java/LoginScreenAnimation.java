@@ -9,12 +9,13 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bp")
-public class class72 {
+public class LoginScreenAnimation
+{
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "[Llq;"
    )
-   IndexedSprite[] field998;
+   IndexedSprite[] sprites;
    @ObfuscatedName("g")
    int[] field1015;
    @ObfuscatedName("l")
@@ -67,7 +68,7 @@ public class class72 {
    @ObfuscatedSignature(
       signature = "([Llq;)V"
    )
-   class72(IndexedSprite[] var1) {
+   LoginScreenAnimation(IndexedSprite[] var1) {
       this.field1015 = new int[256];
       this.field1008 = 0;
       this.field1009 = 0;
@@ -75,7 +76,7 @@ public class class72 {
       this.field1010 = 0;
       this.field1016 = 0;
       this.field1017 = 0;
-      this.field998 = var1;
+      this.sprites = var1;
       this.method1772();
    }
 
@@ -89,55 +90,55 @@ public class class72 {
 
       int var1;
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1006[var1] = var1 * 262144;
+         this.field1006[var1] = var1 * 0x40000;
       }
 
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1006[var1 + 64] = var1 * 1024 + 16711680;
+         this.field1006[var1 + 64] = var1 * 0x400 + 0xff0000;
       }
 
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1006[var1 + 128] = var1 * 4 + 16776960;
+         this.field1006[var1 + 128] = var1 * 0x4 + 0xffff00;
       }
 
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1006[var1 + 192] = 16777215;
+         this.field1006[var1 + 192] = 0xffffff;
       }
 
       this.field1007 = new int[256];
 
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1007[var1] = var1 * 1024;
+         this.field1007[var1] = var1 * 0x400;
       }
 
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1007[var1 + 64] = var1 * 4 + 65280;
+         this.field1007[var1 + 64] = var1 * 0x4 + 0xff00;
       }
 
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1007[var1 + 128] = var1 * 262144 + 65535;
+         this.field1007[var1 + 128] = var1 * 0x40000 + 0xffff;
       }
 
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1007[var1 + 192] = 16777215;
+         this.field1007[var1 + 192] = 0xffffff;
       }
 
       this.field1014 = new int[256];
 
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1014[var1] = var1 * 4;
+         this.field1014[var1] = var1 * 0x4;
       }
 
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1014[var1 + 64] = var1 * 262144 + 255;
+         this.field1014[var1 + 64] = var1 * 0x40000 + 0xff;
       }
 
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1014[var1 + 128] = var1 * 1024 + 16711935;
+         this.field1014[var1 + 128] = var1 * 0x400 + 0xff00ff;
       }
 
       for(var1 = 0; var1 < 64; ++var1) {
-         this.field1014[var1 + 192] = 16777215;
+         this.field1014[var1 + 192] = 0xffffff;
       }
 
       this.field1013 = new int[256];
@@ -172,26 +173,26 @@ public class class72 {
       signature = "(III)V",
       garbageValue = "-1684910110"
    )
-   void method1782(int var1, int var2) {
+   void method1782(int x, int cycle) {
       if(this.field1011 == null) {
          this.method1772();
       }
 
       if(this.field1017 == 0) {
-         this.field1017 = var2;
+         this.field1017 = cycle;
       }
 
-      int var3 = var2 - this.field1017;
+      int var3 = cycle - this.field1017;
       if(var3 >= 256) {
          var3 = 0;
       }
 
-      this.field1017 = var2;
+      this.field1017 = cycle;
       if(var3 > 0) {
          this.method1791(var3);
       }
 
-      this.method1787(var1);
+      this.method1787(x);
    }
 
    @ObfuscatedName("w")
@@ -205,7 +206,7 @@ public class class72 {
       if(this.field1010 > this.field1004.length) {
          this.field1010 -= this.field1004.length;
          var2 = (int)(Math.random() * 12.0D);
-         this.method1779(this.field998[var2]);
+         this.method1779(this.sprites[var2]);
       }
 
       var2 = 0;
@@ -335,7 +336,7 @@ public class class72 {
    )
    final int method1765(int var1, int var2, int var3) {
       int var4 = 256 - var3;
-      return (var4 * (var1 & 65280) + var3 * (var2 & 65280) & 16711680) + (var4 * (var1 & 16711935) + var3 * (var2 & 16711935) & -16711936) >> 8;
+      return (var4 * (var1 & 0xff00) + var3 * (var2 & 0xff00) & 0xff0000) + (var4 * (var1 & 0xff00ff) + var3 * (var2 & 0xff00ff) & 0xff00ff00) >> 8;
    }
 
    @ObfuscatedName("u")
@@ -411,7 +412,7 @@ public class class72 {
                int var13 = 256 - var10;
                var10 = this.field1013[var10];
                int var14 = class197.rasterProvider.pixels[var8];
-               class197.rasterProvider.pixels[var8++] = -16777216 | ((var10 & 16711935) * var12 + (var14 & 16711935) * var13 & -16711936) + (var12 * (var10 & 65280) + var13 * (var14 & 65280) & 16711680) >> 8;
+               class197.rasterProvider.pixels[var8++] = 0xff000000 | ((var10 & 0xff00ff) * var12 + (var14 & 0xff00ff) * var13 & 0xff00ff00) + (var12 * (var10 & 0xff00) + var13 * (var14 & 0xff00) & 0xff0000) >> 8;
             } else {
                ++var8;
             }
