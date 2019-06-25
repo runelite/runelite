@@ -299,6 +299,12 @@ public class WorldMap {
    @Export("__bm")
    int __bm;
 
+   static {
+      fontNameVerdana11 = FontName.FontName_verdana11;
+      fontNameVerdana13 = FontName.FontName_verdana13;
+      fontNameVerdana15 = FontName.FontName_verdana15;
+   }
+
    public WorldMap() {
       this.worldMapTargetX = -1;
       this.worldMapTargetY = -1;
@@ -426,7 +432,6 @@ public class WorldMap {
             this.__bk = var11;
          }
       }
-
    }
 
    @ObfuscatedName("w")
@@ -438,9 +443,7 @@ public class WorldMap {
    public void __w_519(int var1, int var2, boolean var3, boolean var4) {
       long var5 = class203.currentTimeMs();
       this.__o_520(var1, var2, var4, var5);
-      if(this.__x_524() || !var4 && !var3) {
-         this.__e_523();
-      } else {
+      if(!this.__x_524() && (var4 || var3)) {
          if(var4) {
             this.__at = var1;
             this.__ad = var2;
@@ -453,6 +456,8 @@ public class WorldMap {
             int var8 = var2 - this.__ad;
             this.setWorldMapPosition(this.__ab - (int)((float)var7 / this.zoomTarget), (int)((float)var8 / this.zoomTarget) + this.__ae, false);
          }
+      } else {
+         this.__e_523();
       }
 
       if(var4) {
@@ -471,33 +476,32 @@ public class WorldMap {
          int var7 = (int)((float)this.worldMapY - ((float)(var2 - this.worldMapDisplayY) - (float)this.__as_538() * this.zoom / 2.0F) / this.zoom);
          this.mouseCoord = this.currentMapArea0.coord(var6 + this.currentMapArea0.minX() * 64, var7 + this.currentMapArea0.minY() * 64);
          if(this.mouseCoord != null && var3) {
-            int var8;
             int var9;
-            PacketBufferNode var11;
+            int var10;
             if(FriendSystem.jmodCheck() && KeyHandler.KeyHandler_pressedKeys[82] && KeyHandler.KeyHandler_pressedKeys[81]) {
-               int var12 = this.mouseCoord.x;
-               var8 = this.mouseCoord.y;
-               var9 = this.mouseCoord.plane;
-               var11 = Interpreter.method1915(ClientPacket.__gs_bx, Client.packetWriter.isaacCipher);
+               int var13 = this.mouseCoord.x;
+               var9 = this.mouseCoord.y;
+               var10 = this.mouseCoord.plane;
+               PacketBufferNode var11 = Interpreter.method1915(ClientPacket.__gs_bx, Client.packetWriter.isaacCipher);
                var11.packetBuffer.writeIntME(0);
-               var11.packetBuffer.writeShortLE(var8);
-               var11.packetBuffer.__ai_315(var9);
-               var11.packetBuffer.writeShort(var12);
+               var11.packetBuffer.writeShortLE(var9);
+               var11.packetBuffer.__ai_315(var10);
+               var11.packetBuffer.writeShort(var13);
                Client.packetWriter.__q_167(var11);
             } else {
-               boolean var10 = true;
+               boolean var8 = true;
                if(this.__an) {
-                  var8 = var1 - this.__as;
-                  var9 = var2 - this.__am;
-                  if(var4 - this.__ap > 500L || var8 < -25 || var8 > 25 || var9 < -25 || var9 > 25) {
-                     var10 = false;
+                  var9 = var1 - this.__as;
+                  var10 = var2 - this.__am;
+                  if(var4 - this.__ap > 500L || var9 < -25 || var9 > 25 || var10 < -25 || var10 > 25) {
+                     var8 = false;
                   }
                }
 
-               if(var10) {
-                  var11 = Interpreter.method1915(ClientPacket.__gs_az, Client.packetWriter.isaacCipher);
-                  var11.packetBuffer.writeIntME(this.mouseCoord.packed());
-                  Client.packetWriter.__q_167(var11);
+               if(var8) {
+                  PacketBufferNode var12 = Interpreter.method1915(ClientPacket.__gs_az, Client.packetWriter.isaacCipher);
+                  var12.packetBuffer.writeIntME(this.mouseCoord.packed());
+                  Client.packetWriter.__q_167(var12);
                   this.__ap = 0L;
                }
             }
@@ -525,8 +529,8 @@ public class WorldMap {
          if(this.zoom > this.zoomTarget) {
             this.zoom = Math.max(this.zoomTarget, this.zoom - this.zoom / 30.0F);
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("g")
@@ -552,8 +556,8 @@ public class WorldMap {
             this.worldMapTargetX = -1;
             this.worldMapTargetY = -1;
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("l")
@@ -604,14 +608,16 @@ public class WorldMap {
    public WorldMapArea mapAreaAtCoord(int var1, int var2, int var3) {
       Iterator var4 = this.mapAreas.values().iterator();
 
-      while(var4.hasNext()) {
-         WorldMapArea var5 = (WorldMapArea)var4.next();
-         if(var5.containsCoord(var1, var2, var3)) {
-            return var5;
+      WorldMapArea var5;
+      do {
+         if(!var4.hasNext()) {
+            return null;
          }
-      }
 
-      return null;
+         var5 = (WorldMapArea)var4.next();
+      } while(!var5.containsCoord(var1, var2, var3));
+
+      return var5;
    }
 
    @ObfuscatedName("a")
@@ -688,7 +694,6 @@ public class WorldMap {
          this.initializeWorldMap(var1);
          this.jump(-1, -1, -1);
       }
-
    }
 
    @ObfuscatedName("y")
@@ -720,8 +725,8 @@ public class WorldMap {
          } else {
             this.jump(var3.plane, var3.x, var3.y);
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("b")
@@ -746,7 +751,6 @@ public class WorldMap {
          this.iconIterator = null;
          this.worldMapManager.clearIcons();
       }
-
    }
 
    @ObfuscatedName("c")
@@ -807,7 +811,6 @@ public class WorldMap {
          this.worldMapDisplayY = var2;
          Rasterizer2D.Rasterizer2D_setClipArray(var6);
       }
-
    }
 
    @ObfuscatedName("p")
@@ -881,7 +884,6 @@ public class WorldMap {
 
          this.worldMapManager.drawOverview(var1, var2, var3, var4, this.flashingElements, this.__al, this.__ay);
       }
-
    }
 
    @ObfuscatedName("aq")
@@ -959,14 +961,16 @@ public class WorldMap {
    public WorldMapArea getMapArea(int var1) {
       Iterator var2 = this.mapAreas.values().iterator();
 
-      while(var2.hasNext()) {
-         WorldMapArea var3 = (WorldMapArea)var2.next();
-         if(var3.id() == var1) {
-            return var3;
+      WorldMapArea var3;
+      do {
+         if(!var2.hasNext()) {
+            return null;
          }
-      }
 
-      return null;
+         var3 = (WorldMapArea)var2.next();
+      } while(var3.id() != var1);
+
+      return var3;
    }
 
    @ObfuscatedName("ak")
@@ -980,7 +984,6 @@ public class WorldMap {
          this.worldMapTargetX = var1 - this.currentMapArea0.minX() * 64;
          this.worldMapTargetY = var2 - this.currentMapArea0.minY() * 64;
       }
-
    }
 
    @ObfuscatedName("aw")
@@ -995,7 +998,6 @@ public class WorldMap {
          this.worldMapTargetX = -1;
          this.worldMapTargetY = -1;
       }
-
    }
 
    @ObfuscatedName("al")
@@ -1010,8 +1012,8 @@ public class WorldMap {
          if(var4 != null) {
             this.setWorldMapPositionTarget(var4[0], var4[1]);
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("ab")
@@ -1026,8 +1028,8 @@ public class WorldMap {
          if(var4 != null) {
             this.__aw_531(var4[0], var4[1]);
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("ae")
@@ -1287,26 +1289,26 @@ public class WorldMap {
          if(!var9.isEmpty()) {
             Iterator var10 = var9.iterator();
 
-            boolean var11;
+            boolean var13;
             do {
                if(!var10.hasNext()) {
                   return;
                }
 
-               AbstractWorldMapIcon var12 = (AbstractWorldMapIcon)var10.next();
-               WorldMapElement var13 = ViewportMouse.getWorldMapElement(var12.__m_15());
-               var11 = false;
+               AbstractWorldMapIcon var11 = (AbstractWorldMapIcon)var10.next();
+               WorldMapElement var12 = ViewportMouse.getWorldMapElement(var11.__m_15());
+               var13 = false;
 
                for(int var14 = this.__bs.length - 1; var14 >= 0; --var14) {
-                  if(var13.strings[var14] != null) {
-                     Tiles.method1106(var13.strings[var14], var13.string1, this.__bs[var14], var12.__m_15(), var12.coord1.packed(), var12.coord2.packed());
-                     var11 = true;
+                  if(var12.strings[var14] != null) {
+                     Tiles.method1106(var12.strings[var14], var12.string1, this.__bs[var14], var11.__m_15(), var11.coord1.packed(), var11.coord2.packed());
+                     var13 = true;
                   }
                }
-            } while(!var11);
+            } while(!var13);
+
          }
       }
-
    }
 
    @ObfuscatedName("bc")
@@ -1330,22 +1332,26 @@ public class WorldMap {
             int var6 = -1;
             Iterator var7 = var4.iterator();
 
-            while(var7.hasNext()) {
-               AbstractWorldMapIcon var8 = (AbstractWorldMapIcon)var7.next();
-               int var10 = var8.coord2.x - var2.x;
-               int var11 = var8.coord2.y - var2.y;
-               int var9 = var11 * var11 + var10 * var10;
-               if(var9 == 0) {
-                  return var8.coord2;
-               }
+            while(true) {
+               AbstractWorldMapIcon var8;
+               int var11;
+               do {
+                  if(!var7.hasNext()) {
+                     return var5.coord2;
+                  }
 
-               if(var9 < var6 || var5 == null) {
-                  var5 = var8;
-                  var6 = var9;
-               }
+                  var8 = (AbstractWorldMapIcon)var7.next();
+                  int var9 = var8.coord2.x - var2.x;
+                  int var10 = var8.coord2.y - var2.y;
+                  var11 = var10 * var10 + var9 * var9;
+                  if(var11 == 0) {
+                     return var8.coord2;
+                  }
+               } while(var11 >= var6 && var5 != null);
+
+               var5 = var8;
+               var6 = var11;
             }
-
-            return var5.coord2;
          } else {
             return null;
          }
@@ -1418,20 +1424,16 @@ public class WorldMap {
       if(this.iconIterator == null) {
          return null;
       } else {
-         while(this.iconIterator.hasNext()) {
-            AbstractWorldMapIcon var1 = (AbstractWorldMapIcon)this.iconIterator.next();
-            if(var1.__m_15() != -1) {
-               return var1;
+         AbstractWorldMapIcon var1;
+         do {
+            if(!this.iconIterator.hasNext()) {
+               return null;
             }
-         }
 
-         return null;
+            var1 = (AbstractWorldMapIcon)this.iconIterator.next();
+         } while(var1.__m_15() == -1);
+
+         return var1;
       }
-   }
-
-   static {
-      fontNameVerdana11 = FontName.FontName_verdana11;
-      fontNameVerdana13 = FontName.FontName_verdana13;
-      fontNameVerdana15 = FontName.FontName_verdana15;
    }
 }

@@ -56,7 +56,7 @@ public interface InfernoConfig extends Config
 
 	@ConfigItem(
 			position = 2,
-			keyName = "Wave Display",
+			keyName = "waveDisplay",
 			name = "Wave display",
 			description = "Shows monsters that will spawn on the selected wave(s)."
 	)

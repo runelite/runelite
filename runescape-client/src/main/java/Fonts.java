@@ -62,15 +62,15 @@ public class Fonts {
          if(this.map.containsKey(var5)) {
             var2.put(var5, this.map.get(var5));
          } else {
-            AbstractIndexCache var6 = this.__m;
-            AbstractIndexCache var7 = this.__f;
-            String var8 = var5.__g;
-            int var9 = var6.getArchiveId(var8);
-            int var10 = var6.getRecordId(var9, "");
-            Font var11 = SpriteIds.method5823(var6, var7, var9, var10);
-            if(var11 != null) {
-               this.map.put(var5, var11);
-               var2.put(var5, var11);
+            AbstractIndexCache var7 = this.__m;
+            AbstractIndexCache var8 = this.__f;
+            String var9 = var5.__g;
+            int var10 = var7.getArchiveId(var9);
+            int var11 = var7.getRecordId(var10, "");
+            Font var6 = SpriteIds.method5823(var7, var8, var10, var11);
+            if(var6 != null) {
+               this.map.put(var5, var6);
+               var2.put(var5, var6);
             }
          }
       }

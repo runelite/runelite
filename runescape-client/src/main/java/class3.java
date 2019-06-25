@@ -44,6 +44,12 @@ public class class3 implements Enumerated {
    )
    public final class0 field19;
 
+   static {
+      field20 = new class3(2, 0, Integer.class, new class1());
+      field14 = new class3(0, 1, Long.class, new class2());
+      field15 = new class3(1, 2, String.class, new class4());
+   }
+
    @ObfuscatedSignature(
       signature = "(IILjava/lang/Class;Lm;)V"
    )
@@ -59,7 +65,7 @@ public class class3 implements Enumerated {
       signature = "(B)I",
       garbageValue = "83"
    )
-   public int ordinal() {
+   public int rsOrdinal() {
       return this.field17;
    }
 
@@ -97,18 +103,17 @@ public class class3 implements Enumerated {
    )
    public static void method41() {
       while(true) {
-         NodeDeque var0 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-         NodeDeque var2 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-         IndexStoreAction var1;
+         NodeDeque var1 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
+         IndexStoreAction var0;
          synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-            var1 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_responseQueue.removeLast();
+            var0 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_responseQueue.removeLast();
          }
 
-         if(var1 == null) {
+         if(var0 == null) {
             return;
          }
 
-         var1.indexCache.load(var1.indexStore, (int)var1.key, var1.data, false);
+         var0.indexCache.load(var0.indexStore, (int)var0.key, var0.data, false);
       }
    }
 
@@ -126,27 +131,27 @@ public class class3 implements Enumerated {
          ItemContainer.worlds[var1] = var8;
 
          for(int var9 = var0; var9 < var1; ++var9) {
-            World var10 = ItemContainer.worlds[var9];
-            int var11 = WorldMapLabel.compareWorlds(var10, var8, var2, var3);
-            int var12;
-            if(var11 != 0) {
+            World var11 = ItemContainer.worlds[var9];
+            int var12 = WorldMapLabel.compareWorlds(var11, var8, var2, var3);
+            int var10;
+            if(var12 != 0) {
                if(var3) {
-                  var12 = -var11;
+                  var10 = -var12;
                } else {
-                  var12 = var11;
+                  var10 = var12;
                }
             } else if(var4 == -1) {
-               var12 = 0;
+               var10 = 0;
             } else {
-               int var13 = WorldMapLabel.compareWorlds(var10, var8, var4, var5);
+               int var13 = WorldMapLabel.compareWorlds(var11, var8, var4, var5);
                if(var5) {
-                  var12 = -var13;
+                  var10 = -var13;
                } else {
-                  var12 = var13;
+                  var10 = var13;
                }
             }
 
-            if(var12 <= 0) {
+            if(var10 <= 0) {
                World var14 = ItemContainer.worlds[var9];
                ItemContainer.worlds[var9] = ItemContainer.worlds[var7];
                ItemContainer.worlds[var7++] = var14;
@@ -186,67 +191,67 @@ public class class3 implements Enumerated {
          Client.npcCount = 0;
 
          int var5;
-         int var6;
          int var7;
          int var8;
+         int var9;
          for(var4 = 0; var4 < var3; ++var4) {
             var5 = Client.npcIndices[var4];
-            NPC var9 = Client.npcs[var5];
-            var6 = var2.readBits(1);
-            if(var6 == 0) {
+            Npc var6 = Client.npcs[var5];
+            var7 = var2.readBits(1);
+            if(var7 == 0) {
                Client.npcIndices[++Client.npcCount - 1] = var5;
-               var9.npcCycle = Client.cycle;
+               var6.npcCycle = Client.cycle;
             } else {
-               var7 = var2.readBits(2);
-               if(var7 == 0) {
+               var8 = var2.readBits(2);
+               if(var8 == 0) {
                   Client.npcIndices[++Client.npcCount - 1] = var5;
-                  var9.npcCycle = Client.cycle;
+                  var6.npcCycle = Client.cycle;
                   Client.__client_fg[++Client.__client_fw - 1] = var5;
                } else {
                   int var10;
-                  if(var7 == 1) {
+                  if(var8 == 1) {
                      Client.npcIndices[++Client.npcCount - 1] = var5;
-                     var9.npcCycle = Client.cycle;
-                     var8 = var2.readBits(3);
-                     var9.__m_162(var8, (byte)1);
+                     var6.npcCycle = Client.cycle;
+                     var9 = var2.readBits(3);
+                     var6.__m_162(var9, (byte)1);
                      var10 = var2.readBits(1);
                      if(var10 == 1) {
                         Client.__client_fg[++Client.__client_fw - 1] = var5;
                      }
-                  } else if(var7 == 2) {
+                  } else if(var8 == 2) {
                      Client.npcIndices[++Client.npcCount - 1] = var5;
-                     var9.npcCycle = Client.cycle;
-                     var8 = var2.readBits(3);
-                     var9.__m_162(var8, (byte)2);
+                     var6.npcCycle = Client.cycle;
+                     var9 = var2.readBits(3);
+                     var6.__m_162(var9, (byte)2);
                      var10 = var2.readBits(3);
-                     var9.__m_162(var10, (byte)2);
+                     var6.__m_162(var10, (byte)2);
                      int var11 = var2.readBits(1);
                      if(var11 == 1) {
                         Client.__client_fg[++Client.__client_fw - 1] = var5;
                      }
-                  } else if(var7 == 3) {
+                  } else if(var8 == 3) {
                      Client.__client_kd[++Client.__client_ky - 1] = var5;
                   }
                }
             }
          }
 
-         int var13;
+         int var12;
          while(var1.bitsRemaining(Client.packetWriter.serverPacket0Length) >= 27) {
-            var13 = var1.readBits(15);
-            if(var13 == 32767) {
+            var12 = var1.readBits(15);
+            if(var12 == 32767) {
                break;
             }
 
-            boolean var14 = false;
-            if(Client.npcs[var13] == null) {
-               Client.npcs[var13] = new NPC();
-               var14 = true;
+            boolean var15 = false;
+            if(Client.npcs[var12] == null) {
+               Client.npcs[var12] = new Npc();
+               var15 = true;
             }
 
-            NPC var15 = Client.npcs[var13];
-            Client.npcIndices[++Client.npcCount - 1] = var13;
-            var15.npcCycle = Client.cycle;
+            Npc var13 = Client.npcs[var12];
+            Client.npcIndices[++Client.npcCount - 1] = var12;
+            var13.npcCycle = Client.cycle;
             if(var0) {
                var5 = var1.readBits(8);
                if(var5 > 127) {
@@ -259,51 +264,51 @@ public class class3 implements Enumerated {
                }
             }
 
-            int var12 = var1.readBits(1);
-            var6 = Client.__client_kn[var1.readBits(3)];
-            if(var14) {
-               var15.orientation = var15.__ac = var6;
+            int var14 = var1.readBits(1);
+            var7 = Client.__client_kn[var1.readBits(3)];
+            if(var15) {
+               var13.orientation = var13.__ac = var7;
             }
 
-            var7 = var1.readBits(1);
-            if(var7 == 1) {
-               Client.__client_fg[++Client.__client_fw - 1] = var13;
+            var8 = var1.readBits(1);
+            if(var8 == 1) {
+               Client.__client_fg[++Client.__client_fw - 1] = var12;
             }
 
             if(var0) {
-               var8 = var1.readBits(8);
-               if(var8 > 127) {
-                  var8 -= 256;
+               var9 = var1.readBits(8);
+               if(var9 > 127) {
+                  var9 -= 256;
                }
             } else {
-               var8 = var1.readBits(5);
-               if(var8 > 15) {
-                  var8 -= 32;
+               var9 = var1.readBits(5);
+               if(var9 > 15) {
+                  var9 -= 32;
                }
             }
 
-            var15.definition = ObjectDefinition.getNpcDefinition(var1.readBits(14));
-            var15.size = var15.definition.size;
-            var15.__cj = var15.definition.__av;
-            if(var15.__cj == 0) {
-               var15.__ac = 0;
+            var13.definition = ObjectDefinition.getNpcDefinition(var1.readBits(14));
+            var13.size = var13.definition.size;
+            var13.__cj = var13.definition.__av;
+            if(var13.__cj == 0) {
+               var13.__ac = 0;
             }
 
-            var15.walkSequence = var15.definition.walkSequence;
-            var15.walkTurnSequence = var15.definition.walkTurnSequence;
-            var15.walkTurnLeftSequence = var15.definition.walkTurnLeftSequence;
-            var15.walkTurnRightSequence = var15.definition.walkTurnRightSequence;
-            var15.idleSequence = var15.definition.idleSequence;
-            var15.turnLeftSequence = var15.definition.turnLeftSequence;
-            var15.turnRightSequence = var15.definition.turnRightSequence;
-            var15.__f_163(Canvas.localPlayer.pathX[0] + var5, Canvas.localPlayer.pathY[0] + var8, var12 == 1);
+            var13.walkSequence = var13.definition.walkSequence;
+            var13.walkTurnSequence = var13.definition.walkTurnSequence;
+            var13.walkTurnLeftSequence = var13.definition.walkTurnLeftSequence;
+            var13.walkTurnRightSequence = var13.definition.walkTurnRightSequence;
+            var13.idleSequence = var13.definition.idleSequence;
+            var13.turnLeftSequence = var13.definition.turnLeftSequence;
+            var13.turnRightSequence = var13.definition.turnRightSequence;
+            var13.__f_163(Canvas.localPlayer.pathX[0] + var5, Canvas.localPlayer.pathY[0] + var9, var14 == 1);
          }
 
          var1.exportIndex();
          WorldComparator.method67(var1);
 
-         for(var13 = 0; var13 < Client.__client_ky; ++var13) {
-            var3 = Client.__client_kd[var13];
+         for(var12 = 0; var12 < Client.__client_ky; ++var12) {
+            var3 = Client.__client_kd[var12];
             if(Client.npcs[var3].npcCycle != Client.cycle) {
                Client.npcs[var3].definition = null;
                Client.npcs[var3] = null;
@@ -313,19 +318,13 @@ public class class3 implements Enumerated {
          if(var1.index != Client.packetWriter.serverPacket0Length) {
             throw new RuntimeException(var1.index + "," + Client.packetWriter.serverPacket0Length);
          } else {
-            for(var13 = 0; var13 < Client.npcCount; ++var13) {
-               if(Client.npcs[Client.npcIndices[var13]] == null) {
-                  throw new RuntimeException(var13 + "," + Client.npcCount);
+            for(var12 = 0; var12 < Client.npcCount; ++var12) {
+               if(Client.npcs[Client.npcIndices[var12]] == null) {
+                  throw new RuntimeException(var12 + "," + Client.npcCount);
                }
             }
 
          }
       }
-   }
-
-   static {
-      field20 = new class3(2, 0, Integer.class, new class1());
-      field14 = new class3(0, 1, Long.class, new class2());
-      field15 = new class3(1, 2, String.class, new class4());
    }
 }

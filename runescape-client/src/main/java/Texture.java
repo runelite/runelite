@@ -203,7 +203,7 @@ public class Texture extends Node {
          int var5;
          int var6;
          int var7;
-         int[] var8;
+         int[] var10;
          if(this.animationDirection == 1 || this.animationDirection == 3) {
             if(Texture_animatedPixels == null || Texture_animatedPixels.length < this.pixels.length) {
                Texture_animatedPixels = new int[this.pixels.length];
@@ -227,9 +227,9 @@ public class Texture extends Node {
                Texture_animatedPixels[var6] = this.pixels[var7];
             }
 
-            var8 = this.pixels;
+            var10 = this.pixels;
             this.pixels = Texture_animatedPixels;
-            Texture_animatedPixels = var8;
+            Texture_animatedPixels = var10;
          }
 
          if(this.animationDirection == 2 || this.animationDirection == 4) {
@@ -252,17 +252,17 @@ public class Texture extends Node {
 
             for(var6 = 0; var6 < var3; var6 += var2) {
                for(var7 = 0; var7 < var2; ++var7) {
-                  int var9 = var6 + var7;
-                  int var10 = var6 + (var7 + var4 & var5);
-                  Texture_animatedPixels[var9] = this.pixels[var10];
+                  int var8 = var6 + var7;
+                  int var9 = var6 + (var7 + var4 & var5);
+                  Texture_animatedPixels[var8] = this.pixels[var9];
                }
             }
 
-            var8 = this.pixels;
+            var10 = this.pixels;
             this.pixels = Texture_animatedPixels;
-            Texture_animatedPixels = var8;
+            Texture_animatedPixels = var10;
          }
-      }
 
+      }
    }
 }

@@ -226,7 +226,7 @@ public class WorldMapSection1 implements WorldMapSection {
       Client.packetWriter.packetBuffer.index = 0;
       Client.packetWriter.serverPacket0 = null;
       Client.packetWriter.__k = null;
-      Client.packetWriter.surfaceOffsetY = null;
+      Client.packetWriter.__n = null;
       Client.packetWriter.__i = null;
       Client.packetWriter.serverPacket0Length = 0;
       Client.packetWriter.__x = 0;

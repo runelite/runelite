@@ -71,6 +71,18 @@ public class LoginType {
    @Export("__d")
    final String __d;
 
+   static {
+      __lx_m = new LoginType(8, 0, "", "");
+      __lx_f = new LoginType(3, 1, "", "");
+      __lx_q = new LoginType(2, 2, "", "");
+      __lx_w = new LoginType(6, 3, "", "");
+      __lx_o = new LoginType(4, 4, "", "");
+      __lx_u = new LoginType(7, 5, "", "");
+      __lx_g = new LoginType(1, 6, "", "");
+      __lx_l = new LoginType(5, 7, "", "");
+      __lx_e = new LoginType(0, -1, "", "", true, new LoginType[]{__lx_m, __lx_f, __lx_q, __lx_o, __lx_w});
+   }
+
    LoginType(int var1, int var2, String var3, String var4) {
       this.__x = var1;
       this.__d = var4;
@@ -88,17 +100,5 @@ public class LoginType {
    @ObfuscatedName("toString")
    public String __toString_546() {
       return this.__d;
-   }
-
-   static {
-      __lx_m = new LoginType(8, 0, "", "");
-      __lx_f = new LoginType(3, 1, "", "");
-      __lx_q = new LoginType(2, 2, "", "");
-      __lx_w = new LoginType(6, 3, "", "");
-      __lx_o = new LoginType(4, 4, "", "");
-      __lx_u = new LoginType(7, 5, "", "");
-      __lx_g = new LoginType(1, 6, "", "");
-      __lx_l = new LoginType(5, 7, "", "");
-      __lx_e = new LoginType(0, -1, "", "", true, new LoginType[]{__lx_m, __lx_f, __lx_q, __lx_o, __lx_w});
    }
 }

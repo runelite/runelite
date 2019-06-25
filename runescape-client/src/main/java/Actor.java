@@ -480,7 +480,6 @@ public abstract class Actor extends Entity {
          this.hitSplatValues2[var9] = var4;
          this.hitSplatCycles[var9] = var5 + var11 + var6;
       }
-
    }
 
    @ObfuscatedName("bq")
@@ -490,36 +489,36 @@ public abstract class Actor extends Entity {
    )
    @Export("addHealthBar")
    final void addHealthBar(int var1, int var2, int var3, int var4, int var5, int var6) {
-      HealthBarDefinition var7 = (HealthBarDefinition)HealthBarDefinition.HealthBarDefinition_cached.get((long)var1);
-      HealthBarDefinition var8;
-      if(var7 != null) {
-         var8 = var7;
+      HealthBarDefinition var8 = (HealthBarDefinition)HealthBarDefinition.HealthBarDefinition_cached.get((long)var1);
+      HealthBarDefinition var7;
+      if(var8 != null) {
+         var7 = var8;
       } else {
          byte[] var9 = HealthBarDefinition.__ii_m.takeRecord(33, var1);
-         var7 = new HealthBarDefinition();
+         var8 = new HealthBarDefinition();
          if(var9 != null) {
-            var7.read(new Buffer(var9));
+            var8.read(new Buffer(var9));
          }
 
-         HealthBarDefinition.HealthBarDefinition_cached.put(var7, (long)var1);
-         var8 = var7;
+         HealthBarDefinition.HealthBarDefinition_cached.put(var8, (long)var1);
+         var7 = var8;
       }
 
-      var7 = var8;
+      var8 = var7;
       HealthBar var14 = null;
       HealthBar var10 = null;
-      int var11 = var8.int2;
+      int var11 = var7.int2;
       int var12 = 0;
 
       HealthBar var13;
       for(var13 = (HealthBar)this.healthBars.last(); var13 != null; var13 = (HealthBar)this.healthBars.previous()) {
          ++var12;
-         if(var13.definition.__o == var7.__o) {
+         if(var13.definition.__o == var8.__o) {
             var13.put(var2 + var4, var5, var6, var3);
             return;
          }
 
-         if(var13.definition.int1 <= var7.int1) {
+         if(var13.definition.int1 <= var8.int1) {
             var14 = var13;
          }
 
@@ -530,7 +529,7 @@ public abstract class Actor extends Entity {
       }
 
       if(var10 != null || var12 < 4) {
-         var13 = new HealthBar(var7);
+         var13 = new HealthBar(var8);
          if(var14 == null) {
             this.healthBars.addLast(var13);
          } else {
@@ -541,8 +540,8 @@ public abstract class Actor extends Entity {
          if(var12 >= 4) {
             var10.remove();
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("bn")
@@ -552,25 +551,25 @@ public abstract class Actor extends Entity {
    )
    @Export("removeHealthBar")
    final void removeHealthBar(int var1) {
-      HealthBarDefinition var2 = (HealthBarDefinition)HealthBarDefinition.HealthBarDefinition_cached.get((long)var1);
-      HealthBarDefinition var3;
-      if(var2 != null) {
-         var3 = var2;
+      HealthBarDefinition var3 = (HealthBarDefinition)HealthBarDefinition.HealthBarDefinition_cached.get((long)var1);
+      HealthBarDefinition var2;
+      if(var3 != null) {
+         var2 = var3;
       } else {
          byte[] var4 = HealthBarDefinition.__ii_m.takeRecord(33, var1);
-         var2 = new HealthBarDefinition();
+         var3 = new HealthBarDefinition();
          if(var4 != null) {
-            var2.read(new Buffer(var4));
+            var3.read(new Buffer(var4));
          }
 
-         HealthBarDefinition.HealthBarDefinition_cached.put(var2, (long)var1);
-         var3 = var2;
+         HealthBarDefinition.HealthBarDefinition_cached.put(var3, (long)var1);
+         var2 = var3;
       }
 
-      var2 = var3;
+      var3 = var2;
 
       for(HealthBar var5 = (HealthBar)this.healthBars.last(); var5 != null; var5 = (HealthBar)this.healthBars.previous()) {
-         if(var2 == var5.definition) {
+         if(var3 == var5.definition) {
             var5.remove();
             return;
          }
@@ -675,10 +674,10 @@ public abstract class Actor extends Entity {
          Client.packetWriter.__q_167(var8);
       } else {
          PacketBufferNode var9;
-         NPC var10;
+         Npc var13;
          if(var2 == 7) {
-            var10 = Client.npcs[var3];
-            if(var10 != null) {
+            var13 = Client.npcs[var3];
+            if(var13 != null) {
                Client.mouseCrossX = var6;
                Client.mouseCrossY = var7;
                Client.mouseCrossColor = 2;
@@ -694,8 +693,8 @@ public abstract class Actor extends Entity {
                Client.packetWriter.__q_167(var9);
             }
          } else if(var2 == 8) {
-            var10 = Client.npcs[var3];
-            if(var10 != null) {
+            var13 = Client.npcs[var3];
+            if(var13 != null) {
                Client.mouseCrossX = var6;
                Client.mouseCrossY = var7;
                Client.mouseCrossColor = 2;
@@ -710,8 +709,8 @@ public abstract class Actor extends Entity {
                Client.packetWriter.__q_167(var9);
             }
          } else if(var2 == 9) {
-            var10 = Client.npcs[var3];
-            if(var10 != null) {
+            var13 = Client.npcs[var3];
+            if(var13 != null) {
                Client.mouseCrossX = var6;
                Client.mouseCrossY = var7;
                Client.mouseCrossColor = 2;
@@ -724,8 +723,8 @@ public abstract class Actor extends Entity {
                Client.packetWriter.__q_167(var9);
             }
          } else if(var2 == 10) {
-            var10 = Client.npcs[var3];
-            if(var10 != null) {
+            var13 = Client.npcs[var3];
+            if(var13 != null) {
                Client.mouseCrossX = var6;
                Client.mouseCrossY = var7;
                Client.mouseCrossColor = 2;
@@ -738,8 +737,8 @@ public abstract class Actor extends Entity {
                Client.packetWriter.__q_167(var9);
             }
          } else if(var2 == 11) {
-            var10 = Client.npcs[var3];
-            if(var10 != null) {
+            var13 = Client.npcs[var3];
+            if(var13 != null) {
                Client.mouseCrossX = var6;
                Client.mouseCrossY = var7;
                Client.mouseCrossColor = 2;
@@ -752,8 +751,8 @@ public abstract class Actor extends Entity {
                Client.packetWriter.__q_167(var9);
             }
          } else if(var2 == 12) {
-            var10 = Client.npcs[var3];
-            if(var10 != null) {
+            var13 = Client.npcs[var3];
+            if(var13 != null) {
                Client.mouseCrossX = var6;
                Client.mouseCrossY = var7;
                Client.mouseCrossColor = 2;
@@ -766,8 +765,8 @@ public abstract class Actor extends Entity {
                Client.packetWriter.__q_167(var9);
             }
          } else if(var2 == 13) {
-            var10 = Client.npcs[var3];
-            if(var10 != null) {
+            var13 = Client.npcs[var3];
+            if(var13 != null) {
                Client.mouseCrossX = var6;
                Client.mouseCrossY = var7;
                Client.mouseCrossColor = 2;
@@ -780,10 +779,10 @@ public abstract class Actor extends Entity {
                Client.packetWriter.__q_167(var9);
             }
          } else {
-            Player var11;
+            Player var15;
             if(var2 == 14) {
-               var11 = Client.players[var3];
-               if(var11 != null) {
+               var15 = Client.players[var3];
+               if(var15 != null) {
                   Client.mouseCrossX = var6;
                   Client.mouseCrossY = var7;
                   Client.mouseCrossColor = 2;
@@ -799,8 +798,8 @@ public abstract class Actor extends Entity {
                   Client.packetWriter.__q_167(var9);
                }
             } else if(var2 == 15) {
-               var11 = Client.players[var3];
-               if(var11 != null) {
+               var15 = Client.players[var3];
+               if(var15 != null) {
                   Client.mouseCrossX = var6;
                   Client.mouseCrossY = var7;
                   Client.mouseCrossColor = 2;
@@ -917,36 +916,36 @@ public abstract class Actor extends Entity {
                   class65.scene.menuOpen(SoundSystem.plane, var0, var1, true);
                }
             } else {
-               PacketBufferNode var12;
-               Widget var13;
+               PacketBufferNode var10;
+               Widget var16;
                if(var2 == 24) {
-                  var13 = Huffman.getWidget(var1);
-                  boolean var14 = true;
-                  if(var13.contentType > 0) {
-                     var14 = ViewportMouse.method2957(var13);
+                  var16 = Huffman.getWidget(var1);
+                  boolean var12 = true;
+                  if(var16.contentType > 0) {
+                     var12 = ViewportMouse.method2957(var16);
                   }
 
-                  if(var14) {
-                     var12 = Interpreter.method1915(ClientPacket.__gs_bz, Client.packetWriter.isaacCipher);
-                     var12.packetBuffer.writeInt(var1);
-                     Client.packetWriter.__q_167(var12);
+                  if(var12) {
+                     var10 = Interpreter.method1915(ClientPacket.__gs_bz, Client.packetWriter.isaacCipher);
+                     var10.packetBuffer.writeInt(var1);
+                     Client.packetWriter.__q_167(var10);
                   }
                } else {
                   if(var2 == 25) {
-                     var13 = class204.getWidgetChild(var1, var0);
-                     if(var13 != null) {
+                     var16 = class204.getWidgetChild(var1, var0);
+                     if(var16 != null) {
                         Player.method1281();
-                        class25.method350(var1, var0, class211.method4107(class1.getWidgetClickMask(var13)), var13.itemId);
+                        class25.method350(var1, var0, class211.method4107(class1.getWidgetClickMask(var16)), var16.itemId);
                         Client.isItemSelected = 0;
-                        Client.selectedSpellActionName = class198.method3745(var13);
+                        Client.selectedSpellActionName = class198.method3745(var16);
                         if(Client.selectedSpellActionName == null) {
                            Client.selectedSpellActionName = "null";
                         }
 
-                        if(var13.isIf3) {
-                           Client.selectedSpellName = var13.dataText + BufferedFile.colorStartTag(16777215);
+                        if(var16.isIf3) {
+                           Client.selectedSpellName = var16.dataText + BufferedFile.colorStartTag(16777215);
                         } else {
-                           Client.selectedSpellName = BufferedFile.colorStartTag(65280) + var13.spellName + BufferedFile.colorStartTag(16777215);
+                           Client.selectedSpellName = BufferedFile.colorStartTag(65280) + var16.spellName + BufferedFile.colorStartTag(16777215);
                         }
                      }
 
@@ -956,28 +955,28 @@ public abstract class Actor extends Entity {
                   if(var2 == 26) {
                      WorldMapLabelSize.method198();
                   } else {
-                     Widget var15;
-                     int var17;
+                     int var11;
+                     Widget var14;
                      if(var2 == 28) {
                         var8 = Interpreter.method1915(ClientPacket.__gs_bz, Client.packetWriter.isaacCipher);
                         var8.packetBuffer.writeInt(var1);
                         Client.packetWriter.__q_167(var8);
-                        var15 = Huffman.getWidget(var1);
-                        if(var15.cs1Instructions != null && var15.cs1Instructions[0][0] == 5) {
-                           var17 = var15.cs1Instructions[0][1];
-                           Varps.Varps_main[var17] = 1 - Varps.Varps_main[var17];
-                           IndexCache.method4703(var17);
+                        var14 = Huffman.getWidget(var1);
+                        if(var14.cs1Instructions != null && var14.cs1Instructions[0][0] == 5) {
+                           var11 = var14.cs1Instructions[0][1];
+                           Varps.Varps_main[var11] = 1 - Varps.Varps_main[var11];
+                           IndexCache.method4703(var11);
                         }
                      } else if(var2 == 29) {
                         var8 = Interpreter.method1915(ClientPacket.__gs_bz, Client.packetWriter.isaacCipher);
                         var8.packetBuffer.writeInt(var1);
                         Client.packetWriter.__q_167(var8);
-                        var15 = Huffman.getWidget(var1);
-                        if(var15.cs1Instructions != null && var15.cs1Instructions[0][0] == 5) {
-                           var17 = var15.cs1Instructions[0][1];
-                           if(Varps.Varps_main[var17] != var15.cs1ComparisonValues[0]) {
-                              Varps.Varps_main[var17] = var15.cs1ComparisonValues[0];
-                              IndexCache.method4703(var17);
+                        var14 = Huffman.getWidget(var1);
+                        if(var14.cs1Instructions != null && var14.cs1Instructions[0][0] == 5) {
+                           var11 = var14.cs1Instructions[0][1];
+                           if(Varps.Varps_main[var11] != var14.cs1ComparisonValues[0]) {
+                              Varps.Varps_main[var11] = var14.cs1ComparisonValues[0];
+                              IndexCache.method4703(var11);
                            }
                         }
                      } else if(var2 == 30) {
@@ -1057,12 +1056,12 @@ public abstract class Actor extends Entity {
                      } else {
                         if(var2 == 38) {
                            Player.method1281();
-                           var13 = Huffman.getWidget(var1);
+                           var16 = Huffman.getWidget(var1);
                            Client.isItemSelected = 1;
                            HealthBarDefinition.selectedItemSlot = var0;
                            ServerPacket.selectedItemWidget = var1;
                            MenuAction.selectedItemId = var3;
-                           class22.method295(var13);
+                           class22.method295(var16);
                            Client.selectedItemName = BufferedFile.colorStartTag(16748608) + Skills.getItemDefinition(var3).name + BufferedFile.colorStartTag(16777215);
                            if(Client.selectedItemName == null) {
                               Client.selectedItemName = "null";
@@ -1117,8 +1116,8 @@ public abstract class Actor extends Entity {
                            BoundaryObject.__ej_jv = Huffman.getWidget(var1);
                            Client.__client_jz = var0;
                         } else if(var2 == 44) {
-                           var11 = Client.players[var3];
-                           if(var11 != null) {
+                           var15 = Client.players[var3];
+                           if(var15 != null) {
                               Client.mouseCrossX = var6;
                               Client.mouseCrossY = var7;
                               Client.mouseCrossColor = 2;
@@ -1131,8 +1130,8 @@ public abstract class Actor extends Entity {
                               Client.packetWriter.__q_167(var9);
                            }
                         } else if(var2 == 45) {
-                           var11 = Client.players[var3];
-                           if(var11 != null) {
+                           var15 = Client.players[var3];
+                           if(var15 != null) {
                               Client.mouseCrossX = var6;
                               Client.mouseCrossY = var7;
                               Client.mouseCrossColor = 2;
@@ -1145,8 +1144,8 @@ public abstract class Actor extends Entity {
                               Client.packetWriter.__q_167(var9);
                            }
                         } else if(var2 == 46) {
-                           var11 = Client.players[var3];
-                           if(var11 != null) {
+                           var15 = Client.players[var3];
+                           if(var15 != null) {
                               Client.mouseCrossX = var6;
                               Client.mouseCrossY = var7;
                               Client.mouseCrossColor = 2;
@@ -1159,8 +1158,8 @@ public abstract class Actor extends Entity {
                               Client.packetWriter.__q_167(var9);
                            }
                         } else if(var2 == 47) {
-                           var11 = Client.players[var3];
-                           if(var11 != null) {
+                           var15 = Client.players[var3];
+                           if(var15 != null) {
                               Client.mouseCrossX = var6;
                               Client.mouseCrossY = var7;
                               Client.mouseCrossColor = 2;
@@ -1173,8 +1172,8 @@ public abstract class Actor extends Entity {
                               Client.packetWriter.__q_167(var9);
                            }
                         } else if(var2 == 48) {
-                           var11 = Client.players[var3];
-                           if(var11 != null) {
+                           var15 = Client.players[var3];
+                           if(var15 != null) {
                               Client.mouseCrossX = var6;
                               Client.mouseCrossY = var7;
                               Client.mouseCrossColor = 2;
@@ -1187,8 +1186,8 @@ public abstract class Actor extends Entity {
                               Client.packetWriter.__q_167(var9);
                            }
                         } else if(var2 == 49) {
-                           var11 = Client.players[var3];
-                           if(var11 != null) {
+                           var15 = Client.players[var3];
+                           if(var15 != null) {
                               Client.mouseCrossX = var6;
                               Client.mouseCrossY = var7;
                               Client.mouseCrossColor = 2;
@@ -1201,8 +1200,8 @@ public abstract class Actor extends Entity {
                               Client.packetWriter.__q_167(var9);
                            }
                         } else if(var2 == 50) {
-                           var11 = Client.players[var3];
-                           if(var11 != null) {
+                           var15 = Client.players[var3];
+                           if(var15 != null) {
                               Client.mouseCrossX = var6;
                               Client.mouseCrossY = var7;
                               Client.mouseCrossColor = 2;
@@ -1215,8 +1214,8 @@ public abstract class Actor extends Entity {
                               Client.packetWriter.__q_167(var9);
                            }
                         } else if(var2 == 51) {
-                           var11 = Client.players[var3];
-                           if(var11 != null) {
+                           var15 = Client.players[var3];
+                           if(var15 != null) {
                               Client.mouseCrossX = var6;
                               Client.mouseCrossY = var7;
                               Client.mouseCrossColor = 2;
@@ -1229,21 +1228,21 @@ public abstract class Actor extends Entity {
                               Client.packetWriter.__q_167(var9);
                            }
                         } else {
-                           label415: {
+                           label921: {
                               if(var2 != 57) {
                                  if(var2 == 58) {
-                                    var13 = class204.getWidgetChild(var1, var0);
-                                    if(var13 != null) {
+                                    var16 = class204.getWidgetChild(var1, var0);
+                                    if(var16 != null) {
                                        var9 = Interpreter.method1915(ClientPacket.__gs_cs, Client.packetWriter.isaacCipher);
                                        var9.packetBuffer.writeShortLE(Client.__client_lc);
                                        var9.packetBuffer.writeIntLE16(var1);
                                        var9.packetBuffer.writeShortLE(Client.__client_mh);
                                        var9.packetBuffer.__bx_323(var0);
                                        var9.packetBuffer.writeInt(ServerBuild.__iy_lo);
-                                       var9.packetBuffer.__bx_323(var13.itemId);
+                                       var9.packetBuffer.__bx_323(var16.itemId);
                                        Client.packetWriter.__q_167(var9);
                                     }
-                                    break label415;
+                                    break label921;
                                  }
 
                                  if(var2 == 1001) {
@@ -1259,7 +1258,7 @@ public abstract class Actor extends Entity {
                                     var8.packetBuffer.__bo_322(var0 + class50.baseX);
                                     var8.packetBuffer.__bx_323(GraphicsObject.baseY + var1);
                                     Client.packetWriter.__q_167(var8);
-                                    break label415;
+                                    break label921;
                                  }
 
                                  if(var2 == 1002) {
@@ -1270,7 +1269,7 @@ public abstract class Actor extends Entity {
                                     var8 = Interpreter.method1915(ClientPacket.__gs_al, Client.packetWriter.isaacCipher);
                                     var8.packetBuffer.__bo_322(var3);
                                     Client.packetWriter.__q_167(var8);
-                                    break label415;
+                                    break label921;
                                  }
 
                                  if(var2 == 1003) {
@@ -1278,20 +1277,20 @@ public abstract class Actor extends Entity {
                                     Client.mouseCrossY = var7;
                                     Client.mouseCrossColor = 2;
                                     Client.mouseCrossState = 0;
-                                    var10 = Client.npcs[var3];
-                                    if(var10 != null) {
-                                       NPCDefinition var16 = var10.definition;
-                                       if(var16.transforms != null) {
-                                          var16 = var16.transform();
+                                    var13 = Client.npcs[var3];
+                                    if(var13 != null) {
+                                       NpcDefinition var17 = var13.definition;
+                                       if(var17.transforms != null) {
+                                          var17 = var17.transform();
                                        }
 
-                                       if(var16 != null) {
-                                          var12 = Interpreter.method1915(ClientPacket.__gs_ar, Client.packetWriter.isaacCipher);
-                                          var12.packetBuffer.__bo_322(var16.id);
-                                          Client.packetWriter.__q_167(var12);
+                                       if(var17 != null) {
+                                          var10 = Interpreter.method1915(ClientPacket.__gs_ar, Client.packetWriter.isaacCipher);
+                                          var10.packetBuffer.__bo_322(var17.id);
+                                          Client.packetWriter.__q_167(var10);
                                        }
                                     }
-                                    break label415;
+                                    break label921;
                                  }
 
                                  if(var2 == 1004) {
@@ -1302,13 +1301,13 @@ public abstract class Actor extends Entity {
                                     var8 = Interpreter.method1915(ClientPacket.__gs_p, Client.packetWriter.isaacCipher);
                                     var8.packetBuffer.writeShortLE(var3);
                                     Client.packetWriter.__q_167(var8);
-                                    break label415;
+                                    break label921;
                                  }
 
                                  if(var2 == 1005) {
-                                    var13 = Huffman.getWidget(var1);
-                                    if(var13 != null && var13.itemQuantities[var0] >= 100000) {
-                                       WorldMapIcon1.method219(27, "", var13.itemQuantities[var0] + " x " + Skills.getItemDefinition(var3).name);
+                                    var16 = Huffman.getWidget(var1);
+                                    if(var16 != null && var16.itemQuantities[var0] >= 100000) {
+                                       WorldMapIcon1.method219(27, "", var16.itemQuantities[var0] + " x " + Skills.getItemDefinition(var3).name);
                                     } else {
                                        var9 = Interpreter.method1915(ClientPacket.__gs_p, Client.packetWriter.isaacCipher);
                                        var9.packetBuffer.writeShortLE(var3);
@@ -1318,20 +1317,20 @@ public abstract class Actor extends Entity {
                                     Client.__client_ju = 0;
                                     BoundaryObject.__ej_jv = Huffman.getWidget(var1);
                                     Client.__client_jz = var0;
-                                    break label415;
+                                    break label921;
                                  }
 
                                  if(var2 != 1007) {
                                     if(var2 == 1008 || var2 == 1011 || var2 == 1010 || var2 == 1009 || var2 == 1012) {
                                        class60.worldMap0.menuAction(var2, var3, new TileLocation(var0), new TileLocation(var1));
                                     }
-                                    break label415;
+                                    break label921;
                                  }
                               }
 
-                              var13 = class204.getWidgetChild(var1, var0);
-                              if(var13 != null) {
-                                 class171.method3494(var3, var1, var0, var13.itemId, var5);
+                              var16 = class204.getWidgetChild(var1, var0);
+                              if(var16 != null) {
+                                 class171.method3494(var3, var1, var0, var16.itemId, var5);
                               }
                            }
                         }

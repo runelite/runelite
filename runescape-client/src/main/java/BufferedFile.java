@@ -145,86 +145,86 @@ public class BufferedFile {
          }
 
          long var4 = this.__l;
-         int var6 = var3;
-         int var7;
+         int var7 = var3;
+         int var8;
          if(this.__l >= this.__q && this.__l < this.__q + (long)this.__w) {
-            var7 = (int)((long)this.__w - (this.__l - this.__q));
-            if(var7 > var3) {
-               var7 = var3;
+            var8 = (int)((long)this.__w - (this.__l - this.__q));
+            if(var8 > var3) {
+               var8 = var3;
             }
 
-            System.arraycopy(this.readBuffer, (int)(this.__l - this.__q), var1, var2, var7);
-            this.__l += (long)var7;
-            var2 += var7;
-            var3 -= var7;
+            System.arraycopy(this.readBuffer, (int)(this.__l - this.__q), var1, var2, var8);
+            this.__l += (long)var8;
+            var2 += var8;
+            var3 -= var8;
          }
 
          if(var3 > this.readBuffer.length) {
             this.accessFile.seek(this.__l);
 
-            for(this.__d = this.__l; var3 > 0; var3 -= var7) {
-               var7 = this.accessFile.read(var1, var2, var3);
-               if(var7 == -1) {
+            for(this.__d = this.__l; var3 > 0; var3 -= var8) {
+               var8 = this.accessFile.read(var1, var2, var3);
+               if(var8 == -1) {
                   break;
                }
 
-               this.__d += (long)var7;
-               this.__l += (long)var7;
-               var2 += var7;
+               this.__d += (long)var8;
+               this.__l += (long)var8;
+               var2 += var8;
             }
          } else if(var3 > 0) {
             this.load();
-            var7 = var3;
+            var8 = var3;
             if(var3 > this.__w) {
-               var7 = this.__w;
+               var8 = this.__w;
             }
 
-            System.arraycopy(this.readBuffer, 0, var1, var2, var7);
-            var2 += var7;
-            var3 -= var7;
-            this.__l += (long)var7;
+            System.arraycopy(this.readBuffer, 0, var1, var2, var8);
+            var2 += var8;
+            var3 -= var8;
+            this.__l += (long)var8;
          }
 
          if(-1L != this.__u) {
             if(this.__u > this.__l && var3 > 0) {
-               var7 = var2 + (int)(this.__u - this.__l);
-               if(var7 > var3 + var2) {
-                  var7 = var3 + var2;
+               var8 = var2 + (int)(this.__u - this.__l);
+               if(var8 > var3 + var2) {
+                  var8 = var3 + var2;
                }
 
-               while(var2 < var7) {
+               while(var2 < var8) {
                   var1[var2++] = 0;
                   --var3;
                   ++this.__l;
                }
             }
 
-            long var8 = -1L;
+            long var13 = -1L;
             long var10 = -1L;
-            if(this.__u >= var4 && this.__u < var4 + (long)var6) {
-               var8 = this.__u;
+            if(this.__u >= var4 && this.__u < var4 + (long)var7) {
+               var13 = this.__u;
             } else if(var4 >= this.__u && var4 < this.__u + (long)this.__g) {
-               var8 = var4;
+               var13 = var4;
             }
 
-            if((long)this.__g + this.__u > var4 && this.__u + (long)this.__g <= var4 + (long)var6) {
+            if((long)this.__g + this.__u > var4 && this.__u + (long)this.__g <= var4 + (long)var7) {
                var10 = (long)this.__g + this.__u;
-            } else if((long)var6 + var4 > this.__u && (long)var6 + var4 <= this.__u + (long)this.__g) {
-               var10 = (long)var6 + var4;
+            } else if((long)var7 + var4 > this.__u && (long)var7 + var4 <= this.__u + (long)this.__g) {
+               var10 = (long)var7 + var4;
             }
 
-            if(var8 > -1L && var10 > var8) {
-               int var12 = (int)(var10 - var8);
-               System.arraycopy(this.writeBuffer, (int)(var8 - this.__u), var1, (int)(var8 - var4) + var2, var12);
+            if(var13 > -1L && var10 > var13) {
+               int var12 = (int)(var10 - var13);
+               System.arraycopy(this.writeBuffer, (int)(var13 - this.__u), var1, (int)(var13 - var4) + var2, var12);
                if(var10 > this.__l) {
                   var3 = (int)((long)var3 - (var10 - this.__l));
                   this.__l = var10;
                }
             }
          }
-      } catch (IOException var13) {
+      } catch (IOException var16) {
          this.__d = -1L;
-         throw var13;
+         throw var16;
       }
 
       if(var3 > 0) {
@@ -294,6 +294,7 @@ public class BufferedFile {
                if(this.__l - this.__u > (long)this.__g) {
                   this.__g = (int)(this.__l - this.__u);
                }
+
             }
          } else {
             if(this.__d != this.__l) {
@@ -307,12 +308,12 @@ public class BufferedFile {
                this.__e = this.__d;
             }
 
-            long var10 = -1L;
+            long var9 = -1L;
             long var6 = -1L;
             if(this.__l >= this.__q && this.__l < (long)this.__w + this.__q) {
-               var10 = this.__l;
+               var9 = this.__l;
             } else if(this.__q >= this.__l && this.__q < (long)var3 + this.__l) {
-               var10 = this.__q;
+               var9 = this.__q;
             }
 
             if(this.__l + (long)var3 > this.__q && (long)var3 + this.__l <= (long)this.__w + this.__q) {
@@ -321,17 +322,16 @@ public class BufferedFile {
                var6 = (long)this.__w + this.__q;
             }
 
-            if(var10 > -1L && var6 > var10) {
-               int var8 = (int)(var6 - var10);
-               System.arraycopy(var1, (int)(var10 + (long)var2 - this.__l), this.readBuffer, (int)(var10 - this.__q), var8);
+            if(var9 > -1L && var6 > var9) {
+               int var8 = (int)(var6 - var9);
+               System.arraycopy(var1, (int)(var9 + (long)var2 - this.__l), this.readBuffer, (int)(var9 - this.__q), var8);
             }
 
             this.__l += (long)var3;
          }
-
-      } catch (IOException var9) {
+      } catch (IOException var12) {
          this.__d = -1L;
-         throw var9;
+         throw var12;
       }
    }
 

@@ -242,7 +242,7 @@ public class PcmPlayer {
             }
 
             this.nextPosition = var3;
-         } catch (Exception var6) {
+         } catch (Exception var7) {
             this.close();
             this.retryTimeMs = var1 + 2000L;
          }
@@ -256,11 +256,11 @@ public class PcmPlayer {
                this.skip(256);
                this.timeMs += (long)(256000 / class309.PcmPlayer_sampleRate);
             }
-         } catch (Exception var5) {
+         } catch (Exception var6) {
             this.timeMs = var1;
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("ac")
@@ -358,36 +358,36 @@ public class PcmPlayer {
          int var5 = 255;
 
          int var6;
-         PcmStream var7;
-         label106:
+         PcmStream var10;
+         label104:
          for(var6 = 7; var5 != 0; --var6) {
+            int var7;
             int var8;
-            int var9;
             if(var6 < 0) {
-               var8 = var6 & 3;
-               var9 = -(var6 >> 2);
+               var7 = var6 & 3;
+               var8 = -(var6 >> 2);
             } else {
-               var8 = var6;
-               var9 = 0;
+               var7 = var6;
+               var8 = 0;
             }
 
-            for(int var10 = var5 >>> var8 & 286331153; var10 != 0; var10 >>>= 4) {
-               if((var10 & 1) != 0) {
-                  var5 &= ~(1 << var8);
-                  var7 = null;
-                  PcmStream var11 = this.__ay[var8];
+            for(int var9 = var5 >>> var7 & 286331153; var9 != 0; var9 >>>= 4) {
+               if((var9 & 1) != 0) {
+                  var5 &= ~(1 << var7);
+                  var10 = null;
+                  PcmStream var11 = this.__ay[var7];
 
-                  label100:
+                  label98:
                   while(true) {
                      while(true) {
                         if(var11 == null) {
-                           break label100;
+                           break label98;
                         }
 
                         AbstractSound var12 = var11.sound;
-                        if(var12 != null && var12.position > var9) {
-                           var5 |= 1 << var8;
-                           var7 = var11;
+                        if(var12 != null && var12.position > var8) {
+                           var5 |= 1 << var7;
+                           var10 = var11;
                            var11 = var11.after;
                         } else {
                            var11.active = true;
@@ -398,7 +398,7 @@ public class PcmPlayer {
                            }
 
                            if(var4 >= this.__z) {
-                              break label106;
+                              break label104;
                            }
 
                            PcmStream var14 = var11.firstSubStream();
@@ -410,14 +410,14 @@ public class PcmPlayer {
 
                            PcmStream var18 = var11.after;
                            var11.after = null;
-                           if(var7 == null) {
-                              this.__ay[var8] = var18;
+                           if(var10 == null) {
+                              this.__ay[var7] = var18;
                            } else {
-                              var7.after = var18;
+                              var10.after = var18;
                            }
 
                            if(var18 == null) {
-                              this.__ah[var8] = var7;
+                              this.__ah[var7] = var10;
                            }
 
                            var11 = var18;
@@ -426,8 +426,8 @@ public class PcmPlayer {
                   }
                }
 
-               var8 += 4;
-               ++var9;
+               var7 += 4;
+               ++var8;
             }
          }
 
@@ -436,8 +436,8 @@ public class PcmPlayer {
             PcmStream[] var17 = this.__ay;
             this.__ah[var6] = null;
 
-            for(var17[var6] = null; var16 != null; var16 = var7) {
-               var7 = var16.after;
+            for(var17[var6] = null; var16 != null; var16 = var10) {
+               var10 = var16.after;
                var16.after = null;
             }
          }

@@ -31,7 +31,7 @@ public enum class249 implements Enumerated {
    )
    final int field3276;
 
-   private class249(int var3, int var4) {
+   class249(int var3, int var4) {
       this.field3275 = var3;
       this.field3276 = var4;
    }

@@ -41,22 +41,22 @@ public abstract class Clock {
                ++var2;
             }
 
-            char var4;
-            StringBuilder var8;
-            for(var8 = new StringBuilder(var2); var0 != 0L; var8.append(var4)) {
-               long var5 = var0;
+            StringBuilder var5;
+            char var8;
+            for(var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
+               long var6 = var0;
                var0 /= 37L;
-               var4 = class306.base37Table[(int)(var5 - 37L * var0)];
-               if(var4 == '_') {
-                  int var7 = var8.length() - 1;
-                  var8.setCharAt(var7, Character.toUpperCase(var8.charAt(var7)));
-                  var4 = 160;
+               var8 = class306.base37Table[(int)(var6 - 37L * var0)];
+               if(var8 == '_') {
+                  int var9 = var5.length() - 1;
+                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
+                  var8 = 160;
                }
             }
 
-            var8.reverse();
-            var8.setCharAt(0, Character.toUpperCase(var8.charAt(0)));
-            return var8.toString();
+            var5.reverse();
+            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
+            return var5.toString();
          }
       } else {
          return null;

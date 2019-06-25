@@ -44,6 +44,15 @@ public class ByteArrayPool {
    @Export("indexCache13")
    static IndexCache indexCache13;
 
+   static {
+      ByteArrayPool_smallCount = 0;
+      ByteArrayPool_mediumCount = 0;
+      ByteArrayPool_largeCount = 0;
+      ByteArrayPool_small = new byte[1000][];
+      ByteArrayPool_medium = new byte[250][];
+      ByteArrayPool_large = new byte[50][];
+   }
+
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(IZI)[B",
@@ -83,15 +92,15 @@ public class ByteArrayPool {
       }
 
       if(class179.__fe_e != null) {
-         for(int var3 = 0; var3 < __gi_g.length; ++var3) {
-            if(__gi_g[var3] != var0) {
-               if(var0 < __gi_g[var3]) {
+         for(int var4 = 0; var4 < __gi_g.length; ++var4) {
+            if(__gi_g[var4] != var0) {
+               if(var0 < __gi_g[var4]) {
                   ;
                }
-            } else if(WorldMapSection2.__ah_l[var3] > 0) {
-               byte[] var4 = class179.__fe_e[var3][--WorldMapSection2.__ah_l[var3]];
-               class179.__fe_e[var3][WorldMapSection2.__ah_l[var3]] = null;
-               return var4;
+            } else if(WorldMapSection2.__ah_l[var4] > 0) {
+               byte[] var3 = class179.__fe_e[var4][--WorldMapSection2.__ah_l[var4]];
+               class179.__fe_e[var4][WorldMapSection2.__ah_l[var4]] = null;
+               return var3;
             }
          }
       }
@@ -106,8 +115,8 @@ public class ByteArrayPool {
    )
    public static String method4001(int var0, boolean var1) {
       if(var1 && var0 >= 0) {
-         int var2 = var0;
-         String var3;
+         int var3 = var0;
+         String var2;
          if(var1 && var0 >= 0) {
             int var4 = 2;
 
@@ -115,37 +124,28 @@ public class ByteArrayPool {
                var5 /= 10;
             }
 
-            char[] var9 = new char[var4];
-            var9[0] = '+';
+            char[] var6 = new char[var4];
+            var6[0] = '+';
 
-            for(int var6 = var4 - 1; var6 > 0; --var6) {
-               int var7 = var2;
-               var2 /= 10;
-               int var8 = var7 - var2 * 10;
-               if(var8 >= 10) {
-                  var9[var6] = (char)(var8 + 87);
+            for(int var7 = var4 - 1; var7 > 0; --var7) {
+               int var8 = var3;
+               var3 /= 10;
+               int var9 = var8 - var3 * 10;
+               if(var9 >= 10) {
+                  var6[var7] = (char)(var9 + 87);
                } else {
-                  var9[var6] = (char)(var8 + 48);
+                  var6[var7] = (char)(var9 + 48);
                }
             }
 
-            var3 = new String(var9);
+            var2 = new String(var6);
          } else {
-            var3 = Integer.toString(var0, 10);
+            var2 = Integer.toString(var0, 10);
          }
 
-         return var3;
+         return var2;
       } else {
          return Integer.toString(var0);
       }
-   }
-
-   static {
-      ByteArrayPool_smallCount = 0;
-      ByteArrayPool_mediumCount = 0;
-      ByteArrayPool_largeCount = 0;
-      ByteArrayPool_small = new byte[1000][];
-      ByteArrayPool_medium = new byte[250][];
-      ByteArrayPool_large = new byte[50][];
    }
 }

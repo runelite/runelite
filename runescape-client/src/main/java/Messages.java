@@ -37,6 +37,13 @@ public class Messages {
    @Export("soundSystem")
    static SoundSystem soundSystem;
 
+   static {
+      Messages_channels = new HashMap();
+      Messages_hashTable = new IterableNodeHashTable(1024);
+      Messages_queue = new IterableDualNodeQueue();
+      Messages_count = 0;
+   }
+
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -50,14 +57,7 @@ public class Messages {
          } else {
             Client.Login_isUsernameRemembered = false;
          }
+
       }
-
-   }
-
-   static {
-      Messages_channels = new HashMap();
-      Messages_hashTable = new IterableNodeHashTable(1024);
-      Messages_queue = new IterableDualNodeQueue();
-      Messages_count = 0;
    }
 }

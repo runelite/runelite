@@ -40,6 +40,12 @@ public class class168 {
    @Export("__fs_au")
    static int __fs_au;
 
+   static {
+      randomDat = null;
+      dat2File = null;
+      idx255File = null;
+   }
+
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(II)Z",
@@ -62,11 +68,5 @@ public class class168 {
       }
 
       return new String(var2);
-   }
-
-   static {
-      randomDat = null;
-      dat2File = null;
-      idx255File = null;
    }
 }

@@ -423,7 +423,7 @@ public class MidiPcmStream extends PcmStream {
             var6.__l = var9.__o[var2] & 255;
             var6.__e = (var2 << 8) - (var9.__q[var2] & 32767);
             var6.__k = 0;
-            var6.__o = 0;
+            var6.__n = 0;
             var6.__i = 0;
             var6.__a = -1;
             var6.__z = 0;
@@ -905,7 +905,7 @@ public class MidiPcmStream extends PcmStream {
       int var6;
       int var7;
       if(var2.__m != null) {
-         var4 = var1.__o;
+         var4 = var1.__n;
          var5 = var2.__m[var1.__i + 1];
          if(var1.__i < var2.__m.length - 2) {
             var6 = (var2.__m[var1.__i] & 255) << 8;
@@ -1045,12 +1045,12 @@ public class MidiPcmStream extends PcmStream {
 
          if(var6.__m != null) {
             if(var6.__w > 0) {
-               var1.__o += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.__w) + 0.5D);
+               var1.__n += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.__w) + 0.5D);
             } else {
-               var1.__o += 128;
+               var1.__n += 128;
             }
 
-            while(var1.__i < var6.__m.length - 2 && var1.__o > (var6.__m[var1.__i + 2] & 255) << 8) {
+            while(var1.__i < var6.__m.length - 2 && var1.__n > (var6.__m[var1.__i + 2] & 255) << 8) {
                var1.__i += 2;
             }
 

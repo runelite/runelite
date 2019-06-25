@@ -85,14 +85,14 @@ public final class WallDecoration {
       garbageValue = "1120739015"
    )
    public static int method3257(byte[] var0, int var1) {
-      int var2 = -1;
+      int var3 = -1;
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = var2 >>> 8 ^ Buffer.__gr_q[(var2 ^ var0[var3]) & 255];
+      for(int var4 = 0; var4 < var1; ++var4) {
+         var3 = var3 >>> 8 ^ Buffer.__gr_q[(var3 ^ var0[var4]) & 255];
       }
 
-      var2 = ~var2;
-      return var2;
+      var3 = ~var3;
+      return var3;
    }
 
    @ObfuscatedName("t")

@@ -59,6 +59,20 @@ public final class Tiles {
    @Export("__bq_v")
    static int __bq_v;
 
+   static {
+      Tiles_heights = new int[4][105][105];
+      Tiles_renderFlags = new byte[4][104][104];
+      Tiles_minPlane = 99;
+      __bq_t = new int[]{1, 2, 4, 8};
+      __bq_y = new int[]{16, 32, 64, 128};
+      __bq_h = new int[]{1, 0, -1, 0};
+      __bq_b = new int[]{0, -1, 0, 1};
+      __bq_c = new int[]{1, -1, -1, 1};
+      __bq_r = new int[]{-1, -1, 1, 1};
+      __bq_p = (int)(Math.random() * 17.0D) - 8;
+      __bq_v = (int)(Math.random() * 33.0D) - 16;
+   }
+
    @ObfuscatedName("aq")
    @ObfuscatedSignature(
       signature = "(IZII)V",
@@ -81,19 +95,5 @@ public final class Tiles {
    )
    public static final void method1106(String var0, String var1, int var2, int var3, int var4, int var5) {
       class16.insertMenuItem(var0, var1, var2, var3, var4, var5, false);
-   }
-
-   static {
-      Tiles_heights = new int[4][105][105];
-      Tiles_renderFlags = new byte[4][104][104];
-      Tiles_minPlane = 99;
-      __bq_t = new int[]{1, 2, 4, 8};
-      __bq_y = new int[]{16, 32, 64, 128};
-      __bq_h = new int[]{1, 0, -1, 0};
-      __bq_b = new int[]{0, -1, 0, 1};
-      __bq_c = new int[]{1, -1, -1, 1};
-      __bq_r = new int[]{-1, -1, 1, 1};
-      __bq_p = (int)(Math.random() * 17.0D) - 8;
-      __bq_v = (int)(Math.random() * 33.0D) - 16;
    }
 }

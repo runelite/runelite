@@ -142,11 +142,11 @@ public class class72 {
 
       this.field1013 = new int[256];
       this.field1010 = 0;
-      this.field1004 = new int[32768];
-      this.field1018 = new int[32768];
+      this.field1004 = new int['耀'];
+      this.field1018 = new int['耀'];
       this.method1779((IndexedSprite)null);
-      this.field1011 = new int[32768];
-      this.field1012 = new int[32768];
+      this.field1011 = new int['耀'];
+      this.field1012 = new int['耀'];
    }
 
    @ObfuscatedName("f")
@@ -212,30 +212,30 @@ public class class72 {
       int var3 = var1 * 128;
       int var4 = (256 - var1) * 128;
 
-      int var5;
-      for(int var6 = 0; var6 < var4; ++var6) {
-         var5 = this.field1011[var3 + var2] - this.field1004[var2 + this.field1010 & this.field1004.length - 1] * var1 / 6;
-         if(var5 < 0) {
-            var5 = 0;
+      int var6;
+      for(int var5 = 0; var5 < var4; ++var5) {
+         var6 = this.field1011[var3 + var2] - this.field1004[var2 + this.field1010 & this.field1004.length - 1] * var1 / 6;
+         if(var6 < 0) {
+            var6 = 0;
          }
 
-         this.field1011[var2++] = var5;
+         this.field1011[var2++] = var6;
       }
 
       byte var15 = 10;
-      var5 = 128 - var15;
+      var6 = 128 - var15;
 
       int var7;
-      int var8;
+      int var10;
       for(var7 = 256 - var1; var7 < 256; ++var7) {
-         int var9 = var7 * 128;
+         int var8 = var7 * 128;
 
-         for(int var10 = 0; var10 < 128; ++var10) {
-            var8 = (int)(Math.random() * 100.0D);
-            if(var8 < 50 && var10 > var15 && var10 < var5) {
-               this.field1011[var10 + var9] = 255;
+         for(int var9 = 0; var9 < 128; ++var9) {
+            var10 = (int)(Math.random() * 100.0D);
+            if(var10 < 50 && var9 > var15 && var9 < var6) {
+               this.field1011[var9 + var8] = 255;
             } else {
-               this.field1011[var10 + var9] = 0;
+               this.field1011[var9 + var8] = 0;
             }
          }
       }
@@ -273,13 +273,13 @@ public class class72 {
       if(var7 > 0) {
          short var16 = 128;
          byte var17 = 2;
-         var8 = 128 - var17 - var17;
+         var10 = 128 - var17 - var17;
 
          int var11;
          int var12;
          int var13;
          for(var11 = 0; var11 < this.field1016 * 100; ++var11) {
-            var12 = (int)(Math.random() * (double)var8) + var17;
+            var12 = (int)(Math.random() * (double)var10) + var17;
             var13 = (int)(Math.random() * (double)var16) + var16;
             this.field1011[var12 + (var13 << 7)] = 192;
          }
@@ -449,9 +449,9 @@ public class class72 {
             }
          }
 
-         int[] var6 = this.field1004;
+         int[] var8 = this.field1004;
          this.field1004 = this.field1018;
-         this.field1018 = var6;
+         this.field1018 = var8;
       }
 
       if(var1 != null) {
@@ -461,8 +461,8 @@ public class class72 {
             for(var4 = 0; var4 < var1.subWidth; ++var4) {
                if(var1.pixels[var2++] != 0) {
                   var5 = var4 + var1.xOffset + 16;
-                  int var8 = var3 + var1.yOffset + 16;
-                  int var7 = var5 + (var8 << 7);
+                  int var6 = var3 + var1.yOffset + 16;
+                  int var7 = var5 + (var6 << 7);
                   this.field1004[var7] = 0;
                }
             }
@@ -526,56 +526,56 @@ public class class72 {
       var9.__s_297(var5.array, 0, var5.index);
       var9.writeShort(var8.index);
       var9.__s_297(var8.array, 0, var8.index);
-      byte[] var10 = var9.array;
-      int var11 = var10.length;
-      StringBuilder var12 = new StringBuilder();
+      byte[] var11 = var9.array;
+      int var13 = var11.length;
+      StringBuilder var14 = new StringBuilder();
 
-      int var13;
-      for(int var14 = 0; var14 < var11 + 0; var14 += 3) {
-         int var15 = var10[var14] & 255;
-         var12.append(class307.__kc_m[var15 >>> 2]);
-         if(var14 < var11 - 1) {
-            var13 = var10[var14 + 1] & 255;
-            var12.append(class307.__kc_m[(var15 & 3) << 4 | var13 >>> 4]);
-            if(var14 < var11 - 2) {
-               int var16 = var10[var14 + 2] & 255;
-               var12.append(class307.__kc_m[(var13 & 15) << 2 | var16 >>> 6]).append(class307.__kc_m[var16 & 63]);
+      int var17;
+      for(int var15 = 0; var15 < var13 + 0; var15 += 3) {
+         int var16 = var11[var15] & 255;
+         var14.append(class307.__kc_m[var16 >>> 2]);
+         if(var15 < var13 - 1) {
+            var17 = var11[var15 + 1] & 255;
+            var14.append(class307.__kc_m[(var16 & 3) << 4 | var17 >>> 4]);
+            if(var15 < var13 - 2) {
+               int var18 = var11[var15 + 2] & 255;
+               var14.append(class307.__kc_m[(var17 & 15) << 2 | var18 >>> 6]).append(class307.__kc_m[var18 & 63]);
             } else {
-               var12.append(class307.__kc_m[(var13 & 15) << 2]).append("=");
+               var14.append(class307.__kc_m[(var17 & 15) << 2]).append("=");
             }
          } else {
-            var12.append(class307.__kc_m[(var15 & 3) << 4]).append("==");
+            var14.append(class307.__kc_m[(var16 & 3) << 4]).append("==");
          }
       }
 
-      String var21 = var12.toString();
-      var21 = var21;
+      String var12 = var14.toString();
+      var12 = var12;
 
       try {
-         URL var22 = new URL(Message.method1227("services", false) + "m=accountappeal/login.ws");
-         URLConnection var23 = var22.openConnection();
-         var23.setDoInput(true);
-         var23.setDoOutput(true);
-         var23.setConnectTimeout(5000);
-         OutputStreamWriter var17 = new OutputStreamWriter(var23.getOutputStream());
-         var17.write("data2=" + class306.method5781(var21) + "&dest=" + class306.method5781("passwordchoice.ws"));
-         var17.flush();
-         InputStream var18 = var23.getInputStream();
+         URL var19 = new URL(Message.method1227("services", false) + "m=accountappeal/login.ws");
+         URLConnection var24 = var19.openConnection();
+         var24.setDoInput(true);
+         var24.setDoOutput(true);
+         var24.setConnectTimeout(5000);
+         OutputStreamWriter var20 = new OutputStreamWriter(var24.getOutputStream());
+         var20.write("data2=" + class306.method5781(var12) + "&dest=" + class306.method5781("passwordchoice.ws"));
+         var20.flush();
+         InputStream var21 = var24.getInputStream();
          var9 = new Buffer(new byte[1000]);
 
          do {
-            var13 = var18.read(var9.array, var9.index, 1000 - var9.index);
-            if(var13 == -1) {
-               var17.close();
-               var18.close();
-               String var19 = new String(var9.array);
-               if(var19.startsWith("OFFLINE")) {
+            var17 = var21.read(var9.array, var9.index, 1000 - var9.index);
+            if(var17 == -1) {
+               var20.close();
+               var21.close();
+               String var22 = new String(var9.array);
+               if(var22.startsWith("OFFLINE")) {
                   return 4;
-               } else if(var19.startsWith("WRONG")) {
+               } else if(var22.startsWith("WRONG")) {
                   return 7;
-               } else if(var19.startsWith("RELOAD")) {
+               } else if(var22.startsWith("RELOAD")) {
                   return 3;
-               } else if(var19.startsWith("Not permitted for social network accounts.")) {
+               } else if(var22.startsWith("Not permitted for social network accounts.")) {
                   return 6;
                } else {
                   var9.xteaDecryptAll(var6);
@@ -584,9 +584,9 @@ public class class72 {
                      --var9.index;
                   }
 
-                  var19 = new String(var9.array, 0, var9.index);
-                  if(class83.method2026(var19)) {
-                     WorldMapCacheName.method635(var19, true, false);
+                  var22 = new String(var9.array, 0, var9.index);
+                  if(class83.method2026(var22)) {
+                     WorldMapCacheName.method635(var22, true, false);
                      return 2;
                   } else {
                      return 5;
@@ -594,12 +594,12 @@ public class class72 {
                }
             }
 
-            var9.index += var13;
+            var9.index += var17;
          } while(var9.index < 1000);
 
          return 5;
-      } catch (Throwable var20) {
-         var20.printStackTrace();
+      } catch (Throwable var23) {
+         var23.printStackTrace();
          return 5;
       }
    }

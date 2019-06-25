@@ -209,9 +209,9 @@ final class class11 implements Comparator {
 
          return 1;
       } else if(var0 == 2702) {
-         int var4 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-         WidgetGroupParent var5 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var4);
-         if(var5 != null) {
+         int var5 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+         WidgetGroupParent var4 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var5);
+         if(var4 != null) {
             Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 1;
          } else {
             Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;

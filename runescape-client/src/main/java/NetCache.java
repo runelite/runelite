@@ -117,15 +117,6 @@ public class NetCache {
    @Export("NetCache_ioExceptions")
    public static int NetCache_ioExceptions;
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IB)Lbm;",
-      garbageValue = "31"
-   )
-   static Message method4708(int var0) {
-      return (Message)Messages.Messages_hashTable.get((long)var0);
-   }
-
    static {
       __iq_f = 0;
       NetCache_pendingPriorityWrites = new NodeHashTable(4096);
@@ -144,5 +135,14 @@ public class NetCache {
       __iq_b = 0;
       NetCache_crcMismatches = 0;
       NetCache_ioExceptions = 0;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IB)Lbm;",
+      garbageValue = "31"
+   )
+   static Message method4708(int var0) {
+      return (Message)Messages.Messages_hashTable.get((long)var0);
    }
 }

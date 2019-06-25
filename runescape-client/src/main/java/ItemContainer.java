@@ -31,6 +31,10 @@ public class ItemContainer extends Node {
    @Export("quantities")
    int[] quantities;
 
+   static {
+      itemContainers = new NodeHashTable(32);
+   }
+
    ItemContainer() {
       this.ids = new int[]{-1};
       this.quantities = new int[]{0};
@@ -56,44 +60,40 @@ public class ItemContainer extends Node {
       if(var1 != null) {
          return var1;
       } else {
-         AbstractIndexCache var2 = SequenceDefinition.__jh_f;
-         AbstractIndexCache var3 = SequenceDefinition.__jh_q;
-         boolean var4 = true;
-         int[] var5 = var2.__j_395(var0);
+         AbstractIndexCache var3 = SequenceDefinition.__jh_f;
+         AbstractIndexCache var4 = SequenceDefinition.__jh_q;
+         boolean var5 = true;
+         int[] var6 = var3.__j_395(var0);
 
-         for(int var6 = 0; var6 < var5.length; ++var6) {
-            byte[] var7 = var2.getRecord(var0, var5[var6]);
-            if(var7 == null) {
-               var4 = false;
+         for(int var7 = 0; var7 < var6.length; ++var7) {
+            byte[] var8 = var3.getRecord(var0, var6[var7]);
+            if(var8 == null) {
+               var5 = false;
             } else {
-               int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
-               byte[] var9 = var3.getRecord(var8, 0);
-               if(var9 == null) {
-                  var4 = false;
+               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
+               byte[] var10 = var4.getRecord(var9, 0);
+               if(var10 == null) {
+                  var5 = false;
                }
             }
          }
 
-         Frames var11;
-         if(!var4) {
-            var11 = null;
+         Frames var2;
+         if(!var5) {
+            var2 = null;
          } else {
             try {
-               var11 = new Frames(var2, var3, var0, false);
-            } catch (Exception var10) {
-               var11 = null;
+               var2 = new Frames(var3, var4, var0, false);
+            } catch (Exception var12) {
+               var2 = null;
             }
          }
 
-         if(var11 != null) {
-            SequenceDefinition.__jh_o.put(var11, (long)var0);
+         if(var2 != null) {
+            SequenceDefinition.__jh_o.put(var2, (long)var0);
          }
 
-         return var11;
+         return var2;
       }
-   }
-
-   static {
-      itemContainers = new NodeHashTable(32);
    }
 }

@@ -260,7 +260,7 @@ under the License.
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <checkstyle.skip>false</checkstyle.skip>
 		<archetype.test.skip>true</archetype.test.skip>
-		<test.skip>true</test.skip>
+		<test.skip>false</test.skip>
       </properties>
     </profile>
   </profiles>

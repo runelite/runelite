@@ -62,6 +62,13 @@ public class World {
    @Export("index")
    int index;
 
+   static {
+      worldsCount = 0;
+      __bt_g = 0;
+      __bt_l = new int[]{1, 1, 1, 1};
+      __bt_e = new int[]{0, 1, 2, 3};
+   }
+
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)Z",
@@ -135,12 +142,5 @@ public class World {
       var0 |= var0 >>> 8;
       var0 |= var0 >>> 16;
       return var0 + 1;
-   }
-
-   static {
-      worldsCount = 0;
-      __bt_g = 0;
-      __bt_l = new int[]{1, 1, 1, 1};
-      __bt_e = new int[]{0, 1, 2, 3};
    }
 }

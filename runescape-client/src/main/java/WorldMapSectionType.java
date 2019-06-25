@@ -13,7 +13,7 @@ public enum WorldMapSectionType implements Enumerated {
       signature = "Lh;"
    )
    @Export("__h_m")
-   __h_m(1, (byte)0),
+  __h_m(1, (byte)0),
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lh;"
@@ -32,7 +32,6 @@ public enum WorldMapSectionType implements Enumerated {
    )
    @Export("__h_w")
    __h_w(2, (byte)3);
-
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Llq;"
@@ -58,7 +57,7 @@ public enum WorldMapSectionType implements Enumerated {
    @Export("id")
    final byte id;
 
-   private WorldMapSectionType(int var3, byte var4) {
+   WorldMapSectionType(int var3, byte var4) {
       this.type = var3;
       this.id = var4;
    }

@@ -142,15 +142,10 @@ public class BufferedSink implements Runnable {
    @Export("run")
    @ObfuscatedName("run")
    public void run() {
-      while(true) {
-         synchronized(this){}
-
-         while(true) {
-            boolean var13 = false;
-
-            int var1;
-            try {
-               var13 = true;
+      do {
+         int var1;
+         synchronized(this) {
+            while(true) {
                if(this.exception != null) {
                   return;
                }
@@ -161,60 +156,50 @@ public class BufferedSink implements Runnable {
                   var1 = this.capacity - this.position + this.limit;
                }
 
-               if(var1 <= 0) {
-                  try {
-                     this.outputStream.flush();
-                  } catch (IOException var17) {
-                     this.exception = var17;
-                     return;
-                  }
-
-                  if(this.isClosed()) {
-                     return;
-                  }
-
-                  try {
-                     this.wait();
-                  } catch (InterruptedException var18) {
-                     ;
-                  }
-                  continue;
+               if(var1 > 0) {
+                  break;
                }
 
-               var13 = false;
-            } finally {
-               if(var13) {
+               try {
+                  this.outputStream.flush();
+               } catch (IOException var11) {
+                  this.exception = var11;
+                  return;
+               }
+
+               if(this.isClosed()) {
+                  return;
+               }
+
+               try {
+                  this.wait();
+               } catch (InterruptedException var12) {
                   ;
                }
             }
-
-            try {
-               if(var1 + this.position <= this.capacity) {
-                  this.outputStream.write(this.buffer, this.position, var1);
-               } else {
-                  int var2 = this.capacity - this.position;
-                  this.outputStream.write(this.buffer, this.position, var2);
-                  this.outputStream.write(this.buffer, 0, var1 - var2);
-               }
-            } catch (IOException var16) {
-               IOException var3 = var16;
-               synchronized(this) {
-                  this.exception = var3;
-                  return;
-               }
-            }
-
-            synchronized(this) {
-               this.position = (var1 + this.position) % this.capacity;
-            }
-
-            if(!this.isClosed()) {
-               break;
-            }
-
-            return;
          }
-      }
+
+         try {
+            if(var1 + this.position <= this.capacity) {
+               this.outputStream.write(this.buffer, this.position, var1);
+            } else {
+               int var7 = this.capacity - this.position;
+               this.outputStream.write(this.buffer, this.position, var7);
+               this.outputStream.write(this.buffer, 0, var1 - var7);
+            }
+         } catch (IOException var10) {
+            IOException var2 = var10;
+            synchronized(this) {
+               this.exception = var2;
+               return;
+            }
+         }
+
+         synchronized(this) {
+            this.position = (var1 + this.position) % this.capacity;
+         }
+      } while(!this.isClosed());
+
    }
 
    @ObfuscatedName("m")
@@ -223,13 +208,13 @@ public class BufferedSink implements Runnable {
       garbageValue = "449588720"
    )
    static void method3603() {
-      Tiles.__bq_w = (byte[][][])null;
-      Fonts.__kz_o = (byte[][][])null;
-      class32.__ay_u = (byte[][][])null;
-      class307.__kc_g = (byte[][][])null;
-      Tiles.__bq_a = (int[][][])null;
-      Tiles.__bq_l = (byte[][][])null;
-      Huffman.__gd_e = (int[][])null;
+      Tiles.__bq_w = null;
+      Fonts.__kz_o = null;
+      class32.__ay_u = null;
+      class307.__kc_g = null;
+      Tiles.__bq_a = null;
+      Tiles.__bq_l = null;
+      Huffman.__gd_e = null;
       class13.__i_x = null;
       Formatting.__cy_d = null;
       class214.__hf_k = null;

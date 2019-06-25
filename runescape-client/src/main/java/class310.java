@@ -25,13 +25,13 @@ public class class310 {
    )
    public final int field3804;
 
-   class310(int var1) {
-      this.field3804 = var1;
-   }
-
    static {
       field3806 = new class310(0);
       field3805 = new class310(1);
       field3807 = new class310(2);
+   }
+
+   class310(int var1) {
+      this.field3804 = var1;
    }
 }

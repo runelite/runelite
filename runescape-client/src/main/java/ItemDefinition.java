@@ -287,6 +287,12 @@ public class ItemDefinition extends DualNode {
    @Export("placeholderTemplate")
    public int placeholderTemplate;
 
+   static {
+      ItemDefinition_cached = new EvictingDualNodeHashTable(64);
+      ItemDefinition_cachedModels = new EvictingDualNodeHashTable(50);
+      Sprite_cached = new EvictingDualNodeHashTable(200);
+   }
+
    ItemDefinition() {
       this.name = "null";
       this.zoom2d = 2000;
@@ -582,18 +588,18 @@ public class ItemDefinition extends DualNode {
    )
    @Export("__l_429")
    public final ModelData __l_429(int var1) {
-      int var2;
+      int var3;
       if(this.__az != null && var1 > 1) {
-         int var3 = -1;
+         int var2 = -1;
 
-         for(var2 = 0; var2 < 10; ++var2) {
-            if(var1 >= this.__au[var2] && this.__au[var2] != 0) {
-               var3 = this.__az[var2];
+         for(var3 = 0; var3 < 10; ++var3) {
+            if(var1 >= this.__au[var3] && this.__au[var3] != 0) {
+               var2 = this.__az[var3];
             }
          }
 
-         if(var3 != -1) {
-            return Skills.getItemDefinition(var3).__l_429(1);
+         if(var2 != -1) {
+            return Skills.getItemDefinition(var2).__l_429(1);
          }
       }
 
@@ -606,14 +612,14 @@ public class ItemDefinition extends DualNode {
          }
 
          if(this.recolorFrom != null) {
-            for(var2 = 0; var2 < this.recolorFrom.length; ++var2) {
-               var4.recolor(this.recolorFrom[var2], this.recolorTo[var2]);
+            for(var3 = 0; var3 < this.recolorFrom.length; ++var3) {
+               var4.recolor(this.recolorFrom[var3], this.recolorTo[var3]);
             }
          }
 
          if(this.retextureFrom != null) {
-            for(var2 = 0; var2 < this.retextureFrom.length; ++var2) {
-               var4.retexture(this.retextureFrom[var2], this.retextureTo[var2]);
+            for(var3 = 0; var3 < this.retextureFrom.length; ++var3) {
+               var4.retexture(this.retextureFrom[var3], this.retextureTo[var3]);
             }
          }
 
@@ -870,20 +876,20 @@ public class ItemDefinition extends DualNode {
    )
    @Export("getIntParam")
    public int getIntParam(int var1, int var2) {
-      IterableNodeHashTable var3 = this.params;
-      int var4;
-      if(var3 == null) {
-         var4 = var2;
+      IterableNodeHashTable var4 = this.params;
+      int var3;
+      if(var4 == null) {
+         var3 = var2;
       } else {
-         IntegerNode var5 = (IntegerNode)var3.get((long)var1);
+         IntegerNode var5 = (IntegerNode)var4.get((long)var1);
          if(var5 == null) {
-            var4 = var2;
+            var3 = var2;
          } else {
-            var4 = var5.integer;
+            var3 = var5.integer;
          }
       }
 
-      return var4;
+      return var3;
    }
 
    @ObfuscatedName("h")
@@ -904,11 +910,5 @@ public class ItemDefinition extends DualNode {
    @Export("getShiftClickIndex")
    public int getShiftClickIndex() {
       return this.shiftClickIndex0 != -1 && this.inventoryActions != null?(this.shiftClickIndex0 >= 0?(this.inventoryActions[this.shiftClickIndex0] != null?this.shiftClickIndex0:-1):("Drop".equalsIgnoreCase(this.inventoryActions[4])?4:-1)):-1;
-   }
-
-   static {
-      ItemDefinition_cached = new EvictingDualNodeHashTable(64);
-      ItemDefinition_cachedModels = new EvictingDualNodeHashTable(50);
-      Sprite_cached = new EvictingDualNodeHashTable(200);
    }
 }

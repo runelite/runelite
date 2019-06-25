@@ -41,6 +41,10 @@ public class VarbitDefinition extends DualNode {
    @Export("highBit")
    public int highBit;
 
+   static {
+      VarbitDefinition_cached = new EvictingDualNodeHashTable(64);
+   }
+
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(Lgr;I)V",
@@ -89,9 +93,5 @@ public class VarbitDefinition extends DualNode {
       }
 
       return var2.__u_421(var1);
-   }
-
-   static {
-      VarbitDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

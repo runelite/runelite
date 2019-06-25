@@ -1,69 +1,69 @@
 package net.runelite.client.plugins.inferno;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.Color;
 import com.google.inject.Inject;
-import net.runelite.client.ui.overlay.components.TitleComponent;
+import lombok.Setter;
+import static net.runelite.client.plugins.inferno.InfernoWaveMappings.addWaveComponent;
 import java.awt.Graphics2D;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import java.awt.Dimension;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 
 public class InfernoWaveOverlay extends Overlay
 	{
-	private final Client client;
 	private final InfernoPlugin plugin;
-	private final InfernoConfig config;
-	private PanelComponent panelComponent;
+	private final PanelComponent panelComponent;
+
+	@Setter
+	private Color waveHeaderColor;
+
+	@Setter
+	private Color waveTextColor;
+
+	@Setter
+	private InfernoWaveDisplayMode displayMode;
 
 	@Inject
-	InfernoWaveOverlay(final Client client, final InfernoPlugin plugin, final InfernoConfig config)
-		{
-			(this.panelComponent = new PanelComponent()).setPreferredSize(new Dimension(150, 0));
-			this.setPosition(OverlayPosition.TOP_RIGHT);
-			this.setPriority(OverlayPriority.HIGH);
-			this.client = client;
-			this.plugin = plugin;
-			this.config = config;
-		}
+	InfernoWaveOverlay(final InfernoPlugin plugin)
+	{
+		this.panelComponent = new PanelComponent();
+		this.setPosition(OverlayPosition.TOP_RIGHT);
+		this.setPriority(OverlayPriority.HIGH);
+		this.plugin = plugin;
+
+		panelComponent.setPreferredSize(new Dimension(160, 0));
+	}
 
 	public Dimension render(final Graphics2D graphics)
+	{
+		panelComponent.getChildren().clear();
+
+		if (displayMode == InfernoWaveDisplayMode.CURRENT ||
+			displayMode == InfernoWaveDisplayMode.BOTH)
 		{
-			if (!plugin.inInferno() || plugin.getCurrentWaveNumber() == 0)
-				{
-				return null;
-				}
-			panelComponent.getChildren().clear();
-			if (config.waveDisplay() == InfernoWaveDisplayMode.CURRENT
-					|| config.waveDisplay() == InfernoWaveDisplayMode.BOTH)
-				{
-				renderWave("Current Wave (Wave " + plugin.getCurrentWaveNumber() + ")", plugin.getCurrentWaveNumber());
-				}
-			if ((config.waveDisplay() == InfernoWaveDisplayMode.NEXT
-					|| config.waveDisplay() == InfernoWaveDisplayMode.BOTH)
-					&& plugin.isNotFinalWave())
-				{
-				renderWave("Next Wave (Wave " + plugin.getNextWaveNumber()  + ")", plugin.getCurrentWaveNumber());
-				}
-			return panelComponent.render(graphics);
+			addWaveComponent(
+				panelComponent,
+				"Current Wave (Wave " + plugin.getCurrentWaveNumber() + ")",
+				plugin.getCurrentWaveNumber(),
+				waveHeaderColor,
+				waveTextColor
+			);
 		}
 
-	private void renderWave(final String header, final int waveNumber)
+		if (displayMode == InfernoWaveDisplayMode.NEXT ||
+			displayMode == InfernoWaveDisplayMode.BOTH)
 		{
-			panelComponent.getChildren().add(TitleComponent.builder().text(header).color(config.getWaveOverlayHeaderColor()).build());
-			final HashMap<Integer, Integer> waveMap = (HashMap<Integer, Integer>) InfernoWaveMappings.intArrayToHashmap(plugin.getWaves().get(waveNumber));
-			for (final Map.Entry<Integer, Integer> entry : waveMap.entrySet())
-				{
-				final int monsterID = entry.getKey();
-				final int quantity = entry.getValue();
-				if (quantity <= 0)
-					{
-					continue;
-					}
-				panelComponent.getChildren().add(TitleComponent.builder().text(quantity + "x " + plugin.getMonster().get(monsterID)).color(config.getWaveTextColor()).build());
-				}
+			addWaveComponent(
+				panelComponent,
+				"Next Wave (Wave " + plugin.getNextWaveNumber() + ")",
+				plugin.getNextWaveNumber(),
+				waveHeaderColor,
+				waveTextColor
+			);
 		}
+
+		return panelComponent.render(graphics);
 	}
+}

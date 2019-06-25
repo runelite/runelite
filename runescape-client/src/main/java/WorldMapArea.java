@@ -160,14 +160,16 @@ public class WorldMapArea {
    public boolean containsCoord(int var1, int var2, int var3) {
       Iterator var4 = this.sections.iterator();
 
-      while(var4.hasNext()) {
-         WorldMapSection var5 = (WorldMapSection)var4.next();
-         if(var5.containsCoord(var1, var2, var3)) {
-            return true;
+      WorldMapSection var5;
+      do {
+         if(!var4.hasNext()) {
+            return false;
          }
-      }
 
-      return false;
+         var5 = (WorldMapSection)var4.next();
+      } while(!var5.containsCoord(var1, var2, var3));
+
+      return true;
    }
 
    @ObfuscatedName("w")
@@ -183,14 +185,16 @@ public class WorldMapArea {
          if(var4 >= this.minY0 && var4 <= this.maxY0) {
             Iterator var5 = this.sections.iterator();
 
-            while(var5.hasNext()) {
-               WorldMapSection var6 = (WorldMapSection)var5.next();
-               if(var6.containsPosition(var1, var2)) {
-                  return true;
+            WorldMapSection var6;
+            do {
+               if(!var5.hasNext()) {
+                  return false;
                }
-            }
 
-            return false;
+               var6 = (WorldMapSection)var5.next();
+            } while(!var6.containsPosition(var1, var2));
+
+            return true;
          } else {
             return false;
          }
@@ -208,14 +212,16 @@ public class WorldMapArea {
    public int[] position(int var1, int var2, int var3) {
       Iterator var4 = this.sections.iterator();
 
-      while(var4.hasNext()) {
-         WorldMapSection var5 = (WorldMapSection)var4.next();
-         if(var5.containsCoord(var1, var2, var3)) {
-            return var5.position(var1, var2, var3);
+      WorldMapSection var5;
+      do {
+         if(!var4.hasNext()) {
+            return null;
          }
-      }
 
-      return null;
+         var5 = (WorldMapSection)var4.next();
+      } while(!var5.containsCoord(var1, var2, var3));
+
+      return var5.position(var1, var2, var3);
    }
 
    @ObfuscatedName("u")
@@ -227,14 +233,16 @@ public class WorldMapArea {
    public TileLocation coord(int var1, int var2) {
       Iterator var3 = this.sections.iterator();
 
-      while(var3.hasNext()) {
-         WorldMapSection var4 = (WorldMapSection)var3.next();
-         if(var4.containsPosition(var1, var2)) {
-            return var4.coord(var1, var2);
+      WorldMapSection var4;
+      do {
+         if(!var3.hasNext()) {
+            return null;
          }
-      }
 
-      return null;
+         var4 = (WorldMapSection)var3.next();
+      } while(!var4.containsPosition(var1, var2));
+
+      return var4.coord(var1, var2);
    }
 
    @ObfuscatedName("g")

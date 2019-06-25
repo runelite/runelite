@@ -42,24 +42,24 @@ public class NetFileRequest extends DualNode {
                   method4555(var3.children, var3.id);
                }
 
-               WidgetGroupParent var4 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var3.id);
-               if(var4 != null) {
-                  ClientPreferences.method1809(var4.group);
+               WidgetGroupParent var7 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var3.id);
+               if(var7 != null) {
+                  ClientPreferences.method1809(var7.group);
                }
             }
 
             if(var3.type == 6) {
-               int var7;
+               int var5;
                if(var3.sequenceId != -1 || var3.sequenceId2 != -1) {
-                  boolean var5 = class238.runCs1(var3);
-                  if(var5) {
-                     var7 = var3.sequenceId2;
+                  boolean var4 = class238.runCs1(var3);
+                  if(var4) {
+                     var5 = var3.sequenceId2;
                   } else {
-                     var7 = var3.sequenceId;
+                     var5 = var3.sequenceId;
                   }
 
-                  if(var7 != -1) {
-                     SequenceDefinition var6 = WorldMapAreaData.getSequenceDefinition(var7);
+                  if(var5 != -1) {
+                     SequenceDefinition var6 = WorldMapAreaData.getSequenceDefinition(var5);
 
                      for(var3.modelFrameCycle += Client.__client_gy; var3.modelFrameCycle > var6.frameLengths[var3.modelFrame]; class22.method295(var3)) {
                         var3.modelFrameCycle -= var6.frameLengths[var3.modelFrame];
@@ -76,11 +76,11 @@ public class NetFileRequest extends DualNode {
 
                if(var3.__bh != 0 && !var3.isIf3) {
                   int var8 = var3.__bh >> 16;
-                  var7 = var3.__bh << 16 >> 16;
+                  var5 = var3.__bh << 16 >> 16;
                   var8 *= Client.__client_gy;
-                  var7 *= Client.__client_gy;
+                  var5 *= Client.__client_gy;
                   var3.modelAngleX = var8 + var3.modelAngleX & 2047;
-                  var3.modelAngleY = var7 + var3.modelAngleY & 2047;
+                  var3.modelAngleY = var5 + var3.modelAngleY & 2047;
                   class22.method295(var3);
                }
             }
@@ -108,8 +108,8 @@ public class NetFileRequest extends DualNode {
             } else {
                var4.drawAt2(var0 + var10 + var5.width / 2 - var4.width / 2, var5.height / 2 + var1 - var11 - var4.height / 2);
             }
+
          }
       }
-
    }
 }

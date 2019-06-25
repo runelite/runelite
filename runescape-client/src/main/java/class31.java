@@ -21,6 +21,11 @@ public class class31 {
    )
    final int field255;
 
+   static {
+      field259 = new class31(0);
+      field254 = new class31(1);
+   }
+
    class31(int var1) {
       this.field255 = var1;
    }
@@ -101,13 +106,13 @@ public class class31 {
          } else {
             World var4;
             int var5;
-            int var6;
+            int var7;
             if(var0 == 6506) {
-               var6 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
                var4 = null;
 
                for(var5 = 0; var5 < World.worldsCount; ++var5) {
-                  if(var6 == ItemContainer.worlds[var5].id) {
+                  if(var7 == ItemContainer.worlds[var5].id) {
                      var4 = ItemContainer.worlds[var5];
                      break;
                   }
@@ -132,64 +137,64 @@ public class class31 {
                return 1;
             } else if(var0 == 6507) {
                class179.Interpreter_intStackSize -= 4;
-               var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-               boolean var9 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1] == 1;
+               var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+               boolean var10 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1] == 1;
                var5 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
-               boolean var10 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 3] == 1;
-               WorldMapSectionType.method248(var6, var9, var5, var10);
+               boolean var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 3] == 1;
+               WorldMapSectionType.method248(var7, var10, var5, var6);
                return 1;
             } else if(var0 != 6511) {
                if(var0 == 6512) {
                   Client.followerOpsLowPriority = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
                   return 1;
                } else {
-                  int var7;
-                  ParamKeyDefinition var8;
+                  int var8;
+                  ParamKeyDefinition var9;
                   if(var0 == 6513) {
                      class179.Interpreter_intStackSize -= 2;
-                     var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-                     var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
-                     if(var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = ObjectDefinition.getNpcDefinition(var6).getStringParam(var7, var8.keyString);
+                     var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+                     var8 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+                     var9 = class229.getParamKeyDefinition(var8);
+                     if(var9.isString()) {
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = ObjectDefinition.getNpcDefinition(var7).getStringParam(var8, var9.keyString);
                      } else {
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ObjectDefinition.getNpcDefinition(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ObjectDefinition.getNpcDefinition(var7).getIntParam(var8, var9.keyInt);
                      }
 
                      return 1;
                   } else if(var0 == 6514) {
                      class179.Interpreter_intStackSize -= 2;
-                     var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-                     var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
-                     if(var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = class50.getObjectDefinition(var6).getStringParam(var7, var8.keyString);
+                     var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+                     var8 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+                     var9 = class229.getParamKeyDefinition(var8);
+                     if(var9.isString()) {
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = class50.getObjectDefinition(var7).getStringParam(var8, var9.keyString);
                      } else {
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = class50.getObjectDefinition(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = class50.getObjectDefinition(var7).getIntParam(var8, var9.keyInt);
                      }
 
                      return 1;
                   } else if(var0 == 6515) {
                      class179.Interpreter_intStackSize -= 2;
-                     var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-                     var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
-                     if(var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Skills.getItemDefinition(var6).getStringParam(var7, var8.keyString);
+                     var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+                     var8 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+                     var9 = class229.getParamKeyDefinition(var8);
+                     if(var9.isString()) {
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Skills.getItemDefinition(var7).getStringParam(var8, var9.keyString);
                      } else {
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var7).getIntParam(var8, var9.keyInt);
                      }
 
                      return 1;
                   } else if(var0 == 6516) {
                      class179.Interpreter_intStackSize -= 2;
-                     var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-                     var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
-                     if(var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = GzipDecompressor.method3702(var6).getStringParam(var7, var8.keyString);
+                     var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+                     var8 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+                     var9 = class229.getParamKeyDefinition(var8);
+                     if(var9.isString()) {
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = GzipDecompressor.method3702(var7).getStringParam(var8, var9.keyString);
                      } else {
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = GzipDecompressor.method3702(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = GzipDecompressor.method3702(var7).getIntParam(var8, var9.keyInt);
                      }
 
                      return 1;
@@ -225,9 +230,9 @@ public class class31 {
                   }
                }
             } else {
-               var6 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-               if(var6 >= 0 && var6 < World.worldsCount) {
-                  var4 = ItemContainer.worlds[var6];
+               var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               if(var7 >= 0 && var7 < World.worldsCount) {
+                  var4 = ItemContainer.worlds[var7];
                   Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var4.id;
                   Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var4.properties;
                   Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var4.activity;
@@ -261,11 +266,5 @@ public class class31 {
          var1.packetBuffer.writeStringCp1252NullTerminated(var0);
          Client.packetWriter.__q_167(var1);
       }
-
-   }
-
-   static {
-      field259 = new class31(0);
-      field254 = new class31(1);
    }
 }

@@ -66,6 +66,21 @@ public class Interpreter {
    @Export("__bv_r")
    static final double __bv_r;
 
+   static {
+      Interpreter_arrayLengths = new int[5];
+      Interpreter_arrays = new int[5][5000];
+      Interpreter_intStack = new int[1000];
+      Interpreter_stringStack = new String[1000];
+      Interpreter_frameDepth = 0;
+      Interpreter_frames = new ScriptFrame[50];
+      Interpreter_calendar = Calendar.getInstance();
+      __bv_z = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      __bv_s = false;
+      __bv_t = false;
+      __bv_y = 0;
+      __bv_r = Math.log(2.0D);
+   }
+
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(Lgs;Lhn;I)Lgg;",
@@ -154,32 +169,32 @@ public class Interpreter {
    public static void method1976() {
       try {
          File var0 = new File(WorldMapSection1.userHomeDirectory, "random.dat");
-         int var1;
+         int var2;
          if(var0.exists()) {
             class168.randomDat = new BufferedFile(new AccessFile(var0, "rw", 25L), 24, 0);
          } else {
-            label34:
-            for(int var2 = 0; var2 < Canvas.__ao_s.length; ++var2) {
-               for(var1 = 0; var1 < WorldMapSection2.cacheDirectoryLocations.length; ++var1) {
-                  File var3 = new File(WorldMapSection2.cacheDirectoryLocations[var1] + Canvas.__ao_s[var2] + File.separatorChar + "random.dat");
+            label38:
+            for(int var1 = 0; var1 < Canvas.__ao_s.length; ++var1) {
+               for(var2 = 0; var2 < WorldMapSection2.cacheDirectoryLocations.length; ++var2) {
+                  File var3 = new File(WorldMapSection2.cacheDirectoryLocations[var2] + Canvas.__ao_s[var1] + File.separatorChar + "random.dat");
                   if(var3.exists()) {
                      class168.randomDat = new BufferedFile(new AccessFile(var3, "rw", 25L), 24, 0);
-                     break label34;
+                     break label38;
                   }
                }
             }
          }
 
          if(class168.randomDat == null) {
-            RandomAccessFile var5 = new RandomAccessFile(var0, "rw");
-            var1 = var5.read();
-            var5.seek(0L);
-            var5.write(var1);
-            var5.seek(0L);
-            var5.close();
+            RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
+            var2 = var4.read();
+            var4.seek(0L);
+            var4.write(var2);
+            var4.seek(0L);
+            var4.close();
             class168.randomDat = new BufferedFile(new AccessFile(var0, "rw", 25L), 24, 0);
          }
-      } catch (IOException var4) {
+      } catch (IOException var5) {
          ;
       }
 
@@ -199,28 +214,16 @@ public class Interpreter {
             DevicePcmPlayerProvider.drawWidgetGroup(class279.__jx_ne, -1412584499, var1, var2, var3, var4, class54.__bs_nb, class157.__fw_nm, var7);
             class279.__jx_ne = null;
          }
-      } else if(var7 != -1) {
-         Client.__client_od[var7] = true;
+
       } else {
-         for(int var8 = 0; var8 < 100; ++var8) {
-            Client.__client_od[var8] = true;
+         if(var7 != -1) {
+            Client.__client_od[var7] = true;
+         } else {
+            for(int var8 = 0; var8 < 100; ++var8) {
+               Client.__client_od[var8] = true;
+            }
          }
+
       }
-
-   }
-
-   static {
-      Interpreter_arrayLengths = new int[5];
-      Interpreter_arrays = new int[5][5000];
-      Interpreter_intStack = new int[1000];
-      Interpreter_stringStack = new String[1000];
-      Interpreter_frameDepth = 0;
-      Interpreter_frames = new ScriptFrame[50];
-      Interpreter_calendar = Calendar.getInstance();
-      __bv_z = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-      __bv_s = false;
-      __bv_t = false;
-      __bv_y = 0;
-      __bv_r = Math.log(2.0D);
    }
 }

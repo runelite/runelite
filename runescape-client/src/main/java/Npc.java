@@ -5,13 +5,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cv")
 @Implements("NPC")
-public final class NPC extends Actor {
+public final class Npc extends Actor {
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Ljz;"
    )
    @Export("definition")
-   NPCDefinition definition;
+   NpcDefinition definition;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -129,7 +129,7 @@ public final class NPC extends Actor {
          return null;
       } else {
          SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0?WorldMapAreaData.getSequenceDefinition(super.sequence):null;
-         SequenceDefinition var2 = super.movementSequence == -1 || super.movementSequence == super.idleSequence && var1 != null?null:WorldMapAreaData.getSequenceDefinition(super.movementSequence);
+         SequenceDefinition var2 = super.movementSequence != -1 && (super.movementSequence != super.idleSequence || var1 == null)?WorldMapAreaData.getSequenceDefinition(super.movementSequence):null;
          Model var3 = this.definition.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
          if(var3 == null) {
             return null;
@@ -175,13 +175,11 @@ public final class NPC extends Actor {
       var3.indexStore = var1;
       var3.indexCache = var2;
       NodeDeque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-      NodeDeque var5 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
       synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
          IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFirst(var3);
       }
 
-      Object var10 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
-      Object var6 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
+      Object var9 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
       synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
          if(IndexStoreActionHandler.__iv_q == 0) {
             Frames.IndexStoreActionHandler_thread = new Thread(new IndexStoreActionHandler());

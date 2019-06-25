@@ -1,5 +1,4 @@
 import java.math.BigInteger;
-import java.util.logging.Logger;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
@@ -24,6 +23,42 @@ public class Buffer extends Node {
    )
    @Export("index")
    public int index;
+
+   static {
+      __gr_q = new int[256];
+
+      int var2;
+      for(int var1 = 0; var1 < 256; ++var1) {
+         int var0 = var1;
+
+         for(var2 = 0; var2 < 8; ++var2) {
+            if((var0 & 1) == 1) {
+               var0 = var0 >>> 1 ^ -306674912;
+            } else {
+               var0 >>>= 1;
+            }
+         }
+
+         __gr_q[var1] = var0;
+      }
+
+      __gr_o = new long[256];
+
+      for(var2 = 0; var2 < 256; ++var2) {
+         long var4 = (long)var2;
+
+         for(int var3 = 0; var3 < 8; ++var3) {
+            if((var4 & 1L) == 1L) {
+               var4 = var4 >>> 1 ^ -3932672073523589310L;
+            } else {
+               var4 >>>= 1;
+            }
+         }
+
+         __gr_o[var2] = var4;
+      }
+
+   }
 
    public Buffer(int var1) {
       this.array = Canvas.method862(var1);
@@ -169,22 +204,22 @@ public class Buffer extends Node {
    )
    @Export("__j_296")
    public void __j_296(CharSequence var1) {
-      int var2 = var1.length();
-      int var3 = 0;
+      int var3 = var1.length();
+      int var4 = 0;
 
-      for(int var4 = 0; var4 < var2; ++var4) {
-         char var5 = var1.charAt(var4);
-         if(var5 <= 127) {
-            ++var3;
-         } else if(var5 <= 2047) {
-            var3 += 2;
+      for(int var5 = 0; var5 < var3; ++var5) {
+         char var6 = var1.charAt(var5);
+         if(var6 <= 127) {
+            ++var4;
+         } else if(var6 <= 2047) {
+            var4 += 2;
          } else {
-            var3 += 3;
+            var4 += 3;
          }
       }
 
       this.array[++this.index - 1] = 0;
-      this.__c_301(var3);
+      this.__c_301(var4);
       this.index += class16.method190(this.array, this.index, var1);
    }
 
@@ -244,14 +279,11 @@ public class Buffer extends Node {
    public void writeSmartByteShort(int var1) {
       if(var1 >= 0 && var1 < 128) {
          this.writeByte(var1);
-      } else {
-         if(var1 < 0 || var1 >= 32768) {
-            throw new IllegalArgumentException();
-         }
-
+      } else if(var1 >= 0 && var1 < 32768) {
          this.writeShort(var1 + 32768);
+      } else {
+         throw new IllegalArgumentException();
       }
-
    }
 
    @ObfuscatedName("c")
@@ -440,60 +472,60 @@ public class Buffer extends Node {
          if(var2 + this.index > this.array.length) {
             throw new IllegalStateException("");
          } else {
-            byte[] var3 = this.array;
-            int var4 = this.index;
-            char[] var5 = new char[var2];
-            int var6 = 0;
-            int var7 = var4;
+            byte[] var4 = this.array;
+            int var5 = this.index;
+            char[] var6 = new char[var2];
+            int var7 = 0;
+            int var8 = var5;
 
-            int var8;
-            for(int var9 = var4 + var2; var7 < var9; var5[var6++] = (char)var8) {
-               int var10 = var3[var7++] & 255;
+            int var11;
+            for(int var9 = var5 + var2; var8 < var9; var6[var7++] = (char)var11) {
+               int var10 = var4[var8++] & 255;
                if(var10 < 128) {
                   if(var10 == 0) {
-                     var8 = 65533;
+                     var11 = 65533;
                   } else {
-                     var8 = var10;
+                     var11 = var10;
                   }
                } else if(var10 < 192) {
-                  var8 = 65533;
+                  var11 = 65533;
                } else if(var10 < 224) {
-                  if(var7 < var9 && (var3[var7] & 192) == 128) {
-                     var8 = (var10 & 31) << 6 | var3[var7++] & 63;
-                     if(var8 < 128) {
-                        var8 = 65533;
+                  if(var8 < var9 && (var4[var8] & 192) == 128) {
+                     var11 = (var10 & 31) << 6 | var4[var8++] & 63;
+                     if(var11 < 128) {
+                        var11 = 65533;
                      }
                   } else {
-                     var8 = 65533;
+                     var11 = 65533;
                   }
                } else if(var10 < 240) {
-                  if(var7 + 1 < var9 && (var3[var7] & 192) == 128 && (var3[var7 + 1] & 192) == 128) {
-                     var8 = (var10 & 15) << 12 | (var3[var7++] & 63) << 6 | var3[var7++] & 63;
-                     if(var8 < 2048) {
-                        var8 = 65533;
+                  if(var8 + 1 < var9 && (var4[var8] & 192) == 128 && (var4[var8 + 1] & 192) == 128) {
+                     var11 = (var10 & 15) << 12 | (var4[var8++] & 63) << 6 | var4[var8++] & 63;
+                     if(var11 < 2048) {
+                        var11 = 65533;
                      }
                   } else {
-                     var8 = 65533;
+                     var11 = 65533;
                   }
                } else if(var10 < 248) {
-                  if(var7 + 2 < var9 && (var3[var7] & 192) == 128 && (var3[var7 + 1] & 192) == 128 && (var3[var7 + 2] & 192) == 128) {
-                     var8 = (var10 & 7) << 18 | (var3[var7++] & 63) << 12 | (var3[var7++] & 63) << 6 | var3[var7++] & 63;
-                     if(var8 >= 65536 && var8 <= 1114111) {
-                        var8 = 65533;
+                  if(var8 + 2 < var9 && (var4[var8] & 192) == 128 && (var4[var8 + 1] & 192) == 128 && (var4[var8 + 2] & 192) == 128) {
+                     var11 = (var10 & 7) << 18 | (var4[var8++] & 63) << 12 | (var4[var8++] & 63) << 6 | var4[var8++] & 63;
+                     if(var11 >= 65536 && var11 <= 1114111) {
+                        var11 = 65533;
                      } else {
-                        var8 = 65533;
+                        var11 = 65533;
                      }
                   } else {
-                     var8 = 65533;
+                     var11 = 65533;
                   }
                } else {
-                  var8 = 65533;
+                  var11 = 65533;
                }
             }
 
-            String var11 = new String(var5, 0, var6);
+            String var3 = new String(var6, 0, var7);
             this.index += var2;
-            return var11;
+            return var3;
          }
       }
    }
@@ -725,7 +757,6 @@ public class Buffer extends Node {
       byte[] var7 = var6.toByteArray();
       this.index = 0;
       this.writeShort(var7.length);
-      Logger.getAnonymousLogger().warning("unsigned short " + var7.length);
       this.__s_297(var7, 0, var7.length);
    }
 
@@ -736,17 +767,17 @@ public class Buffer extends Node {
    )
    @Export("__aa_312")
    public int __aa_312(int var1) {
-      byte[] var2 = this.array;
-      int var3 = this.index;
-      int var4 = -1;
+      byte[] var3 = this.array;
+      int var4 = this.index;
+      int var5 = -1;
 
-      for(int var5 = var1; var5 < var3; ++var5) {
-         var4 = var4 >>> 8 ^ __gr_q[(var4 ^ var2[var5]) & 255];
+      for(int var6 = var1; var6 < var4; ++var6) {
+         var5 = var5 >>> 8 ^ __gr_q[(var5 ^ var3[var6]) & 255];
       }
 
-      var4 = ~var4;
-      this.writeInt(var4);
-      return var4;
+      var5 = ~var5;
+      this.writeInt(var5);
+      return var5;
    }
 
    @ObfuscatedName("ax")
@@ -757,18 +788,18 @@ public class Buffer extends Node {
    @Export("__ax_313")
    public boolean __ax_313() {
       this.index -= 4;
-      byte[] var1 = this.array;
-      int var2 = this.index;
-      int var3 = -1;
+      byte[] var2 = this.array;
+      int var3 = this.index;
+      int var4 = -1;
 
-      int var4;
-      for(var4 = 0; var4 < var2; ++var4) {
-         var3 = var3 >>> 8 ^ __gr_q[(var3 ^ var1[var4]) & 255];
+      int var5;
+      for(var5 = 0; var5 < var3; ++var5) {
+         var4 = var4 >>> 8 ^ __gr_q[(var4 ^ var2[var5]) & 255];
       }
 
-      var3 = ~var3;
-      var4 = this.readInt();
-      return var4 == var3;
+      var4 = ~var4;
+      var5 = this.readInt();
+      return var5 == var4;
    }
 
    @ObfuscatedName("af")
@@ -1063,41 +1094,5 @@ public class Buffer extends Node {
    public static void method3915() {
       HealthBarDefinition.HealthBarDefinition_cached.clear();
       HealthBarDefinition.HealthBarDefinition_cachedSprites.clear();
-   }
-
-   static {
-      __gr_q = new int[256];
-
-      int var0;
-      for(int var1 = 0; var1 < 256; ++var1) {
-         int var2 = var1;
-
-         for(var0 = 0; var0 < 8; ++var0) {
-            if((var2 & 1) == 1) {
-               var2 = var2 >>> 1 ^ -306674912;
-            } else {
-               var2 >>>= 1;
-            }
-         }
-
-         __gr_q[var1] = var2;
-      }
-
-      __gr_o = new long[256];
-
-      for(var0 = 0; var0 < 256; ++var0) {
-         long var4 = (long)var0;
-
-         for(int var3 = 0; var3 < 8; ++var3) {
-            if((var4 & 1L) == 1L) {
-               var4 = var4 >>> 1 ^ -3932672073523589310L;
-            } else {
-               var4 >>>= 1;
-            }
-         }
-
-         __gr_o[var0] = var4;
-      }
-
    }
 }

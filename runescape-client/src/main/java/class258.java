@@ -29,7 +29,7 @@ public class class258 {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.spritePixels = (byte[][])null;
+      class328.spritePixels = null;
       return var0;
    }
 

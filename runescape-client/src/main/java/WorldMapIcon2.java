@@ -152,13 +152,13 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
                   class171.__fo_q.put(var0, var2);
                   return var2;
                }
-            } catch (Exception var7) {
+            } catch (Exception var8) {
                try {
                   if(var3 != null) {
                      var3.close();
                      var3 = null;
                   }
-               } catch (Exception var6) {
+               } catch (Exception var7) {
                   ;
                }
 
@@ -177,20 +177,22 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       int var4 = var0.pathX[0];
       int var5 = var0.pathY[0];
       int var6 = var0.transformedSize();
-      if(var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6 && var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
-         int var7 = var0.transformedSize();
-         Client.field895.field2120 = var1;
-         Client.field895.field2121 = var2;
-         Client.field895.field2122 = 1;
-         Client.field895.field2123 = 1;
-         class65 var8 = Client.field895;
-         int var9 = NetSocket.method3571(var4, var5, var7, var8, Client.collisionMaps[var0.plane], true, Client.__client_tp, Client.__client_th);
-         if(var9 >= 1) {
-            for(int var10 = 0; var10 < var9 - 1; ++var10) {
-               var0.__a_131(Client.__client_tp[var10], Client.__client_th[var10], var3);
+      if(var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6) {
+         if(var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
+            int var9 = var0.transformedSize();
+            Client.field895.field2120 = var1;
+            Client.field895.field2121 = var2;
+            Client.field895.field2122 = 1;
+            Client.field895.field2123 = 1;
+            class65 var10 = Client.field895;
+            int var11 = NetSocket.method3571(var4, var5, var9, var10, Client.collisionMaps[var0.plane], true, Client.__client_tp, Client.__client_th);
+            if(var11 >= 1) {
+               for(int var12 = 0; var12 < var11 - 1; ++var12) {
+                  var0.__a_131(Client.__client_tp[var12], Client.__client_th[var12], var3);
+               }
+
             }
          }
       }
-
    }
 }

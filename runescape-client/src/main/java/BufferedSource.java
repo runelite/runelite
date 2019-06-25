@@ -234,22 +234,22 @@ public class BufferedSource implements Runnable {
             }
          }
 
-         int var2;
+         int var7;
          try {
-            var2 = this.inputStream.read(this.buffer, this.limit, var1);
-            if(var2 == -1) {
+            var7 = this.inputStream.read(this.buffer, this.limit, var1);
+            if(var7 == -1) {
                throw new EOFException();
             }
          } catch (IOException var11) {
-            IOException var4 = var11;
+            IOException var3 = var11;
             synchronized(this) {
-               this.exception = var4;
+               this.exception = var3;
                return;
             }
          }
 
          synchronized(this) {
-            this.limit = (var2 + this.limit) % this.capacity;
+            this.limit = (var7 + this.limit) % this.capacity;
          }
       }
    }
@@ -261,7 +261,7 @@ public class BufferedSource implements Runnable {
    )
    static final void method3423(boolean var0) {
       for(int var1 = 0; var1 < Client.npcCount; ++var1) {
-         NPC var2 = Client.npcs[Client.npcIndices[var1]];
+         Npc var2 = Client.npcs[Client.npcIndices[var1]];
          if(var2 != null && var2.isVisible() && var2.definition.isVisible == var0 && var2.definition.__e_435()) {
             int var3 = var2.x >> 7;
             int var4 = var2.y >> 7;

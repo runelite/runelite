@@ -45,13 +45,17 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 @Singleton
-class HydraPoisonOverlay extends Overlay
+class HydraSceneOverlay extends Overlay
 {
+	private static final Color GREEN = new Color(0, 255, 0, 100);
+	private static final Color RED = new Color(255, 0, 0, 100);
+	private static final Color REDFILL = new Color(255, 0, 0, 50);
+
 	private final HydraPlugin plugin;
 	private final Client client;
 
 	@Inject
-	public HydraPoisonOverlay(Client client, HydraPlugin plugin)
+	public HydraSceneOverlay(Client client, HydraPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
@@ -99,9 +103,9 @@ class HydraPoisonOverlay extends Overlay
 		}
 
 		graphics.setPaintMode();
-		graphics.setColor(new Color(255, 0, 0, 100));
+		graphics.setColor(RED);
 		graphics.draw(poisonTiles);
-		graphics.setColor(new Color(255, 0, 0, 50));
+		graphics.setColor(REDFILL);
 		graphics.fill(poisonTiles);
 	}
 
@@ -133,11 +137,15 @@ class HydraPoisonOverlay extends Overlay
 			return;
 		}
 
-		Color color = new Color(255, 0, 0, 100); // like
+		Color color; // like
 
 		if (hydra.getNpc().getWorldArea().intersectsWith(new WorldArea(wp, 1, 1)))    // coords
 		{                                                                                            // WHICH FUCKING RETARD DID X, Y, dX, dY, Z???? IT'S XYZdXdY REEEEEEEEEE
-			color = new Color(0, 255, 0, 100);
+			color = GREEN;
+		}
+		else
+		{
+			color = RED;
 		}
 
 		graphics.setColor(color);

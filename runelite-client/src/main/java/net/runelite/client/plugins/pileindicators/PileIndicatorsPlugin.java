@@ -27,7 +27,11 @@ package net.runelite.client.plugins.pileindicators;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Actor;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -40,11 +44,11 @@ import java.awt.*;
 import java.util.ArrayList;
 
 @PluginDescriptor(
-	name = "Pile Indicators",
-	description = "Highlight and count how many npcs/players are stacked on each other.",
-	tags = {"overlay", "pile", "stack", "pvp", "pvm", "pve"},
-	type = PluginType.UTILITY,
-	enabledByDefault = false
+		name = "Pile Indicators",
+		description = "Highlight and count how many npcs/players are stacked on each other.",
+		tags = {"overlay", "pile", "stack", "pvp", "pvm", "pve"},
+		type = PluginType.UTILITY,
+		enabledByDefault = false
 )
 
 @Singleton

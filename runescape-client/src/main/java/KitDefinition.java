@@ -59,6 +59,10 @@ public class KitDefinition extends DualNode {
    @Export("__k")
    public boolean __k;
 
+   static {
+      KitDefinition_cached = new EvictingDualNodeHashTable(64);
+   }
+
    KitDefinition() {
       this.__o = -1;
       this.archives = new int[]{-1, -1, -1, -1, -1};
@@ -258,14 +262,10 @@ public class KitDefinition extends DualNode {
          var0.index += class303.huffman.__f_294(var0.array, var0.index, var3, 0, var2);
          String var4 = WidgetGroupParent.decodeStringCp1252(var3, 0, var2);
          var1 = var4;
-      } catch (Exception var5) {
+      } catch (Exception var6) {
          var1 = "Cabbage";
       }
 
       return var1;
-   }
-
-   static {
-      KitDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

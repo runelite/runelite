@@ -136,6 +136,28 @@ public class ClientParameter {
    @Export("id")
    public final String id;
 
+   static {
+      __ji_m = new ClientParameter("8", "8");
+      __ji_f = new ClientParameter("15", "15");
+      __ji_q = new ClientParameter("7", "7");
+      __ji_w = new ClientParameter("10", "10");
+      __ji_o = new ClientParameter("16", "16");
+      __ji_u = new ClientParameter("12", "12");
+      __ji_g = new ClientParameter("3", "3");
+      __ji_l = new ClientParameter("6", "6");
+      __ji_e = new ClientParameter("17", "17");
+      __ji_x = new ClientParameter("5", "5");
+      __ji_d = new ClientParameter("9", "9");
+      __ji_k = new ClientParameter("14", "14");
+      __ji_n = new ClientParameter("18", "18");
+      __ji_i = new ClientParameter("13", "13");
+      __ji_a = new ClientParameter("4", "4");
+      __ji_z = new ClientParameter("1", "1");
+      __ji_j = new ClientParameter("11", "11");
+      __ji_s = new ClientParameter("2", "2");
+      __ji_t = new ClientParameter("19", "19");
+   }
+
    ClientParameter(String var1, String var2) {
       this.id = var2;
    }
@@ -157,15 +179,15 @@ public class ClientParameter {
             World.worldsCount = var1.__ag_302();
             ItemContainer.worlds = new World[World.worldsCount];
 
-            World var2;
-            for(int var3 = 0; var3 < World.worldsCount; var2.index = var3++) {
-               var2 = ItemContainer.worlds[var3] = new World();
-               var2.id = var1.__ag_302();
-               var2.properties = var1.readInt();
-               var2.host = var1.readStringCp1252NullTerminated();
-               var2.activity = var1.readStringCp1252NullTerminated();
-               var2.location = var1.readUnsignedByte();
-               var2.population = var1.__aq_303();
+            World var3;
+            for(int var2 = 0; var2 < World.worldsCount; var3.index = var2++) {
+               var3 = ItemContainer.worlds[var2] = new World();
+               var3.id = var1.__ag_302();
+               var3.properties = var1.readInt();
+               var3.host = var1.readStringCp1252NullTerminated();
+               var3.activity = var1.readStringCp1252NullTerminated();
+               var3.location = var1.readUnsignedByte();
+               var3.population = var1.__aq_303();
             }
 
             MilliClock.method3400(ItemContainer.worlds, 0, ItemContainer.worlds.length - 1, World.__bt_e, World.__bt_l);
@@ -178,27 +200,5 @@ public class ClientParameter {
       }
 
       return false;
-   }
-
-   static {
-      __ji_m = new ClientParameter("8", "8");
-      __ji_f = new ClientParameter("15", "15");
-      __ji_q = new ClientParameter("7", "7");
-      __ji_w = new ClientParameter("10", "10");
-      __ji_o = new ClientParameter("16", "16");
-      __ji_u = new ClientParameter("12", "12");
-      __ji_g = new ClientParameter("3", "3");
-      __ji_l = new ClientParameter("6", "6");
-      __ji_e = new ClientParameter("17", "17");
-      __ji_x = new ClientParameter("5", "5");
-      __ji_d = new ClientParameter("9", "9");
-      __ji_k = new ClientParameter("14", "14");
-      __ji_n = new ClientParameter("18", "18");
-      __ji_i = new ClientParameter("13", "13");
-      __ji_a = new ClientParameter("4", "4");
-      __ji_z = new ClientParameter("1", "1");
-      __ji_j = new ClientParameter("11", "11");
-      __ji_s = new ClientParameter("2", "2");
-      __ji_t = new ClientParameter("19", "19");
    }
 }

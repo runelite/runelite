@@ -25,10 +25,7 @@
 package net.runelite.http.api;
 
 import com.google.gson.Gson;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
+import com.google.gson.GsonBuilder;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -36,23 +33,45 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class RuneLiteAPI
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneLiteAPI.class);
-
 	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
-
 	public static final OkHttpClient CLIENT;
-	public static final Gson GSON = new Gson();
-	public static String userAgent;
-
+	public static final OkHttpClient RLP_CLIENT;
+	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	private static final Logger logger = LoggerFactory.getLogger(RuneLiteAPI.class);
 	private static final String BASE = "https://api.runelite.net";
+	private static final String PLUS_BASE = "https://api.runelitepl.us";
 	private static final String RLPLUS = "https://session.runelitepl.us";
 	private static final String WSBASE = "https://api.runelite.net/ws";
 	private static final String STATICBASE = "https://static.runelite.net";
+	private static final String MAVEN_METADATA =
+		"http://repo.runelite.net/net/runelite/runelite-parent/maven-metadata.xml";
+	private static final String GITHUB_API = "https://api.github.com/repos/runelite/runelite/commits/master";
+	private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
 	private static final Properties properties = new Properties();
+	private static String userAgent;
+	private static String rlpUserAgent;
 	private static String version;
+	private static String rlpVersion;
 	private static int rsVersion;
 
 	static
@@ -62,12 +81,16 @@ public class RuneLiteAPI
 			InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties");
 			properties.load(in);
 
-			version = properties.getProperty("runelite.version");
+			parseMavenVersion();
+			String commit = parseGithubCommit();
+
+			rlpVersion = properties.getProperty("runelite.version");
 			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
-			String commit = properties.getProperty("runelite.commit");
+			String rlpCommit = properties.getProperty("runelite.commit");
 			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
 
 			userAgent = "RuneLite/" + version + "-" + commit + (dirty ? "+" : "");
+			rlpUserAgent = "RuneLite/" + rlpVersion + "-" + rlpCommit + (dirty ? "+" : "");
 		}
 		catch (NumberFormatException e)
 		{
@@ -82,13 +105,28 @@ public class RuneLiteAPI
 			.pingInterval(30, TimeUnit.SECONDS)
 			.addNetworkInterceptor(new Interceptor()
 			{
-
 				@Override
 				public Response intercept(Chain chain) throws IOException
 				{
 					Request userAgentRequest = chain.request()
 						.newBuilder()
 						.header("User-Agent", userAgent)
+						.build();
+					return chain.proceed(userAgentRequest);
+				}
+			})
+			.build();
+
+		RLP_CLIENT = new OkHttpClient.Builder()
+			.pingInterval(30, TimeUnit.SECONDS)
+			.addNetworkInterceptor(new Interceptor()
+			{
+				@Override
+				public Response intercept(Chain chain) throws IOException
+				{
+					Request userAgentRequest = chain.request()
+						.newBuilder()
+						.header("User-Agent", rlpUserAgent)
 						.build();
 					return chain.proceed(userAgentRequest);
 				}
@@ -123,6 +161,11 @@ public class RuneLiteAPI
 		}
 
 		return HttpUrl.parse(BASE + "/runelite-" + getVersion());
+	}
+
+	public static HttpUrl getPlusApiBase()
+	{
+		return HttpUrl.parse(PLUS_BASE + "/runelite-" + getRlpVersion());
 	}
 
 	public static HttpUrl getStaticBase()
@@ -164,4 +207,94 @@ public class RuneLiteAPI
 		return rsVersion;
 	}
 
+	public static String getRlpVersion()
+	{
+		return rlpVersion;
+	}
+
+	private static byte[] downloadUrl(URL toDownload)
+	{
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		InputStream stream;
+		try
+		{
+			byte[] chunk = new byte[4096];
+			int bytesRead;
+			URLConnection conn = toDownload.openConnection();
+			conn.setRequestProperty("User-Agent", toDownload.getHost().contains("runelite") ? randomAlphaNumeric(8) : "runelite-extended");
+			stream = conn.getInputStream();
+
+			while ((bytesRead = stream.read(chunk)) > 0)
+			{
+				outputStream.write(chunk, 0, bytesRead);
+			}
+			stream.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+
+		return outputStream.toByteArray();
+	}
+
+	private static void parseMavenVersion()
+	{
+		try (ByteArrayInputStream fis = new ByteArrayInputStream(downloadUrl(new URL(MAVEN_METADATA))))
+		{
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			factory.setValidating(false);
+			factory.setIgnoringElementContentWhitespace(true);
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document doc = builder.parse(fis);
+			NodeList versionList = doc.getElementsByTagName("version");
+			for (int i = 0; i != versionList.getLength(); i++)
+			{
+				Node node = versionList.item(i);
+				if (node.getTextContent() != null)
+				{
+					version = node.getTextContent();
+				}
+			}
+		}
+		catch (ParserConfigurationException | IOException | SAXException ex)
+		{
+			logger.error(null, ex);
+		}
+	}
+
+	private static String parseGithubCommit()
+	{
+		try
+		{
+			String jsonData = new String(downloadUrl(new URL(GITHUB_API)));
+			for (String s : jsonData.split("\n"))
+			{
+				if (s.startsWith("\"sha\":"))
+				{
+					s = s.replace(",", "");
+					s = s.replace(" ", "");
+					s = s.replace("\"", "");
+					return s.split(":")[1];
+				}
+			}
+		}
+		catch (MalformedURLException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private static String randomAlphaNumeric(int count)
+	{
+		StringBuilder builder = new StringBuilder();
+		while (count-- != 0)
+		{
+			int character = (int) (Math.random() * ALPHA_NUMERIC_STRING.length());
+			builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+		}
+		return builder.toString();
+	}
 }

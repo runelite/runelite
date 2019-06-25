@@ -29,6 +29,10 @@ public final class PacketBuffer extends Buffer {
    @Export("bitIndex")
    int bitIndex;
 
+   static {
+      PacketBuffer_masks = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
+   }
+
    public PacketBuffer(int var1) {
       super(var1);
    }
@@ -192,6 +196,7 @@ public final class PacketBuffer extends Buffer {
                   --NetCache.NetCache_pendingWritesCount;
                   ++NetCache.NetCache_pendingPriorityWritesCount;
                }
+
             } else {
                if(!var5) {
                   var8 = (NetFileRequest)NetCache.NetCache_pendingResponses.get(var6);
@@ -212,10 +217,10 @@ public final class PacketBuffer extends Buffer {
                   NetCache.NetCache_pendingWrites.put(var8, var6);
                   ++NetCache.NetCache_pendingWritesCount;
                }
+
             }
          }
       }
-
    }
 
    @ObfuscatedName("f")
@@ -225,9 +230,5 @@ public final class PacketBuffer extends Buffer {
    )
    public static int method4081(int var0, int var1) {
       return (var0 + 40000 << 8) + var1;
-   }
-
-   static {
-      PacketBuffer_masks = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
    }
 }

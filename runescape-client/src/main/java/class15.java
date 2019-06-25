@@ -182,6 +182,7 @@ public class class15 extends class21 {
          } else {
             var0.spriteId2 = Client.__client_sl;
          }
+
       } else if(var1 == 325) {
          if(Client.__client_sd == -1) {
             Client.__client_sd = var0.spriteId2;
@@ -193,6 +194,7 @@ public class class15 extends class21 {
          } else {
             var0.spriteId2 = Client.__client_sd;
          }
+
       } else if(var1 == 327) {
          var0.modelAngleX = 150;
          var0.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
@@ -204,6 +206,5 @@ public class class15 extends class21 {
          var0.modelType = 5;
          var0.modelId = 1;
       }
-
    }
 }

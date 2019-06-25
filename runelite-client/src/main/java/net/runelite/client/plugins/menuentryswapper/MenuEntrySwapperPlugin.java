@@ -862,7 +862,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					}
 				}
 			}
-			else if (target.equals("magpie impling jar") || (target.equals("nature impling jar")))
+			else if (target.equals("magpie impling jar") || (target.equals("nature impling jar")) || (target.equals("ninja impling jar")))
 			{
 				if (client.getItemContainer(InventoryID.INVENTORY) != null)
 				{
@@ -1309,7 +1309,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (!Strings.isNullOrEmpty(config))
 		{
-			Map<String, String> split = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config);
+			StringBuilder sb = new StringBuilder();
+
+			for (String str : config.split("\n"))
+			{
+				if (!str.startsWith("//"))
+				{
+					sb.append(str + "\n");
+				}
+			}
+
+			Map<String, String> split = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(sb);
 
 			for (Map.Entry<String, String> entry : split.entrySet())
 			{

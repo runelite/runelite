@@ -78,95 +78,94 @@ final class class4 implements class0 {
 
          return 1;
       } else {
-         int var4;
-         PacketBufferNode var5;
+         int var10;
          if(var0 == 3104) {
             var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-            var4 = 0;
+            var10 = 0;
             if(UserComparator4.method3336(var3)) {
-               var4 = MouseHandler.method1085(var3);
+               var10 = MouseHandler.method1085(var3);
             }
 
-            var5 = Interpreter.method1915(ClientPacket.__gs_s, Client.packetWriter.isaacCipher);
-            var5.packetBuffer.writeInt(var4);
-            Client.packetWriter.__q_167(var5);
-            return 1;
-         } else if(var0 == 3105) {
-            var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-            var5 = Interpreter.method1915(ClientPacket.__gs_cl, Client.packetWriter.isaacCipher);
-            var5.packetBuffer.writeByte(var3.length() + 1);
-            var5.packetBuffer.writeStringCp1252NullTerminated(var3);
-            Client.packetWriter.__q_167(var5);
-            return 1;
-         } else if(var0 == 3106) {
-            var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-            var5 = Interpreter.method1915(ClientPacket.__gs_e, Client.packetWriter.isaacCipher);
-            var5.packetBuffer.writeByte(var3.length() + 1);
-            var5.packetBuffer.writeStringCp1252NullTerminated(var3);
-            Client.packetWriter.__q_167(var5);
+            PacketBufferNode var12 = Interpreter.method1915(ClientPacket.__gs_s, Client.packetWriter.isaacCipher);
+            var12.packetBuffer.writeInt(var10);
+            Client.packetWriter.__q_167(var12);
             return 1;
          } else {
-            String var6;
-            int var7;
-            if(var0 == 3107) {
-               var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-               var6 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-               WorldMapSection2.method583(var7, var6);
+            PacketBufferNode var14;
+            if(var0 == 3105) {
+               var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
+               var14 = Interpreter.method1915(ClientPacket.__gs_cl, Client.packetWriter.isaacCipher);
+               var14.packetBuffer.writeByte(var3.length() + 1);
+               var14.packetBuffer.writeStringCp1252NullTerminated(var3);
+               Client.packetWriter.__q_167(var14);
                return 1;
-            } else if(var0 == 3108) {
-               class179.Interpreter_intStackSize -= 3;
-               var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-               var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-               int var13 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
-               Widget var11 = Huffman.getWidget(var13);
-               Players.clickWidget(var11, var7, var4);
-               return 1;
-            } else if(var0 == 3109) {
-               class179.Interpreter_intStackSize -= 2;
-               var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-               var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-               Widget var12 = var2?WorldMapIcon1.__t_i:class12.__n_n;
-               Players.clickWidget(var12, var7, var4);
-               return 1;
-            } else if(var0 == 3110) {
-               AbstractRasterProvider.__lp_ca = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
-               return 1;
-            } else if(var0 == 3111) {
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.roofsHidden?1:0;
-               return 1;
-            } else if(var0 == 3112) {
-               ReflectionCheck.clientPreferences.roofsHidden = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
-               WorldMapSection0.method247();
+            } else if(var0 == 3106) {
+               var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
+               var14 = Interpreter.method1915(ClientPacket.__gs_e, Client.packetWriter.isaacCipher);
+               var14.packetBuffer.writeByte(var3.length() + 1);
+               var14.packetBuffer.writeStringCp1252NullTerminated(var3);
+               Client.packetWriter.__q_167(var14);
                return 1;
             } else {
-               boolean var8;
-               if(var0 == 3113) {
+               String var7;
+               int var15;
+               if(var0 == 3107) {
+                  var15 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                  var7 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
+                  WorldMapSection2.method583(var15, var7);
+                  return 1;
+               } else if(var0 == 3108) {
+                  class179.Interpreter_intStackSize -= 3;
+                  var15 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+                  var10 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+                  int var9 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
+                  Widget var13 = Huffman.getWidget(var9);
+                  Players.clickWidget(var13, var15, var10);
+                  return 1;
+               } else if(var0 == 3109) {
+                  class179.Interpreter_intStackSize -= 2;
+                  var15 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+                  var10 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+                  Widget var11 = var2?WorldMapIcon1.__t_i:class12.__n_n;
+                  Players.clickWidget(var11, var15, var10);
+                  return 1;
+               } else if(var0 == 3110) {
+                  AbstractRasterProvider.__lp_ca = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                  return 1;
+               } else if(var0 == 3111) {
+                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.roofsHidden?1:0;
+                  return 1;
+               } else if(var0 == 3112) {
+                  ReflectionCheck.clientPreferences.roofsHidden = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                  WorldMapSection0.method247();
+                  return 1;
+               } else if(var0 == 3113) {
                   var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-                  var8 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
-                  WorldMapCacheName.method635(var3, var8, false);
+                  boolean var4 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                  WorldMapCacheName.method635(var3, var4, false);
                   return 1;
                } else if(var0 == 3115) {
-                  var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                  var5 = Interpreter.method1915(ClientPacket.__gs_as, Client.packetWriter.isaacCipher);
-                  var5.packetBuffer.writeShort(var7);
-                  Client.packetWriter.__q_167(var5);
+                  var15 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                  var14 = Interpreter.method1915(ClientPacket.__gs_as, Client.packetWriter.isaacCipher);
+                  var14.packetBuffer.writeShort(var15);
+                  Client.packetWriter.__q_167(var14);
                   return 1;
                } else if(var0 == 3116) {
-                  var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                  var15 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
                   Interpreter.Interpreter_stringStackSize -= 2;
-                  var6 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize];
-                  String var10 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1];
-                  if(var6.length() > 500) {
+                  var7 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize];
+                  String var5 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1];
+                  if(var7.length() > 500) {
                      return 1;
-                  } else if(var10.length() > 500) {
+                  } else if(var5.length() > 500) {
                      return 1;
                   } else {
-                     PacketBufferNode var9 = Interpreter.method1915(ClientPacket.__gs_j, Client.packetWriter.isaacCipher);
-                     var9.packetBuffer.writeShort(1 + WorldMapRegion.method550(var6) + WorldMapRegion.method550(var10));
-                     var9.packetBuffer.writeStringCp1252NullTerminated(var6);
-                     var9.packetBuffer.writeByte(var7);
-                     var9.packetBuffer.writeStringCp1252NullTerminated(var10);
-                     Client.packetWriter.__q_167(var9);
+                     PacketBufferNode var6 = Interpreter.method1915(ClientPacket.__gs_j, Client.packetWriter.isaacCipher);
+                     var6.packetBuffer.writeShort(1 + WorldMapRegion.method550(var7) + WorldMapRegion.method550(var5));
+                     var6.packetBuffer.writeStringCp1252NullTerminated(var7);
+                     var6.packetBuffer.writeByte(var15);
+                     var6.packetBuffer.writeStringCp1252NullTerminated(var5);
+                     Client.packetWriter.__q_167(var6);
                      return 1;
                   }
                } else if(var0 == 3117) {
@@ -266,61 +265,64 @@ final class class4 implements class0 {
                   Client.__client_mf = 3;
                   Client.__client_ms = var2?WorldMapIcon1.__t_i.id:class12.__n_n.id;
                   return 1;
-               } else if(var0 == 3141) {
-                  var8 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
-                  ReflectionCheck.clientPreferences.hideUsername = var8;
-                  WorldMapSection0.method247();
-                  return 1;
-               } else if(var0 == 3142) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.hideUsername?1:0;
-                  return 1;
-               } else if(var0 == 3143) {
-                  var8 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
-                  Client.Login_isUsernameRemembered = var8;
-                  if(!var8) {
-                     ReflectionCheck.clientPreferences.rememberedUsername = "";
-                     WorldMapSection0.method247();
-                  }
-
-                  return 1;
-               } else if(var0 == 3144) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.Login_isUsernameRemembered?1:0;
-                  return 1;
-               } else if(var0 == 3145) {
-                  return 1;
-               } else if(var0 == 3146) {
-                  var8 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
-                  if(var8 == ReflectionCheck.clientPreferences.titleMusicDisabled) {
-                     ReflectionCheck.clientPreferences.titleMusicDisabled = !var8;
-                     WorldMapSection0.method247();
-                  }
-
-                  return 1;
-               } else if(var0 == 3147) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.titleMusicDisabled?0:1;
-                  return 1;
-               } else if(var0 == 3148) {
-                  return 1;
-               } else if(var0 == 3149) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
-                  return 1;
-               } else if(var0 == 3150) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
-                  return 1;
-               } else if(var0 == 3151) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
-                  return 1;
-               } else if(var0 == 3152) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
-                  return 1;
-               } else if(var0 == 3153) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Login.Login_loadingPercent;
-                  return 1;
-               } else if(var0 == 3154) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = GrandExchangeOffer.method101();
-                  return 1;
                } else {
-                  return 2;
+                  boolean var8;
+                  if(var0 == 3141) {
+                     var8 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     ReflectionCheck.clientPreferences.hideUsername = var8;
+                     WorldMapSection0.method247();
+                     return 1;
+                  } else if(var0 == 3142) {
+                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.hideUsername?1:0;
+                     return 1;
+                  } else if(var0 == 3143) {
+                     var8 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     Client.Login_isUsernameRemembered = var8;
+                     if(!var8) {
+                        ReflectionCheck.clientPreferences.rememberedUsername = "";
+                        WorldMapSection0.method247();
+                     }
+
+                     return 1;
+                  } else if(var0 == 3144) {
+                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.Login_isUsernameRemembered?1:0;
+                     return 1;
+                  } else if(var0 == 3145) {
+                     return 1;
+                  } else if(var0 == 3146) {
+                     var8 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                     if(var8 == ReflectionCheck.clientPreferences.titleMusicDisabled) {
+                        ReflectionCheck.clientPreferences.titleMusicDisabled = !var8;
+                        WorldMapSection0.method247();
+                     }
+
+                     return 1;
+                  } else if(var0 == 3147) {
+                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.titleMusicDisabled?0:1;
+                     return 1;
+                  } else if(var0 == 3148) {
+                     return 1;
+                  } else if(var0 == 3149) {
+                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                     return 1;
+                  } else if(var0 == 3150) {
+                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                     return 1;
+                  } else if(var0 == 3151) {
+                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                     return 1;
+                  } else if(var0 == 3152) {
+                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                     return 1;
+                  } else if(var0 == 3153) {
+                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Login.Login_loadingPercent;
+                     return 1;
+                  } else if(var0 == 3154) {
+                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = GrandExchangeOffer.method101();
+                     return 1;
+                  } else {
+                     return 2;
+                  }
                }
             }
          }

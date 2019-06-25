@@ -51,7 +51,7 @@ public class UserComparator10 extends AbstractUserComparator {
                Client.__client_fh = true;
             }
          }
-      }
 
+      }
    }
 }

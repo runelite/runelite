@@ -16,6 +16,20 @@ public class Skills {
    @Export("__hc_ef")
    static int[] __hc_ef;
 
+   static {
+      Skills_enabled = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
+      Skills_experienceTable = new int[99];
+      int var0 = 0;
+
+      for(int var1 = 0; var1 < 99; ++var1) {
+         int var2 = var1 + 1;
+         int var3 = (int)((double)var2 + 300.0D * Math.pow(2.0D, (double)var2 / 7.0D));
+         var0 += var3;
+         Skills_experienceTable[var1] = var0 / 4;
+      }
+
+   }
+
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(II)Ljv;",
@@ -75,19 +89,5 @@ public class Skills {
          ItemDefinition.ItemDefinition_cached.put(var1, (long)var0);
          return var1;
       }
-   }
-
-   static {
-      Skills_enabled = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
-      Skills_experienceTable = new int[99];
-      int var0 = 0;
-
-      for(int var1 = 0; var1 < 99; ++var1) {
-         int var2 = var1 + 1;
-         int var3 = (int)((double)var2 + 300.0D * Math.pow(2.0D, (double)var2 / 7.0D));
-         var0 += var3;
-         Skills_experienceTable[var1] = var0 / 4;
-      }
-
    }
 }

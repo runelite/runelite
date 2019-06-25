@@ -30,7 +30,7 @@ public enum StudioGame implements Enumerated {
       signature = "Lis;"
    )
    @Export("__is_w")
-   __is_w("game4", "Game 4", 3),
+  __is_w("game4", "Game 4", 3),
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lis;"
@@ -43,7 +43,7 @@ public enum StudioGame implements Enumerated {
    )
    @Export("__is_u")
    __is_u("oldscape", "RuneScape 2007", 5);
-
+   
    @ObfuscatedName("g")
    @Export("name")
    public final String name;
@@ -53,8 +53,8 @@ public enum StudioGame implements Enumerated {
    )
    @Export("id")
    final int id;
-
-   private StudioGame(String var3, String var4, int var5) {
+   
+   StudioGame(String var3, String var4, int var5) {
       this.name = var3;
       this.id = var5;
    }

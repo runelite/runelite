@@ -29,40 +29,41 @@ public class IndexStoreActionHandler implements Runnable {
    @Export("IndexStoreActionHandler_lock")
    static Object IndexStoreActionHandler_lock;
 
+   static {
+      IndexStoreActionHandler_requestQueue = new NodeDeque();
+      IndexStoreActionHandler_responseQueue = new NodeDeque();
+      __iv_q = 0;
+      IndexStoreActionHandler_lock = new Object();
+   }
+
    @Export("run")
    @ObfuscatedName("run")
    public void run() {
       try {
          while(true) {
-            NodeDeque var1 = IndexStoreActionHandler_requestQueue;
-            NodeDeque var3 = IndexStoreActionHandler_requestQueue;
-            IndexStoreAction var2;
+            NodeDeque var2 = IndexStoreActionHandler_requestQueue;
+            IndexStoreAction var1;
             synchronized(IndexStoreActionHandler_requestQueue) {
-               var2 = (IndexStoreAction)IndexStoreActionHandler_requestQueue.last();
+               var1 = (IndexStoreAction)IndexStoreActionHandler_requestQueue.last();
             }
 
-            Object var4;
-            Object var15;
-            if(var2 != null) {
-               NodeDeque var16;
-               if(var2.type == 0) {
-                  var2.indexStore.write((int)var2.key, var2.data, var2.data.length);
-                  var1 = IndexStoreActionHandler_requestQueue;
-                  var16 = IndexStoreActionHandler_requestQueue;
+            Object var14;
+            if(var1 != null) {
+               if(var1.type == 0) {
+                  var1.indexStore.write((int)var1.key, var1.data, var1.data.length);
+                  var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
-                     var2.remove();
+                     var1.remove();
                   }
-               } else if(var2.type == 1) {
-                  var2.data = var2.indexStore.read((int)var2.key);
-                  var1 = IndexStoreActionHandler_requestQueue;
-                  var16 = IndexStoreActionHandler_requestQueue;
+               } else if(var1.type == 1) {
+                  var1.data = var1.indexStore.read((int)var1.key);
+                  var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
-                     IndexStoreActionHandler_responseQueue.addFirst(var2);
+                     IndexStoreActionHandler_responseQueue.addFirst(var1);
                   }
                }
 
-               var15 = IndexStoreActionHandler_lock;
-               var4 = IndexStoreActionHandler_lock;
+               var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
                   if(__iv_q <= 1) {
                      __iv_q = 0;
@@ -74,8 +75,7 @@ public class IndexStoreActionHandler implements Runnable {
                }
             } else {
                class203.method4010(100L);
-               var15 = IndexStoreActionHandler_lock;
-               var4 = IndexStoreActionHandler_lock;
+               var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
                   if(__iv_q <= 1) {
                      __iv_q = 0;
@@ -87,8 +87,8 @@ public class IndexStoreActionHandler implements Runnable {
                }
             }
          }
-      } catch (Exception var14) {
-         NPCDefinition.sendStackTrace((String)null, var14);
+      } catch (Exception var13) {
+         NpcDefinition.sendStackTrace((String)null, var13);
       }
    }
 
@@ -104,13 +104,5 @@ public class IndexStoreActionHandler implements Runnable {
          var1.packetBuffer.writeStringCp1252NullTerminated(var0);
          Client.packetWriter.__q_167(var1);
       }
-
-   }
-
-   static {
-      IndexStoreActionHandler_requestQueue = new NodeDeque();
-      IndexStoreActionHandler_responseQueue = new NodeDeque();
-      __iv_q = 0;
-      IndexStoreActionHandler_lock = new Object();
    }
 }

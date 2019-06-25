@@ -205,6 +205,36 @@ public class Model extends Entity {
    @Export("zMidOffset")
    int zMidOffset;
 
+   static {
+      Model_sharedSequenceModel = new Model();
+      Model_sharedSequenceModelFaceAlphas = new byte[1];
+      Model_sharedSpotAnimationModel = new Model();
+      Model_sharedSpotAnimationModelFaceAlphas = new byte[1];
+      __du_at = new boolean[4700];
+      __du_ad = new boolean[4700];
+      modelViewportXs = new int[4700];
+      modelViewportYs = new int[4700];
+      __du_am = new int[4700];
+      __du_an = new int[4700];
+      __du_az = new int[4700];
+      __du_au = new int[4700];
+      __du_aa = new int[1600];
+      __du_ax = new int[1600][512];
+      __du_af = new int[12];
+      __du_ai = new int[12][2000];
+      __du_ba = new int[2000];
+      __du_bb = new int[2000];
+      __du_bs = new int[12];
+      __du_bq = new int[10];
+      __du_bn = new int[10];
+      __du_bk = new int[10];
+      __du_bx = true;
+      Model_sine = Rasterizer3D.Rasterizer3D_sine;
+      Model_cosine = Rasterizer3D.Rasterizer3D_cosine;
+      __du_br = Rasterizer3D.Rasterizer3D_colorPalette;
+      __du_bj = Rasterizer3D.__et_p;
+   }
+
    Model() {
       this.verticesCount = 0;
       this.indicesCount = 0;
@@ -599,8 +629,8 @@ public class Model extends Entity {
             this.xMidOffset += 8;
             this.zMidOffset += 8;
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("u")
@@ -634,7 +664,6 @@ public class Model extends Entity {
          this.radius = (int)(Math.sqrt((double)(this.xzRadius * this.xzRadius + super.height * super.height)) + 0.99D);
          this.diameter = this.radius + (int)(Math.sqrt((double)(this.xzRadius * this.xzRadius + this.bottomY * this.bottomY)) + 0.99D);
       }
-
    }
 
    @ObfuscatedName("g")
@@ -658,7 +687,6 @@ public class Model extends Entity {
          this.radius = this.xzRadius;
          this.diameter = this.xzRadius + this.xzRadius;
       }
-
    }
 
    @ObfuscatedName("l")
@@ -681,21 +709,22 @@ public class Model extends Entity {
    )
    @Export("animate")
    public void animate(Frames var1, int var2) {
-      if(this.vertexLabels != null && var2 != -1) {
-         Animation var3 = var1.frames[var2];
-         Skeleton var4 = var3.skeleton;
-         Model_transformTempX = 0;
-         Model_transformTempY = 0;
-         Model_transformTempZ = 0;
+      if(this.vertexLabels != null) {
+         if(var2 != -1) {
+            Animation var3 = var1.frames[var2];
+            Skeleton var4 = var3.skeleton;
+            Model_transformTempX = 0;
+            Model_transformTempY = 0;
+            Model_transformTempZ = 0;
 
-         for(int var5 = 0; var5 < var3.transformCount; ++var5) {
-            int var6 = var3.transformSkeletonLabels[var5];
-            this.transform(var4.transformTypes[var6], var4.labels[var6], var3.transformXs[var5], var3.transformYs[var5], var3.transformZs[var5]);
+            for(int var5 = 0; var5 < var3.transformCount; ++var5) {
+               int var6 = var3.transformSkeletonLabels[var5];
+               this.transform(var4.transformTypes[var6], var4.labels[var6], var3.transformXs[var5], var3.transformYs[var5], var3.transformZs[var5]);
+            }
+
+            this.resetBounds();
          }
-
-         this.resetBounds();
       }
-
    }
 
    @ObfuscatedName("a")
@@ -713,18 +742,18 @@ public class Model extends Entity {
             Model_transformTempY = 0;
             Model_transformTempZ = 0;
             byte var9 = 0;
-            int var10 = var9 + 1;
-            int var11 = var5[var9];
+            int var13 = var9 + 1;
+            int var10 = var5[var9];
 
+            int var11;
             int var12;
-            int var13;
-            for(var12 = 0; var12 < var6.transformCount; ++var12) {
-               for(var13 = var6.transformSkeletonLabels[var12]; var13 > var11; var11 = var5[var10++]) {
+            for(var11 = 0; var11 < var6.transformCount; ++var11) {
+               for(var12 = var6.transformSkeletonLabels[var11]; var12 > var10; var10 = var5[var13++]) {
                   ;
                }
 
-               if(var13 != var11 || var8.transformTypes[var13] == 0) {
-                  this.transform(var8.transformTypes[var13], var8.labels[var13], var6.transformXs[var12], var6.transformYs[var12], var6.transformZs[var12]);
+               if(var12 != var10 || var8.transformTypes[var12] == 0) {
+                  this.transform(var8.transformTypes[var12], var8.labels[var12], var6.transformXs[var11], var6.transformYs[var11], var6.transformZs[var11]);
                }
             }
 
@@ -732,16 +761,16 @@ public class Model extends Entity {
             Model_transformTempY = 0;
             Model_transformTempZ = 0;
             var9 = 0;
-            var10 = var9 + 1;
-            var11 = var5[var9];
+            var13 = var9 + 1;
+            var10 = var5[var9];
 
-            for(var12 = 0; var12 < var7.transformCount; ++var12) {
-               for(var13 = var7.transformSkeletonLabels[var12]; var13 > var11; var11 = var5[var10++]) {
+            for(var11 = 0; var11 < var7.transformCount; ++var11) {
+               for(var12 = var7.transformSkeletonLabels[var11]; var12 > var10; var10 = var5[var13++]) {
                   ;
                }
 
-               if(var13 == var11 || var8.transformTypes[var13] == 0) {
-                  this.transform(var8.transformTypes[var13], var8.labels[var13], var7.transformXs[var12], var7.transformYs[var12], var7.transformZs[var12]);
+               if(var12 == var10 || var8.transformTypes[var12] == 0) {
+                  this.transform(var8.transformTypes[var12], var8.labels[var12], var7.transformXs[var11], var7.transformYs[var11], var7.transformZs[var11]);
                }
             }
 
@@ -750,7 +779,6 @@ public class Model extends Entity {
             this.animate(var1, var2);
          }
       }
-
    }
 
    @ObfuscatedName("z")
@@ -759,8 +787,8 @@ public class Model extends Entity {
       int var6 = var2.length;
       int var7;
       int var8;
-      int var9;
-      int var10;
+      int var11;
+      int var12;
       if(var1 == 0) {
          var7 = 0;
          Model_transformTempX = 0;
@@ -768,15 +796,15 @@ public class Model extends Entity {
          Model_transformTempZ = 0;
 
          for(var8 = 0; var8 < var6; ++var8) {
-            int var11 = var2[var8];
-            if(var11 < this.vertexLabels.length) {
-               int[] var12 = this.vertexLabels[var11];
+            int var9 = var2[var8];
+            if(var9 < this.vertexLabels.length) {
+               int[] var10 = this.vertexLabels[var9];
 
-               for(var9 = 0; var9 < var12.length; ++var9) {
-                  var10 = var12[var9];
-                  Model_transformTempX += this.verticesX[var10];
-                  Model_transformTempY += this.verticesY[var10];
-                  Model_transformTempZ += this.verticesZ[var10];
+               for(var11 = 0; var11 < var10.length; ++var11) {
+                  var12 = var10[var11];
+                  Model_transformTempX += this.verticesX[var12];
+                  Model_transformTempY += this.verticesY[var12];
+                  Model_transformTempZ += this.verticesZ[var12];
                   ++var7;
                }
             }
@@ -791,6 +819,7 @@ public class Model extends Entity {
             Model_transformTempY = var4;
             Model_transformTempZ = var5;
          }
+
       } else {
          int[] var18;
          int var19;
@@ -801,13 +830,14 @@ public class Model extends Entity {
                   var18 = this.vertexLabels[var8];
 
                   for(var19 = 0; var19 < var18.length; ++var19) {
-                     var9 = var18[var19];
-                     this.verticesX[var9] += var3;
-                     this.verticesY[var9] += var4;
-                     this.verticesZ[var9] += var5;
+                     var11 = var18[var19];
+                     this.verticesX[var11] += var3;
+                     this.verticesY[var11] += var4;
+                     this.verticesZ[var11] += var5;
                   }
                }
             }
+
          } else if(var1 == 2) {
             for(var7 = 0; var7 < var6; ++var7) {
                var8 = var2[var7];
@@ -815,11 +845,11 @@ public class Model extends Entity {
                   var18 = this.vertexLabels[var8];
 
                   for(var19 = 0; var19 < var18.length; ++var19) {
-                     var9 = var18[var19];
-                     this.verticesX[var9] -= Model_transformTempX;
-                     this.verticesY[var9] -= Model_transformTempY;
-                     this.verticesZ[var9] -= Model_transformTempZ;
-                     var10 = (var3 & 255) * 8;
+                     var11 = var18[var19];
+                     this.verticesX[var11] -= Model_transformTempX;
+                     this.verticesY[var11] -= Model_transformTempY;
+                     this.verticesZ[var11] -= Model_transformTempZ;
+                     var12 = (var3 & 255) * 8;
                      int var13 = (var4 & 255) * 8;
                      int var14 = (var5 & 255) * 8;
                      int var15;
@@ -828,33 +858,34 @@ public class Model extends Entity {
                      if(var14 != 0) {
                         var15 = Model_sine[var14];
                         var16 = Model_cosine[var14];
-                        var17 = var15 * this.verticesY[var9] + var16 * this.verticesX[var9] >> 16;
-                        this.verticesY[var9] = var16 * this.verticesY[var9] - var15 * this.verticesX[var9] >> 16;
-                        this.verticesX[var9] = var17;
+                        var17 = var15 * this.verticesY[var11] + var16 * this.verticesX[var11] >> 16;
+                        this.verticesY[var11] = var16 * this.verticesY[var11] - var15 * this.verticesX[var11] >> 16;
+                        this.verticesX[var11] = var17;
                      }
 
-                     if(var10 != 0) {
-                        var15 = Model_sine[var10];
-                        var16 = Model_cosine[var10];
-                        var17 = var16 * this.verticesY[var9] - var15 * this.verticesZ[var9] >> 16;
-                        this.verticesZ[var9] = var15 * this.verticesY[var9] + var16 * this.verticesZ[var9] >> 16;
-                        this.verticesY[var9] = var17;
+                     if(var12 != 0) {
+                        var15 = Model_sine[var12];
+                        var16 = Model_cosine[var12];
+                        var17 = var16 * this.verticesY[var11] - var15 * this.verticesZ[var11] >> 16;
+                        this.verticesZ[var11] = var15 * this.verticesY[var11] + var16 * this.verticesZ[var11] >> 16;
+                        this.verticesY[var11] = var17;
                      }
 
                      if(var13 != 0) {
                         var15 = Model_sine[var13];
                         var16 = Model_cosine[var13];
-                        var17 = var15 * this.verticesZ[var9] + var16 * this.verticesX[var9] >> 16;
-                        this.verticesZ[var9] = var16 * this.verticesZ[var9] - var15 * this.verticesX[var9] >> 16;
-                        this.verticesX[var9] = var17;
+                        var17 = var15 * this.verticesZ[var11] + var16 * this.verticesX[var11] >> 16;
+                        this.verticesZ[var11] = var16 * this.verticesZ[var11] - var15 * this.verticesX[var11] >> 16;
+                        this.verticesX[var11] = var17;
                      }
 
-                     this.verticesX[var9] += Model_transformTempX;
-                     this.verticesY[var9] += Model_transformTempY;
-                     this.verticesZ[var9] += Model_transformTempZ;
+                     this.verticesX[var11] += Model_transformTempX;
+                     this.verticesY[var11] += Model_transformTempY;
+                     this.verticesZ[var11] += Model_transformTempZ;
                   }
                }
             }
+
          } else if(var1 == 3) {
             for(var7 = 0; var7 < var6; ++var7) {
                var8 = var2[var7];
@@ -862,41 +893,44 @@ public class Model extends Entity {
                   var18 = this.vertexLabels[var8];
 
                   for(var19 = 0; var19 < var18.length; ++var19) {
-                     var9 = var18[var19];
-                     this.verticesX[var9] -= Model_transformTempX;
-                     this.verticesY[var9] -= Model_transformTempY;
-                     this.verticesZ[var9] -= Model_transformTempZ;
-                     this.verticesX[var9] = var3 * this.verticesX[var9] / 128;
-                     this.verticesY[var9] = var4 * this.verticesY[var9] / 128;
-                     this.verticesZ[var9] = var5 * this.verticesZ[var9] / 128;
-                     this.verticesX[var9] += Model_transformTempX;
-                     this.verticesY[var9] += Model_transformTempY;
-                     this.verticesZ[var9] += Model_transformTempZ;
+                     var11 = var18[var19];
+                     this.verticesX[var11] -= Model_transformTempX;
+                     this.verticesY[var11] -= Model_transformTempY;
+                     this.verticesZ[var11] -= Model_transformTempZ;
+                     this.verticesX[var11] = var3 * this.verticesX[var11] / 128;
+                     this.verticesY[var11] = var4 * this.verticesY[var11] / 128;
+                     this.verticesZ[var11] = var5 * this.verticesZ[var11] / 128;
+                     this.verticesX[var11] += Model_transformTempX;
+                     this.verticesY[var11] += Model_transformTempY;
+                     this.verticesZ[var11] += Model_transformTempZ;
                   }
                }
             }
-         } else if(var1 == 5 && this.faceLabelsAlpha != null && this.faceAlphas != null) {
-            for(var7 = 0; var7 < var6; ++var7) {
-               var8 = var2[var7];
-               if(var8 < this.faceLabelsAlpha.length) {
-                  var18 = this.faceLabelsAlpha[var8];
 
-                  for(var19 = 0; var19 < var18.length; ++var19) {
-                     var9 = var18[var19];
-                     var10 = (this.faceAlphas[var9] & 255) + var3 * 8;
-                     if(var10 < 0) {
-                        var10 = 0;
-                     } else if(var10 > 255) {
-                        var10 = 255;
+         } else if(var1 == 5) {
+            if(this.faceLabelsAlpha != null && this.faceAlphas != null) {
+               for(var7 = 0; var7 < var6; ++var7) {
+                  var8 = var2[var7];
+                  if(var8 < this.faceLabelsAlpha.length) {
+                     var18 = this.faceLabelsAlpha[var8];
+
+                     for(var19 = 0; var19 < var18.length; ++var19) {
+                        var11 = var18[var19];
+                        var12 = (this.faceAlphas[var11] & 255) + var3 * 8;
+                        if(var12 < 0) {
+                           var12 = 0;
+                        } else if(var12 > 255) {
+                           var12 = 255;
+                        }
+
+                        this.faceAlphas[var11] = (byte)var12;
                      }
-
-                     this.faceAlphas[var9] = (byte)var10;
                   }
                }
             }
+
          }
       }
-
    }
 
    @ObfuscatedName("j")
@@ -1033,7 +1067,7 @@ public class Model extends Entity {
 
       try {
          this.draw0(false, false, false, 0L);
-      } catch (Exception var24) {
+      } catch (Exception var25) {
          ;
       }
 
@@ -1099,7 +1133,7 @@ public class Model extends Entity {
 
       try {
          this.draw0(false, false, false, 0L);
-      } catch (Exception var25) {
+      } catch (Exception var26) {
          ;
       }
 
@@ -1118,80 +1152,81 @@ public class Model extends Entity {
 
          int var7;
          int var8;
-         int var9;
          int var10;
          int var11;
          int var12;
          int var13;
-         int var14;
          int var15;
          int var16;
+         int var18;
+         int var27;
          for(var7 = 0; var7 < this.indicesCount; ++var7) {
             if(this.faceColors3[var7] != -2) {
                var8 = this.indices1[var7];
-               var16 = this.indices2[var7];
-               var9 = this.indices3[var7];
-               var10 = modelViewportXs[var8];
-               var11 = modelViewportXs[var16];
-               var12 = modelViewportXs[var9];
-               int var17;
-               if(!var1 || var10 != -5000 && var11 != -5000 && var12 != -5000) {
-                  if(var2 && NPCDefinition.method5164(modelViewportYs[var8], modelViewportYs[var16], modelViewportYs[var9], var10, var11, var12, var6)) {
+               var27 = this.indices2[var7];
+               var10 = this.indices3[var7];
+               var11 = modelViewportXs[var8];
+               var12 = modelViewportXs[var27];
+               var13 = modelViewportXs[var10];
+               int var14;
+               if(!var1 || var11 != -5000 && var12 != -5000 && var13 != -5000) {
+                  if(var2 && NpcDefinition.method5164(modelViewportYs[var8], modelViewportYs[var27], modelViewportYs[var10], var11, var12, var13, var6)) {
                      Projectile.method2081(var4);
                      var2 = false;
                   }
 
-                  if((var10 - var11) * (modelViewportYs[var9] - modelViewportYs[var16]) - (var12 - var11) * (modelViewportYs[var8] - modelViewportYs[var16]) > 0) {
+                  if((var11 - var12) * (modelViewportYs[var10] - modelViewportYs[var27]) - (var13 - var12) * (modelViewportYs[var8] - modelViewportYs[var27]) > 0) {
                      __du_ad[var7] = false;
-                     if(var10 >= 0 && var11 >= 0 && var12 >= 0 && var10 <= Rasterizer3D.Rasterizer3D_clipWidth && var11 <= Rasterizer3D.Rasterizer3D_clipWidth && var12 <= Rasterizer3D.Rasterizer3D_clipWidth) {
+                     if(var11 >= 0 && var12 >= 0 && var13 >= 0 && var11 <= Rasterizer3D.Rasterizer3D_clipWidth && var12 <= Rasterizer3D.Rasterizer3D_clipWidth && var13 <= Rasterizer3D.Rasterizer3D_clipWidth) {
                         __du_at[var7] = false;
                      } else {
                         __du_at[var7] = true;
                      }
 
-                     var17 = (__du_am[var8] + __du_am[var16] + __du_am[var9]) / 3 + this.radius;
-                     __du_ax[var17][__du_aa[var17]++] = var7;
+                     var14 = (__du_am[var8] + __du_am[var27] + __du_am[var10]) / 3 + this.radius;
+                     __du_ax[var14][__du_aa[var14]++] = var7;
                   }
                } else {
-                  var17 = __du_an[var8];
-                  var13 = __du_an[var16];
-                  var14 = __du_an[var9];
-                  int var18 = __du_az[var8];
-                  var15 = __du_az[var16];
-                  int var19 = __du_az[var9];
+                  var14 = __du_an[var8];
+                  var15 = __du_an[var27];
+                  var16 = __du_an[var10];
+                  int var17 = __du_az[var8];
+                  var18 = __du_az[var27];
+                  int var19 = __du_az[var10];
                   int var20 = __du_au[var8];
-                  int var21 = __du_au[var16];
-                  int var22 = __du_au[var9];
-                  var17 -= var13;
-                  var14 -= var13;
-                  var18 -= var15;
-                  var19 -= var15;
+                  int var21 = __du_au[var27];
+                  int var22 = __du_au[var10];
+                  var14 -= var15;
+                  var16 -= var15;
+                  var17 -= var18;
+                  var19 -= var18;
                   var20 -= var21;
                   var22 -= var21;
-                  int var23 = var18 * var22 - var20 * var19;
-                  int var24 = var20 * var14 - var17 * var22;
-                  int var25 = var17 * var19 - var18 * var14;
-                  if(var13 * var23 + var15 * var24 + var21 * var25 > 0) {
+                  int var23 = var17 * var22 - var20 * var19;
+                  int var24 = var20 * var16 - var14 * var22;
+                  int var25 = var14 * var19 - var17 * var16;
+                  if(var15 * var23 + var18 * var24 + var21 * var25 > 0) {
                      __du_ad[var7] = true;
-                     int var26 = (__du_am[var8] + __du_am[var16] + __du_am[var9]) / 3 + this.radius;
+                     int var26 = (__du_am[var8] + __du_am[var27] + __du_am[var10]) / 3 + this.radius;
                      __du_ax[var26][__du_aa[var26]++] = var7;
                   }
                }
             }
          }
 
-         int[] var27;
+         int[] var9;
          if(this.faceRenderPriorities == null) {
             for(var7 = this.diameter - 1; var7 >= 0; --var7) {
                var8 = __du_aa[var7];
                if(var8 > 0) {
-                  var27 = __du_ax[var7];
+                  var9 = __du_ax[var7];
 
-                  for(var9 = 0; var9 < var8; ++var9) {
-                     this.__ag_236(var27[var9]);
+                  for(var10 = 0; var10 < var8; ++var10) {
+                     this.__ag_236(var9[var10]);
                   }
                }
             }
+
          } else {
             for(var7 = 0; var7 < 12; ++var7) {
                __du_af[var7] = 0;
@@ -1201,19 +1236,19 @@ public class Model extends Entity {
             for(var7 = this.diameter - 1; var7 >= 0; --var7) {
                var8 = __du_aa[var7];
                if(var8 > 0) {
-                  var27 = __du_ax[var7];
+                  var9 = __du_ax[var7];
 
-                  for(var9 = 0; var9 < var8; ++var9) {
-                     var10 = var27[var9];
-                     byte var28 = this.faceRenderPriorities[var10];
-                     var12 = __du_af[var28]++;
-                     __du_ai[var28][var12] = var10;
-                     if(var28 < 10) {
-                        __du_bs[var28] += var7;
-                     } else if(var28 == 10) {
-                        __du_ba[var12] = var7;
+                  for(var10 = 0; var10 < var8; ++var10) {
+                     var11 = var9[var10];
+                     byte var31 = this.faceRenderPriorities[var11];
+                     var13 = __du_af[var31]++;
+                     __du_ai[var31][var13] = var11;
+                     if(var31 < 10) {
+                        __du_bs[var31] += var7;
+                     } else if(var31 == 10) {
+                        __du_ba[var13] = var7;
                      } else {
-                        __du_bb[var12] = var7;
+                        __du_bb[var13] = var7;
                      }
                   }
                }
@@ -1229,103 +1264,103 @@ public class Model extends Entity {
                var8 = (__du_bs[3] + __du_bs[4]) / (__du_af[3] + __du_af[4]);
             }
 
-            var16 = 0;
+            var27 = 0;
             if(__du_af[6] > 0 || __du_af[8] > 0) {
-               var16 = (__du_bs[8] + __du_bs[6]) / (__du_af[8] + __du_af[6]);
+               var27 = (__du_bs[8] + __du_bs[6]) / (__du_af[8] + __du_af[6]);
             }
 
-            var10 = 0;
-            var11 = __du_af[10];
-            int[] var29 = __du_ai[10];
-            int[] var30 = __du_ba;
-            if(var10 == var11) {
-               var10 = 0;
-               var11 = __du_af[11];
-               var29 = __du_ai[11];
-               var30 = __du_bb;
+            var11 = 0;
+            var12 = __du_af[10];
+            int[] var28 = __du_ai[10];
+            int[] var29 = __du_ba;
+            if(var11 == var12) {
+               var11 = 0;
+               var12 = __du_af[11];
+               var28 = __du_ai[11];
+               var29 = __du_bb;
             }
 
-            if(var10 < var11) {
-               var9 = var30[var10];
+            if(var11 < var12) {
+               var10 = var29[var11];
             } else {
-               var9 = -1000;
+               var10 = -1000;
             }
 
-            for(var13 = 0; var13 < 10; ++var13) {
-               while(var13 == 0 && var9 > var7) {
-                  this.__ag_236(var29[var10++]);
-                  if(var10 == var11 && var29 != __du_ai[11]) {
-                     var10 = 0;
-                     var11 = __du_af[11];
-                     var29 = __du_ai[11];
-                     var30 = __du_bb;
+            for(var15 = 0; var15 < 10; ++var15) {
+               while(var15 == 0 && var10 > var7) {
+                  this.__ag_236(var28[var11++]);
+                  if(var11 == var12 && var28 != __du_ai[11]) {
+                     var11 = 0;
+                     var12 = __du_af[11];
+                     var28 = __du_ai[11];
+                     var29 = __du_bb;
                   }
 
-                  if(var10 < var11) {
-                     var9 = var30[var10];
+                  if(var11 < var12) {
+                     var10 = var29[var11];
                   } else {
-                     var9 = -1000;
+                     var10 = -1000;
                   }
                }
 
-               while(var13 == 3 && var9 > var8) {
-                  this.__ag_236(var29[var10++]);
-                  if(var10 == var11 && var29 != __du_ai[11]) {
-                     var10 = 0;
-                     var11 = __du_af[11];
-                     var29 = __du_ai[11];
-                     var30 = __du_bb;
+               while(var15 == 3 && var10 > var8) {
+                  this.__ag_236(var28[var11++]);
+                  if(var11 == var12 && var28 != __du_ai[11]) {
+                     var11 = 0;
+                     var12 = __du_af[11];
+                     var28 = __du_ai[11];
+                     var29 = __du_bb;
                   }
 
-                  if(var10 < var11) {
-                     var9 = var30[var10];
+                  if(var11 < var12) {
+                     var10 = var29[var11];
                   } else {
-                     var9 = -1000;
+                     var10 = -1000;
                   }
                }
 
-               while(var13 == 5 && var9 > var16) {
-                  this.__ag_236(var29[var10++]);
-                  if(var10 == var11 && var29 != __du_ai[11]) {
-                     var10 = 0;
-                     var11 = __du_af[11];
-                     var29 = __du_ai[11];
-                     var30 = __du_bb;
+               while(var15 == 5 && var10 > var27) {
+                  this.__ag_236(var28[var11++]);
+                  if(var11 == var12 && var28 != __du_ai[11]) {
+                     var11 = 0;
+                     var12 = __du_af[11];
+                     var28 = __du_ai[11];
+                     var29 = __du_bb;
                   }
 
-                  if(var10 < var11) {
-                     var9 = var30[var10];
+                  if(var11 < var12) {
+                     var10 = var29[var11];
                   } else {
-                     var9 = -1000;
+                     var10 = -1000;
                   }
                }
 
-               var14 = __du_af[var13];
-               int[] var31 = __du_ai[var13];
+               var16 = __du_af[var15];
+               int[] var30 = __du_ai[var15];
 
-               for(var15 = 0; var15 < var14; ++var15) {
-                  this.__ag_236(var31[var15]);
+               for(var18 = 0; var18 < var16; ++var18) {
+                  this.__ag_236(var30[var18]);
                }
             }
 
-            while(var9 != -1000) {
-               this.__ag_236(var29[var10++]);
-               if(var10 == var11 && var29 != __du_ai[11]) {
-                  var10 = 0;
-                  var29 = __du_ai[11];
-                  var11 = __du_af[11];
-                  var30 = __du_bb;
+            while(var10 != -1000) {
+               this.__ag_236(var28[var11++]);
+               if(var11 == var12 && var28 != __du_ai[11]) {
+                  var11 = 0;
+                  var28 = __du_ai[11];
+                  var12 = __du_af[11];
+                  var29 = __du_bb;
                }
 
-               if(var10 < var11) {
-                  var9 = var30[var10];
+               if(var11 < var12) {
+                  var10 = var29[var11];
                } else {
-                  var9 = -1000;
+                  var10 = -1000;
                }
             }
+
          }
       }
-
    }
 
    @ObfuscatedName("ag")
@@ -1369,8 +1404,8 @@ public class Model extends Entity {
          } else {
             Rasterizer3D.method3037(modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], this.faceColors1[var1], this.faceColors2[var1], this.faceColors3[var1]);
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("aq")
@@ -1575,145 +1610,115 @@ public class Model extends Entity {
 
                      boolean var26 = var25 || this.__h > 0;
                      int var27 = ViewportMouse.ViewportMouse_x;
-                     int var28 = ViewportMouse.ViewportMouse_y;
-                     boolean var29 = ViewportMouse.ViewportMouse_isInViewport;
-                     boolean var30 = 0L != var9;
-                     boolean var31;
-                     if(var30) {
-                        var31 = (int)(var9 >>> 16 & 1L) == 1;
-                        var30 = !var31;
+                     int var29 = ViewportMouse.ViewportMouse_y;
+                     boolean var31 = ViewportMouse.ViewportMouse_isInViewport;
+                     boolean var34 = 0L != var9;
+                     boolean var35;
+                     if(var34) {
+                        var35 = (int)(var9 >>> 16 & 1L) == 1;
+                        var34 = !var35;
                      }
 
-                     var31 = false;
-                     int var32;
-                     int var33;
-                     int var34;
-                     if(var30 && var29) {
-                        boolean var35 = false;
+                     var35 = false;
+                     int var37;
+                     int var38;
+                     int var39;
+                     if(var34 && var31) {
+                        boolean var36 = false;
                         if(__du_bx) {
-                           var35 = Decimator.method2491(this, var6, var7, var8);
+                           var36 = Decimator.method2491(this, var6, var7, var8);
                         } else {
-                           var32 = var12 - var13;
-                           if(var32 <= 50) {
-                              var32 = 50;
+                           var37 = var12 - var13;
+                           if(var37 <= 50) {
+                              var37 = 50;
                            }
 
                            if(var15 > 0) {
                               var16 /= var14;
-                              var17 /= var32;
+                              var17 /= var37;
                            } else {
                               var17 /= var14;
-                              var16 /= var32;
+                              var16 /= var37;
                            }
 
                            if(var18 > 0) {
                               var22 /= var14;
-                              var20 /= var32;
+                              var20 /= var37;
                            } else {
                               var20 /= var14;
-                              var22 /= var32;
+                              var22 /= var37;
                            }
 
-                           var33 = var27 - Rasterizer3D.Rasterizer3D_clipMidX;
-                           var34 = var28 - Rasterizer3D.Rasterizer3D_clipMidY;
-                           if(var33 > var16 && var33 < var17 && var34 > var22 && var34 < var20) {
-                              var35 = true;
+                           var38 = var27 - Rasterizer3D.Rasterizer3D_clipMidX;
+                           var39 = var29 - Rasterizer3D.Rasterizer3D_clipMidY;
+                           if(var38 > var16 && var38 < var17 && var39 > var22 && var39 < var20) {
+                              var36 = true;
                            }
                         }
 
-                        if(var35) {
+                        if(var36) {
                            if(this.isSingleTile) {
                               Projectile.method2081(var9);
                            } else {
-                              var31 = true;
+                              var35 = true;
                            }
                         }
                      }
 
-                     int var42 = Rasterizer3D.Rasterizer3D_clipMidX;
-                     var32 = Rasterizer3D.Rasterizer3D_clipMidY;
-                     var33 = 0;
-                     var34 = 0;
+                     int var47 = Rasterizer3D.Rasterizer3D_clipMidX;
+                     var37 = Rasterizer3D.Rasterizer3D_clipMidY;
+                     var38 = 0;
+                     var39 = 0;
                      if(var1 != 0) {
-                        var33 = Model_sine[var1];
-                        var34 = Model_cosine[var1];
+                        var38 = Model_sine[var1];
+                        var39 = Model_cosine[var1];
                      }
 
-                     for(int var36 = 0; var36 < this.verticesCount; ++var36) {
-                        int var37 = this.verticesX[var36];
-                        int var38 = this.verticesY[var36];
-                        int var39 = this.verticesZ[var36];
-                        int var40;
+                     for(int var40 = 0; var40 < this.verticesCount; ++var40) {
+                        int var41 = this.verticesX[var40];
+                        int var42 = this.verticesY[var40];
+                        int var43 = this.verticesZ[var40];
+                        int var44;
                         if(var1 != 0) {
-                           var40 = var39 * var33 + var37 * var34 >> 16;
-                           var39 = var39 * var34 - var37 * var33 >> 16;
-                           var37 = var40;
+                           var44 = var43 * var38 + var41 * var39 >> 16;
+                           var43 = var43 * var39 - var41 * var38 >> 16;
+                           var41 = var44;
                         }
 
-                        var37 += var6;
-                        var38 += var7;
-                        var39 += var8;
-                        var40 = var39 * var4 + var5 * var37 >> 16;
-                        var39 = var5 * var39 - var37 * var4 >> 16;
-                        var37 = var40;
-                        var40 = var3 * var38 - var39 * var2 >> 16;
-                        var39 = var38 * var2 + var3 * var39 >> 16;
-                        __du_am[var36] = var39 - var12;
-                        if(var39 >= 50) {
-                           modelViewportXs[var36] = var37 * Rasterizer3D.Rasterizer3D_zoom / var39 + var42;
-                           modelViewportYs[var36] = var40 * Rasterizer3D.Rasterizer3D_zoom / var39 + var32;
+                        var41 += var6;
+                        var42 += var7;
+                        var43 += var8;
+                        var44 = var43 * var4 + var5 * var41 >> 16;
+                        var43 = var5 * var43 - var41 * var4 >> 16;
+                        var41 = var44;
+                        var44 = var3 * var42 - var43 * var2 >> 16;
+                        var43 = var42 * var2 + var3 * var43 >> 16;
+                        __du_am[var40] = var43 - var12;
+                        if(var43 >= 50) {
+                           modelViewportXs[var40] = var41 * Rasterizer3D.Rasterizer3D_zoom / var43 + var47;
+                           modelViewportYs[var40] = var44 * Rasterizer3D.Rasterizer3D_zoom / var43 + var37;
                         } else {
-                           modelViewportXs[var36] = -5000;
+                           modelViewportXs[var40] = -5000;
                            var24 = true;
                         }
 
                         if(var26) {
-                           __du_an[var36] = var37;
-                           __du_az[var36] = var40;
-                           __du_au[var36] = var39;
+                           __du_an[var40] = var41;
+                           __du_az[var40] = var44;
+                           __du_au[var40] = var43;
                         }
                      }
 
                      try {
-                        this.draw0(var24, var31, this.isSingleTile, var9);
-                     } catch (Exception var41) {
+                        this.draw0(var24, var35, this.isSingleTile, var9);
+                     } catch (Exception var46) {
                         ;
                      }
+
                   }
                }
             }
          }
       }
-
-   }
-
-   static {
-      Model_sharedSequenceModel = new Model();
-      Model_sharedSequenceModelFaceAlphas = new byte[1];
-      Model_sharedSpotAnimationModel = new Model();
-      Model_sharedSpotAnimationModelFaceAlphas = new byte[1];
-      __du_at = new boolean[4700];
-      __du_ad = new boolean[4700];
-      modelViewportXs = new int[4700];
-      modelViewportYs = new int[4700];
-      __du_am = new int[4700];
-      __du_an = new int[4700];
-      __du_az = new int[4700];
-      __du_au = new int[4700];
-      __du_aa = new int[1600];
-      __du_ax = new int[1600][512];
-      __du_af = new int[12];
-      __du_ai = new int[12][2000];
-      __du_ba = new int[2000];
-      __du_bb = new int[2000];
-      __du_bs = new int[12];
-      __du_bq = new int[10];
-      __du_bn = new int[10];
-      __du_bk = new int[10];
-      __du_bx = true;
-      Model_sine = Rasterizer3D.Rasterizer3D_sine;
-      Model_cosine = Rasterizer3D.Rasterizer3D_cosine;
-      __du_br = Rasterizer3D.Rasterizer3D_colorPalette;
-      __du_bj = Rasterizer3D.__et_p;
    }
 }

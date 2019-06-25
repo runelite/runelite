@@ -46,6 +46,7 @@ class GroundItem
 	private int offset;
 	private boolean tradeable;
 	private boolean isMine;
+	private int ticks;
 	private int durationMillis;
 	private boolean isAlwaysPrivate;
 	private boolean isOwnedByPlayer;

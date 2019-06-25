@@ -42,24 +42,24 @@ public class class203 {
 
             try {
                Thread.sleep(var2);
-            } catch (InterruptedException var7) {
+            } catch (InterruptedException var8) {
                ;
             }
 
             try {
                Thread.sleep(1L);
-            } catch (InterruptedException var6) {
+            } catch (InterruptedException var7) {
                ;
             }
          } else {
             try {
                Thread.sleep(var0);
-            } catch (InterruptedException var5) {
+            } catch (InterruptedException var6) {
                ;
             }
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("w")

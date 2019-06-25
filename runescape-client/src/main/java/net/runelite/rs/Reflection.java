@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package net.runelite.rs;
 
 import java.io.File;
@@ -5,197 +29,287 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-public class Reflection {
-   private static final boolean PRINT_DEBUG_MESSAGES = true;
-   private static Map classes;
+public class Reflection
+{
+	private static final boolean PRINT_DEBUG_MESSAGES = true;
 
-   public static Class findClass(String name) throws ClassNotFoundException {
-      Class var1 = (Class)classes.get(name);
-      if(var1 != null) {
-         return var1;
-      } else {
-         System.out.println("Server requested dummy class " + name);
-         return Class.forName(name);
-      }
-   }
+	private static Map<String, Class<?>> classes = new HashMap<>();
 
-   public static Field findField(Class clazz, String name) throws NoSuchFieldException {
-      System.out.println("Looking for field " + name + " in " + clazz);
-      Field[] var2 = clazz.getDeclaredFields();
-      int var3 = var2.length;
+	static
+	{
+		try
+		{
+			Enumeration<URL> systemResources = ClassLoader.getSystemResources("");
 
-      for(int var4 = 0; var4 < var3; ++var4) {
-         Field var5 = var2[var4];
-         ObfuscatedName var6 = (ObfuscatedName)var5.getAnnotation(ObfuscatedName.class);
-         if(var6 != null && var6.value().equals(name)) {
-            return var5;
-         }
-      }
+			while (systemResources.hasMoreElements())
+			{
+				URL url = systemResources.nextElement();
 
-      System.out.println("Server requested dummy field " + name + " in " + clazz);
-      return clazz.getDeclaredField(name);
-   }
+				Path path;
+				try
+				{
+					path = new File(url.toURI())
+						.toPath();
+				}
+				catch (URISyntaxException e)
+				{
+					path = new File(url.getPath())
+						.toPath();
+				}
 
-   public static String getMethodName(Method method) {
-      ObfuscatedName var1 = (ObfuscatedName)method.getAnnotation(ObfuscatedName.class);
-      return var1 != null?var1.value():method.getName();
-   }
+				Files.walk(path)
+					.filter(Files::isRegularFile)
+					.forEach(f ->
+					{
+						String className = f
+							.getName(f.getNameCount() - 1)
+							.toString()
+							.replace(".class", "");
 
-   public static Class[] getParameterTypes(Method method) {
-      ObfuscatedSignature var1 = (ObfuscatedSignature)method.getAnnotation(ObfuscatedSignature.class);
-      Class[] var2 = method.getParameterTypes();
-      if(var1 == null) {
-         return var2;
-      } else {
-         String var3 = var1.signature();
-         int var4 = var3.lastIndexOf(41);
-         char var5 = var3.charAt(var4 - 1);
-         Class var6;
-         switch(var5) {
-         case 'B':
-            var6 = Byte.TYPE;
-            break;
-         case 'I':
-            var6 = Integer.TYPE;
-            break;
-         case 'S':
-            var6 = Short.TYPE;
-            break;
-         default:
-            throw new IllegalStateException();
-         }
+						try
+						{
+							Class<?> clazz = Class.forName(className);
 
-         var2 = (Class[])Arrays.copyOf(var2, var2.length + 1);
-         var2[var2.length - 1] = var6;
-         return var2;
-      }
-   }
+							ObfuscatedName obfuscatedName = clazz
+								.getAnnotation(ObfuscatedName.class);
 
-   public static int getInt(Field field, Object obj) throws IllegalArgumentException, IllegalAccessException {
-      System.out.println("Getting field " + field);
-      boolean var2 = false;
-      if((field.getModifiers() & 2) == 0) {
-         field.setAccessible(true);
-         var2 = true;
-      }
+							if (obfuscatedName != null)
+							{
+								classes.put(obfuscatedName.value(), clazz);
+							}
+						}
+						catch (ClassNotFoundException ignore)
+						{
+						}
+					});
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
-      int var3;
-      try {
-         var3 = field.getInt(obj);
-      } catch (Exception var9) {
-         var9.printStackTrace();
-         throw var9;
-      } finally {
-         if(var2) {
-            field.setAccessible(false);
-         }
+	public static Class<?> findClass(String name) throws ClassNotFoundException
+	{
+		Class<?> clazz = classes.get(name);
 
-      }
+		if (clazz != null)
+		{
+			return clazz;
+		}
 
-      ObfuscatedGetter var4 = (ObfuscatedGetter)field.getAnnotation(ObfuscatedGetter.class);
-      if(var4 != null) {
-         int var5 = var4.intValue();
-         int var6 = modInverse(var5);
-         var3 *= var6;
-      }
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Server requested dummy class " + name);
+		}
 
-      return var3;
-   }
+		return Class.forName(name);
+	}
 
-   public static void setInt(Field field, Object obj, int value) throws IllegalArgumentException, IllegalAccessException {
-      System.out.println("Setting field " + field + " to " + value);
-      ObfuscatedGetter var3 = (ObfuscatedGetter)field.getAnnotation(ObfuscatedGetter.class);
-      if(var3 != null) {
-         int var4 = var3.intValue();
-         value *= var4;
-      }
+	public static Field findField(Class<?> clazz, String name) throws NoSuchFieldException
+	{
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Looking for field " + name + " in " + clazz);
+		}
 
-      boolean var8 = false;
-      if((field.getModifiers() & 2) == 0) {
-         field.setAccessible(true);
-         var8 = true;
-      }
+		for (Field f : clazz.getDeclaredFields())
+		{
+			ObfuscatedName annotation = f.getAnnotation(ObfuscatedName.class);
+			if (annotation != null && annotation.value().equals(name))
+			{
+				return f;
+			}
+		}
 
-      try {
-         field.setInt(obj, value);
-      } finally {
-         if(var8) {
-            field.setAccessible(false);
-         }
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Server requested dummy field " + name + " in " + clazz);
+		}
 
-      }
+		return clazz.getDeclaredField(name);
+	}
 
-   }
+	public static String getMethodName(Method method)
+	{
+		ObfuscatedName annotation = method.getAnnotation(ObfuscatedName.class);
+		if (annotation != null)
+		{
+			return annotation.value();
+		}
+		else
+		{
+			return method.getName();
+		}
+	}
 
-   public static BigInteger modInverse(BigInteger val, int bits) {
-      BigInteger var2 = BigInteger.ONE.shiftLeft(bits);
-      return val.modInverse(var2);
-   }
+	public static Class<?>[] getParameterTypes(Method method)
+	{
+		ObfuscatedSignature sig = method.getAnnotation(ObfuscatedSignature.class);
+		Class<?>[] types = method.getParameterTypes();
 
-   public static int modInverse(int val) {
-      return modInverse(BigInteger.valueOf((long)val), 32).intValue();
-   }
+		if (sig == null)
+		{
+			return types;
+		}
 
-   public static Object invoke(Method method, Object object, Object[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      System.out.println("Invoking " + method);
+		String s = sig.signature();
+		int i = s.lastIndexOf(')');
+		char c = s.charAt(i - 1);
 
-      try {
-         return method.invoke(object, args);
-      } catch (Throwable var4) {
-         var4.printStackTrace();
-         throw var4;
-      }
-   }
+		Class<?> last;
 
-   static {
-      classes = new HashMap();
+		switch (c)
+		{
+			case 'B':
+				last = byte.class;
+				break;
+			case 'I':
+				last = int.class;
+				break;
+			case 'S':
+				last = short.class;
+				break;
+			default:
+				throw new IllegalStateException();
+		}
 
-      Path var2;
-      try {
-         for(Enumeration var0 = ClassLoader.getSystemResources(""); var0.hasMoreElements(); Files.walk(var2, new FileVisitOption[0]).filter((x$0) -> {
-            return Files.isRegularFile(x$0, new LinkOption[0]);
-         }).forEach((f) -> {
-            String var1 = f.getName(f.getNameCount() - 1).toString().replace(".class", "");
+		types = Arrays.copyOf(types, types.length + 1);
+		types[types.length - 1] = last;
+		return types;
+	}
 
-            try {
-               Class var3 = Class.forName(var1);
-               ObfuscatedName var4 = (ObfuscatedName)var3.getAnnotation(ObfuscatedName.class);
-               if(var3 != null) {
-                  classes.put(var4.value(), var3);
-               }
-            } catch (ClassNotFoundException var4) {
-               ;
-            }
+	public static int getInt(Field field, Object obj) throws IllegalArgumentException, IllegalAccessException
+	{
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Getting field " + field);
+		}
 
-         })) {
-            URL var1 = (URL)var0.nextElement();
+		boolean unset = false;
+		if ((field.getModifiers() & Modifier.PRIVATE) == 0)
+		{
+			// we're outside of the package so set it accessable
+			// to behave like we are in the package
+			field.setAccessible(true);
+			unset = true;
+		}
 
-            try {
-               var2 = (new File(var1.toURI())).toPath();
-            } catch (URISyntaxException var4) {
-               var2 = (new File(var1.getPath())).toPath();
-            }
-         }
-      } catch (IOException var5) {
-         var5.printStackTrace();
-      }
+		int i;
+		try
+		{
+			i = field.getInt(obj);
+		}
+		catch (Exception ex)
+		{
+			if (PRINT_DEBUG_MESSAGES)
+			{
+				ex.printStackTrace();
+			}
+			throw ex;
+		}
+		finally
+		{
+			if (unset)
+			{
+				field.setAccessible(false);
+			}
+		}
 
-   }
+		ObfuscatedGetter og = field.getAnnotation(ObfuscatedGetter.class);
+		if (og != null)
+		{
+			int getter = og.intValue();
+			int setter = modInverse(getter);
+
+			// encrypt
+			i *= setter;
+		}
+		return i;
+	}
+
+	public static void setInt(Field field, Object obj, int value) throws IllegalArgumentException, IllegalAccessException
+	{
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Setting field " + field + " to " + value);
+		}
+
+		ObfuscatedGetter og = field.getAnnotation(ObfuscatedGetter.class);
+		if (og != null)
+		{
+			int getter = og.intValue();
+
+			// decrypt
+			value *= getter;
+		}
+
+		boolean unset = false;
+		if ((field.getModifiers() & Modifier.PRIVATE) == 0)
+		{
+			// we're outside of the package so set it accessable
+			// to behave like we are in the package
+			field.setAccessible(true);
+			unset = true;
+		}
+
+		try
+		{
+			field.setInt(obj, value);
+		}
+		finally
+		{
+			if (unset)
+			{
+				field.setAccessible(false);
+			}
+		}
+	}
+
+	public static BigInteger modInverse(BigInteger val, int bits)
+	{
+		BigInteger shift = BigInteger.ONE.shiftLeft(bits);
+		return val.modInverse(shift);
+	}
+
+	public static int modInverse(int val)
+	{
+		return modInverse(BigInteger.valueOf(val), 32).intValue();
+	}
+
+	public static Object invoke(Method method, Object object, Object[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	{
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Invoking " + method);
+		}
+
+		try
+		{
+			return method.invoke(object, args);
+		}
+		catch (Throwable ex)
+		{
+			if (PRINT_DEBUG_MESSAGES)
+			{
+				ex.printStackTrace();
+			}
+			throw ex;
+		}
+	}
 }

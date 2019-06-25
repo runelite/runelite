@@ -104,8 +104,8 @@ public abstract class class21 {
             this.field157 = true;
             this.field153 = true;
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("x")
@@ -114,11 +114,11 @@ public abstract class class21 {
       garbageValue = "-2111523326"
    )
    void method282() {
-      this.field151 = (short[][][])null;
-      this.field145 = (short[][][])null;
-      this.field154 = (byte[][][])null;
-      this.field155 = (byte[][][])null;
-      this.field144 = (class25[][][][])null;
+      this.field151 = null;
+      this.field145 = null;
+      this.field154 = null;
+      this.field155 = null;
+      this.field144 = null;
       this.field157 = false;
       this.field153 = false;
    }
@@ -136,8 +136,8 @@ public abstract class class21 {
          } else {
             this.method257(var1, var2, var3, var4);
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("a")
@@ -166,17 +166,17 @@ public abstract class class21 {
       this.field151[0][var1][var2] = (short)var3.readUnsignedByte();
       int var8;
       int var9;
-      int var10;
+      int var11;
       if(var6) {
          var8 = var3.readUnsignedByte();
 
          for(var9 = 0; var9 < var8; ++var9) {
-            int var11 = var3.readUnsignedByte();
-            if(var11 != 0) {
-               this.field145[var9][var1][var2] = (short)var11;
-               var10 = var3.readUnsignedByte();
-               this.field154[var9][var1][var2] = (byte)(var10 >> 2);
-               this.field155[var9][var1][var2] = (byte)(var10 & 3);
+            int var10 = var3.readUnsignedByte();
+            if(var10 != 0) {
+               this.field145[var9][var1][var2] = (short)var10;
+               var11 = var3.readUnsignedByte();
+               this.field154[var9][var1][var2] = (byte)(var11 >> 2);
+               this.field155[var9][var1][var2] = (byte)(var11 & 3);
             }
          }
       }
@@ -187,10 +187,10 @@ public abstract class class21 {
             if(var9 != 0) {
                class25[] var14 = this.field144[var8][var1][var2] = new class25[var9];
 
-               for(var10 = 0; var10 < var9; ++var10) {
+               for(var11 = 0; var11 < var9; ++var11) {
                   int var12 = var3.__ap_310();
                   int var13 = var3.readUnsignedByte();
-                  var14[var10] = new class25(var12, var13 >> 2, var13 & 3);
+                  var14[var11] = new class25(var12, var13 >> 2, var13 & 3);
                }
             }
          }
@@ -233,48 +233,48 @@ public abstract class class21 {
          byte var5 = -1;
          int var6;
          int var7;
-         int var8;
          int var9;
          int var10;
+         int var13;
          if((var4 & 64) != 0) {
             var6 = var0.__bb_317();
+            int var8;
             int var11;
             int var12;
-            int var13;
             if(var6 > 0) {
                for(var7 = 0; var7 < var6; ++var7) {
-                  var8 = -1;
                   var9 = -1;
-                  var12 = -1;
-                  var11 = var0.__ae_307();
-                  if(var11 == 32767) {
-                     var11 = var0.__ae_307();
-                     var9 = var0.__ae_307();
+                  var10 = -1;
+                  var11 = -1;
+                  var8 = var0.__ae_307();
+                  if(var8 == 32767) {
                      var8 = var0.__ae_307();
-                     var12 = var0.__ae_307();
-                  } else if(var11 != 32766) {
+                     var10 = var0.__ae_307();
                      var9 = var0.__ae_307();
+                     var11 = var0.__ae_307();
+                  } else if(var8 != 32766) {
+                     var10 = var0.__ae_307();
                   } else {
-                     var11 = -1;
+                     var8 = -1;
                   }
 
-                  var13 = var0.__ae_307();
-                  var3.addHitSplat(var11, var9, var8, var12, Client.cycle, var13);
+                  var12 = var0.__ae_307();
+                  var3.addHitSplat(var8, var10, var9, var11, Client.cycle, var12);
                }
             }
 
             var7 = var0.readUnsignedByteNegate();
             if(var7 > 0) {
-               for(var11 = 0; var11 < var7; ++var11) {
-                  var8 = var0.__ae_307();
+               for(var8 = 0; var8 < var7; ++var8) {
                   var9 = var0.__ae_307();
-                  if(var9 != 32767) {
-                     var12 = var0.__ae_307();
-                     var13 = var0.__bb_317();
-                     var10 = var9 > 0?var0.readUnsignedByte():var13;
-                     var3.addHealthBar(var8, Client.cycle, var9, var12, var13, var10);
+                  var10 = var0.__ae_307();
+                  if(var10 != 32767) {
+                     var11 = var0.__ae_307();
+                     var12 = var0.__bb_317();
+                     var13 = var10 > 0?var0.readUnsignedByte():var12;
+                     var3.addHealthBar(var9, Client.cycle, var10, var11, var12, var13);
                   } else {
-                     var3.removeHealthBar(var8);
+                     var3.removeHealthBar(var9);
                   }
                }
             }
@@ -350,11 +350,11 @@ public abstract class class21 {
 
          if((var4 & 1) != 0) {
             var6 = var0.__bq_318();
-            byte[] var15 = new byte[var6];
-            Buffer var16 = new Buffer(var15);
-            var0.__bh_333(var15, 0, var6);
-            Players.__cq_o[var2] = var16;
-            var3.read(var16);
+            byte[] var14 = new byte[var6];
+            Buffer var15 = new Buffer(var14);
+            var0.__bh_333(var14, 0, var6);
+            Players.__cq_o[var2] = var15;
+            var3.read(var15);
          }
 
          if((var4 & 2) != 0) {
@@ -370,42 +370,42 @@ public abstract class class21 {
 
          if((var4 & 16) != 0) {
             var6 = var0.__bu_325();
-            PlayerType var17 = (PlayerType)ScriptFrame.findEnumerated(class48.method865(), var0.readUnsignedByte());
+            PlayerType var20 = (PlayerType)ScriptFrame.findEnumerated(class48.method865(), var0.readUnsignedByte());
             boolean var18 = var0.readUnsignedByteNegate() == 1;
-            var8 = var0.readUnsignedByte();
-            var9 = var0.index;
+            var9 = var0.readUnsignedByte();
+            var10 = var0.index;
             if(var3.username != null && var3.appearance != null) {
                boolean var19 = false;
-               if(var17.isUser && WorldMapArea.friendSystem.isIgnored(var3.username)) {
+               if(var20.isUser && WorldMapArea.friendSystem.isIgnored(var3.username)) {
                   var19 = true;
                }
 
                if(!var19 && Client.__client_jc == 0 && !var3.isHidden) {
                   Players.__cq_a.index = 0;
-                  var0.__al_305(Players.__cq_a.array, 0, var8);
+                  var0.__al_305(Players.__cq_a.array, 0, var9);
                   Players.__cq_a.index = 0;
-                  String var14 = AbstractFont.escapeBrackets(class233.method4527(KitDefinition.method4866(Players.__cq_a)));
-                  var3.overheadText = var14.trim();
+                  String var16 = AbstractFont.escapeBrackets(class233.method4527(KitDefinition.method4866(Players.__cq_a)));
+                  var3.overheadText = var16.trim();
                   var3.overheadTextColor = var6 >> 8;
                   var3.overheadTextEffect = var6 & 255;
                   var3.overheadTextCyclesRemaining = 150;
                   var3.isAutoChatting = var18;
-                  var3.__az = var3 != Canvas.localPlayer && var17.isUser && "" != Client.__client_pz && var14.toLowerCase().indexOf(Client.__client_pz) == -1;
-                  if(var17.isPrivileged) {
-                     var10 = var18?91:1;
+                  var3.__az = var3 != Canvas.localPlayer && var20.isUser && "" != Client.__client_pz && var16.toLowerCase().indexOf(Client.__client_pz) == -1;
+                  if(var20.isPrivileged) {
+                     var13 = var18?91:1;
                   } else {
-                     var10 = var18?90:2;
+                     var13 = var18?90:2;
                   }
 
-                  if(var17.modIcon != -1) {
-                     WorldMapIcon1.method219(var10, ItemContainer.method1170(var17.modIcon) + var3.username.getName(), var14);
+                  if(var20.modIcon != -1) {
+                     WorldMapIcon1.method219(var13, ItemContainer.method1170(var20.modIcon) + var3.username.getName(), var16);
                   } else {
-                     WorldMapIcon1.method219(var10, var3.username.getName(), var14);
+                     WorldMapIcon1.method219(var13, var3.username.getName(), var16);
                   }
                }
             }
 
-            var0.index = var9 + var8;
+            var0.index = var10 + var9;
          }
 
          if((var4 & 256) != 0) {
@@ -428,14 +428,14 @@ public abstract class class21 {
             if(var5 == 127) {
                var3.resetPath(var3.tileX, var3.tileY);
             } else {
-               byte var20;
+               byte var17;
                if(var5 != -1) {
-                  var20 = var5;
+                  var17 = var5;
                } else {
-                  var20 = Players.__cq_w[var2];
+                  var17 = Players.__cq_w[var2];
                }
 
-               var3.__x_130(var3.tileX, var3.tileY, var20);
+               var3.__x_130(var3.tileX, var3.tileY, var17);
             }
          }
       }

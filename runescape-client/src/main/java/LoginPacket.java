@@ -52,6 +52,21 @@ public class LoginPacket implements ClientPacketMarker {
    @Export("id")
    public final int id;
 
+   static {
+      __gl_m = new LoginPacket(14, 0);
+      __gl_f = new LoginPacket(15, 4);
+      __gl_q = new LoginPacket(16, -2);
+      __gl_w = new LoginPacket(18, -2);
+      __gl_o = new LoginPacket(27, 0);
+      __gl_g = new LoginPacket[32];
+      LoginPacket[] var0 = WorldMapIcon2.method300();
+
+      for(int var1 = 0; var1 < var0.length; ++var1) {
+         __gl_g[var0[var1].id] = var0[var1];
+      }
+
+   }
+
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
@@ -70,9 +85,9 @@ public class LoginPacket implements ClientPacketMarker {
       File var3 = new File(class168.__fs_o, "preferences" + var0 + ".dat");
       if(var3.exists()) {
          try {
-            AccessFile var11 = new AccessFile(var3, "rw", 10000L);
-            return var11;
-         } catch (IOException var10) {
+            AccessFile var10 = new AccessFile(var3, "rw", 10000L);
+            return var10;
+         } catch (IOException var9) {
             ;
          }
       }
@@ -90,7 +105,7 @@ public class LoginPacket implements ClientPacketMarker {
          try {
             var6 = new AccessFile(var5, "rw", 10000L);
             return var6;
-         } catch (IOException var9) {
+         } catch (IOException var8) {
             ;
          }
       }
@@ -98,23 +113,8 @@ public class LoginPacket implements ClientPacketMarker {
       try {
          var6 = new AccessFile(var3, "rw", 10000L);
          return var6;
-      } catch (IOException var8) {
+      } catch (IOException var7) {
          throw new RuntimeException();
       }
-   }
-
-   static {
-      __gl_m = new LoginPacket(14, 0);
-      __gl_f = new LoginPacket(15, 4);
-      __gl_q = new LoginPacket(16, -2);
-      __gl_w = new LoginPacket(18, -2);
-      __gl_o = new LoginPacket(27, 0);
-      __gl_g = new LoginPacket[32];
-      LoginPacket[] var0 = WorldMapIcon2.method300();
-
-      for(int var1 = 0; var1 < var0.length; ++var1) {
-         __gl_g[var0[var1].id] = var0[var1];
-      }
-
    }
 }

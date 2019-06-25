@@ -77,6 +77,20 @@ public abstract class AbstractFont extends Rasterizer2D {
    @Export("kerning")
    byte[] kerning;
 
+   static {
+      AbstractFont_strike = -1;
+      AbstractFont_underline = -1;
+      AbstractFont_previousShadow = -1;
+      AbstractFont_shadow = -1;
+      AbstractFont_previousColor = 0;
+      AbstractFont_color = 0;
+      AbstractFont_alpha = 256;
+      AbstractFont_justificationTotal = 0;
+      AbstractFont_justificationCurrent = 0;
+      AbstractFont_random = new Random();
+      AbstractFont_lines = new String[100];
+   }
+
    AbstractFont(byte[] var1, int[] var2, int[] var3, int[] var4, int[] var5, int[] var6, byte[][] var7) {
       this.pixels = new byte[256][];
       this.ascent = 0;
@@ -135,57 +149,57 @@ public abstract class AbstractFont extends Rasterizer2D {
             this.advances[var3] = var1[var2++] & 255;
          }
 
-         int[] var12 = new int[256];
+         int[] var10 = new int[256];
          int[] var4 = new int[256];
 
          int var5;
          for(var5 = 0; var5 < 256; ++var5) {
-            var12[var5] = var1[var2++] & 255;
+            var10[var5] = var1[var2++] & 255;
          }
 
          for(var5 = 0; var5 < 256; ++var5) {
             var4[var5] = var1[var2++] & 255;
          }
 
-         byte[][] var6 = new byte[256][];
+         byte[][] var11 = new byte[256][];
 
-         int var7;
-         for(int var8 = 0; var8 < 256; ++var8) {
-            var6[var8] = new byte[var12[var8]];
-            byte var9 = 0;
+         int var8;
+         for(int var6 = 0; var6 < 256; ++var6) {
+            var11[var6] = new byte[var10[var6]];
+            byte var7 = 0;
 
-            for(var7 = 0; var7 < var6[var8].length; ++var7) {
-               var9 += var1[var2++];
-               var6[var8][var7] = var9;
+            for(var8 = 0; var8 < var11[var6].length; ++var8) {
+               var7 += var1[var2++];
+               var11[var6][var8] = var7;
             }
          }
 
-         byte[][] var13 = new byte[256][];
+         byte[][] var12 = new byte[256][];
 
-         int var14;
-         for(var14 = 0; var14 < 256; ++var14) {
-            var13[var14] = new byte[var12[var14]];
-            byte var10 = 0;
+         int var13;
+         for(var13 = 0; var13 < 256; ++var13) {
+            var12[var13] = new byte[var10[var13]];
+            byte var14 = 0;
 
-            for(int var11 = 0; var11 < var13[var14].length; ++var11) {
-               var10 += var1[var2++];
-               var13[var14][var11] = var10;
+            for(int var9 = 0; var9 < var12[var13].length; ++var9) {
+               var14 += var1[var2++];
+               var12[var13][var9] = var14;
             }
          }
 
          this.kerning = new byte[65536];
 
-         for(var14 = 0; var14 < 256; ++var14) {
-            if(var14 != 32 && var14 != 160) {
-               for(var7 = 0; var7 < 256; ++var7) {
-                  if(var7 != 32 && var7 != 160) {
-                     this.kerning[var7 + (var14 << 8)] = (byte)method5658(var6, var13, var4, this.advances, var12, var14, var7);
+         for(var13 = 0; var13 < 256; ++var13) {
+            if(var13 != 32 && var13 != 160) {
+               for(var8 = 0; var8 < 256; ++var8) {
+                  if(var8 != 32 && var8 != 160) {
+                     this.kerning[var8 + (var13 << 8)] = (byte)method5658(var11, var12, var4, this.advances, var10, var13, var8);
                   }
                }
             }
          }
 
-         this.ascent = var4[32] + var12[32];
+         this.ascent = var4[32] + var10[32];
       }
 
    }
@@ -227,7 +241,7 @@ public abstract class AbstractFont extends Rasterizer2D {
                               int var8 = MouseHandler.method1085(var7.substring(4));
                               var4 += AbstractFont_modIconSprites[var8].width;
                               var3 = -1;
-                           } catch (Exception var9) {
+                           } catch (Exception var10) {
                               ;
                            }
                         }
@@ -311,7 +325,7 @@ public abstract class AbstractFont extends Rasterizer2D {
                         int var17 = MouseHandler.method1085(var16.substring(4));
                         var4 += AbstractFont_modIconSprites[var17].width;
                         var11 = 0;
-                     } catch (Exception var18) {
+                     } catch (Exception var20) {
                         ;
                      }
                   }
@@ -392,7 +406,6 @@ public abstract class AbstractFont extends Rasterizer2D {
          this.reset(var4, var5);
          this.draw0(var1, var2, var3);
       }
-
    }
 
    @ObfuscatedName("y")
@@ -403,7 +416,6 @@ public abstract class AbstractFont extends Rasterizer2D {
          AbstractFont_alpha = var6;
          this.draw0(var1, var2, var3);
       }
-
    }
 
    @ObfuscatedName("h")
@@ -413,7 +425,6 @@ public abstract class AbstractFont extends Rasterizer2D {
          this.reset(var4, var5);
          this.draw0(var1, var2 - this.stringWidth(var1), var3);
       }
-
    }
 
    @ObfuscatedName("b")
@@ -423,7 +434,6 @@ public abstract class AbstractFont extends Rasterizer2D {
          this.reset(var4, var5);
          this.draw0(var1, var2 - this.stringWidth(var1) / 2, var3);
       }
-
    }
 
    @ObfuscatedName("c")
@@ -500,7 +510,6 @@ public abstract class AbstractFont extends Rasterizer2D {
 
          this.drawWithOffsets0(var1, var2 - this.stringWidth(var1) / 2, var3, (int[])null, var7);
       }
-
    }
 
    @ObfuscatedName("v")
@@ -518,7 +527,6 @@ public abstract class AbstractFont extends Rasterizer2D {
 
          this.drawWithOffsets0(var1, var2 - this.stringWidth(var1) / 2, var3, var7, var8);
       }
-
    }
 
    @ObfuscatedName("ag")
@@ -539,7 +547,6 @@ public abstract class AbstractFont extends Rasterizer2D {
 
          this.drawWithOffsets0(var1, var2 - this.stringWidth(var1) / 2, var3, (int[])null, var10);
       }
-
    }
 
    @ObfuscatedName("aq")
@@ -561,7 +568,6 @@ public abstract class AbstractFont extends Rasterizer2D {
 
          this.drawWithOffsets0(var1, var2, var3, var7, (int[])null);
       }
-
    }
 
    @ObfuscatedName("aj")
@@ -649,26 +655,26 @@ public abstract class AbstractFont extends Rasterizer2D {
             if(var7 == '<') {
                var4 = var6;
             } else {
-               int var8;
+               int var9;
                if(var7 == '>' && var4 != -1) {
-                  String var9 = var1.substring(var4 + 1, var6);
+                  String var8 = var1.substring(var4 + 1, var6);
                   var4 = -1;
-                  if(var9.equals("lt")) {
+                  if(var8.equals("lt")) {
                      var7 = '<';
                   } else {
-                     if(!var9.equals("gt")) {
-                        if(var9.startsWith("img=")) {
+                     if(!var8.equals("gt")) {
+                        if(var8.startsWith("img=")) {
                            try {
-                              var8 = MouseHandler.method1085(var9.substring(4));
-                              IndexedSprite var13 = AbstractFont_modIconSprites[var8];
-                              var13.__q_496(var2, var3 + this.ascent - var13.height);
-                              var2 += var13.width;
+                              var9 = MouseHandler.method1085(var8.substring(4));
+                              IndexedSprite var10 = AbstractFont_modIconSprites[var9];
+                              var10.__q_496(var2, var3 + this.ascent - var10.height);
+                              var2 += var10.width;
                               var5 = -1;
-                           } catch (Exception var11) {
+                           } catch (Exception var14) {
                               ;
                            }
                         } else {
-                           this.decodeTag(var9);
+                           this.decodeTag(var8);
                         }
                         continue;
                      }
@@ -687,20 +693,20 @@ public abstract class AbstractFont extends Rasterizer2D {
                   }
 
                   int var12 = this.widths[var7];
-                  var8 = this.heights[var7];
+                  var9 = this.heights[var7];
                   if(var7 != ' ') {
                      if(AbstractFont_alpha == 256) {
                         if(AbstractFont_shadow != -1) {
-                           AbstractFont_drawGlyph(this.pixels[var7], var2 + this.leftBearings[var7] + 1, var3 + this.topBearings[var7] + 1, var12, var8, AbstractFont_shadow);
+                           AbstractFont_drawGlyph(this.pixels[var7], var2 + this.leftBearings[var7] + 1, var3 + this.topBearings[var7] + 1, var12, var9, AbstractFont_shadow);
                         }
 
-                        this.drawGlyph(this.pixels[var7], var2 + this.leftBearings[var7], var3 + this.topBearings[var7], var12, var8, AbstractFont_color);
+                        this.drawGlyph(this.pixels[var7], var2 + this.leftBearings[var7], var3 + this.topBearings[var7], var12, var9, AbstractFont_color);
                      } else {
                         if(AbstractFont_shadow != -1) {
-                           AbstractFont_drawGlyphAlpha(this.pixels[var7], var2 + this.leftBearings[var7] + 1, var3 + this.topBearings[var7] + 1, var12, var8, AbstractFont_shadow, AbstractFont_alpha);
+                           AbstractFont_drawGlyphAlpha(this.pixels[var7], var2 + this.leftBearings[var7] + 1, var3 + this.topBearings[var7] + 1, var12, var9, AbstractFont_shadow, AbstractFont_alpha);
                         }
 
-                        this.drawGlyphAlpha(this.pixels[var7], var2 + this.leftBearings[var7], var3 + this.topBearings[var7], var12, var8, AbstractFont_color, AbstractFont_alpha);
+                        this.drawGlyphAlpha(this.pixels[var7], var2 + this.leftBearings[var7], var3 + this.topBearings[var7], var12, var9, AbstractFont_color, AbstractFont_alpha);
                      }
                   } else if(AbstractFont_justificationTotal > 0) {
                      AbstractFont_justificationCurrent += AbstractFont_justificationTotal;
@@ -708,16 +714,16 @@ public abstract class AbstractFont extends Rasterizer2D {
                      AbstractFont_justificationCurrent &= 255;
                   }
 
-                  int var10 = this.advances[var7];
+                  int var13 = this.advances[var7];
                   if(AbstractFont_strike != -1) {
-                     Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + (int)((double)this.ascent * 0.7D), var10, AbstractFont_strike);
+                     Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + (int)((double)this.ascent * 0.7D), var13, AbstractFont_strike);
                   }
 
                   if(AbstractFont_underline != -1) {
-                     Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + this.ascent + 1, var10, AbstractFont_underline);
+                     Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + this.ascent + 1, var13, AbstractFont_underline);
                   }
 
-                  var2 += var10;
+                  var2 += var13;
                   var5 = var7;
                }
             }
@@ -740,41 +746,41 @@ public abstract class AbstractFont extends Rasterizer2D {
             if(var10 == '<') {
                var6 = var9;
             } else {
-               int var11;
                int var12;
                int var13;
+               int var14;
                if(var10 == '>' && var6 != -1) {
-                  String var14 = var1.substring(var6 + 1, var9);
+                  String var11 = var1.substring(var6 + 1, var9);
                   var6 = -1;
-                  if(var14.equals("lt")) {
+                  if(var11.equals("lt")) {
                      var10 = '<';
                   } else {
-                     if(!var14.equals("gt")) {
-                        if(var14.startsWith("img=")) {
+                     if(!var11.equals("gt")) {
+                        if(var11.startsWith("img=")) {
                            try {
                               if(var4 != null) {
-                                 var11 = var4[var8];
-                              } else {
-                                 var11 = 0;
-                              }
-
-                              if(var5 != null) {
-                                 var12 = var5[var8];
+                                 var12 = var4[var8];
                               } else {
                                  var12 = 0;
                               }
 
+                              if(var5 != null) {
+                                 var13 = var5[var8];
+                              } else {
+                                 var13 = 0;
+                              }
+
                               ++var8;
-                              var13 = MouseHandler.method1085(var14.substring(4));
-                              IndexedSprite var18 = AbstractFont_modIconSprites[var13];
-                              var18.__q_496(var11 + var2, var12 + (var3 + this.ascent - var18.height));
-                              var2 += var18.width;
+                              var14 = MouseHandler.method1085(var11.substring(4));
+                              IndexedSprite var15 = AbstractFont_modIconSprites[var14];
+                              var15.__q_496(var12 + var2, var13 + (var3 + this.ascent - var15.height));
+                              var2 += var15.width;
                               var7 = -1;
-                           } catch (Exception var16) {
+                           } catch (Exception var19) {
                               ;
                            }
                         } else {
-                           this.decodeTag(var14);
+                           this.decodeTag(var11);
                         }
                         continue;
                      }
@@ -793,33 +799,33 @@ public abstract class AbstractFont extends Rasterizer2D {
                   }
 
                   int var17 = this.widths[var10];
-                  var11 = this.heights[var10];
+                  var12 = this.heights[var10];
                   if(var4 != null) {
-                     var12 = var4[var8];
+                     var13 = var4[var8];
                   } else {
-                     var12 = 0;
+                     var13 = 0;
                   }
 
                   if(var5 != null) {
-                     var13 = var5[var8];
+                     var14 = var5[var8];
                   } else {
-                     var13 = 0;
+                     var14 = 0;
                   }
 
                   ++var8;
                   if(var10 != ' ') {
                      if(AbstractFont_alpha == 256) {
                         if(AbstractFont_shadow != -1) {
-                           AbstractFont_drawGlyph(this.pixels[var10], var12 + var2 + this.leftBearings[var10] + 1, var3 + var13 + this.topBearings[var10] + 1, var17, var11, AbstractFont_shadow);
+                           AbstractFont_drawGlyph(this.pixels[var10], var13 + var2 + this.leftBearings[var10] + 1, var3 + var14 + this.topBearings[var10] + 1, var17, var12, AbstractFont_shadow);
                         }
 
-                        this.drawGlyph(this.pixels[var10], var12 + var2 + this.leftBearings[var10], var3 + var13 + this.topBearings[var10], var17, var11, AbstractFont_color);
+                        this.drawGlyph(this.pixels[var10], var13 + var2 + this.leftBearings[var10], var3 + var14 + this.topBearings[var10], var17, var12, AbstractFont_color);
                      } else {
                         if(AbstractFont_shadow != -1) {
-                           AbstractFont_drawGlyphAlpha(this.pixels[var10], var12 + var2 + this.leftBearings[var10] + 1, var3 + var13 + this.topBearings[var10] + 1, var17, var11, AbstractFont_shadow, AbstractFont_alpha);
+                           AbstractFont_drawGlyphAlpha(this.pixels[var10], var13 + var2 + this.leftBearings[var10] + 1, var3 + var14 + this.topBearings[var10] + 1, var17, var12, AbstractFont_shadow, AbstractFont_alpha);
                         }
 
-                        this.drawGlyphAlpha(this.pixels[var10], var12 + var2 + this.leftBearings[var10], var3 + var13 + this.topBearings[var10], var17, var11, AbstractFont_color, AbstractFont_alpha);
+                        this.drawGlyphAlpha(this.pixels[var10], var13 + var2 + this.leftBearings[var10], var3 + var14 + this.topBearings[var10], var17, var12, AbstractFont_color, AbstractFont_alpha);
                      }
                   } else if(AbstractFont_justificationTotal > 0) {
                      AbstractFont_justificationCurrent += AbstractFont_justificationTotal;
@@ -827,16 +833,16 @@ public abstract class AbstractFont extends Rasterizer2D {
                      AbstractFont_justificationCurrent &= 255;
                   }
 
-                  int var15 = this.advances[var10];
+                  int var18 = this.advances[var10];
                   if(AbstractFont_strike != -1) {
-                     Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + (int)((double)this.ascent * 0.7D), var15, AbstractFont_strike);
+                     Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + (int)((double)this.ascent * 0.7D), var18, AbstractFont_strike);
                   }
 
                   if(AbstractFont_underline != -1) {
-                     Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + this.ascent, var15, AbstractFont_underline);
+                     Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + this.ascent, var18, AbstractFont_underline);
                   }
 
-                  var2 += var15;
+                  var2 += var18;
                   var7 = var10;
                }
             }
@@ -950,7 +956,6 @@ public abstract class AbstractFont extends Rasterizer2D {
       if(var3 > 0 && var4 > 0) {
          AbstractFont_placeGlyph(Rasterizer2D.Rasterizer2D_pixels, var0, var5, var9, var6, var3, var4, var7, var8);
       }
-
    }
 
    @ObfuscatedName("ak")
@@ -1041,7 +1046,6 @@ public abstract class AbstractFont extends Rasterizer2D {
       if(var3 > 0 && var4 > 0) {
          AbstractFont_placeGlyphAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var5, var10, var7, var3, var4, var8, var9, var6);
       }
-
    }
 
    @ObfuscatedName("al")
@@ -1064,19 +1068,5 @@ public abstract class AbstractFont extends Rasterizer2D {
          var3 += var8;
       }
 
-   }
-
-   static {
-      AbstractFont_strike = -1;
-      AbstractFont_underline = -1;
-      AbstractFont_previousShadow = -1;
-      AbstractFont_shadow = -1;
-      AbstractFont_previousColor = 0;
-      AbstractFont_color = 0;
-      AbstractFont_alpha = 256;
-      AbstractFont_justificationTotal = 0;
-      AbstractFont_justificationCurrent = 0;
-      AbstractFont_random = new Random();
-      AbstractFont_lines = new String[100];
    }
 }

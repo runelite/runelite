@@ -58,6 +58,19 @@ public class class190 {
    @Export("xteaKeys")
    static int[][] xteaKeys;
 
+   static {
+      field2346 = new class190(7);
+      field2352 = new class190(15);
+      field2342 = new class190(14);
+      field2341 = new class190(6);
+      field2344 = new class190(4);
+      field2345 = new class190(5);
+      field2350 = new class190(2);
+      field2347 = new class190(3);
+      field2343 = new class190(5);
+      field2349 = new class190(4);
+   }
+
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "7"
@@ -118,19 +131,5 @@ public class class190 {
          Rasterizer3D.method2985(var17, var19, var20);
          Rasterizer3D.method3020(var21, var23, var24, var17, var19, var20, var4);
       }
-
-   }
-
-   static {
-      field2346 = new class190(7);
-      field2352 = new class190(15);
-      field2342 = new class190(14);
-      field2341 = new class190(6);
-      field2344 = new class190(4);
-      field2345 = new class190(5);
-      field2350 = new class190(2);
-      field2347 = new class190(3);
-      field2343 = new class190(5);
-      field2349 = new class190(4);
    }
 }

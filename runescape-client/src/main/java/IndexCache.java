@@ -340,7 +340,7 @@ public class IndexCache extends AbstractIndexCache {
 
          for(var1 = 0; var1 < this.validArchives.length; ++var1) {
             if(super.recordCounts[var1] > 0) {
-               NPC.method2009(var1, this.indexStore, this);
+               Npc.method2009(var1, this.indexStore, this);
                this.__ac = var1;
             }
          }

@@ -716,6 +716,14 @@ public class Widget extends Node {
    @Export("__fz")
    public boolean __fz;
 
+   static {
+      widgetSpriteCache = new EvictingDualNodeHashTable(200);
+      Widget_cachedModels = new EvictingDualNodeHashTable(50);
+      Widget_cachedFonts = new EvictingDualNodeHashTable(20);
+      __ho_z = new EvictingDualNodeHashTable(8);
+      __ho_j = false;
+   }
+
    public Widget() {
       this.isIf3 = false;
       this.id = -1;
@@ -1294,7 +1302,7 @@ public class Widget extends Node {
          return null;
       } else {
          long var3 = ((this.spriteFlipV?1L:0L) << 38) + (long)var2 + ((long)this.outline << 36) + ((this.spriteFlipH?1L:0L) << 39) + ((long)this.spriteShadow << 40);
-         Sprite var5 = (Sprite)widgetSpriteCache.get(var3);
+         Sprite var5 = (Sprite) widgetSpriteCache.get(var3);
          if(var5 != null) {
             return var5;
          } else {
@@ -1374,7 +1382,7 @@ public class Widget extends Node {
          if(var2 == -1) {
             return null;
          } else {
-            Sprite var3 = (Sprite)widgetSpriteCache.get((long)var2);
+            Sprite var3 = (Sprite) widgetSpriteCache.get((long)var2);
             if(var3 != null) {
                return var3;
             } else {
@@ -1567,13 +1575,11 @@ public class Widget extends Node {
       var3.data = var1;
       var3.indexStore = var2;
       NodeDeque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-      NodeDeque var5 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
       synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
          IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFirst(var3);
       }
 
-      Object var10 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
-      Object var6 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
+      Object var9 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
       synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
          if(IndexStoreActionHandler.__iv_q == 0) {
             Frames.IndexStoreActionHandler_thread = new Thread(new IndexStoreActionHandler());
@@ -1584,13 +1590,5 @@ public class Widget extends Node {
 
          IndexStoreActionHandler.__iv_q = 600;
       }
-   }
-
-   static {
-      widgetSpriteCache = new EvictingDualNodeHashTable(200);
-      Widget_cachedModels = new EvictingDualNodeHashTable(50);
-      Widget_cachedFonts = new EvictingDualNodeHashTable(20);
-      __ho_z = new EvictingDualNodeHashTable(8);
-      __ho_j = false;
    }
 }

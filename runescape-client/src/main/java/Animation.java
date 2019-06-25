@@ -43,6 +43,13 @@ public class Animation {
    @Export("hasAlphaTransform")
    boolean hasAlphaTransform;
 
+   static {
+      __dz_m = new int[500];
+      __dz_f = new int[500];
+      __dz_q = new int[500];
+      __dz_w = new int[500];
+   }
+
    @ObfuscatedSignature(
       signature = "([BLek;)V"
    )
@@ -125,12 +132,5 @@ public class Animation {
          }
 
       }
-   }
-
-   static {
-      __dz_m = new int[500];
-      __dz_f = new int[500];
-      __dz_q = new int[500];
-      __dz_w = new int[500];
    }
 }
