@@ -173,20 +173,12 @@ public class MenuManager
 
 		final MenuEntry newestEntry = menuEntries[menuEntries.length - 1];
 
-		boolean isPrio = false;
 		for (ComparableEntry p : priorityEntries)
 		{
 			if (p.matches(newestEntry))
 			{
-				isPrio = true;
-				break;
+				currentPriorityEntries.add(newestEntry);
 			}
-		}
-
-		// If the last entry was a priority entry, keep track of it
-		if (isPrio)
-		{
-			currentPriorityEntries.add(newestEntry);
 		}
 
 		// Make a copy of the menu entries, cause you can't remove from Arrays.asList()
@@ -197,7 +189,29 @@ public class MenuManager
 		{
 			copy.retainAll(currentPriorityEntries);
 
-			copy.add(0, CANCEL());
+			// This is because players existing changes walk-here target
+			// so without this we lose track of em
+			if (copy.size() != currentPriorityEntries.size())
+			{
+				for (MenuEntry e : currentPriorityEntries)
+				{
+					if (copy.contains(e))
+					{
+						continue;
+					}
+
+					for (MenuEntry e2 : client.getMenuEntries())
+					{
+						if (e.getType() == e2.getType())
+						{
+							e.setTarget(e2.getTarget());
+							copy.add(e);
+						}
+					}
+				}
+			}
+
+			copy.add(CANCEL());
 		}
 
 		// Find the current entry in the swaps map

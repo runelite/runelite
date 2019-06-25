@@ -24,12 +24,16 @@
  */
 package net.runelite.api;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 /**
  * A menu entry in a right-click menu.
  */
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class MenuEntry
 {
 	/**

@@ -298,6 +298,7 @@ public interface RSClient extends RSGameShell, Client
 	boolean isCheckClick();
 
 	@Import("menuOptionsCount")
+	@Override
 	int getMenuOptionCount();
 
 	@Import("menuOptionsCount")
