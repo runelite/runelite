@@ -173,10 +173,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showBellowCharges",
-			name = "Show Bellow Charges",
-			description = "Configures if ogre bellow item charge is shown",
-			position = 12
+		keyName = "showBellowCharges",
+		name = "Show Bellow Charges",
+		description = "Configures if ogre bellow item charge is shown",
+		position = 12
 	)
 	default boolean showBellowCharges()
 	{
@@ -184,10 +184,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showBasketCharges",
-			name = "Show Basket Charges",
-			description = "Configures if fruit basket item charge is shown",
-			position = 13
+		keyName = "showBasketCharges",
+		name = "Show Basket Charges",
+		description = "Configures if fruit basket item charge is shown",
+		position = 13
 	)
 	default boolean showBasketCharges()
 	{
@@ -195,10 +195,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showSackCharges",
-			name = "Show Sack Charges",
-			description = "Configures if sack item charge is shown",
-			position = 14
+		keyName = "showSackCharges",
+		name = "Show Sack Charges",
+		description = "Configures if sack item charge is shown",
+		position = 14
 	)
 	default boolean showSackCharges()
 	{
@@ -206,10 +206,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showAbyssalBraceletCharges",
-			name = "Show Abyssal Bracelet Charges",
-			description = "Configures if abyssal bracelet item charge is shown",
-			position = 15
+		keyName = "showAbyssalBraceletCharges",
+		name = "Show Abyssal Bracelet Charges",
+		description = "Configures if abyssal bracelet item charge is shown",
+		position = 15
 	)
 	default boolean showAbyssalBraceletCharges()
 	{
