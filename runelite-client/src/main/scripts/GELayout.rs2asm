@@ -1,0 +1,101 @@
+.id                 806
+.int_stack_count    7
+.string_stack_count 0
+.int_var_count      9
+.string_var_count   0
+   iload                  6
+   invoke                 41
+   get_varbit             4439
+   iconst                 1
+   sub
+   istore                 7
+   iconst                 105
+   iconst                 118
+   iconst                 150
+   iload                  7
+   enum
+   istore                 8
+   iload                  8
+   iconst                 -1
+   if_icmpeq              LABEL16
+   jump                   LABEL37
+LABEL16:
+   iconst                 1
+   iload                  2
+   if_sethide
+   iconst                 0
+   iload                  3
+   if_sethide
+   iconst                 1
+   iload                  4
+   if_sethide
+   iconst                 1
+   iload                  5
+   if_sethide
+   iload                  0
+   iload                  1
+   cc_find
+   iconst                 1
+   if_icmpeq              LABEL34
+   jump                   LABEL36
+LABEL34:
+   sconst                 "Grand Exchange"
+   sconst                 "setGETitle"  ;
+   runelite_callback     ;
+   cc_settext
+LABEL36:
+   return
+LABEL37:
+   iconst                 0
+   iload                  2
+   if_sethide
+   iconst                 0
+   iload                  2
+   if_settrans
+   iload                  7
+   stockmarket_isofferempty
+   iconst                 1
+   if_icmpeq              LABEL48
+   jump                   LABEL66
+LABEL48:
+   iconst                 1
+   iload                  3
+   if_sethide
+   iconst                 1
+   iload                  4
+   if_sethide
+   iconst                 0
+   iload                  5
+   if_sethide
+   iload                  0
+   iload                  1
+   cc_find
+   iconst                 1
+   if_icmpeq              LABEL63
+   jump                   LABEL65
+LABEL63:
+   sconst                 "Grand Exchange: Set up offer"
+   cc_settext
+LABEL65:
+   return
+LABEL66:
+   iconst                 1
+   iload                  3
+   if_sethide
+   iconst                 0
+   iload                  4
+   if_sethide
+   iconst                 1
+   iload                  5
+   if_sethide
+   iload                  0
+   iload                  1
+   cc_find
+   iconst                 1
+   if_icmpeq              LABEL81
+   jump                   LABEL83
+LABEL81:
+   sconst                 "Grand Exchange: Offer status"
+   cc_settext
+LABEL83:
+   return
