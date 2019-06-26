@@ -349,7 +349,6 @@ public class DiscordPlugin extends Plugin
 	public void checkForValidStatus()
 	{
 		discordState.checkForTimeout();
-		discordState.checkForMenuTimeout();
 	}
 
 	private void updatePresence()
