@@ -53,7 +53,6 @@ public class HitSplatDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -1151968735
    )
-   @Export("surfaceOffsetY")
    public int __n;
    @ObfuscatedName("i")
    @ObfuscatedGetter(

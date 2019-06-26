@@ -133,6 +133,8 @@ class DevToolsPanel extends PluginPanel
 			}
 		});
 
+		container.add(plugin.getSoundEffects());
+
 		return container;
 	}
 }

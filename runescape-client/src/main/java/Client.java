@@ -296,8 +296,8 @@ public final class Client extends GameShell implements Usernamed {
    @Export("indexCacheLoaderIndex")
    static int indexCacheLoaderIndex;
    @ObfuscatedName("qn")
-   @Export("unknownSoundValues1")
-   static int[] unknownSoundValues1;
+   @Export("queuedSoundEffectLoops")
+   static int[] queuedSoundEffectLoops;
    @ObfuscatedName("qd")
    @Export("queuedSoundEffectDelays")
    static int[] queuedSoundEffectDelays;
@@ -380,8 +380,8 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -1352723865
    )
-   @Export("__client_qp")
-   static int __client_qp;
+   @Export("soundEffectVolume")
+   static int soundEffectVolume;
    @ObfuscatedName("rm")
    @Export("__client_rm")
    static short __client_rm;
@@ -1602,11 +1602,11 @@ public final class Client extends GameShell implements Usernamed {
       __client_qf = 255;
       __client_qy = -1;
       __client_qq = false;
-      __client_qp = 127;
+      soundEffectVolume = 127;
       __client_qc = 127;
       soundEffectCount = 0;
       soundEffectIds = new int[50];
-      unknownSoundValues1 = new int[50];
+      queuedSoundEffectLoops = new int[50];
 	  queuedSoundEffectDelays = new int[50];
       soundLocations = new int[50];
       soundEffects = new SoundEffect[50];
@@ -4803,8 +4803,8 @@ public final class Client extends GameShell implements Usernamed {
                      SoundEffect var16 = SoundEffect.readSoundEffect(class25.indexCache4, var15.soundEffectId, 0);
                      if(var16 != null) {
                         RawSound var17 = var16.toRawSound().resample(MilliClock.decimator);
-                        RawPcmStream var18 = RawPcmStream.method2497(var17, 100, var7);
-                        var18.__x_181(-1);
+                        RawPcmStream var18 = RawPcmStream.createRawPcmStream(var17, 100, var7);
+                        var18.setNumLoops(-1);
                         TaskHandler.pcmStreamMixer.addSubStream(var18);
                         var15.stream1 = var18;
                      }
@@ -4820,8 +4820,8 @@ public final class Client extends GameShell implements Usernamed {
                      SoundEffect var20 = SoundEffect.readSoundEffect(class25.indexCache4, var15.soundEffectIds[var8], 0);
                      if(var20 != null) {
                         RawSound var21 = var20.toRawSound().resample(MilliClock.decimator);
-                        RawPcmStream var19 = RawPcmStream.method2497(var21, 100, var7);
-                        var19.__x_181(0);
+                        RawPcmStream var19 = RawPcmStream.createRawPcmStream(var21, 100, var7);
+                        var19.setNumLoops(0);
                         TaskHandler.pcmStreamMixer.addSubStream(var19);
                         var15.stream2 = var19;
                         var15.__n = var15.__x + (int)(Math.random() * (double)(var15.__d - var15.__x));

@@ -50,7 +50,6 @@ public class MidiPcmStream extends PcmStream {
    @Export("__k")
    int[] __k;
    @ObfuscatedName("n")
-   @Export("surfaceOffsetY")
    int[] __n;
    @ObfuscatedName("y")
    @Export("__y")
@@ -435,7 +434,7 @@ public class MidiPcmStream extends PcmStream {
             }
 
             if(var9.__q[var2] < 0) {
-               var6.stream.__x_181(-1);
+               var6.stream.setNumLoops(-1);
             }
 
             if(var6.__o >= 0) {
