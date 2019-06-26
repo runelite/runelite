@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
@@ -46,6 +47,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_C
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea;
+import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdType;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -58,34 +60,45 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	private static final Pattern INITIAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*)");
 	private static final Pattern STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*), (.*) last time\\.");
 	private static final Pattern FINAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is visibly shaking.*");
-	private static final HotColdClue CLUE =
+	private static final HotColdClue MASTER_CLUE =
 		new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.",
 			"Jorral",
-			"Speak to Jorral to receive a strange device.");
+			"Speak to Jorral to receive a strange device.",
+			HotColdType.MASTER_CLUE);
+	private static final HotColdClue BEGINNER_CLUE =
+		new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Reldo may have a clue.",
+			"Reldo",
+			"Speak to Reldo to receive a strange device.",
+			HotColdType.BEGINNER_CLUE);
 
 	// list of potential places to dig
 	private List<HotColdLocation> digLocations = new ArrayList<>();
 	private final String text;
 	private final String npc;
 	private final String solution;
+	private final HotColdType type;
 	private WorldPoint location;
 	private WorldPoint lastWorldPoint;
 
 	public static HotColdClue forText(String text)
 	{
-		if (CLUE.text.equalsIgnoreCase(text))
+		if (MASTER_CLUE.text.equalsIgnoreCase(text))
 		{
-			return CLUE;
+			return MASTER_CLUE;
 		}
-
+		if (BEGINNER_CLUE.text.equalsIgnoreCase(text))
+		{
+			return BEGINNER_CLUE;
+		}
 		return null;
 	}
 
-	private HotColdClue(String text, String npc, String solution)
+	private HotColdClue(String text, String npc, String solution, HotColdType type)
 	{
 		this.text = text;
 		this.npc = npc;
 		this.solution = solution;
+		this.type = type;
 		setRequiresSpade(true);
 	}
 
@@ -292,7 +305,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 		if (digLocations.isEmpty())
 		{
-			digLocations.addAll(Arrays.asList(HotColdLocation.values()));
+			digLocations.addAll(Arrays.stream(HotColdLocation.values()).filter(location -> location.getType() == type).collect(Collectors.toList()));
 		}
 
 		int maxSquaresAway = 5000;
