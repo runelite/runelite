@@ -105,7 +105,7 @@ public class LootTrackerPlugin extends Plugin
 
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
-	private static final String LARRAN_LOOTED_PATTERN = "You have opened Larran's ([a-z]+) chest .*";
+	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's ([a-z]+) chest .*");
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = ImmutableMap.of(
 		5179, "Brimstone Chest",
 		11573, "Crystal Chest",
@@ -386,8 +386,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		final String message = event.getMessage();
-
-		if (message.equals(CHEST_LOOTED_MESSAGE) || message.matches(LARRAN_LOOTED_PATTERN))
+		if (message.equals(CHEST_LOOTED_MESSAGE) || LARRAN_LOOTED_PATTERN.matcher(message).matches())
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 			if (!CHEST_EVENT_TYPES.containsKey(regionID))
