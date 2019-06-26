@@ -5,19 +5,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("kc")
 public class class307 {
    @ObfuscatedName("m")
-   @Export("__kc_m")
    public static char[] __kc_m;
    @ObfuscatedName("f")
-   @Export("__kc_f")
    static char[] __kc_f;
    @ObfuscatedName("q")
-   @Export("__kc_q")
    static char[] __kc_q;
    @ObfuscatedName("w")
-   @Export("__kc_w")
    static int[] __kc_w;
    @ObfuscatedName("g")
-   @Export("__kc_g")
    static byte[][][] __kc_g;
    @ObfuscatedName("n")
    @ObfuscatedSignature(

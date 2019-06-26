@@ -23,7 +23,6 @@ public class IndexStoreActionHandler implements Runnable {
    @ObfuscatedGetter(
       intValue = -1282224505
    )
-   @Export("__iv_q")
    static int __iv_q;
    @ObfuscatedName("w")
    @Export("IndexStoreActionHandler_lock")

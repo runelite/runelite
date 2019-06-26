@@ -14,6 +14,7 @@ public class class16 {
    @ObfuscatedSignature(
       signature = "Lbp;"
    )
+   @Export("loginScreenRunesAnimation")
    static LoginScreenAnimation loginScreenRunesAnimation;
    @ObfuscatedName("dv")
    @ObfuscatedSignature(

@@ -9,7 +9,6 @@ public class class30 {
    @ObfuscatedGetter(
       intValue = -1555836449
    )
-   @Export("__ar_qw")
    static int __ar_qw;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -65,6 +64,7 @@ public class class30 {
       signature = "(B)V",
       garbageValue = "49"
    )
+   @Export("resetMenuEntries")
    static void resetMenuEntries() {
       Client.menuOptionsCount = 0;
       Client.isMenuOpen = false;

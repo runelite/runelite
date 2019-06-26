@@ -11,13 +11,11 @@ public class OverlayDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__jf_m")
    public static AbstractIndexCache __jf_m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("__jf_f")
    public static EvictingDualNodeHashTable __jf_f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
@@ -32,7 +30,6 @@ public class OverlayDefinition extends DualNode {
    @Export("texture")
    public int texture;
    @ObfuscatedName("o")
-   @Export("__o")
    public boolean __o;
    @ObfuscatedName("u")
    @ObfuscatedGetter(

@@ -24,7 +24,6 @@ public abstract class AbstractIndexCache {
    @ObfuscatedGetter(
       intValue = -244224193
    )
-   @Export("__ir_s")
    static int __ir_s;
    @ObfuscatedName("au")
    @Export("garbageCollector")
@@ -33,7 +32,6 @@ public abstract class AbstractIndexCache {
    @ObfuscatedGetter(
       intValue = 334735939
    )
-   @Export("__ir_bu")
    static int __ir_bu;
    @ObfuscatedName("di")
    @ObfuscatedSignature(
@@ -247,7 +245,6 @@ public abstract class AbstractIndexCache {
       signature = "(II)V",
       garbageValue = "2102142648"
    )
-   @Export("__f_392")
    void __f_392(int var1) {
    }
 
@@ -317,7 +314,6 @@ public abstract class AbstractIndexCache {
       signature = "(II)Z",
       garbageValue = "-1923759754"
    )
-   @Export("__u_393")
    public boolean __u_393(int var1) {
       if(this.records.length == 1) {
          return this.tryLoadRecord(0, var1);
@@ -348,7 +344,6 @@ public abstract class AbstractIndexCache {
       signature = "(I)Z",
       garbageValue = "1694975256"
    )
-   @Export("__l_394")
    public boolean __l_394() {
       boolean var1 = true;
 
@@ -447,7 +442,6 @@ public abstract class AbstractIndexCache {
       signature = "(IB)[I",
       garbageValue = "28"
    )
-   @Export("__j_395")
    public int[] __j_395(int var1) {
       return var1 >= 0 && var1 < this.recordIds.length?this.recordIds[var1]:null;
    }
@@ -457,7 +451,6 @@ public abstract class AbstractIndexCache {
       signature = "(II)I",
       garbageValue = "1178362496"
    )
-   @Export("__s_396")
    public int __s_396(int var1) {
       return this.records[var1].length;
    }
@@ -467,7 +460,6 @@ public abstract class AbstractIndexCache {
       signature = "(I)I",
       garbageValue = "1702434573"
    )
-   @Export("__t_397")
    public int __t_397() {
       return this.records.length;
    }
@@ -477,7 +469,6 @@ public abstract class AbstractIndexCache {
       signature = "(B)V",
       garbageValue = "38"
    )
-   @Export("__y_398")
    public void __y_398() {
       for(int var1 = 0; var1 < this.archives.length; ++var1) {
          this.archives[var1] = null;
@@ -490,7 +481,6 @@ public abstract class AbstractIndexCache {
       signature = "(II)V",
       garbageValue = "330258899"
    )
-   @Export("__h_399")
    public void __h_399(int var1) {
       for(int var2 = 0; var2 < this.records[var1].length; ++var2) {
          this.records[var1][var2] = null;
@@ -503,7 +493,6 @@ public abstract class AbstractIndexCache {
       signature = "(I)V",
       garbageValue = "-709581639"
    )
-   @Export("__b_400")
    public void __b_400() {
       for(int var1 = 0; var1 < this.records.length; ++var1) {
          if(this.records[var1] != null) {
@@ -640,7 +629,6 @@ public abstract class AbstractIndexCache {
       signature = "(Ljava/lang/String;Ljava/lang/String;B)Z",
       garbageValue = "68"
    )
-   @Export("__ag_401")
    public boolean __ag_401(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
@@ -698,7 +686,6 @@ public abstract class AbstractIndexCache {
       signature = "(Ljava/lang/String;B)V",
       garbageValue = "40"
    )
-   @Export("__ar_402")
    public void __ar_402(String var1) {
       var1 = var1.toLowerCase();
       int var2 = this.archiveNameHashTable.get(Client.hashString(var1));

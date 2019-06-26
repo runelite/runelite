@@ -11,16 +11,12 @@ public class class171 {
    @ObfuscatedGetter(
       intValue = -852697585
    )
-   @Export("__fo_ro")
    static int __fo_ro;
    @ObfuscatedName("m")
-   @Export("__fo_m")
    public static boolean __fo_m;
    @ObfuscatedName("f")
-   @Export("__fo_f")
    public static File __fo_f;
    @ObfuscatedName("q")
-   @Export("__fo_q")
    static Hashtable __fo_q;
 
    static {

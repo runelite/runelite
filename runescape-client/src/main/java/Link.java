@@ -10,13 +10,11 @@ public class Link {
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   @Export("__m")
    public Link __m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   @Export("__f")
    public Link __f;
 
    @ObfuscatedName("m")

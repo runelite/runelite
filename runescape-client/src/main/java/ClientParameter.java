@@ -16,121 +16,101 @@ public class ClientParameter {
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_m")
    static final ClientParameter __ji_m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_f")
    static final ClientParameter __ji_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_q")
    static final ClientParameter __ji_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_w")
    static final ClientParameter __ji_w;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_o")
    static final ClientParameter __ji_o;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_u")
    static final ClientParameter __ji_u;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_g")
    static final ClientParameter __ji_g;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_l")
    static final ClientParameter __ji_l;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_e")
    static final ClientParameter __ji_e;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_x")
    static final ClientParameter __ji_x;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_d")
    static final ClientParameter __ji_d;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_k")
    static final ClientParameter __ji_k;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_n")
    public static final ClientParameter __ji_n;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_i")
    public static final ClientParameter __ji_i;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_a")
    static final ClientParameter __ji_a;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_z")
    static final ClientParameter __ji_z;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_j")
    static final ClientParameter __ji_j;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_s")
    static final ClientParameter __ji_s;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Lji;"
    )
-   @Export("__ji_t")
    static final ClientParameter __ji_t;
    @ObfuscatedName("fp")
    @ObfuscatedSignature(
       signature = "Lfu;"
    )
-   @Export("__ji_fp")
    static AbstractSocket __ji_fp;
    @ObfuscatedName("y")
    @Export("id")

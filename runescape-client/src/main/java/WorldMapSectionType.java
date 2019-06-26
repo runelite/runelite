@@ -12,25 +12,21 @@ public enum WorldMapSectionType implements Enumerated {
    @ObfuscatedSignature(
       signature = "Lh;"
    )
-   @Export("__h_m")
   __h_m(1, (byte)0),
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lh;"
    )
-   @Export("__h_f")
    __h_f(0, (byte)1),
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lh;"
    )
-   @Export("__h_q")
    __h_q(3, (byte)2),
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lh;"
    )
-   @Export("__h_w")
    __h_w(2, (byte)3);
    @ObfuscatedName("e")
    @ObfuscatedSignature(
@@ -39,7 +35,6 @@ public enum WorldMapSectionType implements Enumerated {
    @Export("logoSprite")
    static IndexedSprite logoSprite;
    @ObfuscatedName("n")
-   @Export("__h_n")
    static int[] __h_n;
    @ObfuscatedName("gc")
    @ObfuscatedSignature(
@@ -67,6 +62,7 @@ public enum WorldMapSectionType implements Enumerated {
       signature = "(B)I",
       garbageValue = "83"
    )
+   @Export("rsOrdinal")
    public int rsOrdinal() {
       return this.id;
    }

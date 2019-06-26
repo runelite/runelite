@@ -11,25 +11,21 @@ public class Bounds {
    @ObfuscatedGetter(
       intValue = -2004088829
    )
-   @Export("__m")
    public int __m;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1887298731
    )
-   @Export("__f")
    public int __f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 2001187823
    )
-   @Export("__q")
    public int __q;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 1377856837
    )
-   @Export("__w")
    public int __w;
 
    public Bounds(int var1, int var2, int var3, int var4) {
@@ -46,7 +42,6 @@ public class Bounds {
       signature = "(IIB)V",
       garbageValue = "1"
    )
-   @Export("__m_487")
    public void __m_487(int var1, int var2) {
       this.__m = var1;
       this.__f = var2;
@@ -57,7 +52,6 @@ public class Bounds {
       signature = "(III)V",
       garbageValue = "-11269827"
    )
-   @Export("__f_488")
    public void __f_488(int var1, int var2) {
       this.__q = var1;
       this.__w = var2;
@@ -68,7 +62,6 @@ public class Bounds {
       signature = "(Lla;Lla;I)V",
       garbageValue = "-2123792170"
    )
-   @Export("__q_490")
    public void __q_490(Bounds var1, Bounds var2) {
       this.__w_491(var1, var2);
       this.__o_492(var1, var2);
@@ -79,7 +72,6 @@ public class Bounds {
       signature = "(Lla;Lla;I)V",
       garbageValue = "314675149"
    )
-   @Export("__w_491")
    void __w_491(Bounds var1, Bounds var2) {
       var2.__m = this.__m;
       var2.__q = this.__q;
@@ -103,7 +95,6 @@ public class Bounds {
       signature = "(Lla;Lla;S)V",
       garbageValue = "128"
    )
-   @Export("__o_492")
    void __o_492(Bounds var1, Bounds var2) {
       var2.__f = this.__f;
       var2.__w = this.__w;
@@ -127,7 +118,6 @@ public class Bounds {
       signature = "(I)I",
       garbageValue = "-1842151293"
    )
-   @Export("__u_493")
    int __u_493() {
       return this.__m + this.__q;
    }
@@ -137,12 +127,10 @@ public class Bounds {
       signature = "(B)I",
       garbageValue = "-22"
    )
-   @Export("__g_494")
    int __g_494() {
       return this.__f + this.__w;
    }
 
-   @Export("__toString_489")
    @ObfuscatedName("toString")
    public String __toString_489() {
       return null;

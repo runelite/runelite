@@ -55,7 +55,6 @@ public class IterableDualNodeQueue implements Iterable {
    @ObfuscatedSignature(
       signature = "()Lfn;"
    )
-   @Export("__q_448")
    public DualNode __q_448() {
       DualNode var1 = this.sentinel.previousDual;
       if(var1 == this.sentinel) {
@@ -70,7 +69,6 @@ public class IterableDualNodeQueue implements Iterable {
    @ObfuscatedSignature(
       signature = "()Lfn;"
    )
-   @Export("__w_449")
    public DualNode __w_449() {
       return this.__o_450((DualNode)null);
    }
@@ -79,7 +77,6 @@ public class IterableDualNodeQueue implements Iterable {
    @ObfuscatedSignature(
       signature = "(Lfn;)Lfn;"
    )
-   @Export("__o_450")
    DualNode __o_450(DualNode var1) {
       DualNode var2;
       if(var1 == null) {
@@ -101,7 +98,6 @@ public class IterableDualNodeQueue implements Iterable {
    @ObfuscatedSignature(
       signature = "()Lfn;"
    )
-   @Export("__u_451")
    public DualNode __u_451() {
       DualNode var1 = this.head;
       if(var1 == this.sentinel) {

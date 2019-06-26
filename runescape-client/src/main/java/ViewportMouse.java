@@ -29,25 +29,21 @@ public class ViewportMouse {
    @ObfuscatedGetter(
       intValue = 1135175963
    )
-   @Export("__dm_u")
    static int __dm_u;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 262104267
    )
-   @Export("__dm_g")
    static int __dm_g;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -2071972829
    )
-   @Export("__dm_l")
    static int __dm_l;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -852671813
    )
-   @Export("__dm_k")
    static int __dm_k;
    @ObfuscatedName("i")
    @ObfuscatedGetter(

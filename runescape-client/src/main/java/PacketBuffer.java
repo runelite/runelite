@@ -14,7 +14,6 @@ public final class PacketBuffer extends Buffer {
    @ObfuscatedGetter(
       intValue = 701739159
    )
-   @Export("__hx_z")
    public static int __hx_z;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
@@ -82,7 +81,6 @@ public final class PacketBuffer extends Buffer {
       signature = "(B)Z",
       garbageValue = "101"
    )
-   @Export("__ig_334")
    public boolean __ig_334() {
       int var1 = super.array[super.index] - this.isaacCipher0.__f_337() & 255;
       return var1 >= 128;
@@ -104,7 +102,6 @@ public final class PacketBuffer extends Buffer {
       signature = "([BIII)V",
       garbageValue = "-1168019189"
    )
-   @Export("__jb_335")
    public void __jb_335(byte[] var1, int var2, int var3) {
       for(int var4 = 0; var4 < var3; ++var4) {
          var1[var4 + var2] = (byte)(super.array[++super.index - 1] - this.isaacCipher0.__m_336());

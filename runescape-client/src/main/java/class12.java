@@ -9,7 +9,6 @@ final class class12 implements Comparator {
    @ObfuscatedSignature(
       signature = "Lho;"
    )
-   @Export("__n_n")
    static Widget __n_n;
 
    @ObfuscatedName("m")

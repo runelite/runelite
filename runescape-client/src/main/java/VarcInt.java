@@ -11,7 +11,6 @@ public class VarcInt extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__iw_m")
    static AbstractIndexCache __iw_m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
@@ -36,7 +35,6 @@ public class VarcInt extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "1023420886"
    )
-   @Export("__q_411")
    void __q_411(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
@@ -53,7 +51,6 @@ public class VarcInt extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-202810982"
    )
-   @Export("__w_412")
    void __w_412(Buffer var1, int var2) {
       if(var2 == 2) {
          this.persist = true;
@@ -76,6 +73,7 @@ public class VarcInt extends DualNode {
       signature = "(CI)Z",
       garbageValue = "1367119425"
    )
+   @Export("isAlphaNumeric")
    public static boolean isAlphaNumeric(char var0) {
       return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
    }

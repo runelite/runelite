@@ -113,19 +113,16 @@ public final class Tile extends Node {
    @ObfuscatedGetter(
       intValue = 1724493981
    )
-   @Export("__y")
    int __y;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = -172066661
    )
-   @Export("__h")
    int __h;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = 2030010491
    )
-   @Export("__b")
    int __b;
    @ObfuscatedName("c")
    @ObfuscatedSignature(

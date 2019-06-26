@@ -12,7 +12,6 @@ public class class60 {
    @Export("worldMap0")
    static WorldMap worldMap0;
    @ObfuscatedName("ar")
-   @Export("__bo_ar")
    static FontMetrics __bo_ar;
 
    @ObfuscatedName("m")

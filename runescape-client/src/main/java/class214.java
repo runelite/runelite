@@ -9,13 +9,11 @@ public class class214 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__hf_f")
    public static AbstractIndexCache __hf_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__hf_q")
    public static AbstractIndexCache __hf_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -27,16 +25,13 @@ public class class214 {
    @ObfuscatedGetter(
       intValue = -848833001
    )
-   @Export("__hf_o")
    public static int __hf_o;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__hf_u")
    public static AbstractIndexCache __hf_u;
    @ObfuscatedName("k")
-   @Export("__hf_k")
    static int[] __hf_k;
    @ObfuscatedName("ko")
    @ObfuscatedGetter(

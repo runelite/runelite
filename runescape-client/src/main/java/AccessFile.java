@@ -16,13 +16,11 @@ public final class AccessFile {
    @ObfuscatedGetter(
       intValue = -1762891465
    )
-   @Export("__dk_o")
    static int __dk_o;
    @ObfuscatedName("lm")
    @ObfuscatedSignature(
       signature = "Lho;"
    )
-   @Export("__dk_lm")
    static Widget __dk_lm;
    @ObfuscatedName("m")
    @Export("file")
@@ -142,7 +140,6 @@ public final class AccessFile {
       return var4;
    }
 
-   @Export("__finalize_211")
    @ObfuscatedName("finalize")
    protected void __finalize_211() throws Throwable {
       if(this.file != null) {
@@ -157,6 +154,7 @@ public final class AccessFile {
       signature = "(Lho;Ljv;IIZI)V",
       garbageValue = "-728558316"
    )
+   @Export("addWidgetItemMenuItem")
    static final void addWidgetItemMenuItem(Widget widget, ItemDefinition definition, int var2, int actionIndex, boolean shiftClick) {
       String[] var5 = definition.inventoryActions;
       byte opcode = -1;

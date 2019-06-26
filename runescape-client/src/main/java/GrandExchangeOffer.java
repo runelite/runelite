@@ -12,7 +12,6 @@ public class GrandExchangeOffer {
    @ObfuscatedGetter(
       intValue = -1286287981
    )
-   @Export("__x_rg")
    static int __x_rg;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
@@ -95,7 +94,6 @@ public class GrandExchangeOffer {
       signature = "(II)V",
       garbageValue = "1339285061"
    )
-   @Export("__o_9")
    void __o_9(int var1) {
       this.state &= -8;
       this.state = (byte)(this.state | var1 & 7);
@@ -106,7 +104,6 @@ public class GrandExchangeOffer {
       signature = "(II)V",
       garbageValue = "743094900"
    )
-   @Export("__u_10")
    void __u_10(int var1) {
       this.state &= -9;
       if(var1 == 1) {

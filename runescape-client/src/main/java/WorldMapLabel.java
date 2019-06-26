@@ -21,7 +21,6 @@ public class WorldMapLabel {
    @ObfuscatedGetter(
       intValue = -1536028937
    )
-   @Export("__aj_e")
    public static int __aj_e;
    @ObfuscatedName("m")
    @Export("text")
@@ -169,6 +168,7 @@ public class WorldMapLabel {
       signature = "(I)[Llq;",
       garbageValue = "-1374541046"
    )
+   @Export("createIndexedSpriteArray")
    public static IndexedSprite[] createIndexedSpriteArray() {
       IndexedSprite[] var0 = new IndexedSprite[class328.indexedSpriteCount];
 

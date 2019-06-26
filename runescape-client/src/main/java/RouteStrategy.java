@@ -13,27 +13,30 @@ public abstract class RouteStrategy
    @Export("Interpreter_intStackSize")
    static int Interpreter_intStackSize;
    @ObfuscatedName("e")
-   @Export("__fe_e")
    static byte[][][] __fe_e;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 123677543
    )
+   @Export("approxDestinationX")
    public int approxDestinationX;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -2126454535
    )
+   @Export("approxDestinationY")
    public int approxDestinationY;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1566880917
    )
+   @Export("approxDestinationSizeX")
    public int approxDestinationSizeX;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -2126101601
    )
+   @Export("approxDestinationSizeY")
    public int approxDestinationSizeY;
 
    @ObfuscatedName("m")
@@ -70,6 +73,7 @@ public abstract class RouteStrategy
       signature = "(Lir;II)Z",
       garbageValue = "-602741260"
    )
+   @Export("loadSpriteFlat")
    static boolean loadSpriteFlat(AbstractIndexCache var0, int var1) {
       byte[] var2 = var0.takeRecordFlat(var1);
       if(var2 == null) {

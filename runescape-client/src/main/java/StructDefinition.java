@@ -10,13 +10,11 @@ public class StructDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__jq_m")
    public static AbstractIndexCache __jq_m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("__jq_f")
    public static EvictingDualNodeHashTable __jq_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(

@@ -11,511 +11,426 @@ public class ServerPacket {
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_m")
    public static final ServerPacket __ge_m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_f")
    public static final ServerPacket __ge_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_q")
    public static final ServerPacket __ge_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_w")
    public static final ServerPacket __ge_w;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_o")
    public static final ServerPacket __ge_o;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_u")
    public static final ServerPacket __ge_u;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_g")
    public static final ServerPacket __ge_g;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_l")
    public static final ServerPacket __ge_l;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_e")
    public static final ServerPacket __ge_e;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_x")
    public static final ServerPacket __ge_x;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_d")
    public static final ServerPacket __ge_d;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_k")
    public static final ServerPacket __ge_k;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_n")
    public static final ServerPacket __ge_n;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_i")
    public static final ServerPacket __ge_i;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_a")
    public static final ServerPacket __ge_a;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_z")
    public static final ServerPacket __ge_z;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_j")
    public static final ServerPacket __ge_j;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_s")
    public static final ServerPacket __ge_s;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_t")
    public static final ServerPacket __ge_t;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_y")
    public static final ServerPacket __ge_y;
    @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_h")
    public static final ServerPacket __ge_h;
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_b")
    public static final ServerPacket __ge_b;
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_c")
    public static final ServerPacket __ge_c;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_r")
    public static final ServerPacket __ge_r;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_p")
    public static final ServerPacket __ge_p;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_v")
    public static final ServerPacket __ge_v;
    @ObfuscatedName("ag")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ag")
    public static final ServerPacket __ge_ag;
    @ObfuscatedName("aq")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_aq")
    public static final ServerPacket __ge_aq;
    @ObfuscatedName("aj")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_aj")
    public static final ServerPacket __ge_aj;
    @ObfuscatedName("av")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_av")
    public static final ServerPacket __ge_av;
    @ObfuscatedName("ar")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ar")
    public static final ServerPacket __ge_ar;
    @ObfuscatedName("ac")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ac")
    public static final ServerPacket __ge_ac;
    @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ay")
    public static final ServerPacket __ge_ay;
    @ObfuscatedName("ah")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ah")
    public static final ServerPacket __ge_ah;
    @ObfuscatedName("ak")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ak")
    public static final ServerPacket __ge_ak;
    @ObfuscatedName("aw")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_aw")
    public static final ServerPacket __ge_aw;
    @ObfuscatedName("al")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_al")
    public static final ServerPacket __ge_al;
    @ObfuscatedName("ab")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ab")
    public static final ServerPacket __ge_ab;
    @ObfuscatedName("ae")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ae")
    public static final ServerPacket __ge_ae;
    @ObfuscatedName("at")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_at")
    public static final ServerPacket __ge_at;
    @ObfuscatedName("ad")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ad")
    public static final ServerPacket __ge_ad;
    @ObfuscatedName("ap")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ap")
    public static final ServerPacket __ge_ap;
    @ObfuscatedName("as")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_as")
    public static final ServerPacket __ge_as;
    @ObfuscatedName("am")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_am")
    public static final ServerPacket __ge_am;
    @ObfuscatedName("an")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_an")
    public static final ServerPacket __ge_an;
    @ObfuscatedName("az")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_az")
    public static final ServerPacket __ge_az;
    @ObfuscatedName("au")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_au")
    public static final ServerPacket __ge_au;
    @ObfuscatedName("ao")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ao")
    public static final ServerPacket __ge_ao;
    @ObfuscatedName("aa")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_aa")
    public static final ServerPacket __ge_aa;
    @ObfuscatedName("ax")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ax")
    public static final ServerPacket __ge_ax;
    @ObfuscatedName("af")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_af")
    public static final ServerPacket __ge_af;
    @ObfuscatedName("ai")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ai")
    public static final ServerPacket __ge_ai;
    @ObfuscatedName("ba")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ba")
    public static final ServerPacket __ge_ba;
    @ObfuscatedName("bb")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bb")
    public static final ServerPacket __ge_bb;
    @ObfuscatedName("bs")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bs")
    public static final ServerPacket __ge_bs;
    @ObfuscatedName("bq")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bq")
    public static final ServerPacket __ge_bq;
    @ObfuscatedName("bn")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bn")
    public static final ServerPacket __ge_bn;
    @ObfuscatedName("bk")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bk")
    public static final ServerPacket __ge_bk;
    @ObfuscatedName("bd")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bd")
    public static final ServerPacket __ge_bd;
    @ObfuscatedName("bc")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bc")
    public static final ServerPacket __ge_bc;
    @ObfuscatedName("bo")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bo")
    public static final ServerPacket __ge_bo;
    @ObfuscatedName("bx")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bx")
    public static final ServerPacket __ge_bx;
    @ObfuscatedName("by")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_by")
    public static final ServerPacket __ge_by;
    @ObfuscatedName("bu")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bu")
    public static final ServerPacket __ge_bu;
    @ObfuscatedName("bm")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bm")
    public static final ServerPacket __ge_bm;
    @ObfuscatedName("bl")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bl")
    public static final ServerPacket __ge_bl;
    @ObfuscatedName("br")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_br")
    public static final ServerPacket __ge_br;
    @ObfuscatedName("bj")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bj")
    public static final ServerPacket __ge_bj;
    @ObfuscatedName("bi")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bi")
    public static final ServerPacket __ge_bi;
    @ObfuscatedName("bz")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bz")
    public static final ServerPacket __ge_bz;
    @ObfuscatedName("bg")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bg")
    public static final ServerPacket __ge_bg;
    @ObfuscatedName("bt")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bt")
    public static final ServerPacket __ge_bt;
    @ObfuscatedName("bp")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bp")
    public static final ServerPacket __ge_bp;
    @ObfuscatedName("bf")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bf")
    public static final ServerPacket __ge_bf;
    @ObfuscatedName("bh")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bh")
    public static final ServerPacket __ge_bh;
    @ObfuscatedName("be")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_be")
    public static final ServerPacket __ge_be;
    @ObfuscatedName("bv")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bv")
    public static final ServerPacket __ge_bv;
    @ObfuscatedName("bw")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_bw")
    public static final ServerPacket __ge_bw;
    @ObfuscatedName("cr")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_cr")
    public static final ServerPacket __ge_cr;
    @ObfuscatedName("cv")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_cv")
    public static final ServerPacket __ge_cv;
    @ObfuscatedName("ce")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_ce")
    public static final ServerPacket __ge_ce;
    @ObfuscatedName("cy")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_cy")
    public static final ServerPacket __ge_cy;
    @ObfuscatedName("cs")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_cs")
    public static final ServerPacket __ge_cs;
    @ObfuscatedName("cm")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_cm")
    public static final ServerPacket __ge_cm;
    @ObfuscatedName("cj")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__ge_cj")
    public static final ServerPacket __ge_cj;
    @ObfuscatedName("ix")
    @ObfuscatedGetter(
@@ -634,6 +549,7 @@ public class ServerPacket {
       signature = "(I)Llq;",
       garbageValue = "2048918805"
    )
+   @Export("createIndexedSprite")
    static IndexedSprite createIndexedSprite() {
       IndexedSprite var0 = new IndexedSprite();
       var0.width = class328.indexedSpriteWidth;

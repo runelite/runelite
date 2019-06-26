@@ -16,11 +16,13 @@ public class SoftWrapper extends Wrapper {
    }
 
    @ObfuscatedName("m")
+   @Export("get")
    Object get() {
       return this.ref.get();
    }
 
    @ObfuscatedName("f")
+   @Export("isSoft")
    boolean isSoft() {
       return true;
    }

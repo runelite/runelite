@@ -25,7 +25,6 @@ final class UnitPriceComparator implements Comparator {
       signature = "(Ll;Ll;I)I",
       garbageValue = "-120071238"
    )
-   @Export("__m_11")
    int __m_11(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.grandExchangeOffer.unitPrice < var2.grandExchangeOffer.unitPrice?-1:(var2.grandExchangeOffer.unitPrice == var1.grandExchangeOffer.unitPrice?0:1);
    }
@@ -36,7 +35,6 @@ final class UnitPriceComparator implements Comparator {
       return this.__m_11((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
-   @Export("__equals_13")
    @ObfuscatedName("equals")
    public boolean __equals_13(Object var1) {
       return super.equals(var1);

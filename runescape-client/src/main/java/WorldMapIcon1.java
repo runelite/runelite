@@ -12,7 +12,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
    @ObfuscatedSignature(
       signature = "Lho;"
    )
-   @Export("__t_i")
    static Widget __t_i;
    @ObfuscatedName("db")
    @ObfuscatedSignature(
@@ -33,7 +32,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = -1722323621
    )
-   @Export("__m")
    final int __m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
@@ -45,13 +43,11 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = 364253793
    )
-   @Export("__q")
    final int __q;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -362031241
    )
-   @Export("__w")
    final int __w;
 
    @ObfuscatedSignature(
@@ -78,7 +74,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "(I)I",
       garbageValue = "1990181988"
    )
-   @Export("__m_15")
    public int __m_15() {
       return this.__m;
    }
@@ -88,7 +83,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "(I)Laj;",
       garbageValue = "1159446036"
    )
-   @Export("__f_16")
    WorldMapLabel __f_16() {
       return this.label0;
    }
@@ -98,7 +92,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "(B)I",
       garbageValue = "75"
    )
-   @Export("__q_17")
    int __q_17() {
       return this.__q;
    }
@@ -108,7 +101,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "(I)I",
       garbageValue = "-1558233611"
    )
-   @Export("__w_18")
    int __w_18() {
       return this.__w;
    }

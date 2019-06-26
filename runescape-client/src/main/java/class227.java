@@ -5,7 +5,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hj")
 public class class227 {
    @ObfuscatedName("e")
-   @Export("__hj_e")
    public static short[] __hj_e;
 
    @ObfuscatedName("l")

@@ -15,13 +15,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Canvas")
 public final class Canvas extends java.awt.Canvas {
    @ObfuscatedName("s")
-   @Export("__ao_s")
    public static String[] __ao_s;
    @ObfuscatedName("gk")
    @ObfuscatedGetter(
       intValue = -1131782991
    )
-   @Export("__ao_gk")
    static int __ao_gk;
    @ObfuscatedName("jk")
    @ObfuscatedSignature(

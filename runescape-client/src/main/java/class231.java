@@ -125,10 +125,8 @@ public enum class231 implements Enumerated {
    @ObfuscatedGetter(
       intValue = -745071109
    )
-   @Export("__hb_sg")
    static int __hb_sg;
    @ObfuscatedName("av")
-   @Export("__hb_av")
    static java.awt.Font __hb_av;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
@@ -149,6 +147,7 @@ public enum class231 implements Enumerated {
       signature = "(B)I",
       garbageValue = "83"
    )
+   @Export("rsOrdinal")
    public int rsOrdinal() {
       return this.field2820;
    }

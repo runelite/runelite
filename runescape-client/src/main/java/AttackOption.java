@@ -34,10 +34,8 @@ public enum AttackOption implements Enumerated {
    @Export("AttackOption_hidden")
    AttackOption_hidden(3);
    @ObfuscatedName("sp")
-   @Export("__cj_sp")
    static short[] __cj_sp;
    @ObfuscatedName("ay")
-   @Export("__cj_ay")
    static String __cj_ay;
    @ObfuscatedName("bo")
    @ObfuscatedSignature(
@@ -61,6 +59,7 @@ public enum AttackOption implements Enumerated {
       signature = "(B)I",
       garbageValue = "83"
    )
+   @Export("rsOrdinal")
    public int rsOrdinal() {
       return this.id;
    }

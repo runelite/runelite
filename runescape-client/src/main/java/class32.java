@@ -5,7 +5,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ay")
 public class class32 {
    @ObfuscatedName("u")
-   @Export("__ay_u")
    static byte[][][] __ay_u;
    @ObfuscatedName("gj")
    @ObfuscatedSignature(

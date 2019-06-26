@@ -8,7 +8,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("WorldMapSection2")
 public class WorldMapSection2 implements WorldMapSection {
    @ObfuscatedName("l")
-   @Export("__ah_l")
    static int[] __ah_l;
    @ObfuscatedName("j")
    @Export("cacheDirectoryLocations")
@@ -17,37 +16,31 @@ public class WorldMapSection2 implements WorldMapSection {
    @ObfuscatedGetter(
       intValue = -1561552223
    )
-   @Export("__m")
    int __m;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -245382089
    )
-   @Export("__f")
    int __f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1024859679
    )
-   @Export("__q")
    int __q;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 40495485
    )
-   @Export("__w")
    int __w;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 982234927
    )
-   @Export("__o")
    int __o;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -1272330125
    )
-   @Export("__u")
    int __u;
 
    @ObfuscatedName("m")
@@ -55,6 +48,7 @@ public class WorldMapSection2 implements WorldMapSection {
       signature = "(Lag;I)V",
       garbageValue = "1384899025"
    )
+   @Export("expandBounds")
    public void expandBounds(WorldMapArea var1) {
       if(var1.minX0 > this.__o) {
          var1.minX0 = this.__o;
@@ -79,6 +73,7 @@ public class WorldMapSection2 implements WorldMapSection {
       signature = "(IIIB)Z",
       garbageValue = "93"
    )
+   @Export("containsCoord")
    public boolean containsCoord(int var1, int var2, int var3) {
       return var1 >= this.__m && var1 < this.__m + this.__f?var2 >> 6 == this.__q && var3 >> 6 == this.__w:false;
    }
@@ -88,6 +83,7 @@ public class WorldMapSection2 implements WorldMapSection {
       signature = "(IIB)Z",
       garbageValue = "4"
    )
+   @Export("containsPosition")
    public boolean containsPosition(int var1, int var2) {
       return var1 >> 6 == this.__o && var2 >> 6 == this.__u;
    }
@@ -97,6 +93,7 @@ public class WorldMapSection2 implements WorldMapSection {
       signature = "(IIII)[I",
       garbageValue = "1545934424"
    )
+   @Export("position")
    public int[] position(int var1, int var2, int var3) {
       if(!this.containsCoord(var1, var2, var3)) {
          return null;
@@ -111,6 +108,7 @@ public class WorldMapSection2 implements WorldMapSection {
       signature = "(III)Lhu;",
       garbageValue = "-1916486802"
    )
+   @Export("coord")
    public TileLocation coord(int var1, int var2) {
       if(!this.containsPosition(var1, var2)) {
          return null;
@@ -126,6 +124,7 @@ public class WorldMapSection2 implements WorldMapSection {
       signature = "(Lgr;B)V",
       garbageValue = "-113"
    )
+   @Export("read")
    public void read(Buffer var1) {
       this.__m = var1.readUnsignedByte();
       this.__f = var1.readUnsignedByte();
@@ -141,7 +140,6 @@ public class WorldMapSection2 implements WorldMapSection {
       signature = "(I)V",
       garbageValue = "-1602858772"
    )
-   @Export("__g_65")
    void __g_65() {
    }
 

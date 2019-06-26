@@ -8,7 +8,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Message")
 public class Message extends DualNode {
    @ObfuscatedName("i")
-   @Export("__bm_i")
    static int[] __bm_i;
    @ObfuscatedName("m")
    @ObfuscatedGetter(

@@ -16,13 +16,10 @@ public class PcmStreamMixer extends PcmStream {
    @ObfuscatedSignature(
       signature = "Lje;"
    )
-   @Export("__f")
    NodeDeque __f;
    @ObfuscatedName("q")
-   @Export("__q")
    int __q;
    @ObfuscatedName("o")
-   @Export("__o")
    int __o;
 
    public PcmStreamMixer() {
@@ -51,7 +48,6 @@ public class PcmStreamMixer extends PcmStream {
    }
 
    @ObfuscatedName("q")
-   @Export("__q_168")
    void __q_168() {
       if(this.__q > 0) {
          for(PcmStreamMixerListener var1 = (PcmStreamMixerListener)this.__f.last(); var1 != null; var1 = (PcmStreamMixerListener)this.__f.previous()) {
@@ -68,7 +64,6 @@ public class PcmStreamMixer extends PcmStream {
    @ObfuscatedSignature(
       signature = "(Lgw;Ldf;)V"
    )
-   @Export("__w_169")
    void __w_169(Node var1, PcmStreamMixerListener var2) {
       while(this.__f.sentinel != var1 && ((PcmStreamMixerListener)var1).__m <= var2.__m) {
          var1 = var1.previous;
@@ -82,7 +77,6 @@ public class PcmStreamMixer extends PcmStream {
    @ObfuscatedSignature(
       signature = "(Ldf;)V"
    )
-   @Export("__o_170")
    void __o_170(PcmStreamMixerListener var1) {
       var1.remove();
       var1.remove2();
@@ -114,13 +108,11 @@ public class PcmStreamMixer extends PcmStream {
    }
 
    @ObfuscatedName("l")
-   @Export("__l_171")
    protected int __l_171() {
       return 0;
    }
 
    @ObfuscatedName("e")
-   @Export("__e_172")
    public final synchronized void __e_172(int[] var1, int var2, int var3) {
       do {
          if(this.__o < 0) {
@@ -165,7 +157,6 @@ public class PcmStreamMixer extends PcmStream {
    }
 
    @ObfuscatedName("d")
-   @Export("__d_173")
    public final synchronized void __d_173(int var1) {
       do {
          if(this.__o < 0) {
