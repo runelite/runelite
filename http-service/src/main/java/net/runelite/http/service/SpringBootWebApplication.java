@@ -26,8 +26,6 @@ package net.runelite.http.service;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.google.common.base.Strings;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.HashMap;
@@ -157,12 +155,6 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	public Sql2o trackerSql2o(@Qualifier("runelite-tracker") DataSource dataSource)
 	{
 		return createSql2oFromDataSource(dataSource);
-	}
-
-	@Bean
-	public MongoClient mongoClient(@Value("${mongo.host}") String host)
-	{
-		return MongoClients.create(host);
 	}
 
 	private static DataSource getDataSource(DataSourceProperties dataSourceProperties)
