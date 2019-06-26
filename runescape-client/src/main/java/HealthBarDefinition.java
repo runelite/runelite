@@ -11,13 +11,11 @@ public class HealthBarDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__ii_m")
    public static AbstractIndexCache __ii_m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__ii_f")
    public static AbstractIndexCache __ii_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
@@ -41,7 +39,6 @@ public class HealthBarDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 1515955705
    )
-   @Export("__o")
    public int __o;
    @ObfuscatedName("l")
    @ObfuscatedGetter(

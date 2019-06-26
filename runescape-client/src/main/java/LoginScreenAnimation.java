@@ -15,6 +15,7 @@ public class LoginScreenAnimation
    @ObfuscatedSignature(
       signature = "[Llq;"
    )
+   @Export("sprites")
    IndexedSprite[] sprites;
    @ObfuscatedName("g")
    int[] field1015;

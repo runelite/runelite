@@ -17,7 +17,6 @@ public class WorldMapRegion {
    @ObfuscatedSignature(
       signature = "Lec;"
    )
-   @Export("__av_o")
    public static DemotingHashTable __av_o;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
@@ -37,19 +36,16 @@ public class WorldMapRegion {
    )
    class15 field239;
    @ObfuscatedName("e")
-   @Export("__e")
    LinkedList __e;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -120515153
    )
-   @Export("__x")
    int __x;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 415972873
    )
-   @Export("__d")
    int __d;
    @ObfuscatedName("k")
    @Export("iconsList")
@@ -80,7 +76,6 @@ public class WorldMapRegion {
       signature = "(IIIB)V",
       garbageValue = "-87"
    )
-   @Export("__w_40")
    void __w_40(int var1, int var2, int var3) {
       Sprite var4 = class13.method164(this.x, this.y, this.__d);
       if(var4 != null) {
@@ -109,7 +104,6 @@ public class WorldMapRegion {
       signature = "(Ljava/util/HashSet;Ljava/util/List;B)V",
       garbageValue = "-47"
    )
-   @Export("__u_41")
    void __u_41(HashSet var1, List var2) {
       this.iconsMap.clear();
       Iterator var3 = var1.iterator();
@@ -208,7 +202,6 @@ public class WorldMapRegion {
       signature = "(B)V",
       garbageValue = "5"
    )
-   @Export("__e_42")
    void __e_42() {
       Iterator var1 = this.iconsMap.values().iterator();
 
@@ -226,7 +219,6 @@ public class WorldMapRegion {
       signature = "(Ljava/util/List;I)V",
       garbageValue = "128876606"
    )
-   @Export("__x_43")
    void __x_43(List var1) {
       Iterator var2 = var1.iterator();
 
@@ -245,7 +237,6 @@ public class WorldMapRegion {
       signature = "(I)V",
       garbageValue = "1543354181"
    )
-   @Export("__d_44")
    void __d_44() {
       if(this.field239 != null) {
          this.field239.method282();
@@ -265,7 +256,6 @@ public class WorldMapRegion {
       signature = "(Lir;B)Z",
       garbageValue = "2"
    )
-   @Export("__a_45")
    boolean __a_45(AbstractIndexCache var1) {
       if(this.field239 != null) {
          this.field239.method263(var1);
@@ -343,7 +333,6 @@ public class WorldMapRegion {
       signature = "(IIILjava/util/HashSet;I)V",
       garbageValue = "893970699"
    )
-   @Export("__j_46")
    void __j_46(int var1, int var2, int var3, HashSet var4) {
       if(var4 == null) {
          var4 = new HashSet();
@@ -358,7 +347,6 @@ public class WorldMapRegion {
       signature = "(Ljava/util/HashSet;IIB)V",
       garbageValue = "-70"
    )
-   @Export("__s_47")
    void __s_47(HashSet var1, int var2, int var3) {
       Iterator var4 = this.iconsMap.values().iterator();
 
@@ -757,7 +745,6 @@ public class WorldMapRegion {
       signature = "(IILjava/util/HashSet;IB)V",
       garbageValue = "0"
    )
-   @Export("__aq_48")
    void __aq_48(int var1, int var2, HashSet var3, int var4) {
       float var5 = (float)var4 / 64.0F;
       float var6 = var5 / 2.0F;
@@ -786,7 +773,6 @@ public class WorldMapRegion {
       signature = "(Ljava/util/HashSet;III)V",
       garbageValue = "781854370"
    )
-   @Export("__aj_49")
    void __aj_49(HashSet var1, int var2, int var3) {
       Iterator var4 = this.iconsList.iterator();
 
@@ -807,7 +793,6 @@ public class WorldMapRegion {
       signature = "(Lic;IIIIB)V",
       garbageValue = "92"
    )
-   @Export("__av_50")
    void __av_50(WorldMapElement var1, int var2, int var3, int var4, int var5) {
       Sprite var6 = var1.getSprite(false);
       if(var6 != null) {
@@ -825,7 +810,6 @@ public class WorldMapRegion {
       signature = "(Lak;IIFI)V",
       garbageValue = "-1283733783"
    )
-   @Export("__ar_51")
    void __ar_51(AbstractWorldMapIcon var1, int var2, int var3, float var4) {
       WorldMapElement var5 = ViewportMouse.getWorldMapElement(var1.__m_15());
       this.__ac_52(var5, var2, var3);
@@ -837,7 +821,6 @@ public class WorldMapRegion {
       signature = "(Lic;III)V",
       garbageValue = "423173487"
    )
-   @Export("__ac_52")
    void __ac_52(WorldMapElement var1, int var2, int var3) {
       Sprite var4 = var1.getSprite(false);
       if(var4 != null) {
@@ -853,7 +836,6 @@ public class WorldMapRegion {
       signature = "(Lak;Lic;IIFI)V",
       garbageValue = "-1237576843"
    )
-   @Export("__ay_53")
    void __ay_53(AbstractWorldMapIcon var1, WorldMapElement var2, int var3, int var4, float var5) {
       WorldMapLabel var6 = var1.__f_16();
       if(var6 != null) {
@@ -869,7 +851,6 @@ public class WorldMapRegion {
       signature = "(IILjava/util/HashSet;IB)V",
       garbageValue = "-17"
    )
-   @Export("__ah_54")
    void __ah_54(int var1, int var2, HashSet var3, int var4) {
       float var5 = (float)var4 / 64.0F;
       Iterator var6 = this.iconsList.iterator();
@@ -926,7 +907,6 @@ public class WorldMapRegion {
       signature = "(II)Laj;",
       garbageValue = "598030754"
    )
-   @Export("__al_55")
    WorldMapLabel __al_55(int var1) {
       WorldMapElement var2 = ViewportMouse.getWorldMapElement(var1);
       return this.__ab_56(var2);
@@ -937,7 +917,6 @@ public class WorldMapRegion {
       signature = "(Lic;B)Laj;",
       garbageValue = "59"
    )
-   @Export("__ab_56")
    WorldMapLabel __ab_56(WorldMapElement var1) {
       if(var1.__l != null && this.fonts != null && this.fonts.get(WorldMapLabelSize.WorldMapLabelSize_small) != null) {
          WorldMapLabelSize var2 = WorldMapLabelSize.method195(var1.textSize);
@@ -976,7 +955,6 @@ public class WorldMapRegion {
       signature = "(IIIIII)Ljava/util/List;",
       garbageValue = "-1237576843"
    )
-   @Export("__ae_57")
    List __ae_57(int var1, int var2, int var3, int var4, int var5) {
       LinkedList var6 = new LinkedList();
       if(var4 >= var1 && var5 >= var2) {
@@ -1027,7 +1005,6 @@ public class WorldMapRegion {
       signature = "(IIIII)V",
       garbageValue = "-1516512827"
    )
-   @Export("__ad_58")
    void __ad_58(int var1, int var2, int var3, int var4) {
       var3 %= 4;
       if(var3 == 0) {

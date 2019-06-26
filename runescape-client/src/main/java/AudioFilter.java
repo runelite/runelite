@@ -7,28 +7,20 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("AudioFilter")
 public class AudioFilter {
    @ObfuscatedName("u")
-   @Export("__di_u")
    static float[][] __di_u;
    @ObfuscatedName("g")
-   @Export("__di_g")
    static int[][] __di_g;
    @ObfuscatedName("l")
-   @Export("__di_l")
    static float __di_l;
    @ObfuscatedName("e")
-   @Export("__di_e")
    static int __di_e;
    @ObfuscatedName("m")
-   @Export("__m")
    int[] __m;
    @ObfuscatedName("q")
-   @Export("__q")
    int[][][] __q;
    @ObfuscatedName("w")
-   @Export("__w")
    int[][][] __w;
    @ObfuscatedName("o")
-   @Export("__o")
    int[] __o;
 
    static {
@@ -44,7 +36,6 @@ public class AudioFilter {
    }
 
    @ObfuscatedName("m")
-   @Export("__m_205")
    float __m_205(int var1, int var2, float var3) {
       float var4 = (float)this.__w[var1][0][var2] + var3 * (float)(this.__w[var1][1][var2] - this.__w[var1][0][var2]);
       var4 *= 0.0015258789F;
@@ -52,7 +43,6 @@ public class AudioFilter {
    }
 
    @ObfuscatedName("q")
-   @Export("__q_206")
    float __q_206(int var1, int var2, float var3) {
       float var4 = (float)this.__q[var1][0][var2] + var3 * (float)(this.__q[var1][1][var2] - this.__q[var1][0][var2]);
       var4 *= 1.2207031E-4F;
@@ -60,7 +50,6 @@ public class AudioFilter {
    }
 
    @ObfuscatedName("w")
-   @Export("__w_207")
    int __w_207(int var1, float var2) {
       float var3;
       if(var1 == 0) {
@@ -111,7 +100,6 @@ public class AudioFilter {
    @ObfuscatedSignature(
       signature = "(Lgr;Lde;)V"
    )
-   @Export("__o_208")
    final void __o_208(Buffer var1, SoundEnvelope var2) {
       int var3 = var1.readUnsignedByte();
       this.__m[0] = var3 >> 4;

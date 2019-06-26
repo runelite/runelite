@@ -11,7 +11,6 @@ public class InvDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("__ib_f")
    static EvictingDualNodeHashTable __ib_f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(

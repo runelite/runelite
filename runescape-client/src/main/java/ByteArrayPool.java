@@ -35,7 +35,6 @@ public class ByteArrayPool {
    @Export("ByteArrayPool_large")
    static byte[][] ByteArrayPool_large;
    @ObfuscatedName("g")
-   @Export("__gi_g")
    static int[] __gi_g;
    @ObfuscatedName("dz")
    @ObfuscatedSignature(

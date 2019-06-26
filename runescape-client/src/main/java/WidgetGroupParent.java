@@ -17,7 +17,6 @@ public class WidgetGroupParent extends Node {
    @ObfuscatedGetter(
       intValue = -992379173
    )
-   @Export("__bx_o")
    static int __bx_o;
    @ObfuscatedName("m")
    @ObfuscatedGetter(

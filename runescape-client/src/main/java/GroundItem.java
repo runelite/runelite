@@ -25,6 +25,7 @@ public final class GroundItem extends Entity {
       signature = "(I)Ldu;",
       garbageValue = "-2134947096"
    )
+   @Export("getModel")
    protected final Model getModel() {
       return Skills.getItemDefinition(this.id).getModel(this.quantity);
    }

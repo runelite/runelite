@@ -23,7 +23,6 @@ public class PcmPlayer {
    @ObfuscatedGetter(
       intValue = 1125788887
    )
-   @Export("__z")
    int __z;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
@@ -47,7 +46,6 @@ public class PcmPlayer {
    @ObfuscatedGetter(
       intValue = 1907203055
    )
-   @Export("__y")
    int __y;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
@@ -59,13 +57,11 @@ public class PcmPlayer {
    @ObfuscatedGetter(
       intValue = 48658021
    )
-   @Export("__b")
    int __b;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = 1624619697
    )
-   @Export("__c")
    int __c;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
@@ -77,28 +73,23 @@ public class PcmPlayer {
    @ObfuscatedGetter(
       longValue = -8188447292076890879L
    )
-   @Export("__p")
    long __p;
    @ObfuscatedName("v")
-   @Export("__v")
    boolean __v;
    @ObfuscatedName("ac")
    @ObfuscatedGetter(
       intValue = -645495803
    )
-   @Export("__ac")
    int __ac;
    @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "[Ldc;"
    )
-   @Export("__ay")
    PcmStream[] __ay;
    @ObfuscatedName("ah")
    @ObfuscatedSignature(
       signature = "[Ldc;"
    )
-   @Export("__ah")
    PcmStream[] __ah;
 
    protected PcmPlayer() {
@@ -120,6 +111,7 @@ public class PcmPlayer {
       signature = "(I)V",
       garbageValue = "949670609"
    )
+   @Export("init")
    protected void init() throws Exception {
    }
 
@@ -128,6 +120,7 @@ public class PcmPlayer {
       signature = "(II)V",
       garbageValue = "-1738349775"
    )
+   @Export("open")
    protected void open(int var1) throws Exception {
    }
 
@@ -136,11 +129,13 @@ public class PcmPlayer {
       signature = "(B)I",
       garbageValue = "0"
    )
+   @Export("position")
    protected int position() throws Exception {
       return this.capacity;
    }
 
    @ObfuscatedName("w")
+   @Export("write")
    protected void write() throws Exception {
    }
 
@@ -149,6 +144,7 @@ public class PcmPlayer {
       signature = "(I)V",
       garbageValue = "244995961"
    )
+   @Export("close")
    protected void close() {
    }
 
@@ -157,6 +153,7 @@ public class PcmPlayer {
       signature = "(I)V",
       garbageValue = "-191421600"
    )
+   @Export("discard")
    protected void discard() throws Exception {
    }
 
@@ -268,7 +265,6 @@ public class PcmPlayer {
       signature = "(I)V",
       garbageValue = "-922069005"
    )
-   @Export("__ac_176")
    public final void __ac_176() {
       this.__v = true;
    }
@@ -459,7 +455,6 @@ public class PcmPlayer {
       signature = "(Ldc;II)V",
       garbageValue = "-1884182540"
    )
-   @Export("__ab_177")
    final void __ab_177(PcmStream var1, int var2) {
       int var3 = var2 >> 5;
       PcmStream var4 = this.__ah[var3];

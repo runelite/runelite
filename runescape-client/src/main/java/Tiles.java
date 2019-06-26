@@ -20,43 +20,32 @@ public final class Tiles {
    @Export("Tiles_minPlane")
    static int Tiles_minPlane;
    @ObfuscatedName("w")
-   @Export("__bq_w")
    static byte[][][] __bq_w;
    @ObfuscatedName("l")
-   @Export("__bq_l")
    static byte[][][] __bq_l;
    @ObfuscatedName("a")
-   @Export("__bq_a")
    static int[][][] __bq_a;
    @ObfuscatedName("t")
-   @Export("__bq_t")
    static final int[] __bq_t;
    @ObfuscatedName("y")
-   @Export("__bq_y")
    static final int[] __bq_y;
    @ObfuscatedName("h")
-   @Export("__bq_h")
    static final int[] __bq_h;
    @ObfuscatedName("b")
-   @Export("__bq_b")
    static final int[] __bq_b;
    @ObfuscatedName("c")
-   @Export("__bq_c")
    static final int[] __bq_c;
    @ObfuscatedName("r")
-   @Export("__bq_r")
    static final int[] __bq_r;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -2142579405
    )
-   @Export("__bq_p")
    static int __bq_p;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 834543729
    )
-   @Export("__bq_v")
    static int __bq_v;
 
    static {
@@ -93,6 +82,7 @@ public final class Tiles {
       signature = "(Ljava/lang/String;Ljava/lang/String;IIIII)V",
       garbageValue = "-1525245246"
    )
+   @Export("insertMenuItemNoShift")
    public static final void insertMenuItemNoShift(String var0, String var1, int var2, int var3, int var4, int var5) {
       class16.insertMenuItem(var0, var1, var2, var3, var4, var5, false);
    }

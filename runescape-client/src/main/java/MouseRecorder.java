@@ -17,7 +17,6 @@ public class MouseRecorder implements Runnable {
    @ObfuscatedGetter(
       intValue = 1075569245
    )
-   @Export("__bu_hy")
    static int __bu_hy;
    @ObfuscatedName("m")
    @Export("isRunning")

@@ -5,16 +5,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("gx")
 public class class204 {
    @ObfuscatedName("x")
-   @Export("__gx_x")
    static final int[] __gx_x;
    @ObfuscatedName("d")
-   @Export("__gx_d")
    static final int[] __gx_d;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lkk;"
    )
-   @Export("__gx_n")
    public static Font __gx_n;
 
    static {

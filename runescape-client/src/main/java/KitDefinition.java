@@ -17,13 +17,11 @@ public class KitDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__im_f")
    public static AbstractIndexCache __im_f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 235389995
    )
-   @Export("__im_q")
    public static int __im_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -35,10 +33,8 @@ public class KitDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 1619779051
    )
-   @Export("__o")
    public int __o;
    @ObfuscatedName("u")
-   @Export("__u")
    int[] __u;
    @ObfuscatedName("g")
    @Export("recolorFrom")
@@ -56,7 +52,6 @@ public class KitDefinition extends DualNode {
    @Export("archives")
    int[] archives;
    @ObfuscatedName("k")
-   @Export("__k")
    public boolean __k;
 
    static {
@@ -137,7 +132,6 @@ public class KitDefinition extends DualNode {
       signature = "(I)Z",
       garbageValue = "-1250940659"
    )
-   @Export("__w_413")
    public boolean __w_413() {
       if(this.__u == null) {
          return true;
@@ -159,7 +153,6 @@ public class KitDefinition extends DualNode {
       signature = "(B)Ldw;",
       garbageValue = "0"
    )
-   @Export("__o_414")
    public ModelData __o_414() {
       if(this.__u == null) {
          return null;
@@ -199,7 +192,6 @@ public class KitDefinition extends DualNode {
       signature = "(I)Z",
       garbageValue = "742548471"
    )
-   @Export("__u_415")
    public boolean __u_415() {
       boolean var1 = true;
 
@@ -217,7 +209,6 @@ public class KitDefinition extends DualNode {
       signature = "(B)Ldw;",
       garbageValue = "-56"
    )
-   @Export("__g_416")
    public ModelData __g_416() {
       ModelData[] var1 = new ModelData[5];
       int var2 = 0;

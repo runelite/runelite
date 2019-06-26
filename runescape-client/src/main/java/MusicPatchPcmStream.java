@@ -11,7 +11,6 @@ public class MusicPatchPcmStream extends PcmStream {
    @ObfuscatedGetter(
       intValue = -1367955455
    )
-   @Export("__hq_qg")
    static int __hq_qg;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -46,7 +45,6 @@ public class MusicPatchPcmStream extends PcmStream {
       signature = "(Lha;[IIIII)V",
       garbageValue = "1988628167"
    )
-   @Export("__m_379")
    void __m_379(MusicPatchNode var1, int[] var2, int var3, int var4, int var5) {
       if((this.superStream.__y[var1.__m] & 4) != 0 && var1.__a < 0) {
          int var6 = this.superStream.__p[var1.__m] / class309.PcmPlayer_sampleRate;
@@ -97,7 +95,6 @@ public class MusicPatchPcmStream extends PcmStream {
       signature = "(Lha;II)V",
       garbageValue = "1882591412"
    )
-   @Export("__f_380")
    void __f_380(MusicPatchNode var1, int var2) {
       if((this.superStream.__y[var1.__m] & 4) != 0 && var1.__a < 0) {
          int var3 = this.superStream.__p[var1.__m] / class309.PcmPlayer_sampleRate;
@@ -126,6 +123,7 @@ public class MusicPatchPcmStream extends PcmStream {
    @ObfuscatedSignature(
       signature = "()Ldc;"
    )
+   @Export("firstSubStream")
    protected PcmStream firstSubStream() {
       MusicPatchNode var1 = (MusicPatchNode)this.queue.last();
       return (PcmStream)(var1 == null?null:(var1.stream != null?var1.stream:this.nextSubStream()));
@@ -135,6 +133,7 @@ public class MusicPatchPcmStream extends PcmStream {
    @ObfuscatedSignature(
       signature = "()Ldc;"
    )
+   @Export("nextSubStream")
    protected PcmStream nextSubStream() {
       MusicPatchNode var1;
       do {

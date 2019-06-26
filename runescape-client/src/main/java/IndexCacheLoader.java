@@ -19,13 +19,11 @@ public class IndexCacheLoader {
    @Export("titlebuttonSprite")
    static IndexedSprite titlebuttonSprite;
    @ObfuscatedName("x")
-   @Export("__bd_x")
    public static short[][] __bd_x;
    @ObfuscatedName("er")
    @ObfuscatedGetter(
       intValue = 636454135
    )
-   @Export("__bd_er")
    static int __bd_er;
    @ObfuscatedName("gw")
    @Export("regionMapArchiveIds")
@@ -40,13 +38,11 @@ public class IndexCacheLoader {
    @ObfuscatedGetter(
       intValue = 1459455501
    )
-   @Export("__q")
    final int __q;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 782003089
    )
-   @Export("__w")
    int __w;
 
    @ObfuscatedSignature(
@@ -63,7 +59,6 @@ public class IndexCacheLoader {
       signature = "(I)Z",
       garbageValue = "1352221725"
    )
-   @Export("__m_122")
    boolean __m_122() {
       this.__w = 0;
 

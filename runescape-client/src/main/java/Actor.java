@@ -23,10 +23,8 @@ public abstract class Actor extends Entity {
    @ObfuscatedGetter(
       intValue = 1439711403
    )
-   @Export("__ac")
    int __ac;
    @ObfuscatedName("ay")
-   @Export("__ay")
    boolean __ay;
    @ObfuscatedName("ah")
    @ObfuscatedGetter(
@@ -95,7 +93,6 @@ public abstract class Actor extends Entity {
    @Export("isAutoChatting")
    boolean isAutoChatting;
    @ObfuscatedName("az")
-   @Export("__az")
    boolean __az;
    @ObfuscatedName("au")
    @ObfuscatedGetter(
@@ -152,7 +149,6 @@ public abstract class Actor extends Entity {
    @ObfuscatedGetter(
       intValue = 139384875
    )
-   @Export("__bc")
    int __bc;
    @ObfuscatedName("bo")
    @ObfuscatedGetter(
@@ -200,7 +196,6 @@ public abstract class Actor extends Entity {
    @ObfuscatedGetter(
       intValue = -1523249259
    )
-   @Export("__bj")
    int __bj;
    @ObfuscatedName("bi")
    @ObfuscatedGetter(
@@ -224,7 +219,6 @@ public abstract class Actor extends Entity {
    @ObfuscatedGetter(
       intValue = 886371765
    )
-   @Export("__bt")
    int __bt;
    @ObfuscatedName("bp")
    @ObfuscatedGetter(
@@ -236,43 +230,36 @@ public abstract class Actor extends Entity {
    @ObfuscatedGetter(
       intValue = 2121599561
    )
-   @Export("__bf")
    int __bf;
    @ObfuscatedName("bh")
    @ObfuscatedGetter(
       intValue = 280591281
    )
-   @Export("__bh")
    int __bh;
    @ObfuscatedName("be")
    @ObfuscatedGetter(
       intValue = 837989037
    )
-   @Export("__be")
    int __be;
    @ObfuscatedName("bv")
    @ObfuscatedGetter(
       intValue = -1857513783
    )
-   @Export("__bv")
    int __bv;
    @ObfuscatedName("bw")
    @ObfuscatedGetter(
       intValue = -1630403001
    )
-   @Export("__bw")
    int __bw;
    @ObfuscatedName("cr")
    @ObfuscatedGetter(
       intValue = 1367256299
    )
-   @Export("__cr")
    int __cr;
    @ObfuscatedName("cv")
    @ObfuscatedGetter(
       intValue = -1723834619
    )
-   @Export("__cv")
    int __cv;
    @ObfuscatedName("ce")
    @ObfuscatedGetter(
@@ -296,13 +283,11 @@ public abstract class Actor extends Entity {
    @ObfuscatedGetter(
       intValue = 1252341007
    )
-   @Export("__cm")
    int __cm;
    @ObfuscatedName("cj")
    @ObfuscatedGetter(
       intValue = -336931157
    )
-   @Export("__cj")
    int __cj;
    @ObfuscatedName("cu")
    @ObfuscatedGetter(
@@ -323,13 +308,11 @@ public abstract class Actor extends Entity {
    @ObfuscatedGetter(
       intValue = -1583514013
    )
-   @Export("__cq")
    int __cq;
    @ObfuscatedName("ch")
    @ObfuscatedGetter(
       intValue = 1584102533
    )
-   @Export("__ch")
    int __ch;
 
    Actor() {
@@ -386,6 +369,7 @@ public abstract class Actor extends Entity {
       signature = "(B)Z",
       garbageValue = "1"
    )
+   @Export("isVisible")
    boolean isVisible() {
       return false;
    }
@@ -395,7 +379,6 @@ public abstract class Actor extends Entity {
       signature = "(I)V",
       garbageValue = "1415393262"
    )
-   @Export("__bb_143")
    final void __bb_143() {
       this.pathLength = 0;
       this.__ch = 0;

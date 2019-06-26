@@ -6,10 +6,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ce")
 public class class80 {
    @ObfuscatedName("o")
-   @Export("__ce_o")
    static final BigInteger __ce_o;
    @ObfuscatedName("u")
-   @Export("__ce_u")
    static final BigInteger __ce_u;
 
    static {

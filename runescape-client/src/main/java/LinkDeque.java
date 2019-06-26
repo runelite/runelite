@@ -10,13 +10,11 @@ public class LinkDeque {
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   @Export("__m")
    Link __m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   @Export("__f")
    Link __f;
 
    public LinkDeque() {
@@ -29,7 +27,6 @@ public class LinkDeque {
    @ObfuscatedSignature(
       signature = "(Lgh;)V"
    )
-   @Export("__m_437")
    public void __m_437(Link var1) {
       if(var1.__f != null) {
          var1.remove();
@@ -45,7 +42,6 @@ public class LinkDeque {
    @ObfuscatedSignature(
       signature = "()Lgh;"
    )
-   @Export("__f_438")
    public Link __f_438() {
       Link var1 = this.__m.__m;
       if(var1 == this.__m) {
@@ -61,7 +57,6 @@ public class LinkDeque {
    @ObfuscatedSignature(
       signature = "()Lgh;"
    )
-   @Export("__q_439")
    public Link __q_439() {
       Link var1 = this.__f;
       if(var1 == this.__m) {

@@ -11,25 +11,21 @@ public class ServerBuild {
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   @Export("__iy_m")
    public static final ServerBuild __iy_m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   @Export("__iy_f")
    public static final ServerBuild __iy_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   @Export("__iy_q")
    public static final ServerBuild __iy_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   @Export("__iy_w")
    public static final ServerBuild __iy_w;
    @ObfuscatedName("bx")
    @Export("worldsUrl")
@@ -38,7 +34,6 @@ public class ServerBuild {
    @ObfuscatedGetter(
       intValue = -365366303
    )
-   @Export("__iy_lo")
    static int __iy_lo;
    @ObfuscatedName("o")
    @Export("name")

@@ -9,7 +9,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Login")
 public class Login {
    @ObfuscatedName("f")
-   @Export("__cu_f")
    static boolean __cu_f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
@@ -60,13 +59,11 @@ public class Login {
    @ObfuscatedGetter(
       intValue = 1077910071
    )
-   @Export("__cu_aj")
    static int __cu_aj;
    @ObfuscatedName("ac")
    @ObfuscatedGetter(
       intValue = 1677133239
    )
-   @Export("__cu_ac")
    static int __cu_ac;
    @ObfuscatedName("aw")
    @ObfuscatedGetter(
@@ -93,16 +90,13 @@ public class Login {
    @Export("Login_password")
    static String Login_password;
    @ObfuscatedName("aa")
-   @Export("__cu_aa")
    static boolean __cu_aa;
    @ObfuscatedName("ax")
-   @Export("__cu_ax")
    static boolean __cu_ax;
    @ObfuscatedName("ai")
    @Export("otp")
    static String otp;
    @ObfuscatedName("ba")
-   @Export("__cu_ba")
    static boolean __cu_ba;
    @ObfuscatedName("bb")
    @ObfuscatedGetter(
@@ -135,13 +129,11 @@ public class Login {
    @ObfuscatedGetter(
       longValue = 803647694904294325L
    )
-   @Export("__cu_bi")
    static long __cu_bi;
    @ObfuscatedName("bz")
    @ObfuscatedGetter(
       longValue = -3234258972092460093L
    )
-   @Export("__cu_bz")
    static long __cu_bz;
    @ObfuscatedName("do")
    @ObfuscatedSignature(

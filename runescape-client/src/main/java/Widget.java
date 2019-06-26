@@ -32,7 +32,6 @@ public class Widget extends Node {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__ho_d")
    public static AbstractIndexCache __ho_d;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
@@ -56,10 +55,8 @@ public class Widget extends Node {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("__ho_z")
    static EvictingDualNodeHashTable __ho_z;
    @ObfuscatedName("j")
-   @Export("__ho_j")
    public static boolean __ho_j;
    @ObfuscatedName("s")
    @Export("isIf3")
@@ -170,13 +167,11 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 206556853
    )
-   @Export("__aw")
    public int __aw;
    @ObfuscatedName("al")
    @ObfuscatedGetter(
       intValue = -1047989223
    )
-   @Export("__al")
    public int __al;
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
@@ -254,7 +249,6 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -1853255291
    )
-   @Export("__af")
    public int __af;
    @ObfuscatedName("ai")
    @ObfuscatedGetter(
@@ -263,7 +257,6 @@ public class Widget extends Node {
    @Export("lineWid")
    public int lineWid;
    @ObfuscatedName("ba")
-   @Export("__ba")
    public boolean __ba;
    @ObfuscatedName("bb")
    @ObfuscatedGetter(
@@ -380,19 +373,16 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -1692331135
    )
-   @Export("__bf")
    public int __bf;
    @ObfuscatedName("bh")
    @ObfuscatedGetter(
       intValue = 727421593
    )
-   @Export("__bh")
    public int __bh;
    @ObfuscatedName("be")
    @Export("modelOrthog")
    public boolean modelOrthog;
    @ObfuscatedName("bv")
-   @Export("__bv")
    public boolean __bv;
    @ObfuscatedName("bw")
    @ObfuscatedGetter(
@@ -464,19 +454,14 @@ public class Widget extends Node {
    @Export("clickMask")
    public int clickMask;
    @ObfuscatedName("cg")
-   @Export("__cg")
    public boolean __cg;
    @ObfuscatedName("cf")
-   @Export("__cf")
    public byte[][] __cf;
    @ObfuscatedName("cp")
-   @Export("__cp")
    public byte[][] __cp;
    @ObfuscatedName("cc")
-   @Export("__cc")
    public int[] __cc;
    @ObfuscatedName("ci")
-   @Export("__ci")
    public int[] __ci;
    @ObfuscatedName("de")
    @Export("dataText")
@@ -575,34 +560,26 @@ public class Widget extends Node {
    @Export("onScroll")
    public Object[] onScroll;
    @ObfuscatedName("em")
-   @Export("__em")
    public Object[] __em;
    @ObfuscatedName("ed")
    @Export("onKeyListener")
    public Object[] onKeyListener;
    @ObfuscatedName("ex")
-   @Export("__ex")
    public Object[] __ex;
    @ObfuscatedName("ej")
-   @Export("__ej")
    public Object[] __ej;
    @ObfuscatedName("el")
-   @Export("__el")
    public Object[] __el;
    @ObfuscatedName("en")
    @Export("onDialogAbortListener")
    public Object[] onDialogAbortListener;
    @ObfuscatedName("ei")
-   @Export("__ei")
    public Object[] __ei;
    @ObfuscatedName("ee")
-   @Export("__ee")
    public Object[] __ee;
    @ObfuscatedName("eq")
-   @Export("__eq")
    public Object[] __eq;
    @ObfuscatedName("eh")
-   @Export("__eh")
    public Object[] __eh;
    @ObfuscatedName("eo")
    @Export("cs1Instructions")
@@ -662,34 +639,28 @@ public class Widget extends Node {
    @Export("children")
    public Widget[] children;
    @ObfuscatedName("fq")
-   @Export("__fq")
    public boolean __fq;
    @ObfuscatedName("fw")
-   @Export("__fw")
    public boolean __fw;
    @ObfuscatedName("fg")
    @ObfuscatedGetter(
       intValue = -1520351537
    )
-   @Export("__fg")
    public int __fg;
    @ObfuscatedName("fc")
    @ObfuscatedGetter(
       intValue = 209458049
    )
-   @Export("__fc")
    public int __fc;
    @ObfuscatedName("fl")
    @ObfuscatedGetter(
       intValue = -672198209
    )
-   @Export("__fl")
    public int __fl;
    @ObfuscatedName("fj")
    @ObfuscatedGetter(
       intValue = 876695207
    )
-   @Export("__fj")
    public int __fj;
    @ObfuscatedName("fp")
    @ObfuscatedGetter(
@@ -704,7 +675,6 @@ public class Widget extends Node {
    @Export("cycle")
    public int cycle;
    @ObfuscatedName("fh")
-   @Export("__fh")
    public int[] __fh;
    @ObfuscatedName("fx")
    @Export("noClickThrough")
@@ -713,7 +683,6 @@ public class Widget extends Node {
    @Export("noScrollThrough")
    public boolean noScrollThrough;
    @ObfuscatedName("fz")
-   @Export("__fz")
    public boolean __fz;
 
    static {

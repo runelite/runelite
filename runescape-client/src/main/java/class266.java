@@ -45,6 +45,7 @@ public enum class266 implements Enumerated {
       signature = "(B)I",
       garbageValue = "83"
    )
+   @Export("rsOrdinal")
    public int rsOrdinal() {
       return this.field3530;
    }

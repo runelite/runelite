@@ -77,7 +77,6 @@ public final class Occluder {
    @ObfuscatedGetter(
       intValue = 826041747
    )
-   @Export("__k")
    int __k;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
@@ -88,31 +87,26 @@ public final class Occluder {
    @ObfuscatedGetter(
       intValue = 1324959981
    )
-   @Export("__i")
    int __i;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -1527021367
    )
-   @Export("__a")
    int __a;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -570391007
    )
-   @Export("__z")
    int __z;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -373839103
    )
-   @Export("__j")
    int __j;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1334433969
    )
-   @Export("__s")
    int __s;
 
    @ObfuscatedName("f")

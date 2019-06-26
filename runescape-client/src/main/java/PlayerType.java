@@ -45,7 +45,6 @@ public enum PlayerType implements Enumerated {
    @Export("PlayerType_hardcoreIronman")
    PlayerType_hardcoreIronman(5, 10, false, false, true);
    @ObfuscatedName("ak")
-   @Export("__ij_ak")
    static Image __ij_ak;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
@@ -78,6 +77,7 @@ public enum PlayerType implements Enumerated {
       signature = "(B)I",
       garbageValue = "83"
    )
+   @Export("rsOrdinal")
    public int rsOrdinal() {
       return this.id;
    }
@@ -87,6 +87,7 @@ public enum PlayerType implements Enumerated {
       signature = "(II)V",
       garbageValue = "300731074"
    )
+   @Export("clearItemContainer")
    static void clearItemContainer(int var0) {
       ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
       if(var1 != null) {

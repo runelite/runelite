@@ -24,7 +24,6 @@ public class RunException extends RuntimeException {
    @ObfuscatedGetter(
       intValue = 121013503
    )
-   @Export("__fx_w")
    public static int __fx_w;
    @ObfuscatedName("o")
    @Export("string")

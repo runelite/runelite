@@ -11,7 +11,6 @@ public abstract class AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = -1942470229
    )
-   @Export("__ak_qj")
    static int __ak_qj;
    @ObfuscatedName("ka")
    @ObfuscatedGetter(
@@ -35,13 +34,11 @@ public abstract class AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = -521086143
    )
-   @Export("__e")
    int __e;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1065362217
    )
-   @Export("__x")
    int __x;
 
    @ObfuscatedSignature(
@@ -85,7 +82,6 @@ public abstract class AbstractWorldMapIcon {
       signature = "(IIB)Z",
       garbageValue = "-63"
    )
-   @Export("__y_66")
    boolean __y_66(int var1, int var2) {
       return this.__b_68(var1, var2)?true:this.__c_69(var1, var2);
    }
@@ -95,7 +91,6 @@ public abstract class AbstractWorldMapIcon {
       signature = "(I)Z",
       garbageValue = "1150380891"
    )
-   @Export("__h_67")
    boolean __h_67() {
       return this.__m_15() >= 0;
    }
@@ -105,7 +100,6 @@ public abstract class AbstractWorldMapIcon {
       signature = "(III)Z",
       garbageValue = "484201257"
    )
-   @Export("__b_68")
    boolean __b_68(int var1, int var2) {
       if(!this.__h_67()) {
          return false;
@@ -157,7 +151,6 @@ public abstract class AbstractWorldMapIcon {
       signature = "(III)Z",
       garbageValue = "1201712205"
    )
-   @Export("__c_69")
    boolean __c_69(int var1, int var2) {
       WorldMapLabel var3 = this.__f_16();
       return var3 == null?false:(var1 >= this.__e - var3.width / 2 && var1 <= var3.width / 2 + this.__e?var2 >= this.__x && var2 <= var3.height + this.__x:false);

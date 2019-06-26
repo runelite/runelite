@@ -13,37 +13,31 @@ public class LoginPacket implements ClientPacketMarker {
    @ObfuscatedSignature(
       signature = "Lgl;"
    )
-   @Export("__gl_m")
    public static final LoginPacket __gl_m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lgl;"
    )
-   @Export("__gl_f")
    static final LoginPacket __gl_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgl;"
    )
-   @Export("__gl_q")
    public static final LoginPacket __gl_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgl;"
    )
-   @Export("__gl_w")
    public static final LoginPacket __gl_w;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lgl;"
    )
-   @Export("__gl_o")
    static final LoginPacket __gl_o;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "[Lgl;"
    )
-   @Export("__gl_g")
    static final LoginPacket[] __gl_g;
    @ObfuscatedName("u")
    @ObfuscatedGetter(

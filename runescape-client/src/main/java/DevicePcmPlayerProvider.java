@@ -26,6 +26,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
       signature = "(B)Lco;",
       garbageValue = "-49"
    )
+   @Export("player")
    public PcmPlayer player() {
       return new DevicePcmPlayer();
    }

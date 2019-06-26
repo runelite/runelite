@@ -22,7 +22,6 @@ public class ItemContainer extends Node {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("__bc_dm")
    static IndexCache __bc_dm;
    @ObfuscatedName("f")
    @Export("ids")

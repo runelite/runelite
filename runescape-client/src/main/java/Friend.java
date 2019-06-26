@@ -11,10 +11,8 @@ public class Friend extends Buddy {
    @Export("soundSystemExecutor")
    static ScheduledExecutorService soundSystemExecutor;
    @ObfuscatedName("m")
-   @Export("__m")
    boolean __m;
    @ObfuscatedName("f")
-   @Export("__f")
    boolean __f;
 
    @ObfuscatedName("m")

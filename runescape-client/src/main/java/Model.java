@@ -25,10 +25,8 @@ public class Model extends Entity {
    @Export("Model_sharedSpotAnimationModelFaceAlphas")
    static byte[] Model_sharedSpotAnimationModelFaceAlphas;
    @ObfuscatedName("at")
-   @Export("__du_at")
    static boolean[] __du_at;
    @ObfuscatedName("ad")
-   @Export("__du_ad")
    static boolean[] __du_ad;
    @ObfuscatedName("ap")
    @Export("modelViewportXs")
@@ -37,46 +35,32 @@ public class Model extends Entity {
    @Export("modelViewportYs")
    static int[] modelViewportYs;
    @ObfuscatedName("am")
-   @Export("__du_am")
    static int[] __du_am;
    @ObfuscatedName("an")
-   @Export("__du_an")
    static int[] __du_an;
    @ObfuscatedName("az")
-   @Export("__du_az")
    static int[] __du_az;
    @ObfuscatedName("au")
-   @Export("__du_au")
    static int[] __du_au;
    @ObfuscatedName("aa")
-   @Export("__du_aa")
    static int[] __du_aa;
    @ObfuscatedName("ax")
-   @Export("__du_ax")
    static int[][] __du_ax;
    @ObfuscatedName("af")
-   @Export("__du_af")
    static int[] __du_af;
    @ObfuscatedName("ai")
-   @Export("__du_ai")
    static int[][] __du_ai;
    @ObfuscatedName("ba")
-   @Export("__du_ba")
    static int[] __du_ba;
    @ObfuscatedName("bb")
-   @Export("__du_bb")
    static int[] __du_bb;
    @ObfuscatedName("bs")
-   @Export("__du_bs")
    static int[] __du_bs;
    @ObfuscatedName("bq")
-   @Export("__du_bq")
    static int[] __du_bq;
    @ObfuscatedName("bn")
-   @Export("__du_bn")
    static int[] __du_bn;
    @ObfuscatedName("bk")
-   @Export("__du_bk")
    static int[] __du_bk;
    @ObfuscatedName("bd")
    @Export("Model_transformTempX")
@@ -88,7 +72,6 @@ public class Model extends Entity {
    @Export("Model_transformTempZ")
    static int Model_transformTempZ;
    @ObfuscatedName("bx")
-   @Export("__du_bx")
    static boolean __du_bx;
    @ObfuscatedName("bm")
    @Export("Model_sine")
@@ -97,10 +80,8 @@ public class Model extends Entity {
    @Export("Model_cosine")
    static int[] Model_cosine;
    @ObfuscatedName("br")
-   @Export("__du_br")
    static int[] __du_br;
    @ObfuscatedName("bj")
-   @Export("__du_bj")
    static int[] __du_bj;
    @ObfuscatedName("o")
    @Export("verticesCount")
@@ -142,25 +123,19 @@ public class Model extends Entity {
    @Export("faceAlphas")
    byte[] faceAlphas;
    @ObfuscatedName("s")
-   @Export("__s")
    byte[] __s;
    @ObfuscatedName("t")
    @Export("faceTextures")
    short[] faceTextures;
    @ObfuscatedName("y")
-   @Export("__y")
    byte __y;
    @ObfuscatedName("h")
-   @Export("__h")
    int __h;
    @ObfuscatedName("b")
-   @Export("__b")
    int[] __b;
    @ObfuscatedName("c")
-   @Export("__c")
    int[] __c;
    @ObfuscatedName("r")
-   @Export("__r")
    int[] __r;
    @ObfuscatedName("p")
    @Export("vertexLabels")
@@ -667,7 +642,6 @@ public class Model extends Entity {
    }
 
    @ObfuscatedName("g")
-   @Export("__g_232")
    void __g_232() {
       if(this.boundsType != 2) {
          this.boundsType = 2;
@@ -690,7 +664,6 @@ public class Model extends Entity {
    }
 
    @ObfuscatedName("l")
-   @Export("__l_233")
    public int __l_233() {
       this.calculateBoundsCylinder();
       return this.xzRadius;
@@ -1008,7 +981,6 @@ public class Model extends Entity {
    }
 
    @ObfuscatedName("c")
-   @Export("__c_234")
    public final void __c_234(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       __du_aa[0] = -1;
       if(this.boundsType != 2 && this.boundsType != 1) {
@@ -1074,7 +1046,6 @@ public class Model extends Entity {
    }
 
    @ObfuscatedName("p")
-   @Export("__p_235")
    public final void __p_235(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       __du_aa[0] = -1;
       if(this.boundsType != 2 && this.boundsType != 1) {
@@ -1364,7 +1335,6 @@ public class Model extends Entity {
    }
 
    @ObfuscatedName("ag")
-   @Export("__ag_236")
    final void __ag_236(int var1) {
       if(__du_ad[var1]) {
          this.__aq_237(var1);
@@ -1409,7 +1379,6 @@ public class Model extends Entity {
    }
 
    @ObfuscatedName("aq")
-   @Export("__aq_237")
    final void __aq_237(int var1) {
       int var2 = Rasterizer3D.Rasterizer3D_clipMidX;
       int var3 = Rasterizer3D.Rasterizer3D_clipMidY;
@@ -1577,6 +1546,7 @@ public class Model extends Entity {
    }
 
    @ObfuscatedName("cy")
+   @Export("renderDraw")
    void renderDraw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, long var9) {
       __du_aa[0] = -1;
       if(this.boundsType != 1) {

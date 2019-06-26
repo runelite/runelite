@@ -9,7 +9,6 @@ public class class15 extends class21 {
    @ObfuscatedGetter(
       longValue = 3423502126894795079L
    )
-   @Export("__z_si")
    static long __z_si;
    @ObfuscatedName("j")
    @ObfuscatedSignature(

@@ -11,37 +11,31 @@ public enum StudioGame implements Enumerated {
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-   @Export("__is_m")
    __is_m("runescape", "RuneScape", 0),
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-   @Export("__is_f")
    __is_f("stellardawn", "Stellar Dawn", 1),
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-   @Export("__is_q")
    __is_q("game3", "Game 3", 2),
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-   @Export("__is_w")
   __is_w("game4", "Game 4", 3),
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-   @Export("__is_o")
    __is_o("game5", "Game 5", 4),
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-   @Export("__is_u")
    __is_u("oldscape", "RuneScape 2007", 5);
    
    @ObfuscatedName("g")
@@ -64,7 +58,7 @@ public enum StudioGame implements Enumerated {
       signature = "(B)I",
       garbageValue = "83"
    )
-   @Export("ordinal")
+   @Export("rsOrdinal")
    public int rsOrdinal() {
       return this.id;
    }

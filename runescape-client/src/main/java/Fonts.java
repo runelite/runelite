@@ -14,7 +14,6 @@ public class Fonts {
    @Export("indexStore255")
    static IndexStore indexStore255;
    @ObfuscatedName("o")
-   @Export("__kz_o")
    static byte[][][] __kz_o;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
@@ -26,13 +25,11 @@ public class Fonts {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__m")
    AbstractIndexCache __m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__f")
    AbstractIndexCache __f;
    @ObfuscatedName("q")
    @Export("map")

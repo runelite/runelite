@@ -11,64 +11,53 @@ public class LoginType {
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   @Export("__lx_m")
    public static final LoginType __lx_m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   @Export("__lx_f")
    static final LoginType __lx_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   @Export("__lx_q")
    static final LoginType __lx_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   @Export("__lx_w")
    static final LoginType __lx_w;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   @Export("__lx_o")
    static final LoginType __lx_o;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   @Export("__lx_u")
    static final LoginType __lx_u;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   @Export("__lx_g")
    static final LoginType __lx_g;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   @Export("__lx_l")
    static final LoginType __lx_l;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   @Export("__lx_e")
    public static final LoginType __lx_e;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1916729379
    )
-   @Export("__x")
    public final int __x;
    @ObfuscatedName("d")
-   @Export("__d")
    final String __d;
 
    static {
@@ -96,7 +85,6 @@ public class LoginType {
       this.__d = var4;
    }
 
-   @Export("__toString_546")
    @ObfuscatedName("toString")
    public String __toString_546() {
       return this.__d;

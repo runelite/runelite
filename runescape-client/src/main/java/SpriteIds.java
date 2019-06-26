@@ -11,13 +11,11 @@ public class SpriteIds {
    @ObfuscatedGetter(
       intValue = 1673796151
    )
-   @Export("__m")
    public int __m;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 159591367
    )
-   @Export("__f")
    public int __f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(

@@ -15,11 +15,13 @@ public class DirectWrapper extends Wrapper {
    }
 
    @ObfuscatedName("m")
+   @Export("get")
    Object get() {
       return this.obj;
    }
 
    @ObfuscatedName("f")
+   @Export("isSoft")
    boolean isSoft() {
       return false;
    }

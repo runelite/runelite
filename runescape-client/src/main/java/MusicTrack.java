@@ -336,7 +336,6 @@ public class MusicTrack extends Node {
    }
 
    @ObfuscatedName("f")
-   @Export("__f_381")
    void __f_381() {
       if(this.table == null) {
          this.table = new NodeHashTable(16);

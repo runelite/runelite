@@ -12,7 +12,6 @@ final class TotalQuantityComparator implements Comparator {
       signature = "(Ll;Ll;I)I",
       garbageValue = "-573736433"
    )
-   @Export("__m_5")
    int __m_5(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.grandExchangeOffer.totalQuantity < var2.grandExchangeOffer.totalQuantity?-1:(var2.grandExchangeOffer.totalQuantity == var1.grandExchangeOffer.totalQuantity?0:1);
    }
@@ -23,7 +22,6 @@ final class TotalQuantityComparator implements Comparator {
       return this.__m_5((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
-   @Export("__equals_7")
    @ObfuscatedName("equals")
    public boolean __equals_7(Object var1) {
       return super.equals(var1);

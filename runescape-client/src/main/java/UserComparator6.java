@@ -16,10 +16,8 @@ public class UserComparator6 extends AbstractUserComparator {
    @ObfuscatedSignature(
       signature = "Lho;"
    )
-   @Export("__fg_jh")
    static Widget __fg_jh;
    @ObfuscatedName("m")
-   @Export("__m")
    final boolean __m;
 
    public UserComparator6(boolean var1) {
@@ -31,7 +29,6 @@ public class UserComparator6 extends AbstractUserComparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "750521759"
    )
-   @Export("__m_276")
    int __m_276(Buddy var1, Buddy var2) {
       return var1.world0 != 0 && var2.world0 != 0?(this.__m?var1.username().compareTo0(var2.username()):var2.username().compareTo0(var1.username())):this.__x_461(var1, var2);
    }

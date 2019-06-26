@@ -11,7 +11,6 @@ public class FriendLoginUpdate extends Link {
    @ObfuscatedSignature(
       signature = "Ley;"
    )
-   @Export("__kn_x")
    static UrlRequest __kn_x;
    @ObfuscatedName("q")
    @ObfuscatedGetter(

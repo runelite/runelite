@@ -11,121 +11,96 @@ public class PlatformInfo extends Node {
    @ObfuscatedGetter(
       intValue = 1318366785
    )
-   @Export("__ay")
    int __ay;
    @ObfuscatedName("ah")
-   @Export("__ah")
    boolean __ah;
    @ObfuscatedName("ak")
    @ObfuscatedGetter(
       intValue = 703904161
    )
-   @Export("__ak")
    int __ak;
    @ObfuscatedName("aw")
    @ObfuscatedGetter(
       intValue = 467004305
    )
-   @Export("__aw")
    int __aw;
    @ObfuscatedName("al")
    @ObfuscatedGetter(
       intValue = 2097018521
    )
-   @Export("__al")
    int __al;
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
       intValue = -1667177301
    )
-   @Export("__ab")
    int __ab;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
       intValue = 385109109
    )
-   @Export("__ae")
    int __ae;
    @ObfuscatedName("at")
-   @Export("__at")
    boolean __at;
    @ObfuscatedName("ad")
    @ObfuscatedGetter(
       intValue = -1765017
    )
-   @Export("__ad")
    int __ad;
    @ObfuscatedName("ap")
    @ObfuscatedGetter(
       intValue = -817941105
    )
-   @Export("__ap")
    int __ap;
    @ObfuscatedName("am")
    @ObfuscatedGetter(
       intValue = 30207059
    )
-   @Export("__am")
    int __am;
    @ObfuscatedName("an")
    @ObfuscatedGetter(
       intValue = 890109053
    )
-   @Export("__an")
    int __an;
    @ObfuscatedName("az")
-   @Export("__az")
    String __az;
    @ObfuscatedName("au")
-   @Export("__au")
    String __au;
    @ObfuscatedName("ao")
-   @Export("__ao")
    String __ao;
    @ObfuscatedName("aa")
-   @Export("__aa")
    String __aa;
    @ObfuscatedName("ax")
    @ObfuscatedGetter(
       intValue = 871094255
    )
-   @Export("__ax")
    int __ax;
    @ObfuscatedName("af")
    @ObfuscatedGetter(
       intValue = 1955966365
    )
-   @Export("__af")
    int __af;
    @ObfuscatedName("ai")
    @ObfuscatedGetter(
       intValue = 1196598207
    )
-   @Export("__ai")
    int __ai;
    @ObfuscatedName("ba")
    @ObfuscatedGetter(
       intValue = -170839105
    )
-   @Export("__ba")
    int __ba;
    @ObfuscatedName("bb")
-   @Export("__bb")
    String __bb;
    @ObfuscatedName("bs")
-   @Export("__bs")
    String __bs;
    @ObfuscatedName("bq")
-   @Export("__bq")
    int[] __bq;
    @ObfuscatedName("bn")
    @ObfuscatedGetter(
       intValue = 1466207635
    )
-   @Export("__bn")
    int __bn;
    @ObfuscatedName("bk")
-   @Export("__bk")
    String __bk;
 
    PlatformInfo(int var1, boolean var2, int var3, int var4, int var5, int var6, int var7, boolean var8, int var9, int var10, int var11, int var12, String var13, String var14, String var15, String var16, int var17, int var18, int var19, int var20, String var21, String var22, int[] var23, int var24, String var25) {

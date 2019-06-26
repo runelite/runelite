@@ -17,13 +17,11 @@ public class IterableDualNodeQueueIterator implements Iterator {
    @ObfuscatedSignature(
       signature = "Lfn;"
    )
-   @Export("__f")
    DualNode __f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lfn;"
    )
-   @Export("__q")
    DualNode __q;
 
    @ObfuscatedSignature(
@@ -57,7 +55,6 @@ public class IterableDualNodeQueueIterator implements Iterator {
       return this.queue.sentinel != this.__f;
    }
 
-   @Export("__remove_442")
    @ObfuscatedName("remove")
    public void __remove_442() {
       if(this.__q == null) {

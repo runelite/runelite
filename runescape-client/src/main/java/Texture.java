@@ -13,19 +13,15 @@ public class Texture extends Node {
    @Export("int1")
    int int1;
    @ObfuscatedName("u")
-   @Export("__u")
    boolean __u;
    @ObfuscatedName("g")
    @Export("records")
    int[] records;
    @ObfuscatedName("l")
-   @Export("__l")
    int[] __l;
    @ObfuscatedName("e")
-   @Export("__e")
    int[] __e;
    @ObfuscatedName("x")
-   @Export("__x")
    int[] __x;
    @ObfuscatedName("d")
    @Export("animationDirection")
@@ -90,7 +86,6 @@ public class Texture extends Node {
    @ObfuscatedSignature(
       signature = "(DILir;)Z"
    )
-   @Export("__m_230")
    boolean __m_230(double var1, int var3, AbstractIndexCache var4) {
       int var5;
       for(var5 = 0; var5 < this.records.length; ++var5) {

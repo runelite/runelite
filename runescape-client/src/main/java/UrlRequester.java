@@ -18,13 +18,11 @@ public class UrlRequester implements Runnable {
    @ObfuscatedGetter(
       intValue = -883931753
    )
-   @Export("__eo_u")
    static int __eo_u;
    @ObfuscatedName("ak")
    @ObfuscatedSignature(
       signature = "Lla;"
    )
-   @Export("__eo_ak")
    static Bounds __eo_ak;
    @ObfuscatedName("m")
    @Export("thread")

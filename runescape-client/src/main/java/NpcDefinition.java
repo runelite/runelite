@@ -55,7 +55,6 @@ public class NpcDefinition extends DualNode {
    @Export("archives")
    int[] archives;
    @ObfuscatedName("e")
-   @Export("__e")
    int[] __e;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
@@ -142,13 +141,11 @@ public class NpcDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -1235927151
    )
-   @Export("__ag")
    int __ag;
    @ObfuscatedName("aq")
    @ObfuscatedGetter(
       intValue = 1962875903
    )
-   @Export("__aq")
    int __aq;
    @ObfuscatedName("aj")
    @ObfuscatedGetter(
@@ -160,7 +157,6 @@ public class NpcDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -506638747
    )
-   @Export("__av")
    public int __av;
    @ObfuscatedName("ar")
    @Export("transforms")
@@ -534,7 +530,6 @@ public class NpcDefinition extends DualNode {
       signature = "(I)Z",
       garbageValue = "853540088"
    )
-   @Export("__e_435")
    public boolean __e_435() {
       if(this.transforms == null) {
          return true;

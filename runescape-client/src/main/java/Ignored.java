@@ -8,7 +8,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Ignored")
 public class Ignored extends User {
    @ObfuscatedName("at")
-   @Export("__ks_at")
    protected static String __ks_at;
    @ObfuscatedName("m")
    @ObfuscatedGetter(

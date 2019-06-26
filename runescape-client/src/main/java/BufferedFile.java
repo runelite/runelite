@@ -23,13 +23,11 @@ public class BufferedFile {
    @ObfuscatedGetter(
       longValue = -7773729680030815835L
    )
-   @Export("__q")
    long __q;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -846810907
    )
-   @Export("__w")
    int __w;
    @ObfuscatedName("o")
    @Export("writeBuffer")
@@ -38,25 +36,21 @@ public class BufferedFile {
    @ObfuscatedGetter(
       longValue = 5249231081498323007L
    )
-   @Export("__u")
    long __u;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -1558233611
    )
-   @Export("__g")
    int __g;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       longValue = -6819476051574242871L
    )
-   @Export("__l")
    long __l;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       longValue = -3728247331531750871L
    )
-   @Export("__e")
    long __e;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
@@ -68,7 +62,6 @@ public class BufferedFile {
    @ObfuscatedGetter(
       longValue = 5720856138805191881L
    )
-   @Export("__d")
    long __d;
 
    @ObfuscatedSignature(

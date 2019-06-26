@@ -9,16 +9,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("cm")
 public class class83 {
    @ObfuscatedName("m")
-   @Export("__cm_m")
    static final BigInteger __cm_m;
    @ObfuscatedName("f")
-   @Export("__cm_f")
    static final BigInteger __cm_f;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 533653621
    )
-   @Export("__cm_e")
    public static int __cm_e;
 
    static {

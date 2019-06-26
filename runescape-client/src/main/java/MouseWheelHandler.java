@@ -46,6 +46,7 @@ public final class MouseWheelHandler implements MouseWheel, MouseWheelListener {
       signature = "(I)I",
       garbageValue = "1293035280"
    )
+   @Export("useRotation")
    public synchronized int useRotation() {
       int var1 = this.rotation;
       this.rotation = 0;
