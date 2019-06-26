@@ -22,16 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.item;
+package net.runelite.http.service.util;
 
-import java.util.Map;
-import lombok.Data;
+import org.springframework.core.MethodParameter;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-@Data
-public class RSPrices
+@ControllerAdvice
+public class CacheControlFilter implements ResponseBodyAdvice<Object>
 {
-	/**
-	 * unix time in ms to price in gp
-	 */
-	private Map<Long, Integer> daily;
+
+	@Override
+	public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType)
+	{
+		return true;
+	}
+
+	@Override
+	public Object beforeBodyWrite(
+			Object body,
+			MethodParameter returnType,
+			MediaType selectedContentType,
+			Class<? extends HttpMessageConverter<?>> selectedConverterType,
+			ServerHttpRequest request,
+			ServerHttpResponse response
+	)
+	{
+		if (!response.getHeaders().containsKey("Cache-Control"))
+		{
+			response.getHeaders().add("Cache-Control", "no-cache, no-store, must-revalidate");
+			response.getHeaders().add("pragma", "no-cache");
+		}
+		return body;
+	}
 }

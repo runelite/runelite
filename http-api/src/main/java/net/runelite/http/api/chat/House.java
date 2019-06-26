@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Spedwards <https://github.com/Spedwards>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.item;
+package net.runelite.http.api.chat;
 
-import java.time.Instant;
 import lombok.Data;
+import net.runelite.http.api.RuneLiteAPI;
 
 @Data
-class PriceEntry
+public class House
 {
-	private int item;
-	private String name;
-	private int price;
-	private Instant time;
-	private Instant fetched_time;
+	private String owner;
+	private boolean guildedAltarPresent;
+	private boolean occultAltarPresent;
+	private boolean spiritTreePresent;
+	private boolean fairyRingPresent;
+	private boolean wildernessObeliskPresent;
+	private boolean repairStandPresent;
+	private boolean combatDummyPresent;
+
+	@Override
+	public String toString()
+	{
+		return RuneLiteAPI.GSON.toJson(this);
+	}
 }
