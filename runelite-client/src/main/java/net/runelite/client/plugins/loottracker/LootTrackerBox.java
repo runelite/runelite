@@ -32,6 +32,7 @@ import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
@@ -59,6 +60,7 @@ class LootTrackerBox extends JPanel
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
+	private final JLabel dateLabel = new JLabel();
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
@@ -69,14 +71,17 @@ class LootTrackerBox extends JPanel
 	private long totalPrice;
 	private boolean hideIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;
+	private final long timeStamp;
 
 	LootTrackerBox(
+		final long timeStamp,
 		final ItemManager itemManager,
 		final String id,
 		@Nullable final String subtitle,
 		final boolean hideIgnoredItems,
 		final BiConsumer<String, Boolean> onItemToggle)
 	{
+		this.timeStamp = timeStamp;
 		this.id = id;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
@@ -99,6 +104,12 @@ class LootTrackerBox extends JPanel
 		subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		logTitle.add(subTitleLabel, BorderLayout.CENTER);
 
+		dateLabel.setFont(FontManager.getRunescapeSmallFont().deriveFont(FontManager.getRunescapeSmallFont().getSize() - 2));
+		dateLabel.setForeground(Color.LIGHT_GRAY);
+		dateLabel.setText(new Date(timeStamp).toLocaleString());
+		logTitle.add(dateLabel, BorderLayout.SOUTH);
+
+
 		if (!Strings.isNullOrEmpty(subtitle))
 		{
 			subTitleLabel.setText(subtitle);
@@ -110,6 +121,7 @@ class LootTrackerBox extends JPanel
 
 		add(logTitle, BorderLayout.NORTH);
 		add(itemContainer, BorderLayout.CENTER);
+
 	}
 
 	/**

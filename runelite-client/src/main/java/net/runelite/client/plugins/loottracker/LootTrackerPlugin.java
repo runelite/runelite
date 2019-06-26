@@ -823,7 +823,7 @@ public class LootTrackerPlugin extends Plugin
 			).toArray(LootTrackerItem[]::new);
 
 			trackerRecords.add(new LootTrackerRecord(record.getEventId(), record.getUsername(),
-				"", drops, -1));
+				"", drops, record.getTime()));
 		}
 
 		return trackerRecords;

@@ -17,7 +17,7 @@ public enum LootRecordSortType implements Comparator<LootTrackerRecord>
 			@Override
 			public int compare(LootTrackerRecord o1, LootTrackerRecord o2)
 			{
-				return Long.compare(o1.getTimestamp(), o2.getTimestamp());
+				return Long.compare(o1.getTimestamp().toEpochMilli(), o2.getTimestamp().toEpochMilli());
 			}
 		},
 	TOTAL_VALUE
