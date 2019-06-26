@@ -62,6 +62,16 @@ public enum WorldType
 		PVP,
 		SEASONAL_DEADMAN
 	);
+	
+	private static final EnumSet<WorldType> DEADMAN_WORLD_TYPES = EnumSet.of(
+		DEADMAN,
+		DEADMAN_TOURNAMENT,
+		SEASONAL_DEADMAN
+	);
+
+	private static final EnumSet<WorldType> HIGHRISK_WORLD_TYPES = EnumSet.of(
+		HIGH_RISK
+	);
 
 	/**
 	 * Create enum set of world types from mask.
@@ -103,10 +113,10 @@ public enum WorldType
 	}
 
 	/**
-	 * Checks whether a world having a {@link Collection} of {@link WorldType}s is a PVP world.
+	 * Checks whether a world having a {@link Collection} of {@link WorldType}s is a PVP/DEADMAN/HIGHRISK world.
 	 *
 	 * @param worldTypes A {@link Collection} of {@link WorldType}s describing the given world.
-	 * @return           True if the given worldtypes of the world are a PVP world, false otherwise.
+	 * @return           True if the given worldtypes of the world are a PVP/DEADMAN/HIGHRISK world, false otherwise.
 	 * @see Client#getWorldType()
 	 */
 	public static boolean isPvpWorld(final Collection<WorldType> worldTypes)
@@ -114,13 +124,13 @@ public enum WorldType
 		return worldTypes.stream().anyMatch(PVP_WORLD_TYPES::contains);
 	}
 
-	/**
-	 * Checks to see if a collection of WorlTypes is a Deadman Mode World
-	 * @param worldTypes The List of world types for a world
-	 * @return true if it is deadman, false otherwise
-	 */
 	public static boolean isDeadmanWorld(final Collection<WorldType> worldTypes)
 	{
-		return worldTypes.stream().anyMatch(EnumSet.of(DEADMAN, DEADMAN_TOURNAMENT, SEASONAL_DEADMAN)::contains);
+		return worldTypes.stream().anyMatch(DEADMAN_WORLD_TYPES::contains);
+	}
+
+	public static boolean isHighRiskWorld(final Collection<WorldType> worldTypes)
+	{
+		return worldTypes.stream().anyMatch(HIGHRISK_WORLD_TYPES::contains);
 	}
 }
