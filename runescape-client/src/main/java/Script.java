@@ -124,7 +124,7 @@ public class Script extends DualNode {
                int var6 = var4 >> 4 & 7;
                int var7 = var4 & 15;
                Client.soundEffectIds[Client.soundEffectCount] = var5;
-               Client.unknownSoundValues1[Client.soundEffectCount] = var6;
+               Client.queuedSoundEffectLoops[Client.soundEffectCount] = var6;
                Client.queuedSoundEffectDelays[Client.soundEffectCount] = 0;
                Client.soundEffects[Client.soundEffectCount] = null;
                int var8 = (var2 - 64) / 128;

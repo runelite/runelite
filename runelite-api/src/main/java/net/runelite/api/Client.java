@@ -249,13 +249,11 @@ public interface Client extends GameShell
 
 	/**
 	 * Gets the canvas height
-	 * @return
 	 */
 	int getCanvasHeight();
 
 	/**
 	 * Gets the canvas width
-	 * @return
 	 */
 	int getCanvasWidth();
 
@@ -707,7 +705,7 @@ public interface Client extends GameShell
 	 * @param varps passed varbits
 	 * @param varbitId the variable ID
 	 * @return the value
-	 * @see Varbits#id
+	 * @see Varbits
 	 */
 	int getVarbitValue(int[] varps, int varbitId);
 
@@ -737,7 +735,7 @@ public interface Client extends GameShell
 	 * @param varps passed varbits
 	 * @param varbit the variable
 	 * @param value the value
-	 * @see Varbits#id
+	 * @see Varbits
 	 */
 	void setVarbitValue(int[] varps, int varbit, int value);
 
@@ -781,8 +779,6 @@ public interface Client extends GameShell
 
 	/**
 	 * Get the total experience of the player
-	 *
-	 * @return
 	 */
 	long getOverallExperience();
 
@@ -1083,15 +1079,11 @@ public interface Client extends GameShell
 
 	/**
 	 * Gets the clan owner of the currently joined clan chat
-	 *
-	 * @return
 	 */
 	String getClanOwner();
 
 	/**
 	 * Gets the clan chat name of the currently joined clan chat
-	 *
-	 * @return
 	 */
 	String getClanChatName();
 
@@ -1104,22 +1096,16 @@ public interface Client extends GameShell
 
 	/**
 	 * Gets the number of friends on the friends list.
-	 *
-	 * @return
 	 */
 	int getFriendsCount();
 
 	/**
 	 * Gets an array of players on the ignore list.
-	 *
-	 * @return
 	 */
 	Ignore[] getIgnores();
 
 	/**
 	 * Gets the number of ignored players on the ignore list.
-	 *
-	 * @return
 	 */
 	int getIgnoreCount();
 
@@ -1623,14 +1609,11 @@ public interface Client extends GameShell
 
 	/**
 	 * Get the if1 widget whose item is being dragged
-	 *
-	 * @return
 	 */
 	Widget getIf1DraggedWidget();
 
 	/**
 	 * Get the item index of the item being dragged on an if1 widget
-	 * @return
 	 */
 	int getIf1DraggedItemIndex();
 

@@ -24,6 +24,10 @@
  */
 package net.runelite.rs.api;
 
-public interface RSTaskDataNode
+import net.runelite.mapping.Import;
+
+public interface RSPcmStreamMixer
 {
+	@Import("addSubStream")
+	void addSubStream(RSPcmStream taskDataNode);
 }

@@ -82,8 +82,8 @@ public class Scene {
    @Export("Scene_selectedY")
    public static int Scene_selectedY;
    @ObfuscatedName("ab")
-   @Export("__em_ab")
-   static boolean __em_ab;
+   @Export("viewportWalking")
+   static boolean viewportWalking;
    @ObfuscatedName("ad")
    @Export("Scene_planesCount")
    static int Scene_planesCount;
@@ -207,7 +207,7 @@ public class Scene {
       Scene_selectedScreenY = 0;
       Scene_selectedX = -1;
       Scene_selectedY = -1;
-      __em_ab = false;
+      viewportWalking = false;
       Scene_planesCount = 4;
       Scene_planeOccluderCounts = new int[Scene_planesCount];
       Scene_planeOccluders = new Occluder[Scene_planesCount][500];
@@ -1066,7 +1066,7 @@ public class Scene {
    public void menuOpen(int var1, int var2, int var3, boolean var4) {
       if(!method3187() || var4) {
          checkClick = true;
-         __em_ab = var4;
+         viewportWalking = var4;
          Scene_selectedPlane = var1;
          Scene_selectedScreenX = var2;
          Scene_selectedScreenY = var3;
@@ -1078,7 +1078,7 @@ public class Scene {
    @ObfuscatedName("as")
    @Export("__as_250")
    public void __as_250() {
-      __em_ab = true;
+      viewportWalking = true;
    }
 
    @ObfuscatedName("az")
@@ -2561,13 +2561,13 @@ public class Scene {
 
    @ObfuscatedName("am")
    public static boolean method3187() {
-      return __em_ab && Scene_selectedX != -1;
+      return viewportWalking && Scene_selectedX != -1;
    }
 
    @ObfuscatedName("an")
    public static void method3103() {
       Scene_selectedX = -1;
-      __em_ab = false;
+      viewportWalking = false;
    }
 
    @ObfuscatedName("ax")

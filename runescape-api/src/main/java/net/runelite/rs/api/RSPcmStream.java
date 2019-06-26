@@ -24,10 +24,6 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.mapping.Import;
-
-public interface RSRawAudioNode
+public interface RSPcmStream
 {
-	@Import("applyResampler")
-	RSRawAudioNode applyResampler(RSResampler resampler);
 }

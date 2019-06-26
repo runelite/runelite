@@ -58,7 +58,6 @@ public final class Bzip2State {
    @ObfuscatedGetter(
       intValue = 1860254567
    )
-   @Export("surfaceOffsetY")
    int __n;
    @ObfuscatedName("i")
    @Export("__i")

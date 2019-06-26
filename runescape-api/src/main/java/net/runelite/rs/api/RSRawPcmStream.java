@@ -26,8 +26,8 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface RSAudioTaskNodeQueue
+public interface RSRawPcmStream
 {
-	@Import("queueAudioTaskNode")
-	void queueAudioTaskNode(RSTaskDataNode taskDataNode);
+	@Import("setNumLoops")
+	void setNumLoops(int numLoops);
 }

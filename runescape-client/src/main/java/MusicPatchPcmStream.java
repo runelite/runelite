@@ -78,7 +78,7 @@ public class MusicPatchPcmStream extends PcmStream {
             }
 
             if(var1.patch.__q[var1.__u] < 0) {
-               var1.stream.__x_181(-1);
+               var1.stream.setNumLoops(-1);
             }
 
             var10.__v_192(var8);
@@ -112,7 +112,7 @@ public class MusicPatchPcmStream extends PcmStream {
             }
 
             if(var1.patch.__q[var1.__u] < 0) {
-               var1.stream.__x_181(-1);
+               var1.stream.setNumLoops(-1);
             }
 
             var2 = var1.__b / var3;

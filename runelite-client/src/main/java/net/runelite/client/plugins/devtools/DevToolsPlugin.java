@@ -130,8 +130,8 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton detachedCamera;
 	private DevToolsButton widgetInspector;
 	private DevToolsButton varInspector;
-	private DevToolsButton soundEffects;
 	private DevToolsButton logMenuActions;
+	private DevToolsButton soundEffects;
 	private NavigationButton navButton;
 
 	@Provides
@@ -158,22 +158,27 @@ public class DevToolsPlugin extends Plugin
 
 		location = new DevToolsButton("Location");
 		worldMapLocation = new DevToolsButton("World Map Location");
+
 		tileLocation = new DevToolsButton("Tile Location");
 		cursorPos = new DevToolsButton("Cursor Position");
+
 		cameraPosition = new DevToolsButton("Camera Position");
-
 		chunkBorders = new DevToolsButton("Chunk Borders");
-		mapSquares = new DevToolsButton("Map Squares");
 
+		mapSquares = new DevToolsButton("Map Squares");
 		lineOfSight = new DevToolsButton("Line Of Sight");
+
 		validMovement = new DevToolsButton("Valid Movement");
 		interacting = new DevToolsButton("Interacting");
-		examine = new DevToolsButton("Examine");
 
+		examine = new DevToolsButton("Examine");
 		detachedCamera = new DevToolsButton("Detached Camera");
+
 		widgetInspector = new DevToolsButton("Widget Inspector");
 		varInspector = new DevToolsButton("Var Inspector");
+
 		soundEffects = new DevToolsButton("Sound Effects");
+		logMenuActions = new DevToolsButton("Menu Actions");
 
 		overlayManager.add(overlay);
 		overlayManager.add(locationOverlay);
@@ -182,8 +187,6 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.add(worldMapLocationOverlay);
 		overlayManager.add(mapRegionOverlay);
 		overlayManager.add(soundEffectOverlay);
-
-		logMenuActions = new DevToolsButton("Menu Actions");
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 

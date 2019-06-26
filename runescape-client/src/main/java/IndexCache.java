@@ -480,23 +480,23 @@ public class IndexCache extends AbstractIndexCache {
 
          if(var4 == 4) {
             if(var2 == 0) {
-               Client.__client_qp = 127;
+               Client.soundEffectVolume = 127;
             }
 
             if(var2 == 1) {
-               Client.__client_qp = 96;
+               Client.soundEffectVolume = 96;
             }
 
             if(var2 == 2) {
-               Client.__client_qp = 64;
+               Client.soundEffectVolume = 64;
             }
 
             if(var2 == 3) {
-               Client.__client_qp = 32;
+               Client.soundEffectVolume = 32;
             }
 
             if(var2 == 4) {
-               Client.__client_qp = 0;
+               Client.soundEffectVolume = 0;
             }
          }
 

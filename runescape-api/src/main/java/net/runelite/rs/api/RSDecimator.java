@@ -24,10 +24,6 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.mapping.Import;
-
-public interface RSAudioTaskNode
+public interface RSDecimator
 {
-	@Import("setNumLoops")
-	void setNumLoops(int numLoops);
 }

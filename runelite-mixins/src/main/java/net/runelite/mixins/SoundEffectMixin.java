@@ -31,16 +31,16 @@ import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
-import net.runelite.rs.api.RSAudioTaskNode;
+import net.runelite.rs.api.RSRawPcmStream;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSRawAudioNode;
+import net.runelite.rs.api.RSRawSound;
 import net.runelite.rs.api.RSSoundEffect;
-import net.runelite.rs.api.RSTaskDataNode;
+import net.runelite.rs.api.RSPcmStream;
 
 @Mixin(RSClient.class)
 public abstract class SoundEffectMixin implements RSClient
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
@@ -99,14 +99,14 @@ public abstract class SoundEffectMixin implements RSClient
 			volume = soundEffectVolume;
 		}
 
-		RSRawAudioNode rawAudioNode = soundEffect.toRawAudioNode().applyResampler(getSoundEffectResampler());
-		RSAudioTaskNode audioTaskNode = createSoundEffectAudioTaskNode(rawAudioNode, 100, volume);
-		audioTaskNode.setNumLoops(1);
+		RSRawSound rawAudioNode = soundEffect.toRawAudioNode().applyResampler(getSoundEffectResampler());
+		RSRawPcmStream rawPcmStream = createRawPcmStream(rawAudioNode, 100, volume);
+		rawPcmStream.setNumLoops(1);
 
-		getSoundEffectAudioQueue().queueAudioTaskNode((RSTaskDataNode) audioTaskNode);
+		getSoundEffectAudioQueue().addSubStream((RSPcmStream) rawPcmStream);
 	}
 
-	@FieldHook("queuedSoundEffectCount")
+	@FieldHook("soundEffectCount")
 	@Inject
 	public static void queuedSoundEffectCountChanged(int idx)
 	{

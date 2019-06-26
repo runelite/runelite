@@ -1014,23 +1014,20 @@ public interface RSClient extends RSGameShell, Client
 	@Import("isSpellSelected")
 	boolean getIsSpellSelected();
 
-	@Import("healthBarSpriteCache")
-	RSNodeCache getHealthBarSpriteCache();
+	@Import("readSoundEffect")
+	RSSoundEffect getTrack(RSAbstractIndexCache indexData, int id, int var0);
 
-	@Import("getTrack")
-	RSSoundEffect getTrack(RSIndexData indexData, int id, int var0);
+	@Import("createRawPcmStream")
+	RSRawPcmStream createRawPcmStream(RSRawSound audioNode, int var0, int volume);
 
-	@Import("createSoundEffectAudioTaskNode")
-	RSAudioTaskNode createSoundEffectAudioTaskNode(RSRawAudioNode audioNode, int var0, int volume);
-
-	@Import("soundEffectAudioQueue")
-	RSAudioTaskNodeQueue getSoundEffectAudioQueue();
+	@Import("pcmStreamMixer")
+	RSPcmStreamMixer getSoundEffectAudioQueue();
 
 	@Import("indexCache4")
-	RSIndexData getIndexCache4();
+	RSAbstractIndexCache getIndexCache4();
 
-	@Import("soundEffectResampler")
-	RSResampler getSoundEffectResampler();
+	@Import("decimator")
+	RSDecimator getSoundEffectResampler();
 
 	@Import("soundEffectVolume")
 	int getSoundEffectVolume();
