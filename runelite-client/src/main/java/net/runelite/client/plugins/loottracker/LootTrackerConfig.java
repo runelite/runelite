@@ -158,5 +158,15 @@ public interface LootTrackerConfig extends Config
 		return "";
 	}
 
+	@ConfigItem(
+		keyName = "lootValueMessage",
+		name = "Loot Value Messages",
+		description = "Sends a game message with the total value you of your loot when you get a kill",
+		position = 5
+	)
+	default boolean sendLootValueMessages()
+	{
+		return true;
+	}
 
 }

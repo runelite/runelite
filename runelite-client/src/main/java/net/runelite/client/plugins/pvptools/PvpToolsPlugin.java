@@ -1,10 +1,12 @@
 /*
- * Copyright (c) 2019. PKLite  - All Rights Reserved
- * Unauthorized modification, distribution, or possession of this source file, via any medium is strictly prohibited.
- * Proprietary and confidential. Refer to PKLite License file for more information on
- * full terms of this copyright and to determine what constitutes authorized use.
- * Written by PKLite(ST0NEWALL, others) <stonewall@thots.cc.usa>, 2019
- *
+ * ******************************************************************************
+ *  * Copyright (c) 2019 RuneLitePlus
+ *  *  Redistributions and modifications of this software are permitted as long as this notice remains in its original unmodified state at the top of this file.
+ *  *  If there are any questions comments, or feedback about this software, please direct all inquiries directly to the file authors:
+ *  *  ST0NEWALL#9112
+ *  *   RuneLitePlus Discord: https://discord.gg/Q7wFtCe
+ *  *   RuneLitePlus website: https://runelitepl.us
+ *  *****************************************************************************
  */
 
 package net.runelite.client.plugins.pvptools;
@@ -44,6 +46,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AsyncBufferedImage;
@@ -103,6 +106,9 @@ public class PvpToolsPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	private PvpToolsPlugin uhPvpToolsPlugin = this;
 
@@ -509,6 +515,7 @@ public class PvpToolsPlugin extends Plugin
 			setAttackHotKeyPressed(false);
 		}
 	}
+
 
 	/**
 	 * Enables or disables the fall in helper feature
