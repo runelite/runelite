@@ -105,7 +105,7 @@ public class LootTrackerPlugin extends Plugin
 
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
-	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's ([a-z]+) chest .*");
+	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = ImmutableMap.of(
 		5179, "Brimstone Chest",
 		11573, "Crystal Chest",
