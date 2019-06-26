@@ -165,15 +165,15 @@ public class InventoryTagsPlugin extends Plugin
 			return;
 		}
 
-		final String selectedMenu = Text.removeTags(event.getMenuTarget());
+		final String selectedMenu = Text.removeTags(event.getTarget());
 
-		if (event.getMenuOption().equals(MENU_SET))
+		if (event.getOption().equals(MENU_SET))
 		{
-			setTag(event.getId(), selectedMenu);
+			setTag(event.getIdentifier(), selectedMenu);
 		}
-		else if (event.getMenuOption().equals(MENU_REMOVE))
+		else if (event.getOption().equals(MENU_REMOVE))
 		{
-			unsetTag(event.getId());
+			unsetTag(event.getIdentifier());
 		}
 	}
 

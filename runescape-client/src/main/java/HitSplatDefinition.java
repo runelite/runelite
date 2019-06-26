@@ -265,7 +265,7 @@ public class HitSplatDefinition extends DualNode {
          var2 = this.transforms[this.transforms.length - 1];
       }
 
-      return var2 != -1?class72.getHitSplatDefinition(var2):null;
+      return var2 != -1? LoginScreenAnimation.getHitSplatDefinition(var2):null;
    }
 
    @ObfuscatedName("u")

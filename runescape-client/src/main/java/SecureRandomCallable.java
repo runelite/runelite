@@ -23,7 +23,7 @@ public class SecureRandomCallable implements Callable {
       garbageValue = "64"
    )
    static class27 method1145(byte[] var0) {
-      return var0 == null?new class27():new class27(class27.method438(var0).pixels);
+      return var0 == null?new class27():new class27(class27.convertJpgToSprite(var0).pixels);
    }
 
    @ObfuscatedName("m")
@@ -68,7 +68,7 @@ public class SecureRandomCallable implements Callable {
       int var5;
       int var6;
       for(var5 = 0; var5 < Client.menuOptionsCount; ++var5) {
-         if(WorldMapManager.method672(Client.menuOpcodes[var5])) {
+         if(WorldMapManager.isWidgetMenuOpcode(Client.menuOpcodes[var5])) {
             if(var5 < Client.menuOptionsCount - 1) {
                for(var6 = var5; var6 < Client.menuOptionsCount - 1; ++var6) {
                   Client.menuActions[var6] = Client.menuActions[var6 + 1];

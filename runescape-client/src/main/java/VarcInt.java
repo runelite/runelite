@@ -17,14 +17,14 @@ public class VarcInt extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("__iw_f")
-   static EvictingDualNodeHashTable __iw_f;
+   @Export("cachedVarcInts")
+   static EvictingDualNodeHashTable cachedVarcInts;
    @ObfuscatedName("q")
    @Export("persist")
    public boolean persist;
 
    static {
-      __iw_f = new EvictingDualNodeHashTable(64);
+      cachedVarcInts = new EvictingDualNodeHashTable(64);
    }
 
    VarcInt() {
@@ -76,7 +76,7 @@ public class VarcInt extends DualNode {
       signature = "(CI)Z",
       garbageValue = "1367119425"
    )
-   public static boolean method4807(char var0) {
+   public static boolean isAlphaNumeric(char var0) {
       return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
    }
 }

@@ -277,20 +277,20 @@ public final class IndexStore {
       signature = "(IIILfe;Lfy;B)Z",
       garbageValue = "1"
    )
-   static final boolean method3585(int var0, int var1, int var2, class179 var3, CollisionMap var4) {
+   static final boolean method3585(int var0, int var1, int var2, RouteStrategy var3, CollisionMap var4) {
       int var5 = var0;
       int var6 = var1;
       byte var7 = 64;
       byte var8 = 64;
       int var9 = var0 - var7;
       int var10 = var1 - var8;
-      class178.__fi_q[var7][var8] = 99;
-      class178.__fi_w[var7][var8] = 0;
+      class178.directions[var7][var8] = 99;
+      class178.distances[var7][var8] = 0;
       byte var11 = 0;
       int var12 = 0;
-      class178.__fi_l[var11] = var0;
+      class178.bufferX[var11] = var0;
       int var20 = var11 + 1;
-      class178.__fi_e[var11] = var1;
+      class178.bufferY[var11] = var1;
       int[][] var13 = var4.flags;
 
       while(true) {
@@ -313,8 +313,8 @@ public final class IndexStore {
                            return false;
                         }
 
-                        var5 = class178.__fi_l[var12];
-                        var6 = class178.__fi_e[var12];
+                        var5 = class178.bufferX[var12];
+                        var6 = class178.bufferY[var12];
                         var12 = var12 + 1 & 4095;
                         var18 = var5 - var9;
                         var19 = var6 - var10;
@@ -326,17 +326,17 @@ public final class IndexStore {
                            return true;
                         }
 
-                        var16 = class178.__fi_w[var18][var19] + 1;
-                        if(var18 > 0 && class178.__fi_q[var18 - 1][var19] == 0 && (var13[var14 - 1][var15] & 19136782) == 0 && (var13[var14 - 1][var15 + var2 - 1] & 19136824) == 0) {
+                        var16 = class178.distances[var18][var19] + 1;
+                        if(var18 > 0 && class178.directions[var18 - 1][var19] == 0 && (var13[var14 - 1][var15] & 19136782) == 0 && (var13[var14 - 1][var15 + var2 - 1] & 19136824) == 0) {
                            var17 = 1;
 
                            while(true) {
                               if(var17 >= var2 - 1) {
-                                 class178.__fi_l[var20] = var5 - 1;
-                                 class178.__fi_e[var20] = var6;
+                                 class178.bufferX[var20] = var5 - 1;
+                                 class178.bufferY[var20] = var6;
                                  var20 = var20 + 1 & 4095;
-                                 class178.__fi_q[var18 - 1][var19] = 2;
-                                 class178.__fi_w[var18 - 1][var19] = var16;
+                                 class178.directions[var18 - 1][var19] = 2;
+                                 class178.distances[var18 - 1][var19] = var16;
                                  break;
                               }
 
@@ -348,16 +348,16 @@ public final class IndexStore {
                            }
                         }
 
-                        if(var18 < 128 - var2 && class178.__fi_q[var18 + 1][var19] == 0 && (var13[var14 + var2][var15] & 19136899) == 0 && (var13[var14 + var2][var15 + var2 - 1] & 19136992) == 0) {
+                        if(var18 < 128 - var2 && class178.directions[var18 + 1][var19] == 0 && (var13[var14 + var2][var15] & 19136899) == 0 && (var13[var14 + var2][var15 + var2 - 1] & 19136992) == 0) {
                            var17 = 1;
 
                            while(true) {
                               if(var17 >= var2 - 1) {
-                                 class178.__fi_l[var20] = var5 + 1;
-                                 class178.__fi_e[var20] = var6;
+                                 class178.bufferX[var20] = var5 + 1;
+                                 class178.bufferY[var20] = var6;
                                  var20 = var20 + 1 & 4095;
-                                 class178.__fi_q[var18 + 1][var19] = 8;
-                                 class178.__fi_w[var18 + 1][var19] = var16;
+                                 class178.directions[var18 + 1][var19] = 8;
+                                 class178.distances[var18 + 1][var19] = var16;
                                  break;
                               }
 
@@ -369,16 +369,16 @@ public final class IndexStore {
                            }
                         }
 
-                        if(var19 > 0 && class178.__fi_q[var18][var19 - 1] == 0 && (var13[var14][var15 - 1] & 19136782) == 0 && (var13[var14 + var2 - 1][var15 - 1] & 19136899) == 0) {
+                        if(var19 > 0 && class178.directions[var18][var19 - 1] == 0 && (var13[var14][var15 - 1] & 19136782) == 0 && (var13[var14 + var2 - 1][var15 - 1] & 19136899) == 0) {
                            var17 = 1;
 
                            while(true) {
                               if(var17 >= var2 - 1) {
-                                 class178.__fi_l[var20] = var5;
-                                 class178.__fi_e[var20] = var6 - 1;
+                                 class178.bufferX[var20] = var5;
+                                 class178.bufferY[var20] = var6 - 1;
                                  var20 = var20 + 1 & 4095;
-                                 class178.__fi_q[var18][var19 - 1] = 1;
-                                 class178.__fi_w[var18][var19 - 1] = var16;
+                                 class178.directions[var18][var19 - 1] = 1;
+                                 class178.distances[var18][var19 - 1] = var16;
                                  break;
                               }
 
@@ -390,16 +390,16 @@ public final class IndexStore {
                            }
                         }
 
-                        if(var19 < 128 - var2 && class178.__fi_q[var18][var19 + 1] == 0 && (var13[var14][var15 + var2] & 19136824) == 0 && (var13[var14 + var2 - 1][var15 + var2] & 19136992) == 0) {
+                        if(var19 < 128 - var2 && class178.directions[var18][var19 + 1] == 0 && (var13[var14][var15 + var2] & 19136824) == 0 && (var13[var14 + var2 - 1][var15 + var2] & 19136992) == 0) {
                            var17 = 1;
 
                            while(true) {
                               if(var17 >= var2 - 1) {
-                                 class178.__fi_l[var20] = var5;
-                                 class178.__fi_e[var20] = var6 + 1;
+                                 class178.bufferX[var20] = var5;
+                                 class178.bufferY[var20] = var6 + 1;
                                  var20 = var20 + 1 & 4095;
-                                 class178.__fi_q[var18][var19 + 1] = 4;
-                                 class178.__fi_w[var18][var19 + 1] = var16;
+                                 class178.directions[var18][var19 + 1] = 4;
+                                 class178.distances[var18][var19 + 1] = var16;
                                  break;
                               }
 
@@ -411,16 +411,16 @@ public final class IndexStore {
                            }
                         }
 
-                        if(var18 > 0 && var19 > 0 && class178.__fi_q[var18 - 1][var19 - 1] == 0 && (var13[var14 - 1][var15 - 1] & 19136782) == 0) {
+                        if(var18 > 0 && var19 > 0 && class178.directions[var18 - 1][var19 - 1] == 0 && (var13[var14 - 1][var15 - 1] & 19136782) == 0) {
                            var17 = 1;
 
                            while(true) {
                               if(var17 >= var2) {
-                                 class178.__fi_l[var20] = var5 - 1;
-                                 class178.__fi_e[var20] = var6 - 1;
+                                 class178.bufferX[var20] = var5 - 1;
+                                 class178.bufferY[var20] = var6 - 1;
                                  var20 = var20 + 1 & 4095;
-                                 class178.__fi_q[var18 - 1][var19 - 1] = 3;
-                                 class178.__fi_w[var18 - 1][var19 - 1] = var16;
+                                 class178.directions[var18 - 1][var19 - 1] = 3;
+                                 class178.distances[var18 - 1][var19 - 1] = var16;
                                  break;
                               }
 
@@ -432,16 +432,16 @@ public final class IndexStore {
                            }
                         }
 
-                        if(var18 < 128 - var2 && var19 > 0 && class178.__fi_q[var18 + 1][var19 - 1] == 0 && (var13[var14 + var2][var15 - 1] & 19136899) == 0) {
+                        if(var18 < 128 - var2 && var19 > 0 && class178.directions[var18 + 1][var19 - 1] == 0 && (var13[var14 + var2][var15 - 1] & 19136899) == 0) {
                            var17 = 1;
 
                            while(true) {
                               if(var17 >= var2) {
-                                 class178.__fi_l[var20] = var5 + 1;
-                                 class178.__fi_e[var20] = var6 - 1;
+                                 class178.bufferX[var20] = var5 + 1;
+                                 class178.bufferY[var20] = var6 - 1;
                                  var20 = var20 + 1 & 4095;
-                                 class178.__fi_q[var18 + 1][var19 - 1] = 9;
-                                 class178.__fi_w[var18 + 1][var19 - 1] = var16;
+                                 class178.directions[var18 + 1][var19 - 1] = 9;
+                                 class178.distances[var18 + 1][var19 - 1] = var16;
                                  break;
                               }
 
@@ -453,22 +453,22 @@ public final class IndexStore {
                            }
                         }
 
-                        if(var18 > 0 && var19 < 128 - var2 && class178.__fi_q[var18 - 1][var19 + 1] == 0 && (var13[var14 - 1][var15 + var2] & 19136824) == 0) {
+                        if(var18 > 0 && var19 < 128 - var2 && class178.directions[var18 - 1][var19 + 1] == 0 && (var13[var14 - 1][var15 + var2] & 19136824) == 0) {
                            for(var17 = 1; var17 < var2; ++var17) {
                               if((var13[var14 - 1][var15 + var17] & 19136830) != 0 || (var13[var17 + (var14 - 1)][var15 + var2] & 19137016) != 0) {
                                  continue label277;
                               }
                            }
 
-                           class178.__fi_l[var20] = var5 - 1;
-                           class178.__fi_e[var20] = var6 + 1;
+                           class178.bufferX[var20] = var5 - 1;
+                           class178.bufferY[var20] = var6 + 1;
                            var20 = var20 + 1 & 4095;
-                           class178.__fi_q[var18 - 1][var19 + 1] = 6;
-                           class178.__fi_w[var18 - 1][var19 + 1] = var16;
+                           class178.directions[var18 - 1][var19 + 1] = 6;
+                           class178.distances[var18 - 1][var19 + 1] = var16;
                         }
                      } while(var18 >= 128 - var2);
                   } while(var19 >= 128 - var2);
-               } while(class178.__fi_q[var18 + 1][var19 + 1] != 0);
+               } while(class178.directions[var18 + 1][var19 + 1] != 0);
             } while((var13[var14 + var2][var15 + var2] & 19136992) != 0);
 
             for(var17 = 1; var17 < var2; ++var17) {
@@ -477,11 +477,11 @@ public final class IndexStore {
                }
             }
 
-            class178.__fi_l[var20] = var5 + 1;
-            class178.__fi_e[var20] = var6 + 1;
+            class178.bufferX[var20] = var5 + 1;
+            class178.bufferY[var20] = var6 + 1;
             var20 = var20 + 1 & 4095;
-            class178.__fi_q[var18 + 1][var19 + 1] = 12;
-            class178.__fi_w[var18 + 1][var19 + 1] = var16;
+            class178.directions[var18 + 1][var19 + 1] = 12;
+            class178.distances[var18 + 1][var19 + 1] = var16;
          }
       }
    }

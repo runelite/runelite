@@ -20,11 +20,11 @@ public class World {
    @Export("__bt_g")
    static int __bt_g;
    @ObfuscatedName("l")
-   @Export("__bt_l")
-   static int[] __bt_l;
+   @Export("sortOption2")
+   static int[] sortOption2;
    @ObfuscatedName("e")
-   @Export("__bt_e")
-   static int[] __bt_e;
+   @Export("sortOption1")
+   static int[] sortOption1;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -144265493
@@ -65,8 +65,8 @@ public class World {
    static {
       worldsCount = 0;
       __bt_g = 0;
-      __bt_l = new int[]{1, 1, 1, 1};
-      __bt_e = new int[]{0, 1, 2, 3};
+      sortOption2 = new int[]{1, 1, 1, 1};
+      sortOption1 = new int[]{0, 1, 2, 3};
    }
 
    @ObfuscatedName("e")
@@ -74,8 +74,8 @@ public class World {
       signature = "(I)Z",
       garbageValue = "-1059414592"
    )
-   @Export("__e_144")
-   boolean __e_144() {
+   @Export("isMembersOnly")
+   boolean isMembersOnly() {
       return (1 & this.properties) != 0;
    }
 
@@ -94,8 +94,8 @@ public class World {
       signature = "(I)Z",
       garbageValue = "-354931924"
    )
-   @Export("__d_146")
-   boolean __d_146() {
+   @Export("isPvp")
+   boolean isPvp() {
       return (4 & this.properties) != 0;
    }
 
@@ -114,9 +114,9 @@ public class World {
       signature = "(B)Z",
       garbageValue = "-1"
    )
-   @Export("__z_148")
-   boolean __z_148() {
-      return (536870912 & this.properties) != 0;
+   @Export("isDeadman")
+   boolean isDeadman() {
+      return (0x20000000 & this.properties) != 0; // 1 << 29
    }
 
    @ObfuscatedName("j")
@@ -124,9 +124,9 @@ public class World {
       signature = "(I)Z",
       garbageValue = "2033779841"
    )
-   @Export("__j_149")
-   boolean __j_149() {
-      return (33554432 & this.properties) != 0;
+   @Export("isBeta")
+   boolean isBeta() {
+      return (0x2000000 & this.properties) != 0; // 1 << 25
    }
 
    @ObfuscatedName("f")

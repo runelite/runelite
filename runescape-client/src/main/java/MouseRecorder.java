@@ -105,7 +105,7 @@ public class MouseRecorder implements Runnable {
             if(var16 != null) {
                int var17 = (var15.sizeX * 4 - var16.subWidth) / 2;
                int var18 = (var15.sizeY * 4 - var16.subHeight) / 2;
-               var16.__q_496(var1 * 4 + var17 + 48, (104 - var2 - var15.sizeY) * 4 + var18 + 48);
+               var16.drawAt(var1 * 4 + var17 + 48, (104 - var2 - var15.sizeY) * 4 + var18 + 48);
             }
          } else {
             if(var9 == 0 || var9 == 2) {
@@ -182,7 +182,7 @@ public class MouseRecorder implements Runnable {
             if(var28 != null) {
                var26 = (var20.sizeX * 4 - var28.subWidth) / 2;
                var14 = (var20.sizeY * 4 - var28.subHeight) / 2;
-               var28.__q_496(var26 + var1 * 4 + 48, (104 - var2 - var20.sizeY) * 4 + var14 + 48);
+               var28.drawAt(var26 + var1 * 4 + 48, (104 - var2 - var20.sizeY) * 4 + var14 + 48);
             }
          } else if(var9 == 9) {
             int var25 = 15658734;
@@ -221,7 +221,7 @@ public class MouseRecorder implements Runnable {
             if(var22 != null) {
                var10 = (var21.sizeX * 4 - var22.subWidth) / 2;
                int var11 = (var21.sizeY * 4 - var22.subHeight) / 2;
-               var22.__q_496(var10 + var1 * 4 + 48, var11 + (104 - var2 - var21.sizeY) * 4 + 48);
+               var22.drawAt(var10 + var1 * 4 + 48, var11 + (104 - var2 - var21.sizeY) * 4 + 48);
             }
          }
       }

@@ -39,7 +39,7 @@ public class Varcs {
 
       int var2;
       for(var2 = 0; var2 < var1; ++var2) {
-         VarcInt var3 = AbstractByteArrayCopier.method4021(var2);
+         VarcInt var3 = AbstractByteArrayCopier.getVarcInt(var2);
          this.intsPersistence[var2] = var3.persist;
       }
 
@@ -219,7 +219,7 @@ public class Varcs {
                ++var12;
             }
 
-            var32.writeByte(var9.field17);
+            var32.writeByte(var9.id);
             Class var34 = var8.getClass();
             class3[] var15 = class3.method34();
             int var16 = 0;

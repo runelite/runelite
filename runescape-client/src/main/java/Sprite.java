@@ -382,8 +382,8 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("t")
-   @Export("__t_507")
-   public void __t_507(int var1, int var2, int var3, int var4) {
+   @Export("drawAtTransOverlay")
+   public void drawAtTransOverlay(int var1, int var2, int var3, int var4) {
       if(var3 == 256) {
          this.drawAt2(var1, var2);
       } else {

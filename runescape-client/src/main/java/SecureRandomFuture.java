@@ -15,8 +15,8 @@ public class SecureRandomFuture {
    @ObfuscatedSignature(
       signature = "Llq;"
    )
-   @Export("__cn_bu")
-   static IndexedSprite __cn_bu;
+   @Export("worldSelectLeftSprite")
+   static IndexedSprite worldSelectLeftSprite;
    @ObfuscatedName("dy")
    @ObfuscatedSignature(
       signature = "Lit;"

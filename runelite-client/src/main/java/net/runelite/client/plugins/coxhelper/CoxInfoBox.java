@@ -38,6 +38,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -64,7 +65,8 @@ public class CoxInfoBox extends Overlay
 		this.client = client;
 		this.spriteManager = spriteManager;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		setPosition(OverlayPosition.DETACHED);
+		setPriority(OverlayPriority.HIGH);
+
 	}
 
 	@Override
@@ -103,7 +105,7 @@ public class CoxInfoBox extends Overlay
 				plugin.setPrayAgainstOlm(null);
 			}
 
-			if (config.vangHealth() && plugin.isRunVanguard())
+			if (config.vangHealth() && plugin.getVanguards() > 0)
 			{
 				panelComponent.getChildren().add(TitleComponent.builder()
 					.text("Vanguards")

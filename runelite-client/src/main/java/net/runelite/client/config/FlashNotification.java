@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Twiglet1022 <https://github.com/Twiglet1022>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,44 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api;
+package net.runelite.client.config;
 
-import java.io.IOException;
-import okhttp3.Request;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import org.junit.After;
-import static org.junit.Assert.assertTrue;
-import org.junit.Before;
-import org.junit.Test;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public class RuneLiteAPITest
+@Getter
+@RequiredArgsConstructor
+public enum FlashNotification
 {
-	private final MockWebServer server = new MockWebServer();
+	DISABLED("Off"),
+	FLASH_TWO_SECONDS("Flash for 2 seconds"),
+	SOLID_TWO_SECONDS("Solid for 2 seconds"),
+	FLASH_UNTIL_CANCELLED("Flash until cancelled"),
+	SOLID_UNTIL_CANCELLED("Solid until cancelled");
 
-	@Before
-	public void before() throws IOException
+	private final String type;
+
+	@Override
+	public String toString()
 	{
-		server.enqueue(new MockResponse().setBody("OK"));
-
-		server.start();
-	}
-
-	@After
-	public void after() throws IOException
-	{
-		server.shutdown();
-	}
-
-	@Test
-	public void testUserAgent() throws IOException, InterruptedException
-	{
-		Request request = new Request.Builder()
-			.url(server.url("/").url())
-			.build();
-		RuneLiteAPI.CLIENT.newCall(request).execute().close();
-
-		// rest of UA depends on if git is found
-		assertTrue(server.takeRequest().getHeader("User-Agent").startsWith("RuneLite/" + RuneLiteAPI.getVersion()));
+		return type;
 	}
 }

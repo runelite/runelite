@@ -1091,7 +1091,7 @@ public class Buffer extends Node {
       signature = "(B)V",
       garbageValue = "1"
    )
-   public static void method3915() {
+   public static void clearHealthbarCaches() {
       HealthBarDefinition.HealthBarDefinition_cached.clear();
       HealthBarDefinition.HealthBarDefinition_cachedSprites.clear();
    }

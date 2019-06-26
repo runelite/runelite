@@ -188,31 +188,31 @@ public class ChatChannel {
    )
    static final void method2237(Widget var0, int var1, int var2) {
       if(var0.buttonType == 1) {
-         Tiles.method1106(var0.buttonText, "", 24, 0, 0, var0.id);
+         Tiles.insertMenuItemNoShift(var0.buttonText, "", 24, 0, 0, var0.id);
       }
 
       String var3;
       if(var0.buttonType == 2 && !Client.isSpellSelected) {
          var3 = class198.method3745(var0);
          if(var3 != null) {
-            Tiles.method1106(var3, BufferedFile.colorStartTag(65280) + var0.spellName, 25, 0, -1, var0.id);
+            Tiles.insertMenuItemNoShift(var3, BufferedFile.colorStartTag(65280) + var0.spellName, 25, 0, -1, var0.id);
          }
       }
 
       if(var0.buttonType == 3) {
-         Tiles.method1106("Close", "", 26, 0, 0, var0.id);
+         Tiles.insertMenuItemNoShift("Close", "", 26, 0, 0, var0.id);
       }
 
       if(var0.buttonType == 4) {
-         Tiles.method1106(var0.buttonText, "", 28, 0, 0, var0.id);
+         Tiles.insertMenuItemNoShift(var0.buttonText, "", 28, 0, 0, var0.id);
       }
 
       if(var0.buttonType == 5) {
-         Tiles.method1106(var0.buttonText, "", 29, 0, 0, var0.id);
+         Tiles.insertMenuItemNoShift(var0.buttonText, "", 29, 0, 0, var0.id);
       }
 
       if(var0.buttonType == 6 && Client.__client_mo == null) {
-         Tiles.method1106(var0.buttonText, "", 30, 0, -1, var0.id);
+         Tiles.insertMenuItemNoShift(var0.buttonText, "", 30, 0, -1, var0.id);
       }
 
       int var4;
@@ -237,11 +237,11 @@ public class ChatChannel {
                      ItemDefinition var8 = Skills.getItemDefinition(var0.itemIds[var13] - 1);
                      if(Client.isItemSelected == 1 && WorldMapAreaData.method708(class1.getWidgetClickMask(var0))) {
                         if(var0.id != ServerPacket.selectedItemWidget || var13 != HealthBarDefinition.selectedItemSlot) {
-                           Tiles.method1106("Use", Client.selectedItemName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var8.name, 31, var8.id, var13, var0.id);
+                           Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var8.name, 31, var8.id, var13, var0.id);
                         }
                      } else if(Client.isSpellSelected && WorldMapAreaData.method708(class1.getWidgetClickMask(var0))) {
                         if((FloorDecoration.selectedSpellFlags & 16) == 16) {
-                           Tiles.method1106(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var8.name, 32, var8.id, var13, var0.id);
+                           Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var8.name, 32, var8.id, var13, var0.id);
                         }
                      } else {
                         String[] var9 = var8.inventoryActions;
@@ -254,24 +254,24 @@ public class ChatChannel {
                         if(WorldMapAreaData.method708(class1.getWidgetClickMask(var0))) {
                            for(var11 = 4; var11 >= 3; --var11) {
                               if(var10 != var11) {
-                                 AccessFile.method2726(var0, var8, var13, var11, false);
+                                 AccessFile.addWidgetItemMenuItem(var0, var8, var13, var11, false);
                               }
                            }
                         }
 
                         if(SecureRandomFuture.method2101(class1.getWidgetClickMask(var0))) {
-                           Tiles.method1106("Use", BufferedFile.colorStartTag(16748608) + var8.name, 38, var8.id, var13, var0.id);
+                           Tiles.insertMenuItemNoShift("Use", BufferedFile.colorStartTag(16748608) + var8.name, 38, var8.id, var13, var0.id);
                         }
 
                         if(WorldMapAreaData.method708(class1.getWidgetClickMask(var0))) {
                            for(var11 = 2; var11 >= 0; --var11) {
                               if(var11 != var10) {
-                                 AccessFile.method2726(var0, var8, var13, var11, false);
+                                 AccessFile.addWidgetItemMenuItem(var0, var8, var13, var11, false);
                               }
                            }
 
                            if(var10 >= 0) {
-                              AccessFile.method2726(var0, var8, var13, var10, true);
+                              AccessFile.addWidgetItemMenuItem(var0, var8, var13, var10, true);
                            }
                         }
 
@@ -300,12 +300,12 @@ public class ChatChannel {
                                     var12 = 43;
                                  }
 
-                                 Tiles.method1106(var9[var11], BufferedFile.colorStartTag(16748608) + var8.name, var12, var8.id, var13, var0.id);
+                                 Tiles.insertMenuItemNoShift(var9[var11], BufferedFile.colorStartTag(0xff9040) + var8.name, var12, var8.id, var13, var0.id);
                               }
                            }
                         }
 
-                        Tiles.method1106("Examine", BufferedFile.colorStartTag(16748608) + var8.name, 1005, var8.id, var13, var0.id);
+                        Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(0xff9040) + var8.name, 1005, var8.id, var13, var0.id);
                      }
                   }
                }
@@ -318,19 +318,19 @@ public class ChatChannel {
       if(var0.isIf3) {
          if(Client.isSpellSelected) {
             if(WorldComparator.method58(class1.getWidgetClickMask(var0)) && (FloorDecoration.selectedSpellFlags & 32) == 32) {
-               Tiles.method1106(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + var0.dataText, 58, 0, var0.childIndex, var0.id);
+               Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + var0.dataText, 58, 0, var0.childIndex, var0.id);
             }
          } else {
             for(var13 = 9; var13 >= 5; --var13) {
                String var14 = GameShell.method1060(var0, var13);
                if(var14 != null) {
-                  Tiles.method1106(var14, var0.dataText, 1007, var13 + 1, var0.childIndex, var0.id);
+                  Tiles.insertMenuItemNoShift(var14, var0.dataText, 1007, var13 + 1, var0.childIndex, var0.id);
                }
             }
 
             var3 = class198.method3745(var0);
             if(var3 != null) {
-               Tiles.method1106(var3, var0.dataText, 25, 0, var0.childIndex, var0.id);
+               Tiles.insertMenuItemNoShift(var3, var0.dataText, 25, 0, var0.childIndex, var0.id);
             }
 
             for(var4 = 4; var4 >= 0; --var4) {
@@ -343,7 +343,7 @@ public class ChatChannel {
             var5 = class1.getWidgetClickMask(var0);
             boolean var16 = (var5 & 1) != 0;
             if(var16) {
-               Tiles.method1106("Continue", "", 30, 0, var0.childIndex, var0.id);
+               Tiles.insertMenuItemNoShift("Continue", "", 30, 0, var0.childIndex, var0.id);
             }
          }
       }

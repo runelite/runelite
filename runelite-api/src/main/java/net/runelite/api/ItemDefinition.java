@@ -63,6 +63,8 @@ public interface ItemDefinition
 	 * alchemy values, respectively.
 	 *
 	 * @return the general store value of the item
+	 *
+	 * @see Constants#HIGH_ALCHEMY_MULTIPLIER
 	 */
 	int getPrice();
 

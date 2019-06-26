@@ -32,7 +32,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.HashTable;
-import net.runelite.api.HealthBarOverride;
 import net.runelite.api.HintArrowType;
 import net.runelite.api.Ignore;
 import net.runelite.api.IndexDataBase;
@@ -191,9 +190,6 @@ public abstract class RSClientMixin implements RSClient
 		.build();
 
 	@Inject
-	private static HealthBarOverride healthBarOverride;
-
-	@Inject
 	private static boolean printMenuActions;
 
 	@Inject
@@ -201,6 +197,16 @@ public abstract class RSClientMixin implements RSClient
 	public void setPrintMenuActions(boolean yes)
 	{
 		printMenuActions = yes;
+	}
+
+	@Inject
+	private static boolean hideFriendAttackOptions;
+
+	@Inject
+	@Override
+	public void setHideFriendAttackOptions(boolean yes)
+	{
+		hideFriendAttackOptions = yes;
 	}
 
 	@Inject
@@ -649,12 +655,15 @@ public abstract class RSClientMixin implements RSClient
 		if (newCount == oldCount + 1)
 		{
 			MenuEntryAdded event = new MenuEntryAdded(
-				client.getMenuOptions()[newCount - 1],
-				client.getMenuTargets()[newCount - 1],
-				client.getMenuTypes()[newCount - 1],
-				client.getMenuIdentifiers()[newCount - 1],
-				client.getMenuActionParams0()[newCount - 1],
-				client.getMenuActionParams1()[newCount - 1]
+				new MenuEntry(
+					client.getMenuOptions()[oldCount],
+					client.getMenuTargets()[oldCount],
+					client.getMenuTypes()[oldCount],
+					client.getMenuIdentifiers()[oldCount],
+					client.getMenuActionParams0()[oldCount],
+					client.getMenuActionParams1()[oldCount],
+					client.getMenuForceLeftClick()[oldCount]
+				)
 			);
 
 			client.getCallbacks().post(event);
@@ -1244,13 +1253,18 @@ public abstract class RSClientMixin implements RSClient
 			menuAction -= 2000;
 		}
 
-		final MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setActionParam(actionParam);
-		menuOptionClicked.setMenuOption(menuOption);
-		menuOptionClicked.setMenuTarget(menuTarget);
-		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
-		menuOptionClicked.setId(id);
-		menuOptionClicked.setWidgetId(widgetId);
+		final MenuOptionClicked menuOptionClicked = new MenuOptionClicked(
+			new MenuEntry(
+				menuOption,
+				menuTarget,
+				id,
+				menuAction,
+				actionParam,
+				widgetId,
+				false
+			)
+		);
+
 		client.getCallbacks().post(menuOptionClicked);
 
 		if (menuOptionClicked.isConsumed())
@@ -1266,13 +1280,6 @@ public abstract class RSClientMixin implements RSClient
 	public static void onUsernameChanged(int idx)
 	{
 		client.getCallbacks().post(new UsernameChanged());
-	}
-
-	@Inject
-	@Override
-	public void setHealthBarOverride(HealthBarOverride override)
-	{
-		healthBarOverride = override;
 	}
 
 	@Override
@@ -1564,5 +1571,19 @@ public abstract class RSClientMixin implements RSClient
 		rsEnumDefinition = getRsEnum(id);
 		enumCache.put(id, rsEnumDefinition);
 		return rsEnumDefinition;
+	}
+
+	@Inject
+	@Override
+	public void resetHealthBarCaches()
+	{
+		getHealthBarCache().reset();
+		getHealthBarSpriteCache().reset();
+	}
+
+	@Inject
+	static boolean shouldHideAttackOptionFor(RSPlayer p)
+	{
+		return hideFriendAttackOptions && p.isFriended() || p.isClanMember();
 	}
 }

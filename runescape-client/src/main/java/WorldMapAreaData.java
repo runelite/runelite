@@ -133,7 +133,7 @@ public class WorldMapAreaData extends WorldMapArea {
       Widget var4;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var4 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+         var4 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
          var3 = false;
       } else {
          var4 = var2?WorldMapIcon1.__t_i:class12.__n_n;
@@ -141,7 +141,7 @@ public class WorldMapAreaData extends WorldMapArea {
 
       int var11;
       if(var0 == 1300) {
-         var11 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] - 1;
+         var11 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] - 1;
          if(var11 >= 0 && var11 <= 9) {
             var4.setAction(var11, Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize]);
             return 1;
@@ -152,19 +152,19 @@ public class WorldMapAreaData extends WorldMapArea {
       } else {
          int var6;
          if(var0 == 1301) {
-            class179.Interpreter_intStackSize -= 2;
-            var11 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-            var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+            RouteStrategy.Interpreter_intStackSize -= 2;
+            var11 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+            var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
             var4.parent = class204.getWidgetChild(var11, var6);
             return 1;
          } else if(var0 == 1302) {
-            var4.isScrollBar = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+            var4.isScrollBar = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
             return 1;
          } else if(var0 == 1303) {
-            var4.dragZoneSize = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+            var4.dragZoneSize = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             return 1;
          } else if(var0 == 1304) {
-            var4.dragThreshold = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+            var4.dragThreshold = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             return 1;
          } else if(var0 == 1305) {
             var4.dataText = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
@@ -176,7 +176,7 @@ public class WorldMapAreaData extends WorldMapArea {
             var4.actions = null;
             return 1;
          } else if(var0 == 1308) {
-            var4.__fz = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+            var4.__fz = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
             return 1;
          } else {
             int var7;
@@ -184,17 +184,17 @@ public class WorldMapAreaData extends WorldMapArea {
             if(var0 != 1350) {
                byte var5;
                if(var0 == 1351) {
-                  class179.Interpreter_intStackSize -= 2;
+                  RouteStrategy.Interpreter_intStackSize -= 2;
                   var5 = 10;
-                  var9 = new byte[]{(byte)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize]};
-                  byte[] var10 = new byte[]{(byte)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]};
+                  var9 = new byte[]{(byte)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize]};
+                  byte[] var10 = new byte[]{(byte)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]};
                   BufferedSink.method3595(var4, var5, var9, var10);
                   return 1;
                } else if(var0 == 1352) {
-                  class179.Interpreter_intStackSize -= 3;
-                  var11 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] - 1;
-                  var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-                  var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
+                  RouteStrategy.Interpreter_intStackSize -= 3;
+                  var11 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] - 1;
+                  var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+                  var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
                   if(var11 >= 0 && var11 <= 9) {
                      Varcs.method2168(var4, var11, var6, var7);
                      return 1;
@@ -203,13 +203,13 @@ public class WorldMapAreaData extends WorldMapArea {
                   }
                } else if(var0 == 1353) {
                   var5 = 10;
-                  var6 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                  var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                  var6 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
+                  var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   Varcs.method2168(var4, var5, var6, var7);
                   return 1;
                } else if(var0 == 1354) {
-                  --class179.Interpreter_intStackSize;
-                  var11 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize] - 1;
+                  --RouteStrategy.Interpreter_intStackSize;
+                  var11 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] - 1;
                   if(var11 >= 0 && var11 <= 9) {
                      WorldMapSection3.method345(var4, var11);
                      return 1;
@@ -227,9 +227,9 @@ public class WorldMapAreaData extends WorldMapArea {
                byte[] var8 = null;
                var9 = null;
                if(var3) {
-                  class179.Interpreter_intStackSize -= 10;
+                  RouteStrategy.Interpreter_intStackSize -= 10;
 
-                  for(var7 = 0; var7 < 10 && Interpreter.Interpreter_intStack[var7 + class179.Interpreter_intStackSize] >= 0; var7 += 2) {
+                  for(var7 = 0; var7 < 10 && Interpreter.Interpreter_intStack[var7 + RouteStrategy.Interpreter_intStackSize] >= 0; var7 += 2) {
                      ;
                   }
 
@@ -238,17 +238,17 @@ public class WorldMapAreaData extends WorldMapArea {
                      var9 = new byte[var7 / 2];
 
                      for(var7 -= 2; var7 >= 0; var7 -= 2) {
-                        var8[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + class179.Interpreter_intStackSize];
-                        var9[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + class179.Interpreter_intStackSize + 1];
+                        var8[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + RouteStrategy.Interpreter_intStackSize];
+                        var9[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + RouteStrategy.Interpreter_intStackSize + 1];
                      }
                   }
                } else {
-                  class179.Interpreter_intStackSize -= 2;
-                  var8 = new byte[]{(byte)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize]};
-                  var9 = new byte[]{(byte)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]};
+                  RouteStrategy.Interpreter_intStackSize -= 2;
+                  var8 = new byte[]{(byte)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize]};
+                  var9 = new byte[]{(byte)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]};
                }
 
-               var7 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] - 1;
+               var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] - 1;
                if(var7 >= 0 && var7 <= 9) {
                   BufferedSink.method3595(var4, var7, var8, var9);
                   return 1;

@@ -29,9 +29,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import javax.inject.Inject;
-import net.runelite.api.Actor;
 import net.runelite.api.ClanMember;
 import net.runelite.api.ClanMemberRank;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
@@ -54,7 +52,6 @@ import net.runelite.api.Player;
 import net.runelite.api.events.ClanMemberJoined;
 import net.runelite.api.events.ClanMemberLeft;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -129,35 +126,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
-	{
-		if (config.highlightPile() && callers != null)
-		{
-			for (Player p : client.getPlayers())
-			{
-				for (String name : callers)
-				{
-					Actor pile;
-					String finalName = name.toLowerCase().replace("_", " ");
-					if (p.getName().toLowerCase().replace("_", " ").equals(finalName))
-					{
-						pile = p.getInteracting();
-						if (pile != null)
-						{
-							pileList.set(callers.indexOf(name), pile.getName());
-							//pileList.add(pile.getName());
-						}
-						else
-						{
-							pileList.set(callers.indexOf(name), "");
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@Subscribe
 	public void onClanMemberJoined(ClanMemberJoined event)
 	{
 		getCallerList();
@@ -213,14 +181,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 		return false;
 	}
 
-	boolean isPile(Player player)
-	{
-		if (Objects.nonNull(pileList) && pileList.size() > 0)
-		{
-			return pileList.contains(player.getName());
-		}
-		return false;
-	}
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
@@ -327,10 +287,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 			if (config.colorPlayerMenu() && config.highlightCallers() && this.isCaller(player))
 			{
 				color = config.callerColor();
-			}
-			if (config.colorPlayerMenu() && config.highlightPile() && this.isPile(player))
-			{
-				color = config.pileColor();
 			}
 			if (image != -1 || color != null)
 			{

@@ -26,16 +26,12 @@ package net.runelite.client.plugins.alchemicalhydra;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
-import net.runelite.api.SpriteID;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -46,13 +42,16 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 @Singleton
 class HydraOverlay extends Overlay
 {
+
+	private static final Color RED_BG_COL = new Color(156, 0, 0, 156);
+	private static final Color YEL_BG_COL = new Color(200, 156, 0, 156);
+	private static final Color GRN_BG_COL = new Color(0, 156, 0, 156);
+	static final int IMGSIZE = 36;
+
 	private final HydraPlugin plugin;
 	private final Client client;
 	private final SpriteManager spriteManager;
 	private final PanelComponent panelComponent = new PanelComponent();
-	private static final Color redBgCol = new Color(156, 0, 0, 156);
-	private static final Color yelBgCol = new Color(200, 156, 0, 156);
-	private static final Color grnBgCol = new Color(0, 156, 0, 156);
 
 	@Inject
 	HydraOverlay(HydraPlugin plugin, Client client, SpriteManager spriteManager)
@@ -76,9 +75,8 @@ class HydraOverlay extends Overlay
 		}
 
 		//Add spec overlay first, to keep it above pray
-		HydraPhase phase = hydra.getPhase();
-		int attackCount = hydra.getAttackCount();
-		int nextSpec = hydra.getNextSpecial() - attackCount;
+		final HydraPhase phase = hydra.getPhase();
+		final int nextSpec = hydra.getNextSpecialRelative();
 
 		if (nextSpec <= 3)
 		{
@@ -86,37 +84,34 @@ class HydraOverlay extends Overlay
 
 			if (nextSpec == 0)
 			{
-				specComponent.setBackgroundColor(redBgCol);
+				specComponent.setBackgroundColor(RED_BG_COL);
 			}
 			else if (nextSpec == 1)
 			{
-				specComponent.setBackgroundColor(yelBgCol);
+				specComponent.setBackgroundColor(YEL_BG_COL);
 			}
-			Image specImg = scaleImg(spriteManager.getSprite(phase.getSpecImage(), 0));
 
-			specComponent.setImage(specImg);
+			specComponent.setImage(phase.getSpecImage(spriteManager));
 			specComponent.setText("        " + (nextSpec)); //hacky way to not have to figure out how to move text
 			specComponent.setPreferredSize(new Dimension(40, 40));
 			panelComponent.getChildren().add(specComponent);
 		}
 
-
-		Prayer nextPrayer = hydra.getNextAttack().getPrayer();
-		Image prayImg = scaleImg(getPrayerImage(hydra.getNextAttack().getPrayer()));
-		int nextSwitch = hydra.getNextSwitch();
+		final Prayer nextPrayer = hydra.getNextAttack().getPrayer();
+		final int nextSwitch = hydra.getNextSwitch();
 
 		InfoBoxComponent prayComponent = new InfoBoxComponent();
 
 		if (nextSwitch == 1)
 		{
-			prayComponent.setBackgroundColor(client.isPrayerActive(nextPrayer) ? yelBgCol : redBgCol);
+			prayComponent.setBackgroundColor(client.isPrayerActive(nextPrayer) ? YEL_BG_COL : RED_BG_COL);
 		}
 		else
 		{
-			prayComponent.setBackgroundColor(client.isPrayerActive(nextPrayer) ? grnBgCol : redBgCol);
+			prayComponent.setBackgroundColor(client.isPrayerActive(nextPrayer) ? GRN_BG_COL : RED_BG_COL);
 		}
 
-		prayComponent.setImage(prayImg);
+		prayComponent.setImage(hydra.getNextAttack().getImage(spriteManager));
 		prayComponent.setText("        " + nextSwitch);
 		prayComponent.setColor(Color.white);
 		prayComponent.setPreferredSize(new Dimension(40, 40));
@@ -125,33 +120,5 @@ class HydraOverlay extends Overlay
 		panelComponent.setPreferredSize(new Dimension(40, 0));
 		panelComponent.setBorder(new Rectangle(0, 0, 0, 0));
 		return panelComponent.render(graphics2D);
-	}
-
-	private BufferedImage getPrayerImage(Prayer pray)
-	{
-		return pray == Prayer.PROTECT_FROM_MAGIC
-			? spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MAGIC, 0)
-			: spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MISSILES, 0);
-	}
-
-	private Image scaleImg(final Image img)
-	{
-		if (img == null)
-		{
-			return null;
-		}
-		final double width = img.getWidth(null);
-		final double height = img.getHeight(null);
-		final double size = 36; // Limit size to 2 as that is minimum size not causing breakage
-		final double scalex = size / width;
-		final double scaley = size / height;
-		final double scale = Math.min(scalex, scaley);
-		final int newWidth = (int) (width * scale);
-		final int newHeight = (int) (height * scale);
-		final BufferedImage scaledImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-		final Graphics g = scaledImage.createGraphics();
-		g.drawImage(img, 0, 0, newWidth, newHeight, null);
-		g.dispose();
-		return scaledImage;
 	}
 }

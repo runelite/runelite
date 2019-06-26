@@ -209,11 +209,12 @@
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>runescape-api</artifactId>
 			<version>${project.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.runelit</groupId>
-			<artifactId>client-patch</artifactId>
-			<version>1.5.26.2</version>
+			<groupId>net.runelite</groupId>
+			<artifactId>injected-client</artifactId>
+			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -334,21 +335,14 @@
 							<filters>
 								<!-- include runtime apis -->
 								<filter>
-									<!-- net.runelite:client-patch and net.runelite:api -->
-									<artifact>net.runelite:api</artifact>
+									<!-- net.runelite:injected-client and net.runelite:api -->
+									<artifact>net.runelite:*</artifact>
 									<includes>
 										<include>**</include>
 									</includes>
 								</filter>
 								<filter>
 									<artifact>net.runelite.rs:runescape-api</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<!-- net.runelit:client-patch -->
-									<artifact>net.runelit:client-patch</artifact>
 									<includes>
 										<include>**</include>
 									</includes>

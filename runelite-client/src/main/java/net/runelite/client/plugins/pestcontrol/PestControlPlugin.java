@@ -73,6 +73,8 @@ import net.runelite.client.util.Text;
 )
 public class PestControlPlugin extends Plugin
 {
+	private static final int VOID_KNIGHTS_OUTPOST = 10537;
+
 	private final int NOVICE_GANGPLANK = 14315; // Combat 40+ (3 points)
 	private final int INTERMEDIATE_GANGPLANK = 25631; // Combat 70+ (4 points)
 	private final int VETERAN_GANGPLANK = 25632; // Combat 100+ (5 points)
@@ -662,6 +664,10 @@ public class PestControlPlugin extends Plugin
 
 	boolean isOnPestControlMainIsland()
 	{
-		return client.getLocalPlayer().getWorldLocation().getRegionID() == 10537;
+		if (client.getLocalPlayer() != null)
+		{
+			return client.getLocalPlayer().getWorldLocation().getRegionID() == VOID_KNIGHTS_OUTPOST;
+		}
+		return false;
 	}
 }

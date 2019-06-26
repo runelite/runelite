@@ -85,8 +85,8 @@ public class Scene {
    @Export("__em_ab")
    static boolean __em_ab;
    @ObfuscatedName("ad")
-   @Export("__em_ad")
-   static int __em_ad;
+   @Export("Scene_planesCount")
+   static int Scene_planesCount;
    @ObfuscatedName("ap")
    @Export("Scene_planeOccluderCounts")
    static int[] Scene_planeOccluderCounts;
@@ -208,9 +208,9 @@ public class Scene {
       Scene_selectedX = -1;
       Scene_selectedY = -1;
       __em_ab = false;
-      __em_ad = 4;
-      Scene_planeOccluderCounts = new int[__em_ad];
-      Scene_planeOccluders = new Occluder[__em_ad][500];
+      Scene_planesCount = 4;
+      Scene_planeOccluderCounts = new int[Scene_planesCount];
+      Scene_planeOccluders = new Occluder[Scene_planesCount][500];
       Scene_currentOccludersCount = 0;
       Scene_currentOccluders = new Occluder[500];
       Scene_tilesDeque = new NodeDeque();
@@ -252,7 +252,7 @@ public class Scene {
          }
       }
 
-      for(var1 = 0; var1 < __em_ad; ++var1) {
+      for(var1 = 0; var1 < Scene_planesCount; ++var1) {
          for(var2 = 0; var2 < Scene_planeOccluderCounts[var1]; ++var2) {
             Scene_planeOccluders[var1][var2] = null;
          }

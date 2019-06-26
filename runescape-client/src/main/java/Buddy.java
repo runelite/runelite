@@ -66,7 +66,7 @@ public class Buddy extends User {
       signature = "(I)V",
       garbageValue = "1868787018"
    )
-   static final void method5554() {
+   static final void processOverheadText() {
       int[] var0 = Players.Players_indices;
 
       int var1;

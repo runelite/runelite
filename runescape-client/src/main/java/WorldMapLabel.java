@@ -169,7 +169,7 @@ public class WorldMapLabel {
       signature = "(I)[Llq;",
       garbageValue = "-1374541046"
    )
-   public static IndexedSprite[] method444() {
+   public static IndexedSprite[] createIndexedSpriteArray() {
       IndexedSprite[] var0 = new IndexedSprite[class328.indexedSpriteCount];
 
       for(int var1 = 0; var1 < class328.indexedSpriteCount; ++var1) {
@@ -215,7 +215,7 @@ public class WorldMapLabel {
 
          return var4 - var5;
       } else {
-         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.__a_147()?(var1.__a_147()?0:1):(var1.__a_147()?-1:0)):(var2 == 5?(var0.__x_145()?(var1.__x_145()?0:1):(var1.__x_145()?-1:0)):(var2 == 6?(var0.__d_146()?(var1.__d_146()?0:1):(var1.__d_146()?-1:0)):(var2 == 7?(var0.__e_144()?(var1.__e_144()?0:1):(var1.__e_144()?-1:0)):var0.id - var1.id)))));
+         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.__a_147()?(var1.__a_147()?0:1):(var1.__a_147()?-1:0)):(var2 == 5?(var0.__x_145()?(var1.__x_145()?0:1):(var1.__x_145()?-1:0)):(var2 == 6?(var0.isPvp()?(var1.isPvp()?0:1):(var1.isPvp()?-1:0)):(var2 == 7?(var0.isMembersOnly()?(var1.isMembersOnly()?0:1):(var1.isMembersOnly()?-1:0)):var0.id - var1.id)))));
       }
    }
 

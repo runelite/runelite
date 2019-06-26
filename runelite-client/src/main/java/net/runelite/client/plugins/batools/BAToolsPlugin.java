@@ -707,21 +707,21 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		String target = event.getMenuTarget();
+		String target = event.getTarget();
 
-		if (config.tagging() && (event.getMenuTarget().contains("Penance Ranger") || event.getMenuTarget().contains("Penance Fighter")))
+		if (config.tagging() && (event.getTarget().contains("Penance Ranger") || event.getTarget().contains("Penance Fighter")))
 		{
-			if (event.getMenuOption().contains("Attack"))
+			if (event.getOption().contains("Attack"))
 			{
-				foodPressed.put(event.getId(), Instant.now());
+				foodPressed.put(event.getIdentifier(), Instant.now());
 			}
 			log.info(target);
 		}
 
 		if (config.healerMenuOption() && target.contains("Penance Healer") && target.contains("<col=ff9040>Poisoned") && target.contains("->"))
 		{
-			foodPressed.put(event.getId(), Instant.now());
-			lastHealer = event.getId();
+			foodPressed.put(event.getIdentifier(), Instant.now());
+			lastHealer = event.getIdentifier();
 			log.info("Last healer changed: " + lastHealer);
 		}
 	}

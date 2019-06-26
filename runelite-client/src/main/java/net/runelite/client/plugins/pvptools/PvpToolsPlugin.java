@@ -178,10 +178,10 @@ public class PvpToolsPlugin extends Plugin
 	};
 
 	private final HotkeyListener renderselfHotkeyListener = new HotkeyListener(() -> config.renderSelf())
-	{ //TODO FIX
+	{
 		public void hotkeyPressed()
 		{
-			//client.toggleRenderSelf();
+			client.setRenderSelf(!client.getRenderSelf());
 		}
 	};
 

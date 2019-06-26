@@ -50,8 +50,7 @@ public class PlayerIndicatorsService
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 		if (!config.highlightOwnPlayer() && !config.drawClanMemberNames()
-			&& !config.highlightFriends() && !config.highlightNonClanMembers() && !config.highlightTargets()
-			&& !config.highlightPile() && !config.highlightCallers() && !config.highlightTeamMembers())
+			&& !config.highlightFriends() && !config.highlightNonClanMembers() && !config.highlightTargets() && !config.highlightCallers() && !config.highlightTeamMembers())
 		{
 			return;
 		}
@@ -106,11 +105,6 @@ public class PlayerIndicatorsService
 			if (config.highlightCallers() && config.callers() != null && playerIndicatorsPlugin.isCaller(player))
 			{
 				consumer.accept(player, config.callerColor());
-			}
-			if (config.highlightPile() && playerIndicatorsPlugin.isPile(player)
-				&& !player.isClanMember())
-			{
-				consumer.accept(player, config.pileColor());
 			}
 		}
 	}

@@ -104,7 +104,7 @@ public class ExaminePlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals("Examine"))
+		if (!event.getOption().equals("Examine"))
 		{
 			return;
 		}
@@ -116,20 +116,20 @@ public class ExaminePlugin extends Plugin
 			case EXAMINE_ITEM:
 			{
 				type = ExamineType.ITEM;
-				id = event.getId();
+				id = event.getIdentifier();
 
-				int widgetId = event.getWidgetId();
+				int widgetId = event.getActionParam1();
 				int widgetGroup = TO_GROUP(widgetId);
 				int widgetChild = TO_CHILD(widgetId);
 				Widget widget = client.getWidget(widgetGroup, widgetChild);
-				WidgetItem widgetItem = widget.getWidgetItem(event.getActionParam());
+				WidgetItem widgetItem = widget.getWidgetItem(event.getActionParam0());
 				quantity = widgetItem != null && widgetItem.getId() >= 0 ? widgetItem.getQuantity() : 1;
 				break;
 			}
 			case EXAMINE_ITEM_BANK_EQ:
 			{
 				type = ExamineType.ITEM_BANK_EQ;
-				int[] qi = findItemFromWidget(event.getWidgetId(), event.getActionParam());
+				int[] qi = findItemFromWidget(event.getActionParam1(), event.getActionParam0());
 				if (qi == null)
 				{
 					log.debug("Examine for item with unknown widget: {}", event);
@@ -141,11 +141,11 @@ public class ExaminePlugin extends Plugin
 			}
 			case EXAMINE_OBJECT:
 				type = ExamineType.OBJECT;
-				id = event.getId();
+				id = event.getIdentifier();
 				break;
 			case EXAMINE_NPC:
 				type = ExamineType.NPC;
-				id = event.getId();
+				id = event.getIdentifier();
 				break;
 			default:
 				return;
@@ -199,26 +199,26 @@ public class ExaminePlugin extends Plugin
 		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
 		// If it is an item, show the price of it
-		final ItemDefinition itemComposition;
+		final ItemDefinition Itemdefinition;
 		if (pendingExamine.getType() == ExamineType.ITEM || pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
 		{
 			final int itemId = pendingExamine.getId();
 			final int itemQuantity = pendingExamine.getQuantity();
-			itemComposition = itemManager.getItemDefinition(itemId);
+			Itemdefinition = itemManager.getItemDefinition(itemId);
 
-			if (itemComposition != null)
+			if (Itemdefinition != null)
 			{
-				final int id = itemManager.canonicalize(itemComposition.getId());
-				executor.submit(() -> getItemPrice(id, itemComposition, itemQuantity));
+				final int id = itemManager.canonicalize(Itemdefinition.getId());
+				executor.submit(() -> getItemPrice(id, Itemdefinition, itemQuantity));
 			}
 		}
 		else
 		{
-			itemComposition = null;
+			Itemdefinition = null;
 		}
 
 		// Don't submit examine info for tradeable items, which we already have from the RS item api
-		if (itemComposition != null && itemComposition.isTradeable())
+		if (Itemdefinition != null && Itemdefinition.isTradeable())
 		{
 			return;
 		}

@@ -219,7 +219,7 @@ public class Message extends DualNode {
                   boolean var8;
                   if(Character.isISOControl(var7)) {
                      var8 = false;
-                  } else if(VarcInt.method4807(var7)) {
+                  } else if(VarcInt.isAlphaNumeric(var7)) {
                      var8 = true;
                   } else {
                      char[] var13 = class305.__kb_q;

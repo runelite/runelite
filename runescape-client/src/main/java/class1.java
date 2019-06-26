@@ -81,18 +81,18 @@ final class class1 implements class0 {
       Widget var4;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+         var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          var4 = Huffman.getWidget(var3);
       } else {
          var4 = var2?WorldMapIcon1.__t_i:class12.__n_n;
       }
 
       if(var0 == 1000) {
-         class179.Interpreter_intStackSize -= 4;
-         var4.rawX = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4.rawY = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         var4.xAlignment = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
-         var4.yAlignment = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 3];
+         RouteStrategy.Interpreter_intStackSize -= 4;
+         var4.rawX = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4.rawY = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         var4.xAlignment = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
+         var4.yAlignment = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 3];
          class22.method295(var4);
          TextureProvider.client.alignWidget(var4);
          if(var3 != -1 && var4.type == 0) {
@@ -101,11 +101,11 @@ final class class1 implements class0 {
 
          return 1;
       } else if(var0 == 1001) {
-         class179.Interpreter_intStackSize -= 4;
-         var4.rawWidth = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4.rawHeight = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         var4.widthAlignment = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
-         var4.heightAlignment = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 3];
+         RouteStrategy.Interpreter_intStackSize -= 4;
+         var4.rawWidth = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4.rawHeight = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         var4.widthAlignment = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
+         var4.heightAlignment = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 3];
          class22.method295(var4);
          TextureProvider.client.alignWidget(var4);
          if(var3 != -1 && var4.type == 0) {
@@ -114,7 +114,7 @@ final class class1 implements class0 {
 
          return 1;
       } else if(var0 == 1003) {
-         boolean var5 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+         boolean var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
          if(var5 != var4.isHidden) {
             var4.isHidden = var5;
             class22.method295(var4);
@@ -122,10 +122,10 @@ final class class1 implements class0 {
 
          return 1;
       } else if(var0 == 1005) {
-         var4.noClickThrough = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+         var4.noClickThrough = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
          return 1;
       } else if(var0 == 1006) {
-         var4.noScrollThrough = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+         var4.noScrollThrough = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
          return 1;
       } else {
          return 2;
@@ -140,16 +140,16 @@ final class class1 implements class0 {
    static int method16(int var0, Script var1, boolean var2) {
       int var3;
       if(var0 == 4200) {
-         var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+         var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Skills.getItemDefinition(var3).name;
          return 1;
       } else {
          int var4;
          ItemDefinition var5;
          if(var0 == 4201) {
-            class179.Interpreter_intStackSize -= 2;
-            var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-            var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+            RouteStrategy.Interpreter_intStackSize -= 2;
+            var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+            var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
             var5 = Skills.getItemDefinition(var3);
             if(var4 >= 1 && var4 <= 5 && var5.groundActions[var4 - 1] != null) {
                Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var5.groundActions[var4 - 1];
@@ -159,9 +159,9 @@ final class class1 implements class0 {
 
             return 1;
          } else if(var0 == 4202) {
-            class179.Interpreter_intStackSize -= 2;
-            var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-            var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+            RouteStrategy.Interpreter_intStackSize -= 2;
+            var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+            var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
             var5 = Skills.getItemDefinition(var3);
             if(var4 >= 1 && var4 <= 5 && var5.inventoryActions[var4 - 1] != null) {
                Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var5.inventoryActions[var4 - 1];
@@ -171,64 +171,64 @@ final class class1 implements class0 {
 
             return 1;
          } else if(var0 == 4203) {
-            var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var3).price;
+            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var3).price;
             return 1;
          } else if(var0 == 4204) {
-            var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var3).isStackable == 1?1:0;
+            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var3).isStackable == 1?1:0;
             return 1;
          } else {
             ItemDefinition var6;
             if(var0 == 4205) {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                var6 = Skills.getItemDefinition(var3);
                if(var6.noteTemplate == -1 && var6.note >= 0) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6.note;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.note;
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3;
                }
 
                return 1;
             } else if(var0 == 4206) {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                var6 = Skills.getItemDefinition(var3);
                if(var6.noteTemplate >= 0 && var6.note >= 0) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6.note;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.note;
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3;
                }
 
                return 1;
             } else if(var0 == 4207) {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var3).isMembersOnly?1:0;
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var3).isMembersOnly?1:0;
                return 1;
             } else if(var0 == 4208) {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                var6 = Skills.getItemDefinition(var3);
                if(var6.placeholderTemplate == -1 && var6.placeholder >= 0) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6.placeholder;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.placeholder;
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3;
                }
 
                return 1;
             } else if(var0 == 4209) {
-               var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                var6 = Skills.getItemDefinition(var3);
                if(var6.placeholderTemplate >= 0 && var6.placeholder >= 0) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6.placeholder;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.placeholder;
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3;
                }
 
                return 1;
             } else if(var0 == 4210) {
                String var7 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-               var4 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+               var4 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                class50.method900(var7, var4 == 1);
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = WorldMapSection0.__y_sn;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapSection0.__y_sn;
                return 1;
             } else if(var0 != 4211) {
                if(var0 == 4212) {
@@ -239,9 +239,9 @@ final class class1 implements class0 {
                }
             } else {
                if(AttackOption.__cj_sp != null && class231.__hb_sg < WorldMapSection0.__y_sn) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = AttackOption.__cj_sp[++class231.__hb_sg - 1] & '\uffff';
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = AttackOption.__cj_sp[++class231.__hb_sg - 1] & '\uffff';
                } else {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                }
 
                return 1;

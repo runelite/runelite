@@ -179,9 +179,9 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOpt)
 	{
-		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
+		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getTarget().contains("Bookshelf"))
 		{
-			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
+			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam0(), menuOpt.getActionParam1(), client.getPlane());
 			overlay.setHidden(false);
 		}
 	}

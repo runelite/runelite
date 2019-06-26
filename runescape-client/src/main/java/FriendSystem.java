@@ -116,7 +116,7 @@ public class FriendSystem {
    )
    @Export("isFriended")
    final boolean isFriended(Username var1, boolean var2) {
-      return var1 != null && (var1.__equals_466(Canvas.localPlayer.username) || this.friendsList.isFriended(var1, var2));
+      return var1 != null && (var1.equals(Canvas.localPlayer.username) || this.friendsList.isFriended(var1, var2));
    }
 
    @ObfuscatedName("g")
@@ -145,7 +145,7 @@ public class FriendSystem {
                var10000 = null;
                var4 = "Your friend list is full. Max of 200 for free users, and 400 for members";
                WorldMapIcon1.method219(30, "", var4);
-            } else if(Canvas.localPlayer.username.__equals_466(var2)) {
+            } else if(Canvas.localPlayer.username.equals(var2)) {
                var10000 = null;
                var4 = "You can\'t add yourself to your own friend list";
                WorldMapIcon1.method219(30, "", var4);
@@ -200,7 +200,7 @@ public class FriendSystem {
                var10000 = null;
                var4 = "Your ignore list is full. Max of 100 for free users, and 400 for members";
                WorldMapIcon1.method219(30, "", var4);
-            } else if(Canvas.localPlayer.username.__equals_466(var2)) {
+            } else if(Canvas.localPlayer.username.equals(var2)) {
                var10000 = null;
                var4 = "You can\'t add yourself to your own ignore list";
                WorldMapIcon1.method219(30, "", var4);
@@ -284,8 +284,8 @@ public class FriendSystem {
       signature = "(Lkp;S)Z",
       garbageValue = "-543"
    )
-   @Export("__t_161")
-   final boolean __t_161(Username var1) {
+   @Export("isFriendAndHasWorld")
+   final boolean isFriendAndHasWorld(Username var1) {
       Friend var2 = (Friend)this.friendsList.getByUsername(var1);
       return var2 != null && var2.hasWorld();
    }
@@ -299,7 +299,7 @@ public class FriendSystem {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+         var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
       } else {
          var3 = var2?WorldMapIcon1.__t_i:class12.__n_n;
       }

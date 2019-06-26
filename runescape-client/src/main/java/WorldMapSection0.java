@@ -209,7 +209,7 @@ public class WorldMapSection0 implements WorldMapSection {
       signature = "(I)V",
       garbageValue = "-2102591569"
    )
-   static void method247() {
+   static void savePreferences() {
       AccessFile var0 = null;
 
       try {
@@ -261,7 +261,7 @@ public class WorldMapSection0 implements WorldMapSection {
 
       Client.__client_hh = false;
       int var7;
-      if(MouseHandler.MouseHandler_currentButton == 1 || !AbstractRasterProvider.__lp_ca && MouseHandler.MouseHandler_currentButton == 4) {
+      if(MouseHandler.MouseHandler_currentButton == 1 || !AbstractRasterProvider.mouseCam && MouseHandler.MouseHandler_currentButton == 4) {
          if(var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
             var0.scrollY -= 4;
             class22.method295(var0);

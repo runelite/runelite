@@ -29,7 +29,6 @@ import net.runelite.api.ClanMemberRank;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
 
 @ConfigGroup("playerindicators")
 public interface PlayerIndicatorsConfig extends Config
@@ -361,46 +360,6 @@ public interface PlayerIndicatorsConfig extends Config
 		group = "Callers"
 	)
 	default Color callerColor()
-	{
-		return Color.WHITE;
-	}
-
-	@ConfigItem(
-		position = 27,
-		keyName = "highlightPile",
-		name = "Highlight Pile",
-		description = "Highlights Pile Onscreen",
-		group = "Callers"
-	)
-	default boolean highlightPile()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 29,
-		keyName = "drawPileHull",
-		name = "Draws the hull of the pile.",
-		description = "Draws the hull of the pile for best visibility.",
-		group = "Callers"
-	)
-	default boolean drawPileHull()
-	{
-		return false;
-	}
-
-	@Range(
-		min = 1,
-		max = 10
-	)
-	@ConfigItem(
-		position = 30,
-		keyName = "pileColor",
-		name = "Pile Color",
-		description = "Color of Indicated Pile",
-		group = "Callers"
-	)
-	default Color pileColor()
 	{
 		return Color.WHITE;
 	}

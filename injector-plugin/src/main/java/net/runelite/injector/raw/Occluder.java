@@ -78,6 +78,6 @@ public class Occluder
 		}
 
 		log.info("Changed {} values in occlude()", replaced);
-		log.info("occluder took {}", stopwatch.toString());
+		log.info("Occluder took {}", stopwatch.toString());
 	}
 }

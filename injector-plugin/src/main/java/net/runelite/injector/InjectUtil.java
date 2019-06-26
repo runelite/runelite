@@ -91,6 +91,28 @@ public class InjectUtil
 
 	public static Field findDeobField(Inject inject, String name) throws InjectionException
 	{
+		return findDeobField(inject, name, null);
+	}
+
+	public static Field findDeobField(Inject inject, String name, String hint) throws InjectionException
+	{
+		if (hint != null)
+		{
+			ClassFile c = inject.getDeobfuscated().findClass(hint);
+			for (Field f : c.getFields())
+			{
+				if (!f.getName().equals(name))
+				{
+					continue;
+				}
+
+				String obfuscatedName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
+
+				ClassFile c2 = inject.toObClass(c);
+				return c2.findField(obfuscatedName);
+			}
+		}
+
 		for (ClassFile c : inject.getDeobfuscated().getClasses())
 		{
 			for (Field f : c.getFields())

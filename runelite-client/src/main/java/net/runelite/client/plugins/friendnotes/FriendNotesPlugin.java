@@ -190,20 +190,20 @@ public class FriendNotesPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (WidgetInfo.TO_GROUP(event.getWidgetId()) == WidgetInfo.FRIENDS_LIST.getGroupId())
+		if (WidgetInfo.TO_GROUP(event.getActionParam1()) == WidgetInfo.FRIENDS_LIST.getGroupId())
 		{
-			if (Strings.isNullOrEmpty(event.getMenuTarget()))
+			if (Strings.isNullOrEmpty(event.getTarget()))
 			{
 				return;
 			}
 
 			// Handle clicks on "Add Note" or "Edit Note"
-			if (event.getMenuOption().equals(ADD_NOTE) || event.getMenuOption().equals(EDIT_NOTE))
+			if (event.getOption().equals(ADD_NOTE) || event.getOption().equals(EDIT_NOTE))
 			{
 				event.consume();
 
 				//Friends have color tags
-				final String sanitizedTarget = Text.toJagexName(Text.removeTags(event.getMenuTarget()));
+				final String sanitizedTarget = Text.toJagexName(Text.removeTags(event.getTarget()));
 				final String note = getFriendNote(sanitizedTarget);
 
 				// Open the new chatbox input dialog

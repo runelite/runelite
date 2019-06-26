@@ -58,6 +58,8 @@ public interface RSPlayer extends RSActor, Player
 	@Override
 	boolean isFriend();
 
+	boolean isFriended();
+
 	@Import("headIconPrayer")
 	int getRsOverheadIcon();
 

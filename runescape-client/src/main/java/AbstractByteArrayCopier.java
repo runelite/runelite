@@ -41,8 +41,8 @@ public abstract class AbstractByteArrayCopier {
       signature = "(II)Liw;",
       garbageValue = "1102198559"
    )
-   public static VarcInt method4021(int var0) {
-      VarcInt var1 = (VarcInt)VarcInt.__iw_f.get((long)var0);
+   public static VarcInt getVarcInt(int var0) {
+      VarcInt var1 = (VarcInt)VarcInt.cachedVarcInts.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
@@ -52,7 +52,7 @@ public abstract class AbstractByteArrayCopier {
             var1.__q_411(new Buffer(var2));
          }
 
-         VarcInt.__iw_f.put(var1, (long)var0);
+         VarcInt.cachedVarcInts.put(var1, (long)var0);
          return var1;
       }
    }
@@ -62,7 +62,7 @@ public abstract class AbstractByteArrayCopier {
       signature = "(II)V",
       garbageValue = "-1941491045"
    )
-   public static void method4023(int var0) {
+   public static void unloadWidgetGroup(int var0) {
       if(var0 != -1) {
          if(Widget.loadedWidgetGroups[var0]) {
             Widget.Widget_indexCache.__h_399(var0);

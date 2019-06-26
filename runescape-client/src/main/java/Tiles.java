@@ -93,7 +93,7 @@ public final class Tiles {
       signature = "(Ljava/lang/String;Ljava/lang/String;IIIII)V",
       garbageValue = "-1525245246"
    )
-   public static final void method1106(String var0, String var1, int var2, int var3, int var4, int var5) {
+   public static final void insertMenuItemNoShift(String var0, String var1, int var2, int var3, int var4, int var5) {
       class16.insertMenuItem(var0, var1, var2, var3, var4, var5, false);
    }
 }

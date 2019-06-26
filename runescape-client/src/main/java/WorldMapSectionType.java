@@ -36,8 +36,8 @@ public enum WorldMapSectionType implements Enumerated {
    @ObfuscatedSignature(
       signature = "Llq;"
    )
-   @Export("__h_e")
-   static IndexedSprite __h_e;
+   @Export("logoSprite")
+   static IndexedSprite logoSprite;
    @ObfuscatedName("n")
    @Export("__h_n")
    static int[] __h_n;
@@ -104,22 +104,22 @@ public enum WorldMapSectionType implements Enumerated {
    static int method253(int var0, Script var1, boolean var2) {
       Widget var3 = var2?WorldMapIcon1.__t_i:class12.__n_n;
       if(var0 == 1500) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.x;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.x;
          return 1;
       } else if(var0 == 1501) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.y;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.y;
          return 1;
       } else if(var0 == 1502) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.width;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.width;
          return 1;
       } else if(var0 == 1503) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.height;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.height;
          return 1;
       } else if(var0 == 1504) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.isHidden?1:0;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.isHidden?1:0;
          return 1;
       } else if(var0 == 1505) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3.parentId;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.parentId;
          return 1;
       } else {
          return 2;

@@ -128,6 +128,13 @@ public interface Client extends GameShell
 	GameState getGameState();
 
 	/**
+	 * Sets the current game state.
+	 *
+	 * @param gameState new game state
+	 */
+	void setGameState(int gameState);
+
+	/**
 	 * Gets the current logged in username.
 	 *
 	 * @return the logged in username
@@ -564,6 +571,11 @@ public interface Client extends GameShell
 	MenuEntry[] getMenuEntries();
 
 	/**
+	 * @return amount of menu entries the client has (same as client.getMenuEntries().size())
+	 */
+	int getMenuOptionCount();
+
+	/**
 	 * Sets the array of open menu entries.
 	 * <p>
 	 * This method should typically be used in the context of the {@link net.runelite.api.events.MenuOpened}
@@ -934,7 +946,7 @@ public interface Client extends GameShell
 	 *
 	 * @return all projectiles
 	 */
-	java.util.List<Projectile> getProjectiles();
+	List<Projectile> getProjectiles();
 
 	/**
 	 * Gets a list of all graphics objects currently drawn.
@@ -1504,14 +1516,6 @@ public interface Client extends GameShell
 	NodeCache getWidgetSpriteCache();
 
 	/**
-	 * Overrides health bar sprites with the sprites from the specified override.
-	 * Pass in {@code null} to revert the health bars back to their default.
-	 *
-	 * @param override the health bar override
-	 */
-	void setHealthBarOverride(HealthBarOverride override);
-
-	/**
 	 * Gets the current server tick count.
 	 *
 	 * @return the tick count
@@ -1639,7 +1643,9 @@ public interface Client extends GameShell
 
 	void draw2010Menu();
 
-	NodeCache getHealthBarCache();
+	void resetHealthBarCaches();
+
+	boolean getRenderSelf();
 
 	void setRenderSelf(boolean enabled);
 
@@ -1663,4 +1669,16 @@ public interface Client extends GameShell
 	String getSelectedSpellName();
 	
 	boolean getIsSpellSelected();
+
+	/**
+	 * Set whether or not player attack options will be hidden for clanmembers/friends
+	 */
+	void setHideFriendAttackOptions(boolean yes);
+	
+	/**
+	 * Sorts the current menu entries in the same way the client does this.
+	 * The last entry will be the left click one after this.
+	 */
+	void sortMenuEntries();
+
 }

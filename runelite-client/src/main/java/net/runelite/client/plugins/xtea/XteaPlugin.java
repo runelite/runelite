@@ -81,6 +81,12 @@ public class XteaPlugin extends Plugin
 
 			log.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
 
+			//Don't post non encrypted regions
+			if (keys[0] == 0 && keys[1] == 0 && keys[2] == 0 && keys[3] == 0)
+			{
+				continue;
+			}
+
 			XteaKey xteaKey = new XteaKey();
 			xteaKey.setRegion(region);
 			xteaKey.setKeys(keys);

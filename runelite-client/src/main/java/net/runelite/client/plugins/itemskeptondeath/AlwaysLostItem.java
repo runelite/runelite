@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.inferno;
+package net.runelite.client.plugins.itemskeptondeath;
 
+import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.ItemID;
 
+/**
+ * Certain Items receive a white outline by Jagex as they are always lost on death. This is sometimes incorrectly
+ * added to Items by Jagex as the item is actually kept in non-pvp areas of the game, such as the Rune Pouch.
+ *
+ * The white outline will be added to these items when they are lost on death.
+ */
 @AllArgsConstructor
-enum InfernoWaveMonster
+@Getter
+enum AlwaysLostItem
 {
-	
-	JAL_NIB("Jal-Nib", 32),
-	JAL_MEJRAH("Jal-MejRah", 85),
-	JAL_AK("Jal-Ak", 165),
-	JAL_IMKOT("Jal-ImKot", 240),
-	JAL_XIL("Jal-XIL", 370),
-	JAL_ZEK("Jal-Zek", 490),
-	JALTOK_JAD("JalTok-Jad", 900),
-	TZKAL_ZUK("TzKal-Zuk", 1400);
+	RUNE_POUCH(ItemID.RUNE_POUCH, true),
+	LOOTING_BAG(ItemID.LOOTING_BAG, false),
+	CLUE_BOX(ItemID.CLUE_BOX, false);
 
-	private final String name;
-	private final int level;
+	private final int itemID;
+	private final boolean keptOutsideOfWilderness;
 
-	@Override
-	public String toString()
+	private static final ImmutableMap<Integer, AlwaysLostItem> ID_MAP;
+
+	static
 	{
-		return String.format("%s - Level %s", name, level);
+		final ImmutableMap.Builder<Integer, AlwaysLostItem> map = ImmutableMap.builder();
+		for (final AlwaysLostItem p : values())
+		{
+			map.put(p.itemID, p);
+		}
+		ID_MAP = map.build();
+	}
+
+	static AlwaysLostItem getByItemID(final int itemID)
+	{
+		return ID_MAP.get(itemID);
 	}
 }

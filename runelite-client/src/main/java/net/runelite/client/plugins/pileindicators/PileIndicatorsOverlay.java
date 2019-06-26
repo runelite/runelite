@@ -26,11 +26,15 @@ package net.runelite.client.plugins.pileindicators;
 
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.*;
 
 import javax.inject.Inject;
 import java.awt.*;
 import java.util.ArrayList;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class PileIndicatorsOverlay extends Overlay
 {
@@ -65,22 +69,21 @@ public class PileIndicatorsOverlay extends Overlay
 				PileType pileType = plugin.getPileType(actorArrayList);
 				Color pileColor = plugin.getColorByPileType(pileType);
 
-				try 
+				try
 				{
 					Actor actorToRender = actorArrayList.get(0); //guaranteed to have at least two players
-					final String text;
-					if (config.numberOnly())
+					final String pileTypeStr = pileType == PileType.PLAYER_PILE ? "PLAYER" : pileType == PileType.NPC_PILE ? "NPC" : pileType == PileType.MIXED_PILE ? "MIXED" : "";
+					final String text = config.numberOnly() ? "" + actorArrayList.size() : (pileTypeStr + " PILE SIZE: " + actorArrayList.size());
+					if (config.drawPileTile())
 					{
-						text = "" + actorArrayList.size();
+						OverlayUtil.renderPolygon(graphics, actorToRender.getCanvasTilePoly(), pileColor);
 					}
-					else
+					if (config.drawPileHull())
 					{
-						text = "PILE SIZE: " + actorArrayList.size();
+						OverlayUtil.renderPolygon(graphics, actorToRender.getConvexHull(), pileColor);
 					}
-
-					OverlayUtil.renderPolygon(graphics, actorToRender.getCanvasTilePoly(), pileColor);
 					OverlayUtil.renderTextLocation(graphics, actorToRender.getCanvasTextLocation(graphics, text, 40), text, pileColor);
-				} 
+				}
 				catch (Exception ignored)
 				{
 				}
@@ -89,4 +92,5 @@ public class PileIndicatorsOverlay extends Overlay
 
 		return null;
 	}
+
 }

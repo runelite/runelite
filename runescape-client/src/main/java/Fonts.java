@@ -20,8 +20,8 @@ public class Fonts {
    @ObfuscatedSignature(
       signature = "Lln;"
    )
-   @Export("__kz_l")
-   static Sprite __kz_l;
+   @Export("rightTitleSprite")
+   static Sprite rightTitleSprite;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lir;"

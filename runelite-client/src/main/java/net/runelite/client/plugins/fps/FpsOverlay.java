@@ -50,7 +50,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class FpsOverlay extends Overlay
 {
 	// Local dependencies
-	private final FpsConfig config;
 	private final Client client;
 	private final FpsPlugin plugin;
 
@@ -58,9 +57,8 @@ public class FpsOverlay extends Overlay
 	private boolean isFocused = true;
 
 	@Inject
-	private FpsOverlay(FpsPlugin plugin, FpsConfig config, Client client)
+	private FpsOverlay(FpsPlugin plugin, Client client)
 	{
-		this.config = config;
 		this.client = client;
 		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -75,8 +73,8 @@ public class FpsOverlay extends Overlay
 
 	private boolean isEnforced()
 	{
-		return FpsLimitMode.ALWAYS == config.limitMode()
-			|| (FpsLimitMode.UNFOCUSED == config.limitMode() && !isFocused);
+		return FpsLimitMode.ALWAYS == plugin.getLimitMode()
+			|| (FpsLimitMode.UNFOCUSED == plugin.getLimitMode() && !isFocused);
 	}
 
 	private Color getFpsValueColor()
@@ -110,7 +108,7 @@ public class FpsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.drawFps() && !config.drawPing())
+		if (!plugin.isDrawFps() && !plugin.isDrawPing())
 		{
 			return null;
 		}
@@ -121,7 +119,7 @@ public class FpsOverlay extends Overlay
 
 		int baseYOffset = (fontMetrics.getAscent() - fontMetrics.getDescent()) + 1;
 
-		if (config.drawFps())
+		if (plugin.isDrawFps())
 		{
 			final String fpsText = String.format("%d FPS", client.getFPS());
 			final int textWidth = fontMetrics.stringWidth(fpsText);
@@ -132,7 +130,7 @@ public class FpsOverlay extends Overlay
 			baseYOffset += 11;
 		}
 
-		if (config.drawPing())
+		if (plugin.isDrawPing())
 		{
 			final String pingText = String.format("%dms", plugin.getPing());
 			final int textWidth = fontMetrics.stringWidth(pingText);

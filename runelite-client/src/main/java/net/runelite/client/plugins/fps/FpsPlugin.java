@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -90,6 +91,15 @@ public class FpsPlugin extends Plugin
 
 	private final ScheduledExecutorService pingExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
 
+	@Getter(AccessLevel.PACKAGE)
+	private FpsLimitMode limitMode;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawFps;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawPing;
+
 	@Provides
 	FpsConfig provideConfig(ConfigManager configManager)
 	{
@@ -102,6 +112,10 @@ public class FpsPlugin extends Plugin
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
 		{
 			drawListener.reloadConfig();
+
+			limitMode = fpsConfig.limitMode();
+			drawFps = fpsConfig.drawFps();
+			drawPing = fpsConfig.drawPing();
 		}
 	}
 
@@ -115,6 +129,9 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		limitMode = fpsConfig.limitMode();
+		drawFps = fpsConfig.drawFps();
+		drawPing = fpsConfig.drawPing();
 		overlayManager.add(overlay);
 		drawManager.registerEveryFrameListener(drawListener);
 		drawListener.reloadConfig();
@@ -131,7 +148,7 @@ public class FpsPlugin extends Plugin
 
 	private void getPingToCurrentWorld()
 	{
-		if (client.getGameState().equals(GameState.LOGGED_IN) && fpsConfig.drawPing())
+		if (client.getGameState().equals(GameState.LOGGED_IN) && drawPing)
 		{
 			ping = Ping.ping(String.format("oldschool%d.runescape.com", client.getWorld() - 300));
 		}

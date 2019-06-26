@@ -36,7 +36,9 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.HashTable;
+import net.runelite.api.Skill;
 import net.runelite.api.WidgetNode;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -120,6 +122,7 @@ public class HidePrayersPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
+			reallyHidePrayers();
 			hidePrayers();
 		}
 	}
@@ -506,9 +509,19 @@ public class HidePrayersPlugin extends Plugin
 					prayerWidgets.get(9).setHidden(false);    // Rapid Heal
 				}
 
+				if (WorldType.isHighRiskWorld(client.getWorldType()) || client.getRealSkillLevel(Skill.PRAYER) <= 24)
+				{
+					prayerWidgets.get(10).setHidden(true);    // Protect Item
+				}
+				else
+				{
+					prayerWidgets.get(10).setHidden(false);    // Protect Item
+				}
+
 				switch (config.pvpprayers())
 				{
 					case DISABLED:
+						reallyHidePrayers();
 						break;
 					case PRAY1:
 						prayerWidgets.get(0).setHidden(false);    // Thick Skin
@@ -521,30 +534,21 @@ public class HidePrayersPlugin extends Plugin
 						prayerWidgets.get(6).setHidden(false);    // Super Human Strength
 						break;
 					case PRAY16:
-						prayerWidgets.get(3).setHidden(false);    // Sharp Eye
-						prayerWidgets.get(4).setHidden(false);    // Mystic Will
-						prayerWidgets.get(5).setHidden(false);    // Rock Skin
-						prayerWidgets.get(6).setHidden(false);    // Super Human Strength
-						prayerWidgets.get(7).setHidden(false);    // Improved Reflexed
-						break;
 					case PRAY25:
 						prayerWidgets.get(3).setHidden(false);    // Sharp Eye
 						prayerWidgets.get(4).setHidden(false);    // Mystic Will
 						prayerWidgets.get(5).setHidden(false);    // Rock Skin
 						prayerWidgets.get(6).setHidden(false);    // Super Human Strength
 						prayerWidgets.get(7).setHidden(false);    // Improved Reflexed
-						prayerWidgets.get(10).setHidden(false);    // Protect Item
 						break;
 					case PRAY31:
 						prayerWidgets.get(7).setHidden(false);    // Improved Reflexed
-						prayerWidgets.get(10).setHidden(false);    // Protect Item
 						prayerWidgets.get(11).setHidden(false);    // Hawk Eye
 						prayerWidgets.get(12).setHidden(false);    // Mystic Lore
 						prayerWidgets.get(13).setHidden(false);    // Steel Skin
 						prayerWidgets.get(14).setHidden(false);    // Ultimate Strength
 						break;
 					case PRAY43:
-						prayerWidgets.get(10).setHidden(false);    // Protect Item
 						prayerWidgets.get(11).setHidden(false);    // Hawk Eye
 						prayerWidgets.get(12).setHidden(false);    // Mystic Lore
 						prayerWidgets.get(13).setHidden(false);    // Steel Skin
@@ -555,7 +559,6 @@ public class HidePrayersPlugin extends Plugin
 						prayerWidgets.get(18).setHidden(false);    // Protect from Melee
 						break;
 					case PRAY44:
-						prayerWidgets.get(10).setHidden(false);    // Protect Item
 						prayerWidgets.get(12).setHidden(false);    // Mystic Lore
 						prayerWidgets.get(13).setHidden(false);    // Steel Skin
 						prayerWidgets.get(14).setHidden(false);    // Ultimate Strength
@@ -566,7 +569,6 @@ public class HidePrayersPlugin extends Plugin
 						prayerWidgets.get(19).setHidden(false);    // Eagle Eye
 						break;
 					case PRAY45:
-						prayerWidgets.get(10).setHidden(false);    // Protect Item
 						prayerWidgets.get(13).setHidden(false);    // Steel Skin
 						prayerWidgets.get(14).setHidden(false);    // Ultimate Strength
 						prayerWidgets.get(15).setHidden(false);    // Incredible Reflexes
@@ -577,7 +579,6 @@ public class HidePrayersPlugin extends Plugin
 						prayerWidgets.get(20).setHidden(false);    // Mystic Might
 						break;
 					case PRAY52:
-						prayerWidgets.get(10).setHidden(false);    // Protect Item
 						prayerWidgets.get(13).setHidden(false);    // Steel Skin
 						prayerWidgets.get(14).setHidden(false);    // Ultimate Strength
 						prayerWidgets.get(15).setHidden(false);    // Incredible Reflexes
@@ -590,7 +591,6 @@ public class HidePrayersPlugin extends Plugin
 						prayerWidgets.get(23).setHidden(false);    // Smite
 						break;
 					case PRAY55:
-						prayerWidgets.get(10).setHidden(false);    // Protect Item
 						prayerWidgets.get(13).setHidden(false);    // Steel Skin
 						prayerWidgets.get(14).setHidden(false);    // Ultimate Strength
 						prayerWidgets.get(15).setHidden(false);    // Incredible Reflexes
@@ -604,7 +604,6 @@ public class HidePrayersPlugin extends Plugin
 						prayerWidgets.get(24).setHidden(false);    // Preserve
 						break;
 					case PRAY60:
-						prayerWidgets.get(10).setHidden(false);    // Protect Item
 						prayerWidgets.get(16).setHidden(false);    // Protect from Magic
 						prayerWidgets.get(17).setHidden(false);    // Protect from Range
 						prayerWidgets.get(18).setHidden(false);    // Protect from Melee
@@ -616,7 +615,6 @@ public class HidePrayersPlugin extends Plugin
 						prayerWidgets.get(25).setHidden(false);    // Chivalry
 						break;
 					case PRAY70:
-						prayerWidgets.get(10).setHidden(false);    // Protect Item
 						prayerWidgets.get(16).setHidden(false);    // Protect from Magic
 						prayerWidgets.get(17).setHidden(false);    // Protect from Range
 						prayerWidgets.get(18).setHidden(false);    // Protect from Melee
@@ -628,7 +626,6 @@ public class HidePrayersPlugin extends Plugin
 						prayerWidgets.get(26).setHidden(false);    // Piety
 						break;
 					case PRAY74:
-						prayerWidgets.get(10).setHidden(false);    // Protect Item
 						prayerWidgets.get(16).setHidden(false);    // Protect from Magic
 						prayerWidgets.get(17).setHidden(false);    // Protect from Range
 						prayerWidgets.get(18).setHidden(false);    // Protect from Melee
@@ -640,7 +637,6 @@ public class HidePrayersPlugin extends Plugin
 						prayerWidgets.get(27).setHidden(false);    // Rigour
 						break;
 					case PRAY77:
-						prayerWidgets.get(10).setHidden(false);    // Protect Item
 						prayerWidgets.get(16).setHidden(false);    // Protect from Magic
 						prayerWidgets.get(17).setHidden(false);    // Protect from Range
 						prayerWidgets.get(18).setHidden(false);    // Protect from Melee

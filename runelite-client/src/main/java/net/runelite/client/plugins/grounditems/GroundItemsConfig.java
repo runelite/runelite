@@ -606,4 +606,16 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "showTimer",
+			name = "Show ground item tick countdown timer",
+			description = "Shows how many ticks left until disappearing.",
+			position = 48,
+			parent = "miscStub"
+	)
+	default boolean showTimer()
+	{
+		return false;
+	}
 }

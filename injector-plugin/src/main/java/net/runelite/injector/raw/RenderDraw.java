@@ -1,5 +1,6 @@
 package net.runelite.injector.raw;
 
+import com.google.common.base.Stopwatch;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.attributes.code.Instruction;
@@ -32,18 +33,18 @@ public class RenderDraw
 
 	public void inject() throws InjectionException
 	{
-		injectColorBufferHooks();
-	}
+		Stopwatch stopwatch = Stopwatch.createStarted();
 
-	private void injectColorBufferHooks() throws InjectionException
-	{
 		net.runelite.asm.Method obmethod = findMethod(inject, "drawTile");
 		Method renderDraw = findMethod(inject, "renderDraw").getPoolMethod();
+
 		Instructions ins = obmethod.getCode().getInstructions();
 		replace(ins, renderDraw);
+
+		log.info("RenderDraw took {}", stopwatch.toString());
 	}
 
-	private void replace(Instructions ins, net.runelite.asm.pool.Method meth)
+	private void replace(Instructions ins, net.runelite.asm.pool.Method meth) throws InjectionException
 	{
 		List<Instruction> insList = new ArrayList<>();
 		int count = 0;
@@ -55,12 +56,26 @@ public class RenderDraw
 				{
 					int index = ins.getInstructions().indexOf(i);
 					count++;
-					log.info("Found renderDraw at index {}, {} found.", index, count);
+					log.debug("Found renderDraw at index {}, {} found.", index, count);
 
 					insList.add(i);
 				}
 			}
 		}
+
+		if (count < 21)
+		{
+			throw new InjectionException("Not all renderDraws were found");
+		}
+		else if (count != 21)
+		{
+			log.warn("Found {} renderDraws while 21 were expected. Rev update?", count);
+		}
+		else
+		{
+			log.info("RenderDraw replaced {} method calls", count);
+		}
+
 
 		for (Instruction i : insList)
 		{

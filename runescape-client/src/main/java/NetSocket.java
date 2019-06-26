@@ -16,8 +16,8 @@ public final class NetSocket extends AbstractSocket implements Runnable {
    @ObfuscatedSignature(
       signature = "Llq;"
    )
-   @Export("__fb_bm")
-   static IndexedSprite __fb_bm;
+   @Export("worldSelectRightSprite")
+   static IndexedSprite worldSelectRightSprite;
    @ObfuscatedName("m")
    @Export("inputStream")
    InputStream inputStream;
@@ -305,227 +305,227 @@ public final class NetSocket extends AbstractSocket implements Runnable {
       signature = "(IIILfe;Lfy;Z[I[IB)I",
       garbageValue = "-98"
    )
-   public static int method3571(int var0, int var1, int var2, class179 var3, CollisionMap var4, boolean var5, int[] var6, int[] var7) {
-      int var9;
+   public static int calculateRoute(int srcX, int srcY, int srcSize, RouteStrategy strategy, CollisionMap collisionMap, boolean var5, int[] bufferX, int[] bufferY) {
+      int graphBaseX;
       for(int var8 = 0; var8 < 128; ++var8) {
-         for(var9 = 0; var9 < 128; ++var9) {
-            class178.__fi_q[var8][var9] = 0;
-            class178.__fi_w[var8][var9] = 99999999;
+         for(graphBaseX = 0; graphBaseX < 128; ++graphBaseX) {
+            class178.directions[var8][graphBaseX] = 0;
+            class178.distances[var8][graphBaseX] = 99999999;
          }
       }
 
-      int var10;
-      int var11;
+      int graphBaseY;
+      int endX;
       byte var13;
-      int var14;
+      int lowestDistance;
       int var15;
-      int var17;
-      int var19;
-      int var20;
-      int var21;
-      boolean var28;
-      int var30;
-      int var31;
-      int var33;
-      if(var2 == 1) {
-         var10 = var0;
-         var11 = var1;
+      int approxDestY;
+      int approxDestSizeY;
+      int checkX;
+      int checkY;
+      boolean found;
+      int endY;
+      int lowestCost;
+      int approxDestX;
+      if(srcSize == 1) {
+         graphBaseY = srcX;
+         endX = srcY;
          byte var12 = 64;
          var13 = 64;
-         var14 = var0 - var12;
-         var15 = var1 - var13;
-         class178.__fi_q[var12][var13] = 99;
-         class178.__fi_w[var12][var13] = 0;
+         lowestDistance = srcX - var12;
+         var15 = srcY - var13;
+         class178.directions[var12][var13] = 99;
+         class178.distances[var12][var13] = 0;
          byte var16 = 0;
-         var17 = 0;
-         class178.__fi_l[var16] = var0;
-         var33 = var16 + 1;
-         class178.__fi_e[var16] = var1;
-         int[][] var18 = var4.flags;
+         approxDestY = 0;
+         class178.bufferX[var16] = srcX;
+         approxDestX = var16 + 1;
+         class178.bufferY[var16] = srcY;
+         int[][] var18 = collisionMap.flags;
 
          boolean var29;
          while(true) {
-            if(var33 == var17) {
-               WidgetGroupParent.__bx_o = var10;
-               UrlRequester.__eo_u = var11;
+            if(approxDestX == approxDestY) {
+               WidgetGroupParent.__bx_o = graphBaseY;
+               UrlRequester.__eo_u = endX;
                var29 = false;
                break;
             }
 
-            var10 = class178.__fi_l[var17];
-            var11 = class178.__fi_e[var17];
-            var17 = var17 + 1 & 4095;
-            var30 = var10 - var14;
-            var31 = var11 - var15;
-            var19 = var10 - var4.xInset;
-            var20 = var11 - var4.yInset;
-            if(var3.vmethod3644(1, var10, var11, var4)) {
-               WidgetGroupParent.__bx_o = var10;
-               UrlRequester.__eo_u = var11;
+            graphBaseY = class178.bufferX[approxDestY];
+            endX = class178.bufferY[approxDestY];
+            approxDestY = approxDestY + 1 & 4095;
+            endY = graphBaseY - lowestDistance;
+            lowestCost = endX - var15;
+            approxDestSizeY = graphBaseY - collisionMap.xInset;
+            checkX = endX - collisionMap.yInset;
+            if(strategy.vmethod3644(1, graphBaseY, endX, collisionMap)) {
+               WidgetGroupParent.__bx_o = graphBaseY;
+               UrlRequester.__eo_u = endX;
                var29 = true;
                break;
             }
 
-            var21 = class178.__fi_w[var30][var31] + 1;
-            if(var30 > 0 && class178.__fi_q[var30 - 1][var31] == 0 && (var18[var19 - 1][var20] & 19136776) == 0) {
-               class178.__fi_l[var33] = var10 - 1;
-               class178.__fi_e[var33] = var11;
-               var33 = var33 + 1 & 4095;
-               class178.__fi_q[var30 - 1][var31] = 2;
-               class178.__fi_w[var30 - 1][var31] = var21;
+            checkY = class178.distances[endY][lowestCost] + 1;
+            if(endY > 0 && class178.directions[endY - 1][lowestCost] == 0 && (var18[approxDestSizeY - 1][checkX] & 19136776) == 0) {
+               class178.bufferX[approxDestX] = graphBaseY - 1;
+               class178.bufferY[approxDestX] = endX;
+               approxDestX = approxDestX + 1 & 4095;
+               class178.directions[endY - 1][lowestCost] = 2;
+               class178.distances[endY - 1][lowestCost] = checkY;
             }
 
-            if(var30 < 127 && class178.__fi_q[var30 + 1][var31] == 0 && (var18[var19 + 1][var20] & 19136896) == 0) {
-               class178.__fi_l[var33] = var10 + 1;
-               class178.__fi_e[var33] = var11;
-               var33 = var33 + 1 & 4095;
-               class178.__fi_q[var30 + 1][var31] = 8;
-               class178.__fi_w[var30 + 1][var31] = var21;
+            if(endY < 127 && class178.directions[endY + 1][lowestCost] == 0 && (var18[approxDestSizeY + 1][checkX] & 19136896) == 0) {
+               class178.bufferX[approxDestX] = graphBaseY + 1;
+               class178.bufferY[approxDestX] = endX;
+               approxDestX = approxDestX + 1 & 4095;
+               class178.directions[endY + 1][lowestCost] = 8;
+               class178.distances[endY + 1][lowestCost] = checkY;
             }
 
-            if(var31 > 0 && class178.__fi_q[var30][var31 - 1] == 0 && (var18[var19][var20 - 1] & 19136770) == 0) {
-               class178.__fi_l[var33] = var10;
-               class178.__fi_e[var33] = var11 - 1;
-               var33 = var33 + 1 & 4095;
-               class178.__fi_q[var30][var31 - 1] = 1;
-               class178.__fi_w[var30][var31 - 1] = var21;
+            if(lowestCost > 0 && class178.directions[endY][lowestCost - 1] == 0 && (var18[approxDestSizeY][checkX - 1] & 19136770) == 0) {
+               class178.bufferX[approxDestX] = graphBaseY;
+               class178.bufferY[approxDestX] = endX - 1;
+               approxDestX = approxDestX + 1 & 4095;
+               class178.directions[endY][lowestCost - 1] = 1;
+               class178.distances[endY][lowestCost - 1] = checkY;
             }
 
-            if(var31 < 127 && class178.__fi_q[var30][var31 + 1] == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
-               class178.__fi_l[var33] = var10;
-               class178.__fi_e[var33] = var11 + 1;
-               var33 = var33 + 1 & 4095;
-               class178.__fi_q[var30][var31 + 1] = 4;
-               class178.__fi_w[var30][var31 + 1] = var21;
+            if(lowestCost < 127 && class178.directions[endY][lowestCost + 1] == 0 && (var18[approxDestSizeY][checkX + 1] & 19136800) == 0) {
+               class178.bufferX[approxDestX] = graphBaseY;
+               class178.bufferY[approxDestX] = endX + 1;
+               approxDestX = approxDestX + 1 & 4095;
+               class178.directions[endY][lowestCost + 1] = 4;
+               class178.distances[endY][lowestCost + 1] = checkY;
             }
 
-            if(var30 > 0 && var31 > 0 && class178.__fi_q[var30 - 1][var31 - 1] == 0 && (var18[var19 - 1][var20 - 1] & 19136782) == 0 && (var18[var19 - 1][var20] & 19136776) == 0 && (var18[var19][var20 - 1] & 19136770) == 0) {
-               class178.__fi_l[var33] = var10 - 1;
-               class178.__fi_e[var33] = var11 - 1;
-               var33 = var33 + 1 & 4095;
-               class178.__fi_q[var30 - 1][var31 - 1] = 3;
-               class178.__fi_w[var30 - 1][var31 - 1] = var21;
+            if(endY > 0 && lowestCost > 0 && class178.directions[endY - 1][lowestCost - 1] == 0 && (var18[approxDestSizeY - 1][checkX - 1] & 19136782) == 0 && (var18[approxDestSizeY - 1][checkX] & 19136776) == 0 && (var18[approxDestSizeY][checkX - 1] & 19136770) == 0) {
+               class178.bufferX[approxDestX] = graphBaseY - 1;
+               class178.bufferY[approxDestX] = endX - 1;
+               approxDestX = approxDestX + 1 & 4095;
+               class178.directions[endY - 1][lowestCost - 1] = 3;
+               class178.distances[endY - 1][lowestCost - 1] = checkY;
             }
 
-            if(var30 < 127 && var31 > 0 && class178.__fi_q[var30 + 1][var31 - 1] == 0 && (var18[var19 + 1][var20 - 1] & 19136899) == 0 && (var18[var19 + 1][var20] & 19136896) == 0 && (var18[var19][var20 - 1] & 19136770) == 0) {
-               class178.__fi_l[var33] = var10 + 1;
-               class178.__fi_e[var33] = var11 - 1;
-               var33 = var33 + 1 & 4095;
-               class178.__fi_q[var30 + 1][var31 - 1] = 9;
-               class178.__fi_w[var30 + 1][var31 - 1] = var21;
+            if(endY < 127 && lowestCost > 0 && class178.directions[endY + 1][lowestCost - 1] == 0 && (var18[approxDestSizeY + 1][checkX - 1] & 19136899) == 0 && (var18[approxDestSizeY + 1][checkX] & 19136896) == 0 && (var18[approxDestSizeY][checkX - 1] & 19136770) == 0) {
+               class178.bufferX[approxDestX] = graphBaseY + 1;
+               class178.bufferY[approxDestX] = endX - 1;
+               approxDestX = approxDestX + 1 & 4095;
+               class178.directions[endY + 1][lowestCost - 1] = 9;
+               class178.distances[endY + 1][lowestCost - 1] = checkY;
             }
 
-            if(var30 > 0 && var31 < 127 && class178.__fi_q[var30 - 1][var31 + 1] == 0 && (var18[var19 - 1][var20 + 1] & 19136824) == 0 && (var18[var19 - 1][var20] & 19136776) == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
-               class178.__fi_l[var33] = var10 - 1;
-               class178.__fi_e[var33] = var11 + 1;
-               var33 = var33 + 1 & 4095;
-               class178.__fi_q[var30 - 1][var31 + 1] = 6;
-               class178.__fi_w[var30 - 1][var31 + 1] = var21;
+            if(endY > 0 && lowestCost < 127 && class178.directions[endY - 1][lowestCost + 1] == 0 && (var18[approxDestSizeY - 1][checkX + 1] & 19136824) == 0 && (var18[approxDestSizeY - 1][checkX] & 19136776) == 0 && (var18[approxDestSizeY][checkX + 1] & 19136800) == 0) {
+               class178.bufferX[approxDestX] = graphBaseY - 1;
+               class178.bufferY[approxDestX] = endX + 1;
+               approxDestX = approxDestX + 1 & 4095;
+               class178.directions[endY - 1][lowestCost + 1] = 6;
+               class178.distances[endY - 1][lowestCost + 1] = checkY;
             }
 
-            if(var30 < 127 && var31 < 127 && class178.__fi_q[var30 + 1][var31 + 1] == 0 && (var18[var19 + 1][var20 + 1] & 19136992) == 0 && (var18[var19 + 1][var20] & 19136896) == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
-               class178.__fi_l[var33] = var10 + 1;
-               class178.__fi_e[var33] = var11 + 1;
-               var33 = var33 + 1 & 4095;
-               class178.__fi_q[var30 + 1][var31 + 1] = 12;
-               class178.__fi_w[var30 + 1][var31 + 1] = var21;
+            if(endY < 127 && lowestCost < 127 && class178.directions[endY + 1][lowestCost + 1] == 0 && (var18[approxDestSizeY + 1][checkX + 1] & 19136992) == 0 && (var18[approxDestSizeY + 1][checkX] & 19136896) == 0 && (var18[approxDestSizeY][checkX + 1] & 19136800) == 0) {
+               class178.bufferX[approxDestX] = graphBaseY + 1;
+               class178.bufferY[approxDestX] = endX + 1;
+               approxDestX = approxDestX + 1 & 4095;
+               class178.directions[endY + 1][lowestCost + 1] = 12;
+               class178.distances[endY + 1][lowestCost + 1] = checkY;
             }
          }
 
-         var28 = var29;
-      } else if(var2 == 2) {
-         var28 = WorldMapSection2.method593(var0, var1, var3, var4);
+         found = var29; // Vars are weird above here cause that's an inlined method
+      } else if(srcSize == 2) {
+         found = WorldMapSection2.method593(srcX, srcY, strategy, collisionMap);
       } else {
-         var28 = IndexStore.method3585(var0, var1, var2, var3, var4);
+         found = IndexStore.method3585(srcX, srcY, srcSize, strategy, collisionMap);
       }
 
-      var9 = var0 - 64;
-      var10 = var1 - 64;
-      var11 = WidgetGroupParent.__bx_o;
-      var30 = UrlRequester.__eo_u;
-      if(!var28) {
-         var31 = Integer.MAX_VALUE;
-         var14 = Integer.MAX_VALUE;
-         byte var32 = 10;
-         var33 = var3.field2120;
-         var17 = var3.field2121;
-         int var27 = var3.field2122;
-         var19 = var3.field2123;
+      graphBaseX = srcX - 64;
+      graphBaseY = srcY - 64;
+      endX = WidgetGroupParent.__bx_o;
+      endY = UrlRequester.__eo_u;
+      if(!found) {
+         lowestCost = Integer.MAX_VALUE;
+         lowestDistance = Integer.MAX_VALUE;
+         byte alternativeRouteRange = 10;
+         approxDestX = strategy.approxDestinationX;
+         approxDestY = strategy.approxDestinationY;
+         int approxDestSizeX = strategy.approxDestinationSizeX;
+         approxDestSizeY = strategy.approxDestinationSizeY;
 
-         for(var20 = var33 - var32; var20 <= var32 + var33; ++var20) {
-            for(var21 = var17 - var32; var21 <= var17 + var32; ++var21) {
-               int var22 = var20 - var9;
-               int var23 = var21 - var10;
-               if(var22 >= 0 && var23 >= 0 && var22 < 128 && var23 < 128 && class178.__fi_w[var22][var23] < 100) {
-                  int var24 = 0;
-                  if(var20 < var33) {
-                     var24 = var33 - var20;
-                  } else if(var20 > var27 + var33 - 1) {
-                     var24 = var20 - (var27 + var33 - 1);
+         for(checkX = approxDestX - alternativeRouteRange; checkX <= alternativeRouteRange + approxDestX; ++checkX) {
+            for(checkY = approxDestY - alternativeRouteRange; checkY <= approxDestY + alternativeRouteRange; ++checkY) {
+               int graphX = checkX - graphBaseX;
+               int graphY = checkY - graphBaseY;
+               if(graphX >= 0 && graphY >= 0 && graphX < 128 && graphY < 128 && class178.distances[graphX][graphY] < 100) {
+                  int deltaX = 0;
+                  if(checkX < approxDestX) {
+                     deltaX = approxDestX - checkX;
+                  } else if(checkX > approxDestSizeX + approxDestX - 1) {
+                     deltaX = checkX - (approxDestSizeX + approxDestX - 1);
                   }
 
-                  int var25 = 0;
-                  if(var21 < var17) {
-                     var25 = var17 - var21;
-                  } else if(var21 > var19 + var17 - 1) {
-                     var25 = var21 - (var19 + var17 - 1);
+                  int deltaY = 0;
+                  if(checkY < approxDestY) {
+                     deltaY = approxDestY - checkY;
+                  } else if(checkY > approxDestSizeY + approxDestY - 1) {
+                     deltaY = checkY - (approxDestSizeY + approxDestY - 1);
                   }
 
-                  int var26 = var25 * var25 + var24 * var24;
-                  if(var26 < var31 || var26 == var31 && class178.__fi_w[var22][var23] < var14) {
-                     var31 = var26;
-                     var14 = class178.__fi_w[var22][var23];
-                     var11 = var20;
-                     var30 = var21;
+                  int cost = deltaY * deltaY + deltaX * deltaX;
+                  if(cost < lowestCost || cost == lowestCost && class178.distances[graphX][graphY] < lowestDistance) {
+                     lowestCost = cost;
+                     lowestDistance = class178.distances[graphX][graphY];
+                     endX = checkX;
+                     endY = checkY;
                   }
                }
             }
          }
 
-         if(var31 == Integer.MAX_VALUE) {
+         if(lowestCost == Integer.MAX_VALUE) {
             return -1;
          }
       }
 
-      if(var0 == var11 && var30 == var1) {
+      if(srcX == endX && endY == srcY) {
          return 0;
-      } else {
+      } else { // Inlined again after this I think
          var13 = 0;
-         class178.__fi_l[var13] = var11;
-         var31 = var13 + 1;
-         class178.__fi_e[var13] = var30;
+         class178.bufferX[var13] = endX;
+         lowestCost = var13 + 1;
+         class178.bufferY[var13] = endY;
 
-         for(var14 = var15 = class178.__fi_q[var11 - var9][var30 - var10]; var0 != var11 || var30 != var1; var14 = class178.__fi_q[var11 - var9][var30 - var10]) {
-            if(var14 != var15) {
-               var15 = var14;
-               class178.__fi_l[var31] = var11;
-               class178.__fi_e[var31++] = var30;
+         for(lowestDistance = var15 = class178.directions[endX - graphBaseX][endY - graphBaseY]; srcX != endX || endY != srcY; lowestDistance = class178.directions[endX - graphBaseX][endY - graphBaseY]) {
+            if(lowestDistance != var15) {
+               var15 = lowestDistance;
+               class178.bufferX[lowestCost] = endX;
+               class178.bufferY[lowestCost++] = endY;
             }
 
-            if((var14 & 2) != 0) {
-               ++var11;
-            } else if((var14 & 8) != 0) {
-               --var11;
+            if((lowestDistance & 2) != 0) {
+               ++endX;
+            } else if((lowestDistance & 8) != 0) {
+               --endX;
             }
 
-            if((var14 & 1) != 0) {
-               ++var30;
-            } else if((var14 & 4) != 0) {
-               --var30;
+            if((lowestDistance & 1) != 0) {
+               ++endY;
+            } else if((lowestDistance & 4) != 0) {
+               --endY;
             }
          }
 
-         var33 = 0;
+         approxDestX = 0;
 
-         while(var31-- > 0) {
-            var6[var33] = class178.__fi_l[var31];
-            var7[var33++] = class178.__fi_e[var31];
-            if(var33 >= var6.length) {
+         while(lowestCost-- > 0) {
+            bufferX[approxDestX] = class178.bufferX[lowestCost];
+            bufferY[approxDestX++] = class178.bufferY[lowestCost];
+            if(approxDestX >= bufferX.length) {
                break;
             }
          }
 
-         return var33;
+         return approxDestX;
       }
    }
 

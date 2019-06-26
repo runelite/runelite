@@ -69,6 +69,7 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -202,6 +203,16 @@ public class GroundItemsPlugin extends Plugin
 		hiddenItemList = null;
 		highlightedItemsList = null;
 		collectedGroundItems.clear();
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		for (GroundItem item : collectedGroundItems.values())
+		{
+			if (item.getTicks() == -1) continue;
+			item.setTicks(item.getTicks() - 1);
+		}
 	}
 
 	@Subscribe
@@ -461,6 +472,7 @@ public class GroundItemsPlugin extends Plugin
 			if (groundItem != null)
 			{
 				groundItem.setMine(true);
+				groundItem.setTicks(200);
 
 				boolean shouldNotify = config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
 					groundItem.getName(),
@@ -511,6 +523,7 @@ public class GroundItemsPlugin extends Plugin
 			.durationMillis(durationMillis)
 			.isAlwaysPrivate(client.isInInstancedRegion() || (!itemComposition.isTradeable() && realItemId != COINS))
 			.isOwnedByPlayer(tile.getWorldLocation().equals(playerLocation))
+			.ticks(tile.getWorldLocation().equals(client.getLocalPlayer().getWorldLocation()) ? 200 : 100)
 			.build();
 
 

@@ -321,135 +321,135 @@ public class TextureProvider implements TextureLoader {
       int var3;
       int var4;
       if(var0 == 4000) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 + var4;
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 + var4;
          return 1;
       } else if(var0 == 4001) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 - var4;
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 - var4;
          return 1;
       } else if(var0 == 4002) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var4 * var3;
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var4 * var3;
          return 1;
       } else if(var0 == 4003) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 / var4;
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 / var4;
          return 1;
       } else if(var0 == 4004) {
-         var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (int)(Math.random() * (double)var3);
+         var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)(Math.random() * (double)var3);
          return 1;
       } else if(var0 == 4005) {
-         var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (int)(Math.random() * (double)(var3 + 1));
+         var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)(Math.random() * (double)(var3 + 1));
          return 1;
       } else if(var0 == 4006) {
-         class179.Interpreter_intStackSize -= 5;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         int var5 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
-         int var6 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 3];
-         int var7 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 4];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 + (var7 - var5) * (var4 - var3) / (var6 - var5);
+         RouteStrategy.Interpreter_intStackSize -= 5;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         int var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
+         int var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 3];
+         int var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 4];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 + (var7 - var5) * (var4 - var3) / (var6 - var5);
          return 1;
       } else if(var0 == 4007) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 + var3 * var4 / 100;
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 + var3 * var4 / 100;
          return 1;
       } else if(var0 == 4008) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 | 1 << var4;
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 | 1 << var4;
          return 1;
       } else if(var0 == 4009) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 & -1 - (1 << var4);
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 & -1 - (1 << var4);
          return 1;
       } else if(var0 == 4010) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (var3 & 1 << var4) != 0?1:0;
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (var3 & 1 << var4) != 0?1:0;
          return 1;
       } else if(var0 == 4011) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 % var4;
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 % var4;
          return 1;
       } else if(var0 == 4012) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          if(var3 == 0) {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
          } else {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (int)Math.pow((double)var3, (double)var4);
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)Math.pow((double)var3, (double)var4);
          }
 
          return 1;
       } else if(var0 == 4013) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          if(var3 == 0) {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
             return 1;
          } else {
             switch(var4) {
             case 0:
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Integer.MAX_VALUE;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Integer.MAX_VALUE;
                break;
             case 1:
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3;
                break;
             case 2:
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (int)Math.sqrt((double)var3);
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)Math.sqrt((double)var3);
                break;
             case 3:
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (int)Math.cbrt((double)var3);
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)Math.cbrt((double)var3);
                break;
             case 4:
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (int)Math.sqrt(Math.sqrt((double)var3));
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)Math.sqrt(Math.sqrt((double)var3));
                break;
             default:
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (int)Math.pow((double)var3, 1.0D / (double)var4);
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)Math.pow((double)var3, 1.0D / (double)var4);
             }
 
             return 1;
          }
       } else if(var0 == 4014) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 & var4;
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 & var4;
          return 1;
       } else if(var0 == 4015) {
-         class179.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var3 | var4;
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 | var4;
          return 1;
       } else if(var0 == 4018) {
-         class179.Interpreter_intStackSize -= 3;
-         long var9 = (long)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-         long var11 = (long)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
-         long var13 = (long)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (int)(var13 * var9 / var11);
+         RouteStrategy.Interpreter_intStackSize -= 3;
+         long var9 = (long)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+         long var11 = (long)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+         long var13 = (long)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)(var13 * var9 / var11);
          return 1;
       } else {
          return 2;

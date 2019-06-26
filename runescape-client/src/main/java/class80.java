@@ -24,21 +24,21 @@ public class class80 {
    )
    static void method2015() {
       if(Login.__cu_f) {
-         Login.__cu_o = null;
-         IndexCacheLoader.__bd_u = null;
-         WorldMapEvent.__ap_w = null;
-         Login.__cu_g = null;
-         Fonts.__kz_l = null;
-         WorldMapSectionType.__h_e = null;
-         KeyHandler.__an_x = null;
-         Login.__cu_d = null;
-         class308.__kw_n = null;
-         class30.__ar_bd = null;
-         Frames.__en_bc = null;
-         AttackOption.__cj_bo = null;
-         UrlRequest.__ey_bx = null;
+         Login.titleboxSprite = null;
+         IndexCacheLoader.titlebuttonSprite = null;
+         WorldMapEvent.runesSprite = null;
+         Login.leftTitleSprite = null;
+         Fonts.rightTitleSprite = null;
+         WorldMapSectionType.logoSprite = null;
+         KeyHandler.title_muteSprite = null;
+         Login.options_buttons_0Sprite = null;
+         class308.options_buttons_2Sprite = null;
+         class30.worldSelectBackSprites = null;
+         Frames.worldSelectFlagSprites = null;
+         AttackOption.worldSelectArrows = null;
+         UrlRequest.worldSelectStars = null;
          class277.__jn_by = null;
-         class16.field85.method1762();
+         class16.loginScreenRunesAnimation.method1762();
          AbstractSocket.method3488(2);
          UserComparator9.method3343(true);
          Login.__cu_f = false;

@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -60,10 +61,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class HydraPlugin extends Plugin
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Map<LocalPoint, Projectile> poisonProjectiles = new HashMap<>();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Hydra hydra;
 
 	private boolean inHydraInstance;
@@ -84,7 +85,7 @@ public class HydraPlugin extends Plugin
 	private HydraOverlay overlay;
 
 	@Inject
-	private HydraPoisonOverlay poisonOverlay;
+	private HydraSceneOverlay poisonOverlay;
 
 	@Override
 	protected void startUp()
@@ -124,18 +125,16 @@ public class HydraPlugin extends Plugin
 			}
 			return;
 		}
-		NPC hydraNpc = null;
 
 		for (NPC npc : client.getNpcs())
 		{
 			if (npc.getId() == NpcID.ALCHEMICAL_HYDRA)
 			{
-				hydraNpc = npc;
+				hydra = new Hydra(npc);
 				break;
 			}
 		}
 
-		hydra = new Hydra(hydraNpc);
 		addOverlays();
 	}
 
@@ -171,13 +170,13 @@ public class HydraPlugin extends Plugin
 			switch (phase)
 			{
 				case ONE:
-					changePhase(HydraPhase.TWO);
+					hydra.changePhase(HydraPhase.TWO);
 					return;
 				case TWO:
-					changePhase(HydraPhase.THREE);
+					hydra.changePhase(HydraPhase.THREE);
 					return;
 				case THREE:
-					changePhase(HydraPhase.FOUR);
+					hydra.changePhase(HydraPhase.FOUR);
 					return;
 				case FOUR:
 					hydra = null;
@@ -237,9 +236,9 @@ public class HydraPlugin extends Plugin
 			poisonProjectiles.put(event.getPosition(), projectile);
 		}
 		else if (client.getTickCount() != lastAttackTick
-			&& (id == Hydra.AttackStyle.MAGIC.getProjId() || id == Hydra.AttackStyle.RANGED.getProjId()))
+			&& (id == Hydra.AttackStyle.MAGIC.getProjectileID() || id == Hydra.AttackStyle.RANGED.getProjectileID()))
 		{
-			handleAttack(id);
+			hydra.handleAttack(id);
 			lastAttackTick = client.getTickCount();
 		}
 	}
@@ -270,54 +269,5 @@ public class HydraPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(poisonOverlay);
-	}
-
-	private void changePhase(HydraPhase newPhase)
-	{
-		hydra.setPhase(newPhase);
-		hydra.setNextSpecial(3);
-		hydra.setAttackCount(0);
-		hydra.setWeakened(false);
-
-		if (newPhase == HydraPhase.FOUR)
-		{
-			hydra.setWeakened(true);
-			switchStyles();
-			hydra.setNextSwitch(newPhase.getAttacksPerSwitch());
-		}
-	}
-
-	private void switchStyles()
-	{
-		hydra.setNextAttack(hydra.getLastAttack() == Hydra.AttackStyle.MAGIC
-			? Hydra.AttackStyle.RANGED
-			: Hydra.AttackStyle.MAGIC);
-	}
-
-	private void handleAttack(int id)
-	{
-		if (id != hydra.getNextAttack().getProjId() && id != hydra.getLastAttack().getProjId())
-		{ // If the current attack isn't what was expected and we should have switched prayers
-			switchStyles();
-			hydra.setNextSwitch(hydra.getPhase().getAttacksPerSwitch() - 1);
-			hydra.setLastAttack(hydra.getNextAttack());
-		}
-		else if (id != hydra.getNextAttack().getProjId() && id == hydra.getLastAttack().getProjId())
-		{ // If the current attack isn't what was expected and we accidentally counted 1 too much
-			return;
-		}
-		else
-		{
-			hydra.setNextSwitch(hydra.getNextSwitch() - 1);
-			hydra.setLastAttack(hydra.getNextAttack());
-		}
-
-		hydra.setAttackCount(hydra.getAttackCount() + 1);
-
-		if (hydra.getNextSwitch() <= 0)
-		{
-			switchStyles();
-			hydra.setNextSwitch(hydra.getPhase().getAttacksPerSwitch());
-		}
 	}
 }

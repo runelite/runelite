@@ -331,10 +331,10 @@ public class class171 {
                if(class192.mapSceneSprites == null) {
                   var2 = WorldMapSection3.indexCache8;
                   var28 = class211.spriteIds.mapScenes;
-                  if(!SpriteMask.method4392(var2, var28, 0)) {
+                  if(!SpriteMask.loadSprite(var2, var28, 0)) {
                      var27 = null;
                   } else {
-                     var27 = WorldMapLabel.method444();
+                     var27 = WorldMapLabel.createIndexedSpriteArray();
                   }
 
                   class192.mapSceneSprites = var27;
@@ -346,10 +346,10 @@ public class class171 {
                if(class15.headIconPkSprites == null) {
                   var2 = WorldMapSection3.indexCache8;
                   var28 = class211.spriteIds.headIconsPk;
-                  if(!SpriteMask.method4392(var2, var28, 0)) {
+                  if(!SpriteMask.loadSprite(var2, var28, 0)) {
                      var37 = null;
                   } else {
-                     var37 = UserComparator9.method3344();
+                     var37 = UserComparator9.createSpriteArray();
                   }
 
                   class15.headIconPkSprites = var37;
@@ -360,10 +360,10 @@ public class class171 {
                if(ClientPreferences.headIconPrayerSprites == null) {
                   var2 = WorldMapSection3.indexCache8;
                   var28 = class211.spriteIds.headIconsPrayer;
-                  if(!SpriteMask.method4392(var2, var28, 0)) {
+                  if(!SpriteMask.loadSprite(var2, var28, 0)) {
                      var37 = null;
                   } else {
-                     var37 = UserComparator9.method3344();
+                     var37 = UserComparator9.createSpriteArray();
                   }
 
                   ClientPreferences.headIconPrayerSprites = var37;
@@ -374,10 +374,10 @@ public class class171 {
                if(Player.headIconHintSprites == null) {
                   var2 = WorldMapSection3.indexCache8;
                   var28 = class211.spriteIds.headIconsHint;
-                  if(!SpriteMask.method4392(var2, var28, 0)) {
+                  if(!SpriteMask.loadSprite(var2, var28, 0)) {
                      var37 = null;
                   } else {
-                     var37 = UserComparator9.method3344();
+                     var37 = UserComparator9.createSpriteArray();
                   }
 
                   Player.headIconHintSprites = var37;
@@ -388,10 +388,10 @@ public class class171 {
                if(class16.mapMarkerSprites == null) {
                   var2 = WorldMapSection3.indexCache8;
                   var28 = class211.spriteIds.mapMarkers;
-                  if(!SpriteMask.method4392(var2, var28, 0)) {
+                  if(!SpriteMask.loadSprite(var2, var28, 0)) {
                      var37 = null;
                   } else {
-                     var37 = UserComparator9.method3344();
+                     var37 = UserComparator9.createSpriteArray();
                   }
 
                   class16.mapMarkerSprites = var37;
@@ -402,10 +402,10 @@ public class class171 {
                if(KeyHandler.crossSprites == null) {
                   var2 = WorldMapSection3.indexCache8;
                   var28 = class211.spriteIds.crosses;
-                  if(!SpriteMask.method4392(var2, var28, 0)) {
+                  if(!SpriteMask.loadSprite(var2, var28, 0)) {
                      var37 = null;
                   } else {
-                     var37 = UserComparator9.method3344();
+                     var37 = UserComparator9.createSpriteArray();
                   }
 
                   KeyHandler.crossSprites = var37;
@@ -416,10 +416,10 @@ public class class171 {
                if(class39.mapDotSprites == null) {
                   var2 = WorldMapSection3.indexCache8;
                   var28 = class211.spriteIds.mapDots;
-                  if(!SpriteMask.method4392(var2, var28, 0)) {
+                  if(!SpriteMask.loadSprite(var2, var28, 0)) {
                      var37 = null;
                   } else {
-                     var37 = UserComparator9.method3344();
+                     var37 = UserComparator9.createSpriteArray();
                   }
 
                   class39.mapDotSprites = var37;
@@ -430,10 +430,10 @@ public class class171 {
                if(class32.scrollBarSprites == null) {
                   var2 = WorldMapSection3.indexCache8;
                   var28 = class211.spriteIds.scrollBars;
-                  if(!SpriteMask.method4392(var2, var28, 0)) {
+                  if(!SpriteMask.loadSprite(var2, var28, 0)) {
                      var27 = null;
                   } else {
-                     var27 = WorldMapLabel.method444();
+                     var27 = WorldMapLabel.createIndexedSpriteArray();
                   }
 
                   class32.scrollBarSprites = var27;
@@ -444,10 +444,10 @@ public class class171 {
                if(WorldMapSectionType.modIconSprites == null) {
                   var2 = WorldMapSection3.indexCache8;
                   var28 = class211.spriteIds.modIcons;
-                  if(!SpriteMask.method4392(var2, var28, 0)) {
+                  if(!SpriteMask.loadSprite(var2, var28, 0)) {
                      var27 = null;
                   } else {
-                     var27 = WorldMapLabel.method444();
+                     var27 = WorldMapLabel.createIndexedSpriteArray();
                   }
 
                   WorldMapSectionType.modIconSprites = var27;

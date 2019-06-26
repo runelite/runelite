@@ -474,20 +474,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE || event.getWidgetId() != WidgetInfo.INVENTORY.getId())
+		if (event.getMenuAction() != MenuAction.RUNELITE || event.getActionParam1() != WidgetInfo.INVENTORY.getId())
 		{
 			return;
 		}
 
-		int itemId = event.getId();
+		int itemId = event.getIdentifier();
 
 		if (itemId == -1)
 		{
 			return;
 		}
 
-		String option = event.getMenuOption();
-		String target = event.getMenuTarget();
+		String option = event.getOption();
+		String target = event.getTarget();
 		ItemDefinition itemComposition = client.getItemDefinition(itemId);
 
 		if (option.equals(RESET) && target.equals(MENU_TARGET))
@@ -862,7 +862,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					}
 				}
 			}
-			else if (target.equals("magpie impling jar") || (target.equals("nature impling jar")))
+			else if (target.equals("magpie impling jar") || (target.equals("nature impling jar")) || (target.equals("ninja impling jar")))
 			{
 				if (client.getItemContainer(InventoryID.INVENTORY) != null)
 				{
@@ -1309,7 +1309,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (!Strings.isNullOrEmpty(config))
 		{
-			Map<String, String> split = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config);
+			StringBuilder sb = new StringBuilder();
+
+			for (String str : config.split("\n"))
+			{
+				if (!str.startsWith("//"))
+				{
+					sb.append(str + "\n");
+				}
+			}
+
+			Map<String, String> split = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(sb);
 
 			for (Map.Entry<String, String> entry : split.entrySet())
 			{

@@ -190,7 +190,7 @@ public class ClientParameter {
                var3.population = var1.__aq_303();
             }
 
-            MilliClock.method3400(ItemContainer.worlds, 0, ItemContainer.worlds.length - 1, World.__bt_e, World.__bt_l);
+            MilliClock.method3400(ItemContainer.worlds, 0, ItemContainer.worlds.length - 1, World.sortOption1, World.sortOption2);
             FriendLoginUpdate.__kn_x = null;
             return true;
          }

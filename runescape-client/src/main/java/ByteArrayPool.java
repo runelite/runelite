@@ -91,15 +91,15 @@ public class ByteArrayPool {
          return var2;
       }
 
-      if(class179.__fe_e != null) {
+      if(RouteStrategy.__fe_e != null) {
          for(int var4 = 0; var4 < __gi_g.length; ++var4) {
             if(__gi_g[var4] != var0) {
                if(var0 < __gi_g[var4]) {
                   ;
                }
             } else if(WorldMapSection2.__ah_l[var4] > 0) {
-               byte[] var3 = class179.__fe_e[var4][--WorldMapSection2.__ah_l[var4]];
-               class179.__fe_e[var4][WorldMapSection2.__ah_l[var4]] = null;
+               byte[] var3 = RouteStrategy.__fe_e[var4][--WorldMapSection2.__ah_l[var4]];
+               RouteStrategy.__fe_e[var4][WorldMapSection2.__ah_l[var4]] = null;
                return var3;
             }
          }

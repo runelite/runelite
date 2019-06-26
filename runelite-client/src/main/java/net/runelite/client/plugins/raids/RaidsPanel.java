@@ -27,7 +27,6 @@ package net.runelite.client.plugins.raids;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.lang.reflect.Method;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -78,22 +77,9 @@ class RaidsPanel extends PluginPanel
 		JPanel scoutFrame = new JPanel();
 		reloadButton.addActionListener((ActionEvent e) ->
 		{
-
-
 			if ((client.getGameState() == GameState.LOGGED_IN))
 			{
-				try
-				{
-					//look for client.gameStateChanged(-1); in src files to find
-					Method m = client.getClass().getClassLoader().loadClass("ba").getDeclaredMethod("ec", int.class, byte.class);
-					m.setAccessible(true);
-					m.invoke(null, 40, (byte) 3);
-
-				}
-				catch (ReflectiveOperationException f)
-				{
-					throw new RuntimeException(f);
-				}
+				client.setGameState(40);
 			}
 		});
 		reloadScouter.addActionListener((ActionEvent e) ->

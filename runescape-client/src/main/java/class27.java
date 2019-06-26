@@ -49,7 +49,7 @@ public final class class27 {
       signature = "([BI)Lln;",
       garbageValue = "-143338910"
    )
-   public static final Sprite method438(byte[] var0) {
+   public static final Sprite convertJpgToSprite(byte[] var0) {
       BufferedImage var1 = null;
 
       try {

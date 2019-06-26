@@ -28,14 +28,14 @@ public final class KeyHandler implements KeyListener, FocusListener {
    @ObfuscatedSignature(
       signature = "[Llq;"
    )
-   @Export("__an_x")
-   static IndexedSprite[] __an_x;
+   @Export("title_muteSprite")
+   static IndexedSprite[] title_muteSprite;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Llq;"
    )
-   @Export("__an_i")
-   static IndexedSprite __an_i;
+   @Export("options_buttons_6Sprite")
+   static IndexedSprite options_buttons_6Sprite;
    @ObfuscatedName("bk")
    @ObfuscatedSignature(
       signature = "Llx;"

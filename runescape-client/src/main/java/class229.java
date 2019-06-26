@@ -38,51 +38,51 @@ public class class229 {
    )
    static int method4513(int var0, Script var1, boolean var2) {
       if(var0 == 6200) {
-         class179.Interpreter_intStackSize -= 2;
-         Client.__client_rw = (short)class161.method3395(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize]);
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         Client.__client_rw = (short)class161.method3395(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize]);
          if(Client.__client_rw <= 0) {
             Client.__client_rw = 256;
          }
 
-         Client.__client_rm = (short)class161.method3395(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]);
+         Client.__client_rm = (short)class161.method3395(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
          if(Client.__client_rm <= 0) {
             Client.__client_rm = 256;
          }
 
          return 1;
       } else if(var0 == 6201) {
-         class179.Interpreter_intStackSize -= 2;
-         Client.__client_re = (short)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+         RouteStrategy.Interpreter_intStackSize -= 2;
+         Client.__client_re = (short)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          if(Client.__client_re <= 0) {
             Client.__client_re = 256;
          }
 
-         Client.__client_rb = (short)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+         Client.__client_rb = (short)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          if(Client.__client_rb <= 0) {
             Client.__client_rb = 320;
          }
 
          return 1;
       } else if(var0 == 6202) {
-         class179.Interpreter_intStackSize -= 4;
-         Client.__client_rv = (short)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
+         RouteStrategy.Interpreter_intStackSize -= 4;
+         Client.__client_rv = (short)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          if(Client.__client_rv <= 0) {
             Client.__client_rv = 1;
          }
 
-         Client.__client_ri = (short)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1];
+         Client.__client_ri = (short)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          if(Client.__client_ri <= 0) {
             Client.__client_ri = 32767;
          } else if(Client.__client_ri < Client.__client_rv) {
             Client.__client_ri = Client.__client_rv;
          }
 
-         Client.__client_rs = (short)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 2];
+         Client.__client_rs = (short)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
          if(Client.__client_rs <= 0) {
             Client.__client_rs = 1;
          }
 
-         Client.__client_rp = (short)Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 3];
+         Client.__client_rp = (short)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 3];
          if(Client.__client_rp <= 0) {
             Client.__client_rp = 32767;
          } else if(Client.__client_rp < Client.__client_rs) {
@@ -93,21 +93,21 @@ public class class229 {
       } else if(var0 == 6203) {
          if(Client.viewportWidget != null) {
             FontName.setViewportShape(0, 0, Client.viewportWidget.width, Client.viewportWidget.height, false);
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.viewportWidth;
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.viewportHeight;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.viewportWidth;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.viewportHeight;
          } else {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
          }
 
          return 1;
       } else if(var0 == 6204) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.__client_re;
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = Client.__client_rb;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.__client_re;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.__client_rb;
          return 1;
       } else if(var0 == 6205) {
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = class30.method571(Client.__client_rw);
-         Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = class30.method571(Client.__client_rm);
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class30.method571(Client.__client_rw);
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class30.method571(Client.__client_rm);
          return 1;
       } else {
          return 2;

@@ -60,6 +60,6 @@ public class class83 {
       garbageValue = "1413048059"
    )
    public static IndexedSprite method2028(AbstractIndexCache var0, int var1) {
-      return !class179.method3643(var0, var1)?null:ServerPacket.method3663();
+      return !RouteStrategy.loadSpriteFlat(var0, var1)?null:ServerPacket.createIndexedSprite();
    }
 }

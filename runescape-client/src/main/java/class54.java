@@ -39,96 +39,96 @@ public final class class54 {
    static void method1092(GameShell var0) {
       int var3;
       int var15;
-      if(Login.__cu_bk) {
+      if(Login.worldSelectOpen) {
          while(true) {
             if(!Decimator.method2490()) {
-               if(MouseHandler.MouseHandler_lastButton != 1 && (AbstractRasterProvider.__lp_ca || MouseHandler.MouseHandler_lastButton != 4)) {
+               if(MouseHandler.MouseHandler_lastButton != 1 && (AbstractRasterProvider.mouseCam || MouseHandler.MouseHandler_lastButton != 4)) {
                   break;
                }
 
-               int var1 = Login.__cu_q + 280;
+               int var1 = Login.xPadding + 280;
                if(MouseHandler.MouseHandler_lastPressedX >= var1 && MouseHandler.MouseHandler_lastPressedX <= var1 + 14 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
-                  Interpreter.method1975(0, 0);
+                  Interpreter.changeWorldSelectSorting(0, 0);
                   break;
                }
 
                if(MouseHandler.MouseHandler_lastPressedX >= var1 + 15 && MouseHandler.MouseHandler_lastPressedX <= var1 + 80 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
-                  Interpreter.method1975(0, 1);
+                  Interpreter.changeWorldSelectSorting(0, 1);
                   break;
                }
 
-               int var2 = Login.__cu_q + 390;
+               int var2 = Login.xPadding + 390;
                if(MouseHandler.MouseHandler_lastPressedX >= var2 && MouseHandler.MouseHandler_lastPressedX <= var2 + 14 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
-                  Interpreter.method1975(1, 0);
+                  Interpreter.changeWorldSelectSorting(1, 0);
                   break;
                }
 
                if(MouseHandler.MouseHandler_lastPressedX >= var2 + 15 && MouseHandler.MouseHandler_lastPressedX <= var2 + 80 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
-                  Interpreter.method1975(1, 1);
+                  Interpreter.changeWorldSelectSorting(1, 1);
                   break;
                }
 
-               var3 = Login.__cu_q + 500;
+               var3 = Login.xPadding + 500;
                if(MouseHandler.MouseHandler_lastPressedX >= var3 && MouseHandler.MouseHandler_lastPressedX <= var3 + 14 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
-                  Interpreter.method1975(2, 0);
+                  Interpreter.changeWorldSelectSorting(2, 0);
                   break;
                }
 
                if(MouseHandler.MouseHandler_lastPressedX >= var3 + 15 && MouseHandler.MouseHandler_lastPressedX <= var3 + 80 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
-                  Interpreter.method1975(2, 1);
+                  Interpreter.changeWorldSelectSorting(2, 1);
                   break;
                }
 
-               var15 = Login.__cu_q + 610;
+               var15 = Login.xPadding + 610;
                if(MouseHandler.MouseHandler_lastPressedX >= var15 && MouseHandler.MouseHandler_lastPressedX <= var15 + 14 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
-                  Interpreter.method1975(3, 0);
+                  Interpreter.changeWorldSelectSorting(3, 0);
                   break;
                }
 
                if(MouseHandler.MouseHandler_lastPressedX >= var15 + 15 && MouseHandler.MouseHandler_lastPressedX <= var15 + 80 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
-                  Interpreter.method1975(3, 1);
+                  Interpreter.changeWorldSelectSorting(3, 1);
                   break;
                }
 
-               if(MouseHandler.MouseHandler_lastPressedX >= Login.__cu_q + 708 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedX <= Login.__cu_q + 708 + 50 && MouseHandler.MouseHandler_lastPressedY <= 20) {
-                  FontName.method5636();
+               if(MouseHandler.MouseHandler_lastPressedX >= Login.xPadding + 708 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedX <= Login.xPadding + 708 + 50 && MouseHandler.MouseHandler_lastPressedY <= 20) {
+                  FontName.closeWorldSelect();
                   break;
                }
 
-               if(Login.__cu_bl != -1) {
-                  World var13 = ItemContainer.worlds[Login.__cu_bl];
+               if(Login.hoveredWorldIndex != -1) {
+                  World var13 = ItemContainer.worlds[Login.hoveredWorldIndex];
                   class31.changeWorld(var13);
-                  FontName.method5636();
+                  FontName.closeWorldSelect();
                } else {
-                  if(Login.__cu_br > 0 && SecureRandomFuture.__cn_bu != null && MouseHandler.MouseHandler_lastPressedX >= 0 && MouseHandler.MouseHandler_lastPressedX <= SecureRandomFuture.__cn_bu.subWidth && MouseHandler.MouseHandler_lastPressedY >= Huffman.canvasHeight / 2 - 50 && MouseHandler.MouseHandler_lastPressedY <= Huffman.canvasHeight / 2 + 50) {
-                     --Login.__cu_br;
+                  if(Login.worldSelectPage > 0 && SecureRandomFuture.worldSelectLeftSprite != null && MouseHandler.MouseHandler_lastPressedX >= 0 && MouseHandler.MouseHandler_lastPressedX <= SecureRandomFuture.worldSelectLeftSprite.subWidth && MouseHandler.MouseHandler_lastPressedY >= Huffman.canvasHeight / 2 - 50 && MouseHandler.MouseHandler_lastPressedY <= Huffman.canvasHeight / 2 + 50) {
+                     --Login.worldSelectPage;
                   }
 
-                  if(Login.__cu_br < Login.__cu_bj && NetSocket.__fb_bm != null && MouseHandler.MouseHandler_lastPressedX >= SoundCache.canvasWidth - NetSocket.__fb_bm.subWidth - 5 && MouseHandler.MouseHandler_lastPressedX <= SoundCache.canvasWidth && MouseHandler.MouseHandler_lastPressedY >= Huffman.canvasHeight / 2 - 50 && MouseHandler.MouseHandler_lastPressedY <= Huffman.canvasHeight / 2 + 50) {
-                     ++Login.__cu_br;
+                  if(Login.worldSelectPage < Login.worldSelectPagesCount && NetSocket.worldSelectRightSprite != null && MouseHandler.MouseHandler_lastPressedX >= SoundCache.canvasWidth - NetSocket.worldSelectRightSprite.subWidth - 5 && MouseHandler.MouseHandler_lastPressedX <= SoundCache.canvasWidth && MouseHandler.MouseHandler_lastPressedY >= Huffman.canvasHeight / 2 - 50 && MouseHandler.MouseHandler_lastPressedY <= Huffman.canvasHeight / 2 + 50) {
+                     ++Login.worldSelectPage;
                   }
                }
                break;
             }
 
             if(IndexStoreAction.__ik_cn == 13) {
-               FontName.method5636();
+               FontName.closeWorldSelect();
                break;
             }
 
             if(IndexStoreAction.__ik_cn == 96) {
-               if(Login.__cu_br > 0 && SecureRandomFuture.__cn_bu != null) {
-                  --Login.__cu_br;
+               if(Login.worldSelectPage > 0 && SecureRandomFuture.worldSelectLeftSprite != null) {
+                  --Login.worldSelectPage;
                }
-            } else if(IndexStoreAction.__ik_cn == 97 && Login.__cu_br < Login.__cu_bj && NetSocket.__fb_bm != null) {
-               ++Login.__cu_br;
+            } else if(IndexStoreAction.__ik_cn == 97 && Login.worldSelectPage < Login.worldSelectPagesCount && NetSocket.worldSelectRightSprite != null) {
+               ++Login.worldSelectPage;
             }
          }
 
       } else {
-         if((MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.__lp_ca && MouseHandler.MouseHandler_lastButton == 4) && MouseHandler.MouseHandler_lastPressedX >= Login.__cu_q + 765 - 50 && MouseHandler.MouseHandler_lastPressedY >= 453) {
+         if((MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.mouseCam && MouseHandler.MouseHandler_lastButton == 4) && MouseHandler.MouseHandler_lastPressedX >= Login.xPadding + 765 - 50 && MouseHandler.MouseHandler_lastPressedY >= 453) {
             ReflectionCheck.clientPreferences.titleMusicDisabled = !ReflectionCheck.clientPreferences.titleMusicDisabled;
-            WorldMapSection0.method247();
+            WorldMapSection0.savePreferences();
             if(!ReflectionCheck.clientPreferences.titleMusicDisabled) {
                class204.method4011(UserComparator3.indexCache6, "scape main", "", 255, false);
             } else {
@@ -153,16 +153,16 @@ public final class class54 {
 
             if(Client.gameState == 10 || Client.gameState == 11) {
                if(Client.language == 0) {
-                  if(MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.__lp_ca && MouseHandler.MouseHandler_lastButton == 4) {
-                     var3 = Login.__cu_q + 5;
+                  if(MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.mouseCam && MouseHandler.MouseHandler_lastButton == 4) {
+                     var3 = Login.xPadding + 5;
                      short var4 = 463;
                      byte var5 = 100;
                      byte var6 = 35;
                      if(MouseHandler.MouseHandler_lastPressedX >= var3 && MouseHandler.MouseHandler_lastPressedX <= var3 + var5 && MouseHandler.MouseHandler_lastPressedY >= var4 && MouseHandler.MouseHandler_lastPressedY <= var6 + var4) {
                         if(ClientParameter.loadWorlds()) {
-                           Login.__cu_bk = true;
-                           Login.__cu_br = 0;
-                           Login.__cu_bj = 0;
+                           Login.worldSelectOpen = true;
+                           Login.worldSelectPage = 0;
+                           Login.worldSelectPagesCount = 0;
                         }
 
                         return;
@@ -170,9 +170,9 @@ public final class class54 {
                   }
 
                   if(FriendLoginUpdate.__kn_x != null && ClientParameter.loadWorlds()) {
-                     Login.__cu_bk = true;
-                     Login.__cu_br = 0;
-                     Login.__cu_bj = 0;
+                     Login.worldSelectOpen = true;
+                     Login.worldSelectPage = 0;
+                     Login.worldSelectPagesCount = 0;
                   }
                }
 
@@ -184,7 +184,7 @@ public final class class54 {
                   var16 = MouseHandler.MouseHandler_y;
                }
 
-               if(!AbstractRasterProvider.__lp_ca && var3 == 4) {
+               if(!AbstractRasterProvider.mouseCam && var3 == 4) {
                   var3 = 1;
                }
 
@@ -199,15 +199,15 @@ public final class class54 {
                      }
                   }
 
-                  var7 = Varps.__hv_h - 80;
+                  var7 = Varps.loginBoxCenter - 80;
                   var8 = 291;
                   if(var3 == 1 && var15 >= var7 - 75 && var15 <= var7 + 75 && var16 >= var8 - 20 && var16 <= var8 + 20) {
                      WorldMapCacheName.method635(Message.method1227("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws", true, false);
                   }
 
-                  var7 = Varps.__hv_h + 80;
+                  var7 = Varps.loginBoxCenter + 80;
                   if(var3 == 1 && var15 >= var7 - 75 && var15 <= var7 + 75 && var16 >= var8 - 20 && var16 <= var8 + 20 || var17) {
-                     if((Client.worldProperties & 33554432) != 0) {
+                     if((Client.worldProperties & 0x2000000) != 0) {
                         Login.Login_response0 = "";
                         Login.Login_response1 = "This is a <col=00ffff>Beta<col=ffffff> world.";
                         Login.Login_response2 = "Your normal account will not be affected.";
@@ -274,7 +274,7 @@ public final class class54 {
                            }
                         }
 
-                        var7 = Varps.__hv_h - 80;
+                        var7 = Varps.loginBoxCenter - 80;
                         var8 = 321;
                         if(var3 == 1 && var15 >= var7 - 75 && var15 <= var7 + 75 && var16 >= var8 - 20 && var16 <= var8 + 20) {
                            Login.Login_username = Login.Login_username.trim();
@@ -294,30 +294,30 @@ public final class class54 {
                            return;
                         }
 
-                        var7 = Login.__cu_y + 180 + 80;
+                        var7 = Login.loginBoxX + 180 + 80;
                         if(var3 == 1 && var15 >= var7 - 75 && var15 <= var7 + 75 && var16 >= var8 - 20 && var16 <= var8 + 20) {
                            Login.loginIndex = 0;
                            Login.Login_username = "";
                            Login.Login_password = "";
-                           class13.__i_af = 0;
+                           class13.otpInt = 0;
                            Login.otp = "";
                            Login.__cu_ba = true;
                         }
 
-                        var7 = Varps.__hv_h + -117;
+                        var7 = Varps.loginBoxCenter + -117;
                         var8 = 277;
-                        Login.__cu_aa = var15 >= var7 && var15 < var7 + class168.__fs_au && var16 >= var8 && var16 < var8 + GroundItemPile.__dr_ao;
+                        Login.__cu_aa = var15 >= var7 && var15 < var7 + class168.optionButtonSpriteSubWidth && var16 >= var8 && var16 < var8 + GroundItemPile.optionButtonSpriteSubHeight;
                         if(var3 == 1 && Login.__cu_aa) {
                            Client.Login_isUsernameRemembered = !Client.Login_isUsernameRemembered;
                            if(!Client.Login_isUsernameRemembered && ReflectionCheck.clientPreferences.rememberedUsername != null) {
                               ReflectionCheck.clientPreferences.rememberedUsername = null;
-                              WorldMapSection0.method247();
+                              WorldMapSection0.savePreferences();
                            }
                         }
 
-                        var7 = Varps.__hv_h + 24;
+                        var7 = Varps.loginBoxCenter + 24;
                         var8 = 277;
-                        Login.__cu_ax = var15 >= var7 && var15 < var7 + class168.__fs_au && var16 >= var8 && var16 < var8 + GroundItemPile.__dr_ao;
+                        Login.__cu_ax = var15 >= var7 && var15 < var7 + class168.optionButtonSpriteSubWidth && var16 >= var8 && var16 < var8 + GroundItemPile.optionButtonSpriteSubHeight;
                         if(var3 == 1 && Login.__cu_ax) {
                            ReflectionCheck.clientPreferences.hideUsername = !ReflectionCheck.clientPreferences.hideUsername;
                            if(!ReflectionCheck.clientPreferences.hideUsername) {
@@ -326,7 +326,7 @@ public final class class54 {
                               class196.method3740();
                            }
 
-                           WorldMapSection0.method247();
+                           WorldMapSection0.savePreferences();
                         }
 
                         while(true) {
@@ -344,7 +344,7 @@ public final class class54 {
                                  Login.loginIndex = 0;
                                  Login.Login_username = "";
                                  Login.Login_password = "";
-                                 class13.__i_af = 0;
+                                 class13.otpInt = 0;
                                  Login.otp = "";
                                  Login.__cu_ba = true;
                               } else if(Login.currentLoginField == 0) {
@@ -395,13 +395,13 @@ public final class class54 {
                            return;
                         }
                      } else if(Login.loginIndex == 3) {
-                        var18 = Login.__cu_y + 180;
+                        var18 = Login.loginBoxX + 180;
                         var20 = 276;
                         if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                            MouseHandler.method1084(false);
                         }
 
-                        var18 = Login.__cu_y + 180;
+                        var18 = Login.loginBoxX + 180;
                         var20 = 326;
                         if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                            method1089("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
@@ -411,7 +411,7 @@ public final class class54 {
                      } else {
                         int var22;
                         if(Login.loginIndex == 4) {
-                           var18 = Login.__cu_y + 180 - 80;
+                           var18 = Login.loginBoxX + 180 - 80;
                            var20 = 321;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               Login.otp.trim();
@@ -420,7 +420,7 @@ public final class class54 {
                                  return;
                               }
 
-                              class13.__i_af = Integer.parseInt(Login.otp);
+                              class13.otpInt = Integer.parseInt(Login.otp);
                               Login.otp = "";
                               class15.method184(true);
                               method1089("", "Connecting to server...", "");
@@ -428,20 +428,20 @@ public final class class54 {
                               return;
                            }
 
-                           if(var3 == 1 && var15 >= Login.__cu_y + 180 - 9 && var15 <= Login.__cu_y + 180 + 130 && var16 >= 263 && var16 <= 296) {
+                           if(var3 == 1 && var15 >= Login.loginBoxX + 180 - 9 && var15 <= Login.loginBoxX + 180 + 130 && var16 >= 263 && var16 <= 296) {
                               Login.__cu_ba = !Login.__cu_ba;
                            }
 
-                           if(var3 == 1 && var15 >= Login.__cu_y + 180 - 34 && var15 <= Login.__cu_y + 34 + 180 && var16 >= 351 && var16 <= 363) {
+                           if(var3 == 1 && var15 >= Login.loginBoxX + 180 - 34 && var15 <= Login.loginBoxX + 34 + 180 && var16 >= 351 && var16 <= 363) {
                               WorldMapCacheName.method635(Message.method1227("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
                            }
 
-                           var18 = Login.__cu_y + 180 + 80;
+                           var18 = Login.loginBoxX + 180 + 80;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               Login.loginIndex = 0;
                               Login.Login_username = "";
                               Login.Login_password = "";
-                              class13.__i_af = 0;
+                              class13.otpInt = 0;
                               Login.otp = "";
                            }
 
@@ -459,7 +459,7 @@ public final class class54 {
                                  Login.loginIndex = 0;
                                  Login.Login_username = "";
                                  Login.Login_password = "";
-                                 class13.__i_af = 0;
+                                 class13.otpInt = 0;
                                  Login.otp = "";
                               } else {
                                  if(IndexStoreAction.__ik_cn == 85 && Login.otp.length() > 0) {
@@ -473,7 +473,7 @@ public final class class54 {
                                        return;
                                     }
 
-                                    class13.__i_af = Integer.parseInt(Login.otp);
+                                    class13.otpInt = Integer.parseInt(Login.otp);
                                     Login.otp = "";
                                     class15.method184(true);
                                     method1089("", "Connecting to server...", "");
@@ -487,14 +487,14 @@ public final class class54 {
                               }
                            }
                         } else if(Login.loginIndex == 5) {
-                           var18 = Login.__cu_y + 180 - 80;
+                           var18 = Login.loginBoxX + 180 - 80;
                            var20 = 321;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               NpcDefinition.method5162();
                               return;
                            }
 
-                           var18 = Login.__cu_y + 180 + 80;
+                           var18 = Login.loginBoxX + 180 + 80;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               MouseHandler.method1084(true);
                            }
@@ -550,7 +550,7 @@ public final class class54 {
                               MouseHandler.method1084(true);
                            }
                         } else if(Login.loginIndex == 7) {
-                           var18 = Login.__cu_y + 180 - 80;
+                           var18 = Login.loginBoxX + 180 - 80;
                            var20 = 321;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               WorldMapCacheName.method635(Message.method1227("secure", true) + "m=dob/set_dob.ws", true, false);
@@ -559,12 +559,12 @@ public final class class54 {
                               return;
                            }
 
-                           var18 = Login.__cu_y + 180 + 80;
+                           var18 = Login.loginBoxX + 180 + 80;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               MouseHandler.method1084(true);
                            }
                         } else if(Login.loginIndex == 8) {
-                           var18 = Login.__cu_y + 180 - 80;
+                           var18 = Login.loginBoxX + 180 - 80;
                            var20 = 321;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               WorldMapCacheName.method635("https://www.jagex.com/terms/privacy/#eight", true, false);
@@ -573,7 +573,7 @@ public final class class54 {
                               return;
                            }
 
-                           var18 = Login.__cu_y + 180 + 80;
+                           var18 = Login.loginBoxX + 180 + 80;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               MouseHandler.method1084(true);
                            }
@@ -590,7 +590,7 @@ public final class class54 {
                               MouseHandler.method1084(false);
                            }
 
-                           var7 = Login.__cu_y + 180;
+                           var7 = Login.loginBoxX + 180;
                            var8 = 276;
                            if(var3 == 1 && var15 >= var7 - 75 && var15 <= var7 + 75 && var16 >= var8 - 20 && var16 <= var8 + 20) {
                               WorldMapCacheName.method635(var14, true, false);
@@ -599,7 +599,7 @@ public final class class54 {
                               return;
                            }
 
-                           var7 = Login.__cu_y + 180;
+                           var7 = Login.loginBoxX + 180;
                            var8 = 326;
                            if(var3 == 1 && var15 >= var7 - 75 && var15 <= var7 + 75 && var16 >= var8 - 20 && var16 <= var8 + 20) {
                               MouseHandler.method1084(false);
@@ -615,13 +615,13 @@ public final class class54 {
                         }
                      }
 
-                     var18 = Varps.__hv_h - 80;
+                     var18 = Varps.loginBoxCenter - 80;
                      var20 = 321;
                      if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                         MouseHandler.method1084(false);
                      }
 
-                     var18 = Varps.__hv_h + 80;
+                     var18 = Varps.loginBoxCenter + 80;
                      if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                         Login.loginIndex = 0;
                      }
@@ -660,7 +660,7 @@ public final class class54 {
       } else {
          WorldMapArea var11;
          if(var0 == 6601) {
-            var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             String var16 = "";
             var11 = BufferedFile.worldMap().getMapArea(var3);
             if(var11 != null) {
@@ -670,120 +670,120 @@ public final class class54 {
             Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var16;
             return 1;
          } else if(var0 == 6602) {
-            var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             BufferedFile.worldMap().setCurrentMapAreaId(var3);
             return 1;
          } else if(var0 == 6603) {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getZoomLevel();
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getZoomLevel();
             return 1;
          } else if(var0 == 6604) {
-            var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             BufferedFile.worldMap().setZoomLevel(var3);
             return 1;
          } else if(var0 == 6605) {
-            Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isCacheLoaded()?1:0;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isCacheLoaded()?1:0;
             return 1;
          } else {
             TileLocation var15;
             if(var0 == 6606) {
-               var15 = new TileLocation(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+               var15 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().setWorldMapPositionTarget(var15.x, var15.y);
                return 1;
             } else if(var0 == 6607) {
-               var15 = new TileLocation(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+               var15 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().__aw_531(var15.x, var15.y);
                return 1;
             } else if(var0 == 6608) {
-               var15 = new TileLocation(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+               var15 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().__al_532(var15.plane, var15.x, var15.y);
                return 1;
             } else if(var0 == 6609) {
-               var15 = new TileLocation(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+               var15 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().__ab_533(var15.plane, var15.x, var15.y);
                return 1;
             } else if(var0 == 6610) {
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = BufferedFile.worldMap().__ae_534();
-               Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = BufferedFile.worldMap().__at_535();
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().__ae_534();
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().__at_535();
                return 1;
             } else {
                WorldMapArea var13;
                if(var0 == 6611) {
-                  var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                  var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   var13 = BufferedFile.worldMap().getMapArea(var3);
                   if(var13 == null) {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                   } else {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var13.origin().packed();
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var13.origin().packed();
                   }
 
                   return 1;
                } else if(var0 == 6612) {
-                  var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                  var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   var13 = BufferedFile.worldMap().getMapArea(var3);
                   if(var13 == null) {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                   } else {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (var13.maxX() - var13.minX() + 1) * 64;
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = (var13.maxY() - var13.minY() + 1) * 64;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (var13.maxX() - var13.minX() + 1) * 64;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (var13.maxY() - var13.minY() + 1) * 64;
                   }
 
                   return 1;
                } else if(var0 == 6613) {
-                  var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                  var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   var13 = BufferedFile.worldMap().getMapArea(var3);
                   if(var13 == null) {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                   } else {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var13.minX() * 64;
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var13.minY() * 64;
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var13.maxX() * 64 + 64 - 1;
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var13.maxY() * 64 + 64 - 1;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var13.minX() * 64;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var13.minY() * 64;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var13.maxX() * 64 + 64 - 1;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var13.maxY() * 64 + 64 - 1;
                   }
 
                   return 1;
                } else if(var0 == 6614) {
-                  var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                  var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   var13 = BufferedFile.worldMap().getMapArea(var3);
                   if(var13 == null) {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                   } else {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var13.zoom();
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var13.zoom();
                   }
 
                   return 1;
                } else if(var0 == 6615) {
                   var15 = BufferedFile.worldMap().__ad_536();
                   if(var15 == null) {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                   } else {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var15.x;
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var15.y;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var15.x;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var15.y;
                   }
 
                   return 1;
                } else if(var0 == 6616) {
-                  Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = BufferedFile.worldMap().currentMapAreaId();
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().currentMapAreaId();
                   return 1;
                } else if(var0 == 6617) {
-                  var15 = new TileLocation(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+                  var15 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                   var13 = BufferedFile.worldMap().getCurrentMapArea();
                   if(var13 == null) {
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
-                     Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                      return 1;
                   } else {
                      int[] var14 = var13.position(var15.plane, var15.x, var15.y);
                      if(var14 == null) {
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                      } else {
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var14[0];
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var14[1];
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var14[0];
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var14[1];
                      }
 
                      return 1;
@@ -791,18 +791,18 @@ public final class class54 {
                } else {
                   TileLocation var7;
                   if(var0 == 6618) {
-                     var15 = new TileLocation(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+                     var15 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                      var13 = BufferedFile.worldMap().getCurrentMapArea();
                      if(var13 == null) {
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                         return 1;
                      } else {
                         var7 = var13.coord(var15.x, var15.y);
                         if(var7 == null) {
-                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                           Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                         } else {
-                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var7.packed();
+                           Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var7.packed();
                         }
 
                         return 1;
@@ -810,51 +810,51 @@ public final class class54 {
                   } else {
                      TileLocation var12;
                      if(var0 == 6619) {
-                        class179.Interpreter_intStackSize -= 2;
-                        var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-                        var12 = new TileLocation(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]);
+                        RouteStrategy.Interpreter_intStackSize -= 2;
+                        var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+                        var12 = new TileLocation(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
                         TotalQuantityComparator.method96(var3, var12, false);
                         return 1;
                      } else if(var0 == 6620) {
-                        class179.Interpreter_intStackSize -= 2;
-                        var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-                        var12 = new TileLocation(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]);
+                        RouteStrategy.Interpreter_intStackSize -= 2;
+                        var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+                        var12 = new TileLocation(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
                         TotalQuantityComparator.method96(var3, var12, true);
                         return 1;
                      } else if(var0 == 6621) {
-                        class179.Interpreter_intStackSize -= 2;
-                        var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-                        var12 = new TileLocation(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]);
+                        RouteStrategy.Interpreter_intStackSize -= 2;
+                        var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+                        var12 = new TileLocation(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
                         var11 = BufferedFile.worldMap().getMapArea(var3);
                         if(var11 == null) {
-                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = 0;
+                           Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                            return 1;
                         } else {
-                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var11.containsCoord(var12.plane, var12.x, var12.y)?1:0;
+                           Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.containsCoord(var12.plane, var12.x, var12.y)?1:0;
                            return 1;
                         }
                      } else if(var0 == 6622) {
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = BufferedFile.worldMap().__ap_537();
-                        Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = BufferedFile.worldMap().__as_538();
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().__ap_537();
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().__as_538();
                         return 1;
                      } else if(var0 == 6623) {
-                        var15 = new TileLocation(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+                        var15 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                         var13 = BufferedFile.worldMap().mapAreaAtCoord(var15.plane, var15.x, var15.y);
                         if(var13 == null) {
-                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                           Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                         } else {
-                           Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var13.id();
+                           Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var13.id();
                         }
 
                         return 1;
                      } else if(var0 == 6624) {
-                        BufferedFile.worldMap().__am_539(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+                        BufferedFile.worldMap().__am_539(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                         return 1;
                      } else if(var0 == 6625) {
                         BufferedFile.worldMap().__an_540();
                         return 1;
                      } else if(var0 == 6626) {
-                        BufferedFile.worldMap().__az_541(Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize]);
+                        BufferedFile.worldMap().__az_541(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                         return 1;
                      } else if(var0 == 6627) {
                         BufferedFile.worldMap().__au_542();
@@ -862,58 +862,58 @@ public final class class54 {
                      } else {
                         boolean var10;
                         if(var0 == 6628) {
-                           var10 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                           var10 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                            BufferedFile.worldMap().perpetualFlash(var10);
                            return 1;
                         } else if(var0 == 6629) {
-                           var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                           var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                            BufferedFile.worldMap().flashElement(var3);
                            return 1;
                         } else if(var0 == 6630) {
-                           var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                           var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                            BufferedFile.worldMap().flashCategory(var3);
                            return 1;
                         } else if(var0 == 6631) {
                            BufferedFile.worldMap().stopCurrentFlashes();
                            return 1;
                         } else if(var0 == 6632) {
-                           var10 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize] == 1;
+                           var10 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                            BufferedFile.worldMap().setElementsEnabled(var10);
                            return 1;
                         } else {
                            boolean var4;
                            if(var0 == 6633) {
-                              class179.Interpreter_intStackSize -= 2;
-                              var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-                              var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1] == 1;
+                              RouteStrategy.Interpreter_intStackSize -= 2;
+                              var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+                              var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1] == 1;
                               BufferedFile.worldMap().disableElement(var3, var4);
                               return 1;
                            } else if(var0 == 6634) {
-                              class179.Interpreter_intStackSize -= 2;
-                              var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-                              var4 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1] == 1;
+                              RouteStrategy.Interpreter_intStackSize -= 2;
+                              var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+                              var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1] == 1;
                               BufferedFile.worldMap().disableCategory(var3, var4);
                               return 1;
                            } else if(var0 == 6635) {
-                              Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getElementsEnabled()?1:0;
+                              Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getElementsEnabled()?1:0;
                               return 1;
                            } else if(var0 == 6636) {
-                              var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                              Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isElementDisabled(var3)?1:0;
+                              var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
+                              Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isElementDisabled(var3)?1:0;
                               return 1;
                            } else if(var0 == 6637) {
-                              var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
-                              Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isCategoryDisabled(var3)?1:0;
+                              var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
+                              Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isCategoryDisabled(var3)?1:0;
                               return 1;
                            } else if(var0 == 6638) {
-                              class179.Interpreter_intStackSize -= 2;
-                              var3 = Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize];
-                              var12 = new TileLocation(Interpreter.Interpreter_intStack[class179.Interpreter_intStackSize + 1]);
+                              RouteStrategy.Interpreter_intStackSize -= 2;
+                              var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
+                              var12 = new TileLocation(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
                               var7 = BufferedFile.worldMap().__bc_545(var3, var12);
                               if(var7 == null) {
-                                 Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                                 Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                               } else {
-                                 Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var7.packed();
+                                 Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var7.packed();
                               }
 
                               return 1;
@@ -922,29 +922,29 @@ public final class class54 {
                               if(var0 == 6639) {
                                  var8 = BufferedFile.worldMap().iconStart();
                                  if(var8 == null) {
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                  } else {
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var8.__m_15();
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var8.coord2.packed();
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var8.__m_15();
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var8.coord2.packed();
                                  }
 
                                  return 1;
                               } else if(var0 == 6640) {
                                  var8 = BufferedFile.worldMap().iconNext();
                                  if(var8 == null) {
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                  } else {
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var8.__m_15();
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var8.coord2.packed();
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var8.__m_15();
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var8.coord2.packed();
                                  }
 
                                  return 1;
                               } else {
                                  WorldMapElement var6;
                                  if(var0 == 6693) {
-                                    var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                                    var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                                     var6 = ViewportMouse.getWorldMapElement(var3);
                                     if(var6.__l == null) {
                                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
@@ -954,38 +954,38 @@ public final class class54 {
 
                                     return 1;
                                  } else if(var0 == 6694) {
-                                    var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                                    var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                                     var6 = ViewportMouse.getWorldMapElement(var3);
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6.textSize;
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.textSize;
                                     return 1;
                                  } else if(var0 == 6695) {
-                                    var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                                    var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                                     var6 = ViewportMouse.getWorldMapElement(var3);
                                     if(var6 == null) {
-                                       Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                                       Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                     } else {
-                                       Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6.category;
+                                       Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.category;
                                     }
 
                                     return 1;
                                  } else if(var0 == 6696) {
-                                    var3 = Interpreter.Interpreter_intStack[--class179.Interpreter_intStackSize];
+                                    var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                                     var6 = ViewportMouse.getWorldMapElement(var3);
                                     if(var6 == null) {
-                                       Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = -1;
+                                       Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                     } else {
-                                       Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = var6.sprite1;
+                                       Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.sprite1;
                                     }
 
                                     return 1;
                                  } else if(var0 == 6697) {
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = class15.worldMapEvent.mapElement;
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class15.worldMapEvent.mapElement;
                                     return 1;
                                  } else if(var0 == 6698) {
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = class15.worldMapEvent.coord1.packed();
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class15.worldMapEvent.coord1.packed();
                                     return 1;
                                  } else if(var0 == 6699) {
-                                    Interpreter.Interpreter_intStack[++class179.Interpreter_intStackSize - 1] = class15.worldMapEvent.coord2.packed();
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class15.worldMapEvent.coord2.packed();
                                     return 1;
                                  } else {
                                     return 2;
@@ -1158,7 +1158,7 @@ public final class class54 {
          }
       }
 
-      if(MouseHandler.MouseHandler_currentButton == 4 && AbstractRasterProvider.__lp_ca) {
+      if(MouseHandler.MouseHandler_currentButton == 4 && AbstractRasterProvider.mouseCam) {
          var0 = MouseHandler.MouseHandler_y - Client.__client_ht;
          Client.__client_hu = var0 * 2;
          Client.__client_ht = var0 != -1 && var0 != 1?(MouseHandler.MouseHandler_y + Client.__client_ht) / 2:MouseHandler.MouseHandler_y;

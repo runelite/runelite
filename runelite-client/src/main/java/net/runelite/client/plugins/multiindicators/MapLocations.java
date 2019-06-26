@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2019, Enza-Denino <https://github.com/Enza-Denino>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,11 +35,12 @@ import net.runelite.api.Constants;
 
 public class MapLocations
 {
-	private static final List<Shape>[] MULTICOMBAT = new List[Constants.MAX_Z];
-	private static final List<Shape>[] NOT_MULTICOMBAT = new List[Constants.MAX_Z];
-	private static final List<Shape>[] ROUGH_WILDERNESS = new List[Constants.MAX_Z];
-	private static final List<Shape>[] DEADMAN_SAFE_ZONES = new List[Constants.MAX_Z];
-	private static final List<Shape>[] PVP_WORLD_SAFE_ZONES = new List[Constants.MAX_Z];
+	private static final List<Shape>[] MULTICOMBAT            = new List[Constants.MAX_Z];
+	private static final List<Shape>[] NOT_MULTICOMBAT        = new List[Constants.MAX_Z];
+	private static final List<Shape>[] ROUGH_WILDERNESS       = new List[Constants.MAX_Z];
+	private static final List<Shape>[] WILDERNESS_LEVEL_LINES = new List[Constants.MAX_Z];
+	private static final List<Shape>[] DEADMAN_SAFE_ZONES     = new List[Constants.MAX_Z];
+	private static final List<Shape>[] PVP_WORLD_SAFE_ZONES   = new List[Constants.MAX_Z];
 
 	private static Area getArea(List<Shape> shapes)
 	{
@@ -87,6 +89,16 @@ public class MapLocations
 		return getArea(ROUGH_WILDERNESS[plane], view);
 	}
 
+	public static Area getWildernessLevelLines(int plane)
+	{
+		return getArea(WILDERNESS_LEVEL_LINES[plane]);
+	}
+
+	public static Area getWildernessLevelLines(Rectangle view, int plane)
+	{
+		return getArea(WILDERNESS_LEVEL_LINES[plane], view);
+	}
+
 	public static Area getDeadmanSafeZones(int plane)
 	{
 		return getArea(DEADMAN_SAFE_ZONES[plane]);
@@ -107,33 +119,28 @@ public class MapLocations
 		return getArea(PVP_WORLD_SAFE_ZONES[plane], view);
 	}
 
+	private static void initializeWithEmptyLists(List<Shape>[] array)
+	{
+		for (int i = 0; i < array.length; i++)
+		{
+			array[i] = new ArrayList<>();
+		}
+	}
+
 	static
 	{
-		for (int i = 0; i < MULTICOMBAT.length; i++)
-		{
-			MULTICOMBAT[i] = new ArrayList<>();
-		}
-		for (int i = 0; i < NOT_MULTICOMBAT.length; i++)
-		{
-			NOT_MULTICOMBAT[i] = new ArrayList<>();
-		}
-		for (int i = 0; i < ROUGH_WILDERNESS.length; i++)
-		{
-			ROUGH_WILDERNESS[i] = new ArrayList<>();
-		}
-		for (int i = 0; i < DEADMAN_SAFE_ZONES.length; i++)
-		{
-			DEADMAN_SAFE_ZONES[i] = new ArrayList<>();
-		}
-		for (int i = 0; i < PVP_WORLD_SAFE_ZONES.length; i++)
-		{
-			PVP_WORLD_SAFE_ZONES[i] = new ArrayList<>();
-		}
+		initializeWithEmptyLists(MULTICOMBAT);
+		initializeWithEmptyLists(NOT_MULTICOMBAT);
+		initializeWithEmptyLists(ROUGH_WILDERNESS);
+		initializeWithEmptyLists(WILDERNESS_LEVEL_LINES);
+		initializeWithEmptyLists(DEADMAN_SAFE_ZONES);
+		initializeWithEmptyLists(PVP_WORLD_SAFE_ZONES);
 
 		defineMulticombatAreas();
 		defineDeadmanSafeZones();
 		definePvpSafeZones();
 		defineWilderness();
+		defineWildernessLevelLines();
 	}
 
 	private static void defineMulticombatAreas()
@@ -3440,6 +3447,33 @@ public class MapLocations
 			3264, 10360,
 			3264, 9918);
 	}
+
+	private static void defineWildernessLevelLines()
+	{
+		int wildyLeftX = 2944;
+		int wildyRightX = 3392;
+		int wildyBottomY = 3525;
+		int wildyTopY = 3971;
+
+		// define wilderness level lines at ground level
+		int accumulatedY = 0;
+		for (int level = 1; level <= 56; level++)
+		{
+			int levelTiles = level == 1 ? 3 : 8;
+			// only draw every 2 levels, otherwise lines on two adjacent levels will collide
+			// and it will not show up
+			if (level % 2 != 0)
+			{
+				addPolygonTo(WILDERNESS_LEVEL_LINES,
+					wildyLeftX, wildyBottomY + accumulatedY,
+					wildyRightX, wildyBottomY + accumulatedY,
+					wildyRightX, wildyBottomY + accumulatedY + levelTiles,
+					wildyLeftX, wildyBottomY + accumulatedY + levelTiles);
+			}
+			accumulatedY += levelTiles;
+		}
+	}
+
 
 	private static void addPolygonTo(List<Shape>[] shapes, int... coords)
 	{

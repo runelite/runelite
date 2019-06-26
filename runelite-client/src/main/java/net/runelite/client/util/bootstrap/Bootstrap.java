@@ -14,9 +14,16 @@ import net.runelite.http.api.RuneLiteAPI;
 
 public class Bootstrap
 {
+	class Artifact
+	{
+		String hash;
+		String name;
+		String path;
+		String size;
+	}
 
-	String buildCommit = "c554ab2400dc04a619b36695da2107648c9c87b3";
-	Artifact[] artifacts = getArtifacts();
+	String buildCommit = "2d0c2b8eb66a8088b41b29d42ec2a58ead460581";
+	private Artifact[] artifacts = getArtifacts();
 	Client client = new Client();
 	String[] clientJvm9Arguments = new String[]{
 		"-XX:+DisableAttachMechanism",
@@ -46,53 +53,31 @@ public class Bootstrap
 		"-XX:+UseParNewGC",
 		"-Djna.nosys=true"};
 
-	public Bootstrap()
+	Bootstrap()
 	{
 	}
 
 	public static String getChecksumObject(Serializable object) throws IOException, NoSuchAlgorithmException
 	{
-		ByteArrayOutputStream baos = null;
-		ObjectOutputStream oos = null;
-		try
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); ObjectOutputStream oos = new ObjectOutputStream(baos))
 		{
-			baos = new ByteArrayOutputStream();
-			oos = new ObjectOutputStream(baos);
 			oos.writeObject(object);
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			byte[] thedigest = md.digest(baos.toByteArray());
 			return DatatypeConverter.printHexBinary(thedigest);
 		}
-		finally
-		{
-			oos.close();
-			baos.close();
-		}
 	}
 
-	private static String getChecksumFile(String filepath) throws IOException
+	private static String getChecksumFile(String filepath) throws IOException, NoSuchAlgorithmException
 	{
 		System.out.println("Generating Hash for " + filepath);
-		MessageDigest md = null;
-		try
-		{
-			md = MessageDigest.getInstance("SHA-256");
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+
 		try (DigestInputStream dis = new DigestInputStream(new FileInputStream(filepath), md))
 		{
-			while (dis.read() != -1)
-			{
-				//empty loop to clear the data
-			}
+			//empty loop to clear the data
+			while (dis.read() != -1);
 			md = dis.getMessageDigest();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
 		}
 
 		return bytesToHex(md.digest());
@@ -111,11 +96,11 @@ public class Bootstrap
 
 	}
 
-	public Artifact[] getArtifacts()
+	private Artifact[] getArtifacts()
 	{
 		try
 		{
-			artifacts = new Artifact[42];
+			artifacts = new Artifact[43];
 
 			//Static artifacts
 			artifacts[0] = new Artifact();
@@ -330,8 +315,13 @@ public class Bootstrap
 			artifacts[37].hash = getChecksumFile("./http-api/target/" + artifacts[37].name);
 			artifacts[37].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/" + artifacts[37].name;
 			artifacts[37].size = Long.toString(getFileSize("./http-api/target/" + artifacts[37].name));
+			artifacts[42] = new Artifact();
+			artifacts[42].name = "injected-client-" + RuneLiteAPI.getVersion() + ".jar";
+			artifacts[42].hash = getChecksumFile("./injected-client/target/" + artifacts[42].name);
+			artifacts[42].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/" + artifacts[42].name;
+			artifacts[42].size = Long.toString(getFileSize("./injected-client/target/" + artifacts[42].name));
 		}
-		catch (IOException e)
+		catch (IOException | NoSuchAlgorithmException e)
 		{
 			e.printStackTrace();
 		}
