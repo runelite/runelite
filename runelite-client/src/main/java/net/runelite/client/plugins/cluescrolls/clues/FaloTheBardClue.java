@@ -79,7 +79,7 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 {
 	private static final List<FaloTheBardClue> CLUES = ImmutableList.of(
 		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", item(DRAGON_SCIMITAR)),
-		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might, and vigour.", any("Any god book (must be complete)", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS))),
+		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any god book (must be complete)", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS))),
 		new FaloTheBardClue("A bow of elven craft was made, it shimmers bright, but will soon fade.", any("Crystal Bow", range(NEW_CRYSTAL_BOW, CRYSTAL_BOW_110), range(NEW_CRYSTAL_BOW_I, CRYSTAL_BOW_110_I))),
 		new FaloTheBardClue("A fiery axe of great inferno, when you use it, you'll wonder where the logs go.", item(INFERNAL_AXE)),
 		new FaloTheBardClue("A mark used to increase one's grace, found atop a seer's place.", item(MARK_OF_GRACE)),
@@ -88,7 +88,7 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 		// The wiki doesn't specify whether the trimmed dragon defender will work so I've assumed that it doesn't
 		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", item(DRAGON_DEFENDER)),
 		new FaloTheBardClue("A token used to kill mythical beasts, in hopes of a blade or just for an xp feast.", item(WARRIOR_GUILD_TOKEN)),
-		new FaloTheBardClue("Green is my favorite, mature ale I do love, this takes your herblore above.", item(GREENMANS_ALEM)),
+		new FaloTheBardClue("Green is my favourite, mature ale I do love, this takes your herblore above.", item(GREENMANS_ALEM)),
 		new FaloTheBardClue("It can hold down a boat or crush a goat, this object, you see, is quite heavy.", item(BARRELCHEST_ANCHOR)),
 		new FaloTheBardClue("It comes from the ground, underneath the snowy plain. Trolls aplenty, with what looks like a mane.", item(BASALT)),
 		new FaloTheBardClue("No attack to wield, only strength is required, made of obsidian, but with no room for a shield.", item(TZHAARKETOM)),

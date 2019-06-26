@@ -147,7 +147,6 @@ public interface RSClient extends RSGameShell, Client
 	void setGameState(int gameState);
 
 	@Import("checkClick")
-	@Override
 	void setCheckClick(boolean checkClick);
 
 	@Import("Scene_selectedScreenX")
@@ -563,8 +562,8 @@ public interface RSClient extends RSGameShell, Client
 	@Import("soundLocations")
 	int[] getSoundLocations();
 
-	@Import("unknownSoundValues1")
-	int[] getUnknownSoundValues1();
+	@Import("queuedSoundEffectLoops")
+	int[] getQueuedSoundEffectLoops();
 
 	@Import("queuedSoundEffectDelays")
 	int[] getQueuedSoundEffectDelays();
@@ -574,6 +573,9 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("soundEffectCount")
 	void setQueuedSoundEffectCount(int queuedSoundEffectCount);
+
+	@Import("queueSoundEffect")
+	void queueSoundEffect(int id, int numLoops, int delay);
 
 	@Import("rasterProvider")
 	@Override
@@ -1005,11 +1007,34 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("mouseRecorder")
 	RSMouseRecorder getMouseRecorder();
-		
+
 	@Import("selectedSpellName")
 	String getSelectedSpellName();
-	
+
 	@Import("isSpellSelected")
 	boolean getIsSpellSelected();
 
+	@Import("healthBarSpriteCache")
+	RSNodeCache getHealthBarSpriteCache();
+
+	@Import("getTrack")
+	RSSoundEffect getTrack(RSIndexData indexData, int id, int var0);
+
+	@Import("createSoundEffectAudioTaskNode")
+	RSAudioTaskNode createSoundEffectAudioTaskNode(RSRawAudioNode audioNode, int var0, int volume);
+
+	@Import("soundEffectAudioQueue")
+	RSAudioTaskNodeQueue getSoundEffectAudioQueue();
+
+	@Import("indexCache4")
+	RSIndexData getIndexCache4();
+
+	@Import("soundEffectResampler")
+	RSResampler getSoundEffectResampler();
+
+	@Import("soundEffectVolume")
+	int getSoundEffectVolume();
+
+	@Import("viewportWalking")
+	void setViewportWalking(boolean viewportWalking);
 }
