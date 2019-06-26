@@ -386,6 +386,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		final String message = event.getMessage();
+
 		if (message.equals(CHEST_LOOTED_MESSAGE) || LARRAN_LOOTED_PATTERN.matcher(message).matches())
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
