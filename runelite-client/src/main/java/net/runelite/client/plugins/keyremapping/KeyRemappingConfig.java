@@ -34,6 +34,17 @@ import net.runelite.client.config.ModifierlessKeybind;
 public interface KeyRemappingConfig extends Config
 {
 	@ConfigItem(
+		position = 0,
+		keyName = "hideDisplayName",
+		name = "Hide display name",
+		description = "Hides the display name from showing before \"Press Enter to Chat...\""
+	)
+	default boolean hideDisplayName()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 1,
 		keyName = "cameraRemap",
 		name = "Remap Camera",
