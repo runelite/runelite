@@ -4262,7 +4262,7 @@ public final class Client extends GameShell implements Usernamed {
                                                    } else if(menuOptionsCount > 0) {
                                                       var3 = __client_ja;
                                                       var4 = __client_je;
-                                                      class231.method4520(UnitPriceComparator.tempMenuAction, var3, var4);
+                                                      class231.processTempMenuAction(UnitPriceComparator.tempMenuAction, var3, var4);
                                                       UnitPriceComparator.tempMenuAction = null;
                                                    }
 
@@ -6216,7 +6216,7 @@ public final class Client extends GameShell implements Usernamed {
             if(DevicePcmPlayerProvider.dragInventoryWidget != null && !__client_jl && menuOptionsCount > 0 && !this.shouldLeftClickOpenMenu()) {
                int var10 = __client_ja;
                int var11 = __client_je;
-               class231.method4520(UnitPriceComparator.tempMenuAction, var10, var11);
+               class231.processTempMenuAction(UnitPriceComparator.tempMenuAction, var10, var11);
                UnitPriceComparator.tempMenuAction = null;
             }
 
@@ -6448,7 +6448,7 @@ public final class Client extends GameShell implements Usernamed {
             } else if(menuOptionsCount > 0) {
                int var13 = widgetClickX + __client_nk;
                int var14 = widgetClickY + __client_np;
-               class231.method4520(UnitPriceComparator.tempMenuAction, var13, var14);
+               class231.processTempMenuAction(UnitPriceComparator.tempMenuAction, var13, var14);
                UnitPriceComparator.tempMenuAction = null;
             }
 

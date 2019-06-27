@@ -99,6 +99,11 @@ public class InjectUtil
 		if (hint != null)
 		{
 			ClassFile c = inject.getDeobfuscated().findClass(hint);
+			if (c == null)
+			{
+				throw new InjectionException("Class " + hint + " doesn't exist. (check capitalization)");
+			}
+
 			for (Field f : c.getFields())
 			{
 				if (!f.getName().equals(name))

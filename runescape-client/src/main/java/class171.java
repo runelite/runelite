@@ -543,14 +543,14 @@ public class class171 {
       signature = "(IIIILjava/lang/String;I)V",
       garbageValue = "49247882"
    )
-   static void method3494(int var0, int var1, int var2, int var3, String var4) {
-      Widget var5 = class204.getWidgetChild(var1, var2);
+   static void method3494(int opIndex, int parentID, int childID, int itemID, String target) {
+      Widget var5 = class204.getWidgetChild(parentID, childID);
       if(var5 != null) {
          if(var5.onOp != null) {
             ScriptEvent var6 = new ScriptEvent();
             var6.widget = var5;
-            var6.opIndex = var0;
-            var6.targetName = var4;
+            var6.opIndex = opIndex;
+            var6.targetName = target;
             var6.args0 = var5.onOp;
             AbstractIndexCache.runScript(var6);
          }
@@ -562,87 +562,87 @@ public class class171 {
 
          if(var11) {
             int var8 = class1.getWidgetClickMask(var5);
-            int var9 = var0 - 1;
+            int var9 = opIndex - 1;
             boolean var7 = (var8 >> var9 + 1 & 1) != 0;
             if(var7) {
                PacketBufferNode var10;
-               if(var0 == 1) {
+               if(opIndex == 1) {
                   var10 = Interpreter.method1915(ClientPacket.__gs_bi, Client.packetWriter.isaacCipher);
-                  var10.packetBuffer.writeInt(var1);
-                  var10.packetBuffer.writeShort(var2);
-                  var10.packetBuffer.writeShort(var3);
+                  var10.packetBuffer.writeInt(parentID);
+                  var10.packetBuffer.writeShort(childID);
+                  var10.packetBuffer.writeShort(itemID);
                   Client.packetWriter.__q_167(var10);
                }
 
-               if(var0 == 2) {
+               if(opIndex == 2) {
                   var10 = Interpreter.method1915(ClientPacket.__gs_b, Client.packetWriter.isaacCipher);
-                  var10.packetBuffer.writeInt(var1);
-                  var10.packetBuffer.writeShort(var2);
-                  var10.packetBuffer.writeShort(var3);
+                  var10.packetBuffer.writeInt(parentID);
+                  var10.packetBuffer.writeShort(childID);
+                  var10.packetBuffer.writeShort(itemID);
                   Client.packetWriter.__q_167(var10);
                }
 
-               if(var0 == 3) {
+               if(opIndex == 3) {
                   var10 = Interpreter.method1915(ClientPacket.__gs_aa, Client.packetWriter.isaacCipher);
-                  var10.packetBuffer.writeInt(var1);
-                  var10.packetBuffer.writeShort(var2);
-                  var10.packetBuffer.writeShort(var3);
+                  var10.packetBuffer.writeInt(parentID);
+                  var10.packetBuffer.writeShort(childID);
+                  var10.packetBuffer.writeShort(itemID);
                   Client.packetWriter.__q_167(var10);
                }
 
-               if(var0 == 4) {
+               if(opIndex == 4) {
                   var10 = Interpreter.method1915(ClientPacket.__gs_y, Client.packetWriter.isaacCipher);
-                  var10.packetBuffer.writeInt(var1);
-                  var10.packetBuffer.writeShort(var2);
-                  var10.packetBuffer.writeShort(var3);
+                  var10.packetBuffer.writeInt(parentID);
+                  var10.packetBuffer.writeShort(childID);
+                  var10.packetBuffer.writeShort(itemID);
                   Client.packetWriter.__q_167(var10);
                }
 
-               if(var0 == 5) {
+               if(opIndex == 5) {
                   var10 = Interpreter.method1915(ClientPacket.__gs_ad, Client.packetWriter.isaacCipher);
-                  var10.packetBuffer.writeInt(var1);
-                  var10.packetBuffer.writeShort(var2);
-                  var10.packetBuffer.writeShort(var3);
+                  var10.packetBuffer.writeInt(parentID);
+                  var10.packetBuffer.writeShort(childID);
+                  var10.packetBuffer.writeShort(itemID);
                   Client.packetWriter.__q_167(var10);
                }
 
-               if(var0 == 6) {
+               if(opIndex == 6) {
                   var10 = Interpreter.method1915(ClientPacket.__gs_br, Client.packetWriter.isaacCipher);
-                  var10.packetBuffer.writeInt(var1);
-                  var10.packetBuffer.writeShort(var2);
-                  var10.packetBuffer.writeShort(var3);
+                  var10.packetBuffer.writeInt(parentID);
+                  var10.packetBuffer.writeShort(childID);
+                  var10.packetBuffer.writeShort(itemID);
                   Client.packetWriter.__q_167(var10);
                }
 
-               if(var0 == 7) {
+               if(opIndex == 7) {
                   var10 = Interpreter.method1915(ClientPacket.__gs_cu, Client.packetWriter.isaacCipher);
-                  var10.packetBuffer.writeInt(var1);
-                  var10.packetBuffer.writeShort(var2);
-                  var10.packetBuffer.writeShort(var3);
+                  var10.packetBuffer.writeInt(parentID);
+                  var10.packetBuffer.writeShort(childID);
+                  var10.packetBuffer.writeShort(itemID);
                   Client.packetWriter.__q_167(var10);
                }
 
-               if(var0 == 8) {
+               if(opIndex == 8) {
                   var10 = Interpreter.method1915(ClientPacket.__gs_a, Client.packetWriter.isaacCipher);
-                  var10.packetBuffer.writeInt(var1);
-                  var10.packetBuffer.writeShort(var2);
-                  var10.packetBuffer.writeShort(var3);
+                  var10.packetBuffer.writeInt(parentID);
+                  var10.packetBuffer.writeShort(childID);
+                  var10.packetBuffer.writeShort(itemID);
                   Client.packetWriter.__q_167(var10);
                }
 
-               if(var0 == 9) {
+               if(opIndex == 9) {
                   var10 = Interpreter.method1915(ClientPacket.__gs_cj, Client.packetWriter.isaacCipher);
-                  var10.packetBuffer.writeInt(var1);
-                  var10.packetBuffer.writeShort(var2);
-                  var10.packetBuffer.writeShort(var3);
+                  var10.packetBuffer.writeInt(parentID);
+                  var10.packetBuffer.writeShort(childID);
+                  var10.packetBuffer.writeShort(itemID);
                   Client.packetWriter.__q_167(var10);
                }
 
-               if(var0 == 10) {
+               if(opIndex == 10) {
                   var10 = Interpreter.method1915(ClientPacket.__gs_m, Client.packetWriter.isaacCipher);
-                  var10.packetBuffer.writeInt(var1);
-                  var10.packetBuffer.writeShort(var2);
-                  var10.packetBuffer.writeShort(var3);
+                  var10.packetBuffer.writeInt(parentID);
+                  var10.packetBuffer.writeShort(childID);
+                  var10.packetBuffer.writeShort(itemID);
                   Client.packetWriter.__q_167(var10);
                }
 

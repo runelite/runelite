@@ -566,343 +566,343 @@ public abstract class Actor extends Entity {
       garbageValue = "493234011"
    )
    @Export("menuAction")
-   static final void menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7) {
-      if(var2 >= 2000) {
-         var2 -= 2000;
+   static final void menuAction(int arg1, int arg2, int opcode, int arg0, String action, String target, int mouseX, int mouseY) {
+      if(opcode >= 2000) {
+         opcode -= 2000;
       }
 
       PacketBufferNode var8;
-      if(var2 == 1) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      if(opcode == 1) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = arg1;
+         Client.destinationY = arg2;
          var8 = Interpreter.method1915(ClientPacket.__gs_an, Client.packetWriter.isaacCipher);
-         var8.packetBuffer.__bx_323(GraphicsObject.baseY + var1);
+         var8.packetBuffer.__bx_323(GraphicsObject.baseY + arg2);
          var8.packetBuffer.writeShortLE(HealthBarDefinition.selectedItemSlot);
          var8.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
          var8.packetBuffer.writeIntLE(ServerPacket.selectedItemWidget);
-         var8.packetBuffer.__bx_323(var0 + class50.baseX);
-         var8.packetBuffer.writeShort(var3);
+         var8.packetBuffer.__bx_323(arg1 + class50.baseX);
+         var8.packetBuffer.writeShort(arg0);
          var8.packetBuffer.writeShortLE(MenuAction.selectedItemId);
          Client.packetWriter.__q_167(var8);
-      } else if(var2 == 2) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      } else if(opcode == 2) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = arg1;
+         Client.destinationY = arg2;
          var8 = Interpreter.method1915(ClientPacket.__gs_cg, Client.packetWriter.isaacCipher);
          var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-         var8.packetBuffer.writeShort(var0 + class50.baseX);
-         var8.packetBuffer.__bo_322(var3);
+         var8.packetBuffer.writeShort(arg1 + class50.baseX);
+         var8.packetBuffer.__bo_322(arg0);
          var8.packetBuffer.writeIntLE16(ServerBuild.__iy_lo);
          var8.packetBuffer.writeShort(Client.__client_lc);
-         var8.packetBuffer.writeShortLE(GraphicsObject.baseY + var1);
+         var8.packetBuffer.writeShortLE(GraphicsObject.baseY + arg2);
          Client.packetWriter.__q_167(var8);
-      } else if(var2 == 3) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      } else if(opcode == 3) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = arg1;
+         Client.destinationY = arg2;
          var8 = Interpreter.method1915(ClientPacket.__gs_d, Client.packetWriter.isaacCipher);
-         var8.packetBuffer.writeShort(GraphicsObject.baseY + var1);
+         var8.packetBuffer.writeShort(GraphicsObject.baseY + arg2);
          var8.packetBuffer.__ba_316(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-         var8.packetBuffer.__bo_322(var3);
-         var8.packetBuffer.__bx_323(var0 + class50.baseX);
+         var8.packetBuffer.__bo_322(arg0);
+         var8.packetBuffer.__bx_323(arg1 + class50.baseX);
          Client.packetWriter.__q_167(var8);
-      } else if(var2 == 4) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      } else if(opcode == 4) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = arg1;
+         Client.destinationY = arg2;
          var8 = Interpreter.method1915(ClientPacket.__gs_cv, Client.packetWriter.isaacCipher);
          var8.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-         var8.packetBuffer.writeShort(var3);
-         var8.packetBuffer.writeShort(GraphicsObject.baseY + var1);
-         var8.packetBuffer.writeShort(var0 + class50.baseX);
+         var8.packetBuffer.writeShort(arg0);
+         var8.packetBuffer.writeShort(GraphicsObject.baseY + arg2);
+         var8.packetBuffer.writeShort(arg1 + class50.baseX);
          Client.packetWriter.__q_167(var8);
-      } else if(var2 == 5) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      } else if(opcode == 5) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = arg1;
+         Client.destinationY = arg2;
          var8 = Interpreter.method1915(ClientPacket.__gs_cq, Client.packetWriter.isaacCipher);
-         var8.packetBuffer.__bx_323(var0 + class50.baseX);
-         var8.packetBuffer.__bo_322(var3);
-         var8.packetBuffer.__bx_323(GraphicsObject.baseY + var1);
+         var8.packetBuffer.__bx_323(arg1 + class50.baseX);
+         var8.packetBuffer.__bo_322(arg0);
+         var8.packetBuffer.__bx_323(GraphicsObject.baseY + arg2);
          var8.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
          Client.packetWriter.__q_167(var8);
-      } else if(var2 == 6) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      } else if(opcode == 6) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = arg1;
+         Client.destinationY = arg2;
          var8 = Interpreter.method1915(ClientPacket.__gs_w, Client.packetWriter.isaacCipher);
          var8.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-         var8.packetBuffer.__bo_322(GraphicsObject.baseY + var1);
-         var8.packetBuffer.__bo_322(var0 + class50.baseX);
-         var8.packetBuffer.writeShortLE(var3);
+         var8.packetBuffer.__bo_322(GraphicsObject.baseY + arg2);
+         var8.packetBuffer.__bo_322(arg1 + class50.baseX);
+         var8.packetBuffer.writeShortLE(arg0);
          Client.packetWriter.__q_167(var8);
       } else {
          PacketBufferNode var9;
          Npc var13;
-         if(var2 == 7) {
-            var13 = Client.npcs[var3];
+         if(opcode == 7) {
+            var13 = Client.npcs[arg0];
             if(var13 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var9 = Interpreter.method1915(ClientPacket.__gs_r, Client.packetWriter.isaacCipher);
                var9.packetBuffer.__bx_323(MenuAction.selectedItemId);
                var9.packetBuffer.writeShort(HealthBarDefinition.selectedItemSlot);
-               var9.packetBuffer.__bx_323(var3);
+               var9.packetBuffer.__bx_323(arg0);
                var9.packetBuffer.__ai_315(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                var9.packetBuffer.writeInt(ServerPacket.selectedItemWidget);
                Client.packetWriter.__q_167(var9);
             }
-         } else if(var2 == 8) {
-            var13 = Client.npcs[var3];
+         } else if(opcode == 8) {
+            var13 = Client.npcs[arg0];
             if(var13 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var9 = Interpreter.method1915(ClientPacket.__gs_cb, Client.packetWriter.isaacCipher);
-               var9.packetBuffer.__bx_323(var3);
+               var9.packetBuffer.__bx_323(arg0);
                var9.packetBuffer.__ai_315(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                var9.packetBuffer.writeIntLE(ServerBuild.__iy_lo);
                var9.packetBuffer.__bo_322(Client.__client_lc);
                Client.packetWriter.__q_167(var9);
             }
-         } else if(var2 == 9) {
-            var13 = Client.npcs[var3];
+         } else if(opcode == 9) {
+            var13 = Client.npcs[arg0];
             if(var13 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var9 = Interpreter.method1915(ClientPacket.__gs_bt, Client.packetWriter.isaacCipher);
                var9.packetBuffer.__ai_315(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-               var9.packetBuffer.writeShortLE(var3);
+               var9.packetBuffer.writeShortLE(arg0);
                Client.packetWriter.__q_167(var9);
             }
-         } else if(var2 == 10) {
-            var13 = Client.npcs[var3];
+         } else if(opcode == 10) {
+            var13 = Client.npcs[arg0];
             if(var13 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var9 = Interpreter.method1915(ClientPacket.__gs_f, Client.packetWriter.isaacCipher);
-               var9.packetBuffer.__bo_322(var3);
+               var9.packetBuffer.__bo_322(arg0);
                var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                Client.packetWriter.__q_167(var9);
             }
-         } else if(var2 == 11) {
-            var13 = Client.npcs[var3];
+         } else if(opcode == 11) {
+            var13 = Client.npcs[arg0];
             if(var13 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var9 = Interpreter.method1915(ClientPacket.__gs_ah, Client.packetWriter.isaacCipher);
-               var9.packetBuffer.__bx_323(var3);
+               var9.packetBuffer.__bx_323(arg0);
                var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                Client.packetWriter.__q_167(var9);
             }
-         } else if(var2 == 12) {
-            var13 = Client.npcs[var3];
+         } else if(opcode == 12) {
+            var13 = Client.npcs[arg0];
             if(var13 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var9 = Interpreter.method1915(ClientPacket.__gs_bc, Client.packetWriter.isaacCipher);
-               var9.packetBuffer.writeShort(var3);
+               var9.packetBuffer.writeShort(arg0);
                var9.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                Client.packetWriter.__q_167(var9);
             }
-         } else if(var2 == 13) {
-            var13 = Client.npcs[var3];
+         } else if(opcode == 13) {
+            var13 = Client.npcs[arg0];
             if(var13 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var9 = Interpreter.method1915(ClientPacket.__gs_ac, Client.packetWriter.isaacCipher);
                var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-               var9.packetBuffer.__bo_322(var3);
+               var9.packetBuffer.__bo_322(arg0);
                Client.packetWriter.__q_167(var9);
             }
          } else {
             Player var15;
-            if(var2 == 14) {
-               var15 = Client.players[var3];
+            if(opcode == 14) {
+               var15 = Client.players[arg0];
                if(var15 != null) {
-                  Client.mouseCrossX = var6;
-                  Client.mouseCrossY = var7;
+                  Client.mouseCrossX = mouseX;
+                  Client.mouseCrossY = mouseY;
                   Client.mouseCrossColor = 2;
                   Client.mouseCrossState = 0;
-                  Client.destinationX = var0;
-                  Client.destinationY = var1;
+                  Client.destinationX = arg1;
+                  Client.destinationY = arg2;
                   var9 = Interpreter.method1915(ClientPacket.__gs_cy, Client.packetWriter.isaacCipher);
                   var9.packetBuffer.__bx_323(HealthBarDefinition.selectedItemSlot);
                   var9.packetBuffer.__ba_316(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                   var9.packetBuffer.writeIntME(ServerPacket.selectedItemWidget);
-                  var9.packetBuffer.writeShort(var3);
+                  var9.packetBuffer.writeShort(arg0);
                   var9.packetBuffer.writeShort(MenuAction.selectedItemId);
                   Client.packetWriter.__q_167(var9);
                }
-            } else if(var2 == 15) {
-               var15 = Client.players[var3];
+            } else if(opcode == 15) {
+               var15 = Client.players[arg0];
                if(var15 != null) {
-                  Client.mouseCrossX = var6;
-                  Client.mouseCrossY = var7;
+                  Client.mouseCrossX = mouseX;
+                  Client.mouseCrossY = mouseY;
                   Client.mouseCrossColor = 2;
                   Client.mouseCrossState = 0;
-                  Client.destinationX = var0;
-                  Client.destinationY = var1;
+                  Client.destinationX = arg1;
+                  Client.destinationY = arg2;
                   var9 = Interpreter.method1915(ClientPacket.__gs_bq, Client.packetWriter.isaacCipher);
                   var9.packetBuffer.writeIntLE16(ServerBuild.__iy_lo);
                   var9.packetBuffer.__ba_316(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                   var9.packetBuffer.__bo_322(Client.__client_lc);
-                  var9.packetBuffer.writeShort(var3);
+                  var9.packetBuffer.writeShort(arg0);
                   Client.packetWriter.__q_167(var9);
                }
-            } else if(var2 == 16) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if(opcode == 16) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var8 = Interpreter.method1915(ClientPacket.__gs_t, Client.packetWriter.isaacCipher);
                var8.packetBuffer.writeIntME(ServerPacket.selectedItemWidget);
                var8.packetBuffer.__bx_323(MenuAction.selectedItemId);
                var8.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                var8.packetBuffer.writeShortLE(HealthBarDefinition.selectedItemSlot);
-               var8.packetBuffer.__bx_323(var3);
-               var8.packetBuffer.__bx_323(var0 + class50.baseX);
-               var8.packetBuffer.writeShortLE(GraphicsObject.baseY + var1);
+               var8.packetBuffer.__bx_323(arg0);
+               var8.packetBuffer.__bx_323(arg1 + class50.baseX);
+               var8.packetBuffer.writeShortLE(GraphicsObject.baseY + arg2);
                Client.packetWriter.__q_167(var8);
-            } else if(var2 == 17) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if(opcode == 17) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var8 = Interpreter.method1915(ClientPacket.__gs_bb, Client.packetWriter.isaacCipher);
                var8.packetBuffer.writeIntME(ServerBuild.__iy_lo);
                var8.packetBuffer.writeShort(Client.__client_lc);
-               var8.packetBuffer.__bo_322(GraphicsObject.baseY + var1);
-               var8.packetBuffer.__bo_322(var0 + class50.baseX);
+               var8.packetBuffer.__bo_322(GraphicsObject.baseY + arg2);
+               var8.packetBuffer.__bo_322(arg1 + class50.baseX);
                var8.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-               var8.packetBuffer.writeShortLE(var3);
+               var8.packetBuffer.writeShortLE(arg0);
                Client.packetWriter.__q_167(var8);
-            } else if(var2 == 18) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if(opcode == 18) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var8 = Interpreter.method1915(ClientPacket.__gs_u, Client.packetWriter.isaacCipher);
-               var8.packetBuffer.__bx_323(GraphicsObject.baseY + var1);
-               var8.packetBuffer.writeShortLE(var3);
-               var8.packetBuffer.writeShortLE(var0 + class50.baseX);
+               var8.packetBuffer.__bx_323(GraphicsObject.baseY + arg2);
+               var8.packetBuffer.writeShortLE(arg0);
+               var8.packetBuffer.writeShortLE(arg1 + class50.baseX);
                var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                Client.packetWriter.__q_167(var8);
-            } else if(var2 == 19) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if(opcode == 19) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var8 = Interpreter.method1915(ClientPacket.__gs_bh, Client.packetWriter.isaacCipher);
-               var8.packetBuffer.__bx_323(var3);
-               var8.packetBuffer.__bo_322(var0 + class50.baseX);
-               var8.packetBuffer.writeShort(GraphicsObject.baseY + var1);
+               var8.packetBuffer.__bx_323(arg0);
+               var8.packetBuffer.__bo_322(arg1 + class50.baseX);
+               var8.packetBuffer.writeShort(GraphicsObject.baseY + arg2);
                var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                Client.packetWriter.__q_167(var8);
-            } else if(var2 == 20) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if(opcode == 20) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var8 = Interpreter.method1915(ClientPacket.__gs_g, Client.packetWriter.isaacCipher);
-               var8.packetBuffer.writeShortLE(GraphicsObject.baseY + var1);
+               var8.packetBuffer.writeShortLE(GraphicsObject.baseY + arg2);
                var8.packetBuffer.__ba_316(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-               var8.packetBuffer.writeShortLE(var0 + class50.baseX);
-               var8.packetBuffer.writeShortLE(var3);
+               var8.packetBuffer.writeShortLE(arg1 + class50.baseX);
+               var8.packetBuffer.writeShortLE(arg0);
                Client.packetWriter.__q_167(var8);
-            } else if(var2 == 21) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if(opcode == 21) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var8 = Interpreter.method1915(ClientPacket.__gs_av, Client.packetWriter.isaacCipher);
-               var8.packetBuffer.__bo_322(GraphicsObject.baseY + var1);
-               var8.packetBuffer.writeShortLE(var3);
-               var8.packetBuffer.writeShort(var0 + class50.baseX);
+               var8.packetBuffer.__bo_322(GraphicsObject.baseY + arg2);
+               var8.packetBuffer.writeShortLE(arg0);
+               var8.packetBuffer.writeShort(arg1 + class50.baseX);
                var8.packetBuffer.__ba_316(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                Client.packetWriter.__q_167(var8);
-            } else if(var2 == 22) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if(opcode == 22) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = arg1;
+               Client.destinationY = arg2;
                var8 = Interpreter.method1915(ClientPacket.__gs_ai, Client.packetWriter.isaacCipher);
                var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-               var8.packetBuffer.__bx_323(var3);
-               var8.packetBuffer.__bo_322(GraphicsObject.baseY + var1);
-               var8.packetBuffer.writeShort(var0 + class50.baseX);
+               var8.packetBuffer.__bx_323(arg0);
+               var8.packetBuffer.__bo_322(GraphicsObject.baseY + arg2);
+               var8.packetBuffer.writeShort(arg1 + class50.baseX);
                Client.packetWriter.__q_167(var8);
-            } else if(var2 == 23) {
+            } else if(opcode == 23) {
                if(Client.isMenuOpen) {
                   class65.scene.__as_250();
                } else {
-                  class65.scene.menuOpen(SoundSystem.plane, var0, var1, true);
+                  class65.scene.menuOpen(SoundSystem.plane, arg1, arg2, true);
                }
             } else {
                PacketBufferNode var10;
                Widget var16;
-               if(var2 == 24) {
-                  var16 = Huffman.getWidget(var1);
+               if(opcode == 24) {
+                  var16 = Huffman.getWidget(arg2);
                   boolean var12 = true;
                   if(var16.contentType > 0) {
                      var12 = ViewportMouse.method2957(var16);
@@ -910,15 +910,15 @@ public abstract class Actor extends Entity {
 
                   if(var12) {
                      var10 = Interpreter.method1915(ClientPacket.__gs_bz, Client.packetWriter.isaacCipher);
-                     var10.packetBuffer.writeInt(var1);
+                     var10.packetBuffer.writeInt(arg2);
                      Client.packetWriter.__q_167(var10);
                   }
                } else {
-                  if(var2 == 25) {
-                     var16 = class204.getWidgetChild(var1, var0);
+                  if(opcode == 25) {
+                     var16 = class204.getWidgetChild(arg2, arg1);
                      if(var16 != null) {
                         Player.method1281();
-                        class25.method350(var1, var0, class211.method4107(class1.getWidgetClickMask(var16)), var16.itemId);
+                        class25.method350(arg2, arg1, class211.method4107(class1.getWidgetClickMask(var16)), var16.itemId);
                         Client.isItemSelected = 0;
                         Client.selectedSpellActionName = class198.method3745(var16);
                         if(Client.selectedSpellActionName == null) {
@@ -935,26 +935,26 @@ public abstract class Actor extends Entity {
                      return;
                   }
 
-                  if(var2 == 26) {
+                  if(opcode == 26) {
                      WorldMapLabelSize.method198();
                   } else {
                      int var11;
                      Widget var14;
-                     if(var2 == 28) {
+                     if(opcode == 28) {
                         var8 = Interpreter.method1915(ClientPacket.__gs_bz, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeInt(var1);
+                        var8.packetBuffer.writeInt(arg2);
                         Client.packetWriter.__q_167(var8);
-                        var14 = Huffman.getWidget(var1);
+                        var14 = Huffman.getWidget(arg2);
                         if(var14.cs1Instructions != null && var14.cs1Instructions[0][0] == 5) {
                            var11 = var14.cs1Instructions[0][1];
                            Varps.Varps_main[var11] = 1 - Varps.Varps_main[var11];
                            IndexCache.method4703(var11);
                         }
-                     } else if(var2 == 29) {
+                     } else if(opcode == 29) {
                         var8 = Interpreter.method1915(ClientPacket.__gs_bz, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeInt(var1);
+                        var8.packetBuffer.writeInt(arg2);
                         Client.packetWriter.__q_167(var8);
-                        var14 = Huffman.getWidget(var1);
+                        var14 = Huffman.getWidget(arg2);
                         if(var14.cs1Instructions != null && var14.cs1Instructions[0][0] == 5) {
                            var11 = var14.cs1Instructions[0][1];
                            if(Varps.Varps_main[var11] != var14.cs1ComparisonValues[0]) {
@@ -962,90 +962,90 @@ public abstract class Actor extends Entity {
                               IndexCache.method4703(var11);
                            }
                         }
-                     } else if(var2 == 30) {
+                     } else if(opcode == 30) {
                         if(Client.__client_mo == null) {
-                           TilePaint.method3060(var1, var0);
-                           Client.__client_mo = class204.getWidgetChild(var1, var0);
+                           TilePaint.method3060(arg2, arg1);
+                           Client.__client_mo = class204.getWidgetChild(arg2, arg1);
                            class22.method295(Client.__client_mo);
                         }
-                     } else if(var2 == 31) {
+                     } else if(opcode == 31) {
                         var8 = Interpreter.method1915(ClientPacket.__gs_bu, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeIntME(var1);
+                        var8.packetBuffer.writeIntME(arg2);
                         var8.packetBuffer.writeIntLE16(ServerPacket.selectedItemWidget);
                         var8.packetBuffer.__bx_323(HealthBarDefinition.selectedItemSlot);
                         var8.packetBuffer.writeShortLE(MenuAction.selectedItemId);
-                        var8.packetBuffer.writeShortLE(var0);
-                        var8.packetBuffer.__bx_323(var3);
+                        var8.packetBuffer.writeShortLE(arg1);
+                        var8.packetBuffer.__bx_323(arg0);
                         Client.packetWriter.__q_167(var8);
                         Client.__client_ju = 0;
-                        BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                        Client.__client_jz = var0;
-                     } else if(var2 == 32) {
+                        BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                        Client.__client_jz = arg1;
+                     } else if(opcode == 32) {
                         var8 = Interpreter.method1915(ClientPacket.__gs_q, Client.packetWriter.isaacCipher);
                         var8.packetBuffer.writeIntME(ServerBuild.__iy_lo);
-                        var8.packetBuffer.writeInt(var1);
-                        var8.packetBuffer.writeShort(var0);
-                        var8.packetBuffer.writeShortLE(var3);
+                        var8.packetBuffer.writeInt(arg2);
+                        var8.packetBuffer.writeShort(arg1);
+                        var8.packetBuffer.writeShortLE(arg0);
                         var8.packetBuffer.writeShortLE(Client.__client_lc);
                         Client.packetWriter.__q_167(var8);
                         Client.__client_ju = 0;
-                        BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                        Client.__client_jz = var0;
-                     } else if(var2 == 33) {
+                        BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                        Client.__client_jz = arg1;
+                     } else if(opcode == 33) {
                         var8 = Interpreter.method1915(ClientPacket.__gs_ck, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeShortLE(var3);
-                        var8.packetBuffer.writeIntME(var1);
-                        var8.packetBuffer.writeShort(var0);
+                        var8.packetBuffer.writeShortLE(arg0);
+                        var8.packetBuffer.writeIntME(arg2);
+                        var8.packetBuffer.writeShort(arg1);
                         Client.packetWriter.__q_167(var8);
                         Client.__client_ju = 0;
-                        BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                        Client.__client_jz = var0;
-                     } else if(var2 == 34) {
+                        BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                        Client.__client_jz = arg1;
+                     } else if(opcode == 34) {
                         var8 = Interpreter.method1915(ClientPacket.__gs_cc, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.__bo_322(var3);
-                        var8.packetBuffer.writeIntLE16(var1);
-                        var8.packetBuffer.__bx_323(var0);
+                        var8.packetBuffer.__bo_322(arg0);
+                        var8.packetBuffer.writeIntLE16(arg2);
+                        var8.packetBuffer.__bx_323(arg1);
                         Client.packetWriter.__q_167(var8);
                         Client.__client_ju = 0;
-                        BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                        Client.__client_jz = var0;
-                     } else if(var2 == 35) {
+                        BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                        Client.__client_jz = arg1;
+                     } else if(opcode == 35) {
                         var8 = Interpreter.method1915(ClientPacket.__gs_bp, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeIntLE(var1);
-                        var8.packetBuffer.__bx_323(var0);
-                        var8.packetBuffer.__bx_323(var3);
+                        var8.packetBuffer.writeIntLE(arg2);
+                        var8.packetBuffer.__bx_323(arg1);
+                        var8.packetBuffer.__bx_323(arg0);
                         Client.packetWriter.__q_167(var8);
                         Client.__client_ju = 0;
-                        BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                        Client.__client_jz = var0;
-                     } else if(var2 == 36) {
+                        BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                        Client.__client_jz = arg1;
+                     } else if(opcode == 36) {
                         var8 = Interpreter.method1915(ClientPacket.__gs_l, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.__bx_323(var3);
-                        var8.packetBuffer.writeInt(var1);
-                        var8.packetBuffer.__bx_323(var0);
+                        var8.packetBuffer.__bx_323(arg0);
+                        var8.packetBuffer.writeInt(arg2);
+                        var8.packetBuffer.__bx_323(arg1);
                         Client.packetWriter.__q_167(var8);
                         Client.__client_ju = 0;
-                        BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                        Client.__client_jz = var0;
-                     } else if(var2 == 37) {
+                        BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                        Client.__client_jz = arg1;
+                     } else if(opcode == 37) {
                         var8 = Interpreter.method1915(ClientPacket.__gs_bd, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeInt(var1);
-                        var8.packetBuffer.writeShort(var0);
-                        var8.packetBuffer.writeShort(var3);
+                        var8.packetBuffer.writeInt(arg2);
+                        var8.packetBuffer.writeShort(arg1);
+                        var8.packetBuffer.writeShort(arg0);
                         Client.packetWriter.__q_167(var8);
                         Client.__client_ju = 0;
-                        BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                        Client.__client_jz = var0;
+                        BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                        Client.__client_jz = arg1;
                      } else {
-                        if(var2 == 38) {
+                        if(opcode == 38) {
                            Player.method1281();
-                           var16 = Huffman.getWidget(var1);
+                           var16 = Huffman.getWidget(arg2);
                            Client.isItemSelected = 1;
-                           HealthBarDefinition.selectedItemSlot = var0;
-                           ServerPacket.selectedItemWidget = var1;
-                           MenuAction.selectedItemId = var3;
+                           HealthBarDefinition.selectedItemSlot = arg1;
+                           ServerPacket.selectedItemWidget = arg2;
+                           MenuAction.selectedItemId = arg0;
                            class22.method295(var16);
-                           Client.selectedItemName = BufferedFile.colorStartTag(16748608) + Skills.getItemDefinition(var3).name + BufferedFile.colorStartTag(16777215);
+                           Client.selectedItemName = BufferedFile.colorStartTag(16748608) + Skills.getItemDefinition(arg0).name + BufferedFile.colorStartTag(16777215);
                            if(Client.selectedItemName == null) {
                               Client.selectedItemName = "null";
                            }
@@ -1053,174 +1053,174 @@ public abstract class Actor extends Entity {
                            return;
                         }
 
-                        if(var2 == 39) {
+                        if(opcode == 39) {
                            var8 = Interpreter.method1915(ClientPacket.__gs_au, Client.packetWriter.isaacCipher);
-                           var8.packetBuffer.__bx_323(var3);
-                           var8.packetBuffer.writeIntLE16(var1);
-                           var8.packetBuffer.writeShortLE(var0);
+                           var8.packetBuffer.__bx_323(arg0);
+                           var8.packetBuffer.writeIntLE16(arg2);
+                           var8.packetBuffer.writeShortLE(arg1);
                            Client.packetWriter.__q_167(var8);
                            Client.__client_ju = 0;
-                           BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                           Client.__client_jz = var0;
-                        } else if(var2 == 40) {
+                           BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                           Client.__client_jz = arg1;
+                        } else if(opcode == 40) {
                            var8 = Interpreter.method1915(ClientPacket.__gs_ag, Client.packetWriter.isaacCipher);
-                           var8.packetBuffer.writeIntLE16(var1);
-                           var8.packetBuffer.writeShortLE(var0);
-                           var8.packetBuffer.__bo_322(var3);
+                           var8.packetBuffer.writeIntLE16(arg2);
+                           var8.packetBuffer.writeShortLE(arg1);
+                           var8.packetBuffer.__bo_322(arg0);
                            Client.packetWriter.__q_167(var8);
                            Client.__client_ju = 0;
-                           BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                           Client.__client_jz = var0;
-                        } else if(var2 == 41) {
+                           BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                           Client.__client_jz = arg1;
+                        } else if(opcode == 41) {
                            var8 = Interpreter.method1915(ClientPacket.__gs_bl, Client.packetWriter.isaacCipher);
-                           var8.packetBuffer.writeIntLE(var1);
-                           var8.packetBuffer.__bo_322(var0);
-                           var8.packetBuffer.writeShort(var3);
+                           var8.packetBuffer.writeIntLE(arg2);
+                           var8.packetBuffer.__bo_322(arg1);
+                           var8.packetBuffer.writeShort(arg0);
                            Client.packetWriter.__q_167(var8);
                            Client.__client_ju = 0;
-                           BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                           Client.__client_jz = var0;
-                        } else if(var2 == 42) {
+                           BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                           Client.__client_jz = arg1;
+                        } else if(opcode == 42) {
                            var8 = Interpreter.method1915(ClientPacket.__gs_bm, Client.packetWriter.isaacCipher);
-                           var8.packetBuffer.writeInt(var1);
-                           var8.packetBuffer.__bo_322(var0);
-                           var8.packetBuffer.writeShort(var3);
+                           var8.packetBuffer.writeInt(arg2);
+                           var8.packetBuffer.__bo_322(arg1);
+                           var8.packetBuffer.writeShort(arg0);
                            Client.packetWriter.__q_167(var8);
                            Client.__client_ju = 0;
-                           BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                           Client.__client_jz = var0;
-                        } else if(var2 == 43) {
+                           BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                           Client.__client_jz = arg1;
+                        } else if(opcode == 43) {
                            var8 = Interpreter.method1915(ClientPacket.__gs_ay, Client.packetWriter.isaacCipher);
-                           var8.packetBuffer.writeShort(var3);
-                           var8.packetBuffer.writeIntME(var1);
-                           var8.packetBuffer.writeShort(var0);
+                           var8.packetBuffer.writeShort(arg0);
+                           var8.packetBuffer.writeIntME(arg2);
+                           var8.packetBuffer.writeShort(arg1);
                            Client.packetWriter.__q_167(var8);
                            Client.__client_ju = 0;
-                           BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                           Client.__client_jz = var0;
-                        } else if(var2 == 44) {
-                           var15 = Client.players[var3];
+                           BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                           Client.__client_jz = arg1;
+                        } else if(opcode == 44) {
+                           var15 = Client.players[arg0];
                            if(var15 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = arg1;
+                              Client.destinationY = arg2;
                               var9 = Interpreter.method1915(ClientPacket.__gs_ao, Client.packetWriter.isaacCipher);
-                              var9.packetBuffer.writeShort(var3);
+                              var9.packetBuffer.writeShort(arg0);
                               var9.packetBuffer.__ai_315(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                               Client.packetWriter.__q_167(var9);
                            }
-                        } else if(var2 == 45) {
-                           var15 = Client.players[var3];
+                        } else if(opcode == 45) {
+                           var15 = Client.players[arg0];
                            if(var15 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = arg1;
+                              Client.destinationY = arg2;
                               var9 = Interpreter.method1915(ClientPacket.__gs_bn, Client.packetWriter.isaacCipher);
                               var9.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-                              var9.packetBuffer.__bo_322(var3);
+                              var9.packetBuffer.__bo_322(arg0);
                               Client.packetWriter.__q_167(var9);
                            }
-                        } else if(var2 == 46) {
-                           var15 = Client.players[var3];
+                        } else if(opcode == 46) {
+                           var15 = Client.players[arg0];
                            if(var15 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = arg1;
+                              Client.destinationY = arg2;
                               var9 = Interpreter.method1915(ClientPacket.__gs_by, Client.packetWriter.isaacCipher);
-                              var9.packetBuffer.__bo_322(var3);
+                              var9.packetBuffer.__bo_322(arg0);
                               var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                               Client.packetWriter.__q_167(var9);
                            }
-                        } else if(var2 == 47) {
-                           var15 = Client.players[var3];
+                        } else if(opcode == 47) {
+                           var15 = Client.players[arg0];
                            if(var15 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = arg1;
+                              Client.destinationY = arg2;
                               var9 = Interpreter.method1915(ClientPacket.__gs_aq, Client.packetWriter.isaacCipher);
-                              var9.packetBuffer.__bx_323(var3);
+                              var9.packetBuffer.__bx_323(arg0);
                               var9.packetBuffer.__ai_315(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                               Client.packetWriter.__q_167(var9);
                            }
-                        } else if(var2 == 48) {
-                           var15 = Client.players[var3];
+                        } else if(opcode == 48) {
+                           var15 = Client.players[arg0];
                            if(var15 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = arg1;
+                              Client.destinationY = arg2;
                               var9 = Interpreter.method1915(ClientPacket.__gs_cm, Client.packetWriter.isaacCipher);
                               var9.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-                              var9.packetBuffer.__bo_322(var3);
+                              var9.packetBuffer.__bo_322(arg0);
                               Client.packetWriter.__q_167(var9);
                            }
-                        } else if(var2 == 49) {
-                           var15 = Client.players[var3];
+                        } else if(opcode == 49) {
+                           var15 = Client.players[arg0];
                            if(var15 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = arg1;
+                              Client.destinationY = arg2;
                               var9 = Interpreter.method1915(ClientPacket.__gs_cf, Client.packetWriter.isaacCipher);
-                              var9.packetBuffer.__bo_322(var3);
+                              var9.packetBuffer.__bo_322(arg0);
                               var9.packetBuffer.__ba_316(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
                               Client.packetWriter.__q_167(var9);
                            }
-                        } else if(var2 == 50) {
-                           var15 = Client.players[var3];
+                        } else if(opcode == 50) {
+                           var15 = Client.players[arg0];
                            if(var15 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = arg1;
+                              Client.destinationY = arg2;
                               var9 = Interpreter.method1915(ClientPacket.__gs_be, Client.packetWriter.isaacCipher);
                               var9.packetBuffer.__ba_316(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-                              var9.packetBuffer.writeShortLE(var3);
+                              var9.packetBuffer.writeShortLE(arg0);
                               Client.packetWriter.__q_167(var9);
                            }
-                        } else if(var2 == 51) {
-                           var15 = Client.players[var3];
+                        } else if(opcode == 51) {
+                           var15 = Client.players[arg0];
                            if(var15 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = arg1;
+                              Client.destinationY = arg2;
                               var9 = Interpreter.method1915(ClientPacket.__gs_af, Client.packetWriter.isaacCipher);
                               var9.packetBuffer.__ai_315(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-                              var9.packetBuffer.__bx_323(var3);
+                              var9.packetBuffer.__bx_323(arg0);
                               Client.packetWriter.__q_167(var9);
                            }
                         } else {
                            label921: {
-                              if(var2 != 57) {
-                                 if(var2 == 58) {
-                                    var16 = class204.getWidgetChild(var1, var0);
+                              if(opcode != 57) {
+                                 if(opcode == 58) {
+                                    var16 = class204.getWidgetChild(arg2, arg1);
                                     if(var16 != null) {
                                        var9 = Interpreter.method1915(ClientPacket.__gs_cs, Client.packetWriter.isaacCipher);
                                        var9.packetBuffer.writeShortLE(Client.__client_lc);
-                                       var9.packetBuffer.writeIntLE16(var1);
+                                       var9.packetBuffer.writeIntLE16(arg2);
                                        var9.packetBuffer.writeShortLE(Client.__client_mh);
-                                       var9.packetBuffer.__bx_323(var0);
+                                       var9.packetBuffer.__bx_323(arg1);
                                        var9.packetBuffer.writeInt(ServerBuild.__iy_lo);
                                        var9.packetBuffer.__bx_323(var16.itemId);
                                        Client.packetWriter.__q_167(var9);
@@ -1228,39 +1228,39 @@ public abstract class Actor extends Entity {
                                     break label921;
                                  }
 
-                                 if(var2 == 1001) {
-                                    Client.mouseCrossX = var6;
-                                    Client.mouseCrossY = var7;
+                                 if(opcode == 1001) {
+                                    Client.mouseCrossX = mouseX;
+                                    Client.mouseCrossY = mouseY;
                                     Client.mouseCrossColor = 2;
                                     Client.mouseCrossState = 0;
-                                    Client.destinationX = var0;
-                                    Client.destinationY = var1;
+                                    Client.destinationX = arg1;
+                                    Client.destinationY = arg2;
                                     var8 = Interpreter.method1915(ClientPacket.__gs_cp, Client.packetWriter.isaacCipher);
-                                    var8.packetBuffer.writeShort(var3);
+                                    var8.packetBuffer.writeShort(arg0);
                                     var8.packetBuffer.__af_314(KeyHandler.KeyHandler_pressedKeys[82]?1:0);
-                                    var8.packetBuffer.__bo_322(var0 + class50.baseX);
-                                    var8.packetBuffer.__bx_323(GraphicsObject.baseY + var1);
+                                    var8.packetBuffer.__bo_322(arg1 + class50.baseX);
+                                    var8.packetBuffer.__bx_323(GraphicsObject.baseY + arg2);
                                     Client.packetWriter.__q_167(var8);
                                     break label921;
                                  }
 
-                                 if(var2 == 1002) {
-                                    Client.mouseCrossX = var6;
-                                    Client.mouseCrossY = var7;
+                                 if(opcode == 1002) {
+                                    Client.mouseCrossX = mouseX;
+                                    Client.mouseCrossY = mouseY;
                                     Client.mouseCrossColor = 2;
                                     Client.mouseCrossState = 0;
                                     var8 = Interpreter.method1915(ClientPacket.__gs_al, Client.packetWriter.isaacCipher);
-                                    var8.packetBuffer.__bo_322(var3);
+                                    var8.packetBuffer.__bo_322(arg0);
                                     Client.packetWriter.__q_167(var8);
                                     break label921;
                                  }
 
-                                 if(var2 == 1003) {
-                                    Client.mouseCrossX = var6;
-                                    Client.mouseCrossY = var7;
+                                 if(opcode == 1003) {
+                                    Client.mouseCrossX = mouseX;
+                                    Client.mouseCrossY = mouseY;
                                     Client.mouseCrossColor = 2;
                                     Client.mouseCrossState = 0;
-                                    var13 = Client.npcs[var3];
+                                    var13 = Client.npcs[arg0];
                                     if(var13 != null) {
                                        NpcDefinition var17 = var13.definition;
                                        if(var17.transforms != null) {
@@ -1276,44 +1276,44 @@ public abstract class Actor extends Entity {
                                     break label921;
                                  }
 
-                                 if(var2 == 1004) {
-                                    Client.mouseCrossX = var6;
-                                    Client.mouseCrossY = var7;
+                                 if(opcode == 1004) {
+                                    Client.mouseCrossX = mouseX;
+                                    Client.mouseCrossY = mouseY;
                                     Client.mouseCrossColor = 2;
                                     Client.mouseCrossState = 0;
                                     var8 = Interpreter.method1915(ClientPacket.__gs_p, Client.packetWriter.isaacCipher);
-                                    var8.packetBuffer.writeShortLE(var3);
+                                    var8.packetBuffer.writeShortLE(arg0);
                                     Client.packetWriter.__q_167(var8);
                                     break label921;
                                  }
 
-                                 if(var2 == 1005) {
-                                    var16 = Huffman.getWidget(var1);
-                                    if(var16 != null && var16.itemQuantities[var0] >= 100000) {
-                                       WorldMapIcon1.method219(27, "", var16.itemQuantities[var0] + " x " + Skills.getItemDefinition(var3).name);
+                                 if(opcode == 1005) {
+                                    var16 = Huffman.getWidget(arg2);
+                                    if(var16 != null && var16.itemQuantities[arg1] >= 100000) {
+                                       WorldMapIcon1.method219(27, "", var16.itemQuantities[arg1] + " x " + Skills.getItemDefinition(arg0).name);
                                     } else {
                                        var9 = Interpreter.method1915(ClientPacket.__gs_p, Client.packetWriter.isaacCipher);
-                                       var9.packetBuffer.writeShortLE(var3);
+                                       var9.packetBuffer.writeShortLE(arg0);
                                        Client.packetWriter.__q_167(var9);
                                     }
 
                                     Client.__client_ju = 0;
-                                    BoundaryObject.__ej_jv = Huffman.getWidget(var1);
-                                    Client.__client_jz = var0;
+                                    BoundaryObject.__ej_jv = Huffman.getWidget(arg2);
+                                    Client.__client_jz = arg1;
                                     break label921;
                                  }
 
-                                 if(var2 != 1007) {
-                                    if(var2 == 1008 || var2 == 1011 || var2 == 1010 || var2 == 1009 || var2 == 1012) {
-                                       class60.worldMap0.menuAction(var2, var3, new TileLocation(var0), new TileLocation(var1));
+                                 if(opcode != 1007) {
+                                    if(opcode == 1008 || opcode == 1011 || opcode == 1010 || opcode == 1009 || opcode == 1012) {
+                                       class60.worldMap0.menuAction(opcode, arg0, new TileLocation(arg1), new TileLocation(arg2));
                                     }
                                     break label921;
                                  }
                               }
 
-                              var16 = class204.getWidgetChild(var1, var0);
+                              var16 = class204.getWidgetChild(arg2, arg1);
                               if(var16 != null) {
-                                 class171.method3494(var3, var1, var0, var16.itemId, var5);
+                                 class171.method3494(arg0, arg2, arg1, var16.itemId, target);
                               }
                            }
                         }
