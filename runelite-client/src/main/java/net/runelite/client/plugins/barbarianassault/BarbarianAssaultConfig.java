@@ -90,8 +90,8 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@Range(
-			min = 1,
-			max = 50
+		min = 1,
+		max = 50
 	)
 	@ConfigItem(
 		keyName = "prayerMetronomeVolume",
@@ -107,10 +107,10 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showDeathTimes",
-			name = "Show death times",
-			description = "Shows the time all penance monsters of a certain type are killed in the chat box, an info box, or both",
-			position = 6
+		keyName = "showDeathTimes",
+		name = "Show death times",
+		description = "Shows the time all penance monsters of a certain type are killed in the chat box, an info box, or both",
+		position = 6
 	)
 	default boolean showDeathTimes()
 	{
@@ -118,12 +118,12 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showDeathTimesMode",
-			name = "Mode",
-			description = "",
-			position = 7,
-			hidden = true,
-			unhide = "showDeathTimes"
+		keyName = "showDeathTimesMode",
+		name = "Mode",
+		description = "",
+		position = 7,
+		hidden = true,
+		unhide = "showDeathTimes"
 	)
 	default DeathTimesMode showDeathTimesMode()
 	{
@@ -184,13 +184,13 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "attackStyles",
+		keyName = "removeIncorrectAttackStyles",
 		name = "Remove incorrect attack styles",
-		description = "Hide attack styles depending on weapon.",
+		description = "Hides wrong attack styles for dragon claws and crystal halberd",
 		position = 2,
 		group = "Attacker"
 	)
-	default boolean attackStyles()
+	default boolean removeIncorrectAttackStyles()
 	{
 		return false;
 	}
@@ -306,11 +306,11 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "highlightNotification",
-			name = "Highlight incorrect notification",
-			description = "Highlights incorrect poison chat notification",
-			position = 2,
-			group = "Healer"
+		keyName = "highlightNotification",
+		name = "Highlight incorrect notification",
+		description = "Highlights incorrect poison chat notification",
+		position = 2,
+		group = "Healer"
 	)
 	default boolean highlightNotification()
 	{
@@ -318,13 +318,13 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "highlightNotificationColor",
-			name = "Notification color",
-			description = "Configures the color to highlight the notification text",
-			position = 3,
-			group = "Healer",
-			hidden = true,
-			unhide = "highlightNotification"
+		keyName = "highlightNotificationColor",
+		name = "Notification color",
+		description = "Configures the color to highlight the notification text",
+		position = 3,
+		group = "Healer",
+		hidden = true,
+		unhide = "highlightNotification"
 	)
 	default Color highlightNotificationColor()
 	{

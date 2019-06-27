@@ -130,6 +130,7 @@ class AboveWidgetsOverlay extends Overlay
 
 		Rectangle spriteBounds = roleSprite.getBounds();
 		graphics.drawImage(game.getClockImage(), spriteBounds.x, spriteBounds.y, null);
+		roleSprite.setHidden(true);
 	}
 
 	private void renderInventoryHighlights(Graphics2D graphics, int itemID, Color color)
@@ -152,8 +153,8 @@ class AboveWidgetsOverlay extends Overlay
 				if (item.getQuantity() > 1)
 				{
 					OverlayUtil.renderTextLocation(graphics,
-							new Point(item.getCanvasLocation().getX() + OFFSET_X_TEXT_QUANTITY, item.getCanvasLocation().getY() + OFFSET_Y_TEXT_QUANTITY),
-							String.valueOf(item.getQuantity()), Color.YELLOW);
+						new Point(item.getCanvasLocation().getX() + OFFSET_X_TEXT_QUANTITY, item.getCanvasLocation().getY() + OFFSET_Y_TEXT_QUANTITY),
+						String.valueOf(item.getQuantity()), Color.YELLOW);
 				}
 			}
 		}
