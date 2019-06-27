@@ -72,6 +72,16 @@ public class ComparableEntry
 		this.strictTarget = strictTarget;
 	}
 
+	// This is only used for type checking, which is why it has everything but target
+	// target sometimes changes to option.
+	public ComparableEntry(MenuEntry e)
+	{
+		this.option = e.getOption();
+		this.id = e.getIdentifier();
+		this.type = e.getType();
+		this.strictOption = true;
+	}
+
 	boolean matches(MenuEntry entry)
 	{
 		String opt = Text.standardize(entry.getOption());

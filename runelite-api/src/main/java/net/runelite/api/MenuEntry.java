@@ -70,4 +70,17 @@ public class MenuEntry
 	 * This is used  for shift click
 	 */
 	private boolean forceLeftClick;
+
+	public static MenuEntry copy(MenuEntry src)
+	{
+		return new MenuEntry(
+			src.getOption(),
+			src.getTarget(),
+			src.getIdentifier(),
+			src.getType(),
+			src.getParam0(),
+			src.getParam1(),
+			src.isForceLeftClick()
+		);
+	}
 }
