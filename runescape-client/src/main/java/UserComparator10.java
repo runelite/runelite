@@ -8,7 +8,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("UserComparator10")
 public class UserComparator10 extends AbstractUserComparator {
    @ObfuscatedName("m")
-   @Export("__m")
    final boolean __m;
 
    public UserComparator10(boolean var1) {
@@ -20,7 +19,6 @@ public class UserComparator10 extends AbstractUserComparator {
       signature = "(Lke;Lke;B)I",
       garbageValue = "-15"
    )
-   @Export("__m_268")
    int __m_268(Buddy var1, Buddy var2) {
       return Client.worldId == var1.world0 && var2.world0 == Client.worldId?(this.__m?var1.int2 - var2.int2:var2.int2 - var1.int2):this.__x_461(var1, var2);
    }

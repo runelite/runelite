@@ -30,7 +30,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 1348053843
    )
-   @Export("__client_oo")
    static int __client_oo;
    @ObfuscatedName("os")
    @ObfuscatedGetter(
@@ -42,19 +41,14 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       longValue = 8818983958751331899L
    )
-   @Export("__client_oa")
    static long __client_oa;
    @ObfuscatedName("od")
-   @Export("__client_od")
    static boolean[] __client_od;
    @ObfuscatedName("oq")
-   @Export("__client_oq")
    static boolean[] __client_oq;
    @ObfuscatedName("ot")
-   @Export("__client_ot")
    static boolean[] __client_ot;
    @ObfuscatedName("nt")
-   @Export("__client_nt")
    static boolean __client_nt;
    @ObfuscatedName("ng")
    @ObfuscatedGetter(
@@ -69,19 +63,15 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -451622431
    )
-   @Export("__client_ss")
    public static int __client_ss;
    @ObfuscatedName("na")
    @ObfuscatedGetter(
       intValue = -934082817
    )
-   @Export("__client_na")
    static int __client_na;
    @ObfuscatedName("nn")
-   @Export("__client_nn")
    static boolean __client_nn;
    @ObfuscatedName("qq")
-   @Export("__client_qq")
    static boolean __client_qq;
    @ObfuscatedName("mt")
    @ObfuscatedGetter(
@@ -99,7 +89,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -843739713
    )
-   @Export("__client_nw")
    static int __client_nw;
    @ObfuscatedName("mr")
    @ObfuscatedSignature(
@@ -123,7 +112,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 1939745821
    )
-   @Export("__client_nl")
    static int __client_nl;
    @ObfuscatedName("mx")
    @ObfuscatedSignature(
@@ -173,13 +161,11 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 1019025247
    )
-   @Export("__client_nk")
    static int __client_nk;
    @ObfuscatedName("np")
    @ObfuscatedGetter(
       intValue = 1881890525
    )
-   @Export("__client_np")
    static int __client_np;
    @ObfuscatedName("pd")
    @ObfuscatedGetter(
@@ -197,13 +183,10 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -34294211
    )
-   @Export("__client_qy")
    static int __client_qy;
    @ObfuscatedName("tp")
-   @Export("__client_tp")
    static int[] __client_tp;
    @ObfuscatedName("th")
-   @Export("__client_th")
    static int[] __client_th;
    @ObfuscatedName("ny")
    @Export("isDraggingWidget")
@@ -236,28 +219,23 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -818676431
    )
-   @Export("__client_qc")
    static int __client_qc;
    @ObfuscatedName("nz")
-   @Export("__client_nz")
    static int[] __client_nz;
    @ObfuscatedName("ns")
    @ObfuscatedGetter(
       intValue = 743073293
    )
-   @Export("__client_ns")
    static int __client_ns;
    @ObfuscatedName("sd")
    @ObfuscatedGetter(
       intValue = 944933439
    )
-   @Export("__client_sd")
    static int __client_sd;
    @ObfuscatedName("ru")
    @ObfuscatedSignature(
       signature = "Lhi;"
    )
-   @Export("__client_ru")
    static PlayerAppearance __client_ru;
    @ObfuscatedName("qa")
    @ObfuscatedGetter(
@@ -281,7 +259,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -1605855913
    )
-   @Export("__client_sl")
    static int __client_sl;
    @ObfuscatedName("md")
    @ObfuscatedSignature(
@@ -296,31 +273,27 @@ public final class Client extends GameShell implements Usernamed {
    @Export("indexCacheLoaderIndex")
    static int indexCacheLoaderIndex;
    @ObfuscatedName("qn")
-   @Export("unknownSoundValues1")
-   static int[] unknownSoundValues1;
+   @Export("queuedSoundEffectLoops")
+   static int[] queuedSoundEffectLoops;
    @ObfuscatedName("qd")
    @Export("queuedSoundEffectDelays")
    static int[] queuedSoundEffectDelays;
    @ObfuscatedName("nr")
-   @Export("__client_nr")
    static int[] __client_nr;
    @ObfuscatedName("nv")
    @ObfuscatedGetter(
       intValue = -758575207
    )
-   @Export("__client_nv")
    static int __client_nv;
    @ObfuscatedName("nd")
    @ObfuscatedGetter(
       intValue = 760022015
    )
-   @Export("__client_nd")
    static int __client_nd;
    @ObfuscatedName("ni")
    @ObfuscatedGetter(
       intValue = 1990512261
    )
-   @Export("__client_ni")
    static int __client_ni;
    @ObfuscatedName("qe")
    @ObfuscatedSignature(
@@ -341,13 +314,11 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 587773171
    )
-   @Export("__client_ph")
    static int __client_ph;
    @ObfuscatedName("pp")
    @ObfuscatedGetter(
       longValue = -1704358328771670975L
    )
-   @Export("__client_pp")
    static long __client_pp;
    @ObfuscatedName("sk")
    @ObfuscatedSignature(
@@ -359,40 +330,32 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedSignature(
       signature = "Lho;"
    )
-   @Export("__client_mo")
    static Widget __client_mo;
    @ObfuscatedName("qf")
    @ObfuscatedGetter(
       intValue = 1365951359
    )
-   @Export("__client_qf")
    static int __client_qf;
    @ObfuscatedName("nh")
    @ObfuscatedGetter(
       intValue = -278874973
    )
-   @Export("__client_nh")
    static int __client_nh;
    @ObfuscatedName("rw")
-   @Export("__client_rw")
    static short __client_rw;
    @ObfuscatedName("qp")
    @ObfuscatedGetter(
       intValue = -1352723865
    )
-   @Export("__client_qp")
-   static int __client_qp;
+   @Export("soundEffectVolume")
+   static int soundEffectVolume;
    @ObfuscatedName("rm")
-   @Export("__client_rm")
    static short __client_rm;
    @ObfuscatedName("rs")
-   @Export("__client_rs")
    static short __client_rs;
    @ObfuscatedName("rp")
-   @Export("__client_rp")
    static short __client_rp;
    @ObfuscatedName("ri")
-   @Export("__client_ri")
    static short __client_ri;
    @ObfuscatedName("pi")
    @ObfuscatedGetter(
@@ -407,7 +370,6 @@ public final class Client extends GameShell implements Usernamed {
    @Export("viewportZoom")
    static int viewportZoom;
    @ObfuscatedName("rv")
-   @Export("__client_rv")
    static short __client_rv;
    @ObfuscatedName("ry")
    @ObfuscatedGetter(
@@ -443,7 +405,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 1694810089
    )
-   @Export("__client_mb")
    static int __client_mb;
    @ObfuscatedName("rr")
    @ObfuscatedGetter(
@@ -461,16 +422,13 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -460406997
    )
-   @Export("__client_pm")
    static int __client_pm;
    @ObfuscatedName("pl")
    @ObfuscatedGetter(
       intValue = -1362734353
    )
-   @Export("__client_pl")
    static int __client_pl;
    @ObfuscatedName("rh")
-   @Export("__client_rh")
    static boolean[] __client_rh;
    @ObfuscatedName("ml")
    @ObfuscatedGetter(
@@ -488,64 +446,49 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 206275573
    )
-   @Export("__client_sx")
    static int __client_sx;
    @ObfuscatedName("rd")
-   @Export("__client_rd")
    static int[] __client_rd;
    @ObfuscatedName("rl")
-   @Export("__client_rl")
    static int[] __client_rl;
    @ObfuscatedName("rj")
-   @Export("__client_rj")
    static int[] __client_rj;
    @ObfuscatedName("rk")
-   @Export("__client_rk")
    static int[] __client_rk;
    @ObfuscatedName("pn")
-   @Export("__client_pn")
    static int[] __client_pn;
    @ObfuscatedName("pq")
-   @Export("__client_pq")
    static int[] __client_pq;
    @ObfuscatedName("oh")
    @ObfuscatedSignature(
       signature = "Lje;"
    )
-   @Export("__client_oh")
    static NodeDeque __client_oh;
    @ObfuscatedName("oc")
    @ObfuscatedSignature(
       signature = "Lje;"
    )
-   @Export("__client_oc")
    static NodeDeque __client_oc;
    @ObfuscatedName("rb")
-   @Export("__client_rb")
    static short __client_rb;
    @ObfuscatedName("re")
-   @Export("__client_re")
    static short __client_re;
    @ObfuscatedName("mf")
    @ObfuscatedGetter(
       intValue = -1715020411
    )
-   @Export("__client_mf")
    static int __client_mf;
    @ObfuscatedName("pu")
-   @Export("__client_pu")
    static long[] __client_pu;
    @ObfuscatedName("ms")
    @ObfuscatedGetter(
       intValue = 2128395635
    )
-   @Export("__client_ms")
    static int __client_ms;
    @ObfuscatedName("nc")
    @ObfuscatedGetter(
       intValue = 344308849
    )
-   @Export("__client_nc")
    static int __client_nc;
    @ObfuscatedName("nf")
    @Export("changedSkills")
@@ -557,13 +500,11 @@ public final class Client extends GameShell implements Usernamed {
    @Export("changedSkillsCount")
    static int changedSkillsCount;
    @ObfuscatedName("mn")
-   @Export("__client_mn")
    static boolean __client_mn;
    @ObfuscatedName("pb")
    @ObfuscatedGetter(
       intValue = 1230692157
    )
-   @Export("__client_pb")
    static int __client_pb;
    @ObfuscatedName("nq")
    @ObfuscatedGetter(
@@ -575,19 +516,15 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 535219347
    )
-   @Export("__client_mh")
    static int __client_mh;
    @ObfuscatedName("pz")
-   @Export("__client_pz")
    static String __client_pz;
    @ObfuscatedName("sj")
    @ObfuscatedSignature(
       signature = "Lbj;"
    )
-   @Export("__client_sj")
    static OwnWorldComparator __client_sj;
    @ObfuscatedName("pv")
-   @Export("__client_pv")
    static int[] __client_pv;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -596,7 +533,6 @@ public final class Client extends GameShell implements Usernamed {
    @Export("collisionMaps")
    static CollisionMap[] collisionMaps;
    @ObfuscatedName("ai")
-   @Export("__client_ai")
    static boolean __client_ai;
    @ObfuscatedName("ba")
    @ObfuscatedGetter(
@@ -635,7 +571,6 @@ public final class Client extends GameShell implements Usernamed {
    @Export("clientType")
    static int clientType;
    @ObfuscatedName("bl")
-   @Export("__client_bl")
    static boolean __client_bl;
    @ObfuscatedName("br")
    @ObfuscatedGetter(
@@ -662,22 +597,18 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -1731573291
    )
-   @Export("__client_cn")
    static int __client_cn;
    @ObfuscatedName("cq")
    @ObfuscatedGetter(
       intValue = -1313705721
    )
-   @Export("__client_cq")
    static int __client_cq;
    @ObfuscatedName("ch")
    @ObfuscatedGetter(
       longValue = -6574384275386813769L
    )
-   @Export("__client_ch")
    static long __client_ch;
    @ObfuscatedName("cw")
-   @Export("__client_cw")
    static boolean __client_cw;
    @ObfuscatedName("cg")
    @Export("displayFps")
@@ -764,7 +695,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 1154760205
    )
-   @Export("__client_dp")
    static int __client_dp;
    @ObfuscatedName("ek")
    @ObfuscatedGetter(
@@ -782,19 +712,16 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 755300107
    )
-   @Export("__client_ex")
    static int __client_ex;
    @ObfuscatedName("ej")
    @ObfuscatedGetter(
       intValue = -964416527
    )
-   @Export("__client_ej")
    static int __client_ej;
    @ObfuscatedName("el")
    @ObfuscatedGetter(
       intValue = 689094231
    )
-   @Export("__client_el")
    static int __client_el;
    @ObfuscatedName("en")
    @ObfuscatedSignature(
@@ -805,7 +732,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -447055355
    )
-   @Export("__client_eo")
    static int __client_eo;
    @ObfuscatedName("ew")
    @Export("Login_isUsernameRemembered")
@@ -817,7 +743,6 @@ public final class Client extends GameShell implements Usernamed {
    @Export("secureRandomFuture")
    static SecureRandomFuture secureRandomFuture;
    @ObfuscatedName("ev")
-   @Export("__client_ev")
    static byte[] __client_ev;
    @ObfuscatedName("ez")
    @ObfuscatedSignature(
@@ -838,10 +763,8 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 516059665
    )
-   @Export("__client_fw")
    static int __client_fw;
    @ObfuscatedName("fg")
-   @Export("__client_fg")
    static int[] __client_fg;
    @ObfuscatedName("fj")
    @ObfuscatedSignature(
@@ -853,10 +776,8 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -1050480853
    )
-   @Export("__client_fd")
    static int __client_fd;
    @ObfuscatedName("fh")
-   @Export("__client_fh")
    static boolean __client_fh;
    @ObfuscatedName("fx")
    @Export("useBufferedSocket")
@@ -874,31 +795,26 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 829228151
    )
-   @Export("__client_fe")
    static int __client_fe;
    @ObfuscatedName("fn")
    @ObfuscatedGetter(
       intValue = -597100741
    )
-   @Export("__client_fn")
    static int __client_fn;
    @ObfuscatedName("fk")
    @ObfuscatedGetter(
       intValue = 8470625
    )
-   @Export("__client_fk")
    static int __client_fk;
    @ObfuscatedName("gp")
    @ObfuscatedGetter(
       intValue = 685418907
    )
-   @Export("__client_gp")
    static int __client_gp;
    @ObfuscatedName("gh")
    @ObfuscatedGetter(
       intValue = -1456975367
    )
-   @Export("__client_gh")
    static int __client_gh;
    @ObfuscatedName("gg")
    @Export("isInInstance")
@@ -907,46 +823,38 @@ public final class Client extends GameShell implements Usernamed {
    @Export("instanceChunkTemplates")
    static int[][][] instanceChunkTemplates;
    @ObfuscatedName("gd")
-   @Export("__client_gd")
    static final int[] __client_gd;
    @ObfuscatedName("gy")
    @ObfuscatedGetter(
       intValue = -134014371
    )
-   @Export("__client_gy")
    static int __client_gy;
    @ObfuscatedName("hx")
    @ObfuscatedGetter(
       intValue = -1406125895
    )
-   @Export("__client_hx")
    static int __client_hx;
    @ObfuscatedName("hn")
    @ObfuscatedGetter(
       intValue = -516933613
    )
-   @Export("__client_hn")
    static int __client_hn;
    @ObfuscatedName("hr")
    @ObfuscatedGetter(
       intValue = 1664350313
    )
-   @Export("__client_hr")
    static int __client_hr;
    @ObfuscatedName("hg")
    @ObfuscatedGetter(
       intValue = 1658018867
    )
-   @Export("__client_hg")
    static int __client_hg;
    @ObfuscatedName("hh")
-   @Export("__client_hh")
    static boolean __client_hh;
    @ObfuscatedName("hd")
    @ObfuscatedGetter(
       intValue = 438998245
    )
-   @Export("__client_hd")
    static int __client_hd;
    @ObfuscatedName("hw")
    @ObfuscatedGetter(
@@ -964,25 +872,21 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 218086227
    )
-   @Export("__client_hv")
    static int __client_hv;
    @ObfuscatedName("hu")
    @ObfuscatedGetter(
       intValue = -480633777
    )
-   @Export("__client_hu")
    static int __client_hu;
    @ObfuscatedName("hi")
    @ObfuscatedGetter(
       intValue = 402871301
    )
-   @Export("__client_hi")
    static int __client_hi;
    @ObfuscatedName("ht")
    @ObfuscatedGetter(
       intValue = 1502058429
    )
-   @Export("__client_ht")
    static int __client_ht;
    @ObfuscatedName("hj")
    @ObfuscatedGetter(
@@ -1000,19 +904,16 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -441913785
    )
-   @Export("__client_hc")
    static int __client_hc;
    @ObfuscatedName("hk")
    @ObfuscatedGetter(
       intValue = -1149138989
    )
-   @Export("__client_hk")
    static int __client_hk;
    @ObfuscatedName("if")
    @ObfuscatedGetter(
       intValue = -952172003
    )
-   @Export("__client_if")
    static int __client_if;
    @ObfuscatedName("ie")
    @ObfuscatedGetter(
@@ -1024,31 +925,25 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 351193663
    )
-   @Export("__client_in")
    static int __client_in;
    @ObfuscatedName("il")
    @ObfuscatedGetter(
       intValue = -1063713523
    )
-   @Export("__client_il")
    public static int __client_il;
    @ObfuscatedName("ij")
-   @Export("__client_ij")
    static boolean __client_ij;
    @ObfuscatedName("iy")
    @ObfuscatedGetter(
       intValue = -1213062413
    )
-   @Export("__client_iy")
    static int __client_iy;
    @ObfuscatedName("is")
-   @Export("__client_is")
    static boolean __client_is;
    @ObfuscatedName("ik")
    @ObfuscatedGetter(
       intValue = 910983131
    )
-   @Export("__client_ik")
    static int __client_ik;
    @ObfuscatedName("ir")
    @ObfuscatedGetter(
@@ -1141,13 +1036,11 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 1691923909
    )
-   @Export("__client_ju")
    static int __client_ju;
    @ObfuscatedName("jz")
    @ObfuscatedGetter(
       intValue = -1267243587
    )
-   @Export("__client_jz")
    static int __client_jz;
    @ObfuscatedName("jp")
    @ObfuscatedGetter(
@@ -1159,13 +1052,11 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 813973829
    )
-   @Export("__client_ja")
    static int __client_ja;
    @ObfuscatedName("je")
    @ObfuscatedGetter(
       intValue = 1959822241
    )
-   @Export("__client_je")
    static int __client_je;
    @ObfuscatedName("jy")
    @ObfuscatedGetter(
@@ -1174,7 +1065,6 @@ public final class Client extends GameShell implements Usernamed {
    @Export("dragItemSlotDestination")
    static int dragItemSlotDestination;
    @ObfuscatedName("jl")
-   @Export("__client_jl")
    static boolean __client_jl;
    @ObfuscatedName("jt")
    @ObfuscatedGetter(
@@ -1186,7 +1076,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 1084498299
    )
-   @Export("__client_jc")
    static int __client_jc;
    @ObfuscatedName("jj")
    @Export("showLoadingMessages")
@@ -1207,7 +1096,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -836962805
    )
-   @Export("__client_jo")
    static int __client_jo;
    @ObfuscatedName("js")
    @Export("renderSelf")
@@ -1216,16 +1104,13 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -1208823721
    )
-   @Export("__client_ke")
    static int __client_ke;
    @ObfuscatedName("ky")
    @ObfuscatedGetter(
       intValue = -64320473
    )
-   @Export("__client_ky")
    static int __client_ky;
    @ObfuscatedName("kd")
-   @Export("__client_kd")
    static int[] __client_kd;
    @ObfuscatedName("kp")
    @Export("playerMenuOpcodes")
@@ -1237,7 +1122,6 @@ public final class Client extends GameShell implements Usernamed {
    @Export("playerOptionsPriorities")
    static boolean[] playerOptionsPriorities;
    @ObfuscatedName("kn")
-   @Export("__client_kn")
    static int[] __client_kn;
    @ObfuscatedName("kx")
    @ObfuscatedGetter(
@@ -1255,7 +1139,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedSignature(
       signature = "Lje;"
    )
-   @Export("__client_kh")
    static NodeDeque __client_kh;
    @ObfuscatedName("kk")
    @ObfuscatedSignature(
@@ -1282,7 +1165,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -898263359
    )
-   @Export("__client_ku")
    static int __client_ku;
    @ObfuscatedName("kc")
    @Export("isMenuOpen")
@@ -1330,25 +1212,21 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 26099827
    )
-   @Export("__client_lq")
    static int __client_lq;
    @ObfuscatedName("ln")
    @ObfuscatedGetter(
       intValue = 885052255
    )
-   @Export("__client_ln")
    static int __client_ln;
    @ObfuscatedName("lb")
    @ObfuscatedGetter(
       intValue = 699084605
    )
-   @Export("__client_lb")
    static int __client_lb;
    @ObfuscatedName("ls")
    @ObfuscatedGetter(
       intValue = -274968037
    )
-   @Export("__client_ls")
    static int __client_ls;
    @ObfuscatedName("lz")
    @ObfuscatedGetter(
@@ -1363,7 +1241,6 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 196309625
    )
-   @Export("__client_lc")
    static int __client_lc;
 
    static {
@@ -1602,11 +1479,11 @@ public final class Client extends GameShell implements Usernamed {
       __client_qf = 255;
       __client_qy = -1;
       __client_qq = false;
-      __client_qp = 127;
+      soundEffectVolume = 127;
       __client_qc = 127;
       soundEffectCount = 0;
       soundEffectIds = new int[50];
-      unknownSoundValues1 = new int[50];
+      queuedSoundEffectLoops = new int[50];
 	  queuedSoundEffectDelays = new int[50];
       soundLocations = new int[50];
       soundEffects = new SoundEffect[50];
@@ -1663,6 +1540,7 @@ public final class Client extends GameShell implements Usernamed {
       signature = "(I)V",
       garbageValue = "1297880469"
    )
+   @Export("setUp")
    protected final void setUp() {
       WorldMapCacheName.method633(new int[]{20, 260, 10000}, new int[]{1000, 100, 500});
       class2.port1 = gameBuild == 0?43594:worldId + 40000;
@@ -2715,6 +2593,7 @@ public final class Client extends GameShell implements Usernamed {
       signature = "(I)V",
       garbageValue = "-1879956387"
    )
+   @Export("kill0")
    protected final void kill0() {
       if(class196.varcs.hasUnwrittenChanges()) {
          class196.varcs.write();
@@ -4383,7 +4262,7 @@ public final class Client extends GameShell implements Usernamed {
                                                    } else if(menuOptionsCount > 0) {
                                                       var3 = __client_ja;
                                                       var4 = __client_je;
-                                                      class231.method4520(UnitPriceComparator.tempMenuAction, var3, var4);
+                                                      class231.processTempMenuAction(UnitPriceComparator.tempMenuAction, var3, var4);
                                                       UnitPriceComparator.tempMenuAction = null;
                                                    }
 
@@ -4637,7 +4516,6 @@ public final class Client extends GameShell implements Usernamed {
       signature = "(I)V",
       garbageValue = "-1792846917"
    )
-   @Export("__ge_137")
    void __ge_137() {
       int var1 = SoundCache.canvasWidth;
       int var2 = Huffman.canvasHeight;
@@ -4803,8 +4681,8 @@ public final class Client extends GameShell implements Usernamed {
                      SoundEffect var16 = SoundEffect.readSoundEffect(class25.indexCache4, var15.soundEffectId, 0);
                      if(var16 != null) {
                         RawSound var17 = var16.toRawSound().resample(MilliClock.decimator);
-                        RawPcmStream var18 = RawPcmStream.method2497(var17, 100, var7);
-                        var18.__x_181(-1);
+                        RawPcmStream var18 = RawPcmStream.createRawPcmStream(var17, 100, var7);
+                        var18.setNumLoops(-1);
                         TaskHandler.pcmStreamMixer.addSubStream(var18);
                         var15.stream1 = var18;
                      }
@@ -4820,8 +4698,8 @@ public final class Client extends GameShell implements Usernamed {
                      SoundEffect var20 = SoundEffect.readSoundEffect(class25.indexCache4, var15.soundEffectIds[var8], 0);
                      if(var20 != null) {
                         RawSound var21 = var20.toRawSound().resample(MilliClock.decimator);
-                        RawPcmStream var19 = RawPcmStream.method2497(var21, 100, var7);
-                        var19.__x_181(0);
+                        RawPcmStream var19 = RawPcmStream.createRawPcmStream(var21, 100, var7);
+                        var19.setNumLoops(0);
                         TaskHandler.pcmStreamMixer.addSubStream(var19);
                         var15.stream2 = var19;
                         var15.__n = var15.__x + (int)(Math.random() * (double)(var15.__d - var15.__x));
@@ -4855,7 +4733,6 @@ public final class Client extends GameShell implements Usernamed {
       signature = "(Lcl;I)Z",
       garbageValue = "1488446149"
    )
-   @Export("__hg_138")
    final boolean __hg_138(PacketWriter var1) {
       AbstractSocket var2 = var1.getSocket();
       PacketBuffer var3 = var1.packetBuffer;
@@ -6223,7 +6100,6 @@ public final class Client extends GameShell implements Usernamed {
       signature = "(I)V",
       garbageValue = "-387903382"
    )
-   @Export("__hi_139")
    final void __hi_139() {
       boolean var1 = false;
 
@@ -6340,7 +6216,7 @@ public final class Client extends GameShell implements Usernamed {
             if(DevicePcmPlayerProvider.dragInventoryWidget != null && !__client_jl && menuOptionsCount > 0 && !this.shouldLeftClickOpenMenu()) {
                int var10 = __client_ja;
                int var11 = __client_je;
-               class231.method4520(UnitPriceComparator.tempMenuAction, var10, var11);
+               class231.processTempMenuAction(UnitPriceComparator.tempMenuAction, var10, var11);
                UnitPriceComparator.tempMenuAction = null;
             }
 
@@ -6439,7 +6315,6 @@ public final class Client extends GameShell implements Usernamed {
       signature = "(ZI)V",
       garbageValue = "-271438207"
    )
-   @Export("__iu_141")
    final void __iu_141(boolean var1) {
       int var2 = rootWidgetGroup;
       int var3 = SoundCache.canvasWidth;
@@ -6477,7 +6352,6 @@ public final class Client extends GameShell implements Usernamed {
       signature = "(I)V",
       garbageValue = "715978124"
    )
-   @Export("__jh_142")
    final void __jh_142() {
       class22.method295(clickedWidget);
       ++MouseRecorder.widgetDragDuration;
@@ -6574,7 +6448,7 @@ public final class Client extends GameShell implements Usernamed {
             } else if(menuOptionsCount > 0) {
                int var13 = widgetClickX + __client_nk;
                int var14 = widgetClickY + __client_np;
-               class231.method4520(UnitPriceComparator.tempMenuAction, var13, var14);
+               class231.processTempMenuAction(UnitPriceComparator.tempMenuAction, var13, var14);
                UnitPriceComparator.tempMenuAction = null;
             }
 
@@ -6594,6 +6468,7 @@ public final class Client extends GameShell implements Usernamed {
       signature = "(B)Lkp;",
       garbageValue = "-87"
    )
+   @Export("username")
    public Username username() {
       return Canvas.localPlayer != null?Canvas.localPlayer.username:null;
    }

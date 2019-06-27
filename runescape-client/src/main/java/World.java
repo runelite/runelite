@@ -17,7 +17,6 @@ public class World {
    @ObfuscatedGetter(
       intValue = 1143875805
    )
-   @Export("__bt_g")
    static int __bt_g;
    @ObfuscatedName("l")
    @Export("sortOption2")
@@ -84,7 +83,6 @@ public class World {
       signature = "(B)Z",
       garbageValue = "0"
    )
-   @Export("__x_145")
    boolean __x_145() {
       return (2 & this.properties) != 0;
    }
@@ -104,7 +102,6 @@ public class World {
       signature = "(I)Z",
       garbageValue = "-1662622660"
    )
-   @Export("__a_147")
    boolean __a_147() {
       return (8 & this.properties) != 0;
    }

@@ -48,22 +48,17 @@ public class Interpreter {
    @Export("Interpreter_calendar")
    static Calendar Interpreter_calendar;
    @ObfuscatedName("z")
-   @Export("__bv_z")
    static final String[] __bv_z;
    @ObfuscatedName("s")
-   @Export("__bv_s")
    static boolean __bv_s;
    @ObfuscatedName("t")
-   @Export("__bv_t")
    static boolean __bv_t;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -1019558835
    )
-   @Export("__bv_y")
    static int __bv_y;
    @ObfuscatedName("r")
-   @Export("__bv_r")
    static final double __bv_r;
 
    static {
@@ -141,6 +136,7 @@ public class Interpreter {
       signature = "(IIB)V",
       garbageValue = "76"
    )
+   @Export("changeWorldSelectSorting")
    static void changeWorldSelectSorting(int var0, int var1) {
       int[] var2 = new int[4];
       int[] var3 = new int[4];

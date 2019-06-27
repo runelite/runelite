@@ -30,7 +30,6 @@ public class PacketWriter {
    @ObfuscatedGetter(
       intValue = -1028046199
    )
-   @Export("__q")
    int __q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -63,37 +62,31 @@ public class PacketWriter {
    @Export("serverPacket0Length")
    int serverPacket0Length;
    @ObfuscatedName("e")
-   @Export("__e")
    boolean __e;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 120570975
    )
-   @Export("__x")
    int __x;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1672229609
    )
-   @Export("__d")
    int __d;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__k")
    ServerPacket __k;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("surfaceOffsetY")
    ServerPacket __n;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   @Export("__i")
    ServerPacket __i;
 
    PacketWriter() {
@@ -113,7 +106,6 @@ public class PacketWriter {
       signature = "(I)V",
       garbageValue = "1561094077"
    )
-   @Export("__m_165")
    final void __m_165() {
       this.packetBufferNodes.clear();
       this.__q = 0;
@@ -124,7 +116,6 @@ public class PacketWriter {
       signature = "(I)V",
       garbageValue = "-1839929685"
    )
-   @Export("__f_166")
    final void __f_166() throws IOException {
       if(this.socket0 != null && this.__q > 0) {
          this.buffer.index = 0;
@@ -152,7 +143,6 @@ public class PacketWriter {
       signature = "(Lgg;I)V",
       garbageValue = "599379248"
    )
-   @Export("__q_167")
    public final void __q_167(PacketBufferNode var1) {
       this.packetBufferNodes.addFirst(var1);
       var1.__w = var1.packetBuffer.index;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.barbarianassault;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import net.runelite.api.Constants;
+package net.runelite.client.plugins.objectindicators;
 
-class GameTimer
+public enum OutlineRenderStyle
 {
-	final private Instant startTime = Instant.now();
-	private Instant prevWave = startTime;
-
-	String getTime(boolean waveTime)
-	{
-		final Instant now = Instant.now();
-		final Duration elapsed;
-
-		if (waveTime)
-		{
-			elapsed = Duration.between(prevWave, now);
-		}
-		else
-		{
-			elapsed = Duration.between(startTime, now).minusMillis(Constants.GAME_TICK_LENGTH);
-		}
-
-		return formatTime(LocalTime.ofSecondOfDay(elapsed.getSeconds()));
-	}
-
-	void setWaveStartTime()
-	{
-		prevWave = Instant.now();
-	}
-
-	private static String formatTime(LocalTime time)
-	{
-		if (time.getHour() > 0)
-		{
-			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
-		}
-		else if (time.getMinute() > 9)
-		{
-			return time.format(DateTimeFormatter.ofPattern("mm:ss"));
-		}
-		else
-		{
-			return time.format(DateTimeFormatter.ofPattern("m:ss"));
-		}
-	}
+	THIN_OUTLINE,
+	NORMAL_OUTLINE,
+	THIN_GLOW,
+	GLOW
 }

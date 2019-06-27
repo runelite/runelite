@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, whartd <github.com/whartd>
+ * Copyright (c) 2018, WooxSolo <https://github.com/WooxSolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.barbarianassault;
+package net.runelite.api.events;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.api.Point;
-import net.runelite.api.widgets.WidgetInfo;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
-enum HealerTeam
+@Data
+public class SoundEffectPlayed
 {
-	TEAMMATE1(WidgetInfo.BA_HEAL_TEAMMATE1, new Point(28, 2), 115),
-	TEAMMATE2(WidgetInfo.BA_HEAL_TEAMMATE2, new Point(26, 2), 115),
-	TEAMMATE3(WidgetInfo.BA_HEAL_TEAMMATE3, new Point(26, 2), 115),
-	TEAMMATE4(WidgetInfo.BA_HEAL_TEAMMATE4, new Point(25, 2), 115);
-
-	private WidgetInfo teammate;
-	private Point offset;
-	private int width;
+	private int soundId;
+	private int delay;
 }

@@ -108,7 +108,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("o")
-   @Export("__o_499")
    public void __o_499(int var1) {
       if(this.subWidth != this.width || this.subHeight != this.height) {
          int var2 = var1;
@@ -150,7 +149,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("u")
-   @Export("__u_500")
    public void __u_500() {
       int[] var1 = new int[this.subWidth * this.subHeight];
       int var2 = 0;
@@ -166,7 +164,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("g")
-   @Export("__g_501")
    public void __g_501() {
       int[] var1 = new int[this.subWidth * this.subHeight];
       int var2 = 0;
@@ -182,7 +179,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("l")
-   @Export("__l_502")
    public void __l_502(int var1) {
       int[] var2 = new int[this.subWidth * this.subHeight];
       int var3 = 0;
@@ -210,7 +206,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("e")
-   @Export("__e_503")
    public void __e_503(int var1) {
       for(int var2 = this.subHeight - 1; var2 > 0; --var2) {
          int var3 = var2 * this.subWidth;
@@ -317,7 +312,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("j")
-   @Export("__j_506")
    public void __j_506(int var1, int var2, int var3, int var4) {
       if(var3 > 0 && var4 > 0) {
          int var5 = this.subWidth;
@@ -432,7 +426,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("h")
-   @Export("__h_508")
    public void __h_508(int var1, int var2, int var3) {
       var1 += this.yOffset;
       var2 += this.xOffset;
@@ -478,7 +471,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("c")
-   @Export("__c_509")
    public void __c_509(int var1, int var2, int var3, int var4, int var5) {
       if(var3 > 0 && var4 > 0) {
          int var6 = this.subWidth;
@@ -543,7 +535,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("v")
-   @Export("__v_510")
    public void __v_510(int var1, int var2, int var3) {
       var1 += this.yOffset;
       var2 += this.xOffset;
@@ -594,7 +585,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("aj")
-   @Export("__aj_511")
    public void __aj_511(int var1, int var2, int var3, int var4, int var5) {
       if(var3 > 0 && var4 > 0) {
          int var6 = this.subWidth;
@@ -664,7 +654,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("ac")
-   @Export("__ac_512")
    public void __ac_512(int var1, int var2, int var3, int var4, int var5, int var6, int[] var7, int[] var8) {
       int var9 = var2 < 0?-var2:0;
       int var10 = var2 + this.subHeight <= var6?this.subHeight:var6 - var2;
@@ -713,7 +702,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("ay")
-   @Export("__ay_513")
    public void __ay_513(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int[] var9, int[] var10) {
       try {
          int var11 = -var3 / 2;
@@ -749,7 +737,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("ah")
-   @Export("__ah_514")
    public void __ah_514(int var1, int var2, int var3, int var4, int var5, int var6, double var7, int var9) {
       try {
          int var10 = -var3 / 2;
@@ -790,13 +777,11 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("ak")
-   @Export("__ak_515")
    public void __ak_515(int var1, int var2, int var3, int var4) {
       this.__aw_516(this.width << 3, this.height << 3, var1 << 4, var2 << 4, var3, var4);
    }
 
    @ObfuscatedName("aw")
-   @Export("__aw_516")
    void __aw_516(int var1, int var2, int var3, int var4, int var5, int var6) {
       if(var6 != 0) {
          var1 -= this.yOffset << 4;
@@ -1266,7 +1251,6 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("al")
-   @Export("__al_517")
    public void __al_517(int var1, int var2, int var3, int var4) {
       if(var3 <= this.width && var4 <= this.height) {
          int var5 = var3 * this.yOffset / this.width + var1;

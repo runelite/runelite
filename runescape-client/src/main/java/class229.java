@@ -5,7 +5,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hz")
 public class class229 {
    @ObfuscatedName("l")
-   @Export("__hz_l")
    public static short[][] __hz_l;
 
    @ObfuscatedName("m")

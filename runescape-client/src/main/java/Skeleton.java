@@ -11,7 +11,6 @@ public class Skeleton extends Node {
    @ObfuscatedGetter(
       intValue = 2096389021
    )
-   @Export("__ek_x")
    static int __ek_x;
    @ObfuscatedName("dc")
    @ObfuscatedSignature(

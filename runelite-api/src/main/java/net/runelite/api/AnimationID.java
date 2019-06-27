@@ -157,7 +157,7 @@ public final class AnimationID
 	public static final int HOME_MAKE_TABLET = 4067;
 	public static final int THIEVING_STALL = 832;
 	public static final int PICKPOCKET_SUCCESS = 881;
-	
+
 	//block animations for players and perhaps npcs as well?
 	public static final int BLOCK_DEFENDER = 4177;
 	public static final int BLOCK_NO_SHIELD = 420;
@@ -252,7 +252,7 @@ public final class AnimationID
 	public static final int HYDRA_RANGED_4 = 8255;
 	public static final int HYDRA_4_1 = 8257;
 	public static final int HYDRA_4_2 = 8258;
-	
+
 	// INFERNO animations
 	public static final int JAL_NIB = 7574;
 	public static final int JAL_MEJRAH = 7578;
@@ -278,4 +278,31 @@ public final class AnimationID
 	public static final int GENERAL_AUTO1 = 7018;
 	public static final int GENERAL_AUTO2 = 7020;
 	public static final int GENERAL_AUTO3 = 7021;
+
+	//Zammy-poo
+	public static final int ZAMMY_GENERIC_AUTO = 64;
+	public static final int KRIL_AUTO = 6948;
+	public static final int KRIL_SPEC = 6950;
+	public static final int ZAKL_AUTO = 7077;
+	public static final int BALFRUG_AUTO = 4630;
+
+	//Sara-Poo
+	public static final int ZILYANA_MELEE_AUTO = 6964;
+	public static final int ZILYANA_AUTO = 6967;
+	public static final int ZILYANA_SPEC = 6970;
+	public static final int STARLIGHT_AUTO = 6376;
+	public static final int BREE_AUTO = 7026;
+	public static final int GROWLER_AUTO = 7037;
+
+	//Arma-Poo
+	public static final int KREE_RANGED = 6978;
+	public static final int SKREE_AUTO = 6955;
+	public static final int GEERIN_AUTO = 6956;
+	public static final int GEERIN_FLINCH = 6958;
+	public static final int KILISA_AUTO = 6957;
+
+	//Dag Kings
+	public static final int DAG_REX = 2853;
+	public static final int DAG_PRIME = 2854;
+	public static final int DAG_SUPREME = 2855;
 }

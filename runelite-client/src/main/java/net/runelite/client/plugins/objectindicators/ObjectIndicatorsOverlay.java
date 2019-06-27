@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2019, Owain van Brakel <https://github.com/Owain94>
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
@@ -24,33 +25,40 @@
  */
 package net.runelite.client.plugins.objectindicators;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.geom.Area;
+import static java.lang.Math.floor;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.TileObject;
+import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class ObjectIndicatorsOverlay extends Overlay
 {
+	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+
 	private final Client client;
 	private final ObjectIndicatorsConfig config;
 	private final ObjectIndicatorsPlugin plugin;
+	private final ModelOutlineRenderer modelOutliner;
 
 	@Inject
-	private ObjectIndicatorsOverlay(Client client, ObjectIndicatorsConfig config, ObjectIndicatorsPlugin plugin)
+	private ObjectIndicatorsOverlay(Client client, ObjectIndicatorsConfig config, ObjectIndicatorsPlugin plugin, ModelOutlineRenderer modelOutliner)
 	{
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+		this.modelOutliner = modelOutliner;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -66,46 +74,70 @@ class ObjectIndicatorsOverlay extends Overlay
 				continue;
 			}
 
-			final Polygon polygon;
-			Polygon polygon2 = null;
+			Color color = config.objectMarkerColor();
+			int opacity = (int) floor(config.objectMarkerAlpha() * 2.55);
+			Color objectColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
 
-			if (object instanceof GameObject)
+			switch (config.objectMarkerRenderStyle())
 			{
-				polygon = ((GameObject) object).getConvexHull();
-			}
-			else if (object instanceof DecorativeObject)
-			{
-				polygon = ((DecorativeObject) object).getConvexHull();
-				polygon2 = ((DecorativeObject) object).getConvexHull2();
-			}
-			else
-			{
-				polygon = object.getCanvasTilePoly();
-			}
+				case OUTLINE:
+					switch (config.objectMarkerOutlineRenderStyle())
+					{
+						case THIN_OUTLINE:
+							modelOutliner.drawOutline(object, 1, objectColor);
+							break;
 
-			if (polygon != null)
-			{
-				renderPoly(graphics, polygon, config.markerColor(), config.stroke(), config.alpha());
-			}
+						case NORMAL_OUTLINE:
+							modelOutliner.drawOutline(object, 2, objectColor);
+							break;
 
-			if (polygon2 != null)
-			{
-				renderPoly(graphics, polygon2, config.markerColor(), config.stroke(), config.alpha());
+						case THIN_GLOW:
+							modelOutliner.drawOutline(object, 4, objectColor, TRANSPARENT);
+							break;
+
+						case GLOW:
+							modelOutliner.drawOutline(object, 8, objectColor, TRANSPARENT);
+							break;
+					}
+					break;
+				case HULL:
+					final Polygon polygon;
+					Polygon polygon2 = null;
+
+					if (object instanceof GameObject)
+					{
+						polygon = ((GameObject) object).getConvexHull();
+					}
+					else if (object instanceof DecorativeObject)
+					{
+						polygon = ((DecorativeObject) object).getConvexHull();
+						polygon2 = ((DecorativeObject) object).getConvexHull2();
+					}
+					else
+					{
+						polygon = object.getCanvasTilePoly();
+					}
+
+					if (polygon != null)
+					{
+						OverlayUtil.renderPolygon(graphics, polygon, objectColor);
+					}
+
+					if (polygon2 != null)
+					{
+						OverlayUtil.renderPolygon(graphics, polygon2, objectColor);
+					}
+					break;
+				case CLICKBOX:
+					Area clickbox = object.getClickbox();
+					if (clickbox != null)
+					{
+						OverlayUtil.renderHoverableArea(graphics, object.getClickbox(), client.getMouseCanvasPosition(), TRANSPARENT, objectColor, objectColor.darker());
+					}
+					break;
 			}
 		}
 
 		return null;
-	}
-
-	private void renderPoly(Graphics2D graphics, Polygon polygon, Color color, int stroke, int alpha)
-	{
-		if (polygon != null)
-		{
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 255));
-			graphics.setStroke(new BasicStroke(stroke));
-			graphics.draw(polygon);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha));
-			graphics.fill(polygon);
-		}
 	}
 }

@@ -16,7 +16,6 @@ public final class KeyHandler implements KeyListener, FocusListener {
    @ObfuscatedGetter(
       intValue = -817957995
    )
-   @Export("__an_ra")
    static int __an_ra;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -46,52 +45,42 @@ public final class KeyHandler implements KeyListener, FocusListener {
    @Export("KeyHandler_pressedKeys")
    public static boolean[] KeyHandler_pressedKeys;
    @ObfuscatedName("cq")
-   @Export("__an_cq")
    static int[] __an_cq;
    @ObfuscatedName("ch")
    @ObfuscatedGetter(
       intValue = 1112094745
    )
-   @Export("__an_ch")
    static int __an_ch;
    @ObfuscatedName("cw")
    @ObfuscatedGetter(
       intValue = -1208053825
    )
-   @Export("__an_cw")
    static int __an_cw;
    @ObfuscatedName("cg")
-   @Export("__an_cg")
    static char[] __an_cg;
    @ObfuscatedName("cf")
-   @Export("__an_cf")
    static int[] __an_cf;
    @ObfuscatedName("cp")
-   @Export("__an_cp")
    public static int[] __an_cp;
    @ObfuscatedName("cl")
    @ObfuscatedGetter(
       intValue = -674534717
    )
-   @Export("__an_cl")
    public static int __an_cl;
    @ObfuscatedName("ct")
    @ObfuscatedGetter(
       intValue = -93280591
    )
-   @Export("__an_ct")
    static int __an_ct;
    @ObfuscatedName("cz")
    @ObfuscatedGetter(
       intValue = 2066759739
    )
-   @Export("__an_cz")
    static int __an_cz;
    @ObfuscatedName("cc")
    @ObfuscatedGetter(
       intValue = -1942898885
    )
-   @Export("__an_cc")
    static int __an_cc;
    @ObfuscatedName("ci")
    @ObfuscatedGetter(

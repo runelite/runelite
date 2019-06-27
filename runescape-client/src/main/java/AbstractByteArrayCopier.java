@@ -13,7 +13,6 @@ public abstract class AbstractByteArrayCopier {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("__gu_et")
    static IndexCache __gu_et;
 
    static {
@@ -41,6 +40,7 @@ public abstract class AbstractByteArrayCopier {
       signature = "(II)Liw;",
       garbageValue = "1102198559"
    )
+   @Export("getVarcInt")
    public static VarcInt getVarcInt(int var0) {
       VarcInt var1 = (VarcInt)VarcInt.cachedVarcInts.get((long)var0);
       if(var1 != null) {
@@ -62,6 +62,7 @@ public abstract class AbstractByteArrayCopier {
       signature = "(II)V",
       garbageValue = "-1941491045"
    )
+   @Export("unloadWidgetGroup")
    public static void unloadWidgetGroup(int var0) {
       if(var0 != -1) {
          if(Widget.loadedWidgetGroups[var0]) {

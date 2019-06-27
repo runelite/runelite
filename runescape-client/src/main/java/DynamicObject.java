@@ -107,6 +107,7 @@ public class DynamicObject extends Entity {
       signature = "(I)Ldu;",
       garbageValue = "-2134947096"
    )
+   @Export("getModel")
    protected final Model getModel() {
       if(this.sequenceDefinition != null) {
          int var1 = Client.cycle - this.cycleStart;

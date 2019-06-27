@@ -268,7 +268,15 @@ public class RuneLiteAPI
 	{
 		try
 		{
-			String jsonData = new String(downloadUrl(new URL(GITHUB_API)));
+			byte[] commits = downloadUrl(new URL(GITHUB_API));
+
+			if (commits == null)
+			{
+				return null;
+			}
+
+			String jsonData = new String(commits);
+
 			for (String s : jsonData.split("\n"))
 			{
 				if (s.startsWith("\"sha\":"))

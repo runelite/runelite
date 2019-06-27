@@ -8,7 +8,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("GzipDecompressor")
 public class GzipDecompressor {
    @ObfuscatedName("ck")
-   @Export("__go_ck")
    public static char __go_ck;
    @ObfuscatedName("m")
    @Export("inflater")

@@ -37,6 +37,7 @@ import net.runelite.api.IconID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -68,7 +69,7 @@ public class KeyRemappingPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private ConfigManager configManager;
+	private KeyRemappingConfig config;
 
 	@Inject
 	private KeyManager keyManager;
@@ -83,7 +84,6 @@ public class KeyRemappingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		configManager.setConfiguration("runelite", "entertochatplugin", false);
 		typing = false;
 		keyManager.registerKeyListener(inputListener);
 
@@ -151,6 +151,25 @@ public class KeyRemappingPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (!configChanged.getGroup().equals("keyremapping") || !configChanged.getKey().equals("hideDisplayName"))
+		{
+			return;
+		}
+
+		clientThread.invoke(() ->
+			{
+				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+				if (chatboxInput != null && chatboxInput.getText().endsWith(PRESS_ENTER_TO_CHAT))
+				{
+					chatboxInput.setText(getWaitingText());
+				}
+			}
+		);
+	}
+
+	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		switch (scriptCallbackEvent.getEventName())
@@ -161,7 +180,7 @@ public class KeyRemappingPlugin extends Plugin
 				{
 					if (chatboxFocused() && !typing)
 					{
-						chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
+						chatboxInput.setText(getWaitingText());
 					}
 				}
 				break;
@@ -181,7 +200,7 @@ public class KeyRemappingPlugin extends Plugin
 		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 		if (chatboxInput != null)
 		{
-			chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
+			chatboxInput.setText(getWaitingText());
 			// Typed text can be non-empty on plugin start, so clear it now
 			client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 		}
@@ -219,5 +238,17 @@ public class KeyRemappingPlugin extends Plugin
 				return client.getLocalPlayer().getName();
 		}
 		return icon + client.getLocalPlayer().getName();
+	}
+
+	private String getWaitingText()
+	{
+		if (config.hideDisplayName())
+		{
+			return PRESS_ENTER_TO_CHAT;
+		}
+		else
+		{
+			return getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT;
+		}
 	}
 }

@@ -11,7 +11,6 @@ public class MusicPatch extends Node {
    @ObfuscatedGetter(
       intValue = 574200865
    )
-   @Export("__m")
    int __m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
@@ -20,25 +19,19 @@ public class MusicPatch extends Node {
    @Export("rawSounds")
    RawSound[] rawSounds;
    @ObfuscatedName("q")
-   @Export("__q")
    short[] __q;
    @ObfuscatedName("w")
-   @Export("__w")
    byte[] __w;
    @ObfuscatedName("o")
-   @Export("__o")
    byte[] __o;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "[Lhd;"
    )
-   @Export("__u")
    MusicPatchNode2[] __u;
    @ObfuscatedName("g")
-   @Export("__g")
    byte[] __g;
    @ObfuscatedName("l")
-   @Export("__l")
    int[] __l;
 
    MusicPatch(byte[] var1) {
@@ -497,7 +490,6 @@ public class MusicPatch extends Node {
       signature = "(Ldt;[B[II)Z",
       garbageValue = "1828768318"
    )
-   @Export("__f_373")
    boolean __f_373(SoundCache var1, byte[] var2, int[] var3) {
       boolean var4 = true;
       int var5 = 0;

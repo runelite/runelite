@@ -125,10 +125,8 @@ public enum class231 implements Enumerated {
    @ObfuscatedGetter(
       intValue = -745071109
    )
-   @Export("__hb_sg")
    static int __hb_sg;
    @ObfuscatedName("av")
-   @Export("__hb_av")
    static java.awt.Font __hb_av;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
@@ -149,6 +147,7 @@ public enum class231 implements Enumerated {
       signature = "(B)I",
       garbageValue = "83"
    )
+   @Export("rsOrdinal")
    public int rsOrdinal() {
       return this.field2820;
    }
@@ -179,7 +178,8 @@ public enum class231 implements Enumerated {
       signature = "(Lcs;IIB)V",
       garbageValue = "1"
    )
-   static final void method4520(MenuAction var0, int var1, int var2) {
+   @Export("processTempMenuAction")
+   static final void processTempMenuAction(MenuAction var0, int var1, int var2) {
       Actor.menuAction(var0.argument1, var0.argument2, var0.opcode, var0.argument0, var0.action, var0.action, var1, var2);
    }
 

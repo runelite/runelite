@@ -11,19 +11,16 @@ public class HitSplatDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__jm_m")
    static AbstractIndexCache __jm_m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__jm_f")
    static AbstractIndexCache __jm_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__jm_q")
    static AbstractIndexCache __jm_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -35,7 +32,6 @@ public class HitSplatDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("__jm_o")
    static EvictingDualNodeHashTable __jm_o;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
@@ -53,70 +49,58 @@ public class HitSplatDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -1151968735
    )
-   @Export("surfaceOffsetY")
    public int __n;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -102270561
    )
-   @Export("__i")
    public int __i;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -1533306389
    )
-   @Export("__a")
    int __a;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1677628889
    )
-   @Export("__z")
    int __z;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1683792491
    )
-   @Export("__j")
    int __j;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1845590719
    )
-   @Export("__s")
    int __s;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -389283589
    )
-   @Export("__t")
    public int __t;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = 1751286975
    )
-   @Export("__y")
    public int __y;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 199815415
    )
-   @Export("__h")
    public int __h;
    @ObfuscatedName("b")
-   @Export("__b")
    String __b;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = 1003116765
    )
-   @Export("__c")
    public int __c;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 1498880475
    )
-   @Export("__r")
    public int __r;
    @ObfuscatedName("p")
    @Export("transforms")
@@ -292,7 +276,6 @@ public class HitSplatDefinition extends DualNode {
       signature = "(I)Lln;",
       garbageValue = "-1692599381"
    )
-   @Export("__g_417")
    public Sprite __g_417() {
       if(this.__a < 0) {
          return null;
@@ -316,7 +299,6 @@ public class HitSplatDefinition extends DualNode {
       signature = "(B)Lln;",
       garbageValue = "-15"
    )
-   @Export("__l_418")
    public Sprite __l_418() {
       if(this.__z < 0) {
          return null;
@@ -340,7 +322,6 @@ public class HitSplatDefinition extends DualNode {
       signature = "(B)Lln;",
       garbageValue = "-49"
    )
-   @Export("__e_419")
    public Sprite __e_419() {
       if(this.__j < 0) {
          return null;
@@ -364,7 +345,6 @@ public class HitSplatDefinition extends DualNode {
       signature = "(I)Lln;",
       garbageValue = "393569067"
    )
-   @Export("__x_420")
    public Sprite __x_420() {
       if(this.__s < 0) {
          return null;

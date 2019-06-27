@@ -47,7 +47,7 @@ class WorldMapRegionOverlay extends Overlay
 	private static final int LABEL_PADDING = 4;
 	private static final int REGION_SIZE = 1 << 6;
 	// Bitmask to return first coordinate in region
-	private static final int REGION_TRUNCATE = -(1 << 6);
+	private static final int REGION_TRUNCATE = ~((1 << 6) - 1);
 	private final Client client;
 	private final DevToolsPlugin plugin;
 

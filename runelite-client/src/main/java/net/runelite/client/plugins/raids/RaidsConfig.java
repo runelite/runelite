@@ -29,7 +29,6 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Keybind;
 import net.runelite.client.config.Stub;
 
 @ConfigGroup("raids")
@@ -259,15 +258,29 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 17,
 		parent = "roomConfig",
-		keyName = "crabColor",
-		name = "Crab color",
+		keyName = "goodCrabColor",
+		name = "Good Crab color",
 		description = "The color of good crabs",
 		hidden = true,
 		unhide = "crabHandler"
 	)
-	default Color crabColor()
+	default Color goodCrabColor()
 	{
-		return Color.MAGENTA;
+		return new Color(255, 155, 245);
+	}
+
+	@ConfigItem(
+		position = 17,
+		parent = "roomConfig",
+		keyName = "rareCrabColor",
+		name = "Rare Crab color",
+		description = "The color of rare crabs",
+		hidden = true,
+		unhide = "crabHandler"
+	)
+	default Color rareCrabColor()
+	{
+		return new Color(255, 200, 0);
 	}
 
 	@ConfigItem(
@@ -456,16 +469,5 @@ public interface RaidsConfig extends Config
 	default boolean partyDisplay()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		keyName = "hotkey",
-		name = "Toggle scout overlay",
-		description = "When pressed the scout overlay will be toggled. Must enable show scout overlay in raid",
-		position = 33
-	)
-	default Keybind hotkey()
-	{
-		return Keybind.NOT_SET;
 	}
 }

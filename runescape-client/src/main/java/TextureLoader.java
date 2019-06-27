@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -10,6 +11,7 @@ public interface TextureLoader {
       signature = "(II)[I",
       garbageValue = "-905309626"
    )
+   @Export("load")
    int[] load(int var1);
 
    @ObfuscatedName("w")
@@ -31,5 +33,6 @@ public interface TextureLoader {
       signature = "(II)Z",
       garbageValue = "-1427873761"
    )
+   @Export("isLowDetail")
    boolean isLowDetail(int var1);
 }

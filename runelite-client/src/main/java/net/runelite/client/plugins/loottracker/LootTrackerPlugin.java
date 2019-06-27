@@ -133,10 +133,6 @@ public class LootTrackerPlugin extends Plugin
 		5179, "Brimstone Chest",
 		11573, "Crystal Chest"
 	);
-
-	// Player deaths
-	public static HashSet<String> usernameSet = new HashSet<String>(Arrays.stream(new String[]{"All Records"}).collect(Collectors.toList()));
-
 	private static final File LOOT_RECORDS_FILE = new File(RuneLite.RUNELITE_DIR, "lootRecords.json");
 	private static final Set<Integer> RESPAWN_REGIONS = ImmutableSet.of(
 		12850, // Lumbridge
@@ -144,49 +140,38 @@ public class LootTrackerPlugin extends Plugin
 		12342, // Edgeville
 		11062 // Camelot
 	);
-	private boolean pvpDeath = false;
-
-	@Inject
-	private ClientToolbar clientToolbar;
-
-	@Inject
-	private ItemManager itemManager;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
-
-	@Inject
-	private SpriteManager spriteManager;
-
-	@Inject
-	private LootTrackerConfig config;
-
+	// Player deaths
+	public static HashSet<String> usernameSet = new HashSet<String>(Arrays.stream(new String[]{"All Records"}).collect(Collectors.toList()));
 	@Inject
 	public Client client;
-
+	@VisibleForTesting
+	public Collection<LootRecord> lootRecords = new ArrayList<>();
+	private boolean pvpDeath = false;
+	@Inject
+	private ClientToolbar clientToolbar;
+	@Inject
+	private ItemManager itemManager;
+	@Inject
+	private ChatMessageManager chatMessageManager;
+	@Inject
+	private SpriteManager spriteManager;
+	@Inject
+	private LootTrackerConfig config;
 	@Inject
 	private ClientThread clientThread;
-
 	@Inject
 	private SessionManager sessionManager;
-
 	@Inject
 	private ScheduledExecutorService executor;
-
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
-
 	private List<String> ignoredItems = new ArrayList<>();
-
 	private Multiset<Integer> inventorySnapshot;
-
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
 	private BufferedReader bufferedReader;
 	private JsonStreamParser jsonStreamParser;
-	@VisibleForTesting
-	public Collection<LootRecord> lootRecords = new ArrayList<>();
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -215,6 +200,13 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return list;
+	}
+
+	private static Collection<GameItem> toGameItems(Collection<ItemStack> items)
+	{
+		return items.stream()
+			.map(item -> new GameItem(item.getId(), item.getQuantity()))
+			.collect(Collectors.toList());
 	}
 
 	@Provides
@@ -405,7 +397,6 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-
 	@Subscribe
 	public void onPlayerSpawned(PlayerSpawned event)
 	{
@@ -418,6 +409,18 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
+		if (config.sendLootValueMessages())
+		{
+			if (WorldType.isDeadmanWorld(client.getWorldType()) || WorldType.isHighRiskWorld(client.getWorldType()) || WorldType.isPvpWorld(client.getWorldType()) || client.getVar(Varbits.IN_WILDERNESS) == 1)
+			{
+				final String totalValue = StackFormatter.quantityToRSStackSize(playerLootReceived.getItems().stream()
+					.mapToInt(itemStack -> itemManager.getItemPrice(itemStack.getId()) * itemStack.getQuantity()).sum());
+
+				chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.CONSOLE).runeLiteFormattedMessage(
+					new ChatMessageBuilder().append("The total value of your loot is " + totalValue + " GP.")
+						.build()).build());
+			}
+		}
 		final Player player = playerLootReceived.getPlayer();
 		final Collection<ItemStack> items = playerLootReceived.getItems();
 		final String name = player.getName();
@@ -791,13 +794,6 @@ public class LootTrackerPlugin extends Plugin
 		return itemStacks.stream()
 			.map(itemStack -> buildLootTrackerItem(itemStack.getId(), itemStack.getQuantity()))
 			.toArray(LootTrackerItem[]::new);
-	}
-
-	private static Collection<GameItem> toGameItems(Collection<ItemStack> items)
-	{
-		return items.stream()
-			.map(item -> new GameItem(item.getId(), item.getQuantity()))
-			.collect(Collectors.toList());
 	}
 
 	public Collection<LootTrackerRecord> convertToLootTrackerRecord(final Collection<LootRecord> records)

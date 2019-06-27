@@ -7,19 +7,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("MusicSample")
 public class MusicSample extends Node {
    @ObfuscatedName("g")
-   @Export("__cd_g")
    static byte[] __cd_g;
    @ObfuscatedName("l")
-   @Export("__cd_l")
    static int __cd_l;
    @ObfuscatedName("e")
-   @Export("__cd_e")
    static int __cd_e;
    @ObfuscatedName("x")
-   @Export("__cd_x")
    static int __cd_x;
    @ObfuscatedName("d")
-   @Export("__cd_d")
    static int __cd_d;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
@@ -42,43 +37,30 @@ public class MusicSample extends Node {
    )
    static class114[] field1326;
    @ObfuscatedName("z")
-   @Export("__cd_z")
    static boolean[] __cd_z;
    @ObfuscatedName("j")
-   @Export("__cd_j")
    static int[] __cd_j;
    @ObfuscatedName("s")
-   @Export("__cd_s")
    static boolean __cd_s;
    @ObfuscatedName("c")
-   @Export("__cd_c")
    static float[] __cd_c;
    @ObfuscatedName("r")
-   @Export("__cd_r")
    static float[] __cd_r;
    @ObfuscatedName("p")
-   @Export("__cd_p")
    static float[] __cd_p;
    @ObfuscatedName("v")
-   @Export("__cd_v")
    static float[] __cd_v;
    @ObfuscatedName("ag")
-   @Export("__cd_ag")
    static float[] __cd_ag;
    @ObfuscatedName("aq")
-   @Export("__cd_aq")
    static float[] __cd_aq;
    @ObfuscatedName("aj")
-   @Export("__cd_aj")
    static float[] __cd_aj;
    @ObfuscatedName("av")
-   @Export("__cd_av")
    static int[] __cd_av;
    @ObfuscatedName("ar")
-   @Export("__cd_ar")
    static int[] __cd_ar;
    @ObfuscatedName("m")
-   @Export("__m")
    byte[][] __m;
    @ObfuscatedName("f")
    @Export("sampleRate")
@@ -93,28 +75,21 @@ public class MusicSample extends Node {
    @Export("end")
    int end;
    @ObfuscatedName("u")
-   @Export("__u")
    boolean __u;
    @ObfuscatedName("t")
-   @Export("__t")
    float[] __t;
    @ObfuscatedName("y")
-   @Export("__y")
    int __y;
    @ObfuscatedName("h")
-   @Export("__h")
    int __h;
    @ObfuscatedName("b")
-   @Export("__b")
    boolean __b;
    @ObfuscatedName("ac")
    @Export("samples")
    byte[] samples;
    @ObfuscatedName("ay")
-   @Export("__ay")
    int __ay;
    @ObfuscatedName("ah")
-   @Export("__ah")
    int __ah;
 
    static {
@@ -158,7 +133,6 @@ public class MusicSample extends Node {
    }
 
    @ObfuscatedName("g")
-   @Export("__g_175")
    float[] __g_175(int var1) {
       method2337(this.__m[var1], 0);
       method2338();

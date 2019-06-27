@@ -13,7 +13,6 @@ public class Skills {
    @Export("Skills_experienceTable")
    public static int[] Skills_experienceTable;
    @ObfuscatedName("ef")
-   @Export("__hc_ef")
    static int[] __hc_ef;
 
    static {

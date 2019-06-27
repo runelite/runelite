@@ -39,6 +39,7 @@ public class BufferedNetSocket extends AbstractSocket {
       signature = "(II)Z",
       garbageValue = "1765046516"
    )
+   @Export("isAvailable")
    public boolean isAvailable(int var1) throws IOException {
       return this.source.isAvailable(var1);
    }
@@ -48,6 +49,7 @@ public class BufferedNetSocket extends AbstractSocket {
       signature = "(I)I",
       garbageValue = "-1078471130"
    )
+   @Export("available")
    public int available() throws IOException {
       return this.source.available();
    }
@@ -57,6 +59,7 @@ public class BufferedNetSocket extends AbstractSocket {
       signature = "(I)I",
       garbageValue = "516705222"
    )
+   @Export("readUnsignedByte")
    public int readUnsignedByte() throws IOException {
       return this.source.readUnsignedByte();
    }
@@ -66,6 +69,7 @@ public class BufferedNetSocket extends AbstractSocket {
       signature = "([BIII)I",
       garbageValue = "-1089665746"
    )
+   @Export("read")
    public int read(byte[] var1, int var2, int var3) throws IOException {
       return this.source.read(var1, var2, var3);
    }
@@ -75,6 +79,7 @@ public class BufferedNetSocket extends AbstractSocket {
       signature = "([BIIB)V",
       garbageValue = "-86"
    )
+   @Export("write")
    public void write(byte[] var1, int var2, int var3) throws IOException {
       this.sink.write(var1, var2, var3);
    }
@@ -84,6 +89,7 @@ public class BufferedNetSocket extends AbstractSocket {
       signature = "(I)V",
       garbageValue = "-1252618448"
    )
+   @Export("close")
    public void close() {
       this.sink.close();
 
@@ -96,7 +102,6 @@ public class BufferedNetSocket extends AbstractSocket {
       this.source.close();
    }
 
-   @Export("__finalize_280")
    @ObfuscatedName("finalize")
    protected void __finalize_280() {
       this.close();

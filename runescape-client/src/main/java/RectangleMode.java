@@ -11,19 +11,16 @@ public enum RectangleMode implements Enumerated {
    @ObfuscatedSignature(
       signature = "Llj;"
    )
-   @Export("__lj_m")
    __lj_m(0, 0),
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Llj;"
    )
-   @Export("__lj_f")
    __lj_f(1, 1),
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Llj;"
    )
-   @Export("__lj_q")
    __lj_q(2, 2);
    @ObfuscatedName("d")
    @Export("musicTrackBoolean")
@@ -51,6 +48,7 @@ public enum RectangleMode implements Enumerated {
       signature = "(B)I",
       garbageValue = "83"
    )
+   @Export("rsOrdinal")
    public int rsOrdinal() {
       return this.id2;
    }

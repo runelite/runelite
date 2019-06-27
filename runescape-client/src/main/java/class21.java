@@ -7,7 +7,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("b")
 public abstract class class21 {
    @ObfuscatedName("by")
-   @Export("__b_by")
    static String __b_by;
    @ObfuscatedName("m")
    @ObfuscatedGetter(

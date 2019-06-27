@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.barbarianassault;
+package net.runelite.rs.api;
 
-import java.time.Duration;
-import java.time.Instant;
-import javax.inject.Inject;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Constants;
-
-class Round
+public interface RSPcmStream
 {
-	private final Instant roundStartTime;
-
-	@Getter
-	private final Role roundRole;
-
-	@Getter
-	@Setter
-	private boolean runnersKilled;
-
-	@Getter
-	@Setter
-	private boolean rangersKilled;
-
-	@Getter
-	@Setter
-	private boolean healersKilled;
-
-	@Getter
-	@Setter
-	private boolean fightersKilled;
-
-	@Inject
-	public Round(Role role)
-	{
-		this.roundRole = role;
-		this.roundStartTime = Instant.now().plusMillis(2 * Constants.GAME_TICK_LENGTH);
-	}
-
-	public long getRoundTime()
-	{
-		return Duration.between(roundStartTime, Instant.now()).getSeconds();
-	}
-
-	long getTimeToChange()
-	{
-		return 30 + (Duration.between(Instant.now(), roundStartTime).getSeconds() % 30);
-	}
 }

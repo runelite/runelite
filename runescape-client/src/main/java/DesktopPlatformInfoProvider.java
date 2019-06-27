@@ -1,4 +1,5 @@
 import java.util.Random;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -11,6 +12,7 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
       signature = "(I)Llb;",
       garbageValue = "-843739713"
    )
+   @Export("get")
    public PlatformInfo get() {
       byte var1;
       if(WorldMapSection3.osNameLowerCase.startsWith("win")) {

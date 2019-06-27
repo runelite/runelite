@@ -12,7 +12,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
    @ObfuscatedSignature(
       signature = "Lho;"
    )
-   @Export("__t_i")
    static Widget __t_i;
    @ObfuscatedName("db")
    @ObfuscatedSignature(
@@ -33,7 +32,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = -1722323621
    )
-   @Export("__m")
    final int __m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
@@ -45,13 +43,11 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = 364253793
    )
-   @Export("__q")
    final int __q;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -362031241
    )
-   @Export("__w")
    final int __w;
 
    @ObfuscatedSignature(
@@ -78,7 +74,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "(I)I",
       garbageValue = "1990181988"
    )
-   @Export("__m_15")
    public int __m_15() {
       return this.__m;
    }
@@ -88,7 +83,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "(I)Laj;",
       garbageValue = "1159446036"
    )
-   @Export("__f_16")
    WorldMapLabel __f_16() {
       return this.label0;
    }
@@ -98,7 +92,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "(B)I",
       garbageValue = "75"
    )
-   @Export("__q_17")
    int __q_17() {
       return this.__q;
    }
@@ -108,7 +101,6 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "(I)I",
       garbageValue = "-1558233611"
    )
-   @Export("__w_18")
    int __w_18() {
       return this.__w;
    }
@@ -171,13 +163,13 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
 
                   var2 = (var3 - var8) * Client.__client_qc / var3;
                } else {
-                  var2 = Client.__client_qp;
+                  var2 = Client.soundEffectVolume;
                }
 
                if(var2 > 0) {
                   RawSound var10 = var9.toRawSound().resample(MilliClock.decimator);
-                  RawPcmStream var11 = RawPcmStream.method2497(var10, 100, var2);
-                  var11.__x_181(Client.unknownSoundValues1[var0] - 1);
+                  RawPcmStream var11 = RawPcmStream.createRawPcmStream(var10, 100, var2);
+                  var11.setNumLoops(Client.queuedSoundEffectLoops[var0] - 1);
                   TaskHandler.pcmStreamMixer.addSubStream(var11);
                }
 
@@ -189,7 +181,7 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
             for(int var1 = var0; var1 < Client.soundEffectCount; ++var1) {
                Client.soundEffectIds[var1] = Client.soundEffectIds[var1 + 1];
                Client.soundEffects[var1] = Client.soundEffects[var1 + 1];
-               Client.unknownSoundValues1[var1] = Client.unknownSoundValues1[var1 + 1];
+               Client.queuedSoundEffectLoops[var1] = Client.queuedSoundEffectLoops[var1 + 1];
                Client.queuedSoundEffectDelays[var1] = Client.queuedSoundEffectDelays[var1 + 1];
                Client.soundLocations[var1] = Client.soundLocations[var1 + 1];
             }

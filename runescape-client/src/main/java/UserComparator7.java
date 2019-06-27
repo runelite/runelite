@@ -10,7 +10,6 @@ import net.runelite.rs.Reflection;
 @Implements("UserComparator7")
 public class UserComparator7 extends AbstractUserComparator {
    @ObfuscatedName("m")
-   @Export("__m")
    final boolean __m;
 
    public UserComparator7(boolean var1) {
@@ -22,7 +21,6 @@ public class UserComparator7 extends AbstractUserComparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "-9252550"
    )
-   @Export("__m_270")
    int __m_270(Buddy var1, Buddy var2) {
       return var1.world0 != 0 && var2.world0 != 0?(this.__m?var1.int2 - var2.int2:var2.int2 - var1.int2):this.__x_461(var1, var2);
    }

@@ -19,7 +19,6 @@ public class UserComparator3 extends AbstractUserComparator {
    @Export("socketTask")
    static Task socketTask;
    @ObfuscatedName("m")
-   @Export("__m")
    final boolean __m;
 
    public UserComparator3(boolean var1) {
@@ -31,7 +30,6 @@ public class UserComparator3 extends AbstractUserComparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "-1157645406"
    )
-   @Export("__m_274")
    int __m_274(Buddy var1, Buddy var2) {
       return var2.world0 != var1.world0?(this.__m?var1.world0 - var2.world0:var2.world0 - var1.world0):this.__x_461(var1, var2);
    }

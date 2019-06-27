@@ -35,19 +35,16 @@ public class WorldMap {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__g")
    AbstractIndexCache __g;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__l")
    AbstractIndexCache __l;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__e")
    AbstractIndexCache __e;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
@@ -83,7 +80,6 @@ public class WorldMap {
    @ObfuscatedSignature(
       signature = "Lag;"
    )
-   @Export("__t")
    WorldMapArea __t;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
@@ -155,13 +151,11 @@ public class WorldMap {
    @ObfuscatedGetter(
       intValue = -1653084915
    )
-   @Export("__ac")
    int __ac;
    @ObfuscatedName("ay")
    @ObfuscatedGetter(
       intValue = 1664740569
    )
-   @Export("__ay")
    int __ay;
    @ObfuscatedName("ah")
    @Export("perpetualFlash0")
@@ -173,58 +167,48 @@ public class WorldMap {
    @ObfuscatedGetter(
       intValue = -1683910031
    )
-   @Export("__aw")
    int __aw;
    @ObfuscatedName("al")
    @ObfuscatedGetter(
       intValue = 2064651113
    )
-   @Export("__al")
    int __al;
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
       intValue = -1979665983
    )
-   @Export("__ab")
    int __ab;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
       intValue = 547126547
    )
-   @Export("__ae")
    int __ae;
    @ObfuscatedName("at")
    @ObfuscatedGetter(
       intValue = -815748997
    )
-   @Export("__at")
    int __at;
    @ObfuscatedName("ad")
    @ObfuscatedGetter(
       intValue = -988933407
    )
-   @Export("__ad")
    int __ad;
    @ObfuscatedName("ap")
    @ObfuscatedGetter(
       longValue = -4747643242047040283L
    )
-   @Export("__ap")
    long __ap;
    @ObfuscatedName("as")
    @ObfuscatedGetter(
       intValue = -969094439
    )
-   @Export("__as")
    int __as;
    @ObfuscatedName("am")
    @ObfuscatedGetter(
       intValue = -869889187
    )
-   @Export("__am")
    int __am;
    @ObfuscatedName("an")
-   @Export("__an")
    boolean __an;
    @ObfuscatedName("ao")
    @Export("enabledElements")
@@ -233,10 +217,8 @@ public class WorldMap {
    @Export("enabledCategories")
    HashSet enabledCategories;
    @ObfuscatedName("ax")
-   @Export("__ax")
    HashSet __ax;
    @ObfuscatedName("af")
-   @Export("__af")
    HashSet __af;
    @ObfuscatedName("ai")
    @Export("elementsDisabled")
@@ -245,19 +227,15 @@ public class WorldMap {
    @ObfuscatedGetter(
       intValue = -237734529
    )
-   @Export("__ba")
    int __ba;
    @ObfuscatedName("bs")
-   @Export("__bs")
    final int[] __bs;
    @ObfuscatedName("bq")
-   @Export("__bq")
    List __bq;
    @ObfuscatedName("bn")
    @Export("iconIterator")
    Iterator iconIterator;
    @ObfuscatedName("bk")
-   @Export("__bk")
    HashSet __bk;
    @ObfuscatedName("bd")
    @ObfuscatedSignature(
@@ -278,25 +256,21 @@ public class WorldMap {
    @ObfuscatedGetter(
       intValue = 2031417343
    )
-   @Export("__bx")
    int __bx;
    @ObfuscatedName("by")
    @ObfuscatedGetter(
       intValue = 754899959
    )
-   @Export("__by")
    int __by;
    @ObfuscatedName("bu")
    @ObfuscatedGetter(
       intValue = 2064728623
    )
-   @Export("__bu")
    int __bu;
    @ObfuscatedName("bm")
    @ObfuscatedGetter(
       intValue = -1774424249
    )
-   @Export("__bm")
    int __bm;
 
    static {
@@ -378,7 +352,6 @@ public class WorldMap {
       signature = "(I)V",
       garbageValue = "-1144390092"
    )
-   @Export("__f_518")
    public void __f_518() {
       WorldMapRegion.__av_o.demote(5);
    }
@@ -439,7 +412,6 @@ public class WorldMap {
       signature = "(IIZZS)V",
       garbageValue = "18431"
    )
-   @Export("__w_519")
    public void __w_519(int var1, int var2, boolean var3, boolean var4) {
       long var5 = class203.currentTimeMs();
       this.__o_520(var1, var2, var4, var5);
@@ -469,7 +441,6 @@ public class WorldMap {
    }
 
    @ObfuscatedName("o")
-   @Export("__o_520")
    void __o_520(int var1, int var2, boolean var3, long var4) {
       if(this.currentMapArea0 != null) {
          int var6 = (int)((float)this.worldMapX + ((float)(var1 - this.worldMapDisplayX) - (float)this.__ap_537() * this.zoom / 2.0F) / this.zoom);
@@ -538,7 +509,6 @@ public class WorldMap {
       signature = "(I)V",
       garbageValue = "2075446341"
    )
-   @Export("__g_521")
    void __g_521() {
       if(this.__x_524()) {
          int var1 = this.worldMapTargetX - this.worldMapX;
@@ -581,7 +551,6 @@ public class WorldMap {
       signature = "(B)V",
       garbageValue = "35"
    )
-   @Export("__e_523")
    final void __e_523() {
       this.__ad = -1;
       this.__at = -1;
@@ -594,7 +563,6 @@ public class WorldMap {
       signature = "(I)Z",
       garbageValue = "1444745621"
    )
-   @Export("__x_524")
    boolean __x_524() {
       return this.worldMapTargetX != -1 && this.worldMapTargetY != -1;
    }
@@ -625,7 +593,6 @@ public class WorldMap {
       signature = "(IIIZI)V",
       garbageValue = "469045892"
    )
-   @Export("__a_525")
    public void __a_525(int var1, int var2, int var3, boolean var4) {
       WorldMapArea var5 = this.mapAreaAtCoord(var1, var2, var3);
       if(var5 == null) {
@@ -713,7 +680,6 @@ public class WorldMap {
       signature = "(Lag;Lhu;Lhu;ZI)V",
       garbageValue = "-1430939646"
    )
-   @Export("__h_526")
    public void __h_526(WorldMapArea var1, TileLocation var2, TileLocation var3, boolean var4) {
       if(var1 != null) {
          if(this.currentMapArea0 == null || var1 != this.currentMapArea0) {
@@ -818,7 +784,6 @@ public class WorldMap {
       signature = "(IIIIIII)Z",
       garbageValue = "-1561237851"
    )
-   @Export("__p_527")
    boolean __p_527(int var1, int var2, int var3, int var4, int var5, int var6) {
       return this.sprite == null?true:(this.sprite.subWidth == var1 && this.sprite.subHeight == var2?(this.worldMapManager.__z != this.__bx?true:(this.__bm != Client.__client_ss?true:(var3 <= 0 && var4 <= 0?var3 + var1 < var5 || var2 + var4 < var6:true))):true);
    }
@@ -828,7 +793,6 @@ public class WorldMap {
       signature = "(IIIIIII)V",
       garbageValue = "-2090965249"
    )
-   @Export("__v_528")
    void __v_528(int var1, int var2, int var3, int var4, int var5, int var6) {
       if(ClientParameter.field3645 != null) {
          int var7 = 512 / (this.worldMapManager.__z * 2);
@@ -917,7 +881,6 @@ public class WorldMap {
       signature = "(IB)F",
       garbageValue = "56"
    )
-   @Export("__av_529")
    float __av_529(int var1) {
       return var1 == 25?1.0F:(var1 == 37?1.5F:(var1 == 50?2.0F:(var1 == 75?3.0F:(var1 == 100?4.0F:8.0F))));
    }
@@ -991,7 +954,6 @@ public class WorldMap {
       signature = "(III)V",
       garbageValue = "-2147142500"
    )
-   @Export("__aw_531")
    public void __aw_531(int var1, int var2) {
       if(this.currentMapArea0 != null) {
          this.setWorldMapPosition(var1 - this.currentMapArea0.minX() * 64, var2 - this.currentMapArea0.minY() * 64, true);
@@ -1005,7 +967,6 @@ public class WorldMap {
       signature = "(IIIB)V",
       garbageValue = "-40"
    )
-   @Export("__al_532")
    public void __al_532(int var1, int var2, int var3) {
       if(this.currentMapArea0 != null) {
          int[] var4 = this.currentMapArea0.position(var1, var2, var3);
@@ -1021,7 +982,6 @@ public class WorldMap {
       signature = "(IIII)V",
       garbageValue = "1808854561"
    )
-   @Export("__ab_533")
    public void __ab_533(int var1, int var2, int var3) {
       if(this.currentMapArea0 != null) {
          int[] var4 = this.currentMapArea0.position(var1, var2, var3);
@@ -1037,7 +997,6 @@ public class WorldMap {
       signature = "(I)I",
       garbageValue = "-659556919"
    )
-   @Export("__ae_534")
    public int __ae_534() {
       return this.currentMapArea0 == null?-1:this.worldMapX + this.currentMapArea0.minX() * 64;
    }
@@ -1047,7 +1006,6 @@ public class WorldMap {
       signature = "(I)I",
       garbageValue = "1893257871"
    )
-   @Export("__at_535")
    public int __at_535() {
       return this.currentMapArea0 == null?-1:this.worldMapY + this.currentMapArea0.minY() * 64;
    }
@@ -1057,7 +1015,6 @@ public class WorldMap {
       signature = "(I)Lhu;",
       garbageValue = "-2005824064"
    )
-   @Export("__ad_536")
    public TileLocation __ad_536() {
       return this.currentMapArea0 == null?null:this.currentMapArea0.coord(this.__ae_534(), this.__at_535());
    }
@@ -1067,7 +1024,6 @@ public class WorldMap {
       signature = "(I)I",
       garbageValue = "442119278"
    )
-   @Export("__ap_537")
    public int __ap_537() {
       return this.worldMapDisplayWidth;
    }
@@ -1077,7 +1033,6 @@ public class WorldMap {
       signature = "(I)I",
       garbageValue = "-2065910749"
    )
-   @Export("__as_538")
    public int __as_538() {
       return this.worldMapDisplayHeight;
    }
@@ -1087,7 +1042,6 @@ public class WorldMap {
       signature = "(II)V",
       garbageValue = "2017050927"
    )
-   @Export("__am_539")
    public void __am_539(int var1) {
       if(var1 >= 1) {
          this.__ac = var1;
@@ -1100,7 +1054,6 @@ public class WorldMap {
       signature = "(I)V",
       garbageValue = "-1568631080"
    )
-   @Export("__an_540")
    public void __an_540() {
       this.__ac = 3;
    }
@@ -1110,7 +1063,6 @@ public class WorldMap {
       signature = "(II)V",
       garbageValue = "107295139"
    )
-   @Export("__az_541")
    public void __az_541(int var1) {
       if(var1 >= 1) {
          this.__ay = var1;
@@ -1123,7 +1075,6 @@ public class WorldMap {
       signature = "(I)V",
       garbageValue = "2023118274"
    )
-   @Export("__au_542")
    public void __au_542() {
       this.__ay = 50;
    }
@@ -1268,7 +1219,6 @@ public class WorldMap {
       signature = "(I)V",
       garbageValue = "758731634"
    )
-   @Export("__bk_543")
    void __bk_543() {
       this.__af.clear();
       this.__af.addAll(this.enabledElements);
@@ -1280,7 +1230,6 @@ public class WorldMap {
       signature = "(IIIIIIB)V",
       garbageValue = "-73"
    )
-   @Export("__bd_544")
    public void __bd_544(int var1, int var2, int var3, int var4, int var5, int var6) {
       if(this.cacheLoader.isLoaded()) {
          int var7 = (int)Math.ceil((double)((float)var3 / this.zoom));
@@ -1316,7 +1265,6 @@ public class WorldMap {
       signature = "(ILhu;I)Lhu;",
       garbageValue = "333454230"
    )
-   @Export("__bc_545")
    public TileLocation __bc_545(int var1, TileLocation var2) {
       if(!this.cacheLoader.isLoaded()) {
          return null;

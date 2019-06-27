@@ -14,7 +14,6 @@ public class ClientPreferences {
    @ObfuscatedGetter(
       intValue = 1548448409
    )
-   @Export("__bf_m")
    static int __bf_m;
    @ObfuscatedName("gr")
    @ObfuscatedSignature(
@@ -110,7 +109,6 @@ public class ClientPreferences {
       signature = "(ZI)V",
       garbageValue = "1213718182"
    )
-   @Export("__m_150")
    void __m_150(boolean var1) {
    }
 

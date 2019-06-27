@@ -18,13 +18,11 @@ public class NetCache {
    @ObfuscatedGetter(
       intValue = 948359621
    )
-   @Export("__iq_f")
    public static int __iq_f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       longValue = -4580427166942649525L
    )
-   @Export("__iq_q")
    public static long __iq_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -90,7 +88,6 @@ public class NetCache {
    @ObfuscatedGetter(
       intValue = 840549915
    )
-   @Export("__iq_j")
    public static int __iq_j;
    @ObfuscatedName("t")
    @Export("NetCache_crc")
@@ -102,7 +99,6 @@ public class NetCache {
    @Export("NetCache_indexCaches")
    public static IndexCache[] NetCache_indexCaches;
    @ObfuscatedName("b")
-   @Export("__iq_b")
    public static byte __iq_b;
    @ObfuscatedName("c")
    @ObfuscatedGetter(

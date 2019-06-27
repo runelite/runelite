@@ -8,7 +8,6 @@ public class class277 {
    @ObfuscatedSignature(
       signature = "Llq;"
    )
-   @Export("__jn_by")
    static IndexedSprite __jn_by;
 
    @ObfuscatedName("m")

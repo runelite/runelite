@@ -17,16 +17,13 @@ public class IterableNodeHashTableIterator implements Iterator {
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   @Export("__f")
    Node __f;
    @ObfuscatedName("q")
-   @Export("__q")
    int __q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   @Export("__w")
    Node __w;
 
    @ObfuscatedSignature(
@@ -39,7 +36,6 @@ public class IterableNodeHashTableIterator implements Iterator {
    }
 
    @ObfuscatedName("u")
-   @Export("__u_483")
    void __u_483() {
       this.__f = this.hashTable.buckets[0].previous;
       this.__q = 1;
@@ -89,7 +85,6 @@ public class IterableNodeHashTableIterator implements Iterator {
       }
    }
 
-   @Export("__remove_486")
    @ObfuscatedName("remove")
    public void __remove_486() {
       if(this.__w == null) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, WooxSolo <https://github.com/WooxSolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.batools;
+package net.runelite.api.events;
 
-import java.awt.image.BufferedImage;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Counter;
+import lombok.Data;
 
-class CycleCounter extends Counter
+@Data
+public class AreaSoundEffectPlayed
 {
-	CycleCounter(BufferedImage img, Plugin plugin, int tick)
-	{
-		super(img, plugin, tick);
-	}
+	private int soundId;
+	private int sceneX;
+	private int sceneY;
+	private int range;
+	private int delay;
 }

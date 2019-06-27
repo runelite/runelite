@@ -25,10 +25,10 @@
  */
 package net.runelite.client.plugins.raids;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.io.IOException;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
@@ -39,7 +39,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -71,15 +70,12 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -87,7 +83,6 @@ import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -95,17 +90,14 @@ import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
-import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
-import static net.runelite.client.util.Text.sanitize;
-import net.runelite.http.api.chat.ChatClient;
 
 @PluginDescriptor(
-	name = "Chambers Of Xeric",
+	name = "CoX Scouter",
 	description = "Show helpful information for the Chambers of Xeric raid",
-	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox", "olm"},
+	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox", "olm", "scout"},
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
@@ -118,13 +110,40 @@ public class RaidsPlugin extends Plugin
 	private static final String RAID_START_MESSAGE = "The raid has begun!";
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
-	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
-	private static final String LAYOUT_COMMAND_STRING = "!layout";
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
-	private static final int LINE_COMPONENT_HEIGHT = 16;
-	private static final Pattern LEVEL_COMPLETE_REGEX = Pattern.compile("(.+) level complete! Duration: ([0-9:]+)");
 	private static final Pattern RAID_COMPLETE_REGEX = Pattern.compile("Congratulations - your raid is complete! Duration: ([0-9:]+)");
+	private static final ImmutableSet<String> GOOD_CRABS_FIRST = ImmutableSet.of(
+		"FSCCP.PCSCF - #WNWSWN#ESEENW", //both good crabs
+		"SCSPF.CCSPF - #ESWWNW#ESENES", //both good crabs
+		"SPCFC.CSPCF - #WWNEEE#WSWNWS", //both good crabs
+		"SCFCP.CSCFS - #ENEESW#ENWWSW", //good crabs
+		"SCPFC.CCSSF - #NEESEN#WSWWNE", //good crabs
+		"SCFPC.CSPCF - #WSWWNE#WSEENE" //good crabs first rare crabs second
+	);
+	private static final ImmutableSet<String> GOOD_CRABS_SECOND = ImmutableSet.of(
+		"SCFCP.CCSPF - #ESEENW#ESWWNW", //bad crabs first good crabs second
+		"SCPFC.CSPSF - #WWSEEE#NWSWWN", //bad crabs first good crabs second
+		"SFCCS.PCPSF - #ENWWSW#ENESEN", //bad crabs first good crabs second
+		"SPCFC.SCCPF - #ESENES#WWWNEE", //bad crabs first good crabs second
+		"SPSFP.CCCSF - #NWSWWN#ESEENW", //bad crabs first good crabs second
+		"FSCCP.PCSCF - #ENWWWS#NEESEN" //bad crabs first good crabs second
+	);
+	private static final ImmutableSet<String> RARE_CRABS_FIRST = ImmutableSet.of(
+		"SCPFC.CSPCF - #NEEESW#WWNEEE", //rare crabs first good crabs second
+		"SCPFC.PCSCF - #WNEEES#NWSWNW", //rare crabs first bad crabs second
+		"SCPFC.CCPSF - #NWWWSE#WNEESE" //both rare crabs
+	);
+	private static final ImmutableSet<String> RARE_CRABS_SECOND = ImmutableSet.of(
+		"FSCPC.CSCPF - #WNWWSE#EENWWW", //bad crabs first rare crabs second
+		"SCFPC.PCCSF - #WSEENE#WWWSEE", //bad crabs first rare crabs second
+		"SCFPC.SCPCF - #NESENE#WSWWNE", //bad crabs first rare crabs second
+		"SFCCP.CSCPF - #WNEESE#NWSWWN", //bad crabs first rare crabs second
+		"SCFPC.CSPCF - #WSWWNE#WSEENE" //good crabs first rare crabs second
+	);
+	private static final String TRIPLE_PUZZLE = "SFCCPC.PCSCPF - #WSEENES#WWWNEEE"; //good crabs first rare crabs second rare crabs third
+	private static final Pattern PUZZLES = Pattern.compile("Puzzle - (\\w+)");
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
 	@Getter
@@ -135,21 +154,12 @@ public class RaidsPlugin extends Plugin
 	private final ArrayList<String> layoutWhitelist = new ArrayList<>();
 	@Getter
 	private final Map<String, List<Integer>> recommendedItemsList = new HashMap<>();
-	public boolean canShow;
 	@Inject
 	private ChatMessageManager chatMessageManager;
 	@Inject
 	private InfoBoxManager infoBoxManager;
 	@Inject
 	private Client client;
-	@Inject
-	private DrawManager drawManager;
-	@Inject
-	private ChatCommandManager chatCommandManager;
-	@Inject
-	private ChatClient chatClient;
-	@Inject
-	private ScheduledExecutorService executor;
 	@Inject
 	private RaidsConfig config;
 	@Inject
@@ -163,32 +173,21 @@ public class RaidsPlugin extends Plugin
 	@Inject
 	private LayoutSolver layoutSolver;
 	@Inject
-	private KeyManager keyManager;
-	@Inject
 	private SpriteManager spriteManager;
 	@Inject
 	private ClientThread clientThread;
 	@Inject
 	private TooltipManager tooltipManager;
+	@Inject
+	private ClientToolbar clientToolbar;
+	@Inject
+	private ItemManager itemManager;
 	@Getter
 	private Raid raid;
 	@Getter
 	private boolean inRaidChambers;
-	@Inject
-	private ClientToolbar clientToolbar;
-	private int upperTime = -1;
-	private int middleTime = -1;
-	private int lowerTime = -1;
-	private int raidTime = -1;
-	private WidgetOverlay widgetOverlay;
-	private String tooltip;
-	@Inject
-	private ItemManager itemManager;
-	private NavigationButton navButton;
-	private boolean raidStarted;
 	@Getter
-	private String layoutFullCode;
-	private RaidsTimer timer;
+	private String goodCrabs;
 	@Getter
 	private int startPlayerCount;
 	@Getter
@@ -197,6 +196,18 @@ public class RaidsPlugin extends Plugin
 	private List<String> startingPartyMembers = new ArrayList<>();
 	@Getter
 	private Set<String> missingPartyMembers = new HashSet<>();
+	@Getter
+	private String layoutFullCode;
+	@Getter
+	private boolean raidStarted;
+	private int upperTime = -1;
+	private int middleTime = -1;
+	private int lowerTime = -1;
+	private int raidTime = -1;
+	private WidgetOverlay widgetOverlay;
+	private String tooltip;
+	private NavigationButton navButton;
+	private RaidsTimer timer;
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -219,10 +230,8 @@ public class RaidsPlugin extends Plugin
 		{
 			overlayManager.add(partyOverlay);
 		}
-		keyManager.registerKeyListener(hotkeyListener);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
-		chatCommandManager.registerCommandAsync(LAYOUT_COMMAND_STRING, this::lookupRaid, this::submitRaidLookup);
 		widgetOverlay = overlayManager.getWidgetOverlay(WidgetInfo.RAIDS_POINTS_INFOBOX);
 		RaidsPanel panel = injector.getInstance(RaidsPanel.class);
 		panel.init(config);
@@ -247,14 +256,6 @@ public class RaidsPlugin extends Plugin
 			overlayManager.remove(partyOverlay);
 		}
 		infoBoxManager.removeInfoBox(timer);
-		keyManager.unregisterKeyListener(hotkeyListener);
-		inRaidChambers = false;
-		widgetOverlay = null;
-		raidStarted = false;
-		raid = null;
-		timer = null;
-		chatCommandManager.unregisterCommand(LAYOUT_COMMAND_STRING);
-
 		final Widget widget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX);
 		if (widget != null)
 		{
@@ -492,72 +493,6 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void lookupRaid(final ChatMessage chatmessage, final String message)
-	{
-		final String player;
-		if (chatmessage.getType().equals(ChatMessageType.PRIVATECHATOUT))
-		{
-			player = client.getLocalPlayer().getName();
-		}
-		else
-		{
-			player = sanitize(chatmessage.getName());
-		}
-
-		final String layout;
-		try
-		{
-			layout = chatClient.getLayout(player);
-		}
-		catch (IOException ex)
-		{
-			log.debug("unable to lookup raids layout", ex);
-			return;
-		}
-
-		chatmessage.getMessageNode().setRuneLiteFormatMessage(new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Layout: ")
-				.append(ChatColorType.NORMAL)
-				.append(layout)
-				.build());
-
-		chatMessageManager.update(chatmessage.getMessageNode());
-		client.refreshChat();
-	}
-
-	private boolean submitRaidLookup(final ChatInput chatInput, final String value)
-	{
-		if (!inRaidChambers)
-		{
-			return true;
-		}
-
-		final String playerName = sanitize(client.getLocalPlayer().getName());
-		final String layout = getRaid().getLayout().toCodeString();
-		final String rooms = getRaid().toRoomString();
-		final String raidData = "[" + layout + "]: " + rooms;
-		log.debug("Submitting raids layout {} for {}", raidData, playerName);
-
-		executor.execute(() ->
-		{
-			try
-			{
-				chatClient.submitLayout(playerName, raidData);
-			}
-			catch (IOException e)
-			{
-				log.warn("unable to submit raids layout", e);
-			}
-			finally
-			{
-				chatInput.resume();
-			}
-		});
-
-		return true;
-	}
-
 	private void updatePartyMembers(boolean force)
 	{
 		int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
@@ -587,17 +522,18 @@ public class RaidsPlugin extends Plugin
 			}
 
 			partyMembers.clear();
-			for (int i = 0; i < widgets.length; i++)
+			for (Widget widget : widgets)
 			{
-				if (widgets[i] != null)
+				if (widget == null || widget.getText() == null)
 				{
-					// Party members names can be found as a color tagged string in every fourth(ish) of these children
-					String name = widgets[i].getName();
-					if (name.length() > 1)
-					{
-						// Clean away tag
-						partyMembers.add(name.substring(name.indexOf('>') + 1, name.indexOf('<', 1)));
-					}
+					continue;
+				}
+
+				String name = widget.getName();
+
+				if (name.length() > 1)
+				{
+					partyMembers.add(name.substring(name.indexOf('>') + 1, name.indexOf('<', 1)));
 				}
 			}
 
@@ -654,23 +590,43 @@ public class RaidsPlugin extends Plugin
 					return;
 				}
 
-				layoutFullCode = layout.getTest();
-				log.debug("Full Layout Code: " + layoutFullCode);
+				layoutFullCode = layout.getCode();
 				raid.updateLayout(layout);
 				RotationSolver.solve(raid.getCombatRooms());
-				overlay.setScoutOverlayShown(true);
+				setOverlayStatus(true);
 				sendRaidLayoutMessage();
+				Matcher puzzleMatch = PUZZLES.matcher(raid.getFullRotationString());
+				final List<String> puzzles = new ArrayList<>();
+				while (puzzleMatch.find())
+				{
+					puzzles.add(puzzleMatch.group());
+				}
+				if (raid.getFullRotationString().contains("Crabs"))
+				{
+					switch (puzzles.size())
+					{
+						case 1:
+							goodCrabs = handleCrabs(puzzles.get(0));
+							break;
+						case 2:
+							goodCrabs = handleCrabs(puzzles.get(0), puzzles.get(1));
+							break;
+						case 3:
+							goodCrabs = handleCrabs(puzzles.get(0), puzzles.get(1), puzzles.get(2));
+							break;
+					}
+				}
 			}
 			else if (!config.scoutOverlayAtBank())
 			{
-				overlay.setScoutOverlayShown(false);
+				setOverlayStatus(false);
 			}
 		}
 
 		// If we left party raid was started or we left raid
 		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 && (!inRaidChambers || !config.scoutOverlayInRaid()))
 		{
-			overlay.setScoutOverlayShown(false);
+			setOverlayStatus(false);
 			raidStarted = false;
 		}
 	}
@@ -696,7 +652,7 @@ public class RaidsPlugin extends Plugin
 				.build())
 			.build());
 
-		if (overlay.recordRaid())
+		if (recordRaid() != null)
 		{
 			chatMessageManager.queue(QueuedMessage.builder()
 				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
@@ -1061,6 +1017,10 @@ public class RaidsPlugin extends Plugin
 		lowerTime = -1;
 		raidTime = -1;
 		tooltip = null;
+		inRaidChambers = false;
+		widgetOverlay = null;
+		raidStarted = false;
+		timer = null;
 	}
 
 	private int timeToSeconds(String s)
@@ -1143,22 +1103,73 @@ public class RaidsPlugin extends Plugin
 		tooltip = builder.toString();
 	}
 
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
+	private String handleCrabs(String firstGroup)
 	{
-		@Override
-		public void hotkeyPressed()
+		if (firstGroup.contains("Crabs") && GOOD_CRABS_FIRST.contains(layoutFullCode))
 		{
-			if (config.scoutOverlayInRaid() && raidStarted)
+			return "Good Crabs";
+		}
+		if (firstGroup.contains("Crabs") && RARE_CRABS_FIRST.contains(layoutFullCode))
+		{
+			return "Rare Crabs";
+		}
+		return null;
+	}
+
+	private String handleCrabs(String firstGroup, String secondGroup)
+	{
+		if (firstGroup.contains("Crabs") && GOOD_CRABS_FIRST.contains(layoutFullCode))
+		{
+			return "Good Crabs";
+		}
+		if (secondGroup.contains("Crabs") && GOOD_CRABS_SECOND.contains(layoutFullCode))
+		{
+			return "Good Crabs";
+		}
+		if (firstGroup.contains("Crabs") && RARE_CRABS_FIRST.contains(layoutFullCode))
+		{
+			return "Rare Crabs";
+		}
+		if (secondGroup.contains("Crabs") && RARE_CRABS_SECOND.contains(layoutFullCode))
+		{
+			return "Rare Crabs";
+		}
+		return null;
+	}
+
+	private String handleCrabs(String firstGroup, String secondGroup, String thirdGroup)
+	{
+		if (firstGroup.contains("Crabs"))
+		{
+			return "Good Crabs";
+		}
+		if (secondGroup.contains("Crabs"))
+		{
+			return "Rare Crabs";
+		}
+		if (thirdGroup.contains("Crabs"))
+		{
+			return "Rare Crabs";
+		}
+		return null;
+	}
+
+	String recordRaid()
+	{
+		if (raid.getRotationString().toLowerCase().equals("vasa,tekton,vespula")
+			&& raid.getFullRotationString().toLowerCase().contains("crabs")
+			&& raid.getFullRotationString().toLowerCase().contains("tightrope"))
+		{
+			if (goodCrabs != null)
 			{
-				if (overlay.isScoutOverlayShown())
-				{
-					overlay.setScoutOverlayShown(false);
-				}
-				else
-				{
-					overlay.setScoutOverlayShown(true);
-				}
+				return goodCrabs;
 			}
 		}
-	};
+		return null;
+	}
+
+	private void setOverlayStatus(boolean bool)
+	{
+		overlay.setScoutOverlayShown(bool);
+	}
 }

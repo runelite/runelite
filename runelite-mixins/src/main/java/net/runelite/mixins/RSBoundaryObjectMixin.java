@@ -34,7 +34,7 @@ public abstract class RSBoundaryObjectMixin implements RSBoundaryObject
 	}
 
 	@Inject
-	private Model getModelA()
+	public Model getModelA()
 	{
 		Renderable renderable = getRenderable1();
 		if (renderable == null)
@@ -53,7 +53,7 @@ public abstract class RSBoundaryObjectMixin implements RSBoundaryObject
 	}
 
 	@Inject
-	private Model getModelB()
+	public Model getModelB()
 	{
 		Renderable renderable = getRenderable2();
 		if (renderable == null)

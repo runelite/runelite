@@ -17,13 +17,11 @@ public class SequenceDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__jh_f")
    public static AbstractIndexCache __jh_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__jh_q")
    public static AbstractIndexCache __jh_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -35,7 +33,6 @@ public class SequenceDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("__jh_o")
    public static EvictingDualNodeHashTable __jh_o;
    @ObfuscatedName("u")
    @Export("frameIds")
@@ -47,7 +44,6 @@ public class SequenceDefinition extends DualNode {
    @Export("frameLengths")
    public int[] frameLengths;
    @ObfuscatedName("e")
-   @Export("__e")
    public int[] __e;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
@@ -56,16 +52,13 @@ public class SequenceDefinition extends DualNode {
    @Export("frameCount")
    public int frameCount;
    @ObfuscatedName("d")
-   @Export("__d")
    int[] __d;
    @ObfuscatedName("k")
-   @Export("__k")
    public boolean __k;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 1309695045
    )
-   @Export("__n")
    public int __n;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
@@ -83,25 +76,21 @@ public class SequenceDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -28345361
    )
-   @Export("__z")
    public int __z;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1339014215
    )
-   @Export("__j")
    public int __j;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 2012242069
    )
-   @Export("__s")
    public int __s;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 1147391369
    )
-   @Export("__t")
    public int __t;
 
    static {

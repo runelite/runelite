@@ -10,16 +10,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Players")
 public class Players {
    @ObfuscatedName("q")
-   @Export("__cq_q")
    static byte[] __cq_q;
    @ObfuscatedName("w")
-   @Export("__cq_w")
    static byte[] __cq_w;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "[Lgr;"
    )
-   @Export("__cq_o")
    static Buffer[] __cq_o;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
@@ -34,10 +31,8 @@ public class Players {
    @ObfuscatedGetter(
       intValue = 945250525
    )
-   @Export("__cq_l")
    static int __cq_l;
    @ObfuscatedName("e")
-   @Export("__cq_e")
    static int[] __cq_e;
    @ObfuscatedName("x")
    @Export("Players_regions")
@@ -52,16 +47,13 @@ public class Players {
    @ObfuscatedGetter(
       intValue = -22568397
    )
-   @Export("__cq_n")
    static int __cq_n;
    @ObfuscatedName("i")
-   @Export("__cq_i")
    static int[] __cq_i;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lgr;"
    )
-   @Export("__cq_a")
    static Buffer __cq_a;
    @ObfuscatedName("y")
    @ObfuscatedSignature(

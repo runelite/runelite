@@ -11,7 +11,6 @@ public class IndexStoreAction extends Node {
    @ObfuscatedGetter(
       intValue = -1086790653
    )
-   @Export("__ik_rt")
    static int __ik_rt;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
@@ -23,7 +22,6 @@ public class IndexStoreAction extends Node {
    @ObfuscatedGetter(
       intValue = -1753937079
    )
-   @Export("__ik_cn")
    public static int __ik_cn;
    @ObfuscatedName("m")
    @ObfuscatedGetter(

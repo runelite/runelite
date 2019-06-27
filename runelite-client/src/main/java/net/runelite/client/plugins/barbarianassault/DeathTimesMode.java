@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2019, ganom <https://github.com/Ganom>
+ * Copyright (c) 2019, 7ate9 <https://github.com/se7enAte9>
+ * Copyright (c) 2019, https://runelitepl.us
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,6 +11,7 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -21,26 +23,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.ticktimers;
+package net.runelite.client.plugins.barbarianassault;
 
-import java.awt.Font;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
-@Getter
-@AllArgsConstructor
-public enum FontStyle
+public enum DeathTimesMode
 {
-	BOLD("Bold", Font.BOLD),
-	ITALIC("Italic", Font.ITALIC),
-	PLAIN("Plain", Font.PLAIN);
+	BOTH("Both"),
+	CHAT_BOX("Chat Box"),
+	INFO_BOX("Info Box");
 
-	private String name;
-	private int font;
+	private final String name;
+
+	DeathTimesMode(String name)
+	{
+		this.name = name;
+	}
 
 	@Override
 	public String toString()
 	{
-		return getName();
+		return name;
 	}
 }

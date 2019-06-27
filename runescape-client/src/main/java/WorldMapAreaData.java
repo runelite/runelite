@@ -10,13 +10,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("WorldMapAreaData")
 public class WorldMapAreaData extends WorldMapArea {
    @ObfuscatedName("n")
-   @Export("surfaceOffsetY")
    HashSet __n;
    @ObfuscatedName("i")
-   @Export("__i")
    HashSet __i;
    @ObfuscatedName("a")
-   @Export("__a")
    List __a;
 
    @ObfuscatedName("ce")
@@ -24,7 +21,6 @@ public class WorldMapAreaData extends WorldMapArea {
       signature = "(Lgr;Lgr;IZI)V",
       garbageValue = "-1999841505"
    )
-   @Export("__ce_76")
    void __ce_76(Buffer var1, Buffer var2, int var3, boolean var4) {
       this.read(var1, var3);
       int var5 = var2.__ag_302();
@@ -66,7 +62,6 @@ public class WorldMapAreaData extends WorldMapArea {
       signature = "(Lgr;ZB)V",
       garbageValue = "48"
    )
-   @Export("__cy_77")
    void __cy_77(Buffer var1, boolean var2) {
       this.__a = new LinkedList();
       int var3 = var1.__ag_302();

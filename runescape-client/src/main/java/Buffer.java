@@ -9,10 +9,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Buffer")
 public class Buffer extends Node {
    @ObfuscatedName("q")
-   @Export("__gr_q")
    static int[] __gr_q;
    @ObfuscatedName("o")
-   @Export("__gr_o")
    static long[] __gr_o;
    @ObfuscatedName("m")
    @Export("array")
@@ -75,7 +73,6 @@ public class Buffer extends Node {
       signature = "(S)V",
       garbageValue = "13572"
    )
-   @Export("__f_295")
    public void __f_295() {
       if(this.array != null) {
          VertexNormal.method2984(this.array);
@@ -202,7 +199,6 @@ public class Buffer extends Node {
       signature = "(Ljava/lang/CharSequence;B)V",
       garbageValue = "58"
    )
-   @Export("__j_296")
    public void __j_296(CharSequence var1) {
       int var3 = var1.length();
       int var4 = 0;
@@ -228,7 +224,6 @@ public class Buffer extends Node {
       signature = "([BIII)V",
       garbageValue = "-1915344405"
    )
-   @Export("__s_297")
    public void __s_297(byte[] var1, int var2, int var3) {
       for(int var4 = var2; var4 < var3 + var2; ++var4) {
          this.array[++this.index - 1] = var1[var4];
@@ -241,7 +236,6 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-225163682"
    )
-   @Export("__t_298")
    public void __t_298(int var1) {
       this.array[this.index - var1 - 4] = (byte)(var1 >> 24);
       this.array[this.index - var1 - 3] = (byte)(var1 >> 16);
@@ -254,7 +248,6 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-1298210761"
    )
-   @Export("__y_299")
    public void __y_299(int var1) {
       this.array[this.index - var1 - 2] = (byte)(var1 >> 8);
       this.array[this.index - var1 - 1] = (byte)var1;
@@ -265,7 +258,6 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-1839722163"
    )
-   @Export("__h_300")
    public void __h_300(int var1) {
       this.array[this.index - var1 - 1] = (byte)var1;
    }
@@ -291,7 +283,6 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "820873705"
    )
-   @Export("__c_301")
    public void __c_301(int var1) {
       if((var1 & -128) != 0) {
          if((var1 & -16384) != 0) {
@@ -337,7 +328,6 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "-86"
    )
-   @Export("__ag_302")
    public int __ag_302() {
       this.index += 2;
       return (this.array[this.index - 1] & 255) + ((this.array[this.index - 2] & 255) << 8);
@@ -348,7 +338,6 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "1"
    )
-   @Export("__aq_303")
    public int __aq_303() {
       this.index += 2;
       int var1 = (this.array[this.index - 1] & 255) + ((this.array[this.index - 2] & 255) << 8);
@@ -462,7 +451,6 @@ public class Buffer extends Node {
       signature = "(B)Ljava/lang/String;",
       garbageValue = "-14"
    )
-   @Export("__aw_304")
    public String __aw_304() {
       byte var1 = this.array[++this.index - 1];
       if(var1 != 0) {
@@ -535,7 +523,6 @@ public class Buffer extends Node {
       signature = "([BIIB)V",
       garbageValue = "-122"
    )
-   @Export("__al_305")
    public void __al_305(byte[] var1, int var2, int var3) {
       for(int var4 = var2; var4 < var3 + var2; ++var4) {
          var1[var4] = this.array[++this.index - 1];
@@ -548,7 +535,6 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "-24"
    )
-   @Export("__ab_306")
    public int __ab_306() {
       int var1 = this.array[this.index] & 255;
       return var1 < 128?this.readUnsignedByte() - 64:this.__ag_302() - 49152;
@@ -559,7 +545,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "1370512869"
    )
-   @Export("__ae_307")
    public int __ae_307() {
       int var1 = this.array[this.index] & 255;
       return var1 < 128?this.readUnsignedByte():this.__ag_302() - 32768;
@@ -570,7 +555,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "1177684230"
    )
-   @Export("__at_308")
    public int __at_308() {
       int var1 = 0;
 
@@ -588,7 +572,6 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "103"
    )
-   @Export("__ad_309")
    public int __ad_309() {
       return this.array[this.index] < 0?this.readInt() & Integer.MAX_VALUE:this.__ag_302();
    }
@@ -598,7 +581,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-1151173205"
    )
-   @Export("__ap_310")
    public int __ap_310() {
       if(this.array[this.index] < 0) {
          return this.readInt() & Integer.MAX_VALUE;
@@ -613,7 +595,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "984135559"
    )
-   @Export("__as_311")
    public int __as_311() {
       byte var1 = this.array[++this.index - 1];
 
@@ -765,7 +746,6 @@ public class Buffer extends Node {
       signature = "(II)I",
       garbageValue = "-484928770"
    )
-   @Export("__aa_312")
    public int __aa_312(int var1) {
       byte[] var3 = this.array;
       int var4 = this.index;
@@ -785,7 +765,6 @@ public class Buffer extends Node {
       signature = "(B)Z",
       garbageValue = "-11"
    )
-   @Export("__ax_313")
    public boolean __ax_313() {
       this.index -= 4;
       byte[] var2 = this.array;
@@ -807,7 +786,6 @@ public class Buffer extends Node {
       signature = "(IB)V",
       garbageValue = "-47"
    )
-   @Export("__af_314")
    public void __af_314(int var1) {
       this.array[++this.index - 1] = (byte)(var1 + 128);
    }
@@ -817,7 +795,6 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-1336494664"
    )
-   @Export("__ai_315")
    public void __ai_315(int var1) {
       this.array[++this.index - 1] = (byte)(0 - var1);
    }
@@ -827,7 +804,6 @@ public class Buffer extends Node {
       signature = "(IB)V",
       garbageValue = "21"
    )
-   @Export("__ba_316")
    public void __ba_316(int var1) {
       this.array[++this.index - 1] = (byte)(128 - var1);
    }
@@ -837,7 +813,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-86972759"
    )
-   @Export("__bb_317")
    public int __bb_317() {
       return this.array[++this.index - 1] - 128 & 255;
    }
@@ -857,7 +832,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "359814653"
    )
-   @Export("__bq_318")
    public int __bq_318() {
       return 128 - this.array[++this.index - 1] & 255;
    }
@@ -867,7 +841,6 @@ public class Buffer extends Node {
       signature = "(I)B",
       garbageValue = "2130167320"
    )
-   @Export("__bn_319")
    public byte __bn_319() {
       return (byte)(this.array[++this.index - 1] - 128);
    }
@@ -877,7 +850,6 @@ public class Buffer extends Node {
       signature = "(I)B",
       garbageValue = "1415936818"
    )
-   @Export("__bk_320")
    public byte __bk_320() {
       return (byte)(0 - this.array[++this.index - 1]);
    }
@@ -887,7 +859,6 @@ public class Buffer extends Node {
       signature = "(I)B",
       garbageValue = "1496705333"
    )
-   @Export("__bd_321")
    public byte __bd_321() {
       return (byte)(128 - this.array[++this.index - 1]);
    }
@@ -908,7 +879,6 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "189694315"
    )
-   @Export("__bo_322")
    public void __bo_322(int var1) {
       this.array[++this.index - 1] = (byte)(var1 >> 8);
       this.array[++this.index - 1] = (byte)(var1 + 128);
@@ -919,7 +889,6 @@ public class Buffer extends Node {
       signature = "(IB)V",
       garbageValue = "-7"
    )
-   @Export("__bx_323")
    public void __bx_323(int var1) {
       this.array[++this.index - 1] = (byte)(var1 + 128);
       this.array[++this.index - 1] = (byte)(var1 >> 8);
@@ -930,7 +899,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "2147134369"
    )
-   @Export("__by_324")
    public int __by_324() {
       this.index += 2;
       return ((this.array[this.index - 1] & 255) << 8) + (this.array[this.index - 2] & 255);
@@ -941,7 +909,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-1489217204"
    )
-   @Export("__bu_325")
    public int __bu_325() {
       this.index += 2;
       return (this.array[this.index - 1] - 128 & 255) + ((this.array[this.index - 2] & 255) << 8);
@@ -952,7 +919,6 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "-86"
    )
-   @Export("__bm_326")
    public int __bm_326() {
       this.index += 2;
       return ((this.array[this.index - 1] & 255) << 8) + (this.array[this.index - 2] - 128 & 255);
@@ -963,7 +929,6 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "54"
    )
-   @Export("__bl_327")
    public int __bl_327() {
       this.index += 2;
       int var1 = ((this.array[this.index - 1] & 255) << 8) + (this.array[this.index - 2] & 255);
@@ -979,7 +944,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "388487388"
    )
-   @Export("__br_328")
    public int __br_328() {
       this.index += 2;
       int var1 = ((this.array[this.index - 1] & 255) << 8) + (this.array[this.index - 2] - 128 & 255);
@@ -995,7 +959,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-88751042"
    )
-   @Export("__bj_329")
    public int __bj_329() {
       this.index += 3;
       return (this.array[this.index - 3] & 255) + ((this.array[this.index - 2] & 255) << 8) + ((this.array[this.index - 1] & 255) << 16);
@@ -1045,7 +1008,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-1322860835"
    )
-   @Export("__bt_330")
    public int __bt_330() {
       this.index += 4;
       return (this.array[this.index - 4] & 255) + ((this.array[this.index - 3] & 255) << 8) + ((this.array[this.index - 2] & 255) << 16) + ((this.array[this.index - 1] & 255) << 24);
@@ -1056,7 +1018,6 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-1731171028"
    )
-   @Export("__bp_331")
    public int __bp_331() {
       this.index += 4;
       return ((this.array[this.index - 2] & 255) << 24) + ((this.array[this.index - 4] & 255) << 8) + (this.array[this.index - 3] & 255) + ((this.array[this.index - 1] & 255) << 16);
@@ -1067,7 +1028,6 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "-126"
    )
-   @Export("__bf_332")
    public int __bf_332() {
       this.index += 4;
       return ((this.array[this.index - 1] & 255) << 8) + ((this.array[this.index - 4] & 255) << 16) + (this.array[this.index - 2] & 255) + ((this.array[this.index - 3] & 255) << 24);
@@ -1078,7 +1038,6 @@ public class Buffer extends Node {
       signature = "([BIII)V",
       garbageValue = "1303287859"
    )
-   @Export("__bh_333")
    public void __bh_333(byte[] var1, int var2, int var3) {
       for(int var4 = var2; var4 < var3 + var2; ++var4) {
          var1[var4] = (byte)(this.array[++this.index - 1] - 128);
@@ -1091,6 +1050,7 @@ public class Buffer extends Node {
       signature = "(B)V",
       garbageValue = "1"
    )
+   @Export("clearHealthbarCaches")
    public static void clearHealthbarCaches() {
       HealthBarDefinition.HealthBarDefinition_cached.clear();
       HealthBarDefinition.HealthBarDefinition_cachedSprites.clear();

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.metronome;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.api.SoundEffectVolume;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -164,7 +165,7 @@ public class MetronomePlugin extends Plugin
 			{
 				if (tockClip == null)
 				{
-					client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
+					client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, SoundEffectVolume.MEDIUM_HIGH);
 				}
 				else
 				{
@@ -180,7 +181,7 @@ public class MetronomePlugin extends Plugin
 			{
 				if (tickClip == null)
 				{
-					client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP);
+					client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, SoundEffectVolume.MEDIUM_HIGH);
 				}
 				else
 				{

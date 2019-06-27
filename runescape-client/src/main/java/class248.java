@@ -7,13 +7,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("iu")
 public class class248 {
    @ObfuscatedName("e")
-   @Export("__iu_e")
    static int[] __iu_e;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 662119345
    )
-   @Export("__iu_n")
    static int __iu_n;
    @ObfuscatedName("m")
    final HashMap field3267;

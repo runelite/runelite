@@ -74,7 +74,6 @@ public final class Player extends Actor {
    @ObfuscatedGetter(
       intValue = 665272587
    )
-   @Export("__k")
    int __k;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
@@ -86,7 +85,6 @@ public final class Player extends Actor {
    @ObfuscatedGetter(
       intValue = -1771431457
    )
-   @Export("__i")
    int __i;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
@@ -98,25 +96,21 @@ public final class Player extends Actor {
    @ObfuscatedGetter(
       intValue = 1610462047
    )
-   @Export("__z")
    int __z;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 224552403
    )
-   @Export("__j")
    int __j;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 305969541
    )
-   @Export("__s")
    int __s;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 892671055
    )
-   @Export("__t")
    int __t;
    @ObfuscatedName("y")
    @Export("isUnanimated")
@@ -155,7 +149,6 @@ public final class Player extends Actor {
    @Export("isInClanChat")
    TriBool isInClanChat;
    @ObfuscatedName("ag")
-   @Export("__ag")
    boolean __ag;
    @ObfuscatedName("aq")
    @ObfuscatedGetter(
@@ -451,7 +444,6 @@ public final class Player extends Actor {
       signature = "(IIBI)V",
       garbageValue = "-2066158770"
    )
-   @Export("__x_130")
    final void __x_130(int var1, int var2, byte var3) {
       if(super.sequence != -1 && WorldMapAreaData.getSequenceDefinition(super.sequence).__s == 1) {
          super.sequence = -1;
@@ -496,7 +488,6 @@ public final class Player extends Actor {
       signature = "(IIBI)V",
       garbageValue = "-1280043751"
    )
-   @Export("__a_131")
    final void __a_131(int var1, int var2, byte var3) {
       if(super.pathLength < 9) {
          ++super.pathLength;

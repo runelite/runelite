@@ -82,7 +82,6 @@ public class TextureProvider implements TextureLoader {
       signature = "(I)I",
       garbageValue = "-1996487053"
    )
-   @Export("__m_212")
    public int __m_212() {
       int var1 = 0;
       int var2 = 0;
@@ -155,7 +154,6 @@ public class TextureProvider implements TextureLoader {
       signature = "(II)I",
       garbageValue = "-1641984961"
    )
-   @Export("__w_213")
    public int __w_213(int var1) {
       return this.textures[var1] != null?this.textures[var1].int1:0;
    }
@@ -165,7 +163,6 @@ public class TextureProvider implements TextureLoader {
       signature = "(IB)Z",
       garbageValue = "14"
    )
-   @Export("__o_214")
    public boolean __o_214(int var1) {
       return this.textures[var1].__u;
    }

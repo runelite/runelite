@@ -7,19 +7,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Strings")
 public class Strings {
    @ObfuscatedName("bq")
-   @Export("__id_bq")
    public static String __id_bq;
    @ObfuscatedName("cp")
-   @Export("__id_cp")
    public static String __id_cp;
    @ObfuscatedName("jr")
-   @Export("__id_jr")
    public static String __id_jr;
    @ObfuscatedName("jv")
-   @Export("__id_jv")
    public static String __id_jv;
    @ObfuscatedName("ju")
-   @Export("__id_ju")
    public static String __id_ju;
 
    static {

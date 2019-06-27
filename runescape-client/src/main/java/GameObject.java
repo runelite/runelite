@@ -17,7 +17,6 @@ public final class GameObject {
    @ObfuscatedGetter(
       intValue = -457229589
    )
-   @Export("__eh_fy")
    static int __eh_fy;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
@@ -83,7 +82,6 @@ public final class GameObject {
    @ObfuscatedGetter(
       intValue = 1941106389
    )
-   @Export("__d")
    int __d;
    @ObfuscatedName("k")
    @ObfuscatedGetter(

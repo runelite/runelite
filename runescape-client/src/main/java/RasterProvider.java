@@ -51,6 +51,7 @@ public final class RasterProvider extends AbstractRasterProvider {
       signature = "(III)V",
       garbageValue = "-430495007"
    )
+   @Export("drawFull")
    public final void drawFull(int var1, int var2) {
       this.drawFull0(this.component0.getGraphics(), var1, var2);
    }
@@ -60,6 +61,7 @@ public final class RasterProvider extends AbstractRasterProvider {
       signature = "(IIIIB)V",
       garbageValue = "18"
    )
+   @Export("draw")
    public final void draw(int var1, int var2, int var3, int var4) {
       this.draw0(this.component0.getGraphics(), var1, var2, var3, var4);
    }

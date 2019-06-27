@@ -68,7 +68,6 @@ public class CollisionMap {
       signature = "(IIIIZB)V",
       garbageValue = "2"
    )
-   @Export("__f_283")
    public void __f_283(int var1, int var2, int var3, int var4, boolean var5) {
       var1 -= this.xInset;
       var2 -= this.yInset;
@@ -221,7 +220,6 @@ public class CollisionMap {
       signature = "(IIIIZI)V",
       garbageValue = "1813281219"
    )
-   @Export("__q_284")
    public void __q_284(int var1, int var2, int var3, int var4, boolean var5) {
       int var6 = 256;
       if(var5) {
@@ -248,7 +246,6 @@ public class CollisionMap {
       signature = "(III)V",
       garbageValue = "1082834717"
    )
-   @Export("__w_285")
    public void __w_285(int var1, int var2) {
       var1 -= this.xInset;
       var2 -= this.yInset;
@@ -260,7 +257,6 @@ public class CollisionMap {
       signature = "(III)V",
       garbageValue = "2022671149"
    )
-   @Export("__o_286")
    public void __o_286(int var1, int var2) {
       var1 -= this.xInset;
       var2 -= this.yInset;
@@ -272,7 +268,6 @@ public class CollisionMap {
       signature = "(IIII)V",
       garbageValue = "953350100"
    )
-   @Export("__u_287")
    void __u_287(int var1, int var2, int var3) {
       this.flags[var1][var2] |= var3;
    }
@@ -282,7 +277,6 @@ public class CollisionMap {
       signature = "(IIIIZB)V",
       garbageValue = "54"
    )
-   @Export("__g_288")
    public void __g_288(int var1, int var2, int var3, int var4, boolean var5) {
       var1 -= this.xInset;
       var2 -= this.yInset;
@@ -435,7 +429,6 @@ public class CollisionMap {
       signature = "(IIIIIZB)V",
       garbageValue = "23"
    )
-   @Export("__l_289")
    public void __l_289(int var1, int var2, int var3, int var4, int var5, boolean var6) {
       int var7 = 256;
       if(var6) {
@@ -468,7 +461,6 @@ public class CollisionMap {
       signature = "(IIII)V",
       garbageValue = "52290294"
    )
-   @Export("__e_290")
    void __e_290(int var1, int var2, int var3) {
       this.flags[var1][var2] &= ~var3;
    }
@@ -478,7 +470,6 @@ public class CollisionMap {
       signature = "(IIB)V",
       garbageValue = "37"
    )
-   @Export("__x_291")
    public void __x_291(int var1, int var2) {
       var1 -= this.xInset;
       var2 -= this.yInset;

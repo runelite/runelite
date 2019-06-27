@@ -26,6 +26,7 @@ public class IgnoreList extends UserList {
       signature = "(I)Ljs;",
       garbageValue = "-2063112195"
    )
+   @Export("newInstance")
    User newInstance() {
       return new Ignored();
    }
@@ -35,6 +36,7 @@ public class IgnoreList extends UserList {
       signature = "(II)[Ljs;",
       garbageValue = "861814350"
    )
+   @Export("newTypedArray")
    User[] newTypedArray(int var1) {
       return new Ignored[var1];
    }

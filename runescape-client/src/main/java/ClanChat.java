@@ -26,7 +26,6 @@ public class ClanChat extends UserList {
    @Export("owner")
    public String owner;
    @ObfuscatedName("k")
-   @Export("__k")
    public byte __k;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
@@ -38,7 +37,6 @@ public class ClanChat extends UserList {
    @ObfuscatedGetter(
       intValue = 386706253
    )
-   @Export("__i")
    int __i;
 
    @ObfuscatedSignature(
@@ -58,6 +56,7 @@ public class ClanChat extends UserList {
       signature = "(I)Ljs;",
       garbageValue = "-2063112195"
    )
+   @Export("newInstance")
    User newInstance() {
       return new ClanMate();
    }
@@ -67,6 +66,7 @@ public class ClanChat extends UserList {
       signature = "(II)[Ljs;",
       garbageValue = "861814350"
    )
+   @Export("newTypedArray")
    User[] newTypedArray(int var1) {
       return new ClanMate[var1];
    }
@@ -76,7 +76,6 @@ public class ClanChat extends UserList {
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "242122326"
    )
-   @Export("__q_472")
    final void __q_472(String var1) {
       this.name = HealthBarUpdate.method1722(var1);
    }
@@ -86,7 +85,6 @@ public class ClanChat extends UserList {
       signature = "(Ljava/lang/String;B)V",
       garbageValue = "103"
    )
-   @Export("__x_473")
    final void __x_473(String var1) {
       this.owner = HealthBarUpdate.method1722(var1);
    }
@@ -150,7 +148,6 @@ public class ClanChat extends UserList {
       signature = "(Lgr;B)V",
       garbageValue = "24"
    )
-   @Export("__a_474")
    public final void __a_474(Buffer var1) {
       Username var2 = new Username(var1.readStringCp1252NullTerminated(), this.loginType);
       int var3 = var1.__ag_302();
@@ -219,7 +216,6 @@ public class ClanChat extends UserList {
       signature = "(Ljk;I)V",
       garbageValue = "-128608554"
    )
-   @Export("__cp_475")
    final void __cp_475(ClanMate var1) {
       if(var1.username().equals(this.localUser.username())) {
          this.rank = var1.rank;

@@ -36,7 +36,7 @@ public class Layout
 
 	@Getter
 	@Setter
-	private String test;
+	private String code;
 
 	public void add(Room room)
 	{

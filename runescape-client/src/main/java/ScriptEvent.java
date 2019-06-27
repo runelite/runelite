@@ -74,7 +74,6 @@ public class ScriptEvent extends Node {
    @ObfuscatedGetter(
       intValue = -2138736593
    )
-   @Export("__d")
    int __d;
    @ObfuscatedName("k")
    @ObfuscatedGetter(

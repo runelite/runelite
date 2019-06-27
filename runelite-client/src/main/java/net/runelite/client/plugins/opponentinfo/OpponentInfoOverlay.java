@@ -65,7 +65,7 @@ class OpponentInfoOverlay extends Overlay
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
-	private Integer lastMaxHealth;
+	private int lastMaxHealth;
 	private int lastRatio = 0;
 	private int lastHealthScale = 0;
 	private String opponentName;
@@ -111,7 +111,7 @@ class OpponentInfoOverlay extends Overlay
 			lastHealthScale = opponent.getHealth();
 			opponentName = Text.removeTags(opponent.getName());
 
-			lastMaxHealth = null;
+			lastMaxHealth = -1;
 			if (opponent instanceof NPC)
 			{
 				lastMaxHealth = npcManager.getHealth(((NPC) opponent).getId());
@@ -167,7 +167,7 @@ class OpponentInfoOverlay extends Overlay
 			final HitpointsDisplayStyle displayStyle = opponentInfoConfig.hitpointsDisplayStyle();
 
 			if ((displayStyle == HitpointsDisplayStyle.HITPOINTS || displayStyle == HitpointsDisplayStyle.BOTH)
-				&& lastMaxHealth != null)
+				&& lastMaxHealth != -1)
 			{
 				// This is the reverse of the calculation of healthRatio done by the server
 				// which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)

@@ -6,25 +6,18 @@ import net.runelite.mapping.ObfuscatedName;
 @Implements("TileModel")
 public final class TileModel {
    @ObfuscatedName("z")
-   @Export("__dv_z")
    static int[] __dv_z;
    @ObfuscatedName("j")
-   @Export("__dv_j")
    static int[] __dv_j;
    @ObfuscatedName("s")
-   @Export("__dv_s")
    static int[] __dv_s;
    @ObfuscatedName("t")
-   @Export("__dv_t")
    static int[] __dv_t;
    @ObfuscatedName("y")
-   @Export("__dv_y")
    static int[] __dv_y;
    @ObfuscatedName("h")
-   @Export("__dv_h")
    static final int[][] __dv_h;
    @ObfuscatedName("b")
-   @Export("__dv_b")
    static final int[][] __dv_b;
    @ObfuscatedName("m")
    @Export("vertexX")

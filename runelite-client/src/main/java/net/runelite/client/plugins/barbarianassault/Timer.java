@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, https://runelitepl.us
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,81 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.batools;
-
+package net.runelite.client.plugins.barbarianassault;
 
 import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.NPC;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
-class Healer
+class Timer
 {
-
 	@Getter
-	private NPC npc;
+	private final Instant startTime;
 
-	@Getter
-	@Setter
-	private int wave;
-
-	@Getter
-	@Setter
-	private int spawnNumber;
-
-	@Getter
-	@Setter
-	private int foodRemaining;
-
-	@Getter
-	@Setter
-	private int lastFoodTime;
-
-	@Getter
-	@Setter
-	private int firstCallFood;
-
-	@Getter
-	@Setter
-	private int secondCallFood;
-
-	Healer(NPC npc, int spawnNumber, int wave)
+	Timer()
 	{
-		this.npc = npc;
-		this.wave = wave;
-		this.spawnNumber = spawnNumber;
-		this.firstCallFood = getCode(wave).getFirstCallFood()[spawnNumber];
-		this.secondCallFood = getCode(wave).getSecondCallFood()[spawnNumber];
-		this.foodRemaining = firstCallFood + secondCallFood;
-		this.lastFoodTime = getCode(wave).getSpacing()[spawnNumber];
+		this.startTime = Instant.now();
 	}
 
-	private HealerCode getCode(int wave)
+	long getElapsedTime()
 	{
-		switch (wave)
+		return Duration.between(startTime, Instant.now()).getSeconds();
+	}
+
+	String getElapsedTimeFormatted()
+	{
+		return formatTime(LocalTime.ofSecondOfDay(getElapsedTime()));
+	}
+
+	private static String formatTime(LocalTime time)
+	{
+		if (time.getHour() > 0)
 		{
-			case 1:
-				return HealerCode.WAVEONE;
-			case 2:
-				return HealerCode.WAVETWO;
-			case 3:
-				return HealerCode.WAVETHREE;
-			case 4:
-				return HealerCode.WAVEFOUR;
-			case 5:
-				return HealerCode.WAVEFIVE;
-			case 6:
-				return HealerCode.WAVESIX;
-			case 7:
-				return HealerCode.WAVESEVEN;
-			case 8:
-				return HealerCode.WAVEEIGHT;
-			case 9:
-				return HealerCode.WAVENINE;
-			case 10:
-				return HealerCode.WAVETEN;
-			default:
-				return null;
+			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+		}
+		else if (time.getMinute() > 9)
+		{
+			return time.format(DateTimeFormatter.ofPattern("mm:ss"));
+		}
+		else
+		{
+			return time.format(DateTimeFormatter.ofPattern("m:ss"));
 		}
 	}
 }

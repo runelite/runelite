@@ -43,10 +43,8 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.table.TableAlignment;
-import net.runelite.client.ui.overlay.components.table.TableComponent;
-import net.runelite.client.util.ColorUtil;
 
 class CorpDamageOverlay extends Overlay
 {
@@ -93,9 +91,6 @@ class CorpDamageOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
-		TableComponent tableComponent = new TableComponent();
-		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
-
 		NPC core = corpPlugin.getCore();
 		if (core != null)
 		{
@@ -119,14 +114,25 @@ class CorpDamageOverlay extends Overlay
 				int textWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth(text));
 
 				panelComponent.setPreferredSize(new Dimension(textWidth, 0));
-				tableComponent.addRow(ColorUtil.prependColorTag(text, Color.RED), "");
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left(text)
+					.leftColor(Color.RED)
+					.build());
 			}
 		}
 
 		if (config.showDamage())
 		{
-			tableComponent.addRow("Your damage", ColorUtil.prependColorTag(Integer.toString(myDamage), damageForKill > 0 && myDamage >= damageForKill ? Color.GREEN : Color.RED));
-			tableComponent.addRow("Total damage:", Integer.toString(totalDamage));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Your damage")
+				.right(Integer.toString(myDamage))
+				.rightColor(damageForKill > 0 && myDamage >= damageForKill ? Color.GREEN : Color.RED)
+				.build());
+
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Total damage")
+				.right(Integer.toString(totalDamage))
+				.build());
 		}
 
 		return panelComponent.render(graphics);

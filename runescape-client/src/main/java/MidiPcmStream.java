@@ -17,70 +17,51 @@ public class MidiPcmStream extends PcmStream {
    @ObfuscatedGetter(
       intValue = 335918727
    )
-   @Export("__f")
    int __f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 2095480747
    )
-   @Export("__q")
    int __q;
    @ObfuscatedName("o")
-   @Export("__o")
    int[] __o;
    @ObfuscatedName("u")
-   @Export("__u")
    int[] __u;
    @ObfuscatedName("g")
-   @Export("__g")
    int[] __g;
    @ObfuscatedName("l")
-   @Export("__l")
    int[] __l;
    @ObfuscatedName("e")
-   @Export("__e")
    int[] __e;
    @ObfuscatedName("x")
-   @Export("__x")
    int[] __x;
    @ObfuscatedName("d")
-   @Export("__d")
    int[] __d;
    @ObfuscatedName("k")
-   @Export("__k")
    int[] __k;
    @ObfuscatedName("n")
-   @Export("surfaceOffsetY")
    int[] __n;
    @ObfuscatedName("y")
-   @Export("__y")
    int[] __y;
    @ObfuscatedName("h")
-   @Export("__h")
    int[] __h;
    @ObfuscatedName("b")
-   @Export("__b")
    int[] __b;
    @ObfuscatedName("c")
-   @Export("__c")
    int[] __c;
    @ObfuscatedName("r")
-   @Export("__r")
    int[] __r;
    @ObfuscatedName("p")
-   @Export("__p")
    int[] __p;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "[[Lha;"
    )
-   @Export("__v")
    MusicPatchNode[][] __v;
    @ObfuscatedName("ag")
    @ObfuscatedSignature(
       signature = "[[Lha;"
    )
-   @Export("__ag")
    MusicPatchNode[][] __ag;
    @ObfuscatedName("aq")
    @ObfuscatedSignature(
@@ -89,7 +70,6 @@ public class MidiPcmStream extends PcmStream {
    @Export("midiFile")
    MidiFileReader midiFile;
    @ObfuscatedName("aj")
-   @Export("__aj")
    boolean __aj;
    @ObfuscatedName("av")
    @ObfuscatedGetter(
@@ -107,13 +87,11 @@ public class MidiPcmStream extends PcmStream {
    @ObfuscatedGetter(
       longValue = -7547625335559871937L
    )
-   @Export("__ac")
    long __ac;
    @ObfuscatedName("ay")
    @ObfuscatedGetter(
       longValue = 3736036110499628937L
    )
-   @Export("__ay")
    long __ay;
    @ObfuscatedName("ah")
    @ObfuscatedSignature(
@@ -153,7 +131,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IB)V",
       garbageValue = "92"
    )
-   @Export("__m_340")
    public synchronized void __m_340(int var1) {
       this.__f = var1;
    }
@@ -163,7 +140,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(I)I",
       garbageValue = "2067929289"
    )
-   @Export("__f_341")
    public int __f_341() {
       return this.__f;
    }
@@ -237,6 +213,7 @@ public class MidiPcmStream extends PcmStream {
    @ObfuscatedSignature(
       signature = "()Ldc;"
    )
+   @Export("firstSubStream")
    protected synchronized PcmStream firstSubStream() {
       return this.patchStream;
    }
@@ -245,6 +222,7 @@ public class MidiPcmStream extends PcmStream {
    @ObfuscatedSignature(
       signature = "()Ldc;"
    )
+   @Export("nextSubStream")
    protected synchronized PcmStream nextSubStream() {
       return null;
    }
@@ -351,7 +329,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(III)V",
       garbageValue = "789206119"
    )
-   @Export("__j_342")
    public synchronized void __j_342(int var1, int var2) {
       this.__s_343(var1, var2);
    }
@@ -361,7 +338,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(III)V",
       garbageValue = "-1475022240"
    )
-   @Export("__s_343")
    void __s_343(int var1, int var2) {
       this.__l[var1] = var2;
       this.__x[var1] = var2 & -128;
@@ -373,7 +349,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(III)V",
       garbageValue = "-213159072"
    )
-   @Export("__t_344")
    void __t_344(int var1, int var2) {
       if(var2 != this.__e[var1]) {
          this.__e[var1] = var2;
@@ -390,7 +365,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IIIB)V",
       garbageValue = "15"
    )
-   @Export("__y_345")
    void __y_345(int var1, int var2, int var3) {
       this.__b_347(var1, var2, 64);
       if((this.__y[var1] & 2) != 0) {
@@ -435,7 +409,7 @@ public class MidiPcmStream extends PcmStream {
             }
 
             if(var9.__q[var2] < 0) {
-               var6.stream.__x_181(-1);
+               var6.stream.setNumLoops(-1);
             }
 
             if(var6.__o >= 0) {
@@ -459,7 +433,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;ZI)V",
       garbageValue = "-1455849160"
    )
-   @Export("__h_346")
    void __h_346(MusicPatchNode var1, boolean var2) {
       int var3 = var1.rawSound.samples.length;
       int var4;
@@ -483,7 +456,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IIII)V",
       garbageValue = "-1244653525"
    )
-   @Export("__b_347")
    void __b_347(int var1, int var2, int var3) {
       MusicPatchNode var4 = this.__v[var1][var2];
       if(var4 != null) {
@@ -507,7 +479,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IIII)V",
       garbageValue = "1055105177"
    )
-   @Export("__c_348")
    void __c_348(int var1, int var2, int var3) {
    }
 
@@ -516,7 +487,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IIB)V",
       garbageValue = "-43"
    )
-   @Export("__p_349")
    void __p_349(int var1, int var2) {
    }
 
@@ -525,7 +495,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IIB)V",
       garbageValue = "-1"
    )
-   @Export("__v_350")
    void __v_350(int var1, int var2) {
       this.__d[var1] = var2;
    }
@@ -535,7 +504,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "137929054"
    )
-   @Export("__ah_351")
    void __ah_351(int var1) {
       for(MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
          if(var1 < 0 || var2.__m == var1) {
@@ -563,7 +531,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "-59494316"
    )
-   @Export("__ab_352")
    void __ab_352(int var1) {
       if(var1 >= 0) {
          this.__o[var1] = 12800;
@@ -592,7 +559,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "1458917637"
    )
-   @Export("__ae_353")
    void __ae_353(int var1) {
       for(MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
          if((var1 < 0 || var2.__m == var1) && var2.__a < 0) {
@@ -608,7 +574,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(I)V",
       garbageValue = "808372536"
    )
-   @Export("__at_354")
    void __at_354() {
       this.__ah_351(-1);
       this.__ab_352(-1);
@@ -629,7 +594,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "-1934460661"
    )
-   @Export("__ad_355")
    void __ad_355(int var1) {
       if((this.__y[var1] & 2) != 0) {
          for(MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
@@ -646,7 +610,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "-1305073262"
    )
-   @Export("__ap_356")
    void __ap_356(int var1) {
       if((this.__y[var1] & 4) != 0) {
          for(MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
@@ -663,7 +626,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "1168111396"
    )
-   @Export("__au_357")
    void __au_357(int var1) {
       int var2 = var1 & 240;
       int var3;
@@ -851,7 +813,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(III)V",
       garbageValue = "1380282032"
    )
-   @Export("__ao_358")
    void __ao_358(int var1, int var2) {
       this.__r[var1] = var2;
       this.__p[var1] = (int)(2097152.0D * Math.pow(2.0D, 5.4931640625E-4D * (double)var2) + 0.5D);
@@ -862,7 +823,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;I)I",
       garbageValue = "-1821299983"
    )
-   @Export("__aa_359")
    int __aa_359(MusicPatchNode var1) {
       int var2 = (var1.__d * var1.__x >> 12) + var1.__e;
       var2 += (this.__d[var1.__m] - 8192) * this.__b[var1.__m] >> 12;
@@ -889,7 +849,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;I)I",
       garbageValue = "24812899"
    )
-   @Export("__ax_360")
    int __ax_360(MusicPatchNode var1) {
       MusicPatchNode2 var2 = var1.__w;
       int var3 = this.__o[var1.__m] * this.__g[var1.__m] + 4096 >> 13;
@@ -936,7 +895,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;I)I",
       garbageValue = "360643400"
    )
-   @Export("__af_361")
    int __af_361(MusicPatchNode var1) {
       int var2 = this.__u[var1.__m];
       return var2 < 8192?var2 * var1.__l + 32 >> 6:16384 - ((128 - var1.__l) * (16384 - var2) + 32 >> 6);
@@ -947,7 +905,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(B)V",
       garbageValue = "30"
    )
-   @Export("__ai_367")
    void __ai_367() {
       int var1 = this.track;
       int var2 = this.trackLength;
@@ -994,7 +951,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;I)Z",
       garbageValue = "1820762013"
    )
-   @Export("__ba_368")
    boolean __ba_368(MusicPatchNode var1) {
       if(var1.stream == null) {
          if(var1.__a >= 0) {
@@ -1015,7 +971,6 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;[IIII)Z",
       garbageValue = "-1605961549"
    )
-   @Export("__bb_369")
    boolean __bb_369(MusicPatchNode var1, int[] var2, int var3, int var4) {
       var1.__y = class309.PcmPlayer_sampleRate / 100;
       if(var1.__a < 0 || var1.stream != null && !var1.stream.__ae_195()) {

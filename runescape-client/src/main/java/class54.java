@@ -9,7 +9,6 @@ public final class class54 {
    @ObfuscatedGetter(
       intValue = -1247107945
    )
-   @Export("__bs_nb")
    static int __bs_nb;
 
    @ObfuscatedName("q")

@@ -40,7 +40,6 @@ public final class WorldMapManager {
    @Export("regions")
    WorldMapRegion[][] regions;
    @ObfuscatedName("g")
-   @Export("__g")
    HashMap __g;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
@@ -52,13 +51,11 @@ public final class WorldMapManager {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__e")
    final AbstractIndexCache __e;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__x")
    final AbstractIndexCache __x;
    @ObfuscatedName("d")
    @Export("fonts")
@@ -79,19 +76,16 @@ public final class WorldMapManager {
    @ObfuscatedGetter(
       intValue = 1729323633
    )
-   @Export("__i")
    int __i;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -395718741
    )
-   @Export("__a")
    int __a;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = 1085359673
    )
-   @Export("__z")
    public int __z;
 
    @ObfuscatedSignature(
@@ -196,7 +190,6 @@ public final class WorldMapManager {
       signature = "(IIIIIIIII)V",
       garbageValue = "1619301748"
    )
-   @Export("__q_72")
    public final void __q_72(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int[] var9 = Rasterizer2D.Rasterizer2D_pixels;
       int var10 = Rasterizer2D.Rasterizer2D_width;
@@ -243,7 +236,6 @@ public final class WorldMapManager {
       signature = "(IIIIIIIILjava/util/HashSet;Ljava/util/HashSet;IIZB)V",
       garbageValue = "-71"
    )
-   @Export("__w_73")
    public final void __w_73(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
       class22 var14 = this.method643(var1, var2, var3, var4);
       float var15 = this.getPixelsPerTile(var7 - var5, var3 - var1);
@@ -318,7 +310,6 @@ public final class WorldMapManager {
       signature = "(IIIIIIIIIII)Ljava/util/List;",
       garbageValue = "1185703832"
    )
-   @Export("__u_74")
    public List __u_74(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
       LinkedList var11 = new LinkedList();
       if(!this.isLoaded0) {
@@ -514,6 +505,7 @@ public final class WorldMapManager {
       signature = "(II)Z",
       garbageValue = "-1344882321"
    )
+   @Export("isWidgetMenuOpcode")
    static boolean isWidgetMenuOpcode(int var0) {
       return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
    }

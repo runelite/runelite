@@ -95,6 +95,7 @@ public class SpriteMask extends DualNode {
       signature = "(Lir;IIB)Z",
       garbageValue = "1"
    )
+   @Export("loadSprite")
    public static boolean loadSprite(AbstractIndexCache var0, int var1, int var2) {
       byte[] var3 = var0.takeRecord(var1, var2);
       if(var3 == null) {

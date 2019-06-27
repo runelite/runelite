@@ -37,7 +37,8 @@ public abstract class RSWallDecorationMixin implements RSWallDecoration
 	}
 
 	@Inject
-	private RSModel getModel()
+	@Override
+	public RSModel getModel1()
 	{
 		RSEntity renderable = getRenderable();
 		if (renderable == null)
@@ -60,7 +61,8 @@ public abstract class RSWallDecorationMixin implements RSWallDecoration
 	}
 
 	@Inject
-	private RSModel getModel2()
+	@Override
+	public RSModel getModel2()
 	{
 		RSEntity renderable = getRenderable2();
 		if (renderable == null)
@@ -89,7 +91,7 @@ public abstract class RSWallDecorationMixin implements RSWallDecoration
 		Area clickbox = new Area();
 
 		LocalPoint lp = getLocalLocation();
-		Area clickboxA = Perspective.getClickbox(client, getModel(), 0,
+		Area clickboxA = Perspective.getClickbox(client, getModel1(), 0,
 			new LocalPoint(lp.getX() + getXOffset(), lp.getY() + getYOffset()));
 		Area clickboxB = Perspective.getClickbox(client, getModel2(), 0, lp);
 
@@ -115,7 +117,7 @@ public abstract class RSWallDecorationMixin implements RSWallDecoration
 	@Override
 	public Polygon getConvexHull()
 	{
-		RSModel model = getModel();
+		RSModel model = getModel1();
 
 		if (model == null)
 		{
