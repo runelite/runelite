@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,53 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.config;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package net.runelite.client.plugins.objectindicators;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface ConfigItem
+public enum RenderStyle
 {
-	int position() default -1;
-
-	String keyName();
-
-	String name();
-
-	String description();
-
-	boolean hidden() default false;
-
-	String warning() default "";
-
-	boolean secret() default false;
-
-	String group() default "";
-
-	String unhide() default "";
-
-	String unhideValue() default "";
-
-	String hide() default "";
-
-	String hideValue() default "";
-
-	String parent() default "";
-
-	String enabledBy() default "";
-
-	String enabledByValue() default "";
-
-	String disabledBy() default "";
-
-	String disabledByValue() default "";
-
-	boolean parse() default false;
-
-	Class<?> clazz() default void.class;
-	String method() default "";
+	CLICKBOX,
+	HULL,
+	OUTLINE
 }

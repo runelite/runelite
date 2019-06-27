@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2019, Owain van Brakel <https://github.com/Owain94>
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
@@ -30,48 +31,85 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Stub;
 
 @ConfigGroup("objectindicators")
 public interface ObjectIndicatorsConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
+		keyName = "overlayStub",
+		name = "Overlay Style",
+		description = "",
+		position = 0
+	)
+	default Stub overlayStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "objectMarkerRenderStyle",
+		name = "Highlight Style",
+		description = "Highlight setting",
+		parent = "overlayStub"
+	)
+	default RenderStyle objectMarkerRenderStyle()
+	{
+		return RenderStyle.OUTLINE;
+	}
+
+
+	@ConfigItem(
+		position = 2,
+		keyName = "objectMarkerOutlineRenderStyle",
+		name = "Outline Style",
+		description = "Highlight outline setting",
+		parent = "overlayStub",
+		hidden = true,
+		unhide = "objectMarkerRenderStyle",
+		unhideValue = "OUTLINE"
+	)
+	default OutlineRenderStyle objectMarkerOutlineRenderStyle()
+	{
+		return OutlineRenderStyle.NORMAL_OUTLINE;
+	}
+
+	@ConfigItem(
+		keyName = "colorStub",
+		name = "Colors",
+		description = "",
+		position = 3
+	)
+	default Stub colorStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "markerColor",
 		name = "Marker color",
-		description = "Configures the color of object marker"
+		description = "Configures the outer color of object marker",
+		parent = "colorStub"
 	)
-	default Color markerColor()
+	default Color objectMarkerColor()
 	{
 		return Color.YELLOW;
 	}
 
 	@Range(
-		min = 0,
-		max = 10
+		max = 100
 	)
 	@ConfigItem(
-		position = 1,
-		keyName = "stroke",
-		name = "Stroke Size",
-		description = "Configures the stroke size of object marker"
-	)
-	default int stroke()
-	{
-		return 2;
-	}
-
-	@Range(
-		min = 0,
-		max = 255
-	)
-	@ConfigItem(
-		position = 2,
-		keyName = "alpha",
+		position = 5,
+		keyName = "objectMarkerAlpha",
 		name = "Alpha",
-		description = "Configures the opacity/alpha of object marker"
+		description = "Configures the opacity/alpha of object marker",
+		parent = "colorStub"
 	)
-	default int alpha()
+	default int objectMarkerAlpha()
 	{
-		return 20;
+		return 100;
 	}
 }

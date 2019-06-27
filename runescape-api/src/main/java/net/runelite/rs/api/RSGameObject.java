@@ -35,6 +35,7 @@ public interface RSGameObject extends GameObject
 	int getHeight();
 
 	@Import("orientation")
+	@Override
 	int getRsOrientation();
 
 	@Import("tag")
