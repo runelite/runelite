@@ -71,8 +71,6 @@ public class QuestListPlugin extends Plugin
 	private static final String MENU_OPEN = "Open";
 	private static final String MENU_CLOSE = "Close";
 
-	private static final String MENU_TOGGLE = "Toggle";
-
 	private static final String MENU_SEARCH = "Search";
 	private static final String MENU_SHOW = "Show";
 
@@ -152,8 +150,8 @@ public class QuestListPlugin extends Plugin
 		toggleButton.setOriginalY(2);
 		toggleButton.setHasListener(true);
 		toggleButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden(questState));
-		toggleButton.setAction(1, MENU_TOGGLE);
-		toggleButton.setName(MENU_SHOW + " " + questState.getName());
+		toggleButton.setAction(1, MENU_SHOW);
+		toggleButton.setName(questState.getName());
 		toggleButton.revalidate();
 		return toggleButton;
 	}
@@ -194,7 +192,7 @@ public class QuestListPlugin extends Plugin
 			questHideButton.setOriginalY(2);
 			questHideButton.setHasListener(true);
 			questHideButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden(null));
-			questHideButton.setAction(1, MENU_TOGGLE);
+			questHideButton.setAction(1, MENU_SHOW);
 			questHideButton.revalidate();
 
 			questSet = new EnumMap<>(QuestContainer.class);
