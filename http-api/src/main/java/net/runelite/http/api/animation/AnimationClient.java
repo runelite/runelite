@@ -102,7 +102,7 @@ public class AnimationClient
 
 	public List<AnimationKey> get() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
 			.addPathSegment("animation")
 			.build();
 
@@ -127,7 +127,7 @@ public class AnimationClient
 
 	public AnimationKey get(int npcid) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
 			.addPathSegment("animation")
 			.addPathSegment(Integer.toString(npcid))
 			.build();
