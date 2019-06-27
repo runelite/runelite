@@ -216,4 +216,46 @@ public class ChatClient
 			return Integer.parseInt(response.body().string());
 		}
 	}
+
+	public boolean submitGc(String username, int gc) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("gc")
+			.addQueryParameter("name", username)
+			.addQueryParameter("gc", Integer.toString(gc))
+			.build();
+
+		Request request = new Request.Builder()
+			.post(RequestBody.create(null, new byte[0]))
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+	}
+
+	public int getGc(String username) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("gc")
+			.addQueryParameter("name", username)
+			.build();
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unable to look up gamble count!");
+			}
+			return Integer.parseInt(response.body().string());
+		}
+	}
 }
