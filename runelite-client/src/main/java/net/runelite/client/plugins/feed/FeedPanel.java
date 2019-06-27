@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
-import java.util.function.Supplier;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -103,28 +102,19 @@ class FeedPanel extends PluginPanel
 	}
 
 	private final FeedConfig config;
-	private final Supplier<FeedResult> feedSupplier;
 
-	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier)
+	FeedPanel(FeedConfig config)
 	{
 		super(true);
 		this.config = config;
-		this.feedSupplier = feedSupplier;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new GridLayout(0, 1, 0, 4));
 	}
 
-	void rebuildFeed()
+	void rebuildFeed(FeedResult feed)
 	{
-		FeedResult feed = feedSupplier.get();
-
-		if (feed == null)
-		{
-			return;
-		}
-
 		SwingUtilities.invokeLater(() ->
 		{
 			removeAll();
