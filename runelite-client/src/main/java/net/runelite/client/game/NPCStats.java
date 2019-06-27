@@ -34,6 +34,7 @@ public class NPCStats
 	private final int hitpoints;
 	private final int combatLevel;
 	private final int slayerLevel;
+	private final int attackSpeed;
 
 	private final int attackLevel;
 	private final int strengthLevel;

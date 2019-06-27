@@ -59,6 +59,7 @@ public class NPCManager
 
 	/**
 	 * Returns the {@link NPCStats} for target NPC id
+	 *
 	 * @param npcId NPC id
 	 * @return the {@link NPCStats} or null if unknown
 	 */
@@ -70,23 +71,41 @@ public class NPCManager
 
 	/**
 	 * Returns health for target NPC ID
+	 *
 	 * @param npcId NPC id
 	 * @return health or null if unknown
 	 */
-	@Nullable
-	public Integer getHealth(final int npcId)
+	public int getHealth(final int npcId)
 	{
 		final NPCStats s = statsMap.get(npcId);
 		if (s == null || s.getHitpoints() == -1)
 		{
-			return null;
+			return -1;
 		}
 
 		return s.getHitpoints();
 	}
 
 	/**
+	 * Returns the attack speed for target NPC ID.
+	 *
+	 * @param npcId NPC id
+	 * @return attack speed in game ticks for NPC ID.
+	 */
+	public int getAttackSpeed(final int npcId)
+	{
+		final NPCStats s = statsMap.get(npcId);
+		if (s == null || s.getAttackSpeed() == -1)
+		{
+			return -1;
+		}
+
+		return s.getAttackSpeed();
+	}
+
+	/**
 	 * Returns the exp modifier for target NPC ID based on its stats.
+	 *
 	 * @param npcId NPC id
 	 * @return npcs exp modifier. Assumes default xp rate if npc stats are unknown (returns 1)
 	 */

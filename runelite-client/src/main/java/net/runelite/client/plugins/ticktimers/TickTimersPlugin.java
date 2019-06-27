@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, ganom <https://github.com/Ganom>
+ * Copyright (c) 2019, Ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,13 +24,13 @@
 package net.runelite.client.plugins.ticktimers;
 
 import com.google.inject.Provides;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -41,11 +41,11 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Boss Tick Timers",
@@ -59,21 +59,24 @@ import org.apache.commons.lang3.ArrayUtils;
 public class TickTimersPlugin extends Plugin
 {
 	private static final int GENERAL_REGION = 11347;
+	private static final int ARMA_REGION = 11346;
+	private static final int SARA_REGION = 11601;
+	private static final int ZAMMY_REGION = 11603;
+	private static final int WATERBITH_REGION = 11589;
 
 	@Inject
 	private Client client;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private TimersOverlay timersOverlay;
-
 	@Inject
 	private TickTimersConfig config;
-
+	@Inject
+	private NPCManager npcManager;
 	@Getter(AccessLevel.PACKAGE)
-	private Map<NPC, NPCContainer> npcContainer = new HashMap<>();
+	private Set<NPCContainer> npcContainer = new HashSet<>();
+	private boolean validRegion;
 
 	@Provides
 	TickTimersConfig getConfig(ConfigManager configManager)
@@ -91,25 +94,27 @@ public class TickTimersPlugin extends Plugin
 	public void shutDown()
 	{
 		npcContainer.clear();
+		overlayManager.remove(timersOverlay);
+		validRegion = false;
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-		{
-			if (isInGeneralRegion())
-			{
-				overlayManager.add(timersOverlay);
-			}
-			else
-			{
-				overlayManager.remove(timersOverlay);
-			}
-		}
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
+		}
+
+		if (regionCheck())
+		{
+			validRegion = true;
+			overlayManager.add(timersOverlay);
+		}
+		else
+		{
+			validRegion = false;
+			overlayManager.remove(timersOverlay);
 		}
 		npcContainer.clear();
 	}
@@ -117,15 +122,43 @@ public class TickTimersPlugin extends Plugin
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
+		if (!validRegion)
+		{
+			return;
+		}
+
 		NPC npc = event.getNpc();
+
 		switch (npc.getId())
 		{
 			case NpcID.SERGEANT_STRONGSTACK:
 			case NpcID.SERGEANT_STEELWILL:
 			case NpcID.SERGEANT_GRIMSPIKE:
 			case NpcID.GENERAL_GRAARDOR:
-			case NpcID.GENERAL_GRAARDOR_6494:
-				npcContainer.put(npc, new NPCContainer(npc));
+			case NpcID.TSTANON_KARLAK:
+			case NpcID.BALFRUG_KREEYATH:
+			case NpcID.ZAKLN_GRITCH:
+			case NpcID.KRIL_TSUTSAROTH:
+			case NpcID.STARLIGHT:
+			case NpcID.BREE:
+			case NpcID.GROWLER:
+			case NpcID.COMMANDER_ZILYANA:
+			case NpcID.FLIGHT_KILISA:
+			case NpcID.FLOCKLEADER_GEERIN:
+			case NpcID.WINGMAN_SKREE:
+			case NpcID.KREEARRA:
+				if (config.gwd())
+				{
+					npcContainer.add(new NPCContainer(npc, npcManager.getAttackSpeed(npc.getId())));
+				}
+				break;
+			case NpcID.DAGANNOTH_REX:
+			case NpcID.DAGANNOTH_SUPREME:
+			case NpcID.DAGANNOTH_PRIME:
+				if (config.dks())
+				{
+					npcContainer.add(new NPCContainer(npc, npcManager.getAttackSpeed(npc.getId())));
+				}
 				break;
 		}
 	}
@@ -133,92 +166,76 @@ public class TickTimersPlugin extends Plugin
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		if (npcContainer.remove(event.getNpc()) != null && !npcContainer.isEmpty())
+		if (!validRegion)
 		{
-			npcContainer.remove(event.getNpc());
+			return;
+		}
+
+		NPC npc = event.getNpc();
+
+		switch (npc.getId())
+		{
+			case NpcID.SERGEANT_STRONGSTACK:
+			case NpcID.SERGEANT_STEELWILL:
+			case NpcID.SERGEANT_GRIMSPIKE:
+			case NpcID.GENERAL_GRAARDOR:
+			case NpcID.TSTANON_KARLAK:
+			case NpcID.BALFRUG_KREEYATH:
+			case NpcID.ZAKLN_GRITCH:
+			case NpcID.KRIL_TSUTSAROTH:
+			case NpcID.STARLIGHT:
+			case NpcID.BREE:
+			case NpcID.GROWLER:
+			case NpcID.COMMANDER_ZILYANA:
+			case NpcID.FLIGHT_KILISA:
+			case NpcID.FLOCKLEADER_GEERIN:
+			case NpcID.WINGMAN_SKREE:
+			case NpcID.KREEARRA:
+			case NpcID.DAGANNOTH_REX:
+			case NpcID.DAGANNOTH_SUPREME:
+			case NpcID.DAGANNOTH_PRIME:
+				npcContainer.removeIf(c -> c.getNpc() == npc);
+				break;
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick Event)
 	{
-		if (config.graardor())
+		if (!validRegion)
 		{
-			graardorHandler();
+			return;
 		}
+
+		handleBosses();
 	}
 
-	private void graardorHandler()
+	private void handleBosses()
 	{
-		for (NPCContainer npcs : getNpcContainer().values())
+		for (NPCContainer npcs : getNpcContainer())
 		{
-			switch (npcs.getNpc().getId())
+			if (npcs.getTicksUntilAttack() >= 0)
 			{
-				case NpcID.SERGEANT_STRONGSTACK:
-					npcs.setTicksUntilAttack(npcs.getTicksUntilAttack() - 1);
-					npcs.setAttackStyle(NPCContainer.Attackstyle.MELEE);
-					switch (npcs.getNpc().getAnimation())
+				npcs.setTicksUntilAttack(npcs.getTicksUntilAttack() - 1);
+			}
+
+			for (int anims : npcs.getAnimations())
+			{
+				if (anims == npcs.getNpc().getAnimation())
+				{
+					if (npcs.getTicksUntilAttack() < 1)
 					{
-						case AnimationID.MINION_AUTO1:
-						case AnimationID.MINION_AUTO2:
-							if (npcs.getTicksUntilAttack() < 1)
-							{
-								npcs.setTicksUntilAttack(5);
-							}
-							break;
+						npcs.setTicksUntilAttack(npcs.getAttackSpeed());
 					}
-					break;
-				case NpcID.SERGEANT_STEELWILL:
-					npcs.setTicksUntilAttack(npcs.getTicksUntilAttack() - 1);
-					npcs.setAttackStyle(NPCContainer.Attackstyle.MAGE);
-					switch (npcs.getNpc().getAnimation())
-					{
-						case AnimationID.MINION_AUTO1:
-						case AnimationID.MINION_AUTO2:
-						case AnimationID.MINION_AUTO3:
-							if (npcs.getTicksUntilAttack() < 1)
-							{
-								npcs.setTicksUntilAttack(5);
-							}
-							break;
-					}
-				case NpcID.SERGEANT_GRIMSPIKE:
-					npcs.setTicksUntilAttack(npcs.getTicksUntilAttack() - 1);
-					npcs.setAttackStyle(NPCContainer.Attackstyle.RANGE);
-					switch (npcs.getNpc().getAnimation())
-					{
-						case AnimationID.MINION_AUTO1:
-						case AnimationID.MINION_AUTO2:
-						case AnimationID.MINION_AUTO4:
-							if (npcs.getTicksUntilAttack() < 1)
-							{
-								npcs.setTicksUntilAttack(5);
-							}
-							break;
-					}
-					break;
-				case NpcID.GENERAL_GRAARDOR:
-				case NpcID.GENERAL_GRAARDOR_6494:
-					npcs.setTicksUntilAttack(npcs.getTicksUntilAttack() - 1);
-					npcs.setAttackStyle(NPCContainer.Attackstyle.MELEE);
-					switch (npcs.getNpc().getAnimation())
-					{
-						case AnimationID.GENERAL_AUTO1:
-						case AnimationID.GENERAL_AUTO2:
-						case AnimationID.GENERAL_AUTO3:
-							if (npcs.getTicksUntilAttack() < 1)
-							{
-								npcs.setTicksUntilAttack(6);
-							}
-							break;
-					}
-					break;
+				}
 			}
 		}
 	}
 
-	private boolean isInGeneralRegion()
+	private boolean regionCheck()
 	{
-		return ArrayUtils.contains(client.getMapRegions(), GENERAL_REGION);
+		return Arrays.stream(client.getMapRegions()).anyMatch(
+			x -> x == ARMA_REGION || x == GENERAL_REGION || x == ZAMMY_REGION || x == SARA_REGION || x == WATERBITH_REGION
+		);
 	}
 }

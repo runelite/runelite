@@ -126,9 +126,9 @@ class XpState
 	 * @param npc       currently interacted NPC
 	 * @param npcHealth health of currently interacted NPC
 	 */
-	void updateNpcExperience(Skill skill, NPC npc, Integer npcHealth)
+	void updateNpcExperience(Skill skill, NPC npc, int npcHealth)
 	{
-		if (npc == null || npc.getCombatLevel() <= 0 || npcHealth == null)
+		if (npc == null || npc.getCombatLevel() <= 0 || npcHealth == -1)
 		{
 			return;
 		}
@@ -170,11 +170,11 @@ class XpState
 	 * @param npcHealth max health of npc that just died
 	 * @return UPDATED in case new kill was successfully added
 	 */
-	XpUpdateResult updateNpcKills(Skill skill, NPC npc, Integer npcHealth)
+	XpUpdateResult updateNpcKills(Skill skill, NPC npc, int npcHealth)
 	{
 		XpStateSingle state = getSkill(skill);
 
-		if (state.getXpGained() <= 0 || npcHealth == null || npc != interactedNPC)
+		if (state.getXpGained() <= 0 || npcHealth == -1 || npc != interactedNPC)
 		{
 			return XpUpdateResult.NO_CHANGE;
 		}
