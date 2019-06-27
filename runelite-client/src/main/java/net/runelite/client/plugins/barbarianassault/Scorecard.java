@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, Jacob M <https://github.com/jacoblairm>
+ * Copyright (c) 2019, https://runelitepl.us
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,18 +27,21 @@ package net.runelite.client.plugins.barbarianassault;
 
 import java.awt.Color;
 import java.util.ArrayList;
+
+import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.eventbus.Subscribe;
 
+
 @Getter
-public class Game
+public class Scorecard
 {
-	private Client client;
-	private String currentWave;
-	private ArrayList<Wave> Waves = new ArrayList<>();
+	private BarbarianAssaultPlugin game;
+
+	@Getter(AccessLevel.NONE)
+	private ArrayList<Wave> waves = new ArrayList<>();
 	private String[] totalDescriptions = {
 		"A: ",
 		"; D: ",
@@ -55,32 +59,32 @@ public class Game
 	private int[] totalAmounts = new int[6];
 	private int[] otherRolesPoints = new int[4];
 
-	Game(Client client)
+	Scorecard(BarbarianAssaultPlugin game)
 	{
-		this.client = client;
-	}
-
-	Game(Client client, ArrayList<Wave> waves)
-	{
-		this.client = client;
-		this.Waves = waves;
+		this.game = game;
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (chatMessage.getMessage().startsWith("---- Wave:"))
+		if (chatMessage.getMessage().startsWith("---- Points:"))
 		{
-			String[] tempMessage = chatMessage.getMessage().split(" ");
-			currentWave = tempMessage[2];
-			String[] temp = currentWave.split(" ");
+			if (game.getStage() == 1)
+			{
+				totalPoints = new int[6];
+				totalAmounts = new int[6];
+			}
 		}
-		if (currentWave.equals("1"))
-		{
-			Waves = null;
-			totalPoints = new int[6];
-			totalAmounts = new int[6];
-		}
+	}
+
+	void addWave(Wave wave)
+	{
+		this.waves.add(wave);
+	}
+
+	int getNumberOfWaves()
+	{
+		return waves.size();
 	}
 
 	ChatMessageBuilder getGameSummary()
@@ -89,12 +93,12 @@ public class Game
 		int[] pointsList;
 		int[] otherRolesPointsList;
 		ChatMessageBuilder message = new ChatMessageBuilder();
-		message.append("Round points: ");
-		for (Wave w : Waves)
+		message.append("Game points: ");
+		for (Wave wave : waves)
 		{
-			amountsList = w.getWaveAmounts();
-			pointsList = w.getWavePoints();
-			otherRolesPointsList = w.getOtherRolesPointsList();
+			amountsList = wave.getAmounts();
+			pointsList = wave.getPoints();
+			otherRolesPointsList = wave.getOtherRolesPointsList();
 			for (int j = 0; j < totalAmounts.length; j++)
 			{
 				totalAmounts[j] += amountsList[j];

@@ -57,7 +57,7 @@ public class WidgetID
 	public static final int PEST_CONTROL_BOAT_GROUP_ID = 407;
 	public static final int PEST_CONTROL_GROUP_ID = 408;
 	public static final int PEST_CONTROL_EXCHANGE_WINDOW_GROUP_ID = 243;
-	public static final int PEST_CONTROL_DIALOG_GROUP_ID = 229;
+	public static final int DIALOG_MINIGAME_GROUP_ID = 229;
 	public static final int CLAN_CHAT_GROUP_ID = 7;
 	public static final int MINIMAP_GROUP_ID = 160;
 	public static final int LOGIN_CLICK_TO_PLAY_GROUP_ID = 378;
@@ -84,6 +84,7 @@ public class WidgetID
 	public static final int BA_DEFENDER_GROUP_ID = 487;
 	public static final int BA_HEALER_GROUP_ID = 488;
 	public static final int BA_REWARD_GROUP_ID = 497;
+	public static final int BA_HORN_OF_GLORY = 484;
 	public static final int LEVEL_UP_GROUP_ID = 233;
 	public static final int DIALOG_SPRITE_GROUP_ID = 193;
 	public static final int QUEST_COMPLETED_GROUP_ID = 277;
@@ -197,7 +198,7 @@ public class WidgetID
 		static final int CONFIRM_BUTTON = 6;
 	}
 
-	static class PestControlDialog
+	static class MinigameDialog
 	{
 		static final int TEXT = 1;
 		static final int CONTINUE = 2;
@@ -594,7 +595,8 @@ public class WidgetID
 	{
 		static class ATK
 		{
-			static final int LISTEN = 8;
+			static final int LISTEN_TOP = 7;
+			static final int LISTEN_BOTTOM = 8;
 			static final int TO_CALL_WIDGET = 9;
 			static final int TO_CALL = 10;
 			static final int ROLE_SPRITE = 11;
@@ -606,6 +608,13 @@ public class WidgetID
 			static final int TEAMMATE2 = 22;
 			static final int TEAMMATE3 = 26;
 			static final int TEAMMATE4 = 30;
+		}
+		static class HORN_GLORY
+		{
+			static final int ATTACKER = 5;
+			static final int DEFENDER = 6;
+			static final int COLLECTOR = 7;
+			static final int HEALER = 8;
 		}
 		static class REWARD_VALUES
 		{

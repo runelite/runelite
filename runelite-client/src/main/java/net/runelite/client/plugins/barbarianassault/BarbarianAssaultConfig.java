@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, 7ate9 <https://github.com/se7enAte9>
+ * Copyright (c) 2019, https://runelitepl.us
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,15 +29,26 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("barbarianAssault")
 public interface BarbarianAssaultConfig extends Config
 {
 	@ConfigItem(
+		keyName = "swapLadder",
+		name = "Swap quick-start",
+		description = "Enables swapping of 'Climb-down' and 'Quick-start' in the wave lobby",
+		position = 0
+	)
+	default boolean swapLadder()
+	{
+		return true;
+	}
+	@ConfigItem(
 		keyName = "showTimer",
 		name = "Show call change timer",
-		description = "Show time to next call change",
-		position = 0
+		description = "Shows time to next call change",
+		position = 1
 	)
 	default boolean showTimer()
 	{
@@ -44,10 +56,85 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "removeIncorrectCalls",
+		name = "Remove incorrect calls",
+		description = "Removes incorrect 'Tell' menu options from horn",
+		position = 2
+	)
+	default boolean removeIncorrectCalls()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "removeUnusedMenus",
+		name = "Remove unused menus",
+		description = "Removes unnecessary menu options" +
+			"<br>Example: Attack options are removed when not attacker",
+		position = 3
+	)
+	default boolean removeUnusedMenus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "prayerMetronome",
+		name = "Enable prayer metronome",
+		description = "Turns on a metronome sync'd to the game's tick rate when any prayer is active",
+		position = 4
+	)
+	default boolean prayerMetronome()
+	{
+		return false;
+	}
+
+	@Range(
+			min = 1,
+			max = 50
+	)
+	@ConfigItem(
+		keyName = "prayerMetronomeVolume",
+		name = "Metronome volume",
+		description = "Adjusts the metronome's volume",
+		position = 5,
+		hidden = true,
+		unhide = "prayerMetronome"
+	)
+	default int prayerMetronomeVolume()
+	{
+		return 10;
+	}
+
+	@ConfigItem(
+			keyName = "showDeathTimes",
+			name = "Show death times",
+			description = "Shows the time all penance monsters of a certain type are killed in the chat box, an info box, or both",
+			position = 6
+	)
+	default boolean showDeathTimes()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showDeathTimesMode",
+			name = "Mode",
+			description = "",
+			position = 7,
+			hidden = true,
+			unhide = "showDeathTimes"
+	)
+	default DeathTimesMode showDeathTimesMode()
+	{
+		return DeathTimesMode.BOTH;
+	}
+
+	@ConfigItem(
 		keyName = "waveTimes",
 		name = "Show wave and game duration",
-		description = "Displays wave and game duration",
-		position = 1
+		description = "Displays wave duration after each wave and total game time after wave 10",
+		position = 8
 	)
 	default boolean waveTimes()
 	{
@@ -55,112 +142,329 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showEggCountMessage",
-		name = "Show count of eggs collected as collector.",
-		description = "Display egg count as collector after each wave",
-		position = 2
+		keyName = "showTotalRewards",
+		name = "Summarize total reward points",
+		description = "Gives summary of advanced points breakdown in chat log",
+		position = 9
 	)
-	default boolean showEggCount()
+	default boolean showTotalRewards()
+	{
+		return true;
+	}
+
+
+	/*///************///*/
+	/*///  Attacker  ///*/
+	/*///************///*/
+
+	@ConfigItem(
+		keyName = "highlightArrows",
+		name = "Highlight called arrows",
+		description = "Highlights arrows called by your teammate",
+		position = 0,
+		group = "Attacker"
+	)
+	default boolean highlightArrows()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightArrowColor",
+		name = "Arrow color",
+		description = "Configures the color to highlight the called arrows",
+		position = 1,
+		group = "Attacker",
+		hidden = true,
+		unhide = "highlightArrows"
+	)
+	default Color highlightArrowColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "attackStyles",
+		name = "Remove incorrect attack styles",
+		description = "Hide attack styles depending on weapon.",
+		position = 2,
+		group = "Attacker"
+	)
+	default boolean attackStyles()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		keyName = "showEggCountOverlay",
-		name = "Overlay of eggs counted",
-		description = "Display current egg count as collector",
-		position = 3
+		keyName = "tagging",
+		name = "Enable tagging",
+		description = "Highlights the menu entry of an attacker/ranger that has not been tagged.",
+		position = 3,
+		group = "Attacker"
 	)
-	default boolean showEggCountOverlay()
+	default boolean tagging()
 	{
 		return false;
 	}
 
+
+	/*///************///*/
+	/*///  Defender  ///*/
+	/*///************///*/
+
 	@ConfigItem(
-		keyName = "showHpCountMessage",
-		name = "Show count of Hp healed as healer.",
-		description = "Display healed count as healer after each wave",
-		position = 4
+		keyName = "highlightBait",
+		name = "Highlight called bait",
+		description = "Highlights bait called by your teammate",
+		position = 0,
+		group = "Defender"
 	)
-	default boolean showHpCount()
+	default boolean highlightBait()
 	{
-		return false;
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightBaitColor",
+		name = "Bait color",
+		description = "Configures the color to highlight the called bait",
+		position = 1,
+		group = "Defender",
+		hidden = true,
+		unhide = "highlightBait"
+	)
+	default Color highlightBaitColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "showDefTimer",
+		name = "Show defender tick timer",
+		description = "Shows the current cycle tick of runners",
+		position = 2,
+		group = "Defender"
+	)
+	default boolean showDefTimer()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "deprioritizeBait",
+		name = "Deprioritize bait",
+		description = "Moves 'Take' menu option for all bait below 'Walk Here'",
+		position = 3,
+		group = "Defender"
+	)
+	default boolean deprioritizeBait()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "removePenanceCave",
+		name = "Remove penance cave",
+		description = "Removes 'Block' menu option from penance cave",
+		position = 4,
+		group = "Defender"
+	)
+	default boolean removePenanceCave()
+	{
+		return true;
+	}
+
+
+	/*///**********///*/
+	/*///  Healer  ///*/
+	/*///**********///*/
+
+	@ConfigItem(
+		keyName = "highlightPoison",
+		name = "Highlight called poison",
+		description = "Highlights poison called by your teammate",
+		position = 0,
+		group = "Healer"
+	)
+	default boolean highlightPoison()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightPoisonColor",
+		name = "Poison color",
+		description = "Configures the color to highlight the called poison",
+		position = 1,
+		group = "Healer",
+		hidden = true,
+		unhide = "highlightPoison"
+	)
+	default Color highlightPoisonColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+			keyName = "highlightNotification",
+			name = "Highlight incorrect notification",
+			description = "Highlights incorrect poison chat notification",
+			position = 2,
+			group = "Healer"
+	)
+	default boolean highlightNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "highlightNotificationColor",
+			name = "Notification color",
+			description = "Configures the color to highlight the notification text",
+			position = 3,
+			group = "Healer",
+			hidden = true,
+			unhide = "highlightNotification"
+	)
+	default Color highlightNotificationColor()
+	{
+		return Color.RED;
 	}
 
 	@ConfigItem(
 		keyName = "showHpCountOverlay",
-		name = "Overlay of Hp counted",
-		description = "Display current healed count as healer",
-		position = 5
+		name = "Show number of hitpoints healed",
+		description = "Displays current number of hitpoints healed",
+		position = 4,
+		group = "Healer"
 	)
 	default boolean showHpCountOverlay()
 	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showTeammateHealthbars",
+		name = "Show health bars",
+		description = "Displays a health bar where a teammate's remaining health is located",
+		position = 5,
+		group = "Healer"
+	)
+	default boolean showTeammateHealthbars()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "healerCodes",
+		name = "Show healer codes",
+		description = "Overlay to show healer codes",
+		position = 6,
+		group = "Healer"
+	)
+	default boolean healerCodes()
+	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "healerMenuOption",
+		name = "Show healer menu options",
+		description = "Shows tick count in healer menu options",
+		position = 7,
+		group = "Healer"
+	)
+	default boolean healerMenuOption()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "shiftOverstock",
+		name = "Enable shift overstock",
+		description = "Enables overstocking by pressing shift",
+		position = 8,
+		group = "Healer"
+	)
+	default boolean shiftOverstock()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "controlHealer",
+		name = "Control Healer",
+		description = "Hold ctrl to put last healer clicked on top",
+		position = 9,
+		group = "Healer"
+	)
+	default boolean controlHealer()
+	{
+		return true;
+	}
+
+
+	/*///*************///*/
+	/*///  Collector  ///*/
+	/*///*************///*/
+
+	@ConfigItem(
+		keyName = "swapCollectorBag",
+		name = "Swap empty",
+		description = "Enables swapping of 'Look-in' and 'Empty' on the collector's bag",
+		position = 0,
+		group = "Collector"
+	)
+	default boolean swapCollectorBag()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapDestroyEggs",
+		name = "Swap destroy",
+		description = "Enables swapping of 'Use' and 'Destroy' on collector eggs; this does not affect yellow/omega eggs",
+		position = 1,
+		group = "Collector"
+	)
+	default boolean swapDestroyEggs()
+	{
+		return true;
 	}
 
 	@ConfigItem(
 		keyName = "highlightCollectorEggs",
 		name = "Highlight collector eggs",
 		description = "Highlight called egg colors",
-		position = 6
+		position = 2,
+		group = "Collector"
 	)
 	default boolean highlightCollectorEggs()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showTotalRewards",
-		name = "Summarize total reward points",
-		description = "Displays total eggs/healed hp and missed attacks/lost runners",
-		position = 7
+		keyName = "deprioritizeIncorrectEggs",
+		name = "Deprioritize incorrect eggs",
+		description = "Moves 'Take' menu option for incorrect eggs below 'Walk Here'",
+		position = 3,
+		group = "Collector"
 	)
-	default boolean showTotalRewards()
+	default boolean deprioritizeIncorrectEggs()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showSummaryOfPoints",
-		name = "Display summary of advanced points",
-		description = "Gives summary of advanced points breakdown in chat log",
-		position = 8
+		keyName = "showEggCountOverlay",
+		name = "Show number of eggs collected",
+		description = "Displays current number of eggs collected",
+		position = 4,
+		group = "Collector"
 	)
-	default boolean showSummaryOfPoints()
+	default boolean showEggCountOverlay()
 	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "wrongPoisonFoodTextColor",
-		name = "Change healer wrong poison pack color",
-		description = "Change healer wrong poison pack color",
-		position = 9
-	)
-	default Color wrongPoisonFoodTextColor()
-	{
-		return Color.BLACK;
-	}
-
-	@ConfigItem(
-		keyName = "highlightItems",
-		name = "Highlight called poison/bait",
-		description = "Highlights the poison or bait that was called by your teammate",
-		position = 10
-	)
-	default boolean highlightItems()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "highlightColor",
-		name = "Highlight color",
-		description = "Configures the color to highlight the called poison/bait",
-		position = 11
-	)
-	default Color highlightColor()
-	{
-		return Color.GREEN;
+		return true;
 	}
 }

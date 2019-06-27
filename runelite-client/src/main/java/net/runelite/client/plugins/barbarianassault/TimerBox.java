@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, 7ate9 <https://github.com/se7enAte9>
+ * Copyright (c) 2019, https://runelitepl.us
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,60 +25,65 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
-import java.util.HashMap;
-import java.util.Map;
+import lombok.Data;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-public enum Calls
-{   //Attacker Calls
-	RED_EGG("Red egg", "Tell-red"),
-	GREEN_EGG("Green egg", "Tell-green"),
-	BLUE_EGG("Blue egg", "Tell-blue"),
-	//Collector Calls
-	CONTROLLED("Controlled/Bullet/Wind", "Tell-controlled"),
-	ACCURATE("Accurate/Field/Water", "Tell-accurate"),
-	AGGRESSIVE("Aggressive/Blunt/Earth", "Tell-aggressive"),
-	DEFENSIVE("Defensive/Barbed/Fire", "Tell-defensive"),
-	//Healer Calls
-	TOFU("Tofu", "Tell-tofu"),
-	CRACKERS("Crackers", "Tell-crackers"),
-	WORMS("Worms", "Tell-worms"),
-	//Defender Calls
-	POIS_WORMS("Pois. Worms", "Tell-worms"),
-	POIS_TOFU("Pois. Tofu", "Tell-tofu"),
-	POIS_MEAT("Pois. Meat", "Tell-meat");
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 
-	private final String call;
-	private final String option;
+@Data
+public class TimerBox extends InfoBox
+{
+	private int count;
 
-	private static final Map<String, String> CALL_MENU = new HashMap<>();
+	private boolean inSync = true;
 
-	static
+	private boolean tooltipEnabled = false;
+
+	TimerBox(BufferedImage image, Plugin plugin, int count)
 	{
-		for (Calls s : values())
+		super(image, plugin);
+		this.count = count;
+	}
+
+	@Override
+	public String getText()
+	{
+		if (count == -1)
 		{
-			CALL_MENU.put(s.getCall(), s.getOption());
+			return "";
+		}
+		return Integer.toString(getCount());
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		if (inSync)
+		{
+			return Color.WHITE;
+		}
+		else
+		{
+			return Color.RED;
 		}
 	}
 
-	Calls(String call, String option)
+	@Override
+	public String getTooltip()
 	{
-		this.call = call;
-		this.option = option;
+		if (!tooltipEnabled)
+		{
+			return "";
+		}
+		else if (inSync)
+		{
+			return "<col=00FF00>Valid";
+		}
+		else
+		{
+			return "<col=FF0000>Invalid";
+		}
 	}
-
-	public String getCall()
-	{
-		return call;
-	}
-
-	public String getOption()
-	{
-		return option;
-	}
-
-	public static String getOption(String call)
-	{
-		return CALL_MENU.get(call);
-	}
-
 }
