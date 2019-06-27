@@ -215,11 +215,6 @@ public class PuzzleState
 			return true;
 		}
 
-		if (y1 == y2 && absX == 1)
-		{
-			return true;
-		}
-
-		return false;
+		return y1 == y2 && absX == 1;
 	}
 }

@@ -37,4 +37,5 @@ class RockRespawn
 	private final WorldPoint worldPoint;
 	private final Instant startTime;
 	private final int respawnTime;
+	private final int zOffset;
 }
