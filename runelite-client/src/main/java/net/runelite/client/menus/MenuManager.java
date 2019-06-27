@@ -165,89 +165,78 @@ public class MenuManager
 				client.setMenuEntries(menuEntries);
 			}
 		}
-
-		final MenuEntry newestEntry = menuEntries[menuEntries.length - 1];
-
-		for (ComparableEntry p : priorityEntries)
-		{
-			if (p.matches(newestEntry))
-			{
-				currentPriorityEntries.add(newestEntry);
-			}
-		}
-
-		// Make a copy of the menu entries, cause you can't remove from Arrays.asList()
-		List<MenuEntry> copy = Lists.newArrayList(menuEntries);
-
-		// If there are entries we want to prioritize, we have to remove the rest
-		if (!currentPriorityEntries.isEmpty())
-		{
-			copy.retainAll(currentPriorityEntries);
-
-			// This is because players existing changes walk-here target
-			// so without this we lose track of em
-			if (copy.size() != currentPriorityEntries.size())
-			{
-				for (MenuEntry e : currentPriorityEntries)
-				{
-					if (copy.contains(e))
-					{
-						continue;
-					}
-
-					for (MenuEntry e2 : client.getMenuEntries())
-					{
-						if (e.getType() == e2.getType())
-						{
-							e.setTarget(e2.getTarget());
-							copy.add(e);
-						}
-					}
-				}
-			}
-		}
-
-		boolean isHidden = false;
-		for (ComparableEntry p : hiddenEntries)
-		{
-			if (p.matches(newestEntry))
-			{
-				isHidden = true;
-				break;
-			}
-		}
-
-		if (isHidden)
-		{
-			copy.remove(newestEntry);
-		}
-
-		client.setMenuEntries(copy.toArray(new MenuEntry[0]));
 	}
 
 	@Subscribe
 	private void onClientTick(ClientTick event)
 	{
 		originalType = null;
+		currentPriorityEntries.clear();
 		client.sortMenuEntries();
 
-		final MenuEntry[] oldentries = client.getMenuEntries();
-		MenuEntry[] newEntries;
+		MenuEntry[] oldEntries = client.getMenuEntries();
+		List<MenuEntry> newEntries = Lists.newArrayList(oldEntries);
 
-		if (!currentPriorityEntries.isEmpty())
+		for (MenuEntry entry : oldEntries)
 		{
-			newEntries = new MenuEntry[client.getMenuOptionCount() + 1];
-			newEntries[0] = CANCEL();
+			for (ComparableEntry p : priorityEntries)
+			{
+				if (p.matches(entry))
+				{
+					currentPriorityEntries.add(entry);
+				}
+			}
 
-			System.arraycopy(oldentries, 0, newEntries, 1, oldentries.length);
+			// If there are entries we want to prioritize, we have to remove the rest
+			if (!currentPriorityEntries.isEmpty() && !client.isMenuOpen())
+			{
+				newEntries.retainAll(currentPriorityEntries);
+
+				// This is because players existing changes walk-here target
+				// so without this we lose track of em
+				if (newEntries.size() != currentPriorityEntries.size())
+				{
+					for (MenuEntry e : currentPriorityEntries)
+					{
+						if (newEntries.contains(e))
+						{
+							continue;
+						}
+
+						for (MenuEntry e2 : client.getMenuEntries())
+						{
+							if (e.getType() == e2.getType())
+							{
+								e.setTarget(e2.getTarget());
+								newEntries.add(e);
+							}
+						}
+					}
+				}
+			}
+
+			boolean isHidden = false;
+			for (ComparableEntry p : hiddenEntries)
+			{
+				if (p.matches(entry))
+				{
+					isHidden = true;
+					break;
+				}
+			}
+
+			if (isHidden)
+			{
+				newEntries.remove(entry);
+			}
 		}
-		else
+
+		if (!currentPriorityEntries.isEmpty() && !client.isMenuOpen())
 		{
-			newEntries = Arrays.copyOf(oldentries, client.getMenuOptionCount());
+			newEntries.add(0, CANCEL());
 		}
 
-		MenuEntry leftClickEntry = newEntries[newEntries.length - 1];
-
+		MenuEntry leftClickEntry = newEntries.get(newEntries.size() - 1);
 
 		for (ComparableEntry src : swaps.keySet())
 		{
@@ -258,14 +247,14 @@ public class MenuManager
 
 			ComparableEntry tgt = swaps.get(src);
 
-			for (int i = newEntries.length - 2; i > 0; i--)
+			for (int i = newEntries.size() - 2; i > 0; i--)
 			{
-				MenuEntry e = newEntries[i];
+				MenuEntry e = newEntries.get(i);
 
 				if (tgt.matches(e))
 				{
-					newEntries[newEntries.length - 1] = e;
-					newEntries[i] = leftClickEntry;
+					newEntries.set(newEntries.size() - 1, e);
+					newEntries.set(i, leftClickEntry);
 
 					int type = e.getType();
 
@@ -285,8 +274,7 @@ public class MenuManager
 			}
 		}
 
-		client.setMenuEntries(newEntries);
-		currentPriorityEntries.clear();
+		client.setMenuEntries(newEntries.toArray(new MenuEntry[0]));
 	}
 
 	public void addPlayerMenuItem(String menuText)
