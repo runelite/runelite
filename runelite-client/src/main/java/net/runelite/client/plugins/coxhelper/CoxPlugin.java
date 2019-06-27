@@ -132,7 +132,7 @@ public class CoxPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Actor acidTarget;
 	@Getter(AccessLevel.PACKAGE)
-	private int timer = 45;
+	private int crippleTimer = 45;
 	@Getter(AccessLevel.PACKAGE)
 	private int burnTicks = 41;
 	@Getter(AccessLevel.PACKAGE)
@@ -172,7 +172,7 @@ public class CoxPlugin extends Plugin
 		Olm_TP.clear();
 		prayAgainstOlm = null;
 		burnTarget.clear();
-		timer = 45;
+		crippleTimer = 45;
 		burnTicks = 40;
 		acidTicks = 25;
 		teleportTicks = 10;
@@ -225,6 +225,7 @@ public class CoxPlugin extends Plugin
 						OlmPhase = 0;
 						runOlm = true;
 						needOlm = true;
+						crippleTimer = 45;
 						Olm_NextSpec = -1;
 						break;
 					case "the great olm fires a sphere of aggression your way. your prayers have been sapped.":
@@ -251,6 +252,8 @@ public class CoxPlugin extends Plugin
 						prayAgainstOlm = PrayAgainst.RANGED;
 						lastPrayTime = System.currentTimeMillis();
 						break;
+					case "the great olm's left claw clenches to protect itself temporarily.":
+						HandCripple = true;
 
 				}
 			}
@@ -450,11 +453,11 @@ public class CoxPlugin extends Plugin
 
 		if (HandCripple)
 		{
-			timer--;
-			if (timer <= 0)
+			crippleTimer--;
+			if (crippleTimer <= 0)
 			{
 				HandCripple = false;
-				timer = 45;
+				crippleTimer = 45;
 			}
 		}
 

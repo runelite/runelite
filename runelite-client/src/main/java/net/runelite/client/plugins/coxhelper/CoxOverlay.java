@@ -206,7 +206,7 @@ public class CoxOverlay extends Overlay
 
 			if (plugin.isHandCripple())
 			{
-				int tick = plugin.getTimer();
+				int tick = plugin.getCrippleTimer();
 				NPC olmHand = plugin.getHand();
 				final String tickStr = String.valueOf(tick);
 				Point canvasPoint = olmHand.getCanvasTextLocation(graphics, tickStr, 50);
