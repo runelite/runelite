@@ -264,7 +264,7 @@ public class QuestListPlugin extends Plugin
 		// Set the questHideButton to indicate the current filter.
 
 		questHideButton.setSpriteId(currentFilterState.getSpriteId());
-		questHideButton.setName(" Next");
+		questHideButton.setName("Next");
 	}
 
 	private boolean isOnQuestTab()
