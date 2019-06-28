@@ -102,7 +102,7 @@ public class AnimationClient
 
 	public List<AnimationKey> get() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
 			.addPathSegment("animation")
 			.build();
 
@@ -110,7 +110,7 @@ public class AnimationClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF
@@ -127,7 +127,7 @@ public class AnimationClient
 
 	public AnimationKey get(int npcid) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
 			.addPathSegment("animation")
 			.addPathSegment(Integer.toString(npcid))
 			.build();
@@ -136,7 +136,7 @@ public class AnimationClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), AnimationKey.class);
