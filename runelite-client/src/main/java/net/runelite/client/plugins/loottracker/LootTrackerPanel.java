@@ -34,12 +34,15 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -104,6 +107,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel singleLootBtn = new JLabel();
 	private final JLabel groupedLootBtn = new JLabel();
 	private final JLabel resetIcon = new JLabel();
+	private JComboBox dateFilterComboBox = new JComboBox<>(new Vector<LootRecordDateFilter>(Arrays.asList(LootRecordDateFilter.values())));
 
 	// Log collection
 	private final List<LootTrackerRecord> records = new ArrayList<>();
@@ -114,6 +118,7 @@ class LootTrackerPanel extends PluginPanel
 	private final LootTrackerConfig config;
 
 	private boolean groupLoot;
+	private LootRecordDateFilter dateFilter = LootRecordDateFilter.ALL;
 	private boolean hideIgnoredItems;
 	private String currentView;
 
@@ -176,7 +181,7 @@ class LootTrackerPanel extends PluginPanel
 		actionsContainer.setBorder(new EmptyBorder(5, 5, 5, 10));
 		actionsContainer.setVisible(false);
 
-		final JPanel viewControls = new JPanel(new GridLayout(1, 4, 10, 0));
+		final JPanel viewControls = new JPanel(new GridLayout(1, 5, 5, 0));
 		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		singleLootBtn.setIcon(SINGLE_LOOT_VIEW);
@@ -271,6 +276,19 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
+		dateFilterComboBox.setSelectedItem(LootRecordDateFilter.ALL);
+		dateFilterComboBox.setToolTipText("Filter the displayed loot records by date");
+		dateFilterComboBox.setMaximumSize(new Dimension(15, 0));
+		dateFilterComboBox.setMaximumRowCount(3);
+		dateFilterComboBox.addItemListener(e ->
+		{
+			final LootRecordDateFilter dateFilterSelected = (LootRecordDateFilter) e.getItem();
+			dateFilter = dateFilterSelected;
+			rebuild();
+		}
+		);
+
+		//viewControls.add(dateFilterComboBox);
 		viewControls.add(resetIcon);
 		viewControls.add(groupedLootBtn);
 		viewControls.add(singleLootBtn);
@@ -312,6 +330,7 @@ class LootTrackerPanel extends PluginPanel
 		leftTitleContainer.add(backBtn, BorderLayout.WEST);
 		leftTitleContainer.add(detailsTitle, BorderLayout.CENTER);
 
+		actionsContainer.add(dateFilterComboBox);
 		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
 		actionsContainer.add(viewControls, BorderLayout.EAST);
 
@@ -494,7 +513,15 @@ class LootTrackerPanel extends PluginPanel
 					continue;
 				}
 			}
-			buildBox(records.get(i));
+			if (this.dateFilter.equals(LootRecordDateFilter.ALL))
+			{
+				buildBox(records.get(i));
+				continue;
+			}
+			if (Instant.now().toEpochMilli() - records.get(i).getTimestamp().toEpochMilli() <= this.dateFilter.getDuration().toMillis())
+			{
+				buildBox(records.get(i));
+			}
 
 		}
 		boxes.forEach(LootTrackerBox::rebuild);
@@ -527,6 +554,10 @@ class LootTrackerPanel extends PluginPanel
 			}
 		}
 
+		if (!this.dateFilter.equals(LootRecordDateFilter.ALL))
+		{
+
+		}
 		// Group all similar loot together
 		if (groupLoot)
 		{
