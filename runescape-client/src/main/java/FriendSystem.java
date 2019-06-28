@@ -29,7 +29,6 @@ public class FriendSystem {
    @ObfuscatedGetter(
       intValue = 1477282369
    )
-   @Export("__g")
    int __g;
 
    @ObfuscatedSignature(
@@ -47,7 +46,6 @@ public class FriendSystem {
       signature = "(B)Z",
       garbageValue = "-114"
    )
-   @Export("__m_151")
    boolean __m_151() {
       return this.__g == 2;
    }
@@ -57,7 +55,6 @@ public class FriendSystem {
       signature = "(I)V",
       garbageValue = "-2125539725"
    )
-   @Export("__f_152")
    final void __f_152() {
       this.__g = 1;
    }
@@ -67,7 +64,6 @@ public class FriendSystem {
       signature = "(Lgr;II)V",
       garbageValue = "-1440726810"
    )
-   @Export("__q_153")
    final void __q_153(Buffer var1, int var2) {
       this.friendsList.read(var1, var2);
       this.__g = 2;
@@ -79,7 +75,6 @@ public class FriendSystem {
       signature = "(I)V",
       garbageValue = "-1408945788"
    )
-   @Export("__w_154")
    final void __w_154() {
       for(FriendLoginUpdate var1 = (FriendLoginUpdate)this.friendsList.friendLoginUpdates.__f_438(); var1 != null; var1 = (FriendLoginUpdate)this.friendsList.friendLoginUpdates.__q_439()) {
          if((long)var1.time < class203.currentTimeMs() / 1000L - 5L) {
@@ -134,7 +129,6 @@ public class FriendSystem {
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "-1721017960"
    )
-   @Export("__l_157")
    final void __l_157(String var1) {
       if(var1 != null) {
          Username var2 = new Username(var1, this.loginType);
@@ -179,7 +173,6 @@ public class FriendSystem {
       signature = "(B)Z",
       garbageValue = "57"
    )
-   @Export("__e_158")
    final boolean __e_158() {
       return this.friendsList.isFull() || this.friendsList.size() >= 200 && Client.__client_jo != 1;
    }
@@ -189,7 +182,6 @@ public class FriendSystem {
       signature = "(Ljava/lang/String;B)V",
       garbageValue = "30"
    )
-   @Export("__x_159")
    final void __x_159(String var1) {
       if(var1 != null) {
          Username var2 = new Username(var1, this.loginType);
@@ -228,7 +220,6 @@ public class FriendSystem {
       signature = "(B)Z",
       garbageValue = "120"
    )
-   @Export("__a_160")
    final boolean __a_160() {
       return this.ignoreList.isFull() || this.ignoreList.size() >= 100 && Client.__client_jo != 1;
    }

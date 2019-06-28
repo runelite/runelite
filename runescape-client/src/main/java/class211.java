@@ -8,13 +8,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hg")
 public class class211 {
    @ObfuscatedName("m")
-   @Export("__hg_m")
    static final String[][] __hg_m;
    @ObfuscatedName("f")
-   @Export("__hg_f")
    static final String[] __hg_f;
    @ObfuscatedName("q")
-   @Export("__hg_q")
    static Calendar __hg_q;
    @ObfuscatedName("em")
    @ObfuscatedSignature(

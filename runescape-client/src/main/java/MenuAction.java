@@ -46,6 +46,7 @@ public class MenuAction {
       signature = "(Lir;Ljava/lang/String;Ljava/lang/String;B)Llq;",
       garbageValue = "0"
    )
+   @Export("loadIndexedSpriteByName")
    public static IndexedSprite loadIndexedSpriteByName(AbstractIndexCache var0, String var1, String var2) {
       int var3 = var0.getArchiveId(var1);
       int var4 = var0.getRecordId(var3, var2);

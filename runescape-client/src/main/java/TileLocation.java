@@ -82,19 +82,16 @@ public class TileLocation {
       return this.plane + var1 + (this.x >> 6) + var1 + (this.y >> 6) + var1 + (this.x & 63) + var1 + (this.y & 63);
    }
 
-   @Export("__equals_382")
    @ObfuscatedName("equals")
    public boolean __equals_382(Object var1) {
       return this == var1?true:(!(var1 instanceof TileLocation)?false:this.equals0((TileLocation)var1));
    }
 
-   @Export("__hashCode_383")
    @ObfuscatedName("hashCode")
    public int __hashCode_383() {
       return this.packed();
    }
 
-   @Export("__toString_384")
    @ObfuscatedName("toString")
    public String __toString_384() {
       return this.toString0(",");

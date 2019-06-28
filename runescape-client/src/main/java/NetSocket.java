@@ -49,13 +49,11 @@ public final class NetSocket extends AbstractSocket implements Runnable {
    @ObfuscatedGetter(
       intValue = -738185459
    )
-   @Export("__l")
    int __l;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 2057244853
    )
-   @Export("__e")
    int __e;
    @ObfuscatedName("x")
    @Export("exceptionWriting")
@@ -64,13 +62,11 @@ public final class NetSocket extends AbstractSocket implements Runnable {
    @ObfuscatedGetter(
       intValue = -1644762957
    )
-   @Export("__d")
    final int __d;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -782964015
    )
-   @Export("__k")
    final int __k;
 
    @ObfuscatedSignature(
@@ -98,6 +94,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
       signature = "(II)Z",
       garbageValue = "1765046516"
    )
+   @Export("isAvailable")
    public boolean isAvailable(int var1) throws IOException {
       return this.isClosed?false:this.inputStream.available() >= var1;
    }
@@ -107,6 +104,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
       signature = "(I)I",
       garbageValue = "-1078471130"
    )
+   @Export("available")
    public int available() throws IOException {
       return this.isClosed?0:this.inputStream.available();
    }
@@ -116,6 +114,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
       signature = "(I)I",
       garbageValue = "516705222"
    )
+   @Export("readUnsignedByte")
    public int readUnsignedByte() throws IOException {
       return this.isClosed?0:this.inputStream.read();
    }
@@ -125,6 +124,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
       signature = "([BIII)I",
       garbageValue = "-1089665746"
    )
+   @Export("read")
    public int read(byte[] var1, int var2, int var3) throws IOException {
       if(this.isClosed) {
          return 0;
@@ -149,6 +149,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
       signature = "([BIIB)V",
       garbageValue = "-86"
    )
+   @Export("write")
    public void write(byte[] var1, int var2, int var3) throws IOException {
       this.write0(var1, var2, var3);
    }
@@ -158,6 +159,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
       signature = "(I)V",
       garbageValue = "-1252618448"
    )
+   @Export("close")
    public void close() {
       if(!this.isClosed) {
          synchronized(this) {
@@ -305,6 +307,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
       signature = "(IIILfe;Lfy;Z[I[IB)I",
       garbageValue = "-98"
    )
+   @Export("calculateRoute")
    public static int calculateRoute(int srcX, int srcY, int srcSize, RouteStrategy strategy, CollisionMap collisionMap, boolean var5, int[] bufferX, int[] bufferY) {
       int graphBaseX;
       for(int var8 = 0; var8 < 128; ++var8) {

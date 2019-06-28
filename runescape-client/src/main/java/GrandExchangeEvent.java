@@ -17,7 +17,6 @@ public class GrandExchangeEvent {
    @ObfuscatedGetter(
       longValue = -6503890758391257651L
    )
-   @Export("__f")
    public final long __f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
@@ -57,7 +56,6 @@ public class GrandExchangeEvent {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "1672323214"
    )
-   @Export("__m_3")
    public String __m_3() {
       return this.string1;
    }
@@ -67,7 +65,6 @@ public class GrandExchangeEvent {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "-271438207"
    )
-   @Export("__f_4")
    public String __f_4() {
       return this.string2;
    }

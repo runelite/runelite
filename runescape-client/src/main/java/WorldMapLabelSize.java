@@ -35,31 +35,26 @@ public class WorldMapLabelSize {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("__s_dq")
    static IndexCache __s_dq;
    @ObfuscatedName("fi")
    @ObfuscatedGetter(
       intValue = 1577759565
    )
-   @Export("__s_fi")
    static int __s_fi;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 1252293513
    )
-   @Export("__w")
    final int __w;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 707828941
    )
-   @Export("__o")
    final int __o;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -422937451
    )
-   @Export("__u")
    final int __u;
 
    static {
@@ -79,7 +74,6 @@ public class WorldMapLabelSize {
       signature = "(FI)Z",
       garbageValue = "2107231705"
    )
-   @Export("__f_14")
    boolean __f_14(float var1) {
       return var1 >= (float)this.__u;
    }

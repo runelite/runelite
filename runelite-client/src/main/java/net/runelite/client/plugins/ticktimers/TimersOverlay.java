@@ -24,19 +24,17 @@
  */
 package net.runelite.client.plugins.ticktimers;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.NPCDefinition;
-import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -63,67 +61,91 @@ public class TimersOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Color tickcolor;
-
-		for (NPCContainer npcs : plugin.getNpcContainer().values())
+		for (NPCContainer npc : plugin.getNpcContainer())
 		{
-			renderNpcOverlay(graphics, npcs.getNpc(), npcs.getAttackStyle().getColor(), 100, 10);
-			final int ticksLeft = npcs.getTicksUntilAttack();
-			if (ticksLeft > 0)
+			if (npc.getNpc() == null)
 			{
-				if (ticksLeft == 1)
+				continue;
+			}
+
+			int ticksLeft = npc.getTicksUntilAttack();
+			final List<WorldPoint> hitSquares = getHitSquares(npc.getNpc().getWorldLocation(), npc.getNpcSize(), 1, false);
+			final NPCContainer.AttackStyle attackStyle = npc.getAttackStyle();
+
+			if (config.showHitSquares() && attackStyle.getName().equals("Melee"))
+			{
+				for (WorldPoint p : hitSquares)
 				{
-					tickcolor = npcs.getAttackStyle().getColor();
+					OverlayUtil.drawTile(graphics, client, p, client.getLocalPlayer().getWorldLocation(), attackStyle.getColor(), 0, 0, 50);
 				}
-				else
+			}
+
+			if (ticksLeft <= 0)
+			{
+				continue;
+			}
+
+			final String ticksLeftStr = String.valueOf(ticksLeft);
+			final int font = config.fontStyle().getFont();
+			final boolean shadows = config.shadows();
+			Color color = (ticksLeft <= 1 ? Color.WHITE : attackStyle.getColor());
+
+			if (!config.changeTickColor())
+			{
+				color = attackStyle.getColor();
+			}
+
+			final Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, Integer.toString(ticksLeft), 0);
+
+			OverlayUtil.renderTextLocation(graphics, ticksLeftStr, config.textSize(), font, color, canvasPoint, shadows, 0);
+
+			if (config.showPrayerWidgetHelper() && attackStyle.getPrayer() != null)
+			{
+				Rectangle bounds = OverlayUtil.renderPrayerOverlay(graphics, client, attackStyle.getPrayer(), color);
+
+				if (bounds != null)
 				{
-					tickcolor = Color.WHITE;
+					renderTextLocation(graphics, ticksLeftStr, 16, config.fontStyle().getFont(), color, centerPoint(bounds), shadows);
 				}
-				final String ticksLeftStr = String.valueOf(ticksLeft);
-				Point canvasPoint = npcs.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
-				renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), tickcolor, canvasPoint);
 			}
 		}
 		return null;
 	}
 
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color, int outlineAlpha, int fillAlpha)
-	{
-		int size = 1;
-		NPCDefinition composition = actor.getTransformedDefinition();
-		if (composition != null)
-		{
-			size = composition.getSize();
-		}
-		LocalPoint lp = actor.getLocalLocation();
-		Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
-
-		if (tilePoly != null)
-		{
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(tilePoly);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
-			graphics.fill(tilePoly);
-		}
-	}
-
-	private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)
+	private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint, boolean shadows)
 	{
 		graphics.setFont(new Font("Arial", fontStyle, fontSize));
 		if (canvasPoint != null)
 		{
 			final Point canvasCenterPoint = new Point(
-				canvasPoint.getX(),
-				canvasPoint.getY());
+				canvasPoint.getX() - 3,
+				canvasPoint.getY() + 6);
 			final Point canvasCenterPoint_shadow = new Point(
-				canvasPoint.getX() + 1,
-				canvasPoint.getY() + 1);
-			if (config.shadows())
+				canvasPoint.getX() - 2,
+				canvasPoint.getY() + 7);
+			if (shadows)
 			{
 				OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
 			}
 			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
 		}
+	}
+
+	private List<WorldPoint> getHitSquares(WorldPoint npcLoc, int npcSize, int thickness, boolean includeUnder)
+	{
+		List<WorldPoint> little = new WorldArea(npcLoc, npcSize, npcSize).toWorldPointList();
+		List<WorldPoint> big = new WorldArea(npcLoc.getX() - thickness, npcLoc.getY() - thickness, npcSize + (thickness * 2), npcSize + (thickness * 2), npcLoc.getPlane()).toWorldPointList();
+		if (!includeUnder)
+		{
+			big.removeIf(little::contains);
+		}
+		return big;
+	}
+
+	private Point centerPoint(Rectangle rect)
+	{
+		int x = (int) (rect.getX() + rect.getWidth() / 2);
+		int y = (int) (rect.getY() + rect.getHeight() / 2);
+		return new Point(x, y);
 	}
 }

@@ -11,7 +11,6 @@ public class WorldMapElement extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__ic_m")
    public static AbstractIndexCache __ic_m;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -29,7 +28,6 @@ public class WorldMapElement extends DualNode {
    @ObfuscatedGetter(
       intValue = -1579051565
    )
-   @Export("__o")
    public final int __o;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
@@ -44,13 +42,11 @@ public class WorldMapElement extends DualNode {
    @Export("sprite2")
    int sprite2;
    @ObfuscatedName("l")
-   @Export("__l")
    public String __l;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -231067
    )
-   @Export("__e")
    public int __e;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
@@ -65,31 +61,26 @@ public class WorldMapElement extends DualNode {
    @Export("string1")
    public String string1;
    @ObfuscatedName("i")
-   @Export("__i")
    int[] __i;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1336803515
    )
-   @Export("__a")
    int __a;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1825795359
    )
-   @Export("__z")
    int __z;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1007121521
    )
-   @Export("__j")
    int __j;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1209054101
    )
-   @Export("__s")
    int __s;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
@@ -102,10 +93,8 @@ public class WorldMapElement extends DualNode {
    )
    public class249 field3301;
    @ObfuscatedName("h")
-   @Export("__h")
    int[] __h;
    @ObfuscatedName("b")
-   @Export("__b")
    byte[] __b;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
@@ -245,7 +234,6 @@ public class WorldMapElement extends DualNode {
       signature = "(I)V",
       garbageValue = "1799485224"
    )
-   @Export("__w_409")
    public void __w_409() {
       if(this.__i != null) {
          for(int var1 = 0; var1 < this.__i.length; var1 += 2) {
@@ -305,7 +293,6 @@ public class WorldMapElement extends DualNode {
       signature = "(I)I",
       garbageValue = "821701099"
    )
-   @Export("__g_410")
    public int __g_410() {
       return this.__o;
    }

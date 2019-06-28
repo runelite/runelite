@@ -7,7 +7,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Formatting")
 public class Formatting {
    @ObfuscatedName("d")
-   @Export("__cy_d")
    static int[] __cy_d;
    @ObfuscatedName("dh")
    @ObfuscatedSignature(

@@ -15,7 +15,6 @@ public class UserComparator4 implements Comparator {
    @Export("WorldMapElement_count")
    public static int WorldMapElement_count;
    @ObfuscatedName("m")
-   @Export("__m")
    final boolean __m;
 
    public UserComparator4(boolean var1) {
@@ -27,12 +26,10 @@ public class UserComparator4 implements Comparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "950234237"
    )
-   @Export("__m_261")
    int __m_261(Buddy var1, Buddy var2) {
       return this.__m?var1.int2 - var2.int2:var2.int2 - var1.int2;
    }
 
-   @Export("__equals_263")
    @ObfuscatedName("equals")
    public boolean __equals_263(Object var1) {
       return super.equals(var1);

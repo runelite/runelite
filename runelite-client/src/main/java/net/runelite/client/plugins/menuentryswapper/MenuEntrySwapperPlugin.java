@@ -53,6 +53,7 @@ import static net.runelite.api.MenuAction.WALK;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import static net.runelite.api.Varbits.BUILDING_MODE;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
@@ -81,6 +82,7 @@ import net.runelite.client.plugins.menuentryswapper.util.FairyRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.HouseMode;
 import net.runelite.client.plugins.menuentryswapper.util.ObeliskMode;
 import net.runelite.client.plugins.menuentryswapper.util.OccultAltarMode;
+import net.runelite.client.plugins.menuentryswapper.util.CharterOption;
 import static net.runelite.client.util.MenuUtil.swap;
 import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.Text;
@@ -104,9 +106,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
 	private static final int PURO_PURO_REGION_ID = 10307;
+	private static final String WALK_HERE = "WALK HERE";
+	private static final String CANCEL = "CANCEL";
+	private static final String CAST_OPTIONS_ATTACK = "CAST";
+	public static final HashSet<String> CAST_OPTIONS_KEYWORDS = new HashSet<>();
+		static
+		{
+			CAST_OPTIONS_KEYWORDS.add(CAST_OPTIONS_ATTACK);
+		}
 
 	private MenuEntry[] entries;
-	private final Set<Integer> leftClickConstructionIDs = new HashSet<>();
+	private final Set<String> leftClickConstructionItems = new HashSet<>();
 	private boolean buildingMode;
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
@@ -182,8 +192,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void startUp()
 	{
 		addSwaps();
-		//todo re-enable when fixed.
-		/*loadConstructionIDs(config.getConstructionItems());*/
+		loadConstructionItems(config.getEasyConstructionItems());
 
 		if (config.shiftClickCustomization())
 		{
@@ -197,8 +206,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void shutDown()
 	{
 		disableCustomization();
-		//todo re-enable when fixed.
-		/*loadConstructionIDs("");*/
+		loadConstructionItems("");
 		loadCustomSwaps(""); // Removes all custom swaps
 		removeSwaps();
 	}
@@ -210,9 +218,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			return;
 		}
-		//todo re-enable when fixed.
 
-		/*loadConstructionIDs(config.getConstructionItems());*/
+		loadConstructionItems(config.getEasyConstructionItems());
 		removeSwaps();
 		addSwaps();
 
@@ -307,9 +314,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			return;
 		}
-		//todo re-enable when fixed.
 
-		/*loadConstructionIDs(config.getConstructionItems());*/
+		loadConstructionItems(config.getEasyConstructionItems());
 	}
 
 	@Subscribe
@@ -536,6 +542,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
+		final String pOptionToReplace = Text.removeTags(event.getOption()).toUpperCase();
 		final int eventId = event.getIdentifier();
 		final String option = Text.standardize(event.getOption());
 		final String target = Text.standardize(event.getTarget());
@@ -899,26 +906,50 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 			}
 		}
+		
+		Player[] players = client.getCachedPlayers();
+		Player player = null;
+		int identifier = event.getIdentifier();
+
+		if (identifier >= 0 && identifier < players.length)
+		{
+			player = players[identifier];
+		}
+
+		if (player == null)
+		{
+			return;
+		}
+
+		//If the option is already to walk there, or cancel we don't need to swap it with anything
+		if (pOptionToReplace.equals(CANCEL) || pOptionToReplace.equals(WALK_HERE))
+			{
+				return;
+			}
+
+		if (((config.getRemoveFreezePlayerCoX() &&  client.getVar(Varbits.IN_RAID) == 1)
+		|| (config.getRemoveFreezePlayerToB() &&  client.getVar(Varbits.THEATRE_OF_BLOOD) == 2))
+		&&  (player.isFriend() || player.isClanMember())
+		&& CAST_OPTIONS_KEYWORDS.contains(pOptionToReplace))
+			{
+				addswap(pOptionToReplace);
+			}
 
 		if (option.equals("talk-to"))
 		{
-			if (config.swapPickpocket() && target.contains("h.a.m."))
+			if (config.swapPickpocket())
 			{
 				swap(client, "pickpocket", option, target, true);
-			}
-
-			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
-			{
-				swap(client, "teleport", option, target, true);
 			}
 
 			if (config.swapHardWoodGrove() && target.contains("rionasta"))
 			{
 				swap(client, "send-parcel", option, target, true);
 			}
-			if (config.swapBank())
+			if (config.swapBankExchange())
 			{
 				swap(client, "bank", option, target, true);
+				swap(client, "exchange", option, target, true);
 			}
 
 			if (config.swapContract())
@@ -926,14 +957,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "contract", option, target, true);
 			}
 
-			if (config.swapExchange())
-			{
-				swap(client, "exchange", option, target, true);
-			}
-
-			if (config.swapDarkMage())
+			if (config.swapInteract())
 			{
 				swap(client, "repairs", option, target, true);
+				swap(client, "claim-slime", option, target, true);
+				swap(client, "decant", option, target, true);
+				swap(client, "claim", option, target, true);
+				swap(client, "heal", option, target, true);
+				swap(client, "help", option, target, true);
 			}
 
 			// make sure assignment swap is higher priority than trade swap for slayer masters
@@ -947,21 +978,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "buy-plank", option, target, true);
 			}
 
-			if (config.claimDynamite() && target.equals("thirus"))
-			{
-				swap(client, "claim", option, target, true);
-			}
-
-			if (config.swapTrade())
+			if (config.swapTrade() && (!(target.equals("trader crewmember") || target.equals("trader stan")) || config.charterOption().equals(CharterOption.TRADE)))
 			{
 				swap(client, "trade", option, target, true);
 				swap(client, "trade-with", option, target, true);
 				swap(client, "shop", option, target, true);
 			}
 
-			if (config.claimSlime() && target.equals("robin"))
+			if (config.swapMinigame())
 			{
-				swap(client, "claim-slime", option, target, true);
+				swap(client, "story", option, target, true);
+				swap(client, "escort", option, target, true);
+				swap(client, "dream", option, target, true);
+				swap(client, "start-minigame", option, target, true);
 			}
 
 			if (config.swapTravel())
@@ -976,6 +1005,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "rellekka", option, target, true);
 				swap(client, "follow", option, target, true);
 				swap(client, "transport", option, target, true);
+
+				if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
+				{
+					swap(client, "teleport", option, target, true);
+				}
+
+				if (!(target.equals("trader crewmember") || target.equals("trader stan")) || config.charterOption().equals(CharterOption.CHARTER))
+				{
+					swap(client, "charter", option, target, true);
+				}
 			}
 
 			if (config.swapPay())
@@ -984,30 +1023,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "pay (", option, target, false);
 			}
 
-			if (config.swapDream())
-			{
-				swap(client, "dream", option, target, true);
-			}
-
-			if (config.swapDecant())
-			{
-				swap(client, "decant", option, target, true);
-			}
-
 			if (config.swapQuick())
 			{
 				swap(client, "quick-travel", option, target, true);
 			}
 
-			if (config.swapStory())
+			if (config.swapEnchant())
 			{
-				swap(client, "story", option, target, true);
+				swap(client, "enchant", option, target, true);
 			}
 
-			if (config.swapEscort())
-			{
-				swap(client, "escort", option, target, true);
-			}
 		}
 
 		else if (config.swapWildernessLever() && target.equals("lever") && option.equals("ardougne"))
@@ -1025,18 +1050,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap(client, "stun", option, target, true);
 		}
 
-		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
+		else if (config.swapTravel() && (option.equals("pass") || option.equals("open")))
 		{
-			swap(client, "pay-toll(2-ecto)", option, target, true);
-		}
-
-		else if (config.swapTravel() && option.equals("open") && target.equals("gate"))
-		{
-			swap(client, "pay-toll(10gp)", option, target, true);
-		}
-		else if (config.swapHardWoodGrove() && option.equals("open") && target.equals("hardwood grove doors"))
-		{
-			swap(client, "quick-pay(100)", option, target, true);
+			swap(client, "pay-toll", option, target, false);
 		}
 		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
 		{
@@ -1157,7 +1173,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap(client, "quick-open", option, target, true);
 		}
-
+		else if (config.swapQuick() && option.equals("enter"))
+		{
+			swap(client, "quick-enter", option, target, true);
+		}
+		else if (config.swapQuick() && option.equals("leave tomb"))
+		{
+			swap(client, "quick-leave", option, target, true);
+		}
 		else if (config.swapAdmire() && option.equals("admire"))
 		{
 			swap(client, "teleport", option, target, true);
@@ -1202,17 +1225,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		// Put all item-related swapping after shift-click
-		else if (config.swapTeleportItem() && option.equals("wear"))
+		else if (config.swapTeleportItem() && (option.equals("wear") || option.equals("wield")))
 		{
 			swap(client, "rub", option, target, true);
 			swap(client, "teleport", option, target, true);
 		}
-		else if (option.equals("wield"))
+		else if (config.swapCoalBag() && option.contains("deposit") && target.equals("coal bag"))
 		{
-			if (config.swapTeleportItem())
-			{
-				swap(client, "teleport", option, target, true);
-			}
+			swap(client, "empty", option, target, true);
 		}
 		else if (config.swapBones() && option.equals("bury"))
 		{
@@ -1221,37 +1241,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapNexus() && target.contains("portal nexus"))
 		{
 			swap(client, "teleport menu", option, target, true);
-		}
-
-		if (config.getTempConstruction() && buildingMode && !Strings.isNullOrEmpty(config.getTempConstructionItems()))
-		{
-			if (event.getType() == WALK.getId())
-			{
-				MenuEntry[] menuEntries = client.getMenuEntries();
-				MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-				menuEntry.setType(MenuAction.WALK.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
-				client.setMenuEntries(menuEntries);
-			}
-
-			swap(client, "Build", option, target);
-
-			MenuEntry[] entries = client.getMenuEntries();
-			for (int i = entries.length - 1; i >= 0; i--)
-			{
-				for (String temp : config.getTempConstructionItems().split(","))
-				{
-					if (temp.equalsIgnoreCase(Text.removeTags(entries[i].getTarget())))
-					{
-						if (!entries[i].getOption().equalsIgnoreCase("remove"))
-						{
-							entries = ArrayUtils.remove(entries, i);
-							i--;
-						}
-					}
-				}
-			}
-
-			client.setMenuEntries(entries);
 		}
 	}
 
@@ -1382,6 +1371,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.addSwap("remove", "burning amulet", config.getBurningAmuletMode().toString());
 		}
 
+		if (config.teleEquippedCape())
+		{
+			menuManager.addSwap("remove", "tele to poh", config.telecapeMode().toString());
+			menuManager.addSwap("remove", "teleport", config.telecapeMode().toString());
+		}
+
 		if (config.getCombatBracelet())
 		{
 			menuManager.addSwap("remove", "combat bracelet", config.getCombatBraceletMode().toString());
@@ -1490,25 +1485,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return location.getRegionID() == PURO_PURO_REGION_ID;
 		}
 	}
-	//todo re-enable when fixed.
 
-/*	private void loadConstructionIDs(String from)
+	private void loadConstructionItems(String from)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN
-			|| Strings.isNullOrEmpty(from) && leftClickConstructionIDs.isEmpty())
+			|| Strings.isNullOrEmpty(from) && leftClickConstructionItems.isEmpty())
 		{
 			return;
 		}
 
-		if (!leftClickConstructionIDs.isEmpty())
+		if (!leftClickConstructionItems.isEmpty())
 		{
-			for (int i : leftClickConstructionIDs)
+			for (String s : leftClickConstructionItems)
 			{
-				menuManager.toggleLeftClick("build", i, true);
-				menuManager.toggleLeftClick("remove", i, true);
+				menuManager.removePriorityEntry("build", s);
+				menuManager.removePriorityEntry("remove", s);
 			}
 
-			leftClickConstructionIDs.clear();
+			leftClickConstructionItems.clear();
 		}
 
 		if (config.getEasyConstruction() &&
@@ -1517,21 +1511,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			for (String s : Text.fromCSV(from))
 			{
-				int id = Integer.parseInt(s.replaceAll("[^0-9]", ""));
-
-				if (leftClickConstructionIDs.contains(id))
+				if (leftClickConstructionItems.contains(s))
 				{
 					continue;
 				}
 
-				if (menuManager.toggleLeftClick("build", id, false)
-					|| menuManager.toggleLeftClick("remove", id, false))
-				{
-					leftClickConstructionIDs.add(id);
-				}
+				menuManager.addPriorityEntry("build", s);
+				menuManager.addPriorityEntry("remove", s);
+
+				leftClickConstructionItems.add(s);
 			}
 		}
-	}*/
+	}
 
 	void startShift()
 	{
@@ -1561,5 +1552,48 @@ public class MenuEntrySwapperPlugin extends Plugin
 	void stopControl()
 	{
 		menuManager.removePriorityEntry("climb-down");
+	}
+
+/**
+ * Swaps menu entries if the entries could be found. This places Walk Here where the top level menu option was.
+ * @param pOptionToReplace The String containing the Menu Option that needs to be replaced. IE: "Attack", "Chop Down".
+ */
+	private void addswap(String pOptionToReplace)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		Integer walkHereEntry = searchIndex(entries, WALK_HERE);
+		Integer entryToReplace = searchIndex(entries, pOptionToReplace);
+
+		if (walkHereEntry != null
+				&& entryToReplace != null)
+			{
+			MenuEntry walkHereMenuEntry = entries[walkHereEntry];
+			entries[walkHereEntry] = entries[entryToReplace];
+			entries[entryToReplace] = walkHereMenuEntry;
+			client.setMenuEntries(entries);
+			}
+	}
+
+/**
+ * Finds the index of the menu that contains the verbiage we are looking for.
+ * @param pMenuEntries The list of {@link MenuEntry}s.
+ * @param pMenuEntryToSearchFor The Option in the menu to search for.
+ * @return The index location or null if it was not found.
+ */
+	private Integer searchIndex(MenuEntry[] pMenuEntries, String pMenuEntryToSearchFor)
+	{
+		Integer indexLocation = 0;
+
+		for (MenuEntry menuEntry : pMenuEntries)
+			{
+			String entryOption = Text.removeTags(menuEntry.getOption()).toUpperCase();
+
+			if (entryOption.equals(pMenuEntryToSearchFor))
+				{
+				return indexLocation;
+				}
+			indexLocation++;
+			}
+		return null;
 	}
 }

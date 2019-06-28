@@ -7,13 +7,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ModelData")
 public class ModelData extends Entity {
    @ObfuscatedName("aw")
-   @Export("__dw_aw")
    static int[] __dw_aw;
    @ObfuscatedName("al")
-   @Export("__dw_al")
    static int[] __dw_al;
    @ObfuscatedName("ab")
-   @Export("__dw_ab")
    static int __dw_ab;
    @ObfuscatedName("ae")
    @Export("ModelData_sine")
@@ -46,10 +43,8 @@ public class ModelData extends Entity {
    @Export("indices3")
    int[] indices3;
    @ObfuscatedName("e")
-   @Export("__e")
    byte[] __e;
    @ObfuscatedName("x")
-   @Export("__x")
    byte[] __x;
    @ObfuscatedName("d")
    @Export("faceAlphas")
@@ -64,10 +59,8 @@ public class ModelData extends Entity {
    @Export("faceTextures")
    short[] faceTextures;
    @ObfuscatedName("a")
-   @Export("__a")
    byte __a;
    @ObfuscatedName("z")
-   @Export("__z")
    int __z;
    @ObfuscatedName("j")
    @Export("textureRenderTypes")
@@ -82,10 +75,8 @@ public class ModelData extends Entity {
    @Export("texTriangleZ")
    short[] texTriangleZ;
    @ObfuscatedName("h")
-   @Export("__h")
    int[] __h;
    @ObfuscatedName("b")
-   @Export("__b")
    int[] __b;
    @ObfuscatedName("c")
    @Export("vertexLabels")
@@ -103,37 +94,28 @@ public class ModelData extends Entity {
    @ObfuscatedSignature(
       signature = "[Ldq;"
    )
-   @Export("__v")
    VertexNormal[] __v;
    @ObfuscatedName("ag")
    @ObfuscatedSignature(
       signature = "[Ldq;"
    )
-   @Export("__ag")
    VertexNormal[] __ag;
    @ObfuscatedName("aq")
-   @Export("__aq")
    public short __aq;
    @ObfuscatedName("aj")
-   @Export("__aj")
    public short __aj;
    @ObfuscatedName("av")
    @Export("isBoundsCalculated")
    boolean isBoundsCalculated;
    @ObfuscatedName("ar")
-   @Export("__ar")
    int __ar;
    @ObfuscatedName("ac")
-   @Export("__ac")
    int __ac;
    @ObfuscatedName("ay")
-   @Export("__ay")
    int __ay;
    @ObfuscatedName("ah")
-   @Export("__ah")
    int __ah;
    @ObfuscatedName("ak")
-   @Export("__ak")
    int __ak;
 
    static {
@@ -390,7 +372,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("f")
-   @Export("__f_215")
    void __f_215(byte[] var1) {
       Buffer var2 = new Buffer(var1);
       Buffer var3 = new Buffer(var1);
@@ -697,7 +678,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("q")
-   @Export("__q_216")
    void __q_216(byte[] var1) {
       boolean var2 = false;
       boolean var3 = false;
@@ -978,7 +958,6 @@ public class ModelData extends Entity {
    @ObfuscatedSignature(
       signature = "(Ldw;I)I"
    )
-   @Export("__w_217")
    final int __w_217(ModelData var1, int var2) {
       int var3 = -1;
       int var4 = var1.verticesX[var2];
@@ -1010,7 +989,6 @@ public class ModelData extends Entity {
    @ObfuscatedSignature(
       signature = "()Ldw;"
    )
-   @Export("__o_218")
    public ModelData __o_218() {
       ModelData var1 = new ModelData();
       if(this.__e != null) {
@@ -1055,7 +1033,6 @@ public class ModelData extends Entity {
    @ObfuscatedSignature(
       signature = "([[IIIIZI)Ldw;"
    )
-   @Export("__u_219")
    public ModelData __u_219(int[][] var1, int var2, int var3, int var4, boolean var5, int var6) {
       this.__c_229();
       int var7 = var2 + this.__ac;
@@ -1147,7 +1124,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("g")
-   @Export("__g_220")
    void __g_220() {
       int[] var1;
       int var2;
@@ -1208,7 +1184,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("l")
-   @Export("__l_221")
    public void __l_221() {
       for(int var1 = 0; var1 < this.verticesCount; ++var1) {
          int var2 = this.verticesX[var1];
@@ -1220,7 +1195,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("x")
-   @Export("__x_222")
    public void __x_222() {
       for(int var1 = 0; var1 < this.verticesCount; ++var1) {
          this.verticesX[var1] = -this.verticesX[var1];
@@ -1231,7 +1205,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("d")
-   @Export("__d_223")
    public void __d_223() {
       for(int var1 = 0; var1 < this.verticesCount; ++var1) {
          int var2 = this.verticesZ[var1];
@@ -1243,7 +1216,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("a")
-   @Export("__a_224")
    public void __a_224(int var1) {
       int var2 = ModelData_sine[var1];
       int var3 = ModelData_cosine[var1];
@@ -1258,7 +1230,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("z")
-   @Export("__z_225")
    public void __z_225(int var1, int var2, int var3) {
       for(int var4 = 0; var4 < this.verticesCount; ++var4) {
          this.verticesX[var4] += var1;
@@ -1294,7 +1265,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("t")
-   @Export("__t_226")
    public void __t_226() {
       int var1;
       for(var1 = 0; var1 < this.verticesCount; ++var1) {
@@ -1311,7 +1281,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("y")
-   @Export("__y_227")
    public void __y_227(int var1, int var2, int var3) {
       for(int var4 = 0; var4 < this.verticesCount; ++var4) {
          this.verticesX[var4] = this.verticesX[var4] * var1 / 128;
@@ -1323,7 +1292,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("h")
-   @Export("__h_228")
    public void __h_228() {
       if(this.__v == null) {
          this.__v = new VertexNormal[this.verticesCount];
@@ -1408,7 +1376,6 @@ public class ModelData extends Entity {
    }
 
    @ObfuscatedName("c")
-   @Export("__c_229")
    void __c_229() {
       if(!this.isBoundsCalculated) {
          super.height = 0;

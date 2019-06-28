@@ -13,7 +13,6 @@ public final class class27 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__aq_k")
    public static AbstractIndexCache __aq_k;
    @ObfuscatedName("f")
    final int[] field225;
@@ -49,6 +48,7 @@ public final class class27 {
       signature = "([BI)Lln;",
       garbageValue = "-143338910"
    )
+   @Export("convertJpgToSprite")
    public static final Sprite convertJpgToSprite(byte[] var0) {
       BufferedImage var1 = null;
 

@@ -14,6 +14,7 @@ public class class16 {
    @ObfuscatedSignature(
       signature = "Lbp;"
    )
+   @Export("loginScreenRunesAnimation")
    static LoginScreenAnimation loginScreenRunesAnimation;
    @ObfuscatedName("dv")
    @ObfuscatedSignature(
@@ -208,7 +209,7 @@ public class class16 {
                var10 = var7 + 1;
                if(Canvas.localPlayer.pathX[0] >= var3 - var10 && Canvas.localPlayer.pathX[0] <= var10 + var3 && Canvas.localPlayer.pathY[0] >= var38 - var10 && Canvas.localPlayer.pathY[0] <= var10 + var38 && Client.__client_qc != 0 && var8 > 0 && Client.soundEffectCount < 50) {
                   Client.soundEffectIds[Client.soundEffectCount] = var9;
-                  Client.unknownSoundValues1[Client.soundEffectCount] = var8;
+                  Client.queuedSoundEffectLoops[Client.soundEffectCount] = var8;
                   Client.queuedSoundEffectDelays[Client.soundEffectCount] = var5;
                   Client.soundEffects[Client.soundEffectCount] = null;
                   Client.soundLocations[Client.soundEffectCount] = var7 + (var38 << 8) + (var3 << 16);

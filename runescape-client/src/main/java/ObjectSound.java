@@ -23,37 +23,31 @@ public final class ObjectSound extends Node {
    @ObfuscatedGetter(
       intValue = 647270745
    )
-   @Export("__f")
    int __f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -800464493
    )
-   @Export("__q")
    int __q;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -85911525
    )
-   @Export("__w")
    int __w;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -211591209
    )
-   @Export("__o")
    int __o;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 512258949
    )
-   @Export("__u")
    int __u;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 1344558633
    )
-   @Export("__g")
    int __g;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
@@ -71,13 +65,11 @@ public final class ObjectSound extends Node {
    @ObfuscatedGetter(
       intValue = -1608400407
    )
-   @Export("__x")
    int __x;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1748890449
    )
-   @Export("__d")
    int __d;
    @ObfuscatedName("k")
    @Export("soundEffectIds")
@@ -86,7 +78,6 @@ public final class ObjectSound extends Node {
    @ObfuscatedGetter(
       intValue = -1041508847
    )
-   @Export("surfaceOffsetY")
    int __n;
    @ObfuscatedName("i")
    @ObfuscatedSignature(

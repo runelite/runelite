@@ -14,31 +14,26 @@ public class FaceNormal {
    @ObfuscatedGetter(
       intValue = 422473713
    )
-   @Export("__el_x")
    public static int __el_x;
    @ObfuscatedName("gm")
    @ObfuscatedSignature(
       signature = "Lln;"
    )
-   @Export("__el_gm")
    static Sprite __el_gm;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -2074333261
    )
-   @Export("__m")
    int __m;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1376860893
    )
-   @Export("__f")
    int __f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 2619977
    )
-   @Export("__q")
    int __q;
 
    @ObfuscatedName("f")

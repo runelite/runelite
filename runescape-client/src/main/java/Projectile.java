@@ -231,6 +231,7 @@ public final class Projectile extends Entity {
       signature = "(I)Ldu;",
       garbageValue = "-2134947096"
    )
+   @Export("getModel")
    protected final Model getModel() {
       SpotAnimationDefinition var1 = class50.getSpotAnimationDefinition(this.id);
       Model var2 = var1.getModel(this.frame);

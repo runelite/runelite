@@ -396,7 +396,7 @@ public class PestControlPlugin extends Plugin
 		}
 
 		// Get points from dialog after purchase
-		Widget pestControlDialog = client.getWidget(WidgetInfo.PEST_CONTROL_DIALOG_TEXT);
+		Widget pestControlDialog = client.getWidget(WidgetInfo.MINIGAME_DIALOG_TEXT);
 		if (pestControlDialog != null)
 		{
 			String pestControlDialogText = Text.sanitizeMultilineText(pestControlDialog.getText());

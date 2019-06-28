@@ -31,6 +31,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
+import static java.lang.Math.floor;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -104,11 +105,15 @@ public class GroundItemsPlugin extends Plugin
 
 	// items stay on the ground for 30 mins in an instance
 	private static final int INSTANCE_DURATION_MILLIS = 45 * 60 * 1000;
+	private static final int INSTANCE_DURATION_TICKS = (int) floor(30 * 60 / 0.6);
 	//untradeables stay on the ground for 150 seconds (http://oldschoolrunescape.wikia.com/wiki/Item#Dropping_and_Destroying)
 	private static final int UNTRADEABLE_DURATION_MILLIS = 150 * 1000;
+	private static final int UNTRADEABLE_DURATION_TICKS = (int) floor(150 / 0.6);
 	//items stay on the ground for 1 hour after death
 	private static final int DEATH_DURATION_MILLIS = 60 * 60 * 1000;
+	private static final int DEATH_DURATION_TICKS = (int) floor(60 * 60 / 0.6);
 	private static final int NORMAL_DURATION_MILLIS = 60 * 1000;
+	private static final int NORMAL_DURATION_TICKS = (int) floor(60 / 0.6);
 
 	// Ground item menu options
 	private static final int FIRST_OPTION = MenuAction.GROUND_ITEM_FIRST_OPTION.getId();
@@ -495,20 +500,25 @@ public class GroundItemsPlugin extends Plugin
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = itemManager.getAlchValue(realItemId);
 		int durationMillis;
+		int durationTicks;
+
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+
 		if (client.isInInstancedRegion())
 		{
 			durationMillis = INSTANCE_DURATION_MILLIS;
+			durationTicks = INSTANCE_DURATION_TICKS;
 		}
 		else if (!itemComposition.isTradeable() && realItemId != COINS)
 		{
 			durationMillis = UNTRADEABLE_DURATION_MILLIS;
+			durationTicks = UNTRADEABLE_DURATION_TICKS;
 		}
 		else
 		{
 			durationMillis = NORMAL_DURATION_MILLIS;
+			durationTicks = tile.getWorldLocation().equals(playerLocation) ? NORMAL_DURATION_TICKS * 2 : NORMAL_DURATION_TICKS;
 		}
-
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -523,7 +533,7 @@ public class GroundItemsPlugin extends Plugin
 			.durationMillis(durationMillis)
 			.isAlwaysPrivate(client.isInInstancedRegion() || (!itemComposition.isTradeable() && realItemId != COINS))
 			.isOwnedByPlayer(tile.getWorldLocation().equals(playerLocation))
-			.ticks(tile.getWorldLocation().equals(client.getLocalPlayer().getWorldLocation()) ? 200 : 100)
+			.ticks(durationTicks)
 			.build();
 
 
@@ -593,9 +603,9 @@ public class GroundItemsPlugin extends Plugin
 	{
 		if (config.itemHighlightMode() != OVERLAY
 			&& event.getOption().equals("Take")
-			&& event.getType() == THIRD_OPTION)
+			&& event.getIdentifier() == THIRD_OPTION)
 		{
-			int itemId = event.getIdentifier();
+			int itemId = event.getType();
 			Scene scene = client.getScene();
 			Tile tile = scene.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
 			ItemLayer itemLayer = tile.getItemLayer();

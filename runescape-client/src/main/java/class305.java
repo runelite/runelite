@@ -4,10 +4,8 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("kb")
 public class class305 {
    @ObfuscatedName("q")
-   @Export("__kb_q")
    static final char[] __kb_q;
    @ObfuscatedName("w")
-   @Export("__kb_w")
    static final char[] __kb_w;
 
    static {

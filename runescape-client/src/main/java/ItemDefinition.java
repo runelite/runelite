@@ -47,7 +47,6 @@ public class ItemDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 1070080857
    )
-   @Export("__a")
    int __a;
    @ObfuscatedName("z")
    @Export("name")
@@ -200,10 +199,8 @@ public class ItemDefinition extends DualNode {
    @Export("femaleHeadModel2")
    int femaleHeadModel2;
    @ObfuscatedName("az")
-   @Export("__az")
    int[] __az;
    @ObfuscatedName("au")
-   @Export("__au")
    int[] __au;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
@@ -493,7 +490,6 @@ public class ItemDefinition extends DualNode {
       signature = "(Ljv;Ljv;I)V",
       garbageValue = "2051877377"
    )
-   @Export("__o_426")
    void __o_426(ItemDefinition var1, ItemDefinition var2) {
       this.__a = var1.__a;
       this.zoom2d = var1.zoom2d;
@@ -517,7 +513,6 @@ public class ItemDefinition extends DualNode {
       signature = "(Ljv;Ljv;I)V",
       garbageValue = "227754762"
    )
-   @Export("__u_427")
    void __u_427(ItemDefinition var1, ItemDefinition var2) {
       this.__a = var1.__a;
       this.zoom2d = var1.zoom2d;
@@ -561,7 +556,6 @@ public class ItemDefinition extends DualNode {
       signature = "(Ljv;Ljv;I)V",
       garbageValue = "2084647027"
    )
-   @Export("__g_428")
    void __g_428(ItemDefinition var1, ItemDefinition var2) {
       this.__a = var1.__a;
       this.zoom2d = var1.zoom2d;
@@ -586,7 +580,6 @@ public class ItemDefinition extends DualNode {
       signature = "(II)Ldw;",
       garbageValue = "-223149161"
    )
-   @Export("__l_429")
    public final ModelData __l_429(int var1) {
       int var3;
       if(this.__az != null && var1 > 1) {
@@ -686,7 +679,6 @@ public class ItemDefinition extends DualNode {
       signature = "(IB)Ljv;",
       garbageValue = "0"
    )
-   @Export("__x_430")
    public ItemDefinition __x_430(int var1) {
       if(this.__az != null && var1 > 1) {
          int var2 = -1;
@@ -710,7 +702,6 @@ public class ItemDefinition extends DualNode {
       signature = "(ZI)Z",
       garbageValue = "-918880706"
    )
-   @Export("__z_431")
    public final boolean __z_431(boolean var1) {
       int var2 = this.maleModel;
       int var3 = this.maleModel1;
@@ -746,7 +737,6 @@ public class ItemDefinition extends DualNode {
       signature = "(ZB)Ldw;",
       garbageValue = "-123"
    )
-   @Export("__j_432")
    public final ModelData __j_432(boolean var1) {
       int var2 = this.maleModel;
       int var3 = this.maleModel1;
@@ -803,7 +793,6 @@ public class ItemDefinition extends DualNode {
       signature = "(ZI)Z",
       garbageValue = "-998582497"
    )
-   @Export("__s_433")
    public final boolean __s_433(boolean var1) {
       int var2 = this.maleHeadModel;
       int var3 = this.maleHeadModel2;
@@ -833,7 +822,6 @@ public class ItemDefinition extends DualNode {
       signature = "(ZI)Ldw;",
       garbageValue = "-1820885439"
    )
-   @Export("__t_434")
    public final ModelData __t_434(boolean var1) {
       int var2 = this.maleHeadModel;
       int var3 = this.maleHeadModel2;

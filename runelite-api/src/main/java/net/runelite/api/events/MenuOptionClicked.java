@@ -42,10 +42,15 @@ import net.runelite.api.MenuEntry;
 @Data
 public class MenuOptionClicked
 {
+	public MenuOptionClicked(MenuEntry entry)
+	{
+		menuEntry = entry;
+	}
+
 	/**
 	 * The actual MenuEntry object representing what was clicked
 	 */
-	private final MenuEntry menuEntry;
+	private MenuEntry menuEntry;
 
 	/**
 	 * The option text added to the menu.

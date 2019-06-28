@@ -8,10 +8,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("PlayerAppearance")
 public class PlayerAppearance {
    @ObfuscatedName("g")
-   @Export("__hi_g")
    public static short[] __hi_g;
    @ObfuscatedName("d")
-   @Export("__hi_d")
    static final int[] __hi_d;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
@@ -38,13 +36,11 @@ public class PlayerAppearance {
    @ObfuscatedGetter(
       longValue = -3506189412688081513L
    )
-   @Export("__o")
    long __o;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       longValue = 8217880921734028425L
    )
-   @Export("__u")
    long __u;
 
    static {
@@ -57,7 +53,6 @@ public class PlayerAppearance {
       signature = "([I[IZII)V",
       garbageValue = "727056871"
    )
-   @Export("__m_385")
    public void __m_385(int[] var1, int[] var2, boolean var3, int var4) {
       if(var1 == null) {
          var1 = new int[12];
@@ -85,7 +80,6 @@ public class PlayerAppearance {
       signature = "(IZI)V",
       garbageValue = "-581016899"
    )
-   @Export("__f_386")
    public void __f_386(int var1, boolean var2) {
       if(var1 != 1 || !this.isFemale) {
          int var3 = this.equipment[__hi_d[var1]];
@@ -120,7 +114,6 @@ public class PlayerAppearance {
       signature = "(IZI)V",
       garbageValue = "1416503110"
    )
-   @Export("__q_387")
    public void __q_387(int var1, boolean var2) {
       int var3 = this.bodyColors[var1];
       if(!var2) {
@@ -148,7 +141,6 @@ public class PlayerAppearance {
       signature = "(ZB)V",
       garbageValue = "-90"
    )
-   @Export("__w_388")
    public void __w_388(boolean var1) {
       if(this.isFemale != var1) {
          this.__m_385((int[])null, this.bodyColors, var1, -1);
@@ -160,7 +152,6 @@ public class PlayerAppearance {
       signature = "(Lgr;I)V",
       garbageValue = "779254645"
    )
-   @Export("__o_389")
    public void __o_389(Buffer var1) {
       var1.writeByte(this.isFemale?1:0);
 

@@ -43,7 +43,6 @@ public class FontName {
    @Export("FontName_verdana15")
    public static final FontName FontName_verdana15;
    @ObfuscatedName("g")
-   @Export("__g")
    String __g;
 
    static {
@@ -78,6 +77,7 @@ public class FontName {
       signature = "(I)V",
       garbageValue = "-1587423260"
    )
+   @Export("closeWorldSelect")
    static void closeWorldSelect() {
       Login.worldSelectOpen = false;
       Login.leftTitleSprite.drawAt(Login.xPadding, 0);

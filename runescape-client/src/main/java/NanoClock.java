@@ -23,6 +23,7 @@ public class NanoClock extends Clock {
       signature = "(B)V",
       garbageValue = "61"
    )
+   @Export("mark")
    public void mark() {
       this.lastTimeNano = System.nanoTime();
    }
@@ -32,6 +33,7 @@ public class NanoClock extends Clock {
       signature = "(III)I",
       garbageValue = "-126803683"
    )
+   @Export("wait")
    public int wait(int var1, int var2) {
       long var3 = 1000000L * (long)var2;
       long var5 = this.lastTimeNano - System.nanoTime();

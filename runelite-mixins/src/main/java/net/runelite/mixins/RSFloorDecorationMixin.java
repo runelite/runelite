@@ -34,7 +34,8 @@ public abstract class RSFloorDecorationMixin implements RSFloorDecoration
 	}
 
 	@Inject
-	private Model getModel()
+	@Override
+	public Model getModel()
 	{
 		Renderable renderable = getRenderable();
 		if (renderable == null)

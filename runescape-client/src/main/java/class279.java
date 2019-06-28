@@ -8,7 +8,6 @@ public class class279 {
    @ObfuscatedSignature(
       signature = "[Lho;"
    )
-   @Export("__jx_ne")
    static Widget[] __jx_ne;
 
    @ObfuscatedName("e")

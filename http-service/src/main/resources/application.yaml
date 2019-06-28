@@ -30,8 +30,6 @@ redis:
   pool.size: 10
   host: http://localhost:6379
 
-mongo:
-  host: mongodb://localhost:27017
 
 # Twitter client for feed
 runelite:

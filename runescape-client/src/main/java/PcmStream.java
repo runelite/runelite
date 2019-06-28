@@ -16,7 +16,6 @@ public abstract class PcmStream extends Node {
    @Export("after")
    PcmStream after;
    @ObfuscatedName("s")
-   @Export("__s")
    int __s;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
@@ -33,12 +32,14 @@ public abstract class PcmStream extends Node {
    @ObfuscatedSignature(
       signature = "()Ldc;"
    )
+   @Export("firstSubStream")
    protected abstract PcmStream firstSubStream();
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "()Ldc;"
    )
+   @Export("nextSubStream")
    protected abstract PcmStream nextSubStream();
 
    @ObfuscatedName("l")

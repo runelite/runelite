@@ -35,49 +35,41 @@ public class Instrument {
    @ObfuscatedSignature(
       signature = "Lde;"
    )
-   @Export("__m")
    SoundEnvelope __m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lde;"
    )
-   @Export("__f")
    SoundEnvelope __f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lde;"
    )
-   @Export("__q")
    SoundEnvelope __q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lde;"
    )
-   @Export("__w")
    SoundEnvelope __w;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lde;"
    )
-   @Export("__o")
    SoundEnvelope __o;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lde;"
    )
-   @Export("__u")
    SoundEnvelope __u;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Lde;"
    )
-   @Export("__g")
    SoundEnvelope __g;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lde;"
    )
-   @Export("__l")
    SoundEnvelope __l;
    @ObfuscatedName("e")
    @Export("oscillatorVolume")
@@ -104,7 +96,6 @@ public class Instrument {
    @ObfuscatedSignature(
       signature = "Lde;"
    )
-   @Export("__a")
    SoundEnvelope __a;
    @ObfuscatedName("z")
    @Export("duration")

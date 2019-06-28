@@ -83,13 +83,11 @@ public class SpotAnimationDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -20619847
    )
-   @Export("__a")
    int __a;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = 1866148625
    )
-   @Export("__z")
    int __z;
 
    static {

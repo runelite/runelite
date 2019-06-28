@@ -43,7 +43,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
    @ObfuscatedGetter(
       intValue = -281664295
    )
-   @Export("__ba_q")
    static int __ba_q;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
@@ -58,19 +57,16 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
    @ObfuscatedGetter(
       intValue = -1179083285
    )
-   @Export("__ba_l")
    static int __ba_l;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -1698831905
    )
-   @Export("__ba_e")
    static int __ba_e;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 425367827
    )
-   @Export("__ba_d")
    static int __ba_d;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
@@ -79,22 +75,18 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
    @Export("fps")
    protected static int fps;
    @ObfuscatedName("a")
-   @Export("__ba_a")
    static long[] __ba_a;
    @ObfuscatedName("j")
-   @Export("__ba_j")
    static long[] __ba_j;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -2078849253
    )
-   @Export("__ba_s")
    static int __ba_s;
    @ObfuscatedName("aw")
    @ObfuscatedGetter(
       intValue = -1042005999
    )
-   @Export("__ba_aw")
    static int __ba_aw;
    @ObfuscatedName("an")
    @Export("hasFocus")
@@ -175,7 +167,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
    @Export("canvas")
    java.awt.Canvas canvas;
    @ObfuscatedName("ah")
-   @Export("__ah")
    volatile boolean __ah;
    @ObfuscatedName("al")
    @Export("resizeCanvasNextFrame")
@@ -405,7 +396,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(I)V",
       garbageValue = "-1773624745"
    )
-   @Export("__j_113")
    protected abstract void __j_113();
 
    @ObfuscatedName("p")
@@ -613,7 +603,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(B)V",
       garbageValue = "0"
    )
-   @Export("__av_93")
    void __av_93() {
       long var1 = class203.currentTimeMs();
       long var3 = __ba_j[__ba_s];
@@ -635,7 +624,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(B)V",
       garbageValue = "-2"
    )
-   @Export("__ar_94")
    void __ar_94() {
       Container var1 = this.container();
       long var2 = class203.currentTimeMs();
@@ -678,7 +666,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(I)V",
       garbageValue = "-1999661001"
    )
-   @Export("__ac_95")
    final void __ac_95() {
       Bounds var1 = this.getFrameContentBounds();
       if(var1.__q != this.contentWidth || this.contentHeight != var1.__w || this.resizeCanvasNextFrame) {
@@ -693,7 +680,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(I)V",
       garbageValue = "1147427427"
    )
-   @Export("__ay_96")
    final void __ay_96() {
       this.resizeCanvasNextFrame = true;
    }
@@ -753,7 +739,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(I)V",
       garbageValue = "1445885427"
    )
-   @Export("__al_111")
    protected abstract void __al_111();
 
    @ObfuscatedName("ab")
@@ -833,7 +818,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(I)V",
       garbageValue = "-1283386969"
    )
-   @Export("__ad_108")
    protected final void __ad_108() {
       PlayerType.__ij_ak = null;
       class231.__hb_av = null;
@@ -904,10 +888,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(I)V",
       garbageValue = "1860808291"
    )
-   @Export("__au_110")
    protected abstract void __au_110();
 
-   @Export("__destroy_99")
    @ObfuscatedName("destroy")
    public final void __destroy_99() {
       if(this == gameShell && !isKilled) {
@@ -993,7 +975,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       this.kill();
    }
 
-   @Export("__start_97")
    @ObfuscatedName("start")
    public final void __start_97() {
       if(this == gameShell && !isKilled) {
@@ -1040,11 +1021,9 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
    public final void windowOpened(WindowEvent var1) {
    }
 
-   @Export("__init_109")
    @ObfuscatedName("init")
    public abstract void __init_109();
 
-   @Export("__stop_98")
    @ObfuscatedName("stop")
    public final void __stop_98() {
       if(this == gameShell && !isKilled) {

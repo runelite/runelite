@@ -7,29 +7,22 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("RawPcmStream")
 public class RawPcmStream extends PcmStream {
    @ObfuscatedName("m")
-   @Export("__m")
    int __m;
    @ObfuscatedName("f")
-   @Export("__f")
    int __f;
    @ObfuscatedName("q")
-   @Export("__q")
    int __q;
    @ObfuscatedName("o")
-   @Export("__o")
    int __o;
    @ObfuscatedName("u")
-   @Export("__u")
    int __u;
    @ObfuscatedName("g")
-   @Export("__g")
    int __g;
    @ObfuscatedName("l")
-   @Export("__l")
    int __l;
    @ObfuscatedName("e")
-   @Export("__e")
-   int __e;
+   @Export("numLoops")
+   int numLoops;
    @ObfuscatedName("x")
    @Export("start")
    int start;
@@ -37,19 +30,14 @@ public class RawPcmStream extends PcmStream {
    @Export("end")
    int end;
    @ObfuscatedName("k")
-   @Export("__k")
    boolean __k;
    @ObfuscatedName("n")
-   @Export("surfaceOffsetY")
    int __n;
    @ObfuscatedName("i")
-   @Export("__i")
    int __i;
    @ObfuscatedName("a")
-   @Export("__a")
    int __a;
    @ObfuscatedName("z")
-   @Export("__z")
    int __z;
 
    @ObfuscatedSignature(
@@ -83,7 +71,6 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("o")
-   @Export("__o_180")
    void __o_180() {
       this.__u = this.__q;
       this.__g = method2603(this.__q, this.__o);
@@ -94,6 +81,7 @@ public class RawPcmStream extends PcmStream {
    @ObfuscatedSignature(
       signature = "()Ldc;"
    )
+   @Export("firstSubStream")
    protected PcmStream firstSubStream() {
       return null;
    }
@@ -102,6 +90,7 @@ public class RawPcmStream extends PcmStream {
    @ObfuscatedSignature(
       signature = "()Ldc;"
    )
+   @Export("nextSubStream")
    protected PcmStream nextSubStream() {
       return null;
    }
@@ -122,7 +111,7 @@ public class RawPcmStream extends PcmStream {
          int var7 = var4.samples.length << 8;
          int var8 = var6 - var5;
          if(var8 <= 0) {
-            this.__e = 0;
+            this.numLoops = 0;
          }
 
          int var9 = var2;
@@ -147,7 +136,7 @@ public class RawPcmStream extends PcmStream {
             this.__m = var7 - 1;
          }
 
-         if(this.__e < 0) {
+         if(this.numLoops < 0) {
             if(this.__k) {
                if(this.__f < 0) {
                   var9 = this.__ap_203(var1, var2, var5, var3, var4.samples[this.start]);
@@ -195,7 +184,7 @@ public class RawPcmStream extends PcmStream {
                }
             }
          } else {
-            if(this.__e > 0) {
+            if(this.numLoops > 0) {
                if(this.__k) {
                   label140: {
                      if(this.__f < 0) {
@@ -206,7 +195,7 @@ public class RawPcmStream extends PcmStream {
 
                         this.__m = var5 + var5 - 1 - this.__m;
                         this.__f = -this.__f;
-                        if(--this.__e == 0) {
+                        if(--this.numLoops == 0) {
                            break label140;
                         }
                      }
@@ -219,7 +208,7 @@ public class RawPcmStream extends PcmStream {
 
                         this.__m = var6 + var6 - 1 - this.__m;
                         this.__f = -this.__f;
-                        if(--this.__e == 0) {
+                        if(--this.numLoops == 0) {
                            break;
                         }
 
@@ -230,7 +219,7 @@ public class RawPcmStream extends PcmStream {
 
                         this.__m = var5 + var5 - 1 - this.__m;
                         this.__f = -this.__f;
-                     } while(--this.__e != 0);
+                     } while(--this.numLoops != 0);
                   }
                } else {
                   int var10;
@@ -242,14 +231,14 @@ public class RawPcmStream extends PcmStream {
                         }
 
                         var10 = (var6 - 1 - this.__m) / var8;
-                        if(var10 >= this.__e) {
-                           this.__m += var8 * this.__e;
-                           this.__e = 0;
+                        if(var10 >= this.numLoops) {
+                           this.__m += var8 * this.numLoops;
+                           this.numLoops = 0;
                            break;
                         }
 
                         this.__m += var8 * var10;
-                        this.__e -= var10;
+                        this.numLoops -= var10;
                      }
                   } else {
                      while(true) {
@@ -259,14 +248,14 @@ public class RawPcmStream extends PcmStream {
                         }
 
                         var10 = (this.__m - var5) / var8;
-                        if(var10 >= this.__e) {
-                           this.__m -= var8 * this.__e;
-                           this.__e = 0;
+                        if(var10 >= this.numLoops) {
+                           this.__m -= var8 * this.numLoops;
+                           this.numLoops = 0;
                            break;
                         }
 
                         this.__m -= var8 * var10;
-                        this.__e -= var10;
+                        this.numLoops -= var10;
                      }
                   }
                }
@@ -293,9 +282,9 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("x")
-   @Export("__x_181")
-   public synchronized void __x_181(int var1) {
-      this.__e = var1;
+   @Export("setNumLoops")
+   public synchronized void setNumLoops(int var1) {
+      this.numLoops = var1;
    }
 
    @ObfuscatedName("d")
@@ -327,7 +316,7 @@ public class RawPcmStream extends PcmStream {
       int var5 = var2.samples.length << 8;
       int var6 = var4 - var3;
       if(var6 <= 0) {
-         this.__e = 0;
+         this.numLoops = 0;
       }
 
       if(this.__m < 0) {
@@ -351,7 +340,7 @@ public class RawPcmStream extends PcmStream {
       }
 
       this.__m += this.__f * var1;
-      if(this.__e < 0) {
+      if(this.numLoops < 0) {
          if(!this.__k) {
             if(this.__f < 0) {
                if(this.__m >= var3) {
@@ -390,7 +379,7 @@ public class RawPcmStream extends PcmStream {
 
          }
       } else {
-         if(this.__e > 0) {
+         if(this.numLoops > 0) {
             if(this.__k) {
                label123: {
                   if(this.__f < 0) {
@@ -400,7 +389,7 @@ public class RawPcmStream extends PcmStream {
 
                      this.__m = var3 + var3 - 1 - this.__m;
                      this.__f = -this.__f;
-                     if(--this.__e == 0) {
+                     if(--this.numLoops == 0) {
                         break label123;
                      }
                   }
@@ -412,7 +401,7 @@ public class RawPcmStream extends PcmStream {
 
                      this.__m = var4 + var4 - 1 - this.__m;
                      this.__f = -this.__f;
-                     if(--this.__e == 0) {
+                     if(--this.numLoops == 0) {
                         break;
                      }
 
@@ -422,7 +411,7 @@ public class RawPcmStream extends PcmStream {
 
                      this.__m = var3 + var3 - 1 - this.__m;
                      this.__f = -this.__f;
-                  } while(--this.__e != 0);
+                  } while(--this.numLoops != 0);
                }
             } else {
                int var7;
@@ -432,28 +421,28 @@ public class RawPcmStream extends PcmStream {
                   }
 
                   var7 = (var4 - 1 - this.__m) / var6;
-                  if(var7 < this.__e) {
+                  if(var7 < this.numLoops) {
                      this.__m += var6 * var7;
-                     this.__e -= var7;
+                     this.numLoops -= var7;
                      return;
                   }
 
-                  this.__m += var6 * this.__e;
-                  this.__e = 0;
+                  this.__m += var6 * this.numLoops;
+                  this.numLoops = 0;
                } else {
                   if(this.__m < var4) {
                      return;
                   }
 
                   var7 = (this.__m - var3) / var6;
-                  if(var7 < this.__e) {
+                  if(var7 < this.numLoops) {
                      this.__m -= var6 * var7;
-                     this.__e -= var7;
+                     this.numLoops -= var7;
                      return;
                   }
 
-                  this.__m -= var6 * this.__e;
-                  this.__e = 0;
+                  this.__m -= var6 * this.numLoops;
+                  this.numLoops = 0;
                }
             }
          }
@@ -474,19 +463,16 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("a")
-   @Export("__a_182")
    public synchronized void __a_182(int var1) {
       this.__j_184(var1 << 6, this.__t_186());
    }
 
    @ObfuscatedName("z")
-   @Export("__z_183")
    synchronized void __z_183(int var1) {
       this.__j_184(var1, this.__t_186());
    }
 
    @ObfuscatedName("j")
-   @Export("__j_184")
    synchronized void __j_184(int var1, int var2) {
       this.__q = var1;
       this.__o = var2;
@@ -495,19 +481,16 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("s")
-   @Export("__s_185")
    public synchronized int __s_185() {
       return this.__q == Integer.MIN_VALUE?0:this.__q;
    }
 
    @ObfuscatedName("t")
-   @Export("__t_186")
    public synchronized int __t_186() {
       return this.__o < 0?-1:this.__o;
    }
 
    @ObfuscatedName("y")
-   @Export("__y_187")
    public synchronized void __y_187(int var1) {
       int var2 = ((RawSound)super.sound).samples.length << 8;
       if(var1 < -1) {
@@ -526,14 +509,12 @@ public class RawPcmStream extends PcmStream {
       signature = "(Z)V",
       garbageValue = "1"
    )
-   @Export("__h_188")
    public synchronized void __h_188() {
       this.__f = (this.__f ^ this.__f >> 31) + (this.__f >>> 31);
       this.__f = -this.__f;
    }
 
    @ObfuscatedName("b")
-   @Export("__b_189")
    void __b_189() {
       if(this.__n != 0) {
          if(this.__q == Integer.MIN_VALUE) {
@@ -547,13 +528,11 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("c")
-   @Export("__c_190")
    public synchronized void __c_190(int var1, int var2) {
       this.__p_191(var1, var2, this.__t_186());
    }
 
    @ObfuscatedName("p")
-   @Export("__p_191")
    public synchronized void __p_191(int var1, int var2, int var3) {
       if(var1 == 0) {
          this.__j_184(var2, var3);
@@ -599,7 +578,6 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("v")
-   @Export("__v_192")
    public synchronized void __v_192(int var1) {
       if(var1 == 0) {
          this.__z_183(0);
@@ -644,7 +622,6 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("ah")
-   @Export("__ah_193")
    public synchronized void __ah_193(int var1) {
       if(this.__f < 0) {
          this.__f = -var1;
@@ -655,25 +632,21 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("ab")
-   @Export("__ab_194")
    public synchronized int __ab_194() {
       return this.__f < 0?-this.__f:this.__f;
    }
 
    @ObfuscatedName("ae")
-   @Export("__ae_195")
    public boolean __ae_195() {
       return this.__m < 0 || this.__m >= ((RawSound)super.sound).samples.length << 8;
    }
 
    @ObfuscatedName("at")
-   @Export("__at_196")
    public boolean __at_196() {
       return this.__n != 0;
    }
 
    @ObfuscatedName("ad")
-   @Export("__ad_202")
    int __ad_202(int[] var1, int var2, int var3, int var4, int var5) {
       while(true) {
          if(this.__n > 0) {
@@ -724,7 +697,6 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("ap")
-   @Export("__ap_203")
    int __ap_203(int[] var1, int var2, int var3, int var4, int var5) {
       while(true) {
          if(this.__n > 0) {
@@ -775,13 +747,12 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("az")
-   @Export("__az_179")
    int __az_179() {
       int var1 = this.__u * 3 >> 6;
       var1 = (var1 ^ var1 >> 31) + (var1 >>> 31);
-      if(this.__e == 0) {
+      if(this.numLoops == 0) {
          var1 -= var1 * this.__m / (((RawSound)super.sound).samples.length << 8);
-      } else if(this.__e >= 0) {
+      } else if(this.numLoops >= 0) {
          var1 -= var1 * this.start / ((RawSound)super.sound).samples.length;
       }
 
@@ -789,7 +760,6 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("au")
-   @Export("__au_204")
    boolean __au_204() {
       int var1 = this.__q;
       int var2;
@@ -872,7 +842,8 @@ public class RawPcmStream extends PcmStream {
    @ObfuscatedSignature(
       signature = "(Lcx;II)Lds;"
    )
-   public static RawPcmStream method2497(RawSound var0, int var1, int var2) {
+   @Export("createRawPcmStream")
+   public static RawPcmStream createRawPcmStream(RawSound var0, int var1, int var2) {
       return var0.samples != null && var0.samples.length != 0?new RawPcmStream(var0, (int)((long)var0.sampleRate * 256L * (long)var1 / (long)(class309.PcmPlayer_sampleRate * 100)), var2 << 6):null;
    }
 

@@ -12,22 +12,17 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("GrandExchangeEvents")
 public class GrandExchangeEvents {
    @ObfuscatedName("f")
-   @Export("__g_f")
    public static Comparator __g_f;
    @ObfuscatedName("q")
-   @Export("__g_q")
    public static Comparator __g_q;
    @ObfuscatedName("w")
-   @Export("__g_w")
    public static Comparator __g_w;
    @ObfuscatedName("o")
-   @Export("__g_o")
    public static Comparator __g_o;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1605454211
    )
-   @Export("__g_z")
    static int __g_z;
    @ObfuscatedName("hs")
    @ObfuscatedGetter(

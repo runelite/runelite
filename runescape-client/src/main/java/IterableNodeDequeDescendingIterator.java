@@ -17,13 +17,11 @@ public class IterableNodeDequeDescendingIterator implements Iterator {
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   @Export("__f")
    Node __f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   @Export("__q")
    Node __q;
 
    @ObfuscatedSignature(
@@ -38,14 +36,12 @@ public class IterableNodeDequeDescendingIterator implements Iterator {
    @ObfuscatedSignature(
       signature = "(Lja;)V"
    )
-   @Export("__u_443")
    void __u_443(IterableNodeDeque var1) {
       this.deque = var1;
       this.__g_444();
    }
 
    @ObfuscatedName("g")
-   @Export("__g_444")
    void __g_444() {
       this.__f = this.deque != null?this.deque.sentinel.previous:null;
       this.__q = null;
@@ -72,7 +68,6 @@ public class IterableNodeDequeDescendingIterator implements Iterator {
       return var1;
    }
 
-   @Export("__remove_447")
    @ObfuscatedName("remove")
    public void __remove_447() {
       if(this.__q == null) {

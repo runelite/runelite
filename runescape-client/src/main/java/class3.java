@@ -9,7 +9,6 @@ public class class3 implements Enumerated {
    @ObfuscatedGetter(
       intValue = 1608439891
    )
-   @Export("__w_qs")
    static int __w_qs;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -65,6 +64,7 @@ public class class3 implements Enumerated {
       signature = "(B)I",
       garbageValue = "83"
    )
+   @Export("rsOrdinal")
    public int rsOrdinal() {
       return this.id;
    }

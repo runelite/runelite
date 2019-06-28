@@ -18,7 +18,6 @@ public final class Npc extends Actor {
       signature = "(IBI)V",
       garbageValue = "306250019"
    )
-   @Export("__m_162")
    final void __m_162(int var1, byte var2) {
       int var3 = super.pathX[0];
       int var4 = super.pathY[0];
@@ -82,7 +81,6 @@ public final class Npc extends Actor {
       signature = "(IIZI)V",
       garbageValue = "-1647134110"
    )
-   @Export("__f_163")
    final void __f_163(int var1, int var2, boolean var3) {
       if(super.sequence != -1 && WorldMapAreaData.getSequenceDefinition(super.sequence).__s == 1) {
          super.sequence = -1;
@@ -159,6 +157,7 @@ public final class Npc extends Actor {
       signature = "(B)Z",
       garbageValue = "1"
    )
+   @Export("isVisible")
    final boolean isVisible() {
       return this.definition != null;
    }

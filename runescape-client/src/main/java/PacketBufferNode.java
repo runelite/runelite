@@ -17,19 +17,16 @@ public class PacketBufferNode extends Node {
    @ObfuscatedGetter(
       intValue = -1583654139
    )
-   @Export("__gg_u")
    public static int __gg_u;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__m")
    public ClientPacket __m;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1433542775
    )
-   @Export("__f")
    public int __f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
@@ -41,7 +38,6 @@ public class PacketBufferNode extends Node {
    @ObfuscatedGetter(
       intValue = -2051819203
    )
-   @Export("__w")
    public int __w;
 
    static {
@@ -54,7 +50,6 @@ public class PacketBufferNode extends Node {
       signature = "(I)V",
       garbageValue = "-1987685511"
    )
-   @Export("__f_292")
    public void __f_292() {
       if(__gg_u < packetBufferNodes.length) {
          packetBufferNodes[++__gg_u - 1] = this;

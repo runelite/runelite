@@ -5,7 +5,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hy")
 public class class230 {
    @ObfuscatedName("az")
-   @Export("__hy_az")
    protected static boolean __hy_az;
 
    @ObfuscatedName("q")

@@ -58,182 +58,182 @@ public interface HidePrayersConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "HideTHICK_SKIN",
-		name = "Hide Thick Skin",
+		keyName = "ShowTHICK_SKIN",
+		name = "Show Thick Skin",
 		description = "Hide/Show Thick Skin",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideTHICK_SKIN()
+	default boolean ShowTHICK_SKIN()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 2,
-		keyName = "HideBURST_OF_STRENGTH",
-		name = "Hide Burst of Strength",
+		keyName = "ShowBURST_OF_STRENGTH",
+		name = "Show Burst of Strength",
 		description = "Hide/Show Burst of Strength",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideBURST_OF_STRENGTH()
+	default boolean ShowBURST_OF_STRENGTH()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 3,
-		keyName = "HideCLARITY_OF_THOUGHT",
-		name = "Hide Clarity of Thought",
+		keyName = "ShowCLARITY_OF_THOUGHT",
+		name = "Show Clarity of Thought",
 		description = "Hide/Show Clarity of Thought",
 		group = "Individual Prayers",
 		hidden = true,
-		unhide = "showindividualprayers"
+		unhide = "Showindividualprayers"
 	)
-	default boolean HideCLARITY_OF_THOUGHT()
+	default boolean ShowCLARITY_OF_THOUGHT()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 4,
-		keyName = "HideSHARP_EYE",
-		name = "Hide Sharp Eye",
+		keyName = "ShowSHARP_EYE",
+		name = "Show Sharp Eye",
 		description = "Hide/Show Sharp Eye",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideSHARP_EYE()
+	default boolean ShowSHARP_EYE()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 5,
-		keyName = "HideMYSTIC_WILL",
-		name = "Hide Mystic Will",
+		keyName = "ShowMYSTIC_WILL",
+		name = "Show Mystic Will",
 		description = "Hide/Show Mystic Will",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideMYSTIC_WILL()
+	default boolean ShowMYSTIC_WILL()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 6,
-		keyName = "HideROCK_SKIN",
-		name = "Hide Rock Skin",
+		keyName = "ShowROCK_SKIN",
+		name = "Show Rock Skin",
 		description = "Hide/Show Rock Skin",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideROCK_SKIN()
+	default boolean ShowROCK_SKIN()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 7,
-		keyName = "HideSUPERHUMAN_STRENGTH",
-		name = "Hide Super Human Strength",
+		keyName = "ShowSUPERHUMAN_STRENGTH",
+		name = "Show Super Human Strength",
 		description = "Hide/Show Super Human Strength",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideSUPERHUMAN_STRENGTH()
+	default boolean ShowSUPERHUMAN_STRENGTH()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 8,
-		keyName = "HideIMPROVED_REFLEXES",
-		name = "Hide Improved_Reflexes",
+		keyName = "ShowIMPROVED_REFLEXES",
+		name = "Show Improved_Reflexes",
 		description = "Hide/Show Improved_Reflexes",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideIMPROVED_REFLEXES()
+	default boolean ShowIMPROVED_REFLEXES()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 9,
-		keyName = "HideRapidRestore",
-		name = "Hide Rapid Restore",
+		keyName = "ShowRapidRestore",
+		name = "Show Rapid Restore",
 		description = "Hide/Show Rapid Restore",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideRapidRestore()
+	default boolean ShowRapidRestore()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 10,
-		keyName = "HideRapidHeal",
-		name = "Hide Rapid Heal",
+		keyName = "ShowRapidHeal",
+		name = "Show Rapid Heal",
 		description = "Hide/Show Rapid Heal",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideRapidHeal()
+	default boolean ShowRapidHeal()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 11,
-		keyName = "HideProtectItem",
-		name = "Hide Protect Item",
+		keyName = "ShowProtectItem",
+		name = "Show Protect Item",
 		description = "Hide/Show Protect Item",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideProtectItem()
+	default boolean ShowProtectItem()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 12,
-		keyName = "HideHAWK_EYE",
-		name = "Hide Hawk Eye",
+		keyName = "ShowHAWK_EYE",
+		name = "Show Hawk Eye",
 		description = "Hide/Show Hawk Eye",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideHAWK_EYE()
+	default boolean ShowHAWK_EYE()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 13,
-		keyName = "HideMYSTIC_LORE",
-		name = "Hide Mystic Lore",
+		keyName = "ShowMYSTIC_LORE",
+		name = "Show Mystic Lore",
 		description = "Hide/Show Mystic Lore",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideMYSTIC_LORE()
+	default boolean ShowMYSTIC_LORE()
 	{
 		return false;
 	}
@@ -241,224 +241,224 @@ public interface HidePrayersConfig extends Config
 
 	@ConfigItem(
 		position = 14,
-		keyName = "HideSteelSkin",
-		name = "Hide Steel Skin",
+		keyName = "ShowSteelSkin",
+		name = "Show Steel Skin",
 		description = "Hide/Show Steel skin",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideSteelSkin()
+	default boolean ShowSteelSkin()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 15,
-		keyName = "HideUltimateStrength",
-		name = "Hide Ultimate Strength",
+		keyName = "ShowUltimateStrength",
+		name = "Show Ultimate Strength",
 		description = "Hide/Show Ultimate strength",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideUltimateStrength()
+	default boolean ShowUltimateStrength()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 16,
-		keyName = "HideIncredibleReflex",
-		name = "Hide Incredible Reflex",
+		keyName = "ShowIncredibleReflex",
+		name = "Show Incredible Reflex",
 		description = "Hide/Show Incredible Reflex",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideIncredibleReflex()
+	default boolean ShowIncredibleReflex()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 17,
-		keyName = "HidePTFMagic",
-		name = "Hide Protect From Magic",
+		keyName = "ShowPTFMagic",
+		name = "Show Protect From Magic",
 		description = "Hide/Show Protect From Magic",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HidePTFMagic()
+	default boolean ShowPTFMagic()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 18,
-		keyName = "HidePTFRange",
-		name = "Hide Protect From Range",
+		keyName = "ShowPTFRange",
+		name = "Show Protect From Range",
 		description = "Hide/Show Protect from Range",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HidePTFRange()
+	default boolean ShowPTFRange()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 19,
-		keyName = "HidePTFMelee",
-		name = "Hide Protect From Melee",
+		keyName = "ShowPTFMelee",
+		name = "Show Protect From Melee",
 		description = "Hide/Show Protect From Melee",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HidePTFMelee()
+	default boolean ShowPTFMelee()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 20,
-		keyName = "HideEagle",
-		name = "Hide Eagle Eye",
+		keyName = "ShowEagle",
+		name = "Show Eagle Eye",
 		description = "Hide/Show Eagle Eye",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideEagle()
+	default boolean ShowEagle()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 19,
-		keyName = "HideMystic",
-		name = "Hide Mystic Might",
+		keyName = "ShowMystic",
+		name = "Show Mystic Might",
 		description = "Hide/Show Mystic Might",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideMystic()
+	default boolean ShowMystic()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 21,
-		keyName = "HideRETRIBUTION",
-		name = "Hide Retribution",
+		keyName = "ShowRETRIBUTION",
+		name = "Show Retribution",
 		description = "Hide/Show Retribution",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideRETRIBUTION()
+	default boolean ShowRETRIBUTION()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 22,
-		keyName = "HideRedemption",
-		name = "Hide Redemption",
+		keyName = "ShowRedemption",
+		name = "Show Redemption",
 		description = "Hide/Show Redemption",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideRedemption()
+	default boolean ShowRedemption()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 23,
-		keyName = "HideSmite",
-		name = "Hide Smite",
+		keyName = "ShowSmite",
+		name = "Show Smite",
 		description = "Hide/Show Smite",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideSmite()
+	default boolean ShowSmite()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 24,
-		keyName = "HidePreserve",
-		name = "Hide Preserve",
+		keyName = "ShowPreserve",
+		name = "Show Preserve",
 		description = "Hide/Show Preserve",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HidePreserve()
+	default boolean ShowPreserve()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 25,
-		keyName = "HideChivalry",
-		name = "Hide Chivalry",
+		keyName = "ShowChivalry",
+		name = "Show Chivalry",
 		description = "Hide/Show Chivalry",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideChivalry()
+	default boolean ShowChivalry()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 26,
-		keyName = "HidePiety",
-		name = "Hide Piety",
+		keyName = "ShowPiety",
+		name = "Show Piety",
 		description = "Hide/Show Piety",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HidePiety()
+	default boolean ShowPiety()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 27,
-		keyName = "HideRigour",
-		name = "Hide Rigour",
+		keyName = "ShowRigour",
+		name = "Show Rigour",
 		description = "Hide/Show Rigour",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideRigour()
+	default boolean ShowRigour()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 28,
-		keyName = "HideAugury",
-		name = "Hide Augury",
+		keyName = "ShowAugury",
+		name = "Show Augury",
 		description = "Hide/Show Augury",
 		group = "Individual Prayers",
 		hidden = true,
 		unhide = "showindividualprayers"
 	)
-	default boolean HideAugury()
+	default boolean ShowAugury()
 	{
 		return false;
 	}

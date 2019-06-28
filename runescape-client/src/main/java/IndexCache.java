@@ -30,10 +30,8 @@ public class IndexCache extends AbstractIndexCache {
    @Export("index")
    int index;
    @ObfuscatedName("v")
-   @Export("__v")
    volatile boolean __v;
    @ObfuscatedName("ag")
-   @Export("__ag")
    boolean __ag;
    @ObfuscatedName("aq")
    @Export("validArchives")
@@ -54,7 +52,6 @@ public class IndexCache extends AbstractIndexCache {
    @ObfuscatedGetter(
       intValue = -1884661133
    )
-   @Export("__ac")
    int __ac;
 
    static {
@@ -106,6 +103,7 @@ public class IndexCache extends AbstractIndexCache {
       signature = "(II)I",
       garbageValue = "-1809769865"
    )
+   @Export("archiveLoadPercent")
    int archiveLoadPercent(int var1) {
       return super.archives[var1] != null?100:(this.validArchives[var1]?100:class54.method1086(this.index, var1));
    }
@@ -115,6 +113,7 @@ public class IndexCache extends AbstractIndexCache {
       signature = "(II)V",
       garbageValue = "-1829145107"
    )
+   @Export("loadArchive")
    void loadArchive(int var1) {
       if(this.indexStore != null && this.validArchives != null && this.validArchives[var1]) {
          IndexStore var2 = this.indexStore;
@@ -146,7 +145,6 @@ public class IndexCache extends AbstractIndexCache {
       signature = "(I)Z",
       garbageValue = "1750279412"
    )
-   @Export("__cx_404")
    public boolean __cx_404() {
       return this.__v;
    }
@@ -156,7 +154,6 @@ public class IndexCache extends AbstractIndexCache {
       signature = "(I)I",
       garbageValue = "1671499504"
    )
-   @Export("__ca_405")
    public int __ca_405() {
       if(this.__v) {
          return 100;
@@ -357,7 +354,6 @@ public class IndexCache extends AbstractIndexCache {
       signature = "(IB)Z",
       garbageValue = "0"
    )
-   @Export("__dn_407")
    public boolean __dn_407(int var1) {
       return this.validArchives[var1];
    }
@@ -367,7 +363,6 @@ public class IndexCache extends AbstractIndexCache {
       signature = "(II)Z",
       garbageValue = "1419648188"
    )
-   @Export("__df_408")
    public boolean __df_408(int var1) {
       return this.__j_395(var1) != null;
    }
@@ -480,23 +475,23 @@ public class IndexCache extends AbstractIndexCache {
 
          if(var4 == 4) {
             if(var2 == 0) {
-               Client.__client_qp = 127;
+               Client.soundEffectVolume = 127;
             }
 
             if(var2 == 1) {
-               Client.__client_qp = 96;
+               Client.soundEffectVolume = 96;
             }
 
             if(var2 == 2) {
-               Client.__client_qp = 64;
+               Client.soundEffectVolume = 64;
             }
 
             if(var2 == 3) {
-               Client.__client_qp = 32;
+               Client.soundEffectVolume = 32;
             }
 
             if(var2 == 4) {
-               Client.__client_qp = 0;
+               Client.soundEffectVolume = 0;
             }
          }
 

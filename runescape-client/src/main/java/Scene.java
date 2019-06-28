@@ -82,8 +82,8 @@ public class Scene {
    @Export("Scene_selectedY")
    public static int Scene_selectedY;
    @ObfuscatedName("ab")
-   @Export("__em_ab")
-   static boolean __em_ab;
+   @Export("viewportWalking")
+   static boolean viewportWalking;
    @ObfuscatedName("ad")
    @Export("Scene_planesCount")
    static int Scene_planesCount;
@@ -112,25 +112,18 @@ public class Scene {
    @Export("Scene_tilesDeque")
    static NodeDeque Scene_tilesDeque;
    @ObfuscatedName("au")
-   @Export("__em_au")
    static final int[] __em_au;
    @ObfuscatedName("ao")
-   @Export("__em_ao")
    static final int[] __em_ao;
    @ObfuscatedName("aa")
-   @Export("__em_aa")
    static final int[] __em_aa;
    @ObfuscatedName("ax")
-   @Export("__em_ax")
    static final int[] __em_ax;
    @ObfuscatedName("af")
-   @Export("__em_af")
    static final int[] __em_af;
    @ObfuscatedName("ai")
-   @Export("__em_ai")
    static final int[] __em_ai;
    @ObfuscatedName("ba")
-   @Export("__em_ba")
    static final int[] __em_ba;
    @ObfuscatedName("bc")
    @Export("visibilityMap")
@@ -187,13 +180,10 @@ public class Scene {
    @Export("tempGameObjects")
    GameObject[] tempGameObjects;
    @ObfuscatedName("x")
-   @Export("__x")
    int[][][] __x;
    @ObfuscatedName("bk")
-   @Export("__bk")
    int[][] __bk;
    @ObfuscatedName("bd")
-   @Export("__bd")
    int[][] __bd;
 
    static {
@@ -207,7 +197,7 @@ public class Scene {
       Scene_selectedScreenY = 0;
       Scene_selectedX = -1;
       Scene_selectedY = -1;
-      __em_ab = false;
+      viewportWalking = false;
       Scene_planesCount = 4;
       Scene_planeOccluderCounts = new int[Scene_planesCount];
       Scene_planeOccluders = new Occluder[Scene_planesCount][500];
@@ -484,7 +474,6 @@ public class Scene {
    @ObfuscatedSignature(
       signature = "(IIIIIILex;IJI)Z"
    )
-   @Export("__d_238")
    public boolean __d_238(int var1, int var2, int var3, int var4, int var5, int var6, Entity var7, int var8, long var9, int var11) {
       if(var7 == null) {
          return true;
@@ -499,7 +488,6 @@ public class Scene {
    @ObfuscatedSignature(
       signature = "(IIIIILex;IJZ)Z"
    )
-   @Export("__a_239")
    public boolean __a_239(int var1, int var2, int var3, int var4, int var5, Entity var6, int var7, long var8, boolean var10) {
       if(var6 == null) {
          return true;
@@ -538,7 +526,6 @@ public class Scene {
    @ObfuscatedSignature(
       signature = "(IIIIILex;IJIIII)Z"
    )
-   @Export("__z_240")
    public boolean __z_240(int var1, int var2, int var3, int var4, int var5, Entity var6, int var7, long var8, int var10, int var11, int var12, int var13) {
       return var6 == null?true:this.newGameObject(var1, var10, var11, var12 - var10 + 1, var13 - var11 + 1, var2, var3, var4, var6, var7, true, var8, 0);
    }
@@ -666,7 +653,6 @@ public class Scene {
    }
 
    @ObfuscatedName("y")
-   @Export("__y_241")
    public void __y_241(int var1, int var2, int var3, int var4) {
       Tile var5 = this.tiles[var1][var2][var3];
       if(var5 != null) {
@@ -697,7 +683,6 @@ public class Scene {
    }
 
    @ObfuscatedName("c")
-   @Export("__c_242")
    public void __c_242(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       if(var4 != null) {
@@ -757,7 +742,6 @@ public class Scene {
    @ObfuscatedSignature(
       signature = "(III)Leh;"
    )
-   @Export("__aj_243")
    public GameObject __aj_243(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       if(var4 == null) {
@@ -788,21 +772,18 @@ public class Scene {
    }
 
    @ObfuscatedName("ar")
-   @Export("__ar_244")
    public long __ar_244(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       return var4 != null && var4.boundaryObject != null?var4.boundaryObject.tag:0L;
    }
 
    @ObfuscatedName("ac")
-   @Export("__ac_245")
    public long __ac_245(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       return var4 != null && var4.wallDecoration != null?var4.wallDecoration.tag:0L;
    }
 
    @ObfuscatedName("ay")
-   @Export("__ay_246")
    public long __ay_246(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       if(var4 == null) {
@@ -853,7 +834,6 @@ public class Scene {
    }
 
    @ObfuscatedName("aw")
-   @Export("__aw_247")
    public void __aw_247(int var1, int var2, int var3) {
       for(int var4 = 0; var4 < this.planes; ++var4) {
          for(int var5 = 0; var5 < this.xSize; ++var5) {
@@ -901,7 +881,6 @@ public class Scene {
    @ObfuscatedSignature(
       signature = "(Ldw;III)V"
    )
-   @Export("__al_248")
    void __al_248(ModelData var1, int var2, int var3, int var4) {
       Tile var5;
       ModelData var6;
@@ -943,7 +922,6 @@ public class Scene {
    @ObfuscatedSignature(
       signature = "(Ldw;IIIII)V"
    )
-   @Export("__ab_249")
    void __ab_249(ModelData var1, int var2, int var3, int var4, int var5, int var6) {
       boolean var7 = true;
       int var8 = var3;
@@ -1066,7 +1044,7 @@ public class Scene {
    public void menuOpen(int var1, int var2, int var3, boolean var4) {
       if(!method3187() || var4) {
          checkClick = true;
-         __em_ab = var4;
+         viewportWalking = var4;
          Scene_selectedPlane = var1;
          Scene_selectedScreenX = var2;
          Scene_selectedScreenY = var3;
@@ -1076,9 +1054,8 @@ public class Scene {
    }
 
    @ObfuscatedName("as")
-   @Export("__as_250")
    public void __as_250() {
-      __em_ab = true;
+      viewportWalking = true;
    }
 
    @ObfuscatedName("az")
@@ -2148,7 +2125,6 @@ public class Scene {
    }
 
    @ObfuscatedName("ba")
-   @Export("__ba_253")
    boolean __ba_253(int var1, int var2, int var3) {
       int var4 = this.__x[var1][var2][var3];
       if(var4 == -Scene_drawnCount) {
@@ -2169,7 +2145,6 @@ public class Scene {
    }
 
    @ObfuscatedName("bb")
-   @Export("__bb_254")
    boolean __bb_254(int var1, int var2, int var3, int var4) {
       if(!this.__ba_253(var1, var2, var3)) {
          return false;
@@ -2315,7 +2290,6 @@ public class Scene {
    }
 
    @ObfuscatedName("bs")
-   @Export("__bs_255")
    boolean __bs_255(int var1, int var2, int var3, int var4) {
       if(!this.__ba_253(var1, var2, var3)) {
          return false;
@@ -2327,7 +2301,6 @@ public class Scene {
    }
 
    @ObfuscatedName("bq")
-   @Export("__bq_256")
    boolean __bq_256(int var1, int var2, int var3, int var4, int var5, int var6) {
       int var7;
       int var8;
@@ -2372,7 +2345,6 @@ public class Scene {
    }
 
    @ObfuscatedName("bn")
-   @Export("__bn_257")
    boolean __bn_257(int var1, int var2, int var3) {
       for(int var4 = 0; var4 < Scene_currentOccludersCount; ++var4) {
          Occluder var5 = Scene_currentOccluders[var4];
@@ -2561,13 +2533,13 @@ public class Scene {
 
    @ObfuscatedName("am")
    public static boolean method3187() {
-      return __em_ab && Scene_selectedX != -1;
+      return viewportWalking && Scene_selectedX != -1;
    }
 
    @ObfuscatedName("an")
    public static void method3103() {
       Scene_selectedX = -1;
-      __em_ab = false;
+      viewportWalking = false;
    }
 
    @ObfuscatedName("ax")

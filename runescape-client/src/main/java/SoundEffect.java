@@ -49,7 +49,6 @@ public class SoundEffect {
    }
 
    @ObfuscatedName("q")
-   @Export("__q_174")
    public final int __q_174() {
       int var1 = 9999999;
 

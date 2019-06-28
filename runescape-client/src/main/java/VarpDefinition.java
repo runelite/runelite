@@ -11,13 +11,11 @@ public class VarpDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__ix_m")
    public static AbstractIndexCache __ix_m;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 510774535
    )
-   @Export("__ix_f")
    public static int __ix_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(

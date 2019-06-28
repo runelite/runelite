@@ -5,16 +5,12 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ht")
 public class class226 {
    @ObfuscatedName("m")
-   @Export("__ht_m")
    public static final short[] __ht_m;
    @ObfuscatedName("f")
-   @Export("__ht_f")
    public static final short[][] __ht_f;
    @ObfuscatedName("q")
-   @Export("__ht_q")
    public static final short[] __ht_q;
    @ObfuscatedName("w")
-   @Export("__ht_w")
    public static final short[][] __ht_w;
 
    static {

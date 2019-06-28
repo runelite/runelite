@@ -13,19 +13,16 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = -985436813
    )
-   @Export("__m")
    final int __m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lav;"
    )
-   @Export("__f")
    final WorldMapRegion __f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -25914375
    )
-   @Export("__q")
    int __q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -37,13 +34,11 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = 927871683
    )
-   @Export("__o")
    int __o;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -1431936619
    )
-   @Export("__u")
    int __u;
 
    @ObfuscatedSignature(
@@ -97,7 +92,6 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       signature = "(I)V",
       garbageValue = "-806344204"
    )
-   @Export("__z_27")
    void __z_27() {
       this.__q = class50.getObjectDefinition(this.__m).transform().mapIconId;
       this.label0 = this.__f.__ab_56(ViewportMouse.getWorldMapElement(this.__q));

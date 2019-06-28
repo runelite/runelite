@@ -7,7 +7,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("MidiFileReader")
 public class MidiFileReader {
    @ObfuscatedName("x")
-   @Export("__hs_x")
    static final byte[] __hs_x;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -28,13 +27,10 @@ public class MidiFileReader {
    @Export("trackLengths")
    int[] trackLengths;
    @ObfuscatedName("u")
-   @Export("__u")
    int[] __u;
    @ObfuscatedName("g")
-   @Export("__g")
    int __g;
    @ObfuscatedName("e")
-   @Export("__e")
    long __e;
 
    static {
@@ -168,7 +164,6 @@ public class MidiFileReader {
    }
 
    @ObfuscatedName("d")
-   @Export("__d_371")
    int __d_371(int var1, int var2) {
       int var4;
       if(var2 == 255) {
@@ -205,7 +200,6 @@ public class MidiFileReader {
    }
 
    @ObfuscatedName("a")
-   @Export("__a_372")
    long __a_372(int var1) {
       return this.__e + (long)var1 * (long)this.__g;
    }

@@ -11,7 +11,6 @@ public final class TilePaint {
    @ObfuscatedSignature(
       signature = "Lla;"
    )
-   @Export("__eb_ah")
    static Bounds __eb_ah;
    @ObfuscatedName("m")
    @ObfuscatedGetter(

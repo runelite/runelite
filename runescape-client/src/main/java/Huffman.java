@@ -8,7 +8,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Huffman")
 public class Huffman {
    @ObfuscatedName("e")
-   @Export("__gd_e")
    static int[][] __gd_e;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
@@ -17,13 +16,10 @@ public class Huffman {
    @Export("canvasHeight")
    public static int canvasHeight;
    @ObfuscatedName("m")
-   @Export("__m")
    int[] __m;
    @ObfuscatedName("f")
-   @Export("__f")
    byte[] __f;
    @ObfuscatedName("q")
-   @Export("__q")
    int[] __q;
 
    public Huffman(byte[] var1) {
@@ -114,7 +110,6 @@ public class Huffman {
       signature = "([BII[BIB)I",
       garbageValue = "64"
    )
-   @Export("__m_293")
    public int __m_293(byte[] var1, int var2, int var3, byte[] var4, int var5) {
       int var6 = 0;
       int var7 = var5 << 3;
@@ -165,7 +160,6 @@ public class Huffman {
       signature = "([BI[BIII)I",
       garbageValue = "-2094399899"
    )
-   @Export("__f_294")
    public int __f_294(byte[] var1, int var2, byte[] var3, int var4, int var5) {
       if(var5 == 0) {
          return 0;

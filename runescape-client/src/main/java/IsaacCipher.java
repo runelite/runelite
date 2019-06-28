@@ -11,31 +11,25 @@ public final class IsaacCipher {
    @ObfuscatedGetter(
       intValue = 1514845493
    )
-   @Export("__w")
    int __w;
    @ObfuscatedName("o")
-   @Export("__o")
    int[] __o;
    @ObfuscatedName("u")
-   @Export("__u")
    int[] __u;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -1670027699
    )
-   @Export("__g")
    int __g;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -325762649
    )
-   @Export("__l")
    int __l;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -1951204929
    )
-   @Export("__e")
    int __e;
 
    public IsaacCipher(int[] var1) {
@@ -54,7 +48,6 @@ public final class IsaacCipher {
       signature = "(I)I",
       garbageValue = "-7509790"
    )
-   @Export("__m_336")
    final int __m_336() {
       if(0 == --this.__w + 1) {
          this.__q_338();
@@ -69,7 +62,6 @@ public final class IsaacCipher {
       signature = "(I)I",
       garbageValue = "-506873526"
    )
-   @Export("__f_337")
    final int __f_337() {
       if(this.__w == 0) {
          this.__q_338();
@@ -84,7 +76,6 @@ public final class IsaacCipher {
       signature = "(B)V",
       garbageValue = "124"
    )
-   @Export("__q_338")
    final void __q_338() {
       this.__l += ++this.__e;
 
@@ -115,7 +106,6 @@ public final class IsaacCipher {
       signature = "(I)V",
       garbageValue = "579890110"
    )
-   @Export("__w_339")
    final void __w_339() {
       int var9 = -1640531527;
       int var8 = -1640531527;

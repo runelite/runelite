@@ -9,7 +9,6 @@ public class class157 extends AbstractUserComparator {
    @ObfuscatedGetter(
       intValue = 1006519291
    )
-   @Export("__fw_nm")
    static int __fw_nm;
    @ObfuscatedName("m")
    final boolean field1969;

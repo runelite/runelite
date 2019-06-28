@@ -7,16 +7,12 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Animation")
 public class Animation {
    @ObfuscatedName("m")
-   @Export("__dz_m")
    static int[] __dz_m;
    @ObfuscatedName("f")
-   @Export("__dz_f")
    static int[] __dz_f;
    @ObfuscatedName("q")
-   @Export("__dz_q")
    static int[] __dz_q;
    @ObfuscatedName("w")
-   @Export("__dz_w")
    static int[] __dz_w;
    @ObfuscatedName("o")
    @ObfuscatedSignature(

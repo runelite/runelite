@@ -20,7 +20,6 @@ public class ObjectDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("__jr_q")
    static AbstractIndexCache __jr_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -32,13 +31,11 @@ public class ObjectDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("__jr_o")
    public static EvictingDualNodeHashTable __jr_o;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("__jr_u")
    static EvictingDualNodeHashTable __jr_u;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
@@ -50,7 +47,6 @@ public class ObjectDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "[Ldw;"
    )
-   @Export("__jr_l")
    static ModelData[] __jr_l;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
@@ -59,10 +55,8 @@ public class ObjectDefinition extends DualNode {
    @Export("id")
    public int id;
    @ObfuscatedName("x")
-   @Export("__x")
    int[] __x;
    @ObfuscatedName("d")
-   @Export("__d")
    int[] __d;
    @ObfuscatedName("k")
    @Export("name")
@@ -251,7 +245,6 @@ public class ObjectDefinition extends DualNode {
    @Export("int6")
    public int int6;
    @ObfuscatedName("ax")
-   @Export("__ax")
    public int[] __ax;
    @ObfuscatedName("af")
    @ObfuscatedSignature(
@@ -527,7 +520,6 @@ public class ObjectDefinition extends DualNode {
       signature = "(II)Z",
       garbageValue = "1880172029"
    )
-   @Export("__u_421")
    public final boolean __u_421(int var1) {
       if(this.__d != null) {
          for(int var4 = 0; var4 < this.__d.length; ++var4) {
@@ -557,7 +549,6 @@ public class ObjectDefinition extends DualNode {
       signature = "(I)Z",
       garbageValue = "-666846742"
    )
-   @Export("__g_422")
    public final boolean __g_422() {
       if(this.__x == null) {
          return true;
@@ -577,7 +568,6 @@ public class ObjectDefinition extends DualNode {
       signature = "(II[[IIIIS)Lex;",
       garbageValue = "-27831"
    )
-   @Export("__l_423")
    public final Entity __l_423(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
       long var7;
       if(this.__d == null) {
@@ -897,7 +887,6 @@ public class ObjectDefinition extends DualNode {
       signature = "(I)Z",
       garbageValue = "8470625"
    )
-   @Export("__t_424")
    public boolean __t_424() {
       if(this.transforms == null) {
          return this.ambientSoundId != -1 || this.__ax != null;

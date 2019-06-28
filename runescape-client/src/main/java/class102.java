@@ -4,19 +4,14 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("ca")
 public class class102 {
    @ObfuscatedName("m")
-   @Export("__ca_m")
    static final int[] __ca_m;
    @ObfuscatedName("f")
-   @Export("__ca_f")
    static final float[] __ca_f;
    @ObfuscatedName("x")
-   @Export("__ca_x")
    static int[] __ca_x;
    @ObfuscatedName("d")
-   @Export("__ca_d")
    static int[] __ca_d;
    @ObfuscatedName("k")
-   @Export("__ca_k")
    static boolean[] __ca_k;
    @ObfuscatedName("q")
    int[] field1353;

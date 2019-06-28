@@ -19,7 +19,6 @@ public class RawSound extends AbstractSound {
    @Export("end")
    int end;
    @ObfuscatedName("o")
-   @Export("__o")
    public boolean __o;
 
    RawSound(int var1, byte[] var2, int var3, int var4) {

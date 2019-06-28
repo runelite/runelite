@@ -14,37 +14,31 @@ public class MilliClock extends Clock {
    @Export("decimator")
    static Decimator decimator;
    @ObfuscatedName("m")
-   @Export("__m")
    long[] __m;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1940981129
    )
-   @Export("__f")
    int __f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1217137493
    )
-   @Export("__q")
    int __q;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       longValue = -8372744267470318611L
    )
-   @Export("__w")
    long __w;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 250272357
    )
-   @Export("__o")
    int __o;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 576555527
    )
-   @Export("__u")
    int __u;
 
    public MilliClock() {
@@ -65,6 +59,7 @@ public class MilliClock extends Clock {
       signature = "(B)V",
       garbageValue = "61"
    )
+   @Export("mark")
    public void mark() {
       for(int var1 = 0; var1 < 10; ++var1) {
          this.__m[var1] = 0L;
@@ -77,6 +72,7 @@ public class MilliClock extends Clock {
       signature = "(III)I",
       garbageValue = "-126803683"
    )
+   @Export("wait")
    public int wait(int var1, int var2) {
       int var3 = this.__f;
       int var4 = this.__q;

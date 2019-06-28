@@ -8,7 +8,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("WorldComparator")
 final class WorldComparator implements Comparator {
    @ObfuscatedName("n")
-   @Export("__u_n")
    public static boolean __u_n;
 
    @ObfuscatedName("m")
@@ -16,7 +15,6 @@ final class WorldComparator implements Comparator {
       signature = "(Ll;Ll;I)I",
       garbageValue = "707844889"
    )
-   @Export("__m_0")
    int __m_0(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.world < var2.world?-1:(var2.world == var1.world?0:1);
    }
@@ -27,7 +25,6 @@ final class WorldComparator implements Comparator {
       return this.__m_0((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
-   @Export("__equals_2")
    @ObfuscatedName("equals")
    public boolean __equals_2(Object var1) {
       return super.equals(var1);

@@ -11,607 +11,506 @@ public class ClientPacket implements ClientPacketMarker {
    @ObfuscatedGetter(
       intValue = 1076448827
    )
-   @Export("__gs_qh")
    static int __gs_qh;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_m")
    public static final ClientPacket __gs_m;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_f")
    public static final ClientPacket __gs_f;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_q")
    public static final ClientPacket __gs_q;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_w")
    public static final ClientPacket __gs_w;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_o")
    public static final ClientPacket __gs_o;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_u")
    public static final ClientPacket __gs_u;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_g")
    public static final ClientPacket __gs_g;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_l")
    public static final ClientPacket __gs_l;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_e")
    public static final ClientPacket __gs_e;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_x")
    public static final ClientPacket __gs_x;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_d")
    public static final ClientPacket __gs_d;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_k")
    public static final ClientPacket __gs_k;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_n")
    public static final ClientPacket __gs_n;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_i")
    public static final ClientPacket __gs_i;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_a")
    public static final ClientPacket __gs_a;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_z")
    public static final ClientPacket __gs_z;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_j")
    public static final ClientPacket __gs_j;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_s")
    public static final ClientPacket __gs_s;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_t")
    public static final ClientPacket __gs_t;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_y")
    public static final ClientPacket __gs_y;
    @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_h")
    public static final ClientPacket __gs_h;
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_b")
    public static final ClientPacket __gs_b;
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_c")
    public static final ClientPacket __gs_c;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_r")
    public static final ClientPacket __gs_r;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_p")
    public static final ClientPacket __gs_p;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_v")
    public static final ClientPacket __gs_v;
    @ObfuscatedName("ag")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ag")
    public static final ClientPacket __gs_ag;
    @ObfuscatedName("aq")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_aq")
    public static final ClientPacket __gs_aq;
    @ObfuscatedName("aj")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_aj")
    public static final ClientPacket __gs_aj;
    @ObfuscatedName("av")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_av")
    public static final ClientPacket __gs_av;
    @ObfuscatedName("ar")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ar")
    public static final ClientPacket __gs_ar;
    @ObfuscatedName("ac")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ac")
    public static final ClientPacket __gs_ac;
    @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ay")
    public static final ClientPacket __gs_ay;
    @ObfuscatedName("ah")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ah")
    public static final ClientPacket __gs_ah;
    @ObfuscatedName("ak")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ak")
    public static final ClientPacket __gs_ak;
    @ObfuscatedName("aw")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_aw")
    public static final ClientPacket __gs_aw;
    @ObfuscatedName("al")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_al")
    public static final ClientPacket __gs_al;
    @ObfuscatedName("ab")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ab")
    public static final ClientPacket __gs_ab;
    @ObfuscatedName("ae")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ae")
    public static final ClientPacket __gs_ae;
    @ObfuscatedName("at")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_at")
    public static final ClientPacket __gs_at;
    @ObfuscatedName("ad")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ad")
    public static final ClientPacket __gs_ad;
    @ObfuscatedName("ap")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ap")
    public static final ClientPacket __gs_ap;
    @ObfuscatedName("as")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_as")
    public static final ClientPacket __gs_as;
    @ObfuscatedName("am")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_am")
    static final ClientPacket __gs_am;
    @ObfuscatedName("an")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_an")
    public static final ClientPacket __gs_an;
    @ObfuscatedName("az")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_az")
    public static final ClientPacket __gs_az;
    @ObfuscatedName("au")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_au")
    public static final ClientPacket __gs_au;
    @ObfuscatedName("ao")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ao")
    public static final ClientPacket __gs_ao;
    @ObfuscatedName("aa")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_aa")
    public static final ClientPacket __gs_aa;
    @ObfuscatedName("ax")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ax")
    public static final ClientPacket __gs_ax;
    @ObfuscatedName("af")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_af")
    public static final ClientPacket __gs_af;
    @ObfuscatedName("ai")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ai")
    public static final ClientPacket __gs_ai;
    @ObfuscatedName("ba")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ba")
    public static final ClientPacket __gs_ba;
    @ObfuscatedName("bb")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bb")
    public static final ClientPacket __gs_bb;
    @ObfuscatedName("bs")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bs")
    public static final ClientPacket __gs_bs;
    @ObfuscatedName("bq")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bq")
    public static final ClientPacket __gs_bq;
    @ObfuscatedName("bn")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bn")
    public static final ClientPacket __gs_bn;
    @ObfuscatedName("bk")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bk")
    public static final ClientPacket __gs_bk;
    @ObfuscatedName("bd")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bd")
    public static final ClientPacket __gs_bd;
    @ObfuscatedName("bc")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bc")
    public static final ClientPacket __gs_bc;
    @ObfuscatedName("bo")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bo")
    public static final ClientPacket __gs_bo;
    @ObfuscatedName("bx")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bx")
    public static final ClientPacket __gs_bx;
    @ObfuscatedName("by")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_by")
    public static final ClientPacket __gs_by;
    @ObfuscatedName("bu")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bu")
    public static final ClientPacket __gs_bu;
    @ObfuscatedName("bm")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bm")
    public static final ClientPacket __gs_bm;
    @ObfuscatedName("bl")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bl")
    public static final ClientPacket __gs_bl;
    @ObfuscatedName("br")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_br")
    public static final ClientPacket __gs_br;
    @ObfuscatedName("bj")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bj")
    public static final ClientPacket __gs_bj;
    @ObfuscatedName("bi")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bi")
    public static final ClientPacket __gs_bi;
    @ObfuscatedName("bz")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bz")
    public static final ClientPacket __gs_bz;
    @ObfuscatedName("bg")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bg")
    public static final ClientPacket __gs_bg;
    @ObfuscatedName("bt")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bt")
    public static final ClientPacket __gs_bt;
    @ObfuscatedName("bp")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bp")
    public static final ClientPacket __gs_bp;
    @ObfuscatedName("bf")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bf")
    public static final ClientPacket __gs_bf;
    @ObfuscatedName("bh")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bh")
    public static final ClientPacket __gs_bh;
    @ObfuscatedName("be")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_be")
    public static final ClientPacket __gs_be;
    @ObfuscatedName("bv")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bv")
    public static final ClientPacket __gs_bv;
    @ObfuscatedName("bw")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_bw")
    public static final ClientPacket __gs_bw;
    @ObfuscatedName("cr")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cr")
    public static final ClientPacket __gs_cr;
    @ObfuscatedName("cv")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cv")
    public static final ClientPacket __gs_cv;
    @ObfuscatedName("ce")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ce")
    public static final ClientPacket __gs_ce;
    @ObfuscatedName("cy")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cy")
    public static final ClientPacket __gs_cy;
    @ObfuscatedName("cs")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cs")
    public static final ClientPacket __gs_cs;
    @ObfuscatedName("cm")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cm")
    public static final ClientPacket __gs_cm;
    @ObfuscatedName("cj")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cj")
    public static final ClientPacket __gs_cj;
    @ObfuscatedName("cu")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cu")
    public static final ClientPacket __gs_cu;
    @ObfuscatedName("cb")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cb")
    public static final ClientPacket __gs_cb;
    @ObfuscatedName("ck")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ck")
    public static final ClientPacket __gs_ck;
    @ObfuscatedName("cn")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cn")
    public static final ClientPacket __gs_cn;
    @ObfuscatedName("cq")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cq")
    public static final ClientPacket __gs_cq;
    @ObfuscatedName("ch")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ch")
    public static final ClientPacket __gs_ch;
    @ObfuscatedName("cw")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cw")
    public static final ClientPacket __gs_cw;
    @ObfuscatedName("cg")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cg")
    public static final ClientPacket __gs_cg;
    @ObfuscatedName("cf")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cf")
    public static final ClientPacket __gs_cf;
    @ObfuscatedName("cp")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cp")
    public static final ClientPacket __gs_cp;
    @ObfuscatedName("cl")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cl")
    public static final ClientPacket __gs_cl;
    @ObfuscatedName("ct")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ct")
    public static final ClientPacket __gs_ct;
    @ObfuscatedName("cz")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cz")
    public static final ClientPacket __gs_cz;
    @ObfuscatedName("cc")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_cc")
    public static final ClientPacket __gs_cc;
    @ObfuscatedName("ci")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   @Export("__gs_ci")
    static final ClientPacket __gs_ci;
    @ObfuscatedName("cd")
    @ObfuscatedGetter(

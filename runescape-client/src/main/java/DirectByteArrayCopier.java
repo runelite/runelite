@@ -16,6 +16,7 @@ public class DirectByteArrayCopier extends AbstractByteArrayCopier {
       signature = "(I)[B",
       garbageValue = "-1219910462"
    )
+   @Export("get")
    byte[] get() {
       byte[] var1 = new byte[this.directBuffer.capacity()];
       this.directBuffer.position(0);
@@ -28,6 +29,7 @@ public class DirectByteArrayCopier extends AbstractByteArrayCopier {
       signature = "([BI)V",
       garbageValue = "-2034091753"
    )
+   @Export("set")
    void set(byte[] var1) {
       this.directBuffer = ByteBuffer.allocateDirect(var1.length);
       this.directBuffer.position(0);

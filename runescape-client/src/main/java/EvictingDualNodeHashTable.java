@@ -10,7 +10,6 @@ public final class EvictingDualNodeHashTable {
    @ObfuscatedSignature(
       signature = "Lfn;"
    )
-   @Export("__m")
    DualNode __m;
    @ObfuscatedName("f")
    @Export("capacity")

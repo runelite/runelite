@@ -37,7 +37,6 @@ public class WorldMapArea {
    @ObfuscatedGetter(
       intValue = 986239133
    )
-   @Export("__w")
    int __w;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
@@ -306,7 +305,6 @@ public class WorldMapArea {
       signature = "(I)I",
       garbageValue = "-1657905623"
    )
-   @Export("__a_39")
    int __a_39() {
       return this.__w;
    }

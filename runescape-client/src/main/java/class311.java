@@ -14,7 +14,6 @@ public class class311 {
    @ObfuscatedGetter(
       intValue = -2077113503
    )
-   @Export("__ka_e")
    static int __ka_e;
    @ObfuscatedName("f")
    @ObfuscatedGetter(

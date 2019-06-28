@@ -11,94 +11,78 @@ public class WorldMapSection0 implements WorldMapSection {
    @ObfuscatedGetter(
       intValue = -1946112139
    )
-   @Export("__y_sn")
    static int __y_sn;
    @ObfuscatedName("p")
-   @Export("__y_p")
    static int[] __y_p;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -2011838881
    )
-   @Export("__m")
    int __m;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1299225715
    )
-   @Export("__f")
    int __f;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 82600709
    )
-   @Export("__q")
    int __q;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -477370575
    )
-   @Export("__w")
    int __w;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -671345527
    )
-   @Export("__o")
    int __o;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 529427495
    )
-   @Export("__u")
    int __u;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -150870205
    )
-   @Export("__g")
    int __g;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 1009718107
    )
-   @Export("__l")
    int __l;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -1022177315
    )
-   @Export("__e")
    int __e;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1397517463
    )
-   @Export("__x")
    int __x;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -799353317
    )
-   @Export("__d")
    int __d;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -1388959491
    )
-   @Export("__k")
    int __k;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -1657956317
    )
-   @Export("surfaceOffsetY")
    int __n;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1345061881
    )
-   @Export("__i")
    int __i;
 
    @ObfuscatedName("m")
@@ -106,6 +90,7 @@ public class WorldMapSection0 implements WorldMapSection {
       signature = "(Lag;I)V",
       garbageValue = "1384899025"
    )
+   @Export("expandBounds")
    public void expandBounds(WorldMapArea var1) {
       if(var1.minX0 > this.__o) {
          var1.minX0 = this.__o;
@@ -130,6 +115,7 @@ public class WorldMapSection0 implements WorldMapSection {
       signature = "(IIIB)Z",
       garbageValue = "93"
    )
+   @Export("containsCoord")
    public boolean containsCoord(int var1, int var2, int var3) {
       return var1 >= this.__m && var1 < this.__m + this.__f?var2 >= (this.__q << 6) + (this.__g << 3) && var2 <= (this.__q << 6) + (this.__e << 3) + 7 && var3 >= (this.__w << 6) + (this.__l << 3) && var3 <= (this.__w << 6) + (this.__x << 3) + 7:false;
    }
@@ -139,6 +125,7 @@ public class WorldMapSection0 implements WorldMapSection {
       signature = "(IIB)Z",
       garbageValue = "4"
    )
+   @Export("containsPosition")
    public boolean containsPosition(int var1, int var2) {
       return var1 >= (this.__o << 6) + (this.__d << 3) && var1 <= (this.__o << 6) + (this.__n << 3) + 7 && var2 >= (this.__u << 6) + (this.__k << 3) && var2 <= (this.__u << 6) + (this.__i << 3) + 7;
    }
@@ -148,6 +135,7 @@ public class WorldMapSection0 implements WorldMapSection {
       signature = "(IIII)[I",
       garbageValue = "1545934424"
    )
+   @Export("position")
    public int[] position(int var1, int var2, int var3) {
       if(!this.containsCoord(var1, var2, var3)) {
          return null;
@@ -162,6 +150,7 @@ public class WorldMapSection0 implements WorldMapSection {
       signature = "(III)Lhu;",
       garbageValue = "-1916486802"
    )
+   @Export("coord")
    public TileLocation coord(int var1, int var2) {
       if(!this.containsPosition(var1, var2)) {
          return null;
@@ -177,6 +166,7 @@ public class WorldMapSection0 implements WorldMapSection {
       signature = "(Lgr;B)V",
       garbageValue = "-113"
    )
+   @Export("read")
    public void read(Buffer var1) {
       this.__m = var1.readUnsignedByte();
       this.__f = var1.readUnsignedByte();
@@ -200,7 +190,6 @@ public class WorldMapSection0 implements WorldMapSection {
       signature = "(I)V",
       garbageValue = "1967186894"
    )
-   @Export("__g_25")
    void __g_25() {
    }
 
@@ -209,6 +198,7 @@ public class WorldMapSection0 implements WorldMapSection {
       signature = "(I)V",
       garbageValue = "-2102591569"
    )
+   @Export("savePreferences")
    static void savePreferences() {
       AccessFile var0 = null;
 

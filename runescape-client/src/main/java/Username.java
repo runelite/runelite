@@ -72,13 +72,11 @@ public class Username implements Comparable {
       }
    }
 
-   @Export("__hashCode_467")
    @ObfuscatedName("hashCode")
    public int __hashCode_467() {
       return this.cleanName == null?0:this.cleanName.hashCode();
    }
 
-   @Export("__toString_468")
    @ObfuscatedName("toString")
    public String __toString_468() {
       return this.getName();

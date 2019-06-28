@@ -7,10 +7,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("af")
 public class class50 {
    @ObfuscatedName("m")
-   @Export("__af_m")
    public static Applet __af_m;
    @ObfuscatedName("f")
-   @Export("__af_f")
    public static String __af_f;
    @ObfuscatedName("ei")
    @Export("worldHost")
