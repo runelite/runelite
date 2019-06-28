@@ -64,7 +64,7 @@ public class TextureDumper
 
 			for (TextureDefinition texture : tm.getTextures())
 			{
-				Files.asCharSink(new File(outDir, texture.getId() + ".json"), Charset.defaultCharset()).write(gson.toJson(texture));
+				Files.write(gson.toJson(texture), new File(outDir, texture.getId() + ".json"), Charset.defaultCharset());
 				++count;
 			}
 		}
