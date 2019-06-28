@@ -53,6 +53,7 @@ import static net.runelite.api.MenuAction.WALK;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import static net.runelite.api.Varbits.BUILDING_MODE;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
@@ -105,6 +106,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
 	private static final int PURO_PURO_REGION_ID = 10307;
+	private static final String WALK_HERE = "WALK HERE";
+	private static final String CANCEL = "CANCEL";
+	private static final String CAST_OPTIONS_ATTACK = "CAST";
+	public static final HashSet<String> CAST_OPTIONS_KEYWORDS = new HashSet<>();
+		static
+		{
+			CAST_OPTIONS_KEYWORDS.add(CAST_OPTIONS_ATTACK);
+		}
 
 	private MenuEntry[] entries;
 	private final Set<Integer> leftClickConstructionIDs = new HashSet<>();
@@ -537,6 +546,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
+		final String pOptionToReplace = Text.removeTags(event.getOption()).toUpperCase();
 		final int eventId = event.getIdentifier();
 		final String option = Text.standardize(event.getOption());
 		final String target = Text.standardize(event.getTarget());
@@ -900,6 +910,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 			}
 		}
+
+		//If the option is already to walk there, or cancel we don't need to swap it with anything
+		if (pOptionToReplace.equals(CANCEL) || pOptionToReplace.equals(WALK_HERE))
+			{
+				return;
+			}
+
+		if (((config.getRemoveFreezePlayerCoX() &&  client.getVar(Varbits.IN_RAID) == 1)
+		|| (config.getRemoveFreezePlayerToB() &&  client.getVar(Varbits.THEATRE_OF_BLOOD) == 2))
+		&& CAST_OPTIONS_KEYWORDS.contains(pOptionToReplace))
+			{
+				addswap(pOptionToReplace);
+			}
 
 		if (option.equals("talk-to"))
 		{
@@ -1553,5 +1576,48 @@ public class MenuEntrySwapperPlugin extends Plugin
 	void stopControl()
 	{
 		menuManager.removePriorityEntry("climb-down");
+	}
+
+/**
+ * Swaps menu entries if the entries could be found. This places Walk Here where the top level menu option was.
+ * @param pOptionToReplace The String containing the Menu Option that needs to be replaced. IE: "Attack", "Chop Down".
+ */
+	private void addswap(String pOptionToReplace)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		Integer walkHereEntry = searchIndex(entries, WALK_HERE);
+		Integer entryToReplace = searchIndex(entries, pOptionToReplace);
+
+		if (walkHereEntry != null
+				&& entryToReplace != null)
+			{
+			MenuEntry walkHereMenuEntry = entries[walkHereEntry];
+			entries[walkHereEntry] = entries[entryToReplace];
+			entries[entryToReplace] = walkHereMenuEntry;
+			client.setMenuEntries(entries);
+			}
+	}
+
+/**
+ * Finds the index of the menu that contains the verbiage we are looking for.
+ * @param pMenuEntries The list of {@link MenuEntry}s.
+ * @param pMenuEntryToSearchFor The Option in the menu to search for.
+ * @return The index location or null if it was not found.
+ */
+	private Integer searchIndex(MenuEntry[] pMenuEntries, String pMenuEntryToSearchFor)
+	{
+		Integer indexLocation = 0;
+
+		for (MenuEntry menuEntry : pMenuEntries)
+			{
+			String entryOption = Text.removeTags(menuEntry.getOption()).toUpperCase();
+
+			if (entryOption.equals(pMenuEntryToSearchFor))
+				{
+				return indexLocation;
+				}
+			indexLocation++;
+			}
+		return null;
 	}
 }
