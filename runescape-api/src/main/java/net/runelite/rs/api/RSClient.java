@@ -1034,4 +1034,8 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("viewportWalking")
 	void setViewportWalking(boolean viewportWalking);
+
+	@Import("crossSprites")
+	@Override
+	RSSprite[] getCrossSprites();
 }
