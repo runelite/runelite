@@ -1037,5 +1037,5 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("crossSprites")
 	@Override
-	RSSpritePixels[] getCrossSprites();
+	RSSprite[] getCrossSprites();
 }

@@ -71,7 +71,7 @@ public class InterfaceStylesPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
-	private SpritePixels[] defaultCrossSprites;
+	private Sprite[] defaultCrossSprites;
 
 	@Provides
 	InterfaceStylesConfig provideConfig(ConfigManager configManager)
@@ -316,19 +316,19 @@ public class InterfaceStylesPlugin extends Plugin
 				return;
 			}
 
-			SpritePixels[] crossSprites = client.getCrossSprites();
+			Sprite[] crossSprites = client.getCrossSprites();
 
 			if (crossSprites == null)
 			{
 				return;
 			}
 
-			defaultCrossSprites = new SpritePixels[crossSprites.length];
+			defaultCrossSprites = new Sprite[crossSprites.length];
 			System.arraycopy(crossSprites, 0, defaultCrossSprites, 0, defaultCrossSprites.length);
 
 			for (int i = 0; i < crossSprites.length; i++)
 			{
-				SpritePixels newSprite = getFileSpritePixels("rs3/cross_sprites/" + i + ".png");
+				Sprite newSprite = getFileSpritePixels("rs3/cross_sprites/" + i + ".png");
 
 				if (newSprite == null)
 				{
@@ -351,7 +351,7 @@ public class InterfaceStylesPlugin extends Plugin
 			return;
 		}
 
-		SpritePixels[] crossSprites = client.getCrossSprites();
+		Sprite[] crossSprites = client.getCrossSprites();
 
 		if (crossSprites != null && defaultCrossSprites.length == crossSprites.length)
 		{
