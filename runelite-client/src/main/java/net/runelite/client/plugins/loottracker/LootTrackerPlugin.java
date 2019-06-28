@@ -518,13 +518,18 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		final LootTrackerItem[] entries = buildEntries(stack(items));
+
 		SwingUtilities.invokeLater(() -> panel.add(eventType, client.getLocalPlayer().getName(), -1, entries));
+		LootRecord lootRecord = new LootRecord(eventType, client.getLocalPlayer().getName(), LootRecordType.EVENT,
+			toGameItems(items), Instant.now());
 
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(eventType, client.getLocalPlayer().getName(), LootRecordType.EVENT,
-				toGameItems(items), Instant.now());
 			lootTrackerClient.submit(lootRecord);
+		}
+		if (config.localPersistence())
+		{
+			saveLocalLootRecord(lootRecord);
 		}
 	}
 
@@ -744,11 +749,16 @@ public class LootTrackerPlugin extends Plugin
 			final LootTrackerItem[] entries = buildEntries(stack(items));
 			SwingUtilities.invokeLater(() -> panel.add(chestType, client.getLocalPlayer().getName(), -1, entries));
 
+			LootRecord lootRecord = new LootRecord(chestType, client.getLocalPlayer().getName(),
+				LootRecordType.EVENT, toGameItems(items), Instant.now());
 			if (lootTrackerClient != null && config.saveLoot())
 			{
-				LootRecord lootRecord = new LootRecord(chestType, client.getLocalPlayer().getName(),
-					LootRecordType.EVENT, toGameItems(items), Instant.now());
 				lootTrackerClient.submit(lootRecord);
+			}
+
+			if (config.localPersistence())
+			{
+				saveLocalLootRecord(lootRecord);
 			}
 
 			inventorySnapshot = null;
