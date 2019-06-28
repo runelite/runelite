@@ -200,4 +200,14 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "showDFSSpecial",
+			name = "Dragonfire Shield special timer",
+			description = "Configures whether the special attack timer for the Dragonfire Shield is displayed"
+	)
+	default boolean showDFSSpecial()
+	{
+		return true;
+	}
 }
