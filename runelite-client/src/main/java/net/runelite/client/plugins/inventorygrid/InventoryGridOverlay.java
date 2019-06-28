@@ -34,6 +34,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -70,7 +71,8 @@ class InventoryGridOverlay extends Overlay
 		final Widget if1DraggingWidget = client.getIf1DraggedWidget();
 		final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 
-		if (if1DraggingWidget == null || if1DraggingWidget != inventoryWidget)
+		if (if1DraggingWidget == null || if1DraggingWidget != inventoryWidget
+			|| client.getItemPressedDuration() < config.dragDelay() / Constants.CLIENT_TICK_LENGTH)
 		{
 			return null;
 		}

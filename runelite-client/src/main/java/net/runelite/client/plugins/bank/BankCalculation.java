@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -47,7 +48,6 @@ import net.runelite.client.game.ItemManager;
 @Slf4j
 class BankCalculation
 {
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	private static final ImmutableList<Varbits> TAB_VARBITS = ImmutableList.of(
 		Varbits.BANK_TAB_ONE_COUNT,
 		Varbits.BANK_TAB_TWO_COUNT,
@@ -157,7 +157,7 @@ class BankCalculation
 
 				if (price > 0)
 				{
-					haPrice += (long) Math.round(price * HIGH_ALCHEMY_CONSTANT) *
+					haPrice += (long) Math.round(price * Constants.HIGH_ALCHEMY_MULTIPLIER) *
 						(long) quantity;
 				}
 			}

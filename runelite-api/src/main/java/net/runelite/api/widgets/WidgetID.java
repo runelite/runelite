@@ -139,6 +139,8 @@ public class WidgetID
 	public static final int BEGINNER_CLUE_MAP_DRAYNOR = 348;
 	public static final int BEGINNER_CLUE_MAP_NORTH_OF_FALADOR = 351;
 	public static final int BEGINNER_CLUE_MAP_WIZARDS_TOWER = 356;
+	public static final int SEED_BOX_GROUP_ID = 128;
+	public static final int ITEMS_KEPT_ON_DEATH_GROUP_ID = 4;
 
 	static class WorldMap
 	{
@@ -730,11 +732,11 @@ public class WidgetID
 
 	static class Pvp
 	{
-		static final int BOUNTY_HUNTER_INFO = 19;
+		static final int BOUNTY_HUNTER_INFO = 18;
 		static final int KILLDEATH_RATIO = 15;
-		static final int SKULL_CONTAINER = 62;
-		static final int SAFE_ZONE = 64;
-		static final int WILDERNESS_LEVEL = 67; // this can also be the Deadman Mode "Protection" text
+		static final int SKULL_CONTAINER = 61;
+		static final int SAFE_ZONE = 63;
+		static final int WILDERNESS_LEVEL = 66; // this can also be the Deadman Mode "Protection" text
 	}
 
 	static class KourendFavour
@@ -804,5 +806,17 @@ public class WidgetID
 		static final int ANSWER2 = 15;
 		static final int ANSWER3_CONTAINER = 16;
 		static final int ANSWER3 = 17;
+	}
+
+	static class KeptOnDeath
+	{
+		static final int KEPT_ITEMS_TEXT = 17;
+		static final int KEPT_ITEMS_CONTAINER = 18;
+		static final int LOST_ITEMS_TEXT = 20;
+		static final int LOST_ITEMS_CONTAINER = 21;
+		static final int LOST_ITEMS_VALUE = 23;
+		static final int INFORMATION_CONTAINER = 29;
+		static final int MAX_ITEMS_KEPT_ON_DEATH = 30;
+		static final int SAFE_ZONE_CONTAINER = 31;
 	}
 }

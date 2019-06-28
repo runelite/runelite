@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.Set;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -146,7 +147,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Blow a raspberry in the Fishing Guild bank. Beware of double agents! Equip an elemental shield, blue dragonhide chaps and a rune warhammer.", FISHING_GUILD_BANK, new WorldPoint(2588, 3419, 0), RASPBERRY, item(ELEMENTAL_SHIELD), item(BLUE_DHIDE_CHAPS), item(RUNE_WARHAMMER)),
 		new EmoteClue("Salute in the banana plantation. Beware of double agents! Equip a diamond ring, amulet of power, and nothing on your chest and legs.", WEST_SIDE_OF_THE_KARAMJA_BANANA_PLANTATION, new WorldPoint(2914, 3168, 0), SALUTE, item(DIAMOND_RING), item(AMULET_OF_POWER), emptySlot("Nothing on chest & legs", BODY, LEGS)),
 		new EmoteClue("Salute in the Warriors' guild bank. Equip only a black salamander.", WARRIORS_GUILD_BANK, new WorldPoint(2844, 3542, 0), SALUTE, item(BLACK_SALAMANDER), emptySlot("Nothing else", HEAD, CAPE, AMULET, BODY, SHIELD, LEGS, GLOVES, BOOTS, RING, AMMO)),
-		new EmoteClue("Salute in the centre of the mess hall. Beware of double agents! Equip a rune halberd rune platebody, and an amulet of strength.", HOSIDIUS_MESS, new WorldPoint(1646, 3632, 0), SALUTE, item(RUNE_HALBERD), item(RUNE_PLATEBODY), item(AMULET_OF_STRENGTH)),
+		new EmoteClue("Salute in the centre of the mess hall. Beware of double agents! Equip a rune halberd rune platebody, and an amulet of strength.", HOSIDIUS_MESS, new WorldPoint(1646, 3631, 0), SALUTE, item(RUNE_HALBERD), item(RUNE_PLATEBODY), item(AMULET_OF_STRENGTH)),
 		new EmoteClue("Shrug in the mine near Rimmington. Equip a gold necklace, a gold ring and a bronze spear.", RIMMINGTON_MINE, new WorldPoint(2976, 3238, 0), SHRUG, item(GOLD_NECKLACE), item(GOLD_RING), item(BRONZE_SPEAR)),
 		new EmoteClue("Shrug in Catherby bank. Yawn before you talk to me. Equip a maple longbow, green d'hide chaps and an iron med helm.", OUTSIDE_CATHERBY_BANK, new WorldPoint(2808, 3440, 0), SHRUG, YAWN, item(MAPLE_LONGBOW), item(GREEN_DHIDE_CHAPS), item(IRON_MED_HELM)),
 		new EmoteClue("Shrug in the Zamorak temple found in the Eastern Wilderness. Beware of double agents! Equip rune platelegs, an iron platebody and blue dragonhide vambraces.", CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS, new WorldPoint(3239, 3611, 0), SHRUG, item(RUNE_PLATELEGS), item(IRON_PLATEBODY), item(BLUE_DHIDE_VAMB)),
@@ -214,6 +215,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	}
 
 	private final String text;
+	@Nullable
 	private final STASHUnit stashUnit;
 	private final WorldPoint location;
 	private final Emote firstEmote;
@@ -256,15 +258,19 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		if (itemRequirements.length > 0)
 		{
 			Client client = plugin.getClient();
-			client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getObjectId(), 0, 0, 0);
-			int[] intStack = client.getIntStack();
-			boolean stashUnitBuilt = intStack[0] == 1;
 
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("STASH Unit:")
-				.right(stashUnitBuilt ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
-				.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
-				.build());
+			if (stashUnit != null)
+			{
+				client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getObjectId(), 0, 0, 0);
+				int[] intStack = client.getIntStack();
+				boolean stashUnitBuilt = intStack[0] == 1;
+
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("STASH Unit:")
+					.right(stashUnitBuilt ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
+					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
+					.build());
+			}
 
 			panelComponent.getChildren().add(LineComponent.builder().left("Equip:").build());
 
@@ -312,18 +318,21 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localPoint, plugin.getEmoteImage(), Color.ORANGE);
 		}
 
-		final WorldPoint[] worldPoints = stashUnit.getWorldPoints();
-
-		for (final WorldPoint worldPoint : worldPoints)
+		if (stashUnit != null)
 		{
-			final LocalPoint stashUnitLocalPoint = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
+			final WorldPoint[] worldPoints = stashUnit.getWorldPoints();
 
-			if (stashUnitLocalPoint != null)
+			for (final WorldPoint worldPoint : worldPoints)
 			{
-				final Polygon poly = Perspective.getCanvasTilePoly(plugin.getClient(), stashUnitLocalPoint);
-				if (poly != null)
+				final LocalPoint stashUnitLocalPoint = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
+
+				if (stashUnitLocalPoint != null)
 				{
-					OverlayUtil.renderPolygon(graphics, poly, Color.RED);
+					final Polygon poly = Perspective.getCanvasTilePoly(plugin.getClient(), stashUnitLocalPoint);
+					if (poly != null)
+					{
+						OverlayUtil.renderPolygon(graphics, poly, Color.RED);
+					}
 				}
 			}
 		}
