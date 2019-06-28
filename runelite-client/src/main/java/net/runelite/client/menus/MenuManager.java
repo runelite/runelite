@@ -265,7 +265,7 @@ public class MenuManager
 						{
 							MenuEntry original = MenuEntry.copy(e);
 							e.setType(newType);
-							originalType = new EntryTypeMapping(new ComparableEntry(e), original);
+							originalType = new EntryTypeMapping(new ComparableEntry(leftClickEntry), original);
 						}
 					}
 

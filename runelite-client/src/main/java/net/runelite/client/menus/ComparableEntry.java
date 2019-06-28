@@ -81,6 +81,7 @@ public class ComparableEntry
 		this.type = e.getType();
 		this.strictOption = true;
 	}
+
 	boolean matches(MenuEntry entry)
 	{
 		String opt = Text.standardize(entry.getOption());
