@@ -52,6 +52,25 @@ public interface LootTrackerConfig extends Config
 	void setIgnoredItems(String key);
 
 	@ConfigItem(
+		keyName = "ignoredNPCs",
+		name = "Ignored NPCs",
+		description = "Configures which NPCs should be ignored ",
+		position = 1,
+		group = "Filters"
+	)
+	default String getIgnoredNPCs()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "ignoredNPCs",
+		name = "",
+		description = ""
+	)
+	void setIgnoredNPCs(String key);
+
+	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Submit loot tracker data",
 		description = "Submit loot tracker data (requires being logged in)"
@@ -165,6 +184,26 @@ public interface LootTrackerConfig extends Config
 		position = 5
 	)
 	default boolean sendLootValueMessages()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDeaths",
+		name = "Show PvP Deaths",
+		description = "Shows your deaths to help you calculate PvP profit"
+	)
+	default boolean showDeaths()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "displayDate",
+		name = "Display Date",
+		description = "Displays the date the loot was received"
+	)
+	default boolean displayDate()
 	{
 		return true;
 	}

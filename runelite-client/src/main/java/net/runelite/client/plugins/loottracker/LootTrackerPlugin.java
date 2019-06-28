@@ -167,6 +167,7 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 	private List<String> ignoredItems = new ArrayList<>();
+	private List<String> ignoredNPCs = new ArrayList<>();
 	private Multiset<Integer> inventorySnapshot;
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
@@ -268,6 +269,7 @@ public class LootTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
+		ignoredNPCs = Text.fromCSV(config.getIgnoredNPCs());
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
@@ -785,6 +787,38 @@ public class LootTrackerPlugin extends Plugin
 	boolean isIgnored(String name)
 	{
 		return ignoredItems.contains(name);
+	}
+
+	/**
+	 * Toggles the hidden status for a particular record
+	 * @param name - The String name of the record to toggle the hidden status of
+	 * @param ignore - true to ignore, false to remove
+	 */
+	public void toggleNPC(String name, boolean ignore)
+	{
+		final Set<String> ignoredNPCSet = new HashSet<>(ignoredNPCs);
+
+		if (ignore)
+		{
+			ignoredNPCSet.add(name);
+		}
+		else
+		{
+			ignoredNPCSet.remove(name);
+		}
+
+		config.setIgnoredNPCs(Text.toCSV(ignoredNPCSet));
+		panel.rebuild();
+	}
+
+	/**
+	 * Checks to see if a record name is in the list of ignored NPCs
+	 * @param name - The String of the name to check
+	 * @return - true if it is being ignored, false otherwise
+	 */
+	public boolean isIgnoredNPC(String name)
+	{
+		return ignoredNPCs.contains(name);
 	}
 
 	@VisibleForTesting

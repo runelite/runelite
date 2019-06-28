@@ -506,6 +506,15 @@ class LootTrackerPanel extends PluginPanel
 		for (int i = start; i < records.size(); i++)
 		{
 
+			// Check to see if we should even show this record
+			if (this.hideIgnoredItems)
+			{
+				if (this.plugin.isIgnoredNPC(records.get(i).getTitle()))
+				{
+					continue;
+				}
+			}
+
 			if (this.plugin.client.getGameState().equals(GameState.LOGGED_IN))
 			{
 				if (!(this.plugin.client.getLocalPlayer().getName().equals(records.get(i).getLocalUsername())))
@@ -554,10 +563,16 @@ class LootTrackerPanel extends PluginPanel
 			}
 		}
 
-		if (!this.dateFilter.equals(LootRecordDateFilter.ALL))
+		// Check to see if we should even show this record
+		if (this.hideIgnoredItems)
 		{
-
+			if (this.plugin.isIgnoredNPC(record.getTitle()))
+			{
+				return null;
+			}
 		}
+
+
 		// Group all similar loot together
 		if (groupLoot)
 		{
@@ -578,13 +593,33 @@ class LootTrackerPanel extends PluginPanel
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(record.getTimestamp().toEpochMilli(), itemManager, record.getTitle(),  record.getSubTitle(),
-			hideIgnoredItems, plugin::toggleItem);
+			hideIgnoredItems, config.displayDate(), plugin::toggleItem);
 		box.combine(record);
 
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		box.setComponentPopupMenu(popupMenu);
+
+		// Create Hide Menu item
+
+		final JMenuItem hide;
+		if (this.hideIgnoredItems)
+		{
+			hide = new JMenuItem("Hide " + box.getId());
+		}
+		else
+		{
+			hide = new JMenuItem("Unhide " + box.getId());
+		}
+
+		hide.addActionListener(e ->
+		{
+			this.plugin.toggleNPC(box.getId(), this.hideIgnoredItems);
+			rebuild();
+		});
+
+		popupMenu.add(hide);
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
@@ -645,7 +680,14 @@ class LootTrackerPanel extends PluginPanel
 			{
 				if (!record.getLocalUsername().equals(plugin.client.getLocalPlayer().getName()))
 				{
-
+					continue;
+				}
+			}
+			if (!dateFilter.equals(LootRecordDateFilter.ALL))
+			{
+				if (Instant.now().toEpochMilli() - record.getTimestamp().toEpochMilli()
+					> this.dateFilter.getDuration().toMillis())
+				{
 					continue;
 				}
 			}

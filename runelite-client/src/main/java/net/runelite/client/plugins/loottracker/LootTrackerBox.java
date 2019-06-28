@@ -79,6 +79,7 @@ class LootTrackerBox extends JPanel
 		final String id,
 		@Nullable final String subtitle,
 		final boolean hideIgnoredItems,
+		@Nullable final Boolean showDate,
 		final BiConsumer<String, Boolean> onItemToggle)
 	{
 		this.timeStamp = timeStamp;
@@ -107,7 +108,10 @@ class LootTrackerBox extends JPanel
 		dateLabel.setFont(FontManager.getRunescapeSmallFont().deriveFont(FontManager.getRunescapeSmallFont().getSize() - 2));
 		dateLabel.setForeground(Color.LIGHT_GRAY);
 		dateLabel.setText(new Date(timeStamp).toLocaleString());
-		logTitle.add(dateLabel, BorderLayout.SOUTH);
+		if (showDate)
+		{
+			logTitle.add(dateLabel, BorderLayout.SOUTH);
+		}
 
 
 		if (!Strings.isNullOrEmpty(subtitle))
