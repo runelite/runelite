@@ -910,6 +910,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 			}
 		}
+		
+		Player[] players = client.getCachedPlayers();
+		Player player = null;
+		int identifier = event.getIdentifier();
+
+		if (identifier >= 0 && identifier < players.length)
+		{
+			player = players[identifier];
+		}
+
+		if (player == null)
+		{
+			return;
+		}
 
 		//If the option is already to walk there, or cancel we don't need to swap it with anything
 		if (pOptionToReplace.equals(CANCEL) || pOptionToReplace.equals(WALK_HERE))
@@ -919,6 +933,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (((config.getRemoveFreezePlayerCoX() &&  client.getVar(Varbits.IN_RAID) == 1)
 		|| (config.getRemoveFreezePlayerToB() &&  client.getVar(Varbits.THEATRE_OF_BLOOD) == 2))
+		&&  (player.isFriend() || player.isClanMember())
 		&& CAST_OPTIONS_KEYWORDS.contains(pOptionToReplace))
 			{
 				addswap(pOptionToReplace);
