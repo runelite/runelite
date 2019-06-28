@@ -98,6 +98,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String QP_COMMAND_STRING = "!qp";
 	private static final String GC_COMMAND_STRING = "!gc";
 	private static final String PB_COMMAND = "!pb";
+	private static final String GC_COMMAND_STRING = "!gc";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final ChatClient chatClient = new ChatClient();
@@ -148,6 +149,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
 		chatCommandManager.registerCommandAsync(GC_COMMAND_STRING, this::gambleCountLookup, this::gambleCountSubmit);
 		chatCommandManager.registerCommandAsync(PB_COMMAND, this::personalBestLookup, this::personalBestSubmit);
+		chatCommandManager.registerCommandAsync(GC_COMMAND_STRING, this::gambleCountLookup, this::gambleCountSubmit);
 	}
 
 	@Override
@@ -637,6 +639,74 @@ public class ChatCommandsPlugin extends Plugin
 			catch (Exception ex)
 			{
 				log.warn("unable to submit personal best", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
+	}
+
+	private void gambleCountLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.gc())
+		{
+			return;
+		}
+
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type == ChatMessageType.PRIVATECHATOUT)
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = sanitize(chatMessage.getName());
+		}
+
+		int gc;
+		try
+		{
+			gc = chatClient.getGc(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup gamble count", ex);
+			return;
+		}
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Barbarian Assault High-level gambles: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(gc))
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
+	private boolean gambleCountSubmit(ChatInput chatInput, String value)
+	{
+		final int gc = client.getVar(Varbits.BA_GC);
+		final String playerName = client.getLocalPlayer().getName();
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitGc(playerName, gc);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit gamble count", ex);
 			}
 			finally
 			{
