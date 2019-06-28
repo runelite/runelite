@@ -118,4 +118,15 @@ public interface AntiDragConfig extends Config
 	{
 		return CustomCursor.DRAGON_SCIMITAR;
 	}
+
+	@ConfigItem(
+		keyName = "alwaysOn",
+		name = "Always On",
+		description = "Makes the anti-drag always active and disables the hotkey toggle",
+		position = 8
+	)
+	default boolean alwaysOn()
+	{
+		return false;
+	}
 }

@@ -28,6 +28,7 @@ package net.runelite.client.plugins.antidrag;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -51,6 +52,7 @@ import net.runelite.client.util.HotkeyListener;
 public class AntiDragPlugin extends Plugin
 {
 	private static final int DEFAULT_DELAY = 5;
+	private static final String CONFIG_GROUP_NAME = "antiDrag";
 	private boolean toggleDrag;
 
 	@Inject
@@ -84,7 +86,8 @@ public class AntiDragPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		keyManager.registerKeyListener(hotkeyListener);
-		toggleDrag = false;
+		toggleDrag = config.alwaysOn();
+		enableAntiDrag();
 
 	}
 
@@ -97,46 +100,76 @@ public class AntiDragPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals(CONFIG_GROUP_NAME))
+		{
+			toggleDrag = config.alwaysOn();
+			enableAntiDrag();
+		}
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged focusChanged)
+	{
+		if (!config.alwaysOn())
+		{
+			if (!focusChanged.isFocused() && config.reqfocus())
+			{
+				client.setInventoryDragDelay(DEFAULT_DELAY);
+				overlayManager.remove(overlay);
+			}
+		}
+	}
+
+	private void enableAntiDrag()
+	{
+		if (toggleDrag)
+		{
+			client.setInventoryDragDelay(config.dragDelay());
+		}
+		else
+		{
+			client.setInventoryDragDelay(DEFAULT_DELAY);
+		}
+	}
+
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.key())
 	{
 		@Override
 		public void hotkeyPressed()
 		{
-			toggleDrag = !toggleDrag;
-			if (toggleDrag)
+			if (!config.alwaysOn())
 			{
-				if (config.overlay())
+				toggleDrag = !toggleDrag;
+				if (toggleDrag)
 				{
-					overlayManager.add(overlay);
-				}
-				if (config.changeCursor())
-				{
-					CustomCursor selectedCursor = config.selectedCursor();
-					clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
-				}
+					if (config.overlay())
+					{
+						overlayManager.add(overlay);
+					}
+					if (config.changeCursor())
+					{
+						CustomCursor selectedCursor = config.selectedCursor();
+						clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+					}
 
-				client.setInventoryDragDelay(config.dragDelay());
-			}
-			else
-			{
-				overlayManager.remove(overlay);
-				client.setInventoryDragDelay(DEFAULT_DELAY);
-				if (config.changeCursor())
+					client.setInventoryDragDelay(config.dragDelay());
+				}
+				else
 				{
-					net.runelite.client.plugins.customcursor.CustomCursor selectedCursor = configManager.getConfig(CustomCursorConfig.class).selectedCursor();
-					clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+					overlayManager.remove(overlay);
+					client.setInventoryDragDelay(DEFAULT_DELAY);
+					if (config.changeCursor())
+					{
+						net.runelite.client.plugins.customcursor.CustomCursor selectedCursor = configManager.getConfig(CustomCursorConfig.class).selectedCursor();
+						clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+					}
 				}
 			}
 		}
 	};
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
-	{
-		if (!focusChanged.isFocused() && config.reqfocus())
-		{
-			client.setInventoryDragDelay(DEFAULT_DELAY);
-			overlayManager.remove(overlay);
-		}
-	}
+
 }
