@@ -64,8 +64,8 @@ public class ComparableEntry
 
 	public ComparableEntry(String option, String target, int id, int type, boolean strictOption, boolean strictTarget)
 	{
-		this.option = option;
-		this.target = target;
+		this.option = Text.standardize(option);
+		this.target = Text.standardize(target);
 		this.id = id;
 		this.type = type;
 		this.strictOption = strictOption;
@@ -76,12 +76,11 @@ public class ComparableEntry
 	// target sometimes changes to option.
 	public ComparableEntry(MenuEntry e)
 	{
-		this.option = e.getOption();
+		this.option = Text.standardize(e.getOption());
 		this.id = e.getIdentifier();
 		this.type = e.getType();
 		this.strictOption = true;
 	}
-
 	boolean matches(MenuEntry entry)
 	{
 		String opt = Text.standardize(entry.getOption());

@@ -873,57 +873,29 @@ public interface MenuEntrySwapperConfig extends Config
 		return "";
 	}
 
-	//------------------------------------------------------------//
-
-/*	@ConfigItem(
-			keyName = "easyConstruction",
-			name = "Easy Construction",
-			description = "Makes 'Remove'/'Build' the default option for listed item ID's in build mode.<br>Tip: Use dev tools \"'Game Objects\" to find out the ID!",
-			position = 59,
-			group = "Skilling"
-	)
-	default boolean getEasyConstruction()
-	{
-		return false;
-	}
-
 	@ConfigItem(
-			keyName = "constructionItems",
-			name = "Construction Items",
-			description = "Makes 'Remove'/'Build' the default option for listed item ID's in build mode.<br>Tip: Use dev tools \"Game Objects\" to find out the ID, and separate values with a ','",
-			position = 60,
-			group = "Skilling",
-			hidden = true,
-			unhide = "easyConstruction"
-	)
-	default String getConstructionItems()
-	{
-		return "";
-	}*/
-
-	@ConfigItem(
-		keyName = "getTempConstruction",
+		keyName = "getEasyConstruction",
 		name = "Easy Construction",
 		description = "Makes 'Remove'/'Build' the default option for listed items.",
 		position = 64,
 		group = "Skilling"
 	)
 
-	default boolean getTempConstruction()
+	default boolean getEasyConstruction()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "getTempConstructionItems",
+		keyName = "getEasyConstructionItems",
 		name = "Build Items",
 		description = "",
 		position = 65,
 		group = "Skilling",
 		hidden = true,
-		unhide = "getTempConstruction"
+		unhide = "getEasyConstruction"
 	)
-	default String getTempConstructionItems()
+	default String getEasyConstructionItems()
 	{
 		return "";
 	}
