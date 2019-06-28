@@ -1626,6 +1626,10 @@ public interface Client extends GameShell
 	 * Returns client item composition cache
 	 */
 	NodeCache getItemDefinitionCache();
+	/**
+	 * Returns the array of cross sprites that appear and animate when left-clicking
+	 */
+	Sprite[] getCrossSprites();
 
 	EnumDefinition getEnum(int id);
 
