@@ -37,22 +37,40 @@ import net.runelite.client.config.ModifierlessKeybind;
 @ConfigGroup("antiDrag")
 public interface AntiDragConfig extends Config
 {
+
 	@ConfigItem(
-		keyName = "dragDelay",
-		name = "Drag Delay",
-		description = "Configures the inventory drag delay in client ticks (20ms)",
-		position = 1
+		position = 0,
+		keyName = "alwaysOn",
+		name = "Always On",
+		description = "Makes the anti-drag always active and disables the hotkey toggle",
+		disabledBy = "keybind",
+		hide = "keybind"
 	)
-	default int dragDelay()
+	default boolean alwaysOn()
 	{
-		return Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH; // one game tick
+		return false;
 	}
 
 	@ConfigItem(
+		position = 1,
 		keyName = "keybind",
-		name = "keybind",
+		name = "Toggle with Keybind",
+		description = "Toggle anti drag on and off, rather than always on.",
+		disabledBy = "alwaysOn",
+		hide = "alwaysOn"
+	)
+	default boolean keybind()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "key",
+		name = "Keybind",
 		description = "The keybind you want to use for antidrag",
-		position = 2
+		position = 2,
+		hidden = true,
+		unhide = "keybind"
 	)
 	default Keybind key()
 	{
@@ -60,10 +78,25 @@ public interface AntiDragConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "dragDelay",
+		name = "Drag Delay",
+		description = "Configures the inventory drag delay in client ticks (20ms)",
+		position = 3,
+		hidden = true,
+		unhide = "keybind"
+	)
+	default int dragDelay()
+	{
+		return Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH; // one game tick
+	}
+
+	@ConfigItem(
 		keyName = "reqfocus",
 		name = "Reset on focus loss",
 		description = "Disable antidrag when losing focus (like alt tabbing)",
-		position = 3
+		position = 4,
+		hidden = true,
+		unhide = "keybind"
 	)
 	default boolean reqfocus()
 	{
@@ -74,7 +107,9 @@ public interface AntiDragConfig extends Config
 		keyName = "overlay",
 		name = "Enable overlay",
 		description = "Do you really need a description?",
-		position = 4
+		position = 5,
+		hidden = true,
+		unhide = "keybind"
 	)
 	default boolean overlay()
 	{
@@ -87,8 +122,8 @@ public interface AntiDragConfig extends Config
 		name = "Overlay color",
 		description = "Change the overlay color, duh",
 		hidden = true,
-		unhide = "overlay",
-		position = 5
+		unhide = "keybind",
+		position = 6
 	)
 	default Color color()
 	{
@@ -99,7 +134,9 @@ public interface AntiDragConfig extends Config
 		keyName = "changeCursor",
 		name = "Change Cursor",
 		description = "Change cursor when you have anti-drag enabled.",
-		position = 6
+		position = 7,
+		hidden = true,
+		unhide = "keybind"
 	)
 	default boolean changeCursor()
 	{
@@ -111,22 +148,11 @@ public interface AntiDragConfig extends Config
 		name = "Cursor",
 		description = "Select which cursor you wish to use",
 		hidden = true,
-		unhide = "changeCursor",
-		position = 7
+		unhide = "keybind",
+		position = 8
 	)
 	default CustomCursor selectedCursor()
 	{
 		return CustomCursor.DRAGON_SCIMITAR;
-	}
-
-	@ConfigItem(
-		keyName = "alwaysOn",
-		name = "Always On",
-		description = "Makes the anti-drag always active and disables the hotkey toggle",
-		position = 8
-	)
-	default boolean alwaysOn()
-	{
-		return false;
 	}
 }

@@ -52,7 +52,7 @@ import net.runelite.client.util.HotkeyListener;
 public class AntiDragPlugin extends Plugin
 {
 	private static final int DEFAULT_DELAY = 5;
-	private static final String CONFIG_GROUP_NAME = "antiDrag";
+	
 	private boolean toggleDrag;
 
 	@Inject
@@ -85,10 +85,11 @@ public class AntiDragPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		keyManager.registerKeyListener(hotkeyListener);
-		toggleDrag = config.alwaysOn();
-		enableAntiDrag();
-
+		if (config.keybind())
+		{
+			keyManager.registerKeyListener(hotkeyListener);
+		}
+		client.setInventoryDragDelay(config.alwaysOn() ? config.dragDelay() : DEFAULT_DELAY);
 	}
 
 	@Override
@@ -103,10 +104,23 @@ public class AntiDragPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals(CONFIG_GROUP_NAME))
+		if (event.getGroup().equals("antiDrag"))
 		{
-			toggleDrag = config.alwaysOn();
-			enableAntiDrag();
+			if (event.getKey().equals("keybind"))
+			{
+				if (config.keybind())
+				{
+					keyManager.registerKeyListener(hotkeyListener);
+				}
+				else
+				{
+					keyManager.unregisterKeyListener(hotkeyListener);
+				}
+			}
+			if (event.getKey().equals("alwaysOn"))
+			{
+				client.setInventoryDragDelay(config.alwaysOn() ? config.dragDelay() : DEFAULT_DELAY);
+			}
 		}
 	}
 
@@ -120,18 +134,6 @@ public class AntiDragPlugin extends Plugin
 				client.setInventoryDragDelay(DEFAULT_DELAY);
 				overlayManager.remove(overlay);
 			}
-		}
-	}
-
-	private void enableAntiDrag()
-	{
-		if (toggleDrag)
-		{
-			client.setInventoryDragDelay(config.dragDelay());
-		}
-		else
-		{
-			client.setInventoryDragDelay(DEFAULT_DELAY);
 		}
 	}
 
@@ -170,6 +172,4 @@ public class AntiDragPlugin extends Plugin
 			}
 		}
 	};
-
-
 }
