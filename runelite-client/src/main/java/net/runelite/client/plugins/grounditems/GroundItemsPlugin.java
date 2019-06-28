@@ -501,6 +501,9 @@ public class GroundItemsPlugin extends Plugin
 		final int alchPrice = itemManager.getAlchValue(realItemId);
 		int durationMillis;
 		int durationTicks;
+
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+
 		if (client.isInInstancedRegion())
 		{
 			durationMillis = INSTANCE_DURATION_MILLIS;
@@ -514,10 +517,8 @@ public class GroundItemsPlugin extends Plugin
 		else
 		{
 			durationMillis = NORMAL_DURATION_MILLIS;
-			durationTicks = NORMAL_DURATION_TICKS;
+			durationTicks = tile.getWorldLocation().equals(playerLocation) ? NORMAL_DURATION_TICKS * 2 : NORMAL_DURATION_TICKS;
 		}
-
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
