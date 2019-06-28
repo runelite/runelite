@@ -199,7 +199,7 @@ public class TooltipComponent implements RenderableEntity
 		return textWidth;
 	}
 
-	private void renderModIcon(Graphics2D graphics, int x, int y, IndexedSprite modIcon)
+	private static void renderModIcon(Graphics2D graphics, int x, int y, IndexedSprite modIcon)
 	{
 		int sourceOffset = 0;
 

@@ -116,7 +116,7 @@ public class CrystalMathLabs extends Plugin
 		return total;
 	}
 
-	private void sendUpdateRequest(String username)
+	private static void sendUpdateRequest(String username)
 	{
 		String reformedUsername = username.replace(" ", "_");
 		OkHttpClient httpClient = RuneLiteAPI.CLIENT;

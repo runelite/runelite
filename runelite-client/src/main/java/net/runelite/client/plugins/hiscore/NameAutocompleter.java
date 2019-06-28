@@ -241,7 +241,7 @@ class NameAutocompleter implements KeyListener
 		return autocompleteName.isPresent();
 	}
 
-	private boolean isExpectedNext(JTextComponent input, String nextChar)
+	private static boolean isExpectedNext(JTextComponent input, String nextChar)
 	{
 		String expected;
 		if (input.getSelectionStart() < input.getSelectionEnd())

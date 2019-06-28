@@ -342,7 +342,7 @@ public class GroundItemsOverlay extends Overlay
 		return null;
 	}
 
-	private void drawRectangle(Graphics2D graphics, Rectangle rect, Color color, boolean inList, boolean hiddenBox)
+	private static void drawRectangle(Graphics2D graphics, Rectangle rect, Color color, boolean inList, boolean hiddenBox)
 	{
 		graphics.setColor(Color.BLACK);
 		graphics.drawRect(rect.x + 1, rect.y + 1, rect.width, rect.height);

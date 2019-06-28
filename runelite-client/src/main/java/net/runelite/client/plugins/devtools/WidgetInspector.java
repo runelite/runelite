@@ -206,7 +206,7 @@ class WidgetInspector extends JFrame
 		});
 	}
 
-	private DefaultMutableTreeNode addWidget(String type, Widget widget)
+	private static DefaultMutableTreeNode addWidget(String type, Widget widget)
 	{
 		if (widget == null || widget.isHidden())
 		{

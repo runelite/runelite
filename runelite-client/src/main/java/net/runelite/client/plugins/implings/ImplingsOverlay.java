@@ -127,7 +127,7 @@ public class ImplingsOverlay extends Overlay
 		}
 	}
 
-	private void drawImp(Graphics2D graphics, Actor actor, String text, Color color)
+	private static void drawImp(Graphics2D graphics, Actor actor, String text, Color color)
 	{
 		Polygon poly = actor.getCanvasTilePoly();
 		if (poly != null)

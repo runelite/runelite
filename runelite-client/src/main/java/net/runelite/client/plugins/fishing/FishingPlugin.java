@@ -227,7 +227,7 @@ public class FishingPlugin extends Plugin
 		currentSpot = spot;
 	}
 
-	private boolean canPlayerFish(final ItemContainer itemContainer)
+	private static boolean canPlayerFish(final ItemContainer itemContainer)
 	{
 		if (itemContainer == null)
 		{

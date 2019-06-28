@@ -243,12 +243,12 @@ public class GrandExchangeOfferSlot extends JPanel
 		repaint();
 	}
 
-	private String htmlTooltip(String value)
+	private static String htmlTooltip(String value)
 	{
 		return "<html><body style = 'color:" + ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>Progress: <span style = 'color:white'>" + value + "</span></body></html>";
 	}
 
-	private String htmlLabel(String key, String value)
+	private static String htmlLabel(String key, String value)
 	{
 		return "<html><body style = 'color:white'>" + key + "<span style = 'color:" + ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + value + "</span></body></html>";
 	}
@@ -259,7 +259,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		cardLayout.show(container, showingFace ? FACE_CARD : DETAILS_CARD);
 	}
 
-	private Color getProgressColor(GrandExchangeOffer offer)
+	private static Color getProgressColor(GrandExchangeOffer offer)
 	{
 		if (offer.getState() == CANCELLED_BUY || offer.getState() == CANCELLED_SELL)
 		{

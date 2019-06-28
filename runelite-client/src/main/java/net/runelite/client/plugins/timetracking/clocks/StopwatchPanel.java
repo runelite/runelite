@@ -126,7 +126,7 @@ class StopwatchPanel extends ClockPanel
 		lapsContainer.repaint();
 	}
 
-	private JLabel createSmallLabel(String text)
+	private static JLabel createSmallLabel(String text)
 	{
 		JLabel label = new JLabel(text, SwingConstants.CENTER);
 		label.setFont(FontManager.getRunescapeSmallFont());

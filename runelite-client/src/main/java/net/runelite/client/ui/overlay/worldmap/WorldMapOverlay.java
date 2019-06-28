@@ -280,7 +280,7 @@ public class WorldMapOverlay extends Overlay
 		graphics.drawString(tooltip, drawPoint.getX(), drawPoint.getY() + height);
 	}
 
-	private Point clipToRectangle(Point drawPoint, Rectangle mapDisplayRectangle)
+	private static Point clipToRectangle(Point drawPoint, Rectangle mapDisplayRectangle)
 	{
 		int clippedX = drawPoint.getX();
 

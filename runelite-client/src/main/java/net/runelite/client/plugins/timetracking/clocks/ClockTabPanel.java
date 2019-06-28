@@ -139,7 +139,7 @@ public class ClockTabPanel extends TabContentPanel
 		revalidate();
 	}
 
-	private JPanel createHeaderPanel(String title, String type, boolean largePadding, ActionListener actionListener)
+	private static JPanel createHeaderPanel(String title, String type, boolean largePadding, ActionListener actionListener)
 	{
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(new EmptyBorder(largePadding ? 11 : 0, 0, 0, 0));
@@ -159,7 +159,7 @@ public class ClockTabPanel extends TabContentPanel
 		return panel;
 	}
 
-	private JPanel createInfoPanel(String text)
+	private static JPanel createInfoPanel(String text)
 	{
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(new EmptyBorder(7, 8, 6, 8));

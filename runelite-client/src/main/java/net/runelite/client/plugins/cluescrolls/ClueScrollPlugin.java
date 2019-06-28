@@ -556,7 +556,7 @@ public class ClueScrollPlugin extends Plugin
 	 * Example input: "00 degrees 00 minutes north 07 degrees 13 minutes west"
 	 * Note: some clues use "1 degree" instead of "01 degrees"
 	 */
-	private CoordinateClue coordinatesToWorldPoint(String text)
+	private static CoordinateClue coordinatesToWorldPoint(String text)
 	{
 		String[] splitText = text.split(" ");
 
@@ -597,7 +597,7 @@ public class ClueScrollPlugin extends Plugin
 	 * This conversion is explained on
 	 * https://oldschool.runescape.wiki/w/Treasure_Trails/Guide/Coordinates
 	 */
-	private WorldPoint coordinatesToWorldPoint(int degX, int minX, int degY, int minY)
+	private static WorldPoint coordinatesToWorldPoint(int degX, int minX, int degY, int minY)
 	{
 		// Center of the Observatory
 		int x2 = 2440;

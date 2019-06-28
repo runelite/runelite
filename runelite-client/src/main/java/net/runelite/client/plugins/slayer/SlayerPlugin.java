@@ -821,7 +821,7 @@ public class SlayerPlugin extends Plugin
 	}
 
 	//Utils
-	private String capsString(String str)
+	private static String capsString(String str)
 	{
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}

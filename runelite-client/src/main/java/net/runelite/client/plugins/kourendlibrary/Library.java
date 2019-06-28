@@ -272,7 +272,7 @@ class Library
 		return bookcaseIndex;
 	}
 
-	private List<List<Book>> populateSequences()
+	private static List<List<Book>> populateSequences()
 	{
 		List<List<Book>> books = Arrays.asList(
 			Arrays.asList(

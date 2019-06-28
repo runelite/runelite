@@ -69,7 +69,7 @@ public class TargetClickboxOverlay extends Overlay
 		return null;
 	}
 
-	private void renderTargetOverlay(Graphics2D graphics, NPC actor, Color color)
+	private static void renderTargetOverlay(Graphics2D graphics, NPC actor, Color color)
 	{
 		Polygon objectClickbox = actor.getConvexHull();
 		if (objectClickbox != null)

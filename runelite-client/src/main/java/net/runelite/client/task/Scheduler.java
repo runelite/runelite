@@ -91,7 +91,7 @@ public class Scheduler
 		}
 	}
 
-	private void run(ScheduledMethod scheduledMethod)
+	private static void run(ScheduledMethod scheduledMethod)
 	{
 		Method method = scheduledMethod.getMethod();
 

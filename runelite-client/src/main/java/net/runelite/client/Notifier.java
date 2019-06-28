@@ -340,7 +340,7 @@ public class Notifier
 		}
 	}
 
-	private boolean isTerminalNotifierAvailable()
+	private static boolean isTerminalNotifierAvailable()
 	{
 		if (OSType.getOSType() == OSType.MacOS)
 		{

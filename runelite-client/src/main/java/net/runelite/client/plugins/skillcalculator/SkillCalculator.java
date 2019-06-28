@@ -322,7 +322,7 @@ class SkillCalculator extends JPanel
 		updateCombinedAction();
 	}
 
-	private String formatXPActionString(double xp, int actionCount, String expExpression)
+	private static String formatXPActionString(double xp, int actionCount, String expExpression)
 	{
 		return XP_FORMAT.format(xp) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount > 1 ? " actions" : " action");
 	}
@@ -404,7 +404,7 @@ class SkillCalculator extends JPanel
 		});
 	}
 
-	private boolean slotContainsText(UIActionSlot slot, String text)
+	private static boolean slotContainsText(UIActionSlot slot, String text)
 	{
 		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
 	}

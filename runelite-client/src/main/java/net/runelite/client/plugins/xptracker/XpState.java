@@ -107,7 +107,7 @@ class XpState
 		}
 	}
 
-	private double getCombatXPModifier(Skill skill)
+	private static double getCombatXPModifier(Skill skill)
 	{
 		if (skill == Skill.HITPOINTS)
 		{

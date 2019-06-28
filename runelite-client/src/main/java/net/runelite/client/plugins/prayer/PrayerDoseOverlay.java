@@ -163,7 +163,7 @@ class PrayerDoseOverlay extends Overlay
 		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());
 	}
 
-	private double getPrayerDrainRate(Client client)
+	private static double getPrayerDrainRate(Client client)
 	{
 		double drainRate = 0.0;
 

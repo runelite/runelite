@@ -363,7 +363,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	private void hideWidget(Widget widget, boolean hidden)
+	private static void hideWidget(Widget widget, boolean hidden)
 	{
 		if (widget != null)
 		{

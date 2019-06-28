@@ -69,7 +69,7 @@ public class ScreenMarkerCreationOverlay extends Overlay
 		return getBounds().getSize();
 	}
 
-	private Stroke createStripedStroke(int thickness)
+	private static Stroke createStripedStroke(int thickness)
 	{
 		return new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
 	}

@@ -93,7 +93,7 @@ public class CannonSpotOverlay extends Overlay
 		return null;
 	}
 
-	private void renderCannonSpot(Graphics2D graphics, Client client, LocalPoint point, BufferedImage image, Color color)
+	private static void renderCannonSpot(Graphics2D graphics, Client client, LocalPoint point, BufferedImage image, Color color)
 	{
 		//Render tile
 		Polygon poly = Perspective.getCanvasTilePoly(client, point);

@@ -292,7 +292,7 @@ public class TelekineticRoom extends MTARoom
 		return Math.abs(point1.getX() - point2.getX()) + Math.abs(point2.getY() - point1.getY());
 	}
 
-	private WorldPoint nearest(WorldArea area, WorldPoint worldPoint)
+	private static WorldPoint nearest(WorldArea area, WorldPoint worldPoint)
 	{
 		int dist = Integer.MAX_VALUE;
 		WorldPoint nearest = null;
@@ -391,7 +391,7 @@ public class TelekineticRoom extends MTARoom
 		return build(edges, finishLocation);
 	}
 
-	private Stack<Direction> build(Map<WorldPoint, WorldPoint> edges, WorldPoint finish)
+	private static Stack<Direction> build(Map<WorldPoint, WorldPoint> edges, WorldPoint finish)
 	{
 		Stack<Direction> path = new Stack<>();
 		WorldPoint current = finish;
@@ -472,7 +472,7 @@ public class TelekineticRoom extends MTARoom
 		return LocalPoint.fromWorld(client, worldPoint);
 	}
 
-	private Rectangle getBounds(WallObject[] walls)
+	private static Rectangle getBounds(WallObject[] walls)
 	{
 		int minX = Integer.MAX_VALUE;
 		int minY = Integer.MAX_VALUE;

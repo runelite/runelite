@@ -696,7 +696,7 @@ public class ConfigPanel extends PluginPanel
 		return new Dimension(PANEL_WIDTH + SCROLLBAR_WIDTH, super.getPreferredSize().height);
 	}
 
-	private class FixedWidthPanel extends JPanel
+	private static class FixedWidthPanel extends JPanel
 	{
 		@Override
 		public Dimension getPreferredSize()
