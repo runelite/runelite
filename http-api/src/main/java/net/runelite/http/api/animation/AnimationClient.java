@@ -110,7 +110,7 @@ public class AnimationClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF
@@ -136,7 +136,7 @@ public class AnimationClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), AnimationKey.class);
