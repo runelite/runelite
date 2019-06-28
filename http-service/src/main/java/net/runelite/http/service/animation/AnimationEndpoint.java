@@ -44,7 +44,7 @@ public class AnimationEndpoint
 		+ "  `npcid` int(11) NOT NULL,\n"
 		+ "  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
 		+ "  `rev` int(11) NOT NULL,\n"
-		+ "  `anim1` int(11),\n"
+		+ "  `anim1` int(11) NOT NULL,\n"
 		+ "  `anim2` int(11),\n"
 		+ "  `anim3` int(11),\n"
 		+ "  `anim4` int(11),\n"
