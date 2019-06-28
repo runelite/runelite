@@ -1632,6 +1632,11 @@ public interface Client extends GameEngine
 	 */
 	NodeCache getItemCompositionCache();
 
+	/**
+	 * Returns the array of cross sprites that appear and animate when left-clicking
+	 */
+	SpritePixels[] getCrossSprites();
+
 	EnumComposition getEnum(int id);
 
 	void draw2010Menu();
