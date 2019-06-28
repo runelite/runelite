@@ -30,5 +30,12 @@ import lombok.Data;
 @Data
 public class InteractChanged
 {
+	public static final InteractChanged INSTANCE = new InteractChanged();
+
+	private InteractChanged()
+	{
+		// noop
+	}
+
 	private Actor actor;
 }

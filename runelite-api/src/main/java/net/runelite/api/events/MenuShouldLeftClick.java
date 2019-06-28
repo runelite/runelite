@@ -33,6 +33,13 @@ import lombok.Data;
 @Data
 public class MenuShouldLeftClick
 {
+	public static final MenuShouldLeftClick INSTANCE = new MenuShouldLeftClick();
+
+	private MenuShouldLeftClick()
+	{
+		// noop
+	}
+
 	/**
 	 * If set to true, the menu will open on left click.
 	 */

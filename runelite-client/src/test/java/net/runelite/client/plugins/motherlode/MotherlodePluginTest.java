@@ -115,13 +115,13 @@ public class MotherlodePluginTest
 	public void testOreCounter()
 	{
 		// set inMlm
-		GameStateChanged gameStateChanged = new GameStateChanged();
+		GameStateChanged gameStateChanged = GameStateChanged.INSTANCE;
 		gameStateChanged.setGameState(GameState.LOGGED_IN);
 		motherlodePlugin.onGameStateChanged(gameStateChanged);
 
 		// Initial sack count
 		when(client.getVar(Varbits.SACK_NUMBER)).thenReturn(42);
-		motherlodePlugin.onVarbitChanged(new VarbitChanged());
+		motherlodePlugin.onVarbitChanged(VarbitChanged.INSTANCE);
 
 		// Create before inventory
 		ItemContainer inventory = mock(ItemContainer.class);
@@ -140,7 +140,7 @@ public class MotherlodePluginTest
 
 		// Withdraw 20
 		when(client.getVar(Varbits.SACK_NUMBER)).thenReturn(22);
-		motherlodePlugin.onVarbitChanged(new VarbitChanged());
+		motherlodePlugin.onVarbitChanged(VarbitChanged.INSTANCE);
 
 		inventory = mock(ItemContainer.class);
 		// +1 rune, +4 nugget, +2 coal, +1 addy
@@ -162,7 +162,9 @@ public class MotherlodePluginTest
 		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(inventory);
 
 		// Trigger comparison
-		motherlodePlugin.onItemContainerChanged(new ItemContainerChanged(inventory));
+		ItemContainerChanged event = ItemContainerChanged.INSTANCE;
+		event.setItemContainer(inventory);
+		motherlodePlugin.onItemContainerChanged(event);
 
 		verify(motherlodeSession).updateOreFound(ItemID.RUNITE_ORE, 1);
 		verify(motherlodeSession).updateOreFound(ItemID.GOLDEN_NUGGET, 4);

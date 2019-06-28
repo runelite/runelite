@@ -33,6 +33,13 @@ import lombok.Data;
 @Data
 public class WidgetHiddenChanged
 {
+	public static final WidgetHiddenChanged INSTANCE = new WidgetHiddenChanged();
+
+	private WidgetHiddenChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The affected widget.
 	 */

@@ -32,6 +32,13 @@ import lombok.Data;
 @Data
 public class WidgetLoaded
 {
+	public static final WidgetLoaded INSTANCE = new WidgetLoaded();
+
+	private WidgetLoaded()
+	{
+		// noop
+	}
+
 	/**
 	 * The group ID of the loaded widget.
 	 */

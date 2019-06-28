@@ -44,6 +44,13 @@ import lombok.Data;
 @Data
 public class BoostedLevelChanged
 {
+	public static final BoostedLevelChanged INSTANCE = new BoostedLevelChanged();
+
+	private BoostedLevelChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The skill that has had its level modified.
 	 */

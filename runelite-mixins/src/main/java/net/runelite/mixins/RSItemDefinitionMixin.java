@@ -60,7 +60,7 @@ public abstract class RSItemDefinitionMixin implements RSItemDefinition
 	@MethodHook(value = "post", end = true)
 	public void post()
 	{
-		final PostItemDefinition event = new PostItemDefinition();
+		final PostItemDefinition event = PostItemDefinition.INSTANCE;
 		event.setItemDefinition(this);
 		client.getCallbacks().post(event);
 	}

@@ -35,6 +35,13 @@ import lombok.Data;
 @Data
 public class DecorativeObjectChanged
 {
+	public static final DecorativeObjectChanged INSTANCE = new DecorativeObjectChanged();
+
+	private DecorativeObjectChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The affected tile.
 	 */

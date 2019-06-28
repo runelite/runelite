@@ -408,7 +408,7 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public void broadcastHidden(boolean hidden)
 	{
-		WidgetHiddenChanged event = new WidgetHiddenChanged();
+		WidgetHiddenChanged event = WidgetHiddenChanged.INSTANCE;
 		event.setWidget(this);
 		event.setHidden(hidden);
 
@@ -496,7 +496,7 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		client.getLogger().trace("Posting widget position changed");
 
-		WidgetPositioned widgetPositioned = new WidgetPositioned();
+		WidgetPositioned widgetPositioned = WidgetPositioned.INSTANCE;
 		client.getCallbacks().postDeferred(widgetPositioned);
 	}
 

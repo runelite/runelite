@@ -29,6 +29,13 @@ import lombok.Data;
 @Data
 public class BeforeMenuRender
 {
+	public static final BeforeMenuRender INSTANCE = new BeforeMenuRender();
+
+	private BeforeMenuRender()
+	{
+		// noop
+	}
+
 	private boolean consumed;
 
 	public void consume()

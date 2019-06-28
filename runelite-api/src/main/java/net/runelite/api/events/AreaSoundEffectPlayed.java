@@ -29,6 +29,13 @@ import lombok.Data;
 @Data
 public class AreaSoundEffectPlayed
 {
+	public static final AreaSoundEffectPlayed INSTANCE = new AreaSoundEffectPlayed();
+
+	private AreaSoundEffectPlayed()
+	{
+		// noop
+	}
+
 	private int soundId;
 	private int sceneX;
 	private int sceneY;

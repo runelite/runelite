@@ -34,6 +34,13 @@ import lombok.Data;
 @Data
 public class ExperienceChanged
 {
+	public static final ExperienceChanged INSTANCE = new ExperienceChanged();
+
+	private ExperienceChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The modified skill.
 	 */

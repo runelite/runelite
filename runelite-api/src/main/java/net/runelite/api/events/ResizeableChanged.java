@@ -34,6 +34,13 @@ import lombok.Data;
 @Data
 public class ResizeableChanged
 {
+	public static final ResizeableChanged INSTANCE = new ResizeableChanged();
+
+	private ResizeableChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * Whether the game is in resizable mode.
 	 */

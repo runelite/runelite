@@ -29,6 +29,13 @@ import lombok.Data;
 @Data
 public class SoundEffectPlayed
 {
+	public static final SoundEffectPlayed INSTANCE = new SoundEffectPlayed();
+
+	private SoundEffectPlayed()
+	{
+		// noop
+	}
+
 	private int soundId;
 	private int delay;
 }

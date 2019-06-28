@@ -1,12 +1,19 @@
 package net.runelite.api.events;
 
 import net.runelite.api.Actor;
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class OverheadTextChanged
 {
-	private final Actor actor;
+	public static final OverheadTextChanged INSTANCE = new OverheadTextChanged();
 
-	private final String overheadText;
+	private OverheadTextChanged()
+	{
+		// noop
+	}
+
+	private Actor actor;
+
+	private String overheadText;
 }

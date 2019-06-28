@@ -62,7 +62,8 @@ public abstract class RSWorldMixin implements RSWorld
 		if (worlds != null && worlds.length > 0 && worlds[worlds.length - 1] == this)
 		{
 			// this is the last world in the list.
-			WorldListLoad worldLoad = new WorldListLoad(worlds);
+			WorldListLoad worldLoad = WorldListLoad.INSTANCE;
+			worldLoad.setWorlds(worlds);
 			client.getCallbacks().post(worldLoad);
 		}
 	}

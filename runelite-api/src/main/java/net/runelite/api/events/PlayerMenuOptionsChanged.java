@@ -29,6 +29,13 @@ import lombok.Data;
 @Data
 public class PlayerMenuOptionsChanged
 {
+	public static final PlayerMenuOptionsChanged INSTANCE = new PlayerMenuOptionsChanged();
+
+	private PlayerMenuOptionsChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * Index in playerOptions which changed.
 	 */

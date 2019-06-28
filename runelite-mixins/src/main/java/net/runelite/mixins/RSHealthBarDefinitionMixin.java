@@ -19,7 +19,7 @@ public abstract class RSHealthBarDefinitionMixin implements RSHealthBarDefinitio
 	@Inject
 	public void onRead(RSBuffer buffer)
 	{
-		PostHealthBar postHealthBar = new PostHealthBar();
+		PostHealthBar postHealthBar = PostHealthBar.INSTANCE;
 		postHealthBar.setHealthBar(this);
 		client.getCallbacks().post(postHealthBar);
 	}

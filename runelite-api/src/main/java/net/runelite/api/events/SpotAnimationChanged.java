@@ -21,6 +21,13 @@ import net.runelite.api.Actor;
 @Data
 public class SpotAnimationChanged
 {
+	public static final SpotAnimationChanged INSTANCE = new SpotAnimationChanged();
+
+	private SpotAnimationChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The actor that has had their graphic changed.
 	 */

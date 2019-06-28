@@ -34,6 +34,13 @@ import lombok.Data;
 @Data
 public class VarbitChanged
 {
+	public static final VarbitChanged INSTANCE = new VarbitChanged();
+
+	private VarbitChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * Index in the varp array that was changed.
 	 * For varplayer, this is the varplayer id.

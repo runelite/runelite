@@ -25,16 +25,23 @@
 package net.runelite.api.events;
 
 import net.runelite.api.Nameable;
-import lombok.Value;
+import lombok.Data;
 
 /**
  * An event where a {@link Nameable} has had their name changed.
  */
-@Value
+@Data
 public class NameableNameChanged
 {
+	public static final NameableNameChanged INSTANCE = new NameableNameChanged();
+
+	private NameableNameChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The nameable that changed names.
 	 */
-	private final Nameable nameable;
+	private Nameable nameable;
 }

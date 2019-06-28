@@ -73,7 +73,7 @@ public class EmojiPluginTest
 		when(client.createIndexedSprite()).thenReturn(mock(IndexedSprite.class));
 
 		// Trip emoji loading
-		GameStateChanged gameStateChanged = new GameStateChanged();
+		GameStateChanged gameStateChanged = GameStateChanged.INSTANCE;
 		gameStateChanged.setGameState(GameState.LOGGED_IN);
 		emojiPlugin.onGameStateChanged(gameStateChanged);
 
@@ -81,7 +81,7 @@ public class EmojiPluginTest
 		// With chat recolor, message may be wrapped in col tags
 		when(messageNode.getValue()).thenReturn("<col=ff0000>:) :) :)</col>");
 
-		ChatMessage chatMessage = new ChatMessage();
+		ChatMessage chatMessage = ChatMessage.INSTANCE;
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
 
@@ -98,14 +98,14 @@ public class EmojiPluginTest
 		when(client.createIndexedSprite()).thenReturn(mock(IndexedSprite.class));
 
 		// Trip emoji loading
-		GameStateChanged gameStateChanged = new GameStateChanged();
+		GameStateChanged gameStateChanged = GameStateChanged.INSTANCE;
 		gameStateChanged.setGameState(GameState.LOGGED_IN);
 		emojiPlugin.onGameStateChanged(gameStateChanged);
 
 		MessageNode messageNode = mock(MessageNode.class);
 		when(messageNode.getValue()).thenReturn("<gt>:D<lt>");
 
-		ChatMessage chatMessage = new ChatMessage();
+		ChatMessage chatMessage = ChatMessage.INSTANCE;
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
 

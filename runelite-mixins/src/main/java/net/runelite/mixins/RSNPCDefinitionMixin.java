@@ -42,7 +42,7 @@ public abstract class RSNPCDefinitionMixin implements RSNPCDefinition
 	@Inject
 	public void actionsHook(int idx)
 	{
-		NpcActionChanged npcActionChanged = new NpcActionChanged();
+		NpcActionChanged npcActionChanged = NpcActionChanged.INSTANCE;
 		npcActionChanged.setNpcDefinition(this);
 		npcActionChanged.setIdx(idx);
 		client.getCallbacks().post(npcActionChanged);

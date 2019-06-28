@@ -25,11 +25,18 @@
 package net.runelite.api.events;
 
 import net.runelite.api.ClanMember;
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class ClanMemberJoined
 {
+	public static final ClanMemberJoined INSTANCE = new ClanMemberJoined();
+
+	private ClanMemberJoined()
+	{
+		// noop
+	}
+
 	/**
 	 * The ClanMember that joined
 	 */

@@ -109,7 +109,9 @@ public abstract class RSNPCMixin implements RSNPC
 	{
 		if (composition == null)
 		{
-			client.getCallbacks().post(new NpcDespawned(this));
+			NpcDespawned event = NpcDespawned.INSTANCE;
+			event.setNpc(this);
+			client.getCallbacks().post(event);
 		}
 	}
 

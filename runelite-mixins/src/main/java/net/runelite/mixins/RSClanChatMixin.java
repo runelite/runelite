@@ -27,7 +27,8 @@ public abstract class RSClanChatMixin implements RSClanChat
 			return;
 		}
 
-		ClanMemberJoined event = new ClanMemberJoined(member);
+		ClanMemberJoined event = ClanMemberJoined.INSTANCE;
+		event.setMember(member);
 		client.getCallbacks().postDeferred(event);
 	}
 
@@ -41,7 +42,8 @@ public abstract class RSClanChatMixin implements RSClanChat
 			return;
 		}
 
-		ClanMemberLeft event = new ClanMemberLeft(member);
+		ClanMemberLeft event = ClanMemberLeft.INSTANCE;
+		event.setMember(member);
 		client.getCallbacks().postDeferred(event);
 	}
 }

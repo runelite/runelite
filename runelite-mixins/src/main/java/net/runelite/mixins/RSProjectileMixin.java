@@ -46,7 +46,7 @@ public abstract class RSProjectileMixin implements RSProjectile
 	@Inject
 	RSProjectileMixin()
 	{
-		final ProjectileSpawned projectileSpawned = new ProjectileSpawned();
+		final ProjectileSpawned projectileSpawned = ProjectileSpawned.INSTANCE;
 		projectileSpawned.setProjectile(this);
 		client.getCallbacks().post(projectileSpawned);
 	}
@@ -105,7 +105,7 @@ public abstract class RSProjectileMixin implements RSProjectile
 	public void projectileMoved(int targetX, int targetY, int targetZ, int cycle)
 	{
 		final LocalPoint position = new LocalPoint(targetX, targetY);
-		final ProjectileMoved projectileMoved = new ProjectileMoved();
+		final ProjectileMoved projectileMoved = ProjectileMoved.INSTANCE;
 		projectileMoved.setProjectile(this);
 		projectileMoved.setPosition(position);
 		projectileMoved.setZ(targetZ);

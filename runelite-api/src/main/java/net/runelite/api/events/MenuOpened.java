@@ -33,6 +33,13 @@ import lombok.Data;
 @Data
 public class MenuOpened
 {
+	public static final MenuOpened INSTANCE = new MenuOpened();
+
+	private MenuOpened()
+	{
+		// noop
+	}
+
 	/**
 	 * The menu entries in the newly opened menu.
 	 * <p>

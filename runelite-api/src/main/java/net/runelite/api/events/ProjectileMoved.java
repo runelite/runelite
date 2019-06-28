@@ -37,6 +37,13 @@ import lombok.Data;
 @Data
 public class ProjectileMoved
 {
+	public static final ProjectileMoved INSTANCE = new ProjectileMoved();
+
+	private ProjectileMoved()
+	{
+		// noop
+	}
+
 	/**
 	 * The projectile being moved.
 	 */
