@@ -265,7 +265,7 @@ public class MenuManager
 						{
 							MenuEntry original = MenuEntry.copy(e);
 							e.setType(newType);
-							originalType = new EntryTypeMapping(new ComparableEntry(e), original);
+							originalType = new EntryTypeMapping(new ComparableEntry(leftClickEntry), original);
 						}
 					}
 
@@ -750,7 +750,7 @@ public class MenuManager
 		{
 			MenuEntry entry = event.getMenuEntry();
 
-			if (!entry.getTarget().equals(entry.getOption()) && !comparable.matches(entry))
+			if (event.getTarget().equals("do not edit") || !comparable.matches(entry))
 			{
 				return false;
 			}

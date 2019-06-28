@@ -116,7 +116,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 	private MenuEntry[] entries;
-	private final Set<Integer> leftClickConstructionIDs = new HashSet<>();
+	private final Set<String> leftClickConstructionItems = new HashSet<>();
 	private boolean buildingMode;
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
@@ -192,8 +192,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void startUp()
 	{
 		addSwaps();
-		//todo re-enable when fixed.
-		/*loadConstructionIDs(config.getConstructionItems());*/
+		loadConstructionItems(config.getEasyConstructionItems());
 
 		if (config.shiftClickCustomization())
 		{
@@ -207,8 +206,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void shutDown()
 	{
 		disableCustomization();
-		//todo re-enable when fixed.
-		/*loadConstructionIDs("");*/
+		loadConstructionItems("");
 		loadCustomSwaps(""); // Removes all custom swaps
 		removeSwaps();
 	}
@@ -220,9 +218,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			return;
 		}
-		//todo re-enable when fixed.
 
-		/*loadConstructionIDs(config.getConstructionItems());*/
+		loadConstructionItems(config.getEasyConstructionItems());
 		removeSwaps();
 		addSwaps();
 
@@ -317,9 +314,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			return;
 		}
-		//todo re-enable when fixed.
 
-		/*loadConstructionIDs(config.getConstructionItems());*/
+		loadConstructionItems(config.getEasyConstructionItems());
 	}
 
 	@Subscribe
@@ -1246,37 +1242,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap(client, "teleport menu", option, target, true);
 		}
-
-		if (config.getTempConstruction() && buildingMode && !Strings.isNullOrEmpty(config.getTempConstructionItems()))
-		{
-			if (event.getType() == WALK.getId())
-			{
-				MenuEntry[] menuEntries = client.getMenuEntries();
-				MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-				menuEntry.setType(MenuAction.WALK.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
-				client.setMenuEntries(menuEntries);
-			}
-
-			swap(client, "Build", option, target);
-
-			MenuEntry[] entries = client.getMenuEntries();
-			for (int i = entries.length - 1; i >= 0; i--)
-			{
-				for (String temp : config.getTempConstructionItems().split(","))
-				{
-					if (temp.equalsIgnoreCase(Text.removeTags(entries[i].getTarget())))
-					{
-						if (!entries[i].getOption().equalsIgnoreCase("remove"))
-						{
-							entries = ArrayUtils.remove(entries, i);
-							i--;
-						}
-					}
-				}
-			}
-
-			client.setMenuEntries(entries);
-		}
 	}
 
 	@Subscribe
@@ -1520,25 +1485,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return location.getRegionID() == PURO_PURO_REGION_ID;
 		}
 	}
-	//todo re-enable when fixed.
 
-/*	private void loadConstructionIDs(String from)
+	private void loadConstructionItems(String from)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN
-			|| Strings.isNullOrEmpty(from) && leftClickConstructionIDs.isEmpty())
+			|| Strings.isNullOrEmpty(from) && leftClickConstructionItems.isEmpty())
 		{
 			return;
 		}
 
-		if (!leftClickConstructionIDs.isEmpty())
+		if (!leftClickConstructionItems.isEmpty())
 		{
-			for (int i : leftClickConstructionIDs)
+			for (String s : leftClickConstructionItems)
 			{
-				menuManager.toggleLeftClick("build", i, true);
-				menuManager.toggleLeftClick("remove", i, true);
+				menuManager.removePriorityEntry("build", s);
+				menuManager.removePriorityEntry("remove", s);
 			}
 
-			leftClickConstructionIDs.clear();
+			leftClickConstructionItems.clear();
 		}
 
 		if (config.getEasyConstruction() &&
@@ -1547,21 +1511,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			for (String s : Text.fromCSV(from))
 			{
-				int id = Integer.parseInt(s.replaceAll("[^0-9]", ""));
-
-				if (leftClickConstructionIDs.contains(id))
+				if (leftClickConstructionItems.contains(s))
 				{
 					continue;
 				}
 
-				if (menuManager.toggleLeftClick("build", id, false)
-					|| menuManager.toggleLeftClick("remove", id, false))
-				{
-					leftClickConstructionIDs.add(id);
-				}
+				menuManager.addPriorityEntry("build", s);
+				menuManager.addPriorityEntry("remove", s);
+
+				leftClickConstructionItems.add(s);
 			}
 		}
-	}*/
+	}
 
 	void startShift()
 	{
