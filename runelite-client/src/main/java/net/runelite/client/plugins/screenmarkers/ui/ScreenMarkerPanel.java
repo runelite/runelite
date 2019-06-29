@@ -261,6 +261,20 @@ class ScreenMarkerPanel extends JPanel
 				}
 			}
 		});
+		nameInput.getTextField().addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				preview(true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				preview(false);
+			}
+		});
 
 		nameWrapper.add(nameInput, BorderLayout.CENTER);
 		nameWrapper.add(nameActions, BorderLayout.EAST);
@@ -368,10 +382,7 @@ class ScreenMarkerPanel extends JPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				visible = !visible;
-				marker.getMarker().setVisible(visible);
-				plugin.updateConfig();
-				updateVisibility();
+				toggle(!visible);
 			}
 
 			@Override
@@ -431,6 +442,24 @@ class ScreenMarkerPanel extends JPanel
 		updateBorder();
 		updateBorder();
 
+	}
+
+	private void preview(boolean on)
+	{
+		if (visible)
+		{
+			return;
+		}
+
+		marker.getMarker().setVisible(on);
+	}
+
+	private void toggle(boolean on)
+	{
+		visible = on;
+		marker.getMarker().setVisible(visible);
+		plugin.updateConfig();
+		updateVisibility();
 	}
 
 	private void save()
