@@ -29,6 +29,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -169,12 +171,7 @@ class ScreenMarkerPanel extends JPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				marker.getMarker().setName(nameInput.getText());
-				plugin.updateConfig();
-
-				nameInput.setEditable(false);
-				updateNameActions(false);
-				requestFocusInWindow();
+				save();
 			}
 
 			@Override
@@ -198,10 +195,7 @@ class ScreenMarkerPanel extends JPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				nameInput.setEditable(false);
-				nameInput.setText(marker.getMarker().getName());
-				updateNameActions(false);
-				requestFocusInWindow();
+				cancel();
 			}
 
 			@Override
@@ -252,6 +246,21 @@ class ScreenMarkerPanel extends JPanel
 		nameInput.setPreferredSize(new Dimension(0, 24));
 		nameInput.getTextField().setForeground(Color.WHITE);
 		nameInput.getTextField().setBorder(new EmptyBorder(0, 8, 0, 0));
+		nameInput.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					save();
+				}
+				else if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+				{
+					cancel();
+				}
+			}
+		});
 
 		nameWrapper.add(nameInput, BorderLayout.CENTER);
 		nameWrapper.add(nameActions, BorderLayout.EAST);
@@ -422,6 +431,24 @@ class ScreenMarkerPanel extends JPanel
 		updateBorder();
 		updateBorder();
 
+	}
+
+	private void save()
+	{
+		marker.getMarker().setName(nameInput.getText());
+		plugin.updateConfig();
+
+		nameInput.setEditable(false);
+		updateNameActions(false);
+		requestFocusInWindow();
+	}
+
+	private void cancel()
+	{
+		nameInput.setEditable(false);
+		nameInput.setText(marker.getMarker().getName());
+		updateNameActions(false);
+		requestFocusInWindow();
 	}
 
 	private void updateNameActions(boolean saveAndCancel)
