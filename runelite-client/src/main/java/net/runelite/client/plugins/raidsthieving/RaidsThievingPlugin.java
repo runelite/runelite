@@ -201,6 +201,12 @@ public class RaidsThievingPlugin extends Plugin
 		{
 			log.debug("Found poison splat");
 			WorldPoint loc = WorldPoint.fromLocal(client, obj.getLocation());
+
+			if (chests.get(loc) == null)
+			{
+				return;
+			}
+
 			chests.get(loc).setPoison(true);
 		}
 	}
@@ -235,7 +241,7 @@ public class RaidsThievingPlugin extends Plugin
 		mapper = null;
 	}
 
-	public int numberOfEmptyChestsFound()
+	int numberOfEmptyChestsFound()
 	{
 		int total = 0;
 		for (ThievingChest chest : chests.values())
@@ -247,7 +253,6 @@ public class RaidsThievingPlugin extends Plugin
 		}
 		return total;
 	}
-
 
 	private boolean checkForBats()
 	{
@@ -266,7 +271,7 @@ public class RaidsThievingPlugin extends Plugin
 		return false;
 	}
 
-	public int getChestId(WorldPoint worldPoint)
+	int getChestId(WorldPoint worldPoint)
 	{
 		return chests.get(worldPoint).getChestId();
 	}

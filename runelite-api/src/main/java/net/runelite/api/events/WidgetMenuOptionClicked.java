@@ -33,13 +33,6 @@ import lombok.Data;
 @Data
 public class WidgetMenuOptionClicked
 {
-	public static final WidgetMenuOptionClicked INSTANCE = new WidgetMenuOptionClicked();
-
-	private WidgetMenuOptionClicked()
-	{
-		// noop
-	}
-
 	/**
 	 * The clicked menu option.
 	 */

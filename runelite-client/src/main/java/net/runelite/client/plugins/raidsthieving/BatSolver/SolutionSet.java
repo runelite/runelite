@@ -35,9 +35,9 @@ import lombok.Getter;
 // e.g. if there is an empty chest in L room chest 1, the other empty chests could be 16, 17, 38, 54, 55
 // See https://dikkenoob.github.io/ for more information
 
-public class SolutionSet
+class SolutionSet
 {
-	public static final SolutionSet[] SOLUTION_SETS =
+	static final SolutionSet[] SOLUTION_SETS =
 		{
 			new SolutionSet(ThievingRoomType.LEFT_TURN, 1, 16, 17, 55),
 			new SolutionSet(ThievingRoomType.LEFT_TURN, 1, 17, 38, 54),
@@ -147,12 +147,12 @@ public class SolutionSet
 		this.emptyChests = new HashSet<>(Arrays.asList(emptyChests));
 	}
 
-	public void addEmptyChest(int chestId)
+	void addEmptyChest(int chestId)
 	{
 		emptyChests.add(chestId);
 	}
 
-	public boolean containsChest(int chestId)
+	boolean containsChest(int chestId)
 	{
 		return emptyChests.contains(chestId);
 	}

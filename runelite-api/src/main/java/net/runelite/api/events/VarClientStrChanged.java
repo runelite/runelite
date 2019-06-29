@@ -25,20 +25,13 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
+import lombok.Value;
 
 /**
  * An event where a varbit string has changed.
  */
-@Data
+@Value
 public class VarClientStrChanged
 {
-	public static final VarClientStrChanged INSTANCE = new VarClientStrChanged();
-
-	private VarClientStrChanged()
-	{
-		// noop
-	}
-
 	private int index;
 }

@@ -32,10 +32,4 @@ package net.runelite.api.events;
  */
 public class UsernameChanged
 {
-	public static final UsernameChanged INSTANCE = new UsernameChanged();
-
-	private UsernameChanged()
-	{
-		// noop
-	}
 }

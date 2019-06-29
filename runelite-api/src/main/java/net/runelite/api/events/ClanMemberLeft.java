@@ -25,18 +25,11 @@
 package net.runelite.api.events;
 
 import net.runelite.api.ClanMember;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class ClanMemberLeft
 {
-	public static final ClanMemberLeft INSTANCE = new ClanMemberLeft();
-
-	private ClanMemberLeft()
-	{
-		// noop
-	}
-
 	/**
 	 * The ClanMember that left
 	 */

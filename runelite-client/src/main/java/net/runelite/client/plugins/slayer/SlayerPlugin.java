@@ -390,7 +390,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	int estimateKillCount(List<NPCPresence> potentialKills, int gains)
+	private int estimateKillCount(List<NPCPresence> potentialKills, int gains)
 	{
 		// failsafe to avoid calculating kill count if there were no slayer monsters around that could be killed on task
 		// this failsafe *WILL FAIL* if someone decides to lamp their slayer in the middle of a task next to on task creatures
@@ -751,7 +751,7 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	void killedOne()
+	private void killedOne()
 	{
 		if (currentTask.getAmount() == 0)
 		{
@@ -788,7 +788,7 @@ public class SlayerPlugin extends Plugin
 	}
 
 	// checks if any contiguous subsequence of seq0 exactly matches the String toMatch
-	boolean contiguousSubsequenceMatches(String[] seq0, String toMatch)
+	private boolean contiguousSubsequenceMatches(String[] seq0, String toMatch)
 	{
 		for (int i = 0; i < seq0.length; i++)
 		{
@@ -962,7 +962,7 @@ public class SlayerPlugin extends Plugin
 		rebuildTargetList();
 	}
 
-	public AsyncBufferedImage getImageForTask(Task task)
+	AsyncBufferedImage getImageForTask(Task task)
 	{
 		int itemSpriteId = ItemID.ENCHANTED_GEM;
 		if (task != null)
@@ -1045,6 +1045,11 @@ public class SlayerPlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.debug("unable to lookup slayer task", ex);
+			return;
+		}
+
+		if (task == null)
+		{
 			return;
 		}
 

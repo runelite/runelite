@@ -29,17 +29,17 @@ public class NPCPresence
 		return name + "[" + combatLevel + "]";
 	}
 
-	public boolean shouldExist()
+	boolean shouldExist()
 	{
 		return fadeTimer > 0;
 	}
 
-	public void tickExistence()
+	void tickExistence()
 	{
 		fadeTimer--;
 	}
 
-	public static NPCPresence buildPresence(NPC npc)
+	static NPCPresence buildPresence(NPC npc)
 	{
 		return new NPCPresence(npc.getName(), npc.getCombatLevel());
 	}

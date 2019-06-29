@@ -54,17 +54,17 @@ public class FreezeTimersOverlay extends Overlay
 	private final BufferedImage FREEZE_IMAGE = ImageUtil.getResourceStreamFromClass(getClass(), "freeze.png");
 	private final BufferedImage TB_IMAGE = ImageUtil.getResourceStreamFromClass(getClass(), "teleblock.png");
 	private final BufferedImage VENG_IMAGE = ImageUtil.getResourceStreamFromClass(getClass(), "veng.png");
-	@Inject
 	private Timers timers;
 	private boolean lock;
 	private long finishedAtTest;
 
 
 	@Inject
-	public FreezeTimersOverlay(FreezeTimersConfig config, Client client)
+	public FreezeTimersOverlay(FreezeTimersConfig config, Client client, Timers timers)
 	{
 		this.config = config;
 		this.client = client;
+		this.timers = timers;
 		setPriority(OverlayPriority.HIGHEST);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
@@ -119,24 +119,23 @@ public class FreezeTimersOverlay extends Overlay
 		String text = processTickCounter(finishedAt);
 		int test = Integer.parseInt(text);
 		Point poi = actor.getCanvasTextLocation(g, text, 0);
+
 		if (poi == null)
 		{
 			return false;
 		}
 
-		int xpoi = poi.getX();
-		int ypoi = poi.getY();
-		Point FixedPoint = new Point(xpoi, ypoi);
+		Point FixedPoint = new Point(poi.getX(), poi.getY());
 
 		if (config.noImage())
 		{
 			if (test > 3)
 			{
-				renderTextLocation(g, text, config.textSize(), config.fontStyle().getFont(), Color.WHITE, FixedPoint);
+				OverlayUtil.renderTextLocation(g, text, config.textSize(), config.fontStyle().getFont(), Color.WHITE, FixedPoint, false, 0);
 			}
 			else
 			{
-				renderTextLocation(g, text, config.textSize(), config.fontStyle().getFont(), Color.YELLOW, FixedPoint);
+				OverlayUtil.renderTextLocation(g, text, config.textSize(), config.fontStyle().getFont(), Color.YELLOW, FixedPoint, false, 0);
 			}
 		}
 		else
@@ -161,23 +160,26 @@ public class FreezeTimersOverlay extends Overlay
 
 		String text = processTickCounter(finishedAt);
 		Point poi = actor.getCanvasTextLocation(g, text, 0);
-		int xpoi = poi.getX() + 20;
-		int ypoi = poi.getY();
-		Point FixedPoint = new Point(xpoi, ypoi);
 
+		if (poi == null)
+		{
+			return false;
+		}
+
+		Point FixedPoint = new Point(poi.getX() + 20, poi.getY());
 		if (config.noImage())
 		{
 			if (timers.getTimerEnd(actor, TimerType.FREEZE) <= currentTick)
 			{
-				renderTextLocation(g, text, config.textSize(), config.fontStyle().getFont(), Color.CYAN, poi);
+				OverlayUtil.renderTextLocation(g, text, config.textSize(), config.fontStyle().getFont(), Color.CYAN, poi, false, 0);
 			}
 			if (timers.getTimerEnd(actor, TimerType.FREEZE) >= currentTick)
 			{
-				renderTextLocation(g, " | " + text, config.textSize(), config.fontStyle().getFont(), Color.CYAN, FixedPoint);
+				OverlayUtil.renderTextLocation(g, " | " + text, config.textSize(), config.fontStyle().getFont(), Color.CYAN, FixedPoint, false, 0);
 			}
 			if (timers.getTimerEnd(actor, TimerType.VENG) >= currentTick)
 			{
-				renderTextLocation(g, " | " + text, config.textSize(), config.fontStyle().getFont(), Color.CYAN, FixedPoint);
+				OverlayUtil.renderTextLocation(g, " | " + text, config.textSize(), config.fontStyle().getFont(), Color.CYAN, FixedPoint, false, 0);
 			}
 		}
 		else
@@ -202,22 +204,26 @@ public class FreezeTimersOverlay extends Overlay
 
 		String text = processTickCounter(finishedAt);
 		Point poi = actor.getCanvasTextLocation(g, text, 0);
-		int xpoi = poi.getX() - 20;
-		int ypoi = poi.getY();
-		Point FixedPoint = new Point(xpoi, ypoi);
+
+		if (poi == null)
+		{
+			return false;
+		}
+
+		Point FixedPoint = new Point(poi.getX() - 20, poi.getY());
 		if (config.noImage())
 		{
 			if (timers.getTimerEnd(actor, TimerType.FREEZE) <= currentTick)
 			{
-				renderTextLocation(g, text, config.textSize(), config.fontStyle().getFont(), Color.RED, poi);
+				OverlayUtil.renderTextLocation(g, text, config.textSize(), config.fontStyle().getFont(), Color.RED, poi, false, 0);
 			}
 			if (timers.getTimerEnd(actor, TimerType.FREEZE) >= currentTick)
 			{
-				renderTextLocation(g, text + " | ", config.textSize(), config.fontStyle().getFont(), Color.RED, FixedPoint);
+				OverlayUtil.renderTextLocation(g, text + " | ", config.textSize(), config.fontStyle().getFont(), Color.RED, FixedPoint, false, 0);
 			}
 			if (timers.getTimerEnd(actor, TimerType.TELEBLOCK) >= currentTick)
 			{
-				renderTextLocation(g, text + " | ", config.textSize(), config.fontStyle().getFont(), Color.RED, FixedPoint);
+				OverlayUtil.renderTextLocation(g, text + " | ", config.textSize(), config.fontStyle().getFont(), Color.RED, FixedPoint, false, 0);
 			}
 		}
 		else
@@ -229,10 +235,13 @@ public class FreezeTimersOverlay extends Overlay
 
 			g.setColor(RED);
 			Polygon poly = actor.getCanvasTilePoly();
-			if (poly != null)
+
+			if (poly == null)
 			{
-				OverlayUtil.renderPolygon(g, poly, RED);
+				return false;
 			}
+
+			OverlayUtil.renderPolygon(g, poly, RED);
 			OverlayUtil.renderTextLocation(g, new Point((int) poly.getBounds2D().getCenterX(),
 				(int) poly.getBounds2D().getCenterY()), actor.getName(), RED);
 		}
@@ -249,22 +258,6 @@ public class FreezeTimersOverlay extends Overlay
 			xOffset);
 	}
 
-	private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)
-	{
-		graphics.setFont(new Font("Arial", fontStyle, fontSize));
-		if (canvasPoint != null)
-		{
-			final Point canvasCenterPoint = new Point(
-				canvasPoint.getX(),
-				canvasPoint.getY());
-			final Point canvasCenterPoint_shadow = new Point(
-				canvasPoint.getX() + 1,
-				canvasPoint.getY() + 1);
-			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
-			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
-		}
-	}
-
 	public void renderImageLocation(Graphics2D graphics, Point imgLoc, BufferedImage image)
 	{
 		int x = imgLoc.getX();
@@ -273,12 +266,9 @@ public class FreezeTimersOverlay extends Overlay
 		graphics.drawImage(image, x, y, null);
 	}
 
-	public void renderActorTextAndImage(Graphics2D graphics, Actor actor, String text, Color color,
-										BufferedImage image, int yOffset, int xOffset)
+	private void renderActorTextAndImage(Graphics2D graphics, Actor actor, String text, Color color, BufferedImage image, int yOffset, int xOffset)
 	{
-		Point textLocation = new Point(actor.getCanvasImageLocation(image, 0).getX() + xOffset,
-			actor.getCanvasImageLocation(image, 0).getY() + yOffset);
-
+		Point textLocation = new Point(actor.getCanvasImageLocation(image, 0).getX() + xOffset, actor.getCanvasImageLocation(image, 0).getY() + yOffset);
 		renderImageLocation(graphics, textLocation, image);
 		xOffset = image.getWidth() + 1;
 		yOffset = (image.getHeight() - (int) graphics.getFontMetrics().getStringBounds(text, graphics).getHeight());

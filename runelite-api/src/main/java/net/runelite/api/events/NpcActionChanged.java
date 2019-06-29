@@ -33,13 +33,6 @@ import net.runelite.api.NPCDefinition;
 @Data
 public class NpcActionChanged
 {
-	public static final NpcActionChanged INSTANCE = new NpcActionChanged();
-
-	private NpcActionChanged()
-	{
-		// noop
-	}
-
 	/**
 	 * The NPC composition that has been changed.
 	 */

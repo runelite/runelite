@@ -26,25 +26,18 @@ package net.runelite.api.events;
 
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
-import lombok.Data;
+import lombok.Value;
 
 /**
  * An event where an {@link NPC} has spawned.
  */
-@Data
+@Value
 public class NpcSpawned
 {
-	public static final NpcSpawned INSTANCE = new NpcSpawned();
-
-	private NpcSpawned()
-	{
-		// noop
-	}
-
 	/**
 	 * The spawned NPC.
 	 */
-	private NPC npc;
+	private final NPC npc;
 
 	public Actor getActor()
 	{

@@ -34,13 +34,6 @@ import lombok.Data;
 @Data
 public class ProjectileSpawned
 {
-	public static final ProjectileSpawned INSTANCE = new ProjectileSpawned();
-
-	private ProjectileSpawned()
-	{
-		// noop
-	}
-
 	/**
 	 * The spawned projectile.
 	 */

@@ -29,10 +29,4 @@ package net.runelite.api.events;
  */
 public class BeforeRender
 {
-	public static final BeforeRender INSTANCE = new BeforeRender();
-
-	private BeforeRender()
-	{
-		// noop
-	}
 }

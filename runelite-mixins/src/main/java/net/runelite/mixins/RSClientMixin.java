@@ -867,7 +867,7 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void draggingWidgetChanged(int idx)
 	{
-		DraggingWidgetChanged draggingWidgetChanged = DraggingWidgetChanged.INSTANCE;
+		DraggingWidgetChanged draggingWidgetChanged = new DraggingWidgetChanged();
 		draggingWidgetChanged.setDraggingWidget(client.isDraggingWidget());
 		client.getCallbacks().post(draggingWidgetChanged);
 	}
@@ -905,7 +905,7 @@ public abstract class RSClientMixin implements RSClient
 
 		if (loaded)
 		{
-			WidgetLoaded event = WidgetLoaded.INSTANCE;
+			WidgetLoaded event = new WidgetLoaded();
 			event.setGroupId(groupId);
 			client.getCallbacks().post(event);
 		}
@@ -937,7 +937,7 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void experiencedChanged(int idx)
 	{
-		ExperienceChanged experienceChanged = ExperienceChanged.INSTANCE;
+		ExperienceChanged experienceChanged = new ExperienceChanged();
 		Skill[] possibleSkills = Skill.values();
 
 		// We subtract one here because 'Overall' isn't considered a skill that's updated.
@@ -958,7 +958,7 @@ public abstract class RSClientMixin implements RSClient
 		if (idx >= 0 && idx < skills.length - 1)
 		{
 			Skill updatedSkill = skills[idx];
-			BoostedLevelChanged boostedLevelChanged = BoostedLevelChanged.INSTANCE;
+			BoostedLevelChanged boostedLevelChanged = new BoostedLevelChanged();
 			boostedLevelChanged.setSkill(updatedSkill);
 			client.getCallbacks().post(boostedLevelChanged);
 		}
@@ -977,7 +977,7 @@ public abstract class RSClientMixin implements RSClient
 			client.getPlayerMenuTypes()[idx] = playerAction.getId();
 		}
 
-		PlayerMenuOptionsChanged optionsChanged = PlayerMenuOptionsChanged.INSTANCE;
+		PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
 		optionsChanged.setIndex(idx);
 		client.getCallbacks().post(optionsChanged);
 	}
@@ -986,7 +986,7 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void gameStateChanged(int idx)
 	{
-		GameStateChanged gameStateChange = GameStateChanged.INSTANCE;
+		GameStateChanged gameStateChange = new GameStateChanged();
 		gameStateChange.setGameState(client.getGameState());
 		client.getCallbacks().post(gameStateChange);
 	}
@@ -1007,9 +1007,7 @@ public abstract class RSClientMixin implements RSClient
 		{
 			npc.setIndex(idx);
 
-			NpcSpawned npcSpawned = NpcSpawned.INSTANCE;
-			npcSpawned.setNpc(npc);
-			client.getCallbacks().postDeferred(npcSpawned);
+			client.getCallbacks().postDeferred(new NpcSpawned(npc));
 		}
 	}
 
@@ -1029,15 +1027,11 @@ public abstract class RSClientMixin implements RSClient
 
 		if (oldPlayer != null)
 		{
-			PlayerDespawned playerDespawned = PlayerDespawned.INSTANCE;
-			playerDespawned.setPlayer(oldPlayer);
-			client.getCallbacks().post(playerDespawned);
+			client.getCallbacks().post(new PlayerDespawned(oldPlayer));
 		}
 		if (player != null)
 		{
-			PlayerSpawned playerSpawned = PlayerSpawned.INSTANCE;
-			playerSpawned.setPlayer(player);
-			client.getCallbacks().postDeferred(playerSpawned);
+			client.getCallbacks().postDeferred(new PlayerSpawned(player));
 		}
 	}
 
@@ -1057,7 +1051,7 @@ public abstract class RSClientMixin implements RSClient
 			return;
 		}
 
-		GrandExchangeOfferChanged offerChangedEvent = GrandExchangeOfferChanged.INSTANCE;
+		GrandExchangeOfferChanged offerChangedEvent = new GrandExchangeOfferChanged();
 		offerChangedEvent.setOffer(internalOffer);
 		offerChangedEvent.setSlot(idx);
 		client.getCallbacks().post(offerChangedEvent);
@@ -1067,7 +1061,7 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void settingsChanged(int idx)
 	{
-		VarbitChanged varbitChanged = VarbitChanged.INSTANCE;
+		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setIndex(idx);
 		client.getCallbacks().post(varbitChanged);
 	}
@@ -1081,7 +1075,7 @@ public abstract class RSClientMixin implements RSClient
 
 		if (oldIsResized != isResized)
 		{
-			ResizeableChanged resizeableChanged = ResizeableChanged.INSTANCE;
+			ResizeableChanged resizeableChanged = new ResizeableChanged();
 			resizeableChanged.setResized(isResized);
 			client.getCallbacks().post(resizeableChanged);
 
@@ -1093,9 +1087,7 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void clanMemberManagerChanged(int idx)
 	{
-		ClanChanged event = ClanChanged.INSTANCE;
-		event.setJoined(client.getClanMemberManager() != null);
-		client.getCallbacks().post(event);
+		client.getCallbacks().post(new ClanChanged(client.getClanMemberManager() != null));
 	}
 
 	@FieldHook("canvasWidth")
@@ -1279,7 +1271,7 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void onUsernameChanged(int idx)
 	{
-		client.getCallbacks().post(UsernameChanged.INSTANCE);
+		client.getCallbacks().post(new UsernameChanged());
 	}
 
 	@Override
@@ -1308,7 +1300,7 @@ public abstract class RSClientMixin implements RSClient
 	@MethodHook("openMenu")
 	public void menuOpened(int var1, int var2)
 	{
-		final MenuOpened event = MenuOpened.INSTANCE;
+		final MenuOpened event = new MenuOpened();
 		event.setMenuEntries(getMenuEntries());
 		callbacks.post(event);
 	}
@@ -1521,7 +1513,7 @@ public abstract class RSClientMixin implements RSClient
 	@FieldHook("cycleCntr")
 	public static void onCycleCntrChanged(int idx)
 	{
-		client.getCallbacks().post(ClientTick.INSTANCE);
+		client.getCallbacks().post(new ClientTick());
 	}
 
 	@Copy("shouldLeftClickOpenMenu")
@@ -1538,7 +1530,7 @@ public abstract class RSClientMixin implements RSClient
 			return true;
 		}
 
-		MenuShouldLeftClick menuShouldLeftClick = MenuShouldLeftClick.INSTANCE;
+		MenuShouldLeftClick menuShouldLeftClick = new MenuShouldLeftClick();
 		client.getCallbacks().post(menuShouldLeftClick);
 
 		if (menuShouldLeftClick.isForceRightClick())

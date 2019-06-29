@@ -29,10 +29,4 @@ package net.runelite.api.events;
  */
 public class LocalPlayerDeath
 {
-	public static final LocalPlayerDeath INSTANCE = new LocalPlayerDeath();
-
-	private LocalPlayerDeath()
-	{
-		// noop
-	}
 }

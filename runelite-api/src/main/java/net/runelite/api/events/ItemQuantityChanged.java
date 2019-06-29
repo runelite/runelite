@@ -26,23 +26,16 @@ package net.runelite.api.events;
 
 import net.runelite.api.Item;
 import net.runelite.api.Tile;
-import lombok.Data;
+import lombok.Value;
 
 /**
  * Called when the quantity of an item pile changes.
  */
-@Data
+@Value
 public class ItemQuantityChanged
 {
-	public static final ItemQuantityChanged INSTANCE = new ItemQuantityChanged();
-
-	private ItemQuantityChanged()
-	{
-		// noop
-	}
-
-	private Item item;
-	private Tile tile;
-	private int oldQuantity;
-	private int newQuantity;
+	private final Item item;
+	private final Tile tile;
+	private final int oldQuantity;
+	private final int newQuantity;
 }

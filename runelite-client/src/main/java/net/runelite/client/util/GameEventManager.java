@@ -118,9 +118,7 @@ public class GameEventManager
 
 				if (itemContainer != null)
 				{
-					ItemContainerChanged event = ItemContainerChanged.INSTANCE;
-					event.setItemContainer(itemContainer);
-					eventBus.post(event);
+					eventBus.post(new ItemContainerChanged(itemContainer));
 				}
 			}
 
@@ -128,8 +126,7 @@ public class GameEventManager
 			{
 				if (npc != null)
 				{
-					final NpcSpawned npcSpawned = NpcSpawned.INSTANCE;
-					npcSpawned.setNpc(npc);
+					final NpcSpawned npcSpawned = new NpcSpawned(npc);
 					eventBus.post(npcSpawned);
 				}
 			}
@@ -138,8 +135,7 @@ public class GameEventManager
 			{
 				if (player != null)
 				{
-					final PlayerSpawned playerSpawned = PlayerSpawned.INSTANCE;
-					playerSpawned.setPlayer(player);
+					final PlayerSpawned playerSpawned = new PlayerSpawned(player);
 					eventBus.post(playerSpawned);
 				}
 			}
@@ -148,7 +144,7 @@ public class GameEventManager
 			{
 				Optional.ofNullable(tile.getWallObject()).ifPresent(object ->
 				{
-					final WallObjectSpawned objectSpawned = WallObjectSpawned.INSTANCE;
+					final WallObjectSpawned objectSpawned = new WallObjectSpawned();
 					objectSpawned.setTile(tile);
 					objectSpawned.setWallObject(object);
 					eventBus.post(objectSpawned);
@@ -156,7 +152,7 @@ public class GameEventManager
 
 				Optional.ofNullable(tile.getDecorativeObject()).ifPresent(object ->
 				{
-					final DecorativeObjectSpawned objectSpawned = DecorativeObjectSpawned.INSTANCE;
+					final DecorativeObjectSpawned objectSpawned = new DecorativeObjectSpawned();
 					objectSpawned.setTile(tile);
 					objectSpawned.setDecorativeObject(object);
 					eventBus.post(objectSpawned);
@@ -164,7 +160,7 @@ public class GameEventManager
 
 				Optional.ofNullable(tile.getGroundObject()).ifPresent(object ->
 				{
-					final GroundObjectSpawned objectSpawned = GroundObjectSpawned.INSTANCE;
+					final GroundObjectSpawned objectSpawned = new GroundObjectSpawned();
 					objectSpawned.setTile(tile);
 					objectSpawned.setGroundObject(object);
 					eventBus.post(objectSpawned);
@@ -174,7 +170,7 @@ public class GameEventManager
 					.filter(Objects::nonNull)
 					.forEach(object ->
 					{
-						final GameObjectSpawned objectSpawned = GameObjectSpawned.INSTANCE;
+						final GameObjectSpawned objectSpawned = new GameObjectSpawned();
 						objectSpawned.setTile(tile);
 						objectSpawned.setGameObject(object);
 						eventBus.post(objectSpawned);
@@ -190,9 +186,7 @@ public class GameEventManager
 
 						current = current.getNext();
 
-						final ItemSpawned itemSpawned = ItemSpawned.INSTANCE;
-						itemSpawned.setItem(item);
-						itemSpawned.setTile(tile);
+						final ItemSpawned itemSpawned = new ItemSpawned(tile, item);
 						eventBus.post(itemSpawned);
 					}
 				});

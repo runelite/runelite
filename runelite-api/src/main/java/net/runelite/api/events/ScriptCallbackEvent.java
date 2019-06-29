@@ -33,13 +33,6 @@ import lombok.Data;
 @Data
 public class ScriptCallbackEvent
 {
-	public static final ScriptCallbackEvent INSTANCE = new ScriptCallbackEvent();
-
-	private ScriptCallbackEvent()
-	{
-		// noop
-	}
-
 	/**
 	 * The script being called.
 	 */

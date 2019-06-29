@@ -13,6 +13,7 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 public class XarpusCounter extends Overlay
@@ -60,6 +61,7 @@ public class XarpusCounter extends Overlay
 			));
 
 			TableComponent tableComponent = new TableComponent();
+			tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 			tableComponent.addRow("Exhumes", String.valueOf(xarpusHandler.getExhumesCount()));
 
 			panelComponent.getChildren().add(tableComponent);

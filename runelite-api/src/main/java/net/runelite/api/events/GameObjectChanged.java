@@ -34,13 +34,6 @@ import net.runelite.api.Tile;
 @Data
 public class GameObjectChanged
 {
-	public static final GameObjectChanged INSTANCE = new GameObjectChanged();
-
-	private GameObjectChanged()
-	{
-		// noop
-	}
-
 	/**
 	 * The affected tile.
 	 */

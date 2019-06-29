@@ -114,9 +114,7 @@ public class CommandManager
 		String command = split[0];
 		String[] args = Arrays.copyOfRange(split, 1, split.length);
 
-		CommandExecuted commandExecuted = CommandExecuted.INSTANCE;
-		commandExecuted.setCommand(command);
-		commandExecuted.setArguments(args);
+		CommandExecuted commandExecuted = new CommandExecuted(command, args);
 		eventBus.post(commandExecuted);
 	}
 

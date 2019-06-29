@@ -26,27 +26,20 @@ package net.runelite.api.events;
 
 import net.runelite.api.Actor;
 import net.runelite.api.Player;
-import lombok.Data;
+import lombok.Value;
 
 /**
  * An event where a {@link Player} has despawned.
  * <p>
  * Note: This event does not get called for the local player.
  */
-@Data
+@Value
 public class PlayerDespawned
 {
-	public static final PlayerDespawned INSTANCE = new PlayerDespawned();
-
-	private PlayerDespawned()
-	{
-		// noop
-	}
-
 	/**
 	 * The despawned player.
 	 */
-	private Player player;
+	private final Player player;
 
 	public Actor getActor()
 	{

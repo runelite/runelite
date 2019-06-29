@@ -33,13 +33,6 @@ import lombok.Data;
 @Data
 public class DraggingWidgetChanged
 {
-	public static final DraggingWidgetChanged INSTANCE = new DraggingWidgetChanged();
-
-	private DraggingWidgetChanged()
-	{
-		// noop
-	}
-
 	/**
 	 * Whether a widget is currently being dragged.
 	 */

@@ -30,12 +30,5 @@ import lombok.Data;
 @Data
 public class PostHealthBar
 {
-	public static final PostHealthBar INSTANCE = new PostHealthBar();
-
-	private PostHealthBar()
-	{
-		// noop
-	}
-
 	private HealthBar healthBar;
 }

@@ -26,25 +26,18 @@ package net.runelite.api.events;
 
 import net.runelite.api.Actor;
 import net.runelite.api.Player;
-import lombok.Data;
+import lombok.Value;
 
 /**
  * An event where a {@link Player} has spawned.
  */
-@Data
+@Value
 public class PlayerSpawned
 {
-	public static final PlayerSpawned INSTANCE = new PlayerSpawned();
-
-	private PlayerSpawned()
-	{
-		// noop
-	}
-
 	/**
 	 * The spawned player.
 	 */
-	private Player player;
+	private final Player player;
 
 	public Actor getActor()
 	{

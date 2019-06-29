@@ -38,13 +38,6 @@ import lombok.Data;
 @Data
 public class HitsplatApplied
 {
-	public static final HitsplatApplied INSTANCE = new HitsplatApplied();
-
-	private HitsplatApplied()
-	{
-		// noop
-	}
-
 	/**
 	 * The actor the hitsplat was applied to.
 	 */

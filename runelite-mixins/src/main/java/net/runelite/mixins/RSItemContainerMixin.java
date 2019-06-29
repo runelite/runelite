@@ -75,8 +75,7 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 
 		rl$lastCycle = cycle;
 
-		ItemContainerChanged event = ItemContainerChanged.INSTANCE;
-		event.setItemContainer(this);
+		ItemContainerChanged event = new ItemContainerChanged(this);
 		client.getCallbacks().postDeferred(event);
 	}
 

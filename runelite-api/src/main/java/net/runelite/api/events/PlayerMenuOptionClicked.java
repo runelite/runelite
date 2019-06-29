@@ -33,13 +33,6 @@ import lombok.Data;
 @Data
 public class PlayerMenuOptionClicked
 {
-	public static final PlayerMenuOptionClicked INSTANCE = new PlayerMenuOptionClicked();
-
-	private PlayerMenuOptionClicked()
-	{
-		// noop
-	}
-
 	/**
 	 * The menu option clicked.
 	 */

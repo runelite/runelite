@@ -87,6 +87,9 @@ public class Hooks implements Callbacks
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 	private static final OverlayManager overlayManager = injector.getInstance(OverlayManager.class);
 
+	private static final GameTick GAME_TICK = new GameTick();
+	private static final BeforeRender BEFORE_RENDER = new BeforeRender();
+
 	@Inject
 	private EventBus eventBus;
 
@@ -148,13 +151,13 @@ public class Hooks implements Callbacks
 
 			deferredEventBus.replay();
 
-			eventBus.post(GameTick.INSTANCE);
+			eventBus.post(GAME_TICK);
 
 			int tick = client.getTickCount();
 			client.setTickCount(tick + 1);
 		}
 
-		eventBus.post(BeforeRender.INSTANCE);
+		eventBus.post(BEFORE_RENDER);
 
 		clientThread.invoke();
 
@@ -508,7 +511,7 @@ public class Hooks implements Callbacks
 
 	public static boolean drawMenu()
 	{
-		BeforeMenuRender event = BeforeMenuRender.INSTANCE;
+		BeforeMenuRender event = new BeforeMenuRender();
 		client.getCallbacks().post(event);
 		return event.isConsumed();
 	}

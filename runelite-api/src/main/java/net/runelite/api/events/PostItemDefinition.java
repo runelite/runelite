@@ -34,13 +34,6 @@ import net.runelite.api.ItemDefinition;
 @Data
 public class PostItemDefinition
 {
-	public static final PostItemDefinition INSTANCE = new PostItemDefinition();
-
-	private PostItemDefinition()
-	{
-		// noop
-	}
-
 	/**
 	 * The newly created item.
 	 */

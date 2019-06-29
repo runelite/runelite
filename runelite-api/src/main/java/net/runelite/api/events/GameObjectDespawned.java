@@ -34,13 +34,6 @@ import lombok.Data;
 @Data
 public class GameObjectDespawned
 {
-	public static final GameObjectDespawned INSTANCE = new GameObjectDespawned();
-
-	private GameObjectDespawned()
-	{
-		// noop
-	}
-
 	/**
 	 * The affected tile.
 	 */

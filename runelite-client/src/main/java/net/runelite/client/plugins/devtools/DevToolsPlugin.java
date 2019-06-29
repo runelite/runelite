@@ -258,7 +258,7 @@ public class DevToolsPlugin extends Plugin
 				int value = Integer.parseInt(args[1]);
 				client.setVarpValue(client.getVarps(), varp, value);
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set VarPlayer " + varp + " to " + value, null);
-				VarbitChanged varbitChanged = VarbitChanged.INSTANCE;
+				VarbitChanged varbitChanged = new VarbitChanged();
 				varbitChanged.setIndex(varp);
 				eventBus.post(varbitChanged); // fake event
 				break;
@@ -276,7 +276,7 @@ public class DevToolsPlugin extends Plugin
 				int value = Integer.parseInt(args[1]);
 				client.setVarbitValue(client.getVarps(), varbit, value);
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set varbit " + varbit + " to " + value, null);
-				eventBus.post(VarbitChanged.INSTANCE); // fake event
+				eventBus.post(new VarbitChanged()); // fake event
 				break;
 			}
 			case "addxp":
@@ -293,7 +293,7 @@ public class DevToolsPlugin extends Plugin
 
 				client.queueChangedSkill(skill);
 
-				ExperienceChanged experienceChanged = ExperienceChanged.INSTANCE;
+				ExperienceChanged experienceChanged = new ExperienceChanged();
 				experienceChanged.setSkill(skill);
 				eventBus.post(experienceChanged);
 				break;
@@ -312,11 +312,11 @@ public class DevToolsPlugin extends Plugin
 
 				client.queueChangedSkill(skill);
 
-				ExperienceChanged experienceChanged = ExperienceChanged.INSTANCE;
+				ExperienceChanged experienceChanged = new ExperienceChanged();
 				experienceChanged.setSkill(skill);
 				eventBus.post(experienceChanged);
 
-				BoostedLevelChanged boostedLevelChanged = BoostedLevelChanged.INSTANCE;
+				BoostedLevelChanged boostedLevelChanged = new BoostedLevelChanged();
 				boostedLevelChanged.setSkill(skill);
 				eventBus.post(boostedLevelChanged);
 				break;

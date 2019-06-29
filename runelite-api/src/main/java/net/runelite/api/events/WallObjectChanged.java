@@ -34,13 +34,6 @@ import lombok.Data;
 @Data
 public class WallObjectChanged
 {
-	public static final WallObjectChanged INSTANCE = new WallObjectChanged();
-
-	private WallObjectChanged()
-	{
-		// noop
-	}
-
 	/**
 	 * The affected tile.
 	 */

@@ -34,13 +34,6 @@ import lombok.Data;
 @Data
 public class GroundObjectChanged
 {
-	public static final GroundObjectChanged INSTANCE = new GroundObjectChanged();
-
-	private GroundObjectChanged()
-	{
-		// noop
-	}
-
 	/**
 	 * The affected tile.
 	 */

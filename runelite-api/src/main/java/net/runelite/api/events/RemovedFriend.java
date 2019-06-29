@@ -24,23 +24,16 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
+import lombok.Value;
 
 /**
  * An event where a request to remove a friend is sent to the server.
  */
-@Data
+@Value
 public class RemovedFriend
 {
-	public static final RemovedFriend INSTANCE = new RemovedFriend();
-
-	private RemovedFriend()
-	{
-		// noop
-	}
-
 	/**
 	 * The name of the removed friend.
 	 */
-	private String name;
+	private final String name;
 }

@@ -26,23 +26,15 @@ package net.runelite.api.events;
 
 import net.runelite.api.Item;
 import net.runelite.api.Tile;
-
-import lombok.Data;
+import lombok.Value;
 
 /**
  * Called when an item pile despawns from the ground. When the client loads a new scene,
  * all item piles are implicitly despawned, and despawn events will not be sent.
  */
-@Data
+@Value
 public class ItemDespawned
 {
-	public static final ItemDespawned INSTANCE = new ItemDespawned();
-
-	private ItemDespawned()
-	{
-		// noop
-	}
-
-	private Tile tile;
-	private Item item;
+	private final Tile tile;
+	private final Item item;
 }

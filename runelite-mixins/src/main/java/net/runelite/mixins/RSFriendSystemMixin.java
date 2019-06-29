@@ -18,8 +18,7 @@ public abstract class RSFriendSystemMixin implements RSFriendSystem
 	@Inject
 	public void rl$removeFriend(String friendName)
 	{
-		RemovedFriend removedFriend = RemovedFriend.INSTANCE;
-		removedFriend.setName(friendName);
+		RemovedFriend removedFriend = new RemovedFriend(friendName);
 		client.getCallbacks().post(removedFriend);
 	}
 }

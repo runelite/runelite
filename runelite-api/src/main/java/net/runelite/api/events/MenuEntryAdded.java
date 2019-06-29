@@ -35,17 +35,10 @@ import net.runelite.api.MenuEntry;
 @AllArgsConstructor
 public class MenuEntryAdded
 {
-	public static final MenuEntryAdded INSTANCE = new MenuEntryAdded();
-
-	private MenuEntryAdded()
-	{
-		// noop
-	}
-
 	/**
 	 * The MenuEntry object that was actually added
 	 */
-	private MenuEntry menuEntry;
+	private final MenuEntry menuEntry;
 
 	public String getOption()
 	{

@@ -155,7 +155,7 @@ public class SlayerPluginTest
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW);
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
-		slayerPlugin.onGameTick(GameTick.INSTANCE);
+		slayerPlugin.onGameTick(new GameTick());
 
 		assertEquals("Suqahs", slayerPlugin.getCurrentTask().getTaskName());
 		assertEquals(231, slayerPlugin.getCurrentTask().getAmount());
@@ -167,7 +167,7 @@ public class SlayerPluginTest
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW_KONAR);
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
-		slayerPlugin.onGameTick(GameTick.INSTANCE);
+		slayerPlugin.onGameTick(new GameTick());
 
 		assertEquals("Wyrms", slayerPlugin.getCurrentTask().getTaskName());
 		assertEquals(147, slayerPlugin.getCurrentTask().getAmount());
@@ -180,7 +180,7 @@ public class SlayerPluginTest
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW_KONAR_2);
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
-		slayerPlugin.onGameTick(GameTick.INSTANCE);
+		slayerPlugin.onGameTick(new GameTick());
 
 		assertEquals("Hellhounds", slayerPlugin.getCurrentTask().getTaskName());
 		assertEquals(142, slayerPlugin.getCurrentTask().getAmount());
@@ -193,7 +193,7 @@ public class SlayerPluginTest
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW_KONAR_3);
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
-		slayerPlugin.onGameTick(GameTick.INSTANCE);
+		slayerPlugin.onGameTick(new GameTick());
 
 		assertEquals("Trolls", slayerPlugin.getCurrentTask().getTaskName());
 		assertEquals(135, slayerPlugin.getCurrentTask().getAmount());
@@ -206,7 +206,7 @@ public class SlayerPluginTest
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW_FIRST);
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
-		slayerPlugin.onGameTick(GameTick.INSTANCE);
+		slayerPlugin.onGameTick(new GameTick());
 
 		assertEquals("goblins", slayerPlugin.getCurrentTask().getTaskName());
 		assertEquals(17, slayerPlugin.getCurrentTask().getAmount());
@@ -218,7 +218,7 @@ public class SlayerPluginTest
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW_NPC_CONTACT);
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
-		slayerPlugin.onGameTick(GameTick.INSTANCE);
+		slayerPlugin.onGameTick(new GameTick());
 
 		assertEquals("Suqahs", slayerPlugin.getCurrentTask().getTaskName());
 		assertEquals(211, slayerPlugin.getCurrentTask().getAmount());
@@ -230,7 +230,7 @@ public class SlayerPluginTest
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_BOSS_NEW);
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
-		slayerPlugin.onGameTick(GameTick.INSTANCE);
+		slayerPlugin.onGameTick(new GameTick());
 
 		assertEquals("Vet'ion", slayerPlugin.getCurrentTask().getTaskName());
 		assertEquals(3, slayerPlugin.getCurrentTask().getAmount());
@@ -243,7 +243,7 @@ public class SlayerPluginTest
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_BOSS_NEW_THE);
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
-		slayerPlugin.onGameTick(GameTick.INSTANCE);
+		slayerPlugin.onGameTick(new GameTick());
 
 		assertEquals("Chaos Elemental", slayerPlugin.getCurrentTask().getTaskName());
 		assertEquals(3, slayerPlugin.getCurrentTask().getAmount());
@@ -296,7 +296,7 @@ public class SlayerPluginTest
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_EXISTING);
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
-		slayerPlugin.onGameTick(GameTick.INSTANCE);
+		slayerPlugin.onGameTick(new GameTick());
 
 		assertEquals("suqahs", slayerPlugin.getCurrentTask().getTaskName());
 		assertEquals(222, slayerPlugin.getCurrentTask().getAmount());
@@ -331,7 +331,7 @@ public class SlayerPluginTest
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_POINTS, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
-		VarbitChanged varbitChanged = VarbitChanged.INSTANCE;
+		VarbitChanged varbitChanged = new VarbitChanged();
 		slayerPlugin.onVarbitChanged(varbitChanged);
 
 		assertEquals(9, slayerPlugin.getStreak());
@@ -347,7 +347,7 @@ public class SlayerPluginTest
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_LARGE_STREAK, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
-		VarbitChanged varbitChanged = VarbitChanged.INSTANCE;
+		VarbitChanged varbitChanged = new VarbitChanged();
 		slayerPlugin.onVarbitChanged(varbitChanged);
 
 		assertEquals(2465, slayerPlugin.getStreak());
@@ -408,7 +408,7 @@ public class SlayerPluginTest
 		when(slayerConfig.taskCommand()).thenReturn(true);
 		when(chatClient.getTask(anyString())).thenReturn(task);
 
-		ChatMessage setMessage = ChatMessage.INSTANCE;
+		ChatMessage setMessage = new ChatMessage();
 		setMessage.setType(ChatMessageType.PUBLICCHAT);
 		setMessage.setName("Adam");
 		setMessage.setMessageNode(mock(MessageNode.class));
@@ -430,7 +430,7 @@ public class SlayerPluginTest
 		when(slayerConfig.taskCommand()).thenReturn(true);
 		when(chatClient.getTask(anyString())).thenReturn(task);
 
-		ChatMessage chatMessage = ChatMessage.INSTANCE;
+		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setName("Adam");
 		chatMessage.setMessageNode(mock(MessageNode.class));

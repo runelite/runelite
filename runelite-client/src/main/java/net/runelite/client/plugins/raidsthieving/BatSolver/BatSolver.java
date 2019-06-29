@@ -106,7 +106,7 @@ public class BatSolver
 	}
 
 
-	public void calculateChanceOfPoison()
+	private void calculateChanceOfPoison()
 	{
 		if (getType() == null)
 		{

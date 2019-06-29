@@ -98,7 +98,7 @@ public abstract class ScriptVMMixin implements RSClient
 				return true;
 			}
 
-			ScriptCallbackEvent event = ScriptCallbackEvent.INSTANCE;
+			ScriptCallbackEvent event = new ScriptCallbackEvent();
 			event.setScript(currentScript);
 			event.setEventName(stringOp);
 			client.getCallbacks().post(event);

@@ -28,6 +28,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.MessageNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * An event where a new chat message is received.
@@ -39,15 +40,9 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ChatMessage
 {
-	public static final ChatMessage INSTANCE = new ChatMessage();
-
-	private ChatMessage()
-	{
-		// noop
-	}
-
 	/**
 	 * The underlying MessageNode for the message.
 	 */

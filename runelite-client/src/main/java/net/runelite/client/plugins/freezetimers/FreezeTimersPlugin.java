@@ -121,7 +121,7 @@ public class FreezeTimersPlugin extends Plugin
 		{
 			if (prayerTracker.getSpotanimLastTick(actor) != actor.getSpotAnimation())
 			{
-				SpotAnimationChanged callback = SpotAnimationChanged.INSTANCE;
+				SpotAnimationChanged callback = new SpotAnimationChanged();
 				callback.setActor(actor);
 				client.getCallbacks().post(callback);
 			}

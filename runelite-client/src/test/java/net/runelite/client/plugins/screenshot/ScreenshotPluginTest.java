@@ -175,11 +175,11 @@ public class ScreenshotPluginTest
 
 		assertEquals("Hitpoints(99)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
-		WidgetLoaded event = WidgetLoaded.INSTANCE;
+		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(event);
 
-		GameTick tick = GameTick.INSTANCE;
+		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
@@ -198,11 +198,11 @@ public class ScreenshotPluginTest
 
 		assertEquals("Firemaking(9)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
-		WidgetLoaded event = WidgetLoaded.INSTANCE;
+		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(event);
 
-		GameTick tick = GameTick.INSTANCE;
+		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
@@ -221,11 +221,11 @@ public class ScreenshotPluginTest
 
 		assertEquals("Attack(70)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
-		WidgetLoaded event = WidgetLoaded.INSTANCE;
+		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(event);
 
-		GameTick tick = GameTick.INSTANCE;
+		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
@@ -244,11 +244,11 @@ public class ScreenshotPluginTest
 
 		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_TEXT));
 
-		WidgetLoaded event = WidgetLoaded.INSTANCE;
+		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(event);
 
-		GameTick tick = GameTick.INSTANCE;
+		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));

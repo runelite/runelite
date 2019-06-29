@@ -186,7 +186,7 @@ public abstract class RSActorMixin implements RSActor
 	@Inject
 	public void animationChanged(int idx)
 	{
-		AnimationChanged animationChange = AnimationChanged.INSTANCE;
+		AnimationChanged animationChange = new AnimationChanged();
 		animationChange.setActor(this);
 		client.getCallbacks().post(animationChange);
 	}
@@ -195,7 +195,7 @@ public abstract class RSActorMixin implements RSActor
 	@Inject
 	public void spotAnimationChanged(int idx)
 	{
-		SpotAnimationChanged spotAnimationChanged = SpotAnimationChanged.INSTANCE;
+		SpotAnimationChanged spotAnimationChanged = new SpotAnimationChanged();
 		spotAnimationChanged.setActor(this);
 		client.getCallbacks().post(spotAnimationChanged);
 	}
@@ -204,9 +204,7 @@ public abstract class RSActorMixin implements RSActor
 	@Inject
 	public void interactingChanged(int idx)
 	{
-		InteractingChanged interactingChanged = InteractingChanged.INSTANCE;
-		interactingChanged.setSource(this);
-		interactingChanged.setTarget(getInteracting());
+		InteractingChanged interactingChanged = new InteractingChanged(this, getInteracting());
 		client.getCallbacks().post(interactingChanged);
 	}
 
@@ -217,10 +215,7 @@ public abstract class RSActorMixin implements RSActor
 		String overheadText = getOverheadText();
 		if (overheadText != null)
 		{
-
-			OverheadTextChanged overheadTextChanged = OverheadTextChanged.INSTANCE;
-			overheadTextChanged.setActor(this);
-			overheadTextChanged.setOverheadText(overheadText);
+			OverheadTextChanged overheadTextChanged = new OverheadTextChanged(this, overheadText);
 			client.getCallbacks().post(overheadTextChanged);
 		}
 	}
@@ -256,7 +251,7 @@ public abstract class RSActorMixin implements RSActor
 			{
 				client.getLogger().debug("You died!");
 
-				LocalPlayerDeath event = LocalPlayerDeath.INSTANCE;
+				LocalPlayerDeath event = new LocalPlayerDeath();
 				client.getCallbacks().post(event);
 			}
 			else if (this instanceof RSNPC)
@@ -283,7 +278,7 @@ public abstract class RSActorMixin implements RSActor
 	public void applyActorHitsplat(int type, int value, int var3, int var4, int gameCycle, int duration)
 	{
 		final Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value, gameCycle + duration);
-		final HitsplatApplied event = HitsplatApplied.INSTANCE;
+		final HitsplatApplied event = new HitsplatApplied();
 		event.setActor(this);
 		event.setHitsplat(hitsplat);
 		client.getCallbacks().post(event);

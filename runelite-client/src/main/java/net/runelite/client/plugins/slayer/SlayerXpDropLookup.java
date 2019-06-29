@@ -31,14 +31,14 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-public class SlayerXpDropLookup
+class SlayerXpDropLookup
 {
 	private Map<String, List<Double>> xpMap;
 
 	// floating point math equality
 	private static final double EPSILON = 1e-6;
 
-	void loadXpJson()
+	private void loadXpJson()
 	{
 		final InputStream xpFile = getClass().getResourceAsStream("/slayer_xp.json");
 		Gson gson = new Gson();
@@ -76,7 +76,7 @@ public class SlayerXpDropLookup
 	 * @param npc the npc we are estimating slayer xp for
 	 * @return our best guess for the slayer xp for this npc
 	 */
-	public double findXpForNpc(NPCPresence npc)
+	double findXpForNpc(NPCPresence npc)
 	{
 		List<Double> xpCombatLevel = xpMap.get(npc.getName());
 		if (xpCombatLevel == null)
@@ -127,7 +127,7 @@ public class SlayerXpDropLookup
 		return -1;
 	}
 
-	public SlayerXpDropLookup()
+	SlayerXpDropLookup()
 	{
 		loadXpJson();
 	}

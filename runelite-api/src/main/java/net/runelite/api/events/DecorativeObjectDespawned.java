@@ -35,13 +35,6 @@ import lombok.Data;
 @Data
 public class DecorativeObjectDespawned
 {
-	public static final DecorativeObjectDespawned INSTANCE = new DecorativeObjectDespawned();
-
-	private DecorativeObjectDespawned()
-	{
-		// noop
-	}
-
 	/**
 	 * The affected tile.
 	 */

@@ -29,10 +29,4 @@ package net.runelite.api.events;
  */
 public class CannonballFired
 {
-	public static final CannonballFired INSTANCE = new CannonballFired();
-
-	private CannonballFired()
-	{
-		// noop
-	}
 }

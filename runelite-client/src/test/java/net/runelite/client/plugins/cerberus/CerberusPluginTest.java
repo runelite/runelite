@@ -71,7 +71,7 @@ public class CerberusPluginTest
 			mockNpc(new LocalPoint(2, 5)),
 			mockNpc(new LocalPoint(1, 5))
 		));
-		cerberusPlugin.onGameTick(GameTick.INSTANCE);
+		cerberusPlugin.onGameTick(new GameTick());
 
 		// Expected sort is by lowest y first, then by lowest x
 		assertEquals(ghosts.get(0).getLocalLocation(), new LocalPoint(0, 0));

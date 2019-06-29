@@ -25,24 +25,16 @@
 package net.runelite.api.events;
 
 import net.runelite.api.GraphicsObject;
-
-import lombok.Data;
+import lombok.Value;
 
 /**
  * An event where a new {@link GraphicsObject} has been created.
  */
-@Data
+@Value
 public class GraphicsObjectCreated
 {
-	public static final GraphicsObjectCreated INSTANCE = new GraphicsObjectCreated();
-
-	private GraphicsObjectCreated()
-	{
-		// noop
-	}
-
 	/**
 	 * The newly created graphics object.
 	 */
-	private GraphicsObject graphicsObject;
+	private final GraphicsObject graphicsObject;
 }

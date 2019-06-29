@@ -17,8 +17,7 @@ public abstract class RSGraphicsObjectMixin implements RSGraphicsObject
 	@Inject
 	RSGraphicsObjectMixin()
 	{
-		final GraphicsObjectCreated event = GraphicsObjectCreated.INSTANCE;
-		event.setGraphicsObject(this);
+		final GraphicsObjectCreated event = new GraphicsObjectCreated(this);
 		client.getCallbacks().post(event);
 	}
 

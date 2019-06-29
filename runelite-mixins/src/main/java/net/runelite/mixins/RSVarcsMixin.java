@@ -19,17 +19,13 @@ public abstract class RSVarcsMixin implements RSVarcs
 	@Inject
 	public void onVarCIntChanged(int id, int value)
 	{
-		VarClientIntChanged event = VarClientIntChanged.INSTANCE;
-		event.setIndex(id);
-		client.getCallbacks().post(event);
+		client.getCallbacks().post(new VarClientIntChanged(id));
 	}
 
 	@MethodHook(value = "setString", end = true)
 	@Inject
 	public void onVarCStrChanged(int id, String value)
 	{
-		VarClientStrChanged event = VarClientStrChanged.INSTANCE;
-		event.setIndex(id);
-		client.getCallbacks().post(event);
+		client.getCallbacks().post(new VarClientStrChanged(id));
 	}
 }

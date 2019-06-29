@@ -34,13 +34,6 @@ import lombok.Data;
 @Data
 public class GameObjectSpawned
 {
-	public static final GameObjectSpawned INSTANCE = new GameObjectSpawned();
-
-	private GameObjectSpawned()
-	{
-		// noop
-	}
-
 	/**
 	 * The affected tile.
 	 */

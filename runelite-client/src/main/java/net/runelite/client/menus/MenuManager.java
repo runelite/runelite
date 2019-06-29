@@ -429,7 +429,7 @@ public class MenuManager
 			if (curMenuOption.getMenuTarget().equals(event.getTarget())
 				&& curMenuOption.getMenuOption().equals(event.getOption()))
 			{
-				WidgetMenuOptionClicked customMenu = WidgetMenuOptionClicked.INSTANCE;
+				WidgetMenuOptionClicked customMenu = new WidgetMenuOptionClicked();
 				customMenu.setMenuOption(event.getOption());
 				customMenu.setMenuTarget(event.getTarget());
 				customMenu.setWidget(curMenuOption.getWidget());
@@ -444,7 +444,7 @@ public class MenuManager
 		// <col=ffffff>username<col=40ff00>  (level-42) or <col=ffffff><img=2>username</col>
 		String username = Text.removeTags(target).split("[(]")[0].trim();
 
-		PlayerMenuOptionClicked playerMenuOptionClicked = PlayerMenuOptionClicked.INSTANCE;
+		PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
 		playerMenuOptionClicked.setMenuOption(event.getOption());
 		playerMenuOptionClicked.setMenuTarget(username);
 

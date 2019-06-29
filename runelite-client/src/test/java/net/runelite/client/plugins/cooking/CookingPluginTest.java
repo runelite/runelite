@@ -118,7 +118,7 @@ public class CookingPluginTest
 		when(config.fermentTimer()).thenReturn(true);
 		when(client.getLocalPlayer()).thenReturn(player);
 
-		SpotAnimationChanged graphicChanged = SpotAnimationChanged.INSTANCE;
+		SpotAnimationChanged graphicChanged = new SpotAnimationChanged();
 		graphicChanged.setActor(player);
 		cookingPlugin.onSpotAnimationChanged(graphicChanged);
 

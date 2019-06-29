@@ -26,22 +26,15 @@ package net.runelite.api.events;
 
 import net.runelite.api.Item;
 import net.runelite.api.Tile;
-import lombok.Data;
+import lombok.Value;
 
 /**
  * Called when an item pile spawns on the ground. When the client loads a new scene,
  * all item piles are implicitly reset and a new spawn event will be sent.
  */
-@Data
+@Value
 public class ItemSpawned
 {
-	public static final ItemSpawned INSTANCE = new ItemSpawned();
-
-	private ItemSpawned()
-	{
-		// noop
-	}
-
-	private Tile tile;
-	private Item item;
+	private final Tile tile;
+	private final Item item;
 }

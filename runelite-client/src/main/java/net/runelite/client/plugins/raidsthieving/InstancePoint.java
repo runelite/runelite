@@ -15,7 +15,7 @@ public class InstancePoint
 	private static final int CHUNK_SIZE = 8;
 	private static final double CHUNK_OFFSET = 3.5;
 
-	public InstancePoint(int x, int y, int rot)
+	private InstancePoint(int x, int y, int rot)
 	{
 		this.x = x;
 		this.y = y;
@@ -29,7 +29,7 @@ public class InstancePoint
 		this.rot = 0;
 	}
 
-	public static InstancePoint buildFromPoint(WorldPoint worldPoint, Client client)
+	static InstancePoint buildFromPoint(WorldPoint worldPoint, Client client)
 	{
 		Point point = new Point(worldPoint.getX(), worldPoint.getY());
 		Point base = new Point(client.getBaseX(), client.getBaseY());
@@ -48,7 +48,7 @@ public class InstancePoint
 		return buildFromTile(base, point, rotation, new Point(x, y));
 	}
 
-	public static InstancePoint buildFromTile(Point base, Point tile, int rot, Point chunkOrigin)
+	private static InstancePoint buildFromTile(Point base, Point tile, int rot, Point chunkOrigin)
 	{
 		int deltaX = tile.getX() - base.getX();
 		int deltaY = tile.getY() - base.getY();
