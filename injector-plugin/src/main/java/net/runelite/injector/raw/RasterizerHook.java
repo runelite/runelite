@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import net.runelite.asm.ClassFile;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.ArrayStore;
 import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.GetStatic;
@@ -25,14 +26,16 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
-import net.runelite.deob.DeobAnnotations;
 import net.runelite.injector.Inject;
+import static net.runelite.injector.InjectUtil.findDeobField;
+import static net.runelite.injector.InjectUtil.findStaticMethod;
 import net.runelite.injector.InjectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RasterizerHook
 {
+	// TODO: Should probably make this better
 	private static final Logger logger = LoggerFactory.getLogger(ClearColorBuffer.class);
 	private static final int val = -16777216;
 
@@ -40,10 +43,12 @@ public class RasterizerHook
 	private static final String circle_alpha = "Rasterizer2D_drawCircleAlpha";
 	private static final String line_alpha = "Rasterizer2D_drawHorizontalLineAlpha";
 	private static final String line_alpha2 = "Rasterizer2D_drawVerticalLineAlpha";
-	private static final String more_alpha = "Rasterizer2D_moreAlpha";
+	private static final String fill_rect_alpha = "Rasterizer2D_fillRectangleAlpha";
 	private static final String r3d_vert = "Rasterizer3D_vertAlpha";
 	private static final String r3d_horiz = "Rasterizer3D_horizAlpha";
 	private static final String r3d_field = "Rasterizer3D_alpha";
+	private static final String sprite_alpha1 = "Sprite_alpha1";
+	private static final String sprite_alpha2 = "Sprite_alpha2";
 
 	private static final String font = "AbstractFont_placeGlyph";
 	private static final String rast3D = "Rasterizer3D_iDontKnow";
@@ -71,14 +76,13 @@ public class RasterizerHook
 	public void inject() throws InjectionException
 	{
 		runDrawAlpha();
+
 		logger.info("Injected {} drawAlpha's", count);
+		assert count == 35 : "Either too many or not enough drawAlpha's were injected";
+
 		count = 0;
 
 		runVars();
-
-		{
-		//	throw new InjectionException("Not all variable alpha thingshits were found");
-		}
 
 		run();
 	}
@@ -91,13 +95,15 @@ public class RasterizerHook
 		runAlpha(circle_alpha, 2, 4);
 		runAlpha(line_alpha, 1, 4);
 		runAlpha(line_alpha2, 1, 4);
-		runAlpha(more_alpha, 1, 5);
+		runAlpha(fill_rect_alpha, 1, 5);
+		runAlpha(sprite_alpha1, 1, 9, 0);
+		runAlpha(sprite_alpha2, 1, 12, 0);
 	}
 
 	private void runR3DAlpha(String methodName, int req, String fieldName) throws InjectionException
 	{
-		Method meth = findStaticMethod(methodName);
-		Field field = findDeobField(fieldName);
+		Method meth = findStaticMethod(inject, methodName);
+		Field field = findDeobField(inject, fieldName);
 		Instructions ins = meth.getCode().getInstructions();
 		int varIdx = 0; // This is obviously dumb but I cba making this better
 		int added = 0;
@@ -112,8 +118,6 @@ public class RasterizerHook
 		{
 			throw new InjectionException("Couldn't find hook location in " + methodName);
 		}
-
-		int oldCount = count;
 
 		for (int i : indices)
 		{
@@ -136,15 +140,26 @@ public class RasterizerHook
 
 	private void runAlpha(String methodName, int req, int extraArg) throws InjectionException
 	{
-		final net.runelite.asm.pool.Field pixels = findDeobField("Rasterizer2D_pixels").getPoolField();
-		Method meth = findStaticMethod(methodName);
-		Instructions ins = meth.getCode().getInstructions();
+		runAlpha(methodName, req, extraArg, -1);
+	}
+
+	private void runAlpha(String methodName, int req, int extraArg, int varIndex) throws InjectionException
+	{
+		final net.runelite.asm.pool.Field pixels = findDeobField(inject, "Rasterizer2D_pixels").getPoolField();
+		Method meth = findStaticMethod(inject, methodName);
+		if (meth == null)
+		{
+			throw new InjectionException(methodName + " couldnt be found");
+		}
+
+		Code code = meth.getCode();
+		Instructions ins = code.getInstructions();
 		int added = 0;
 
 		List<Integer> indices = new ArrayList<>();
 		for (Instruction i : ins.getInstructions())
 		{
-			if (!(i instanceof IALoad) && !(i instanceof GetField))
+			if (!(i instanceof IALoad) && !(i instanceof GetField) && !(i instanceof ALoad))
 			{
 				continue;
 			}
@@ -155,10 +170,15 @@ public class RasterizerHook
 				{
 					indices.add(ins.getInstructions().indexOf(i));
 				}
-				continue;
 			}
-
-			indices.add(ins.getInstructions().indexOf(i));
+			else if ((i instanceof ALoad) && varIndex >= 0 && ((LVTInstruction) i).getVariableIndex() == varIndex)
+			{
+				indices.add(ins.getInstructions().indexOf(i));
+			}
+			else if (varIndex == -1)
+			{
+				indices.add(ins.getInstructions().indexOf(i));
+			}
 		}
 
 		if (indices.isEmpty())
@@ -194,8 +214,7 @@ public class RasterizerHook
 
 	private void runFontAlpha(String methodName, int req, int extraArg) throws InjectionException
 	{
-		final net.runelite.asm.pool.Field pixels = findDeobField("Rasterizer2D_pixels").getPoolField();
-		Method meth = findStaticMethod(methodName);
+		Method meth = findStaticMethod(inject, methodName);
 		Instructions ins = meth.getCode().getInstructions();
 		int varIdx = 0; // This is obviously dumb but I cba making this better
 		int added = 0;
@@ -231,13 +250,9 @@ public class RasterizerHook
 			}
 		}
 
-		if (count - oldCount > req)
+		if (count - req != oldCount)
 		{
-			throw new InjectionException("Too many drawAlpha's were injected into " + methodName);
-		}
-		if (count == oldCount)
-		{
-			throw new InjectionException("Couldn't find any drawAlpha positions in " + methodName);
+			throw new InjectionException(req != oldCount ? req > count - oldCount ? "Not enough" : "Too many" : "No" + " drawAlpha's were injected into " + methodName);
 		}
 	}
 
@@ -261,7 +276,7 @@ public class RasterizerHook
 	private void run() throws InjectionException
 	{
 		final int startCount = count; // Cause you can't just count shit ty
-		final net.runelite.asm.pool.Field pixels = findDeobField("Rasterizer2D_pixels").getPoolField();
+		final net.runelite.asm.pool.Field pixels = findDeobField(inject, "Rasterizer2D_pixels").getPoolField();
 
 		Execution ex = new Execution(inject.getVanilla());
 		ex.populateInitialMethods();
@@ -273,7 +288,7 @@ public class RasterizerHook
 			Instructions ins = i.getInstructions();
 			Code code = ins.getCode();
 			Method method = code.getMethod();
-			logger.debug(i.toString());
+			//logger.debug(i.toString());
 
 			if (!(i instanceof IAStore))
 			{
@@ -304,7 +319,7 @@ public class RasterizerHook
 			{
 				if ((int) ic.getPops().get(0).getValue().getValue() == 0)
 				{
-					logger.info("Didn't add hook in method {}.{}. {} added, {} total, value 0", method.getClassFile().getClassName(), method.getName(), count - startCount, count);
+					logger.debug("Didn't add hook in method {}.{}. {} added, {} total, value 0", method.getClassFile().getClassName(), method.getName(), count - startCount, count);
 					return;
 				}
 			}
@@ -312,7 +327,7 @@ public class RasterizerHook
 			ins.getInstructions().add(index, new IOr(ins, InstructionType.IOR)); // Add instructions backwards
 			ins.getInstructions().add(index, new LDC(ins, val));
 			count++;
-			logger.info("Added hook in method {}.{}. {} added, {} total", method.getClassFile().getClassName(), method.getName(), count - startCount, count);
+			logger.debug("Added hook in method {}.{}. {} added, {} total", method.getClassFile().getClassName(), method.getName(), count - startCount, count);
 		});
 
 		ex.run();
@@ -320,7 +335,7 @@ public class RasterizerHook
 
 	private void runOnMethodWithVar(String meth, int varIndex) throws InjectionException
 	{
-		Method method = findStaticMethod(meth);
+		Method method = findStaticMethod(inject, meth);
 
 		Instructions ins = method.getCode().getInstructions();
 		List<Integer> indices = new ArrayList<>();
@@ -352,49 +367,5 @@ public class RasterizerHook
 		}
 
 		logger.info("Added {} instructions in {}. {} total", added >>> 1, meth, count);
-	}
-
-	private Method findStaticMethod(String name) throws InjectionException
-	{
-		for (ClassFile c : inject.getDeobfuscated().getClasses())
-		{
-			for (Method m : c.getMethods())
-			{
-				if (!m.getName().equals(name))
-				{
-					continue;
-				}
-
-				String obfuscatedName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
-				Signature obfuscatedSignature = DeobAnnotations.getObfuscatedSignature(m);
-
-				ClassFile c2 = inject.toObClass(c);
-
-				return c2.findMethod(obfuscatedName, (obfuscatedSignature != null) ? obfuscatedSignature : m.getDescriptor());
-			}
-		}
-
-		throw new InjectionException("Couldn't find static method " + name);
-	}
-
-	private Field findDeobField(String name) throws InjectionException
-	{
-		for (ClassFile c : inject.getDeobfuscated().getClasses())
-		{
-			for (Field f : c.getFields())
-			{
-				if (!f.getName().equals(name))
-				{
-					continue;
-				}
-
-				String obfuscatedName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
-
-				ClassFile c2 = inject.toObClass(c);
-				return c2.findField(obfuscatedName);
-			}
-		}
-
-		throw new InjectionException(String.format("Mapped field \"%s\" could not be found.", name));
 	}
 }

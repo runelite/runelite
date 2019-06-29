@@ -39,22 +39,22 @@ import org.slf4j.LoggerFactory;
  *
  * @author Adam
  */
-public class InjectorValidator
+class InjectorValidator
 {
 	private static final Logger logger = LoggerFactory.getLogger(InjectorValidator.class);
 
-	private static final String API_PACKAGE_BASE = "rs/api/";
+	private static final String API_PACKAGE_BASE = "net/runelite/rs/api/";
 
 	private final ClassGroup group;
 
 	private int error, missing, okay;
 
-	public InjectorValidator(ClassGroup group)
+	InjectorValidator(ClassGroup group)
 	{
 		this.group = group;
 	}
 
-	public void validate()
+	void validate()
 	{
 		for (ClassFile cf : group.getClasses())
 		{
@@ -131,17 +131,17 @@ public class InjectorValidator
 		}
 	}
 
-	public int getError()
+	int getError()
 	{
 		return error;
 	}
 
-	public int getMissing()
+	int getMissing()
 	{
 		return missing;
 	}
 
-	public int getOkay()
+	int getOkay()
 	{
 		return okay;
 	}

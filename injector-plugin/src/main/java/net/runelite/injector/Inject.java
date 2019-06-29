@@ -47,23 +47,23 @@ import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import net.runelite.injector.raw.ClearColorBuffer;
 import net.runelite.injector.raw.DrawAfterWidgets;
+import net.runelite.injector.raw.DrawMenu;
+import net.runelite.injector.raw.HidePlayerAttacks;
+import net.runelite.injector.raw.Occluder;
 import net.runelite.injector.raw.RasterizerHook;
 import net.runelite.injector.raw.RenderDraw;
 import net.runelite.injector.raw.ScriptVM;
 import net.runelite.mapping.Import;
+import net.runelite.rs.api.RSClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rs.api.RSClient;
 
 public class Inject
 {
-	private static final Logger logger = LoggerFactory.getLogger(Inject.class);
-
 	public static final java.lang.Class<?> CLIENT_CLASS = RSClient.class;
-
-	public static final String API_PACKAGE_BASE = "rs.api.RS";
-	public static final String RL_API_PACKAGE_BASE = "api.";
-
+	public static final String API_PACKAGE_BASE = "net.runelite.rs.api.RS";
+	public static final String RL_API_PACKAGE_BASE = "net.runelite.api.";
+	private static final Logger logger = LoggerFactory.getLogger(Inject.class);
 	private final InjectHookMethod hookMethod = new InjectHookMethod(this);
 
 	private final InjectGetter getters = new InjectGetter(this);
@@ -71,12 +71,15 @@ public class Inject
 	private final InjectInvoker invokes = new InjectInvoker(this);
 	private final InjectConstruct construct = new InjectConstruct(this);
 
+	private final DrawMenu drawMenu = new DrawMenu(this);
 	private final RasterizerHook rasterizerHook = new RasterizerHook(this);
 	private final MixinInjector mixinInjector = new MixinInjector(this);
 	private final DrawAfterWidgets drawAfterWidgets = new DrawAfterWidgets(this);
 	private final ScriptVM scriptVM = new ScriptVM(this);
 	private final ClearColorBuffer clearColorBuffer = new ClearColorBuffer(this);
 	private final RenderDraw renderDraw = new RenderDraw(this);
+	private final Occluder occluder = new Occluder(this);
+	private final HidePlayerAttacks hidePlayerAttacks = new HidePlayerAttacks(this);
 
 	// deobfuscated contains exports etc to apply to vanilla
 	private final ClassGroup deobfuscated, vanilla;
@@ -85,34 +88,6 @@ public class Inject
 	{
 		this.deobfuscated = deobfuscated;
 		this.vanilla = vanilla;
-	}
-
-	public Type getFieldType(Field f)
-	{
-		Type type = f.getType();
-
-		Annotation obfSignature = f.getAnnotations().find(DeobAnnotations.OBFUSCATED_SIGNATURE);
-		if (obfSignature != null)
-		{
-			//Annotation exists. Type was updated by us during deobfuscation
-			type = DeobAnnotations.getObfuscatedType(f);
-		}
-
-		return type;
-	}
-
-	public Signature getMethodSignature(Method m)
-	{
-		Signature signature = m.getDescriptor();
-
-		Annotation obfSignature = m.getAnnotations().find(DeobAnnotations.OBFUSCATED_SIGNATURE);
-		if (obfSignature != null)
-		{
-			//Annotation exists. Signature was updated by us during deobfuscation
-			signature = DeobAnnotations.getObfuscatedSignature(m);
-		}
-
-		return signature;
 	}
 
 	/**
@@ -171,6 +146,34 @@ public class Inject
 		}
 
 		return Type.getType("L" + c.getName().replace('.', '/') + ";", dimms);
+	}
+
+	public Type getFieldType(Field f)
+	{
+		Type type = f.getType();
+
+		Annotation obfSignature = f.getAnnotations().find(DeobAnnotations.OBFUSCATED_SIGNATURE);
+		if (obfSignature != null)
+		{
+			//Annotation exists. Type was updated by us during deobfuscation
+			type = DeobAnnotations.getObfuscatedType(f);
+		}
+
+		return type;
+	}
+
+	public Signature getMethodSignature(Method m)
+	{
+		Signature signature = m.getDescriptor();
+
+		Annotation obfSignature = m.getAnnotations().find(DeobAnnotations.OBFUSCATED_SIGNATURE);
+		if (obfSignature != null)
+		{
+			//Annotation exists. Signature was updated by us during deobfuscation
+			signature = DeobAnnotations.getObfuscatedSignature(m);
+		}
+
+		return signature;
 	}
 
 	/**
@@ -284,7 +287,7 @@ public class Inject
 					assert !f.isStatic();
 
 					// non static field exported on non exported interface
-		//			logger.debug("Non static exported field {} on non exported interface", exportedName);
+					//			logger.debug("Non static exported field {} on non exported interface", exportedName);
 					continue;
 				}
 
@@ -303,7 +306,7 @@ public class Inject
 				apiMethod = findImportMethodOnApi(targetApiClass, exportedName, false);
 				if (apiMethod == null)
 				{
-		//			logger.debug("Unable to find import method on api class {} with imported name {}, not injecting getter", targetApiClass, exportedName);
+					//logger.debug("Unable to find import method on api class {} with imported name {}, not injecting getter", targetApiClass, exportedName);
 					continue;
 				}
 
@@ -325,7 +328,7 @@ public class Inject
 				invokes.process(m, other, implementingClass);
 			}
 		}
-		
+
 		logger.info("Injected {} getters, {} setters, {} invokers",
 			getters.getInjectedGetters(),
 			setters.getInjectedSetters(), invokes.getInjectedInvokers());
@@ -334,6 +337,9 @@ public class Inject
 		scriptVM.inject();
 		clearColorBuffer.inject();
 		renderDraw.inject();
+		drawMenu.inject();
+		occluder.inject();
+		hidePlayerAttacks.inject();
 	}
 
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)
@@ -466,7 +472,7 @@ public class Inject
 		return null;
 	}
 
-	Field toObField(Field field)
+	public Field toObField(Field field)
 	{
 		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getClassFile().getAnnotations());
 		String obfuscatedFieldName = DeobAnnotations.getObfuscatedName(field.getAnnotations()); // obfuscated name of field
@@ -514,17 +520,17 @@ public class Inject
 			}
 		}
 
-	//	if (rlApiType == null)
-	//	{
-	//		throw new InjectionException("RS API type " + rsApiType + " does not extend RL API interface");
-	//	}
+		//	if (rlApiType == null)
+		//	{
+		//		throw new InjectionException("RS API type " + rsApiType + " does not extend RL API interface");
+		//	}
 
 		final java.lang.Class<?> finalType = rlApiType == null ? rsApiType : rlApiType;
 
 		return Type.getType("L" + finalType.getName().replace('.', '/') + ";", type.getDimensions());
 	}
 
-	Type apiTypeToDeobfuscatedType(Type type) throws InjectionException
+	Type apiTypeToDeobfuscatedType(Type type)
 	{
 		if (type.isPrimitive())
 		{
@@ -539,7 +545,7 @@ public class Inject
 
 		return Type.getType("L" + type.getInternalName().substring(API_PACKAGE_BASE.length()) + ";", type.getDimensions());
 	}
-	
+
 	ClassFile findVanillaForInterface(java.lang.Class<?> clazz)
 	{
 		String className = clazz.getName().replace('.', '/');

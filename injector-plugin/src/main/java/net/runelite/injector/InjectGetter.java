@@ -44,20 +44,20 @@ import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InjectGetter
+class InjectGetter
 {
 	private static final Logger logger = LoggerFactory.getLogger(InjectGetter.class);
-	
+
 	private final Inject inject;
-	
+
 	private int injectedGetters;
 
-	public InjectGetter(Inject inject)
+	InjectGetter(Inject inject)
 	{
 		this.inject = inject;
 	}
-	
-	public void injectGetter(ClassFile clazz, java.lang.reflect.Method method, Field field, Number getter)
+
+	void injectGetter(ClassFile clazz, java.lang.reflect.Method method, Field field, Number getter)
 	{
 		// clazz = class file we're injecting the method into.
 		// method = api method (java reflect) that we're overriding
@@ -148,7 +148,7 @@ public class InjectGetter
 		++injectedGetters;
 	}
 
-	public int getInjectedGetters()
+	int getInjectedGetters()
 	{
 		return injectedGetters;
 	}

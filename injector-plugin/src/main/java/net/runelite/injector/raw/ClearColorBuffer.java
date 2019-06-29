@@ -1,16 +1,18 @@
 package net.runelite.injector.raw;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ListIterator;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
-import net.runelite.deob.DeobAnnotations;
 import net.runelite.injector.Inject;
+import net.runelite.injector.InjectUtil;
 import net.runelite.injector.InjectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,57 +39,86 @@ public class ClearColorBuffer
 
 	private void injectColorBufferHooks() throws InjectionException
 	{
-		Method obmethod = findStaticMethod("drawEntities");
-		net.runelite.asm.pool.Method fillRectangle = findStaticMethod("Rasterizer2D_fillRectangle").getPoolMethod();
-		Instructions ins = obmethod.getCode().getInstructions();
-		replace(ins, fillRectangle);
-	}
+		net.runelite.asm.pool.Method fillRectangle = InjectUtil.findStaticMethod(inject, "Rasterizer2D_fillRectangle").getPoolMethod();
 
-	private void replace(Instructions ins, net.runelite.asm.pool.Method meth)
-	{
-		List<Instruction> insList = new ArrayList<>();
-		for (Instruction i : ins.getInstructions())
+		int count = 0;
+		int replaced = 0;
+
+		for (ClassFile cf : inject.getVanilla().getClasses())
 		{
-			if (i instanceof InvokeStatic)
+			for (Method m : cf.getMethods())
 			{
-				if (((InvokeStatic) i).getMethod().equals(meth))
-				{
-					int index = ins.getInstructions().indexOf(i);
-					log.info("Found drawRectangle at index {}", index);
-
-					insList.add(i);
-				}
-			}
-		}
-
-		for (Instruction i : insList)
-		{
-			Instruction invoke = new InvokeStatic(ins, clearBuffer);
-			ins.replace(i, invoke);
-		}
-	}
-
-	private Method findStaticMethod(String name) throws InjectionException
-	{
-		for (ClassFile c : inject.getDeobfuscated().getClasses())
-		{
-			for (Method m : c.getMethods())
-			{
-				if (!m.getName().equals(name))
+				if (!m.isStatic())
 				{
 					continue;
 				}
 
-				String obfuscatedName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
-				Signature obfuscatedSignature = DeobAnnotations.getObfuscatedSignature(m);
+				Code c = m.getCode();
+				if (c == null)
+				{
+					continue;
+				}
 
-				ClassFile c2 = inject.toObClass(c);
+				Instructions ins = c.getInstructions();
+				ListIterator<Instruction> it = ins.getInstructions().listIterator();
 
-				return c2.findMethod(obfuscatedName, (obfuscatedSignature != null) ? obfuscatedSignature : m.getDescriptor());
+				for (; it.hasNext(); )
+				{
+					Instruction i = it.next();
+					if (!(i instanceof InvokeStatic))
+					{
+						continue;
+					}
+
+					if (!((InvokeStatic) i).getMethod().equals(fillRectangle))
+					{
+						continue;
+					}
+
+					int indexToReturnTo = it.nextIndex();
+					count++;
+					it.previous();
+					Instruction current = it.previous();
+					if (current instanceof LDC && ((LDC) current).getConstantAsInt() == 0)
+					{
+						int varIdx = 0;
+						for (; ; )
+						{
+							current = it.previous();
+							if (current instanceof ILoad && ((ILoad) current).getVariableIndex() == 3 - varIdx)
+							{
+								varIdx++;
+								log.debug(varIdx + " we can count yay");
+								continue;
+							}
+
+							break;
+						}
+
+						if (varIdx == 4)
+						{
+							for (; !(current instanceof InvokeStatic); )
+							{
+								current = it.next();
+							}
+							assert it.nextIndex() == indexToReturnTo;
+
+							it.set(new InvokeStatic(ins, clearBuffer));
+							replaced++;
+							log.debug("Found drawRectangle at {}. Found: {}, replaced {}", m.getName(), count, replaced);
+						}
+						else
+						{
+							log.debug("Welp, guess this wasn't it chief " + m);
+						}
+					}
+
+					while (it.nextIndex() != indexToReturnTo)
+					{
+						it.next();
+					}
+				}
 			}
 		}
-
-		throw new InjectionException("Couldn't find static method " + name);
 	}
-
 }

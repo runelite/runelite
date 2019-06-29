@@ -27,9 +27,9 @@
     <modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.runeswag</groupId>
-		<artifactId>runeswag-parent</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<groupId>net.runelite</groupId>
+		<artifactId>runelite-parent</artifactId>
+		<version>1.5.28-SNAPSHOT</version>
 	</parent>
 
     <artifactId>deobfuscator</artifactId>
@@ -37,9 +37,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.runeswag</groupId>
-            <artifactId>api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>net.runelite</groupId>
+            <artifactId>runelite-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.runelite.rs</groupId>
+            <artifactId>runescape-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.runelite</groupId>
@@ -55,7 +60,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.8.0-beta4</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -74,15 +78,15 @@
         </dependency>
 
         <dependency>
-            <groupId>com.runeswag</groupId>
+            <groupId>net.runelite.rs</groupId>
             <artifactId>rs-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.runelite.rs</groupId>
             <artifactId>vanilla</artifactId>
-            <version>180</version>
+            <version>${rs.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -149,6 +153,17 @@
                         <phase>package</phase> <!--  bind to the packaging phase -->
                         <goals>
                             <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
                         </goals>
                     </execution>
                 </executions>

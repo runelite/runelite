@@ -48,6 +48,7 @@ import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.asm.attributes.code.instructions.ALoad;
+import net.runelite.asm.attributes.code.instructions.ANewArray;
 import net.runelite.asm.attributes.code.instructions.CheckCast;
 import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.ILoad;
@@ -86,7 +87,7 @@ public class MixinInjector
 	// Use net.runelite.asm.pool.Field instead of Field because the pool version has hashcode implemented
 	private final Map<net.runelite.asm.pool.Field, Field> shadowFields = new HashMap<>();
 
-	public MixinInjector(Inject inject)
+	MixinInjector(Inject inject)
 	{
 		this.inject = inject;
 	}
@@ -164,9 +165,6 @@ public class MixinInjector
 
 	/**
 	 * Finds fields that are marked @Inject and inject them into the target
-	 *
-	 * @param mixinClasses
-	 * @throws InjectionException
 	 */
 	private void injectFields(Map<Class<?>, List<ClassFile>> mixinClasses) throws InjectionException
 	{
@@ -229,10 +227,10 @@ public class MixinInjector
 
 					cf.addField(copy);
 
-					if (injectedFields.containsKey(field.getName()))
+					if (injectedFields.containsKey(field.getName()) && !field.getName().equals(ASSERTION_FIELD))
 					{
-						java.util.logging.Logger.getAnonymousLogger().severe("Duplicate field : "+ field.getName());
-						//throw new InjectionException("Injected field names must be globally unique");
+						java.util.logging.Logger.getAnonymousLogger().severe("Duplicate field : " + field.getName());
+						throw new InjectionException("Injected field names must be globally unique");
 					}
 
 					injectedFields.put(field.getName(), copy);
@@ -244,9 +242,6 @@ public class MixinInjector
 
 	/**
 	 * Find fields which are marked @Shadow, and what they shadow
-	 *
-	 * @param mixinClasses
-	 * @throws InjectionException
 	 */
 	private void findShadowFields(Map<Class<?>, List<ClassFile>> mixinClasses) throws InjectionException
 	{
@@ -286,7 +281,7 @@ public class MixinInjector
 					else
 					{
 						// Shadow a field already in the gamepack
-						Field shadowField = findDeobField(shadowName);
+						Field shadowField = InjectUtil.findDeobFieldButUseless(inject, shadowName);
 
 						if (shadowField == null)
 						{
@@ -313,21 +308,6 @@ public class MixinInjector
 
 			return cv.getClassFile();
 		}
-	}
-
-	private Field findDeobField(String name)
-	{
-		for (ClassFile cf : inject.getDeobfuscated().getClasses())
-		{
-			for (Field f : cf.getFields())
-			{
-				if (f.getName().equals(name) && f.isStatic())
-				{
-					return f;
-				}
-			}
-		}
-		return null;
 	}
 
 	private void injectMethods(ClassFile mixinCf, ClassFile cf, Map<net.runelite.asm.pool.Field, Field> shadowFields)
@@ -403,7 +383,7 @@ public class MixinInjector
 				care of the garbage parameter itself.
 			 */
 			boolean hasGarbageValue = method.getDescriptor().size() != obMethod.getDescriptor().size()
-					&& deobMethod.getDescriptor().size() < obMethodSignature.size();
+				&& deobMethod.getDescriptor().size() < obMethodSignature.size();
 			copiedMethods.put(method.getPoolMethod(), new CopiedMethod(copy, hasGarbageValue));
 
 			logger.debug("Injected copy of {} to {}", obMethod, copy);
@@ -576,7 +556,7 @@ public class MixinInjector
 				if (!returnType.equals(deobReturnType))
 				{
 					ClassFile deobReturnTypeClassFile = inject.getDeobfuscated()
-							.findClass(deobReturnType.getInternalName());
+						.findClass(deobReturnType.getInternalName());
 					if (deobReturnTypeClassFile != null)
 					{
 						ClassFile obReturnTypeClass = inject.toObClass(deobReturnTypeClassFile);
@@ -600,13 +580,13 @@ public class MixinInjector
 				moveCode(obMethod, method.getCode());
 
 				boolean hasGarbageValue = method.getDescriptor().size() != obMethod.getDescriptor().size()
-						&& deobMethod.getDescriptor().size() < obMethodSignature.size();
+					&& deobMethod.getDescriptor().size() < obMethodSignature.size();
 
 				if (hasGarbageValue)
 				{
 					int garbageIndex = obMethod.isStatic()
-							? obMethod.getDescriptor().size() - 1
-							: obMethod.getDescriptor().size();
+						? obMethod.getDescriptor().size() - 1
+						: obMethod.getDescriptor().size();
 
 					/*
 						If the mixin method doesn't have the garbage parameter,
@@ -644,8 +624,8 @@ public class MixinInjector
 	}
 
 	private void setOwnersToTargetClass(ClassFile mixinCf, ClassFile cf, Method method,
-		Map<net.runelite.asm.pool.Field, Field> shadowFields,
-		Map<net.runelite.asm.pool.Method, CopiedMethod> copiedMethods)
+										Map<net.runelite.asm.pool.Field, Field> shadowFields,
+										Map<net.runelite.asm.pool.Method, CopiedMethod> copiedMethods)
 		throws InjectionException
 	{
 		ListIterator<Instruction> iterator = method.getCode().getInstructions().getInstructions().listIterator();
@@ -653,6 +633,21 @@ public class MixinInjector
 		while (iterator.hasNext())
 		{
 			Instruction i = iterator.next();
+
+			if (i instanceof ANewArray)
+			{
+				Type type = ((ANewArray) i).getType_();
+				ClassFile deobCf = inject.getDeobfuscated().findClass(type.toString().replace("Lnet/runelite/rs/api/RS", "").replace(";", ""));
+
+				if (deobCf != null)
+				{
+					ClassFile obReturnTypeClass = inject.toObClass(deobCf);
+					Type newType = new Type("L" + obReturnTypeClass.getName() + ";");
+
+					((ANewArray) i).setType(newType);
+					logger.info("Replaced {} type {} with type {}", i, type, newType);
+				}
+			}
 
 			if (i instanceof InvokeInstruction)
 			{
@@ -885,12 +880,19 @@ public class MixinInjector
 						if (targetField == null)
 						{
 							// first try non static fields, then static
-							targetField = findDeobField(hookName);
+							targetField = InjectUtil.findDeobFieldButUseless(inject, hookName);
 						}
 
 						if (targetField == null)
 						{
 							throw new InjectionException("Field hook for nonexistent field " + hookName + " on " + method);
+						}
+
+						Annotation an = targetField.getAnnotations().find(DeobAnnotations.OBFUSCATED_GETTER);
+						Number getter = null;
+						if (an != null)
+						{
+							getter = (Number) an.getElement().getValue();
 						}
 
 						Field obField = inject.toObField(targetField);
@@ -906,6 +908,7 @@ public class MixinInjector
 						hookInfo.fieldName = hookName;
 						hookInfo.method = method;
 						hookInfo.before = before;
+						hookInfo.getter = getter;
 						injectHook.hook(obField, hookInfo);
 					}
 				}

@@ -45,16 +45,13 @@ import org.apache.maven.plugins.annotations.Parameter;
 )
 public class InjectMojo extends AbstractMojo
 {
+	private final Log log = getLog();
 	@Parameter(defaultValue = "${project.build.outputDirectory}")
 	private File outputDirectory;
-
-	@Parameter(defaultValue = "./rs-client/target/rs-client-1.0-SNAPSHOT.jar", readonly = true, required = true)
+	@Parameter(defaultValue = "./runescape-client/target/rs-client-${project.version}.jar", readonly = true, required = true)
 	private String rsClientPath;
-
 	@Parameter(defaultValue = "${net.runelite.rs:vanilla:jar}", readonly = true, required = true)
 	private String vanillaPath;
-
-	private final Log log = getLog();
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException

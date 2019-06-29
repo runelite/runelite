@@ -34,7 +34,7 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.mapping.Import;
-import rs.api.RSClient;
+import net.runelite.rs.api.RSClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +44,7 @@ public class AnnotationIntegrityChecker
 
 	public static final java.lang.Class<?> CLIENT_CLASS = RSClient.class;
 
-	public static final String API_PACKAGE_BASE = "rs.api.RS";
+	public static final String API_PACKAGE_BASE = "net.runelite.rs.api.RS";
 
 	private final ClassGroup one;
 	private final ClassGroup two;
