@@ -1264,7 +1264,8 @@ public abstract class RSClientMixin implements RSClient
 			return;
 		}
 
-		rs$menuAction(actionParam, widgetId, menuAction, id, menuOption, menuTarget, var6, var7);
+		rs$menuAction(menuOptionClicked.getActionParam0(), menuOptionClicked.getActionParam1(), menuOptionClicked.getType(),
+			menuOptionClicked.getIdentifier(), menuOptionClicked.getOption(), menuOptionClicked.getTarget(), var6, var7);
 	}
 
 	@FieldHook("Login_username")
