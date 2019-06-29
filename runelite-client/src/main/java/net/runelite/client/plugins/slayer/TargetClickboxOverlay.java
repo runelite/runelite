@@ -26,7 +26,6 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -57,8 +56,7 @@ public class TargetClickboxOverlay extends Overlay
 	private final ModelOutlineRenderer modelOutliner;
 
 	@Inject
-	TargetClickboxOverlay(Client client, SlayerConfig config, SlayerPlugin plugin,
-						ModelOutlineRenderer modelOutlineRenderer)
+	TargetClickboxOverlay(Client client, SlayerConfig config, SlayerPlugin plugin, ModelOutlineRenderer modelOutlineRenderer)
 	{
 		this.client = client;
 		this.config = config;
@@ -76,7 +74,13 @@ public class TargetClickboxOverlay extends Overlay
 			List<NPC> targets = plugin.getHighlightedTargets();
 			for (NPC target : targets)
 			{
+				if (target == null || target.getName() == null)
+				{
+					continue;
+				}
+
 				Color coloration = config.getTargetColor();
+
 				if (plugin.isSuperior(target.getName()))
 				{
 					coloration = config.getSuperiorColor();
@@ -95,28 +99,36 @@ public class TargetClickboxOverlay extends Overlay
 		{
 			case SOUTH_WEST_TILE:
 				LocalPoint lp1 = LocalPoint.fromWorld(client, actor.getWorldLocation());
+
+				if (lp1 == null)
+				{
+					return;
+				}
+
 				Polygon tilePoly1 = Perspective.getCanvasTilePoly(client, lp1);
 
-				renderPoly(graphics, color, tilePoly1);
+				OverlayUtil.renderPolygon(graphics, tilePoly1, color);
 				break;
 
 			case TILE:
 				int size = 1;
 				NPCDefinition composition = actor.getTransformedDefinition();
+
 				if (composition != null)
 				{
 					size = composition.getSize();
 				}
+
 				LocalPoint lp = actor.getLocalLocation();
 				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 
-				renderPoly(graphics, color, tilePoly);
+				OverlayUtil.renderPolygon(graphics, tilePoly, color);
 				break;
 
 			case HULL:
 				Polygon objectClickbox = actor.getConvexHull();
 
-				renderPoly(graphics, color, objectClickbox);
+				OverlayUtil.renderPolygon(graphics, objectClickbox, color);
 				break;
 			case THIN_OUTLINE:
 				modelOutliner.drawOutline(actor, 1, color);
@@ -136,15 +148,23 @@ public class TargetClickboxOverlay extends Overlay
 			case TRUE_LOCATIONS:
 				size = 1;
 				composition = actor.getTransformedDefinition();
+
 				if (composition != null)
 				{
 					size = composition.getSize();
 				}
+
 				WorldPoint wp = actor.getWorldLocation();
 				lp = LocalPoint.fromWorld(client, wp);
+
+				if (lp == null)
+				{
+					return;
+				}
+
 				tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 
-				renderPoly(graphics, color, tilePoly);
+				OverlayUtil.renderPolygon(graphics, tilePoly, color);
 				break;
 		}
 
@@ -157,18 +177,6 @@ public class TargetClickboxOverlay extends Overlay
 			{
 				OverlayUtil.renderTextLocation(graphics, textLocation, npcName, color);
 			}
-		}
-	}
-
-	private static void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
-	{
-		if (polygon != null)
-		{
-			graphics.setColor(color);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(polygon);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-			graphics.fill(polygon);
 		}
 	}
 }

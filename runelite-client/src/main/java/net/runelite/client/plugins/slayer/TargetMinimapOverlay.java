@@ -67,7 +67,13 @@ public class TargetMinimapOverlay extends Overlay
 		List<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
 		{
+			if (target == null || target.getName() == null)
+			{
+				continue;
+			}
+
 			Color coloration = config.getTargetColor();
+
 			if (plugin.isSuperior(target.getName()))
 			{
 				coloration = config.getSuperiorColor();
