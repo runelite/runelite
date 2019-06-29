@@ -540,6 +540,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("quick-open", option, target, true);
 		}
+		else if (config.swapQuick() && option.equals("climb-down"))
+		{
+			swap("quick-start", option, target, true);
+		}
 		else if (config.swapAdmire() && option.equals("admire"))
 		{
 			swap("teleport", option, target, true);

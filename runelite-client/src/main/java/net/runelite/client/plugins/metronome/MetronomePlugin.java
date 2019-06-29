@@ -27,6 +27,7 @@ package net.runelite.client.plugins.metronome;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.api.SoundEffectVolume;
 import net.runelite.api.Client;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.GameTick;
@@ -70,11 +71,11 @@ public class MetronomePlugin extends Plugin
 		{
 			if (config.enableTock() && shouldTock)
 			{
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP);
+				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, SoundEffectVolume.MEDIUM_HIGH);
 			}
 			else
 			{
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
+				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, SoundEffectVolume.MEDIUM_HIGH);
 			}
 			shouldTock = !shouldTock;
 		}

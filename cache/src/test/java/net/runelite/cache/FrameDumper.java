@@ -101,7 +101,7 @@ public class FrameDumper
 					frames.add(frame);
 				}
 
-				Files.write(gson.toJson(frames), new File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset()).write(gson.toJson(frames));
 				++count;
 			}
 		}
