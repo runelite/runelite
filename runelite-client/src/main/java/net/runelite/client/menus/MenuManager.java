@@ -27,10 +27,12 @@ package net.runelite.client.menus;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,12 +41,10 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
-import static net.runelite.api.MenuAction.GAME_OBJECT_FIRST_OPTION;
-import static net.runelite.api.MenuAction.WIDGET_DEFAULT;
+import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.events.ClientTick;
@@ -97,7 +97,7 @@ public class MenuManager
 	private final Set<ComparableEntry> hiddenEntries = new HashSet<>();
 
 	private final Map<ComparableEntry, ComparableEntry> swaps = new HashMap<>();
-	private EntryTypeMapping originalType;
+	private MenuEntry leftClickEntry;
 
 	@Inject
 	private MenuManager(Client client, EventBus eventBus)
@@ -170,108 +170,127 @@ public class MenuManager
 	@Subscribe
 	private void onClientTick(ClientTick event)
 	{
-		originalType = null;
+		leftClickEntry = null;
+
+		if (client.isMenuOpen())
+		{
+			return;
+		}
+
 		currentPriorityEntries.clear();
 		client.sortMenuEntries();
 
 		MenuEntry[] oldEntries = client.getMenuEntries();
 		List<MenuEntry> newEntries = Lists.newArrayList(oldEntries);
 
-		for (MenuEntry entry : oldEntries)
+		boolean shouldDeprioritize = false;
+		boolean modified = false;
+
+
+		prioritizer: for (MenuEntry entry : oldEntries)
 		{
-			for (ComparableEntry p : priorityEntries)
-			{
-				if (p.matches(entry))
-				{
-					currentPriorityEntries.add(entry);
-				}
-			}
-
-			// If there are entries we want to prioritize, we have to remove the rest
-			if (!currentPriorityEntries.isEmpty() && !client.isMenuOpen())
-			{
-				newEntries.retainAll(currentPriorityEntries);
-
-				// This is because players existing changes walk-here target
-				// so without this we lose track of em
-				if (newEntries.size() != currentPriorityEntries.size())
-				{
-					for (MenuEntry e : currentPriorityEntries)
-					{
-						if (newEntries.contains(e))
-						{
-							continue;
-						}
-
-						for (MenuEntry e2 : client.getMenuEntries())
-						{
-							if (e.getType() == e2.getType())
-							{
-								e.setTarget(e2.getTarget());
-								newEntries.add(e);
-							}
-						}
-					}
-				}
-			}
-
-			boolean isHidden = false;
+			// Remove hidden entries from menus
 			for (ComparableEntry p : hiddenEntries)
 			{
 				if (p.matches(entry))
 				{
-					isHidden = true;
-					break;
+					newEntries.remove(entry);
+					continue prioritizer;
 				}
 			}
 
-			if (isHidden)
+			for (ComparableEntry p : priorityEntries)
 			{
-				newEntries.remove(entry);
-			}
-		}
-
-		if (!currentPriorityEntries.isEmpty() && !client.isMenuOpen())
-		{
-			newEntries.add(0, CANCEL());
-		}
-
-		MenuEntry leftClickEntry = newEntries.get(newEntries.size() - 1);
-
-		for (ComparableEntry src : swaps.keySet())
-		{
-			if (!src.matches(leftClickEntry))
-			{
-				continue;
-			}
-
-			ComparableEntry tgt = swaps.get(src);
-
-			for (int i = newEntries.size() - 2; i > 0; i--)
-			{
-				MenuEntry e = newEntries.get(i);
-
-				if (tgt.matches(e))
+				// Create list of priority entries, and remove from menus
+				if (p.matches(entry))
 				{
-					newEntries.set(newEntries.size() - 1, e);
-					newEntries.set(i, leftClickEntry);
-
-					int type = e.getType();
-
-					if (type >= 1000)
+					// Other entries need to be deprioritized if their types are lower than 1000
+					if (entry.getType() >= 1000 && !shouldDeprioritize)
 					{
-						int newType = getLeftClickType(type);
-						if (newType != -1 && newType != type)
-						{
-							MenuEntry original = MenuEntry.copy(e);
-							e.setType(newType);
-							originalType = new EntryTypeMapping(new ComparableEntry(leftClickEntry), original);
-						}
+						shouldDeprioritize = true;
+					}
+					currentPriorityEntries.add(entry);
+					newEntries.remove(entry);
+					continue prioritizer;
+				}
+			}
+		}
+
+		if (newEntries.size() > 0)
+		{
+			MenuEntry entry = Iterables.getLast(newEntries);
+
+			// Swap first matching entry to top
+			for (ComparableEntry src : swaps.keySet())
+			{
+				if (!src.matches(entry))
+				{
+					continue;
+				}
+
+				MenuEntry swapFrom = null;
+
+				ComparableEntry from = swaps.get(src);
+
+				for (MenuEntry e : newEntries)
+				{
+					if (from.matches(e))
+					{
+						swapFrom = e;
+						break;
+					}
+				}
+
+				// Do not need to swap with itself
+				if (swapFrom != null && swapFrom != entry)
+				{
+					// Deprioritize entries if the swaps are not in similar type groups
+					if ((swapFrom.getType() >= 1000 && entry.getType() < 1000) || (entry.getType() >= 1000 && swapFrom.getType() < 1000) && !shouldDeprioritize)
+					{
+						shouldDeprioritize = true;
 					}
 
+					int indexFrom = newEntries.indexOf(swapFrom);
+					int indexTo = newEntries.indexOf(entry);
+
+					Collections.swap(newEntries, indexFrom, indexTo);
+
+					// Set force left click if entry was moved to first entry
+					if (indexTo == newEntries.size() - 1)
+					{
+						swapFrom.setForceLeftClick(true);
+						entry.setForceLeftClick(false);
+					}
+
+					modified = true;
+
+					// If this loop is placed in the 'prioritizer' block and the following break is removed,
+					// all swaps will be applied instead of only swapping the first one found to the first entry
 					break;
 				}
 			}
+		}
+		
+		if (shouldDeprioritize)
+		{
+			for (MenuEntry entry : newEntries)
+			{
+				if (entry.getType() <= MENU_ACTION_DEPRIORITIZE_OFFSET)
+				{
+					entry.setType(entry.getType() + MENU_ACTION_DEPRIORITIZE_OFFSET);
+				}
+			}
+		}
+
+		if (!priorityEntries.isEmpty())
+		{
+			newEntries.addAll(currentPriorityEntries);
+			modified = true;
+		}
+
+		if (modified)
+		{
+			leftClickEntry = newEntries.get(newEntries.size() - 1);
 		}
 
 		client.setMenuEntries(newEntries.toArray(new MenuEntry[0]));
@@ -338,24 +357,6 @@ public class MenuManager
 		}
 	}
 
-	private int getLeftClickType(int oldType)
-	{
-		if (oldType > 2000)
-		{
-			oldType -= 2000;
-		}
-
-		switch (MenuAction.of(oldType))
-		{
-			case GAME_OBJECT_FIFTH_OPTION:
-				return GAME_OBJECT_FIRST_OPTION.getId();
-			case EXAMINE_ITEM_BANK_EQ:
-				return WIDGET_DEFAULT.getId();
-			default:
-				return oldType;
-		}
-	}
-
 	private void addNpcOption(NPCDefinition composition, String npcOption)
 	{
 		String[] actions = composition.getActions();
@@ -399,21 +400,10 @@ public class MenuManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		// Type is changed in check
-		if (originalType != null && originalType.check(event))
+		if (leftClickEntry != null)
 		{
-			event.consume();
-
-			client.invokeMenuAction(
-				event.getActionParam0(),
-				event.getActionParam1(),
-				event.getType(),
-				event.getIdentifier(),
-				"do not edit",
-				event.getTarget(),
-				client.getMouseCanvasPosition().getX(),
-				client.getMouseCanvasPosition().getY()
-			);
+			event.setMenuEntry(leftClickEntry);
+			leftClickEntry = null;
 		}
 
 		if (event.getMenuAction() != MenuAction.RUNELITE)
@@ -738,25 +728,5 @@ public class MenuManager
 	public void removeHiddenEntry(ComparableEntry entry)
 	{
 		hiddenEntries.remove(entry);
-	}
-
-	@AllArgsConstructor
-	private class EntryTypeMapping
-	{
-		private final ComparableEntry comparable;
-		private final MenuEntry target;
-
-		private boolean check(MenuOptionClicked event)
-		{
-			MenuEntry entry = event.getMenuEntry();
-
-			if (event.getTarget().equals("do not edit") || !comparable.matches(entry))
-			{
-				return false;
-			}
-
-			event.setMenuEntry(target);
-			return true;
-		}
 	}
 }
