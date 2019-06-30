@@ -21,7 +21,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import org.apache.commons.lang3.ArrayUtils;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import java.awt.event.KeyEvent;
@@ -32,7 +31,8 @@ import java.awt.event.KeyEvent;
 		tags = {"translate", "language", "english", "spanish", "dutch", "french"},
 		type = PluginType.UTILITY
 )
-public class ChatTranslationPlugin extends Plugin implements KeyListener {
+public class ChatTranslationPlugin extends Plugin implements KeyListener
+{
 
 	public static final String TRANSLATE = "Translate";
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Kick");
@@ -144,7 +144,8 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener {
 
 		Translator translator = new Translator();
 
-		try {
+		try
+		{
 			//Automatically check language of message and translate to selected language.
 			String translation = translator.translate("auto", config.publicTargetLanguage().toString(), message);
 			if (translation != null)
@@ -153,7 +154,9 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener {
 				messageNode.setRuneLiteFormatMessage(translation);
 				chatMessageManager.update(messageNode);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -161,8 +164,10 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent event) {
-		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN) {
+	public void keyPressed(KeyEvent event)
+	{
+		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
+		{
 			return;
 		}
 
@@ -183,7 +188,8 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener {
 
 					String message = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
 
-					try {
+					try
+					{
 						//Automatically check language of message and translate to selected language.
 						String translation = translator.translate("auto", config.playerTargetLanguage().toString(), message);
 
@@ -191,18 +197,24 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener {
 						{
 							client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translation);
 
-							clientThread.invoke(() -> {
+							clientThread.invoke(() ->
+									{
 								client.runScript(96, 0, translation);
-							});
+								}
+							);
 
 						}
 
 						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
-					} catch (Exception e) {
+					}
+					catch (Exception e)
+					{
 						e.printStackTrace();
 					}
 				}
-		} else {
+		}
+		else
+		{
 			return;
 		}
 	}

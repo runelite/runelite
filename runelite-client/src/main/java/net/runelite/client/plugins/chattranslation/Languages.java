@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.chattranslation;
 
-public enum Languages {
+public enum Languages
+{
 
 	ENGLISH("en"),
 	DUTCH("nl"),

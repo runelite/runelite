@@ -15,7 +15,10 @@ public interface ChatTranslationConfig extends Config
 			position = 0,
 			group = "Public Chat Translation"
 	)
-	default boolean publicChat() { return false; }
+	default boolean publicChat()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 			keyName = "publicTargetLanguage",
@@ -38,7 +41,10 @@ public interface ChatTranslationConfig extends Config
 			position = 2,
 			group = "Player Message Translation"
 	)
-	default boolean playerChat() { return false; }
+	default boolean playerChat()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 			keyName = "playerTargetLanguage",

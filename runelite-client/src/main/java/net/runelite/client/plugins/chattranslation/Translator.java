@@ -8,7 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class Translator {
+public class Translator
+{
 
 	public String translate(String source, String target, String message) throws Exception
 	{
@@ -23,7 +24,8 @@ public class Translator {
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 
-		while ((inputLine = in.readLine()) != null) {
+		while ((inputLine = in.readLine()) != null)
+		{
 			response.append(inputLine);
 		}
 		in.close();
