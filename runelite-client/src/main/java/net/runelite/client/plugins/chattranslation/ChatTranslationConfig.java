@@ -27,8 +27,8 @@ public interface ChatTranslationConfig extends Config
 			description = "Language to translate messages too.",
 			position = 1,
 			group = "Public Chat Translation",
-			hidden = true,
-			unhide = "publicChat"
+			hidden = true
+//			unhide = "publicChat"
 	)
 	default Languages publicTargetLanguage()
 	{
