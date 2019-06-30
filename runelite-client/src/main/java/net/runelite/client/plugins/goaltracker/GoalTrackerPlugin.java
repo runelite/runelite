@@ -49,8 +49,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @PluginDescriptor(
-		name = "Goal Tracker",
-		description = "Add goals to chunks to complete",
+		name = "[WIP] Goal Tracker",
+		description = "Add goals to chunks to complete (this is a Work In Progress plugin)",
 		tags = {"chunk", "backlog", "log"},
 		enabledByDefault = false
 )

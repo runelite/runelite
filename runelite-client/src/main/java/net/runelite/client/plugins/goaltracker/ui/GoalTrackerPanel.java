@@ -103,7 +103,7 @@ public class GoalTrackerPanel extends PluginPanel
 
 		JPanel actionWrapper = new JPanel(new BorderLayout(8, 0));
 
-		title.setText("Goal Tracker");
+		title.setText("Goal Tracker Beta");
 		title.setForeground(Color.WHITE);
 
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
