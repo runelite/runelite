@@ -34,7 +34,7 @@ import java.awt.event.KeyEvent;
 public class ChatTranslationPlugin extends Plugin implements KeyListener
 {
 
-	public static final String TRANSLATE = "Translate";
+	private static final String TRANSLATE = "Translate";
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Kick");
 
 	@Inject
@@ -66,7 +66,10 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	{
 		if (client != null)
 		{
-			menuManager.get().addPlayerMenuItem(TRANSLATE);
+			if (config.translateOptionVisable())
+			{
+				menuManager.get().addPlayerMenuItem(TRANSLATE);
+			}
 		}
 		keyManager.registerKeyListener(this);
 	}
@@ -76,7 +79,10 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	{
 		if (client != null)
 		{
-			menuManager.get().removePlayerMenuItem(TRANSLATE);
+			if (config.translateOptionVisable())
+			{
+				menuManager.get().removePlayerMenuItem(TRANSLATE);
+			}
 		}
 		keyManager.unregisterKeyListener(this);
 	}
@@ -93,6 +99,11 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
+		if (!config.translateOptionVisable())
+		{
+			return;
+		}
+
 		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 		String option = event.getOption();
 
@@ -180,42 +191,33 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 
 		if (chatboxParent != null && chatboxParent.getOnKeyListener() != null)
 		{
-				if (event.getKeyCode() == 0xA)
+			if (event.getKeyCode() == 0xA)
+			{
+				event.consume();
+
+				Translator translator = new Translator();
+				String message = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+
+				try
 				{
-					event.consume();
-
-					Translator translator = new Translator();
-
-					String message = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-
-					try
+					//Automatically check language of message and translate to selected language.
+					String translation = translator.translate("auto", config.playerTargetLanguage().toString(), message);
+					if (translation != null)
 					{
-						//Automatically check language of message and translate to selected language.
-						String translation = translator.translate("auto", config.playerTargetLanguage().toString(), message);
+						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translation);
 
-						if (translation != null)
+						clientThread.invoke(() ->
 						{
-							client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translation);
-
-							clientThread.invoke(() ->
-									{
-								client.runScript(96, 0, translation);
-								}
-							);
-
-						}
-
-						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+							client.runScript(96, 0, translation);
+						});
 					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
+					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 				}
-		}
-		else
-		{
-			return;
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
