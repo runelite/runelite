@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,53 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache;
+package net.runelite.api;
 
-import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import net.runelite.cache.definitions.TextureDefinition;
-import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class TextureDumper
+/**
+ * Volume values for each of the stops on the volume interface
+ */
+public final class SoundEffectVolume
 {
-	private static final Logger logger = LoggerFactory.getLogger(TextureDumper.class);
-
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-	@Test
-	public void extract() throws IOException
-	{
-		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
-
-		int count = 0;
-
-		try (Store store = new Store(base))
-		{
-			store.load();
-
-			TextureManager tm = new TextureManager(store);
-			tm.load();
-
-			for (TextureDefinition texture : tm.getTextures())
-			{
-				Files.asCharSink(new File(outDir, texture.getId() + ".json"), Charset.defaultCharset()).write(gson.toJson(texture));
-				++count;
-			}
-		}
-
-		logger.info("Dumped {} textures to {}", count, outDir);
-	}
+	public static final int MUTED = 0;
+	public static final int LOW = 32;
+	public static final int MEDIUM_LOW = 64;
+	public static final int MEDIUM_HIGH = 96;
+	public static final int HIGH = 127;
 }
