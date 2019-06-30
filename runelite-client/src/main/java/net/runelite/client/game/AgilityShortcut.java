@@ -84,7 +84,7 @@ public enum AgilityShortcut
 	GOBLIN_VILLAGE_WALL(14, "Wall", new WorldPoint(2925, 3523, 0), TIGHTGAP),
 	CORSAIR_COVE_DUNGEON_PILLAR(15, "Pillar Jump", new WorldPoint(1980, 8996, 0), PILLAR_31809),
 	EDGEVILLE_DUNGEON_MONKEYBARS(15, "Monkey Bars", null, MONKEYBARS_23566),
-	TROLLHEIM_ROCKS(15, "Rocks", null, new WorldPoint(2838, 3614, 0), ROCKS_3748),	// No fixed world map location, but rocks near death plateau have a requirement of 15
+	TROLLHEIM_ROCKS(15, "Rocks", null, new WorldPoint(2838, 3614, 0), ROCKS_3748), // No fixed world map location, but rocks near death plateau have a requirement of 15
 	YANILLE_UNDERWALL_TUNNEL(16, "Underwall Tunnel", new WorldPoint(2574, 3109, 0), HOLE_16520, CASTLE_WALL),
 	YANILLE_WATCHTOWER_TRELLIS(18, "Trellis", null, TRELLIS_20056),
 	COAL_TRUCKS_LOG_BALANCE(20, "Log Balance", new WorldPoint(2598, 3475, 0), LOG_BALANCE_23274),
@@ -128,7 +128,7 @@ public enum AgilityShortcut
 	DEEP_WILDERNESS_DUNGEON_CREVICE_SOUTH(46, "Narrow Crevice", new WorldPoint(3045, 10327, 0), CREVICE_19043),
 	TROLLHEIM_HARD_CLIFF_SCRAMBLE(47, "Rocks", new WorldPoint(2902, 3680, 0), ROCKS_16524),
 	FREMENNIK_LOG_BALANCE(48, "Log Balance", new WorldPoint(2721, 3591, 0), LOG_BALANCE_16540, LOG_BALANCE_16541, LOG_BALANCE_16542),
-	YANILLE_DUNGEON_PIPE_SQUEEZE(49, "Pipe Squeeze", null,  OBSTACLE_PIPE_23140),
+	YANILLE_DUNGEON_PIPE_SQUEEZE(49, "Pipe Squeeze", null, OBSTACLE_PIPE_23140),
 	ARCEUUS_ESSENCE_MINE_BOULDER(49, "Boulder", new WorldPoint(1774, 3888, 0), BOULDER_27990),
 	MORYTANIA_STEPPING_STONE(50, "Stepping Stone", new WorldPoint(3418, 3326, 0), STEPPING_STONE_13504),
 	VARROCK_SEWERS_PIPE_SQUEEZE(51, "Pipe Squeeze", new WorldPoint(3152, 9905, 0), OBSTACLE_PIPE_16511),
