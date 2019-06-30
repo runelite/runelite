@@ -77,7 +77,7 @@ public class InventoryDumper
 				InventoryLoader loader = new InventoryLoader();
 				InventoryDefinition inv = loader.load(file.getFileId(), file.getContents());
 
-				Files.write(gson.toJson(inv), new File(outDir, inv.id + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(outDir, inv.id + ".json"), Charset.defaultCharset()).write(gson.toJson(inv));
 				++count;
 			}
 		}
