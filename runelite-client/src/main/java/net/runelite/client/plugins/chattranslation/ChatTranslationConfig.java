@@ -32,7 +32,7 @@ public interface ChatTranslationConfig extends Config
 	)
 	default boolean translateOptionVisable()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
