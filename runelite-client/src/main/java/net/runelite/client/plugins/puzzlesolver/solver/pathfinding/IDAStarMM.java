@@ -90,7 +90,7 @@ public class IDAStarMM extends IDAStar
 
 			if (valCurrent != valTarget)
 			{
-				moveTowardsVal(valTarget, i, row,  true);
+				moveTowardsVal(valTarget, i, row, true);
 			}
 		}
 	}
@@ -107,7 +107,7 @@ public class IDAStarMM extends IDAStar
 
 			if (valCurrent != valTarget)
 			{
-				moveTowardsVal(valTarget, column, i,  false);
+				moveTowardsVal(valTarget, column, i, false);
 			}
 		}
 	}

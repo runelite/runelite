@@ -47,6 +47,6 @@ public abstract class WorldHoppingMixin implements RSClient
 	public void hopToWorld(World world)
 	{
 		final int worldId = world.getId();
-		menuAction(worldId, WidgetInfo.WORLD_SWITCHER_LIST.getId(), MenuAction.WIDGET_DEFAULT.getId(), 1, "Switch", "<col=ff9040>" + (worldId - 300) +  "</col>", 683, 244);
+		menuAction(worldId, WidgetInfo.WORLD_SWITCHER_LIST.getId(), MenuAction.WIDGET_DEFAULT.getId(), 1, "Switch", "<col=ff9040>" + (worldId - 300) + "</col>", 683, 244);
 	}
 }
