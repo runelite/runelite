@@ -28,6 +28,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,6 +37,6 @@ public class Goal
 {
 	private String name;
 	private int chunk;
-	private String requirements;
+	private ArrayList<Requirement> requirements;
 	private boolean completed;
 }

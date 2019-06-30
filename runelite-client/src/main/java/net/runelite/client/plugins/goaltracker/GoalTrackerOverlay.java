@@ -26,23 +26,27 @@
 package net.runelite.client.plugins.goaltracker;
 
 import com.google.inject.Inject;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.ColorUtil;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 
 public class GoalTrackerOverlay extends Overlay
 {
@@ -132,17 +136,13 @@ public class GoalTrackerOverlay extends Overlay
 						tooltipManager.add(new Tooltip(tooltip));
 					}
 				}
-				int total = 0;
-				for (final Goal goal : plugin.getGoals())
+				Goal[] goals = plugin.getGoals().stream().filter(g -> g.getChunk() == regionId).toArray(Goal[]::new);
+				long completed = Arrays.stream(goals).filter(Goal::isCompleted).count();
+				long total = goals.length;
+				if (total > 0 && completed < total)
 				{
-					if (regionId == goal.getChunk() && !goal.isCompleted())
-					{
-						total++;
-					}
-				}
-				if (total > 0)
-				{
-					graphics.setColor(new Color(255, 236, 219, 200));
+					Color color = getProgressColor(completed, total);
+					graphics.setColor(color);
 					graphics.drawRect(xPos + 1, yPos + 1, regionPixelSize - 2, regionPixelSize - 2);
 					//graphics.drawString(Integer.toString(total), xPos + LABEL_PADDING, yPos - LABEL_PADDING);
 				}
@@ -153,16 +153,38 @@ public class GoalTrackerOverlay extends Overlay
 	private String buildTooltip(int regionId)
 	{
 		String id = Integer.toString(regionId);
-		String title = "Goals to complete:</br>";
+		String title = "Goals:</br>";
 		StringBuilder sb = new StringBuilder(title);
 		for (final Goal goal : plugin.getGoals())
 		{
 			if (regionId == goal.getChunk() && !goal.isCompleted())
 			{
-				sb.append(goal.getName() + "</br>");
+				long completed = goal.getRequirements().stream().filter(Requirement::isCompleted).count();
+				long total = goal.getRequirements().size();
+				Color color = getProgressColor(completed, total);
+
+				sb.append(ColorUtil.wrapWithColorTag(goal.getName(), color) + "</br>");
 			}
 		}
 		if (sb.toString().equals(title)) return "";
 		return sb.toString();
+	}
+
+	private Color getProgressColor(long count, long total)
+	{
+		Color color;
+		if (count == 0)
+		{
+			color = Color.RED;
+		}
+		else if (count == total)
+		{
+			color = Color.GREEN;
+		}
+		else
+		{
+			color = Color.YELLOW;
+		}
+		return color;
 	}
 }

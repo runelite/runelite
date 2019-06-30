@@ -25,6 +25,21 @@
 package net.runelite.client.plugins.goaltracker.ui;
 
 import com.google.inject.Inject;
+import lombok.Getter;
+import net.runelite.client.plugins.goaltracker.Goal;
+import net.runelite.client.plugins.goaltracker.GoalTrackerPlugin;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.ImageUtil;
+
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,20 +48,13 @@ import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import lombok.Getter;
-import net.runelite.client.plugins.goaltracker.Goal;
-import net.runelite.client.plugins.goaltracker.GoalTrackerPlugin;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.components.IconTextField;
-import net.runelite.client.util.ImageUtil;
 
 public class GoalTrackerPanel extends PluginPanel
 {
@@ -59,6 +67,7 @@ public class GoalTrackerPanel extends PluginPanel
 	private static final int DEFAULT_BORDER_THICKNESS = 3;
 
 	private final JLabel addGoal = new JLabel(ADD_ICON);
+	private final JLabel importButton = new JLabel("Import...");
 	private final JLabel title = new JLabel();
 
 	private final JPanel goalView = new JPanel(new GridBagLayout());
@@ -89,8 +98,10 @@ public class GoalTrackerPanel extends PluginPanel
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		JPanel northPanel = new JPanel(new BorderLayout());
+		JPanel northPanel = new JPanel(new BorderLayout(0, 5));
 		northPanel.setBorder(new EmptyBorder(1, 0, 10, 0));
+
+		JPanel actionWrapper = new JPanel(new BorderLayout(8, 0));
 
 		title.setText("Goal Tracker");
 		title.setForeground(Color.WHITE);
@@ -101,8 +112,11 @@ public class GoalTrackerPanel extends PluginPanel
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.addActionListener(e -> onSearchBarChanged());
 
+		actionWrapper.add(importButton, BorderLayout.CENTER);
+		actionWrapper.add(addGoal, BorderLayout.EAST);
+
 		northPanel.add(title, BorderLayout.WEST);
-		northPanel.add(addGoal, BorderLayout.EAST);
+		northPanel.add(actionWrapper, BorderLayout.EAST);
 		northPanel.add(searchBar, BorderLayout.SOUTH);
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
@@ -131,6 +145,70 @@ public class GoalTrackerPanel extends PluginPanel
 			public void mouseExited(MouseEvent mouseEvent)
 			{
 				addGoal.setIcon(ADD_ICON);
+			}
+		});
+
+		importButton.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		importButton.setToolTipText("Import goals file...");
+		importButton.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				JFileChooser fc = new JFileChooser();
+				int returnVal = fc.showOpenDialog(GoalTrackerPanel.this);
+				if (returnVal != JFileChooser.APPROVE_OPTION) return;
+
+				File file = fc.getSelectedFile();
+
+				if (plugin.getGoals().size() > 0)
+				{
+					int confirm = JOptionPane.showConfirmDialog(GoalTrackerPanel.this,
+							"Are you sure you want to import this file? This will delete all your current goals.",
+							"Warning", JOptionPane.OK_CANCEL_OPTION);
+
+					if (confirm != 0) return;
+				}
+
+				try
+				{
+					BufferedReader in = new BufferedReader(new FileReader(file));
+					String line = in.readLine();
+					StringBuilder json = new StringBuilder();
+					while (line != null)
+					{
+						json.append(line + System.lineSeparator());
+						line = in.readLine();
+					}
+					plugin.getGoals().clear();
+					plugin.loadConfig(json.toString()).forEach(plugin.getGoals()::add);
+					plugin.updateConfig();
+					updateGoals();
+				}
+				catch (FileNotFoundException ex)
+				{
+					JOptionPane.showConfirmDialog(GoalTrackerPanel.this,
+							"That file doesn't exist!",
+							"Error", JOptionPane.DEFAULT_OPTION);
+				}
+				catch (IOException ex)
+				{
+					JOptionPane.showConfirmDialog(GoalTrackerPanel.this,
+							"Cannot parse file!",
+							"Error", JOptionPane.DEFAULT_OPTION);
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				importButton.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				importButton.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 			}
 		});
 
@@ -175,7 +253,7 @@ public class GoalTrackerPanel extends PluginPanel
 
 		for (final Goal goal : plugin.getGoals())
 		{
-			if (goal != null && text.isEmpty() || matchesSearchTerms(goal, text.toLowerCase()))
+			if (goal != null && (text.isEmpty() || matchesSearchTerms(goal, text.toLowerCase())))
 			{
 				goalView.add(new GoalPanel(plugin, goal), constraints);
 				constraints.gridy++;
@@ -198,16 +276,17 @@ public class GoalTrackerPanel extends PluginPanel
 		{
 			String term = m.group();
 			term = term.replaceAll("^\"|\"$", "");
-			if (term == null) continue;
-			if (term.equals(Integer.toString(goal.getChunk())))
+			final String t = term;
+			if (t.isEmpty()) continue;
+			if (t.equals(Integer.toString(goal.getChunk())))
 			{
 				return true;
 			}
-			else if (goal.getName().toLowerCase().contains(term))
+			else if (goal.getName().toLowerCase().contains(t))
 			{
 				return true;
 			}
-			else if (goal.getRequirements().toLowerCase().contains(term))
+			else if (goal.getRequirements().stream().anyMatch(str -> str.getName().toLowerCase().contains(t)))
 			{
 				return true;
 			}

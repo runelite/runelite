@@ -29,10 +29,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -41,12 +37,16 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.goaltracker.ui.GoalTrackerPanel;
-import net.runelite.client.plugins.itemstats.ItemStatOverlay;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
+
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 @PluginDescriptor(
 		name = "Goal Tracker",
@@ -153,7 +153,7 @@ public class GoalTrackerPlugin extends Plugin
 		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY, json);
 	}
 
-	private Stream<Goal> loadConfig(String json)
+	public Stream<Goal> loadConfig(String json)
 	{
 		if (Strings.isNullOrEmpty(json))
 		{
@@ -173,19 +173,24 @@ public class GoalTrackerPlugin extends Plugin
 		Goal goal = new Goal(
 				"Goal " + (goals.size() + 1),
 				12850,
-				"",
+				new ArrayList<>(),
 				false
 		);
 
 		goals.add(0, goal);
-		pluginPanel.updateGoals();
+		updateGoals();
 		updateConfig();
 	}
 
-	public void deleteProfile(final Goal profile)
+	public void deleteGoal(final Goal goal)
 	{
-		goals.remove(profile);
-		pluginPanel.updateGoals();
+		goals.remove(goal);
+		updateGoals();
 		updateConfig();
+	}
+
+	public void updateGoals()
+	{
+		pluginPanel.updateGoals();
 	}
 }

@@ -263,7 +263,7 @@ public class GoalPanel extends JPanel
 
 				if (confirm == 0)
 				{
-					plugin.deleteProfile(goal);
+					plugin.deleteGoal(goal);
 				}
 			}
 
@@ -305,19 +305,6 @@ public class GoalPanel extends JPanel
 			}
 		});
 
-		requirementsInput.setText(goal.getRequirements());
-		requirementsInput.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		requirementsInput.setLineWrap(true);
-		requirementsInput.setWrapStyleWord(true);
-		requirementsInput.addFocusListener(new FocusAdapter()
-		{
-			@Override
-			public void focusLost(FocusEvent e)
-			{
-				goal.setRequirements(requirementsInput.getText());
-			}
-		});
-
 		JLabel chunkLabel = new JLabel("Chunk ID:");
 		chunkLabel.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
 		chunkWrapper.add(chunkLabel, BorderLayout.WEST);
@@ -327,11 +314,7 @@ public class GoalPanel extends JPanel
 		bottomContainer.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
 		gbc.gridy++;
 
-		JLabel requirementsLabel = new JLabel("Requirements");
-		requirementsLabel.setBorder(BorderFactory.createEmptyBorder(0, 8, 5, 0));
-		bottomContainer.add(requirementsLabel, gbc);
-		gbc.gridy++;
-		bottomContainer.add(requirementsInput, gbc);
+		bottomContainer.add(new RequirementsPanel(plugin, goal), gbc);
 		gbc.gridy++;
 		bottomContainer.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
 		gbc.gridy++;
