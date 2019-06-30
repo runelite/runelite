@@ -13,7 +13,8 @@ public interface ChatTranslationConfig extends Config
 			name = "Translate incoming Messages",
 			description = "Would you like to Translate Public Chat?",
 			position = 0,
-			group = "Public Chat Translation"
+			group = "Public Chat Translation",
+			hidden = true
 	)
 	default boolean publicChat()
 	{
