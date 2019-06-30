@@ -175,7 +175,7 @@ public class GoalTrackerPanel extends PluginPanel
 
 		for (final Goal goal : plugin.getGoals())
 		{
-			if (text.isEmpty() || matchesSearchTerms(goal, text.toLowerCase()))
+			if (goal != null && text.isEmpty() || matchesSearchTerms(goal, text.toLowerCase()))
 			{
 				goalView.add(new GoalPanel(plugin, goal), constraints);
 				constraints.gridy++;

@@ -142,9 +142,9 @@ public class GoalTrackerOverlay extends Overlay
 				}
 				if (total > 0)
 				{
-					yPos += regionPixelSize;
-					graphics.setColor(new Color(255, 0, 255, 255));
-					graphics.drawString(Integer.toString(total), xPos + LABEL_PADDING, yPos - LABEL_PADDING);
+					graphics.setColor(new Color(255, 236, 219, 200));
+					graphics.drawRect(xPos + 1, yPos + 1, regionPixelSize - 2, regionPixelSize - 2);
+					//graphics.drawString(Integer.toString(total), xPos + LABEL_PADDING, yPos - LABEL_PADDING);
 				}
 			}
 		}

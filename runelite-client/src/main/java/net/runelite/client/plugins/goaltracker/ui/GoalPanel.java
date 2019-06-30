@@ -72,7 +72,7 @@ public class GoalPanel extends JPanel
 	private final GoalTrackerPlugin plugin;
 	private final Goal goal;
 
-	private final JLabel visibilityLabel = new JLabel();
+	private final JLabel completeLabel = new JLabel();
 	private final JLabel deleteLabel = new JLabel();
 
 	private final FlatTextField nameInput = new FlatTextField();
@@ -227,8 +227,8 @@ public class GoalPanel extends JPanel
 		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
 		rightActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		visibilityLabel.setToolTipText(goal.isCompleted() ? "Completed" : "Complete");
-		visibilityLabel.addMouseListener(new MouseAdapter()
+		completeLabel.setToolTipText(goal.isCompleted() ? "Completed" : "Complete");
+		completeLabel.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
@@ -240,7 +240,7 @@ public class GoalPanel extends JPanel
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				visibilityLabel.setIcon(goal.isCompleted() ? CHECKED_HOVER_ICON : CHECKBOX_HOVER_ICON);
+				completeLabel.setIcon(goal.isCompleted() ? CHECKED_HOVER_ICON : CHECKBOX_HOVER_ICON);
 			}
 
 			@Override
@@ -280,8 +280,12 @@ public class GoalPanel extends JPanel
 			}
 		});
 
+		JPanel chunkWrapper = new JPanel(new BorderLayout(3, 0));
+		chunkWrapper.setPreferredSize(new Dimension(0, 24));
+		chunkWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
 		chunkInput.setText(Integer.toString(goal.getChunk()));
-		chunkInput.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		chunkInput.setPreferredSize(new Dimension(0, 24));
 		chunkInput.addFocusListener(new FocusAdapter()
 		{
 			@Override
@@ -314,25 +318,26 @@ public class GoalPanel extends JPanel
 			}
 		});
 
-		rightActions.add(visibilityLabel);
-		rightActions.add(deleteLabel);
-
-		JLabel chunkLabel = new JLabel("Chunk ID");
-		chunkLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		bottomContainer.add(chunkLabel, gbc);
-		gbc.gridy++;
-		bottomContainer.add(chunkInput, gbc);
+		JLabel chunkLabel = new JLabel("Chunk ID:");
+		chunkLabel.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
+		chunkWrapper.add(chunkLabel, BorderLayout.WEST);
+		chunkWrapper.add(chunkInput, BorderLayout.CENTER);
+		bottomContainer.add(chunkWrapper, gbc);
 		gbc.gridy++;
 		bottomContainer.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
 		gbc.gridy++;
+
 		JLabel requirementsLabel = new JLabel("Requirements");
-		requirementsLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		requirementsLabel.setBorder(BorderFactory.createEmptyBorder(0, 8, 5, 0));
 		bottomContainer.add(requirementsLabel, gbc);
 		gbc.gridy++;
 		bottomContainer.add(requirementsInput, gbc);
 		gbc.gridy++;
 		bottomContainer.add(Box.createRigidArea(new Dimension(0, 10)), gbc);
 		gbc.gridy++;
+
+		rightActions.add(completeLabel);
+		rightActions.add(deleteLabel);
 		bottomContainer.add(rightActions, gbc);
 		gbc.gridy++;
 
@@ -357,7 +362,7 @@ public class GoalPanel extends JPanel
 
 	private void updateCompletion()
 	{
-		visibilityLabel.setIcon(goal.isCompleted() ? CHECKED_ICON : CHECKBOX_ICON);
+		completeLabel.setIcon(goal.isCompleted() ? CHECKED_ICON : CHECKBOX_ICON);
 		plugin.updateConfig();
 	}
 }
