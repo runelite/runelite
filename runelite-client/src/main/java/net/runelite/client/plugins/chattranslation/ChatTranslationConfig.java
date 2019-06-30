@@ -10,23 +10,48 @@ public interface ChatTranslationConfig extends Config
 
 	@ConfigItem(
 			keyName = "publicChat",
-			name = "Translate All Public Chat?",
+			name = "Translate incoming Messages",
 			description = "Would you like to Translate Public Chat?",
-			position = 0
+			position = 0,
+			group = "Public Chat Translation"
 	)
 	default boolean publicChat() { return false; }
 
 	@ConfigItem(
-			keyName = "targetLanguage",
+			keyName = "publicTargetLanguage",
 			name = "Target Language",
 			description = "Language to translate messages too.",
-			position = 2,
+			position = 1,
+			group = "Public Chat Translation",
 			hidden = true,
 			unhide = "publicChat"
 	)
-	default Languages targetLanguage()
+	default Languages publicTargetLanguage()
 	{
 		return Languages.ENGLISH;
+	}
+
+	@ConfigItem(
+			keyName = "playerChat",
+			name = "Translate outgoing Messages",
+			description = "Would you like to Translate your Messages?",
+			position = 2,
+			group = "Player Message Translation"
+	)
+	default boolean playerChat() { return false; }
+
+	@ConfigItem(
+			keyName = "playerTargetLanguage",
+			name = "Target Language",
+			description = "Language to translate messages too.",
+			position = 3,
+			group = "Player Message Translation",
+			hidden = true,
+			unhide = "playerChat"
+	)
+	default Languages playerTargetLanguage()
+	{
+		return Languages.SPANISH;
 	}
 
 }

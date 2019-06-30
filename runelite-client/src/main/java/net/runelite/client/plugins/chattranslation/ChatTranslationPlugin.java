@@ -7,10 +7,14 @@ import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -20,6 +24,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import java.awt.event.KeyEvent;
 
 @PluginDescriptor(
 		name = "Chat Translator",
@@ -27,20 +32,25 @@ import javax.inject.Provider;
 		tags = {"translate", "language", "english", "spanish", "dutch", "french"},
 		type = PluginType.UTILITY
 )
-public class ChatTranslationPlugin extends Plugin {
+public class ChatTranslationPlugin extends Plugin implements KeyListener {
 
 	public static final String TRANSLATE = "Translate";
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Kick");
 
 	@Inject
-	@Nullable
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private Provider<MenuManager> menuManager;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private KeyManager keyManager;
 
 	@Inject
 	private ChatTranslationConfig config;
@@ -58,6 +68,7 @@ public class ChatTranslationPlugin extends Plugin {
 		{
 			menuManager.get().addPlayerMenuItem(TRANSLATE);
 		}
+		keyManager.registerKeyListener(this);
 	}
 
 	@Override
@@ -67,6 +78,7 @@ public class ChatTranslationPlugin extends Plugin {
 		{
 			menuManager.get().removePlayerMenuItem(TRANSLATE);
 		}
+		keyManager.unregisterKeyListener(this);
 	}
 
 	@Subscribe
@@ -101,7 +113,10 @@ public class ChatTranslationPlugin extends Plugin {
 			lookup.setParam1(event.getActionParam1());
 			lookup.setIdentifier(event.getIdentifier());
 
-			insertMenuEntry(lookup, client.getMenuEntries());
+			MenuEntry[] newMenu = ObjectArrays.concat(lookup, client.getMenuEntries());
+			int menuEntryCount = newMenu.length;
+			ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
+			client.setMenuEntries(newMenu);
 		}
 	}
 
@@ -131,11 +146,13 @@ public class ChatTranslationPlugin extends Plugin {
 
 		try {
 			//Automatically check language of message and translate to selected language.
-			String translation = translator.translate("auto", config.targetLanguage().toString(), message);
-
-			final MessageNode messageNode = chatMessage.getMessageNode();
-			messageNode.setRuneLiteFormatMessage(translation);
-			chatMessageManager.update(messageNode);
+			String translation = translator.translate("auto", config.publicTargetLanguage().toString(), message);
+			if (translation != null)
+			{
+				final MessageNode messageNode = chatMessage.getMessageNode();
+				messageNode.setRuneLiteFormatMessage(translation);
+				chatMessageManager.update(messageNode);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -143,12 +160,63 @@ public class ChatTranslationPlugin extends Plugin {
 		client.refreshChat();
 	}
 
-	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries)
+	@Override
+	public void keyPressed(KeyEvent event) {
+		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN) {
+			return;
+		}
+
+		if (!config.playerChat())
+		{
+			return;
+		}
+
+		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
+
+		if (chatboxParent != null && chatboxParent.getOnKeyListener() != null)
+		{
+				if (event.getKeyCode() == 0xA)
+				{
+					event.consume();
+
+					Translator translator = new Translator();
+
+					String message = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+
+					try {
+						//Automatically check language of message and translate to selected language.
+						String translation = translator.translate("auto", config.playerTargetLanguage().toString(), message);
+
+						if (translation != null)
+						{
+							client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translation);
+
+							clientThread.invoke(() -> {
+								client.runScript(96, 0, translation);
+							});
+
+						}
+
+						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+		} else {
+			return;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
 	{
-		MenuEntry[] newMenu = ObjectArrays.concat(entries, newEntry);
-		int menuEntryCount = newMenu.length;
-		ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
-		client.setMenuEntries(newMenu);
+		// Nothing.
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+		// Nothing.
 	}
 
 }
