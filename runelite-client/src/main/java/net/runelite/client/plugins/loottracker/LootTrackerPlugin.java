@@ -62,6 +62,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
@@ -113,11 +114,17 @@ public class LootTrackerPlugin extends Plugin
 		13113, "Larran's small chest"
 	);
 
+	private static final String CONFIG_LOOTED = "looted";
+	private static final String CONFIG_GROUP = "loottracker";
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -147,6 +154,9 @@ public class LootTrackerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
+
+	private Boolean looted = false;
+	private boolean loggingIn;
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -319,6 +329,42 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case LOGGED_IN:
+				if (loggingIn)
+				{
+					loggingIn = false;
+					loadConfig();
+					resetConfig();
+				}
+				break;
+			case LOGGING_IN:
+				loggingIn = true;
+				break;
+			case LOADING:
+				if (!loggingIn)
+				{
+					if (!client.isInInstancedRegion())
+					{
+						looted = false;
+					}
+				}
+				break;
+			case HOPPING:
+				loggingIn = true;
+			case LOGIN_SCREEN:
+				saveConfig();
+				break;
+			default:
+				break;
+		}
+
+	}
+
+	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		final ItemContainer container;
@@ -330,7 +376,15 @@ public class LootTrackerPlugin extends Plugin
 				break;
 			case (WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID):
 				eventType = "Chambers of Xeric";
-				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
+				if (!looted)
+				{
+					container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
+					looted = true;
+				}
+				else
+				{
+					container = null;
+				}
 				break;
 			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
 				int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
@@ -339,7 +393,15 @@ public class LootTrackerPlugin extends Plugin
 					return;
 				}
 				eventType = "Theatre of Blood";
-				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
+				if (!looted)
+				{
+					container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
+					looted = true;
+				}
+				else
+				{
+					container = null;
+				}
 				break;
 			case (WidgetID.CLUE_SCROLL_REWARD_GROUP_ID):
 				// event type should be set via ChatMessage for clue scrolls.
@@ -555,5 +617,24 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return trackerRecords;
+	}
+
+	private void loadConfig()
+	{
+		looted = configManager.getConfiguration(CONFIG_GROUP, CONFIG_LOOTED, Boolean.class);
+		if (looted == null)
+		{
+			looted = false;
+		}
+	}
+
+	private void resetConfig()
+	{
+		configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_LOOTED);
+	}
+
+	private void saveConfig()
+	{
+		configManager.setConfiguration(CONFIG_GROUP, CONFIG_LOOTED, looted);
 	}
 }
