@@ -30,6 +30,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -47,8 +49,8 @@ import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPCDefinition;
-import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcActionChanged;
 import net.runelite.api.events.PlayerMenuOptionClicked;
@@ -58,6 +60,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Singleton
 @Slf4j
@@ -97,7 +100,8 @@ public class MenuManager
 	private final Set<ComparableEntry> hiddenEntries = new HashSet<>();
 
 	private final Map<ComparableEntry, ComparableEntry> swaps = new HashMap<>();
-	private MenuEntry leftClickEntry;
+	private MenuEntry leftClickEntry = null;
+	private ComparableEntry comparableEntry = null;
 
 	@Inject
 	private MenuManager(Client client, EventBus eventBus)
@@ -144,48 +148,18 @@ public class MenuManager
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
-	{
-		int widgetId = event.getActionParam1();
-		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
-		MenuEntry[] menuEntries = client.getMenuEntries();
-
-		for (WidgetMenuOption currentMenu : options)
-		{
-			if (!menuContainsCustomMenu(currentMenu))//Don't add if we have already added it to this widget
-			{
-				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
-				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-				menuEntry.setOption(currentMenu.getMenuOption());
-				menuEntry.setParam1(widgetId);
-				menuEntry.setTarget(currentMenu.getMenuTarget());
-				menuEntry.setType(MenuAction.RUNELITE.getId());
-
-				client.setMenuEntries(menuEntries);
-			}
-		}
-	}
-
-	@Subscribe
-	private void onClientTick(ClientTick event)
+	public void onMenuOpened(MenuOpened event)
 	{
 		leftClickEntry = null;
 
-		if (client.isMenuOpen())
-		{
-			return;
-		}
-
 		currentPriorityEntries.clear();
-		client.sortMenuEntries();
 
-		MenuEntry[] oldEntries = client.getMenuEntries();
+		MenuEntry[] entries = client.getMenuEntries();
+
+		ArrayList<MenuEntry> oldEntries = Lists.newArrayList(entries);
 		List<MenuEntry> newEntries = Lists.newArrayList(oldEntries);
 
 		boolean shouldDeprioritize = false;
-		boolean modified = false;
-
 
 		prioritizer: for (MenuEntry entry : oldEntries)
 		{
@@ -214,63 +188,50 @@ public class MenuManager
 					continue prioritizer;
 				}
 			}
-		}
 
-		if (newEntries.size() > 0)
-		{
-			MenuEntry entry = Iterables.getLast(newEntries);
-
-			// Swap first matching entry to top
-			for (ComparableEntry src : swaps.keySet())
+			if (newEntries.size() > 0)
 			{
-				if (!src.matches(entry))
+				MenuEntry last = Iterables.getLast(newEntries);
+
+				// Swap first matching entry to top
+				for (ComparableEntry src : swaps.keySet())
 				{
-					continue;
-				}
-
-				MenuEntry swapFrom = null;
-
-				ComparableEntry from = swaps.get(src);
-
-				for (MenuEntry e : newEntries)
-				{
-					if (from.matches(e))
+					if (!src.matches(last))
 					{
-						swapFrom = e;
-						break;
-					}
-				}
-
-				// Do not need to swap with itself
-				if (swapFrom != null && swapFrom != entry)
-				{
-					// Deprioritize entries if the swaps are not in similar type groups
-					if ((swapFrom.getType() >= 1000 && entry.getType() < 1000) || (entry.getType() >= 1000 && swapFrom.getType() < 1000) && !shouldDeprioritize)
-					{
-						shouldDeprioritize = true;
+						continue;
 					}
 
-					int indexFrom = newEntries.indexOf(swapFrom);
-					int indexTo = newEntries.indexOf(entry);
+					MenuEntry swapFrom = null;
 
-					Collections.swap(newEntries, indexFrom, indexTo);
+					ComparableEntry from = swaps.get(src);
 
-					// Set force left click if entry was moved to first entry
-					if (indexTo == newEntries.size() - 1)
+					for (MenuEntry e : newEntries)
 					{
-						swapFrom.setForceLeftClick(true);
-						entry.setForceLeftClick(false);
+						if (from.matches(e))
+						{
+							swapFrom = e;
+							break;
+						}
 					}
 
-					modified = true;
+					// Do not need to swap with itself
+					if (swapFrom != null && swapFrom != last)
+					{
+						// Deprioritize entries if the swaps are not in similar type groups
+						if ((swapFrom.getType() >= 1000 && last.getType() < 1000) || (last.getType() >= 1000 && swapFrom.getType() < 1000) && !shouldDeprioritize)
+						{
+							shouldDeprioritize = true;
+						}
 
-					// If this loop is placed in the 'prioritizer' block and the following break is removed,
-					// all swaps will be applied instead of only swapping the first one found to the first entry
-					break;
+						int indexFrom = newEntries.indexOf(swapFrom);
+						int indexTo = newEntries.indexOf(last);
+
+						Collections.swap(newEntries, indexFrom, indexTo);
+					}
 				}
 			}
 		}
-		
+
 		if (shouldDeprioritize)
 		{
 			for (MenuEntry entry : newEntries)
@@ -285,15 +246,106 @@ public class MenuManager
 		if (!priorityEntries.isEmpty())
 		{
 			newEntries.addAll(currentPriorityEntries);
-			modified = true;
 		}
 
-		if (modified)
+		event.setMenuEntries(newEntries.toArray(new MenuEntry[0]));
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		int widgetId = event.getActionParam1();
+		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
+		MenuEntry[] menuEntries = client.getMenuEntries();
+
+		for (WidgetMenuOption currentMenu : options)
 		{
-			leftClickEntry = newEntries.get(newEntries.size() - 1);
+			if (!menuContainsCustomMenu(currentMenu))//Don't add if we have already added it to this widget
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+				menuEntry.setOption(currentMenu.getMenuOption());
+				menuEntry.setParam1(widgetId);
+				menuEntry.setTarget(currentMenu.getMenuTarget());
+				menuEntry.setType(MenuAction.RUNELITE.getId());
+
+				client.setMenuEntries(menuEntries);
+			}
 		}
 
-		client.setMenuEntries(newEntries.toArray(new MenuEntry[0]));
+		final MenuEntry entry = menuEntries[menuEntries.length - 1];
+
+		// Reset tracked entries
+		if (entry.getOption().equals("Cancel"))
+		{
+			comparableEntry = null;
+			leftClickEntry = null;
+		}
+
+		if (leftClickEntry == null)
+		{
+			for (ComparableEntry p : priorityEntries)
+			{
+				if (p.matches(entry))
+				{
+					leftClickEntry = entry;
+					comparableEntry = new ComparableEntry(entry);
+					return;
+				}
+			}
+
+			for (ComparableEntry p : swaps.values())
+			{
+				if (p.matches(entry))
+				{
+					leftClickEntry = entry;
+					comparableEntry = new ComparableEntry(entry);
+					return;
+				}
+			}
+		}
+
+		if (leftClickEntry != null && menuEntries.length > 1)
+		{
+			// No need to move the entry if it is already the first option
+			if (comparableEntry.matches(menuEntries[menuEntries.length - 1]))
+			{
+				return;
+			}
+
+			// If the entry is not the second to last, we can't do a normal swap
+			if (!comparableEntry.matches(menuEntries[menuEntries.length - 2]))
+			{
+				int position = 0;
+				MenuEntry foundEntry = null;
+
+				for (MenuEntry e : menuEntries)
+				{
+					if (e.getOption().equals(leftClickEntry.getOption())
+						&& e.getTarget().equals(leftClickEntry.getTarget()))
+					{
+						foundEntry = menuEntries[position];
+						break;
+					}
+					position++;
+				}
+
+				if (foundEntry != null)
+				{
+					menuEntries = ArrayUtils.remove(menuEntries, position);
+					menuEntries = ArrayUtils.insert(menuEntries.length, menuEntries, foundEntry);
+				}
+			}
+			else
+			{
+				ArrayUtils.swap(menuEntries, menuEntries.length - 2, menuEntries.length - 1);
+			}
+
+			menuEntries[menuEntries.length - 1].setType(MenuAction.WIDGET_DEFAULT.getId());
+
+			client.setMenuEntries(menuEntries);
+		}
 	}
 
 	public void addPlayerMenuItem(String menuText)
@@ -403,7 +455,6 @@ public class MenuManager
 		if (leftClickEntry != null)
 		{
 			event.setMenuEntry(leftClickEntry);
-			leftClickEntry = null;
 		}
 
 		if (event.getMenuAction() != MenuAction.RUNELITE)
