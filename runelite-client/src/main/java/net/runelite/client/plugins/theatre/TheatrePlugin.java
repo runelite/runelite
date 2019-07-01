@@ -9,31 +9,42 @@
 package net.runelite.client.plugins.theatre;
 
 import com.google.inject.Provides;
+import java.awt.Color;
+import java.util.LinkedList;
+import java.util.List;
+import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import java.util.LinkedList;
-import java.util.List;
-import net.runelite.api.events.*;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.plugins.Plugin;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.SpotAnimationChanged;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.graphics.ModelOutlineRenderer;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.theatre.rooms.BloatHandler;
 import net.runelite.client.plugins.theatre.rooms.MaidenHandler;
 import net.runelite.client.plugins.theatre.rooms.SotetsegHandler;
 import net.runelite.client.plugins.theatre.rooms.VerzikHandler;
-import net.runelite.client.plugins.theatre.rooms.xarpus.XarpusHandler;
 import net.runelite.client.plugins.theatre.rooms.nylocas.NyloHandler;
+import net.runelite.client.plugins.theatre.rooms.xarpus.XarpusHandler;
 import net.runelite.client.ui.overlay.OverlayManager;
-
-import javax.inject.Inject;
-import java.awt.*;
 
 @PluginDescriptor(
 	name = "Theatre of Blood",
@@ -43,9 +54,9 @@ import java.awt.*;
 	enabledByDefault = false
 )
 
-public class TheatrePlugin extends Plugin 
+@Slf4j
+public class TheatrePlugin extends Plugin
 {
-
 	@Getter(AccessLevel.PUBLIC)
 	@Setter(AccessLevel.PUBLIC)
 	private TheatreRoom room;
@@ -83,6 +94,9 @@ public class TheatrePlugin extends Plugin
 	@Inject
 	private TheatreConfig config;
 
+	@Inject
+	private ModelOutlineRenderer modelOutline;
+
 	@Provides
 	TheatreConfig getConfig(ConfigManager configManager)
 	{
@@ -94,7 +108,7 @@ public class TheatrePlugin extends Plugin
 	{
 		room = TheatreRoom.UNKNOWN;
 
-		maidenHandler = new MaidenHandler(client, this, config);
+		maidenHandler = new MaidenHandler(client, this, config, modelOutline);
 		bloatHandler = new BloatHandler(client, this, config);
 		nyloHandler = new NyloHandler(client, this, config);
 		sotetsegHandler = new SotetsegHandler(client, this, config);
@@ -132,25 +146,46 @@ public class TheatrePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onSpotAnimationChanged(SpotAnimationChanged event)
+	{
+		if (maidenHandler != null)
+		{
+			maidenHandler.onSpotAnimationChanged(event);
+		}
+	}
+
+	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
 		if (maidenHandler != null)
+		{
 			maidenHandler.onNpcSpawned(event);
+		}
 
 		if (bloatHandler != null)
+		{
 			bloatHandler.onNpcSpawned(event);
+		}
 
 		if (nyloHandler != null)
+		{
 			nyloHandler.onNpcSpawned(event);
+		}
 
 		if (sotetsegHandler != null)
+		{
 			sotetsegHandler.onNpcSpawned(event);
+		}
 
 		if (xarpusHandler != null)
+		{
 			xarpusHandler.onNpcSpawned(event);
+		}
 
 		if (verzikHandler != null)
+		{
 			verzikHandler.onNpcSpawned(event);
+		}
 
 	}
 
@@ -158,19 +193,29 @@ public class TheatrePlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned event)
 	{
 		if (maidenHandler != null)
+		{
 			maidenHandler.onNpcDespawned(event);
+		}
 
 		if (bloatHandler != null)
+		{
 			bloatHandler.onNpcDespawned(event);
+		}
 
 		if (nyloHandler != null)
+		{
 			nyloHandler.onNpcDespawned(event);
+		}
 
 		if (sotetsegHandler != null)
+		{
 			sotetsegHandler.onNpcDespawned(event);
+		}
 
 		if (xarpusHandler != null)
+		{
 			xarpusHandler.onNpcDespawned(event);
+		}
 
 	}
 
@@ -178,7 +223,18 @@ public class TheatrePlugin extends Plugin
 	public void onAnimationChanged(AnimationChanged event)
 	{
 		if (verzikHandler != null)
+		{
 			verzikHandler.onAnimationChanged(event);
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (maidenHandler != null)
+		{
+			maidenHandler.onChatMessage(event);
+		}
 	}
 
 	@Subscribe
@@ -204,22 +260,34 @@ public class TheatrePlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		if (maidenHandler != null)
+		{
 			maidenHandler.onGameTick();
+		}
 
 		if (bloatHandler != null)
+		{
 			bloatHandler.onGameTick();
+		}
 
 		if (nyloHandler != null)
+		{
 			nyloHandler.onGameTick();
+		}
 
 		if (sotetsegHandler != null)
+		{
 			sotetsegHandler.onGameTick();
+		}
 
 		if (xarpusHandler != null)
+		{
 			xarpusHandler.onGameTick();
+		}
 
 		if (verzikHandler != null)
+		{
 			verzikHandler.onGameTick();
+		}
 
 		if (widget == null)
 		{
@@ -315,27 +383,37 @@ public class TheatrePlugin extends Plugin
 	public void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		if (sotetsegHandler != null)
+		{
 			sotetsegHandler.onGroundObjectSpawned(event);
+		}
 
 		if (xarpusHandler != null)
+		{
 			xarpusHandler.onGroundObjectSpawned(event);
+		}
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (nyloHandler != null)
+		{
 			nyloHandler.onConfigChanged();
+		}
 	}
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		if (bloatHandler != null)
+		{
 			bloatHandler.onVarbitChanged(event);
+		}
 
 		if (xarpusHandler != null)
+		{
 			xarpusHandler.onVarbitChanged(event);
+		}
 	}
 
 	@Subscribe
