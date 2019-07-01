@@ -90,12 +90,12 @@ class LootTrackerBox extends JPanel
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
 		final JLabel titleLabel = new JLabel(Text.removeTags(id));
-		titleLabel.setFont(FontManager.getRunescapeSmallFont());
+		titleLabel.setFont(FontManager.getSmallFont(getFont()));
 		titleLabel.setForeground(Color.WHITE);
 
 		logTitle.add(titleLabel, BorderLayout.WEST);
 
-		subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
+		subTitleLabel.setFont(FontManager.getSmallFont(getFont()));
 		subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		logTitle.add(subTitleLabel, BorderLayout.CENTER);
 
@@ -104,7 +104,7 @@ class LootTrackerBox extends JPanel
 			subTitleLabel.setText(subtitle);
 		}
 
-		priceLabel.setFont(FontManager.getRunescapeSmallFont());
+		priceLabel.setFont(FontManager.getSmallFont(getFont()));
 		priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		logTitle.add(priceLabel, BorderLayout.EAST);
 

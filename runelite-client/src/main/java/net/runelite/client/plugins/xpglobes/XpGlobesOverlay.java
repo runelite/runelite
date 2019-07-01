@@ -187,7 +187,7 @@ public class XpGlobesOverlay extends Overlay
 
 		final FontMetrics metrics = graphics.getFontMetrics();
 		int drawX = x + (config.xpOrbSize() / 2) - (metrics.stringWidth(progress) / 2);
-		int drawY = y + (config.xpOrbSize() / 2) + (metrics.getHeight() / 2);
+		int drawY = y + (config.xpOrbSize() / 2) + (metrics.getHeight() / 2) - metrics.getMaxDescent();
 
 		OverlayUtil.renderTextLocation(graphics, new Point(drawX, drawY), progress, Color.WHITE);
 	}

@@ -295,7 +295,7 @@ public class HiscorePanel extends PluginPanel
 	private JPanel makeSkillPanel(HiscoreSkill skill)
 	{
 		JLabel label = new JLabel();
-		label.setFont(FontManager.getRunescapeSmallFont());
+		label.setFont(FontManager.getSmallFont(getFont()));
 		label.setText("--");
 
 		String skillName = (skill == null ? "combat" : skill.getName().toLowerCase());
