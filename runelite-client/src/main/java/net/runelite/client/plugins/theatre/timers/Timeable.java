@@ -4,5 +4,5 @@ import java.util.HashMap;
 
 public interface Timeable
 {
-	public abstract HashMap<String, Long> getTimes();
+	HashMap<String, Long> getTimes();
 }

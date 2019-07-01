@@ -1,91 +1,19 @@
 package net.runelite.client.plugins.theatre.rooms.nylocas;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.NpcSpawned;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class NyloPredictor
 {
 
-	public enum NylocasType
-	{
-		MELEE_162,
-		RANGE_162,
-		MAGE_162,
-		MELEE_260,
-		RANGE_260,
-		MAGE_260;
-	}
-
-	public enum Spawn
-	{
-		WEST,
-		SOUTH,
-		EAST;
-	}
-
-	public static class Nylocas
-	{
-
-		private NylocasType type;
-		private Spawn spawn;
-
-		public Nylocas(NylocasType type, Spawn spawn)
+	private static final Wave[] NYLOCAS_WAVES = new Wave[]
 		{
-			this.type = type;
-			this.spawn = spawn;
-		}
-
-		public NylocasType getType()
-		{
-			return this.type;
-		}
-
-		public Spawn getSpawn()
-		{
-			return this.spawn;
-		}
-
-		@Override
-		public boolean equals(Object object)
-		{
-			if (object != null && (object instanceof Nylocas))
-			{
-				Nylocas nylo = (Nylocas) object;
-				if (nylo.getType() == this.type && nylo.getSpawn() == this.spawn)
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
-	}
-
-	public static class Wave
-	{
-
-		private Nylocas[] spawns;
-
-		public Wave(Nylocas... nylocas) 
-		{
-			this.spawns = nylocas;
-		}
-
-		public Nylocas[] getSpawns()
-		{
-			return this.spawns;
-		}
-	}
-
-	public static final Wave[] NYLOCAS_WAVES = new Wave[]
-	{
 			new Wave(new Nylocas(NylocasType.RANGE_162, Spawn.WEST), new Nylocas(NylocasType.MAGE_162, Spawn.SOUTH), new Nylocas(NylocasType.MELEE_162, Spawn.EAST)),
 			new Wave(new Nylocas(NylocasType.MAGE_162, Spawn.WEST), new Nylocas(NylocasType.MELEE_162, Spawn.SOUTH), new Nylocas(NylocasType.RANGE_162, Spawn.EAST)),
 			new Wave(new Nylocas(NylocasType.MELEE_162, Spawn.WEST), new Nylocas(NylocasType.RANGE_162, Spawn.SOUTH), new Nylocas(NylocasType.MAGE_162, Spawn.EAST)),
@@ -117,15 +45,16 @@ public class NyloPredictor
 			new Wave(new Nylocas(NylocasType.MELEE_162, Spawn.WEST), new Nylocas(NylocasType.RANGE_162, Spawn.WEST), new Nylocas(NylocasType.MELEE_260, Spawn.SOUTH), new Nylocas(NylocasType.RANGE_162, Spawn.EAST), new Nylocas(NylocasType.MAGE_162, Spawn.EAST)),
 			new Wave(new Nylocas(NylocasType.RANGE_260, Spawn.WEST), new Nylocas(NylocasType.MAGE_162, Spawn.SOUTH), new Nylocas(NylocasType.MELEE_162, Spawn.SOUTH), new Nylocas(NylocasType.MAGE_260, Spawn.EAST)),
 			new Wave(new Nylocas(NylocasType.MELEE_162, Spawn.WEST), new Nylocas(NylocasType.RANGE_162, Spawn.WEST), new Nylocas(NylocasType.MAGE_162, Spawn.SOUTH), new Nylocas(NylocasType.MELEE_162, Spawn.SOUTH), new Nylocas(NylocasType.RANGE_162, Spawn.EAST), new Nylocas(NylocasType.MAGE_162, Spawn.EAST))
-	};
-
+		};
 	public Client client;
-	public NyloHandler handler;
+	int westBound = 50;
+	int eastBound = 77;
+	int southBound = 42;
+	private NyloHandler handler;
+	private Map<Nylocas, NPC> currentSpawns = new HashMap<Nylocas, NPC>();
+	private int currentIndex = -1;
 
-	public Map<Nylocas, NPC> currentSpawns = new HashMap<Nylocas, NPC>();
-	public int currentIndex = -1;
-
-	public NyloPredictor(Client client, NyloHandler handler)
+	NyloPredictor(Client client, NyloHandler handler)
 	{
 		this.client = client;
 		this.handler = handler;
@@ -137,12 +66,6 @@ public class NyloPredictor
 		this.currentSpawns.clear();
 		this.currentIndex = -1;
 	}
-
-	public int westBound = 50;
-
-	public int eastBound = 77;
-
-	public int southBound = 42;
 
 	public void onNpcSpawned(NpcSpawned event)
 	{
@@ -157,11 +80,11 @@ public class NyloPredictor
 		if (x <= westBound)
 		{
 			spawn = Spawn.WEST;
-		} 
+		}
 		else if (x >= eastBound)
 		{
 			spawn = Spawn.EAST;
-		} 
+		}
 		else if (y <= southBound)
 		{
 			spawn = Spawn.SOUTH;
@@ -175,11 +98,11 @@ public class NyloPredictor
 		if (name.contains("Hagios"))
 		{
 			type = NylocasType.valueOf("MAGE_" + level);
-		} 
+		}
 		else if (name.contains("Toxobolos"))
 		{
 			type = NylocasType.valueOf("RANGE_" + level);
-		} 
+		}
 		else if (name.contains("Ischyros"))
 		{
 			type = NylocasType.valueOf("MELEE_" + level);
@@ -213,7 +136,7 @@ public class NyloPredictor
 					int index = queue.indexOf(nylocas);
 					Nylocas hashed = queue.remove(index);
 					npcs.put(currentSpawns.get(hashed), hashed);
-				} 
+				}
 				else
 				{
 					found = false;
@@ -257,12 +180,14 @@ public class NyloPredictor
 				for (NPC npc : client.getNpcs())
 				{
 					if (npc.getHealthRatio() == 0)
+					{
 						continue;
+					}
 					if (npc.getName().equalsIgnoreCase("Nylocas Hagios"))
 					{
 						mage_level += npc.getCombatLevel();
 						mage_count += 1;
-					} 
+					}
 					else if (npc.getName().equalsIgnoreCase("Nylocas Toxobolos"))
 					{
 						range_level += npc.getCombatLevel();
@@ -300,7 +225,7 @@ public class NyloPredictor
 		}
 	}
 
-	public boolean isAgressive(NylocasType type, Spawn spawn, int wave)
+	private boolean isAgressive(NylocasType type, Spawn spawn, int wave)
 	{
 		if (wave == 0 && spawn == Spawn.WEST)
 		{
@@ -329,9 +254,13 @@ public class NyloPredictor
 		else if (wave == 9)
 		{
 			if (spawn == Spawn.EAST && type == NylocasType.RANGE_162)
+			{
 				return true;
-			else if (spawn == Spawn.WEST)
-				return true;
+			}
+			else
+			{
+				return spawn == Spawn.WEST;
+			}
 		}
 		else if (wave == 10 && (spawn == Spawn.EAST || spawn == Spawn.WEST))
 		{
@@ -344,23 +273,35 @@ public class NyloPredictor
 		else if (wave == 12)
 		{
 			if (spawn == Spawn.WEST && type == NylocasType.MAGE_162)
+			{
 				return true;
-			else if (spawn == Spawn.EAST)
-				return true;
+			}
+			else
+			{
+				return spawn == Spawn.EAST;
+			}
 		}
 		else if (wave == 13)
 		{
 			if (spawn == Spawn.WEST && type == NylocasType.MELEE_162)
+			{
 				return true;
-			else if (spawn == Spawn.EAST)
-				return true;
+			}
+			else
+			{
+				return spawn == Spawn.EAST;
+			}
 		}
 		else if (wave == 14)
 		{
 			if (spawn == Spawn.WEST && type == NylocasType.RANGE_162)
+			{
 				return true;
-			else if (spawn == Spawn.EAST && type == NylocasType.MAGE_162)
-				return true;
+			}
+			else
+			{
+				return spawn == Spawn.EAST && type == NylocasType.MAGE_162;
+			}
 		}
 		else if (wave == 17 && spawn == Spawn.WEST)
 		{
@@ -405,17 +346,20 @@ public class NyloPredictor
 		else if (wave == 28)
 		{
 			if (spawn == Spawn.EAST && type == NylocasType.RANGE_162)
+			{
 				return true;
-			else if (spawn == Spawn.WEST && type == NylocasType.MELEE_162)
-				return true;
+			}
+			else
+			{
+				return spawn == Spawn.WEST && type == NylocasType.MELEE_162;
+			}
 
 		}
-		else if (wave == 29 && spawn == Spawn.EAST)
+		else
 		{
-			return true;
+			return wave == 29 && spawn == Spawn.EAST;
 		}
 
-		return false;
 	}
 
 	public int getCurrentWave()
@@ -485,6 +429,74 @@ public class NyloPredictor
 			}
 
 			return types.length() > 0 ? types : null;
+		}
+	}
+
+	public enum NylocasType
+	{
+		MELEE_162,
+		RANGE_162,
+		MAGE_162,
+		MELEE_260,
+		RANGE_260,
+		MAGE_260
+	}
+
+	public enum Spawn
+	{
+		WEST,
+		SOUTH,
+		EAST
+	}
+
+	public static class Nylocas
+	{
+
+		private NylocasType type;
+		private Spawn spawn;
+
+		public Nylocas(NylocasType type, Spawn spawn)
+		{
+			this.type = type;
+			this.spawn = spawn;
+		}
+
+		public NylocasType getType()
+		{
+			return this.type;
+		}
+
+		public Spawn getSpawn()
+		{
+			return this.spawn;
+		}
+
+		@Override
+		public boolean equals(Object object)
+		{
+			if (object != null && (object instanceof Nylocas))
+			{
+				Nylocas nylo = (Nylocas) object;
+				return nylo.getType() == this.type && nylo.getSpawn() == this.spawn;
+			}
+
+			return false;
+		}
+	}
+
+	public static class Wave
+	{
+
+		private Nylocas[] spawns;
+
+		public Wave(Nylocas... nylocas)
+		{
+			this.spawns = nylocas;
+		}
+
+		public Nylocas[] getSpawns()
+		{
+			return this.spawns;
 		}
 	}
 }

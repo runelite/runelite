@@ -1,42 +1,36 @@
 package net.runelite.client.plugins.theatre.rooms;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.util.Random;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.GraphicsObject;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Point;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.plugins.theatre.RoomHandler;
 import net.runelite.client.plugins.theatre.TheatreConfig;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
-import net.runelite.client.plugins.theatre.RoomHandler;
-
-import java.awt.*;
-import java.util.Random;
 
 public class BloatHandler extends RoomHandler
 {
 
-	public static enum BloatState
-	{
-		DOWN,
-		UP,
-		WARN;
-	}
-
+	private int bloatTimer;
 	@Getter(AccessLevel.PUBLIC)
 	private NPC bloat;
-
 	private int counter;
-
-	//My variables
 	private boolean bloatFlag;
-	int bloatTimer;
 	private Color color;
-
 	@Getter(AccessLevel.PUBLIC)
 	private BloatState bloatState;
 
@@ -49,7 +43,9 @@ public class BloatHandler extends RoomHandler
 	public void onStart()
 	{
 		if (this.plugin.getRoom() == TheatreRoom.BLOAT)
+		{
 			return;
+		}
 
 		this.reset();
 		this.plugin.setRoom(TheatreRoom.BLOAT);
@@ -106,8 +102,8 @@ public class BloatHandler extends RoomHandler
 					WorldPoint point = WorldPoint.fromLocal(client, object.getLocation());
 					if (!config.BloatFeetIndicatorRaveEdition())
 					{
-						drawTile(graphics, point,  new Color(36, 248, 229), 2, 255, 10);
-					} 
+						drawTile(graphics, point, new Color(36, 248, 229), 2, 255, 10);
+					}
 					else
 					{
 						drawTile(graphics, point, color, 2, 255, 10);
@@ -120,15 +116,15 @@ public class BloatHandler extends RoomHandler
 		if (config.showBloatTimer())
 		{
 			final String tickCounter = String.valueOf(bloatTimer);
-			int secondConversion = (int)(bloatTimer * .6);
+			int secondConversion = (int) (bloatTimer * .6);
 			if (bloat != null)
 			{
 				Point canvasPoint = bloat.getCanvasTextLocation(graphics, tickCounter, 60);
-				if (bloatTimer <= 37) 
+				if (bloatTimer <= 37)
 				{
 					renderTextLocation(graphics, tickCounter + "( " + secondConversion + " )", 15, Font.BOLD, Color.WHITE, canvasPoint);
-				} 
-				else 
+				}
+				else
 				{
 					renderTextLocation(graphics, tickCounter + "( " + secondConversion + " )", 15, Font.BOLD, Color.RED, canvasPoint);
 				}
@@ -139,9 +135,9 @@ public class BloatHandler extends RoomHandler
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (client.getVar(Varbits.BLOAT_DOOR) == 1) 
+		if (client.getVar(Varbits.BLOAT_DOOR) == 1)
 		{
-			if (!bloatFlag) 
+			if (!bloatFlag)
 			{
 				bloatTimer = 0;
 				bloatFlag = true;
@@ -149,12 +145,12 @@ public class BloatHandler extends RoomHandler
 		}
 	}
 
-	public void onNpcSpawned(NpcSpawned event) 
+	public void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
 		int id = npc.getId();
 
-		if (id == NpcID.PESTILENT_BLOAT) 
+		if (id == NpcID.PESTILENT_BLOAT)
 		{
 			this.onStart();
 			bloatTimer = 0;
@@ -162,12 +158,12 @@ public class BloatHandler extends RoomHandler
 		}
 	}
 
-	public void onNpcDespawned(NpcDespawned event) 
+	public void onNpcDespawned(NpcDespawned event)
 	{
 		NPC npc = event.getNpc();
 		int id = npc.getId();
 
-		if (id == NpcID.PESTILENT_BLOAT) 
+		if (id == NpcID.PESTILENT_BLOAT)
 		{
 			this.onStop();
 			bloatTimer = 0;
@@ -175,9 +171,9 @@ public class BloatHandler extends RoomHandler
 		}
 	}
 
-	public void onGameTick() 
+	public void onGameTick()
 	{
-		if (plugin.getRoom() != TheatreRoom.BLOAT) 
+		if (plugin.getRoom() != TheatreRoom.BLOAT)
 		{
 			return;
 		}
@@ -196,39 +192,46 @@ public class BloatHandler extends RoomHandler
 
 		counter++;
 
-		if (bloat.getAnimation() == -1) 
+		if (bloat.getAnimation() == -1)
 		{
 			bloatTimer++;
 			counter = 0;
 			if (bloat.getHealth() == 0)
 			{
 				bloatState = BloatState.DOWN;
-			} 
-			else 
-			{
-				bloatState = BloatState.UP;
 			}
-		} 
-		else 
-		{
-			if (25 < counter && counter < 35) 
-			{
-				bloatState = BloatState.WARN;
-			} 
-			else if (counter < 26) 
-			{
-				bloatTimer = 0;
-				bloatState = BloatState.DOWN;
-			} 
-			else if (bloat.getModelHeight() == 568) 
-			{
-				bloatTimer = 0;
-				bloatState = BloatState.DOWN;
-			} 
-			else 
+			else
 			{
 				bloatState = BloatState.UP;
 			}
 		}
+		else
+		{
+			if (25 < counter && counter < 35)
+			{
+				bloatState = BloatState.WARN;
+			}
+			else if (counter < 26)
+			{
+				bloatTimer = 0;
+				bloatState = BloatState.DOWN;
+			}
+			else if (bloat.getModelHeight() == 568)
+			{
+				bloatTimer = 0;
+				bloatState = BloatState.DOWN;
+			}
+			else
+			{
+				bloatState = BloatState.UP;
+			}
+		}
+	}
+
+	public enum BloatState
+	{
+		DOWN,
+		UP,
+		WARN
 	}
 }
