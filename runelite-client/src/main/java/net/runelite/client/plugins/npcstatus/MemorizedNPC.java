@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2019, GeChallengeM <https://github.com/GeChallengeM>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,61 +22,63 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npchighlight;
+package net.runelite.client.plugins.npcstatus;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.awt.Color;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCDefinition;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.Actor;
 
-class MemorizedNpc
+@Getter
+class MemorizedNPC
 {
-	@Getter
+	private NPC npc;
 	private int npcIndex;
-
-	@Getter
-	private Set<String> npcNames;
-
-	@Getter
-	private int npcSize;
-
-	/**
-	 * The time the npc died at, in game ticks, relative to the tick counter
-	 */
-	@Getter
+	private String npcName;
+	private int attackSpeed;
 	@Setter
-	private int diedOnTick;
-
-	/**
-	 * The time it takes for the npc to respawn, in game ticks
-	 */
-	@Getter
+	private int combatTimerEnd;
 	@Setter
-	private int respawnTime;
-
-	@Getter
+	private int timeLeft;
 	@Setter
-	private List<WorldPoint> possibleRespawnLocations;
+	private int flinchTimerEnd;
+	@Setter
+	private Status status;
+	@Setter
+	private WorldArea lastnpcarea;
+	@Setter
+	private Actor lastinteracted;
+	@Setter
+	private int lastspotanimation;
 
-	MemorizedNpc(NPC npc)
+	MemorizedNPC(NPC npc, int attackSpeed, WorldArea worldArea)
 	{
-		this.npcNames = new HashSet<>();
-		this.npcNames.add(npc.getName());
+		this.npc = npc;
 		this.npcIndex = npc.getIndex();
-		this.possibleRespawnLocations = new ArrayList<>();
-		this.respawnTime = -1;
-		this.diedOnTick = -1;
+		this.npcName = npc.getName();
+		this.attackSpeed = attackSpeed;
+		this.combatTimerEnd = -1;
+		this.flinchTimerEnd = -1;
+		this.timeLeft = 0;
+		this.status = Status.OUT_OF_COMBAT;
+		this.lastnpcarea = worldArea;
+		this.lastinteracted = null;
+		this.lastspotanimation = -1;
+	}
 
-		final NPCDefinition composition = npc.getTransformedDefinition();
+	@Getter
+	@AllArgsConstructor
+	enum Status
+	{
+		FLINCHING("Flinching", Color.GREEN),
+		IN_COMBAT_DELAY("In Combat Delay", Color.ORANGE),
+		IN_COMBAT("In Combat", Color.RED),
+		OUT_OF_COMBAT("Out of Combat", Color.BLUE);
 
-		if (composition != null)
-		{
-			this.npcSize = composition.getSize();
-		}
+		private String name;
+		private Color color;
 	}
 }

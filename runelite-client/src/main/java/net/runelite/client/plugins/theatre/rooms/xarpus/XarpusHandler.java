@@ -1,5 +1,13 @@
 package net.runelite.client.plugins.theatre.rooms.xarpus;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -19,20 +27,13 @@ import net.runelite.client.plugins.theatre.TheatreConfig;
 import net.runelite.client.plugins.theatre.TheatreConstant;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class XarpusHandler extends RoomHandler
 {
 
-	private int previousTurn;
-
-	private boolean staring;
-
 	private final Map<GroundObject, Integer> exhumes = new HashMap<>();
-
+	private int previousTurn;
+	private boolean staring;
 	private int ticksUntilShoot = 8;
 
 	@Getter
@@ -56,7 +57,9 @@ public class XarpusHandler extends RoomHandler
 	public void onStart()
 	{
 		if (this.plugin.getRoom() == TheatreRoom.XARPUS)
+		{
 			return;
+		}
 
 		this.reset();
 		this.plugin.setRoom(TheatreRoom.XARPUS);
@@ -102,7 +105,9 @@ public class XarpusHandler extends RoomHandler
 	public void render(Graphics2D graphics)
 	{
 		if (npc == null)
+		{
 			return;
+		}
 
 		if (npc.getId() == NpcID.XARPUS_8340) //&& !staring&& config.showXarpusTick())
 		{
@@ -111,13 +116,15 @@ public class XarpusHandler extends RoomHandler
 				this.up = true;
 				long elapsedTime = System.currentTimeMillis() - this.startTime;
 				long seconds = elapsedTime / 1000L;
-	
+
 				long minutes = seconds / 60L;
 				seconds = seconds % 60;
-	
+
 				this.ticksUntilShoot = 8;
 				if (config.extraTimers())
-				this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'Xarpus - Recovery' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
+				{
+					this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'Xarpus - Recovery' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
+				}
 			}
 
 			final String ticksLeftStr = String.valueOf(ticksUntilShoot);
@@ -257,7 +264,9 @@ public class XarpusHandler extends RoomHandler
 				long minutes = seconds / 60L;
 				seconds = seconds % 60;
 				if (config.extraTimers())
-				this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'Xarpus - Acid' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
+				{
+					this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'Xarpus - Acid' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
+				}
 			}
 
 			ticksUntilShoot = 6;
@@ -275,7 +284,7 @@ public class XarpusHandler extends RoomHandler
 			if (staring)
 			{
 				ticksUntilShoot = 8;
-			} 
+			}
 			else
 			{
 				ticksUntilShoot = 4;

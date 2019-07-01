@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2019, GeChallengeM <https://github.com/GeChallengeM>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,61 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npchighlight;
+package net.runelite.client.plugins.npcstatus;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.NPC;
-import net.runelite.api.NPCDefinition;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-class MemorizedNpc
+@ConfigGroup("npcstatus")
+public interface NpcStatusConfig extends Config
 {
-	@Getter
-	private int npcIndex;
-
-	@Getter
-	private Set<String> npcNames;
-
-	@Getter
-	private int npcSize;
-
-	/**
-	 * The time the npc died at, in game ticks, relative to the tick counter
-	 */
-	@Getter
-	@Setter
-	private int diedOnTick;
-
-	/**
-	 * The time it takes for the npc to respawn, in game ticks
-	 */
-	@Getter
-	@Setter
-	private int respawnTime;
-
-	@Getter
-	@Setter
-	private List<WorldPoint> possibleRespawnLocations;
-
-	MemorizedNpc(NPC npc)
+	@ConfigItem(
+			keyName = "AttackRange",
+			name = "NPC Attack range",
+			description = "The attack range of the NPC"
+	)
+	default int getRange()
 	{
-		this.npcNames = new HashSet<>();
-		this.npcNames.add(npc.getName());
-		this.npcIndex = npc.getIndex();
-		this.possibleRespawnLocations = new ArrayList<>();
-		this.respawnTime = -1;
-		this.diedOnTick = -1;
-
-		final NPCDefinition composition = npc.getTransformedDefinition();
-
-		if (composition != null)
-		{
-			this.npcSize = composition.getSize();
-		}
+		return 1;
 	}
 }

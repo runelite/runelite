@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2018, James Swindle <wilingua@gmail.com>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
+ * Copyright (c) 2018, GeChallengeM <https://github.com/GeChallengeM>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,74 +22,68 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.slayer;
+package net.runelite.client.plugins.npcstatus;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.Set;
 import javax.inject.Inject;
-import net.runelite.api.NPC;
+import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class TargetMinimapOverlay extends Overlay
+public class NpcStatusOverlay extends Overlay
 {
-	private final SlayerConfig config;
-	private final SlayerPlugin plugin;
+	private final Client client;
+	private final NpcStatusPlugin plugin;
 
 	@Inject
-	TargetMinimapOverlay(SlayerConfig config, SlayerPlugin plugin)
+	NpcStatusOverlay(Client client, NpcStatusPlugin plugin)
 	{
-		this.config = config;
+		this.client = client;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.highlightTargets())
+		for (MemorizedNPC npc : plugin.getMemorizedNPCs())
 		{
-			return null;
-		}
-
-		Set<NPC> targets = plugin.getHighlightedTargets();
-		for (NPC target : targets)
-		{
-			if (target == null || target.getName() == null)
+			if (npc.getNpc().getInteracting() == null)
 			{
 				continue;
 			}
-
-			Color coloration = config.getTargetColor();
-
-			if (plugin.isSuperior(target.getName()))
+			if (npc.getNpc().getInteracting() == client.getLocalPlayer() || client.getLocalPlayer().getInteracting() == npc.getNpc())
 			{
-				coloration = config.getSuperiorColor();
+				switch (npc.getStatus())
+				{
+					case FLINCHING:
+						npc.setTimeLeft(Math.max(0, npc.getFlinchTimerEnd() - client.getTickCount()));
+						break;
+					case IN_COMBAT_DELAY:
+						npc.setTimeLeft(Math.max(0, npc.getCombatTimerEnd() - client.getTickCount() - 7));
+						break;
+					case IN_COMBAT:
+						npc.setTimeLeft(Math.max(0, npc.getCombatTimerEnd() - client.getTickCount()));
+						break;
+					case OUT_OF_COMBAT:
+					default:
+						npc.setTimeLeft(0);
+						break;
+				}
+
+				Point textLocation = npc.getNpc().getCanvasTextLocation(graphics, Integer.toString(npc.getTimeLeft()), npc.getNpc().getLogicalHeight() + 40);
+
+				if (textLocation != null)
+				{
+					OverlayUtil.renderTextLocation(graphics, textLocation, Integer.toString(npc.getTimeLeft()), npc.getStatus().getColor());
+				}
 			}
-
-			renderTargetOverlay(graphics, target, target.getName(), coloration);
 		}
-
 		return null;
-	}
-
-	private void renderTargetOverlay(Graphics2D graphics, NPC actor, String name, Color color)
-	{
-		Point minimapLocation = actor.getMinimapLocation();
-		if (minimapLocation != null)
-		{
-			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color);
-
-			if (config.drawMinimapNames())
-			{
-				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
-			}
-		}
 	}
 }
