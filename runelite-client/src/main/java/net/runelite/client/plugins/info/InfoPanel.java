@@ -199,7 +199,7 @@ public class InfoPanel extends PluginPanel
 	/**
 	 * Builds a link panel with a given icon, text and callable to call.
 	 */
-	private static JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, Runnable callback)
+	private JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, Runnable callback)
 	{
 		JPanel container = new JPanel();
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
