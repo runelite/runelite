@@ -328,7 +328,7 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
-
+	
 	@ConfigItem(
 		keyName = "swapQuestCape",
 		name = "Swap Quest Cape",
@@ -651,20 +651,20 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Don't open implings if bank has a clue.",
 		position = 23,
 		group = "Miscellaneous"
-	)
-	default boolean swapImps()
+)
+default boolean swapImps()
 	{
 		return false;
 	}
 
-	@ConfigItem(
+@ConfigItem(
 		keyName = "charterOption",
 		name = "Trader Crew",
 		description = "Configure whether you want Charter or Trade to be the first option of Trader Crewmembers.",
 		position = 24,
 		group = "Miscellaneous"
-	)
-	default CharterOption charterOption()
+)
+default CharterOption charterOption()
 	{
 		return CharterOption.TRADE;
 	}
@@ -1671,25 +1671,23 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "removeFreezePlayerToB",
 		name = "Remove freeze in ToB",
 		description = "Removes the freeze option for ice barrage, ice blitz, entangle etc. in ToB",
-		position = 0,
-		group = "PVM"
+		position = 0
 	)
 
 	default boolean getRemoveFreezePlayerToB()
-	{
-		return true;
-	}
+		{
+			return true;
+		}
 
 	@ConfigItem(
 		keyName = "removeFreezePlayerCoX",
 		name = "Remove freeze in CoX",
 		description = "Removes the freeze option for ice barrage, ice blitz, entangle etc. in CoX",
-		position = 1,
-		group = "PVM"
+		position = 1
 	)
 
 	default boolean getRemoveFreezePlayerCoX()
-	{
-		return true;
-	}
+		{
+			return true;
+		}
 }
