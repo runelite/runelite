@@ -76,19 +76,6 @@ public class MenuManager
 	private static final int IDX_UPPER = 8;
 	static final Pattern LEVEL_PATTERN = Pattern.compile("\\(level-[0-9]*\\)");
 
-	private static MenuEntry CANCEL()
-	{
-		MenuEntry cancel = new MenuEntry();
-		cancel.setOption("Cancel");
-		cancel.setTarget("");
-		cancel.setIdentifier(0);
-		cancel.setType(MenuAction.CANCEL.getId());
-		cancel.setParam0(0);
-		cancel.setParam1(0);
-
-		return cancel;
-	}
-
 	private final Client client;
 	private final EventBus eventBus;
 	private final Prioritizer prioritizer;
@@ -107,9 +94,9 @@ public class MenuManager
 	private final Map<ComparableEntry, MenuEntry> currentSwaps = new HashMap<>();
 
 	private final LinkedHashSet<MenuEntry> entries = Sets.newLinkedHashSet();
-	private final Map<MenuEntry, Integer> originalTypes = new HashMap<>();
 
 	private MenuEntry leftClickEntry = null;
+	private int leftClickType = -1;
 
 	@Inject
 	private MenuManager(Client client, EventBus eventBus)
@@ -159,8 +146,6 @@ public class MenuManager
 	@Subscribe
 	public void onMenuOpened(MenuOpened event)
 	{
-		leftClickEntry = null;
-
 		currentPriorityEntries.clear();
 		currentHiddenEntries.clear();
 
@@ -169,11 +154,15 @@ public class MenuManager
 
 		for (MenuEntry entry : oldEntries)
 		{
-			if (originalTypes.containsKey(entry))
+			if (entry == leftClickEntry)
 			{
-				entry.setType(originalTypes.get(entry));
+				entry.setType(leftClickType);
+				break;
 			}
 		}
+
+		leftClickEntry = null;
+		leftClickType = -1;
 
 		client.sortMenuEntries();
 
@@ -299,6 +288,7 @@ public class MenuManager
 	public void onBeforeRender(BeforeRender event)
 	{
 		leftClickEntry = null;
+		leftClickType = -1;
 
 		if (client.isMenuOpen())
 		{
@@ -317,7 +307,6 @@ public class MenuManager
 		currentPriorityEntries.clear();
 		currentHiddenEntries.clear();
 		currentSwaps.clear();
-		originalTypes.clear();
 
 		prioritizer.prioritize();
 
@@ -334,10 +323,10 @@ public class MenuManager
 			if (entries.contains(entry))
 			{
 				leftClickEntry = entry;
-				originalTypes.put(leftClickEntry, leftClickEntry.getType());
+				leftClickType = entry.getType();
 				entries.remove(leftClickEntry);
+				leftClickEntry.setType(MenuAction.WIDGET_DEFAULT.getId());
 				entries.add(leftClickEntry);
-				Iterables.getLast(entries).setType(MenuAction.WIDGET_DEFAULT.getId());
 				break;
 			}
 		}
@@ -352,10 +341,10 @@ public class MenuManager
 				if (swap.matches(first))
 				{
 					leftClickEntry = currentSwaps.get(swap);
-					originalTypes.put(leftClickEntry, leftClickEntry.getType());
+					leftClickType = leftClickEntry.getType();
 					entries.remove(leftClickEntry);
+					leftClickEntry.setType(MenuAction.WIDGET_DEFAULT.getId());
 					entries.add(leftClickEntry);
-					Iterables.getLast(entries).setType(MenuAction.WIDGET_DEFAULT.getId());
 					break;
 				}
 			}
@@ -469,8 +458,9 @@ public class MenuManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (leftClickEntry != null)
+		if (leftClickEntry != null && leftClickType != -1)
 		{
+			leftClickEntry.setType(leftClickType);
 			event.setMenuEntry(leftClickEntry);
 			leftClickEntry = null;
 		}
