@@ -128,6 +128,11 @@ public class GoalTrackerOverlay extends Overlay
 				Rectangle2D textBounds = fm.getStringBounds(regionText, graphics);
 				Rectangle regionRect = new Rectangle(xPos, yPos, regionPixelSize, regionPixelSize);
 
+
+				Goal[] goals = plugin.getGoals().stream().filter(g -> g.getChunk() == regionId).toArray(Goal[]::new);
+				long completed = Arrays.stream(goals).filter(Goal::isCompleted).count();
+				long total = goals.length;
+
 				Goal[] reqs = new Goal[0];
 				if (!RegionLocker.hasRegion(regionId))
 				{
@@ -137,19 +142,16 @@ public class GoalTrackerOverlay extends Overlay
 							)
 					).toArray(Goal[]::new);
 				}
+
 				if (plugin.isHotkeyPressed() && regionRect.contains(mousePos.getX(), mousePos.getY()))
 				{
-					final String tooltip = buildTooltip(regionId, reqs);
+					final String tooltip = buildTooltip(goals, reqs);
 
 					if (!tooltip.isEmpty())
 					{
 						tooltipManager.add(new Tooltip(tooltip));
 					}
 				}
-
-				Goal[] goals = plugin.getGoals().stream().filter(g -> g.getChunk() == regionId).toArray(Goal[]::new);
-				long completed = Arrays.stream(goals).filter(Goal::isCompleted).count();
-				long total = goals.length;
 
 				if ((total > 0 && completed < total) || reqs.length > 0)
 				{
@@ -166,13 +168,23 @@ public class GoalTrackerOverlay extends Overlay
 		}
 	}
 
-	private String buildTooltip(int regionId, Goal[] reqs)
+	private String buildTooltip(Goal[] goals, Goal[] reqs)
 	{
 		String title = "Goals:</br>";
+		StringBuilder sb = textFromGoals(title, goals);
+
+		String reqsTitle = "Chunk required for:</br>";
+		StringBuilder reqsSb = textFromGoals(reqsTitle, reqs);
+
+		return sb.toString() + reqsSb.toString();
+	}
+
+	private StringBuilder textFromGoals(String title, Goal[] goals)
+	{
 		StringBuilder sb = new StringBuilder();
-		for (final Goal goal : plugin.getGoals())
+		for (final Goal goal : goals)
 		{
-			if (regionId == goal.getChunk() && !goal.isCompleted())
+			if (!goal.isCompleted())
 			{
 				long completed = goal.getRequirements().stream().filter(Requirement::isCompleted).count();
 				long total = goal.getRequirements().size();
@@ -182,23 +194,7 @@ public class GoalTrackerOverlay extends Overlay
 			}
 		}
 		if (!sb.toString().isEmpty()) sb.insert(0, title);
-
-		String reqsTitle = "Chunk required for:</br>";
-		StringBuilder reqsSb = new StringBuilder();
-		for (final Goal goal : reqs)
-		{
-			if (!goal.isCompleted())
-			{
-				long completed = goal.getRequirements().stream().filter(Requirement::isCompleted).count();
-				long total = goal.getRequirements().size();
-				Color color = getProgressColor(completed, total);
-
-				reqsSb.append(ColorUtil.wrapWithColorTag(goal.getName(), color) + "</br>");
-			}
-		}
-		if (!reqsSb.toString().isEmpty()) reqsSb.insert(0, reqsTitle);
-
-		return sb.toString() + reqsSb.toString();
+		return sb;
 	}
 
 	private Color getProgressColor(long count, long total)
