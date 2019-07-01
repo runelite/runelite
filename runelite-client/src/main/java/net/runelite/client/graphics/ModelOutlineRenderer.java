@@ -620,11 +620,6 @@ public class ModelOutlineRenderer
 	 */
 	private boolean projectVertices(Model model, final int localX, final int localY, final int localZ, final int vertexOrientation)
 	{
-		if (model == null)
-		{
-			return false;
-		}
-
 		final int cameraX = client.getCameraX();
 		final int cameraY = client.getCameraY();
 		final int cameraZ = client.getCameraZ();
