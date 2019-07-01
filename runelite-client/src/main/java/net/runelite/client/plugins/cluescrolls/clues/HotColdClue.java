@@ -296,10 +296,10 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		else
 		{
 			location = null;
-
-			final HotColdTemperatureChange temperatureChange = HotColdTemperatureChange.of(message);
-			hotColdSolver.signal(localWorld, temperature, temperatureChange);
 		}
+
+		final HotColdTemperatureChange temperatureChange = HotColdTemperatureChange.of(message);
+		hotColdSolver.signal(localWorld, temperature, temperatureChange);
 
 		return true;
 	}
@@ -339,7 +339,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	private void markFinalSpot(WorldPoint wp)
 	{
 		this.location = wp;
-		reset();
 	}
 
 	public String[] getNpcs()
