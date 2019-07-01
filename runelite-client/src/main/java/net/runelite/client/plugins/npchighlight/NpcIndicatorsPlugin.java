@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -58,6 +59,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcCompositionChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.callback.ClientThread;
@@ -304,14 +306,15 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		if (removed)
 		{
-			highlightedNpcs.remove(npc);
-			memorizedNpcs.remove(npc.getIndex());
+			MemorizedNpc mn = memorizedNpcs.get(npc.getIndex());
+			if (mn != null && isNpcMemorizationUnnecessary(mn))
+			{
+				memorizedNpcs.remove(npc.getIndex());
+			}
 		}
 		else
 		{
-			memorizeNpc(npc);
 			npcTags.add(id);
-			highlightedNpcs.add(npc);
 		}
 
 		click.consume();
@@ -320,30 +323,28 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
-		final NPC npc = npcSpawned.getNpc();
-		final String npcName = npc.getName();
+		NPC npc = npcSpawned.getNpc();
+		highlightNpcIfMatch(npc);
 
-		if (npcName == null)
+		if (memorizedNpcs.containsKey(npc.getIndex()))
 		{
-			return;
-		}
-
-		if (npcTags.contains(npc.getIndex()))
-		{
-			memorizeNpc(npc);
-			highlightedNpcs.add(npc);
 			spawnedNpcsThisTick.add(npc);
-			return;
 		}
+	}
 
-		for (String highlight : highlights)
+	@Subscribe
+	public void onNpcCompositionChanged(NpcCompositionChanged event)
+	{
+		NPC npc = event.getNpc();
+		highlightNpcIfMatch(npc);
+
+		MemorizedNpc mn = memorizedNpcs.get(npc.getIndex());
+		if (mn != null)
 		{
-			if (WildcardMatcher.matches(highlight, npcName))
+			String npcName = npc.getName();
+			if (npcName != null)
 			{
-				memorizeNpc(npc);
-				highlightedNpcs.add(npc);
-				spawnedNpcsThisTick.add(npc);
-				break;
+				mn.getNpcNames().add(npcName);
 			}
 		}
 	}
@@ -428,10 +429,57 @@ public class NpcIndicatorsPlugin extends Plugin
 		return new WorldPoint(currWP.getX() - dx, currWP.getY() - dy, currWP.getPlane());
 	}
 
+	private void highlightNpcIfMatch(final NPC npc)
+	{
+		if (npcTags.contains(npc.getIndex()))
+		{
+			memorizeNpc(npc);
+			highlightedNpcs.add(npc);
+			return;
+		}
+
+		final String npcName = npc.getName();
+		if (npcName != null)
+		{
+			for (String highlight : highlights)
+			{
+				if (WildcardMatcher.matches(highlight, npcName))
+				{
+					memorizeNpc(npc);
+					highlightedNpcs.add(npc);
+					return;
+				}
+			}
+		}
+
+		highlightedNpcs.remove(npc);
+	}
+
 	private void memorizeNpc(NPC npc)
 	{
 		final int npcIndex = npc.getIndex();
 		memorizedNpcs.putIfAbsent(npcIndex, new MemorizedNpc(npc));
+	}
+
+	private boolean isNpcMemorizationUnnecessary(final MemorizedNpc mn)
+	{
+		if (npcTags.contains(mn.getNpcIndex()))
+		{
+			return false;
+		}
+
+		for (String npcName : mn.getNpcNames())
+		{
+			for (String highlight : highlights)
+			{
+				if (WildcardMatcher.matches(highlight, npcName))
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	private void removeOldHighlightedRespawns()
@@ -464,34 +512,21 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		outer:
+		Iterator<Map.Entry<Integer, MemorizedNpc>> it = memorizedNpcs.entrySet().iterator();
+		while (it.hasNext())
+		{
+			MemorizedNpc mn = it.next().getValue();
+
+			if (isNpcMemorizationUnnecessary(mn))
+			{
+				deadNpcsToDisplay.remove(mn.getNpcIndex());
+				it.remove();
+			}
+		}
+
 		for (NPC npc : client.getNpcs())
 		{
-			final String npcName = npc.getName();
-
-			if (npcName == null)
-			{
-				continue;
-			}
-
-			if (npcTags.contains(npc.getIndex()))
-			{
-				highlightedNpcs.add(npc);
-				continue;
-			}
-
-			for (String highlight : highlights)
-			{
-				if (WildcardMatcher.matches(highlight, npcName))
-				{
-					memorizeNpc(npc);
-					highlightedNpcs.add(npc);
-					continue outer;
-				}
-			}
-
-			// NPC is not highlighted
-			memorizedNpcs.remove(npc.getIndex());
+			highlightNpcIfMatch(npc);
 		}
 	}
 
@@ -524,7 +559,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 						if (!mn.getPossibleRespawnLocations().isEmpty())
 						{
-							log.debug("Starting {} tick countdown for {}", mn.getRespawnTime(), mn.getNpcName());
+							log.debug("Starting {} tick countdown for {}", mn.getRespawnTime(), mn.getNpcNames().iterator().next());
 							deadNpcsToDisplay.put(mn.getNpcIndex(), mn);
 						}
 					}
