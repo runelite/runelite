@@ -30,7 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
@@ -71,7 +71,7 @@ public class TargetClickboxOverlay extends Overlay
 	{
 		if (config.highlightTargets())
 		{
-			List<NPC> targets = plugin.getHighlightedTargets();
+			Set<NPC> targets = plugin.getHighlightedTargets();
 			for (NPC target : targets)
 			{
 				if (target == null || target.getName() == null)

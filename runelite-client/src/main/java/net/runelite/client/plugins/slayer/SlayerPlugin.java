@@ -36,6 +36,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -66,6 +67,7 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.NpcCompositionChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
@@ -79,7 +81,6 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.AsyncBufferedImage;
@@ -215,11 +216,8 @@ public class SlayerPlugin extends Plugin
 	@Inject
 	private ChatClient chatClient;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
-	private List<NPC> highlightedTargets = new ArrayList<>();
+	private final Set<NPC> highlightedTargets = new HashSet<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -349,8 +347,17 @@ public class SlayerPlugin extends Plugin
 		if (isTarget(npc, targetNames))
 		{
 			highlightedTargets.add(npc);
-			NPCPresence newPresence = NPCPresence.buildPresence(npc);
-			// log.debug("New presence of " + newPresence.toString());
+		}
+	}
+
+	@Subscribe
+	public void onNpcCompositionChanged(NpcCompositionChanged event)
+	{
+		NPC npc = event.getNpc();
+
+		if (isTarget(npc, targetNames))
+		{
+			highlightedTargets.add(npc);
 		}
 	}
 
@@ -363,7 +370,6 @@ public class SlayerPlugin extends Plugin
 		{
 			NPCPresence lingeringPresence = NPCPresence.buildPresence(npc);
 			lingeringPresences.add(lingeringPresence);
-			// log.debug("Presence of " + lingeringPresence.toString() + " now lingering");
 		}
 	}
 
@@ -583,8 +589,6 @@ public class SlayerPlugin extends Plugin
 					streak = 1;
 					break;
 				case 1:
-					streak = Integer.parseInt(matches.get(0));
-					break;
 				case 3:
 					streak = Integer.parseInt(matches.get(0));
 					break;
@@ -665,29 +669,13 @@ public class SlayerPlugin extends Plugin
 			// this is not the initial xp sent on login so these are new xp gains
 			int gains = slayerExp - cachedXp;
 
-			//log.debug("Slayer xp drop received");
-
-			//StringBuilder debugString = new StringBuilder();
-
 			// potential npcs to give xp drop are current highlighted npcs and the lingering presences
-			List<NPCPresence> potentialNPCs = new ArrayList<>();
-			//debugString.append("Lingering presences {");
-			for (NPCPresence presence : lingeringPresences)
-			{
-				potentialNPCs.add(presence);
-			//	debugString.append(presence.toString());
-			//	debugString.append(", ");
-			}
-			//debugString.append("}\nCurrent presences {");
+			List<NPCPresence> potentialNPCs = new ArrayList<>(lingeringPresences);
 			for (NPC npc : highlightedTargets)
 			{
 				NPCPresence currentPresence = NPCPresence.buildPresence(npc);
 				potentialNPCs.add(currentPresence);
-			//	debugString.append(currentPresence.toString());
-			//	debugString.append(", ");
 			}
-			//debugString.append("}");
-			//log.debug(debugString.toString());
 
 			int killCount = estimateKillCount(potentialNPCs, gains);
 			for (int i = 0; i < killCount; i++)
@@ -906,8 +894,7 @@ public class SlayerPlugin extends Plugin
 
 		if (task != null)
 		{
-			task.getNpcIds().stream()
-				.forEach(targetIds::add);
+			targetIds.addAll(task.getNpcIds());
 		}
 	}
 
