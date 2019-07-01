@@ -224,11 +224,8 @@ public class MaidenHandler extends RoomHandler
 				}
 				if (!N1.contains(wp) && !N2.contains(wp) && !S1.contains(wp) && !S2.contains(wp))
 				{
-					log.debug("------------------------");
-					log.debug("No World Points Matched");
-					log.debug("Dumping Location");
-					log.debug("Instance Loc: " + wp);
-					log.debug("------------------------");
+					log.info("No World Points Matched");
+					log.info("Instance Loc: " + wp);
 				}
 				break;
 			case "Blood spawn":
