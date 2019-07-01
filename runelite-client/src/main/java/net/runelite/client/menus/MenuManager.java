@@ -31,24 +31,28 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPCDefinition;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -60,7 +64,6 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.Text;
-import org.apache.commons.lang3.ArrayUtils;
 
 @Singleton
 @Slf4j
@@ -88,6 +91,7 @@ public class MenuManager
 
 	private final Client client;
 	private final EventBus eventBus;
+	private final Prioritizer prioritizer;
 
 	//Maps the indexes that are being used to the menu option.
 	private final Map<Integer, String> playerMenuIndexMap = new HashMap<>();
@@ -98,16 +102,21 @@ public class MenuManager
 	private final Set<ComparableEntry> priorityEntries = new HashSet<>();
 	private final Set<MenuEntry> currentPriorityEntries = new HashSet<>();
 	private final Set<ComparableEntry> hiddenEntries = new HashSet<>();
-
+	private final Set<MenuEntry> currentHiddenEntries = new HashSet<>();
 	private final Map<ComparableEntry, ComparableEntry> swaps = new HashMap<>();
+	private final Map<ComparableEntry, MenuEntry> currentSwaps = new HashMap<>();
+
+	private final LinkedHashSet<MenuEntry> entries = Sets.newLinkedHashSet();
+	private final Map<MenuEntry, Integer> originalTypes = new HashMap<>();
+
 	private MenuEntry leftClickEntry = null;
-	private ComparableEntry comparableEntry = null;
 
 	@Inject
 	private MenuManager(Client client, EventBus eventBus)
 	{
 		this.client = client;
 		this.eventBus = eventBus;
+		this.prioritizer = new Prioritizer();
 	}
 
 	/**
@@ -153,10 +162,21 @@ public class MenuManager
 		leftClickEntry = null;
 
 		currentPriorityEntries.clear();
+		currentHiddenEntries.clear();
 
-		MenuEntry[] entries = client.getMenuEntries();
+		// Need to reorder the list to normal, then rebuild with swaps
+		MenuEntry[] oldEntries = event.getMenuEntries();
 
-		ArrayList<MenuEntry> oldEntries = Lists.newArrayList(entries);
+		for (MenuEntry entry : oldEntries)
+		{
+			if (originalTypes.containsKey(entry))
+			{
+				entry.setType(originalTypes.get(entry));
+			}
+		}
+
+		client.sortMenuEntries();
+
 		List<MenuEntry> newEntries = Lists.newArrayList(oldEntries);
 
 		boolean shouldDeprioritize = false;
@@ -191,12 +211,10 @@ public class MenuManager
 
 			if (newEntries.size() > 0)
 			{
-				MenuEntry last = Iterables.getLast(newEntries);
-
 				// Swap first matching entry to top
 				for (ComparableEntry src : swaps.keySet())
 				{
-					if (!src.matches(last))
+					if (!src.matches(entry))
 					{
 						continue;
 					}
@@ -215,16 +233,16 @@ public class MenuManager
 					}
 
 					// Do not need to swap with itself
-					if (swapFrom != null && swapFrom != last)
+					if (swapFrom != null && swapFrom != entry)
 					{
 						// Deprioritize entries if the swaps are not in similar type groups
-						if ((swapFrom.getType() >= 1000 && last.getType() < 1000) || (last.getType() >= 1000 && swapFrom.getType() < 1000) && !shouldDeprioritize)
+						if ((swapFrom.getType() >= 1000 && entry.getType() < 1000) || (entry.getType() >= 1000 && swapFrom.getType() < 1000) && !shouldDeprioritize)
 						{
 							shouldDeprioritize = true;
 						}
 
 						int indexFrom = newEntries.indexOf(swapFrom);
-						int indexTo = newEntries.indexOf(last);
+						int indexTo = newEntries.indexOf(entry);
 
 						Collections.swap(newEntries, indexFrom, indexTo);
 					}
@@ -273,80 +291,79 @@ public class MenuManager
 				client.setMenuEntries(menuEntries);
 			}
 		}
+	}
 
-		final MenuEntry entry = menuEntries[menuEntries.length - 1];
 
-		// Reset tracked entries
-		if (entry.getOption().equals("Cancel"))
+
+	@Subscribe
+	public void onBeforeRender(BeforeRender event)
+	{
+		leftClickEntry = null;
+
+		if (client.isMenuOpen())
 		{
-			comparableEntry = null;
-			leftClickEntry = null;
+			return;
 		}
+
+		entries.clear();
+
+		entries.addAll(Arrays.asList(client.getMenuEntries()));
+
+		if (entries.size() < 2)
+		{
+			return;
+		}
+
+		currentPriorityEntries.clear();
+		currentHiddenEntries.clear();
+		currentSwaps.clear();
+		originalTypes.clear();
+
+		prioritizer.prioritize();
+
+		while (prioritizer.isRunning())
+		{
+			// wait
+		}
+
+		entries.removeAll(currentHiddenEntries);
+
+
+		for (MenuEntry entry : currentPriorityEntries)
+		{
+			if (entries.contains(entry))
+			{
+				leftClickEntry = entry;
+				originalTypes.put(leftClickEntry, leftClickEntry.getType());
+				entries.remove(leftClickEntry);
+				entries.add(leftClickEntry);
+				Iterables.getLast(entries).setType(MenuAction.WIDGET_DEFAULT.getId());
+				break;
+			}
+		}
+
 
 		if (leftClickEntry == null)
 		{
-			for (ComparableEntry p : priorityEntries)
-			{
-				if (p.matches(entry))
-				{
-					leftClickEntry = entry;
-					comparableEntry = new ComparableEntry(entry);
-					return;
-				}
-			}
+			MenuEntry first = Iterables.getLast(entries);
 
-			for (ComparableEntry p : swaps.values())
+			for (ComparableEntry swap : currentSwaps.keySet())
 			{
-				if (p.matches(entry))
+				if (swap.matches(first))
 				{
-					leftClickEntry = entry;
-					comparableEntry = new ComparableEntry(entry);
-					return;
+					leftClickEntry = currentSwaps.get(swap);
+					originalTypes.put(leftClickEntry, leftClickEntry.getType());
+					entries.remove(leftClickEntry);
+					entries.add(leftClickEntry);
+					Iterables.getLast(entries).setType(MenuAction.WIDGET_DEFAULT.getId());
+					break;
 				}
 			}
 		}
 
-		if (leftClickEntry != null && menuEntries.length > 1)
-		{
-			// No need to move the entry if it is already the first option
-			if (comparableEntry.matches(menuEntries[menuEntries.length - 1]))
-			{
-				return;
-			}
-
-			// If the entry is not the second to last, we can't do a normal swap
-			if (!comparableEntry.matches(menuEntries[menuEntries.length - 2]))
-			{
-				int position = 0;
-				MenuEntry foundEntry = null;
-
-				for (MenuEntry e : menuEntries)
-				{
-					if (e.getOption().equals(leftClickEntry.getOption())
-						&& e.getTarget().equals(leftClickEntry.getTarget()))
-					{
-						foundEntry = menuEntries[position];
-						break;
-					}
-					position++;
-				}
-
-				if (foundEntry != null)
-				{
-					menuEntries = ArrayUtils.remove(menuEntries, position);
-					menuEntries = ArrayUtils.insert(menuEntries.length, menuEntries, foundEntry);
-				}
-			}
-			else
-			{
-				ArrayUtils.swap(menuEntries, menuEntries.length - 2, menuEntries.length - 1);
-			}
-
-			menuEntries[menuEntries.length - 1].setType(MenuAction.WIDGET_DEFAULT.getId());
-
-			client.setMenuEntries(menuEntries);
-		}
+		client.setMenuEntries(entries.toArray(new MenuEntry[0]));
 	}
+
 
 	public void addPlayerMenuItem(String menuText)
 	{
@@ -455,6 +472,7 @@ public class MenuManager
 		if (leftClickEntry != null)
 		{
 			event.setMenuEntry(leftClickEntry);
+			leftClickEntry = null;
 		}
 
 		if (event.getMenuAction() != MenuAction.RUNELITE)
@@ -779,5 +797,117 @@ public class MenuManager
 	public void removeHiddenEntry(ComparableEntry entry)
 	{
 		hiddenEntries.remove(entry);
+	}
+
+	private class Prioritizer
+	{
+		private MenuEntry[] entries;
+		private AtomicInteger state = new AtomicInteger(0);
+
+		boolean isRunning()
+		{
+			return state.get() != 0;
+		}
+
+		void prioritize()
+		{
+			if (state.get() != 0)
+			{
+				return;
+			}
+
+			entries = client.getMenuEntries();
+
+			state.set(3);
+
+			if (!hiddenEntries.isEmpty())
+			{
+				hiddenFinder.run();
+			}
+			else
+			{
+				state.decrementAndGet();
+			}
+
+			if (!priorityEntries.isEmpty())
+			{
+				priorityFinder.run();
+			}
+			else
+			{
+				state.decrementAndGet();
+			}
+
+			if (!swaps.isEmpty())
+			{
+				swapFinder.run();
+			}
+			else
+			{
+				state.decrementAndGet();
+			}
+		}
+
+		private Thread hiddenFinder = new Thread()
+		{
+			@Override
+			public void run()
+			{
+				Arrays.stream(entries).parallel().forEach(entry ->
+				{
+					for (ComparableEntry p : hiddenEntries)
+					{
+						if (p.matches(entry))
+						{
+							currentHiddenEntries.add(entry);
+							return;
+						}
+					}
+				});
+				state.decrementAndGet();
+			}
+		};
+
+		private Thread priorityFinder = new Thread()
+		{
+			@Override
+			public void run()
+			{
+				Arrays.stream(entries).parallel().forEach(entry ->
+				{
+					for (ComparableEntry p : priorityEntries)
+					{
+						if (p.matches(entry))
+						{
+							currentPriorityEntries.add(entry);
+							return;
+						}
+					}
+				});
+
+				state.decrementAndGet();
+			}
+		};
+
+		private Thread swapFinder = new Thread()
+		{
+			@Override
+			public void run()
+			{
+				Arrays.stream(entries).parallel().forEach(entry ->
+				{
+					for (Map.Entry<ComparableEntry, ComparableEntry> p : swaps.entrySet())
+					{
+						if (p.getValue().matches(entry))
+						{
+							currentSwaps.put(p.getKey(), entry);
+							return;
+						}
+					}
+				});
+
+				state.decrementAndGet();
+			}
+		};
 	}
 }
