@@ -67,7 +67,7 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
-import net.runelite.api.events.NpcCompositionChanged;
+import net.runelite.api.events.NpcDefinitionChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
@@ -351,7 +351,7 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcCompositionChanged(NpcCompositionChanged event)
+	public void onNpcDefinitionChanged(NpcDefinitionChanged event)
 	{
 		NPC npc = event.getNpc();
 
