@@ -29,9 +29,8 @@ package net.runelite.client.plugins.slayer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
-import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
@@ -41,15 +40,12 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class TargetMinimapOverlay extends Overlay
 {
-
-	private final Client client;
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
 
 	@Inject
-	TargetMinimapOverlay(Client client, SlayerConfig config, SlayerPlugin plugin)
+	TargetMinimapOverlay(SlayerConfig config, SlayerPlugin plugin)
 	{
-		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
@@ -64,7 +60,7 @@ public class TargetMinimapOverlay extends Overlay
 			return null;
 		}
 
-		List<NPC> targets = plugin.getHighlightedTargets();
+		Set<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
 		{
 			if (target == null || target.getName() == null)
