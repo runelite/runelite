@@ -29,133 +29,8 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import static net.runelite.api.ItemID.ABYSSAL_BRACELET1;
-import static net.runelite.api.ItemID.ABYSSAL_BRACELET2;
-import static net.runelite.api.ItemID.ABYSSAL_BRACELET3;
-import static net.runelite.api.ItemID.ABYSSAL_BRACELET4;
-import static net.runelite.api.ItemID.ABYSSAL_BRACELET5;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY1;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY2;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY3;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY4;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY5;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY6;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY_T1;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY_T2;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY_T3;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY_T4;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY_T5;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY_T6;
-import static net.runelite.api.ItemID.BURNING_AMULET1;
-import static net.runelite.api.ItemID.BURNING_AMULET2;
-import static net.runelite.api.ItemID.BURNING_AMULET3;
-import static net.runelite.api.ItemID.BURNING_AMULET4;
-import static net.runelite.api.ItemID.BURNING_AMULET5;
-import static net.runelite.api.ItemID.COMBAT_BRACELET1;
-import static net.runelite.api.ItemID.COMBAT_BRACELET2;
-import static net.runelite.api.ItemID.COMBAT_BRACELET3;
-import static net.runelite.api.ItemID.COMBAT_BRACELET4;
-import static net.runelite.api.ItemID.COMBAT_BRACELET5;
-import static net.runelite.api.ItemID.COMBAT_BRACELET6;
-import static net.runelite.api.ItemID.DIGSITE_PENDANT_1;
-import static net.runelite.api.ItemID.DIGSITE_PENDANT_2;
-import static net.runelite.api.ItemID.DIGSITE_PENDANT_3;
-import static net.runelite.api.ItemID.DIGSITE_PENDANT_4;
-import static net.runelite.api.ItemID.DIGSITE_PENDANT_5;
-import static net.runelite.api.ItemID.ENCHANTED_LYRE1;
-import static net.runelite.api.ItemID.ENCHANTED_LYRE2;
-import static net.runelite.api.ItemID.ENCHANTED_LYRE3;
-import static net.runelite.api.ItemID.ENCHANTED_LYRE4;
-import static net.runelite.api.ItemID.ENCHANTED_LYRE5;
-import static net.runelite.api.ItemID.FUNGICIDE_SPRAY_0;
-import static net.runelite.api.ItemID.FUNGICIDE_SPRAY_1;
-import static net.runelite.api.ItemID.FUNGICIDE_SPRAY_10;
-import static net.runelite.api.ItemID.FUNGICIDE_SPRAY_2;
-import static net.runelite.api.ItemID.FUNGICIDE_SPRAY_3;
-import static net.runelite.api.ItemID.FUNGICIDE_SPRAY_4;
-import static net.runelite.api.ItemID.FUNGICIDE_SPRAY_5;
-import static net.runelite.api.ItemID.FUNGICIDE_SPRAY_6;
-import static net.runelite.api.ItemID.FUNGICIDE_SPRAY_7;
-import static net.runelite.api.ItemID.FUNGICIDE_SPRAY_8;
-import static net.runelite.api.ItemID.FUNGICIDE_SPRAY_9;
-import static net.runelite.api.ItemID.GAMES_NECKLACE1;
-import static net.runelite.api.ItemID.GAMES_NECKLACE2;
-import static net.runelite.api.ItemID.GAMES_NECKLACE3;
-import static net.runelite.api.ItemID.GAMES_NECKLACE4;
-import static net.runelite.api.ItemID.GAMES_NECKLACE5;
-import static net.runelite.api.ItemID.GAMES_NECKLACE6;
-import static net.runelite.api.ItemID.GAMES_NECKLACE7;
-import static net.runelite.api.ItemID.GAMES_NECKLACE8;
-import static net.runelite.api.ItemID.IMPINABOX1;
-import static net.runelite.api.ItemID.IMPINABOX2;
-import static net.runelite.api.ItemID.NECKLACE_OF_PASSAGE1;
-import static net.runelite.api.ItemID.NECKLACE_OF_PASSAGE2;
-import static net.runelite.api.ItemID.NECKLACE_OF_PASSAGE3;
-import static net.runelite.api.ItemID.NECKLACE_OF_PASSAGE4;
-import static net.runelite.api.ItemID.NECKLACE_OF_PASSAGE5;
-import static net.runelite.api.ItemID.OGRE_BELLOWS;
-import static net.runelite.api.ItemID.OGRE_BELLOWS_1;
-import static net.runelite.api.ItemID.OGRE_BELLOWS_2;
-import static net.runelite.api.ItemID.OGRE_BELLOWS_3;
-import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE_1;
-import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE_2;
-import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE_3;
-import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE_4;
-import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE_5;
-import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE_6;
-import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE_7;
-import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE_8;
-import static net.runelite.api.ItemID.RING_OF_DUELING1;
-import static net.runelite.api.ItemID.RING_OF_DUELING2;
-import static net.runelite.api.ItemID.RING_OF_DUELING3;
-import static net.runelite.api.ItemID.RING_OF_DUELING4;
-import static net.runelite.api.ItemID.RING_OF_DUELING5;
-import static net.runelite.api.ItemID.RING_OF_DUELING6;
-import static net.runelite.api.ItemID.RING_OF_DUELING7;
-import static net.runelite.api.ItemID.RING_OF_DUELING8;
-import static net.runelite.api.ItemID.RING_OF_RETURNING1;
-import static net.runelite.api.ItemID.RING_OF_RETURNING2;
-import static net.runelite.api.ItemID.RING_OF_RETURNING3;
-import static net.runelite.api.ItemID.RING_OF_RETURNING4;
-import static net.runelite.api.ItemID.RING_OF_RETURNING5;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_1;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_2;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_3;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_4;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_5;
-import static net.runelite.api.ItemID.SKILLS_NECKLACE1;
-import static net.runelite.api.ItemID.SKILLS_NECKLACE2;
-import static net.runelite.api.ItemID.SKILLS_NECKLACE3;
-import static net.runelite.api.ItemID.SKILLS_NECKLACE4;
-import static net.runelite.api.ItemID.SKILLS_NECKLACE5;
-import static net.runelite.api.ItemID.SKILLS_NECKLACE6;
-import static net.runelite.api.ItemID.SLAYER_RING_1;
-import static net.runelite.api.ItemID.SLAYER_RING_2;
-import static net.runelite.api.ItemID.SLAYER_RING_3;
-import static net.runelite.api.ItemID.SLAYER_RING_4;
-import static net.runelite.api.ItemID.SLAYER_RING_5;
-import static net.runelite.api.ItemID.SLAYER_RING_6;
-import static net.runelite.api.ItemID.SLAYER_RING_7;
-import static net.runelite.api.ItemID.SLAYER_RING_8;
-import static net.runelite.api.ItemID.TELEPORT_CRYSTAL_1;
-import static net.runelite.api.ItemID.TELEPORT_CRYSTAL_2;
-import static net.runelite.api.ItemID.TELEPORT_CRYSTAL_3;
-import static net.runelite.api.ItemID.TELEPORT_CRYSTAL_4;
-import static net.runelite.api.ItemID.TELEPORT_CRYSTAL_5;
-import static net.runelite.api.ItemID.WATERING_CAN;
-import static net.runelite.api.ItemID.WATERING_CAN1;
-import static net.runelite.api.ItemID.WATERING_CAN2;
-import static net.runelite.api.ItemID.WATERING_CAN3;
-import static net.runelite.api.ItemID.WATERING_CAN4;
-import static net.runelite.api.ItemID.WATERING_CAN5;
-import static net.runelite.api.ItemID.WATERING_CAN6;
-import static net.runelite.api.ItemID.WATERING_CAN7;
-import static net.runelite.api.ItemID.WATERING_CAN8;
-import static net.runelite.api.ItemID.WATERSKIN0;
-import static net.runelite.api.ItemID.WATERSKIN1;
-import static net.runelite.api.ItemID.WATERSKIN2;
-import static net.runelite.api.ItemID.WATERSKIN3;
-import static net.runelite.api.ItemID.WATERSKIN4;
+
+import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.ABYSSAL_BRACELET;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
@@ -163,6 +38,8 @@ import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.FRUIT_BASKET;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.SACK;
 
 @AllArgsConstructor
 @Getter
@@ -173,6 +50,31 @@ enum ItemWithCharge
 	ABRACE3(ABYSSAL_BRACELET, ABYSSAL_BRACELET3, 3),
 	ABRACE4(ABYSSAL_BRACELET, ABYSSAL_BRACELET4, 4),
 	ABRACE5(ABYSSAL_BRACELET, ABYSSAL_BRACELET5, 5),
+	BASKET_APPLES1(FRUIT_BASKET, APPLES1, 1),
+	BASKET_APPLES2(FRUIT_BASKET, APPLES2, 2),
+	BASKET_APPLES3(FRUIT_BASKET, APPLES3, 3),
+	BASKET_APPLES4(FRUIT_BASKET, APPLES4, 4),
+	BASKET_APPLES5(FRUIT_BASKET, APPLES5, 5),
+	BASKET_BANANAS1(FRUIT_BASKET, BANANAS1, 1),
+	BASKET_BANANAS2(FRUIT_BASKET, BANANAS2, 2),
+	BASKET_BANANAS3(FRUIT_BASKET, BANANAS3, 3),
+	BASKET_BANANAS4(FRUIT_BASKET, BANANAS4, 4),
+	BASKET_BANANAS5(FRUIT_BASKET, BANANAS5, 5),
+	BASKET_ORANGES1(FRUIT_BASKET, ORANGES1, 1),
+	BASKET_ORANGES2(FRUIT_BASKET, ORANGES2, 2),
+	BASKET_ORANGES3(FRUIT_BASKET, ORANGES3, 3),
+	BASKET_ORANGES4(FRUIT_BASKET, ORANGES4, 4),
+	BASKET_ORANGES5(FRUIT_BASKET, ORANGES5, 5),
+	BASKET_STRAWBERRIES1(FRUIT_BASKET, STRAWBERRIES1, 1),
+	BASKET_STRAWBERRIES2(FRUIT_BASKET, STRAWBERRIES2, 2),
+	BASKET_STRAWBERRIES3(FRUIT_BASKET, STRAWBERRIES3, 3),
+	BASKET_STRAWBERRIES4(FRUIT_BASKET, STRAWBERRIES4, 4),
+	BASKET_STRAWBERRIES5(FRUIT_BASKET, STRAWBERRIES5, 5),
+	BASKET_TOMATOES1(FRUIT_BASKET, TOMATOES1, 1),
+	BASKET_TOMATOES2(FRUIT_BASKET, TOMATOES2, 2),
+	BASKET_TOMATOES3(FRUIT_BASKET, TOMATOES3, 3),
+	BASKET_TOMATOES4(FRUIT_BASKET, TOMATOES4, 4),
+	BASKET_TOMATOES5(FRUIT_BASKET, TOMATOES5, 5),
 	BELLOWS0(BELLOWS, OGRE_BELLOWS, 0),
 	BELLOWS1(BELLOWS, OGRE_BELLOWS_1, 1),
 	BELLOWS2(BELLOWS, OGRE_BELLOWS_2, 2),
@@ -270,6 +172,36 @@ enum ItemWithCharge
 	ROW3(TELEPORT, RING_OF_WEALTH_3, 3),
 	ROW4(TELEPORT, RING_OF_WEALTH_4, 4),
 	ROW5(TELEPORT, RING_OF_WEALTH_5, 5),
+	SACK_CABBAGES1(SACK, CABBAGES1, 1),
+	SACK_CABBAGES2(SACK, CABBAGES2, 2),
+	SACK_CABBAGES3(SACK, CABBAGES3, 3),
+	SACK_CABBAGES4(SACK, CABBAGES4, 4),
+	SACK_CABBAGES5(SACK, CABBAGES5, 5),
+	SACK_CABBAGES6(SACK, CABBAGES6, 6),
+	SACK_CABBAGES7(SACK, CABBAGES7, 7),
+	SACK_CABBAGES8(SACK, CABBAGES8, 8),
+	SACK_CABBAGES9(SACK, CABBAGES9, 9),
+	SACK_CABBAGES10(SACK, CABBAGES10, 10),
+	SACK_ONIONS1(SACK, ONIONS1, 1),
+	SACK_ONIONS2(SACK, ONIONS2, 2),
+	SACK_ONIONS3(SACK, ONIONS3, 3),
+	SACK_ONIONS4(SACK, ONIONS4, 4),
+	SACK_ONIONS5(SACK, ONIONS5, 5),
+	SACK_ONIONS6(SACK, ONIONS6, 6),
+	SACK_ONIONS7(SACK, ONIONS7, 7),
+	SACK_ONIONS8(SACK, ONIONS8, 8),
+	SACK_ONIONS9(SACK, ONIONS9, 9),
+	SACK_ONIONS10(SACK, ONIONS10, 10),
+	SACK_POTATOES1(SACK, POTATOES1, 1),
+	SACK_POTATOES2(SACK, POTATOES2, 2),
+	SACK_POTATOES3(SACK, POTATOES3, 3),
+	SACK_POTATOES4(SACK, POTATOES4, 4),
+	SACK_POTATOES5(SACK, POTATOES5, 5),
+	SACK_POTATOES6(SACK, POTATOES6, 6),
+	SACK_POTATOES7(SACK, POTATOES7, 7),
+	SACK_POTATOES8(SACK, POTATOES8, 8),
+	SACK_POTATOES9(SACK, POTATOES9, 9),
+	SACK_POTATOES10(SACK, POTATOES10, 10),
 	SKILLS1(TELEPORT, SKILLS_NECKLACE1, 1),
 	SKILLS2(TELEPORT, SKILLS_NECKLACE2, 2),
 	SKILLS3(TELEPORT, SKILLS_NECKLACE3, 3),
