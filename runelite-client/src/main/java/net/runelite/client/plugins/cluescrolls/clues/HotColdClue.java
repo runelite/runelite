@@ -307,6 +307,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	@Override
 	public void reset()
 	{
+		location = null;
 		initializeSolver();
 	}
 
