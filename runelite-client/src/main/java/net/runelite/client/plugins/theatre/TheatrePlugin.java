@@ -23,6 +23,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.NpcDefinitionChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
@@ -151,6 +152,15 @@ public class TheatrePlugin extends Plugin
 		if (maidenHandler != null)
 		{
 			maidenHandler.onSpotAnimationChanged(event);
+		}
+	}
+
+	@Subscribe
+	public void onNpcDefinitionChanged(NpcDefinitionChanged event)
+	{
+		if (maidenHandler != null)
+		{
+			maidenHandler.onNpcDefinitionChanged(event);
 		}
 	}
 

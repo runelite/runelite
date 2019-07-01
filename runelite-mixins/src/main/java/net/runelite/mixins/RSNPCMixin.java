@@ -29,7 +29,7 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.NpcCompositionChanged;
+import net.runelite.api.events.NpcDefinitionChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
@@ -114,7 +114,7 @@ public abstract class RSNPCMixin implements RSNPC
 		}
 		else if (this.getId() != -1)
 		{
-			client.getCallbacks().post(new NpcCompositionChanged(this));
+			client.getCallbacks().post(new NpcDefinitionChanged(this));
 		}
 	}
 

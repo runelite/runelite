@@ -14,6 +14,7 @@ import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.NpcDefinitionChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.SpotAnimationChanged;
@@ -59,7 +60,7 @@ public class MaidenHandler extends RoomHandler
 	private List<WorldPoint> bloodSpawnLocation = new ArrayList<>();
 	private List<WorldPoint> bloodSpawnTarget = new ArrayList<>();
 	private NPC maiden;
-	private String nyloCall = "n1";
+	private String nyloCall;
 	private Set<Nylos> nylos = new HashSet<>();
 	private List<NPC> healers = new ArrayList<>();
 	private int healerCount = 0;
@@ -101,6 +102,7 @@ public class MaidenHandler extends RoomHandler
 		this.bloodSpawnLocation.clear();
 		this.bloodSpawnTarget.clear();
 		this.healers.clear();
+		this.nylos.clear();
 		this.healerCount = 0;
 		this.startTime = -1;
 		this.wave = 1;
@@ -116,6 +118,11 @@ public class MaidenHandler extends RoomHandler
 			}
 
 			final String location = nylo.getSpawnLocation().getName();
+
+			if (nyloCall == null || nyloCall.equals(""))
+			{
+				nyloCall = "n1";
+			}
 
 			if (location.equals(nyloCall))
 			{
@@ -217,11 +224,8 @@ public class MaidenHandler extends RoomHandler
 				}
 				if (!N1.contains(wp) && !N2.contains(wp) && !S1.contains(wp) && !S2.contains(wp))
 				{
-					log.debug("------------------------");
-					log.debug("No World Points Matched");
-					log.debug("Dumping Location");
-					log.debug("Instance Loc: " + wp);
-					log.debug("------------------------");
+					log.info("No World Points Matched");
+					log.info("Instance Loc: " + wp);
 				}
 				break;
 			case "Blood spawn":
@@ -230,6 +234,19 @@ public class MaidenHandler extends RoomHandler
 					bloodSpawns.add(npc);
 				}
 				break;
+		}
+	}
+
+	public void onNpcDefinitionChanged(NpcDefinitionChanged event)
+	{
+		NPC npc = event.getNpc();
+
+		if (npc.getName() != null && npc.getName().equals("Nylocas Matomenos"))
+		{
+			if (npc.getId() == -1)
+			{
+				nylos.removeIf(c -> c.getNpc() == npc);
+			}
 		}
 	}
 
@@ -249,6 +266,7 @@ public class MaidenHandler extends RoomHandler
 			case "s1":
 			case "s2":
 				nyloCall = msg;
+				log.debug("Nylo Call Assigned: " + msg);
 				break;
 		}
 	}
@@ -278,14 +296,6 @@ public class MaidenHandler extends RoomHandler
 		if (plugin.getRoom() != TheatreRoom.MAIDEN)
 		{
 			return;
-		}
-
-		if (!nylos.isEmpty())
-		{
-			for (Nylos nylo : nylos)
-			{
-				nylos.removeIf(c -> c.getNpc().getId() == -1);
-			}
 		}
 
 		bloodThrows.clear();
