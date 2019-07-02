@@ -343,7 +343,7 @@ public class SlayerTaskPanel extends PluginPanel
 		changePauseState(paused);
 	}
 
-	static String htmlLabel(String key, long timeMillis)
+	private static String htmlLabel(String key, long timeMillis)
 	{
 		if (timeMillis == Long.MAX_VALUE)
 		{
@@ -363,7 +363,7 @@ public class SlayerTaskPanel extends PluginPanel
 		}
 	}
 
-	static String htmlLabel(String key, int value)
+	private static String htmlLabel(String key, int value)
 	{
 		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR),

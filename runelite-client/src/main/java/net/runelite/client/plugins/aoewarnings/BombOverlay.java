@@ -121,6 +121,10 @@ public class BombOverlay extends Overlay
 	{
 		final Player localPlayer = client.getLocalPlayer();
 		LocalPoint localLoc = LocalPoint.fromWorld(client, bomb.getWorldLocation());
+		if (localLoc == null)
+		{
+			return;
+		}
 		double distance_x = Math.abs(bomb.getWorldLocation().getX() - localPlayer.getWorldLocation().getX());
 		double distance_y = Math.abs(bomb.getWorldLocation().getY() - localPlayer.getWorldLocation().getY());
 		Color color_code = Color.decode(SAFE);
@@ -142,7 +146,7 @@ public class BombOverlay extends Overlay
 		{
 			color_code = Color.decode(CAUTION);
 		}
-		LocalPoint CenterPoint = new LocalPoint(localLoc.getX() + 0, localLoc.getY() + 0);
+		LocalPoint CenterPoint = new LocalPoint(localLoc.getX(), localLoc.getY());
 		Polygon poly = Perspective.getCanvasTileAreaPoly(client, CenterPoint, BOMB_AOE);
 
 		if (poly != null)

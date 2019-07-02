@@ -1,5 +1,12 @@
 package net.runelite.client.plugins.theatre.rooms;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
@@ -22,37 +29,25 @@ import net.runelite.client.plugins.theatre.TheatreConfig;
 import net.runelite.client.plugins.theatre.TheatreConstant;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
-import java.awt.*;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class VerzikHandler extends RoomHandler
 {
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<Projectile, WorldPoint> Verzik_RangeProjectiles = new HashMap<>();
-
+	//My variables
+	private int redCrabsTimer;
 	@Getter(AccessLevel.PUBLIC)
 	private int versikCounter = 0;
 	private int attacksLeft = 0;
-
 	@Getter(AccessLevel.PUBLIC)
 	private NPC npc;
-
 	private int lastId = -1;
-
 	private int autosSinceYellows;
 	private int yellows;
-
 	private boolean tornados;
-
 	private int attackTick = -1;
-
 	private long startTime = 0;
-
-	//My variables
-	int redCrabsTimer;
 
 	public VerzikHandler(Client client, TheatrePlugin plugin, TheatreConfig config)
 	{
@@ -63,7 +58,9 @@ public class VerzikHandler extends RoomHandler
 	public void onStart()
 	{
 		if (this.plugin.getRoom() == TheatreRoom.VERSIK)
+		{
 			return;
+		}
 
 		this.reset();
 		this.plugin.setRoom(TheatreRoom.VERSIK);
@@ -117,10 +114,10 @@ public class VerzikHandler extends RoomHandler
 					if (this.versikCounter >= 0)
 					{
 						String str = Integer.toString(versikCounter);
-	
+
 						LocalPoint lp = npc.getLocalLocation();
 						Point point = Perspective.getCanvasTextLocation(client, graphics, lp, str, 0);
-	
+
 						renderTextLocation(graphics, str, 20, Font.BOLD, Color.CYAN, point);
 					}
 				}
@@ -141,19 +138,6 @@ public class VerzikHandler extends RoomHandler
 				}
 			}
 
-/*
-					if (npc.getAnimation() == 8117){
-						if (this.redCrabsTimer > 0){
-						String str = Integer.toString(redCrabsTimer);
-
-						LocalPoint lp = npc.getLocalLocation();
-						Point point = Perspective.getCanvasTextLocation(client, graphics, lp, str, 60);
-						renderTextLocation(graphics, str, 15, Font.BOLD, Color.WHITE, point);
-					}
-
-
-				}*/
-
 			else if (id == TheatreConstant.VERZIK_ID_P3)
 			{
 				if (config.p3attacks())
@@ -162,10 +146,10 @@ public class VerzikHandler extends RoomHandler
 					if (versikCounter > 0 && versikCounter < 8)
 					{
 						String str = Math.max(versikCounter, 0) + "";// + " | " + model.getModelHeight();// + " | " + model.getRadius();
-	
+
 						LocalPoint lp = npc.getLocalLocation();
 						Point point = Perspective.getCanvasTextLocation(client, graphics, lp, str, 0);
-	
+
 						renderTextLocation(graphics, str, 15, Font.BOLD, Color.WHITE, point);
 					}
 				}
@@ -210,16 +194,22 @@ public class VerzikHandler extends RoomHandler
 				for (NPC npc : client.getNpcs())
 				{
 					if (npc.getName() == null)
+					{
 						continue;
+					}
 
 					Pattern p = Pattern.compile("Nylocas (Hagios|Toxobolos|Ischyros)");
 					Matcher m = p.matcher(npc.getName());
 					if (!m.matches())
+					{
 						continue;
+					}
 
 					Actor target = npc.getInteracting();
 					if (target == null || target.getName() == null)
+					{
 						continue;
+					}
 
 					LocalPoint lp = npc.getLocalLocation();
 					Color color = local.getName().equals(target.getName()) ? Color.RED : Color.GREEN;
@@ -231,15 +221,17 @@ public class VerzikHandler extends RoomHandler
 		}
 
 	}
-public void onProjectileMoved(ProjectileMoved event)
-{
-	Projectile projectile = event.getProjectile();
-	if (projectile.getId() == 1583)
+
+	public void onProjectileMoved(ProjectileMoved event)
 	{
-		WorldPoint p = WorldPoint.fromLocal(client, event.getPosition());
-		Verzik_RangeProjectiles.put(projectile, p);
+		Projectile projectile = event.getProjectile();
+		if (projectile.getId() == 1583)
+		{
+			WorldPoint p = WorldPoint.fromLocal(client, event.getPosition());
+			Verzik_RangeProjectiles.put(projectile, p);
+		}
 	}
-}
+
 	public void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
@@ -282,7 +274,9 @@ public void onProjectileMoved(ProjectileMoved event)
 
 		Actor actor = event.getActor();
 		if (!(actor instanceof NPC))
+		{
 			return;
+		}
 
 		NPC npc = (NPC) actor;
 		int id = npc.getId();
@@ -325,29 +319,22 @@ public void onProjectileMoved(ProjectileMoved event)
 		}
 		if (!Verzik_RangeProjectiles.isEmpty())
 		{
-			for (Iterator<Projectile> it = Verzik_RangeProjectiles.keySet().iterator(); it.hasNext();)
-			{
-				Projectile projectile = it.next();
-				if (projectile.getRemainingCycles() < 1)
-				{
-					it.remove();
-				}
-			}
+			Verzik_RangeProjectiles.keySet().removeIf(p -> p.getRemainingCycles() < 1);
 		}
 		if (this.yellows == 0)
 		{
 			//if (this.autosSinceYellows > 0){
-				for (GraphicsObject object : client.getGraphicsObjects())
+			for (GraphicsObject object : client.getGraphicsObjects())
+			{
+				if (object.getId() == TheatreConstant.GRAPHIC_ID_YELLOWS)
 				{
-					if (object.getId() == TheatreConstant.GRAPHIC_ID_YELLOWS)
-					{
-						this.yellows = 14;
+					this.yellows = 14;
 //						this.versikCounter = 22;
-						this.autosSinceYellows = 0;
-						System.out.println("Yellows have spawned.");
-						break;
-					}
+					this.autosSinceYellows = 0;
+					System.out.println("Yellows have spawned.");
+					break;
 				}
+			}
 			//}
 		}
 		else
@@ -380,7 +367,9 @@ public void onProjectileMoved(ProjectileMoved event)
 			}
 
 			if (foundTornado && foundVerzik)
+			{
 				break;
+			}
 		}
 
 		if (!foundVerzik)
@@ -390,7 +379,9 @@ public void onProjectileMoved(ProjectileMoved event)
 		}
 
 		if (npc == null)
+		{
 			return;
+		}
 
 		int id = npc.getId();
 
@@ -410,7 +401,9 @@ public void onProjectileMoved(ProjectileMoved event)
 				long minutes = seconds / 60L;
 				seconds = seconds % 60;
 				if (config.extraTimers())
-				this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Final Challenge - Part 1' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
+				{
+					this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Final Challenge - Part 1' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
+				}
 			}
 			else if (id == TheatreConstant.VERZIK_ID_P2_TRANSFORM && this.startTime != 0)
 			{
@@ -424,7 +417,9 @@ public void onProjectileMoved(ProjectileMoved event)
 				this.versikCounter = -1;
 				this.attacksLeft = 9;
 				if (config.extraTimers())
-				this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Final Challenge - Part 2' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
+				{
+					this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Final Challenge - Part 2' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
+				}
 			}
 		}
 
@@ -443,7 +438,9 @@ public void onProjectileMoved(ProjectileMoved event)
 		{
 			versikCounter--;
 			if (versikCounter < 0)
+			{
 				versikCounter = 0;
+			}
 		}
 		else if (id == TheatreConstant.VERZIK_ID_P3)
 		{

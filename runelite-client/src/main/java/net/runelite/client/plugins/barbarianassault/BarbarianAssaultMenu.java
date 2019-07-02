@@ -174,7 +174,7 @@ class BarbarianAssaultMenu
 					return config.removeIncorrectCalls() && !hornUpdated;
 
 				default:
-					return config.removeUnusedMenus();
+					return role != null && config.removeUnusedMenus();
 			}
 		});
 

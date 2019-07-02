@@ -13,6 +13,7 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 public class XarpusCounter extends Overlay
@@ -21,10 +22,8 @@ public class XarpusCounter extends Overlay
 	private final Client client;
 	private final TheatrePlugin plugin;
 	private final TheatreConfig config;
-
-	private XarpusHandler xarpusHandler;
-
 	PanelComponent panelComponent = new PanelComponent();
+	private XarpusHandler xarpusHandler;
 
 	public XarpusCounter(Client client, TheatrePlugin plugin, TheatreConfig config, XarpusHandler xarpushandler)
 	{
@@ -50,16 +49,17 @@ public class XarpusCounter extends Overlay
 
 			// Build overlay title
 			panelComponent.getChildren().add(TitleComponent.builder()
-					.text(overlayTitle)
-					.color(Color.GREEN)
-					.build());
+				.text(overlayTitle)
+				.color(Color.GREEN)
+				.build());
 
 			//Set the size of overlay
 			panelComponent.setPreferredSize(new Dimension(
-					graphics.getFontMetrics().stringWidth(overlayTitle) + 30, 0
+				graphics.getFontMetrics().stringWidth(overlayTitle) + 30, 0
 			));
 
 			TableComponent tableComponent = new TableComponent();
+			tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 			tableComponent.addRow("Exhumes", String.valueOf(xarpusHandler.getExhumesCount()));
 
 			panelComponent.getChildren().add(tableComponent);

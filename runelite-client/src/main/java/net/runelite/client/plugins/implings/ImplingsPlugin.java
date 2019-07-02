@@ -30,14 +30,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
@@ -118,6 +117,11 @@ public class ImplingsPlugin extends Plugin
 		for (NPC npc : implings)
 		{
 			Impling impling = Impling.findImpling(npc.getId());
+
+			if (impling == null || impling.getImplingType() == null)
+			{
+				continue;
+			}
 
 			ImplingType type = impling.getImplingType();
 			if (implingCounterMap.containsKey(type))

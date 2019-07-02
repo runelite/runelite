@@ -83,10 +83,21 @@ public interface BoostsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "boldIconFont",
+		name = "Bold Font for Icons",
+		description = "",
+		position = 5
+	)
+	default boolean boldIconFont()
+	{
+		return false;
+	}
+	
+	@ConfigItem(
 		keyName = "displayNextBuffChange",
 		name = "Display next buff change",
 		description = "Configures whether or not to display when the next buffed stat change will be",
-		position = 5
+		position = 6
 	)
 	default DisplayChangeMode displayNextBuffChange()
 	{
@@ -97,7 +108,7 @@ public interface BoostsConfig extends Config
 		keyName = "displayNextDebuffChange",
 		name = "Display next debuff change",
 		description = "Configures whether or not to display when the next debuffed stat change will be",
-		position = 6
+		position = 7
 	)
 	default DisplayChangeMode displayNextDebuffChange()
 	{
@@ -108,7 +119,7 @@ public interface BoostsConfig extends Config
 		keyName = "boostThreshold",
 		name = "Boost Amount Threshold",
 		description = "The amount of levels boosted to send a notification at. A value of 0 will disable notification.",
-		position = 7
+		position = 8
 	)
 	default int boostThreshold()
 	{
@@ -119,7 +130,7 @@ public interface BoostsConfig extends Config
 		keyName = "groupNotifications",
 		name = "Group Notifications",
 		description = "Configures whether or not to group notifications for multiple skills into a single notification",
-		position = 8
+		position = 9
 	)
 	default boolean groupNotifications()
 	{

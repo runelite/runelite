@@ -27,7 +27,7 @@ package net.runelite.client.plugins.slayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KnapsackSolver
+class KnapsackSolver
 {
 
 	private List<Integer> reconstructItemsInSack(int[][] sackMatrix, List<Integer> items, int i, int w)
@@ -49,7 +49,7 @@ public class KnapsackSolver
 		}
 	}
 
-	public int howMuchFitsInSack(List<Integer> items, int maxWeight)
+	int howMuchFitsInSack(List<Integer> items, int maxWeight)
 	{
 		int itemCount = items.size();
 

@@ -1,6 +1,6 @@
 package net.runelite.client.plugins.theatre;
 
-public enum TheatreRoom 
+public enum TheatreRoom
 {
 	MAIDEN,
 	BLOAT,
@@ -8,5 +8,5 @@ public enum TheatreRoom
 	SOTETSEG,
 	XARPUS,
 	VERSIK,
-	UNKNOWN;
+	UNKNOWN
 }

@@ -41,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
@@ -48,6 +49,7 @@ import net.runelite.api.Projectile;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -72,40 +74,35 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class AoeWarningPlugin extends Plugin
 {
-
 	@Getter
 	private final Map<WorldPoint, CrystalBomb> bombs = new HashMap<>();
 	private final Map<Projectile, AoeProjectile> projectiles = new HashMap<>();
-
 	@Inject
 	public AoeWarningConfig config;
-
 	@Inject
 	private Notifier notifier;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private AoeWarningOverlay coreOverlay;
-
 	@Inject
 	private BombOverlay bombOverlay;
-
 	@Inject
 	private Client client;
-
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> LightningTrail = new ArrayList<>();
-
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> AcidTrail = new ArrayList<>();
-
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> CrystalSpike = new ArrayList<>();
-
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> WintertodtSnowFall = new ArrayList<>();
+	@Getter(AccessLevel.PACKAGE)
+	private boolean shadows;
+	@Getter(AccessLevel.PACKAGE)
+	private int textSize;
+	@Getter(AccessLevel.PACKAGE)
+	private int fontStyle;
 
 	@Provides
 	AoeWarningConfig getConfig(ConfigManager configManager)
@@ -123,10 +120,7 @@ public class AoeWarningPlugin extends Plugin
 	{
 		overlayManager.add(coreOverlay);
 		overlayManager.add(bombOverlay);
-		LightningTrail.clear();
-		AcidTrail.clear();
-		CrystalSpike.clear();
-		WintertodtSnowFall.clear();
+		reset(true);
 	}
 
 	@Override
@@ -134,10 +128,29 @@ public class AoeWarningPlugin extends Plugin
 	{
 		overlayManager.remove(coreOverlay);
 		overlayManager.remove(bombOverlay);
-		LightningTrail.clear();
-		AcidTrail.clear();
-		CrystalSpike.clear();
-		WintertodtSnowFall.clear();
+		reset(false);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("aoe"))
+		{
+			return;
+		}
+
+		switch (event.getKey())
+		{
+			case "fontStyle":
+				fontStyle = config.fontStyle().getFont();
+				break;
+			case "textSize":
+				textSize = config.textSize();
+				break;
+			case "shadows":
+				shadows = config.shadows();
+				break;
+		}
 	}
 
 	@Subscribe
@@ -172,12 +185,12 @@ public class AoeWarningPlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();
-		final WorldPoint bombLocation = gameObject.getWorldLocation();
+		final WorldPoint wp = gameObject.getWorldLocation();
 
 		switch (gameObject.getId())
 		{
 			case ObjectID.CRYSTAL_BOMB:
-				bombs.put(bombLocation, new CrystalBomb(gameObject, client.getTickCount()));
+				bombs.put(wp, new CrystalBomb(gameObject, client.getTickCount()));
 
 				if (config.aoeNotifyAll() || config.bombDisplayNotifyEnabled())
 				{
@@ -185,17 +198,16 @@ public class AoeWarningPlugin extends Plugin
 				}
 				break;
 			case ObjectID.ACID_POOL:
-				AcidTrail.add(bombLocation);
+				AcidTrail.add(wp);
 				break;
 			case ObjectID.SMALL_CRYSTALS:
-				//todo
-				CrystalSpike.add(bombLocation);
+				CrystalSpike.add(wp);
 				break;
 			case NullObjectID.NULL_26690:
 				//Wintertodt Snowfall
 				if (config.isWintertodtEnabled())
 				{
-					WintertodtSnowFall.add(bombLocation);
+					WintertodtSnowFall.add(wp);
 
 					if (config.aoeNotifyAll() || config.isWintertodtNotifyEnabled())
 					{
@@ -210,25 +222,23 @@ public class AoeWarningPlugin extends Plugin
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		GameObject gameObject = event.getGameObject();
-		WorldPoint bombLocation = gameObject.getWorldLocation();
+		WorldPoint wp = gameObject.getWorldLocation();
 		switch (gameObject.getId())
 		{
 			case ObjectID.CRYSTAL_BOMB:
-				//might as well check the ObjectID to save some time.
 				purgeBombs(bombs);
 				break;
 			case ObjectID.ACID_POOL:
-				AcidTrail.remove(bombLocation);
+				AcidTrail.remove(wp);
 				break;
 			case ObjectID.SMALL_CRYSTALS:
-				//todo
-				CrystalSpike.remove(bombLocation);
+				CrystalSpike.remove(wp);
 				break;
 			case NullObjectID.NULL_26690:
 				//Wintertodt Snowfall
 				if (config.isWintertodtEnabled())
 				{
-					WintertodtSnowFall.remove(bombLocation);
+					WintertodtSnowFall.remove(wp);
 				}
 				break;
 		}
@@ -251,7 +261,7 @@ public class AoeWarningPlugin extends Plugin
 			LightningTrail.clear();
 			for (GraphicsObject o : client.getGraphicsObjects())
 			{
-				if (o.getId() == 1356)
+				if (o.getId() == GraphicID.OLM_LIGHTNING)
 				{
 					LightningTrail.add(WorldPoint.fromLocal(client, o.getLocation()));
 
@@ -281,6 +291,12 @@ public class AoeWarningPlugin extends Plugin
 			Map.Entry<WorldPoint, CrystalBomb> entry = it.next();
 			WorldPoint world = entry.getKey();
 			LocalPoint local = LocalPoint.fromWorld(client, world);
+
+			if (local == null)
+			{
+				return;
+			}
+
 			Tile tile = tiles[world.getPlane()][local.getSceneX()][local.getSceneY()];
 			GameObject[] objects = tile.getGameObjects();
 			boolean containsObjects = false;
@@ -390,5 +406,21 @@ public class AoeWarningPlugin extends Plugin
 		}
 
 		return false;
+	}
+
+	private void reset(boolean setConfig)
+	{
+		LightningTrail.clear();
+		AcidTrail.clear();
+		CrystalSpike.clear();
+		WintertodtSnowFall.clear();
+		bombs.clear();
+		projectiles.clear();
+		if (setConfig)
+		{
+			fontStyle = config.fontStyle().getFont();
+			textSize = config.textSize();
+			shadows = config.shadows();
+		}
 	}
 }

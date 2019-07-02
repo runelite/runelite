@@ -29,7 +29,7 @@ public enum DigsitePendantMode
 {
 	DIGSITE("Digsite"),
 	FOSSIL_ISLAND("Fossil Island"),
-	LITHKREN("Lithkren");
+	LITHKREN("Lithkren Dungeon");
 
 	private final String name;
 

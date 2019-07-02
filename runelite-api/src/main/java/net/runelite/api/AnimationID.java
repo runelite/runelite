@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;;
+package net.runelite.api;
 
 /**
  * Utility class used for mapping animation IDs.
@@ -166,8 +166,15 @@ public final class AnimationID
 	public static final int BLOCK_UNARMED = 424; // Same Animation as failed pickpocked
 
 	// NPC animations
-	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
+	public static final int TZTOK_JAD_MELEE_ATTACK = 2655;
+	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
+	public static final int TOK_XIL_RANGE_ATTACK = 2633;
+	public static final int TOK_XIL_MELEE_ATTACK = 2628;
+	public static final int KET_ZEK_MELEE_ATTACK = 2644;
+	public static final int KET_ZEK_MAGE_ATTACK = 2647;
+	public static final int MEJ_KOT_MELEE_ATTACK = 2637;
+	public static final int MEJ_KOT_HEAL_ATTACK = 2639;
 	public static final int HELLHOUND_DEFENCE = 6566;
 	public static final int VORKATH_WAKE_UP = 7950;
 	public static final int VORKATH_DEATH = 7949;

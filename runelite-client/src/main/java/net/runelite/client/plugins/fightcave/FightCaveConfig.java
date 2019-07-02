@@ -24,20 +24,119 @@
  */
 package net.runelite.client.plugins.fightcave;
 
+import java.awt.Font;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
+import net.runelite.client.config.Stub;
 
 @ConfigGroup("fightcave")
 public interface FightCaveConfig extends Config
 {
 	@ConfigItem(
+		position = 0,
+		keyName = "mainConfig",
+		name = "Main Config",
+		description = ""
+	)
+	default Stub mainConfig()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 1,
 		keyName = "waveDisplay",
 		name = "Wave display",
-		description = "Shows monsters that will spawn on the selected wave(s)."
+		description = "Shows monsters that will spawn on the selected wave(s).",
+		parent = "mainConfig"
 	)
 	default WaveDisplayMode waveDisplay()
 	{
 		return WaveDisplayMode.BOTH;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "tickTimersWidget",
+		name = "Tick Timers in Prayer",
+		description = "Adds an overlay to the Praayer Interface with the ticks until next attack for that prayer.",
+		parent = "mainConfig"
+	)
+	default boolean tickTimersWidget()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "text",
+		name = "Text",
+		description = ""
+	)
+	default Stub text()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "fontStyle",
+		name = "Font Style",
+		description = "Plain | Bold | Italics",
+		parent = "text"
+	)
+	default FontStyle fontStyle()
+	{
+		return FontStyle.BOLD;
+	}
+
+	@Range(
+		min = 14,
+		max = 40
+	)
+	@ConfigItem(
+		position = 5,
+		keyName = "textSize",
+		name = "Text Size",
+		description = "Text Size for Timers.",
+		parent = "text"
+	)
+	default int textSize()
+	{
+		return 32;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "shadows",
+		name = "Shadows",
+		description = "Adds Shadows to text.",
+		parent = "text"
+	)
+	default boolean shadows()
+	{
+		return false;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	enum FontStyle
+	{
+		BOLD("Bold", Font.BOLD),
+		ITALIC("Italic", Font.ITALIC),
+		PLAIN("Plain", Font.PLAIN);
+
+		private String name;
+		private int font;
+
+		@Override
+		public String toString()
+		{
+			return getName();
+		}
 	}
 }

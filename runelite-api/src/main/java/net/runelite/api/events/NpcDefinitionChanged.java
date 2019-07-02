@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fightcave;
+package net.runelite.api.events;
 
-import net.runelite.api.AnimationID;
-import net.runelite.api.Prayer;
+import lombok.Value;
+import net.runelite.api.NPC;
 
-public enum JadAttack
+/**
+ * Fires after the composition of an {@link NPC} changes.
+ */
+@Value
+public class NpcDefinitionChanged
 {
-	MAGIC(AnimationID.TZTOK_JAD_MAGIC_ATTACK, Prayer.PROTECT_FROM_MAGIC),
-	RANGE(AnimationID.TZTOK_JAD_RANGE_ATTACK, Prayer.PROTECT_FROM_MISSILES);
-
-	private final int animation;
-	private final Prayer prayer;
-
-	JadAttack(int animation, Prayer prayer)
-	{
-		this.animation = animation;
-		this.prayer = prayer;
-	}
-
-	public int getAnimation()
-	{
-		return animation;
-	}
-
-	public Prayer getPrayer()
-	{
-		return prayer;
-	}
+	/**
+	 * The NPC of which the composition changed.
+	 */
+	private final NPC npc;
 }

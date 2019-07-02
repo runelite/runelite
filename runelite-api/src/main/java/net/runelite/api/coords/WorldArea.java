@@ -185,6 +185,25 @@ public class WorldArea
 	}
 
 	/**
+	 * Checks whether this area is within melee distance of another without blocking in-between.
+	 *
+	 * @param client the client to test in
+	 * @param other the other area
+	 * @return true if in melee distance without blocking, false otherwise
+	 */
+	public boolean canMelee(Client client, WorldArea other)
+	{
+		if (isInMeleeDistance(other))
+		{
+			Point p1 = this.getComparisonPoint(other);
+			Point p2 = other.getComparisonPoint(this);
+			WorldArea w1 = new WorldArea(p1.getX(), p1.getY() , 1, 1, this.getPlane());
+			return (w1.canTravelInDirection(client, p2.getX() - p1.getX(), p2.getY() - p1.getY()));
+		}
+		return false;
+	}
+
+	/**
 	 * Checks whether this area intersects with another.
 	 *
 	 * @param other the other area
