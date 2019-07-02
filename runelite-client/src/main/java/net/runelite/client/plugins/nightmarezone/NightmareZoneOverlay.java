@@ -107,7 +107,12 @@ class NightmareZoneOverlay extends Overlay
 		TableComponent tableComponent = new TableComponent();
 		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 		tableComponent.addRow("Points:", StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)));
-		tableComponent.addRow("Total:", StackFormatter.formatNumber(client.getVar(VarPlayer.NMZ_REWARD_POINTS) + client.getVar(Varbits.NMZ_POINTS)));
+		
+		if (config.showtotalpoints())
+		{
+			tableComponent.addRow("Total:", StackFormatter.formatNumber(client.getVar(VarPlayer.NMZ_REWARD_POINTS) + client.getVar(Varbits.NMZ_POINTS)));
+		}
+		
 		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
