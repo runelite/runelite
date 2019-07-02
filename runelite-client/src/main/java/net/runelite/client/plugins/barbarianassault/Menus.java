@@ -79,11 +79,11 @@ public enum Menus
 
 	ATTACK_PENANCE_QUEEN(null, new ComparableEntry("attack", "penance queen", -1, -1, true, false)),
 	ATTACK_QUEEN_SPAWN(null, new ComparableEntry("attack", "queen spawn", -1, -1, true, false)),
-	DROP_HORN(null, new ComparableEntry("drop", "horn", -1, -1, true, false)),
-	EXAMINE_HORN(null, new ComparableEntry("examine", "horn", -1, -1, true, false)),
+	DROP_HORN(null, new ComparableEntry("drop", "r horn", -1, -1, true, false)),
+	EXAMINE_HORN(null, new ComparableEntry("examine", "r horn", -1, -1, true, false)),
 	LIGHT_LOGS(null, new ComparableEntry("light", "logs", -1, -1, true, true)),
-	MEDIC_HORN(null, new ComparableEntry("medic", "horn", -1, -1, true, false)),
-	USE_HORN(null, new ComparableEntry("use", "horn", -1, -1, true, false));
+	MEDIC_HORN(null, new ComparableEntry("medic", "r horn", -1, -1, true, false)),
+	USE_HORN(null, new ComparableEntry("use", "r horn", -1, -1, true, false));
 
 	@Getter
 	private final Role role;
