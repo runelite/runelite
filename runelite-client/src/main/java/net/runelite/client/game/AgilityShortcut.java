@@ -288,7 +288,7 @@ public enum AgilityShortcut
 	GOBLIN_VILLAGE_WALL(14, "Wall", new WorldPoint(2925, 3523, 0), TIGHTGAP),
 	CORSAIR_COVE_DUNGEON_PILLAR(15, "Pillar Jump", new WorldPoint(1980, 8996, 0), PILLAR_31809),
 	EDGEVILLE_DUNGEON_MONKEYBARS(15, "Monkey Bars", null, MONKEYBARS_23566),
-	TROLLHEIM_ROCKS(15, "Rocks", null, new WorldPoint(2838, 3614, 0), ROCKS_3748), // No fixed world map location, but rocks near death plateau have a requirement of 15
+	TROLLHEIM_ROCKS(15, "Rocks", null, new WorldPoint(2838, 3614, 0), ROCKS_3748),    // No fixed world map location, but rocks near death plateau have a requirement of 15
 	YANILLE_UNDERWALL_TUNNEL(16, "Underwall Tunnel", new WorldPoint(2574, 3109, 0), HOLE_16520, CASTLE_WALL),
 	YANILLE_WATCHTOWER_TRELLIS(18, "Trellis", null, TRELLIS_20056),
 	COAL_TRUCKS_LOG_BALANCE(20, "Log Balance", new WorldPoint(2598, 3475, 0), LOG_BALANCE_23274),
