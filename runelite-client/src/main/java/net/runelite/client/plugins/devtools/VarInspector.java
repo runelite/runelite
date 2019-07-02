@@ -193,7 +193,7 @@ class VarInspector extends JFrame
 			{
 				lastTick = tick;
 				JLabel header = new JLabel("Tick " + tick);
-				header.setFont(FontManager.getRunescapeSmallFont());
+				header.setFont(FontManager.getSmallFont(getFont()));
 				header.setBorder(new CompoundBorder(
 					BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
 					BorderFactory.createEmptyBorder(3, 6, 0, 0)

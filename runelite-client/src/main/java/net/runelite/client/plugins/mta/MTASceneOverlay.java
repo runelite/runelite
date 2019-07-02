@@ -51,7 +51,7 @@ public class MTASceneOverlay extends Overlay
 		{
 			if (room.inside())
 			{
-				graphics.setFont(FontManager.getRunescapeFont());
+				graphics.setFont(FontManager.getSmallFont(graphics.getFont()));
 				room.under(graphics);
 			}
 		}

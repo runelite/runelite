@@ -271,7 +271,7 @@ class WorldTableRow extends JPanel
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
 		playerCountField = new JLabel(world.getPlayers() + "");
-		playerCountField.setFont(FontManager.getRunescapeSmallFont());
+		playerCountField.setFont(FontManager.getSmallFont(getFont()));
 
 		column.add(playerCountField, BorderLayout.WEST);
 
@@ -300,7 +300,7 @@ class WorldTableRow extends JPanel
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
 		activityField = new JLabel(world.getActivity());
-		activityField.setFont(FontManager.getRunescapeSmallFont());
+		activityField.setFont(FontManager.getSmallFont(getFont()));
 
 		column.add(activityField, BorderLayout.WEST);
 
