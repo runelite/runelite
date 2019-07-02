@@ -267,12 +267,12 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	@Override
 	public String[] getNpcs()
 	{
-		return new String[]{npc};
+		return new String[] {npc};
 	}
 
 	@Override
 	public int[] getObjectIds()
 	{
-		return new int[]{objectId};
+		return new int[] {objectId};
 	}
 }

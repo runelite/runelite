@@ -91,7 +91,7 @@ public class MusicClue extends ClueScroll implements NpcClueScroll
 	@Override
 	public String[] getNpcs()
 	{
-		return new String[]{CECILIA};
+		return new String[] {CECILIA};
 	}
 
 	public static MusicClue forText(String text)

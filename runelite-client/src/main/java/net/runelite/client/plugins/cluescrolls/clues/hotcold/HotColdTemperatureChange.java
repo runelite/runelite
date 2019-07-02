@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
-import lombok.Getter;
-import static net.runelite.api.SpriteID.*;
+import lombok.AllArgsConstructor;
 
-@Getter
-public enum Emote
+@AllArgsConstructor
+public enum HotColdTemperatureChange
 {
-	BULL_ROARER("Bull Roarer", -1),
-	YES("Yes", EMOTE_YES),
-	NO("No", EMOTE_NO),
-	THINK("Think", EMOTE_THINK),
-	BOW("Bow", EMOTE_BOW),
-	ANGRY("Angry", EMOTE_ANGRY),
-	CRY("Cry", EMOTE_CRY),
-	LAUGH("Laugh", EMOTE_LAUGH),
-	CHEER("Cheer", EMOTE_CHEER),
-	WAVE("Wave", EMOTE_WAVE),
-	BECKON("Beckon", EMOTE_BECKON),
-	DANCE("Dance", EMOTE_DANCE),
-	CLAP("Clap", EMOTE_CLAP),
-	PANIC("Panic", EMOTE_PANIC),
-	JIG("Jig", EMOTE_JIG),
-	SPIN("Spin", EMOTE_SPIN),
-	HEADBANG("Headbang", EMOTE_HEADBANG),
-	JUMP_FOR_JOY("Jump for Joy", EMOTE_JUMP_FOR_JOY),
-	RASPBERRY("Raspberry", EMOTE_RASPBERRY),
-	YAWN("Yawn", EMOTE_YAWN),
-	SALUTE("Salute", EMOTE_SALUTE),
-	SHRUG("Shrug", EMOTE_SHRUG),
-	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS),
-	GOBLIN_SALUTE("Goblin Salute", EMOTE_GOBLIN_SALUTE),
-	SLAP_HEAD("Slap Head", EMOTE_SLAP_HEAD),
-	STOMP("Stomp", EMOTE_STOMP),
-	FLAP("Flap", EMOTE_FLAP),
-	PUSH_UP("Push up", EMOTE_PUSH_UP);
+	WARMER("and warmer than"),
+	SAME("and the same temperature as"),
+	COLDER("but colder than");
 
-	private String name;
-	private int spriteId;
+	private final String text;
 
-	Emote(String name, int spriteId)
+	public static HotColdTemperatureChange of(final String message)
 	{
-		this.name = name;
-		this.spriteId = spriteId;
-	}
+		if (!message.endsWith(" last time."))
+		{
+			return null;
+		}
 
-	public boolean hasSprite()
-	{
-		return spriteId != -1;
+		for (final HotColdTemperatureChange change : values())
+		{
+			if (message.contains(change.text))
+			{
+				return change;
+			}
+		}
+
+		return null;
 	}
 }
