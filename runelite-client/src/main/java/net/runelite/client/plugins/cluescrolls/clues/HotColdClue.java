@@ -312,6 +312,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 	private void initializeSolver()
 	{
+
 		final boolean isBeginner;
 
 		if (this.equals(BEGINNER_CLUE))
@@ -322,7 +323,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		{
 			isBeginner = false;
 		}
-
 		else
 		{
 			log.warn("Hot cold solver could not be initialized, clue type is unknown; text: {}, npc: {}, solution: {}",
