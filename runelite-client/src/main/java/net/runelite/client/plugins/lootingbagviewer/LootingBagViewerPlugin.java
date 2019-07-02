@@ -152,9 +152,12 @@ public class LootingBagViewerPlugin extends Plugin
 
 				if (!Strings.isNullOrEmpty(value.getText()))
 				{
-					if (value.getText().equals("Value: -")) {
+					if (value.getText().equals("Value: -")) 
+					{
 						setValueToShow(-1);
-					} else {
+					} 
+					else 
+					{
 						String str = value.getText();
 						str = str.replace("Bag value: ", "")
 								.replace("Value: ", "")
