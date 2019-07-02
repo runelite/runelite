@@ -9,12 +9,25 @@ public interface ChatTranslationConfig extends Config
 {
 
 	@ConfigItem(
+			keyName = "translateOptionVisable",
+			name = "Show 'Translate' menu option",
+			description = "Adds 'Translate' to the right-click menu in the Chatbox.",
+			position = 0,
+			group = "Public Chat Translation"
+	)
+	default boolean translateOptionVisable()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 			keyName = "publicChat",
 			name = "Translate incoming Messages",
 			description = "Would you like to Translate Public Chat?",
-			position = 0,
+			position = 1,
 			group = "Public Chat Translation",
-			hidden = true
+			hidden = true,
+			unhide = "translateOptionVisable"
 	)
 	default boolean publicChat()
 	{
@@ -22,17 +35,17 @@ public interface ChatTranslationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "translateOptionVisable",
-			name = "Show 'Translate' menu option",
-			description = "Adds 'Translate' to the right-click menu in the Chatbox.",
-			position = 1,
+			keyName = "playerNames",
+			name = "Translated Player list:",
+			description = "Players you add to this list will be Translated in Public chat.",
+			position = 2,
 			group = "Public Chat Translation",
-			hidden = true
-//			unhide = "publicChat"
+			hidden = true,
+			unhide = "translateOptionVisable"
 	)
-	default boolean translateOptionVisable()
+	default String getPlayerNames()
 	{
-		return true;
+		return "";
 	}
 
 	@ConfigItem(
@@ -41,8 +54,8 @@ public interface ChatTranslationConfig extends Config
 			description = "Language to translate messages too.",
 			position = 2,
 			group = "Public Chat Translation",
-			hidden = true
-//			unhide = "publicChat"
+			hidden = true,
+			unhide = "publicChat"
 	)
 	default Languages publicTargetLanguage()
 	{

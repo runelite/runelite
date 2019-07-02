@@ -5,6 +5,7 @@ import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.widgets.Widget;
@@ -19,11 +20,13 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 @PluginDescriptor(
 		name = "Chat Translator",
@@ -35,13 +38,19 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 {
 
 	private static final String TRANSLATE = "Translate";
+
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Kick");
+
+	private ArrayList<String> playerNames = new ArrayList<>();
 
 	@Inject
 	private Client client;
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private Provider<MenuManager> menuManager;
@@ -72,6 +81,8 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 			}
 		}
 		keyManager.registerKeyListener(this);
+
+		playerNames.addAll(Text.fromCSV(config.getPlayerNames()));
 	}
 
 	@Override
@@ -85,14 +96,25 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 			}
 		}
 		keyManager.unregisterKeyListener(this);
+
+		playerNames.clear();
 	}
 
 	@Subscribe
-	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
+	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getMenuOption().equals(TRANSLATE))
+		if (event.getGroup().equals("chattranslation"))
 		{
-			//TODO: Translate selected message.
+			if (event.getKey().equals("playerNames"))
+			{
+				for (String names : Text.fromCSV(config.getPlayerNames()))
+				{
+					if (!playerNames.contains(Text.toJagexName(names)))
+					{
+						playerNames.add(Text.toJagexName(names));
+					}
+				}
+			}
 		}
 	}
 
@@ -116,18 +138,34 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 				return;
 			}
 
-			final MenuEntry lookup = new MenuEntry();
-			lookup.setOption(TRANSLATE);
-			lookup.setTarget(event.getTarget());
-			lookup.setType(MenuAction.RUNELITE.getId());
-			lookup.setParam0(event.getActionParam0());
-			lookup.setParam1(event.getActionParam1());
-			lookup.setIdentifier(event.getIdentifier());
+			final MenuEntry menuEntry = new MenuEntry();
+			menuEntry.setOption(TRANSLATE);
+			menuEntry.setTarget(event.getTarget());
+			menuEntry.setType(MenuAction.RUNELITE.getId());
+			menuEntry.setParam0(event.getActionParam0());
+			menuEntry.setParam1(event.getActionParam1());
+			menuEntry.setIdentifier(event.getIdentifier());
 
-			MenuEntry[] newMenu = ObjectArrays.concat(lookup, client.getMenuEntries());
+			MenuEntry[] newMenu = ObjectArrays.concat(menuEntry, client.getMenuEntries());
 			int menuEntryCount = newMenu.length;
 			ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
 			client.setMenuEntries(newMenu);
+		}
+	}
+
+	@Subscribe
+	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
+	{
+		if (event.getMenuOption().equals(TRANSLATE))
+		{
+			String name = Text.toJagexName(event.getMenuTarget());
+			if (!playerNames.contains(name))
+			{
+				playerNames.add(name);
+			}
+
+			configManager.setConfiguration("chattranslation", "playerNames", Text.toCSV(playerNames));
+			configManager.sendConfig();
 		}
 	}
 
@@ -151,27 +189,33 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 				return;
 		}
 
-		String message = chatMessage.getMessage();
-
-		Translator translator = new Translator();
-
-		try
+		for (String nameList : playerNames)
 		{
-			//Automatically check language of message and translate to selected language.
-			String translation = translator.translate("auto", config.publicTargetLanguage().toString(), message);
-			if (translation != null)
+			if (nameList.contains(Text.toJagexName(chatMessage.getName())))
 			{
-				final MessageNode messageNode = chatMessage.getMessageNode();
-				messageNode.setRuneLiteFormatMessage(translation);
-				chatMessageManager.update(messageNode);
+				String message = chatMessage.getMessage();
+
+				Translator translator = new Translator();
+
+				try
+				{
+					//Automatically check language of message and translate to selected language.
+					String translation = translator.translate("auto", config.publicTargetLanguage().toString(), message);
+					if (translation != null)
+					{
+						final MessageNode messageNode = chatMessage.getMessageNode();
+						messageNode.setRuneLiteFormatMessage(translation);
+						chatMessageManager.update(messageNode);
+					}
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+
+				client.refreshChat();
 			}
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		client.refreshChat();
 	}
 
 	@Override
