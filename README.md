@@ -20,7 +20,7 @@
 - [http-api](http-api/src/main/java/net/runelite/http/api) - API for runelite and runeliteplus
 - [http-service](http-service/src/main/java/net/runelite/http/service) - Service for https://api.runelitepl.us
 - [runelite-api](runelite-api/src/main/java/net/runelite/api) - RuneLite API, interfaces for accessing the client
-- [runelite-mixins](runelite-mixins/src/main/java/net/runelite) - Mixins which are injected into the injected client's classes
+- [runelite-mixins](runelite-mixins/src/main/java/net/runelite) - Mixins which are injected into the vanilla client's classes
 - [runescape-api](runescape-api/src/main/java/net/runelite) - Mappings correspond to these interfaces, runelite-api is a subset of this
 - [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
 
