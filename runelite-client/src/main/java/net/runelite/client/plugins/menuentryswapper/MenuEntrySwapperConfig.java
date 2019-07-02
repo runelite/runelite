@@ -1671,7 +1671,8 @@ default CharterOption charterOption()
 		keyName = "removeFreezePlayerToB",
 		name = "Remove freeze in ToB",
 		description = "Removes the freeze option for ice barrage, ice blitz, entangle etc. in ToB",
-		position = 0
+		position = 0,
+		group = "PVM"
 	)
 
 	default boolean getRemoveFreezePlayerToB()
@@ -1683,7 +1684,8 @@ default CharterOption charterOption()
 		keyName = "removeFreezePlayerCoX",
 		name = "Remove freeze in CoX",
 		description = "Removes the freeze option for ice barrage, ice blitz, entangle etc. in CoX",
-		position = 1
+		position = 1,
+		group = "PVM"
 	)
 
 	default boolean getRemoveFreezePlayerCoX()
