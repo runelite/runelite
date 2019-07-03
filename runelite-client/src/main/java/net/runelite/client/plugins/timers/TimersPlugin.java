@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.timers;
 
 import com.google.inject.Provides;
-import java.awt.image.BufferedImage;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -866,8 +865,16 @@ public class TimersPlugin extends Plugin
 	{
 		removeGameTimer(timer);
 
-		BufferedImage image = timer.getImage(itemManager, spriteManager);
-		TimerTimer t = new TimerTimer(timer, this, image);
+		TimerTimer t = new TimerTimer(timer, this);
+		switch (timer.getImageType())
+		{
+			case SPRITE:
+				spriteManager.getSpriteAsync(timer.getImageId(), 0, t);
+				break;
+			case ITEM:
+				t.setImage(itemManager.getImage(timer.getImageId()));
+				break;
+		}
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
 		return t;
@@ -882,8 +889,16 @@ public class TimersPlugin extends Plugin
 	{
 		removeGameIndicator(gameIndicator);
 
-		BufferedImage image = gameIndicator.getImage(itemManager, spriteManager);
-		IndicatorIndicator indicator = new IndicatorIndicator(gameIndicator, image, this);
+		IndicatorIndicator indicator = new IndicatorIndicator(gameIndicator, this);
+		switch (gameIndicator.getImageType())
+		{
+			case SPRITE:
+				spriteManager.getSpriteAsync(gameIndicator.getImageId(), 0, indicator);
+				break;
+			case ITEM:
+				indicator.setImage(itemManager.getImage(gameIndicator.getImageId()));
+				break;
+		}
 		indicator.setTooltip(gameIndicator.getDescription());
 		infoBoxManager.addInfoBox(indicator);
 

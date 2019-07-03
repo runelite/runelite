@@ -118,7 +118,7 @@ public class InfoBoxManager
 		}
 	}
 
-	private void updateInfoBoxImage(final InfoBox infoBox)
+	public void updateInfoBoxImage(final InfoBox infoBox)
 	{
 		if (infoBox.getImage() == null)
 		{

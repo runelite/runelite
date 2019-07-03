@@ -360,6 +360,7 @@ public interface Client extends GameEngine
 	 * @param scale the scale of the sprite
 	 * @return the created sprite
 	 */
+	@Nullable
 	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
 
 	/**
@@ -370,6 +371,7 @@ public interface Client extends GameEngine
 	 * @param fileId the sprites file ID
 	 * @return the sprite image of the file
 	 */
+	@Nullable
 	SpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId);
 
 	/**
