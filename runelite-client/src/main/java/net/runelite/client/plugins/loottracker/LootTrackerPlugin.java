@@ -804,10 +804,12 @@ public class LootTrackerPlugin extends Plugin
 		if (ignore)
 		{
 			ignoredNPCSet.add(name);
+			ignoredNPCs.add(name);
 		}
 		else
 		{
 			ignoredNPCSet.remove(name);
+			ignoredNPCs.remove(name);
 		}
 
 		config.setIgnoredNPCs(Text.toCSV(ignoredNPCSet));
@@ -821,6 +823,7 @@ public class LootTrackerPlugin extends Plugin
 	 */
 	public boolean isIgnoredNPC(String name)
 	{
+		log.info(ignoredNPCs.toString());
 		return ignoredNPCs.contains(name);
 	}
 

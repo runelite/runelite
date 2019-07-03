@@ -477,6 +477,7 @@ class LootTrackerPanel extends PluginPanel
 	{
 		for (LootTrackerRecord r : records)
 		{
+			if (plugin.isIgnoredNPC(r.getTitle()))
 			for (LootTrackerItem item : r.getItems())
 			{
 				if (plugin.isIgnored(item.getName()) != item.isIgnored())
