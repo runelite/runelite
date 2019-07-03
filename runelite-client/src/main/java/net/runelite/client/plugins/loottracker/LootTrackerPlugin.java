@@ -259,6 +259,11 @@ public class LootTrackerPlugin extends Plugin
 				ignoredItems = Text.fromCSV(config.getIgnoredItems());
 				SwingUtilities.invokeLater(panel::updateIgnoredRecords);
 			}
+			if (event.getKey().equals("ignoredNPCs"))
+			{
+				ignoredNPCs = Text.fromCSV(config.getIgnoredNPCs());
+				SwingUtilities.invokeLater(panel::updateIgnoredRecords);
+			}
 			if (event.getKey().equals("sortType"))
 			{
 				panel.setLootRecordSortType(config.sortType());
@@ -304,20 +309,9 @@ public class LootTrackerPlugin extends Plugin
 
 				executor.submit(() ->
 				{
-
-					if (config.syncPanel() && lootTrackerClient != null)
+					if (config.syncPanel())
 					{
 						lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
-						try
-						{
-							lootRecords = lootTrackerClient.get();
-						}
-						catch (IOException e)
-						{
-							log.debug("Unable to look up loot", e);
-							return;
-						}
-						log.debug("Loaded {} remote data entries", lootRecords.size());
 					}
 
 					if (config.localPersistence())
@@ -392,7 +386,7 @@ public class LootTrackerPlugin extends Plugin
 		LootRecord lootRecord = new LootRecord(name, localUsername, LootRecordType.NPC,
 			toGameItems(items), Instant.now());
 
-		if (lootTrackerClient != null && config.saveLoot())
+		if (config.saveLoot() && lootTrackerClient != null)
 		{
 			lootTrackerClient.submit(lootRecord);
 		}
@@ -416,7 +410,8 @@ public class LootTrackerPlugin extends Plugin
 	{
 		if (config.sendLootValueMessages())
 		{
-			if (WorldType.isDeadmanWorld(client.getWorldType()) || WorldType.isHighRiskWorld(client.getWorldType()) || WorldType.isPvpWorld(client.getWorldType()) || client.getVar(Varbits.IN_WILDERNESS) == 1)
+			if (WorldType.isDeadmanWorld(client.getWorldType()) || WorldType.isHighRiskWorld(client.getWorldType()) ||
+					WorldType.isPvpWorld(client.getWorldType()) || client.getVar(Varbits.IN_WILDERNESS) == 1)
 			{
 				final String totalValue = StackFormatter.quantityToRSStackSize(playerLootReceived.getItems().stream()
 					.mapToInt(itemStack -> itemManager.getItemPrice(itemStack.getId()) * itemStack.getQuantity()).sum());
@@ -439,7 +434,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			lootTrackerClient.submit(lootRecord);
 		}
-		if (config.localPersistence() && lootTrackerClient == null)
+		if (config.localPersistence())
 		{
 			saveLocalLootRecord(lootRecord);
 		}
@@ -695,6 +690,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		try
 		{
+			lootRecords.clear();
 			Files.deleteIfExists(LOOT_RECORDS_FILE.toPath());
 		}
 		catch (IOException e)
@@ -800,16 +796,13 @@ public class LootTrackerPlugin extends Plugin
 	public void toggleNPC(String name, boolean ignore)
 	{
 		final Set<String> ignoredNPCSet = new HashSet<>(ignoredNPCs);
-
 		if (ignore)
 		{
 			ignoredNPCSet.add(name);
-			ignoredNPCs.add(name);
 		}
 		else
 		{
 			ignoredNPCSet.remove(name);
-			ignoredNPCs.remove(name);
 		}
 
 		config.setIgnoredNPCs(Text.toCSV(ignoredNPCSet));
@@ -823,7 +816,6 @@ public class LootTrackerPlugin extends Plugin
 	 */
 	public boolean isIgnoredNPC(String name)
 	{
-		log.info(ignoredNPCs.toString());
 		return ignoredNPCs.contains(name);
 	}
 
