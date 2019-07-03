@@ -36,8 +36,10 @@ import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -98,7 +100,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.ItemUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -225,9 +226,9 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked event)
 	{
-		if (event.getOption() != null && event.getOption().equals("Read"))
+		if (event.getMenuAction() != null && event.getMenuAction().equals("Read"))
 		{
-			final ItemDefinition itemComposition = itemManager.getItemDefinition(event.getIdentifier());
+			final ItemDefinition itemComposition = itemManager.getItemDefinition(event.hashCode());
 
 			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
 			{
@@ -256,8 +257,10 @@ public class ClueScrollPlugin extends Plugin
 		// Check if item was removed from inventory
 		if (clue != null && clueItemId != null)
 		{
+			final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
+
 			// Check if clue was removed from inventory
-			if (!ItemUtil.containsItemId(event.getItemContainer().getItems(), clueItemId))
+			if (items.noneMatch(item -> itemManager.getItemDefinition(item.getId()).getId() == clueItemId))
 			{
 				resetClue(true);
 			}
@@ -761,7 +764,7 @@ public class ClueScrollPlugin extends Plugin
 		textComponent.render(graphics);
 	}
 
-	void scrollToWidget(WidgetInfo list, WidgetInfo scrollbar, Widget... toHighlight)
+	void scrollToWidget(WidgetInfo list, WidgetInfo scrollbar, Widget ... toHighlight)
 	{
 		final Widget parent = client.getWidget(list);
 		int averageCentralY = 0;

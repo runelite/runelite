@@ -322,7 +322,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		{
 			isBeginner = false;
 		}
-
 		else
 		{
 			log.warn("Hot cold solver could not be initialized, clue type is unknown; text: {}, npc: {}, solution: {}",
@@ -345,6 +344,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 	public String[] getNpcs()
 	{
-		return new String[]{npc};
+		return new String[] {npc};
 	}
 }

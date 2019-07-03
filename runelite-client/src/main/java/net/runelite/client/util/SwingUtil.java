@@ -309,6 +309,8 @@ public class SwingUtil
 			// Use substance look and feel
 			SwingUtil.setTheme(new SubstanceRuneLiteLookAndFeel());
 			// Use custom UI font
+			//TODO : SUPPORT CUSTOM FONT?
+			//SwingUtil.setFont(FontManager.getFontOrDefault(config.clientFont()));
 			SwingUtil.setFont(FontManager.getRunescapeFont());
 		}
 	}

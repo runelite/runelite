@@ -109,14 +109,14 @@ public class GroundItemsOverlay extends Overlay
 		{
 			return null;
 		}
-
-		final FontMetrics fm = graphics.getFontMetrics();
 		final Player player = client.getLocalPlayer();
 
 		if (player == null || client.getViewportWidget() == null)
 		{
 			return null;
 		}
+
+		final FontMetrics fm = graphics.getFontMetrics();
 
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
@@ -319,14 +319,14 @@ public class GroundItemsOverlay extends Overlay
 
 				// Item bounds
 				int x = textX - 2;
-				int y = textY - stringHeight - 2;
+				int y = textY - stringHeight - 2 + fm.getMaxDescent();
 				int width = stringWidth + 4;
 				int height = stringHeight + 4;
 				final Rectangle itemBounds = new Rectangle(x, y, width, height);
 
 				// Hidden box
 				x += width + 2;
-				y = textY - (RECTANGLE_SIZE + stringHeight) / 2;
+				y = textY - (fm.getMaxAscent() + RECTANGLE_SIZE) / 2;
 				width = height = RECTANGLE_SIZE;
 				final Rectangle itemHiddenBox = new Rectangle(x, y, width, height);
 
@@ -376,7 +376,8 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.toggleOutline())
 			{
-				graphics.setColor(Color.BLACK);
+				final Color bordercolor = config.bordercolor();
+				graphics.setColor(bordercolor);
 				graphics.drawString(itemString, textX + 1, textY + 1);
 				graphics.drawString(itemString, textX - 1, textY - 1);
 				graphics.drawString(itemString, textX - 1, textY + 1);
@@ -388,7 +389,6 @@ public class GroundItemsOverlay extends Overlay
 			textComponent.setPosition(new java.awt.Point(textX, textY));
 			textComponent.render(graphics);
 		}
-
 		return null;
 	}
 

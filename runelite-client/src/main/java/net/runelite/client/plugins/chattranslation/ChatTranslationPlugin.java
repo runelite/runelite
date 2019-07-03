@@ -29,10 +29,10 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 @PluginDescriptor(
-		name = "Chat Translator",
-		description = "Translates messages from one Language to another.",
-		tags = {"translate", "language", "english", "spanish", "dutch", "french"},
-		type = PluginType.UTILITY
+	name = "Chat Translator",
+	description = "Translates messages from one Language to another.",
+	tags = {"translate", "language", "english", "spanish", "dutch", "french"},
+	type = PluginType.UTILITY
 )
 public class ChatTranslationPlugin extends Plugin implements KeyListener
 {
@@ -180,6 +180,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 		{
 			case PUBLICCHAT:
 			case MODCHAT:
+			case FRIENDSCHAT:
 				if (!config.publicChat())
 				{
 					return;
@@ -237,10 +238,23 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 		{
 			if (event.getKeyCode() == 0xA)
 			{
-				event.consume();
-
 				Translator translator = new Translator();
 				String message = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+
+				if (message.startsWith("/"))
+				{
+					try
+					{
+						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translator.translate("auto", config.playerTargetLanguage().toString(), message));
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+					return;
+				}
+
+				event.consume();
 
 				try
 				{

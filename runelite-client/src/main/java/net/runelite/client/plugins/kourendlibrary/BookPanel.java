@@ -47,7 +47,7 @@ class BookPanel extends JPanel
 		JLabel image = new JLabel();
 		b.getIcon().addTo(image);
 		JLabel name = new JLabel(b.getShortName());
-		location.setFont(FontManager.getRunescapeSmallFont());
+		location.setFont(FontManager.getSmallFont(getFont()));
 
 		layout.setVerticalGroup(layout.createParallelGroup()
 			.addComponent(image)

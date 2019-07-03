@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jasper Ketelaar <Jasper0781@gmail.com>
+ * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,6 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,40 +21,65 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mta;
 
-import java.awt.Dimension;
+package net.runelite.client.plugins.lootingbagviewer;
+
+import java.awt.Color;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.api.Client;
+import net.runelite.api.ItemID;
+import net.runelite.api.Point;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.WidgetItemOverlay;
 
-public class MTASceneOverlay extends Overlay
+public class LootingBagViewerWidgetOverlay extends WidgetItemOverlay
 {
-	private final MTAPlugin plugin;
+	private Client client;
+	private LootingBagViewerPlugin plugin;
 
 	@Inject
-	public MTASceneOverlay(MTAPlugin plugin)
+	LootingBagViewerWidgetOverlay(Client client, LootingBagViewerPlugin plugin)
 	{
+		this.client = client;
 		this.plugin = plugin;
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		showOnInventory();
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		for (MTARoom room : plugin.getRooms())
+		if (plugin.getValueToShow() != -1)
 		{
-			if (room.inside())
+			switch (itemId)
 			{
-				graphics.setFont(FontManager.getSmallFont(graphics.getFont()));
-				room.under(graphics);
+				case ItemID.LOOTING_BAG:
+				case ItemID.LOOTING_BAG_22586:
+					Point point = new Point(itemWidget.getCanvasLocation().getX() + lineX(plugin.getValueToShow()), itemWidget.getCanvasLocation().getY() + 25);
+					OverlayUtil.renderTextLocation(graphics, point, (plugin.getValueToShow() + "K"), Color.WHITE);
+					break;
 			}
 		}
+	}
 
-		return null;
+	/**
+	 * To align 16k (gp) or 4213k (gp) correctly between the looting bag without looking off
+	 *
+	 * @return
+	 */
+	private static int lineX(int lootingBagValue)
+	{
+		switch ((int) (Math.log10(lootingBagValue) + 1))
+		{
+			case 1:
+			case 2:
+				return 8;
+			case 3:
+			case 4:
+				return 6;
+			default:
+				return 8;
+		}
 	}
 }

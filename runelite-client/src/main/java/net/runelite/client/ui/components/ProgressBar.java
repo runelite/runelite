@@ -69,18 +69,26 @@ public class ProgressBar extends DimmableJPanel
 
 		setPreferredSize(new Dimension(100, 16));
 
-		leftLabel.setFont(FontManager.getRunescapeSmallFont());
+		int topIndent = 0;
+		if (getFont().equals(FontManager.getRunescapeSmallFont())
+			|| getFont().equals(FontManager.getRunescapeFont())
+			|| getFont().equals(FontManager.getRunescapeBoldFont()))
+		{
+			topIndent = 2;
+		}
+
+		leftLabel.setFont(FontManager.getSmallFont(getFont()));
 		leftLabel.setForeground(Color.WHITE);
-		leftLabel.setBorder(new EmptyBorder(2, 5, 0, 0));
+		leftLabel.setBorder(new EmptyBorder(topIndent, 5, 0, 0));
 
-		rightLabel.setFont(FontManager.getRunescapeSmallFont());
+		rightLabel.setFont(FontManager.getSmallFont(getFont()));
 		rightLabel.setForeground(Color.WHITE);
-		rightLabel.setBorder(new EmptyBorder(2, 0, 0, 5));
+		rightLabel.setBorder(new EmptyBorder(topIndent, 0, 0, 5));
 
-		centerLabel.setFont(FontManager.getRunescapeSmallFont());
+		centerLabel.setFont(FontManager.getSmallFont(getFont()));
 		centerLabel.setForeground(Color.WHITE);
 		centerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		centerLabel.setBorder(new EmptyBorder(2, 0, 0, 0));
+		centerLabel.setBorder(new EmptyBorder(topIndent, 0, 0, 0));
 
 		// Adds components to be automatically redrawn when paintComponents is called
 		add(leftLabel, BorderLayout.WEST);

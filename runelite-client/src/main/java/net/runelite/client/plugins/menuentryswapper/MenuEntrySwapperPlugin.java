@@ -1044,10 +1044,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap(client, "stun", option, target, true);
 		}
 
-		else if (config.swapTravel() && (option.equals("pass") || option.equals("open")))
+		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
-			swap(client, "pay-toll", option, target, false);
+			swap(client, "pay-toll(2-ecto)", option, target, true);
 		}
+
+		else if (config.swapTravel() && option.equals("open") && target.equals("gate"))
+		{
+			swap(client, "pay-toll(10gp)", option, target, true);
+		}
+		
+		else if (config.swapHardWoodGrove() && option.equals("open") && target.equals("hardwood grove doors"))
+		{
+			swap(client, "quick-pay(100)", option, target, true);
+		}
+		
 		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
 		{
 			swap(client, "travel", option, target, true);
@@ -1160,7 +1171,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapQuick() && option.equals("pass"))
 		{
 			swap(client, "quick-pass", option, target, true);
-			swap(client, "quick pass", option, target, true);
 		}
 
 		else if (config.swapQuick() && option.equals("open"))

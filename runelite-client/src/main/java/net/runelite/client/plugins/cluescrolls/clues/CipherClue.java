@@ -133,6 +133,6 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 
 	public String[] getNpcs()
 	{
-		return new String[]{npc};
+		return new String[] {npc};
 	}
 }

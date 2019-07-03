@@ -124,6 +124,7 @@ public class GroundItemsPlugin extends Plugin
 	private static final int EXAMINE_ITEM = MenuAction.EXAMINE_ITEM_GROUND.getId();
 	private static final int WALK = MenuAction.WALK.getId();
 
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> textBoxBounds;

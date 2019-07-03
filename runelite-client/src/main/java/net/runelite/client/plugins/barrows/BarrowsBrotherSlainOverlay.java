@@ -84,7 +84,7 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 		{
 			final boolean brotherSlain = client.getVar(brother.getKilledVarbit()) > 0;
 			String slain = brotherSlain ? "\u2713" : "\u2717";
-			tableComponent.addRow(brother.getName(), ColorUtil.prependColorTag(slain, brotherSlain ? Color.RED : Color.GREEN));
+			tableComponent.addRow(brother.getName(), ColorUtil.prependColorTag(slain, brotherSlain ? Color.GREEN : Color.RED));
 		}
 
 		float rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) / 10.0f;

@@ -29,8 +29,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -164,14 +162,19 @@ class ScreenMarkerPanel extends JPanel
 		nameActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		save.setVisible(false);
-		save.setFont(FontManager.getRunescapeSmallFont());
+		save.setFont(FontManager.getSmallFont(getFont()));
 		save.setForeground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 		save.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				save();
+				marker.getMarker().setName(nameInput.getText());
+				plugin.updateConfig();
+
+				nameInput.setEditable(false);
+				updateNameActions(false);
+				requestFocusInWindow();
 			}
 
 			@Override
@@ -188,14 +191,17 @@ class ScreenMarkerPanel extends JPanel
 		});
 
 		cancel.setVisible(false);
-		cancel.setFont(FontManager.getRunescapeSmallFont());
+		cancel.setFont(FontManager.getSmallFont(getFont()));
 		cancel.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
 		cancel.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				cancel();
+				nameInput.setEditable(false);
+				nameInput.setText(marker.getMarker().getName());
+				updateNameActions(false);
+				requestFocusInWindow();
 			}
 
 			@Override
@@ -211,7 +217,7 @@ class ScreenMarkerPanel extends JPanel
 			}
 		});
 
-		rename.setFont(FontManager.getRunescapeSmallFont());
+		rename.setFont(FontManager.getSmallFont(getFont()));
 		rename.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
 		rename.addMouseListener(new MouseAdapter()
 		{
@@ -246,35 +252,6 @@ class ScreenMarkerPanel extends JPanel
 		nameInput.setPreferredSize(new Dimension(0, 24));
 		nameInput.getTextField().setForeground(Color.WHITE);
 		nameInput.getTextField().setBorder(new EmptyBorder(0, 8, 0, 0));
-		nameInput.addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-				{
-					save();
-				}
-				else if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-				{
-					cancel();
-				}
-			}
-		});
-		nameInput.getTextField().addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseEntered(MouseEvent mouseEvent)
-			{
-				preview(true);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent mouseEvent)
-			{
-				preview(false);
-			}
-		});
 
 		nameWrapper.add(nameInput, BorderLayout.CENTER);
 		nameWrapper.add(nameActions, BorderLayout.EAST);
@@ -382,7 +359,10 @@ class ScreenMarkerPanel extends JPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				toggle(!visible);
+				visible = !visible;
+				marker.getMarker().setVisible(visible);
+				plugin.updateConfig();
+				updateVisibility();
 			}
 
 			@Override
@@ -442,42 +422,6 @@ class ScreenMarkerPanel extends JPanel
 		updateBorder();
 		updateBorder();
 
-	}
-
-	private void preview(boolean on)
-	{
-		if (visible)
-		{
-			return;
-		}
-
-		marker.getMarker().setVisible(on);
-	}
-
-	private void toggle(boolean on)
-	{
-		visible = on;
-		marker.getMarker().setVisible(visible);
-		plugin.updateConfig();
-		updateVisibility();
-	}
-
-	private void save()
-	{
-		marker.getMarker().setName(nameInput.getText());
-		plugin.updateConfig();
-
-		nameInput.setEditable(false);
-		updateNameActions(false);
-		requestFocusInWindow();
-	}
-
-	private void cancel()
-	{
-		nameInput.setEditable(false);
-		nameInput.setText(marker.getMarker().getName());
-		updateNameActions(false);
-		requestFocusInWindow();
 	}
 
 	private void updateNameActions(boolean saveAndCancel)

@@ -88,6 +88,10 @@ public class RunepouchOverlay extends WidgetItemOverlay
 		Point location = itemWidget.getCanvasLocation();
 		StringBuilder tooltipBuilder = new StringBuilder();
 
+		// location.getY() + graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getMaxDescent()
+		// this will draw the character exactly on the border
+		int yLocation = location.getY() + 1 +
+			graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getMaxDescent();
 		for (int i = 0; i < AMOUNT_VARBITS.length; i++)
 		{
 			Varbits amountVarbit = AMOUNT_VARBITS[i];
@@ -117,9 +121,18 @@ public class RunepouchOverlay extends WidgetItemOverlay
 				continue;
 			}
 
+			// the reason this is not split up in maxascent and maxdescent to equal the height of the text like it should
+			// be is because numbers (afaik) dont use font descent so a 1 pixel seperator should be good and give
+			// consistent results across fonts
+			int yOffset = (1 + (graphics.getFontMetrics().getMaxAscent()) * i);
+
 			graphics.setColor(Color.black);
+			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 6),
+				yLocation + yOffset);
+
+			graphics.setColor(config.fontColor());
 			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 5),
-				location.getY() + 13 + (graphics.getFontMetrics().getHeight() - 1) * i);
+				yLocation + yOffset);
 
 			graphics.setColor(config.fontColor());
 			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 11 : 4),
@@ -134,7 +147,13 @@ public class RunepouchOverlay extends WidgetItemOverlay
 			if (image != null)
 			{
 				OverlayUtil.renderImageLocation(graphics,
-					new Point(location.getX() - 1, location.getY() + graphics.getFontMetrics().getHeight() * i - 1),
+					//TODO :: SEE WHAT ONE IS RIGHT?
+					//new Point(location.getX() - 1, location.getY() + graphics.getFontMetrics().getMaxAscent() * i - 1),
+					//image);
+					//or
+					//new Point(location.getX(), location.getY() + (1 + graphics.getFontMetrics().getMaxAscent()) * i),
+					//image);
+					new Point(location.getX(), location.getY() + (1 + graphics.getFontMetrics().getMaxAscent()) * i),
 					image);
 			}
 		}
