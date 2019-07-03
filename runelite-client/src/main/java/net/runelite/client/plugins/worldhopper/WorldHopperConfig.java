@@ -103,10 +103,21 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "menuOption",
+			name = " Show Hop-to menu option",
+			description = "Show Hop-to option in menus",
+			position = 6
+	)
+	default boolean menuOption()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "subscriptionFilter",
 		name = "Show subscription types",
 		description = "Only show free worlds, member worlds, or both types of worlds in sidebar",
-		position = 6
+		position = 7
 	)
 	default SubscriptionFilterMode subscriptionFilter()
 	{
