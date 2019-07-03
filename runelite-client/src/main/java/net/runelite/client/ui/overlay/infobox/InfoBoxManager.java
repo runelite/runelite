@@ -27,7 +27,6 @@ package net.runelite.client.ui.overlay.infobox;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ComparisonChain;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -126,8 +125,8 @@ public class InfoBoxManager
 		}
 
 		// Set scaled InfoBox image
-		final Image image = infoBox.getImage();
-		Image resultImage = image;
+		final BufferedImage image = infoBox.getImage();
+		BufferedImage resultImage = image;
 		final double width = image.getWidth(null);
 		final double height = image.getHeight(null);
 		final double size = Math.max(2, runeLiteConfig.infoBoxSize()); // Limit size to 2 as that is minimum size not causing breakage
