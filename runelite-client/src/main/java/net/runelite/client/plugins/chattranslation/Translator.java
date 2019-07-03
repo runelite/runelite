@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.chattranslation;
 
-import org.json.JSONArray;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -33,14 +34,15 @@ public class Translator
 		return parseResult(response.toString());
 	}
 
-	private String parseResult(String inputJson) throws Exception
+	private String parseResult(String inputJson)
 	{
-		//TODO: find a way to do this using google.gson
-		JSONArray jsonArray = new JSONArray(inputJson);
-		JSONArray jsonArray2 = (JSONArray) jsonArray.get(0);
-		JSONArray jsonArray3 = (JSONArray) jsonArray2.get(0);
+		String result;
+		JsonArray jsonArray = new JsonParser().parse(inputJson).getAsJsonArray();
+		JsonArray jsonArray2 = jsonArray.get(0).getAsJsonArray();
+		JsonArray jsonArray3 = jsonArray2.get(0).getAsJsonArray();
+		result = jsonArray3.get(0).toString();
 
-		return jsonArray3.get(0).toString();
+		return result.substring(1, result.length() - 1);
 	}
 
 }

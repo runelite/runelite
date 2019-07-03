@@ -284,11 +284,6 @@
 			<artifactId>asm-all</artifactId>
 			<version>6.0_BETA</version>
 		</dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20180813</version>
-		</dependency>
     </dependencies>
 
 	<build>
