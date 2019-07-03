@@ -1,70 +1,133 @@
-/*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package net.runelite.client.rs;
 
 import java.applet.AppletContext;
 import java.applet.AppletStub;
-import java.net.MalformedURLException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
-import lombok.RequiredArgsConstructor;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
-@RequiredArgsConstructor
-class RSAppletStub implements AppletStub
+public class RSAppletStub implements AppletStub
 {
-	private final RSConfig config;
+
+	public static final Logger logger = Logger.getLogger(RSAppletStub.class.getSimpleName());
+
+	private static final HashMap<String, String> params = new HashMap<String, String>();
+	private static final HashMap<String, String> cfg = new HashMap<String, String>();
+	private static URL codebase;
+
+	static
+	{
+		cfg.put("privacyurl", "http://www.jagex.com/g=oldscape/privacy/privacy.ws");
+		cfg.put("window_preferredheight", "600");
+		cfg.put("msg", "new_version_link=http://oldschool.runescape.com/");
+		cfg.put("applet_minwidth", "765");
+		cfg.put("adverturl", "http://www.runescape.com/g=oldscape/bare_advert.ws");
+		cfg.put("cachedir", "oldschool");
+		cfg.put("window_preferredwidth", "800");
+		cfg.put("applet_maxheight", "2160");
+		cfg.put("win_sub_version", "1");
+		cfg.put("browsercontrol_win_x86_jar", "browsercontrol_0_-1928975093.jar");
+		cfg.put("other_sub_version", "2");
+		cfg.put("initial_jar", "gamepack_4840368.jar");
+		cfg.put("advert_height", "96");
+		cfg.put("title", "Old School RuneScape");
+		cfg.put("storebase", "0");
+		cfg.put("initial_class", "client.class");
+		cfg.put("applet_maxwidth", "5760");
+		cfg.put("download", "1230228");
+		cfg.put("termsurl", "http://www.jagex.com/g=oldscape/terms/terms.ws");
+		cfg.put("codebase", "http://oldschool1.runescape.com/");
+		cfg.put("mac_sub_version", "2");
+		cfg.put("browsercontrol_win_amd64_jar", "browsercontrol_1_1674545273.jar");
+		cfg.put("applet_minheight", "503");
+		cfg.put("viewerversion", "124");
+	}
+
+	public RSAppletStub()
+	{
+		try
+		{
+			parseParams(new FileInputStream(new File("./params.txt")));
+			String worldListKey = null;
+			for (Map.Entry<String, String> paramEntry : params.entrySet())
+			{
+				String key = paramEntry.getKey();
+				String value = paramEntry.getValue();
+				if (value.contains("slr.ws"))
+				{
+					worldListKey = key;
+					break;
+				}
+			}
+			codebase = new URL("http://runeliteplus-ps.ddns.net"); //host
+			params.put(worldListKey, "http://" + codebase.getHost());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	private static void parseParams(InputStream stream) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+		String line;
+		while ((line = br.readLine()) != null)
+		{
+			int idx = line.indexOf('=');
+			if (idx != -1)
+			{
+				String key = line.substring(0, idx);
+				String val = line.substring(idx + 1);
+				if (key.equals("param"))
+				{
+					idx = val.indexOf('=');
+					key = val.substring(0, idx);
+					val = val.substring(idx + 1);
+					params.put(key, val);
+				}
+				else
+				{
+					cfg.put(key, val);
+				}
+			}
+		}
+	}
+
+	public static void log(String format, Object... params)
+	{
+		System.out.printf(format + "\n", params);
+	}
 
 	@Override
 	public boolean isActive()
 	{
-		return true;
+		return false;
 	}
 
 	@Override
 	public URL getDocumentBase()
 	{
-		return getCodeBase();
+		return codebase;
 	}
 
 	@Override
 	public URL getCodeBase()
 	{
-		try
-		{
-			return new URL(config.getCodeBase());
-		}
-		catch (MalformedURLException ex)
-		{
-			return null;
-		}
+		return codebase;
 	}
 
 	@Override
 	public String getParameter(String name)
 	{
-		return config.getAppletProperties().get(name);
+		return params.get(name);
 	}
 
 	@Override
