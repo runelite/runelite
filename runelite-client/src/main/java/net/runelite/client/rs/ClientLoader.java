@@ -60,8 +60,13 @@ public class ClientLoader
 
 			switch (updateCheckMode)
 			{
+				case AUTO:
 				default:
 					return loadRLPlus(config);
+				case VANILLA:
+					return loadVanilla(config);
+				case NONE:
+					return null;
 			}
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
@@ -102,7 +107,7 @@ public class ClientLoader
 	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass) throws IllegalAccessException, InstantiationException
 	{
 		final Applet rs = (Applet) clientClass.newInstance();
-		rs.setStub(new RSAppletStub());
+		rs.setStub(new RSAppletStub(config));
 		return rs;
 	}
 }
