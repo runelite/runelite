@@ -106,7 +106,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "menuOption",
 			name = " Show Hop-to menu option",
 			description = "Show Hop-to option in menus",
-			position = 6
+		position = 6
 	)
 	default boolean menuOption()
 	{
