@@ -103,7 +103,7 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "menuOption",
+		keyName = "menuOption",
 			name = " Show Hop-to menu option",
 			description = "Show Hop-to option in menus",
 			position = 6
