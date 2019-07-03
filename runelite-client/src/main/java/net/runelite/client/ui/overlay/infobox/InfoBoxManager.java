@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @Singleton
@@ -71,6 +72,14 @@ public class InfoBoxManager
 		updateInfoBoxImage(infoBox);
 		infoBoxes.add(infoBox);
 		refreshInfoBoxes();
+
+		BufferedImage image = infoBox.getImage();
+
+		if (image instanceof AsyncBufferedImage)
+		{
+			AsyncBufferedImage abi = (AsyncBufferedImage) image;
+			abi.onChanged(() -> updateInfoBoxImage(infoBox));
+		}
 	}
 
 	public void removeInfoBox(InfoBox infoBox)
