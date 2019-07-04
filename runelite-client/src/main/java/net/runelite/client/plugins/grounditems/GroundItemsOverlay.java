@@ -94,14 +94,14 @@ public class GroundItemsOverlay extends Overlay
 		{
 			return null;
 		}
-
-		final FontMetrics fm = graphics.getFontMetrics();
 		final Player player = client.getLocalPlayer();
 
 		if (player == null || client.getViewportWidget() == null)
 		{
 			return null;
 		}
+
+		final FontMetrics fm = graphics.getFontMetrics();
 
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
@@ -338,7 +338,6 @@ public class GroundItemsOverlay extends Overlay
 			textComponent.setPosition(new java.awt.Point(textX, textY));
 			textComponent.render(graphics);
 		}
-
 		return null;
 	}
 

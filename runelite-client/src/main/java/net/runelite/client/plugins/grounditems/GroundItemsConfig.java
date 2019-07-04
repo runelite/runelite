@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.grounditems;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -116,16 +117,16 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "highlightTiles",
 		name = "Highlight Tiles",
 		description = "Configures whether or not to highlight tiles containing ground items",
 		position = 6
 	)
-	default boolean highlightTiles() 
-	{ 
-		return false; 
+	default boolean highlightTiles()
+	{
+		return false;
 	}
 
 	@ConfigItem(
@@ -211,6 +212,7 @@ public interface GroundItemsConfig extends Config
 		description = "Configures the color for default, non-highlighted items",
 		position = 14
 	)
+	@Alpha
 	default Color defaultColor()
 	{
 		return Color.WHITE;
@@ -222,6 +224,7 @@ public interface GroundItemsConfig extends Config
 		description = "Configures the color for highlighted items",
 		position = 15
 	)
+	@Alpha
 	default Color highlightedColor()
 	{
 		return Color.decode("#AA00FF");
@@ -233,6 +236,7 @@ public interface GroundItemsConfig extends Config
 		description = "Configures the color for hidden items in right-click menu and when holding ALT",
 		position = 16
 	)
+	@Alpha
 	default Color hiddenColor()
 	{
 		return Color.GRAY;
@@ -244,6 +248,7 @@ public interface GroundItemsConfig extends Config
 		description = "Configures the color for low value items",
 		position = 17
 	)
+	@Alpha
 	default Color lowValueColor()
 	{
 		return Color.decode("#66B2FF");
@@ -266,6 +271,7 @@ public interface GroundItemsConfig extends Config
 		description = "Configures the color for medium value items",
 		position = 19
 	)
+	@Alpha
 	default Color mediumValueColor()
 	{
 		return Color.decode("#99FF99");
@@ -288,6 +294,7 @@ public interface GroundItemsConfig extends Config
 		description = "Configures the color for high value items",
 		position = 21
 	)
+	@Alpha
 	default Color highValueColor()
 	{
 		return Color.decode("#FF9600");
@@ -310,6 +317,7 @@ public interface GroundItemsConfig extends Config
 		description = "Configures the color for insane value items",
 		position = 23
 	)
+	@Alpha
 	default Color insaneValueColor()
 	{
 		return Color.decode("#FF66B2");
@@ -358,4 +366,5 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
+
 }
