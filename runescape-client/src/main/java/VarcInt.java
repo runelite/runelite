@@ -11,7 +11,7 @@ public class VarcInt extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache __iw_m;
+   static AbstractIndexCache field942;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -22,10 +22,6 @@ public class VarcInt extends DualNode {
    @Export("persist")
    public boolean persist;
 
-   static {
-      cachedVarcInts = new EvictingDualNodeHashTable(64);
-   }
-
    VarcInt() {
       this.persist = false;
    }
@@ -35,14 +31,14 @@ public class VarcInt extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "1023420886"
    )
-   void __q_411(Buffer var1) {
-      while(true) {
+   void method354(Buffer var1) {
+      while (true) {
          int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+         if (var2 == 0) {
             return;
          }
 
-         this.__w_412(var1, var2);
+         this.method355(var1, var2);
       }
    }
 
@@ -51,8 +47,8 @@ public class VarcInt extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-202810982"
    )
-   void __w_412(Buffer var1, int var2) {
-      if(var2 == 2) {
+   void method355(Buffer var1, int var2) {
+      if (var2 == 2) {
          this.persist = true;
       }
 
@@ -65,7 +61,7 @@ public class VarcInt extends DualNode {
    )
    @Export("loadClassFromDescriptor")
    static Class loadClassFromDescriptor(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
+      return var0.equals("B") ? Byte.TYPE : (var0.equals("I") ? Integer.TYPE : (var0.equals("S") ? Short.TYPE : (var0.equals("J") ? Long.TYPE : (var0.equals("Z") ? Boolean.TYPE : (var0.equals("F") ? Float.TYPE : (var0.equals("D") ? Double.TYPE : (var0.equals("C") ? Character.TYPE : (var0.equals("void") ? Void.TYPE : Reflection.findClass(var0)))))))));
    }
 
    @ObfuscatedName("a")
@@ -76,5 +72,9 @@ public class VarcInt extends DualNode {
    @Export("isAlphaNumeric")
    public static boolean isAlphaNumeric(char var0) {
       return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
+   }
+
+   static {
+      cachedVarcInts = new EvictingDualNodeHashTable(64);
    }
 }

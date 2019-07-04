@@ -44,7 +44,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
          var2.write(var3);
          var2.seek(0L);
          var2.close();
-         if(var1) {
+         if (var1) {
             var0.delete();
          }
 
@@ -72,47 +72,47 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
    static void decodeSprite(byte[] var0) {
       Buffer var1 = new Buffer(var0);
       var1.index = var0.length - 2;
-      class328.indexedSpriteCount = var1.__ag_302();
+      class328.indexedSpriteCount = var1.method43();
       class328.indexedSpriteOffsetXs = new int[class328.indexedSpriteCount];
       class328.indexedSpriteOffsetYs = new int[class328.indexedSpriteCount];
       VarbitDefinition.indexedSpriteWidths = new int[class328.indexedSpriteCount];
       SecureRandomCallable.indexedSpriteHeights = new int[class328.indexedSpriteCount];
       class328.spritePixels = new byte[class328.indexedSpriteCount][];
       var1.index = var0.length - 7 - class328.indexedSpriteCount * 8;
-      class328.indexedSpriteWidth = var1.__ag_302();
-      class328.indexedSpriteHeight = var1.__ag_302();
+      class328.indexedSpriteWidth = var1.method43();
+      class328.indexedSpriteHeight = var1.method43();
       int var2 = (var1.readUnsignedByte() & 255) + 1;
 
       int var3;
-      for(var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
-         class328.indexedSpriteOffsetXs[var3] = var1.__ag_302();
+      for (var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
+         class328.indexedSpriteOffsetXs[var3] = var1.method43();
       }
 
-      for(var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
-         class328.indexedSpriteOffsetYs[var3] = var1.__ag_302();
+      for (var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
+         class328.indexedSpriteOffsetYs[var3] = var1.method43();
       }
 
-      for(var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
-         VarbitDefinition.indexedSpriteWidths[var3] = var1.__ag_302();
+      for (var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
+         VarbitDefinition.indexedSpriteWidths[var3] = var1.method43();
       }
 
-      for(var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
-         SecureRandomCallable.indexedSpriteHeights[var3] = var1.__ag_302();
+      for (var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
+         SecureRandomCallable.indexedSpriteHeights[var3] = var1.method43();
       }
 
       var1.index = var0.length - 7 - class328.indexedSpriteCount * 8 - (var2 - 1) * 3;
       class328.indexedSpritePalette = new int[var2];
 
-      for(var3 = 1; var3 < var2; ++var3) {
+      for (var3 = 1; var3 < var2; ++var3) {
          class328.indexedSpritePalette[var3] = var1.readMedium();
-         if(class328.indexedSpritePalette[var3] == 0) {
+         if (class328.indexedSpritePalette[var3] == 0) {
             class328.indexedSpritePalette[var3] = 1;
          }
       }
 
       var1.index = 0;
 
-      for(var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
+      for (var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
          int var4 = VarbitDefinition.indexedSpriteWidths[var3];
          int var5 = SecureRandomCallable.indexedSpriteHeights[var3];
          int var6 = var4 * var5;
@@ -120,13 +120,13 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
          class328.spritePixels[var3] = var7;
          int var8 = var1.readUnsignedByte();
          int var9;
-         if(var8 == 0) {
-            for(var9 = 0; var9 < var6; ++var9) {
+         if (var8 == 0) {
+            for (var9 = 0; var9 < var6; ++var9) {
                var7[var9] = var1.readByte();
             }
-         } else if(var8 == 1) {
-            for(var9 = 0; var9 < var4; ++var9) {
-               for(int var10 = 0; var10 < var5; ++var10) {
+         } else if (var8 == 1) {
+            for (var9 = 0; var9 < var4; ++var9) {
+               for (int var10 = 0; var10 < var5; ++var10) {
                   var7[var9 + var10 * var4] = var1.readByte();
                }
             }
@@ -154,11 +154,11 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
       Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
       Rasterizer3D.Rasterizer3D_method1();
 
-      for(int var9 = 0; var9 < var0.length; ++var9) {
+      for (int var9 = 0; var9 < var0.length; ++var9) {
          Widget var10 = var0[var9];
-         if(var10 != null && (var10.parentId == var1 || var1 == -1412584499 && var10 == Client.clickedWidget)) {
+         if (var10 != null && (var10.parentId == var1 || var1 == -1412584499 && var10 == Client.clickedWidget)) {
             int var11;
-            if(var8 == -1) {
+            if (var8 == -1) {
                Client.rootWidgetXs[Client.rootWidgetCount] = var10.x + var6;
                Client.rootWidgetYs[Client.rootWidgetCount] = var7 + var10.y;
                Client.rootWidgetWidths[Client.rootWidgetCount] = var10.width;
@@ -170,8 +170,8 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
 
             var10.rootIndex = var11;
             var10.cycle = Client.cycle;
-            if(!var10.isIf3 || !PacketBufferNode.method3673(var10)) {
-               if(var10.contentType > 0) {
+            if (!var10.isIf3 || !PacketBufferNode.method3673(var10)) {
+               if (var10.contentType > 0) {
                   class15.method186(var10);
                }
 
@@ -180,266 +180,266 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                int var14 = var10.transparency;
                int var15;
                int var16;
-               if(var10 == Client.clickedWidget) {
-                  if(var1 != -1412584499 && !var10.isScrollBar) {
-                     class279.__jx_ne = var0;
-                     class54.__bs_nb = var6;
-                     class157.__fw_nm = var7;
+               if (var10 == Client.clickedWidget) {
+                  if (var1 != -1412584499 && !var10.isScrollBar) {
+                     class279.field1145 = var0;
+                     class54.field1161 = var6;
+                     class157.field1114 = var7;
                      continue;
                   }
 
-                  if(Client.isDraggingWidget && Client.__client_nn) {
+                  if (Client.isDraggingWidget && Client.field106) {
                      var15 = MouseHandler.MouseHandler_x;
                      var16 = MouseHandler.MouseHandler_y;
                      var15 -= Client.widgetClickX;
                      var16 -= Client.widgetClickY;
-                     if(var15 < Client.__client_nw) {
-                        var15 = Client.__client_nw;
+                     if (var15 < Client.field108) {
+                        var15 = Client.field108;
                      }
 
-                     if(var15 + var10.width > Client.__client_nw + Client.clickedWidgetParent.width) {
-                        var15 = Client.__client_nw + Client.clickedWidgetParent.width - var10.width;
+                     if (var15 + var10.width > Client.field108 + Client.clickedWidgetParent.width) {
+                        var15 = Client.field108 + Client.clickedWidgetParent.width - var10.width;
                      }
 
-                     if(var16 < Client.__client_nl) {
-                        var16 = Client.__client_nl;
+                     if (var16 < Client.field109) {
+                        var16 = Client.field109;
                      }
 
-                     if(var16 + var10.height > Client.__client_nl + Client.clickedWidgetParent.height) {
-                        var16 = Client.__client_nl + Client.clickedWidgetParent.height - var10.height;
+                     if (var16 + var10.height > Client.field109 + Client.clickedWidgetParent.height) {
+                        var16 = Client.field109 + Client.clickedWidgetParent.height - var10.height;
                      }
 
                      var12 = var15;
                      var13 = var16;
                   }
 
-                  if(!var10.isScrollBar) {
+                  if (!var10.isScrollBar) {
                      var14 = 128;
                   }
                }
 
                int var17;
                int var18;
+               int var19;
                int var20;
                int var21;
                int var22;
-               int var30;
-               if(var10.type == 2) {
+               if (var10.type == 2) {
                   var15 = var2;
                   var16 = var3;
                   var17 = var4;
                   var18 = var5;
-               } else if(var10.type == 9) {
-                  var30 = var12;
-                  var20 = var13;
-                  var21 = var12 + var10.width;
-                  var22 = var13 + var10.height;
-                  if(var21 < var12) {
-                     var30 = var21;
-                     var21 = var12;
+               } else if (var10.type == 9) {
+                  var22 = var12;
+                  var19 = var13;
+                  var20 = var12 + var10.width;
+                  var21 = var13 + var10.height;
+                  if (var20 < var12) {
+                     var22 = var20;
+                     var20 = var12;
                   }
 
-                  if(var22 < var13) {
-                     var20 = var22;
-                     var22 = var13;
+                  if (var21 < var13) {
+                     var19 = var21;
+                     var21 = var13;
                   }
 
+                  ++var20;
                   ++var21;
-                  ++var22;
-                  var15 = var30 > var2?var30:var2;
-                  var16 = var20 > var3?var20:var3;
-                  var17 = var21 < var4?var21:var4;
-                  var18 = var22 < var5?var22:var5;
+                  var15 = var22 > var2 ? var22 : var2;
+                  var16 = var19 > var3 ? var19 : var3;
+                  var17 = var20 < var4 ? var20 : var4;
+                  var18 = var21 < var5 ? var21 : var5;
                } else {
-                  var30 = var12 + var10.width;
-                  var20 = var13 + var10.height;
-                  var15 = var12 > var2?var12:var2;
-                  var16 = var13 > var3?var13:var3;
-                  var17 = var30 < var4?var30:var4;
-                  var18 = var20 < var5?var20:var5;
+                  var22 = var12 + var10.width;
+                  var19 = var13 + var10.height;
+                  var15 = var12 > var2 ? var12 : var2;
+                  var16 = var13 > var3 ? var13 : var3;
+                  var17 = var22 < var4 ? var22 : var4;
+                  var18 = var19 < var5 ? var19 : var5;
                }
 
-               if(!var10.isIf3 || var15 < var17 && var16 < var18) {
-                  if(var10.contentType != 0) {
-                     if(var10.contentType == 1336) {
-                        if(Client.displayFps) {
+               if (!var10.isIf3 || var15 < var17 && var16 < var18) {
+                  if (var10.contentType != 0) {
+                     if (var10.contentType == 1336) {
+                        if (Client.displayFps) {
                            var13 += 15;
                            fontPlain12.drawRightAligned("Fps:" + GameShell.fps, var12 + var10.width, var13, 16776960, -1);
                            var13 += 15;
-                           Runtime var38 = Runtime.getRuntime();
-                           var20 = (int)((var38.totalMemory() - var38.freeMemory()) / 1024L);
-                           var21 = 16776960;
-                           if(var20 > 327680 && !Client.isLowDetail) {
-                              var21 = 16711680;
+                           Runtime var34 = Runtime.getRuntime();
+                           var19 = (int)((var34.totalMemory() - var34.freeMemory()) / 1024L);
+                           var20 = 16776960;
+                           if (var19 > 327680 && !Client.isLowDetail) {
+                              var20 = 16711680;
                            }
 
-                           fontPlain12.drawRightAligned("Mem:" + var20 + "k", var12 + var10.width, var13, var21, -1);
+                           fontPlain12.drawRightAligned("Mem:" + var19 + "k", var12 + var10.width, var13, var20, -1);
                            var13 += 15;
                         }
                         continue;
                      }
 
-                     if(var10.contentType == 1337) {
-                        Client.__client_lq = var12;
-                        Client.__client_ln = var13;
+                     if (var10.contentType == 1337) {
+                        Client.field216 = var12;
+                        Client.field217 = var13;
                         class40.drawEntities(var12, var13, var10.width, var10.height);
-                        Client.__client_od[var10.rootIndex] = true;
+                        Client.field100[var10.rootIndex] = true;
                         Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
                         continue;
                      }
 
-                     if(var10.contentType == 1338) {
+                     if (var10.contentType == 1338) {
                         MouseRecorder.method1189(var10, var12, var13, var11);
                         Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
                         continue;
                      }
 
-                     if(var10.contentType == 1339) {
+                     if (var10.contentType == 1339) {
                         class22.method296(var10, var12, var13, var11);
                         Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
                         continue;
                      }
 
-                     if(var10.contentType == 1400) {
+                     if (var10.contentType == 1400) {
                         class60.worldMap0.draw(var12, var13, var10.width, var10.height, Client.cycle);
                      }
 
-                     if(var10.contentType == 1401) {
+                     if (var10.contentType == 1401) {
                         class60.worldMap0.drawOverview(var12, var13, var10.width, var10.height);
                      }
 
-                     if(var10.contentType == 1402) {
+                     if (var10.contentType == 1402) {
                         class16.loginScreenRunesAnimation.method1782(var12, Client.cycle);
                      }
                   }
 
-                  if(var10.type == 0) {
-                     if(!var10.isIf3 && PacketBufferNode.method3673(var10) && var10 != Clock.mousedOverWidgetIf1) {
+                  if (var10.type == 0) {
+                     if (!var10.isIf3 && PacketBufferNode.method3673(var10) && var10 != Clock.mousedOverWidgetIf1) {
                         continue;
                      }
 
-                     if(!var10.isIf3) {
-                        if(var10.scrollY > var10.scrollHeight - var10.height) {
+                     if (!var10.isIf3) {
+                        if (var10.scrollY > var10.scrollHeight - var10.height) {
                            var10.scrollY = var10.scrollHeight - var10.height;
                         }
 
-                        if(var10.scrollY < 0) {
+                        if (var10.scrollY < 0) {
                            var10.scrollY = 0;
                         }
                      }
 
                      drawWidgetGroup(var0, var10.id, var15, var16, var17, var18, var12 - var10.scrollX, var13 - var10.scrollY, var11);
-                     if(var10.children != null) {
+                     if (var10.children != null) {
                         drawWidgetGroup(var10.children, var10.id, var15, var16, var17, var18, var12 - var10.scrollX, var13 - var10.scrollY, var11);
                      }
 
-                     WidgetGroupParent var19 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var10.id);
-                     if(var19 != null) {
-                        Interpreter.drawWidgets(var19.group, var15, var16, var17, var18, var12, var13, var11);
+                     WidgetGroupParent var23 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var10.id);
+                     if (var23 != null) {
+                        Interpreter.drawWidgets(var23.group, var15, var16, var17, var18, var12, var13, var11);
                      }
 
                      Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
                      Rasterizer3D.Rasterizer3D_method1();
                   }
 
-                  if(Client.isResizable || Client.__client_oq[var11] || Client.gameDrawingMode > 1) {
-                     if(var10.type == 0 && !var10.isIf3 && var10.scrollHeight > var10.height) {
+                  if (Client.isResizable || Client.field101[var11] || Client.gameDrawingMode > 1) {
+                     if (var10.type == 0 && !var10.isIf3 && var10.scrollHeight > var10.height) {
                         class11.method148(var12 + var10.width, var13, var10.scrollY, var10.height, var10.scrollHeight);
                      }
 
-                     if(var10.type != 1) {
-                        int var23;
+                     if (var10.type != 1) {
                         int var24;
                         int var25;
                         int var26;
-                        if(var10.type == 2) {
-                           var30 = 0;
+                        int var33;
+                        if (var10.type == 2) {
+                           var22 = 0;
 
-                           for(var20 = 0; var20 < var10.rawHeight; ++var20) {
-                              for(var21 = 0; var21 < var10.rawWidth; ++var21) {
-                                 var22 = var12 + var21 * (var10.paddingX + 32);
-                                 var23 = var13 + var20 * (var10.paddingY + 32);
-                                 if(var30 < 20) {
-                                    var22 += var10.inventoryXOffsets[var30];
-                                    var23 += var10.inventoryYOffsets[var30];
+                           for (var19 = 0; var19 < var10.rawHeight; ++var19) {
+                              for (var20 = 0; var20 < var10.rawWidth; ++var20) {
+                                 var21 = var12 + var20 * (var10.paddingX + 32);
+                                 var33 = var13 + var19 * (var10.paddingY + 32);
+                                 if (var22 < 20) {
+                                    var21 += var10.inventoryXOffsets[var22];
+                                    var33 += var10.inventoryYOffsets[var22];
                                  }
 
-                                 if(var10.itemIds[var30] <= 0) {
-                                    if(var10.inventorySprites != null && var30 < 20) {
-                                       Sprite var42 = var10.getInventorySprite(var30);
-                                       if(var42 != null) {
-                                          var42.drawAt2(var22, var23);
-                                       } else if(Widget.__ho_j) {
+                                 if (var10.itemIds[var22] <= 0) {
+                                    if (var10.inventorySprites != null && var22 < 20) {
+                                       Sprite var36 = var10.getInventorySprite(var22);
+                                       if (var36 != null) {
+                                          var36.drawAt2(var21, var33);
+                                       } else if (Widget.field957) {
                                           class22.method295(var10);
                                        }
                                     }
                                  } else {
-                                    boolean var39 = false;
-                                    boolean var40 = false;
-                                    var26 = var10.itemIds[var30] - 1;
-                                    if(var22 + 32 > var2 && var22 < var4 && var23 + 32 > var3 && var23 < var5 || var10 == dragInventoryWidget && var30 == Client.dragItemSlotSource) {
-                                       Sprite var27;
-                                       if(Client.isItemSelected == 1 && var30 == HealthBarDefinition.selectedItemSlot && var10.id == ServerPacket.selectedItemWidget) {
-                                          var27 = class226.getItemSprite(var26, var10.itemQuantities[var30], 2, 0, 2, false);
+                                    boolean var35 = false;
+                                    boolean var46 = false;
+                                    var26 = var10.itemIds[var22] - 1;
+                                    if (var21 + 32 > var2 && var21 < var4 && var33 + 32 > var3 && var33 < var5 || var10 == dragInventoryWidget && var22 == Client.dragItemSlotSource) {
+                                       Sprite var42;
+                                       if (Client.isItemSelected == 1 && var22 == HealthBarDefinition.selectedItemSlot && var10.id == ServerPacket.selectedItemWidget) {
+                                          var42 = class226.getItemSprite(var26, var10.itemQuantities[var22], 2, 0, 2, false);
                                        } else {
-                                          var27 = class226.getItemSprite(var26, var10.itemQuantities[var30], 1, 3153952, 2, false);
+                                          var42 = class226.getItemSprite(var26, var10.itemQuantities[var22], 1, 3153952, 2, false);
                                        }
 
-                                       if(var27 != null) {
-                                          if(var10 == dragInventoryWidget && var30 == Client.dragItemSlotSource) {
-                                             var24 = MouseHandler.MouseHandler_x - Client.__client_ja;
-                                             var25 = MouseHandler.MouseHandler_y - Client.__client_je;
-                                             if(var24 < 5 && var24 > -5) {
+                                       if (var42 != null) {
+                                          if (var10 == dragInventoryWidget && var22 == Client.dragItemSlotSource) {
+                                             var24 = MouseHandler.MouseHandler_x - Client.field205;
+                                             var25 = MouseHandler.MouseHandler_y - Client.field206;
+                                             if (var24 < 5 && var24 > -5) {
                                                 var24 = 0;
                                              }
 
-                                             if(var25 < 5 && var25 > -5) {
+                                             if (var25 < 5 && var25 > -5) {
                                                 var25 = 0;
                                              }
 
-                                             if(Client.itemDragDuration < 5) {
+                                             if (Client.itemDragDuration < 5) {
                                                 var24 = 0;
                                                 var25 = 0;
                                              }
 
-                                             var27.__h_508(var22 + var24, var23 + var25, 128);
-                                             if(var1 != -1) {
-                                                Widget var28 = var0[var1 & 65535];
-                                                int var29;
-                                                if(var23 + var25 < Rasterizer2D.Rasterizer2D_yClipStart && var28.scrollY > 0) {
-                                                   var29 = (Rasterizer2D.Rasterizer2D_yClipStart - var23 - var25) * Client.__client_gy / 3;
-                                                   if(var29 > Client.__client_gy * 10) {
-                                                      var29 = Client.__client_gy * 10;
+                                             var42.method310(var21 + var24, var33 + var25, 128);
+                                             if (var1 != -1) {
+                                                Widget var47 = var0[var1 & 65535];
+                                                int var45;
+                                                if (var33 + var25 < Rasterizer2D.Rasterizer2D_yClipStart && var47.scrollY > 0) {
+                                                   var45 = (Rasterizer2D.Rasterizer2D_yClipStart - var33 - var25) * Client.field183 / 3;
+                                                   if (var45 > Client.field183 * 10) {
+                                                      var45 = Client.field183 * 10;
                                                    }
 
-                                                   if(var29 > var28.scrollY) {
-                                                      var29 = var28.scrollY;
+                                                   if (var45 > var47.scrollY) {
+                                                      var45 = var47.scrollY;
                                                    }
 
-                                                   var28.scrollY -= var29;
-                                                   Client.__client_je += var29;
-                                                   class22.method295(var28);
+                                                   var47.scrollY -= var45;
+                                                   Client.field206 += var45;
+                                                   class22.method295(var47);
                                                 }
 
-                                                if(var25 + var23 + 32 > Rasterizer2D.Rasterizer2D_yClipEnd && var28.scrollY < var28.scrollHeight - var28.height) {
-                                                   var29 = (var23 + var25 + 32 - Rasterizer2D.Rasterizer2D_yClipEnd) * Client.__client_gy / 3;
-                                                   if(var29 > Client.__client_gy * 10) {
-                                                      var29 = Client.__client_gy * 10;
+                                                if (var25 + var33 + 32 > Rasterizer2D.Rasterizer2D_yClipEnd && var47.scrollY < var47.scrollHeight - var47.height) {
+                                                   var45 = (var33 + var25 + 32 - Rasterizer2D.Rasterizer2D_yClipEnd) * Client.field183 / 3;
+                                                   if (var45 > Client.field183 * 10) {
+                                                      var45 = Client.field183 * 10;
                                                    }
 
-                                                   if(var29 > var28.scrollHeight - var28.height - var28.scrollY) {
-                                                      var29 = var28.scrollHeight - var28.height - var28.scrollY;
+                                                   if (var45 > var47.scrollHeight - var47.height - var47.scrollY) {
+                                                      var45 = var47.scrollHeight - var47.height - var47.scrollY;
                                                    }
 
-                                                   var28.scrollY += var29;
-                                                   Client.__client_je -= var29;
-                                                   class22.method295(var28);
+                                                   var47.scrollY += var45;
+                                                   Client.field206 -= var45;
+                                                   class22.method295(var47);
                                                 }
                                              }
-                                          } else if(var10 == BoundaryObject.__ej_jv && var30 == Client.__client_jz) {
-                                             var27.__h_508(var22, var23, 128);
+                                          } else if (var10 == BoundaryObject.field40 && var22 == Client.field204) {
+                                             var42.method310(var21, var33, 128);
                                           } else {
-                                             var27.drawAt2(var22, var23);
+                                             var42.drawAt2(var21, var33);
                                           }
                                        } else {
                                           class22.method295(var10);
@@ -447,138 +447,138 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                     }
                                  }
 
-                                 ++var30;
+                                 ++var22;
                               }
                            }
-                        } else if(var10.type == 3) {
-                           if(class238.runCs1(var10)) {
-                              var30 = var10.color2;
-                              if(var10 == Clock.mousedOverWidgetIf1 && var10.mouseOverColor2 != 0) {
-                                 var30 = var10.mouseOverColor2;
+                        } else if (var10.type == 3) {
+                           if (class238.runCs1(var10)) {
+                              var22 = var10.color2;
+                              if (var10 == Clock.mousedOverWidgetIf1 && var10.mouseOverColor2 != 0) {
+                                 var22 = var10.mouseOverColor2;
                               }
                            } else {
-                              var30 = var10.color;
-                              if(var10 == Clock.mousedOverWidgetIf1 && var10.mouseOverColor != 0) {
-                                 var30 = var10.mouseOverColor;
+                              var22 = var10.color;
+                              if (var10 == Clock.mousedOverWidgetIf1 && var10.mouseOverColor != 0) {
+                                 var22 = var10.mouseOverColor;
                               }
                            }
 
-                           if(var10.fill) {
+                           if (var10.fill) {
                               switch(var10.rectangleMode.id) {
                               case 1:
                                  Rasterizer2D.drawGradient(var12, var13, var10.width, var10.height, var10.color, var10.color2);
                                  break;
                               case 2:
-                                 Rasterizer2D.drawGradientAlpha(var12, var13, var10.width, var10.height, var10.color, var10.color2, 255 - (var10.transparency & 255), 255 - (var10.__af & 255));
+                                 Rasterizer2D.drawGradientAlpha(var12, var13, var10.width, var10.height, var10.color, var10.color2, 255 - (var10.transparency & 255), 255 - (var10.field960 & 255));
                                  break;
                               default:
-                                 if(var14 == 0) {
-                                    Rasterizer2D.Rasterizer2D_fillRectangle(var12, var13, var10.width, var10.height, var30);
+                                 if (var14 == 0) {
+                                    Rasterizer2D.Rasterizer2D_fillRectangle(var12, var13, var10.width, var10.height, var22);
                                  } else {
-                                    Rasterizer2D.Rasterizer2D_fillRectangleAlpha(var12, var13, var10.width, var10.height, var30, 256 - (var14 & 255));
+                                    Rasterizer2D.Rasterizer2D_fillRectangleAlpha(var12, var13, var10.width, var10.height, var22, 256 - (var14 & 255));
                                  }
                               }
-                           } else if(var14 == 0) {
-                              Rasterizer2D.Rasterizer2D_drawRectangle(var12, var13, var10.width, var10.height, var30);
+                           } else if (var14 == 0) {
+                              Rasterizer2D.Rasterizer2D_drawRectangle(var12, var13, var10.width, var10.height, var22);
                            } else {
-                              Rasterizer2D.Rasterizer2D_drawRectangleAlpha(var12, var13, var10.width, var10.height, var30, 256 - (var14 & 255));
+                              Rasterizer2D.Rasterizer2D_drawRectangleAlpha(var12, var13, var10.width, var10.height, var22, 256 - (var14 & 255));
                            }
                         } else {
-                           Font var36;
-                           if(var10.type == 4) {
-                              var36 = var10.getFont();
-                              if(var36 == null) {
-                                 if(Widget.__ho_j) {
+                           Font var27;
+                           if (var10.type == 4) {
+                              var27 = var10.getFont();
+                              if (var27 == null) {
+                                 if (Widget.field957) {
                                     class22.method295(var10);
                                  }
                               } else {
-                                 String var45 = var10.text;
-                                 if(class238.runCs1(var10)) {
-                                    var20 = var10.color2;
-                                    if(var10 == Clock.mousedOverWidgetIf1 && var10.mouseOverColor2 != 0) {
-                                       var20 = var10.mouseOverColor2;
+                                 String var38 = var10.text;
+                                 if (class238.runCs1(var10)) {
+                                    var19 = var10.color2;
+                                    if (var10 == Clock.mousedOverWidgetIf1 && var10.mouseOverColor2 != 0) {
+                                       var19 = var10.mouseOverColor2;
                                     }
 
-                                    if(var10.text2.length() > 0) {
-                                       var45 = var10.text2;
+                                    if (var10.text2.length() > 0) {
+                                       var38 = var10.text2;
                                     }
                                  } else {
-                                    var20 = var10.color;
-                                    if(var10 == Clock.mousedOverWidgetIf1 && var10.mouseOverColor != 0) {
-                                       var20 = var10.mouseOverColor;
+                                    var19 = var10.color;
+                                    if (var10 == Clock.mousedOverWidgetIf1 && var10.mouseOverColor != 0) {
+                                       var19 = var10.mouseOverColor;
                                     }
                                  }
 
-                                 if(var10.isIf3 && var10.itemId != -1) {
-                                    ItemDefinition var46 = Skills.getItemDefinition(var10.itemId);
-                                    var45 = var46.name;
-                                    if(var45 == null) {
-                                       var45 = "null";
+                                 if (var10.isIf3 && var10.itemId != -1) {
+                                    ItemDefinition var41 = Skills.getItemDefinition(var10.itemId);
+                                    var38 = var41.name;
+                                    if (var38 == null) {
+                                       var38 = "null";
                                     }
 
-                                    if((var46.isStackable == 1 || var10.itemQuantity != 1) && var10.itemQuantity != -1) {
-                                       var45 = BufferedFile.colorStartTag(16748608) + var45 + "</col>" + " " + 'x' + GrandExchangeEvent.method88(var10.itemQuantity);
+                                    if ((var41.isStackable == 1 || var10.itemQuantity != 1) && var10.itemQuantity != -1) {
+                                       var38 = BufferedFile.colorStartTag(16748608) + var38 + "</col> " + 'x' + GrandExchangeEvent.method88(var10.itemQuantity);
                                     }
                                  }
 
-                                 if(var10 == Client.__client_mo) {
-                                    var45 = "Please wait...";
-                                    var20 = var10.color;
+                                 if (var10 == Client.field127) {
+                                    var38 = "Please wait...";
+                                    var19 = var10.color;
                                  }
 
-                                 if(!var10.isIf3) {
-                                    var45 = MouseRecorder.method1194(var45, var10);
+                                 if (!var10.isIf3) {
+                                    var38 = MouseRecorder.method1194(var38, var10);
                                  }
 
-                                 var36.drawLines(var45, var12, var13, var10.width, var10.height, var20, var10.textShadowed?0:-1, var10.textXAlignment, var10.textYAlignment, var10.textLineHeight);
+                                 var27.drawLines(var38, var12, var13, var10.width, var10.height, var19, var10.textShadowed ? 0 : -1, var10.textXAlignment, var10.textYAlignment, var10.textLineHeight);
                               }
-                           } else if(var10.type == 5) {
+                           } else if (var10.type == 5) {
                               Sprite var37;
-                              if(!var10.isIf3) {
+                              if (!var10.isIf3) {
                                  var37 = var10.getSprite(class238.runCs1(var10));
-                                 if(var37 != null) {
+                                 if (var37 != null) {
                                     var37.drawAt2(var12, var13);
-                                 } else if(Widget.__ho_j) {
+                                 } else if (Widget.field957) {
                                     class22.method295(var10);
                                  }
                               } else {
-                                 if(var10.itemId != -1) {
+                                 if (var10.itemId != -1) {
                                     var37 = class226.getItemSprite(var10.itemId, var10.itemQuantity, var10.outline, var10.spriteShadow, var10.itemQuantityMode, false);
                                  } else {
                                     var37 = var10.getSprite(false);
                                  }
 
-                                 if(var37 == null) {
-                                    if(Widget.__ho_j) {
+                                 if (var37 == null) {
+                                    if (Widget.field957) {
                                        class22.method295(var10);
                                     }
                                  } else {
-                                    var20 = var37.width;
-                                    var21 = var37.height;
-                                    if(!var10.spriteTiling) {
-                                       var22 = var10.width * 4096 / var20;
-                                       if(var10.spriteAngle != 0) {
-                                          var37.__ak_515(var10.width / 2 + var12, var10.height / 2 + var13, var10.spriteAngle, var22);
-                                       } else if(var14 != 0) {
-                                          var37.__c_509(var12, var13, var10.width, var10.height, 256 - (var14 & 255));
-                                       } else if(var20 == var10.width && var21 == var10.height) {
+                                    var19 = var37.width;
+                                    var20 = var37.height;
+                                    if (!var10.spriteTiling) {
+                                       var21 = var10.width * 4096 / var19;
+                                       if (var10.spriteAngle != 0) {
+                                          var37.method317(var10.width / 2 + var12, var10.height / 2 + var13, var10.spriteAngle, var21);
+                                       } else if (var14 != 0) {
+                                          var37.method311(var12, var13, var10.width, var10.height, 256 - (var14 & 255));
+                                       } else if (var19 == var10.width && var20 == var10.height) {
                                           var37.drawAt2(var12, var13);
                                        } else {
-                                          var37.__j_506(var12, var13, var10.width, var10.height);
+                                          var37.method309(var12, var13, var10.width, var10.height);
                                        }
                                     } else {
                                        Rasterizer2D.Rasterizer2D_expandClip(var12, var13, var12 + var10.width, var13 + var10.height);
-                                       var22 = (var20 - 1 + var10.width) / var20;
-                                       var23 = (var21 - 1 + var10.height) / var21;
+                                       var21 = (var19 - 1 + var10.width) / var19;
+                                       var33 = (var20 - 1 + var10.height) / var20;
 
-                                       for(var24 = 0; var24 < var22; ++var24) {
-                                          for(var25 = 0; var25 < var23; ++var25) {
-                                             if(var10.spriteAngle != 0) {
-                                                var37.__ak_515(var20 / 2 + var12 + var20 * var24, var21 / 2 + var13 + var25 * var21, var10.spriteAngle, 4096);
-                                             } else if(var14 != 0) {
-                                                var37.__h_508(var12 + var20 * var24, var13 + var21 * var25, 256 - (var14 & 255));
+                                       for (var24 = 0; var24 < var21; ++var24) {
+                                          for (var25 = 0; var25 < var33; ++var25) {
+                                             if (var10.spriteAngle != 0) {
+                                                var37.method317(var19 / 2 + var12 + var19 * var24, var20 / 2 + var13 + var25 * var20, var10.spriteAngle, 4096);
+                                             } else if (var14 != 0) {
+                                                var37.method310(var12 + var19 * var24, var13 + var20 * var25, 256 - (var14 & 255));
                                              } else {
-                                                var37.drawAt2(var12 + var20 * var24, var13 + var25 * var21);
+                                                var37.drawAt2(var12 + var19 * var24, var13 + var25 * var20);
                                              }
                                           }
                                        }
@@ -588,179 +588,179 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                  }
                               }
                            } else {
-                              ItemDefinition var34;
-                              if(var10.type == 6) {
-                                 boolean var43 = class238.runCs1(var10);
-                                 if(var43) {
-                                    var20 = var10.sequenceId2;
+                              ItemDefinition var28;
+                              if (var10.type == 6) {
+                                 boolean var40 = class238.runCs1(var10);
+                                 if (var40) {
+                                    var19 = var10.sequenceId2;
                                  } else {
-                                    var20 = var10.sequenceId;
+                                    var19 = var10.sequenceId;
                                  }
 
-                                 Model var41 = null;
-                                 var22 = 0;
-                                 if(var10.itemId != -1) {
-                                    var34 = Skills.getItemDefinition(var10.itemId);
-                                    if(var34 != null) {
-                                       var34 = var34.__x_430(var10.itemQuantity);
-                                       var41 = var34.getModel(1);
-                                       if(var41 != null) {
-                                          var41.calculateBoundsCylinder();
-                                          var22 = var41.height / 2;
+                                 Model var43 = null;
+                                 var21 = 0;
+                                 if (var10.itemId != -1) {
+                                    var28 = Skills.getItemDefinition(var10.itemId);
+                                    if (var28 != null) {
+                                       var28 = var28.method144(var10.itemQuantity);
+                                       var43 = var28.getModel(1);
+                                       if (var43 != null) {
+                                          var43.calculateBoundsCylinder();
+                                          var21 = var43.height / 2;
                                        } else {
                                           class22.method295(var10);
                                        }
                                     }
-                                 } else if(var10.modelType == 5) {
-                                    if(var10.modelId == 0) {
-                                       var41 = Client.__client_ru.getModel((SequenceDefinition)null, -1, (SequenceDefinition)null, -1);
+                                 } else if (var10.modelType == 5) {
+                                    if (var10.modelId == 0) {
+                                       var43 = Client.field119.getModel((SequenceDefinition)null, -1, (SequenceDefinition)null, -1);
                                     } else {
-                                       var41 = Canvas.localPlayer.getModel();
+                                       var43 = Canvas.localPlayer.getModel();
                                     }
-                                 } else if(var20 == -1) {
-                                    var41 = var10.getModel((SequenceDefinition)null, -1, var43, Canvas.localPlayer.appearance);
-                                    if(var41 == null && Widget.__ho_j) {
+                                 } else if (var19 == -1) {
+                                    var43 = var10.getModel((SequenceDefinition)null, -1, var40, Canvas.localPlayer.appearance);
+                                    if (var43 == null && Widget.field957) {
                                        class22.method295(var10);
                                     }
                                  } else {
-                                    SequenceDefinition var47 = WorldMapAreaData.getSequenceDefinition(var20);
-                                    var41 = var10.getModel(var47, var10.modelFrame, var43, Canvas.localPlayer.appearance);
-                                    if(var41 == null && Widget.__ho_j) {
+                                    SequenceDefinition var44 = WorldMapAreaData.getSequenceDefinition(var19);
+                                    var43 = var10.getModel(var44, var10.modelFrame, var40, Canvas.localPlayer.appearance);
+                                    if (var43 == null && Widget.field957) {
                                        class22.method295(var10);
                                     }
                                  }
 
                                  Rasterizer3D.method2989(var10.width / 2 + var12, var10.height / 2 + var13);
-                                 var23 = Rasterizer3D.Rasterizer3D_sine[var10.modelAngleX] * var10.modelZoom >> 16;
+                                 var33 = Rasterizer3D.Rasterizer3D_sine[var10.modelAngleX] * var10.modelZoom >> 16;
                                  var24 = Rasterizer3D.Rasterizer3D_cosine[var10.modelAngleX] * var10.modelZoom >> 16;
-                                 if(var41 != null) {
-                                    if(!var10.isIf3) {
-                                       var41.__c_234(0, var10.modelAngleY, 0, var10.modelAngleX, 0, var23, var24);
+                                 if (var43 != null) {
+                                    if (!var10.isIf3) {
+                                       var43.method199(0, var10.modelAngleY, 0, var10.modelAngleX, 0, var33, var24);
                                     } else {
-                                       var41.calculateBoundsCylinder();
-                                       if(var10.modelOrthog) {
-                                          var41.__p_235(0, var10.modelAngleY, var10.modelAngleZ, var10.modelAngleX, var10.modelOffsetX, var22 + var23 + var10.modelOffsetY, var24 + var10.modelOffsetY, var10.modelZoom);
+                                       var43.calculateBoundsCylinder();
+                                       if (var10.modelOrthog) {
+                                          var43.method200(0, var10.modelAngleY, var10.modelAngleZ, var10.modelAngleX, var10.modelOffsetX, var21 + var33 + var10.modelOffsetY, var24 + var10.modelOffsetY, var10.modelZoom);
                                        } else {
-                                          var41.__c_234(0, var10.modelAngleY, var10.modelAngleZ, var10.modelAngleX, var10.modelOffsetX, var23 + var22 + var10.modelOffsetY, var24 + var10.modelOffsetY);
+                                          var43.method199(0, var10.modelAngleY, var10.modelAngleZ, var10.modelAngleX, var10.modelOffsetX, var33 + var21 + var10.modelOffsetY, var24 + var10.modelOffsetY);
                                        }
                                     }
                                  }
 
                                  Rasterizer3D.Rasterizer3D_method3();
                               } else {
-                                 if(var10.type == 7) {
-                                    var36 = var10.getFont();
-                                    if(var36 == null) {
-                                       if(Widget.__ho_j) {
+                                 if (var10.type == 7) {
+                                    var27 = var10.getFont();
+                                    if (var27 == null) {
+                                       if (Widget.field957) {
                                           class22.method295(var10);
                                        }
                                        continue;
                                     }
 
-                                    var20 = 0;
+                                    var19 = 0;
 
-                                    for(var21 = 0; var21 < var10.rawHeight; ++var21) {
-                                       for(var22 = 0; var22 < var10.rawWidth; ++var22) {
-                                          if(var10.itemIds[var20] > 0) {
-                                             var34 = Skills.getItemDefinition(var10.itemIds[var20] - 1);
-                                             String var31;
-                                             if(var34.isStackable != 1 && var10.itemQuantities[var20] == 1) {
-                                                var31 = BufferedFile.colorStartTag(16748608) + var34.name + "</col>";
+                                    for (var20 = 0; var20 < var10.rawHeight; ++var20) {
+                                       for (var21 = 0; var21 < var10.rawWidth; ++var21) {
+                                          if (var10.itemIds[var19] > 0) {
+                                             var28 = Skills.getItemDefinition(var10.itemIds[var19] - 1);
+                                             String var29;
+                                             if (var28.isStackable != 1 && var10.itemQuantities[var19] == 1) {
+                                                var29 = BufferedFile.colorStartTag(16748608) + var28.name + "</col>";
                                              } else {
-                                                var31 = BufferedFile.colorStartTag(16748608) + var34.name + "</col>" + " " + 'x' + GrandExchangeEvent.method88(var10.itemQuantities[var20]);
+                                                var29 = BufferedFile.colorStartTag(16748608) + var28.name + "</col> " + 'x' + GrandExchangeEvent.method88(var10.itemQuantities[var19]);
                                              }
 
-                                             var25 = var22 * (var10.paddingX + 115) + var12;
-                                             var26 = var21 * (var10.paddingY + 12) + var13;
-                                             if(var10.textXAlignment == 0) {
-                                                var36.draw(var31, var25, var26, var10.color, var10.textShadowed?0:-1);
-                                             } else if(var10.textXAlignment == 1) {
-                                                var36.drawCentered(var31, var10.width / 2 + var25, var26, var10.color, var10.textShadowed?0:-1);
+                                             var25 = var21 * (var10.paddingX + 115) + var12;
+                                             var26 = var20 * (var10.paddingY + 12) + var13;
+                                             if (var10.textXAlignment == 0) {
+                                                var27.draw(var29, var25, var26, var10.color, var10.textShadowed ? 0 : -1);
+                                             } else if (var10.textXAlignment == 1) {
+                                                var27.drawCentered(var29, var10.width / 2 + var25, var26, var10.color, var10.textShadowed ? 0 : -1);
                                              } else {
-                                                var36.drawRightAligned(var31, var25 + var10.width - 1, var26, var10.color, var10.textShadowed?0:-1);
+                                                var27.drawRightAligned(var29, var25 + var10.width - 1, var26, var10.color, var10.textShadowed ? 0 : -1);
                                              }
                                           }
 
-                                          ++var20;
+                                          ++var19;
                                        }
                                     }
                                  }
 
-                                 if(var10.type == 8 && var10 == AccessFile.__dk_lm && Client.__client_ls == Client.__client_lb) {
-                                    var30 = 0;
-                                    var20 = 0;
-                                    Font var32 = fontPlain12;
-                                    String var33 = var10.text;
+                                 if (var10.type == 8 && var10 == AccessFile.field8 && Client.field219 == Client.field218) {
+                                    var22 = 0;
+                                    var19 = 0;
+                                    Font var39 = fontPlain12;
+                                    String var30 = var10.text;
 
-                                    String var44;
-                                    for(var33 = MouseRecorder.method1194(var33, var10); var33.length() > 0; var20 = var20 + var32.ascent + 1) {
-                                       var24 = var33.indexOf("<br>");
-                                       if(var24 != -1) {
-                                          var44 = var33.substring(0, var24);
-                                          var33 = var33.substring(var24 + 4);
+                                    String var31;
+                                    for (var30 = MouseRecorder.method1194(var30, var10); var30.length() > 0; var19 = var19 + var39.ascent + 1) {
+                                       var24 = var30.indexOf("<br>");
+                                       if (var24 != -1) {
+                                          var31 = var30.substring(0, var24);
+                                          var30 = var30.substring(var24 + 4);
                                        } else {
-                                          var44 = var33;
-                                          var33 = "";
+                                          var31 = var30;
+                                          var30 = "";
                                        }
 
-                                       var25 = var32.stringWidth(var44);
-                                       if(var25 > var30) {
-                                          var30 = var25;
+                                       var25 = var39.stringWidth(var31);
+                                       if (var25 > var22) {
+                                          var22 = var25;
                                        }
                                     }
 
-                                    var30 += 6;
-                                    var20 += 7;
-                                    var24 = var12 + var10.width - 5 - var30;
+                                    var22 += 6;
+                                    var19 += 7;
+                                    var24 = var12 + var10.width - 5 - var22;
                                     var25 = var13 + var10.height + 5;
-                                    if(var24 < var12 + 5) {
+                                    if (var24 < var12 + 5) {
                                        var24 = var12 + 5;
                                     }
 
-                                    if(var30 + var24 > var4) {
-                                       var24 = var4 - var30;
+                                    if (var22 + var24 > var4) {
+                                       var24 = var4 - var22;
                                     }
 
-                                    if(var25 + var20 > var5) {
-                                       var25 = var5 - var20;
+                                    if (var25 + var19 > var5) {
+                                       var25 = var5 - var19;
                                     }
 
-                                    Rasterizer2D.Rasterizer2D_fillRectangle(var24, var25, var30, var20, 16777120);
-                                    Rasterizer2D.Rasterizer2D_drawRectangle(var24, var25, var30, var20, 0);
-                                    var33 = var10.text;
-                                    var26 = var25 + var32.ascent + 2;
+                                    Rasterizer2D.Rasterizer2D_fillRectangle(var24, var25, var22, var19, 16777120);
+                                    Rasterizer2D.Rasterizer2D_drawRectangle(var24, var25, var22, var19, 0);
+                                    var30 = var10.text;
+                                    var26 = var25 + var39.ascent + 2;
 
-                                    for(var33 = MouseRecorder.method1194(var33, var10); var33.length() > 0; var26 = var26 + var32.ascent + 1) {
-                                       int var35 = var33.indexOf("<br>");
-                                       if(var35 != -1) {
-                                          var44 = var33.substring(0, var35);
-                                          var33 = var33.substring(var35 + 4);
+                                    for (var30 = MouseRecorder.method1194(var30, var10); var30.length() > 0; var26 = var26 + var39.ascent + 1) {
+                                       int var32 = var30.indexOf("<br>");
+                                       if (var32 != -1) {
+                                          var31 = var30.substring(0, var32);
+                                          var30 = var30.substring(var32 + 4);
                                        } else {
-                                          var44 = var33;
-                                          var33 = "";
+                                          var31 = var30;
+                                          var30 = "";
                                        }
 
-                                       var32.draw(var44, var24 + 3, var26, 0, -1);
+                                       var39.draw(var31, var24 + 3, var26, 0, -1);
                                     }
                                  }
 
-                                 if(var10.type == 9) {
-                                    if(var10.__ba) {
-                                       var30 = var12;
-                                       var20 = var13 + var10.height;
-                                       var21 = var12 + var10.width;
-                                       var22 = var13;
+                                 if (var10.type == 9) {
+                                    if (var10.field961) {
+                                       var22 = var12;
+                                       var19 = var13 + var10.height;
+                                       var20 = var12 + var10.width;
+                                       var21 = var13;
                                     } else {
-                                       var30 = var12;
-                                       var20 = var13;
-                                       var21 = var12 + var10.width;
-                                       var22 = var13 + var10.height;
+                                       var22 = var12;
+                                       var19 = var13;
+                                       var20 = var12 + var10.width;
+                                       var21 = var13 + var10.height;
                                     }
 
-                                    if(var10.lineWid == 1) {
-                                       Rasterizer2D.Rasterizer2D_drawLine(var30, var20, var21, var22, var10.color);
+                                    if (var10.lineWid == 1) {
+                                       Rasterizer2D.Rasterizer2D_drawLine(var22, var19, var20, var21, var10.color);
                                     } else {
-                                       class190.method3669(var30, var20, var21, var22, var10.color, var10.lineWid);
+                                       class190.method3669(var22, var19, var20, var21, var10.color, var10.lineWid);
                                     }
                                  }
                               }
@@ -781,17 +781,17 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
       garbageValue = "-1666917204"
    )
    static final void method845(int var0) {
-      if(GroundItemPile.loadWidgetGroup(var0)) {
+      if (GroundItemPile.loadWidgetGroup(var0)) {
          Widget[] var1 = Widget.widgets[var0];
 
-         for(int var2 = 0; var2 < var1.length; ++var2) {
+         for (int var2 = 0; var2 < var1.length; ++var2) {
             Widget var3 = var1[var2];
-            if(var3 != null) {
+            if (var3 != null) {
                var3.modelFrame = 0;
                var3.modelFrameCycle = 0;
             }
          }
-
       }
+
    }
 }

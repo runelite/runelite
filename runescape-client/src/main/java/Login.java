@@ -9,7 +9,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Login")
 public class Login {
    @ObfuscatedName("f")
-   static boolean __cu_f;
+   static boolean field465;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1606541885
@@ -59,12 +59,12 @@ public class Login {
    @ObfuscatedGetter(
       intValue = 1077910071
    )
-   static int __cu_aj;
+   static int field466;
    @ObfuscatedName("ac")
    @ObfuscatedGetter(
       intValue = 1677133239
    )
-   static int __cu_ac;
+   static int field467;
    @ObfuscatedName("aw")
    @ObfuscatedGetter(
       intValue = 1861681835
@@ -90,14 +90,14 @@ public class Login {
    @Export("Login_password")
    static String Login_password;
    @ObfuscatedName("aa")
-   static boolean __cu_aa;
+   static boolean field468;
    @ObfuscatedName("ax")
-   static boolean __cu_ax;
+   static boolean field469;
    @ObfuscatedName("ai")
    @Export("otp")
    static String otp;
    @ObfuscatedName("ba")
-   static boolean __cu_ba;
+   static boolean field470;
    @ObfuscatedName("bb")
    @ObfuscatedGetter(
       intValue = 1769484271
@@ -129,46 +129,18 @@ public class Login {
    @ObfuscatedGetter(
       longValue = 803647694904294325L
    )
-   static long __cu_bi;
+   static long field471;
    @ObfuscatedName("bz")
    @ObfuscatedGetter(
       longValue = -3234258972092460093L
    )
-   static long __cu_bz;
+   static long field472;
    @ObfuscatedName("do")
    @ObfuscatedSignature(
       signature = "Lit;"
    )
    @Export("indexCache11")
    static IndexCache indexCache11;
-
-   static {
-      xPadding = 0;
-      loginBoxX = xPadding + 202;
-      Login_loadingPercent = 10;
-      Login_loadingText = "";
-      __cu_aj = -1;
-      __cu_ac = 1;
-      loginIndex = 0;
-      Login_response0 = "";
-      Login_response1 = "";
-      Login_response2 = "";
-      Login_response3 = "";
-      Login_username = "";
-      Login_password = "";
-      __cu_aa = false;
-      __cu_ax = false;
-      __cu_ba = true;
-      currentLoginField = 0;
-      worldSelectOpen = false;
-      hoveredWorldIndex = -1;
-      worldSelectPage = 0;
-      worldSelectPagesCount = 0;
-      new DecimalFormat("##0.00");
-      new class161();
-      __cu_bi = -1L;
-      __cu_bz = -1L;
-   }
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -177,7 +149,7 @@ public class Login {
    )
    static MusicPatch method2045(AbstractIndexCache var0, int var1) {
       byte[] var2 = var0.takeRecordFlat(var1);
-      return var2 == null?null:new MusicPatch(var2);
+      return var2 == null ? null : new MusicPatch(var2);
    }
 
    @ObfuscatedName("m")
@@ -186,24 +158,24 @@ public class Login {
       garbageValue = "-246495141"
    )
    static void method2056() {
-      class248.__iu_e = new int[2000];
+      class248.field1141 = new int[2000];
       int var0 = 0;
       int var1 = 240;
 
-      int var3;
-      for(byte var2 = 12; var0 < 16; var1 -= var2) {
-         var3 = class277.method5355((double)((float)var1 / 360.0F), 0.9998999834060669D, (double)((float)var0 * 0.425F / 16.0F + 0.075F));
-         class248.__iu_e[var0] = var3;
+      int var2;
+      for (byte var3 = 12; var0 < 16; var1 -= var3) {
+         var2 = class277.method5355((double)((float)var1 / 360.0F), 0.9998999834060669D, (double)((float)var0 * 0.425F / 16.0F + 0.075F));
+         class248.field1141[var0] = var2;
          ++var0;
       }
 
       var1 = 48;
 
-      for(int var5 = var1 / 6; var0 < class248.__iu_e.length; var1 -= var5) {
-         var3 = var0 * 2;
+      for (int var5 = var1 / 6; var0 < class248.field1141.length; var1 -= var5) {
+         var2 = var0 * 2;
 
-         for(int var4 = class277.method5355((double)((float)var1 / 360.0F), 0.9998999834060669D, 0.5D); var0 < var3 && var0 < class248.__iu_e.length; ++var0) {
-            class248.__iu_e[var0] = var4;
+         for (int var4 = class277.method5355((double)((float)var1 / 360.0F), 0.9998999834060669D, 0.5D); var0 < var2 && var0 < class248.field1141.length; ++var0) {
+            class248.field1141[var0] = var4;
          }
       }
 
@@ -215,13 +187,13 @@ public class Login {
       garbageValue = "45"
    )
    public static void method2076(AbstractIndexCache var0, int var1, int var2, int var3, boolean var4) {
-      class214.__hf_o = 1;
-      class214.__hf_u = var0;
+      class214.field1129 = 1;
+      class214.field1130 = var0;
       class30.musicTrackArchiveId = var1;
       GrandExchangeOffer.musicTrackFileId = var2;
-      WorldMapLabel.__aj_e = var3;
+      WorldMapLabel.field1039 = var3;
       RectangleMode.musicTrackBoolean = var4;
-      FaceNormal.__el_x = 10000;
+      FaceNormal.field344 = 10000;
    }
 
    @ObfuscatedName("gm")
@@ -230,11 +202,39 @@ public class Login {
       garbageValue = "-1"
    )
    static final int method2061() {
-      if(ReflectionCheck.clientPreferences.roofsHidden) {
+      if (ReflectionCheck.clientPreferences.roofsHidden) {
          return SoundSystem.plane;
       } else {
          int var0 = class32.getTileHeight(WorldMapSection1.cameraX, class11.cameraZ, SoundSystem.plane);
-         return var0 - GrandExchangeEvents.cameraY < 800 && (Tiles.Tiles_renderFlags[SoundSystem.plane][WorldMapSection1.cameraX >> 7][class11.cameraZ >> 7] & 4) != 0?SoundSystem.plane:3;
+         return var0 - GrandExchangeEvents.cameraY < 800 && (Tiles.Tiles_renderFlags[SoundSystem.plane][WorldMapSection1.cameraX >> 7][class11.cameraZ >> 7] & 4) != 0 ? SoundSystem.plane : 3;
       }
+   }
+
+   static {
+      xPadding = 0;
+      loginBoxX = xPadding + 202;
+      Login_loadingPercent = 10;
+      Login_loadingText = "";
+      field466 = -1;
+      field467 = 1;
+      loginIndex = 0;
+      Login_response0 = "";
+      Login_response1 = "";
+      Login_response2 = "";
+      Login_response3 = "";
+      Login_username = "";
+      Login_password = "";
+      field468 = false;
+      field469 = false;
+      field470 = true;
+      currentLoginField = 0;
+      worldSelectOpen = false;
+      hoveredWorldIndex = -1;
+      worldSelectPage = 0;
+      worldSelectPagesCount = 0;
+      new DecimalFormat("##0.00");
+      new class161();
+      field471 = -1L;
+      field472 = -1L;
    }
 }

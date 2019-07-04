@@ -5,26 +5,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("gx")
 public class class204 {
    @ObfuscatedName("x")
-   static final int[] __gx_x;
+   static final int[] field1120;
    @ObfuscatedName("d")
-   static final int[] __gx_d;
+   static final int[] field1121;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lkk;"
    )
-   public static Font __gx_n;
-
-   static {
-      __gx_x = new int[2048];
-      __gx_d = new int[2048];
-      double var0 = 0.0030679615757712823D;
-
-      for(int var2 = 0; var2 < 2048; ++var2) {
-         __gx_x[var2] = (int)(65536.0D * Math.sin(var0 * (double)var2));
-         __gx_d[var2] = (int)(65536.0D * Math.cos(var0 * (double)var2));
-      }
-
-   }
+   public static Font field1122;
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
@@ -34,7 +22,7 @@ public class class204 {
    @Export("getWidgetChild")
    public static Widget getWidgetChild(int var0, int var1) {
       Widget var2 = Huffman.getWidget(var0);
-      return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
+      return var1 == -1 ? var2 : (var2 != null && var2.children != null && var1 < var2.children.length ? var2.children[var1] : null);
    }
 
    @ObfuscatedName("f")
@@ -54,42 +42,55 @@ public class class204 {
       garbageValue = "64"
    )
    static final void method4013(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, CollisionMap[] var8) {
-      int var10;
-      for(int var9 = 0; var9 < 8; ++var9) {
-         for(var10 = 0; var10 < 8; ++var10) {
-            if(var9 + var2 > 0 && var9 + var2 < 103 && var3 + var10 > 0 && var3 + var10 < 103) {
-               var8[var1].flags[var9 + var2][var3 + var10] &= -16777217;
+      int var9;
+      for (int var10 = 0; var10 < 8; ++var10) {
+         for (var9 = 0; var9 < 8; ++var9) {
+            if (var10 + var2 > 0 && var10 + var2 < 103 && var3 + var9 > 0 && var3 + var9 < 103) {
+               int[] var10000 = var8[var1].flags[var10 + var2];
+               var10000[var3 + var9] &= -16777217;
             }
          }
       }
 
-      Buffer var21 = new Buffer(var0);
+      Buffer var18 = new Buffer(var0);
 
-      for(var10 = 0; var10 < 4; ++var10) {
-         for(int var11 = 0; var11 < 64; ++var11) {
-            for(int var12 = 0; var12 < 64; ++var12) {
-               if(var10 == var4 && var11 >= var5 && var11 < var5 + 8 && var12 >= var6 && var12 < var6 + 8) {
-                  int var15 = var2 + CollisionMap.method3632(var11 & 7, var12 & 7, var7);
-                  int var18 = var11 & 7;
-                  int var19 = var12 & 7;
-                  int var20 = var7 & 3;
+      for (var9 = 0; var9 < 4; ++var9) {
+         for (int var11 = 0; var11 < 64; ++var11) {
+            for (int var12 = 0; var12 < 64; ++var12) {
+               if (var9 == var4 && var11 >= var5 && var11 < var5 + 8 && var12 >= var6 && var12 < var6 + 8) {
+                  int var13 = var2 + CollisionMap.method3632(var11 & 7, var12 & 7, var7);
+                  int var14 = var11 & 7;
+                  int var15 = var12 & 7;
+                  int var16 = var7 & 3;
                   int var17;
-                  if(var20 == 0) {
-                     var17 = var19;
-                  } else if(var20 == 1) {
-                     var17 = 7 - var18;
-                  } else if(var20 == 2) {
-                     var17 = 7 - var19;
+                  if (var16 == 0) {
+                     var17 = var15;
+                  } else if (var16 == 1) {
+                     var17 = 7 - var14;
+                  } else if (var16 == 2) {
+                     var17 = 7 - var15;
                   } else {
-                     var17 = var18;
+                     var17 = var14;
                   }
 
-                  TotalQuantityComparator.loadTerrain(var21, var1, var15, var3 + var17, 0, 0, var7);
+                  TotalQuantityComparator.loadTerrain(var18, var1, var13, var3 + var17, 0, 0, var7);
                } else {
-                  TotalQuantityComparator.loadTerrain(var21, 0, -1, -1, 0, 0, 0);
+                  TotalQuantityComparator.loadTerrain(var18, 0, -1, -1, 0, 0, 0);
                }
             }
          }
+      }
+
+   }
+
+   static {
+      field1120 = new int[2048];
+      field1121 = new int[2048];
+      double var0 = 0.0030679615757712823D;
+
+      for (int var2 = 0; var2 < 2048; ++var2) {
+         field1120[var2] = (int)(65536.0D * Math.sin(var0 * (double)var2));
+         field1121[var2] = (int)(65536.0D * Math.cos(var0 * (double)var2));
       }
 
    }

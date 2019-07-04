@@ -51,34 +51,31 @@ public class Username implements Comparable {
    )
    @Export("compareTo0")
    public int compareTo0(Username var1) {
-      return this.cleanName == null?(var1.cleanName == null?0:1):(var1.cleanName == null?-1:this.cleanName.compareTo(var1.cleanName));
+      return this.cleanName == null ? (var1.cleanName == null ? 0 : 1) : (var1.cleanName == null ? -1 : this.cleanName.compareTo(var1.cleanName));
    }
 
    @Export("equals")
    @ObfuscatedName("equals")
    public boolean equals(Object var1) {
-      if(var1 instanceof Username) {
+      if (var1 instanceof Username) {
          Username var2 = (Username)var1;
-		  if (this.cleanName == null)
-		  {
-			  return var2.cleanName == null;
-		  }
-		  else
-		  {
-			  return var2.cleanName != null && (this.__hashCode_467() == var2.__hashCode_467() && this.cleanName.equals(var2.cleanName));
-		  }
+         if (this.cleanName == null) {
+            return var2.cleanName == null;
+         } else {
+            return var2.cleanName != null && this.method352() == var2.method352() && this.cleanName.equals(var2.cleanName);
+         }
       } else {
          return false;
       }
    }
 
    @ObfuscatedName("hashCode")
-   public int __hashCode_467() {
-      return this.cleanName == null?0:this.cleanName.hashCode();
+   public int method352() {
+      return this.cleanName == null ? 0 : this.cleanName.hashCode();
    }
 
    @ObfuscatedName("toString")
-   public String __toString_468() {
+   public String method353() {
       return this.getName();
    }
 

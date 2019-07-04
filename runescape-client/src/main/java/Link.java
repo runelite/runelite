@@ -10,21 +10,22 @@ public class Link {
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   public Link __m;
+   public Link field461;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   public Link __f;
+   public Link field462;
 
    @ObfuscatedName("m")
    @Export("remove")
    public void remove() {
-      if(this.__f != null) {
-         this.__f.__m = this.__m;
-         this.__m.__f = this.__f;
-         this.__m = null;
-         this.__f = null;
+      if (this.field462 != null) {
+         this.field462.field461 = this.field461;
+         this.field461.field462 = this.field462;
+         this.field461 = null;
+         this.field462 = null;
       }
+
    }
 }

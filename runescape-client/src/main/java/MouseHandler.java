@@ -130,27 +130,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
    @Export("oculusOrbFocalPointX")
    static int oculusOrbFocalPointX;
 
-   static {
-      MouseHandler_instance = new MouseHandler();
-      MouseHandler_idleCycles = 0;
-      MouseHandler_currentButton0 = 0;
-      MouseHandler_x0 = -1;
-      MouseHandler_y0 = -1;
-      MouseHandler_millis0 = -1L;
-      MouseHandler_currentButton = 0;
-      MouseHandler_x = 0;
-      MouseHandler_y = 0;
-      MouseHandler_millis = 0L;
-      MouseHandler_lastButton0 = 0;
-      MouseHandler_lastPressedX0 = 0;
-      MouseHandler_lastPressedY0 = 0;
-      MouseHandler_lastPressedTimeMillis0 = 0L;
-      MouseHandler_lastButton = 0;
-      MouseHandler_lastPressedX = 0;
-      MouseHandler_lastPressedY = 0;
-      MouseHandler_lastPressedTimeMillis = 0L;
-   }
-
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/event/MouseEvent;I)I",
@@ -159,13 +138,13 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
    @Export("getButton")
    final int getButton(MouseEvent var1) {
       int var2 = var1.getButton();
-      return !var1.isAltDown() && var2 != 2?(!var1.isMetaDown() && var2 != 3?1:2):4;
+      return !var1.isAltDown() && var2 != 2 ? (!var1.isMetaDown() && var2 != 3 ? 1 : 2) : 4;
    }
 
    @Export("mouseMoved")
    @ObfuscatedName("mouseMoved")
    public final synchronized void mouseMoved(MouseEvent var1) {
-      if(MouseHandler_instance != null) {
+      if (MouseHandler_instance != null) {
          MouseHandler_idleCycles = 0;
          MouseHandler_x0 = var1.getX();
          MouseHandler_y0 = var1.getY();
@@ -177,18 +156,18 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
    @Export("mousePressed")
    @ObfuscatedName("mousePressed")
    public final synchronized void mousePressed(MouseEvent var1) {
-      if(MouseHandler_instance != null) {
+      if (MouseHandler_instance != null) {
          MouseHandler_idleCycles = 0;
          MouseHandler_lastPressedX0 = var1.getX();
          MouseHandler_lastPressedY0 = var1.getY();
          MouseHandler_lastPressedTimeMillis0 = class203.currentTimeMs();
          MouseHandler_lastButton0 = this.getButton(var1);
-         if(MouseHandler_lastButton0 != 0) {
+         if (MouseHandler_lastButton0 != 0) {
             MouseHandler_currentButton0 = MouseHandler_lastButton0;
          }
       }
 
-      if(var1.isPopupTrigger()) {
+      if (var1.isPopupTrigger()) {
          var1.consume();
       }
 
@@ -197,12 +176,12 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
    @Export("mouseReleased")
    @ObfuscatedName("mouseReleased")
    public final synchronized void mouseReleased(MouseEvent var1) {
-      if(MouseHandler_instance != null) {
+      if (MouseHandler_instance != null) {
          MouseHandler_idleCycles = 0;
          MouseHandler_currentButton0 = 0;
       }
 
-      if(var1.isPopupTrigger()) {
+      if (var1.isPopupTrigger()) {
          var1.consume();
       }
 
@@ -211,7 +190,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
    @Export("mouseClicked")
    @ObfuscatedName("mouseClicked")
    public final void mouseClicked(MouseEvent var1) {
-      if(var1.isPopupTrigger()) {
+      if (var1.isPopupTrigger()) {
          var1.consume();
       }
 
@@ -220,7 +199,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
    @Export("mouseExited")
    @ObfuscatedName("mouseExited")
    public final synchronized void mouseExited(MouseEvent var1) {
-      if(MouseHandler_instance != null) {
+      if (MouseHandler_instance != null) {
          MouseHandler_idleCycles = 0;
          MouseHandler_x0 = -1;
          MouseHandler_y0 = -1;
@@ -243,7 +222,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
    @Export("focusLost")
    @ObfuscatedName("focusLost")
    public final synchronized void focusLost(FocusEvent var1) {
-      if(MouseHandler_instance != null) {
+      if (MouseHandler_instance != null) {
          MouseHandler_currentButton0 = 0;
       }
 
@@ -283,11 +262,32 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
       Login.Login_response2 = "Enter your username/email & password.";
       Login.Login_response3 = "";
       Login.loginIndex = 2;
-      if(var0) {
+      if (var0) {
          Login.Login_password = "";
       }
 
       Messages.method2200();
       class196.method3740();
+   }
+
+   static {
+      MouseHandler_instance = new MouseHandler();
+      MouseHandler_idleCycles = 0;
+      MouseHandler_currentButton0 = 0;
+      MouseHandler_x0 = -1;
+      MouseHandler_y0 = -1;
+      MouseHandler_millis0 = -1L;
+      MouseHandler_currentButton = 0;
+      MouseHandler_x = 0;
+      MouseHandler_y = 0;
+      MouseHandler_millis = 0L;
+      MouseHandler_lastButton0 = 0;
+      MouseHandler_lastPressedX0 = 0;
+      MouseHandler_lastPressedY0 = 0;
+      MouseHandler_lastPressedTimeMillis0 = 0L;
+      MouseHandler_lastButton = 0;
+      MouseHandler_lastPressedX = 0;
+      MouseHandler_lastPressedY = 0;
+      MouseHandler_lastPressedTimeMillis = 0L;
    }
 }

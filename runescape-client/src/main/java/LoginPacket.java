@@ -13,53 +13,38 @@ public class LoginPacket implements ClientPacketMarker {
    @ObfuscatedSignature(
       signature = "Lgl;"
    )
-   public static final LoginPacket __gl_m;
+   public static final LoginPacket field473;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lgl;"
    )
-   static final LoginPacket __gl_f;
+   static final LoginPacket field474;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgl;"
    )
-   public static final LoginPacket __gl_q;
+   public static final LoginPacket field475;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgl;"
    )
-   public static final LoginPacket __gl_w;
+   public static final LoginPacket field476;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lgl;"
    )
-   static final LoginPacket __gl_o;
+   static final LoginPacket field477;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "[Lgl;"
    )
-   static final LoginPacket[] __gl_g;
+   static final LoginPacket[] field478;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1743806243
    )
    @Export("id")
    public final int id;
-
-   static {
-      __gl_m = new LoginPacket(14, 0);
-      __gl_f = new LoginPacket(15, 4);
-      __gl_q = new LoginPacket(16, -2);
-      __gl_w = new LoginPacket(18, -2);
-      __gl_o = new LoginPacket(27, 0);
-      __gl_g = new LoginPacket[32];
-      LoginPacket[] var0 = WorldMapIcon2.method300();
-
-      for(int var1 = 0; var1 < var0.length; ++var1) {
-         __gl_g[var0[var1].id] = var0[var1];
-      }
-
-   }
 
    @ObfuscatedSignature(
       signature = "(II)V",
@@ -76,39 +61,52 @@ public class LoginPacket implements ClientPacketMarker {
    )
    @Export("getPreferencesFile")
    public static AccessFile getPreferencesFile(String var0, String var1, boolean var2) {
-      File var3 = new File(class168.__fs_o, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
+      File var3 = new File(class168.field1115, "preferences" + var0 + ".dat");
+      if (var3.exists()) {
          try {
-            AccessFile var10 = new AccessFile(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
-            ;
+            AccessFile var11 = new AccessFile(var3, "rw", 10000L);
+            return var11;
+         } catch (IOException var10) {
          }
       }
 
       String var4 = "";
-      if(PacketBuffer.__hx_z == 33) {
+      if (PacketBuffer.field667 == 33) {
          var4 = "_rc";
-      } else if(PacketBuffer.__hx_z == 34) {
+      } else if (PacketBuffer.field667 == 34) {
          var4 = "_wip";
       }
 
       File var5 = new File(WorldMapSection1.userHomeDirectory, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
       AccessFile var6;
-      if(!var2 && var5.exists()) {
+      if (!var2 && var5.exists()) {
          try {
             var6 = new AccessFile(var5, "rw", 10000L);
             return var6;
-         } catch (IOException var8) {
-            ;
+         } catch (IOException var9) {
          }
       }
 
       try {
          var6 = new AccessFile(var3, "rw", 10000L);
          return var6;
-      } catch (IOException var7) {
+      } catch (IOException var8) {
          throw new RuntimeException();
       }
+   }
+
+   static {
+      field473 = new LoginPacket(14, 0);
+      field474 = new LoginPacket(15, 4);
+      field475 = new LoginPacket(16, -2);
+      field476 = new LoginPacket(18, -2);
+      field477 = new LoginPacket(27, 0);
+      field478 = new LoginPacket[32];
+      LoginPacket[] var0 = WorldMapIcon2.method300();
+
+      for (int var1 = 0; var1 < var0.length; ++var1) {
+         field478[var0[var1].id] = var0[var1];
+      }
+
    }
 }

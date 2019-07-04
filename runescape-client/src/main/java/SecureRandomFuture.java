@@ -84,7 +84,7 @@ public class SecureRandomFuture {
    static void method2104() {
       Iterator var0 = Messages.Messages_hashTable.iterator();
 
-      while(var0.hasNext()) {
+      while (var0.hasNext()) {
          Message var1 = (Message)var0.next();
          var1.clearIsFromIgnored();
       }

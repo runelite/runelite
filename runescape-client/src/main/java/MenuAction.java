@@ -51,7 +51,7 @@ public class MenuAction {
       int var3 = var0.getArchiveId(var1);
       int var4 = var0.getRecordId(var3, var2);
       IndexedSprite var5;
-      if(!SpriteMask.loadSprite(var0, var3, var4)) {
+      if (!SpriteMask.loadSprite(var0, var3, var4)) {
          var5 = null;
       } else {
          var5 = ServerPacket.createIndexedSprite();
@@ -70,27 +70,27 @@ public class MenuAction {
       int var2 = var0.group;
       int var3 = (int)var0.key;
       var0.remove();
-      if(var1) {
+      if (var1) {
          AbstractByteArrayCopier.unloadWidgetGroup(var2);
       }
 
-      for(IntegerNode var4 = (IntegerNode)Client.widgetClickMasks.first(); var4 != null; var4 = (IntegerNode)Client.widgetClickMasks.next()) {
-         if((long)var2 == (var4.key >> 48 & 65535L)) {
+      for (IntegerNode var4 = (IntegerNode)Client.widgetClickMasks.first(); var4 != null; var4 = (IntegerNode)Client.widgetClickMasks.next()) {
+         if ((long)var2 == (var4.key >> 48 & 65535L)) {
             var4.remove();
          }
       }
 
-      Widget var14 = Huffman.getWidget(var3);
-      if(var14 != null) {
-         class22.method295(var14);
+      Widget var12 = Huffman.getWidget(var3);
+      if (var12 != null) {
+         class22.method295(var12);
       }
 
       int var5;
       int var6;
-      for(var5 = 0; var5 < Client.menuOptionsCount; ++var5) {
-         if(WorldMapManager.isWidgetMenuOpcode(Client.menuOpcodes[var5])) {
-            if(var5 < Client.menuOptionsCount - 1) {
-               for(var6 = var5; var6 < Client.menuOptionsCount - 1; ++var6) {
+      for (var5 = 0; var5 < Client.menuOptionsCount; ++var5) {
+         if (WorldMapManager.isWidgetMenuOpcode(Client.menuOpcodes[var5])) {
+            if (var5 < Client.menuOptionsCount - 1) {
+               for (var6 = var5; var6 < Client.menuOptionsCount - 1; ++var6) {
                   Client.menuActions[var6] = Client.menuActions[var6 + 1];
                   Client.menuTargetNames[var6] = Client.menuTargetNames[var6 + 1];
                   Client.menuOpcodes[var6] = Client.menuOpcodes[var6 + 1];
@@ -111,48 +111,48 @@ public class MenuAction {
       int var7 = class2.fontBold12.stringWidth("Choose Option");
 
       int var8;
-      for(var8 = 0; var8 < Client.menuOptionsCount; ++var8) {
+      for (var8 = 0; var8 < Client.menuOptionsCount; ++var8) {
          Font var9 = class2.fontBold12;
          String var10;
-         if(var8 < 0) {
+         if (var8 < 0) {
             var10 = "";
-         } else if(Client.menuTargetNames[var8].length() > 0) {
+         } else if (Client.menuTargetNames[var8].length() > 0) {
             var10 = Client.menuActions[var8] + " " + Client.menuTargetNames[var8];
          } else {
             var10 = Client.menuActions[var8];
          }
 
          int var11 = var9.stringWidth(var10);
-         if(var11 > var7) {
+         if (var11 > var7) {
             var7 = var11;
          }
       }
 
       var7 += 8;
       var8 = Client.menuOptionsCount * 15 + 22;
-      int var12 = var5 - var7 / 2;
-      if(var7 + var12 > SoundCache.canvasWidth) {
-         var12 = SoundCache.canvasWidth - var7;
+      int var13 = var5 - var7 / 2;
+      if (var7 + var13 > SoundCache.canvasWidth) {
+         var13 = SoundCache.canvasWidth - var7;
       }
 
-      if(var12 < 0) {
-         var12 = 0;
-      }
-
-      int var13 = var6;
-      if(var6 + var8 > Huffman.canvasHeight) {
-         var13 = Huffman.canvasHeight - var8;
-      }
-
-      if(var13 < 0) {
+      if (var13 < 0) {
          var13 = 0;
       }
 
-      class25.menuX = var12;
-      GameShell.menuY = var13;
+      int var14 = var6;
+      if (var6 + var8 > Huffman.canvasHeight) {
+         var14 = Huffman.canvasHeight - var8;
+      }
+
+      if (var14 < 0) {
+         var14 = 0;
+      }
+
+      class25.menuX = var13;
+      GameShell.menuY = var14;
       class214.menuWidth = var7;
       AbstractWorldMapIcon.menuHeight = Client.menuOptionsCount * 15 + 22;
-      if(Client.rootWidgetGroup != -1) {
+      if (Client.rootWidgetGroup != -1) {
          GrandExchangeEvents.method74(Client.rootWidgetGroup, 1);
       }
 

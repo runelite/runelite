@@ -23,32 +23,32 @@ public final class ObjectSound extends Node {
    @ObfuscatedGetter(
       intValue = 647270745
    )
-   int __f;
+   int field647;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -800464493
    )
-   int __q;
+   int field648;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -85911525
    )
-   int __w;
+   int field649;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -211591209
    )
-   int __o;
+   int field650;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 512258949
    )
-   int __u;
+   int field651;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 1344558633
    )
-   int __g;
+   int field652;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -731474443
@@ -65,12 +65,12 @@ public final class ObjectSound extends Node {
    @ObfuscatedGetter(
       intValue = -1608400407
    )
-   int __x;
+   int field653;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1748890449
    )
-   int __d;
+   int field654;
    @ObfuscatedName("k")
    @Export("soundEffectIds")
    int[] soundEffectIds;
@@ -78,7 +78,7 @@ public final class ObjectSound extends Node {
    @ObfuscatedGetter(
       intValue = -1041508847
    )
-   int __n;
+   int field655;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lds;"
@@ -92,10 +92,6 @@ public final class ObjectSound extends Node {
    @Export("obj")
    ObjectDefinition obj;
 
-   static {
-      objectSounds = new NodeDeque();
-   }
-
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -105,24 +101,28 @@ public final class ObjectSound extends Node {
    void set() {
       int var1 = this.soundEffectId;
       ObjectDefinition var2 = this.obj.transform();
-      if(var2 != null) {
+      if (var2 != null) {
          this.soundEffectId = var2.ambientSoundId;
-         this.__g = var2.int4 * 128;
-         this.__x = var2.int5;
-         this.__d = var2.int6;
-         this.soundEffectIds = var2.__ax;
+         this.field652 = var2.int4 * 128;
+         this.field653 = var2.int5;
+         this.field654 = var2.int6;
+         this.soundEffectIds = var2.field646;
       } else {
          this.soundEffectId = -1;
-         this.__g = 0;
-         this.__x = 0;
-         this.__d = 0;
+         this.field652 = 0;
+         this.field653 = 0;
+         this.field654 = 0;
          this.soundEffectIds = null;
       }
 
-      if(var1 != this.soundEffectId && this.stream1 != null) {
+      if (var1 != this.soundEffectId && this.stream1 != null) {
          TaskHandler.pcmStreamMixer.removeSubStream(this.stream1);
          this.stream1 = null;
       }
 
+   }
+
+   static {
+      objectSounds = new NodeDeque();
    }
 }

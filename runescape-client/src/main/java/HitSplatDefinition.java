@@ -11,17 +11,17 @@ public class HitSplatDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache __jm_m;
+   static AbstractIndexCache field382;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache __jm_f;
+   static AbstractIndexCache field383;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache __jm_q;
+   static AbstractIndexCache field384;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -32,7 +32,7 @@ public class HitSplatDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   static EvictingDualNodeHashTable __jm_o;
+   static EvictingDualNodeHashTable field385;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -49,59 +49,59 @@ public class HitSplatDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -1151968735
    )
-   public int __n;
+   public int field386;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -102270561
    )
-   public int __i;
+   public int field387;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -1533306389
    )
-   int __a;
+   int field388;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1677628889
    )
-   int __z;
+   int field389;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1683792491
    )
-   int __j;
+   int field390;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1845590719
    )
-   int __s;
+   int field391;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -389283589
    )
-   public int __t;
+   public int field392;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = 1751286975
    )
-   public int __y;
+   public int field393;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 199815415
    )
-   public int __h;
+   public int field394;
    @ObfuscatedName("b")
-   String __b;
+   String field395;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = 1003116765
    )
-   public int __c;
+   public int field396;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 1498880475
    )
-   public int __r;
+   public int field397;
    @ObfuscatedName("p")
    @Export("transforms")
    public int[] transforms;
@@ -118,26 +118,20 @@ public class HitSplatDefinition extends DualNode {
    @Export("transformVarp")
    int transformVarp;
 
-   static {
-      HitSplatDefinition_cached = new EvictingDualNodeHashTable(64);
-      __jm_o = new EvictingDualNodeHashTable(64);
-      HitSplatDefinition_cachedFonts = new EvictingDualNodeHashTable(20);
-   }
-
    HitSplatDefinition() {
       this.fontId = -1;
-      this.__n = 16777215;
-      this.__i = 70;
-      this.__a = -1;
-      this.__z = -1;
-      this.__j = -1;
-      this.__s = -1;
-      this.__t = 0;
-      this.__y = 0;
-      this.__h = -1;
-      this.__b = "";
-      this.__c = -1;
-      this.__r = 0;
+      this.field386 = 16777215;
+      this.field387 = 70;
+      this.field388 = -1;
+      this.field389 = -1;
+      this.field390 = -1;
+      this.field391 = -1;
+      this.field392 = 0;
+      this.field393 = 0;
+      this.field394 = -1;
+      this.field395 = "";
+      this.field396 = -1;
+      this.field397 = 0;
       this.transformVarbit = -1;
       this.transformVarp = -1;
    }
@@ -149,9 +143,9 @@ public class HitSplatDefinition extends DualNode {
    )
    @Export("read")
    void read(Buffer var1) {
-      while(true) {
+      while (true) {
          int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+         if (var2 == 0) {
             return;
          }
 
@@ -166,49 +160,49 @@ public class HitSplatDefinition extends DualNode {
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
-      if(var2 == 1) {
-         this.fontId = var1.__ap_310();
-      } else if(var2 == 2) {
-         this.__n = var1.readMedium();
-      } else if(var2 == 3) {
-         this.__a = var1.__ap_310();
-      } else if(var2 == 4) {
-         this.__j = var1.__ap_310();
-      } else if(var2 == 5) {
-         this.__z = var1.__ap_310();
-      } else if(var2 == 6) {
-         this.__s = var1.__ap_310();
-      } else if(var2 == 7) {
-         this.__t = var1.__aq_303();
-      } else if(var2 == 8) {
-         this.__b = var1.readStringCp1252NullCircumfixed();
-      } else if(var2 == 9) {
-         this.__i = var1.__ag_302();
-      } else if(var2 == 10) {
-         this.__y = var1.__aq_303();
-      } else if(var2 == 11) {
-         this.__h = 0;
-      } else if(var2 == 12) {
-         this.__c = var1.readUnsignedByte();
-      } else if(var2 == 13) {
-         this.__r = var1.__aq_303();
-      } else if(var2 == 14) {
-         this.__h = var1.__ag_302();
-      } else if(var2 == 17 || var2 == 18) {
-         this.transformVarbit = var1.__ag_302();
-         if(this.transformVarbit == 65535) {
+      if (var2 == 1) {
+         this.fontId = var1.method51();
+      } else if (var2 == 2) {
+         this.field386 = var1.readMedium();
+      } else if (var2 == 3) {
+         this.field388 = var1.method51();
+      } else if (var2 == 4) {
+         this.field390 = var1.method51();
+      } else if (var2 == 5) {
+         this.field389 = var1.method51();
+      } else if (var2 == 6) {
+         this.field391 = var1.method51();
+      } else if (var2 == 7) {
+         this.field392 = var1.method44();
+      } else if (var2 == 8) {
+         this.field395 = var1.readStringCp1252NullCircumfixed();
+      } else if (var2 == 9) {
+         this.field387 = var1.method43();
+      } else if (var2 == 10) {
+         this.field393 = var1.method44();
+      } else if (var2 == 11) {
+         this.field394 = 0;
+      } else if (var2 == 12) {
+         this.field396 = var1.readUnsignedByte();
+      } else if (var2 == 13) {
+         this.field397 = var1.method44();
+      } else if (var2 == 14) {
+         this.field394 = var1.method43();
+      } else if (var2 == 17 || var2 == 18) {
+         this.transformVarbit = var1.method43();
+         if (this.transformVarbit == 65535) {
             this.transformVarbit = -1;
          }
 
-         this.transformVarp = var1.__ag_302();
-         if(this.transformVarp == 65535) {
+         this.transformVarp = var1.method43();
+         if (this.transformVarp == 65535) {
             this.transformVarp = -1;
          }
 
          int var3 = -1;
-         if(var2 == 18) {
-            var3 = var1.__ag_302();
-            if(var3 == 65535) {
+         if (var2 == 18) {
+            var3 = var1.method43();
+            if (var3 == 65535) {
                var3 = -1;
             }
          }
@@ -216,9 +210,9 @@ public class HitSplatDefinition extends DualNode {
          int var4 = var1.readUnsignedByte();
          this.transforms = new int[var4 + 2];
 
-         for(int var5 = 0; var5 <= var4; ++var5) {
-            this.transforms[var5] = var1.__ag_302();
-            if(this.transforms[var5] == 65535) {
+         for (int var5 = 0; var5 <= var4; ++var5) {
+            this.transforms[var5] = var1.method43();
+            if (this.transforms[var5] == 65535) {
                this.transforms[var5] = -1;
             }
          }
@@ -236,20 +230,20 @@ public class HitSplatDefinition extends DualNode {
    @Export("transform")
    public final HitSplatDefinition transform() {
       int var1 = -1;
-      if(this.transformVarbit != -1) {
+      if (this.transformVarbit != -1) {
          var1 = WorldMapSection2.getVarbit(this.transformVarbit);
-      } else if(this.transformVarp != -1) {
+      } else if (this.transformVarp != -1) {
          var1 = Varps.Varps_main[this.transformVarp];
       }
 
       int var2;
-      if(var1 >= 0 && var1 < this.transforms.length - 1) {
+      if (var1 >= 0 && var1 < this.transforms.length - 1) {
          var2 = this.transforms[var1];
       } else {
          var2 = this.transforms[this.transforms.length - 1];
       }
 
-      return var2 != -1? LoginScreenAnimation.getHitSplatDefinition(var2):null;
+      return var2 != -1 ? LoginScreenAnimation.getHitSplatDefinition(var2) : null;
    }
 
    @ObfuscatedName("u")
@@ -259,11 +253,11 @@ public class HitSplatDefinition extends DualNode {
    )
    @Export("getString")
    public String getString(int var1) {
-      String var2 = this.__b;
+      String var2 = this.field395;
 
-      while(true) {
+      while (true) {
          int var3 = var2.indexOf("%1");
-         if(var3 < 0) {
+         if (var3 < 0) {
             return var2;
          }
 
@@ -276,17 +270,17 @@ public class HitSplatDefinition extends DualNode {
       signature = "(I)Lln;",
       garbageValue = "-1692599381"
    )
-   public Sprite __g_417() {
-      if(this.__a < 0) {
+   public Sprite method123() {
+      if (this.field388 < 0) {
          return null;
       } else {
-         Sprite var1 = (Sprite)__jm_o.get((long)this.__a);
-         if(var1 != null) {
+         Sprite var1 = (Sprite)field385.get((long)this.field388);
+         if (var1 != null) {
             return var1;
          } else {
-            var1 = class322.readSprite(__jm_f, this.__a, 0);
-            if(var1 != null) {
-               __jm_o.put(var1, (long)this.__a);
+            var1 = class322.readSprite(field383, this.field388, 0);
+            if (var1 != null) {
+               field385.put(var1, (long)this.field388);
             }
 
             return var1;
@@ -299,17 +293,17 @@ public class HitSplatDefinition extends DualNode {
       signature = "(B)Lln;",
       garbageValue = "-15"
    )
-   public Sprite __l_418() {
-      if(this.__z < 0) {
+   public Sprite method124() {
+      if (this.field389 < 0) {
          return null;
       } else {
-         Sprite var1 = (Sprite)__jm_o.get((long)this.__z);
-         if(var1 != null) {
+         Sprite var1 = (Sprite)field385.get((long)this.field389);
+         if (var1 != null) {
             return var1;
          } else {
-            var1 = class322.readSprite(__jm_f, this.__z, 0);
-            if(var1 != null) {
-               __jm_o.put(var1, (long)this.__z);
+            var1 = class322.readSprite(field383, this.field389, 0);
+            if (var1 != null) {
+               field385.put(var1, (long)this.field389);
             }
 
             return var1;
@@ -322,17 +316,17 @@ public class HitSplatDefinition extends DualNode {
       signature = "(B)Lln;",
       garbageValue = "-49"
    )
-   public Sprite __e_419() {
-      if(this.__j < 0) {
+   public Sprite method125() {
+      if (this.field390 < 0) {
          return null;
       } else {
-         Sprite var1 = (Sprite)__jm_o.get((long)this.__j);
-         if(var1 != null) {
+         Sprite var1 = (Sprite)field385.get((long)this.field390);
+         if (var1 != null) {
             return var1;
          } else {
-            var1 = class322.readSprite(__jm_f, this.__j, 0);
-            if(var1 != null) {
-               __jm_o.put(var1, (long)this.__j);
+            var1 = class322.readSprite(field383, this.field390, 0);
+            if (var1 != null) {
+               field385.put(var1, (long)this.field390);
             }
 
             return var1;
@@ -345,17 +339,17 @@ public class HitSplatDefinition extends DualNode {
       signature = "(I)Lln;",
       garbageValue = "393569067"
    )
-   public Sprite __x_420() {
-      if(this.__s < 0) {
+   public Sprite method126() {
+      if (this.field391 < 0) {
          return null;
       } else {
-         Sprite var1 = (Sprite)__jm_o.get((long)this.__s);
-         if(var1 != null) {
+         Sprite var1 = (Sprite)field385.get((long)this.field391);
+         if (var1 != null) {
             return var1;
          } else {
-            var1 = class322.readSprite(__jm_f, this.__s, 0);
-            if(var1 != null) {
-               __jm_o.put(var1, (long)this.__s);
+            var1 = class322.readSprite(field383, this.field391, 0);
+            if (var1 != null) {
+               field385.put(var1, (long)this.field391);
             }
 
             return var1;
@@ -370,15 +364,15 @@ public class HitSplatDefinition extends DualNode {
    )
    @Export("getFont")
    public Font getFont() {
-      if(this.fontId == -1) {
+      if (this.fontId == -1) {
          return null;
       } else {
          Font var1 = (Font)HitSplatDefinition_cachedFonts.get((long)this.fontId);
-         if(var1 != null) {
+         if (var1 != null) {
             return var1;
          } else {
-            var1 = SpriteIds.method5823(__jm_f, __jm_q, this.fontId, 0);
-            if(var1 != null) {
+            var1 = SpriteIds.method5823(field383, field384, this.fontId, 0);
+            if (var1 != null) {
                HitSplatDefinition_cachedFonts.put(var1, (long)this.fontId);
             }
 
@@ -390,5 +384,11 @@ public class HitSplatDefinition extends DualNode {
    @ObfuscatedName("o")
    public static int method4972(long var0) {
       return (int)(var0 >>> 17 & 4294967295L);
+   }
+
+   static {
+      HitSplatDefinition_cached = new EvictingDualNodeHashTable(64);
+      field385 = new EvictingDualNodeHashTable(64);
+      HitSplatDefinition_cachedFonts = new EvictingDualNodeHashTable(20);
    }
 }

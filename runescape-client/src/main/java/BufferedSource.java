@@ -14,7 +14,7 @@ public class BufferedSource implements Runnable {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache __fh_x;
+   public static AbstractIndexCache field54;
    @ObfuscatedName("m")
    @Export("thread")
    Thread thread;
@@ -64,19 +64,19 @@ public class BufferedSource implements Runnable {
    )
    @Export("isAvailable")
    boolean isAvailable(int var1) throws IOException {
-      if(var1 == 0) {
+      if (var1 == 0) {
          return true;
-      } else if(var1 > 0 && var1 < this.capacity) {
+      } else if (var1 > 0 && var1 < this.capacity) {
          synchronized(this) {
             int var3;
-            if(this.position <= this.limit) {
+            if (this.position <= this.limit) {
                var3 = this.limit - this.position;
             } else {
                var3 = this.capacity - this.position + this.limit;
             }
 
-            if(var3 < var1) {
-               if(this.exception != null) {
+            if (var3 < var1) {
+               if (this.exception != null) {
                   throw new IOException(this.exception.toString());
                } else {
                   this.notifyAll();
@@ -100,13 +100,13 @@ public class BufferedSource implements Runnable {
    int available() throws IOException {
       synchronized(this) {
          int var2;
-         if(this.position <= this.limit) {
+         if (this.position <= this.limit) {
             var2 = this.limit - this.position;
          } else {
             var2 = this.capacity - this.position + this.limit;
          }
 
-         if(var2 <= 0 && this.exception != null) {
+         if (var2 <= 0 && this.exception != null) {
             throw new IOException(this.exception.toString());
          } else {
             this.notifyAll();
@@ -123,8 +123,8 @@ public class BufferedSource implements Runnable {
    @Export("readUnsignedByte")
    int readUnsignedByte() throws IOException {
       synchronized(this) {
-         if(this.position == this.limit) {
-            if(this.exception != null) {
+         if (this.position == this.limit) {
+            if (this.exception != null) {
                throw new IOException(this.exception.toString());
             } else {
                return -1;
@@ -145,23 +145,23 @@ public class BufferedSource implements Runnable {
    )
    @Export("read")
    int read(byte[] var1, int var2, int var3) throws IOException {
-      if(var3 >= 0 && var2 >= 0 && var3 + var2 <= var1.length) {
+      if (var3 >= 0 && var2 >= 0 && var3 + var2 <= var1.length) {
          synchronized(this) {
             int var5;
-            if(this.position <= this.limit) {
+            if (this.position <= this.limit) {
                var5 = this.limit - this.position;
             } else {
                var5 = this.capacity - this.position + this.limit;
             }
 
-            if(var3 > var5) {
+            if (var3 > var5) {
                var3 = var5;
             }
 
-            if(var3 == 0 && this.exception != null) {
+            if (var3 == 0 && this.exception != null) {
                throw new IOException(this.exception.toString());
             } else {
-               if(var3 + this.position <= this.capacity) {
+               if (var3 + this.position <= this.capacity) {
                   System.arraycopy(this.buffer, this.position, var1, var2, var3);
                } else {
                   int var6 = this.capacity - this.position;
@@ -187,7 +187,7 @@ public class BufferedSource implements Runnable {
    @Export("close")
    void close() {
       synchronized(this) {
-         if(this.exception == null) {
+         if (this.exception == null) {
             this.exception = new IOException("");
          }
 
@@ -197,7 +197,6 @@ public class BufferedSource implements Runnable {
       try {
          this.thread.join();
       } catch (InterruptedException var3) {
-         ;
       }
 
    }
@@ -205,50 +204,49 @@ public class BufferedSource implements Runnable {
    @Export("run")
    @ObfuscatedName("run")
    public void run() {
-      while(true) {
+      while (true) {
          int var1;
          synchronized(this) {
-            while(true) {
-               if(this.exception != null) {
+            while (true) {
+               if (this.exception != null) {
                   return;
                }
 
-               if(this.position == 0) {
+               if (this.position == 0) {
                   var1 = this.capacity - this.limit - 1;
-               } else if(this.position <= this.limit) {
+               } else if (this.position <= this.limit) {
                   var1 = this.capacity - this.limit;
                } else {
                   var1 = this.position - this.limit - 1;
                }
 
-               if(var1 > 0) {
+               if (var1 > 0) {
                   break;
                }
 
                try {
                   this.wait();
                } catch (InterruptedException var10) {
-                  ;
                }
             }
          }
 
-         int var7;
+         int var2;
          try {
-            var7 = this.inputStream.read(this.buffer, this.limit, var1);
-            if(var7 == -1) {
+            var2 = this.inputStream.read(this.buffer, this.limit, var1);
+            if (var2 == -1) {
                throw new EOFException();
             }
          } catch (IOException var11) {
-            IOException var3 = var11;
+            IOException var4 = var11;
             synchronized(this) {
-               this.exception = var3;
+               this.exception = var4;
                return;
             }
          }
 
          synchronized(this) {
-            this.limit = (var7 + this.limit) % this.capacity;
+            this.limit = (var2 + this.limit) % this.capacity;
          }
       }
    }
@@ -259,14 +257,14 @@ public class BufferedSource implements Runnable {
       garbageValue = "6"
    )
    static final void method3423(boolean var0) {
-      for(int var1 = 0; var1 < Client.npcCount; ++var1) {
-         Npc var2 = Client.npcs[Client.npcIndices[var1]];
-         if(var2 != null && var2.isVisible() && var2.definition.isVisible == var0 && var2.definition.__e_435()) {
+      for (int var1 = 0; var1 < Client.npcCount; ++var1) {
+         NPC var2 = Client.npcs[Client.npcIndices[var1]];
+         if (var2 != null && var2.isVisible() && var2.definition.isVisible == var0 && var2.definition.method229()) {
             int var3 = var2.x >> 7;
             int var4 = var2.y >> 7;
-            if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-               if(var2.size == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-                  if(Client.tileLastDrawnActor[var3][var4] == Client.viewportDrawCount) {
+            if (var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
+               if (var2.size == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
+                  if (Client.tileLastDrawnActor[var3][var4] == Client.viewportDrawCount) {
                      continue;
                   }
 
@@ -275,7 +273,7 @@ public class BufferedSource implements Runnable {
 
                long var5 = FontName.method5637(0, 0, 1, !var2.definition.isInteractable, Client.npcIndices[var1]);
                var2.playerCycle = Client.cycle;
-               class65.scene.__a_239(SoundSystem.plane, var2.x, var2.y, class32.getTileHeight(var2.size * 64 - 64 + var2.x, var2.size * 64 - 64 + var2.y, SoundSystem.plane), var2.size * 64 - 64 + 60, var2, var2.__ac, var5, var2.__ay);
+               class65.scene.method285(SoundSystem.plane, var2.x, var2.y, class32.getTileHeight(var2.size * 64 - 64 + var2.x, var2.size * 64 - 64 + var2.y, SoundSystem.plane), var2.size * 64 - 64 + 60, var2, var2.field9, var5, var2.field10);
             }
          }
       }

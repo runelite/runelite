@@ -38,11 +38,11 @@ public class class16 {
       int var3 = var2.length();
       int var4 = var1;
 
-      for(int var5 = 0; var5 < var3; ++var5) {
+      for (int var5 = 0; var5 < var3; ++var5) {
          char var6 = var2.charAt(var5);
-         if(var6 <= 127) {
+         if (var6 <= 127) {
             var0[var4++] = (byte)var6;
-         } else if(var6 <= 2047) {
+         } else if (var6 <= 2047) {
             var0[var4++] = (byte)(192 | var6 >> 6);
             var0[var4++] = (byte)(128 | var6 & '?');
          } else {
@@ -61,13 +61,13 @@ public class class16 {
       garbageValue = "1394688825"
    )
    static int method188(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?WorldMapIcon1.__t_i:class12.__n_n;
-      if(var0 == 1800) {
+      Widget var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+      if (var0 == 1800) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class211.method4107(class1.getWidgetClickMask(var3));
          return 1;
-      } else if(var0 != 1801) {
-         if(var0 == 1802) {
-            if(var3.dataText == null) {
+      } else if (var0 != 1801) {
+         if (var0 == 1802) {
+            if (var3.dataText == null) {
                Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
             } else {
                Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.dataText;
@@ -80,7 +80,7 @@ public class class16 {
       } else {
          int var4 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          --var4;
-         if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
+         if (var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
             Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.actions[var4];
          } else {
             Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
@@ -97,44 +97,44 @@ public class class16 {
    )
    static final void method189(class190 var0) {
       PacketBuffer var1 = Client.packetWriter.packetBuffer;
+      int var2;
       int var3;
+      int var4;
       int var5;
       int var6;
       int var7;
       int var8;
       int var9;
-      int var10;
-      int var12;
-      byte var13;
-      int var14;
-      if(class190.field2342 == var0) {
-         byte var2 = var1.__bk_320();
-         var3 = var1.__bm_326();
-         byte var4 = var1.__bk_320();
-         var5 = var1.__bu_325();
-         var6 = var1.__ag_302();
-         var7 = var1.__bb_317();
-         var8 = var7 >> 2;
-         var9 = var7 & 3;
-         var10 = Client.__client_gd[var8];
-         byte var11 = var1.__bn_319();
-         var12 = var1.__by_324();
-         var13 = var1.__bk_320();
-         var14 = var1.readUnsignedByteNegate();
-         int var15 = (var14 >> 4 & 7) + WorldMapSection3.__p_go;
-         int var16 = (var14 & 7) + Canvas.__ao_gk;
+      byte var10;
+      int var11;
+      if (class190.field2342 == var0) {
+         byte var12 = var1.method61();
+         var2 = var1.method67();
+         byte var13 = var1.method61();
+         var3 = var1.method66();
+         var4 = var1.method43();
+         var5 = var1.method58();
+         var6 = var5 >> 2;
+         var7 = var5 & 3;
+         var8 = Client.field182[var6];
+         byte var14 = var1.method60();
+         var9 = var1.method65();
+         var10 = var1.method61();
+         var11 = var1.readUnsignedByteNegate();
+         int var15 = (var11 >> 4 & 7) + WorldMapSection3.field1089;
+         int var16 = (var11 & 7) + Canvas.field95;
          Player var17;
-         if(var12 == Client.localPlayerIndex) {
+         if (var9 == Client.localPlayerIndex) {
             var17 = Canvas.localPlayer;
          } else {
-            var17 = Client.players[var12];
+            var17 = Client.players[var9];
          }
 
-         if(var17 != null) {
-            ObjectDefinition var18 = class50.getObjectDefinition(var5);
+         if (var17 != null) {
+            ObjectDefinition var18 = class50.getObjectDefinition(var3);
             int var19;
             int var20;
-            if(var9 != 1 && var9 != 3) {
+            if (var7 != 1 && var7 != 3) {
                var19 = var18.sizeX;
                var20 = var18.sizeY;
             } else {
@@ -150,259 +150,253 @@ public class class16 {
             int var26 = var25[var22][var23] + var25[var21][var23] + var25[var21][var24] + var25[var22][var24] >> 2;
             int var27 = (var15 << 7) + (var19 << 6);
             int var28 = (var16 << 7) + (var20 << 6);
-            Model var29 = var18.getModel(var8, var9, var25, var27, var26, var28);
-            if(var29 != null) {
-               class258.method4898(SoundSystem.plane, var15, var16, var10, -1, 0, 0, var6 + 1, var3 + 1);
-               var17.animationCycleStart = var6 + Client.cycle;
-               var17.animationCycleEnd = var3 + Client.cycle;
+            Model var29 = var18.getModel(var6, var7, var25, var27, var26, var28);
+            if (var29 != null) {
+               class258.method4898(SoundSystem.plane, var15, var16, var8, -1, 0, 0, var4 + 1, var2 + 1);
+               var17.animationCycleStart = var4 + Client.cycle;
+               var17.animationCycleEnd = var2 + Client.cycle;
                var17.model0 = var29;
-               var17.__k = var15 * 128 + var19 * 64;
-               var17.__i = var16 * 128 + var20 * 64;
+               var17.field719 = var15 * 128 + var19 * 64;
+               var17.field720 = var16 * 128 + var20 * 64;
                var17.tileHeight2 = var26;
                byte var30;
-               if(var2 > var13) {
-                  var30 = var2;
-                  var2 = var13;
+               if (var12 > var10) {
+                  var30 = var12;
+                  var12 = var10;
+                  var10 = var30;
+               }
+
+               if (var14 > var13) {
+                  var30 = var14;
+                  var14 = var13;
                   var13 = var30;
                }
 
-               if(var11 > var4) {
-                  var30 = var11;
-                  var11 = var4;
-                  var4 = var30;
-               }
-
-               var17.__z = var15 + var2;
-               var17.__s = var13 + var15;
-               var17.__j = var11 + var16;
-               var17.__t = var4 + var16;
+               var17.field721 = var15 + var12;
+               var17.field723 = var10 + var15;
+               var17.field722 = var14 + var16;
+               var17.field724 = var13 + var16;
             }
          }
       }
 
-      int var37;
-      int var38;
-      if(class190.field2349 == var0) {
-         var37 = var1.__bb_317();
-         var3 = (var37 >> 4 & 7) + WorldMapSection3.__p_go;
-         var38 = (var37 & 7) + Canvas.__ao_gk;
-         var5 = var1.__bq_318();
-         var6 = var5 >> 2;
-         var7 = var5 & 3;
-         var8 = Client.__client_gd[var6];
-         var9 = var1.__bu_325();
-         if(var3 >= 0 && var38 >= 0 && var3 < 104 && var38 < 104) {
-            class258.method4898(SoundSystem.plane, var3, var38, var8, var9, var6, var7, 0, -1);
+      int var31;
+      int var32;
+      if (class190.field2349 == var0) {
+         var31 = var1.method58();
+         var2 = (var31 >> 4 & 7) + WorldMapSection3.field1089;
+         var32 = (var31 & 7) + Canvas.field95;
+         var3 = var1.method59();
+         var4 = var3 >> 2;
+         var5 = var3 & 3;
+         var6 = Client.field182[var4];
+         var7 = var1.method66();
+         if (var2 >= 0 && var32 >= 0 && var2 < 104 && var32 < 104) {
+            class258.method4898(SoundSystem.plane, var2, var32, var6, var7, var4, var5, 0, -1);
          }
-
       } else {
-         if(class190.field2345 == var0) {
-            var37 = var1.readUnsignedByte();
-            var3 = (var37 >> 4 & 7) + WorldMapSection3.__p_go;
-            var38 = (var37 & 7) + Canvas.__ao_gk;
-            var5 = var1.__bq_318();
-            var6 = var1.__bb_317();
-            var7 = var6 >> 4 & 15;
-            var8 = var6 & 7;
-            var9 = var1.__bm_326();
-            if(var3 >= 0 && var38 >= 0 && var3 < 104 && var38 < 104) {
-               var10 = var7 + 1;
-               if(Canvas.localPlayer.pathX[0] >= var3 - var10 && Canvas.localPlayer.pathX[0] <= var10 + var3 && Canvas.localPlayer.pathY[0] >= var38 - var10 && Canvas.localPlayer.pathY[0] <= var10 + var38 && Client.__client_qc != 0 && var8 > 0 && Client.soundEffectCount < 50) {
-                  Client.soundEffectIds[Client.soundEffectCount] = var9;
-                  Client.queuedSoundEffectLoops[Client.soundEffectCount] = var8;
-                  Client.queuedSoundEffectDelays[Client.soundEffectCount] = var5;
+         if (class190.field2345 == var0) {
+            var31 = var1.readUnsignedByte();
+            var2 = (var31 >> 4 & 7) + WorldMapSection3.field1089;
+            var32 = (var31 & 7) + Canvas.field95;
+            var3 = var1.method59();
+            var4 = var1.method58();
+            var5 = var4 >> 4 & 15;
+            var6 = var4 & 7;
+            var7 = var1.method67();
+            if (var2 >= 0 && var32 >= 0 && var2 < 104 && var32 < 104) {
+               var8 = var5 + 1;
+               if (Canvas.localPlayer.pathX[0] >= var2 - var8 && Canvas.localPlayer.pathX[0] <= var8 + var2 && Canvas.localPlayer.pathY[0] >= var32 - var8 && Canvas.localPlayer.pathY[0] <= var8 + var32 && Client.field115 != 0 && var6 > 0 && Client.soundEffectCount < 50) {
+                  Client.soundEffectIds[Client.soundEffectCount] = var7;
+                  Client.queuedSoundEffectLoops[Client.soundEffectCount] = var6;
+                  Client.queuedSoundEffectDelays[Client.soundEffectCount] = var3;
                   Client.soundEffects[Client.soundEffectCount] = null;
-                  Client.soundLocations[Client.soundEffectCount] = var7 + (var38 << 8) + (var3 << 16);
+                  Client.soundLocations[Client.soundEffectCount] = var5 + (var32 << 8) + (var2 << 16);
                   ++Client.soundEffectCount;
                }
             }
          }
 
-         if(class190.field2341 == var0) {
-            var37 = var1.__ag_302();
-            var3 = var1.__bb_317();
-            var38 = var1.__bu_325();
-            var5 = var1.readUnsignedByte();
-            var6 = (var5 >> 4 & 7) + WorldMapSection3.__p_go;
-            var7 = (var5 & 7) + Canvas.__ao_gk;
-            if(var6 >= 0 && var7 >= 0 && var6 < 104 && var7 < 104) {
-               var6 = var6 * 128 + 64;
-               var7 = var7 * 128 + 64;
-               GraphicsObject var42 = new GraphicsObject(var37, SoundSystem.plane, var6, var7, class32.getTileHeight(var6, var7, SoundSystem.plane) - var3, var38, Client.cycle);
-               Client.graphicsObjects.addFirst(var42);
+         if (class190.field2341 == var0) {
+            var31 = var1.method43();
+            var2 = var1.method58();
+            var32 = var1.method66();
+            var3 = var1.readUnsignedByte();
+            var4 = (var3 >> 4 & 7) + WorldMapSection3.field1089;
+            var5 = (var3 & 7) + Canvas.field95;
+            if (var4 >= 0 && var5 >= 0 && var4 < 104 && var5 < 104) {
+               var4 = var4 * 128 + 64;
+               var5 = var5 * 128 + 64;
+               GraphicsObject var33 = new GraphicsObject(var31, SoundSystem.plane, var4, var5, class32.getTileHeight(var4, var5, SoundSystem.plane) - var2, var32, Client.cycle);
+               Client.graphicsObjects.addFirst(var33);
             }
-
          } else {
-            int var39;
-            if(class190.field2344 == var0) {
-               var37 = var1.__bq_318();
-               var3 = var37 >> 2;
-               var38 = var37 & 3;
-               var5 = Client.__client_gd[var3];
-               var6 = var1.readUnsignedByteNegate();
-               var7 = (var6 >> 4 & 7) + WorldMapSection3.__p_go;
-               var8 = (var6 & 7) + Canvas.__ao_gk;
-               var9 = var1.__ag_302();
-               if(var7 >= 0 && var8 >= 0 && var7 < 103 && var8 < 103) {
-                  if(var5 == 0) {
-                     BoundaryObject var32 = class65.scene.getBoundaryObject(SoundSystem.plane, var7, var8);
-                     if(var32 != null) {
-                        var39 = HitSplatDefinition.method4972(var32.tag);
-                        if(var3 == 2) {
-                           var32.entity1 = new DynamicObject(var39, 2, var38 + 4, SoundSystem.plane, var7, var8, var9, false, var32.entity1);
-                           var32.entity2 = new DynamicObject(var39, 2, var38 + 1 & 3, SoundSystem.plane, var7, var8, var9, false, var32.entity2);
+            int var35;
+            if (class190.field2344 == var0) {
+               var31 = var1.method59();
+               var2 = var31 >> 2;
+               var32 = var31 & 3;
+               var3 = Client.field182[var2];
+               var4 = var1.readUnsignedByteNegate();
+               var5 = (var4 >> 4 & 7) + WorldMapSection3.field1089;
+               var6 = (var4 & 7) + Canvas.field95;
+               var7 = var1.method43();
+               if (var5 >= 0 && var6 >= 0 && var5 < 103 && var6 < 103) {
+                  if (var3 == 0) {
+                     BoundaryObject var34 = class65.scene.getBoundaryObject(SoundSystem.plane, var5, var6);
+                     if (var34 != null) {
+                        var35 = HitSplatDefinition.method4972(var34.tag);
+                        if (var2 == 2) {
+                           var34.entity1 = new DynamicObject(var35, 2, var32 + 4, SoundSystem.plane, var5, var6, var7, false, var34.entity1);
+                           var34.entity2 = new DynamicObject(var35, 2, var32 + 1 & 3, SoundSystem.plane, var5, var6, var7, false, var34.entity2);
                         } else {
-                           var32.entity1 = new DynamicObject(var39, var3, var38, SoundSystem.plane, var7, var8, var9, false, var32.entity1);
+                           var34.entity1 = new DynamicObject(var35, var2, var32, SoundSystem.plane, var5, var6, var7, false, var34.entity1);
                         }
                      }
                   }
 
-                  if(var5 == 1) {
-                     WallDecoration var43 = class65.scene.getWallDecoration(SoundSystem.plane, var7, var8);
-                     if(var43 != null) {
-                        var39 = HitSplatDefinition.method4972(var43.tag);
-                        if(var3 != 4 && var3 != 5) {
-                           if(var3 == 6) {
-                              var43.entity1 = new DynamicObject(var39, 4, var38 + 4, SoundSystem.plane, var7, var8, var9, false, var43.entity1);
-                           } else if(var3 == 7) {
-                              var43.entity1 = new DynamicObject(var39, 4, (var38 + 2 & 3) + 4, SoundSystem.plane, var7, var8, var9, false, var43.entity1);
-                           } else if(var3 == 8) {
-                              var43.entity1 = new DynamicObject(var39, 4, var38 + 4, SoundSystem.plane, var7, var8, var9, false, var43.entity1);
-                              var43.entity2 = new DynamicObject(var39, 4, (var38 + 2 & 3) + 4, SoundSystem.plane, var7, var8, var9, false, var43.entity2);
+                  if (var3 == 1) {
+                     WallDecoration var36 = class65.scene.getWallDecoration(SoundSystem.plane, var5, var6);
+                     if (var36 != null) {
+                        var35 = HitSplatDefinition.method4972(var36.tag);
+                        if (var2 != 4 && var2 != 5) {
+                           if (var2 == 6) {
+                              var36.entity1 = new DynamicObject(var35, 4, var32 + 4, SoundSystem.plane, var5, var6, var7, false, var36.entity1);
+                           } else if (var2 == 7) {
+                              var36.entity1 = new DynamicObject(var35, 4, (var32 + 2 & 3) + 4, SoundSystem.plane, var5, var6, var7, false, var36.entity1);
+                           } else if (var2 == 8) {
+                              var36.entity1 = new DynamicObject(var35, 4, var32 + 4, SoundSystem.plane, var5, var6, var7, false, var36.entity1);
+                              var36.entity2 = new DynamicObject(var35, 4, (var32 + 2 & 3) + 4, SoundSystem.plane, var5, var6, var7, false, var36.entity2);
                            }
                         } else {
-                           var43.entity1 = new DynamicObject(var39, 4, var38, SoundSystem.plane, var7, var8, var9, false, var43.entity1);
+                           var36.entity1 = new DynamicObject(var35, 4, var32, SoundSystem.plane, var5, var6, var7, false, var36.entity1);
                         }
                      }
                   }
 
-                  if(var5 == 2) {
-                     GameObject var44 = class65.scene.__aj_243(SoundSystem.plane, var7, var8);
-                     if(var3 == 11) {
-                        var3 = 10;
+                  if (var3 == 2) {
+                     GameObject var37 = class65.scene.method289(SoundSystem.plane, var5, var6);
+                     if (var2 == 11) {
+                        var2 = 10;
                      }
 
-                     if(var44 != null) {
-                        var44.entity = new DynamicObject(HitSplatDefinition.method4972(var44.tag), var3, var38, SoundSystem.plane, var7, var8, var9, false, var44.entity);
+                     if (var37 != null) {
+                        var37.entity = new DynamicObject(HitSplatDefinition.method4972(var37.tag), var2, var32, SoundSystem.plane, var5, var6, var7, false, var37.entity);
                      }
                   }
 
-                  if(var5 == 3) {
-                     FloorDecoration var45 = class65.scene.getFloorDecoration(SoundSystem.plane, var7, var8);
-                     if(var45 != null) {
-                        var45.entity = new DynamicObject(HitSplatDefinition.method4972(var45.tag), 22, var38, SoundSystem.plane, var7, var8, var9, false, var45.entity);
+                  if (var3 == 3) {
+                     FloorDecoration var39 = class65.scene.getFloorDecoration(SoundSystem.plane, var5, var6);
+                     if (var39 != null) {
+                        var39.entity = new DynamicObject(HitSplatDefinition.method4972(var39.tag), 22, var32, SoundSystem.plane, var5, var6, var7, false, var39.entity);
                      }
                   }
                }
-
             } else {
-               GroundItem var34;
-               if(class190.field2347 == var0) {
-                  var37 = var1.__bb_317();
-                  var3 = (var37 >> 4 & 7) + WorldMapSection3.__p_go;
-                  var38 = (var37 & 7) + Canvas.__ao_gk;
-                  var5 = var1.__bm_326();
-                  if(var3 >= 0 && var38 >= 0 && var3 < 104 && var38 < 104) {
-                     NodeDeque var33 = Client.groundItems[SoundSystem.plane][var3][var38];
-                     if(var33 != null) {
-                        for(var34 = (GroundItem)var33.last(); var34 != null; var34 = (GroundItem)var33.previous()) {
-                           if((var5 & 32767) == var34.id) {
-                              var34.remove();
+               NodeDeque var38;
+               GroundItem var41;
+               if (class190.field2347 == var0) {
+                  var31 = var1.method58();
+                  var2 = (var31 >> 4 & 7) + WorldMapSection3.field1089;
+                  var32 = (var31 & 7) + Canvas.field95;
+                  var3 = var1.method67();
+                  if (var2 >= 0 && var32 >= 0 && var2 < 104 && var32 < 104) {
+                     var38 = Client.groundItems[SoundSystem.plane][var2][var32];
+                     if (var38 != null) {
+                        for (var41 = (GroundItem)var38.last(); var41 != null; var41 = (GroundItem)var38.previous()) {
+                           if ((var3 & 32767) == var41.id) {
+                              var41.remove();
                               break;
                            }
                         }
 
-                        if(var33.last() == null) {
-                           Client.groundItems[SoundSystem.plane][var3][var38] = null;
+                        if (var38.last() == null) {
+                           Client.groundItems[SoundSystem.plane][var2][var32] = null;
                         }
 
-                        TilePaint.method3061(var3, var38);
+                        TilePaint.method3061(var2, var32);
                      }
                   }
-
-               } else if(class190.field2350 == var0) {
-                  var37 = var1.__bq_318();
-                  var3 = var37 >> 2;
-                  var38 = var37 & 3;
-                  var5 = Client.__client_gd[var3];
-                  var6 = var1.__bq_318();
-                  var7 = (var6 >> 4 & 7) + WorldMapSection3.__p_go;
-                  var8 = (var6 & 7) + Canvas.__ao_gk;
-                  if(var7 >= 0 && var8 >= 0 && var7 < 104 && var8 < 104) {
-                     class258.method4898(SoundSystem.plane, var7, var8, var5, -1, var3, var38, 0, -1);
+               } else if (class190.field2350 == var0) {
+                  var31 = var1.method59();
+                  var2 = var31 >> 2;
+                  var32 = var31 & 3;
+                  var3 = Client.field182[var2];
+                  var4 = var1.method59();
+                  var5 = (var4 >> 4 & 7) + WorldMapSection3.field1089;
+                  var6 = (var4 & 7) + Canvas.field95;
+                  if (var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
+                     class258.method4898(SoundSystem.plane, var5, var6, var3, -1, var2, var32, 0, -1);
                   }
-
-               } else if(class190.field2352 == var0) {
-                  var37 = var1.__bq_318() * 4;
-                  var3 = var1.__ag_302();
-                  var38 = var1.__bu_325();
-                  var5 = var1.__bq_318() * 4;
-                  var6 = var1.__bl_327();
-                  var7 = var1.readUnsignedByte();
-                  var8 = var1.__bq_318();
-                  var9 = var1.__by_324();
-                  var10 = var1.__bb_317();
-                  var39 = (var10 >> 4 & 7) + WorldMapSection3.__p_go;
-                  var12 = (var10 & 7) + Canvas.__ao_gk;
-                  var13 = var1.__bn_319();
-                  byte var40 = var1.__bk_320();
-                  var14 = var40 + var39;
-                  int var41 = var13 + var12;
-                  if(var39 >= 0 && var12 >= 0 && var39 < 104 && var12 < 104 && var14 >= 0 && var41 >= 0 && var14 < 104 && var41 < 104 && var38 != 65535) {
-                     var39 = var39 * 128 + 64;
-                     var12 = var12 * 128 + 64;
-                     var14 = var14 * 128 + 64;
-                     var41 = var41 * 128 + 64;
-                     Projectile var35 = new Projectile(var38, SoundSystem.plane, var39, var12, class32.getTileHeight(var39, var12, SoundSystem.plane) - var5, var9 + Client.cycle, var3 + Client.cycle, var7, var8, var6, var37);
-                     var35.setDestination(var14, var41, class32.getTileHeight(var14, var41, SoundSystem.plane) - var37, var9 + Client.cycle);
-                     Client.projectiles.addFirst(var35);
+               } else if (class190.field2352 == var0) {
+                  var31 = var1.method59() * 4;
+                  var2 = var1.method43();
+                  var32 = var1.method66();
+                  var3 = var1.method59() * 4;
+                  var4 = var1.method68();
+                  var5 = var1.readUnsignedByte();
+                  var6 = var1.method59();
+                  var7 = var1.method65();
+                  var8 = var1.method58();
+                  var35 = (var8 >> 4 & 7) + WorldMapSection3.field1089;
+                  var9 = (var8 & 7) + Canvas.field95;
+                  var10 = var1.method60();
+                  byte var40 = var1.method61();
+                  var11 = var40 + var35;
+                  int var42 = var10 + var9;
+                  if (var35 >= 0 && var9 >= 0 && var35 < 104 && var9 < 104 && var11 >= 0 && var42 >= 0 && var11 < 104 && var42 < 104 && var32 != 65535) {
+                     var35 = var35 * 128 + 64;
+                     var9 = var9 * 128 + 64;
+                     var11 = var11 * 128 + 64;
+                     var42 = var42 * 128 + 64;
+                     Projectile var43 = new Projectile(var32, SoundSystem.plane, var35, var9, class32.getTileHeight(var35, var9, SoundSystem.plane) - var3, var7 + Client.cycle, var2 + Client.cycle, var5, var6, var4, var31);
+                     var43.setDestination(var11, var42, class32.getTileHeight(var11, var42, SoundSystem.plane) - var31, var7 + Client.cycle);
+                     Client.projectiles.addFirst(var43);
                   }
-
-               } else if(class190.field2346 != var0) {
-                  if(class190.field2343 == var0) {
-                     var37 = var1.__bu_325();
-                     var3 = var1.__bm_326();
-                     var38 = var1.__bb_317();
-                     var5 = (var38 >> 4 & 7) + WorldMapSection3.__p_go;
-                     var6 = (var38 & 7) + Canvas.__ao_gk;
-                     if(var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
-                        var34 = new GroundItem();
-                        var34.id = var3;
-                        var34.quantity = var37;
-                        if(Client.groundItems[SoundSystem.plane][var5][var6] == null) {
-                           Client.groundItems[SoundSystem.plane][var5][var6] = new NodeDeque();
+               } else if (class190.field2346 != var0) {
+                  if (class190.field2343 == var0) {
+                     var31 = var1.method66();
+                     var2 = var1.method67();
+                     var32 = var1.method58();
+                     var3 = (var32 >> 4 & 7) + WorldMapSection3.field1089;
+                     var4 = (var32 & 7) + Canvas.field95;
+                     if (var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104) {
+                        var41 = new GroundItem();
+                        var41.id = var2;
+                        var41.quantity = var31;
+                        if (Client.groundItems[SoundSystem.plane][var3][var4] == null) {
+                           Client.groundItems[SoundSystem.plane][var3][var4] = new NodeDeque();
                         }
 
-                        Client.groundItems[SoundSystem.plane][var5][var6].addFirst(var34);
-                        TilePaint.method3061(var5, var6);
+                        Client.groundItems[SoundSystem.plane][var3][var4].addFirst(var41);
+                        TilePaint.method3061(var3, var4);
                      }
-
                   }
                } else {
-                  var37 = var1.__by_324();
-                  var3 = var1.__bm_326();
-                  var38 = var1.__by_324();
-                  var5 = var1.__bb_317();
-                  var6 = (var5 >> 4 & 7) + WorldMapSection3.__p_go;
-                  var7 = (var5 & 7) + Canvas.__ao_gk;
-                  if(var6 >= 0 && var7 >= 0 && var6 < 104 && var7 < 104) {
-                     NodeDeque var31 = Client.groundItems[SoundSystem.plane][var6][var7];
-                     if(var31 != null) {
-                        for(GroundItem var36 = (GroundItem)var31.last(); var36 != null; var36 = (GroundItem)var31.previous()) {
-                           if((var37 & 32767) == var36.id && var38 == var36.quantity) {
-                              var36.quantity = var3;
+                  var31 = var1.method65();
+                  var2 = var1.method67();
+                  var32 = var1.method65();
+                  var3 = var1.method58();
+                  var4 = (var3 >> 4 & 7) + WorldMapSection3.field1089;
+                  var5 = (var3 & 7) + Canvas.field95;
+                  if (var4 >= 0 && var5 >= 0 && var4 < 104 && var5 < 104) {
+                     var38 = Client.groundItems[SoundSystem.plane][var4][var5];
+                     if (var38 != null) {
+                        for (GroundItem var44 = (GroundItem)var38.last(); var44 != null; var44 = (GroundItem)var38.previous()) {
+                           if ((var31 & 32767) == var44.id && var32 == var44.quantity) {
+                              var44.quantity = var2;
                               break;
                            }
                         }
 
-                        TilePaint.method3061(var6, var7);
+                        TilePaint.method3061(var4, var5);
                      }
                   }
-
                }
             }
          }
       }
+
    }
 
    @ObfuscatedName("il")
@@ -412,19 +406,17 @@ public class class16 {
    )
    @Export("insertMenuItem")
    static final void insertMenuItem(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
-      if(!Client.isMenuOpen) {
-         if(Client.menuOptionsCount < 500) {
-            Client.menuActions[Client.menuOptionsCount] = var0;
-            Client.menuTargetNames[Client.menuOptionsCount] = var1;
-            Client.menuOpcodes[Client.menuOptionsCount] = var2;
-            Client.menuArguments0[Client.menuOptionsCount] = var3;
-            Client.menuArguments1[Client.menuOptionsCount] = var4;
-            Client.menuArguments2[Client.menuOptionsCount] = var5;
-            Client.menuShiftClick[Client.menuOptionsCount] = var6;
-            ++Client.menuOptionsCount;
-         }
-
+      if (!Client.isMenuOpen && Client.menuOptionsCount < 500) {
+         Client.menuActions[Client.menuOptionsCount] = var0;
+         Client.menuTargetNames[Client.menuOptionsCount] = var1;
+         Client.menuOpcodes[Client.menuOptionsCount] = var2;
+         Client.menuArguments0[Client.menuOptionsCount] = var3;
+         Client.menuArguments1[Client.menuOptionsCount] = var4;
+         Client.menuArguments2[Client.menuOptionsCount] = var5;
+         Client.menuShiftClick[Client.menuOptionsCount] = var6;
+         ++Client.menuOptionsCount;
       }
+
    }
 
    @ObfuscatedName("ii")
@@ -433,30 +425,30 @@ public class class16 {
       garbageValue = "931169314"
    )
    static final int method187(Widget var0, int var1) {
-      if(var0.cs1Instructions != null && var1 < var0.cs1Instructions.length) {
+      if (var0.cs1Instructions != null && var1 < var0.cs1Instructions.length) {
          try {
             int[] var2 = var0.cs1Instructions[var1];
             int var3 = 0;
             int var4 = 0;
             byte var5 = 0;
 
-            while(true) {
+            while (true) {
                int var6 = var2[var4++];
                int var7 = 0;
                byte var8 = 0;
-               if(var6 == 0) {
+               if (var6 == 0) {
                   return var3;
                }
 
-               if(var6 == 1) {
+               if (var6 == 1) {
                   var7 = Client.currentLevels[var2[var4++]];
                }
 
-               if(var6 == 2) {
+               if (var6 == 2) {
                   var7 = Client.levels[var2[var4++]];
                }
 
-               if(var6 == 3) {
+               if (var6 == 3) {
                   var7 = Client.experience[var2[var4++]];
                }
 
@@ -464,52 +456,52 @@ public class class16 {
                Widget var10;
                int var11;
                int var12;
-               if(var6 == 4) {
+               if (var6 == 4) {
                   var9 = var2[var4++] << 16;
                   var9 += var2[var4++];
                   var10 = Huffman.getWidget(var9);
                   var11 = var2[var4++];
-                  if(var11 != -1 && (!Skills.getItemDefinition(var11).isMembersOnly || Client.isMembersWorld)) {
-                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var11 + 1 == var10.itemIds[var12]) {
+                  if (var11 != -1 && (!Skills.getItemDefinition(var11).isMembersOnly || Client.isMembersWorld)) {
+                     for (var12 = 0; var12 < var10.itemIds.length; ++var12) {
+                        if (var11 + 1 == var10.itemIds[var12]) {
                            var7 += var10.itemQuantities[var12];
                         }
                      }
                   }
                }
 
-               if(var6 == 5) {
+               if (var6 == 5) {
                   var7 = Varps.Varps_main[var2[var4++]];
                }
 
-               if(var6 == 6) {
+               if (var6 == 6) {
                   var7 = Skills.Skills_experienceTable[Client.levels[var2[var4++]] - 1];
                }
 
-               if(var6 == 7) {
+               if (var6 == 7) {
                   var7 = Varps.Varps_main[var2[var4++]] * 100 / 46875;
                }
 
-               if(var6 == 8) {
+               if (var6 == 8) {
                   var7 = Canvas.localPlayer.combatLevel;
                }
 
-               if(var6 == 9) {
-                  for(var9 = 0; var9 < 25; ++var9) {
-                     if(Skills.Skills_enabled[var9]) {
+               if (var6 == 9) {
+                  for (var9 = 0; var9 < 25; ++var9) {
+                     if (Skills.Skills_enabled[var9]) {
                         var7 += Client.levels[var9];
                      }
                   }
                }
 
-               if(var6 == 10) {
+               if (var6 == 10) {
                   var9 = var2[var4++] << 16;
                   var9 += var2[var4++];
                   var10 = Huffman.getWidget(var9);
                   var11 = var2[var4++];
-                  if(var11 != -1 && (!Skills.getItemDefinition(var11).isMembersOnly || Client.isMembersWorld)) {
-                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var11 + 1 == var10.itemIds[var12]) {
+                  if (var11 != -1 && (!Skills.getItemDefinition(var11).isMembersOnly || Client.isMembersWorld)) {
+                     for (var12 = 0; var12 < var10.itemIds.length; ++var12) {
+                        if (var11 + 1 == var10.itemIds[var12]) {
                            var7 = 999999999;
                            break;
                         }
@@ -517,63 +509,63 @@ public class class16 {
                   }
                }
 
-               if(var6 == 11) {
+               if (var6 == 11) {
                   var7 = Client.runEnergy;
                }
 
-               if(var6 == 12) {
+               if (var6 == 12) {
                   var7 = Client.weight;
                }
 
-               if(var6 == 13) {
+               if (var6 == 13) {
                   var9 = Varps.Varps_main[var2[var4++]];
                   int var13 = var2[var4++];
-                  var7 = (var9 & 1 << var13) != 0?1:0;
+                  var7 = (var9 & 1 << var13) != 0 ? 1 : 0;
                }
 
-               if(var6 == 14) {
+               if (var6 == 14) {
                   var9 = var2[var4++];
                   var7 = WorldMapSection2.getVarbit(var9);
                }
 
-               if(var6 == 15) {
+               if (var6 == 15) {
                   var8 = 1;
                }
 
-               if(var6 == 16) {
+               if (var6 == 16) {
                   var8 = 2;
                }
 
-               if(var6 == 17) {
+               if (var6 == 17) {
                   var8 = 3;
                }
 
-               if(var6 == 18) {
+               if (var6 == 18) {
                   var7 = (Canvas.localPlayer.x >> 7) + class50.baseX;
                }
 
-               if(var6 == 19) {
+               if (var6 == 19) {
                   var7 = (Canvas.localPlayer.y >> 7) + GraphicsObject.baseY;
                }
 
-               if(var6 == 20) {
+               if (var6 == 20) {
                   var7 = var2[var4++];
                }
 
-               if(var8 == 0) {
-                  if(var5 == 0) {
+               if (var8 == 0) {
+                  if (var5 == 0) {
                      var3 += var7;
                   }
 
-                  if(var5 == 1) {
+                  if (var5 == 1) {
                      var3 -= var7;
                   }
 
-                  if(var5 == 2 && var7 != 0) {
+                  if (var5 == 2 && var7 != 0) {
                      var3 /= var7;
                   }
 
-                  if(var5 == 3) {
+                  if (var5 == 3) {
                      var3 *= var7;
                   }
 

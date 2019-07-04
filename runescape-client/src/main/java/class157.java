@@ -1,4 +1,3 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -9,7 +8,7 @@ public class class157 extends AbstractUserComparator {
    @ObfuscatedGetter(
       intValue = 1006519291
    )
-   static int __fw_nm;
+   static int field1114;
    @ObfuscatedName("m")
    final boolean field1969;
 
@@ -23,7 +22,7 @@ public class class157 extends AbstractUserComparator {
       garbageValue = "884616259"
    )
    int method3381(Buddy var1, Buddy var2) {
-      return var2.rank != var1.rank?(this.field1969?var1.rank - var2.rank:var2.rank - var1.rank):this.__x_461(var1, var2);
+      return var2.rank != var1.rank ? (this.field1969 ? var1.rank - var2.rank : var2.rank - var1.rank) : this.method12(var1, var2);
    }
 
    public int compare(Object var1, Object var2) {
@@ -39,6 +38,6 @@ public class class157 extends AbstractUserComparator {
       Widget.widgetSpriteCache.clear();
       Widget.Widget_cachedModels.clear();
       Widget.Widget_cachedFonts.clear();
-      Widget.__ho_z.clear();
+      Widget.field956.clear();
    }
 }

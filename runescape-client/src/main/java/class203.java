@@ -26,7 +26,7 @@ public class class203 {
    @Export("currentTimeMs")
    public static synchronized long currentTimeMs() {
       long var0 = System.currentTimeMillis();
-      if(var0 < ModelData0.currentTimeMsLast) {
+      if (var0 < ModelData0.currentTimeMsLast) {
          currentTimeMsOffset += ModelData0.currentTimeMsLast - var0;
       }
 
@@ -36,30 +36,27 @@ public class class203 {
 
    @ObfuscatedName("m")
    public static final void method4010(long var0) {
-      if(var0 > 0L) {
-         if(var0 % 10L == 0L) {
+      if (var0 > 0L) {
+         if (var0 % 10L == 0L) {
             long var2 = var0 - 1L;
 
             try {
                Thread.sleep(var2);
-            } catch (InterruptedException var8) {
-               ;
+            } catch (InterruptedException var7) {
             }
 
             try {
                Thread.sleep(1L);
-            } catch (InterruptedException var7) {
-               ;
+            } catch (InterruptedException var6) {
             }
          } else {
             try {
                Thread.sleep(var0);
-            } catch (InterruptedException var6) {
-               ;
+            } catch (InterruptedException var5) {
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("w")
@@ -68,10 +65,10 @@ public class class203 {
       garbageValue = "571835999"
    )
    public static void method4008(int var0) {
-      if(class214.__hf_o != 0) {
-         WorldMapLabel.__aj_e = var0;
+      if (class214.field1129 != 0) {
+         WorldMapLabel.field1039 = var0;
       } else {
-         class214.midiPcmStream.__m_340(var0);
+         class214.midiPcmStream.method169(var0);
       }
 
    }

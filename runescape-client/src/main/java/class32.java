@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ay")
 public class class32 {
    @ObfuscatedName("u")
-   static byte[][][] __ay_u;
+   static byte[][][] field1157;
    @ObfuscatedName("gj")
    @ObfuscatedSignature(
       signature = "[Llq;"
@@ -20,20 +20,20 @@ public class class32 {
    )
    static int method576(int var0, Script var1, boolean var2) {
       Widget var3;
-      if(var0 >= 2000) {
+      if (var0 >= 2000) {
          var0 -= 1000;
          var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
       } else {
-         var3 = var2?WorldMapIcon1.__t_i:class12.__n_n;
+         var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
       }
 
       class22.method295(var3);
-      if(var0 != 1200 && var0 != 1205 && var0 != 1212) {
-         if(var0 == 1201) {
+      if (var0 != 1200 && var0 != 1205 && var0 != 1212) {
+         if (var0 == 1201) {
             var3.modelType = 2;
             var3.modelId = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             return 1;
-         } else if(var0 == 1202) {
+         } else if (var0 == 1202) {
             var3.modelType = 3;
             var3.modelId = Canvas.localPlayer.appearance.getChatHeadId();
             return 1;
@@ -53,17 +53,17 @@ public class class32 {
          var3.modelOffsetX = var6.offsetX2d;
          var3.modelOffsetY = var6.offsetY2d;
          var3.modelZoom = var6.zoom2d;
-         if(var0 == 1205) {
+         if (var0 == 1205) {
             var3.itemQuantityMode = 0;
-         } else if(var0 == 1212 | 1 == var6.isStackable) {
+         } else if (var0 == 1212 | 1 == var6.isStackable) {
             var3.itemQuantityMode = 1;
          } else {
             var3.itemQuantityMode = 2;
          }
 
-         if(var3.__bf > 0) {
-            var3.modelZoom = var3.modelZoom * 32 / var3.__bf;
-         } else if(var3.rawWidth > 0) {
+         if (var3.field962 > 0) {
+            var3.modelZoom = var3.modelZoom * 32 / var3.field962;
+         } else if (var3.rawWidth > 0) {
             var3.modelZoom = var3.modelZoom * 32 / var3.rawWidth;
          }
 
@@ -78,7 +78,7 @@ public class class32 {
    )
    static void method578(int var0) {
       Login.loginIndex = 12;
-      Login.__cu_aj = var0;
+      Login.field466 = var0;
    }
 
    @ObfuscatedName("gu")
@@ -90,9 +90,9 @@ public class class32 {
    static final int getTileHeight(int var0, int var1, int var2) {
       int var3 = var0 >> 7;
       int var4 = var1 >> 7;
-      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
+      if (var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
          int var5 = var2;
-         if(var2 < 3 && (Tiles.Tiles_renderFlags[1][var3][var4] & 2) == 2) {
+         if (var2 < 3 && (Tiles.Tiles_renderFlags[1][var3][var4] & 2) == 2) {
             var5 = var2 + 1;
          }
 

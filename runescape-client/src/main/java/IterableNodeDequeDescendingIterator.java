@@ -17,64 +17,64 @@ public class IterableNodeDequeDescendingIterator implements Iterator {
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   Node __f;
+   Node field440;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   Node __q;
+   Node field441;
 
    @ObfuscatedSignature(
       signature = "(Lja;)V"
    )
    IterableNodeDequeDescendingIterator(IterableNodeDeque var1) {
-      this.__q = null;
-      this.__u_443(var1);
+      this.field441 = null;
+      this.method154(var1);
    }
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(Lja;)V"
    )
-   void __u_443(IterableNodeDeque var1) {
+   void method154(IterableNodeDeque var1) {
       this.deque = var1;
-      this.__g_444();
+      this.method155();
    }
 
    @ObfuscatedName("g")
-   void __g_444() {
-      this.__f = this.deque != null?this.deque.sentinel.previous:null;
-      this.__q = null;
+   void method155() {
+      this.field440 = this.deque != null ? this.deque.sentinel.previous : null;
+      this.field441 = null;
    }
 
    @Export("hasNext")
    @ObfuscatedName("hasNext")
    public boolean hasNext() {
-      return this.deque.sentinel != this.__f;
+      return this.deque.sentinel != this.field440;
    }
 
    @Export("next")
    @ObfuscatedName("next")
    public Object next() {
-      Node var1 = this.__f;
-      if(var1 == this.deque.sentinel) {
+      Node var1 = this.field440;
+      if (var1 == this.deque.sentinel) {
          var1 = null;
-         this.__f = null;
+         this.field440 = null;
       } else {
-         this.__f = var1.previous;
+         this.field440 = var1.previous;
       }
 
-      this.__q = var1;
+      this.field441 = var1;
       return var1;
    }
 
    @ObfuscatedName("remove")
-   public void __remove_447() {
-      if(this.__q == null) {
+   public void method156() {
+      if (this.field441 == null) {
          throw new IllegalStateException();
       } else {
-         this.__q.remove();
-         this.__q = null;
+         this.field441.remove();
+         this.field441 = null;
       }
    }
 }

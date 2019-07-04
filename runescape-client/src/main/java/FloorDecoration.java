@@ -63,47 +63,47 @@ public final class FloorDecoration {
    )
    static int method2853(AbstractIndexCache var0, AbstractIndexCache var1) {
       int var2 = 0;
-      if(var0.tryLoadRecordByNames("title.jpg", "")) {
+      if (var0.tryLoadRecordByNames("title.jpg", "")) {
          ++var2;
       }
 
-      if(var1.tryLoadRecordByNames("logo", "")) {
+      if (var1.tryLoadRecordByNames("logo", "")) {
          ++var2;
       }
 
-      if(var1.tryLoadRecordByNames("logo_deadman_mode", "")) {
+      if (var1.tryLoadRecordByNames("logo_deadman_mode", "")) {
          ++var2;
       }
 
-      if(var1.tryLoadRecordByNames("titlebox", "")) {
+      if (var1.tryLoadRecordByNames("titlebox", "")) {
          ++var2;
       }
 
-      if(var1.tryLoadRecordByNames("titlebutton", "")) {
+      if (var1.tryLoadRecordByNames("titlebutton", "")) {
          ++var2;
       }
 
-      if(var1.tryLoadRecordByNames("runes", "")) {
+      if (var1.tryLoadRecordByNames("runes", "")) {
          ++var2;
       }
 
-      if(var1.tryLoadRecordByNames("title_mute", "")) {
+      if (var1.tryLoadRecordByNames("title_mute", "")) {
          ++var2;
       }
 
-      if(var1.tryLoadRecordByNames("options_radio_buttons,0", "")) {
+      if (var1.tryLoadRecordByNames("options_radio_buttons,0", "")) {
          ++var2;
       }
 
-      if(var1.tryLoadRecordByNames("options_radio_buttons,2", "")) {
+      if (var1.tryLoadRecordByNames("options_radio_buttons,2", "")) {
          ++var2;
       }
 
-      if(var1.tryLoadRecordByNames("options_radio_buttons,4", "")) {
+      if (var1.tryLoadRecordByNames("options_radio_buttons,4", "")) {
          ++var2;
       }
 
-      if(var1.tryLoadRecordByNames("options_radio_buttons,6", "")) {
+      if (var1.tryLoadRecordByNames("options_radio_buttons,6", "")) {
          ++var2;
       }
 

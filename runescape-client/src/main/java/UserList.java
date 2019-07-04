@@ -114,7 +114,7 @@ public abstract class UserList {
    @Export("getByUsername")
    public User getByUsername(Username var1) {
       User var2 = this.getByCurrentUsername(var1);
-      return var2 != null?var2:this.getByPreviousUsername(var1);
+      return var2 != null ? var2 : this.getByPreviousUsername(var1);
    }
 
    @ObfuscatedName("h")
@@ -124,7 +124,7 @@ public abstract class UserList {
    )
    @Export("getByCurrentUsername")
    User getByCurrentUsername(Username var1) {
-      return !var1.hasCleanName()?null:(User)this.usernamesMap.get(var1);
+      return !var1.hasCleanName() ? null : (User)this.usernamesMap.get(var1);
    }
 
    @ObfuscatedName("b")
@@ -134,7 +134,7 @@ public abstract class UserList {
    )
    @Export("getByPreviousUsername")
    User getByPreviousUsername(Username var1) {
-      return !var1.hasCleanName()?null:(User)this.previousUsernamesMap.get(var1);
+      return !var1.hasCleanName() ? null : (User)this.previousUsernamesMap.get(var1);
    }
 
    @ObfuscatedName("c")
@@ -145,7 +145,7 @@ public abstract class UserList {
    @Export("removeByUsername")
    public final boolean removeByUsername(Username var1) {
       User var2 = this.getByCurrentUsername(var1);
-      if(var2 == null) {
+      if (var2 == null) {
          return false;
       } else {
          this.remove(var2);
@@ -161,10 +161,11 @@ public abstract class UserList {
    @Export("remove")
    final void remove(User var1) {
       int var2 = this.indexOf(var1);
-      if(var2 != -1) {
+      if (var2 != -1) {
          this.arrayRemove(var2);
          this.mapRemove(var1);
       }
+
    }
 
    @ObfuscatedName("v")
@@ -184,7 +185,7 @@ public abstract class UserList {
    )
    @Export("addLast")
    User addLast(Username var1, Username var2) {
-      if(this.getByCurrentUsername(var1) != null) {
+      if (this.getByCurrentUsername(var1) != null) {
          throw new IllegalStateException();
       } else {
          User var3 = this.newInstance();
@@ -202,7 +203,7 @@ public abstract class UserList {
    )
    @Export("get")
    public final User get(int var1) {
-      if(var1 >= 0 && var1 < this.size0) {
+      if (var1 >= 0 && var1 < this.size0) {
          return this.array[var1];
       } else {
          throw new ArrayIndexOutOfBoundsException(var1);
@@ -216,7 +217,7 @@ public abstract class UserList {
    )
    @Export("sort")
    public final void sort() {
-      if(this.comparator == null) {
+      if (this.comparator == null) {
          Arrays.sort(this.array, 0, this.size0);
       } else {
          Arrays.sort(this.array, 0, this.size0, this.comparator);
@@ -243,8 +244,8 @@ public abstract class UserList {
    )
    @Export("indexOf")
    final int indexOf(User var1) {
-      for(int var2 = 0; var2 < this.size0; ++var2) {
-         if(this.array[var2] == var1) {
+      for (int var2 = 0; var2 < this.size0; ++var2) {
+         if (this.array[var2] == var1) {
             return var2;
          }
       }
@@ -259,7 +260,7 @@ public abstract class UserList {
    )
    @Export("mapRemove")
    final void mapRemove(User var1) {
-      if(var1.previousUsername != null) {
+      if (var1.previousUsername != null) {
          this.previousUsernamesMap.remove(var1.previousUsername);
       }
 
@@ -283,9 +284,9 @@ public abstract class UserList {
    @Export("mapPut")
    final void mapPut(User var1) {
       this.usernamesMap.put(var1.username0, var1);
-      if(var1.previousUsername != null) {
+      if (var1.previousUsername != null) {
          User var2 = (User)this.previousUsernamesMap.put(var1.previousUsername, var1);
-         if(var2 != null && var2 != var1) {
+         if (var2 != null && var2 != var1) {
             var2.previousUsername = null;
          }
       }
@@ -300,7 +301,7 @@ public abstract class UserList {
    @Export("arrayRemove")
    final void arrayRemove(int var1) {
       --this.size0;
-      if(var1 < this.size0) {
+      if (var1 < this.size0) {
          System.arraycopy(this.array, var1 + 1, this.array, var1, this.size0 - var1);
       }
 
@@ -323,10 +324,10 @@ public abstract class UserList {
    )
    @Export("addComparator")
    public final void addComparator(Comparator var1) {
-      if(this.comparator == null) {
+      if (this.comparator == null) {
          this.comparator = var1;
-      } else if(this.comparator instanceof AbstractUserComparator) {
-         ((AbstractUserComparator)this.comparator).__e_460(var1);
+      } else if (this.comparator instanceof AbstractUserComparator) {
+         ((AbstractUserComparator)this.comparator).method11(var1);
       }
 
    }

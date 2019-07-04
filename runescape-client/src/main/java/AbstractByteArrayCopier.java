@@ -13,11 +13,7 @@ public abstract class AbstractByteArrayCopier {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   static IndexCache __gu_et;
-
-   static {
-      directBufferUnavailable = false;
-   }
+   static IndexCache field0;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -43,13 +39,13 @@ public abstract class AbstractByteArrayCopier {
    @Export("getVarcInt")
    public static VarcInt getVarcInt(int var0) {
       VarcInt var1 = (VarcInt)VarcInt.cachedVarcInts.get((long)var0);
-      if(var1 != null) {
+      if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = VarcInt.__iw_m.takeRecord(19, var0);
+         byte[] var2 = VarcInt.field942.takeRecord(19, var0);
          var1 = new VarcInt();
-         if(var2 != null) {
-            var1.__q_411(new Buffer(var2));
+         if (var2 != null) {
+            var1.method354(new Buffer(var2));
          }
 
          VarcInt.cachedVarcInts.put(var1, (long)var0);
@@ -64,30 +60,29 @@ public abstract class AbstractByteArrayCopier {
    )
    @Export("unloadWidgetGroup")
    public static void unloadWidgetGroup(int var0) {
-      if(var0 != -1) {
-         if(Widget.loadedWidgetGroups[var0]) {
-            Widget.Widget_indexCache.__h_399(var0);
-            if(Widget.widgets[var0] != null) {
-               boolean var1 = true;
+      if (var0 != -1 && Widget.loadedWidgetGroups[var0]) {
+         Widget.Widget_indexCache.method7(var0);
+         if (Widget.widgets[var0] != null) {
+            boolean var1 = true;
 
-               for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
-                  if(Widget.widgets[var0][var2] != null) {
-                     if(Widget.widgets[var0][var2].type != 2) {
-                        Widget.widgets[var0][var2] = null;
-                     } else {
-                        var1 = false;
-                     }
+            for (int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
+               if (Widget.widgets[var0][var2] != null) {
+                  if (Widget.widgets[var0][var2].type != 2) {
+                     Widget.widgets[var0][var2] = null;
+                  } else {
+                     var1 = false;
                   }
                }
-
-               if(var1) {
-                  Widget.widgets[var0] = null;
-               }
-
-               Widget.loadedWidgetGroups[var0] = false;
             }
+
+            if (var1) {
+               Widget.widgets[var0] = null;
+            }
+
+            Widget.loadedWidgetGroups[var0] = false;
          }
       }
+
    }
 
    @ObfuscatedName("gb")
@@ -96,10 +91,14 @@ public abstract class AbstractByteArrayCopier {
       garbageValue = "-1256278627"
    )
    static void method4024() {
-      PacketBufferNode var0 = Interpreter.method1915(ClientPacket.__gs_aw, Client.packetWriter.isaacCipher);
+      PacketBufferNode var0 = Interpreter.method1915(ClientPacket.field257, Client.packetWriter.isaacCipher);
       var0.packetBuffer.writeByte(SpotAnimationDefinition.method4822());
       var0.packetBuffer.writeShort(SoundCache.canvasWidth);
       var0.packetBuffer.writeShort(Huffman.canvasHeight);
-      Client.packetWriter.__q_167(var0);
+      Client.packetWriter.method241(var0);
+   }
+
+   static {
+      directBufferUnavailable = false;
    }
 }

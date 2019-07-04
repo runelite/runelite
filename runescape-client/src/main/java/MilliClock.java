@@ -14,42 +14,42 @@ public class MilliClock extends Clock {
    @Export("decimator")
    static Decimator decimator;
    @ObfuscatedName("m")
-   long[] __m;
+   long[] field517;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1940981129
    )
-   int __f;
+   int field518;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1217137493
    )
-   int __q;
+   int field519;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       longValue = -8372744267470318611L
    )
-   long __w;
+   long field520;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 250272357
    )
-   int __o;
+   int field521;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 576555527
    )
-   int __u;
+   int field522;
 
    public MilliClock() {
-      this.__m = new long[10];
-      this.__f = 256;
-      this.__q = 1;
-      this.__o = 0;
-      this.__w = class203.currentTimeMs();
+      this.field517 = new long[10];
+      this.field518 = 256;
+      this.field519 = 1;
+      this.field521 = 0;
+      this.field520 = class203.currentTimeMs();
 
-      for(int var1 = 0; var1 < 10; ++var1) {
-         this.__m[var1] = this.__w;
+      for (int var1 = 0; var1 < 10; ++var1) {
+         this.field517[var1] = this.field520;
       }
 
    }
@@ -61,8 +61,8 @@ public class MilliClock extends Clock {
    )
    @Export("mark")
    public void mark() {
-      for(int var1 = 0; var1 < 10; ++var1) {
-         this.__m[var1] = 0L;
+      for (int var1 = 0; var1 < 10; ++var1) {
+         this.field517[var1] = 0L;
       }
 
    }
@@ -74,53 +74,54 @@ public class MilliClock extends Clock {
    )
    @Export("wait")
    public int wait(int var1, int var2) {
-      int var3 = this.__f;
-      int var4 = this.__q;
-      this.__f = 300;
-      this.__q = 1;
-      this.__w = class203.currentTimeMs();
-      if(0L == this.__m[this.__u]) {
-         this.__f = var3;
-         this.__q = var4;
-      } else if(this.__w > this.__m[this.__u]) {
-         this.__f = (int)((long)(var1 * 2560) / (this.__w - this.__m[this.__u]));
+      int var3 = this.field518;
+      int var4 = this.field519;
+      this.field518 = 300;
+      this.field519 = 1;
+      this.field520 = class203.currentTimeMs();
+      if (0L == this.field517[this.field522]) {
+         this.field518 = var3;
+         this.field519 = var4;
+      } else if (this.field520 > this.field517[this.field522]) {
+         this.field518 = (int)((long)(var1 * 2560) / (this.field520 - this.field517[this.field522]));
       }
 
-      if(this.__f < 25) {
-         this.__f = 25;
+      if (this.field518 < 25) {
+         this.field518 = 25;
       }
 
-      if(this.__f > 256) {
-         this.__f = 256;
-         this.__q = (int)((long)var1 - (this.__w - this.__m[this.__u]) / 10L);
+      if (this.field518 > 256) {
+         this.field518 = 256;
+         this.field519 = (int)((long)var1 - (this.field520 - this.field517[this.field522]) / 10L);
       }
 
-      if(this.__q > var1) {
-         this.__q = var1;
+      if (this.field519 > var1) {
+         this.field519 = var1;
       }
 
-      this.__m[this.__u] = this.__w;
-      this.__u = (this.__u + 1) % 10;
+      this.field517[this.field522] = this.field520;
+      this.field522 = (this.field522 + 1) % 10;
       int var5;
-      if(this.__q > 1) {
-         for(var5 = 0; var5 < 10; ++var5) {
-            if(this.__m[var5] != 0L) {
-               this.__m[var5] += (long)this.__q;
+      if (this.field519 > 1) {
+         for (var5 = 0; var5 < 10; ++var5) {
+            if (this.field517[var5] != 0L) {
+               long[] var10000 = this.field517;
+               var10000[var5] += (long)this.field519;
             }
          }
       }
 
-      if(this.__q < var2) {
-         this.__q = var2;
+      if (this.field519 < var2) {
+         this.field519 = var2;
       }
 
-      class203.method4010((long)this.__q);
+      class203.method4010((long)this.field519);
 
-      for(var5 = 0; this.__o < 256; this.__o += this.__f) {
+      for (var5 = 0; this.field521 < 256; this.field521 += this.field518) {
          ++var5;
       }
 
-      this.__o &= 255;
+      this.field521 &= 255;
       return var5;
    }
 
@@ -130,7 +131,7 @@ public class MilliClock extends Clock {
       garbageValue = "-1374398116"
    )
    static void method3400(World[] var0, int var1, int var2, int[] var3, int[] var4) {
-      if(var1 < var2) {
+      if (var1 < var2) {
          int var5 = var1 - 1;
          int var6 = var2 + 1;
          int var7 = (var2 + var1) / 2;
@@ -138,7 +139,7 @@ public class MilliClock extends Clock {
          var0[var7] = var0[var1];
          var0[var1] = var8;
 
-         while(var5 < var6) {
+         while (var5 < var6) {
             boolean var9 = true;
 
             int var10;
@@ -147,36 +148,36 @@ public class MilliClock extends Clock {
             do {
                --var6;
 
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
+               for (var10 = 0; var10 < 4; ++var10) {
+                  if (var3[var10] == 2) {
                      var11 = var0[var6].index;
                      var12 = var8.index;
-                  } else if(var3[var10] == 1) {
+                  } else if (var3[var10] == 1) {
                      var11 = var0[var6].population;
                      var12 = var8.population;
-                     if(var11 == -1 && var4[var10] == 1) {
+                     if (var11 == -1 && var4[var10] == 1) {
                         var11 = 2001;
                      }
 
-                     if(var12 == -1 && var4[var10] == 1) {
+                     if (var12 == -1 && var4[var10] == 1) {
                         var12 = 2001;
                      }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var6].isMembersOnly()?1:0;
-                     var12 = var8.isMembersOnly()?1:0;
+                  } else if (var3[var10] == 3) {
+                     var11 = var0[var6].isMembersOnly() ? 1 : 0;
+                     var12 = var8.isMembersOnly() ? 1 : 0;
                   } else {
                      var11 = var0[var6].id;
                      var12 = var8.id;
                   }
 
-                  if(var12 != var11) {
-                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
+                  if (var12 != var11) {
+                     if ((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
                         var9 = false;
                      }
                      break;
                   }
 
-                  if(var10 == 3) {
+                  if (var10 == 3) {
                      var9 = false;
                   }
                }
@@ -187,42 +188,42 @@ public class MilliClock extends Clock {
             do {
                ++var5;
 
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
+               for (var10 = 0; var10 < 4; ++var10) {
+                  if (var3[var10] == 2) {
                      var11 = var0[var5].index;
                      var12 = var8.index;
-                  } else if(var3[var10] == 1) {
+                  } else if (var3[var10] == 1) {
                      var11 = var0[var5].population;
                      var12 = var8.population;
-                     if(var11 == -1 && var4[var10] == 1) {
+                     if (var11 == -1 && var4[var10] == 1) {
                         var11 = 2001;
                      }
 
-                     if(var12 == -1 && var4[var10] == 1) {
+                     if (var12 == -1 && var4[var10] == 1) {
                         var12 = 2001;
                      }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var5].isMembersOnly()?1:0;
-                     var12 = var8.isMembersOnly()?1:0;
+                  } else if (var3[var10] == 3) {
+                     var11 = var0[var5].isMembersOnly() ? 1 : 0;
+                     var12 = var8.isMembersOnly() ? 1 : 0;
                   } else {
                      var11 = var0[var5].id;
                      var12 = var8.id;
                   }
 
-                  if(var11 != var12) {
-                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
+                  if (var11 != var12) {
+                     if ((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
                         var9 = false;
                      }
                      break;
                   }
 
-                  if(var10 == 3) {
+                  if (var10 == 3) {
                      var9 = false;
                   }
                }
             } while(var9);
 
-            if(var5 < var6) {
+            if (var5 < var6) {
                World var13 = var0[var5];
                var0[var5] = var0[var6];
                var0[var6] = var13;

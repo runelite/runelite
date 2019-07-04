@@ -10,10 +10,10 @@ import net.runelite.rs.Reflection;
 @Implements("UserComparator7")
 public class UserComparator7 extends AbstractUserComparator {
    @ObfuscatedName("m")
-   final boolean __m;
+   final boolean field939;
 
    public UserComparator7(boolean var1) {
-      this.__m = var1;
+      this.field939 = var1;
    }
 
    @ObfuscatedName("m")
@@ -21,14 +21,14 @@ public class UserComparator7 extends AbstractUserComparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "-9252550"
    )
-   int __m_270(Buddy var1, Buddy var2) {
-      return var1.world0 != 0 && var2.world0 != 0?(this.__m?var1.int2 - var2.int2:var2.int2 - var1.int2):this.__x_461(var1, var2);
+   int method349(Buddy var1, Buddy var2) {
+      return var1.world0 != 0 && var2.world0 != 0 ? (this.field939 ? var1.int2 - var2.int2 : var2.int2 - var1.int2) : this.method12(var1, var2);
    }
 
    @Export("compare")
    @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.__m_270((Buddy)var1, (Buddy)var2);
+      return this.method349((Buddy)var1, (Buddy)var2);
    }
 
    @ObfuscatedName("q")
@@ -47,65 +47,65 @@ public class UserComparator7 extends AbstractUserComparator {
       var2.methods = new Method[var2.size];
       var2.arguments = new byte[var2.size][][];
 
-      for(int var3 = 0; var3 < var2.size; ++var3) {
+      for (int var3 = 0; var3 < var2.size; ++var3) {
          try {
             int var4 = var0.readUnsignedByte();
             String var5;
             String var6;
             int var7;
-            if(var4 != 0 && var4 != 1 && var4 != 2) {
-               if(var4 == 3 || var4 == 4) {
+            if (var4 != 0 && var4 != 1 && var4 != 2) {
+               if (var4 == 3 || var4 == 4) {
                   var5 = var0.readStringCp1252NullTerminated();
                   var6 = var0.readStringCp1252NullTerminated();
                   var7 = var0.readUnsignedByte();
                   String[] var8 = new String[var7];
 
-                  for(int var9 = 0; var9 < var7; ++var9) {
+                  for (int var9 = 0; var9 < var7; ++var9) {
                      var8[var9] = var0.readStringCp1252NullTerminated();
                   }
 
-                  String var20 = var0.readStringCp1252NullTerminated();
+                  String var26 = var0.readStringCp1252NullTerminated();
                   byte[][] var10 = new byte[var7][];
-                  int var12;
-                  if(var4 == 3) {
-                     for(int var11 = 0; var11 < var7; ++var11) {
-                        var12 = var0.readInt();
-                        var10[var11] = new byte[var12];
-                        var0.__al_305(var10[var11], 0, var12);
+                  int var11;
+                  if (var4 == 3) {
+                     for (int var12 = 0; var12 < var7; ++var12) {
+                        var11 = var0.readInt();
+                        var10[var12] = new byte[var11];
+                        var0.method46(var10[var12], 0, var11);
                      }
                   }
 
                   var2.operations[var3] = var4;
-                  Class[] var21 = new Class[var7];
+                  Class[] var27 = new Class[var7];
 
-                  for(var12 = 0; var12 < var7; ++var12) {
-                     var21[var12] = VarcInt.loadClassFromDescriptor(var8[var12]);
+                  for (var11 = 0; var11 < var7; ++var11) {
+                     var27[var11] = VarcInt.loadClassFromDescriptor(var8[var11]);
                   }
 
-                  Class var22 = VarcInt.loadClassFromDescriptor(var20);
-                  if(VarcInt.loadClassFromDescriptor(var5).getClassLoader() == null) {
+                  Class var13 = VarcInt.loadClassFromDescriptor(var26);
+                  if (VarcInt.loadClassFromDescriptor(var5).getClassLoader() == null) {
                      throw new SecurityException();
                   }
 
-                  Method[] var13 = VarcInt.loadClassFromDescriptor(var5).getDeclaredMethods();
-                  Method[] var14 = var13;
+                  Method[] var14 = VarcInt.loadClassFromDescriptor(var5).getDeclaredMethods();
+                  Method[] var15 = var14;
 
-                  for(int var15 = 0; var15 < var14.length; ++var15) {
-                     Method var16 = var14[var15];
-                     if(Reflection.getMethodName(var16).equals(var6)) {
-                        Class[] var17 = Reflection.getParameterTypes(var16);
-                        if(var21.length == var17.length) {
-                           boolean var18 = true;
+                  for (int var16 = 0; var16 < var15.length; ++var16) {
+                     Method var17 = var15[var16];
+                     if (Reflection.getMethodName(var17).equals(var6)) {
+                        Class[] var18 = Reflection.getParameterTypes(var17);
+                        if (var27.length == var18.length) {
+                           boolean var19 = true;
 
-                           for(int var19 = 0; var19 < var21.length; ++var19) {
-                              if(var21[var19] != var17[var19]) {
-                                 var18 = false;
+                           for (int var20 = 0; var20 < var27.length; ++var20) {
+                              if (var27[var20] != var18[var20]) {
+                                 var19 = false;
                                  break;
                               }
                            }
 
-                           if(var18 && var22 == var16.getReturnType()) {
-                              var2.methods[var3] = var16;
+                           if (var19 && var13 == var17.getReturnType()) {
+                              var2.methods[var3] = var17;
                            }
                         }
                      }
@@ -117,27 +117,27 @@ public class UserComparator7 extends AbstractUserComparator {
                var5 = var0.readStringCp1252NullTerminated();
                var6 = var0.readStringCp1252NullTerminated();
                var7 = 0;
-               if(var4 == 1) {
+               if (var4 == 1) {
                   var7 = var0.readInt();
                }
 
                var2.operations[var3] = var4;
                var2.intReplaceValues[var3] = var7;
-               if(VarcInt.loadClassFromDescriptor(var5).getClassLoader() == null) {
+               if (VarcInt.loadClassFromDescriptor(var5).getClassLoader() == null) {
                   throw new SecurityException();
                }
 
                var2.fields[var3] = Reflection.findField(VarcInt.loadClassFromDescriptor(var5), var6);
             }
-         } catch (ClassNotFoundException var24) {
+         } catch (ClassNotFoundException var21) {
             var2.creationErrors[var3] = -1;
-         } catch (SecurityException var25) {
+         } catch (SecurityException var22) {
             var2.creationErrors[var3] = -2;
-         } catch (NullPointerException var26) {
+         } catch (NullPointerException var23) {
             var2.creationErrors[var3] = -3;
-         } catch (Exception var27) {
+         } catch (Exception var24) {
             var2.creationErrors[var3] = -4;
-         } catch (Throwable var28) {
+         } catch (Throwable var25) {
             var2.creationErrors[var3] = -5;
          }
       }
@@ -151,11 +151,11 @@ public class UserComparator7 extends AbstractUserComparator {
       garbageValue = "2084569794"
    )
    static final boolean method3364(int var0) {
-      if(var0 < 0) {
+      if (var0 < 0) {
          return false;
       } else {
          int var1 = Client.menuOpcodes[var0];
-         if(var1 >= 2000) {
+         if (var1 >= 2000) {
             var1 -= 2000;
          }
 

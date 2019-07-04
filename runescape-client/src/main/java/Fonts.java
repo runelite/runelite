@@ -14,7 +14,7 @@ public class Fonts {
    @Export("indexStore255")
    static IndexStore indexStore255;
    @ObfuscatedName("o")
-   static byte[][][] __kz_o;
+   static byte[][][] field350;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lln;"
@@ -25,12 +25,12 @@ public class Fonts {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   AbstractIndexCache __m;
+   AbstractIndexCache field351;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   AbstractIndexCache __f;
+   AbstractIndexCache field352;
    @ObfuscatedName("q")
    @Export("map")
    HashMap map;
@@ -39,8 +39,8 @@ public class Fonts {
       signature = "(Lir;Lir;)V"
    )
    public Fonts(AbstractIndexCache var1, AbstractIndexCache var2) {
-      this.__m = var1;
-      this.__f = var2;
+      this.field351 = var1;
+      this.field352 = var2;
       this.map = new HashMap();
    }
 
@@ -54,20 +54,20 @@ public class Fonts {
       HashMap var2 = new HashMap();
       FontName[] var3 = var1;
 
-      for(int var4 = 0; var4 < var3.length; ++var4) {
+      for (int var4 = 0; var4 < var3.length; ++var4) {
          FontName var5 = var3[var4];
-         if(this.map.containsKey(var5)) {
+         if (this.map.containsKey(var5)) {
             var2.put(var5, this.map.get(var5));
          } else {
-            AbstractIndexCache var7 = this.__m;
-            AbstractIndexCache var8 = this.__f;
-            String var9 = var5.__g;
-            int var10 = var7.getArchiveId(var9);
-            int var11 = var7.getRecordId(var10, "");
-            Font var6 = SpriteIds.method5823(var7, var8, var10, var11);
-            if(var6 != null) {
-               this.map.put(var5, var6);
-               var2.put(var5, var6);
+            AbstractIndexCache var6 = this.field351;
+            AbstractIndexCache var7 = this.field352;
+            String var8 = var5.field349;
+            int var9 = var6.getArchiveId(var8);
+            int var10 = var6.getRecordId(var9, "");
+            Font var11 = SpriteIds.method5823(var6, var7, var9, var10);
+            if (var11 != null) {
+               this.map.put(var5, var11);
+               var2.put(var5, var11);
             }
          }
       }
@@ -81,6 +81,6 @@ public class Fonts {
       garbageValue = "2102006478"
    )
    static World method5647() {
-      return World.__bt_g < World.worldsCount?ItemContainer.worlds[++World.__bt_g - 1]:null;
+      return World.field987 < World.worldsCount ? ItemContainer.worlds[++World.field987 - 1] : null;
    }
 }

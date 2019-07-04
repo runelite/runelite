@@ -1,4 +1,3 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -10,45 +9,45 @@ public class LinkDeque {
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   Link __m;
+   Link field463;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   Link __f;
+   Link field464;
 
    public LinkDeque() {
-      this.__m = new Link();
-      this.__m.__m = this.__m;
-      this.__m.__f = this.__m;
+      this.field463 = new Link();
+      this.field463.field461 = this.field463;
+      this.field463.field462 = this.field463;
    }
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(Lgh;)V"
    )
-   public void __m_437(Link var1) {
-      if(var1.__f != null) {
+   public void method163(Link var1) {
+      if (var1.field462 != null) {
          var1.remove();
       }
 
-      var1.__f = this.__m.__f;
-      var1.__m = this.__m;
-      var1.__f.__m = var1;
-      var1.__m.__f = var1;
+      var1.field462 = this.field463.field462;
+      var1.field461 = this.field463;
+      var1.field462.field461 = var1;
+      var1.field461.field462 = var1;
    }
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "()Lgh;"
    )
-   public Link __f_438() {
-      Link var1 = this.__m.__m;
-      if(var1 == this.__m) {
-         this.__f = null;
+   public Link method164() {
+      Link var1 = this.field463.field461;
+      if (var1 == this.field463) {
+         this.field464 = null;
          return null;
       } else {
-         this.__f = var1.__m;
+         this.field464 = var1.field461;
          return var1;
       }
    }
@@ -57,13 +56,13 @@ public class LinkDeque {
    @ObfuscatedSignature(
       signature = "()Lgh;"
    )
-   public Link __q_439() {
-      Link var1 = this.__f;
-      if(var1 == this.__m) {
-         this.__f = null;
+   public Link method165() {
+      Link var1 = this.field464;
+      if (var1 == this.field463) {
+         this.field464 = null;
          return null;
       } else {
-         this.__f = var1.__m;
+         this.field464 = var1.field461;
          return var1;
       }
    }

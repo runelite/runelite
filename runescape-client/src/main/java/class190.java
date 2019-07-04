@@ -58,19 +58,6 @@ public class class190 {
    @Export("xteaKeys")
    static int[][] xteaKeys;
 
-   static {
-      field2346 = new class190(7);
-      field2352 = new class190(15);
-      field2342 = new class190(14);
-      field2341 = new class190(6);
-      field2344 = new class190(4);
-      field2345 = new class190(5);
-      field2350 = new class190(2);
-      field2347 = new class190(3);
-      field2343 = new class190(5);
-      field2349 = new class190(4);
-   }
-
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "7"
@@ -84,7 +71,7 @@ public class class190 {
       garbageValue = "-68901151"
    )
    static World method3672() {
-      World.__bt_g = 0;
+      World.field987 = 0;
       return Fonts.method5647();
    }
 
@@ -96,17 +83,17 @@ public class class190 {
    static final void method3669(int var0, int var1, int var2, int var3, int var4, int var5) {
       int var6 = var2 - var0;
       int var7 = var3 - var1;
-      int var8 = var6 >= 0?var6:-var6;
-      int var9 = var7 >= 0?var7:-var7;
+      int var8 = var6 >= 0 ? var6 : -var6;
+      int var9 = var7 >= 0 ? var7 : -var7;
       int var10 = var8;
-      if(var8 < var9) {
+      if (var8 < var9) {
          var10 = var9;
       }
 
-      if(var10 != 0) {
+      if (var10 != 0) {
          int var11 = (var6 << 16) / var10;
          int var12 = (var7 << 16) / var10;
-         if(var12 <= var11) {
+         if (var12 <= var11) {
             var11 = -var11;
          } else {
             var12 = -var12;
@@ -131,5 +118,19 @@ public class class190 {
          Rasterizer3D.method2985(var17, var19, var20);
          Rasterizer3D.method3020(var21, var23, var24, var17, var19, var20, var4);
       }
+
+   }
+
+   static {
+      field2346 = new class190(7);
+      field2352 = new class190(15);
+      field2342 = new class190(14);
+      field2341 = new class190(6);
+      field2344 = new class190(4);
+      field2345 = new class190(5);
+      field2350 = new class190(2);
+      field2347 = new class190(3);
+      field2343 = new class190(5);
+      field2349 = new class190(4);
    }
 }

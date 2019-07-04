@@ -17,17 +17,17 @@ public class PacketBufferNode extends Node {
    @ObfuscatedGetter(
       intValue = -1583654139
    )
-   public static int __gg_u;
+   public static int field668;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   public ClientPacket __m;
+   public ClientPacket field669;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1433542775
    )
-   public int __f;
+   public int field670;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lhx;"
@@ -38,22 +38,18 @@ public class PacketBufferNode extends Node {
    @ObfuscatedGetter(
       intValue = -2051819203
    )
-   public int __w;
-
-   static {
-      packetBufferNodes = new PacketBufferNode[300];
-      __gg_u = 0;
-   }
+   public int field671;
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "-1987685511"
    )
-   public void __f_292() {
-      if(__gg_u < packetBufferNodes.length) {
-         packetBufferNodes[++__gg_u - 1] = this;
+   public void method238() {
+      if (field668 < packetBufferNodes.length) {
+         packetBufferNodes[++field668 - 1] = this;
       }
+
    }
 
    @ObfuscatedName("kq")
@@ -63,5 +59,10 @@ public class PacketBufferNode extends Node {
    )
    static boolean method3673(Widget var0) {
       return var0.isHidden;
+   }
+
+   static {
+      packetBufferNodes = new PacketBufferNode[300];
+      field668 = 0;
    }
 }

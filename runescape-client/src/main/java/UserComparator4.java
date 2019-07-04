@@ -15,10 +15,10 @@ public class UserComparator4 implements Comparator {
    @Export("WorldMapElement_count")
    public static int WorldMapElement_count;
    @ObfuscatedName("m")
-   final boolean __m;
+   final boolean field935;
 
    public UserComparator4(boolean var1) {
-      this.__m = var1;
+      this.field935 = var1;
    }
 
    @ObfuscatedName("m")
@@ -26,19 +26,19 @@ public class UserComparator4 implements Comparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "950234237"
    )
-   int __m_261(Buddy var1, Buddy var2) {
-      return this.__m?var1.int2 - var2.int2:var2.int2 - var1.int2;
+   int method345(Buddy var1, Buddy var2) {
+      return this.field935 ? var1.int2 - var2.int2 : var2.int2 - var1.int2;
    }
 
    @ObfuscatedName("equals")
-   public boolean __equals_263(Object var1) {
+   public boolean method346(Object var1) {
       return super.equals(var1);
    }
 
    @Export("compare")
    @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.__m_261((Buddy)var1, (Buddy)var2);
+      return this.method345((Buddy)var1, (Buddy)var2);
    }
 
    @ObfuscatedName("f")
@@ -56,23 +56,23 @@ public class UserComparator4 implements Comparator {
       garbageValue = "-2050984400"
    )
    static int method3335(int var0, Script var1, boolean var2) {
-      if(var0 == 5306) {
+      if (var0 == 5306) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = SpotAnimationDefinition.method4822();
          return 1;
       } else {
          int var3;
-         if(var0 == 5307) {
+         if (var0 == 5307) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-            if(var3 == 1 || var3 == 2) {
+            if (var3 == 1 || var3 == 2) {
                GroundItem.method2095(var3);
             }
 
             return 1;
-         } else if(var0 == 5308) {
+         } else if (var0 == 5308) {
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.windowMode;
             return 1;
-         } else if(var0 != 5309) {
-            if(var0 == 5310) {
+         } else if (var0 != 5309) {
+            if (var0 == 5310) {
                --RouteStrategy.Interpreter_intStackSize;
                return 1;
             } else {
@@ -80,7 +80,7 @@ public class UserComparator4 implements Comparator {
             }
          } else {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-            if(var3 == 1 || var3 == 2) {
+            if (var3 == 1 || var3 == 2) {
                ReflectionCheck.clientPreferences.windowMode = var3;
                WorldMapSection0.savePreferences();
             }

@@ -61,12 +61,12 @@ public abstract class AbstractSocket {
       garbageValue = "-15"
    )
    public static void method3488(int var0) {
-      class214.__hf_o = 1;
-      class214.__hf_u = null;
+      class214.field1129 = 1;
+      class214.field1130 = null;
       class30.musicTrackArchiveId = -1;
       GrandExchangeOffer.musicTrackFileId = -1;
-      WorldMapLabel.__aj_e = 0;
+      WorldMapLabel.field1039 = 0;
       RectangleMode.musicTrackBoolean = false;
-      FaceNormal.__el_x = var0;
+      FaceNormal.field344 = var0;
    }
 }

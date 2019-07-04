@@ -41,10 +41,6 @@ public class VarbitDefinition extends DualNode {
    @Export("highBit")
    public int highBit;
 
-   static {
-      VarbitDefinition_cached = new EvictingDualNodeHashTable(64);
-   }
-
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(Lgr;I)V",
@@ -52,9 +48,9 @@ public class VarbitDefinition extends DualNode {
    )
    @Export("read")
    void read(Buffer var1) {
-      while(true) {
+      while (true) {
          int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+         if (var2 == 0) {
             return;
          }
 
@@ -69,8 +65,8 @@ public class VarbitDefinition extends DualNode {
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
-      if(var2 == 1) {
-         this.varp = var1.__ag_302();
+      if (var2 == 1) {
+         this.varp = var1.method43();
          this.lowBit = var1.readUnsignedByte();
          this.highBit = var1.readUnsignedByte();
       }
@@ -84,14 +80,18 @@ public class VarbitDefinition extends DualNode {
    )
    static final boolean method4910(int var0, int var1) {
       ObjectDefinition var2 = class50.getObjectDefinition(var0);
-      if(var1 == 11) {
+      if (var1 == 11) {
          var1 = 10;
       }
 
-      if(var1 >= 5 && var1 <= 8) {
+      if (var1 >= 5 && var1 <= 8) {
          var1 = 4;
       }
 
-      return var2.__u_421(var1);
+      return var2.method230(var1);
+   }
+
+   static {
+      VarbitDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

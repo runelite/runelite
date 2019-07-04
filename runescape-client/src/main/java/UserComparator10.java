@@ -8,10 +8,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("UserComparator10")
 public class UserComparator10 extends AbstractUserComparator {
    @ObfuscatedName("m")
-   final boolean __m;
+   final boolean field932;
 
    public UserComparator10(boolean var1) {
-      this.__m = var1;
+      this.field932 = var1;
    }
 
    @ObfuscatedName("m")
@@ -19,14 +19,14 @@ public class UserComparator10 extends AbstractUserComparator {
       signature = "(Lke;Lke;B)I",
       garbageValue = "-15"
    )
-   int __m_268(Buddy var1, Buddy var2) {
-      return Client.worldId == var1.world0 && var2.world0 == Client.worldId?(this.__m?var1.int2 - var2.int2:var2.int2 - var1.int2):this.__x_461(var1, var2);
+   int method341(Buddy var1, Buddy var2) {
+      return Client.worldId == var1.world0 && var2.world0 == Client.worldId ? (this.field932 ? var1.int2 - var2.int2 : var2.int2 - var1.int2) : this.method12(var1, var2);
    }
 
    @Export("compare")
    @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.__m_268((Buddy)var1, (Buddy)var2);
+      return this.method341((Buddy)var1, (Buddy)var2);
    }
 
    @ObfuscatedName("hn")
@@ -36,20 +36,20 @@ public class UserComparator10 extends AbstractUserComparator {
    )
    static final void method3352(boolean var0) {
       class13.playPcmPlayers();
-      ++Client.packetWriter.__d;
-      if(Client.packetWriter.__d >= 50 || var0) {
-         Client.packetWriter.__d = 0;
-         if(!Client.__client_fh && Client.packetWriter.getSocket() != null) {
-            PacketBufferNode var1 = Interpreter.method1915(ClientPacket.__gs_c, Client.packetWriter.isaacCipher);
-            Client.packetWriter.__q_167(var1);
+      ++Client.packetWriter.field675;
+      if (Client.packetWriter.field675 >= 50 || var0) {
+         Client.packetWriter.field675 = 0;
+         if (!Client.field176 && Client.packetWriter.getSocket() != null) {
+            PacketBufferNode var1 = Interpreter.method1915(ClientPacket.field244, Client.packetWriter.isaacCipher);
+            Client.packetWriter.method241(var1);
 
             try {
-               Client.packetWriter.__f_166();
+               Client.packetWriter.method240();
             } catch (IOException var3) {
-               Client.__client_fh = true;
+               Client.field176 = true;
             }
          }
-
       }
+
    }
 }

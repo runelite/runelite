@@ -91,7 +91,7 @@ public final class class68 extends Node {
       int var4 = var2.lowBit;
       int var5 = var2.highBit;
       int var6 = Varps.Varps_masks[var5 - var4];
-      if(var1 < 0 || var1 > var6) {
+      if (var1 < 0 || var1 > var6) {
          var1 = 0;
       }
 
@@ -106,7 +106,7 @@ public final class class68 extends Node {
    )
    @Export("drawLoadingMessage")
    static final void drawLoadingMessage(String var0, boolean var1) {
-      if(Client.showLoadingMessages) {
+      if (Client.showLoadingMessages) {
          byte var2 = 4;
          int var3 = var2 + 6;
          int var4 = var2 + 6;
@@ -116,7 +116,7 @@ public final class class68 extends Node {
          Rasterizer2D.Rasterizer2D_drawRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var2 + var6, 16777215);
          DevicePcmPlayerProvider.fontPlain12.drawLines(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
          Players.method2112(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2);
-         if(var1) {
+         if (var1) {
             class197.rasterProvider.drawFull(0, 0);
          } else {
             int var7 = var3;
@@ -124,13 +124,13 @@ public final class class68 extends Node {
             int var9 = var5;
             int var10 = var6;
 
-            for(int var11 = 0; var11 < Client.rootWidgetCount; ++var11) {
-               if(Client.rootWidgetWidths[var11] + Client.rootWidgetXs[var11] > var7 && Client.rootWidgetXs[var11] < var9 + var7 && Client.rootWidgetHeights[var11] + Client.rootWidgetYs[var11] > var8 && Client.rootWidgetYs[var11] < var10 + var8) {
-                  Client.__client_ot[var11] = true;
+            for (int var11 = 0; var11 < Client.rootWidgetCount; ++var11) {
+               if (Client.rootWidgetWidths[var11] + Client.rootWidgetXs[var11] > var7 && Client.rootWidgetXs[var11] < var9 + var7 && Client.rootWidgetHeights[var11] + Client.rootWidgetYs[var11] > var8 && Client.rootWidgetYs[var11] < var10 + var8) {
+                  Client.field102[var11] = true;
                }
             }
          }
-
       }
+
    }
 }

@@ -17,7 +17,7 @@ public class WidgetGroupParent extends Node {
    @ObfuscatedGetter(
       intValue = -992379173
    )
-   static int __bx_o;
+   static int field986;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -707461797
@@ -45,22 +45,22 @@ public class WidgetGroupParent extends Node {
    )
    static Script method1175(int var0, int var1) {
       Script var2 = (Script)Script.Script_cached.get((long)(var0 << 16));
-      if(var2 != null) {
+      if (var2 != null) {
          return var2;
       } else {
          String var3 = String.valueOf(var0);
          int var4 = Formatting.indexCache12.getArchiveId(var3);
-         if(var4 == -1) {
+         if (var4 == -1) {
             return null;
          } else {
             byte[] var5 = Formatting.indexCache12.takeRecordFlat(var4);
-            if(var5 != null) {
-               if(var5.length <= 1) {
+            if (var5 != null) {
+               if (var5.length <= 1) {
                   return null;
                }
 
                var2 = Occluder.newScript(var5);
-               if(var2 != null) {
+               if (var2 != null) {
                   Script.Script_cached.put(var2, (long)(var0 << 16));
                   return var2;
                }
@@ -81,12 +81,12 @@ public class WidgetGroupParent extends Node {
       char[] var3 = new char[var2];
       int var4 = 0;
 
-      for(int var5 = 0; var5 < var2; ++var5) {
+      for (int var5 = 0; var5 < var2; ++var5) {
          int var6 = var0[var5 + var1] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
+         if (var6 != 0) {
+            if (var6 >= 128 && var6 < 160) {
                char var7 = class304.cp1252AsciiExtension[var6 - 128];
-               if(var7 == 0) {
+               if (var7 == 0) {
                   var7 = '?';
                }
 
@@ -106,7 +106,7 @@ public class WidgetGroupParent extends Node {
       garbageValue = "32"
    )
    static int method1174(int var0) {
-      ChatChannel var1 = (ChatChannel)Messages.Messages_channels.get(Integer.valueOf(var0));
-      return var1 == null?0:var1.size();
+      ChatChannel var1 = (ChatChannel)Messages.Messages_channels.get(var0);
+      return var1 == null ? 0 : var1.size();
    }
 }

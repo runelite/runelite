@@ -96,14 +96,13 @@ public class BufferedNetSocket extends AbstractSocket {
       try {
          this.socket.close();
       } catch (IOException var2) {
-         ;
       }
 
       this.source.close();
    }
 
    @ObfuscatedName("finalize")
-   protected void __finalize_280() {
+   protected void method75() {
       this.close();
    }
 

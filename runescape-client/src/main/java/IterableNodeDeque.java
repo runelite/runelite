@@ -29,7 +29,7 @@ public class IterableNodeDeque implements Iterable {
    @ObfuscatedName("m")
    @Export("clear")
    public void clear() {
-      while(this.sentinel.previous != this.sentinel) {
+      while (this.sentinel.previous != this.sentinel) {
          this.sentinel.previous.remove();
       }
 
@@ -41,7 +41,7 @@ public class IterableNodeDeque implements Iterable {
    )
    @Export("addFirst")
    public void addFirst(Node var1) {
-      if(var1.next != null) {
+      if (var1.next != null) {
          var1.remove();
       }
 
@@ -57,7 +57,7 @@ public class IterableNodeDeque implements Iterable {
    )
    @Export("addLast")
    public void addLast(Node var1) {
-      if(var1.next != null) {
+      if (var1.next != null) {
          var1.remove();
       }
 
@@ -83,13 +83,13 @@ public class IterableNodeDeque implements Iterable {
    @Export("previousOrLast")
    Node previousOrLast(Node var1) {
       Node var2;
-      if(var1 == null) {
+      if (var1 == null) {
          var2 = this.sentinel.previous;
       } else {
          var2 = var1;
       }
 
-      if(var2 == this.sentinel) {
+      if (var2 == this.sentinel) {
          this.current = null;
          return null;
       } else {
@@ -105,7 +105,7 @@ public class IterableNodeDeque implements Iterable {
    @Export("previous")
    public Node previous() {
       Node var1 = this.current;
-      if(var1 == this.sentinel) {
+      if (var1 == this.sentinel) {
          this.current = null;
          return null;
       } else {
@@ -132,7 +132,7 @@ public class IterableNodeDeque implements Iterable {
    )
    @Export("IterableNodeDeque_addBefore")
    public static void IterableNodeDeque_addBefore(Node var0, Node var1) {
-      if(var0.next != null) {
+      if (var0.next != null) {
          var0.remove();
       }
 

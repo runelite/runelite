@@ -23,19 +23,6 @@ public class Varps {
    @Export("loginBoxCenter")
    static int loginBoxCenter;
 
-   static {
-      Varps_masks = new int[32];
-      int var0 = 2;
-
-      for(int var1 = 0; var1 < 32; ++var1) {
-         Varps_masks[var1] = var0 - 1;
-         var0 += var0;
-      }
-
-      Varps_temp = new int[4000];
-      Varps_main = new int[4000];
-   }
-
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(Lir;I)V",
@@ -51,11 +38,25 @@ public class Varps {
       garbageValue = "-1714608824"
    )
    static void method4400(Buffer var0) {
-      if(Client.__client_ev != null) {
-         var0.__s_297(Client.__client_ev, 0, Client.__client_ev.length);
+      if (Client.field172 != null) {
+         var0.method38(Client.field172, 0, Client.field172.length);
       } else {
          byte[] var1 = AttackOption.method2032();
-         var0.__s_297(var1, 0, var1.length);
+         var0.method38(var1, 0, var1.length);
       }
+
+   }
+
+   static {
+      Varps_masks = new int[32];
+      int var0 = 2;
+
+      for (int var1 = 0; var1 < 32; ++var1) {
+         Varps_masks[var1] = var0 - 1;
+         var0 += var0;
+      }
+
+      Varps_temp = new int[4000];
+      Varps_main = new int[4000];
    }
 }
