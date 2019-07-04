@@ -258,7 +258,12 @@ public class RuneLitePlusPlugin extends Plugin
 				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Grand Exchange")
 				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Housing Security System")
 				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Dominic's Coffer")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Dominic's Reward Shop"))
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Dominic's Reward Shop")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Seed Vault")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Leprechaun Protection")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Access Bond Pouch")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Miscellania Security System")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("STASH Security"))
 
 		{
 			entered = 0;
