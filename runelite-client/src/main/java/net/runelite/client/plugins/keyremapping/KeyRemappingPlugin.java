@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wasdcamera;
+package net.runelite.client.plugins.keyremapping;
 
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -50,12 +50,12 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
-	name = "WASD Camera",
-	description = "Allows use of WASD keys for camera movement with 'Press Enter to Chat'",
-	tags = {"enter", "chat"},
+	name = "Key Remapping",
+	description = "Allows use of WASD keys for camera movement with 'Press Enter to Chat', and remapping number keys to F-keys",
+	tags = {"enter", "chat", "wasd", "camera"},
 	enabledByDefault = false
 )
-public class WASDCameraPlugin extends Plugin
+public class KeyRemappingPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
 	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
@@ -71,7 +71,7 @@ public class WASDCameraPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
-	private WASDCameraListener inputListener;
+	private KeyRemappingListener inputListener;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -107,9 +107,9 @@ public class WASDCameraPlugin extends Plugin
 	}
 
 	@Provides
-	WASDCameraConfig getConfig(ConfigManager configManager)
+	KeyRemappingConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(WASDCameraConfig.class);
+		return configManager.getConfig(KeyRemappingConfig.class);
 	}
 
 	boolean chatboxFocused()
@@ -123,12 +123,27 @@ public class WASDCameraPlugin extends Plugin
 		// the search box on the world map can be focused, and chat input goes there, even
 		// though the chatbox still has its key listener.
 		Widget worldMapSearch = client.getWidget(WidgetInfo.WORLD_MAP_SEARCH);
-		if (worldMapSearch != null && client.getVar(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) == 1)
-		{
-			return false;
-		}
+		return worldMapSearch == null || client.getVar(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) != 1;
+	}
 
-		return true;
+	/**
+	 * Check if a dialog is open that will grab numerical input, to prevent F-key remapping
+	 * from triggering.
+	 *
+	 * @return
+	 */
+	boolean isDialogOpen()
+	{
+		// Most chat dialogs with numerical input are added without the chatbox or its key listener being removed,
+		// so chatboxFocused() is true. The chatbox onkey script uses the following logic to ignore key presses,
+		// so we will use it too to not remap F-keys.
+		return isHidden(WidgetInfo.CHATBOX_MESSAGES) || isHidden(WidgetInfo.CHATBOX_TRANSPARENT_LINES);
+	}
+
+	private boolean isHidden(WidgetInfo widgetInfo)
+	{
+		Widget w = client.getWidget(widgetInfo);
+		return w == null || w.isSelfHidden();
 	}
 
 	@Subscribe
@@ -159,31 +174,25 @@ public class WASDCameraPlugin extends Plugin
 
 	void lockChat()
 	{
-		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
-		if (chatboxParent != null && chatboxParent.getOnKeyListener() != null)
+		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+		if (chatboxInput != null)
 		{
-			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-			if (chatboxInput != null)
-			{
-				chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
-			}
+			chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
+			// Typed text can be non-empty on plugin start, so clear it now
+			client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 		}
 	}
 
 	void unlockChat()
 	{
-		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
-		if (chatboxParent != null)
+		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+		if (chatboxInput != null)
 		{
-			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-			if (chatboxInput != null)
+			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				if (client.getGameState() == GameState.LOGGED_IN)
-				{
-					final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
-					final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
-					chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
-				}
+				final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+				final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
+				chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 			}
 		}
 	}

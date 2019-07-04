@@ -134,6 +134,8 @@ public class QuestListPlugin extends Plugin
 		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
 		if (header != null)
 		{
+			header.deleteAllChildren();
+
 			questSearchButton = header.createChild(-1, WidgetType.GRAPHIC);
 			questSearchButton.setSpriteId(SpriteID.GE_SEARCH);
 			questSearchButton.setOriginalWidth(18);

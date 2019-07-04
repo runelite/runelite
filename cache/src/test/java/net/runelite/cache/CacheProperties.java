@@ -30,7 +30,7 @@ import java.util.Properties;
 
 public class CacheProperties
 {
-	private static Properties getProperies() throws IOException
+	private static Properties getProperties() throws IOException
 	{
 		Properties properties = new Properties();
 		InputStream resourceAsStream = StoreLocation.class.getResourceAsStream("/cache.properties");
@@ -40,11 +40,11 @@ public class CacheProperties
 
 	public static int getRsVersion() throws IOException
 	{
-		return Integer.parseInt(getProperies().getProperty("rs.version"));
+		return Integer.parseInt(getProperties().getProperty("rs.version"));
 	}
 
 	public static int getCacheVersion() throws IOException
 	{
-		return Integer.parseInt(getProperies().getProperty("cache.version"));
+		return Integer.parseInt(getProperties().getProperty("cache.version"));
 	}
 }

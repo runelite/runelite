@@ -1,0 +1,111 @@
+/*
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package net.runelite.client.plugins.itemskeptondeath;
+
+import com.google.common.collect.ImmutableSet;
+import lombok.AllArgsConstructor;
+import net.runelite.api.ItemID;
+
+/**
+ * Some non tradeable items are kept on death inside low level wilderness (1-20) but are turned into a broken variant.
+ *
+ * The non-broken variant will be shown inside the interface.
+ */
+@AllArgsConstructor
+enum BrokenOnDeathItem
+{
+	// Capes
+	FIRE_CAPE(ItemID.FIRE_CAPE),
+	FIRE_MAX_CAPE(ItemID.FIRE_MAX_CAPE),
+	INFERNAL_CAPE(ItemID.INFERNAL_CAPE),
+	INFERNAL_MAX_CAPE(ItemID.INFERNAL_MAX_CAPE),
+	AVAS_ASSEMBLER(ItemID.AVAS_ASSEMBLER),
+	ASSEMBLER_MAX_CAPE(ItemID.ASSEMBLER_MAX_CAPE),
+
+	// Defenders
+	BRONZE_DEFENDER(ItemID.BRONZE_DEFENDER),
+	IRON_DEFENDER(ItemID.IRON_DEFENDER),
+	STEEL_DEFENDER(ItemID.STEEL_DEFENDER),
+	BLACK_DEFENDER(ItemID.BLACK_DEFENDER),
+	MITHRIL_DEFENDER(ItemID.MITHRIL_DEFENDER),
+	ADAMANT_DEFENDER(ItemID.ADAMANT_DEFENDER),
+	RUNE_DEFENDER(ItemID.RUNE_DEFENDER),
+	DRAGON_DEFENDER(ItemID.DRAGON_DEFENDER),
+	AVERNIC_DEFENDER(ItemID.AVERNIC_DEFENDER),
+
+	// Void
+	VOID_MAGE_HELM(ItemID.VOID_MAGE_HELM),
+	VOID_RANGER_HELM(ItemID.VOID_RANGER_HELM),
+	VOID_MELEE_HELM(ItemID.VOID_MELEE_HELM),
+	VOID_KNIGHT_TOP(ItemID.VOID_KNIGHT_TOP),
+	VOID_KNIGHT_ROBE(ItemID.VOID_KNIGHT_ROBE),
+	VOID_KNIGHT_GLOVES(ItemID.VOID_KNIGHT_GLOVES),
+	VOID_KNIGHT_MACE(ItemID.VOID_KNIGHT_MACE),
+	ELITE_VOID_TOP(ItemID.ELITE_VOID_TOP),
+	ELITE_VOID_ROBE(ItemID.ELITE_VOID_ROBE),
+
+	// Barb Assault
+	FIGHTER_HAT(ItemID.FIGHTER_HAT),
+	RANGER_HAT(ItemID.RANGER_HAT),
+	HEALER_HAT(ItemID.HEALER_HAT),
+	FIGHTER_TORSO(ItemID.FIGHTER_TORSO),
+	PENANCE_SKIRT(ItemID.PENANCE_SKIRT),
+
+	// Castle Wars
+	SARADOMIN_HALO(ItemID.SARADOMIN_HALO),
+	ZAMORAK_HALO(ItemID.ZAMORAK_HALO),
+	GUTHIX_HALO(ItemID.GUTHIX_HALO),
+	DECORATIVE_MAGIC_HAT(ItemID.DECORATIVE_ARMOUR_11898),
+	DECORATIVE_MAGIC_ROBE_TOP(ItemID.DECORATIVE_ARMOUR_11896),
+	DECORATIVE_MAGIC_ROBE_LEGS(ItemID.DECORATIVE_ARMOUR_11897),
+	DECORATIVE_RANGE_TOP(ItemID.DECORATIVE_ARMOUR_11899),
+	DECORATIVE_RANGE_BOTTOM(ItemID.DECORATIVE_ARMOUR_11900),
+	DECORATIVE_RANGE_QUIVER(ItemID.DECORATIVE_ARMOUR_11901),
+	GOLD_DECORATIVE_HELM(ItemID.DECORATIVE_HELM_4511),
+	GOLD_DECORATIVE_BODY(ItemID.DECORATIVE_ARMOUR_4509),
+	GOLD_DECORATIVE_LEGS(ItemID.DECORATIVE_ARMOUR_4510),
+	GOLD_DECORATIVE_SKIRT(ItemID.DECORATIVE_ARMOUR_11895),
+	GOLD_DECORATIVE_SHIELD(ItemID.DECORATIVE_SHIELD_4512),
+	GOLD_DECORATIVE_SWORD(ItemID.DECORATIVE_SWORD_4508);
+
+	private final int itemID;
+
+	private static final ImmutableSet<Integer> ID_SET;
+
+	static
+	{
+		final ImmutableSet.Builder<Integer> set = new ImmutableSet.Builder<>();
+		for (final BrokenOnDeathItem p : values())
+		{
+			set.add(p.itemID);
+		}
+		ID_SET = set.build();
+	}
+
+	static boolean isBrokenOnDeath(final int itemID)
+	{
+		return ID_SET.contains(itemID);
+	}
+}

@@ -140,7 +140,6 @@ public interface RSClient extends RSGameEngine, Client
 	int getRSGameState();
 
 	@Import("checkClick")
-	@Override
 	void setCheckClick(boolean checkClick);
 
 	@Import("mouseX2")
@@ -248,9 +247,17 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	void setPassword(String password);
 
+	@Import("otp")
+	@Override
+	void setOtp(String otp);
+
 	@Import("currentLoginField")
 	@Override
 	int getCurrentLoginField();
+
+	@Import("loginIndex")
+	@Override
+	int getLoginIndex();
 
 	@Import("playerOptions")
 	@Override
@@ -544,8 +551,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("soundLocations")
 	int[] getSoundLocations();
 
-	@Import("unknownSoundValues1")
-	int[] getUnknownSoundValues1();
+	@Import("queuedSoundEffectLoops")
+	int[] getQueuedSoundEffectLoops();
 
 	@Import("queuedSoundEffectDelays")
 	int[] getQueuedSoundEffectDelays();
@@ -555,6 +562,9 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("queuedSoundEffectCount")
 	void setQueuedSoundEffectCount(int queuedSoundEffectCount);
+
+	@Import("queueSoundEffect")
+	void queueSoundEffect(int id, int numLoops, int delay);
 
 	@Import("rasterProvider")
 	@Override
@@ -769,6 +779,7 @@ public interface RSClient extends RSGameEngine, Client
 	boolean isInInstancedRegion();
 
 	@Import("itemPressedDuration")
+	@Override
 	int getItemPressedDuration();
 
 	@Import("itemPressedDuration")
@@ -924,6 +935,14 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("endY")
 	int getEndY();
 
+	@Import("if1DraggedWidget")
+	@Override
+	RSWidget getIf1DraggedWidget();
+
+	@Import("if1DraggedItemIndex")
+	@Override
+	int getIf1DraggedItemIndex();
+
 	@Import("spellSelected")
 	@Override
 	void setSpellSelected(boolean selected);
@@ -965,6 +984,33 @@ public interface RSClient extends RSGameEngine, Client
 	void RasterizerDrawCircle(int x, int y, int r, int rgb);
 
 	@Import("healthbarCache")
-	@Override
 	RSNodeCache getHealthBarCache();
+
+	@Import("healthBarSpriteCache")
+	RSNodeCache getHealthBarSpriteCache();
+
+	@Import("getTrack")
+	RSSoundEffect getTrack(RSIndexData indexData, int id, int var0);
+
+	@Import("createSoundEffectAudioTaskNode")
+	RSAudioTaskNode createSoundEffectAudioTaskNode(RSRawAudioNode audioNode, int var0, int volume);
+
+	@Import("soundEffectAudioQueue")
+	RSAudioTaskNodeQueue getSoundEffectAudioQueue();
+
+	@Import("indexCache4")
+	RSIndexData getIndexCache4();
+
+	@Import("soundEffectResampler")
+	RSResampler getSoundEffectResampler();
+
+	@Import("soundEffectVolume")
+	int getSoundEffectVolume();
+
+	@Import("viewportWalking")
+	void setViewportWalking(boolean viewportWalking);
+
+	@Import("crossSprites")
+	@Override
+	RSSpritePixels[] getCrossSprites();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Lucas C <lucas1757@gmail.com>
+ * Copyright (c) 2018, WooxSolo <https://github.com/WooxSolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cooking;
+package net.runelite.api.events;
 
-import java.time.Instant;
-import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.Data;
 
-class FermentTimerSession
+@Data
+public class SoundEffectPlayed
 {
-	@Getter(AccessLevel.PACKAGE)
-	private Instant lastWineMakingAction;
-
-	void updateLastWineMakingAction()
-	{
-		this.lastWineMakingAction = Instant.now();
-	}
+	private int soundId;
+	private int delay;
 }

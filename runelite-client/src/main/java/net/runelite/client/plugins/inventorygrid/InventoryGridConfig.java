@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,58 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wasdcamera;
+package net.runelite.client.plugins.inventorygrid;
 
-import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.config.Range;
 
-@ConfigGroup("wasdcamera")
-public interface WASDCameraConfig extends Config
+@ConfigGroup("inventorygrid")
+public interface InventoryGridConfig extends Config
 {
 	@ConfigItem(
-		position = 1,
-		keyName = "up",
-		name = "Up key",
-		description = "The key which will replace up."
+		keyName = "showItem",
+		name = "Show item",
+		description = "Show a preview of the item in the new slot"
 	)
-	default ModifierlessKeybind up()
+	default boolean showItem()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_W, 0);
+		return true;
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "down",
-		name = "Down key",
-		description = "The key which will replace down."
+		keyName = "showGrid",
+		name = "Show grid",
+		description = "Show a grid on the inventory while dragging"
 	)
-	default ModifierlessKeybind down()
+	default boolean showGrid()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_S, 0);
+		return true;
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "left",
-		name = "Left key",
-		description = "The key which will replace left."
+		keyName = "showHighlight",
+		name = "Highlight background",
+		description = "Show a green background highlight on the new slot"
 	)
-	default ModifierlessKeybind left()
+	default boolean showHighlight()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_A, 0);
+		return true;
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "right",
-		name = "Right key",
-		description = "The key which will replace right."
+		keyName = "dragDelay",
+		name = "Drag Delay",
+		description = "Time in ms to wait after item press before showing grid"
 	)
-	default ModifierlessKeybind right()
+	@Range(min = 100)
+	default int dragDelay()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_D, 0);
+		return 100;
 	}
 }
