@@ -547,7 +547,8 @@ class ScreenMarkerPanel extends JPanel
 	{
 		RuneliteColorPicker colorPicker = new RuneliteColorPicker(SwingUtilities.windowForComponent(this),
 			marker.getMarker().getFill(), marker.getMarker().getName() + " Fill", false);
-		colorPicker.setLocation(getLocationOnScreen());
+		colorPicker.setLocationRelativeTo(this);
+		colorPicker.fitInWindowBounds();
 		colorPicker.setOnColorChange(c ->
 		{
 			marker.getMarker().setFill(c);
@@ -569,7 +570,8 @@ class ScreenMarkerPanel extends JPanel
 	{
 		RuneliteColorPicker colorPicker = new RuneliteColorPicker(SwingUtilities.windowForComponent(this),
 			marker.getMarker().getColor(), marker.getMarker().getName() + " Border", false);
-		colorPicker.setLocation(getLocationOnScreen());
+		colorPicker.setLocationRelativeTo(this);
+		colorPicker.fitInWindowBounds();
 		colorPicker.setOnColorChange(c ->
 		{
 			marker.getMarker().setColor(c);
