@@ -39,6 +39,21 @@ public class ContainableFrame extends JFrame
 	private boolean containedInScreen;
 	private boolean expandedClientOppositeDirection;
 
+	ContainableFrame()
+	{
+		addWindowStateListener(windowEvent ->
+		{
+			if (windowEvent.getNewState() == Frame.NORMAL)
+			{
+				// When the sidebar is contracted while the frame is normal and the frame is as small as possible,
+				// then the sidebar is expanded while the frame is maximized, then restoring the frame, the frame will
+				// restore back to the smaller original contracted size instead of the new larger expanded minimum size.
+				// This will revalidate the size when restored.
+				revalidateMinimumSize();
+			}
+		});
+	}
+
 	public void setContainedInScreen(boolean value)
 	{
 		this.containedInScreen = value;
