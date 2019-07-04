@@ -282,6 +282,11 @@ public class ItemManager
 		{
 			return 1000;
 		}
+		if (itemID == OLD_SCHOOL_BOND_UNTRADEABLE)
+		{
+			// 1 untradeable bond = 0.9 * tradable bond = tradable bond - 1/10th of a tradable bond
+			return Math.round(getItemPrice(ItemID.OLD_SCHOOL_BOND) * 0.9f);
+		}
 
 		UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
 		if (p != null)
