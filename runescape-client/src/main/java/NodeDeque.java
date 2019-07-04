@@ -169,7 +169,8 @@ public class NodeDeque {
    @ObfuscatedSignature(
       signature = "(Lgw;Lgw;)V"
    )
-   public static void method5270(Node var0, Node var1) {
+   @Export("NodeDeque_addBefore")
+   public static void NodeDeque_addBefore(Node var0, Node var1) {
       if (var0.next != null) {
          var0.remove();
       }

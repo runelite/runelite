@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -9,45 +10,49 @@ public class LinkDeque {
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   Link field463;
+   @Export("sentinel")
+   Link sentinel;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   Link field464;
+   @Export("current")
+   Link current;
 
    public LinkDeque() {
-      this.field463 = new Link();
-      this.field463.field461 = this.field463;
-      this.field463.field462 = this.field463;
+      this.sentinel = new Link();
+      this.sentinel.previous = this.sentinel;
+      this.sentinel.next = this.sentinel;
    }
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(Lgh;)V"
    )
-   public void method163(Link var1) {
-      if (var1.field462 != null) {
+   @Export("addFirst")
+   public void addFirst(Link var1) {
+      if (var1.next != null) {
          var1.remove();
       }
 
-      var1.field462 = this.field463.field462;
-      var1.field461 = this.field463;
-      var1.field462.field461 = var1;
-      var1.field461.field462 = var1;
+      var1.next = this.sentinel.next;
+      var1.previous = this.sentinel;
+      var1.next.previous = var1;
+      var1.previous.next = var1;
    }
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "()Lgh;"
    )
-   public Link method164() {
-      Link var1 = this.field463.field461;
-      if (var1 == this.field463) {
-         this.field464 = null;
+   @Export("last")
+   public Link last() {
+      Link var1 = this.sentinel.previous;
+      if (var1 == this.sentinel) {
+         this.current = null;
          return null;
       } else {
-         this.field464 = var1.field461;
+         this.current = var1.previous;
          return var1;
       }
    }
@@ -56,13 +61,14 @@ public class LinkDeque {
    @ObfuscatedSignature(
       signature = "()Lgh;"
    )
-   public Link method165() {
-      Link var1 = this.field464;
-      if (var1 == this.field463) {
-         this.field464 = null;
+   @Export("previous")
+   public Link previous() {
+      Link var1 = this.current;
+      if (var1 == this.sentinel) {
+         this.current = null;
          return null;
       } else {
-         this.field464 = var1.field461;
+         this.current = var1.previous;
          return var1;
       }
    }

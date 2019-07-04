@@ -17,51 +17,54 @@ public class IterableDualNodeQueueIterator implements Iterator {
    @ObfuscatedSignature(
       signature = "Lfn;"
    )
-   DualNode field438;
+   @Export("head")
+   DualNode head;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lfn;"
    )
-   DualNode field439;
+   @Export("last")
+   DualNode last;
 
    @ObfuscatedSignature(
       signature = "(Ljc;)V"
    )
    IterableDualNodeQueueIterator(IterableDualNodeQueue var1) {
-      this.field439 = null;
+      this.last = null;
       this.queue = var1;
-      this.field438 = this.queue.sentinel.previousDual;
-      this.field439 = null;
+      this.head = this.queue.sentinel.previousDual;
+      this.last = null;
    }
 
    @Export("next")
    @ObfuscatedName("next")
    public Object next() {
-      DualNode var1 = this.field438;
+      DualNode var1 = this.head;
       if (var1 == this.queue.sentinel) {
          var1 = null;
-         this.field438 = null;
+         this.head = null;
       } else {
-         this.field438 = var1.previousDual;
+         this.head = var1.previousDual;
       }
 
-      this.field439 = var1;
+      this.last = var1;
       return var1;
    }
 
    @Export("hasNext")
    @ObfuscatedName("hasNext")
    public boolean hasNext() {
-      return this.queue.sentinel != this.field438;
+      return this.queue.sentinel != this.head;
    }
 
    @ObfuscatedName("remove")
-   public void method153() {
-      if (this.field439 == null) {
+   @Export("remove")
+   public void remove() {
+      if (this.last == null) {
          throw new IllegalStateException();
       } else {
-         this.field439.removeDual();
-         this.field439 = null;
+         this.last.removeDual();
+         this.last = null;
       }
    }
 }

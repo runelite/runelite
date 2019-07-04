@@ -17,64 +17,69 @@ public class IterableNodeDequeDescendingIterator implements Iterator {
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   Node field440;
+   @Export("head")
+   Node head;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   Node field441;
+   @Export("last")
+   Node last;
 
    @ObfuscatedSignature(
       signature = "(Lja;)V"
    )
    IterableNodeDequeDescendingIterator(IterableNodeDeque var1) {
-      this.field441 = null;
-      this.method154(var1);
+      this.last = null;
+      this.setDeque(var1);
    }
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(Lja;)V"
    )
-   void method154(IterableNodeDeque var1) {
+   @Export("setDeque")
+   void setDeque(IterableNodeDeque var1) {
       this.deque = var1;
-      this.method155();
+      this.start();
    }
 
    @ObfuscatedName("g")
-   void method155() {
-      this.field440 = this.deque != null ? this.deque.sentinel.previous : null;
-      this.field441 = null;
+   @Export("start")
+   void start() {
+      this.head = this.deque != null ? this.deque.sentinel.previous : null;
+      this.last = null;
    }
 
    @Export("hasNext")
    @ObfuscatedName("hasNext")
    public boolean hasNext() {
-      return this.deque.sentinel != this.field440;
+      return this.deque.sentinel != this.head;
    }
 
    @Export("next")
    @ObfuscatedName("next")
    public Object next() {
-      Node var1 = this.field440;
+      Node var1 = this.head;
       if (var1 == this.deque.sentinel) {
          var1 = null;
-         this.field440 = null;
+         this.head = null;
       } else {
-         this.field440 = var1.previous;
+         this.head = var1.previous;
       }
 
-      this.field441 = var1;
+      this.last = var1;
       return var1;
    }
 
    @ObfuscatedName("remove")
-   public void method156() {
-      if (this.field441 == null) {
+   @Export("remove")
+   public void remove() {
+      if (this.last == null) {
          throw new IllegalStateException();
       } else {
-         this.field441.remove();
-         this.field441 = null;
+         this.last.remove();
+         this.last = null;
       }
    }
 }

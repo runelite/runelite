@@ -108,7 +108,7 @@ public class FriendsList extends UserList {
                   if (var6 != var11.world0) {
                      boolean var14 = true;
 
-                     for (FriendLoginUpdate var13 = (FriendLoginUpdate)this.friendLoginUpdates.method164(); var13 != null; var13 = (FriendLoginUpdate)this.friendLoginUpdates.method165()) {
+                     for (FriendLoginUpdate var13 = (FriendLoginUpdate)this.friendLoginUpdates.last(); var13 != null; var13 = (FriendLoginUpdate)this.friendLoginUpdates.previous()) {
                         if (var13.username.equals(var4)) {
                            if (var6 != 0 && var13.world == 0) {
                               var13.remove();
@@ -121,7 +121,7 @@ public class FriendsList extends UserList {
                      }
 
                      if (var14) {
-                        this.friendLoginUpdates.method163(new FriendLoginUpdate(var4, var6));
+                        this.friendLoginUpdates.addFirst(new FriendLoginUpdate(var4, var6));
                      }
                   }
                } else {

@@ -93,7 +93,8 @@ public final class DualNodeDeque {
    @ObfuscatedSignature(
       signature = "(Lfn;Lfn;)V"
    )
-   public static void method5220(DualNode var0, DualNode var1) {
+   @Export("DualNodeDeque_addBefore")
+   public static void DualNodeDeque_addBefore(DualNode var0, DualNode var1) {
       if (var0.nextDual != null) {
          var0.removeDual();
       }

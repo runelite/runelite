@@ -76,7 +76,7 @@ public class FriendSystem {
       garbageValue = "-1408945788"
    )
    final void method102() {
-      for (FriendLoginUpdate var1 = (FriendLoginUpdate)this.friendsList.friendLoginUpdates.method164(); var1 != null; var1 = (FriendLoginUpdate)this.friendsList.friendLoginUpdates.method165()) {
+      for (FriendLoginUpdate var1 = (FriendLoginUpdate)this.friendsList.friendLoginUpdates.last(); var1 != null; var1 = (FriendLoginUpdate)this.friendsList.friendLoginUpdates.previous()) {
          if ((long)var1.time < class203.currentTimeMs() / 1000L - 5L) {
             if (var1.world > 0) {
                WorldMapIcon1.method219(5, "", var1.username + " has logged in.");

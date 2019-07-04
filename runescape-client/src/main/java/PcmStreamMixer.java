@@ -69,7 +69,7 @@ public class PcmStreamMixer extends PcmStream {
          var1 = var1.previous;
       }
 
-      NodeDeque.method5270(var2, var1);
+      NodeDeque.NodeDeque_addBefore(var2, var1);
       this.field692 = ((PcmStreamMixerListener)this.field690.sentinel.previous).field693;
    }
 

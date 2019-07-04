@@ -99,7 +99,7 @@ public final class DemotingHashTable {
          this.remaining -= var4;
 
          while (this.remaining < 0) {
-            Wrapper var5 = (Wrapper)this.queue.method149();
+            Wrapper var5 = (Wrapper)this.queue.removeLast();
             this.removeWrapper(var5);
          }
 
@@ -113,7 +113,7 @@ public final class DemotingHashTable {
    @ObfuscatedName("o")
    @Export("demote")
    public void demote(int var1) {
-      for (Wrapper var2 = (Wrapper)this.queue.method150(); var2 != null; var2 = (Wrapper)this.queue.method152()) {
+      for (Wrapper var2 = (Wrapper)this.queue.last(); var2 != null; var2 = (Wrapper)this.queue.previous()) {
          if (var2.isSoft()) {
             if (var2.get() == null) {
                var2.remove();
@@ -123,7 +123,7 @@ public final class DemotingHashTable {
          } else if (++var2.keyDual > (long)var1) {
             SoftWrapper var3 = new SoftWrapper(var2.get(), var2.size);
             this.hashTable.put(var3, var2.key);
-            DualNodeDeque.method5220(var3, var2);
+            DualNodeDeque.DualNodeDeque_addBefore(var3, var2);
             var2.remove();
             var2.removeDual();
          }

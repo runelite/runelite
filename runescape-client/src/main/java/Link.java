@@ -10,21 +10,23 @@ public class Link {
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   public Link field461;
+   @Export("previous")
+   public Link previous;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
-   public Link field462;
+   @Export("next")
+   public Link next;
 
    @ObfuscatedName("m")
    @Export("remove")
    public void remove() {
-      if (this.field462 != null) {
-         this.field462.field461 = this.field461;
-         this.field461.field462 = this.field462;
-         this.field461 = null;
-         this.field462 = null;
+      if (this.next != null) {
+         this.next.previous = this.previous;
+         this.previous.next = this.next;
+         this.previous = null;
+         this.next = null;
       }
 
    }

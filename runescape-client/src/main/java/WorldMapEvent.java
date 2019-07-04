@@ -55,6 +55,7 @@ public class WorldMapEvent {
       signature = "(IIIIB)V",
       garbageValue = "2"
    )
+   @Export("addSceneMenuOptions")
    static final void addSceneMenuOptions(int var0, int var1, int var2, int var3) {
       if (Client.isItemSelected == 0 && !Client.isSpellSelected) {
          Tiles.insertMenuItemNoShift("Walk here", "", 23, 0, var0 - var2, var1 - var3);

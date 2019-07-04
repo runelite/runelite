@@ -17,46 +17,50 @@ public class IterableNodeHashTableIterator implements Iterator {
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   Node field442;
+   @Export("head")
+   Node head;
    @ObfuscatedName("q")
-   int field443;
+   @Export("index")
+   int index;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   Node field444;
+   @Export("last")
+   Node last;
 
    @ObfuscatedSignature(
       signature = "(Llh;)V"
    )
    IterableNodeHashTableIterator(IterableNodeHashTable var1) {
-      this.field444 = null;
+      this.last = null;
       this.hashTable = var1;
-      this.method157();
+      this.start();
    }
 
    @ObfuscatedName("u")
-   void method157() {
-      this.field442 = this.hashTable.buckets[0].previous;
-      this.field443 = 1;
-      this.field444 = null;
+   @Export("start")
+   void start() {
+      this.head = this.hashTable.buckets[0].previous;
+      this.index = 1;
+      this.last = null;
    }
 
    @Export("next")
    @ObfuscatedName("next")
    public Object next() {
       Node var1;
-      if (this.hashTable.buckets[this.field443 - 1] != this.field442) {
-         var1 = this.field442;
-         this.field442 = var1.previous;
-         this.field444 = var1;
+      if (this.hashTable.buckets[this.index - 1] != this.head) {
+         var1 = this.head;
+         this.head = var1.previous;
+         this.last = var1;
          return var1;
       } else {
-         while (this.field443 < this.hashTable.size) {
-            var1 = this.hashTable.buckets[this.field443++].previous;
-            if (var1 != this.hashTable.buckets[this.field443 - 1]) {
-               this.field442 = var1.previous;
-               this.field444 = var1;
+         while (this.index < this.hashTable.size) {
+            var1 = this.hashTable.buckets[this.index++].previous;
+            if (var1 != this.hashTable.buckets[this.index - 1]) {
+               this.head = var1.previous;
+               this.last = var1;
                return var1;
             }
          }
@@ -68,16 +72,16 @@ public class IterableNodeHashTableIterator implements Iterator {
    @Export("hasNext")
    @ObfuscatedName("hasNext")
    public boolean hasNext() {
-      if (this.hashTable.buckets[this.field443 - 1] != this.field442) {
+      if (this.hashTable.buckets[this.index - 1] != this.head) {
          return true;
       } else {
-         while (this.field443 < this.hashTable.size) {
-            if (this.hashTable.buckets[this.field443++].previous != this.hashTable.buckets[this.field443 - 1]) {
-               this.field442 = this.hashTable.buckets[this.field443 - 1].previous;
+         while (this.index < this.hashTable.size) {
+            if (this.hashTable.buckets[this.index++].previous != this.hashTable.buckets[this.index - 1]) {
+               this.head = this.hashTable.buckets[this.index - 1].previous;
                return true;
             }
 
-            this.field442 = this.hashTable.buckets[this.field443 - 1];
+            this.head = this.hashTable.buckets[this.index - 1];
          }
 
          return false;
@@ -85,12 +89,13 @@ public class IterableNodeHashTableIterator implements Iterator {
    }
 
    @ObfuscatedName("remove")
-   public void method158() {
-      if (this.field444 == null) {
+   @Export("remove")
+   public void remove() {
+      if (this.last == null) {
          throw new IllegalStateException();
       } else {
-         this.field444.remove();
-         this.field444 = null;
+         this.last.remove();
+         this.last = null;
       }
    }
 }
