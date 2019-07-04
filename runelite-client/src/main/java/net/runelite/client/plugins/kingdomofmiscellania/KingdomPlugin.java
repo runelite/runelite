@@ -26,26 +26,35 @@ package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
 import javax.inject.Inject;
+
+import com.google.inject.Provides;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
+import net.runelite.api.*;
+
 import static net.runelite.api.ItemID.TEAK_CHEST;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
+
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
-	name = "Kingdom of Miscellania",
-	description = "Show amount of favor when inside Miscellania",
-	tags = {"favor", "favour", "managing", "overlay"},
-	enabledByDefault = false
+		name = "Kingdom of Miscellania",
+		description = "Show amount of favor when inside Miscellania",
+		tags = {"favor", "favour", "managing", "overlay"},
+		enabledByDefault = false
 )
 @Slf4j
 public class KingdomPlugin extends Plugin
@@ -61,10 +70,22 @@ public class KingdomPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private KingdomConfig config;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
 	@Getter
 	private int favor = 0, coffer = 0;
 
 	private KingdomCounter counter;
+
+	@Provides
+	KingdomConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(KingdomConfig.class);
+	}
 
 	@Override
 	protected void shutDown() throws Exception
@@ -125,9 +146,34 @@ public class KingdomPlugin extends Plugin
 	private boolean isInKingdom()
 	{
 		return client.getLocalPlayer() != null
-			&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
+				&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
 	}
 
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event) {
+		if (event.getGroupId() == WidgetID.KINGDOM_GROUP_ID && config.showKingdomValue()) {
+			ItemContainer kingdomRewardContainer = client.getItemContainer(InventoryID.KINGDOM_OF_MISCELLANIA);
+			Item[] items = kingdomRewardContainer.getItems();
+			long kingdomPrice = 0;
+
+			for (Item item : items) {
+				long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
+				kingdomPrice += itemStack;
+			}
+
+			final ChatMessageBuilder message = new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append("Your kingdom reward is worth around ")
+					.append(StackFormatter.formatNumber(kingdomPrice))
+					.append(" coins.")
+					.append(ChatColorType.NORMAL);
+
+			chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.ITEM_EXAMINE)
+					.runeLiteFormattedMessage(message.build())
+					.build());
+		}
+	}
 	private boolean hasCompletedQuest()
 	{
 		return client.getVar(VarPlayer.THRONE_OF_MISCELLANIA) > 0;
