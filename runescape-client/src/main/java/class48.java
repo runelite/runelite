@@ -4,10 +4,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aa")
 public class class48 {
-   static {
-      ImageIO.setUseCache(false);
-   }
-
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I)[Lij;",
@@ -23,14 +19,15 @@ public class class48 {
       garbageValue = "643714573"
    )
    static final void method868() {
-      if(Client.__client_fd > 0) {
+      if (Client.field175 > 0) {
          TextureProvider.method2773();
       } else {
-         Client.timer.__f_454();
+         Client.timer.method330();
          GameShell.updateGameState(40);
-         ClientParameter.__ji_fp = Client.packetWriter.getSocket();
+         ClientParameter.field341 = Client.packetWriter.getSocket();
          Client.packetWriter.removeSocket();
       }
+
    }
 
    @ObfuscatedName("je")
@@ -39,35 +36,34 @@ public class class48 {
       garbageValue = "-1926681563"
    )
    static Widget method869(Widget var0) {
-      Widget var2 = var0;
-      int var3 = WorldMapRegion.method568(class1.getWidgetClickMask(var0));
-      Widget var1;
-      if(var3 == 0) {
-         var1 = null;
+      Widget var1 = var0;
+      int var2 = WorldMapRegion.method568(class1.getWidgetClickMask(var0));
+      Widget var3;
+      if (var2 == 0) {
+         var3 = null;
       } else {
-         int var4 = 0;
-
-         while(true) {
-            if(var4 >= var3) {
-               var1 = var2;
-               break;
+         label29: {
+            for (int var4 = 0; var4 < var2; ++var4) {
+               var1 = Huffman.getWidget(var1.parentId);
+               if (var1 == null) {
+                  var3 = null;
+                  break label29;
+               }
             }
 
-            var2 = Huffman.getWidget(var2.parentId);
-            if(var2 == null) {
-               var1 = null;
-               break;
-            }
-
-            ++var4;
+            var3 = var1;
          }
       }
 
-      Widget var5 = var1;
-      if(var1 == null) {
+      Widget var5 = var3;
+      if (var3 == null) {
          var5 = var0.parent;
       }
 
       return var5;
+   }
+
+   static {
+      ImageIO.setUseCache(false);
    }
 }

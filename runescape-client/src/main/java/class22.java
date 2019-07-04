@@ -43,7 +43,6 @@ public final class class22 {
       intValue = 2138505015
    )
    int field167;
-   // $FF: synthetic field
    @ObfuscatedSignature(
       signature = "Lal;"
    )
@@ -71,10 +70,10 @@ public final class class22 {
       garbageValue = "61"
    )
    static final void method294(String var0) {
-      StringBuilder var10000 = (new StringBuilder()).append(var0);
-      Object var10001 = null;
-      String var1 = var10000.append(" is already on your ignore list").toString();
-      WorldMapIcon1.method219(30, "", var1);
+      StringBuilder var1 = (new StringBuilder()).append(var0);
+      Object var2 = null;
+      String var3 = var1.append(" is already on your ignore list").toString();
+      WorldMapIcon1.method219(30, "", var3);
    }
 
    @ObfuscatedName("fw")
@@ -85,7 +84,7 @@ public final class class22 {
    @Export("newIndexCache")
    static IndexCache newIndexCache(int var0, boolean var1, boolean var2, boolean var3) {
       IndexStore var4 = null;
-      if(class168.dat2File != null) {
+      if (class168.dat2File != null) {
          var4 = new IndexStore(var0, class168.dat2File, IndexStoreAction.idxFiles[var0], 1000000);
       }
 
@@ -98,8 +97,8 @@ public final class class22 {
       garbageValue = "1002272291"
    )
    static void method295(Widget var0) {
-      if(var0.cycle == Client.__client_oo) {
-         Client.__client_od[var0.rootIndex] = true;
+      if (var0.cycle == Client.field98) {
+         Client.field100[var0.rootIndex] = true;
       }
 
    }
@@ -111,13 +110,13 @@ public final class class22 {
    )
    static final void method296(Widget var0, int var1, int var2, int var3) {
       SpriteMask var4 = var0.getSpriteMask(false);
-      if(var4 != null) {
-         if(Client.minimapState < 3) {
-            UnitPriceComparator.compass.__ay_513(var1, var2, var4.width, var4.height, 25, 25, Client.minimapOrientation, 256, var4.xStarts, var4.xWidths);
+      if (var4 != null) {
+         if (Client.minimapState < 3) {
+            UnitPriceComparator.compass.method315(var1, var2, var4.width, var4.height, 25, 25, Client.minimapOrientation, 256, var4.xStarts, var4.xWidths);
          } else {
             Rasterizer2D.method5948(var1, var2, 0, var4.xStarts, var4.xWidths);
          }
-
       }
+
    }
 }

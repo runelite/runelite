@@ -42,14 +42,13 @@ public class WorldMapIndexCacheLoader {
    )
    @Export("reset")
    void reset(String var1) {
-      if(var1 != null && !var1.isEmpty()) {
-         if(var1 != this.cacheName) {
-            this.cacheName = var1;
-            this.percentLoaded0 = 0;
-            this.isLoaded0 = false;
-            this.load();
-         }
+      if (var1 != null && !var1.isEmpty() && var1 != this.cacheName) {
+         this.cacheName = var1;
+         this.percentLoaded0 = 0;
+         this.isLoaded0 = false;
+         this.load();
       }
+
    }
 
    @ObfuscatedName("f")
@@ -59,24 +58,24 @@ public class WorldMapIndexCacheLoader {
    )
    @Export("load")
    int load() {
-      if(this.percentLoaded0 < 33) {
-         if(!this.indexCache.tryLoadRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, this.cacheName)) {
+      if (this.percentLoaded0 < 33) {
+         if (!this.indexCache.tryLoadRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, this.cacheName)) {
             return this.percentLoaded0;
          }
 
          this.percentLoaded0 = 33;
       }
 
-      if(this.percentLoaded0 == 33) {
-         if(this.indexCache.__ag_401(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName) && !this.indexCache.tryLoadRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName)) {
+      if (this.percentLoaded0 == 33) {
+         if (this.indexCache.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName) && !this.indexCache.tryLoadRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName)) {
             return this.percentLoaded0;
          }
 
          this.percentLoaded0 = 66;
       }
 
-      if(this.percentLoaded0 == 66) {
-         if(!this.indexCache.tryLoadRecordByNames(this.cacheName, WorldMapCacheName.WorldMapCacheName_labels.name)) {
+      if (this.percentLoaded0 == 66) {
+         if (!this.indexCache.tryLoadRecordByNames(this.cacheName, WorldMapCacheName.WorldMapCacheName_labels.name)) {
             return this.percentLoaded0;
          }
 

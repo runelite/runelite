@@ -29,7 +29,7 @@ public class IterableDualNodeQueue implements Iterable {
    @ObfuscatedName("m")
    @Export("clear")
    public void clear() {
-      while(this.sentinel.previousDual != this.sentinel) {
+      while (this.sentinel.previousDual != this.sentinel) {
          this.sentinel.previousDual.removeDual();
       }
 
@@ -41,7 +41,7 @@ public class IterableDualNodeQueue implements Iterable {
    )
    @Export("add")
    public void add(DualNode var1) {
-      if(var1.nextDual != null) {
+      if (var1.nextDual != null) {
          var1.removeDual();
       }
 
@@ -55,9 +55,10 @@ public class IterableDualNodeQueue implements Iterable {
    @ObfuscatedSignature(
       signature = "()Lfn;"
    )
-   public DualNode __q_448() {
+   @Export("removeLast")
+   public DualNode removeLast() {
       DualNode var1 = this.sentinel.previousDual;
-      if(var1 == this.sentinel) {
+      if (var1 == this.sentinel) {
          return null;
       } else {
          var1.removeDual();
@@ -69,23 +70,25 @@ public class IterableDualNodeQueue implements Iterable {
    @ObfuscatedSignature(
       signature = "()Lfn;"
    )
-   public DualNode __w_449() {
-      return this.__o_450((DualNode)null);
+   @Export("last")
+   public DualNode last() {
+      return this.previousOrLast((DualNode)null);
    }
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(Lfn;)Lfn;"
    )
-   DualNode __o_450(DualNode var1) {
+   @Export("previousOrLast")
+   DualNode previousOrLast(DualNode var1) {
       DualNode var2;
-      if(var1 == null) {
+      if (var1 == null) {
          var2 = this.sentinel.previousDual;
       } else {
          var2 = var1;
       }
 
-      if(var2 == this.sentinel) {
+      if (var2 == this.sentinel) {
          this.head = null;
          return null;
       } else {
@@ -98,9 +101,10 @@ public class IterableDualNodeQueue implements Iterable {
    @ObfuscatedSignature(
       signature = "()Lfn;"
    )
-   public DualNode __u_451() {
+   @Export("previous")
+   public DualNode previous() {
       DualNode var1 = this.head;
-      if(var1 == this.sentinel) {
+      if (var1 == this.sentinel) {
          this.head = null;
          return null;
       } else {

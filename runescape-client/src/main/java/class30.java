@@ -9,7 +9,7 @@ public class class30 {
    @ObfuscatedGetter(
       intValue = -1555836449
    )
-   static int __ar_qw;
+   static int field1148;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lar;"
@@ -41,11 +41,6 @@ public class class30 {
    )
    final int field248;
 
-   static {
-      field246 = new class30(0);
-      field247 = new class30(1);
-   }
-
    class30(int var1) {
       this.field248 = var1;
    }
@@ -56,7 +51,7 @@ public class class30 {
       garbageValue = "2127022463"
    )
    static int method571(int var0) {
-      return (int)((Math.log((double)var0) / Interpreter.__bv_r - 7.0D) * 256.0D);
+      return (int)((Math.log((double)var0) / Interpreter.field426 - 7.0D) * 256.0D);
    }
 
    @ObfuscatedName("hp")
@@ -81,43 +76,48 @@ public class class30 {
       garbageValue = "-1070833742"
    )
    static final void method570(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
+      for (int var2 = 0; var2 < var0.length; ++var2) {
          Widget var3 = var0[var2];
-         if(var3 != null) {
-            if(var3.type == 0) {
-               if(var3.children != null) {
+         if (var3 != null) {
+            if (var3.type == 0) {
+               if (var3.children != null) {
                   method570(var3.children, var1);
                }
 
                WidgetGroupParent var4 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var3.id);
-               if(var4 != null) {
+               if (var4 != null) {
                   GrandExchangeEvents.method74(var4.group, var1);
                }
             }
 
-            ScriptEvent var5;
-            if(var1 == 0 && var3.onDialogAbortListener != null) {
-               var5 = new ScriptEvent();
-               var5.widget = var3;
-               var5.args0 = var3.onDialogAbortListener;
-               AbstractIndexCache.runScript(var5);
+            ScriptEvent var6;
+            if (var1 == 0 && var3.onDialogAbortListener != null) {
+               var6 = new ScriptEvent();
+               var6.widget = var3;
+               var6.args0 = var3.onDialogAbortListener;
+               AbstractIndexCache.runScript(var6);
             }
 
-            if(var1 == 1 && var3.__ei != null) {
-               if(var3.childIndex >= 0) {
-                  Widget var6 = Huffman.getWidget(var3.id);
-                  if(var6 == null || var6.children == null || var3.childIndex >= var6.children.length || var3 != var6.children[var3.childIndex]) {
+            if (var1 == 1 && var3.field974 != null) {
+               if (var3.childIndex >= 0) {
+                  Widget var5 = Huffman.getWidget(var3.id);
+                  if (var5 == null || var5.children == null || var3.childIndex >= var5.children.length || var3 != var5.children[var3.childIndex]) {
                      continue;
                   }
                }
 
-               var5 = new ScriptEvent();
-               var5.widget = var3;
-               var5.args0 = var3.__ei;
-               AbstractIndexCache.runScript(var5);
+               var6 = new ScriptEvent();
+               var6.widget = var3;
+               var6.args0 = var3.field974;
+               AbstractIndexCache.runScript(var6);
             }
          }
       }
 
+   }
+
+   static {
+      field246 = new class30(0);
+      field247 = new class30(1);
    }
 }

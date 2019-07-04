@@ -32,11 +32,12 @@ public class class40 {
       garbageValue = "125"
    )
    void method743(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      if(var7 != 0 && this.field326 != 0 && this.field329 != null) {
+      if (var7 != 0 && this.field326 != 0 && this.field329 != null) {
          var8 = this.method744(var8, var7);
          var7 = this.method774(var7);
          Rasterizer2D.raster2d7(var1, var2, var5, var6, var3, var4, this.field329[var7 - 1][var8], this.field326);
       }
+
    }
 
    @ObfuscatedName("f")
@@ -45,15 +46,15 @@ public class class40 {
       garbageValue = "-203451964"
    )
    int method744(int var1, int var2) {
-      if(var2 == 9) {
+      if (var2 == 9) {
          var1 = var1 + 1 & 3;
       }
 
-      if(var2 == 10) {
+      if (var2 == 10) {
          var1 = var1 + 3 & 3;
       }
 
-      if(var2 == 11) {
+      if (var2 == 11) {
          var1 = var1 + 3 & 3;
       }
 
@@ -66,7 +67,7 @@ public class class40 {
       garbageValue = "-63"
    )
    int method774(int var1) {
-      return var1 != 9 && var1 != 10?(var1 == 11?8:var1):1;
+      return var1 != 9 && var1 != 10 ? (var1 == 11 ? 8 : var1) : 1;
    }
 
    @ObfuscatedName("w")
@@ -75,7 +76,7 @@ public class class40 {
       garbageValue = "1551779144"
    )
    void method763() {
-      if(this.field329 == null) {
+      if (this.field329 == null) {
          this.field329 = new byte[8][4][];
          this.method745();
          this.method748();
@@ -86,6 +87,7 @@ public class class40 {
          this.method753();
          this.method754();
       }
+
    }
 
    @ObfuscatedName("o")
@@ -99,9 +101,9 @@ public class class40 {
 
       int var3;
       int var4;
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 <= var3) {
+      for (var3 = 0; var3 < this.field326; ++var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var4 <= var3) {
                var1[var2] = -1;
             }
 
@@ -113,9 +115,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 <= var3) {
+      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var4 <= var3) {
                var1[var2] = -1;
             }
 
@@ -127,9 +129,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 >= var3) {
+      for (var3 = 0; var3 < this.field326; ++var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var4 >= var3) {
                var1[var2] = -1;
             }
 
@@ -141,9 +143,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 >= var3) {
+      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var4 >= var3) {
                var1[var2] = -1;
             }
 
@@ -165,9 +167,9 @@ public class class40 {
 
       int var3;
       int var4;
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 <= var3 >> 1) {
+      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var4 <= var3 >> 1) {
                var1[var2] = -1;
             }
 
@@ -179,10 +181,10 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var2 >= 0 && var2 < var1.length) {
-               if(var4 >= var3 << 1) {
+      for (var3 = 0; var3 < this.field326; ++var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var2 >= 0 && var2 < var1.length) {
+               if (var4 >= var3 << 1) {
                   var1[var2] = -1;
                }
 
@@ -197,9 +199,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 <= var3 >> 1) {
+      for (var3 = 0; var3 < this.field326; ++var3) {
+         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+            if (var4 <= var3 >> 1) {
                var1[var2] = -1;
             }
 
@@ -211,9 +213,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 >= var3 << 1) {
+      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
+         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+            if (var4 >= var3 << 1) {
                var1[var2] = -1;
             }
 
@@ -235,9 +237,9 @@ public class class40 {
 
       int var3;
       int var4;
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 <= var3 >> 1) {
+      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
+         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+            if (var4 <= var3 >> 1) {
                var1[var2] = -1;
             }
 
@@ -249,9 +251,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 >= var3 << 1) {
+      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var4 >= var3 << 1) {
                var1[var2] = -1;
             }
 
@@ -263,9 +265,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 <= var3 >> 1) {
+      for (var3 = 0; var3 < this.field326; ++var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var4 <= var3 >> 1) {
                var1[var2] = -1;
             }
 
@@ -277,9 +279,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 >= var3 << 1) {
+      for (var3 = 0; var3 < this.field326; ++var3) {
+         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+            if (var4 >= var3 << 1) {
                var1[var2] = -1;
             }
 
@@ -301,9 +303,9 @@ public class class40 {
 
       int var3;
       int var4;
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 >= var3 >> 1) {
+      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var4 >= var3 >> 1) {
                var1[var2] = -1;
             }
 
@@ -315,9 +317,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 <= var3 << 1) {
+      for (var3 = 0; var3 < this.field326; ++var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var4 <= var3 << 1) {
                var1[var2] = -1;
             }
 
@@ -329,9 +331,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 >= var3 >> 1) {
+      for (var3 = 0; var3 < this.field326; ++var3) {
+         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+            if (var4 >= var3 >> 1) {
                var1[var2] = -1;
             }
 
@@ -343,9 +345,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 <= var3 << 1) {
+      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
+         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+            if (var4 <= var3 << 1) {
                var1[var2] = -1;
             }
 
@@ -367,9 +369,9 @@ public class class40 {
 
       int var3;
       int var4;
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 >= var3 >> 1) {
+      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
+         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+            if (var4 >= var3 >> 1) {
                var1[var2] = -1;
             }
 
@@ -381,9 +383,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 <= var3 << 1) {
+      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var4 <= var3 << 1) {
                var1[var2] = -1;
             }
 
@@ -395,9 +397,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 >= var3 >> 1) {
+      for (var3 = 0; var3 < this.field326; ++var3) {
+         for (var4 = 0; var4 < this.field326; ++var4) {
+            if (var4 >= var3 >> 1) {
                var1[var2] = -1;
             }
 
@@ -409,9 +411,9 @@ public class class40 {
       var1 = new byte[this.field326 * this.field326];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 <= var3 << 1) {
+      for (var3 = 0; var3 < this.field326; ++var3) {
+         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+            if (var4 <= var3 << 1) {
                var1[var2] = -1;
             }
 
@@ -431,59 +433,59 @@ public class class40 {
       byte[] var1 = new byte[this.field326 * this.field326];
       boolean var2 = false;
       var1 = new byte[this.field326 * this.field326];
-      int var5 = 0;
+      int var3 = 0;
 
-      int var3;
       int var4;
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 <= this.field326 / 2) {
-               var1[var5] = -1;
+      int var5;
+      for (var4 = 0; var4 < this.field326; ++var4) {
+         for (var5 = 0; var5 < this.field326; ++var5) {
+            if (var5 <= this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field329[5][0] = var1;
       var1 = new byte[this.field326 * this.field326];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var3 <= this.field326 / 2) {
-               var1[var5] = -1;
+      for (var4 = 0; var4 < this.field326; ++var4) {
+         for (var5 = 0; var5 < this.field326; ++var5) {
+            if (var4 <= this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field329[5][1] = var1;
       var1 = new byte[this.field326 * this.field326];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 >= this.field326 / 2) {
-               var1[var5] = -1;
+      for (var4 = 0; var4 < this.field326; ++var4) {
+         for (var5 = 0; var5 < this.field326; ++var5) {
+            if (var5 >= this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field329[5][2] = var1;
       var1 = new byte[this.field326 * this.field326];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var3 >= this.field326 / 2) {
-               var1[var5] = -1;
+      for (var4 = 0; var4 < this.field326; ++var4) {
+         for (var5 = 0; var5 < this.field326; ++var5) {
+            if (var4 >= this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
@@ -499,59 +501,59 @@ public class class40 {
       byte[] var1 = new byte[this.field326 * this.field326];
       boolean var2 = false;
       var1 = new byte[this.field326 * this.field326];
-      int var5 = 0;
+      int var3 = 0;
 
-      int var3;
       int var4;
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 <= var3 - this.field326 / 2) {
-               var1[var5] = -1;
+      int var5;
+      for (var4 = 0; var4 < this.field326; ++var4) {
+         for (var5 = 0; var5 < this.field326; ++var5) {
+            if (var5 <= var4 - this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field329[6][0] = var1;
       var1 = new byte[this.field326 * this.field326];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 <= var3 - this.field326 / 2) {
-               var1[var5] = -1;
+      for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+         for (var5 = 0; var5 < this.field326; ++var5) {
+            if (var5 <= var4 - this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field329[6][1] = var1;
       var1 = new byte[this.field326 * this.field326];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 <= var3 - this.field326 / 2) {
-               var1[var5] = -1;
+      for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+         for (var5 = this.field326 - 1; var5 >= 0; --var5) {
+            if (var5 <= var4 - this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field329[6][2] = var1;
       var1 = new byte[this.field326 * this.field326];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 <= var3 - this.field326 / 2) {
-               var1[var5] = -1;
+      for (var4 = 0; var4 < this.field326; ++var4) {
+         for (var5 = this.field326 - 1; var5 >= 0; --var5) {
+            if (var5 <= var4 - this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
@@ -567,59 +569,59 @@ public class class40 {
       byte[] var1 = new byte[this.field326 * this.field326];
       boolean var2 = false;
       var1 = new byte[this.field326 * this.field326];
-      int var5 = 0;
+      int var3 = 0;
 
-      int var3;
       int var4;
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 >= var3 - this.field326 / 2) {
-               var1[var5] = -1;
+      int var5;
+      for (var4 = 0; var4 < this.field326; ++var4) {
+         for (var5 = 0; var5 < this.field326; ++var5) {
+            if (var5 >= var4 - this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field329[7][0] = var1;
       var1 = new byte[this.field326 * this.field326];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field326; ++var4) {
-            if(var4 >= var3 - this.field326 / 2) {
-               var1[var5] = -1;
+      for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+         for (var5 = 0; var5 < this.field326; ++var5) {
+            if (var5 >= var4 - this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field329[7][1] = var1;
       var1 = new byte[this.field326 * this.field326];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 >= var3 - this.field326 / 2) {
-               var1[var5] = -1;
+      for (var4 = this.field326 - 1; var4 >= 0; --var4) {
+         for (var5 = this.field326 - 1; var5 >= 0; --var5) {
+            if (var5 >= var4 - this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field329[7][2] = var1;
       var1 = new byte[this.field326 * this.field326];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = 0; var3 < this.field326; ++var3) {
-         for(var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if(var4 >= var3 - this.field326 / 2) {
-               var1[var5] = -1;
+      for (var4 = 0; var4 < this.field326; ++var4) {
+         for (var5 = this.field326 - 1; var5 >= 0; --var5) {
+            if (var5 >= var4 - this.field326 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
@@ -642,58 +644,58 @@ public class class40 {
       int[] var5 = Players.Players_indices;
 
       int var6;
-      for(var6 = 0; var6 < var4; ++var6) {
-         if(var5[var6] != Client.combatTargetPlayerIndex && var5[var6] != Client.localPlayerIndex) {
+      for (var6 = 0; var6 < var4; ++var6) {
+         if (var5[var6] != Client.combatTargetPlayerIndex && var5[var6] != Client.localPlayerIndex) {
             WorldMapCacheName.addPlayerToScene(Client.players[var5[var6]], true);
          }
       }
 
       BufferedSource.method3423(false);
 
-      for(Projectile var20 = (Projectile)Client.projectiles.last(); var20 != null; var20 = (Projectile)Client.projectiles.previous()) {
-         if(var20.plane == SoundSystem.plane && Client.cycle <= var20.cycleEnd) {
-            if(Client.cycle >= var20.cycleStart) {
-               if(var20.targetIndex > 0) {
-                  Npc var22 = Client.npcs[var20.targetIndex - 1];
-                  if(var22 != null && var22.x >= 0 && var22.x < 13312 && var22.y >= 0 && var22.y < 13312) {
-                     var20.setDestination(var22.x, var22.y, class32.getTileHeight(var22.x, var22.y, var20.plane) - var20.endHeight, Client.cycle);
+      for (Projectile var7 = (Projectile)Client.projectiles.last(); var7 != null; var7 = (Projectile)Client.projectiles.previous()) {
+         if (var7.plane == SoundSystem.plane && Client.cycle <= var7.cycleEnd) {
+            if (Client.cycle >= var7.cycleStart) {
+               if (var7.targetIndex > 0) {
+                  NPC var8 = Client.npcs[var7.targetIndex - 1];
+                  if (var8 != null && var8.x >= 0 && var8.x < 13312 && var8.y >= 0 && var8.y < 13312) {
+                     var7.setDestination(var8.x, var8.y, class32.getTileHeight(var8.x, var8.y, var7.plane) - var7.endHeight, Client.cycle);
                   }
                }
 
-               if(var20.targetIndex < 0) {
-                  var6 = -var20.targetIndex - 1;
+               if (var7.targetIndex < 0) {
+                  var6 = -var7.targetIndex - 1;
                   Player var23;
-                  if(var6 == Client.localPlayerIndex) {
+                  if (var6 == Client.localPlayerIndex) {
                      var23 = Canvas.localPlayer;
                   } else {
                      var23 = Client.players[var6];
                   }
 
-                  if(var23 != null && var23.x >= 0 && var23.x < 13312 && var23.y >= 0 && var23.y < 13312) {
-                     var20.setDestination(var23.x, var23.y, class32.getTileHeight(var23.x, var23.y, var20.plane) - var20.endHeight, Client.cycle);
+                  if (var23 != null && var23.x >= 0 && var23.x < 13312 && var23.y >= 0 && var23.y < 13312) {
+                     var7.setDestination(var23.x, var23.y, class32.getTileHeight(var23.x, var23.y, var7.plane) - var7.endHeight, Client.cycle);
                   }
                }
 
-               var20.advance(Client.__client_gy);
-               class65.scene.__a_239(SoundSystem.plane, (int)var20.x, (int)var20.y, (int)var20.z, 60, var20, var20.yaw, -1L, false);
+               var7.advance(Client.field183);
+               class65.scene.method285(SoundSystem.plane, (int)var7.x, (int)var7.y, (int)var7.z, 60, var7, var7.yaw, -1L, false);
             }
          } else {
-            var20.remove();
+            var7.remove();
          }
       }
 
-      for(GraphicsObject var25 = (GraphicsObject)Client.graphicsObjects.last(); var25 != null; var25 = (GraphicsObject)Client.graphicsObjects.previous()) {
-         if(var25.plane == SoundSystem.plane && !var25.isFinished) {
-            if(Client.cycle >= var25.cycleStart) {
-               var25.advance(Client.__client_gy);
-               if(var25.isFinished) {
-                  var25.remove();
+      for (GraphicsObject var21 = (GraphicsObject)Client.graphicsObjects.last(); var21 != null; var21 = (GraphicsObject)Client.graphicsObjects.previous()) {
+         if (var21.plane == SoundSystem.plane && !var21.isFinished) {
+            if (Client.cycle >= var21.cycleStart) {
+               var21.advance(Client.field183);
+               if (var21.isFinished) {
+                  var21.remove();
                } else {
-                  class65.scene.__a_239(var25.plane, var25.x, var25.y, var25.height, 60, var25, 0, -1L, false);
+                  class65.scene.method285(var21.plane, var21.x, var21.y, var21.height, 60, var21, 0, -1L, false);
                }
             }
          } else {
-            var25.remove();
+            var21.remove();
          }
       }
 
@@ -704,111 +706,111 @@ public class class40 {
       var3 = Client.viewportHeight;
       Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
       Rasterizer3D.Rasterizer3D_method1();
-      int var7;
-      int var8;
       int var9;
       int var10;
       int var11;
       int var12;
       int var13;
       int var14;
-      int var21;
-      if(!Client.isCameraLocked) {
+      int var15;
+      int var22;
+      int var24;
+      if (!Client.isCameraLocked) {
          var4 = Client.cameraPitchTarget;
-         if(Client.__client_ik / 256 > var4) {
-            var4 = Client.__client_ik / 256;
+         if (Client.field202 / 256 > var4) {
+            var4 = Client.field202 / 256;
          }
 
-         if(Client.__client_rh[4] && Client.__client_rl[4] + 128 > var4) {
-            var4 = Client.__client_rl[4] + 128;
+         if (Client.field139[4] && Client.field142[4] + 128 > var4) {
+            var4 = Client.field142[4] + 128;
          }
 
-         var21 = Client.minimapOrientation & 2047;
+         var15 = Client.minimapOrientation & 2047;
          var6 = MouseHandler.oculusOrbFocalPointX;
-         var7 = MouseRecorder.__bu_hy;
-         var8 = ScriptEvent.oculusOrbFocalPointY;
+         var22 = MouseRecorder.field566;
+         var24 = ScriptEvent.oculusOrbFocalPointY;
          var9 = var4 * 3 + 600;
          var10 = ScriptEvent.method1176(var9, var3);
          var11 = 2048 - var4 & 2047;
-         var12 = 2048 - var21 & 2047;
+         var12 = 2048 - var15 & 2047;
          var13 = 0;
          var14 = 0;
-         int var15 = var10;
-         int var16;
+         int var16 = var10;
          int var17;
          int var18;
-         if(var11 != 0) {
-            var16 = Rasterizer3D.Rasterizer3D_sine[var11];
-            var17 = Rasterizer3D.Rasterizer3D_cosine[var11];
-            var18 = var14 * var17 - var16 * var10 >> 16;
-            var15 = var17 * var10 + var16 * var14 >> 16;
-            var14 = var18;
+         int var19;
+         if (var11 != 0) {
+            var17 = Rasterizer3D.Rasterizer3D_sine[var11];
+            var18 = Rasterizer3D.Rasterizer3D_cosine[var11];
+            var19 = var14 * var18 - var17 * var10 >> 16;
+            var16 = var18 * var10 + var17 * var14 >> 16;
+            var14 = var19;
          }
 
-         if(var12 != 0) {
-            var16 = Rasterizer3D.Rasterizer3D_sine[var12];
-            var17 = Rasterizer3D.Rasterizer3D_cosine[var12];
-            var18 = var15 * var16 + var17 * var13 >> 16;
-            var15 = var15 * var17 - var16 * var13 >> 16;
-            var13 = var18;
+         if (var12 != 0) {
+            var17 = Rasterizer3D.Rasterizer3D_sine[var12];
+            var18 = Rasterizer3D.Rasterizer3D_cosine[var12];
+            var19 = var16 * var17 + var18 * var13 >> 16;
+            var16 = var16 * var18 - var17 * var13 >> 16;
+            var13 = var19;
          }
 
          WorldMapSection1.cameraX = var6 - var13;
-         GrandExchangeEvents.cameraY = var7 - var14;
-         class11.cameraZ = var8 - var15;
+         GrandExchangeEvents.cameraY = var22 - var14;
+         class11.cameraZ = var24 - var16;
          WorldMapIcon1.cameraPitch = var4;
-         MusicPatchNode.cameraYaw = var21;
-         if(Client.oculusOrbState == 1 && Client.rights >= 2 && Client.cycle % 50 == 0 && (MouseHandler.oculusOrbFocalPointX >> 7 != Canvas.localPlayer.x >> 7 || ScriptEvent.oculusOrbFocalPointY >> 7 != Canvas.localPlayer.y >> 7)) {
-            var16 = Canvas.localPlayer.plane;
-            var17 = (MouseHandler.oculusOrbFocalPointX >> 7) + class50.baseX;
-            var18 = (ScriptEvent.oculusOrbFocalPointY >> 7) + GraphicsObject.baseY;
-            PacketBufferNode var19 = Interpreter.method1915(ClientPacket.__gs_bx, Client.packetWriter.isaacCipher);
-            var19.packetBuffer.writeIntME(Client.__client_il);
-            var19.packetBuffer.writeShortLE(var18);
-            var19.packetBuffer.__ai_315(var16);
-            var19.packetBuffer.writeShort(var17);
-            Client.packetWriter.__q_167(var19);
+         MusicPatchNode.cameraYaw = var15;
+         if (Client.oculusOrbState == 1 && Client.rights >= 2 && Client.cycle % 50 == 0 && (MouseHandler.oculusOrbFocalPointX >> 7 != Canvas.localPlayer.x >> 7 || ScriptEvent.oculusOrbFocalPointY >> 7 != Canvas.localPlayer.y >> 7)) {
+            var17 = Canvas.localPlayer.plane;
+            var18 = (MouseHandler.oculusOrbFocalPointX >> 7) + class50.baseX;
+            var19 = (ScriptEvent.oculusOrbFocalPointY >> 7) + GraphicsObject.baseY;
+            PacketBufferNode var20 = Interpreter.method1915(ClientPacket.field283, Client.packetWriter.isaacCipher);
+            var20.packetBuffer.writeIntME(Client.field198);
+            var20.packetBuffer.writeShortLE(var19);
+            var20.packetBuffer.method56(var17);
+            var20.packetBuffer.writeShort(var18);
+            Client.packetWriter.method241(var20);
          }
       }
 
-      if(!Client.isCameraLocked) {
+      if (!Client.isCameraLocked) {
          var4 = UnitPriceComparator.method131();
       } else {
          var4 = Login.method2061();
       }
 
-      var21 = WorldMapSection1.cameraX;
+      var15 = WorldMapSection1.cameraX;
       var6 = GrandExchangeEvents.cameraY;
-      var7 = class11.cameraZ;
-      var8 = WorldMapIcon1.cameraPitch;
+      var22 = class11.cameraZ;
+      var24 = WorldMapIcon1.cameraPitch;
       var9 = MusicPatchNode.cameraYaw;
 
-      for(var10 = 0; var10 < 5; ++var10) {
-         if(Client.__client_rh[var10]) {
-            var11 = (int)(Math.random() * (double)(Client.__client_rd[var10] * 2 + 1) - (double)Client.__client_rd[var10] + Math.sin((double)Client.__client_rk[var10] * ((double)Client.__client_rj[var10] / 100.0D)) * (double)Client.__client_rl[var10]);
-            if(var10 == 0) {
+      for (var10 = 0; var10 < 5; ++var10) {
+         if (Client.field139[var10]) {
+            var11 = (int)(Math.random() * (double)(Client.field141[var10] * 2 + 1) - (double)Client.field141[var10] + Math.sin((double)Client.field144[var10] * ((double)Client.field143[var10] / 100.0D)) * (double)Client.field142[var10]);
+            if (var10 == 0) {
                WorldMapSection1.cameraX += var11;
             }
 
-            if(var10 == 1) {
+            if (var10 == 1) {
                GrandExchangeEvents.cameraY += var11;
             }
 
-            if(var10 == 2) {
+            if (var10 == 2) {
                class11.cameraZ += var11;
             }
 
-            if(var10 == 3) {
+            if (var10 == 3) {
                MusicPatchNode.cameraYaw = var11 + MusicPatchNode.cameraYaw & 2047;
             }
 
-            if(var10 == 4) {
+            if (var10 == 4) {
                WorldMapIcon1.cameraPitch += var11;
-               if(WorldMapIcon1.cameraPitch < 128) {
+               if (WorldMapIcon1.cameraPitch < 128) {
                   WorldMapIcon1.cameraPitch = 128;
                }
 
-               if(WorldMapIcon1.cameraPitch > 383) {
+               if (WorldMapIcon1.cameraPitch > 383) {
                   WorldMapIcon1.cameraPitch = 383;
                }
             }
@@ -817,12 +819,12 @@ public class class40 {
 
       var10 = MouseHandler.MouseHandler_x;
       var11 = MouseHandler.MouseHandler_y;
-      if(MouseHandler.MouseHandler_lastButton != 0) {
+      if (MouseHandler.MouseHandler_lastButton != 0) {
          var10 = MouseHandler.MouseHandler_lastPressedX;
          var11 = MouseHandler.MouseHandler_lastPressedY;
       }
 
-      if(var10 >= var0 && var10 < var0 + var2 && var11 >= var1 && var11 < var3 + var1) {
+      if (var10 >= var0 && var10 < var0 + var2 && var11 >= var1 && var11 < var3 + var1) {
          var12 = var10 - var0;
          var13 = var11 - var1;
          ViewportMouse.ViewportMouse_x = var12;
@@ -846,36 +848,36 @@ public class class40 {
       class65.scene.clearTempGameObjects();
       UrlRequester.method3258(var0, var1, var2, var3);
       UnitPriceComparator.method136(var0, var1);
-      ((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).animate(Client.__client_gy);
-      Client.__client_jc = 0;
+      ((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).animate(Client.field183);
+      Client.field208 = 0;
       var13 = (Canvas.localPlayer.x >> 7) + class50.baseX;
       var14 = (Canvas.localPlayer.y >> 7) + GraphicsObject.baseY;
-      if(var13 >= 3053 && var13 <= 3156 && var14 >= 3056 && var14 <= 3136) {
-         Client.__client_jc = 1;
+      if (var13 >= 3053 && var13 <= 3156 && var14 >= 3056 && var14 <= 3136) {
+         Client.field208 = 1;
       }
 
-      if(var13 >= 3072 && var13 <= 3118 && var14 >= 9492 && var14 <= 9535) {
-         Client.__client_jc = 1;
+      if (var13 >= 3072 && var13 <= 3118 && var14 >= 9492 && var14 <= 9535) {
+         Client.field208 = 1;
       }
 
-      if(Client.__client_jc == 1 && var13 >= 3139 && var13 <= 3199 && var14 >= 3008 && var14 <= 3062) {
-         Client.__client_jc = 0;
+      if (Client.field208 == 1 && var13 >= 3139 && var13 <= 3199 && var14 >= 3008 && var14 <= 3062) {
+         Client.field208 = 0;
       }
 
-      WorldMapSection1.cameraX = var21;
+      WorldMapSection1.cameraX = var15;
       GrandExchangeEvents.cameraY = var6;
-      class11.cameraZ = var7;
-      WorldMapIcon1.cameraPitch = var8;
+      class11.cameraZ = var22;
+      WorldMapIcon1.cameraPitch = var24;
       MusicPatchNode.cameraYaw = var9;
-      if(Client.isLoading) {
-         byte var24 = 0;
-         var14 = var24 + NetCache.NetCache_pendingPriorityWritesCount + NetCache.NetCache_pendingPriorityResponsesCount;
-         if(var14 == 0) {
+      if (Client.isLoading) {
+         byte var25 = 0;
+         var14 = var25 + NetCache.NetCache_pendingPriorityWritesCount + NetCache.NetCache_pendingPriorityResponsesCount;
+         if (var14 == 0) {
             Client.isLoading = false;
          }
       }
 
-      if(Client.isLoading) {
+      if (Client.isLoading) {
          Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var3, 0);
          class68.drawLoadingMessage("Loading - please wait.", false);
       }

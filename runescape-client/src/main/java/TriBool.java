@@ -31,21 +31,21 @@ public class TriBool {
    @Export("urlRequester")
    static UrlRequester urlRequester;
 
-   static {
-      TriBool_unknown = new TriBool();
-      TriBool_true = new TriBool();
-      TriBool_false = new TriBool();
-   }
-
    @ObfuscatedName("go")
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "-1009406649"
    )
    static void method5560() {
-      if(Client.combatTargetPlayerIndex >= 0 && Client.players[Client.combatTargetPlayerIndex] != null) {
+      if (Client.combatTargetPlayerIndex >= 0 && Client.players[Client.combatTargetPlayerIndex] != null) {
          WorldMapCacheName.addPlayerToScene(Client.players[Client.combatTargetPlayerIndex], false);
       }
 
+   }
+
+   static {
+      TriBool_unknown = new TriBool();
+      TriBool_true = new TriBool();
+      TriBool_false = new TriBool();
    }
 }

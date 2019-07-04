@@ -17,52 +17,52 @@ public class MidiPcmStream extends PcmStream {
    @ObfuscatedGetter(
       intValue = 335918727
    )
-   int __f;
+   int field495;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 2095480747
    )
-   int __q;
+   int field496;
    @ObfuscatedName("o")
-   int[] __o;
+   int[] field497;
    @ObfuscatedName("u")
-   int[] __u;
+   int[] field498;
    @ObfuscatedName("g")
-   int[] __g;
+   int[] field499;
    @ObfuscatedName("l")
-   int[] __l;
+   int[] field500;
    @ObfuscatedName("e")
-   int[] __e;
+   int[] field501;
    @ObfuscatedName("x")
-   int[] __x;
+   int[] field502;
    @ObfuscatedName("d")
-   int[] __d;
+   int[] field503;
    @ObfuscatedName("k")
-   int[] __k;
+   int[] field504;
    @ObfuscatedName("n")
-   int[] __n;
+   int[] field505;
    @ObfuscatedName("y")
-   int[] __y;
+   int[] field506;
    @ObfuscatedName("h")
-   int[] __h;
+   int[] field507;
    @ObfuscatedName("b")
-   int[] __b;
+   int[] field508;
    @ObfuscatedName("c")
-   int[] __c;
+   int[] field509;
    @ObfuscatedName("r")
-   int[] __r;
+   int[] field510;
    @ObfuscatedName("p")
-   int[] __p;
+   int[] field511;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "[[Lha;"
    )
-   MusicPatchNode[][] __v;
+   MusicPatchNode[][] field512;
    @ObfuscatedName("ag")
    @ObfuscatedSignature(
       signature = "[[Lha;"
    )
-   MusicPatchNode[][] __ag;
+   MusicPatchNode[][] field513;
    @ObfuscatedName("aq")
    @ObfuscatedSignature(
       signature = "Lhs;"
@@ -70,7 +70,7 @@ public class MidiPcmStream extends PcmStream {
    @Export("midiFile")
    MidiFileReader midiFile;
    @ObfuscatedName("aj")
-   boolean __aj;
+   boolean field514;
    @ObfuscatedName("av")
    @ObfuscatedGetter(
       intValue = 1450922835
@@ -87,12 +87,12 @@ public class MidiPcmStream extends PcmStream {
    @ObfuscatedGetter(
       longValue = -7547625335559871937L
    )
-   long __ac;
+   long field515;
    @ObfuscatedName("ay")
    @ObfuscatedGetter(
       longValue = 3736036110499628937L
    )
-   long __ay;
+   long field516;
    @ObfuscatedName("ah")
    @ObfuscatedSignature(
       signature = "Lhq;"
@@ -101,29 +101,29 @@ public class MidiPcmStream extends PcmStream {
    MusicPatchPcmStream patchStream;
 
    public MidiPcmStream() {
-      this.__f = 256;
-      this.__q = 1000000;
-      this.__o = new int[16];
-      this.__u = new int[16];
-      this.__g = new int[16];
-      this.__l = new int[16];
-      this.__e = new int[16];
-      this.__x = new int[16];
-      this.__d = new int[16];
-      this.__k = new int[16];
-      this.__n = new int[16];
-      this.__y = new int[16];
-      this.__h = new int[16];
-      this.__b = new int[16];
-      this.__c = new int[16];
-      this.__r = new int[16];
-      this.__p = new int[16];
-      this.__v = new MusicPatchNode[16][128];
-      this.__ag = new MusicPatchNode[16][128];
+      this.field495 = 256;
+      this.field496 = 1000000;
+      this.field497 = new int[16];
+      this.field498 = new int[16];
+      this.field499 = new int[16];
+      this.field500 = new int[16];
+      this.field501 = new int[16];
+      this.field502 = new int[16];
+      this.field503 = new int[16];
+      this.field504 = new int[16];
+      this.field505 = new int[16];
+      this.field506 = new int[16];
+      this.field507 = new int[16];
+      this.field508 = new int[16];
+      this.field509 = new int[16];
+      this.field510 = new int[16];
+      this.field511 = new int[16];
+      this.field512 = new MusicPatchNode[16][128];
+      this.field513 = new MusicPatchNode[16][128];
       this.midiFile = new MidiFileReader();
       this.patchStream = new MusicPatchPcmStream(this);
       this.musicPatches = new NodeHashTable(128);
-      this.__at_354();
+      this.method186();
    }
 
    @ObfuscatedName("m")
@@ -131,8 +131,8 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IB)V",
       garbageValue = "92"
    )
-   public synchronized void __m_340(int var1) {
-      this.__f = var1;
+   public synchronized void method169(int var1) {
+      this.field495 = var1;
    }
 
    @ObfuscatedName("f")
@@ -140,8 +140,8 @@ public class MidiPcmStream extends PcmStream {
       signature = "(I)I",
       garbageValue = "2067929289"
    )
-   public int __f_341() {
-      return this.__f;
+   public int method170() {
+      return this.field495;
    }
 
    @ObfuscatedName("q")
@@ -151,19 +151,19 @@ public class MidiPcmStream extends PcmStream {
    )
    @Export("loadMusicTrack")
    public synchronized boolean loadMusicTrack(MusicTrack var1, AbstractIndexCache var2, SoundCache var3, int var4) {
-      var1.__f_381();
+      var1.method226();
       boolean var5 = true;
       int[] var6 = null;
-      if(var4 > 0) {
+      if (var4 > 0) {
          var6 = new int[]{var4};
       }
 
-      for(ByteArrayNode var7 = (ByteArrayNode)var1.table.first(); var7 != null; var7 = (ByteArrayNode)var1.table.next()) {
+      for (ByteArrayNode var7 = (ByteArrayNode)var1.table.first(); var7 != null; var7 = (ByteArrayNode)var1.table.next()) {
          int var8 = (int)var7.key;
          MusicPatch var9 = (MusicPatch)this.musicPatches.get((long)var8);
-         if(var9 == null) {
+         if (var9 == null) {
             var9 = Login.method2045(var2, var8);
-            if(var9 == null) {
+            if (var9 == null) {
                var5 = false;
                continue;
             }
@@ -171,12 +171,12 @@ public class MidiPcmStream extends PcmStream {
             this.musicPatches.put(var9, (long)var8);
          }
 
-         if(!var9.__f_373(var3, var7.byteArray, var6)) {
+         if (!var9.method218(var3, var7.byteArray, var6)) {
             var5 = false;
          }
       }
 
-      if(var5) {
+      if (var5) {
          var1.clear();
       }
 
@@ -190,7 +190,7 @@ public class MidiPcmStream extends PcmStream {
    )
    @Export("clearAll")
    public synchronized void clearAll() {
-      for(MusicPatch var1 = (MusicPatch)this.musicPatches.first(); var1 != null; var1 = (MusicPatch)this.musicPatches.next()) {
+      for (MusicPatch var1 = (MusicPatch)this.musicPatches.first(); var1 != null; var1 = (MusicPatch)this.musicPatches.next()) {
          var1.clear();
       }
 
@@ -203,7 +203,7 @@ public class MidiPcmStream extends PcmStream {
    )
    @Export("removeAll")
    public synchronized void removeAll() {
-      for(MusicPatch var1 = (MusicPatch)this.musicPatches.first(); var1 != null; var1 = (MusicPatch)this.musicPatches.next()) {
+      for (MusicPatch var1 = (MusicPatch)this.musicPatches.first(); var1 != null; var1 = (MusicPatch)this.musicPatches.next()) {
          var1.remove();
       }
 
@@ -228,32 +228,32 @@ public class MidiPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("l")
-   protected synchronized int __l_171() {
+   protected synchronized int vmethod262() {
       return 0;
    }
 
    @ObfuscatedName("e")
-   protected synchronized void __e_172(int[] var1, int var2, int var3) {
-      if(this.midiFile.isReady()) {
-         int var4 = this.midiFile.division * this.__q / class309.PcmPlayer_sampleRate;
+   protected synchronized void vmethod263(int[] var1, int var2, int var3) {
+      if (this.midiFile.isReady()) {
+         int var4 = this.midiFile.division * this.field496 / class309.PcmPlayer_sampleRate;
 
          do {
-            long var5 = (long)var4 * (long)var3 + this.__ac;
-            if(this.__ay - var5 >= 0L) {
-               this.__ac = var5;
+            long var5 = (long)var4 * (long)var3 + this.field515;
+            if (this.field516 - var5 >= 0L) {
+               this.field515 = var5;
                break;
             }
 
-            int var7 = (int)(((long)var4 + (this.__ay - this.__ac) - 1L) / (long)var4);
-            this.__ac += (long)var4 * (long)var7;
-            this.patchStream.__e_172(var1, var2, var7);
+            int var7 = (int)(((long)var4 + (this.field516 - this.field515) - 1L) / (long)var4);
+            this.field515 += (long)var4 * (long)var7;
+            this.patchStream.vmethod263(var1, var2, var7);
             var2 += var7;
             var3 -= var7;
-            this.__ai_367();
+            this.method194();
          } while(this.midiFile.isReady());
       }
 
-      this.patchStream.__e_172(var1, var2, var3);
+      this.patchStream.vmethod263(var1, var2, var3);
    }
 
    @ObfuscatedName("x")
@@ -265,11 +265,11 @@ public class MidiPcmStream extends PcmStream {
    public synchronized void setMusicTrack(MusicTrack var1, boolean var2) {
       this.clear();
       this.midiFile.parse(var1.midi);
-      this.__aj = var2;
-      this.__ac = 0L;
+      this.field514 = var2;
+      this.field515 = 0L;
       int var3 = this.midiFile.trackCount();
 
-      for(int var4 = 0; var4 < var3; ++var4) {
+      for (int var4 = 0; var4 < var3; ++var4) {
          this.midiFile.gotoTrack(var4);
          this.midiFile.readTrackLength(var4);
          this.midiFile.markTrackPosition(var4);
@@ -277,30 +277,30 @@ public class MidiPcmStream extends PcmStream {
 
       this.track = this.midiFile.getPrioritizedTrack();
       this.trackLength = this.midiFile.trackLengths[this.track];
-      this.__ay = this.midiFile.__a_372(this.trackLength);
+      this.field516 = this.midiFile.method168(this.trackLength);
    }
 
    @ObfuscatedName("d")
-   protected synchronized void __d_173(int var1) {
-      if(this.midiFile.isReady()) {
-         int var2 = this.midiFile.division * this.__q / class309.PcmPlayer_sampleRate;
+   protected synchronized void vmethod264(int var1) {
+      if (this.midiFile.isReady()) {
+         int var2 = this.midiFile.division * this.field496 / class309.PcmPlayer_sampleRate;
 
          do {
-            long var3 = this.__ac + (long)var2 * (long)var1;
-            if(this.__ay - var3 >= 0L) {
-               this.__ac = var3;
+            long var3 = this.field515 + (long)var2 * (long)var1;
+            if (this.field516 - var3 >= 0L) {
+               this.field515 = var3;
                break;
             }
 
-            int var5 = (int)(((long)var2 + (this.__ay - this.__ac) - 1L) / (long)var2);
-            this.__ac += (long)var5 * (long)var2;
-            this.patchStream.__d_173(var5);
+            int var5 = (int)(((long)var2 + (this.field516 - this.field515) - 1L) / (long)var2);
+            this.field515 += (long)var5 * (long)var2;
+            this.patchStream.vmethod264(var5);
             var1 -= var5;
-            this.__ai_367();
+            this.method194();
          } while(this.midiFile.isReady());
       }
 
-      this.patchStream.__d_173(var1);
+      this.patchStream.vmethod264(var1);
    }
 
    @ObfuscatedName("a")
@@ -311,7 +311,7 @@ public class MidiPcmStream extends PcmStream {
    @Export("clear")
    public synchronized void clear() {
       this.midiFile.clear();
-      this.__at_354();
+      this.method186();
    }
 
    @ObfuscatedName("z")
@@ -329,8 +329,8 @@ public class MidiPcmStream extends PcmStream {
       signature = "(III)V",
       garbageValue = "789206119"
    )
-   public synchronized void __j_342(int var1, int var2) {
-      this.__s_343(var1, var2);
+   public synchronized void method174(int var1, int var2) {
+      this.method175(var1, var2);
    }
 
    @ObfuscatedName("s")
@@ -338,10 +338,10 @@ public class MidiPcmStream extends PcmStream {
       signature = "(III)V",
       garbageValue = "-1475022240"
    )
-   void __s_343(int var1, int var2) {
-      this.__l[var1] = var2;
-      this.__x[var1] = var2 & -128;
-      this.__t_344(var1, var2);
+   void method175(int var1, int var2) {
+      this.field500[var1] = var2;
+      this.field502[var1] = var2 & -128;
+      this.method176(var1, var2);
    }
 
    @ObfuscatedName("t")
@@ -349,12 +349,12 @@ public class MidiPcmStream extends PcmStream {
       signature = "(III)V",
       garbageValue = "-213159072"
    )
-   void __t_344(int var1, int var2) {
-      if(var2 != this.__e[var1]) {
-         this.__e[var1] = var2;
+   void method176(int var1, int var2) {
+      if (var2 != this.field501[var1]) {
+         this.field501[var1] = var2;
 
-         for(int var3 = 0; var3 < 128; ++var3) {
-            this.__ag[var1][var3] = null;
+         for (int var3 = 0; var3 < 128; ++var3) {
+            this.field513[var1][var3] = null;
          }
       }
 
@@ -365,67 +365,68 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IIIB)V",
       garbageValue = "15"
    )
-   void __y_345(int var1, int var2, int var3) {
-      this.__b_347(var1, var2, 64);
-      if((this.__y[var1] & 2) != 0) {
-         for(MusicPatchNode var4 = (MusicPatchNode)this.patchStream.queue.first(); var4 != null; var4 = (MusicPatchNode)this.patchStream.queue.next()) {
-            if(var4.__m == var1 && var4.__a < 0) {
-               this.__v[var1][var4.__u] = null;
-               this.__v[var1][var2] = var4;
-               int var5 = (var4.__d * var4.__x >> 12) + var4.__e;
-               var4.__e += var2 - var4.__u << 8;
-               var4.__x = var5 - var4.__e;
-               var4.__d = 4096;
-               var4.__u = var2;
+   void method177(int var1, int var2, int var3) {
+      this.method179(var1, var2, 64);
+      if ((this.field506[var1] & 2) != 0) {
+         for (MusicPatchNode var4 = (MusicPatchNode)this.patchStream.queue.first(); var4 != null; var4 = (MusicPatchNode)this.patchStream.queue.next()) {
+            if (var4.field574 == var1 && var4.field586 < 0) {
+               this.field512[var1][var4.field577] = null;
+               this.field512[var1][var2] = var4;
+               int var5 = (var4.field582 * var4.field581 >> 12) + var4.field580;
+               var4.field580 += var2 - var4.field577 << 8;
+               var4.field581 = var5 - var4.field580;
+               var4.field582 = 4096;
+               var4.field577 = var2;
                return;
             }
          }
       }
 
-      MusicPatch var9 = (MusicPatch)this.musicPatches.get((long)this.__e[var1]);
-      if(var9 != null) {
-         RawSound var8 = var9.rawSounds[var2];
-         if(var8 != null) {
+      MusicPatch var8 = (MusicPatch)this.musicPatches.get((long)this.field501[var1]);
+      if (var8 != null) {
+         RawSound var9 = var8.rawSounds[var2];
+         if (var9 != null) {
             MusicPatchNode var6 = new MusicPatchNode();
-            var6.__m = var1;
-            var6.patch = var9;
-            var6.rawSound = var8;
-            var6.__w = var9.__u[var2];
-            var6.__o = var9.__g[var2];
-            var6.__u = var2;
-            var6.__g = var3 * var3 * var9.__w[var2] * var9.__m + 1024 >> 11;
-            var6.__l = var9.__o[var2] & 255;
-            var6.__e = (var2 << 8) - (var9.__q[var2] & 32767);
-            var6.__k = 0;
-            var6.__n = 0;
-            var6.__i = 0;
-            var6.__a = -1;
-            var6.__z = 0;
-            if(this.__c[var1] == 0) {
-               var6.stream = RawPcmStream.method2524(var8, this.__aa_359(var6), this.__ax_360(var6), this.__af_361(var6));
+            var6.field574 = var1;
+            var6.patch = var8;
+            var6.rawSound = var9;
+            var6.field575 = var8.field571[var2];
+            var6.field576 = var8.field572[var2];
+            var6.field577 = var2;
+            var6.field578 = var3 * var3 * var8.field569[var2] * var8.field567 + 1024 >> 11;
+            var6.field579 = var8.field570[var2] & 255;
+            var6.field580 = (var2 << 8) - (var8.field568[var2] & 32767);
+            var6.field583 = 0;
+            var6.field584 = 0;
+            var6.field585 = 0;
+            var6.field586 = -1;
+            var6.field587 = 0;
+            if (this.field509[var1] == 0) {
+               var6.stream = RawPcmStream.method2524(var9, this.method191(var6), this.method192(var6), this.method193(var6));
             } else {
-               var6.stream = RawPcmStream.method2524(var8, this.__aa_359(var6), 0, this.__af_361(var6));
-               this.__h_346(var6, var9.__q[var2] < 0);
+               var6.stream = RawPcmStream.method2524(var9, this.method191(var6), 0, this.method193(var6));
+               this.method178(var6, var8.field568[var2] < 0);
             }
 
-            if(var9.__q[var2] < 0) {
+            if (var8.field568[var2] < 0) {
                var6.stream.setNumLoops(-1);
             }
 
-            if(var6.__o >= 0) {
-               MusicPatchNode var7 = this.__ag[var1][var6.__o];
-               if(var7 != null && var7.__a < 0) {
-                  this.__v[var1][var7.__u] = null;
-                  var7.__a = 0;
+            if (var6.field576 >= 0) {
+               MusicPatchNode var7 = this.field513[var1][var6.field576];
+               if (var7 != null && var7.field586 < 0) {
+                  this.field512[var1][var7.field577] = null;
+                  var7.field586 = 0;
                }
 
-               this.__ag[var1][var6.__o] = var6;
+               this.field513[var1][var6.field576] = var6;
             }
 
             this.patchStream.queue.addFirst(var6);
-            this.__v[var1][var2] = var6;
+            this.field512[var1][var2] = var6;
          }
       }
+
    }
 
    @ObfuscatedName("h")
@@ -433,22 +434,22 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;ZI)V",
       garbageValue = "-1455849160"
    )
-   void __h_346(MusicPatchNode var1, boolean var2) {
+   void method178(MusicPatchNode var1, boolean var2) {
       int var3 = var1.rawSound.samples.length;
       int var4;
-      if(var2 && var1.rawSound.__o) {
+      if (var2 && var1.rawSound.field756) {
          int var5 = var3 + var3 - var1.rawSound.start;
-         var4 = (int)((long)var5 * (long)this.__c[var1.__m] >> 6);
+         var4 = (int)((long)var5 * (long)this.field509[var1.field574] >> 6);
          var3 <<= 8;
-         if(var4 >= var3) {
+         if (var4 >= var3) {
             var4 = var3 + var3 - 1 - var4;
-            var1.stream.__h_188();
+            var1.stream.method271();
          }
       } else {
-         var4 = (int)((long)this.__c[var1.__m] * (long)var3 >> 6);
+         var4 = (int)((long)this.field509[var1.field574] * (long)var3 >> 6);
       }
 
-      var1.stream.__y_187(var4);
+      var1.stream.method270(var4);
    }
 
    @ObfuscatedName("b")
@@ -456,22 +457,22 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IIII)V",
       garbageValue = "-1244653525"
    )
-   void __b_347(int var1, int var2, int var3) {
-      MusicPatchNode var4 = this.__v[var1][var2];
-      if(var4 != null) {
-         this.__v[var1][var2] = null;
-         if((this.__y[var1] & 2) != 0) {
-            for(MusicPatchNode var5 = (MusicPatchNode)this.patchStream.queue.last(); var5 != null; var5 = (MusicPatchNode)this.patchStream.queue.previous()) {
-               if(var5.__m == var4.__m && var5.__a < 0 && var5 != var4) {
-                  var4.__a = 0;
+   void method179(int var1, int var2, int var3) {
+      MusicPatchNode var4 = this.field512[var1][var2];
+      if (var4 != null) {
+         this.field512[var1][var2] = null;
+         if ((this.field506[var1] & 2) != 0) {
+            for (MusicPatchNode var5 = (MusicPatchNode)this.patchStream.queue.last(); var5 != null; var5 = (MusicPatchNode)this.patchStream.queue.previous()) {
+               if (var5.field574 == var4.field574 && var5.field586 < 0 && var5 != var4) {
+                  var4.field586 = 0;
                   break;
                }
             }
          } else {
-            var4.__a = 0;
+            var4.field586 = 0;
          }
-
       }
+
    }
 
    @ObfuscatedName("c")
@@ -479,7 +480,7 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IIII)V",
       garbageValue = "1055105177"
    )
-   void __c_348(int var1, int var2, int var3) {
+   void method180(int var1, int var2, int var3) {
    }
 
    @ObfuscatedName("p")
@@ -487,7 +488,7 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IIB)V",
       garbageValue = "-43"
    )
-   void __p_349(int var1, int var2) {
+   void method181(int var1, int var2) {
    }
 
    @ObfuscatedName("v")
@@ -495,8 +496,8 @@ public class MidiPcmStream extends PcmStream {
       signature = "(IIB)V",
       garbageValue = "-1"
    )
-   void __v_350(int var1, int var2) {
-      this.__d[var1] = var2;
+   void method182(int var1, int var2) {
+      this.field503[var1] = var2;
    }
 
    @ObfuscatedName("ah")
@@ -504,20 +505,20 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "137929054"
    )
-   void __ah_351(int var1) {
-      for(MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
-         if(var1 < 0 || var2.__m == var1) {
-            if(var2.stream != null) {
-               var2.stream.__v_192(class309.PcmPlayer_sampleRate / 100);
-               if(var2.stream.__at_196()) {
+   void method183(int var1) {
+      for (MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
+         if (var1 < 0 || var2.field574 == var1) {
+            if (var2.stream != null) {
+               var2.stream.method275(class309.PcmPlayer_sampleRate / 100);
+               if (var2.stream.method279()) {
                   this.patchStream.mixer.addSubStream(var2.stream);
                }
 
-               var2.__m_370();
+               var2.method219();
             }
 
-            if(var2.__a < 0) {
-               this.__v[var2.__m][var2.__u] = null;
+            if (var2.field586 < 0) {
+               this.field512[var2.field574][var2.field577] = null;
             }
 
             var2.remove();
@@ -531,27 +532,27 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "-59494316"
    )
-   void __ab_352(int var1) {
-      if(var1 >= 0) {
-         this.__o[var1] = 12800;
-         this.__u[var1] = 8192;
-         this.__g[var1] = 16383;
-         this.__d[var1] = 8192;
-         this.__k[var1] = 0;
-         this.__n[var1] = 8192;
-         this.__ad_355(var1);
-         this.__ap_356(var1);
-         this.__y[var1] = 0;
-         this.__h[var1] = 32767;
-         this.__b[var1] = 256;
-         this.__c[var1] = 0;
-         this.__ao_358(var1, 8192);
+   void method184(int var1) {
+      if (var1 >= 0) {
+         this.field497[var1] = 12800;
+         this.field498[var1] = 8192;
+         this.field499[var1] = 16383;
+         this.field503[var1] = 8192;
+         this.field504[var1] = 0;
+         this.field505[var1] = 8192;
+         this.method187(var1);
+         this.method188(var1);
+         this.field506[var1] = 0;
+         this.field507[var1] = 32767;
+         this.field508[var1] = 256;
+         this.field509[var1] = 0;
+         this.method190(var1, 8192);
       } else {
-         for(var1 = 0; var1 < 16; ++var1) {
-            this.__ab_352(var1);
+         for (var1 = 0; var1 < 16; ++var1) {
+            this.method184(var1);
          }
-
       }
+
    }
 
    @ObfuscatedName("ae")
@@ -559,11 +560,11 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "1458917637"
    )
-   void __ae_353(int var1) {
-      for(MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
-         if((var1 < 0 || var2.__m == var1) && var2.__a < 0) {
-            this.__v[var2.__m][var2.__u] = null;
-            var2.__a = 0;
+   void method185(int var1) {
+      for (MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
+         if ((var1 < 0 || var2.field574 == var1) && var2.field586 < 0) {
+            this.field512[var2.field574][var2.field577] = null;
+            var2.field586 = 0;
          }
       }
 
@@ -574,17 +575,17 @@ public class MidiPcmStream extends PcmStream {
       signature = "(I)V",
       garbageValue = "808372536"
    )
-   void __at_354() {
-      this.__ah_351(-1);
-      this.__ab_352(-1);
+   void method186() {
+      this.method183(-1);
+      this.method184(-1);
 
       int var1;
-      for(var1 = 0; var1 < 16; ++var1) {
-         this.__e[var1] = this.__l[var1];
+      for (var1 = 0; var1 < 16; ++var1) {
+         this.field501[var1] = this.field500[var1];
       }
 
-      for(var1 = 0; var1 < 16; ++var1) {
-         this.__x[var1] = this.__l[var1] & -128;
+      for (var1 = 0; var1 < 16; ++var1) {
+         this.field502[var1] = this.field500[var1] & -128;
       }
 
    }
@@ -594,11 +595,11 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "-1934460661"
    )
-   void __ad_355(int var1) {
-      if((this.__y[var1] & 2) != 0) {
-         for(MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
-            if(var2.__m == var1 && this.__v[var1][var2.__u] == null && var2.__a < 0) {
-               var2.__a = 0;
+   void method187(int var1) {
+      if ((this.field506[var1] & 2) != 0) {
+         for (MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
+            if (var2.field574 == var1 && this.field512[var1][var2.field577] == null && var2.field586 < 0) {
+               var2.field586 = 0;
             }
          }
       }
@@ -610,11 +611,11 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "-1305073262"
    )
-   void __ap_356(int var1) {
-      if((this.__y[var1] & 4) != 0) {
-         for(MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
-            if(var2.__m == var1) {
-               var2.__b = 0;
+   void method188(int var1) {
+      if ((this.field506[var1] & 4) != 0) {
+         for (MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
+            if (var2.field574 == var1) {
+               var2.field591 = 0;
             }
          }
       }
@@ -626,186 +627,192 @@ public class MidiPcmStream extends PcmStream {
       signature = "(II)V",
       garbageValue = "1168111396"
    )
-   void __au_357(int var1) {
+   void method189(int var1) {
       int var2 = var1 & 240;
       int var3;
       int var4;
       int var5;
-      if(var2 == 128) {
+      if (var2 == 128) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
          var5 = var1 >> 16 & 127;
-         this.__b_347(var3, var4, var5);
-      } else if(var2 == 144) {
+         this.method179(var3, var4, var5);
+      } else if (var2 == 144) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
          var5 = var1 >> 16 & 127;
-         if(var5 > 0) {
-            this.__y_345(var3, var4, var5);
+         if (var5 > 0) {
+            this.method177(var3, var4, var5);
          } else {
-            this.__b_347(var3, var4, 64);
+            this.method179(var3, var4, 64);
          }
-
-      } else if(var2 == 160) {
+      } else if (var2 == 160) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
          var5 = var1 >> 16 & 127;
-         this.__c_348(var3, var4, var5);
-      } else if(var2 == 176) {
+         this.method180(var3, var4, var5);
+      } else if (var2 == 176) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
          var5 = var1 >> 16 & 127;
-         if(var4 == 0) {
-            this.__x[var3] = (var5 << 14) + (this.__x[var3] & -2080769);
+         if (var4 == 0) {
+            this.field502[var3] = (var5 << 14) + (this.field502[var3] & -2080769);
          }
 
-         if(var4 == 32) {
-            this.__x[var3] = (var5 << 7) + (this.__x[var3] & -16257);
+         if (var4 == 32) {
+            this.field502[var3] = (var5 << 7) + (this.field502[var3] & -16257);
          }
 
-         if(var4 == 1) {
-            this.__k[var3] = (var5 << 7) + (this.__k[var3] & -16257);
+         if (var4 == 1) {
+            this.field504[var3] = (var5 << 7) + (this.field504[var3] & -16257);
          }
 
-         if(var4 == 33) {
-            this.__k[var3] = var5 + (this.__k[var3] & -128);
+         if (var4 == 33) {
+            this.field504[var3] = var5 + (this.field504[var3] & -128);
          }
 
-         if(var4 == 5) {
-            this.__n[var3] = (var5 << 7) + (this.__n[var3] & -16257);
+         if (var4 == 5) {
+            this.field505[var3] = (var5 << 7) + (this.field505[var3] & -16257);
          }
 
-         if(var4 == 37) {
-            this.__n[var3] = var5 + (this.__n[var3] & -128);
+         if (var4 == 37) {
+            this.field505[var3] = var5 + (this.field505[var3] & -128);
          }
 
-         if(var4 == 7) {
-            this.__o[var3] = (var5 << 7) + (this.__o[var3] & -16257);
+         if (var4 == 7) {
+            this.field497[var3] = (var5 << 7) + (this.field497[var3] & -16257);
          }
 
-         if(var4 == 39) {
-            this.__o[var3] = var5 + (this.__o[var3] & -128);
+         if (var4 == 39) {
+            this.field497[var3] = var5 + (this.field497[var3] & -128);
          }
 
-         if(var4 == 10) {
-            this.__u[var3] = (var5 << 7) + (this.__u[var3] & -16257);
+         if (var4 == 10) {
+            this.field498[var3] = (var5 << 7) + (this.field498[var3] & -16257);
          }
 
-         if(var4 == 42) {
-            this.__u[var3] = var5 + (this.__u[var3] & -128);
+         if (var4 == 42) {
+            this.field498[var3] = var5 + (this.field498[var3] & -128);
          }
 
-         if(var4 == 11) {
-            this.__g[var3] = (var5 << 7) + (this.__g[var3] & -16257);
+         if (var4 == 11) {
+            this.field499[var3] = (var5 << 7) + (this.field499[var3] & -16257);
          }
 
-         if(var4 == 43) {
-            this.__g[var3] = var5 + (this.__g[var3] & -128);
+         if (var4 == 43) {
+            this.field499[var3] = var5 + (this.field499[var3] & -128);
          }
 
-         if(var4 == 64) {
-            if(var5 >= 64) {
-               this.__y[var3] |= 1;
+         int[] var10000;
+         if (var4 == 64) {
+            if (var5 >= 64) {
+               var10000 = this.field506;
+               var10000[var3] |= 1;
             } else {
-               this.__y[var3] &= -2;
+               var10000 = this.field506;
+               var10000[var3] &= -2;
             }
          }
 
-         if(var4 == 65) {
-            if(var5 >= 64) {
-               this.__y[var3] |= 2;
+         if (var4 == 65) {
+            if (var5 >= 64) {
+               var10000 = this.field506;
+               var10000[var3] |= 2;
             } else {
-               this.__ad_355(var3);
-               this.__y[var3] &= -3;
+               this.method187(var3);
+               var10000 = this.field506;
+               var10000[var3] &= -3;
             }
          }
 
-         if(var4 == 99) {
-            this.__h[var3] = (var5 << 7) + (this.__h[var3] & 127);
+         if (var4 == 99) {
+            this.field507[var3] = (var5 << 7) + (this.field507[var3] & 127);
          }
 
-         if(var4 == 98) {
-            this.__h[var3] = (this.__h[var3] & 16256) + var5;
+         if (var4 == 98) {
+            this.field507[var3] = (this.field507[var3] & 16256) + var5;
          }
 
-         if(var4 == 101) {
-            this.__h[var3] = (var5 << 7) + (this.__h[var3] & 127) + 16384;
+         if (var4 == 101) {
+            this.field507[var3] = (var5 << 7) + (this.field507[var3] & 127) + 16384;
          }
 
-         if(var4 == 100) {
-            this.__h[var3] = (this.__h[var3] & 16256) + var5 + 16384;
+         if (var4 == 100) {
+            this.field507[var3] = (this.field507[var3] & 16256) + var5 + 16384;
          }
 
-         if(var4 == 120) {
-            this.__ah_351(var3);
+         if (var4 == 120) {
+            this.method183(var3);
          }
 
-         if(var4 == 121) {
-            this.__ab_352(var3);
+         if (var4 == 121) {
+            this.method184(var3);
          }
 
-         if(var4 == 123) {
-            this.__ae_353(var3);
+         if (var4 == 123) {
+            this.method185(var3);
          }
 
          int var6;
-         if(var4 == 6) {
-            var6 = this.__h[var3];
-            if(var6 == 16384) {
-               this.__b[var3] = (var5 << 7) + (this.__b[var3] & -16257);
+         if (var4 == 6) {
+            var6 = this.field507[var3];
+            if (var6 == 16384) {
+               this.field508[var3] = (var5 << 7) + (this.field508[var3] & -16257);
             }
          }
 
-         if(var4 == 38) {
-            var6 = this.__h[var3];
-            if(var6 == 16384) {
-               this.__b[var3] = var5 + (this.__b[var3] & -128);
+         if (var4 == 38) {
+            var6 = this.field507[var3];
+            if (var6 == 16384) {
+               this.field508[var3] = var5 + (this.field508[var3] & -128);
             }
          }
 
-         if(var4 == 16) {
-            this.__c[var3] = (var5 << 7) + (this.__c[var3] & -16257);
+         if (var4 == 16) {
+            this.field509[var3] = (var5 << 7) + (this.field509[var3] & -16257);
          }
 
-         if(var4 == 48) {
-            this.__c[var3] = var5 + (this.__c[var3] & -128);
+         if (var4 == 48) {
+            this.field509[var3] = var5 + (this.field509[var3] & -128);
          }
 
-         if(var4 == 81) {
-            if(var5 >= 64) {
-               this.__y[var3] |= 4;
+         if (var4 == 81) {
+            if (var5 >= 64) {
+               var10000 = this.field506;
+               var10000[var3] |= 4;
             } else {
-               this.__ap_356(var3);
-               this.__y[var3] &= -5;
+               this.method188(var3);
+               var10000 = this.field506;
+               var10000[var3] &= -5;
             }
          }
 
-         if(var4 == 17) {
-            this.__ao_358(var3, (var5 << 7) + (this.__r[var3] & -16257));
+         if (var4 == 17) {
+            this.method190(var3, (var5 << 7) + (this.field510[var3] & -16257));
          }
 
-         if(var4 == 49) {
-            this.__ao_358(var3, var5 + (this.__r[var3] & -128));
+         if (var4 == 49) {
+            this.method190(var3, var5 + (this.field510[var3] & -128));
          }
-
-      } else if(var2 == 192) {
+      } else if (var2 == 192) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
-         this.__t_344(var3, var4 + this.__x[var3]);
-      } else if(var2 == 208) {
+         this.method176(var3, var4 + this.field502[var3]);
+      } else if (var2 == 208) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
-         this.__p_349(var3, var4);
-      } else if(var2 == 224) {
+         this.method181(var3, var4);
+      } else if (var2 == 224) {
          var3 = var1 & 15;
          var4 = (var1 >> 8 & 127) + (var1 >> 9 & 16256);
-         this.__v_350(var3, var4);
+         this.method182(var3, var4);
       } else {
          var2 = var1 & 255;
-         if(var2 == 255) {
-            this.__at_354();
+         if (var2 == 255) {
+            this.method186();
          }
       }
+
    }
 
    @ObfuscatedName("ao")
@@ -813,9 +820,9 @@ public class MidiPcmStream extends PcmStream {
       signature = "(III)V",
       garbageValue = "1380282032"
    )
-   void __ao_358(int var1, int var2) {
-      this.__r[var1] = var2;
-      this.__p[var1] = (int)(2097152.0D * Math.pow(2.0D, 5.4931640625E-4D * (double)var2) + 0.5D);
+   void method190(int var1, int var2) {
+      this.field510[var1] = var2;
+      this.field511[var1] = (int)(2097152.0D * Math.pow(2.0D, 5.4931640625E-4D * (double)var2) + 0.5D);
    }
 
    @ObfuscatedName("aa")
@@ -823,25 +830,25 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;I)I",
       garbageValue = "-1821299983"
    )
-   int __aa_359(MusicPatchNode var1) {
-      int var2 = (var1.__d * var1.__x >> 12) + var1.__e;
-      var2 += (this.__d[var1.__m] - 8192) * this.__b[var1.__m] >> 12;
-      MusicPatchNode2 var3 = var1.__w;
+   int method191(MusicPatchNode var1) {
+      int var2 = (var1.field582 * var1.field581 >> 12) + var1.field580;
+      var2 += (this.field503[var1.field574] - 8192) * this.field508[var1.field574] >> 12;
+      MusicPatchNode2 var3 = var1.field575;
       int var4;
-      if(var3.__l > 0 && (var3.__g > 0 || this.__k[var1.__m] > 0)) {
-         var4 = var3.__g << 2;
-         int var5 = var3.__e << 1;
-         if(var1.__j < var5) {
-            var4 = var4 * var1.__j / var5;
+      if (var3.field600 > 0 && (var3.field599 > 0 || this.field504[var1.field574] > 0)) {
+         var4 = var3.field599 << 2;
+         int var5 = var3.field601 << 1;
+         if (var1.field588 < var5) {
+            var4 = var4 * var1.field588 / var5;
          }
 
-         var4 += this.__k[var1.__m] >> 7;
-         double var6 = Math.sin((double)(var1.__s & 511) * 0.01227184630308513D);
+         var4 += this.field504[var1.field574] >> 7;
+         double var6 = Math.sin((double)(var1.field589 & 511) * 0.01227184630308513D);
          var2 += (int)(var6 * (double)var4);
       }
 
       var4 = (int)((double)(var1.rawSound.sampleRate * 256) * Math.pow(2.0D, (double)var2 * 3.255208333333333E-4D) / (double)class309.PcmPlayer_sampleRate + 0.5D);
-      return var4 < 1?1:var4;
+      return var4 < 1 ? 1 : var4;
    }
 
    @ObfuscatedName("ax")
@@ -849,39 +856,39 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;I)I",
       garbageValue = "24812899"
    )
-   int __ax_360(MusicPatchNode var1) {
-      MusicPatchNode2 var2 = var1.__w;
-      int var3 = this.__o[var1.__m] * this.__g[var1.__m] + 4096 >> 13;
+   int method192(MusicPatchNode var1) {
+      MusicPatchNode2 var2 = var1.field575;
+      int var3 = this.field497[var1.field574] * this.field499[var1.field574] + 4096 >> 13;
       var3 = var3 * var3 + 16384 >> 15;
-      var3 = var3 * var1.__g + 16384 >> 15;
-      var3 = var3 * this.__f + 128 >> 8;
-      if(var2.__q > 0) {
-         var3 = (int)((double)var3 * Math.pow(0.5D, (double)var2.__q * (double)var1.__k * 1.953125E-5D) + 0.5D);
+      var3 = var3 * var1.field578 + 16384 >> 15;
+      var3 = var3 * this.field495 + 128 >> 8;
+      if (var2.field595 > 0) {
+         var3 = (int)((double)var3 * Math.pow(0.5D, (double)var2.field595 * (double)var1.field583 * 1.953125E-5D) + 0.5D);
       }
 
       int var4;
       int var5;
       int var6;
       int var7;
-      if(var2.__m != null) {
-         var4 = var1.__n;
-         var5 = var2.__m[var1.__i + 1];
-         if(var1.__i < var2.__m.length - 2) {
-            var6 = (var2.__m[var1.__i] & 255) << 8;
-            var7 = (var2.__m[var1.__i + 2] & 255) << 8;
-            var5 += (var2.__m[var1.__i + 3] - var5) * (var4 - var6) / (var7 - var6);
+      if (var2.field593 != null) {
+         var4 = var1.field584;
+         var5 = var2.field593[var1.field585 + 1];
+         if (var1.field585 < var2.field593.length - 2) {
+            var6 = (var2.field593[var1.field585] & 255) << 8;
+            var7 = (var2.field593[var1.field585 + 2] & 255) << 8;
+            var5 += (var2.field593[var1.field585 + 3] - var5) * (var4 - var6) / (var7 - var6);
          }
 
          var3 = var5 * var3 + 32 >> 6;
       }
 
-      if(var1.__a > 0 && var2.__f != null) {
-         var4 = var1.__a;
-         var5 = var2.__f[var1.__z + 1];
-         if(var1.__z < var2.__f.length - 2) {
-            var6 = (var2.__f[var1.__z] & 255) << 8;
-            var7 = (var2.__f[var1.__z + 2] & 255) << 8;
-            var5 += (var4 - var6) * (var2.__f[var1.__z + 3] - var5) / (var7 - var6);
+      if (var1.field586 > 0 && var2.field594 != null) {
+         var4 = var1.field586;
+         var5 = var2.field594[var1.field587 + 1];
+         if (var1.field587 < var2.field594.length - 2) {
+            var6 = (var2.field594[var1.field587] & 255) << 8;
+            var7 = (var2.field594[var1.field587 + 2] & 255) << 8;
+            var5 += (var4 - var6) * (var2.field594[var1.field587 + 3] - var5) / (var7 - var6);
          }
 
          var3 = var3 * var5 + 32 >> 6;
@@ -895,9 +902,9 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;I)I",
       garbageValue = "360643400"
    )
-   int __af_361(MusicPatchNode var1) {
-      int var2 = this.__u[var1.__m];
-      return var2 < 8192?var2 * var1.__l + 32 >> 6:16384 - ((128 - var1.__l) * (16384 - var2) + 32 >> 6);
+   int method193(MusicPatchNode var1) {
+      int var2 = this.field498[var1.field574];
+      return var2 < 8192 ? var2 * var1.field579 + 32 >> 6 : 16384 - ((128 - var1.field579) * (16384 - var2) + 32 >> 6);
    }
 
    @ObfuscatedName("ai")
@@ -905,21 +912,21 @@ public class MidiPcmStream extends PcmStream {
       signature = "(B)V",
       garbageValue = "30"
    )
-   void __ai_367() {
+   void method194() {
       int var1 = this.track;
       int var2 = this.trackLength;
 
       long var3;
-      for(var3 = this.__ay; var2 == this.trackLength; var3 = this.midiFile.__a_372(var2)) {
-         while(var2 == this.midiFile.trackLengths[var1]) {
+      for (var3 = this.field516; var2 == this.trackLength; var3 = this.midiFile.method168(var2)) {
+         while (var2 == this.midiFile.trackLengths[var1]) {
             this.midiFile.gotoTrack(var1);
             int var5 = this.midiFile.readMessage(var1);
-            if(var5 == 1) {
+            if (var5 == 1) {
                this.midiFile.setTrackDone();
                this.midiFile.markTrackPosition(var1);
-               if(this.midiFile.isDone()) {
-                  if(!this.__aj || var2 == 0) {
-                     this.__at_354();
+               if (this.midiFile.isDone()) {
+                  if (!this.field514 || var2 == 0) {
+                     this.method186();
                      this.midiFile.clear();
                      return;
                   }
@@ -929,8 +936,8 @@ public class MidiPcmStream extends PcmStream {
                break;
             }
 
-            if((var5 & 128) != 0) {
-               this.__au_357(var5);
+            if ((var5 & 128) != 0) {
+               this.method189(var5);
             }
 
             this.midiFile.readTrackLength(var1);
@@ -943,7 +950,7 @@ public class MidiPcmStream extends PcmStream {
 
       this.track = var1;
       this.trackLength = var2;
-      this.__ay = var3;
+      this.field516 = var3;
    }
 
    @ObfuscatedName("ba")
@@ -951,12 +958,12 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;I)Z",
       garbageValue = "1820762013"
    )
-   boolean __ba_368(MusicPatchNode var1) {
-      if(var1.stream == null) {
-         if(var1.__a >= 0) {
+   boolean method195(MusicPatchNode var1) {
+      if (var1.stream == null) {
+         if (var1.field586 >= 0) {
             var1.remove();
-            if(var1.__o > 0 && var1 == this.__ag[var1.__m][var1.__o]) {
-               this.__ag[var1.__m][var1.__o] = null;
+            if (var1.field576 > 0 && var1 == this.field513[var1.field574][var1.field576]) {
+               this.field513[var1.field574][var1.field576] = null;
             }
          }
 
@@ -971,95 +978,95 @@ public class MidiPcmStream extends PcmStream {
       signature = "(Lha;[IIII)Z",
       garbageValue = "-1605961549"
    )
-   boolean __bb_369(MusicPatchNode var1, int[] var2, int var3, int var4) {
-      var1.__y = class309.PcmPlayer_sampleRate / 100;
-      if(var1.__a < 0 || var1.stream != null && !var1.stream.__ae_195()) {
-         int var5 = var1.__d;
-         if(var5 > 0) {
-            var5 -= (int)(16.0D * Math.pow(2.0D, (double)this.__n[var1.__m] * 4.921259842519685E-4D) + 0.5D);
-            if(var5 < 0) {
+   boolean method196(MusicPatchNode var1, int[] var2, int var3, int var4) {
+      var1.field590 = class309.PcmPlayer_sampleRate / 100;
+      if (var1.field586 < 0 || var1.stream != null && !var1.stream.method278()) {
+         int var5 = var1.field582;
+         if (var5 > 0) {
+            var5 -= (int)(16.0D * Math.pow(2.0D, (double)this.field505[var1.field574] * 4.921259842519685E-4D) + 0.5D);
+            if (var5 < 0) {
                var5 = 0;
             }
 
-            var1.__d = var5;
+            var1.field582 = var5;
          }
 
-         var1.stream.__ah_193(this.__aa_359(var1));
-         MusicPatchNode2 var6 = var1.__w;
+         var1.stream.method276(this.method191(var1));
+         MusicPatchNode2 var6 = var1.field575;
          boolean var7 = false;
-         ++var1.__j;
-         var1.__s += var6.__l;
-         double var8 = 5.086263020833333E-6D * (double)((var1.__u - 60 << 8) + (var1.__x * var1.__d >> 12));
-         if(var6.__q > 0) {
-            if(var6.__u > 0) {
-               var1.__k += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.__u) + 0.5D);
+         ++var1.field588;
+         var1.field589 += var6.field600;
+         double var8 = 5.086263020833333E-6D * (double)((var1.field577 - 60 << 8) + (var1.field581 * var1.field582 >> 12));
+         if (var6.field595 > 0) {
+            if (var6.field598 > 0) {
+               var1.field583 += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.field598) + 0.5D);
             } else {
-               var1.__k += 128;
+               var1.field583 += 128;
             }
          }
 
-         if(var6.__m != null) {
-            if(var6.__w > 0) {
-               var1.__n += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.__w) + 0.5D);
+         if (var6.field593 != null) {
+            if (var6.field596 > 0) {
+               var1.field584 += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.field596) + 0.5D);
             } else {
-               var1.__n += 128;
+               var1.field584 += 128;
             }
 
-            while(var1.__i < var6.__m.length - 2 && var1.__n > (var6.__m[var1.__i + 2] & 255) << 8) {
-               var1.__i += 2;
+            while (var1.field585 < var6.field593.length - 2 && var1.field584 > (var6.field593[var1.field585 + 2] & 255) << 8) {
+               var1.field585 += 2;
             }
 
-            if(var6.__m.length - 2 == var1.__i && var6.__m[var1.__i + 1] == 0) {
+            if (var6.field593.length - 2 == var1.field585 && var6.field593[var1.field585 + 1] == 0) {
                var7 = true;
             }
          }
 
-         if(var1.__a >= 0 && var6.__f != null && (this.__y[var1.__m] & 1) == 0 && (var1.__o < 0 || var1 != this.__ag[var1.__m][var1.__o])) {
-            if(var6.__o > 0) {
-               var1.__a += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.__o) + 0.5D);
+         if (var1.field586 >= 0 && var6.field594 != null && (this.field506[var1.field574] & 1) == 0 && (var1.field576 < 0 || var1 != this.field513[var1.field574][var1.field576])) {
+            if (var6.field597 > 0) {
+               var1.field586 += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.field597) + 0.5D);
             } else {
-               var1.__a += 128;
+               var1.field586 += 128;
             }
 
-            while(var1.__z < var6.__f.length - 2 && var1.__a > (var6.__f[var1.__z + 2] & 255) << 8) {
-               var1.__z += 2;
+            while (var1.field587 < var6.field594.length - 2 && var1.field586 > (var6.field594[var1.field587 + 2] & 255) << 8) {
+               var1.field587 += 2;
             }
 
-            if(var6.__f.length - 2 == var1.__z) {
+            if (var6.field594.length - 2 == var1.field587) {
                var7 = true;
             }
          }
 
-         if(var7) {
-            var1.stream.__v_192(var1.__y);
-            if(var2 != null) {
-               var1.stream.__e_172(var2, var3, var4);
+         if (var7) {
+            var1.stream.method275(var1.field590);
+            if (var2 != null) {
+               var1.stream.vmethod263(var2, var3, var4);
             } else {
-               var1.stream.__d_173(var4);
+               var1.stream.vmethod264(var4);
             }
 
-            if(var1.stream.__at_196()) {
+            if (var1.stream.method279()) {
                this.patchStream.mixer.addSubStream(var1.stream);
             }
 
-            var1.__m_370();
-            if(var1.__a >= 0) {
+            var1.method219();
+            if (var1.field586 >= 0) {
                var1.remove();
-               if(var1.__o > 0 && var1 == this.__ag[var1.__m][var1.__o]) {
-                  this.__ag[var1.__m][var1.__o] = null;
+               if (var1.field576 > 0 && var1 == this.field513[var1.field574][var1.field576]) {
+                  this.field513[var1.field574][var1.field576] = null;
                }
             }
 
             return true;
          } else {
-            var1.stream.__p_191(var1.__y, this.__ax_360(var1), this.__af_361(var1));
+            var1.stream.method274(var1.field590, this.method192(var1), this.method193(var1));
             return false;
          }
       } else {
-         var1.__m_370();
+         var1.method219();
          var1.remove();
-         if(var1.__o > 0 && var1 == this.__ag[var1.__m][var1.__o]) {
-            this.__ag[var1.__m][var1.__o] = null;
+         if (var1.field576 > 0 && var1 == this.field513[var1.field574][var1.field576]) {
+            this.field513[var1.field574][var1.field576] = null;
          }
 
          return true;
@@ -1074,11 +1081,11 @@ public class MidiPcmStream extends PcmStream {
    @Export("PcmStream_disable")
    static final void PcmStream_disable(PcmStream var0) {
       var0.active = false;
-      if(var0.sound != null) {
+      if (var0.sound != null) {
          var0.sound.position = 0;
       }
 
-      for(PcmStream var1 = var0.firstSubStream(); var1 != null; var1 = var0.nextSubStream()) {
+      for (PcmStream var1 = var0.firstSubStream(); var1 != null; var1 = var0.nextSubStream()) {
          PcmStream_disable(var1);
       }
 

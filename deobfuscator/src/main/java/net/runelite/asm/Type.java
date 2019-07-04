@@ -110,7 +110,7 @@ public class Type
 		{
 			s = s.substring(1);
 		}
-		if (s.startsWith("L"))
+		if (s.startsWith("L") && s.endsWith(";"))
 		{
 			return s.substring(1, s.length() - 1);
 		}

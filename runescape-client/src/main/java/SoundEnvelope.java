@@ -72,9 +72,9 @@ public class SoundEnvelope {
       this.durations = new int[this.segments];
       this.phases = new int[this.segments];
 
-      for(int var2 = 0; var2 < this.segments; ++var2) {
-         this.durations[var2] = var1.__ag_302();
-         this.phases[var2] = var1.__ag_302();
+      for (int var2 = 0; var2 < this.segments; ++var2) {
+         this.durations[var2] = var1.method43();
+         this.phases[var2] = var1.method43();
       }
 
    }
@@ -92,14 +92,14 @@ public class SoundEnvelope {
    @ObfuscatedName("w")
    @Export("doStep")
    final int doStep(int var1) {
-      if(this.max >= this.ticks) {
+      if (this.max >= this.ticks) {
          this.amplitude = this.phases[this.phaseIndex++] << 15;
-         if(this.phaseIndex >= this.segments) {
+         if (this.phaseIndex >= this.segments) {
             this.phaseIndex = this.segments - 1;
          }
 
          this.ticks = (int)((double)this.durations[this.phaseIndex] / 65536.0D * (double)var1);
-         if(this.ticks > this.max) {
+         if (this.ticks > this.max) {
             this.step = ((this.phases[this.phaseIndex] << 15) - this.amplitude) / (this.ticks - this.max);
          }
       }

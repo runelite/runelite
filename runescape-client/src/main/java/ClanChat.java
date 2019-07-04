@@ -26,7 +26,7 @@ public class ClanChat extends UserList {
    @Export("owner")
    public String owner;
    @ObfuscatedName("k")
-   public byte __k;
+   public byte field96;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -1534670751
@@ -37,7 +37,7 @@ public class ClanChat extends UserList {
    @ObfuscatedGetter(
       intValue = 386706253
    )
-   int __i;
+   int field97;
 
    @ObfuscatedSignature(
       signature = "(Llx;Lky;)V"
@@ -46,7 +46,7 @@ public class ClanChat extends UserList {
       super(100);
       this.name = null;
       this.owner = null;
-      this.__i = 1;
+      this.field97 = 1;
       this.loginType = var1;
       this.localUser = var2;
    }
@@ -76,7 +76,7 @@ public class ClanChat extends UserList {
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "242122326"
    )
-   final void __q_472(String var1) {
+   final void method76(String var1) {
       this.name = HealthBarUpdate.method1722(var1);
    }
 
@@ -85,7 +85,7 @@ public class ClanChat extends UserList {
       signature = "(Ljava/lang/String;B)V",
       garbageValue = "103"
    )
-   final void __x_473(String var1) {
+   final void method77(String var1) {
       this.owner = HealthBarUpdate.method1722(var1);
    }
 
@@ -96,51 +96,51 @@ public class ClanChat extends UserList {
    )
    @Export("readUpdate")
    public final void readUpdate(Buffer var1) {
-      this.__x_473(var1.readStringCp1252NullTerminated());
+      this.method77(var1.readStringCp1252NullTerminated());
       long var2 = var1.readLong();
-      long var5 = var2;
-      String var4;
+      long var4 = var2;
+      String var6;
       int var7;
-      if(var2 > 0L && var2 < 6582952005840035281L) {
-         if(var2 % 37L == 0L) {
-            var4 = null;
+      if (var2 > 0L && var2 < 6582952005840035281L) {
+         if (var2 % 37L == 0L) {
+            var6 = null;
          } else {
             var7 = 0;
 
-            for(long var13 = var2; var13 != 0L; var13 /= 37L) {
+            for (long var8 = var2; var8 != 0L; var8 /= 37L) {
                ++var7;
             }
 
-            StringBuilder var15 = new StringBuilder(var7);
+            StringBuilder var11 = new StringBuilder(var7);
 
-            while(var5 != 0L) {
-               long var11 = var5;
-               var5 /= 37L;
-               var15.append(class306.base37Table[(int)(var11 - 37L * var5)]);
+            while (var4 != 0L) {
+               long var9 = var4;
+               var4 /= 37L;
+               var11.append(class306.base37Table[(int)(var9 - 37L * var4)]);
             }
 
-            var4 = var15.reverse().toString();
+            var6 = var11.reverse().toString();
          }
       } else {
-         var4 = null;
+         var6 = null;
       }
 
-      this.__q_472(var4);
-      this.__k = var1.readByte();
+      this.method76(var6);
+      this.field96 = var1.readByte();
       var7 = var1.readUnsignedByte();
-      if(var7 != 255) {
+      if (var7 != 255) {
          this.clear();
 
-         for(int var8 = 0; var8 < var7; ++var8) {
-            ClanMate var9 = (ClanMate)this.addLastNoPreviousUsername(new Username(var1.readStringCp1252NullTerminated(), this.loginType));
-            int var10 = var1.__ag_302();
-            var9.set(var10, ++this.__i - 1);
-            var9.rank = var1.readByte();
+         for (int var12 = 0; var12 < var7; ++var12) {
+            ClanMate var13 = (ClanMate)this.addLastNoPreviousUsername(new Username(var1.readStringCp1252NullTerminated(), this.loginType));
+            int var10 = var1.method43();
+            var13.set(var10, ++this.field97 - 1);
+            var13.rank = var1.readByte();
             var1.readStringCp1252NullTerminated();
-            this.__cp_475(var9);
+            this.method79(var13);
          }
-
       }
+
    }
 
    @ObfuscatedName("a")
@@ -148,39 +148,39 @@ public class ClanChat extends UserList {
       signature = "(Lgr;B)V",
       garbageValue = "24"
    )
-   public final void __a_474(Buffer var1) {
+   public final void method78(Buffer var1) {
       Username var2 = new Username(var1.readStringCp1252NullTerminated(), this.loginType);
-      int var3 = var1.__ag_302();
+      int var3 = var1.method43();
       byte var4 = var1.readByte();
       boolean var5 = false;
-      if(var4 == -128) {
+      if (var4 == -128) {
          var5 = true;
       }
 
       ClanMate var6;
-      if(var5) {
-         if(this.size() == 0) {
+      if (var5) {
+         if (this.size() == 0) {
             return;
          }
 
          var6 = (ClanMate)this.getByCurrentUsername(var2);
-         if(var6 != null && var6.world() == var3) {
+         if (var6 != null && var6.world() == var3) {
             this.remove(var6);
          }
       } else {
          var1.readStringCp1252NullTerminated();
          var6 = (ClanMate)this.getByCurrentUsername(var2);
-         if(var6 == null) {
-            if(this.size() > super.capacity) {
+         if (var6 == null) {
+            if (this.size() > super.capacity) {
                return;
             }
 
             var6 = (ClanMate)this.addLastNoPreviousUsername(var2);
          }
 
-         var6.set(var3, ++this.__i - 1);
+         var6.set(var3, ++this.field97 - 1);
          var6.rank = var4;
-         this.__cp_475(var6);
+         this.method79(var6);
       }
 
    }
@@ -192,7 +192,7 @@ public class ClanChat extends UserList {
    )
    @Export("clearFriends")
    public final void clearFriends() {
-      for(int var1 = 0; var1 < this.size(); ++var1) {
+      for (int var1 = 0; var1 < this.size(); ++var1) {
          ((ClanMate)this.get(var1)).clearIsFriend();
       }
 
@@ -205,7 +205,7 @@ public class ClanChat extends UserList {
    )
    @Export("clearIgnoreds")
    public final void clearIgnoreds() {
-      for(int var1 = 0; var1 < this.size(); ++var1) {
+      for (int var1 = 0; var1 < this.size(); ++var1) {
          ((ClanMate)this.get(var1)).clearIsIgnored();
       }
 
@@ -216,8 +216,8 @@ public class ClanChat extends UserList {
       signature = "(Ljk;I)V",
       garbageValue = "-128608554"
    )
-   final void __cp_475(ClanMate var1) {
-      if(var1.username().equals(this.localUser.username())) {
+   final void method79(ClanMate var1) {
+      if (var1.username().equals(this.localUser.username())) {
          this.rank = var1.rank;
       }
 

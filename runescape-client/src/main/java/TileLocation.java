@@ -42,7 +42,7 @@ public class TileLocation {
    }
 
    public TileLocation(int var1) {
-      if(var1 == -1) {
+      if (var1 == -1) {
          this.plane = -1;
       } else {
          this.plane = var1 >> 28 & 3;
@@ -69,7 +69,7 @@ public class TileLocation {
    )
    @Export("equals0")
    boolean equals0(TileLocation var1) {
-      return this.plane != var1.plane?false:(this.x != var1.x?false:this.y == var1.y);
+      return this.plane != var1.plane ? false : (this.x != var1.x ? false : this.y == var1.y);
    }
 
    @ObfuscatedName("q")
@@ -83,17 +83,17 @@ public class TileLocation {
    }
 
    @ObfuscatedName("equals")
-   public boolean __equals_382(Object var1) {
-      return this == var1?true:(!(var1 instanceof TileLocation)?false:this.equals0((TileLocation)var1));
+   public boolean method326(Object var1) {
+      return this == var1 ? true : (!(var1 instanceof TileLocation) ? false : this.equals0((TileLocation)var1));
    }
 
    @ObfuscatedName("hashCode")
-   public int __hashCode_383() {
+   public int method327() {
       return this.packed();
    }
 
    @ObfuscatedName("toString")
-   public String __toString_384() {
+   public String method328() {
       return this.toString0(",");
    }
 }

@@ -7,7 +7,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("PcmStreamMixerListener")
 public abstract class PcmStreamMixerListener extends Node {
    @ObfuscatedName("m")
-   int __m;
+   int field693;
 
    @ObfuscatedName("m")
    @Export("remove2")

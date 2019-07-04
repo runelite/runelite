@@ -17,64 +17,69 @@ public class IterableNodeDequeDescendingIterator implements Iterator {
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   Node __f;
+   @Export("head")
+   Node head;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   Node __q;
+   @Export("last")
+   Node last;
 
    @ObfuscatedSignature(
       signature = "(Lja;)V"
    )
    IterableNodeDequeDescendingIterator(IterableNodeDeque var1) {
-      this.__q = null;
-      this.__u_443(var1);
+      this.last = null;
+      this.setDeque(var1);
    }
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(Lja;)V"
    )
-   void __u_443(IterableNodeDeque var1) {
+   @Export("setDeque")
+   void setDeque(IterableNodeDeque var1) {
       this.deque = var1;
-      this.__g_444();
+      this.start();
    }
 
    @ObfuscatedName("g")
-   void __g_444() {
-      this.__f = this.deque != null?this.deque.sentinel.previous:null;
-      this.__q = null;
+   @Export("start")
+   void start() {
+      this.head = this.deque != null ? this.deque.sentinel.previous : null;
+      this.last = null;
    }
 
    @Export("hasNext")
    @ObfuscatedName("hasNext")
    public boolean hasNext() {
-      return this.deque.sentinel != this.__f;
+      return this.deque.sentinel != this.head;
    }
 
    @Export("next")
    @ObfuscatedName("next")
    public Object next() {
-      Node var1 = this.__f;
-      if(var1 == this.deque.sentinel) {
+      Node var1 = this.head;
+      if (var1 == this.deque.sentinel) {
          var1 = null;
-         this.__f = null;
+         this.head = null;
       } else {
-         this.__f = var1.previous;
+         this.head = var1.previous;
       }
 
-      this.__q = var1;
+      this.last = var1;
       return var1;
    }
 
    @ObfuscatedName("remove")
-   public void __remove_447() {
-      if(this.__q == null) {
+   @Export("remove")
+   public void remove() {
+      if (this.last == null) {
          throw new IllegalStateException();
       } else {
-         this.__q.remove();
-         this.__q = null;
+         this.last.remove();
+         this.last = null;
       }
    }
 }

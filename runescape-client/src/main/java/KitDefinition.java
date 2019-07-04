@@ -17,12 +17,12 @@ public class KitDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache __im_f;
+   public static AbstractIndexCache field456;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 235389995
    )
-   public static int __im_q;
+   public static int field457;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -33,9 +33,9 @@ public class KitDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 1619779051
    )
-   public int __o;
+   public int field458;
    @ObfuscatedName("u")
-   int[] __u;
+   int[] field459;
    @ObfuscatedName("g")
    @Export("recolorFrom")
    short[] recolorFrom;
@@ -52,16 +52,12 @@ public class KitDefinition extends DualNode {
    @Export("archives")
    int[] archives;
    @ObfuscatedName("k")
-   public boolean __k;
-
-   static {
-      KitDefinition_cached = new EvictingDualNodeHashTable(64);
-   }
+   public boolean field460;
 
    KitDefinition() {
-      this.__o = -1;
+      this.field458 = -1;
       this.archives = new int[]{-1, -1, -1, -1, -1};
-      this.__k = false;
+      this.field460 = false;
    }
 
    @ObfuscatedName("f")
@@ -71,9 +67,9 @@ public class KitDefinition extends DualNode {
    )
    @Export("read")
    void read(Buffer var1) {
-      while(true) {
+      while (true) {
          int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+         if (var2 == 0) {
             return;
          }
 
@@ -88,40 +84,40 @@ public class KitDefinition extends DualNode {
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
-      if(var2 == 1) {
-         this.__o = var1.readUnsignedByte();
+      if (var2 == 1) {
+         this.field458 = var1.readUnsignedByte();
       } else {
          int var3;
          int var4;
-         if(var2 == 2) {
+         if (var2 == 2) {
             var3 = var1.readUnsignedByte();
-            this.__u = new int[var3];
+            this.field459 = new int[var3];
 
-            for(var4 = 0; var4 < var3; ++var4) {
-               this.__u[var4] = var1.__ag_302();
+            for (var4 = 0; var4 < var3; ++var4) {
+               this.field459[var4] = var1.method43();
             }
-         } else if(var2 == 3) {
-            this.__k = true;
-         } else if(var2 == 40) {
+         } else if (var2 == 3) {
+            this.field460 = true;
+         } else if (var2 == 40) {
             var3 = var1.readUnsignedByte();
             this.recolorFrom = new short[var3];
             this.recolorTo = new short[var3];
 
-            for(var4 = 0; var4 < var3; ++var4) {
-               this.recolorFrom[var4] = (short)var1.__ag_302();
-               this.recolorTo[var4] = (short)var1.__ag_302();
+            for (var4 = 0; var4 < var3; ++var4) {
+               this.recolorFrom[var4] = (short)var1.method43();
+               this.recolorTo[var4] = (short)var1.method43();
             }
-         } else if(var2 == 41) {
+         } else if (var2 == 41) {
             var3 = var1.readUnsignedByte();
             this.retextureFrom = new short[var3];
             this.retextureTo = new short[var3];
 
-            for(var4 = 0; var4 < var3; ++var4) {
-               this.retextureFrom[var4] = (short)var1.__ag_302();
-               this.retextureTo[var4] = (short)var1.__ag_302();
+            for (var4 = 0; var4 < var3; ++var4) {
+               this.retextureFrom[var4] = (short)var1.method43();
+               this.retextureTo[var4] = (short)var1.method43();
             }
-         } else if(var2 >= 60 && var2 < 70) {
-            this.archives[var2 - 60] = var1.__ag_302();
+         } else if (var2 >= 60 && var2 < 70) {
+            this.archives[var2 - 60] = var1.method43();
          }
       }
 
@@ -132,14 +128,14 @@ public class KitDefinition extends DualNode {
       signature = "(I)Z",
       garbageValue = "-1250940659"
    )
-   public boolean __w_413() {
-      if(this.__u == null) {
+   public boolean method159() {
+      if (this.field459 == null) {
          return true;
       } else {
          boolean var1 = true;
 
-         for(int var2 = 0; var2 < this.__u.length; ++var2) {
-            if(!__im_f.tryLoadRecord(this.__u[var2], 0)) {
+         for (int var2 = 0; var2 < this.field459.length; ++var2) {
+            if (!field456.tryLoadRecord(this.field459[var2], 0)) {
                var1 = false;
             }
          }
@@ -153,32 +149,32 @@ public class KitDefinition extends DualNode {
       signature = "(B)Ldw;",
       garbageValue = "0"
    )
-   public ModelData __o_414() {
-      if(this.__u == null) {
+   public ModelData method160() {
+      if (this.field459 == null) {
          return null;
       } else {
-         ModelData[] var1 = new ModelData[this.__u.length];
+         ModelData[] var1 = new ModelData[this.field459.length];
 
-         for(int var2 = 0; var2 < this.__u.length; ++var2) {
-            var1[var2] = ModelData.method2788(__im_f, this.__u[var2], 0);
+         for (int var2 = 0; var2 < this.field459.length; ++var2) {
+            var1[var2] = ModelData.method2788(field456, this.field459[var2], 0);
          }
 
          ModelData var4;
-         if(var1.length == 1) {
+         if (var1.length == 1) {
             var4 = var1[0];
          } else {
             var4 = new ModelData(var1, var1.length);
          }
 
          int var3;
-         if(this.recolorFrom != null) {
-            for(var3 = 0; var3 < this.recolorFrom.length; ++var3) {
+         if (this.recolorFrom != null) {
+            for (var3 = 0; var3 < this.recolorFrom.length; ++var3) {
                var4.recolor(this.recolorFrom[var3], this.recolorTo[var3]);
             }
          }
 
-         if(this.retextureFrom != null) {
-            for(var3 = 0; var3 < this.retextureFrom.length; ++var3) {
+         if (this.retextureFrom != null) {
+            for (var3 = 0; var3 < this.retextureFrom.length; ++var3) {
                var4.retexture(this.retextureFrom[var3], this.retextureTo[var3]);
             }
          }
@@ -192,11 +188,11 @@ public class KitDefinition extends DualNode {
       signature = "(I)Z",
       garbageValue = "742548471"
    )
-   public boolean __u_415() {
+   public boolean method161() {
       boolean var1 = true;
 
-      for(int var2 = 0; var2 < 5; ++var2) {
-         if(this.archives[var2] != -1 && !__im_f.tryLoadRecord(this.archives[var2], 0)) {
+      for (int var2 = 0; var2 < 5; ++var2) {
+         if (this.archives[var2] != -1 && !field456.tryLoadRecord(this.archives[var2], 0)) {
             var1 = false;
          }
       }
@@ -209,26 +205,26 @@ public class KitDefinition extends DualNode {
       signature = "(B)Ldw;",
       garbageValue = "-56"
    )
-   public ModelData __g_416() {
+   public ModelData method162() {
       ModelData[] var1 = new ModelData[5];
       int var2 = 0;
 
-      for(int var3 = 0; var3 < 5; ++var3) {
-         if(this.archives[var3] != -1) {
-            var1[var2++] = ModelData.method2788(__im_f, this.archives[var3], 0);
+      for (int var3 = 0; var3 < 5; ++var3) {
+         if (this.archives[var3] != -1) {
+            var1[var2++] = ModelData.method2788(field456, this.archives[var3], 0);
          }
       }
 
       ModelData var5 = new ModelData(var1, var2);
       int var4;
-      if(this.recolorFrom != null) {
-         for(var4 = 0; var4 < this.recolorFrom.length; ++var4) {
+      if (this.recolorFrom != null) {
+         for (var4 = 0; var4 < this.recolorFrom.length; ++var4) {
             var5.recolor(this.recolorFrom[var4], this.recolorTo[var4]);
          }
       }
 
-      if(this.retextureFrom != null) {
-         for(var4 = 0; var4 < this.retextureFrom.length; ++var4) {
+      if (this.retextureFrom != null) {
+         for (var4 = 0; var4 < this.retextureFrom.length; ++var4) {
             var5.retexture(this.retextureFrom[var4], this.retextureTo[var4]);
          }
       }
@@ -244,19 +240,23 @@ public class KitDefinition extends DualNode {
    public static String method4866(Buffer var0) {
       String var1;
       try {
-         int var2 = var0.__ae_307();
-         if(var2 > 32767) {
+         int var2 = var0.method48();
+         if (var2 > 32767) {
             var2 = 32767;
          }
 
          byte[] var3 = new byte[var2];
-         var0.index += class303.huffman.__f_294(var0.array, var0.index, var3, 0, var2);
+         var0.index += class303.huffman.method128(var0.array, var0.index, var3, 0, var2);
          String var4 = WidgetGroupParent.decodeStringCp1252(var3, 0, var2);
          var1 = var4;
-      } catch (Exception var6) {
+      } catch (Exception var5) {
          var1 = "Cabbage";
       }
 
       return var1;
+   }
+
+   static {
+      KitDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

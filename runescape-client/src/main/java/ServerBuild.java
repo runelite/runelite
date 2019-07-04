@@ -11,22 +11,22 @@ public class ServerBuild {
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   public static final ServerBuild __iy_m;
+   public static final ServerBuild field784;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   public static final ServerBuild __iy_f;
+   public static final ServerBuild field785;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   public static final ServerBuild __iy_q;
+   public static final ServerBuild field786;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   public static final ServerBuild __iy_w;
+   public static final ServerBuild field787;
    @ObfuscatedName("bx")
    @Export("worldsUrl")
    static String worldsUrl;
@@ -34,7 +34,7 @@ public class ServerBuild {
    @ObfuscatedGetter(
       intValue = -365366303
    )
-   static int __iy_lo;
+   static int field788;
    @ObfuscatedName("o")
    @Export("name")
    public final String name;
@@ -45,15 +45,15 @@ public class ServerBuild {
    @Export("id")
    public final int id;
 
-   static {
-      __iy_m = new ServerBuild("LIVE", 0);
-      __iy_f = new ServerBuild("BUILDLIVE", 3);
-      __iy_q = new ServerBuild("RC", 1);
-      __iy_w = new ServerBuild("WIP", 2);
-   }
-
    ServerBuild(String var1, int var2) {
       this.name = var1;
       this.id = var2;
+   }
+
+   static {
+      field784 = new ServerBuild("LIVE", 0);
+      field785 = new ServerBuild("BUILDLIVE", 3);
+      field786 = new ServerBuild("RC", 1);
+      field787 = new ServerBuild("WIP", 2);
    }
 }

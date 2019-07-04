@@ -11,7 +11,7 @@ public final class GraphicsObject extends Entity {
    @ObfuscatedGetter(
       intValue = -1807262579
    )
-   static int __bw_d;
+   static int field377;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Llq;"
@@ -93,7 +93,7 @@ public final class GraphicsObject extends Entity {
       this.height = var5;
       this.cycleStart = var7 + var6;
       int var8 = class50.getSpotAnimationDefinition(this.id).sequence;
-      if(var8 != -1) {
+      if (var8 != -1) {
          this.isFinished = false;
          this.sequenceDefinition = WorldMapAreaData.getSequenceDefinition(var8);
       } else {
@@ -109,19 +109,19 @@ public final class GraphicsObject extends Entity {
    )
    @Export("advance")
    final void advance(int var1) {
-      if(!this.isFinished) {
+      if (!this.isFinished) {
          this.frameCycle += var1;
 
-         while(this.frameCycle > this.sequenceDefinition.frameLengths[this.frame]) {
+         while (this.frameCycle > this.sequenceDefinition.frameLengths[this.frame]) {
             this.frameCycle -= this.sequenceDefinition.frameLengths[this.frame];
             ++this.frame;
-            if(this.frame >= this.sequenceDefinition.frameIds.length) {
+            if (this.frame >= this.sequenceDefinition.frameIds.length) {
                this.isFinished = true;
                break;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("e")
@@ -133,13 +133,13 @@ public final class GraphicsObject extends Entity {
    protected final Model getModel() {
       SpotAnimationDefinition var1 = class50.getSpotAnimationDefinition(this.id);
       Model var2;
-      if(!this.isFinished) {
+      if (!this.isFinished) {
          var2 = var1.getModel(this.frame);
       } else {
          var2 = var1.getModel(-1);
       }
 
-      return var2 == null?null:var2;
+      return var2 == null ? null : var2;
    }
 
    @ObfuscatedName("x")

@@ -8,40 +8,40 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("OwnWorldComparator")
 public class OwnWorldComparator implements Comparator {
    @ObfuscatedName("m")
-   boolean __m;
+   boolean field666;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(Ll;Ll;B)I",
       garbageValue = "21"
    )
-   int __m_132(GrandExchangeEvent var1, GrandExchangeEvent var2) {
-      if(var2.world == var1.world) {
+   int method234(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+      if (var2.world == var1.world) {
          return 0;
       } else {
-         if(this.__m) {
-            if(Client.worldId == var1.world) {
+         if (this.field666) {
+            if (Client.worldId == var1.world) {
                return -1;
             }
 
-            if(var2.world == Client.worldId) {
+            if (var2.world == Client.worldId) {
                return 1;
             }
          }
 
-         return var1.world < var2.world?-1:1;
+         return var1.world < var2.world ? -1 : 1;
       }
    }
 
    @ObfuscatedName("equals")
-   public boolean __equals_134(Object var1) {
+   public boolean method235(Object var1) {
       return super.equals(var1);
    }
 
    @Export("compare")
    @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.__m_132((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+      return this.method234((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    @ObfuscatedName("al")
@@ -51,31 +51,31 @@ public class OwnWorldComparator implements Comparator {
    )
    static int method1285(int var0, Script var1, boolean var2) {
       int var3;
-      if(var0 == 5504) {
+      if (var0 == 5504) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          int var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         if(!Client.isCameraLocked) {
+         if (!Client.isCameraLocked) {
             Client.cameraPitchTarget = var3;
             Client.minimapOrientation = var4;
          }
 
          return 1;
-      } else if(var0 == 5505) {
+      } else if (var0 == 5505) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.cameraPitchTarget;
          return 1;
-      } else if(var0 == 5506) {
+      } else if (var0 == 5506) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.minimapOrientation;
          return 1;
-      } else if(var0 == 5530) {
+      } else if (var0 == 5530) {
          var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-         if(var3 < 0) {
+         if (var3 < 0) {
             var3 = 0;
          }
 
          Client.cameraFollowHeight = var3;
          return 1;
-      } else if(var0 == 5531) {
+      } else if (var0 == 5531) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.cameraFollowHeight;
          return 1;
       } else {

@@ -17,7 +17,7 @@ public class World {
    @ObfuscatedGetter(
       intValue = 1143875805
    )
-   static int __bt_g;
+   static int field987;
    @ObfuscatedName("l")
    @Export("sortOption2")
    static int[] sortOption2;
@@ -61,13 +61,6 @@ public class World {
    @Export("index")
    int index;
 
-   static {
-      worldsCount = 0;
-      __bt_g = 0;
-      sortOption2 = new int[]{1, 1, 1, 1};
-      sortOption1 = new int[]{0, 1, 2, 3};
-   }
-
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)Z",
@@ -83,7 +76,7 @@ public class World {
       signature = "(B)Z",
       garbageValue = "0"
    )
-   boolean __x_145() {
+   boolean method356() {
       return (2 & this.properties) != 0;
    }
 
@@ -102,7 +95,7 @@ public class World {
       signature = "(I)Z",
       garbageValue = "-1662622660"
    )
-   boolean __a_147() {
+   boolean method357() {
       return (8 & this.properties) != 0;
    }
 
@@ -113,7 +106,7 @@ public class World {
    )
    @Export("isDeadman")
    boolean isDeadman() {
-      return (0x20000000 & this.properties) != 0; // 1 << 29
+      return (536870912 & this.properties) != 0;
    }
 
    @ObfuscatedName("j")
@@ -123,7 +116,7 @@ public class World {
    )
    @Export("isBeta")
    boolean isBeta() {
-      return (0x2000000 & this.properties) != 0; // 1 << 25
+      return (33554432 & this.properties) != 0;
    }
 
    @ObfuscatedName("f")
@@ -139,5 +132,12 @@ public class World {
       var0 |= var0 >>> 8;
       var0 |= var0 >>> 16;
       return var0 + 1;
+   }
+
+   static {
+      worldsCount = 0;
+      field987 = 0;
+      sortOption2 = new int[]{1, 1, 1, 1};
+      sortOption1 = new int[]{0, 1, 2, 3};
    }
 }

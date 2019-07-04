@@ -1,4 +1,3 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -11,82 +10,82 @@ public class LoginType {
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   public static final LoginType __lx_m;
+   public static final LoginType field479;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   static final LoginType __lx_f;
+   static final LoginType field480;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   static final LoginType __lx_q;
+   static final LoginType field481;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   static final LoginType __lx_w;
+   static final LoginType field482;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   static final LoginType __lx_o;
+   static final LoginType field483;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   static final LoginType __lx_u;
+   static final LoginType field484;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   static final LoginType __lx_g;
+   static final LoginType field485;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   static final LoginType __lx_l;
+   static final LoginType field486;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Llx;"
    )
-   public static final LoginType __lx_e;
+   public static final LoginType field487;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1916729379
    )
-   public final int __x;
+   public final int field488;
    @ObfuscatedName("d")
-   final String __d;
-
-   static {
-      __lx_m = new LoginType(8, 0, "", "");
-      __lx_f = new LoginType(3, 1, "", "");
-      __lx_q = new LoginType(2, 2, "", "");
-      __lx_w = new LoginType(6, 3, "", "");
-      __lx_o = new LoginType(4, 4, "", "");
-      __lx_u = new LoginType(7, 5, "", "");
-      __lx_g = new LoginType(1, 6, "", "");
-      __lx_l = new LoginType(5, 7, "", "");
-      __lx_e = new LoginType(0, -1, "", "", true, new LoginType[]{__lx_m, __lx_f, __lx_q, __lx_o, __lx_w});
-   }
+   final String field489;
 
    LoginType(int var1, int var2, String var3, String var4) {
-      this.__x = var1;
-      this.__d = var4;
+      this.field488 = var1;
+      this.field489 = var4;
    }
 
    @ObfuscatedSignature(
       signature = "(IILjava/lang/String;Ljava/lang/String;Z[Llx;)V"
    )
    LoginType(int var1, int var2, String var3, String var4, boolean var5, LoginType[] var6) {
-      this.__x = var1;
-      this.__d = var4;
+      this.field488 = var1;
+      this.field489 = var4;
    }
 
    @ObfuscatedName("toString")
-   public String __toString_546() {
-      return this.__d;
+   public String method166() {
+      return this.field489;
+   }
+
+   static {
+      field479 = new LoginType(8, 0, "", "");
+      field480 = new LoginType(3, 1, "", "");
+      field481 = new LoginType(2, 2, "", "");
+      field482 = new LoginType(6, 3, "", "");
+      field483 = new LoginType(4, 4, "", "");
+      field484 = new LoginType(7, 5, "", "");
+      field485 = new LoginType(1, 6, "", "");
+      field486 = new LoginType(5, 7, "", "");
+      field487 = new LoginType(0, -1, "", "", true, new LoginType[]{field479, field480, field481, field483, field482});
    }
 }

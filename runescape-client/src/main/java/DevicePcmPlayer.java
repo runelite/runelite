@@ -1,8 +1,8 @@
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.DataLine.Info;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
@@ -35,8 +35,8 @@ public class DevicePcmPlayer extends PcmPlayer {
    )
    @Export("init")
    protected void init() {
-      this.format = new AudioFormat((float)class309.PcmPlayer_sampleRate, 16, PcmPlayer.isStereo?2:1, true, false);
-      this.byteSamples = new byte[256 << (PcmPlayer.isStereo?2:1)];
+      this.format = new AudioFormat((float)class309.PcmPlayer_sampleRate, 16, PcmPlayer.isStereo ? 2 : 1, true, false);
+      this.byteSamples = new byte[256 << (PcmPlayer.isStereo ? 2 : 1)];
    }
 
    @ObfuscatedName("f")
@@ -47,25 +47,26 @@ public class DevicePcmPlayer extends PcmPlayer {
    @Export("open")
    protected void open(int var1) throws LineUnavailableException {
       try {
-         Info var2 = new Info(SourceDataLine.class, this.format, var1 << (PcmPlayer.isStereo?2:1));
+         Info var2 = new Info(SourceDataLine.class, this.format, var1 << (PcmPlayer.isStereo ? 2 : 1));
          this.line = (SourceDataLine)AudioSystem.getLine(var2);
          this.line.open();
          this.line.start();
          this.capacity2 = var1;
       } catch (LineUnavailableException var5) {
-         int var4 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
-         var4 = (var4 >>> 2 & 858993459) + (var4 & 858993459);
-         var4 = (var4 >>> 4) + var4 & 252645135;
-         var4 += var4 >>> 8;
-         var4 += var4 >>> 16;
-         int var3 = var4 & 255;
-         if(var3 != 1) {
-            this.open(World.method1759(var1));
-         } else {
+         int var3 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
+         var3 = (var3 >>> 2 & 858993459) + (var3 & 858993459);
+         var3 = (var3 >>> 4) + var3 & 252645135;
+         var3 += var3 >>> 8;
+         var3 += var3 >>> 16;
+         int var4 = var3 & 255;
+         if (var4 == 1) {
             this.line = null;
             throw var5;
          }
+
+         this.open(World.method1759(var1));
       }
+
    }
 
    @ObfuscatedName("q")
@@ -75,20 +76,20 @@ public class DevicePcmPlayer extends PcmPlayer {
    )
    @Export("position")
    protected int position() {
-      return this.capacity2 - (this.line.available() >> (PcmPlayer.isStereo?2:1));
+      return this.capacity2 - (this.line.available() >> (PcmPlayer.isStereo ? 2 : 1));
    }
 
    @ObfuscatedName("w")
    @Export("write")
    protected void write() {
       int var1 = 256;
-      if(PcmPlayer.isStereo) {
+      if (PcmPlayer.isStereo) {
          var1 <<= 1;
       }
 
-      for(int var2 = 0; var2 < var1; ++var2) {
+      for (int var2 = 0; var2 < var1; ++var2) {
          int var3 = super.samples[var2];
-         if((var3 + 8388608 & -16777216) != 0) {
+         if ((var3 + 8388608 & -16777216) != 0) {
             var3 = 8388607 ^ var3 >> 31;
          }
 
@@ -106,7 +107,7 @@ public class DevicePcmPlayer extends PcmPlayer {
    )
    @Export("close")
    protected void close() {
-      if(this.line != null) {
+      if (this.line != null) {
          this.line.close();
          this.line = null;
       }

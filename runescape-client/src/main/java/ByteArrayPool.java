@@ -35,22 +35,13 @@ public class ByteArrayPool {
    @Export("ByteArrayPool_large")
    static byte[][] ByteArrayPool_large;
    @ObfuscatedName("g")
-   static int[] __gi_g;
+   static int[] field55;
    @ObfuscatedName("dz")
    @ObfuscatedSignature(
       signature = "Lit;"
    )
    @Export("indexCache13")
    static IndexCache indexCache13;
-
-   static {
-      ByteArrayPool_smallCount = 0;
-      ByteArrayPool_mediumCount = 0;
-      ByteArrayPool_largeCount = 0;
-      ByteArrayPool_small = new byte[1000][];
-      ByteArrayPool_medium = new byte[250][];
-      ByteArrayPool_large = new byte[50][];
-   }
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
@@ -60,46 +51,42 @@ public class ByteArrayPool {
    @Export("ByteArrayPool_get")
    static synchronized byte[] ByteArrayPool_get(int var0, boolean var1) {
       byte[] var2;
-      if(var0 != 100) {
-         if(var0 < 100) {
-            ;
+      if (var0 != 100) {
+         if (var0 < 100) {
          }
-      } else if(ByteArrayPool_smallCount > 0) {
+      } else if (ByteArrayPool_smallCount > 0) {
          var2 = ByteArrayPool_small[--ByteArrayPool_smallCount];
          ByteArrayPool_small[ByteArrayPool_smallCount] = null;
          return var2;
       }
 
-      if(var0 != 5000) {
-         if(var0 < 5000) {
-            ;
+      if (var0 != 5000) {
+         if (var0 < 5000) {
          }
-      } else if(ByteArrayPool_mediumCount > 0) {
+      } else if (ByteArrayPool_mediumCount > 0) {
          var2 = ByteArrayPool_medium[--ByteArrayPool_mediumCount];
          ByteArrayPool_medium[ByteArrayPool_mediumCount] = null;
          return var2;
       }
 
-      if(var0 != 30000) {
-         if(var0 < 30000) {
-            ;
+      if (var0 != 30000) {
+         if (var0 < 30000) {
          }
-      } else if(ByteArrayPool_largeCount > 0) {
+      } else if (ByteArrayPool_largeCount > 0) {
          var2 = ByteArrayPool_large[--ByteArrayPool_largeCount];
          ByteArrayPool_large[ByteArrayPool_largeCount] = null;
          return var2;
       }
 
-      if(RouteStrategy.__fe_e != null) {
-         for(int var4 = 0; var4 < __gi_g.length; ++var4) {
-            if(__gi_g[var4] != var0) {
-               if(var0 < __gi_g[var4]) {
-                  ;
+      if (RouteStrategy.field760 != null) {
+         for (int var3 = 0; var3 < field55.length; ++var3) {
+            if (field55[var3] != var0) {
+               if (var0 < field55[var3]) {
                }
-            } else if(WorldMapSection2.__ah_l[var4] > 0) {
-               byte[] var3 = RouteStrategy.__fe_e[var4][--WorldMapSection2.__ah_l[var4]];
-               RouteStrategy.__fe_e[var4][WorldMapSection2.__ah_l[var4]] = null;
-               return var3;
+            } else if (WorldMapSection2.field1082[var3] > 0) {
+               byte[] var4 = RouteStrategy.field760[var3][--WorldMapSection2.field1082[var3]];
+               RouteStrategy.field760[var3][WorldMapSection2.field1082[var3]] = null;
+               return var4;
             }
          }
       }
@@ -113,38 +100,47 @@ public class ByteArrayPool {
       garbageValue = "-399583759"
    )
    public static String method4001(int var0, boolean var1) {
-      if(var1 && var0 >= 0) {
-         int var3 = var0;
-         String var2;
-         if(var1 && var0 >= 0) {
+      if (var1 && var0 >= 0) {
+         int var2 = var0;
+         String var3;
+         if (var1 && var0 >= 0) {
             int var4 = 2;
 
-            for(int var5 = var0 / 10; var5 != 0; ++var4) {
+            for (int var5 = var0 / 10; var5 != 0; ++var4) {
                var5 /= 10;
             }
 
-            char[] var6 = new char[var4];
-            var6[0] = '+';
+            char[] var9 = new char[var4];
+            var9[0] = '+';
 
-            for(int var7 = var4 - 1; var7 > 0; --var7) {
-               int var8 = var3;
-               var3 /= 10;
-               int var9 = var8 - var3 * 10;
-               if(var9 >= 10) {
-                  var6[var7] = (char)(var9 + 87);
+            for (int var6 = var4 - 1; var6 > 0; --var6) {
+               int var7 = var2;
+               var2 /= 10;
+               int var8 = var7 - var2 * 10;
+               if (var8 >= 10) {
+                  var9[var6] = (char)(var8 + 87);
                } else {
-                  var6[var7] = (char)(var9 + 48);
+                  var9[var6] = (char)(var8 + 48);
                }
             }
 
-            var2 = new String(var6);
+            var3 = new String(var9);
          } else {
-            var2 = Integer.toString(var0, 10);
+            var3 = Integer.toString(var0, 10);
          }
 
-         return var2;
+         return var3;
       } else {
          return Integer.toString(var0);
       }
+   }
+
+   static {
+      ByteArrayPool_smallCount = 0;
+      ByteArrayPool_mediumCount = 0;
+      ByteArrayPool_largeCount = 0;
+      ByteArrayPool_small = new byte[1000][];
+      ByteArrayPool_medium = new byte[250][];
+      ByteArrayPool_large = new byte[50][];
    }
 }

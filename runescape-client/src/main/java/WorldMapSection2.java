@@ -8,7 +8,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("WorldMapSection2")
 public class WorldMapSection2 implements WorldMapSection {
    @ObfuscatedName("l")
-   static int[] __ah_l;
+   static int[] field1082;
    @ObfuscatedName("j")
    @Export("cacheDirectoryLocations")
    public static String[] cacheDirectoryLocations;
@@ -16,32 +16,32 @@ public class WorldMapSection2 implements WorldMapSection {
    @ObfuscatedGetter(
       intValue = -1561552223
    )
-   int __m;
+   int field1083;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -245382089
    )
-   int __f;
+   int field1084;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1024859679
    )
-   int __q;
+   int field1085;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 40495485
    )
-   int __w;
+   int field1086;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 982234927
    )
-   int __o;
+   int field1087;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -1272330125
    )
-   int __u;
+   int field1088;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -50,20 +50,20 @@ public class WorldMapSection2 implements WorldMapSection {
    )
    @Export("expandBounds")
    public void expandBounds(WorldMapArea var1) {
-      if(var1.minX0 > this.__o) {
-         var1.minX0 = this.__o;
+      if (var1.minX0 > this.field1087) {
+         var1.minX0 = this.field1087;
       }
 
-      if(var1.maxX0 < this.__o) {
-         var1.maxX0 = this.__o;
+      if (var1.maxX0 < this.field1087) {
+         var1.maxX0 = this.field1087;
       }
 
-      if(var1.minY0 > this.__u) {
-         var1.minY0 = this.__u;
+      if (var1.minY0 > this.field1088) {
+         var1.minY0 = this.field1088;
       }
 
-      if(var1.maxY0 < this.__u) {
-         var1.maxY0 = this.__u;
+      if (var1.maxY0 < this.field1088) {
+         var1.maxY0 = this.field1088;
       }
 
    }
@@ -75,7 +75,7 @@ public class WorldMapSection2 implements WorldMapSection {
    )
    @Export("containsCoord")
    public boolean containsCoord(int var1, int var2, int var3) {
-      return var1 >= this.__m && var1 < this.__m + this.__f?var2 >> 6 == this.__q && var3 >> 6 == this.__w:false;
+      return var1 >= this.field1083 && var1 < this.field1083 + this.field1084 ? var2 >> 6 == this.field1085 && var3 >> 6 == this.field1086 : false;
    }
 
    @ObfuscatedName("q")
@@ -85,7 +85,7 @@ public class WorldMapSection2 implements WorldMapSection {
    )
    @Export("containsPosition")
    public boolean containsPosition(int var1, int var2) {
-      return var1 >> 6 == this.__o && var2 >> 6 == this.__u;
+      return var1 >> 6 == this.field1087 && var2 >> 6 == this.field1088;
    }
 
    @ObfuscatedName("w")
@@ -95,10 +95,10 @@ public class WorldMapSection2 implements WorldMapSection {
    )
    @Export("position")
    public int[] position(int var1, int var2, int var3) {
-      if(!this.containsCoord(var1, var2, var3)) {
+      if (!this.containsCoord(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.__o * 64 - this.__q * 64 + var2, var3 + (this.__u * 64 - this.__w * 64)};
+         int[] var4 = new int[]{this.field1087 * 64 - this.field1085 * 64 + var2, var3 + (this.field1088 * 64 - this.field1086 * 64)};
          return var4;
       }
    }
@@ -110,12 +110,12 @@ public class WorldMapSection2 implements WorldMapSection {
    )
    @Export("coord")
    public TileLocation coord(int var1, int var2) {
-      if(!this.containsPosition(var1, var2)) {
+      if (!this.containsPosition(var1, var2)) {
          return null;
       } else {
-         int var3 = this.__q * 64 - this.__o * 64 + var1;
-         int var4 = this.__w * 64 - this.__u * 64 + var2;
-         return new TileLocation(this.__m, var3, var4);
+         int var3 = this.field1085 * 64 - this.field1087 * 64 + var1;
+         int var4 = this.field1086 * 64 - this.field1088 * 64 + var2;
+         return new TileLocation(this.field1083, var3, var4);
       }
    }
 
@@ -126,13 +126,13 @@ public class WorldMapSection2 implements WorldMapSection {
    )
    @Export("read")
    public void read(Buffer var1) {
-      this.__m = var1.readUnsignedByte();
-      this.__f = var1.readUnsignedByte();
-      this.__q = var1.__ag_302();
-      this.__w = var1.__ag_302();
-      this.__o = var1.__ag_302();
-      this.__u = var1.__ag_302();
-      this.__g_65();
+      this.field1083 = var1.readUnsignedByte();
+      this.field1084 = var1.readUnsignedByte();
+      this.field1085 = var1.method43();
+      this.field1086 = var1.method43();
+      this.field1087 = var1.method43();
+      this.field1088 = var1.method43();
+      this.method425();
    }
 
    @ObfuscatedName("g")
@@ -140,7 +140,7 @@ public class WorldMapSection2 implements WorldMapSection {
       signature = "(I)V",
       garbageValue = "-1602858772"
    )
-   void __g_65() {
+   void method425() {
    }
 
    @ObfuscatedName("m")
@@ -163,105 +163,104 @@ public class WorldMapSection2 implements WorldMapSection {
       signature = "(IILfe;Lfy;I)Z",
       garbageValue = "-2025028346"
    )
-   static final boolean method593(int srcX, int srcY, RouteStrategy strategy, CollisionMap collisionMap) {
-      int var4 = srcX;
-      int var5 = srcY;
+   static final boolean method593(int var0, int var1, RouteStrategy var2, CollisionMap var3) {
+      int var4 = var0;
+      int var5 = var1;
       byte var6 = 64;
       byte var7 = 64;
-      int graphBaseX = srcX - var6;
-      int graphBaseY = srcY - var7;
+      int var8 = var0 - var6;
+      int var9 = var1 - var7;
       class178.directions[var6][var7] = 99;
       class178.distances[var6][var7] = 0;
       byte var10 = 0;
       int var11 = 0;
-      class178.bufferX[var10] = srcX;
-      byte var10001 = var10;
-      int var18 = var10 + 1;
-      class178.bufferY[var10001] = srcY;
-      int[][] var12 = collisionMap.flags;
+      class178.bufferX[var10] = var0;
+      int var13 = var10 + 1;
+      class178.bufferY[var10] = var1;
+      int[][] var14 = var3.flags;
 
-      while(var18 != var11) {
+      while (var13 != var11) {
          var4 = class178.bufferX[var11];
          var5 = class178.bufferY[var11];
          var11 = var11 + 1 & 4095;
-         int var16 = var4 - graphBaseX;
-         int var17 = var5 - graphBaseY;
-         int var13 = var4 - collisionMap.xInset;
-         int var14 = var5 - collisionMap.yInset;
-         if(strategy.vmethod3644(2, var4, var5, collisionMap)) {
-            WidgetGroupParent.__bx_o = var4;
-            UrlRequester.__eo_u = var5;
+         int var15 = var4 - var8;
+         int var16 = var5 - var9;
+         int var17 = var4 - var3.xInset;
+         int var18 = var5 - var3.yInset;
+         if (var2.vmethod3644(2, var4, var5, var3)) {
+            WidgetGroupParent.field986 = var4;
+            UrlRequester.field929 = var5;
             return true;
          }
 
-         int var15 = class178.distances[var16][var17] + 1;
-         if(var16 > 0 && class178.directions[var16 - 1][var17] == 0 && (var12[var13 - 1][var14] & 19136782) == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0) {
-            class178.bufferX[var18] = var4 - 1;
-            class178.bufferY[var18] = var5;
-            var18 = var18 + 1 & 4095;
-            class178.directions[var16 - 1][var17] = 2;
-            class178.distances[var16 - 1][var17] = var15;
+         int var19 = class178.distances[var15][var16] + 1;
+         if (var15 > 0 && class178.directions[var15 - 1][var16] == 0 && (var14[var17 - 1][var18] & 19136782) == 0 && (var14[var17 - 1][var18 + 1] & 19136824) == 0) {
+            class178.bufferX[var13] = var4 - 1;
+            class178.bufferY[var13] = var5;
+            var13 = var13 + 1 & 4095;
+            class178.directions[var15 - 1][var16] = 2;
+            class178.distances[var15 - 1][var16] = var19;
          }
 
-         if(var16 < 126 && class178.directions[var16 + 1][var17] == 0 && (var12[var13 + 2][var14] & 19136899) == 0 && (var12[var13 + 2][var14 + 1] & 19136992) == 0) {
-            class178.bufferX[var18] = var4 + 1;
-            class178.bufferY[var18] = var5;
-            var18 = var18 + 1 & 4095;
-            class178.directions[var16 + 1][var17] = 8;
-            class178.distances[var16 + 1][var17] = var15;
+         if (var15 < 126 && class178.directions[var15 + 1][var16] == 0 && (var14[var17 + 2][var18] & 19136899) == 0 && (var14[var17 + 2][var18 + 1] & 19136992) == 0) {
+            class178.bufferX[var13] = var4 + 1;
+            class178.bufferY[var13] = var5;
+            var13 = var13 + 1 & 4095;
+            class178.directions[var15 + 1][var16] = 8;
+            class178.distances[var15 + 1][var16] = var19;
          }
 
-         if(var17 > 0 && class178.directions[var16][var17 - 1] == 0 && (var12[var13][var14 - 1] & 19136782) == 0 && (var12[var13 + 1][var14 - 1] & 19136899) == 0) {
-            class178.bufferX[var18] = var4;
-            class178.bufferY[var18] = var5 - 1;
-            var18 = var18 + 1 & 4095;
-            class178.directions[var16][var17 - 1] = 1;
-            class178.distances[var16][var17 - 1] = var15;
+         if (var16 > 0 && class178.directions[var15][var16 - 1] == 0 && (var14[var17][var18 - 1] & 19136782) == 0 && (var14[var17 + 1][var18 - 1] & 19136899) == 0) {
+            class178.bufferX[var13] = var4;
+            class178.bufferY[var13] = var5 - 1;
+            var13 = var13 + 1 & 4095;
+            class178.directions[var15][var16 - 1] = 1;
+            class178.distances[var15][var16 - 1] = var19;
          }
 
-         if(var17 < 126 && class178.directions[var16][var17 + 1] == 0 && (var12[var13][var14 + 2] & 19136824) == 0 && (var12[var13 + 1][var14 + 2] & 19136992) == 0) {
-            class178.bufferX[var18] = var4;
-            class178.bufferY[var18] = var5 + 1;
-            var18 = var18 + 1 & 4095;
-            class178.directions[var16][var17 + 1] = 4;
-            class178.distances[var16][var17 + 1] = var15;
+         if (var16 < 126 && class178.directions[var15][var16 + 1] == 0 && (var14[var17][var18 + 2] & 19136824) == 0 && (var14[var17 + 1][var18 + 2] & 19136992) == 0) {
+            class178.bufferX[var13] = var4;
+            class178.bufferY[var13] = var5 + 1;
+            var13 = var13 + 1 & 4095;
+            class178.directions[var15][var16 + 1] = 4;
+            class178.distances[var15][var16 + 1] = var19;
          }
 
-         if(var16 > 0 && var17 > 0 && class178.directions[var16 - 1][var17 - 1] == 0 && (var12[var13 - 1][var14] & 19136830) == 0 && (var12[var13 - 1][var14 - 1] & 19136782) == 0 && (var12[var13][var14 - 1] & 19136911) == 0) {
-            class178.bufferX[var18] = var4 - 1;
-            class178.bufferY[var18] = var5 - 1;
-            var18 = var18 + 1 & 4095;
-            class178.directions[var16 - 1][var17 - 1] = 3;
-            class178.distances[var16 - 1][var17 - 1] = var15;
+         if (var15 > 0 && var16 > 0 && class178.directions[var15 - 1][var16 - 1] == 0 && (var14[var17 - 1][var18] & 19136830) == 0 && (var14[var17 - 1][var18 - 1] & 19136782) == 0 && (var14[var17][var18 - 1] & 19136911) == 0) {
+            class178.bufferX[var13] = var4 - 1;
+            class178.bufferY[var13] = var5 - 1;
+            var13 = var13 + 1 & 4095;
+            class178.directions[var15 - 1][var16 - 1] = 3;
+            class178.distances[var15 - 1][var16 - 1] = var19;
          }
 
-         if(var16 < 126 && var17 > 0 && class178.directions[var16 + 1][var17 - 1] == 0 && (var12[var13 + 1][var14 - 1] & 19136911) == 0 && (var12[var13 + 2][var14 - 1] & 19136899) == 0 && (var12[var13 + 2][var14] & 19136995) == 0) {
-            class178.bufferX[var18] = var4 + 1;
-            class178.bufferY[var18] = var5 - 1;
-            var18 = var18 + 1 & 4095;
-            class178.directions[var16 + 1][var17 - 1] = 9;
-            class178.distances[var16 + 1][var17 - 1] = var15;
+         if (var15 < 126 && var16 > 0 && class178.directions[var15 + 1][var16 - 1] == 0 && (var14[var17 + 1][var18 - 1] & 19136911) == 0 && (var14[var17 + 2][var18 - 1] & 19136899) == 0 && (var14[var17 + 2][var18] & 19136995) == 0) {
+            class178.bufferX[var13] = var4 + 1;
+            class178.bufferY[var13] = var5 - 1;
+            var13 = var13 + 1 & 4095;
+            class178.directions[var15 + 1][var16 - 1] = 9;
+            class178.distances[var15 + 1][var16 - 1] = var19;
          }
 
-         if(var16 > 0 && var17 < 126 && class178.directions[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136830) == 0 && (var12[var13 - 1][var14 + 2] & 19136824) == 0 && (var12[var13][var14 + 2] & 19137016) == 0) {
-            class178.bufferX[var18] = var4 - 1;
-            class178.bufferY[var18] = var5 + 1;
-            var18 = var18 + 1 & 4095;
-            class178.directions[var16 - 1][var17 + 1] = 6;
-            class178.distances[var16 - 1][var17 + 1] = var15;
+         if (var15 > 0 && var16 < 126 && class178.directions[var15 - 1][var16 + 1] == 0 && (var14[var17 - 1][var18 + 1] & 19136830) == 0 && (var14[var17 - 1][var18 + 2] & 19136824) == 0 && (var14[var17][var18 + 2] & 19137016) == 0) {
+            class178.bufferX[var13] = var4 - 1;
+            class178.bufferY[var13] = var5 + 1;
+            var13 = var13 + 1 & 4095;
+            class178.directions[var15 - 1][var16 + 1] = 6;
+            class178.distances[var15 - 1][var16 + 1] = var19;
          }
 
-         if(var16 < 126 && var17 < 126 && class178.directions[var16 + 1][var17 + 1] == 0 && (var12[var13 + 1][var14 + 2] & 19137016) == 0 && (var12[var13 + 2][var14 + 2] & 19136992) == 0 && (var12[var13 + 2][var14 + 1] & 19136995) == 0) {
-            class178.bufferX[var18] = var4 + 1;
-            class178.bufferY[var18] = var5 + 1;
-            var18 = var18 + 1 & 4095;
-            class178.directions[var16 + 1][var17 + 1] = 12;
-            class178.distances[var16 + 1][var17 + 1] = var15;
+         if (var15 < 126 && var16 < 126 && class178.directions[var15 + 1][var16 + 1] == 0 && (var14[var17 + 1][var18 + 2] & 19137016) == 0 && (var14[var17 + 2][var18 + 2] & 19136992) == 0 && (var14[var17 + 2][var18 + 1] & 19136995) == 0) {
+            class178.bufferX[var13] = var4 + 1;
+            class178.bufferY[var13] = var5 + 1;
+            var13 = var13 + 1 & 4095;
+            class178.directions[var15 + 1][var16 + 1] = 12;
+            class178.distances[var15 + 1][var16 + 1] = var19;
          }
       }
 
-      WidgetGroupParent.__bx_o = var4;
-      UrlRequester.__eo_u = var5;
+      WidgetGroupParent.field986 = var4;
+      UrlRequester.field929 = var5;
       return false;
    }
 
@@ -276,30 +275,30 @@ public class WorldMapSection2 implements WorldMapSection {
       boolean var4 = false;
       Username var5 = new Username(var1, KeyHandler.loginType);
 
-      for(int var6 = 0; var6 < var2; ++var6) {
+      for (int var6 = 0; var6 < var2; ++var6) {
          Player var7 = Client.players[var3[var6]];
-         if(var7 != null && var7 != Canvas.localPlayer && var7.username != null && var7.username.equals(var5)) {
+         if (var7 != null && var7 != Canvas.localPlayer && var7.username != null && var7.username.equals(var5)) {
             PacketBufferNode var8;
-            if(var0 == 1) {
-               var8 = Interpreter.method1915(ClientPacket.__gs_ao, Client.packetWriter.isaacCipher);
+            if (var0 == 1) {
+               var8 = Interpreter.method1915(ClientPacket.field269, Client.packetWriter.isaacCipher);
                var8.packetBuffer.writeShort(var3[var6]);
-               var8.packetBuffer.__ai_315(0);
-               Client.packetWriter.__q_167(var8);
-            } else if(var0 == 4) {
-               var8 = Interpreter.method1915(ClientPacket.__gs_aq, Client.packetWriter.isaacCipher);
-               var8.packetBuffer.__bx_323(var3[var6]);
-               var8.packetBuffer.__ai_315(0);
-               Client.packetWriter.__q_167(var8);
-            } else if(var0 == 6) {
-               var8 = Interpreter.method1915(ClientPacket.__gs_cf, Client.packetWriter.isaacCipher);
-               var8.packetBuffer.__bo_322(var3[var6]);
-               var8.packetBuffer.__ba_316(0);
-               Client.packetWriter.__q_167(var8);
-            } else if(var0 == 7) {
-               var8 = Interpreter.method1915(ClientPacket.__gs_be, Client.packetWriter.isaacCipher);
-               var8.packetBuffer.__ba_316(0);
+               var8.packetBuffer.method56(0);
+               Client.packetWriter.method241(var8);
+            } else if (var0 == 4) {
+               var8 = Interpreter.method1915(ClientPacket.field249, Client.packetWriter.isaacCipher);
+               var8.packetBuffer.method64(var3[var6]);
+               var8.packetBuffer.method56(0);
+               Client.packetWriter.method241(var8);
+            } else if (var0 == 6) {
+               var8 = Interpreter.method1915(ClientPacket.field315, Client.packetWriter.isaacCipher);
+               var8.packetBuffer.method63(var3[var6]);
+               var8.packetBuffer.method57(0);
+               Client.packetWriter.method241(var8);
+            } else if (var0 == 7) {
+               var8 = Interpreter.method1915(ClientPacket.field297, Client.packetWriter.isaacCipher);
+               var8.packetBuffer.method57(0);
                var8.packetBuffer.writeShortLE(var3[var6]);
-               Client.packetWriter.__q_167(var8);
+               Client.packetWriter.method241(var8);
             }
 
             var4 = true;
@@ -307,7 +306,7 @@ public class WorldMapSection2 implements WorldMapSection {
          }
       }
 
-      if(!var4) {
+      if (!var4) {
          WorldMapIcon1.method219(4, "", "Unable to find " + var1);
       }
 

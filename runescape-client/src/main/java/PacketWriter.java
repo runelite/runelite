@@ -30,7 +30,7 @@ public class PacketWriter {
    @ObfuscatedGetter(
       intValue = -1028046199
    )
-   int __q;
+   int field672;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgr;"
@@ -62,43 +62,43 @@ public class PacketWriter {
    @Export("serverPacket0Length")
    int serverPacket0Length;
    @ObfuscatedName("e")
-   boolean __e;
+   boolean field673;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 120570975
    )
-   int __x;
+   int field674;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1672229609
    )
-   int __d;
+   int field675;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   ServerPacket __k;
+   ServerPacket field676;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   ServerPacket __n;
+   ServerPacket field677;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   ServerPacket __i;
+   ServerPacket field678;
 
    PacketWriter() {
       this.packetBufferNodes = new IterableNodeDeque();
-      this.__q = 0;
+      this.field672 = 0;
       this.buffer = new Buffer(5000);
       this.packetBuffer = new PacketBuffer(40000);
       this.serverPacket0 = null;
       this.serverPacket0Length = 0;
-      this.__e = true;
-      this.__x = 0;
-      this.__d = 0;
+      this.field673 = true;
+      this.field674 = 0;
+      this.field675 = 0;
    }
 
    @ObfuscatedName("m")
@@ -106,9 +106,9 @@ public class PacketWriter {
       signature = "(I)V",
       garbageValue = "1561094077"
    )
-   final void __m_165() {
+   final void method239() {
       this.packetBufferNodes.clear();
-      this.__q = 0;
+      this.field672 = 0;
    }
 
    @ObfuscatedName("f")
@@ -116,23 +116,23 @@ public class PacketWriter {
       signature = "(I)V",
       garbageValue = "-1839929685"
    )
-   final void __f_166() throws IOException {
-      if(this.socket0 != null && this.__q > 0) {
+   final void method240() throws IOException {
+      if (this.socket0 != null && this.field672 > 0) {
          this.buffer.index = 0;
 
-         while(true) {
+         while (true) {
             PacketBufferNode var1 = (PacketBufferNode)this.packetBufferNodes.last();
-            if(var1 == null || var1.__w > this.buffer.array.length - this.buffer.index) {
+            if (var1 == null || var1.field671 > this.buffer.array.length - this.buffer.index) {
                this.socket0.write(this.buffer.array, 0, this.buffer.index);
-               this.__d = 0;
+               this.field675 = 0;
                break;
             }
 
-            this.buffer.__s_297(var1.packetBuffer.array, 0, var1.__w);
-            this.__q -= var1.__w;
+            this.buffer.method38(var1.packetBuffer.array, 0, var1.field671);
+            this.field672 -= var1.field671;
             var1.remove();
-            var1.packetBuffer.__f_295();
-            var1.__f_292();
+            var1.packetBuffer.method36();
+            var1.method238();
          }
       }
 
@@ -143,11 +143,11 @@ public class PacketWriter {
       signature = "(Lgg;I)V",
       garbageValue = "599379248"
    )
-   public final void __q_167(PacketBufferNode var1) {
+   public final void method241(PacketBufferNode var1) {
       this.packetBufferNodes.addFirst(var1);
-      var1.__w = var1.packetBuffer.index;
+      var1.field671 = var1.packetBuffer.index;
       var1.packetBuffer.index = 0;
-      this.__q += var1.__w;
+      this.field672 += var1.field671;
    }
 
    @ObfuscatedName("w")
@@ -167,7 +167,7 @@ public class PacketWriter {
    )
    @Export("close")
    void close() {
-      if(this.socket0 != null) {
+      if (this.socket0 != null) {
          this.socket0.close();
          this.socket0 = null;
       }

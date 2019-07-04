@@ -19,14 +19,14 @@ public interface TextureLoader {
       signature = "(II)I",
       garbageValue = "-1641984961"
    )
-   int __w_213(int var1);
+   int vmethod324(int var1);
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(IB)Z",
       garbageValue = "14"
    )
-   boolean __o_214(int var1);
+   boolean vmethod325(int var1);
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(

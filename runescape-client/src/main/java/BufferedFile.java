@@ -23,12 +23,12 @@ public class BufferedFile {
    @ObfuscatedGetter(
       longValue = -7773729680030815835L
    )
-   long __q;
+   long field47;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -846810907
    )
-   int __w;
+   int field48;
    @ObfuscatedName("o")
    @Export("writeBuffer")
    byte[] writeBuffer;
@@ -36,22 +36,22 @@ public class BufferedFile {
    @ObfuscatedGetter(
       longValue = 5249231081498323007L
    )
-   long __u;
+   long field49;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -1558233611
    )
-   int __g;
+   int field50;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       longValue = -6819476051574242871L
    )
-   long __l;
+   long field51;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       longValue = -3728247331531750871L
    )
-   long __e;
+   long field52;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       longValue = 2663146692618913943L
@@ -62,20 +62,20 @@ public class BufferedFile {
    @ObfuscatedGetter(
       longValue = 5720856138805191881L
    )
-   long __d;
+   long field53;
 
    @ObfuscatedSignature(
       signature = "(Ldk;II)V"
    )
    public BufferedFile(AccessFile var1, int var2, int var3) throws IOException {
-      this.__q = -1L;
-      this.__u = -1L;
-      this.__g = 0;
+      this.field47 = -1L;
+      this.field49 = -1L;
+      this.field50 = 0;
       this.accessFile = var1;
-      this.capacity = this.__e = var1.length();
+      this.capacity = this.field52 = var1.length();
       this.readBuffer = new byte[var2];
       this.writeBuffer = new byte[var3];
-      this.__l = 0L;
+      this.field51 = 0L;
    }
 
    @ObfuscatedName("m")
@@ -92,10 +92,10 @@ public class BufferedFile {
    @ObfuscatedName("f")
    @Export("seek")
    public void seek(long var1) throws IOException {
-      if(var1 < 0L) {
+      if (var1 < 0L) {
          throw new IOException("");
       } else {
-         this.__l = var1;
+         this.field51 = var1;
       }
    }
 
@@ -127,100 +127,100 @@ public class BufferedFile {
    @Export("read")
    public void read(byte[] var1, int var2, int var3) throws IOException {
       try {
-         if(var3 + var2 > var1.length) {
+         if (var3 + var2 > var1.length) {
             throw new ArrayIndexOutOfBoundsException(var3 + var2 - var1.length);
          }
 
-         if(-1L != this.__u && this.__l >= this.__u && this.__l + (long)var3 <= this.__u + (long)this.__g) {
-            System.arraycopy(this.writeBuffer, (int)(this.__l - this.__u), var1, var2, var3);
-            this.__l += (long)var3;
+         if (-1L != this.field49 && this.field51 >= this.field49 && this.field51 + (long)var3 <= this.field49 + (long)this.field50) {
+            System.arraycopy(this.writeBuffer, (int)(this.field51 - this.field49), var1, var2, var3);
+            this.field51 += (long)var3;
             return;
          }
 
-         long var4 = this.__l;
-         int var7 = var3;
-         int var8;
-         if(this.__l >= this.__q && this.__l < this.__q + (long)this.__w) {
-            var8 = (int)((long)this.__w - (this.__l - this.__q));
-            if(var8 > var3) {
-               var8 = var3;
+         long var4 = this.field51;
+         int var6 = var3;
+         int var7;
+         if (this.field51 >= this.field47 && this.field51 < this.field47 + (long)this.field48) {
+            var7 = (int)((long)this.field48 - (this.field51 - this.field47));
+            if (var7 > var3) {
+               var7 = var3;
             }
 
-            System.arraycopy(this.readBuffer, (int)(this.__l - this.__q), var1, var2, var8);
-            this.__l += (long)var8;
-            var2 += var8;
-            var3 -= var8;
+            System.arraycopy(this.readBuffer, (int)(this.field51 - this.field47), var1, var2, var7);
+            this.field51 += (long)var7;
+            var2 += var7;
+            var3 -= var7;
          }
 
-         if(var3 > this.readBuffer.length) {
-            this.accessFile.seek(this.__l);
+         if (var3 > this.readBuffer.length) {
+            this.accessFile.seek(this.field51);
 
-            for(this.__d = this.__l; var3 > 0; var3 -= var8) {
-               var8 = this.accessFile.read(var1, var2, var3);
-               if(var8 == -1) {
+            for (this.field53 = this.field51; var3 > 0; var3 -= var7) {
+               var7 = this.accessFile.read(var1, var2, var3);
+               if (var7 == -1) {
                   break;
                }
 
-               this.__d += (long)var8;
-               this.__l += (long)var8;
-               var2 += var8;
+               this.field53 += (long)var7;
+               this.field51 += (long)var7;
+               var2 += var7;
             }
-         } else if(var3 > 0) {
+         } else if (var3 > 0) {
             this.load();
-            var8 = var3;
-            if(var3 > this.__w) {
-               var8 = this.__w;
+            var7 = var3;
+            if (var3 > this.field48) {
+               var7 = this.field48;
             }
 
-            System.arraycopy(this.readBuffer, 0, var1, var2, var8);
-            var2 += var8;
-            var3 -= var8;
-            this.__l += (long)var8;
+            System.arraycopy(this.readBuffer, 0, var1, var2, var7);
+            var2 += var7;
+            var3 -= var7;
+            this.field51 += (long)var7;
          }
 
-         if(-1L != this.__u) {
-            if(this.__u > this.__l && var3 > 0) {
-               var8 = var2 + (int)(this.__u - this.__l);
-               if(var8 > var3 + var2) {
-                  var8 = var3 + var2;
+         if (-1L != this.field49) {
+            if (this.field49 > this.field51 && var3 > 0) {
+               var7 = var2 + (int)(this.field49 - this.field51);
+               if (var7 > var3 + var2) {
+                  var7 = var3 + var2;
                }
 
-               while(var2 < var8) {
+               while (var2 < var7) {
                   var1[var2++] = 0;
                   --var3;
-                  ++this.__l;
+                  ++this.field51;
                }
             }
 
-            long var13 = -1L;
+            long var8 = -1L;
             long var10 = -1L;
-            if(this.__u >= var4 && this.__u < var4 + (long)var7) {
-               var13 = this.__u;
-            } else if(var4 >= this.__u && var4 < this.__u + (long)this.__g) {
-               var13 = var4;
+            if (this.field49 >= var4 && this.field49 < var4 + (long)var6) {
+               var8 = this.field49;
+            } else if (var4 >= this.field49 && var4 < this.field49 + (long)this.field50) {
+               var8 = var4;
             }
 
-            if((long)this.__g + this.__u > var4 && this.__u + (long)this.__g <= var4 + (long)var7) {
-               var10 = (long)this.__g + this.__u;
-            } else if((long)var7 + var4 > this.__u && (long)var7 + var4 <= this.__u + (long)this.__g) {
-               var10 = (long)var7 + var4;
+            if ((long)this.field50 + this.field49 > var4 && this.field49 + (long)this.field50 <= var4 + (long)var6) {
+               var10 = (long)this.field50 + this.field49;
+            } else if ((long)var6 + var4 > this.field49 && (long)var6 + var4 <= this.field49 + (long)this.field50) {
+               var10 = (long)var6 + var4;
             }
 
-            if(var13 > -1L && var10 > var13) {
-               int var12 = (int)(var10 - var13);
-               System.arraycopy(this.writeBuffer, (int)(var13 - this.__u), var1, (int)(var13 - var4) + var2, var12);
-               if(var10 > this.__l) {
-                  var3 = (int)((long)var3 - (var10 - this.__l));
-                  this.__l = var10;
+            if (var8 > -1L && var10 > var8) {
+               int var12 = (int)(var10 - var8);
+               System.arraycopy(this.writeBuffer, (int)(var8 - this.field49), var1, (int)(var8 - var4) + var2, var12);
+               if (var10 > this.field51) {
+                  var3 = (int)((long)var3 - (var10 - this.field51));
+                  this.field51 = var10;
                }
             }
          }
-      } catch (IOException var16) {
-         this.__d = -1L;
-         throw var16;
+      } catch (IOException var13) {
+         this.field53 = -1L;
+         throw var13;
       }
 
-      if(var3 > 0) {
+      if (var3 > 0) {
          throw new EOFException();
       }
    }
@@ -232,20 +232,20 @@ public class BufferedFile {
    )
    @Export("load")
    void load() throws IOException {
-      this.__w = 0;
-      if(this.__d != this.__l) {
-         this.accessFile.seek(this.__l);
-         this.__d = this.__l;
+      this.field48 = 0;
+      if (this.field53 != this.field51) {
+         this.accessFile.seek(this.field51);
+         this.field53 = this.field51;
       }
 
       int var1;
-      for(this.__q = this.__l; this.__w < this.readBuffer.length; this.__w += var1) {
-         var1 = this.accessFile.read(this.readBuffer, this.__w, this.readBuffer.length - this.__w);
-         if(var1 == -1) {
+      for (this.field47 = this.field51; this.field48 < this.readBuffer.length; this.field48 += var1) {
+         var1 = this.accessFile.read(this.readBuffer, this.field48, this.readBuffer.length - this.field48);
+         if (var1 == -1) {
             break;
          }
 
-         this.__d += (long)var1;
+         this.field53 += (long)var1;
       }
 
    }
@@ -258,73 +258,73 @@ public class BufferedFile {
    @Export("write")
    public void write(byte[] var1, int var2, int var3) throws IOException {
       try {
-         if(this.__l + (long)var3 > this.capacity) {
-            this.capacity = this.__l + (long)var3;
+         if (this.field51 + (long)var3 > this.capacity) {
+            this.capacity = this.field51 + (long)var3;
          }
 
-         if(-1L != this.__u && (this.__l < this.__u || this.__l > this.__u + (long)this.__g)) {
+         if (-1L != this.field49 && (this.field51 < this.field49 || this.field51 > this.field49 + (long)this.field50)) {
             this.flush();
          }
 
-         if(this.__u != -1L && (long)var3 + this.__l > this.__u + (long)this.writeBuffer.length) {
-            int var4 = (int)((long)this.writeBuffer.length - (this.__l - this.__u));
-            System.arraycopy(var1, var2, this.writeBuffer, (int)(this.__l - this.__u), var4);
-            this.__l += (long)var4;
+         if (this.field49 != -1L && (long)var3 + this.field51 > this.field49 + (long)this.writeBuffer.length) {
+            int var4 = (int)((long)this.writeBuffer.length - (this.field51 - this.field49));
+            System.arraycopy(var1, var2, this.writeBuffer, (int)(this.field51 - this.field49), var4);
+            this.field51 += (long)var4;
             var2 += var4;
             var3 -= var4;
-            this.__g = this.writeBuffer.length;
+            this.field50 = this.writeBuffer.length;
             this.flush();
          }
 
-         if(var3 <= this.writeBuffer.length) {
-            if(var3 > 0) {
-               if(this.__u == -1L) {
-                  this.__u = this.__l;
+         if (var3 <= this.writeBuffer.length) {
+            if (var3 > 0) {
+               if (this.field49 == -1L) {
+                  this.field49 = this.field51;
                }
 
-               System.arraycopy(var1, var2, this.writeBuffer, (int)(this.__l - this.__u), var3);
-               this.__l += (long)var3;
-               if(this.__l - this.__u > (long)this.__g) {
-                  this.__g = (int)(this.__l - this.__u);
+               System.arraycopy(var1, var2, this.writeBuffer, (int)(this.field51 - this.field49), var3);
+               this.field51 += (long)var3;
+               if (this.field51 - this.field49 > (long)this.field50) {
+                  this.field50 = (int)(this.field51 - this.field49);
                }
-
             }
          } else {
-            if(this.__d != this.__l) {
-               this.accessFile.seek(this.__l);
-               this.__d = this.__l;
+            if (this.field53 != this.field51) {
+               this.accessFile.seek(this.field51);
+               this.field53 = this.field51;
             }
 
             this.accessFile.write(var1, var2, var3);
-            this.__d += (long)var3;
-            if(this.__d > this.__e) {
-               this.__e = this.__d;
+            this.field53 += (long)var3;
+            if (this.field53 > this.field52) {
+               this.field52 = this.field53;
             }
 
-            long var9 = -1L;
+            long var10 = -1L;
             long var6 = -1L;
-            if(this.__l >= this.__q && this.__l < (long)this.__w + this.__q) {
-               var9 = this.__l;
-            } else if(this.__q >= this.__l && this.__q < (long)var3 + this.__l) {
-               var9 = this.__q;
+            if (this.field51 >= this.field47 && this.field51 < (long)this.field48 + this.field47) {
+               var10 = this.field51;
+            } else if (this.field47 >= this.field51 && this.field47 < (long)var3 + this.field51) {
+               var10 = this.field47;
             }
 
-            if(this.__l + (long)var3 > this.__q && (long)var3 + this.__l <= (long)this.__w + this.__q) {
-               var6 = this.__l + (long)var3;
-            } else if((long)this.__w + this.__q > this.__l && this.__q + (long)this.__w <= (long)var3 + this.__l) {
-               var6 = (long)this.__w + this.__q;
+            if (this.field51 + (long)var3 > this.field47 && (long)var3 + this.field51 <= (long)this.field48 + this.field47) {
+               var6 = this.field51 + (long)var3;
+            } else if ((long)this.field48 + this.field47 > this.field51 && this.field47 + (long)this.field48 <= (long)var3 + this.field51) {
+               var6 = (long)this.field48 + this.field47;
             }
 
-            if(var9 > -1L && var6 > var9) {
-               int var8 = (int)(var6 - var9);
-               System.arraycopy(var1, (int)(var9 + (long)var2 - this.__l), this.readBuffer, (int)(var9 - this.__q), var8);
+            if (var10 > -1L && var6 > var10) {
+               int var8 = (int)(var6 - var10);
+               System.arraycopy(var1, (int)(var10 + (long)var2 - this.field51), this.readBuffer, (int)(var10 - this.field47), var8);
             }
 
-            this.__l += (long)var3;
+            this.field51 += (long)var3;
          }
-      } catch (IOException var12) {
-         this.__d = -1L;
-         throw var12;
+
+      } catch (IOException var9) {
+         this.field53 = -1L;
+         throw var9;
       }
    }
 
@@ -335,39 +335,39 @@ public class BufferedFile {
    )
    @Export("flush")
    void flush() throws IOException {
-      if(this.__u != -1L) {
-         if(this.__u != this.__d) {
-            this.accessFile.seek(this.__u);
-            this.__d = this.__u;
+      if (this.field49 != -1L) {
+         if (this.field49 != this.field53) {
+            this.accessFile.seek(this.field49);
+            this.field53 = this.field49;
          }
 
-         this.accessFile.write(this.writeBuffer, 0, this.__g);
-         this.__d += (long)(this.__g * 1290782301) * -1558233611L;
-         if(this.__d > this.__e) {
-            this.__e = this.__d;
+         this.accessFile.write(this.writeBuffer, 0, this.field50);
+         this.field53 += (long)(this.field50 * 1290782301) * -1558233611L;
+         if (this.field53 > this.field52) {
+            this.field52 = this.field53;
          }
 
          long var1 = -1L;
          long var3 = -1L;
-         if(this.__u >= this.__q && this.__u < (long)this.__w + this.__q) {
-            var1 = this.__u;
-         } else if(this.__q >= this.__u && this.__q < this.__u + (long)this.__g) {
-            var1 = this.__q;
+         if (this.field49 >= this.field47 && this.field49 < (long)this.field48 + this.field47) {
+            var1 = this.field49;
+         } else if (this.field47 >= this.field49 && this.field47 < this.field49 + (long)this.field50) {
+            var1 = this.field47;
          }
 
-         if(this.__u + (long)this.__g > this.__q && this.__u + (long)this.__g <= this.__q + (long)this.__w) {
-            var3 = this.__u + (long)this.__g;
-         } else if((long)this.__w + this.__q > this.__u && (long)this.__w + this.__q <= (long)this.__g + this.__u) {
-            var3 = this.__q + (long)this.__w;
+         if (this.field49 + (long)this.field50 > this.field47 && this.field49 + (long)this.field50 <= this.field47 + (long)this.field48) {
+            var3 = this.field49 + (long)this.field50;
+         } else if ((long)this.field48 + this.field47 > this.field49 && (long)this.field48 + this.field47 <= (long)this.field50 + this.field49) {
+            var3 = this.field47 + (long)this.field48;
          }
 
-         if(var1 > -1L && var3 > var1) {
+         if (var1 > -1L && var3 > var1) {
             int var5 = (int)(var3 - var1);
-            System.arraycopy(this.writeBuffer, (int)(var1 - this.__u), this.readBuffer, (int)(var1 - this.__q), var5);
+            System.arraycopy(this.writeBuffer, (int)(var1 - this.field49), this.readBuffer, (int)(var1 - this.field47), var5);
          }
 
-         this.__u = -1L;
-         this.__g = 0;
+         this.field49 = -1L;
+         this.field50 = 0;
       }
 
    }

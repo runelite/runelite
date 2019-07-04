@@ -11,7 +11,7 @@ public class FriendLoginUpdate extends Link {
    @ObfuscatedSignature(
       signature = "Ley;"
    )
-   static UrlRequest __kn_x;
+   static UrlRequest field356;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1390885889
