@@ -471,4 +471,10 @@ public interface RSWidget extends Widget
 	@Import("noScrollThrough")
 	@Override
 	void setNoScrollThrough(boolean noScrollThrough);
+
+	@Import("animFrame")
+	int getAnimFrame();
+
+	@Import("animFrameCycle")
+	int getAnimFrameCycle();
 }
