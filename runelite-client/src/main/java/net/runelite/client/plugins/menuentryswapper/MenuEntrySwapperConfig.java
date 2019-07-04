@@ -291,4 +291,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swapMtaItems",
+		name = "MTA Alchemy Room Items",
+		description = "Swap 'Wear' and 'Wield' on the mage training arena items with 'use'"
+	)
+	default boolean swapMtaItems()
+	{
+		return true;
+	}
 }

@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Set;
@@ -34,6 +35,10 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
+import static net.runelite.api.ItemID.ADAMANT_KITESHIELD_6894;
+import static net.runelite.api.ItemID.ADAMANT_MED_HELM_6895;
+import static net.runelite.api.ItemID.LEATHER_BOOTS_6893;
+import static net.runelite.api.ItemID.RUNE_LONGSWORD_6897;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -73,6 +78,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
+
+	private static final ImmutableList<Integer> MTA_ITEMS = ImmutableList.of(LEATHER_BOOTS_6893, ADAMANT_KITESHIELD_6894, ADAMANT_MED_HELM_6895, RUNE_LONGSWORD_6897); //item id's of mage training arena alchemy room items
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
@@ -572,6 +579,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
+		}
+		else if (config.swapMtaItems() && MTA_ITEMS.contains(eventId) && ("wield".equals(option) || "wear".equals(option)))
+		{
+			swap("use", option, target, true);
 		}
 		else if (option.equals("wield"))
 		{
