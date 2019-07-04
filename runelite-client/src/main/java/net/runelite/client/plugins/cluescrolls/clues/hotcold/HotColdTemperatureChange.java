@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,53 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache;
+package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
-import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import net.runelite.cache.definitions.AreaDefinition;
-import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.AllArgsConstructor;
 
-public class AreaDumper
+@AllArgsConstructor
+public enum HotColdTemperatureChange
 {
-	private static final Logger logger = LoggerFactory.getLogger(AreaDumper.class);
+	WARMER("and warmer than"),
+	SAME("and the same temperature as"),
+	COLDER("but colder than");
 
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
+	private final String text;
 
-	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-	@Test
-	public void extract() throws IOException
+	public static HotColdTemperatureChange of(final String message)
 	{
-		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
-
-		int count = 0;
-
-		try (Store store = new Store(base))
+		if (!message.endsWith(" last time."))
 		{
-			store.load();
+			return null;
+		}
 
-			AreaManager areaManager = new AreaManager(store);
-			areaManager.load();
-
-			for (AreaDefinition area : areaManager.getAreas())
+		for (final HotColdTemperatureChange change : values())
+		{
+			if (message.contains(change.text))
 			{
-				Files.asCharSink(new File(outDir, area.id + ".json"), Charset.defaultCharset()).write(gson.toJson(area));
-				++count;
+				return change;
 			}
 		}
 
-		logger.info("Dumped {} areas to {}", count, outDir);
+		return null;
 	}
 }

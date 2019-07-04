@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,53 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache;
+package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
-import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import net.runelite.cache.definitions.AreaDefinition;
-import net.runelite.cache.fs.Store;
-import org.junit.Rule;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class AreaDumper
+public class BeginnerHotColdLocationTest
 {
-	private static final Logger logger = LoggerFactory.getLogger(AreaDumper.class);
-
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	private static final Set<HotColdLocation> BEGINNER_HOT_COLD_LOCATIONS = Arrays.stream(HotColdLocation.values())
+		.filter(HotColdLocation::isBeginnerClue)
+		.collect(Collectors.toSet());
+	private static final int EXPECTED_DIMENSION_SIZE = 7;
 
 	@Test
-	public void extract() throws IOException
+	public void beginnerHotColdLocationAreaTest()
 	{
-		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
 
-		int count = 0;
-
-		try (Store store = new Store(base))
+		for (final HotColdLocation location : BEGINNER_HOT_COLD_LOCATIONS)
 		{
-			store.load();
-
-			AreaManager areaManager = new AreaManager(store);
-			areaManager.load();
-
-			for (AreaDefinition area : areaManager.getAreas())
-			{
-				Files.asCharSink(new File(outDir, area.id + ".json"), Charset.defaultCharset()).write(gson.toJson(area));
-				++count;
-			}
+			assertEquals(EXPECTED_DIMENSION_SIZE, location.getRect().height);
+			assertEquals(EXPECTED_DIMENSION_SIZE, location.getRect().width);
 		}
-
-		logger.info("Dumped {} areas to {}", count, outDir);
 	}
 }
