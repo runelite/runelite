@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.events.DynamicObjectAnimationChanged;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -89,6 +90,14 @@ public abstract class RSDynamicObjectMixin implements RSDynamicObject
 	public void rl$init(int id, int type, int orientation, int plane, int x, int y, int animationID, boolean var8, RSEntity var9)
 	{
 		this.animationID = animationID;
+
+		if (animationID != -1)
+		{
+			DynamicObjectAnimationChanged dynamicObjectAnimationChanged = new DynamicObjectAnimationChanged();
+			dynamicObjectAnimationChanged.setObject(id);
+			dynamicObjectAnimationChanged.setAnimation(animationID);
+			client.getCallbacks().post(dynamicObjectAnimationChanged);
+		}
 	}
 
 	@Inject
