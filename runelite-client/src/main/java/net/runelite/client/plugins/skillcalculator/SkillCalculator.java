@@ -339,6 +339,8 @@ class SkillCalculator extends JPanel
 		uiInput.setCurrentXPInput(currentXP);
 		uiInput.setTargetLevelInput(targetLevel);
 		uiInput.setTargetXPInput(targetXP);
+		uiInput.setRemainingLevelsInput(targetLevel - currentLevel);
+		uiInput.setRemainingXPInput(targetXP - currentXP);
 		calculate();
 	}
 
