@@ -29,10 +29,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum BossTab
 {
 	// Chest Rewards

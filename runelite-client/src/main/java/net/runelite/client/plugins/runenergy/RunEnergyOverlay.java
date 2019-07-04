@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.Widget;
@@ -39,6 +40,7 @@ import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import org.apache.commons.lang3.StringUtils;
 
+@Singleton
 class RunEnergyOverlay extends Overlay
 {
 	private final RunEnergyPlugin plugin;

@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.GAME_TICK_LENGTH;
@@ -79,7 +81,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 public class PyramidPlunderPlugin extends Plugin
 {
 	private static final int PYRAMID_PLUNDER_REGION_ID = 7749;
@@ -133,6 +135,18 @@ public class PyramidPlunderPlugin extends Plugin
 
 	private int pyramidTimer;
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showPlunderStatus;
+	private boolean highlightDoors;
+	private boolean highlightSpearTrap;
+	private boolean showTimer;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean hideWidget;
+	@Getter(AccessLevel.PACKAGE)
+	private int firstWarningTime;
+	@Getter(AccessLevel.PACKAGE)
+	private int secondWarningTime;
+
 	@Provides
 	PyramidPlunderConfig getConfig(ConfigManager configManager)
 	{
@@ -142,6 +156,7 @@ public class PyramidPlunderPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
 	}
 
 	@Override
@@ -160,12 +175,14 @@ public class PyramidPlunderPlugin extends Plugin
 			return;
 		}
 
-		if (!config.showTimer())
+		updateConfig();
+
+		if (!this.showTimer)
 		{
 			removeTimer();
 		}
 
-		if (config.showTimer() && isInGame)
+		if (this.showTimer && isInGame)
 		{
 			int remainingTime = GAME_TICK_LENGTH * (PYRAMID_PLUNDER_TIMER_MAX - pyramidTimer);
 
@@ -255,7 +272,7 @@ public class PyramidPlunderPlugin extends Plugin
 		{
 			overlayManager.add(pyramidPlunderOverlay);
 			isInGame = true;
-			if (config.showTimer())
+			if (this.showTimer)
 			{
 				showTimer();
 			}
@@ -315,10 +332,21 @@ public class PyramidPlunderPlugin extends Plugin
 		}
 
 		int id = newObject.getId();
-		if (id == TRAP && config.highlightSpearTrap() ||
-			(DOOR_WALL_IDS.contains(id) || id == OPENED_DOOR || id == CLOSED_DOOR) && config.highlightDoors())
+		if (id == TRAP && this.highlightSpearTrap ||
+			(DOOR_WALL_IDS.contains(id) || id == OPENED_DOOR || id == CLOSED_DOOR) && this.highlightDoors)
 		{
 			highlighted.put(newObject, tile);
 		}
+	}
+
+	private void updateConfig()
+	{
+		this.showPlunderStatus = config.showPlunderStatus();
+		this.highlightDoors = config.highlightDoors();
+		this.highlightSpearTrap = config.highlightSpearTrap();
+		this.showTimer = config.showTimer();
+		this.hideWidget = config.hideWidget();
+		this.firstWarningTime = config.firstWarningTime();
+		this.secondWarningTime = config.secondWarningTime();
 	}
 }

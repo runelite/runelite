@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -64,6 +65,7 @@ import net.runelite.client.util.StackFormatter;
 	enabledByDefault = false
 )
 @Slf4j
+@Singleton
 public class ItemsKeptOnDeathPlugin extends Plugin
 {
 	private static final int DEEP_WILDY = 20;

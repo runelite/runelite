@@ -30,6 +30,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
@@ -44,10 +45,10 @@ public class RaidsTimer extends InfoBox
 	private LocalTime thirdFloorTime;
 	private LocalTime olmTime;
 
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private boolean stopped;
 
-	RaidsTimer(BufferedImage image, Plugin plugin, Instant startTime)
+	RaidsTimer(final BufferedImage image, final Plugin plugin, final Instant startTime)
 	{
 		super(image, plugin);
 		this.startTime = startTime;

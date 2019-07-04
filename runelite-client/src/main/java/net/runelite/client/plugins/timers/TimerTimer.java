@@ -35,14 +35,14 @@ class TimerTimer extends Timer
 {
 	private final GameTimer timer;
 
-	TimerTimer(GameTimer timer, Plugin plugin, BufferedImage image)
+	TimerTimer(final GameTimer timer, final Plugin plugin, final BufferedImage image)
 	{
 		super(timer.getDuration().toMillis(), ChronoUnit.MILLIS, image, plugin);
 		this.timer = timer;
 		setPriority(InfoBoxPriority.MED);
 	}
 
-	TimerTimer(GameTimer timer, int amount, Plugin plugin, BufferedImage image)
+	TimerTimer(final GameTimer timer, final int amount, final Plugin plugin, final BufferedImage image)
 	{
 		super(timer.getDuration().toMillis() * amount, ChronoUnit.MILLIS, image, plugin);
 		this.timer = timer;

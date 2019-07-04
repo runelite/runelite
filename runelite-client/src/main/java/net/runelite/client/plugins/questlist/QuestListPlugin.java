@@ -32,6 +32,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -63,6 +64,7 @@ import net.runelite.client.util.Text;
 	name = "Quest List",
 	description = "Adds searching and filtering to the quest list"
 )
+@Singleton
 public class QuestListPlugin extends Plugin
 {
 	private static final int ENTRY_PADDING = 8;
@@ -171,7 +173,7 @@ public class QuestListPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (isChatboxOpen() && !isOnQuestTab())
+		if (isChatboxOpen() && isNotOnQuestTab())
 		{
 			chatboxPanelManager.close();
 		}
@@ -182,7 +184,7 @@ public class QuestListPlugin extends Plugin
 	{
 		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex())
 		{
-			if (isChatboxOpen() && !isOnQuestTab())
+			if (isChatboxOpen() && isNotOnQuestTab())
 			{
 				chatboxPanelManager.close();
 			}
@@ -207,9 +209,9 @@ public class QuestListPlugin extends Plugin
 		questHideButton.setName(MENU_SHOW + " " + currentFilterState.getName());
 	}
 
-	private boolean isOnQuestTab()
+	private boolean isNotOnQuestTab()
 	{
-		return client.getVar(Varbits.QUEST_TAB) == 0 && client.getVar(VarClientInt.INVENTORY_TAB) == 2;
+		return client.getVar(Varbits.QUEST_TAB) != 0 || client.getVar(VarClientInt.INVENTORY_TAB) != 2;
 	}
 
 	private boolean isChatboxOpen()

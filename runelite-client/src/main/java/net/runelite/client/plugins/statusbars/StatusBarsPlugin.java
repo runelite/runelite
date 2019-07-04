@@ -28,6 +28,7 @@ import javax.inject.Inject;
 
 import com.google.common.collect.Maps;
 import com.google.inject.Provides;
+import javax.inject.Singleton;
 import lombok.Getter;
 import java.time.Duration;
 import java.time.Instant;
@@ -38,6 +39,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -61,6 +63,7 @@ import java.util.Map;
 	description = "Draws status bars next to players inventory showing currentValue and restore amounts",
 	enabledByDefault = false
 )
+@Singleton
 @PluginDependency(ItemStatPlugin.class)
 public class StatusBarsPlugin extends Plugin
 {
@@ -94,9 +97,24 @@ public class StatusBarsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Instant lastCombatAction;
 
+	@Getter(AccessLevel.PUBLIC)
+	private boolean enableCounter;
+	@Getter(AccessLevel.PUBLIC)
+	private boolean enableSkillIcon;
+	@Getter(AccessLevel.PUBLIC)
+	private boolean enableRestorationBars;
+	@Getter(AccessLevel.PACKAGE)
+	private BarMode leftBarMode;
+	@Getter(AccessLevel.PACKAGE)
+	private BarMode rightBarMode;
+	private boolean toggleRestorationBars;
+	private int hideStatusBarDelay;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(overlay);
 		barRenderers.put(BarMode.DISABLED, null);
 		barRenderers.put(BarMode.HITPOINTS, hitPointsRenderer);
@@ -105,7 +123,7 @@ public class StatusBarsPlugin extends Plugin
 		barRenderers.put(BarMode.SPECIAL_ATTACK, specialAttackRenderer);
 	}
 
-	void updateLastCombatAction()
+	private void updateLastCombatAction()
 	{
 		this.lastCombatAction = Instant.now();
 	}
@@ -113,10 +131,9 @@ public class StatusBarsPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (!config.toggleRestorationBars())
+		if (!this.toggleRestorationBars)
 		{
 			overlayManager.add(overlay);
-			return;
 		}
 		else
 		{
@@ -128,14 +145,14 @@ public class StatusBarsPlugin extends Plugin
 	{
 		final Actor interacting = client.getLocalPlayer().getInteracting();
 		final boolean isNpc = interacting instanceof NPC;
-		final int combatTimeout = config.hideStatusBarDelay();
+		final int combatTimeout = this.hideStatusBarDelay;
 
 		if (isNpc)
 		{
 			final NPC npc = (NPC) interacting;
 			final NPCDefinition npcComposition = npc.getDefinition();
 			final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
-			if (npcMenuActions.contains("Attack") && config.toggleRestorationBars())
+			if (npcMenuActions.contains("Attack") && this.toggleRestorationBars)
 			{
 				updateLastCombatAction();
 				overlayManager.add(overlay);
@@ -161,5 +178,27 @@ public class StatusBarsPlugin extends Plugin
 	StatusBarsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(StatusBarsConfig.class);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!"statusbars".equals(event.getGroup()))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.enableCounter = config.enableCounter();
+		this.enableSkillIcon = config.enableSkillIcon();
+		this.enableRestorationBars = config.enableRestorationBars();
+		this.leftBarMode = config.leftBarMode();
+		this.rightBarMode = config.rightBarMode();
+		this.toggleRestorationBars = config.toggleRestorationBars();
+		this.hideStatusBarDelay = config.hideStatusBarDelay();
 	}
 }

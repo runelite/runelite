@@ -27,6 +27,7 @@ package net.runelite.client.plugins.entityhider;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -44,6 +45,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"npcs", "players", "projectiles"},
 	enabledByDefault = false
 )
+@Singleton
 public class EntityHiderPlugin extends Plugin
 {
 	@Inject

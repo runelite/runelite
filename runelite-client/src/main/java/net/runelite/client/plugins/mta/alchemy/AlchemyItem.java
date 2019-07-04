@@ -43,7 +43,7 @@ public enum AlchemyItem
 	@Getter
 	private final String name;
 
-	AlchemyItem(String name, int id)
+	AlchemyItem(final String name, final int id)
 	{
 		this.id = id;
 		this.name = name;

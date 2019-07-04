@@ -97,7 +97,6 @@ public interface WarIndicatorConfig extends Config
 	)
 	void setActiveCallers(String key);
 
-
 	@ConfigItem(
 		position = 6,
 		keyName = "highlightSnipes",

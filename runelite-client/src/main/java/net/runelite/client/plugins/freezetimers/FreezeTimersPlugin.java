@@ -28,9 +28,13 @@ import com.google.inject.Provides;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.api.events.PlayerDespawned;
@@ -48,11 +52,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
-
+@Singleton
 public class FreezeTimersPlugin extends Plugin
 {
 	private final Map<String, FreezeInfo> freezes = new HashMap<>();
-	private Actor player;
 
 	@Inject
 	private Client client;
@@ -69,8 +72,31 @@ public class FreezeTimersPlugin extends Plugin
 	@Inject
 	private FreezeTimersOverlay overlay;
 
+	@Inject
+	private FreezeTimersConfig config;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showPlayers;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showNpcs;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean FreezeTimers;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean TB;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean Veng;
+	@Getter(AccessLevel.PACKAGE)
+	private int offset;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean noImage;
+	@Getter(AccessLevel.PACKAGE)
+	private FontStyle fontStyle;
+	@Getter(AccessLevel.PACKAGE)
+	private int textSize;
+
 	public void startUp()
 	{
+		updateConfig();
 		overlayManager.add(overlay);
 	}
 
@@ -141,4 +167,26 @@ public class FreezeTimersPlugin extends Plugin
 		freezes.remove(actor.getName());
 	}
 
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("freezetimers"))
+		{
+			updateConfig();
+		}
+	}
+
+	private void updateConfig()
+	{
+		this.showPlayers = config.showPlayers();
+		this.showNpcs = config.showNpcs();
+		this.FreezeTimers = config.FreezeTimers();
+		this.TB = config.TB();
+		this.Veng = config.Veng();
+		this.offset = config.offset();
+		this.noImage = config.noImage();
+		this.fontStyle = config.fontStyle();
+		this.textSize = config.textSize();
+	}
 }

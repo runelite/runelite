@@ -25,16 +25,17 @@
 package net.runelite.client.plugins.prayer;
 
 import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 
 class PrayerCounter extends InfoBox
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final PrayerType prayerType;
 
-	PrayerCounter(Plugin plugin, PrayerType prayerType)
+	PrayerCounter(final Plugin plugin, final PrayerType prayerType)
 	{
 		super(null, plugin);
 		this.prayerType = prayerType;

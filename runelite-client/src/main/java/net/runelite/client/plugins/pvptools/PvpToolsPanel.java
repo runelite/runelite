@@ -14,6 +14,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,6 +28,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
+@Singleton
 public class PvpToolsPanel extends PluginPanel
 {
 

@@ -4,24 +4,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import net.runelite.api.Client;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
+@Singleton
 public class RunecraftOverlay extends Overlay
 {
 	private final RunecraftPlugin plugin;
-	private final Client client;
 	private final PanelComponent panel = new PanelComponent();
 
 	@Inject
-	RunecraftOverlay(RunecraftPlugin plugin, Client client)
+	RunecraftOverlay(final RunecraftPlugin plugin)
 	{
 		this.plugin = plugin;
-		this.client = client;
 		setPosition(OverlayPosition.CANVAS_TOP_RIGHT);
 		panel.setOrientation(ComponentOrientation.VERTICAL);
 	}

@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.Perspective;
@@ -40,6 +41,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
+@Singleton
 class GrotesqueGuardiansOverlay extends Overlay
 {
 	private static final int GROTESQUE_GUARDIANS_REGION_ID = 6727;
@@ -51,7 +53,7 @@ class GrotesqueGuardiansOverlay extends Overlay
 	private static final int GROTESQUE_GUARDIANS_STONE_ORB = 160;
 
 	@Inject
-	private GrotesqueGuardiansOverlay(Client client, GrotesqueGuardiansPlugin plugin)
+	private GrotesqueGuardiansOverlay(final Client client, final GrotesqueGuardiansPlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;

@@ -30,6 +30,7 @@ import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
+import javax.inject.Singleton;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.GrandExchangeOffer;
@@ -38,7 +39,8 @@ import net.runelite.api.ItemDefinition;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.PluginErrorPanel;
 
-public class GrandExchangeOffersPanel extends JPanel
+@Singleton
+class GrandExchangeOffersPanel extends JPanel
 {
 	private static final String ERROR_PANEL = "ERROR_PANEL";
 	private static final String OFFERS_PANEL = "OFFERS_PANEL";

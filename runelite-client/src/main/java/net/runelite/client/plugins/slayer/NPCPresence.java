@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.slayer;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.NPC;
 
@@ -8,15 +9,15 @@ public class NPCPresence
 
 	private static final int FADE_TIMER_START = 20;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private String name;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int combatLevel;
 
 	private int fadeTimer;
 
-	private NPCPresence(String name, int combatLevel)
+	private NPCPresence(final String name, final int combatLevel)
 	{
 		this.name = name;
 		this.combatLevel = combatLevel;

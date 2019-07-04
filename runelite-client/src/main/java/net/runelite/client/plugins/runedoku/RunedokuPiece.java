@@ -51,7 +51,7 @@ public enum RunedokuPiece
 	private final int pieceID;
 	private final int pieceForSudoku;
 
-	RunedokuPiece(int pieceID, int pieceForSudoku)
+	RunedokuPiece(final int pieceID, final int pieceForSudoku)
 	{
 		this.pieceID = pieceID;
 		this.pieceForSudoku = pieceForSudoku;

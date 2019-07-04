@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.specbar;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.eventbus.Subscribe;
@@ -39,7 +40,7 @@ import net.runelite.client.plugins.PluginType;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
-
+@Singleton
 public class SpecBarPlugin extends Plugin
 {
 

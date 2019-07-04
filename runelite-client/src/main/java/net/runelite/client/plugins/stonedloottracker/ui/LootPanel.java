@@ -35,6 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.inject.Singleton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -48,6 +49,7 @@ import net.runelite.client.plugins.stonedloottracker.data.UniqueItemPrepared;
 import net.runelite.client.ui.ColorScheme;
 
 @Slf4j
+@Singleton
 class LootPanel extends JPanel
 {
 	private Collection<LootRecordCustom> records;
@@ -63,7 +65,7 @@ class LootPanel extends JPanel
 	private boolean playbackPlaying = false;
 	private boolean cancelPlayback = false;
 
-	LootPanel(Collection<LootRecordCustom> records, Map<Integer, Collection<UniqueItemPrepared>> uniqueMap, boolean hideUnqiues, ItemSortTypes sort, boolean itemBreakdown, ItemManager itemManager)
+	LootPanel(final Collection<LootRecordCustom> records, final Map<Integer, Collection<UniqueItemPrepared>> uniqueMap, final boolean hideUnqiues, final ItemSortTypes sort, final boolean itemBreakdown, final ItemManager itemManager)
 	{
 		this.records = (records == null ? new ArrayList<>() : records);
 		this.uniqueMap = (uniqueMap == null ? new HashMap<>() : uniqueMap);

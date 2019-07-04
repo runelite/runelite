@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -40,6 +41,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+@Singleton
 class WaveOverlay extends Overlay
 {
 	private static final Color HEADER_COLOR = ColorScheme.BRAND_ORANGE;
@@ -49,7 +51,7 @@ class WaveOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private WaveOverlay(FightCaveConfig config, FightCavePlugin plugin)
+	private WaveOverlay(final FightCaveConfig config, final FightCavePlugin plugin)
 	{
 		this.config = config;
 		this.plugin = plugin;

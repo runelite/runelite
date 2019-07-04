@@ -251,7 +251,7 @@ public abstract class RSActorMixin implements RSActor
 			{
 				client.getLogger().debug("You died!");
 
-				LocalPlayerDeath event = new LocalPlayerDeath();
+				LocalPlayerDeath event = LocalPlayerDeath.INSTANCE;
 				client.getCallbacks().post(event);
 			}
 			else if (this instanceof RSNPC)

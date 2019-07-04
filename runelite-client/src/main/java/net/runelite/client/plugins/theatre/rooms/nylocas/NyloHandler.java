@@ -25,7 +25,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.plugins.theatre.RoomHandler;
-import net.runelite.client.plugins.theatre.TheatreConfig;
 import net.runelite.client.plugins.theatre.TheatreConstant;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
@@ -41,8 +40,8 @@ public class NyloHandler extends RoomHandler
 	private Map<NPC, Integer> pillars = new HashMap<>();
 	@Getter(AccessLevel.PUBLIC)
 	private Map<NPC, Integer> spiders = new HashMap<>();
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int wave = 0;
 	private NyloOverlay overlay = null;
 	private NyloPredictor predictor = null;
@@ -50,9 +49,9 @@ public class NyloHandler extends RoomHandler
 	private Point west = new Point(49, 56);
 	private Point east = new Point(78, 56);
 
-	public NyloHandler(Client client, TheatrePlugin plugin, TheatreConfig config)
+	public NyloHandler(final Client client, final TheatrePlugin plugin)
 	{
-		super(client, plugin, config);
+		super(client, plugin);
 	}
 
 	@Override
@@ -66,9 +65,9 @@ public class NyloHandler extends RoomHandler
 		this.reset();
 
 		this.plugin.setRoom(TheatreRoom.NYLOCAS);
-		if (overlay == null && config.showNylocasAmount())
+		if (overlay == null && plugin.isShowNylocasAmount())
 		{
-			overlay = new NyloOverlay(client, plugin, config, this);
+			overlay = new NyloOverlay(client, plugin, this);
 			plugin.getOverlayManager().add(overlay);
 		}
 
@@ -100,7 +99,7 @@ public class NyloHandler extends RoomHandler
 
 		if (this.startTime != 0)
 		{
-			if (config.extraTimers())
+			if (plugin.isExtraTimers())
 			{
 				this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Nylocas - Waves' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 			}
@@ -128,12 +127,12 @@ public class NyloHandler extends RoomHandler
 			return;
 		}
 
-		if (overlay == null && config.showNylocasAmount())
+		if (overlay == null && plugin.isShowNylocasAmount())
 		{
-			overlay = new NyloOverlay(client, plugin, config, this);
+			overlay = new NyloOverlay(client, plugin, this);
 			plugin.getOverlayManager().add(overlay);
 		}
-		else if (overlay != null && !config.showNylocasAmount())
+		else if (overlay != null && !plugin.isShowNylocasAmount())
 		{
 			plugin.getOverlayManager().remove(overlay);
 			overlay = null;
@@ -148,14 +147,13 @@ public class NyloHandler extends RoomHandler
 		double rMod = 130.0 * health / 100.0;
 		double gMod = 255.0 * health / 100.0;
 		double bMod = 125.0 * health / 100.0;
-		Color c = new Color((int) (255 - rMod), (int) (0 + gMod), (int) (0 + bMod));
 
-		return c;
+		return new Color((int) (255 - rMod), (int) (0 + gMod), (int) (0 + bMod));
 	}
 
 	public void render(Graphics2D graphics)
 	{
-		if (config.showNyloPillarHealth())
+		if (plugin.isShowNyloPillarHealth())
 		{
 			for (NPC npc : pillars.keySet())
 			{
@@ -170,7 +168,7 @@ public class NyloHandler extends RoomHandler
 			}
 		}
 
-		switch (config.showNylocasExplosions())
+		switch (plugin.getShowNylocasExplosions())
 		{
 			case TILE:
 				for (NPC npc : spiders.keySet())
@@ -202,11 +200,11 @@ public class NyloHandler extends RoomHandler
 				break;
 		}
 
-		Set<NPC> toHighlight = new HashSet<NPC>();
+		Set<NPC> toHighlight = new HashSet<>();
 
-		if (config.highlightNyloAgros())
+		if (plugin.isHighlightNyloAgros())
 		{
-			for (NPC npc : new ArrayList<NPC>(this.waveAgros))
+			for (NPC npc : new ArrayList<>(this.waveAgros))
 			{
 				try
 				{

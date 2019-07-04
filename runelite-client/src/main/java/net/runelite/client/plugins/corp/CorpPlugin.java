@@ -41,6 +41,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
@@ -101,6 +102,10 @@ public class CorpPlugin extends Plugin
 	@Inject
 	private CorpConfig config;
 
+	private boolean leftClickCore;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showDamage;
+
 	@Provides
 	CorpConfig getConfig(ConfigManager configManager)
 	{
@@ -110,6 +115,8 @@ public class CorpPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(corpOverlay);
 		overlayManager.add(coreOverlay);
 	}
@@ -229,7 +236,7 @@ public class CorpPlugin extends Plugin
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		if (menuEntryAdded.getType() != NPC_SECTION_ACTION
-			|| !config.leftClickCore() || !menuEntryAdded.getOption().equals(ATTACK))
+			|| !this.leftClickCore || !menuEntryAdded.getOption().equals(ATTACK))
 		{
 			return;
 		}
@@ -247,5 +254,20 @@ public class CorpPlugin extends Plugin
 
 		menuEntry.setType(NPC_SECTION_ACTION + MENU_ACTION_DEPRIORITIZE_OFFSET);
 		client.setMenuEntries(menuEntries);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (configChanged.getGroup().equals("corp"))
+		{
+			updateConfig();
+		}
+	}
+
+	private void updateConfig()
+	{
+		this.leftClickCore = config.leftClickCore();
+		this.showDamage = config.showDamage();
 	}
 }

@@ -39,7 +39,7 @@ public class BatSolver
 
 	private final HashSet<Integer> grubsChests;
 
-	public BatSolver(ThievingRoomType roomType)
+	public BatSolver(final ThievingRoomType roomType)
 	{
 		solution = new SolutionSet(roomType);
 		grubsChests = new HashSet<>();
@@ -184,10 +184,5 @@ public class BatSolver
 		}
 		double chestChance = (double) (timesFound) / (double) (mostFrequentPoison);
 		return 1. / (1 + Math.exp(5 - 10 * chestChance));
-	}
-
-	public int getNumberOfEmptyChests()
-	{
-		return solution.getEmptyChests().size();
 	}
 }

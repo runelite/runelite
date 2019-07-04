@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 import net.runelite.api.SpriteID;
@@ -40,6 +41,7 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+@Singleton
 public class BabyHydraPrayOverlay extends Overlay
 {
 	private final BabyHydraPlugin plugin;
@@ -56,7 +58,7 @@ public class BabyHydraPrayOverlay extends Overlay
 	private Client client;
 
 	@Inject
-	private BabyHydraPrayOverlay(BabyHydraPlugin plugin, SpriteManager spriteManager)
+	private BabyHydraPrayOverlay(final BabyHydraPlugin plugin, final SpriteManager spriteManager)
 	{
 		this.plugin = plugin;
 		this.spriteManager = spriteManager;

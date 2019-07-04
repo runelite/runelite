@@ -25,8 +25,12 @@
 package net.runelite.client.plugins.nightmarezone;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.Arrays;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -48,6 +52,7 @@ import net.runelite.client.util.Text;
 	description = "Show NMZ points/absorption and/or notify about expiring potions",
 	tags = {"combat", "nmz", "minigame", "notifications"}
 )
+@Singleton
 public class NightmareZonePlugin extends Plugin
 {
 	private static final int[] NMZ_MAP_REGION = {9033};
@@ -71,9 +76,28 @@ public class NightmareZonePlugin extends Plugin
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean moveOverlay;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showtotalpoints;
+	private boolean powerSurgeNotification;
+	private boolean recurrentDamageNotification;
+	private boolean zapperNotification;
+	private boolean ultimateForceNotification;
+	private boolean overloadNotification;
+	private boolean absorptionNotification;
+	@Getter(AccessLevel.PACKAGE)
+	private int absorptionThreshold;
+	@Getter(AccessLevel.PACKAGE)
+	private Color absorptionColorAboveThreshold;
+	@Getter(AccessLevel.PACKAGE)
+	private Color absorptionColorBelowThreshold;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(overlay);
 		overlay.removeAbsorptionCounter();
 	}
@@ -95,6 +119,12 @@ public class NightmareZonePlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		if (!event.getGroup().equals("nightmareZone"))
+		{
+			return;
+		}
+
+		updateConfig();
 		overlay.updateConfig();
 	}
 
@@ -107,7 +137,7 @@ public class NightmareZonePlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!isInNightmareZone())
+		if (isNotInNightmareZone())
 		{
 			if (!absorptionNotificationSend)
 			{
@@ -116,7 +146,8 @@ public class NightmareZonePlugin extends Plugin
 
 			return;
 		}
-		if (config.absorptionNotification())
+
+		if (this.absorptionNotification)
 		{
 			checkAbsorption();
 		}
@@ -126,7 +157,7 @@ public class NightmareZonePlugin extends Plugin
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE
-			|| !isInNightmareZone())
+			|| isNotInNightmareZone())
 		{
 			return;
 		}
@@ -134,7 +165,7 @@ public class NightmareZonePlugin extends Plugin
 		String msg = Text.removeTags(event.getMessage()); //remove color
 		if (msg.contains("The effects of overload have worn off, and you feel normal again."))
 		{
-			if (config.overloadNotification())
+			if (this.overloadNotification)
 			{
 				notifier.notify("Your overload has worn off");
 			}
@@ -143,28 +174,28 @@ public class NightmareZonePlugin extends Plugin
 		{
 			if (msg.contains("Power surge"))
 			{
-				if (config.powerSurgeNotification())
+				if (this.powerSurgeNotification)
 				{
 					notifier.notify(msg);
 				}
 			}
 			else if (msg.contains("Recurrent damage"))
 			{
-				if (config.recurrentDamageNotification())
+				if (this.recurrentDamageNotification)
 				{
 					notifier.notify(msg);
 				}
 			}
 			else if (msg.contains("Zapper"))
 			{
-				if (config.zapperNotification())
+				if (this.zapperNotification)
 				{
 					notifier.notify(msg);
 				}
 			}
 			else if (msg.contains("Ultimate force"))
 			{
-				if (config.ultimateForceNotification())
+				if (this.ultimateForceNotification)
 				{
 					notifier.notify(msg);
 				}
@@ -178,23 +209,38 @@ public class NightmareZonePlugin extends Plugin
 
 		if (!absorptionNotificationSend)
 		{
-			if (absorptionPoints < config.absorptionThreshold())
+			if (absorptionPoints < this.absorptionThreshold)
 			{
-				notifier.notify("Absorption points below: " + config.absorptionThreshold());
+				notifier.notify("Absorption points below: " + this.absorptionThreshold);
 				absorptionNotificationSend = true;
 			}
 		}
 		else
 		{
-			if (absorptionPoints > config.absorptionThreshold())
+			if (absorptionPoints > this.absorptionThreshold)
 			{
 				absorptionNotificationSend = false;
 			}
 		}
 	}
 
-	public boolean isInNightmareZone()
+	boolean isNotInNightmareZone()
 	{
-		return Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
+		return !Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
+	}
+
+	private void updateConfig()
+	{
+		this.moveOverlay = config.moveOverlay();
+		this.showtotalpoints = config.showtotalpoints();
+		this.powerSurgeNotification = config.powerSurgeNotification();
+		this.recurrentDamageNotification = config.recurrentDamageNotification();
+		this.zapperNotification = config.zapperNotification();
+		this.ultimateForceNotification = config.ultimateForceNotification();
+		this.overloadNotification = config.overloadNotification();
+		this.absorptionNotification = config.absorptionNotification();
+		this.absorptionThreshold = config.absorptionThreshold();
+		this.absorptionColorAboveThreshold = config.absorptionColorAboveThreshold();
+		this.absorptionColorBelowThreshold = config.absorptionColorBelowThreshold();
 	}
 }

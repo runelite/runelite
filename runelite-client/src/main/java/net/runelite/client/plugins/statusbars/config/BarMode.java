@@ -24,10 +24,11 @@
  */
 package net.runelite.client.plugins.statusbars.config;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor
 public enum BarMode
 {

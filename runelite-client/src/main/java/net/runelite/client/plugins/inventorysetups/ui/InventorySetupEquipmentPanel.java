@@ -28,6 +28,7 @@ package net.runelite.client.plugins.inventorysetups.ui;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.inject.Singleton;
 import javax.swing.JPanel;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.client.game.ItemManager;
@@ -36,6 +37,7 @@ import net.runelite.client.plugins.inventorysetups.InventorySetupItem;
 import net.runelite.client.plugins.inventorysetups.InventorySetupPlugin;
 import net.runelite.client.ui.ColorScheme;
 
+@Singleton
 public class InventorySetupEquipmentPanel extends InventorySetupContainerPanel
 {
 	private HashMap<EquipmentInventorySlot, InventorySetupSlot> equipmentSlots;

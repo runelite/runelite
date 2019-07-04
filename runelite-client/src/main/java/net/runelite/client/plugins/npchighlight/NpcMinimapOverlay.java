@@ -29,7 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import net.runelite.api.Client;
+import javax.inject.Singleton;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
@@ -37,17 +37,14 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class NpcMinimapOverlay extends Overlay
 {
-	private final Client client;
-	private final NpcIndicatorsConfig config;
 	private final NpcIndicatorsPlugin plugin;
 
 	@Inject
-	NpcMinimapOverlay(Client client, NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin)
+	NpcMinimapOverlay(final NpcIndicatorsPlugin plugin)
 	{
-		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -58,7 +55,7 @@ public class NpcMinimapOverlay extends Overlay
 	{
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc, npc.getName(), config.getHighlightColor());
+			renderNpcOverlay(graphics, npc, npc.getName(), plugin.getGetHighlightColor());
 		}
 
 		return null;
@@ -71,7 +68,7 @@ public class NpcMinimapOverlay extends Overlay
 		{
 			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color.darker());
 
-			if (config.drawMinimapNames())
+			if (plugin.isDrawMinimapNames())
 			{
 				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
 			}

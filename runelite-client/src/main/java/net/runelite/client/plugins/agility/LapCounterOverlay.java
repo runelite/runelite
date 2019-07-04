@@ -29,6 +29,7 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -39,21 +40,20 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+@Singleton
 class LapCounterOverlay extends Overlay
 {
 	private final AgilityPlugin plugin;
-	private final AgilityConfig config;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private LapCounterOverlay(AgilityPlugin plugin, AgilityConfig config)
+	private LapCounterOverlay(final AgilityPlugin plugin)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
-		this.config = config;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Agility overlay"));
 	}
 
@@ -62,7 +62,7 @@ class LapCounterOverlay extends Overlay
 	{
 		AgilitySession session = plugin.getSession();
 
-		if (!config.showLapCount() ||
+		if (!plugin.isShowLapCount() ||
 			session == null ||
 			session.getLastLapCompleted() == null ||
 			session.getCourse() == null)
@@ -70,7 +70,7 @@ class LapCounterOverlay extends Overlay
 			return null;
 		}
 
-		Duration lapTimeout = Duration.ofMinutes(config.lapTimeout());
+		Duration lapTimeout = Duration.ofMinutes(plugin.getLapTimeout());
 		Duration sinceLap = Duration.between(session.getLastLapCompleted(), Instant.now());
 
 		if (sinceLap.compareTo(lapTimeout) >= 0)
@@ -85,12 +85,12 @@ class LapCounterOverlay extends Overlay
 		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 		tableComponent.addRow("Total Laps:", Integer.toString(session.getTotalLaps()));
 
-		if (config.lapsToLevel() && session.getLapsTillLevel() > 0)
+		if (plugin.isLapsToLevel() && session.getLapsTillLevel() > 0)
 		{
 			tableComponent.addRow("Laps until level:", Integer.toString(session.getLapsTillLevel()));
 		}
 
-		if (config.lapsToGoal() && session.getLapsTillGoal() > 0)
+		if (plugin.isLapsToGoal() && session.getLapsTillGoal() > 0)
 		{
 			tableComponent.addRow("Laps until goal:", Integer.toString(session.getLapsTillGoal()));
 		}

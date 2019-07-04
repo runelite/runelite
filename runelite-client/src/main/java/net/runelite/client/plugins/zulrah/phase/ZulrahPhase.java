@@ -124,11 +124,6 @@ public class ZulrahPhase
 		return startTile;
 	}
 
-	public ZulrahLocation getZulrahLocation()
-	{
-		return zulrahLocation;
-	}
-
 	public ZulrahType getType()
 	{
 		return type;

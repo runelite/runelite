@@ -28,16 +28,17 @@ package net.runelite.client.plugins.inventorysetups.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
+import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
-import net.runelite.client.plugins.inventorysetups.InventorySetupConfig;
 import net.runelite.client.plugins.inventorysetups.InventorySetupItem;
 import net.runelite.client.plugins.inventorysetups.InventorySetupPlugin;
 import net.runelite.client.ui.ColorScheme;
 
+@Singleton
 public abstract class InventorySetupContainerPanel extends JPanel
 {
 	protected ItemManager itemManager;
@@ -99,10 +100,9 @@ public abstract class InventorySetupContainerPanel extends JPanel
 		// important note: do not use item names for comparisons
 		// they are all empty to avoid clientThread usage when highlighting
 
-		final InventorySetupConfig config = plugin.getConfig();
-		final Color highlightColor = config.getHighlightColor();
+		final Color highlightColor = plugin.getGetHighlightColor();
 
-		if (config.getStackDifference() && currItem.getQuantity() != savedItem.getQuantity())
+		if (plugin.isGetStackDifference() && currItem.getQuantity() != savedItem.getQuantity())
 		{
 			containerSlot.setBackground(highlightColor);
 			return;
@@ -111,7 +111,7 @@ public abstract class InventorySetupContainerPanel extends JPanel
 		int currId = currItem.getId();
 		int checkId = savedItem.getId();
 
-		if (!config.getVariationDifference())
+		if (!plugin.isGetVariationDifference())
 		{
 			currId = ItemVariationMapping.map(currId);
 			checkId = ItemVariationMapping.map(checkId);

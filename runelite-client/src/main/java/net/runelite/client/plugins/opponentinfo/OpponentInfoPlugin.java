@@ -30,12 +30,14 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.EnumSet;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
@@ -51,6 +53,7 @@ import net.runelite.http.api.hiscore.HiscoreEndpoint;
 	description = "Show name and hitpoints information about the NPC you are fighting",
 	tags = {"combat", "health", "hitpoints", "npcs", "overlay"}
 )
+@Singleton
 public class OpponentInfoPlugin extends Plugin
 {
 	private static final Duration WAIT = Duration.ofSeconds(5);
@@ -78,6 +81,13 @@ public class OpponentInfoPlugin extends Plugin
 
 	private Instant lastTime;
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean lookupOnInteraction;
+	@Getter(AccessLevel.PACKAGE)
+	private HitpointsDisplayStyle hitpointsDisplayStyle;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showOpponentsOpponent;
+
 	@Provides
 	OpponentInfoConfig provideConfig(ConfigManager configManager)
 	{
@@ -87,6 +97,8 @@ public class OpponentInfoPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(opponentInfoOverlay);
 		overlayManager.add(playerComparisonOverlay);
 	}
@@ -158,5 +170,23 @@ public class OpponentInfoPlugin extends Plugin
 				lastOpponent = null;
 			}
 		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("opponentinfo"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.lookupOnInteraction = config.lookupOnInteraction();
+		this.hitpointsDisplayStyle = config.hitpointsDisplayStyle();
+		this.showOpponentsOpponent = config.showOpponentsOpponent();
 	}
 }

@@ -33,10 +33,10 @@ public interface PyramidPlunderConfig extends Config
 {
 
 	@ConfigItem(
-			position = 1,
-			keyName = "showPlunderStatus",
-			name = "Show session stats",
-			description = "Configures whether to display pyramid plunder session stats"
+		position = 1,
+		keyName = "showPlunderStatus",
+		name = "Show session stats",
+		description = "Configures whether to display pyramid plunder session stats"
 	)
 	default boolean showPlunderStatus()
 	{
@@ -77,10 +77,10 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "hideWidget",
-			name = "Hide default widget",
-			description = "Hide the default widget"
+		position = 5,
+		keyName = "hideWidget",
+		name = "Hide default widget",
+		description = "Hide the default widget"
 	)
 	default boolean hideWidget()
 	{
@@ -88,10 +88,10 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 6,
-			keyName = "firstWarningTime",
-			name = "First warning time",
-			description = "Recolor time left(s)"
+		position = 6,
+		keyName = "firstWarningTime",
+		name = "First warning time",
+		description = "Recolor time left(s)"
 	)
 	default int firstWarningTime()
 	{
@@ -99,10 +99,10 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
-			keyName = "secondWarningTime",
-			name = "Second warning time",
-			description = "Recolor time left(s)"
+		position = 7,
+		keyName = "secondWarningTime",
+		name = "Second warning time",
+		description = "Recolor time left(s)"
 	)
 	default int secondWarningTime()
 	{

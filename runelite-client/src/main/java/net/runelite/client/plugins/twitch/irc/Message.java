@@ -28,9 +28,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 class Message
 {
 	private final Map<String, String> tags = new HashMap<>();

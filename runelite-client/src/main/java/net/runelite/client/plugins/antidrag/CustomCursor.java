@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.antidrag;
 
 import java.awt.image.BufferedImage;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.plugins.customcursor.CustomCursorPlugin;
 import net.runelite.client.util.ImageUtil;
@@ -43,7 +44,8 @@ public enum CustomCursor
 	ZAMORAK_GODSWORD("Zamorak Godsword", "cursor-zamorak-godsword.png");
 
 	private final String name;
-	@Getter
+
+	@Getter(AccessLevel.PACKAGE)
 	private final BufferedImage cursorImage;
 
 	CustomCursor(String name, String icon)

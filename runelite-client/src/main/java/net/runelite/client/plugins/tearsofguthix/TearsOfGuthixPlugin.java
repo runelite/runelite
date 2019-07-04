@@ -28,6 +28,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -48,6 +49,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show timers for the Tears Of Guthix streams",
 	tags = {"minigame", "overlay", "skilling", "timers", "tog"}
 )
+@Singleton
 public class TearsOfGuthixPlugin extends Plugin
 {
 	private static final int TOG_REGION = 12948;

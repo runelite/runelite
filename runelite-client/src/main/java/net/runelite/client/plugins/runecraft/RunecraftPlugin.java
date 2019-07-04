@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -69,6 +70,7 @@ import net.runelite.client.util.Text;
 	description = "Show minimap icons and clickboxes for abyssal rifts",
 	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"}
 )
+@Singleton
 public class RunecraftPlugin extends Plugin
 {
 	private static final int FIRE_ALTAR = 10315;
@@ -113,6 +115,43 @@ public class RunecraftPlugin extends Plugin
 	@Inject
 	private MenuManager menuManager;
 
+	private boolean Lavas;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean essPouch;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean hightlightDarkMage;
+	private boolean degradingNotification;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showRifts;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showAir;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showBlood;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showBody;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showChaos;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showCosmic;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showDeath;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showEarth;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showFire;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showLaw;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showMind;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showNature;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showSoul;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showWater;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showClickBox;
+
 	@Provides
 	RunecraftConfig getConfig(ConfigManager configManager)
 	{
@@ -122,6 +161,8 @@ public class RunecraftPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(abyssOverlay);
 		abyssOverlay.updateConfig();
 		overlayManager.add(runecraftOverlay);
@@ -147,6 +188,8 @@ public class RunecraftPlugin extends Plugin
 			return;
 		}
 
+		updateConfig();
+
 		if (event.getKey().equals("essPouch"))
 		{
 			addSwaps();
@@ -163,7 +206,7 @@ public class RunecraftPlugin extends Plugin
 			return;
 		}
 
-		if (config.degradingNotification())
+		if (this.degradingNotification)
 		{
 			if (event.getMessage().contains(POUCH_DECAYED_MESSAGE))
 			{
@@ -294,8 +337,8 @@ public class RunecraftPlugin extends Plugin
 		else if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
 			final Item[] items = event.getItemContainer().getItems();
-			wearingTiara = config.Lavas() && items[EquipmentInventorySlot.HEAD.getSlotIdx()].getId() == ItemID.FIRE_TIARA;
-			wearingCape = config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPE || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPET || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.MAX_CAPE_13342;
+			wearingTiara = this.Lavas && items[EquipmentInventorySlot.HEAD.getSlotIdx()].getId() == ItemID.FIRE_TIARA;
+			wearingCape = this.Lavas && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPE || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPET || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.MAX_CAPE_13342;
 		}
 	}
 
@@ -337,5 +380,28 @@ public class RunecraftPlugin extends Plugin
 	{
 		menuManager.removeSwap("deposit", "pouch", 2, 57, "fill", "pouch", 9, 1007);
 		menuManager.removeSwap("fill", "pouch", "empty", "pouch", true, false);
+	}
+
+	private void updateConfig()
+	{
+		this.Lavas = config.Lavas();
+		this.essPouch = config.essPouch();
+		this.hightlightDarkMage = config.hightlightDarkMage();
+		this.degradingNotification = config.degradingNotification();
+		this.showRifts = config.showRifts();
+		this.showAir = config.showAir();
+		this.showBlood = config.showBlood();
+		this.showBody = config.showBody();
+		this.showChaos = config.showChaos();
+		this.showCosmic = config.showCosmic();
+		this.showDeath = config.showDeath();
+		this.showEarth = config.showEarth();
+		this.showFire = config.showFire();
+		this.showLaw = config.showLaw();
+		this.showMind = config.showMind();
+		this.showNature = config.showNature();
+		this.showSoul = config.showSoul();
+		this.showWater = config.showWater();
+		this.showClickBox = config.showClickBox();
 	}
 }

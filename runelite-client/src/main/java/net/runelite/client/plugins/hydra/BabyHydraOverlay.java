@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
@@ -38,19 +39,17 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class BabyHydraOverlay extends Overlay
 {
-	private final BabyHydraConfig config;
 	private final BabyHydraPlugin plugin;
-
 
 	@Inject
 	private Client client;
 
 	@Inject
-	private BabyHydraOverlay(BabyHydraConfig config, BabyHydraPlugin plugin)
+	private BabyHydraOverlay(final BabyHydraPlugin plugin)
 	{
-		this.config = config;
 		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -73,7 +72,7 @@ public class BabyHydraOverlay extends Overlay
 					int val = plugin.getHydras().get(hydra.getIndex());
 					if (val != 0)
 					{
-						if (config.BoldText())
+						if (plugin.isBoldText())
 						{
 							graphics.setFont(FontManager.getRunescapeBoldFont());
 						}

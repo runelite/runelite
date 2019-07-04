@@ -38,7 +38,7 @@ public class PlayerContainer
 	private long whenTheyAttackedMe;
 	private int millisToExpireHighlight;
 
-	PlayerContainer(Player player, long whenTheyAttackedMe, int millisToExpireHighlight)
+	PlayerContainer(final Player player, final long whenTheyAttackedMe, final int millisToExpireHighlight)
 	{
 		this.player = player;
 		this.whenTheyAttackedMe = whenTheyAttackedMe;

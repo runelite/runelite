@@ -35,12 +35,12 @@ import net.runelite.api.Constants;
 
 public class MapLocations
 {
-	private static final List<Shape>[] MULTICOMBAT            = new List[Constants.MAX_Z];
-	private static final List<Shape>[] NOT_MULTICOMBAT        = new List[Constants.MAX_Z];
-	private static final List<Shape>[] ROUGH_WILDERNESS       = new List[Constants.MAX_Z];
+	private static final List<Shape>[] MULTICOMBAT = new List[Constants.MAX_Z];
+	private static final List<Shape>[] NOT_MULTICOMBAT = new List[Constants.MAX_Z];
+	private static final List<Shape>[] ROUGH_WILDERNESS = new List[Constants.MAX_Z];
 	private static final List<Shape>[] WILDERNESS_LEVEL_LINES = new List[Constants.MAX_Z];
-	private static final List<Shape>[] DEADMAN_SAFE_ZONES     = new List[Constants.MAX_Z];
-	private static final List<Shape>[] PVP_WORLD_SAFE_ZONES   = new List[Constants.MAX_Z];
+	private static final List<Shape>[] DEADMAN_SAFE_ZONES = new List[Constants.MAX_Z];
+	private static final List<Shape>[] PVP_WORLD_SAFE_ZONES = new List[Constants.MAX_Z];
 
 	private static Area getArea(List<Shape> shapes)
 	{
@@ -3453,7 +3453,6 @@ public class MapLocations
 		int wildyLeftX = 2944;
 		int wildyRightX = 3392;
 		int wildyBottomY = 3525;
-		int wildyTopY = 3971;
 
 		// define wilderness level lines at ground level
 		int accumulatedY = 0;
@@ -3482,9 +3481,9 @@ public class MapLocations
 		{
 			poly.addPoint(coords[i], coords[i + 1]);
 		}
-		for (int i = 0; i < shapes.length; i++)
+		for (List<Shape> shape : shapes)
 		{
-			shapes[i].add(poly);
+			shape.add(poly);
 		}
 	}
 
@@ -3496,18 +3495,5 @@ public class MapLocations
 			poly.addPoint(coords[i], coords[i + 1]);
 		}
 		shapes[plane].add(poly);
-	}
-
-	private static void addPolygonOnPlanes(List<Shape>[] shapes, int minPlane, int maxPlane, int... coords)
-	{
-		Polygon poly = new Polygon();
-		for (int i = 0; i < coords.length; i += 2)
-		{
-			poly.addPoint(coords[i], coords[i + 1]);
-		}
-		for (int i = minPlane; i <= maxPlane; i++)
-		{
-			shapes[i].add(poly);
-		}
 	}
 }

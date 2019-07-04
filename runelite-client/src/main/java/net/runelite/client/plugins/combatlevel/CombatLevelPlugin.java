@@ -30,6 +30,9 @@ import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
@@ -52,6 +55,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show a more accurate combat level in Combat Options panel and other combat level functions",
 	tags = {"wilderness", "attack", "range"}
 )
+@Singleton
 public class CombatLevelPlugin extends Plugin
 {
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
@@ -80,6 +84,10 @@ public class CombatLevelPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showLevelsUntil;
+	private boolean wildernessAttackLevelRange;
+
 	@Provides
 	CombatLevelConfig provideConfig(ConfigManager configManager)
 	{
@@ -89,9 +97,11 @@ public class CombatLevelPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(overlay);
 
-		if (config.wildernessAttackLevelRange())
+		if (this.wildernessAttackLevelRange)
 		{
 			appendAttackLevelRangeText();
 		}
@@ -151,7 +161,9 @@ public class CombatLevelPlugin extends Plugin
 			return;
 		}
 
-		if (config.wildernessAttackLevelRange())
+		updateConfig();
+
+		if (this.wildernessAttackLevelRange)
 		{
 			appendAttackLevelRangeText();
 		}
@@ -164,7 +176,7 @@ public class CombatLevelPlugin extends Plugin
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		if (config.wildernessAttackLevelRange()
+		if (this.wildernessAttackLevelRange
 			&& "wildernessWidgetTextSet".equals(event.getEventName()))
 		{
 			appendAttackLevelRangeText();
@@ -240,5 +252,11 @@ public class CombatLevelPlugin extends Plugin
 	private static String combatAttackRange(final int combatLevel, final int wildernessLevel)
 	{
 		return Math.max(MIN_COMBAT_LEVEL, combatLevel - wildernessLevel) + "-" + Math.min(Experience.MAX_COMBAT_LEVEL, combatLevel + wildernessLevel);
+	}
+
+	private void updateConfig()
+	{
+		this.showLevelsUntil = config.showLevelsUntil();
+		this.wildernessAttackLevelRange = config.showLevelsUntil();
 	}
 }

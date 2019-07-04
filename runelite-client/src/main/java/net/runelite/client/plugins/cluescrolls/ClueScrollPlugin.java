@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -108,6 +109,7 @@ import net.runelite.client.util.Text;
 	tags = {"arrow", "hints", "world", "map", "coordinates", "emotes"}
 )
 @Slf4j
+@Singleton
 public class ClueScrollPlugin extends Plugin
 {
 	private static final Color HIGHLIGHT_BORDER_COLOR = Color.ORANGE;
@@ -164,6 +166,8 @@ public class ClueScrollPlugin extends Plugin
 
 	private final TextComponent textComponent = new TextComponent();
 
+	private boolean displayHintArrows;
+
 	@Provides
 	ClueScrollConfig getConfig(ConfigManager configManager)
 	{
@@ -179,6 +183,7 @@ public class ClueScrollPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		this.displayHintArrows = config.displayHintArrows();
 		overlayManager.add(clueScrollOverlay);
 		overlayManager.add(clueScrollEmoteOverlay);
 		overlayManager.add(clueScrollWorldOverlay);
@@ -274,7 +279,7 @@ public class ClueScrollPlugin extends Plugin
 				worldMapPointsSet = false;
 				npcsToMark.clear();
 
-				if (config.displayHintArrows())
+				if (this.displayHintArrows)
 				{
 					client.clearHintArrow();
 				}
@@ -313,9 +318,13 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("cluescroll") && !config.displayHintArrows())
+		if (event.getGroup().equals("cluescroll"))
 		{
-			client.clearHintArrow();
+			this.displayHintArrows = config.displayHintArrows();
+			if (!this.displayHintArrows)
+			{
+				client.clearHintArrow();
+			}
 		}
 	}
 
@@ -366,7 +375,7 @@ public class ClueScrollPlugin extends Plugin
 			if (location != null)
 			{
 				// Only set the location hint arrow if we do not already have more accurate location
-				if (config.displayHintArrows()
+				if (this.displayHintArrows
 					&& (client.getHintArrowNpc() == null
 					|| !npcsToMark.contains(client.getHintArrowNpc())))
 				{
@@ -455,7 +464,7 @@ public class ClueScrollPlugin extends Plugin
 		worldMapPointsSet = false;
 		npcsToMark.clear();
 
-		if (config.displayHintArrows())
+		if (this.displayHintArrows)
 		{
 			client.clearHintArrow();
 		}
@@ -698,7 +707,7 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		if (!npcsToMark.isEmpty() && config.displayHintArrows())
+		if (!npcsToMark.isEmpty() && this.displayHintArrows)
 		{
 			// Always set hint arrow to first seen NPC
 			client.setHintArrow(npcsToMark.get(0));

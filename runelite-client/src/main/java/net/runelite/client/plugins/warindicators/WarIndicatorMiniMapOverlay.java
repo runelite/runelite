@@ -41,12 +41,12 @@ import org.apache.commons.lang3.ArrayUtils;
 public class WarIndicatorMiniMapOverlay extends Overlay
 {
 	private final WarIndicatorService warIndicatorService;
-	private final WarIndicatorConfig config;
+	private final WarIndicatorPlugin plugin;
 
 	@Inject
-	private WarIndicatorMiniMapOverlay(WarIndicatorConfig config, WarIndicatorService warIndicatorService)
+	private WarIndicatorMiniMapOverlay(final WarIndicatorPlugin plugin, final WarIndicatorService warIndicatorService)
 	{
-		this.config = config;
+		this.plugin = plugin;
 		this.warIndicatorService = warIndicatorService;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -65,10 +65,10 @@ public class WarIndicatorMiniMapOverlay extends Overlay
 		final String name = actor.getName().replace('\u00A0', ' ');
 		final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
 
-		String[] callers = config.getActiveCallers().split(", ");
-		String[] targets = config.getTargetedSnipes().split(", ");
+		String[] callers = plugin.getGetActiveCallers().split(", ");
+		String[] targets = plugin.getGetTargetedSnipes().split(", ");
 
-		if (config.callerMinimap() && ArrayUtils.contains(callers, actor.getName()))
+		if (plugin.isCallerMinimap() && ArrayUtils.contains(callers, actor.getName()))
 		{
 			if (minimapLocation != null)
 			{
@@ -76,7 +76,7 @@ public class WarIndicatorMiniMapOverlay extends Overlay
 			}
 		}
 
-		if (config.snipeMinimap() && ArrayUtils.contains(targets, actor.getName()))
+		if (plugin.isSnipeMinimap() && ArrayUtils.contains(targets, actor.getName()))
 		{
 			if (minimapLocation != null)
 			{

@@ -29,12 +29,14 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Singleton
 public class RoguesDenOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
@@ -43,7 +45,7 @@ public class RoguesDenOverlay extends Overlay
 	private final RoguesDenPlugin plugin;
 
 	@Inject
-	public RoguesDenOverlay(Client client, RoguesDenPlugin plugin)
+	public RoguesDenOverlay(final Client client, final RoguesDenPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);

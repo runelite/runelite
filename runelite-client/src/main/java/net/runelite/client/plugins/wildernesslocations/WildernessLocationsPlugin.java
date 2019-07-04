@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -24,11 +26,13 @@ import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -46,7 +50,7 @@ import net.runelite.client.util.WildernessLocation;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
-
+@Singleton
 public class WildernessLocationsPlugin extends Plugin
 {
 
@@ -79,7 +83,7 @@ public class WildernessLocationsPlugin extends Plugin
 	private WorldPoint worldPoint = null;
 	private final HashMap<WorldArea, String> wildLocs = getLocationMap();
 
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> wildyConfig.keybind())
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
 	{
 		@Override
 		public void hotkeyPressed()
@@ -87,6 +91,10 @@ public class WildernessLocationsPlugin extends Plugin
 			sendLocToCC();
 		}
 	};
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawOverlay;
+	private Keybind keybind;
 
 	@Provides
 	WildernessLocationsConfig getConfig(ConfigManager configManager)
@@ -97,8 +105,23 @@ public class WildernessLocationsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		this.drawOverlay = wildyConfig.drawOverlay();
+		this.keybind = wildyConfig.keybind();
+
 		overlayManager.add(overlay);
 		keyManager.registerKeyListener(hotkeyListener);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("wildernesslocations"))
+		{
+			return;
+		}
+
+		this.drawOverlay = wildyConfig.drawOverlay();
+		this.keybind = wildyConfig.keybind();
 	}
 
 	@Override

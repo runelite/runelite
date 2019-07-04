@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.Varbits;
@@ -47,6 +48,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
  * This locks "FPS:" into one position (the far top right corner of the canvas),
  * along with a locked position for the FPS value.
  */
+@Singleton
 public class FpsOverlay extends Overlay
 {
 	// Local dependencies
@@ -57,7 +59,7 @@ public class FpsOverlay extends Overlay
 	private boolean isFocused = true;
 
 	@Inject
-	private FpsOverlay(FpsPlugin plugin, Client client)
+	private FpsOverlay(final FpsPlugin plugin, final Client client)
 	{
 		this.client = client;
 		this.plugin = plugin;

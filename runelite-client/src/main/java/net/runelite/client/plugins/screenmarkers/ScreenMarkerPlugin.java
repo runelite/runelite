@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.ConfigChanged;
@@ -58,6 +59,7 @@ import net.runelite.client.util.ImageUtil;
 	description = "Enable drawing of screen markers on top of the client",
 	tags = {"boxes", "overlay", "panel"}
 )
+@Singleton
 public class ScreenMarkerPlugin extends Plugin
 {
 	private static final String PLUGIN_NAME = "Screen Markers";
@@ -159,7 +161,7 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 	}
 
-	public void startCreation(Point location)
+	void startCreation(Point location)
 	{
 		currentMarker = new ScreenMarker(
 			Instant.now().toEpochMilli(),
@@ -201,7 +203,7 @@ public class ScreenMarkerPlugin extends Plugin
 	}
 
 	/* The marker area has been drawn, inform the user and unlock the confirm button */
-	public void completeSelection()
+	void completeSelection()
 	{
 		pluginPanel.getCreationPanel().unlockConfirm();
 	}

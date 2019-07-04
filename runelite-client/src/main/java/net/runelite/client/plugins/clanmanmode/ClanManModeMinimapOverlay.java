@@ -19,7 +19,7 @@ public class ClanManModeMinimapOverlay extends Overlay
 	private final ClanManModeConfig config;
 
 	@Inject
-	private ClanManModeMinimapOverlay(ClanManModeConfig config, ClanManModeService ClanManModeService)
+	private ClanManModeMinimapOverlay(final ClanManModeConfig config, final ClanManModeService ClanManModeService)
 	{
 		this.config = config;
 		this.ClanManModeService = ClanManModeService;

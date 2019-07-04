@@ -44,7 +44,7 @@ public abstract class ZulrahPattern
 		add(loc, type, standLocation, false, prayer);
 	}
 
-	protected final void addJad(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, Prayer prayer)
+	final void addJad(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, Prayer prayer)
 	{
 		add(loc, type, standLocation, true, prayer);
 	}

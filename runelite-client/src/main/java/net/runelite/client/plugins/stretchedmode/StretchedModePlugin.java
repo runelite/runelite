@@ -27,6 +27,7 @@ package net.runelite.client.plugins.stretchedmode;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ResizeableChanged;
@@ -42,6 +43,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"resize", "ui", "interface", "stretch", "scaling", "fixed"},
 	enabledByDefault = false
 )
+@Singleton
 public class StretchedModePlugin extends Plugin
 {
 	@Inject

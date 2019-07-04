@@ -29,6 +29,8 @@ package net.runelite.client.plugins.zulrah;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -68,6 +70,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	enabledByDefault = false
 )
 @Slf4j
+@Singleton
 public class ZulrahPlugin extends Plugin
 {
 	private static final ZulrahPattern[] patterns = new ZulrahPattern[]
@@ -77,7 +80,7 @@ public class ZulrahPlugin extends Plugin
 			new ZulrahPatternC(),
 			new ZulrahPatternD()
 		};
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private NPC zulrah;
 	@Inject
 	private Client client;
@@ -126,7 +129,7 @@ public class ZulrahPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!config.enabled() || client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}

@@ -34,13 +34,13 @@ import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 import net.runelite.client.util.ImageUtil;
 
 @Slf4j
-public class ZulrahImageManager
+class ZulrahImageManager
 {
 	private static final BufferedImage[] zulrahBufferedImages = new BufferedImage[3];
 	private static final BufferedImage[] smallZulrahBufferedImages = new BufferedImage[3];
 	private static final BufferedImage[] prayerBufferedImages = new BufferedImage[2];
 
-	public static BufferedImage getZulrahBufferedImage(ZulrahType type)
+	static BufferedImage getZulrahBufferedImage(ZulrahType type)
 	{
 		switch (type)
 		{
@@ -66,7 +66,7 @@ public class ZulrahImageManager
 		return null;
 	}
 
-	public static BufferedImage getSmallZulrahBufferedImage(ZulrahType type)
+	static BufferedImage getSmallZulrahBufferedImage(ZulrahType type)
 	{
 		switch (type)
 		{
@@ -92,7 +92,7 @@ public class ZulrahImageManager
 		return null;
 	}
 
-	public static BufferedImage getProtectionPrayerBufferedImage(Prayer prayer)
+	static BufferedImage getProtectionPrayerBufferedImage(Prayer prayer)
 	{
 		switch (prayer)
 		{

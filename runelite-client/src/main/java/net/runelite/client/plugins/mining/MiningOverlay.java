@@ -31,6 +31,7 @@ import java.time.Instant;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -43,6 +44,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
+@Singleton
 class MiningOverlay extends Overlay
 {
 	// Range of Motherlode vein respawn time not 100% confirmed but based on observation
@@ -57,7 +59,7 @@ class MiningOverlay extends Overlay
 	private final MiningPlugin plugin;
 
 	@Inject
-	private MiningOverlay(Client client, MiningPlugin plugin)
+	private MiningOverlay(final Client client, final MiningPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);

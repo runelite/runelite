@@ -34,6 +34,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -56,6 +57,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 
 @Slf4j
+@Singleton
 public class BankedCalculator extends JPanel
 {
 	private static final DecimalFormat XP_FORMAT_COMMA = new DecimalFormat("#,###.#");
@@ -88,11 +90,11 @@ public class BankedCalculator extends JPanel
 	private Map<CriticalItem, Integer> linkedMap = new HashMap<>();        // ItemID of item that links to the CriticalItem
 
 	BankedCalculator(
-		SkillCalculatorPanel parent,
-		Client client,
-		UICalculatorInputArea uiInput,
-		SkillCalculatorConfig config,
-		ItemManager itemManager)
+		final SkillCalculatorPanel parent,
+		final Client client,
+		final UICalculatorInputArea uiInput,
+		final SkillCalculatorConfig config,
+		final ItemManager itemManager)
 	{
 		this.parent = parent;
 		this.client = client;

@@ -3,6 +3,7 @@ package net.runelite.client.plugins.chattranslation;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
+import javax.inject.Singleton;
 import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 	tags = {"translate", "language", "english", "spanish", "dutch", "french"},
 	type = PluginType.UTILITY
 )
+@Singleton
 public class ChatTranslationPlugin extends Plugin implements KeyListener
 {
 
@@ -64,6 +66,13 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	@Inject
 	private ChatTranslationConfig config;
 
+	private boolean translateOptionVisable;
+	private boolean publicChat;
+	private String getPlayerNames;
+	private Languages publicTargetLanguage;
+	private boolean playerChat;
+	private Languages playerTargetLanguage;
+
 	@Provides
 	ChatTranslationConfig provideConfig(ConfigManager configManager)
 	{
@@ -73,9 +82,11 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		if (client != null)
 		{
-			if (config.translateOptionVisable())
+			if (this.translateOptionVisable)
 			{
 				menuManager.get().addPlayerMenuItem(TRANSLATE);
 			}
@@ -90,7 +101,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	{
 		if (client != null)
 		{
-			if (config.translateOptionVisable())
+			if (this.translateOptionVisable)
 			{
 				menuManager.get().removePlayerMenuItem(TRANSLATE);
 			}
@@ -105,9 +116,10 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	{
 		if (event.getGroup().equals("chattranslation"))
 		{
+			updateConfig();
 			if (event.getKey().equals("playerNames"))
 			{
-				for (String names : Text.fromCSV(config.getPlayerNames()))
+				for (String names : Text.fromCSV(this.getPlayerNames))
 				{
 					if (!playerNames.contains(Text.toJagexName(names)))
 					{
@@ -121,7 +133,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!config.translateOptionVisable())
+		if (!this.translateOptionVisable)
 		{
 			return;
 		}
@@ -181,7 +193,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 			case PUBLICCHAT:
 			case MODCHAT:
 			case FRIENDSCHAT:
-				if (!config.publicChat())
+				if (!this.publicChat)
 				{
 					return;
 				}
@@ -201,7 +213,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 				try
 				{
 					//Automatically check language of message and translate to selected language.
-					String translation = translator.translate("auto", config.publicTargetLanguage().toString(), message);
+					String translation = translator.translate("auto", this.publicTargetLanguage.toString(), message);
 					if (translation != null)
 					{
 						final MessageNode messageNode = chatMessage.getMessageNode();
@@ -227,7 +239,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		if (!config.playerChat())
+		if (!this.playerChat)
 		{
 			return;
 		}
@@ -259,7 +271,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 				try
 				{
 					//Automatically check language of message and translate to selected language.
-					String translation = translator.translate("auto", config.playerTargetLanguage().toString(), message);
+					String translation = translator.translate("auto", this.playerTargetLanguage.toString(), message);
 					if (translation != null)
 					{
 						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translation);
@@ -291,4 +303,13 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 		// Nothing.
 	}
 
+	private void updateConfig()
+	{
+		this.publicChat = config.publicChat();
+		this.getPlayerNames = config.getPlayerNames();
+		this.translateOptionVisable = config.translateOptionVisable();
+		this.publicTargetLanguage = config.publicTargetLanguage();
+		this.playerChat = config.playerChat();
+		this.playerTargetLanguage = config.playerTargetLanguage();
+	}
 }

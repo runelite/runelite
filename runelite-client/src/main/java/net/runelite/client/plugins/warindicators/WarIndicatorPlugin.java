@@ -27,6 +27,9 @@ package net.runelite.client.plugins.warindicators;
 import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.FOLLOW;
 import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
@@ -42,6 +45,7 @@ import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
 import static net.runelite.api.MenuAction.TRADE;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -58,7 +62,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
-
+@Singleton
 public class WarIndicatorPlugin extends Plugin
 {
 	@Inject
@@ -76,6 +80,27 @@ public class WarIndicatorPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highLightCallers;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getCallerColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean callerMinimap;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean callerTile;
+	@Getter(AccessLevel.PACKAGE)
+	private String getActiveCallers;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightSnipes;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getSnipeColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean snipeMinimap;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean snipeTile;
+	@Getter(AccessLevel.PACKAGE)
+	private String getTargetedSnipes;
+
 	@Provides
 	WarIndicatorConfig provideConfig(ConfigManager configManager)
 	{
@@ -85,6 +110,8 @@ public class WarIndicatorPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(warIndicatorOverlay);
 		overlayManager.add(warIndicatorMiniMapOverlay);
 	}
@@ -123,8 +150,8 @@ public class WarIndicatorPlugin extends Plugin
 			Player player = null;
 			String player2 = null;
 
-			String[] callers = config.getActiveCallers().split(", ");
-			String[] targets = config.getTargetedSnipes().split(", ");
+			String[] callers = this.getActiveCallers.split(", ");
+			String[] targets = this.getTargetedSnipes.split(", ");
 
 			if (identifier >= 0 && identifier < players.length)
 			{
@@ -139,14 +166,14 @@ public class WarIndicatorPlugin extends Plugin
 
 			Color color = null;
 
-			if (config.highLightCallers() && ArrayUtils.contains(callers, player2))
+			if (this.highLightCallers && ArrayUtils.contains(callers, player2))
 			{
-				color = config.getCallerColor();
+				color = this.getCallerColor;
 			}
 
-			if (config.highlightSnipes() && ArrayUtils.contains(targets, player2))
+			if (this.highlightSnipes && ArrayUtils.contains(targets, player2))
 			{
-				color = config.getSnipeColor();
+				color = this.getSnipeColor;
 			}
 
 			if (color != null)
@@ -166,5 +193,28 @@ public class WarIndicatorPlugin extends Plugin
 			}
 
 		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("warIndicators"))
+		{
+			updateConfig();
+		}
+	}
+
+	private void updateConfig()
+	{
+		this.highLightCallers = config.highLightCallers();
+		this.getCallerColor = config.getCallerColor();
+		this.callerMinimap = config.callerMinimap();
+		this.callerTile = config.callerTile();
+		this.getActiveCallers = config.getActiveCallers();
+		this.highlightSnipes = config.highlightSnipes();
+		this.getSnipeColor = config.getSnipeColor();
+		this.snipeMinimap = config.snipeMinimap();
+		this.snipeTile = config.snipeTile();
+		this.getTargetedSnipes = config.getTargetedSnipes();
 	}
 }

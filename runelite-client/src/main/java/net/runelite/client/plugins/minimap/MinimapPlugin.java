@@ -28,6 +28,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Arrays;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Sprite;
@@ -46,6 +47,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	description = "Customize the color of minimap dots",
 	tags = {"items", "npcs", "players"}
 )
+@Singleton
 public class MinimapPlugin extends Plugin
 {
 	private static final int NUM_MAPDOTS = 6;
@@ -58,6 +60,14 @@ public class MinimapPlugin extends Plugin
 
 	private Sprite[] originalDotSprites;
 
+	private Color itemColor;
+	private Color npcColor;
+	private Color playerColor;
+	private Color friendColor;
+	private Color teamColor;
+	private Color clanColor;
+	private boolean hideMinimap;
+
 	@Provides
 	private MinimapConfig provideConfig(ConfigManager configManager)
 	{
@@ -67,7 +77,9 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		updateMinimapWidgetVisibility(config.hideMinimap());
+		updateConfig();
+
+		updateMinimapWidgetVisibility(this.hideMinimap);
 		storeOriginalDots();
 		replaceMapDots();
 	}
@@ -97,9 +109,11 @@ public class MinimapPlugin extends Plugin
 			return;
 		}
 
+		updateConfig();
+
 		if (event.getKey().equals("hideMinimap"))
 		{
-			updateMinimapWidgetVisibility(config.hideMinimap());
+			updateMinimapWidgetVisibility(this.hideMinimap);
 			return;
 		}
 
@@ -109,7 +123,7 @@ public class MinimapPlugin extends Plugin
 	@Subscribe
 	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
-		updateMinimapWidgetVisibility(config.hideMinimap());
+		updateMinimapWidgetVisibility(this.hideMinimap);
 	}
 
 	private void updateMinimapWidgetVisibility(boolean enable)
@@ -155,12 +169,13 @@ public class MinimapPlugin extends Plugin
 	private Color[] getColors()
 	{
 		Color[] colors = new Color[NUM_MAPDOTS];
-		colors[0] = config.itemColor();
-		colors[1] = config.npcColor();
-		colors[2] = config.playerColor();
-		colors[3] = config.friendColor();
-		colors[4] = config.teamColor();
-		colors[5] = config.clanColor();
+		colors[0] = this.itemColor;
+		colors[1] = this.npcColor;
+		colors[2] = this.playerColor;
+		colors[3] = this.friendColor;
+		colors[4] = this.teamColor;
+		colors[5] = this.clanColor;
+
 		return colors;
 	}
 
@@ -186,5 +201,16 @@ public class MinimapPlugin extends Plugin
 		}
 
 		System.arraycopy(originalDotSprites, 0, mapDots, 0, mapDots.length);
+	}
+
+	private void updateConfig()
+	{
+		this.itemColor = config.itemColor();
+		this.npcColor = config.npcColor();
+		this.playerColor = config.playerColor();
+		this.friendColor = config.friendColor();
+		this.teamColor = config.teamColor();
+		this.clanColor = config.clanColor();
+		this.hideMinimap = config.hideMinimap();
 	}
 }

@@ -26,6 +26,7 @@ package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
@@ -50,7 +51,7 @@ import static net.runelite.api.ItemID.STEEL_AXE;
 import static net.runelite.api.ItemID._3RD_AGE_AXE;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum Axe
 {
 	BRONZE(WOODCUTTING_BRONZE, BRONZE_AXE),

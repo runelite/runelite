@@ -24,31 +24,33 @@
 
 package net.runelite.client.plugins.pileindicators;
 
-import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.awt.Color;
+import java.util.ArrayList;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.awt.*;
-import java.util.ArrayList;
-
 @PluginDescriptor(
-		name = "Pile Indicators",
-		description = "Highlight and count how many npcs/players are stacked on each other.",
-		tags = {"overlay", "pile", "stack", "pvp", "pvm", "pve"},
-		type = PluginType.UTILITY,
-		enabledByDefault = false
+	name = "Pile Indicators",
+	description = "Highlight and count how many npcs/players are stacked on each other.",
+	tags = {"overlay", "pile", "stack", "pvp", "pvm", "pve"},
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
 
 @Singleton
@@ -68,6 +70,20 @@ public class PileIndicatorsPlugin extends Plugin
 	@Inject
 	private PileIndicatorsOverlay overlay;
 
+	private boolean enablePlayers;
+	private boolean wildyOnlyPlayer;
+	private Color playerPileColor;
+	private boolean enableNPCS;
+	private Color npcPileColor;
+	private Color mixedPileColor;
+	private int minimumPileSize;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean numberOnly;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawPileTile;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawPileHull;
+
 	@Provides
 	PileIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
@@ -75,13 +91,9 @@ public class PileIndicatorsPlugin extends Plugin
 	}
 
 	@Override
-	public void configure(Binder binder)
-	{
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
 		overlayManager.add(overlay);
 	}
 
@@ -91,13 +103,13 @@ public class PileIndicatorsPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
-	protected ArrayList<ArrayList<Actor>> getStacks()
+	ArrayList<ArrayList<Actor>> getStacks()
 	{
 		ArrayList<ArrayList<Actor>> outerArrayList = new ArrayList<>();
 
 		ArrayList<Actor> pileList = new ArrayList<>();
 
-		if (config.enableNPCS())
+		if (this.enableNPCS)
 		{
 			for (NPC npc : client.getNpcs())
 			{
@@ -108,9 +120,9 @@ public class PileIndicatorsPlugin extends Plugin
 			}
 		}
 
-		if (config.enablePlayers())
+		if (this.enablePlayers)
 		{
-			if ((client.getVar(Varbits.IN_WILDERNESS) > 0 && config.wildyOnlyPlayer()) ^ (!config.wildyOnlyPlayer()))
+			if ((client.getVar(Varbits.IN_WILDERNESS) > 0 && this.wildyOnlyPlayer) ^ (!this.wildyOnlyPlayer))
 			{
 				for (Player player : client.getPlayers())
 				{
@@ -140,7 +152,7 @@ public class PileIndicatorsPlugin extends Plugin
 					}
 				}
 			}
-			if (potentialStackArrayList.size() >= config.minimumPileSize())
+			if (potentialStackArrayList.size() >= this.minimumPileSize)
 			{
 				outerArrayList.add(potentialStackArrayList);
 			}
@@ -149,21 +161,21 @@ public class PileIndicatorsPlugin extends Plugin
 		return outerArrayList.size() != 0 ? outerArrayList : null;
 	}
 
-	protected Color getColorByPileType(PileType pileType)
+	Color getColorByPileType(PileType pileType)
 	{
 		switch (pileType)
 		{
 			case PLAYER_PILE:
-				return config.playerPileColor();
+				return this.playerPileColor;
 			case NPC_PILE:
-				return config.npcPileColor();
+				return this.npcPileColor;
 			case MIXED_PILE:
-				return config.mixedPileColor();
+				return this.mixedPileColor;
 		}
 		return null;
 	}
 
-	protected PileType getPileType(ArrayList<Actor> pile)
+	PileType getPileType(ArrayList<Actor> pile)
 	{
 		PileType pileType = null;
 
@@ -187,5 +199,30 @@ public class PileIndicatorsPlugin extends Plugin
 			}
 		}
 		return pileType;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("pileindicators"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.enablePlayers = config.enablePlayers();
+		this.wildyOnlyPlayer = config.wildyOnlyPlayer();
+		this.playerPileColor = config.playerPileColor();
+		this.enableNPCS = config.enableNPCS();
+		this.npcPileColor = config.npcPileColor();
+		this.mixedPileColor = config.mixedPileColor();
+		this.minimumPileSize = config.minimumPileSize();
+		this.numberOnly = config.numberOnly();
+		this.drawPileTile = config.drawPileTile();
+		this.drawPileHull = config.drawPileHull();
 	}
 }

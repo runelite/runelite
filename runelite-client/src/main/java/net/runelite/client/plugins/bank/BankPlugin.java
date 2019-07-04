@@ -28,8 +28,12 @@ package net.runelite.client.plugins.bank;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -46,6 +50,7 @@ import net.runelite.client.util.StackFormatter;
 	description = "Modifications to the banking interface",
 	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit"}
 )
+@Singleton
 public class BankPlugin extends Plugin
 {
 	private static final String DEPOSIT_WORN = "Deposit worn items";
@@ -75,6 +80,21 @@ public class BankPlugin extends Plugin
 		return configManager.getConfig(BankConfig.class);
 	}
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showGE;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showHA;
+	private boolean showExact;
+	private boolean rightClickBankInventory;
+	private boolean rightClickBankEquip;
+	private boolean rightClickBankLoot;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		updateConfig();
+	}
+
 	@Override
 	protected void shutDown()
 	{
@@ -94,9 +114,9 @@ public class BankPlugin extends Plugin
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		for (MenuEntry entry : menuEntries)
 		{
-			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
-				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
+			if ((entry.getOption().equals(DEPOSIT_WORN) && this.rightClickBankEquip)
+				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && this.rightClickBankInventory)
+				|| (entry.getOption().equals(DEPOSIT_LOOT) && this.rightClickBankLoot))
 			{
 				event.setForceRightClick(true);
 				return;
@@ -107,9 +127,9 @@ public class BankPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
-			|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
+		if ((event.getOption().equals(DEPOSIT_WORN) && this.rightClickBankEquip)
+			|| (event.getOption().equals(DEPOSIT_INVENTORY) && this.rightClickBankInventory)
+			|| (event.getOption().equals(DEPOSIT_LOOT) && this.rightClickBankLoot))
 		{
 			forceRightClickFlag = true;
 		}
@@ -128,16 +148,16 @@ public class BankPlugin extends Plugin
 		long gePrice = bankCalculation.getGePrice();
 		long haPrice = bankCalculation.getHaPrice();
 
-		if (config.showGE() && gePrice != 0)
+		if (this.showGE && gePrice != 0)
 		{
 			strCurrentTab += " (";
 
-			if (config.showHA())
+			if (this.showHA)
 			{
 				strCurrentTab += "EX: ";
 			}
 
-			if (config.showExact())
+			if (this.showExact)
 			{
 				strCurrentTab += StackFormatter.formatNumber(gePrice) + ")";
 			}
@@ -147,16 +167,16 @@ public class BankPlugin extends Plugin
 			}
 		}
 
-		if (config.showHA() && haPrice != 0)
+		if (this.showHA && haPrice != 0)
 		{
 			strCurrentTab += " (";
 
-			if (config.showGE())
+			if (this.showGE)
 			{
 				strCurrentTab += "HA: ";
 			}
 
-			if (config.showExact())
+			if (this.showExact)
 			{
 				strCurrentTab += StackFormatter.formatNumber(haPrice) + ")";
 			}
@@ -170,5 +190,26 @@ public class BankPlugin extends Plugin
 		int stringStackSize = client.getStringStackSize();
 
 		stringStack[stringStackSize - 1] += strCurrentTab;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("bank"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	public void updateConfig()
+	{
+		this.showGE = config.showGE();
+		this.showHA = config.showHA();
+		this.showExact = config.showExact();
+		this.rightClickBankInventory = config.rightClickBankInventory();
+		this.rightClickBankEquip = config.rightClickBankEquip();
+		this.rightClickBankLoot = config.rightClickBankLoot();
 	}
 }

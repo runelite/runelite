@@ -27,6 +27,7 @@ package net.runelite.client.plugins.virtuallevels;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -45,6 +46,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"skill", "total", "max"},
 	enabledByDefault = false
 )
+@Singleton
 public class VirtualLevelsPlugin extends Plugin
 {
 	private static final String TOTAL_LEVEL_TEXT_PREFIX = "Total level:<br>";

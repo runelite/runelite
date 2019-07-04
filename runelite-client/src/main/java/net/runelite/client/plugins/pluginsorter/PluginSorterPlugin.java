@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -47,6 +48,7 @@ import net.runelite.client.plugins.config.PluginListItem;
 	tags = {"plugins", "organizer"},
 	type = PluginType.PLUGIN_ORGANIZER
 )
+@Singleton
 public class PluginSorterPlugin extends Plugin
 {
 	//Cache the hidden plugins
@@ -54,6 +56,13 @@ public class PluginSorterPlugin extends Plugin
 
 	@Inject
 	private PluginSorterConfig config;
+
+	private boolean hidePlugins;
+	private Color externalColor;
+	private Color pvmColor;
+	private Color pvpColor;
+	private Color skillingColor;
+	private Color utilityColor;
 
 	@Provides
 	PluginSorterConfig provideConfig(ConfigManager configManager)
@@ -64,6 +73,7 @@ public class PluginSorterPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
 		updateColors();
 	}
 
@@ -78,7 +88,7 @@ public class PluginSorterPlugin extends Plugin
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			if (config.hidePlugins())
+			if (this.hidePlugins)
 			{
 				hidePlugins();
 			}
@@ -89,9 +99,16 @@ public class PluginSorterPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
+		if (!configChanged.getGroup().equals("pluginsorter"))
+		{
+			return;
+		}
+
+		updateConfig();
+
 		if (configChanged.getKey().equals("hidePlugins"))
 		{
-			if (config.hidePlugins())
+			if (this.hidePlugins)
 			{
 				hidePlugins();
 			}
@@ -112,19 +129,19 @@ public class PluginSorterPlugin extends Plugin
 				switch (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type())
 				{
 					case EXTERNAL:
-						pli.nameLabel.setForeground(config.externalColor());
+						pli.nameLabel.setForeground(this.externalColor);
 						break;
 					case PVM:
-						pli.nameLabel.setForeground(config.pvmColor());
+						pli.nameLabel.setForeground(this.pvmColor);
 						break;
 					case PVP:
-						pli.nameLabel.setForeground(config.pvpColor());
+						pli.nameLabel.setForeground(this.pvpColor);
 						break;
 					case SKILLING:
-						pli.nameLabel.setForeground(config.skillingColor());
+						pli.nameLabel.setForeground(this.skillingColor);
 						break;
 					case UTILITY:
-						pli.nameLabel.setForeground(config.utilityColor());
+						pli.nameLabel.setForeground(this.utilityColor);
 						break;
 					default:
 						pli.nameLabel.setForeground(Color.WHITE);
@@ -166,5 +183,15 @@ public class PluginSorterPlugin extends Plugin
 		tempList.addAll(ConfigPanel.pluginList);
 		tempList.addAll(1, removedPlugins);
 		ConfigPanel.pluginList = tempList;
+	}
+
+	private void updateConfig()
+	{
+		this.hidePlugins = config.hidePlugins();
+		this.externalColor = config.externalColor();
+		this.pvmColor = config.pvmColor();
+		this.pvpColor = config.pvpColor();
+		this.skillingColor = config.skillingColor();
+		this.utilityColor = config.utilityColor();
 	}
 }

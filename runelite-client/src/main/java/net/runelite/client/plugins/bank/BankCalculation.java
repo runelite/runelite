@@ -58,7 +58,7 @@ class BankCalculation
 		Varbits.BANK_TAB_NINE_COUNT
 	);
 
-	private final BankConfig config;
+	private final BankPlugin plugin;
 	private final ItemManager itemManager;
 	private final Client client;
 
@@ -72,10 +72,10 @@ class BankCalculation
 	private long haPrice;
 
 	@Inject
-	BankCalculation(ItemManager itemManager, BankConfig config, Client client)
+	BankCalculation(ItemManager itemManager, BankPlugin plugin, Client client)
 	{
 		this.itemManager = itemManager;
-		this.config = config;
+		this.plugin = plugin;
 		this.client = client;
 	}
 
@@ -142,12 +142,12 @@ class BankCalculation
 				continue;
 			}
 
-			if (config.showGE())
+			if (plugin.isShowGE())
 			{
 				itemIds.add(item.getId());
 			}
 
-			if (config.showHA())
+			if (plugin.isShowHA())
 			{
 				long alchValue = itemManager.getAlchValue(item.getId());
 
@@ -159,7 +159,7 @@ class BankCalculation
 		}
 
 		// Now do the calculations
-		if (config.showGE() && !itemIds.isEmpty())
+		if (plugin.isShowGE() && !itemIds.isEmpty())
 		{
 			for (Item item : items)
 			{

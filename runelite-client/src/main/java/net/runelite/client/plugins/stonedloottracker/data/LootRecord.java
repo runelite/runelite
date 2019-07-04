@@ -27,9 +27,10 @@ package net.runelite.client.plugins.stonedloottracker.data;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 @Deprecated
 public class LootRecord
 {
@@ -39,7 +40,7 @@ public class LootRecord
 	private final int killCount;
 	final Collection<LootTrackerItemEntry> drops;
 
-	public LootRecord(int id, String name, int level, int kc, Collection<LootTrackerItemEntry> drops)
+	public LootRecord(final int id, final String name, final int level, final int kc, final Collection<LootTrackerItemEntry> drops)
 	{
 		this.id = id;
 		this.name = name;

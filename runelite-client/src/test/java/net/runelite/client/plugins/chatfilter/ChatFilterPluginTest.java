@@ -65,16 +65,17 @@ public class ChatFilterPluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
-		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
-		when(chatFilterConfig.filteredWords()).thenReturn("");
-		when(chatFilterConfig.filteredRegex()).thenReturn("");
+		chatFilterPlugin.setFilterType(ChatFilterType.CENSOR_WORDS);
+		chatFilterPlugin.setFilteredWords("");
+		chatFilterPlugin.setFilteredRegex("");
+
 		when(client.getLocalPlayer()).thenReturn(localPlayer);
 	}
 
 	@Test
 	public void testCensorWords()
 	{
-		when(chatFilterConfig.filteredWords()).thenReturn("hat");
+		chatFilterPlugin.setFilteredWords("hat");
 
 		chatFilterPlugin.updateFilteredPatterns();
 		assertEquals("w***s up", chatFilterPlugin.censorMessage("whats up"));
@@ -83,8 +84,8 @@ public class ChatFilterPluginTest
 	@Test
 	public void testCensorRegex()
 	{
-		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
-		when(chatFilterConfig.filteredRegex()).thenReturn("5[0-9]x2\n(");
+		chatFilterPlugin.setFilterType(ChatFilterType.REMOVE_MESSAGE);
+		chatFilterPlugin.setFilteredRegex("5[0-9]x2\n(");
 
 		chatFilterPlugin.updateFilteredPatterns();
 		assertNull(chatFilterPlugin.censorMessage("55X2 Dicing | Trusted Ranks | Huge Pay Outs!"));
@@ -93,7 +94,7 @@ public class ChatFilterPluginTest
 	@Test
 	public void testBrokenRegex()
 	{
-		when(chatFilterConfig.filteredRegex()).thenReturn("Test\n)\n73");
+		chatFilterPlugin.setFilteredRegex("Test\n)\n73");
 
 		chatFilterPlugin.updateFilteredPatterns();
 		assertEquals("** isn't funny", chatFilterPlugin.censorMessage("73 isn't funny"));
@@ -102,8 +103,8 @@ public class ChatFilterPluginTest
 	@Test
 	public void testCaseSensitivity()
 	{
-		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_MESSAGE);
-		when(chatFilterConfig.filteredWords()).thenReturn("ReGeX!!!");
+		chatFilterPlugin.setFilterType(ChatFilterType.CENSOR_MESSAGE);
+		chatFilterPlugin.setFilteredWords("ReGeX!!!");
 
 		chatFilterPlugin.updateFilteredPatterns();
 		assertEquals("Hey, everyone, I just tried to say something very silly!",
@@ -113,8 +114,8 @@ public class ChatFilterPluginTest
 	@Test
 	public void testNonPrintableCharacters()
 	{
-		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
-		when(chatFilterConfig.filteredWords()).thenReturn("test");
+		chatFilterPlugin.setFilterType(ChatFilterType.REMOVE_MESSAGE);
+		chatFilterPlugin.setFilteredWords("test");
 
 		chatFilterPlugin.updateFilteredPatterns();
 		assertNull(chatFilterPlugin.censorMessage("te\u008Cst"));
@@ -124,7 +125,7 @@ public class ChatFilterPluginTest
 	public void testMessageFromFriendIsFiltered()
 	{
 		when(client.isFriended("Iron Mammal", false)).thenReturn(true);
-		when(chatFilterConfig.filterFriends()).thenReturn(true);
+		chatFilterPlugin.setFilterFriends(true);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Iron Mammal"));
 	}
 
@@ -132,7 +133,7 @@ public class ChatFilterPluginTest
 	public void testMessageFromFriendIsNotFiltered()
 	{
 		when(client.isFriended("Iron Mammal", false)).thenReturn(true);
-		when(chatFilterConfig.filterFriends()).thenReturn(false);
+		chatFilterPlugin.setFilterFriends(false);
 		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage("Iron Mammal"));
 	}
 
@@ -140,7 +141,7 @@ public class ChatFilterPluginTest
 	public void testMessageFromClanIsFiltered()
 	{
 		when(client.isClanMember("B0aty")).thenReturn(true);
-		when(chatFilterConfig.filterClan()).thenReturn(true);
+		chatFilterPlugin.setFilterClan(true);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
 	}
 
@@ -148,7 +149,7 @@ public class ChatFilterPluginTest
 	public void testMessageFromClanIsNotFiltered()
 	{
 		when(client.isClanMember("B0aty")).thenReturn(true);
-		when(chatFilterConfig.filterClan()).thenReturn(false);
+		chatFilterPlugin.setFilterClan(false);
 		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
 	}
 

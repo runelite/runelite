@@ -26,11 +26,16 @@
 package net.runelite.client.plugins.antidrag;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -48,11 +53,11 @@ import net.runelite.client.util.HotkeyListener;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 public class AntiDragPlugin extends Plugin
 {
 	private static final int DEFAULT_DELAY = 5;
-	
+
 	private boolean toggleDrag;
 
 	@Inject
@@ -82,14 +87,27 @@ public class AntiDragPlugin extends Plugin
 		return configManager.getConfig(AntiDragConfig.class);
 	}
 
+	private boolean alwaysOn;
+	private boolean keybind;
+	private Keybind key;
+	private int dragDelay;
+	private boolean reqfocus;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean configOverlay;
+	@Getter(AccessLevel.PACKAGE)
+	private Color color;
+	private boolean changeCursor;
+	private CustomCursor selectedCursor;
+
 	@Override
 	protected void startUp() throws Exception
 	{
-		if (config.keybind())
+		updateConfig();
+		if (this.keybind)
 		{
 			keyManager.registerKeyListener(hotkeyListener);
 		}
-		client.setInventoryDragDelay(config.alwaysOn() ? config.dragDelay() : DEFAULT_DELAY);
+		client.setInventoryDragDelay(this.alwaysOn ? this.dragDelay : DEFAULT_DELAY);
 	}
 
 	@Override
@@ -106,9 +124,11 @@ public class AntiDragPlugin extends Plugin
 	{
 		if (event.getGroup().equals("antiDrag"))
 		{
+			updateConfig();
+
 			if (event.getKey().equals("keybind"))
 			{
-				if (config.keybind())
+				if (this.keybind)
 				{
 					keyManager.registerKeyListener(hotkeyListener);
 				}
@@ -119,17 +139,30 @@ public class AntiDragPlugin extends Plugin
 			}
 			if (event.getKey().equals("alwaysOn"))
 			{
-				client.setInventoryDragDelay(config.alwaysOn() ? config.dragDelay() : DEFAULT_DELAY);
+				client.setInventoryDragDelay(this.alwaysOn ? this.dragDelay : DEFAULT_DELAY);
 			}
 		}
+	}
+
+	public void updateConfig()
+	{
+		this.alwaysOn = config.alwaysOn();
+		this.keybind = config.keybind();
+		this.key = config.key();
+		this.dragDelay = config.dragDelay();
+		this.reqfocus = config.reqfocus();
+		this.configOverlay = config.overlay();
+		this.color = config.color();
+		this.changeCursor = config.changeCursor();
+		this.selectedCursor = config.selectedCursor();
 	}
 
 	@Subscribe
 	public void onFocusChanged(FocusChanged focusChanged)
 	{
-		if (!config.alwaysOn())
+		if (!this.alwaysOn)
 		{
-			if (!focusChanged.isFocused() && config.reqfocus())
+			if (!focusChanged.isFocused() && this.reqfocus)
 			{
 				client.setInventoryDragDelay(DEFAULT_DELAY);
 				overlayManager.remove(overlay);
@@ -137,33 +170,32 @@ public class AntiDragPlugin extends Plugin
 		}
 	}
 
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.key())
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> this.key)
 	{
 		@Override
 		public void hotkeyPressed()
 		{
-			if (!config.alwaysOn())
+			if (!alwaysOn)
 			{
 				toggleDrag = !toggleDrag;
 				if (toggleDrag)
 				{
-					if (config.overlay())
+					if (configOverlay)
 					{
 						overlayManager.add(overlay);
 					}
-					if (config.changeCursor())
+					if (changeCursor)
 					{
-						CustomCursor selectedCursor = config.selectedCursor();
 						clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
 					}
 
-					client.setInventoryDragDelay(config.dragDelay());
+					client.setInventoryDragDelay(dragDelay);
 				}
 				else
 				{
 					overlayManager.remove(overlay);
 					client.setInventoryDragDelay(DEFAULT_DELAY);
-					if (config.changeCursor())
+					if (changeCursor)
 					{
 						net.runelite.client.plugins.customcursor.CustomCursor selectedCursor = configManager.getConfig(CustomCursorConfig.class).selectedCursor();
 						clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());

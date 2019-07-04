@@ -36,7 +36,7 @@ class ClueScrollWorldMapPoint extends WorldMapPoint
 	private final BufferedImage clueScrollWorldImage;
 	private final Point clueScrollWorldImagePoint;
 
-	ClueScrollWorldMapPoint(final WorldPoint worldPoint, ClueScrollPlugin plugin)
+	ClueScrollWorldMapPoint(final WorldPoint worldPoint, final ClueScrollPlugin plugin)
 	{
 		super(worldPoint, null);
 

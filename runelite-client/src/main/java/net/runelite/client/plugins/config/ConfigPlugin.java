@@ -27,6 +27,7 @@ package net.runelite.client.plugins.config;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import net.runelite.api.MenuAction;
 import net.runelite.client.config.ChatColorConfig;
@@ -39,7 +40,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -50,10 +50,9 @@ import net.runelite.client.util.ImageUtil;
 	loadWhenOutdated = true,
 	hidden = true // prevent users from disabling
 )
+@Singleton
 public class ConfigPlugin extends Plugin
 {
-	@Inject
-	private ClientUI clientUI;
 
 	@Inject
 	private ClientToolbar clientToolbar;

@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.maxhit;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -48,7 +49,7 @@ import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 public class MaxHitPlugin extends Plugin
 {
 

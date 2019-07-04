@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -51,6 +52,7 @@ import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
 @Slf4j
+@Singleton
 class SkillCalculatorPanel extends PluginPanel
 {
 	private final SkillCalculator uiCalculator;
@@ -67,7 +69,7 @@ class SkillCalculatorPanel extends PluginPanel
 	private Map<Integer, Integer> bankMap = new HashMap<>();
 	private GridBagConstraints c;
 
-	SkillCalculatorPanel(SkillIconManager iconManager, Client client, SkillCalculatorConfig config, SpriteManager spriteManager, ItemManager itemManager)
+	SkillCalculatorPanel(final SkillIconManager iconManager, final Client client, final SkillCalculatorConfig config, final SpriteManager spriteManager, final ItemManager itemManager)
 	{
 		super();
 		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

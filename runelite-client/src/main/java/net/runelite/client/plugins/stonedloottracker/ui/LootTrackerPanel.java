@@ -37,6 +37,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -56,6 +57,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 
 @Slf4j
+@Singleton
 public class LootTrackerPanel extends PluginPanel
 {
 	private static final BufferedImage ICON_DELETE;
@@ -99,7 +101,7 @@ public class LootTrackerPanel extends PluginPanel
 	private final ItemManager itemManager;
 	private final StonedLootTrackerPlugin plugin;
 
-	public LootTrackerPanel(final ItemManager itemManager, StonedLootTrackerPlugin plugin)
+	public LootTrackerPanel(final ItemManager itemManager, final StonedLootTrackerPlugin plugin)
 	{
 		super(false);
 		this.itemManager = itemManager;

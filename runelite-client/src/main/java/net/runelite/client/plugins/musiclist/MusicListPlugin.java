@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -57,6 +58,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	name = "Music List",
 	description = "Adds search and filter for the music list"
 )
+@Singleton
 public class MusicListPlugin extends Plugin
 {
 	@Inject

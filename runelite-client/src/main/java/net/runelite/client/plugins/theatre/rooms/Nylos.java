@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.theatre.rooms;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,12 +8,12 @@ import net.runelite.api.NPC;
 
 class Nylos
 {
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private NPC npc;
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private int npcIndex;
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PUBLIC)
+	@Setter(AccessLevel.PUBLIC)
 	private SpawnLocation spawnLocation;
 
 	Nylos(NPC npc, SpawnLocation spawnLocation)

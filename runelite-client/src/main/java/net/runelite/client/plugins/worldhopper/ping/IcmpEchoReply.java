@@ -47,7 +47,7 @@ public class IcmpEchoReply extends Structure
 	public WinDef.UCHAR optionsSize;
 	public WinDef.PVOID optionsData;
 
-	IcmpEchoReply(Pointer p)
+	IcmpEchoReply(final Pointer p)
 	{
 		super(p);
 	}

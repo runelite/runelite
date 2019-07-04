@@ -24,12 +24,13 @@
  */
 package net.runelite.client.plugins.statusbars;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.WidgetInfo;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 enum Viewport
 {

@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Varbits;
@@ -43,13 +44,14 @@ import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
 
+@Singleton
 public class BarrowsBrotherSlainOverlay extends Overlay
 {
 	private final Client client;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private BarrowsBrotherSlainOverlay(BarrowsPlugin plugin, Client client)
+	private BarrowsBrotherSlainOverlay(final BarrowsPlugin plugin, final Client client)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);

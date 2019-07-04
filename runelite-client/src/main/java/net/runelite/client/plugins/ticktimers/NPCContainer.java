@@ -28,6 +28,7 @@ package net.runelite.client.plugins.ticktimers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ import net.runelite.api.NPCDefinition;
 import net.runelite.api.NpcID;
 import net.runelite.api.Prayer;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 class NPCContainer
 {
 	private NPC npc;
@@ -48,14 +49,14 @@ class NPCContainer
 	private int npcSize;
 	private ImmutableSet<Integer> animations;
 	private int attackSpeed;
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private int ticksUntilAttack;
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private Actor npcInteracting;
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private AttackStyle attackStyle;
 
-	NPCContainer(NPC npc, int attackSpeed)
+	NPCContainer(final NPC npc, final int attackSpeed)
 	{
 		this.npc = npc;
 		this.npcName = npc.getName();

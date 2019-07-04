@@ -32,6 +32,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -56,6 +57,7 @@ import net.runelite.client.util.ImageUtil;
 	description = "Show where you last died, and on what world",
 	tags = {"arrow", "hints", "world", "map", "overlay"}
 )
+@Singleton
 @Slf4j
 public class DeathIndicatorPlugin extends Plugin
 {

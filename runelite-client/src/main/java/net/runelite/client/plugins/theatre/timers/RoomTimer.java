@@ -27,7 +27,7 @@ public class RoomTimer extends Overlay
 
 
 	@Inject
-	public RoomTimer(Client client, TheatrePlugin plugin)
+	public RoomTimer(final Client client, final TheatrePlugin plugin)
 	{
 		super(plugin);
 

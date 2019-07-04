@@ -54,6 +54,7 @@ package net.runelite.client.plugins.slayermusiq;
 import com.google.common.primitives.Ints;
 import java.util.Arrays;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
@@ -75,7 +76,7 @@ import net.runelite.client.util.Text;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 @Slf4j
 public class SlayermusiqPlugin extends Plugin
 {

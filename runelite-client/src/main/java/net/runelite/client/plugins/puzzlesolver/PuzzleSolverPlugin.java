@@ -29,8 +29,12 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Arrays;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -65,6 +69,7 @@ import net.runelite.client.util.Text;
 	tags = {"clues", "scrolls", "overlay"}
 )
 @Slf4j
+@Singleton
 public class PuzzleSolverPlugin extends Plugin
 {
 	private static final Color CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR = new Color(0, 248, 128);
@@ -78,14 +83,25 @@ public class PuzzleSolverPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private PuzzleSolverConfig config;
+
 	private LightboxState lightbox;
 	private LightboxState[] changes = new LightboxState[LightBox.COMBINATIONS_POWER];
 	private Combination lastClick;
 	private boolean lastClickInvalid;
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean displaySolution;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean displayRemainingMoves;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawDots;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
 		overlayManager.add(overlay);
 	}
 
@@ -279,5 +295,21 @@ public class PuzzleSolverPlugin extends Plugin
 				title.setText("Light box - Solution: unknown");
 			}
 		}
+	}
+
+	@Subscribe
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("puzzlesolver"))
+		{
+			updateConfig();
+		}
+	}
+
+	private void updateConfig()
+	{
+		this.displaySolution = config.displaySolution();
+		this.displayRemainingMoves = config.displayRemainingMoves();
+		this.drawDots = config.drawDots();
 	}
 }

@@ -32,6 +32,7 @@ import com.google.common.collect.ObjectArrays;
 import java.awt.Color;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -58,6 +59,7 @@ import net.runelite.client.util.Text;
 	name = "Friend Notes",
 	description = "Store notes about your friends"
 )
+@Singleton
 public class FriendNotesPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "friendNotes";

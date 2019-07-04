@@ -33,6 +33,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
@@ -51,6 +52,7 @@ import net.runelite.client.util.ColorUtil;
 	tags = {"timestamp"},
 	enabledByDefault = false
 )
+@Singleton
 public class TimestampPlugin extends Plugin
 {
 	@Inject

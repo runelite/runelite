@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -36,19 +37,18 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
+@Singleton
 class AttackStylesOverlay extends Overlay
 {
 	private final AttackStylesPlugin plugin;
-	private final AttackStylesConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
+	private AttackStylesOverlay(final AttackStylesPlugin plugin)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		this.plugin = plugin;
-		this.config = config;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Attack style overlay"));
 	}
 
@@ -58,7 +58,7 @@ class AttackStylesOverlay extends Overlay
 		panelComponent.getChildren().clear();
 		boolean warnedSkillSelected = plugin.isWarnedSkillSelected();
 
-		if (warnedSkillSelected || config.alwaysShowStyle())
+		if (warnedSkillSelected || plugin.isAlwaysShowStyle())
 		{
 			final String attackStyleString = plugin.getAttackStyle().getName();
 

@@ -34,6 +34,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -55,6 +56,7 @@ import net.runelite.client.ui.components.FlatTextField;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ImageUtil;
 
+@Singleton
 class ScreenMarkerPanel extends JPanel
 {
 	private static final int DEFAULT_FILL_OPACITY = 75;
@@ -144,7 +146,7 @@ class ScreenMarkerPanel extends JPanel
 		DELETE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(deleteImg, -100));
 	}
 
-	ScreenMarkerPanel(ScreenMarkerPlugin plugin, ScreenMarkerOverlay marker)
+	ScreenMarkerPanel(final ScreenMarkerPlugin plugin, final ScreenMarkerOverlay marker)
 	{
 		this.plugin = plugin;
 		this.marker = marker;

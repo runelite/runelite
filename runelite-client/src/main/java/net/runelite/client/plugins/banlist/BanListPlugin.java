@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
@@ -67,7 +68,7 @@ import okhttp3.Response;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 @Slf4j
 public class BanListPlugin extends Plugin
 {
@@ -94,9 +95,16 @@ public class BanListPlugin extends Plugin
 		return configManager.getConfig(BanListConfig.class);
 	}
 
+	// save config values
+	private boolean enableWDR;
+	private boolean enableRuneWatch;
+	private boolean highlightInClan;
+	private boolean highlightInTrade;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
 		manualBans.addAll(Text.fromCSV(config.getBannedPlayers()));
 		fetchFromWebsites();
 	}
@@ -128,6 +136,14 @@ public class BanListPlugin extends Plugin
 		}
 	}
 
+	public void updateConfig()
+	{
+		this.enableWDR = config.enableWDR();
+		this.enableRuneWatch = config.enableRuneWatch();
+		this.highlightInClan = config.highlightInClan();
+		this.highlightInTrade = config.highlightInTrade();
+	}
+
 	/**
 	 * Event to keep making sure player names are highlighted red in clan chat, since the red name goes away frequently
 	 */
@@ -138,7 +154,7 @@ public class BanListPlugin extends Plugin
 			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
 			|| client.getViewportWidget() == null
 			|| client.getWidget(WidgetInfo.CLAN_CHAT) == null
-			|| !config.highlightInClan())
+			|| !this.highlightInClan)
 		{
 			return;
 		}
@@ -163,7 +179,7 @@ public class BanListPlugin extends Plugin
 		if (scamList != null)
 		{
 			sendWarning(Text.standardize(member.getUsername()), scamList);
-			if (config.highlightInClan())
+			if (this.highlightInClan)
 			{
 				highlightRedInCC();
 			}
@@ -172,7 +188,7 @@ public class BanListPlugin extends Plugin
 		if (toxicList != null)
 		{
 			sendWarning(Text.standardize(member.getUsername()), toxicList);
-			if (config.highlightInClan())
+			if (this.highlightInClan)
 			{
 				highlightRedInCC();
 			}
@@ -185,7 +201,7 @@ public class BanListPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (config.highlightInTrade())
+		if (this.highlightInTrade)
 		{
 			if (widgetLoaded.getGroupId() == 335)
 			{ //if trading window was loaded
@@ -211,7 +227,7 @@ public class BanListPlugin extends Plugin
 	 */
 	private ListType checkScamList(String nameToBeChecked)
 	{
-		if (wdrScamArrayList.size() > 0 && config.enableWDR())
+		if (wdrScamArrayList.size() > 0 && this.enableWDR)
 		{
 			if (wdrScamArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
 			{
@@ -219,7 +235,7 @@ public class BanListPlugin extends Plugin
 			}
 		}
 
-		if (runeWatchArrayList.size() > 0 && config.enableRuneWatch())
+		if (runeWatchArrayList.size() > 0 && this.enableRuneWatch)
 		{
 			if (runeWatchArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
 			{
@@ -241,7 +257,7 @@ public class BanListPlugin extends Plugin
 	private ListType checkToxicList(String nameToBeChecked)
 	{
 
-		if (wdrToxicArrayList.size() > 0 && config.enableWDR())
+		if (wdrToxicArrayList.size() > 0 && this.enableWDR)
 		{
 			if (wdrToxicArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
 			{

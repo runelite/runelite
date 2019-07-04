@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.collect.ImmutableMap;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -46,7 +47,7 @@ import java.awt.Stroke;
 import java.awt.BasicStroke;
 import java.util.Map;
 
-
+@Singleton
 class AboveSceneOverlay extends Overlay
 {
 	private static final int HEALTH_BAR_HEIGHT = 20;
@@ -62,18 +63,16 @@ class AboveSceneOverlay extends Overlay
 
 	private final Client client;
 	private final BarbarianAssaultPlugin game;
-	private final BarbarianAssaultConfig config;
 
 
 	@Inject
-	private AboveSceneOverlay(Client client, BarbarianAssaultPlugin game, BarbarianAssaultConfig config)
+	private AboveSceneOverlay(final Client client, final BarbarianAssaultPlugin game)
 	{
 		super(game);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.game = game;
-		this.config = config;
 	}
 
 	@Override
@@ -88,11 +87,11 @@ class AboveSceneOverlay extends Overlay
 		{
 
 			case HEALER:
-				if (config.showTeammateHealthbars())
+				if (game.isShowTeammateHealthbars())
 				{
 					renderHealthBars(graphics);
 				}
-				if (config.healerCodes())
+				if (game.isHealerCodes())
 				{
 					renderHealerCodes(graphics);
 				}
@@ -100,7 +99,7 @@ class AboveSceneOverlay extends Overlay
 
 
 			case COLLECTOR:
-				if (config.highlightCollectorEggs())
+				if (game.isHighlightCollectorEggs())
 				{
 					renderEggs(graphics);
 				}

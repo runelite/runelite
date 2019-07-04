@@ -35,10 +35,10 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -56,7 +56,6 @@ import org.apache.commons.lang3.RandomUtils;
 		type = PluginType.SKILLING,
 		enabledByDefault = false
 )
-
 @Singleton
 @Slf4j
 public class BlackjackPlugin extends Plugin
@@ -68,10 +67,9 @@ public class BlackjackPlugin extends Plugin
 	@Inject
 	private Client client;
 	@Inject
-	private MenuManager menuManager;
-	@Inject
 	private BlackjackConfig config;
 
+	private boolean pickpocketOnAggro;
 
 	@Provides
 	BlackjackConfig getConfig(ConfigManager configManager)
@@ -79,6 +77,20 @@ public class BlackjackPlugin extends Plugin
 		return configManager.getConfig(BlackjackConfig.class);
 	}
 
+	@Override
+	protected void startUp() throws Exception
+	{
+		this.pickpocketOnAggro = config.pickpocketOnAggro();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("blackjack"))
+		{
+			this.pickpocketOnAggro = config.pickpocketOnAggro();
+		}
+	}
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
@@ -107,7 +119,7 @@ public class BlackjackPlugin extends Plugin
 	{
 		if (event.getType() == ChatMessageType.SPAM)
 		{
-			if (event.getMessage().equals(SUCCESS_BLACKJACK) ^ (event.getMessage().equals(FAILED_BLACKJACK) && config.pickpocketOnAggro()))
+			if (event.getMessage().equals(SUCCESS_BLACKJACK) ^ (event.getMessage().equals(FAILED_BLACKJACK) && this.pickpocketOnAggro))
 			{
 				nextKnockOutTick = client.getTickCount() + RandomUtils.nextInt(3, 4);
 			}

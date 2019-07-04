@@ -27,12 +27,14 @@ package net.runelite.client.plugins.hydra;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+@Singleton
 public class BabyHydraIndicatorOverlay extends Overlay
 {
 	private final BabyHydraPlugin plugin;
@@ -40,7 +42,7 @@ public class BabyHydraIndicatorOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private BabyHydraIndicatorOverlay(BabyHydraPlugin plugin)
+	private BabyHydraIndicatorOverlay(final BabyHydraPlugin plugin)
 	{
 		this.plugin = plugin;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);

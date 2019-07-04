@@ -27,12 +27,13 @@ package net.runelite.client.plugins.skillcalculator.banked.beans;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.skillcalculator.banked.CriticalItem;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum Activity
 {
 	/**
@@ -350,7 +351,7 @@ public enum Activity
 		this.preventLinked = false;
 	}
 
-	Activity(int Icon, String name, Skill skill, int level, double xp, CriticalItem criticalItem, ActivitySecondaries secondaries, boolean preventLinked)
+	Activity(final int Icon, final String name, final Skill skill, final int level, final double xp, final CriticalItem criticalItem, final ActivitySecondaries secondaries, final boolean preventLinked)
 	{
 		this.icon = Icon;
 		this.name = name;
@@ -368,7 +369,7 @@ public enum Activity
 		Map<CriticalItem, ArrayList<Activity>> map = new HashMap<>();
 		for (Activity item : values())
 		{
-			map.computeIfAbsent(item.getCriticalItem(), e -> new ArrayList<Activity>()).add(item);
+			map.computeIfAbsent(item.getCriticalItem(), e -> new ArrayList<>()).add(item);
 		}
 
 		return map;

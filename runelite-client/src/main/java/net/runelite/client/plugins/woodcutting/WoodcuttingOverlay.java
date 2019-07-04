@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
@@ -41,22 +42,21 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+@Singleton
 class WoodcuttingOverlay extends Overlay
 {
 	private final Client client;
 	private final WoodcuttingPlugin plugin;
-	private final WoodcuttingConfig config;
 	private final XpTrackerService xpTrackerService;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config, XpTrackerService xpTrackerService)
+	private WoodcuttingOverlay(final Client client, final WoodcuttingPlugin plugin, final XpTrackerService xpTrackerService)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 		this.xpTrackerService = xpTrackerService;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Woodcutting overlay"));
 	}
@@ -64,7 +64,7 @@ class WoodcuttingOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showWoodcuttingStats())
+		if (!plugin.isShowWoodcuttingStats())
 		{
 			return null;
 		}

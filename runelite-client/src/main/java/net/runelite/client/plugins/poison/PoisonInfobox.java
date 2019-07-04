@@ -35,7 +35,7 @@ class PoisonInfobox extends Timer
 {
 	private final PoisonPlugin plugin;
 
-	PoisonInfobox(int duration, BufferedImage image, PoisonPlugin plugin)
+	PoisonInfobox(final int duration, final BufferedImage image, final PoisonPlugin plugin)
 	{
 		super(duration, ChronoUnit.MILLIS, image, plugin);
 		this.plugin = plugin;

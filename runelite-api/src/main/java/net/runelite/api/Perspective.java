@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import java.awt.geom.Path2D;
 import static net.runelite.api.Constants.TILE_FLAG_BRIDGE;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -549,7 +550,7 @@ public class Perspective
 	)
 	{
 		int radius = 5;
-		Area geometry = new Area();
+		Path2D.Double geometry = new Path2D.Double();
 
 		final int tileHeight = getTileHeight(client, point, client.getPlane());
 
@@ -607,10 +608,10 @@ public class Perspective
 				continue;
 			}
 
-			geometry.add(new Area(clickableRect));
+			geometry.append(clickableRect, false);
 		}
 
-		return geometry;
+		return new Area(geometry);
 	}
 
 	private static Area getAABB(

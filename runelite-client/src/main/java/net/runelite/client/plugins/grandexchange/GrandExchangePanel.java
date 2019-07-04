@@ -30,8 +30,10 @@ import java.awt.BorderLayout;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
@@ -40,6 +42,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
+@Singleton
 class GrandExchangePanel extends PluginPanel
 {
 
@@ -49,9 +52,9 @@ class GrandExchangePanel extends PluginPanel
 	private final MaterialTabGroup tabGroup = new MaterialTabGroup(display);
 	private final MaterialTab searchTab;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private GrandExchangeSearchPanel searchPanel;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private GrandExchangeOffersPanel offersPanel;
 
 	@Inject

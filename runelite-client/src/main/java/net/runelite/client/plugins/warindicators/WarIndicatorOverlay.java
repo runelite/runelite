@@ -43,12 +43,12 @@ import org.apache.commons.lang3.ArrayUtils;
 public class WarIndicatorOverlay extends Overlay
 {
 	private final WarIndicatorService warIndicatorService;
-	private final WarIndicatorConfig config;
+	private final WarIndicatorPlugin plugin;
 
 	@Inject
-	private WarIndicatorOverlay(WarIndicatorConfig config, WarIndicatorService warIndicatorService)
+	private WarIndicatorOverlay(final WarIndicatorPlugin plugin, final WarIndicatorService warIndicatorService)
 	{
-		this.config = config;
+		this.plugin = plugin;
 		this.warIndicatorService = warIndicatorService;
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -64,16 +64,16 @@ public class WarIndicatorOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		if (!config.highlightSnipes() && !config.highLightCallers())
+		if (!plugin.isHighlightSnipes() && !plugin.isHighLightCallers())
 		{
 			return;
 		}
 
 		Polygon poly = actor.getCanvasTilePoly();
-		String[] callers = config.getActiveCallers().split(", ");
-		String[] targets = config.getTargetedSnipes().split(", ");
+		String[] callers = plugin.getGetActiveCallers().split(", ");
+		String[] targets = plugin.getGetTargetedSnipes().split(", ");
 
-		if (config.callerTile() && ArrayUtils.contains(callers, actor.getName()))
+		if (plugin.isCallerTile() && ArrayUtils.contains(callers, actor.getName()))
 		{
 			if (poly != null)
 			{
@@ -81,7 +81,7 @@ public class WarIndicatorOverlay extends Overlay
 			}
 		}
 
-		if (config.snipeTile() && ArrayUtils.contains(targets, actor.getName()))
+		if (plugin.isSnipeTile() && ArrayUtils.contains(targets, actor.getName()))
 		{
 			if (poly != null)
 			{

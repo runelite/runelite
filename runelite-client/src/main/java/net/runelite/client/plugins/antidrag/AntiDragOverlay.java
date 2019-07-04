@@ -42,13 +42,13 @@ public class AntiDragOverlay extends Overlay
 {
 	private static final int RADIUS = 20;
 
-	private Client client;
-	private AntiDragConfig config;
+	private final Client client;
+	private final AntiDragPlugin plugin;
 
 	@Inject
-	private AntiDragOverlay(Client client, AntiDragConfig config)
+	private AntiDragOverlay(final Client client, final AntiDragPlugin plugin)
 	{
-		this.config = config;
+		this.plugin = plugin;
 		this.client = client;
 		setPosition(OverlayPosition.TOOLTIP);
 		setPriority(OverlayPriority.HIGHEST);
@@ -58,7 +58,7 @@ public class AntiDragOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D g)
 	{
-		final Color color = config.color();
+		final Color color = plugin.getColor();
 		g.setColor(color);
 
 		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();

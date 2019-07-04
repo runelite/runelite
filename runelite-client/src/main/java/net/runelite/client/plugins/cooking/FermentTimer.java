@@ -28,9 +28,11 @@ import java.awt.Color;
 import java.awt.Image;
 import java.time.Duration;
 import java.time.Instant;
+import javax.inject.Singleton;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 
+@Singleton
 final class FermentTimer extends InfoBox
 {
 	private static final Duration FERMENT_TIME = Duration.ofMillis(13_800);

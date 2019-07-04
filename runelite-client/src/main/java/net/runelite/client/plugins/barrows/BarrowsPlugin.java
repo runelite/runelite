@@ -27,10 +27,12 @@ package net.runelite.client.plugins.barrows;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -77,6 +79,7 @@ import net.runelite.client.util.StackFormatter;
 	description = "Show helpful information for the Barrows minigame",
 	tags = {"combat", "minigame", "minimap", "bosses", "pve", "pvm"}
 )
+@Singleton
 public class BarrowsPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
@@ -144,9 +147,23 @@ public class BarrowsPlugin extends Plugin
 		return configManager.getConfig(BarrowsConfig.class);
 	}
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showMinimap;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showBrotherLoc;
+	private boolean showChestValue;
+	@Getter(AccessLevel.PACKAGE)
+	private Color brotherLocColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color deadBrotherLocColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showPuzzleAnswer;
+	private boolean showPrayerDrainTimer;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
 		overlayManager.add(barrowsOverlay);
 		overlayManager.add(brotherOverlay);
 	}
@@ -179,10 +196,26 @@ public class BarrowsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("barrows") && !config.showPrayerDrainTimer())
+		if (event.getGroup().equals("barrows"))
 		{
-			stopPrayerDrainTimer();
+			updateConfig();
+
+			if (!this.showPrayerDrainTimer)
+			{
+				stopPrayerDrainTimer();
+			}
 		}
+	}
+
+	public void updateConfig()
+	{
+		this.showMinimap = config.showMinimap();
+		this.showBrotherLoc = config.showBrotherLoc();
+		this.showChestValue = config.showChestValue();
+		this.brotherLocColor = config.brotherLocColor();
+		this.deadBrotherLocColor = config.deadBrotherLocColor();
+		this.showPuzzleAnswer = config.showPuzzleAnswer();
+		this.showPrayerDrainTimer = config.showPrayerDrainTimer();
 	}
 
 	@Subscribe
@@ -276,10 +309,14 @@ public class BarrowsPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
+		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && this.showChestValue)
 		{
 			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
-			Item[] items = barrowsRewardContainer.getItems();
+			Item[] items = new Item[0];
+			if (barrowsRewardContainer != null)
+			{
+				items = barrowsRewardContainer.getItems();
+			}
 			long chestPrice = 0;
 
 			for (Item item : items)
@@ -320,7 +357,7 @@ public class BarrowsPlugin extends Plugin
 
 	private void startPrayerDrainTimer()
 	{
-		if (config.showPrayerDrainTimer())
+		if (this.showPrayerDrainTimer)
 		{
 			final LoopTimer loopTimer = new LoopTimer(
 				PRAYER_DRAIN_INTERVAL_MS,

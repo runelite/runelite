@@ -10,17 +10,14 @@ public class Sudoku
 
 	private int[][] board;
 	public static final int EMPTY = 0;
-	public static final int SIZE = 9;
+	private static final int SIZE = 9;
 
-	Sudoku(int[][] board)
+	Sudoku(final int[][] board)
 	{
 		this.board = new int[SIZE][SIZE];
 		for (int i = 0; i < SIZE; i++)
 		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				this.board[i][j] = board[i][j];
-			}
+			System.arraycopy(board[i], 0, this.board[i], 0, SIZE);
 		}
 	}
 
@@ -74,7 +71,7 @@ public class Sudoku
 		return !isInRow(row, number) && !isInCol(col, number) && !isInBox(row, col, number);
 	}
 
-	public boolean solve()
+	boolean solve()
 	{
 		for (int row = 0; row < SIZE; row++)
 		{
@@ -116,7 +113,7 @@ public class Sudoku
 		}
 	}
 
-	public int[][] getBoard()
+	int[][] getBoard()
 	{
 		return board;
 	}

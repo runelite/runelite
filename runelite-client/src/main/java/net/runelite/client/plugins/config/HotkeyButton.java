@@ -26,17 +26,20 @@ package net.runelite.client.plugins.config;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.inject.Singleton;
 import javax.swing.JButton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 
+@Singleton
 public class HotkeyButton extends JButton
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Keybind value;
 
-	public HotkeyButton(Keybind value, boolean modifierless)
+	HotkeyButton(Keybind value, boolean modifierless)
 	{
 		setValue(value);
 		addActionListener(e ->

@@ -28,6 +28,7 @@ package net.runelite.client.plugins.inventorysetups;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -35,8 +36,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -70,6 +74,7 @@ import net.runelite.client.util.ImageUtil;
 )
 
 @Slf4j
+@Singleton
 public class InventorySetupPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "inventorysetups";
@@ -109,9 +114,23 @@ public class InventorySetupPlugin extends Plugin
 
 	private boolean highlightDifference;
 
+	private boolean getHighlightDifferences;
+	@Getter(AccessLevel.PUBLIC)
+	private Color getHighlightColor;
+	@Getter(AccessLevel.PUBLIC)
+	private boolean getStackDifference;
+	@Getter(AccessLevel.PUBLIC)
+	private boolean getVariationDifference;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean getBankHighlight;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getBankHighlightColor;
+
 	@Override
 	public void startUp()
 	{
+		updateConfigOptions();
+
 		overlayManager.add(overlay);
 
 		panel = new InventorySetupPluginPanel(this, itemManager);
@@ -242,8 +261,9 @@ public class InventorySetupPlugin extends Plugin
 	{
 		if (event.getGroup().equals(CONFIG_GROUP))
 		{
+			updateConfigOptions();
 			// only allow highlighting if the config is enabled and the player is logged in
-			highlightDifference = config.getHighlightDifferences() && client.getGameState() == GameState.LOGGED_IN;
+			highlightDifference = this.getHighlightDifferences && client.getGameState() == GameState.LOGGED_IN;
 			final String setupName = panel.getSelectedInventorySetup();
 			if (highlightDifference && !setupName.isEmpty())
 			{
@@ -338,7 +358,7 @@ public class InventorySetupPlugin extends Plugin
 
 			// set highlighting
 			case LOGGED_IN:
-				highlightDifference = config.getHighlightDifferences();
+				highlightDifference = this.getHighlightDifferences;
 				break;
 
 			default:
@@ -432,5 +452,15 @@ public class InventorySetupPlugin extends Plugin
 			.filter(Objects::nonNull)
 			.filter(id -> id != -1)
 			.toArray();
+	}
+
+	private void updateConfigOptions()
+	{
+		this.getHighlightDifferences = config.getHighlightDifferences();
+		this.getHighlightColor = config.getHighlightColor();
+		this.getStackDifference = config.getHighlightDifferences();
+		this.getVariationDifference = config.getVariationDifference();
+		this.getBankHighlight = config.getBankHighlight();
+		this.getBankHighlightColor = config.getBankHighlightColor();
 	}
 }

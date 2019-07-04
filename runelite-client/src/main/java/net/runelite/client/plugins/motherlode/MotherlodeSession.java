@@ -133,7 +133,7 @@ public class MotherlodeSession
 		}
 	}
 
-	public void incrementPayDirtMined()
+	void incrementPayDirtMined()
 	{
 		Instant now = Instant.now();
 
@@ -153,33 +153,28 @@ public class MotherlodeSession
 		}
 	}
 
-	public void resetRecent()
+	void resetRecent()
 	{
 		recentPayDirtMined = null;
 		recentMined = 0;
 	}
 
-	public int getPerHour()
+	int getPerHour()
 	{
 		return perHour;
 	}
 
-	public Instant getLastPayDirtMined()
+	Instant getLastPayDirtMined()
 	{
 		return lastPayDirtMined;
 	}
 
-	public int getTotalMined()
+	int getTotalMined()
 	{
 		return totalMined;
 	}
 
-	public Instant getRecentPayDirtMined()
-	{
-		return recentPayDirtMined;
-	}
-
-	public int getRecentMined()
+	int getRecentMined()
 	{
 		return recentMined;
 	}

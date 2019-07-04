@@ -8,7 +8,6 @@ import net.runelite.client.config.ConfigItem;
 
 public interface BanListConfig extends Config
 {
-
 	@ConfigItem(
 			keyName = "bannedPlayers",
 			name = "Manual Scammer List",

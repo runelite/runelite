@@ -27,6 +27,7 @@ package net.runelite.client.plugins.tobdamagecount;
 
 import java.text.DecimalFormat;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -59,7 +60,7 @@ import net.runelite.client.plugins.PluginType;
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
-
+@Singleton
 public class DamageCounterPlugin extends Plugin
 {
 	private int currentWorld = -1;
@@ -329,10 +330,10 @@ public class DamageCounterPlugin extends Plugin
 		String DeathMessage = "You have died! You did " + DAMAGEFORMAT.format(DamageCount) + " damage to " +
 			BossName + "!";
 		String MessageTaken = "You have taken " + DAMAGEFORMAT.format(DamageTaken) + " damage from this fight!";
-		for (int i = 0; i < ToB_Region.length; i++)
+		for (int value : ToB_Region)
 		{
 			if (WorldPoint.fromLocalInstance(client,
-				client.getLocalPlayer().getLocalLocation()).getRegionID() == ToB_Region[i])
+				client.getLocalPlayer().getLocalLocation()).getRegionID() == value)
 			{
 				sendChatMessage(DeathMessage);
 				sendChatMessage(MessageTaken);

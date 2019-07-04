@@ -31,6 +31,7 @@ import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Singleton;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -46,7 +47,7 @@ import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
 
-
+@Singleton
 class SuppliesTrackerPanel extends PluginPanel
 {
 	private static final String HTML_LABEL_TEMPLATE =

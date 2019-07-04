@@ -24,26 +24,27 @@
  */
 package net.runelite.client.plugins.raids.solver;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Room
 {
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final int position;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final char symbol;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private Room next;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private Room previous;
 
-	Room(int position, char symbol)
+	Room(final int position, final char symbol)
 	{
 		this.position = position;
 		this.symbol = symbol;

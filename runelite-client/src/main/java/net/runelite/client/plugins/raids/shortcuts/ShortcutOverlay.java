@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
@@ -17,20 +18,19 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
+@Singleton
 public class ShortcutOverlay extends Overlay
 {
 	private final Client client;
-	private final ShortcutConfig config;
 	private final ShortcutPlugin plugin;
 	private final BufferedImage treeIcon;
 	private final BufferedImage strengthIcon;
 	private final BufferedImage miningIcon;
 
 	@Inject
-	ShortcutOverlay(Client client, ShortcutConfig config, ShortcutPlugin plugin, SkillIconManager iconManager)
+	ShortcutOverlay(final Client client, final ShortcutPlugin plugin, final SkillIconManager iconManager)
 	{
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
@@ -76,7 +76,7 @@ public class ShortcutOverlay extends Overlay
 						default:
 							name = "null";
 					}
-					if (config.highlightShortcuts())
+					if (plugin.isHighlightShortcuts())
 					{
 						if (name.equals("Tree"))
 						{

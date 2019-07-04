@@ -46,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -82,11 +83,14 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.OVERLAY;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
+import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
+import net.runelite.client.plugins.grounditems.config.TimerDisplayMode;
 import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
@@ -98,6 +102,7 @@ import net.runelite.client.util.Text;
 	description = "Highlight ground items and/or show price information",
 	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"}
 )
+@Singleton
 public class GroundItemsPlugin extends Plugin
 {
 	// ItemID for coins
@@ -175,11 +180,62 @@ public class GroundItemsPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	public static final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
+
+	private Color defaultColor;
+	private Color highlightedColor;
+	private Color hiddenColor;
+	private String getHighlightItems;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showHighlightedOnly;
+	private ValueCalculationMode valueCalculationMode;
+	private int getHighlightOverValue;
+	private boolean notifyHighlightedDrops;
+	private boolean dontHideUntradeables;
+	private String getHiddenItems;
+	private boolean recolorMenuHiddenItems;
+	private int getHideUnderValue;
+	private boolean removeIgnored;
+	private boolean rightClickHidden;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightTiles;
+	@Getter(AccessLevel.PACKAGE)
+	private ItemHighlightMode itemHighlightMode;
+	private MenuHighlightMode menuHighlightMode;
+	private Color lowValueColor;
+	private int lowValuePrice;
+	private boolean notifyLowValueDrops;
+	private Color mediumValueColor;
+	private int mediumValuePrice;
+	private boolean notifyMediumValueDrops;
+	private Color highValueColor;
+	private int highValuePrice;
+	private boolean notifyHighValueDrops;
+	private Color insaneValueColor;
+	private int insaneValuePrice;
+	private boolean notifyInsaneValueDrops;
+	@Getter(AccessLevel.PACKAGE)
+	private PriceDisplayMode priceDisplayMode;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean sortByGEPrice;
+	private boolean showMenuItemQuantities;
+	private boolean collapseEntries;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean onlyShowLoot;
+	@Getter(AccessLevel.PACKAGE)
+	private TimerDisplayMode showGroundItemDuration;
+	@Getter(AccessLevel.PACKAGE)
+	private int doubleTapDelay;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean toggleOutline;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showTimer;
+	@Getter(AccessLevel.PACKAGE)
+	private Color bordercolor;
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -190,6 +246,7 @@ public class GroundItemsPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
 		overlayManager.add(overlay);
 		reset();
 		mouseManager.registerMouseListener(inputListener);
@@ -226,6 +283,7 @@ public class GroundItemsPlugin extends Plugin
 	{
 		if (event.getGroup().equals("grounditems"))
 		{
+			updateConfig();
 			reset();
 		}
 	}
@@ -254,12 +312,12 @@ public class GroundItemsPlugin extends Plugin
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 		}
 
-		boolean shouldNotify = !config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
+		boolean shouldNotify = !this.onlyShowLoot && this.highlightedColor.equals(getHighlighted(
 			groundItem.getName(),
 			groundItem.getGePrice(),
 			groundItem.getHaPrice()));
 
-		if (config.notifyHighlightedDrops() && shouldNotify)
+		if (this.notifyHighlightedDrops && shouldNotify)
 		{
 			notifyHighlightedItem(groundItem);
 		}
@@ -340,23 +398,23 @@ public class GroundItemsPlugin extends Plugin
 			Color itemColor = getHighlighted(composition.getName(), itemManager.getItemPrice(is.getId()) * is.getQuantity(), itemManager.getAlchValue(is.getId()) * is.getQuantity());
 			if (itemColor != null)
 			{
-				if (config.notifyHighlightedDrops() && itemColor.equals(config.highlightedColor()))
+				if (this.notifyHighlightedDrops && itemColor.equals(this.highlightedColor))
 				{
 					sendLootNotification(composition.getName(), "highlighted");
 				}
-				else if (config.notifyLowValueDrops() && itemColor.equals(config.lowValueColor()))
+				else if (this.notifyLowValueDrops && itemColor.equals(this.lowValueColor))
 				{
 					sendLootNotification(composition.getName(), "low value");
 				}
-				else if (config.notifyMediumValueDrops() && itemColor.equals(config.mediumValueColor()))
+				else if (this.notifyMediumValueDrops && itemColor.equals(this.mediumValueColor))
 				{
 					sendLootNotification(composition.getName(), "medium value");
 				}
-				else if (config.notifyHighValueDrops() && itemColor.equals(config.highValueColor()))
+				else if (this.notifyHighValueDrops && itemColor.equals(this.highValueColor))
 				{
 					sendLootNotification(composition.getName(), "high value");
 				}
-				else if (config.notifyInsaneValueDrops() && itemColor.equals(config.insaneValueColor()))
+				else if (this.notifyInsaneValueDrops && itemColor.equals(this.insaneValueColor))
 				{
 					sendLootNotification(composition.getName(), "insane value");
 				}
@@ -382,7 +440,7 @@ public class GroundItemsPlugin extends Plugin
 		{
 			MenuEntry menuEntry = menuEntries[i];
 
-			if (config.collapseEntries())
+			if (this.collapseEntries)
 			{
 				int menuType = menuEntry.getType();
 				if (menuType == FIRST_OPTION || menuType == SECOND_OPTION || menuType == THIRD_OPTION
@@ -427,7 +485,7 @@ public class GroundItemsPlugin extends Plugin
 					final int bQuantity = getCollapsedItemQuantity(bId, bEntry.getTarget());
 
 					// only put items below walk if the config is set for it
-					if (config.rightClickHidden())
+					if (this.rightClickHidden)
 					{
 						if (aHidden && bMenuType == WALK)
 							return -1;
@@ -442,8 +500,8 @@ public class GroundItemsPlugin extends Plugin
 						return 1;
 
 
-					// RS sorts by alch price by default, so no need to sort if config not set
-					if (config.sortByGEPrice())
+					// RS sorts by alch price by private, so no need to sort if config not set
+					if (this.sortByGEPrice)
 						return (getGePriceFromItemId(aId) * aQuantity) - (getGePriceFromItemId(bId) * bQuantity);
 				}
 			}
@@ -455,7 +513,7 @@ public class GroundItemsPlugin extends Plugin
 		{
 			final MenuEntry entry = e.getEntry();
 
-			if (config.collapseEntries())
+			if (this.collapseEntries)
 			{
 				final int count = e.getCount();
 				if (count > 1)
@@ -480,12 +538,12 @@ public class GroundItemsPlugin extends Plugin
 				groundItem.setMine(true);
 				groundItem.setTicks(200);
 
-				boolean shouldNotify = config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
+				boolean shouldNotify = this.onlyShowLoot && this.highlightedColor.equals(getHighlighted(
 					groundItem.getName(),
 					groundItem.getGePrice(),
 					groundItem.getHaPrice()));
 
-				if (config.notifyHighlightedDrops() && shouldNotify)
+				if (this.notifyHighlightedDrops && shouldNotify)
 				{
 					notifyHighlightedItem(groundItem);
 				}
@@ -555,10 +613,10 @@ public class GroundItemsPlugin extends Plugin
 	private void reset()
 	{
 		// gets the hidden items from the text box in the config
-		hiddenItemList = Text.fromCSV(config.getHiddenItems());
+		hiddenItemList = Text.fromCSV(this.getHiddenItems);
 
 		// gets the highlighted items from the text box in the config
-		highlightedItemsList = Text.fromCSV(config.getHighlightItems());
+		highlightedItemsList = Text.fromCSV(this.getHighlightItems);
 
 		highlightedItems = CacheBuilder.newBuilder()
 			.maximumSize(512L)
@@ -573,36 +631,36 @@ public class GroundItemsPlugin extends Plugin
 		// Cache colors
 		priceChecks.clear();
 
-		if (config.insaneValuePrice() > 0)
+		if (this.insaneValuePrice > 0)
 		{
-			priceChecks.put(config.insaneValuePrice(), config.insaneValueColor());
+			priceChecks.put(this.insaneValuePrice, this.insaneValueColor);
 		}
 
-		if (config.highValuePrice() > 0)
+		if (this.highValuePrice > 0)
 		{
-			priceChecks.put(config.highValuePrice(), config.highValueColor());
+			priceChecks.put(this.highValuePrice, this.highValueColor);
 		}
 
-		if (config.mediumValuePrice() > 0)
+		if (this.mediumValuePrice > 0)
 		{
-			priceChecks.put(config.mediumValuePrice(), config.mediumValueColor());
+			priceChecks.put(this.mediumValuePrice, this.mediumValueColor);
 		}
 
-		if (config.lowValuePrice() > 0)
+		if (this.lowValuePrice > 0)
 		{
-			priceChecks.put(config.lowValuePrice(), config.lowValueColor());
+			priceChecks.put(this.lowValuePrice, this.lowValueColor);
 		}
 
-		if (config.getHighlightOverValue() > 0)
+		if (this.getHighlightOverValue > 0)
 		{
-			priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
+			priceChecks.put(this.getHighlightOverValue, this.highlightedColor);
 		}
 	}
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (config.itemHighlightMode() != OVERLAY
+		if (this.itemHighlightMode != OVERLAY
 			&& event.getOption().equals("Take")
 			&& event.getIdentifier() == THIRD_OPTION)
 		{
@@ -641,11 +699,11 @@ public class GroundItemsPlugin extends Plugin
 			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
 			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
 			final Color color = getItemColor(highlighted, hidden);
-			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
+			final boolean canBeRecolored = highlighted != null || (hidden != null && this.recolorMenuHiddenItems);
 
-			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
+			if (color != null && canBeRecolored && !color.equals(this.defaultColor))
 			{
-				final MenuHighlightMode mode = config.menuHighlightMode();
+				final MenuHighlightMode mode = this.menuHighlightMode;
 
 				if (mode == BOTH || mode == OPTION)
 				{
@@ -659,12 +717,12 @@ public class GroundItemsPlugin extends Plugin
 				}
 			}
 
-			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
+			if (this.showMenuItemQuantities && itemComposition.isStackable() && quantity > 1)
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
 			}
 
-			if (config.removeIgnored() && event.getOption().equals("Take") && hiddenItemList.contains(Text.removeTags(event.getTarget())))
+			if (this.removeIgnored && event.getOption().equals("Take") && hiddenItemList.contains(Text.removeTags(event.getTarget())))
 			{
 				menuEntries = removeOption(event.getOption(), event.getTarget());
 			}
@@ -718,14 +776,16 @@ public class GroundItemsPlugin extends Plugin
 		}
 
 		config.setHiddenItems(Text.toCSV(hiddenItemSet));
+		this.getHiddenItems = Text.toCSV(hiddenItemSet);
 		config.setHighlightedItem(Text.toCSV(highlightedItemSet));
+		this.getHighlightItems = Text.toCSV(highlightedItemSet);
 	}
 
 	Color getHighlighted(String item, int gePrice, int haPrice)
 	{
 		if (TRUE.equals(highlightedItems.getUnchecked(item)))
 		{
-			return config.highlightedColor();
+			return this.highlightedColor;
 		}
 
 		// Explicit hide takes priority over implicit highlight
@@ -734,7 +794,7 @@ public class GroundItemsPlugin extends Plugin
 			return null;
 		}
 
-		ValueCalculationMode mode = config.valueCalculationMode();
+		ValueCalculationMode mode = this.valueCalculationMode;
 		for (Map.Entry<Integer, Color> entry : priceChecks.entrySet())
 		{
 			switch (mode)
@@ -767,13 +827,13 @@ public class GroundItemsPlugin extends Plugin
 	{
 		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
 		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
-		final boolean canBeHidden = gePrice > 0 || isTradeable || !config.dontHideUntradeables();
-		final boolean underGe = gePrice < config.getHideUnderValue();
-		final boolean underHa = haPrice < config.getHideUnderValue();
+		final boolean canBeHidden = gePrice > 0 || isTradeable || !this.dontHideUntradeables;
+		final boolean underGe = gePrice < this.getHideUnderValue;
+		final boolean underHa = haPrice < this.getHideUnderValue;
 
 		// Explicit highlight takes priority over implicit hide
 		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
-				? config.hiddenColor()
+				? this.hiddenColor
 				: null;
 	}
 
@@ -827,7 +887,7 @@ public class GroundItemsPlugin extends Plugin
 			return hidden;
 		}
 
-		return config.defaultColor();
+		return this.defaultColor;
 	}
 
 	@Subscribe
@@ -867,5 +927,48 @@ public class GroundItemsPlugin extends Plugin
 
 		notificationStringBuilder.append("!");
 		notifier.notify(notificationStringBuilder.toString());
+	}
+
+	private void updateConfig()
+	{
+		this.defaultColor = config.defaultColor();
+		this.highlightedColor = config.highlightedColor();
+		this.hiddenColor = config.hiddenColor();
+		this.getHighlightItems = config.getHighlightItems();
+		this.showHighlightedOnly = config.showHighlightedOnly();
+		this.valueCalculationMode = config.valueCalculationMode();
+		this.getHighlightOverValue = config.getHighlightOverValue();
+		this.notifyHighlightedDrops = config.notifyHighlightedDrops();
+		this.dontHideUntradeables = config.dontHideUntradeables();
+		this.getHiddenItems = config.getHiddenItems();
+		this.recolorMenuHiddenItems = config.recolorMenuHiddenItems();
+		this.getHideUnderValue = config.getHideUnderValue();
+		this.removeIgnored = config.removeIgnored();
+		this.rightClickHidden = config.rightClickHidden();
+		this.highlightTiles = config.highlightTiles();
+		this.itemHighlightMode = config.itemHighlightMode();
+		this.menuHighlightMode = config.menuHighlightMode();
+		this.lowValueColor = config.lowValueColor();
+		this.lowValuePrice = config.lowValuePrice();
+		this.notifyLowValueDrops = config.notifyLowValueDrops();
+		this.mediumValueColor = config.mediumValueColor();
+		this.mediumValuePrice = config.mediumValuePrice();
+		this.notifyMediumValueDrops = config.notifyMediumValueDrops();
+		this.highValueColor = config.highValueColor();
+		this.highValuePrice = config.highValuePrice();
+		this.notifyHighValueDrops = config.notifyHighValueDrops();
+		this.insaneValueColor = config.insaneValueColor();
+		this.insaneValuePrice = config.insaneValuePrice();
+		this.notifyInsaneValueDrops = config.notifyInsaneValueDrops();
+		this.priceDisplayMode = config.priceDisplayMode();
+		this.sortByGEPrice = config.sortByGEPrice();
+		this.showMenuItemQuantities = config.showMenuItemQuantities();
+		this.collapseEntries = config.collapseEntries();
+		this.onlyShowLoot = config.onlyShowLoot();
+		this.showGroundItemDuration = config.showGroundItemDuration();
+		this.doubleTapDelay = config.doubleTapDelay();
+		this.toggleOutline = config.toggleOutline();
+		this.showTimer = config.showTimer();
+		this.bordercolor = config.bordercolor();
 	}
 }

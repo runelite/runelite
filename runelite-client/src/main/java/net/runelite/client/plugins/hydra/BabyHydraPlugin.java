@@ -28,6 +28,8 @@ import com.google.inject.Provides;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -50,7 +52,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
-
+@Singleton
 public class BabyHydraPlugin extends Plugin
 {
 	@Inject
@@ -77,23 +79,30 @@ public class BabyHydraPlugin extends Plugin
 		return configManager.getConfig(BabyHydraConfig.class);
 	}
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Map<Integer, Integer> hydras = new HashMap<>();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Map<Integer, Integer> hydraattacks = new HashMap<>();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private NPC hydra;
+
+	private boolean TextIndicator;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean BoldText;
+	private boolean PrayerHelper;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		if (config.TextIndicator())
+		updateConfig();
+
+		if (this.TextIndicator)
 		{
 			overlayManager.add(hydraOverlay);
 		}
-		if (config.PrayerHelper())
+		if (this.PrayerHelper)
 		{
 			overlayManager.add(hydraPrayOverlay);
 			overlayManager.add(hydraIndicatorOverlay);
@@ -117,6 +126,8 @@ public class BabyHydraPlugin extends Plugin
 		{
 			return;
 		}
+
+		updateConfig();
 
 		if (event.getKey().equals("textindicators"))
 		{
@@ -240,5 +251,12 @@ public class BabyHydraPlugin extends Plugin
 				hydras.replace(hydra.getIndex(), currval - 1);
 			}
 		}
+	}
+
+	private void updateConfig()
+	{
+		this.TextIndicator = config.TextIndicator();
+		this.BoldText = config.BoldText();
+		this.PrayerHelper = config.PrayerHelper();
 	}
 }

@@ -24,10 +24,11 @@
  */
 package net.runelite.client.plugins.skillcalculator.banked.beans;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum ActivitySecondaries
 {
 	/**
@@ -104,7 +105,7 @@ public enum ActivitySecondaries
 	;
 	private final SecondaryItem[] items;
 
-	ActivitySecondaries(SecondaryItem... items)
+	ActivitySecondaries(final SecondaryItem... items)
 	{
 		this.items = items;
 	}

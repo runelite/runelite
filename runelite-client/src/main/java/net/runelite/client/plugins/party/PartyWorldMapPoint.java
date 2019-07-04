@@ -39,7 +39,7 @@ class PartyWorldMapPoint extends WorldMapPoint
 	private BufferedImage partyImage;
 	private PartyMember member;
 
-	PartyWorldMapPoint(WorldPoint worldPoint, PartyMember member)
+	PartyWorldMapPoint(final WorldPoint worldPoint, final PartyMember member)
 	{
 		super(worldPoint, null);
 		this.member = member;

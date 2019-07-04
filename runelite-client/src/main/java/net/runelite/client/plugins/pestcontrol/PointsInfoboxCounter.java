@@ -27,13 +27,10 @@ package net.runelite.client.plugins.pestcontrol;
 import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
-public class PointsInfoboxCounter extends Counter
+class PointsInfoboxCounter extends Counter
 {
-	private final PestControlPlugin plugin;
-
-	PointsInfoboxCounter(BufferedImage image, PestControlPlugin plugin, int count)
+	PointsInfoboxCounter(final BufferedImage image, final PestControlPlugin plugin, final int count)
 	{
 		super(image, plugin, count);
-		this.plugin = plugin;
 	}
 }

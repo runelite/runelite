@@ -8,6 +8,7 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -23,7 +24,6 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.plugins.theatre.RoomHandler;
-import net.runelite.client.plugins.theatre.TheatreConfig;
 import net.runelite.client.plugins.theatre.TheatreConstant;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
@@ -36,21 +36,21 @@ public class XarpusHandler extends RoomHandler
 	private boolean staring;
 	private int ticksUntilShoot = 8;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private NPC npc;
 
 	private long startTime = 0;
 	private boolean up = false;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private int exhumesCount;
 	private boolean xarpusFlag;
 
 	private XarpusCounter overlay = null;
 
-	public XarpusHandler(Client client, TheatrePlugin plugin, TheatreConfig config)
+	public XarpusHandler(final Client client, final TheatrePlugin plugin)
 	{
-		super(client, plugin, config);
+		super(client, plugin);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class XarpusHandler extends RoomHandler
 
 		if (overlay == null)
 		{
-			overlay = new XarpusCounter(client, plugin, config, this);
+			overlay = new XarpusCounter(plugin, this);
 			plugin.getOverlayManager().add(overlay);
 		}
 
@@ -121,7 +121,7 @@ public class XarpusHandler extends RoomHandler
 				seconds = seconds % 60;
 
 				this.ticksUntilShoot = 8;
-				if (config.extraTimers())
+				if (plugin.isExtraTimers())
 				{
 					this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'Xarpus - Recovery' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 				}
@@ -132,7 +132,7 @@ public class XarpusHandler extends RoomHandler
 			renderTextLocation(graphics, ticksLeftStr, 12, Font.BOLD, Color.WHITE, canvasPoint);
 		}
 
-		if (npc.getId() == NpcID.XARPUS_8339 && config.showXarpusHeals())
+		if (npc.getId() == NpcID.XARPUS_8339 && plugin.isShowXarpusHeals())
 		{
 			for (GroundObject o : exhumes.keySet())
 			{
@@ -263,7 +263,7 @@ public class XarpusHandler extends RoomHandler
 
 				long minutes = seconds / 60L;
 				seconds = seconds % 60;
-				if (config.extraTimers())
+				if (plugin.isExtraTimers())
 				{
 					this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'Xarpus - Acid' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 				}

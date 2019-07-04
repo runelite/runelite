@@ -32,18 +32,19 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
 public class TextComponent implements RenderableEntity
 {
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private String text;
 
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private Point position = new Point();
 
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private Color color = Color.WHITE;
 
 	@Override

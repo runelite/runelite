@@ -24,10 +24,11 @@
 package net.runelite.client.plugins.freezetimers;
 
 import java.awt.Font;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 public enum FontStyle
 {

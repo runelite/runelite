@@ -24,6 +24,7 @@
 package net.runelite.client.plugins.ticktimers;
 
 import java.awt.Font;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.client.config.Config;
@@ -169,7 +170,7 @@ public interface TickTimersConfig extends Config
 		return false;
 	}
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	@AllArgsConstructor
 	enum FontStyle
 	{

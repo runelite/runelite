@@ -33,6 +33,7 @@ import java.util.Deque;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -69,6 +70,7 @@ import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 	tags = {"npcs", "items", "inventory", "objects"}
 )
 @Slf4j
+@Singleton
 public class ExaminePlugin extends Plugin
 {
 	private static final Pattern X_PATTERN = Pattern.compile("^\\d+ x ");

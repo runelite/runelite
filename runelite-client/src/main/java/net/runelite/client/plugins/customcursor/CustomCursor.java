@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.customcursor;
 
 import java.awt.image.BufferedImage;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.util.ImageUtil;
 
@@ -42,10 +43,10 @@ public enum CustomCursor
 	ZAMORAK_GODSWORD("Zamorak Godsword", "cursor-zamorak-godsword.png");
 
 	private final String name;
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final BufferedImage cursorImage;
 
-	CustomCursor(String name, String icon)
+	CustomCursor(final String name, final String icon)
 	{
 		this.name = name;
 		this.cursorImage = ImageUtil.getResourceStreamFromClass(CustomCursorPlugin.class, icon);

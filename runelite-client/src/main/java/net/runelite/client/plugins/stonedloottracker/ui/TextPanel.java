@@ -28,17 +28,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.StackFormatter;
 
-@Getter
+@Singleton
+@Getter(AccessLevel.PACKAGE)
 class TextPanel extends JPanel
 {
 	private static final GridBagLayout LAYOUT = new GridBagLayout();

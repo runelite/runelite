@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.implings;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
@@ -32,7 +33,7 @@ import net.runelite.api.coords.WorldPoint;
  * @author Juzzed
  */
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum ImplingSpawn
 {
 	//Baby spawns

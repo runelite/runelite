@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nullable;
+import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -47,7 +48,8 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
 
-@Getter
+@Singleton
+@Getter(AccessLevel.PACKAGE)
 class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
@@ -58,7 +60,7 @@ class LootTrackerBox extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<LootRecordCustom> records = new ArrayList<>();
 
 	private long totalPrice;

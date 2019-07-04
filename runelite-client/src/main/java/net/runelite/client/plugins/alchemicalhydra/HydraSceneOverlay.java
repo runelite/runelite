@@ -55,7 +55,7 @@ class HydraSceneOverlay extends Overlay
 	private final Client client;
 
 	@Inject
-	public HydraSceneOverlay(Client client, HydraPlugin plugin)
+	public HydraSceneOverlay(final Client client, final HydraPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.UNDER_WIDGETS);

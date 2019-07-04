@@ -35,6 +35,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
@@ -51,11 +52,15 @@ public class EnchantmentRoom extends MTARoom
 	private final Client client;
 	private final List<WorldPoint> dragonstones = new ArrayList<>();
 
+	private boolean enchantment;
+
 	@Inject
-	private EnchantmentRoom(MTAConfig config, Client client)
+	private EnchantmentRoom(final MTAConfig config, final Client client)
 	{
 		super(config);
 		this.client = client;
+
+		this.enchantment = config.enchantment();
 	}
 
 	@Subscribe
@@ -70,7 +75,7 @@ public class EnchantmentRoom extends MTARoom
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!inside() || !config.enchantment())
+		if (!inside() || !this.enchantment)
 		{
 			return;
 		}
@@ -129,6 +134,17 @@ public class EnchantmentRoom extends MTARoom
 			log.debug("Removed dragonstone at {}", location);
 			dragonstones.remove(location);
 		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("mta") || !event.getKey().equals("enchantment"))
+		{
+			return;
+		}
+
+		this.enchantment = config.enchantment();
 	}
 
 	@Override

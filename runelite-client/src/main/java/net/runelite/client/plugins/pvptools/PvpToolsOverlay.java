@@ -9,13 +9,11 @@
 
 package net.runelite.client.plugins.pvptools;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import javax.inject.Inject;
-import net.runelite.api.Client;
+import javax.inject.Singleton;
 import net.runelite.api.Point;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -24,18 +22,15 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class PvpToolsOverlay extends Overlay
 {
 	private PvpToolsPlugin pvpToolsPlugin;
-	private PvpToolsConfig pvpToolsConfig;
-	private Client client;
 
 	@Inject
-	private PvpToolsOverlay(PvpToolsConfig pvpToolsConfig, PvpToolsPlugin pvpToolsPlugin, Client client)
+	private PvpToolsOverlay(final PvpToolsPlugin pvpToolsPlugin)
 	{
 		this.pvpToolsPlugin = pvpToolsPlugin;
-		this.pvpToolsConfig = pvpToolsConfig;
-		this.client = client;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -45,7 +40,7 @@ public class PvpToolsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (pvpToolsConfig.fallInHelper())
+		if (pvpToolsPlugin.isFallInHelper())
 		{
 			if (pvpToolsPlugin.fallinHelperEnabled)
 			{
@@ -54,17 +49,5 @@ public class PvpToolsOverlay extends Overlay
 			}
 		}
 		return null;
-	}
-
-	private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
-	{
-		if (polygon != null)
-		{
-			graphics.setColor(color);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(polygon);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-			graphics.fill(polygon);
-		}
 	}
 }

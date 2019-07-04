@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.pestcontrol;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Dimension;
@@ -46,11 +47,9 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 @Slf4j
+@Singleton
 public class PortalWeaknessOverlay extends Overlay
 {
-	private int zOffset = 100;
-
-	private final PestControlConfig config;
 	private final PestControlPlugin plugin;
 	private final Client client;
 
@@ -62,14 +61,12 @@ public class PortalWeaknessOverlay extends Overlay
 
 	@Inject
 	PortalWeaknessOverlay(
-		PestControlConfig config,
-		PestControlPlugin plugin,
-		Client client,
-		ItemManager itemManager,
-		SkillIconManager skillIconManager
+		final PestControlPlugin plugin,
+		final Client client,
+		final ItemManager itemManager,
+		final SkillIconManager skillIconManager
 	)
 	{
-		this.config = config;
 		this.plugin = plugin;
 		this.client = client;
 
@@ -96,6 +93,7 @@ public class PortalWeaknessOverlay extends Overlay
 
 		// We can use any image here as it's only needed to calculate the position
 
+		int zOffset = 100;
 		return Perspective.getCanvasImageLocation(client, localLocation, magicImage, zOffset);
 
 	}

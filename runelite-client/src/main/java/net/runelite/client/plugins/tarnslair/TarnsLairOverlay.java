@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.coords.LocalPoint;
@@ -36,6 +37,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Singleton
 @Slf4j
 public class TarnsLairOverlay extends Overlay
 {
@@ -45,7 +47,7 @@ public class TarnsLairOverlay extends Overlay
 	private final TarnsLairPlugin plugin;
 
 	@Inject
-	public TarnsLairOverlay(Client client, TarnsLairPlugin plugin)
+	public TarnsLairOverlay(final Client client, final TarnsLairPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);

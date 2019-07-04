@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -37,6 +38,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Singleton
 class ClueScrollMusicOverlay extends Overlay
 {
 	private static final Rectangle PADDING = new Rectangle(2, 1, 0, 1);
@@ -47,7 +49,7 @@ class ClueScrollMusicOverlay extends Overlay
 	private boolean hasScrolled;
 
 	@Inject
-	private ClueScrollMusicOverlay(ClueScrollPlugin plugin, Client client)
+	private ClueScrollMusicOverlay(final ClueScrollPlugin plugin, final Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);

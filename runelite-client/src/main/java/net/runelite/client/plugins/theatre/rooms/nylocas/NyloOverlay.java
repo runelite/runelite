@@ -30,7 +30,6 @@ import java.awt.Graphics2D;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
-import net.runelite.client.plugins.theatre.TheatreConfig;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
 import net.runelite.client.ui.overlay.Overlay;
@@ -53,7 +52,7 @@ class NyloOverlay extends Overlay
 
 	private NyloHandler nylohandler;
 
-	NyloOverlay(Client client, TheatrePlugin plugin, TheatreConfig config, NyloHandler nylohandler)
+	NyloOverlay(final Client client, final TheatrePlugin plugin, final NyloHandler nylohandler)
 	{
 		super(plugin);
 
@@ -84,17 +83,17 @@ class NyloOverlay extends Overlay
 			String name = npc.getName();
 			if (name != null)
 			{
-				if (name.equals("Nylocas Hagios"))
+				switch (name)
 				{
-					hagios++;
-				}
-				else if (name.equals("Nylocas Toxobolos"))
-				{
-					toxobolos++;
-				}
-				else if (name.equals("Nylocas Ischyros"))
-				{
-					ischyros++;
+					case "Nylocas Hagios":
+						hagios++;
+						break;
+					case "Nylocas Toxobolos":
+						toxobolos++;
+						break;
+					case "Nylocas Ischyros":
+						ischyros++;
+						break;
 				}
 			}
 		}

@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -41,6 +42,7 @@ import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+@Singleton
 public class LootingBagViewerOverlay extends Overlay
 {
 	private static final int INVENTORY_SIZE = 28;
@@ -57,7 +59,7 @@ public class LootingBagViewerOverlay extends Overlay
 	private Item[] items;
 
 	@Inject
-	private LootingBagViewerOverlay(Client client, ItemManager itemManager)
+	private LootingBagViewerOverlay(final Client client, final ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrapping(4);

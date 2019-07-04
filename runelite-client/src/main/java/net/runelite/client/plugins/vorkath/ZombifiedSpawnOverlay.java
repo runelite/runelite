@@ -28,17 +28,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class ZombifiedSpawnOverlay extends Overlay
 {
 	private VorkathPlugin plugin;
 
 	@Inject
-	public ZombifiedSpawnOverlay(VorkathPlugin plugin)
+	public ZombifiedSpawnOverlay(final VorkathPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
