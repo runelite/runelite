@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>runescape-api</artifactId>
-			<version>1.5.28-SNAPSHOT</version>
+			<version>1.5.29-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
