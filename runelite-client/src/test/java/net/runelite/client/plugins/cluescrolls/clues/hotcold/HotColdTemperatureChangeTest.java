@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,53 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache;
+package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
-import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import net.runelite.cache.definitions.AreaDefinition;
-import net.runelite.cache.fs.Store;
-import org.junit.Rule;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class AreaDumper
+public class HotColdTemperatureChangeTest
 {
-	private static final Logger logger = LoggerFactory.getLogger(AreaDumper.class);
-
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	private static final String[] VALID_MESSAGES = {
+		"The device is warm, and warmer than last time.",
+		"The device is cold, but colder than last time.",
+		"The device is very hot, and the same temperature as last time.",
+	};
+	private static final String[] INVALID_MESSAGES = {
+		"The device is cold.",
+		"The device is ice cold.",
+		"The device is very cold.",
+		"The device is hot.",
+		"The device is incredibly hot.",
+		"The device is an octopus, and is wetter than last time",
+		"foobar",
+		"a q p w",
+		"My feet are cold, I should put them in some lukewarm water, or run hot water over them.",
+		"and warmer than and colder than and the same temperature",
+	};
 
 	@Test
-	public void extract() throws IOException
+	public void testValidTemperatureChangeMessages()
 	{
-		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
-
-		int count = 0;
-
-		try (Store store = new Store(base))
+		for (final String message : VALID_MESSAGES)
 		{
-			store.load();
-
-			AreaManager areaManager = new AreaManager(store);
-			areaManager.load();
-
-			for (AreaDefinition area : areaManager.getAreas())
-			{
-				Files.asCharSink(new File(outDir, area.id + ".json"), Charset.defaultCharset()).write(gson.toJson(area));
-				++count;
-			}
+			assertNotNull(message, HotColdTemperatureChange.of(message));
 		}
+	}
 
-		logger.info("Dumped {} areas to {}", count, outDir);
+	@Test
+	public void testInvalidTemperatureChangeMessages()
+	{
+		for (final String message : INVALID_MESSAGES)
+		{
+			assertNull(message, HotColdTemperatureChange.of(message));
+		}
 	}
 }

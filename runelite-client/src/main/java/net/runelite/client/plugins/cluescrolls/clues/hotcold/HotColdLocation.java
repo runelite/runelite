@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Eadgars Ruse <https://github.com/Eadgars-Ruse>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +27,6 @@
 package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
@@ -69,6 +69,8 @@ public enum HotColdLocation
 	DESERT_POLLNIVNEACH(new WorldPoint(3287, 2975, 0), DESERT, "West of Pollnivneach."),
 	DESERT_MTA(new WorldPoint(3350, 3293, 0), DESERT, "Next to Mage Training Arena."),
 	DESERT_SHANTY(new WorldPoint(3294, 3106, 0), DESERT, "South-west of Shantay Pass."),
+	DRAYNOR_MANOR_MUSHROOMS(true, new WorldPoint(3096, 3379, 0), MISTHALIN, "Patch of mushrooms just northwest of Draynor Manor"),
+	DRAYNOR_WHEAT_FIELD(true, new WorldPoint(3120, 3282, 0), MISTHALIN, "Inside the wheat field next to Draynor Village"),
 	FELDIP_HILLS_JIGGIG(new WorldPoint(2413, 3055, 0), FELDIP_HILLS, "West of Jiggig, east of the fairy ring bkp."),
 	FELDIP_HILLS_SW(new WorldPoint(2582, 2895, 0), FELDIP_HILLS, "West of the southeasternmost lake in Feldip Hills."),
 	FELDIP_HILLS_GNOME_GLITER(new WorldPoint(2553, 2972, 0), FELDIP_HILLS, "East of the gnome glider (Lemantolly Undri)."),
@@ -91,6 +93,7 @@ public enum HotColdLocation
 	FREMENNIK_PROVINCE_ASTRAL_ALTER(new WorldPoint(2147, 3862, 0), FREMENNIK_PROVINCE, "Astral altar"),
 	FREMENNIK_PROVINCE_LUNAR_VILLAGE(new WorldPoint(2087, 3915, 0), FREMENNIK_PROVINCE, "Lunar Isle, inside the village."),
 	FREMENNIK_PROVINCE_LUNAR_NORTH(new WorldPoint(2106, 3949, 0), FREMENNIK_PROVINCE, "Lunar Isle, north of the village."),
+	ICE_MOUNTAIN(true, new WorldPoint(3007, 3475, 0), MISTHALIN, "Atop Ice Mountain"),
 	KANDARIN_SINCLAR_MANSION(new WorldPoint(2726, 3588, 0), KANDARIN, "North-west of the Sinclair Mansion, near the log balance shortcut."),
 	KANDARIN_CATHERBY(new WorldPoint(2774, 3433, 0), KANDARIN, "Catherby, between the bank and the beehives, near small rock formation."),
 	KANDARIN_GRAND_TREE(new WorldPoint(2444, 3503, 0), KANDARIN, "Grand Tree, just east of the terrorchick gnome enclosure."),
@@ -115,6 +118,7 @@ public enum HotColdLocation
 	KARAMJA_KHARAZI_NE(new WorldPoint(2904, 2925, 0), KARAMJA, "North-eastern part of Kharazi Jungle."),
 	KARAMJA_KHARAZI_SW(new WorldPoint(2783, 2898, 0), KARAMJA, "South-western part of Kharazi Jungle."),
 	KARAMJA_CRASH_ISLAND(new WorldPoint(2910, 2737, 0), KARAMJA, "Northern part of Crash Island."),
+	LUMBRIDGE_COW_FIELD(true, new WorldPoint(3174, 3336, 0), MISTHALIN, "Cow field north of Lumbridge"),
 	MISTHALIN_VARROCK_STONE_CIRCLE(new WorldPoint(3225, 3355, 0), MISTHALIN, "South of the stone circle near Varrock's entrance."),
 	MISTHALIN_LUMBRIDGE(new WorldPoint(3238, 3169, 0), MISTHALIN, "Just north-west of the Lumbridge Fishing tutor."),
 	MISTHALIN_LUMBRIDGE_2(new WorldPoint(3170, 3278, 0), MISTHALIN, "North of the pond between Lumbridge and Draynor Village."),
@@ -131,6 +135,7 @@ public enum HotColdLocation
 	MORYTANIA_MOS_LES_HARMLESS_BAR(new WorldPoint(3670, 2974, 0), MORYTANIA, "Near Mos Le'Harmless southern bar."),
 	MORYTANIA_DRAGONTOOTH_NORTH(new WorldPoint(3813, 3567, 0), MORYTANIA, "Northern part of Dragontooth Island."),
 	MORYTANIA_DRAGONTOOTH_SOUTH(new WorldPoint(3803, 3532, 0), MORYTANIA, "Southern part of Dragontooth Island."),
+	NORTHEAST_OF_AL_KHARID_MINE(true, new WorldPoint(3332, 3313, 0), MISTHALIN, "Northeast of Al Kharid Mine"),
 	WESTERN_PROVINCE_EAGLES_PEAK(new WorldPoint(2297, 3530, 0), WESTERN_PROVINCE, "North-west of Eagles' Peak."),
 	WESTERN_PROVINCE_PISCATORIS(new WorldPoint(2337, 3689, 0), WESTERN_PROVINCE, "Piscatoris Fishing Colony"),
 	WESTERN_PROVINCE_PISCATORIS_HUNTER_AREA(new WorldPoint(2361, 3566, 0), WESTERN_PROVINCE, "Eastern part of Piscatoris Hunter area, south-west of the Falconry."),
@@ -176,12 +181,20 @@ public enum HotColdLocation
 	ZEAH_DAIRY_COW(new WorldPoint(1320, 3718, 0), ZEAH, "North-east of the Kebos Lowlands, east of the dairy cow."),
 	ZEAH_CRIMSON_SWIFTS(new WorldPoint(1186, 3583, 0), ZEAH, "South-west of the Kebos Swamp, below the crimson swifts.");
 
+	private final boolean beginnerClue;
 	private final WorldPoint worldPoint;
 	private final HotColdArea hotColdArea;
 	private final String area;
 
-	public Rectangle2D getRect()
+	HotColdLocation(WorldPoint worldPoint, HotColdArea hotColdArea, String areaDescription)
 	{
-		return new Rectangle(worldPoint.getX() - 4, worldPoint.getY() - 4, 9, 9);
+		this(false, worldPoint, hotColdArea, areaDescription);
+	}
+
+	public Rectangle getRect()
+	{
+		final int digRadius = beginnerClue ? HotColdTemperature.BEGINNER_VISIBLY_SHAKING.getMaxDistance() :
+			HotColdTemperature.MASTER_VISIBLY_SHAKING.getMaxDistance();
+		return new Rectangle(worldPoint.getX() - digRadius, worldPoint.getY() - digRadius, digRadius * 2 + 1, digRadius * 2 + 1);
 	}
 }

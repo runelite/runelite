@@ -29,6 +29,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyMode;
 
 @ConfigGroup("wintertodt")
@@ -54,5 +55,19 @@ public interface WintertodtConfig extends Config
 	default Color damageNotificationColor()
 	{
 		return Color.CYAN;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "roundNotification",
+		name = "Wintertodt round notification",
+		description = "Notifies you before the round starts (in seconds)"
+	)
+	@Range(
+		max = 60
+	)
+	default int roundNotification()
+	{
+		return 5;
 	}
 }
