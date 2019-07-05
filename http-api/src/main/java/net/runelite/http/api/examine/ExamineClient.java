@@ -84,7 +84,7 @@ public class ExamineClient
 			public void onResponse(Call call, Response response)
 			{
 				response.close();
-				//logger.debug("Submitted examine info for {} {}: {}", type, id, text);
+				logger.debug("Submitted examine info for {} {}: {}", type, id, text);
 			}
 		});
 	}

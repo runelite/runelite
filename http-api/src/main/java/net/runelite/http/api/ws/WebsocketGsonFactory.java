@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.http.api.ws.messages.Handshake;
 import net.runelite.http.api.ws.messages.LoginResponse;
@@ -78,9 +79,8 @@ public class WebsocketGsonFactory
 			.create();
 	}
 
-	public static boolean build()
+	public static Gson build()
 	{
-		//return build(factory(Collections.emptyList()));
-		return true;
+		return build(factory(Collections.emptyList()));
 	}
 }

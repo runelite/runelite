@@ -62,7 +62,7 @@ public class XpClient
 			public void onResponse(Call call, Response response)
 			{
 				response.close();
-				//logger.debug("Submitted xp track for {}", username);
+				logger.debug("Submitted xp track for {}", username);
 			}
 		});
 	}
