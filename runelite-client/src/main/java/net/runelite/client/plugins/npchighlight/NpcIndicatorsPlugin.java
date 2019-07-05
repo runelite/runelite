@@ -332,11 +332,13 @@ public class NpcIndicatorsPlugin extends Plugin
 			if (mn != null && isNpcMemorizationUnnecessary(mn))
 			{
 				memorizedNpcs.remove(npc.getIndex());
+				rebuildAllNpcs();
 			}
 		}
 		else
 		{
 			npcTags.add(id);
+			rebuildAllNpcs();
 		}
 
 		click.consume();
