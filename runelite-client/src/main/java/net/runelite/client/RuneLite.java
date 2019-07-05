@@ -88,8 +88,8 @@ public class RuneLite
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
-	static final RuneLiteSplashScreen splashScreen = new RuneLiteSplashScreen();
-
+	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
+	private static final RuneLiteSplashScreen splashScreen = new RuneLiteSplashScreen();
 
 	@Getter
 	private static Injector injector;
