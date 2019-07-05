@@ -349,7 +349,8 @@
 							</goals>
 							<phase>compile</phase>
 							<configuration>
-								<source>8</source>
+								<source>${java.version}</source>
+								<target>${java.version}</target>
 								<proc>proc</proc>
 								<!-- or "javac" to use javac java compiler -->
 								<compilerId>jdt</compilerId>
