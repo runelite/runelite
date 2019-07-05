@@ -44,11 +44,13 @@ import static net.runelite.api.ItemID.BRUMA_KINDLING;
 import static net.runelite.api.ItemID.BRUMA_ROOT;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -105,6 +107,7 @@ public class WintertodtPlugin extends Plugin
 
 	private Instant lastActionTime;
 
+	private int previousTimerValue;
 	private WintertodtNotifyMode notifyCondition;
 	private Color damageNotificationColor;
 
@@ -184,6 +187,30 @@ public class WintertodtPlugin extends Plugin
 		isInWintertodt = true;
 
 		checkActionTimeout();
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged varbitChanged)
+	{
+		int timerValue = client.getVar(Varbits.WINTERTODT_TIMER);
+		if (timerValue != previousTimerValue)
+		{
+			int timeToNotify = config.roundNotification();
+			if (timeToNotify > 0)
+			{
+				int timeInSeconds = timerValue * 30 / 50;
+				int prevTimeInSeconds = previousTimerValue * 30 / 50;
+
+				log.debug("Seconds left until round start: {}", timeInSeconds);
+
+				if (prevTimeInSeconds > timeToNotify && timeInSeconds <= timeToNotify)
+				{
+					notifier.notify("Wintertodt round is about to start");
+				}
+			}
+
+			previousTimerValue = timerValue;
+		}
 	}
 
 	private void checkActionTimeout()

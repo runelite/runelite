@@ -651,7 +651,9 @@ public enum Varbits
 	/**
 	 * POH Building mode (1 = yes, 0 = no)
 	 */
-	BUILDING_MODE(2176);
+	BUILDING_MODE(2176),
+
+	WINTERTODT_TIMER(7980);
 
 	/**
 	 * The raw varbit ID.
