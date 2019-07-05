@@ -706,6 +706,11 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
+		if (config.showDFSSpecial() && lastAnimation == AnimationID.DRAGONFIRE_SHIELD_SPECIAL)
+		{
+			createGameTimer(DRAGON_FIRE_SHIELD);
+		}
+
 		lastAnimation = client.getLocalPlayer().getAnimation();
 	}
 
