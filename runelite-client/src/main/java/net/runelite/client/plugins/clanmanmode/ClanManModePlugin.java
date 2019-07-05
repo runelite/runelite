@@ -68,7 +68,6 @@ public class ClanManModePlugin extends Plugin
 		overlayManager.add(ClanManModeOverlay);
 		overlayManager.add(ClanManModeTileOverlay);
 		overlayManager.add(ClanManModeMinimapOverlay);
-		client.setHideFriendAttackOptions(config.hideAtkOpt());
 	}
 
 	@Override
@@ -77,7 +76,6 @@ public class ClanManModePlugin extends Plugin
 		overlayManager.remove(ClanManModeOverlay);
 		overlayManager.remove(ClanManModeTileOverlay);
 		overlayManager.remove(ClanManModeMinimapOverlay);
-		client.setHideFriendAttackOptions(false);
 		clan.clear();
 		ticks = 0;
 		wildernessLevel = 0;
@@ -93,8 +91,6 @@ public class ClanManModePlugin extends Plugin
 		{
 			return;
 		}
-
-		client.setHideFriendAttackOptions(config.hideAtkOpt());
 	}
 
 	@Subscribe

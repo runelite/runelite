@@ -152,17 +152,6 @@ public interface ClanManModeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
-		keyName = "hideatkopt",
-		name = "Hide attack option for clan members",
-		description = "Disables attack option for clan members"
-	)
-	default boolean hideAtkOpt()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		position = 14,
 		keyName = "showclanmembers",
 		name = "Persistent Clan Members",

@@ -400,7 +400,7 @@ public class MultiIndicatorsPlugin extends Plugin
 		this.multicombatZoneVisibility = config.multicombatZoneVisibility();
 		this.showPvpSafeZones = config.showPvpSafeZones();
 		this.showDeadmanSafeZones = config.showDeadmanSafeZones();
-		this.showWildernessLevelLines = config.showDeadmanSafeZones();
+		this.showWildernessLevelLines = config.showWildernessLevelLines();
 		this.showMinimapLines = config.showMinimapLines();
 		this.multicombatColor = config.multicombatColor();
 		this.safeZoneColor = config.safeZoneColor();

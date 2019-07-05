@@ -15,10 +15,8 @@ import com.google.inject.Provides;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.Objects;
@@ -36,15 +34,11 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemDefinition;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.SkullIcon;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.client.config.ConfigManager;
@@ -67,7 +61,6 @@ import net.runelite.client.util.PvPUtil;
 import static net.runelite.client.util.StackFormatter.quantityToRSDecimalStack;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "PvP Tools",
@@ -93,10 +86,6 @@ public class PvpToolsPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
-	private boolean attackHotKeyPressed;
-
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
 	private boolean hideAll;
 
 	@Inject
@@ -109,17 +98,6 @@ public class PvpToolsPlugin extends Plugin
 	private ItemManager itemManager;
 
 	private PvpToolsPlugin uhPvpToolsPlugin = this;
-
-	private static final String WALK_HERE = "WALK HERE";
-	private static final String CANCEL = "CANCEL";
-	private static final String CAST = "CAST";
-	private static final String ATTACK_OPTIONS_ATTACK = "ATTACK";
-	private static final HashSet<String> ATTACK_OPTIONS_KEYWORDS = new HashSet<>();
-		static
-		{
-			ATTACK_OPTIONS_KEYWORDS.add(CAST);
-			ATTACK_OPTIONS_KEYWORDS.add(ATTACK_OPTIONS_ATTACK);
-		}
 
 	/**
 	 * ActionListener for the missing cc members and refresh buttons
@@ -167,18 +145,12 @@ public class PvpToolsPlugin extends Plugin
 	private boolean fallInHelper;
 	private Keybind hotkey;
 	private Keybind renderSelf;
-	private boolean hideAttack;
-	private AttackMode hideAttackMode;
-	private boolean hideCast;
-	private AttackMode hideCastMode;
-	private String hideCastIgnored;
-	private boolean attackOptionsClan;
-	private boolean attackOptionsFriend;
-	private boolean levelRangeAttackOptions;
 	private boolean riskCalculatorEnabled;
 	private boolean missingPlayersEnabled;
 	private boolean currentPlayersEnabled;
-	
+	private boolean hideAttack;
+	private boolean hideCast;
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -209,7 +181,6 @@ public class PvpToolsPlugin extends Plugin
 
 	private int[] overheadCount = new int[]{0, 0, 0};
 
-	private List ignoredSpells = new ArrayList();
 	@Getter
 	private int enemyPlayerCount = 0;
 	@Getter
@@ -270,10 +241,11 @@ public class PvpToolsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		
+
 		overlayManager.add(pvpToolsOverlay);
 		overlayManager.add(playerCountOverlay);
-
+		client.setHideFriendAttackOptions(this.hideAttack);
+		client.setHideFriendCastOptions(this.hideCast);
 		keyManager.registerKeyListener(fallinHotkeyListener);
 		keyManager.registerKeyListener(renderselfHotkeyListener);
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "skull.png");
@@ -303,7 +275,6 @@ public class PvpToolsPlugin extends Plugin
 			panel.currentPlayers.setVisible(true);
 		}
 
-		ignoredSpells = Arrays.asList(this.hideCastIgnored.toLowerCase().split("\\s*,\\s*"));
 	}
 
 	@Override
@@ -314,15 +285,24 @@ public class PvpToolsPlugin extends Plugin
 		keyManager.unregisterKeyListener(fallinHotkeyListener);
 		keyManager.unregisterKeyListener(renderselfHotkeyListener);
 		clientToolbar.removeNavigation(navButton);
+		client.setHideFriendAttackOptions(false);
+		client.setHideFriendCastOptions(false);
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
+		if (!"pvptools".equals(configChanged.getGroup()))
+		{
+			return;
+		}
+		client.setHideFriendAttackOptions(this.hideAttack);
+		client.setHideFriendCastOptions(this.hideCast);
+
 		if (configChanged.getGroup().equals("pvptools"))
 		{
 			updateConfig();
-			
+
 			switch (configChanged.getKey())
 			{
 				case "countPlayers":
@@ -366,9 +346,6 @@ public class PvpToolsPlugin extends Plugin
 					{
 						panel.currentPlayers.setVisible(true);
 					}
-					break;
-				case "hideCastIgnored":
-					ignoredSpells = Arrays.asList(this.hideCastIgnored.toLowerCase().split("\\s*,\\s*"));
 					break;
 				default:
 					break;
@@ -428,115 +405,6 @@ public class PvpToolsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
-	{
-		if (this.attackOptionsFriend || this.attackOptionsClan || this.levelRangeAttackOptions)
-		{
-			final String pOptionToReplace = Text.removeTags(menuEntryAdded.getOption()).toUpperCase();
-
-			if (client.getGameState() != GameState.LOGGED_IN)
-			{
-				return;
-			}
-
-			if (pOptionToReplace.equals(CANCEL) || pOptionToReplace.equals(WALK_HERE))
-			{
-				return;
-			}
-
-			Player[] players = client.getCachedPlayers();
-			Player player = null;
-			int identifier = menuEntryAdded.getIdentifier();
-			if (identifier >= 0 && identifier < players.length)
-			{
-				player = players[identifier];
-			}
-			if (player == null)
-			{
-				return;
-			}
-
-
-			if (attackHotKeyPressed && this.attackOptionsClan || this.attackOptionsFriend ||
-				this.levelRangeAttackOptions)
-			{
-				if (this.attackOptionsFriend && player.isFriend())
-				{
-					swap(pOptionToReplace);
-				}
-				else if (this.attackOptionsClan && player.isClanMember())
-				{
-					swap(pOptionToReplace);
-				}
-				else if (this.levelRangeAttackOptions && !PvPUtil.isAttackable(client, player))
-				{
-					swap(pOptionToReplace);
-				}
-			}
-		}
-	}
-
-	@Subscribe
-	public void onMenuOpened(MenuOpened event)
-	{
-		Player localPlayer = client.getLocalPlayer();
-
-		if (localPlayer == null)
-		{
-			return;
-		}
-
-		List<MenuEntry> menu = new ArrayList<>();
-
-		for (MenuEntry entry : event.getMenuEntries())
-		{
-			String option = Text.removeTags(entry.getOption()).toLowerCase();
-			String target = Text.removeTags(entry.getTarget()).toLowerCase();
-
-			int identifier = entry.getIdentifier();
-
-			Player[] players = client.getCachedPlayers();
-			Player player = null;
-
-			if (identifier >= 0 && identifier < players.length)
-			{
-				player = players[identifier];
-			}
-
-			if (player == null)
-			{
-				menu.add(entry);
-				continue;
-			}
-
-			if (option.contains("attack") && this.hideAttack && shouldHide(this.hideAttackMode, player))
-			{
-				continue;
-			}
-
-			else if (option.contains("cast") && this.hideCast && shouldHide(this.hideCastMode, player)
-					&& !ignoredSpells.contains(StringUtils.substringBefore(target, " ->")))
-			{
-				continue;
-			}
-
-			menu.add(entry);
-		}
-
-		client.setMenuEntries(menu.toArray(new MenuEntry[0]));
-	}
-
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
-	{
-		if (!focusChanged.isFocused())
-		{
-			setAttackHotKeyPressed(false);
-		}
-	}
-
-
 	/**
 	 * Enables or disables the fall in helper feature
 	 */
@@ -569,7 +437,6 @@ public class PvpToolsPlugin extends Plugin
 		panel.numRangeJLabel.repaint();
 		panel.numMeleeJLabel.repaint();
 	}
-
 
 	private void updatePlayers()
 	{
@@ -727,81 +594,6 @@ public class PvpToolsPlugin extends Plugin
 		panel.biggestItemLabel.repaint();
 	}
 
-	/**
-	 * Swaps menu entries if the entries could be found. This places Walk Here where the top level menu option was.
-	 * @param pOptionToReplace The String containing the Menu Option that needs to be replaced. IE: "Attack", "Chop Down".
-	 */
-	private void swap(String pOptionToReplace)
-	{
-		MenuEntry[] entries = client.getMenuEntries();
-		Integer walkHereEntry = searchIndex(entries, WALK_HERE);
-		Integer entryToReplace = searchIndex(entries, pOptionToReplace);
-
-		if (walkHereEntry != null
-				&& entryToReplace != null)
-		{
-			MenuEntry walkHereMenuEntry = entries[walkHereEntry];
-			entries[walkHereEntry] = entries[entryToReplace];
-			entries[entryToReplace] = walkHereMenuEntry;
-			client.setMenuEntries(entries);
-		}
-	}
-
-	/**
-	 * Finds the index of the menu that contains the verbiage we are looking for.
-	 * @param pMenuEntries The list of {@link MenuEntry}s.
-	 * @param pMenuEntryToSearchFor The Option in the menu to search for.
-	 * @return The index location or null if it was not found.
-	 */
-	private Integer searchIndex(MenuEntry[] pMenuEntries, String pMenuEntryToSearchFor)
-	{
-		Integer indexLocation = 0;
-
-		for (MenuEntry menuEntry : pMenuEntries)
-		{
-			String entryOption = Text.removeTags(menuEntry.getOption()).toUpperCase();
-
-			if (entryOption.equals(pMenuEntryToSearchFor))
-			{
-				return indexLocation;
-			}
-			indexLocation++;
-		}
-		return null;
-	}
-
-	/**
-	 * Given an AttackMode, checks whether or not a player should be hidden.
-	 * @param mode The {@link AttackMode} the player should be checked against.
-	 * @param player The player that should be checked.
-	 * @return True if the player should be hidden, false otherwise.
-	 */
-	private boolean shouldHide(AttackMode mode, Player player)
-	{
-		switch (mode)
-		{
-			case CLAN:
-				if (player.isClanMember())
-				{
-					return true;
-				}
-				break;
-			case FRIENDS:
-				if (player.isFriend())
-				{
-					return true;
-				}
-				break;
-			case BOTH:
-				if (player.isClanMember() || player.isFriend())
-				{
-					return true;
-				}
-				break;
-		}
-
-		return false;
-	}
 
 	private void updateConfig()
 	{
@@ -810,16 +602,10 @@ public class PvpToolsPlugin extends Plugin
 		this.fallInHelper = config.fallInHelper();
 		this.hotkey = config.hotkey();
 		this.renderSelf = config.renderSelf();
-		this.hideAttack = config.hideAttack();
-		this.hideAttackMode = config.hideAttackMode();
-		this.hideCast = config.hideCast();
-		this.hideCastMode = config.hideCastMode();
-		this.hideCastIgnored = config.hideCastIgnored();
-		this.attackOptionsClan = config.attackOptionsClan();
-		this.attackOptionsFriend = config.attackOptionsFriend();
-		this.levelRangeAttackOptions = config.levelRangeAttackOptions();
 		this.riskCalculatorEnabled = config.riskCalculatorEnabled();
 		this.missingPlayersEnabled = config.missingPlayersEnabled();
 		this.currentPlayersEnabled = config.currentPlayersEnabled();
+		this.hideAttack = config.hideAttack();
+		this.hideCast = config.hideCast();
 	}
 }

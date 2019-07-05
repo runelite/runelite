@@ -122,14 +122,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
 	private static final int PURO_PURO_REGION_ID = 10307;
-	private static final String WALK_HERE = "WALK HERE";
-	private static final String CANCEL = "CANCEL";
-	private static final String CAST_OPTIONS_ATTACK = "CAST";
-	private static final HashSet<String> CAST_OPTIONS_KEYWORDS = new HashSet<>();
-		static
-		{
-			CAST_OPTIONS_KEYWORDS.add(CAST_OPTIONS_ATTACK);
-		}
+
 
 	private MenuEntry[] entries;
 	private final Set<String> leftClickConstructionItems = new HashSet<>();
@@ -338,6 +331,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		updateConfig();
 		addSwaps();
 		loadConstructionItems(config.getEasyConstructionItems());
+		client.setHideFriendCastOptions(config.getRemoveFreezePlayerToB());
+		client.setHideFriendCastOptions(config.getRemoveFreezePlayerCoX());
 
 		if (config.shiftClickCustomization())
 		{
@@ -350,6 +345,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
+		client.setHideFriendCastOptions(false);
 		disableCustomization();
 		loadConstructionItems("");
 		loadCustomSwaps(""); // Removes all custom swaps
@@ -394,6 +390,22 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (event.getKey().startsWith(ITEM_KEY_PREFIX))
 		{
 			clientThread.invoke(this::resetItemDefinitionCache);
+		}
+
+		if (event.getKey().equals("removeFreezePlayerToB"))
+		{
+			if (this.getRemoveFreezePlayerToB && client.getVar(Varbits.THEATRE_OF_BLOOD) == 2)
+			{
+				client.setHideFriendCastOptions(config.getRemoveFreezePlayerToB());
+			}
+		}
+
+		if (event.getKey().equals("removeFreezePlayerCoX"))
+		{
+			if (this.getRemoveFreezePlayerCoX && client.getVar(Varbits.IN_RAID) == 1)
+			{
+				client.setHideFriendCastOptions(config.getRemoveFreezePlayerCoX());
+			}
 		}
 	}
 
@@ -1052,28 +1064,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 
-		//If the option is already to walk there, or cancel we don't need to swap it with anything
-		if (!pOptionToReplace.equals(CANCEL) && !pOptionToReplace.equals(WALK_HERE))
-		{
-			Player[] players = client.getCachedPlayers();
-			int identifier = event.getIdentifier();
-
-			if (identifier >= 0 && identifier < players.length)
-			{
-				Player player = players[identifier];
-				if (player != null)
-				{
-					if (((this.getRemoveFreezePlayerCoX &&  client.getVar(Varbits.IN_RAID) == 1)
-						|| (this.getRemoveFreezePlayerToB &&  client.getVar(Varbits.THEATRE_OF_BLOOD) == 2))
-						&&  (player.isFriend() || player.isClanMember())
-						&& CAST_OPTIONS_KEYWORDS.contains(pOptionToReplace))
-					{
-						addswap(pOptionToReplace);
-					}
-				}
-			}
-		}
-
 		if (option.equals("talk-to"))
 		{
 			if (this.swapPickpocket)
@@ -1703,49 +1693,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("climb-down");
 	}
 
-/**
- * Swaps menu entries if the entries could be found. This places Walk Here where the top level menu option was.
- * @param pOptionToReplace The String containing the Menu Option that needs to be replaced. IE: "Attack", "Chop Down".
- */
-	private void addswap(String pOptionToReplace)
-	{
-		MenuEntry[] entries = client.getMenuEntries();
-		Integer walkHereEntry = searchIndex(entries, WALK_HERE);
-		Integer entryToReplace = searchIndex(entries, pOptionToReplace);
-
-		if (walkHereEntry != null
-				&& entryToReplace != null)
-			{
-			MenuEntry walkHereMenuEntry = entries[walkHereEntry];
-			entries[walkHereEntry] = entries[entryToReplace];
-			entries[entryToReplace] = walkHereMenuEntry;
-			client.setMenuEntries(entries);
-			}
-	}
-
-/**
- * Finds the index of the menu that contains the verbiage we are looking for.
- * @param pMenuEntries The list of {@link MenuEntry}s.
- * @param pMenuEntryToSearchFor The Option in the menu to search for.
- * @return The index location or null if it was not found.
- */
-	private Integer searchIndex(MenuEntry[] pMenuEntries, String pMenuEntryToSearchFor)
-	{
-		Integer indexLocation = 0;
-
-		for (MenuEntry menuEntry : pMenuEntries)
-			{
-			String entryOption = Text.removeTags(menuEntry.getOption()).toUpperCase();
-
-			if (entryOption.equals(pMenuEntryToSearchFor))
-				{
-				return indexLocation;
-				}
-			indexLocation++;
-			}
-		return null;
-	}
-	
 	private void updateConfig()
 	{
 		this.getWithdrawOne = config.getWithdrawOne();

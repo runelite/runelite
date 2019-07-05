@@ -1605,6 +1605,6 @@ public abstract class RSClientMixin implements RSClient
 				&& !unhiddenCasts.contains(client.getSelectedSpellName());
 		}
 
-		return hideFriendAttackOptions && p.isFriended() || p.isClanMember();
+		return hideFriendAttackOptions && (p.isFriended() || p.isClanMember());
 	}
 }
