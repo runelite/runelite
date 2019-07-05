@@ -52,7 +52,7 @@ public class class227 {
          int var16 = var15[var12][var14] + var15[var11][var14] + var15[var11][var13] + var15[var12][var13] >> 2;
          int var17 = (var1 << 7) + (var9 << 6);
          int var18 = (var2 << 7) + (var10 << 6);
-         long var19 = FontName.method5637(var1, var2, 2, var8.int1 == 0, var3);
+         long var19 = FontName.calculateTag(var1, var2, 2, var8.int1 == 0, var3);
          int var21 = var5 + (var4 << 6);
          if (var8.int3 == 1) {
             var21 += 256;

@@ -2156,7 +2156,7 @@ public final class Client extends GameShell implements Usernamed {
 
                   for (var21 = 0; var21 < 104; ++var21) {
                      for (var56 = 0; var56 < 104; ++var56) {
-                        TilePaint.method3061(var21, var56);
+                        TilePaint.updateItemPile(var21, var56);
                      }
                   }
 
@@ -5311,7 +5311,7 @@ public final class Client extends GameShell implements Usernamed {
                   for (var6 = Canvas.field95; var6 < Canvas.field95 + 8; ++var6) {
                      if (groundItems[SoundSystem.plane][var37][var6] != null) {
                         groundItems[SoundSystem.plane][var37][var6] = null;
-                        TilePaint.method3061(var37, var6);
+                        TilePaint.updateItemPile(var37, var6);
                      }
                   }
                }

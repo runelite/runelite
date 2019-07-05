@@ -27,6 +27,7 @@ package net.runelite.api;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -1661,12 +1662,22 @@ public interface Client extends GameShell
 	
 	String getSelectedSpellName();
 	
-	boolean getIsSpellSelected();
+	boolean isSpellSelected();
 
 	/**
 	 * Set whether or not player attack options will be hidden for clanmembers/friends
 	 */
 	void setHideFriendAttackOptions(boolean yes);
+
+	/**
+	 * Set whether or not player cast options will be hidden for clanmembers/friends
+	 */
+	void setHideFriendCastOptions(boolean yes);
+
+	/**
+	 * Set spells excluded from above hiding
+	 */
+	void setUnhiddenCasts(HashSet<String> casts);
 	
 	/**
 	 * Sorts the current menu entries in the same way the client does this.

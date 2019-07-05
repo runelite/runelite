@@ -54,10 +54,11 @@ public class FontName {
       signature = "(IIIZII)J",
       garbageValue = "1039369805"
    )
-   public static long method5637(int var0, int var1, int var2, boolean var3, int var4) {
-      long var5 = (long)((var0 & 127) << 0 | (var1 & 127) << 7 | (var2 & 3) << 14) | ((long)var4 & 4294967295L) << 17;
-      if (var3) {
-         var5 |= 65536L;
+   @Export("calculateTag")
+   public static long calculateTag(int x, int y, int type, boolean isNotInteractable, int identifier) {
+      long var5 = (long)((x & 0b1111111) << 0 | (y & 0b1111111) << 7 | (type & 0b11) << 14) | ((long)identifier & 0xffffffffL) << 17;
+      if (isNotInteractable) {
+         var5 |= 0x10000L;
       }
 
       return var5;

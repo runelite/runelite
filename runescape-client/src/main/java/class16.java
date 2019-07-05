@@ -314,7 +314,7 @@ public class class16 {
                            Client.groundItems[SoundSystem.plane][var2][var32] = null;
                         }
 
-                        TilePaint.method3061(var2, var32);
+                        TilePaint.updateItemPile(var2, var32);
                      }
                   }
                } else if (class190.field2350 == var0) {
@@ -369,7 +369,7 @@ public class class16 {
                         }
 
                         Client.groundItems[SoundSystem.plane][var3][var4].addFirst(var41);
-                        TilePaint.method3061(var3, var4);
+                        TilePaint.updateItemPile(var3, var4);
                      }
                   }
                } else {
@@ -389,7 +389,7 @@ public class class16 {
                            }
                         }
 
-                        TilePaint.method3061(var4, var5);
+                        TilePaint.updateItemPile(var4, var5);
                      }
                   }
                }

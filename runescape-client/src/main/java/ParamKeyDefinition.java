@@ -207,7 +207,7 @@ public class ParamKeyDefinition extends DualNode {
             int var23 = var22[var18][var21] + var22[var19][var20] + var22[var18][var20] + var22[var19][var21] >> 2;
             int var24 = (var2 << 7) + (var39 << 6);
             int var25 = (var3 << 7) + (var17 << 6);
-            long var26 = FontName.method5637(var2, var3, 2, var38.int1 == 0, var4);
+            long var26 = FontName.calculateTag(var2, var3, 2, var38.int1 == 0, var4);
             int var28 = (var5 << 6) + var6;
             if (var38.int3 == 1) {
                var28 += 256;

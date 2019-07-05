@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import java.util.HashSet;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.EnumDefinition;
@@ -200,13 +201,33 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	private static boolean hideFriendAttackOptions;
+	private static boolean hideFriendAttackOptions = false;
+
+	@Inject
+	private static boolean hideFriendCastOptions = false;
+
+	@Inject
+	private static HashSet<String> unhiddenCasts = new HashSet<String>();
 
 	@Inject
 	@Override
 	public void setHideFriendAttackOptions(boolean yes)
 	{
 		hideFriendAttackOptions = yes;
+	}
+
+	@Inject
+	@Override
+	public void setHideFriendCastOptions(boolean yes)
+	{
+		hideFriendCastOptions = yes;
+	}
+
+	@Inject
+	@Override
+	public void setUnhiddenCasts(HashSet<String> casts)
+	{
+		unhiddenCasts = casts;
 	}
 
 	@Inject
@@ -1577,6 +1598,13 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	static boolean shouldHideAttackOptionFor(RSPlayer p)
 	{
+		if (client.isSpellSelected())
+		{
+			return hideFriendCastOptions
+				&& (p.isFriended() || p.isClanMember())
+				&& !unhiddenCasts.contains(client.getSelectedSpellName());
+		}
+
 		return hideFriendAttackOptions && p.isFriended() || p.isClanMember();
 	}
 }

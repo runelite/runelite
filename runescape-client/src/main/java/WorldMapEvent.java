@@ -78,18 +78,18 @@ public class WorldMapEvent {
             return;
          }
 
-         long var10 = ViewportMouse.ViewportMouse_entityTags[var8];
-         if (var6 != var10) {
+         long tag = ViewportMouse.ViewportMouse_entityTags[var8];
+         if (var6 != tag) {
             label276: {
-               var6 = var10;
-               int var12 = method780(var8);
+               var6 = tag;
+               int x = method780(var8);
                long var13 = ViewportMouse.ViewportMouse_entityTags[var8];
-               int var15 = (int)(var13 >>> 7 & 127L);
-               var15 = var15;
+               int y = (int)(var13 >>> 7 & 127L);
+               y = y;
                int var16 = GrandExchangeEvent.method80(var8);
-               int var17 = ClientPreferences.method1808(var8);
-               if (var16 == 2 && class65.scene.getObjectFlags(SoundSystem.plane, var12, var15, var10) >= 0) {
-                  ObjectDefinition var18 = class50.getObjectDefinition(var17);
+               int identifier = ClientPreferences.method1808(var8);
+               if (var16 == 2 && class65.scene.getObjectFlags(SoundSystem.plane, x, y, tag) >= 0) {
+                  ObjectDefinition var18 = class50.getObjectDefinition(identifier);
                   if (var18.transforms != null) {
                      var18 = var18.transform();
                   }
@@ -99,10 +99,10 @@ public class WorldMapEvent {
                   }
 
                   if (Client.isItemSelected == 1) {
-                     Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " -> " + BufferedFile.colorStartTag(65535) + var18.name, 1, var17, var12, var15);
+                     Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " -> " + BufferedFile.colorStartTag(65535) + var18.name, 1, identifier, x, y);
                   } else if (Client.isSpellSelected) {
                      if ((FloorDecoration.selectedSpellFlags & 4) == 4) {
-                        Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + BufferedFile.colorStartTag(65535) + var18.name, 2, var17, var12, var15);
+                        Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + BufferedFile.colorStartTag(65535) + var18.name, 2, identifier, x, y);
                      }
                   } else {
                      String[] var19 = var18.actions;
@@ -130,12 +130,12 @@ public class WorldMapEvent {
                                  var21 = 1001;
                               }
 
-                              Tiles.insertMenuItemNoShift(var19[var20], BufferedFile.colorStartTag(65535) + var18.name, var21, var17, var12, var15);
+                              Tiles.insertMenuItemNoShift(var19[var20], BufferedFile.colorStartTag(65535) + var18.name, var21, identifier, x, y);
                            }
                         }
                      }
 
-                     Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(65535) + var18.name, 1002, var18.id, var12, var15);
+                     Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(65535) + var18.name, 1002, var18.id, x, y);
                   }
                }
 
@@ -145,7 +145,7 @@ public class WorldMapEvent {
                Player var32;
                int[] var34;
                if (var16 == 1) {
-                  NPC var23 = Client.npcs[var17];
+                  NPC var23 = Client.npcs[identifier];
                   if (var23 == null) {
                      break label276;
                   }
@@ -154,7 +154,7 @@ public class WorldMapEvent {
                      for (var30 = 0; var30 < Client.npcCount; ++var30) {
                         var31 = Client.npcs[Client.npcIndices[var30]];
                         if (var31 != null && var23 != var31 && var31.definition.size == 1 && var31.x == var23.x && var31.y == var23.y) {
-                           Tile.addNpcToMenu(var31.definition, Client.npcIndices[var30], var12, var15);
+                           Tile.addNpcToMenu(var31.definition, Client.npcIndices[var30], x, y);
                         }
                      }
 
@@ -164,16 +164,16 @@ public class WorldMapEvent {
                      for (var22 = 0; var22 < var30; ++var22) {
                         var32 = Client.players[var34[var22]];
                         if (var32 != null && var32.x == var23.x && var32.y == var23.y) {
-                           TotalQuantityComparator.addPlayerToMenu(var32, var34[var22], var12, var15);
+                           TotalQuantityComparator.addPlayerToMenu(var32, var34[var22], x, y);
                         }
                      }
                   }
 
-                  Tile.addNpcToMenu(var23.definition, var17, var12, var15);
+                  Tile.addNpcToMenu(var23.definition, identifier, x, y);
                }
 
                if (var16 == 0) {
-                  Player var33 = Client.players[var17];
+                  Player var33 = Client.players[identifier];
                   if (var33 == null) {
                      break label276;
                   }
@@ -182,7 +182,7 @@ public class WorldMapEvent {
                      for (var30 = 0; var30 < Client.npcCount; ++var30) {
                         var31 = Client.npcs[Client.npcIndices[var30]];
                         if (var31 != null && var31.definition.size == 1 && var33.x == var31.x && var33.y == var31.y) {
-                           Tile.addNpcToMenu(var31.definition, Client.npcIndices[var30], var12, var15);
+                           Tile.addNpcToMenu(var31.definition, Client.npcIndices[var30], x, y);
                         }
                      }
 
@@ -192,28 +192,28 @@ public class WorldMapEvent {
                      for (var22 = 0; var22 < var30; ++var22) {
                         var32 = Client.players[var34[var22]];
                         if (var32 != null && var32 != var33 && var32.x == var33.x && var32.y == var33.y) {
-                           TotalQuantityComparator.addPlayerToMenu(var32, var34[var22], var12, var15);
+                           TotalQuantityComparator.addPlayerToMenu(var32, var34[var22], x, y);
                         }
                      }
                   }
 
-                  if (var17 != Client.combatTargetPlayerIndex) {
-                     TotalQuantityComparator.addPlayerToMenu(var33, var17, var12, var15);
+                  if (identifier != Client.combatTargetPlayerIndex) {
+                     TotalQuantityComparator.addPlayerToMenu(var33, identifier, x, y);
                   } else {
-                     var4 = var10;
+                     var4 = tag;
                   }
                }
 
                if (var16 == 3) {
-                  NodeDeque var35 = Client.groundItems[SoundSystem.plane][var12][var15];
+                  NodeDeque var35 = Client.groundItems[SoundSystem.plane][x][y];
                   if (var35 != null) {
                      for (GroundItem var24 = (GroundItem)var35.first(); var24 != null; var24 = (GroundItem)var35.next()) {
                         ItemDefinition var25 = Skills.getItemDefinition(var24.id);
                         if (Client.isItemSelected == 1) {
-                           Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " -> " + BufferedFile.colorStartTag(16748608) + var25.name, 16, var24.id, var12, var15);
+                           Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " -> " + BufferedFile.colorStartTag(16748608) + var25.name, 16, var24.id, x, y);
                         } else if (Client.isSpellSelected) {
                            if ((FloorDecoration.selectedSpellFlags & 1) == 1) {
-                              Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + BufferedFile.colorStartTag(16748608) + var25.name, 17, var24.id, var12, var15);
+                              Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + BufferedFile.colorStartTag(16748608) + var25.name, 17, var24.id, x, y);
                            }
                         } else {
                            String[] var26 = var25.groundActions;
@@ -241,13 +241,13 @@ public class WorldMapEvent {
                                     var28 = 22;
                                  }
 
-                                 Tiles.insertMenuItemNoShift(var26[var27], BufferedFile.colorStartTag(16748608) + var25.name, var28, var24.id, var12, var15);
+                                 Tiles.insertMenuItemNoShift(var26[var27], BufferedFile.colorStartTag(16748608) + var25.name, var28, var24.id, x, y);
                               } else if (var27 == 2) {
-                                 Tiles.insertMenuItemNoShift("Take", BufferedFile.colorStartTag(16748608) + var25.name, 20, var24.id, var12, var15);
+                                 Tiles.insertMenuItemNoShift("Take", BufferedFile.colorStartTag(16748608) + var25.name, 20, var24.id, x, y);
                               }
                            }
 
-                           Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(16748608) + var25.name, 1004, var24.id, var12, var15);
+                           Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(16748608) + var25.name, 1004, var24.id, x, y);
                         }
                      }
                   }

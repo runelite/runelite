@@ -36,7 +36,8 @@ public class TriBool {
       signature = "(I)V",
       garbageValue = "-1009406649"
    )
-   static void method5560() {
+   @Export("addTargetPlayerToScene")
+   static void addTargetPlayerToScene() {
       if (Client.combatTargetPlayerIndex >= 0 && Client.players[Client.combatTargetPlayerIndex] != null) {
          WorldMapCacheName.addPlayerToScene(Client.players[Client.combatTargetPlayerIndex], false);
       }

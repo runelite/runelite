@@ -72,7 +72,8 @@ public class class25 {
       signature = "(I)V",
       garbageValue = "641029128"
    )
-   static void method349() {
+   @Export("addLocalPlayerToScene")
+   static void addLocalPlayerToScene() {
       if (Client.renderSelf) {
          WorldMapCacheName.addPlayerToScene(Canvas.localPlayer, false);
       }

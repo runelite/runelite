@@ -268,7 +268,8 @@ public final class Projectile extends Entity {
    }
 
    @ObfuscatedName("g")
-   static final void method2081(long var0) {
+   @Export("addEntityTagAtMouse")
+   static final void addEntityTagAtMouse(long var0) {
       ViewportMouse.ViewportMouse_entityTags[++ViewportMouse.ViewportMouse_entityCount - 1] = var0;
    }
 

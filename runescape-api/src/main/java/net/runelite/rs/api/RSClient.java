@@ -1012,7 +1012,7 @@ public interface RSClient extends RSGameShell, Client
 	String getSelectedSpellName();
 
 	@Import("isSpellSelected")
-	boolean getIsSpellSelected();
+	boolean isSpellSelected();
 
 	@Import("readSoundEffect")
 	RSSoundEffect getTrack(RSAbstractIndexCache indexData, int id, int var0);

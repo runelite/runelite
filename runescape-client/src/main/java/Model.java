@@ -1123,7 +1123,7 @@ public class Model extends Entity {
                int var17;
                if (!var1 || var10 != -5000 && var11 != -5000 && var12 != -5000) {
                   if (var2 && NPCDefinition.method5164(modelViewportYs[var8], modelViewportYs[var16], modelViewportYs[var9], var10, var11, var12, var6)) {
-                     Projectile.method2081(var4);
+                     Projectile.addEntityTagAtMouse(var4);
                      var2 = false;
                   }
 
@@ -1609,7 +1609,7 @@ public class Model extends Entity {
 
                         if (var35) {
                            if (this.isSingleTile) {
-                              Projectile.method2081(var9);
+                              Projectile.addEntityTagAtMouse(var9);
                            } else {
                               var31 = true;
                            }

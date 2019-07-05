@@ -637,8 +637,8 @@ public class class40 {
    static final void drawEntities(int var0, int var1, int var2, int var3) {
       ++Client.viewportDrawCount;
       class229.method4514();
-      class25.method349();
-      TriBool.method5560();
+      class25.addLocalPlayerToScene();
+      TriBool.addTargetPlayerToScene();
       BufferedSource.method3423(true);
       int var4 = Players.Players_count;
       int[] var5 = Players.Players_indices;

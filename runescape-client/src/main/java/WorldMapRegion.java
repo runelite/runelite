@@ -694,13 +694,13 @@ public class WorldMapRegion {
                boolean var10 = var9 >= class231.field2805.field2820 && var9 <= class231.field2804.field2820 || var9 == class231.field2806.field2820;
                if (var10) {
                   ObjectDefinition var11 = class50.getObjectDefinition(var8.field199);
-                  int var12 = var11.int1 != 0 ? -3407872 : -3355444;
+                  int var12 = var11.int1 != 0 ? 0xffcc0000 : 0xffcccccc;
                   if (var8.field198 == class231.field2805.field2820) {
                      this.method422(var1, var2, var8.field202, var12);
                   }
 
                   if (var8.field198 == class231.field2813.field2820) {
-                     this.method422(var1, var2, var8.field202, -3355444);
+                     this.method422(var1, var2, var8.field202, 0xffcccccc);
                      this.method422(var1, var2, var8.field202 + 1, var12);
                   }
 

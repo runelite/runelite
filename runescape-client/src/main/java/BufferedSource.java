@@ -271,7 +271,7 @@ public class BufferedSource implements Runnable {
                   Client.tileLastDrawnActor[var3][var4] = Client.viewportDrawCount;
                }
 
-               long var5 = FontName.method5637(0, 0, 1, !var2.definition.isInteractable, Client.npcIndices[var1]);
+               long var5 = FontName.calculateTag(0, 0, 1, !var2.definition.isInteractable, Client.npcIndices[var1]);
                var2.playerCycle = Client.cycle;
                class65.scene.method285(SoundSystem.plane, var2.x, var2.y, class32.getTileHeight(var2.size * 64 - 64 + var2.x, var2.size * 64 - 64 + var2.y, SoundSystem.plane), var2.size * 64 - 64 + 60, var2, var2.field9, var5, var2.field10);
             }
