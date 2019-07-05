@@ -182,6 +182,9 @@ public abstract class RSClientMixin implements RSClient
 	private static boolean oldIsResized;
 
 	@Inject
+	private static boolean hdMinimapEnabled;
+
+	@Inject
 	static int skyboxColor;
 
 	@Inject
@@ -269,6 +272,20 @@ public abstract class RSClientMixin implements RSClient
 	public void setInventoryDragDelay(int delay)
 	{
 		inventoryDragDelay = delay;
+	}
+
+	@Inject
+	@Override
+	public boolean isHdMinimapEnabled()
+	{
+		return hdMinimapEnabled;
+	}
+
+	@Inject
+	@Override
+	public void setHdMinimapEnabled(boolean enabled)
+	{
+		hdMinimapEnabled = enabled;
 	}
 
 	@Inject
