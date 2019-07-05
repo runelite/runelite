@@ -312,7 +312,7 @@
 			</plugin>
 			<plugin>
 				<groupId>io.github.zlika</groupId>
-				<artifactId>reproducible-build-maven-plugin</artifactId>//logger.debug("Submitted xp track for {}", username);
+				<artifactId>reproducible-build-maven-plugin</artifactId>
 				<version>${zlika.reproducible.build.maven.plugin.version}</version>
 				<executions>
 					<execution>
