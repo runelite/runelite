@@ -26,21 +26,6 @@
 package net.runelite.client.plugins.goaltracker;
 
 import com.google.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Point;
-import net.runelite.api.RenderOverview;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.plugins.regionlocker.RegionLocker;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.tooltip.Tooltip;
-import net.runelite.client.ui.overlay.tooltip.TooltipManager;
-import net.runelite.client.util.ColorUtil;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -48,6 +33,19 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
+import net.runelite.api.Client;
+import net.runelite.api.Point;
+import net.runelite.api.RenderOverview;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.plugins.regionlocker.RegionLocker;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.ColorUtil;
 
 public class GoalTrackerOverlay extends Overlay
 {
