@@ -650,8 +650,8 @@ public abstract class RSClientMixin implements RSClient
 				new MenuEntry(
 					client.getMenuOptions()[oldCount],
 					client.getMenuTargets()[oldCount],
-					client.getMenuTypes()[oldCount],
 					client.getMenuIdentifiers()[oldCount],
+					client.getMenuTypes()[oldCount],
 					client.getMenuActionParams0()[oldCount],
 					client.getMenuActionParams1()[oldCount],
 					client.getMenuForceLeftClick()[oldCount]
