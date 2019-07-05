@@ -101,9 +101,8 @@ public class InventorySetupEquipmentPanel extends InventorySetupContainerPanel
 
 		for (final EquipmentInventorySlot slot : EquipmentInventorySlot.values())
 		{
-
 			int slotIdx = slot.getSlotIdx();
-			super.highlightDifferentSlotColor(equipToCheck.get(slotIdx), currEquipment.get(slotIdx), equipmentSlots.get(slot));
+			super.highlightDifferentSlotColor(inventorySetup, equipToCheck.get(slotIdx), currEquipment.get(slotIdx), equipmentSlots.get(slot));
 		}
 	}
 

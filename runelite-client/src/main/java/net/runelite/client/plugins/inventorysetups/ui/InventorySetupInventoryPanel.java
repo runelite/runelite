@@ -90,7 +90,7 @@ public class InventorySetupInventoryPanel extends InventorySetupContainerPanel
 
 		for (int i = 0; i < NUM_INVENTORY_ITEMS; i++)
 		{
-			super.highlightDifferentSlotColor(inventoryToCheck.get(i), currInventory.get(i), inventorySlots.get(i));
+			super.highlightDifferentSlotColor(inventorySetup, inventoryToCheck.get(i), currInventory.get(i), inventorySlots.get(i));
 		}
 	}
 

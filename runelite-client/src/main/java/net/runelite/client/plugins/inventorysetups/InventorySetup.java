@@ -26,7 +26,9 @@ package net.runelite.client.plugins.inventorysetups;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 @AllArgsConstructor
@@ -34,6 +36,27 @@ public class InventorySetup
 {
 	@Getter
 	private ArrayList<InventorySetupItem> inventory;
+
 	@Getter
 	private ArrayList<InventorySetupItem> equipment;
+
+	@Getter
+	@Setter
+	private String name;
+
+	@Getter
+	@Setter
+	private Color highlightColor;
+
+	@Getter
+	@Setter
+	private boolean stackDifference;
+
+	@Getter
+	@Setter
+	private boolean variationDifference;
+
+	@Getter
+	@Setter
+	private boolean highlightDifference;
 }

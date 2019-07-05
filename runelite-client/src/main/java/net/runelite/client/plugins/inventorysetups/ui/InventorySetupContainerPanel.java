@@ -28,7 +28,6 @@ import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.plugins.inventorysetups.InventorySetup;
-import net.runelite.client.plugins.inventorysetups.InventorySetupConfig;
 import net.runelite.client.plugins.inventorysetups.InventorySetupItem;
 import net.runelite.client.plugins.inventorysetups.InventorySetupPlugin;
 import net.runelite.client.ui.ColorScheme;
@@ -93,18 +92,15 @@ public abstract class InventorySetupContainerPanel extends JPanel
 		containerSlot.setImageLabel(toolTip, itemImg);
 	}
 
-	void highlightDifferentSlotColor(InventorySetupItem savedItem, InventorySetupItem currItem, final InventorySetupSlot containerSlot)
+	void highlightDifferentSlotColor(final InventorySetup setup, InventorySetupItem savedItem, InventorySetupItem currItem, final InventorySetupSlot containerSlot)
 	{
 		// important note: do not use item names for comparisons
 		// they are all empty to avoid clientThread usage when highlighting
 
-		final InventorySetupConfig config = plugin.getConfig();
-		final Color highlightColor = config.getHighlightColor();
-
 		// first check if stack differences are enabled and compare quantities
-		if (config.getStackDifference() && currItem.getQuantity() != savedItem.getQuantity())
+		if (setup.isStackDifference() && currItem.getQuantity() != savedItem.getQuantity())
 		{
-			containerSlot.setBackground(highlightColor);
+			containerSlot.setBackground(setup.getHighlightColor());
 			return;
 		}
 
@@ -112,7 +108,7 @@ public abstract class InventorySetupContainerPanel extends JPanel
 		int currId = currItem.getId();
 		int checkId = savedItem.getId();
 
-		if (!config.getVariationDifference())
+		if (!setup.isVariationDifference())
 		{
 			currId = ItemVariationMapping.map(currId);
 			checkId = ItemVariationMapping.map(checkId);
@@ -121,7 +117,7 @@ public abstract class InventorySetupContainerPanel extends JPanel
 		// if the ids don't match, highlight the container slot
 		if (currId != checkId)
 		{
-			containerSlot.setBackground(highlightColor);
+			containerSlot.setBackground(setup.getHighlightColor());
 			return;
 		}
 
