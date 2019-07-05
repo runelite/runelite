@@ -73,7 +73,7 @@ public interface RuneLiteConfig extends Config
 	)
 	default boolean enablePlugins()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(

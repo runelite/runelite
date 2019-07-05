@@ -67,7 +67,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Flexo Config",
 	description = "Customizes the flexo api",
 	tags = {"flexo", "null"},
-	type = PluginType.UTILITY
+	type = PluginType.EXTERNAL,
+	enabledByDefault = false
 )
 
 public class FlexoPlugin extends Plugin
