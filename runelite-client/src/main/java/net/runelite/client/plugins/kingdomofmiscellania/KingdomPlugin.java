@@ -158,28 +158,29 @@ public class KingdomPlugin extends Plugin
 	{
 		if (event.getGroupId() != WidgetID.KINGDOM_GROUP_ID || !config.showKingdomValue())
 		{
-			ItemContainer kingdomRewardContainer = client.getItemContainer(InventoryID.KINGDOM_OF_MISCELLANIA);
-			Item[] items = kingdomRewardContainer.getItems();
-			long kingdomPrice = 0;
-
-			for (Item item : items)
-			{
-				long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
-				kingdomPrice += itemStack;
-			}
-
-			final ChatMessageBuilder message = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Your kingdom reward is worth around ")
-				.append(StackFormatter.formatNumber(kingdomPrice))
-				.append(" coins.")
-				.append(ChatColorType.NORMAL);
-
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.ITEM_EXAMINE)
-				.runeLiteFormattedMessage(message.build())
-				.build());
+			return;
 		}
+		ItemContainer kingdomRewardContainer = client.getItemContainer(InventoryID.KINGDOM_OF_MISCELLANIA);
+		Item[] items = kingdomRewardContainer.getItems();
+		long kingdomPrice = 0;
+
+		for (Item item : items)
+		{
+			long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
+			kingdomPrice += itemStack;
+		}
+
+		final ChatMessageBuilder message = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Your kingdom reward is worth around ")
+			.append(StackFormatter.formatNumber(kingdomPrice))
+			.append(" coins.")
+			.append(ChatColorType.NORMAL);
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.ITEM_EXAMINE)
+			.runeLiteFormattedMessage(message.build())
+			.build());
 	}
 
 	private boolean hasCompletedQuest()
