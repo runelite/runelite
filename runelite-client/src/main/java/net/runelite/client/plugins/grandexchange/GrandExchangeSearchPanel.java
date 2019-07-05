@@ -221,11 +221,12 @@ class GrandExchangeSearchPanel extends JPanel
 		SwingUtilities.invokeLater(() ->
 		{
 			int index = 0;
+			int natRune = itemManager.getItemPrice(ItemID.NATURE_RUNE);
 			for (GrandExchangeItems item : itemsList)
 			{
 				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(item.getIcon(), item.getName(),
 					item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit(),
-					itemManager.getItemPrice(ItemID.NATURE_RUNE));
+						natRune);
 
 				/*
 				Add the first item directly, wrap the rest with margin. This margin hack is because
