@@ -243,6 +243,10 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+					<!-- Enable incremental compilation so that unchanged files dont have to be recompiled.
+	 				False seems to actually enable incremental compilation, due to a bug in this mvn plugin:
+	 				See: https://issues.apache.org/jira/browse/MCOMPILER-209 -->
+					<useIncrementalCompilation>false</useIncrementalCompilation>
 				</configuration>
 			</plugin>
 			<plugin>
