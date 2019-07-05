@@ -154,7 +154,9 @@ class GrandExchangeItemPanel extends JPanel
 		// Alch price
 		// Determine Profit Margin, assumes both Nature Runes and item are bought, then high alched
 		int profitMargin = haPrice.intValue() - (natRunePrice + gePrice);
-		String haPriceLabelText = StackFormatter.quantityToStackSize(haPrice.intValue()) + " alch (" + StackFormatter.quantityToStackSize(profitMargin) + ")";
+		String haPriceLabelText = StackFormatter.formatNumber(haPrice.intValue()) + " alch";
+		// Adding the profit as default behavior. If need to wrap in an option, wrap this line in a if check
+		haPriceLabelText = haPriceLabelText +" (" + StackFormatter.quantityToStackSize(profitMargin) + ")";
 		JLabel haPriceLabel = new JLabel();
 		haPriceLabel.setText(haPriceLabelText);
 		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
