@@ -67,14 +67,9 @@ public enum UntradeableItemMapping
 		UNTRADEABLE_RECLAIM_MAP = map.build();
 	}
 
-	public static UntradeableItemMapping map(int itemId, int optionalItemId)
+	public static UntradeableItemMapping map(int itemId)
 	{
-		UntradeableItemMapping mapping = UNTRADEABLE_RECLAIM_MAP.get(itemId);
-		if (mapping != null || itemId == optionalItemId)
-		{
-			return mapping;
-		}
-		return UNTRADEABLE_RECLAIM_MAP.get(optionalItemId);
+		return UNTRADEABLE_RECLAIM_MAP.get(itemId);
 	}
 }
 
