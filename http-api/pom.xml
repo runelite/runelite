@@ -40,7 +40,6 @@
 		<maven.git.commit.id.version>2.2.6</maven.git.commit.id.version>
 
 		<git.commit.id.abbrev>nogit</git.commit.id.abbrev>
-		<project.build.java.target>1.7</project.build.java.target>
 		<git.dirty>false</git.dirty>
 	</properties>
 
@@ -115,39 +114,5 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>io.takari.maven.plugins</groupId>
-					<artifactId>takari-lifecycle-plugin</artifactId>
-					<version>${maven.takari-lifecycle-plugin.verson}</version>
-					<executions>
-						<execution>
-							<id>compile</id>
-							<goals>
-								<goal>compile</goal>
-							</goals>
-							<phase>compile</phase>
-							<configuration>
-								<source>8</source>
-								<proc>proc</proc>
-								<!-- or "javac" to use javac java compiler -->
-								<compilerId>jdt</compilerId>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>${maven.compiler.plugin.version}</version>
-					<configuration>
-						<!-- disable maven-compiler-plugin -->
-						<skipMain>true</skipMain>
-						<skip>true</skip>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 </project>
