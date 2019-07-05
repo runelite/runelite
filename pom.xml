@@ -58,7 +58,6 @@
 		<maven.javadoc.plugin.version>3.0.0-M1</maven.javadoc.plugin.version>
 		<maven.release.plugin.version>2.5.3</maven.release.plugin.version>
 		<maven.surefire-plugin.version>2.18</maven.surefire-plugin.version>
-		<maven.takari-lifecycle-plugin.verson>1.13.9</maven.takari-lifecycle-plugin.verson>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
@@ -238,20 +237,12 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>io.takari.maven.plugins</groupId>
-				<artifactId>takari-lifecycle-plugin</artifactId>
-				<version>${maven.takari-lifecycle-plugin.verson}</version>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
-					<!-- disable maven-compiler-plugin -->
-					<skipMain>true</skipMain>
-					<skip>true</skip>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -338,35 +329,9 @@
 					<version>${maven.jar.plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>io.takari.maven.plugins</groupId>
-					<artifactId>takari-lifecycle-plugin</artifactId>
-					<version>${maven.takari-lifecycle-plugin.verson}</version>
-					<executions>
-						<execution>
-							<id>compile</id>
-							<goals>
-								<goal>compile</goal>
-							</goals>
-							<phase>compile</phase>
-							<configuration>
-								<source>${java.version}</source>
-								<target>${java.version}</target>
-								<proc>proc</proc>
-								<!-- or "javac" to use javac java compiler -->
-								<compilerId>javac</compilerId>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${maven.compiler.plugin.version}</version>
-					<configuration>
-						<!-- disable maven-compiler-plugin -->
-						<skipMain>true</skipMain>
-						<skip>true</skip>
-					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
