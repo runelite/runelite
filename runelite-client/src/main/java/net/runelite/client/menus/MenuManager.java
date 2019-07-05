@@ -287,6 +287,11 @@ public class MenuManager
 			return;
 		}
 
+		rebuildLeftClickMenu();
+	}
+
+	private void rebuildLeftClickMenu()
+	{
 		entries.clear();
 		entries.addAll(Arrays.asList(client.getMenuEntries()));
 
@@ -428,10 +433,15 @@ public class MenuManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!client.isMenuOpen() && leftClickEntry != null)
+		if (!client.isMenuOpen())
 		{
-			event.setMenuEntry(leftClickEntry);
-			leftClickEntry = null;
+			rebuildLeftClickMenu();
+
+			if (leftClickEntry != null)
+			{
+				event.setMenuEntry(leftClickEntry);
+				leftClickEntry = null;
+			}
 		}
 
 		if (event.getMenuAction() != MenuAction.RUNELITE)
