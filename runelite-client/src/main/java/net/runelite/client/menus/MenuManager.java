@@ -796,7 +796,7 @@ public class MenuManager
 		leftClickEntry = Iterables.getLast(safeCurrentPriorityEntries.entrySet().stream()
 			.sorted(Comparator.comparingInt(e -> e.getValue().getPriority()))
 			.map(Map.Entry::getKey)
-			.collect(Collectors.toList()));
+			.collect(Collectors.toList()), null);
 	}
 
 	private void indexSwapEntries(Set<MenuEntry>  entries)
