@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Pineapple <https://github.com/Pineapplezz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,12 +29,16 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("kingdom")
-public interface KingdomConfig extends Config {
-    @ConfigItem(
-            keyName = "showKingdomValue",
-            name = "Show Reward Value of Kingdom",
-            description = "Configure whether to show total exchange value of kingdom when opened",
-            position = 0
-    )
-    default boolean showKingdomValue() { return true; }
+public interface KingdomConfig extends Config
+{
+	@ConfigItem(
+		keyName = "showKingdomValue",
+		name = "Show Reward Value of Kingdom",
+		description = "Configure whether to show total exchange value of kingdom when opened",
+		position = 0
+	)
+	default boolean showKingdomValue()
+	{
+		return true;
+	}
 }
