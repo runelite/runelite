@@ -355,6 +355,8 @@ public class GroundMarkerPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
 		keyManager.registerKeyListener(inputListener);
@@ -364,8 +366,6 @@ public class GroundMarkerPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		updateConfig();
-
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
 		keyManager.unregisterKeyListener(inputListener);
