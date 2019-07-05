@@ -31,6 +31,7 @@ import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
@@ -56,7 +57,7 @@ import net.runelite.client.ui.ClientUI;
 		description = "Configures various aspects of RuneLitePlus",
 		type = PluginType.EXTERNAL
 )
-
+@Singleton
 @Slf4j
 public class RuneLitePlusPlugin extends Plugin
 {
@@ -120,13 +121,10 @@ public class RuneLitePlusPlugin extends Plugin
 		};*/
 	public static boolean customPresenceEnabled = false;
 	public static final String rlPlusDiscordApp = "560644885250572289";
-	public static final String rlDiscordApp = "409416265891971072";
+	private static final String rlDiscordApp = "409416265891971072";
 
 	@Inject
 	public RuneLitePlusConfig config;
-
-	@Inject
-	private ConfigManager configManager;
 
 	@Inject
 	public DiscordService discordService;
@@ -258,7 +256,12 @@ public class RuneLitePlusPlugin extends Plugin
 				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Grand Exchange")
 				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Housing Security System")
 				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Dominic's Coffer")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Dominic's Reward Shop"))
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Dominic's Reward Shop")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Seed Vault")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Leprechaun Protection")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Access Bond Pouch")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Miscellania Security System")
+				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("STASH Security"))
 
 		{
 			entered = 0;

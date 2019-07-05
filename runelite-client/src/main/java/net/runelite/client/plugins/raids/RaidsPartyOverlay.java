@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.ClanMember;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
@@ -44,6 +45,7 @@ import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
 
+@Singleton
 public class RaidsPartyOverlay extends Overlay
 {
 	static final String PARTY_OVERLAY_RESET = "Reset missing";
@@ -56,7 +58,7 @@ public class RaidsPartyOverlay extends Overlay
 	private RaidsPlugin plugin;
 
 	@Inject
-	private RaidsPartyOverlay(RaidsPlugin plugin)
+	private RaidsPartyOverlay(final RaidsPlugin plugin)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_RIGHT);

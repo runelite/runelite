@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.text.DecimalFormat;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import static net.runelite.api.AnimationID.BLOCK_UNARMED;
 import static net.runelite.api.AnimationID.PICKPOCKET_SUCCESS;
 import static net.runelite.api.AnimationID.THIEVING_STALL;
@@ -44,6 +45,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+@Singleton
 public class ThievingOverlay extends Overlay
 {
 	private static final DecimalFormat FORMAT = new DecimalFormat("#.#");
@@ -54,7 +56,7 @@ public class ThievingOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private ThievingOverlay(Client client, ThievingPlugin plugin, XpTrackerService xpTrackerService)
+	private ThievingOverlay(final Client client, final ThievingPlugin plugin, final XpTrackerService xpTrackerService)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;

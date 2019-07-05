@@ -17,7 +17,7 @@ public class FriendsList extends UserList {
    @ObfuscatedGetter(
       intValue = -217526077
    )
-   int __x;
+   int field358;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Ljy;"
@@ -30,7 +30,7 @@ public class FriendsList extends UserList {
    )
    public FriendsList(LoginType var1) {
       super(400);
-      this.__x = 1;
+      this.field358 = 1;
       this.friendLoginUpdates = new LinkDeque();
       this.loginType = var1;
    }
@@ -73,29 +73,29 @@ public class FriendsList extends UserList {
    )
    @Export("read")
    public void read(Buffer var1, int var2) {
-      while(true) {
-         if(var1.index < var2) {
+      while (true) {
+         if (var1.index < var2) {
             boolean var3 = var1.readUnsignedByte() == 1;
             Username var4 = new Username(var1.readStringCp1252NullTerminated(), this.loginType);
             Username var5 = new Username(var1.readStringCp1252NullTerminated(), this.loginType);
-            int var6 = var1.__ag_302();
+            int var6 = var1.method43();
             int var7 = var1.readUnsignedByte();
             int var8 = var1.readUnsignedByte();
             boolean var9 = (var8 & 2) != 0;
             boolean var10 = (var8 & 1) != 0;
-            if(var6 > 0) {
+            if (var6 > 0) {
                var1.readStringCp1252NullTerminated();
                var1.readUnsignedByte();
                var1.readInt();
             }
 
             var1.readStringCp1252NullTerminated();
-            if(var4 != null && var4.hasCleanName()) {
+            if (var4 != null && var4.hasCleanName()) {
                Friend var11 = (Friend)this.getByCurrentUsername(var4);
-               if(var3) {
+               if (var3) {
                   Friend var12 = (Friend)this.getByCurrentUsername(var5);
-                  if(var12 != null && var12 != var11) {
-                     if(var11 != null) {
+                  if (var12 != null && var12 != var11) {
+                     if (var11 != null) {
                         this.remove(var12);
                      } else {
                         var11 = var12;
@@ -103,38 +103,38 @@ public class FriendsList extends UserList {
                   }
                }
 
-               if(var11 != null) {
+               if (var11 != null) {
                   this.changeName(var11, var4, var5);
-                  if(var6 != var11.world0) {
+                  if (var6 != var11.world0) {
                      boolean var14 = true;
 
-                     for(FriendLoginUpdate var13 = (FriendLoginUpdate)this.friendLoginUpdates.__f_438(); var13 != null; var13 = (FriendLoginUpdate)this.friendLoginUpdates.__q_439()) {
-                        if(var13.username.equals(var4)) {
-                           if(var6 != 0 && var13.world == 0) {
+                     for (FriendLoginUpdate var13 = (FriendLoginUpdate)this.friendLoginUpdates.last(); var13 != null; var13 = (FriendLoginUpdate)this.friendLoginUpdates.previous()) {
+                        if (var13.username.equals(var4)) {
+                           if (var6 != 0 && var13.world == 0) {
                               var13.remove();
                               var14 = false;
-                           } else if(var6 == 0 && var13.world != 0) {
+                           } else if (var6 == 0 && var13.world != 0) {
                               var13.remove();
                               var14 = false;
                            }
                         }
                      }
 
-                     if(var14) {
-                        this.friendLoginUpdates.__m_437(new FriendLoginUpdate(var4, var6));
+                     if (var14) {
+                        this.friendLoginUpdates.addFirst(new FriendLoginUpdate(var4, var6));
                      }
                   }
                } else {
-                  if(this.size() >= 400) {
+                  if (this.size() >= 400) {
                      continue;
                   }
 
                   var11 = (Friend)this.addLast(var4, var5);
                }
 
-               if(var6 != var11.world0) {
-                  var11.int2 = ++this.__x - 1;
-                  if(var11.world0 == -1 && var6 == 0) {
+               if (var6 != var11.world0) {
+                  var11.int2 = ++this.field358 - 1;
+                  if (var11.world0 == -1 && var6 == 0) {
                      var11.int2 = -(var11.int2 * -1377538447) * 120689297;
                   }
 
@@ -142,8 +142,8 @@ public class FriendsList extends UserList {
                }
 
                var11.rank = var7;
-               var11.__m = var9;
-               var11.__f = var10;
+               var11.field354 = var9;
+               var11.field355 = var10;
                continue;
             }
 

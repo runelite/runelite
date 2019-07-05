@@ -35,7 +35,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.eventbus.Subscribe;
 
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public class Scorecard
 {
 	private BarbarianAssaultPlugin game;

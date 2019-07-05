@@ -20,7 +20,7 @@ public class ClanManModeService
 	private final ClanManModePlugin plugin;
 
 	@Inject
-	private ClanManModeService(Client client, ClanManModeConfig config, ClanManModePlugin plugin)
+	private ClanManModeService(final Client client, final ClanManModeConfig config, final ClanManModePlugin plugin)
 	{
 		this.config = config;
 		this.client = client;

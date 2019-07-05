@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.Comparator;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
@@ -60,6 +61,7 @@ import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
 
+@Singleton
 public class GroundItemsOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2500;
@@ -83,7 +85,6 @@ public class GroundItemsOverlay extends Overlay
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
-	private final GroundItemsConfig config;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 	private final TextComponent textComponent = new TextComponent();
@@ -91,21 +92,20 @@ public class GroundItemsOverlay extends Overlay
 	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
 
 	@Inject
-	private GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config)
+	private GroundItemsOverlay(final Client client, final GroundItemsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final boolean dontShowOverlay = (config.itemHighlightMode() == MENU || plugin.isHideAll()) && !plugin.isHotKeyPressed();
+		final boolean dontShowOverlay = (plugin.getItemHighlightMode() == MENU || plugin.isHideAll()) && !plugin.isHotKeyPressed();
 
-		if (dontShowOverlay && !config.highlightTiles())
+		if (dontShowOverlay && !plugin.isHighlightTiles())
 		{
 			return null;
 		}
@@ -177,13 +177,13 @@ public class GroundItemsOverlay extends Overlay
 		plugin.setHiddenBoxBounds(null);
 		plugin.setHighlightBoxBounds(null);
 
-		final boolean onlyShowLoot = config.onlyShowLoot();
+		final boolean onlyShowLoot = plugin.isOnlyShowLoot();
 
 		List<GroundItem> groundItemListAsList = new ArrayList<>(groundItemList);  // make a copy so we can non-destructively modify the list
 
 		Comparator<GroundItem> compareByHaPrice = Comparator.comparingInt(GroundItem::getHaPrice);
 		Comparator<GroundItem> compareByGePrice = Comparator.comparingInt(GroundItem::getGePrice);
-		groundItemListAsList.sort(config.sortByGEPrice() ? compareByGePrice : compareByHaPrice);
+		groundItemListAsList.sort(plugin.isSortByGEPrice() ? compareByGePrice : compareByHaPrice);
 
 		for (GroundItem item : groundItemListAsList)
 		{
@@ -207,7 +207,7 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				// Do not display non-highlighted items
-				if (config.showHighlightedOnly())
+				if (plugin.isShowHighlightedOnly())
 				{
 					continue;
 				}
@@ -215,7 +215,7 @@ public class GroundItemsOverlay extends Overlay
 
 			final Color color = plugin.getItemColor(highlighted, hidden);
 
-			if (config.highlightTiles())
+			if (plugin.isHighlightTiles())
 			{
 				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
 
@@ -246,7 +246,7 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
-			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
+			if (plugin.getPriceDisplayMode() == PriceDisplayMode.BOTH)
 			{
 				if (item.getGePrice() > 0)
 				{
@@ -262,9 +262,9 @@ public class GroundItemsOverlay extends Overlay
 						.append(" gp)");
 				}
 			}
-			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
+			else if (plugin.getPriceDisplayMode() != PriceDisplayMode.OFF)
 			{
-				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
+				final int price = plugin.getPriceDisplayMode() == PriceDisplayMode.GE
 					? item.getGePrice()
 					: item.getHaPrice();
 
@@ -277,7 +277,7 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
-			if (item.getTicks() > 0 && config.showTimer())
+			if (item.getTicks() > 0 && plugin.isShowTimer())
 			{
 				itemStringBuilder
 						.append(" - ")
@@ -368,15 +368,15 @@ public class GroundItemsOverlay extends Overlay
 				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
 			}
 
-			if (config.showGroundItemDuration() == TimerDisplayMode.ALWAYS
-				|| (config.showGroundItemDuration() == TimerDisplayMode.HOTKEY_PRESSED && plugin.isHotKeyPressed()))
+			if (plugin.getShowGroundItemDuration() == TimerDisplayMode.ALWAYS
+				|| (plugin.getShowGroundItemDuration() == TimerDisplayMode.HOTKEY_PRESSED && plugin.isHotKeyPressed()))
 			{
 				drawTimerOverlay(graphics, new java.awt.Point(textX, textY), item);
 			}
 
-			if (config.toggleOutline())
+			if (plugin.isToggleOutline())
 			{
-				final Color bordercolor = config.bordercolor();
+				final Color bordercolor = plugin.getBordercolor();
 				graphics.setColor(bordercolor);
 				graphics.drawString(itemString, textX + 1, textY + 1);
 				graphics.drawString(itemString, textX - 1, textY - 1);

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.itemcharges;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.ItemID.ABYSSAL_BRACELET1;
@@ -165,7 +166,7 @@ import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum ItemWithCharge
 {
 	ABRACE1(ABYSSAL_BRACELET, ABYSSAL_BRACELET1, 1),

@@ -125,9 +125,9 @@ public enum class231 implements Enumerated {
    @ObfuscatedGetter(
       intValue = -745071109
    )
-   static int __hb_sg;
+   static int field1139;
    @ObfuscatedName("av")
-   static java.awt.Font __hb_av;
+   static java.awt.Font field1140;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 899733687
@@ -138,7 +138,7 @@ public enum class231 implements Enumerated {
       signature = "(II)V",
       garbageValue = "0"
    )
-   class231(int var3, int var4) {
+   private class231(int var3, int var4) {
       this.field2820 = var3;
    }
 
@@ -158,17 +158,17 @@ public enum class231 implements Enumerated {
       garbageValue = "1"
    )
    public static InvDefinition method4523(int var0) {
-      InvDefinition var1 = (InvDefinition)InvDefinition.__ib_f.get((long)var0);
-      if(var1 != null) {
+      InvDefinition var1 = (InvDefinition)InvDefinition.field427.get((long)var0);
+      if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class4.__o_m.takeRecord(5, var0);
+         byte[] var2 = class4.field1158.takeRecord(5, var0);
          var1 = new InvDefinition();
-         if(var2 != null) {
+         if (var2 != null) {
             var1.read(new Buffer(var2));
          }
 
-         InvDefinition.__ib_f.put(var1, (long)var0);
+         InvDefinition.field427.put(var1, (long)var0);
          return var1;
       }
    }
@@ -189,8 +189,9 @@ public enum class231 implements Enumerated {
       garbageValue = "1521012895"
    )
    static final void method4517(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(GroundItemPile.loadWidgetGroup(var0)) {
+      if (GroundItemPile.loadWidgetGroup(var0)) {
          class238.updateWidgetGroup(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6);
       }
+
    }
 }

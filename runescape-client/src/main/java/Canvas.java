@@ -15,12 +15,12 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Canvas")
 public final class Canvas extends java.awt.Canvas {
    @ObfuscatedName("s")
-   public static String[] __ao_s;
+   public static String[] field94;
    @ObfuscatedName("gk")
    @ObfuscatedGetter(
       intValue = -1131782991
    )
-   static int __ao_gk;
+   static int field95;
    @ObfuscatedName("jk")
    @ObfuscatedSignature(
       signature = "Lbr;"
@@ -54,7 +54,7 @@ public final class Canvas extends java.awt.Canvas {
    )
    static String method860(Throwable var0) throws IOException {
       String var1;
-      if(var0 instanceof RunException) {
+      if (var0 instanceof RunException) {
          RunException var2 = (RunException)var0;
          var1 = var2.string + " | ";
          var0 = var2.throwable;
@@ -70,20 +70,20 @@ public final class Canvas extends java.awt.Canvas {
       BufferedReader var5 = new BufferedReader(new StringReader(var4));
       String var6 = var5.readLine();
 
-      while(true) {
-         while(true) {
+      while (true) {
+         while (true) {
             String var7 = var5.readLine();
-            if(var7 == null) {
+            if (var7 == null) {
                var1 = var1 + "| " + var6;
                return var1;
             }
 
             int var8 = var7.indexOf(40);
             int var9 = var7.indexOf(41, var8 + 1);
-            if(var8 >= 0 && var9 >= 0) {
+            if (var8 >= 0 && var9 >= 0) {
                String var10 = var7.substring(var8 + 1, var9);
                int var11 = var10.indexOf(".java:");
-               if(var11 >= 0) {
+               if (var11 >= 0) {
                   var10 = var10.substring(0, var11) + var10.substring(var11 + 5);
                   var1 = var1 + var10 + ' ';
                   continue;
@@ -117,42 +117,43 @@ public final class Canvas extends java.awt.Canvas {
    static int method861(int var0, Script var1, boolean var2) {
       int var3;
       int var4;
-      if(var0 == 100) {
+      Widget var6;
+      if (var0 == 100) {
          RouteStrategy.Interpreter_intStackSize -= 3;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         int var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
-         if(var4 == 0) {
+         int var9 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
+         if (var4 == 0) {
             throw new RuntimeException();
          } else {
-            Widget var6 = Huffman.getWidget(var3);
-            if(var6.children == null) {
-               var6.children = new Widget[var5 + 1];
+            var6 = Huffman.getWidget(var3);
+            if (var6.children == null) {
+               var6.children = new Widget[var9 + 1];
             }
 
-            if(var6.children.length <= var5) {
-               Widget[] var7 = new Widget[var5 + 1];
+            if (var6.children.length <= var9) {
+               Widget[] var7 = new Widget[var9 + 1];
 
-               for(int var8 = 0; var8 < var6.children.length; ++var8) {
+               for (int var8 = 0; var8 < var6.children.length; ++var8) {
                   var7[var8] = var6.children[var8];
                }
 
                var6.children = var7;
             }
 
-            if(var5 > 0 && var6.children[var5 - 1] == null) {
-               throw new RuntimeException("" + (var5 - 1));
+            if (var9 > 0 && var6.children[var9 - 1] == null) {
+               throw new RuntimeException("" + (var9 - 1));
             } else {
-               Widget var12 = new Widget();
-               var12.type = var4;
-               var12.parentId = var12.id = var6.id;
-               var12.childIndex = var5;
-               var12.isIf3 = true;
-               var6.children[var5] = var12;
-               if(var2) {
-                  WorldMapIcon1.__t_i = var12;
+               Widget var10 = new Widget();
+               var10.type = var4;
+               var10.parentId = var10.id = var6.id;
+               var10.childIndex = var9;
+               var10.isIf3 = true;
+               var6.children[var9] = var10;
+               if (var2) {
+                  WorldMapIcon1.field1030 = var10;
                } else {
-                  class12.__n_n = var12;
+                  class12.field1111 = var10;
                }
 
                class22.method295(var6);
@@ -160,27 +161,27 @@ public final class Canvas extends java.awt.Canvas {
             }
          }
       } else {
-         Widget var9;
-         if(var0 == 101) {
-            var9 = var2?WorldMapIcon1.__t_i:class12.__n_n;
-            Widget var10 = Huffman.getWidget(var9.id);
-            var10.children[var9.childIndex] = null;
-            class22.method295(var10);
+         Widget var5;
+         if (var0 == 101) {
+            var5 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+            var6 = Huffman.getWidget(var5.id);
+            var6.children[var5.childIndex] = null;
+            class22.method295(var6);
             return 1;
-         } else if(var0 == 102) {
-            var9 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-            var9.children = null;
-            class22.method295(var9);
+         } else if (var0 == 102) {
+            var5 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+            var5.children = null;
+            class22.method295(var5);
             return 1;
-         } else if(var0 != 200) {
-            if(var0 == 201) {
-               var9 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-               if(var9 != null) {
+         } else if (var0 != 200) {
+            if (var0 == 201) {
+               var5 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+               if (var5 != null) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
-                  if(var2) {
-                     WorldMapIcon1.__t_i = var9;
+                  if (var2) {
+                     WorldMapIcon1.field1030 = var5;
                   } else {
-                     class12.__n_n = var9;
+                     class12.field1111 = var5;
                   }
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -194,13 +195,13 @@ public final class Canvas extends java.awt.Canvas {
             RouteStrategy.Interpreter_intStackSize -= 2;
             var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
             var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-            Widget var11 = class204.getWidgetChild(var3, var4);
-            if(var11 != null && var4 != -1) {
+            var6 = class204.getWidgetChild(var3, var4);
+            if (var6 != null && var4 != -1) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
-               if(var2) {
-                  WorldMapIcon1.__t_i = var11;
+               if (var2) {
+                  WorldMapIcon1.field1030 = var6;
                } else {
-                  class12.__n_n = var11;
+                  class12.field1111 = var6;
                }
             } else {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -219,13 +220,13 @@ public final class Canvas extends java.awt.Canvas {
    public static void method858(int var0, AbstractIndexCache var1, String var2, String var3, int var4, boolean var5) {
       int var6 = var1.getArchiveId(var2);
       int var7 = var1.getRecordId(var6, var3);
-      class214.__hf_o = 1;
-      class214.__hf_u = var1;
+      class214.field1129 = 1;
+      class214.field1130 = var1;
       class30.musicTrackArchiveId = var6;
       GrandExchangeOffer.musicTrackFileId = var7;
-      WorldMapLabel.__aj_e = var4;
+      WorldMapLabel.field1039 = var4;
       RectangleMode.musicTrackBoolean = var5;
-      FaceNormal.__el_x = var0;
+      FaceNormal.field344 = var0;
    }
 
    @ObfuscatedName("ha")
@@ -234,27 +235,27 @@ public final class Canvas extends java.awt.Canvas {
       garbageValue = "-1032035944"
    )
    static final void method855() {
-      for(class68 var0 = (class68)Client.__client_kh.last(); var0 != null; var0 = (class68)Client.__client_kh.previous()) {
-         if(var0.field910 > 0) {
+      for (class68 var0 = (class68)Client.field214.last(); var0 != null; var0 = (class68)Client.field214.previous()) {
+         if (var0.field910 > 0) {
             --var0.field910;
          }
 
-         if(var0.field910 == 0) {
-            if(var0.field903 < 0 || VarbitDefinition.method4910(var0.field903, var0.field905)) {
+         if (var0.field910 == 0) {
+            if (var0.field903 < 0 || VarbitDefinition.method4910(var0.field903, var0.field905)) {
                ParamKeyDefinition.method4933(var0.field911, var0.field906, var0.field913, var0.field901, var0.field903, var0.field904, var0.field905);
                var0.remove();
             }
          } else {
-            if(var0.field909 > 0) {
+            if (var0.field909 > 0) {
                --var0.field909;
             }
 
-            if(var0.field909 == 0 && var0.field913 >= 1 && var0.field901 >= 1 && var0.field913 <= 102 && var0.field901 <= 102 && (var0.field899 < 0 || VarbitDefinition.method4910(var0.field899, var0.field908))) {
+            if (var0.field909 == 0 && var0.field913 >= 1 && var0.field901 >= 1 && var0.field913 <= 102 && var0.field901 <= 102 && (var0.field899 < 0 || VarbitDefinition.method4910(var0.field899, var0.field908))) {
                ParamKeyDefinition.method4933(var0.field911, var0.field906, var0.field913, var0.field901, var0.field899, var0.field907, var0.field908);
                var0.field909 = -1;
-               if(var0.field903 == var0.field899 && var0.field903 == -1) {
+               if (var0.field903 == var0.field899 && var0.field903 == -1) {
                   var0.remove();
-               } else if(var0.field899 == var0.field903 && var0.field904 == var0.field907 && var0.field908 == var0.field905) {
+               } else if (var0.field899 == var0.field903 && var0.field904 == var0.field907 && var0.field908 == var0.field905) {
                   var0.remove();
                }
             }

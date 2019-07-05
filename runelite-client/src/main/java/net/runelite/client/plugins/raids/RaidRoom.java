@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.raids;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,25 +33,25 @@ import net.runelite.api.Tile;
 public class RaidRoom
 {
 	static final int ROOM_MAX_SIZE = 32;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Tile base;
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private Type type;
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PUBLIC)
+	@Setter(AccessLevel.PUBLIC)
 	private Boss boss;
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private Puzzle puzzle;
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private RaidRoom previousRoom;
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private RaidRoom nextRoom;
 
-	RaidRoom(Tile base, Type type)
+	RaidRoom(final Tile base, final Type type)
 	{
 		this.base = base;
 		this.type = type;

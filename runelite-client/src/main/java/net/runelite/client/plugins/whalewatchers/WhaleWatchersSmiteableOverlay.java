@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -24,6 +25,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 /**
  * The overlay for the smiteable warning
  */
+@Singleton
 public class WhaleWatchersSmiteableOverlay extends Overlay
 {
 	private WhaleWatchersPlugin plugin;
@@ -31,7 +33,7 @@ public class WhaleWatchersSmiteableOverlay extends Overlay
 
 
 	@Inject
-	public WhaleWatchersSmiteableOverlay(WhaleWatchersPlugin plugin)
+	public WhaleWatchersSmiteableOverlay(final WhaleWatchersPlugin plugin)
 	{
 		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);

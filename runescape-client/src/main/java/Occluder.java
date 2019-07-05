@@ -77,37 +77,37 @@ public final class Occluder {
    @ObfuscatedGetter(
       intValue = 826041747
    )
-   int __k;
+   int field656;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -407777817
    )
-   int __n;
+   int field657;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1324959981
    )
-   int __i;
+   int field658;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -1527021367
    )
-   int __a;
+   int field659;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -570391007
    )
-   int __z;
+   int field660;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -373839103
    )
-   int __j;
+   int field661;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1334433969
    )
-   int __s;
+   int field662;
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
@@ -116,12 +116,12 @@ public final class Occluder {
    )
    public static VarbitDefinition method3255(int var0) {
       VarbitDefinition var1 = (VarbitDefinition)VarbitDefinition.VarbitDefinition_cached.get((long)var0);
-      if(var1 != null) {
+      if (var1 != null) {
          return var1;
       } else {
          byte[] var2 = VarbitDefinition.VarbitDefinition_indexCache.takeRecord(14, var0);
          var1 = new VarbitDefinition();
-         if(var2 != null) {
+         if (var2 != null) {
             var1.read(new Buffer(var2));
          }
 
@@ -140,26 +140,26 @@ public final class Occluder {
       Script var1 = new Script();
       Buffer var2 = new Buffer(var0);
       var2.index = var2.array.length - 2;
-      int var3 = var2.__ag_302();
+      int var3 = var2.method43();
       int var4 = var2.array.length - 2 - var3 - 12;
       var2.index = var4;
       int var5 = var2.readInt();
-      var1.localIntCount = var2.__ag_302();
-      var1.localStringCount = var2.__ag_302();
-      var1.intArgumentCount = var2.__ag_302();
-      var1.stringArgumentCount = var2.__ag_302();
+      var1.localIntCount = var2.method43();
+      var1.localStringCount = var2.method43();
+      var1.intArgumentCount = var2.method43();
+      var1.stringArgumentCount = var2.method43();
       int var6 = var2.readUnsignedByte();
       int var7;
       int var8;
-      if(var6 > 0) {
-         var1.switches = var1.__o_164(var6);
+      if (var6 > 0) {
+         var1.switches = var1.method302(var6);
 
-         for(var7 = 0; var7 < var6; ++var7) {
-            var8 = var2.__ag_302();
-            IterableNodeHashTable var9 = new IterableNodeHashTable(var8 > 0?World.method1759(var8):1);
+         for (var7 = 0; var7 < var6; ++var7) {
+            var8 = var2.method43();
+            IterableNodeHashTable var9 = new IterableNodeHashTable(var8 > 0 ? World.method1759(var8) : 1);
             var1.switches[var7] = var9;
 
-            while(var8-- > 0) {
+            while (var8-- > 0) {
                int var10 = var2.readInt();
                int var11 = var2.readInt();
                var9.put(new IntegerNode(var11), (long)var10);
@@ -173,11 +173,11 @@ public final class Occluder {
       var1.intOperands = new int[var5];
       var1.stringOperands = new String[var5];
 
-      for(var7 = 0; var2.index < var4; var1.opcodes[var7++] = var8) {
-         var8 = var2.__ag_302();
-         if(var8 == 3) {
+      for (var7 = 0; var2.index < var4; var1.opcodes[var7++] = var8) {
+         var8 = var2.method43();
+         if (var8 == 3) {
             var1.stringOperands[var7] = var2.readStringCp1252NullTerminated();
-         } else if(var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
+         } else if (var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
             var1.intOperands[var7] = var2.readInt();
          } else {
             var1.intOperands[var7] = var2.readUnsignedByte();

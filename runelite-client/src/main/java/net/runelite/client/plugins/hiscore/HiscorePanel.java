@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -95,6 +96,7 @@ import static net.runelite.http.api.hiscore.HiscoreSkill.WOODCUTTING;
 import net.runelite.http.api.hiscore.Skill;
 
 @Slf4j
+@Singleton
 public class HiscorePanel extends PluginPanel
 {
 	/* The maximum allowed username length in runescape accounts */

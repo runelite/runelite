@@ -32,11 +32,12 @@ import static java.util.Arrays.asList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum Task
 {
 

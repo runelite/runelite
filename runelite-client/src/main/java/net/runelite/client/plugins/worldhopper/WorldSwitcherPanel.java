@@ -33,6 +33,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Singleton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
@@ -45,6 +46,7 @@ import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
 
 @Slf4j
+@Singleton
 class WorldSwitcherPanel extends PluginPanel
 {
 	private static final Color ODD_ROW = new Color(44, 44, 44);

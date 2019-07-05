@@ -13,17 +13,17 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = -985436813
    )
-   final int __m;
+   final int field1034;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lav;"
    )
-   final WorldMapRegion __f;
+   final WorldMapRegion field1035;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -25914375
    )
-   int __q;
+   int field1036;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Laj;"
@@ -34,21 +34,21 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = 927871683
    )
-   int __o;
+   int field1037;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -1431936619
    )
-   int __u;
+   int field1038;
 
    @ObfuscatedSignature(
       signature = "(Lhu;Lhu;ILav;)V"
    )
    WorldMapIcon2(TileLocation var1, TileLocation var2, int var3, WorldMapRegion var4) {
       super(var1, var2);
-      this.__m = var3;
-      this.__f = var4;
-      this.__z_27();
+      this.field1034 = var3;
+      this.field1035 = var4;
+      this.method399();
    }
 
    @ObfuscatedName("m")
@@ -56,8 +56,8 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       signature = "(I)I",
       garbageValue = "1990181988"
    )
-   public int __m_15() {
-      return this.__q;
+   public int vmethod395() {
+      return this.field1036;
    }
 
    @ObfuscatedName("f")
@@ -65,7 +65,7 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       signature = "(I)Laj;",
       garbageValue = "1159446036"
    )
-   WorldMapLabel __f_16() {
+   WorldMapLabel vmethod396() {
       return this.label0;
    }
 
@@ -74,8 +74,8 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       signature = "(B)I",
       garbageValue = "75"
    )
-   int __q_17() {
-      return this.__o;
+   int vmethod397() {
+      return this.field1037;
    }
 
    @ObfuscatedName("w")
@@ -83,8 +83,8 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       signature = "(I)I",
       garbageValue = "-1558233611"
    )
-   int __w_18() {
-      return this.__u;
+   int vmethod398() {
+      return this.field1038;
    }
 
    @ObfuscatedName("z")
@@ -92,17 +92,17 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       signature = "(I)V",
       garbageValue = "-806344204"
    )
-   void __z_27() {
-      this.__q = class50.getObjectDefinition(this.__m).transform().mapIconId;
-      this.label0 = this.__f.__ab_56(ViewportMouse.getWorldMapElement(this.__q));
-      WorldMapElement var1 = ViewportMouse.getWorldMapElement(this.__m_15());
+   void method399() {
+      this.field1036 = class50.getObjectDefinition(this.field1034).transform().mapIconId;
+      this.label0 = this.field1035.method420(ViewportMouse.getWorldMapElement(this.field1036));
+      WorldMapElement var1 = ViewportMouse.getWorldMapElement(this.vmethod395());
       Sprite var2 = var1.getSprite(false);
-      if(var2 != null) {
-         this.__o = var2.subWidth;
-         this.__u = var2.subHeight;
+      if (var2 != null) {
+         this.field1037 = var2.subWidth;
+         this.field1038 = var2.subHeight;
       } else {
-         this.__o = 0;
-         this.__u = 0;
+         this.field1037 = 0;
+         this.field1038 = 0;
       }
 
    }
@@ -113,7 +113,7 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       garbageValue = "1026409510"
    )
    static LoginPacket[] method300() {
-      return new LoginPacket[]{LoginPacket.__gl_q, LoginPacket.__gl_w, LoginPacket.__gl_m, LoginPacket.__gl_o, LoginPacket.__gl_f};
+      return new LoginPacket[]{LoginPacket.field475, LoginPacket.field476, LoginPacket.field473, LoginPacket.field477, LoginPacket.field474};
    }
 
    @ObfuscatedName("m")
@@ -122,19 +122,19 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       garbageValue = "16723968"
    )
    public static File method315(String var0) {
-      if(!class171.__fo_m) {
+      if (!class171.field1117) {
          throw new RuntimeException("");
       } else {
-         File var1 = (File)class171.__fo_q.get(var0);
-         if(var1 != null) {
+         File var1 = (File)class171.field1119.get(var0);
+         if (var1 != null) {
             return var1;
          } else {
-            File var2 = new File(class171.__fo_f, var0);
+            File var2 = new File(class171.field1118, var0);
             RandomAccessFile var3 = null;
 
             try {
                File var4 = new File(var2.getParent());
-               if(!var4.exists()) {
+               if (!var4.exists()) {
                   throw new RuntimeException("");
                } else {
                   var3 = new RandomAccessFile(var2, "rw");
@@ -143,17 +143,16 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
                   var3.write(var5);
                   var3.seek(0L);
                   var3.close();
-                  class171.__fo_q.put(var0, var2);
+                  class171.field1119.put(var0, var2);
                   return var2;
                }
-            } catch (Exception var8) {
+            } catch (Exception var7) {
                try {
-                  if(var3 != null) {
+                  if (var3 != null) {
                      var3.close();
                      var3 = null;
                   }
-               } catch (Exception var7) {
-                  ;
+               } catch (Exception var6) {
                }
 
                throw new RuntimeException();
@@ -171,22 +170,20 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       int var4 = var0.pathX[0];
       int var5 = var0.pathY[0];
       int var6 = var0.transformedSize();
-      if(var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6) {
-         if(var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
-            int var9 = var0.transformedSize();
-            Client.field895.approxDestinationX = var1;
-            Client.field895.approxDestinationY = var2;
-            Client.field895.approxDestinationSizeX = 1;
-            Client.field895.approxDestinationSizeY = 1;
-            class65 var10 = Client.field895;
-            int var11 = NetSocket.calculateRoute(var4, var5, var9, var10, Client.collisionMaps[var0.plane], true, Client.__client_tp, Client.__client_th);
-            if(var11 >= 1) {
-               for(int var12 = 0; var12 < var11 - 1; ++var12) {
-                  var0.__a_131(Client.__client_tp[var12], Client.__client_th[var12], var3);
-               }
-
+      if (var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6 && var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
+         int var7 = var0.transformedSize();
+         Client.field895.approxDestinationX = var1;
+         Client.field895.approxDestinationY = var2;
+         Client.field895.approxDestinationSizeX = 1;
+         Client.field895.approxDestinationSizeY = 1;
+         class65 var8 = Client.field895;
+         int var9 = NetSocket.calculateRoute(var4, var5, var7, var8, Client.collisionMaps[var0.plane], true, Client.field113, Client.field114);
+         if (var9 >= 1) {
+            for (int var10 = 0; var10 < var9 - 1; ++var10) {
+               var0.method255(Client.field113[var10], Client.field114[var10], var3);
             }
          }
       }
+
    }
 }

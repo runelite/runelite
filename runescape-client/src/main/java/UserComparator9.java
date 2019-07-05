@@ -8,10 +8,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("UserComparator9")
 public class UserComparator9 extends AbstractUserComparator {
    @ObfuscatedName("m")
-   final boolean __m;
+   final boolean field941;
 
    public UserComparator9(boolean var1) {
-      this.__m = var1;
+      this.field941 = var1;
    }
 
    @ObfuscatedName("m")
@@ -19,14 +19,14 @@ public class UserComparator9 extends AbstractUserComparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "1966780392"
    )
-   int __m_264(Buddy var1, Buddy var2) {
-      return Client.worldId == var1.world0 && var2.world0 == Client.worldId?(this.__m?var1.username().compareTo0(var2.username()):var2.username().compareTo0(var1.username())):this.__x_461(var1, var2);
+   int method351(Buddy var1, Buddy var2) {
+      return Client.worldId == var1.world0 && var2.world0 == Client.worldId ? (this.field941 ? var1.username().compareTo0(var2.username()) : var2.username().compareTo0(var1.username())) : this.method12(var1, var2);
    }
 
    @Export("compare")
    @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.__m_264((Buddy)var1, (Buddy)var2);
+      return this.method351((Buddy)var1, (Buddy)var2);
    }
 
    @ObfuscatedName("m")
@@ -35,24 +35,23 @@ public class UserComparator9 extends AbstractUserComparator {
       garbageValue = "-1"
    )
    public static void method3343(boolean var0) {
-      if(NetCache.NetCache_socket != null) {
+      if (NetCache.NetCache_socket != null) {
          try {
             Buffer var1 = new Buffer(4);
-            var1.writeByte(var0?2:3);
+            var1.writeByte(var0 ? 2 : 3);
             var1.writeMedium(0);
             NetCache.NetCache_socket.write(var1.array, 0, 4);
          } catch (IOException var4) {
             try {
                NetCache.NetCache_socket.close();
             } catch (Exception var3) {
-               ;
             }
 
             ++NetCache.NetCache_ioExceptions;
             NetCache.NetCache_socket = null;
          }
-
       }
+
    }
 
    @ObfuscatedName("l")
@@ -64,7 +63,7 @@ public class UserComparator9 extends AbstractUserComparator {
    public static Sprite[] createSpriteArray() {
       Sprite[] var0 = new Sprite[class328.indexedSpriteCount];
 
-      for(int var1 = 0; var1 < class328.indexedSpriteCount; ++var1) {
+      for (int var1 = 0; var1 < class328.indexedSpriteCount; ++var1) {
          Sprite var2 = var0[var1] = new Sprite();
          var2.width = class328.indexedSpriteWidth;
          var2.height = class328.indexedSpriteHeight;
@@ -76,7 +75,7 @@ public class UserComparator9 extends AbstractUserComparator {
          byte[] var4 = class328.spritePixels[var1];
          var2.pixels = new int[var3];
 
-         for(int var5 = 0; var5 < var3; ++var5) {
+         for (int var5 = 0; var5 < var3; ++var5) {
             var2.pixels[var5] = class328.indexedSpritePalette[var4[var5] & 255];
          }
       }
@@ -86,7 +85,7 @@ public class UserComparator9 extends AbstractUserComparator {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.spritePixels = null;
+      class328.spritePixels = (byte[][])null;
       return var0;
    }
 }

@@ -68,7 +68,7 @@ class NameAutocompleter implements KeyListener
 	private Pattern autocompleteNamePattern;
 
 	@Inject
-	private NameAutocompleter(@Nullable Client client)
+	private NameAutocompleter(@Nullable final Client client)
 	{
 		this.client = client;
 	}

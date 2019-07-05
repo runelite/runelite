@@ -45,7 +45,7 @@ enum GameIndicator
 	private final int imageId;
 	private final GameTimerImageType imageType;
 
-	GameIndicator(int imageId, GameTimerImageType idType, String description, String text, Color textColor)
+	GameIndicator(final int imageId, final GameTimerImageType idType, final String description, final String text, final Color textColor)
 	{
 		this.imageId = imageId;
 		this.imageType = idType;
@@ -54,7 +54,7 @@ enum GameIndicator
 		this.textColor = textColor;
 	}
 
-	GameIndicator(int imageId, GameTimerImageType idType, String description)
+	GameIndicator(final int imageId, final GameTimerImageType idType, final String description)
 	{
 		this(imageId, idType, description, "", null);
 	}

@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -62,6 +63,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	tags = {"panel", "players"},
 	loadWhenOutdated = true
 )
+@Singleton
 public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
@@ -179,8 +181,6 @@ public class HiscorePlugin extends Plugin
 			groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
 			groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId())
 		{
-			boolean after;
-
 			if (!AFTER_OPTIONS.contains(option))
 			{
 				return;
@@ -194,7 +194,10 @@ public class HiscorePlugin extends Plugin
 			lookup.setParam1(event.getActionParam1());
 			lookup.setIdentifier(event.getIdentifier());
 
-			insertMenuEntry(lookup, client.getMenuEntries());
+			if (client != null)
+			{
+				insertMenuEntry(lookup, client.getMenuEntries());
+			}
 		}
 	}
 
@@ -228,7 +231,10 @@ public class HiscorePlugin extends Plugin
 		MenuEntry[] newMenu = ObjectArrays.concat(entries, newEntry);
 		int menuEntryCount = newMenu.length;
 		ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
-		client.setMenuEntries(newMenu);
+		if (client != null)
+		{
+			client.setMenuEntries(newMenu);
+		}
 	}
 
 	private void lookupPlayer(String playerName)

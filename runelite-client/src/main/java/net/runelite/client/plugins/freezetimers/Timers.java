@@ -24,28 +24,22 @@
 package net.runelite.client.plugins.freezetimers;
 
 import java.util.HashMap;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
-import net.runelite.api.Client;
 
 @Slf4j
 @Singleton
 public class Timers
 {
-
-	@Inject
-	private Client client;
-
 	private HashMap<Actor, HashMap<TimerType, Long>> timerMap = new HashMap<>();
 
-	public void gameTick()
+	void gameTick()
 	{
 
 	}
 
-	public void setTimerEnd(Actor actor, TimerType type, long n)
+	void setTimerEnd(Actor actor, TimerType type, long n)
 	{
 		if (!timerMap.containsKey(actor))
 		{
@@ -54,7 +48,7 @@ public class Timers
 		timerMap.get(actor).put(type, n);
 	}
 
-	public long getTimerEnd(Actor actor, TimerType type)
+	long getTimerEnd(Actor actor, TimerType type)
 	{
 		if (!timerMap.containsKey(actor))
 		{
@@ -63,7 +57,7 @@ public class Timers
 		return timerMap.get(actor).getOrDefault(type, (long) 0);
 	}
 
-	public boolean areAllTimersZero(Actor actor)
+	boolean areAllTimersZero(Actor actor)
 	{
 		for (TimerType type : TimerType.values())
 		{

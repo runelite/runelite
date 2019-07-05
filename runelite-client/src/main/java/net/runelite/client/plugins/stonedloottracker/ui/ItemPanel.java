@@ -30,12 +30,14 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.stonedloottracker.data.LootTrackerItemEntry;
@@ -44,7 +46,8 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.StackFormatter;
 
-@Getter
+@Singleton
+@Getter(AccessLevel.PACKAGE)
 class ItemPanel extends JPanel
 {
 	private static final GridBagLayout LAYOUT = new GridBagLayout();
@@ -57,7 +60,7 @@ class ItemPanel extends JPanel
 
 	private LootTrackerItemEntry record;
 
-	ItemPanel(LootTrackerItemEntry record, ItemManager itemManager)
+	ItemPanel(final LootTrackerItemEntry record, final ItemManager itemManager)
 	{
 		this.record = record;
 		this.setLayout(LAYOUT);

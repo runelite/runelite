@@ -29,11 +29,13 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
+@Singleton
 public class ScreenMarkerCreationOverlay extends Overlay
 {
 	private ScreenMarkerPlugin plugin;

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.raidsthieving.BatSolver;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
 
 // Each Thieving room has 4 empty chests
@@ -135,7 +136,7 @@ class SolutionSet
 			new SolutionSet(ThievingRoomType.STRAIGHT, 51, 53, 56, 59)
 		};
 
-	SolutionSet(ThievingRoomType type)
+	SolutionSet(final ThievingRoomType type)
 	{
 		this.type = type;
 		emptyChests = new HashSet<>();
@@ -157,9 +158,9 @@ class SolutionSet
 		return emptyChests.contains(chestId);
 	}
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private ThievingRoomType type;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Set<Integer> emptyChests;
 }

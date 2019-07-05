@@ -51,6 +51,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -66,6 +67,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
+@Singleton
 class ProfilesPanel extends PluginPanel
 {
 	private static final int iterations = 100000;
@@ -93,7 +95,7 @@ class ProfilesPanel extends PluginPanel
 	private GridBagConstraints c;
 
 	@Inject
-	public ProfilesPanel(Client client, ProfilesConfig config)
+	public ProfilesPanel(final Client client, final ProfilesConfig config)
 	{
 		super();
 		this.client = client;

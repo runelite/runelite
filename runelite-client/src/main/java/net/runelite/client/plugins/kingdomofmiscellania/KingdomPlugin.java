@@ -26,6 +26,8 @@ package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -48,6 +50,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	enabledByDefault = false
 )
 @Slf4j
+@Singleton
 public class KingdomPlugin extends Plugin
 {
 	private static final ImmutableSet<Integer> KINGDOM_REGION = ImmutableSet.of(10044, 10300);
@@ -61,7 +64,7 @@ public class KingdomPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int favor = 0, coffer = 0;
 
 	private KingdomCounter counter;
@@ -75,9 +78,12 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		favor = client.getVar(Varbits.KINGDOM_FAVOR);
-		coffer = client.getVar(Varbits.KINGDOM_COFFER);
-		processInfobox();
+		if (isInKingdom())
+		{
+			favor = client.getVar(Varbits.KINGDOM_FAVOR);
+			coffer = client.getVar(Varbits.KINGDOM_COFFER);
+			processInfobox();
+		}
 	}
 
 	@Subscribe

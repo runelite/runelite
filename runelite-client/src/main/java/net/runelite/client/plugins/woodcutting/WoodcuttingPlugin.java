@@ -30,6 +30,8 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -38,6 +40,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -57,6 +60,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show woodcutting statistics and/or bird nest notifications",
 	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc"}
 )
+@Singleton
 @PluginDependency(XpTrackerPlugin.class)
 public class WoodcuttingPlugin extends Plugin
 {
@@ -78,14 +82,21 @@ public class WoodcuttingPlugin extends Plugin
 	@Inject
 	private WoodcuttingConfig config;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private WoodcuttingSession session;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Axe axe;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> treeObjects = new HashSet<>();
+
+	private int statTimeout;
+	private boolean showNestNotification;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showWoodcuttingStats;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showRedwoodTrees;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -96,6 +107,8 @@ public class WoodcuttingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(overlay);
 		overlayManager.add(treesOverlay);
 	}
@@ -118,7 +131,7 @@ public class WoodcuttingPlugin extends Plugin
 			return;
 		}
 
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration statTimeout = Duration.ofMinutes(this.statTimeout);
 		Duration sinceCut = Duration.between(session.getLastLogCut(), Instant.now());
 
 		if (sinceCut.compareTo(statTimeout) >= 0)
@@ -143,7 +156,7 @@ public class WoodcuttingPlugin extends Plugin
 				session.setLastLogCut();
 			}
 
-			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
+			if (event.getMessage().contains("A bird's nest falls out of the tree") && this.showNestNotification)
 			{
 				notifier.notify("A bird nest has spawned!");
 			}
@@ -199,5 +212,24 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			this.axe = axe;
 		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("woodcutting"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.statTimeout = config.statTimeout();
+		this.showNestNotification = config.showNestNotification();
+		this.showWoodcuttingStats = config.showWoodcuttingStats();
+		this.showRedwoodTrees = config.showRedwoodTrees();
 	}
 }

@@ -26,6 +26,8 @@ package net.runelite.client.plugins.shiftwalker;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -45,7 +47,7 @@ import net.runelite.client.plugins.PluginType;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 public class ShiftWalkerPlugin extends Plugin
 {
 
@@ -63,6 +65,9 @@ public class ShiftWalkerPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
+	private boolean shiftWalk;
+	private boolean shiftLoot;
+
 	@Provides
 	ShiftWalkerConfig provideConfig(ConfigManager configManager)
 	{
@@ -72,6 +77,9 @@ public class ShiftWalkerPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+		this.shiftWalk = config.shiftWalk();
+		this.shiftLoot = config.shiftLoot();
+
 		keyManager.registerKeyListener(inputListener);
 	}
 
@@ -92,14 +100,14 @@ public class ShiftWalkerPlugin extends Plugin
 
 	void startPrioritizing()
 	{
-		if (config.shiftLoot())
+		if (this.shiftLoot)
 		{
-			menuManager.addPriorityEntry(TAKE);
+			menuManager.addPriorityEntry(TAKE).setPriority(100);
 		}
 		
-		if (config.shiftWalk())
+		if (this.shiftWalk)
 		{
-			menuManager.addPriorityEntry(WALK_HERE);
+			menuManager.addPriorityEntry(WALK_HERE).setPriority(90);
 		}	
 	}
 
@@ -107,5 +115,17 @@ public class ShiftWalkerPlugin extends Plugin
 	{
 		menuManager.removePriorityEntry(TAKE);
 		menuManager.removePriorityEntry(WALK_HERE);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("shiftwalkhere"))
+		{
+			return;
+		}
+
+		this.shiftWalk = config.shiftWalk();
+		this.shiftLoot = config.shiftLoot();
 	}
 }

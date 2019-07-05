@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.FontTypeFace;
@@ -66,6 +67,7 @@ import net.runelite.client.util.Text;
 	description = "Display level requirements in Achievement Diary interface",
 	tags = {"achievements", "tasks"}
 )
+@Singleton
 public class DiaryRequirementsPlugin extends Plugin
 {
 	private static final String AND_JOINER = ", ";

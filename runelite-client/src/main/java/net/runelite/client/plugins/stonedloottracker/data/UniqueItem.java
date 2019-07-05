@@ -30,12 +30,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
 
 @RequiredArgsConstructor
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum UniqueItem
 {
 	// Shared "Uniques" (Dropped by multiple activities)
@@ -828,7 +829,7 @@ public enum UniqueItem
 	HERBI("Herbi", ItemID.HERBI, "Herbiboar", "Pet", -1);
 
 	// Shared Unique Items
-	UniqueItem(String n, int id, String... activities)
+	UniqueItem(final String n, final int id, final String... activities)
 	{
 		this.name = n;
 		this.itemID = id;
@@ -838,7 +839,7 @@ public enum UniqueItem
 	}
 
 	// Non-Shared Unique Items
-	UniqueItem(String n, int id, String a, String set, int position)
+	UniqueItem(final String n, final int id, final String a, final String set, final int position)
 	{
 		this.name = n;
 		this.itemID = id;
@@ -886,7 +887,7 @@ public enum UniqueItem
 			String[] activities = item.getActivities();
 			for (String activity : activities)
 			{
-				byName.computeIfAbsent(activity.toUpperCase(), e -> new ArrayList<UniqueItem>()).add(item);
+				byName.computeIfAbsent(activity.toUpperCase(), e -> new ArrayList<>()).add(item);
 			}
 
 		}

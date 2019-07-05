@@ -50,6 +50,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
@@ -138,9 +139,27 @@ public class FishingPlugin extends Plugin
 		return configManager.getConfig(FishingConfig.class);
 	}
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean onlyCurrentSpot;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showSpotTiles;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showSpotIcons;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showSpotNames;
+	private int statTimeout;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showFishingStats;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showMinnowOverlay;
+	private boolean trawlerNotification;
+	private boolean trawlerTimer;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(overlay);
 		overlayManager.add(spotOverlay);
 		overlayManager.add(fishingSpotMinimapOverlay);
@@ -159,6 +178,17 @@ public class FishingPlugin extends Plugin
 		trawlerNotificationSent = false;
 		currentSpot = null;
 		trawlerStartTime = null;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("fishing"))
+		{
+			return;
+		}
+
+		updateConfig();
 	}
 
 	@Subscribe
@@ -253,7 +283,7 @@ public class FishingPlugin extends Plugin
 		// Reset fishing session
 		if (session.getLastFishCaught() != null)
 		{
-			final Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+			final Duration statTimeout = Duration.ofMinutes(this.statTimeout);
 			final Duration sinceCaught = Duration.between(session.getLastFishCaught(), Instant.now());
 
 			if (sinceCaught.compareTo(statTimeout) >= 0)
@@ -267,7 +297,7 @@ public class FishingPlugin extends Plugin
 
 		for (NPC npc : fishingSpots)
 		{
-			if (FishingSpot.getSPOTS().get(npc.getId()) == FishingSpot.MINNOW && config.showMinnowOverlay())
+			if (FishingSpot.getSPOTS().get(npc.getId()) == FishingSpot.MINNOW && this.showMinnowOverlay)
 			{
 				final int id = npc.getIndex();
 				final MinnowSpot minnowSpot = minnowSpots.get(id);
@@ -282,7 +312,7 @@ public class FishingPlugin extends Plugin
 			}
 		}
 
-		if (config.trawlerTimer())
+		if (this.trawlerTimer)
 		{
 			updateTrawlerTimer();
 		}
@@ -319,7 +349,7 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (!config.trawlerNotification() || client.getGameState() != GameState.LOGGED_IN)
+		if (!this.trawlerNotification || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -410,5 +440,18 @@ public class FishingPlugin extends Plugin
 	{
 		final LocalPoint cameraPoint = new LocalPoint(client.getCameraX(), client.getCameraY());
 		fishingSpots.sort(Comparator.comparing(npc -> -1 * npc.getLocalLocation().distanceTo(cameraPoint)));
+	}
+
+	private void updateConfig()
+	{
+		this.onlyCurrentSpot = config.onlyCurrentSpot();
+		this.showSpotTiles = config.showSpotTiles();
+		this.showSpotIcons = config.showSpotIcons();
+		this.showSpotNames = config.showSpotNames();
+		this.statTimeout = config.statTimeout();
+		this.showFishingStats = config.showFishingStats();
+		this.showMinnowOverlay = config.showMinnowOverlay();
+		this.trawlerNotification = config.trawlerNotification();
+		this.trawlerTimer = config.trawlerTimer();
 	}
 }

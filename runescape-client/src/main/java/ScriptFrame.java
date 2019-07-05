@@ -39,9 +39,9 @@ public class ScriptFrame {
    public static Enumerated findEnumerated(Enumerated[] var0, int var1) {
       Enumerated[] var2 = var0;
 
-      for(int var3 = 0; var3 < var2.length; ++var3) {
+      for (int var3 = 0; var3 < var2.length; ++var3) {
          Enumerated var4 = var2[var3];
-         if(var1 == var4.rsOrdinal()) {
+         if (var1 == var4.rsOrdinal()) {
             return var4;
          }
       }
@@ -55,12 +55,12 @@ public class ScriptFrame {
       garbageValue = "-423549686"
    )
    static void method1138() {
-      if(ClientParameter.field3645 != null) {
-         Client.__client_ss = Client.cycle;
+      if (ClientParameter.field3645 != null) {
+         Client.field104 = Client.cycle;
          ClientParameter.field3645.method4719();
 
-         for(int var0 = 0; var0 < Client.players.length; ++var0) {
-            if(Client.players[var0] != null) {
+         for (int var0 = 0; var0 < Client.players.length; ++var0) {
+            if (Client.players[var0] != null) {
                ClientParameter.field3645.method4738((Client.players[var0].x >> 7) + class50.baseX, (Client.players[var0].y >> 7) + GraphicsObject.baseY);
             }
          }

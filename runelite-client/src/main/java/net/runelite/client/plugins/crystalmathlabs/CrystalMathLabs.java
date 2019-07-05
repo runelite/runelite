@@ -27,6 +27,7 @@ package net.runelite.client.plugins.crystalmathlabs;
 import java.io.IOException;
 import java.util.Objects;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -52,6 +53,7 @@ import okhttp3.Response;
 	enabledByDefault = false
 )
 @Slf4j
+@Singleton
 public class CrystalMathLabs extends Plugin
 {
 	/**

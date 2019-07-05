@@ -62,7 +62,7 @@ class XpPanel extends PluginPanel
 	/* This displays the "No exp gained" text */
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-	XpPanel(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, SkillIconManager iconManager)
+	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager)
 	{
 		super();
 
@@ -134,7 +134,7 @@ class XpPanel extends PluginPanel
 			{
 				break;
 			}
-			infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, xpTrackerConfig, client, infoBoxPanel, skill, iconManager));
+			infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, skill, iconManager));
 		}
 
 		errorPanel.setContent("Exp trackers", "You have not gained experience yet.");

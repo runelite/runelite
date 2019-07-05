@@ -24,6 +24,11 @@
  */
 package net.runelite.api;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 /**
  * An enumeration of game states the client is in.
  */
@@ -66,6 +71,10 @@ public enum GameState
 	 */
 	HOPPING(45);
 
+	private static final Map<Integer, GameState> stateValueMap =
+		Arrays.stream(GameState.values())
+			.collect(Collectors.toMap(gs -> gs.state, Function.identity()));
+
 	/**
 	 * The raw state value.
 	 */
@@ -85,13 +94,6 @@ public enum GameState
 	 */
 	public static GameState of(int state)
 	{
-		for (GameState gs : GameState.values())
-		{
-			if (gs.state == state)
-			{
-				return gs;
-			}
-		}
-		return UNKNOWN;
+		return stateValueMap.getOrDefault(state, UNKNOWN);
 	}
 }

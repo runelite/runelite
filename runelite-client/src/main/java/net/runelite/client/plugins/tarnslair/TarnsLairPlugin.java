@@ -26,6 +26,7 @@ package net.runelite.client.plugins.tarnslair;
 
 import java.util.HashMap;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +55,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 @Slf4j
 public class TarnsLairPlugin extends Plugin
 {

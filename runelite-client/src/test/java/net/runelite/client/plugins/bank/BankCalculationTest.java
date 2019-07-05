@@ -61,7 +61,7 @@ public class BankCalculationTest
 	private BankConfig bankConfig;
 
 	@Inject
-	private BankCalculation bankCalculation;
+	private BankPlugin bankplugin;
 
 	@Before
 	public void before()
@@ -107,6 +107,7 @@ public class BankCalculationTest
 		when(itemManager.getItemDefinition(ItemID.ABYSSAL_WHIP))
 			.thenReturn(whipComp);
 
+		BankCalculation bankCalculation = new BankCalculation(itemManager, bankplugin, client);
 		bankCalculation.calculate();
 
 		long value = bankCalculation.getHaPrice();

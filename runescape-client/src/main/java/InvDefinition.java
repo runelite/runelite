@@ -11,17 +11,13 @@ public class InvDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   static EvictingDualNodeHashTable __ib_f;
+   static EvictingDualNodeHashTable field427;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1358868971
    )
    @Export("size")
    public int size;
-
-   static {
-      __ib_f = new EvictingDualNodeHashTable(64);
-   }
 
    InvDefinition() {
       this.size = 0;
@@ -34,9 +30,9 @@ public class InvDefinition extends DualNode {
    )
    @Export("read")
    void read(Buffer var1) {
-      while(true) {
+      while (true) {
          int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+         if (var2 == 0) {
             return;
          }
 
@@ -51,8 +47,8 @@ public class InvDefinition extends DualNode {
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.size = var1.__ag_302();
+      if (var2 == 2) {
+         this.size = var1.method43();
       }
 
    }
@@ -64,5 +60,9 @@ public class InvDefinition extends DualNode {
    )
    public static void method4754() {
       ParamKeyDefinition.ParamKeyDefinition_cached.clear();
+   }
+
+   static {
+      field427 = new EvictingDualNodeHashTable(64);
    }
 }

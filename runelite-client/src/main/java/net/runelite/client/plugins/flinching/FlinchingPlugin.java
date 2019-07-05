@@ -25,10 +25,14 @@
 package net.runelite.client.plugins.flinching;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -49,6 +53,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 
 @Slf4j
+@Singleton
 @PluginDescriptor(
 	name = "Flinching Timer",
 	description = "Time your attacks while flinching",
@@ -79,6 +84,15 @@ public class FlinchingPlugin extends Plugin
 	private boolean resetOnHit = true;
 	private boolean resetOnHitReceived = true;
 
+	private int getFlinchAttackedDelay;
+	private int getFlinchDelay;
+	@Getter(AccessLevel.PACKAGE)
+	private int flinchOverlaySize;
+	@Getter(AccessLevel.PACKAGE)
+	private Color flinchOverlayColor;
+	private boolean getFlinchResetOnHit;
+	private boolean getFlinchResetOnHitReceived;
+
 	@Provides
 	FlinchingConfig provideConfig(ConfigManager configManager)
 	{
@@ -88,11 +102,13 @@ public class FlinchingPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+
 		overlayManager.add(overlay);
 
 		overlay.updateConfig();
-		resetOnHit = config.getFlinchResetOnHit();
-		resetOnHitReceived = config.getFlinchResetOnHitReceived();
+		resetOnHit = this.getFlinchResetOnHit;
+		resetOnHitReceived = this.getFlinchResetOnHitReceived;
 
 		ClearTargets();
 	}
@@ -108,16 +124,18 @@ public class FlinchingPlugin extends Plugin
 	{
 		if (event.getGroup().equals("flinching"))
 		{
+			updateConfig();
+
 			overlay.updateConfig();
-			resetOnHit = config.getFlinchResetOnHit();
-			resetOnHitReceived = config.getFlinchResetOnHitReceived();
+			resetOnHit = this.getFlinchResetOnHit;
+			resetOnHitReceived = this.getFlinchResetOnHitReceived;
 
 			for (Map.Entry<Integer, FlinchingTarget> integerFlinchingTargetEntry : flinchingTargets.entrySet())
 			{
 				FlinchingTarget target = integerFlinchingTargetEntry.getValue();
 				if (target != null)
 				{
-					target.SetDelayTime(config.getFlinchDelay(), config.getFlinchAttackedDelay());
+					target.SetDelayTime(this.getFlinchDelay, this.getFlinchAttackedDelay);
 				}
 			}
 		}
@@ -278,5 +296,15 @@ public class FlinchingPlugin extends Plugin
 	Map<Integer, FlinchingTarget> GetTargets()
 	{
 		return (flinchingTargets);
+	}
+
+	private void updateConfig()
+	{
+		this.getFlinchAttackedDelay = config.getFlinchAttackedDelay();
+		this.getFlinchDelay = config.getFlinchDelay();
+		this.flinchOverlaySize = config.getFlinchOverlaySize();
+		this.flinchOverlayColor = config.getFlinchOverlayColor();
+		this.getFlinchResetOnHit = config.getFlinchResetOnHit();
+		this.getFlinchResetOnHitReceived = config.getFlinchResetOnHitReceived();
 	}
 }

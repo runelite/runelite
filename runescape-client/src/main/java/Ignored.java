@@ -8,7 +8,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Ignored")
 public class Ignored extends User {
    @ObfuscatedName("at")
-   protected static String __ks_at;
+   protected static String field402;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 344024525
@@ -47,7 +47,7 @@ public class Ignored extends User {
    )
    @Export("queueSoundEffect")
    static void queueSoundEffect(int var0, int var1, int var2) {
-      if(Client.soundEffectVolume != 0 && var1 != 0 && Client.soundEffectCount < 50) {
+      if (Client.soundEffectVolume != 0 && var1 != 0 && Client.soundEffectCount < 50) {
          Client.soundEffectIds[Client.soundEffectCount] = var0;
          Client.queuedSoundEffectLoops[Client.soundEffectCount] = var1;
          Client.queuedSoundEffectDelays[Client.soundEffectCount] = var2;

@@ -86,51 +86,6 @@ public interface SpellbookConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "standard",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String standard()
-	{
-		return "";
-	}
-
-
-	@ConfigItem(
-		keyName = "ancient",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String ancient()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "lunar",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String lunar()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "arceuus",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String arceuus()
-	{
-		return "";
-	}
-
-	@ConfigItem(
 		keyName = "canDrag",
 		name = "",
 		description = "",

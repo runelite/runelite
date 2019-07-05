@@ -17,7 +17,7 @@ public class MusicPatchNode extends Node {
    @ObfuscatedGetter(
       intValue = 801157533
    )
-   int __m;
+   int field574;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lhl;"
@@ -34,77 +34,77 @@ public class MusicPatchNode extends Node {
    @ObfuscatedSignature(
       signature = "Lhd;"
    )
-   MusicPatchNode2 __w;
+   MusicPatchNode2 field575;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -2058553171
    )
-   int __o;
+   int field576;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 62958303
    )
-   int __u;
+   int field577;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -836502917
    )
-   int __g;
+   int field578;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -308599455
    )
-   int __l;
+   int field579;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -471899285
    )
-   int __e;
+   int field580;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1520706641
    )
-   int __x;
+   int field581;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -852988281
    )
-   int __d;
+   int field582;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -439388365
    )
-   int __k;
+   int field583;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 476852577
    )
-   int __n;
+   int field584;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -2136855685
    )
-   int __i;
+   int field585;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -2083252379
    )
-   int __a;
+   int field586;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = 1605236771
    )
-   int __z;
+   int field587;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 173672931
    )
-   int __j;
+   int field588;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 219840779
    )
-   int __s;
+   int field589;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Lds;"
@@ -115,22 +115,22 @@ public class MusicPatchNode extends Node {
    @ObfuscatedGetter(
       intValue = -666877449
    )
-   int __y;
+   int field590;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = 1359854411
    )
-   int __b;
+   int field591;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(B)V",
       garbageValue = "39"
    )
-   void __m_370() {
+   void method219() {
       this.patch = null;
       this.rawSound = null;
-      this.__w = null;
+      this.field575 = null;
       this.stream = null;
    }
 }

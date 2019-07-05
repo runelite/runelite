@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -48,6 +49,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"overlay", "players"},
 	enabledByDefault = false
 )
+@Singleton
 public class TeamCapesPlugin extends Plugin
 {
 	@Inject

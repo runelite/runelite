@@ -18,12 +18,12 @@ public class NetCache {
    @ObfuscatedGetter(
       intValue = 948359621
    )
-   public static int __iq_f;
+   public static int field628;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       longValue = -4580427166942649525L
    )
-   public static long __iq_q;
+   public static long field629;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lld;"
@@ -88,7 +88,7 @@ public class NetCache {
    @ObfuscatedGetter(
       intValue = 840549915
    )
-   public static int __iq_j;
+   public static int field630;
    @ObfuscatedName("t")
    @Export("NetCache_crc")
    public static CRC32 NetCache_crc;
@@ -99,7 +99,7 @@ public class NetCache {
    @Export("NetCache_indexCaches")
    public static IndexCache[] NetCache_indexCaches;
    @ObfuscatedName("b")
-   public static byte __iq_b;
+   public static byte field631;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = -1404585009
@@ -113,8 +113,17 @@ public class NetCache {
    @Export("NetCache_ioExceptions")
    public static int NetCache_ioExceptions;
 
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IB)Lbm;",
+      garbageValue = "31"
+   )
+   static Message method4708(int var0) {
+      return (Message)Messages.Messages_hashTable.get((long)var0);
+   }
+
    static {
-      __iq_f = 0;
+      field628 = 0;
       NetCache_pendingPriorityWrites = new NodeHashTable(4096);
       NetCache_pendingPriorityWritesCount = 0;
       NetCache_pendingPriorityResponses = new NodeHashTable(32);
@@ -125,20 +134,11 @@ public class NetCache {
       NetCache_pendingResponses = new NodeHashTable(4096);
       NetCache_pendingResponsesCount = 0;
       NetCache_responseHeaderBuffer = new Buffer(8);
-      __iq_j = 0;
+      field630 = 0;
       NetCache_crc = new CRC32();
       NetCache_indexCaches = new IndexCache[256];
-      __iq_b = 0;
+      field631 = 0;
       NetCache_crcMismatches = 0;
       NetCache_ioExceptions = 0;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IB)Lbm;",
-      garbageValue = "31"
-   )
-   static Message method4708(int var0) {
-      return (Message)Messages.Messages_hashTable.get((long)var0);
    }
 }

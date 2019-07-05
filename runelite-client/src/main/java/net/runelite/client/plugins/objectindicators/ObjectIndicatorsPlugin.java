@@ -29,6 +29,7 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +55,7 @@ import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.FocusChanged;
@@ -76,6 +79,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"overlay", "objects", "mark", "marker"},
 	enabledByDefault = false
 )
+@Singleton
 public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 {
 	private static final String CONFIG_GROUP = "objectindicators";
@@ -101,7 +105,19 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private ObjectIndicatorsOverlay overlay;
 
 	@Inject
+	private ObjectIndicatorsConfig config;
+
+	@Inject
 	private KeyManager keyManager;
+
+	@Getter(AccessLevel.PACKAGE)
+	private RenderStyle objectMarkerRenderStyle;
+	@Getter(AccessLevel.PACKAGE)
+	private OutlineRenderStyle objectMarkerOutlineRenderStyle;
+	@Getter(AccessLevel.PACKAGE)
+	private Color objectMarkerColor;
+	@Getter(AccessLevel.PACKAGE)
+	private int objectMarkerAlpha;
 
 	@Provides
 	ObjectIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -112,6 +128,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+
 		overlayManager.add(overlay);
 		keyManager.registerKeyListener(this);
 	}
@@ -427,5 +445,24 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		return GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
 		{
 		}.getType());
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("objectindicators"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.objectMarkerRenderStyle = config.objectMarkerRenderStyle();
+		this.objectMarkerOutlineRenderStyle = config.objectMarkerOutlineRenderStyle();
+		this.objectMarkerColor = config.objectMarkerColor();
+		this.objectMarkerAlpha = config.objectMarkerAlpha();
 	}
 }

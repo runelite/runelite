@@ -11,33 +11,33 @@ public enum StudioGame implements Enumerated {
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-   __is_m("runescape", "RuneScape", 0),
+   field887("runescape", "RuneScape", 0),
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-   __is_f("stellardawn", "Stellar Dawn", 1),
+   field888("stellardawn", "Stellar Dawn", 1),
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-   __is_q("game3", "Game 3", 2),
+   field889("game3", "Game 3", 2),
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-  __is_w("game4", "Game 4", 3),
+   field890("game4", "Game 4", 3),
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-   __is_o("game5", "Game 5", 4),
+   field891("game5", "Game 5", 4),
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lis;"
    )
-   __is_u("oldscape", "RuneScape 2007", 5);
-   
+   field892("oldscape", "RuneScape 2007", 5);
+
    @ObfuscatedName("g")
    @Export("name")
    public final String name;
@@ -47,8 +47,8 @@ public enum StudioGame implements Enumerated {
    )
    @Export("id")
    final int id;
-   
-   StudioGame(String var3, String var4, int var5) {
+
+   private StudioGame(String var3, String var4, int var5) {
       this.name = var3;
       this.id = var5;
    }
@@ -70,12 +70,12 @@ public enum StudioGame implements Enumerated {
    )
    public static UnderlayDefinition method4550(int var0) {
       UnderlayDefinition var1 = (UnderlayDefinition)UnderlayDefinition.UnderlayDefinition_cached.get((long)var0);
-      if(var1 != null) {
+      if (var1 != null) {
          return var1;
       } else {
          byte[] var2 = UnderlayDefinition.UnderlayDefinition_indexCache.takeRecord(1, var0);
          var1 = new UnderlayDefinition();
-         if(var2 != null) {
+         if (var2 != null) {
             var1.read(new Buffer(var2), var0);
          }
 

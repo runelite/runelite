@@ -2,13 +2,16 @@ package net.runelite.client.plugins.raids.shortcuts;
 
 import com.google.inject.Provides;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
@@ -24,6 +27,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"boulder", "cox", "raids", "highlight"}
 )
 @Slf4j
+@Singleton
 public class ShortcutPlugin extends Plugin
 {
 	private final List<TileObject> shortcut = new ArrayList<>();
@@ -33,6 +37,11 @@ public class ShortcutPlugin extends Plugin
 	private OverlayManager overlayManager;
 	@Inject
 	private ShortcutOverlay overlay;
+	@Inject
+	private ShortcutConfig config;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightShortcuts;
 
 	List<TileObject> getShortcut()
 	{
@@ -48,6 +57,7 @@ public class ShortcutPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		this.highlightShortcuts = config.highlightShortcuts();
 		overlayManager.add(overlay);
 	}
 
@@ -80,18 +90,17 @@ public class ShortcutPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (shortcut == null)
+		shortcut.removeIf(object -> object.getCanvasLocation() == null);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("shortcut"))
 		{
 			return;
 		}
-		Iterator<TileObject> it = shortcut.iterator();
-		while (it.hasNext())
-		{
-			TileObject object = it.next();
-			if (object.getCanvasLocation() == null)
-			{
-				it.remove();
-			}
-		}
+
+		this.highlightShortcuts = config.highlightShortcuts();
 	}
 }

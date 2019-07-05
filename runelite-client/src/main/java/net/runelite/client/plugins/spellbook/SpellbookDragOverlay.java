@@ -46,7 +46,7 @@ public class SpellbookDragOverlay extends Overlay
 	private SpriteManager spriteManager;
 
 	@Inject
-	private SpellbookDragOverlay(SpellbookPlugin plugin, Client client, SpriteManager spriteManager)
+	private SpellbookDragOverlay(final SpellbookPlugin plugin, final Client client, final SpriteManager spriteManager)
 	{
 		this.plugin = plugin;
 		this.client = client;

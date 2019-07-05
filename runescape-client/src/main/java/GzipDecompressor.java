@@ -8,7 +8,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("GzipDecompressor")
 public class GzipDecompressor {
    @ObfuscatedName("ck")
-   public static char __go_ck;
+   public static char field378;
    @ObfuscatedName("m")
    @Export("inflater")
    Inflater inflater;
@@ -31,8 +31,8 @@ public class GzipDecompressor {
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
-      if(var1.array[var1.index] == 31 && var1.array[var1.index + 1] == -117) {
-         if(this.inflater == null) {
+      if (var1.array[var1.index] == 31 && var1.array[var1.index + 1] == -117) {
+         if (this.inflater == null) {
             this.inflater = new Inflater(true);
          }
 
@@ -56,18 +56,18 @@ public class GzipDecompressor {
       garbageValue = "-1060388349"
    )
    public static StructDefinition method3702(int var0) {
-      StructDefinition var1 = (StructDefinition)StructDefinition.__jq_f.get((long)var0);
-      if(var1 != null) {
+      StructDefinition var1 = (StructDefinition)StructDefinition.field886.get((long)var0);
+      if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = StructDefinition.__jq_m.takeRecord(34, var0);
+         byte[] var2 = StructDefinition.field885.takeRecord(34, var0);
          var1 = new StructDefinition();
-         if(var2 != null) {
+         if (var2 != null) {
             var1.read(new Buffer(var2));
          }
 
          var1.init();
-         StructDefinition.__jq_f.put(var1, (long)var0);
+         StructDefinition.field886.put(var1, (long)var0);
          return var1;
       }
    }

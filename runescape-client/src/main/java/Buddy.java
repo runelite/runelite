@@ -71,22 +71,22 @@ public class Buddy extends User {
       int[] var0 = Players.Players_indices;
 
       int var1;
-      for(var1 = 0; var1 < Players.Players_count; ++var1) {
+      for (var1 = 0; var1 < Players.Players_count; ++var1) {
          Player var2 = Client.players[var0[var1]];
-         if(var2 != null && var2.overheadTextCyclesRemaining > 0) {
+         if (var2 != null && var2.overheadTextCyclesRemaining > 0) {
             --var2.overheadTextCyclesRemaining;
-            if(var2.overheadTextCyclesRemaining == 0) {
+            if (var2.overheadTextCyclesRemaining == 0) {
                var2.overheadText = null;
             }
          }
       }
 
-      for(var1 = 0; var1 < Client.npcCount; ++var1) {
+      for (var1 = 0; var1 < Client.npcCount; ++var1) {
          int var4 = Client.npcIndices[var1];
-         Npc var3 = Client.npcs[var4];
-         if(var3 != null && var3.overheadTextCyclesRemaining > 0) {
+         NPC var3 = Client.npcs[var4];
+         if (var3 != null && var3.overheadTextCyclesRemaining > 0) {
             --var3.overheadTextCyclesRemaining;
-            if(var3.overheadTextCyclesRemaining == 0) {
+            if (var3.overheadTextCyclesRemaining == 0) {
                var3.overheadText = null;
             }
          }

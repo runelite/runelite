@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.grotesqueguardians;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -46,7 +47,7 @@ import static net.runelite.api.NpcID.DUSK_7888;
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
-
+@Singleton
 public class GrotesqueGuardiansPlugin extends Plugin
 {
 	private static final int GARGOYLES_REGION = 6727;
@@ -93,7 +94,7 @@ public class GrotesqueGuardiansPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
-		final ArrayList<Integer> regions = new ArrayList<Integer>();
+		final ArrayList<Integer> regions = new ArrayList<>();
 		for (final int intValue : client.getMapRegions())
 		{
 			regions.add(intValue);
@@ -126,14 +127,7 @@ public class GrotesqueGuardiansPlugin extends Plugin
 					{
 					prayAgainst = null;
 				}
-				if (dusk.getAnimation() == 7802)
-				{
-					needingToRun = true;
-				}
-				else
-					{
-					needingToRun = false;
-				}
+				needingToRun = dusk.getAnimation() == 7802;
 			}
 		}
 		else

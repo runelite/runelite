@@ -57,6 +57,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -117,6 +118,7 @@ import net.runelite.http.api.loottracker.LootTrackerClient;
 	enabledByDefault = false
 )
 @Slf4j
+@Singleton
 public class LootTrackerPlugin extends Plugin
 {
 	// Activity/Event loot handling
@@ -212,6 +214,18 @@ public class LootTrackerPlugin extends Plugin
 			.collect(Collectors.toList());
 	}
 
+	private String getIgnoredItems;
+	private boolean saveLoot;
+	private boolean chestLootChat;
+	private boolean syncPanel;
+	private boolean localPersistence;
+	private LootRecordSortType sortType;
+	private boolean whitelistEnabled;
+	private String getWhitelist;
+	private boolean blacklistEnabled;
+	private String getBlacklist;
+	private boolean sendLootValueMessages;
+
 	@Provides
 	LootTrackerConfig provideConfig(ConfigManager configManager)
 	{
@@ -253,14 +267,16 @@ public class LootTrackerPlugin extends Plugin
 	{
 		if (event.getGroup().equals("loottracker"))
 		{
+			updateConfig();
+
 			if (event.getKey().equals("ignoredItems"))
 			{
-				ignoredItems = Text.fromCSV(config.getIgnoredItems());
+				ignoredItems = Text.fromCSV(this.getIgnoredItems);
 				SwingUtilities.invokeLater(panel::updateIgnoredRecords);
 			}
 			if (event.getKey().equals("sortType"))
 			{
-				panel.setLootRecordSortType(config.sortType());
+				panel.setLootRecordSortType(this.sortType);
 				SwingUtilities.invokeLater(panel::rebuild);
 			}
 		}
@@ -270,7 +286,9 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		ignoredItems = Text.fromCSV(config.getIgnoredItems());
+		updateConfig();
+
+		ignoredItems = Text.fromCSV(this.getIgnoredItems);
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
@@ -288,7 +306,7 @@ public class LootTrackerPlugin extends Plugin
 		AccountSession accountSession = sessionManager.getAccountSession();
 		LOOT_RECORDS_FILE.createNewFile();
 		bufferedReader = Files.newBufferedReader(LOOT_RECORDS_FILE.toPath());
-		if (accountSession != null || config.localPersistence())
+		if (accountSession != null || this.localPersistence)
 		{
 
 			clientThread.invokeLater(() ->
@@ -303,7 +321,7 @@ public class LootTrackerPlugin extends Plugin
 				executor.submit(() ->
 				{
 
-					if (config.syncPanel() && lootTrackerClient != null)
+					if (this.syncPanel && lootTrackerClient != null)
 					{
 						lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
 						try
@@ -318,7 +336,7 @@ public class LootTrackerPlugin extends Plugin
 						log.debug("Loaded {} remote data entries", lootRecords.size());
 					}
 
-					if (config.localPersistence())
+					if (this.localPersistence)
 					{
 						try
 						{
@@ -367,18 +385,18 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		String localUsername = client.getLocalPlayer().getName();
 
-		if (config.whitelistEnabled())
+		if (this.whitelistEnabled)
 		{
-			final String configNpcs = config.getWhitelist().toLowerCase();
+			final String configNpcs = this.getWhitelist.toLowerCase();
 			List<String> whitelist = Text.fromCSV(configNpcs);
 			if (!whitelist.contains(name.toLowerCase()))
 			{
 				return;
 			}
 		}
-		else if (config.blacklistEnabled())
+		else if (this.blacklistEnabled)
 		{
-			final String configNpcs = config.getBlacklist().toLowerCase();
+			final String configNpcs = this.getBlacklist.toLowerCase();
 			List<String> blacklist = Text.fromCSV(configNpcs);
 			if (blacklist.contains(name.toLowerCase()))
 			{
@@ -390,11 +408,11 @@ public class LootTrackerPlugin extends Plugin
 		LootRecord lootRecord = new LootRecord(name, localUsername, LootRecordType.NPC,
 			toGameItems(items), Instant.now());
 
-		if (lootTrackerClient != null && config.saveLoot())
+		if (lootTrackerClient != null && this.saveLoot)
 		{
 			lootTrackerClient.submit(lootRecord);
 		}
-		if (config.localPersistence())
+		if (this.localPersistence)
 		{
 			saveLocalLootRecord(lootRecord);
 		}
@@ -412,7 +430,7 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
-		if (config.sendLootValueMessages())
+		if (this.sendLootValueMessages)
 		{
 			if (WorldType.isDeadmanWorld(client.getWorldType()) || WorldType.isHighRiskWorld(client.getWorldType()) || WorldType.isPvpWorld(client.getWorldType()) || client.getVar(Varbits.IN_WILDERNESS) == 1)
 			{
@@ -433,11 +451,11 @@ public class LootTrackerPlugin extends Plugin
 		SwingUtilities.invokeLater(() -> panel.add(name, localUsername, combat, entries));
 		LootRecord lootRecord = new LootRecord(name, localUsername, LootRecordType.PLAYER,
 			toGameItems(items), Instant.now());
-		if (lootTrackerClient != null && config.saveLoot())
+		if (lootTrackerClient != null && this.saveLoot)
 		{
 			lootTrackerClient.submit(lootRecord);
 		}
-		if (config.localPersistence() && lootTrackerClient == null)
+		if (this.localPersistence && lootTrackerClient == null)
 		{
 			saveLocalLootRecord(lootRecord);
 		}
@@ -480,7 +498,7 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (!(event.getGroupId() == WidgetID.CLUE_SCROLL_REWARD_GROUP_ID) && config.chestLootChat())
+		if (!(event.getGroupId() == WidgetID.CLUE_SCROLL_REWARD_GROUP_ID) && this.chestLootChat)
 		{
 			Item[] items = container.getItems();
 			long chestPrice = 0;
@@ -523,7 +541,7 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(eventType, client.getLocalPlayer().getName(), -1, entries));
 
-		if (lootTrackerClient != null && config.saveLoot())
+		if (lootTrackerClient != null && this.saveLoot)
 		{
 			LootRecord lootRecord = new LootRecord(eventType, client.getLocalPlayer().getName(), LootRecordType.EVENT,
 				toGameItems(items), Instant.now());
@@ -627,11 +645,11 @@ public class LootTrackerPlugin extends Plugin
 						client.getLocalPlayer().getCombatLevel(), entries));
 					LootRecord lootRecord = new LootRecord(name, client.getLocalPlayer().getName(), LootRecordType.DEATH,
 						toGameItems(itemsLost), Instant.now());
-					if (lootTrackerClient != null && config.saveLoot())
+					if (lootTrackerClient != null && this.saveLoot)
 					{
 						lootTrackerClient.submit(lootRecord);
 					}
-					if (config.localPersistence() && lootTrackerClient == null)
+					if (this.localPersistence && lootTrackerClient == null)
 					{
 						saveLocalLootRecord(lootRecord);
 					}
@@ -734,7 +752,7 @@ public class LootTrackerPlugin extends Plugin
 			final LootTrackerItem[] entries = buildEntries(stack(items));
 			SwingUtilities.invokeLater(() -> panel.add(chestType, client.getLocalPlayer().getName(), -1, entries));
 
-			if (lootTrackerClient != null && config.saveLoot())
+			if (lootTrackerClient != null && this.saveLoot)
 			{
 				LootRecord lootRecord = new LootRecord(chestType, client.getLocalPlayer().getName(),
 					LootRecordType.EVENT, toGameItems(items), Instant.now());
@@ -759,6 +777,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		config.setIgnoredItems(Text.toCSV(ignoredItemSet));
+		this.getIgnoredItems = Text.toCSV(ignoredItemSet);
 		panel.updateIgnoredRecords();
 	}
 
@@ -813,5 +832,20 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return trackerRecords;
+	}
+
+	private void updateConfig()
+	{
+		this.getIgnoredItems = config.getIgnoredItems();
+		this.saveLoot = config.saveLoot();
+		this.chestLootChat = config.chestLootChat();
+		this.syncPanel = config.syncPanel();
+		this.localPersistence = config.localPersistence();
+		this.sortType = config.sortType();
+		this.whitelistEnabled = config.whitelistEnabled();
+		this.getWhitelist = config.getWhitelist();
+		this.blacklistEnabled = config.blacklistEnabled();
+		this.getBlacklist = config.getBlacklist();
+		this.sendLootValueMessages = config.sendLootValueMessages();
 	}
 }

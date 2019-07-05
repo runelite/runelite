@@ -46,6 +46,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -97,7 +98,7 @@ import net.runelite.client.util.Text;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 @Slf4j
 public class StonedLootTrackerPlugin extends Plugin
 {

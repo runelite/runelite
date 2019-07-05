@@ -15,10 +15,10 @@ public class class14 {
          AccessFile var2 = new AccessFile(class337.clDat, "rw", 10000L);
          Buffer var3 = new Buffer(500);
          var3.writeByte(3);
-         var3.writeByte(var1 != null?1:0);
-         var3.__j_296(var0.getPath());
-         if(var1 != null) {
-            var3.__j_296("");
+         var3.writeByte(var1 != null ? 1 : 0);
+         var3.method37(var0.getPath());
+         if (var1 != null) {
+            var3.method37("");
          }
 
          var2.write(var3.array, 0, var3.index);
@@ -36,12 +36,12 @@ public class class14 {
    )
    public static char method171(byte var0) {
       int var1 = var0 & 255;
-      if(var1 == 0) {
+      if (var1 == 0) {
          throw new IllegalArgumentException("");
       } else {
-         if(var1 >= 128 && var1 < 160) {
+         if (var1 >= 128 && var1 < 160) {
             char var2 = class304.cp1252AsciiExtension[var1 - 128];
-            if(var2 == 0) {
+            if (var2 == 0) {
                var2 = '?';
             }
 
@@ -58,6 +58,6 @@ public class class14 {
       garbageValue = "-1103685678"
    )
    static boolean method169() {
-      return (Client.__client_ke & 8) != 0;
+      return (Client.field210 & 8) != 0;
    }
 }

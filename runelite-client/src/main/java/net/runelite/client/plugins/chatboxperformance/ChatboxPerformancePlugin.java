@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.chatboxperformance;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
@@ -40,6 +41,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	name = "Chatbox performance",
 	hidden = true
 )
+@Singleton
 public class ChatboxPerformancePlugin extends Plugin
 {
 	@Inject

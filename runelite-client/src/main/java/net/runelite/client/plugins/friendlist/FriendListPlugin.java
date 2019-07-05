@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.friendlist;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameTick;
@@ -39,6 +40,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	name = "Friend List",
 	description = "Add extra information to the friend and ignore lists"
 )
+@Singleton
 public class FriendListPlugin extends Plugin
 {
 	private static final int MAX_FRIENDS_P2P = 400;

@@ -26,6 +26,7 @@ package net.runelite.client.plugins.fps;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -64,6 +65,7 @@ import net.runelite.client.util.ping.Ping;
 	tags = {"frames", "framerate", "limit", "overlay", "ping"},
 	enabledByDefault = false
 )
+@Singleton
 public class FpsPlugin extends Plugin
 {
 	static final String CONFIG_GROUP_KEY = "fpscontrol";

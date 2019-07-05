@@ -30,6 +30,7 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.VarClientStr;
@@ -39,6 +40,7 @@ import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 
+@Singleton
 class KeyRemappingListener extends MouseAdapter implements KeyListener
 {
 	private static final Keybind ONE = new ModifierlessKeybind(KeyEvent.VK_1, 0);
@@ -56,9 +58,6 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 
 	@Inject
 	private KeyRemappingPlugin plugin;
-
-	@Inject
-	private KeyRemappingConfig config;
 
 	@Inject
 	private Client client;
@@ -83,24 +82,24 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 
 		if (!plugin.isTyping())
 		{
-			if (config.cameraRemap())
+			if (plugin.isCameraRemap())
 			{
-				if (config.up().matches(e))
+				if (plugin.getUp().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_UP);
 					e.setKeyCode(KeyEvent.VK_UP);
 				}
-				else if (config.down().matches(e))
+				else if (plugin.getDown().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_DOWN);
 					e.setKeyCode(KeyEvent.VK_DOWN);
 				}
-				else if (config.left().matches(e))
+				else if (plugin.getLeft().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_LEFT);
 					e.setKeyCode(KeyEvent.VK_LEFT);
 				}
-				else if (config.right().matches(e))
+				else if (plugin.getRight().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_RIGHT);
 					e.setKeyCode(KeyEvent.VK_RIGHT);
@@ -110,7 +109,7 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 			// In addition to the above checks, the F-key remapping shouldn't
 			// activate when dialogs are open which listen for number keys
 			// to select options
-			if (config.fkeyRemap() && !plugin.isDialogOpen())
+			if (plugin.isFkeyRemap() && !plugin.isDialogOpen())
 			{
 				if (ONE.matches(e))
 				{
@@ -219,27 +218,27 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 		{
 			modified.remove(e.getKeyCode());
 
-			if (config.cameraRemap())
+			if (plugin.isCameraRemap())
 			{
-				if (config.up().matches(e))
+				if (plugin.getUp().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_UP);
 				}
-				else if (config.down().matches(e))
+				else if (plugin.getDown().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_DOWN);
 				}
-				else if (config.left().matches(e))
+				else if (plugin.getLeft().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_LEFT);
 				}
-				else if (config.right().matches(e))
+				else if (plugin.getRight().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_RIGHT);
 				}
 			}
 
-			if (config.fkeyRemap())
+			if (plugin.isFkeyRemap())
 			{
 				if (ONE.matches(e))
 				{

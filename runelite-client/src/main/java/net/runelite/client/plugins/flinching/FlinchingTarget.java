@@ -26,6 +26,7 @@ package net.runelite.client.plugins.flinching;
 
 import java.time.Duration;
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
@@ -42,11 +43,11 @@ public class FlinchingTarget
 
 	public boolean isActive;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int objectId;
 	private NPC targetObject;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	public WorldPoint worldLocation;
 
 	FlinchingTarget(NPC target)

@@ -11,12 +11,12 @@ public class SpriteIds {
    @ObfuscatedGetter(
       intValue = 1673796151
    )
-   public int __m;
+   public int field878;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 159591367
    )
-   public int __f;
+   public int field879;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -104203005
@@ -73,8 +73,8 @@ public class SpriteIds {
    public int modIcons;
 
    public SpriteIds() {
-      this.__m = -1;
-      this.__f = -1;
+      this.field878 = -1;
+      this.field879 = -1;
       this.mapScenes = -1;
       this.headIconsPk = -1;
       this.headIconsPrayer = -1;
@@ -96,9 +96,9 @@ public class SpriteIds {
       byte[] var2 = var1.takeRecordFlat(class311.field3810.field3809);
       Buffer var3 = new Buffer(var2);
 
-      while(true) {
+      while (true) {
          int var4 = var3.readUnsignedByte();
-         if(var4 == 0) {
+         if (var4 == 0) {
             return;
          }
 
@@ -107,17 +107,17 @@ public class SpriteIds {
             var3.readMedium();
             break;
          case 2:
-            this.__m = var3.__ap_310();
-            this.__f = var3.__ap_310();
-            this.mapScenes = var3.__ap_310();
-            this.headIconsPk = var3.__ap_310();
-            this.headIconsPrayer = var3.__ap_310();
-            this.headIconsHint = var3.__ap_310();
-            this.mapMarkers = var3.__ap_310();
-            this.crosses = var3.__ap_310();
-            this.mapDots = var3.__ap_310();
-            this.scrollBars = var3.__ap_310();
-            this.modIcons = var3.__ap_310();
+            this.field878 = var3.method51();
+            this.field879 = var3.method51();
+            this.mapScenes = var3.method51();
+            this.headIconsPk = var3.method51();
+            this.headIconsPrayer = var3.method51();
+            this.headIconsHint = var3.method51();
+            this.mapMarkers = var3.method51();
+            this.crosses = var3.method51();
+            this.mapDots = var3.method51();
+            this.scrollBars = var3.method51();
+            this.modIcons = var3.method51();
          }
       }
    }
@@ -128,25 +128,25 @@ public class SpriteIds {
       garbageValue = "195396240"
    )
    public static Font method5823(AbstractIndexCache var0, AbstractIndexCache var1, int var2, int var3) {
-      if(!SpriteMask.loadSprite(var0, var2, var3)) {
+      if (!SpriteMask.loadSprite(var0, var2, var3)) {
          return null;
       } else {
-         byte[] var5 = var1.takeRecord(var2, var3);
-         Font var4;
-         if(var5 == null) {
-            var4 = null;
+         byte[] var4 = var1.takeRecord(var2, var3);
+         Font var5;
+         if (var4 == null) {
+            var5 = null;
          } else {
-            Font var6 = new Font(var5, class328.indexedSpriteOffsetXs, class328.indexedSpriteOffsetYs, VarbitDefinition.indexedSpriteWidths, SecureRandomCallable.indexedSpriteHeights, class328.indexedSpritePalette, class328.spritePixels);
+            Font var6 = new Font(var4, class328.indexedSpriteOffsetXs, class328.indexedSpriteOffsetYs, VarbitDefinition.indexedSpriteWidths, SecureRandomCallable.indexedSpriteHeights, class328.indexedSpritePalette, class328.spritePixels);
             class328.indexedSpriteOffsetXs = null;
             class328.indexedSpriteOffsetYs = null;
             VarbitDefinition.indexedSpriteWidths = null;
             SecureRandomCallable.indexedSpriteHeights = null;
             class328.indexedSpritePalette = null;
-            class328.spritePixels = null;
-            var4 = var6;
+            class328.spritePixels = (byte[][])null;
+            var5 = var6;
          }
 
-         return var4;
+         return var5;
       }
    }
 
@@ -156,12 +156,12 @@ public class SpriteIds {
       garbageValue = "58"
    )
    static final void method5828(Actor var0) {
-      int var1 = var0.__bw - Client.cycle;
-      int var2 = var0.__bf * 128 + var0.size * 64;
-      int var3 = var0.__be * 128 + var0.size * 64;
+      int var1 = var0.field19 - Client.cycle;
+      int var2 = var0.field15 * 128 + var0.size * 64;
+      int var3 = var0.field17 * 128 + var0.size * 64;
       var0.x += (var2 - var0.x) / var1;
       var0.y += (var3 - var0.y) / var1;
-      var0.__cq = 0;
-      var0.orientation = var0.__cv;
+      var0.field24 = 0;
+      var0.orientation = var0.field21;
    }
 }

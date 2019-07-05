@@ -25,9 +25,12 @@
 package net.runelite.client.plugins.tithefarm;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
@@ -47,6 +50,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show timers for the farming patches within the Tithe Farm minigame",
 	tags = {"farming", "minigame", "overlay", "skilling", "timers"}
 )
+@Singleton
 public class TitheFarmPlugin extends Plugin
 {
 	@Inject
@@ -55,8 +59,18 @@ public class TitheFarmPlugin extends Plugin
 	@Inject
 	private TitheFarmPlantOverlay titheFarmOverlay;
 
-	@Getter
+	@Inject
+	private TitheFarmPluginConfig config;
+
+	@Getter(AccessLevel.PACKAGE)
 	private final Set<TitheFarmPlant> plants = new HashSet<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Color getColorUnwatered;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getColorWatered;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getColorGrown;
 
 	@Provides
 	TitheFarmPluginConfig getConfig(ConfigManager configManager)
@@ -67,6 +81,7 @@ public class TitheFarmPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
 		overlayManager.add(titheFarmOverlay);
 		titheFarmOverlay.updateConfig();
 	}
@@ -82,6 +97,8 @@ public class TitheFarmPlugin extends Plugin
 	{
 		if (event.getGroup().equals("tithefarmplugin"))
 		{
+			updateConfig();
+
 			titheFarmOverlay.updateConfig();
 		}
 	}
@@ -151,5 +168,12 @@ public class TitheFarmPlugin extends Plugin
 			}
 		}
 		return null;
+	}
+
+	private void updateConfig()
+	{
+		this.getColorUnwatered = config.getColorUnwatered();
+		this.getColorWatered = config.getColorWatered();
+		this.getColorGrown = config.getColorGrown();
 	}
 }

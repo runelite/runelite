@@ -35,7 +35,7 @@ class CacheSkillData
 {
 	private final Map<String, SkillData> cache = new HashMap<>();
 
-	SkillData getSkillData(String dataFile)
+	SkillData getSkillData(final String dataFile)
 	{
 		if (cache.containsKey(dataFile))
 		{

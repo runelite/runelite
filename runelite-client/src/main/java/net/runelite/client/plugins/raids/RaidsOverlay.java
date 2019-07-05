@@ -35,6 +35,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -60,6 +62,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
+@Singleton
 public class RaidsOverlay extends Overlay
 {
 	private static final int OLM_PLANE = 0;
@@ -74,28 +77,26 @@ public class RaidsOverlay extends Overlay
 	private final PanelComponent panelImages = new PanelComponent();
 	private Client client;
 	private RaidsPlugin plugin;
-	private RaidsConfig config;
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private boolean sharable = false;
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private boolean scoutOverlayShown = false;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean scouterActive = false;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int width;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int height;
 
 	@Inject
-	private RaidsOverlay(Client client, RaidsPlugin plugin, RaidsConfig config, ItemManager itemManager, SpriteManager spriteManager)
+	private RaidsOverlay(final Client client, final RaidsPlugin plugin, final ItemManager itemManager, final SpriteManager spriteManager)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 		this.itemManager = itemManager;
 		this.spriteManager = spriteManager;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
@@ -104,7 +105,7 @@ public class RaidsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.scoutOverlay() || !scoutOverlayShown || plugin.isInRaidChambers() && client.getPlane() == OLM_PLANE)
+		if (!plugin.isScoutOverlay() || !scoutOverlayShown || plugin.isInRaidChambers() && client.getPlane() == OLM_PLANE)
 		{
 			return null;
 		}
@@ -112,7 +113,7 @@ public class RaidsOverlay extends Overlay
 		scouterActive = false;
 		panelComponent.getChildren().clear();
 
-		if (config.hideBackground())
+		if (plugin.isHideBackground())
 		{
 			panelComponent.setBackgroundColor(null);
 		}
@@ -134,7 +135,7 @@ public class RaidsOverlay extends Overlay
 		Color color = Color.WHITE;
 		String layout = plugin.getRaid().getLayout().toCodeString();
 		String displayLayout;
-		if (config.displayFloorBreak())
+		if (plugin.isDisplayFloorBreak())
 		{
 			displayLayout = plugin.getRaid().getLayout().toCode();
 			displayLayout = displayLayout.substring(0, displayLayout.length() - 1).replaceAll("#", "").replaceFirst("¤", " | ");
@@ -144,7 +145,7 @@ public class RaidsOverlay extends Overlay
 			displayLayout = layout;
 		}
 
-		if (config.enableLayoutWhitelist() && !plugin.getLayoutWhitelist().contains(layout.toLowerCase()))
+		if (plugin.isEnableLayoutWhitelist() && !plugin.getLayoutWhitelist().contains(layout.toLowerCase()))
 		{
 			color = Color.RED;
 		}
@@ -216,7 +217,7 @@ public class RaidsOverlay extends Overlay
 			puzzles = crabs ? "cr" : iceDemon ? "ri" : thieving ? "tr" : "?r";
 		}
 
-		if ((config.hideVanguards() && vanguards) || (config.hideRopeless() && !tightrope) || (config.hideUnknownCombat() && unknownCombat))
+		if ((plugin.isHideVanguards() && vanguards) || (plugin.isHideRopeless() && !tightrope) || (plugin.isHideUnknownCombat() && unknownCombat))
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Bad Raid!")
@@ -227,7 +228,7 @@ public class RaidsOverlay extends Overlay
 		}
 
 		scouterActive = true;
-		displayLayout = (config.enhanceScouterTitle() ? "" + combatCount + "c " + puzzles + " " : "") + displayLayout;
+		displayLayout = (plugin.isEnhanceScouterTitle() ? "" + combatCount + "c " + puzzles + " " : "") + displayLayout;
 
 		for (Integer i : iceRooms)
 		{
@@ -259,7 +260,7 @@ public class RaidsOverlay extends Overlay
 		}
 		else
 		{
-			if (config.hideBackground())
+			if (plugin.isHideBackground())
 			{
 				panelComponent.setBackgroundColor(null);
 			}
@@ -273,7 +274,7 @@ public class RaidsOverlay extends Overlay
 		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
 		color = Color.ORANGE;
-		if (sharable || config.alwaysShowWorldAndCC())
+		if (sharable || plugin.isAlwaysShowWorldAndCC())
 		{
 			String clanOwner = Text.removeTags(client.getWidget(WidgetInfo.CLAN_CHAT_OWNER).getText());
 			if (clanOwner.equals("None"))
@@ -289,7 +290,7 @@ public class RaidsOverlay extends Overlay
 		int bossCount = 0;
 		roomCount = 0;
 
-		if (config.enableRotationWhitelist())
+		if (plugin.isEnableRotationWhitelist())
 		{
 			bossMatches = plugin.getRotationMatches();
 		}
@@ -316,14 +317,14 @@ public class RaidsOverlay extends Overlay
 						color = Color.GREEN;
 					}
 					else if (plugin.getRoomBlacklist().contains(room.getBoss().getName().toLowerCase())
-						|| config.enableRotationWhitelist() && bossCount > bossMatches)
+						|| plugin.isEnableRotationWhitelist() && bossCount > bossMatches)
 					{
 						color = Color.RED;
 					}
 
 					String bossName = room.getBoss().getName();
 					String bossNameLC = bossName.toLowerCase();
-					if (config.showRecommendedItems())
+					if (plugin.isShowRecommendedItems())
 					{
 						if (plugin.getRecommendedItemsList().get(bossNameLC) != null)
 						{
@@ -331,7 +332,7 @@ public class RaidsOverlay extends Overlay
 						}
 					}
 
-					tableComponent.addRow(config.showRecommendedItems() ? "" : room.getType().getName(), ColorUtil.prependColorTag(bossName, color));
+					tableComponent.addRow(plugin.isShowRecommendedItems() ? "" : room.getType().getName(), ColorUtil.prependColorTag(bossName, color));
 
 					break;
 
@@ -350,11 +351,11 @@ public class RaidsOverlay extends Overlay
 					{
 						color = Color.RED;
 					}
-					if (config.colorTightrope() && puzzleNameLC.equals("tightrope"))
+					if (plugin.isColorTightrope() && puzzleNameLC.equals("tightrope"))
 					{
-						color = config.tightropeColor();
+						color = plugin.getTightropeColor();
 					}
-					if (config.crabHandler() && puzzleNameLC.equals("crabs"))
+					if (plugin.isCrabHandler() && puzzleNameLC.equals("crabs"))
 					{
 						if (plugin.getGoodCrabs() == null)
 						{
@@ -365,33 +366,33 @@ public class RaidsOverlay extends Overlay
 							switch (plugin.getGoodCrabs())
 							{
 								case "Good Crabs":
-									color = config.goodCrabColor();
+									color = plugin.getGoodCrabColor();
 									break;
 								case "Rare Crabs":
-									color = config.rareCrabColor();
+									color = plugin.getRareCrabColor();
 									break;
 							}
 						}
 					}
 
-					tableComponent.addRow(config.showRecommendedItems() ? "" : room.getType().getName(), ColorUtil.prependColorTag(puzzleName, color));
+					tableComponent.addRow(plugin.isShowRecommendedItems() ? "" : room.getType().getName(), ColorUtil.prependColorTag(puzzleName, color));
 					break;
 				case FARMING:
-					if (config.showScavsFarms())
+					if (plugin.isShowScavsFarms())
 					{
 						tableComponent.addRow("", ColorUtil.prependColorTag(room.getType().getName(), new Color(181, 230, 29)));
 					}
 					break;
 				case SCAVENGERS:
-					if (config.scavsBeforeOlm() && roomCount == lastScavs)
+					if (plugin.isScavsBeforeOlm() && roomCount == lastScavs)
 					{
-						tableComponent.addRow(config.showRecommendedItems() ? "" : "OlmPrep", ColorUtil.prependColorTag("Scavs", config.scavPrepColor()));
+						tableComponent.addRow(plugin.isShowRecommendedItems() ? "" : "OlmPrep", ColorUtil.prependColorTag("Scavs", plugin.getScavPrepColor()));
 					}
-					else if (config.scavsBeforeIce() && scavsBeforeIceRooms.contains(roomCount))
+					else if (plugin.isScavsBeforeIce() && scavsBeforeIceRooms.contains(roomCount))
 					{
-						tableComponent.addRow(config.showRecommendedItems() ? "" : "IcePrep", ColorUtil.prependColorTag("Scavs", config.scavPrepColor()));
+						tableComponent.addRow(plugin.isShowRecommendedItems() ? "" : "IcePrep", ColorUtil.prependColorTag("Scavs", plugin.getScavPrepColor()));
 					}
-					else if (config.showScavsFarms())
+					else if (plugin.isShowScavsFarms())
 					{
 						tableComponent.addRow("", ColorUtil.prependColorTag("Scavs", new Color(181, 230, 29)));
 					}
@@ -407,12 +408,12 @@ public class RaidsOverlay extends Overlay
 		height = (int) panelDims.getHeight();
 
 		//add recommended items
-		if (config.showRecommendedItems() && imageIds.size() > 0)
+		if (plugin.isShowRecommendedItems() && imageIds.size() > 0)
 		{
 			panelImages.getChildren().clear();
 			Integer[] idArray = imageIds.toArray(new Integer[0]);
-			int imagesVerticalOffset = TITLE_COMPONENT_HEIGHT + (sharable || config.alwaysShowWorldAndCC() ? LINE_COMPONENT_HEIGHT : 0) - BORDER_OFFSET;
-			int imagesMaxHeight = height - 2 * BORDER_OFFSET - TITLE_COMPONENT_HEIGHT - (sharable || config.alwaysShowWorldAndCC() ? LINE_COMPONENT_HEIGHT : 0);
+			int imagesVerticalOffset = TITLE_COMPONENT_HEIGHT + (sharable || plugin.isAlwaysShowWorldAndCC() ? LINE_COMPONENT_HEIGHT : 0) - BORDER_OFFSET;
+			int imagesMaxHeight = height - 2 * BORDER_OFFSET - TITLE_COMPONENT_HEIGHT - (sharable || plugin.isAlwaysShowWorldAndCC() ? LINE_COMPONENT_HEIGHT : 0);
 			boolean smallImages = false;
 
 			panelImages.setPreferredLocation(new Point(0, imagesVerticalOffset));

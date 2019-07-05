@@ -71,12 +71,12 @@ public class PrayerTracker
 		newTick.get(actor).put("SpotAnim", actor.getSpotAnimation());
 	}
 
-	public int getPrayerIconLastTick(Actor p)
+	int getPrayerIconLastTick(Actor p)
 	{
 		return lastTick.getOrDefault(p, new HashMap<>()).getOrDefault("PrayerIcon", -1337);
 	}
 
-	public int getSpotanimLastTick(Actor p)
+	int getSpotanimLastTick(Actor p)
 	{
 		return lastTick.getOrDefault(p, new HashMap<>()).getOrDefault("SpotAnim", -1337);
 	}

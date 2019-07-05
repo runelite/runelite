@@ -35,7 +35,7 @@ public enum class266 implements Enumerated {
    )
    final int field3530;
 
-   class266(int var3, int var4) {
+   private class266(int var3, int var4) {
       this.field3528 = var3;
       this.field3530 = var4;
    }
@@ -56,13 +56,13 @@ public enum class266 implements Enumerated {
       garbageValue = "1908348747"
    )
    static final void method5120() {
-      if(VertexNormal.__dq_pe) {
-         if(PacketWriter.clanChat != null) {
+      if (VertexNormal.field945) {
+         if (PacketWriter.clanChat != null) {
             PacketWriter.clanChat.sort();
          }
 
          FontName.method5635();
-         VertexNormal.__dq_pe = false;
+         VertexNormal.field945 = false;
       }
 
    }

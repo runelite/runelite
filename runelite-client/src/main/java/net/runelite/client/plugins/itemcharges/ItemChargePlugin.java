@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -69,6 +70,7 @@ import static net.runelite.api.ItemID.RING_OF_RECOIL;
 	description = "Show number of item charges remaining",
 	tags = {"inventory", "notifications", "overlay"}
 )
+@Singleton
 public class ItemChargePlugin extends Plugin
 {
 	private static final Pattern DODGY_CHECK_PATTERN = Pattern.compile(
@@ -126,8 +128,6 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_BINDING_CHARGES = 16;
 	private static final int MAX_EXPLORER_RING_CHARGES = 30;
 
-	private int lastExplorerRingCharge = -1;
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean ringOfRecoilAvailable = false;
 
@@ -164,6 +164,65 @@ public class ItemChargePlugin extends Plugin
 	// Limits destroy callback to once per tick
 	private int lastCheckTick;
 
+	private Color veryLowWarningColor;
+	private Color lowWarningolor;
+	private int veryLowWarning;
+	private int lowWarning;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showTeleportCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showDodgyCount;
+	private boolean dodgyNotification;
+	@Getter(AccessLevel.PACKAGE)
+	private int dodgyNecklace;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showImpCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showFungicideCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showWateringCanCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showWaterskinCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showBellowCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showBasketCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showSackCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showAbyssalBraceletCharges;
+	private boolean recoilNotification;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showBindingNecklaceCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private int bindingNecklace;
+	private boolean bindingNotification;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showExplorerRingCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private int explorerRing;
+	private boolean showInfoboxes;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showSlayerBracelets;
+	@Getter(AccessLevel.PACKAGE)
+	private int expeditious;
+	@Getter(AccessLevel.PACKAGE)
+	private int slaughter;
+	@Getter(AccessLevel.PACKAGE)
+	private int xericTalisman;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showSoulBearerCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private int soulBearer;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showChronicleCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showXericTalismanCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showrecoil;
+	@Getter(AccessLevel.PACKAGE)
+	private int chronicle;
+
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
 	{
@@ -173,6 +232,8 @@ public class ItemChargePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+
 		overlayManager.add(overlay);
 		overlayManager.add(recoilOverlay);
 		recoilRingImage = itemManager.getImage(RING_OF_RECOIL);
@@ -195,39 +256,41 @@ public class ItemChargePlugin extends Plugin
 			return;
 		}
 
-		if (!config.showInfoboxes())
+		updateConfig();
+
+		if (!this.showInfoboxes)
 		{
 			infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
 			return;
 		}
 
-		if (!config.showTeleportCharges())
+		if (!this.showTeleportCharges)
 		{
 			removeInfobox(ItemWithSlot.TELEPORT);
 		}
 
-		if (!config.showAbyssalBraceletCharges())
+		if (!this.showAbyssalBraceletCharges)
 		{
 			removeInfobox(ItemWithSlot.ABYSSAL_BRACELET);
 		}
 
-		if (!config.showDodgyCount())
+		if (!this.showDodgyCount)
 		{
 			removeInfobox(ItemWithSlot.DODGY_NECKLACE);
 		}
 
-		if (!config.showSlayerBracelets())
+		if (!this.showSlayerBracelets)
 		{
 			removeInfobox(ItemWithSlot.BRACELET_OF_SLAUGHTER);
 			removeInfobox(ItemWithSlot.EXPEDITIOUS_BRACELET);
 		}
 
-		if (!config.showBindingNecklaceCharges())
+		if (!this.showBindingNecklaceCharges)
 		{
 			removeInfobox(ItemWithSlot.BINDING_NECKLACE);
 		}
 
-		if (!config.showExplorerRingCharges())
+		if (!this.showExplorerRingCharges)
 		{
 			removeInfobox(ItemWithSlot.EXPLORER_RING);
 		}
@@ -256,7 +319,7 @@ public class ItemChargePlugin extends Plugin
 
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
-			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
+			if (this.recoilNotification && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
 				notifier.notify("Your Ring of Recoil has shattered");
 			}
@@ -286,7 +349,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (dodgyBreakMatcher.find())
 			{
-				if (config.dodgyNotification())
+				if (this.dodgyNotification)
 				{
 					notifier.notify("Your dodgy necklace has crumbled to dust.");
 				}
@@ -295,7 +358,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.contains(BINDING_BREAK_TEXT))
 			{
-				if (config.bindingNotification())
+				if (this.bindingNotification)
 				{
 					notifier.notify(BINDING_BREAK_TEXT);
 				}
@@ -305,7 +368,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (bindingNecklaceUsedMatcher.find())
 			{
-				updateBindingNecklaceCharges(config.bindingNecklace() - 1);
+				updateBindingNecklaceCharges(this.bindingNecklace - 1);
 			}
 			else if (bindingNecklaceCheckMatcher.find())
 			{
@@ -360,40 +423,40 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT) || !config.showInfoboxes())
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT) || !this.showInfoboxes)
 		{
 			return;
 		}
 
 		final Item[] items = event.getItemContainer().getItems();
 
-		if (config.showTeleportCharges())
+		if (this.showTeleportCharges)
 		{
 			updateJewelleryInfobox(ItemWithSlot.TELEPORT, items);
 		}
 
-		if (config.showDodgyCount())
+		if (this.showDodgyCount)
 		{
 			updateJewelleryInfobox(ItemWithSlot.DODGY_NECKLACE, items);
 		}
 
-		if (config.showAbyssalBraceletCharges())
+		if (this.showAbyssalBraceletCharges)
 		{
 			updateJewelleryInfobox(ItemWithSlot.ABYSSAL_BRACELET, items);
 		}
 
-		if (config.showSlayerBracelets())
+		if (this.showSlayerBracelets)
 		{
 			updateJewelleryInfobox(ItemWithSlot.BRACELET_OF_SLAUGHTER, items);
 			updateJewelleryInfobox(ItemWithSlot.EXPEDITIOUS_BRACELET, items);
 		}
 
-		if (config.showBindingNecklaceCharges())
+		if (this.showBindingNecklaceCharges)
 		{
 			updateJewelleryInfobox(ItemWithSlot.BINDING_NECKLACE, items);
 		}
 
-		if (config.showExplorerRingCharges())
+		if (this.showExplorerRingCharges)
 		{
 			updateJewelleryInfobox(ItemWithSlot.EXPLORER_RING, items);
 		}
@@ -410,10 +473,12 @@ public class ItemChargePlugin extends Plugin
 			if (braceletText.contains("bracelet of slaughter"))
 			{
 				config.slaughter(MAX_SLAUGHTER_CHARGES);
+				this.slaughter = MAX_SLAUGHTER_CHARGES;
 			}
 			else if (braceletText.contains("expeditious bracelet"))
 			{
 				config.expeditious(MAX_EXPEDITIOUS_CHARGES);
+				this.expeditious = MAX_EXPEDITIOUS_CHARGES;
 			}
 		}
 
@@ -506,7 +571,7 @@ public class ItemChargePlugin extends Plugin
 		{
 			if (client.getLocalPlayer().getSpotAnimation() == GraphicID.XERIC_TELEPORT)
 			{
-				final int xericCharges = Math.max(config.xericTalisman() - 1, 0);
+				final int xericCharges = Math.max(this.xericTalisman - 1, 0);
 				updateXericCharges(xericCharges);
 			}
 		}
@@ -531,6 +596,7 @@ public class ItemChargePlugin extends Plugin
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		int explorerRingCharge = client.getVar(Varbits.EXPLORER_RING_ALCHS);
+		int lastExplorerRingCharge = -1;
 		if (lastExplorerRingCharge != explorerRingCharge)
 		{
 			updateExplorerRingCharges(explorerRingCharge);
@@ -540,8 +606,9 @@ public class ItemChargePlugin extends Plugin
 	private void updateDodgyNecklaceCharges(final int value)
 	{
 		config.dodgyNecklace(value);
+		this.dodgyNecklace = value;
 
-		if (config.showInfoboxes() && config.showDodgyCount())
+		if (this.showInfoboxes && this.showDodgyCount)
 		{
 			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
@@ -557,8 +624,9 @@ public class ItemChargePlugin extends Plugin
 	private void updateBraceletOfSlaughterCharges(final int value)
 	{
 		config.slaughter(value);
+		this.slaughter = value;
 
-		if (config.showInfoboxes() && config.showSlayerBracelets())
+		if (this.showInfoboxes && this.showSlayerBracelets)
 		{
 			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
@@ -574,8 +642,9 @@ public class ItemChargePlugin extends Plugin
 	private void updateExpeditiousCharges(final int value)
 	{
 		config.expeditious(value);
+		this.expeditious = value;
 
-		if (config.showInfoboxes() && config.showSlayerBracelets())
+		if (this.showInfoboxes && this.showSlayerBracelets)
 		{
 			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
@@ -591,8 +660,9 @@ public class ItemChargePlugin extends Plugin
 	private void updateBindingNecklaceCharges(final int value)
 	{
 		config.bindingNecklace(value);
+		this.bindingNecklace = value;
 
-		if (config.showInfoboxes() && config.showBindingNecklaceCharges())
+		if (this.showInfoboxes && this.showBindingNecklaceCharges)
 		{
 			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
@@ -608,24 +678,28 @@ public class ItemChargePlugin extends Plugin
 	private void updateXericCharges(int xericCharges)
 	{
 		config.xericTalisman(xericCharges);
+		this.xericTalisman = xericCharges;
 	}
 
 	private void updateSoulBearerCharges(int soulBearerCharges)
 	{
 		config.soulBearer(soulBearerCharges);
+		this.soulBearer = soulBearerCharges;
 	}
 
 	private void updateChronicleCharges(int chronicleCharges)
 	{
 		config.chronicle(chronicleCharges);
+		this.chronicle = chronicleCharges;
 	}
 	
 	private void updateExplorerRingCharges(final int value)
 	{
 		// Note: Varbit counts upwards. We count down from the maximum charges.
 		config.explorerRing(MAX_EXPLORER_RING_CHARGES - value);
+		this.explorerRing = MAX_EXPLORER_RING_CHARGES - value;
 
-		if (config.showInfoboxes() && config.showExplorerRingCharges())
+		if (this.showInfoboxes && this.showExplorerRingCharges)
 		{
 			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
@@ -694,23 +768,23 @@ public class ItemChargePlugin extends Plugin
 		{
 			if (id == ItemID.DODGY_NECKLACE && type == ItemWithSlot.DODGY_NECKLACE)
 			{
-				charges = config.dodgyNecklace();
+				charges = this.dodgyNecklace;
 			}
 			else if (id == ItemID.BRACELET_OF_SLAUGHTER && type == ItemWithSlot.BRACELET_OF_SLAUGHTER)
 			{
-				charges = config.slaughter();
+				charges = this.slaughter;
 			}
 			else if (id == ItemID.EXPEDITIOUS_BRACELET && type == ItemWithSlot.EXPEDITIOUS_BRACELET)
 			{
-				charges = config.expeditious();
+				charges = this.expeditious;
 			}
 			else if (id == ItemID.BINDING_NECKLACE && type == ItemWithSlot.BINDING_NECKLACE)
 			{
-				charges = config.bindingNecklace();
+				charges = this.bindingNecklace;
 			}
 			else if ((id >= ItemID.EXPLORERS_RING_1 && id <= ItemID.EXPLORERS_RING_4) && type == ItemWithSlot.EXPLORER_RING)
 			{
-				charges = config.explorerRing();
+				charges = this.explorerRing;
 			}
 		}
 		else if (itemWithCharge.getType() == type.getType())
@@ -751,14 +825,49 @@ public class ItemChargePlugin extends Plugin
 	Color getColor(int charges)
 	{
 		Color color = Color.WHITE;
-		if (charges <= config.veryLowWarning())
+		if (charges <= this.veryLowWarning)
 		{
-			color = config.veryLowWarningColor();
+			color = this.veryLowWarningColor;
 		}
-		else if (charges <= config.lowWarning())
+		else if (charges <= this.lowWarning)
 		{
-			color = config.lowWarningolor();
+			color = this.lowWarningolor;
 		}
 		return color;
+	}
+
+	private void updateConfig()
+	{
+		this.veryLowWarningColor = config.veryLowWarningColor();
+		this.lowWarningolor = config.lowWarningolor();
+		this.veryLowWarning = config.veryLowWarning();
+		this.lowWarning = config.lowWarning();
+		this.showTeleportCharges = config.showTeleportCharges();
+		this.showDodgyCount = config.showDodgyCount();
+		this.dodgyNotification = config.dodgyNotification();
+		this.dodgyNecklace = config.dodgyNecklace();
+		this.showImpCharges = config.showImpCharges();
+		this.showFungicideCharges = config.showFungicideCharges();
+		this.showWateringCanCharges = config.showWateringCanCharges();
+		this.showWaterskinCharges = config.showWaterskinCharges();
+		this.showBellowCharges = config.showBellowCharges();
+		this.showAbyssalBraceletCharges = config.showAbyssalBraceletCharges();
+		this.recoilNotification = config.recoilNotification();
+		this.showBindingNecklaceCharges = config.showBindingNecklaceCharges();
+		this.bindingNecklace = config.bindingNecklace();
+		this.bindingNotification = config.bindingNotification();
+		this.showExplorerRingCharges = config.showExplorerRingCharges();
+		this.explorerRing = config.explorerRing();
+		this.showInfoboxes = config.showInfoboxes();
+		this.showSlayerBracelets = config.showSlayerBracelets();
+		this.expeditious = config.expeditious();
+		this.slaughter = config.slaughter();
+		this.xericTalisman = config.xericTalisman();
+		this.showSoulBearerCharges = config.showSoulBearerCharges();
+		this.soulBearer = config.soulBearer();
+		this.showChronicleCharges = config.showChronicleCharges();
+		this.showXericTalismanCharges = config.showXericTalismanCharges();
+		this.showrecoil = config.showrecoil();
+		this.chronicle = config.chronicle();
 	}
 }

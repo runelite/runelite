@@ -12,7 +12,7 @@ public class class60 {
    @Export("worldMap0")
    static WorldMap worldMap0;
    @ObfuscatedName("ar")
-   static FontMetrics __bo_ar;
+   static FontMetrics field1162;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -20,8 +20,8 @@ public class class60 {
       garbageValue = "1583108922"
    )
    public static void method1172(AbstractIndexCache var0, AbstractIndexCache var1, AbstractIndexCache var2) {
-      HitSplatDefinition.__jm_m = var0;
-      HitSplatDefinition.__jm_f = var1;
-      HitSplatDefinition.__jm_q = var2;
+      HitSplatDefinition.field382 = var0;
+      HitSplatDefinition.field383 = var1;
+      HitSplatDefinition.field384 = var2;
    }
 }

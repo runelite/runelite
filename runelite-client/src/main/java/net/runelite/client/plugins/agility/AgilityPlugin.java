@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -83,14 +85,15 @@ import net.runelite.client.util.ColorUtil;
 	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
 @Slf4j
+@Singleton
 public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Obstacle> obstacles = new HashMap<>();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<Tile> marksOfGrace = new ArrayList<>();
 
 	@Inject
@@ -117,13 +120,13 @@ public class AgilityPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private AgilitySession session;
 
 	private int lastAgilityXp;
 	private WorldPoint lastArenaTicketPosition;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int agilityLevel;
 
 	@Provides
@@ -132,9 +135,36 @@ public class AgilityPlugin extends Plugin
 		return configManager.getConfig(AgilityConfig.class);
 	}
 
+	// Config values
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showLapCount;
+	@Getter(AccessLevel.PACKAGE)
+	private int lapTimeout;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean lapsToLevel;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean lapsToGoal;
+	@Getter(AccessLevel.PACKAGE)
+	private Color overlayColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightMarks;
+	@Getter(AccessLevel.PACKAGE)
+	private Color markColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightShortcuts;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showTrapOverlay;
+	@Getter(AccessLevel.PACKAGE)
+	private Color trapColor;
+	private boolean notifyAgilityArena;
+	private boolean showAgilityArenaTimer;
+	private boolean showShortcutLevel;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(agilityOverlay);
 		overlayManager.add(lapCounterOverlay);
 		agilityLevel = client.getBoostedSkillLevel(Skill.AGILITY);
@@ -179,16 +209,40 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!config.showAgilityArenaTimer())
+		if (!event.getGroup().equals("agility"))
+		{
+			return;
+		}
+
+		updateConfig();
+
+		if (!this.showAgilityArenaTimer)
 		{
 			removeAgilityArenaTimer();
 		}
 	}
 
+	public void updateConfig()
+	{
+		this.showLapCount = config.showLapCount();
+		this.lapTimeout = config.lapTimeout();
+		this.lapsToLevel = config.lapsToLevel();
+		this.lapsToGoal = config.lapsToGoal();
+		this.overlayColor = config.getOverlayColor();
+		this.highlightMarks = config.highlightMarks();
+		this.markColor = config.getMarkColor();
+		this.highlightShortcuts = config.highlightShortcuts();
+		this.showTrapOverlay = config.showTrapOverlay();
+		this.trapColor = config.getTrapColor();
+		this.notifyAgilityArena = config.notifyAgilityArena();
+		this.showAgilityArenaTimer = config.showAgilityArenaTimer();
+		this.showShortcutLevel = config.showShortcutLevel();
+	}
+
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
-		if (event.getSkill() != AGILITY || !config.showLapCount())
+		if (event.getSkill() != AGILITY || !this.showLapCount)
 		{
 			return;
 		}
@@ -272,12 +326,12 @@ public class AgilityPlugin extends Plugin
 			{
 				log.debug("Ticked position moved from {} to {}", oldTickPosition, newTicketPosition);
 
-				if (config.notifyAgilityArena())
+				if (this.notifyAgilityArena)
 				{
 					notifier.notify("Ticket location changed");
 				}
 
-				if (config.showAgilityArenaTimer())
+				if (this.showAgilityArenaTimer)
 				{
 					showNewAgilityArenaTimer();
 				}
@@ -430,7 +484,7 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!config.showShortcutLevel())
+		if (!this.showShortcutLevel)
 		{
 			return;
 		}

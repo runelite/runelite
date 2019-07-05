@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.Collections;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,6 +21,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.StackFormatter;
 
+@Singleton
 class TaskBox extends JPanel
 {
 	private static final long MILLIS_PER_SECOND = 1000;

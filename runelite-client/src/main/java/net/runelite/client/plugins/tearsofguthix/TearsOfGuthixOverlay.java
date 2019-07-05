@@ -30,12 +30,14 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
+@Singleton
 class TearsOfGuthixOverlay extends Overlay
 {
 	private static final Color CYAN_ALPHA = new Color(Color.CYAN.getRed(), Color.CYAN.getGreen(), Color.CYAN.getBlue(), 100);
@@ -43,7 +45,7 @@ class TearsOfGuthixOverlay extends Overlay
 	private final TearsOfGuthixPlugin plugin;
 
 	@Inject
-	private TearsOfGuthixOverlay(TearsOfGuthixPlugin plugin)
+	private TearsOfGuthixOverlay(final TearsOfGuthixPlugin plugin)
 	{
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);

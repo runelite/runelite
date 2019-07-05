@@ -11,125 +11,125 @@ public class PlatformInfo extends Node {
    @ObfuscatedGetter(
       intValue = 1318366785
    )
-   int __ay;
+   int field694;
    @ObfuscatedName("ah")
-   boolean __ah;
+   boolean field695;
    @ObfuscatedName("ak")
    @ObfuscatedGetter(
       intValue = 703904161
    )
-   int __ak;
+   int field696;
    @ObfuscatedName("aw")
    @ObfuscatedGetter(
       intValue = 467004305
    )
-   int __aw;
+   int field697;
    @ObfuscatedName("al")
    @ObfuscatedGetter(
       intValue = 2097018521
    )
-   int __al;
+   int field698;
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
       intValue = -1667177301
    )
-   int __ab;
+   int field699;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
       intValue = 385109109
    )
-   int __ae;
+   int field700;
    @ObfuscatedName("at")
-   boolean __at;
+   boolean field701;
    @ObfuscatedName("ad")
    @ObfuscatedGetter(
       intValue = -1765017
    )
-   int __ad;
+   int field702;
    @ObfuscatedName("ap")
    @ObfuscatedGetter(
       intValue = -817941105
    )
-   int __ap;
+   int field703;
    @ObfuscatedName("am")
    @ObfuscatedGetter(
       intValue = 30207059
    )
-   int __am;
+   int field704;
    @ObfuscatedName("an")
    @ObfuscatedGetter(
       intValue = 890109053
    )
-   int __an;
+   int field705;
    @ObfuscatedName("az")
-   String __az;
+   String field706;
    @ObfuscatedName("au")
-   String __au;
+   String field707;
    @ObfuscatedName("ao")
-   String __ao;
+   String field708;
    @ObfuscatedName("aa")
-   String __aa;
+   String field709;
    @ObfuscatedName("ax")
    @ObfuscatedGetter(
       intValue = 871094255
    )
-   int __ax;
+   int field710;
    @ObfuscatedName("af")
    @ObfuscatedGetter(
       intValue = 1955966365
    )
-   int __af;
+   int field711;
    @ObfuscatedName("ai")
    @ObfuscatedGetter(
       intValue = 1196598207
    )
-   int __ai;
+   int field712;
    @ObfuscatedName("ba")
    @ObfuscatedGetter(
       intValue = -170839105
    )
-   int __ba;
+   int field713;
    @ObfuscatedName("bb")
-   String __bb;
+   String field714;
    @ObfuscatedName("bs")
-   String __bs;
+   String field715;
    @ObfuscatedName("bq")
-   int[] __bq;
+   int[] field716;
    @ObfuscatedName("bn")
    @ObfuscatedGetter(
       intValue = 1466207635
    )
-   int __bn;
+   int field717;
    @ObfuscatedName("bk")
-   String __bk;
+   String field718;
 
    PlatformInfo(int var1, boolean var2, int var3, int var4, int var5, int var6, int var7, boolean var8, int var9, int var10, int var11, int var12, String var13, String var14, String var15, String var16, int var17, int var18, int var19, int var20, String var21, String var22, int[] var23, int var24, String var25) {
-      this.__bq = new int[3];
-      this.__ay = var1;
-      this.__ah = var2;
-      this.__ak = var3;
-      this.__aw = var4;
-      this.__al = var5;
-      this.__ab = var6;
-      this.__ae = var7;
-      this.__at = var8;
-      this.__ad = var9;
-      this.__ap = var10;
-      this.__am = var11;
-      this.__an = var12;
-      this.__az = var13;
-      this.__au = var14;
-      this.__ao = var15;
-      this.__aa = var16;
-      this.__ax = var17;
-      this.__af = var18;
-      this.__ai = var19;
-      this.__ba = var20;
-      this.__bb = var21;
-      this.__bs = var22;
-      this.__bq = var23;
-      this.__bn = var24;
-      this.__bk = var25;
+      this.field716 = new int[3];
+      this.field694 = var1;
+      this.field695 = var2;
+      this.field696 = var3;
+      this.field697 = var4;
+      this.field698 = var5;
+      this.field699 = var6;
+      this.field700 = var7;
+      this.field701 = var8;
+      this.field702 = var9;
+      this.field703 = var10;
+      this.field704 = var11;
+      this.field705 = var12;
+      this.field706 = var13;
+      this.field707 = var14;
+      this.field708 = var15;
+      this.field709 = var16;
+      this.field710 = var17;
+      this.field711 = var18;
+      this.field712 = var19;
+      this.field713 = var20;
+      this.field714 = var21;
+      this.field715 = var22;
+      this.field716 = var23;
+      this.field717 = var24;
+      this.field718 = var25;
    }
 
    @ObfuscatedName("m")
@@ -140,35 +140,35 @@ public class PlatformInfo extends Node {
    @Export("write")
    public void write(Buffer var1) {
       var1.writeByte(7);
-      var1.writeByte(this.__ay);
-      var1.writeByte(this.__ah?1:0);
-      var1.writeByte(this.__ak);
-      var1.writeByte(this.__aw);
-      var1.writeByte(this.__al);
-      var1.writeByte(this.__ab);
-      var1.writeByte(this.__ae);
-      var1.writeByte(this.__at?1:0);
-      var1.writeShort(this.__ad);
-      var1.writeByte(this.__ap);
-      var1.writeMedium(this.__am);
-      var1.writeShort(this.__an);
-      var1.writeStringCp1252NullCircumfixed(this.__az);
-      var1.writeStringCp1252NullCircumfixed(this.__au);
-      var1.writeStringCp1252NullCircumfixed(this.__ao);
-      var1.writeStringCp1252NullCircumfixed(this.__aa);
-      var1.writeByte(this.__af);
-      var1.writeShort(this.__ax);
-      var1.writeStringCp1252NullCircumfixed(this.__bb);
-      var1.writeStringCp1252NullCircumfixed(this.__bs);
-      var1.writeByte(this.__ai);
-      var1.writeByte(this.__ba);
+      var1.writeByte(this.field694);
+      var1.writeByte(this.field695 ? 1 : 0);
+      var1.writeByte(this.field696);
+      var1.writeByte(this.field697);
+      var1.writeByte(this.field698);
+      var1.writeByte(this.field699);
+      var1.writeByte(this.field700);
+      var1.writeByte(this.field701 ? 1 : 0);
+      var1.writeShort(this.field702);
+      var1.writeByte(this.field703);
+      var1.writeMedium(this.field704);
+      var1.writeShort(this.field705);
+      var1.writeStringCp1252NullCircumfixed(this.field706);
+      var1.writeStringCp1252NullCircumfixed(this.field707);
+      var1.writeStringCp1252NullCircumfixed(this.field708);
+      var1.writeStringCp1252NullCircumfixed(this.field709);
+      var1.writeByte(this.field711);
+      var1.writeShort(this.field710);
+      var1.writeStringCp1252NullCircumfixed(this.field714);
+      var1.writeStringCp1252NullCircumfixed(this.field715);
+      var1.writeByte(this.field712);
+      var1.writeByte(this.field713);
 
-      for(int var2 = 0; var2 < this.__bq.length; ++var2) {
-         var1.writeInt(this.__bq[var2]);
+      for (int var2 = 0; var2 < this.field716.length; ++var2) {
+         var1.writeInt(this.field716[var2]);
       }
 
-      var1.writeInt(this.__bn);
-      var1.writeStringCp1252NullCircumfixed(this.__bk);
+      var1.writeInt(this.field717);
+      var1.writeStringCp1252NullCircumfixed(this.field718);
    }
 
    @ObfuscatedName("f")
@@ -179,13 +179,13 @@ public class PlatformInfo extends Node {
    @Export("size")
    public int size() {
       byte var1 = 38;
-      int var2 = var1 + Client.method1692(this.__az);
-      var2 += Client.method1692(this.__au);
-      var2 += Client.method1692(this.__ao);
-      var2 += Client.method1692(this.__aa);
-      var2 += Client.method1692(this.__bb);
-      var2 += Client.method1692(this.__bs);
-      var2 += Client.method1692(this.__bk);
+      int var2 = var1 + Client.method1692(this.field706);
+      var2 += Client.method1692(this.field707);
+      var2 += Client.method1692(this.field708);
+      var2 += Client.method1692(this.field709);
+      var2 += Client.method1692(this.field714);
+      var2 += Client.method1692(this.field715);
+      var2 += Client.method1692(this.field718);
       return var2;
    }
 }

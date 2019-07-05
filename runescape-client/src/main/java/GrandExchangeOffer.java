@@ -12,7 +12,7 @@ public class GrandExchangeOffer {
    @ObfuscatedGetter(
       intValue = -1286287981
    )
-   static int __x_rg;
+   static int field376;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -812708185
@@ -62,7 +62,7 @@ public class GrandExchangeOffer {
    )
    public GrandExchangeOffer(Buffer var1, boolean var2) {
       this.state = var1.readByte();
-      this.id = var1.__ag_302();
+      this.id = var1.method43();
       this.unitPrice = var1.readInt();
       this.totalQuantity = var1.readInt();
       this.currentQuantity = var1.readInt();
@@ -86,7 +86,7 @@ public class GrandExchangeOffer {
    )
    @Export("type")
    public int type() {
-      return (this.state & 8) == 8?1:0;
+      return (this.state & 8) == 8 ? 1 : 0;
    }
 
    @ObfuscatedName("o")
@@ -94,7 +94,7 @@ public class GrandExchangeOffer {
       signature = "(II)V",
       garbageValue = "1339285061"
    )
-   void __o_9(int var1) {
+   void method121(int var1) {
       this.state &= -8;
       this.state = (byte)(this.state | var1 & 7);
    }
@@ -104,9 +104,9 @@ public class GrandExchangeOffer {
       signature = "(II)V",
       garbageValue = "743094900"
    )
-   void __u_10(int var1) {
+   void method122(int var1) {
       this.state &= -9;
-      if(var1 == 1) {
+      if (var1 == 1) {
          this.state = (byte)(this.state | 8);
       }
 
@@ -120,11 +120,11 @@ public class GrandExchangeOffer {
    static int method105(PacketBuffer var0) {
       int var1 = var0.readBits(2);
       int var2;
-      if(var1 == 0) {
+      if (var1 == 0) {
          var2 = 0;
-      } else if(var1 == 1) {
+      } else if (var1 == 1) {
          var2 = var0.readBits(5);
-      } else if(var1 == 2) {
+      } else if (var1 == 2) {
          var2 = var0.readBits(8);
       } else {
          var2 = var0.readBits(11);
@@ -139,14 +139,14 @@ public class GrandExchangeOffer {
       garbageValue = "50"
    )
    static int method101() {
-      if(Client.indexCacheLoaders != null && Client.indexCacheLoaderIndex < Client.indexCacheLoaders.size()) {
+      if (Client.indexCacheLoaders != null && Client.indexCacheLoaderIndex < Client.indexCacheLoaders.size()) {
          int var0 = 0;
 
-         for(int var1 = 0; var1 <= Client.indexCacheLoaderIndex; ++var1) {
-            var0 += ((IndexCacheLoader)Client.indexCacheLoaders.get(var1)).__w;
+         for (int var1 = 0; var1 <= Client.indexCacheLoaderIndex; ++var1) {
+            var0 += ((IndexCacheLoader)Client.indexCacheLoaders.get(var1)).field409;
          }
 
-         return var0 * 10000 / Client.__client_sx;
+         return var0 * 10000 / Client.field140;
       } else {
          return 10000;
       }
@@ -158,19 +158,19 @@ public class GrandExchangeOffer {
       garbageValue = "-304562381"
    )
    static final void method121() {
-      for(int var0 = 0; var0 < Players.Players_count; ++var0) {
+      for (int var0 = 0; var0 < Players.Players_count; ++var0) {
          Player var1 = Client.players[Players.Players_indices[var0]];
          var1.clearIsFriend();
       }
 
       Iterator var2 = Messages.Messages_hashTable.iterator();
 
-      while(var2.hasNext()) {
+      while (var2.hasNext()) {
          Message var3 = (Message)var2.next();
          var3.clearIsFromFriend();
       }
 
-      if(PacketWriter.clanChat != null) {
+      if (PacketWriter.clanChat != null) {
          PacketWriter.clanChat.clearFriends();
       }
 

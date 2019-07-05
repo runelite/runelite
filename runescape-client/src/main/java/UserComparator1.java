@@ -8,10 +8,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("UserComparator1")
 public class UserComparator1 implements Comparator {
    @ObfuscatedName("m")
-   final boolean __m;
+   final boolean field931;
 
    public UserComparator1(boolean var1) {
-      this.__m = var1;
+      this.field931 = var1;
    }
 
    @ObfuscatedName("m")
@@ -19,18 +19,18 @@ public class UserComparator1 implements Comparator {
       signature = "(Ljs;Ljs;B)I",
       garbageValue = "68"
    )
-   int __m_476(User var1, User var2) {
-      return this.__m?var1.compareTo0(var2):var2.compareTo0(var1);
+   int method339(User var1, User var2) {
+      return this.field931 ? var1.compareTo0(var2) : var2.compareTo0(var1);
    }
 
    @Export("compare")
    @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.__m_476((User)var1, (User)var2);
+      return this.method339((User)var1, (User)var2);
    }
 
    @ObfuscatedName("equals")
-   public boolean __equals_478(Object var1) {
+   public boolean method340(Object var1) {
       return super.equals(var1);
    }
 }

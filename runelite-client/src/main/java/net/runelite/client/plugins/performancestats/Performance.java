@@ -24,16 +24,17 @@
  */
 package net.runelite.client.plugins.performancestats;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 class Performance extends PartyMemberMessage
 {
 	private static final double TICK_LENGTH = 0.6;
 
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	String username;
 
 	double damageDealt = 0;
@@ -43,7 +44,7 @@ class Performance extends PartyMemberMessage
 	double highestHitTaken = 0;
 
 	int lastActivityTick = -1;
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	double ticksSpent = 0;
 
 	void addDamageDealt(double a, int currentTick)
@@ -83,7 +84,7 @@ class Performance extends PartyMemberMessage
 		ticksSpent = 0;
 	}
 
-	double getSecondsSpent()
+	private double getSecondsSpent()
 	{
 		return Math.round(this.ticksSpent * TICK_LENGTH);
 	}

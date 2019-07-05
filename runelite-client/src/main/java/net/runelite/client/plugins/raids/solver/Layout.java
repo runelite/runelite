@@ -26,16 +26,17 @@ package net.runelite.client.plugins.raids.solver;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Layout
 {
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final List<Room> rooms = new ArrayList<>();
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PUBLIC)
+	@Setter(AccessLevel.PACKAGE)
 	private String code;
 
 	public void add(Room room)

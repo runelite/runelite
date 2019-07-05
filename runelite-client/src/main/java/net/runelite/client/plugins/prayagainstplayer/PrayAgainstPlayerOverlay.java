@@ -31,6 +31,7 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.util.ConcurrentModificationException;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
@@ -43,19 +44,18 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.Text;
 
+@Singleton
 class PrayAgainstPlayerOverlay extends Overlay
 {
 
 	private final PrayAgainstPlayerPlugin plugin;
-	private final PrayAgainstPlayerConfig config;
 	private final Client client;
 
 	@Inject
-	private PrayAgainstPlayerOverlay(PrayAgainstPlayerPlugin plugin, PrayAgainstPlayerConfig config, Client client)
+	private PrayAgainstPlayerOverlay(final PrayAgainstPlayerPlugin plugin, final Client client)
 	{
 		super(plugin);
 		this.plugin = plugin;
-		this.config = config;
 		this.client = client;
 
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -86,21 +86,21 @@ class PrayAgainstPlayerOverlay extends Overlay
 						{
 							plugin.removePlayerFromPotentialContainer(container);
 						}
-						if (config.drawPotentialTargetsName())
+						if (plugin.isDrawPotentialTargetsName())
 						{
-							renderNameAboveHead(graphics, container.getPlayer(), config.potentialPlayerColor());
+							renderNameAboveHead(graphics, container.getPlayer(), plugin.getPotentialPlayerColor());
 						}
-						if (config.drawPotentialTargetHighlight())
+						if (plugin.isDrawPotentialTargetHighlight())
 						{
-							renderHighlightedPlayer(graphics, container.getPlayer(), config.potentialPlayerColor());
+							renderHighlightedPlayer(graphics, container.getPlayer(), plugin.getPotentialPlayerColor());
 						}
-						if (config.drawPotentialTargetTile())
+						if (plugin.isDrawPotentialTargetTile())
 						{
-							renderTileUnderPlayer(graphics, container.getPlayer(), config.potentialPlayerColor());
+							renderTileUnderPlayer(graphics, container.getPlayer(), plugin.getPotentialPlayerColor());
 						}
-						if (config.drawPotentialTargetPrayAgainst())
+						if (plugin.isDrawPotentialTargetPrayAgainst())
 						{
-							renderPrayAgainstOnPlayer(graphics, container.getPlayer(), config.potentialPlayerColor());
+							renderPrayAgainstOnPlayer(graphics, container.getPlayer(), plugin.getPotentialPlayerColor());
 						}
 					}
 				}
@@ -126,21 +126,21 @@ class PrayAgainstPlayerOverlay extends Overlay
 							plugin.removePlayerFromAttackerContainer(container);
 						}
 
-						if (config.drawTargetsName())
+						if (plugin.isDrawTargetsName())
 						{
-							renderNameAboveHead(graphics, container.getPlayer(), config.attackerPlayerColor());
+							renderNameAboveHead(graphics, container.getPlayer(), plugin.getAttackerPlayerColor());
 						}
-						if (config.drawTargetHighlight())
+						if (plugin.isDrawTargetHighlight())
 						{
-							renderHighlightedPlayer(graphics, container.getPlayer(), config.attackerPlayerColor());
+							renderHighlightedPlayer(graphics, container.getPlayer(), plugin.getAttackerPlayerColor());
 						}
-						if (config.drawTargetTile())
+						if (plugin.isDrawTargetTile())
 						{
-							renderTileUnderPlayer(graphics, container.getPlayer(), config.attackerPlayerColor());
+							renderTileUnderPlayer(graphics, container.getPlayer(), plugin.getAttackerPlayerColor());
 						}
-						if (config.drawTargetPrayAgainst())
+						if (plugin.isDrawTargetPrayAgainst())
 						{
-							renderPrayAgainstOnPlayer(graphics, container.getPlayer(), config.attackerPlayerColor());
+							renderPrayAgainstOnPlayer(graphics, container.getPlayer(), plugin.getAttackerPlayerColor());
 						}
 					}
 				}
@@ -208,7 +208,7 @@ class PrayAgainstPlayerOverlay extends Overlay
 			}
 			else
 			{
-				if (config.drawUnknownWeapons())
+				if (plugin.isDrawUnknownWeapons())
 				{
 					int itemId = player.getPlayerAppearance().getEquipmentId(KitType.WEAPON);
 					ItemDefinition itemComposition = client.getItemDefinition(itemId);

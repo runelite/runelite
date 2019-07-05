@@ -34,6 +34,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -51,6 +52,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ImageUtil;
 
+@Singleton
 public class InventorySetupPluginPanel extends PluginPanel
 {
 	private static ImageIcon ADD_ICON;

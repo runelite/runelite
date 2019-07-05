@@ -61,14 +61,14 @@ public class BufferedSink implements Runnable {
    )
    @Export("isClosed")
    boolean isClosed() {
-      if(this.isClosed0) {
+      if (this.isClosed0) {
          try {
             this.outputStream.close();
-            if(this.exception == null) {
+            if (this.exception == null) {
                this.exception = new IOException("");
             }
          } catch (IOException var2) {
-            if(this.exception == null) {
+            if (this.exception == null) {
                this.exception = new IOException(var2);
             }
          }
@@ -86,22 +86,22 @@ public class BufferedSink implements Runnable {
    )
    @Export("write")
    void write(byte[] var1, int var2, int var3) throws IOException {
-      if(var3 >= 0 && var2 >= 0 && var3 + var2 <= var1.length) {
+      if (var3 >= 0 && var2 >= 0 && var3 + var2 <= var1.length) {
          synchronized(this) {
-            if(this.exception != null) {
+            if (this.exception != null) {
                throw new IOException(this.exception.toString());
             } else {
                int var5;
-               if(this.position <= this.limit) {
+               if (this.position <= this.limit) {
                   var5 = this.capacity - this.limit + this.position - 1;
                } else {
                   var5 = this.position - this.limit - 1;
                }
 
-               if(var5 < var3) {
+               if (var5 < var3) {
                   throw new IOException("");
                } else {
-                  if(var3 + this.limit <= this.capacity) {
+                  if (var3 + this.limit <= this.capacity) {
                      System.arraycopy(var1, var2, this.buffer, this.limit, var3);
                   } else {
                      int var6 = this.capacity - this.limit;
@@ -134,7 +134,6 @@ public class BufferedSink implements Runnable {
       try {
          this.thread.join();
       } catch (InterruptedException var3) {
-         ;
       }
 
    }
@@ -142,64 +141,78 @@ public class BufferedSink implements Runnable {
    @Export("run")
    @ObfuscatedName("run")
    public void run() {
-      do {
-         int var1;
-         synchronized(this) {
-            while(true) {
-               if(this.exception != null) {
+      while (true) {
+         synchronized(this){}
+
+         while (true) {
+            boolean var13 = false;
+
+            int var1;
+            try {
+               var13 = true;
+               if (this.exception != null) {
                   return;
                }
 
-               if(this.position <= this.limit) {
+               if (this.position <= this.limit) {
                   var1 = this.limit - this.position;
                } else {
                   var1 = this.capacity - this.position + this.limit;
                }
 
-               if(var1 > 0) {
-                  break;
+               if (var1 <= 0) {
+                  try {
+                     this.outputStream.flush();
+                  } catch (IOException var17) {
+                     this.exception = var17;
+                     return;
+                  }
+
+                  if (this.isClosed()) {
+                     return;
+                  }
+
+                  try {
+                     this.wait();
+                  } catch (InterruptedException var18) {
+                  }
+                  continue;
                }
 
-               try {
-                  this.outputStream.flush();
-               } catch (IOException var11) {
-                  this.exception = var11;
-                  return;
-               }
-
-               if(this.isClosed()) {
-                  return;
-               }
-
-               try {
-                  this.wait();
-               } catch (InterruptedException var12) {
+               var13 = false;
+            } finally {
+               if (var13) {
                   ;
                }
             }
-         }
 
-         try {
-            if(var1 + this.position <= this.capacity) {
-               this.outputStream.write(this.buffer, this.position, var1);
-            } else {
-               int var7 = this.capacity - this.position;
-               this.outputStream.write(this.buffer, this.position, var7);
-               this.outputStream.write(this.buffer, 0, var1 - var7);
+            try {
+               if (var1 + this.position <= this.capacity) {
+                  this.outputStream.write(this.buffer, this.position, var1);
+               } else {
+                  int var2 = this.capacity - this.position;
+                  this.outputStream.write(this.buffer, this.position, var2);
+                  this.outputStream.write(this.buffer, 0, var1 - var2);
+               }
+            } catch (IOException var16) {
+               IOException var3 = var16;
+               synchronized(this) {
+                  this.exception = var3;
+                  return;
+               }
             }
-         } catch (IOException var10) {
-            IOException var2 = var10;
+
             synchronized(this) {
-               this.exception = var2;
-               return;
+               this.position = (var1 + this.position) % this.capacity;
             }
-         }
 
-         synchronized(this) {
-            this.position = (var1 + this.position) % this.capacity;
-         }
-      } while(!this.isClosed());
+            if (!this.isClosed()) {
+               break;
+            }
 
+            return;
+         }
+      }
    }
 
    @ObfuscatedName("m")
@@ -208,18 +221,18 @@ public class BufferedSink implements Runnable {
       garbageValue = "449588720"
    )
    static void method3603() {
-      Tiles.__bq_w = null;
-      Fonts.__kz_o = null;
-      class32.__ay_u = null;
-      class307.__kc_g = null;
-      Tiles.__bq_a = null;
-      Tiles.__bq_l = null;
-      Huffman.__gd_e = null;
-      class13.__i_x = null;
-      Formatting.__cy_d = null;
-      class214.__hf_k = null;
-      WorldMapSectionType.__h_n = null;
-      Message.__bm_i = null;
+      Tiles.field908 = (byte[][][])null;
+      Fonts.field350 = (byte[][][])null;
+      class32.field1157 = (byte[][][])null;
+      class307.field1155 = (byte[][][])null;
+      Tiles.field910 = (int[][][])null;
+      Tiles.field909 = (byte[][][])null;
+      Huffman.field398 = (int[][])null;
+      class13.field1112 = null;
+      Formatting.field353 = null;
+      class214.field1131 = null;
+      WorldMapSectionType.field1104 = null;
+      Message.field490 = null;
    }
 
    @ObfuscatedName("e")
@@ -228,31 +241,31 @@ public class BufferedSink implements Runnable {
       garbageValue = "-1337774818"
    )
    static final void method3595(Widget var0, int var1, byte[] var2, byte[] var3) {
-      if(var0.__cf == null) {
-         if(var2 == null) {
+      if (var0.field966 == null) {
+         if (var2 == null) {
             return;
          }
 
-         var0.__cf = new byte[11][];
-         var0.__cp = new byte[11][];
-         var0.__cc = new int[11];
-         var0.__ci = new int[11];
+         var0.field966 = new byte[11][];
+         var0.field967 = new byte[11][];
+         var0.field968 = new int[11];
+         var0.field969 = new int[11];
       }
 
-      var0.__cf[var1] = var2;
-      if(var2 != null) {
-         var0.__cg = true;
+      var0.field966[var1] = var2;
+      if (var2 != null) {
+         var0.field965 = true;
       } else {
-         var0.__cg = false;
+         var0.field965 = false;
 
-         for(int var4 = 0; var4 < var0.__cf.length; ++var4) {
-            if(var0.__cf[var4] != null) {
-               var0.__cg = true;
+         for (int var4 = 0; var4 < var0.field966.length; ++var4) {
+            if (var0.field966[var4] != null) {
+               var0.field965 = true;
                break;
             }
          }
       }
 
-      var0.__cp[var1] = var3;
+      var0.field967[var1] = var3;
    }
 }

@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ import net.runelite.api.GraphicID;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldArea;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
@@ -46,7 +48,6 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -59,25 +60,33 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"flinch", "npc"},
 	enabledByDefault = false
 )
+@Singleton
 public class NpcStatusPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<MemorizedNPC> memorizedNPCs = new HashSet<>();
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
-	@Inject
-	private ItemManager itemManager;
+
 	@Inject
 	private NPCManager npcManager;
+
 	@Inject
 	private NpcStatusConfig config;
+
 	@Inject
 	private NpcStatusOverlay npcStatusOverlay;
+
 	@Getter(AccessLevel.PACKAGE)
 	private Instant lastTickUpdate;
+
 	private WorldArea lastPlayerLocation;
+
+	private int getRange;
 
 	@Provides
 	NpcStatusConfig provideConfig(ConfigManager configManager)
@@ -88,6 +97,7 @@ public class NpcStatusPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		this.getRange = config.getRange();
 		overlayManager.add(npcStatusOverlay);
 	}
 
@@ -169,7 +179,7 @@ public class NpcStatusPlugin extends Plugin
 				if (npc.getLastspotanimation() == GraphicID.SPLASH && npc.getNpc().getSpotAnimation() == GraphicID.SPLASH) //For splash flinching
 				{
 					npc.setLastspotanimation(-1);
-					if ((npc.getStatus() == MemorizedNPC.Status.OUT_OF_COMBAT ) || npc.getLastinteracted() == null)
+					if ((npc.getStatus() == MemorizedNPC.Status.OUT_OF_COMBAT) || npc.getLastinteracted() == null)
 					{
 						npc.setStatus(MemorizedNPC.Status.FLINCHING);
 						npc.setCombatTimerEnd(-1);
@@ -180,8 +190,8 @@ public class NpcStatusPlugin extends Plugin
 					}
 				}
 				//Checks: will the NPC attack this tick?
-				if (((npc.getNpc().getWorldArea().canMelee(client, lastPlayerLocation) && config.getRange() == 1) //Separate mechanics for meleerange-only NPC's because they have extra collisiondata checks (fences etc.) and can't attack diagonally
-					|| (lastPlayerLocation.hasLineOfSightTo(client, npc.getNpc().getWorldArea()) && npc.getNpc().getWorldArea().distanceTo(lastPlayerLocation) <= config.getRange() && config.getRange() > 1))
+				if (((npc.getNpc().getWorldArea().canMelee(client, lastPlayerLocation) && this.getRange == 1) //Separate mechanics for meleerange-only NPC's because they have extra collisiondata checks (fences etc.) and can't attack diagonally
+					|| (lastPlayerLocation.hasLineOfSightTo(client, npc.getNpc().getWorldArea()) && npc.getNpc().getWorldArea().distanceTo(lastPlayerLocation) <= this.getRange && this.getRange > 1))
 					&& ((npc.getStatus() != MemorizedNPC.Status.FLINCHING && CombatTime < 9) || (npc.getStatus() == MemorizedNPC.Status.FLINCHING && FlinchTime < 2))
 					&& npc.getNpc().getAnimation() != -1 //Failsafe, attacking NPC's always have an animation.
 					&& !(npc.getLastnpcarea().distanceTo(lastPlayerLocation) == 0 && npc.getLastnpcarea() != npc.getNpc().getWorldArea())) //Weird mechanic: NPC's can't attack on the tick they do a random move
@@ -227,5 +237,16 @@ public class NpcStatusPlugin extends Plugin
 		lastTickUpdate = Instant.now();
 		checkStatus();
 		lastPlayerLocation = client.getLocalPlayer().getWorldArea();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (!configChanged.getGroup().equals("npcstatus"))
+		{
+			return;
+		}
+
+		this.getRange = config.getRange();
 	}
 }

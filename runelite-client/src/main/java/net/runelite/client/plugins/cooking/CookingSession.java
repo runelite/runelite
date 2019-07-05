@@ -26,9 +26,11 @@
 package net.runelite.client.plugins.cooking;
 
 import java.time.Instant;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 
+@Singleton
 class CookingSession
 {
 	@Getter(AccessLevel.PACKAGE)

@@ -1,10 +1,9 @@
 package net.runelite.client.plugins.spawntimer;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-
-import java.awt.*;
 
 @ConfigGroup("spawntimer")
 public interface SpawnTimerConfig extends Config 
@@ -19,6 +18,7 @@ public interface SpawnTimerConfig extends Config
 	{
 		return "";
 	}
+
 	@ConfigItem(
 		position = 2,
 		keyName = "npcColor",

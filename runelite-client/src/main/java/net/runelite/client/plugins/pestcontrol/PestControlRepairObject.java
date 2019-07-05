@@ -26,13 +26,14 @@ package net.runelite.client.plugins.pestcontrol;
 
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ObjectID;
 
-@Getter
-public class PestControlRepairObject
+@Getter(AccessLevel.PACKAGE)
+class PestControlRepairObject
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> repairableBarricades = ImmutableSet.of(
 		//ObjectID.BARRICADE_14224,
 		ObjectID.BARRICADE_14227,
@@ -43,7 +44,7 @@ public class PestControlRepairObject
 		ObjectID.BARRICADE_14232
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> repairableGates = ImmutableSet.of(
 		ObjectID.GATE_14238,
 		ObjectID.GATE_14239,
@@ -58,17 +59,17 @@ public class PestControlRepairObject
 		ObjectID.GATE_14248
 	);
 
-	public static boolean isRepairableBarricadeId(int objectId)
+	static boolean isRepairableBarricadeId(int objectId)
 	{
 		return repairableBarricades.contains(objectId);
 	}
 
-	public static boolean isRepairableGateId(int objectId)
+	static boolean isRepairableGateId(int objectId)
 	{
 		return repairableGates.contains(objectId);
 	}
 
-	public static boolean isRepairableId(int objectId)
+	static boolean isRepairableId(int objectId)
 	{
 		return isRepairableBarricadeId(objectId) || isRepairableGateId(objectId);
 	}

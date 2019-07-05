@@ -52,7 +52,6 @@ public class TaskHandler implements Runnable {
          javaVendor = System.getProperty("java.vendor");
          javaVersion = System.getProperty("java.version");
       } catch (Exception var2) {
-         ;
       }
 
       this.isClosed = false;
@@ -77,7 +76,6 @@ public class TaskHandler implements Runnable {
       try {
          this.thread.join();
       } catch (InterruptedException var3) {
-         ;
       }
 
    }
@@ -94,7 +92,7 @@ public class TaskHandler implements Runnable {
       var5.intArgument = var2;
       var5.objectArgument = var4;
       synchronized(this) {
-         if(this.task0 != null) {
+         if (this.task0 != null) {
             this.task0.next = var5;
             this.task0 = var5;
          } else {
@@ -129,18 +127,18 @@ public class TaskHandler implements Runnable {
    @Export("run")
    @ObfuscatedName("run")
    public final void run() {
-      while(true) {
+      while (true) {
          Task var1;
          synchronized(this) {
-            while(true) {
-               if(this.isClosed) {
+            while (true) {
+               if (this.isClosed) {
                   return;
                }
 
-               if(this.current != null) {
+               if (this.current != null) {
                   var1 = this.current;
                   this.current = this.current.next;
-                  if(this.current == null) {
+                  if (this.current == null) {
                      this.task0 = null;
                   }
                   break;
@@ -148,30 +146,29 @@ public class TaskHandler implements Runnable {
 
                try {
                   this.wait();
-               } catch (InterruptedException var8) {
-                  ;
+               } catch (InterruptedException var7) {
                }
             }
          }
 
          try {
-            int var5 = var1.type;
-            if(var5 == 1) {
+            int var2 = var1.type;
+            if (var2 == 1) {
                var1.result = new Socket(InetAddress.getByName((String)var1.objectArgument), var1.intArgument);
-            } else if(var5 == 2) {
+            } else if (var2 == 2) {
                Thread var3 = new Thread((Runnable)var1.objectArgument);
                var3.setDaemon(true);
                var3.start();
                var3.setPriority(var1.intArgument);
                var1.result = var3;
-            } else if(var5 == 4) {
+            } else if (var2 == 4) {
                var1.result = new DataInputStream(((URL)var1.objectArgument).openStream());
             }
 
             var1.status = 1;
-         } catch (ThreadDeath var6) {
-            throw var6;
-         } catch (Throwable var7) {
+         } catch (ThreadDeath var5) {
+            throw var5;
+         } catch (Throwable var6) {
             var1.status = 2;
          }
       }

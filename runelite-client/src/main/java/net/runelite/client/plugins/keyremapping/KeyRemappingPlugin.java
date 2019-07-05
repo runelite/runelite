@@ -28,6 +28,7 @@ package net.runelite.client.plugins.keyremapping;
 import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +44,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -56,6 +58,7 @@ import net.runelite.client.util.ColorUtil;
 	tags = {"enter", "chat", "wasd", "camera"},
 	enabledByDefault = false
 )
+@Singleton
 public class KeyRemappingPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
@@ -81,9 +84,25 @@ public class KeyRemappingPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	private boolean typing;
 
+	private boolean hideDisplayName;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean cameraRemap;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind up;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind down;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind left;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind right;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean fkeyRemap;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		typing = false;
 		keyManager.registerKeyListener(inputListener);
 
@@ -153,10 +172,12 @@ public class KeyRemappingPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		if (!configChanged.getGroup().equals("keyremapping") || !configChanged.getKey().equals("hideDisplayName"))
+		if (!configChanged.getGroup().equals("keyremapping"))
 		{
 			return;
 		}
+
+		updateConfig();
 
 		clientThread.invoke(() ->
 			{
@@ -242,7 +263,7 @@ public class KeyRemappingPlugin extends Plugin
 
 	private String getWaitingText()
 	{
-		if (config.hideDisplayName())
+		if (this.hideDisplayName)
 		{
 			return PRESS_ENTER_TO_CHAT;
 		}
@@ -250,5 +271,16 @@ public class KeyRemappingPlugin extends Plugin
 		{
 			return getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT;
 		}
+	}
+
+	private void updateConfig()
+	{
+		this.hideDisplayName = config.hideDisplayName();
+		this.cameraRemap = config.cameraRemap();
+		this.up = config.up();
+		this.down = config.down();
+		this.left = config.left();
+		this.right = config.right();
+		this.fkeyRemap = config.fkeyRemap();
 	}
 }

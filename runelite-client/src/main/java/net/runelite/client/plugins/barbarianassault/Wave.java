@@ -37,7 +37,6 @@ import net.runelite.client.chat.ChatMessageBuilder;
 
 import java.awt.Color;
 
-
 @Data
 public class Wave
 {

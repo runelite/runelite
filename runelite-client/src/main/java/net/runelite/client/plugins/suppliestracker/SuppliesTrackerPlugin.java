@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.AnimationID.BLOWPIPE_ATTACK;
@@ -184,7 +185,7 @@ import net.runelite.http.api.item.ItemPrice;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 @Slf4j
 public class SuppliesTrackerPlugin extends Plugin
 {

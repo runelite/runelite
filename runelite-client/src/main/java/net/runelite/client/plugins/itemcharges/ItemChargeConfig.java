@@ -284,8 +284,8 @@ public interface ItemChargeConfig extends Config
 	{
 		return false;
 	}
-	
-	
+
+
 	@ConfigItem(
 		keyName = "showSlayerBracelets",
 		name = "Show Slayer Bracelets Charges",
@@ -298,12 +298,11 @@ public interface ItemChargeConfig extends Config
 	}
 
 
-
 	@ConfigItem(
-			keyName = "expeditious",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "expeditious",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int expeditious()
 	{
@@ -311,9 +310,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "expeditious",
-			name = "",
-			description = ""
+		keyName = "expeditious",
+		name = "",
+		description = ""
 	)
 	void expeditious(int expeditious);
 
@@ -337,10 +336,10 @@ public interface ItemChargeConfig extends Config
 
 
 	@ConfigItem(
-			keyName = "xericTalisman",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "xericTalisman",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int xericTalisman()
 	{
@@ -348,17 +347,17 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "xericTalisman",
-			name = "",
-			description = ""
+		keyName = "xericTalisman",
+		name = "",
+		description = ""
 	)
 	void xericTalisman(int xericTalisman);
 
 	@ConfigItem(
-			keyName = "showSoulBearerCharges",
-			name = "Show Soul Bearer Charges",
-			description = "Configures if Soul Bearer item charge is shown",
-			position = 19
+		keyName = "showSoulBearerCharges",
+		name = "Show Soul Bearer Charges",
+		description = "Configures if Soul Bearer item charge is shown",
+		position = 19
 	)
 	default boolean showSoulBearerCharges()
 	{
@@ -366,10 +365,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "soulBearer",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "soulBearer",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int soulBearer()
 	{
@@ -377,17 +376,17 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "soulBearer",
-			name = "",
-			description = ""
+		keyName = "soulBearer",
+		name = "",
+		description = ""
 	)
 	void soulBearer(int soulBearer);
 
 	@ConfigItem(
-			keyName = "showChronicleCharges",
-			name = "Show Chronicle Charges",
-			description = "Configures if Chronicle item charge is shown",
-			position = 20
+		keyName = "showChronicleCharges",
+		name = "Show Chronicle Charges",
+		description = "Configures if Chronicle item charge is shown",
+		position = 20
 	)
 	default boolean showChronicleCharges()
 	{
@@ -395,23 +394,21 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showXericTalismanCharges",
-			name = "Show Xeric's Talisman Charges",
-			description = "Configures if Xeric's Talisman item charge is shown",
-			position = 21
+		keyName = "showXericTalismanCharges",
+		name = "Show Xeric's Talisman Charges",
+		description = "Configures if Xeric's Talisman item charge is shown",
+		position = 21
 	)
 	default boolean showXericTalismanCharges()
 	{
 		return false;
 	}
 
-
-
 	@ConfigItem(
-			keyName = "showrecoil",
-			name = "Show If Recoil is activated",
-			description = "Configures if Recoil is activated",
-			position = 22
+		keyName = "showrecoil",
+		name = "Show If Recoil is activated",
+		description = "Configures if Recoil is activated",
+		position = 22
 	)
 	default boolean showrecoil()
 	{
@@ -419,10 +416,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "chronicle",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "chronicle",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int chronicle()
 	{
@@ -430,9 +427,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "chronicle",
-			name = "",
-			description = ""
+		keyName = "chronicle",
+		name = "",
+		description = ""
 	)
 	void chronicle(int chronicle);
 

@@ -50,6 +50,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -113,6 +114,7 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
+@Singleton
 public class ConfigPanel extends PluginPanel
 {
 	private static final int SPINNER_FIELD_WIDTH = 6;

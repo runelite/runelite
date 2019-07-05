@@ -30,12 +30,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
+@Singleton
 class SlayerOverlay extends WidgetItemOverlay
 {
 	private final static Set<Integer> SLAYER_JEWELRY = ImmutableSet.of(
@@ -81,14 +83,12 @@ class SlayerOverlay extends WidgetItemOverlay
 		ItemID.SLAYER_RING_8
 	);
 
-	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
 
 	@Inject
-	private SlayerOverlay(SlayerPlugin plugin, SlayerConfig config)
+	private SlayerOverlay(final SlayerPlugin plugin)
 	{
 		this.plugin = plugin;
-		this.config = config;
 		showOnInventory();
 		showOnEquipment();
 	}
@@ -101,7 +101,7 @@ class SlayerOverlay extends WidgetItemOverlay
 			return;
 		}
 
-		if (!config.showItemOverlay())
+		if (!plugin.isShowItemOverlay())
 		{
 			return;
 		}

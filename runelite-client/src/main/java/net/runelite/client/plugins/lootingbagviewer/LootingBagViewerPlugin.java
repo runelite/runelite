@@ -29,6 +29,8 @@ package net.runelite.client.plugins.lootingbagviewer;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +59,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
  * TODO: Write something to capture adding items to a looting bag and add its price to the current looting bag value
  */
 @Slf4j
+@Singleton // WHY IS THIS PLUGIN EVEN MERGED IT'S AGES FROM BEING DONE!?!?!?!?
 public class LootingBagViewerPlugin extends Plugin
 {
 	@Inject
@@ -77,8 +80,8 @@ public class LootingBagViewerPlugin extends Plugin
 	@Inject
 	private LootingBagViewerConfig config;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int valueToShow = -1;
 
 	@Provides

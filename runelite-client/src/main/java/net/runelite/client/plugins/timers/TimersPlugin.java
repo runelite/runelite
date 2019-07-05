@@ -30,6 +30,9 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -118,6 +121,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )
 @Slf4j
+@Singleton
 public class TimersPlugin extends Plugin
 {
 	private static final String ANTIFIRE_DRINK_MESSAGE = "You drink some of your antifire potion.";
@@ -180,6 +184,26 @@ public class TimersPlugin extends Plugin
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
+	
+	private boolean showHomeMinigameTeleports;
+	private boolean showAntiPoison;
+	private boolean showAntiFire;
+	private boolean showStamina;
+	private boolean showOverload;
+	private boolean showPrayerEnhance;
+	private boolean showCannon;
+	private boolean showMagicImbue;
+	private boolean showCharge;
+	private boolean showImbuedHeart;
+	private boolean showVengeance;
+	private boolean showVengeanceActive;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean showTeleblock;
+	private boolean showFreezes;
+	private boolean showGodWarsAltar;
+	private boolean showSkull;
+	private boolean showStaffOfTheDead;
+	private boolean showAbyssalSireStun;
 
 	@Provides
 	TimersConfig getConfig(ConfigManager configManager)
@@ -187,6 +211,12 @@ public class TimersPlugin extends Plugin
 		return configManager.getConfig(TimersConfig.class);
 	}
 
+	@Override
+	protected void startUp() throws Exception
+	{
+		updateConfig();
+	}
+	
 	@Override
 	protected void shutDown() throws Exception
 	{
@@ -217,7 +247,7 @@ public class TimersPlugin extends Plugin
 			lastRaidVarb = raidVarb;
 		}
 
-		if (lastVengCooldownVarb != vengCooldownVarb && config.showVengeance())
+		if (lastVengCooldownVarb != vengCooldownVarb && this.showVengeance)
 		{
 			if (vengCooldownVarb == 1)
 			{
@@ -231,7 +261,7 @@ public class TimersPlugin extends Plugin
 			lastVengCooldownVarb = vengCooldownVarb;
 		}
 
-		if (lastIsVengeancedVarb != isVengeancedVarb && config.showVengeanceActive())
+		if (lastIsVengeancedVarb != isVengeancedVarb && this.showVengeanceActive)
 		{
 			if (isVengeancedVarb == 1)
 			{
@@ -261,7 +291,7 @@ public class TimersPlugin extends Plugin
 			lastWildernessVarb = inWilderness;
 		}
 
-		if (lastPoisonVarp != poisonVarp && config.showAntiPoison())
+		if (lastPoisonVarp != poisonVarp && this.showAntiPoison)
 		{
 			if (nextPoisonTick - client.getTickCount() <= 0 || lastPoisonVarp == 0)
 			{
@@ -304,76 +334,83 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!config.showHomeMinigameTeleports())
+		if (!event.getGroup().equals("timers"))
+		{
+			return;
+		}
+		
+		updateConfig();
+		
+		if (!this.showHomeMinigameTeleports)
 		{
 			removeGameTimer(HOME_TELEPORT);
 			removeGameTimer(MINIGAME_TELEPORT);
 		}
 
-		if (!config.showAntiFire())
+		if (!this.showAntiFire)
 		{
 			removeGameTimer(ANTIFIRE);
 			removeGameTimer(EXANTIFIRE);
 			removeGameTimer(SUPERANTIFIRE);
 		}
 
-		if (!config.showStamina())
+		if (!this.showStamina)
 		{
 			removeGameTimer(STAMINA);
 		}
 
-		if (!config.showOverload())
+		if (!this.showOverload)
 		{
 			removeGameTimer(OVERLOAD);
 			removeGameTimer(OVERLOAD_RAID);
 		}
 
-		if (!config.showPrayerEnhance())
+		if (!this.showPrayerEnhance)
 		{
 			removeGameTimer(PRAYER_ENHANCE);
 		}
 
-		if (!config.showCannon())
+		if (!this.showCannon)
 		{
 			removeGameTimer(CANNON);
 		}
 
-		if (!config.showMagicImbue())
+		if (!this.showMagicImbue)
 		{
 			removeGameTimer(MAGICIMBUE);
 		}
 
-		if (!config.showCharge())
+		if (!this.showCharge)
 		{
 			removeGameTimer(CHARGE);
 		}
 
-		if (!config.showImbuedHeart())
+		if (!this.showImbuedHeart)
 		{
 			removeGameTimer(IMBUEDHEART);
 		}
 
-		if (!config.showStaffOfTheDead())
+		if (!this.showStaffOfTheDead)
 		{
 			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 
-		if (!config.showVengeance())
+		if (!this.showVengeance)
 		{
 			removeGameTimer(VENGEANCE);
 		}
 
-		if (!config.showVengeanceActive())
+		if (!this.showVengeanceActive)
 		{
 			removeGameIndicator(VENGEANCE_ACTIVE);
 		}
 
-		if (!config.showTeleblock())
+		if (!this.showTeleblock)
 		{
 			removeTbTimers();
 		}
 
-		if (!config.showFreezes())
+		if (!this.showFreezes)
 		{
 			removeGameTimer(BIND);
 			removeGameTimer(HALFBIND);
@@ -397,7 +434,7 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (config.showStamina()
+		if (this.showStamina
 			&& event.getOption().contains("Drink")
 			&& (event.getIdentifier() == ItemID.STAMINA_MIX1
 			|| event.getIdentifier() == ItemID.STAMINA_MIX2))
@@ -407,7 +444,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showAntiFire()
+		if (this.showAntiFire
 			&& event.getOption().contains("Drink")
 			&& (event.getIdentifier() == ItemID.ANTIFIRE_MIX1
 			|| event.getIdentifier() == ItemID.ANTIFIRE_MIX2))
@@ -417,7 +454,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showAntiFire()
+		if (this.showAntiFire
 			&& event.getOption().contains("Drink")
 			&& (event.getIdentifier() == ItemID.EXTENDED_ANTIFIRE_MIX1
 			|| event.getIdentifier() == ItemID.EXTENDED_ANTIFIRE_MIX2))
@@ -427,7 +464,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showAntiFire()
+		if (this.showAntiFire
 			&& event.getOption().contains("Drink")
 			&& (event.getIdentifier() == ItemID.SUPER_ANTIFIRE_MIX1
 			|| event.getIdentifier() == ItemID.SUPER_ANTIFIRE_MIX2))
@@ -437,7 +474,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showAntiFire()
+		if (this.showAntiFire
 			&& event.getOption().contains("Drink")
 			&& (event.getIdentifier() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX1
 			|| event.getIdentifier() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX2))
@@ -453,7 +490,7 @@ public class TimersPlugin extends Plugin
 			lastTeleportClicked = teleportWidget;
 		}
 
-		if (config.showImbuedHeart()
+		if (this.showImbuedHeart
 			&& event.getOption().contains("Invigorate"))
 		{
 			// Needs a hook as there's a few cases where potions boost the same amount as the heart
@@ -469,44 +506,44 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showStamina() && (event.getMessage().equals(STAMINA_DRINK_MESSAGE) || event.getMessage().equals(STAMINA_SHARED_DRINK_MESSAGE)))
+		if (this.showStamina && (event.getMessage().equals(STAMINA_DRINK_MESSAGE) || event.getMessage().equals(STAMINA_SHARED_DRINK_MESSAGE)))
 		{
 			createGameTimer(STAMINA);
 		}
 
-		if (config.showStamina() && event.getMessage().equals(STAMINA_EXPIRED_MESSAGE))
+		if (this.showStamina && event.getMessage().equals(STAMINA_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(STAMINA);
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals(ANTIFIRE_DRINK_MESSAGE))
+		if (this.showAntiFire && event.getMessage().equals(ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(ANTIFIRE);
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals(EXTENDED_ANTIFIRE_DRINK_MESSAGE))
+		if (this.showAntiFire && event.getMessage().equals(EXTENDED_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(EXANTIFIRE);
 		}
 
-		if (config.showGodWarsAltar() && event.getMessage().equalsIgnoreCase(GOD_WARS_ALTAR_MESSAGE))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
+		if (this.showGodWarsAltar && event.getMessage().equalsIgnoreCase(GOD_WARS_ALTAR_MESSAGE))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
 		{
 			createGameTimer(GOD_WARS_ALTAR);
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals(EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE))
+		if (this.showAntiFire && event.getMessage().equals(EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(EXSUPERANTIFIRE);
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals(ANTIFIRE_EXPIRED_MESSAGE))
+		if (this.showAntiFire && event.getMessage().equals(ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			//they have the same expired message
 			removeGameTimer(ANTIFIRE);
 			removeGameTimer(EXANTIFIRE);
 		}
 
-		if (config.showOverload() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("overload"))
+		if (this.showOverload && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("overload"))
 		{
 			if (client.getVar(Varbits.IN_RAID) == 1)
 			{
@@ -519,17 +556,17 @@ public class TimersPlugin extends Plugin
 
 		}
 
-		if (config.showCannon() && (event.getMessage().equals(CANNON_FURNACE_MESSAGE) || event.getMessage().contains(CANNON_REPAIR_MESSAGE)))
+		if (this.showCannon && (event.getMessage().equals(CANNON_FURNACE_MESSAGE) || event.getMessage().contains(CANNON_REPAIR_MESSAGE)))
 		{
 			createGameTimer(CANNON);
 		}
 
-		if (config.showCannon() && event.getMessage().equals(CANNON_PICKUP_MESSAGE))
+		if (this.showCannon && event.getMessage().equals(CANNON_PICKUP_MESSAGE))
 		{
 			removeGameTimer(CANNON);
 		}
 
-		if (config.showMagicImbue() && event.getMessage().equals(MAGIC_IMBUE_MESSAGE))
+		if (this.showMagicImbue && event.getMessage().equals(MAGIC_IMBUE_MESSAGE))
 		{
 			createGameTimer(MAGICIMBUE);
 		}
@@ -539,7 +576,7 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(MAGICIMBUE);
 		}
 
-		if (config.showTeleblock())
+		if (this.showTeleblock)
 		{
 			if (FULL_TELEBLOCK_PATTERN.matcher(event.getMessage()).find())
 			{
@@ -564,53 +601,53 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (config.showAntiFire() && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
+		if (this.showAntiFire && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(SUPERANTIFIRE);
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
+		if (this.showAntiFire && event.getMessage().equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(SUPERANTIFIRE);
 		}
 
-		if (config.showImbuedHeart() && event.getMessage().contains(IMBUED_HEART_NOTREADY_MESSAGE))
+		if (this.showImbuedHeart && event.getMessage().contains(IMBUED_HEART_NOTREADY_MESSAGE))
 		{
 			imbuedHeartClicked = false;
 			return;
 		}
 
-		if (config.showImbuedHeart() && event.getMessage().equals(IMBUED_HEART_READY_MESSAGE))
+		if (this.showImbuedHeart && event.getMessage().equals(IMBUED_HEART_READY_MESSAGE))
 		{
 			removeGameTimer(IMBUEDHEART);
 		}
 
-		if (config.showPrayerEnhance() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("prayer enhance"))
+		if (this.showPrayerEnhance && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("prayer enhance"))
 		{
 			createGameTimer(PRAYER_ENHANCE);
 		}
 
-		if (config.showCharge() && event.getMessage().equals(CHARGE_MESSAGE))
+		if (this.showCharge && event.getMessage().equals(CHARGE_MESSAGE))
 		{
 			createGameTimer(CHARGE);
 		}
 
-		if (config.showCharge() && event.getMessage().equals(CHARGE_EXPIRED_MESSAGE))
+		if (this.showCharge && event.getMessage().equals(CHARGE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(CHARGE);
 		}
 
-		if (config.showStaffOfTheDead() && event.getMessage().contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
+		if (this.showStaffOfTheDead && event.getMessage().contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
 		{
 			createGameTimer(STAFF_OF_THE_DEAD);
 		}
 
-		if (config.showStaffOfTheDead() && event.getMessage().contains(STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE))
+		if (this.showStaffOfTheDead && event.getMessage().contains(STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 
-		if (config.showFreezes() && event.getMessage().equals(FROZEN_MESSAGE))
+		if (this.showFreezes && event.getMessage().equals(FROZEN_MESSAGE))
 		{
 			freezeTimer = createGameTimer(ICEBARRAGE);
 			freezeTime = client.getTickCount();
@@ -627,7 +664,7 @@ public class TimersPlugin extends Plugin
 
 		final boolean isSkulled = player.getSkullIcon() != null && player.getSkullIcon() != SkullIcon.SKULL_FIGHT_PIT;
 
-		if (isSkulled != skulledLastTick && config.showSkull())
+		if (isSkulled != skulledLastTick && this.showSkull)
 		{
 			skulledLastTick = isSkulled;
 			if (isSkulled)
@@ -689,7 +726,7 @@ public class TimersPlugin extends Plugin
 	{
 		Actor actor = event.getActor();
 
-		if (config.showAbyssalSireStun()
+		if (this.showAbyssalSireStun
 			&& actor instanceof NPC)
 		{
 			int npcId = ((NPC) actor).getId();
@@ -720,7 +757,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showHomeMinigameTeleports()
+		if (this.showHomeMinigameTeleports
 			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
 			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6))
@@ -748,12 +785,12 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showImbuedHeart() && actor.getSpotAnimation() == IMBUEDHEART.getGraphicId())
+		if (this.showImbuedHeart && actor.getSpotAnimation() == IMBUEDHEART.getGraphicId())
 		{
 			createGameTimer(IMBUEDHEART);
 		}
 
-		if (config.showFreezes())
+		if (this.showFreezes)
 		{
 			if (actor.getSpotAnimation() == BIND.getGraphicId())
 			{
@@ -891,7 +928,7 @@ public class TimersPlugin extends Plugin
 	{
 		Skill skill = event.getSkill();
 
-		if (skill != Skill.MAGIC || !config.showImbuedHeart() || !imbuedHeartClicked)
+		if (skill != Skill.MAGIC || !this.showImbuedHeart || !imbuedHeartClicked)
 		{
 			return;
 		}
@@ -959,5 +996,27 @@ public class TimersPlugin extends Plugin
 		removeGameTimer(HALFTB);
 		removeGameTimer(DMM_FULLTB);
 		removeGameTimer(DMM_HALFTB);
+	}
+	
+	private void updateConfig()
+	{
+		this.showHomeMinigameTeleports = config.showHomeMinigameTeleports();
+		this.showAntiPoison = config.showAntiPoison();
+		this.showAntiFire = config.showAntiFire();
+		this.showStamina = config.showStamina();
+		this.showOverload = config.showOverload();
+		this.showPrayerEnhance = config.showPrayerEnhance();
+		this.showCannon = config.showCannon();
+		this.showMagicImbue = config.showMagicImbue();
+		this.showCharge = config.showCharge();
+		this.showImbuedHeart = config.showImbuedHeart();
+		this.showVengeance = config.showVengeance();
+		this.showVengeanceActive = config.showVengeanceActive();
+		this.showTeleblock = config.showTeleblock();
+		this.showFreezes = config.showFreezes();
+		this.showGodWarsAltar = config.showGodWarsAltar();
+		this.showSkull = config.showSkull();
+		this.showStaffOfTheDead = config.showStaffOfTheDead();
+		this.showAbyssalSireStun = config.showAbyssalSireStun();
 	}
 }

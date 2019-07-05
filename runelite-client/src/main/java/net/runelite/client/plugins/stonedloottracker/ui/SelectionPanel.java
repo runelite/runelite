@@ -36,6 +36,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -49,7 +50,8 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
-public class SelectionPanel extends JPanel
+@Singleton
+class SelectionPanel extends JPanel
 {
 	private TreeSet<String> names;
 	private LootTrackerPanel parent;
@@ -61,7 +63,7 @@ public class SelectionPanel extends JPanel
 
 	private boolean configToggle;
 
-	SelectionPanel(boolean configToggle, TreeSet<String> names, LootTrackerPanel parent, ItemManager itemManager)
+	SelectionPanel(final boolean configToggle, final TreeSet<String> names, final LootTrackerPanel parent, final ItemManager itemManager)
 	{
 		this.names = names == null ? new TreeSet<>() : names;
 		this.parent = parent;

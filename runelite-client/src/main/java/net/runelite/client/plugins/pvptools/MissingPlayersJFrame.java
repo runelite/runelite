@@ -16,6 +16,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.inject.Singleton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,12 +26,11 @@ import javax.swing.JScrollPane;
 import net.runelite.api.Client;
 import net.runelite.client.ui.FontManager;
 
-public class MissingPlayersJFrame extends JFrame
+@Singleton
+class MissingPlayersJFrame extends JFrame
 {
 
-	public JList<Object> missingPlayersJList;
-
-	MissingPlayersJFrame(Client client, PvpToolsPlugin pvpToolsPlugin, List<String> list)
+	MissingPlayersJFrame(final Client client, final PvpToolsPlugin pvpToolsPlugin, final List<String> list)
 	{
 		super();
 		int x = client.getCanvas().getLocationOnScreen().x + client.getCanvas().getWidth();
@@ -41,7 +41,7 @@ public class MissingPlayersJFrame extends JFrame
 		JButton refreshJButton = new JButton("Refresh");
 		refreshJButton.addActionListener(pvpToolsPlugin.playersButtonActionListener);
 		JButton copyJButton = new JButton("Copy List");
-		missingPlayersJList = new JList<>(list.toArray());
+		JList<Object> missingPlayersJList = new JList<>(list.toArray());
 		ActionListener copyButtonActionListener = e ->
 		{
 			StringSelection stringSelection;

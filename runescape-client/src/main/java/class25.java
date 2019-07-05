@@ -45,21 +45,21 @@ public class class25 {
       garbageValue = "-1540935608"
    )
    static final int method348(int var0, int var1) {
-      if(var0 == -2) {
+      if (var0 == -2) {
          return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 2) {
+      } else if (var0 == -1) {
+         if (var1 < 2) {
             var1 = 2;
-         } else if(var1 > 126) {
+         } else if (var1 > 126) {
             var1 = 126;
          }
 
          return var1;
       } else {
          var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
+         if (var1 < 2) {
             var1 = 2;
-         } else if(var1 > 126) {
+         } else if (var1 > 126) {
             var1 = 126;
          }
 
@@ -73,7 +73,7 @@ public class class25 {
       garbageValue = "641029128"
    )
    static void method349() {
-      if(Client.renderSelf) {
+      if (Client.renderSelf) {
          WorldMapCacheName.addPlayerToScene(Canvas.localPlayer, false);
       }
 
@@ -86,17 +86,17 @@ public class class25 {
    )
    static void method350(int var0, int var1, int var2, int var3) {
       Widget var4 = class204.getWidgetChild(var0, var1);
-      if(var4 != null && var4.onTargetEnter != null) {
+      if (var4 != null && var4.onTargetEnter != null) {
          ScriptEvent var5 = new ScriptEvent();
          var5.widget = var4;
          var5.args0 = var4.onTargetEnter;
          AbstractIndexCache.runScript(var5);
       }
 
-      Client.__client_mh = var3;
+      Client.field157 = var3;
       Client.isSpellSelected = true;
-      ServerBuild.__iy_lo = var0;
-      Client.__client_lc = var1;
+      ServerBuild.field788 = var0;
+      Client.field220 = var1;
       FloorDecoration.selectedSpellFlags = var2;
       class22.method295(var4);
    }

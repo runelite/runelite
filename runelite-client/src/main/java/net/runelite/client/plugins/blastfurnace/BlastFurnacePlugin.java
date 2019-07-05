@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -37,6 +38,7 @@ import net.runelite.api.GameState;
 import static net.runelite.api.NullObjectID.NULL_9092;
 import static net.runelite.api.ObjectID.CONVEYOR_BELT;
 import net.runelite.api.Skill;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -57,6 +59,7 @@ import net.runelite.client.util.Text;
 	description = "Show helpful information for the Blast Furnace minigame",
 	tags = {"minigame", "overlay", "skilling", "smithing"}
 )
+@Singleton
 public class BlastFurnacePlugin extends Plugin
 {
 	private static final int BAR_DISPENSER = NULL_9092;
@@ -91,9 +94,19 @@ public class BlastFurnacePlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
+	@Inject
+	private BlastFurnaceConfig config;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showConveyorBelt;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showBarDispenser;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(overlay);
 		overlayManager.add(cofferOverlay);
 		overlayManager.add(clickBoxOverlay);
@@ -115,6 +128,15 @@ public class BlastFurnacePlugin extends Plugin
 	BlastFurnaceConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(BlastFurnaceConfig.class);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("blastfurnace"))
+		{
+			updateConfig();
+		}
 	}
 
 	@Subscribe
@@ -186,5 +208,11 @@ public class BlastFurnacePlugin extends Plugin
 				infoBoxManager.addInfoBox(foremanTimer);
 			}
 		}
+	}
+
+	public void updateConfig()
+	{
+		this.showBarDispenser = config.showBarDispenser();
+		this.showConveyorBelt = config.showConveyorBelt();
 	}
 }

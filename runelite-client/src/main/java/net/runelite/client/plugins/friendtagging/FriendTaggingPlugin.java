@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -52,7 +53,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 public class FriendTaggingPlugin extends Plugin
 {
 	public static final ConcurrentHashMap<String, String> taggedFriends = new ConcurrentHashMap<>();

@@ -43,7 +43,7 @@ public class EquipmentSlotItem
 		return this.itemIds;
 	}
 
-	public EquipmentInventorySlot getEquipmentSlot()
+	EquipmentInventorySlot getEquipmentSlot()
 	{
 		return this.equipmentSlot;
 	}

@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -43,6 +44,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Singleton
 public class DemonicGorillaOverlay extends Overlay
 {
 	private static final Color COLOR_ICON_BACKGROUND = new Color(0, 0, 0, 128);
@@ -58,7 +60,7 @@ public class DemonicGorillaOverlay extends Overlay
 	private SkillIconManager iconManager;
 
 	@Inject
-	public DemonicGorillaOverlay(Client client, DemonicGorillaPlugin plugin)
+	public DemonicGorillaOverlay(final Client client, final DemonicGorillaPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -106,7 +108,10 @@ public class DemonicGorillaOverlay extends Overlay
 					{
 						BufferedImage icon = getIcon(attackStyle);
 						icons.add(icon);
-						totalWidth += icon.getWidth();
+						if (icon != null)
+						{
+							totalWidth += icon.getWidth();
+						}
 					}
 
 					int bgPadding = 4;

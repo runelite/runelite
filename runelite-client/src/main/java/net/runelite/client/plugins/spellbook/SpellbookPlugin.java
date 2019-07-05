@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -70,7 +71,7 @@ import net.runelite.client.util.Text;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 @Slf4j
 public class SpellbookPlugin extends Plugin
 {
@@ -134,6 +135,11 @@ public class SpellbookPlugin extends Plugin
 	private Spellbook spellbook;
 	private SpellbookMouseListener mouseListener;
 
+	private boolean enableMobile;
+	private boolean dragSpells;
+	private boolean scroll;
+	private int size;
+	private String filter;
 
 	@Provides
 	SpellbookConfig getConfig(ConfigManager configManager)
@@ -144,6 +150,8 @@ public class SpellbookPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+
 		refreshMagicTabOption();
 		loadFilter();
 		mouseListener = new SpellbookMouseListener(this);
@@ -176,6 +184,8 @@ public class SpellbookPlugin extends Plugin
 		{
 			return;
 		}
+
+		updateConfig();
 
 		String key = event.getKey();
 
@@ -260,7 +270,7 @@ public class SpellbookPlugin extends Plugin
 			mouseManager.registerMouseListener(mouseListener);
 			tmp = new HashMap<>();
 
-			if (config.scroll())
+			if (this.scroll)
 			{
 				mouseManager.registerMouseWheelListener(mouseListener);
 			}
@@ -289,7 +299,7 @@ public class SpellbookPlugin extends Plugin
 	private void refreshMagicTabOption()
 	{
 		clearMagicTabMenus();
-		if (client.getGameState() != GameState.LOGGED_IN || !config.dragSpells())
+		if (client.getGameState() != GameState.LOGGED_IN || !this.dragSpells)
 		{
 			return;
 		}
@@ -312,7 +322,7 @@ public class SpellbookPlugin extends Plugin
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (client.getVar(Varbits.FILTER_SPELLBOOK) != 0
-			|| !config.enableMobile()
+			|| !this.enableMobile
 			|| !event.getEventName().toLowerCase().contains("spell"))
 		{
 			return;
@@ -367,7 +377,7 @@ public class SpellbookPlugin extends Plugin
 		}
 		else if ("resizeSpell".equals(event.getEventName()))
 		{
-			int size = config.size();
+			int size = this.size;
 			int columns = clamp(FULL_WIDTH / size, 2, 3);
 
 			iStack[iStackSize - 2] = size;
@@ -375,7 +385,7 @@ public class SpellbookPlugin extends Plugin
 		}
 		else if ("setSpellAreaSize".equals(event.getEventName()))
 		{
-			if (!config.dragSpells())
+			if (!this.dragSpells)
 			{
 				return;
 			}
@@ -411,7 +421,7 @@ public class SpellbookPlugin extends Plugin
 		}
 		else if ("setSpellPosition".equals(event.getEventName()))
 		{
-			if (!config.dragSpells())
+			if (!this.dragSpells)
 			{
 				return;
 			}
@@ -509,7 +519,7 @@ public class SpellbookPlugin extends Plugin
 		return WordFilterMode.CONTAINS; // but probably null soz
 	}
 
-	boolean isOnSpellWidget(java.awt.Point point)
+	boolean isNotOnSpellWidget(java.awt.Point point)
 	{
 		Widget boundsWidget = client.getWidget(WidgetInfo.SPELLBOOK_FILTERED_BOUNDS);
 		if (client.getVar(VarClientInt.INVENTORY_TAB) != 6
@@ -517,15 +527,15 @@ public class SpellbookPlugin extends Plugin
 			|| boundsWidget == null
 			|| !boundsWidget.getBounds().contains(point))
 		{
-			return false;
+			return true;
 		}
 
-		return currentWidget(point) != null;
+		return currentWidget(point) == null;
 	}
 
 	private void loadFilter()
 	{
-		notFilteredSpells = ImmutableSet.copyOf(Text.fromCSV(config.filter().toLowerCase()));
+		notFilteredSpells = ImmutableSet.copyOf(Text.fromCSV(this.filter.toLowerCase()));
 	}
 
 	void startDragging(java.awt.Point point)
@@ -630,7 +640,7 @@ public class SpellbookPlugin extends Plugin
 	{
 		Widget clickedWidget = currentWidget(point);
 
-		if (clickedWidget == null || dragging || !config.scroll())
+		if (clickedWidget == null || dragging || !this.scroll)
 		{
 			return;
 		}
@@ -701,6 +711,15 @@ public class SpellbookPlugin extends Plugin
 
 	private int trueSize(Spell s)
 	{
-		return s.getSize() * 2 + config.size();
+		return s.getSize() * 2 + this.size;
+	}
+
+	private void updateConfig()
+	{
+		this.enableMobile = config.enableMobile();
+		this.dragSpells = config.dragSpells();
+		this.scroll = config.scroll();
+		this.size = config.size();
+		this.filter = config.filter();
 	}
 }

@@ -27,22 +27,21 @@ package net.runelite.client.plugins.lootingbagviewer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import net.runelite.api.Client;
+import javax.inject.Singleton;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 
+@Singleton
 public class LootingBagViewerWidgetOverlay extends WidgetItemOverlay
 {
-	private Client client;
 	private LootingBagViewerPlugin plugin;
 
 	@Inject
-	LootingBagViewerWidgetOverlay(Client client, LootingBagViewerPlugin plugin)
+	LootingBagViewerWidgetOverlay(final LootingBagViewerPlugin plugin)
 	{
-		this.client = client;
 		this.plugin = plugin;
 		showOnInventory();
 	}
@@ -72,9 +71,6 @@ public class LootingBagViewerWidgetOverlay extends WidgetItemOverlay
 	{
 		switch ((int) (Math.log10(lootingBagValue) + 1))
 		{
-			case 1:
-			case 2:
-				return 8;
 			case 3:
 			case 4:
 				return 6;

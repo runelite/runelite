@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.bosstimer;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.NPC;
 import net.runelite.api.events.NpcDespawned;
@@ -40,6 +41,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	description = "Show boss spawn timer overlays",
 	tags = {"combat", "pve", "overlay", "spawn"}
 )
+@Singleton
 @Slf4j
 public class BossTimersPlugin extends Plugin
 {

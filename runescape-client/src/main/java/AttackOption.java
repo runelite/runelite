@@ -33,10 +33,11 @@ public enum AttackOption implements Enumerated {
    )
    @Export("AttackOption_hidden")
    AttackOption_hidden(3);
+
    @ObfuscatedName("sp")
-   static short[] __cj_sp;
+   static short[] field30;
    @ObfuscatedName("ay")
-   static String __cj_ay;
+   static String field31;
    @ObfuscatedName("bo")
    @ObfuscatedSignature(
       signature = "[Llq;"
@@ -50,7 +51,7 @@ public enum AttackOption implements Enumerated {
    @Export("id")
    final int id;
 
-   AttackOption(int var3) {
+   private AttackOption(int var3) {
       this.id = var3;
    }
 
@@ -88,57 +89,57 @@ public enum AttackOption implements Enumerated {
       byte var7 = 0;
       byte var8 = 0;
 
-      while(var5 - var7 < var3 || var6 - var8 < var4) {
-         if(var5 - var7 >= var3) {
+      while (var5 - var7 < var3 || var6 - var8 < var4) {
+         if (var5 - var7 >= var3) {
             return -1;
          }
 
-         if(var6 - var8 >= var4) {
+         if (var6 - var8 >= var4) {
             return 1;
          }
 
          char var9;
-         if(var7 != 0) {
+         if (var7 != 0) {
             var9 = (char)var7;
-            boolean var14 = false;
+            boolean var10 = false;
          } else {
             var9 = var0.charAt(var5++);
          }
 
-         char var10;
-         if(var8 != 0) {
-            var10 = (char)var8;
-            boolean var15 = false;
+         char var14;
+         if (var8 != 0) {
+            var14 = (char)var8;
+            boolean var11 = false;
          } else {
-            var10 = var1.charAt(var6++);
+            var14 = var1.charAt(var6++);
          }
 
-         byte var11;
-         if(var9 == 198) {
-            var11 = 69;
-         } else if(var9 == 230) {
-            var11 = 101;
-         } else if(var9 == 223) {
-            var11 = 115;
-         } else if(var9 == 338) {
-            var11 = 69;
-         } else if(var9 == 339) {
-            var11 = 101;
+         byte var16;
+         if (var9 == 198) {
+            var16 = 69;
+         } else if (var9 == 230) {
+            var16 = 101;
+         } else if (var9 == 223) {
+            var16 = 115;
+         } else if (var9 == 338) {
+            var16 = 69;
+         } else if (var9 == 339) {
+            var16 = 101;
          } else {
-            var11 = 0;
+            var16 = 0;
          }
 
-         var7 = var11;
+         var7 = var16;
          byte var12;
-         if(var10 == 198) {
+         if (var14 == 198) {
             var12 = 69;
-         } else if(var10 == 230) {
+         } else if (var14 == 230) {
             var12 = 101;
-         } else if(var10 == 223) {
+         } else if (var14 == 223) {
             var12 = 115;
-         } else if(var10 == 338) {
+         } else if (var14 == 338) {
             var12 = 69;
-         } else if(var10 == 339) {
+         } else if (var14 == 339) {
             var12 = 101;
          } else {
             var12 = 0;
@@ -146,41 +147,41 @@ public enum AttackOption implements Enumerated {
 
          var8 = var12;
          var9 = class12.method155(var9, var2);
-         var10 = class12.method155(var10, var2);
-         if(var9 != var10 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
+         var14 = class12.method155(var14, var2);
+         if (var9 != var14 && Character.toUpperCase(var9) != Character.toUpperCase(var14)) {
             var9 = Character.toLowerCase(var9);
-            var10 = Character.toLowerCase(var10);
-            if(var10 != var9) {
-               return CollisionMap.method3631(var9, var2) - CollisionMap.method3631(var10, var2);
+            var14 = Character.toLowerCase(var14);
+            if (var14 != var9) {
+               return CollisionMap.method3631(var9, var2) - CollisionMap.method3631(var14, var2);
             }
          }
       }
 
-      int var16 = Math.min(var3, var4);
+      int var15 = Math.min(var3, var4);
 
       int var17;
-      char var20;
-      for(var17 = 0; var17 < var16; ++var17) {
-         char var18 = var0.charAt(var17);
-         var20 = var1.charAt(var17);
-         if(var20 != var18 && Character.toUpperCase(var18) != Character.toUpperCase(var20)) {
+      char var18;
+      for (var17 = 0; var17 < var15; ++var17) {
+         char var19 = var0.charAt(var17);
+         var18 = var1.charAt(var17);
+         if (var18 != var19 && Character.toUpperCase(var19) != Character.toUpperCase(var18)) {
+            var19 = Character.toLowerCase(var19);
             var18 = Character.toLowerCase(var18);
-            var20 = Character.toLowerCase(var20);
-            if(var18 != var20) {
-               return CollisionMap.method3631(var18, var2) - CollisionMap.method3631(var20, var2);
+            if (var19 != var18) {
+               return CollisionMap.method3631(var19, var2) - CollisionMap.method3631(var18, var2);
             }
          }
       }
 
       var17 = var3 - var4;
-      if(var17 != 0) {
+      if (var17 != 0) {
          return var17;
       } else {
-         for(int var19 = 0; var19 < var16; ++var19) {
-            var20 = var0.charAt(var19);
-            char var13 = var1.charAt(var19);
-            if(var20 != var13) {
-               return CollisionMap.method3631(var20, var2) - CollisionMap.method3631(var13, var2);
+         for (int var20 = 0; var20 < var15; ++var20) {
+            var18 = var0.charAt(var20);
+            char var13 = var1.charAt(var20);
+            if (var18 != var13) {
+               return CollisionMap.method3631(var18, var2) - CollisionMap.method3631(var13, var2);
             }
          }
 
@@ -201,15 +202,14 @@ public enum AttackOption implements Enumerated {
          class168.randomDat.readFill(var0);
 
          int var1;
-         for(var1 = 0; var1 < 24 && var0[var1] == 0; ++var1) {
-            ;
+         for (var1 = 0; var1 < 24 && var0[var1] == 0; ++var1) {
          }
 
-         if(var1 >= 24) {
+         if (var1 >= 24) {
             throw new IOException();
          }
-      } catch (Exception var4) {
-         for(int var2 = 0; var2 < 24; ++var2) {
+      } catch (Exception var3) {
+         for (int var2 = 0; var2 < 24; ++var2) {
             var0[var2] = -1;
          }
       }

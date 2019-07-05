@@ -13,7 +13,7 @@ public final class class27 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache __aq_k;
+   public static AbstractIndexCache field1143;
    @ObfuscatedName("f")
    final int[] field225;
 
@@ -40,7 +40,7 @@ public final class class27 {
       garbageValue = "37"
    )
    public static ServerPacket[] method429() {
-      return new ServerPacket[]{ServerPacket.__ge_m, ServerPacket.__ge_f, ServerPacket.__ge_q, ServerPacket.__ge_w, ServerPacket.__ge_o, ServerPacket.__ge_u, ServerPacket.__ge_g, ServerPacket.__ge_l, ServerPacket.__ge_e, ServerPacket.__ge_x, ServerPacket.__ge_d, ServerPacket.__ge_k, ServerPacket.__ge_n, ServerPacket.__ge_i, ServerPacket.__ge_a, ServerPacket.__ge_z, ServerPacket.__ge_j, ServerPacket.__ge_s, ServerPacket.__ge_t, ServerPacket.__ge_y, ServerPacket.__ge_h, ServerPacket.__ge_b, ServerPacket.__ge_c, ServerPacket.__ge_r, ServerPacket.__ge_p, ServerPacket.__ge_v, ServerPacket.__ge_ag, ServerPacket.__ge_aq, ServerPacket.__ge_aj, ServerPacket.__ge_av, ServerPacket.__ge_ar, ServerPacket.__ge_ac, ServerPacket.__ge_ay, ServerPacket.__ge_ah, ServerPacket.__ge_ak, ServerPacket.__ge_aw, ServerPacket.__ge_al, ServerPacket.__ge_ab, ServerPacket.__ge_ae, ServerPacket.__ge_at, ServerPacket.__ge_ad, ServerPacket.__ge_ap, ServerPacket.__ge_as, ServerPacket.__ge_am, ServerPacket.__ge_an, ServerPacket.__ge_az, ServerPacket.__ge_au, ServerPacket.__ge_ao, ServerPacket.__ge_aa, ServerPacket.__ge_ax, ServerPacket.__ge_af, ServerPacket.__ge_ai, ServerPacket.__ge_ba, ServerPacket.__ge_bb, ServerPacket.__ge_bs, ServerPacket.__ge_bq, ServerPacket.__ge_bn, ServerPacket.__ge_bk, ServerPacket.__ge_bd, ServerPacket.__ge_bc, ServerPacket.__ge_bo, ServerPacket.__ge_bx, ServerPacket.__ge_by, ServerPacket.__ge_bu, ServerPacket.__ge_bm, ServerPacket.__ge_bl, ServerPacket.__ge_br, ServerPacket.__ge_bj, ServerPacket.__ge_bi, ServerPacket.__ge_bz, ServerPacket.__ge_bg, ServerPacket.__ge_bt, ServerPacket.__ge_bp, ServerPacket.__ge_bf, ServerPacket.__ge_bh, ServerPacket.__ge_be, ServerPacket.__ge_bv, ServerPacket.__ge_bw, ServerPacket.__ge_cr, ServerPacket.__ge_cv, ServerPacket.__ge_ce, ServerPacket.__ge_cy, ServerPacket.__ge_cs, ServerPacket.__ge_cm, ServerPacket.__ge_cj};
+      return new ServerPacket[]{ServerPacket.field789, ServerPacket.field790, ServerPacket.field791, ServerPacket.field792, ServerPacket.field793, ServerPacket.field794, ServerPacket.field795, ServerPacket.field796, ServerPacket.field797, ServerPacket.field798, ServerPacket.field799, ServerPacket.field800, ServerPacket.field801, ServerPacket.field802, ServerPacket.field803, ServerPacket.field804, ServerPacket.field805, ServerPacket.field806, ServerPacket.field807, ServerPacket.field808, ServerPacket.field809, ServerPacket.field810, ServerPacket.field811, ServerPacket.field812, ServerPacket.field813, ServerPacket.field814, ServerPacket.field815, ServerPacket.field816, ServerPacket.field817, ServerPacket.field818, ServerPacket.field819, ServerPacket.field820, ServerPacket.field821, ServerPacket.field822, ServerPacket.field823, ServerPacket.field824, ServerPacket.field825, ServerPacket.field826, ServerPacket.field827, ServerPacket.field828, ServerPacket.field829, ServerPacket.field830, ServerPacket.field831, ServerPacket.field832, ServerPacket.field833, ServerPacket.field834, ServerPacket.field835, ServerPacket.field836, ServerPacket.field837, ServerPacket.field838, ServerPacket.field839, ServerPacket.field840, ServerPacket.field841, ServerPacket.field842, ServerPacket.field843, ServerPacket.field844, ServerPacket.field845, ServerPacket.field846, ServerPacket.field847, ServerPacket.field848, ServerPacket.field849, ServerPacket.field850, ServerPacket.field851, ServerPacket.field852, ServerPacket.field853, ServerPacket.field854, ServerPacket.field855, ServerPacket.field856, ServerPacket.field857, ServerPacket.field858, ServerPacket.field859, ServerPacket.field860, ServerPacket.field861, ServerPacket.field862, ServerPacket.field863, ServerPacket.field864, ServerPacket.field865, ServerPacket.field866, ServerPacket.field867, ServerPacket.field868, ServerPacket.field869, ServerPacket.field870, ServerPacket.field871, ServerPacket.field872, ServerPacket.field873};
    }
 
    @ObfuscatedName("m")
@@ -60,10 +60,8 @@ public final class class27 {
          PixelGrabber var5 = new PixelGrabber(var1, 0, 0, var2, var3, var4, 0, var2);
          var5.grabPixels();
          return new Sprite(var4, var2, var3);
-      } catch (IOException var7) {
-         ;
-      } catch (InterruptedException var8) {
-         ;
+      } catch (IOException var6) {
+      } catch (InterruptedException var7) {
       }
 
       return new Sprite(0, 0);

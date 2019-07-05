@@ -26,12 +26,14 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class TimerBox extends InfoBox
 {

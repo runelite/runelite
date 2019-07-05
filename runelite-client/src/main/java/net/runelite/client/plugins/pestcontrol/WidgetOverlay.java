@@ -32,6 +32,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
@@ -41,6 +42,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 @Slf4j
+@Singleton
 public class WidgetOverlay extends Overlay
 {
 	private final Client client;
@@ -48,7 +50,7 @@ public class WidgetOverlay extends Overlay
 	private final PestControlPlugin plugin;
 
 	@Inject
-	public WidgetOverlay(Client client, PestControlPlugin plugin)
+	public WidgetOverlay(final Client client, final PestControlPlugin plugin)
 	{
 		this.plugin = plugin;
 		this.client = client;
@@ -57,7 +59,7 @@ public class WidgetOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
-	public Integer getPortalHitpoints(PortalColor color)
+	Integer getPortalHitpoints(PortalColor color)
 	{
 		if (plugin.getGame() == null)
 		{

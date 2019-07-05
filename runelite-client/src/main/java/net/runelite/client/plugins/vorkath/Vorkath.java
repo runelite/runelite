@@ -70,7 +70,7 @@ public class Vorkath
 	 *
 	 * @param newPhase the new phase Vorkath is current on
 	 */
-	public void updatePhase(Phase newPhase)
+	void updatePhase(Phase newPhase)
 	{
 		Phase oldLastPhase = this.lastPhase;
 		Phase oldCurrentPhase = this.currentPhase;

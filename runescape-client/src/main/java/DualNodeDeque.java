@@ -25,7 +25,7 @@ public final class DualNodeDeque {
    )
    @Export("addFirst")
    public void addFirst(DualNode var1) {
-      if(var1.nextDual != null) {
+      if (var1.nextDual != null) {
          var1.removeDual();
       }
 
@@ -41,7 +41,7 @@ public final class DualNodeDeque {
    )
    @Export("addLast")
    public void addLast(DualNode var1) {
-      if(var1.nextDual != null) {
+      if (var1.nextDual != null) {
          var1.removeDual();
       }
 
@@ -58,7 +58,7 @@ public final class DualNodeDeque {
    @Export("removeLast")
    public DualNode removeLast() {
       DualNode var1 = this.sentinel.previousDual;
-      if(var1 == this.sentinel) {
+      if (var1 == this.sentinel) {
          return null;
       } else {
          var1.removeDual();
@@ -73,15 +73,15 @@ public final class DualNodeDeque {
    @Export("last")
    public DualNode last() {
       DualNode var1 = this.sentinel.previousDual;
-      return var1 == this.sentinel?null:var1;
+      return var1 == this.sentinel ? null : var1;
    }
 
    @ObfuscatedName("u")
    @Export("clear")
    public void clear() {
-      while(true) {
+      while (true) {
          DualNode var1 = this.sentinel.previousDual;
-         if(var1 == this.sentinel) {
+         if (var1 == this.sentinel) {
             return;
          }
 
@@ -93,8 +93,9 @@ public final class DualNodeDeque {
    @ObfuscatedSignature(
       signature = "(Lfn;Lfn;)V"
    )
-   public static void method5220(DualNode var0, DualNode var1) {
-      if(var0.nextDual != null) {
+   @Export("DualNodeDeque_addBefore")
+   public static void DualNodeDeque_addBefore(DualNode var0, DualNode var1) {
+      if (var0.nextDual != null) {
          var0.removeDual();
       }
 

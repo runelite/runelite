@@ -21,7 +21,7 @@ public final class Font extends AbstractFont {
       int var9 = 0;
       int var10 = 0;
       int var11;
-      if(var3 < Rasterizer2D.Rasterizer2D_yClipStart) {
+      if (var3 < Rasterizer2D.Rasterizer2D_yClipStart) {
          var11 = Rasterizer2D.Rasterizer2D_yClipStart - var3;
          var5 -= var11;
          var3 = Rasterizer2D.Rasterizer2D_yClipStart;
@@ -29,11 +29,11 @@ public final class Font extends AbstractFont {
          var7 += var11 * Rasterizer2D.Rasterizer2D_width;
       }
 
-      if(var3 + var5 > Rasterizer2D.Rasterizer2D_yClipEnd) {
+      if (var3 + var5 > Rasterizer2D.Rasterizer2D_yClipEnd) {
          var5 -= var3 + var5 - Rasterizer2D.Rasterizer2D_yClipEnd;
       }
 
-      if(var2 < Rasterizer2D.Rasterizer2D_xClipStart) {
+      if (var2 < Rasterizer2D.Rasterizer2D_xClipStart) {
          var11 = Rasterizer2D.Rasterizer2D_xClipStart - var2;
          var4 -= var11;
          var2 = Rasterizer2D.Rasterizer2D_xClipStart;
@@ -43,16 +43,17 @@ public final class Font extends AbstractFont {
          var8 += var11;
       }
 
-      if(var2 + var4 > Rasterizer2D.Rasterizer2D_xClipEnd) {
+      if (var2 + var4 > Rasterizer2D.Rasterizer2D_xClipEnd) {
          var11 = var2 + var4 - Rasterizer2D.Rasterizer2D_xClipEnd;
          var4 -= var11;
          var9 += var11;
          var8 += var11;
       }
 
-      if(var4 > 0 && var5 > 0) {
+      if (var4 > 0 && var5 > 0) {
          AbstractFont.AbstractFont_placeGlyph(Rasterizer2D.Rasterizer2D_pixels, var1, var6, var10, var7, var4, var5, var8, var9);
       }
+
    }
 
    @ObfuscatedName("f")
@@ -63,7 +64,7 @@ public final class Font extends AbstractFont {
       int var10 = 0;
       int var11 = 0;
       int var12;
-      if(var3 < Rasterizer2D.Rasterizer2D_yClipStart) {
+      if (var3 < Rasterizer2D.Rasterizer2D_yClipStart) {
          var12 = Rasterizer2D.Rasterizer2D_yClipStart - var3;
          var5 -= var12;
          var3 = Rasterizer2D.Rasterizer2D_yClipStart;
@@ -71,11 +72,11 @@ public final class Font extends AbstractFont {
          var8 += var12 * Rasterizer2D.Rasterizer2D_width;
       }
 
-      if(var3 + var5 > Rasterizer2D.Rasterizer2D_yClipEnd) {
+      if (var3 + var5 > Rasterizer2D.Rasterizer2D_yClipEnd) {
          var5 -= var3 + var5 - Rasterizer2D.Rasterizer2D_yClipEnd;
       }
 
-      if(var2 < Rasterizer2D.Rasterizer2D_xClipStart) {
+      if (var2 < Rasterizer2D.Rasterizer2D_xClipStart) {
          var12 = Rasterizer2D.Rasterizer2D_xClipStart - var2;
          var4 -= var12;
          var2 = Rasterizer2D.Rasterizer2D_xClipStart;
@@ -85,15 +86,16 @@ public final class Font extends AbstractFont {
          var9 += var12;
       }
 
-      if(var2 + var4 > Rasterizer2D.Rasterizer2D_xClipEnd) {
+      if (var2 + var4 > Rasterizer2D.Rasterizer2D_xClipEnd) {
          var12 = var2 + var4 - Rasterizer2D.Rasterizer2D_xClipEnd;
          var4 -= var12;
          var10 += var12;
          var9 += var12;
       }
 
-      if(var4 > 0 && var5 > 0) {
+      if (var4 > 0 && var5 > 0) {
          AbstractFont.AbstractFont_placeGlyphAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, var11, var8, var4, var5, var9, var10, var7);
       }
+
    }
 }

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.barrows;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Varbits;
@@ -39,10 +40,10 @@ public enum BarrowsBrothers
 	TORAG("Torag", new WorldPoint(3553, 3283, 0), Varbits.BARROWS_KILLED_TORAG),
 	VERAC("Verac", new WorldPoint(3557, 3298, 0), Varbits.BARROWS_KILLED_VERAC);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String name;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final WorldPoint location;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Varbits killedVarbit;
 }

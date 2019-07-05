@@ -376,8 +376,7 @@ public class NyloPredictor
 	{
 		if ((currentIndex + 1) < NYLOCAS_WAVES.length)
 		{
-			Wave nextWave = NYLOCAS_WAVES[currentIndex + 1];
-			return nextWave;
+			return NYLOCAS_WAVES[currentIndex + 1];
 		}
 		else
 		{
@@ -393,7 +392,7 @@ public class NyloPredictor
 		}
 		else
 		{
-			String types = "";
+			StringBuilder types = new StringBuilder();
 
 			for (Nylocas nylo : wave.getSpawns())
 			{
@@ -401,34 +400,34 @@ public class NyloPredictor
 				{
 					if (types.length() > 0)
 					{
-						types += ", ";
+						types.append(", ");
 					}
 
 					switch (nylo.getType())
 					{
 						case MAGE_162:
-							types += "Small Mage";
+							types.append("Small Mage");
 							break;
 						case MAGE_260:
-							types += "Big Mage";
+							types.append("Big Mage");
 							break;
 						case MELEE_162:
-							types += "Small Melee";
+							types.append("Small Melee");
 							break;
 						case MELEE_260:
-							types += "Big Melee";
+							types.append("Big Melee");
 							break;
 						case RANGE_162:
-							types += "Small Range";
+							types.append("Small Range");
 							break;
 						case RANGE_260:
-							types += "Big Range";
+							types.append("Big Range");
 							break;
 					}
 				}
 			}
 
-			return types.length() > 0 ? types : null;
+			return types.length() > 0 ? types.toString() : null;
 		}
 	}
 
@@ -474,7 +473,7 @@ public class NyloPredictor
 		@Override
 		public boolean equals(Object object)
 		{
-			if (object != null && (object instanceof Nylocas))
+			if ((object instanceof Nylocas))
 			{
 				Nylocas nylo = (Nylocas) object;
 				return nylo.getType() == this.type && nylo.getSpawn() == this.spawn;

@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -23,6 +24,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
+@Singleton
 public class SlayerTaskPanel extends PluginPanel
 {
 	private static final long MILLIS_PER_SECOND = 1000;

@@ -28,9 +28,9 @@ public class NodeDeque {
    @ObfuscatedName("m")
    @Export("clear")
    public void clear() {
-      while(true) {
+      while (true) {
          Node var1 = this.sentinel.previous;
-         if(var1 == this.sentinel) {
+         if (var1 == this.sentinel) {
             this.current = null;
             return;
          }
@@ -45,7 +45,7 @@ public class NodeDeque {
    )
    @Export("addFirst")
    public void addFirst(Node var1) {
-      if(var1.next != null) {
+      if (var1.next != null) {
          var1.remove();
       }
 
@@ -61,7 +61,7 @@ public class NodeDeque {
    )
    @Export("addLast")
    public void addLast(Node var1) {
-      if(var1.next != null) {
+      if (var1.next != null) {
          var1.remove();
       }
 
@@ -78,7 +78,7 @@ public class NodeDeque {
    @Export("removeLast")
    public Node removeLast() {
       Node var1 = this.sentinel.previous;
-      if(var1 == this.sentinel) {
+      if (var1 == this.sentinel) {
          return null;
       } else {
          var1.remove();
@@ -93,7 +93,7 @@ public class NodeDeque {
    @Export("removeFirst")
    public Node removeFirst() {
       Node var1 = this.sentinel.next;
-      if(var1 == this.sentinel) {
+      if (var1 == this.sentinel) {
          return null;
       } else {
          var1.remove();
@@ -108,7 +108,7 @@ public class NodeDeque {
    @Export("last")
    public Node last() {
       Node var1 = this.sentinel.previous;
-      if(var1 == this.sentinel) {
+      if (var1 == this.sentinel) {
          this.current = null;
          return null;
       } else {
@@ -124,7 +124,7 @@ public class NodeDeque {
    @Export("first")
    public Node first() {
       Node var1 = this.sentinel.next;
-      if(var1 == this.sentinel) {
+      if (var1 == this.sentinel) {
          this.current = null;
          return null;
       } else {
@@ -140,7 +140,7 @@ public class NodeDeque {
    @Export("previous")
    public Node previous() {
       Node var1 = this.current;
-      if(var1 == this.sentinel) {
+      if (var1 == this.sentinel) {
          this.current = null;
          return null;
       } else {
@@ -156,7 +156,7 @@ public class NodeDeque {
    @Export("next")
    public Node next() {
       Node var1 = this.current;
-      if(var1 == this.sentinel) {
+      if (var1 == this.sentinel) {
          this.current = null;
          return null;
       } else {
@@ -169,8 +169,9 @@ public class NodeDeque {
    @ObfuscatedSignature(
       signature = "(Lgw;Lgw;)V"
    )
-   public static void method5270(Node var0, Node var1) {
-      if(var0.next != null) {
+   @Export("NodeDeque_addBefore")
+   public static void NodeDeque_addBefore(Node var0, Node var1) {
+      if (var0.next != null) {
          var0.remove();
       }
 

@@ -11,7 +11,7 @@ public class Skeleton extends Node {
    @ObfuscatedGetter(
       intValue = 2096389021
    )
-   static int __ek_x;
+   static int field874;
    @ObfuscatedName("dc")
    @ObfuscatedSignature(
       signature = "Lit;"
@@ -45,16 +45,16 @@ public class Skeleton extends Node {
       this.labels = new int[this.count][];
 
       int var4;
-      for(var4 = 0; var4 < this.count; ++var4) {
+      for (var4 = 0; var4 < this.count; ++var4) {
          this.transformTypes[var4] = var3.readUnsignedByte();
       }
 
-      for(var4 = 0; var4 < this.count; ++var4) {
+      for (var4 = 0; var4 < this.count; ++var4) {
          this.labels[var4] = new int[var3.readUnsignedByte()];
       }
 
-      for(var4 = 0; var4 < this.count; ++var4) {
-         for(int var5 = 0; var5 < this.labels[var4].length; ++var5) {
+      for (var4 = 0; var4 < this.count; ++var4) {
+         for (int var5 = 0; var5 < this.labels[var4].length; ++var5) {
             this.labels[var4][var5] = var3.readUnsignedByte();
          }
       }
@@ -68,24 +68,24 @@ public class Skeleton extends Node {
    )
    static final void method3062(PacketBuffer var0, int var1) {
       int var2 = var0.index;
-      Players.__cq_n = 0;
+      Players.field736 = 0;
       int var3 = 0;
       var0.importIndex();
 
       int var4;
       int var5;
       int var6;
-      for(var4 = 0; var4 < Players.Players_count; ++var4) {
+      for (var4 = 0; var4 < Players.Players_count; ++var4) {
          var5 = Players.Players_indices[var4];
-         if((Players.__cq_q[var5] & 1) == 0) {
-            if(var3 > 0) {
+         if ((Players.field731[var5] & 1) == 0) {
+            if (var3 > 0) {
                --var3;
-               Players.__cq_q[var5] = (byte)(Players.__cq_q[var5] | 2);
+               Players.field731[var5] = (byte)(Players.field731[var5] | 2);
             } else {
                var6 = var0.readBits(1);
-               if(var6 == 0) {
+               if (var6 == 0) {
                   var3 = GrandExchangeOffer.method105(var0);
-                  Players.__cq_q[var5] = (byte)(Players.__cq_q[var5] | 2);
+                  Players.field731[var5] = (byte)(Players.field731[var5] | 2);
                } else {
                   class210.method4101(var0, var5);
                }
@@ -94,22 +94,22 @@ public class Skeleton extends Node {
       }
 
       var0.exportIndex();
-      if(var3 != 0) {
+      if (var3 != 0) {
          throw new RuntimeException();
       } else {
          var0.importIndex();
 
-         for(var4 = 0; var4 < Players.Players_count; ++var4) {
+         for (var4 = 0; var4 < Players.Players_count; ++var4) {
             var5 = Players.Players_indices[var4];
-            if((Players.__cq_q[var5] & 1) != 0) {
-               if(var3 > 0) {
+            if ((Players.field731[var5] & 1) != 0) {
+               if (var3 > 0) {
                   --var3;
-                  Players.__cq_q[var5] = (byte)(Players.__cq_q[var5] | 2);
+                  Players.field731[var5] = (byte)(Players.field731[var5] | 2);
                } else {
                   var6 = var0.readBits(1);
-                  if(var6 == 0) {
+                  if (var6 == 0) {
                      var3 = GrandExchangeOffer.method105(var0);
-                     Players.__cq_q[var5] = (byte)(Players.__cq_q[var5] | 2);
+                     Players.field731[var5] = (byte)(Players.field731[var5] | 2);
                   } else {
                      class210.method4101(var0, var5);
                   }
@@ -118,72 +118,72 @@ public class Skeleton extends Node {
          }
 
          var0.exportIndex();
-         if(var3 != 0) {
+         if (var3 != 0) {
             throw new RuntimeException();
          } else {
             var0.importIndex();
 
-            for(var4 = 0; var4 < Players.__cq_l; ++var4) {
-               var5 = Players.__cq_e[var4];
-               if((Players.__cq_q[var5] & 1) != 0) {
-                  if(var3 > 0) {
+            for (var4 = 0; var4 < Players.field734; ++var4) {
+               var5 = Players.field735[var4];
+               if ((Players.field731[var5] & 1) != 0) {
+                  if (var3 > 0) {
                      --var3;
-                     Players.__cq_q[var5] = (byte)(Players.__cq_q[var5] | 2);
+                     Players.field731[var5] = (byte)(Players.field731[var5] | 2);
                   } else {
                      var6 = var0.readBits(1);
-                     if(var6 == 0) {
+                     if (var6 == 0) {
                         var3 = GrandExchangeOffer.method105(var0);
-                        Players.__cq_q[var5] = (byte)(Players.__cq_q[var5] | 2);
-                     } else if(class236.updateExternalPlayer(var0, var5)) {
-                        Players.__cq_q[var5] = (byte)(Players.__cq_q[var5] | 2);
+                        Players.field731[var5] = (byte)(Players.field731[var5] | 2);
+                     } else if (class236.updateExternalPlayer(var0, var5)) {
+                        Players.field731[var5] = (byte)(Players.field731[var5] | 2);
                      }
                   }
                }
             }
 
             var0.exportIndex();
-            if(var3 != 0) {
+            if (var3 != 0) {
                throw new RuntimeException();
             } else {
                var0.importIndex();
 
-               for(var4 = 0; var4 < Players.__cq_l; ++var4) {
-                  var5 = Players.__cq_e[var4];
-                  if((Players.__cq_q[var5] & 1) == 0) {
-                     if(var3 > 0) {
+               for (var4 = 0; var4 < Players.field734; ++var4) {
+                  var5 = Players.field735[var4];
+                  if ((Players.field731[var5] & 1) == 0) {
+                     if (var3 > 0) {
                         --var3;
-                        Players.__cq_q[var5] = (byte)(Players.__cq_q[var5] | 2);
+                        Players.field731[var5] = (byte)(Players.field731[var5] | 2);
                      } else {
                         var6 = var0.readBits(1);
-                        if(var6 == 0) {
+                        if (var6 == 0) {
                            var3 = GrandExchangeOffer.method105(var0);
-                           Players.__cq_q[var5] = (byte)(Players.__cq_q[var5] | 2);
-                        } else if(class236.updateExternalPlayer(var0, var5)) {
-                           Players.__cq_q[var5] = (byte)(Players.__cq_q[var5] | 2);
+                           Players.field731[var5] = (byte)(Players.field731[var5] | 2);
+                        } else if (class236.updateExternalPlayer(var0, var5)) {
+                           Players.field731[var5] = (byte)(Players.field731[var5] | 2);
                         }
                      }
                   }
                }
 
                var0.exportIndex();
-               if(var3 != 0) {
+               if (var3 != 0) {
                   throw new RuntimeException();
                } else {
                   Players.Players_count = 0;
-                  Players.__cq_l = 0;
+                  Players.field734 = 0;
 
-                  for(var4 = 1; var4 < 2048; ++var4) {
-                     Players.__cq_q[var4] = (byte)(Players.__cq_q[var4] >> 1);
+                  for (var4 = 1; var4 < 2048; ++var4) {
+                     Players.field731[var4] = (byte)(Players.field731[var4] >> 1);
                      Player var7 = Client.players[var4];
-                     if(var7 != null) {
+                     if (var7 != null) {
                         Players.Players_indices[++Players.Players_count - 1] = var4;
                      } else {
-                        Players.__cq_e[++Players.__cq_l - 1] = var4;
+                        Players.field735[++Players.field734 - 1] = var4;
                      }
                   }
 
                   class21.method293(var0);
-                  if(var0.index - var2 != var1) {
+                  if (var0.index - var2 != var1) {
                      throw new RuntimeException(var0.index - var2 + " " + var1);
                   }
                }

@@ -39,7 +39,7 @@ final class class2 implements class0 {
       garbageValue = "704451908"
    )
    public Object vmethod46(Buffer var1) {
-      return Long.valueOf(var1.readLong());
+      return var1.readLong();
    }
 
    @ObfuscatedName("g")
@@ -48,7 +48,7 @@ final class class2 implements class0 {
       garbageValue = "1518625016"
    )
    void method21(Long var1, Buffer var2) {
-      var2.writeLong(var1.longValue());
+      var2.writeLong(var1);
    }
 
    @ObfuscatedName("q")
@@ -57,18 +57,17 @@ final class class2 implements class0 {
       garbageValue = "-1535318699"
    )
    static void method27(AbstractIndexCache var0, AbstractIndexCache var1, boolean var2, int var3) {
-      if(Login.__cu_f) {
-         if(var3 == 4) {
+      if (Login.field465) {
+         if (var3 == 4) {
             Login.loginIndex = 4;
          }
-
       } else {
          Login.loginIndex = var3;
          Rasterizer2D.Rasterizer2D_clear();
          byte[] var4 = var0.takeRecordByNames("title.jpg", "");
          Login.leftTitleSprite = class27.convertJpgToSprite(var4);
          Fonts.rightTitleSprite = Login.leftTitleSprite.copy();
-         if((Client.worldProperties & 0x20000000) != 0) {
+         if ((Client.worldProperties & 536870912) != 0) {
             WorldMapSectionType.logoSprite = MenuAction.loadIndexedSpriteByName(var1, "logo_deadman_mode", "");
          } else {
             WorldMapSectionType.logoSprite = MenuAction.loadIndexedSpriteByName(var1, "logo", "");
@@ -76,20 +75,20 @@ final class class2 implements class0 {
 
          Login.titleboxSprite = MenuAction.loadIndexedSpriteByName(var1, "titlebox", "");
          IndexCacheLoader.titlebuttonSprite = MenuAction.loadIndexedSpriteByName(var1, "titlebutton", "");
-         int var6 = var1.getArchiveId("runes");
-         int var7 = var1.getRecordId(var6, "");
-         IndexedSprite[] var8;
-         if(!SpriteMask.loadSprite(var1, var6, var7)) {
-            var8 = null;
+         int var5 = var1.getArchiveId("runes");
+         int var6 = var1.getRecordId(var5, "");
+         IndexedSprite[] var7;
+         if (!SpriteMask.loadSprite(var1, var5, var6)) {
+            var7 = null;
          } else {
-            var8 = WorldMapLabel.createIndexedSpriteArray();
+            var7 = WorldMapLabel.createIndexedSpriteArray();
          }
 
-         WorldMapEvent.runesSprite = var8;
-         var7 = var1.getArchiveId("title_mute");
-         int var10 = var1.getRecordId(var7, "");
+         WorldMapEvent.runesSprite = var7;
+         var6 = var1.getArchiveId("title_mute");
+         int var8 = var1.getRecordId(var6, "");
          IndexedSprite[] var9;
-         if(!SpriteMask.loadSprite(var1, var7, var10)) {
+         if (!SpriteMask.loadSprite(var1, var6, var8)) {
             var9 = null;
          } else {
             var9 = WorldMapLabel.createIndexedSpriteArray();
@@ -103,23 +102,23 @@ final class class2 implements class0 {
          class168.optionButtonSpriteSubWidth = Login.options_buttons_0Sprite.subWidth;
          GroundItemPile.optionButtonSpriteSubHeight = Login.options_buttons_0Sprite.subHeight;
          class16.loginScreenRunesAnimation = new LoginScreenAnimation(WorldMapEvent.runesSprite);
-         if(var2) {
+         if (var2) {
             Login.Login_username = "";
             Login.Login_password = "";
          }
 
          class13.otpInt = 0;
          Login.otp = "";
-         Login.__cu_ba = true;
+         Login.field470 = true;
          Login.worldSelectOpen = false;
-         if(!ReflectionCheck.clientPreferences.titleMusicDisabled) {
+         if (!ReflectionCheck.clientPreferences.titleMusicDisabled) {
             Canvas.method858(2, UserComparator3.indexCache6, "scape main", "", 255, false);
          } else {
             AbstractSocket.method3488(2);
          }
 
          UserComparator9.method3343(false);
-         Login.__cu_f = true;
+         Login.field465 = true;
          Login.xPadding = (SoundCache.canvasWidth - 765) / 2;
          Login.loginBoxX = Login.xPadding + 202;
          Varps.loginBoxCenter = Login.loginBoxX + 180;
@@ -127,6 +126,7 @@ final class class2 implements class0 {
          Fonts.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
          WorldMapSectionType.logoSprite.drawAt(Login.xPadding + 382 - WorldMapSectionType.logoSprite.subWidth / 2, 18);
       }
+
    }
 
    @ObfuscatedName("w")
@@ -138,7 +138,7 @@ final class class2 implements class0 {
       int var3 = var0.getArchiveId(var1);
       int var4 = var0.getRecordId(var3, var2);
       Sprite[] var5;
-      if(!SpriteMask.loadSprite(var0, var3, var4)) {
+      if (!SpriteMask.loadSprite(var0, var3, var4)) {
          var5 = null;
       } else {
          var5 = UserComparator9.createSpriteArray();

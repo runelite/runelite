@@ -9,7 +9,7 @@ public class class3 implements Enumerated {
    @ObfuscatedGetter(
       intValue = 1608439891
    )
-   static int __w_qs;
+   static int field1146;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lw;"
@@ -34,7 +34,7 @@ public class class3 implements Enumerated {
    @ObfuscatedGetter(
       intValue = -393250053
    )
-   public final int id;
+   public final int field1147;
    @ObfuscatedName("u")
    public final Class field18;
    @ObfuscatedName("g")
@@ -43,18 +43,12 @@ public class class3 implements Enumerated {
    )
    public final class0 field19;
 
-   static {
-      field20 = new class3(2, 0, Integer.class, new class1());
-      field14 = new class3(0, 1, Long.class, new class2());
-      field15 = new class3(1, 2, String.class, new class4());
-   }
-
    @ObfuscatedSignature(
       signature = "(IILjava/lang/Class;Lm;)V"
    )
    class3(int var1, int var2, Class var3, class0 var4) {
       this.field13 = var1;
-      this.id = var2;
+      this.field1147 = var2;
       this.field18 = var3;
       this.field19 = var4;
    }
@@ -66,7 +60,7 @@ public class class3 implements Enumerated {
    )
    @Export("rsOrdinal")
    public int rsOrdinal() {
-      return this.id;
+      return this.field1147;
    }
 
    @ObfuscatedName("q")
@@ -102,18 +96,18 @@ public class class3 implements Enumerated {
       garbageValue = "729662922"
    )
    public static void method41() {
-      while(true) {
-         NodeDeque var1 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-         IndexStoreAction var0;
+      while (true) {
+         NodeDeque var0 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
+         IndexStoreAction var1;
          synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-            var0 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_responseQueue.removeLast();
+            var1 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_responseQueue.removeLast();
          }
 
-         if(var0 == null) {
+         if (var1 == null) {
             return;
          }
 
-         var0.indexCache.load(var0.indexStore, (int)var0.key, var0.data, false);
+         var1.indexCache.load(var1.indexStore, (int)var1.key, var1.data, false);
       }
    }
 
@@ -123,35 +117,35 @@ public class class3 implements Enumerated {
       garbageValue = "653716649"
    )
    static void method42(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
-      if(var0 < var1) {
+      if (var0 < var1) {
          int var6 = (var0 + var1) / 2;
          int var7 = var0;
          World var8 = ItemContainer.worlds[var6];
          ItemContainer.worlds[var6] = ItemContainer.worlds[var1];
          ItemContainer.worlds[var1] = var8;
 
-         for(int var9 = var0; var9 < var1; ++var9) {
-            World var11 = ItemContainer.worlds[var9];
-            int var12 = WorldMapLabel.compareWorlds(var11, var8, var2, var3);
-            int var10;
-            if(var12 != 0) {
-               if(var3) {
-                  var10 = -var12;
+         for (int var9 = var0; var9 < var1; ++var9) {
+            World var10 = ItemContainer.worlds[var9];
+            int var11 = WorldMapLabel.compareWorlds(var10, var8, var2, var3);
+            int var12;
+            if (var11 != 0) {
+               if (var3) {
+                  var12 = -var11;
                } else {
-                  var10 = var12;
+                  var12 = var11;
                }
-            } else if(var4 == -1) {
-               var10 = 0;
+            } else if (var4 == -1) {
+               var12 = 0;
             } else {
-               int var13 = WorldMapLabel.compareWorlds(var11, var8, var4, var5);
-               if(var5) {
-                  var10 = -var13;
+               int var13 = WorldMapLabel.compareWorlds(var10, var8, var4, var5);
+               if (var5) {
+                  var12 = -var13;
                } else {
-                  var10 = var13;
+                  var12 = var13;
                }
             }
 
-            if(var10 <= 0) {
+            if (var12 <= 0) {
                World var14 = ItemContainer.worlds[var9];
                ItemContainer.worlds[var9] = ItemContainer.worlds[var7];
                ItemContainer.worlds[var7++] = var14;
@@ -173,158 +167,164 @@ public class class3 implements Enumerated {
    )
    @Export("updateNpcs")
    static final void updateNpcs(boolean var0, PacketBuffer var1) {
-      Client.__client_ky = 0;
-      Client.__client_fw = 0;
+      Client.field211 = 0;
+      Client.field173 = 0;
       PacketBuffer var2 = Client.packetWriter.packetBuffer;
       var2.importIndex();
       int var3 = var2.readBits(8);
       int var4;
-      if(var3 < Client.npcCount) {
-         for(var4 = var3; var4 < Client.npcCount; ++var4) {
-            Client.__client_kd[++Client.__client_ky - 1] = Client.npcIndices[var4];
+      if (var3 < Client.npcCount) {
+         for (var4 = var3; var4 < Client.npcCount; ++var4) {
+            Client.field212[++Client.field211 - 1] = Client.npcIndices[var4];
          }
       }
 
-      if(var3 > Client.npcCount) {
+      if (var3 > Client.npcCount) {
          throw new RuntimeException("");
       } else {
          Client.npcCount = 0;
 
          int var5;
+         int var6;
          int var7;
          int var8;
-         int var9;
-         for(var4 = 0; var4 < var3; ++var4) {
+         for (var4 = 0; var4 < var3; ++var4) {
             var5 = Client.npcIndices[var4];
-            Npc var6 = Client.npcs[var5];
-            var7 = var2.readBits(1);
-            if(var7 == 0) {
+            NPC var9 = Client.npcs[var5];
+            var6 = var2.readBits(1);
+            if (var6 == 0) {
                Client.npcIndices[++Client.npcCount - 1] = var5;
-               var6.npcCycle = Client.cycle;
+               var9.npcCycle = Client.cycle;
             } else {
-               var8 = var2.readBits(2);
-               if(var8 == 0) {
+               var7 = var2.readBits(2);
+               if (var7 == 0) {
                   Client.npcIndices[++Client.npcCount - 1] = var5;
-                  var6.npcCycle = Client.cycle;
-                  Client.__client_fg[++Client.__client_fw - 1] = var5;
+                  var9.npcCycle = Client.cycle;
+                  Client.field174[++Client.field173 - 1] = var5;
                } else {
                   int var10;
-                  if(var8 == 1) {
+                  if (var7 == 1) {
                      Client.npcIndices[++Client.npcCount - 1] = var5;
-                     var6.npcCycle = Client.cycle;
-                     var9 = var2.readBits(3);
-                     var6.__m_162(var9, (byte)1);
+                     var9.npcCycle = Client.cycle;
+                     var8 = var2.readBits(3);
+                     var9.method227(var8, (byte)1);
                      var10 = var2.readBits(1);
-                     if(var10 == 1) {
-                        Client.__client_fg[++Client.__client_fw - 1] = var5;
+                     if (var10 == 1) {
+                        Client.field174[++Client.field173 - 1] = var5;
                      }
-                  } else if(var8 == 2) {
+                  } else if (var7 == 2) {
                      Client.npcIndices[++Client.npcCount - 1] = var5;
-                     var6.npcCycle = Client.cycle;
-                     var9 = var2.readBits(3);
-                     var6.__m_162(var9, (byte)2);
+                     var9.npcCycle = Client.cycle;
+                     var8 = var2.readBits(3);
+                     var9.method227(var8, (byte)2);
                      var10 = var2.readBits(3);
-                     var6.__m_162(var10, (byte)2);
+                     var9.method227(var10, (byte)2);
                      int var11 = var2.readBits(1);
-                     if(var11 == 1) {
-                        Client.__client_fg[++Client.__client_fw - 1] = var5;
+                     if (var11 == 1) {
+                        Client.field174[++Client.field173 - 1] = var5;
                      }
-                  } else if(var8 == 3) {
-                     Client.__client_kd[++Client.__client_ky - 1] = var5;
+                  } else if (var7 == 3) {
+                     Client.field212[++Client.field211 - 1] = var5;
                   }
                }
             }
          }
 
-         int var12;
-         while(var1.bitsRemaining(Client.packetWriter.serverPacket0Length) >= 27) {
-            var12 = var1.readBits(15);
-            if(var12 == 32767) {
+         int var13;
+         while (var1.bitsRemaining(Client.packetWriter.serverPacket0Length) >= 27) {
+            var13 = var1.readBits(15);
+            if (var13 == 32767) {
                break;
             }
 
-            boolean var15 = false;
-            if(Client.npcs[var12] == null) {
-               Client.npcs[var12] = new Npc();
-               var15 = true;
+            boolean var14 = false;
+            if (Client.npcs[var13] == null) {
+               Client.npcs[var13] = new NPC();
+               var14 = true;
             }
 
-            Npc var13 = Client.npcs[var12];
-            Client.npcIndices[++Client.npcCount - 1] = var12;
-            var13.npcCycle = Client.cycle;
-            if(var0) {
+            NPC var15 = Client.npcs[var13];
+            Client.npcIndices[++Client.npcCount - 1] = var13;
+            var15.npcCycle = Client.cycle;
+            if (var0) {
                var5 = var1.readBits(8);
-               if(var5 > 127) {
+               if (var5 > 127) {
                   var5 -= 256;
                }
             } else {
                var5 = var1.readBits(5);
-               if(var5 > 15) {
+               if (var5 > 15) {
                   var5 -= 32;
                }
             }
 
-            int var14 = var1.readBits(1);
-            var7 = Client.__client_kn[var1.readBits(3)];
-            if(var15) {
-               var13.orientation = var13.__ac = var7;
+            int var12 = var1.readBits(1);
+            var6 = Client.field213[var1.readBits(3)];
+            if (var14) {
+               var15.orientation = var15.field9 = var6;
             }
 
-            var8 = var1.readBits(1);
-            if(var8 == 1) {
-               Client.__client_fg[++Client.__client_fw - 1] = var12;
+            var7 = var1.readBits(1);
+            if (var7 == 1) {
+               Client.field174[++Client.field173 - 1] = var13;
             }
 
-            if(var0) {
-               var9 = var1.readBits(8);
-               if(var9 > 127) {
-                  var9 -= 256;
+            if (var0) {
+               var8 = var1.readBits(8);
+               if (var8 > 127) {
+                  var8 -= 256;
                }
             } else {
-               var9 = var1.readBits(5);
-               if(var9 > 15) {
-                  var9 -= 32;
+               var8 = var1.readBits(5);
+               if (var8 > 15) {
+                  var8 -= 32;
                }
             }
 
-            var13.definition = ObjectDefinition.getNpcDefinition(var1.readBits(14));
-            var13.size = var13.definition.size;
-            var13.__cj = var13.definition.__av;
-            if(var13.__cj == 0) {
-               var13.__ac = 0;
+            var15.definition = ObjectDefinition.getNpcDefinition(var1.readBits(14));
+            var15.size = var15.definition.size;
+            var15.field23 = var15.definition.field639;
+            if (var15.field23 == 0) {
+               var15.field9 = 0;
             }
 
-            var13.walkSequence = var13.definition.walkSequence;
-            var13.walkTurnSequence = var13.definition.walkTurnSequence;
-            var13.walkTurnLeftSequence = var13.definition.walkTurnLeftSequence;
-            var13.walkTurnRightSequence = var13.definition.walkTurnRightSequence;
-            var13.idleSequence = var13.definition.idleSequence;
-            var13.turnLeftSequence = var13.definition.turnLeftSequence;
-            var13.turnRightSequence = var13.definition.turnRightSequence;
-            var13.__f_163(Canvas.localPlayer.pathX[0] + var5, Canvas.localPlayer.pathY[0] + var9, var14 == 1);
+            var15.walkSequence = var15.definition.walkSequence;
+            var15.walkTurnSequence = var15.definition.walkTurnSequence;
+            var15.walkTurnLeftSequence = var15.definition.walkTurnLeftSequence;
+            var15.walkTurnRightSequence = var15.definition.walkTurnRightSequence;
+            var15.idleSequence = var15.definition.idleSequence;
+            var15.turnLeftSequence = var15.definition.turnLeftSequence;
+            var15.turnRightSequence = var15.definition.turnRightSequence;
+            var15.method228(Canvas.localPlayer.pathX[0] + var5, Canvas.localPlayer.pathY[0] + var8, var12 == 1);
          }
 
          var1.exportIndex();
          WorldComparator.method67(var1);
 
-         for(var12 = 0; var12 < Client.__client_ky; ++var12) {
-            var3 = Client.__client_kd[var12];
-            if(Client.npcs[var3].npcCycle != Client.cycle) {
+         for (var13 = 0; var13 < Client.field211; ++var13) {
+            var3 = Client.field212[var13];
+            if (Client.npcs[var3].npcCycle != Client.cycle) {
                Client.npcs[var3].definition = null;
                Client.npcs[var3] = null;
             }
          }
 
-         if(var1.index != Client.packetWriter.serverPacket0Length) {
+         if (var1.index != Client.packetWriter.serverPacket0Length) {
             throw new RuntimeException(var1.index + "," + Client.packetWriter.serverPacket0Length);
          } else {
-            for(var12 = 0; var12 < Client.npcCount; ++var12) {
-               if(Client.npcs[Client.npcIndices[var12]] == null) {
-                  throw new RuntimeException(var12 + "," + Client.npcCount);
+            for (var13 = 0; var13 < Client.npcCount; ++var13) {
+               if (Client.npcs[Client.npcIndices[var13]] == null) {
+                  throw new RuntimeException(var13 + "," + Client.npcCount);
                }
             }
 
          }
       }
+   }
+
+   static {
+      field20 = new class3(2, 0, Integer.class, new class1());
+      field14 = new class3(0, 1, Long.class, new class2());
+      field15 = new class3(1, 2, String.class, new class4());
    }
 }

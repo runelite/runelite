@@ -27,6 +27,7 @@ package net.runelite.client.plugins.kourendlibrary;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.AsyncBufferedImage;
@@ -99,22 +100,22 @@ enum Book
 		return BY_NAME.get(name);
 	}
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int item;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String name;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String shortName;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private AsyncBufferedImage icon;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final boolean isDarkManuscript;
 
-	Book(int id, String shortName, String name)
+	Book(final int id, final String shortName, final String name)
 	{
 		this.item = id;
 		this.isDarkManuscript = false;
@@ -122,7 +123,7 @@ enum Book
 		this.name = name;
 	}
 
-	Book(int id)
+	Book(final int id)
 	{
 		this.item = id;
 		this.isDarkManuscript = true;

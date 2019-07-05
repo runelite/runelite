@@ -20,7 +20,7 @@ public class class258 {
       byte[] var2 = class328.spritePixels[0];
       var0.pixels = new int[var1];
 
-      for(int var3 = 0; var3 < var1; ++var3) {
+      for (int var3 = 0; var3 < var1; ++var3) {
          var0.pixels[var3] = class328.indexedSpritePalette[var2[var3] & 255];
       }
 
@@ -29,7 +29,7 @@ public class class258 {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.spritePixels = null;
+      class328.spritePixels = (byte[][])null;
       return var0;
    }
 
@@ -41,21 +41,21 @@ public class class258 {
    static final void method4898(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       class68 var9 = null;
 
-      for(class68 var10 = (class68)Client.__client_kh.last(); var10 != null; var10 = (class68)Client.__client_kh.previous()) {
-         if(var0 == var10.field911 && var10.field913 == var1 && var2 == var10.field901 && var3 == var10.field906) {
+      for (class68 var10 = (class68)Client.field214.last(); var10 != null; var10 = (class68)Client.field214.previous()) {
+         if (var0 == var10.field911 && var10.field913 == var1 && var2 == var10.field901 && var3 == var10.field906) {
             var9 = var10;
             break;
          }
       }
 
-      if(var9 == null) {
+      if (var9 == null) {
          var9 = new class68();
          var9.field911 = var0;
          var9.field906 = var3;
          var9.field913 = var1;
          var9.field901 = var2;
          class13.method165(var9);
-         Client.__client_kh.addFirst(var9);
+         Client.field214.addFirst(var9);
       }
 
       var9.field899 = var4;

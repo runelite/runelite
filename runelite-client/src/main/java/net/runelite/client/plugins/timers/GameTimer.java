@@ -30,6 +30,7 @@ package net.runelite.client.plugins.timers;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.GraphicID;
 import net.runelite.api.ItemID;
@@ -75,19 +76,19 @@ enum GameTimer
 	ANTIPOISON(ItemID.ANTIPOISON4, GameTimerImageType.ITEM, "Antipoison"),
 	ANTIVENOM(ItemID.ANTIVENOM4, GameTimerImageType.ITEM, "Anti-venom");
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Duration duration;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Integer graphicId;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String description;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final boolean removedOnDeath;
 
 	private final int imageId;
 	private final GameTimerImageType imageType;
 
-	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit, boolean removedOnDeath)
+	GameTimer(final int imageId, final GameTimerImageType idType, final String description, final Integer graphicId, final long time, final ChronoUnit unit, final boolean removedOnDeath)
 	{
 		this.description = description;
 		this.graphicId = graphicId;
@@ -97,22 +98,22 @@ enum GameTimer
 		this.removedOnDeath = removedOnDeath;
 	}
 
-	GameTimer(int imageId, GameTimerImageType idType, String description, long time, ChronoUnit unit, boolean removeOnDeath)
+	GameTimer(final int imageId, final GameTimerImageType idType, final String description, final long time, final ChronoUnit unit, final boolean removeOnDeath)
 	{
 		this(imageId, idType, description, null, time, unit, removeOnDeath);
 	}
 
-	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit)
+	GameTimer(final int imageId, final GameTimerImageType idType, final String description, final Integer graphicId, final long time, final ChronoUnit unit)
 	{
 		this(imageId, idType, description, graphicId, time, unit, false);
 	}
 
-	GameTimer(int imageId, GameTimerImageType idType, String description, long time, ChronoUnit unit)
+	GameTimer(final int imageId, final GameTimerImageType idType, final String description, final long time, final ChronoUnit unit)
 	{
 		this(imageId, idType, description, null, time, unit, false);
 	}
 
-	GameTimer(int imageId, GameTimerImageType idType, String description)
+	GameTimer(final int imageId, final GameTimerImageType idType, final String description)
 	{
 		this(imageId, idType, description, null, 1, ChronoUnit.MILLIS, false);
 	}

@@ -38,6 +38,8 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -50,6 +52,7 @@ import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
@@ -87,6 +90,7 @@ import net.runelite.http.api.ws.messages.party.UserSync;
 	description = "Shows useful information about current party"
 )
 @Slf4j
+@Singleton
 public class PartyPlugin extends Plugin implements KeyListener
 {
 	@Inject
@@ -126,15 +130,23 @@ public class PartyPlugin extends Plugin implements KeyListener
 	@Named("developerMode")
 	boolean developerMode;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<UUID, PartyData> partyDataMap = Collections.synchronizedMap(new HashMap<>());
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<PartyTilePingData> pendingTilePings = Collections.synchronizedList(new ArrayList<>());
 
 	private int lastHp, lastPray;
 	private boolean hotkeyDown, doSync;
 	private boolean sendAlert;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean stats;
+	private boolean pings;
+	private boolean sounds;
+	private boolean messages;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean recolorNames;
 
 	@Override
 	public void configure(Binder binder)
@@ -145,6 +157,8 @@ public class PartyPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(partyStatsOverlay);
 		overlayManager.add(partyPingOverlay);
 		wsClient.registerMessage(SkillUpdate.class);
@@ -186,7 +200,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 		{
 			party.changeParty(null);
 
-			if (!config.messages())
+			if (!this.messages)
 			{
 				return;
 			}
@@ -206,7 +220,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!hotkeyDown || client.isMenuOpen() || party.getMembers().isEmpty() || !config.pings())
+		if (!hotkeyDown || client.isMenuOpen() || party.getMembers().isEmpty() || !this.pings)
 		{
 			return;
 		}
@@ -246,14 +260,14 @@ public class PartyPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onTilePing(TilePing event)
 	{
-		if (config.pings())
+		if (this.pings)
 		{
 			final PartyData partyData = getPartyData(event.getMemberId());
 			final Color color = partyData != null ? partyData.getColor() : Color.RED;
 			pendingTilePings.add(new PartyTilePingData(event.getPoint(), color));
 		}
 
-		if (config.sounds())
+		if (this.sounds)
 		{
 			WorldPoint point = event.getPoint();
 
@@ -375,7 +389,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 	{
 		final PartyData partyData = getPartyData(event.getMemberId());
 
-		if (partyData == null || !config.messages())
+		if (partyData == null || !this.messages)
 		{
 			return;
 		}
@@ -427,7 +441,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 
 		if (removed != null)
 		{
-			if (config.messages())
+			if (this.messages)
 			{
 				final String joinMessage = new ChatMessageBuilder()
 					.append(ChatColorType.HIGHLIGHT)
@@ -545,5 +559,25 @@ public class PartyPlugin extends Plugin implements KeyListener
 			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 			.runeLiteFormattedMessage(helpMessage)
 			.build());
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("party"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.stats = config.stats();
+		this.pings = config.pings();
+		this.sounds = config.sounds();
+		this.messages = config.messages();
+		this.recolorNames = config.recolorNames();
 	}
 }

@@ -1,15 +1,14 @@
 package net.runelite.client.plugins.lootassist;
 
-import com.google.inject.Provides;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -23,7 +22,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
-
+@Singleton
 public class LootAssistPlugin extends Plugin
 {
 	@Inject
@@ -33,12 +32,6 @@ public class LootAssistPlugin extends Plugin
 	LootAssistOverlay lootAssistOverlay;
 
 	static ConcurrentHashMap<WorldPoint, LootPile> lootPiles = new ConcurrentHashMap<>();
-
-	@Provides
-	LootAssitConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(LootAssitConfig.class);
-	}
 
 	@Override
 	protected void startUp() throws Exception

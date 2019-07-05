@@ -27,6 +27,7 @@ package net.runelite.client.plugins.shayzieninfirmary;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -47,11 +48,11 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 public class ShayzienInfirmaryPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
-	private List<NPC> unhealedSoldiers = new ArrayList<NPC>();
+	private List<NPC> unhealedSoldiers = new ArrayList<>();
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -87,7 +88,7 @@ public class ShayzienInfirmaryPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!isAtInfirmary())
+		if (isNotAtInfirmary())
 		{
 			return;
 		}
@@ -113,8 +114,8 @@ public class ShayzienInfirmaryPlugin extends Plugin
 		return (isSoldierId(npcId) && npcId % 2 == 0);
 	}
 
-	boolean isAtInfirmary()
+	boolean isNotAtInfirmary()
 	{
-		return client.getLocalPlayer().getWorldLocation().getRegionID() == 6200;
+		return client.getLocalPlayer().getWorldLocation().getRegionID() != 6200;
 	}
 }

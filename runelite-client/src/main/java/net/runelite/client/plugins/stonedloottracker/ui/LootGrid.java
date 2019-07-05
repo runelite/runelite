@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -37,6 +38,7 @@ import net.runelite.client.plugins.stonedloottracker.data.LootTrackerItemEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.StackFormatter;
 
+@Singleton
 class LootGrid extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
@@ -44,7 +46,7 @@ class LootGrid extends JPanel
 	private final LootTrackerItemEntry[] itemsToDisplay;
 	private ItemManager itemManager;
 
-	LootGrid(LootTrackerItemEntry[] itemsToDisplay, ItemManager itemManager)
+	LootGrid(final LootTrackerItemEntry[] itemsToDisplay, final ItemManager itemManager)
 	{
 		this.itemsToDisplay = itemsToDisplay;
 		this.itemManager = itemManager;

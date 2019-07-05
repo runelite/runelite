@@ -12,18 +12,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("GrandExchangeEvents")
 public class GrandExchangeEvents {
    @ObfuscatedName("f")
-   public static Comparator __g_f;
+   public static Comparator field371;
    @ObfuscatedName("q")
-   public static Comparator __g_q;
+   public static Comparator field372;
    @ObfuscatedName("w")
-   public static Comparator __g_w;
+   public static Comparator field373;
    @ObfuscatedName("o")
-   public static Comparator __g_o;
+   public static Comparator field374;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1605454211
    )
-   static int __g_z;
+   static int field375;
    @ObfuscatedName("hs")
    @ObfuscatedGetter(
       intValue = 1326137897
@@ -34,32 +34,24 @@ public class GrandExchangeEvents {
    @Export("events")
    public final List events;
 
-   static {
-      __g_f = new class12();
-      new WorldComparator();
-      __g_q = new UnitPriceComparator();
-      __g_w = new class11();
-      __g_o = new TotalQuantityComparator();
-   }
-
    @ObfuscatedSignature(
       signature = "(Lgr;Z)V",
       garbageValue = "1"
    )
    public GrandExchangeEvents(Buffer var1, boolean var2) {
-      int var3 = var1.__ag_302();
+      int var3 = var1.method43();
       boolean var4 = var1.readUnsignedByte() == 1;
       byte var5;
-      if(var4) {
+      if (var4) {
          var5 = 1;
       } else {
          var5 = 0;
       }
 
-      int var6 = var1.__ag_302();
+      int var6 = var1.method43();
       this.events = new ArrayList(var6);
 
-      for(int var7 = 0; var7 < var6; ++var7) {
+      for (int var7 = 0; var7 < var6; ++var7) {
          this.events.add(new GrandExchangeEvent(var1, var5, var3));
       }
 
@@ -72,7 +64,7 @@ public class GrandExchangeEvents {
    )
    @Export("sort")
    public void sort(Comparator var1, boolean var2) {
-      if(var2) {
+      if (var2) {
          Collections.sort(this.events, var1);
       } else {
          Collections.sort(this.events, Collections.reverseOrder(var1));
@@ -87,10 +79,10 @@ public class GrandExchangeEvents {
    )
    @Export("addChatMessage")
    static void addChatMessage(int var0, String var1, String var2, String var3) {
-      ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(Integer.valueOf(var0));
-      if(var4 == null) {
+      ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(var0);
+      if (var4 == null) {
          var4 = new ChatChannel();
-         Messages.Messages_channels.put(Integer.valueOf(var0), var4);
+         Messages.Messages_channels.put(var0, var4);
       }
 
       Message var5 = var4.addMessage(var0, var1, var2, var3);
@@ -106,7 +98,7 @@ public class GrandExchangeEvents {
    )
    public static void method69() {
       HitSplatDefinition.HitSplatDefinition_cached.clear();
-      HitSplatDefinition.__jm_o.clear();
+      HitSplatDefinition.field385.clear();
       HitSplatDefinition.HitSplatDefinition_cachedFonts.clear();
    }
 
@@ -117,50 +109,50 @@ public class GrandExchangeEvents {
    )
    static int method75(int var0, Script var1, boolean var2) {
       Widget var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-      if(var0 == 2600) {
+      if (var0 == 2600) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollX;
          return 1;
-      } else if(var0 == 2601) {
+      } else if (var0 == 2601) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollY;
          return 1;
-      } else if(var0 == 2602) {
+      } else if (var0 == 2602) {
          Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.text;
          return 1;
-      } else if(var0 == 2603) {
+      } else if (var0 == 2603) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollWidth;
          return 1;
-      } else if(var0 == 2604) {
+      } else if (var0 == 2604) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollHeight;
          return 1;
-      } else if(var0 == 2605) {
+      } else if (var0 == 2605) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelZoom;
          return 1;
-      } else if(var0 == 2606) {
+      } else if (var0 == 2606) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleX;
          return 1;
-      } else if(var0 == 2607) {
+      } else if (var0 == 2607) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleZ;
          return 1;
-      } else if(var0 == 2608) {
+      } else if (var0 == 2608) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleY;
          return 1;
-      } else if(var0 == 2609) {
+      } else if (var0 == 2609) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.transparency;
          return 1;
-      } else if(var0 == 2610) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.__af;
+      } else if (var0 == 2610) {
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.field960;
          return 1;
-      } else if(var0 == 2611) {
+      } else if (var0 == 2611) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.color;
          return 1;
-      } else if(var0 == 2612) {
+      } else if (var0 == 2612) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.color2;
          return 1;
-      } else if(var0 == 2613) {
+      } else if (var0 == 2613) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
          return 1;
-      } else if(var0 == 2614) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.__bv?1:0;
+      } else if (var0 == 2614) {
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.field964 ? 1 : 0;
          return 1;
       } else {
          return 2;
@@ -173,8 +165,17 @@ public class GrandExchangeEvents {
       garbageValue = "-635606409"
    )
    static final void method74(int var0, int var1) {
-      if(GroundItemPile.loadWidgetGroup(var0)) {
+      if (GroundItemPile.loadWidgetGroup(var0)) {
          class30.method570(Widget.widgets[var0], var1);
       }
+
+   }
+
+   static {
+      field371 = new class12();
+      new WorldComparator();
+      field372 = new UnitPriceComparator();
+      field373 = new class11();
+      field374 = new TotalQuantityComparator();
    }
 }

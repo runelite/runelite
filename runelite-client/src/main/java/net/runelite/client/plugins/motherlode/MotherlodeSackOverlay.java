@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Varbits;
@@ -45,22 +46,21 @@ import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
 
+@Singleton
 class MotherlodeSackOverlay extends Overlay
 {
 	private static final Color DANGER = new Color(150, 0, 0, 150);
 	private final Client client;
-	private final MotherlodeConfig config;
 	private final MotherlodePlugin plugin;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MotherlodeSackOverlay(Client client, MotherlodeConfig config, MotherlodePlugin plugin)
+	MotherlodeSackOverlay(final Client client, final MotherlodePlugin plugin)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Sack overlay"));
 	}
@@ -85,7 +85,7 @@ class MotherlodeSackOverlay extends Overlay
 		{
 			sack.setHidden(true);
 
-			if (config.showSack())
+			if (plugin.isShowSack())
 			{
 				if (plugin.getCurSackSize() >= plugin.getMaxSackSize())
 				{
@@ -95,7 +95,7 @@ class MotherlodeSackOverlay extends Overlay
 				tableComponent.addRow("Pay-dirt in sack:", String.valueOf(client.getVar(Varbits.SACK_NUMBER)));
 			}
 
-			if (config.showDepositsLeft())
+			if (plugin.isShowDepositsLeft())
 			{
 				final Integer depositsLeft = plugin.getDepositsLeft();
 				Color color = Color.WHITE;

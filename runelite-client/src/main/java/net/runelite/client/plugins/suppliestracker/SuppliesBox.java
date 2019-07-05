@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -78,6 +79,7 @@ import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.item.ItemPrice;
 
+@Singleton
 class SuppliesBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
@@ -91,12 +93,12 @@ class SuppliesBox extends JPanel
 	private final SuppliesTrackerPlugin plugin;
 	private final SuppliesTrackerPanel panel;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<SuppliesTrackerItem> trackedItems = new ArrayList<>();
 
 	private long totalPrice;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final ItemType type;
 
 	SuppliesBox(final ItemManager itemManager, final String id,

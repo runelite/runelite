@@ -59,18 +59,18 @@ public class SoundCache {
       var4 |= var1 << 16;
       long var5 = (long)var4;
       RawSound var7 = (RawSound)this.rawSounds.get(var5);
-      if(var7 != null) {
+      if (var7 != null) {
          return var7;
-      } else if(var3 != null && var3[0] <= 0) {
+      } else if (var3 != null && var3[0] <= 0) {
          return null;
       } else {
          SoundEffect var8 = SoundEffect.readSoundEffect(this.soundEffectIndex, var1, var2);
-         if(var8 == null) {
+         if (var8 == null) {
             return null;
          } else {
             var7 = var8.toRawSound();
             this.rawSounds.put(var7, var5);
-            if(var3 != null) {
+            if (var3 != null) {
                var3[0] -= var7.samples.length;
             }
 
@@ -90,15 +90,15 @@ public class SoundCache {
       var4 |= var1 << 16;
       long var5 = (long)var4 ^ 4294967296L;
       RawSound var7 = (RawSound)this.rawSounds.get(var5);
-      if(var7 != null) {
+      if (var7 != null) {
          return var7;
-      } else if(var3 != null && var3[0] <= 0) {
+      } else if (var3 != null && var3[0] <= 0) {
          return null;
       } else {
          MusicSample var8 = (MusicSample)this.musicSamples.get(var5);
-         if(var8 == null) {
+         if (var8 == null) {
             var8 = MusicSample.readMusicSample(this.musicSampleIndex, var1, var2);
-            if(var8 == null) {
+            if (var8 == null) {
                return null;
             }
 
@@ -106,7 +106,7 @@ public class SoundCache {
          }
 
          var7 = var8.toRawSound(var3);
-         if(var7 == null) {
+         if (var7 == null) {
             return null;
          } else {
             var8.remove();
@@ -123,9 +123,9 @@ public class SoundCache {
    )
    @Export("getSoundEffect")
    public RawSound getSoundEffect(int var1, int[] var2) {
-      if(this.soundEffectIndex.__t_397() == 1) {
+      if (this.soundEffectIndex.method5() == 1) {
          return this.getSoundEffect0(0, var1, var2);
-      } else if(this.soundEffectIndex.__s_396(var1) == 1) {
+      } else if (this.soundEffectIndex.method4(var1) == 1) {
          return this.getSoundEffect0(var1, 0, var2);
       } else {
          throw new RuntimeException();
@@ -139,9 +139,9 @@ public class SoundCache {
    )
    @Export("getMusicSample")
    public RawSound getMusicSample(int var1, int[] var2) {
-      if(this.musicSampleIndex.__t_397() == 1) {
+      if (this.musicSampleIndex.method5() == 1) {
          return this.getMusicSample0(0, var1, var2);
-      } else if(this.musicSampleIndex.__s_396(var1) == 1) {
+      } else if (this.musicSampleIndex.method4(var1) == 1) {
          return this.getMusicSample0(var1, 0, var2);
       } else {
          throw new RuntimeException();
@@ -157,66 +157,68 @@ public class SoundCache {
    public static int encodeStringCp1252(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
       int var5 = var2 - var1;
 
-      for(int var6 = 0; var6 < var5; ++var6) {
+      for (int var6 = 0; var6 < var5; ++var6) {
          char var7 = var0.charAt(var6 + var1);
-         if(var7 > 0 && var7 < 128 || var7 >= 160 && var7 <= 255) {
-            var3[var6 + var4] = (byte)var7;
-         } else if(var7 == 8364) {
-            var3[var6 + var4] = -128;
-         } else if(var7 == 8218) {
-            var3[var6 + var4] = -126;
-         } else if(var7 == 402) {
-            var3[var6 + var4] = -125;
-         } else if(var7 == 8222) {
-            var3[var6 + var4] = -124;
-         } else if(var7 == 8230) {
-            var3[var6 + var4] = -123;
-         } else if(var7 == 8224) {
-            var3[var6 + var4] = -122;
-         } else if(var7 == 8225) {
-            var3[var6 + var4] = -121;
-         } else if(var7 == 710) {
-            var3[var6 + var4] = -120;
-         } else if(var7 == 8240) {
-            var3[var6 + var4] = -119;
-         } else if(var7 == 352) {
-            var3[var6 + var4] = -118;
-         } else if(var7 == 8249) {
-            var3[var6 + var4] = -117;
-         } else if(var7 == 338) {
-            var3[var6 + var4] = -116;
-         } else if(var7 == 381) {
-            var3[var6 + var4] = -114;
-         } else if(var7 == 8216) {
-            var3[var6 + var4] = -111;
-         } else if(var7 == 8217) {
-            var3[var6 + var4] = -110;
-         } else if(var7 == 8220) {
-            var3[var6 + var4] = -109;
-         } else if(var7 == 8221) {
-            var3[var6 + var4] = -108;
-         } else if(var7 == 8226) {
-            var3[var6 + var4] = -107;
-         } else if(var7 == 8211) {
-            var3[var6 + var4] = -106;
-         } else if(var7 == 8212) {
-            var3[var6 + var4] = -105;
-         } else if(var7 == 732) {
-            var3[var6 + var4] = -104;
-         } else if(var7 == 8482) {
-            var3[var6 + var4] = -103;
-         } else if(var7 == 353) {
-            var3[var6 + var4] = -102;
-         } else if(var7 == 8250) {
-            var3[var6 + var4] = -101;
-         } else if(var7 == 339) {
-            var3[var6 + var4] = -100;
-         } else if(var7 == 382) {
-            var3[var6 + var4] = -98;
-         } else if(var7 == 376) {
-            var3[var6 + var4] = -97;
+         if ((var7 <= 0 || var7 >= 128) && (var7 < 160 || var7 > 255)) {
+            if (var7 == 8364) {
+               var3[var6 + var4] = -128;
+            } else if (var7 == 8218) {
+               var3[var6 + var4] = -126;
+            } else if (var7 == 402) {
+               var3[var6 + var4] = -125;
+            } else if (var7 == 8222) {
+               var3[var6 + var4] = -124;
+            } else if (var7 == 8230) {
+               var3[var6 + var4] = -123;
+            } else if (var7 == 8224) {
+               var3[var6 + var4] = -122;
+            } else if (var7 == 8225) {
+               var3[var6 + var4] = -121;
+            } else if (var7 == 710) {
+               var3[var6 + var4] = -120;
+            } else if (var7 == 8240) {
+               var3[var6 + var4] = -119;
+            } else if (var7 == 352) {
+               var3[var6 + var4] = -118;
+            } else if (var7 == 8249) {
+               var3[var6 + var4] = -117;
+            } else if (var7 == 338) {
+               var3[var6 + var4] = -116;
+            } else if (var7 == 381) {
+               var3[var6 + var4] = -114;
+            } else if (var7 == 8216) {
+               var3[var6 + var4] = -111;
+            } else if (var7 == 8217) {
+               var3[var6 + var4] = -110;
+            } else if (var7 == 8220) {
+               var3[var6 + var4] = -109;
+            } else if (var7 == 8221) {
+               var3[var6 + var4] = -108;
+            } else if (var7 == 8226) {
+               var3[var6 + var4] = -107;
+            } else if (var7 == 8211) {
+               var3[var6 + var4] = -106;
+            } else if (var7 == 8212) {
+               var3[var6 + var4] = -105;
+            } else if (var7 == 732) {
+               var3[var6 + var4] = -104;
+            } else if (var7 == 8482) {
+               var3[var6 + var4] = -103;
+            } else if (var7 == 353) {
+               var3[var6 + var4] = -102;
+            } else if (var7 == 8250) {
+               var3[var6 + var4] = -101;
+            } else if (var7 == 339) {
+               var3[var6 + var4] = -100;
+            } else if (var7 == 382) {
+               var3[var6 + var4] = -98;
+            } else if (var7 == 376) {
+               var3[var6 + var4] = -97;
+            } else {
+               var3[var6 + var4] = 63;
+            }
          } else {
-            var3[var6 + var4] = 63;
+            var3[var6 + var4] = (byte)var7;
          }
       }
 

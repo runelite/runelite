@@ -23,7 +23,7 @@ public class PcmPlayer {
    @ObfuscatedGetter(
       intValue = 1125788887
    )
-   int __z;
+   int field680;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       longValue = -8124323644430480811L
@@ -46,7 +46,7 @@ public class PcmPlayer {
    @ObfuscatedGetter(
       intValue = 1907203055
    )
-   int __y;
+   int field681;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       longValue = -200656835998283411L
@@ -57,12 +57,12 @@ public class PcmPlayer {
    @ObfuscatedGetter(
       intValue = 48658021
    )
-   int __b;
+   int field682;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = 1624619697
    )
-   int __c;
+   int field683;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -1586398263
@@ -73,37 +73,37 @@ public class PcmPlayer {
    @ObfuscatedGetter(
       longValue = -8188447292076890879L
    )
-   long __p;
+   long field684;
    @ObfuscatedName("v")
-   boolean __v;
+   boolean field685;
    @ObfuscatedName("ac")
    @ObfuscatedGetter(
       intValue = -645495803
    )
-   int __ac;
+   int field686;
    @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "[Ldc;"
    )
-   PcmStream[] __ay;
+   PcmStream[] field687;
    @ObfuscatedName("ah")
    @ObfuscatedSignature(
       signature = "[Ldc;"
    )
-   PcmStream[] __ah;
+   PcmStream[] field688;
 
    protected PcmPlayer() {
-      this.__z = 32;
+      this.field680 = 32;
       this.timeMs = class203.currentTimeMs();
       this.retryTimeMs = 0L;
-      this.__b = 0;
-      this.__c = 0;
+      this.field682 = 0;
+      this.field683 = 0;
       this.nextPosition = 0;
-      this.__p = 0L;
-      this.__v = true;
-      this.__ac = 0;
-      this.__ay = new PcmStream[8];
-      this.__ah = new PcmStream[8];
+      this.field684 = 0L;
+      this.field685 = true;
+      this.field686 = 0;
+      this.field687 = new PcmStream[8];
+      this.field688 = new PcmStream[8];
    }
 
    @ObfuscatedName("m")
@@ -174,90 +174,90 @@ public class PcmPlayer {
    )
    @Export("run")
    public final synchronized void run() {
-      if(this.samples != null) {
+      if (this.samples != null) {
          long var1 = class203.currentTimeMs();
 
          try {
-            if(0L != this.retryTimeMs) {
-               if(var1 < this.retryTimeMs) {
+            if (0L != this.retryTimeMs) {
+               if (var1 < this.retryTimeMs) {
                   return;
                }
 
                this.open(this.capacity);
                this.retryTimeMs = 0L;
-               this.__v = true;
+               this.field685 = true;
             }
 
             int var3 = this.position();
-            if(this.nextPosition - var3 > this.__b) {
-               this.__b = this.nextPosition - var3;
+            if (this.nextPosition - var3 > this.field682) {
+               this.field682 = this.nextPosition - var3;
             }
 
-            int var4 = this.__y + this.frequency;
-            if(var4 + 256 > 16384) {
+            int var4 = this.field681 + this.frequency;
+            if (var4 + 256 > 16384) {
                var4 = 16128;
             }
 
-            if(var4 + 256 > this.capacity) {
+            if (var4 + 256 > this.capacity) {
                this.capacity += 1024;
-               if(this.capacity > 16384) {
+               if (this.capacity > 16384) {
                   this.capacity = 16384;
                }
 
                this.close();
                this.open(this.capacity);
                var3 = 0;
-               this.__v = true;
-               if(var4 + 256 > this.capacity) {
+               this.field685 = true;
+               if (var4 + 256 > this.capacity) {
                   var4 = this.capacity - 256;
-                  this.__y = var4 - this.frequency;
+                  this.field681 = var4 - this.frequency;
                }
             }
 
-            while(var3 < var4) {
+            while (var3 < var4) {
                this.fill(this.samples, 256);
                this.write();
                var3 += 256;
             }
 
-            if(var1 > this.__p) {
-               if(!this.__v) {
-                  if(this.__b == 0 && this.__c == 0) {
+            if (var1 > this.field684) {
+               if (!this.field685) {
+                  if (this.field682 == 0 && this.field683 == 0) {
                      this.close();
                      this.retryTimeMs = 2000L + var1;
                      return;
                   }
 
-                  this.__y = Math.min(this.__c, this.__b);
-                  this.__c = this.__b;
+                  this.field681 = Math.min(this.field683, this.field682);
+                  this.field683 = this.field682;
                } else {
-                  this.__v = false;
+                  this.field685 = false;
                }
 
-               this.__b = 0;
-               this.__p = 2000L + var1;
+               this.field682 = 0;
+               this.field684 = 2000L + var1;
             }
 
             this.nextPosition = var3;
-         } catch (Exception var7) {
+         } catch (Exception var6) {
             this.close();
             this.retryTimeMs = var1 + 2000L;
          }
 
          try {
-            if(var1 > this.timeMs + 500000L) {
+            if (var1 > this.timeMs + 500000L) {
                var1 = this.timeMs;
             }
 
-            while(var1 > 5000L + this.timeMs) {
+            while (var1 > 5000L + this.timeMs) {
                this.skip(256);
                this.timeMs += (long)(256000 / class309.PcmPlayer_sampleRate);
             }
-         } catch (Exception var6) {
+         } catch (Exception var5) {
             this.timeMs = var1;
          }
-
       }
+
    }
 
    @ObfuscatedName("ac")
@@ -265,8 +265,8 @@ public class PcmPlayer {
       signature = "(I)V",
       garbageValue = "-922069005"
    )
-   public final void __ac_176() {
-      this.__v = true;
+   public final void method242() {
+      this.field685 = true;
    }
 
    @ObfuscatedName("ay")
@@ -276,7 +276,7 @@ public class PcmPlayer {
    )
    @Export("tryDiscard")
    public final synchronized void tryDiscard() {
-      this.__v = true;
+      this.field685 = true;
 
       try {
          this.discard();
@@ -294,20 +294,20 @@ public class PcmPlayer {
    )
    @Export("shutdown")
    public final synchronized void shutdown() {
-      if(Messages.soundSystem != null) {
+      if (Messages.soundSystem != null) {
          boolean var1 = true;
 
-         for(int var2 = 0; var2 < 2; ++var2) {
-            if(this == Messages.soundSystem.players[var2]) {
+         for (int var2 = 0; var2 < 2; ++var2) {
+            if (this == Messages.soundSystem.players[var2]) {
                Messages.soundSystem.players[var2] = null;
             }
 
-            if(Messages.soundSystem.players[var2] != null) {
+            if (Messages.soundSystem.players[var2] != null) {
                var1 = false;
             }
          }
 
-         if(var1) {
+         if (var1) {
             Friend.soundSystemExecutor.shutdownNow();
             Friend.soundSystemExecutor = null;
             Messages.soundSystem = null;
@@ -325,13 +325,13 @@ public class PcmPlayer {
    )
    @Export("skip")
    final void skip(int var1) {
-      this.__ac -= var1;
-      if(this.__ac < 0) {
-         this.__ac = 0;
+      this.field686 -= var1;
+      if (this.field686 < 0) {
+         this.field686 = 0;
       }
 
-      if(this.stream0 != null) {
-         this.stream0.__d_173(var1);
+      if (this.stream0 != null) {
+         this.stream0.vmethod264(var1);
       }
 
    }
@@ -340,80 +340,80 @@ public class PcmPlayer {
    @Export("fill")
    final void fill(int[] var1, int var2) {
       int var3 = var2;
-      if(isStereo) {
+      if (isStereo) {
          var3 = var2 << 1;
       }
 
       class212.clearIntArray(var1, 0, var3);
-      this.__ac -= var2;
-      if(this.stream0 != null && this.__ac <= 0) {
-         this.__ac += class309.PcmPlayer_sampleRate >> 4;
+      this.field686 -= var2;
+      if (this.stream0 != null && this.field686 <= 0) {
+         this.field686 += class309.PcmPlayer_sampleRate >> 4;
          MidiPcmStream.PcmStream_disable(this.stream0);
-         this.__ab_177(this.stream0, this.stream0.__az_179());
+         this.method243(this.stream0, this.stream0.vmethod282());
          int var4 = 0;
          int var5 = 255;
 
          int var6;
-         PcmStream var10;
-         label104:
-         for(var6 = 7; var5 != 0; --var6) {
-            int var7;
+         PcmStream var7;
+         label106:
+         for (var6 = 7; var5 != 0; --var6) {
             int var8;
-            if(var6 < 0) {
-               var7 = var6 & 3;
-               var8 = -(var6 >> 2);
+            int var9;
+            if (var6 < 0) {
+               var8 = var6 & 3;
+               var9 = -(var6 >> 2);
             } else {
-               var7 = var6;
-               var8 = 0;
+               var8 = var6;
+               var9 = 0;
             }
 
-            for(int var9 = var5 >>> var7 & 286331153; var9 != 0; var9 >>>= 4) {
-               if((var9 & 1) != 0) {
-                  var5 &= ~(1 << var7);
-                  var10 = null;
-                  PcmStream var11 = this.__ay[var7];
+            for (int var10 = var5 >>> var8 & 286331153; var10 != 0; var10 >>>= 4) {
+               if ((var10 & 1) != 0) {
+                  var5 &= ~(1 << var8);
+                  var7 = null;
+                  PcmStream var11 = this.field687[var8];
 
-                  label98:
-                  while(true) {
-                     while(true) {
-                        if(var11 == null) {
-                           break label98;
+                  label100:
+                  while (true) {
+                     while (true) {
+                        if (var11 == null) {
+                           break label100;
                         }
 
                         AbstractSound var12 = var11.sound;
-                        if(var12 != null && var12.position > var8) {
-                           var5 |= 1 << var7;
-                           var10 = var11;
+                        if (var12 != null && var12.position > var9) {
+                           var5 |= 1 << var8;
+                           var7 = var11;
                            var11 = var11.after;
                         } else {
                            var11.active = true;
-                           int var13 = var11.__l_171();
+                           int var13 = var11.vmethod262();
                            var4 += var13;
-                           if(var12 != null) {
+                           if (var12 != null) {
                               var12.position += var13;
                            }
 
-                           if(var4 >= this.__z) {
-                              break label104;
+                           if (var4 >= this.field680) {
+                              break label106;
                            }
 
                            PcmStream var14 = var11.firstSubStream();
-                           if(var14 != null) {
-                              for(int var15 = var11.__s; var14 != null; var14 = var11.nextSubStream()) {
-                                 this.__ab_177(var14, var15 * var14.__az_179() >> 8);
+                           if (var14 != null) {
+                              for (int var15 = var11.field689; var14 != null; var14 = var11.nextSubStream()) {
+                                 this.method243(var14, var15 * var14.vmethod282() >> 8);
                               }
                            }
 
                            PcmStream var18 = var11.after;
                            var11.after = null;
-                           if(var10 == null) {
-                              this.__ay[var7] = var18;
+                           if (var7 == null) {
+                              this.field687[var8] = var18;
                            } else {
-                              var10.after = var18;
+                              var7.after = var18;
                            }
 
-                           if(var18 == null) {
-                              this.__ah[var7] = var10;
+                           if (var18 == null) {
+                              this.field688[var8] = var7;
                            }
 
                            var11 = var18;
@@ -422,29 +422,29 @@ public class PcmPlayer {
                   }
                }
 
-               var7 += 4;
-               ++var8;
+               var8 += 4;
+               ++var9;
             }
          }
 
-         for(var6 = 0; var6 < 8; ++var6) {
-            PcmStream var16 = this.__ay[var6];
-            PcmStream[] var17 = this.__ay;
-            this.__ah[var6] = null;
+         for (var6 = 0; var6 < 8; ++var6) {
+            PcmStream var16 = this.field687[var6];
+            PcmStream[] var17 = this.field687;
+            this.field688[var6] = null;
 
-            for(var17[var6] = null; var16 != null; var16 = var10) {
-               var10 = var16.after;
+            for (var17[var6] = null; var16 != null; var16 = var7) {
+               var7 = var16.after;
                var16.after = null;
             }
          }
       }
 
-      if(this.__ac < 0) {
-         this.__ac = 0;
+      if (this.field686 < 0) {
+         this.field686 = 0;
       }
 
-      if(this.stream0 != null) {
-         this.stream0.__e_172(var1, 0, var2);
+      if (this.stream0 != null) {
+         this.stream0.vmethod263(var1, 0, var2);
       }
 
       this.timeMs = class203.currentTimeMs();
@@ -455,16 +455,16 @@ public class PcmPlayer {
       signature = "(Ldc;II)V",
       garbageValue = "-1884182540"
    )
-   final void __ab_177(PcmStream var1, int var2) {
+   final void method243(PcmStream var1, int var2) {
       int var3 = var2 >> 5;
-      PcmStream var4 = this.__ah[var3];
-      if(var4 == null) {
-         this.__ay[var3] = var1;
+      PcmStream var4 = this.field688[var3];
+      if (var4 == null) {
+         this.field687[var3] = var1;
       } else {
          var4.after = var1;
       }
 
-      this.__ah[var3] = var1;
-      var1.__s = var2;
+      this.field688[var3] = var1;
+      var1.field689 = var2;
    }
 }

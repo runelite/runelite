@@ -31,8 +31,7 @@ public final class DemotingHashTable {
       this.remaining = var1;
 
       int var3;
-      for(var3 = 1; var3 + var3 < var1 && var3 < var2; var3 += var3) {
-         ;
+      for (var3 = 1; var3 + var3 < var1 && var3 < var2; var3 += var3) {
       }
 
       this.hashTable = new IterableNodeHashTable(var3);
@@ -42,17 +41,17 @@ public final class DemotingHashTable {
    @Export("get")
    public Object get(long var1) {
       Wrapper var3 = (Wrapper)this.hashTable.get(var1);
-      if(var3 == null) {
+      if (var3 == null) {
          return null;
       } else {
          Object var4 = var3.get();
-         if(var4 == null) {
+         if (var4 == null) {
             var3.remove();
             var3.removeDual();
             this.remaining += var3.size;
             return null;
          } else {
-            if(var3.isSoft()) {
+            if (var3.isSoft()) {
                DirectWrapper var5 = new DirectWrapper(var4, var3.size);
                this.hashTable.put(var5, var3.key);
                this.queue.add(var5);
@@ -82,7 +81,7 @@ public final class DemotingHashTable {
    )
    @Export("removeWrapper")
    void removeWrapper(Wrapper var1) {
-      if(var1 != null) {
+      if (var1 != null) {
          var1.remove();
          var1.removeDual();
          this.remaining += var1.size;
@@ -93,14 +92,14 @@ public final class DemotingHashTable {
    @ObfuscatedName("w")
    @Export("put")
    public void put(Object var1, long var2, int var4) {
-      if(var4 > this.capacity) {
+      if (var4 > this.capacity) {
          throw new IllegalStateException();
       } else {
          this.remove(var2);
          this.remaining -= var4;
 
-         while(this.remaining < 0) {
-            Wrapper var5 = (Wrapper)this.queue.__q_448();
+         while (this.remaining < 0) {
+            Wrapper var5 = (Wrapper)this.queue.removeLast();
             this.removeWrapper(var5);
          }
 
@@ -114,17 +113,17 @@ public final class DemotingHashTable {
    @ObfuscatedName("o")
    @Export("demote")
    public void demote(int var1) {
-      for(Wrapper var2 = (Wrapper)this.queue.__w_449(); var2 != null; var2 = (Wrapper)this.queue.__u_451()) {
-         if(var2.isSoft()) {
-            if(var2.get() == null) {
+      for (Wrapper var2 = (Wrapper)this.queue.last(); var2 != null; var2 = (Wrapper)this.queue.previous()) {
+         if (var2.isSoft()) {
+            if (var2.get() == null) {
                var2.remove();
                var2.removeDual();
                this.remaining += var2.size;
             }
-         } else if(++var2.keyDual > (long)var1) {
+         } else if (++var2.keyDual > (long)var1) {
             SoftWrapper var3 = new SoftWrapper(var2.get(), var2.size);
             this.hashTable.put(var3, var2.key);
-            DualNodeDeque.method5220(var3, var2);
+            DualNodeDeque.DualNodeDeque_addBefore(var3, var2);
             var2.remove();
             var2.removeDual();
          }

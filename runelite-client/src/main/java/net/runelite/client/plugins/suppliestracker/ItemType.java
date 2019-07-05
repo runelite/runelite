@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.suppliestracker;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -41,7 +42,7 @@ public enum ItemType
 	AMMO("Ammo"),
 	TELEPORT("Teleports");
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private String label;
 
 	/**

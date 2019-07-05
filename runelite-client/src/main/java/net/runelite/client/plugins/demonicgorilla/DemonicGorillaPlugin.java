@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
@@ -64,6 +66,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Count demonic gorilla attacks and display their next possible attack styles",
 	tags = {"combat", "overlay", "pve", "pvm"}
 )
+@Singleton
 public class DemonicGorillaPlugin extends Plugin
 {
 	@Inject
@@ -78,7 +81,7 @@ public class DemonicGorillaPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Map<NPC, DemonicGorilla> gorillas;
 
 	private List<WorldPoint> recentBoulders;
@@ -145,7 +148,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
-	public static boolean isNpcGorilla(int npcId)
+	private static boolean isNpcGorilla(int npcId)
 	{
 		return npcId == NpcID.DEMONIC_GORILLA ||
 			npcId == NpcID.DEMONIC_GORILLA_7145 ||
@@ -321,8 +324,11 @@ public class DemonicGorillaPlugin extends Plugin
 						.stream()
 						.filter(x -> x != DemonicGorilla.AttackStyle.MELEE)
 						.collect(Collectors.toList()));
-					checkGorillaAttackStyleSwitch(gorilla, DemonicGorilla.AttackStyle.MELEE,
-						getProtectedStyle(interacting));
+					if (interacting != null)
+					{
+						checkGorillaAttackStyleSwitch(gorilla, DemonicGorilla.AttackStyle.MELEE,
+							getProtectedStyle(interacting));
+					}
 				}
 			}
 			else if (animationId != gorilla.getLastTickAnimation())
@@ -373,8 +379,7 @@ public class DemonicGorillaPlugin extends Plugin
 							else if (mp != null)
 							{
 								WorldArea lastPlayerArea = mp.getLastWorldArea();
-								if (lastPlayerArea != null &&
-									interacting != null && recentBoulders.stream()
+								if (lastPlayerArea != null && recentBoulders.stream()
 									.anyMatch(x -> x.distanceTo(lastPlayerArea) == 0))
 								{
 									// A boulder started falling on the gorillas target,
@@ -425,23 +430,21 @@ public class DemonicGorillaPlugin extends Plugin
 							// Gorillas can't normally walk through other gorillas
 							// or other players
 							final WorldArea area1 = new WorldArea(x, 1, 1);
-							return area1 != null &&
-								gorillas.values().stream().noneMatch(y ->
+							return gorillas.values().stream().noneMatch(y ->
+							{
+								if (y == gorilla)
 								{
-									if (y == gorilla)
-									{
-										return false;
-									}
-									final WorldArea area2 =
-										y.getNpc().getIndex() < gorilla.getNpc().getIndex() ?
-											y.getNpc().getWorldArea() : y.getLastWorldArea();
-									return area2 != null && area1.intersectsWith(area2);
-								}) &&
-								memorizedPlayers.values().stream().noneMatch(y ->
-								{
-									final WorldArea area2 = y.getLastWorldArea();
-									return area2 != null && area1.intersectsWith(area2);
-								});
+									return false;
+								}
+								final WorldArea area2 =
+									y.getNpc().getIndex() < gorilla.getNpc().getIndex() ?
+										y.getNpc().getWorldArea() : y.getLastWorldArea();
+								return area2 != null && area1.intersectsWith(area2);
+							}) && memorizedPlayers.values().stream().noneMatch(y ->
+							{
+								final WorldArea area2 = y.getLastWorldArea();
+								return area2 != null && area1.intersectsWith(area2);
+							});
 
 							// There is a special case where if a player walked through
 							// a gorilla, or a player walked through another player,
@@ -453,9 +456,7 @@ public class DemonicGorillaPlugin extends Plugin
 					{
 						int distance = gorilla.getNpc().getWorldArea().distanceTo(mp.getLastWorldArea());
 						WorldPoint predictedMovement = predictedNewArea.toWorldPoint();
-						if (distance <= DemonicGorilla.MAX_ATTACK_RANGE &&
-							mp != null &&
-							mp.getLastWorldArea().hasLineOfSightTo(client, gorilla.getLastWorldArea()))
+						if (distance <= DemonicGorilla.MAX_ATTACK_RANGE && mp.getLastWorldArea().hasLineOfSightTo(client, gorilla.getLastWorldArea()))
 						{
 							if (predictedMovement.distanceTo(gorilla.getLastWorldArea().toWorldPoint()) != 0)
 							{
@@ -549,8 +550,7 @@ public class DemonicGorillaPlugin extends Plugin
 		{
 			recentBoulders.add(WorldPoint.fromLocal(client, event.getPosition()));
 		}
-		else if (projectileId == ProjectileID.DEMONIC_GORILLA_MAGIC ||
-			projectileId == ProjectileID.DEMONIC_GORILLA_RANGED)
+		else
 		{
 			WorldPoint projectileSourcePosition = WorldPoint.fromLocal(
 				client, projectile.getX1(), projectile.getY1(), client.getPlane());

@@ -1,5 +1,4 @@
 import java.util.Comparator;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -8,18 +7,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("AbstractUserComparator")
 public abstract class AbstractUserComparator implements Comparator {
    @ObfuscatedName("f")
-   Comparator __f;
+   Comparator field3;
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;B)V",
       garbageValue = "-2"
    )
-   final void __e_460(Comparator var1) {
-      if(this.__f == null) {
-         this.__f = var1;
-      } else if(this.__f instanceof AbstractUserComparator) {
-         ((AbstractUserComparator)this.__f).__e_460(var1);
+   final void method11(Comparator var1) {
+      if (this.field3 == null) {
+         this.field3 = var1;
+      } else if (this.field3 instanceof AbstractUserComparator) {
+         ((AbstractUserComparator)this.field3).method11(var1);
       }
 
    }
@@ -29,12 +28,12 @@ public abstract class AbstractUserComparator implements Comparator {
       signature = "(Ljs;Ljs;I)I",
       garbageValue = "-962181316"
    )
-   protected final int __x_461(User var1, User var2) {
-      return this.__f == null?0:this.__f.compare(var1, var2);
+   protected final int method12(User var1, User var2) {
+      return this.field3 == null ? 0 : this.field3.compare(var1, var2);
    }
 
    @ObfuscatedName("equals")
-   public boolean __equals_462(Object var1) {
+   public boolean method13(Object var1) {
       return super.equals(var1);
    }
 
@@ -44,22 +43,22 @@ public abstract class AbstractUserComparator implements Comparator {
       garbageValue = "2048322935"
    )
    static void method5437(int var0) {
-      if(var0 == -1 && !Client.__client_qq) {
+      if (var0 == -1 && !Client.field107) {
          class214.midiPcmStream.clear();
-         class214.__hf_o = 1;
-         class214.__hf_u = null;
-      } else if(var0 != -1 && var0 != Client.__client_qy && Client.__client_qf != 0 && !Client.__client_qq) {
+         class214.field1129 = 1;
+         class214.field1130 = null;
+      } else if (var0 != -1 && var0 != Client.field112 && Client.field128 != 0 && !Client.field107) {
          IndexCache var1 = UserComparator3.indexCache6;
-         int var2 = Client.__client_qf;
-         class214.__hf_o = 1;
-         class214.__hf_u = var1;
+         int var2 = Client.field128;
+         class214.field1129 = 1;
+         class214.field1130 = var1;
          class30.musicTrackArchiveId = var0;
          GrandExchangeOffer.musicTrackFileId = 0;
-         WorldMapLabel.__aj_e = var2;
+         WorldMapLabel.field1039 = var2;
          RectangleMode.musicTrackBoolean = false;
-         FaceNormal.__el_x = 2;
+         FaceNormal.field344 = 2;
       }
 
-      Client.__client_qy = var0;
+      Client.field112 = var0;
    }
 }

@@ -28,6 +28,7 @@ package net.runelite.client.plugins.npchighlight;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -78,6 +80,7 @@ import net.runelite.client.util.WildcardMatcher;
 	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
 )
 @Slf4j
+@Singleton
 public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
@@ -179,6 +182,21 @@ public class NpcIndicatorsPlugin extends Plugin
 	 */
 	private boolean skipNextSpawnCheck = false;
 
+	@Getter(AccessLevel.PACKAGE)
+	private RenderStyle renderStyle;
+	@Setter(AccessLevel.PACKAGE)
+	private String getNpcToHighlight;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getHighlightColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawNames;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawMinimapNames;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightMenuNames;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showRespawnTimer;
+
 	@Provides
 	NpcIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
@@ -188,6 +206,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(npcSceneOverlay);
 		overlayManager.add(npcMinimapOverlay);
 		keyManager.registerKeyListener(inputListener);
@@ -236,6 +256,8 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
+		updateConfig();
+
 		highlights = getHighlights();
 		rebuildAllNpcs();
 	}
@@ -261,7 +283,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
 		}
 
-		if (config.highlightMenuNames() &&
+		if (this.highlightMenuNames &&
 			NPC_MENU_ACTIONS.contains(MenuAction.of(type)) &&
 			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
 		{
@@ -490,7 +512,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@VisibleForTesting
 	List<String> getHighlights()
 	{
-		final String configNpcs = config.getNpcToHighlight().toLowerCase();
+		final String configNpcs = this.getNpcToHighlight.toLowerCase();
 
 		if (configNpcs.isEmpty())
 		{
@@ -618,5 +640,16 @@ public class NpcIndicatorsPlugin extends Plugin
 		spawnedNpcsThisTick.clear();
 		despawnedNpcsThisTick.clear();
 		teleportGraphicsObjectSpawnedThisTick.clear();
+	}
+
+	private void updateConfig()
+	{
+		this.renderStyle = config.renderStyle();
+		this.getNpcToHighlight = config.getNpcToHighlight();
+		this.getHighlightColor = config.getHighlightColor();
+		this.drawNames = config.drawNames();
+		this.drawMinimapNames = config.drawMinimapNames();
+		this.highlightMenuNames = config.highlightMenuNames();
+		this.showRespawnTimer = config.showRespawnTimer();
 	}
 }

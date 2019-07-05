@@ -26,6 +26,7 @@ import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,8 +47,8 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
@@ -75,7 +76,7 @@ import org.apache.commons.lang3.StringUtils;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
-
+@Singleton
 public class PvpToolsPlugin extends Plugin
 {
 	@Inject
@@ -107,16 +108,13 @@ public class PvpToolsPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	@Inject
-	private ChatMessageManager chatMessageManager;
-
 	private PvpToolsPlugin uhPvpToolsPlugin = this;
 
 	private static final String WALK_HERE = "WALK HERE";
 	private static final String CANCEL = "CANCEL";
 	private static final String CAST = "CAST";
 	private static final String ATTACK_OPTIONS_ATTACK = "ATTACK";
-	public static final HashSet<String> ATTACK_OPTIONS_KEYWORDS = new HashSet<>();
+	private static final HashSet<String> ATTACK_OPTIONS_KEYWORDS = new HashSet<>();
 		static
 		{
 			ATTACK_OPTIONS_KEYWORDS.add(CAST);
@@ -162,7 +160,25 @@ public class PvpToolsPlugin extends Plugin
 		}
 	};
 
-
+	@Getter(AccessLevel.PACKAGE)
+	private boolean countPlayers;
+	private boolean countOverHeads;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean fallInHelper;
+	private Keybind hotkey;
+	private Keybind renderSelf;
+	private boolean hideAttack;
+	private AttackMode hideAttackMode;
+	private boolean hideCast;
+	private AttackMode hideCastMode;
+	private String hideCastIgnored;
+	private boolean attackOptionsClan;
+	private boolean attackOptionsFriend;
+	private boolean levelRangeAttackOptions;
+	private boolean riskCalculatorEnabled;
+	private boolean missingPlayersEnabled;
+	private boolean currentPlayersEnabled;
+	
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -175,7 +191,7 @@ public class PvpToolsPlugin extends Plugin
 	/**
 	 * The HotKeyListener for the hot key assigned in the config that triggers the Fall In Helper feature
 	 */
-	private final HotkeyListener fallinHotkeyListener = new HotkeyListener(() -> config.hotkey())
+	private final HotkeyListener fallinHotkeyListener = new HotkeyListener(() -> this.hotkey)
 	{
 		public void hotkeyPressed()
 		{
@@ -183,7 +199,7 @@ public class PvpToolsPlugin extends Plugin
 		}
 	};
 
-	private final HotkeyListener renderselfHotkeyListener = new HotkeyListener(() -> config.renderSelf())
+	private final HotkeyListener renderselfHotkeyListener = new HotkeyListener(() -> this.renderSelf)
 	{
 		public void hotkeyPressed()
 		{
@@ -253,6 +269,8 @@ public class PvpToolsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		
 		overlayManager.add(pvpToolsOverlay);
 		overlayManager.add(playerCountOverlay);
 
@@ -275,17 +293,17 @@ public class PvpToolsPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 
-		if (config.missingPlayersEnabled())
+		if (this.missingPlayersEnabled)
 		{
 			panel.missingPlayers.setVisible(true);
 		}
 
-		if (config.currentPlayersEnabled())
+		if (this.currentPlayersEnabled)
 		{
 			panel.currentPlayers.setVisible(true);
 		}
 
-		ignoredSpells = Arrays.asList(config.hideCastIgnored().toLowerCase().split("\\s*,\\s*"));
+		ignoredSpells = Arrays.asList(this.hideCastIgnored.toLowerCase().split("\\s*,\\s*"));
 	}
 
 	@Override
@@ -303,52 +321,54 @@ public class PvpToolsPlugin extends Plugin
 	{
 		if (configChanged.getGroup().equals("pvptools"))
 		{
+			updateConfig();
+			
 			switch (configChanged.getKey())
 			{
 				case "countPlayers":
-					if (config.countPlayers())
+					if (this.countPlayers)
 					{
 						updatePlayers();
 					}
-					if (!config.countPlayers())
+					if (!this.countPlayers)
 					{
 						panel.disablePlayerCount();
 					}
 					break;
 				case "countOverHeads":
-					if (config.countOverHeads())
+					if (this.countOverHeads)
 					{
 						countOverHeads();
 					}
-					if (!config.countOverHeads())
+					if (!this.countOverHeads)
 					{
 						panel.disablePrayerCount();
 					}
 					break;
 				case "riskCalculator":
-					if (config.riskCalculatorEnabled())
+					if (this.riskCalculatorEnabled)
 					{
 						getCarriedWealth();
 					}
-					if (!config.riskCalculatorEnabled())
+					if (!this.riskCalculatorEnabled)
 					{
 						panel.disableRiskCalculator();
 					}
 					break;
 				case "missingPlayers":
-					if (config.missingPlayersEnabled())
+					if (this.missingPlayersEnabled)
 					{
 						panel.missingPlayers.setVisible(true);
 					}
 					break;
 				case "currentPlayers":
-					if (config.currentPlayersEnabled())
+					if (this.currentPlayersEnabled)
 					{
 						panel.currentPlayers.setVisible(true);
 					}
 					break;
 				case "hideCastIgnored":
-					ignoredSpells = Arrays.asList(config.hideCastIgnored().toLowerCase().split("\\s*,\\s*"));
+					ignoredSpells = Arrays.asList(this.hideCastIgnored.toLowerCase().split("\\s*,\\s*"));
 					break;
 				default:
 					break;
@@ -360,7 +380,7 @@ public class PvpToolsPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer().equals(client.getItemContainer(InventoryID.INVENTORY)) &&
-			config.riskCalculatorEnabled())
+			this.riskCalculatorEnabled)
 		{
 			getCarriedWealth();
 		}
@@ -369,13 +389,13 @@ public class PvpToolsPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState().equals(GameState.LOGGED_IN) && config.riskCalculatorEnabled())
+		if (event.getGameState().equals(GameState.LOGGED_IN) && this.riskCalculatorEnabled)
 		{
 			getCarriedWealth();
 		}
 		if (event.getGameState().equals(GameState.LOGGED_IN))
 		{
-			if (config.countPlayers())
+			if (this.countPlayers)
 			{
 				updatePlayers();
 			}
@@ -385,11 +405,11 @@ public class PvpToolsPlugin extends Plugin
 	@Subscribe
 	public void onPlayerSpawned(PlayerSpawned event)
 	{
-		if (config.countPlayers() && PvPUtil.isAttackable(client, event.getPlayer()))
+		if (this.countPlayers && PvPUtil.isAttackable(client, event.getPlayer()))
 		{
 			updatePlayers();
 		}
-		if (config.countOverHeads())
+		if (this.countOverHeads)
 		{
 			countOverHeads();
 		}
@@ -398,11 +418,11 @@ public class PvpToolsPlugin extends Plugin
 	@Subscribe
 	public void onPlayerDespawned(PlayerDespawned event)
 	{
-		if (config.countPlayers() && PvPUtil.isAttackable(client, event.getPlayer()))
+		if (this.countPlayers && PvPUtil.isAttackable(client, event.getPlayer()))
 		{
 			updatePlayers();
 		}
-		if (config.countOverHeads())
+		if (this.countOverHeads)
 		{
 			countOverHeads();
 		}
@@ -411,7 +431,7 @@ public class PvpToolsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
-		if (config.attackOptionsFriend() || config.attackOptionsClan() || config.levelRangeAttackOptions())
+		if (this.attackOptionsFriend || this.attackOptionsClan || this.levelRangeAttackOptions)
 		{
 			final String pOptionToReplace = Text.removeTags(menuEntryAdded.getOption()).toUpperCase();
 
@@ -438,18 +458,18 @@ public class PvpToolsPlugin extends Plugin
 			}
 
 
-			if (attackHotKeyPressed && config.attackOptionsClan() || config.attackOptionsFriend() ||
-				config.levelRangeAttackOptions())
+			if (attackHotKeyPressed && this.attackOptionsClan || this.attackOptionsFriend ||
+				this.levelRangeAttackOptions)
 			{
-				if (config.attackOptionsFriend() && player.isFriend())
+				if (this.attackOptionsFriend && player.isFriend())
 				{
 					swap(pOptionToReplace);
 				}
-				else if (config.attackOptionsClan() && player.isClanMember())
+				else if (this.attackOptionsClan && player.isClanMember())
 				{
 					swap(pOptionToReplace);
 				}
-				else if (config.levelRangeAttackOptions() && !PvPUtil.isAttackable(client, player))
+				else if (this.levelRangeAttackOptions && !PvPUtil.isAttackable(client, player))
 				{
 					swap(pOptionToReplace);
 				}
@@ -490,12 +510,12 @@ public class PvpToolsPlugin extends Plugin
 				continue;
 			}
 
-			if (option.contains("attack") && config.hideAttack() && shouldHide(config.hideAttackMode(), player))
+			if (option.contains("attack") && this.hideAttack && shouldHide(this.hideAttackMode, player))
 			{
 				continue;
 			}
 
-			else if (option.contains("cast") && config.hideCast() && shouldHide(config.hideCastMode(), player)
+			else if (option.contains("cast") && this.hideCast && shouldHide(this.hideCastMode, player)
 					&& !ignoredSpells.contains(StringUtils.substringBefore(target, " ->")))
 			{
 				continue;
@@ -555,7 +575,7 @@ public class PvpToolsPlugin extends Plugin
 	{
 		friendlyPlayerCount = 0;
 		enemyPlayerCount = 0;
-		if (config.countPlayers())
+		if (this.countPlayers)
 		{
 			for (Player p : client.getPlayers())
 			{
@@ -621,7 +641,7 @@ public class PvpToolsPlugin extends Plugin
 	 */
 	private void getCarriedWealth()
 	{
-		if (!config.riskCalculatorEnabled())
+		if (!this.riskCalculatorEnabled)
 		{
 			return;
 		}
@@ -783,4 +803,23 @@ public class PvpToolsPlugin extends Plugin
 		return false;
 	}
 
+	private void updateConfig()
+	{
+		this.countPlayers = config.countPlayers();
+		this.countOverHeads = config.countOverHeads();
+		this.fallInHelper = config.fallInHelper();
+		this.hotkey = config.hotkey();
+		this.renderSelf = config.renderSelf();
+		this.hideAttack = config.hideAttack();
+		this.hideAttackMode = config.hideAttackMode();
+		this.hideCast = config.hideCast();
+		this.hideCastMode = config.hideCastMode();
+		this.hideCastIgnored = config.hideCastIgnored();
+		this.attackOptionsClan = config.attackOptionsClan();
+		this.attackOptionsFriend = config.attackOptionsFriend();
+		this.levelRangeAttackOptions = config.levelRangeAttackOptions();
+		this.riskCalculatorEnabled = config.riskCalculatorEnabled();
+		this.missingPlayersEnabled = config.missingPlayersEnabled();
+		this.currentPlayersEnabled = config.currentPlayersEnabled();
+	}
 }

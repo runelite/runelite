@@ -11,427 +11,427 @@ public class ServerPacket {
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_m;
+   public static final ServerPacket field789;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_f;
+   public static final ServerPacket field790;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_q;
+   public static final ServerPacket field791;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_w;
+   public static final ServerPacket field792;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_o;
+   public static final ServerPacket field793;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_u;
+   public static final ServerPacket field794;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_g;
+   public static final ServerPacket field795;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_l;
+   public static final ServerPacket field796;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_e;
+   public static final ServerPacket field797;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_x;
+   public static final ServerPacket field798;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_d;
+   public static final ServerPacket field799;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_k;
+   public static final ServerPacket field800;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_n;
+   public static final ServerPacket field801;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_i;
+   public static final ServerPacket field802;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_a;
+   public static final ServerPacket field803;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_z;
+   public static final ServerPacket field804;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_j;
+   public static final ServerPacket field805;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_s;
+   public static final ServerPacket field806;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_t;
+   public static final ServerPacket field807;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_y;
+   public static final ServerPacket field808;
    @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_h;
+   public static final ServerPacket field809;
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_b;
+   public static final ServerPacket field810;
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_c;
+   public static final ServerPacket field811;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_r;
+   public static final ServerPacket field812;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_p;
+   public static final ServerPacket field813;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_v;
+   public static final ServerPacket field814;
    @ObfuscatedName("ag")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ag;
+   public static final ServerPacket field815;
    @ObfuscatedName("aq")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_aq;
+   public static final ServerPacket field816;
    @ObfuscatedName("aj")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_aj;
+   public static final ServerPacket field817;
    @ObfuscatedName("av")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_av;
+   public static final ServerPacket field818;
    @ObfuscatedName("ar")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ar;
+   public static final ServerPacket field819;
    @ObfuscatedName("ac")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ac;
+   public static final ServerPacket field820;
    @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ay;
+   public static final ServerPacket field821;
    @ObfuscatedName("ah")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ah;
+   public static final ServerPacket field822;
    @ObfuscatedName("ak")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ak;
+   public static final ServerPacket field823;
    @ObfuscatedName("aw")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_aw;
+   public static final ServerPacket field824;
    @ObfuscatedName("al")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_al;
+   public static final ServerPacket field825;
    @ObfuscatedName("ab")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ab;
+   public static final ServerPacket field826;
    @ObfuscatedName("ae")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ae;
+   public static final ServerPacket field827;
    @ObfuscatedName("at")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_at;
+   public static final ServerPacket field828;
    @ObfuscatedName("ad")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ad;
+   public static final ServerPacket field829;
    @ObfuscatedName("ap")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ap;
+   public static final ServerPacket field830;
    @ObfuscatedName("as")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_as;
+   public static final ServerPacket field831;
    @ObfuscatedName("am")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_am;
+   public static final ServerPacket field832;
    @ObfuscatedName("an")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_an;
+   public static final ServerPacket field833;
    @ObfuscatedName("az")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_az;
+   public static final ServerPacket field834;
    @ObfuscatedName("au")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_au;
+   public static final ServerPacket field835;
    @ObfuscatedName("ao")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ao;
+   public static final ServerPacket field836;
    @ObfuscatedName("aa")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_aa;
+   public static final ServerPacket field837;
    @ObfuscatedName("ax")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ax;
+   public static final ServerPacket field838;
    @ObfuscatedName("af")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_af;
+   public static final ServerPacket field839;
    @ObfuscatedName("ai")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ai;
+   public static final ServerPacket field840;
    @ObfuscatedName("ba")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ba;
+   public static final ServerPacket field841;
    @ObfuscatedName("bb")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bb;
+   public static final ServerPacket field842;
    @ObfuscatedName("bs")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bs;
+   public static final ServerPacket field843;
    @ObfuscatedName("bq")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bq;
+   public static final ServerPacket field844;
    @ObfuscatedName("bn")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bn;
+   public static final ServerPacket field845;
    @ObfuscatedName("bk")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bk;
+   public static final ServerPacket field846;
    @ObfuscatedName("bd")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bd;
+   public static final ServerPacket field847;
    @ObfuscatedName("bc")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bc;
+   public static final ServerPacket field848;
    @ObfuscatedName("bo")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bo;
+   public static final ServerPacket field849;
    @ObfuscatedName("bx")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bx;
+   public static final ServerPacket field850;
    @ObfuscatedName("by")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_by;
+   public static final ServerPacket field851;
    @ObfuscatedName("bu")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bu;
+   public static final ServerPacket field852;
    @ObfuscatedName("bm")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bm;
+   public static final ServerPacket field853;
    @ObfuscatedName("bl")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bl;
+   public static final ServerPacket field854;
    @ObfuscatedName("br")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_br;
+   public static final ServerPacket field855;
    @ObfuscatedName("bj")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bj;
+   public static final ServerPacket field856;
    @ObfuscatedName("bi")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bi;
+   public static final ServerPacket field857;
    @ObfuscatedName("bz")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bz;
+   public static final ServerPacket field858;
    @ObfuscatedName("bg")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bg;
+   public static final ServerPacket field859;
    @ObfuscatedName("bt")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bt;
+   public static final ServerPacket field860;
    @ObfuscatedName("bp")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bp;
+   public static final ServerPacket field861;
    @ObfuscatedName("bf")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bf;
+   public static final ServerPacket field862;
    @ObfuscatedName("bh")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bh;
+   public static final ServerPacket field863;
    @ObfuscatedName("be")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_be;
+   public static final ServerPacket field864;
    @ObfuscatedName("bv")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bv;
+   public static final ServerPacket field865;
    @ObfuscatedName("bw")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_bw;
+   public static final ServerPacket field866;
    @ObfuscatedName("cr")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_cr;
+   public static final ServerPacket field867;
    @ObfuscatedName("cv")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_cv;
+   public static final ServerPacket field868;
    @ObfuscatedName("ce")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_ce;
+   public static final ServerPacket field869;
    @ObfuscatedName("cy")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_cy;
+   public static final ServerPacket field870;
    @ObfuscatedName("cs")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_cs;
+   public static final ServerPacket field871;
    @ObfuscatedName("cm")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_cm;
+   public static final ServerPacket field872;
    @ObfuscatedName("cj")
    @ObfuscatedSignature(
       signature = "Lge;"
    )
-   public static final ServerPacket __ge_cj;
+   public static final ServerPacket field873;
    @ObfuscatedName("ix")
    @ObfuscatedGetter(
       intValue = -1645409107
@@ -450,94 +450,6 @@ public class ServerPacket {
    )
    @Export("length")
    public final int length;
-
-   static {
-      __ge_m = new ServerPacket(0, -2);
-      __ge_f = new ServerPacket(1, 0);
-      __ge_q = new ServerPacket(2, 0);
-      __ge_w = new ServerPacket(3, -1);
-      __ge_o = new ServerPacket(4, 6);
-      __ge_u = new ServerPacket(5, 4);
-      __ge_g = new ServerPacket(6, 4);
-      __ge_l = new ServerPacket(7, 4);
-      __ge_e = new ServerPacket(8, 6);
-      __ge_x = new ServerPacket(9, 4);
-      __ge_d = new ServerPacket(10, -2);
-      __ge_k = new ServerPacket(11, 15);
-      __ge_n = new ServerPacket(12, 5);
-      __ge_i = new ServerPacket(13, 2);
-      __ge_a = new ServerPacket(14, 3);
-      __ge_z = new ServerPacket(15, 7);
-      __ge_j = new ServerPacket(16, 1);
-      __ge_s = new ServerPacket(17, -2);
-      __ge_t = new ServerPacket(18, -2);
-      __ge_y = new ServerPacket(19, -2);
-      __ge_h = new ServerPacket(20, 10);
-      __ge_b = new ServerPacket(21, 5);
-      __ge_c = new ServerPacket(22, 6);
-      __ge_r = new ServerPacket(23, 2);
-      __ge_p = new ServerPacket(24, 6);
-      __ge_v = new ServerPacket(25, 2);
-      __ge_ag = new ServerPacket(26, 5);
-      __ge_aq = new ServerPacket(27, -2);
-      __ge_aj = new ServerPacket(28, 0);
-      __ge_av = new ServerPacket(29, 0);
-      __ge_ar = new ServerPacket(30, 4);
-      __ge_ac = new ServerPacket(31, 6);
-      __ge_ay = new ServerPacket(32, -2);
-      __ge_ah = new ServerPacket(33, -2);
-      __ge_ak = new ServerPacket(34, 1);
-      __ge_aw = new ServerPacket(35, 6);
-      __ge_al = new ServerPacket(36, 6);
-      __ge_ab = new ServerPacket(37, -1);
-      __ge_ae = new ServerPacket(38, -2);
-      __ge_at = new ServerPacket(39, 4);
-      __ge_ad = new ServerPacket(40, 5);
-      __ge_ap = new ServerPacket(41, 8);
-      __ge_as = new ServerPacket(42, 14);
-      __ge_am = new ServerPacket(43, -2);
-      __ge_an = new ServerPacket(44, -2);
-      __ge_az = new ServerPacket(45, -1);
-      __ge_au = new ServerPacket(46, 2);
-      __ge_ao = new ServerPacket(47, -1);
-      __ge_aa = new ServerPacket(48, 12);
-      __ge_ax = new ServerPacket(49, 4);
-      __ge_af = new ServerPacket(50, 10);
-      __ge_ai = new ServerPacket(51, -2);
-      __ge_ba = new ServerPacket(52, 0);
-      __ge_bb = new ServerPacket(53, -2);
-      __ge_bs = new ServerPacket(54, -1);
-      __ge_bq = new ServerPacket(55, 20);
-      __ge_bn = new ServerPacket(56, -2);
-      __ge_bk = new ServerPacket(57, 28);
-      __ge_bd = new ServerPacket(58, -2);
-      __ge_bc = new ServerPacket(59, 8);
-      __ge_bo = new ServerPacket(60, 1);
-      __ge_bx = new ServerPacket(61, 6);
-      __ge_by = new ServerPacket(62, -2);
-      __ge_bu = new ServerPacket(63, 3);
-      __ge_bm = new ServerPacket(64, 2);
-      __ge_bl = new ServerPacket(65, 5);
-      __ge_br = new ServerPacket(66, -1);
-      __ge_bj = new ServerPacket(67, 2);
-      __ge_bi = new ServerPacket(68, 1);
-      __ge_bz = new ServerPacket(69, 8);
-      __ge_bg = new ServerPacket(70, -2);
-      __ge_bt = new ServerPacket(71, 2);
-      __ge_bp = new ServerPacket(72, 2);
-      __ge_bf = new ServerPacket(73, 0);
-      __ge_bh = new ServerPacket(74, 1);
-      __ge_be = new ServerPacket(75, 6);
-      __ge_bv = new ServerPacket(76, 6);
-      __ge_bw = new ServerPacket(77, 7);
-      __ge_cr = new ServerPacket(78, 0);
-      __ge_cv = new ServerPacket(79, -2);
-      __ge_ce = new ServerPacket(80, 2);
-      __ge_cy = new ServerPacket(81, -2);
-      __ge_cs = new ServerPacket(82, 8);
-      __ge_cm = new ServerPacket(83, 6);
-      __ge_cj = new ServerPacket(84, 2);
-   }
 
    ServerPacket(int var1, int var2) {
       this.id = var1;
@@ -565,7 +477,7 @@ public class ServerPacket {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.spritePixels = null;
+      class328.spritePixels = (byte[][])null;
       return var0;
    }
 
@@ -578,18 +490,18 @@ public class ServerPacket {
       Buffer var10 = new Buffer(var0);
       int var11 = -1;
 
-      while(true) {
-         int var12 = var10.__at_308();
-         if(var12 == 0) {
+      while (true) {
+         int var12 = var10.method49();
+         if (var12 == 0) {
             return;
          }
 
          var11 += var12;
          int var13 = 0;
 
-         while(true) {
-            int var14 = var10.__ae_307();
-            if(var14 == 0) {
+         while (true) {
+            int var14 = var10.method48();
+            if (var14 == 0) {
                break;
             }
 
@@ -600,48 +512,136 @@ public class ServerPacket {
             int var18 = var10.readUnsignedByte();
             int var19 = var18 >> 2;
             int var20 = var18 & 3;
-            if(var17 == var4 && var16 >= var5 && var16 < var5 + 8 && var15 >= var6 && var15 < var6 + 8) {
+            if (var17 == var4 && var16 >= var5 && var16 < var5 + 8 && var15 >= var6 && var15 < var6 + 8) {
                ObjectDefinition var21 = class50.getObjectDefinition(var11);
-               int var24 = var16 & 7;
-               int var25 = var15 & 7;
-               int var27 = var21.sizeX;
-               int var28 = var21.sizeY;
-               int var29;
-               if((var20 & 1) == 1) {
-                  var29 = var27;
-                  var27 = var28;
-                  var28 = var29;
+               int var22 = var16 & 7;
+               int var23 = var15 & 7;
+               int var24 = var21.sizeX;
+               int var25 = var21.sizeY;
+               int var26;
+               if ((var20 & 1) == 1) {
+                  var26 = var24;
+                  var24 = var25;
+                  var25 = var26;
                }
 
-               int var26 = var7 & 3;
-               int var23;
-               if(var26 == 0) {
-                  var23 = var24;
-               } else if(var26 == 1) {
-                  var23 = var25;
-               } else if(var26 == 2) {
-                  var23 = 7 - var24 - (var27 - 1);
+               int var27 = var7 & 3;
+               int var28;
+               if (var27 == 0) {
+                  var28 = var22;
+               } else if (var27 == 1) {
+                  var28 = var23;
+               } else if (var27 == 2) {
+                  var28 = 7 - var22 - (var24 - 1);
                } else {
-                  var23 = 7 - var25 - (var28 - 1);
+                  var28 = 7 - var23 - (var25 - 1);
                }
 
-               var29 = var2 + var23;
-               int var30 = var3 + class171.method3496(var16 & 7, var15 & 7, var7, var21.sizeX, var21.sizeY, var20);
-               if(var29 > 0 && var30 > 0 && var29 < 103 && var30 < 103) {
-                  int var31 = var1;
-                  if((Tiles.Tiles_renderFlags[1][var29][var30] & 2) == 2) {
-                     var31 = var1 - 1;
+               var26 = var2 + var28;
+               int var29 = var3 + class171.method3496(var16 & 7, var15 & 7, var7, var21.sizeX, var21.sizeY, var20);
+               if (var26 > 0 && var29 > 0 && var26 < 103 && var29 < 103) {
+                  int var30 = var1;
+                  if ((Tiles.Tiles_renderFlags[1][var26][var29] & 2) == 2) {
+                     var30 = var1 - 1;
                   }
 
-                  CollisionMap var32 = null;
-                  if(var31 >= 0) {
-                     var32 = var9[var31];
+                  CollisionMap var31 = null;
+                  if (var30 >= 0) {
+                     var31 = var9[var30];
                   }
 
-                  class227.method4446(var1, var29, var30, var11, var20 + var7 & 3, var19, var8, var32);
+                  class227.method4446(var1, var26, var29, var11, var20 + var7 & 3, var19, var8, var31);
                }
             }
          }
       }
+   }
+
+   static {
+      field789 = new ServerPacket(0, -2);
+      field790 = new ServerPacket(1, 0);
+      field791 = new ServerPacket(2, 0);
+      field792 = new ServerPacket(3, -1);
+      field793 = new ServerPacket(4, 6);
+      field794 = new ServerPacket(5, 4);
+      field795 = new ServerPacket(6, 4);
+      field796 = new ServerPacket(7, 4);
+      field797 = new ServerPacket(8, 6);
+      field798 = new ServerPacket(9, 4);
+      field799 = new ServerPacket(10, -2);
+      field800 = new ServerPacket(11, 15);
+      field801 = new ServerPacket(12, 5);
+      field802 = new ServerPacket(13, 2);
+      field803 = new ServerPacket(14, 3);
+      field804 = new ServerPacket(15, 7);
+      field805 = new ServerPacket(16, 1);
+      field806 = new ServerPacket(17, -2);
+      field807 = new ServerPacket(18, -2);
+      field808 = new ServerPacket(19, -2);
+      field809 = new ServerPacket(20, 10);
+      field810 = new ServerPacket(21, 5);
+      field811 = new ServerPacket(22, 6);
+      field812 = new ServerPacket(23, 2);
+      field813 = new ServerPacket(24, 6);
+      field814 = new ServerPacket(25, 2);
+      field815 = new ServerPacket(26, 5);
+      field816 = new ServerPacket(27, -2);
+      field817 = new ServerPacket(28, 0);
+      field818 = new ServerPacket(29, 0);
+      field819 = new ServerPacket(30, 4);
+      field820 = new ServerPacket(31, 6);
+      field821 = new ServerPacket(32, -2);
+      field822 = new ServerPacket(33, -2);
+      field823 = new ServerPacket(34, 1);
+      field824 = new ServerPacket(35, 6);
+      field825 = new ServerPacket(36, 6);
+      field826 = new ServerPacket(37, -1);
+      field827 = new ServerPacket(38, -2);
+      field828 = new ServerPacket(39, 4);
+      field829 = new ServerPacket(40, 5);
+      field830 = new ServerPacket(41, 8);
+      field831 = new ServerPacket(42, 14);
+      field832 = new ServerPacket(43, -2);
+      field833 = new ServerPacket(44, -2);
+      field834 = new ServerPacket(45, -1);
+      field835 = new ServerPacket(46, 2);
+      field836 = new ServerPacket(47, -1);
+      field837 = new ServerPacket(48, 12);
+      field838 = new ServerPacket(49, 4);
+      field839 = new ServerPacket(50, 10);
+      field840 = new ServerPacket(51, -2);
+      field841 = new ServerPacket(52, 0);
+      field842 = new ServerPacket(53, -2);
+      field843 = new ServerPacket(54, -1);
+      field844 = new ServerPacket(55, 20);
+      field845 = new ServerPacket(56, -2);
+      field846 = new ServerPacket(57, 28);
+      field847 = new ServerPacket(58, -2);
+      field848 = new ServerPacket(59, 8);
+      field849 = new ServerPacket(60, 1);
+      field850 = new ServerPacket(61, 6);
+      field851 = new ServerPacket(62, -2);
+      field852 = new ServerPacket(63, 3);
+      field853 = new ServerPacket(64, 2);
+      field854 = new ServerPacket(65, 5);
+      field855 = new ServerPacket(66, -1);
+      field856 = new ServerPacket(67, 2);
+      field857 = new ServerPacket(68, 1);
+      field858 = new ServerPacket(69, 8);
+      field859 = new ServerPacket(70, -2);
+      field860 = new ServerPacket(71, 2);
+      field861 = new ServerPacket(72, 2);
+      field862 = new ServerPacket(73, 0);
+      field863 = new ServerPacket(74, 1);
+      field864 = new ServerPacket(75, 6);
+      field865 = new ServerPacket(76, 6);
+      field866 = new ServerPacket(77, 7);
+      field867 = new ServerPacket(78, 0);
+      field868 = new ServerPacket(79, -2);
+      field869 = new ServerPacket(80, 2);
+      field870 = new ServerPacket(81, -2);
+      field871 = new ServerPacket(82, 8);
+      field872 = new ServerPacket(83, 6);
+      field873 = new ServerPacket(84, 2);
    }
 }

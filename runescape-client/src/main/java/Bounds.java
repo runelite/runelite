@@ -1,4 +1,3 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -11,26 +10,26 @@ public class Bounds {
    @ObfuscatedGetter(
       intValue = -2004088829
    )
-   public int __m;
+   public int field41;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1887298731
    )
-   public int __f;
+   public int field42;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 2001187823
    )
-   public int __q;
+   public int field43;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 1377856837
    )
-   public int __w;
+   public int field44;
 
    public Bounds(int var1, int var2, int var3, int var4) {
-      this.__m_487(var1, var2);
-      this.__f_488(var3, var4);
+      this.method28(var1, var2);
+      this.method29(var3, var4);
    }
 
    public Bounds(int var1, int var2) {
@@ -42,9 +41,9 @@ public class Bounds {
       signature = "(IIB)V",
       garbageValue = "1"
    )
-   public void __m_487(int var1, int var2) {
-      this.__m = var1;
-      this.__f = var2;
+   public void method28(int var1, int var2) {
+      this.field41 = var1;
+      this.field42 = var2;
    }
 
    @ObfuscatedName("f")
@@ -52,9 +51,9 @@ public class Bounds {
       signature = "(III)V",
       garbageValue = "-11269827"
    )
-   public void __f_488(int var1, int var2) {
-      this.__q = var1;
-      this.__w = var2;
+   public void method29(int var1, int var2) {
+      this.field43 = var1;
+      this.field44 = var2;
    }
 
    @ObfuscatedName("q")
@@ -62,9 +61,9 @@ public class Bounds {
       signature = "(Lla;Lla;I)V",
       garbageValue = "-2123792170"
    )
-   public void __q_490(Bounds var1, Bounds var2) {
-      this.__w_491(var1, var2);
-      this.__o_492(var1, var2);
+   public void method30(Bounds var1, Bounds var2) {
+      this.method31(var1, var2);
+      this.method32(var1, var2);
    }
 
    @ObfuscatedName("w")
@@ -72,20 +71,20 @@ public class Bounds {
       signature = "(Lla;Lla;I)V",
       garbageValue = "314675149"
    )
-   void __w_491(Bounds var1, Bounds var2) {
-      var2.__m = this.__m;
-      var2.__q = this.__q;
-      if(this.__m < var1.__m) {
-         var2.__q -= var1.__m - this.__m;
-         var2.__m = var1.__m;
+   void method31(Bounds var1, Bounds var2) {
+      var2.field41 = this.field41;
+      var2.field43 = this.field43;
+      if (this.field41 < var1.field41) {
+         var2.field43 -= var1.field41 - this.field41;
+         var2.field41 = var1.field41;
       }
 
-      if(var2.__u_493() > var1.__u_493()) {
-         var2.__q -= var2.__u_493() - var1.__u_493();
+      if (var2.method33() > var1.method33()) {
+         var2.field43 -= var2.method33() - var1.method33();
       }
 
-      if(var2.__q < 0) {
-         var2.__q = 0;
+      if (var2.field43 < 0) {
+         var2.field43 = 0;
       }
 
    }
@@ -95,20 +94,20 @@ public class Bounds {
       signature = "(Lla;Lla;S)V",
       garbageValue = "128"
    )
-   void __o_492(Bounds var1, Bounds var2) {
-      var2.__f = this.__f;
-      var2.__w = this.__w;
-      if(this.__f < var1.__f) {
-         var2.__w -= var1.__f - this.__f;
-         var2.__f = var1.__f;
+   void method32(Bounds var1, Bounds var2) {
+      var2.field42 = this.field42;
+      var2.field44 = this.field44;
+      if (this.field42 < var1.field42) {
+         var2.field44 -= var1.field42 - this.field42;
+         var2.field42 = var1.field42;
       }
 
-      if(var2.__g_494() > var1.__g_494()) {
-         var2.__w -= var2.__g_494() - var1.__g_494();
+      if (var2.method34() > var1.method34()) {
+         var2.field44 -= var2.method34() - var1.method34();
       }
 
-      if(var2.__w < 0) {
-         var2.__w = 0;
+      if (var2.field44 < 0) {
+         var2.field44 = 0;
       }
 
    }
@@ -118,8 +117,8 @@ public class Bounds {
       signature = "(I)I",
       garbageValue = "-1842151293"
    )
-   int __u_493() {
-      return this.__m + this.__q;
+   int method33() {
+      return this.field41 + this.field43;
    }
 
    @ObfuscatedName("g")
@@ -127,12 +126,12 @@ public class Bounds {
       signature = "(B)I",
       garbageValue = "-22"
    )
-   int __g_494() {
-      return this.__f + this.__w;
+   int method34() {
+      return this.field42 + this.field44;
    }
 
    @ObfuscatedName("toString")
-   public String __toString_489() {
+   public String method35() {
       return null;
    }
 
@@ -146,11 +145,11 @@ public class Bounds {
       double[] var6 = new double[var5];
       int var7 = -var4;
 
-      for(int var8 = 0; var7 <= var4; ++var8) {
-         double var15 = ((double)var7 - var0) / var2;
-         double var13 = Math.exp(-var15 * var15 / 2.0D) / Math.sqrt(6.283185307179586D);
-         double var11 = var13 / var2;
-         var6[var8] = var11;
+      for (int var8 = 0; var7 <= var4; ++var8) {
+         double var9 = ((double)var7 - var0) / var2;
+         double var11 = Math.exp(-var9 * var9 / 2.0D) / Math.sqrt(6.283185307179586D);
+         double var13 = var11 / var2;
+         var6[var8] = var13;
          ++var7;
       }
 

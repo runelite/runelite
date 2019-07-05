@@ -35,6 +35,7 @@ import java.text.NumberFormat;
 import java.time.Instant;
 import java.util.Locale;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.NPC;
@@ -50,6 +51,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.Text;
 
+@Singleton
 public class NpcSceneOverlay extends Overlay
 {
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
@@ -66,15 +68,13 @@ public class NpcSceneOverlay extends Overlay
 	}
 
 	private final Client client;
-	private final NpcIndicatorsConfig config;
 	private final NpcIndicatorsPlugin plugin;
 	private final ModelOutlineRenderer modelOutliner;
 
 	@Inject
-	NpcSceneOverlay(Client client, NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin, ModelOutlineRenderer modelOutliner)
+	NpcSceneOverlay(final Client client, final NpcIndicatorsPlugin plugin, final ModelOutlineRenderer modelOutliner)
 	{
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 		this.modelOutliner = modelOutliner;
 		setPosition(OverlayPosition.DYNAMIC);
@@ -84,14 +84,14 @@ public class NpcSceneOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.showRespawnTimer())
+		if (plugin.isShowRespawnTimer())
 		{
 			plugin.getDeadNpcsToDisplay().forEach((id, npc) -> renderNpcRespawn(npc, graphics));
 		}
 
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc, config.getHighlightColor());
+			renderNpcOverlay(graphics, npc, plugin.getGetHighlightColor());
 		}
 
 		return null;
@@ -112,7 +112,7 @@ public class NpcSceneOverlay extends Overlay
 			return;
 		}
 
-		final Color color = config.getHighlightColor();
+		final Color color = plugin.getGetHighlightColor();
 
 		final LocalPoint centerLp = new LocalPoint(
 			lp.getX() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2,
@@ -149,7 +149,7 @@ public class NpcSceneOverlay extends Overlay
 
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color)
 	{
-		switch (config.renderStyle())
+		switch (plugin.getRenderStyle())
 		{
 			case SOUTH_WEST_TILE:
 				LocalPoint lp1 = LocalPoint.fromWorld(client, actor.getWorldLocation());
@@ -194,7 +194,7 @@ public class NpcSceneOverlay extends Overlay
 				break;
 		}
 
-		if (config.drawNames() && actor.getName() != null)
+		if (plugin.isDrawNames() && actor.getName() != null)
 		{
 			String npcName = Text.removeTags(actor.getName());
 			Point textLocation = actor.getCanvasTextLocation(graphics, npcName, actor.getLogicalHeight() + 40);

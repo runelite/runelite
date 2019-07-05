@@ -36,7 +36,7 @@ public class User implements Comparable {
    )
    @Export("name")
    public String name() {
-      return this.username0 == null?"":this.username0.getName();
+      return this.username0 == null ? "" : this.username0.getName();
    }
 
    @ObfuscatedName("ag")
@@ -46,7 +46,7 @@ public class User implements Comparable {
    )
    @Export("previousName")
    public String previousName() {
-      return this.previousUsername == null?"":this.previousUsername.getName();
+      return this.previousUsername == null ? "" : this.previousUsername.getName();
    }
 
    @ObfuscatedName("aq")
@@ -56,7 +56,7 @@ public class User implements Comparable {
    )
    @Export("set")
    void set(Username var1, Username var2) {
-      if(var1 == null) {
+      if (var1 == null) {
          throw new NullPointerException();
       } else {
          this.username0 = var1;

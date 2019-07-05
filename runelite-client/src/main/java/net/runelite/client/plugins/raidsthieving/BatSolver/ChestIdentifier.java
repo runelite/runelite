@@ -31,7 +31,7 @@ import net.runelite.client.plugins.raidsthieving.ThievingChest;
 
 public class ChestIdentifier
 {
-	public ChestIdentifier(ThievingRoomType roomType)
+	public ChestIdentifier(final ThievingRoomType roomType)
 	{
 		chestIds = new HashMap<>();
 		switch (roomType)
@@ -250,11 +250,10 @@ public class ChestIdentifier
 
 	}
 
-	public int indentifyChest(ThievingChest chest)
+	public void indentifyChest(ThievingChest chest)
 	{
 		int id = chestIds.get(chest.getInstancePoint());
 		chest.setChestId(id);
-		return id;
 	}
 
 	private Map<InstancePoint, Integer> chestIds;

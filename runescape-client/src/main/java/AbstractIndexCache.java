@@ -24,7 +24,7 @@ public abstract class AbstractIndexCache {
    @ObfuscatedGetter(
       intValue = -244224193
    )
-   static int __ir_s;
+   static int field1;
    @ObfuscatedName("au")
    @Export("garbageCollector")
    static GarbageCollectorMXBean garbageCollector;
@@ -32,7 +32,7 @@ public abstract class AbstractIndexCache {
    @ObfuscatedGetter(
       intValue = 334735939
    )
-   static int __ir_bu;
+   static int field2;
    @ObfuscatedName("di")
    @ObfuscatedSignature(
       signature = "Lit;"
@@ -97,11 +97,6 @@ public abstract class AbstractIndexCache {
    @Export("shallowRecords")
    boolean shallowRecords;
 
-   static {
-      gzipDecompressor = new GzipDecompressor();
-      __ir_s = 0;
-   }
-
    AbstractIndexCache(boolean var1, boolean var2) {
       this.releaseArchives = var1;
       this.shallowRecords = var2;
@@ -117,33 +112,33 @@ public abstract class AbstractIndexCache {
       this.hash = WallDecoration.method3257(var1, var1.length);
       Buffer var2 = new Buffer(Strings.decompressBytes(var1));
       int var3 = var2.readUnsignedByte();
-      if(var3 >= 5 && var3 <= 7) {
-         if(var3 >= 6) {
+      if (var3 >= 5 && var3 <= 7) {
+         if (var3 >= 6) {
             var2.readInt();
          }
 
          int var4 = var2.readUnsignedByte();
-         if(var3 >= 7) {
-            this.archiveCount = var2.__ad_309();
+         if (var3 >= 7) {
+            this.archiveCount = var2.method50();
          } else {
-            this.archiveCount = var2.__ag_302();
+            this.archiveCount = var2.method43();
          }
 
          int var5 = 0;
          int var6 = -1;
          this.archiveIds = new int[this.archiveCount];
          int var7;
-         if(var3 >= 7) {
-            for(var7 = 0; var7 < this.archiveCount; ++var7) {
-               this.archiveIds[var7] = var5 += var2.__ad_309();
-               if(this.archiveIds[var7] > var6) {
+         if (var3 >= 7) {
+            for (var7 = 0; var7 < this.archiveCount; ++var7) {
+               this.archiveIds[var7] = var5 += var2.method50();
+               if (this.archiveIds[var7] > var6) {
                   var6 = this.archiveIds[var7];
                }
             }
          } else {
-            for(var7 = 0; var7 < this.archiveCount; ++var7) {
-               this.archiveIds[var7] = var5 += var2.__ag_302();
-               if(this.archiveIds[var7] > var6) {
+            for (var7 = 0; var7 < this.archiveCount; ++var7) {
+               this.archiveIds[var7] = var5 += var2.method43();
+               if (this.archiveIds[var7] > var6) {
                   var6 = this.archiveIds[var7];
                }
             }
@@ -155,26 +150,26 @@ public abstract class AbstractIndexCache {
          this.recordIds = new int[var6 + 1][];
          this.archives = new Object[var6 + 1];
          this.records = new Object[var6 + 1][];
-         if(var4 != 0) {
+         if (var4 != 0) {
             this.archiveNameHashes = new int[var6 + 1];
 
-            for(var7 = 0; var7 < this.archiveCount; ++var7) {
+            for (var7 = 0; var7 < this.archiveCount; ++var7) {
                this.archiveNameHashes[this.archiveIds[var7]] = var2.readInt();
             }
 
             this.archiveNameHashTable = new IntHashTable(this.archiveNameHashes);
          }
 
-         for(var7 = 0; var7 < this.archiveCount; ++var7) {
+         for (var7 = 0; var7 < this.archiveCount; ++var7) {
             this.archiveCrcs[this.archiveIds[var7]] = var2.readInt();
          }
 
-         for(var7 = 0; var7 < this.archiveCount; ++var7) {
+         for (var7 = 0; var7 < this.archiveCount; ++var7) {
             this.archiveVersions[this.archiveIds[var7]] = var2.readInt();
          }
 
-         for(var7 = 0; var7 < this.archiveCount; ++var7) {
-            this.recordCounts[this.archiveIds[var7]] = var2.__ag_302();
+         for (var7 = 0; var7 < this.archiveCount; ++var7) {
+            this.recordCounts[this.archiveIds[var7]] = var2.method43();
          }
 
          int var8;
@@ -182,17 +177,17 @@ public abstract class AbstractIndexCache {
          int var10;
          int var11;
          int var12;
-         if(var3 >= 7) {
-            for(var7 = 0; var7 < this.archiveCount; ++var7) {
+         if (var3 >= 7) {
+            for (var7 = 0; var7 < this.archiveCount; ++var7) {
                var8 = this.archiveIds[var7];
                var9 = this.recordCounts[var8];
                var5 = 0;
                var10 = -1;
                this.recordIds[var8] = new int[var9];
 
-               for(var11 = 0; var11 < var9; ++var11) {
-                  var12 = this.recordIds[var8][var11] = var5 += var2.__ad_309();
-                  if(var12 > var10) {
+               for (var11 = 0; var11 < var9; ++var11) {
+                  var12 = this.recordIds[var8][var11] = var5 += var2.method50();
+                  if (var12 > var10) {
                      var10 = var12;
                   }
                }
@@ -200,16 +195,16 @@ public abstract class AbstractIndexCache {
                this.records[var8] = new Object[var10 + 1];
             }
          } else {
-            for(var7 = 0; var7 < this.archiveCount; ++var7) {
+            for (var7 = 0; var7 < this.archiveCount; ++var7) {
                var8 = this.archiveIds[var7];
                var9 = this.recordCounts[var8];
                var5 = 0;
                var10 = -1;
                this.recordIds[var8] = new int[var9];
 
-               for(var11 = 0; var11 < var9; ++var11) {
-                  var12 = this.recordIds[var8][var11] = var5 += var2.__ag_302();
-                  if(var12 > var10) {
+               for (var11 = 0; var11 < var9; ++var11) {
+                  var12 = this.recordIds[var8][var11] = var5 += var2.method43();
+                  if (var12 > var10) {
                      var10 = var12;
                   }
                }
@@ -218,16 +213,16 @@ public abstract class AbstractIndexCache {
             }
          }
 
-         if(var4 != 0) {
+         if (var4 != 0) {
             this.recordNameHashes = new int[var6 + 1][];
             this.recordNameHashTables = new IntHashTable[var6 + 1];
 
-            for(var7 = 0; var7 < this.archiveCount; ++var7) {
+            for (var7 = 0; var7 < this.archiveCount; ++var7) {
                var8 = this.archiveIds[var7];
                var9 = this.recordCounts[var8];
                this.recordNameHashes[var8] = new int[this.records[var8].length];
 
-               for(var10 = 0; var10 < var9; ++var10) {
+               for (var10 = 0; var10 < var9; ++var10) {
                   this.recordNameHashes[var8][this.recordIds[var8][var10]] = var2.readInt();
                }
 
@@ -245,7 +240,7 @@ public abstract class AbstractIndexCache {
       signature = "(II)V",
       garbageValue = "2102142648"
    )
-   void __f_392(int var1) {
+   void vmethod129(int var1) {
    }
 
    @ObfuscatedName("q")
@@ -265,20 +260,20 @@ public abstract class AbstractIndexCache {
    )
    @Export("takeRecordEncrypted")
    public byte[] takeRecordEncrypted(int var1, int var2, int[] var3) {
-      if(var1 >= 0 && var1 < this.records.length && this.records[var1] != null && var2 >= 0 && var2 < this.records[var1].length) {
-         if(this.records[var1][var2] == null) {
+      if (var1 >= 0 && var1 < this.records.length && this.records[var1] != null && var2 >= 0 && var2 < this.records[var1].length) {
+         if (this.records[var1][var2] == null) {
             boolean var4 = this.buildRecords(var1, var3);
-            if(!var4) {
+            if (!var4) {
                this.loadArchive(var1);
                var4 = this.buildRecords(var1, var3);
-               if(!var4) {
+               if (!var4) {
                   return null;
                }
             }
          }
 
          byte[] var5 = TextureProvider.byteArrayFromObject(this.records[var1][var2], false);
-         if(this.shallowRecords) {
+         if (this.shallowRecords) {
             this.records[var1][var2] = null;
          }
 
@@ -295,10 +290,10 @@ public abstract class AbstractIndexCache {
    )
    @Export("tryLoadRecord")
    public boolean tryLoadRecord(int var1, int var2) {
-      if(var1 >= 0 && var1 < this.records.length && this.records[var1] != null && var2 >= 0 && var2 < this.records[var1].length) {
-         if(this.records[var1][var2] != null) {
+      if (var1 >= 0 && var1 < this.records.length && this.records[var1] != null && var2 >= 0 && var2 < this.records[var1].length) {
+         if (this.records[var1][var2] != null) {
             return true;
-         } else if(this.archives[var1] != null) {
+         } else if (this.archives[var1] != null) {
             return true;
          } else {
             this.loadArchive(var1);
@@ -314,10 +309,10 @@ public abstract class AbstractIndexCache {
       signature = "(II)Z",
       garbageValue = "-1923759754"
    )
-   public boolean __u_393(int var1) {
-      if(this.records.length == 1) {
+   public boolean method1(int var1) {
+      if (this.records.length == 1) {
          return this.tryLoadRecord(0, var1);
-      } else if(this.records[var1].length == 1) {
+      } else if (this.records[var1].length == 1) {
          return this.tryLoadRecord(var1, 0);
       } else {
          throw new RuntimeException();
@@ -331,7 +326,7 @@ public abstract class AbstractIndexCache {
    )
    @Export("tryLoadArchive")
    public boolean tryLoadArchive(int var1) {
-      if(this.archives[var1] != null) {
+      if (this.archives[var1] != null) {
          return true;
       } else {
          this.loadArchive(var1);
@@ -344,14 +339,14 @@ public abstract class AbstractIndexCache {
       signature = "(I)Z",
       garbageValue = "1694975256"
    )
-   public boolean __l_394() {
+   public boolean method2() {
       boolean var1 = true;
 
-      for(int var2 = 0; var2 < this.archiveIds.length; ++var2) {
+      for (int var2 = 0; var2 < this.archiveIds.length; ++var2) {
          int var3 = this.archiveIds[var2];
-         if(this.archives[var3] == null) {
+         if (this.archives[var3] == null) {
             this.loadArchive(var3);
-            if(this.archives[var3] == null) {
+            if (this.archives[var3] == null) {
                var1 = false;
             }
          }
@@ -367,7 +362,7 @@ public abstract class AbstractIndexCache {
    )
    @Export("archiveLoadPercent")
    int archiveLoadPercent(int var1) {
-      return this.archives[var1] != null?100:0;
+      return this.archives[var1] != null ? 100 : 0;
    }
 
    @ObfuscatedName("x")
@@ -377,9 +372,9 @@ public abstract class AbstractIndexCache {
    )
    @Export("takeRecordFlat")
    public byte[] takeRecordFlat(int var1) {
-      if(this.records.length == 1) {
+      if (this.records.length == 1) {
          return this.takeRecord(0, var1);
-      } else if(this.records[var1].length == 1) {
+      } else if (this.records[var1].length == 1) {
          return this.takeRecord(var1, 0);
       } else {
          throw new RuntimeException();
@@ -393,13 +388,13 @@ public abstract class AbstractIndexCache {
    )
    @Export("getRecord")
    public byte[] getRecord(int var1, int var2) {
-      if(var1 >= 0 && var1 < this.records.length && this.records[var1] != null && var2 >= 0 && var2 < this.records[var1].length) {
-         if(this.records[var1][var2] == null) {
+      if (var1 >= 0 && var1 < this.records.length && this.records[var1] != null && var2 >= 0 && var2 < this.records[var1].length) {
+         if (this.records[var1][var2] == null) {
             boolean var3 = this.buildRecords(var1, (int[])null);
-            if(!var3) {
+            if (!var3) {
                this.loadArchive(var1);
                var3 = this.buildRecords(var1, (int[])null);
-               if(!var3) {
+               if (!var3) {
                   return null;
                }
             }
@@ -419,9 +414,9 @@ public abstract class AbstractIndexCache {
    )
    @Export("getRecordFlat")
    public byte[] getRecordFlat(int var1) {
-      if(this.records.length == 1) {
+      if (this.records.length == 1) {
          return this.getRecord(0, var1);
-      } else if(this.records[var1].length == 1) {
+      } else if (this.records[var1].length == 1) {
          return this.getRecord(var1, 0);
       } else {
          throw new RuntimeException();
@@ -442,8 +437,8 @@ public abstract class AbstractIndexCache {
       signature = "(IB)[I",
       garbageValue = "28"
    )
-   public int[] __j_395(int var1) {
-      return var1 >= 0 && var1 < this.recordIds.length?this.recordIds[var1]:null;
+   public int[] method3(int var1) {
+      return var1 >= 0 && var1 < this.recordIds.length ? this.recordIds[var1] : null;
    }
 
    @ObfuscatedName("s")
@@ -451,7 +446,7 @@ public abstract class AbstractIndexCache {
       signature = "(II)I",
       garbageValue = "1178362496"
    )
-   public int __s_396(int var1) {
+   public int method4(int var1) {
       return this.records[var1].length;
    }
 
@@ -460,7 +455,7 @@ public abstract class AbstractIndexCache {
       signature = "(I)I",
       garbageValue = "1702434573"
    )
-   public int __t_397() {
+   public int method5() {
       return this.records.length;
    }
 
@@ -469,8 +464,8 @@ public abstract class AbstractIndexCache {
       signature = "(B)V",
       garbageValue = "38"
    )
-   public void __y_398() {
-      for(int var1 = 0; var1 < this.archives.length; ++var1) {
+   public void method6() {
+      for (int var1 = 0; var1 < this.archives.length; ++var1) {
          this.archives[var1] = null;
       }
 
@@ -481,8 +476,8 @@ public abstract class AbstractIndexCache {
       signature = "(II)V",
       garbageValue = "330258899"
    )
-   public void __h_399(int var1) {
-      for(int var2 = 0; var2 < this.records[var1].length; ++var2) {
+   public void method7(int var1) {
+      for (int var2 = 0; var2 < this.records[var1].length; ++var2) {
          this.records[var1][var2] = null;
       }
 
@@ -493,10 +488,10 @@ public abstract class AbstractIndexCache {
       signature = "(I)V",
       garbageValue = "-709581639"
    )
-   public void __b_400() {
-      for(int var1 = 0; var1 < this.records.length; ++var1) {
-         if(this.records[var1] != null) {
-            for(int var2 = 0; var2 < this.records[var1].length; ++var2) {
+   public void method8() {
+      for (int var1 = 0; var1 < this.records.length; ++var1) {
+         if (this.records[var1] != null) {
+            for (int var2 = 0; var2 < this.records[var1].length; ++var2) {
                this.records[var1][var2] = null;
             }
          }
@@ -511,7 +506,7 @@ public abstract class AbstractIndexCache {
    )
    @Export("buildRecords")
    boolean buildRecords(int var1, int[] var2) {
-      if(this.archives[var1] == null) {
+      if (this.archives[var1] == null) {
          return false;
       } else {
          int var3 = this.recordCounts[var1];
@@ -519,18 +514,18 @@ public abstract class AbstractIndexCache {
          Object[] var5 = this.records[var1];
          boolean var6 = true;
 
-         for(int var7 = 0; var7 < var3; ++var7) {
-            if(var5[var4[var7]] == null) {
+         for (int var7 = 0; var7 < var3; ++var7) {
+            if (var5[var4[var7]] == null) {
                var6 = false;
                break;
             }
          }
 
-         if(var6) {
+         if (var6) {
             return true;
          } else {
             byte[] var18;
-            if(var2 == null || var2[0] == 0 && var2[1] == 0 && var2[2] == 0 && var2[3] == 0) {
+            if (var2 == null || var2[0] == 0 && var2[1] == 0 && var2[2] == 0 && var2[3] == 0) {
                var18 = TextureProvider.byteArrayFromObject(this.archives[var1], false);
             } else {
                var18 = TextureProvider.byteArrayFromObject(this.archives[var1], true);
@@ -538,63 +533,63 @@ public abstract class AbstractIndexCache {
                var8.xteaDecrypt(var2, 5, var8.array.length);
             }
 
-            byte[] var20 = Strings.decompressBytes(var18);
-            if(this.releaseArchives) {
+            byte[] var19 = Strings.decompressBytes(var18);
+            if (this.releaseArchives) {
                this.archives[var1] = null;
             }
 
-            if(var3 > 1) {
-               int var9 = var20.length;
+            if (var3 > 1) {
+               int var9 = var19.length;
                --var9;
-               int var10 = var20[var9] & 255;
+               int var10 = var19[var9] & 255;
                var9 -= var10 * var3 * 4;
-               Buffer var11 = new Buffer(var20);
+               Buffer var11 = new Buffer(var19);
                int[] var12 = new int[var3];
                var11.index = var9;
 
+               int var13;
                int var14;
-               int var15;
-               for(int var13 = 0; var13 < var10; ++var13) {
-                  var14 = 0;
+               for (int var15 = 0; var15 < var10; ++var15) {
+                  var13 = 0;
 
-                  for(var15 = 0; var15 < var3; ++var15) {
-                     var14 += var11.readInt();
-                     var12[var15] += var14;
+                  for (var14 = 0; var14 < var3; ++var14) {
+                     var13 += var11.readInt();
+                     var12[var14] += var13;
                   }
                }
 
-               byte[][] var19 = new byte[var3][];
+               byte[][] var20 = new byte[var3][];
 
-               for(var14 = 0; var14 < var3; ++var14) {
-                  var19[var14] = new byte[var12[var14]];
-                  var12[var14] = 0;
+               for (var13 = 0; var13 < var3; ++var13) {
+                  var20[var13] = new byte[var12[var13]];
+                  var12[var13] = 0;
                }
 
                var11.index = var9;
-               var14 = 0;
+               var13 = 0;
 
-               for(var15 = 0; var15 < var10; ++var15) {
+               for (var14 = 0; var14 < var10; ++var14) {
                   int var16 = 0;
 
-                  for(int var17 = 0; var17 < var3; ++var17) {
+                  for (int var17 = 0; var17 < var3; ++var17) {
                      var16 += var11.readInt();
-                     System.arraycopy(var20, var14, var19[var17], var12[var17], var16);
+                     System.arraycopy(var19, var13, var20[var17], var12[var17], var16);
                      var12[var17] += var16;
-                     var14 += var16;
+                     var13 += var16;
                   }
                }
 
-               for(var15 = 0; var15 < var3; ++var15) {
-                  if(!this.shallowRecords) {
-                     var5[var4[var15]] = Projectile.byteArrayToObject(var19[var15], false);
+               for (var14 = 0; var14 < var3; ++var14) {
+                  if (!this.shallowRecords) {
+                     var5[var4[var14]] = Projectile.byteArrayToObject(var20[var14], false);
                   } else {
-                     var5[var4[var15]] = var19[var15];
+                     var5[var4[var14]] = var20[var14];
                   }
                }
-            } else if(!this.shallowRecords) {
-               var5[var4[0]] = Projectile.byteArrayToObject(var20, false);
+            } else if (!this.shallowRecords) {
+               var5[var4[0]] = Projectile.byteArrayToObject(var19, false);
             } else {
-               var5[var4[0]] = var20;
+               var5[var4[0]] = var19;
             }
 
             return true;
@@ -629,11 +624,11 @@ public abstract class AbstractIndexCache {
       signature = "(Ljava/lang/String;Ljava/lang/String;B)Z",
       garbageValue = "68"
    )
-   public boolean __ag_401(String var1, String var2) {
+   public boolean method9(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
       int var3 = this.archiveNameHashTable.get(Client.hashString(var1));
-      if(var3 < 0) {
+      if (var3 < 0) {
          return false;
       } else {
          int var4 = this.recordNameHashTables[var3].get(Client.hashString(var2));
@@ -686,12 +681,13 @@ public abstract class AbstractIndexCache {
       signature = "(Ljava/lang/String;B)V",
       garbageValue = "40"
    )
-   public void __ar_402(String var1) {
+   public void method10(String var1) {
       var1 = var1.toLowerCase();
       int var2 = this.archiveNameHashTable.get(Client.hashString(var1));
-      if(var2 >= 0) {
-         this.__f_392(var2);
+      if (var2 >= 0) {
+         this.vmethod129(var2);
       }
+
    }
 
    @ObfuscatedName("ac")
@@ -715,16 +711,16 @@ public abstract class AbstractIndexCache {
    static final IterableNodeHashTable readStringIntParameters(Buffer var0, IterableNodeHashTable var1) {
       int var2 = var0.readUnsignedByte();
       int var3;
-      if(var1 == null) {
+      if (var1 == null) {
          var3 = World.method1759(var2);
          var1 = new IterableNodeHashTable(var3);
       }
 
-      for(var3 = 0; var3 < var2; ++var3) {
+      for (var3 = 0; var3 < var2; ++var3) {
          boolean var4 = var0.readUnsignedByte() == 1;
          int var5 = var0.readMedium();
          Object var6;
-         if(var4) {
+         if (var4) {
             var6 = new ObjectNode(var0.readStringCp1252NullTerminated());
          } else {
             var6 = new IntegerNode(var0.readInt());
@@ -752,10 +748,10 @@ public abstract class AbstractIndexCache {
       garbageValue = "308670894"
    )
    static boolean method4585() {
-      if(Client.indexCacheLoaders != null && Client.indexCacheLoaderIndex < Client.indexCacheLoaders.size()) {
-         while(Client.indexCacheLoaderIndex < Client.indexCacheLoaders.size()) {
+      if (Client.indexCacheLoaders != null && Client.indexCacheLoaderIndex < Client.indexCacheLoaders.size()) {
+         while (Client.indexCacheLoaderIndex < Client.indexCacheLoaders.size()) {
             IndexCacheLoader var0 = (IndexCacheLoader)Client.indexCacheLoaders.get(Client.indexCacheLoaderIndex);
-            if(!var0.__m_122()) {
+            if (!var0.method134()) {
                return false;
             }
 
@@ -766,5 +762,10 @@ public abstract class AbstractIndexCache {
       } else {
          return true;
       }
+   }
+
+   static {
+      gzipDecompressor = new GzipDecompressor();
+      field1 = 0;
    }
 }

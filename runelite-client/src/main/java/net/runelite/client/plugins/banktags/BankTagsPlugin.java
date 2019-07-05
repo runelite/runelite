@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -82,6 +83,7 @@ import net.runelite.client.util.Text;
 	tags = {"searching", "tagging"}
 )
 @PluginDependency(ClueScrollPlugin.class)
+@Singleton
 public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyListener
 {
 	public static final String CONFIG_GROUP = "banktags";

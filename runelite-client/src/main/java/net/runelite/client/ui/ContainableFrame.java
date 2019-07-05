@@ -39,6 +39,17 @@ public class ContainableFrame extends JFrame
 	private boolean containedInScreen;
 	private boolean expandedClientOppositeDirection;
 
+	ContainableFrame()
+	{
+		addWindowStateListener(windowEvent ->
+		{
+			if (windowEvent.getNewState() == Frame.NORMAL)
+			{
+				revalidateMinimumSize();
+			}
+		});
+	}
+
 	public void setContainedInScreen(boolean value)
 	{
 		this.containedInScreen = value;

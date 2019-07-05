@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("i")
 public class class13 {
    @ObfuscatedName("x")
-   static int[] __i_x;
+   static int[] field1112;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lhe;"
@@ -26,7 +26,7 @@ public class class13 {
       garbageValue = "862375604"
    )
    static Sprite method164(int var0, int var1, int var2) {
-      return (Sprite)WorldMapRegion.__av_o.get(MouseHandler.method1083(var0, var1, var2));
+      return (Sprite)WorldMapRegion.field1051.get(MouseHandler.method1083(var0, var1, var2));
    }
 
    @ObfuscatedName("fm")
@@ -36,11 +36,11 @@ public class class13 {
    )
    @Export("playPcmPlayers")
    static final void playPcmPlayers() {
-      if(AbstractIndexCache.pcmPlayer1 != null) {
+      if (AbstractIndexCache.pcmPlayer1 != null) {
          AbstractIndexCache.pcmPlayer1.run();
       }
 
-      if(WorldMapCacheName.pcmPlayer0 != null) {
+      if (WorldMapCacheName.pcmPlayer0 != null) {
          WorldMapCacheName.pcmPlayer0.run();
       }
 
@@ -56,23 +56,23 @@ public class class13 {
       int var3 = -1;
       int var4 = 0;
       int var5 = 0;
-      if(var0.field906 == 0) {
-         var1 = class65.scene.__ar_244(var0.field911, var0.field913, var0.field901);
+      if (var0.field906 == 0) {
+         var1 = class65.scene.method290(var0.field911, var0.field913, var0.field901);
       }
 
-      if(var0.field906 == 1) {
-         var1 = class65.scene.__ac_245(var0.field911, var0.field913, var0.field901);
+      if (var0.field906 == 1) {
+         var1 = class65.scene.method291(var0.field911, var0.field913, var0.field901);
       }
 
-      if(var0.field906 == 2) {
-         var1 = class65.scene.__ay_246(var0.field911, var0.field913, var0.field901);
+      if (var0.field906 == 2) {
+         var1 = class65.scene.method292(var0.field911, var0.field913, var0.field901);
       }
 
-      if(var0.field906 == 3) {
+      if (var0.field906 == 3) {
          var1 = class65.scene.getFloorDecorationTag(var0.field911, var0.field913, var0.field901);
       }
 
-      if(var1 != 0L) {
+      if (var1 != 0L) {
          int var6 = class65.scene.getObjectFlags(var0.field911, var0.field913, var0.field901, var1);
          var3 = HitSplatDefinition.method4972(var1);
          var4 = var6 & 31;

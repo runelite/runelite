@@ -32,6 +32,7 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.Duration;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import static net.runelite.api.AnimationID.COOKING_FIRE;
 import static net.runelite.api.AnimationID.COOKING_RANGE;
 import net.runelite.api.Client;
@@ -47,6 +48,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+@Singleton
 class CookingOverlay extends Overlay
 {
 	private static final int COOK_TIMEOUT = 3;
@@ -58,7 +60,7 @@ class CookingOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private CookingOverlay(Client client, CookingPlugin plugin, XpTrackerService xpTrackerService)
+	private CookingOverlay(final Client client, final CookingPlugin plugin, final XpTrackerService xpTrackerService)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);

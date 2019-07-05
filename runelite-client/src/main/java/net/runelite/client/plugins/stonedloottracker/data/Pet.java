@@ -2,10 +2,11 @@ package net.runelite.client.plugins.stonedloottracker.data;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum Pet
 {
 	// GWD Pets
@@ -46,7 +47,7 @@ public enum Pet
 	private final String[] bossNames;
 	private static final Map<String, Pet> byBossName = buildBossMap();
 
-	Pet(int id, String... bossNames)
+	Pet(final int id, final String... bossNames)
 	{
 		this.petID = id;
 		this.bossNames = bossNames;

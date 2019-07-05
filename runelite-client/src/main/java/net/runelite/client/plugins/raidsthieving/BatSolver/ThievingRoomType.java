@@ -38,7 +38,7 @@ public enum ThievingRoomType
 	private final int x;
 	private final int y;
 
-	ThievingRoomType(int x, int y)
+	ThievingRoomType(final int x, final int y)
 	{
 		this.x = x;
 		this.y = y;

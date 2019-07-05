@@ -14,7 +14,7 @@ public class ClientPreferences {
    @ObfuscatedGetter(
       intValue = 1548448409
    )
-   static int __bf_m;
+   static int field342;
    @ObfuscatedName("gr")
    @ObfuscatedSignature(
       signature = "[Lln;"
@@ -43,16 +43,12 @@ public class ClientPreferences {
    @Export("parameters")
    LinkedHashMap parameters;
 
-   static {
-      __bf_m = 6;
-   }
-
    ClientPreferences() {
       this.windowMode = 1;
       this.rememberedUsername = null;
       this.hideUsername = false;
       this.parameters = new LinkedHashMap();
-      this.__m_150(true);
+      this.method89(true);
    }
 
    @ObfuscatedSignature(
@@ -63,43 +59,43 @@ public class ClientPreferences {
       this.rememberedUsername = null;
       this.hideUsername = false;
       this.parameters = new LinkedHashMap();
-      if(var1 != null && var1.array != null) {
+      if (var1 != null && var1.array != null) {
          int var2 = var1.readUnsignedByte();
-         if(var2 >= 0 && var2 <= __bf_m) {
-            if(var1.readUnsignedByte() == 1) {
+         if (var2 >= 0 && var2 <= field342) {
+            if (var1.readUnsignedByte() == 1) {
                this.roofsHidden = true;
             }
 
-            if(var2 > 1) {
+            if (var2 > 1) {
                this.titleMusicDisabled = var1.readUnsignedByte() == 1;
             }
 
-            if(var2 > 3) {
+            if (var2 > 3) {
                this.windowMode = var1.readUnsignedByte();
             }
 
-            if(var2 > 2) {
+            if (var2 > 2) {
                int var3 = var1.readUnsignedByte();
 
-               for(int var4 = 0; var4 < var3; ++var4) {
+               for (int var4 = 0; var4 < var3; ++var4) {
                   int var5 = var1.readInt();
                   int var6 = var1.readInt();
-                  this.parameters.put(Integer.valueOf(var5), Integer.valueOf(var6));
+                  this.parameters.put(var5, var6);
                }
             }
 
-            if(var2 > 4) {
+            if (var2 > 4) {
                this.rememberedUsername = var1.readStringCp1252NullTerminatedOrNull();
             }
 
-            if(var2 > 5) {
+            if (var2 > 5) {
                this.hideUsername = var1.readBoolean();
             }
          } else {
-            this.__m_150(true);
+            this.method89(true);
          }
       } else {
-         this.__m_150(true);
+         this.method89(true);
       }
 
    }
@@ -109,7 +105,7 @@ public class ClientPreferences {
       signature = "(ZI)V",
       garbageValue = "1213718182"
    )
-   void __m_150(boolean var1) {
+   void method89(boolean var1) {
    }
 
    @ObfuscatedName("f")
@@ -120,20 +116,20 @@ public class ClientPreferences {
    @Export("toBuffer")
    Buffer toBuffer() {
       Buffer var1 = new Buffer(100);
-      var1.writeByte(__bf_m);
-      var1.writeByte(this.roofsHidden?1:0);
-      var1.writeByte(this.titleMusicDisabled?1:0);
+      var1.writeByte(field342);
+      var1.writeByte(this.roofsHidden ? 1 : 0);
+      var1.writeByte(this.titleMusicDisabled ? 1 : 0);
       var1.writeByte(this.windowMode);
       var1.writeByte(this.parameters.size());
       Iterator var2 = this.parameters.entrySet().iterator();
 
-      while(var2.hasNext()) {
+      while (var2.hasNext()) {
          Entry var3 = (Entry)var2.next();
-         var1.writeInt(((Integer)var3.getKey()).intValue());
-         var1.writeInt(((Integer)var3.getValue()).intValue());
+         var1.writeInt((Integer)var3.getKey());
+         var1.writeInt((Integer)var3.getValue());
       }
 
-      var1.writeStringCp1252NullTerminated(this.rememberedUsername != null?this.rememberedUsername:"");
+      var1.writeStringCp1252NullTerminated(this.rememberedUsername != null ? this.rememberedUsername : "");
       var1.writeBoolean(this.hideUsername);
       return var1;
    }
@@ -153,8 +149,13 @@ public class ClientPreferences {
       garbageValue = "0"
    )
    static final void method1809(int var0) {
-      if(GroundItemPile.loadWidgetGroup(var0)) {
+      if (GroundItemPile.loadWidgetGroup(var0)) {
          NetFileRequest.method4555(Widget.widgets[var0], -1);
       }
+
+   }
+
+   static {
+      field342 = 6;
    }
 }

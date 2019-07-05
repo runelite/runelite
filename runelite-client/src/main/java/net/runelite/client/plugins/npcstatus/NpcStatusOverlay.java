@@ -27,6 +27,7 @@ package net.runelite.client.plugins.npcstatus;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
@@ -34,13 +35,14 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class NpcStatusOverlay extends Overlay
 {
 	private final Client client;
 	private final NpcStatusPlugin plugin;
 
 	@Inject
-	NpcStatusOverlay(Client client, NpcStatusPlugin plugin)
+	NpcStatusOverlay(final Client client, final NpcStatusPlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;

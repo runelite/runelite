@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.MenuEntry;
@@ -31,10 +32,10 @@ import net.runelite.api.MenuEntry;
 @RequiredArgsConstructor
 class MenuEntryWithCount
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final MenuEntry entry;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int count = 1;
 
 	void increment()

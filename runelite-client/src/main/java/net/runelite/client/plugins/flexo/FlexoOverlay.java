@@ -35,38 +35,37 @@ import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Singleton
 public class FlexoOverlay extends Overlay
 {
-	private static Rectangle clickArea;
-
-	ArrayList<Rectangle> clickAreas = new ArrayList<>();
-	ArrayList<Point> clickPoints = new ArrayList<>();
+	@Inject
+	private FlexoPlugin plugin;
 
 	@Inject
-	private FlexoConfig config;
-
-	@Inject
-	public FlexoOverlay(FlexoConfig config)
+	public FlexoOverlay(final FlexoPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		this.config = config;
+		this.plugin = plugin;
 	}
 
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.getDebugNPCs() || config.getDebugGroundItems() || config.getDebugPlayers())
+		if (!plugin.isOverlayEnabled())
 		{
-			if (clickArea != null)
-			{
-				graphics.draw(clickArea);
-			}
+			return null;
+		}
+
+		if (plugin.isDebugNPCs() || plugin.isDebugGroundItems() || plugin.isDebugPlayers())
+		{
+			ArrayList<Rectangle> clickAreas = plugin.getClickAreas();
 			if (clickAreas != null)
 			{
 				for (Rectangle clickArea : clickAreas)
@@ -77,6 +76,8 @@ public class FlexoOverlay extends Overlay
 					}
 				}
 			}
+
+			ArrayList<Point> clickPoints = plugin.getClickPoints();
 			if (clickPoints != null)
 			{
 				for (Point p : clickPoints)

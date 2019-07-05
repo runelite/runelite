@@ -11,7 +11,7 @@ public final class BoundaryObject {
    @ObfuscatedSignature(
       signature = "Lho;"
    )
-   static Widget __ej_jv;
+   static Widget field40;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -9307913
@@ -79,57 +79,57 @@ public final class BoundaryObject {
    )
    @Export("doCheat")
    static final void doCheat(String var0) {
-      if(var0.equalsIgnoreCase("toggleroof")) {
+      if (var0.equalsIgnoreCase("toggleroof")) {
          ReflectionCheck.clientPreferences.roofsHidden = !ReflectionCheck.clientPreferences.roofsHidden;
          WorldMapSection0.savePreferences();
-         if(ReflectionCheck.clientPreferences.roofsHidden) {
+         if (ReflectionCheck.clientPreferences.roofsHidden) {
             WorldMapIcon1.method219(99, "", "Roofs are now all hidden");
          } else {
             WorldMapIcon1.method219(99, "", "Roofs will only be removed selectively");
          }
       }
 
-      if(var0.equalsIgnoreCase("displayfps")) {
+      if (var0.equalsIgnoreCase("displayfps")) {
          Client.displayFps = !Client.displayFps;
       }
 
-      if(var0.equalsIgnoreCase("renderself")) {
+      if (var0.equalsIgnoreCase("renderself")) {
          Client.renderSelf = !Client.renderSelf;
       }
 
-      if(var0.equalsIgnoreCase("mouseovertext")) {
+      if (var0.equalsIgnoreCase("mouseovertext")) {
          Client.showMouseOverText = !Client.showMouseOverText;
       }
 
-      if(Client.rights >= 2) {
-         if(var0.equalsIgnoreCase("errortest")) {
+      if (Client.rights >= 2) {
+         if (var0.equalsIgnoreCase("errortest")) {
             throw new RuntimeException();
          }
 
-         if(var0.equalsIgnoreCase("showcoord")) {
+         if (var0.equalsIgnoreCase("showcoord")) {
             class60.worldMap0.showCoord = !class60.worldMap0.showCoord;
          }
 
-         if(var0.equalsIgnoreCase("fpson")) {
+         if (var0.equalsIgnoreCase("fpson")) {
             Client.displayFps = true;
          }
 
-         if(var0.equalsIgnoreCase("fpsoff")) {
+         if (var0.equalsIgnoreCase("fpsoff")) {
             Client.displayFps = false;
          }
 
-         if(var0.equalsIgnoreCase("gc")) {
+         if (var0.equalsIgnoreCase("gc")) {
             System.gc();
          }
 
-         if(var0.equalsIgnoreCase("clientdrop")) {
+         if (var0.equalsIgnoreCase("clientdrop")) {
             class48.method868();
          }
       }
 
-      PacketBufferNode var1 = Interpreter.method1915(ClientPacket.__gs_bo, Client.packetWriter.isaacCipher);
+      PacketBufferNode var1 = Interpreter.method1915(ClientPacket.field282, Client.packetWriter.isaacCipher);
       var1.packetBuffer.writeByte(var0.length() + 1);
       var1.packetBuffer.writeStringCp1252NullTerminated(var0);
-      Client.packetWriter.__q_167(var1);
+      Client.packetWriter.method241(var1);
    }
 }

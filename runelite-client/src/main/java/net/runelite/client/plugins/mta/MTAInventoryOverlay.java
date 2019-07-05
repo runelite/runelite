@@ -27,17 +27,19 @@ package net.runelite.client.plugins.mta;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Singleton
 public class MTAInventoryOverlay extends Overlay
 {
 	private final MTAPlugin plugin;
 
 	@Inject
-	public MTAInventoryOverlay(MTAPlugin plugin)
+	public MTAInventoryOverlay(final MTAPlugin plugin)
 	{
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);

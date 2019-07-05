@@ -33,12 +33,16 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.PlayerDespawned;
@@ -64,6 +68,7 @@ import net.runelite.client.util.ImageUtil;
  * I am fully aware that there is plenty of overhead and is a MESS!
  * If you'd like to contribute please do!
  */
+@Singleton
 public class PrayAgainstPlayerPlugin extends Plugin
 {
 
@@ -97,6 +102,37 @@ public class PrayAgainstPlayerPlugin extends Plugin
 	@Inject
 	private PrayAgainstPlayerConfig config;
 
+	@Getter(AccessLevel.PACKAGE)
+	private Color attackerPlayerColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color potentialPlayerColor;
+	private int attackerTargetTimeout;
+	private int potentialTargetTimeout;
+	private int newSpawnTimeout;
+	private boolean ignoreFriends;
+	private boolean ignoreClanMates;
+	private boolean markNewPlayer;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawTargetPrayAgainst;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawPotentialTargetPrayAgainst;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawTargetPrayAgainstPrayerTab;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawTargetsName;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawPotentialTargetsName;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawTargetHighlight;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawPotentialTargetHighlight;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawTargetTile;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawPotentialTargetTile;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawUnknownWeapons;
+
 	@Provides
 	PrayAgainstPlayerConfig provideConfig(ConfigManager configManager)
 	{
@@ -115,6 +151,8 @@ public class PrayAgainstPlayerPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+
 		potentialPlayersAttackingMe = new ArrayList<>();
 		playersAttackingMe = new ArrayList<>();
 		overlayManager.add(overlay);
@@ -136,11 +174,11 @@ public class PrayAgainstPlayerPlugin extends Plugin
 			Player sourcePlayer = (Player) animationChanged.getActor();
 
 			// is the client is a friend/clan and the config is set to ignore friends/clan dont add them to list
-			if (client.isFriended(sourcePlayer.getName(), true) && config.ignoreFriends())
+			if (client.isFriended(sourcePlayer.getName(), true) && this.ignoreFriends)
 			{
 				return;
 			}
-			if (client.isClanMember(sourcePlayer.getName()) && config.ignoreClanMates())
+			if (client.isClanMember(sourcePlayer.getName()) && this.ignoreClanMates)
 			{
 				return;
 			}
@@ -160,7 +198,7 @@ public class PrayAgainstPlayerPlugin extends Plugin
 				// if he's not in the attackers list, add him
 				if (findPlayerInAttackerList(sourcePlayer) == null)
 				{
-					PlayerContainer container = new PlayerContainer(sourcePlayer, System.currentTimeMillis(), (config.attackerTargetTimeout() * 1000));
+					PlayerContainer container = new PlayerContainer(sourcePlayer, System.currentTimeMillis(), (this.attackerTargetTimeout * 1000));
 					playersAttackingMe.add(container);
 				}
 			}
@@ -179,16 +217,16 @@ public class PrayAgainstPlayerPlugin extends Plugin
 			{ //we're being interacted with
 
 				// is the client is a friend/clan and the config is set to ignore friends/clan dont add them to list
-				if (client.isFriended(sourcePlayer.getName(), true) && config.ignoreFriends())
+				if (client.isFriended(sourcePlayer.getName(), true) && this.ignoreFriends)
 				{
 					return;
 				}
-				if (client.isClanMember(sourcePlayer.getName()) && config.ignoreClanMates())
+				if (client.isClanMember(sourcePlayer.getName()) && this.ignoreClanMates)
 				{
 					return;
 				}
 
-				PlayerContainer container = new PlayerContainer(sourcePlayer, System.currentTimeMillis(), (config.potentialTargetTimeout() * 1000));
+				PlayerContainer container = new PlayerContainer(sourcePlayer, System.currentTimeMillis(), (this.potentialTargetTimeout * 1000));
 				potentialPlayersAttackingMe.add(container);
 			}
 		}
@@ -212,15 +250,15 @@ public class PrayAgainstPlayerPlugin extends Plugin
 	@Subscribe
 	protected void onPlayerSpawned(PlayerSpawned playerSpawned)
 	{
-		if (config.markNewPlayer())
+		if (this.markNewPlayer)
 		{
 			Player p = playerSpawned.getPlayer();
 
-			if (client.isFriended(p.getName(), true) && config.ignoreFriends())
+			if (client.isFriended(p.getName(), true) && this.ignoreFriends)
 			{
 				return;
 			}
-			if (client.isClanMember(p.getName()) && config.ignoreClanMates())
+			if (client.isClanMember(p.getName()) && this.ignoreClanMates)
 			{
 				return;
 			}
@@ -228,7 +266,7 @@ public class PrayAgainstPlayerPlugin extends Plugin
 			PlayerContainer container = findPlayerInPotentialList(p);
 			if (container == null)
 			{
-				container = new PlayerContainer(p, System.currentTimeMillis(), (config.newSpawnTimeout() * 1000));
+				container = new PlayerContainer(p, System.currentTimeMillis(), (this.newSpawnTimeout * 1000));
 				potentialPlayersAttackingMe.add(container);
 			}
 		}
@@ -274,7 +312,7 @@ public class PrayAgainstPlayerPlugin extends Plugin
 	private void resetPlayerFromAttackerContainerTimer(PlayerContainer container)
 	{
 		removePlayerFromAttackerContainer(container);
-		PlayerContainer newContainer = new PlayerContainer(container.getPlayer(), System.currentTimeMillis(), (config.attackerTargetTimeout() * 1000));
+		PlayerContainer newContainer = new PlayerContainer(container.getPlayer(), System.currentTimeMillis(), (this.attackerTargetTimeout * 1000));
 		playersAttackingMe.add(newContainer);
 	}
 
@@ -377,4 +415,36 @@ public class PrayAgainstPlayerPlugin extends Plugin
 		return null;
 	}
 
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("prayagainstplayer"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.attackerPlayerColor = config.attackerPlayerColor();
+		this.potentialPlayerColor = config.potentialPlayerColor();
+		this.attackerTargetTimeout = config.attackerTargetTimeout();
+		this.potentialTargetTimeout = config.potentialTargetTimeout();
+		this.newSpawnTimeout = config.newSpawnTimeout();
+		this.ignoreFriends = config.ignoreFriends();
+		this.ignoreClanMates = config.ignoreClanMates();
+		this.markNewPlayer = config.markNewPlayer();
+		this.drawTargetPrayAgainst = config.drawTargetPrayAgainst();
+		this.drawPotentialTargetPrayAgainst = config.drawPotentialTargetPrayAgainst();
+		this.drawTargetPrayAgainstPrayerTab = config.drawTargetPrayAgainstPrayerTab();
+		this.drawTargetsName = config.drawTargetsName();
+		this.drawPotentialTargetsName = config.drawPotentialTargetsName();
+		this.drawTargetHighlight = config.drawTargetHighlight();
+		this.drawPotentialTargetHighlight = config.drawPotentialTargetHighlight();
+		this.drawTargetTile = config.drawTargetTile();
+		this.drawPotentialTargetTile = config.drawPotentialTargetTile();
+		this.drawUnknownWeapons = config.drawUnknownWeapons();
+	}
 }

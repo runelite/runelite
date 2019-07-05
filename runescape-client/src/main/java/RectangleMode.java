@@ -11,17 +11,18 @@ public enum RectangleMode implements Enumerated {
    @ObfuscatedSignature(
       signature = "Llj;"
    )
-   __lj_m(0, 0),
+   field757(0, 0),
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Llj;"
    )
-   __lj_f(1, 1),
+   field758(1, 1),
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Llj;"
    )
-   __lj_q(2, 2);
+   field759(2, 2);
+
    @ObfuscatedName("d")
    @Export("musicTrackBoolean")
    public static boolean musicTrackBoolean;
@@ -38,7 +39,7 @@ public enum RectangleMode implements Enumerated {
    @Export("id2")
    final int id2;
 
-   RectangleMode(int var3, int var4) {
+   private RectangleMode(int var3, int var4) {
       this.id = var3;
       this.id2 = var4;
    }
@@ -60,7 +61,7 @@ public enum RectangleMode implements Enumerated {
    )
    public static void method6028(AbstractIndexCache var0, AbstractIndexCache var1, boolean var2) {
       ObjectDefinition.ObjectDefinition_indexCache = var0;
-      ObjectDefinition.__jr_q = var1;
+      ObjectDefinition.field640 = var1;
       ObjectDefinition.ObjectDefinition_isLowDetail = var2;
    }
 }

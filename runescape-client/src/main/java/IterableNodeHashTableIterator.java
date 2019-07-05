@@ -17,68 +17,71 @@ public class IterableNodeHashTableIterator implements Iterator {
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   Node __f;
+   @Export("head")
+   Node head;
    @ObfuscatedName("q")
-   int __q;
+   @Export("index")
+   int index;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
-   Node __w;
+   @Export("last")
+   Node last;
 
    @ObfuscatedSignature(
       signature = "(Llh;)V"
    )
    IterableNodeHashTableIterator(IterableNodeHashTable var1) {
-      this.__w = null;
+      this.last = null;
       this.hashTable = var1;
-      this.__u_483();
+      this.start();
    }
 
    @ObfuscatedName("u")
-   void __u_483() {
-      this.__f = this.hashTable.buckets[0].previous;
-      this.__q = 1;
-      this.__w = null;
+   @Export("start")
+   void start() {
+      this.head = this.hashTable.buckets[0].previous;
+      this.index = 1;
+      this.last = null;
    }
 
    @Export("next")
    @ObfuscatedName("next")
    public Object next() {
       Node var1;
-      if(this.hashTable.buckets[this.__q - 1] != this.__f) {
-         var1 = this.__f;
-         this.__f = var1.previous;
-         this.__w = var1;
+      if (this.hashTable.buckets[this.index - 1] != this.head) {
+         var1 = this.head;
+         this.head = var1.previous;
+         this.last = var1;
          return var1;
       } else {
-         do {
-            if(this.__q >= this.hashTable.size) {
-               return null;
+         while (this.index < this.hashTable.size) {
+            var1 = this.hashTable.buckets[this.index++].previous;
+            if (var1 != this.hashTable.buckets[this.index - 1]) {
+               this.head = var1.previous;
+               this.last = var1;
+               return var1;
             }
+         }
 
-            var1 = this.hashTable.buckets[this.__q++].previous;
-         } while(var1 == this.hashTable.buckets[this.__q - 1]);
-
-         this.__f = var1.previous;
-         this.__w = var1;
-         return var1;
+         return null;
       }
    }
 
    @Export("hasNext")
    @ObfuscatedName("hasNext")
    public boolean hasNext() {
-      if(this.hashTable.buckets[this.__q - 1] != this.__f) {
+      if (this.hashTable.buckets[this.index - 1] != this.head) {
          return true;
       } else {
-         while(this.__q < this.hashTable.size) {
-            if(this.hashTable.buckets[this.__q++].previous != this.hashTable.buckets[this.__q - 1]) {
-               this.__f = this.hashTable.buckets[this.__q - 1].previous;
+         while (this.index < this.hashTable.size) {
+            if (this.hashTable.buckets[this.index++].previous != this.hashTable.buckets[this.index - 1]) {
+               this.head = this.hashTable.buckets[this.index - 1].previous;
                return true;
             }
 
-            this.__f = this.hashTable.buckets[this.__q - 1];
+            this.head = this.hashTable.buckets[this.index - 1];
          }
 
          return false;
@@ -86,12 +89,13 @@ public class IterableNodeHashTableIterator implements Iterator {
    }
 
    @ObfuscatedName("remove")
-   public void __remove_486() {
-      if(this.__w == null) {
+   @Export("remove")
+   public void remove() {
+      if (this.last == null) {
          throw new IllegalStateException();
       } else {
-         this.__w.remove();
-         this.__w = null;
+         this.last.remove();
+         this.last = null;
       }
    }
 }

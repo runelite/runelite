@@ -26,6 +26,7 @@ package net.runelite.client.plugins.customcursor;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -38,6 +39,7 @@ import net.runelite.client.ui.ClientUI;
 	description = "Replaces your mouse cursor image",
 	enabledByDefault = false
 )
+@Singleton
 public class CustomCursorPlugin extends Plugin
 {
 	@Inject

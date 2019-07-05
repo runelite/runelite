@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.inventorygrid;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.awt.AlphaComposite;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -42,20 +43,21 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Singleton
 class InventoryGridOverlay extends Overlay
 {
 	private static final int INVENTORY_SIZE = 28;
 
-	private final InventoryGridConfig config;
+	private final InventoryGridPlugin plugin;
 	private final Client client;
 	private final ItemManager itemManager;
 
 	@Inject
-	private InventoryGridOverlay(InventoryGridConfig config, Client client, ItemManager itemManager)
+	private InventoryGridOverlay(final InventoryGridPlugin plugin, final Client client, final ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
 		this.client = client;
-		this.config = config;
+		this.plugin = plugin;
 
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -68,7 +70,7 @@ class InventoryGridOverlay extends Overlay
 		final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 
 		if (if1DraggingWidget == null || if1DraggingWidget != inventoryWidget
-			|| client.getItemPressedDuration() < config.dragDelay() / Constants.CLIENT_TICK_LENGTH)
+			|| client.getItemPressedDuration() < plugin.getDragDelay() / Constants.CLIENT_TICK_LENGTH)
 		{
 			return null;
 		}
@@ -83,7 +85,7 @@ class InventoryGridOverlay extends Overlay
 			final Rectangle bounds = widgetItem.getCanvasBounds();
 			boolean inBounds = bounds.contains(mousePoint);
 
-			if (config.showItem() && inBounds)
+			if (plugin.isShowItem() && inBounds)
 			{
 				final WidgetItem draggedItem = inventoryWidget.getWidgetItem(client.getIf1DraggedItemIndex());
 				final BufferedImage draggedItemImage = itemManager.getImage(draggedItem.getId());
@@ -95,14 +97,14 @@ class InventoryGridOverlay extends Overlay
 				graphics.setComposite(AlphaComposite.SrcOver);
 			}
 
-			if (config.showHighlight() && inBounds)
+			if (plugin.isShowHighlight() && inBounds)
 			{
-				graphics.setColor(config.highlightColor());
+				graphics.setColor(plugin.getHighlightColor());
 				graphics.fill(bounds);
 			}
-			else if (config.showGrid())
+			else if (plugin.isShowGrid())
 			{
-				graphics.setColor(config.gridColor());
+				graphics.setColor(plugin.getGridColor());
 				graphics.fill(bounds);
 			}
 		}

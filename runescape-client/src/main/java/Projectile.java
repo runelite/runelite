@@ -154,7 +154,7 @@ public final class Projectile extends Entity {
       this.endHeight = var11;
       this.isMoving = false;
       int var12 = class50.getSpotAnimationDefinition(this.id).sequence;
-      if(var12 != -1) {
+      if (var12 != -1) {
          this.sequenceDefinition = WorldMapAreaData.getSequenceDefinition(var12);
       } else {
          this.sequenceDefinition = null;
@@ -170,7 +170,7 @@ public final class Projectile extends Entity {
    @Export("setDestination")
    final void setDestination(int var1, int var2, int var3, int var4) {
       double var5;
-      if(!this.isMoving) {
+      if (!this.isMoving) {
          var5 = (double)(var1 - this.sourceX);
          double var7 = (double)(var2 - this.sourceY);
          double var9 = Math.sqrt(var5 * var5 + var7 * var7);
@@ -183,7 +183,7 @@ public final class Projectile extends Entity {
       this.speedX = ((double)var1 - this.x) / var5;
       this.speedY = ((double)var2 - this.y) / var5;
       this.speed = Math.sqrt(this.speedY * this.speedY + this.speedX * this.speedX);
-      if(!this.isMoving) {
+      if (!this.isMoving) {
          this.speedZ = -this.speed * Math.tan(0.02454369D * (double)this.slope);
       }
 
@@ -204,13 +204,13 @@ public final class Projectile extends Entity {
       this.speedZ += this.accelerationZ * (double)var1;
       this.yaw = (int)(Math.atan2(this.speedX, this.speedY) * 325.949D) + 1024 & 2047;
       this.pitch = (int)(Math.atan2(this.speedZ, this.speed) * 325.949D) & 2047;
-      if(this.sequenceDefinition != null) {
+      if (this.sequenceDefinition != null) {
          this.frameCycle += var1;
 
-         while(true) {
+         while (true) {
             do {
                do {
-                  if(this.frameCycle <= this.sequenceDefinition.frameLengths[this.frame]) {
+                  if (this.frameCycle <= this.sequenceDefinition.frameLengths[this.frame]) {
                      return;
                   }
 
@@ -235,7 +235,7 @@ public final class Projectile extends Entity {
    protected final Model getModel() {
       SpotAnimationDefinition var1 = class50.getSpotAnimationDefinition(this.id);
       Model var2 = var1.getModel(this.frame);
-      if(var2 == null) {
+      if (var2 == null) {
          return null;
       } else {
          var2.rotateZ(this.pitch);
@@ -250,10 +250,10 @@ public final class Projectile extends Entity {
    )
    @Export("byteArrayToObject")
    public static Object byteArrayToObject(byte[] var0, boolean var1) {
-      if(var0 == null) {
+      if (var0 == null) {
          return null;
       } else {
-         if(var0.length > 136 && !AbstractByteArrayCopier.directBufferUnavailable) {
+         if (var0.length > 136 && !AbstractByteArrayCopier.directBufferUnavailable) {
             try {
                DirectByteArrayCopier var2 = new DirectByteArrayCopier();
                var2.set(var0);

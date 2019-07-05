@@ -20,7 +20,7 @@ public class ObjectDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache __jr_q;
+   static AbstractIndexCache field640;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -31,12 +31,12 @@ public class ObjectDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   public static EvictingDualNodeHashTable __jr_o;
+   public static EvictingDualNodeHashTable field641;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   static EvictingDualNodeHashTable __jr_u;
+   static EvictingDualNodeHashTable field642;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -47,7 +47,7 @@ public class ObjectDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "[Ldw;"
    )
-   static ModelData[] __jr_l;
+   static ModelData[] field643;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -2034835389
@@ -55,9 +55,9 @@ public class ObjectDefinition extends DualNode {
    @Export("id")
    public int id;
    @ObfuscatedName("x")
-   int[] __x;
+   int[] field644;
    @ObfuscatedName("d")
-   int[] __d;
+   int[] field645;
    @ObfuscatedName("k")
    @Export("name")
    public String name;
@@ -245,22 +245,13 @@ public class ObjectDefinition extends DualNode {
    @Export("int6")
    public int int6;
    @ObfuscatedName("ax")
-   public int[] __ax;
+   public int[] field646;
    @ObfuscatedName("af")
    @ObfuscatedSignature(
       signature = "Llh;"
    )
    @Export("params")
    IterableNodeHashTable params;
-
-   static {
-      ObjectDefinition_isLowDetail = false;
-      ObjectDefinition_cached = new EvictingDualNodeHashTable(4096);
-      __jr_o = new EvictingDualNodeHashTable(500);
-      __jr_u = new EvictingDualNodeHashTable(30);
-      ObjectDefinition_cachedModels = new EvictingDualNodeHashTable(30);
-      __jr_l = new ModelData[4];
-   }
 
    ObjectDefinition() {
       this.name = "null";
@@ -305,21 +296,21 @@ public class ObjectDefinition extends DualNode {
    )
    @Export("init")
    void init() {
-      if(this.int1 == -1) {
+      if (this.int1 == -1) {
          this.int1 = 0;
-         if(this.__x != null && (this.__d == null || this.__d[0] == 10)) {
+         if (this.field644 != null && (this.field645 == null || this.field645[0] == 10)) {
             this.int1 = 1;
          }
 
-         for(int var1 = 0; var1 < 5; ++var1) {
-            if(this.actions[var1] != null) {
+         for (int var1 = 0; var1 < 5; ++var1) {
+            if (this.actions[var1] != null) {
                this.int1 = 1;
             }
          }
       }
 
-      if(this.int3 == -1) {
-         this.int3 = this.interactType != 0?1:0;
+      if (this.int3 == -1) {
+         this.int3 = this.interactType != 0 ? 1 : 0;
       }
 
    }
@@ -331,9 +322,9 @@ public class ObjectDefinition extends DualNode {
    )
    @Export("read")
    void read(Buffer var1) {
-      while(true) {
+      while (true) {
          int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+         if (var2 == 0) {
             return;
          }
 
@@ -350,152 +341,152 @@ public class ObjectDefinition extends DualNode {
    void readNext(Buffer var1, int var2) {
       int var3;
       int var4;
-      if(var2 == 1) {
+      if (var2 == 1) {
          var3 = var1.readUnsignedByte();
-         if(var3 > 0) {
-            if(this.__x != null && !ObjectDefinition_isLowDetail) {
+         if (var3 > 0) {
+            if (this.field644 != null && !ObjectDefinition_isLowDetail) {
                var1.index += var3 * 3;
             } else {
-               this.__d = new int[var3];
-               this.__x = new int[var3];
+               this.field645 = new int[var3];
+               this.field644 = new int[var3];
 
-               for(var4 = 0; var4 < var3; ++var4) {
-                  this.__x[var4] = var1.__ag_302();
-                  this.__d[var4] = var1.readUnsignedByte();
+               for (var4 = 0; var4 < var3; ++var4) {
+                  this.field644[var4] = var1.method43();
+                  this.field645[var4] = var1.readUnsignedByte();
                }
             }
          }
-      } else if(var2 == 2) {
+      } else if (var2 == 2) {
          this.name = var1.readStringCp1252NullTerminated();
-      } else if(var2 == 5) {
+      } else if (var2 == 5) {
          var3 = var1.readUnsignedByte();
-         if(var3 > 0) {
-            if(this.__x != null && !ObjectDefinition_isLowDetail) {
+         if (var3 > 0) {
+            if (this.field644 != null && !ObjectDefinition_isLowDetail) {
                var1.index += var3 * 2;
             } else {
-               this.__d = null;
-               this.__x = new int[var3];
+               this.field645 = null;
+               this.field644 = new int[var3];
 
-               for(var4 = 0; var4 < var3; ++var4) {
-                  this.__x[var4] = var1.__ag_302();
+               for (var4 = 0; var4 < var3; ++var4) {
+                  this.field644[var4] = var1.method43();
                }
             }
          }
-      } else if(var2 == 14) {
+      } else if (var2 == 14) {
          this.sizeX = var1.readUnsignedByte();
-      } else if(var2 == 15) {
+      } else if (var2 == 15) {
          this.sizeY = var1.readUnsignedByte();
-      } else if(var2 == 17) {
+      } else if (var2 == 17) {
          this.interactType = 0;
          this.boolean1 = false;
-      } else if(var2 == 18) {
+      } else if (var2 == 18) {
          this.boolean1 = false;
-      } else if(var2 == 19) {
+      } else if (var2 == 19) {
          this.int1 = var1.readUnsignedByte();
-      } else if(var2 == 21) {
+      } else if (var2 == 21) {
          this.clipType = 0;
-      } else if(var2 == 22) {
+      } else if (var2 == 22) {
          this.nonFlatShading = true;
-      } else if(var2 == 23) {
+      } else if (var2 == 23) {
          this.modelClipped = true;
-      } else if(var2 == 24) {
-         this.animationId = var1.__ag_302();
-         if(this.animationId == 65535) {
+      } else if (var2 == 24) {
+         this.animationId = var1.method43();
+         if (this.animationId == 65535) {
             this.animationId = -1;
          }
-      } else if(var2 == 27) {
+      } else if (var2 == 27) {
          this.interactType = 1;
-      } else if(var2 == 28) {
+      } else if (var2 == 28) {
          this.int2 = var1.readUnsignedByte();
-      } else if(var2 == 29) {
+      } else if (var2 == 29) {
          this.ambient = var1.readByte();
-      } else if(var2 == 39) {
+      } else if (var2 == 39) {
          this.contrast = var1.readByte() * 25;
-      } else if(var2 >= 30 && var2 < 35) {
+      } else if (var2 >= 30 && var2 < 35) {
          this.actions[var2 - 30] = var1.readStringCp1252NullTerminated();
-         if(this.actions[var2 - 30].equalsIgnoreCase("Hidden")) {
+         if (this.actions[var2 - 30].equalsIgnoreCase("Hidden")) {
             this.actions[var2 - 30] = null;
          }
-      } else if(var2 == 40) {
+      } else if (var2 == 40) {
          var3 = var1.readUnsignedByte();
          this.recolorFrom = new short[var3];
          this.recolorTo = new short[var3];
 
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.recolorFrom[var4] = (short)var1.__ag_302();
-            this.recolorTo[var4] = (short)var1.__ag_302();
+         for (var4 = 0; var4 < var3; ++var4) {
+            this.recolorFrom[var4] = (short)var1.method43();
+            this.recolorTo[var4] = (short)var1.method43();
          }
-      } else if(var2 == 41) {
+      } else if (var2 == 41) {
          var3 = var1.readUnsignedByte();
          this.retextureFrom = new short[var3];
          this.retextureTo = new short[var3];
 
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.retextureFrom[var4] = (short)var1.__ag_302();
-            this.retextureTo[var4] = (short)var1.__ag_302();
+         for (var4 = 0; var4 < var3; ++var4) {
+            this.retextureFrom[var4] = (short)var1.method43();
+            this.retextureTo[var4] = (short)var1.method43();
          }
-      } else if(var2 == 62) {
+      } else if (var2 == 62) {
          this.isRotated = true;
-      } else if(var2 == 64) {
+      } else if (var2 == 64) {
          this.clipped = false;
-      } else if(var2 == 65) {
-         this.modelSizeX = var1.__ag_302();
-      } else if(var2 == 66) {
-         this.modelHeight = var1.__ag_302();
-      } else if(var2 == 67) {
-         this.modelSizeY = var1.__ag_302();
-      } else if(var2 == 68) {
-         this.mapSceneId = var1.__ag_302();
-      } else if(var2 == 69) {
+      } else if (var2 == 65) {
+         this.modelSizeX = var1.method43();
+      } else if (var2 == 66) {
+         this.modelHeight = var1.method43();
+      } else if (var2 == 67) {
+         this.modelSizeY = var1.method43();
+      } else if (var2 == 68) {
+         this.mapSceneId = var1.method43();
+      } else if (var2 == 69) {
          var1.readUnsignedByte();
-      } else if(var2 == 70) {
-         this.offsetX = var1.__aq_303();
-      } else if(var2 == 71) {
-         this.offsetHeight = var1.__aq_303();
-      } else if(var2 == 72) {
-         this.offsetY = var1.__aq_303();
-      } else if(var2 == 73) {
+      } else if (var2 == 70) {
+         this.offsetX = var1.method44();
+      } else if (var2 == 71) {
+         this.offsetHeight = var1.method44();
+      } else if (var2 == 72) {
+         this.offsetY = var1.method44();
+      } else if (var2 == 73) {
          this.boolean2 = true;
-      } else if(var2 == 74) {
+      } else if (var2 == 74) {
          this.isSolid = true;
-      } else if(var2 == 75) {
+      } else if (var2 == 75) {
          this.int3 = var1.readUnsignedByte();
-      } else if(var2 != 77 && var2 != 92) {
-         if(var2 == 78) {
-            this.ambientSoundId = var1.__ag_302();
+      } else if (var2 != 77 && var2 != 92) {
+         if (var2 == 78) {
+            this.ambientSoundId = var1.method43();
             this.int4 = var1.readUnsignedByte();
-         } else if(var2 == 79) {
-            this.int5 = var1.__ag_302();
-            this.int6 = var1.__ag_302();
+         } else if (var2 == 79) {
+            this.int5 = var1.method43();
+            this.int6 = var1.method43();
             this.int4 = var1.readUnsignedByte();
             var3 = var1.readUnsignedByte();
-            this.__ax = new int[var3];
+            this.field646 = new int[var3];
 
-            for(var4 = 0; var4 < var3; ++var4) {
-               this.__ax[var4] = var1.__ag_302();
+            for (var4 = 0; var4 < var3; ++var4) {
+               this.field646[var4] = var1.method43();
             }
-         } else if(var2 == 81) {
+         } else if (var2 == 81) {
             this.clipType = var1.readUnsignedByte() * 256;
-         } else if(var2 == 82) {
-            this.mapIconId = var1.__ag_302();
-         } else if(var2 == 249) {
+         } else if (var2 == 82) {
+            this.mapIconId = var1.method43();
+         } else if (var2 == 249) {
             this.params = AbstractIndexCache.readStringIntParameters(var1, this.params);
          }
       } else {
-         this.transformVarbit = var1.__ag_302();
-         if(this.transformVarbit == 65535) {
+         this.transformVarbit = var1.method43();
+         if (this.transformVarbit == 65535) {
             this.transformVarbit = -1;
          }
 
-         this.transformConfigId = var1.__ag_302();
-         if(this.transformConfigId == 65535) {
+         this.transformConfigId = var1.method43();
+         if (this.transformConfigId == 65535) {
             this.transformConfigId = -1;
          }
 
          var3 = -1;
-         if(var2 == 92) {
-            var3 = var1.__ag_302();
-            if(var3 == 65535) {
+         if (var2 == 92) {
+            var3 = var1.method43();
+            if (var3 == 65535) {
                var3 = -1;
             }
          }
@@ -503,9 +494,9 @@ public class ObjectDefinition extends DualNode {
          var4 = var1.readUnsignedByte();
          this.transforms = new int[var4 + 2];
 
-         for(int var5 = 0; var5 <= var4; ++var5) {
-            this.transforms[var5] = var1.__ag_302();
-            if(this.transforms[var5] == 65535) {
+         for (int var5 = 0; var5 <= var4; ++var5) {
+            this.transforms[var5] = var1.method43();
+            if (this.transforms[var5] == 65535) {
                this.transforms[var5] = -1;
             }
          }
@@ -520,24 +511,24 @@ public class ObjectDefinition extends DualNode {
       signature = "(II)Z",
       garbageValue = "1880172029"
    )
-   public final boolean __u_421(int var1) {
-      if(this.__d != null) {
-         for(int var4 = 0; var4 < this.__d.length; ++var4) {
-            if(this.__d[var4] == var1) {
-               return __jr_q.tryLoadRecord(this.__x[var4] & 65535, 0);
+   public final boolean method230(int var1) {
+      if (this.field645 != null) {
+         for (int var4 = 0; var4 < this.field645.length; ++var4) {
+            if (this.field645[var4] == var1) {
+               return field640.tryLoadRecord(this.field644[var4] & 65535, 0);
             }
          }
 
          return true;
-      } else if(this.__x == null) {
+      } else if (this.field644 == null) {
          return true;
-      } else if(var1 != 10) {
+      } else if (var1 != 10) {
          return true;
       } else {
          boolean var2 = true;
 
-         for(int var3 = 0; var3 < this.__x.length; ++var3) {
-            var2 &= __jr_q.tryLoadRecord(this.__x[var3] & 65535, 0);
+         for (int var3 = 0; var3 < this.field644.length; ++var3) {
+            var2 &= field640.tryLoadRecord(this.field644[var3] & 65535, 0);
          }
 
          return var2;
@@ -549,14 +540,14 @@ public class ObjectDefinition extends DualNode {
       signature = "(I)Z",
       garbageValue = "-666846742"
    )
-   public final boolean __g_422() {
-      if(this.__x == null) {
+   public final boolean method231() {
+      if (this.field644 == null) {
          return true;
       } else {
          boolean var1 = true;
 
-         for(int var2 = 0; var2 < this.__x.length; ++var2) {
-            var1 &= __jr_q.tryLoadRecord(this.__x[var2] & 65535, 0);
+         for (int var2 = 0; var2 < this.field644.length; ++var2) {
+            var1 &= field640.tryLoadRecord(this.field644[var2] & 65535, 0);
          }
 
          return var1;
@@ -568,42 +559,42 @@ public class ObjectDefinition extends DualNode {
       signature = "(II[[IIIIS)Lex;",
       garbageValue = "-27831"
    )
-   public final Entity __l_423(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
+   public final Entity method232(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
       long var7;
-      if(this.__d == null) {
+      if (this.field645 == null) {
          var7 = (long)(var2 + (this.id << 10));
       } else {
          var7 = (long)(var2 + (var1 << 3) + (this.id << 10));
       }
 
-      Object var9 = (Entity)__jr_u.get(var7);
-      if(var9 == null) {
+      Object var9 = (Entity)field642.get(var7);
+      if (var9 == null) {
          ModelData var10 = this.getModelData(var1, var2);
-         if(var10 == null) {
+         if (var10 == null) {
             return null;
          }
 
-         if(!this.nonFlatShading) {
+         if (!this.nonFlatShading) {
             var9 = var10.toModel(this.ambient + 64, this.contrast + 768, -50, -10, -50);
          } else {
-            var10.__aq = (short)(this.ambient + 64);
-            var10.__aj = (short)(this.contrast + 768);
-            var10.__h_228();
+            var10.field559 = (short)(this.ambient + 64);
+            var10.field560 = (short)(this.contrast + 768);
+            var10.method216();
             var9 = var10;
          }
 
-         __jr_u.put((DualNode)var9, var7);
+         field642.put((DualNode)var9, var7);
       }
 
-      if(this.nonFlatShading) {
-         var9 = ((ModelData)var9).__o_218();
+      if (this.nonFlatShading) {
+         var9 = ((ModelData)var9).method206();
       }
 
-      if(this.clipType >= 0) {
-         if(var9 instanceof Model) {
+      if (this.clipType >= 0) {
+         if (var9 instanceof Model) {
             var9 = ((Model)var9).contourGround(var3, var4, var5, var6, true, this.clipType);
-         } else if(var9 instanceof ModelData) {
-            var9 = ((ModelData)var9).__u_219(var3, var4, var5, var6, true, this.clipType);
+         } else if (var9 instanceof ModelData) {
+            var9 = ((ModelData)var9).method207(var3, var4, var5, var6, true, this.clipType);
          }
       }
 
@@ -618,16 +609,16 @@ public class ObjectDefinition extends DualNode {
    @Export("getModel")
    public final Model getModel(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
       long var7;
-      if(this.__d == null) {
+      if (this.field645 == null) {
          var7 = (long)(var2 + (this.id << 10));
       } else {
          var7 = (long)(var2 + (var1 << 3) + (this.id << 10));
       }
 
       Model var9 = (Model)ObjectDefinition_cachedModels.get(var7);
-      if(var9 == null) {
+      if (var9 == null) {
          ModelData var10 = this.getModelData(var1, var2);
-         if(var10 == null) {
+         if (var10 == null) {
             return null;
          }
 
@@ -635,7 +626,7 @@ public class ObjectDefinition extends DualNode {
          ObjectDefinition_cachedModels.put(var9, var7);
       }
 
-      if(this.clipType >= 0) {
+      if (this.clipType >= 0) {
          var9 = var9.contourGround(var3, var4, var5, var6, true, this.clipType);
       }
 
@@ -650,16 +641,16 @@ public class ObjectDefinition extends DualNode {
    @Export("getModelDynamic")
    public final Model getModelDynamic(int var1, int var2, int[][] var3, int var4, int var5, int var6, SequenceDefinition var7, int var8) {
       long var9;
-      if(this.__d == null) {
+      if (this.field645 == null) {
          var9 = (long)(var2 + (this.id << 10));
       } else {
          var9 = (long)(var2 + (var1 << 3) + (this.id << 10));
       }
 
       Model var11 = (Model)ObjectDefinition_cachedModels.get(var9);
-      if(var11 == null) {
+      if (var11 == null) {
          ModelData var12 = this.getModelData(var1, var2);
-         if(var12 == null) {
+         if (var12 == null) {
             return null;
          }
 
@@ -667,16 +658,16 @@ public class ObjectDefinition extends DualNode {
          ObjectDefinition_cachedModels.put(var11, var9);
       }
 
-      if(var7 == null && this.clipType == -1) {
+      if (var7 == null && this.clipType == -1) {
          return var11;
       } else {
-         if(var7 != null) {
+         if (var7 != null) {
             var11 = var7.animateObject(var11, var8, var2);
          } else {
             var11 = var11.toSharedSequenceModel(true);
          }
 
-         if(this.clipType >= 0) {
+         if (this.clipType >= 0) {
             var11 = var11.contourGround(var3, var4, var5, var6, false, this.clipType);
          }
 
@@ -694,135 +685,136 @@ public class ObjectDefinition extends DualNode {
       ModelData var3 = null;
       boolean var4;
       int var5;
+      int var6;
       int var7;
-      if(this.__d == null) {
-         if(var1 != 10) {
+      if (this.field645 == null) {
+         if (var1 != 10) {
             return null;
          }
 
-         if(this.__x == null) {
+         if (this.field644 == null) {
             return null;
          }
 
          var4 = this.isRotated;
-         if(var1 == 2 && var2 > 3) {
+         if (var1 == 2 && var2 > 3) {
             var4 = !var4;
          }
 
-         var5 = this.__x.length;
+         var5 = this.field644.length;
 
-         for(int var6 = 0; var6 < var5; ++var6) {
-            var7 = this.__x[var6];
-            if(var4) {
-               var7 += 65536;
+         for (var7 = 0; var7 < var5; ++var7) {
+            var6 = this.field644[var7];
+            if (var4) {
+               var6 += 65536;
             }
 
-            var3 = (ModelData)__jr_o.get((long)var7);
-            if(var3 == null) {
-               var3 = ModelData.method2788(__jr_q, var7 & 65535, 0);
-               if(var3 == null) {
+            var3 = (ModelData)field641.get((long)var6);
+            if (var3 == null) {
+               var3 = ModelData.method2788(field640, var6 & 65535, 0);
+               if (var3 == null) {
                   return null;
                }
 
-               if(var4) {
-                  var3.__t_226();
+               if (var4) {
+                  var3.method214();
                }
 
-               __jr_o.put(var3, (long)var7);
+               field641.put(var3, (long)var6);
             }
 
-            if(var5 > 1) {
-               __jr_l[var6] = var3;
+            if (var5 > 1) {
+               field643[var7] = var3;
             }
          }
 
-         if(var5 > 1) {
-            var3 = new ModelData(__jr_l, var5);
+         if (var5 > 1) {
+            var3 = new ModelData(field643, var5);
          }
       } else {
-         int var9 = -1;
+         var7 = -1;
 
-         for(var5 = 0; var5 < this.__d.length; ++var5) {
-            if(this.__d[var5] == var1) {
-               var9 = var5;
+         for (var5 = 0; var5 < this.field645.length; ++var5) {
+            if (this.field645[var5] == var1) {
+               var7 = var5;
                break;
             }
          }
 
-         if(var9 == -1) {
+         if (var7 == -1) {
             return null;
          }
 
-         var5 = this.__x[var9];
-         boolean var10 = this.isRotated ^ var2 > 3;
-         if(var10) {
+         var5 = this.field644[var7];
+         boolean var8 = this.isRotated ^ var2 > 3;
+         if (var8) {
             var5 += 65536;
          }
 
-         var3 = (ModelData)__jr_o.get((long)var5);
-         if(var3 == null) {
-            var3 = ModelData.method2788(__jr_q, var5 & 65535, 0);
-            if(var3 == null) {
+         var3 = (ModelData)field641.get((long)var5);
+         if (var3 == null) {
+            var3 = ModelData.method2788(field640, var5 & 65535, 0);
+            if (var3 == null) {
                return null;
             }
 
-            if(var10) {
-               var3.__t_226();
+            if (var8) {
+               var3.method214();
             }
 
-            __jr_o.put(var3, (long)var5);
+            field641.put(var3, (long)var5);
          }
       }
 
-      if(this.modelSizeX == 128 && this.modelHeight == 128 && this.modelSizeY == 128) {
+      if (this.modelSizeX == 128 && this.modelHeight == 128 && this.modelSizeY == 128) {
          var4 = false;
       } else {
          var4 = true;
       }
 
-      boolean var11;
-      if(this.offsetX == 0 && this.offsetHeight == 0 && this.offsetY == 0) {
-         var11 = false;
+      boolean var10;
+      if (this.offsetX == 0 && this.offsetHeight == 0 && this.offsetY == 0) {
+         var10 = false;
       } else {
-         var11 = true;
+         var10 = true;
       }
 
-      ModelData var8 = new ModelData(var3, var2 == 0 && !var4 && !var11, this.recolorFrom == null, null == this.retextureFrom, true);
-      if(var1 == 4 && var2 > 3) {
-         var8.__a_224(256);
-         var8.__z_225(45, 0, -45);
+      ModelData var9 = new ModelData(var3, var2 == 0 && !var4 && !var10, this.recolorFrom == null, null == this.retextureFrom, true);
+      if (var1 == 4 && var2 > 3) {
+         var9.method212(256);
+         var9.method213(45, 0, -45);
       }
 
       var2 &= 3;
-      if(var2 == 1) {
-         var8.__l_221();
-      } else if(var2 == 2) {
-         var8.__x_222();
-      } else if(var2 == 3) {
-         var8.__d_223();
+      if (var2 == 1) {
+         var9.method209();
+      } else if (var2 == 2) {
+         var9.method210();
+      } else if (var2 == 3) {
+         var9.method211();
       }
 
-      if(this.recolorFrom != null) {
-         for(var7 = 0; var7 < this.recolorFrom.length; ++var7) {
-            var8.recolor(this.recolorFrom[var7], this.recolorTo[var7]);
+      if (this.recolorFrom != null) {
+         for (var6 = 0; var6 < this.recolorFrom.length; ++var6) {
+            var9.recolor(this.recolorFrom[var6], this.recolorTo[var6]);
          }
       }
 
-      if(this.retextureFrom != null) {
-         for(var7 = 0; var7 < this.retextureFrom.length; ++var7) {
-            var8.retexture(this.retextureFrom[var7], this.retextureTo[var7]);
+      if (this.retextureFrom != null) {
+         for (var6 = 0; var6 < this.retextureFrom.length; ++var6) {
+            var9.retexture(this.retextureFrom[var6], this.retextureTo[var6]);
          }
       }
 
-      if(var4) {
-         var8.__y_227(this.modelSizeX, this.modelHeight, this.modelSizeY);
+      if (var4) {
+         var9.method215(this.modelSizeX, this.modelHeight, this.modelSizeY);
       }
 
-      if(var11) {
-         var8.__z_225(this.offsetX, this.offsetHeight, this.offsetY);
+      if (var10) {
+         var9.method213(this.offsetX, this.offsetHeight, this.offsetY);
       }
 
-      return var8;
+      return var9;
    }
 
    @ObfuscatedName("a")
@@ -833,20 +825,20 @@ public class ObjectDefinition extends DualNode {
    @Export("transform")
    public final ObjectDefinition transform() {
       int var1 = -1;
-      if(this.transformVarbit != -1) {
+      if (this.transformVarbit != -1) {
          var1 = WorldMapSection2.getVarbit(this.transformVarbit);
-      } else if(this.transformConfigId != -1) {
+      } else if (this.transformConfigId != -1) {
          var1 = Varps.Varps_main[this.transformConfigId];
       }
 
       int var2;
-      if(var1 >= 0 && var1 < this.transforms.length - 1) {
+      if (var1 >= 0 && var1 < this.transforms.length - 1) {
          var2 = this.transforms[var1];
       } else {
          var2 = this.transforms[this.transforms.length - 1];
       }
 
-      return var2 != -1?class50.getObjectDefinition(var2):null;
+      return var2 != -1 ? class50.getObjectDefinition(var2) : null;
    }
 
    @ObfuscatedName("z")
@@ -856,20 +848,20 @@ public class ObjectDefinition extends DualNode {
    )
    @Export("getIntParam")
    public int getIntParam(int var1, int var2) {
-      IterableNodeHashTable var4 = this.params;
-      int var3;
-      if(var4 == null) {
-         var3 = var2;
+      IterableNodeHashTable var3 = this.params;
+      int var4;
+      if (var3 == null) {
+         var4 = var2;
       } else {
-         IntegerNode var5 = (IntegerNode)var4.get((long)var1);
-         if(var5 == null) {
-            var3 = var2;
+         IntegerNode var5 = (IntegerNode)var3.get((long)var1);
+         if (var5 == null) {
+            var4 = var2;
          } else {
-            var3 = var5.integer;
+            var4 = var5.integer;
          }
       }
 
-      return var3;
+      return var4;
    }
 
    @ObfuscatedName("j")
@@ -887,14 +879,14 @@ public class ObjectDefinition extends DualNode {
       signature = "(I)Z",
       garbageValue = "8470625"
    )
-   public boolean __t_424() {
-      if(this.transforms == null) {
-         return this.ambientSoundId != -1 || this.__ax != null;
+   public boolean method233() {
+      if (this.transforms == null) {
+         return this.ambientSoundId != -1 || this.field646 != null;
       } else {
-         for(int var1 = 0; var1 < this.transforms.length; ++var1) {
-            if(this.transforms[var1] != -1) {
+         for (int var1 = 0; var1 < this.transforms.length; ++var1) {
+            if (this.transforms[var1] != -1) {
                ObjectDefinition var2 = class50.getObjectDefinition(this.transforms[var1]);
-               if(var2.ambientSoundId != -1 || var2.__ax != null) {
+               if (var2.ambientSoundId != -1 || var2.field646 != null) {
                   return true;
                }
             }
@@ -910,20 +902,20 @@ public class ObjectDefinition extends DualNode {
       garbageValue = "-1284680749"
    )
    @Export("getNpcDefinition")
-   public static NpcDefinition getNpcDefinition(int var0) {
-      NpcDefinition var1 = (NpcDefinition)NpcDefinition.NpcDefinition_cached.get((long)var0);
-      if(var1 != null) {
+   public static NPCDefinition getNpcDefinition(int var0) {
+      NPCDefinition var1 = (NPCDefinition)NPCDefinition.NpcDefinition_cached.get((long)var0);
+      if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = NpcDefinition.NpcDefinition_indexCache.takeRecord(9, var0);
-         var1 = new NpcDefinition();
+         byte[] var2 = NPCDefinition.NpcDefinition_indexCache.takeRecord(9, var0);
+         var1 = new NPCDefinition();
          var1.id = var0;
-         if(var2 != null) {
+         if (var2 != null) {
             var1.read(new Buffer(var2));
          }
 
          var1.init();
-         NpcDefinition.NpcDefinition_cached.put(var1, (long)var0);
+         NPCDefinition.NpcDefinition_cached.put(var1, (long)var0);
          return var1;
       }
    }
@@ -935,5 +927,14 @@ public class ObjectDefinition extends DualNode {
    )
    public static void method5041() {
       ItemDefinition.Sprite_cached.clear();
+   }
+
+   static {
+      ObjectDefinition_isLowDetail = false;
+      ObjectDefinition_cached = new EvictingDualNodeHashTable(4096);
+      field641 = new EvictingDualNodeHashTable(500);
+      field642 = new EvictingDualNodeHashTable(30);
+      ObjectDefinition_cachedModels = new EvictingDualNodeHashTable(30);
+      field643 = new ModelData[4];
    }
 }

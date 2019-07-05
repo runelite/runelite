@@ -1094,14 +1094,14 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void canvasWidthChanged(int idx)
 	{
-		client.getCallbacks().post(new CanvasSizeChanged());
+		client.getCallbacks().post(CanvasSizeChanged.INSTANCE);
 	}
 
 	@FieldHook("canvasHeight")
 	@Inject
 	public static void canvasHeightChanged(int idx)
 	{
-		client.getCallbacks().post(new CanvasSizeChanged());
+		client.getCallbacks().post(CanvasSizeChanged.INSTANCE);
 	}
 
 	@Inject
@@ -1272,7 +1272,7 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void onUsernameChanged(int idx)
 	{
-		client.getCallbacks().post(new UsernameChanged());
+		client.getCallbacks().post(UsernameChanged.INSTANCE);
 	}
 
 	@Override
@@ -1304,7 +1304,6 @@ public abstract class RSClientMixin implements RSClient
 		final MenuOpened event = new MenuOpened();
 		event.setMenuEntries(getMenuEntries());
 		callbacks.post(event);
-		client.setMenuEntries(event.getMenuEntries());
 	}
 
 	@Inject
@@ -1515,7 +1514,7 @@ public abstract class RSClientMixin implements RSClient
 	@FieldHook("cycleCntr")
 	public static void onCycleCntrChanged(int idx)
 	{
-		client.getCallbacks().post(new ClientTick());
+		client.getCallbacks().post(ClientTick.INSTANCE);
 	}
 
 	@Copy("shouldLeftClickOpenMenu")

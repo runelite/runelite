@@ -59,7 +59,7 @@ public class FpsDrawListener implements Runnable
 	private long sleepDelay = 0;
 
 	@Inject
-	private FpsDrawListener(FpsConfig config, FpsPlugin plugin)
+	private FpsDrawListener(final FpsConfig config, final FpsPlugin plugin)
 	{
 		this.config = config;
 		this.plugin = plugin;

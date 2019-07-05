@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -47,6 +48,7 @@ import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.util.ImageUtil;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 
+@Singleton
 public class PluginListItem extends JPanel
 {
 	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
@@ -74,10 +76,10 @@ public class PluginListItem extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	public final ConfigDescriptor configDescriptor;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final String name;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final String description;
 
 	private final List<String> keywords = new ArrayList<>();

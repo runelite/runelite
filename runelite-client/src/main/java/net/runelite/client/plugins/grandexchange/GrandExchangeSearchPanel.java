@@ -36,10 +36,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.inject.Singleton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemDefinition;
@@ -56,6 +58,7 @@ import net.runelite.http.api.item.ItemPrice;
  * It should display a search bar and either item results or a error panel.
  */
 @Slf4j
+@Singleton
 class GrandExchangeSearchPanel extends JPanel
 {
 	private static final String ERROR_PANEL = "ERROR_PANEL";
@@ -82,10 +85,10 @@ class GrandExchangeSearchPanel extends JPanel
 
 	private final List<GrandExchangeItems> itemsList = new ArrayList<>();
 
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private Map<Integer, Integer> itemGELimits = Collections.emptyMap();
 
-	GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
+	GrandExchangeSearchPanel(final ClientThread clientThread, final ItemManager itemManager, final ScheduledExecutorService executor)
 	{
 		this.clientThread = clientThread;
 		this.itemManager = itemManager;

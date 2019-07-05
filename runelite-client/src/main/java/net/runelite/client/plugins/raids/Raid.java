@@ -28,16 +28,17 @@ import com.google.common.base.Joiner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
 
 public class Raid
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final RaidRoom[] rooms = new RaidRoom[16];
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Layout layout;
 
 	void updateLayout(Layout layout)

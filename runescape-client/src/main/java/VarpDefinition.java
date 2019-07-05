@@ -11,12 +11,12 @@ public class VarpDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache __ix_m;
+   public static AbstractIndexCache field943;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 510774535
    )
-   public static int __ix_f;
+   public static int field944;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -30,10 +30,6 @@ public class VarpDefinition extends DualNode {
    @Export("type")
    public int type;
 
-   static {
-      VarpDefinition_cached = new EvictingDualNodeHashTable(64);
-   }
-
    VarpDefinition() {
       this.type = 0;
    }
@@ -45,9 +41,9 @@ public class VarpDefinition extends DualNode {
    )
    @Export("read")
    void read(Buffer var1) {
-      while(true) {
+      while (true) {
          int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+         if (var2 == 0) {
             return;
          }
 
@@ -62,9 +58,13 @@ public class VarpDefinition extends DualNode {
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
-      if(var2 == 5) {
-         this.type = var1.__ag_302();
+      if (var2 == 5) {
+         this.type = var1.method43();
       }
 
+   }
+
+   static {
+      VarpDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

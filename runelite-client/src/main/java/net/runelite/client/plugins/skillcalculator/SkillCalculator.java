@@ -35,6 +35,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
@@ -58,6 +59,7 @@ import net.runelite.client.ui.components.IconTextField;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+@Singleton
 class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
@@ -85,7 +87,7 @@ class SkillCalculator extends JPanel
 	private float lastBonus = 0.0f;
 	private CalculatorType calculatorType;
 
-	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
+	SkillCalculator(final Client client, final UICalculatorInputArea uiInput, final SpriteManager spriteManager, final ItemManager itemManager)
 	{
 		this.client = client;
 		this.uiInput = uiInput;

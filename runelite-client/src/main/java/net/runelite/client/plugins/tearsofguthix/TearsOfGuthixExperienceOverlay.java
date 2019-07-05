@@ -25,6 +25,7 @@
 
 package net.runelite.client.plugins.tearsofguthix;
 
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -36,6 +37,7 @@ import java.awt.Graphics2D;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+@Singleton
 class TearsOfGuthixExperienceOverlay extends Overlay
 {
 	private final TearsOfGuthixPlugin plugin;

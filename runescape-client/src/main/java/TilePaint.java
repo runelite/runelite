@@ -11,7 +11,7 @@ public final class TilePaint {
    @ObfuscatedSignature(
       signature = "Lla;"
    )
-   static Bounds __eb_ah;
+   static Bounds field907;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 181759449
@@ -70,49 +70,50 @@ public final class TilePaint {
    )
    static final void method3061(int var0, int var1) {
       NodeDeque var2 = Client.groundItems[SoundSystem.plane][var0][var1];
-      if(var2 == null) {
+      if (var2 == null) {
          class65.scene.removeGroundItemPile(SoundSystem.plane, var0, var1);
       } else {
          long var3 = -99999999L;
          GroundItem var5 = null;
 
          GroundItem var6;
-         for(var6 = (GroundItem)var2.last(); var6 != null; var6 = (GroundItem)var2.previous()) {
+         for (var6 = (GroundItem)var2.last(); var6 != null; var6 = (GroundItem)var2.previous()) {
             ItemDefinition var7 = Skills.getItemDefinition(var6.id);
             long var8 = (long)var7.price;
-            if(var7.isStackable == 1) {
+            if (var7.isStackable == 1) {
                var8 *= (long)(var6.quantity + 1);
             }
 
-            if(var8 > var3) {
+            if (var8 > var3) {
                var3 = var8;
                var5 = var6;
             }
          }
 
-         if(var5 == null) {
+         if (var5 == null) {
             class65.scene.removeGroundItemPile(SoundSystem.plane, var0, var1);
          } else {
             var2.addLast(var5);
-            GroundItem var12 = null;
             GroundItem var11 = null;
+            GroundItem var12 = null;
 
-            for(var6 = (GroundItem)var2.last(); var6 != null; var6 = (GroundItem)var2.previous()) {
-               if(var5.id != var6.id) {
-                  if(var12 == null) {
-                     var12 = var6;
+            for (var6 = (GroundItem)var2.last(); var6 != null; var6 = (GroundItem)var2.previous()) {
+               if (var5.id != var6.id) {
+                  if (var11 == null) {
+                     var11 = var6;
                   }
 
-                  if(var12.id != var6.id && var11 == null) {
-                     var11 = var6;
+                  if (var11.id != var6.id && var12 == null) {
+                     var12 = var6;
                   }
                }
             }
 
             long var9 = FontName.method5637(var0, var1, 3, false, 0);
-            class65.scene.newGroundItemPile(SoundSystem.plane, var0, var1, class32.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, SoundSystem.plane), var5, var9, var12, var11);
+            class65.scene.newGroundItemPile(SoundSystem.plane, var0, var1, class32.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, SoundSystem.plane), var5, var9, var11, var12);
          }
       }
+
    }
 
    @ObfuscatedName("id")
@@ -121,9 +122,9 @@ public final class TilePaint {
       garbageValue = "-2025682764"
    )
    static void method3060(int var0, int var1) {
-      PacketBufferNode var2 = Interpreter.method1915(ClientPacket.__gs_bg, Client.packetWriter.isaacCipher);
+      PacketBufferNode var2 = Interpreter.method1915(ClientPacket.field292, Client.packetWriter.isaacCipher);
       var2.packetBuffer.writeIntLE16(var0);
-      var2.packetBuffer.__bo_322(var1);
-      Client.packetWriter.__q_167(var2);
+      var2.packetBuffer.method63(var1);
+      Client.packetWriter.method241(var2);
    }
 }

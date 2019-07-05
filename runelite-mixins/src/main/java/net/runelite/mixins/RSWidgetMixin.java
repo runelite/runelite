@@ -496,7 +496,7 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		client.getLogger().trace("Posting widget position changed");
 
-		WidgetPositioned widgetPositioned = new WidgetPositioned();
+		WidgetPositioned widgetPositioned = WidgetPositioned.INSTANCE;
 		client.getCallbacks().postDeferred(widgetPositioned);
 	}
 

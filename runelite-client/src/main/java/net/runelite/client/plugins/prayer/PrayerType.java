@@ -24,13 +24,14 @@
  */
 package net.runelite.client.plugins.prayer;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Prayer;
 import net.runelite.api.SpriteID;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum PrayerType
 {
 	THICK_SKIN("Thick Skin", Prayer.THICK_SKIN, "+5% Defence", SpriteID.PRAYER_THICK_SKIN, false),

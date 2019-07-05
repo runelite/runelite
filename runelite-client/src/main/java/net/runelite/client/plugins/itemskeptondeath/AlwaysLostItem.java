@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.itemskeptondeath;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -36,7 +37,7 @@ import net.runelite.api.ItemID;
  * The white outline will be added to these items when they are lost on death.
  */
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum AlwaysLostItem
 {
 	RUNE_POUCH(ItemID.RUNE_POUCH, true),

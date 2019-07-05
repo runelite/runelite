@@ -27,6 +27,7 @@ package net.runelite.client.plugins.grandexchange;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
@@ -35,13 +36,14 @@ import net.runelite.client.input.MouseAdapter;
 import static net.runelite.client.plugins.grandexchange.GrandExchangePlugin.SEARCH_GRAND_EXCHANGE;
 import net.runelite.client.util.Text;
 
+@Singleton
 public class GrandExchangeInputListener extends MouseAdapter implements KeyListener
 {
 	private final Client client;
 	private final GrandExchangePlugin plugin;
 
 	@Inject
-	private GrandExchangeInputListener(Client client, GrandExchangePlugin plugin)
+	private GrandExchangeInputListener(final Client client, final GrandExchangePlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;

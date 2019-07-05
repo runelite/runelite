@@ -28,11 +28,12 @@
 package net.runelite.client.plugins.aoewarnings;
 
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.LocalPoint;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 class AoeProjectile
 {

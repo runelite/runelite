@@ -24,9 +24,10 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public enum PortalColor
 {
 	BLUE,

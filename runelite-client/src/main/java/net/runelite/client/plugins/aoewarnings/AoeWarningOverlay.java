@@ -37,6 +37,7 @@ import java.time.Instant;
 import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -48,6 +49,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import static net.runelite.client.util.ColorUtil.setAlphaComponent;
 
+@Singleton
 public class AoeWarningOverlay extends Overlay
 {
 	private static final int FILL_START_ALPHA = 25;
@@ -55,16 +57,14 @@ public class AoeWarningOverlay extends Overlay
 
 	private final Client client;
 	private final AoeWarningPlugin plugin;
-	private final AoeWarningConfig config;
 
 	@Inject
-	public AoeWarningOverlay(Client client, AoeWarningPlugin plugin, AoeWarningConfig config)
+	public AoeWarningOverlay(final Client client, final AoeWarningPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public class AoeWarningOverlay extends Overlay
 			int tickProgress = aoeProjectile.getFinalTick() - client.getTickCount();
 
 			int fillAlpha, outlineAlpha;
-			if (config.isFadeEnabled())
+			if (plugin.isConfigFadeEnabled())
 			{
 				fillAlpha = (int) ((1 - progress) * FILL_START_ALPHA);//alpha drop off over lifetime
 				outlineAlpha = (int) ((1 - progress) * OUTLINE_START_ALPHA);
@@ -152,12 +152,12 @@ public class AoeWarningOverlay extends Overlay
 				outlineAlpha = 255;
 			}
 
-			if (config.isOutlineEnabled())
+			if (plugin.isConfigOutlineEnabled())
 			{
-				graphics.setColor(new Color(setAlphaComponent(config.overlayColor().getRGB(), outlineAlpha), true));
+				graphics.setColor(new Color(setAlphaComponent(plugin.getOverlayColor().getRGB(), outlineAlpha), true));
 				graphics.drawPolygon(tilePoly);
 			}
-			if (config.tickTimers())
+			if (plugin.isTickTimers())
 			{
 				if (tickProgress >= 0)
 				{
@@ -165,7 +165,7 @@ public class AoeWarningOverlay extends Overlay
 						plugin.getFontStyle(), color, centerPoint(tilePoly.getBounds()), plugin.isShadows(), 0);
 				}
 			}
-			graphics.setColor(new Color(setAlphaComponent(config.overlayColor().getRGB(), fillAlpha), true));
+			graphics.setColor(new Color(setAlphaComponent(plugin.getOverlayColor().getRGB(), fillAlpha), true));
 			graphics.fillPolygon(tilePoly);
 		}
 		return null;

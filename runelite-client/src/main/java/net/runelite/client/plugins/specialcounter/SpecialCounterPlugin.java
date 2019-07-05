@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -60,6 +61,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false
 )
+@Singleton
 public class SpecialCounterPlugin extends Plugin
 {
 	private int currentWorld = -1;

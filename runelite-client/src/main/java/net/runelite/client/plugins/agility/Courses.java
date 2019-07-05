@@ -26,6 +26,7 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
@@ -50,16 +51,16 @@ enum Courses
 
 	private final static Map<Integer, Courses> coursesByRegion;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final double totalXp;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int lastObstacleXp;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int regionId;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final WorldPoint[] courseEndWorldPoints;
 
 	static

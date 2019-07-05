@@ -40,9 +40,9 @@ public class SpriteMask extends DualNode {
    )
    @Export("contains")
    public boolean contains(int var1, int var2) {
-      if(var2 >= 0 && var2 < this.xStarts.length) {
+      if (var2 >= 0 && var2 < this.xStarts.length) {
          int var3 = this.xStarts[var2];
-         if(var1 >= var3 && var1 <= var3 + this.xWidths[var2]) {
+         if (var1 >= var3 && var1 <= var3 + this.xWidths[var2]) {
             return true;
          }
       }
@@ -56,13 +56,13 @@ public class SpriteMask extends DualNode {
       garbageValue = "-1301156444"
    )
    static void method4390() {
-      for(ObjectSound var0 = (ObjectSound)ObjectSound.objectSounds.last(); var0 != null; var0 = (ObjectSound)ObjectSound.objectSounds.previous()) {
-         if(var0.stream1 != null) {
+      for (ObjectSound var0 = (ObjectSound)ObjectSound.objectSounds.last(); var0 != null; var0 = (ObjectSound)ObjectSound.objectSounds.previous()) {
+         if (var0.stream1 != null) {
             TaskHandler.pcmStreamMixer.removeSubStream(var0.stream1);
             var0.stream1 = null;
          }
 
-         if(var0.stream2 != null) {
+         if (var0.stream2 != null) {
             TaskHandler.pcmStreamMixer.removeSubStream(var0.stream2);
             var0.stream2 = null;
          }
@@ -87,7 +87,7 @@ public class SpriteMask extends DualNode {
    )
    static int method4391(int var0) {
       Message var1 = (Message)Messages.Messages_hashTable.get((long)var0);
-      return var1 == null?-1:(var1.nextDual == Messages.Messages_queue.sentinel?-1:((Message)var1.nextDual).count);
+      return var1 == null ? -1 : (var1.nextDual == Messages.Messages_queue.sentinel ? -1 : ((Message)var1.nextDual).count);
    }
 
    @ObfuscatedName("x")
@@ -98,7 +98,7 @@ public class SpriteMask extends DualNode {
    @Export("loadSprite")
    public static boolean loadSprite(AbstractIndexCache var0, int var1, int var2) {
       byte[] var3 = var0.takeRecord(var1, var2);
-      if(var3 == null) {
+      if (var3 == null) {
          return false;
       } else {
          DevicePcmPlayerProvider.decodeSprite(var3);

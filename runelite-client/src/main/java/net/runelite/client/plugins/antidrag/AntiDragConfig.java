@@ -37,7 +37,6 @@ import net.runelite.client.config.ModifierlessKeybind;
 @ConfigGroup("antiDrag")
 public interface AntiDragConfig extends Config
 {
-
 	@ConfigItem(
 		position = 0,
 		keyName = "alwaysOn",
