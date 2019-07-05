@@ -102,12 +102,12 @@ public class ShiftWalkerPlugin extends Plugin
 	{
 		if (this.shiftLoot)
 		{
-			menuManager.addPriorityEntry(TAKE);
+			menuManager.addPriorityEntry(TAKE).setPriority(100);
 		}
 		
 		if (this.shiftWalk)
 		{
-			menuManager.addPriorityEntry(WALK_HERE);
+			menuManager.addPriorityEntry(WALK_HERE).setPriority(90);
 		}	
 	}
 
