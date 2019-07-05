@@ -149,7 +149,7 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.KINGDOM_GROUP_ID && config.showKingdomValue())
+		if (event.getGroupId() != WidgetID.KINGDOM_GROUP_ID || !config.showKingdomValue())
 		{
 			ItemContainer kingdomRewardContainer = client.getItemContainer(InventoryID.KINGDOM_OF_MISCELLANIA);
 			Item[] items = kingdomRewardContainer.getItems();
@@ -174,6 +174,7 @@ public class KingdomPlugin extends Plugin
 				.build());
 		}
 	}
+
 	private boolean hasCompletedQuest()
 	{
 		return client.getVar(VarPlayer.THRONE_OF_MISCELLANIA) > 0;
