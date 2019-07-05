@@ -45,7 +45,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Singleton
 class GroundMarkerMinimapOverlay extends Overlay
 {
-	private static final int MAX_DRAW_DISTANCE = 16;
 	private static final int TILE_WIDTH = 4;
 	private static final int TILE_HEIGHT = 4;
 
@@ -103,12 +102,6 @@ class GroundMarkerMinimapOverlay extends Overlay
 
 	private void drawOnMinimap(Graphics2D graphics, WorldPoint point, Color color)
 	{
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-
-		if (point.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
-		{
-			return;
-		}
 
 		LocalPoint lp = LocalPoint.fromWorld(client, point);
 		if (lp == null)
