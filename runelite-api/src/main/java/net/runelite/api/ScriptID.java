@@ -200,4 +200,9 @@ public final class ScriptID
 	 * Join a clan, duh
 	 */
 	public static final int CUSTOM_JOIN_CLAN = 10690;
+
+	/**
+	 * Send a public message
+	 */
+	public static final int PUBLICMSG = 13337;
 }
