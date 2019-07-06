@@ -55,7 +55,7 @@ import net.runelite.client.ui.ClientUI;
 		hidden = true, // prevent users from disabling
 		name = "RuneLitePlus",
 		description = "Configures various aspects of RuneLitePlus",
-		type = PluginType.UTILITY
+		type = PluginType.RUNELITPLUS
 )
 @Singleton
 @Slf4j

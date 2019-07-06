@@ -36,6 +36,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -84,16 +85,21 @@ public class PluginSorterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	public void onPluginChanged(PluginChanged pluginChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		validatePlugins();
+	}
+
+	public void validatePlugins() {
+		if (this.hidePlugins)
 		{
-			if (config.hidePlugins())
-			{
-				hidePlugins();
-			}
-			updateColors();
+			hidePlugins();
 		}
+		else
+		{
+			showPlugins();
+		}
+		updateColors();
 	}
 
 	@Subscribe
@@ -108,16 +114,8 @@ public class PluginSorterPlugin extends Plugin
 
 		if (configChanged.getKey().equals("hidePlugins"))
 		{
-			if (this.hidePlugins)
-			{
-				hidePlugins();
-			}
-			else
-			{
-				showPlugins();
-			}
+			validatePlugins();
 		}
-		updateColors();
 	}
 
 	private void updateColors()

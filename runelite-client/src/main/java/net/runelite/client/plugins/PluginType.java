@@ -2,6 +2,7 @@ package net.runelite.client.plugins;
 
 public enum PluginType
 {
+	RUNELITPLUS,
 	PVM,
 	PVP,
 	SKILLING,
