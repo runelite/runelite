@@ -88,7 +88,7 @@ public class PluginSorterPlugin extends Plugin
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			if (this.hidePlugins)
+			if (config.hidePlugins())
 			{
 				hidePlugins();
 			}
