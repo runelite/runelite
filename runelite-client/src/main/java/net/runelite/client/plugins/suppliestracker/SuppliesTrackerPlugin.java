@@ -401,7 +401,13 @@ public class SuppliesTrackerPlugin extends Plugin
 					{
 						quantity -= newItem.getQuantity();
 					}
-					buildEntries(oldItem.getId(), quantity);
+					// ensure that only positive quantities are added since it is reported
+					// that sometimes checkUsedRunes is called on the same tick that a player
+					// gains runes in their inventory
+					if (quantity > 0)
+					{
+						buildEntries(oldItem.getId(), quantity);
+					}
 				}
 			}
 		}
