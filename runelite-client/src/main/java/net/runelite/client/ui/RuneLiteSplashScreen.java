@@ -40,7 +40,6 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.util.SwingUtil;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -57,11 +56,9 @@ public class RuneLiteSplashScreen
 
 	public JFrame frame;
 	public JPanel panel = new JPanel();
-	public JLabel messageLabel;
-	public JLabel subMessageLabel;
-	public JProgressBar progressBar = new JProgressBar();
-
-	private int currentStep;
+	private JLabel messageLabel;
+	private JLabel subMessageLabel;
+	private JProgressBar progressBar = new JProgressBar();
 
 	/**
 	 * This is not done in the constructor in order to avoid processing in case the user chooses to not load
@@ -130,7 +127,7 @@ public class RuneLiteSplashScreen
 		panel.add(version, versionConstraints);
 
 		// version
-		final JLabel litVersion = new JLabel("Plus Version : " + RuneLite.RUNELIT_VERSION);
+		final JLabel litVersion = new JLabel("Plus Version : " + runeLiteProperties.getRunelitVersion());
 		litVersion.setForeground(Color.GREEN);
 		litVersion.setFont(FontManager.getRunescapeSmallFont());
 		litVersion.setForeground(litVersion.getForeground().darker());

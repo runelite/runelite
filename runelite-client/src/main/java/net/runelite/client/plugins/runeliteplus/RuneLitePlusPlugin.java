@@ -26,8 +26,6 @@
  */
 package net.runelite.client.plugins.runeliteplus;
 
-import com.google.inject.Provides;
-
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 
@@ -40,22 +38,19 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLitePlusConfig;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientUI;
 
 @PluginDescriptor(
-		loadWhenOutdated = true, // prevent users from disabling
-		hidden = true, // prevent users from disabling
-		name = "RuneLitePlus",
-		description = "Configures various aspects of RuneLitePlus",
-		type = PluginType.RUNELITPLUS
+	loadWhenOutdated = true, // prevent users from disabling
+	hidden = true, // prevent users from disabling
+	name = "RunelitePlus"
 )
 @Singleton
 @Slf4j
@@ -96,38 +91,14 @@ public class RuneLitePlusPlugin extends Plugin
 		}
 	}
 
-	/* Can't feed this as args to runscript?
-	private static final int[] widgetArgs = new int[]
-		{
-			WidgetInfo.BANK_PIN_EXIT_BUTTON.getId(),
-			WidgetInfo.BANK_PIN_FORGOT_BUTTON.getId(),
-			WidgetInfo.BANK_PIN_1.getId(),
-			WidgetInfo.BANK_PIN_2.getId(),
-			WidgetInfo.BANK_PIN_3.getId(),
-			WidgetInfo.BANK_PIN_4.getId(),
-			WidgetInfo.BANK_PIN_5.getId(),
-			WidgetInfo.BANK_PIN_6.getId(),
-			WidgetInfo.BANK_PIN_7.getId(),
-			WidgetInfo.BANK_PIN_8.getId(),
-			WidgetInfo.BANK_PIN_9.getId(),
-			WidgetInfo.BANK_PIN_0.getId(),
-			WidgetInfo.BANK_PIN_EXIT_BUTTON.getId(),
-			WidgetInfo.BANK_PIN_FORGOT_BUTTON.getId(),
-			WidgetInfo.BANK_PIN_FIRST_ENTERED.getId(),
-			WidgetInfo.BANK_PIN_SECOND_ENTERED.getId(),
-			WidgetInfo.BANK_PIN_THIRD_ENTERED.getId(),
-			WidgetInfo.BANK_PIN_FOURTH_ENTERED.getId(),
-			WidgetInfo.BANK_PIN_INSTRUCTION_TEXT.getId()
-		};*/
-	public static boolean customPresenceEnabled = false;
-	public static final String rlPlusDiscordApp = "560644885250572289";
-	private static final String rlDiscordApp = "409416265891971072";
+	@Inject
+	private RuneLiteProperties runeLiteProperties;
 
 	@Inject
-	public RuneLitePlusConfig config;
+	private RuneLitePlusConfig config;
 
 	@Inject
-	public DiscordService discordService;
+	private DiscordService discordService;
 
 	@Inject
 	private KeyManager keyManager;
@@ -137,12 +108,6 @@ public class RuneLitePlusPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
-
-	@Provides
-	RuneLitePlusConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(RuneLitePlusConfig.class);
-	}
 
 	private RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
 	private int entered = -1;
@@ -156,10 +121,10 @@ public class RuneLitePlusPlugin extends Plugin
 		{
 			ClientUI.currentPresenceName = ("RuneLitePlus");
 			ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-			RuneLiteProperties.discordAppID = rlPlusDiscordApp;
-			discordService.close();
-			discordService.init();
 		}
+
+		discordService.close();
+		discordService.init();
 
 		entered = -1;
 		enterIdx = 0;
@@ -180,7 +145,6 @@ public class RuneLitePlusPlugin extends Plugin
 			{
 				ClientUI.currentPresenceName = ("RuneLitePlus");
 				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-				RuneLiteProperties.discordAppID = rlPlusDiscordApp;
 				discordService.close();
 				discordService.init();
 			}
@@ -188,7 +152,6 @@ public class RuneLitePlusPlugin extends Plugin
 			{
 				ClientUI.currentPresenceName = ("RuneLite");
 				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-				RuneLiteProperties.discordAppID = rlDiscordApp;
 				discordService.close();
 				discordService.init();
 			}

@@ -33,6 +33,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.RuneLitePlusConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
@@ -70,6 +71,9 @@ public class ConfigPlugin extends Plugin
 	private RuneLiteConfig runeLiteConfig;
 
 	@Inject
+	private RuneLitePlusConfig runeLitePlusConfig;
+
+	@Inject
 	private ChatColorConfig chatColorConfig;
 
 	private ConfigPanel configPanel;
@@ -78,7 +82,7 @@ public class ConfigPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig, chatColorConfig);
+		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig, runeLitePlusConfig, chatColorConfig);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "config_icon.png");
 

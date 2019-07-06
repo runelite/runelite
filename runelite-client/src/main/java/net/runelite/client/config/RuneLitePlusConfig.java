@@ -24,7 +24,7 @@
  *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package net.runelite.client.plugins.runeliteplus;
+package net.runelite.client.config;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -78,6 +78,17 @@ public interface RuneLitePlusConfig extends Config
 		position = 3
 	)
 	default boolean keyboardPin()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "enablePlugins",
+		name = "Enable loading of external plugins",
+		description = "Enable loading of external plugins",
+		position = 10
+	)
+	default boolean enablePlugins()
 	{
 		return false;
 	}

@@ -93,6 +93,7 @@ import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.RuneLitePlusConfig;
 import net.runelite.client.config.Stub;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -126,11 +127,13 @@ public class ConfigPanel extends PluginPanel
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
+	private static final String RUNELITEPLUS_PLUGIN = "RuneLitePlus";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
 	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
 	private final ScheduledExecutorService executorService;
 	private final RuneLiteConfig runeLiteConfig;
+	private final RuneLitePlusConfig runeLitePlusConfig;
 	private final ChatColorConfig chatColorConfig;
 	public static List<PluginListItem> pluginList = new ArrayList<>();
 
@@ -150,13 +153,14 @@ public class ConfigPanel extends PluginPanel
 	}
 
 	ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
-				RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig)
+				RuneLiteConfig runeLiteConfig, RuneLitePlusConfig runeLitePlusConfig, ChatColorConfig chatColorConfig)
 	{
 		super(false);
 		this.pluginManager = pluginManager;
 		this.configManager = configManager;
 		this.executorService = executorService;
 		this.runeLiteConfig = runeLiteConfig;
+		this.runeLitePlusConfig = runeLitePlusConfig;
 		this.chatColorConfig = chatColorConfig;
 
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
@@ -261,22 +265,13 @@ public class ConfigPanel extends PluginPanel
 		runeLite.nameLabel.setForeground(Color.WHITE);
 		pluginList.add(runeLite);
 
-		List<PluginListItem> runeLitePlus = new ArrayList<>();
-		// populate pluginList with all external Plugins
-		pluginManager.getPlugins().stream()
-				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.RUNELITPLUS))
-				.forEach(plugin ->
-				{
-					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-					final Config config = pluginManager.getPluginConfigProxy(plugin);
-					final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
-
-					final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
-					listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
-					runeLitePlus.add(listItem);
-				});
-		runeLitePlus.sort(Comparator.comparing(PluginListItem::getName));
-		pluginList.addAll(runeLitePlus);
+		// set RuneLitePlus config on top, as it should always have been
+		final PluginListItem runeLitePlus = new PluginListItem(this, configManager, runeLitePlusConfig,
+			configManager.getConfigDescriptor(runeLitePlusConfig),
+			RUNELITEPLUS_PLUGIN, "RuneLitePlus client settings", "client");
+		runeLitePlus.setPinned(pinnedPlugins.contains(RUNELITEPLUS_PLUGIN));
+		runeLitePlus.nameLabel.setForeground(Color.WHITE);
+		pluginList.add(runeLitePlus);
 
 		List<PluginListItem> externalPlugins = new ArrayList<>();
 		// populate pluginList with all external Plugins
@@ -418,15 +413,18 @@ public class ConfigPanel extends PluginPanel
 
 	void refreshPluginList()
 	{
-		// update enabled / disabled status of all items
-		pluginList.forEach(listItem ->
+		if (pluginManager != null)
 		{
-			final Plugin plugin = listItem.getPlugin();
-			if (plugin != null)
+			// update enabled / disabled status of all items
+			pluginList.forEach(listItem ->
 			{
-				listItem.setPluginEnabled(pluginManager.isPluginEnabled(plugin));
-			}
-		});
+				final Plugin plugin = listItem.getPlugin();
+				if (plugin != null)
+				{
+					listItem.setPluginEnabled(pluginManager.isPluginEnabled(plugin));
+				}
+			});
+		}
 
 		if (showingPluginList)
 		{

@@ -106,7 +106,7 @@ public class DiscordService implements AutoCloseable
 		discordEventHandlers.joinGame = this::joinGame;
 		discordEventHandlers.spectateGame = this::spectateGame;
 		discordEventHandlers.joinRequest = this::joinRequest;
-		discordRPC.Discord_Initialize(RuneLiteProperties.discordAppID, discordEventHandlers, true, null);
+		discordRPC.Discord_Initialize(runeLiteProperties.getDiscordAppId(), discordEventHandlers, true, null);
 		executorService.scheduleAtFixedRate(discordRPC::Discord_RunCallbacks, 0, 2, TimeUnit.SECONDS);
 	}
 

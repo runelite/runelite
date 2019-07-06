@@ -177,9 +177,15 @@ public class PluginSorterPlugin extends Plugin
 
 	private void showPlugins()
 	{
-		List<PluginListItem> tempList = new ArrayList<>();
-		tempList.addAll(ConfigPanel.pluginList);
-		tempList.addAll(1, removedPlugins);
+		List<PluginListItem> tempList = new ArrayList<>(ConfigPanel.pluginList);
+		if (tempList.size() > 0)
+		{
+			tempList.addAll(1, removedPlugins);
+		}
+		else
+		{
+			tempList.addAll(removedPlugins);
+		}
 		ConfigPanel.pluginList = tempList;
 	}
 
