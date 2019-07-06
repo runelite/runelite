@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
@@ -63,6 +64,8 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26667;
@@ -75,6 +78,7 @@ import static net.runelite.api.ObjectID.ROCKFALL;
 import static net.runelite.api.ObjectID.ROCKFALL_26680;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
@@ -89,6 +93,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
@@ -105,6 +110,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
@@ -212,6 +218,7 @@ public class MotherlodePlugin extends Plugin
 	private boolean notifyOnIdle;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showTargetVein;
+	private boolean payDirtMsg;
 
 	@Provides
 	MotherlodeConfig getConfig(ConfigManager configManager)
@@ -321,7 +328,7 @@ public class MotherlodePlugin extends Plugin
 		period = 1,
 		unit = ChronoUnit.SECONDS
 	)
-	public void checkMining()
+	void checkMining()
 	{
 		if (!inMlm)
 		{
@@ -722,9 +729,6 @@ public class MotherlodePlugin extends Plugin
 	/**
 	 * Checks if the given point is "upstairs" in the mlm.
 	 * The upper floor is actually on z=0.
-	 *
-	 * @param localPoint
-	 * @return
 	 */
 	boolean isUpstairs(LocalPoint localPoint)
 	{
@@ -755,5 +759,38 @@ public class MotherlodePlugin extends Plugin
 		this.showOresFound = config.showOresFound();
 		this.notifyOnIdle = config.notifyOnIdle();
 		this.showTargetVein = config.showTargetVein();
+		this.payDirtMsg = config.payDirtMsg();
+	}
+
+	@Subscribe
+	private void onOverheadTextChanged(OverheadTextChanged event)
+	{
+		if (!payDirtMsg || Strings.isNullOrEmpty(event.getOverheadText()) || !(event.getActor() instanceof NPC))
+		{
+			return;
+		}
+
+		switch (((NPC) event.getActor()).getId())
+		{
+			case NpcID.MINER_5606:
+			case NpcID.MINER_5813:
+			case NpcID.MINER_5814:
+			case NpcID.MINER_6565:
+			case NpcID.MINER_6567:
+			case NpcID.MINER_6568:
+			case NpcID.MINER_6569:
+			case NpcID.MINER_6570:
+			case NpcID.MINER_6571:
+			case NpcID.MINER_6572:
+			case NpcID.MINER_6645:
+				break;
+			default:
+				return;
+		}
+
+		if ("pay-dirt!".equals(Text.standardize(event.getOverheadText())))
+		{
+			client.runScript(ScriptID.PUBLICMSG, "Pay-dirt!");
+		}
 	}
 }
