@@ -325,8 +325,13 @@ public class MenuManager
 		{
 			entries.remove(leftClickEntry);
 			entries.add(leftClickEntry);
-			client.setMenuEntries(entries.toArray(new MenuEntry[0]));
 		}
+		else if (!currentHiddenEntries.isEmpty())
+		{
+			leftClickEntry = Iterables.getLast(entries, null);
+		}
+
+		client.setMenuEntries(entries.toArray(new MenuEntry[0]));
 	}
 
 	public void addPlayerMenuItem(String menuText)
