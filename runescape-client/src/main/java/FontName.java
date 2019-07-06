@@ -480,7 +480,7 @@ public class FontName {
       AbstractIndexCache.indexCache0.method8();
       Skeleton.indexCache1.method8();
       WorldMapIcon1.indexCache3.method8();
-      class25.indexCache4.method8();
+      WorldMapDecoration.indexCache4.method8();
       SecureRandomFuture.indexCache5.method8();
       UserComparator3.indexCache6.method8();
       class40.indexCache7.method8();

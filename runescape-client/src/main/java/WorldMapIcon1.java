@@ -126,7 +126,7 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
             SoundEffect var10 = Client.soundEffects[var0];
             if (var10 == null) {
                Object var2 = null;
-               var10 = SoundEffect.readSoundEffect(class25.indexCache4, Client.soundEffectIds[var0], 0);
+               var10 = SoundEffect.readSoundEffect(WorldMapDecoration.indexCache4, Client.soundEffectIds[var0], 0);
                if (var10 == null) {
                   continue;
                }

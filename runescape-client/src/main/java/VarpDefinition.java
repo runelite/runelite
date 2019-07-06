@@ -59,7 +59,7 @@ public class VarpDefinition extends DualNode {
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
       if (var2 == 5) {
-         this.type = var1.method43();
+         this.type = var1.readUnsignedShort();
       }
 
    }

@@ -89,7 +89,7 @@ public class class50 {
       if (!Client.isInInstance) {
          var2 = var1.method67();
          var3 = var1.method66();
-         int var8 = var1.method43();
+         int var8 = var1.readUnsignedShort();
          class190.xteaKeys = new int[var8][4];
 
          for (var4 = 0; var4 < var8; ++var4) {
@@ -131,7 +131,7 @@ public class class50 {
          var2 = var1.method66();
          var3 = var1.method67();
          boolean var15 = var1.readUnsignedByte() == 1;
-         var4 = var1.method43();
+         var4 = var1.readUnsignedShort();
          var1.importIndex();
 
          int var16;
@@ -233,7 +233,7 @@ public class class50 {
       }
 
       AttackOption.field30 = var2;
-      class231.field1139 = 0;
+      WorldMapDecorationType.field1139 = 0;
       WorldMapSection0.field1055 = var3;
       String[] var8 = new String[WorldMapSection0.field1055];
 

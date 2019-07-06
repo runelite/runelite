@@ -132,7 +132,7 @@ public class HealthBarDefinition extends DualNode {
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
       if (var2 == 1) {
-         var1.method43();
+         var1.readUnsignedShort();
       } else if (var2 == 2) {
          this.int1 = var1.readUnsignedByte();
       } else if (var2 == 3) {
@@ -140,7 +140,7 @@ public class HealthBarDefinition extends DualNode {
       } else if (var2 == 4) {
          this.int3 = 0;
       } else if (var2 == 5) {
-         this.int5 = var1.method43();
+         this.int5 = var1.readUnsignedShort();
       } else if (var2 == 6) {
          var1.readUnsignedByte();
       } else if (var2 == 7) {
@@ -148,7 +148,7 @@ public class HealthBarDefinition extends DualNode {
       } else if (var2 == 8) {
          this.spriteId2 = var1.method51();
       } else if (var2 == 11) {
-         this.int3 = var1.method43();
+         this.int3 = var1.readUnsignedShort();
       } else if (var2 == 14) {
          this.width = var1.readUnsignedByte();
       } else if (var2 == 15) {

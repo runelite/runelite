@@ -104,24 +104,24 @@ public class AudioFilter {
       this.field36[0] = var3 >> 4;
       this.field36[1] = var3 & 15;
       if (var3 != 0) {
-         this.field39[0] = var1.method43();
-         this.field39[1] = var1.method43();
+         this.field39[0] = var1.readUnsignedShort();
+         this.field39[1] = var1.readUnsignedShort();
          int var4 = var1.readUnsignedByte();
 
          int var5;
          int var6;
          for (var5 = 0; var5 < 2; ++var5) {
             for (var6 = 0; var6 < this.field36[var5]; ++var6) {
-               this.field37[var5][0][var6] = var1.method43();
-               this.field38[var5][0][var6] = var1.method43();
+               this.field37[var5][0][var6] = var1.readUnsignedShort();
+               this.field38[var5][0][var6] = var1.readUnsignedShort();
             }
          }
 
          for (var5 = 0; var5 < 2; ++var5) {
             for (var6 = 0; var6 < this.field36[var5]; ++var6) {
                if ((var4 & 1 << var5 * 4 << var6) != 0) {
-                  this.field37[var5][1][var6] = var1.method43();
-                  this.field38[var5][1][var6] = var1.method43();
+                  this.field37[var5][1][var6] = var1.readUnsignedShort();
+                  this.field38[var5][1][var6] = var1.readUnsignedShort();
                } else {
                   this.field37[var5][1][var6] = this.field37[var5][0][var6];
                   this.field38[var5][1][var6] = this.field38[var5][0][var6];

@@ -209,7 +209,7 @@ public final class Player extends Actor {
             var6 = var1.readUnsignedByte();
             var4[var7] = var6 + (var5 << 8);
             if (var7 == 0 && var4[0] == 65535) {
-               var3 = var1.method43();
+               var3 = var1.readUnsignedShort();
                break;
             }
 
@@ -233,38 +233,38 @@ public final class Player extends Actor {
          var9[var5] = var6;
       }
 
-      super.idleSequence = var1.method43();
+      super.idleSequence = var1.readUnsignedShort();
       if (super.idleSequence == 65535) {
          super.idleSequence = -1;
       }
 
-      super.turnLeftSequence = var1.method43();
+      super.turnLeftSequence = var1.readUnsignedShort();
       if (super.turnLeftSequence == 65535) {
          super.turnLeftSequence = -1;
       }
 
       super.turnRightSequence = super.turnLeftSequence;
-      super.walkSequence = var1.method43();
+      super.walkSequence = var1.readUnsignedShort();
       if (super.walkSequence == 65535) {
          super.walkSequence = -1;
       }
 
-      super.walkTurnSequence = var1.method43();
+      super.walkTurnSequence = var1.readUnsignedShort();
       if (super.walkTurnSequence == 65535) {
          super.walkTurnSequence = -1;
       }
 
-      super.walkTurnLeftSequence = var1.method43();
+      super.walkTurnLeftSequence = var1.readUnsignedShort();
       if (super.walkTurnLeftSequence == 65535) {
          super.walkTurnLeftSequence = -1;
       }
 
-      super.walkTurnRightSequence = var1.method43();
+      super.walkTurnRightSequence = var1.readUnsignedShort();
       if (super.walkTurnRightSequence == 65535) {
          super.walkTurnRightSequence = -1;
       }
 
-      super.runSequence = var1.method43();
+      super.runSequence = var1.readUnsignedShort();
       if (super.runSequence == 65535) {
          super.runSequence = -1;
       }
@@ -277,7 +277,7 @@ public final class Player extends Actor {
       }
 
       this.combatLevel = var1.readUnsignedByte();
-      this.skillLevel = var1.method43();
+      this.skillLevel = var1.readUnsignedShort();
       this.isHidden = var1.readUnsignedByte() == 1;
       if (Client.gameBuild == 0 && Client.rights >= 2) {
          this.isHidden = false;

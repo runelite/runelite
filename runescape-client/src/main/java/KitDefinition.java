@@ -33,9 +33,11 @@ public class KitDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 1619779051
    )
-   public int field458;
+   @Export("bodypartID")
+   public int bodypartID;
    @ObfuscatedName("u")
-   int[] field459;
+   @Export("modelIDs")
+   int[] modelIDs;
    @ObfuscatedName("g")
    @Export("recolorFrom")
    short[] recolorFrom;
@@ -52,12 +54,13 @@ public class KitDefinition extends DualNode {
    @Export("archives")
    int[] archives;
    @ObfuscatedName("k")
-   public boolean field460;
+   @Export("nonSelectable")
+   public boolean nonSelectable;
 
    KitDefinition() {
-      this.field458 = -1;
+      this.bodypartID = -1;
       this.archives = new int[]{-1, -1, -1, -1, -1};
-      this.field460 = false;
+      this.nonSelectable = false;
    }
 
    @ObfuscatedName("f")
@@ -85,27 +88,27 @@ public class KitDefinition extends DualNode {
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
       if (var2 == 1) {
-         this.field458 = var1.readUnsignedByte();
+         this.bodypartID = var1.readUnsignedByte();
       } else {
          int var3;
          int var4;
          if (var2 == 2) {
             var3 = var1.readUnsignedByte();
-            this.field459 = new int[var3];
+            this.modelIDs = new int[var3];
 
             for (var4 = 0; var4 < var3; ++var4) {
-               this.field459[var4] = var1.method43();
+               this.modelIDs[var4] = var1.readUnsignedShort();
             }
          } else if (var2 == 3) {
-            this.field460 = true;
+            this.nonSelectable = true;
          } else if (var2 == 40) {
             var3 = var1.readUnsignedByte();
             this.recolorFrom = new short[var3];
             this.recolorTo = new short[var3];
 
             for (var4 = 0; var4 < var3; ++var4) {
-               this.recolorFrom[var4] = (short)var1.method43();
-               this.recolorTo[var4] = (short)var1.method43();
+               this.recolorFrom[var4] = (short)var1.readUnsignedShort();
+               this.recolorTo[var4] = (short)var1.readUnsignedShort();
             }
          } else if (var2 == 41) {
             var3 = var1.readUnsignedByte();
@@ -113,11 +116,11 @@ public class KitDefinition extends DualNode {
             this.retextureTo = new short[var3];
 
             for (var4 = 0; var4 < var3; ++var4) {
-               this.retextureFrom[var4] = (short)var1.method43();
-               this.retextureTo[var4] = (short)var1.method43();
+               this.retextureFrom[var4] = (short)var1.readUnsignedShort();
+               this.retextureTo[var4] = (short)var1.readUnsignedShort();
             }
          } else if (var2 >= 60 && var2 < 70) {
-            this.archives[var2 - 60] = var1.method43();
+            this.archives[var2 - 60] = var1.readUnsignedShort();
          }
       }
 
@@ -128,14 +131,15 @@ public class KitDefinition extends DualNode {
       signature = "(I)Z",
       garbageValue = "-1250940659"
    )
-   public boolean method159() {
-      if (this.field459 == null) {
+   @Export("ready")
+   public boolean ready() {
+      if (this.modelIDs == null) {
          return true;
       } else {
          boolean var1 = true;
 
-         for (int var2 = 0; var2 < this.field459.length; ++var2) {
-            if (!field456.tryLoadRecord(this.field459[var2], 0)) {
+         for (int var2 = 0; var2 < this.modelIDs.length; ++var2) {
+            if (!field456.tryLoadRecord(this.modelIDs[var2], 0)) {
                var1 = false;
             }
          }
@@ -149,14 +153,15 @@ public class KitDefinition extends DualNode {
       signature = "(B)Ldw;",
       garbageValue = "0"
    )
-   public ModelData method160() {
-      if (this.field459 == null) {
+   @Export("getModelData")
+   public ModelData getModelData() {
+      if (this.modelIDs == null) {
          return null;
       } else {
-         ModelData[] var1 = new ModelData[this.field459.length];
+         ModelData[] var1 = new ModelData[this.modelIDs.length];
 
-         for (int var2 = 0; var2 < this.field459.length; ++var2) {
-            var1[var2] = ModelData.method2788(field456, this.field459[var2], 0);
+         for (int var2 = 0; var2 < this.modelIDs.length; ++var2) {
+            var1[var2] = ModelData.method2788(field456, this.modelIDs[var2], 0);
          }
 
          ModelData var4;

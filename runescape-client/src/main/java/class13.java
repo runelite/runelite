@@ -51,29 +51,29 @@ public class class13 {
       signature = "(Lbi;I)V",
       garbageValue = "-527387190"
    )
-   static final void method165(class68 var0) {
+   static final void method165(PendingSpawn var0) {
       long var1 = 0L;
       int var3 = -1;
       int var4 = 0;
       int var5 = 0;
-      if (var0.field906 == 0) {
-         var1 = class65.scene.method290(var0.field911, var0.field913, var0.field901);
+      if (var0.type == 0) {
+         var1 = class65.scene.method290(var0.level, var0.x, var0.y);
       }
 
-      if (var0.field906 == 1) {
-         var1 = class65.scene.method291(var0.field911, var0.field913, var0.field901);
+      if (var0.type == 1) {
+         var1 = class65.scene.method291(var0.level, var0.x, var0.y);
       }
 
-      if (var0.field906 == 2) {
-         var1 = class65.scene.method292(var0.field911, var0.field913, var0.field901);
+      if (var0.type == 2) {
+         var1 = class65.scene.method292(var0.level, var0.x, var0.y);
       }
 
-      if (var0.field906 == 3) {
-         var1 = class65.scene.getFloorDecorationTag(var0.field911, var0.field913, var0.field901);
+      if (var0.type == 3) {
+         var1 = class65.scene.getFloorDecorationTag(var0.level, var0.x, var0.y);
       }
 
       if (var1 != 0L) {
-         int var6 = class65.scene.getObjectFlags(var0.field911, var0.field913, var0.field901, var1);
+         int var6 = class65.scene.getObjectFlags(var0.level, var0.x, var0.y, var1);
          var3 = HitSplatDefinition.method4972(var1);
          var4 = var6 & 31;
          var5 = var6 >> 6 & 3;

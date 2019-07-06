@@ -373,8 +373,8 @@ public class ModelData extends Entity {
       Buffer var7 = new Buffer(var1);
       Buffer var8 = new Buffer(var1);
       var2.index = var1.length - 23;
-      int var9 = var2.method43();
-      int var10 = var2.method43();
+      int var9 = var2.readUnsignedShort();
+      int var10 = var2.readUnsignedShort();
       int var11 = var2.readUnsignedByte();
       int var12 = var2.readUnsignedByte();
       int var13 = var2.readUnsignedByte();
@@ -382,11 +382,11 @@ public class ModelData extends Entity {
       int var15 = var2.readUnsignedByte();
       int var16 = var2.readUnsignedByte();
       int var17 = var2.readUnsignedByte();
-      int var18 = var2.method43();
-      int var19 = var2.method43();
-      int var20 = var2.method43();
-      int var21 = var2.method43();
-      int var22 = var2.method43();
+      int var18 = var2.readUnsignedShort();
+      int var19 = var2.readUnsignedShort();
+      int var20 = var2.readUnsignedShort();
+      int var21 = var2.readUnsignedShort();
+      int var22 = var2.readUnsignedShort();
       int var23 = 0;
       int var24 = 0;
       int var25 = 0;
@@ -565,7 +565,7 @@ public class ModelData extends Entity {
       var8.index = var35;
 
       for (var49 = 0; var49 < var10; ++var49) {
-         this.faceColors[var49] = (short)var2.method43();
+         this.faceColors[var49] = (short)var2.readUnsignedShort();
          if (var12 == 1) {
             this.field551[var49] = var3.readByte();
          }
@@ -583,7 +583,7 @@ public class ModelData extends Entity {
          }
 
          if (var16 == 1) {
-            this.faceTextures[var49] = (short)(var7.method43() - 1);
+            this.faceTextures[var49] = (short)(var7.readUnsignedShort() - 1);
          }
 
          if (this.textureCoords != null && this.faceTextures[var49] != -1) {
@@ -651,9 +651,9 @@ public class ModelData extends Entity {
       for (var53 = 0; var53 < var11; ++var53) {
          var54 = this.textureRenderTypes[var53] & 255;
          if (var54 == 0) {
-            this.texTriangleX[var53] = (short)var2.method43();
-            this.texTriangleY[var53] = (short)var2.method43();
-            this.texTriangleZ[var53] = (short)var2.method43();
+            this.texTriangleX[var53] = (short)var2.readUnsignedShort();
+            this.texTriangleY[var53] = (short)var2.readUnsignedShort();
+            this.texTriangleZ[var53] = (short)var2.readUnsignedShort();
          }
       }
 
@@ -661,9 +661,9 @@ public class ModelData extends Entity {
       var53 = var2.readUnsignedByte();
       if (var53 != 0) {
          new ModelData0();
-         var2.method43();
-         var2.method43();
-         var2.method43();
+         var2.readUnsignedShort();
+         var2.readUnsignedShort();
+         var2.readUnsignedShort();
          var2.readInt();
       }
 
@@ -679,18 +679,18 @@ public class ModelData extends Entity {
       Buffer var7 = new Buffer(var1);
       Buffer var8 = new Buffer(var1);
       var4.index = var1.length - 18;
-      int var9 = var4.method43();
-      int var10 = var4.method43();
+      int var9 = var4.readUnsignedShort();
+      int var10 = var4.readUnsignedShort();
       int var11 = var4.readUnsignedByte();
       int var12 = var4.readUnsignedByte();
       int var13 = var4.readUnsignedByte();
       int var14 = var4.readUnsignedByte();
       int var15 = var4.readUnsignedByte();
       int var16 = var4.readUnsignedByte();
-      int var17 = var4.method43();
-      int var18 = var4.method43();
-      int var19 = var4.method43();
-      int var20 = var4.method43();
+      int var17 = var4.readUnsignedShort();
+      int var18 = var4.readUnsignedShort();
+      int var19 = var4.readUnsignedShort();
+      int var20 = var4.readUnsignedShort();
       byte var21 = 0;
       int var22 = var21 + var9;
       int var23 = var22;
@@ -821,7 +821,7 @@ public class ModelData extends Entity {
       var8.index = var25;
 
       for (var38 = 0; var38 < var10; ++var38) {
-         this.faceColors[var38] = (short)var4.method43();
+         this.faceColors[var38] = (short)var4.readUnsignedShort();
          if (var12 == 1) {
             var39 = var5.readUnsignedByte();
             if ((var39 & 1) == 1) {
@@ -912,9 +912,9 @@ public class ModelData extends Entity {
 
       for (var42 = 0; var42 < var11; ++var42) {
          this.textureRenderTypes[var42] = 0;
-         this.texTriangleX[var42] = (short)var4.method43();
-         this.texTriangleY[var42] = (short)var4.method43();
-         this.texTriangleZ[var42] = (short)var4.method43();
+         this.texTriangleX[var42] = (short)var4.readUnsignedShort();
+         this.texTriangleY[var42] = (short)var4.readUnsignedShort();
+         this.texTriangleZ[var42] = (short)var4.readUnsignedShort();
       }
 
       if (this.textureCoords != null) {

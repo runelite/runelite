@@ -295,7 +295,8 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "-86"
    )
-   public int method43() {
+   @Export("readUnsignedShort")
+   public int readUnsignedShort() {
       this.index += 2;
       return (this.array[this.index - 1] & 255) + ((this.array[this.index - 2] & 255) << 8);
    }
@@ -502,7 +503,7 @@ public class Buffer extends Node {
    )
    public int method47() {
       int var1 = this.array[this.index] & 255;
-      return var1 < 128 ? this.readUnsignedByte() - 64 : this.method43() - 49152;
+      return var1 < 128 ? this.readUnsignedByte() - 64 : this.readUnsignedShort() - 49152;
    }
 
    @ObfuscatedName("ae")
@@ -512,7 +513,7 @@ public class Buffer extends Node {
    )
    public int method48() {
       int var1 = this.array[this.index] & 255;
-      return var1 < 128 ? this.readUnsignedByte() : this.method43() - 32768;
+      return var1 < 128 ? this.readUnsignedByte() : this.readUnsignedShort() - 32768;
    }
 
    @ObfuscatedName("at")
@@ -538,7 +539,7 @@ public class Buffer extends Node {
       garbageValue = "103"
    )
    public int method50() {
-      return this.array[this.index] < 0 ? this.readInt() & Integer.MAX_VALUE : this.method43();
+      return this.array[this.index] < 0 ? this.readInt() & Integer.MAX_VALUE : this.readUnsignedShort();
    }
 
    @ObfuscatedName("ap")
@@ -550,7 +551,7 @@ public class Buffer extends Node {
       if (this.array[this.index] < 0) {
          return this.readInt() & Integer.MAX_VALUE;
       } else {
-         int var1 = this.method43();
+         int var1 = this.readUnsignedShort();
          return var1 == 32767 ? -1 : var1;
       }
    }

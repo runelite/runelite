@@ -23,7 +23,7 @@ public class WorldMapAreaData extends WorldMapArea {
    )
    void method387(Buffer var1, Buffer var2, int var3, boolean var4) {
       this.read(var1, var3);
-      int var5 = var2.method43();
+      int var5 = var2.readUnsignedShort();
       this.field1016 = new HashSet(var5);
 
       int var6;
@@ -39,7 +39,7 @@ public class WorldMapAreaData extends WorldMapArea {
          this.field1016.add(var7);
       }
 
-      var6 = var2.method43();
+      var6 = var2.readUnsignedShort();
       this.field1017 = new HashSet(var6);
 
       for (int var12 = 0; var12 < var6; ++var12) {
@@ -64,7 +64,7 @@ public class WorldMapAreaData extends WorldMapArea {
    )
    void method388(Buffer var1, boolean var2) {
       this.field1018 = new LinkedList();
-      int var3 = var1.method43();
+      int var3 = var1.readUnsignedShort();
 
       for (int var4 = 0; var4 < var3; ++var4) {
          int var5 = var1.method51();
@@ -106,7 +106,7 @@ public class WorldMapAreaData extends WorldMapArea {
       garbageValue = "-1767097678"
    )
    public static boolean method711(int var0) {
-      return var0 >= class231.field2810.field2820 && var0 <= class231.field2822.field2820;
+      return var0 >= WorldMapDecorationType.field2810.id && var0 <= WorldMapDecorationType.field2822.id;
    }
 
    @ObfuscatedName("u")

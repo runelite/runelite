@@ -1139,7 +1139,8 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedSignature(
       signature = "Lje;"
    )
-   static NodeDeque field214;
+   @Export("pendingSpawns")
+   static NodeDeque pendingSpawns;
    @ObfuscatedName("kk")
    @ObfuscatedSignature(
       signature = "Lje;"
@@ -1417,7 +1418,7 @@ public final class Client extends GameShell implements Usernamed {
                   field181 = 2;
                } else {
                   if (field181 != 0) {
-                     class68.drawLoadingMessage("Loading - please wait.<br> (100%)", true);
+                     PendingSpawn.drawLoadingMessage("Loading - please wait.<br> (100%)", true);
                   }
 
                   class13.playPcmPlayers();
@@ -1917,7 +1918,7 @@ public final class Client extends GameShell implements Usernamed {
 
                                        var50 = 0;
                                        if (var49 != -2) {
-                                          var50 = Rasterizer3D.Rasterizer3D_colorPalette[class25.method348(var49, 96)];
+                                          var50 = Rasterizer3D.Rasterizer3D_colorPalette[WorldMapDecoration.method348(var49, 96)];
                                        }
 
                                        if (var43.rgb2 != -1) {
@@ -1930,10 +1931,10 @@ public final class Client extends GameShell implements Usernamed {
                                           }
 
                                           var49 = WorldMapAreaData.method712(var51, var43.saturation2, var52);
-                                          var50 = Rasterizer3D.Rasterizer3D_colorPalette[class25.method348(var49, 96)];
+                                          var50 = Rasterizer3D.Rasterizer3D_colorPalette[WorldMapDecoration.method348(var49, 96)];
                                        }
 
-                                       var60.addTile(var6, var12, var18, var41, var66, var69, var30, var31, var32, var33, class15.method183(var38, var34), class15.method183(var38, var35), class15.method183(var38, var36), class15.method183(var38, var37), class25.method348(var48, var34), class25.method348(var48, var35), class25.method348(var48, var36), class25.method348(var48, var37), var40, var50);
+                                       var60.addTile(var6, var12, var18, var41, var66, var69, var30, var31, var32, var33, class15.method183(var38, var34), class15.method183(var38, var35), class15.method183(var38, var36), class15.method183(var38, var37), WorldMapDecoration.method348(var48, var34), WorldMapDecoration.method348(var48, var35), WorldMapDecoration.method348(var48, var36), WorldMapDecoration.method348(var48, var37), var40, var50);
                                     }
                                  }
                               }
@@ -2283,23 +2284,23 @@ public final class Client extends GameShell implements Usernamed {
                }
 
                var3 = (field178 * 50 - field177 * 50) / field178;
-               class68.drawLoadingMessage("Loading - please wait.<br> (" + var3 + "%)", false);
+               PendingSpawn.drawLoadingMessage("Loading - please wait.<br> (" + var3 + "%)", false);
             } else if (field181 == 2) {
                if (field179 > field180) {
                   field180 = field179;
                }
 
                var3 = (field180 * 50 - field179 * 50) / field180 + 50;
-               class68.drawLoadingMessage("Loading - please wait.<br> (" + var3 + "%)", false);
+               PendingSpawn.drawLoadingMessage("Loading - please wait.<br> (" + var3 + "%)", false);
             } else {
-               class68.drawLoadingMessage("Loading - please wait.", false);
+               PendingSpawn.drawLoadingMessage("Loading - please wait.", false);
             }
          } else if (gameState == 30) {
             this.drawLoggedIn();
          } else if (gameState == 40) {
-            class68.drawLoadingMessage("Connection lost<br>Please wait - attempting to reestablish", false);
+            PendingSpawn.drawLoadingMessage("Connection lost<br>Please wait - attempting to reestablish", false);
          } else if (gameState == 45) {
-            class68.drawLoadingMessage("Please wait...", false);
+            PendingSpawn.drawLoadingMessage("Please wait...", false);
          }
       } else {
          IndexCacheLoader.drawTitle(class2.fontBold12, ScriptEvent.fontPlain11, DevicePcmPlayerProvider.fontPlain12);
@@ -2807,7 +2808,7 @@ public final class Client extends GameShell implements Usernamed {
                         if (ModelData0.NetCache_currentResponse == null) {
                            NetCache.NetCache_responseHeaderBuffer.index = 0;
                            var11 = NetCache.NetCache_responseHeaderBuffer.readUnsignedByte();
-                           var12 = NetCache.NetCache_responseHeaderBuffer.method43();
+                           var12 = NetCache.NetCache_responseHeaderBuffer.readUnsignedShort();
                            int var14 = NetCache.NetCache_responseHeaderBuffer.readUnsignedByte();
                            var13 = NetCache.NetCache_responseHeaderBuffer.readInt();
                            long var15 = (long)(var12 + (var11 << 16));
@@ -3323,7 +3324,7 @@ public final class Client extends GameShell implements Usernamed {
             var8.packetBuffer.writeInt(Skeleton.indexCache1.hash);
             var8.packetBuffer.writeInt(ObjectSound.indexCache2.hash);
             var8.packetBuffer.writeInt(WorldMapIcon1.indexCache3.hash);
-            var8.packetBuffer.writeInt(class25.indexCache4.hash);
+            var8.packetBuffer.writeInt(WorldMapDecoration.indexCache4.hash);
             var8.packetBuffer.writeInt(SecureRandomFuture.indexCache5.hash);
             var8.packetBuffer.writeInt(UserComparator3.indexCache6.hash);
             var8.packetBuffer.writeInt(class40.indexCache7.hash);
@@ -3452,7 +3453,7 @@ public final class Client extends GameShell implements Usernamed {
                packetWriter.serverPacket0Length = packetWriter.serverPacket0.length;
                ((AbstractSocket)var1).read(var2.array, 0, 2);
                var2.index = 0;
-               packetWriter.serverPacket0Length = var2.method43();
+               packetWriter.serverPacket0Length = var2.readUnsignedShort();
 
                try {
                   Client var25 = TextureProvider.client;
@@ -3479,7 +3480,7 @@ public final class Client extends GameShell implements Usernamed {
                   var2.index = 0;
                   ((AbstractSocket)var1).read(var2.array, 0, 2);
                   var2.index = 0;
-                  IndexCacheLoader.field407 = var2.method43();
+                  IndexCacheLoader.field407 = var2.readUnsignedShort();
                   loginState = 15;
                }
 
@@ -3518,7 +3519,7 @@ public final class Client extends GameShell implements Usernamed {
 
                      ((AbstractSocket)var1).read(var2.array, 0, 2);
                      var2.index = 0;
-                     packetWriter.serverPacket0Length = var2.method43();
+                     packetWriter.serverPacket0Length = var2.readUnsignedShort();
                   }
 
                   if (((AbstractSocket)var1).available() >= packetWriter.serverPacket0Length) {
@@ -3930,7 +3931,7 @@ public final class Client extends GameShell implements Usernamed {
                   }
 
                   if (rootWidgetGroup != -1) {
-                     class231.method4517(rootWidgetGroup, 0, 0, SoundCache.canvasWidth, Huffman.canvasHeight, 0, 0);
+                     WorldMapDecorationType.method4517(rootWidgetGroup, 0, 0, SoundCache.canvasWidth, Huffman.canvasHeight, 0, 0);
                   }
 
                   ++cycleCntr;
@@ -4009,7 +4010,7 @@ public final class Client extends GameShell implements Usernamed {
                                                    } else if (menuOptionsCount > 0) {
                                                       var4 = field205;
                                                       var9 = field206;
-                                                      class231.processTempMenuAction(UnitPriceComparator.tempMenuAction, var4, var9);
+                                                      WorldMapDecorationType.processTempMenuAction(UnitPriceComparator.tempMenuAction, var4, var9);
                                                       UnitPriceComparator.tempMenuAction = null;
                                                    }
 
@@ -4338,7 +4339,7 @@ public final class Client extends GameShell implements Usernamed {
             class39.drawMenuActionTextAt(field216, field217);
          }
       } else {
-         var1 = class25.menuX;
+         var1 = WorldMapDecoration.menuX;
          var2 = GameShell.menuY;
          var3 = class214.menuWidth;
          var4 = AbstractWorldMapIcon.menuHeight;
@@ -4372,7 +4373,7 @@ public final class Client extends GameShell implements Usernamed {
             var11.draw(var12, var1 + 3, var9, var10, 0);
          }
 
-         var7 = class25.menuX;
+         var7 = WorldMapDecoration.menuX;
          var9 = GameShell.menuY;
          var10 = class214.menuWidth;
          int var15 = AbstractWorldMapIcon.menuHeight;
@@ -4428,7 +4429,7 @@ public final class Client extends GameShell implements Usernamed {
                if (var13.stream1 == null) {
                   if (var13.soundEffectId >= 0) {
                      var14 = null;
-                     var16 = SoundEffect.readSoundEffect(class25.indexCache4, var13.soundEffectId, 0);
+                     var16 = SoundEffect.readSoundEffect(WorldMapDecoration.indexCache4, var13.soundEffectId, 0);
                      if (var16 != null) {
                         var17 = var16.toRawSound().resample(MilliClock.decimator);
                         var19 = RawPcmStream.createRawPcmStream(var17, 100, var6);
@@ -4445,7 +4446,7 @@ public final class Client extends GameShell implements Usernamed {
                   if (var13.soundEffectIds != null && (var13.field655 -= var4) <= 0) {
                      var7 = (int)(Math.random() * (double)var13.soundEffectIds.length);
                      var14 = null;
-                     var16 = SoundEffect.readSoundEffect(class25.indexCache4, var13.soundEffectIds[var7], 0);
+                     var16 = SoundEffect.readSoundEffect(WorldMapDecoration.indexCache4, var13.soundEffectIds[var7], 0);
                      if (var16 != null) {
                         var17 = var16.toRawSound().resample(MilliClock.decimator);
                         var19 = RawPcmStream.createRawPcmStream(var17, 100, var6);
@@ -4541,7 +4542,7 @@ public final class Client extends GameShell implements Usernamed {
 
                var1.getSocket().read(var3.array, 0, 2);
                var3.index = 0;
-               var1.serverPacket0Length = var3.method43();
+               var1.serverPacket0Length = var3.readUnsignedShort();
             }
 
             if (!var2.isAvailable(var1.serverPacket0Length)) {
@@ -4565,7 +4566,7 @@ public final class Client extends GameShell implements Usernamed {
                isCameraLocked = true;
                class3.field1146 = var3.readUnsignedByte();
                MusicPatchPcmStream.field602 = var3.readUnsignedByte();
-               AbstractWorldMapIcon.field4 = var3.method43();
+               AbstractWorldMapIcon.field4 = var3.readUnsignedShort();
                ClientPacket.field221 = var3.readUnsignedByte();
                class30.field1148 = var3.readUnsignedByte();
                if (class30.field1148 >= 100) {
@@ -4663,7 +4664,7 @@ public final class Client extends GameShell implements Usernamed {
             int var13;
             if (ServerPacket.field859 == var1.serverPacket0) {
                var37 = var3.readInt();
-               var6 = var3.method43();
+               var6 = var3.readUnsignedShort();
                if (var37 < -70000) {
                   var6 += 32768;
                }
@@ -4682,10 +4683,10 @@ public final class Client extends GameShell implements Usernamed {
                }
 
                PlayerType.clearItemContainer(var6);
-               var10 = var3.method43();
+               var10 = var3.readUnsignedShort();
 
                for (var11 = 0; var11 < var10; ++var11) {
-                  var12 = var3.method43();
+                  var12 = var3.readUnsignedShort();
                   var13 = var3.readUnsignedByte();
                   if (var13 == 255) {
                      var13 = var3.method73();
@@ -4821,7 +4822,7 @@ public final class Client extends GameShell implements Usernamed {
             if (ServerPacket.field825 == var1.serverPacket0) {
                hintArrowType = var3.readUnsignedByte();
                if (hintArrowType == 1) {
-                  hintArrowNpcIndex = var3.method43();
+                  hintArrowNpcIndex = var3.readUnsignedShort();
                }
 
                if (hintArrowType >= 2 && hintArrowType <= 6) {
@@ -4851,13 +4852,13 @@ public final class Client extends GameShell implements Usernamed {
                   }
 
                   hintArrowType = 2;
-                  hintArrowX = var3.method43();
-                  hintArrowY = var3.method43();
+                  hintArrowX = var3.readUnsignedShort();
+                  hintArrowY = var3.readUnsignedShort();
                   hintArrowHeight = var3.readUnsignedByte();
                }
 
                if (hintArrowType == 10) {
-                  hintArrowPlayerIndex = var3.method43();
+                  hintArrowPlayerIndex = var3.readUnsignedShort();
                }
 
                var1.serverPacket0 = null;
@@ -4899,7 +4900,7 @@ public final class Client extends GameShell implements Usernamed {
 
             if (ServerPacket.field809 == var1.serverPacket0) {
                var37 = var3.readInt();
-               var6 = var3.method43();
+               var6 = var3.readUnsignedShort();
                if (var6 == 65535) {
                   var6 = -1;
                }
@@ -5008,7 +5009,7 @@ public final class Client extends GameShell implements Usernamed {
                }
 
                var5 = var3.method73();
-               var10 = var3.method43();
+               var10 = var3.readUnsignedShort();
                if (var10 == 65535) {
                   var10 = -1;
                }
@@ -5114,7 +5115,7 @@ public final class Client extends GameShell implements Usernamed {
 
             if (ServerPacket.field833 == var1.serverPacket0) {
                var37 = var3.readInt();
-               var6 = var3.method43();
+               var6 = var3.readUnsignedShort();
                if (var37 < -70000) {
                   var6 += 32768;
                }
@@ -5127,7 +5128,7 @@ public final class Client extends GameShell implements Usernamed {
 
                for (; var3.index < var1.serverPacket0Length; WorldMapManager.itemContainerSetItem(var6, var10, var11 - 1, var12)) {
                   var10 = var3.method48();
-                  var11 = var3.method43();
+                  var11 = var3.readUnsignedShort();
                   var12 = 0;
                   if (var11 != 0) {
                      var12 = var3.readUnsignedByte();
@@ -5153,9 +5154,9 @@ public final class Client extends GameShell implements Usernamed {
             }
 
             if (ServerPacket.field854 == var1.serverPacket0) {
-               var37 = var3.method43();
+               var37 = var3.readUnsignedShort();
                var6 = var3.readUnsignedByte();
-               var5 = var3.method43();
+               var5 = var3.readUnsignedShort();
                Ignored.queueSoundEffect(var37, var6, var5);
                var1.serverPacket0 = null;
                return true;
@@ -5199,7 +5200,7 @@ public final class Client extends GameShell implements Usernamed {
             if (ServerPacket.field836 == var1.serverPacket0) {
                World var43 = new World();
                var43.host = var3.readStringCp1252NullTerminated();
-               var43.id = var3.method43();
+               var43.id = var3.readUnsignedShort();
                var6 = var3.readInt();
                var43.properties = var6;
                GameShell.updateGameState(45);
@@ -5297,7 +5298,7 @@ public final class Client extends GameShell implements Usernamed {
             }
 
             if (ServerPacket.field861 == var1.serverPacket0) {
-               rebootTimer = var3.method43() * 30;
+               rebootTimer = var3.readUnsignedShort() * 30;
                field124 = cycleCntr;
                var1.serverPacket0 = null;
                return true;
@@ -5316,9 +5317,9 @@ public final class Client extends GameShell implements Usernamed {
                   }
                }
 
-               for (class68 var45 = (class68)field214.last(); var45 != null; var45 = (class68)field214.previous()) {
-                  if (var45.field913 >= WorldMapSection3.field1089 && var45.field913 < WorldMapSection3.field1089 + 8 && var45.field901 >= Canvas.field95 && var45.field901 < Canvas.field95 + 8 && var45.field911 == SoundSystem.plane) {
-                     var45.field910 = 0;
+               for (PendingSpawn var45 = (PendingSpawn) pendingSpawns.last(); var45 != null; var45 = (PendingSpawn) pendingSpawns.previous()) {
+                  if (var45.x >= WorldMapSection3.field1089 && var45.x < WorldMapSection3.field1089 + 8 && var45.y >= Canvas.field95 && var45.y < Canvas.field95 + 8 && var45.level == SoundSystem.plane) {
+                     var45.hitpoints = 0;
                   }
                }
 
@@ -5354,7 +5355,7 @@ public final class Client extends GameShell implements Usernamed {
             if (ServerPacket.field843 == var1.serverPacket0) {
                var21 = var3.readStringCp1252NullTerminated();
                var25 = var3.readLong();
-               var27 = (long)var3.method43();
+               var27 = (long)var3.readUnsignedShort();
                var19 = (long)var3.readMedium();
                var29 = (PlayerType)ScriptFrame.findEnumerated(class48.method865(), var3.readUnsignedByte());
                var23 = (var27 << 32) + var19;
@@ -5426,7 +5427,7 @@ public final class Client extends GameShell implements Usernamed {
                isCameraLocked = true;
                GrandExchangeOffer.field376 = var3.readUnsignedByte();
                KeyHandler.field445 = var3.readUnsignedByte();
-               IndexStoreAction.field410 = var3.method43();
+               IndexStoreAction.field410 = var3.readUnsignedShort();
                VertexNormal.field946 = var3.readUnsignedByte();
                class171.field1116 = var3.readUnsignedByte();
                if (class171.field1116 >= 100) {
@@ -5575,8 +5576,8 @@ public final class Client extends GameShell implements Usernamed {
             WidgetGroupParent var50;
             if (ServerPacket.field845 == var1.serverPacket0) {
                var37 = var3.index + var1.serverPacket0Length;
-               var6 = var3.method43();
-               var5 = var3.method43();
+               var6 = var3.readUnsignedShort();
+               var5 = var3.readUnsignedShort();
                if (var6 != rootWidgetGroup) {
                   rootWidgetGroup = var6;
                   this.method87(false);
@@ -5590,7 +5591,7 @@ public final class Client extends GameShell implements Usernamed {
 
                for (; var5-- > 0; var50.keep = true) {
                   var10 = var3.readInt();
-                  var11 = var3.method43();
+                  var11 = var3.readUnsignedShort();
                   var12 = var3.readUnsignedByte();
                   var50 = (WidgetGroupParent)widgetGroupParents.get((long)var10);
                   if (var50 != null && var11 != var50.group) {
@@ -5615,8 +5616,8 @@ public final class Client extends GameShell implements Usernamed {
 
                while (var3.index < var37) {
                   var10 = var3.readInt();
-                  var11 = var3.method43();
-                  var12 = var3.method43();
+                  var11 = var3.readUnsignedShort();
+                  var12 = var3.readUnsignedShort();
                   var13 = var3.readInt();
 
                   for (int var51 = var11; var51 <= var12; ++var51) {
@@ -5669,7 +5670,7 @@ public final class Client extends GameShell implements Usernamed {
             }
 
             if (ServerPacket.field793 == var1.serverPacket0) {
-               var37 = var3.method43();
+               var37 = var3.readUnsignedShort();
                var6 = var3.readInt();
                Varps.Varps_temp[var37] = var6;
                if (Varps.Varps_main[var37] != var6) {
@@ -5763,7 +5764,7 @@ public final class Client extends GameShell implements Usernamed {
 
             if (ServerPacket.field799 == var1.serverPacket0) {
                var21 = var3.readStringCp1252NullTerminated();
-               var25 = (long)var3.method43();
+               var25 = (long)var3.readUnsignedShort();
                var27 = (long)var3.readMedium();
                var29 = (PlayerType)ScriptFrame.findEnumerated(class48.method865(), var3.readUnsignedByte());
                long var30 = (var25 << 32) + var27;
@@ -5897,14 +5898,14 @@ public final class Client extends GameShell implements Usernamed {
             if (var12 != 1 && (AbstractRasterProvider.mouseCam || var12 != 4)) {
                var2 = MouseHandler.MouseHandler_x;
                var14 = MouseHandler.MouseHandler_y;
-               if (var2 < class25.menuX - 10 || var2 > class25.menuX + class214.menuWidth + 10 || var14 < GameShell.menuY - 10 || var14 > AbstractWorldMapIcon.menuHeight + GameShell.menuY + 10) {
+               if (var2 < WorldMapDecoration.menuX - 10 || var2 > WorldMapDecoration.menuX + class214.menuWidth + 10 || var14 < GameShell.menuY - 10 || var14 > AbstractWorldMapIcon.menuHeight + GameShell.menuY + 10) {
                   isMenuOpen = false;
-                  Players.method2112(class25.menuX, GameShell.menuY, class214.menuWidth, AbstractWorldMapIcon.menuHeight);
+                  Players.method2112(WorldMapDecoration.menuX, GameShell.menuY, class214.menuWidth, AbstractWorldMapIcon.menuHeight);
                }
             }
 
             if (var12 == 1 || !AbstractRasterProvider.mouseCam && var12 == 4) {
-               var2 = class25.menuX;
+               var2 = WorldMapDecoration.menuX;
                var14 = GameShell.menuY;
                var7 = class214.menuWidth;
                var3 = MouseHandler.MouseHandler_lastPressedX;
@@ -5923,7 +5924,7 @@ public final class Client extends GameShell implements Usernamed {
                }
 
                isMenuOpen = false;
-               Players.method2112(class25.menuX, GameShell.menuY, class214.menuWidth, AbstractWorldMapIcon.menuHeight);
+               Players.method2112(WorldMapDecoration.menuX, GameShell.menuY, class214.menuWidth, AbstractWorldMapIcon.menuHeight);
             }
          } else {
             var2 = menuOptionsCount - 1;
@@ -5946,7 +5947,7 @@ public final class Client extends GameShell implements Usernamed {
                      if (DevicePcmPlayerProvider.dragInventoryWidget != null && !field207 && menuOptionsCount > 0 && !this.shouldLeftClickOpenMenu()) {
                         var12 = field205;
                         var13 = field206;
-                        class231.processTempMenuAction(UnitPriceComparator.tempMenuAction, var12, var13);
+                        WorldMapDecorationType.processTempMenuAction(UnitPriceComparator.tempMenuAction, var12, var13);
                         UnitPriceComparator.tempMenuAction = null;
                      }
 
@@ -6049,7 +6050,7 @@ public final class Client extends GameShell implements Usernamed {
          var9 = 0;
       }
 
-      class25.menuX = var8;
+      WorldMapDecoration.menuX = var8;
       GameShell.menuY = var9;
       class214.menuWidth = var3;
       AbstractWorldMapIcon.menuHeight = menuOptionsCount * 15 + 22;
@@ -6191,7 +6192,7 @@ public final class Client extends GameShell implements Usernamed {
             } else if (menuOptionsCount > 0) {
                int var9 = widgetClickX + field110;
                var10 = widgetClickY + field111;
-               class231.processTempMenuAction(UnitPriceComparator.tempMenuAction, var9, var10);
+               WorldMapDecorationType.processTempMenuAction(UnitPriceComparator.tempMenuAction, var9, var10);
                UnitPriceComparator.tempMenuAction = null;
             }
 
@@ -6368,7 +6369,7 @@ public final class Client extends GameShell implements Usernamed {
       field213 = new int[]{768, 1024, 1280, 512, 1536, 256, 0, 1792};
       combatTargetPlayerIndex = -1;
       groundItems = new NodeDeque[4][104][104];
-      field214 = new NodeDeque();
+      pendingSpawns = new NodeDeque();
       projectiles = new NodeDeque();
       graphicsObjects = new NodeDeque();
       currentLevels = new int[25];

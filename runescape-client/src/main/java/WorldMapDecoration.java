@@ -1,10 +1,13 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("v")
-public class class25 {
+@Implements("WorldMapDecoration")
+public class WorldMapDecoration
+{
    @ObfuscatedName("dd")
    @ObfuscatedSignature(
       signature = "Lit;"
@@ -21,22 +24,25 @@ public class class25 {
    @ObfuscatedGetter(
       intValue = 916624935
    )
-   final int field199;
+   @Export("objectDefinitionId")
+   final int objectDefinitionId;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1452888767
    )
-   final int field198;
+   @Export("decoration")
+   final int decoration;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -501025733
    )
-   final int field202;
+   @Export("rotation")
+   final int rotation;
 
-   class25(int var1, int var2, int var3) {
-      this.field199 = var1;
-      this.field198 = var2;
-      this.field202 = var3;
+   WorldMapDecoration(int var1, int var2, int var3) {
+      this.objectDefinitionId = var1;
+      this.decoration = var2;
+      this.rotation = var3;
    }
 
    @ObfuscatedName("j")

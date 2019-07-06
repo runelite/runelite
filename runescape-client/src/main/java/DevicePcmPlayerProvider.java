@@ -72,32 +72,32 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
    static void decodeSprite(byte[] var0) {
       Buffer var1 = new Buffer(var0);
       var1.index = var0.length - 2;
-      class328.indexedSpriteCount = var1.method43();
+      class328.indexedSpriteCount = var1.readUnsignedShort();
       class328.indexedSpriteOffsetXs = new int[class328.indexedSpriteCount];
       class328.indexedSpriteOffsetYs = new int[class328.indexedSpriteCount];
       VarbitDefinition.indexedSpriteWidths = new int[class328.indexedSpriteCount];
       SecureRandomCallable.indexedSpriteHeights = new int[class328.indexedSpriteCount];
       class328.spritePixels = new byte[class328.indexedSpriteCount][];
       var1.index = var0.length - 7 - class328.indexedSpriteCount * 8;
-      class328.indexedSpriteWidth = var1.method43();
-      class328.indexedSpriteHeight = var1.method43();
+      class328.indexedSpriteWidth = var1.readUnsignedShort();
+      class328.indexedSpriteHeight = var1.readUnsignedShort();
       int var2 = (var1.readUnsignedByte() & 255) + 1;
 
       int var3;
       for (var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
-         class328.indexedSpriteOffsetXs[var3] = var1.method43();
+         class328.indexedSpriteOffsetXs[var3] = var1.readUnsignedShort();
       }
 
       for (var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
-         class328.indexedSpriteOffsetYs[var3] = var1.method43();
+         class328.indexedSpriteOffsetYs[var3] = var1.readUnsignedShort();
       }
 
       for (var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
-         VarbitDefinition.indexedSpriteWidths[var3] = var1.method43();
+         VarbitDefinition.indexedSpriteWidths[var3] = var1.readUnsignedShort();
       }
 
       for (var3 = 0; var3 < class328.indexedSpriteCount; ++var3) {
-         SecureRandomCallable.indexedSpriteHeights[var3] = var1.method43();
+         SecureRandomCallable.indexedSpriteHeights[var3] = var1.readUnsignedShort();
       }
 
       var1.index = var0.length - 7 - class328.indexedSpriteCount * 8 - (var2 - 1) * 3;

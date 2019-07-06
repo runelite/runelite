@@ -792,20 +792,20 @@ public class Widget extends Node {
       this.isIf3 = false;
       this.type = var1.readUnsignedByte();
       this.buttonType = var1.readUnsignedByte();
-      this.contentType = var1.method43();
+      this.contentType = var1.readUnsignedShort();
       this.rawX = var1.method44();
       this.rawY = var1.method44();
-      this.rawWidth = var1.method43();
-      this.rawHeight = var1.method43();
+      this.rawWidth = var1.readUnsignedShort();
+      this.rawHeight = var1.readUnsignedShort();
       this.transparency = var1.readUnsignedByte();
-      this.parentId = var1.method43();
+      this.parentId = var1.readUnsignedShort();
       if (this.parentId == 65535) {
          this.parentId = -1;
       } else {
          this.parentId += this.id & -65536;
       }
 
-      this.mouseOverRedirect = var1.method43();
+      this.mouseOverRedirect = var1.readUnsignedShort();
       if (this.mouseOverRedirect == 65535) {
          this.mouseOverRedirect = -1;
       }
@@ -818,7 +818,7 @@ public class Widget extends Node {
 
          for (var3 = 0; var3 < var2; ++var3) {
             this.cs1Comparisons[var3] = var1.readUnsignedByte();
-            this.cs1ComparisonValues[var3] = var1.method43();
+            this.cs1ComparisonValues[var3] = var1.readUnsignedShort();
          }
       }
 
@@ -830,11 +830,11 @@ public class Widget extends Node {
          this.cs1Instructions = new int[var3][];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            var5 = var1.method43();
+            var5 = var1.readUnsignedShort();
             this.cs1Instructions[var4] = new int[var5];
 
             for (var6 = 0; var6 < var5; ++var6) {
-               this.cs1Instructions[var4][var6] = var1.method43();
+               this.cs1Instructions[var4][var6] = var1.readUnsignedShort();
                if (this.cs1Instructions[var4][var6] == 65535) {
                   this.cs1Instructions[var4][var6] = -1;
                }
@@ -843,12 +843,12 @@ public class Widget extends Node {
       }
 
       if (this.type == 0) {
-         this.scrollHeight = var1.method43();
+         this.scrollHeight = var1.readUnsignedShort();
          this.isHidden = var1.readUnsignedByte() == 1;
       }
 
       if (this.type == 1) {
-         var1.method43();
+         var1.readUnsignedShort();
          var1.readUnsignedByte();
       }
 
@@ -912,7 +912,7 @@ public class Widget extends Node {
          this.textXAlignment = var1.readUnsignedByte();
          this.textYAlignment = var1.readUnsignedByte();
          this.textLineHeight = var1.readUnsignedByte();
-         this.fontId = var1.method43();
+         this.fontId = var1.readUnsignedShort();
          if (this.fontId == 65535) {
             this.fontId = -1;
          }
@@ -942,37 +942,37 @@ public class Widget extends Node {
 
       if (this.type == 6) {
          this.modelType = 1;
-         this.modelId = var1.method43();
+         this.modelId = var1.readUnsignedShort();
          if (this.modelId == 65535) {
             this.modelId = -1;
          }
 
          this.modelType2 = 1;
-         this.modelId2 = var1.method43();
+         this.modelId2 = var1.readUnsignedShort();
          if (this.modelId2 == 65535) {
             this.modelId2 = -1;
          }
 
-         this.sequenceId = var1.method43();
+         this.sequenceId = var1.readUnsignedShort();
          if (this.sequenceId == 65535) {
             this.sequenceId = -1;
          }
 
-         this.sequenceId2 = var1.method43();
+         this.sequenceId2 = var1.readUnsignedShort();
          if (this.sequenceId2 == 65535) {
             this.sequenceId2 = -1;
          }
 
-         this.modelZoom = var1.method43();
-         this.modelAngleX = var1.method43();
-         this.modelAngleY = var1.method43();
+         this.modelZoom = var1.readUnsignedShort();
+         this.modelAngleX = var1.readUnsignedShort();
+         this.modelAngleY = var1.readUnsignedShort();
       }
 
       if (this.type == 7) {
          this.itemIds = new int[this.rawHeight * this.rawWidth];
          this.itemQuantities = new int[this.rawWidth * this.rawHeight];
          this.textXAlignment = var1.readUnsignedByte();
-         this.fontId = var1.method43();
+         this.fontId = var1.readUnsignedShort();
          if (this.fontId == 65535) {
             this.fontId = -1;
          }
@@ -1004,7 +1004,7 @@ public class Widget extends Node {
       if (this.buttonType == 2 || this.type == 2) {
          this.spellActionName = var1.readStringCp1252NullTerminated();
          this.spellName = var1.readStringCp1252NullTerminated();
-         var4 = var1.method43() & 63;
+         var4 = var1.readUnsignedShort() & 63;
          this.clickMask |= var4 << 11;
       }
 
@@ -1049,21 +1049,21 @@ public class Widget extends Node {
       var1.readUnsignedByte();
       this.isIf3 = true;
       this.type = var1.readUnsignedByte();
-      this.contentType = var1.method43();
+      this.contentType = var1.readUnsignedShort();
       this.rawX = var1.method44();
       this.rawY = var1.method44();
-      this.rawWidth = var1.method43();
+      this.rawWidth = var1.readUnsignedShort();
       if (this.type == 9) {
          this.rawHeight = var1.method44();
       } else {
-         this.rawHeight = var1.method43();
+         this.rawHeight = var1.readUnsignedShort();
       }
 
       this.widthAlignment = var1.readByte();
       this.heightAlignment = var1.readByte();
       this.xAlignment = var1.readByte();
       this.yAlignment = var1.readByte();
-      this.parentId = var1.method43();
+      this.parentId = var1.readUnsignedShort();
       if (this.parentId == 65535) {
          this.parentId = -1;
       } else {
@@ -1072,14 +1072,14 @@ public class Widget extends Node {
 
       this.isHidden = var1.readUnsignedByte() == 1;
       if (this.type == 0) {
-         this.scrollWidth = var1.method43();
-         this.scrollHeight = var1.method43();
+         this.scrollWidth = var1.readUnsignedShort();
+         this.scrollHeight = var1.readUnsignedShort();
          this.noClickThrough = var1.readUnsignedByte() == 1;
       }
 
       if (this.type == 5) {
          this.spriteId2 = var1.readInt();
-         this.spriteAngle = var1.method43();
+         this.spriteAngle = var1.readUnsignedShort();
          this.spriteTiling = var1.readUnsignedByte() == 1;
          this.transparency = var1.readUnsignedByte();
          this.outline = var1.readUnsignedByte();
@@ -1090,35 +1090,35 @@ public class Widget extends Node {
 
       if (this.type == 6) {
          this.modelType = 1;
-         this.modelId = var1.method43();
+         this.modelId = var1.readUnsignedShort();
          if (this.modelId == 65535) {
             this.modelId = -1;
          }
 
          this.modelOffsetX = var1.method44();
          this.modelOffsetY = var1.method44();
-         this.modelAngleX = var1.method43();
-         this.modelAngleY = var1.method43();
-         this.modelAngleZ = var1.method43();
-         this.modelZoom = var1.method43();
-         this.sequenceId = var1.method43();
+         this.modelAngleX = var1.readUnsignedShort();
+         this.modelAngleY = var1.readUnsignedShort();
+         this.modelAngleZ = var1.readUnsignedShort();
+         this.modelZoom = var1.readUnsignedShort();
+         this.sequenceId = var1.readUnsignedShort();
          if (this.sequenceId == 65535) {
             this.sequenceId = -1;
          }
 
          this.modelOrthog = var1.readUnsignedByte() == 1;
-         var1.method43();
+         var1.readUnsignedShort();
          if (this.widthAlignment != 0) {
-            this.field962 = var1.method43();
+            this.field962 = var1.readUnsignedShort();
          }
 
          if (this.heightAlignment != 0) {
-            var1.method43();
+            var1.readUnsignedShort();
          }
       }
 
       if (this.type == 4) {
-         this.fontId = var1.method43();
+         this.fontId = var1.readUnsignedShort();
          if (this.fontId == 65535) {
             this.fontId = -1;
          }

@@ -133,25 +133,25 @@ public class SequenceDefinition extends DualNode {
       int var3;
       int var4;
       if (var2 == 1) {
-         var3 = var1.method43();
+         var3 = var1.readUnsignedShort();
          this.frameLengths = new int[var3];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            this.frameLengths[var4] = var1.method43();
+            this.frameLengths[var4] = var1.readUnsignedShort();
          }
 
          this.frameIds = new int[var3];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            this.frameIds[var4] = var1.method43();
+            this.frameIds[var4] = var1.readUnsignedShort();
          }
 
          for (var4 = 0; var4 < var3; ++var4) {
             var10000 = this.frameIds;
-            var10000[var4] += var1.method43() << 16;
+            var10000[var4] += var1.readUnsignedShort() << 16;
          }
       } else if (var2 == 2) {
-         this.frameCount = var1.method43();
+         this.frameCount = var1.readUnsignedShort();
       } else if (var2 == 3) {
          var3 = var1.readUnsignedByte();
          this.field777 = new int[var3 + 1];
@@ -166,9 +166,9 @@ public class SequenceDefinition extends DualNode {
       } else if (var2 == 5) {
          this.field779 = var1.readUnsignedByte();
       } else if (var2 == 6) {
-         this.shield = var1.method43();
+         this.shield = var1.readUnsignedShort();
       } else if (var2 == 7) {
-         this.weapon = var1.method43();
+         this.weapon = var1.readUnsignedShort();
       } else if (var2 == 8) {
          this.field780 = var1.readUnsignedByte();
       } else if (var2 == 9) {
@@ -182,12 +182,12 @@ public class SequenceDefinition extends DualNode {
          this.frameIds2 = new int[var3];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            this.frameIds2[var4] = var1.method43();
+            this.frameIds2[var4] = var1.readUnsignedShort();
          }
 
          for (var4 = 0; var4 < var3; ++var4) {
             var10000 = this.frameIds2;
-            var10000[var4] += var1.method43() << 16;
+            var10000[var4] += var1.readUnsignedShort() << 16;
          }
       } else if (var2 == 13) {
          var3 = var1.readUnsignedByte();

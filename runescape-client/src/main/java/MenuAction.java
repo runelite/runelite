@@ -106,7 +106,7 @@ public class MenuAction {
          }
       }
 
-      var5 = class214.menuWidth / 2 + class25.menuX;
+      var5 = class214.menuWidth / 2 + WorldMapDecoration.menuX;
       var6 = GameShell.menuY;
       int var7 = class2.fontBold12.stringWidth("Choose Option");
 
@@ -148,7 +148,7 @@ public class MenuAction {
          var14 = 0;
       }
 
-      class25.menuX = var13;
+      WorldMapDecoration.menuX = var13;
       GameShell.menuY = var14;
       class214.menuWidth = var7;
       AbstractWorldMapIcon.menuHeight = Client.menuOptionsCount * 15 + 22;

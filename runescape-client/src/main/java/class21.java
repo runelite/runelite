@@ -59,7 +59,7 @@ public abstract class class21 {
    @ObfuscatedSignature(
       signature = "[[[[Lv;"
    )
-   class25[][][][] field144;
+   WorldMapDecoration[][][][] field144;
    @ObfuscatedName("i")
    boolean field157;
    @ObfuscatedName("a")
@@ -116,7 +116,7 @@ public abstract class class21 {
       this.field145 = (short[][][])null;
       this.field154 = (byte[][][])null;
       this.field155 = (byte[][][])null;
-      this.field144 = (class25[][][][])null;
+      this.field144 = (WorldMapDecoration[][][][])null;
       this.field157 = false;
       this.field153 = false;
    }
@@ -183,12 +183,12 @@ public abstract class class21 {
          for (var8 = 0; var8 < var5; ++var8) {
             var9 = var3.readUnsignedByte();
             if (var9 != 0) {
-               class25[] var14 = this.field144[var8][var1][var2] = new class25[var9];
+               WorldMapDecoration[] var14 = this.field144[var8][var1][var2] = new WorldMapDecoration[var9];
 
                for (var10 = 0; var10 < var9; ++var10) {
                   int var12 = var3.method51();
                   int var13 = var3.readUnsignedByte();
-                  var14[var10] = new class25(var12, var13 >> 2, var13 & 3);
+                  var14[var10] = new WorldMapDecoration(var12, var13 >> 2, var13 & 3);
                }
             }
          }
@@ -305,7 +305,7 @@ public abstract class class21 {
             var3.field18 = var0.method62();
             var3.field19 = var0.method66() + Client.cycle;
             var3.field20 = var0.method65() + Client.cycle;
-            var3.field21 = var0.method43();
+            var3.field21 = var0.readUnsignedShort();
             if (var3.field725) {
                var3.field15 += var3.tileX;
                var3.field17 += var3.tileY;
@@ -413,7 +413,7 @@ public abstract class class21 {
          }
 
          if ((var4 & 128) != 0) {
-            var6 = var0.method43();
+            var6 = var0.readUnsignedShort();
             if (var6 == 65535) {
                var6 = -1;
             }

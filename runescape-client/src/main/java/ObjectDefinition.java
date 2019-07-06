@@ -351,7 +351,7 @@ public class ObjectDefinition extends DualNode {
                this.field644 = new int[var3];
 
                for (var4 = 0; var4 < var3; ++var4) {
-                  this.field644[var4] = var1.method43();
+                  this.field644[var4] = var1.readUnsignedShort();
                   this.field645[var4] = var1.readUnsignedByte();
                }
             }
@@ -368,7 +368,7 @@ public class ObjectDefinition extends DualNode {
                this.field644 = new int[var3];
 
                for (var4 = 0; var4 < var3; ++var4) {
-                  this.field644[var4] = var1.method43();
+                  this.field644[var4] = var1.readUnsignedShort();
                }
             }
          }
@@ -390,7 +390,7 @@ public class ObjectDefinition extends DualNode {
       } else if (var2 == 23) {
          this.modelClipped = true;
       } else if (var2 == 24) {
-         this.animationId = var1.method43();
+         this.animationId = var1.readUnsignedShort();
          if (this.animationId == 65535) {
             this.animationId = -1;
          }
@@ -413,8 +413,8 @@ public class ObjectDefinition extends DualNode {
          this.recolorTo = new short[var3];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            this.recolorFrom[var4] = (short)var1.method43();
-            this.recolorTo[var4] = (short)var1.method43();
+            this.recolorFrom[var4] = (short)var1.readUnsignedShort();
+            this.recolorTo[var4] = (short)var1.readUnsignedShort();
          }
       } else if (var2 == 41) {
          var3 = var1.readUnsignedByte();
@@ -422,21 +422,21 @@ public class ObjectDefinition extends DualNode {
          this.retextureTo = new short[var3];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            this.retextureFrom[var4] = (short)var1.method43();
-            this.retextureTo[var4] = (short)var1.method43();
+            this.retextureFrom[var4] = (short)var1.readUnsignedShort();
+            this.retextureTo[var4] = (short)var1.readUnsignedShort();
          }
       } else if (var2 == 62) {
          this.isRotated = true;
       } else if (var2 == 64) {
          this.clipped = false;
       } else if (var2 == 65) {
-         this.modelSizeX = var1.method43();
+         this.modelSizeX = var1.readUnsignedShort();
       } else if (var2 == 66) {
-         this.modelHeight = var1.method43();
+         this.modelHeight = var1.readUnsignedShort();
       } else if (var2 == 67) {
-         this.modelSizeY = var1.method43();
+         this.modelSizeY = var1.readUnsignedShort();
       } else if (var2 == 68) {
-         this.mapSceneId = var1.method43();
+         this.mapSceneId = var1.readUnsignedShort();
       } else if (var2 == 69) {
          var1.readUnsignedByte();
       } else if (var2 == 70) {
@@ -453,39 +453,39 @@ public class ObjectDefinition extends DualNode {
          this.int3 = var1.readUnsignedByte();
       } else if (var2 != 77 && var2 != 92) {
          if (var2 == 78) {
-            this.ambientSoundId = var1.method43();
+            this.ambientSoundId = var1.readUnsignedShort();
             this.int4 = var1.readUnsignedByte();
          } else if (var2 == 79) {
-            this.int5 = var1.method43();
-            this.int6 = var1.method43();
+            this.int5 = var1.readUnsignedShort();
+            this.int6 = var1.readUnsignedShort();
             this.int4 = var1.readUnsignedByte();
             var3 = var1.readUnsignedByte();
             this.field646 = new int[var3];
 
             for (var4 = 0; var4 < var3; ++var4) {
-               this.field646[var4] = var1.method43();
+               this.field646[var4] = var1.readUnsignedShort();
             }
          } else if (var2 == 81) {
             this.clipType = var1.readUnsignedByte() * 256;
          } else if (var2 == 82) {
-            this.mapIconId = var1.method43();
+            this.mapIconId = var1.readUnsignedShort();
          } else if (var2 == 249) {
             this.params = AbstractIndexCache.readStringIntParameters(var1, this.params);
          }
       } else {
-         this.transformVarbit = var1.method43();
+         this.transformVarbit = var1.readUnsignedShort();
          if (this.transformVarbit == 65535) {
             this.transformVarbit = -1;
          }
 
-         this.transformConfigId = var1.method43();
+         this.transformConfigId = var1.readUnsignedShort();
          if (this.transformConfigId == 65535) {
             this.transformConfigId = -1;
          }
 
          var3 = -1;
          if (var2 == 92) {
-            var3 = var1.method43();
+            var3 = var1.readUnsignedShort();
             if (var3 == 65535) {
                var3 = -1;
             }
@@ -495,7 +495,7 @@ public class ObjectDefinition extends DualNode {
          this.transforms = new int[var4 + 2];
 
          for (int var5 = 0; var5 <= var4; ++var5) {
-            this.transforms[var5] = var1.method43();
+            this.transforms[var5] = var1.readUnsignedShort();
             if (this.transforms[var5] == 65535) {
                this.transforms[var5] = -1;
             }

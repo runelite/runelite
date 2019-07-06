@@ -196,7 +196,7 @@ public class WorldMapElement extends DualNode {
             } else if (var2 == 18) {
                var1.method51();
             } else if (var2 == 19) {
-               this.category = var1.method43();
+               this.category = var1.readUnsignedShort();
             } else if (var2 == 21) {
                var1.readInt();
             } else if (var2 == 22) {

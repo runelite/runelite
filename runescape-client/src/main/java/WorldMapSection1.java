@@ -163,13 +163,13 @@ public class WorldMapSection1 implements WorldMapSection {
    public void read(Buffer var1) {
       this.field1072 = var1.readUnsignedByte();
       this.field1073 = var1.readUnsignedByte();
-      this.field1074 = var1.method43();
+      this.field1074 = var1.readUnsignedShort();
       this.field1078 = var1.readUnsignedByte();
-      this.field1075 = var1.method43();
+      this.field1075 = var1.readUnsignedShort();
       this.field1079 = var1.readUnsignedByte();
-      this.field1076 = var1.method43();
+      this.field1076 = var1.readUnsignedShort();
       this.field1080 = var1.readUnsignedByte();
-      this.field1077 = var1.method43();
+      this.field1077 = var1.readUnsignedShort();
       this.field1081 = var1.readUnsignedByte();
       this.method424();
    }
@@ -215,7 +215,7 @@ public class WorldMapSection1 implements WorldMapSection {
       class230.field1138 = true;
       Client.field166 = true;
       Client.field126 = -1L;
-      class68.method1694();
+      PendingSpawn.method1694();
       Client.packetWriter.method239();
       Client.packetWriter.packetBuffer.index = 0;
       Client.packetWriter.serverPacket0 = null;
@@ -272,7 +272,7 @@ public class WorldMapSection1 implements WorldMapSection {
          }
       }
 
-      Client.field214 = new NodeDeque();
+      Client.pendingSpawns = new NodeDeque();
       WorldMapArea.friendSystem.clear();
 
       for (var0 = 0; var0 < VarpDefinition.field944; ++var0) {

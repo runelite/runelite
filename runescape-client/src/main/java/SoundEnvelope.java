@@ -73,8 +73,8 @@ public class SoundEnvelope {
       this.phases = new int[this.segments];
 
       for (int var2 = 0; var2 < this.segments; ++var2) {
-         this.durations[var2] = var1.method43();
-         this.phases[var2] = var1.method43();
+         this.durations[var2] = var1.readUnsignedShort();
+         this.phases[var2] = var1.readUnsignedShort();
       }
 
    }

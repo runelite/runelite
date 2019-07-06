@@ -256,25 +256,25 @@ public class NPCDefinition extends DualNode {
          this.archives = new int[var3];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            this.archives[var4] = var1.method43();
+            this.archives[var4] = var1.readUnsignedShort();
          }
       } else if (var2 == 2) {
          this.name = var1.readStringCp1252NullTerminated();
       } else if (var2 == 12) {
          this.size = var1.readUnsignedByte();
       } else if (var2 == 13) {
-         this.idleSequence = var1.method43();
+         this.idleSequence = var1.readUnsignedShort();
       } else if (var2 == 14) {
-         this.walkSequence = var1.method43();
+         this.walkSequence = var1.readUnsignedShort();
       } else if (var2 == 15) {
-         this.turnLeftSequence = var1.method43();
+         this.turnLeftSequence = var1.readUnsignedShort();
       } else if (var2 == 16) {
-         this.turnRightSequence = var1.method43();
+         this.turnRightSequence = var1.readUnsignedShort();
       } else if (var2 == 17) {
-         this.walkSequence = var1.method43();
-         this.walkTurnSequence = var1.method43();
-         this.walkTurnLeftSequence = var1.method43();
-         this.walkTurnRightSequence = var1.method43();
+         this.walkSequence = var1.readUnsignedShort();
+         this.walkTurnSequence = var1.readUnsignedShort();
+         this.walkTurnLeftSequence = var1.readUnsignedShort();
+         this.walkTurnRightSequence = var1.readUnsignedShort();
       } else if (var2 >= 30 && var2 < 35) {
          this.actions[var2 - 30] = var1.readStringCp1252NullTerminated();
          if (this.actions[var2 - 30].equalsIgnoreCase("Hidden")) {
@@ -286,8 +286,8 @@ public class NPCDefinition extends DualNode {
          this.recolorTo = new short[var3];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            this.recolorFrom[var4] = (short)var1.method43();
-            this.recolorTo[var4] = (short)var1.method43();
+            this.recolorFrom[var4] = (short)var1.readUnsignedShort();
+            this.recolorTo[var4] = (short)var1.readUnsignedShort();
          }
       } else if (var2 == 41) {
          var3 = var1.readUnsignedByte();
@@ -295,24 +295,24 @@ public class NPCDefinition extends DualNode {
          this.retextureTo = new short[var3];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            this.retextureFrom[var4] = (short)var1.method43();
-            this.retextureTo[var4] = (short)var1.method43();
+            this.retextureFrom[var4] = (short)var1.readUnsignedShort();
+            this.retextureTo[var4] = (short)var1.readUnsignedShort();
          }
       } else if (var2 == 60) {
          var3 = var1.readUnsignedByte();
          this.field636 = new int[var3];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            this.field636[var4] = var1.method43();
+            this.field636[var4] = var1.readUnsignedShort();
          }
       } else if (var2 == 93) {
          this.drawMapDot = false;
       } else if (var2 == 95) {
-         this.combatLevel = var1.method43();
+         this.combatLevel = var1.readUnsignedShort();
       } else if (var2 == 97) {
-         this.widthScale = var1.method43();
+         this.widthScale = var1.readUnsignedShort();
       } else if (var2 == 98) {
-         this.heightScale = var1.method43();
+         this.heightScale = var1.readUnsignedShort();
       } else if (var2 == 99) {
          this.isVisible = true;
       } else if (var2 == 100) {
@@ -320,9 +320,9 @@ public class NPCDefinition extends DualNode {
       } else if (var2 == 101) {
          this.field638 = var1.readByte();
       } else if (var2 == 102) {
-         this.headIconPrayer = var1.method43();
+         this.headIconPrayer = var1.readUnsignedShort();
       } else if (var2 == 103) {
-         this.field639 = var1.method43();
+         this.field639 = var1.readUnsignedShort();
       } else if (var2 != 106 && var2 != 118) {
          if (var2 == 107) {
             this.isInteractable = false;
@@ -334,19 +334,19 @@ public class NPCDefinition extends DualNode {
             this.params = AbstractIndexCache.readStringIntParameters(var1, this.params);
          }
       } else {
-         this.transformVarbit = var1.method43();
+         this.transformVarbit = var1.readUnsignedShort();
          if (this.transformVarbit == 65535) {
             this.transformVarbit = -1;
          }
 
-         this.transformVarp = var1.method43();
+         this.transformVarp = var1.readUnsignedShort();
          if (this.transformVarp == 65535) {
             this.transformVarp = -1;
          }
 
          var3 = -1;
          if (var2 == 118) {
-            var3 = var1.method43();
+            var3 = var1.readUnsignedShort();
             if (var3 == 65535) {
                var3 = -1;
             }
@@ -356,7 +356,7 @@ public class NPCDefinition extends DualNode {
          this.transforms = new int[var4 + 2];
 
          for (int var5 = 0; var5 <= var4; ++var5) {
-            this.transforms[var5] = var1.method43();
+            this.transforms[var5] = var1.readUnsignedShort();
             if (this.transforms[var5] == 65535) {
                this.transforms[var5] = -1;
             }

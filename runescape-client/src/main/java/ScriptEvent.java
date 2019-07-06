@@ -195,7 +195,7 @@ public class ScriptEvent extends Node {
             return 1;
          } else if (var0 == 3304) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class231.method4523(var3).size;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapDecorationType.method4523(var3).size;
             return 1;
          } else if (var0 == 3305) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
@@ -341,9 +341,9 @@ public class ScriptEvent extends Node {
       garbageValue = "35"
    )
    static final void method1179() {
-      for (class68 var0 = (class68)Client.field214.last(); var0 != null; var0 = (class68)Client.field214.previous()) {
-         if (var0.field910 == -1) {
-            var0.field909 = 0;
+      for (PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.last(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.previous()) {
+         if (var0.hitpoints == -1) {
+            var0.delay = 0;
             class13.method165(var0);
          } else {
             var0.remove();

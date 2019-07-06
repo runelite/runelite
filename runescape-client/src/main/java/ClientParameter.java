@@ -134,13 +134,13 @@ public class ClientParameter {
             byte[] var0 = FriendLoginUpdate.field356.getResponse();
             Buffer var1 = new Buffer(var0);
             var1.readInt();
-            World.worldsCount = var1.method43();
+            World.worldsCount = var1.readUnsignedShort();
             ItemContainer.worlds = new World[World.worldsCount];
 
             World var2;
             for (int var3 = 0; var3 < World.worldsCount; var2.index = var3++) {
                var2 = ItemContainer.worlds[var3] = new World();
-               var2.id = var1.method43();
+               var2.id = var1.readUnsignedShort();
                var2.properties = var1.readInt();
                var2.host = var1.readStringCp1252NullTerminated();
                var2.activity = var1.readStringCp1252NullTerminated();

@@ -90,7 +90,7 @@ public class EnumDefinition extends DualNode {
       } else {
          int var3;
          if (var2 == 5) {
-            this.size0 = var1.method43();
+            this.size0 = var1.readUnsignedShort();
             this.keys = new int[this.size0];
             this.stringVals = new String[this.size0];
 
@@ -99,7 +99,7 @@ public class EnumDefinition extends DualNode {
                this.stringVals[var3] = var1.readStringCp1252NullTerminated();
             }
          } else if (var2 == 6) {
-            this.size0 = var1.method43();
+            this.size0 = var1.readUnsignedShort();
             this.keys = new int[this.size0];
             this.intVals = new int[this.size0];
 

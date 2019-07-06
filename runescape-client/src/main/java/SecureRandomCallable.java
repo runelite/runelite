@@ -86,7 +86,7 @@ public class SecureRandomCallable implements Callable {
          }
       }
 
-      var5 = class214.menuWidth / 2 + class25.menuX;
+      var5 = class214.menuWidth / 2 + WorldMapDecoration.menuX;
       var6 = GameShell.menuY;
       int var7 = class2.fontBold12.stringWidth("Choose Option");
 
@@ -128,7 +128,7 @@ public class SecureRandomCallable implements Callable {
          var13 = 0;
       }
 
-      class25.menuX = var12;
+      WorldMapDecoration.menuX = var12;
       GameShell.menuY = var13;
       class214.menuWidth = var7;
       AbstractWorldMapIcon.menuHeight = Client.menuOptionsCount * 15 + 22;
