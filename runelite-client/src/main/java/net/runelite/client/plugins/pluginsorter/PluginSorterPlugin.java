@@ -31,9 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
@@ -90,7 +88,8 @@ public class PluginSorterPlugin extends Plugin
 		validatePlugins();
 	}
 
-	public void validatePlugins() {
+	private void validatePlugins()
+	{
 		if (this.hidePlugins)
 		{
 			hidePlugins();
@@ -99,6 +98,7 @@ public class PluginSorterPlugin extends Plugin
 		{
 			showPlugins();
 		}
+
 		updateColors();
 	}
 
