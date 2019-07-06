@@ -128,10 +128,10 @@ public class WorldMapSection2 implements WorldMapSection {
    public void read(Buffer var1) {
       this.field1083 = var1.readUnsignedByte();
       this.field1084 = var1.readUnsignedByte();
-      this.field1085 = var1.method43();
-      this.field1086 = var1.method43();
-      this.field1087 = var1.method43();
-      this.field1088 = var1.method43();
+      this.field1085 = var1.readUnsignedShort();
+      this.field1086 = var1.readUnsignedShort();
+      this.field1087 = var1.readUnsignedShort();
+      this.field1088 = var1.readUnsignedShort();
       this.method425();
    }
 

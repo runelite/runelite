@@ -39,29 +39,29 @@ public class class258 {
       garbageValue = "772902595"
    )
    static final void method4898(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      class68 var9 = null;
+      PendingSpawn var9 = null;
 
-      for (class68 var10 = (class68)Client.field214.last(); var10 != null; var10 = (class68)Client.field214.previous()) {
-         if (var0 == var10.field911 && var10.field913 == var1 && var2 == var10.field901 && var3 == var10.field906) {
+      for (PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.last(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.previous()) {
+         if (var0 == var10.level && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
             var9 = var10;
             break;
          }
       }
 
       if (var9 == null) {
-         var9 = new class68();
-         var9.field911 = var0;
-         var9.field906 = var3;
-         var9.field913 = var1;
-         var9.field901 = var2;
+         var9 = new PendingSpawn();
+         var9.level = var0;
+         var9.type = var3;
+         var9.x = var1;
+         var9.y = var2;
          class13.method165(var9);
-         Client.field214.addFirst(var9);
+         Client.pendingSpawns.addFirst(var9);
       }
 
-      var9.field899 = var4;
+      var9.id = var4;
       var9.field908 = var5;
-      var9.field907 = var6;
-      var9.field909 = var7;
-      var9.field910 = var8;
+      var9.orientation = var6;
+      var9.delay = var7;
+      var9.hitpoints = var8;
    }
 }

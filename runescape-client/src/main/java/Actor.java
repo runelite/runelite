@@ -919,7 +919,7 @@ public abstract class Actor extends Entity {
                      var13 = class204.getWidgetChild(var1, var0);
                      if (var13 != null) {
                         Player.method1281();
-                        class25.method350(var1, var0, class211.method4107(class1.getWidgetClickMask(var13)), var13.itemId);
+                        WorldMapDecoration.method350(var1, var0, class211.method4107(class1.getWidgetClickMask(var13)), var13.itemId);
                         Client.isItemSelected = 0;
                         Client.selectedSpellActionName = class198.method3745(var13);
                         if (Client.selectedSpellActionName == null) {

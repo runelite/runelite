@@ -177,7 +177,7 @@ public class HitSplatDefinition extends DualNode {
       } else if (var2 == 8) {
          this.field395 = var1.readStringCp1252NullCircumfixed();
       } else if (var2 == 9) {
-         this.field387 = var1.method43();
+         this.field387 = var1.readUnsignedShort();
       } else if (var2 == 10) {
          this.field393 = var1.method44();
       } else if (var2 == 11) {
@@ -187,21 +187,21 @@ public class HitSplatDefinition extends DualNode {
       } else if (var2 == 13) {
          this.field397 = var1.method44();
       } else if (var2 == 14) {
-         this.field394 = var1.method43();
+         this.field394 = var1.readUnsignedShort();
       } else if (var2 == 17 || var2 == 18) {
-         this.transformVarbit = var1.method43();
+         this.transformVarbit = var1.readUnsignedShort();
          if (this.transformVarbit == 65535) {
             this.transformVarbit = -1;
          }
 
-         this.transformVarp = var1.method43();
+         this.transformVarp = var1.readUnsignedShort();
          if (this.transformVarp == 65535) {
             this.transformVarp = -1;
          }
 
          int var3 = -1;
          if (var2 == 18) {
-            var3 = var1.method43();
+            var3 = var1.readUnsignedShort();
             if (var3 == 65535) {
                var3 = -1;
             }
@@ -211,7 +211,7 @@ public class HitSplatDefinition extends DualNode {
          this.transforms = new int[var4 + 2];
 
          for (int var5 = 0; var5 <= var4; ++var5) {
-            this.transforms[var5] = var1.method43();
+            this.transforms[var5] = var1.readUnsignedShort();
             if (this.transforms[var5] == 65535) {
                this.transforms[var5] = -1;
             }

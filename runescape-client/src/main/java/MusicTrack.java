@@ -22,7 +22,7 @@ public class MusicTrack extends Node {
    MusicTrack(Buffer var1) {
       var1.index = var1.array.length - 3;
       int var2 = var1.readUnsignedByte();
-      int var3 = var1.method43();
+      int var3 = var1.readUnsignedShort();
       int var4 = var2 * 10 + 14;
       var1.index = 0;
       int var5 = 0;

@@ -285,7 +285,7 @@ public class Varcs {
                int var8;
                int var9;
                if (var5 >= 2) {
-                  var9 = var25.method43();
+                  var9 = var25.readUnsignedShort();
                   var6 = 0;
 
                   while (true) {
@@ -293,7 +293,7 @@ public class Varcs {
                         break label225;
                      }
 
-                     var7 = var25.method43();
+                     var7 = var25.readUnsignedShort();
                      var8 = var25.readUnsignedByte();
                      class3 var10 = (class3)ScriptFrame.findEnumerated(class3.method34(), var8);
                      Object var11 = var10.method31(var25);
@@ -304,17 +304,17 @@ public class Varcs {
                      ++var6;
                   }
                } else {
-                  var9 = var25.method43();
+                  var9 = var25.readUnsignedShort();
 
                   for (var6 = 0; var6 < var9; ++var6) {
-                     var7 = var25.method43();
+                     var7 = var25.readUnsignedShort();
                      var8 = var25.readInt();
                      if (this.intsPersistence[var7]) {
                         this.map.put(var7, var8);
                      }
                   }
 
-                  var6 = var25.method43();
+                  var6 = var25.readUnsignedShort();
                   var7 = 0;
 
                   while (true) {
@@ -322,7 +322,7 @@ public class Varcs {
                         break label225;
                      }
 
-                     var25.method43();
+                     var25.readUnsignedShort();
                      var25.readStringCp1252NullTerminated();
                      ++var7;
                   }

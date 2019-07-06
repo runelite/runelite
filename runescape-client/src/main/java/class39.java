@@ -44,12 +44,12 @@ public class class39 extends class21 {
       } else {
          super.field148 = var1.readUnsignedByte();
          super.field156 = var1.readUnsignedByte();
-         super.field149 = var1.method43();
-         super.field146 = var1.method43();
+         super.field149 = var1.readUnsignedShort();
+         super.field146 = var1.readUnsignedShort();
          this.field318 = var1.readUnsignedByte();
          this.field319 = var1.readUnsignedByte();
-         super.field159 = var1.method43();
-         super.field147 = var1.method43();
+         super.field159 = var1.readUnsignedShort();
+         super.field147 = var1.readUnsignedShort();
          this.field321 = var1.readUnsignedByte();
          this.field323 = var1.readUnsignedByte();
          super.field150 = var1.method51();
@@ -68,7 +68,7 @@ public class class39 extends class21 {
       super.field145 = new short[super.field156][64][64];
       super.field154 = new byte[super.field156][64][64];
       super.field155 = new byte[super.field156][64][64];
-      super.field144 = new class25[super.field156][64][64][];
+      super.field144 = new WorldMapDecoration[super.field156][64][64][];
       int var2 = var1.readUnsignedByte();
       if (var2 != class30.field247.field248) {
          throw new IllegalStateException("");

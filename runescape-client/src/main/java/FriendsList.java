@@ -78,7 +78,7 @@ public class FriendsList extends UserList {
             boolean var3 = var1.readUnsignedByte() == 1;
             Username var4 = new Username(var1.readStringCp1252NullTerminated(), this.loginType);
             Username var5 = new Username(var1.readStringCp1252NullTerminated(), this.loginType);
-            int var6 = var1.method43();
+            int var6 = var1.readUnsignedShort();
             int var7 = var1.readUnsignedByte();
             int var8 = var1.readUnsignedByte();
             boolean var9 = (var8 & 2) != 0;

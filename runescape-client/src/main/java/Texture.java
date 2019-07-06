@@ -41,7 +41,7 @@ public class Texture extends Node {
    )
    Texture(Buffer var1) {
       this.isLoaded = false;
-      this.int1 = var1.method43();
+      this.int1 = var1.readUnsignedShort();
       this.field893 = var1.readUnsignedByte() == 1;
       int var2 = var1.readUnsignedByte();
       if (var2 >= 1 && var2 <= 4) {
@@ -49,7 +49,7 @@ public class Texture extends Node {
 
          int var3;
          for (var3 = 0; var3 < var2; ++var3) {
-            this.records[var3] = var1.method43();
+            this.records[var3] = var1.readUnsignedShort();
          }
 
          if (var2 > 1) {

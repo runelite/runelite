@@ -66,7 +66,7 @@ public class VarbitDefinition extends DualNode {
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
       if (var2 == 1) {
-         this.varp = var1.method43();
+         this.varp = var1.readUnsignedShort();
          this.lowBit = var1.readUnsignedByte();
          this.highBit = var1.readUnsignedByte();
       }

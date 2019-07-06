@@ -1,30 +1,36 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bi")
-public final class class68 extends Node {
+@Implements("PendingSpawn")
+public final class PendingSpawn extends Node {
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1439936951
    )
-   int field911;
+   @Export("level")
+   int level;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1471611383
    )
-   int field906;
+   @Export("type")
+   int type;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1059464897
    )
-   int field913;
+   @Export("x")
+   int x;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1306474107
    )
-   int field901;
+   @Export("y")
+   int y;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1889242993
@@ -44,12 +50,14 @@ public final class class68 extends Node {
    @ObfuscatedGetter(
       intValue = 1986990761
    )
-   int field899;
+   @Export("id")
+   int id;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1768602131
    )
-   int field907;
+   @Export("orientation")
+   int orientation;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 1989829133
@@ -59,16 +67,18 @@ public final class class68 extends Node {
    @ObfuscatedGetter(
       intValue = -715662659
    )
-   int field909;
+   @Export("delay")
+   int delay;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -2141472019
    )
-   int field910;
+   @Export("hitpoints")
+   int hitpoints;
 
-   class68() {
-      this.field909 = 0;
-      this.field910 = -1;
+   PendingSpawn() {
+      this.delay = 0;
+      this.hitpoints = -1;
    }
 
    @ObfuscatedName("m")

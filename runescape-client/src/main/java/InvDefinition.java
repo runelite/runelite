@@ -48,7 +48,7 @@ public class InvDefinition extends DualNode {
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
       if (var2 == 2) {
-         this.size = var1.method43();
+         this.size = var1.readUnsignedShort();
       }
 
    }

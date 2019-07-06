@@ -1,10 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hb")
-public enum class231 implements Enumerated {
+@Implements("WorldMapDecorationType")
+public enum WorldMapDecorationType implements Enumerated {
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lhb;"
@@ -132,14 +134,15 @@ public enum class231 implements Enumerated {
    @ObfuscatedGetter(
       intValue = 899733687
    )
-   public final int field2820;
+   @Export("id")
+   public final int id;
 
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
    )
-   private class231(int var3, int var4) {
-      this.field2820 = var3;
+   private WorldMapDecorationType(int var3, int var4) {
+      this.id = var3;
    }
 
    @ObfuscatedName("f")
@@ -149,7 +152,7 @@ public enum class231 implements Enumerated {
    )
    @Export("rsOrdinal")
    public int rsOrdinal() {
-      return this.field2820;
+      return this.id;
    }
 
    @ObfuscatedName("m")

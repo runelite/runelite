@@ -37,7 +37,7 @@ public class GrandExchangeEvent {
    GrandExchangeEvent(Buffer var1, byte var2, int var3) {
       this.string1 = var1.readStringCp1252NullTerminated();
       this.string2 = var1.readStringCp1252NullTerminated();
-      this.world = var1.method43();
+      this.world = var1.readUnsignedShort();
       this.field370 = var1.readLong();
       int var4 = var1.readInt();
       int var5 = var1.readInt();
@@ -238,7 +238,7 @@ public class GrandExchangeEvent {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapSection2.getVarbit(var11);
                   } else if (var13 == 27) {
                      var11 = var6[var4];
-                     class68.method1695(var11, Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+                     PendingSpawn.method1695(var11, Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                   } else if (var13 == 31) {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      if (Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] <= Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]) {

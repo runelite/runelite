@@ -534,7 +534,7 @@ public class DynamicObject extends Entity {
          GameObject.field359 = var0;
          WorldMapLabelSize.field1041 = var1;
          GameShell.updateGameState(25);
-         class68.drawLoadingMessage("Loading - please wait.", true);
+         PendingSpawn.drawLoadingMessage("Loading - please wait.", true);
          int var3 = class50.baseX;
          int var4 = GraphicsObject.baseY;
          class50.baseX = (var0 - 6) * 8;
@@ -611,10 +611,10 @@ public class DynamicObject extends Entity {
             }
          }
 
-         for (class68 var22 = (class68)Client.field214.last(); var22 != null; var22 = (class68)Client.field214.previous()) {
-            var22.field913 -= var5;
-            var22.field901 -= var6;
-            if (var22.field913 < 0 || var22.field901 < 0 || var22.field913 >= 104 || var22.field901 >= 104) {
+         for (PendingSpawn var22 = (PendingSpawn)Client.pendingSpawns.last(); var22 != null; var22 = (PendingSpawn)Client.pendingSpawns.previous()) {
+            var22.x -= var5;
+            var22.y -= var6;
+            if (var22.x < 0 || var22.y < 0 || var22.x >= 104 || var22.y >= 104) {
                var22.remove();
             }
          }

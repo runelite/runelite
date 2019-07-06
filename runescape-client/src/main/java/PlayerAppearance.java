@@ -55,7 +55,7 @@ public class PlayerAppearance {
          for (int var5 = 0; var5 < 7; ++var5) {
             for (int var6 = 0; var6 < KitDefinition.field457; ++var6) {
                KitDefinition var7 = WorldMapSection1.getKitDefinition(var6);
-               if (var7 != null && !var7.field460 && var5 + (var3 ? 7 : 0) == var7.field458) {
+               if (var7 != null && !var7.nonSelectable && var5 + (var3 ? 7 : 0) == var7.bodypartID) {
                   var1[field727[var5]] = var6 + 256;
                   break;
                }
@@ -99,8 +99,8 @@ public class PlayerAppearance {
 
                      var4 = WorldMapSection1.getKitDefinition(var3);
                   } while(var4 == null);
-               } while(var4.field460);
-            } while(var1 + (this.isFemale ? 7 : 0) != var4.field458);
+               } while(var4.nonSelectable);
+            } while(var1 + (this.isFemale ? 7 : 0) != var4.bodypartID);
 
             this.equipment[field727[var1]] = var3 + 256;
             this.setHash();
@@ -254,7 +254,7 @@ public class PlayerAppearance {
             int var10;
             for (int var11 = 0; var11 < 12; ++var11) {
                var10 = var7[var11];
-               if (var10 >= 256 && var10 < 512 && !WorldMapSection1.getKitDefinition(var10 - 256).method159()) {
+               if (var10 >= 256 && var10 < 512 && !WorldMapSection1.getKitDefinition(var10 - 256).ready()) {
                   var9 = true;
                }
 
@@ -282,7 +282,7 @@ public class PlayerAppearance {
                   var12 = var7[var13];
                   ModelData var14;
                   if (var12 >= 256 && var12 < 512) {
-                     var14 = WorldMapSection1.getKitDefinition(var12 - 256).method160();
+                     var14 = WorldMapSection1.getKitDefinition(var12 - 256).getModelData();
                      if (var14 != null) {
                         var17[var10++] = var14;
                      }

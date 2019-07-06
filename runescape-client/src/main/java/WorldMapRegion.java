@@ -126,16 +126,16 @@ public class WorldMapRegion {
          label66:
          for (int var7 = var2; var7 < var2 + var4; ++var7) {
             for (int var8 = 0; var8 < var5.field156; ++var8) {
-               class25[] var9 = var5.field144[var8][var6][var7];
+               WorldMapDecoration[] var9 = var5.field144[var8][var6][var7];
                if (var9 != null && var9.length != 0) {
-                  class25[] var10 = var9;
+                  WorldMapDecoration[] var10 = var9;
 
                   for (int var11 = 0; var11 < var10.length; ++var11) {
                      ObjectDefinition var12;
                      boolean var13;
                      label57: {
-                        class25 var14 = var10[var11];
-                        var12 = class50.getObjectDefinition(var14.field199);
+                        WorldMapDecoration var14 = var10[var11];
+                        var12 = class50.getObjectDefinition(var14.objectDefinitionId);
                         if (var12.transforms != null) {
                            int[] var15 = var12.transforms;
 
@@ -655,14 +655,14 @@ public class WorldMapRegion {
    )
    void method464(int var1, int var2, class21 var3, IndexedSprite[] var4) {
       for (int var5 = 0; var5 < var3.field156; ++var5) {
-         class25[] var6 = var3.field144[var5][var1][var2];
+         WorldMapDecoration[] var6 = var3.field144[var5][var1][var2];
          if (var6 != null && var6.length != 0) {
-            class25[] var7 = var6;
+            WorldMapDecoration[] var7 = var6;
 
             for (int var8 = 0; var8 < var7.length; ++var8) {
-               class25 var9 = var7[var8];
-               if (WorldMapAreaData.method711(var9.field198) || class1.method19(var9.field198)) {
-                  ObjectDefinition var10 = class50.getObjectDefinition(var9.field199);
+               WorldMapDecoration var9 = var7[var8];
+               if (WorldMapAreaData.method711(var9.decoration) || class1.method19(var9.decoration)) {
+                  ObjectDefinition var10 = class50.getObjectDefinition(var9.objectDefinitionId);
                   if (var10.mapSceneId != -1) {
                      if (var10.mapSceneId != 46 && var10.mapSceneId != 52) {
                         var4[var10.mapSceneId].method135(this.field1054 * var1, this.field1054 * (63 - var2), this.field1054 * 2, this.field1054 * 2);
@@ -684,46 +684,46 @@ public class WorldMapRegion {
    )
    void method465(int var1, int var2, class21 var3) {
       for (int var4 = 0; var4 < var3.field156; ++var4) {
-         class25[] var5 = var3.field144[var4][var1][var2];
+         WorldMapDecoration[] var5 = var3.field144[var4][var1][var2];
          if (var5 != null && var5.length != 0) {
-            class25[] var6 = var5;
+            WorldMapDecoration[] var6 = var5;
 
             for (int var7 = 0; var7 < var6.length; ++var7) {
-               class25 var8 = var6[var7];
-               int var9 = var8.field198;
-               boolean var10 = var9 >= class231.field2805.field2820 && var9 <= class231.field2804.field2820 || var9 == class231.field2806.field2820;
+               WorldMapDecoration var8 = var6[var7];
+               int var9 = var8.decoration;
+               boolean var10 = var9 >= WorldMapDecorationType.field2805.id && var9 <= WorldMapDecorationType.field2804.id || var9 == WorldMapDecorationType.field2806.id;
                if (var10) {
-                  ObjectDefinition var11 = class50.getObjectDefinition(var8.field199);
+                  ObjectDefinition var11 = class50.getObjectDefinition(var8.objectDefinitionId);
                   int var12 = var11.int1 != 0 ? 0xffcc0000 : 0xffcccccc;
-                  if (var8.field198 == class231.field2805.field2820) {
-                     this.method422(var1, var2, var8.field202, var12);
+                  if (var8.decoration == WorldMapDecorationType.field2805.id) {
+                     this.method422(var1, var2, var8.rotation, var12);
                   }
 
-                  if (var8.field198 == class231.field2813.field2820) {
-                     this.method422(var1, var2, var8.field202, 0xffcccccc);
-                     this.method422(var1, var2, var8.field202 + 1, var12);
+                  if (var8.decoration == WorldMapDecorationType.field2813.id) {
+                     this.method422(var1, var2, var8.rotation, 0xffcccccc);
+                     this.method422(var1, var2, var8.rotation + 1, var12);
                   }
 
-                  if (var8.field198 == class231.field2804.field2820) {
-                     if (var8.field202 == 0) {
+                  if (var8.decoration == WorldMapDecorationType.field2804.id) {
+                     if (var8.rotation == 0) {
                         Rasterizer2D.Rasterizer2D_drawHorizontalLine(this.field1054 * var1, this.field1054 * (63 - var2), 1, var12);
                      }
 
-                     if (var8.field202 == 1) {
+                     if (var8.rotation == 1) {
                         Rasterizer2D.Rasterizer2D_drawHorizontalLine(this.field1054 * var1 + this.field1054 - 1, this.field1054 * (63 - var2), 1, var12);
                      }
 
-                     if (var8.field202 == 2) {
+                     if (var8.rotation == 2) {
                         Rasterizer2D.Rasterizer2D_drawHorizontalLine(this.field1054 * var1 + this.field1054 - 1, this.field1054 * (63 - var2) + this.field1054 - 1, 1, var12);
                      }
 
-                     if (var8.field202 == 3) {
+                     if (var8.rotation == 3) {
                         Rasterizer2D.Rasterizer2D_drawHorizontalLine(this.field1054 * var1, this.field1054 * (63 - var2) + this.field1054 - 1, 1, var12);
                      }
                   }
 
-                  if (var8.field198 == class231.field2806.field2820) {
-                     int var13 = var8.field202 % 2;
+                  if (var8.decoration == WorldMapDecorationType.field2806.id) {
+                     int var13 = var8.rotation % 2;
                      int var14;
                      if (var13 == 0) {
                         for (var14 = 0; var14 < this.field1054; ++var14) {

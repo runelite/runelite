@@ -745,9 +745,9 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
    protected final void drawInitial(int var1, String var2, boolean var3) {
       try {
          Graphics var4 = this.canvas.getGraphics();
-         if (class231.field1140 == null) {
-            class231.field1140 = new java.awt.Font("Helvetica", 1, 13);
-            class60.field1162 = this.canvas.getFontMetrics(class231.field1140);
+         if (WorldMapDecorationType.field1140 == null) {
+            WorldMapDecorationType.field1140 = new java.awt.Font("Helvetica", 1, 13);
+            class60.field1162 = this.canvas.getFontMetrics(WorldMapDecorationType.field1140);
          }
 
          if (var3) {
@@ -769,7 +769,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
             var6.setColor(Color.black);
             var6.drawRect(1, 1, 301, 31);
             var6.fillRect(var1 * 3 + 2, 2, 300 - var1 * 3, 30);
-            var6.setFont(class231.field1140);
+            var6.setFont(WorldMapDecorationType.field1140);
             var6.setColor(Color.white);
             var6.drawString(var2, (304 - class60.field1162.stringWidth(var2)) / 2, 22);
             var4.drawImage(PlayerType.field730, SoundCache.canvasWidth / 2 - 152, Huffman.canvasHeight / 2 - 18, (ImageObserver)null);
@@ -782,7 +782,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
             var4.setColor(Color.black);
             var4.drawRect(var7 + 1, var8 + 1, 301, 31);
             var4.fillRect(var1 * 3 + var7 + 2, var8 + 2, 300 - var1 * 3, 30);
-            var4.setFont(class231.field1140);
+            var4.setFont(WorldMapDecorationType.field1140);
             var4.setColor(Color.white);
             var4.drawString(var2, var7 + (304 - class60.field1162.stringWidth(var2)) / 2, var8 + 22);
          }
@@ -799,7 +799,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
    )
    protected final void method113() {
       PlayerType.field730 = null;
-      class231.field1140 = null;
+      WorldMapDecorationType.field1140 = null;
       class60.field1162 = null;
    }
 

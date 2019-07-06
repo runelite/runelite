@@ -103,7 +103,7 @@ public class class171 {
          Skeleton.indexCache1 = class22.newIndexCache(1, false, true, true);
          ObjectSound.indexCache2 = class22.newIndexCache(2, true, false, true);
          WorldMapIcon1.indexCache3 = class22.newIndexCache(3, false, true, true);
-         class25.indexCache4 = class22.newIndexCache(4, false, true, true);
+         WorldMapDecoration.indexCache4 = class22.newIndexCache(4, false, true, true);
          SecureRandomFuture.indexCache5 = class22.newIndexCache(5, true, true, true);
          UserComparator3.indexCache6 = class22.newIndexCache(6, true, true, true);
          class40.indexCache7 = class22.newIndexCache(7, false, true, true);
@@ -128,7 +128,7 @@ public class class171 {
          var0 += Skeleton.indexCache1.method131() * 4 / 100;
          var0 += ObjectSound.indexCache2.method131() * 2 / 100;
          var0 += WorldMapIcon1.indexCache3.method131() * 2 / 100;
-         var0 += class25.indexCache4.method131() * 6 / 100;
+         var0 += WorldMapDecoration.indexCache4.method131() * 6 / 100;
          var0 += SecureRandomFuture.indexCache5.method131() * 4 / 100;
          var0 += UserComparator3.indexCache6.method131() * 2 / 100;
          var0 += class40.indexCache7.method131() * 56 / 100;
@@ -153,7 +153,7 @@ public class class171 {
          } else {
             AbstractWorldMapIcon.method625(AbstractIndexCache.indexCache0, "Animations");
             AbstractWorldMapIcon.method625(Skeleton.indexCache1, "Skeletons");
-            AbstractWorldMapIcon.method625(class25.indexCache4, "Sound FX");
+            AbstractWorldMapIcon.method625(WorldMapDecoration.indexCache4, "Sound FX");
             AbstractWorldMapIcon.method625(SecureRandomFuture.indexCache5, "Maps");
             AbstractWorldMapIcon.method625(UserComparator3.indexCache6, "Music Tracks");
             AbstractWorldMapIcon.method625(class40.indexCache7, "Models");
@@ -176,7 +176,7 @@ public class class171 {
          var28.method174(9, 128);
          WorldMapCacheName.pcmPlayer0 = Players.newPcmPlayer(GameShell.taskHandler, 0, 22050);
          WorldMapCacheName.pcmPlayer0.setStream(var28);
-         NetSocket.method3537(WorldMapSection1.indexCache15, class2.indexCache14, class25.indexCache4, var28);
+         NetSocket.method3537(WorldMapSection1.indexCache15, class2.indexCache14, WorldMapDecoration.indexCache4, var28);
          AbstractIndexCache.pcmPlayer1 = Players.newPcmPlayer(GameShell.taskHandler, 1, 2048);
          TaskHandler.pcmStreamMixer = new PcmStreamMixer();
          AbstractIndexCache.pcmPlayer1.setStream(TaskHandler.pcmStreamMixer);

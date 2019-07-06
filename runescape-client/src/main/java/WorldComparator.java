@@ -93,7 +93,7 @@ final class WorldComparator implements Comparator {
          }
 
          if ((var4 & 32) != 0) {
-            var5 = var0.method43();
+            var5 = var0.readUnsignedShort();
             if (var5 == 65535) {
                var5 = -1;
             }
@@ -122,7 +122,7 @@ final class WorldComparator implements Comparator {
          }
 
          if ((var4 & 4) != 0) {
-            var3.definition = ObjectDefinition.getNpcDefinition(var0.method43());
+            var3.definition = ObjectDefinition.getNpcDefinition(var0.readUnsignedShort());
             var3.size = var3.definition.size;
             var3.field23 = var3.definition.field639;
             var3.walkSequence = var3.definition.walkSequence;

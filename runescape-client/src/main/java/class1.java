@@ -43,7 +43,7 @@ final class class1 implements class0 {
       garbageValue = "553036714"
    )
    public static boolean method19(int var0) {
-      return var0 == class231.field2819.field2820;
+      return var0 == WorldMapDecorationType.field2819.id;
    }
 
    @ObfuscatedName("q")
@@ -231,14 +231,14 @@ final class class1 implements class0 {
                return 1;
             } else if (var0 != 4211) {
                if (var0 == 4212) {
-                  class231.field1139 = 0;
+                  WorldMapDecorationType.field1139 = 0;
                   return 1;
                } else {
                   return 2;
                }
             } else {
-               if (AttackOption.field30 != null && class231.field1139 < WorldMapSection0.field1055) {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = AttackOption.field30[++class231.field1139 - 1] & '\uffff';
+               if (AttackOption.field30 != null && WorldMapDecorationType.field1139 < WorldMapSection0.field1055) {
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = AttackOption.field30[++WorldMapDecorationType.field1139 - 1] & '\uffff';
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                }

@@ -133,7 +133,7 @@ public class ClanChat extends UserList {
 
          for (int var12 = 0; var12 < var7; ++var12) {
             ClanMate var13 = (ClanMate)this.addLastNoPreviousUsername(new Username(var1.readStringCp1252NullTerminated(), this.loginType));
-            int var10 = var1.method43();
+            int var10 = var1.readUnsignedShort();
             var13.set(var10, ++this.field97 - 1);
             var13.rank = var1.readByte();
             var1.readStringCp1252NullTerminated();
@@ -150,7 +150,7 @@ public class ClanChat extends UserList {
    )
    public final void method78(Buffer var1) {
       Username var2 = new Username(var1.readStringCp1252NullTerminated(), this.loginType);
-      int var3 = var1.method43();
+      int var3 = var1.readUnsignedShort();
       byte var4 = var1.readByte();
       boolean var5 = false;
       if (var4 == -128) {

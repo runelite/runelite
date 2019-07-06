@@ -121,7 +121,7 @@ public abstract class AbstractIndexCache {
          if (var3 >= 7) {
             this.archiveCount = var2.method50();
          } else {
-            this.archiveCount = var2.method43();
+            this.archiveCount = var2.readUnsignedShort();
          }
 
          int var5 = 0;
@@ -137,7 +137,7 @@ public abstract class AbstractIndexCache {
             }
          } else {
             for (var7 = 0; var7 < this.archiveCount; ++var7) {
-               this.archiveIds[var7] = var5 += var2.method43();
+               this.archiveIds[var7] = var5 += var2.readUnsignedShort();
                if (this.archiveIds[var7] > var6) {
                   var6 = this.archiveIds[var7];
                }
@@ -169,7 +169,7 @@ public abstract class AbstractIndexCache {
          }
 
          for (var7 = 0; var7 < this.archiveCount; ++var7) {
-            this.recordCounts[this.archiveIds[var7]] = var2.method43();
+            this.recordCounts[this.archiveIds[var7]] = var2.readUnsignedShort();
          }
 
          int var8;
@@ -203,7 +203,7 @@ public abstract class AbstractIndexCache {
                this.recordIds[var8] = new int[var9];
 
                for (var11 = 0; var11 < var9; ++var11) {
-                  var12 = this.recordIds[var8][var11] = var5 += var2.method43();
+                  var12 = this.recordIds[var8][var11] = var5 += var2.readUnsignedShort();
                   if (var12 > var10) {
                      var10 = var12;
                   }
