@@ -362,7 +362,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final int eventId = event.getIdentifier();
 		final String option = Text.removeTags(event.getOption()).toLowerCase();
 		final String target = Text.removeTags(event.getTarget()).toLowerCase();
-		final NPC hintArrowNpc  = client.getHintArrowNpc();
+		final NPC hintArrowNpc = client.getHintArrowNpc();
 
 		if (hintArrowNpc != null
 			&& hintArrowNpc.getIndex() == eventId
@@ -454,6 +454,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapQuick())
 			{
 				swap("quick-travel", option, target, true);
+			}
+
+			if (config.swapEnchant())
+			{
+				swap("enchant", option, target, true);
 			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))

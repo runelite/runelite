@@ -64,7 +64,7 @@ public class AreaDumper
 
 			for (AreaDefinition area : areaManager.getAreas())
 			{
-				Files.asCharSink(new File(outDir, area.id + ".json"),  Charset.defaultCharset()).write(gson.toJson(area));
+				Files.asCharSink(new File(outDir, area.id + ".json"), Charset.defaultCharset()).write(gson.toJson(area));
 				++count;
 			}
 		}
