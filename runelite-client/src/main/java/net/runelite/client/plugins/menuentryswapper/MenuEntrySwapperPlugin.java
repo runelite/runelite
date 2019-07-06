@@ -1063,13 +1063,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
-
-		if (option.equals("talk-to"))
+		
+		if (option.equals("talk-to") || option.equals("attack"))
 		{
 			if (this.swapPickpocket)
 			{
 				swap(client, "pickpocket", option, target, true);
 			}
+
+		}
+
+		if (option.equals("talk-to"))
+		{
 
 			if (this.swapHardWoodGrove && target.contains("rionasta"))
 			{
