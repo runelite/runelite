@@ -61,7 +61,7 @@ public class ScriptOpcodesTransformer implements Transformer // robots in disgui
 				ListIterator<Instruction> it = ins.getInstructions().listIterator();
 
 				Instruction i;
-				while(it.hasNext())
+				while (it.hasNext())
 				{
 					i = it.next();
 

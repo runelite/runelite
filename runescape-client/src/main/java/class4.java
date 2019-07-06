@@ -64,11 +64,11 @@ final class class4 implements class0 {
       String var3;
       if (var0 == ScriptOpcodes.MES) {
          var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-         WorldMapIcon1.method219(0, "", var3);
+         WorldMapIcon1.addGameMessage(0, "", var3);
          return 1;
       } else if (var0 == ScriptOpcodes.ANIM) {
          RouteStrategy.Interpreter_intStackSize -= 2;
-         class234.method4534(Canvas.localPlayer, Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
+         class234.performPlayerAnimation(Canvas.localPlayer, Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
          return 1;
       } else if (var0 == ScriptOpcodes.IF_CLOSE) {
          if (!Interpreter.field424) {
@@ -142,7 +142,7 @@ final class class4 implements class0 {
                if (var0 == ScriptOpcodes.OPENURL) {
                   var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                   var8 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
-                  WorldMapCacheName.method635(var3, var8, false);
+                  WorldMapCacheName.openURL(var3, var8, false);
                   return 1;
                } else if (var0 == ScriptOpcodes.RESUME_OBJDIALOG) {
                   var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
@@ -219,10 +219,10 @@ final class class4 implements class0 {
                   Client.showLoadingMessages = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   return 1;
                } else if (var0 == ScriptOpcodes.SETTAPTODROP) {
-                  WorldMapAreaData.method705(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1);
+                  WorldMapAreaData.setTapToDrop(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1);
                   return 1;
                } else if (var0 == ScriptOpcodes.GETTAPTODROP) {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class206.method4028() ? 1 : 0;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class206.getTapToDrop() ? 1 : 0;
                   return 1;
                } else if (var0 == 3129) {
                   RouteStrategy.Interpreter_intStackSize -= 2;

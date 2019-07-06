@@ -286,7 +286,8 @@ public class WorldMapAreaData extends WorldMapArea {
       signature = "(ZI)V",
       garbageValue = "-1746120861"
    )
-   static void method705(boolean var0) {
+   @Export("setTapToDrop")
+   static void setTapToDrop(boolean var0) {
       Client.tapToDrop = var0;
    }
 }

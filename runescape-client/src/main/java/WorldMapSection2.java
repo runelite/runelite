@@ -307,7 +307,7 @@ public class WorldMapSection2 implements WorldMapSection {
       }
 
       if (!var4) {
-         WorldMapIcon1.method219(4, "", "Unable to find " + var1);
+         WorldMapIcon1.addGameMessage(4, "", "Unable to find " + var1);
       }
 
    }

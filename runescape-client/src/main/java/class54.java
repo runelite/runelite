@@ -115,7 +115,7 @@ public final class class54 {
                   var18 = Varps.loginBoxCenter - 80;
                   var19 = 291;
                   if (var1 == 1 && var2 >= var18 - 75 && var2 <= var18 + 75 && var17 >= var19 - 20 && var17 <= var19 + 20) {
-                     WorldMapCacheName.method635(Message.method1227("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws", true, false);
+                     WorldMapCacheName.openURL(Message.method1227("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws", true, false);
                   }
 
                   var18 = Varps.loginBoxCenter + 80;
@@ -182,7 +182,7 @@ public final class class54 {
                                  Login.loginIndex = 5;
                                  return;
                               case 2:
-                                 WorldMapCacheName.method635("https://support.runescape.com/hc/en-gb", true, false);
+                                 WorldMapCacheName.openURL("https://support.runescape.com/hc/en-gb", true, false);
                               }
                            }
                         }
@@ -348,7 +348,7 @@ public final class class54 {
                            }
 
                            if (var1 == 1 && var2 >= Login.loginBoxX + 180 - 34 && var2 <= Login.loginBoxX + 34 + 180 && var17 >= 351 && var17 <= 363) {
-                              WorldMapCacheName.method635(Message.method1227("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
+                              WorldMapCacheName.openURL(Message.method1227("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
                            }
 
                            var20 = Login.loginBoxX + 180 + 80;
@@ -418,7 +418,7 @@ public final class class54 {
                            if (UrlRequester.field930 != null) {
                               var13 = UrlRequester.field930.field43 / 2;
                               if (var1 == 1 && var2 >= UrlRequester.field930.field41 - var13 && var2 <= var13 + UrlRequester.field930.field41 && var17 >= var19 - 15 && var17 < var19) {
-                                 WorldMapCacheName.method635(Message.method1227("secure", true) + "m=weblogin/g=oldscape/cant_log_in", true, false);
+                                 WorldMapCacheName.openURL(Message.method1227("secure", true) + "m=weblogin/g=oldscape/cant_log_in", true, false);
                               }
                            }
 
@@ -471,7 +471,7 @@ public final class class54 {
                               var20 = Login.loginBoxX + 180 - 80;
                               var9 = 321;
                               if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
-                                 WorldMapCacheName.method635(Message.method1227("secure", true) + "m=dob/set_dob.ws", true, false);
+                                 WorldMapCacheName.openURL(Message.method1227("secure", true) + "m=dob/set_dob.ws", true, false);
                                  method1089("", "Page has opened in a new window.", "(Please check your popup blocker.)");
                                  Login.loginIndex = 6;
                                  return;
@@ -485,7 +485,7 @@ public final class class54 {
                               var20 = Login.loginBoxX + 180 - 80;
                               var9 = 321;
                               if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
-                                 WorldMapCacheName.method635("https://www.jagex.com/terms/privacy/#eight", true, false);
+                                 WorldMapCacheName.openURL("https://www.jagex.com/terms/privacy/#eight", true, false);
                                  method1089("", "Page has opened in a new window.", "(Please check your popup blocker.)");
                                  Login.loginIndex = 6;
                                  return;
@@ -511,7 +511,7 @@ public final class class54 {
                               var18 = Login.loginBoxX + 180;
                               var19 = 276;
                               if (var1 == 1 && var2 >= var18 - 75 && var2 <= var18 + 75 && var17 >= var19 - 20 && var17 <= var19 + 20) {
-                                 WorldMapCacheName.method635(var21, true, false);
+                                 WorldMapCacheName.openURL(var21, true, false);
                                  method1089("", "Page has opened in a new window.", "(Please check your popup blocker.)");
                                  Login.loginIndex = 6;
                                  return;

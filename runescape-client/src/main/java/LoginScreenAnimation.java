@@ -587,7 +587,7 @@ public class LoginScreenAnimation {
 
                   var19 = new String(var9.array, 0, var9.index);
                   if (class83.method2026(var19)) {
-                     WorldMapCacheName.method635(var19, true, false);
+                     WorldMapCacheName.openURL(var19, true, false);
                      return 2;
                   } else {
                      return 5;
