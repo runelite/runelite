@@ -31,6 +31,7 @@ import net.runelite.deob.deobfuscators.mapping.AnnotationIntegrityChecker;
 import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
 import net.runelite.deob.deobfuscators.mapping.Mapper;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
+import net.runelite.deob.deobfuscators.transformers.ScriptOpcodesTransformer;
 import net.runelite.deob.util.JarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,6 +73,8 @@ public class UpdateMappings
 
 		ParameterRenamer pr = new ParameterRenamer(group1, group2, mapping);
 		pr.run();
+
+		new ScriptOpcodesTransformer().transform(group2);
 	}
 
 	public void save(File out) throws IOException
