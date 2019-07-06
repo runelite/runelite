@@ -3,6 +3,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("dl")
 @Implements("TextureProvider")
@@ -234,7 +235,7 @@ public class TextureProvider implements TextureLoader {
       if (var0 == null) {
          return null;
       } else if (var0 instanceof byte[]) {
-         byte[] var5 = (byte[])((byte[])((byte[])var0));
+         byte[] var5 = (byte[])var0;
          if (var1) {
             int var3 = var5.length;
             byte[] var4 = new byte[var3];
@@ -329,39 +330,39 @@ public class TextureProvider implements TextureLoader {
    static int method2752(int var0, Script var1, boolean var2) {
       int var3;
       int var4;
-      if (var0 == 4000) {
+      if (var0 == ScriptOpcodes.ADD) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 + var4;
          return 1;
-      } else if (var0 == 4001) {
+      } else if (var0 == ScriptOpcodes.SUB) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 - var4;
          return 1;
-      } else if (var0 == 4002) {
+      } else if (var0 == ScriptOpcodes.MULTIPLY) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var4 * var3;
          return 1;
-      } else if (var0 == 4003) {
+      } else if (var0 == ScriptOpcodes.DIV) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 / var4;
          return 1;
-      } else if (var0 == 4004) {
+      } else if (var0 == ScriptOpcodes.RANDOM) {
          var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)(Math.random() * (double)var3);
          return 1;
-      } else if (var0 == 4005) {
+      } else if (var0 == ScriptOpcodes.RANDOMINC) {
          var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)(Math.random() * (double)(var3 + 1));
          return 1;
-      } else if (var0 == 4006) {
+      } else if (var0 == ScriptOpcodes.INTERPOLATE) {
          RouteStrategy.Interpreter_intStackSize -= 5;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -370,37 +371,37 @@ public class TextureProvider implements TextureLoader {
          int var12 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 4];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 + (var12 - var11) * (var4 - var3) / (var6 - var11);
          return 1;
-      } else if (var0 == 4007) {
+      } else if (var0 == ScriptOpcodes.ADDPERCENT) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 + var3 * var4 / 100;
          return 1;
-      } else if (var0 == 4008) {
+      } else if (var0 == ScriptOpcodes.SETBIT) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 | 1 << var4;
          return 1;
-      } else if (var0 == 4009) {
+      } else if (var0 == ScriptOpcodes.CLEARBIT) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 & -1 - (1 << var4);
          return 1;
-      } else if (var0 == 4010) {
+      } else if (var0 == ScriptOpcodes.TESTBIT) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (var3 & 1 << var4) != 0 ? 1 : 0;
          return 1;
-      } else if (var0 == 4011) {
+      } else if (var0 == ScriptOpcodes.MOD) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 % var4;
          return 1;
-      } else if (var0 == 4012) {
+      } else if (var0 == ScriptOpcodes.POW) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -411,7 +412,7 @@ public class TextureProvider implements TextureLoader {
          }
 
          return 1;
-      } else if (var0 == 4013) {
+      } else if (var0 == ScriptOpcodes.INVPOW) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -441,19 +442,19 @@ public class TextureProvider implements TextureLoader {
 
             return 1;
          }
-      } else if (var0 == 4014) {
+      } else if (var0 == ScriptOpcodes.AND) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 & var4;
          return 1;
-      } else if (var0 == 4015) {
+      } else if (var0 == ScriptOpcodes.OR) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 | var4;
          return 1;
-      } else if (var0 == 4018) {
+      } else if (var0 == ScriptOpcodes.SCALE) {
          RouteStrategy.Interpreter_intStackSize -= 3;
          long var5 = (long)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          long var7 = (long)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];

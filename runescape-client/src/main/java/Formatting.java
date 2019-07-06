@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("cy")
 @Implements("Formatting")
@@ -22,10 +23,10 @@ public class Formatting {
    )
    static int method2023(int var0, Script var1, boolean var2) {
       Widget var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
-      if (var0 == 1700) {
+      if (var0 == ScriptOpcodes.CC_GETINVOBJECT) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.itemId;
          return 1;
-      } else if (var0 == 1701) {
+      } else if (var0 == ScriptOpcodes.CC_GETINVCOUNT) {
          if (var3.itemId != -1) {
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.itemQuantity;
          } else {
@@ -33,7 +34,7 @@ public class Formatting {
          }
 
          return 1;
-      } else if (var0 == 1702) {
+      } else if (var0 == ScriptOpcodes.CC_GETID) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.childIndex;
          return 1;
       } else {
@@ -51,7 +52,7 @@ public class Formatting {
       int var4;
       int var5;
       EnumDefinition var9;
-      if (var0 == 3400) {
+      if (var0 == ScriptOpcodes.ENUM_STRING) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -72,8 +73,8 @@ public class Formatting {
          }
 
          return 1;
-      } else if (var0 != 3408) {
-         if (var0 == 3411) {
+      } else if (var0 != ScriptOpcodes.ENUM) {
+         if (var0 == ScriptOpcodes.ENUM_GETOUTPUTCOUNT) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             var9 = Interpreter.getEnum(var3);
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var9.size();

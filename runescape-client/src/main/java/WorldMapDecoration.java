@@ -6,8 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("v")
 @Implements("WorldMapDecoration")
-public class WorldMapDecoration
-{
+public class WorldMapDecoration {
    @ObfuscatedName("dd")
    @ObfuscatedSignature(
       signature = "Lit;"

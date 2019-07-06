@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("ac")
 public class class31 {
@@ -55,12 +56,12 @@ public class class31 {
       garbageValue = "130306081"
    )
    static int method573(int var0, Script var1, boolean var2) {
-      if (var0 == 6500) {
+      if (var0 == ScriptOpcodes.WORLDLIST_FETCH) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ClientParameter.loadWorlds() ? 1 : 0;
          return 1;
       } else {
          World var3;
-         if (var0 == 6501) {
+         if (var0 == ScriptOpcodes.WORLDLIST_START) {
             var3 = class190.method3672();
             if (var3 != null) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.id;
@@ -79,7 +80,7 @@ public class class31 {
             }
 
             return 1;
-         } else if (var0 == 6502) {
+         } else if (var0 == ScriptOpcodes.WORLDLIST_NEXT) {
             var3 = Fonts.method5647();
             if (var3 != null) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.id;
@@ -102,7 +103,7 @@ public class class31 {
             World var4;
             int var5;
             int var6;
-            if (var0 == 6506) {
+            if (var0 == ScriptOpcodes.WORLDLIST_SPECIFIC) {
                var6 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                var4 = null;
 
@@ -130,7 +131,7 @@ public class class31 {
                }
 
                return 1;
-            } else if (var0 == 6507) {
+            } else if (var0 == ScriptOpcodes.WORLDLIST_SORT) {
                RouteStrategy.Interpreter_intStackSize -= 4;
                var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                boolean var9 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1] == 1;
@@ -139,13 +140,13 @@ public class class31 {
                WorldMapSectionType.method248(var6, var9, var5, var10);
                return 1;
             } else if (var0 != 6511) {
-               if (var0 == 6512) {
+               if (var0 == ScriptOpcodes.SETFOLLOWEROPSLOWPRIORITY) {
                   Client.followerOpsLowPriority = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   return 1;
                } else {
                   int var7;
                   ParamKeyDefinition var8;
-                  if (var0 == 6513) {
+                  if (var0 == ScriptOpcodes.NC_PARAM) {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -157,7 +158,7 @@ public class class31 {
                      }
 
                      return 1;
-                  } else if (var0 == 6514) {
+                  } else if (var0 == ScriptOpcodes.LC_PARAM) {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -169,7 +170,7 @@ public class class31 {
                      }
 
                      return 1;
-                  } else if (var0 == 6515) {
+                  } else if (var0 == ScriptOpcodes.OC_PARAM) {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -181,7 +182,7 @@ public class class31 {
                      }
 
                      return 1;
-                  } else if (var0 == 6516) {
+                  } else if (var0 == ScriptOpcodes.STRUCT_PARAM) {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -193,10 +194,10 @@ public class class31 {
                      }
 
                      return 1;
-                  } else if (var0 == 6518) {
+                  } else if (var0 == ScriptOpcodes.ON_MOBILE) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.field162 ? 1 : 0;
                      return 1;
-                  } else if (var0 == 6519) {
+                  } else if (var0 == ScriptOpcodes.CLIENTTYPE) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.clientType & 3;
                      return 1;
                   } else if (var0 == 6520) {
@@ -211,13 +212,13 @@ public class class31 {
                      --Interpreter.Interpreter_stringStackSize;
                      --RouteStrategy.Interpreter_intStackSize;
                      return 1;
-                  } else if (var0 == 6524) {
+                  } else if (var0 == ScriptOpcodes.BATTERYLEVEL) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                      return 1;
-                  } else if (var0 == 6525) {
+                  } else if (var0 == ScriptOpcodes.BATTERYCHARGING) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                      return 1;
-                  } else if (var0 == 6526) {
+                  } else if (var0 == ScriptOpcodes.WIFIAVAILABLE) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                      return 1;
                   } else {

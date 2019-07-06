@@ -1,6 +1,7 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("bs")
 public final class class54 {
@@ -639,7 +640,7 @@ public final class class54 {
          return 1;
       } else {
          WorldMapArea var4;
-         if (var0 == 6601) {
+         if (var0 == ScriptOpcodes.WORLDMAP_GETMAPNAME) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             String var14 = "";
             var4 = BufferedFile.worldMap().getMapArea(var3);
@@ -649,45 +650,45 @@ public final class class54 {
 
             Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var14;
             return 1;
-         } else if (var0 == 6602) {
+         } else if (var0 == ScriptOpcodes.WORLDMAP_SETMAP) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             BufferedFile.worldMap().setCurrentMapAreaId(var3);
             return 1;
-         } else if (var0 == 6603) {
+         } else if (var0 == ScriptOpcodes.WORLDMAP_GETZOOM) {
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getZoomLevel();
             return 1;
-         } else if (var0 == 6604) {
+         } else if (var0 == ScriptOpcodes.WORLDMAP_SETZOOM) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             BufferedFile.worldMap().setZoomLevel(var3);
             return 1;
-         } else if (var0 == 6605) {
+         } else if (var0 == ScriptOpcodes.WORLDMAP_ISLOADED) {
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isCacheLoaded() ? 1 : 0;
             return 1;
          } else {
             TileLocation var5;
-            if (var0 == 6606) {
+            if (var0 == ScriptOpcodes.WORLDMAP_JUMPTODISPLAYCOORD) {
                var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().setWorldMapPositionTarget(var5.x, var5.y);
                return 1;
-            } else if (var0 == 6607) {
+            } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTODISPLAYCOORD_INSTANT) {
                var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().method371(var5.x, var5.y);
                return 1;
-            } else if (var0 == 6608) {
+            } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTOSOURCECOORD) {
                var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().method372(var5.plane, var5.x, var5.y);
                return 1;
-            } else if (var0 == 6609) {
+            } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTOSOURCECOORD_INSTANT) {
                var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().method373(var5.plane, var5.x, var5.y);
                return 1;
-            } else if (var0 == 6610) {
+            } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISPLAYPOSITION) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().method374();
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().method375();
                return 1;
             } else {
                WorldMapArea var6;
-               if (var0 == 6611) {
+               if (var0 == ScriptOpcodes.WORLDMAP_GETCONFIGORIGIN) {
                   var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   var6 = BufferedFile.worldMap().getMapArea(var3);
                   if (var6 == null) {
@@ -697,7 +698,7 @@ public final class class54 {
                   }
 
                   return 1;
-               } else if (var0 == 6612) {
+               } else if (var0 == ScriptOpcodes.WORLDMAP_GETCONFIGSIZE) {
                   var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   var6 = BufferedFile.worldMap().getMapArea(var3);
                   if (var6 == null) {
@@ -709,7 +710,7 @@ public final class class54 {
                   }
 
                   return 1;
-               } else if (var0 == 6613) {
+               } else if (var0 == ScriptOpcodes.WORLDMAP_GETCONFIGBOUNDS) {
                   var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   var6 = BufferedFile.worldMap().getMapArea(var3);
                   if (var6 == null) {
@@ -725,7 +726,7 @@ public final class class54 {
                   }
 
                   return 1;
-               } else if (var0 == 6614) {
+               } else if (var0 == ScriptOpcodes.WORLDMAP_GETCONFIGZOOM) {
                   var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   var6 = BufferedFile.worldMap().getMapArea(var3);
                   if (var6 == null) {
@@ -746,10 +747,10 @@ public final class class54 {
                   }
 
                   return 1;
-               } else if (var0 == 6616) {
+               } else if (var0 == ScriptOpcodes.WORLDMAP_GETCURRENTMAP) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().currentMapAreaId();
                   return 1;
-               } else if (var0 == 6617) {
+               } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISPLAYCOORD) {
                   var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                   var6 = BufferedFile.worldMap().getCurrentMapArea();
                   if (var6 == null) {
@@ -801,7 +802,7 @@ public final class class54 {
                         var8 = new TileLocation(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
                         TotalQuantityComparator.method96(var3, var8, true);
                         return 1;
-                     } else if (var0 == 6621) {
+                     } else if (var0 == ScriptOpcodes.WORLDMAP_COORDINMAP) {
                         RouteStrategy.Interpreter_intStackSize -= 2;
                         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                         var8 = new TileLocation(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
@@ -813,7 +814,7 @@ public final class class54 {
                            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var4.containsCoord(var8.plane, var8.x, var8.y) ? 1 : 0;
                            return 1;
                         }
-                     } else if (var0 == 6622) {
+                     } else if (var0 == ScriptOpcodes.WORLDMAP_GETSIZE) {
                         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().method377();
                         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().method378();
                         return 1;
@@ -841,47 +842,47 @@ public final class class54 {
                         return 1;
                      } else {
                         boolean var9;
-                        if (var0 == 6628) {
+                        if (var0 == ScriptOpcodes.WORLDMAP_PERPETUALFLASH) {
                            var9 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                            BufferedFile.worldMap().perpetualFlash(var9);
                            return 1;
-                        } else if (var0 == 6629) {
+                        } else if (var0 == ScriptOpcodes.WORLDMAP_FLASHELEMENT) {
                            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                            BufferedFile.worldMap().flashElement(var3);
                            return 1;
-                        } else if (var0 == 6630) {
+                        } else if (var0 == ScriptOpcodes.WORLDMAP_FLASHELEMENTCATEGORY) {
                            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                            BufferedFile.worldMap().flashCategory(var3);
                            return 1;
-                        } else if (var0 == 6631) {
+                        } else if (var0 == ScriptOpcodes.WORLDMAP_STOPCURRENTFLASHES) {
                            BufferedFile.worldMap().stopCurrentFlashes();
                            return 1;
-                        } else if (var0 == 6632) {
+                        } else if (var0 == ScriptOpcodes.WORLDMAP_DISABLEELEMENTS) {
                            var9 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                            BufferedFile.worldMap().setElementsEnabled(var9);
                            return 1;
                         } else {
                            boolean var10;
-                           if (var0 == 6633) {
+                           if (var0 == ScriptOpcodes.WORLDMAP_DISABLEELEMENT) {
                               RouteStrategy.Interpreter_intStackSize -= 2;
                               var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                               var10 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1] == 1;
                               BufferedFile.worldMap().disableElement(var3, var10);
                               return 1;
-                           } else if (var0 == 6634) {
+                           } else if (var0 == ScriptOpcodes.WORLDMAP_DISABLEELEMENTCATEGORY) {
                               RouteStrategy.Interpreter_intStackSize -= 2;
                               var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                               var10 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1] == 1;
                               BufferedFile.worldMap().disableCategory(var3, var10);
                               return 1;
-                           } else if (var0 == 6635) {
+                           } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISABLEELEMENTS) {
                               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getElementsEnabled() ? 1 : 0;
                               return 1;
-                           } else if (var0 == 6636) {
+                           } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISABLEELEMENT) {
                               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isElementDisabled(var3) ? 1 : 0;
                               return 1;
-                           } else if (var0 == 6637) {
+                           } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISABLEELEMENTCATEGORY) {
                               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isCategoryDisabled(var3) ? 1 : 0;
                               return 1;
@@ -899,7 +900,7 @@ public final class class54 {
                               return 1;
                            } else {
                               AbstractWorldMapIcon var11;
-                              if (var0 == 6639) {
+                              if (var0 == ScriptOpcodes.WORLDMAP_LISTELEMENT_START) {
                                  var11 = BufferedFile.worldMap().iconStart();
                                  if (var11 == null) {
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
@@ -910,7 +911,7 @@ public final class class54 {
                                  }
 
                                  return 1;
-                              } else if (var0 == 6640) {
+                              } else if (var0 == ScriptOpcodes.WORLDMAP_LISTELEMENT_NEXT) {
                                  var11 = BufferedFile.worldMap().iconNext();
                                  if (var11 == null) {
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
@@ -923,7 +924,7 @@ public final class class54 {
                                  return 1;
                               } else {
                                  WorldMapElement var12;
-                                 if (var0 == 6693) {
+                                 if (var0 == ScriptOpcodes.MEC_TEXT) {
                                     var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                                     var12 = ViewportMouse.getWorldMapElement(var3);
                                     if (var12.field1021 == null) {
@@ -933,12 +934,12 @@ public final class class54 {
                                     }
 
                                     return 1;
-                                 } else if (var0 == 6694) {
+                                 } else if (var0 == ScriptOpcodes.MEC_TEXTSIZE) {
                                     var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                                     var12 = ViewportMouse.getWorldMapElement(var3);
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var12.textSize;
                                     return 1;
-                                 } else if (var0 == 6695) {
+                                 } else if (var0 == ScriptOpcodes.MEC_CATEGORY) {
                                     var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                                     var12 = ViewportMouse.getWorldMapElement(var3);
                                     if (var12 == null) {
@@ -948,7 +949,7 @@ public final class class54 {
                                     }
 
                                     return 1;
-                                 } else if (var0 == 6696) {
+                                 } else if (var0 == ScriptOpcodes.MEC_SPRITE) {
                                     var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                                     var12 = ViewportMouse.getWorldMapElement(var3);
                                     if (var12 == null) {

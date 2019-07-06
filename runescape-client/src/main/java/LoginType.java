@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -73,7 +74,8 @@ public class LoginType {
    }
 
    @ObfuscatedName("toString")
-   public String method166() {
+   @Export("toString")
+   public String toString() {
       return this.field489;
    }
 

@@ -3,6 +3,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("u")
 @Implements("WorldComparator")
@@ -45,14 +46,14 @@ final class WorldComparator implements Comparator {
       garbageValue = "108"
    )
    static int method68(int var0, Script var1, boolean var2) {
-      if (var0 == 3200) {
+      if (var0 == ScriptOpcodes.SOUND_SYNTH) {
          RouteStrategy.Interpreter_intStackSize -= 3;
          Ignored.queueSoundEffect(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2]);
          return 1;
-      } else if (var0 == 3201) {
+      } else if (var0 == ScriptOpcodes.SOUND_SONG) {
          AbstractUserComparator.method5437(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
          return 1;
-      } else if (var0 == 3202) {
+      } else if (var0 == ScriptOpcodes.SOUND_JINGLE) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          HealthBar.method1994(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
          return 1;
