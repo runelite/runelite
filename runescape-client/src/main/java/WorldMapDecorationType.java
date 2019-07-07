@@ -192,8 +192,8 @@ public enum WorldMapDecorationType implements Enumerated {
       garbageValue = "1521012895"
    )
    static final void method4517(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if (GroundItemPile.loadWidgetGroup(var0)) {
-         class238.updateWidgetGroup(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6);
+      if (GroundItemPile.loadInterface(var0)) {
+         class238.updateInterface(Widget.interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6);
       }
 
    }

@@ -96,7 +96,7 @@ public class NetFileRequest extends DualNode {
    )
    static final void method4554(int var0, int var1, int var2, int var3, Sprite var4, SpriteMask var5) {
       if (var4 != null) {
-         int var6 = Client.minimapOrientation & 2047;
+         int var6 = Client.camAngleY & 2047;
          int var7 = var3 * var3 + var2 * var2;
          if (var7 <= 6400) {
             int var8 = Rasterizer3D.Rasterizer3D_sine[var6];

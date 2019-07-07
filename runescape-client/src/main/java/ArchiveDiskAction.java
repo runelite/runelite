@@ -94,7 +94,7 @@ public class ArchiveDiskAction extends Node {
                   var5 = false;
                }
 
-               if (var0.movementSequence == var0.idleSequence && (var0.field22 > 25 || var5)) {
+               if (var0.movementSequence == var0.readySequence && (var0.field22 > 25 || var5)) {
                   if (var0.turnLeftSequence != -1) {
                      var0.movementSequence = var0.turnLeftSequence;
                   } else {
@@ -109,7 +109,7 @@ public class ArchiveDiskAction extends Node {
                   var5 = false;
                }
 
-               if (var0.movementSequence == var0.idleSequence && (var0.field22 > 25 || var5)) {
+               if (var0.movementSequence == var0.readySequence && (var0.field22 > 25 || var5)) {
                   if (var0.turnRightSequence != -1) {
                      var0.movementSequence = var0.turnRightSequence;
                   } else {

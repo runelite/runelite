@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jb")
-@Implements("ParamKeyDefinition")
-public class ParamKeyDefinition extends DualNode {
+@Implements("ParamDefinition")
+public class ParamDefinition extends DualNode {
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lir;"
@@ -16,8 +16,8 @@ public class ParamKeyDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("ParamKeyDefinition_cached")
-   static EvictingDualNodeHashTable ParamKeyDefinition_cached;
+   @Export("ParamDefinition_cached")
+   static EvictingDualNodeHashTable ParamDefinition_cached;
    @ObfuscatedName("q")
    @Export("type")
    char type;
@@ -25,17 +25,17 @@ public class ParamKeyDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 1133042753
    )
-   @Export("keyInt")
-   public int keyInt;
+   @Export("defaultInt")
+   public int defaultInt;
    @ObfuscatedName("o")
-   @Export("keyString")
-   public String keyString;
+   @Export("defaultStr")
+   public String defaultStr;
    @ObfuscatedName("u")
-   @Export("isMembersOnly")
-   boolean isMembersOnly;
+   @Export("autoDisable")
+   boolean autoDisable;
 
-   ParamKeyDefinition() {
-      this.isMembersOnly = true;
+   ParamDefinition() {
+      this.autoDisable = true;
    }
 
    @ObfuscatedName("f")
@@ -43,8 +43,8 @@ public class ParamKeyDefinition extends DualNode {
       signature = "(B)V",
       garbageValue = "121"
    )
-   @Export("init")
-   void init() {
+   @Export("postDecode")
+   void postDecode() {
    }
 
    @ObfuscatedName("q")
@@ -74,11 +74,11 @@ public class ParamKeyDefinition extends DualNode {
       if (var2 == 1) {
          this.type = class14.method171(var1.readByte());
       } else if (var2 == 2) {
-         this.keyInt = var1.readInt();
+         this.defaultInt = var1.readInt();
       } else if (var2 == 4) {
-         this.isMembersOnly = false;
+         this.autoDisable = false;
       } else if (var2 == 5) {
-         this.keyString = var1.readStringCp1252NullTerminated();
+         this.defaultStr = var1.readStringCp1252NullTerminated();
       }
 
    }
@@ -391,6 +391,6 @@ public class ParamKeyDefinition extends DualNode {
    }
 
    static {
-      ParamKeyDefinition_cached = new EvictingDualNodeHashTable(64);
+      ParamDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

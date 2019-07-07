@@ -652,7 +652,7 @@ public class WorldMap {
    @Export("setCurrentMapArea")
    void setCurrentMapArea(WorldMapArea var1) {
       if (this.currentMapArea == null || var1 != this.currentMapArea) {
-         this.initializeWorldMap(var1);
+         this.initializeWorldMapManager(var1);
          this.jump(-1, -1, -1);
       }
 
@@ -663,8 +663,8 @@ public class WorldMap {
       signature = "(Lag;I)V",
       garbageValue = "-1072205896"
    )
-   @Export("initializeWorldMap")
-   void initializeWorldMap(WorldMapArea var1) {
+   @Export("initializeWorldMapManager")
+   void initializeWorldMapManager(WorldMapArea var1) {
       this.currentMapArea = var1;
       this.worldMapManager = new WorldMapManager(this.mapSceneSprites, this.fonts, this.field990, this.field991);
       this.cacheLoader.reset(this.currentMapArea.archiveName());
@@ -678,7 +678,7 @@ public class WorldMap {
    public void method367(WorldMapArea var1, Coord var2, Coord var3, boolean var4) {
       if (var1 != null) {
          if (this.currentMapArea == null || var1 != this.currentMapArea) {
-            this.initializeWorldMap(var1);
+            this.initializeWorldMapManager(var1);
          }
 
          if (!var4 && this.currentMapArea.containsCoord(var2.plane, var2.x, var2.y)) {

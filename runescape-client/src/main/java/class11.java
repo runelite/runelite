@@ -161,7 +161,7 @@ final class class11 implements Comparator {
       } else if (var0 == ScriptOpcodes.CC_SETONCHATTRANSMIT) {
          var3.field970 = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONKEY) {
-         var3.onKeyListener = var8;
+         var3.onKey = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONFRIENDTRANSMIT) {
          var3.field971 = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONCLANTRANSMIT) {
@@ -169,7 +169,7 @@ final class class11 implements Comparator {
       } else if (var0 == ScriptOpcodes.CC_SETONMISCTRANSMIT) {
          var3.field973 = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONDIALOGABORT) {
-         var3.onDialogAbortListener = var8;
+         var3.onDialogAbort = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONSUBCHANGE) {
          var3.field974 = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONSTOCKTRANSMIT) {
@@ -219,7 +219,7 @@ final class class11 implements Comparator {
 
          return 1;
       } else if (var0 == ScriptOpcodes.IF_GETTOP) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.rootWidgetGroup;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.rootInterface;
          return 1;
       } else {
          return 2;

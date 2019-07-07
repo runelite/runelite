@@ -112,7 +112,7 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
    )
    @Export("addGameMessage")
    static void addGameMessage(int var0, String var1, String var2) {
-      GrandExchangeEvents.addChatMessage(var0, var1, var2, (String)null);
+      GrandExchangeEvents.addMessage(var0, var1, var2, (String)null);
    }
 
    @ObfuscatedName("fz")

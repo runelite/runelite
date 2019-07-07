@@ -29,8 +29,8 @@ public class StructDefinition extends DualNode {
       signature = "(B)V",
       garbageValue = "-16"
    )
-   @Export("init")
-   void init() {
+   @Export("postDecode")
+   void postDecode() {
    }
 
    @ObfuscatedName("q")
@@ -238,7 +238,7 @@ public class StructDefinition extends DualNode {
             var4.scrollHeight = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
             class22.method295(var4);
             if (var3 != -1 && var4.type == 0) {
-               class39.revalidateWidgetScroll(Widget.widgets[var3 >> 16], var4, false);
+               class39.revalidateWidgetScroll(Widget.interfaceComponents[var3 >> 16], var4, false);
             }
 
             return 1;

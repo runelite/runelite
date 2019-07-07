@@ -9,7 +9,7 @@ public interface RSNPCDefinition extends NPCDefinition
 	@Override
 	String getName();
 
-	@Import("archives")
+	@Import("models")
 	@Override
 	int[] getModels();
 

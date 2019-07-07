@@ -149,8 +149,8 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
       signature = "([Lho;IIIIIIIII)V",
       garbageValue = "-1516599170"
    )
-   @Export("drawWidgetGroup")
-   static final void drawWidgetGroup(Widget[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   @Export("drawInterface")
+   static final void drawInterface(Widget[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
       Rasterizer3D.Rasterizer3D_method1();
 
@@ -328,9 +328,9 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                         }
                      }
 
-                     drawWidgetGroup(var0, var10.id, var15, var16, var17, var18, var12 - var10.scrollX, var13 - var10.scrollY, var11);
+                     drawInterface(var0, var10.id, var15, var16, var17, var18, var12 - var10.scrollX, var13 - var10.scrollY, var11);
                      if (var10.children != null) {
-                        drawWidgetGroup(var10.children, var10.id, var15, var16, var17, var18, var12 - var10.scrollX, var13 - var10.scrollY, var11);
+                        drawInterface(var10.children, var10.id, var15, var16, var17, var18, var12 - var10.scrollX, var13 - var10.scrollY, var11);
                      }
 
                      InterfaceParent var23 = (InterfaceParent)Client.interfaceParents.get((long)var10.id);
@@ -781,8 +781,8 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
       garbageValue = "-1666917204"
    )
    static final void method845(int var0) {
-      if (GroundItemPile.loadWidgetGroup(var0)) {
-         Widget[] var1 = Widget.widgets[var0];
+      if (GroundItemPile.loadInterface(var0)) {
+         Widget[] var1 = Widget.interfaceComponents[var0];
 
          for (int var2 = 0; var2 < var1.length; ++var2) {
             Widget var3 = var1[var2];

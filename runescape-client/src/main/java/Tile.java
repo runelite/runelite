@@ -146,7 +146,7 @@ public final class Tile extends Node {
       garbageValue = "-1899580455"
    )
    public static void method2867() {
-      FloorUnderlayDefinition.UnderlayDefinition_cached.clear();
+      FloorUnderlayDefinition.FloorUnderlayDefinition_cached.clear();
    }
 
    @ObfuscatedName("is")

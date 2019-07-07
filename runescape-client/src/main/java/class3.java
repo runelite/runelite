@@ -289,10 +289,10 @@ public class class3 implements Enumerated {
             }
 
             var15.walkSequence = var15.definition.walkSequence;
-            var15.walkTurnSequence = var15.definition.walkTurnSequence;
-            var15.walkTurnLeftSequence = var15.definition.walkTurnLeftSequence;
-            var15.walkTurnRightSequence = var15.definition.walkTurnRightSequence;
-            var15.idleSequence = var15.definition.idleSequence;
+            var15.walkBackSequence = var15.definition.walkBackSequence;
+            var15.walkLeftSequence = var15.definition.walkLeftSequence;
+            var15.walkRightSequence = var15.definition.walkRightSequence;
+            var15.readySequence = var15.definition.readySequence;
             var15.turnLeftSequence = var15.definition.turnLeftSequence;
             var15.turnRightSequence = var15.definition.turnRightSequence;
             var15.method228(Canvas.localPlayer.pathX[0] + var5, Canvas.localPlayer.pathY[0] + var8, var12 == 1);

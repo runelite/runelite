@@ -29,7 +29,7 @@ public class Varps {
       garbageValue = "2111080001"
    )
    public static void method4393(AbstractArchive var0) {
-      FloorUnderlayDefinition.UnderlayDefinition_archive = var0;
+      FloorUnderlayDefinition.FloorUnderlayDefinition_archive = var0;
    }
 
    @ObfuscatedName("ki")

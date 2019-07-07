@@ -88,7 +88,7 @@ public final class class22 {
          var4 = new ArchiveDisk(var0, class168.dat2File, ArchiveDiskAction.idxFiles[var0], 1000000);
       }
 
-      return new Archive(var4, Fonts.archiveDisk255, var0, var1, var2, var3);
+      return new Archive(var4, Fonts.masterDisk, var0, var1, var2, var3);
    }
 
    @ObfuscatedName("jp")
@@ -112,7 +112,7 @@ public final class class22 {
       SpriteMask var4 = var0.getSpriteMask(false);
       if (var4 != null) {
          if (Client.minimapState < 3) {
-            UnitPriceComparator.compass.method315(var1, var2, var4.width, var4.height, 25, 25, Client.minimapOrientation, 256, var4.xStarts, var4.xWidths);
+            UnitPriceComparator.compass.method315(var1, var2, var4.width, var4.height, 25, 25, Client.camAngleY, 256, var4.xStarts, var4.xWidths);
          } else {
             Rasterizer2D.method5948(var1, var2, 0, var4.xStarts, var4.xWidths);
          }

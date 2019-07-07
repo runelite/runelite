@@ -60,7 +60,7 @@ public class InvDefinition extends DualNode {
       garbageValue = "-121177696"
    )
    public static void method4754() {
-      ParamKeyDefinition.ParamKeyDefinition_cached.clear();
+      ParamDefinition.ParamDefinition_cached.clear();
    }
 
    static {

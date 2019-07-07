@@ -1046,14 +1046,14 @@ public final class class54 {
             Client.field202 += (var6 - Client.field202) / 80;
          }
 
-         MouseRecorder.field566 = class32.getTileHeight(Canvas.localPlayer.x, Canvas.localPlayer.y, SoundSystem.plane) - Client.cameraFollowHeight;
+         MouseRecorder.field566 = class32.getTileHeight(Canvas.localPlayer.x, Canvas.localPlayer.y, SoundSystem.plane) - Client.camFollowHeight;
       } else if (Client.oculusOrbState == 1) {
          if (Client.field199 && Canvas.localPlayer != null) {
             var0 = Canvas.localPlayer.pathX[0];
             var1 = Canvas.localPlayer.pathY[0];
             if (var0 >= 0 && var1 >= 0 && var0 < 104 && var1 < 104) {
                MouseHandler.oculusOrbFocalPointX = Canvas.localPlayer.x;
-               var2 = class32.getTileHeight(Canvas.localPlayer.x, Canvas.localPlayer.y, SoundSystem.plane) - Client.cameraFollowHeight;
+               var2 = class32.getTileHeight(Canvas.localPlayer.x, Canvas.localPlayer.y, SoundSystem.plane) - Client.camFollowHeight;
                if (var2 < MouseRecorder.field566) {
                   MouseRecorder.field566 = var2;
                }
@@ -1167,14 +1167,14 @@ public final class class54 {
          Client.field192 = MouseHandler.MouseHandler_x;
       }
 
-      Client.minimapOrientation = Client.field190 / 2 + Client.minimapOrientation & 2047;
-      Client.cameraPitchTarget += Client.field191 / 2;
-      if (Client.cameraPitchTarget < 128) {
-         Client.cameraPitchTarget = 128;
+      Client.camAngleY = Client.field190 / 2 + Client.camAngleY & 2047;
+      Client.camAngleX += Client.field191 / 2;
+      if (Client.camAngleX < 128) {
+         Client.camAngleX = 128;
       }
 
-      if (Client.cameraPitchTarget > 383) {
-         Client.cameraPitchTarget = 383;
+      if (Client.camAngleX > 383) {
+         Client.camAngleX = 383;
       }
 
    }

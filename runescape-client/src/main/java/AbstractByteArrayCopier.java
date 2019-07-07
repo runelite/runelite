@@ -58,17 +58,17 @@ public abstract class AbstractByteArrayCopier {
       signature = "(II)V",
       garbageValue = "-1941491045"
    )
-   @Export("unloadWidgetGroup")
-   public static void unloadWidgetGroup(int var0) {
-      if (var0 != -1 && Widget.loadedWidgetGroups[var0]) {
+   @Export("unloadInterface")
+   public static void unloadInterface(int var0) {
+      if (var0 != -1 && Widget.loadedInterfaces[var0]) {
          Widget.Widget_archive.method7(var0);
-         if (Widget.widgets[var0] != null) {
+         if (Widget.interfaceComponents[var0] != null) {
             boolean var1 = true;
 
-            for (int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
-               if (Widget.widgets[var0][var2] != null) {
-                  if (Widget.widgets[var0][var2].type != 2) {
-                     Widget.widgets[var0][var2] = null;
+            for (int var2 = 0; var2 < Widget.interfaceComponents[var0].length; ++var2) {
+               if (Widget.interfaceComponents[var0][var2] != null) {
+                  if (Widget.interfaceComponents[var0][var2].type != 2) {
+                     Widget.interfaceComponents[var0][var2] = null;
                   } else {
                      var1 = false;
                   }
@@ -76,10 +76,10 @@ public abstract class AbstractByteArrayCopier {
             }
 
             if (var1) {
-               Widget.widgets[var0] = null;
+               Widget.interfaceComponents[var0] = null;
             }
 
-            Widget.loadedWidgetGroups[var0] = false;
+            Widget.loadedInterfaces[var0] = false;
          }
       }
 

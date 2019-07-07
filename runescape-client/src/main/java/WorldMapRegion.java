@@ -1061,7 +1061,7 @@ public class WorldMapRegion {
          if (var3.contains(var4, var5)) {
             var4 -= var3.width / 2;
             var5 -= var3.height / 2;
-            int var6 = Client.minimapOrientation & 2047;
+            int var6 = Client.camAngleY & 2047;
             int var7 = Rasterizer3D.Rasterizer3D_sine[var6];
             int var8 = Rasterizer3D.Rasterizer3D_cosine[var6];
             int var9 = var4 * var8 + var7 * var5 >> 11;
@@ -1075,7 +1075,7 @@ public class WorldMapRegion {
             var13.packetBuffer.method55(KeyHandler.KeyHandler_pressedKeys[82] ? (KeyHandler.KeyHandler_pressedKeys[81] ? 2 : 1) : 0);
             var13.packetBuffer.writeByte(var4);
             var13.packetBuffer.writeByte(var5);
-            var13.packetBuffer.writeShort(Client.minimapOrientation);
+            var13.packetBuffer.writeShort(Client.camAngleY);
             var13.packetBuffer.writeByte(57);
             var13.packetBuffer.writeByte(0);
             var13.packetBuffer.writeByte(0);

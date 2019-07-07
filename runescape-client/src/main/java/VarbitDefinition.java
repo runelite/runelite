@@ -26,20 +26,20 @@ public class VarbitDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 1552575189
    )
-   @Export("varp")
-   public int varp;
+   @Export("baseVar")
+   public int baseVar;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -870948181
    )
-   @Export("lowBit")
-   public int lowBit;
+   @Export("startBit")
+   public int startBit;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1710935305
    )
-   @Export("highBit")
-   public int highBit;
+   @Export("endBit")
+   public int endBit;
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
@@ -66,9 +66,9 @@ public class VarbitDefinition extends DualNode {
    @Export("decodeNext")
    void decodeNext(Buffer var1, int var2) {
       if (var2 == 1) {
-         this.varp = var1.readUnsignedShort();
-         this.lowBit = var1.readUnsignedByte();
-         this.highBit = var1.readUnsignedByte();
+         this.baseVar = var1.readUnsignedShort();
+         this.startBit = var1.readUnsignedByte();
+         this.endBit = var1.readUnsignedByte();
       }
 
    }

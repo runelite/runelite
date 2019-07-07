@@ -234,7 +234,7 @@ public class WorldMapSection1 implements WorldMapSection {
       Client.isItemSelected = 0;
       Client.isSpellSelected = false;
       Client.soundEffectCount = 0;
-      Client.minimapOrientation = 0;
+      Client.camAngleY = 0;
       Client.oculusOrbState = 0;
       ClientParameter.field3645 = null;
       Client.minimapState = 0;
@@ -285,15 +285,15 @@ public class WorldMapSection1 implements WorldMapSection {
 
       class196.varcs.clearTransient();
       Client.followerIndex = -1;
-      if (Client.rootWidgetGroup != -1) {
-         AbstractByteArrayCopier.unloadWidgetGroup(Client.rootWidgetGroup);
+      if (Client.rootInterface != -1) {
+         AbstractByteArrayCopier.unloadInterface(Client.rootInterface);
       }
 
       for (InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.first(); var4 != null; var4 = (InterfaceParent)Client.interfaceParents.next()) {
-         MenuAction.closeWidgetGroup(var4, true);
+         MenuAction.closeInterface(var4, true);
       }
 
-      Client.rootWidgetGroup = -1;
+      Client.rootInterface = -1;
       Client.interfaceParents = new NodeHashTable(8);
       Client.field127 = null;
       Client.menuOptionsCount = 0;

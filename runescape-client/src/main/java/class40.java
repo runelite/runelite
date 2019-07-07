@@ -716,7 +716,7 @@ public class class40 {
       int var22;
       int var24;
       if (!Client.isCameraLocked) {
-         var4 = Client.cameraPitchTarget;
+         var4 = Client.camAngleX;
          if (Client.field202 / 256 > var4) {
             var4 = Client.field202 / 256;
          }
@@ -725,7 +725,7 @@ public class class40 {
             var4 = Client.field142[4] + 128;
          }
 
-         var15 = Client.minimapOrientation & 2047;
+         var15 = Client.camAngleY & 2047;
          var6 = MouseHandler.oculusOrbFocalPointX;
          var22 = MouseRecorder.field566;
          var24 = ScriptEvent.oculusOrbFocalPointY;
@@ -760,7 +760,7 @@ public class class40 {
          class11.cameraZ = var24 - var16;
          WorldMapIcon1.cameraPitch = var4;
          MusicPatchNode.cameraYaw = var15;
-         if (Client.oculusOrbState == 1 && Client.rights >= 2 && Client.cycle % 50 == 0 && (MouseHandler.oculusOrbFocalPointX >> 7 != Canvas.localPlayer.x >> 7 || ScriptEvent.oculusOrbFocalPointY >> 7 != Canvas.localPlayer.y >> 7)) {
+         if (Client.oculusOrbState == 1 && Client.staffModLevel >= 2 && Client.cycle % 50 == 0 && (MouseHandler.oculusOrbFocalPointX >> 7 != Canvas.localPlayer.x >> 7 || ScriptEvent.oculusOrbFocalPointY >> 7 != Canvas.localPlayer.y >> 7)) {
             var17 = Canvas.localPlayer.plane;
             var18 = (MouseHandler.oculusOrbFocalPointX >> 7) + class50.baseX;
             var19 = (ScriptEvent.oculusOrbFocalPointY >> 7) + GraphicsObject.baseY;

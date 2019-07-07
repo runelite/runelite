@@ -252,8 +252,8 @@ public class ScriptEvent extends Node {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class1.method18(var3, var4);
                return 1;
             } else if (var0 == ScriptOpcodes.STAFFMODLEVEL) {
-               if (Client.rights >= 2) {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.rights;
+               if (Client.staffModLevel >= 2) {
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.staffModLevel;
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                }

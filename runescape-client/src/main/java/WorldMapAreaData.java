@@ -95,7 +95,7 @@ public class WorldMapAreaData extends WorldMapArea {
             var1.decode(new Buffer(var2));
          }
 
-         var1.init();
+         var1.postDecode();
          SequenceDefinition.SequenceDefinition_cached.put(var1, (long)var0);
          return var1;
       }

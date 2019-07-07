@@ -272,7 +272,7 @@ public class MouseRecorder implements Runnable {
       if (var4 != null) {
          Rasterizer2D.Rasterizer2D_setClip(var1, var2, var4.width + var1, var2 + var4.height);
          if (Client.minimapState != 2 && Client.minimapState != 5) {
-            int var5 = Client.minimapOrientation & 2047;
+            int var5 = Client.camAngleY & 2047;
             int var6 = Canvas.localPlayer.x / 32 + 48;
             int var7 = 464 - Canvas.localPlayer.y / 32;
             InterfaceParent.sceneMinimapSprite.method315(var1, var2, var4.width, var4.height, var6, var7, var5, 256, var4.xStarts, var4.xWidths);

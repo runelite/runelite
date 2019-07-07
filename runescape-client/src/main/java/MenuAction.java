@@ -65,13 +65,13 @@ public class MenuAction {
       signature = "(Lbx;ZI)V",
       garbageValue = "1537219807"
    )
-   @Export("closeWidgetGroup")
-   static final void closeWidgetGroup(InterfaceParent var0, boolean var1) {
+   @Export("closeInterface")
+   static final void closeInterface(InterfaceParent var0, boolean var1) {
       int var2 = var0.group;
       int var3 = (int)var0.key;
       var0.remove();
       if (var1) {
-         AbstractByteArrayCopier.unloadWidgetGroup(var2);
+         AbstractByteArrayCopier.unloadInterface(var2);
       }
 
       for (IntegerNode var4 = (IntegerNode)Client.widgetClickMasks.first(); var4 != null; var4 = (IntegerNode)Client.widgetClickMasks.next()) {
@@ -152,8 +152,8 @@ public class MenuAction {
       GameShell.menuY = var14;
       class214.menuWidth = var7;
       AbstractWorldMapIcon.menuHeight = Client.menuOptionsCount * 15 + 22;
-      if (Client.rootWidgetGroup != -1) {
-         GrandExchangeEvents.method74(Client.rootWidgetGroup, 1);
+      if (Client.rootInterface != -1) {
+         GrandExchangeEvents.method74(Client.rootInterface, 1);
       }
 
    }

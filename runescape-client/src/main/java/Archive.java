@@ -71,7 +71,7 @@ public class Archive extends AbstractArchive {
          Players.NetCache_reference.index = var7 * 8 + 5;
          int var8 = Players.NetCache_reference.readInt();
          int var9 = Players.NetCache_reference.readInt();
-         this.loadIndexReference(var8, var9);
+         this.loadIndex(var8, var9);
       } else {
          PacketBuffer.requestNetFile((Archive)null, 255, 255, 0, (byte)0, true);
          NetCache.NetCache_archives[var7] = this;
@@ -171,8 +171,8 @@ public class Archive extends AbstractArchive {
       signature = "(III)V",
       garbageValue = "-1621053520"
    )
-   @Export("loadIndexReference")
-   public void loadIndexReference(int var1, int var2) {
+   @Export("loadIndex")
+   public void loadIndex(int var1, int var2) {
       this.indexCrc = var1;
       this.indexVersion = var2;
       if (this.masterDisk != null) {

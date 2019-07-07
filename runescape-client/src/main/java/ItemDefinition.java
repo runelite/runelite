@@ -124,8 +124,8 @@ public class ItemDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 881309855
    )
-   @Export("shiftClickIndex0")
-   int shiftClickIndex0;
+   @Export("shiftClickIndex")
+   int shiftClickIndex;
    @ObfuscatedName("ah")
    @ObfuscatedGetter(
       intValue = 939367983
@@ -248,8 +248,8 @@ public class ItemDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -1057008657
    )
-   @Export("int1")
-   public int int1;
+   @Export("team")
+   public int team;
    @ObfuscatedName("bq")
    @ObfuscatedSignature(
       signature = "Llh;"
@@ -297,7 +297,7 @@ public class ItemDefinition extends DualNode {
       this.isMembersOnly = false;
       this.groundActions = new String[]{null, null, "Take", null, null};
       this.inventoryActions = new String[]{null, null, null, null, "Drop"};
-      this.shiftClickIndex0 = -2;
+      this.shiftClickIndex = -2;
       this.maleModel = -1;
       this.maleModel1 = -1;
       this.maleOffset = 0;
@@ -317,7 +317,7 @@ public class ItemDefinition extends DualNode {
       this.resizeZ = 128;
       this.ambient = 0;
       this.contrast = 0;
-      this.int1 = 0;
+      this.team = 0;
       this.isTradable = false;
       this.unnotedId = -1;
       this.notedId = -1;
@@ -423,7 +423,7 @@ public class ItemDefinition extends DualNode {
                this.retextureTo[var4] = (short)var1.readUnsignedShort();
             }
          } else if (var2 == 42) {
-            this.shiftClickIndex0 = var1.readByte();
+            this.shiftClickIndex = var1.readByte();
          } else if (var2 == 65) {
             this.isTradable = true;
          } else if (var2 == 78) {
@@ -463,7 +463,7 @@ public class ItemDefinition extends DualNode {
          } else if (var2 == 114) {
             this.contrast = var1.readByte();
          } else if (var2 == 115) {
-            this.int1 = var1.readUnsignedByte();
+            this.team = var1.readUnsignedByte();
          } else if (var2 == 139) {
             this.unnotedId = var1.readUnsignedShort();
          } else if (var2 == 140) {
@@ -532,7 +532,7 @@ public class ItemDefinition extends DualNode {
       this.maleHeadModel2 = var2.maleHeadModel2;
       this.femaleHeadModel = var2.femaleHeadModel;
       this.femaleHeadModel2 = var2.femaleHeadModel2;
-      this.int1 = var2.int1;
+      this.team = var2.team;
       this.groundActions = var2.groundActions;
       this.inventoryActions = new String[5];
       if (var2.inventoryActions != null) {
@@ -891,7 +891,7 @@ public class ItemDefinition extends DualNode {
    )
    @Export("getShiftClickIndex")
    public int getShiftClickIndex() {
-      return this.shiftClickIndex0 != -1 && this.inventoryActions != null ? (this.shiftClickIndex0 >= 0 ? (this.inventoryActions[this.shiftClickIndex0] != null ? this.shiftClickIndex0 : -1) : ("Drop".equalsIgnoreCase(this.inventoryActions[4]) ? 4 : -1)) : -1;
+      return this.shiftClickIndex != -1 && this.inventoryActions != null ? (this.shiftClickIndex >= 0 ? (this.inventoryActions[this.shiftClickIndex] != null ? this.shiftClickIndex : -1) : ("Drop".equalsIgnoreCase(this.inventoryActions[4]) ? 4 : -1)) : -1;
    }
 
    static {

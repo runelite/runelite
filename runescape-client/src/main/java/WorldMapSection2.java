@@ -151,9 +151,9 @@ public class WorldMapSection2 implements WorldMapSection {
    @Export("getVarbit")
    public static int getVarbit(int var0) {
       VarbitDefinition var1 = Occluder.method3255(var0);
-      int var2 = var1.varp;
-      int var3 = var1.lowBit;
-      int var4 = var1.highBit;
+      int var2 = var1.baseVar;
+      int var3 = var1.startBit;
+      int var4 = var1.endBit;
       int var5 = Varps.Varps_masks[var4 - var3];
       return Varps.Varps_main[var2] >> var3 & var5;
    }

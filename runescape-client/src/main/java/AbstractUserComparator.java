@@ -52,7 +52,7 @@ public abstract class AbstractUserComparator implements Comparator {
          int var2 = Client.field128;
          class214.field1129 = 1;
          class214.field1130 = var1;
-         class30.musicTrackArchiveId = var0;
+         class30.musicTrackGroupId = var0;
          GrandExchangeOffer.musicTrackFileId = 0;
          WorldMapLabel.field1039 = var2;
          RectangleMode.musicTrackBoolean = false;

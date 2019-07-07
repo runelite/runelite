@@ -11,8 +11,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 public final class ArchiveDisk
 {
    @ObfuscatedName("m")
-   @Export("IndexStore_buffer")
-   static byte[] IndexStore_buffer;
+   @Export("ArchiveDisk_buffer")
+   static byte[] ArchiveDisk_buffer;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ldy;"
@@ -70,9 +70,9 @@ public final class ArchiveDisk
             }
 
             this.idxFile.seek((long)(var1 * 6));
-            this.idxFile.read(IndexStore_buffer, 0, 6);
-            int var5 = ((IndexStore_buffer[0] & 255) << 16) + (IndexStore_buffer[2] & 255) + ((IndexStore_buffer[1] & 255) << 8);
-            int var6 = (IndexStore_buffer[5] & 255) + ((IndexStore_buffer[3] & 255) << 16) + ((IndexStore_buffer[4] & 255) << 8);
+            this.idxFile.read(ArchiveDisk_buffer, 0, 6);
+            int var5 = ((ArchiveDisk_buffer[0] & 255) << 16) + (ArchiveDisk_buffer[2] & 255) + ((ArchiveDisk_buffer[1] & 255) << 8);
+            int var6 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[3] & 255) << 16) + ((ArchiveDisk_buffer[4] & 255) << 8);
             if (var5 < 0 || var5 > this.maxEntrySize) {
                var4 = null;
                var10000 = ((byte[])var4);
@@ -97,15 +97,15 @@ public final class ArchiveDisk
                      var10 = 512;
                   }
 
-                  this.datFile.read(IndexStore_buffer, 0, var10 + 8);
-                  int var11 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
-                  int var12 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
-                  int var13 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
-                  int var14 = IndexStore_buffer[7] & 255;
+                  this.datFile.read(ArchiveDisk_buffer, 0, var10 + 8);
+                  int var11 = (ArchiveDisk_buffer[1] & 255) + ((ArchiveDisk_buffer[0] & 255) << 8);
+                  int var12 = (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
+                  int var13 = ((ArchiveDisk_buffer[5] & 255) << 8) + ((ArchiveDisk_buffer[4] & 255) << 16) + (ArchiveDisk_buffer[6] & 255);
+                  int var14 = ArchiveDisk_buffer[7] & 255;
                   if (var11 == var1 && var9 == var12 && var14 == this.archive) {
                      if (var13 >= 0 && (long)var13 <= this.datFile.length() / 520L) {
                         for (int var15 = 0; var15 < var10; ++var15) {
-                           var7[var8++] = IndexStore_buffer[var15 + 8];
+                           var7[var8++] = ArchiveDisk_buffer[var15 + 8];
                         }
 
                         var6 = var13;
@@ -180,8 +180,8 @@ public final class ArchiveDisk
                }
 
                this.idxFile.seek((long)(var1 * 6));
-               this.idxFile.read(IndexStore_buffer, 0, 6);
-               var7 = (IndexStore_buffer[5] & 255) + ((IndexStore_buffer[3] & 255) << 16) + ((IndexStore_buffer[4] & 255) << 8);
+               this.idxFile.read(ArchiveDisk_buffer, 0, 6);
+               var7 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[3] & 255) << 16) + ((ArchiveDisk_buffer[4] & 255) << 8);
                if (var7 <= 0 || (long)var7 > this.datFile.length() / 520L) {
                   var8 = false;
                   var10000 = var8;
@@ -194,14 +194,14 @@ public final class ArchiveDisk
                }
             }
 
-            IndexStore_buffer[0] = (byte)(var3 >> 16);
-            IndexStore_buffer[1] = (byte)(var3 >> 8);
-            IndexStore_buffer[2] = (byte)var3;
-            IndexStore_buffer[3] = (byte)(var7 >> 16);
-            IndexStore_buffer[4] = (byte)(var7 >> 8);
-            IndexStore_buffer[5] = (byte)var7;
+            ArchiveDisk_buffer[0] = (byte)(var3 >> 16);
+            ArchiveDisk_buffer[1] = (byte)(var3 >> 8);
+            ArchiveDisk_buffer[2] = (byte)var3;
+            ArchiveDisk_buffer[3] = (byte)(var7 >> 16);
+            ArchiveDisk_buffer[4] = (byte)(var7 >> 8);
+            ArchiveDisk_buffer[5] = (byte)var7;
             this.idxFile.seek((long)(var1 * 6));
-            this.idxFile.write(IndexStore_buffer, 0, 6);
+            this.idxFile.write(ArchiveDisk_buffer, 0, 6);
             int var9 = 0;
             int var10 = 0;
 
@@ -214,15 +214,15 @@ public final class ArchiveDisk
                         this.datFile.seek((long)(var7 * 520));
 
                         try {
-                           this.datFile.read(IndexStore_buffer, 0, 8);
+                           this.datFile.read(ArchiveDisk_buffer, 0, 8);
                         } catch (EOFException var16) {
                            break label129;
                         }
 
-                        var12 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
-                        int var13 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
-                        var11 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
-                        int var14 = IndexStore_buffer[7] & 255;
+                        var12 = (ArchiveDisk_buffer[1] & 255) + ((ArchiveDisk_buffer[0] & 255) << 8);
+                        int var13 = (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
+                        var11 = ((ArchiveDisk_buffer[5] & 255) << 8) + ((ArchiveDisk_buffer[4] & 255) << 16) + (ArchiveDisk_buffer[6] & 255);
+                        int var14 = ArchiveDisk_buffer[7] & 255;
                         if (var12 != var1 || var13 != var10 || var14 != this.archive) {
                            var8 = false;
                            var10000 = var8;
@@ -252,16 +252,16 @@ public final class ArchiveDisk
                         var11 = 0;
                      }
 
-                     IndexStore_buffer[0] = (byte)(var1 >> 8);
-                     IndexStore_buffer[1] = (byte)var1;
-                     IndexStore_buffer[2] = (byte)(var10 >> 8);
-                     IndexStore_buffer[3] = (byte)var10;
-                     IndexStore_buffer[4] = (byte)(var11 >> 16);
-                     IndexStore_buffer[5] = (byte)(var11 >> 8);
-                     IndexStore_buffer[6] = (byte)var11;
-                     IndexStore_buffer[7] = (byte)this.archive;
+                     ArchiveDisk_buffer[0] = (byte)(var1 >> 8);
+                     ArchiveDisk_buffer[1] = (byte)var1;
+                     ArchiveDisk_buffer[2] = (byte)(var10 >> 8);
+                     ArchiveDisk_buffer[3] = (byte)var10;
+                     ArchiveDisk_buffer[4] = (byte)(var11 >> 16);
+                     ArchiveDisk_buffer[5] = (byte)(var11 >> 8);
+                     ArchiveDisk_buffer[6] = (byte)var11;
+                     ArchiveDisk_buffer[7] = (byte)this.archive;
                      this.datFile.seek((long)(var7 * 520));
-                     this.datFile.write(IndexStore_buffer, 0, 8);
+                     this.datFile.write(ArchiveDisk_buffer, 0, 8);
                      var12 = var3 - var9;
                      if (var12 > 512) {
                         var12 = 512;
@@ -491,6 +491,6 @@ public final class ArchiveDisk
    }
 
    static {
-      IndexStore_buffer = new byte[520];
+      ArchiveDisk_buffer = new byte[520];
    }
 }

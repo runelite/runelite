@@ -52,16 +52,16 @@ public class NPCDefinition extends DualNode {
    @Export("size")
    public int size;
    @ObfuscatedName("l")
-   @Export("archives")
-   int[] archives;
+   @Export("models")
+   int[] models;
    @ObfuscatedName("e")
    int[] field636;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 275200787
    )
-   @Export("idleSequence")
-   public int idleSequence;
+   @Export("readySequence")
+   public int readySequence;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 819690597
@@ -84,20 +84,20 @@ public class NPCDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 1952230339
    )
-   @Export("walkTurnSequence")
-   public int walkTurnSequence;
+   @Export("walkBackSequence")
+   public int walkBackSequence;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -1213774321
    )
-   @Export("walkTurnLeftSequence")
-   public int walkTurnLeftSequence;
+   @Export("walkLeftSequence")
+   public int walkLeftSequence;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -96930503
    )
-   @Export("walkTurnRightSequence")
-   public int walkTurnRightSequence;
+   @Export("walkRightSequence")
+   public int walkRightSequence;
    @ObfuscatedName("j")
    @Export("recolorFrom")
    short[] recolorFrom;
@@ -192,13 +192,13 @@ public class NPCDefinition extends DualNode {
    NPCDefinition() {
       this.name = "null";
       this.size = 1;
-      this.idleSequence = -1;
+      this.readySequence = -1;
       this.turnLeftSequence = -1;
       this.turnRightSequence = -1;
       this.walkSequence = -1;
-      this.walkTurnSequence = -1;
-      this.walkTurnLeftSequence = -1;
-      this.walkTurnRightSequence = -1;
+      this.walkBackSequence = -1;
+      this.walkLeftSequence = -1;
+      this.walkRightSequence = -1;
       this.actions = new String[5];
       this.drawMapDot = true;
       this.combatLevel = -1;
@@ -221,8 +221,8 @@ public class NPCDefinition extends DualNode {
       signature = "(I)V",
       garbageValue = "482179419"
    )
-   @Export("init")
-   void init() {
+   @Export("postDecode")
+   void postDecode() {
    }
 
    @ObfuscatedName("w")
@@ -253,17 +253,17 @@ public class NPCDefinition extends DualNode {
       int var4;
       if (var2 == 1) {
          var3 = var1.readUnsignedByte();
-         this.archives = new int[var3];
+         this.models = new int[var3];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            this.archives[var4] = var1.readUnsignedShort();
+            this.models[var4] = var1.readUnsignedShort();
          }
       } else if (var2 == 2) {
          this.name = var1.readStringCp1252NullTerminated();
       } else if (var2 == 12) {
          this.size = var1.readUnsignedByte();
       } else if (var2 == 13) {
-         this.idleSequence = var1.readUnsignedShort();
+         this.readySequence = var1.readUnsignedShort();
       } else if (var2 == 14) {
          this.walkSequence = var1.readUnsignedShort();
       } else if (var2 == 15) {
@@ -272,9 +272,9 @@ public class NPCDefinition extends DualNode {
          this.turnRightSequence = var1.readUnsignedShort();
       } else if (var2 == 17) {
          this.walkSequence = var1.readUnsignedShort();
-         this.walkTurnSequence = var1.readUnsignedShort();
-         this.walkTurnLeftSequence = var1.readUnsignedShort();
-         this.walkTurnRightSequence = var1.readUnsignedShort();
+         this.walkBackSequence = var1.readUnsignedShort();
+         this.walkLeftSequence = var1.readUnsignedShort();
+         this.walkRightSequence = var1.readUnsignedShort();
       } else if (var2 >= 30 && var2 < 35) {
          this.actions[var2 - 30] = var1.readStringCp1252NullTerminated();
          if (this.actions[var2 - 30].equalsIgnoreCase("Hidden")) {
@@ -382,8 +382,8 @@ public class NPCDefinition extends DualNode {
          if (var5 == null) {
             boolean var6 = false;
 
-            for (int var7 = 0; var7 < this.archives.length; ++var7) {
-               if (!NpcDefinition_modelArchive.tryLoadFile(this.archives[var7], 0)) {
+            for (int var7 = 0; var7 < this.models.length; ++var7) {
+               if (!NpcDefinition_modelArchive.tryLoadFile(this.models[var7], 0)) {
                   var6 = true;
                }
             }
@@ -392,11 +392,11 @@ public class NPCDefinition extends DualNode {
                return null;
             }
 
-            ModelData[] var12 = new ModelData[this.archives.length];
+            ModelData[] var12 = new ModelData[this.models.length];
 
             int var8;
-            for (var8 = 0; var8 < this.archives.length; ++var8) {
-               var12[var8] = ModelData.method2788(NpcDefinition_modelArchive, this.archives[var8], 0);
+            for (var8 = 0; var8 < this.models.length; ++var8) {
+               var12[var8] = ModelData.method2788(NpcDefinition_modelArchive, this.models[var8], 0);
             }
 
             ModelData var9;

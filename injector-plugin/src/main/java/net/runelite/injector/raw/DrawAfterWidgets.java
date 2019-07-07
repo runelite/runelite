@@ -76,8 +76,8 @@ public class DrawAfterWidgets
 
 		   @Export("drawLoggedIn")
 		   final void drawLoggedIn() {
-		      if(rootWidgetGroup != -1) {
-		         ClientPreferences.method1809(rootWidgetGroup);
+		      if(rootInterface != -1) {
+		         ClientPreferences.method1809(rootInterface);
 		      }
 
 		      int var1;
@@ -94,9 +94,9 @@ public class DrawAfterWidgets
 		      __client_lq = -1;
 		      __client_ln = -1;
 		      UserComparator6.__fg_jh = null;
-		      if(rootWidgetGroup != -1) {
+		      if(rootInterface != -1) {
 		         rootWidgetCount = 0;
-		         Interpreter.method1977(rootWidgetGroup, 0, 0, SoundCache.canvasWidth, Huffman.canvasHeight, 0, 0, -1);
+		         Interpreter.method1977(rootInterface, 0, 0, SoundCache.canvasWidth, Huffman.canvasHeight, 0, 0, -1);
 		      }
 
 				< --  here appearantly

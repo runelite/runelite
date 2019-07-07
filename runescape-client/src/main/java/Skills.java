@@ -51,14 +51,14 @@ public class Skills {
             var1.isTradable = false;
             var1.groundActions = null;
             var1.inventoryActions = null;
-            var1.shiftClickIndex0 = -1;
-            var1.int1 = 0;
+            var1.shiftClickIndex = -1;
+            var1.team = 0;
             if (var1.params != null) {
                boolean var3 = false;
 
                for (Node var4 = var1.params.first(); var4 != null; var4 = var1.params.next()) {
-                  ParamKeyDefinition var5 = class229.getParamKeyDefinition((int)var4.key);
-                  if (var5.isMembersOnly) {
+                  ParamDefinition var5 = class229.getParamDefinition((int)var4.key);
+                  if (var5.autoDisable) {
                      var4.remove();
                   } else {
                      var3 = true;

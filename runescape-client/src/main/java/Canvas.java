@@ -223,7 +223,7 @@ public final class Canvas extends java.awt.Canvas {
       int var7 = var1.getFileId(var6, var3);
       class214.field1129 = 1;
       class214.field1130 = var1;
-      class30.musicTrackArchiveId = var6;
+      class30.musicTrackGroupId = var6;
       GrandExchangeOffer.musicTrackFileId = var7;
       WorldMapLabel.field1039 = var4;
       RectangleMode.musicTrackBoolean = var5;
@@ -243,7 +243,7 @@ public final class Canvas extends java.awt.Canvas {
 
          if (var0.hitpoints == 0) {
             if (var0.field903 < 0 || VarbitDefinition.method4910(var0.field903, var0.field905)) {
-               ParamKeyDefinition.method4933(var0.level, var0.type, var0.x, var0.y, var0.field903, var0.field904, var0.field905);
+               ParamDefinition.method4933(var0.level, var0.type, var0.x, var0.y, var0.field903, var0.field904, var0.field905);
                var0.remove();
             }
          } else {
@@ -252,7 +252,7 @@ public final class Canvas extends java.awt.Canvas {
             }
 
             if (var0.delay == 0 && var0.x >= 1 && var0.y >= 1 && var0.x <= 102 && var0.y <= 102 && (var0.id < 0 || VarbitDefinition.method4910(var0.id, var0.field908))) {
-               ParamKeyDefinition.method4933(var0.level, var0.type, var0.x, var0.y, var0.id, var0.orientation, var0.field908);
+               ParamDefinition.method4933(var0.level, var0.type, var0.x, var0.y, var0.id, var0.orientation, var0.field908);
                var0.delay = -1;
                if (var0.field903 == var0.id && var0.field903 == -1) {
                   var0.remove();

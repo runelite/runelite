@@ -205,8 +205,8 @@ public class SequenceDefinition extends DualNode {
       signature = "(B)V",
       garbageValue = "1"
    )
-   @Export("init")
-   void init() {
+   @Export("postDecode")
+   void postDecode() {
       if (this.field781 == -1) {
          if (this.field777 != null) {
             this.field781 = 2;

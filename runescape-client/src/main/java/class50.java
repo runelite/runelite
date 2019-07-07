@@ -61,7 +61,7 @@ public class class50 {
             var1.decode(new Buffer(var2));
          }
 
-         var1.init();
+         var1.postDecode();
          if (var1.isSolid) {
             var1.interactType = 0;
             var1.boolean1 = false;

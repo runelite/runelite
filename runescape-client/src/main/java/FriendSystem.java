@@ -332,6 +332,6 @@ public class FriendSystem {
    )
    @Export("jmodCheck")
    public static boolean jmodCheck() {
-      return Client.rights >= 2;
+      return Client.staffModLevel >= 2;
    }
 }

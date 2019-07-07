@@ -45,7 +45,7 @@ public class UserComparator5 extends AbstractUserComparator {
    static final void worldToMinimap(int var0, int var1, int var2, int var3, Sprite var4, SpriteMask var5) {
       int var6 = var3 * var3 + var2 * var2;
       if (var6 > 4225 && var6 < 90000) {
-         int var7 = Client.minimapOrientation & 2047;
+         int var7 = Client.camAngleY & 2047;
          int var8 = Rasterizer3D.Rasterizer3D_sine[var7];
          int var9 = Rasterizer3D.Rasterizer3D_cosine[var7];
          int var10 = var3 * var8 + var9 * var2 >> 16;

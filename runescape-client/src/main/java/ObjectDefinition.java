@@ -218,8 +218,8 @@ public class ObjectDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -2119965579
    )
-   @Export("transformConfigId")
-   int transformConfigId;
+   @Export("transformVarp")
+   int transformVarp;
    @ObfuscatedName("az")
    @ObfuscatedGetter(
       intValue = 374616127
@@ -282,7 +282,7 @@ public class ObjectDefinition extends DualNode {
       this.isSolid = false;
       this.int3 = -1;
       this.transformVarbit = -1;
-      this.transformConfigId = -1;
+      this.transformVarp = -1;
       this.ambientSoundId = -1;
       this.int4 = 0;
       this.int5 = 0;
@@ -294,8 +294,8 @@ public class ObjectDefinition extends DualNode {
       signature = "(I)V",
       garbageValue = "-245255765"
    )
-   @Export("init")
-   void init() {
+   @Export("postDecode")
+   void postDecode() {
       if (this.int1 == -1) {
          this.int1 = 0;
          if (this.field644 != null && (this.field645 == null || this.field645[0] == 10)) {
@@ -478,9 +478,9 @@ public class ObjectDefinition extends DualNode {
             this.transformVarbit = -1;
          }
 
-         this.transformConfigId = var1.readUnsignedShort();
-         if (this.transformConfigId == 65535) {
-            this.transformConfigId = -1;
+         this.transformVarp = var1.readUnsignedShort();
+         if (this.transformVarp == 65535) {
+            this.transformVarp = -1;
          }
 
          var3 = -1;
@@ -827,8 +827,8 @@ public class ObjectDefinition extends DualNode {
       int var1 = -1;
       if (this.transformVarbit != -1) {
          var1 = WorldMapSection2.getVarbit(this.transformVarbit);
-      } else if (this.transformConfigId != -1) {
-         var1 = Varps.Varps_main[this.transformConfigId];
+      } else if (this.transformVarp != -1) {
+         var1 = Varps.Varps_main[this.transformVarp];
       }
 
       int var2;
@@ -914,7 +914,7 @@ public class ObjectDefinition extends DualNode {
             var1.decode(new Buffer(var2));
          }
 
-         var1.init();
+         var1.postDecode();
          NPCDefinition.NpcDefinition_cached.put(var1, (long)var0);
          return var1;
       }

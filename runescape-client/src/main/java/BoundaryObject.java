@@ -101,7 +101,7 @@ public final class BoundaryObject {
          Client.showMouseOverText = !Client.showMouseOverText;
       }
 
-      if (Client.rights >= 2) {
+      if (Client.staffModLevel >= 2) {
          if (var0.equalsIgnoreCase("errortest")) {
             throw new RuntimeException();
          }

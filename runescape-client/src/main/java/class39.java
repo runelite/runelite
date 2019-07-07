@@ -813,8 +813,8 @@ public class class39 extends class21 {
       InterfaceParent var5 = (InterfaceParent)Client.interfaceParents.get((long)var1.id);
       if (var5 != null) {
          int var6 = var5.group;
-         if (GroundItemPile.loadWidgetGroup(var6)) {
-            WorldMapRegion.notRevalidateWidgetScroll(Widget.widgets[var6], -1, var3, var4, var2);
+         if (GroundItemPile.loadInterface(var6)) {
+            WorldMapRegion.notRevalidateWidgetScroll(Widget.interfaceComponents[var6], -1, var3, var4, var2);
          }
       }
 

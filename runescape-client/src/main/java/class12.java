@@ -125,9 +125,9 @@ final class class12 implements Comparator {
    static void method159() {
       for (InterfaceParent var0 = (InterfaceParent)Client.interfaceParents.first(); var0 != null; var0 = (InterfaceParent)Client.interfaceParents.next()) {
          int var1 = var0.group;
-         if (GroundItemPile.loadWidgetGroup(var1)) {
+         if (GroundItemPile.loadInterface(var1)) {
             boolean var2 = true;
-            Widget[] var3 = Widget.widgets[var1];
+            Widget[] var3 = Widget.interfaceComponents[var1];
 
             int var4;
             for (var4 = 0; var4 < var3.length; ++var4) {

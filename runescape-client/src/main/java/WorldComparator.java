@@ -127,10 +127,10 @@ final class WorldComparator implements Comparator {
             var3.size = var3.definition.size;
             var3.field23 = var3.definition.field639;
             var3.walkSequence = var3.definition.walkSequence;
-            var3.walkTurnSequence = var3.definition.walkTurnSequence;
-            var3.walkTurnLeftSequence = var3.definition.walkTurnLeftSequence;
-            var3.walkTurnRightSequence = var3.definition.walkTurnRightSequence;
-            var3.idleSequence = var3.definition.idleSequence;
+            var3.walkBackSequence = var3.definition.walkBackSequence;
+            var3.walkLeftSequence = var3.definition.walkLeftSequence;
+            var3.walkRightSequence = var3.definition.walkRightSequence;
+            var3.readySequence = var3.definition.readySequence;
             var3.turnLeftSequence = var3.definition.turnLeftSequence;
             var3.turnRightSequence = var3.definition.turnRightSequence;
          }

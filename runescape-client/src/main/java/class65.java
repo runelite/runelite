@@ -56,7 +56,7 @@ public class class65 extends RouteStrategy {
             var0.orientation = var0.field21;
             var0.field9 = var0.orientation;
          } else {
-            var0.movementSequence = var0.idleSequence;
+            var0.movementSequence = var0.readySequence;
             if (var0.pathLength == 0) {
                var0.field24 = 0;
             } else {
@@ -107,13 +107,13 @@ public class class65 extends RouteStrategy {
                         var6 -= 2048;
                      }
 
-                     int var8 = var0.walkTurnSequence;
+                     int var8 = var0.walkBackSequence;
                      if (var6 >= -256 && var6 <= 256) {
                         var8 = var0.walkSequence;
                      } else if (var6 >= 256 && var6 < 768) {
-                        var8 = var0.walkTurnRightSequence;
+                        var8 = var0.walkRightSequence;
                      } else if (var6 >= -768 && var6 <= -256) {
-                        var8 = var0.walkTurnLeftSequence;
+                        var8 = var0.walkLeftSequence;
                      }
 
                      if (var8 == -1) {

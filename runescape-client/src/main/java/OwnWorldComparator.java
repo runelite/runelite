@@ -57,16 +57,16 @@ public class OwnWorldComparator implements Comparator {
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          int var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          if (!Client.isCameraLocked) {
-            Client.cameraPitchTarget = var3;
-            Client.minimapOrientation = var4;
+            Client.camAngleX = var3;
+            Client.camAngleY = var4;
          }
 
          return 1;
       } else if (var0 == ScriptOpcodes.CAM_GETANGLE_XA) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.cameraPitchTarget;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.camAngleX;
          return 1;
       } else if (var0 == ScriptOpcodes.CAM_GETANGLE_YA) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.minimapOrientation;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.camAngleY;
          return 1;
       } else if (var0 == ScriptOpcodes.CAM_SETFOLLOWHEIGHT) {
          var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
@@ -74,10 +74,10 @@ public class OwnWorldComparator implements Comparator {
             var3 = 0;
          }
 
-         Client.cameraFollowHeight = var3;
+         Client.camFollowHeight = var3;
          return 1;
       } else if (var0 == ScriptOpcodes.CAM_GETFOLLOWHEIGHT) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.cameraFollowHeight;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.camFollowHeight;
          return 1;
       } else {
          return 2;

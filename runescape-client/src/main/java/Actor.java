@@ -42,8 +42,8 @@ public abstract class Actor extends Entity {
    @ObfuscatedGetter(
       intValue = -299122235
    )
-   @Export("idleSequence")
-   int idleSequence;
+   @Export("readySequence")
+   int readySequence;
    @ObfuscatedName("al")
    @ObfuscatedGetter(
       intValue = -831787909
@@ -66,20 +66,20 @@ public abstract class Actor extends Entity {
    @ObfuscatedGetter(
       intValue = -1598871111
    )
-   @Export("walkTurnSequence")
-   int walkTurnSequence;
+   @Export("walkBackSequence")
+   int walkBackSequence;
    @ObfuscatedName("ad")
    @ObfuscatedGetter(
       intValue = -568830521
    )
-   @Export("walkTurnLeftSequence")
-   int walkTurnLeftSequence;
+   @Export("walkLeftSequence")
+   int walkLeftSequence;
    @ObfuscatedName("ap")
    @ObfuscatedGetter(
       intValue = -257240117
    )
-   @Export("walkTurnRightSequence")
-   int walkTurnRightSequence;
+   @Export("walkRightSequence")
+   int walkRightSequence;
    @ObfuscatedName("as")
    @ObfuscatedGetter(
       intValue = 1708570917
@@ -318,13 +318,13 @@ public abstract class Actor extends Entity {
    Actor() {
       this.field10 = false;
       this.size = 1;
-      this.idleSequence = -1;
+      this.readySequence = -1;
       this.turnLeftSequence = -1;
       this.turnRightSequence = -1;
       this.walkSequence = -1;
-      this.walkTurnSequence = -1;
-      this.walkTurnLeftSequence = -1;
-      this.walkTurnRightSequence = -1;
+      this.walkBackSequence = -1;
+      this.walkLeftSequence = -1;
+      this.walkRightSequence = -1;
       this.runSequence = -1;
       this.overheadText = null;
       this.field11 = false;

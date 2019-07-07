@@ -78,8 +78,8 @@ public class GrandExchangeEvents {
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "1601363438"
    )
-   @Export("addChatMessage")
-   static void addChatMessage(int var0, String var1, String var2, String var3) {
+   @Export("addMessage")
+   static void addMessage(int var0, String var1, String var2, String var3) {
       ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(var0);
       if (var4 == null) {
          var4 = new ChatChannel();
@@ -166,8 +166,8 @@ public class GrandExchangeEvents {
       garbageValue = "-635606409"
    )
    static final void method74(int var0, int var1) {
-      if (GroundItemPile.loadWidgetGroup(var0)) {
-         class30.method570(Widget.widgets[var0], var1);
+      if (GroundItemPile.loadInterface(var0)) {
+         class30.method570(Widget.interfaceComponents[var0], var1);
       }
 
    }

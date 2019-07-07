@@ -66,7 +66,7 @@ public class GzipDecompressor {
             var1.decode(new Buffer(var2));
          }
 
-         var1.init();
+         var1.postDecode();
          StructDefinition.field886.put(var1, (long)var0);
          return var1;
       }

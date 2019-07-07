@@ -50,8 +50,8 @@ public final class class238 {
       signature = "([Lho;IIIIIIII)V",
       garbageValue = "1706481742"
    )
-   @Export("updateWidgetGroup")
-   static final void updateWidgetGroup(Widget[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @Export("updateInterface")
+   static final void updateInterface(Widget[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       for (int var8 = 0; var8 < var0.length; ++var8) {
          Widget var9 = var0[var8];
          if (var9 != null && var9.parentId == var1 && (!var9.isIf3 || var9.type == 0 || var9.hasListener || class1.getWidgetClickMask(var9) != 0 || var9 == Client.clickedWidgetParent || var9.contentType == 1338)) {
@@ -525,13 +525,13 @@ public final class class238 {
                         }
 
                         var9.field980 = Client.cycleCntr;
-                        if (var9.onKeyListener != null) {
+                        if (var9.onKey != null) {
                            for (var35 = 0; var35 < Client.field137; ++var35) {
                               ScriptEvent var27 = new ScriptEvent();
                               var27.widget = var9;
                               var27.keyTyped = Client.field145[var35];
                               var27.keyPressed = Client.field146[var35];
-                              var27.args0 = var9.onKeyListener;
+                              var27.args0 = var9.onKey;
                               Client.scriptEvents.addFirst(var27);
                            }
                         }
@@ -561,9 +561,9 @@ public final class class238 {
                   }
 
                   if (var9.type == 0) {
-                     updateWidgetGroup(var0, var9.id, var12, var13, var14, var15, var10 - var9.scrollX, var11 - var9.scrollY);
+                     updateInterface(var0, var9.id, var12, var13, var14, var15, var10 - var9.scrollX, var11 - var9.scrollY);
                      if (var9.children != null) {
-                        updateWidgetGroup(var9.children, var9.id, var12, var13, var14, var15, var10 - var9.scrollX, var11 - var9.scrollY);
+                        updateInterface(var9.children, var9.id, var12, var13, var14, var15, var10 - var9.scrollX, var11 - var9.scrollY);
                      }
 
                      InterfaceParent var33 = (InterfaceParent)Client.interfaceParents.get((long)var9.id);

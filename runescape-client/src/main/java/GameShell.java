@@ -598,7 +598,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
          class230.field1138 = hasFocus;
       }
 
-      this.packetHandler();
+      this.doCycle();
    }
 
    @ObfuscatedName("ar")
@@ -635,7 +635,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       }
 
       this.method110();
-      this.methodDraw(this.field369);
+      this.draw(this.field369);
       if (this.field369) {
          this.clearBackground();
       }
@@ -718,16 +718,16 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(I)V",
       garbageValue = "1445885427"
    )
-   @Export("packetHandler")
-   protected abstract void packetHandler();
+   @Export("doCycle")
+   protected abstract void doCycle();
 
    @ObfuscatedName("ab")
    @ObfuscatedSignature(
       signature = "(ZI)V",
       garbageValue = "106302203"
    )
-   @Export("methodDraw")
-   protected abstract void methodDraw(boolean var1);
+   @Export("draw")
+   protected abstract void draw(boolean var1);
 
    @ObfuscatedName("ae")
    @ObfuscatedSignature(
@@ -1001,7 +1001,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
    public final void windowOpened(WindowEvent var1) {
    }
 
-   @ObfuscatedName("init")
+   @ObfuscatedName("postDecode")
    public abstract void vmethod117();
 
    @ObfuscatedName("stop")

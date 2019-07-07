@@ -214,7 +214,7 @@ public final class Player extends Actor {
             }
 
             if (var4[var7] >= 512) {
-               int var8 = Skills.getItemDefinition(var4[var7] - 512).int1;
+               int var8 = Skills.getItemDefinition(var4[var7] - 512).team;
                if (var8 != 0) {
                   this.team = var8;
                }
@@ -233,9 +233,9 @@ public final class Player extends Actor {
          var9[var5] = var6;
       }
 
-      super.idleSequence = var1.readUnsignedShort();
-      if (super.idleSequence == 65535) {
-         super.idleSequence = -1;
+      super.readySequence = var1.readUnsignedShort();
+      if (super.readySequence == 65535) {
+         super.readySequence = -1;
       }
 
       super.turnLeftSequence = var1.readUnsignedShort();
@@ -249,19 +249,19 @@ public final class Player extends Actor {
          super.walkSequence = -1;
       }
 
-      super.walkTurnSequence = var1.readUnsignedShort();
-      if (super.walkTurnSequence == 65535) {
-         super.walkTurnSequence = -1;
+      super.walkBackSequence = var1.readUnsignedShort();
+      if (super.walkBackSequence == 65535) {
+         super.walkBackSequence = -1;
       }
 
-      super.walkTurnLeftSequence = var1.readUnsignedShort();
-      if (super.walkTurnLeftSequence == 65535) {
-         super.walkTurnLeftSequence = -1;
+      super.walkLeftSequence = var1.readUnsignedShort();
+      if (super.walkLeftSequence == 65535) {
+         super.walkLeftSequence = -1;
       }
 
-      super.walkTurnRightSequence = var1.readUnsignedShort();
-      if (super.walkTurnRightSequence == 65535) {
-         super.walkTurnRightSequence = -1;
+      super.walkRightSequence = var1.readUnsignedShort();
+      if (super.walkRightSequence == 65535) {
+         super.walkRightSequence = -1;
       }
 
       super.runSequence = var1.readUnsignedShort();
@@ -279,7 +279,7 @@ public final class Player extends Actor {
       this.combatLevel = var1.readUnsignedByte();
       this.skillLevel = var1.readUnsignedShort();
       this.isHidden = var1.readUnsignedByte() == 1;
-      if (Client.gameBuild == 0 && Client.rights >= 2) {
+      if (Client.gameBuild == 0 && Client.staffModLevel >= 2) {
          this.isHidden = false;
       }
 
@@ -379,7 +379,7 @@ public final class Player extends Actor {
          return null;
       } else {
          SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? WorldMapAreaData.getSequenceDefinition(super.sequence) : null;
-         SequenceDefinition var2 = super.movementSequence != -1 && !this.isUnanimated && (super.idleSequence != super.movementSequence || var1 == null) ? WorldMapAreaData.getSequenceDefinition(super.movementSequence) : null;
+         SequenceDefinition var2 = super.movementSequence != -1 && !this.isUnanimated && (super.readySequence != super.movementSequence || var1 == null) ? WorldMapAreaData.getSequenceDefinition(super.movementSequence) : null;
          Model var3 = this.appearance.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
          if (var3 == null) {
             return null;

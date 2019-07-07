@@ -24,8 +24,8 @@ public class class30 {
    @ObfuscatedGetter(
       intValue = -18917723
    )
-   @Export("musicTrackArchiveId")
-   public static int musicTrackArchiveId;
+   @Export("musicTrackGroupId")
+   public static int musicTrackGroupId;
    @ObfuscatedName("l")
    @Export("inMembersWorld")
    public static boolean inMembersWorld;
@@ -91,10 +91,10 @@ public class class30 {
             }
 
             ScriptEvent var6;
-            if (var1 == 0 && var3.onDialogAbortListener != null) {
+            if (var1 == 0 && var3.onDialogAbort != null) {
                var6 = new ScriptEvent();
                var6.widget = var3;
-               var6.args0 = var3.onDialogAbortListener;
+               var6.args0 = var3.onDialogAbort;
                AbstractArchive.runScript(var6);
             }
 

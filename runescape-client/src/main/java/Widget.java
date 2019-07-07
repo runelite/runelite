@@ -17,11 +17,11 @@ public class Widget extends Node {
    @ObfuscatedSignature(
       signature = "[[Lho;"
    )
-   @Export("widgets")
-   public static Widget[][] widgets;
+   @Export("interfaceComponents")
+   public static Widget[][] interfaceComponents;
    @ObfuscatedName("l")
-   @Export("loadedWidgetGroups")
-   public static boolean[] loadedWidgetGroups;
+   @Export("loadedInterfaces")
+   public static boolean[] loadedInterfaces;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lir;"
@@ -562,8 +562,8 @@ public class Widget extends Node {
    @ObfuscatedName("em")
    public Object[] field970;
    @ObfuscatedName("ed")
-   @Export("onKeyListener")
-   public Object[] onKeyListener;
+   @Export("onKey")
+   public Object[] onKey;
    @ObfuscatedName("ex")
    public Object[] field971;
    @ObfuscatedName("ej")
@@ -571,8 +571,8 @@ public class Widget extends Node {
    @ObfuscatedName("el")
    public Object[] field973;
    @ObfuscatedName("en")
-   @Export("onDialogAbortListener")
-   public Object[] onDialogAbortListener;
+   @Export("onDialogAbort")
+   public Object[] onDialogAbort;
    @ObfuscatedName("ei")
    public Object[] field974;
    @ObfuscatedName("ee")

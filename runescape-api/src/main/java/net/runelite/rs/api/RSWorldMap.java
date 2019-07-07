@@ -43,7 +43,7 @@ public interface RSWorldMap extends RenderOverview
 	@Override
 	RSWorldMapManager getWorldMapManager();
 
-	@Import("initializeWorldMap")
+	@Import("initializeWorldMapManager")
 	@Override
 	void initializeWorldMap(WorldMapData var1);
 

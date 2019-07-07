@@ -1335,7 +1335,7 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	@MethodHook(value = "addChatMessage", end = true)
+	@MethodHook(value = "addMessage", end = true)
 	public static void onAddChatMessage(int type, String name, String message, String sender)
 	{
 		Logger logger = client.getLogger();
@@ -1355,13 +1355,13 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	@MethodHook("methodDraw")
-	public void methodDraw(boolean var1)
+	@MethodHook("draw")
+	public void draw(boolean var1)
 	{
 		callbacks.clientMainLoop();
 	}
 
-	@MethodHook("drawWidgetGroup")
+	@MethodHook("drawInterface")
 	@Inject
 	public static void renderWidgetLayer(Widget[] widgets, int parentId, int minX, int minY, int maxX, int maxY, int x, int y, int var8)
 	{

@@ -145,16 +145,16 @@ public class class31 {
                   return 1;
                } else {
                   int var7;
-                  ParamKeyDefinition var8;
+                  ParamDefinition var8;
                   if (var0 == ScriptOpcodes.NC_PARAM) {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
+                     var8 = class229.getParamDefinition(var7);
                      if (var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = ObjectDefinition.getNpcDefinition(var6).getStringParam(var7, var8.keyString);
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = ObjectDefinition.getNpcDefinition(var6).getStringParam(var7, var8.defaultStr);
                      } else {
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ObjectDefinition.getNpcDefinition(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ObjectDefinition.getNpcDefinition(var6).getIntParam(var7, var8.defaultInt);
                      }
 
                      return 1;
@@ -162,11 +162,11 @@ public class class31 {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
+                     var8 = class229.getParamDefinition(var7);
                      if (var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = class50.getObjectDefinition(var6).getStringParam(var7, var8.keyString);
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = class50.getObjectDefinition(var6).getStringParam(var7, var8.defaultStr);
                      } else {
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class50.getObjectDefinition(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class50.getObjectDefinition(var6).getIntParam(var7, var8.defaultInt);
                      }
 
                      return 1;
@@ -174,11 +174,11 @@ public class class31 {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
+                     var8 = class229.getParamDefinition(var7);
                      if (var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Skills.getItemDefinition(var6).getStringParam(var7, var8.keyString);
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Skills.getItemDefinition(var6).getStringParam(var7, var8.defaultStr);
                      } else {
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var6).getIntParam(var7, var8.defaultInt);
                      }
 
                      return 1;
@@ -186,11 +186,11 @@ public class class31 {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
+                     var8 = class229.getParamDefinition(var7);
                      if (var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = GzipDecompressor.method3702(var6).getStringParam(var7, var8.keyString);
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = GzipDecompressor.method3702(var6).getStringParam(var7, var8.defaultStr);
                      } else {
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = GzipDecompressor.method3702(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = GzipDecompressor.method3702(var6).getIntParam(var7, var8.defaultInt);
                      }
 
                      return 1;

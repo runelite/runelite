@@ -96,7 +96,7 @@ final class class1 implements class0 {
          class22.method295(var4);
          TextureProvider.client.alignWidget(var4);
          if (var3 != -1 && var4.type == 0) {
-            class39.revalidateWidgetScroll(Widget.widgets[var3 >> 16], var4, false);
+            class39.revalidateWidgetScroll(Widget.interfaceComponents[var3 >> 16], var4, false);
          }
 
          return 1;
@@ -109,7 +109,7 @@ final class class1 implements class0 {
          class22.method295(var4);
          TextureProvider.client.alignWidget(var4);
          if (var3 != -1 && var4.type == 0) {
-            class39.revalidateWidgetScroll(Widget.widgets[var3 >> 16], var4, false);
+            class39.revalidateWidgetScroll(Widget.interfaceComponents[var3 >> 16], var4, false);
          }
 
          return 1;

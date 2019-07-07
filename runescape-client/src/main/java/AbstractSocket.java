@@ -63,7 +63,7 @@ public abstract class AbstractSocket {
    public static void method3488(int var0) {
       class214.field1129 = 1;
       class214.field1130 = null;
-      class30.musicTrackArchiveId = -1;
+      class30.musicTrackGroupId = -1;
       GrandExchangeOffer.musicTrackFileId = -1;
       WorldMapLabel.field1039 = 0;
       RectangleMode.musicTrackBoolean = false;

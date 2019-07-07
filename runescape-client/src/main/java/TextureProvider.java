@@ -205,7 +205,7 @@ public class TextureProvider implements TextureLoader {
       for (int var2 = 0; var2 < this.textures.length; ++var2) {
          Texture var3 = this.textures[var2];
          if (var3 != null && var3.animationDirection != 0 && var3.isLoaded) {
-            var3.Texture_animate(var1);
+            var3.animate(var1);
             var3.isLoaded = false;
          }
       }
