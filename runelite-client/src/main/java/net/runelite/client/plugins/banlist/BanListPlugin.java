@@ -134,7 +134,7 @@ public class BanListPlugin extends Plugin
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.enableWDR = config.enableWDR();
 		this.enableRuneWatch = config.enableRuneWatch();
