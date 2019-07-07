@@ -9,7 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class Translator
+class Translator
 {
 
 	public String translate(String source, String target, String message) throws Exception
