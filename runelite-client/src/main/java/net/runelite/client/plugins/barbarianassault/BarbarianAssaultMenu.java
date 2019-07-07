@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.collect.Sets;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,7 +42,7 @@ class BarbarianAssaultMenu
 {
 	private final MenuManager menuManager;
 	private final BarbarianAssaultPlugin game;
-	private final ArrayList<ComparableEntry> tracker = new ArrayList<>();
+	private final List<ComparableEntry> tracker = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hornUpdated = false;

@@ -183,16 +183,16 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 	private Font font = null;
 
 	@Getter
-	private final HashMap<WorldPoint, Integer> redEggs = new HashMap<>();
+	private final Map<WorldPoint, Integer> redEggs = new HashMap<>();
 
 	@Getter
-	private final HashMap<WorldPoint, Integer> greenEggs = new HashMap<>();
+	private final Map<WorldPoint, Integer> greenEggs = new HashMap<>();
 
 	@Getter
-	private final HashMap<WorldPoint, Integer> blueEggs = new HashMap<>();
+	private final Map<WorldPoint, Integer> blueEggs = new HashMap<>();
 
 	@Getter
-	private final HashMap<WorldPoint, Integer> yellowEggs = new HashMap<>();
+	private final Map<WorldPoint, Integer> yellowEggs = new HashMap<>();
 
 	@Getter
 	private final Map<Integer, Healer> healers = new HashMap<>();
@@ -234,9 +234,9 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 
 	private BufferedImage torsoImage, fighterImage, healerImage, rangerImage, runnerImage;
 
-	private ArrayList<TimerBox> deathTimes = new ArrayList<>();
+	private List<TimerBox> deathTimes = new ArrayList<>();
 
-	private HashMap<Integer, Projectile> projectiles = new HashMap<>();
+	private Map<Integer, Projectile> projectiles = new HashMap<>();
 
 	private TimerBox tickCounter;
 
@@ -645,7 +645,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		HashMap<WorldPoint, Integer> eggMap = getEggMap(itemSpawned.getItem().getId());
+		Map<WorldPoint, Integer> eggMap = getEggMap(itemSpawned.getItem().getId());
 		if (eggMap != null)
 		{
 			WorldPoint worldPoint = itemSpawned.getTile().getWorldLocation();
@@ -674,7 +674,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 
 		// If an egg despawns due to time and the collector is standing over it,
 		// a point will added as if the player picked it up
-		HashMap<WorldPoint, Integer> eggMap = getEggMap(itemId);
+		Map<WorldPoint, Integer> eggMap = getEggMap(itemId);
 		if (eggMap != null)
 		{
 			WorldPoint worldPoint = itemDespawned.getTile().getWorldLocation();
@@ -1590,7 +1590,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		yellowEggs.clear();
 	}
 
-	private HashMap<WorldPoint, Integer> getEggMap(int itemID)
+	private Map<WorldPoint, Integer> getEggMap(int itemID)
 	{
 		switch (itemID)
 		{

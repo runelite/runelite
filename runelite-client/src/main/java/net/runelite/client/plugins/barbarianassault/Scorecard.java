@@ -28,6 +28,7 @@ package net.runelite.client.plugins.barbarianassault;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.ChatMessage;
@@ -41,7 +42,7 @@ public class Scorecard
 	private BarbarianAssaultPlugin game;
 
 	@Getter(AccessLevel.NONE)
-	private ArrayList<Wave> waves = new ArrayList<>();
+	private List<Wave> waves = new ArrayList<>();
 	private String[] totalDescriptions = {
 		"A: ",
 		"; D: ",
