@@ -86,7 +86,6 @@ class VarInspector extends JFrame
 	private final static int MAX_LOG_ENTRIES = 10_000;
 
 	private final Client client;
-	private final DevToolsPlugin plugin;
 	private final EventBus eventBus;
 
 	private final JPanel tracker = new JPanel();
@@ -104,7 +103,6 @@ class VarInspector extends JFrame
 	{
 		this.eventBus = eventBus;
 		this.client = client;
-		this.plugin = plugin;
 
 		setTitle("RuneLite Var Inspector");
 		setIconImage(ClientUI.ICON);
