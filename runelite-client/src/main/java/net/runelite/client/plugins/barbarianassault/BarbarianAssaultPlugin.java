@@ -234,9 +234,9 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 
 	private BufferedImage torsoImage, fighterImage, healerImage, rangerImage, runnerImage;
 
-	private List<TimerBox> deathTimes = new ArrayList<>();
+	private final List<TimerBox> deathTimes = new ArrayList<>();
 
-	private Map<Integer, Projectile> projectiles = new HashMap<>();
+	private final Map<Integer, Projectile> projectiles = new HashMap<>();
 
 	private TimerBox tickCounter;
 
