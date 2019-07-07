@@ -33,7 +33,6 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonStreamParser;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -146,12 +145,10 @@ public class LootTrackerPlugin extends Plugin
 		12342, // Edgeville
 		11062 // Camelot
 	);
-	// Player deaths
-	public static HashSet<String> usernameSet = new HashSet<>(Arrays.stream(new String[]{"All Records"}).collect(Collectors.toList()));
 	@Inject
 	public Client client;
 	@VisibleForTesting
-	public Collection<LootRecord> lootRecords = new ArrayList<>();
+	private Collection<LootRecord> lootRecords = new ArrayList<>();
 	private boolean pvpDeath = false;
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -176,7 +173,6 @@ public class LootTrackerPlugin extends Plugin
 	private Multiset<Integer> inventorySnapshot;
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
-	private JsonStreamParser jsonStreamParser;
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -305,7 +301,7 @@ public class LootTrackerPlugin extends Plugin
 
 		AccountSession accountSession = sessionManager.getAccountSession();
 		LOOT_RECORDS_FILE.createNewFile();
-		BufferedReader bufferedReader = Files.newBufferedReader(LOOT_RECORDS_FILE.toPath());
+		// BufferedReader bufferedReader = Files.newBufferedReader(LOOT_RECORDS_FILE.toPath());
 		if (accountSession != null || this.localPersistence)
 		{
 
@@ -616,8 +612,6 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		final ItemContainer itemContainer = event.getItemContainer();
-
 		if (pvpDeath && RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID()))
 		{
 			Multiset snapshot;
