@@ -85,10 +85,10 @@ public class BanListPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private List<String> wdrScamArrayList = new ArrayList<>();
-	private List<String> wdrToxicArrayList = new ArrayList<>();
-	private List<String> runeWatchArrayList = new ArrayList<>();
-	private List<String> manualBans = new ArrayList<>();
+	private final List<String> wdrScamArrayList = new ArrayList<>();
+	private final List<String> wdrToxicArrayList = new ArrayList<>();
+	private final List<String> runeWatchArrayList = new ArrayList<>();
+	private final List<String> manualBans = new ArrayList<>();
 
 	@Provides
 	BanListConfig getConfig(ConfigManager configManager)
