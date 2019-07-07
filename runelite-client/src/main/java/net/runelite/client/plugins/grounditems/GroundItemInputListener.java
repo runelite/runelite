@@ -119,14 +119,11 @@ public class GroundItemInputListener extends MouseAdapter implements KeyListener
 					return e;
 				}
 			}
-			else if (SwingUtilities.isRightMouseButton(e))
+			else if (SwingUtilities.isRightMouseButton(e) && plugin.getTextBoxBounds() != null && plugin.getTextBoxBounds().getKey().contains(mousePos))
 			{
-				if (plugin.getTextBoxBounds() != null && plugin.getTextBoxBounds().getKey().contains(mousePos))
-				{
-					plugin.updateList(plugin.getTextBoxBounds().getValue().getName(), true);
-					e.consume();
-					return e;
-				}
+				plugin.updateList(plugin.getTextBoxBounds().getValue().getName(), true);
+				e.consume();
+				return e;
 			}
 		}
 
