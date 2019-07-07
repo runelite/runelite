@@ -126,21 +126,15 @@ public class DamageCounterPlugin extends Plugin
 	{
 		Player localPlayer = client.getLocalPlayer();
 		Actor interacting = localPlayer.getInteracting();
-		if (client.getGameState() == GameState.LOGGED_IN)
+		if (client.getGameState() == GameState.LOGGED_IN && BossName == null && interacting instanceof NPC)
 		{
-			if (BossName == null)
+			int interactingId = ((NPC) interacting).getId();
+			String interactingName = interacting.getName();
+			for (int aNPCARRAY : NPCARRAY)
 			{
-				if (interacting instanceof NPC)
+				if (aNPCARRAY == interactingId)
 				{
-					int interactingId = ((NPC) interacting).getId();
-					String interactingName = interacting.getName();
-					for (int aNPCARRAY : NPCARRAY)
-					{
-						if (aNPCARRAY == interactingId)
-						{
-							BossName = interactingName;
-						}
-					}
+					BossName = interactingName;
 				}
 			}
 		}
@@ -186,16 +180,13 @@ public class DamageCounterPlugin extends Plugin
 	{
 		Player localPlayer = client.getLocalPlayer();
 		Actor interacting = localPlayer.getInteracting();
-		if (client.getGameState() == GameState.LOGGED_IN)
+		if (client.getGameState() == GameState.LOGGED_IN && interacting instanceof NPC)
 		{
-			if (interacting instanceof NPC)
+			String interactingName = interacting.getName();
+			if (interactingName.equals(BossName))
 			{
-				String interactingName = interacting.getName();
-				if (interactingName.equals(BossName))
-				{
-					DamageCount += (XPtoDamage() * BOSS_MODIFIER);
+				DamageCount += (XPtoDamage() * BOSS_MODIFIER);
 
-				}
 			}
 		}
 	}
