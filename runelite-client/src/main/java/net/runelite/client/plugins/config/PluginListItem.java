@@ -62,7 +62,6 @@ public class PluginListItem extends JPanel
 	private static final ImageIcon OFF_STAR;
 
 	private final ConfigPanel configPanel;
-	private final ConfigManager configManager;
 
 	@Getter
 	@Nullable
@@ -144,7 +143,6 @@ public class PluginListItem extends JPanel
 						@Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
 	{
 		this.configPanel = configPanel;
-		this.configManager = configManager;
 		this.plugin = plugin;
 		this.config = config;
 		this.configDescriptor = configDescriptor;
