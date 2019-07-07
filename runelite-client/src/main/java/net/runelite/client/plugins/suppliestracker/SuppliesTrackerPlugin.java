@@ -221,9 +221,9 @@ public class SuppliesTrackerPlugin extends Plugin
 	private static final int[] RUNE_IDS = new int[]{AIR_RUNE, WATER_RUNE, EARTH_RUNE, MIND_RUNE, BODY_RUNE, COSMIC_RUNE, CHAOS_RUNE, NATURE_RUNE, LAW_RUNE, DEATH_RUNE, ASTRAL_RUNE, BLOOD_RUNE, SOUL_RUNE, WRATH_RUNE, MIST_RUNE, DUST_RUNE, MUD_RUNE, SMOKE_RUNE, STEAM_RUNE, LAVA_RUNE};
 
 	//Hold Supply Data
-	private static HashMap<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
+	private static final HashMap<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
 	private ItemContainer old;
-	private Deque<MenuAction> actionStack = new ArrayDeque<>();
+	private final Deque<MenuAction> actionStack = new ArrayDeque<>();
 	private int ammoId = 0;
 	private int ammoAmount = 0;
 	private int thrownId = 0;
@@ -234,7 +234,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	private int mainHand = 0;
 	private SuppliesTrackerPanel panel;
 	private NavigationButton navButton;
-	private String[] RAIDS_CONSUMABLES = new String[]{"xeric's", "elder", "twisted", "revitalisation", "overload", "prayer enhance", "pysk", "suphi", "leckish", "brawk", "mycil", "roqed", "kyren", "guanic", "prael", "giral", "phluxia", "kryket", "murng", "psykk"};
+	private final String[] RAIDS_CONSUMABLES = new String[]{"xeric's", "elder", "twisted", "revitalisation", "overload", "prayer enhance", "pysk", "suphi", "leckish", "brawk", "mycil", "roqed", "kyren", "guanic", "prael", "giral", "phluxia", "kryket", "murng", "psykk"};
 
 	private int attackStyleVarbit = -1;
 	private int ticks = 0;
