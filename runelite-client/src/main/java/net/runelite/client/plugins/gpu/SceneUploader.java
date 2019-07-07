@@ -126,21 +126,15 @@ class SceneUploader
 		}
 
 		GroundObject groundObject = tile.getGroundObject();
-		if (groundObject != null)
+		if (groundObject != null && groundObject.getRenderable() instanceof Model)
 		{
-			if (groundObject.getRenderable() instanceof Model)
-			{
-				((Model) groundObject.getRenderable()).setBufferOffset(-1);
-			}
+			((Model) groundObject.getRenderable()).setBufferOffset(-1);
 		}
 
 		DecorativeObject decorativeObject = tile.getDecorativeObject();
-		if (decorativeObject != null)
+		if (decorativeObject != null && decorativeObject.getRenderable() instanceof Model)
 		{
-			if (decorativeObject.getRenderable() instanceof Model)
-			{
-				((Model) decorativeObject.getRenderable()).setBufferOffset(-1);
-			}
+			((Model) decorativeObject.getRenderable()).setBufferOffset(-1);
 		}
 
 		GameObject[] gameObjects = tile.getGameObjects();
