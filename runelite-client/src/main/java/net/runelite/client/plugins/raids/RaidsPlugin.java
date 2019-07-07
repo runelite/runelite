@@ -96,6 +96,7 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 @PluginDescriptor(
 	name = "CoX Scouter",
@@ -1216,9 +1217,9 @@ public class RaidsPlugin extends Plugin
 
 	String recordRaid()
 	{
-		if (raid.getRotationString().toLowerCase().equals("vasa,tekton,vespula")
-			&& raid.getFullRotationString().toLowerCase().contains("crabs")
-			&& raid.getFullRotationString().toLowerCase().contains("tightrope")
+		if (raid.getRotationString().equalsIgnoreCase("vasa,tekton,vespula")
+			&& containsIgnoreCase(raid.getFullRotationString(), "crabs")
+			&& containsIgnoreCase(raid.getFullRotationString(), "tightrope")
 			&& goodCrabs != null)
 		{
 			return goodCrabs;
