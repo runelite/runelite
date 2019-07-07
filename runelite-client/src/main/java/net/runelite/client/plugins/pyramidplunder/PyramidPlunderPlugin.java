@@ -90,21 +90,21 @@ public class PyramidPlunderPlugin extends Plugin
 	static final int CLOSED_DOOR = TOMB_DOOR_20948;
 	static final int OPENED_DOOR = TOMB_DOOR_20949;
 
-	// Next 2 are in here for anyone who wants to spend more time on this
-	private static final Set<Integer> LOOTABLE = ImmutableSet.of(
-		GRAND_GOLD_CHEST,
-		SARCOPHAGUS_21255,
-		URN_21261,
-		URN_21262,
-		URN_21263
-	);
-	private static final Set<Integer> LOOTED = ImmutableSet.of(
-		OPENED_GOLD_CHEST,
-		SARCOPHAGUS_21256,
-		URN_21265,
-		URN_21266,
-		URN_21267
-	);
+//	// Next 2 are in here for anyone who wants to spend more time on this
+//	private static final Set<Integer> LOOTABLE = ImmutableSet.of(
+//		GRAND_GOLD_CHEST,
+//		SARCOPHAGUS_21255,
+//		URN_21261,
+//		URN_21262,
+//		URN_21263
+//	);
+//	private static final Set<Integer> LOOTED = ImmutableSet.of(
+//		OPENED_GOLD_CHEST,
+//		SARCOPHAGUS_21256,
+//		URN_21265,
+//		URN_21266,
+//		URN_21267
+//	);
 	private static final Set<Integer> DOOR_WALL_IDS = ImmutableSet.of(
 		26618, 26619, 26620, 26621
 	);
