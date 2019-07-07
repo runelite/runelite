@@ -26,6 +26,7 @@ package net.runelite.client.plugins.stonedloottracker.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -120,14 +121,14 @@ public enum BossTab
 	}
 
 	// By Category Name
-	private static final Map<String, ArrayList<BossTab>> byCategoryName = buildCategoryMap();
-	public static ArrayList<BossTab> getByCategoryName(String name)
+	private static final Map<String, List<BossTab>> byCategoryName = buildCategoryMap();
+	public static List<BossTab> getByCategoryName(String name)
 	{
 		return byCategoryName.get(name.toUpperCase());
 	}
-	private static Map<String, ArrayList<BossTab>> buildCategoryMap()
+	private static Map<String, List<BossTab>> buildCategoryMap()
 	{
-		Map<String, ArrayList<BossTab>> map = new HashMap<>();
+		Map<String, List<BossTab>> map = new HashMap<>();
 		for (BossTab tab : values())
 		{
 			map.computeIfAbsent(tab.getCategory().toUpperCase(), e -> new ArrayList<>()).add(tab);

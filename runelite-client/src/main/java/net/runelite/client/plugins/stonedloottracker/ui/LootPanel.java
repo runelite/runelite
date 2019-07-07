@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -187,7 +188,7 @@ class LootPanel extends JPanel
 
 
 		Collection<LootTrackerItemEntry> itemsToDisplay = new ArrayList<>();
-		ArrayList<LootTrackerItemEntry> items = LootTrackerBox.dedupeClues(new ArrayList<>(consolidated.values()));
+		List<LootTrackerItemEntry> items = LootTrackerBox.dedupeClues(new ArrayList<>(consolidated.values()));
 		for (LootTrackerItemEntry item : items)
 		{
 			totalValue += item.getTotal();
