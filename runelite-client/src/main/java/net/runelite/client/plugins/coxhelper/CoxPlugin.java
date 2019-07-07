@@ -83,7 +83,7 @@ import net.runelite.client.util.Text;
 public class CoxPlugin extends Plugin
 {
 	private static final int ANIMATION_ID_G1 = 430;
-	// private static final String OLM_HAND_CRIPPLE = "The Great Olm\'s left claw clenches to protect itself temporarily.";
+	private static final String OLM_HAND_CRIPPLE = "The Great Olm\'s left claw clenches to protect itself temporarily.";
 	private static final Pattern TP_REGEX = Pattern.compile("You have been paired with <col=ff0000>(.*)</col>! The magical power will enact soon...");
 	@Setter
 	@Getter(AccessLevel.PACKAGE)
@@ -92,11 +92,11 @@ public class CoxPlugin extends Plugin
 	protected long lastPrayTime;
 	private int sleepcount = 0;
 	private boolean needOlm = false;
-	// private GraphicsObject teleportObject;
+	private GraphicsObject teleportObject;
 	@Inject
 	private Client client;
-	// @Inject
-	// private ChatMessageManager chatMessageManager;
+	@Inject
+	private ChatMessageManager chatMessageManager;
 	@Inject
 	private CoxOverlay coxOverlay;
 	@Inject
