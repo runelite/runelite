@@ -346,7 +346,7 @@ class ProfilesPanel extends PluginPanel
 			}
 			catch (InvalidKeySpecException | NoSuchAlgorithmException ex)
 			{
-				ex.printStackTrace();
+				log.error(e.toString());
 			}
 
 			this.addAccount(data);
@@ -552,7 +552,7 @@ class ProfilesPanel extends PluginPanel
 		}
 		catch (NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException e)
 		{
-			e.printStackTrace();
+			log.error(e.toString());
 		}
 		return new byte[0];
 	}
@@ -568,7 +568,7 @@ class ProfilesPanel extends PluginPanel
 		}
 		catch (NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException e)
 		{
-			e.printStackTrace();
+			log.error(e.toString());
 		}
 		return "";
 	}
