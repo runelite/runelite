@@ -539,7 +539,8 @@ public class BankedCalculator extends JPanel
 		if (oldMapFlag)
 		{
 			CalculatorType calc = CalculatorType.getBySkill(currentSkill);
-			SwingUtilities.invokeLater(() -> {
+			SwingUtilities.invokeLater(() ->
+			{
 				if (calc != null)
 				{
 					openBanked(calc);
