@@ -29,7 +29,7 @@ import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
 @Singleton
-public class PvpToolsPanel extends PluginPanel
+class PvpToolsPanel extends PluginPanel
 {
 
 	private final JLabel loggedLabel = new JLabel();
