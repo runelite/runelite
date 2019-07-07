@@ -125,23 +125,28 @@ public class ContainableFrame extends JFrame
 		if (forcedWidthIncrease || expandResizeType == ExpandResizeType.KEEP_GAME_SIZE)
 		{
 			final int newWindowWidth = getWidth() + increment;
-			final Rectangle screenBounds = getGraphicsConfiguration().getBounds();
-			final boolean wouldExpandThroughEdge = getX() + newWindowWidth > screenBounds.getX() + screenBounds.getWidth();
 			int newWindowX = getX();
 
-			if (wouldExpandThroughEdge)
+			if (containedInScreen)
 			{
-				if (!isFrameCloseToRightEdge() || isFrameCloseToLeftEdge())
+				final Rectangle screenBounds = getGraphicsConfiguration().getBounds();
+				final boolean wouldExpandThroughEdge = getX() + newWindowWidth > screenBounds.getX() + screenBounds.getWidth();
+
+				if (wouldExpandThroughEdge)
 				{
-					// Move the window to the edge
-					newWindowX = (int) (screenBounds.getX() + screenBounds.getWidth()) - getWidth();
+
+					if (!isFrameCloseToRightEdge() || isFrameCloseToLeftEdge())
+					{
+						// Move the window to the edge
+						newWindowX = (int) (screenBounds.getX() + screenBounds.getWidth()) - getWidth();
+					}
+
+					// Expand the window to the left as the user probably don't want the
+					// window to go through the screen
+					newWindowX -= increment;
+
+					expandedClientOppositeDirection = true;
 				}
-
-				// Expand the window to the left as the user probably don't want the
-				// window to go through the screen
-				newWindowX -= increment;
-
-				expandedClientOppositeDirection = true;
 			}
 
 			setBounds(newWindowX, getY(), newWindowWidth, getHeight());
