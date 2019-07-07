@@ -109,7 +109,7 @@ public class Raid
 			}
 		}
 
-		return combatRooms.toArray(new RaidRoom[combatRooms.size()]);
+		return combatRooms.toArray(new RaidRoom[0]);
 	}
 
 	String getRotationString()
