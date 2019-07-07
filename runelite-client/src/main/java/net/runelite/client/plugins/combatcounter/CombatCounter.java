@@ -316,7 +316,7 @@ public class CombatCounter extends Plugin
 								for (NPC nearby : this.client.getNpcs())
 								{
 									int distance = npc.getWorldLocation().distanceTo(nearby.getWorldLocation());
-									if (distance <= 1 && npc != nearby)
+									if (distance <= 1 && npc.equals(nearby))
 									{
 										actives.add(nearby);
 									}
