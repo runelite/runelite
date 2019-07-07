@@ -1103,7 +1103,7 @@ public class RaidsPlugin extends Plugin
 		StringBuilder builder = new StringBuilder();
 		if (seconds >= 3600)
 		{
-			builder.append((int) Math.floor(seconds / 3600) + ";");
+			builder.append((int) Math.floor(seconds / 3600)).append(";");
 		}
 		seconds %= 3600;
 		if (builder.toString().equals(""))
