@@ -94,13 +94,10 @@ public class ChestOverlay extends Overlay
 
 			if (chest != null)
 			{
-				if (!plugin.isBatsFound() && !chest.isEverOpened())
+				if (!plugin.isBatsFound() && !chest.isEverOpened() && shouldDrawChest(pos))
 				{
-					if (shouldDrawChest(pos))
-					{
-						Color drawColor = new Color(setAlphaComponent(plugin.getGetPotentialBatColor().getRGB(), getChestOpacity(pos)));
-						drawCircleOnTrap(graphics, chest, drawColor);
-					}
+					Color drawColor = new Color(setAlphaComponent(plugin.getGetPotentialBatColor().getRGB(), getChestOpacity(pos)));
+					drawCircleOnTrap(graphics, chest, drawColor);
 				}
 				if (chest.isPoison())
 				{
