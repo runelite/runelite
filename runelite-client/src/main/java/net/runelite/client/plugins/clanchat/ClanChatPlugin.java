@@ -485,7 +485,7 @@ public class ClanChatPlugin extends Plugin
 		final Player local = client.getLocalPlayer();
 		final Player player = event.getPlayer();
 
-		if (!player.equals(local) && player.isClanMember())
+		if (player != null && !player.equals(local) && player.isClanMember())
 		{
 			clanMembers.add(player);
 			addClanCounter();
