@@ -67,13 +67,10 @@ public class Scorecard
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (chatMessage.getMessage().startsWith("---- Points:"))
+		if (chatMessage.getMessage().startsWith("---- Points:") && game.getStage() == 1)
 		{
-			if (game.getStage() == 1)
-			{
-				totalPoints = new int[6];
-				totalAmounts = new int[6];
-			}
+			totalPoints = new int[6];
+			totalAmounts = new int[6];
 		}
 	}
 

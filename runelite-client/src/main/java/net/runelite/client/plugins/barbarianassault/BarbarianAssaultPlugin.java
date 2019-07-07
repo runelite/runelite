@@ -29,7 +29,6 @@ package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
@@ -42,12 +41,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
-
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -760,12 +757,9 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 
 		String name = event.getNpc().getName();
 
-		if (name.equals("Penance Healer"))
+		if (name.equals("Penance Healer") && !healers.containsKey(npc.getIndex()))
 		{
-			if (!healers.containsKey(npc.getIndex()))
-			{
-				healers.put(npc.getIndex(), new Healer(npc, healers.size(), stage));
-			}
+			healers.put(npc.getIndex(), new Healer(npc, healers.size(), stage));
 		}
 	}
 
@@ -1160,16 +1154,12 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
-		if (getRole() == Role.HEALER)
+		if (getRole() == Role.HEALER && (target.startsWith("poisoned meat -> penance healer")
+			|| target.startsWith("poisoned tofu -> penance healer")
+			|| target.startsWith("poisoned worms -> penance healer")))
 		{
-			if (target.startsWith("poisoned meat -> penance healer")
-				|| target.startsWith("poisoned tofu -> penance healer")
-				|| target.startsWith("poisoned worms -> penance healer"))
-			{
-				lastHealerPoisoned = event.getIdentifier();
-				poisonUsed = StringUtils.substringBefore(target.replace("oned", "."), " ->");
-				return;
-			}
+			lastHealerPoisoned = event.getIdentifier();
+			poisonUsed = StringUtils.substringBefore(target.replace("oned", "."), " ->");
 		}
 
 		// INW
@@ -1206,14 +1196,11 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 
 		if (opponent == null)
 		{
-			if (lastInteracted != -1)
+			if (lastInteracted != -1 && StringUtils.equalsIgnoreCase(poisonUsed, getRole().getListen(client)) && healers.containsKey(lastInteracted))
 			{
-				if (StringUtils.equalsIgnoreCase(poisonUsed, getRole().getListen(client)) && healers.containsKey(lastInteracted))
-				{
-					Healer healer = healers.get(lastInteracted);
-					healer.setFoodRemaining(healer.getFoodRemaining() - 1);
-					healer.setTimeLastPoisoned(Instant.now());
-				}
+				Healer healer = healers.get(lastInteracted);
+				healer.setFoodRemaining(healer.getFoodRemaining() - 1);
+				healer.setTimeLastPoisoned(Instant.now());
 			}
 
 			lastInteracted = -1;
