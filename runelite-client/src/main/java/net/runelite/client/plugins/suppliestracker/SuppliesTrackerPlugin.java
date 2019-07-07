@@ -48,113 +48,10 @@ import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
-import static net.runelite.api.ItemID.ACCUMULATOR_MAX_CAPE;
-import static net.runelite.api.ItemID.ADAMANT_DART;
-import static net.runelite.api.ItemID.ADAMANT_KNIFE;
-import static net.runelite.api.ItemID.ADAMANT_THROWNAXE;
-import static net.runelite.api.ItemID.ADMIRAL_PIE;
-import static net.runelite.api.ItemID.AIR_RUNE;
-import static net.runelite.api.ItemID.ANCHOVY_PIZZA;
-import static net.runelite.api.ItemID.APPLE_PIE;
-import static net.runelite.api.ItemID.ASSEMBLER_MAX_CAPE;
-import static net.runelite.api.ItemID.ASTRAL_RUNE;
-import static net.runelite.api.ItemID.AVAS_ACCUMULATOR;
-import static net.runelite.api.ItemID.AVAS_ASSEMBLER;
-import static net.runelite.api.ItemID.AVAS_ATTRACTOR;
-import static net.runelite.api.ItemID.BLACK_CHINCHOMPA;
-import static net.runelite.api.ItemID.BLACK_DART;
-import static net.runelite.api.ItemID.BLACK_KNIFE;
-import static net.runelite.api.ItemID.BLOOD_RUNE;
-import static net.runelite.api.ItemID.BODY_RUNE;
-import static net.runelite.api.ItemID.BOTANICAL_PIE;
-import static net.runelite.api.ItemID.BRONZE_DART;
-import static net.runelite.api.ItemID.BRONZE_KNIFE;
-import static net.runelite.api.ItemID.BRONZE_THROWNAXE;
-import static net.runelite.api.ItemID.CAKE;
-import static net.runelite.api.ItemID.CANNONBALL;
-import static net.runelite.api.ItemID.CHAOS_RUNE;
-import static net.runelite.api.ItemID.CHINCHOMPA_10033;
-import static net.runelite.api.ItemID.CHOCOLATE_CAKE;
-import static net.runelite.api.ItemID.CHOCOLATE_SLICE;
-import static net.runelite.api.ItemID.COINS_995;
-import static net.runelite.api.ItemID.COSMIC_RUNE;
-import static net.runelite.api.ItemID.DEATH_RUNE;
-import static net.runelite.api.ItemID.DRAGON_DART;
-import static net.runelite.api.ItemID.DRAGON_KNIFE;
-import static net.runelite.api.ItemID.DRAGON_KNIFEP;
-import static net.runelite.api.ItemID.DRAGON_KNIFEP_22808;
-import static net.runelite.api.ItemID.DRAGON_KNIFEP_22810;
-import static net.runelite.api.ItemID.DRAGON_KNIFE_22812;
-import static net.runelite.api.ItemID.DRAGON_KNIFE_22814;
-import static net.runelite.api.ItemID.DRAGON_THROWNAXE;
-import static net.runelite.api.ItemID.DUST_RUNE;
-import static net.runelite.api.ItemID.EARTH_RUNE;
-import static net.runelite.api.ItemID.FIRE_RUNE;
-import static net.runelite.api.ItemID.FISH_PIE;
-import static net.runelite.api.ItemID.GARDEN_PIE;
-import static net.runelite.api.ItemID.HALF_AN_ADMIRAL_PIE;
-import static net.runelite.api.ItemID.HALF_AN_APPLE_PIE;
-import static net.runelite.api.ItemID.HALF_A_BOTANICAL_PIE;
-import static net.runelite.api.ItemID.HALF_A_FISH_PIE;
-import static net.runelite.api.ItemID.HALF_A_GARDEN_PIE;
-import static net.runelite.api.ItemID.HALF_A_MEAT_PIE;
-import static net.runelite.api.ItemID.HALF_A_MUSHROOM_PIE;
-import static net.runelite.api.ItemID.HALF_A_REDBERRY_PIE;
-import static net.runelite.api.ItemID.HALF_A_SUMMER_PIE;
-import static net.runelite.api.ItemID.HALF_A_WILD_PIE;
-import static net.runelite.api.ItemID.IRON_DART;
-import static net.runelite.api.ItemID.IRON_KNIFE;
-import static net.runelite.api.ItemID.IRON_THROWNAXE;
-import static net.runelite.api.ItemID.LAVA_RUNE;
-import static net.runelite.api.ItemID.LAW_RUNE;
-import static net.runelite.api.ItemID.MEAT_PIE;
-import static net.runelite.api.ItemID.MEAT_PIZZA;
-import static net.runelite.api.ItemID.MIND_RUNE;
-import static net.runelite.api.ItemID.MIST_RUNE;
-import static net.runelite.api.ItemID.MITHRIL_DART;
-import static net.runelite.api.ItemID.MITHRIL_KNIFE;
-import static net.runelite.api.ItemID.MITHRIL_THROWNAXE;
-import static net.runelite.api.ItemID.MUD_RUNE;
-import static net.runelite.api.ItemID.MUSHROOM_PIE;
-import static net.runelite.api.ItemID.NATURE_RUNE;
-import static net.runelite.api.ItemID.PINEAPPLE_PIZZA;
-import static net.runelite.api.ItemID.PLAIN_PIZZA;
-import static net.runelite.api.ItemID.RANGING_CAPE;
-import static net.runelite.api.ItemID.REDBERRY_PIE;
-import static net.runelite.api.ItemID.RED_CHINCHOMPA_10034;
-import static net.runelite.api.ItemID.RUNE_DART;
-import static net.runelite.api.ItemID.RUNE_KNIFE;
-import static net.runelite.api.ItemID.RUNE_THROWNAXE;
-import static net.runelite.api.ItemID.SANGUINESTI_STAFF;
-import static net.runelite.api.ItemID.SANGUINESTI_STAFF_UNCHARGED;
-import static net.runelite.api.ItemID.SLICE_OF_CAKE;
-import static net.runelite.api.ItemID.SMOKE_RUNE;
-import static net.runelite.api.ItemID.SOUL_RUNE;
-import static net.runelite.api.ItemID.STEAM_RUNE;
-import static net.runelite.api.ItemID.STEEL_DART;
-import static net.runelite.api.ItemID.STEEL_KNIFE;
-import static net.runelite.api.ItemID.STEEL_THROWNAXE;
-import static net.runelite.api.ItemID.SUMMER_PIE;
-import static net.runelite.api.ItemID.TRIDENT_OF_THE_SEAS;
-import static net.runelite.api.ItemID.TRIDENT_OF_THE_SEAS_E;
-import static net.runelite.api.ItemID.TRIDENT_OF_THE_SEAS_FULL;
-import static net.runelite.api.ItemID.TRIDENT_OF_THE_SWAMP;
-import static net.runelite.api.ItemID.TRIDENT_OF_THE_SWAMP_E;
-import static net.runelite.api.ItemID.UNCHARGED_TOXIC_TRIDENT;
-import static net.runelite.api.ItemID.UNCHARGED_TOXIC_TRIDENT_E;
-import static net.runelite.api.ItemID.WATER_RUNE;
-import static net.runelite.api.ItemID.WILD_PIE;
-import static net.runelite.api.ItemID.WRATH_RUNE;
-import static net.runelite.api.ItemID.ZULRAHS_SCALES;
-import static net.runelite.api.ItemID._12_ANCHOVY_PIZZA;
-import static net.runelite.api.ItemID._12_MEAT_PIZZA;
-import static net.runelite.api.ItemID._12_PINEAPPLE_PIZZA;
-import static net.runelite.api.ItemID._12_PLAIN_PIZZA;
-import static net.runelite.api.ItemID._23_CAKE;
-import static net.runelite.api.ItemID._23_CHOCOLATE_CAKE;
+import static net.runelite.api.ItemID.*;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.AnimationChanged;
@@ -604,9 +501,8 @@ public class SuppliesTrackerPlugin extends Plugin
 		// Create pattern to find eat/drink at beginning
 		Pattern eatPattern = Pattern.compile(EAT_PATTERN);
 		Pattern drinkPattern = Pattern.compile(DRINK_PATTERN);
-		if (eatPattern.matcher(event.getTarget().toLowerCase()).find() || drinkPattern.matcher(event.getTarget().toLowerCase()).find())
-		{
-			if (actionStack.stream().noneMatch(a ->
+		if ((eatPattern.matcher(event.getTarget().toLowerCase()).find() || drinkPattern.matcher(event.getTarget().toLowerCase()).find()) &&
+			actionStack.stream().noneMatch(a ->
 			{
 				if (a instanceof MenuAction.ItemAction)
 				{
@@ -615,15 +511,14 @@ public class SuppliesTrackerPlugin extends Plugin
 				}
 				return false;
 			}))
+		{
+			old = client.getItemContainer(InventoryID.INVENTORY);
+			int slot = event.getActionParam0();
+			if (old.getItems() != null)
 			{
-				old = client.getItemContainer(InventoryID.INVENTORY);
-				int slot = event.getActionParam0();
-				if (old.getItems() != null)
-				{
-					int pushItem = old.getItems()[event.getActionParam0()].getId();
-					MenuAction newAction = new MenuAction.ItemAction(CONSUMABLE, old.getItems(), pushItem, slot);
-					actionStack.push(newAction);
-				}
+				int pushItem = old.getItems()[event.getActionParam0()].getId();
+				MenuAction newAction = new MenuAction.ItemAction(CONSUMABLE, old.getItems(), pushItem, slot);
+				actionStack.push(newAction);
 			}
 		}
 
