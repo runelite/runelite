@@ -30,7 +30,7 @@ import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.util.StackFormatter;
 
 @Singleton
-public class KingdomCounter extends Counter
+class KingdomCounter extends Counter
 {
 	private final KingdomPlugin plugin;
 
