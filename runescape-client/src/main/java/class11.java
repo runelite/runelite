@@ -3,6 +3,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("k")
 final class class11 implements Comparator {
@@ -120,63 +121,63 @@ final class class11 implements Comparator {
          var8 = null;
       }
 
-      if (var0 == 1400) {
+      if (var0 == ScriptOpcodes.CC_SETONCLICK) {
          var3.onClick = var8;
-      } else if (var0 == 1401) {
+      } else if (var0 == ScriptOpcodes.CC_SETONHOLD) {
          var3.onHold = var8;
-      } else if (var0 == 1402) {
+      } else if (var0 == ScriptOpcodes.CC_SETONRELEASE) {
          var3.onRelease = var8;
-      } else if (var0 == 1403) {
+      } else if (var0 == ScriptOpcodes.CC_SETONMOUSEOVER) {
          var3.onMouseOver = var8;
-      } else if (var0 == 1404) {
+      } else if (var0 == ScriptOpcodes.CC_SETONMOUSELEAVE) {
          var3.onMouseLeave = var8;
-      } else if (var0 == 1405) {
+      } else if (var0 == ScriptOpcodes.CC_SETONDRAG) {
          var3.onDrag = var8;
-      } else if (var0 == 1406) {
+      } else if (var0 == ScriptOpcodes.CC_SETONTARGETLEAVE) {
          var3.onTargetLeave = var8;
-      } else if (var0 == 1407) {
+      } else if (var0 == ScriptOpcodes.CC_SETONVARTRANSMIT) {
          var3.onVarTransmit = var8;
          var3.varTransmitTriggers = var5;
-      } else if (var0 == 1408) {
+      } else if (var0 == ScriptOpcodes.CC_SETONTIMER) {
          var3.onTimer = var8;
-      } else if (var0 == 1409) {
+      } else if (var0 == ScriptOpcodes.CC_SETONOP) {
          var3.onOp = var8;
-      } else if (var0 == 1410) {
+      } else if (var0 == ScriptOpcodes.CC_SETONDRAGCOMPLETE) {
          var3.onDragComplete = var8;
-      } else if (var0 == 1411) {
+      } else if (var0 == ScriptOpcodes.CC_SETONCLICKREPEAT) {
          var3.onClickRepeat = var8;
-      } else if (var0 == 1412) {
+      } else if (var0 == ScriptOpcodes.CC_SETONMOUSEREPEAT) {
          var3.onMouseRepeat = var8;
-      } else if (var0 == 1414) {
+      } else if (var0 == ScriptOpcodes.CC_SETONINVTRANSMIT) {
          var3.onInvTransmit = var8;
          var3.invTransmitTriggers = var5;
-      } else if (var0 == 1415) {
+      } else if (var0 == ScriptOpcodes.CC_SETONSTATTRANSMIT) {
          var3.onStatTransmit = var8;
          var3.statTransmitTriggers = var5;
-      } else if (var0 == 1416) {
+      } else if (var0 == ScriptOpcodes.CC_SETONTARGETENTER) {
          var3.onTargetEnter = var8;
-      } else if (var0 == 1417) {
+      } else if (var0 == ScriptOpcodes.CC_SETONSCROLLWHEEL) {
          var3.onScroll = var8;
-      } else if (var0 == 1418) {
+      } else if (var0 == ScriptOpcodes.CC_SETONCHATTRANSMIT) {
          var3.field970 = var8;
-      } else if (var0 == 1419) {
+      } else if (var0 == ScriptOpcodes.CC_SETONKEY) {
          var3.onKeyListener = var8;
-      } else if (var0 == 1420) {
+      } else if (var0 == ScriptOpcodes.CC_SETONFRIENDTRANSMIT) {
          var3.field971 = var8;
-      } else if (var0 == 1421) {
+      } else if (var0 == ScriptOpcodes.CC_SETONCLANTRANSMIT) {
          var3.field972 = var8;
-      } else if (var0 == 1422) {
+      } else if (var0 == ScriptOpcodes.CC_SETONMISCTRANSMIT) {
          var3.field973 = var8;
-      } else if (var0 == 1423) {
+      } else if (var0 == ScriptOpcodes.CC_SETONDIALOGABORT) {
          var3.onDialogAbortListener = var8;
-      } else if (var0 == 1424) {
+      } else if (var0 == ScriptOpcodes.CC_SETONSUBCHANGE) {
          var3.field974 = var8;
-      } else if (var0 == 1425) {
+      } else if (var0 == ScriptOpcodes.CC_SETONSTOCKTRANSMIT) {
          var3.field976 = var8;
       } else if (var0 == 1426) {
          var3.field977 = var8;
       } else {
-         if (var0 != 1427) {
+         if (var0 != ScriptOpcodes.CC_SETONRESIZE) {
             return 2;
          }
 
@@ -194,11 +195,11 @@ final class class11 implements Comparator {
    )
    static int method146(int var0, Script var1, boolean var2) {
       Widget var3;
-      if (var0 == 2700) {
+      if (var0 == ScriptOpcodes.IF_GETINVOBJECT) {
          var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.itemId;
          return 1;
-      } else if (var0 == 2701) {
+      } else if (var0 == ScriptOpcodes.IF_GETINVCOUNT) {
          var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
          if (var3.itemId != -1) {
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.itemQuantity;
@@ -207,7 +208,7 @@ final class class11 implements Comparator {
          }
 
          return 1;
-      } else if (var0 == 2702) {
+      } else if (var0 == ScriptOpcodes.IF_HASSUB) {
          int var4 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          WidgetGroupParent var5 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var4);
          if (var5 != null) {
@@ -217,7 +218,7 @@ final class class11 implements Comparator {
          }
 
          return 1;
-      } else if (var0 == 2706) {
+      } else if (var0 == ScriptOpcodes.IF_GETTOP) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.rootWidgetGroup;
          return 1;
       } else {

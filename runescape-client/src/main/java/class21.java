@@ -327,9 +327,9 @@ public abstract class class21 {
             var3.overheadText = var0.readStringCp1252NullTerminated();
             if (var3.overheadText.charAt(0) == '~') {
                var3.overheadText = var3.overheadText.substring(1);
-               WorldMapIcon1.method219(2, var3.username.getName(), var3.overheadText);
+               WorldMapIcon1.addGameMessage(2, var3.username.getName(), var3.overheadText);
             } else if (var3 == Canvas.localPlayer) {
-               WorldMapIcon1.method219(2, var3.username.getName(), var3.overheadText);
+               WorldMapIcon1.addGameMessage(2, var3.username.getName(), var3.overheadText);
             }
 
             var3.isAutoChatting = false;
@@ -396,9 +396,9 @@ public abstract class class21 {
                   }
 
                   if (var17.modIcon != -1) {
-                     WorldMapIcon1.method219(var10, ItemContainer.method1170(var17.modIcon) + var3.username.getName(), var14);
+                     WorldMapIcon1.addGameMessage(var10, ItemContainer.method1170(var17.modIcon) + var3.username.getName(), var14);
                   } else {
-                     WorldMapIcon1.method219(var10, var3.username.getName(), var14);
+                     WorldMapIcon1.addGameMessage(var10, var3.username.getName(), var14);
                   }
                }
             }
@@ -419,7 +419,7 @@ public abstract class class21 {
             }
 
             var7 = var0.readUnsignedByte();
-            class234.method4534(var3, var6, var7);
+            class234.performPlayerAnimation(var3, var6, var7);
          }
 
          if (var3.field725) {

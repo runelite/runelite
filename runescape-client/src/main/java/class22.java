@@ -73,7 +73,7 @@ public final class class22 {
       StringBuilder var1 = (new StringBuilder()).append(var0);
       Object var2 = null;
       String var3 = var1.append(" is already on your ignore list").toString();
-      WorldMapIcon1.method219(30, "", var3);
+      WorldMapIcon1.addGameMessage(30, "", var3);
    }
 
    @ObfuscatedName("fw")

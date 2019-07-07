@@ -3,6 +3,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("dp")
 @Implements("Decimator")
@@ -237,7 +238,7 @@ public class Decimator {
       garbageValue = "-858740470"
    )
    static int method2492(int var0, Script var1, boolean var2) {
-      if (var0 == 5630) {
+      if (var0 == ScriptOpcodes.LOGOUT) {
          Client.field175 = 250;
          return 1;
       } else {

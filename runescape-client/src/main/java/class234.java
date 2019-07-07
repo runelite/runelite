@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -8,7 +9,8 @@ public class class234 {
       signature = "(Lbr;III)V",
       garbageValue = "-701527010"
    )
-   static void method4534(Player var0, int var1, int var2) {
+   @Export("performPlayerAnimation")
+   static void performPlayerAnimation(Player var0, int var1, int var2) {
       if (var0.sequence == var1 && var1 != -1) {
          int var3 = WorldMapAreaData.getSequenceDefinition(var1).field783;
          if (var3 == 1) {

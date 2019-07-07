@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("z")
 public class class15 extends class21 {
@@ -121,11 +122,11 @@ public class class15 extends class21 {
    )
    static int method182(int var0, Script var1, boolean var2) {
       Widget var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-      if (var0 == 2800) {
+      if (var0 == ScriptOpcodes.IF_GETTARGETMASK) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class211.method4107(class1.getWidgetClickMask(var3));
          return 1;
-      } else if (var0 != 2801) {
-         if (var0 == 2802) {
+      } else if (var0 != ScriptOpcodes.IF_GETOP) {
+         if (var0 == ScriptOpcodes.IF_GETOPBASE) {
             if (var3.dataText == null) {
                Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
             } else {

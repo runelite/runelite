@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("j")
 public class class16 {
@@ -62,11 +63,11 @@ public class class16 {
    )
    static int method188(int var0, Script var1, boolean var2) {
       Widget var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
-      if (var0 == 1800) {
+      if (var0 == ScriptOpcodes.CC_GETTARGETMASK) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class211.method4107(class1.getWidgetClickMask(var3));
          return 1;
-      } else if (var0 != 1801) {
-         if (var0 == 1802) {
+      } else if (var0 != ScriptOpcodes.CC_GETOP) {
+         if (var0 == ScriptOpcodes.CC_GETOPBASE) {
             if (var3.dataText == null) {
                Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
             } else {

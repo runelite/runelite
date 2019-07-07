@@ -80,7 +80,8 @@ public class WorldMapCacheName {
       signature = "(Ljava/lang/String;ZZI)V",
       garbageValue = "1532180466"
    )
-   public static void method635(String var0, boolean var1, boolean var2) {
+   @Export("openURL")
+   public static void openURL(String var0, boolean var1, boolean var2) {
       if (var1) {
          if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
             try {

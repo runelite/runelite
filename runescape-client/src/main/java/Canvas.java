@@ -10,6 +10,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("ao")
 @Implements("Canvas")
@@ -118,7 +119,7 @@ public final class Canvas extends java.awt.Canvas {
       int var3;
       int var4;
       Widget var6;
-      if (var0 == 100) {
+      if (var0 == ScriptOpcodes.CC_CREATE) {
          RouteStrategy.Interpreter_intStackSize -= 3;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -162,19 +163,19 @@ public final class Canvas extends java.awt.Canvas {
          }
       } else {
          Widget var5;
-         if (var0 == 101) {
+         if (var0 == ScriptOpcodes.CC_DELETE) {
             var5 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
             var6 = Huffman.getWidget(var5.id);
             var6.children[var5.childIndex] = null;
             class22.method295(var6);
             return 1;
-         } else if (var0 == 102) {
+		 } else if (var0 == ScriptOpcodes.CC_DELETEALL) {
             var5 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
             var5.children = null;
             class22.method295(var5);
             return 1;
-         } else if (var0 != 200) {
-            if (var0 == 201) {
+         } else if (var0 != ScriptOpcodes.CC_FIND) {
+            if (var0 == ScriptOpcodes.IF_FIND) {
                var5 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                if (var5 != null) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
