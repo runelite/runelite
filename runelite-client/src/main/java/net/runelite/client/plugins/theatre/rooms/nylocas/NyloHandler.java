@@ -34,8 +34,8 @@ public class NyloHandler extends RoomHandler
 
 	public long startTime = 0L;
 	int startTick = 0;
-	ArrayList<NPC> waveSpawns = new ArrayList<>();
-	ArrayList<NPC> waveAgros = new ArrayList<>();
+	final ArrayList<NPC> waveSpawns = new ArrayList<>();
+	final ArrayList<NPC> waveAgros = new ArrayList<>();
 	@Getter(AccessLevel.PUBLIC)
 	private Map<NPC, Integer> pillars = new HashMap<>();
 	@Getter(AccessLevel.PUBLIC)

@@ -39,11 +39,11 @@ public class SotetsegHandler extends RoomHandler
 	private int playerY;
 	@Getter(AccessLevel.PUBLIC)
 	private List<WorldPoint> redOverworld = new ArrayList<>();
-	private List<WorldPoint> blackOverworld = new ArrayList<>();
-	private List<WorldPoint> blackUnderworld = new ArrayList<>();
-	private List<WorldPoint> redUnderworld = new ArrayList<>();
-	private List<Point> gridPath = new ArrayList<>();
-	private Map<Projectile, WorldPoint> soteyProjectiles = new HashMap<>();
+	private final List<WorldPoint> blackOverworld = new ArrayList<>();
+	private final List<WorldPoint> blackUnderworld = new ArrayList<>();
+	private final List<WorldPoint> redUnderworld = new ArrayList<>();
+	private final List<Point> gridPath = new ArrayList<>();
+	private final Map<Projectile, WorldPoint> soteyProjectiles = new HashMap<>();
 	private NPC npc;
 
 	public SotetsegHandler(final Client client, final TheatrePlugin plugin)

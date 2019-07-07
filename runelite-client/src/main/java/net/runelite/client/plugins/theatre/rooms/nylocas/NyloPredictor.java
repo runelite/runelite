@@ -46,12 +46,12 @@ public class NyloPredictor
 			new Wave(new Nylocas(NylocasType.RANGE_260, Spawn.WEST), new Nylocas(NylocasType.MAGE_162, Spawn.SOUTH), new Nylocas(NylocasType.MELEE_162, Spawn.SOUTH), new Nylocas(NylocasType.MAGE_260, Spawn.EAST)),
 			new Wave(new Nylocas(NylocasType.MELEE_162, Spawn.WEST), new Nylocas(NylocasType.RANGE_162, Spawn.WEST), new Nylocas(NylocasType.MAGE_162, Spawn.SOUTH), new Nylocas(NylocasType.MELEE_162, Spawn.SOUTH), new Nylocas(NylocasType.RANGE_162, Spawn.EAST), new Nylocas(NylocasType.MAGE_162, Spawn.EAST))
 		};
-	public Client client;
+	public final Client client;
 	int westBound = 50;
 	int eastBound = 77;
 	int southBound = 42;
-	private NyloHandler handler;
-	private Map<Nylocas, NPC> currentSpawns = new HashMap<>();
+	private final NyloHandler handler;
+	private final Map<Nylocas, NPC> currentSpawns = new HashMap<>();
 	private int currentIndex = -1;
 
 	NyloPredictor(Client client, NyloHandler handler)
@@ -451,8 +451,8 @@ public class NyloPredictor
 	public static class Nylocas
 	{
 
-		private NylocasType type;
-		private Spawn spawn;
+		private final NylocasType type;
+		private final Spawn spawn;
 
 		public Nylocas(NylocasType type, Spawn spawn)
 		{
@@ -486,7 +486,7 @@ public class NyloPredictor
 	public static class Wave
 	{
 
-		private Nylocas[] spawns;
+		private final Nylocas[] spawns;
 
 		public Wave(Nylocas... nylocas)
 		{

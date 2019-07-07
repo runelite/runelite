@@ -50,7 +50,7 @@ class NyloOverlay extends Overlay
 	private final TheatrePlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
 
-	private NyloHandler nylohandler;
+	private final NyloHandler nylohandler;
 
 	NyloOverlay(final Client client, final TheatrePlugin plugin, final NyloHandler nylohandler)
 	{

@@ -16,8 +16,8 @@ import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 public class XarpusCounter extends Overlay
 {
-	private PanelComponent panelComponent = new PanelComponent();
-	private XarpusHandler xarpusHandler;
+	private final PanelComponent panelComponent = new PanelComponent();
+	private final XarpusHandler xarpusHandler;
 
 	XarpusCounter(final TheatrePlugin plugin, final XarpusHandler xarpushandler)
 	{
