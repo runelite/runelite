@@ -66,7 +66,7 @@ public class TagManager
 		this.clueScrollService = clueScrollService;
 	}
 
-	String getTagString(int itemId, boolean variation)
+	private String getTagString(int itemId, boolean variation)
 	{
 		itemId = getItemId(itemId, variation);
 
