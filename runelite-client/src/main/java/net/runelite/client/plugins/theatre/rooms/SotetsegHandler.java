@@ -61,7 +61,6 @@ public class SotetsegHandler extends RoomHandler
 
 		this.reset();
 		this.plugin.setRoom(TheatreRoom.SOTETSEG);
-		System.out.println("Starting Sotetseg Room");
 	}
 
 	@Override
@@ -69,7 +68,6 @@ public class SotetsegHandler extends RoomHandler
 	{
 		this.reset();
 		this.plugin.setRoom(TheatreRoom.UNKNOWN);
-		System.out.println("Stopping Sotetseg Room");
 	}
 
 	private void reset()

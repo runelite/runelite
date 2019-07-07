@@ -69,8 +69,6 @@ public class XarpusHandler extends RoomHandler
 			overlay = new XarpusCounter(plugin, this);
 			plugin.getOverlayManager().add(overlay);
 		}
-
-		System.out.println("Starting Xarpus Room");
 	}
 
 	@Override
@@ -84,8 +82,6 @@ public class XarpusHandler extends RoomHandler
 			plugin.getOverlayManager().remove(overlay);
 			overlay = null;
 		}
-
-		System.out.println("Stopping Xarpus Room");
 	}
 
 	private void reset()

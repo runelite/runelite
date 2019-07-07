@@ -69,7 +69,6 @@ public class NyloHandler extends RoomHandler
 			plugin.getOverlayManager().add(overlay);
 		}
 
-		System.out.println("Starting Nylocas Room");
 		this.startTime = System.currentTimeMillis();
 		this.startTick = this.client.getTickCount();
 	}
@@ -99,7 +98,6 @@ public class NyloHandler extends RoomHandler
 		{
 			this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Nylocas - Waves' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 		}
-		System.out.println("Stopping Nylocas Room");
 	}
 
 	private void reset()

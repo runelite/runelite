@@ -108,8 +108,6 @@ public class NyloPredictor
 			type = NylocasType.valueOf("MELEE_" + level);
 		}
 
-		System.out.println(npc.getName() + " | " + npc.getCombatLevel() + " | (" + lp.getSceneX() + ", " + lp.getSceneY() + ") | (" + westBound + ", " + eastBound + ", " + southBound + ") | " + type + " | " + spawn);
-
 		if (spawn == null || type == null)
 		{
 			return;
@@ -150,7 +148,6 @@ public class NyloPredictor
 				currentSpawns.clear();
 
 				handler.setWave(currentIndex);
-				System.out.println("Nylocas Wave #" + currentIndex + " has spawned @ " + (this.client.getTickCount() - this.handler.startTick) + " | " + npcs.size() + " size.");
 
 				for (Map.Entry<NPC, Nylocas> nylocas : npcs.entrySet())
 				{
@@ -220,7 +217,6 @@ public class NyloPredictor
 					}
 				}
 
-				System.out.printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\n", elapsedTicks, mage_count, mage_level, range_count, range_level, melee_count, melee_level);
 			}
 		}
 	}

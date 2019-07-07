@@ -48,7 +48,6 @@ public class BloatHandler extends RoomHandler
 
 		this.reset();
 		this.plugin.setRoom(TheatreRoom.BLOAT);
-		System.out.println("Starting Bloat Room");
 	}
 
 	@Override
@@ -56,7 +55,6 @@ public class BloatHandler extends RoomHandler
 	{
 		this.reset();
 		this.plugin.setRoom(TheatreRoom.UNKNOWN);
-		System.out.println("Stopping Bloat Room");
 	}
 
 	private void reset()

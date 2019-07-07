@@ -61,7 +61,6 @@ public class VerzikHandler extends RoomHandler
 
 		this.reset();
 		this.plugin.setRoom(TheatreRoom.VERSIK);
-		System.out.println("Starting Verzik Room");
 	}
 
 	@Override
@@ -69,7 +68,6 @@ public class VerzikHandler extends RoomHandler
 	{
 		this.reset();
 		this.plugin.setRoom(TheatreRoom.UNKNOWN);
-		System.out.println("Stopping Verzik Room");
 	}
 
 	private void reset()
@@ -307,7 +305,6 @@ public class VerzikHandler extends RoomHandler
 				{
 					this.yellows = 14;
 //						this.versikCounter = 22;
-					System.out.println("Yellows have spawned.");
 					break;
 				}
 			}
