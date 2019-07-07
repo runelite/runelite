@@ -148,13 +148,13 @@ public class RaidsPlugin extends Plugin
 	private static final String TRIPLE_PUZZLE = "SFCCPC.PCSCPF - #WSEENES#WWWNEEE"; //good crabs first rare crabs second rare crabs third
 	private static final Pattern PUZZLES = Pattern.compile("Puzzle - (\\w+)");
 	@Getter(AccessLevel.PACKAGE)
-	private final ArrayList<String> roomWhitelist = new ArrayList<>();
+	private final List<String> roomWhitelist = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
-	private final ArrayList<String> roomBlacklist = new ArrayList<>();
+	private final List<String> roomBlacklist = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
-	private final ArrayList<String> rotationWhitelist = new ArrayList<>();
+	private final List<String> rotationWhitelist = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
-	private final ArrayList<String> layoutWhitelist = new ArrayList<>();
+	private final List<String> layoutWhitelist = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, List<Integer>> recommendedItemsList = new HashMap<>();
 	@Inject
@@ -814,7 +814,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void updateList(ArrayList<String> list, String input)
+	private void updateList(List<String> list, String input)
 	{
 		list.clear();
 
