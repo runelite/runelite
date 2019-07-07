@@ -51,7 +51,7 @@ public class NyloPredictor
 	int eastBound = 77;
 	int southBound = 42;
 	private NyloHandler handler;
-	private Map<Nylocas, NPC> currentSpawns = new HashMap<Nylocas, NPC>();
+	private Map<Nylocas, NPC> currentSpawns = new HashMap<>();
 	private int currentIndex = -1;
 
 	NyloPredictor(Client client, NyloHandler handler)
@@ -126,7 +126,7 @@ public class NyloPredictor
 			Wave checkWave = NYLOCAS_WAVES[i];
 
 			List<Nylocas> queue = new ArrayList<>(currentSpawns.keySet());
-			HashMap<NPC, Nylocas> npcs = new HashMap<NPC, Nylocas>();
+			HashMap<NPC, Nylocas> npcs = new HashMap<>();
 
 			boolean found = true;
 			for (Nylocas nylocas : checkWave.getSpawns())
