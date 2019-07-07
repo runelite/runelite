@@ -57,9 +57,6 @@ public class MaterialTab extends JLabel
 	private static final Border UNSELECTED_BORDER = BorderFactory
 		.createEmptyBorder(5, 10, 5, 10);
 
-	/* The tab's containing group */
-	private final MaterialTabGroup group;
-
 	/* The tab's associated content display */
 	@Getter
 	private final JComponent content;
@@ -75,7 +72,7 @@ public class MaterialTab extends JLabel
 	{
 		super(string);
 
-		this.group = group;
+		/* The tab's containing group */
 		this.content = content;
 
 		if (selected)
