@@ -521,7 +521,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	void doNotification()
 	{
-		if(!this.sendNotification)
+		if (!this.sendNotification)
 		{
 			return;
 		}
