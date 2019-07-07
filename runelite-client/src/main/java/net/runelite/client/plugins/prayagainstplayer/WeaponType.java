@@ -54,7 +54,7 @@ enum WeaponType
 		{
 			return WEAPON_MELEE;
 		}
-		if (weaponNameGivenLowerCase == null || weaponNameGivenLowerCase.toLowerCase().contains("null"))
+		if (weaponNameGivenLowerCase.toLowerCase().contains("null"))
 		{
 			return WEAPON_MELEE;
 		}
