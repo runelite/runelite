@@ -45,7 +45,7 @@ public class FlinchingTarget
 
 	@Getter(AccessLevel.PACKAGE)
 	private int objectId;
-	private NPC targetObject;
+	private final NPC targetObject;
 
 	@Getter(AccessLevel.PACKAGE)
 	public WorldPoint worldLocation;
