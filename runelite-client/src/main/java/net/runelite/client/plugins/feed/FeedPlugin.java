@@ -69,8 +69,8 @@ public class FeedPlugin extends Plugin
 	private FeedPanel feedPanel;
 	private NavigationButton navButton;
 
-	private FeedClient feedClient = new FeedClient();
-	private Supplier<FeedResult> feedSupplier = Suppliers.memoizeWithExpiration(() ->
+	private final FeedClient feedClient = new FeedClient();
+	private final Supplier<FeedResult> feedSupplier = Suppliers.memoizeWithExpiration(() ->
 	{
 		try
 		{
