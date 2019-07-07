@@ -38,7 +38,7 @@ public class Parse
 			{
 				if (!str.startsWith("//"))
 				{
-					sb.append(str + "\n");
+					sb.append(str).append("\n");
 				}
 			}
 
