@@ -63,12 +63,9 @@ class ShamanSpawnOverlay extends Overlay
 			final long startCountdown = Duration.between(spawn.getStart(), now).getSeconds();
 			final double certainSec = spawn.getCountdownTimer() - startCountdown;
 
-			if (certainSec <= 0)
+			if (certainSec <= 0 && spawn.getEnd() == null)
 			{
-				if (spawn.getEnd() == null)
-				{
-					spawn.setEnd(Instant.now());
-				}
+				spawn.setEnd(Instant.now());
 			}
 
 			final ProgressPieComponent pieComponent = new ProgressPieComponent();

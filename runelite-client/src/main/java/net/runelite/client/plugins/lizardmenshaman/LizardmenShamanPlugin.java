@@ -102,12 +102,9 @@ public class LizardmenShamanPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (this.notifyOnSpawn)
+		if (this.notifyOnSpawn && event.getMessage().contains(MESSAGE))
 		{
-			if (event.getMessage().contains(MESSAGE))
-			{
-				notifier.notify(MESSAGE);
-			}
+			notifier.notify(MESSAGE);
 		}
 	}
 
@@ -120,12 +117,9 @@ public class LizardmenShamanPlugin extends Plugin
 			return;
 		}
 
-		if (actor.getName().equals(SHAMAN) && actor.getAnimation() == 7157)
+		if (actor.getName().equals(SHAMAN) && actor.getAnimation() == 7157 && this.showTimer)
 		{
-			if (this.showTimer)
-			{
-				spawns.put(event.getActor().getLocalLocation(), new LizardmenShamanSpawn(8.4, null));
-			}
+			spawns.put(event.getActor().getLocalLocation(), new LizardmenShamanSpawn(8.4, null));
 		}
 	}
 
