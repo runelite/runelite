@@ -41,9 +41,9 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 @Singleton
 public class SpellbookDragOverlay extends Overlay
 {
-	private SpellbookPlugin plugin;
-	private Client client;
-	private SpriteManager spriteManager;
+	private final SpellbookPlugin plugin;
+	private final Client client;
+	private final SpriteManager spriteManager;
 
 	@Inject
 	private SpellbookDragOverlay(final SpellbookPlugin plugin, final Client client, final SpriteManager spriteManager)

@@ -129,7 +129,7 @@ public class SpellbookPlugin extends Plugin
 	@Getter
 	private Point draggingLocation;
 
-	private Map<Integer, Spell> spells = new HashMap<>();
+	private final Map<Integer, Spell> spells = new HashMap<>();
 	private Map<Integer, Spell> tmp = null;
 	private ImmutableSet<String> notFilteredSpells;
 	private Spellbook spellbook;
