@@ -161,7 +161,7 @@ public class RaidsOverlay extends Overlay
 		boolean vanguards = false;
 		boolean unknownCombat = false;
 		String puzzles = "";
-		String roomName = "";
+		String roomName;
 		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
 		{
 			int position = layoutRoom.getPosition();
