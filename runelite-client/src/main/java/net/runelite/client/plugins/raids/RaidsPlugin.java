@@ -818,7 +818,7 @@ public class RaidsPlugin extends Plugin
 	{
 		list.clear();
 
-		if (list == rotationWhitelist)
+		if (list.equals(rotationWhitelist))
 		{
 			Matcher m = ROTATION_REGEX.matcher(input);
 			while (m.find())
