@@ -142,7 +142,7 @@ public class SlayerPlugin extends Plugin
 
 	// Superiors
 	@VisibleForTesting
-	static List<String> SUPERIOR_SLAYER_MONSTERS = Arrays.asList(
+	static final List<String> SUPERIOR_SLAYER_MONSTERS = Arrays.asList(
 		"crushing hand",
 		"chasm crawler",
 		"screaming banshee",
@@ -239,10 +239,10 @@ public class SlayerPlugin extends Plugin
 	private int cachedPoints;
 	private Instant infoTimer;
 	private List<String> targetNames = new ArrayList<>();
-	private List<Integer> targetIds = new ArrayList<>();
+	private final List<Integer> targetIds = new ArrayList<>();
 	private boolean checkAsTokens = true;
 
-	private List<NPCPresence> lingeringPresences = new ArrayList<>();
+	private final List<NPCPresence> lingeringPresences = new ArrayList<>();
 	private SlayerXpDropLookup slayerXpDropLookup = null;
 
 	private SlayerTaskPanel panel;
