@@ -80,7 +80,11 @@ public class VorkathOverlay extends Overlay
 
 					BufferedImage currentPhaseIcon = getIcon(vorkath);
 
-					int totalWidth = currentPhaseIcon.getWidth() * OVERLAY_ICON_MARGIN;
+					int totalWidth = 0;
+					if (currentPhaseIcon != null)
+					{
+						totalWidth = currentPhaseIcon.getWidth() * OVERLAY_ICON_MARGIN;
+					}
 					int bgPadding = 8;
 					int currentPosX = 0;
 
