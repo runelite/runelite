@@ -147,7 +147,7 @@ public class Game
 			}
 		}
 
-		possibleRotations = rotations.toArray(new PortalRotation[rotations.size()]);
+		possibleRotations = rotations.toArray(new PortalRotation[0]);
 	}
 
 	private void killPortal(Portal portal)
