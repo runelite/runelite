@@ -16,13 +16,11 @@ import net.runelite.api.coords.WorldPoint;
 public class ClanManModeService
 {
 	private final Client client;
-	private final ClanManModeConfig config;
 	private final ClanManModePlugin plugin;
 
 	@Inject
-	private ClanManModeService(final Client client, final ClanManModeConfig config, final ClanManModePlugin plugin)
+	private ClanManModeService(final Client client, final ClanManModePlugin plugin)
 	{
-		this.config = config;
 		this.client = client;
 		this.plugin = plugin;
 	}
@@ -57,13 +55,13 @@ public class ClanManModeService
 				interactor = ((Player) interacting);
 			}
 
-			if (config.showAttackers())
+			if (plugin.isShowAttackers())
 			{
 				if (interactor != null)
 				{
 					if (interactor.getName().equals(localName))
 					{
-						consumer.accept(player, config.getAttackerColor());
+						consumer.accept(player, plugin.getGetAttackerColor());
 					}
 				}
 			}
@@ -76,7 +74,7 @@ public class ClanManModeService
 					{
 						plugin.clan.put(player.getName(), player.getCombatLevel());
 					}
-					if (config.highlightAttacked())
+					if (plugin.isHighlightAttacked())
 					{
 						if (interactor != null)
 						{
@@ -91,12 +89,12 @@ public class ClanManModeService
 								{
 									wildydiff = 0;
 								}
-								if (config.CalcSelfCB())
+								if (plugin.isCalcSelfCB())
 								{
 									if (interacting.getCombatLevel() <= selfmax && interacting.getCombatLevel() - wildydiff >= selfmin && !interactor.isClanMember())
 									{
 										interactors.put(interactor.getName(), player.getName());
-										consumer.accept(interactor, config.getClanAttackableColor());
+										consumer.accept(interactor, plugin.getGetClanAttackableColor());
 									}
 								}
 								else
@@ -104,7 +102,7 @@ public class ClanManModeService
 									if (interacting.getCombatLevel() <= maxatk && interacting.getCombatLevel() - wildydiff >= minatk && !interactor.isClanMember())
 									{
 										interactors.put(interactor.getName(), player.getName());
-										consumer.accept(interactor, config.getClanAttackableColor());
+										consumer.accept(interactor, plugin.getGetClanAttackableColor());
 									}
 								}
 							}
@@ -113,14 +111,14 @@ public class ClanManModeService
 				}
 				else
 				{
-					if (config.PersistentClan())
+					if (plugin.isPersistentClan())
 					{
 						if (plugin.clan.containsKey(player.getName()))
 						{
-							consumer.accept(player, config.getClanMemberColor());
+							consumer.accept(player, plugin.getGetClanMemberColor());
 						}
 					}
-					if (config.highlightAttacked())
+					if (plugin.isHighlightAttacked())
 					{
 						if (interactors.containsKey(player.getName()))
 						{
@@ -140,7 +138,7 @@ public class ClanManModeService
 									{
 										if (ainteract.getName().equals(player.getName()))
 										{
-											consumer.accept(player, config.getClanAttackableColor());
+											consumer.accept(player, plugin.getGetClanAttackableColor());
 										}
 										else
 										{
@@ -161,9 +159,9 @@ public class ClanManModeService
 							continue;
 						}
 					}
-					if (config.highlightAttackable())
+					if (plugin.isHighlightAttackable())
 					{
-						if ((config.hideAttackable() && plugin.ticks >= config.hideTime()) || plugin.clan.containsKey(player.getName()))
+						if ((plugin.isHideAttackable() && plugin.ticks >= plugin.getHideTime()) || plugin.clan.containsKey(player.getName()))
 						{
 							continue;
 						}
@@ -176,18 +174,18 @@ public class ClanManModeService
 						{
 							wildydiff = 0;
 						}
-						if (config.CalcSelfCB())
+						if (plugin.isCalcSelfCB())
 						{
 							if (player.getCombatLevel() <= selfmax && player.getCombatLevel() - wildydiff >= selfmin)
 							{
-								consumer.accept(player, config.getAttackableColor());
+								consumer.accept(player, plugin.getGetAttackableColor());
 							}
 						}
 						else
 						{
 							if (player.getCombatLevel() <= maxatk && player.getCombatLevel() - wildydiff >= minatk)
 							{
-								consumer.accept(player, config.getAttackableColor());
+								consumer.accept(player, plugin.getGetAttackableColor());
 							}
 						}
 					}
