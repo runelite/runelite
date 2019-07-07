@@ -85,7 +85,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 
 		assert AMOUNT_VARBITS.length == RUNE_VARBITS.length;
 
-		graphics.setFont(FontManager.getSmallFont(graphics.getFont()));
+		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		Point location = itemWidget.getCanvasLocation();
 		StringBuilder tooltipBuilder = new StringBuilder();

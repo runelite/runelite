@@ -6,6 +6,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("cf")
 @Implements("DynamicObject")
@@ -208,21 +209,21 @@ public class DynamicObject extends Entity {
       garbageValue = "-83"
    )
    static int method2223(int var0, Script var1, boolean var2) {
-      if (var0 == 5000) {
+      if (var0 == ScriptOpcodes.CHAT_GETFILTER_PUBLIC) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.publicChatMode;
          return 1;
-      } else if (var0 == 5001) {
+      } else if (var0 == ScriptOpcodes.CHAT_SETFILTER) {
          RouteStrategy.Interpreter_intStackSize -= 3;
          Client.publicChatMode = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         IndexCacheLoader.field512 = WorldMapElement.method4783(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
-         if (IndexCacheLoader.field512 == null) {
-            IndexCacheLoader.field512 = class310.field3805;
+         ArchiveLoader.field512 = WorldMapElement.method4783(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
+         if (ArchiveLoader.field512 == null) {
+            ArchiveLoader.field512 = class310.field3805;
          }
 
          Client.field138 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
          PacketBufferNode var15 = Interpreter.method1915(ClientPacket.field237, Client.packetWriter.isaacCipher);
          var15.packetBuffer.writeByte(Client.publicChatMode);
-         var15.packetBuffer.writeByte(IndexCacheLoader.field512.field3804);
+         var15.packetBuffer.writeByte(ArchiveLoader.field512.field3804);
          var15.packetBuffer.writeByte(Client.field138);
          Client.packetWriter.method241(var15);
          return 1;
@@ -230,32 +231,32 @@ public class DynamicObject extends Entity {
          String var3;
          int var4;
          int var5;
-         if (var0 == 5002) {
+         if (var0 == ScriptOpcodes.CHAT_SENDABUSEREPORT) {
             var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
             RouteStrategy.Interpreter_intStackSize -= 2;
             var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
             var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-            PacketBufferNode var13 = Interpreter.method1915(ClientPacket.field260, Client.packetWriter.isaacCipher);
-            var13.packetBuffer.writeByte(WorldMapRegion.method550(var3) + 2);
-            var13.packetBuffer.writeStringCp1252NullTerminated(var3);
-            var13.packetBuffer.writeByte(var4 - 1);
-            var13.packetBuffer.writeByte(var5);
-            Client.packetWriter.method241(var13);
+            PacketBufferNode var12 = Interpreter.method1915(ClientPacket.field260, Client.packetWriter.isaacCipher);
+            var12.packetBuffer.writeByte(WorldMapRegion.stringCp1252NullTerminatedByteSize(var3) + 2);
+            var12.packetBuffer.writeStringCp1252NullTerminated(var3);
+            var12.packetBuffer.writeByte(var4 - 1);
+            var12.packetBuffer.writeByte(var5);
+            Client.packetWriter.method241(var12);
             return 1;
          } else {
-            Message var11;
-            if (var0 == 5003) {
+            Message var6;
+            if (var0 == ScriptOpcodes.CHAT_GETHISTORY_BYTYPEANDLINE) {
                RouteStrategy.Interpreter_intStackSize -= 2;
                var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-               var11 = Message.method1226(var5, var4);
-               if (var11 != null) {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.count;
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.cycle;
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var11.sender != null ? var11.sender : "";
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var11.prefix != null ? var11.prefix : "";
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var11.text != null ? var11.text : "";
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.isFromFriend() ? 1 : (var11.isFromIgnored() ? 2 : 0);
+               var6 = Message.method1226(var5, var4);
+               if (var6 != null) {
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.count;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.cycle;
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.sender != null ? var6.sender : "";
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.prefix != null ? var6.prefix : "";
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.text != null ? var6.text : "";
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.isFromFriend() ? 1 : (var6.isFromIgnored() ? 2 : 0);
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -266,16 +267,16 @@ public class DynamicObject extends Entity {
                }
 
                return 1;
-            } else if (var0 == 5004) {
+            } else if (var0 == ScriptOpcodes.CHAT_GETHISTORY_BYUID) {
                var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-               var11 = NetCache.method4708(var5);
-               if (var11 != null) {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.type;
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.cycle;
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var11.sender != null ? var11.sender : "";
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var11.prefix != null ? var11.prefix : "";
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var11.text != null ? var11.text : "";
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.isFromFriend() ? 1 : (var11.isFromIgnored() ? 2 : 0);
+               var6 = NetCache.method4708(var5);
+               if (var6 != null) {
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.type;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.cycle;
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.sender != null ? var6.sender : "";
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.prefix != null ? var6.prefix : "";
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.text != null ? var6.text : "";
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.isFromFriend() ? 1 : (var6.isFromIgnored() ? 2 : 0);
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -286,179 +287,179 @@ public class DynamicObject extends Entity {
                }
 
                return 1;
-            } else if (var0 == 5005) {
-               if (IndexCacheLoader.field512 == null) {
+            } else if (var0 == ScriptOpcodes.CHAT_GETFILTER_PRIVATE) {
+               if (ArchiveLoader.field512 == null) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                } else {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = IndexCacheLoader.field512.field3804;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ArchiveLoader.field512.field3804;
                }
 
                return 1;
             } else {
-               String var6;
-               if (var0 == 5008) {
+               String var7;
+               if (var0 == ScriptOpcodes.CHAT_SENDPUBLIC) {
                   var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                   var4 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                  var6 = var3.toLowerCase();
-                  byte var12 = 0;
-                  if (var6.startsWith("yellow:")) {
-                     var12 = 0;
+                  var7 = var3.toLowerCase();
+                  byte var13 = 0;
+                  if (var7.startsWith("yellow:")) {
+                     var13 = 0;
                      var3 = var3.substring("yellow:".length());
-                  } else if (var6.startsWith("red:")) {
-                     var12 = 1;
+                  } else if (var7.startsWith("red:")) {
+                     var13 = 1;
                      var3 = var3.substring("red:".length());
-                  } else if (var6.startsWith("green:")) {
-                     var12 = 2;
+                  } else if (var7.startsWith("green:")) {
+                     var13 = 2;
                      var3 = var3.substring("green:".length());
-                  } else if (var6.startsWith("cyan:")) {
-                     var12 = 3;
+                  } else if (var7.startsWith("cyan:")) {
+                     var13 = 3;
                      var3 = var3.substring("cyan:".length());
-                  } else if (var6.startsWith("purple:")) {
-                     var12 = 4;
+                  } else if (var7.startsWith("purple:")) {
+                     var13 = 4;
                      var3 = var3.substring("purple:".length());
-                  } else if (var6.startsWith("white:")) {
-                     var12 = 5;
+                  } else if (var7.startsWith("white:")) {
+                     var13 = 5;
                      var3 = var3.substring("white:".length());
-                  } else if (var6.startsWith("flash1:")) {
-                     var12 = 6;
+                  } else if (var7.startsWith("flash1:")) {
+                     var13 = 6;
                      var3 = var3.substring("flash1:".length());
-                  } else if (var6.startsWith("flash2:")) {
-                     var12 = 7;
+                  } else if (var7.startsWith("flash2:")) {
+                     var13 = 7;
                      var3 = var3.substring("flash2:".length());
-                  } else if (var6.startsWith("flash3:")) {
-                     var12 = 8;
+                  } else if (var7.startsWith("flash3:")) {
+                     var13 = 8;
                      var3 = var3.substring("flash3:".length());
-                  } else if (var6.startsWith("glow1:")) {
-                     var12 = 9;
+                  } else if (var7.startsWith("glow1:")) {
+                     var13 = 9;
                      var3 = var3.substring("glow1:".length());
-                  } else if (var6.startsWith("glow2:")) {
-                     var12 = 10;
+                  } else if (var7.startsWith("glow2:")) {
+                     var13 = 10;
                      var3 = var3.substring("glow2:".length());
-                  } else if (var6.startsWith("glow3:")) {
-                     var12 = 11;
+                  } else if (var7.startsWith("glow3:")) {
+                     var13 = 11;
                      var3 = var3.substring("glow3:".length());
                   } else if (Client.language != 0) {
-                     if (var6.startsWith("yellow:")) {
-                        var12 = 0;
+                     if (var7.startsWith("yellow:")) {
+                        var13 = 0;
                         var3 = var3.substring("yellow:".length());
-                     } else if (var6.startsWith("red:")) {
-                        var12 = 1;
+                     } else if (var7.startsWith("red:")) {
+                        var13 = 1;
                         var3 = var3.substring("red:".length());
-                     } else if (var6.startsWith("green:")) {
-                        var12 = 2;
+                     } else if (var7.startsWith("green:")) {
+                        var13 = 2;
                         var3 = var3.substring("green:".length());
-                     } else if (var6.startsWith("cyan:")) {
-                        var12 = 3;
+                     } else if (var7.startsWith("cyan:")) {
+                        var13 = 3;
                         var3 = var3.substring("cyan:".length());
-                     } else if (var6.startsWith("purple:")) {
-                        var12 = 4;
+                     } else if (var7.startsWith("purple:")) {
+                        var13 = 4;
                         var3 = var3.substring("purple:".length());
-                     } else if (var6.startsWith("white:")) {
-                        var12 = 5;
+                     } else if (var7.startsWith("white:")) {
+                        var13 = 5;
                         var3 = var3.substring("white:".length());
-                     } else if (var6.startsWith("flash1:")) {
-                        var12 = 6;
+                     } else if (var7.startsWith("flash1:")) {
+                        var13 = 6;
                         var3 = var3.substring("flash1:".length());
-                     } else if (var6.startsWith("flash2:")) {
-                        var12 = 7;
+                     } else if (var7.startsWith("flash2:")) {
+                        var13 = 7;
                         var3 = var3.substring("flash2:".length());
-                     } else if (var6.startsWith("flash3:")) {
-                        var12 = 8;
+                     } else if (var7.startsWith("flash3:")) {
+                        var13 = 8;
                         var3 = var3.substring("flash3:".length());
-                     } else if (var6.startsWith("glow1:")) {
-                        var12 = 9;
+                     } else if (var7.startsWith("glow1:")) {
+                        var13 = 9;
                         var3 = var3.substring("glow1:".length());
-                     } else if (var6.startsWith("glow2:")) {
-                        var12 = 10;
+                     } else if (var7.startsWith("glow2:")) {
+                        var13 = 10;
                         var3 = var3.substring("glow2:".length());
-                     } else if (var6.startsWith("glow3:")) {
-                        var12 = 11;
+                     } else if (var7.startsWith("glow3:")) {
+                        var13 = 11;
                         var3 = var3.substring("glow3:".length());
                      }
                   }
 
-                  var6 = var3.toLowerCase();
+                  var7 = var3.toLowerCase();
                   byte var14 = 0;
-                  if (var6.startsWith("wave:")) {
+                  if (var7.startsWith("wave:")) {
                      var14 = 1;
                      var3 = var3.substring("wave:".length());
-                  } else if (var6.startsWith("wave2:")) {
+                  } else if (var7.startsWith("wave2:")) {
                      var14 = 2;
                      var3 = var3.substring("wave2:".length());
-                  } else if (var6.startsWith("shake:")) {
+                  } else if (var7.startsWith("shake:")) {
                      var14 = 3;
                      var3 = var3.substring("shake:".length());
-                  } else if (var6.startsWith("scroll:")) {
+                  } else if (var7.startsWith("scroll:")) {
                      var14 = 4;
                      var3 = var3.substring("scroll:".length());
-                  } else if (var6.startsWith("slide:")) {
+                  } else if (var7.startsWith("slide:")) {
                      var14 = 5;
                      var3 = var3.substring("slide:".length());
                   } else if (Client.language != 0) {
-                     if (var6.startsWith("wave:")) {
+                     if (var7.startsWith("wave:")) {
                         var14 = 1;
                         var3 = var3.substring("wave:".length());
-                     } else if (var6.startsWith("wave2:")) {
+                     } else if (var7.startsWith("wave2:")) {
                         var14 = 2;
                         var3 = var3.substring("wave2:".length());
-                     } else if (var6.startsWith("shake:")) {
+                     } else if (var7.startsWith("shake:")) {
                         var14 = 3;
                         var3 = var3.substring("shake:".length());
-                     } else if (var6.startsWith("scroll:")) {
+                     } else if (var7.startsWith("scroll:")) {
                         var14 = 4;
                         var3 = var3.substring("scroll:".length());
-                     } else if (var6.startsWith("slide:")) {
+                     } else if (var7.startsWith("slide:")) {
                         var14 = 5;
                         var3 = var3.substring("slide:".length());
                      }
                   }
 
-                  PacketBufferNode var9 = Interpreter.method1915(ClientPacket.field319, Client.packetWriter.isaacCipher);
-                  var9.packetBuffer.writeByte(0);
-                  int var10 = var9.packetBuffer.index;
-                  var9.packetBuffer.writeByte(var4);
-                  var9.packetBuffer.writeByte(var12);
-                  var9.packetBuffer.writeByte(var14);
-                  TextureProvider.method2777(var9.packetBuffer, var3);
-                  var9.packetBuffer.method41(var9.packetBuffer.index - var10);
-                  Client.packetWriter.method241(var9);
+                  PacketBufferNode var10 = Interpreter.method1915(ClientPacket.field319, Client.packetWriter.isaacCipher);
+                  var10.packetBuffer.writeByte(0);
+                  int var11 = var10.packetBuffer.index;
+                  var10.packetBuffer.writeByte(var4);
+                  var10.packetBuffer.writeByte(var13);
+                  var10.packetBuffer.writeByte(var14);
+                  TextureProvider.method2777(var10.packetBuffer, var3);
+                  var10.packetBuffer.method41(var10.packetBuffer.index - var11);
+                  Client.packetWriter.method241(var10);
                   return 1;
-               } else if (var0 == 5009) {
+               } else if (var0 == ScriptOpcodes.CHAT_SENDPRIVATE) {
                   Interpreter.Interpreter_stringStackSize -= 2;
                   var3 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize];
-                  var6 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1];
-                  PacketBufferNode var7 = Interpreter.method1915(ClientPacket.field247, Client.packetWriter.isaacCipher);
-                  var7.packetBuffer.writeShort(0);
-                  int var8 = var7.packetBuffer.index;
-                  var7.packetBuffer.writeStringCp1252NullTerminated(var3);
-                  TextureProvider.method2777(var7.packetBuffer, var6);
-                  var7.packetBuffer.method40(var7.packetBuffer.index - var8);
-                  Client.packetWriter.method241(var7);
+                  var7 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1];
+                  PacketBufferNode var8 = Interpreter.method1915(ClientPacket.field247, Client.packetWriter.isaacCipher);
+                  var8.packetBuffer.writeShort(0);
+                  int var9 = var8.packetBuffer.index;
+                  var8.packetBuffer.writeStringCp1252NullTerminated(var3);
+                  TextureProvider.method2777(var8.packetBuffer, var7);
+                  var8.packetBuffer.method40(var8.packetBuffer.index - var9);
+                  Client.packetWriter.method241(var8);
                   return 1;
-               } else if (var0 != 5015) {
-                  if (var0 == 5016) {
+               } else if (var0 != ScriptOpcodes.CHAT_PLAYERNAME) {
+                  if (var0 == ScriptOpcodes.CHAT_GETFILTER_TRADE) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.field138;
                      return 1;
-                  } else if (var0 == 5017) {
+                  } else if (var0 == ScriptOpcodes.CHAT_GETHISTORYLENGTH) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WidgetGroupParent.method1174(var5);
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = InterfaceParent.method1174(var5);
                      return 1;
-                  } else if (var0 == 5018) {
+                  } else if (var0 == ScriptOpcodes.CHAT_GETNEXTUID) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class12.method161(var5);
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = GrandExchangeOfferAgeComparator.method161(var5);
                      return 1;
-                  } else if (var0 == 5019) {
+                  } else if (var0 == ScriptOpcodes.CHAT_GETPREVUID) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = SpriteMask.method4391(var5);
                      return 1;
-                  } else if (var0 == 5020) {
+                  } else if (var0 == ScriptOpcodes.DOCHEAT) {
                      var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                      BoundaryObject.doCheat(var3);
                      return 1;
-                  } else if (var0 == 5021) {
+                  } else if (var0 == ScriptOpcodes.CHAT_SETMESSAGEFILTER) {
                      Client.field158 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize].toLowerCase().trim();
                      return 1;
-                  } else if (var0 == 5022) {
+                  } else if (var0 == ScriptOpcodes.CHAT_GETMESSAGEFILTER) {
                      Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Client.field158;
                      return 1;
                   } else if (var0 == 5023) {
@@ -490,14 +491,14 @@ public class DynamicObject extends Entity {
    )
    protected static int method2222() {
       int var0 = 0;
-      if (AbstractIndexCache.garbageCollector == null || !AbstractIndexCache.garbageCollector.isValid()) {
+      if (AbstractArchive.garbageCollector == null || !AbstractArchive.garbageCollector.isValid()) {
          try {
             Iterator var1 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
 
             while (var1.hasNext()) {
                GarbageCollectorMXBean var2 = (GarbageCollectorMXBean)var1.next();
                if (var2.isValid()) {
-                  AbstractIndexCache.garbageCollector = var2;
+                  AbstractArchive.garbageCollector = var2;
                   GameShell.garbageCollectorLastCheckTimeMs = -1L;
                   GameShell.garbageCollectorLastCollectionTime = -1L;
                }
@@ -506,9 +507,9 @@ public class DynamicObject extends Entity {
          }
       }
 
-      if (AbstractIndexCache.garbageCollector != null) {
+      if (AbstractArchive.garbageCollector != null) {
          long var10 = class203.currentTimeMs();
-         long var3 = AbstractIndexCache.garbageCollector.getCollectionTime();
+         long var3 = AbstractArchive.garbageCollector.getCollectionTime();
          if (GameShell.garbageCollectorLastCollectionTime != -1L) {
             long var5 = var3 - GameShell.garbageCollectorLastCollectionTime;
             long var7 = var10 - GameShell.garbageCollectorLastCheckTimeMs;
@@ -546,76 +547,76 @@ public class DynamicObject extends Entity {
 
          int var7;
          int var8;
-         int[] var10000;
+         int[] var9;
          for (var7 = 0; var7 < 32768; ++var7) {
-            NPC var9 = Client.npcs[var7];
-            if (var9 != null) {
+            NPC var10 = Client.npcs[var7];
+            if (var10 != null) {
                for (var8 = 0; var8 < 10; ++var8) {
-                  var10000 = var9.pathX;
-                  var10000[var8] -= var5;
-                  var10000 = var9.pathY;
-                  var10000[var8] -= var6;
+                  var9 = var10.pathX;
+                  var9[var8] -= var5;
+                  var9 = var10.pathY;
+                  var9[var8] -= var6;
                }
 
-               var9.x -= var5 * 128;
-               var9.y -= var6 * 128;
+               var10.x -= var5 * 128;
+               var10.y -= var6 * 128;
             }
          }
 
          for (var7 = 0; var7 < 2048; ++var7) {
-            Player var20 = Client.players[var7];
-            if (var20 != null) {
+            Player var21 = Client.players[var7];
+            if (var21 != null) {
                for (var8 = 0; var8 < 10; ++var8) {
-                  var10000 = var20.pathX;
-                  var10000[var8] -= var5;
-                  var10000 = var20.pathY;
-                  var10000[var8] -= var6;
+                  var9 = var21.pathX;
+                  var9[var8] -= var5;
+                  var9 = var21.pathY;
+                  var9[var8] -= var6;
                }
 
-               var20.x -= var5 * 128;
-               var20.y -= var6 * 128;
+               var21.x -= var5 * 128;
+               var21.y -= var6 * 128;
             }
          }
 
-         byte var21 = 0;
-         byte var10 = 104;
-         byte var11 = 1;
+         byte var22 = 0;
+         byte var11 = 104;
+         byte var12 = 1;
          if (var5 < 0) {
-            var21 = 103;
-            var10 = -1;
+            var22 = 103;
             var11 = -1;
+            var12 = -1;
          }
 
-         byte var12 = 0;
-         byte var13 = 104;
-         byte var14 = 1;
+         byte var13 = 0;
+         byte var14 = 104;
+         byte var15 = 1;
          if (var6 < 0) {
-            var12 = 103;
-            var13 = -1;
+            var13 = 103;
             var14 = -1;
+            var15 = -1;
          }
 
-         int var15;
-         for (int var16 = var21; var16 != var10; var16 += var11) {
-            for (var15 = var12; var13 != var15; var15 += var14) {
-               int var17 = var16 + var5;
-               int var18 = var15 + var6;
+         int var16;
+         for (int var17 = var22; var17 != var11; var17 += var12) {
+            for (var16 = var13; var14 != var16; var16 += var15) {
+               int var18 = var17 + var5;
+               int var19 = var16 + var6;
 
-               for (int var19 = 0; var19 < 4; ++var19) {
-                  if (var17 >= 0 && var18 >= 0 && var17 < 104 && var18 < 104) {
-                     Client.groundItems[var19][var16][var15] = Client.groundItems[var19][var17][var18];
+               for (int var20 = 0; var20 < 4; ++var20) {
+                  if (var18 >= 0 && var19 >= 0 && var18 < 104 && var19 < 104) {
+                     Client.groundItems[var20][var17][var16] = Client.groundItems[var20][var18][var19];
                   } else {
-                     Client.groundItems[var19][var16][var15] = null;
+                     Client.groundItems[var20][var17][var16] = null;
                   }
                }
             }
          }
 
-         for (PendingSpawn var22 = (PendingSpawn)Client.pendingSpawns.last(); var22 != null; var22 = (PendingSpawn)Client.pendingSpawns.previous()) {
-            var22.x -= var5;
-            var22.y -= var6;
-            if (var22.x < 0 || var22.y < 0 || var22.x >= 104 || var22.y >= 104) {
-               var22.remove();
+         for (PendingSpawn var23 = (PendingSpawn)Client.pendingSpawns.last(); var23 != null; var23 = (PendingSpawn)Client.pendingSpawns.previous()) {
+            var23.x -= var5;
+            var23.y -= var6;
+            if (var23.x < 0 || var23.y < 0 || var23.x >= 104 || var23.y >= 104) {
+               var23.remove();
             }
          }
 
@@ -627,15 +628,15 @@ public class DynamicObject extends Entity {
          Client.soundEffectCount = 0;
          Client.isCameraLocked = false;
          WorldMapSection1.cameraX -= var5 << 7;
-         class11.cameraZ -= var6 << 7;
+         GrandExchangeOfferNameComparator.cameraZ -= var6 << 7;
          MouseHandler.oculusOrbFocalPointX -= var5 << 7;
          ScriptEvent.oculusOrbFocalPointY -= var6 << 7;
          Client.field125 = -1;
          Client.graphicsObjects.clear();
          Client.projectiles.clear();
 
-         for (var15 = 0; var15 < 4; ++var15) {
-            Client.collisionMaps[var15].clear();
+         for (var16 = 0; var16 < 4; ++var16) {
+            Client.collisionMaps[var16].clear();
          }
       }
 

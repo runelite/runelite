@@ -13,7 +13,7 @@ public abstract class AbstractSocket {
       garbageValue = "1765046516"
    )
    @Export("isAvailable")
-   public abstract boolean isAvailable(int var1) throws IOException;
+   public abstract boolean isAvailable(int length) throws IOException;
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
@@ -37,7 +37,7 @@ public abstract class AbstractSocket {
       garbageValue = "-1089665746"
    )
    @Export("read")
-   public abstract int read(byte[] var1, int var2, int var3) throws IOException;
+   public abstract int read(byte[] dst, int dstIndex, int length) throws IOException;
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
@@ -45,7 +45,7 @@ public abstract class AbstractSocket {
       garbageValue = "-86"
    )
    @Export("write")
-   public abstract void write(byte[] var1, int var2, int var3) throws IOException;
+   public abstract void write(byte[] src, int srcIndex, int length) throws IOException;
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
@@ -63,7 +63,7 @@ public abstract class AbstractSocket {
    public static void method3488(int var0) {
       class214.field1129 = 1;
       class214.field1130 = null;
-      class30.musicTrackArchiveId = -1;
+      class30.musicTrackGroupId = -1;
       GrandExchangeOffer.musicTrackFileId = -1;
       WorldMapLabel.field1039 = 0;
       RectangleMode.musicTrackBoolean = false;

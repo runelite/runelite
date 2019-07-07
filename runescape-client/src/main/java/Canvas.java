@@ -10,6 +10,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("ao")
 @Implements("Canvas")
@@ -117,8 +118,8 @@ public final class Canvas extends java.awt.Canvas {
    static int method861(int var0, Script var1, boolean var2) {
       int var3;
       int var4;
-      Widget var6;
-      if (var0 == 100) {
+      Widget var5;
+      if (var0 == ScriptOpcodes.CC_CREATE) {
          RouteStrategy.Interpreter_intStackSize -= 3;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -126,62 +127,62 @@ public final class Canvas extends java.awt.Canvas {
          if (var4 == 0) {
             throw new RuntimeException();
          } else {
-            var6 = Huffman.getWidget(var3);
-            if (var6.children == null) {
-               var6.children = new Widget[var9 + 1];
+            var5 = Huffman.getWidget(var3);
+            if (var5.children == null) {
+               var5.children = new Widget[var9 + 1];
             }
 
-            if (var6.children.length <= var9) {
+            if (var5.children.length <= var9) {
                Widget[] var7 = new Widget[var9 + 1];
 
-               for (int var8 = 0; var8 < var6.children.length; ++var8) {
-                  var7[var8] = var6.children[var8];
+               for (int var8 = 0; var8 < var5.children.length; ++var8) {
+                  var7[var8] = var5.children[var8];
                }
 
-               var6.children = var7;
+               var5.children = var7;
             }
 
-            if (var9 > 0 && var6.children[var9 - 1] == null) {
+            if (var9 > 0 && var5.children[var9 - 1] == null) {
                throw new RuntimeException("" + (var9 - 1));
             } else {
                Widget var10 = new Widget();
                var10.type = var4;
-               var10.parentId = var10.id = var6.id;
+               var10.parentId = var10.id = var5.id;
                var10.childIndex = var9;
                var10.isIf3 = true;
-               var6.children[var9] = var10;
+               var5.children[var9] = var10;
                if (var2) {
                   WorldMapIcon1.field1030 = var10;
                } else {
-                  class12.field1111 = var10;
+                  GrandExchangeOfferAgeComparator.field1111 = var10;
                }
 
-               class22.method295(var6);
+               class22.method295(var5);
                return 1;
             }
          }
       } else {
-         Widget var5;
-         if (var0 == 101) {
-            var5 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
-            var6 = Huffman.getWidget(var5.id);
-            var6.children[var5.childIndex] = null;
-            class22.method295(var6);
-            return 1;
-         } else if (var0 == 102) {
-            var5 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-            var5.children = null;
+         Widget var6;
+         if (var0 == ScriptOpcodes.CC_DELETE) {
+            var6 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
+            var5 = Huffman.getWidget(var6.id);
+            var5.children[var6.childIndex] = null;
             class22.method295(var5);
             return 1;
-         } else if (var0 != 200) {
-            if (var0 == 201) {
-               var5 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-               if (var5 != null) {
+         } else if (var0 == ScriptOpcodes.CC_DELETEALL) {
+            var6 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+            var6.children = null;
+            class22.method295(var6);
+            return 1;
+         } else if (var0 != ScriptOpcodes.CC_FIND) {
+            if (var0 == ScriptOpcodes.IF_FIND) {
+               var6 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+               if (var6 != null) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                   if (var2) {
-                     WorldMapIcon1.field1030 = var5;
+                     WorldMapIcon1.field1030 = var6;
                   } else {
-                     class12.field1111 = var5;
+                     GrandExchangeOfferAgeComparator.field1111 = var6;
                   }
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -195,13 +196,13 @@ public final class Canvas extends java.awt.Canvas {
             RouteStrategy.Interpreter_intStackSize -= 2;
             var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
             var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-            var6 = class204.getWidgetChild(var3, var4);
-            if (var6 != null && var4 != -1) {
+            var5 = class204.getWidgetChild(var3, var4);
+            if (var5 != null && var4 != -1) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                if (var2) {
-                  WorldMapIcon1.field1030 = var6;
+                  WorldMapIcon1.field1030 = var5;
                } else {
-                  class12.field1111 = var6;
+                  GrandExchangeOfferAgeComparator.field1111 = var5;
                }
             } else {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -217,12 +218,12 @@ public final class Canvas extends java.awt.Canvas {
       signature = "(ILir;Ljava/lang/String;Ljava/lang/String;IZS)V",
       garbageValue = "-9124"
    )
-   public static void method858(int var0, AbstractIndexCache var1, String var2, String var3, int var4, boolean var5) {
-      int var6 = var1.getArchiveId(var2);
-      int var7 = var1.getRecordId(var6, var3);
+   public static void method858(int var0, AbstractArchive var1, String groupName, String fileName, int var4, boolean var5) {
+      int var6 = var1.getGroupId(groupName);
+      int var7 = var1.getFileId(var6, fileName);
       class214.field1129 = 1;
       class214.field1130 = var1;
-      class30.musicTrackArchiveId = var6;
+      class30.musicTrackGroupId = var6;
       GrandExchangeOffer.musicTrackFileId = var7;
       WorldMapLabel.field1039 = var4;
       RectangleMode.musicTrackBoolean = var5;
@@ -242,7 +243,7 @@ public final class Canvas extends java.awt.Canvas {
 
          if (var0.hitpoints == 0) {
             if (var0.field903 < 0 || VarbitDefinition.method4910(var0.field903, var0.field905)) {
-               ParamKeyDefinition.method4933(var0.level, var0.type, var0.x, var0.y, var0.field903, var0.field904, var0.field905);
+               ParamDefinition.addPendingSpawnToScene(var0.plane, var0.type, var0.x, var0.y, var0.field903, var0.field904, var0.field905);
                var0.remove();
             }
          } else {
@@ -251,7 +252,7 @@ public final class Canvas extends java.awt.Canvas {
             }
 
             if (var0.delay == 0 && var0.x >= 1 && var0.y >= 1 && var0.x <= 102 && var0.y <= 102 && (var0.id < 0 || VarbitDefinition.method4910(var0.id, var0.field908))) {
-               ParamKeyDefinition.method4933(var0.level, var0.type, var0.x, var0.y, var0.id, var0.orientation, var0.field908);
+               ParamDefinition.addPendingSpawnToScene(var0.plane, var0.type, var0.x, var0.y, var0.id, var0.orientation, var0.field908);
                var0.delay = -1;
                if (var0.field903 == var0.id && var0.field903 == -1) {
                   var0.remove();

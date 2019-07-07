@@ -86,6 +86,10 @@ class NpcAggroAreaOverlay extends Overlay
 				outlineColor.getBlue(),
 				100);
 		}
+		else
+		{
+			plugin.doNotification();
+		}
 
 		renderPath(graphics, lines, outlineColor);
 		return null;

@@ -8,7 +8,6 @@ public class HookClass
 	@SerializedName("class")
 	String clazz;
 	String name;
-	int access;
 	List<HookField> fields;
 	List<HookMethod> methods;
 }

@@ -108,9 +108,9 @@ public final class GraphicsObject extends Entity {
       garbageValue = "-730240149"
    )
    @Export("advance")
-   final void advance(int var1) {
+   final void advance(int cycles) {
       if (!this.isFinished) {
-         this.frameCycle += var1;
+         this.frameCycle += cycles;
 
          while (this.frameCycle > this.sequenceDefinition.frameLengths[this.frame]) {
             this.frameCycle -= this.sequenceDefinition.frameLengths[this.frame];

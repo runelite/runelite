@@ -3,6 +3,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("by")
 @Implements("ScriptEvent")
@@ -92,8 +93,8 @@ public class ScriptEvent extends Node {
       garbageValue = "723852511"
    )
    @Export("setArgs")
-   public void setArgs(Object[] var1) {
-      this.args0 = var1;
+   public void setArgs(Object[] args) {
+      this.args0 = args;
    }
 
    @ObfuscatedName("f")
@@ -102,8 +103,8 @@ public class ScriptEvent extends Node {
       garbageValue = "-110"
    )
    @Export("setType")
-   public void setType(int var1) {
-      this.type0 = var1;
+   public void setType(int type) {
+      this.type0 = type;
    }
 
    @ObfuscatedName("j")
@@ -112,51 +113,51 @@ public class ScriptEvent extends Node {
       garbageValue = "0"
    )
    static int method1185(int var0, Script var1, boolean var2) {
-      Widget var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
-      if (var0 == 1600) {
+      Widget var3 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
+      if (var0 == ScriptOpcodes.CC_GETSCROLLX) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollX;
          return 1;
-      } else if (var0 == 1601) {
+      } else if (var0 == ScriptOpcodes.CC_GETSCROLLY) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollY;
          return 1;
-      } else if (var0 == 1602) {
+      } else if (var0 == ScriptOpcodes.CC_GETTEXT) {
          Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.text;
          return 1;
-      } else if (var0 == 1603) {
+      } else if (var0 == ScriptOpcodes.CC_GETSCROLLWIDTH) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollWidth;
          return 1;
-      } else if (var0 == 1604) {
+      } else if (var0 == ScriptOpcodes.CC_GETSCROLLHEIGHT) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollHeight;
          return 1;
-      } else if (var0 == 1605) {
+      } else if (var0 == ScriptOpcodes.CC_GETMODELZOOM) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelZoom;
          return 1;
-      } else if (var0 == 1606) {
+      } else if (var0 == ScriptOpcodes.CC_GETMODELANGLE_X) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleX;
          return 1;
-      } else if (var0 == 1607) {
+      } else if (var0 == ScriptOpcodes.CC_GETMODELANGLE_Z) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleZ;
          return 1;
-      } else if (var0 == 1608) {
+      } else if (var0 == ScriptOpcodes.CC_GETMODELANGLE_Y) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleY;
          return 1;
-      } else if (var0 == 1609) {
+      } else if (var0 == ScriptOpcodes.CC_GETTRANS) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.transparency;
          return 1;
       } else if (var0 == 1610) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.field960;
          return 1;
-      } else if (var0 == 1611) {
+      } else if (var0 == ScriptOpcodes.CC_GETCOLOUR) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.color;
          return 1;
-      } else if (var0 == 1612) {
+      } else if (var0 == ScriptOpcodes.CC_GETFILLCOLOUR) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.color2;
          return 1;
       } else if (var0 == 1613) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
          return 1;
       } else if (var0 == 1614) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.field964 ? 1 : 0;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0;
          return 1;
       } else {
          return 2;
@@ -169,119 +170,119 @@ public class ScriptEvent extends Node {
       garbageValue = "1256509027"
    )
    static int method1187(int var0, Script var1, boolean var2) {
-      if (var0 == 3300) {
+      if (var0 == ScriptOpcodes.CLIENTCLOCK) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.cycle;
          return 1;
       } else {
          int var3;
          int var4;
-         if (var0 == 3301) {
+         if (var0 == ScriptOpcodes.INV_GETOBJ) {
             RouteStrategy.Interpreter_intStackSize -= 2;
             var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
             var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class83.method2027(var3, var4);
             return 1;
-         } else if (var0 == 3302) {
+         } else if (var0 == ScriptOpcodes.INV_GETNUM) {
             RouteStrategy.Interpreter_intStackSize -= 2;
             var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
             var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapLabel.method442(var3, var4);
             return 1;
-         } else if (var0 == 3303) {
+         } else if (var0 == ScriptOpcodes.INV_TOTAL) {
             RouteStrategy.Interpreter_intStackSize -= 2;
             var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
             var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class1.method18(var3, var4);
             return 1;
-         } else if (var0 == 3304) {
+         } else if (var0 == ScriptOpcodes.INV_SIZE) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapDecorationType.method4523(var3).size;
             return 1;
-         } else if (var0 == 3305) {
+         } else if (var0 == ScriptOpcodes.STAT) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.currentLevels[var3];
             return 1;
-         } else if (var0 == 3306) {
+         } else if (var0 == ScriptOpcodes.STAT_BASE) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.levels[var3];
             return 1;
-         } else if (var0 == 3307) {
+         } else if (var0 == ScriptOpcodes.STAT_XP) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.experience[var3];
             return 1;
          } else {
             int var5;
-            if (var0 == 3308) {
+            if (var0 == ScriptOpcodes.COORD) {
                var3 = SoundSystem.plane;
                var4 = (Canvas.localPlayer.x >> 7) + class50.baseX;
                var5 = (Canvas.localPlayer.y >> 7) + GraphicsObject.baseY;
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (var4 << 14) + var5 + (var3 << 28);
                return 1;
-            } else if (var0 == 3309) {
+            } else if (var0 == ScriptOpcodes.COORDX) {
                var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 >> 14 & 16383;
                return 1;
-            } else if (var0 == 3310) {
+            } else if (var0 == ScriptOpcodes.COORDZ) {
                var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 >> 28;
                return 1;
-            } else if (var0 == 3311) {
+            } else if (var0 == ScriptOpcodes.COORDY) {
                var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 & 16383;
                return 1;
-            } else if (var0 == 3312) {
+            } else if (var0 == ScriptOpcodes.MAP_MEMBERS) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.isMembersWorld ? 1 : 0;
                return 1;
-            } else if (var0 == 3313) {
+            } else if (var0 == ScriptOpcodes.INVOTHER_GETOBJ) {
                RouteStrategy.Interpreter_intStackSize -= 2;
                var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] + 32768;
                var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class83.method2027(var3, var4);
                return 1;
-            } else if (var0 == 3314) {
+            } else if (var0 == ScriptOpcodes.INVOTHER_GETNUM) {
                RouteStrategy.Interpreter_intStackSize -= 2;
                var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] + 32768;
                var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapLabel.method442(var3, var4);
                return 1;
-            } else if (var0 == 3315) {
+            } else if (var0 == ScriptOpcodes.INVOTHER_TOTAL) {
                RouteStrategy.Interpreter_intStackSize -= 2;
                var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] + 32768;
                var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class1.method18(var3, var4);
                return 1;
-            } else if (var0 == 3316) {
-               if (Client.rights >= 2) {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.rights;
+            } else if (var0 == ScriptOpcodes.STAFFMODLEVEL) {
+               if (Client.staffModLevel >= 2) {
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.staffModLevel;
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                }
 
                return 1;
-            } else if (var0 == 3317) {
+            } else if (var0 == ScriptOpcodes.REBOOTTIMER) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.rebootTimer;
                return 1;
-            } else if (var0 == 3318) {
+            } else if (var0 == ScriptOpcodes.MAP_WORLD) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.worldId;
                return 1;
-            } else if (var0 == 3321) {
+            } else if (var0 == ScriptOpcodes.RUNENERGY_VISIBLE) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.runEnergy;
                return 1;
-            } else if (var0 == 3322) {
+            } else if (var0 == ScriptOpcodes.RUNWEIGHT_VISIBLE) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.weight;
                return 1;
-            } else if (var0 == 3323) {
-               if (Client.field155) {
+            } else if (var0 == ScriptOpcodes.PLAYERMOD) {
+               if (Client.playerMod) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                }
 
                return 1;
-            } else if (var0 == 3324) {
+            } else if (var0 == ScriptOpcodes.WORLDFLAGS) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.worldProperties;
                return 1;
-            } else if (var0 == 3325) {
+            } else if (var0 == ScriptOpcodes.MOVECOORD) {
                RouteStrategy.Interpreter_intStackSize -= 4;
                var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];

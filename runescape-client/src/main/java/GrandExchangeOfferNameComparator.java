@@ -1,11 +1,14 @@
 import java.util.Comparator;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("k")
-final class class11 implements Comparator {
+@Implements("GrandExchangeOfferNameComparator")
+final class GrandExchangeOfferNameComparator implements Comparator {
    @ObfuscatedName("hl")
    @ObfuscatedGetter(
       intValue = -1945589829
@@ -18,8 +21,9 @@ final class class11 implements Comparator {
       signature = "(Ll;Ll;B)I",
       garbageValue = "1"
    )
-   int method138(GrandExchangeEvent var1, GrandExchangeEvent var2) {
-      return var1.method119().compareTo(var2.method119());
+   @Export("compareTyped")
+   int compareTyped(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+      return var1.getOfferName().compareTo(var2.getOfferName());
    }
 
    public boolean equals(Object var1) {
@@ -27,7 +31,7 @@ final class class11 implements Comparator {
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method138((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+      return this.compareTyped((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    @ObfuscatedName("m")
@@ -87,7 +91,7 @@ final class class11 implements Comparator {
          var0 -= 1000;
          var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
       } else {
-         var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+         var3 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       }
 
       String var4 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
@@ -120,67 +124,67 @@ final class class11 implements Comparator {
          var8 = null;
       }
 
-      if (var0 == 1400) {
+      if (var0 == ScriptOpcodes.CC_SETONCLICK) {
          var3.onClick = var8;
-      } else if (var0 == 1401) {
+      } else if (var0 == ScriptOpcodes.CC_SETONHOLD) {
          var3.onHold = var8;
-      } else if (var0 == 1402) {
+      } else if (var0 == ScriptOpcodes.CC_SETONRELEASE) {
          var3.onRelease = var8;
-      } else if (var0 == 1403) {
+      } else if (var0 == ScriptOpcodes.CC_SETONMOUSEOVER) {
          var3.onMouseOver = var8;
-      } else if (var0 == 1404) {
+      } else if (var0 == ScriptOpcodes.CC_SETONMOUSELEAVE) {
          var3.onMouseLeave = var8;
-      } else if (var0 == 1405) {
+      } else if (var0 == ScriptOpcodes.CC_SETONDRAG) {
          var3.onDrag = var8;
-      } else if (var0 == 1406) {
+      } else if (var0 == ScriptOpcodes.CC_SETONTARGETLEAVE) {
          var3.onTargetLeave = var8;
-      } else if (var0 == 1407) {
+      } else if (var0 == ScriptOpcodes.CC_SETONVARTRANSMIT) {
          var3.onVarTransmit = var8;
          var3.varTransmitTriggers = var5;
-      } else if (var0 == 1408) {
+      } else if (var0 == ScriptOpcodes.CC_SETONTIMER) {
          var3.onTimer = var8;
-      } else if (var0 == 1409) {
+      } else if (var0 == ScriptOpcodes.CC_SETONOP) {
          var3.onOp = var8;
-      } else if (var0 == 1410) {
+      } else if (var0 == ScriptOpcodes.CC_SETONDRAGCOMPLETE) {
          var3.onDragComplete = var8;
-      } else if (var0 == 1411) {
+      } else if (var0 == ScriptOpcodes.CC_SETONCLICKREPEAT) {
          var3.onClickRepeat = var8;
-      } else if (var0 == 1412) {
+      } else if (var0 == ScriptOpcodes.CC_SETONMOUSEREPEAT) {
          var3.onMouseRepeat = var8;
-      } else if (var0 == 1414) {
+      } else if (var0 == ScriptOpcodes.CC_SETONINVTRANSMIT) {
          var3.onInvTransmit = var8;
          var3.invTransmitTriggers = var5;
-      } else if (var0 == 1415) {
+      } else if (var0 == ScriptOpcodes.CC_SETONSTATTRANSMIT) {
          var3.onStatTransmit = var8;
          var3.statTransmitTriggers = var5;
-      } else if (var0 == 1416) {
+      } else if (var0 == ScriptOpcodes.CC_SETONTARGETENTER) {
          var3.onTargetEnter = var8;
-      } else if (var0 == 1417) {
+      } else if (var0 == ScriptOpcodes.CC_SETONSCROLLWHEEL) {
          var3.onScroll = var8;
-      } else if (var0 == 1418) {
-         var3.field970 = var8;
-      } else if (var0 == 1419) {
-         var3.onKeyListener = var8;
-      } else if (var0 == 1420) {
-         var3.field971 = var8;
-      } else if (var0 == 1421) {
-         var3.field972 = var8;
-      } else if (var0 == 1422) {
-         var3.field973 = var8;
-      } else if (var0 == 1423) {
-         var3.onDialogAbortListener = var8;
-      } else if (var0 == 1424) {
-         var3.field974 = var8;
-      } else if (var0 == 1425) {
-         var3.field976 = var8;
+      } else if (var0 == ScriptOpcodes.CC_SETONCHATTRANSMIT) {
+         var3.onChatTransmit = var8;
+      } else if (var0 == ScriptOpcodes.CC_SETONKEY) {
+         var3.onKey = var8;
+      } else if (var0 == ScriptOpcodes.CC_SETONFRIENDTRANSMIT) {
+         var3.onFriendTransmit = var8;
+      } else if (var0 == ScriptOpcodes.CC_SETONCLANTRANSMIT) {
+         var3.onClanTransmit = var8;
+      } else if (var0 == ScriptOpcodes.CC_SETONMISCTRANSMIT) {
+         var3.onMiscTransmit = var8;
+      } else if (var0 == ScriptOpcodes.CC_SETONDIALOGABORT) {
+         var3.onDialogAbort = var8;
+      } else if (var0 == ScriptOpcodes.CC_SETONSUBCHANGE) {
+         var3.onSubChange = var8;
+      } else if (var0 == ScriptOpcodes.CC_SETONSTOCKTRANSMIT) {
+         var3.onStockTransmit = var8;
       } else if (var0 == 1426) {
          var3.field977 = var8;
       } else {
-         if (var0 != 1427) {
+         if (var0 != ScriptOpcodes.CC_SETONRESIZE) {
             return 2;
          }
 
-         var3.field975 = var8;
+         var3.onResize = var8;
       }
 
       var3.hasListener = true;
@@ -194,11 +198,11 @@ final class class11 implements Comparator {
    )
    static int method146(int var0, Script var1, boolean var2) {
       Widget var3;
-      if (var0 == 2700) {
+      if (var0 == ScriptOpcodes.IF_GETINVOBJECT) {
          var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.itemId;
          return 1;
-      } else if (var0 == 2701) {
+      } else if (var0 == ScriptOpcodes.IF_GETINVCOUNT) {
          var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
          if (var3.itemId != -1) {
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.itemQuantity;
@@ -207,9 +211,9 @@ final class class11 implements Comparator {
          }
 
          return 1;
-      } else if (var0 == 2702) {
+      } else if (var0 == ScriptOpcodes.IF_HASSUB) {
          int var4 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-         WidgetGroupParent var5 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var4);
+         InterfaceParent var5 = (InterfaceParent)Client.interfaceParents.get((long)var4);
          if (var5 != null) {
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
          } else {
@@ -217,8 +221,8 @@ final class class11 implements Comparator {
          }
 
          return 1;
-      } else if (var0 == 2706) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.rootWidgetGroup;
+      } else if (var0 == ScriptOpcodes.IF_GETTOP) {
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.rootInterface;
          return 1;
       } else {
          return 2;

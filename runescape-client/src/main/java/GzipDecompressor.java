@@ -55,19 +55,20 @@ public class GzipDecompressor {
       signature = "(II)Ljq;",
       garbageValue = "-1060388349"
    )
-   public static StructDefinition method3702(int var0) {
-      StructDefinition var1 = (StructDefinition)StructDefinition.field886.get((long)var0);
+   @Export("getStructDefinition")
+   public static StructDefinition getStructDefinition(int var0) {
+      StructDefinition var1 = (StructDefinition)StructDefinition.StructDefinition_cached.get((long)var0);
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = StructDefinition.field885.takeRecord(34, var0);
+         byte[] var2 = StructDefinition.StructDefinition_archive.takeFile(34, var0);
          var1 = new StructDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
-         var1.init();
-         StructDefinition.field886.put(var1, (long)var0);
+         var1.postDecode();
+         StructDefinition.StructDefinition_cached.put(var1, (long)var0);
          return var1;
       }
    }

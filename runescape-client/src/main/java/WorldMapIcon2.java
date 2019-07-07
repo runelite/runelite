@@ -23,13 +23,14 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = -25914375
    )
-   int field1036;
+   @Export("element")
+   int element;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Laj;"
    )
-   @Export("label0")
-   WorldMapLabel label0;
+   @Export("label")
+   WorldMapLabel label;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 927871683
@@ -44,7 +45,7 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
    @ObfuscatedSignature(
       signature = "(Lhu;Lhu;ILav;)V"
    )
-   WorldMapIcon2(TileLocation var1, TileLocation var2, int var3, WorldMapRegion var4) {
+   WorldMapIcon2(Coord var1, Coord var2, int var3, WorldMapRegion var4) {
       super(var1, var2);
       this.field1034 = var3;
       this.field1035 = var4;
@@ -56,8 +57,9 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       signature = "(I)I",
       garbageValue = "1990181988"
    )
-   public int vmethod395() {
-      return this.field1036;
+   @Export("getElement")
+   public int getElement() {
+      return this.element;
    }
 
    @ObfuscatedName("f")
@@ -65,8 +67,9 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       signature = "(I)Laj;",
       garbageValue = "1159446036"
    )
-   WorldMapLabel vmethod396() {
-      return this.label0;
+   @Export("getLabel")
+   WorldMapLabel getLabel() {
+      return this.label;
    }
 
    @ObfuscatedName("q")
@@ -93,9 +96,9 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       garbageValue = "-806344204"
    )
    void method399() {
-      this.field1036 = class50.getObjectDefinition(this.field1034).transform().mapIconId;
-      this.label0 = this.field1035.method420(ViewportMouse.getWorldMapElement(this.field1036));
-      WorldMapElement var1 = ViewportMouse.getWorldMapElement(this.vmethod395());
+      this.element = class50.getObjectDefinition(this.field1034).transform().mapIconId;
+      this.label = this.field1035.method420(ViewportMouse.getWorldMapElement(this.element));
+      WorldMapElement var1 = ViewportMouse.getWorldMapElement(this.getElement());
       Sprite var2 = var1.getSprite(false);
       if (var2 != null) {
          this.field1037 = var2.subWidth;

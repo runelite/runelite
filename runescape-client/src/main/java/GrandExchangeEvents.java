@@ -7,18 +7,23 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("g")
 @Implements("GrandExchangeEvents")
 public class GrandExchangeEvents {
    @ObfuscatedName("f")
-   public static Comparator field371;
+   @Export("geAgeComparator")
+   public static Comparator geAgeComparator;
    @ObfuscatedName("q")
-   public static Comparator field372;
+   @Export("geUnitPriceComparator")
+   public static Comparator geUnitPriceComparator;
    @ObfuscatedName("w")
-   public static Comparator field373;
+   @Export("geItemNameComparator")
+   public static Comparator geItemNameComparator;
    @ObfuscatedName("o")
-   public static Comparator field374;
+   @Export("geTotalQuantityComparator")
+   public static Comparator geTotalQuantityComparator;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1605454211
@@ -78,14 +83,14 @@ public class GrandExchangeEvents {
       garbageValue = "1601363438"
    )
    @Export("addChatMessage")
-   static void addChatMessage(int var0, String var1, String var2, String var3) {
-      ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(var0);
+   static void addChatMessage(int type, String sender, String text, String prefix) {
+      ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(type);
       if (var4 == null) {
          var4 = new ChatChannel();
-         Messages.Messages_channels.put(var0, var4);
+         Messages.Messages_channels.put(type, var4);
       }
 
-      Message var5 = var4.addMessage(var0, var1, var2, var3);
+      Message var5 = var4.addMessage(type, sender, text, prefix);
       Messages.Messages_hashTable.put(var5, (long)var5.count);
       Messages.Messages_queue.add(var5);
       Client.chatCycle = Client.cycleCntr;
@@ -109,50 +114,50 @@ public class GrandExchangeEvents {
    )
    static int method75(int var0, Script var1, boolean var2) {
       Widget var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-      if (var0 == 2600) {
+      if (var0 == ScriptOpcodes.IF_GETSCROLLX) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollX;
          return 1;
-      } else if (var0 == 2601) {
+      } else if (var0 == ScriptOpcodes.IF_GETSCROLLY) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollY;
          return 1;
-      } else if (var0 == 2602) {
+      } else if (var0 == ScriptOpcodes.IF_GETTEXT) {
          Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.text;
          return 1;
-      } else if (var0 == 2603) {
+      } else if (var0 == ScriptOpcodes.IF_GETSCROLLWIDTH) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollWidth;
          return 1;
-      } else if (var0 == 2604) {
+      } else if (var0 == ScriptOpcodes.IF_GETSCROLLHEIGHT) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollHeight;
          return 1;
-      } else if (var0 == 2605) {
+      } else if (var0 == ScriptOpcodes.IF_GETMODELZOOM) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelZoom;
          return 1;
-      } else if (var0 == 2606) {
+      } else if (var0 == ScriptOpcodes.IF_GETMODELANGLE_X) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleX;
          return 1;
-      } else if (var0 == 2607) {
+      } else if (var0 == ScriptOpcodes.IF_GETMODELANGLE_Z) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleZ;
          return 1;
-      } else if (var0 == 2608) {
+      } else if (var0 == ScriptOpcodes.IF_GETMODELANGLE_Y) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelAngleY;
          return 1;
-      } else if (var0 == 2609) {
+      } else if (var0 == ScriptOpcodes.IF_GETTRANS) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.transparency;
          return 1;
       } else if (var0 == 2610) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.field960;
          return 1;
-      } else if (var0 == 2611) {
+      } else if (var0 == ScriptOpcodes.IF_GETCOLOUR) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.color;
          return 1;
-      } else if (var0 == 2612) {
+      } else if (var0 == ScriptOpcodes.IF_GETFILLCOLOUR) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.color2;
          return 1;
       } else if (var0 == 2613) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
          return 1;
       } else if (var0 == 2614) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.field964 ? 1 : 0;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0;
          return 1;
       } else {
          return 2;
@@ -165,17 +170,17 @@ public class GrandExchangeEvents {
       garbageValue = "-635606409"
    )
    static final void method74(int var0, int var1) {
-      if (GroundItemPile.loadWidgetGroup(var0)) {
-         class30.method570(Widget.widgets[var0], var1);
+      if (GroundItemPile.loadInterface(var0)) {
+         class30.method570(Widget.interfaceComponents[var0], var1);
       }
 
    }
 
    static {
-      field371 = new class12();
-      new WorldComparator();
-      field372 = new UnitPriceComparator();
-      field373 = new class11();
-      field374 = new TotalQuantityComparator();
+      geAgeComparator = new GrandExchangeOfferAgeComparator();
+      new GrandExchangeOfferWorldComparator();
+      geUnitPriceComparator = new GrandExchangeOfferUnitPriceComparator();
+      geItemNameComparator = new GrandExchangeOfferNameComparator();
+      geTotalQuantityComparator = new GrandExchangeOfferTotalQuantityComparator();
    }
 }

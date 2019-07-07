@@ -42,8 +42,8 @@ public abstract class Actor extends Entity {
    @ObfuscatedGetter(
       intValue = -299122235
    )
-   @Export("idleSequence")
-   int idleSequence;
+   @Export("readySequence")
+   int readySequence;
    @ObfuscatedName("al")
    @ObfuscatedGetter(
       intValue = -831787909
@@ -66,20 +66,20 @@ public abstract class Actor extends Entity {
    @ObfuscatedGetter(
       intValue = -1598871111
    )
-   @Export("walkTurnSequence")
-   int walkTurnSequence;
+   @Export("walkBackSequence")
+   int walkBackSequence;
    @ObfuscatedName("ad")
    @ObfuscatedGetter(
       intValue = -568830521
    )
-   @Export("walkTurnLeftSequence")
-   int walkTurnLeftSequence;
+   @Export("walkLeftSequence")
+   int walkLeftSequence;
    @ObfuscatedName("ap")
    @ObfuscatedGetter(
       intValue = -257240117
    )
-   @Export("walkTurnRightSequence")
-   int walkTurnRightSequence;
+   @Export("walkRightSequence")
+   int walkRightSequence;
    @ObfuscatedName("as")
    @ObfuscatedGetter(
       intValue = 1708570917
@@ -318,13 +318,13 @@ public abstract class Actor extends Entity {
    Actor() {
       this.field10 = false;
       this.size = 1;
-      this.idleSequence = -1;
+      this.readySequence = -1;
       this.turnLeftSequence = -1;
       this.turnRightSequence = -1;
       this.walkSequence = -1;
-      this.walkTurnSequence = -1;
-      this.walkTurnLeftSequence = -1;
-      this.walkTurnRightSequence = -1;
+      this.walkBackSequence = -1;
+      this.walkLeftSequence = -1;
+      this.walkRightSequence = -1;
       this.runSequence = -1;
       this.overheadText = null;
       this.field11 = false;
@@ -390,13 +390,13 @@ public abstract class Actor extends Entity {
       garbageValue = "-1925126781"
    )
    @Export("addHitSplat")
-   final void addHitSplat(int var1, int var2, int var3, int var4, int var5, int var6) {
+   final void addHitSplat(int type, int value, int type2, int value2, int cycle, int cycle2) {
       boolean var7 = true;
       boolean var8 = true;
 
       int var9;
       for (var9 = 0; var9 < 4; ++var9) {
-         if (this.hitSplatCycles[var9] > var5) {
+         if (this.hitSplatCycles[var9] > cycle) {
             var7 = false;
          } else {
             var8 = false;
@@ -406,8 +406,8 @@ public abstract class Actor extends Entity {
       var9 = -1;
       int var10 = -1;
       int var11 = 0;
-      if (var1 >= 0) {
-         HitSplatDefinition var12 = LoginScreenAnimation.getHitSplatDefinition(var1);
+      if (type >= 0) {
+         HitSplatDefinition var12 = LoginScreenAnimation.getHitSplatDefinition(type);
          var10 = var12.field396;
          var11 = var12.field387;
       }
@@ -438,7 +438,7 @@ public abstract class Actor extends Entity {
             }
          }
 
-         if (var10 == 1 && var14 >= var2) {
+         if (var10 == 1 && var14 >= value) {
             return;
          }
       } else {
@@ -449,7 +449,7 @@ public abstract class Actor extends Entity {
          for (var14 = 0; var14 < 4; ++var14) {
             byte var15 = this.hitSplatCount;
             this.hitSplatCount = (byte)((this.hitSplatCount + 1) % 4);
-            if (this.hitSplatCycles[var15] <= var5) {
+            if (this.hitSplatCycles[var15] <= cycle) {
                var9 = var15;
                break;
             }
@@ -457,11 +457,11 @@ public abstract class Actor extends Entity {
       }
 
       if (var9 >= 0) {
-         this.hitSplatTypes[var9] = var1;
-         this.hitSplatValues[var9] = var2;
-         this.hitSplatTypes2[var9] = var3;
-         this.hitSplatValues2[var9] = var4;
-         this.hitSplatCycles[var9] = var5 + var11 + var6;
+         this.hitSplatTypes[var9] = type;
+         this.hitSplatValues[var9] = value;
+         this.hitSplatTypes2[var9] = type2;
+         this.hitSplatValues2[var9] = value2;
+         this.hitSplatCycles[var9] = cycle + var11 + cycle2;
       }
 
    }
@@ -472,19 +472,19 @@ public abstract class Actor extends Entity {
       garbageValue = "27"
    )
    @Export("addHealthBar")
-   final void addHealthBar(int var1, int var2, int var3, int var4, int var5, int var6) {
-      HealthBarDefinition var7 = (HealthBarDefinition)HealthBarDefinition.HealthBarDefinition_cached.get((long)var1);
+   final void addHealthBar(int healthBarDefinition, int cycle, int var3, int var4, int var5, int var6) {
+      HealthBarDefinition var7 = (HealthBarDefinition)HealthBarDefinition.HealthBarDefinition_cached.get((long)healthBarDefinition);
       HealthBarDefinition var8;
       if (var7 != null) {
          var8 = var7;
       } else {
-         byte[] var9 = HealthBarDefinition.field379.takeRecord(33, var1);
+         byte[] var9 = HealthBarDefinition.field379.takeFile(33, healthBarDefinition);
          var7 = new HealthBarDefinition();
          if (var9 != null) {
-            var7.read(new Buffer(var9));
+            var7.decode(new Buffer(var9));
          }
 
-         HealthBarDefinition.HealthBarDefinition_cached.put(var7, (long)var1);
+         HealthBarDefinition.HealthBarDefinition_cached.put(var7, (long)healthBarDefinition);
          var8 = var7;
       }
 
@@ -498,7 +498,7 @@ public abstract class Actor extends Entity {
       for (var13 = (HealthBar)this.healthBars.last(); var13 != null; var13 = (HealthBar)this.healthBars.previous()) {
          ++var12;
          if (var13.definition.field381 == var7.field381) {
-            var13.put(var2 + var4, var5, var6, var3);
+            var13.put(cycle + var4, var5, var6, var3);
             return;
          }
 
@@ -520,7 +520,7 @@ public abstract class Actor extends Entity {
             IterableNodeDeque.IterableNodeDeque_addBefore(var13, var14);
          }
 
-         var13.put(var2 + var4, var5, var6, var3);
+         var13.put(cycle + var4, var5, var6, var3);
          if (var12 >= 4) {
             var10.remove();
          }
@@ -534,19 +534,19 @@ public abstract class Actor extends Entity {
       garbageValue = "-31198"
    )
    @Export("removeHealthBar")
-   final void removeHealthBar(int var1) {
-      HealthBarDefinition var2 = (HealthBarDefinition)HealthBarDefinition.HealthBarDefinition_cached.get((long)var1);
+   final void removeHealthBar(int healthBarDefinition) {
+      HealthBarDefinition var2 = (HealthBarDefinition)HealthBarDefinition.HealthBarDefinition_cached.get((long)healthBarDefinition);
       HealthBarDefinition var3;
       if (var2 != null) {
          var3 = var2;
       } else {
-         byte[] var4 = HealthBarDefinition.field379.takeRecord(33, var1);
+         byte[] var4 = HealthBarDefinition.field379.takeFile(33, healthBarDefinition);
          var2 = new HealthBarDefinition();
          if (var4 != null) {
-            var2.read(new Buffer(var4));
+            var2.decode(new Buffer(var4));
          }
 
-         HealthBarDefinition.HealthBarDefinition_cached.put(var2, (long)var1);
+         HealthBarDefinition.HealthBarDefinition_cached.put(var2, (long)healthBarDefinition);
          var3 = var2;
       }
 
@@ -567,343 +567,343 @@ public abstract class Actor extends Entity {
       garbageValue = "493234011"
    )
    @Export("menuAction")
-   static final void menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7) {
-      if (var2 >= 2000) {
-         var2 -= 2000;
+   static final void menuAction(int argument1, int argument2, int opcode, int argument0, String action, String targetName, int mouseX, int mouseY) {
+      if (opcode >= 2000) {
+         opcode -= 2000;
       }
 
       PacketBufferNode var8;
-      if (var2 == 1) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      if (opcode == 1) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = argument1;
+         Client.destinationY = argument2;
          var8 = Interpreter.method1915(ClientPacket.field266, Client.packetWriter.isaacCipher);
-         var8.packetBuffer.method64(GraphicsObject.baseY + var1);
+         var8.packetBuffer.method64(GraphicsObject.baseY + argument2);
          var8.packetBuffer.writeShortLE(HealthBarDefinition.selectedItemSlot);
          var8.packetBuffer.method55(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
          var8.packetBuffer.writeIntLE(ServerPacket.selectedItemWidget);
-         var8.packetBuffer.method64(var0 + class50.baseX);
-         var8.packetBuffer.writeShort(var3);
+         var8.packetBuffer.method64(argument1 + class50.baseX);
+         var8.packetBuffer.writeShort(argument0);
          var8.packetBuffer.writeShortLE(MenuAction.selectedItemId);
          Client.packetWriter.method241(var8);
-      } else if (var2 == 2) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      } else if (opcode == 2) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = argument1;
+         Client.destinationY = argument2;
          var8 = Interpreter.method1915(ClientPacket.field314, Client.packetWriter.isaacCipher);
          var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-         var8.packetBuffer.writeShort(var0 + class50.baseX);
-         var8.packetBuffer.method63(var3);
+         var8.packetBuffer.writeShort(argument1 + class50.baseX);
+         var8.packetBuffer.method63(argument0);
          var8.packetBuffer.writeIntLE16(ServerBuild.field788);
          var8.packetBuffer.writeShort(Client.field220);
-         var8.packetBuffer.writeShortLE(GraphicsObject.baseY + var1);
+         var8.packetBuffer.writeShortLE(GraphicsObject.baseY + argument2);
          Client.packetWriter.method241(var8);
-      } else if (var2 == 3) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      } else if (opcode == 3) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = argument1;
+         Client.destinationY = argument2;
          var8 = Interpreter.method1915(ClientPacket.field232, Client.packetWriter.isaacCipher);
-         var8.packetBuffer.writeShort(GraphicsObject.baseY + var1);
+         var8.packetBuffer.writeShort(GraphicsObject.baseY + argument2);
          var8.packetBuffer.method57(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-         var8.packetBuffer.method63(var3);
-         var8.packetBuffer.method64(var0 + class50.baseX);
+         var8.packetBuffer.method63(argument0);
+         var8.packetBuffer.method64(argument1 + class50.baseX);
          Client.packetWriter.method241(var8);
-      } else if (var2 == 4) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      } else if (opcode == 4) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = argument1;
+         Client.destinationY = argument2;
          var8 = Interpreter.method1915(ClientPacket.field301, Client.packetWriter.isaacCipher);
          var8.packetBuffer.method55(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-         var8.packetBuffer.writeShort(var3);
-         var8.packetBuffer.writeShort(GraphicsObject.baseY + var1);
-         var8.packetBuffer.writeShort(var0 + class50.baseX);
+         var8.packetBuffer.writeShort(argument0);
+         var8.packetBuffer.writeShort(GraphicsObject.baseY + argument2);
+         var8.packetBuffer.writeShort(argument1 + class50.baseX);
          Client.packetWriter.method241(var8);
-      } else if (var2 == 5) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      } else if (opcode == 5) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = argument1;
+         Client.destinationY = argument2;
          var8 = Interpreter.method1915(ClientPacket.field311, Client.packetWriter.isaacCipher);
-         var8.packetBuffer.method64(var0 + class50.baseX);
-         var8.packetBuffer.method63(var3);
-         var8.packetBuffer.method64(GraphicsObject.baseY + var1);
+         var8.packetBuffer.method64(argument1 + class50.baseX);
+         var8.packetBuffer.method63(argument0);
+         var8.packetBuffer.method64(GraphicsObject.baseY + argument2);
          var8.packetBuffer.method55(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
          Client.packetWriter.method241(var8);
-      } else if (var2 == 6) {
-         Client.mouseCrossX = var6;
-         Client.mouseCrossY = var7;
+      } else if (opcode == 6) {
+         Client.mouseCrossX = mouseX;
+         Client.mouseCrossY = mouseY;
          Client.mouseCrossColor = 2;
          Client.mouseCrossState = 0;
-         Client.destinationX = var0;
-         Client.destinationY = var1;
+         Client.destinationX = argument1;
+         Client.destinationY = argument2;
          var8 = Interpreter.method1915(ClientPacket.field225, Client.packetWriter.isaacCipher);
          var8.packetBuffer.method55(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-         var8.packetBuffer.method63(GraphicsObject.baseY + var1);
-         var8.packetBuffer.method63(var0 + class50.baseX);
-         var8.packetBuffer.writeShortLE(var3);
+         var8.packetBuffer.method63(GraphicsObject.baseY + argument2);
+         var8.packetBuffer.method63(argument1 + class50.baseX);
+         var8.packetBuffer.writeShortLE(argument0);
          Client.packetWriter.method241(var8);
       } else {
          PacketBufferNode var9;
          NPC var10;
-         if (var2 == 7) {
-            var10 = Client.npcs[var3];
+         if (opcode == 7) {
+            var10 = Client.npcs[argument0];
             if (var10 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var9 = Interpreter.method1915(ClientPacket.field245, Client.packetWriter.isaacCipher);
                var9.packetBuffer.method64(MenuAction.selectedItemId);
                var9.packetBuffer.writeShort(HealthBarDefinition.selectedItemSlot);
-               var9.packetBuffer.method64(var3);
+               var9.packetBuffer.method64(argument0);
                var9.packetBuffer.method56(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                var9.packetBuffer.writeInt(ServerPacket.selectedItemWidget);
                Client.packetWriter.method241(var9);
             }
-         } else if (var2 == 8) {
-            var10 = Client.npcs[var3];
+         } else if (opcode == 8) {
+            var10 = Client.npcs[argument0];
             if (var10 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var9 = Interpreter.method1915(ClientPacket.field308, Client.packetWriter.isaacCipher);
-               var9.packetBuffer.method64(var3);
+               var9.packetBuffer.method64(argument0);
                var9.packetBuffer.method56(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                var9.packetBuffer.writeIntLE(ServerBuild.field788);
                var9.packetBuffer.method63(Client.field220);
                Client.packetWriter.method241(var9);
             }
-         } else if (var2 == 9) {
-            var10 = Client.npcs[var3];
+         } else if (opcode == 9) {
+            var10 = Client.npcs[argument0];
             if (var10 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var9 = Interpreter.method1915(ClientPacket.field293, Client.packetWriter.isaacCipher);
                var9.packetBuffer.method56(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-               var9.packetBuffer.writeShortLE(var3);
+               var9.packetBuffer.writeShortLE(argument0);
                Client.packetWriter.method241(var9);
             }
-         } else if (var2 == 10) {
-            var10 = Client.npcs[var3];
+         } else if (opcode == 10) {
+            var10 = Client.npcs[argument0];
             if (var10 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var9 = Interpreter.method1915(ClientPacket.field223, Client.packetWriter.isaacCipher);
-               var9.packetBuffer.method63(var3);
+               var9.packetBuffer.method63(argument0);
                var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                Client.packetWriter.method241(var9);
             }
-         } else if (var2 == 11) {
-            var10 = Client.npcs[var3];
+         } else if (opcode == 11) {
+            var10 = Client.npcs[argument0];
             if (var10 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var9 = Interpreter.method1915(ClientPacket.field255, Client.packetWriter.isaacCipher);
-               var9.packetBuffer.method64(var3);
+               var9.packetBuffer.method64(argument0);
                var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                Client.packetWriter.method241(var9);
             }
-         } else if (var2 == 12) {
-            var10 = Client.npcs[var3];
+         } else if (opcode == 12) {
+            var10 = Client.npcs[argument0];
             if (var10 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var9 = Interpreter.method1915(ClientPacket.field281, Client.packetWriter.isaacCipher);
-               var9.packetBuffer.writeShort(var3);
+               var9.packetBuffer.writeShort(argument0);
                var9.packetBuffer.method55(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                Client.packetWriter.method241(var9);
             }
-         } else if (var2 == 13) {
-            var10 = Client.npcs[var3];
+         } else if (opcode == 13) {
+            var10 = Client.npcs[argument0];
             if (var10 != null) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var9 = Interpreter.method1915(ClientPacket.field253, Client.packetWriter.isaacCipher);
                var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-               var9.packetBuffer.method63(var3);
+               var9.packetBuffer.method63(argument0);
                Client.packetWriter.method241(var9);
             }
          } else {
             Player var11;
-            if (var2 == 14) {
-               var11 = Client.players[var3];
+            if (opcode == 14) {
+               var11 = Client.players[argument0];
                if (var11 != null) {
-                  Client.mouseCrossX = var6;
-                  Client.mouseCrossY = var7;
+                  Client.mouseCrossX = mouseX;
+                  Client.mouseCrossY = mouseY;
                   Client.mouseCrossColor = 2;
                   Client.mouseCrossState = 0;
-                  Client.destinationX = var0;
-                  Client.destinationY = var1;
+                  Client.destinationX = argument1;
+                  Client.destinationY = argument2;
                   var9 = Interpreter.method1915(ClientPacket.field303, Client.packetWriter.isaacCipher);
                   var9.packetBuffer.method64(HealthBarDefinition.selectedItemSlot);
                   var9.packetBuffer.method57(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                   var9.packetBuffer.writeIntME(ServerPacket.selectedItemWidget);
-                  var9.packetBuffer.writeShort(var3);
+                  var9.packetBuffer.writeShort(argument0);
                   var9.packetBuffer.writeShort(MenuAction.selectedItemId);
                   Client.packetWriter.method241(var9);
                }
-            } else if (var2 == 15) {
-               var11 = Client.players[var3];
+            } else if (opcode == 15) {
+               var11 = Client.players[argument0];
                if (var11 != null) {
-                  Client.mouseCrossX = var6;
-                  Client.mouseCrossY = var7;
+                  Client.mouseCrossX = mouseX;
+                  Client.mouseCrossY = mouseY;
                   Client.mouseCrossColor = 2;
                   Client.mouseCrossState = 0;
-                  Client.destinationX = var0;
-                  Client.destinationY = var1;
+                  Client.destinationX = argument1;
+                  Client.destinationY = argument2;
                   var9 = Interpreter.method1915(ClientPacket.field277, Client.packetWriter.isaacCipher);
                   var9.packetBuffer.writeIntLE16(ServerBuild.field788);
                   var9.packetBuffer.method57(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                   var9.packetBuffer.method63(Client.field220);
-                  var9.packetBuffer.writeShort(var3);
+                  var9.packetBuffer.writeShort(argument0);
                   Client.packetWriter.method241(var9);
                }
-            } else if (var2 == 16) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if (opcode == 16) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var8 = Interpreter.method1915(ClientPacket.field240, Client.packetWriter.isaacCipher);
                var8.packetBuffer.writeIntME(ServerPacket.selectedItemWidget);
                var8.packetBuffer.method64(MenuAction.selectedItemId);
                var8.packetBuffer.method55(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                var8.packetBuffer.writeShortLE(HealthBarDefinition.selectedItemSlot);
-               var8.packetBuffer.method64(var3);
-               var8.packetBuffer.method64(var0 + class50.baseX);
-               var8.packetBuffer.writeShortLE(GraphicsObject.baseY + var1);
+               var8.packetBuffer.method64(argument0);
+               var8.packetBuffer.method64(argument1 + class50.baseX);
+               var8.packetBuffer.writeShortLE(GraphicsObject.baseY + argument2);
                Client.packetWriter.method241(var8);
-            } else if (var2 == 17) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if (opcode == 17) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var8 = Interpreter.method1915(ClientPacket.field275, Client.packetWriter.isaacCipher);
                var8.packetBuffer.writeIntME(ServerBuild.field788);
                var8.packetBuffer.writeShort(Client.field220);
-               var8.packetBuffer.method63(GraphicsObject.baseY + var1);
-               var8.packetBuffer.method63(var0 + class50.baseX);
+               var8.packetBuffer.method63(GraphicsObject.baseY + argument2);
+               var8.packetBuffer.method63(argument1 + class50.baseX);
                var8.packetBuffer.method55(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-               var8.packetBuffer.writeShortLE(var3);
+               var8.packetBuffer.writeShortLE(argument0);
                Client.packetWriter.method241(var8);
-            } else if (var2 == 18) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if (opcode == 18) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var8 = Interpreter.method1915(ClientPacket.field227, Client.packetWriter.isaacCipher);
-               var8.packetBuffer.method64(GraphicsObject.baseY + var1);
-               var8.packetBuffer.writeShortLE(var3);
-               var8.packetBuffer.writeShortLE(var0 + class50.baseX);
+               var8.packetBuffer.method64(GraphicsObject.baseY + argument2);
+               var8.packetBuffer.writeShortLE(argument0);
+               var8.packetBuffer.writeShortLE(argument1 + class50.baseX);
                var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                Client.packetWriter.method241(var8);
-            } else if (var2 == 19) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if (opcode == 19) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var8 = Interpreter.method1915(ClientPacket.field296, Client.packetWriter.isaacCipher);
-               var8.packetBuffer.method64(var3);
-               var8.packetBuffer.method63(var0 + class50.baseX);
-               var8.packetBuffer.writeShort(GraphicsObject.baseY + var1);
+               var8.packetBuffer.method64(argument0);
+               var8.packetBuffer.method63(argument1 + class50.baseX);
+               var8.packetBuffer.writeShort(GraphicsObject.baseY + argument2);
                var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                Client.packetWriter.method241(var8);
-            } else if (var2 == 20) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if (opcode == 20) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var8 = Interpreter.method1915(ClientPacket.field228, Client.packetWriter.isaacCipher);
-               var8.packetBuffer.writeShortLE(GraphicsObject.baseY + var1);
+               var8.packetBuffer.writeShortLE(GraphicsObject.baseY + argument2);
                var8.packetBuffer.method57(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-               var8.packetBuffer.writeShortLE(var0 + class50.baseX);
-               var8.packetBuffer.writeShortLE(var3);
+               var8.packetBuffer.writeShortLE(argument1 + class50.baseX);
+               var8.packetBuffer.writeShortLE(argument0);
                Client.packetWriter.method241(var8);
-            } else if (var2 == 21) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if (opcode == 21) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var8 = Interpreter.method1915(ClientPacket.field251, Client.packetWriter.isaacCipher);
-               var8.packetBuffer.method63(GraphicsObject.baseY + var1);
-               var8.packetBuffer.writeShortLE(var3);
-               var8.packetBuffer.writeShort(var0 + class50.baseX);
+               var8.packetBuffer.method63(GraphicsObject.baseY + argument2);
+               var8.packetBuffer.writeShortLE(argument0);
+               var8.packetBuffer.writeShort(argument1 + class50.baseX);
                var8.packetBuffer.method57(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                Client.packetWriter.method241(var8);
-            } else if (var2 == 22) {
-               Client.mouseCrossX = var6;
-               Client.mouseCrossY = var7;
+            } else if (opcode == 22) {
+               Client.mouseCrossX = mouseX;
+               Client.mouseCrossY = mouseY;
                Client.mouseCrossColor = 2;
                Client.mouseCrossState = 0;
-               Client.destinationX = var0;
-               Client.destinationY = var1;
+               Client.destinationX = argument1;
+               Client.destinationY = argument2;
                var8 = Interpreter.method1915(ClientPacket.field273, Client.packetWriter.isaacCipher);
                var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-               var8.packetBuffer.method64(var3);
-               var8.packetBuffer.method63(GraphicsObject.baseY + var1);
-               var8.packetBuffer.writeShort(var0 + class50.baseX);
+               var8.packetBuffer.method64(argument0);
+               var8.packetBuffer.method63(GraphicsObject.baseY + argument2);
+               var8.packetBuffer.writeShort(argument1 + class50.baseX);
                Client.packetWriter.method241(var8);
-            } else if (var2 == 23) {
+            } else if (opcode == 23) {
                if (Client.isMenuOpen) {
                   class65.scene.method296();
                } else {
-                  class65.scene.menuOpen(SoundSystem.plane, var0, var1, true);
+                  class65.scene.menuOpen(SoundSystem.plane, argument1, argument2, true);
                }
             } else {
                PacketBufferNode var12;
                Widget var13;
-               if (var2 == 24) {
-                  var13 = Huffman.getWidget(var1);
+               if (opcode == 24) {
+                  var13 = Huffman.getWidget(argument2);
                   boolean var14 = true;
                   if (var13.contentType > 0) {
                      var14 = ViewportMouse.method2957(var13);
@@ -911,15 +911,15 @@ public abstract class Actor extends Entity {
 
                   if (var14) {
                      var12 = Interpreter.method1915(ClientPacket.field291, Client.packetWriter.isaacCipher);
-                     var12.packetBuffer.writeInt(var1);
+                     var12.packetBuffer.writeInt(argument2);
                      Client.packetWriter.method241(var12);
                   }
                } else {
-                  if (var2 == 25) {
-                     var13 = class204.getWidgetChild(var1, var0);
+                  if (opcode == 25) {
+                     var13 = class204.getWidgetChild(argument2, argument1);
                      if (var13 != null) {
                         Player.method1281();
-                        WorldMapDecoration.method350(var1, var0, class211.method4107(class1.getWidgetClickMask(var13)), var13.itemId);
+                        WorldMapDecoration.method350(argument2, argument1, class211.method4107(class1.getWidgetClickMask(var13)), var13.itemId);
                         Client.isItemSelected = 0;
                         Client.selectedSpellActionName = class198.method3745(var13);
                         if (Client.selectedSpellActionName == null) {
@@ -936,117 +936,117 @@ public abstract class Actor extends Entity {
                      return;
                   }
 
-                  if (var2 == 26) {
+                  if (opcode == 26) {
                      WorldMapLabelSize.method198();
                   } else {
-                     Widget var15;
-                     int var17;
-                     if (var2 == 28) {
+                     int var15;
+                     Widget var17;
+                     if (opcode == 28) {
                         var8 = Interpreter.method1915(ClientPacket.field291, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeInt(var1);
+                        var8.packetBuffer.writeInt(argument2);
                         Client.packetWriter.method241(var8);
-                        var15 = Huffman.getWidget(var1);
-                        if (var15.cs1Instructions != null && var15.cs1Instructions[0][0] == 5) {
-                           var17 = var15.cs1Instructions[0][1];
-                           Varps.Varps_main[var17] = 1 - Varps.Varps_main[var17];
-                           IndexCache.method4703(var17);
+                        var17 = Huffman.getWidget(argument2);
+                        if (var17.cs1Instructions != null && var17.cs1Instructions[0][0] == 5) {
+                           var15 = var17.cs1Instructions[0][1];
+                           Varps.Varps_main[var15] = 1 - Varps.Varps_main[var15];
+                           Archive.method4703(var15);
                         }
-                     } else if (var2 == 29) {
+                     } else if (opcode == 29) {
                         var8 = Interpreter.method1915(ClientPacket.field291, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeInt(var1);
+                        var8.packetBuffer.writeInt(argument2);
                         Client.packetWriter.method241(var8);
-                        var15 = Huffman.getWidget(var1);
-                        if (var15.cs1Instructions != null && var15.cs1Instructions[0][0] == 5) {
-                           var17 = var15.cs1Instructions[0][1];
-                           if (Varps.Varps_main[var17] != var15.cs1ComparisonValues[0]) {
-                              Varps.Varps_main[var17] = var15.cs1ComparisonValues[0];
-                              IndexCache.method4703(var17);
+                        var17 = Huffman.getWidget(argument2);
+                        if (var17.cs1Instructions != null && var17.cs1Instructions[0][0] == 5) {
+                           var15 = var17.cs1Instructions[0][1];
+                           if (Varps.Varps_main[var15] != var17.cs1ComparisonValues[0]) {
+                              Varps.Varps_main[var15] = var17.cs1ComparisonValues[0];
+                              Archive.method4703(var15);
                            }
                         }
-                     } else if (var2 == 30) {
+                     } else if (opcode == 30) {
                         if (Client.field127 == null) {
-                           TilePaint.method3060(var1, var0);
-                           Client.field127 = class204.getWidgetChild(var1, var0);
+                           TilePaint.method3060(argument2, argument1);
+                           Client.field127 = class204.getWidgetChild(argument2, argument1);
                            class22.method295(Client.field127);
                         }
-                     } else if (var2 == 31) {
+                     } else if (opcode == 31) {
                         var8 = Interpreter.method1915(ClientPacket.field285, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeIntME(var1);
+                        var8.packetBuffer.writeIntME(argument2);
                         var8.packetBuffer.writeIntLE16(ServerPacket.selectedItemWidget);
                         var8.packetBuffer.method64(HealthBarDefinition.selectedItemSlot);
                         var8.packetBuffer.writeShortLE(MenuAction.selectedItemId);
-                        var8.packetBuffer.writeShortLE(var0);
-                        var8.packetBuffer.method64(var3);
+                        var8.packetBuffer.writeShortLE(argument1);
+                        var8.packetBuffer.method64(argument0);
                         Client.packetWriter.method241(var8);
                         Client.field203 = 0;
-                        BoundaryObject.field40 = Huffman.getWidget(var1);
-                        Client.field204 = var0;
-                     } else if (var2 == 32) {
+                        BoundaryObject.field40 = Huffman.getWidget(argument2);
+                        Client.field204 = argument1;
+                     } else if (opcode == 32) {
                         var8 = Interpreter.method1915(ClientPacket.field224, Client.packetWriter.isaacCipher);
                         var8.packetBuffer.writeIntME(ServerBuild.field788);
-                        var8.packetBuffer.writeInt(var1);
-                        var8.packetBuffer.writeShort(var0);
-                        var8.packetBuffer.writeShortLE(var3);
+                        var8.packetBuffer.writeInt(argument2);
+                        var8.packetBuffer.writeShort(argument1);
+                        var8.packetBuffer.writeShortLE(argument0);
                         var8.packetBuffer.writeShortLE(Client.field220);
                         Client.packetWriter.method241(var8);
                         Client.field203 = 0;
-                        BoundaryObject.field40 = Huffman.getWidget(var1);
-                        Client.field204 = var0;
-                     } else if (var2 == 33) {
+                        BoundaryObject.field40 = Huffman.getWidget(argument2);
+                        Client.field204 = argument1;
+                     } else if (opcode == 33) {
                         var8 = Interpreter.method1915(ClientPacket.field309, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeShortLE(var3);
-                        var8.packetBuffer.writeIntME(var1);
-                        var8.packetBuffer.writeShort(var0);
+                        var8.packetBuffer.writeShortLE(argument0);
+                        var8.packetBuffer.writeIntME(argument2);
+                        var8.packetBuffer.writeShort(argument1);
                         Client.packetWriter.method241(var8);
                         Client.field203 = 0;
-                        BoundaryObject.field40 = Huffman.getWidget(var1);
-                        Client.field204 = var0;
-                     } else if (var2 == 34) {
+                        BoundaryObject.field40 = Huffman.getWidget(argument2);
+                        Client.field204 = argument1;
+                     } else if (opcode == 34) {
                         var8 = Interpreter.method1915(ClientPacket.field320, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.method63(var3);
-                        var8.packetBuffer.writeIntLE16(var1);
-                        var8.packetBuffer.method64(var0);
+                        var8.packetBuffer.method63(argument0);
+                        var8.packetBuffer.writeIntLE16(argument2);
+                        var8.packetBuffer.method64(argument1);
                         Client.packetWriter.method241(var8);
                         Client.field203 = 0;
-                        BoundaryObject.field40 = Huffman.getWidget(var1);
-                        Client.field204 = var0;
-                     } else if (var2 == 35) {
+                        BoundaryObject.field40 = Huffman.getWidget(argument2);
+                        Client.field204 = argument1;
+                     } else if (opcode == 35) {
                         var8 = Interpreter.method1915(ClientPacket.field294, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeIntLE(var1);
-                        var8.packetBuffer.method64(var0);
-                        var8.packetBuffer.method64(var3);
+                        var8.packetBuffer.writeIntLE(argument2);
+                        var8.packetBuffer.method64(argument1);
+                        var8.packetBuffer.method64(argument0);
                         Client.packetWriter.method241(var8);
                         Client.field203 = 0;
-                        BoundaryObject.field40 = Huffman.getWidget(var1);
-                        Client.field204 = var0;
-                     } else if (var2 == 36) {
+                        BoundaryObject.field40 = Huffman.getWidget(argument2);
+                        Client.field204 = argument1;
+                     } else if (opcode == 36) {
                         var8 = Interpreter.method1915(ClientPacket.field229, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.method64(var3);
-                        var8.packetBuffer.writeInt(var1);
-                        var8.packetBuffer.method64(var0);
+                        var8.packetBuffer.method64(argument0);
+                        var8.packetBuffer.writeInt(argument2);
+                        var8.packetBuffer.method64(argument1);
                         Client.packetWriter.method241(var8);
                         Client.field203 = 0;
-                        BoundaryObject.field40 = Huffman.getWidget(var1);
-                        Client.field204 = var0;
-                     } else if (var2 == 37) {
+                        BoundaryObject.field40 = Huffman.getWidget(argument2);
+                        Client.field204 = argument1;
+                     } else if (opcode == 37) {
                         var8 = Interpreter.method1915(ClientPacket.field280, Client.packetWriter.isaacCipher);
-                        var8.packetBuffer.writeInt(var1);
-                        var8.packetBuffer.writeShort(var0);
-                        var8.packetBuffer.writeShort(var3);
+                        var8.packetBuffer.writeInt(argument2);
+                        var8.packetBuffer.writeShort(argument1);
+                        var8.packetBuffer.writeShort(argument0);
                         Client.packetWriter.method241(var8);
                         Client.field203 = 0;
-                        BoundaryObject.field40 = Huffman.getWidget(var1);
-                        Client.field204 = var0;
+                        BoundaryObject.field40 = Huffman.getWidget(argument2);
+                        Client.field204 = argument1;
                      } else {
-                        if (var2 == 38) {
+                        if (opcode == 38) {
                            Player.method1281();
-                           var13 = Huffman.getWidget(var1);
+                           var13 = Huffman.getWidget(argument2);
                            Client.isItemSelected = 1;
-                           HealthBarDefinition.selectedItemSlot = var0;
-                           ServerPacket.selectedItemWidget = var1;
-                           MenuAction.selectedItemId = var3;
+                           HealthBarDefinition.selectedItemSlot = argument1;
+                           ServerPacket.selectedItemWidget = argument2;
+                           MenuAction.selectedItemId = argument0;
                            class22.method295(var13);
-                           Client.selectedItemName = BufferedFile.colorStartTag(16748608) + Skills.getItemDefinition(var3).name + BufferedFile.colorStartTag(16777215);
+                           Client.selectedItemName = BufferedFile.colorStartTag(16748608) + Skills.getItemDefinition(argument0).name + BufferedFile.colorStartTag(16777215);
                            if (Client.selectedItemName == null) {
                               Client.selectedItemName = "null";
                            }
@@ -1054,174 +1054,174 @@ public abstract class Actor extends Entity {
                            return;
                         }
 
-                        if (var2 == 39) {
+                        if (opcode == 39) {
                            var8 = Interpreter.method1915(ClientPacket.field268, Client.packetWriter.isaacCipher);
-                           var8.packetBuffer.method64(var3);
-                           var8.packetBuffer.writeIntLE16(var1);
-                           var8.packetBuffer.writeShortLE(var0);
+                           var8.packetBuffer.method64(argument0);
+                           var8.packetBuffer.writeIntLE16(argument2);
+                           var8.packetBuffer.writeShortLE(argument1);
                            Client.packetWriter.method241(var8);
                            Client.field203 = 0;
-                           BoundaryObject.field40 = Huffman.getWidget(var1);
-                           Client.field204 = var0;
-                        } else if (var2 == 40) {
+                           BoundaryObject.field40 = Huffman.getWidget(argument2);
+                           Client.field204 = argument1;
+                        } else if (opcode == 40) {
                            var8 = Interpreter.method1915(ClientPacket.field248, Client.packetWriter.isaacCipher);
-                           var8.packetBuffer.writeIntLE16(var1);
-                           var8.packetBuffer.writeShortLE(var0);
-                           var8.packetBuffer.method63(var3);
+                           var8.packetBuffer.writeIntLE16(argument2);
+                           var8.packetBuffer.writeShortLE(argument1);
+                           var8.packetBuffer.method63(argument0);
                            Client.packetWriter.method241(var8);
                            Client.field203 = 0;
-                           BoundaryObject.field40 = Huffman.getWidget(var1);
-                           Client.field204 = var0;
-                        } else if (var2 == 41) {
+                           BoundaryObject.field40 = Huffman.getWidget(argument2);
+                           Client.field204 = argument1;
+                        } else if (opcode == 41) {
                            var8 = Interpreter.method1915(ClientPacket.field287, Client.packetWriter.isaacCipher);
-                           var8.packetBuffer.writeIntLE(var1);
-                           var8.packetBuffer.method63(var0);
-                           var8.packetBuffer.writeShort(var3);
+                           var8.packetBuffer.writeIntLE(argument2);
+                           var8.packetBuffer.method63(argument1);
+                           var8.packetBuffer.writeShort(argument0);
                            Client.packetWriter.method241(var8);
                            Client.field203 = 0;
-                           BoundaryObject.field40 = Huffman.getWidget(var1);
-                           Client.field204 = var0;
-                        } else if (var2 == 42) {
+                           BoundaryObject.field40 = Huffman.getWidget(argument2);
+                           Client.field204 = argument1;
+                        } else if (opcode == 42) {
                            var8 = Interpreter.method1915(ClientPacket.field286, Client.packetWriter.isaacCipher);
-                           var8.packetBuffer.writeInt(var1);
-                           var8.packetBuffer.method63(var0);
-                           var8.packetBuffer.writeShort(var3);
+                           var8.packetBuffer.writeInt(argument2);
+                           var8.packetBuffer.method63(argument1);
+                           var8.packetBuffer.writeShort(argument0);
                            Client.packetWriter.method241(var8);
                            Client.field203 = 0;
-                           BoundaryObject.field40 = Huffman.getWidget(var1);
-                           Client.field204 = var0;
-                        } else if (var2 == 43) {
+                           BoundaryObject.field40 = Huffman.getWidget(argument2);
+                           Client.field204 = argument1;
+                        } else if (opcode == 43) {
                            var8 = Interpreter.method1915(ClientPacket.field254, Client.packetWriter.isaacCipher);
-                           var8.packetBuffer.writeShort(var3);
-                           var8.packetBuffer.writeIntME(var1);
-                           var8.packetBuffer.writeShort(var0);
+                           var8.packetBuffer.writeShort(argument0);
+                           var8.packetBuffer.writeIntME(argument2);
+                           var8.packetBuffer.writeShort(argument1);
                            Client.packetWriter.method241(var8);
                            Client.field203 = 0;
-                           BoundaryObject.field40 = Huffman.getWidget(var1);
-                           Client.field204 = var0;
-                        } else if (var2 == 44) {
-                           var11 = Client.players[var3];
+                           BoundaryObject.field40 = Huffman.getWidget(argument2);
+                           Client.field204 = argument1;
+                        } else if (opcode == 44) {
+                           var11 = Client.players[argument0];
                            if (var11 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = argument1;
+                              Client.destinationY = argument2;
                               var9 = Interpreter.method1915(ClientPacket.field269, Client.packetWriter.isaacCipher);
-                              var9.packetBuffer.writeShort(var3);
+                              var9.packetBuffer.writeShort(argument0);
                               var9.packetBuffer.method56(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                               Client.packetWriter.method241(var9);
                            }
-                        } else if (var2 == 45) {
-                           var11 = Client.players[var3];
+                        } else if (opcode == 45) {
+                           var11 = Client.players[argument0];
                            if (var11 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = argument1;
+                              Client.destinationY = argument2;
                               var9 = Interpreter.method1915(ClientPacket.field278, Client.packetWriter.isaacCipher);
                               var9.packetBuffer.method55(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-                              var9.packetBuffer.method63(var3);
+                              var9.packetBuffer.method63(argument0);
                               Client.packetWriter.method241(var9);
                            }
-                        } else if (var2 == 46) {
-                           var11 = Client.players[var3];
+                        } else if (opcode == 46) {
+                           var11 = Client.players[argument0];
                            if (var11 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = argument1;
+                              Client.destinationY = argument2;
                               var9 = Interpreter.method1915(ClientPacket.field284, Client.packetWriter.isaacCipher);
-                              var9.packetBuffer.method63(var3);
+                              var9.packetBuffer.method63(argument0);
                               var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                               Client.packetWriter.method241(var9);
                            }
-                        } else if (var2 == 47) {
-                           var11 = Client.players[var3];
+                        } else if (opcode == 47) {
+                           var11 = Client.players[argument0];
                            if (var11 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = argument1;
+                              Client.destinationY = argument2;
                               var9 = Interpreter.method1915(ClientPacket.field249, Client.packetWriter.isaacCipher);
-                              var9.packetBuffer.method64(var3);
+                              var9.packetBuffer.method64(argument0);
                               var9.packetBuffer.method56(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                               Client.packetWriter.method241(var9);
                            }
-                        } else if (var2 == 48) {
-                           var11 = Client.players[var3];
+                        } else if (opcode == 48) {
+                           var11 = Client.players[argument0];
                            if (var11 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = argument1;
+                              Client.destinationY = argument2;
                               var9 = Interpreter.method1915(ClientPacket.field305, Client.packetWriter.isaacCipher);
                               var9.packetBuffer.method55(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-                              var9.packetBuffer.method63(var3);
+                              var9.packetBuffer.method63(argument0);
                               Client.packetWriter.method241(var9);
                            }
-                        } else if (var2 == 49) {
-                           var11 = Client.players[var3];
+                        } else if (opcode == 49) {
+                           var11 = Client.players[argument0];
                            if (var11 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = argument1;
+                              Client.destinationY = argument2;
                               var9 = Interpreter.method1915(ClientPacket.field315, Client.packetWriter.isaacCipher);
-                              var9.packetBuffer.method63(var3);
+                              var9.packetBuffer.method63(argument0);
                               var9.packetBuffer.method57(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
                               Client.packetWriter.method241(var9);
                            }
-                        } else if (var2 == 50) {
-                           var11 = Client.players[var3];
+                        } else if (opcode == 50) {
+                           var11 = Client.players[argument0];
                            if (var11 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = argument1;
+                              Client.destinationY = argument2;
                               var9 = Interpreter.method1915(ClientPacket.field297, Client.packetWriter.isaacCipher);
                               var9.packetBuffer.method57(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-                              var9.packetBuffer.writeShortLE(var3);
+                              var9.packetBuffer.writeShortLE(argument0);
                               Client.packetWriter.method241(var9);
                            }
-                        } else if (var2 == 51) {
-                           var11 = Client.players[var3];
+                        } else if (opcode == 51) {
+                           var11 = Client.players[argument0];
                            if (var11 != null) {
-                              Client.mouseCrossX = var6;
-                              Client.mouseCrossY = var7;
+                              Client.mouseCrossX = mouseX;
+                              Client.mouseCrossY = mouseY;
                               Client.mouseCrossColor = 2;
                               Client.mouseCrossState = 0;
-                              Client.destinationX = var0;
-                              Client.destinationY = var1;
+                              Client.destinationX = argument1;
+                              Client.destinationY = argument2;
                               var9 = Interpreter.method1915(ClientPacket.field272, Client.packetWriter.isaacCipher);
                               var9.packetBuffer.method56(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-                              var9.packetBuffer.method64(var3);
+                              var9.packetBuffer.method64(argument0);
                               Client.packetWriter.method241(var9);
                            }
                         } else {
                            label415: {
-                              if (var2 != 57) {
-                                 if (var2 == 58) {
-                                    var13 = class204.getWidgetChild(var1, var0);
+                              if (opcode != 57) {
+                                 if (opcode == 58) {
+                                    var13 = class204.getWidgetChild(argument2, argument1);
                                     if (var13 != null) {
                                        var9 = Interpreter.method1915(ClientPacket.field304, Client.packetWriter.isaacCipher);
                                        var9.packetBuffer.writeShortLE(Client.field220);
-                                       var9.packetBuffer.writeIntLE16(var1);
+                                       var9.packetBuffer.writeIntLE16(argument2);
                                        var9.packetBuffer.writeShortLE(Client.field157);
-                                       var9.packetBuffer.method64(var0);
+                                       var9.packetBuffer.method64(argument1);
                                        var9.packetBuffer.writeInt(ServerBuild.field788);
                                        var9.packetBuffer.method64(var13.itemId);
                                        Client.packetWriter.method241(var9);
@@ -1229,39 +1229,39 @@ public abstract class Actor extends Entity {
                                     break label415;
                                  }
 
-                                 if (var2 == 1001) {
-                                    Client.mouseCrossX = var6;
-                                    Client.mouseCrossY = var7;
+                                 if (opcode == 1001) {
+                                    Client.mouseCrossX = mouseX;
+                                    Client.mouseCrossY = mouseY;
                                     Client.mouseCrossColor = 2;
                                     Client.mouseCrossState = 0;
-                                    Client.destinationX = var0;
-                                    Client.destinationY = var1;
+                                    Client.destinationX = argument1;
+                                    Client.destinationY = argument2;
                                     var8 = Interpreter.method1915(ClientPacket.field316, Client.packetWriter.isaacCipher);
-                                    var8.packetBuffer.writeShort(var3);
+                                    var8.packetBuffer.writeShort(argument0);
                                     var8.packetBuffer.method55(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-                                    var8.packetBuffer.method63(var0 + class50.baseX);
-                                    var8.packetBuffer.method64(GraphicsObject.baseY + var1);
+                                    var8.packetBuffer.method63(argument1 + class50.baseX);
+                                    var8.packetBuffer.method64(GraphicsObject.baseY + argument2);
                                     Client.packetWriter.method241(var8);
                                     break label415;
                                  }
 
-                                 if (var2 == 1002) {
-                                    Client.mouseCrossX = var6;
-                                    Client.mouseCrossY = var7;
+                                 if (opcode == 1002) {
+                                    Client.mouseCrossX = mouseX;
+                                    Client.mouseCrossY = mouseY;
                                     Client.mouseCrossColor = 2;
                                     Client.mouseCrossState = 0;
                                     var8 = Interpreter.method1915(ClientPacket.field258, Client.packetWriter.isaacCipher);
-                                    var8.packetBuffer.method63(var3);
+                                    var8.packetBuffer.method63(argument0);
                                     Client.packetWriter.method241(var8);
                                     break label415;
                                  }
 
-                                 if (var2 == 1003) {
-                                    Client.mouseCrossX = var6;
-                                    Client.mouseCrossY = var7;
+                                 if (opcode == 1003) {
+                                    Client.mouseCrossX = mouseX;
+                                    Client.mouseCrossY = mouseY;
                                     Client.mouseCrossColor = 2;
                                     Client.mouseCrossState = 0;
-                                    var10 = Client.npcs[var3];
+                                    var10 = Client.npcs[argument0];
                                     if (var10 != null) {
                                        NPCDefinition var16 = var10.definition;
                                        if (var16.transforms != null) {
@@ -1277,44 +1277,44 @@ public abstract class Actor extends Entity {
                                     break label415;
                                  }
 
-                                 if (var2 == 1004) {
-                                    Client.mouseCrossX = var6;
-                                    Client.mouseCrossY = var7;
+                                 if (opcode == 1004) {
+                                    Client.mouseCrossX = mouseX;
+                                    Client.mouseCrossY = mouseY;
                                     Client.mouseCrossColor = 2;
                                     Client.mouseCrossState = 0;
                                     var8 = Interpreter.method1915(ClientPacket.field246, Client.packetWriter.isaacCipher);
-                                    var8.packetBuffer.writeShortLE(var3);
+                                    var8.packetBuffer.writeShortLE(argument0);
                                     Client.packetWriter.method241(var8);
                                     break label415;
                                  }
 
-                                 if (var2 == 1005) {
-                                    var13 = Huffman.getWidget(var1);
-                                    if (var13 != null && var13.itemQuantities[var0] >= 100000) {
-                                       WorldMapIcon1.method219(27, "", var13.itemQuantities[var0] + " x " + Skills.getItemDefinition(var3).name);
+                                 if (opcode == 1005) {
+                                    var13 = Huffman.getWidget(argument2);
+                                    if (var13 != null && var13.itemQuantities[argument1] >= 100000) {
+                                       WorldMapIcon1.addGameMessage(27, "", var13.itemQuantities[argument1] + " x " + Skills.getItemDefinition(argument0).name);
                                     } else {
                                        var9 = Interpreter.method1915(ClientPacket.field246, Client.packetWriter.isaacCipher);
-                                       var9.packetBuffer.writeShortLE(var3);
+                                       var9.packetBuffer.writeShortLE(argument0);
                                        Client.packetWriter.method241(var9);
                                     }
 
                                     Client.field203 = 0;
-                                    BoundaryObject.field40 = Huffman.getWidget(var1);
-                                    Client.field204 = var0;
+                                    BoundaryObject.field40 = Huffman.getWidget(argument2);
+                                    Client.field204 = argument1;
                                     break label415;
                                  }
 
-                                 if (var2 != 1007) {
-                                    if (var2 == 1008 || var2 == 1011 || var2 == 1010 || var2 == 1009 || var2 == 1012) {
-                                       class60.worldMap0.menuAction(var2, var3, new TileLocation(var0), new TileLocation(var1));
+                                 if (opcode != 1007) {
+                                    if (opcode == 1008 || opcode == 1011 || opcode == 1010 || opcode == 1009 || opcode == 1012) {
+                                       class60.worldMap0.menuAction(opcode, argument0, new Coord(argument1), new Coord(argument2));
                                     }
                                     break label415;
                                  }
                               }
 
-                              var13 = class204.getWidgetChild(var1, var0);
+                              var13 = class204.getWidgetChild(argument2, argument1);
                               if (var13 != null) {
-                                 class171.method3494(var3, var1, var0, var13.itemId, var5);
+                                 class171.method3494(argument0, argument2, argument1, var13.itemId, targetName);
                               }
                            }
                         }

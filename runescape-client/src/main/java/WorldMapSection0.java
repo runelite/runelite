@@ -151,13 +151,13 @@ public class WorldMapSection0 implements WorldMapSection {
       garbageValue = "-1916486802"
    )
    @Export("coord")
-   public TileLocation coord(int var1, int var2) {
+   public Coord coord(int var1, int var2) {
       if (!this.containsPosition(var1, var2)) {
          return null;
       } else {
          int var3 = this.field1059 * 64 - this.field1061 * 64 + (this.field1063 * 8 - this.field1067 * 8) + var1;
          int var4 = this.field1060 * 64 - this.field1062 * 64 + var2 + (this.field1064 * 8 - this.field1068 * 8);
-         return new TileLocation(this.field1057, var3, var4);
+         return new Coord(this.field1057, var3, var4);
       }
    }
 

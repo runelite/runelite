@@ -142,4 +142,14 @@ public interface MotherlodeConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		keyName = "payDirtMsg",
+		name = "Pay-dirt!",
+		description = "Send a public message saying \"Pay-dirt!\" every time a dwarf says \"Pay-dirt!\"",
+		position = 99
+	)
+	default boolean payDirtMsg()
+	{
+		return false;
+	}
 }

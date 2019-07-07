@@ -39,6 +39,8 @@ import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
+import net.runelite.asm.attributes.code.LocalVariable;
+import net.runelite.asm.attributes.code.Parameter;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.util.VirtualMethods;
 import static net.runelite.deob.DeobAnnotations.EXPORT;
@@ -97,7 +99,7 @@ public class HookImporter
 	@Ignore
 	public void importHooks()
 	{
-		int classes = 0, fields = 0, methods = 0, access = 0;
+		int classes = 0, fields = 0, methods = 0, params = 0;
 		NameMappings mappings = new NameMappings();
 
 		for (HookClass hc : hooks)
@@ -106,12 +108,6 @@ public class HookImporter
 			ClassFile cf = findClassWithObfuscatedName(hc.name);
 
 			assert cf != null;
-
-			if (cf.getAccess() != hc.access)
-			{
-				cf.setAccess(hc.access);
-				++access;
-			}
 
 			String implementsName = getAnnotation(cf.getAnnotations(), IMPLEMENTS);
 			if (implementsName.isEmpty())
@@ -122,21 +118,26 @@ public class HookImporter
 				++classes;
 			}
 
+			if (!implementsName.isEmpty() && !implementsName.equals(hc.clazz))
+			{
+				logger.info("Runestar calls class {} {}, while we call it {}", hc.name, hc.clazz, implementsName);
+			}
+
 			for (HookField fh : hc.fields)
 			{
+				if (fh.field.startsWith("__"))
+				{
+					continue;
+				}
+
 				ClassFile cf2 = findClassWithObfuscatedName(fh.owner);
 				assert cf2 != null;
 
 				Field f = findFieldWithObfuscatedName(cf2, fh.name);
 				if (f == null)
 				{
+					logger.warn("Missing field {}", fh); // inlined constant maybe?
 					continue;
-				}
-
-				if (f.getAccessFlags() != fh.access)
-				{
-					f.setAccessFlags(fh.access);
-					++access;
 				}
 
 				String exportedName = getAnnotation(f.getAnnotations(), EXPORT);
@@ -155,11 +156,20 @@ public class HookImporter
 					mappings.map(f.getPoolField(), deobfuscatedFieldName);
 					++fields;
 				}
+
+				if (!exportedName.isEmpty() && !exportedName.equals(fh.field))
+				{
+					logger.info("Runestar calls field {}.{} {}, while we call it {}", fh.owner, fh.name, fh.field, exportedName);
+				}
 			}
 
 			outer:
 			for (HookMethod hm : hc.methods)
 			{
+				if (hm.method.startsWith("__"))
+				{
+					continue;
+				}
 
 				ClassFile cf2 = findClassWithObfuscatedName(hm.owner);
 				assert cf2 != null;
@@ -171,10 +181,40 @@ public class HookImporter
 					continue;
 				}
 
-				if (m.getAccessFlags() != hm.access)
+				if (hm.parameters != null && !hm.parameters.isEmpty() && m.getParameters().size() >= 1)
 				{
-					m.setAccessFlags(hm.access);
-					++access;
+					List<Parameter> oldParams = m.getParameters();
+					for (int i = 0; i < hm.parameters.size(); i++)
+					{
+						String name = hm.parameters.get(i);
+						if (name.matches("arg[0-9]") || name.length() <= 2 && (name.charAt(0) != 'x' && name.charAt(0) != 'y'))
+						{
+							continue;
+						}
+
+						Parameter oldParam = oldParams.get(i);
+						LocalVariable oldVar = oldParam.getLocalVariable();
+
+						Parameter newParam = new Parameter(name, oldParam.getAccess());
+						oldParams.set(i, newParam);
+						params++;
+
+						if (oldVar == null)
+						{
+							continue;
+						}
+
+						LocalVariable newVar = new LocalVariable(
+							name,
+							oldVar.getDesc(),
+							oldVar.getSignature(),
+							oldVar.getStart(),
+							oldVar.getEnd(),
+							oldVar.getIndex()
+						);
+
+						newParam.setLocalVariable(newVar);
+					}
 				}
 
 				// maybe only the base class method is exported
@@ -184,6 +224,10 @@ public class HookImporter
 					String exportedName = getAnnotation(method.getAnnotations(), EXPORT);
 					if (!exportedName.isEmpty())
 					{
+						if (!exportedName.equals(hm.method))
+						{
+							logger.info("Runestar calls {}.{} {}, while we call it {}", hm.owner, hm.name, hm.method, exportedName);
+						}
 						continue outer;
 					}
 				}
@@ -198,7 +242,7 @@ public class HookImporter
 		Renamer renamer = new Renamer(mappings);
 		renamer.run(group);
 
-		logger.info("Imported {} classes, {} fields, {} methods, {} access levels", classes, fields, methods, access);
+		logger.info("Imported {} classes, {} fields, {} methods, {} params", classes, fields, methods, params);
 	}
 
 	private ClassFile findClassWithObfuscatedName(String name)
@@ -259,8 +303,7 @@ public class HookImporter
 		{
 			for (Element e : a.getElements())
 			{
-				String str = (String) e.getValue();
-				return str;
+				return (String) e.getValue();
 			}
 		}
 
@@ -270,13 +313,13 @@ public class HookImporter
 	private Signature getObfuscatedMethodSignature(Method method)
 	{
 		String sig = getAnnotation(method.getAnnotations(), OBFUSCATED_SIGNATURE);
-		if (sig.isEmpty() == false)
+		if (sig.isEmpty())
 		{
-			return new Signature(sig); // if it is annotated, use that
+			return method.getDescriptor();
 		}
 		else
 		{
-			return method.getDescriptor();
+			return new Signature(sig); // if it is annotated, use that
 		}
 	}
 }

@@ -3,10 +3,11 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("u")
-@Implements("WorldComparator")
-final class WorldComparator implements Comparator {
+@Implements("GrandExchangeOfferWorldComparator")
+final class GrandExchangeOfferWorldComparator implements Comparator {
    @ObfuscatedName("n")
    public static boolean field988;
 
@@ -15,18 +16,16 @@ final class WorldComparator implements Comparator {
       signature = "(Ll;Ll;I)I",
       garbageValue = "707844889"
    )
-   int method358(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+   @Export("compareTyped")
+   int compareTyped(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.world < var2.world ? -1 : (var2.world == var1.world ? 0 : 1);
    }
 
-   @Export("compare")
-   @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.method358((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+      return this.compareTyped((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
-   @ObfuscatedName("equals")
-   public boolean method359(Object var1) {
+   public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
@@ -45,14 +44,14 @@ final class WorldComparator implements Comparator {
       garbageValue = "108"
    )
    static int method68(int var0, Script var1, boolean var2) {
-      if (var0 == 3200) {
+      if (var0 == ScriptOpcodes.SOUND_SYNTH) {
          RouteStrategy.Interpreter_intStackSize -= 3;
          Ignored.queueSoundEffect(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2]);
          return 1;
-      } else if (var0 == 3201) {
+      } else if (var0 == ScriptOpcodes.SOUND_SONG) {
          AbstractUserComparator.method5437(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
          return 1;
-      } else if (var0 == 3202) {
+      } else if (var0 == ScriptOpcodes.SOUND_JINGLE) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          HealthBar.method1994(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
          return 1;
@@ -126,10 +125,10 @@ final class WorldComparator implements Comparator {
             var3.size = var3.definition.size;
             var3.field23 = var3.definition.field639;
             var3.walkSequence = var3.definition.walkSequence;
-            var3.walkTurnSequence = var3.definition.walkTurnSequence;
-            var3.walkTurnLeftSequence = var3.definition.walkTurnLeftSequence;
-            var3.walkTurnRightSequence = var3.definition.walkTurnRightSequence;
-            var3.idleSequence = var3.definition.idleSequence;
+            var3.walkBackSequence = var3.definition.walkBackSequence;
+            var3.walkLeftSequence = var3.definition.walkLeftSequence;
+            var3.walkRightSequence = var3.definition.walkRightSequence;
+            var3.readySequence = var3.definition.readySequence;
             var3.turnLeftSequence = var3.definition.turnLeftSequence;
             var3.turnRightSequence = var3.definition.turnRightSequence;
          }

@@ -11,17 +11,17 @@ public class HitSplatDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache field382;
+   static AbstractArchive field382;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache field383;
+   static AbstractArchive field383;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache field384;
+   static AbstractArchive field384;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -141,15 +141,15 @@ public class HitSplatDefinition extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "1963348982"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -158,8 +158,8 @@ public class HitSplatDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "1789835753"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       if (var2 == 1) {
          this.fontId = var1.method51();
       } else if (var2 == 2) {
@@ -371,7 +371,7 @@ public class HitSplatDefinition extends DualNode {
          if (var1 != null) {
             return var1;
          } else {
-            var1 = SpriteIds.method5823(field383, field384, this.fontId, 0);
+            var1 = GraphicsDefaults.method5823(field383, field384, this.fontId, 0);
             if (var1 != null) {
                HitSplatDefinition_cachedFonts.put(var1, (long)this.fontId);
             }

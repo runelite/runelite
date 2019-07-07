@@ -16,8 +16,8 @@ public class Skeleton extends Node {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache1")
-   static IndexCache indexCache1;
+   @Export("archive1")
+   static Archive archive1;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -1634889691

@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("ay")
 public class class32 {
@@ -24,16 +25,16 @@ public class class32 {
          var0 -= 1000;
          var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
       } else {
-         var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+         var3 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       }
 
       class22.method295(var3);
-      if (var0 != 1200 && var0 != 1205 && var0 != 1212) {
-         if (var0 == 1201) {
+      if (var0 != ScriptOpcodes.CC_SETOBJECT && var0 != ScriptOpcodes.CC_SETOBJECT_NONUM && var0 != ScriptOpcodes.CC_SETOBJECT_ALWAYS_NUM) {
+         if (var0 == ScriptOpcodes.CC_SETNPCHEAD) {
             var3.modelType = 2;
             var3.modelId = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             return 1;
-         } else if (var0 == 1202) {
+         } else if (var0 == ScriptOpcodes.CC_SETPLAYERHEAD_SELF) {
             var3.modelType = 3;
             var3.modelId = Canvas.localPlayer.appearance.getChatHeadId();
             return 1;
@@ -53,9 +54,9 @@ public class class32 {
          var3.modelOffsetX = var6.offsetX2d;
          var3.modelOffsetY = var6.offsetY2d;
          var3.modelZoom = var6.zoom2d;
-         if (var0 == 1205) {
+         if (var0 == ScriptOpcodes.CC_SETOBJECT_NONUM) {
             var3.itemQuantityMode = 0;
-         } else if (var0 == 1212 | 1 == var6.isStackable) {
+         } else if (var0 == ScriptOpcodes.CC_SETOBJECT_ALWAYS_NUM | 1 == var6.isStackable) {
             var3.itemQuantityMode = 1;
          } else {
             var3.itemQuantityMode = 2;

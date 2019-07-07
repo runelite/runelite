@@ -26,24 +26,24 @@ public class Skills {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = ItemDefinition.ItemDefinition_indexCache.takeRecord(10, var0);
+         byte[] var2 = ItemDefinition.ItemDefinition_archive.takeFile(10, var0);
          var1 = new ItemDefinition();
          var1.id = var0;
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          var1.post();
          if (var1.noteTemplate != -1) {
-            var1.method140(getItemDefinition(var1.noteTemplate), getItemDefinition(var1.note));
+            var1.genCert(getItemDefinition(var1.noteTemplate), getItemDefinition(var1.note));
          }
 
          if (var1.notedId != -1) {
-            var1.method141(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
+            var1.genBought(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
          }
 
          if (var1.placeholderTemplate != -1) {
-            var1.method142(getItemDefinition(var1.placeholderTemplate), getItemDefinition(var1.placeholder));
+            var1.genPlaceholder(getItemDefinition(var1.placeholderTemplate), getItemDefinition(var1.placeholder));
          }
 
          if (!class30.inMembersWorld && var1.isMembersOnly) {
@@ -51,14 +51,14 @@ public class Skills {
             var1.isTradable = false;
             var1.groundActions = null;
             var1.inventoryActions = null;
-            var1.shiftClickIndex0 = -1;
-            var1.int1 = 0;
+            var1.shiftClickIndex = -1;
+            var1.team = 0;
             if (var1.params != null) {
                boolean var3 = false;
 
                for (Node var4 = var1.params.first(); var4 != null; var4 = var1.params.next()) {
-                  ParamKeyDefinition var5 = class229.getParamKeyDefinition((int)var4.key);
-                  if (var5.isMembersOnly) {
+                  ParamDefinition var5 = class229.getParamDefinition((int)var4.key);
+                  if (var5.autoDisable) {
                      var4.remove();
                   } else {
                      var3 = true;

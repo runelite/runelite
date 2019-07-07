@@ -12,7 +12,7 @@ public interface WorldMapSection {
       garbageValue = "1384899025"
    )
    @Export("expandBounds")
-   void expandBounds(WorldMapArea var1);
+   void expandBounds(WorldMapArea area);
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
@@ -20,7 +20,7 @@ public interface WorldMapSection {
       garbageValue = "93"
    )
    @Export("containsCoord")
-   boolean containsCoord(int var1, int var2, int var3);
+   boolean containsCoord(int plane, int x, int y);
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
@@ -28,7 +28,7 @@ public interface WorldMapSection {
       garbageValue = "4"
    )
    @Export("containsPosition")
-   boolean containsPosition(int var1, int var2);
+   boolean containsPosition(int x, int y);
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -36,7 +36,7 @@ public interface WorldMapSection {
       garbageValue = "1545934424"
    )
    @Export("position")
-   int[] position(int var1, int var2, int var3);
+   int[] position(int plane, int x, int y);
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
@@ -44,7 +44,7 @@ public interface WorldMapSection {
       garbageValue = "-1916486802"
    )
    @Export("coord")
-   TileLocation coord(int var1, int var2);
+   Coord coord(int x, int y);
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
@@ -52,5 +52,5 @@ public interface WorldMapSection {
       garbageValue = "-113"
    )
    @Export("read")
-   void read(Buffer var1);
+   void read(Buffer buffer);
 }

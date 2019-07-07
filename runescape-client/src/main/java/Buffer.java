@@ -51,8 +51,8 @@ public class Buffer extends Node {
       garbageValue = "-654332799"
    )
    @Export("writeByte")
-   public void writeByte(int var1) {
-      this.array[++this.index - 1] = (byte)var1;
+   public void writeByte(int value) {
+      this.array[++this.index - 1] = (byte)value;
    }
 
    @ObfuscatedName("w")
@@ -61,9 +61,9 @@ public class Buffer extends Node {
       garbageValue = "0"
    )
    @Export("writeShort")
-   public void writeShort(int var1) {
-      this.array[++this.index - 1] = (byte)(var1 >> 8);
-      this.array[++this.index - 1] = (byte)var1;
+   public void writeShort(int value) {
+      this.array[++this.index - 1] = (byte)(value >> 8);
+      this.array[++this.index - 1] = (byte)value;
    }
 
    @ObfuscatedName("o")
@@ -72,10 +72,10 @@ public class Buffer extends Node {
       garbageValue = "-26"
    )
    @Export("writeMedium")
-   public void writeMedium(int var1) {
-      this.array[++this.index - 1] = (byte)(var1 >> 16);
-      this.array[++this.index - 1] = (byte)(var1 >> 8);
-      this.array[++this.index - 1] = (byte)var1;
+   public void writeMedium(int value) {
+      this.array[++this.index - 1] = (byte)(value >> 16);
+      this.array[++this.index - 1] = (byte)(value >> 8);
+      this.array[++this.index - 1] = (byte)value;
    }
 
    @ObfuscatedName("u")
@@ -84,11 +84,11 @@ public class Buffer extends Node {
       garbageValue = "-106996411"
    )
    @Export("writeInt")
-   public void writeInt(int var1) {
-      this.array[++this.index - 1] = (byte)(var1 >> 24);
-      this.array[++this.index - 1] = (byte)(var1 >> 16);
-      this.array[++this.index - 1] = (byte)(var1 >> 8);
-      this.array[++this.index - 1] = (byte)var1;
+   public void writeInt(int value) {
+      this.array[++this.index - 1] = (byte)(value >> 24);
+      this.array[++this.index - 1] = (byte)(value >> 16);
+      this.array[++this.index - 1] = (byte)(value >> 8);
+      this.array[++this.index - 1] = (byte)value;
    }
 
    @ObfuscatedName("g")
@@ -121,8 +121,8 @@ public class Buffer extends Node {
       garbageValue = "-125"
    )
    @Export("writeBoolean")
-   public void writeBoolean(boolean var1) {
-      this.writeByte(var1 ? 1 : 0);
+   public void writeBoolean(boolean value) {
+      this.writeByte(value ? 1 : 0);
    }
 
    @ObfuscatedName("d")
@@ -131,12 +131,12 @@ public class Buffer extends Node {
       garbageValue = "-9"
    )
    @Export("writeStringCp1252NullTerminated")
-   public void writeStringCp1252NullTerminated(String var1) {
-      int var2 = var1.indexOf(0);
+   public void writeStringCp1252NullTerminated(String string) {
+      int var2 = string.indexOf(0);
       if (var2 >= 0) {
          throw new IllegalArgumentException("");
       } else {
-         this.index += SoundCache.encodeStringCp1252(var1, 0, var1.length(), this.array, this.index);
+         this.index += SoundCache.encodeStringCp1252(string, 0, string.length(), this.array, this.index);
          this.array[++this.index - 1] = 0;
       }
    }
@@ -147,13 +147,13 @@ public class Buffer extends Node {
       garbageValue = "22356"
    )
    @Export("writeStringCp1252NullCircumfixed")
-   public void writeStringCp1252NullCircumfixed(String var1) {
-      int var2 = var1.indexOf(0);
+   public void writeStringCp1252NullCircumfixed(String string) {
+      int var2 = string.indexOf(0);
       if (var2 >= 0) {
          throw new IllegalArgumentException("");
       } else {
          this.array[++this.index - 1] = 0;
-         this.index += SoundCache.encodeStringCp1252(var1, 0, var1.length(), this.array, this.index);
+         this.index += SoundCache.encodeStringCp1252(string, 0, string.length(), this.array, this.index);
          this.array[++this.index - 1] = 0;
       }
    }
@@ -232,15 +232,15 @@ public class Buffer extends Node {
       garbageValue = "1324532803"
    )
    @Export("writeSmartByteShort")
-   public void writeSmartByteShort(int var1) {
-      if (var1 >= 0 && var1 < 128) {
-         this.writeByte(var1);
+   public void writeSmartByteShort(int value) {
+      if (value >= 0 && value < 128) {
+         this.writeByte(value);
       } else {
-         if (var1 < 0 || var1 >= 32768) {
+         if (value < 0 || value >= 32768) {
             throw new IllegalArgumentException();
          }
 
-         this.writeShort(var1 + 32768);
+         this.writeShort(value + 32768);
       }
 
    }
@@ -388,7 +388,7 @@ public class Buffer extends Node {
       }
 
       int var2 = this.index - var1 - 1;
-      return var2 == 0 ? "" : WidgetGroupParent.decodeStringCp1252(this.array, var1, var2);
+      return var2 == 0 ? "" : InterfaceParent.decodeStringCp1252(this.array, var1, var2);
    }
 
    @ObfuscatedName("ak")
@@ -408,7 +408,7 @@ public class Buffer extends Node {
          }
 
          int var3 = this.index - var2 - 1;
-         return var3 == 0 ? "" : WidgetGroupParent.decodeStringCp1252(this.array, var2, var3);
+         return var3 == 0 ? "" : InterfaceParent.decodeStringCp1252(this.array, var2, var3);
       }
    }
 
@@ -578,7 +578,7 @@ public class Buffer extends Node {
       garbageValue = "36"
    )
    @Export("xteaEncryptAll")
-   public void xteaEncryptAll(int[] var1) {
+   public void xteaEncryptAll(int[] xteaKey) {
       int var2 = this.index / 8;
       this.index = 0;
 
@@ -588,8 +588,8 @@ public class Buffer extends Node {
          int var6 = 0;
          int var7 = -1640531527;
 
-         for (int var8 = 32; var8-- > 0; var5 += var4 + (var4 << 4 ^ var4 >>> 5) ^ var1[var6 >>> 11 & 3] + var6) {
-            var4 += var5 + (var5 << 4 ^ var5 >>> 5) ^ var6 + var1[var6 & 3];
+         for (int var8 = 32; var8-- > 0; var5 += var4 + (var4 << 4 ^ var4 >>> 5) ^ xteaKey[var6 >>> 11 & 3] + var6) {
+            var4 += var5 + (var5 << 4 ^ var5 >>> 5) ^ var6 + xteaKey[var6 & 3];
             var6 += var7;
          }
 
@@ -606,7 +606,7 @@ public class Buffer extends Node {
       garbageValue = "1682045100"
    )
    @Export("xteaDecryptAll")
-   public void xteaDecryptAll(int[] var1) {
+   public void xteaDecryptAll(int[] xteaKey) {
       int var2 = this.index / 8;
       this.index = 0;
 
@@ -616,8 +616,8 @@ public class Buffer extends Node {
          int var6 = -957401312;
          int var7 = -1640531527;
 
-         for (int var8 = 32; var8-- > 0; var4 -= var5 + (var5 << 4 ^ var5 >>> 5) ^ var6 + var1[var6 & 3]) {
-            var5 -= var4 + (var4 << 4 ^ var4 >>> 5) ^ var1[var6 >>> 11 & 3] + var6;
+         for (int var8 = 32; var8-- > 0; var4 -= var5 + (var5 << 4 ^ var5 >>> 5) ^ var6 + xteaKey[var6 & 3]) {
+            var5 -= var4 + (var4 << 4 ^ var4 >>> 5) ^ xteaKey[var6 >>> 11 & 3] + var6;
             var6 -= var7;
          }
 
@@ -634,10 +634,10 @@ public class Buffer extends Node {
       garbageValue = "-1341435074"
    )
    @Export("xteaEncrypt")
-   public void xteaEncrypt(int[] var1, int var2, int var3) {
+   public void xteaEncrypt(int[] xteaKey, int start, int end) {
       int var4 = this.index;
-      this.index = var2;
-      int var5 = (var3 - var2) / 8;
+      this.index = start;
+      int var5 = (end - start) / 8;
 
       for (int var6 = 0; var6 < var5; ++var6) {
          int var7 = this.readInt();
@@ -645,8 +645,8 @@ public class Buffer extends Node {
          int var9 = 0;
          int var10 = -1640531527;
 
-         for (int var11 = 32; var11-- > 0; var8 += var7 + (var7 << 4 ^ var7 >>> 5) ^ var1[var9 >>> 11 & 3] + var9) {
-            var7 += var8 + (var8 << 4 ^ var8 >>> 5) ^ var9 + var1[var9 & 3];
+         for (int var11 = 32; var11-- > 0; var8 += var7 + (var7 << 4 ^ var7 >>> 5) ^ xteaKey[var9 >>> 11 & 3] + var9) {
+            var7 += var8 + (var8 << 4 ^ var8 >>> 5) ^ var9 + xteaKey[var9 & 3];
             var9 += var10;
          }
 
@@ -664,10 +664,10 @@ public class Buffer extends Node {
       garbageValue = "307218624"
    )
    @Export("xteaDecrypt")
-   public void xteaDecrypt(int[] var1, int var2, int var3) {
+   public void xteaDecrypt(int[] xteaKey, int start, int end) {
       int var4 = this.index;
-      this.index = var2;
-      int var5 = (var3 - var2) / 8;
+      this.index = start;
+      int var5 = (end - start) / 8;
 
       for (int var6 = 0; var6 < var5; ++var6) {
          int var7 = this.readInt();
@@ -675,8 +675,8 @@ public class Buffer extends Node {
          int var9 = -957401312;
          int var10 = -1640531527;
 
-         for (int var11 = 32; var11-- > 0; var7 -= var8 + (var8 << 4 ^ var8 >>> 5) ^ var9 + var1[var9 & 3]) {
-            var8 -= var7 + (var7 << 4 ^ var7 >>> 5) ^ var1[var9 >>> 11 & 3] + var9;
+         for (int var11 = 32; var11-- > 0; var7 -= var8 + (var8 << 4 ^ var8 >>> 5) ^ var9 + xteaKey[var9 & 3]) {
+            var8 -= var7 + (var7 << 4 ^ var7 >>> 5) ^ xteaKey[var9 >>> 11 & 3] + var9;
             var9 -= var10;
          }
 
@@ -835,9 +835,9 @@ public class Buffer extends Node {
       garbageValue = "51"
    )
    @Export("writeShortLE")
-   public void writeShortLE(int var1) {
-      this.array[++this.index - 1] = (byte)var1;
-      this.array[++this.index - 1] = (byte)(var1 >> 8);
+   public void writeShortLE(int value) {
+      this.array[++this.index - 1] = (byte)value;
+      this.array[++this.index - 1] = (byte)(value >> 8);
    }
 
    @ObfuscatedName("bo")
@@ -936,11 +936,11 @@ public class Buffer extends Node {
       garbageValue = "78"
    )
    @Export("writeIntLE")
-   public void writeIntLE(int var1) {
-      this.array[++this.index - 1] = (byte)var1;
-      this.array[++this.index - 1] = (byte)(var1 >> 8);
-      this.array[++this.index - 1] = (byte)(var1 >> 16);
-      this.array[++this.index - 1] = (byte)(var1 >> 24);
+   public void writeIntLE(int value) {
+      this.array[++this.index - 1] = (byte)value;
+      this.array[++this.index - 1] = (byte)(value >> 8);
+      this.array[++this.index - 1] = (byte)(value >> 16);
+      this.array[++this.index - 1] = (byte)(value >> 24);
    }
 
    @ObfuscatedName("bz")
@@ -949,11 +949,11 @@ public class Buffer extends Node {
       garbageValue = "80"
    )
    @Export("writeIntME")
-   public void writeIntME(int var1) {
-      this.array[++this.index - 1] = (byte)(var1 >> 8);
-      this.array[++this.index - 1] = (byte)var1;
-      this.array[++this.index - 1] = (byte)(var1 >> 24);
-      this.array[++this.index - 1] = (byte)(var1 >> 16);
+   public void writeIntME(int value) {
+      this.array[++this.index - 1] = (byte)(value >> 8);
+      this.array[++this.index - 1] = (byte)value;
+      this.array[++this.index - 1] = (byte)(value >> 24);
+      this.array[++this.index - 1] = (byte)(value >> 16);
    }
 
    @ObfuscatedName("bg")
@@ -962,11 +962,11 @@ public class Buffer extends Node {
       garbageValue = "2115295559"
    )
    @Export("writeIntLE16")
-   public void writeIntLE16(int var1) {
-      this.array[++this.index - 1] = (byte)(var1 >> 16);
-      this.array[++this.index - 1] = (byte)(var1 >> 24);
-      this.array[++this.index - 1] = (byte)var1;
-      this.array[++this.index - 1] = (byte)(var1 >> 8);
+   public void writeIntLE16(int value) {
+      this.array[++this.index - 1] = (byte)(value >> 16);
+      this.array[++this.index - 1] = (byte)(value >> 24);
+      this.array[++this.index - 1] = (byte)value;
+      this.array[++this.index - 1] = (byte)(value >> 8);
    }
 
    @ObfuscatedName("bt")

@@ -60,35 +60,35 @@ public class AudioFilter {
          field32[var1][0] = -2.0F * var3 * (float)Math.cos((double)this.method25(var1, 0, var2));
          field32[var1][1] = var3 * var3;
 
-         float[] var10000;
-         int var4;
-         for (var4 = 1; var4 < this.field36[var1]; ++var4) {
-            var3 = this.method24(var1, var4, var2);
-            float var5 = -2.0F * var3 * (float)Math.cos((double)this.method25(var1, var4, var2));
-            float var6 = var3 * var3;
-            field32[var1][var4 * 2 + 1] = field32[var1][var4 * 2 - 1] * var6;
-            field32[var1][var4 * 2] = field32[var1][var4 * 2 - 1] * var5 + field32[var1][var4 * 2 - 2] * var6;
+         float[] var4;
+         int var5;
+         for (var5 = 1; var5 < this.field36[var1]; ++var5) {
+            var3 = this.method24(var1, var5, var2);
+            float var6 = -2.0F * var3 * (float)Math.cos((double)this.method25(var1, var5, var2));
+            float var7 = var3 * var3;
+            field32[var1][var5 * 2 + 1] = field32[var1][var5 * 2 - 1] * var7;
+            field32[var1][var5 * 2] = field32[var1][var5 * 2 - 1] * var6 + field32[var1][var5 * 2 - 2] * var7;
 
-            for (int var7 = var4 * 2 - 1; var7 >= 2; --var7) {
-               var10000 = field32[var1];
-               var10000[var7] += field32[var1][var7 - 1] * var5 + field32[var1][var7 - 2] * var6;
+            for (int var8 = var5 * 2 - 1; var8 >= 2; --var8) {
+               var4 = field32[var1];
+               var4[var8] += field32[var1][var8 - 1] * var6 + field32[var1][var8 - 2] * var7;
             }
 
-            var10000 = field32[var1];
-            var10000[1] += field32[var1][0] * var5 + var6;
-            var10000 = field32[var1];
-            var10000[0] += var5;
+            var4 = field32[var1];
+            var4[1] += field32[var1][0] * var6 + var7;
+            var4 = field32[var1];
+            var4[0] += var6;
          }
 
          if (var1 == 0) {
-            for (var4 = 0; var4 < this.field36[0] * 2; ++var4) {
-               var10000 = field32[0];
-               var10000[var4] *= field34;
+            for (var5 = 0; var5 < this.field36[0] * 2; ++var5) {
+               var4 = field32[0];
+               var4[var5] *= field34;
             }
          }
 
-         for (var4 = 0; var4 < this.field36[var1] * 2; ++var4) {
-            field33[var1][var4] = (int)(field32[var1][var4] * 65536.0F);
+         for (var5 = 0; var5 < this.field36[var1] * 2; ++var5) {
+            field33[var1][var5] = (int)(field32[var1][var5] * 65536.0F);
          }
 
          return this.field36[var1] * 2;

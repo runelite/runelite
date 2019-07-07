@@ -161,17 +161,17 @@ public enum WorldMapDecorationType implements Enumerated {
       garbageValue = "1"
    )
    public static InvDefinition method4523(int var0) {
-      InvDefinition var1 = (InvDefinition)InvDefinition.field427.get((long)var0);
+      InvDefinition var1 = (InvDefinition)InvDefinition.InvDefinition_cached.get((long)var0);
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class4.field1158.takeRecord(5, var0);
+         byte[] var2 = class4.field1158.takeFile(5, var0);
          var1 = new InvDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
-         InvDefinition.field427.put(var1, (long)var0);
+         InvDefinition.InvDefinition_cached.put(var1, (long)var0);
          return var1;
       }
    }
@@ -192,8 +192,8 @@ public enum WorldMapDecorationType implements Enumerated {
       garbageValue = "1521012895"
    )
    static final void method4517(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if (GroundItemPile.loadWidgetGroup(var0)) {
-         class238.updateWidgetGroup(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6);
+      if (GroundItemPile.loadInterface(var0)) {
+         class238.updateInterface(Widget.interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6);
       }
 
    }

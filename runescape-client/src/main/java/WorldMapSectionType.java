@@ -4,6 +4,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("h")
 @Implements("WorldMapSectionType")
@@ -86,9 +87,10 @@ public enum WorldMapSectionType implements Enumerated {
       signature = "(IZIZI)V",
       garbageValue = "2102950996"
    )
-   static void method248(int var0, boolean var1, int var2, boolean var3) {
+   @Export("sortWorlds")
+   static void sortWorlds(int primaryMode, boolean primaryReversed, int secondaryMode, boolean secondaryReversed) {
       if (ItemContainer.worlds != null) {
-         class3.method42(0, ItemContainer.worlds.length - 1, var0, var1, var2, var3);
+         class3.doWorldSorting(0, ItemContainer.worlds.length - 1, primaryMode, primaryReversed, secondaryMode, secondaryReversed);
       }
 
    }
@@ -99,23 +101,23 @@ public enum WorldMapSectionType implements Enumerated {
       garbageValue = "-1520594673"
    )
    static int method253(int var0, Script var1, boolean var2) {
-      Widget var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
-      if (var0 == 1500) {
+      Widget var3 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
+      if (var0 == ScriptOpcodes.CC_GETX) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.x;
          return 1;
-      } else if (var0 == 1501) {
+      } else if (var0 == ScriptOpcodes.CC_GETY) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.y;
          return 1;
-      } else if (var0 == 1502) {
+      } else if (var0 == ScriptOpcodes.CC_GETWIDTH) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.width;
          return 1;
-      } else if (var0 == 1503) {
+      } else if (var0 == ScriptOpcodes.CC_GETHEIGHT) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.height;
          return 1;
-      } else if (var0 == 1504) {
+      } else if (var0 == ScriptOpcodes.CC_GETHIDE) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.isHidden ? 1 : 0;
          return 1;
-      } else if (var0 == 1505) {
+      } else if (var0 == ScriptOpcodes.CC_GETLAYER) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.parentId;
          return 1;
       } else {

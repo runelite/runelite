@@ -105,10 +105,10 @@ public class Interpreter {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = EnumDefinition.EnumDefinition_indexCache.takeRecord(8, var0);
+         byte[] var2 = EnumDefinition.EnumDefinition_archive.takeFile(8, var0);
          var1 = new EnumDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          EnumDefinition.EnumDefinition_cached.put(var1, (long)var0);
@@ -187,11 +187,11 @@ public class Interpreter {
    )
    @Export("drawWidgets")
    static final void drawWidgets(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      if (GroundItemPile.loadWidgetGroup(var0)) {
+      if (GroundItemPile.loadInterface(var0)) {
          class279.field1145 = null;
-         DevicePcmPlayerProvider.drawWidgetGroup(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
+         DevicePcmPlayerProvider.drawInterface(Widget.interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6, var7);
          if (class279.field1145 != null) {
-            DevicePcmPlayerProvider.drawWidgetGroup(class279.field1145, -1412584499, var1, var2, var3, var4, class54.field1161, class157.field1114, var7);
+            DevicePcmPlayerProvider.drawInterface(class279.field1145, -1412584499, var1, var2, var3, var4, class54.field1161, BuddyRankComparator.field1114, var7);
             class279.field1145 = null;
          }
       } else if (var7 != -1) {

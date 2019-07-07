@@ -44,15 +44,15 @@ public class NodeDeque {
       signature = "(Lgw;)V"
    )
    @Export("addFirst")
-   public void addFirst(Node var1) {
-      if (var1.next != null) {
-         var1.remove();
+   public void addFirst(Node node) {
+      if (node.next != null) {
+         node.remove();
       }
 
-      var1.next = this.sentinel.next;
-      var1.previous = this.sentinel;
-      var1.next.previous = var1;
-      var1.previous.next = var1;
+      node.next = this.sentinel.next;
+      node.previous = this.sentinel;
+      node.next.previous = node;
+      node.previous.next = node;
    }
 
    @ObfuscatedName("q")
@@ -60,15 +60,15 @@ public class NodeDeque {
       signature = "(Lgw;)V"
    )
    @Export("addLast")
-   public void addLast(Node var1) {
-      if (var1.next != null) {
-         var1.remove();
+   public void addLast(Node node) {
+      if (node.next != null) {
+         node.remove();
       }
 
-      var1.next = this.sentinel;
-      var1.previous = this.sentinel.previous;
-      var1.next.previous = var1;
-      var1.previous.next = var1;
+      node.next = this.sentinel;
+      node.previous = this.sentinel.previous;
+      node.next.previous = node;
+      node.previous.next = node;
    }
 
    @ObfuscatedName("o")

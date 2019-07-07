@@ -469,7 +469,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       garbageValue = "559367680"
    )
    @Export("startThread")
-   protected final void startThread(int var1, int var2, int var3) {
+   protected final void startThread(int width, int height, int revision) {
       try {
          if (gameShell != null) {
             ++field361;
@@ -483,9 +483,9 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
          }
 
          gameShell = this;
-         SoundCache.canvasWidth = var1;
-         Huffman.canvasHeight = var2;
-         RunException.revision = var3;
+         SoundCache.canvasWidth = width;
+         Huffman.canvasHeight = height;
+         RunException.revision = revision;
          RunException.applet = this;
          if (taskHandler == null) {
             taskHandler = new TaskHandler();
@@ -598,7 +598,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
          class230.field1138 = hasFocus;
       }
 
-      this.vmethod112();
+      this.doCycle();
    }
 
    @ObfuscatedName("ar")
@@ -635,7 +635,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       }
 
       this.method110();
-      this.methodDraw(this.field369);
+      this.draw(this.field369);
       if (this.field369) {
          this.clearBackground();
       }
@@ -718,15 +718,16 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(I)V",
       garbageValue = "1445885427"
    )
-   protected abstract void vmethod112();
+   @Export("doCycle")
+   protected abstract void doCycle();
 
    @ObfuscatedName("ab")
    @ObfuscatedSignature(
       signature = "(ZI)V",
       garbageValue = "106302203"
    )
-   @Export("methodDraw")
-   protected abstract void methodDraw(boolean var1);
+   @Export("draw")
+   protected abstract void draw(boolean var1);
 
    @ObfuscatedName("ae")
    @ObfuscatedSignature(
@@ -809,13 +810,13 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       garbageValue = "39"
    )
    @Export("error")
-   protected void error(String var1) {
+   protected void error(String type) {
       if (!this.hasErrored) {
          this.hasErrored = true;
-         System.out.println("error_game_" + var1);
+         System.out.println("error_game_" + type);
 
          try {
-            this.getAppletContext().showDocument(new URL(this.getCodeBase(), "error_game_" + var1 + ".ws"), "_self");
+            this.getAppletContext().showDocument(new URL(this.getCodeBase(), "error_game_" + type + ".ws"), "_self");
          } catch (Exception var3) {
          }
       }
@@ -868,8 +869,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
    )
    protected abstract void vmethod114();
 
-   @ObfuscatedName("destroy")
-   public final void method115() {
+   public final void destroy() {
       if (this == gameShell && !isKilled) {
          stopTimeMs = class203.currentTimeMs();
          class203.method4010(5000L);
@@ -878,8 +878,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
    }
 
-   @Export("paint")
-   @ObfuscatedName("paint")
    public final synchronized void paint(Graphics var1) {
       if (this == gameShell && !isKilled) {
          this.field369 = true;
@@ -893,8 +891,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
    }
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       try {
          if (TaskHandler.javaVendor != null) {
@@ -908,7 +904,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
                if (var2.startsWith("1.6.0_")) {
                   int var3;
-                  for (var3 = 6; var3 < var2.length() && class159.method3394(var2.charAt(var3)); ++var3) {
+                  for (var3 = 6; var3 < var2.length() && class159.isCharDigit(var2.charAt(var3)); ++var3) {
                   }
 
                   String var4 = var2.substring(6, var3);
@@ -953,76 +949,53 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       this.kill();
    }
 
-   @ObfuscatedName("start")
-   public final void method116() {
+   public final void start() {
       if (this == gameShell && !isKilled) {
          stopTimeMs = 0L;
       }
 
    }
 
-   @Export("update")
-   @ObfuscatedName("update")
    public final void update(Graphics var1) {
       this.paint(var1);
    }
 
-   @Export("focusGained")
-   @ObfuscatedName("focusGained")
    public final void focusGained(FocusEvent var1) {
       hasFocus = true;
       this.field369 = true;
    }
 
-   @Export("windowActivated")
-   @ObfuscatedName("windowActivated")
    public final void windowActivated(WindowEvent var1) {
    }
 
-   @Export("windowClosed")
-   @ObfuscatedName("windowClosed")
    public final void windowClosed(WindowEvent var1) {
    }
 
-   @Export("windowClosing")
-   @ObfuscatedName("windowClosing")
    public final void windowClosing(WindowEvent var1) {
-      this.method115();
+      this.destroy();
    }
 
-   @Export("windowDeiconified")
-   @ObfuscatedName("windowDeiconified")
    public final void windowDeiconified(WindowEvent var1) {
    }
 
-   @Export("windowOpened")
-   @ObfuscatedName("windowOpened")
    public final void windowOpened(WindowEvent var1) {
    }
 
-   @ObfuscatedName("init")
-   public abstract void vmethod117();
+   public abstract void init();
 
-   @ObfuscatedName("stop")
-   public final void method118() {
+   public final void stop() {
       if (this == gameShell && !isKilled) {
          stopTimeMs = class203.currentTimeMs() + 4000L;
       }
 
    }
 
-   @Export("windowIconified")
-   @ObfuscatedName("windowIconified")
    public final void windowIconified(WindowEvent var1) {
    }
 
-   @Export("windowDeactivated")
-   @ObfuscatedName("windowDeactivated")
    public final void windowDeactivated(WindowEvent var1) {
    }
 
-   @Export("focusLost")
-   @ObfuscatedName("focusLost")
    public final void focusLost(FocusEvent var1) {
       hasFocus = false;
    }
@@ -1033,23 +1006,23 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       garbageValue = "17"
    )
    @Export("updateGameState")
-   static void updateGameState(int var0) {
-      if (var0 != Client.gameState) {
+   static void updateGameState(int gameState) {
+      if (gameState != Client.gameState) {
          if (Client.gameState == 0) {
             TextureProvider.client.method113();
          }
 
-         if (var0 == 20 || var0 == 40 || var0 == 45) {
+         if (gameState == 20 || gameState == 40 || gameState == 45) {
             Client.loginState = 0;
             Client.field168 = 0;
             Client.field169 = 0;
-            Client.timer.method331(var0);
-            if (var0 != 20) {
+            Client.timer.method331(gameState);
+            if (gameState != 20) {
                class15.method184(false);
             }
          }
 
-         if (var0 != 20 && var0 != 40 && ClientParameter.field341 != null) {
+         if (gameState != 20 && gameState != 40 && ClientParameter.field341 != null) {
             ClientParameter.field341.close();
             ClientParameter.field341 = null;
          }
@@ -1062,19 +1035,19 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
             Client.field180 = 1;
          }
 
-         if (var0 != 5 && var0 != 10) {
-            if (var0 == 20) {
-               class2.method27(class16.indexCache10, WorldMapSection3.indexCache8, true, Client.gameState == 11 ? 4 : 0);
-            } else if (var0 == 11) {
-               class2.method27(class16.indexCache10, WorldMapSection3.indexCache8, false, 4);
+         if (gameState != 5 && gameState != 10) {
+            if (gameState == 20) {
+               class2.method27(class16.archive10, WorldMapSection3.archive8, true, Client.gameState == 11 ? 4 : 0);
+            } else if (gameState == 11) {
+               class2.method27(class16.archive10, WorldMapSection3.archive8, false, 4);
             } else {
                class80.method2015();
             }
          } else {
-            class2.method27(class16.indexCache10, WorldMapSection3.indexCache8, true, 0);
+            class2.method27(class16.archive10, WorldMapSection3.archive8, true, 0);
          }
 
-         Client.gameState = var0;
+         Client.gameState = gameState;
       }
 
    }

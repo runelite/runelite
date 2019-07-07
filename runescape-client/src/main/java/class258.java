@@ -29,7 +29,7 @@ public class class258 {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.spritePixels = (byte[][])null;
+      class328.spritePixels = ((byte[][])null);
       return var0;
    }
 
@@ -42,7 +42,7 @@ public class class258 {
       PendingSpawn var9 = null;
 
       for (PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.last(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.previous()) {
-         if (var0 == var10.level && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
+         if (var0 == var10.plane && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
             var9 = var10;
             break;
          }
@@ -50,7 +50,7 @@ public class class258 {
 
       if (var9 == null) {
          var9 = new PendingSpawn();
-         var9.level = var0;
+         var9.plane = var0;
          var9.type = var3;
          var9.x = var1;
          var9.y = var2;

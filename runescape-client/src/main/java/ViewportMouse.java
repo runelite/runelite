@@ -3,6 +3,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("dm")
 @Implements("ViewportMouse")
@@ -72,22 +73,22 @@ public class ViewportMouse {
    )
    static int method2983(int var0, Script var1, boolean var2) {
       Widget var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-      if (var0 == 2500) {
+      if (var0 == ScriptOpcodes.IF_GETX) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.x;
          return 1;
-      } else if (var0 == 2501) {
+      } else if (var0 == ScriptOpcodes.IF_GETY) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.y;
          return 1;
-      } else if (var0 == 2502) {
+      } else if (var0 == ScriptOpcodes.IF_GETWIDTH) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.width;
          return 1;
-      } else if (var0 == 2503) {
+      } else if (var0 == ScriptOpcodes.IF_GETHEIGHT) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.height;
          return 1;
-      } else if (var0 == 2504) {
+      } else if (var0 == ScriptOpcodes.IF_GETHIDE) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.isHidden ? 1 : 0;
          return 1;
-      } else if (var0 == 2505) {
+      } else if (var0 == ScriptOpcodes.IF_GETLAYER) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.parentId;
          return 1;
       } else {

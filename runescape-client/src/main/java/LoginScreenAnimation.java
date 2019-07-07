@@ -510,7 +510,7 @@ public class LoginScreenAnimation {
       Varps.method4400(var5);
       var5.writeLong(var3.nextLong());
       var5.encryptRsa(class80.field1163, class80.field1164);
-      var7 = WorldMapRegion.method550(var2);
+      var7 = WorldMapRegion.stringCp1252NullTerminatedByteSize(var2);
       if (var7 % 8 != 0) {
          var7 += 8 - var7 % 8;
       }
@@ -587,7 +587,7 @@ public class LoginScreenAnimation {
 
                   var19 = new String(var9.array, 0, var9.index);
                   if (class83.method2026(var19)) {
-                     WorldMapCacheName.method635(var19, true, false);
+                     WorldMapCacheName.openURL(var19, true, false);
                      return 2;
                   } else {
                      return 5;
@@ -616,10 +616,10 @@ public class LoginScreenAnimation {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = HitSplatDefinition.field382.takeRecord(32, var0);
+         byte[] var2 = HitSplatDefinition.field382.takeFile(32, var0);
          var1 = new HitSplatDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          HitSplatDefinition.HitSplatDefinition_cached.put(var1, (long)var0);

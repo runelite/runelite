@@ -61,7 +61,7 @@ public abstract class UserList {
       garbageValue = "861814350"
    )
    @Export("newTypedArray")
-   abstract User[] newTypedArray(int var1);
+   abstract User[] newTypedArray(int size);
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
@@ -102,8 +102,8 @@ public abstract class UserList {
       garbageValue = "933434965"
    )
    @Export("contains")
-   public boolean contains(Username var1) {
-      return var1.hasCleanName() && (this.usernamesMap.containsKey(var1) || this.previousUsernamesMap.containsKey(var1));
+   public boolean contains(Username username) {
+      return username.hasCleanName() && (this.usernamesMap.containsKey(username) || this.previousUsernamesMap.containsKey(username));
    }
 
    @ObfuscatedName("y")
@@ -112,9 +112,9 @@ public abstract class UserList {
       garbageValue = "-291023874"
    )
    @Export("getByUsername")
-   public User getByUsername(Username var1) {
-      User var2 = this.getByCurrentUsername(var1);
-      return var2 != null ? var2 : this.getByPreviousUsername(var1);
+   public User getByUsername(Username username) {
+      User var2 = this.getByCurrentUsername(username);
+      return var2 != null ? var2 : this.getByPreviousUsername(username);
    }
 
    @ObfuscatedName("h")
@@ -123,8 +123,8 @@ public abstract class UserList {
       garbageValue = "-1364698032"
    )
    @Export("getByCurrentUsername")
-   User getByCurrentUsername(Username var1) {
-      return !var1.hasCleanName() ? null : (User)this.usernamesMap.get(var1);
+   User getByCurrentUsername(Username username) {
+      return !username.hasCleanName() ? null : (User)this.usernamesMap.get(username);
    }
 
    @ObfuscatedName("b")
@@ -133,8 +133,8 @@ public abstract class UserList {
       garbageValue = "-1976876334"
    )
    @Export("getByPreviousUsername")
-   User getByPreviousUsername(Username var1) {
-      return !var1.hasCleanName() ? null : (User)this.previousUsernamesMap.get(var1);
+   User getByPreviousUsername(Username previousUsername) {
+      return !previousUsername.hasCleanName() ? null : (User)this.previousUsernamesMap.get(previousUsername);
    }
 
    @ObfuscatedName("c")
@@ -143,8 +143,8 @@ public abstract class UserList {
       garbageValue = "7857"
    )
    @Export("removeByUsername")
-   public final boolean removeByUsername(Username var1) {
-      User var2 = this.getByCurrentUsername(var1);
+   public final boolean removeByUsername(Username username) {
+      User var2 = this.getByCurrentUsername(username);
       if (var2 == null) {
          return false;
       } else {
@@ -159,11 +159,11 @@ public abstract class UserList {
       garbageValue = "-1991960360"
    )
    @Export("remove")
-   final void remove(User var1) {
-      int var2 = this.indexOf(var1);
+   final void remove(User user) {
+      int var2 = this.indexOf(user);
       if (var2 != -1) {
          this.arrayRemove(var2);
-         this.mapRemove(var1);
+         this.mapRemove(user);
       }
 
    }
@@ -174,8 +174,8 @@ public abstract class UserList {
       garbageValue = "-1137431921"
    )
    @Export("addLastNoPreviousUsername")
-   User addLastNoPreviousUsername(Username var1) {
-      return this.addLast(var1, (Username)null);
+   User addLastNoPreviousUsername(Username username) {
+      return this.addLast(username, (Username)null);
    }
 
    @ObfuscatedName("ag")
@@ -184,12 +184,12 @@ public abstract class UserList {
       garbageValue = "1445676158"
    )
    @Export("addLast")
-   User addLast(Username var1, Username var2) {
-      if (this.getByCurrentUsername(var1) != null) {
+   User addLast(Username username, Username previousUsername) {
+      if (this.getByCurrentUsername(username) != null) {
          throw new IllegalStateException();
       } else {
          User var3 = this.newInstance();
-         var3.set(var1, var2);
+         var3.set(username, previousUsername);
          this.arrayAddLast(var3);
          this.mapPut(var3);
          return var3;
@@ -202,11 +202,11 @@ public abstract class UserList {
       garbageValue = "-1676228472"
    )
    @Export("get")
-   public final User get(int var1) {
-      if (var1 >= 0 && var1 < this.size0) {
-         return this.array[var1];
+   public final User get(int index) {
+      if (index >= 0 && index < this.size0) {
+         return this.array[index];
       } else {
-         throw new ArrayIndexOutOfBoundsException(var1);
+         throw new ArrayIndexOutOfBoundsException(index);
       }
    }
 
@@ -231,10 +231,10 @@ public abstract class UserList {
       garbageValue = "35"
    )
    @Export("changeName")
-   final void changeName(User var1, Username var2, Username var3) {
-      this.mapRemove(var1);
-      var1.set(var2, var3);
-      this.mapPut(var1);
+   final void changeName(User user, Username username, Username previousUsername) {
+      this.mapRemove(user);
+      user.set(username, previousUsername);
+      this.mapPut(user);
    }
 
    @ObfuscatedName("ar")
@@ -243,9 +243,9 @@ public abstract class UserList {
       garbageValue = "-1908653684"
    )
    @Export("indexOf")
-   final int indexOf(User var1) {
+   final int indexOf(User user) {
       for (int var2 = 0; var2 < this.size0; ++var2) {
-         if (this.array[var2] == var1) {
+         if (this.array[var2] == user) {
             return var2;
          }
       }
@@ -259,9 +259,9 @@ public abstract class UserList {
       garbageValue = "-20791"
    )
    @Export("mapRemove")
-   final void mapRemove(User var1) {
-      if (var1.previousUsername != null) {
-         this.previousUsernamesMap.remove(var1.previousUsername);
+   final void mapRemove(User user) {
+      if (user.previousUsername != null) {
+         this.previousUsernamesMap.remove(user.previousUsername);
       }
 
    }
@@ -272,8 +272,8 @@ public abstract class UserList {
       garbageValue = "1398315954"
    )
    @Export("arrayAddLast")
-   final void arrayAddLast(User var1) {
-      this.array[++this.size0 - 1] = var1;
+   final void arrayAddLast(User user) {
+      this.array[++this.size0 - 1] = user;
    }
 
    @ObfuscatedName("ah")
@@ -282,11 +282,11 @@ public abstract class UserList {
       garbageValue = "103"
    )
    @Export("mapPut")
-   final void mapPut(User var1) {
-      this.usernamesMap.put(var1.username0, var1);
-      if (var1.previousUsername != null) {
-         User var2 = (User)this.previousUsernamesMap.put(var1.previousUsername, var1);
-         if (var2 != null && var2 != var1) {
+   final void mapPut(User user) {
+      this.usernamesMap.put(user.username, user);
+      if (user.previousUsername != null) {
+         User var2 = (User)this.previousUsernamesMap.put(user.previousUsername, user);
+         if (var2 != null && var2 != user) {
             var2.previousUsername = null;
          }
       }
@@ -299,10 +299,10 @@ public abstract class UserList {
       garbageValue = "-616972929"
    )
    @Export("arrayRemove")
-   final void arrayRemove(int var1) {
+   final void arrayRemove(int index) {
       --this.size0;
-      if (var1 < this.size0) {
-         System.arraycopy(this.array, var1 + 1, this.array, var1, this.size0 - var1);
+      if (index < this.size0) {
+         System.arraycopy(this.array, index + 1, this.array, index, this.size0 - index);
       }
 
    }
@@ -327,7 +327,7 @@ public abstract class UserList {
       if (this.comparator == null) {
          this.comparator = var1;
       } else if (this.comparator instanceof AbstractUserComparator) {
-         ((AbstractUserComparator)this.comparator).method11(var1);
+         ((AbstractUserComparator)this.comparator).addComparator(var1);
       }
 
    }

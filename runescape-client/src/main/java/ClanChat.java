@@ -26,7 +26,8 @@ public class ClanChat extends UserList {
    @Export("owner")
    public String owner;
    @ObfuscatedName("k")
-   public byte field96;
+   @Export("minKick")
+   public byte minKick;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -1534670751
@@ -95,9 +96,9 @@ public class ClanChat extends UserList {
       garbageValue = "455791964"
    )
    @Export("readUpdate")
-   public final void readUpdate(Buffer var1) {
-      this.method77(var1.readStringCp1252NullTerminated());
-      long var2 = var1.readLong();
+   public final void readUpdate(Buffer buffer) {
+      this.method77(buffer.readStringCp1252NullTerminated());
+      long var2 = buffer.readLong();
       long var4 = var2;
       String var6;
       int var7;
@@ -126,17 +127,17 @@ public class ClanChat extends UserList {
       }
 
       this.method76(var6);
-      this.field96 = var1.readByte();
-      var7 = var1.readUnsignedByte();
+      this.minKick = buffer.readByte();
+      var7 = buffer.readUnsignedByte();
       if (var7 != 255) {
          this.clear();
 
          for (int var12 = 0; var12 < var7; ++var12) {
-            ClanMate var13 = (ClanMate)this.addLastNoPreviousUsername(new Username(var1.readStringCp1252NullTerminated(), this.loginType));
-            int var10 = var1.readUnsignedShort();
+            ClanMate var13 = (ClanMate)this.addLastNoPreviousUsername(new Username(buffer.readStringCp1252NullTerminated(), this.loginType));
+            int var10 = buffer.readUnsignedShort();
             var13.set(var10, ++this.field97 - 1);
-            var13.rank = var1.readByte();
-            var1.readStringCp1252NullTerminated();
+            var13.rank = buffer.readByte();
+            buffer.readStringCp1252NullTerminated();
             this.method79(var13);
          }
       }
@@ -164,7 +165,7 @@ public class ClanChat extends UserList {
          }
 
          var6 = (ClanMate)this.getByCurrentUsername(var2);
-         if (var6 != null && var6.world() == var3) {
+         if (var6 != null && var6.getWorld() == var3) {
             this.remove(var6);
          }
       } else {
@@ -217,7 +218,7 @@ public class ClanChat extends UserList {
       garbageValue = "-128608554"
    )
    final void method79(ClanMate var1) {
-      if (var1.username().equals(this.localUser.username())) {
+      if (var1.getUsername().equals(this.localUser.username())) {
          this.rank = var1.rank;
       }
 

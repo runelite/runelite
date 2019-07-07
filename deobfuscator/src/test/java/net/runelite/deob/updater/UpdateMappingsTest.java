@@ -37,6 +37,7 @@ import net.runelite.deob.deobfuscators.mapping.AnnotationIntegrityChecker;
 import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
 import net.runelite.deob.deobfuscators.mapping.Mapper;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
+import net.runelite.deob.deobfuscators.transformers.ScriptOpcodesTransformer;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -85,6 +86,19 @@ public class UpdateMappingsTest
 		map(group1, group2);
 
 		check(group1, group2);
+	}
+
+	@Test
+	@Ignore
+	public void testScriptopcodes() throws Exception
+	{
+		File client = new File("C:\\Users\\Lucas\\IdeaProjects\\runelitexxx\\client.jar");
+
+		ClassGroup group = JarUtil.loadJar(client);
+
+		new ScriptOpcodesTransformer().transform(group);
+
+		JarUtil.saveJar(group, new File("C:/Users/Lucas/Desktop/Apapapapapap.jar"));
 	}
 
 	private void unannotate(ClassGroup group)

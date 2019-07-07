@@ -45,15 +45,15 @@ public class DevicePcmPlayer extends PcmPlayer {
       garbageValue = "-1738349775"
    )
    @Export("open")
-   protected void open(int var1) throws LineUnavailableException {
+   protected void open(int bufferSize) throws LineUnavailableException {
       try {
-         Info var2 = new Info(SourceDataLine.class, this.format, var1 << (PcmPlayer.isStereo ? 2 : 1));
+         Info var2 = new Info(SourceDataLine.class, this.format, bufferSize << (PcmPlayer.isStereo ? 2 : 1));
          this.line = (SourceDataLine)AudioSystem.getLine(var2);
          this.line.open();
          this.line.start();
-         this.capacity2 = var1;
+         this.capacity2 = bufferSize;
       } catch (LineUnavailableException var5) {
-         int var3 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
+         int var3 = (bufferSize >>> 1 & 1431655765) + (bufferSize & 1431655765);
          var3 = (var3 >>> 2 & 858993459) + (var3 & 858993459);
          var3 = (var3 >>> 4) + var3 & 252645135;
          var3 += var3 >>> 8;
@@ -64,7 +64,7 @@ public class DevicePcmPlayer extends PcmPlayer {
             throw var5;
          }
 
-         this.open(World.method1759(var1));
+         this.open(World.method1759(bufferSize));
       }
 
    }

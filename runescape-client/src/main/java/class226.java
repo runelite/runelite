@@ -19,14 +19,14 @@ public class class226 {
       garbageValue = "-76173898"
    )
    @Export("getItemSprite")
-   public static final Sprite getItemSprite(int var0, int var1, int var2, int var3, int var4, boolean var5) {
-      if (var1 == -1) {
+   public static final Sprite getItemSprite(int var0, int quantity, int var2, int var3, int var4, boolean var5) {
+      if (quantity == -1) {
          var4 = 0;
-      } else if (var4 == 2 && var1 != 1) {
+      } else if (var4 == 2 && quantity != 1) {
          var4 = 1;
       }
 
-      long var6 = ((long)var1 << 16) + (long)var0 + ((long)var2 << 38) + ((long)var4 << 40) + ((long)var3 << 42);
+      long var6 = ((long)quantity << 16) + (long)var0 + ((long)var2 << 38) + ((long)var4 << 40) + ((long)var3 << 42);
       Sprite var8;
       if (!var5) {
          var8 = (Sprite)ItemDefinition.Sprite_cached.get(var6);
@@ -36,12 +36,12 @@ public class class226 {
       }
 
       ItemDefinition var9 = Skills.getItemDefinition(var0);
-      if (var1 > 1 && var9.field436 != null) {
+      if (quantity > 1 && var9.countobj != null) {
          int var10 = -1;
 
          for (int var11 = 0; var11 < 10; ++var11) {
-            if (var1 >= var9.field437[var11] && var9.field437[var11] != 0) {
-               var10 = var9.field436[var11];
+            if (quantity >= var9.countco[var11] && var9.countco[var11] != 0) {
+               var10 = var9.countobj[var11];
             }
          }
 
@@ -61,12 +61,12 @@ public class class226 {
                return null;
             }
          } else if (var9.notedId != -1) {
-            var20 = getItemSprite(var9.unnotedId, var1, var2, var3, 0, false);
+            var20 = getItemSprite(var9.unnotedId, quantity, var2, var3, 0, false);
             if (var20 == null) {
                return null;
             }
          } else if (var9.placeholderTemplate != -1) {
-            var20 = getItemSprite(var9.placeholder, var1, 0, 0, 0, false);
+            var20 = getItemSprite(var9.placeholder, quantity, 0, 0, 0, false);
             if (var20 == null) {
                return null;
             }
@@ -120,7 +120,7 @@ public class class226 {
          }
 
          if (var4 == 1 || var4 == 2 && var9.isStackable == 1) {
-            class204.field1122.draw(class196.method3735(var1), 0, 9, 16776960, 1);
+            class204.field1122.draw(class196.method3735(quantity), 0, 9, 16776960, 1);
          }
 
          if (!var5) {

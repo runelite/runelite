@@ -38,8 +38,8 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "-763699765"
    )
    @Export("newIsaacCipher")
-   public void newIsaacCipher(int[] var1) {
-      this.isaacCipher0 = new IsaacCipher(var1);
+   public void newIsaacCipher(int[] array) {
+      this.isaacCipher0 = new IsaacCipher(array);
    }
 
    @ObfuscatedName("ih")
@@ -48,8 +48,8 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "0"
    )
    @Export("setIsaacCipher")
-   public void setIsaacCipher(IsaacCipher var1) {
-      this.isaacCipher0 = var1;
+   public void setIsaacCipher(IsaacCipher isaacCipher) {
+      this.isaacCipher0 = isaacCipher;
    }
 
    @ObfuscatedName("im")
@@ -121,20 +121,20 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "1710439720"
    )
    @Export("readBits")
-   public int readBits(int var1) {
+   public int readBits(int bits) {
       int var2 = this.bitIndex >> 3;
       int var3 = 8 - (this.bitIndex & 7);
       int var4 = 0;
 
-      for (this.bitIndex += var1; var1 > var3; var3 = 8) {
-         var4 += (super.array[var2++] & PacketBuffer_masks[var3]) << var1 - var3;
-         var1 -= var3;
+      for (this.bitIndex += bits; bits > var3; var3 = 8) {
+         var4 += (super.array[var2++] & PacketBuffer_masks[var3]) << bits - var3;
+         bits -= var3;
       }
 
-      if (var3 == var1) {
+      if (var3 == bits) {
          var4 += super.array[var2] & PacketBuffer_masks[var3];
       } else {
-         var4 += super.array[var2] >> var3 - var1 & PacketBuffer_masks[var1];
+         var4 += super.array[var2] >> var3 - bits & PacketBuffer_masks[bits];
       }
 
       return var4;
@@ -156,8 +156,8 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "-141269845"
    )
    @Export("bitsRemaining")
-   public int bitsRemaining(int var1) {
-      return var1 * 8 - this.bitIndex;
+   public int bitsRemaining(int index) {
+      return index * 8 - this.bitIndex;
    }
 
    @ObfuscatedName("m")
@@ -175,7 +175,7 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "-1562700981"
    )
    @Export("requestNetFile")
-   static void requestNetFile(IndexCache var0, int var1, int var2, int var3, byte var4, boolean var5) {
+   static void requestNetFile(Archive var0, int var1, int var2, int var3, byte var4, boolean var5) {
       long var6 = (long)((var1 << 16) + var2);
       NetFileRequest var8 = (NetFileRequest)NetCache.NetCache_pendingPriorityWrites.get(var6);
       if (var8 == null) {
@@ -198,7 +198,7 @@ public final class PacketBuffer extends Buffer {
                }
 
                var8 = new NetFileRequest();
-               var8.indexCache = var0;
+               var8.archive = var0;
                var8.crc = var3;
                var8.padding = var4;
                if (var5) {

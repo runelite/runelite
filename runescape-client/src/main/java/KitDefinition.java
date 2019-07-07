@@ -11,13 +11,13 @@ public class KitDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("KitDefinition_indexCache")
-   public static AbstractIndexCache KitDefinition_indexCache;
+   @Export("KitDefinition_archive")
+   public static AbstractArchive KitDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field456;
+   public static AbstractArchive field456;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 235389995
@@ -36,8 +36,8 @@ public class KitDefinition extends DualNode {
    @Export("bodypartID")
    public int bodypartID;
    @ObfuscatedName("u")
-   @Export("modelIDs")
-   int[] modelIDs;
+   @Export("models2")
+   int[] models2;
    @ObfuscatedName("g")
    @Export("recolorFrom")
    short[] recolorFrom;
@@ -51,15 +51,15 @@ public class KitDefinition extends DualNode {
    @Export("retextureTo")
    short[] retextureTo;
    @ObfuscatedName("d")
-   @Export("archives")
-   int[] archives;
+   @Export("models")
+   int[] models;
    @ObfuscatedName("k")
    @Export("nonSelectable")
    public boolean nonSelectable;
 
    KitDefinition() {
       this.bodypartID = -1;
-      this.archives = new int[]{-1, -1, -1, -1, -1};
+      this.models = new int[]{-1, -1, -1, -1, -1};
       this.nonSelectable = false;
    }
 
@@ -68,15 +68,15 @@ public class KitDefinition extends DualNode {
       signature = "(Lgr;S)V",
       garbageValue = "22753"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -85,8 +85,8 @@ public class KitDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-1828581673"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       if (var2 == 1) {
          this.bodypartID = var1.readUnsignedByte();
       } else {
@@ -94,10 +94,10 @@ public class KitDefinition extends DualNode {
          int var4;
          if (var2 == 2) {
             var3 = var1.readUnsignedByte();
-            this.modelIDs = new int[var3];
+            this.models2 = new int[var3];
 
             for (var4 = 0; var4 < var3; ++var4) {
-               this.modelIDs[var4] = var1.readUnsignedShort();
+               this.models2[var4] = var1.readUnsignedShort();
             }
          } else if (var2 == 3) {
             this.nonSelectable = true;
@@ -120,7 +120,7 @@ public class KitDefinition extends DualNode {
                this.retextureTo[var4] = (short)var1.readUnsignedShort();
             }
          } else if (var2 >= 60 && var2 < 70) {
-            this.archives[var2 - 60] = var1.readUnsignedShort();
+            this.models[var2 - 60] = var1.readUnsignedShort();
          }
       }
 
@@ -133,13 +133,13 @@ public class KitDefinition extends DualNode {
    )
    @Export("ready")
    public boolean ready() {
-      if (this.modelIDs == null) {
+      if (this.models2 == null) {
          return true;
       } else {
          boolean var1 = true;
 
-         for (int var2 = 0; var2 < this.modelIDs.length; ++var2) {
-            if (!field456.tryLoadRecord(this.modelIDs[var2], 0)) {
+         for (int var2 = 0; var2 < this.models2.length; ++var2) {
+            if (!field456.tryLoadFile(this.models2[var2], 0)) {
                var1 = false;
             }
          }
@@ -155,13 +155,13 @@ public class KitDefinition extends DualNode {
    )
    @Export("getModelData")
    public ModelData getModelData() {
-      if (this.modelIDs == null) {
+      if (this.models2 == null) {
          return null;
       } else {
-         ModelData[] var1 = new ModelData[this.modelIDs.length];
+         ModelData[] var1 = new ModelData[this.models2.length];
 
-         for (int var2 = 0; var2 < this.modelIDs.length; ++var2) {
-            var1[var2] = ModelData.method2788(field456, this.modelIDs[var2], 0);
+         for (int var2 = 0; var2 < this.models2.length; ++var2) {
+            var1[var2] = ModelData.method2788(field456, this.models2[var2], 0);
          }
 
          ModelData var4;
@@ -197,7 +197,7 @@ public class KitDefinition extends DualNode {
       boolean var1 = true;
 
       for (int var2 = 0; var2 < 5; ++var2) {
-         if (this.archives[var2] != -1 && !field456.tryLoadRecord(this.archives[var2], 0)) {
+         if (this.models[var2] != -1 && !field456.tryLoadFile(this.models[var2], 0)) {
             var1 = false;
          }
       }
@@ -215,8 +215,8 @@ public class KitDefinition extends DualNode {
       int var2 = 0;
 
       for (int var3 = 0; var3 < 5; ++var3) {
-         if (this.archives[var3] != -1) {
-            var1[var2++] = ModelData.method2788(field456, this.archives[var3], 0);
+         if (this.models[var3] != -1) {
+            var1[var2++] = ModelData.method2788(field456, this.models[var3], 0);
          }
       }
 
@@ -252,7 +252,7 @@ public class KitDefinition extends DualNode {
 
          byte[] var3 = new byte[var2];
          var0.index += class303.huffman.method128(var0.array, var0.index, var3, 0, var2);
-         String var4 = WidgetGroupParent.decodeStringCp1252(var3, 0, var2);
+         String var4 = InterfaceParent.decodeStringCp1252(var3, 0, var2);
          var1 = var4;
       } catch (Exception var5) {
          var1 = "Cabbage";

@@ -30,7 +30,7 @@ public class ChatChannel {
       garbageValue = "463993373"
    )
    @Export("addMessage")
-   Message addMessage(int var1, String var2, String var3, String var4) {
+   Message addMessage(int type, String sender, String text, String prefix) {
       Message var5 = this.messages[99];
 
       for (int var6 = this.count; var6 > 0; --var6) {
@@ -40,11 +40,11 @@ public class ChatChannel {
       }
 
       if (var5 == null) {
-         var5 = new Message(var1, var2, var4, var3);
+         var5 = new Message(type, sender, prefix, text);
       } else {
          var5.remove();
          var5.removeDual();
-         var5.set(var1, var2, var4, var3);
+         var5.set(type, sender, prefix, text);
       }
 
       this.messages[0] = var5;
@@ -61,8 +61,8 @@ public class ChatChannel {
       garbageValue = "-195254780"
    )
    @Export("getMessage")
-   Message getMessage(int var1) {
-      return var1 >= 0 && var1 < this.count ? this.messages[var1] : null;
+   Message getMessage(int index) {
+      return index >= 0 && index < this.count ? this.messages[index] : null;
    }
 
    @ObfuscatedName("q")
@@ -80,7 +80,8 @@ public class ChatChannel {
       signature = "(CI)Z",
       garbageValue = "-1857344803"
    )
-   public static boolean method2238(char var0) {
+   @Export("isCharPrintable")
+   public static boolean isCharPrintable(char var0) {
       return var0 >= ' ' && var0 <= '~' ? true : (var0 >= 160 && var0 <= 255 ? true : var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
    }
 
@@ -317,7 +318,7 @@ public class ChatChannel {
 
       if (var0.isIf3) {
          if (Client.isSpellSelected) {
-            if (WorldComparator.method58(class1.getWidgetClickMask(var0)) && (FloorDecoration.selectedSpellFlags & 32) == 32) {
+            if (GrandExchangeOfferWorldComparator.method58(class1.getWidgetClickMask(var0)) && (FloorDecoration.selectedSpellFlags & 32) == 32) {
                Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + var0.dataText, 58, 0, var0.childIndex, var0.id);
             }
          } else {

@@ -33,7 +33,7 @@ public class Varcs {
 
    Varcs() {
       this.unwrittenChanges = false;
-      int var1 = ObjectSound.indexCache2.method4(19);
+      int var1 = ObjectSound.archive2.method4(19);
       this.map = new HashMap();
       this.intsPersistence = new boolean[var1];
 
@@ -44,8 +44,8 @@ public class Varcs {
       }
 
       var2 = 0;
-      if (ObjectSound.indexCache2.method133(15)) {
-         var2 = ObjectSound.indexCache2.method4(15);
+      if (ObjectSound.archive2.method133(15)) {
+         var2 = ObjectSound.archive2.method4(15);
       }
 
       this.strings = new String[var2];
@@ -58,9 +58,9 @@ public class Varcs {
       garbageValue = "920518911"
    )
    @Export("setInt")
-   void setInt(int var1, int var2) {
-      this.map.put(var1, var2);
-      if (this.intsPersistence[var1]) {
+   void setInt(int index, int var2) {
+      this.map.put(index, var2);
+      if (this.intsPersistence[index]) {
          this.unwrittenChanges = true;
       }
 
@@ -72,8 +72,8 @@ public class Varcs {
       garbageValue = "6"
    )
    @Export("getInt")
-   int getInt(int var1) {
-      Object var2 = this.map.get(var1);
+   int getInt(int index) {
+      Object var2 = this.map.get(index);
       return var2 instanceof Integer ? (Integer)var2 : -1;
    }
 
@@ -83,8 +83,8 @@ public class Varcs {
       garbageValue = "12847051"
    )
    @Export("setString")
-   void setString(int var1, String var2) {
-      this.map.put(var1, var2);
+   void setString(int index, String var2) {
+      this.map.put(index, var2);
    }
 
    @ObfuscatedName("w")
@@ -93,8 +93,8 @@ public class Varcs {
       garbageValue = "897961099"
    )
    @Export("getString")
-   String getString(int var1) {
-      Object var2 = this.map.get(var1);
+   String getString(int index) {
+      Object var2 = this.map.get(index);
       return var2 instanceof String ? (String)var2 : "";
    }
 
@@ -104,8 +104,8 @@ public class Varcs {
       garbageValue = "15"
    )
    @Export("setStringOld")
-   void setStringOld(int var1, String var2) {
-      this.strings[var1] = var2;
+   void setStringOld(int index, String var2) {
+      this.strings[index] = var2;
    }
 
    @ObfuscatedName("u")
@@ -114,8 +114,8 @@ public class Varcs {
       garbageValue = "0"
    )
    @Export("getStringOld")
-   String getStringOld(int var1) {
-      return this.strings[var1];
+   String getStringOld(int index) {
+      return this.strings[index];
    }
 
    @ObfuscatedName("g")
@@ -171,79 +171,87 @@ public class Varcs {
                if (var7 instanceof Integer) {
                   var2 += 4;
                } else if (var7 instanceof String) {
-                  var2 += WorldMapRegion.method550((String)var7);
+                  var2 += WorldMapRegion.stringCp1252NullTerminatedByteSize((String)var7);
                }
 
                ++var3;
             }
          }
 
-         Buffer var29 = new Buffer(var2);
-         var29.writeByte(2);
-         var29.writeShort(var3);
-         Iterator var30 = this.map.entrySet().iterator();
+         Buffer var28 = new Buffer(var2);
+         var28.writeByte(2);
+         var28.writeShort(var3);
+         Iterator var29 = this.map.entrySet().iterator();
 
-         label187:
+         label179:
          while (true) {
-            int var8;
-            Entry var31;
+            Entry var8;
+            int var30;
             do {
-               if (!var30.hasNext()) {
-                  var1.write(var29.array, 0, var29.index);
-                  break label187;
+               if (!var29.hasNext()) {
+                  var1.write(var28.array, 0, var28.index);
+                  break label179;
                }
 
-               var31 = (Entry)var30.next();
-               var8 = (Integer)var31.getKey();
-            } while(!this.intsPersistence[var8]);
+               var8 = (Entry)var29.next();
+               var30 = (Integer)var8.getKey();
+            } while(!this.intsPersistence[var30]);
 
-            var29.writeShort(var8);
-            Object var9 = var31.getValue();
+            var28.writeShort(var30);
+            Object var9 = var8.getValue();
             Class var10 = var9.getClass();
             class3[] var11 = class3.method34();
+            int var13 = 0;
 
-            class3 var13;
-            label174: {
-               for (int var12 = 0; var12 < var11.length; ++var12) {
-                  class3 var14 = var11[var12];
-                  if (var10 == var14.field18) {
-                     var13 = var14;
-                     break label174;
-                  }
+            class3 var12;
+            while (true) {
+               if (var13 >= var11.length) {
+                  var12 = null;
+                  break;
                }
 
-               var13 = null;
-            }
-
-            var29.writeByte(var13.field1147);
-            Class var32 = var9.getClass();
-            class3[] var15 = class3.method34();
-
-            class3 var17;
-            label184: {
-               for (int var16 = 0; var16 < var15.length; ++var16) {
-                  class3 var18 = var15[var16];
-                  if (var32 == var18.field18) {
-                     var17 = var18;
-                     break label184;
-                  }
+               class3 var14 = var11[var13];
+               if (var10 == var14.field18) {
+                  var12 = var14;
+                  break;
                }
 
-               var17 = null;
+               ++var13;
             }
 
-            if (var17 == null) {
+            var28.writeByte(var12.field1147);
+            Class var31 = var9.getClass();
+            class3[] var32 = class3.method34();
+            int var16 = 0;
+
+            class3 var15;
+            while (true) {
+               if (var16 >= var32.length) {
+                  var15 = null;
+                  break;
+               }
+
+               class3 var17 = var32[var16];
+               if (var31 == var17.field18) {
+                  var15 = var17;
+                  break;
+               }
+
+               ++var16;
+            }
+
+            if (var15 == null) {
                throw new IllegalArgumentException();
             }
 
-            class0 var33 = var17.field19;
-            var33.vmethod44(var9, var29);
+            class0 var33 = var15.field19;
+            var33.vmethod44(var9, var28);
          }
-      } catch (Exception var27) {
+      } catch (Exception var26) {
       } finally {
          try {
             var1.close();
-         } catch (Exception var26) {
+         } catch (Exception var25) {
          }
 
       }
@@ -261,84 +269,68 @@ public class Varcs {
    void read() {
       AccessFile var1 = this.getPreferencesFile(false);
 
-      label225: {
-         try {
-            byte[] var2 = new byte[(int)var1.length()];
+      try {
+         byte[] var2 = new byte[(int)var1.length()];
 
-            int var3;
-            for (int var4 = 0; var4 < var2.length; var4 += var3) {
-               var3 = var1.read(var2, var4, var2.length - var4);
-               if (var3 == -1) {
-                  throw new EOFException();
-               }
+         int var3;
+         for (int var4 = 0; var4 < var2.length; var4 += var3) {
+            var3 = var1.read(var2, var4, var2.length - var4);
+            if (var3 == -1) {
+               throw new EOFException();
             }
-
-            Buffer var25 = new Buffer(var2);
-            if (var25.array.length - var25.index < 1) {
-               return;
-            }
-
-            int var5 = var25.readUnsignedByte();
-            if (var5 >= 0 && var5 <= 2) {
-               int var6;
-               int var7;
-               int var8;
-               int var9;
-               if (var5 >= 2) {
-                  var9 = var25.readUnsignedShort();
-                  var6 = 0;
-
-                  while (true) {
-                     if (var6 >= var9) {
-                        break label225;
-                     }
-
-                     var7 = var25.readUnsignedShort();
-                     var8 = var25.readUnsignedByte();
-                     class3 var10 = (class3)ScriptFrame.findEnumerated(class3.method34(), var8);
-                     Object var11 = var10.method31(var25);
-                     if (this.intsPersistence[var7]) {
-                        this.map.put(var7, var11);
-                     }
-
-                     ++var6;
-                  }
-               } else {
-                  var9 = var25.readUnsignedShort();
-
-                  for (var6 = 0; var6 < var9; ++var6) {
-                     var7 = var25.readUnsignedShort();
-                     var8 = var25.readInt();
-                     if (this.intsPersistence[var7]) {
-                        this.map.put(var7, var8);
-                     }
-                  }
-
-                  var6 = var25.readUnsignedShort();
-                  var7 = 0;
-
-                  while (true) {
-                     if (var7 >= var6) {
-                        break label225;
-                     }
-
-                     var25.readUnsignedShort();
-                     var25.readStringCp1252NullTerminated();
-                     ++var7;
-                  }
-               }
-            }
-         } catch (Exception var23) {
-            break label225;
-         } finally {
-            try {
-               var1.close();
-            } catch (Exception var22) {
-            }
-
          }
 
-         return;
+         Buffer var24 = new Buffer(var2);
+         if (var24.array.length - var24.index < 1) {
+            return;
+         }
+
+         int var5 = var24.readUnsignedByte();
+         if (var5 < 0 || var5 > 2) {
+            return;
+         }
+
+         int var6;
+         int var7;
+         int var8;
+         int var9;
+         if (var5 >= 2) {
+            var9 = var24.readUnsignedShort();
+
+            for (var6 = 0; var6 < var9; ++var6) {
+               var7 = var24.readUnsignedShort();
+               var8 = var24.readUnsignedByte();
+               class3 var10 = (class3)ScriptFrame.findEnumerated(class3.method34(), var8);
+               Object var11 = var10.method31(var24);
+               if (this.intsPersistence[var7]) {
+                  this.map.put(var7, var11);
+               }
+            }
+         } else {
+            var9 = var24.readUnsignedShort();
+
+            for (var6 = 0; var6 < var9; ++var6) {
+               var7 = var24.readUnsignedShort();
+               var8 = var24.readInt();
+               if (this.intsPersistence[var7]) {
+                  this.map.put(var7, var8);
+               }
+            }
+
+            var6 = var24.readUnsignedShort();
+
+            for (var7 = 0; var7 < var6; ++var7) {
+               var24.readUnsignedShort();
+               var24.readStringCp1252NullTerminated();
+            }
+         }
+      } catch (Exception var22) {
+      } finally {
+         try {
+            var1.close();
+         } catch (Exception var21) {
+         }
+
       }
 
       this.unwrittenChanges = false;
@@ -372,8 +364,8 @@ public class Varcs {
       signature = "(Lir;I)V",
       garbageValue = "321265868"
    )
-   public static void method2160(AbstractIndexCache var0) {
-      OverlayDefinition.field663 = var0;
+   public static void method2160(AbstractArchive var0) {
+      FloorOverlayDefinition.field663 = var0;
    }
 
    @ObfuscatedName("q")
@@ -388,8 +380,8 @@ public class Varcs {
          for (var6 = 0; var6 < 64; ++var6) {
             for (var7 = 0; var7 < 64; ++var7) {
                if (var6 + var1 > 0 && var6 + var1 < 103 && var7 + var2 > 0 && var7 + var2 < 103) {
-                  int[] var10000 = var5[var8].flags[var6 + var1];
-                  var10000[var7 + var2] &= -16777217;
+                  int[] var9 = var5[var8].flags[var6 + var1];
+                  var9[var7 + var2] &= -16777217;
                }
             }
          }
@@ -399,8 +391,8 @@ public class Varcs {
 
       for (var6 = 0; var6 < 4; ++var6) {
          for (var7 = 0; var7 < 64; ++var7) {
-            for (int var9 = 0; var9 < 64; ++var9) {
-               TotalQuantityComparator.loadTerrain(var10, var6, var7 + var1, var9 + var2, var3, var4, 0);
+            for (int var11 = 0; var11 < 64; ++var11) {
+               GrandExchangeOfferTotalQuantityComparator.loadTerrain(var10, var6, var7 + var1, var11 + var2, var3, var4, 0);
             }
          }
       }

@@ -19,7 +19,7 @@ public class class60 {
       signature = "(Lir;Lir;Lir;I)V",
       garbageValue = "1583108922"
    )
-   public static void method1172(AbstractIndexCache var0, AbstractIndexCache var1, AbstractIndexCache var2) {
+   public static void method1172(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2) {
       HitSplatDefinition.field382 = var0;
       HitSplatDefinition.field383 = var1;
       HitSplatDefinition.field384 = var2;

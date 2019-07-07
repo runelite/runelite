@@ -8,8 +8,8 @@ public final class class238 {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache9")
-   static IndexCache indexCache9;
+   @Export("archive9")
+   static Archive archive9;
 
    @ObfuscatedName("im")
    @ObfuscatedSignature(
@@ -17,22 +17,22 @@ public final class class238 {
       garbageValue = "188151075"
    )
    @Export("runCs1")
-   static final boolean runCs1(Widget var0) {
-      if (var0.cs1Comparisons == null) {
+   static final boolean runCs1(Widget component) {
+      if (component.cs1Comparisons == null) {
          return false;
       } else {
-         for (int var1 = 0; var1 < var0.cs1Comparisons.length; ++var1) {
-            int var2 = class16.method187(var0, var1);
-            int var3 = var0.cs1ComparisonValues[var1];
-            if (var0.cs1Comparisons[var1] == 2) {
+         for (int var1 = 0; var1 < component.cs1Comparisons.length; ++var1) {
+            int var2 = class16.method187(component, var1);
+            int var3 = component.cs1ComparisonValues[var1];
+            if (component.cs1Comparisons[var1] == 2) {
                if (var2 >= var3) {
                   return false;
                }
-            } else if (var0.cs1Comparisons[var1] == 3) {
+            } else if (component.cs1Comparisons[var1] == 3) {
                if (var2 <= var3) {
                   return false;
                }
-            } else if (var0.cs1Comparisons[var1] == 4) {
+            } else if (component.cs1Comparisons[var1] == 4) {
                if (var2 == var3) {
                   return false;
                }
@@ -50,11 +50,11 @@ public final class class238 {
       signature = "([Lho;IIIIIIII)V",
       garbageValue = "1706481742"
    )
-   @Export("updateWidgetGroup")
-   static final void updateWidgetGroup(Widget[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      for (int var8 = 0; var8 < var0.length; ++var8) {
-         Widget var9 = var0[var8];
-         if (var9 != null && var9.parentId == var1 && (!var9.isIf3 || var9.type == 0 || var9.hasListener || class1.getWidgetClickMask(var9) != 0 || var9 == Client.clickedWidgetParent || var9.contentType == 1338)) {
+   @Export("updateInterface")
+   static final void updateInterface(Widget[] components, int parentId, int var2, int var3, int var4, int var5, int x, int y) {
+      for (int var8 = 0; var8 < components.length; ++var8) {
+         Widget var9 = components[var8];
+         if (var9 != null && var9.parentId == parentId && (!var9.isIf3 || var9.type == 0 || var9.hasListener || class1.getWidgetClickMask(var9) != 0 || var9 == Client.clickedWidgetParent || var9.contentType == 1338)) {
             if (var9.isIf3) {
                if (PacketBufferNode.method3673(var9)) {
                   continue;
@@ -63,8 +63,8 @@ public final class class238 {
                continue;
             }
 
-            int var10 = var9.x + var6;
-            int var11 = var7 + var9.y;
+            int var10 = var9.x + x;
+            int var11 = y + var9.y;
             int var12;
             int var13;
             int var14;
@@ -194,10 +194,11 @@ public final class class238 {
 
                   boolean var20;
                   int var21;
+                  boolean var23;
                   if (var28) {
                      for (int var22 = 0; var22 < var9.field966.length; ++var22) {
                         var20 = false;
-                        boolean var23 = false;
+                        var23 = false;
                         if (!var20 && var9.field966[var22] != null) {
                            for (var21 = 0; var21 < var9.field966[var22].length; ++var21) {
                               boolean var24 = false;
@@ -260,7 +261,7 @@ public final class class238 {
                      }
                   }
 
-                  ScriptEvent var32;
+                  ScriptEvent var31;
                   if (var9.isIf3) {
                      if (MouseHandler.MouseHandler_x >= var12 && MouseHandler.MouseHandler_y >= var13 && MouseHandler.MouseHandler_x < var14 && MouseHandler.MouseHandler_y < var15) {
                         var30 = true;
@@ -268,9 +269,9 @@ public final class class238 {
                         var30 = false;
                      }
 
-                     boolean var31 = false;
+                     var23 = false;
                      if ((MouseHandler.MouseHandler_currentButton == 1 || !AbstractRasterProvider.mouseCam && MouseHandler.MouseHandler_currentButton == 4) && var30) {
-                        var31 = true;
+                        var23 = true;
                      }
 
                      var20 = false;
@@ -283,7 +284,7 @@ public final class class238 {
                      }
 
                      if (var9.contentType == 1400) {
-                        class60.worldMap0.method361(var16, var17, var30 & var31, var30 & var20);
+                        class60.worldMap0.method361(var16, var17, var30 & var23, var30 & var20);
                      }
 
                      if (Client.clickedWidget != null && var9 != Client.clickedWidget && var30 && class54.method1090(class1.getWidgetClickMask(var9))) {
@@ -298,133 +299,133 @@ public final class class238 {
 
                      if (var9.hasListener) {
                         if (var30 && Client.mouseWheelRotation != 0 && var9.onScroll != null) {
-                           var32 = new ScriptEvent();
-                           var32.boolean1 = true;
-                           var32.widget = var9;
-                           var32.mouseY = Client.mouseWheelRotation;
-                           var32.args0 = var9.onScroll;
-                           Client.scriptEvents.addFirst(var32);
+                           var31 = new ScriptEvent();
+                           var31.boolean1 = true;
+                           var31.widget = var9;
+                           var31.mouseY = Client.mouseWheelRotation;
+                           var31.args0 = var9.onScroll;
+                           Client.scriptEvents.addFirst(var31);
                         }
 
                         if (Client.clickedWidget != null || DevicePcmPlayerProvider.dragInventoryWidget != null || Client.isMenuOpen) {
                            var20 = false;
-                           var31 = false;
+                           var23 = false;
                            var30 = false;
                         }
 
                         if (!var9.field979 && var20) {
                            var9.field979 = true;
                            if (var9.onClick != null) {
-                              var32 = new ScriptEvent();
-                              var32.boolean1 = true;
-                              var32.widget = var9;
-                              var32.mouseX = MouseHandler.MouseHandler_lastPressedX - var10;
-                              var32.mouseY = MouseHandler.MouseHandler_lastPressedY - var11;
-                              var32.args0 = var9.onClick;
-                              Client.scriptEvents.addFirst(var32);
+                              var31 = new ScriptEvent();
+                              var31.boolean1 = true;
+                              var31.widget = var9;
+                              var31.mouseX = MouseHandler.MouseHandler_lastPressedX - var10;
+                              var31.mouseY = MouseHandler.MouseHandler_lastPressedY - var11;
+                              var31.args0 = var9.onClick;
+                              Client.scriptEvents.addFirst(var31);
                            }
                         }
 
-                        if (var9.field979 && var31 && var9.onClickRepeat != null) {
-                           var32 = new ScriptEvent();
-                           var32.boolean1 = true;
-                           var32.widget = var9;
-                           var32.mouseX = MouseHandler.MouseHandler_x - var10;
-                           var32.mouseY = MouseHandler.MouseHandler_y - var11;
-                           var32.args0 = var9.onClickRepeat;
-                           Client.scriptEvents.addFirst(var32);
+                        if (var9.field979 && var23 && var9.onClickRepeat != null) {
+                           var31 = new ScriptEvent();
+                           var31.boolean1 = true;
+                           var31.widget = var9;
+                           var31.mouseX = MouseHandler.MouseHandler_x - var10;
+                           var31.mouseY = MouseHandler.MouseHandler_y - var11;
+                           var31.args0 = var9.onClickRepeat;
+                           Client.scriptEvents.addFirst(var31);
                         }
 
-                        if (var9.field979 && !var31) {
+                        if (var9.field979 && !var23) {
                            var9.field979 = false;
                            if (var9.onRelease != null) {
-                              var32 = new ScriptEvent();
-                              var32.boolean1 = true;
-                              var32.widget = var9;
-                              var32.mouseX = MouseHandler.MouseHandler_x - var10;
-                              var32.mouseY = MouseHandler.MouseHandler_y - var11;
-                              var32.args0 = var9.onRelease;
-                              Client.field148.addFirst(var32);
+                              var31 = new ScriptEvent();
+                              var31.boolean1 = true;
+                              var31.widget = var9;
+                              var31.mouseX = MouseHandler.MouseHandler_x - var10;
+                              var31.mouseY = MouseHandler.MouseHandler_y - var11;
+                              var31.args0 = var9.onRelease;
+                              Client.field148.addFirst(var31);
                            }
                         }
 
-                        if (var31 && var9.onHold != null) {
-                           var32 = new ScriptEvent();
-                           var32.boolean1 = true;
-                           var32.widget = var9;
-                           var32.mouseX = MouseHandler.MouseHandler_x - var10;
-                           var32.mouseY = MouseHandler.MouseHandler_y - var11;
-                           var32.args0 = var9.onHold;
-                           Client.scriptEvents.addFirst(var32);
+                        if (var23 && var9.onHold != null) {
+                           var31 = new ScriptEvent();
+                           var31.boolean1 = true;
+                           var31.widget = var9;
+                           var31.mouseX = MouseHandler.MouseHandler_x - var10;
+                           var31.mouseY = MouseHandler.MouseHandler_y - var11;
+                           var31.args0 = var9.onHold;
+                           Client.scriptEvents.addFirst(var31);
                         }
 
                         if (!var9.field978 && var30) {
                            var9.field978 = true;
                            if (var9.onMouseOver != null) {
-                              var32 = new ScriptEvent();
-                              var32.boolean1 = true;
-                              var32.widget = var9;
-                              var32.mouseX = MouseHandler.MouseHandler_x - var10;
-                              var32.mouseY = MouseHandler.MouseHandler_y - var11;
-                              var32.args0 = var9.onMouseOver;
-                              Client.scriptEvents.addFirst(var32);
+                              var31 = new ScriptEvent();
+                              var31.boolean1 = true;
+                              var31.widget = var9;
+                              var31.mouseX = MouseHandler.MouseHandler_x - var10;
+                              var31.mouseY = MouseHandler.MouseHandler_y - var11;
+                              var31.args0 = var9.onMouseOver;
+                              Client.scriptEvents.addFirst(var31);
                            }
                         }
 
                         if (var9.field978 && var30 && var9.onMouseRepeat != null) {
-                           var32 = new ScriptEvent();
-                           var32.boolean1 = true;
-                           var32.widget = var9;
-                           var32.mouseX = MouseHandler.MouseHandler_x - var10;
-                           var32.mouseY = MouseHandler.MouseHandler_y - var11;
-                           var32.args0 = var9.onMouseRepeat;
-                           Client.scriptEvents.addFirst(var32);
+                           var31 = new ScriptEvent();
+                           var31.boolean1 = true;
+                           var31.widget = var9;
+                           var31.mouseX = MouseHandler.MouseHandler_x - var10;
+                           var31.mouseY = MouseHandler.MouseHandler_y - var11;
+                           var31.args0 = var9.onMouseRepeat;
+                           Client.scriptEvents.addFirst(var31);
                         }
 
                         if (var9.field978 && !var30) {
                            var9.field978 = false;
                            if (var9.onMouseLeave != null) {
-                              var32 = new ScriptEvent();
-                              var32.boolean1 = true;
-                              var32.widget = var9;
-                              var32.mouseX = MouseHandler.MouseHandler_x - var10;
-                              var32.mouseY = MouseHandler.MouseHandler_y - var11;
-                              var32.args0 = var9.onMouseLeave;
-                              Client.field148.addFirst(var32);
+                              var31 = new ScriptEvent();
+                              var31.boolean1 = true;
+                              var31.widget = var9;
+                              var31.mouseX = MouseHandler.MouseHandler_x - var10;
+                              var31.mouseY = MouseHandler.MouseHandler_y - var11;
+                              var31.args0 = var9.onMouseLeave;
+                              Client.field148.addFirst(var31);
                            }
                         }
 
                         if (var9.onTimer != null) {
-                           var32 = new ScriptEvent();
-                           var32.widget = var9;
-                           var32.args0 = var9.onTimer;
-                           Client.field147.addFirst(var32);
+                           var31 = new ScriptEvent();
+                           var31.widget = var9;
+                           var31.args0 = var9.onTimer;
+                           Client.field147.addFirst(var31);
                         }
 
                         int var26;
-                        ScriptEvent var34;
-                        int var35;
+                        int var32;
+                        ScriptEvent var33;
                         if (var9.onVarTransmit != null && Client.field123 > var9.field981) {
                            if (var9.varTransmitTriggers != null && Client.field123 - var9.field981 <= 32) {
                               label590:
-                              for (var35 = var9.field981; var35 < Client.field123; ++var35) {
-                                 var21 = Client.field121[var35 & 31];
+                              for (var26 = var9.field981; var26 < Client.field123; ++var26) {
+                                 var21 = Client.field121[var26 & 31];
 
-                                 for (var26 = 0; var26 < var9.varTransmitTriggers.length; ++var26) {
-                                    if (var21 == var9.varTransmitTriggers[var26]) {
-                                       var34 = new ScriptEvent();
-                                       var34.widget = var9;
-                                       var34.args0 = var9.onVarTransmit;
-                                       Client.scriptEvents.addFirst(var34);
+                                 for (var32 = 0; var32 < var9.varTransmitTriggers.length; ++var32) {
+                                    if (var21 == var9.varTransmitTriggers[var32]) {
+                                       var33 = new ScriptEvent();
+                                       var33.widget = var9;
+                                       var33.args0 = var9.onVarTransmit;
+                                       Client.scriptEvents.addFirst(var33);
                                        break label590;
                                     }
                                  }
                               }
                            } else {
-                              var32 = new ScriptEvent();
-                              var32.widget = var9;
-                              var32.args0 = var9.onVarTransmit;
-                              Client.scriptEvents.addFirst(var32);
+                              var31 = new ScriptEvent();
+                              var31.widget = var9;
+                              var31.args0 = var9.onVarTransmit;
+                              Client.scriptEvents.addFirst(var31);
                            }
 
                            var9.field981 = Client.field123;
@@ -433,24 +434,24 @@ public final class class238 {
                         if (var9.onInvTransmit != null && Client.field117 > var9.field982) {
                            if (var9.invTransmitTriggers != null && Client.field117 - var9.field982 <= 32) {
                               label566:
-                              for (var35 = var9.field982; var35 < Client.field117; ++var35) {
-                                 var21 = Client.field116[var35 & 31];
+                              for (var26 = var9.field982; var26 < Client.field117; ++var26) {
+                                 var21 = Client.field116[var26 & 31];
 
-                                 for (var26 = 0; var26 < var9.invTransmitTriggers.length; ++var26) {
-                                    if (var21 == var9.invTransmitTriggers[var26]) {
-                                       var34 = new ScriptEvent();
-                                       var34.widget = var9;
-                                       var34.args0 = var9.onInvTransmit;
-                                       Client.scriptEvents.addFirst(var34);
+                                 for (var32 = 0; var32 < var9.invTransmitTriggers.length; ++var32) {
+                                    if (var21 == var9.invTransmitTriggers[var32]) {
+                                       var33 = new ScriptEvent();
+                                       var33.widget = var9;
+                                       var33.args0 = var9.onInvTransmit;
+                                       Client.scriptEvents.addFirst(var33);
                                        break label566;
                                     }
                                  }
                               }
                            } else {
-                              var32 = new ScriptEvent();
-                              var32.widget = var9;
-                              var32.args0 = var9.onInvTransmit;
-                              Client.scriptEvents.addFirst(var32);
+                              var31 = new ScriptEvent();
+                              var31.widget = var9;
+                              var31.args0 = var9.onInvTransmit;
+                              Client.scriptEvents.addFirst(var31);
                            }
 
                            var9.field982 = Client.field117;
@@ -459,79 +460,79 @@ public final class class238 {
                         if (var9.onStatTransmit != null && Client.changedSkillsCount > var9.field983) {
                            if (var9.statTransmitTriggers != null && Client.changedSkillsCount - var9.field983 <= 32) {
                               label542:
-                              for (var35 = var9.field983; var35 < Client.changedSkillsCount; ++var35) {
-                                 var21 = Client.changedSkills[var35 & 31];
+                              for (var26 = var9.field983; var26 < Client.changedSkillsCount; ++var26) {
+                                 var21 = Client.changedSkills[var26 & 31];
 
-                                 for (var26 = 0; var26 < var9.statTransmitTriggers.length; ++var26) {
-                                    if (var21 == var9.statTransmitTriggers[var26]) {
-                                       var34 = new ScriptEvent();
-                                       var34.widget = var9;
-                                       var34.args0 = var9.onStatTransmit;
-                                       Client.scriptEvents.addFirst(var34);
+                                 for (var32 = 0; var32 < var9.statTransmitTriggers.length; ++var32) {
+                                    if (var21 == var9.statTransmitTriggers[var32]) {
+                                       var33 = new ScriptEvent();
+                                       var33.widget = var9;
+                                       var33.args0 = var9.onStatTransmit;
+                                       Client.scriptEvents.addFirst(var33);
                                        break label542;
                                     }
                                  }
                               }
                            } else {
-                              var32 = new ScriptEvent();
-                              var32.widget = var9;
-                              var32.args0 = var9.onStatTransmit;
-                              Client.scriptEvents.addFirst(var32);
+                              var31 = new ScriptEvent();
+                              var31.widget = var9;
+                              var31.args0 = var9.onStatTransmit;
+                              Client.scriptEvents.addFirst(var31);
                            }
 
                            var9.field983 = Client.changedSkillsCount;
                         }
 
-                        if (Client.chatCycle > var9.field980 && var9.field970 != null) {
-                           var32 = new ScriptEvent();
-                           var32.widget = var9;
-                           var32.args0 = var9.field970;
-                           Client.scriptEvents.addFirst(var32);
+                        if (Client.chatCycle > var9.field980 && var9.onChatTransmit != null) {
+                           var31 = new ScriptEvent();
+                           var31.widget = var9;
+                           var31.args0 = var9.onChatTransmit;
+                           Client.scriptEvents.addFirst(var31);
                         }
 
-                        if (Client.field105 > var9.field980 && var9.field971 != null) {
-                           var32 = new ScriptEvent();
-                           var32.widget = var9;
-                           var32.args0 = var9.field971;
-                           Client.scriptEvents.addFirst(var32);
+                        if (Client.field105 > var9.field980 && var9.onFriendTransmit != null) {
+                           var31 = new ScriptEvent();
+                           var31.widget = var9;
+                           var31.args0 = var9.onFriendTransmit;
+                           Client.scriptEvents.addFirst(var31);
                         }
 
-                        if (Client.field129 > var9.field980 && var9.field972 != null) {
-                           var32 = new ScriptEvent();
-                           var32.widget = var9;
-                           var32.args0 = var9.field972;
-                           Client.scriptEvents.addFirst(var32);
+                        if (Client.field129 > var9.field980 && var9.onClanTransmit != null) {
+                           var31 = new ScriptEvent();
+                           var31.widget = var9;
+                           var31.args0 = var9.onClanTransmit;
+                           Client.scriptEvents.addFirst(var31);
                         }
 
-                        if (Client.field122 > var9.field980 && var9.field976 != null) {
-                           var32 = new ScriptEvent();
-                           var32.widget = var9;
-                           var32.args0 = var9.field976;
-                           Client.scriptEvents.addFirst(var32);
+                        if (Client.field122 > var9.field980 && var9.onStockTransmit != null) {
+                           var31 = new ScriptEvent();
+                           var31.widget = var9;
+                           var31.args0 = var9.onStockTransmit;
+                           Client.scriptEvents.addFirst(var31);
                         }
 
                         if (Client.field154 > var9.field980 && var9.field977 != null) {
-                           var32 = new ScriptEvent();
-                           var32.widget = var9;
-                           var32.args0 = var9.field977;
-                           Client.scriptEvents.addFirst(var32);
+                           var31 = new ScriptEvent();
+                           var31.widget = var9;
+                           var31.args0 = var9.field977;
+                           Client.scriptEvents.addFirst(var31);
                         }
 
-                        if (Client.field124 > var9.field980 && var9.field973 != null) {
-                           var32 = new ScriptEvent();
-                           var32.widget = var9;
-                           var32.args0 = var9.field973;
-                           Client.scriptEvents.addFirst(var32);
+                        if (Client.field124 > var9.field980 && var9.onMiscTransmit != null) {
+                           var31 = new ScriptEvent();
+                           var31.widget = var9;
+                           var31.args0 = var9.onMiscTransmit;
+                           Client.scriptEvents.addFirst(var31);
                         }
 
                         var9.field980 = Client.cycleCntr;
-                        if (var9.onKeyListener != null) {
-                           for (var35 = 0; var35 < Client.field137; ++var35) {
+                        if (var9.onKey != null) {
+                           for (var26 = 0; var26 < Client.field137; ++var26) {
                               ScriptEvent var27 = new ScriptEvent();
                               var27.widget = var9;
-                              var27.keyTyped = Client.field145[var35];
-                              var27.keyPressed = Client.field146[var35];
-                              var27.args0 = var9.onKeyListener;
+                              var27.keyTyped = Client.field145[var26];
+                              var27.keyPressed = Client.field146[var26];
+                              var27.args0 = var9.onKey;
                               Client.scriptEvents.addFirst(var27);
                            }
                         }
@@ -545,7 +546,7 @@ public final class class238 {
 
                      if ((var9.mouseOverRedirect >= 0 || var9.mouseOverColor != 0) && MouseHandler.MouseHandler_x >= var12 && MouseHandler.MouseHandler_y >= var13 && MouseHandler.MouseHandler_x < var14 && MouseHandler.MouseHandler_y < var15) {
                         if (var9.mouseOverRedirect >= 0) {
-                           Clock.mousedOverWidgetIf1 = var0[var9.mouseOverRedirect];
+                           Clock.mousedOverWidgetIf1 = components[var9.mouseOverRedirect];
                         } else {
                            Clock.mousedOverWidgetIf1 = var9;
                         }
@@ -561,18 +562,18 @@ public final class class238 {
                   }
 
                   if (var9.type == 0) {
-                     updateWidgetGroup(var0, var9.id, var12, var13, var14, var15, var10 - var9.scrollX, var11 - var9.scrollY);
+                     updateInterface(components, var9.id, var12, var13, var14, var15, var10 - var9.scrollX, var11 - var9.scrollY);
                      if (var9.children != null) {
-                        updateWidgetGroup(var9.children, var9.id, var12, var13, var14, var15, var10 - var9.scrollX, var11 - var9.scrollY);
+                        updateInterface(var9.children, var9.id, var12, var13, var14, var15, var10 - var9.scrollX, var11 - var9.scrollY);
                      }
 
-                     WidgetGroupParent var33 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var9.id);
-                     if (var33 != null) {
-                        if (var33.type == 0 && MouseHandler.MouseHandler_x >= var12 && MouseHandler.MouseHandler_y >= var13 && MouseHandler.MouseHandler_x < var14 && MouseHandler.MouseHandler_y < var15 && !Client.isMenuOpen) {
-                           for (var32 = (ScriptEvent)Client.scriptEvents.last(); var32 != null; var32 = (ScriptEvent)Client.scriptEvents.previous()) {
-                              if (var32.boolean1) {
-                                 var32.remove();
-                                 var32.widget.field978 = false;
+                     InterfaceParent var34 = (InterfaceParent)Client.interfaceParents.get((long)var9.id);
+                     if (var34 != null) {
+                        if (var34.type == 0 && MouseHandler.MouseHandler_x >= var12 && MouseHandler.MouseHandler_y >= var13 && MouseHandler.MouseHandler_x < var14 && MouseHandler.MouseHandler_y < var15 && !Client.isMenuOpen) {
+                           for (var31 = (ScriptEvent)Client.scriptEvents.last(); var31 != null; var31 = (ScriptEvent)Client.scriptEvents.previous()) {
+                              if (var31.boolean1) {
+                                 var31.remove();
+                                 var31.widget.field978 = false;
                               }
                            }
 
@@ -586,7 +587,7 @@ public final class class238 {
                            }
                         }
 
-                        WorldMapDecorationType.method4517(var33.group, var12, var13, var14, var15, var10, var11);
+                        WorldMapDecorationType.method4517(var34.group, var12, var13, var14, var15, var10, var11);
                      }
                   }
                }

@@ -36,7 +36,7 @@ public class RenderDraw
 		Stopwatch stopwatch = Stopwatch.createStarted();
 
 		net.runelite.asm.Method obmethod = findMethod(inject, "drawTile");
-		Method renderDraw = findMethod(inject, "renderDraw").getPoolMethod();
+		Method renderDraw = findMethod(inject, "draw", "Entity").getPoolMethod();
 
 		Instructions ins = obmethod.getCode().getInstructions();
 		replace(ins, renderDraw);
@@ -69,7 +69,7 @@ public class RenderDraw
 		}
 		else if (count != 21)
 		{
-			log.warn("Found {} renderDraws while 21 were expected. Rev update?", count);
+			log.warn("Found {} draws while 21 were expected. Rev update?", count);
 		}
 		else
 		{

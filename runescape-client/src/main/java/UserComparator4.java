@@ -4,6 +4,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("ev")
 @Implements("UserComparator4")
@@ -15,10 +16,11 @@ public class UserComparator4 implements Comparator {
    @Export("WorldMapElement_count")
    public static int WorldMapElement_count;
    @ObfuscatedName("m")
-   final boolean field935;
+   @Export("reversed")
+   final boolean reversed;
 
    public UserComparator4(boolean var1) {
-      this.field935 = var1;
+      this.reversed = var1;
    }
 
    @ObfuscatedName("m")
@@ -26,19 +28,17 @@ public class UserComparator4 implements Comparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "950234237"
    )
-   int method345(Buddy var1, Buddy var2) {
-      return this.field935 ? var1.int2 - var2.int2 : var2.int2 - var1.int2;
+   @Export("compareBuddy")
+   int compareBuddy(Buddy var1, Buddy var2) {
+      return this.reversed ? var1.int2 - var2.int2 : var2.int2 - var1.int2;
    }
 
-   @ObfuscatedName("equals")
-   public boolean method346(Object var1) {
+   public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @Export("compare")
-   @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.method345((Buddy)var1, (Buddy)var2);
+      return this.compareBuddy((Buddy)var1, (Buddy)var2);
    }
 
    @ObfuscatedName("f")
@@ -56,22 +56,22 @@ public class UserComparator4 implements Comparator {
       garbageValue = "-2050984400"
    )
    static int method3335(int var0, Script var1, boolean var2) {
-      if (var0 == 5306) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = SpotAnimationDefinition.method4822();
+      if (var0 == ScriptOpcodes.GETWINDOWMODE) {
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = SpotAnimationDefinition.getWindowedMode();
          return 1;
       } else {
          int var3;
-         if (var0 == 5307) {
+         if (var0 == ScriptOpcodes.SETWINDOWMODE) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             if (var3 == 1 || var3 == 2) {
-               GroundItem.method2095(var3);
+               GroundItem.setWindowedMode(var3);
             }
 
             return 1;
-         } else if (var0 == 5308) {
+         } else if (var0 == ScriptOpcodes.GETDEFAULTWINDOWMODE) {
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.windowMode;
             return 1;
-         } else if (var0 != 5309) {
+         } else if (var0 != ScriptOpcodes.SETDEFAULTWINDOWMODE) {
             if (var0 == 5310) {
                --RouteStrategy.Interpreter_intStackSize;
                return 1;

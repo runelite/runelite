@@ -10,8 +10,8 @@ public class UserComparator3 extends AbstractUserComparator {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache6")
-   static IndexCache indexCache6;
+   @Export("archive6")
+   static Archive archive6;
    @ObfuscatedName("fl")
    @ObfuscatedSignature(
       signature = "Lfm;"
@@ -19,10 +19,11 @@ public class UserComparator3 extends AbstractUserComparator {
    @Export("socketTask")
    static Task socketTask;
    @ObfuscatedName("m")
-   final boolean field934;
+   @Export("reversed")
+   final boolean reversed;
 
    public UserComparator3(boolean var1) {
-      this.field934 = var1;
+      this.reversed = var1;
    }
 
    @ObfuscatedName("m")
@@ -30,14 +31,13 @@ public class UserComparator3 extends AbstractUserComparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "-1157645406"
    )
-   int method344(Buddy var1, Buddy var2) {
-      return var2.world0 != var1.world0 ? (this.field934 ? var1.world0 - var2.world0 : var2.world0 - var1.world0) : this.method12(var1, var2);
+   @Export("compareBuddy")
+   int compareBuddy(Buddy var1, Buddy var2) {
+      return var2.world != var1.world ? (this.reversed ? var1.world - var2.world : var2.world - var1.world) : this.compareUser(var1, var2);
    }
 
-   @Export("compare")
-   @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.method344((Buddy)var1, (Buddy)var2);
+      return this.compareBuddy((Buddy)var1, (Buddy)var2);
    }
 
    @ObfuscatedName("o")

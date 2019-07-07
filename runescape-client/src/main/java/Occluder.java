@@ -119,10 +119,10 @@ public final class Occluder {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = VarbitDefinition.VarbitDefinition_indexCache.takeRecord(14, var0);
+         byte[] var2 = VarbitDefinition.VarbitDefinition_archive.takeFile(14, var0);
          var1 = new VarbitDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          VarbitDefinition.VarbitDefinition_cached.put(var1, (long)var0);
@@ -136,9 +136,9 @@ public final class Occluder {
       garbageValue = "-1164060583"
    )
    @Export("newScript")
-   static Script newScript(byte[] var0) {
+   static Script newScript(byte[] bytes) {
       Script var1 = new Script();
-      Buffer var2 = new Buffer(var0);
+      Buffer var2 = new Buffer(bytes);
       var2.index = var2.array.length - 2;
       int var3 = var2.readUnsignedShort();
       int var4 = var2.array.length - 2 - var3 - 12;

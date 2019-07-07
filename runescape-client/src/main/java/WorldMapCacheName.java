@@ -70,7 +70,7 @@ public class WorldMapCacheName {
       } else {
          ByteArrayPool.field55 = null;
          WorldMapSection2.field1082 = null;
-         RouteStrategy.field760 = (byte[][][])null;
+         RouteStrategy.field760 = ((byte[][][])null);
       }
 
    }
@@ -80,7 +80,8 @@ public class WorldMapCacheName {
       signature = "(Ljava/lang/String;ZZI)V",
       garbageValue = "1532180466"
    )
-   public static void method635(String var0, boolean var1, boolean var2) {
+   @Export("openURL")
+   public static void openURL(String var0, boolean var1, boolean var2) {
       if (var1) {
          if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
             try {
@@ -144,24 +145,24 @@ public class WorldMapCacheName {
       garbageValue = "519207109"
    )
    @Export("addPlayerToScene")
-   static void addPlayerToScene(Player var0, boolean var1) {
-      if (var0 != null && var0.isVisible() && !var0.isHidden) {
-         var0.isUnanimated = false;
-         if ((Client.isLowDetail && Players.Players_count > 50 || Players.Players_count > 200) && var1 && var0.movementSequence == var0.idleSequence) {
-            var0.isUnanimated = true;
+   static void addPlayerToScene(Player player, boolean var1) {
+      if (player != null && player.isVisible() && !player.isHidden) {
+         player.isUnanimated = false;
+         if ((Client.isLowDetail && Players.Players_count > 50 || Players.Players_count > 200) && var1 && player.movementSequence == player.readySequence) {
+            player.isUnanimated = true;
          }
 
-         int var2 = var0.x >> 7;
-         int var3 = var0.y >> 7;
+         int var2 = player.x >> 7;
+         int var3 = player.y >> 7;
          if (var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
-            long var4 = FontName.calculateTag(0, 0, 0, false, var0.index);
-            if (var0.model0 != null && Client.cycle >= var0.animationCycleStart && Client.cycle < var0.animationCycleEnd) {
-               var0.isUnanimated = false;
-               var0.tileHeight = class32.getTileHeight(var0.x, var0.y, SoundSystem.plane);
-               var0.playerCycle = Client.cycle;
-               class65.scene.method286(SoundSystem.plane, var0.x, var0.y, var0.tileHeight, 60, var0, var0.field9, var4, var0.field721, var0.field722, var0.field723, var0.field724);
+            long var4 = FontName.calculateTag(0, 0, 0, false, player.index);
+            if (player.model0 != null && Client.cycle >= player.animationCycleStart && Client.cycle < player.animationCycleEnd) {
+               player.isUnanimated = false;
+               player.tileHeight = class32.getTileHeight(player.x, player.y, SoundSystem.plane);
+               player.playerCycle = Client.cycle;
+               class65.scene.method286(SoundSystem.plane, player.x, player.y, player.tileHeight, 60, player, player.field9, var4, player.field721, player.field722, player.field723, player.field724);
             } else {
-               if ((var0.x & 127) == 64 && (var0.y & 127) == 64) {
+               if ((player.x & 127) == 64 && (player.y & 127) == 64) {
                   if (Client.tileLastDrawnActor[var2][var3] == Client.viewportDrawCount) {
                      return;
                   }
@@ -169,9 +170,9 @@ public class WorldMapCacheName {
                   Client.tileLastDrawnActor[var2][var3] = Client.viewportDrawCount;
                }
 
-               var0.tileHeight = class32.getTileHeight(var0.x, var0.y, SoundSystem.plane);
-               var0.playerCycle = Client.cycle;
-               class65.scene.method285(SoundSystem.plane, var0.x, var0.y, var0.tileHeight, 60, var0, var0.field9, var4, var0.field10);
+               player.tileHeight = class32.getTileHeight(player.x, player.y, SoundSystem.plane);
+               player.playerCycle = Client.cycle;
+               class65.scene.method285(SoundSystem.plane, player.x, player.y, player.tileHeight, 60, player, player.field9, var4, player.field10);
             }
          }
       }

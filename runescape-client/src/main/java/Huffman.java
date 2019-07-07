@@ -307,14 +307,14 @@ public class Huffman {
    public static Widget getWidget(int var0) {
       int var1 = var0 >> 16;
       int var2 = var0 & 65535;
-      if (Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
-         boolean var3 = GroundItemPile.loadWidgetGroup(var1);
+      if (Widget.interfaceComponents[var1] == null || Widget.interfaceComponents[var1][var2] == null) {
+         boolean var3 = GroundItemPile.loadInterface(var1);
          if (!var3) {
             return null;
          }
       }
 
-      return Widget.widgets[var1][var2];
+      return Widget.interfaceComponents[var1][var2];
    }
 
    @ObfuscatedName("m")

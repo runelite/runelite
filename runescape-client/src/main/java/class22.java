@@ -21,8 +21,8 @@ public final class class22 {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache16")
-   static IndexCache indexCache16;
+   @Export("archive16")
+   static Archive archive16;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1976624405
@@ -73,7 +73,7 @@ public final class class22 {
       StringBuilder var1 = (new StringBuilder()).append(var0);
       Object var2 = null;
       String var3 = var1.append(" is already on your ignore list").toString();
-      WorldMapIcon1.method219(30, "", var3);
+      WorldMapIcon1.addGameMessage(30, "", var3);
    }
 
    @ObfuscatedName("fw")
@@ -81,14 +81,14 @@ public final class class22 {
       signature = "(IZZZB)Lit;",
       garbageValue = "-15"
    )
-   @Export("newIndexCache")
-   static IndexCache newIndexCache(int var0, boolean var1, boolean var2, boolean var3) {
-      IndexStore var4 = null;
+   @Export("newArchive")
+   static Archive newArchive(int var0, boolean var1, boolean var2, boolean var3) {
+      ArchiveDisk var4 = null;
       if (class168.dat2File != null) {
-         var4 = new IndexStore(var0, class168.dat2File, IndexStoreAction.idxFiles[var0], 1000000);
+         var4 = new ArchiveDisk(var0, class168.dat2File, ArchiveDiskAction.idxFiles[var0], 1000000);
       }
 
-      return new IndexCache(var4, Fonts.indexStore255, var0, var1, var2, var3);
+      return new Archive(var4, Fonts.masterDisk, var0, var1, var2, var3);
    }
 
    @ObfuscatedName("jp")
@@ -112,7 +112,7 @@ public final class class22 {
       SpriteMask var4 = var0.getSpriteMask(false);
       if (var4 != null) {
          if (Client.minimapState < 3) {
-            UnitPriceComparator.compass.method315(var1, var2, var4.width, var4.height, 25, 25, Client.minimapOrientation, 256, var4.xStarts, var4.xWidths);
+            GrandExchangeOfferUnitPriceComparator.compass.method315(var1, var2, var4.width, var4.height, 25, 25, Client.camAngleY, 256, var4.xStarts, var4.xWidths);
          } else {
             Rasterizer2D.method5948(var1, var2, 0, var4.xStarts, var4.xWidths);
          }

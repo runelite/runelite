@@ -28,8 +28,8 @@ public class Varps {
       signature = "(Lir;I)V",
       garbageValue = "2111080001"
    )
-   public static void method4393(AbstractIndexCache var0) {
-      UnderlayDefinition.UnderlayDefinition_indexCache = var0;
+   public static void method4393(AbstractArchive var0) {
+      FloorUnderlayDefinition.FloorUnderlayDefinition_archive = var0;
    }
 
    @ObfuscatedName("ki")

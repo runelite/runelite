@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("o")
 final class class4 implements class0 {
@@ -7,7 +8,7 @@ final class class4 implements class0 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field1158;
+   public static AbstractArchive field1158;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -51,7 +52,7 @@ final class class4 implements class0 {
       garbageValue = "-843046456"
    )
    public static void method55() {
-      OverlayDefinition.field664.clear();
+      FloorOverlayDefinition.field664.clear();
    }
 
    @ObfuscatedName("v")
@@ -61,15 +62,15 @@ final class class4 implements class0 {
    )
    static int method54(int var0, Script var1, boolean var2) {
       String var3;
-      if (var0 == 3100) {
+      if (var0 == ScriptOpcodes.MES) {
          var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-         WorldMapIcon1.method219(0, "", var3);
+         WorldMapIcon1.addGameMessage(0, "", var3);
          return 1;
-      } else if (var0 == 3101) {
+      } else if (var0 == ScriptOpcodes.ANIM) {
          RouteStrategy.Interpreter_intStackSize -= 2;
-         class234.method4534(Canvas.localPlayer, Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
+         class234.performPlayerAnimation(Canvas.localPlayer, Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
          return 1;
-      } else if (var0 == 3103) {
+      } else if (var0 == ScriptOpcodes.IF_CLOSE) {
          if (!Interpreter.field424) {
             Interpreter.field423 = true;
          }
@@ -78,7 +79,7 @@ final class class4 implements class0 {
       } else {
          int var4;
          PacketBufferNode var5;
-         if (var0 == 3104) {
+         if (var0 == ScriptOpcodes.RESUME_COUNTDIALOG) {
             var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
             var4 = 0;
             if (UserComparator4.method3336(var3)) {
@@ -89,14 +90,14 @@ final class class4 implements class0 {
             var5.packetBuffer.writeInt(var4);
             Client.packetWriter.method241(var5);
             return 1;
-         } else if (var0 == 3105) {
+         } else if (var0 == ScriptOpcodes.RESUME_NAMEDIALOG) {
             var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
             var5 = Interpreter.method1915(ClientPacket.field317, Client.packetWriter.isaacCipher);
             var5.packetBuffer.writeByte(var3.length() + 1);
             var5.packetBuffer.writeStringCp1252NullTerminated(var3);
             Client.packetWriter.method241(var5);
             return 1;
-         } else if (var0 == 3106) {
+         } else if (var0 == ScriptOpcodes.RESUME_STRINGDIALOG) {
             var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
             var5 = Interpreter.method1915(ClientPacket.field230, Client.packetWriter.isaacCipher);
             var5.packetBuffer.writeByte(var3.length() + 1);
@@ -106,12 +107,12 @@ final class class4 implements class0 {
          } else {
             String var6;
             int var7;
-            if (var0 == 3107) {
+            if (var0 == ScriptOpcodes.OPPLAYER) {
                var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                var6 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                WorldMapSection2.method583(var7, var6);
                return 1;
-            } else if (var0 == 3108) {
+            } else if (var0 == ScriptOpcodes.IF_DRAGPICKUP) {
                RouteStrategy.Interpreter_intStackSize -= 3;
                var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -119,61 +120,61 @@ final class class4 implements class0 {
                Widget var11 = Huffman.getWidget(var13);
                Players.clickWidget(var11, var7, var4);
                return 1;
-            } else if (var0 == 3109) {
+            } else if (var0 == ScriptOpcodes.CC_DRAGPICKUP) {
                RouteStrategy.Interpreter_intStackSize -= 2;
                var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-               Widget var12 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+               Widget var12 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
                Players.clickWidget(var12, var7, var4);
                return 1;
-            } else if (var0 == 3110) {
+            } else if (var0 == ScriptOpcodes.MOUSECAM) {
                AbstractRasterProvider.mouseCam = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                return 1;
-            } else if (var0 == 3111) {
+            } else if (var0 == ScriptOpcodes.GETREMOVEROOFS) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.roofsHidden ? 1 : 0;
                return 1;
-            } else if (var0 == 3112) {
+            } else if (var0 == ScriptOpcodes.SETREMOVEROOFS) {
                ReflectionCheck.clientPreferences.roofsHidden = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                WorldMapSection0.savePreferences();
                return 1;
             } else {
                boolean var8;
-               if (var0 == 3113) {
+               if (var0 == ScriptOpcodes.OPENURL) {
                   var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                   var8 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
-                  WorldMapCacheName.method635(var3, var8, false);
+                  WorldMapCacheName.openURL(var3, var8, false);
                   return 1;
-               } else if (var0 == 3115) {
+               } else if (var0 == ScriptOpcodes.RESUME_OBJDIALOG) {
                   var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   var5 = Interpreter.method1915(ClientPacket.field264, Client.packetWriter.isaacCipher);
                   var5.packetBuffer.writeShort(var7);
                   Client.packetWriter.method241(var5);
                   return 1;
-               } else if (var0 == 3116) {
+               } else if (var0 == ScriptOpcodes.BUG_REPORT) {
                   var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   Interpreter.Interpreter_stringStackSize -= 2;
                   var6 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize];
-                  String var10 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1];
+                  String var9 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1];
                   if (var6.length() > 500) {
                      return 1;
-                  } else if (var10.length() > 500) {
+                  } else if (var9.length() > 500) {
                      return 1;
                   } else {
-                     PacketBufferNode var9 = Interpreter.method1915(ClientPacket.field238, Client.packetWriter.isaacCipher);
-                     var9.packetBuffer.writeShort(1 + WorldMapRegion.method550(var6) + WorldMapRegion.method550(var10));
-                     var9.packetBuffer.writeStringCp1252NullTerminated(var6);
-                     var9.packetBuffer.writeByte(var7);
-                     var9.packetBuffer.writeStringCp1252NullTerminated(var10);
-                     Client.packetWriter.method241(var9);
+                     PacketBufferNode var10 = Interpreter.method1915(ClientPacket.field238, Client.packetWriter.isaacCipher);
+                     var10.packetBuffer.writeShort(1 + WorldMapRegion.stringCp1252NullTerminatedByteSize(var6) + WorldMapRegion.stringCp1252NullTerminatedByteSize(var9));
+                     var10.packetBuffer.writeStringCp1252NullTerminated(var6);
+                     var10.packetBuffer.writeByte(var7);
+                     var10.packetBuffer.writeStringCp1252NullTerminated(var9);
+                     Client.packetWriter.method241(var10);
                      return 1;
                   }
-               } else if (var0 == 3117) {
+               } else if (var0 == ScriptOpcodes.SETSHIFTCLICKDROP) {
                   Client.shiftClickDrop = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   return 1;
-               } else if (var0 == 3118) {
+               } else if (var0 == ScriptOpcodes.SETSHOWMOUSEOVERTEXT) {
                   Client.showMouseOverText = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   return 1;
-               } else if (var0 == 3119) {
+               } else if (var0 == ScriptOpcodes.RENDERSELF) {
                   Client.renderSelf = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   return 1;
                } else if (var0 == 3120) {
@@ -211,22 +212,22 @@ final class class4 implements class0 {
                } else if (var0 == 3124) {
                   Client.field210 = 0;
                   return 1;
-               } else if (var0 == 3125) {
+               } else if (var0 == ScriptOpcodes.SETSHOWMOUSECROSS) {
                   Client.showMouseCross = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   return 1;
-               } else if (var0 == 3126) {
+               } else if (var0 == ScriptOpcodes.SETSHOWLOADINGMESSAGES) {
                   Client.showLoadingMessages = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   return 1;
-               } else if (var0 == 3127) {
-                  WorldMapAreaData.method705(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1);
+               } else if (var0 == ScriptOpcodes.SETTAPTODROP) {
+                  WorldMapAreaData.setTapToDrop(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1);
                   return 1;
-               } else if (var0 == 3128) {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class206.method4028() ? 1 : 0;
+               } else if (var0 == ScriptOpcodes.GETTAPTODROP) {
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class206.getTapToDrop() ? 1 : 0;
                   return 1;
-               } else if (var0 == 3129) {
+               } else if (var0 == ScriptOpcodes.SETOCULUSORBSPEED) {
                   RouteStrategy.Interpreter_intStackSize -= 2;
                   Client.oculusOrbNormalSpeed = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-                  Client.field197 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+                  Client.oculusOrbSlowedSpeed = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
                   return 1;
                } else if (var0 == 3130) {
                   RouteStrategy.Interpreter_intStackSize -= 2;
@@ -234,7 +235,7 @@ final class class4 implements class0 {
                } else if (var0 == 3131) {
                   --RouteStrategy.Interpreter_intStackSize;
                   return 1;
-               } else if (var0 == 3132) {
+               } else if (var0 == ScriptOpcodes.GETCANVASSIZE) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = SoundCache.canvasWidth;
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Huffman.canvasHeight;
                   return 1;
@@ -262,17 +263,17 @@ final class class4 implements class0 {
                   return 1;
                } else if (var0 == 3140) {
                   Client.field151 = 3;
-                  Client.field153 = var2 ? WorldMapIcon1.field1030.id : class12.field1111.id;
+                  Client.field153 = var2 ? WorldMapIcon1.field1030.id : GrandExchangeOfferAgeComparator.field1111.id;
                   return 1;
-               } else if (var0 == 3141) {
+               } else if (var0 == ScriptOpcodes.SETHIDEUSERNAME) {
                   var8 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   ReflectionCheck.clientPreferences.hideUsername = var8;
                   WorldMapSection0.savePreferences();
                   return 1;
-               } else if (var0 == 3142) {
+               } else if (var0 == ScriptOpcodes.GETHIDEUSERNAME) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.hideUsername ? 1 : 0;
                   return 1;
-               } else if (var0 == 3143) {
+               } else if (var0 == ScriptOpcodes.SETREMEMBERUSERNAME) {
                   var8 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   Client.Login_isUsernameRemembered = var8;
                   if (!var8) {
@@ -281,12 +282,12 @@ final class class4 implements class0 {
                   }
 
                   return 1;
-               } else if (var0 == 3144) {
+               } else if (var0 == ScriptOpcodes.GETREMEMBERUSERNAME) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.Login_isUsernameRemembered ? 1 : 0;
                   return 1;
                } else if (var0 == 3145) {
                   return 1;
-               } else if (var0 == 3146) {
+               } else if (var0 == ScriptOpcodes.SETTITLEMUSICENABLED) {
                   var8 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   if (var8 == ReflectionCheck.clientPreferences.titleMusicDisabled) {
                      ReflectionCheck.clientPreferences.titleMusicDisabled = !var8;
@@ -294,7 +295,7 @@ final class class4 implements class0 {
                   }
 
                   return 1;
-               } else if (var0 == 3147) {
+               } else if (var0 == ScriptOpcodes.GETTITLEMUSICENABLED) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.titleMusicDisabled ? 0 : 1;
                   return 1;
                } else if (var0 == 3148) {

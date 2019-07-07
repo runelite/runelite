@@ -50,7 +50,7 @@ public class class83 {
       signature = "(Lir;II)Llq;",
       garbageValue = "1413048059"
    )
-   public static IndexedSprite method2028(AbstractIndexCache var0, int var1) {
+   public static IndexedSprite method2028(AbstractArchive var0, int var1) {
       return !RouteStrategy.loadSpriteFlat(var0, var1) ? null : ServerPacket.createIndexedSprite();
    }
 

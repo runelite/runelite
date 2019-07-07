@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hu")
-@Implements("TileLocation")
-public class TileLocation {
+@Implements("Coord")
+public class Coord {
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 503621925
@@ -29,19 +29,19 @@ public class TileLocation {
    @ObfuscatedSignature(
       signature = "(Lhu;)V"
    )
-   public TileLocation(TileLocation var1) {
+   public Coord(Coord var1) {
       this.plane = var1.plane;
       this.x = var1.x;
       this.y = var1.y;
    }
 
-   public TileLocation(int var1, int var2, int var3) {
+   public Coord(int var1, int var2, int var3) {
       this.plane = var1;
       this.x = var2;
       this.y = var3;
    }
 
-   public TileLocation(int var1) {
+   public Coord(int var1) {
       if (var1 == -1) {
          this.plane = -1;
       } else {
@@ -67,9 +67,9 @@ public class TileLocation {
       signature = "(Lhu;B)Z",
       garbageValue = "-1"
    )
-   @Export("equals0")
-   boolean equals0(TileLocation var1) {
-      return this.plane != var1.plane ? false : (this.x != var1.x ? false : this.y == var1.y);
+   @Export("equalsCoord")
+   boolean equalsCoord(Coord other) {
+      return this.plane != other.plane ? false : (this.x != other.x ? false : this.y == other.y);
    }
 
    @ObfuscatedName("q")
@@ -77,23 +77,20 @@ public class TileLocation {
       signature = "(Ljava/lang/String;I)Ljava/lang/String;",
       garbageValue = "997364398"
    )
-   @Export("toString0")
-   String toString0(String var1) {
-      return this.plane + var1 + (this.x >> 6) + var1 + (this.y >> 6) + var1 + (this.x & 63) + var1 + (this.y & 63);
+   @Export("toString")
+   String toString(String separator) {
+      return this.plane + separator + (this.x >> 6) + separator + (this.y >> 6) + separator + (this.x & 63) + separator + (this.y & 63);
    }
 
-   @ObfuscatedName("equals")
-   public boolean method326(Object var1) {
-      return this == var1 ? true : (!(var1 instanceof TileLocation) ? false : this.equals0((TileLocation)var1));
+   public boolean equals(Object var1) {
+      return this == var1 ? true : (!(var1 instanceof Coord) ? false : this.equalsCoord((Coord)var1));
    }
 
-   @ObfuscatedName("hashCode")
-   public int method327() {
+   public int hashCode() {
       return this.packed();
    }
 
-   @ObfuscatedName("toString")
-   public String method328() {
-      return this.toString0(",");
+   public String toString() {
+      return this.toString(",");
    }
 }

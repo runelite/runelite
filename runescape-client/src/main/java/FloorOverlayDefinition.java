@@ -5,13 +5,13 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jf")
-@Implements("OverlayDefinition")
-public class OverlayDefinition extends DualNode {
+@Implements("FloorOverlayDefinition")
+public class FloorOverlayDefinition extends DualNode {
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field663;
+   public static AbstractArchive field663;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -74,7 +74,7 @@ public class OverlayDefinition extends DualNode {
    @Export("lightness2")
    public int lightness2;
 
-   public OverlayDefinition() {
+   public FloorOverlayDefinition() {
       this.rgb = 0;
       this.texture = -1;
       this.field665 = true;
@@ -86,8 +86,8 @@ public class OverlayDefinition extends DualNode {
       signature = "(I)V",
       garbageValue = "867788548"
    )
-   @Export("init")
-   public void init() {
+   @Export("postDecode")
+   public void postDecode() {
       if (this.rgb2 != -1) {
          this.setHsl(this.rgb2);
          this.hue2 = this.hue;
@@ -103,15 +103,15 @@ public class OverlayDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-424203051"
    )
-   @Export("read")
-   public void read(Buffer var1, int var2) {
+   @Export("decode")
+   public void decode(Buffer var1, int var2) {
       while (true) {
          int var3 = var1.readUnsignedByte();
          if (var3 == 0) {
             return;
          }
 
-         this.readNext(var1, var3, var2);
+         this.decodeNext(var1, var3, var2);
       }
    }
 
@@ -120,8 +120,8 @@ public class OverlayDefinition extends DualNode {
       signature = "(Lgr;III)V",
       garbageValue = "2094105763"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2, int var3) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2, int var3) {
       if (var2 == 1) {
          this.rgb = var1.readMedium();
       } else if (var2 == 2) {
@@ -141,10 +141,10 @@ public class OverlayDefinition extends DualNode {
       garbageValue = "489697731"
    )
    @Export("setHsl")
-   void setHsl(int var1) {
-      double var2 = (double)(var1 >> 16 & 255) / 256.0D;
-      double var4 = (double)(var1 >> 8 & 255) / 256.0D;
-      double var6 = (double)(var1 & 255) / 256.0D;
+   void setHsl(int rgb) {
+      double var2 = (double)(rgb >> 16 & 255) / 256.0D;
+      double var4 = (double)(rgb >> 8 & 255) / 256.0D;
+      double var6 = (double)(rgb & 255) / 256.0D;
       double var8 = var2;
       if (var4 < var2) {
          var8 = var4;
@@ -208,33 +208,33 @@ public class OverlayDefinition extends DualNode {
       garbageValue = "30"
    )
    @Export("alignWidgetPosition")
-   static void alignWidgetPosition(Widget var0, int var1, int var2) {
-      if (var0.xAlignment == 0) {
-         var0.x = var0.rawX;
-      } else if (var0.xAlignment == 1) {
-         var0.x = var0.rawX + (var1 - var0.width) / 2;
-      } else if (var0.xAlignment == 2) {
-         var0.x = var1 - var0.width - var0.rawX;
-      } else if (var0.xAlignment == 3) {
-         var0.x = var0.rawX * var1 >> 14;
-      } else if (var0.xAlignment == 4) {
-         var0.x = (var0.rawX * var1 >> 14) + (var1 - var0.width) / 2;
+   static void alignWidgetPosition(Widget component, int parentWidth, int parentHeight) {
+      if (component.xAlignment == 0) {
+         component.x = component.rawX;
+      } else if (component.xAlignment == 1) {
+         component.x = component.rawX + (parentWidth - component.width) / 2;
+      } else if (component.xAlignment == 2) {
+         component.x = parentWidth - component.width - component.rawX;
+      } else if (component.xAlignment == 3) {
+         component.x = component.rawX * parentWidth >> 14;
+      } else if (component.xAlignment == 4) {
+         component.x = (component.rawX * parentWidth >> 14) + (parentWidth - component.width) / 2;
       } else {
-         var0.x = var1 - var0.width - (var0.rawX * var1 >> 14);
+         component.x = parentWidth - component.width - (component.rawX * parentWidth >> 14);
       }
 
-      if (var0.yAlignment == 0) {
-         var0.y = var0.rawY;
-      } else if (var0.yAlignment == 1) {
-         var0.y = (var2 - var0.height) / 2 + var0.rawY;
-      } else if (var0.yAlignment == 2) {
-         var0.y = var2 - var0.height - var0.rawY;
-      } else if (var0.yAlignment == 3) {
-         var0.y = var2 * var0.rawY >> 14;
-      } else if (var0.yAlignment == 4) {
-         var0.y = (var2 * var0.rawY >> 14) + (var2 - var0.height) / 2;
+      if (component.yAlignment == 0) {
+         component.y = component.rawY;
+      } else if (component.yAlignment == 1) {
+         component.y = (parentHeight - component.height) / 2 + component.rawY;
+      } else if (component.yAlignment == 2) {
+         component.y = parentHeight - component.height - component.rawY;
+      } else if (component.yAlignment == 3) {
+         component.y = parentHeight * component.rawY >> 14;
+      } else if (component.yAlignment == 4) {
+         component.y = (parentHeight * component.rawY >> 14) + (parentHeight - component.height) / 2;
       } else {
-         var0.y = var2 - var0.height - (var2 * var0.rawY >> 14);
+         component.y = parentHeight - component.height - (parentHeight * component.rawY >> 14);
       }
 
    }

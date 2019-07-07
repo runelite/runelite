@@ -127,7 +127,7 @@ public final class NPC extends Actor {
          return null;
       } else {
          SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? WorldMapAreaData.getSequenceDefinition(super.sequence) : null;
-         SequenceDefinition var2 = super.movementSequence == -1 || super.movementSequence == super.idleSequence && var1 != null ? null : WorldMapAreaData.getSequenceDefinition(super.movementSequence);
+         SequenceDefinition var2 = super.movementSequence != -1 && (super.movementSequence != super.readySequence || var1 == null) ? WorldMapAreaData.getSequenceDefinition(super.movementSequence) : null;
          Model var3 = this.definition.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
          if (var3 == null) {
             return null;
@@ -167,27 +167,27 @@ public final class NPC extends Actor {
       signature = "(ILff;Lit;B)V",
       garbageValue = "-51"
    )
-   static void method2009(int var0, IndexStore var1, IndexCache var2) {
-      IndexStoreAction var3 = new IndexStoreAction();
+   static void method2009(int var0, ArchiveDisk var1, Archive var2) {
+      ArchiveDiskAction var3 = new ArchiveDiskAction();
       var3.type = 1;
       var3.key = (long)var0;
-      var3.indexStore = var1;
-      var3.indexCache = var2;
-      NodeDeque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-         IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFirst(var3);
+      var3.archiveDisk = var1;
+      var3.archive = var2;
+      NodeDeque var4 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue;
+      synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
+         ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.addFirst(var3);
       }
 
-      Object var5 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
-         if (IndexStoreActionHandler.field412 == 0) {
-            Frames.IndexStoreActionHandler_thread = new Thread(new IndexStoreActionHandler());
-            Frames.IndexStoreActionHandler_thread.setDaemon(true);
-            Frames.IndexStoreActionHandler_thread.start();
-            Frames.IndexStoreActionHandler_thread.setPriority(5);
+      Object var5 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock;
+      synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock) {
+         if (ArchiveDiskActionHandler.field412 == 0) {
+            Frames.ArchiveDiskActionHandler_thread = new Thread(new ArchiveDiskActionHandler());
+            Frames.ArchiveDiskActionHandler_thread.setDaemon(true);
+            Frames.ArchiveDiskActionHandler_thread.start();
+            Frames.ArchiveDiskActionHandler_thread.setPriority(5);
          }
 
-         IndexStoreActionHandler.field412 = 600;
+         ArchiveDiskActionHandler.field412 = 600;
       }
    }
 }

@@ -15,12 +15,12 @@ import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import org.slf4j.Logger;
-import net.runelite.rs.api.RSAbstractIndexCache;
+import net.runelite.rs.api.RSAbstractArchive;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSIndexCache;
+import net.runelite.rs.api.RSArchive;
 
-@Mixin(RSAbstractIndexCache.class)
-public abstract class RSAbstractIndexCacheMixin implements RSAbstractIndexCache
+@Mixin(RSAbstractArchive.class)
+public abstract class RSAbstractArchiveMixin implements RSAbstractArchive
 {
 	@Shadow("client")
 	private static RSClient client;
@@ -35,14 +35,14 @@ public abstract class RSAbstractIndexCacheMixin implements RSAbstractIndexCache
 		return overlayOutdated;
 	}
 
-	@Copy("takeRecord")
+	@Copy("takeFile")
 	abstract byte[] rs$getConfigData(int archiveId, int fileId);
 
-	@Replace("takeRecord")
+	@Replace("takeFile")
 	public byte[] rl$getConfigData(int archiveId, int fileId)
 	{
 		byte[] rsData = rs$getConfigData(archiveId, fileId);
-		RSIndexCache indexData = (RSIndexCache) this;
+		RSArchive indexData = (RSArchive) this;
 
 		if (!OverlayIndex.hasOverlay(indexData.getIndex(), archiveId))
 		{

@@ -84,7 +84,7 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	int getFPS();
 
-	@Import("minimapOrientation")
+	@Import("camAngleY")
 	@Override
 	int getMapAngle();
 
@@ -187,7 +187,7 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	void setDraggedOnWidget(Widget widget);
 
-	@Import("widgets")
+	@Import("interfaceComponents")
 	RSWidget[][] getWidgets();
 
 	/**
@@ -390,8 +390,7 @@ public interface RSClient extends RSGameShell, Client
 	RSSprite createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
 
 	@Import("menuAction")
-	@Override
-	void invokeMenuAction(int n2, int n3, int n4, int n5, String string, String string2, int n6, int n7);
+	void sendMenuAction(int n2, int n3, int n4, int n5, String string, String string2, int n6, int n7);
 
 	@Import("decodeSprite")
 	void decodeSprite(byte[] data);
@@ -441,19 +440,19 @@ public interface RSClient extends RSGameShell, Client
 	@Import("indexedSpritePalette")
 	void setIndexedSpritePalette(int[] indexedSpritePalette);
 
-	@Import("indexCache8")
+	@Import("archive8")
 	@Override
-	RSAbstractIndexCache getIndexSprites();
+	RSAbstractArchive getIndexSprites();
 
-	@Import("indexCache12")
+	@Import("archive12")
 	@Override
-	RSAbstractIndexCache getIndexScripts();
+	RSAbstractArchive getIndexScripts();
 
 	@Import("widgetClickMasks")
 	@Override
 	RSNodeHashTable getWidgetFlags();
 
-	@Import("widgetGroupParents")
+	@Import("interfaceParents")
 	@Override
 	RSNodeHashTable getComponentTable();
 
@@ -514,7 +513,7 @@ public interface RSClient extends RSGameShell, Client
 	 * Get the widget top group. widgets[topGroup] contains widgets with
 	 * parentId -1, which are the widget roots.
 	 */
-	@Import("rootWidgetGroup")
+	@Import("rootInterface")
 	int getWidgetRoot();
 
 	@Import("WorldMapElement_cached")
@@ -662,10 +661,10 @@ public interface RSClient extends RSGameShell, Client
 	 *
 	 * (1) JAU - Jagex Angle Unit; 1/1024 of a revolution
 	 */
-	@Import("cameraPitchTarget")
+	@Import("camAngleX")
 	int getCameraPitchTarget();
 
-	@Import("cameraPitchTarget")
+	@Import("camAngleX")
 	void setCameraPitchTarget(int pitch);
 
 	@Import("Scene_cameraPitchSine")
@@ -1015,7 +1014,7 @@ public interface RSClient extends RSGameShell, Client
 	boolean isSpellSelected();
 
 	@Import("readSoundEffect")
-	RSSoundEffect getTrack(RSAbstractIndexCache indexData, int id, int var0);
+	RSSoundEffect getTrack(RSAbstractArchive indexData, int id, int var0);
 
 	@Import("createRawPcmStream")
 	RSRawPcmStream createRawPcmStream(RSRawSound audioNode, int var0, int volume);
@@ -1023,8 +1022,8 @@ public interface RSClient extends RSGameShell, Client
 	@Import("pcmStreamMixer")
 	RSPcmStreamMixer getSoundEffectAudioQueue();
 
-	@Import("indexCache4")
-	RSAbstractIndexCache getIndexCache4();
+	@Import("archive4")
+	RSAbstractArchive getIndexCache4();
 
 	@Import("decimator")
 	RSDecimator getSoundEffectResampler();

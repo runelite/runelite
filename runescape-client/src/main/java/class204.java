@@ -30,9 +30,9 @@ public class class204 {
       signature = "(Lir;Ljava/lang/String;Ljava/lang/String;IZB)V",
       garbageValue = "0"
    )
-   public static void method4011(AbstractIndexCache var0, String var1, String var2, int var3, boolean var4) {
-      int var5 = var0.getArchiveId(var1);
-      int var6 = var0.getRecordId(var5, var2);
+   public static void method4011(AbstractArchive var0, String var1, String var2, int var3, boolean var4) {
+      int var5 = var0.getGroupId(var1);
+      int var6 = var0.getFileId(var5, var2);
       Login.method2076(var0, var5, var6, var3, var4);
    }
 
@@ -46,8 +46,8 @@ public class class204 {
       for (int var10 = 0; var10 < 8; ++var10) {
          for (var9 = 0; var9 < 8; ++var9) {
             if (var10 + var2 > 0 && var10 + var2 < 103 && var3 + var9 > 0 && var3 + var9 < 103) {
-               int[] var10000 = var8[var1].flags[var10 + var2];
-               var10000[var3 + var9] &= -16777217;
+               int[] var11 = var8[var1].flags[var10 + var2];
+               var11[var3 + var9] &= -16777217;
             }
          }
       }
@@ -55,11 +55,11 @@ public class class204 {
       Buffer var18 = new Buffer(var0);
 
       for (var9 = 0; var9 < 4; ++var9) {
-         for (int var11 = 0; var11 < 64; ++var11) {
+         for (int var19 = 0; var19 < 64; ++var19) {
             for (int var12 = 0; var12 < 64; ++var12) {
-               if (var9 == var4 && var11 >= var5 && var11 < var5 + 8 && var12 >= var6 && var12 < var6 + 8) {
-                  int var13 = var2 + CollisionMap.method3632(var11 & 7, var12 & 7, var7);
-                  int var14 = var11 & 7;
+               if (var9 == var4 && var19 >= var5 && var19 < var5 + 8 && var12 >= var6 && var12 < var6 + 8) {
+                  int var13 = var2 + CollisionMap.method3632(var19 & 7, var12 & 7, var7);
+                  int var14 = var19 & 7;
                   int var15 = var12 & 7;
                   int var16 = var7 & 3;
                   int var17;
@@ -73,9 +73,9 @@ public class class204 {
                      var17 = var14;
                   }
 
-                  TotalQuantityComparator.loadTerrain(var18, var1, var13, var3 + var17, 0, 0, var7);
+                  GrandExchangeOfferTotalQuantityComparator.loadTerrain(var18, var1, var13, var3 + var17, 0, 0, var7);
                } else {
-                  TotalQuantityComparator.loadTerrain(var18, 0, -1, -1, 0, 0, 0);
+                  GrandExchangeOfferTotalQuantityComparator.loadTerrain(var18, 0, -1, -1, 0, 0, 0);
                }
             }
          }

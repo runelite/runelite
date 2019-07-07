@@ -17,22 +17,22 @@ public class Widget extends Node {
    @ObfuscatedSignature(
       signature = "[[Lho;"
    )
-   @Export("widgets")
-   public static Widget[][] widgets;
+   @Export("interfaceComponents")
+   public static Widget[][] interfaceComponents;
    @ObfuscatedName("l")
-   @Export("loadedWidgetGroups")
-   public static boolean[] loadedWidgetGroups;
+   @Export("loadedInterfaces")
+   public static boolean[] loadedInterfaces;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("Widget_indexCache")
-   public static AbstractIndexCache Widget_indexCache;
+   @Export("Widget_archive")
+   public static AbstractArchive Widget_archive;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field955;
+   public static AbstractArchive field955;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -383,7 +383,8 @@ public class Widget extends Node {
    @Export("modelOrthog")
    public boolean modelOrthog;
    @ObfuscatedName("bv")
-   public boolean field964;
+   @Export("modelTransparency")
+   public boolean modelTransparency;
    @ObfuscatedName("bw")
    @ObfuscatedGetter(
       intValue = -1658511475
@@ -560,25 +561,32 @@ public class Widget extends Node {
    @Export("onScroll")
    public Object[] onScroll;
    @ObfuscatedName("em")
-   public Object[] field970;
+   @Export("onChatTransmit")
+   public Object[] onChatTransmit;
    @ObfuscatedName("ed")
-   @Export("onKeyListener")
-   public Object[] onKeyListener;
+   @Export("onKey")
+   public Object[] onKey;
    @ObfuscatedName("ex")
-   public Object[] field971;
+   @Export("onFriendTransmit")
+   public Object[] onFriendTransmit;
    @ObfuscatedName("ej")
-   public Object[] field972;
+   @Export("onClanTransmit")
+   public Object[] onClanTransmit;
    @ObfuscatedName("el")
-   public Object[] field973;
+   @Export("onMiscTransmit")
+   public Object[] onMiscTransmit;
    @ObfuscatedName("en")
-   @Export("onDialogAbortListener")
-   public Object[] onDialogAbortListener;
+   @Export("onDialogAbort")
+   public Object[] onDialogAbort;
    @ObfuscatedName("ei")
-   public Object[] field974;
+   @Export("onSubChange")
+   public Object[] onSubChange;
    @ObfuscatedName("ee")
-   public Object[] field975;
+   @Export("onResize")
+   public Object[] onResize;
    @ObfuscatedName("eq")
-   public Object[] field976;
+   @Export("onStockTransmit")
+   public Object[] onStockTransmit;
    @ObfuscatedName("eh")
    public Object[] field977;
    @ObfuscatedName("eo")
@@ -742,7 +750,7 @@ public class Widget extends Node {
       this.field962 = 0;
       this.field963 = 0;
       this.modelOrthog = false;
-      this.field964 = false;
+      this.modelTransparency = false;
       this.itemQuantityMode = 2;
       this.fontId = -1;
       this.text = "";
@@ -788,41 +796,41 @@ public class Widget extends Node {
       garbageValue = "688173225"
    )
    @Export("decodeLegacy")
-   void decodeLegacy(Buffer var1) {
+   void decodeLegacy(Buffer buffer) {
       this.isIf3 = false;
-      this.type = var1.readUnsignedByte();
-      this.buttonType = var1.readUnsignedByte();
-      this.contentType = var1.readUnsignedShort();
-      this.rawX = var1.method44();
-      this.rawY = var1.method44();
-      this.rawWidth = var1.readUnsignedShort();
-      this.rawHeight = var1.readUnsignedShort();
-      this.transparency = var1.readUnsignedByte();
-      this.parentId = var1.readUnsignedShort();
+      this.type = buffer.readUnsignedByte();
+      this.buttonType = buffer.readUnsignedByte();
+      this.contentType = buffer.readUnsignedShort();
+      this.rawX = buffer.method44();
+      this.rawY = buffer.method44();
+      this.rawWidth = buffer.readUnsignedShort();
+      this.rawHeight = buffer.readUnsignedShort();
+      this.transparency = buffer.readUnsignedByte();
+      this.parentId = buffer.readUnsignedShort();
       if (this.parentId == 65535) {
          this.parentId = -1;
       } else {
          this.parentId += this.id & -65536;
       }
 
-      this.mouseOverRedirect = var1.readUnsignedShort();
+      this.mouseOverRedirect = buffer.readUnsignedShort();
       if (this.mouseOverRedirect == 65535) {
          this.mouseOverRedirect = -1;
       }
 
-      int var2 = var1.readUnsignedByte();
+      int var2 = buffer.readUnsignedByte();
       int var3;
       if (var2 > 0) {
          this.cs1Comparisons = new int[var2];
          this.cs1ComparisonValues = new int[var2];
 
          for (var3 = 0; var3 < var2; ++var3) {
-            this.cs1Comparisons[var3] = var1.readUnsignedByte();
-            this.cs1ComparisonValues[var3] = var1.readUnsignedShort();
+            this.cs1Comparisons[var3] = buffer.readUnsignedByte();
+            this.cs1ComparisonValues[var3] = buffer.readUnsignedShort();
          }
       }
 
-      var3 = var1.readUnsignedByte();
+      var3 = buffer.readUnsignedByte();
       int var4;
       int var5;
       int var6;
@@ -830,11 +838,11 @@ public class Widget extends Node {
          this.cs1Instructions = new int[var3][];
 
          for (var4 = 0; var4 < var3; ++var4) {
-            var5 = var1.readUnsignedShort();
+            var5 = buffer.readUnsignedShort();
             this.cs1Instructions[var4] = new int[var5];
 
             for (var6 = 0; var6 < var5; ++var6) {
-               this.cs1Instructions[var4][var6] = var1.readUnsignedShort();
+               this.cs1Instructions[var4][var6] = buffer.readUnsignedShort();
                if (this.cs1Instructions[var4][var6] == 65535) {
                   this.cs1Instructions[var4][var6] = -1;
                }
@@ -843,51 +851,51 @@ public class Widget extends Node {
       }
 
       if (this.type == 0) {
-         this.scrollHeight = var1.readUnsignedShort();
-         this.isHidden = var1.readUnsignedByte() == 1;
+         this.scrollHeight = buffer.readUnsignedShort();
+         this.isHidden = buffer.readUnsignedByte() == 1;
       }
 
       if (this.type == 1) {
-         var1.readUnsignedShort();
-         var1.readUnsignedByte();
+         buffer.readUnsignedShort();
+         buffer.readUnsignedByte();
       }
 
       if (this.type == 2) {
          this.itemIds = new int[this.rawHeight * this.rawWidth];
          this.itemQuantities = new int[this.rawWidth * this.rawHeight];
-         var4 = var1.readUnsignedByte();
+         var4 = buffer.readUnsignedByte();
          if (var4 == 1) {
             this.clickMask |= 268435456;
          }
 
-         var5 = var1.readUnsignedByte();
+         var5 = buffer.readUnsignedByte();
          if (var5 == 1) {
             this.clickMask |= 1073741824;
          }
 
-         var6 = var1.readUnsignedByte();
+         var6 = buffer.readUnsignedByte();
          if (var6 == 1) {
             this.clickMask |= Integer.MIN_VALUE;
          }
 
-         int var7 = var1.readUnsignedByte();
+         int var7 = buffer.readUnsignedByte();
          if (var7 == 1) {
             this.clickMask |= 536870912;
          }
 
-         this.paddingX = var1.readUnsignedByte();
-         this.paddingY = var1.readUnsignedByte();
+         this.paddingX = buffer.readUnsignedByte();
+         this.paddingY = buffer.readUnsignedByte();
          this.inventoryXOffsets = new int[20];
          this.inventoryYOffsets = new int[20];
          this.inventorySprites = new int[20];
 
          int var8;
          for (var8 = 0; var8 < 20; ++var8) {
-            int var9 = var1.readUnsignedByte();
+            int var9 = buffer.readUnsignedByte();
             if (var9 == 1) {
-               this.inventoryXOffsets[var8] = var1.method44();
-               this.inventoryYOffsets[var8] = var1.method44();
-               this.inventorySprites[var8] = var1.readInt();
+               this.inventoryXOffsets[var8] = buffer.method44();
+               this.inventoryYOffsets[var8] = buffer.method44();
+               this.inventorySprites[var8] = buffer.readInt();
             } else {
                this.inventorySprites[var8] = -1;
             }
@@ -896,7 +904,7 @@ public class Widget extends Node {
          this.itemActions = new String[5];
 
          for (var8 = 0; var8 < 5; ++var8) {
-            String var11 = var1.readStringCp1252NullTerminated();
+            String var11 = buffer.readStringCp1252NullTerminated();
             if (var11.length() > 0) {
                this.itemActions[var8] = var11;
                this.clickMask |= 1 << var8 + 23;
@@ -905,83 +913,83 @@ public class Widget extends Node {
       }
 
       if (this.type == 3) {
-         this.fill = var1.readUnsignedByte() == 1;
+         this.fill = buffer.readUnsignedByte() == 1;
       }
 
       if (this.type == 4 || this.type == 1) {
-         this.textXAlignment = var1.readUnsignedByte();
-         this.textYAlignment = var1.readUnsignedByte();
-         this.textLineHeight = var1.readUnsignedByte();
-         this.fontId = var1.readUnsignedShort();
+         this.textXAlignment = buffer.readUnsignedByte();
+         this.textYAlignment = buffer.readUnsignedByte();
+         this.textLineHeight = buffer.readUnsignedByte();
+         this.fontId = buffer.readUnsignedShort();
          if (this.fontId == 65535) {
             this.fontId = -1;
          }
 
-         this.textShadowed = var1.readUnsignedByte() == 1;
+         this.textShadowed = buffer.readUnsignedByte() == 1;
       }
 
       if (this.type == 4) {
-         this.text = var1.readStringCp1252NullTerminated();
-         this.text2 = var1.readStringCp1252NullTerminated();
+         this.text = buffer.readStringCp1252NullTerminated();
+         this.text2 = buffer.readStringCp1252NullTerminated();
       }
 
       if (this.type == 1 || this.type == 3 || this.type == 4) {
-         this.color = var1.readInt();
+         this.color = buffer.readInt();
       }
 
       if (this.type == 3 || this.type == 4) {
-         this.color2 = var1.readInt();
-         this.mouseOverColor = var1.readInt();
-         this.mouseOverColor2 = var1.readInt();
+         this.color2 = buffer.readInt();
+         this.mouseOverColor = buffer.readInt();
+         this.mouseOverColor2 = buffer.readInt();
       }
 
       if (this.type == 5) {
-         this.spriteId2 = var1.readInt();
-         this.spriteId = var1.readInt();
+         this.spriteId2 = buffer.readInt();
+         this.spriteId = buffer.readInt();
       }
 
       if (this.type == 6) {
          this.modelType = 1;
-         this.modelId = var1.readUnsignedShort();
+         this.modelId = buffer.readUnsignedShort();
          if (this.modelId == 65535) {
             this.modelId = -1;
          }
 
          this.modelType2 = 1;
-         this.modelId2 = var1.readUnsignedShort();
+         this.modelId2 = buffer.readUnsignedShort();
          if (this.modelId2 == 65535) {
             this.modelId2 = -1;
          }
 
-         this.sequenceId = var1.readUnsignedShort();
+         this.sequenceId = buffer.readUnsignedShort();
          if (this.sequenceId == 65535) {
             this.sequenceId = -1;
          }
 
-         this.sequenceId2 = var1.readUnsignedShort();
+         this.sequenceId2 = buffer.readUnsignedShort();
          if (this.sequenceId2 == 65535) {
             this.sequenceId2 = -1;
          }
 
-         this.modelZoom = var1.readUnsignedShort();
-         this.modelAngleX = var1.readUnsignedShort();
-         this.modelAngleY = var1.readUnsignedShort();
+         this.modelZoom = buffer.readUnsignedShort();
+         this.modelAngleX = buffer.readUnsignedShort();
+         this.modelAngleY = buffer.readUnsignedShort();
       }
 
       if (this.type == 7) {
          this.itemIds = new int[this.rawHeight * this.rawWidth];
          this.itemQuantities = new int[this.rawWidth * this.rawHeight];
-         this.textXAlignment = var1.readUnsignedByte();
-         this.fontId = var1.readUnsignedShort();
+         this.textXAlignment = buffer.readUnsignedByte();
+         this.fontId = buffer.readUnsignedShort();
          if (this.fontId == 65535) {
             this.fontId = -1;
          }
 
-         this.textShadowed = var1.readUnsignedByte() == 1;
-         this.color = var1.readInt();
-         this.paddingX = var1.method44();
-         this.paddingY = var1.method44();
-         var4 = var1.readUnsignedByte();
+         this.textShadowed = buffer.readUnsignedByte() == 1;
+         this.color = buffer.readInt();
+         this.paddingX = buffer.method44();
+         this.paddingY = buffer.method44();
+         var4 = buffer.readUnsignedByte();
          if (var4 == 1) {
             this.clickMask |= 1073741824;
          }
@@ -989,7 +997,7 @@ public class Widget extends Node {
          this.itemActions = new String[5];
 
          for (var5 = 0; var5 < 5; ++var5) {
-            String var10 = var1.readStringCp1252NullTerminated();
+            String var10 = buffer.readStringCp1252NullTerminated();
             if (var10.length() > 0) {
                this.itemActions[var5] = var10;
                this.clickMask |= 1 << var5 + 23;
@@ -998,18 +1006,18 @@ public class Widget extends Node {
       }
 
       if (this.type == 8) {
-         this.text = var1.readStringCp1252NullTerminated();
+         this.text = buffer.readStringCp1252NullTerminated();
       }
 
       if (this.buttonType == 2 || this.type == 2) {
-         this.spellActionName = var1.readStringCp1252NullTerminated();
-         this.spellName = var1.readStringCp1252NullTerminated();
-         var4 = var1.readUnsignedShort() & 63;
+         this.spellActionName = buffer.readStringCp1252NullTerminated();
+         this.spellName = buffer.readStringCp1252NullTerminated();
+         var4 = buffer.readUnsignedShort() & 63;
          this.clickMask |= var4 << 11;
       }
 
       if (this.buttonType == 1 || this.buttonType == 4 || this.buttonType == 5 || this.buttonType == 6) {
-         this.buttonText = var1.readStringCp1252NullTerminated();
+         this.buttonText = buffer.readStringCp1252NullTerminated();
          if (this.buttonText.length() == 0) {
             if (this.buttonType == 1) {
                this.buttonText = "Ok";
@@ -1045,140 +1053,140 @@ public class Widget extends Node {
       garbageValue = "-1967445442"
    )
    @Export("decode")
-   void decode(Buffer var1) {
-      var1.readUnsignedByte();
+   void decode(Buffer buffer) {
+      buffer.readUnsignedByte();
       this.isIf3 = true;
-      this.type = var1.readUnsignedByte();
-      this.contentType = var1.readUnsignedShort();
-      this.rawX = var1.method44();
-      this.rawY = var1.method44();
-      this.rawWidth = var1.readUnsignedShort();
+      this.type = buffer.readUnsignedByte();
+      this.contentType = buffer.readUnsignedShort();
+      this.rawX = buffer.method44();
+      this.rawY = buffer.method44();
+      this.rawWidth = buffer.readUnsignedShort();
       if (this.type == 9) {
-         this.rawHeight = var1.method44();
+         this.rawHeight = buffer.method44();
       } else {
-         this.rawHeight = var1.readUnsignedShort();
+         this.rawHeight = buffer.readUnsignedShort();
       }
 
-      this.widthAlignment = var1.readByte();
-      this.heightAlignment = var1.readByte();
-      this.xAlignment = var1.readByte();
-      this.yAlignment = var1.readByte();
-      this.parentId = var1.readUnsignedShort();
+      this.widthAlignment = buffer.readByte();
+      this.heightAlignment = buffer.readByte();
+      this.xAlignment = buffer.readByte();
+      this.yAlignment = buffer.readByte();
+      this.parentId = buffer.readUnsignedShort();
       if (this.parentId == 65535) {
          this.parentId = -1;
       } else {
          this.parentId += this.id & -65536;
       }
 
-      this.isHidden = var1.readUnsignedByte() == 1;
+      this.isHidden = buffer.readUnsignedByte() == 1;
       if (this.type == 0) {
-         this.scrollWidth = var1.readUnsignedShort();
-         this.scrollHeight = var1.readUnsignedShort();
-         this.noClickThrough = var1.readUnsignedByte() == 1;
+         this.scrollWidth = buffer.readUnsignedShort();
+         this.scrollHeight = buffer.readUnsignedShort();
+         this.noClickThrough = buffer.readUnsignedByte() == 1;
       }
 
       if (this.type == 5) {
-         this.spriteId2 = var1.readInt();
-         this.spriteAngle = var1.readUnsignedShort();
-         this.spriteTiling = var1.readUnsignedByte() == 1;
-         this.transparency = var1.readUnsignedByte();
-         this.outline = var1.readUnsignedByte();
-         this.spriteShadow = var1.readInt();
-         this.spriteFlipV = var1.readUnsignedByte() == 1;
-         this.spriteFlipH = var1.readUnsignedByte() == 1;
+         this.spriteId2 = buffer.readInt();
+         this.spriteAngle = buffer.readUnsignedShort();
+         this.spriteTiling = buffer.readUnsignedByte() == 1;
+         this.transparency = buffer.readUnsignedByte();
+         this.outline = buffer.readUnsignedByte();
+         this.spriteShadow = buffer.readInt();
+         this.spriteFlipV = buffer.readUnsignedByte() == 1;
+         this.spriteFlipH = buffer.readUnsignedByte() == 1;
       }
 
       if (this.type == 6) {
          this.modelType = 1;
-         this.modelId = var1.readUnsignedShort();
+         this.modelId = buffer.readUnsignedShort();
          if (this.modelId == 65535) {
             this.modelId = -1;
          }
 
-         this.modelOffsetX = var1.method44();
-         this.modelOffsetY = var1.method44();
-         this.modelAngleX = var1.readUnsignedShort();
-         this.modelAngleY = var1.readUnsignedShort();
-         this.modelAngleZ = var1.readUnsignedShort();
-         this.modelZoom = var1.readUnsignedShort();
-         this.sequenceId = var1.readUnsignedShort();
+         this.modelOffsetX = buffer.method44();
+         this.modelOffsetY = buffer.method44();
+         this.modelAngleX = buffer.readUnsignedShort();
+         this.modelAngleY = buffer.readUnsignedShort();
+         this.modelAngleZ = buffer.readUnsignedShort();
+         this.modelZoom = buffer.readUnsignedShort();
+         this.sequenceId = buffer.readUnsignedShort();
          if (this.sequenceId == 65535) {
             this.sequenceId = -1;
          }
 
-         this.modelOrthog = var1.readUnsignedByte() == 1;
-         var1.readUnsignedShort();
+         this.modelOrthog = buffer.readUnsignedByte() == 1;
+         buffer.readUnsignedShort();
          if (this.widthAlignment != 0) {
-            this.field962 = var1.readUnsignedShort();
+            this.field962 = buffer.readUnsignedShort();
          }
 
          if (this.heightAlignment != 0) {
-            var1.readUnsignedShort();
+            buffer.readUnsignedShort();
          }
       }
 
       if (this.type == 4) {
-         this.fontId = var1.readUnsignedShort();
+         this.fontId = buffer.readUnsignedShort();
          if (this.fontId == 65535) {
             this.fontId = -1;
          }
 
-         this.text = var1.readStringCp1252NullTerminated();
-         this.textLineHeight = var1.readUnsignedByte();
-         this.textXAlignment = var1.readUnsignedByte();
-         this.textYAlignment = var1.readUnsignedByte();
-         this.textShadowed = var1.readUnsignedByte() == 1;
-         this.color = var1.readInt();
+         this.text = buffer.readStringCp1252NullTerminated();
+         this.textLineHeight = buffer.readUnsignedByte();
+         this.textXAlignment = buffer.readUnsignedByte();
+         this.textYAlignment = buffer.readUnsignedByte();
+         this.textShadowed = buffer.readUnsignedByte() == 1;
+         this.color = buffer.readInt();
       }
 
       if (this.type == 3) {
-         this.color = var1.readInt();
-         this.fill = var1.readUnsignedByte() == 1;
-         this.transparency = var1.readUnsignedByte();
+         this.color = buffer.readInt();
+         this.fill = buffer.readUnsignedByte() == 1;
+         this.transparency = buffer.readUnsignedByte();
       }
 
       if (this.type == 9) {
-         this.lineWid = var1.readUnsignedByte();
-         this.color = var1.readInt();
-         this.field961 = var1.readUnsignedByte() == 1;
+         this.lineWid = buffer.readUnsignedByte();
+         this.color = buffer.readInt();
+         this.field961 = buffer.readUnsignedByte() == 1;
       }
 
-      this.clickMask = var1.readMedium();
-      this.dataText = var1.readStringCp1252NullTerminated();
-      int var2 = var1.readUnsignedByte();
+      this.clickMask = buffer.readMedium();
+      this.dataText = buffer.readStringCp1252NullTerminated();
+      int var2 = buffer.readUnsignedByte();
       if (var2 > 0) {
          this.actions = new String[var2];
 
          for (int var3 = 0; var3 < var2; ++var3) {
-            this.actions[var3] = var1.readStringCp1252NullTerminated();
+            this.actions[var3] = buffer.readStringCp1252NullTerminated();
          }
       }
 
-      this.dragZoneSize = var1.readUnsignedByte();
-      this.dragThreshold = var1.readUnsignedByte();
-      this.isScrollBar = var1.readUnsignedByte() == 1;
-      this.spellActionName = var1.readStringCp1252NullTerminated();
-      this.onLoad = this.readListener(var1);
-      this.onMouseOver = this.readListener(var1);
-      this.onMouseLeave = this.readListener(var1);
-      this.onTargetLeave = this.readListener(var1);
-      this.onTargetEnter = this.readListener(var1);
-      this.onVarTransmit = this.readListener(var1);
-      this.onInvTransmit = this.readListener(var1);
-      this.onStatTransmit = this.readListener(var1);
-      this.onTimer = this.readListener(var1);
-      this.onOp = this.readListener(var1);
-      this.onMouseRepeat = this.readListener(var1);
-      this.onClick = this.readListener(var1);
-      this.onClickRepeat = this.readListener(var1);
-      this.onRelease = this.readListener(var1);
-      this.onHold = this.readListener(var1);
-      this.onDrag = this.readListener(var1);
-      this.onDragComplete = this.readListener(var1);
-      this.onScroll = this.readListener(var1);
-      this.varTransmitTriggers = this.readListenerTriggers(var1);
-      this.invTransmitTriggers = this.readListenerTriggers(var1);
-      this.statTransmitTriggers = this.readListenerTriggers(var1);
+      this.dragZoneSize = buffer.readUnsignedByte();
+      this.dragThreshold = buffer.readUnsignedByte();
+      this.isScrollBar = buffer.readUnsignedByte() == 1;
+      this.spellActionName = buffer.readStringCp1252NullTerminated();
+      this.onLoad = this.readListener(buffer);
+      this.onMouseOver = this.readListener(buffer);
+      this.onMouseLeave = this.readListener(buffer);
+      this.onTargetLeave = this.readListener(buffer);
+      this.onTargetEnter = this.readListener(buffer);
+      this.onVarTransmit = this.readListener(buffer);
+      this.onInvTransmit = this.readListener(buffer);
+      this.onStatTransmit = this.readListener(buffer);
+      this.onTimer = this.readListener(buffer);
+      this.onOp = this.readListener(buffer);
+      this.onMouseRepeat = this.readListener(buffer);
+      this.onClick = this.readListener(buffer);
+      this.onClickRepeat = this.readListener(buffer);
+      this.onRelease = this.readListener(buffer);
+      this.onHold = this.readListener(buffer);
+      this.onDrag = this.readListener(buffer);
+      this.onDragComplete = this.readListener(buffer);
+      this.onScroll = this.readListener(buffer);
+      this.varTransmitTriggers = this.readListenerTriggers(buffer);
+      this.invTransmitTriggers = this.readListenerTriggers(buffer);
+      this.statTransmitTriggers = this.readListenerTriggers(buffer);
    }
 
    @ObfuscatedName("g")
@@ -1187,19 +1195,19 @@ public class Widget extends Node {
       garbageValue = "1906438788"
    )
    @Export("readListener")
-   Object[] readListener(Buffer var1) {
-      int var2 = var1.readUnsignedByte();
+   Object[] readListener(Buffer buffer) {
+      int var2 = buffer.readUnsignedByte();
       if (var2 == 0) {
          return null;
       } else {
          Object[] var3 = new Object[var2];
 
          for (int var4 = 0; var4 < var2; ++var4) {
-            int var5 = var1.readUnsignedByte();
+            int var5 = buffer.readUnsignedByte();
             if (var5 == 0) {
-               var3[var4] = new Integer(var1.readInt());
+               var3[var4] = new Integer(buffer.readInt());
             } else if (var5 == 1) {
-               var3[var4] = var1.readStringCp1252NullTerminated();
+               var3[var4] = buffer.readStringCp1252NullTerminated();
             }
          }
 
@@ -1214,15 +1222,15 @@ public class Widget extends Node {
       garbageValue = "1"
    )
    @Export("readListenerTriggers")
-   int[] readListenerTriggers(Buffer var1) {
-      int var2 = var1.readUnsignedByte();
+   int[] readListenerTriggers(Buffer buffer) {
+      int var2 = buffer.readUnsignedByte();
       if (var2 == 0) {
          return null;
       } else {
          int[] var3 = new int[var2];
 
          for (int var4 = 0; var4 < var2; ++var4) {
-            var3[var4] = var1.readInt();
+            var3[var4] = buffer.readInt();
          }
 
          return var3;
@@ -1235,13 +1243,13 @@ public class Widget extends Node {
       garbageValue = "1403134294"
    )
    @Export("swapItems")
-   public void swapItems(int var1, int var2) {
-      int var3 = this.itemIds[var2];
-      this.itemIds[var2] = this.itemIds[var1];
-      this.itemIds[var1] = var3;
-      var3 = this.itemQuantities[var2];
-      this.itemQuantities[var2] = this.itemQuantities[var1];
-      this.itemQuantities[var1] = var3;
+   public void swapItems(int indexA, int indexB) {
+      int var3 = this.itemIds[indexB];
+      this.itemIds[indexB] = this.itemIds[indexA];
+      this.itemIds[indexA] = var3;
+      var3 = this.itemQuantities[indexB];
+      this.itemQuantities[indexB] = this.itemQuantities[indexA];
+      this.itemQuantities[indexA] = var3;
    }
 
    @ObfuscatedName("x")
@@ -1318,7 +1326,7 @@ public class Widget extends Node {
          if (var1 != null) {
             return var1;
          } else {
-            var1 = SpriteIds.method5823(field955, class27.field1143, this.fontId, 0);
+            var1 = GraphicsDefaults.method5823(field955, class27.field1143, this.fontId, 0);
             if (var1 != null) {
                Widget_cachedFonts.put(var1, (long)this.fontId);
             } else {
@@ -1368,7 +1376,7 @@ public class Widget extends Node {
       garbageValue = "1082545676"
    )
    @Export("getModel")
-   public Model getModel(SequenceDefinition var1, int var2, boolean var3, PlayerAppearance var4) {
+   public Model getModel(SequenceDefinition sequence, int frame, boolean var3, PlayerAppearance appearance) {
       field957 = false;
       int var5;
       int var6;
@@ -1409,11 +1417,11 @@ public class Widget extends Node {
             }
 
             if (var5 == 3) {
-               if (var4 == null) {
+               if (appearance == null) {
                   return null;
                }
 
-               var8 = var4.getModelData();
+               var8 = appearance.getModelData();
                if (var8 == null) {
                   field957 = true;
                   return null;
@@ -1436,8 +1444,8 @@ public class Widget extends Node {
             Widget_cachedModels.put(var7, (long)(var6 + (var5 << 16)));
          }
 
-         if (var1 != null) {
-            var7 = var1.animateWidget(var7, var2);
+         if (sequence != null) {
+            var7 = sequence.animateWidget(var7, frame);
          }
 
          return var7;
@@ -1509,9 +1517,9 @@ public class Widget extends Node {
       garbageValue = "-30"
    )
    @Export("setAction")
-   public void setAction(int var1, String var2) {
-      if (this.actions == null || this.actions.length <= var1) {
-         String[] var3 = new String[var1 + 1];
+   public void setAction(int index, String var2) {
+      if (this.actions == null || this.actions.length <= index) {
+         String[] var3 = new String[index + 1];
          if (this.actions != null) {
             for (int var4 = 0; var4 < this.actions.length; ++var4) {
                var3[var4] = this.actions[var4];
@@ -1521,7 +1529,7 @@ public class Widget extends Node {
          this.actions = var3;
       }
 
-      this.actions[var1] = var2;
+      this.actions[index] = var2;
    }
 
    @ObfuscatedName("m")
@@ -1529,27 +1537,27 @@ public class Widget extends Node {
       signature = "(I[BLff;I)V",
       garbageValue = "-1287305716"
    )
-   static void method4499(int var0, byte[] var1, IndexStore var2) {
-      IndexStoreAction var3 = new IndexStoreAction();
+   static void method4499(int var0, byte[] var1, ArchiveDisk var2) {
+      ArchiveDiskAction var3 = new ArchiveDiskAction();
       var3.type = 0;
       var3.key = (long)var0;
       var3.data = var1;
-      var3.indexStore = var2;
-      NodeDeque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-         IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFirst(var3);
+      var3.archiveDisk = var2;
+      NodeDeque var4 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue;
+      synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
+         ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.addFirst(var3);
       }
 
-      Object var5 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
-         if (IndexStoreActionHandler.field412 == 0) {
-            Frames.IndexStoreActionHandler_thread = new Thread(new IndexStoreActionHandler());
-            Frames.IndexStoreActionHandler_thread.setDaemon(true);
-            Frames.IndexStoreActionHandler_thread.start();
-            Frames.IndexStoreActionHandler_thread.setPriority(5);
+      Object var5 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock;
+      synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock) {
+         if (ArchiveDiskActionHandler.field412 == 0) {
+            Frames.ArchiveDiskActionHandler_thread = new Thread(new ArchiveDiskActionHandler());
+            Frames.ArchiveDiskActionHandler_thread.setDaemon(true);
+            Frames.ArchiveDiskActionHandler_thread.start();
+            Frames.ArchiveDiskActionHandler_thread.setPriority(5);
          }
 
-         IndexStoreActionHandler.field412 = 600;
+         ArchiveDiskActionHandler.field412 = 600;
       }
    }
 

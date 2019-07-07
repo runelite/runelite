@@ -40,8 +40,8 @@ public class ByteArrayPool {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache13")
-   static IndexCache indexCache13;
+   @Export("archive13")
+   static Archive archive13;
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(

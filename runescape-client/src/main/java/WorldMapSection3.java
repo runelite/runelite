@@ -14,8 +14,8 @@ public class WorldMapSection3 implements WorldMapSection {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache8")
-   static IndexCache indexCache8;
+   @Export("archive8")
+   static Archive archive8;
    @ObfuscatedName("go")
    @ObfuscatedGetter(
       intValue = -948290091
@@ -138,13 +138,13 @@ public class WorldMapSection3 implements WorldMapSection {
       garbageValue = "-1916486802"
    )
    @Export("coord")
-   public TileLocation coord(int var1, int var2) {
+   public Coord coord(int var1, int var2) {
       if (!this.containsPosition(var1, var2)) {
          return null;
       } else {
          int var3 = this.field1092 * 64 - this.field1096 * 64 + var1;
          int var4 = this.field1093 * 64 - this.field1097 * 64 + var2;
-         return new TileLocation(this.field1090, var3, var4);
+         return new Coord(this.field1090, var3, var4);
       }
    }
 
@@ -200,8 +200,8 @@ public class WorldMapSection3 implements WorldMapSection {
    )
    @Export("runWidgetOnLoadListener")
    static void runWidgetOnLoadListener(int var0) {
-      if (var0 != -1 && GroundItemPile.loadWidgetGroup(var0)) {
-         Widget[] var1 = Widget.widgets[var0];
+      if (var0 != -1 && GroundItemPile.loadInterface(var0)) {
+         Widget[] var1 = Widget.interfaceComponents[var0];
 
          for (int var2 = 0; var2 < var1.length; ++var2) {
             Widget var3 = var1[var2];
@@ -222,41 +222,41 @@ public class WorldMapSection3 implements WorldMapSection {
       garbageValue = "-35"
    )
    @Export("alignWidgetSize")
-   static void alignWidgetSize(Widget var0, int var1, int var2, boolean var3) {
-      int var4 = var0.width;
-      int var5 = var0.height;
-      if (var0.widthAlignment == 0) {
-         var0.width = var0.rawWidth;
-      } else if (var0.widthAlignment == 1) {
-         var0.width = var1 - var0.rawWidth;
-      } else if (var0.widthAlignment == 2) {
-         var0.width = var0.rawWidth * var1 >> 14;
+   static void alignWidgetSize(Widget component, int parentWidth, int parentHeight, boolean var3) {
+      int var4 = component.width;
+      int var5 = component.height;
+      if (component.widthAlignment == 0) {
+         component.width = component.rawWidth;
+      } else if (component.widthAlignment == 1) {
+         component.width = parentWidth - component.rawWidth;
+      } else if (component.widthAlignment == 2) {
+         component.width = component.rawWidth * parentWidth >> 14;
       }
 
-      if (var0.heightAlignment == 0) {
-         var0.height = var0.rawHeight;
-      } else if (var0.heightAlignment == 1) {
-         var0.height = var2 - var0.rawHeight;
-      } else if (var0.heightAlignment == 2) {
-         var0.height = var2 * var0.rawHeight >> 14;
+      if (component.heightAlignment == 0) {
+         component.height = component.rawHeight;
+      } else if (component.heightAlignment == 1) {
+         component.height = parentHeight - component.rawHeight;
+      } else if (component.heightAlignment == 2) {
+         component.height = parentHeight * component.rawHeight >> 14;
       }
 
-      if (var0.widthAlignment == 4) {
-         var0.width = var0.height * var0.field958 / var0.field959;
+      if (component.widthAlignment == 4) {
+         component.width = component.height * component.field958 / component.field959;
       }
 
-      if (var0.heightAlignment == 4) {
-         var0.height = var0.width * var0.field959 / var0.field958;
+      if (component.heightAlignment == 4) {
+         component.height = component.width * component.field959 / component.field958;
       }
 
-      if (var0.contentType == 1337) {
-         Client.viewportWidget = var0;
+      if (component.contentType == 1337) {
+         Client.viewportWidget = component;
       }
 
-      if (var3 && var0.field975 != null && (var4 != var0.width || var5 != var0.height)) {
+      if (var3 && component.onResize != null && (var4 != component.width || var5 != component.height)) {
          ScriptEvent var6 = new ScriptEvent();
-         var6.widget = var0;
-         var6.args0 = var0.field975;
+         var6.widget = component;
+         var6.args0 = component.onResize;
          Client.scriptEvents.addFirst(var6);
       }
 
