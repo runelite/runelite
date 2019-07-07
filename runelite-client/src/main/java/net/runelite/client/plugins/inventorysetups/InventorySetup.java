@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.inventorysetups;
 
 import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -33,7 +34,7 @@ import lombok.Getter;
 public class InventorySetup
 {
 	@Getter
-	private ArrayList<InventorySetupItem> inventory;
+	private List<InventorySetupItem> inventory;
 	@Getter
-	private ArrayList<InventorySetupItem> equipment;
+	private List<InventorySetupItem> equipment;
 }

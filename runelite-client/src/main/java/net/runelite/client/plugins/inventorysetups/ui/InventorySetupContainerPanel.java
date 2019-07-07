@@ -28,6 +28,7 @@ package net.runelite.client.plugins.inventorysetups.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -73,7 +74,7 @@ abstract class InventorySetupContainerPanel extends JPanel
 
 	void setContainerSlot(int index,
 						final InventorySetupSlot containerSlot,
-						final ArrayList<InventorySetupItem> items)
+						final List<InventorySetupItem> items)
 	{
 		if (index >= items.size() || items.get(index).getId() == -1)
 		{
