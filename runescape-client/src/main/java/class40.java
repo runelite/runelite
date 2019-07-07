@@ -9,8 +9,8 @@ public class class40 {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache7")
-   static IndexCache indexCache7;
+   @Export("archive7")
+   static Archive archive7;
    @ObfuscatedName("gs")
    @Export("regionLandArchives")
    static byte[][] regionLandArchives;
@@ -716,7 +716,7 @@ public class class40 {
       int var22;
       int var24;
       if (!Client.isCameraLocked) {
-         var4 = Client.cameraPitchTarget;
+         var4 = Client.camAngleX;
          if (Client.field202 / 256 > var4) {
             var4 = Client.field202 / 256;
          }
@@ -725,42 +725,42 @@ public class class40 {
             var4 = Client.field142[4] + 128;
          }
 
-         var15 = Client.minimapOrientation & 2047;
+         var13 = Client.camAngleY & 2047;
          var6 = MouseHandler.oculusOrbFocalPointX;
-         var22 = MouseRecorder.field566;
-         var24 = ScriptEvent.oculusOrbFocalPointY;
-         var9 = var4 * 3 + 600;
-         var10 = ScriptEvent.method1176(var9, var3);
-         var11 = 2048 - var4 & 2047;
-         var12 = 2048 - var15 & 2047;
-         var13 = 0;
-         var14 = 0;
-         int var16 = var10;
+         var14 = MouseRecorder.field566;
+         var15 = ScriptEvent.oculusOrbFocalPointY;
+         var22 = var4 * 3 + 600;
+         var24 = ScriptEvent.method1176(var22, var3);
+         var9 = 2048 - var4 & 2047;
+         var10 = 2048 - var13 & 2047;
+         var11 = 0;
+         var12 = 0;
+         int var16 = var24;
          int var17;
          int var18;
          int var19;
-         if (var11 != 0) {
-            var17 = Rasterizer3D.Rasterizer3D_sine[var11];
-            var18 = Rasterizer3D.Rasterizer3D_cosine[var11];
-            var19 = var14 * var18 - var17 * var10 >> 16;
-            var16 = var18 * var10 + var17 * var14 >> 16;
-            var14 = var19;
+         if (var9 != 0) {
+            var17 = Rasterizer3D.Rasterizer3D_sine[var9];
+            var18 = Rasterizer3D.Rasterizer3D_cosine[var9];
+            var19 = var12 * var18 - var17 * var24 >> 16;
+            var16 = var18 * var24 + var17 * var12 >> 16;
+            var12 = var19;
          }
 
-         if (var12 != 0) {
-            var17 = Rasterizer3D.Rasterizer3D_sine[var12];
-            var18 = Rasterizer3D.Rasterizer3D_cosine[var12];
-            var19 = var16 * var17 + var18 * var13 >> 16;
-            var16 = var16 * var18 - var17 * var13 >> 16;
-            var13 = var19;
+         if (var10 != 0) {
+            var17 = Rasterizer3D.Rasterizer3D_sine[var10];
+            var18 = Rasterizer3D.Rasterizer3D_cosine[var10];
+            var19 = var16 * var17 + var18 * var11 >> 16;
+            var16 = var16 * var18 - var17 * var11 >> 16;
+            var11 = var19;
          }
 
-         WorldMapSection1.cameraX = var6 - var13;
-         GrandExchangeEvents.cameraY = var22 - var14;
-         class11.cameraZ = var24 - var16;
+         WorldMapSection1.cameraX = var6 - var11;
+         GrandExchangeEvents.cameraY = var14 - var12;
+         GrandExchangeOfferNameComparator.cameraZ = var15 - var16;
          WorldMapIcon1.cameraPitch = var4;
-         MusicPatchNode.cameraYaw = var15;
-         if (Client.oculusOrbState == 1 && Client.rights >= 2 && Client.cycle % 50 == 0 && (MouseHandler.oculusOrbFocalPointX >> 7 != Canvas.localPlayer.x >> 7 || ScriptEvent.oculusOrbFocalPointY >> 7 != Canvas.localPlayer.y >> 7)) {
+         MusicPatchNode.cameraYaw = var13;
+         if (Client.oculusOrbState == 1 && Client.staffModLevel >= 2 && Client.cycle % 50 == 0 && (MouseHandler.oculusOrbFocalPointX >> 7 != Canvas.localPlayer.x >> 7 || ScriptEvent.oculusOrbFocalPointY >> 7 != Canvas.localPlayer.y >> 7)) {
             var17 = Canvas.localPlayer.plane;
             var18 = (MouseHandler.oculusOrbFocalPointX >> 7) + class50.baseX;
             var19 = (ScriptEvent.oculusOrbFocalPointY >> 7) + GraphicsObject.baseY;
@@ -774,38 +774,38 @@ public class class40 {
       }
 
       if (!Client.isCameraLocked) {
-         var4 = UnitPriceComparator.method131();
+         var4 = GrandExchangeOfferUnitPriceComparator.method131();
       } else {
          var4 = Login.method2061();
       }
 
-      var15 = WorldMapSection1.cameraX;
+      var13 = WorldMapSection1.cameraX;
       var6 = GrandExchangeEvents.cameraY;
-      var22 = class11.cameraZ;
-      var24 = WorldMapIcon1.cameraPitch;
-      var9 = MusicPatchNode.cameraYaw;
+      var14 = GrandExchangeOfferNameComparator.cameraZ;
+      var15 = WorldMapIcon1.cameraPitch;
+      var22 = MusicPatchNode.cameraYaw;
 
-      for (var10 = 0; var10 < 5; ++var10) {
-         if (Client.field139[var10]) {
-            var11 = (int)(Math.random() * (double)(Client.field141[var10] * 2 + 1) - (double)Client.field141[var10] + Math.sin((double)Client.field144[var10] * ((double)Client.field143[var10] / 100.0D)) * (double)Client.field142[var10]);
-            if (var10 == 0) {
-               WorldMapSection1.cameraX += var11;
+      for (var24 = 0; var24 < 5; ++var24) {
+         if (Client.field139[var24]) {
+            var9 = (int)(Math.random() * (double)(Client.field141[var24] * 2 + 1) - (double)Client.field141[var24] + Math.sin((double)Client.field144[var24] * ((double)Client.field143[var24] / 100.0D)) * (double)Client.field142[var24]);
+            if (var24 == 0) {
+               WorldMapSection1.cameraX += var9;
             }
 
-            if (var10 == 1) {
-               GrandExchangeEvents.cameraY += var11;
+            if (var24 == 1) {
+               GrandExchangeEvents.cameraY += var9;
             }
 
-            if (var10 == 2) {
-               class11.cameraZ += var11;
+            if (var24 == 2) {
+               GrandExchangeOfferNameComparator.cameraZ += var9;
             }
 
-            if (var10 == 3) {
-               MusicPatchNode.cameraYaw = var11 + MusicPatchNode.cameraYaw & 2047;
+            if (var24 == 3) {
+               MusicPatchNode.cameraYaw = var9 + MusicPatchNode.cameraYaw & 2047;
             }
 
-            if (var10 == 4) {
-               WorldMapIcon1.cameraPitch += var11;
+            if (var24 == 4) {
+               WorldMapIcon1.cameraPitch += var9;
                if (WorldMapIcon1.cameraPitch < 128) {
                   WorldMapIcon1.cameraPitch = 128;
                }
@@ -817,18 +817,18 @@ public class class40 {
          }
       }
 
-      var10 = MouseHandler.MouseHandler_x;
-      var11 = MouseHandler.MouseHandler_y;
+      var24 = MouseHandler.MouseHandler_x;
+      var9 = MouseHandler.MouseHandler_y;
       if (MouseHandler.MouseHandler_lastButton != 0) {
-         var10 = MouseHandler.MouseHandler_lastPressedX;
-         var11 = MouseHandler.MouseHandler_lastPressedY;
+         var24 = MouseHandler.MouseHandler_lastPressedX;
+         var9 = MouseHandler.MouseHandler_lastPressedY;
       }
 
-      if (var10 >= var0 && var10 < var0 + var2 && var11 >= var1 && var11 < var3 + var1) {
-         var12 = var10 - var0;
-         var13 = var11 - var1;
-         ViewportMouse.ViewportMouse_x = var12;
-         ViewportMouse.ViewportMouse_y = var13;
+      if (var24 >= var0 && var24 < var0 + var2 && var9 >= var1 && var9 < var3 + var1) {
+         var10 = var24 - var0;
+         var11 = var9 - var1;
+         ViewportMouse.ViewportMouse_x = var10;
+         ViewportMouse.ViewportMouse_y = var11;
          ViewportMouse.ViewportMouse_isInViewport = true;
          ViewportMouse.ViewportMouse_entityCount = 0;
          ViewportMouse.ViewportMouse_false0 = false;
@@ -840,39 +840,39 @@ public class class40 {
       class13.playPcmPlayers();
       Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var3, 0);
       class13.playPcmPlayers();
-      var12 = Rasterizer3D.Rasterizer3D_zoom;
+      var10 = Rasterizer3D.Rasterizer3D_zoom;
       Rasterizer3D.Rasterizer3D_zoom = Client.viewportZoom;
-      class65.scene.draw(WorldMapSection1.cameraX, GrandExchangeEvents.cameraY, class11.cameraZ, WorldMapIcon1.cameraPitch, MusicPatchNode.cameraYaw, var4);
-      Rasterizer3D.Rasterizer3D_zoom = var12;
+      class65.scene.draw(WorldMapSection1.cameraX, GrandExchangeEvents.cameraY, GrandExchangeOfferNameComparator.cameraZ, WorldMapIcon1.cameraPitch, MusicPatchNode.cameraYaw, var4);
+      Rasterizer3D.Rasterizer3D_zoom = var10;
       class13.playPcmPlayers();
       class65.scene.clearTempGameObjects();
       UrlRequester.method3258(var0, var1, var2, var3);
-      UnitPriceComparator.method136(var0, var1);
+      GrandExchangeOfferUnitPriceComparator.method136(var0, var1);
       ((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).animate(Client.field183);
       Client.field208 = 0;
-      var13 = (Canvas.localPlayer.x >> 7) + class50.baseX;
-      var14 = (Canvas.localPlayer.y >> 7) + GraphicsObject.baseY;
-      if (var13 >= 3053 && var13 <= 3156 && var14 >= 3056 && var14 <= 3136) {
+      var11 = (Canvas.localPlayer.x >> 7) + class50.baseX;
+      var12 = (Canvas.localPlayer.y >> 7) + GraphicsObject.baseY;
+      if (var11 >= 3053 && var11 <= 3156 && var12 >= 3056 && var12 <= 3136) {
          Client.field208 = 1;
       }
 
-      if (var13 >= 3072 && var13 <= 3118 && var14 >= 9492 && var14 <= 9535) {
+      if (var11 >= 3072 && var11 <= 3118 && var12 >= 9492 && var12 <= 9535) {
          Client.field208 = 1;
       }
 
-      if (Client.field208 == 1 && var13 >= 3139 && var13 <= 3199 && var14 >= 3008 && var14 <= 3062) {
+      if (Client.field208 == 1 && var11 >= 3139 && var11 <= 3199 && var12 >= 3008 && var12 <= 3062) {
          Client.field208 = 0;
       }
 
-      WorldMapSection1.cameraX = var15;
+      WorldMapSection1.cameraX = var13;
       GrandExchangeEvents.cameraY = var6;
-      class11.cameraZ = var22;
-      WorldMapIcon1.cameraPitch = var24;
-      MusicPatchNode.cameraYaw = var9;
+      GrandExchangeOfferNameComparator.cameraZ = var14;
+      WorldMapIcon1.cameraPitch = var15;
+      MusicPatchNode.cameraYaw = var22;
       if (Client.isLoading) {
          byte var25 = 0;
-         var14 = var25 + NetCache.NetCache_pendingPriorityWritesCount + NetCache.NetCache_pendingPriorityResponsesCount;
-         if (var14 == 0) {
+         var12 = var25 + NetCache.NetCache_pendingPriorityWritesCount + NetCache.NetCache_pendingPriorityResponsesCount;
+         if (var12 == 0) {
             Client.isLoading = false;
          }
       }

@@ -13,13 +13,17 @@ import net.runelite.rs.ScriptOpcodes;
 @Implements("GrandExchangeEvents")
 public class GrandExchangeEvents {
    @ObfuscatedName("f")
-   public static Comparator field371;
+   @Export("geAgeComparator")
+   public static Comparator geAgeComparator;
    @ObfuscatedName("q")
-   public static Comparator field372;
+   @Export("geUnitPriceComparator")
+   public static Comparator geUnitPriceComparator;
    @ObfuscatedName("w")
-   public static Comparator field373;
+   @Export("geItemNameComparator")
+   public static Comparator geItemNameComparator;
    @ObfuscatedName("o")
-   public static Comparator field374;
+   @Export("geTotalQuantityComparator")
+   public static Comparator geTotalQuantityComparator;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1605454211
@@ -79,14 +83,14 @@ public class GrandExchangeEvents {
       garbageValue = "1601363438"
    )
    @Export("addChatMessage")
-   static void addChatMessage(int var0, String var1, String var2, String var3) {
-      ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(var0);
+   static void addChatMessage(int type, String sender, String text, String prefix) {
+      ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(type);
       if (var4 == null) {
          var4 = new ChatChannel();
-         Messages.Messages_channels.put(var0, var4);
+         Messages.Messages_channels.put(type, var4);
       }
 
-      Message var5 = var4.addMessage(var0, var1, var2, var3);
+      Message var5 = var4.addMessage(type, sender, text, prefix);
       Messages.Messages_hashTable.put(var5, (long)var5.count);
       Messages.Messages_queue.add(var5);
       Client.chatCycle = Client.cycleCntr;
@@ -153,7 +157,7 @@ public class GrandExchangeEvents {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
          return 1;
       } else if (var0 == 2614) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.field964 ? 1 : 0;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0;
          return 1;
       } else {
          return 2;
@@ -166,17 +170,17 @@ public class GrandExchangeEvents {
       garbageValue = "-635606409"
    )
    static final void method74(int var0, int var1) {
-      if (GroundItemPile.loadWidgetGroup(var0)) {
-         class30.method570(Widget.widgets[var0], var1);
+      if (GroundItemPile.loadInterface(var0)) {
+         class30.method570(Widget.interfaceComponents[var0], var1);
       }
 
    }
 
    static {
-      field371 = new class12();
-      new WorldComparator();
-      field372 = new UnitPriceComparator();
-      field373 = new class11();
-      field374 = new TotalQuantityComparator();
+      geAgeComparator = new GrandExchangeOfferAgeComparator();
+      new GrandExchangeOfferWorldComparator();
+      geUnitPriceComparator = new GrandExchangeOfferUnitPriceComparator();
+      geItemNameComparator = new GrandExchangeOfferNameComparator();
+      geTotalQuantityComparator = new GrandExchangeOfferTotalQuantityComparator();
    }
 }

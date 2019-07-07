@@ -27,28 +27,26 @@ public class Strings {
       Buffer var1 = new Buffer(var0);
       int var2 = var1.readUnsignedByte();
       int var3 = var1.readInt();
-      if (var3 >= 0 && (AbstractIndexCache.field1 == 0 || var3 <= AbstractIndexCache.field1)) {
-         if (var2 == 0) {
-            byte[] var6 = new byte[var3];
-            var1.method46(var6, 0, var3);
-            return var6;
-         } else {
-            int var4 = var1.readInt();
-            if (var4 < 0 || AbstractIndexCache.field1 != 0 && var4 > AbstractIndexCache.field1) {
-               throw new RuntimeException();
-            } else {
-               byte[] var5 = new byte[var4];
-               if (var2 == 1) {
-                  Bzip2Decompressor.Bzip2Decompressor_decompress(var5, var4, var0, var3, 9);
-               } else {
-                  AbstractIndexCache.gzipDecompressor.decompress(var1, var5);
-               }
-
-               return var5;
-            }
-         }
-      } else {
+      if (var3 < 0 || AbstractArchive.field1 != 0 && var3 > AbstractArchive.field1) {
          throw new RuntimeException();
+      } else if (var2 == 0) {
+         byte[] var6 = new byte[var3];
+         var1.method46(var6, 0, var3);
+         return var6;
+      } else {
+         int var4 = var1.readInt();
+         if (var4 < 0 || AbstractArchive.field1 != 0 && var4 > AbstractArchive.field1) {
+            throw new RuntimeException();
+         } else {
+            byte[] var5 = new byte[var4];
+            if (var2 == 1) {
+               Bzip2Decompressor.Bzip2Decompressor_decompress(var5, var4, var0, var3, 9);
+            } else {
+               AbstractArchive.gzipDecompressor.decompress(var1, var5);
+            }
+
+            return var5;
+         }
       }
    }
 

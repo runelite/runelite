@@ -137,24 +137,24 @@ public class class31 {
                boolean var9 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1] == 1;
                var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
                boolean var10 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 3] == 1;
-               WorldMapSectionType.method248(var6, var9, var5, var10);
+               WorldMapSectionType.sortWorlds(var6, var9, var5, var10);
                return 1;
-            } else if (var0 != 6511) {
+            } else if (var0 != ScriptOpcodes.GETWORLDINFO) {
                if (var0 == ScriptOpcodes.SETFOLLOWEROPSLOWPRIORITY) {
                   Client.followerOpsLowPriority = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   return 1;
                } else {
                   int var7;
-                  ParamKeyDefinition var8;
+                  ParamDefinition var8;
                   if (var0 == ScriptOpcodes.NC_PARAM) {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
+                     var8 = class229.getParamDefinition(var7);
                      if (var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = ObjectDefinition.getNpcDefinition(var6).getStringParam(var7, var8.keyString);
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = ObjectDefinition.getNpcDefinition(var6).getStringParam(var7, var8.defaultStr);
                      } else {
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ObjectDefinition.getNpcDefinition(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ObjectDefinition.getNpcDefinition(var6).getIntParam(var7, var8.defaultInt);
                      }
 
                      return 1;
@@ -162,11 +162,11 @@ public class class31 {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
+                     var8 = class229.getParamDefinition(var7);
                      if (var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = class50.getObjectDefinition(var6).getStringParam(var7, var8.keyString);
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = class50.getObjectDefinition(var6).getStringParam(var7, var8.defaultStr);
                      } else {
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class50.getObjectDefinition(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class50.getObjectDefinition(var6).getIntParam(var7, var8.defaultInt);
                      }
 
                      return 1;
@@ -174,11 +174,11 @@ public class class31 {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
+                     var8 = class229.getParamDefinition(var7);
                      if (var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Skills.getItemDefinition(var6).getStringParam(var7, var8.keyString);
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Skills.getItemDefinition(var6).getStringParam(var7, var8.defaultStr);
                      } else {
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Skills.getItemDefinition(var6).getIntParam(var7, var8.defaultInt);
                      }
 
                      return 1;
@@ -186,16 +186,16 @@ public class class31 {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var8 = class229.getParamKeyDefinition(var7);
+                     var8 = class229.getParamDefinition(var7);
                      if (var8.isString()) {
-                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = GzipDecompressor.method3702(var6).getStringParam(var7, var8.keyString);
+                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = GzipDecompressor.getStructDefinition(var6).getStringParam(var7, var8.defaultStr);
                      } else {
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = GzipDecompressor.method3702(var6).getIntParam(var7, var8.keyInt);
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = GzipDecompressor.getStructDefinition(var6).getIntParam(var7, var8.defaultInt);
                      }
 
                      return 1;
                   } else if (var0 == ScriptOpcodes.ON_MOBILE) {
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.field162 ? 1 : 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.onMobile ? 1 : 0;
                      return 1;
                   } else if (var0 == ScriptOpcodes.CLIENTTYPE) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.clientType & 3;
@@ -258,7 +258,7 @@ public class class31 {
    static final void method574(String var0) {
       if (!var0.equals("")) {
          PacketBufferNode var1 = Interpreter.method1915(ClientPacket.field300, Client.packetWriter.isaacCipher);
-         var1.packetBuffer.writeByte(WorldMapRegion.method550(var0));
+         var1.packetBuffer.writeByte(WorldMapRegion.stringCp1252NullTerminatedByteSize(var0));
          var1.packetBuffer.writeStringCp1252NullTerminated(var0);
          Client.packetWriter.method241(var1);
       }

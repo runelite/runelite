@@ -34,8 +34,8 @@ public class PcmStreamMixer extends PcmStream {
       signature = "(Ldc;)V"
    )
    @Export("addSubStream")
-   public final synchronized void addSubStream(PcmStream var1) {
-      this.subStreams.addLast(var1);
+   public final synchronized void addSubStream(PcmStream subStream) {
+      this.subStreams.addLast(subStream);
    }
 
    @ObfuscatedName("f")
@@ -43,8 +43,8 @@ public class PcmStreamMixer extends PcmStream {
       signature = "(Ldc;)V"
    )
    @Export("removeSubStream")
-   public final synchronized void removeSubStream(PcmStream var1) {
-      var1.remove();
+   public final synchronized void removeSubStream(PcmStream subStream) {
+      subStream.remove();
    }
 
    @ObfuscatedName("q")
@@ -113,7 +113,8 @@ public class PcmStreamMixer extends PcmStream {
    }
 
    @ObfuscatedName("e")
-   public final synchronized void vmethod263(int[] var1, int var2, int var3) {
+   @Export("fill")
+   public final synchronized void fill(int[] var1, int var2, int var3) {
       do {
          if (this.field692 < 0) {
             this.updateSubStreams(var1, var2, var3);
@@ -149,15 +150,16 @@ public class PcmStreamMixer extends PcmStream {
 
    @ObfuscatedName("x")
    @Export("updateSubStreams")
-   void updateSubStreams(int[] var1, int var2, int var3) {
+   void updateSubStreams(int[] buffer, int start, int end) {
       for (PcmStream var4 = (PcmStream)this.subStreams.last(); var4 != null; var4 = (PcmStream)this.subStreams.previous()) {
-         var4.update(var1, var2, var3);
+         var4.update(buffer, start, end);
       }
 
    }
 
    @ObfuscatedName("d")
-   public final synchronized void vmethod264(int var1) {
+   @Export("skip")
+   public final synchronized void skip(int var1) {
       do {
          if (this.field692 < 0) {
             this.skipSubStreams(var1);
@@ -192,9 +194,9 @@ public class PcmStreamMixer extends PcmStream {
 
    @ObfuscatedName("a")
    @Export("skipSubStreams")
-   void skipSubStreams(int var1) {
+   void skipSubStreams(int length) {
       for (PcmStream var2 = (PcmStream)this.subStreams.last(); var2 != null; var2 = (PcmStream)this.subStreams.previous()) {
-         var2.vmethod264(var1);
+         var2.skip(length);
       }
 
    }

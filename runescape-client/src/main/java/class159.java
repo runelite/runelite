@@ -35,11 +35,12 @@ public enum class159 implements Enumerated {
    @ObfuscatedGetter(
       intValue = 458308007
    )
-   final int field1981;
+   @Export("id")
+   final int id;
 
    private class159(int var3, int var4) {
       this.field1984 = var3;
-      this.field1981 = var4;
+      this.id = var4;
    }
 
    @ObfuscatedName("f")
@@ -49,7 +50,7 @@ public enum class159 implements Enumerated {
    )
    @Export("rsOrdinal")
    public int rsOrdinal() {
-      return this.field1981;
+      return this.id;
    }
 
    @ObfuscatedName("d")
@@ -57,7 +58,8 @@ public enum class159 implements Enumerated {
       signature = "(CI)Z",
       garbageValue = "1176730001"
    )
-   public static boolean method3394(char var0) {
+   @Export("isCharDigit")
+   public static boolean isCharDigit(char var0) {
       return var0 >= '0' && var0 <= '9';
    }
 }

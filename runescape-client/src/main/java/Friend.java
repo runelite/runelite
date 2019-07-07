@@ -20,9 +20,9 @@ public class Friend extends Buddy {
       signature = "(Lkq;I)I",
       garbageValue = "-1559116693"
    )
-   @Export("compareTo00")
-   int compareTo00(Friend var1) {
-      return super.world0 == Client.worldId && Client.worldId != var1.world0 ? -1 : (Client.worldId == var1.world0 && super.world0 != Client.worldId ? 1 : (super.world0 != 0 && var1.world0 == 0 ? -1 : (var1.world0 != 0 && super.world0 == 0 ? 1 : (this.field354 && !var1.field354 ? -1 : (!this.field354 && var1.field354 ? 1 : (this.field355 && !var1.field355 ? -1 : (!this.field355 && var1.field355 ? 1 : (super.world0 != 0 ? super.int2 - var1.int2 : var1.int2 - super.int2))))))));
+   @Export("compareToFriend")
+   int compareToFriend(Friend other) {
+      return super.world == Client.worldId && Client.worldId != other.world ? -1 : (Client.worldId == other.world && super.world != Client.worldId ? 1 : (super.world != 0 && other.world == 0 ? -1 : (other.world != 0 && super.world == 0 ? 1 : (this.field354 && !other.field354 ? -1 : (!this.field354 && other.field354 ? 1 : (this.field355 && !other.field355 ? -1 : (!this.field355 && other.field355 ? 1 : (super.world != 0 ? super.int2 - other.int2 : other.int2 - super.int2))))))));
    }
 
    @ObfuscatedName("aj")
@@ -30,12 +30,12 @@ public class Friend extends Buddy {
       signature = "(Ljs;I)I",
       garbageValue = "1627362569"
    )
-   public int compareTo0(User var1) {
-      return this.compareTo00((Friend)var1);
+   @Export("compareToUser")
+   public int compareToUser(User var1) {
+      return this.compareToFriend((Friend)var1);
    }
 
-   @ObfuscatedName("compareTo")
    public int compareTo(Object var1) {
-      return this.compareTo00((Friend)var1);
+      return this.compareToFriend((Friend)var1);
    }
 }

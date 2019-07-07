@@ -36,8 +36,8 @@ public class class13 {
    )
    @Export("playPcmPlayers")
    static final void playPcmPlayers() {
-      if (AbstractIndexCache.pcmPlayer1 != null) {
-         AbstractIndexCache.pcmPlayer1.run();
+      if (AbstractArchive.pcmPlayer1 != null) {
+         AbstractArchive.pcmPlayer1.run();
       }
 
       if (WorldMapCacheName.pcmPlayer0 != null) {
@@ -57,23 +57,23 @@ public class class13 {
       int var4 = 0;
       int var5 = 0;
       if (var0.type == 0) {
-         var1 = class65.scene.method290(var0.level, var0.x, var0.y);
+         var1 = class65.scene.getBoundaryObjectTag(var0.plane, var0.x, var0.y);
       }
 
       if (var0.type == 1) {
-         var1 = class65.scene.method291(var0.level, var0.x, var0.y);
+         var1 = class65.scene.getWallDecorationTag(var0.plane, var0.x, var0.y);
       }
 
       if (var0.type == 2) {
-         var1 = class65.scene.method292(var0.level, var0.x, var0.y);
+         var1 = class65.scene.getGameObjectTag(var0.plane, var0.x, var0.y);
       }
 
       if (var0.type == 3) {
-         var1 = class65.scene.getFloorDecorationTag(var0.level, var0.x, var0.y);
+         var1 = class65.scene.getFloorDecorationTag(var0.plane, var0.x, var0.y);
       }
 
       if (var1 != 0L) {
-         int var6 = class65.scene.getObjectFlags(var0.level, var0.x, var0.y, var1);
+         int var6 = class65.scene.getObjectFlags(var0.plane, var0.x, var0.y, var1);
          var3 = HitSplatDefinition.method4972(var1);
          var4 = var6 & 31;
          var5 = var6 >> 6 & 3;

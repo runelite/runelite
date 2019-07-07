@@ -17,8 +17,8 @@ public class class322 {
       garbageValue = "-2000477161"
    )
    @Export("readSprite")
-   public static Sprite readSprite(AbstractIndexCache var0, int var1, int var2) {
-      return !SpriteMask.loadSprite(var0, var1, var2) ? null : class258.method4900();
+   public static Sprite readSprite(AbstractArchive archive, int group, int file) {
+      return !SpriteMask.loadSprite(archive, group, file) ? null : class258.method4900();
    }
 
    static {

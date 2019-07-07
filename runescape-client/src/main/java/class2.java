@@ -9,8 +9,8 @@ final class class2 implements class0 {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache14")
-   static IndexCache indexCache14;
+   @Export("archive14")
+   static Archive archive14;
    @ObfuscatedName("ee")
    @ObfuscatedGetter(
       intValue = -753026759
@@ -56,7 +56,7 @@ final class class2 implements class0 {
       signature = "(Lir;Lir;ZII)V",
       garbageValue = "-1535318699"
    )
-   static void method27(AbstractIndexCache var0, AbstractIndexCache var1, boolean var2, int var3) {
+   static void method27(AbstractArchive var0, AbstractArchive var1, boolean var2, int var3) {
       if (Login.field465) {
          if (var3 == 4) {
             Login.loginIndex = 4;
@@ -64,7 +64,7 @@ final class class2 implements class0 {
       } else {
          Login.loginIndex = var3;
          Rasterizer2D.Rasterizer2D_clear();
-         byte[] var4 = var0.takeRecordByNames("title.jpg", "");
+         byte[] var4 = var0.takeFileByNames("title.jpg", "");
          Login.leftTitleSprite = class27.convertJpgToSprite(var4);
          Fonts.rightTitleSprite = Login.leftTitleSprite.copy();
          if ((Client.worldProperties & 536870912) != 0) {
@@ -74,9 +74,9 @@ final class class2 implements class0 {
          }
 
          Login.titleboxSprite = MenuAction.loadIndexedSpriteByName(var1, "titlebox", "");
-         IndexCacheLoader.titlebuttonSprite = MenuAction.loadIndexedSpriteByName(var1, "titlebutton", "");
-         int var5 = var1.getArchiveId("runes");
-         int var6 = var1.getRecordId(var5, "");
+         ArchiveLoader.titlebuttonSprite = MenuAction.loadIndexedSpriteByName(var1, "titlebutton", "");
+         int var5 = var1.getGroupId("runes");
+         int var6 = var1.getFileId(var5, "");
          IndexedSprite[] var7;
          if (!SpriteMask.loadSprite(var1, var5, var6)) {
             var7 = null;
@@ -85,8 +85,8 @@ final class class2 implements class0 {
          }
 
          WorldMapEvent.runesSprite = var7;
-         var6 = var1.getArchiveId("title_mute");
-         int var8 = var1.getRecordId(var6, "");
+         var6 = var1.getGroupId("title_mute");
+         int var8 = var1.getFileId(var6, "");
          IndexedSprite[] var9;
          if (!SpriteMask.loadSprite(var1, var6, var8)) {
             var9 = null;
@@ -112,7 +112,7 @@ final class class2 implements class0 {
          Login.field470 = true;
          Login.worldSelectOpen = false;
          if (!ReflectionCheck.clientPreferences.titleMusicDisabled) {
-            Canvas.method858(2, UserComparator3.indexCache6, "scape main", "", 255, false);
+            Canvas.method858(2, UserComparator3.archive6, "scape main", "", 255, false);
          } else {
             AbstractSocket.method3488(2);
          }
@@ -134,9 +134,9 @@ final class class2 implements class0 {
       signature = "(Lir;Ljava/lang/String;Ljava/lang/String;B)[Lln;",
       garbageValue = "0"
    )
-   public static Sprite[] method20(AbstractIndexCache var0, String var1, String var2) {
-      int var3 = var0.getArchiveId(var1);
-      int var4 = var0.getRecordId(var3, var2);
+   public static Sprite[] method20(AbstractArchive var0, String var1, String var2) {
+      int var3 = var0.getGroupId(var1);
+      int var4 = var0.getFileId(var3, var2);
       Sprite[] var5;
       if (!SpriteMask.loadSprite(var0, var3, var4)) {
          var5 = null;

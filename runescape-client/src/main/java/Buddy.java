@@ -11,8 +11,8 @@ public class Buddy extends User {
    @ObfuscatedGetter(
       intValue = 429472919
    )
-   @Export("world0")
-   public int world0;
+   @Export("world")
+   public int world;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 120689297
@@ -27,7 +27,7 @@ public class Buddy extends User {
    public int rank;
 
    Buddy() {
-      this.world0 = -1;
+      this.world = -1;
    }
 
    @ObfuscatedName("an")
@@ -37,7 +37,7 @@ public class Buddy extends User {
    )
    @Export("set")
    void set(int var1, int var2) {
-      this.world0 = var1;
+      this.world = var1;
       this.int2 = var2;
    }
 
@@ -46,9 +46,9 @@ public class Buddy extends User {
       signature = "(B)I",
       garbageValue = "0"
    )
-   @Export("world")
-   public int world() {
-      return this.world0;
+   @Export("getWorld")
+   public int getWorld() {
+      return this.world;
    }
 
    @ObfuscatedName("au")
@@ -58,7 +58,7 @@ public class Buddy extends User {
    )
    @Export("hasWorld")
    public boolean hasWorld() {
-      return this.world0 > 0;
+      return this.world > 0;
    }
 
    @ObfuscatedName("ff")

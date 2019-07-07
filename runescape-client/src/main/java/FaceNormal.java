@@ -41,13 +41,13 @@ public class FaceNormal {
       garbageValue = "-1788849120"
    )
    static Script method3236(int var0, int var1, int var2) {
-      int var3 = UnitPriceComparator.method125(var1, var0);
-      Script var4 = WidgetGroupParent.method1175(var3, var0);
+      int var3 = GrandExchangeOfferUnitPriceComparator.method125(var1, var0);
+      Script var4 = InterfaceParent.method1175(var3, var0);
       if (var4 != null) {
          return var4;
       } else {
          var3 = PacketBuffer.method4081(var2, var0);
-         var4 = WidgetGroupParent.method1175(var3, var0);
+         var4 = InterfaceParent.method1175(var3, var0);
          return var4 != null ? var4 : null;
       }
    }

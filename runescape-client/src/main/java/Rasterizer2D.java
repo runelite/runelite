@@ -30,11 +30,11 @@ public class Rasterizer2D extends DualNode {
 
    @ObfuscatedName("dp")
    @Export("Rasterizer2D_replace")
-   public static void Rasterizer2D_replace(int[] var0, int var1, int var2) {
-      Rasterizer2D_pixels = var0;
-      Rasterizer2D_width = var1;
-      Rasterizer2D_height = var2;
-      Rasterizer2D_setClip(0, 0, var1, var2);
+   public static void Rasterizer2D_replace(int[] pixels, int width, int height) {
+      Rasterizer2D_pixels = pixels;
+      Rasterizer2D_width = width;
+      Rasterizer2D_height = height;
+      Rasterizer2D_setClip(0, 0, width, height);
    }
 
    @ObfuscatedName("ds")
@@ -48,66 +48,66 @@ public class Rasterizer2D extends DualNode {
 
    @ObfuscatedName("di")
    @Export("Rasterizer2D_setClip")
-   public static void Rasterizer2D_setClip(int var0, int var1, int var2, int var3) {
-      if (var0 < 0) {
-         var0 = 0;
+   public static void Rasterizer2D_setClip(int xStart, int yStart, int xEnd, int yEnd) {
+      if (xStart < 0) {
+         xStart = 0;
       }
 
-      if (var1 < 0) {
-         var1 = 0;
+      if (yStart < 0) {
+         yStart = 0;
       }
 
-      if (var2 > Rasterizer2D_width) {
-         var2 = Rasterizer2D_width;
+      if (xEnd > Rasterizer2D_width) {
+         xEnd = Rasterizer2D_width;
       }
 
-      if (var3 > Rasterizer2D_height) {
-         var3 = Rasterizer2D_height;
+      if (yEnd > Rasterizer2D_height) {
+         yEnd = Rasterizer2D_height;
       }
 
-      Rasterizer2D_xClipStart = var0;
-      Rasterizer2D_yClipStart = var1;
-      Rasterizer2D_xClipEnd = var2;
-      Rasterizer2D_yClipEnd = var3;
+      Rasterizer2D_xClipStart = xStart;
+      Rasterizer2D_yClipStart = yStart;
+      Rasterizer2D_xClipEnd = xEnd;
+      Rasterizer2D_yClipEnd = yEnd;
    }
 
    @ObfuscatedName("dc")
    @Export("Rasterizer2D_expandClip")
-   public static void Rasterizer2D_expandClip(int var0, int var1, int var2, int var3) {
-      if (Rasterizer2D_xClipStart < var0) {
-         Rasterizer2D_xClipStart = var0;
+   public static void Rasterizer2D_expandClip(int xStart, int yStart, int xEnd, int yEnd) {
+      if (Rasterizer2D_xClipStart < xStart) {
+         Rasterizer2D_xClipStart = xStart;
       }
 
-      if (Rasterizer2D_yClipStart < var1) {
-         Rasterizer2D_yClipStart = var1;
+      if (Rasterizer2D_yClipStart < yStart) {
+         Rasterizer2D_yClipStart = yStart;
       }
 
-      if (Rasterizer2D_xClipEnd > var2) {
-         Rasterizer2D_xClipEnd = var2;
+      if (Rasterizer2D_xClipEnd > xEnd) {
+         Rasterizer2D_xClipEnd = xEnd;
       }
 
-      if (Rasterizer2D_yClipEnd > var3) {
-         Rasterizer2D_yClipEnd = var3;
+      if (Rasterizer2D_yClipEnd > yEnd) {
+         Rasterizer2D_yClipEnd = yEnd;
       }
 
    }
 
    @ObfuscatedName("dg")
    @Export("Rasterizer2D_getClipArray")
-   public static void Rasterizer2D_getClipArray(int[] var0) {
-      var0[0] = Rasterizer2D_xClipStart;
-      var0[1] = Rasterizer2D_yClipStart;
-      var0[2] = Rasterizer2D_xClipEnd;
-      var0[3] = Rasterizer2D_yClipEnd;
+   public static void Rasterizer2D_getClipArray(int[] dst) {
+      dst[0] = Rasterizer2D_xClipStart;
+      dst[1] = Rasterizer2D_yClipStart;
+      dst[2] = Rasterizer2D_xClipEnd;
+      dst[3] = Rasterizer2D_yClipEnd;
    }
 
    @ObfuscatedName("db")
    @Export("Rasterizer2D_setClipArray")
-   public static void Rasterizer2D_setClipArray(int[] var0) {
-      Rasterizer2D_xClipStart = var0[0];
-      Rasterizer2D_yClipStart = var0[1];
-      Rasterizer2D_xClipEnd = var0[2];
-      Rasterizer2D_yClipEnd = var0[3];
+   public static void Rasterizer2D_setClipArray(int[] src) {
+      Rasterizer2D_xClipStart = src[0];
+      Rasterizer2D_yClipStart = src[1];
+      Rasterizer2D_xClipEnd = src[2];
+      Rasterizer2D_yClipEnd = src[3];
    }
 
    @ObfuscatedName("dd")
@@ -379,31 +379,31 @@ public class Rasterizer2D extends DualNode {
 
    @ObfuscatedName("dr")
    @Export("Rasterizer2D_fillRectangle")
-   public static void Rasterizer2D_fillRectangle(int var0, int var1, int var2, int var3, int var4) {
-      if (var0 < Rasterizer2D_xClipStart) {
-         var2 -= Rasterizer2D_xClipStart - var0;
-         var0 = Rasterizer2D_xClipStart;
+   public static void Rasterizer2D_fillRectangle(int x, int y, int width, int height, int color) {
+      if (x < Rasterizer2D_xClipStart) {
+         width -= Rasterizer2D_xClipStart - x;
+         x = Rasterizer2D_xClipStart;
       }
 
-      if (var1 < Rasterizer2D_yClipStart) {
-         var3 -= Rasterizer2D_yClipStart - var1;
-         var1 = Rasterizer2D_yClipStart;
+      if (y < Rasterizer2D_yClipStart) {
+         height -= Rasterizer2D_yClipStart - y;
+         y = Rasterizer2D_yClipStart;
       }
 
-      if (var0 + var2 > Rasterizer2D_xClipEnd) {
-         var2 = Rasterizer2D_xClipEnd - var0;
+      if (x + width > Rasterizer2D_xClipEnd) {
+         width = Rasterizer2D_xClipEnd - x;
       }
 
-      if (var3 + var1 > Rasterizer2D_yClipEnd) {
-         var3 = Rasterizer2D_yClipEnd - var1;
+      if (height + y > Rasterizer2D_yClipEnd) {
+         height = Rasterizer2D_yClipEnd - y;
       }
 
-      int var5 = Rasterizer2D_width - var2;
-      int var6 = var0 + Rasterizer2D_width * var1;
+      int var5 = Rasterizer2D_width - width;
+      int var6 = x + Rasterizer2D_width * y;
 
-      for (int var7 = -var3; var7 < 0; ++var7) {
-         for (int var8 = -var2; var8 < 0; ++var8) {
-            Rasterizer2D_pixels[var6++] = var4;
+      for (int var7 = -height; var7 < 0; ++var7) {
+         for (int var8 = -width; var8 < 0; ++var8) {
+            Rasterizer2D_pixels[var6++] = color;
          }
 
          var6 += var5;
@@ -594,42 +594,42 @@ public class Rasterizer2D extends DualNode {
 
    @ObfuscatedName("dh")
    @Export("Rasterizer2D_drawRectangle")
-   public static void Rasterizer2D_drawRectangle(int var0, int var1, int var2, int var3, int var4) {
-      Rasterizer2D_drawHorizontalLine(var0, var1, var2, var4);
-      Rasterizer2D_drawHorizontalLine(var0, var3 + var1 - 1, var2, var4);
-      Rasterizer2D_drawVerticalLine(var0, var1, var3, var4);
-      Rasterizer2D_drawVerticalLine(var0 + var2 - 1, var1, var3, var4);
+   public static void Rasterizer2D_drawRectangle(int x, int y, int width, int height, int color) {
+      Rasterizer2D_drawHorizontalLine(x, y, width, color);
+      Rasterizer2D_drawHorizontalLine(x, height + y - 1, width, color);
+      Rasterizer2D_drawVerticalLine(x, y, height, color);
+      Rasterizer2D_drawVerticalLine(x + width - 1, y, height, color);
    }
 
    @ObfuscatedName("dz")
    @Export("Rasterizer2D_drawRectangleAlpha")
-   public static void Rasterizer2D_drawRectangleAlpha(int var0, int var1, int var2, int var3, int var4, int var5) {
-      Rasterizer2D_drawHorizontalLineAlpha(var0, var1, var2, var4, var5);
-      Rasterizer2D_drawHorizontalLineAlpha(var0, var3 + var1 - 1, var2, var4, var5);
-      if (var3 >= 3) {
-         Rasterizer2D_drawVerticalLineAlpha(var0, var1 + 1, var3 - 2, var4, var5);
-         Rasterizer2D_drawVerticalLineAlpha(var0 + var2 - 1, var1 + 1, var3 - 2, var4, var5);
+   public static void Rasterizer2D_drawRectangleAlpha(int x, int y, int width, int height, int rgb, int alpha) {
+      Rasterizer2D_drawHorizontalLineAlpha(x, y, width, rgb, alpha);
+      Rasterizer2D_drawHorizontalLineAlpha(x, height + y - 1, width, rgb, alpha);
+      if (height >= 3) {
+         Rasterizer2D_drawVerticalLineAlpha(x, y + 1, height - 2, rgb, alpha);
+         Rasterizer2D_drawVerticalLineAlpha(x + width - 1, y + 1, height - 2, rgb, alpha);
       }
 
    }
 
    @ObfuscatedName("dj")
    @Export("Rasterizer2D_drawHorizontalLine")
-   public static void Rasterizer2D_drawHorizontalLine(int var0, int var1, int var2, int var3) {
-      if (var1 >= Rasterizer2D_yClipStart && var1 < Rasterizer2D_yClipEnd) {
-         if (var0 < Rasterizer2D_xClipStart) {
-            var2 -= Rasterizer2D_xClipStart - var0;
-            var0 = Rasterizer2D_xClipStart;
+   public static void Rasterizer2D_drawHorizontalLine(int x, int y, int length, int color) {
+      if (y >= Rasterizer2D_yClipStart && y < Rasterizer2D_yClipEnd) {
+         if (x < Rasterizer2D_xClipStart) {
+            length -= Rasterizer2D_xClipStart - x;
+            x = Rasterizer2D_xClipStart;
          }
 
-         if (var0 + var2 > Rasterizer2D_xClipEnd) {
-            var2 = Rasterizer2D_xClipEnd - var0;
+         if (x + length > Rasterizer2D_xClipEnd) {
+            length = Rasterizer2D_xClipEnd - x;
          }
 
-         int var4 = var0 + Rasterizer2D_width * var1;
+         int var4 = x + Rasterizer2D_width * y;
 
-         for (int var5 = 0; var5 < var2; ++var5) {
-            Rasterizer2D_pixels[var4 + var5] = var3;
+         for (int var5 = 0; var5 < length; ++var5) {
+            Rasterizer2D_pixels[var4 + var5] = color;
          }
       }
 
@@ -637,24 +637,24 @@ public class Rasterizer2D extends DualNode {
 
    @ObfuscatedName("du")
    @Export("Rasterizer2D_drawHorizontalLineAlpha")
-   static void Rasterizer2D_drawHorizontalLineAlpha(int var0, int var1, int var2, int var3, int var4) {
-      if (var1 >= Rasterizer2D_yClipStart && var1 < Rasterizer2D_yClipEnd) {
-         if (var0 < Rasterizer2D_xClipStart) {
-            var2 -= Rasterizer2D_xClipStart - var0;
-            var0 = Rasterizer2D_xClipStart;
+   static void Rasterizer2D_drawHorizontalLineAlpha(int x, int y, int length, int rgb, int alpha) {
+      if (y >= Rasterizer2D_yClipStart && y < Rasterizer2D_yClipEnd) {
+         if (x < Rasterizer2D_xClipStart) {
+            length -= Rasterizer2D_xClipStart - x;
+            x = Rasterizer2D_xClipStart;
          }
 
-         if (var0 + var2 > Rasterizer2D_xClipEnd) {
-            var2 = Rasterizer2D_xClipEnd - var0;
+         if (x + length > Rasterizer2D_xClipEnd) {
+            length = Rasterizer2D_xClipEnd - x;
          }
 
-         int var5 = 256 - var4;
-         int var6 = (var3 >> 16 & 255) * var4;
-         int var7 = (var3 >> 8 & 255) * var4;
-         int var8 = var4 * (var3 & 255);
-         int var9 = var0 + Rasterizer2D_width * var1;
+         int var5 = 256 - alpha;
+         int var6 = (rgb >> 16 & 255) * alpha;
+         int var7 = (rgb >> 8 & 255) * alpha;
+         int var8 = alpha * (rgb & 255);
+         int var9 = x + Rasterizer2D_width * y;
 
-         for (int var10 = 0; var10 < var2; ++var10) {
+         for (int var10 = 0; var10 < length; ++var10) {
             int var11 = var5 * (Rasterizer2D_pixels[var9] >> 16 & 255);
             int var12 = (Rasterizer2D_pixels[var9] >> 8 & 255) * var5;
             int var13 = var5 * (Rasterizer2D_pixels[var9] & 255);
@@ -667,21 +667,21 @@ public class Rasterizer2D extends DualNode {
 
    @ObfuscatedName("dm")
    @Export("Rasterizer2D_drawVerticalLine")
-   public static void Rasterizer2D_drawVerticalLine(int var0, int var1, int var2, int var3) {
-      if (var0 >= Rasterizer2D_xClipStart && var0 < Rasterizer2D_xClipEnd) {
-         if (var1 < Rasterizer2D_yClipStart) {
-            var2 -= Rasterizer2D_yClipStart - var1;
-            var1 = Rasterizer2D_yClipStart;
+   public static void Rasterizer2D_drawVerticalLine(int x, int y, int length, int color) {
+      if (x >= Rasterizer2D_xClipStart && x < Rasterizer2D_xClipEnd) {
+         if (y < Rasterizer2D_yClipStart) {
+            length -= Rasterizer2D_yClipStart - y;
+            y = Rasterizer2D_yClipStart;
          }
 
-         if (var2 + var1 > Rasterizer2D_yClipEnd) {
-            var2 = Rasterizer2D_yClipEnd - var1;
+         if (length + y > Rasterizer2D_yClipEnd) {
+            length = Rasterizer2D_yClipEnd - y;
          }
 
-         int var4 = var0 + Rasterizer2D_width * var1;
+         int var4 = x + Rasterizer2D_width * y;
 
-         for (int var5 = 0; var5 < var2; ++var5) {
-            Rasterizer2D_pixels[var4 + var5 * Rasterizer2D_width] = var3;
+         for (int var5 = 0; var5 < length; ++var5) {
+            Rasterizer2D_pixels[var4 + var5 * Rasterizer2D_width] = color;
          }
       }
 
@@ -689,24 +689,24 @@ public class Rasterizer2D extends DualNode {
 
    @ObfuscatedName("dq")
    @Export("Rasterizer2D_drawVerticalLineAlpha")
-   static void Rasterizer2D_drawVerticalLineAlpha(int var0, int var1, int var2, int var3, int var4) {
-      if (var0 >= Rasterizer2D_xClipStart && var0 < Rasterizer2D_xClipEnd) {
-         if (var1 < Rasterizer2D_yClipStart) {
-            var2 -= Rasterizer2D_yClipStart - var1;
-            var1 = Rasterizer2D_yClipStart;
+   static void Rasterizer2D_drawVerticalLineAlpha(int x, int y, int length, int rgb, int alpha) {
+      if (x >= Rasterizer2D_xClipStart && x < Rasterizer2D_xClipEnd) {
+         if (y < Rasterizer2D_yClipStart) {
+            length -= Rasterizer2D_yClipStart - y;
+            y = Rasterizer2D_yClipStart;
          }
 
-         if (var2 + var1 > Rasterizer2D_yClipEnd) {
-            var2 = Rasterizer2D_yClipEnd - var1;
+         if (length + y > Rasterizer2D_yClipEnd) {
+            length = Rasterizer2D_yClipEnd - y;
          }
 
-         int var5 = 256 - var4;
-         int var6 = (var3 >> 16 & 255) * var4;
-         int var7 = (var3 >> 8 & 255) * var4;
-         int var8 = var4 * (var3 & 255);
-         int var9 = var0 + Rasterizer2D_width * var1;
+         int var5 = 256 - alpha;
+         int var6 = (rgb >> 16 & 255) * alpha;
+         int var7 = (rgb >> 8 & 255) * alpha;
+         int var8 = alpha * (rgb & 255);
+         int var9 = x + Rasterizer2D_width * y;
 
-         for (int var10 = 0; var10 < var2; ++var10) {
+         for (int var10 = 0; var10 < length; ++var10) {
             int var11 = var5 * (Rasterizer2D_pixels[var9] >> 16 & 255);
             int var12 = (Rasterizer2D_pixels[var9] >> 8 & 255) * var5;
             int var13 = var5 * (Rasterizer2D_pixels[var9] & 255);
@@ -720,78 +720,78 @@ public class Rasterizer2D extends DualNode {
 
    @ObfuscatedName("et")
    @Export("Rasterizer2D_drawLine")
-   public static void Rasterizer2D_drawLine(int var0, int var1, int var2, int var3, int var4) {
-      var2 -= var0;
-      var3 -= var1;
-      if (var3 == 0) {
-         if (var2 >= 0) {
-            Rasterizer2D_drawHorizontalLine(var0, var1, var2 + 1, var4);
+   public static void Rasterizer2D_drawLine(int x0, int y0, int x1, int y1, int color) {
+      x1 -= x0;
+      y1 -= y0;
+      if (y1 == 0) {
+         if (x1 >= 0) {
+            Rasterizer2D_drawHorizontalLine(x0, y0, x1 + 1, color);
          } else {
-            Rasterizer2D_drawHorizontalLine(var0 + var2, var1, -var2 + 1, var4);
+            Rasterizer2D_drawHorizontalLine(x0 + x1, y0, -x1 + 1, color);
          }
-      } else if (var2 == 0) {
-         if (var3 >= 0) {
-            Rasterizer2D_drawVerticalLine(var0, var1, var3 + 1, var4);
+      } else if (x1 == 0) {
+         if (y1 >= 0) {
+            Rasterizer2D_drawVerticalLine(x0, y0, y1 + 1, color);
          } else {
-            Rasterizer2D_drawVerticalLine(var0, var3 + var1, -var3 + 1, var4);
+            Rasterizer2D_drawVerticalLine(x0, y1 + y0, -y1 + 1, color);
          }
       } else {
-         if (var3 + var2 < 0) {
-            var0 += var2;
-            var2 = -var2;
-            var1 += var3;
-            var3 = -var3;
+         if (y1 + x1 < 0) {
+            x0 += x1;
+            x1 = -x1;
+            y0 += y1;
+            y1 = -y1;
          }
 
          int var5;
          int var6;
-         if (var2 > var3) {
-            var1 <<= 16;
-            var1 += 32768;
-            var3 <<= 16;
-            var5 = (int)Math.floor((double)var3 / (double)var2 + 0.5D);
-            var2 += var0;
-            if (var0 < Rasterizer2D_xClipStart) {
-               var1 += var5 * (Rasterizer2D_xClipStart - var0);
-               var0 = Rasterizer2D_xClipStart;
+         if (x1 > y1) {
+            y0 <<= 16;
+            y0 += 32768;
+            y1 <<= 16;
+            var5 = (int)Math.floor((double)y1 / (double)x1 + 0.5D);
+            x1 += x0;
+            if (x0 < Rasterizer2D_xClipStart) {
+               y0 += var5 * (Rasterizer2D_xClipStart - x0);
+               x0 = Rasterizer2D_xClipStart;
             }
 
-            if (var2 >= Rasterizer2D_xClipEnd) {
-               var2 = Rasterizer2D_xClipEnd - 1;
+            if (x1 >= Rasterizer2D_xClipEnd) {
+               x1 = Rasterizer2D_xClipEnd - 1;
             }
 
-            while (var0 <= var2) {
-               var6 = var1 >> 16;
+            while (x0 <= x1) {
+               var6 = y0 >> 16;
                if (var6 >= Rasterizer2D_yClipStart && var6 < Rasterizer2D_yClipEnd) {
-                  Rasterizer2D_pixels[var0 + var6 * Rasterizer2D_width] = var4;
+                  Rasterizer2D_pixels[x0 + var6 * Rasterizer2D_width] = color;
                }
 
-               var1 += var5;
-               ++var0;
+               y0 += var5;
+               ++x0;
             }
          } else {
-            var0 <<= 16;
-            var0 += 32768;
-            var2 <<= 16;
-            var5 = (int)Math.floor((double)var2 / (double)var3 + 0.5D);
-            var3 += var1;
-            if (var1 < Rasterizer2D_yClipStart) {
-               var0 += (Rasterizer2D_yClipStart - var1) * var5;
-               var1 = Rasterizer2D_yClipStart;
+            x0 <<= 16;
+            x0 += 32768;
+            x1 <<= 16;
+            var5 = (int)Math.floor((double)x1 / (double)y1 + 0.5D);
+            y1 += y0;
+            if (y0 < Rasterizer2D_yClipStart) {
+               x0 += (Rasterizer2D_yClipStart - y0) * var5;
+               y0 = Rasterizer2D_yClipStart;
             }
 
-            if (var3 >= Rasterizer2D_yClipEnd) {
-               var3 = Rasterizer2D_yClipEnd - 1;
+            if (y1 >= Rasterizer2D_yClipEnd) {
+               y1 = Rasterizer2D_yClipEnd - 1;
             }
 
-            while (var1 <= var3) {
-               var6 = var0 >> 16;
+            while (y0 <= y1) {
+               var6 = x0 >> 16;
                if (var6 >= Rasterizer2D_xClipStart && var6 < Rasterizer2D_xClipEnd) {
-                  Rasterizer2D_pixels[var6 + Rasterizer2D_width * var1] = var4;
+                  Rasterizer2D_pixels[var6 + Rasterizer2D_width * y0] = color;
                }
 
-               var0 += var5;
-               ++var1;
+               x0 += var5;
+               ++y0;
             }
          }
       }
@@ -800,9 +800,9 @@ public class Rasterizer2D extends DualNode {
 
    @ObfuscatedName("eb")
    @Export("Rasterizer2D_setPixel")
-   static void Rasterizer2D_setPixel(int var0, int var1, int var2) {
-      if (var0 >= Rasterizer2D_xClipStart && var1 >= Rasterizer2D_yClipStart && var0 < Rasterizer2D_xClipEnd && var1 < Rasterizer2D_yClipEnd) {
-         Rasterizer2D_pixels[var0 + Rasterizer2D_width * var1] = var2;
+   static void Rasterizer2D_setPixel(int x, int y, int color) {
+      if (x >= Rasterizer2D_xClipStart && y >= Rasterizer2D_yClipStart && x < Rasterizer2D_xClipEnd && y < Rasterizer2D_yClipEnd) {
+         Rasterizer2D_pixels[x + Rasterizer2D_width * y] = color;
       }
 
    }

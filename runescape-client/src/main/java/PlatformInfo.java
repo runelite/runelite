@@ -138,37 +138,37 @@ public class PlatformInfo extends Node {
       garbageValue = "1518809220"
    )
    @Export("write")
-   public void write(Buffer var1) {
-      var1.writeByte(7);
-      var1.writeByte(this.field694);
-      var1.writeByte(this.field695 ? 1 : 0);
-      var1.writeByte(this.field696);
-      var1.writeByte(this.field697);
-      var1.writeByte(this.field698);
-      var1.writeByte(this.field699);
-      var1.writeByte(this.field700);
-      var1.writeByte(this.field701 ? 1 : 0);
-      var1.writeShort(this.field702);
-      var1.writeByte(this.field703);
-      var1.writeMedium(this.field704);
-      var1.writeShort(this.field705);
-      var1.writeStringCp1252NullCircumfixed(this.field706);
-      var1.writeStringCp1252NullCircumfixed(this.field707);
-      var1.writeStringCp1252NullCircumfixed(this.field708);
-      var1.writeStringCp1252NullCircumfixed(this.field709);
-      var1.writeByte(this.field711);
-      var1.writeShort(this.field710);
-      var1.writeStringCp1252NullCircumfixed(this.field714);
-      var1.writeStringCp1252NullCircumfixed(this.field715);
-      var1.writeByte(this.field712);
-      var1.writeByte(this.field713);
+   public void write(Buffer buffer) {
+      buffer.writeByte(7);
+      buffer.writeByte(this.field694);
+      buffer.writeByte(this.field695 ? 1 : 0);
+      buffer.writeByte(this.field696);
+      buffer.writeByte(this.field697);
+      buffer.writeByte(this.field698);
+      buffer.writeByte(this.field699);
+      buffer.writeByte(this.field700);
+      buffer.writeByte(this.field701 ? 1 : 0);
+      buffer.writeShort(this.field702);
+      buffer.writeByte(this.field703);
+      buffer.writeMedium(this.field704);
+      buffer.writeShort(this.field705);
+      buffer.writeStringCp1252NullCircumfixed(this.field706);
+      buffer.writeStringCp1252NullCircumfixed(this.field707);
+      buffer.writeStringCp1252NullCircumfixed(this.field708);
+      buffer.writeStringCp1252NullCircumfixed(this.field709);
+      buffer.writeByte(this.field711);
+      buffer.writeShort(this.field710);
+      buffer.writeStringCp1252NullCircumfixed(this.field714);
+      buffer.writeStringCp1252NullCircumfixed(this.field715);
+      buffer.writeByte(this.field712);
+      buffer.writeByte(this.field713);
 
       for (int var2 = 0; var2 < this.field716.length; ++var2) {
-         var1.writeInt(this.field716[var2]);
+         buffer.writeInt(this.field716[var2]);
       }
 
-      var1.writeInt(this.field717);
-      var1.writeStringCp1252NullCircumfixed(this.field718);
+      buffer.writeInt(this.field717);
+      buffer.writeStringCp1252NullCircumfixed(this.field718);
    }
 
    @ObfuscatedName("f")

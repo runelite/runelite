@@ -61,9 +61,9 @@ public final class AccessFile {
 
    @ObfuscatedName("m")
    @Export("seek")
-   final void seek(long var1) throws IOException {
-      this.file.seek(var1);
-      this.index = var1;
+   final void seek(long index) throws IOException {
+      this.file.seek(index);
+      this.index = index;
    }
 
    @ObfuscatedName("f")
@@ -72,14 +72,14 @@ public final class AccessFile {
       garbageValue = "-86"
    )
    @Export("write")
-   public final void write(byte[] var1, int var2, int var3) throws IOException {
-      if ((long)var3 + this.index > this.capacity) {
+   public final void write(byte[] src, int srcIndex, int length) throws IOException {
+      if ((long)length + this.index > this.capacity) {
          this.file.seek(this.capacity + 1L);
          this.file.write(1);
          throw new EOFException();
       } else {
-         this.file.write(var1, var2, var3);
-         this.index += (long)var3;
+         this.file.write(src, srcIndex, length);
+         this.index += (long)length;
       }
    }
 
@@ -99,9 +99,9 @@ public final class AccessFile {
       garbageValue = "166642884"
    )
    @Export("closeSync")
-   public final void closeSync(boolean var1) throws IOException {
+   public final void closeSync(boolean sync) throws IOException {
       if (this.file != null) {
-         if (var1) {
+         if (sync) {
             try {
                this.file.getFD().sync();
             } catch (SyncFailedException var3) {
@@ -130,8 +130,8 @@ public final class AccessFile {
       garbageValue = "971670468"
    )
    @Export("read")
-   public final int read(byte[] var1, int var2, int var3) throws IOException {
-      int var4 = this.file.read(var1, var2, var3);
+   public final int read(byte[] dst, int dstIndex, int length) throws IOException {
+      int var4 = this.file.read(dst, dstIndex, length);
       if (var4 > 0) {
          this.index += (long)var4;
       }

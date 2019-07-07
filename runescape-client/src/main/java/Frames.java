@@ -7,8 +7,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Frames")
 public class Frames extends DualNode {
    @ObfuscatedName("o")
-   @Export("IndexStoreActionHandler_thread")
-   static Thread IndexStoreActionHandler_thread;
+   @Export("ArchiveDiskActionHandler_thread")
+   static Thread ArchiveDiskActionHandler_thread;
    @ObfuscatedName("bc")
    @ObfuscatedSignature(
       signature = "[Llq;"
@@ -26,14 +26,14 @@ public class Frames extends DualNode {
       signature = "(Lir;Lir;IZ)V",
       garbageValue = "0"
    )
-   public Frames(AbstractIndexCache var1, AbstractIndexCache var2, int var3, boolean var4) {
+   public Frames(AbstractArchive var1, AbstractArchive var2, int var3, boolean var4) {
       NodeDeque var5 = new NodeDeque();
       int var6 = var1.method4(var3);
       this.frames = new Animation[var6];
       int[] var7 = var1.method3(var3);
 
       for (int var8 = 0; var8 < var7.length; ++var8) {
-         byte[] var9 = var1.takeRecord(var3, var7[var8]);
+         byte[] var9 = var1.takeFile(var3, var7[var8]);
          Skeleton var10 = null;
          int var11 = (var9[0] & 255) << 8 | var9[1] & 255;
 
@@ -45,7 +45,7 @@ public class Frames extends DualNode {
          }
 
          if (var10 == null) {
-            byte[] var13 = var2.getRecord(var11, 0);
+            byte[] var13 = var2.getFile(var11, 0);
             var10 = new Skeleton(var11, var13);
             var5.addFirst(var10);
          }
@@ -61,8 +61,8 @@ public class Frames extends DualNode {
       garbageValue = "-1018278334"
    )
    @Export("hasAlphaTransform")
-   public boolean hasAlphaTransform(int var1) {
-      return this.frames[var1].hasAlphaTransform;
+   public boolean hasAlphaTransform(int frame) {
+      return this.frames[frame].hasAlphaTransform;
    }
 
    @ObfuscatedName("m")
@@ -70,7 +70,7 @@ public class Frames extends DualNode {
       signature = "(Lir;I)V",
       garbageValue = "1204337492"
    )
-   public static void method3241(AbstractIndexCache var0) {
+   public static void method3241(AbstractArchive var0) {
       VarcInt.field942 = var0;
    }
 

@@ -91,11 +91,11 @@ public class BufferedFile {
 
    @ObfuscatedName("f")
    @Export("seek")
-   public void seek(long var1) throws IOException {
-      if (var1 < 0L) {
+   public void seek(long index) throws IOException {
+      if (index < 0L) {
          throw new IOException("");
       } else {
-         this.field51 = var1;
+         this.field51 = index;
       }
    }
 
@@ -115,8 +115,8 @@ public class BufferedFile {
       garbageValue = "617965847"
    )
    @Export("readFill")
-   public void readFill(byte[] var1) throws IOException {
-      this.read(var1, 0, var1.length);
+   public void readFill(byte[] dst) throws IOException {
+      this.read(dst, 0, dst.length);
    }
 
    @ObfuscatedName("o")
@@ -125,69 +125,69 @@ public class BufferedFile {
       garbageValue = "-35"
    )
    @Export("read")
-   public void read(byte[] var1, int var2, int var3) throws IOException {
+   public void read(byte[] dst, int dstIndex, int length) throws IOException {
       try {
-         if (var3 + var2 > var1.length) {
-            throw new ArrayIndexOutOfBoundsException(var3 + var2 - var1.length);
+         if (length + dstIndex > dst.length) {
+            throw new ArrayIndexOutOfBoundsException(length + dstIndex - dst.length);
          }
 
-         if (-1L != this.field49 && this.field51 >= this.field49 && this.field51 + (long)var3 <= this.field49 + (long)this.field50) {
-            System.arraycopy(this.writeBuffer, (int)(this.field51 - this.field49), var1, var2, var3);
-            this.field51 += (long)var3;
+         if (-1L != this.field49 && this.field51 >= this.field49 && this.field51 + (long)length <= this.field49 + (long)this.field50) {
+            System.arraycopy(this.writeBuffer, (int)(this.field51 - this.field49), dst, dstIndex, length);
+            this.field51 += (long)length;
             return;
          }
 
          long var4 = this.field51;
-         int var6 = var3;
+         int var6 = length;
          int var7;
          if (this.field51 >= this.field47 && this.field51 < this.field47 + (long)this.field48) {
             var7 = (int)((long)this.field48 - (this.field51 - this.field47));
-            if (var7 > var3) {
-               var7 = var3;
+            if (var7 > length) {
+               var7 = length;
             }
 
-            System.arraycopy(this.readBuffer, (int)(this.field51 - this.field47), var1, var2, var7);
+            System.arraycopy(this.readBuffer, (int)(this.field51 - this.field47), dst, dstIndex, var7);
             this.field51 += (long)var7;
-            var2 += var7;
-            var3 -= var7;
+            dstIndex += var7;
+            length -= var7;
          }
 
-         if (var3 > this.readBuffer.length) {
+         if (length > this.readBuffer.length) {
             this.accessFile.seek(this.field51);
 
-            for (this.field53 = this.field51; var3 > 0; var3 -= var7) {
-               var7 = this.accessFile.read(var1, var2, var3);
+            for (this.field53 = this.field51; length > 0; length -= var7) {
+               var7 = this.accessFile.read(dst, dstIndex, length);
                if (var7 == -1) {
                   break;
                }
 
                this.field53 += (long)var7;
                this.field51 += (long)var7;
-               var2 += var7;
+               dstIndex += var7;
             }
-         } else if (var3 > 0) {
+         } else if (length > 0) {
             this.load();
-            var7 = var3;
-            if (var3 > this.field48) {
+            var7 = length;
+            if (length > this.field48) {
                var7 = this.field48;
             }
 
-            System.arraycopy(this.readBuffer, 0, var1, var2, var7);
-            var2 += var7;
-            var3 -= var7;
+            System.arraycopy(this.readBuffer, 0, dst, dstIndex, var7);
+            dstIndex += var7;
+            length -= var7;
             this.field51 += (long)var7;
          }
 
          if (-1L != this.field49) {
-            if (this.field49 > this.field51 && var3 > 0) {
-               var7 = var2 + (int)(this.field49 - this.field51);
-               if (var7 > var3 + var2) {
-                  var7 = var3 + var2;
+            if (this.field49 > this.field51 && length > 0) {
+               var7 = dstIndex + (int)(this.field49 - this.field51);
+               if (var7 > length + dstIndex) {
+                  var7 = length + dstIndex;
                }
 
-               while (var2 < var7) {
-                  var1[var2++] = 0;
-                  --var3;
+               while (dstIndex < var7) {
+                  dst[dstIndex++] = 0;
+                  --length;
                   ++this.field51;
                }
             }
@@ -208,9 +208,9 @@ public class BufferedFile {
 
             if (var8 > -1L && var10 > var8) {
                int var12 = (int)(var10 - var8);
-               System.arraycopy(this.writeBuffer, (int)(var8 - this.field49), var1, (int)(var8 - var4) + var2, var12);
+               System.arraycopy(this.writeBuffer, (int)(var8 - this.field49), dst, (int)(var8 - var4) + dstIndex, var12);
                if (var10 > this.field51) {
-                  var3 = (int)((long)var3 - (var10 - this.field51));
+                  length = (int)((long)length - (var10 - this.field51));
                   this.field51 = var10;
                }
             }
@@ -220,7 +220,7 @@ public class BufferedFile {
          throw var13;
       }
 
-      if (var3 > 0) {
+      if (length > 0) {
          throw new EOFException();
       }
    }
@@ -256,34 +256,34 @@ public class BufferedFile {
       garbageValue = "-601174169"
    )
    @Export("write")
-   public void write(byte[] var1, int var2, int var3) throws IOException {
+   public void write(byte[] src, int srcIndex, int length) throws IOException {
       try {
-         if (this.field51 + (long)var3 > this.capacity) {
-            this.capacity = this.field51 + (long)var3;
+         if (this.field51 + (long)length > this.capacity) {
+            this.capacity = this.field51 + (long)length;
          }
 
          if (-1L != this.field49 && (this.field51 < this.field49 || this.field51 > this.field49 + (long)this.field50)) {
             this.flush();
          }
 
-         if (this.field49 != -1L && (long)var3 + this.field51 > this.field49 + (long)this.writeBuffer.length) {
+         if (this.field49 != -1L && (long)length + this.field51 > this.field49 + (long)this.writeBuffer.length) {
             int var4 = (int)((long)this.writeBuffer.length - (this.field51 - this.field49));
-            System.arraycopy(var1, var2, this.writeBuffer, (int)(this.field51 - this.field49), var4);
+            System.arraycopy(src, srcIndex, this.writeBuffer, (int)(this.field51 - this.field49), var4);
             this.field51 += (long)var4;
-            var2 += var4;
-            var3 -= var4;
+            srcIndex += var4;
+            length -= var4;
             this.field50 = this.writeBuffer.length;
             this.flush();
          }
 
-         if (var3 <= this.writeBuffer.length) {
-            if (var3 > 0) {
+         if (length <= this.writeBuffer.length) {
+            if (length > 0) {
                if (this.field49 == -1L) {
                   this.field49 = this.field51;
                }
 
-               System.arraycopy(var1, var2, this.writeBuffer, (int)(this.field51 - this.field49), var3);
-               this.field51 += (long)var3;
+               System.arraycopy(src, srcIndex, this.writeBuffer, (int)(this.field51 - this.field49), length);
+               this.field51 += (long)length;
                if (this.field51 - this.field49 > (long)this.field50) {
                   this.field50 = (int)(this.field51 - this.field49);
                }
@@ -294,8 +294,8 @@ public class BufferedFile {
                this.field53 = this.field51;
             }
 
-            this.accessFile.write(var1, var2, var3);
-            this.field53 += (long)var3;
+            this.accessFile.write(src, srcIndex, length);
+            this.field53 += (long)length;
             if (this.field53 > this.field52) {
                this.field52 = this.field53;
             }
@@ -304,22 +304,22 @@ public class BufferedFile {
             long var6 = -1L;
             if (this.field51 >= this.field47 && this.field51 < (long)this.field48 + this.field47) {
                var10 = this.field51;
-            } else if (this.field47 >= this.field51 && this.field47 < (long)var3 + this.field51) {
+            } else if (this.field47 >= this.field51 && this.field47 < (long)length + this.field51) {
                var10 = this.field47;
             }
 
-            if (this.field51 + (long)var3 > this.field47 && (long)var3 + this.field51 <= (long)this.field48 + this.field47) {
-               var6 = this.field51 + (long)var3;
-            } else if ((long)this.field48 + this.field47 > this.field51 && this.field47 + (long)this.field48 <= (long)var3 + this.field51) {
+            if (this.field51 + (long)length > this.field47 && (long)length + this.field51 <= (long)this.field48 + this.field47) {
+               var6 = this.field51 + (long)length;
+            } else if ((long)this.field48 + this.field47 > this.field51 && this.field47 + (long)this.field48 <= (long)length + this.field51) {
                var6 = (long)this.field48 + this.field47;
             }
 
             if (var10 > -1L && var6 > var10) {
                int var8 = (int)(var6 - var10);
-               System.arraycopy(var1, (int)(var10 + (long)var2 - this.field51), this.readBuffer, (int)(var10 - this.field47), var8);
+               System.arraycopy(src, (int)(var10 + (long)srcIndex - this.field51), this.readBuffer, (int)(var10 - this.field47), var8);
             }
 
-            this.field51 += (long)var3;
+            this.field51 += (long)length;
          }
 
       } catch (IOException var9) {
@@ -387,8 +387,8 @@ public class BufferedFile {
       garbageValue = "-792629541"
    )
    @Export("colorStartTag")
-   static String colorStartTag(int var0) {
-      return "<col=" + Integer.toHexString(var0) + ">";
+   static String colorStartTag(int color) {
+      return "<col=" + Integer.toHexString(color) + ">";
    }
 
    @ObfuscatedName("er")

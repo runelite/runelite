@@ -74,8 +74,8 @@ public final class TilePaint {
       if (var2 == null) {
          class65.scene.removeGroundItemPile(SoundSystem.plane, var0, var1);
       } else {
-         long highestValue = -99999999L;
-         GroundItem highestValuedItem = null;
+         long var3 = -99999999L;
+         GroundItem var5 = null;
 
          GroundItem var6;
          for (var6 = (GroundItem)var2.last(); var6 != null; var6 = (GroundItem)var2.previous()) {
@@ -85,21 +85,21 @@ public final class TilePaint {
                var8 *= (long)(var6.quantity + 1);
             }
 
-            if (var8 > highestValue) {
-               highestValue = var8;
-               highestValuedItem = var6;
+            if (var8 > var3) {
+               var3 = var8;
+               var5 = var6;
             }
          }
 
-         if (highestValuedItem == null) {
+         if (var5 == null) {
             class65.scene.removeGroundItemPile(SoundSystem.plane, var0, var1);
          } else {
-            var2.addLast(highestValuedItem);
+            var2.addLast(var5);
             GroundItem var11 = null;
             GroundItem var12 = null;
 
             for (var6 = (GroundItem)var2.last(); var6 != null; var6 = (GroundItem)var2.previous()) {
-               if (highestValuedItem.id != var6.id) {
+               if (var5.id != var6.id) {
                   if (var11 == null) {
                      var11 = var6;
                   }
@@ -111,7 +111,7 @@ public final class TilePaint {
             }
 
             long var9 = FontName.calculateTag(var0, var1, 3, false, 0);
-            class65.scene.newGroundItemPile(SoundSystem.plane, var0, var1, class32.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, SoundSystem.plane), highestValuedItem, var9, var11, var12);
+            class65.scene.newGroundItemPile(SoundSystem.plane, var0, var1, class32.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, SoundSystem.plane), var5, var9, var11, var12);
          }
       }
 

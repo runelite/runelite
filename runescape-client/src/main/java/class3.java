@@ -97,17 +97,17 @@ public class class3 implements Enumerated {
    )
    public static void method41() {
       while (true) {
-         NodeDeque var0 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-         IndexStoreAction var1;
-         synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-            var1 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_responseQueue.removeLast();
+         NodeDeque var0 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue;
+         ArchiveDiskAction var1;
+         synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
+            var1 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_responseQueue.removeLast();
          }
 
          if (var1 == null) {
             return;
          }
 
-         var1.indexCache.load(var1.indexStore, (int)var1.key, var1.data, false);
+         var1.archive.load(var1.archiveDisk, (int)var1.key, var1.data, false);
       }
    }
 
@@ -116,29 +116,30 @@ public class class3 implements Enumerated {
       signature = "(IIIZIZI)V",
       garbageValue = "653716649"
    )
-   static void method42(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
-      if (var0 < var1) {
-         int var6 = (var0 + var1) / 2;
-         int var7 = var0;
+   @Export("doWorldSorting")
+   static void doWorldSorting(int lowestUnsorted, int highestUnsorted, int primaryMode, boolean primaryReversed, int secondaryMode, boolean secondaryReversed) {
+      if (lowestUnsorted < highestUnsorted) {
+         int var6 = (lowestUnsorted + highestUnsorted) / 2;
+         int var7 = lowestUnsorted;
          World var8 = ItemContainer.worlds[var6];
-         ItemContainer.worlds[var6] = ItemContainer.worlds[var1];
-         ItemContainer.worlds[var1] = var8;
+         ItemContainer.worlds[var6] = ItemContainer.worlds[highestUnsorted];
+         ItemContainer.worlds[highestUnsorted] = var8;
 
-         for (int var9 = var0; var9 < var1; ++var9) {
+         for (int var9 = lowestUnsorted; var9 < highestUnsorted; ++var9) {
             World var10 = ItemContainer.worlds[var9];
-            int var11 = WorldMapLabel.compareWorlds(var10, var8, var2, var3);
+            int var11 = WorldMapLabel.compareWorlds(var10, var8, primaryMode, primaryReversed);
             int var12;
             if (var11 != 0) {
-               if (var3) {
+               if (primaryReversed) {
                   var12 = -var11;
                } else {
                   var12 = var11;
                }
-            } else if (var4 == -1) {
+            } else if (secondaryMode == -1) {
                var12 = 0;
             } else {
-               int var13 = WorldMapLabel.compareWorlds(var10, var8, var4, var5);
-               if (var5) {
+               int var13 = WorldMapLabel.compareWorlds(var10, var8, secondaryMode, secondaryReversed);
+               if (secondaryReversed) {
                   var12 = -var13;
                } else {
                   var12 = var13;
@@ -152,10 +153,10 @@ public class class3 implements Enumerated {
             }
          }
 
-         ItemContainer.worlds[var1] = ItemContainer.worlds[var7];
+         ItemContainer.worlds[highestUnsorted] = ItemContainer.worlds[var7];
          ItemContainer.worlds[var7] = var8;
-         method42(var0, var7 - 1, var2, var3, var4, var5);
-         method42(var7 + 1, var1, var2, var3, var4, var5);
+         doWorldSorting(lowestUnsorted, var7 - 1, primaryMode, primaryReversed, secondaryMode, secondaryReversed);
+         doWorldSorting(var7 + 1, highestUnsorted, primaryMode, primaryReversed, secondaryMode, secondaryReversed);
       }
 
    }
@@ -289,17 +290,17 @@ public class class3 implements Enumerated {
             }
 
             var15.walkSequence = var15.definition.walkSequence;
-            var15.walkTurnSequence = var15.definition.walkTurnSequence;
-            var15.walkTurnLeftSequence = var15.definition.walkTurnLeftSequence;
-            var15.walkTurnRightSequence = var15.definition.walkTurnRightSequence;
-            var15.idleSequence = var15.definition.idleSequence;
+            var15.walkBackSequence = var15.definition.walkBackSequence;
+            var15.walkLeftSequence = var15.definition.walkLeftSequence;
+            var15.walkRightSequence = var15.definition.walkRightSequence;
+            var15.readySequence = var15.definition.readySequence;
             var15.turnLeftSequence = var15.definition.turnLeftSequence;
             var15.turnRightSequence = var15.definition.turnRightSequence;
             var15.method228(Canvas.localPlayer.pathX[0] + var5, Canvas.localPlayer.pathY[0] + var8, var12 == 1);
          }
 
          var1.exportIndex();
-         WorldComparator.method67(var1);
+         GrandExchangeOfferWorldComparator.method67(var1);
 
          for (var13 = 0; var13 < Client.field211; ++var13) {
             var3 = Client.field212[var13];

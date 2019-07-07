@@ -56,7 +56,7 @@ public class MusicPatchPcmStream extends PcmStream {
                break;
             }
 
-            var1.stream.vmethod263(var2, var3, var7);
+            var1.stream.fill(var2, var3, var7);
             var3 += var7;
             var4 -= var7;
             var1.field591 += var7 * var6 - 1048576;
@@ -80,14 +80,14 @@ public class MusicPatchPcmStream extends PcmStream {
             }
 
             var10.method275(var8);
-            var10.vmethod263(var2, var3, var5 - var3);
+            var10.fill(var2, var3, var5 - var3);
             if (var10.method279()) {
                this.mixer.addSubStream(var10);
             }
          }
       }
 
-      var1.stream.vmethod263(var2, var3, var4);
+      var1.stream.fill(var2, var3, var4);
    }
 
    @ObfuscatedName("f")
@@ -116,7 +116,7 @@ public class MusicPatchPcmStream extends PcmStream {
          }
       }
 
-      var1.stream.vmethod264(var2);
+      var1.stream.skip(var2);
    }
 
    @ObfuscatedName("u")
@@ -152,8 +152,9 @@ public class MusicPatchPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("e")
-   protected void vmethod263(int[] var1, int var2, int var3) {
-      this.mixer.vmethod263(var1, var2, var3);
+   @Export("fill")
+   protected void fill(int[] var1, int var2, int var3) {
+      this.mixer.fill(var1, var2, var3);
 
       for (MusicPatchNode var4 = (MusicPatchNode)this.queue.last(); var4 != null; var4 = (MusicPatchNode)this.queue.previous()) {
          if (!this.superStream.method195(var4)) {
@@ -177,8 +178,9 @@ public class MusicPatchPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("d")
-   protected void vmethod264(int var1) {
-      this.mixer.vmethod264(var1);
+   @Export("skip")
+   protected void skip(int var1) {
+      this.mixer.skip(var1);
 
       for (MusicPatchNode var2 = (MusicPatchNode)this.queue.last(); var2 != null; var2 = (MusicPatchNode)this.queue.previous()) {
          if (!this.superStream.method195(var2)) {

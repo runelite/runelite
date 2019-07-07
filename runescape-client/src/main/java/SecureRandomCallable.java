@@ -36,10 +36,10 @@ public class SecureRandomCallable implements Callable {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = VarpDefinition.field943.takeRecord(16, var0);
+         byte[] var2 = VarpDefinition.field943.takeFile(16, var0);
          var1 = new VarpDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          VarpDefinition.VarpDefinition_cached.put(var1, (long)var0);
@@ -52,11 +52,11 @@ public class SecureRandomCallable implements Callable {
       signature = "(IIII)Lbx;",
       garbageValue = "329127611"
    )
-   static final WidgetGroupParent method1143(int var0, int var1, int var2) {
-      WidgetGroupParent var3 = new WidgetGroupParent();
+   static final InterfaceParent method1143(int var0, int var1, int var2) {
+      InterfaceParent var3 = new InterfaceParent();
       var3.group = var1;
       var3.type = var2;
-      Client.widgetGroupParents.put(var3, (long)var0);
+      Client.interfaceParents.put(var3, (long)var0);
       DevicePcmPlayerProvider.method845(var1);
       Widget var4 = Huffman.getWidget(var0);
       class22.method295(var4);
@@ -132,10 +132,10 @@ public class SecureRandomCallable implements Callable {
       GameShell.menuY = var13;
       class214.menuWidth = var7;
       AbstractWorldMapIcon.menuHeight = Client.menuOptionsCount * 15 + 22;
-      class39.revalidateWidgetScroll(Widget.widgets[var0 >> 16], var4, false);
+      class39.revalidateWidgetScroll(Widget.interfaceComponents[var0 >> 16], var4, false);
       WorldMapSection3.runWidgetOnLoadListener(var1);
-      if (Client.rootWidgetGroup != -1) {
-         GrandExchangeEvents.method74(Client.rootWidgetGroup, 1);
+      if (Client.rootInterface != -1) {
+         GrandExchangeEvents.method74(Client.rootInterface, 1);
       }
 
       return var3;

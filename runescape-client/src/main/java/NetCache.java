@@ -96,8 +96,8 @@ public class NetCache {
    @ObfuscatedSignature(
       signature = "[Lit;"
    )
-   @Export("NetCache_indexCaches")
-   public static IndexCache[] NetCache_indexCaches;
+   @Export("NetCache_archives")
+   public static Archive[] NetCache_archives;
    @ObfuscatedName("b")
    public static byte field631;
    @ObfuscatedName("c")
@@ -136,7 +136,7 @@ public class NetCache {
       NetCache_responseHeaderBuffer = new Buffer(8);
       field630 = 0;
       NetCache_crc = new CRC32();
-      NetCache_indexCaches = new IndexCache[256];
+      NetCache_archives = new Archive[256];
       field631 = 0;
       NetCache_crcMismatches = 0;
       NetCache_ioExceptions = 0;

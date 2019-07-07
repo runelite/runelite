@@ -66,8 +66,8 @@ public class SoundEffect {
       if (var1 != 9999999 && var1 != 0) {
          for (var2 = 0; var2 < 10; ++var2) {
             if (this.instruments[var2] != null) {
-               Instrument var10000 = this.instruments[var2];
-               var10000.offset -= var1 * 20;
+               Instrument var3 = this.instruments[var2];
+               var3.offset -= var1 * 20;
             }
          }
 
@@ -126,8 +126,8 @@ public class SoundEffect {
       signature = "(Lir;II)Lci;"
    )
    @Export("readSoundEffect")
-   public static SoundEffect readSoundEffect(AbstractIndexCache var0, int var1, int var2) {
-      byte[] var3 = var0.takeRecord(var1, var2);
+   public static SoundEffect readSoundEffect(AbstractArchive var0, int var1, int var2) {
+      byte[] var3 = var0.takeFile(var1, var2);
       return var3 == null ? null : new SoundEffect(new Buffer(var3));
    }
 }

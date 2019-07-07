@@ -51,7 +51,6 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
-import net.runelite.api.PacketBuffer;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -111,8 +110,9 @@ import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSPacketBuffer;
 import org.slf4j.Logger;
-import net.runelite.rs.api.RSAbstractIndexCache;
+import net.runelite.rs.api.RSAbstractArchive;
 import net.runelite.rs.api.RSChatChannel;
 import net.runelite.rs.api.RSClanChat;
 import net.runelite.rs.api.RSClient;
@@ -1329,7 +1329,7 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@MethodHook("updateNpcs")
-	public static void updateNpcs(boolean var0, PacketBuffer var1)
+	public static void updateNpcs(boolean var0, RSPacketBuffer var1)
 	{
 		client.getCallbacks().updateNpcs();
 	}
@@ -1355,13 +1355,13 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	@MethodHook("methodDraw")
-	public void methodDraw(boolean var1)
+	@MethodHook("draw")
+	public void draw(boolean var1)
 	{
 		callbacks.clientMainLoop();
 	}
 
-	@MethodHook("drawWidgetGroup")
+	@MethodHook("drawInterface")
 	@Inject
 	public static void renderWidgetLayer(Widget[] widgets, int parentId, int minX, int minY, int maxX, int maxY, int x, int y, int var8)
 	{
@@ -1464,7 +1464,7 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public RSSprite[] getSprites(IndexDataBase source, int archiveId, int fileId)
 	{
-		RSAbstractIndexCache rsSource = (RSAbstractIndexCache) source;
+		RSAbstractArchive rsSource = (RSAbstractArchive) source;
 		byte[] configData = rsSource.getConfigData(archiveId, fileId);
 		if (configData == null)
 		{

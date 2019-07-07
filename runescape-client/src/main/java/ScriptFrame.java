@@ -36,12 +36,12 @@ public class ScriptFrame {
       garbageValue = "-1726705535"
    )
    @Export("findEnumerated")
-   public static Enumerated findEnumerated(Enumerated[] var0, int var1) {
-      Enumerated[] var2 = var0;
+   public static Enumerated findEnumerated(Enumerated[] values, int ordinal) {
+      Enumerated[] var2 = values;
 
       for (int var3 = 0; var3 < var2.length; ++var3) {
          Enumerated var4 = var2[var3];
-         if (var1 == var4.rsOrdinal()) {
+         if (ordinal == var4.rsOrdinal()) {
             return var4;
          }
       }

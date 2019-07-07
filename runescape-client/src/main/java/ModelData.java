@@ -1119,30 +1119,30 @@ public class ModelData extends Entity {
    void method208() {
       int[] var1;
       int var2;
-      int var10002;
-      int var3;
+      int var10003;
       int var4;
+      int var5;
       if (this.field555 != null) {
          var1 = new int[256];
          var2 = 0;
 
-         for (var3 = 0; var3 < this.verticesCount; ++var3) {
-            var4 = this.field555[var3];
-            var10002 = var1[var4]++;
-            if (var4 > var2) {
-               var2 = var4;
+         for (var4 = 0; var4 < this.verticesCount; ++var4) {
+            var5 = this.field555[var4];
+            var10003 = var1[var5]++;
+            if (var5 > var2) {
+               var2 = var5;
             }
          }
 
          this.vertexLabels = new int[var2 + 1][];
 
-         for (var3 = 0; var3 <= var2; ++var3) {
-            this.vertexLabels[var3] = new int[var1[var3]];
-            var1[var3] = 0;
+         for (var4 = 0; var4 <= var2; ++var4) {
+            this.vertexLabels[var4] = new int[var1[var4]];
+            var1[var4] = 0;
          }
 
-         for (var3 = 0; var3 < this.verticesCount; this.vertexLabels[var4][var1[var4]++] = var3++) {
-            var4 = this.field555[var3];
+         for (var4 = 0; var4 < this.verticesCount; this.vertexLabels[var5][var1[var5]++] = var4++) {
+            var5 = this.field555[var4];
          }
 
          this.field555 = null;
@@ -1152,23 +1152,23 @@ public class ModelData extends Entity {
          var1 = new int[256];
          var2 = 0;
 
-         for (var3 = 0; var3 < this.faceCount; ++var3) {
-            var4 = this.field556[var3];
-            var10002 = var1[var4]++;
-            if (var4 > var2) {
-               var2 = var4;
+         for (var4 = 0; var4 < this.faceCount; ++var4) {
+            var5 = this.field556[var4];
+            var10003 = var1[var5]++;
+            if (var5 > var2) {
+               var2 = var5;
             }
          }
 
          this.faceLabelsAlpha = new int[var2 + 1][];
 
-         for (var3 = 0; var3 <= var2; ++var3) {
-            this.faceLabelsAlpha[var3] = new int[var1[var3]];
-            var1[var3] = 0;
+         for (var4 = 0; var4 <= var2; ++var4) {
+            this.faceLabelsAlpha[var4] = new int[var1[var4]];
+            var1[var4] = 0;
          }
 
-         for (var3 = 0; var3 < this.faceCount; this.faceLabelsAlpha[var4][var1[var4]++] = var3++) {
-            var4 = this.field556[var3];
+         for (var4 = 0; var4 < this.faceCount; this.faceLabelsAlpha[var5][var1[var5]++] = var4++) {
+            var5 = this.field556[var4];
          }
 
          this.field556 = null;
@@ -1225,12 +1225,12 @@ public class ModelData extends Entity {
    @ObfuscatedName("z")
    public void method213(int var1, int var2, int var3) {
       for (int var4 = 0; var4 < this.verticesCount; ++var4) {
-         int[] var10000 = this.verticesX;
-         var10000[var4] += var1;
-         var10000 = this.verticesY;
-         var10000[var4] += var2;
-         var10000 = this.verticesZ;
-         var10000[var4] += var3;
+         int[] var5 = this.verticesX;
+         var5[var4] += var1;
+         var5 = this.verticesY;
+         var5[var4] += var2;
+         var5 = this.verticesZ;
+         var5[var4] += var3;
       }
 
       this.invalidate();
@@ -1238,9 +1238,9 @@ public class ModelData extends Entity {
 
    @ObfuscatedName("j")
    @Export("recolor")
-   public void recolor(short var1, short var2) {
+   public void recolor(short from, short var2) {
       for (int var3 = 0; var3 < this.faceCount; ++var3) {
-         if (this.faceColors[var3] == var1) {
+         if (this.faceColors[var3] == from) {
             this.faceColors[var3] = var2;
          }
       }
@@ -1249,10 +1249,10 @@ public class ModelData extends Entity {
 
    @ObfuscatedName("s")
    @Export("retexture")
-   public void retexture(short var1, short var2) {
+   public void retexture(short from, short var2) {
       if (this.faceTextures != null) {
          for (int var3 = 0; var3 < this.faceCount; ++var3) {
-            if (this.faceTextures[var3] == var1) {
+            if (this.faceTextures[var3] == from) {
                this.faceTextures[var3] = var2;
             }
          }
@@ -1606,8 +1606,8 @@ public class ModelData extends Entity {
    @ObfuscatedSignature(
       signature = "(Lir;II)Ldw;"
    )
-   public static ModelData method2788(AbstractIndexCache var0, int var1, int var2) {
-      byte[] var3 = var0.takeRecord(var1, var2);
+   public static ModelData method2788(AbstractArchive var0, int var1, int var2) {
+      byte[] var3 = var0.takeFile(var1, var2);
       return var3 == null ? null : new ModelData(var3);
    }
 

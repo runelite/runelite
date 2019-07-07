@@ -146,7 +146,7 @@ public final class Tile extends Node {
       garbageValue = "-1899580455"
    )
    public static void method2867() {
-      UnderlayDefinition.UnderlayDefinition_cached.clear();
+      FloorUnderlayDefinition.FloorUnderlayDefinition_cached.clear();
    }
 
    @ObfuscatedName("is")
@@ -155,19 +155,19 @@ public final class Tile extends Node {
       garbageValue = "117"
    )
    @Export("addNpcToMenu")
-   static final void addNpcToMenu(NPCDefinition var0, int var1, int var2, int var3) {
+   static final void addNpcToMenu(NPCDefinition npc, int menuArg0, int menuArg1, int menuArg2) {
       if (Client.menuOptionsCount < 400) {
-         if (var0.transforms != null) {
-            var0 = var0.transform();
+         if (npc.transforms != null) {
+            npc = npc.transform();
          }
 
-         if (var0 != null && var0.isInteractable && (!var0.isFollower || Client.followerIndex == var1)) {
-            String var4 = var0.name;
+         if (npc != null && npc.isInteractable && (!npc.isFollower || Client.followerIndex == menuArg0)) {
+            String var4 = npc.name;
             int var5;
             int var6;
             int var7;
-            if (var0.combatLevel != 0) {
-               var5 = var0.combatLevel;
+            if (npc.combatLevel != 0) {
+               var5 = npc.combatLevel;
                var6 = Canvas.localPlayer.combatLevel;
                var7 = var6 - var5;
                String var8;
@@ -191,22 +191,22 @@ public final class Tile extends Node {
                   var8 = BufferedFile.colorStartTag(16776960);
                }
 
-               var4 = var4 + var8 + "  (level-" + var0.combatLevel + ")";
+               var4 = var4 + var8 + "  (level-" + npc.combatLevel + ")";
             }
 
-            if (var0.isFollower && Client.followerOpsLowPriority) {
-               Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(16776960) + var4, 1003, var1, var2, var3);
+            if (npc.isFollower && Client.followerOpsLowPriority) {
+               Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(16776960) + var4, 1003, menuArg0, menuArg1, menuArg2);
             }
 
             if (Client.isItemSelected == 1) {
-               Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " -> " + BufferedFile.colorStartTag(16776960) + var4, 7, var1, var2, var3);
+               Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " -> " + BufferedFile.colorStartTag(16776960) + var4, 7, menuArg0, menuArg1, menuArg2);
             } else if (Client.isSpellSelected) {
                if ((FloorDecoration.selectedSpellFlags & 2) == 2) {
-                  Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + BufferedFile.colorStartTag(16776960) + var4, 8, var1, var2, var3);
+                  Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + BufferedFile.colorStartTag(16776960) + var4, 8, menuArg0, menuArg1, menuArg2);
                }
             } else {
-               var7 = var0.isFollower && Client.followerOpsLowPriority ? 2000 : 0;
-               String[] var10 = var0.actions;
+               var7 = npc.isFollower && Client.followerOpsLowPriority ? 2000 : 0;
+               String[] var10 = npc.actions;
                if (var10 != null) {
                   for (var5 = 4; var5 >= 0; --var5) {
                      if (var10[var5] != null && !var10[var5].equalsIgnoreCase("Attack")) {
@@ -231,7 +231,7 @@ public final class Tile extends Node {
                            var6 = var7 + 13;
                         }
 
-                        Tiles.insertMenuItemNoShift(var10[var5], BufferedFile.colorStartTag(16776960) + var4, var6, var1, var2, var3);
+                        Tiles.insertMenuItemNoShift(var10[var5], BufferedFile.colorStartTag(16776960) + var4, var6, menuArg0, menuArg1, menuArg2);
                      }
                   }
                }
@@ -241,7 +241,7 @@ public final class Tile extends Node {
                      if (var10[var5] != null && var10[var5].equalsIgnoreCase("Attack")) {
                         short var9 = 0;
                         if (AttackOption.AttackOption_hidden != Client.npcAttackOption) {
-                           if (AttackOption.AttackOption_alwaysRightClick == Client.npcAttackOption || Client.npcAttackOption == AttackOption.AttackOption_dependsOnCombatLevels && var0.combatLevel > Canvas.localPlayer.combatLevel) {
+                           if (AttackOption.AttackOption_alwaysRightClick == Client.npcAttackOption || Client.npcAttackOption == AttackOption.AttackOption_dependsOnCombatLevels && npc.combatLevel > Canvas.localPlayer.combatLevel) {
                               var9 = 2000;
                            }
 
@@ -266,14 +266,14 @@ public final class Tile extends Node {
                               var6 = var9 + 13;
                            }
 
-                           Tiles.insertMenuItemNoShift(var10[var5], BufferedFile.colorStartTag(16776960) + var4, var6, var1, var2, var3);
+                           Tiles.insertMenuItemNoShift(var10[var5], BufferedFile.colorStartTag(16776960) + var4, var6, menuArg0, menuArg1, menuArg2);
                         }
                      }
                   }
                }
 
-               if (!var0.isFollower || !Client.followerOpsLowPriority) {
-                  Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(16776960) + var4, 1003, var1, var2, var3);
+               if (!npc.isFollower || !Client.followerOpsLowPriority) {
+                  Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(16776960) + var4, 1003, menuArg0, menuArg1, menuArg2);
                }
             }
          }

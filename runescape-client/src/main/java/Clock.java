@@ -27,7 +27,7 @@ public abstract class Clock {
       garbageValue = "-126803683"
    )
    @Export("wait")
-   public abstract int wait(int var1, int var2);
+   public abstract int wait(int cycleMs, int minSleepMs);
 
    @ObfuscatedName("m")
    public static String method3534(long var0) {
@@ -41,22 +41,22 @@ public abstract class Clock {
                ++var2;
             }
 
-            char var4;
-            StringBuilder var8;
-            for (var8 = new StringBuilder(var2); var0 != 0L; var8.append(var4)) {
+            StringBuilder var4;
+            char var8;
+            for (var4 = new StringBuilder(var2); var0 != 0L; var4.append(var8)) {
                long var5 = var0;
                var0 /= 37L;
-               var4 = class306.base37Table[(int)(var5 - 37L * var0)];
-               if (var4 == '_') {
-                  int var7 = var8.length() - 1;
-                  var8.setCharAt(var7, Character.toUpperCase(var8.charAt(var7)));
-                  var4 = 160;
+               var8 = class306.base37Table[(int)(var5 - 37L * var0)];
+               if (var8 == '_') {
+                  int var7 = var4.length() - 1;
+                  var4.setCharAt(var7, Character.toUpperCase(var4.charAt(var7)));
+                  var8 = 160;
                }
             }
 
-            var8.reverse();
-            var8.setCharAt(0, Character.toUpperCase(var8.charAt(0)));
-            return var8.toString();
+            var4.reverse();
+            var4.setCharAt(0, Character.toUpperCase(var4.charAt(0)));
+            return var4.toString();
          }
       } else {
          return null;

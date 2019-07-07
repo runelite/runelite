@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("lg")
-@Implements("SpriteIds")
-public class SpriteIds {
+@Implements("GraphicsDefaults")
+public class GraphicsDefaults {
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1673796151
@@ -72,7 +72,7 @@ public class SpriteIds {
    @Export("modIcons")
    public int modIcons;
 
-   public SpriteIds() {
+   public GraphicsDefaults() {
       this.field878 = -1;
       this.field879 = -1;
       this.mapScenes = -1;
@@ -91,9 +91,9 @@ public class SpriteIds {
       signature = "(Lir;I)V",
       garbageValue = "1764356022"
    )
-   @Export("read")
-   public void read(AbstractIndexCache var1) {
-      byte[] var2 = var1.takeRecordFlat(class311.field3810.field3809);
+   @Export("decode")
+   public void decode(AbstractArchive index) {
+      byte[] var2 = index.takeFileFlat(DefaultsGroup.DefaultsGroup_graphics.group);
       Buffer var3 = new Buffer(var2);
 
       while (true) {
@@ -127,11 +127,11 @@ public class SpriteIds {
       signature = "(Lir;Lir;III)Lkk;",
       garbageValue = "195396240"
    )
-   public static Font method5823(AbstractIndexCache var0, AbstractIndexCache var1, int var2, int var3) {
+   public static Font method5823(AbstractArchive var0, AbstractArchive var1, int var2, int var3) {
       if (!SpriteMask.loadSprite(var0, var2, var3)) {
          return null;
       } else {
-         byte[] var4 = var1.takeRecord(var2, var3);
+         byte[] var4 = var1.takeFile(var2, var3);
          Font var5;
          if (var4 == null) {
             var5 = null;
@@ -142,7 +142,7 @@ public class SpriteIds {
             VarbitDefinition.indexedSpriteWidths = null;
             SecureRandomCallable.indexedSpriteHeights = null;
             class328.indexedSpritePalette = null;
-            class328.spritePixels = (byte[][])null;
+            class328.spritePixels = ((byte[][])null);
             var5 = var6;
          }
 

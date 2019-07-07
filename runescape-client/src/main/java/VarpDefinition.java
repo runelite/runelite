@@ -11,7 +11,7 @@ public class VarpDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field943;
+   public static AbstractArchive field943;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 510774535
@@ -39,15 +39,15 @@ public class VarpDefinition extends DualNode {
       signature = "(Lgr;B)V",
       garbageValue = "-41"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -56,8 +56,8 @@ public class VarpDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-1859920822"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       if (var2 == 5) {
          this.type = var1.readUnsignedShort();
       }

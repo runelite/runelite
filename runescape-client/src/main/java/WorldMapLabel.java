@@ -190,7 +190,7 @@ public class WorldMapLabel {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.spritePixels = (byte[][])null;
+      class328.spritePixels = ((byte[][])null);
       return var0;
    }
 
@@ -200,11 +200,11 @@ public class WorldMapLabel {
       garbageValue = "1459100828"
    )
    @Export("compareWorlds")
-   static int compareWorlds(World var0, World var1, int var2, boolean var3) {
-      if (var2 == 1) {
+   static int compareWorlds(World var0, World var1, int mode, boolean reversed) {
+      if (mode == 1) {
          int var4 = var0.population;
          int var5 = var1.population;
-         if (!var3) {
+         if (!reversed) {
             if (var4 == -1) {
                var4 = 2001;
             }
@@ -216,7 +216,7 @@ public class WorldMapLabel {
 
          return var4 - var5;
       } else {
-         return var2 == 2 ? var0.location - var1.location : (var2 == 3 ? (var0.activity.equals("-") ? (var1.activity.equals("-") ? 0 : (var3 ? -1 : 1)) : (var1.activity.equals("-") ? (var3 ? 1 : -1) : var0.activity.compareTo(var1.activity))) : (var2 == 4 ? (var0.method357() ? (var1.method357() ? 0 : 1) : (var1.method357() ? -1 : 0)) : (var2 == 5 ? (var0.method356() ? (var1.method356() ? 0 : 1) : (var1.method356() ? -1 : 0)) : (var2 == 6 ? (var0.isPvp() ? (var1.isPvp() ? 0 : 1) : (var1.isPvp() ? -1 : 0)) : (var2 == 7 ? (var0.isMembersOnly() ? (var1.isMembersOnly() ? 0 : 1) : (var1.isMembersOnly() ? -1 : 0)) : var0.id - var1.id)))));
+         return mode == 2 ? var0.location - var1.location : (mode == 3 ? (var0.activity.equals("-") ? (var1.activity.equals("-") ? 0 : (reversed ? -1 : 1)) : (var1.activity.equals("-") ? (reversed ? 1 : -1) : var0.activity.compareTo(var1.activity))) : (mode == 4 ? (var0.method357() ? (var1.method357() ? 0 : 1) : (var1.method357() ? -1 : 0)) : (mode == 5 ? (var0.method356() ? (var1.method356() ? 0 : 1) : (var1.method356() ? -1 : 0)) : (mode == 6 ? (var0.isPvp() ? (var1.isPvp() ? 0 : 1) : (var1.isPvp() ? -1 : 0)) : (mode == 7 ? (var0.isMembersOnly() ? (var1.isMembersOnly() ? 0 : 1) : (var1.isMembersOnly() ? -1 : 0)) : var0.id - var1.id)))));
       }
    }
 
@@ -241,7 +241,7 @@ public class WorldMapLabel {
          int var3 = class32.getTileHeight(var0, var1, SoundSystem.plane) - var2;
          var0 -= WorldMapSection1.cameraX;
          var3 -= GrandExchangeEvents.cameraY;
-         var1 -= class11.cameraZ;
+         var1 -= GrandExchangeOfferNameComparator.cameraZ;
          int var4 = Rasterizer3D.Rasterizer3D_sine[WorldMapIcon1.cameraPitch];
          int var5 = Rasterizer3D.Rasterizer3D_cosine[WorldMapIcon1.cameraPitch];
          int var6 = Rasterizer3D.Rasterizer3D_sine[MusicPatchNode.cameraYaw];

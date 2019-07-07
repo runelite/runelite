@@ -81,7 +81,7 @@ public enum AttackOption implements Enumerated {
       signature = "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;II)I",
       garbageValue = "-189314181"
    )
-   public static int method2033(CharSequence var0, CharSequence var1, int var2) {
+   public static int method2033(CharSequence var0, CharSequence var1, int language) {
       int var3 = var0.length();
       int var4 = var1.length();
       int var5 = 0;
@@ -146,13 +146,13 @@ public enum AttackOption implements Enumerated {
          }
 
          var8 = var12;
-         var9 = class12.method155(var9, var2);
-         var14 = class12.method155(var14, var2);
+         var9 = GrandExchangeOfferAgeComparator.method155(var9, language);
+         var14 = GrandExchangeOfferAgeComparator.method155(var14, language);
          if (var9 != var14 && Character.toUpperCase(var9) != Character.toUpperCase(var14)) {
             var9 = Character.toLowerCase(var9);
             var14 = Character.toLowerCase(var14);
             if (var14 != var9) {
-               return CollisionMap.method3631(var9, var2) - CollisionMap.method3631(var14, var2);
+               return CollisionMap.method3631(var9, language) - CollisionMap.method3631(var14, language);
             }
          }
       }
@@ -168,7 +168,7 @@ public enum AttackOption implements Enumerated {
             var19 = Character.toLowerCase(var19);
             var18 = Character.toLowerCase(var18);
             if (var19 != var18) {
-               return CollisionMap.method3631(var19, var2) - CollisionMap.method3631(var18, var2);
+               return CollisionMap.method3631(var19, language) - CollisionMap.method3631(var18, language);
             }
          }
       }
@@ -181,7 +181,7 @@ public enum AttackOption implements Enumerated {
             var18 = var0.charAt(var20);
             char var13 = var1.charAt(var20);
             if (var18 != var13) {
-               return CollisionMap.method3631(var18, var2) - CollisionMap.method3631(var13, var2);
+               return CollisionMap.method3631(var18, language) - CollisionMap.method3631(var13, language);
             }
          }
 

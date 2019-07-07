@@ -8,7 +8,7 @@ final class class4 implements class0 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field1158;
+   public static AbstractArchive field1158;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -52,7 +52,7 @@ final class class4 implements class0 {
       garbageValue = "-843046456"
    )
    public static void method55() {
-      OverlayDefinition.field664.clear();
+      FloorOverlayDefinition.field664.clear();
    }
 
    @ObfuscatedName("v")
@@ -124,7 +124,7 @@ final class class4 implements class0 {
                RouteStrategy.Interpreter_intStackSize -= 2;
                var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-               Widget var12 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+               Widget var12 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
                Players.clickWidget(var12, var7, var4);
                return 1;
             } else if (var0 == ScriptOpcodes.MOUSECAM) {
@@ -154,18 +154,18 @@ final class class4 implements class0 {
                   var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   Interpreter.Interpreter_stringStackSize -= 2;
                   var6 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize];
-                  String var10 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1];
+                  String var9 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1];
                   if (var6.length() > 500) {
                      return 1;
-                  } else if (var10.length() > 500) {
+                  } else if (var9.length() > 500) {
                      return 1;
                   } else {
-                     PacketBufferNode var9 = Interpreter.method1915(ClientPacket.field238, Client.packetWriter.isaacCipher);
-                     var9.packetBuffer.writeShort(1 + WorldMapRegion.method550(var6) + WorldMapRegion.method550(var10));
-                     var9.packetBuffer.writeStringCp1252NullTerminated(var6);
-                     var9.packetBuffer.writeByte(var7);
-                     var9.packetBuffer.writeStringCp1252NullTerminated(var10);
-                     Client.packetWriter.method241(var9);
+                     PacketBufferNode var10 = Interpreter.method1915(ClientPacket.field238, Client.packetWriter.isaacCipher);
+                     var10.packetBuffer.writeShort(1 + WorldMapRegion.stringCp1252NullTerminatedByteSize(var6) + WorldMapRegion.stringCp1252NullTerminatedByteSize(var9));
+                     var10.packetBuffer.writeStringCp1252NullTerminated(var6);
+                     var10.packetBuffer.writeByte(var7);
+                     var10.packetBuffer.writeStringCp1252NullTerminated(var9);
+                     Client.packetWriter.method241(var10);
                      return 1;
                   }
                } else if (var0 == ScriptOpcodes.SETSHIFTCLICKDROP) {
@@ -224,10 +224,10 @@ final class class4 implements class0 {
                } else if (var0 == ScriptOpcodes.GETTAPTODROP) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class206.getTapToDrop() ? 1 : 0;
                   return 1;
-               } else if (var0 == 3129) {
+               } else if (var0 == ScriptOpcodes.SETOCULUSORBSPEED) {
                   RouteStrategy.Interpreter_intStackSize -= 2;
                   Client.oculusOrbNormalSpeed = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-                  Client.field197 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
+                  Client.oculusOrbSlowedSpeed = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
                   return 1;
                } else if (var0 == 3130) {
                   RouteStrategy.Interpreter_intStackSize -= 2;
@@ -263,7 +263,7 @@ final class class4 implements class0 {
                   return 1;
                } else if (var0 == 3140) {
                   Client.field151 = 3;
-                  Client.field153 = var2 ? WorldMapIcon1.field1030.id : class12.field1111.id;
+                  Client.field153 = var2 ? WorldMapIcon1.field1030.id : GrandExchangeOfferAgeComparator.field1111.id;
                   return 1;
                } else if (var0 == ScriptOpcodes.SETHIDEUSERNAME) {
                   var8 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
@@ -287,7 +287,7 @@ final class class4 implements class0 {
                   return 1;
                } else if (var0 == 3145) {
                   return 1;
-               } else if (var0 == 3146) {
+               } else if (var0 == ScriptOpcodes.SETTITLEMUSICENABLED) {
                   var8 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   if (var8 == ReflectionCheck.clientPreferences.titleMusicDisabled) {
                      ReflectionCheck.clientPreferences.titleMusicDisabled = !var8;
@@ -295,7 +295,7 @@ final class class4 implements class0 {
                   }
 
                   return 1;
-               } else if (var0 == 3147) {
+               } else if (var0 == ScriptOpcodes.GETTITLEMUSICENABLED) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.titleMusicDisabled ? 0 : 1;
                   return 1;
                } else if (var0 == 3148) {

@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ik")
-@Implements("IndexStoreAction")
-public class IndexStoreAction extends Node {
+@Implements("ArchiveDiskAction")
+public class ArchiveDiskAction extends Node {
    @ObfuscatedName("rt")
    @ObfuscatedGetter(
       intValue = -1086790653
@@ -36,14 +36,14 @@ public class IndexStoreAction extends Node {
    @ObfuscatedSignature(
       signature = "Lff;"
    )
-   @Export("indexStore")
-   IndexStore indexStore;
+   @Export("archiveDisk")
+   ArchiveDisk archiveDisk;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache")
-   IndexCache indexCache;
+   @Export("archive")
+   Archive archive;
 
    @ObfuscatedName("fn")
    @ObfuscatedSignature(
@@ -94,7 +94,7 @@ public class IndexStoreAction extends Node {
                   var5 = false;
                }
 
-               if (var0.movementSequence == var0.idleSequence && (var0.field22 > 25 || var5)) {
+               if (var0.movementSequence == var0.readySequence && (var0.field22 > 25 || var5)) {
                   if (var0.turnLeftSequence != -1) {
                      var0.movementSequence = var0.turnLeftSequence;
                   } else {
@@ -109,7 +109,7 @@ public class IndexStoreAction extends Node {
                   var5 = false;
                }
 
-               if (var0.movementSequence == var0.idleSequence && (var0.field22 > 25 || var5)) {
+               if (var0.movementSequence == var0.readySequence && (var0.field22 > 25 || var5)) {
                   if (var0.turnRightSequence != -1) {
                      var0.movementSequence = var0.turnRightSequence;
                   } else {

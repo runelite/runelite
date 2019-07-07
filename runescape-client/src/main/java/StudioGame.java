@@ -68,19 +68,19 @@ public enum StudioGame implements Enumerated {
       signature = "(II)Lih;",
       garbageValue = "-2058685786"
    )
-   public static UnderlayDefinition method4550(int var0) {
-      UnderlayDefinition var1 = (UnderlayDefinition)UnderlayDefinition.UnderlayDefinition_cached.get((long)var0);
+   public static FloorUnderlayDefinition method4550(int var0) {
+      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.FloorUnderlayDefinition_cached.get((long)var0);
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = UnderlayDefinition.UnderlayDefinition_indexCache.takeRecord(1, var0);
-         var1 = new UnderlayDefinition();
+         byte[] var2 = FloorUnderlayDefinition.FloorUnderlayDefinition_archive.takeFile(1, var0);
+         var1 = new FloorUnderlayDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2), var0);
+            var1.decode(new Buffer(var2), var0);
          }
 
-         var1.init();
-         UnderlayDefinition.UnderlayDefinition_cached.put(var1, (long)var0);
+         var1.postDecode();
+         FloorUnderlayDefinition.FloorUnderlayDefinition_cached.put(var1, (long)var0);
          return var1;
       }
    }

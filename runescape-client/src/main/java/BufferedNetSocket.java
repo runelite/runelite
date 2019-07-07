@@ -40,8 +40,8 @@ public class BufferedNetSocket extends AbstractSocket {
       garbageValue = "1765046516"
    )
    @Export("isAvailable")
-   public boolean isAvailable(int var1) throws IOException {
-      return this.source.isAvailable(var1);
+   public boolean isAvailable(int length) throws IOException {
+      return this.source.isAvailable(length);
    }
 
    @ObfuscatedName("q")
@@ -70,8 +70,8 @@ public class BufferedNetSocket extends AbstractSocket {
       garbageValue = "-1089665746"
    )
    @Export("read")
-   public int read(byte[] var1, int var2, int var3) throws IOException {
-      return this.source.read(var1, var2, var3);
+   public int read(byte[] dst, int dstIndex, int length) throws IOException {
+      return this.source.read(dst, dstIndex, length);
    }
 
    @ObfuscatedName("u")
@@ -80,8 +80,8 @@ public class BufferedNetSocket extends AbstractSocket {
       garbageValue = "-86"
    )
    @Export("write")
-   public void write(byte[] var1, int var2, int var3) throws IOException {
-      this.sink.write(var1, var2, var3);
+   public void write(byte[] src, int srcIndex, int length) throws IOException {
+      this.sink.write(src, srcIndex, length);
    }
 
    @ObfuscatedName("g")

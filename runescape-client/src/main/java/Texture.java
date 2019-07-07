@@ -86,10 +86,10 @@ public class Texture extends Node {
    @ObfuscatedSignature(
       signature = "(DILir;)Z"
    )
-   boolean method320(double var1, int var3, AbstractIndexCache var4) {
+   boolean method320(double var1, int var3, AbstractArchive var4) {
       int var5;
       for (var5 = 0; var5 < this.records.length; ++var5) {
-         if (var4.getRecordFlat(this.records[var5]) == null) {
+         if (var4.getFileFlat(this.records[var5]) == null) {
             return false;
          }
       }
@@ -184,8 +184,8 @@ public class Texture extends Node {
    }
 
    @ObfuscatedName("q")
-   @Export("Texture_animate")
-   void Texture_animate(int var1) {
+   @Export("animate")
+   void animate(int var1) {
       if (this.pixels != null) {
          short var2;
          int var3;

@@ -10,10 +10,11 @@ import net.runelite.rs.Reflection;
 @Implements("UserComparator7")
 public class UserComparator7 extends AbstractUserComparator {
    @ObfuscatedName("m")
-   final boolean field939;
+   @Export("reversed")
+   final boolean reversed;
 
    public UserComparator7(boolean var1) {
-      this.field939 = var1;
+      this.reversed = var1;
    }
 
    @ObfuscatedName("m")
@@ -21,14 +22,13 @@ public class UserComparator7 extends AbstractUserComparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "-9252550"
    )
-   int method349(Buddy var1, Buddy var2) {
-      return var1.world0 != 0 && var2.world0 != 0 ? (this.field939 ? var1.int2 - var2.int2 : var2.int2 - var1.int2) : this.method12(var1, var2);
+   @Export("compareBuddy")
+   int compareBuddy(Buddy var1, Buddy var2) {
+      return var1.world != 0 && var2.world != 0 ? (this.reversed ? var1.int2 - var2.int2 : var2.int2 - var1.int2) : this.compareUser(var1, var2);
    }
 
-   @Export("compare")
-   @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.method349((Buddy)var1, (Buddy)var2);
+      return this.compareBuddy((Buddy)var1, (Buddy)var2);
    }
 
    @ObfuscatedName("q")
