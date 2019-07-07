@@ -249,7 +249,10 @@ public class AlchemyRoom extends MTARoom
 				Cupboard clicked = getClicked();
 				if (clicked.alchemyItem != alchemyItem)
 				{
-					fill(clicked, alchemyItem);
+					if (alchemyItem != null)
+					{
+						fill(clicked, alchemyItem);
+					}
 				}
 			}
 			else if (message.equals(EMPTY))
