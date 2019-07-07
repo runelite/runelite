@@ -109,7 +109,7 @@ public class RuneLitePlusPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	private RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
+	private final RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
 	private int entered = -1;
 	private int enterIdx;
 	private boolean expectInput;
