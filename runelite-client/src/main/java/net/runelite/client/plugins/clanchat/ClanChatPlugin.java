@@ -121,13 +121,13 @@ public class ClanChatPlugin extends Plugin
 		return (CopyOnWriteArrayList<Player>) clanMembers.clone();
 	}
 
-	private static CopyOnWriteArrayList<Player> clanMembers = new CopyOnWriteArrayList<>();
+	private static final CopyOnWriteArrayList<Player> clanMembers = new CopyOnWriteArrayList<>();
 	private ClanChatIndicator clanMemberCounter;
 	/**
 	 * queue of temporary messages added to the client
 	 */
 	private final Deque<ClanJoinMessage> clanJoinMessages = new ArrayDeque<>();
-	private Map<String, ClanMemberActivity> activityBuffer = new HashMap<>();
+	private final Map<String, ClanMemberActivity> activityBuffer = new HashMap<>();
 	private int clanJoinedTick;
 
 	private boolean clanChatIcons;
