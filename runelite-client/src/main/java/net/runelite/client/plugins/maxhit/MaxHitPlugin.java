@@ -108,7 +108,7 @@ public class MaxHitPlugin extends Plugin
 		equipYourCharacter.setText(maxHitText);
 	}
 
-	private class MaxHit
+	private static class MaxHit
 	{
 		private final double maxMeleeHit;
 		private final double maxRangeHit;
