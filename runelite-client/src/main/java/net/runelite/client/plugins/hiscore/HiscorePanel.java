@@ -605,7 +605,11 @@ public class HiscorePanel extends PluginPanel
 		 */
 		if (SKILLS.contains(skill))
 		{
-			long experience = result.getSkill(skill).getExperience();
+			long experience = 0;
+			if (skill != null)
+			{
+				experience = result.getSkill(skill).getExperience();
+			}
 			if (experience >= 0)
 			{
 				int currentXp = (int) experience;
