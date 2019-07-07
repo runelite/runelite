@@ -69,7 +69,7 @@ public enum StudioGame implements Enumerated {
       garbageValue = "-2058685786"
    )
    public static FloorUnderlayDefinition method4550(int var0) {
-      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition) FloorUnderlayDefinition.FloorUnderlayDefinition_cached.get((long)var0);
+      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.FloorUnderlayDefinition_cached.get((long)var0);
       if (var1 != null) {
          return var1;
       } else {

@@ -61,8 +61,8 @@ public class Frames extends DualNode {
       garbageValue = "-1018278334"
    )
    @Export("hasAlphaTransform")
-   public boolean hasAlphaTransform(int var1) {
-      return this.frames[var1].hasAlphaTransform;
+   public boolean hasAlphaTransform(int frame) {
+      return this.frames[frame].hasAlphaTransform;
    }
 
    @ObfuscatedName("m")

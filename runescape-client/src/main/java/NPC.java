@@ -127,7 +127,7 @@ public final class NPC extends Actor {
          return null;
       } else {
          SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? WorldMapAreaData.getSequenceDefinition(super.sequence) : null;
-         SequenceDefinition var2 = super.movementSequence == -1 || super.movementSequence == super.readySequence && var1 != null ? null : WorldMapAreaData.getSequenceDefinition(super.movementSequence);
+         SequenceDefinition var2 = super.movementSequence != -1 && (super.movementSequence != super.readySequence || var1 == null) ? WorldMapAreaData.getSequenceDefinition(super.movementSequence) : null;
          Model var3 = this.definition.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
          if (var3 == null) {
             return null;

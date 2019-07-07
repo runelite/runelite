@@ -112,8 +112,8 @@ public class TextureProvider implements TextureLoader {
 
    @ObfuscatedName("f")
    @Export("setBrightness")
-   public void setBrightness(double var1) {
-      this.brightness0 = var1;
+   public void setBrightness(double brightness) {
+      this.brightness0 = brightness;
       this.clear();
    }
 
@@ -231,12 +231,12 @@ public class TextureProvider implements TextureLoader {
       garbageValue = "-8"
    )
    @Export("byteArrayFromObject")
-   public static byte[] byteArrayFromObject(Object var0, boolean var1) {
+   public static byte[] byteArrayFromObject(Object var0, boolean copyArray) {
       if (var0 == null) {
          return null;
       } else if (var0 instanceof byte[]) {
-         byte[] var5 = (byte[])var0;
-         if (var1) {
+         byte[] var5 = ((byte[])var0);
+         if (copyArray) {
             int var3 = var5.length;
             byte[] var4 = new byte[var3];
             System.arraycopy(var5, 0, var4, 0, var3);
@@ -262,7 +262,7 @@ public class TextureProvider implements TextureLoader {
       Buffer var4 = new Buffer(var0);
       int var5 = -1;
 
-      label71:
+      label56:
       while (true) {
          int var6 = var4.method49();
          if (var6 == 0) {
@@ -274,50 +274,38 @@ public class TextureProvider implements TextureLoader {
          boolean var8 = false;
 
          while (true) {
-            int var12;
-            ObjectDefinition var15;
-            do {
-               int var13;
-               int var14;
-               do {
-                  do {
-                     do {
-                        do {
-                           int var9;
-                           while (var8) {
-                              var9 = var4.method48();
-                              if (var9 == 0) {
-                                 continue label71;
-                              }
+            int var13;
+            while (!var8) {
+               var13 = var4.method48();
+               if (var13 == 0) {
+                  continue label56;
+               }
 
-                              var4.readUnsignedByte();
-                           }
+               var7 += var13 - 1;
+               int var14 = var7 & 63;
+               int var15 = var7 >> 6 & 63;
+               int var9 = var4.readUnsignedByte() >> 2;
+               int var11 = var15 + var1;
+               int var12 = var14 + var2;
+               if (var11 > 0 && var12 > 0 && var11 < 103 && var12 < 103) {
+                  ObjectDefinition var10 = class50.getObjectDefinition(var5);
+                  if (var9 != 22 || !Client.isLowDetail || var10.int1 != 0 || var10.interactType == 1 || var10.boolean2) {
+                     if (!var10.method231()) {
+                        ++Client.field179;
+                        var3 = false;
+                     }
 
-                           var9 = var4.method48();
-                           if (var9 == 0) {
-                              continue label71;
-                           }
-
-                           var7 += var9 - 1;
-                           int var10 = var7 & 63;
-                           int var11 = var7 >> 6 & 63;
-                           var12 = var4.readUnsignedByte() >> 2;
-                           var13 = var11 + var1;
-                           var14 = var10 + var2;
-                        } while(var13 <= 0);
-                     } while(var14 <= 0);
-                  } while(var13 >= 103);
-               } while(var14 >= 103);
-
-               var15 = class50.getObjectDefinition(var5);
-            } while(var12 == 22 && Client.isLowDetail && var15.int1 == 0 && var15.interactType != 1 && !var15.boolean2);
-
-            if (!var15.method231()) {
-               ++Client.field179;
-               var3 = false;
+                     var8 = true;
+                  }
+               }
             }
 
-            var8 = true;
+            var13 = var4.method48();
+            if (var13 == 0) {
+               break;
+            }
+
+            var4.readUnsignedByte();
          }
       }
    }

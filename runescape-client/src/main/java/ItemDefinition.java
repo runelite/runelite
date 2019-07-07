@@ -47,7 +47,8 @@ public class ItemDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 1070080857
    )
-   int field435;
+   @Export("model")
+   int model;
    @ObfuscatedName("z")
    @Export("name")
    public String name;
@@ -199,9 +200,11 @@ public class ItemDefinition extends DualNode {
    @Export("femaleHeadModel2")
    int femaleHeadModel2;
    @ObfuscatedName("az")
-   int[] field436;
+   @Export("countobj")
+   int[] countobj;
    @ObfuscatedName("au")
-   int[] field437;
+   @Export("countco")
+   int[] countco;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
       intValue = 619422509
@@ -359,7 +362,7 @@ public class ItemDefinition extends DualNode {
    @Export("decodeNext")
    void decodeNext(Buffer var1, int var2) {
       if (var2 == 1) {
-         this.field435 = var1.readUnsignedShort();
+         this.model = var1.readUnsignedShort();
       } else if (var2 == 2) {
          this.name = var1.readStringCp1252NullTerminated();
       } else if (var2 == 4) {
@@ -445,13 +448,13 @@ public class ItemDefinition extends DualNode {
          } else if (var2 == 98) {
             this.noteTemplate = var1.readUnsignedShort();
          } else if (var2 >= 100 && var2 < 110) {
-            if (this.field436 == null) {
-               this.field436 = new int[10];
-               this.field437 = new int[10];
+            if (this.countobj == null) {
+               this.countobj = new int[10];
+               this.countco = new int[10];
             }
 
-            this.field436[var2 - 100] = var1.readUnsignedShort();
-            this.field437[var2 - 100] = var1.readUnsignedShort();
+            this.countobj[var2 - 100] = var1.readUnsignedShort();
+            this.countco[var2 - 100] = var1.readUnsignedShort();
          } else if (var2 == 110) {
             this.resizeX = var1.readUnsignedShort();
          } else if (var2 == 111) {
@@ -484,21 +487,22 @@ public class ItemDefinition extends DualNode {
       signature = "(Ljv;Ljv;I)V",
       garbageValue = "2051877377"
    )
-   void method140(ItemDefinition var1, ItemDefinition var2) {
-      this.field435 = var1.field435;
-      this.zoom2d = var1.zoom2d;
-      this.xan2d = var1.xan2d;
-      this.yan2d = var1.yan2d;
-      this.zan2d = var1.zan2d;
-      this.offsetX2d = var1.offsetX2d;
-      this.offsetY2d = var1.offsetY2d;
-      this.recolorFrom = var1.recolorFrom;
-      this.recolorTo = var1.recolorTo;
-      this.retextureFrom = var1.retextureFrom;
-      this.retextureTo = var1.retextureTo;
-      this.name = var2.name;
-      this.isMembersOnly = var2.isMembersOnly;
-      this.price = var2.price;
+   @Export("genCert")
+   void genCert(ItemDefinition template, ItemDefinition link) {
+      this.model = template.model;
+      this.zoom2d = template.zoom2d;
+      this.xan2d = template.xan2d;
+      this.yan2d = template.yan2d;
+      this.zan2d = template.zan2d;
+      this.offsetX2d = template.offsetX2d;
+      this.offsetY2d = template.offsetY2d;
+      this.recolorFrom = template.recolorFrom;
+      this.recolorTo = template.recolorTo;
+      this.retextureFrom = template.retextureFrom;
+      this.retextureTo = template.retextureTo;
+      this.name = link.name;
+      this.isMembersOnly = link.isMembersOnly;
+      this.price = link.price;
       this.isStackable = 1;
    }
 
@@ -507,37 +511,38 @@ public class ItemDefinition extends DualNode {
       signature = "(Ljv;Ljv;I)V",
       garbageValue = "227754762"
    )
-   void method141(ItemDefinition var1, ItemDefinition var2) {
-      this.field435 = var1.field435;
-      this.zoom2d = var1.zoom2d;
-      this.xan2d = var1.xan2d;
-      this.yan2d = var1.yan2d;
-      this.zan2d = var1.zan2d;
-      this.offsetX2d = var1.offsetX2d;
-      this.offsetY2d = var1.offsetY2d;
-      this.recolorFrom = var2.recolorFrom;
-      this.recolorTo = var2.recolorTo;
-      this.retextureFrom = var2.retextureFrom;
-      this.retextureTo = var2.retextureTo;
-      this.name = var2.name;
-      this.isMembersOnly = var2.isMembersOnly;
-      this.isStackable = var2.isStackable;
-      this.maleModel = var2.maleModel;
-      this.maleModel1 = var2.maleModel1;
-      this.maleModel2 = var2.maleModel2;
-      this.femaleModel = var2.femaleModel;
-      this.femaleModel1 = var2.femaleModel1;
-      this.femaleModel2 = var2.femaleModel2;
-      this.maleHeadModel = var2.maleHeadModel;
-      this.maleHeadModel2 = var2.maleHeadModel2;
-      this.femaleHeadModel = var2.femaleHeadModel;
-      this.femaleHeadModel2 = var2.femaleHeadModel2;
-      this.team = var2.team;
-      this.groundActions = var2.groundActions;
+   @Export("genBought")
+   void genBought(ItemDefinition template, ItemDefinition link) {
+      this.model = template.model;
+      this.zoom2d = template.zoom2d;
+      this.xan2d = template.xan2d;
+      this.yan2d = template.yan2d;
+      this.zan2d = template.zan2d;
+      this.offsetX2d = template.offsetX2d;
+      this.offsetY2d = template.offsetY2d;
+      this.recolorFrom = link.recolorFrom;
+      this.recolorTo = link.recolorTo;
+      this.retextureFrom = link.retextureFrom;
+      this.retextureTo = link.retextureTo;
+      this.name = link.name;
+      this.isMembersOnly = link.isMembersOnly;
+      this.isStackable = link.isStackable;
+      this.maleModel = link.maleModel;
+      this.maleModel1 = link.maleModel1;
+      this.maleModel2 = link.maleModel2;
+      this.femaleModel = link.femaleModel;
+      this.femaleModel1 = link.femaleModel1;
+      this.femaleModel2 = link.femaleModel2;
+      this.maleHeadModel = link.maleHeadModel;
+      this.maleHeadModel2 = link.maleHeadModel2;
+      this.femaleHeadModel = link.femaleHeadModel;
+      this.femaleHeadModel2 = link.femaleHeadModel2;
+      this.team = link.team;
+      this.groundActions = link.groundActions;
       this.inventoryActions = new String[5];
-      if (var2.inventoryActions != null) {
+      if (link.inventoryActions != null) {
          for (int var3 = 0; var3 < 4; ++var3) {
-            this.inventoryActions[var3] = var2.inventoryActions[var3];
+            this.inventoryActions[var3] = link.inventoryActions[var3];
          }
       }
 
@@ -550,20 +555,21 @@ public class ItemDefinition extends DualNode {
       signature = "(Ljv;Ljv;I)V",
       garbageValue = "2084647027"
    )
-   void method142(ItemDefinition var1, ItemDefinition var2) {
-      this.field435 = var1.field435;
-      this.zoom2d = var1.zoom2d;
-      this.xan2d = var1.xan2d;
-      this.yan2d = var1.yan2d;
-      this.zan2d = var1.zan2d;
-      this.offsetX2d = var1.offsetX2d;
-      this.offsetY2d = var1.offsetY2d;
-      this.recolorFrom = var1.recolorFrom;
-      this.recolorTo = var1.recolorTo;
-      this.retextureFrom = var1.retextureFrom;
-      this.retextureTo = var1.retextureTo;
-      this.isStackable = var1.isStackable;
-      this.name = var2.name;
+   @Export("genPlaceholder")
+   void genPlaceholder(ItemDefinition template, ItemDefinition link) {
+      this.model = template.model;
+      this.zoom2d = template.zoom2d;
+      this.xan2d = template.xan2d;
+      this.yan2d = template.yan2d;
+      this.zan2d = template.zan2d;
+      this.offsetX2d = template.offsetX2d;
+      this.offsetY2d = template.offsetY2d;
+      this.recolorFrom = template.recolorFrom;
+      this.recolorTo = template.recolorTo;
+      this.retextureFrom = template.retextureFrom;
+      this.retextureTo = template.retextureTo;
+      this.isStackable = template.isStackable;
+      this.name = link.name;
       this.price = 0;
       this.isMembersOnly = false;
       this.isTradable = false;
@@ -576,12 +582,12 @@ public class ItemDefinition extends DualNode {
    )
    public final ModelData method143(int var1) {
       int var2;
-      if (this.field436 != null && var1 > 1) {
+      if (this.countobj != null && var1 > 1) {
          int var3 = -1;
 
          for (var2 = 0; var2 < 10; ++var2) {
-            if (var1 >= this.field437[var2] && this.field437[var2] != 0) {
-               var3 = this.field436[var2];
+            if (var1 >= this.countco[var2] && this.countco[var2] != 0) {
+               var3 = this.countobj[var2];
             }
          }
 
@@ -590,7 +596,7 @@ public class ItemDefinition extends DualNode {
          }
       }
 
-      ModelData var4 = ModelData.method2788(ItemDefinition_modelArchive, this.field435, 0);
+      ModelData var4 = ModelData.method2788(ItemDefinition_modelArchive, this.model, 0);
       if (var4 == null) {
          return null;
       } else {
@@ -620,13 +626,13 @@ public class ItemDefinition extends DualNode {
       garbageValue = "1152916563"
    )
    @Export("getModel")
-   public final Model getModel(int var1) {
-      if (this.field436 != null && var1 > 1) {
+   public final Model getModel(int quantity) {
+      if (this.countobj != null && quantity > 1) {
          int var2 = -1;
 
          for (int var3 = 0; var3 < 10; ++var3) {
-            if (var1 >= this.field437[var3] && this.field437[var3] != 0) {
-               var2 = this.field436[var3];
+            if (quantity >= this.countco[var3] && this.countco[var3] != 0) {
+               var2 = this.countobj[var3];
             }
          }
 
@@ -639,7 +645,7 @@ public class ItemDefinition extends DualNode {
       if (var5 != null) {
          return var5;
       } else {
-         ModelData var6 = ModelData.method2788(ItemDefinition_modelArchive, this.field435, 0);
+         ModelData var6 = ModelData.method2788(ItemDefinition_modelArchive, this.model, 0);
          if (var6 == null) {
             return null;
          } else {
@@ -673,13 +679,14 @@ public class ItemDefinition extends DualNode {
       signature = "(IB)Ljv;",
       garbageValue = "0"
    )
-   public ItemDefinition method144(int var1) {
-      if (this.field436 != null && var1 > 1) {
+   @Export("getCountObj")
+   public ItemDefinition getCountObj(int quantity) {
+      if (this.countobj != null && quantity > 1) {
          int var2 = -1;
 
          for (int var3 = 0; var3 < 10; ++var3) {
-            if (var1 >= this.field437[var3] && this.field437[var3] != 0) {
-               var2 = this.field436[var3];
+            if (quantity >= this.countco[var3] && this.countco[var3] != 0) {
+               var2 = this.countobj[var3];
             }
          }
 

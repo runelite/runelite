@@ -15,7 +15,7 @@ public class class229 {
    )
    @Export("getParamDefinition")
    public static ParamDefinition getParamDefinition(int var0) {
-      ParamDefinition var1 = (ParamDefinition) ParamDefinition.ParamDefinition_cached.get((long)var0);
+      ParamDefinition var1 = (ParamDefinition)ParamDefinition.ParamDefinition_cached.get((long)var0);
       if (var1 != null) {
          return var1;
       } else {

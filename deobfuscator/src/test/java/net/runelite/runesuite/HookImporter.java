@@ -187,7 +187,7 @@ public class HookImporter
 					for (int i = 0; i < hm.parameters.size(); i++)
 					{
 						String name = hm.parameters.get(i);
-						if (name.matches("arg[0-9]") || name.length() <= 2 && (name.charAt(0) != 'x' || name.charAt(0) != 'y'))
+						if (name.matches("arg[0-9]") || name.length() <= 2 && (name.charAt(0) != 'x' && name.charAt(0) != 'y'))
 						{
 							continue;
 						}

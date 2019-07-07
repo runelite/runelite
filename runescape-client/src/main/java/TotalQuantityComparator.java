@@ -33,18 +33,18 @@ final class TotalQuantityComparator implements Comparator {
       garbageValue = "46"
    )
    @Export("loadTerrain")
-   static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+   static final void loadTerrain(Buffer buffer, int plane, int x, int y, int x0, int y0, int var6) {
       int var7;
-      if (var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
-         Tiles.Tiles_renderFlags[var1][var2][var3] = 0;
+      if (x >= 0 && x < 104 && y >= 0 && y < 104) {
+         Tiles.Tiles_renderFlags[plane][x][y] = 0;
 
          while (true) {
-            var7 = var0.readUnsignedByte();
+            var7 = buffer.readUnsignedByte();
             if (var7 == 0) {
-               if (var1 == 0) {
-                  int[] var12 = Tiles.Tiles_heights[0][var2];
-                  int var9 = var2 + var4 + 932731;
-                  int var10 = var3 + var5 + 556238;
+               if (plane == 0) {
+                  int[] var12 = Tiles.Tiles_heights[0][x];
+                  int var9 = x + x0 + 932731;
+                  int var10 = y + y0 + 556238;
                   int var11 = Script.method2204(var9 + 45365, var10 + 91923, 4) - 128 + (Script.method2204(10294 + var9, 37821 + var10, 2) - 128 >> 1) + (Script.method2204(var9, var10, 1) - 128 >> 2);
                   var11 = (int)((double)var11 * 0.3D) + 35;
                   if (var11 < 10) {
@@ -53,51 +53,51 @@ final class TotalQuantityComparator implements Comparator {
                      var11 = 60;
                   }
 
-                  var12[var3] = -var11 * 8;
+                  var12[y] = -var11 * 8;
                } else {
-                  Tiles.Tiles_heights[var1][var2][var3] = Tiles.Tiles_heights[var1 - 1][var2][var3] - 240;
+                  Tiles.Tiles_heights[plane][x][y] = Tiles.Tiles_heights[plane - 1][x][y] - 240;
                }
                break;
             }
 
             if (var7 == 1) {
-               int var8 = var0.readUnsignedByte();
+               int var8 = buffer.readUnsignedByte();
                if (var8 == 1) {
                   var8 = 0;
                }
 
-               if (var1 == 0) {
-                  Tiles.Tiles_heights[0][var2][var3] = -var8 * 8;
+               if (plane == 0) {
+                  Tiles.Tiles_heights[0][x][y] = -var8 * 8;
                } else {
-                  Tiles.Tiles_heights[var1][var2][var3] = Tiles.Tiles_heights[var1 - 1][var2][var3] - var8 * 8;
+                  Tiles.Tiles_heights[plane][x][y] = Tiles.Tiles_heights[plane - 1][x][y] - var8 * 8;
                }
                break;
             }
 
             if (var7 <= 49) {
-               Fonts.field350[var1][var2][var3] = var0.readByte();
-               class32.field1157[var1][var2][var3] = (byte)((var7 - 2) / 4);
-               class307.field1155[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+               Fonts.field350[plane][x][y] = buffer.readByte();
+               class32.field1157[plane][x][y] = (byte)((var7 - 2) / 4);
+               class307.field1155[plane][x][y] = (byte)(var7 - 2 + var6 & 3);
             } else if (var7 <= 81) {
-               Tiles.Tiles_renderFlags[var1][var2][var3] = (byte)(var7 - 49);
+               Tiles.Tiles_renderFlags[plane][x][y] = (byte)(var7 - 49);
             } else {
-               Tiles.field908[var1][var2][var3] = (byte)(var7 - 81);
+               Tiles.field908[plane][x][y] = (byte)(var7 - 81);
             }
          }
       } else {
          while (true) {
-            var7 = var0.readUnsignedByte();
+            var7 = buffer.readUnsignedByte();
             if (var7 == 0) {
                break;
             }
 
             if (var7 == 1) {
-               var0.readUnsignedByte();
+               buffer.readUnsignedByte();
                break;
             }
 
             if (var7 <= 49) {
-               var0.readUnsignedByte();
+               buffer.readUnsignedByte();
             }
          }
       }
@@ -124,13 +124,13 @@ final class TotalQuantityComparator implements Comparator {
       garbageValue = "835715563"
    )
    @Export("addPlayerToMenu")
-   static final void addPlayerToMenu(Player var0, int var1, int var2, int var3) {
-      if (Canvas.localPlayer != var0 && Client.menuOptionsCount < 400) {
+   static final void addPlayerToMenu(Player player, int menuArg0, int menuArg1, int menuArg2) {
+      if (Canvas.localPlayer != player && Client.menuOptionsCount < 400) {
          String var4;
          int var5;
-         if (var0.skillLevel == 0) {
-            String var6 = var0.actions[0] + var0.username + var0.actions[1];
-            var5 = var0.combatLevel;
+         if (player.skillLevel == 0) {
+            String var6 = player.actions[0] + player.username + player.actions[1];
+            var5 = player.combatLevel;
             int var7 = Canvas.localPlayer.combatLevel;
             int var8 = var7 - var5;
             String var9;
@@ -154,17 +154,17 @@ final class TotalQuantityComparator implements Comparator {
                var9 = BufferedFile.colorStartTag(16776960);
             }
 
-            var4 = var6 + var9 + "  (level-" + var0.combatLevel + ")" + var0.actions[2];
+            var4 = var6 + var9 + "  (level-" + player.combatLevel + ")" + player.actions[2];
          } else {
-            var4 = var0.actions[0] + var0.username + var0.actions[1] + "  (skill-" + var0.skillLevel + ")" + var0.actions[2];
+            var4 = player.actions[0] + player.username + player.actions[1] + "  (skill-" + player.skillLevel + ")" + player.actions[2];
          }
 
          int var10;
          if (Client.isItemSelected == 1) {
-            Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " -> " + BufferedFile.colorStartTag(16777215) + var4, 14, var1, var2, var3);
+            Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " -> " + BufferedFile.colorStartTag(16777215) + var4, 14, menuArg0, menuArg1, menuArg2);
          } else if (Client.isSpellSelected) {
             if ((FloorDecoration.selectedSpellFlags & 8) == 8) {
-               Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + BufferedFile.colorStartTag(16777215) + var4, 15, var1, var2, var3);
+               Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + BufferedFile.colorStartTag(16777215) + var4, 15, menuArg0, menuArg1, menuArg2);
             }
          } else {
             for (var10 = 7; var10 >= 0; --var10) {
@@ -175,12 +175,12 @@ final class TotalQuantityComparator implements Comparator {
                         continue;
                      }
 
-                     if (AttackOption.AttackOption_alwaysRightClick == Client.playerAttackOption || AttackOption.AttackOption_dependsOnCombatLevels == Client.playerAttackOption && var0.combatLevel > Canvas.localPlayer.combatLevel) {
+                     if (AttackOption.AttackOption_alwaysRightClick == Client.playerAttackOption || AttackOption.AttackOption_dependsOnCombatLevels == Client.playerAttackOption && player.combatLevel > Canvas.localPlayer.combatLevel) {
                         var11 = 2000;
                      }
 
-                     if (Canvas.localPlayer.team != 0 && var0.team != 0) {
-                        if (var0.team == Canvas.localPlayer.team) {
+                     if (Canvas.localPlayer.team != 0 && player.team != 0) {
+                        if (player.team == Canvas.localPlayer.team) {
                            var11 = 2000;
                         } else {
                            var11 = 0;
@@ -192,7 +192,7 @@ final class TotalQuantityComparator implements Comparator {
 
                   boolean var12 = false;
                   var5 = Client.playerMenuOpcodes[var10] + var11;
-                  Tiles.insertMenuItemNoShift(Client.playerMenuActions[var10], BufferedFile.colorStartTag(16777215) + var4, var5, var1, var2, var3);
+                  Tiles.insertMenuItemNoShift(Client.playerMenuActions[var10], BufferedFile.colorStartTag(16777215) + var4, var5, menuArg0, menuArg1, menuArg2);
                }
             }
          }

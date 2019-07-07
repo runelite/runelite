@@ -168,26 +168,26 @@ public final class Projectile extends Entity {
       garbageValue = "-553495769"
    )
    @Export("setDestination")
-   final void setDestination(int var1, int var2, int var3, int var4) {
+   final void setDestination(int x, int y, int height, int cycle) {
       double var5;
       if (!this.isMoving) {
-         var5 = (double)(var1 - this.sourceX);
-         double var7 = (double)(var2 - this.sourceY);
+         var5 = (double)(x - this.sourceX);
+         double var7 = (double)(y - this.sourceY);
          double var9 = Math.sqrt(var5 * var5 + var7 * var7);
          this.x = (double)this.sourceX + var5 * (double)this.startHeight / var9;
          this.y = (double)this.sourceY + (double)this.startHeight * var7 / var9;
          this.z = (double)this.sourceZ;
       }
 
-      var5 = (double)(this.cycleEnd + 1 - var4);
-      this.speedX = ((double)var1 - this.x) / var5;
-      this.speedY = ((double)var2 - this.y) / var5;
+      var5 = (double)(this.cycleEnd + 1 - cycle);
+      this.speedX = ((double)x - this.x) / var5;
+      this.speedY = ((double)y - this.y) / var5;
       this.speed = Math.sqrt(this.speedY * this.speedY + this.speedX * this.speedX);
       if (!this.isMoving) {
          this.speedZ = -this.speed * Math.tan(0.02454369D * (double)this.slope);
       }
 
-      this.accelerationZ = ((double)var3 - this.z - var5 * this.speedZ) * 2.0D / (var5 * var5);
+      this.accelerationZ = ((double)height - this.z - var5 * this.speedZ) * 2.0D / (var5 * var5);
    }
 
    @ObfuscatedName("f")
@@ -196,16 +196,16 @@ public final class Projectile extends Entity {
       garbageValue = "1351865817"
    )
    @Export("advance")
-   final void advance(int var1) {
+   final void advance(int cycles) {
       this.isMoving = true;
-      this.x += this.speedX * (double)var1;
-      this.y += (double)var1 * this.speedY;
-      this.z += (double)var1 * this.accelerationZ * 0.5D * (double)var1 + this.speedZ * (double)var1;
-      this.speedZ += this.accelerationZ * (double)var1;
+      this.x += this.speedX * (double)cycles;
+      this.y += (double)cycles * this.speedY;
+      this.z += (double)cycles * this.accelerationZ * 0.5D * (double)cycles + this.speedZ * (double)cycles;
+      this.speedZ += this.accelerationZ * (double)cycles;
       this.yaw = (int)(Math.atan2(this.speedX, this.speedY) * 325.949D) + 1024 & 2047;
       this.pitch = (int)(Math.atan2(this.speedZ, this.speed) * 325.949D) & 2047;
       if (this.sequenceDefinition != null) {
-         this.frameCycle += var1;
+         this.frameCycle += cycles;
 
          while (true) {
             do {
@@ -249,21 +249,21 @@ public final class Projectile extends Entity {
       garbageValue = "95"
    )
    @Export("byteArrayToObject")
-   public static Object byteArrayToObject(byte[] var0, boolean var1) {
-      if (var0 == null) {
+   public static Object byteArrayToObject(byte[] bytes, boolean copyArray) {
+      if (bytes == null) {
          return null;
       } else {
-         if (var0.length > 136 && !AbstractByteArrayCopier.directBufferUnavailable) {
+         if (bytes.length > 136 && !AbstractByteArrayCopier.directBufferUnavailable) {
             try {
                DirectByteArrayCopier var2 = new DirectByteArrayCopier();
-               var2.set(var0);
+               var2.set(bytes);
                return var2;
             } catch (Throwable var3) {
                AbstractByteArrayCopier.directBufferUnavailable = true;
             }
          }
 
-         return var0;
+         return bytes;
       }
    }
 

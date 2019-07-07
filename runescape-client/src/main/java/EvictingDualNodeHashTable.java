@@ -48,8 +48,8 @@ public final class EvictingDualNodeHashTable {
       signature = "(J)Lfn;"
    )
    @Export("get")
-   public DualNode get(long var1) {
-      DualNode var3 = (DualNode)this.hashTable.get(var1);
+   public DualNode get(long key) {
+      DualNode var3 = (DualNode)this.hashTable.get(key);
       if (var3 != null) {
          this.deque.addFirst(var3);
       }
@@ -59,8 +59,8 @@ public final class EvictingDualNodeHashTable {
 
    @ObfuscatedName("f")
    @Export("remove")
-   public void remove(long var1) {
-      DualNode var3 = (DualNode)this.hashTable.get(var1);
+   public void remove(long key) {
+      DualNode var3 = (DualNode)this.hashTable.get(key);
       if (var3 != null) {
          var3.remove();
          var3.removeDual();
@@ -74,7 +74,7 @@ public final class EvictingDualNodeHashTable {
       signature = "(Lfn;J)V"
    )
    @Export("put")
-   public void put(DualNode var1, long var2) {
+   public void put(DualNode value, long key) {
       if (this.remainingCapacity == 0) {
          DualNode var4 = this.deque.removeLast();
          var4.remove();
@@ -88,8 +88,8 @@ public final class EvictingDualNodeHashTable {
          --this.remainingCapacity;
       }
 
-      this.hashTable.put(var1, var2);
-      this.deque.addFirst(var1);
+      this.hashTable.put(value, key);
+      this.deque.addFirst(value);
    }
 
    @ObfuscatedName("w")

@@ -159,21 +159,21 @@ final class class11 implements Comparator {
       } else if (var0 == ScriptOpcodes.CC_SETONSCROLLWHEEL) {
          var3.onScroll = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONCHATTRANSMIT) {
-         var3.field970 = var8;
+         var3.onChatTransmit = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONKEY) {
          var3.onKey = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONFRIENDTRANSMIT) {
-         var3.field971 = var8;
+         var3.onFriendTransmit = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONCLANTRANSMIT) {
-         var3.field972 = var8;
+         var3.onClanTransmit = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONMISCTRANSMIT) {
-         var3.field973 = var8;
+         var3.onMiscTransmit = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONDIALOGABORT) {
          var3.onDialogAbort = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONSUBCHANGE) {
-         var3.field974 = var8;
+         var3.onSubChange = var8;
       } else if (var0 == ScriptOpcodes.CC_SETONSTOCKTRANSMIT) {
-         var3.field976 = var8;
+         var3.onStockTransmit = var8;
       } else if (var0 == 1426) {
          var3.field977 = var8;
       } else {

@@ -666,44 +666,45 @@ public final class Sprite extends Rasterizer2D {
       int var9 = var2 < 0 ? -var2 : 0;
       int var10 = var2 + this.subHeight <= var6 ? this.subHeight : var6 - var2;
       int var11 = var1 < 0 ? -var1 : 0;
+      int var12;
       if (this.subWidth + var1 <= var5) {
-         int var12 = this.subWidth;
+         var12 = this.subWidth;
       } else {
          int var10000 = var5 - var1;
       }
 
-      int var13 = var3 + var11 + (var9 + var2 + var4) * Rasterizer2D.Rasterizer2D_width + var1;
-      int var14 = var9 + var2;
+      var12 = var3 + var11 + (var9 + var2 + var4) * Rasterizer2D.Rasterizer2D_width + var1;
+      int var13 = var9 + var2;
 
-      for (int var15 = var9; var15 < var10; ++var15) {
-         int var16 = var7[var14];
-         int var17 = var8[var14++];
-         int var18 = var13;
+      for (int var14 = var9; var14 < var10; ++var14) {
+         int var15 = var7[var13];
+         int var16 = var8[var13++];
+         int var17 = var12;
+         int var18;
+         if (var1 < var15) {
+            var18 = var15 - var1;
+            var17 = var12 + (var18 - var11);
+         } else {
+            var18 = var11;
+         }
+
          int var19;
-         if (var1 < var16) {
-            var19 = var16 - var1;
-            var18 = var13 + (var19 - var11);
+         if (this.subWidth + var1 <= var15 + var16) {
+            var19 = this.subWidth;
          } else {
-            var19 = var11;
+            var19 = var15 + var16 - var1;
          }
 
-         int var20;
-         if (this.subWidth + var1 <= var16 + var17) {
-            var20 = this.subWidth;
-         } else {
-            var20 = var16 + var17 - var1;
-         }
-
-         for (int var21 = var19; var21 < var20; ++var21) {
-            int var22 = this.pixels[var21 + var15 * this.subWidth];
-            if (var22 != 0) {
-               Rasterizer2D.Rasterizer2D_pixels[var18++] = var22;
+         for (int var20 = var18; var20 < var19; ++var20) {
+            int var21 = this.pixels[var20 + var14 * this.subWidth];
+            if (var21 != 0) {
+               Rasterizer2D.Rasterizer2D_pixels[var17++] = var21;
             } else {
-               ++var18;
+               ++var17;
             }
          }
 
-         var13 += Rasterizer2D.Rasterizer2D_width;
+         var12 += Rasterizer2D.Rasterizer2D_width;
       }
 
    }

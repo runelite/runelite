@@ -30,7 +30,7 @@ public class ChatChannel {
       garbageValue = "463993373"
    )
    @Export("addMessage")
-   Message addMessage(int var1, String var2, String var3, String var4) {
+   Message addMessage(int type, String sender, String text, String prefix) {
       Message var5 = this.messages[99];
 
       for (int var6 = this.count; var6 > 0; --var6) {
@@ -40,11 +40,11 @@ public class ChatChannel {
       }
 
       if (var5 == null) {
-         var5 = new Message(var1, var2, var4, var3);
+         var5 = new Message(type, sender, prefix, text);
       } else {
          var5.remove();
          var5.removeDual();
-         var5.set(var1, var2, var4, var3);
+         var5.set(type, sender, prefix, text);
       }
 
       this.messages[0] = var5;
@@ -61,8 +61,8 @@ public class ChatChannel {
       garbageValue = "-195254780"
    )
    @Export("getMessage")
-   Message getMessage(int var1) {
-      return var1 >= 0 && var1 < this.count ? this.messages[var1] : null;
+   Message getMessage(int index) {
+      return index >= 0 && index < this.count ? this.messages[index] : null;
    }
 
    @ObfuscatedName("q")

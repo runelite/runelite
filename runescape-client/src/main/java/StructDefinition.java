@@ -276,7 +276,7 @@ public class StructDefinition extends DualNode {
                return 1;
             } else if (var0 == 1127) {
                var6 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
-               var4.field964 = var6;
+               var4.modelTransparency = var6;
                return 1;
             } else {
                return 2;

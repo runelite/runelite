@@ -6,8 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hu")
 @Implements("Coord")
-public class Coord
-{
+public class Coord {
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 503621925
@@ -69,8 +68,8 @@ public class Coord
       garbageValue = "-1"
    )
    @Export("equals0")
-   boolean equals0(Coord var1) {
-      return this.plane != var1.plane ? false : (this.x != var1.x ? false : this.y == var1.y);
+   boolean equals0(Coord other) {
+      return this.plane != other.plane ? false : (this.x != other.x ? false : this.y == other.y);
    }
 
    @ObfuscatedName("q")
@@ -79,8 +78,8 @@ public class Coord
       garbageValue = "997364398"
    )
    @Export("toString0")
-   String toString0(String var1) {
-      return this.plane + var1 + (this.x >> 6) + var1 + (this.y >> 6) + var1 + (this.x & 63) + var1 + (this.y & 63);
+   String toString0(String separator) {
+      return this.plane + separator + (this.x >> 6) + separator + (this.y >> 6) + separator + (this.x & 63) + separator + (this.y & 63);
    }
 
    @ObfuscatedName("equals")

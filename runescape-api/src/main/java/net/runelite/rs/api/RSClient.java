@@ -328,7 +328,7 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	RSWorld[] getWorldList();
 
-	@Import("addMessage")
+	@Import("addChatMessage")
 	void addChatMessage(int type, String name, String message, String sender);
 
 	@Override

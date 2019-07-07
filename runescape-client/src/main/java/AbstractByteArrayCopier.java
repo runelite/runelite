@@ -29,7 +29,7 @@ public abstract class AbstractByteArrayCopier {
       garbageValue = "-2034091753"
    )
    @Export("set")
-   abstract void set(byte[] var1);
+   abstract void set(byte[] array);
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(

@@ -52,8 +52,8 @@ public final class RasterProvider extends AbstractRasterProvider {
       garbageValue = "-430495007"
    )
    @Export("drawFull")
-   public final void drawFull(int var1, int var2) {
-      this.drawFull0(this.component0.getGraphics(), var1, var2);
+   public final void drawFull(int x, int y) {
+      this.drawFull0(this.component0.getGraphics(), x, y);
    }
 
    @ObfuscatedName("q")
@@ -62,8 +62,8 @@ public final class RasterProvider extends AbstractRasterProvider {
       garbageValue = "18"
    )
    @Export("draw")
-   public final void draw(int var1, int var2, int var3, int var4) {
-      this.draw0(this.component0.getGraphics(), var1, var2, var3, var4);
+   public final void draw(int x, int y, int width, int height) {
+      this.draw0(this.component0.getGraphics(), x, y, width, height);
    }
 
    @ObfuscatedName("w")
@@ -72,9 +72,9 @@ public final class RasterProvider extends AbstractRasterProvider {
       garbageValue = "-2102440865"
    )
    @Export("drawFull0")
-   final void drawFull0(Graphics var1, int var2, int var3) {
+   final void drawFull0(Graphics graphics, int x, int y) {
       try {
-         var1.drawImage(this.image, var2, var3, this.component0);
+         graphics.drawImage(this.image, x, y, this.component0);
       } catch (Exception var5) {
          this.component0.repaint();
       }
@@ -87,12 +87,12 @@ public final class RasterProvider extends AbstractRasterProvider {
       garbageValue = "3"
    )
    @Export("draw0")
-   final void draw0(Graphics var1, int var2, int var3, int var4, int var5) {
+   final void draw0(Graphics graphics, int x, int y, int width, int height) {
       try {
-         Shape var6 = var1.getClip();
-         var1.clipRect(var2, var3, var4, var5);
-         var1.drawImage(this.image, 0, 0, this.component0);
-         var1.setClip(var6);
+         Shape var6 = graphics.getClip();
+         graphics.clipRect(x, y, width, height);
+         graphics.drawImage(this.image, 0, 0, this.component0);
+         graphics.setClip(var6);
       } catch (Exception var7) {
          this.component0.repaint();
       }

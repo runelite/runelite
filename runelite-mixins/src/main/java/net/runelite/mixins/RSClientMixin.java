@@ -51,7 +51,6 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
-import net.runelite.api.PacketBuffer;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -111,6 +110,7 @@ import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSPacketBuffer;
 import org.slf4j.Logger;
 import net.runelite.rs.api.RSAbstractArchive;
 import net.runelite.rs.api.RSChatChannel;
@@ -1329,13 +1329,13 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@MethodHook("updateNpcs")
-	public static void updateNpcs(boolean var0, PacketBuffer var1)
+	public static void updateNpcs(boolean var0, RSPacketBuffer var1)
 	{
 		client.getCallbacks().updateNpcs();
 	}
 
 	@Inject
-	@MethodHook(value = "addMessage", end = true)
+	@MethodHook(value = "addChatMessage", end = true)
 	public static void onAddChatMessage(int type, String name, String message, String sender)
 	{
 		Logger logger = client.getLogger();

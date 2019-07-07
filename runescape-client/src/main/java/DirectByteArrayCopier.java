@@ -30,9 +30,9 @@ public class DirectByteArrayCopier extends AbstractByteArrayCopier {
       garbageValue = "-2034091753"
    )
    @Export("set")
-   void set(byte[] var1) {
-      this.directBuffer = ByteBuffer.allocateDirect(var1.length);
+   void set(byte[] array) {
+      this.directBuffer = ByteBuffer.allocateDirect(array.length);
       this.directBuffer.position(0);
-      this.directBuffer.put(var1);
+      this.directBuffer.put(array);
    }
 }

@@ -93,8 +93,8 @@ public class ScriptEvent extends Node {
       garbageValue = "723852511"
    )
    @Export("setArgs")
-   public void setArgs(Object[] var1) {
-      this.args0 = var1;
+   public void setArgs(Object[] args) {
+      this.args0 = args;
    }
 
    @ObfuscatedName("f")
@@ -103,8 +103,8 @@ public class ScriptEvent extends Node {
       garbageValue = "-110"
    )
    @Export("setType")
-   public void setType(int var1) {
-      this.type0 = var1;
+   public void setType(int type) {
+      this.type0 = type;
    }
 
    @ObfuscatedName("j")
@@ -157,7 +157,7 @@ public class ScriptEvent extends Node {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
          return 1;
       } else if (var0 == 1614) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.field964 ? 1 : 0;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0;
          return 1;
       } else {
          return 2;
@@ -272,7 +272,7 @@ public class ScriptEvent extends Node {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.weight;
                return 1;
             } else if (var0 == ScriptOpcodes.PLAYERMOD) {
-               if (Client.field155) {
+               if (Client.playerMod) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;

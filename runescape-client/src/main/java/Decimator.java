@@ -126,12 +126,12 @@ public class Decimator {
       garbageValue = "-1419232405"
    )
    @Export("scaleRate")
-   int scaleRate(int var1) {
+   int scaleRate(int rate) {
       if (this.table != null) {
-         var1 = (int)((long)this.outputRate * (long)var1 / (long)this.inputRate);
+         rate = (int)((long)this.outputRate * (long)rate / (long)this.inputRate);
       }
 
-      return var1;
+      return rate;
    }
 
    @ObfuscatedName("q")
@@ -140,12 +140,12 @@ public class Decimator {
       garbageValue = "25"
    )
    @Export("scalePosition")
-   int scalePosition(int var1) {
+   int scalePosition(int position) {
       if (this.table != null) {
-         var1 = (int)((long)this.outputRate * (long)var1 / (long)this.inputRate) + 6;
+         position = (int)((long)this.outputRate * (long)position / (long)this.inputRate) + 6;
       }
 
-      return var1;
+      return position;
    }
 
    @ObfuscatedName("f")

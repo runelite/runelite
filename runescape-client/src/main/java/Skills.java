@@ -35,15 +35,15 @@ public class Skills {
 
          var1.post();
          if (var1.noteTemplate != -1) {
-            var1.method140(getItemDefinition(var1.noteTemplate), getItemDefinition(var1.note));
+            var1.genCert(getItemDefinition(var1.noteTemplate), getItemDefinition(var1.note));
          }
 
          if (var1.notedId != -1) {
-            var1.method141(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
+            var1.genBought(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
          }
 
          if (var1.placeholderTemplate != -1) {
-            var1.method142(getItemDefinition(var1.placeholderTemplate), getItemDefinition(var1.placeholder));
+            var1.genPlaceholder(getItemDefinition(var1.placeholderTemplate), getItemDefinition(var1.placeholder));
          }
 
          if (!class30.inMembersWorld && var1.isMembersOnly) {

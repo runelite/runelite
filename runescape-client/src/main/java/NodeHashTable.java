@@ -49,11 +49,11 @@ public final class NodeHashTable {
       signature = "(J)Lgw;"
    )
    @Export("get")
-   public Node get(long var1) {
-      Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
+   public Node get(long key) {
+      Node var3 = this.buckets[(int)(key & (long)(this.size - 1))];
 
       for (this.currentGet = var3.previous; var3 != this.currentGet; this.currentGet = this.currentGet.previous) {
-         if (this.currentGet.key == var1) {
+         if (this.currentGet.key == key) {
             Node var4 = this.currentGet;
             this.currentGet = this.currentGet.previous;
             return var4;
@@ -69,17 +69,17 @@ public final class NodeHashTable {
       signature = "(Lgw;J)V"
    )
    @Export("put")
-   public void put(Node var1, long var2) {
-      if (var1.next != null) {
-         var1.remove();
+   public void put(Node node, long key) {
+      if (node.next != null) {
+         node.remove();
       }
 
-      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
-      var1.next = var4.next;
-      var1.previous = var4;
-      var1.next.previous = var1;
-      var1.previous.next = var1;
-      var1.key = var2;
+      Node var4 = this.buckets[(int)(key & (long)(this.size - 1))];
+      node.next = var4.next;
+      node.previous = var4;
+      node.next.previous = node;
+      node.previous.next = node;
+      node.key = key;
    }
 
    @ObfuscatedName("q")
@@ -124,15 +124,16 @@ public final class NodeHashTable {
          this.current = var1.previous;
          return var1;
       } else {
-         while (this.index < this.size) {
-            var1 = this.buckets[this.index++].previous;
-            if (var1 != this.buckets[this.index - 1]) {
-               this.current = var1.previous;
-               return var1;
+         do {
+            if (this.index >= this.size) {
+               return null;
             }
-         }
 
-         return null;
+            var1 = this.buckets[this.index++].previous;
+         } while(var1 == this.buckets[this.index - 1]);
+
+         this.current = var1.previous;
+         return var1;
       }
    }
 }

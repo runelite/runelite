@@ -98,7 +98,7 @@ public class class30 {
                AbstractArchive.runScript(var6);
             }
 
-            if (var1 == 1 && var3.field974 != null) {
+            if (var1 == 1 && var3.onSubChange != null) {
                if (var3.childIndex >= 0) {
                   Widget var5 = Huffman.getWidget(var3.id);
                   if (var5 == null || var5.children == null || var3.childIndex >= var5.children.length || var3 != var5.children[var3.childIndex]) {
@@ -108,7 +108,7 @@ public class class30 {
 
                var6 = new ScriptEvent();
                var6.widget = var3;
-               var6.args0 = var3.field974;
+               var6.args0 = var3.onSubChange;
                AbstractArchive.runScript(var6);
             }
          }

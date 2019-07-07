@@ -116,8 +116,8 @@ public class Archive extends AbstractArchive {
          byte[] var3 = null;
          NodeDeque var4 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue;
          synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
-            for (ArchiveDiskAction var6 = (ArchiveDiskAction) ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.last(); var6 != null; var6 = (ArchiveDiskAction) ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.previous()) {
-               if (var6.key == (long) group && var2 == var6.archiveDisk && var6.type == 0) {
+            for (ArchiveDiskAction var6 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.last(); var6 != null; var6 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.previous()) {
+               if (var6.key == (long)group && var2 == var6.archiveDisk && var6.type == 0) {
                   var3 = var6.data;
                   break;
                }
@@ -181,7 +181,7 @@ public class Archive extends AbstractArchive {
          byte[] var5 = null;
          NodeDeque var6 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue;
          synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
-            for (ArchiveDiskAction var8 = (ArchiveDiskAction) ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.last(); var8 != null; var8 = (ArchiveDiskAction) ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.previous()) {
+            for (ArchiveDiskAction var8 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.last(); var8 != null; var8 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.previous()) {
                if (var8.key == (long)var3 && var4 == var8.archiveDisk && var8.type == 0) {
                   var5 = var8.data;
                   break;
@@ -245,7 +245,9 @@ public class Archive extends AbstractArchive {
       if (var1 == this.masterDisk) {
          if (this.field403) {
             throw new RuntimeException();
-         } else if (var3 == null) {
+         }
+
+         if (var3 == null) {
             PacketBuffer.requestNetFile(this, 255, this.index, this.indexCrc, (byte)0, true);
          } else {
             Archive_crc.reset();
@@ -254,22 +256,22 @@ public class Archive extends AbstractArchive {
             if (var5 != this.indexCrc) {
                PacketBuffer.requestNetFile(this, 255, this.index, this.indexCrc, (byte)0, true);
             } else {
-               Buffer var9 = new Buffer(Strings.decompressBytes(var3));
-               int var7 = var9.readUnsignedByte();
+               Buffer var6 = new Buffer(Strings.decompressBytes(var3));
+               int var7 = var6.readUnsignedByte();
                if (var7 != 5 && var7 != 6) {
                   throw new RuntimeException(var7 + "," + this.index + "," + var2);
-               } else {
-                  int var8 = 0;
-                  if (var7 >= 6) {
-                     var8 = var9.readInt();
-                  }
+               }
 
-                  if (var8 != this.indexVersion) {
-                     PacketBuffer.requestNetFile(this, 255, this.index, this.indexCrc, (byte)0, true);
-                  } else {
-                     this.decodeIndex(var3);
-                     this.loadAllLocal();
-                  }
+               int var8 = 0;
+               if (var7 >= 6) {
+                  var8 = var6.readInt();
+               }
+
+               if (var8 != this.indexVersion) {
+                  PacketBuffer.requestNetFile(this, 255, this.index, this.indexCrc, (byte)0, true);
+               } else {
+                  this.decodeIndex(var3);
+                  this.loadAllLocal();
                }
             }
          }
@@ -282,28 +284,26 @@ public class Archive extends AbstractArchive {
             Archive_crc.reset();
             Archive_crc.update(var3, 0, var3.length - 2);
             var5 = (int)Archive_crc.getValue();
-            int var6 = ((var3[var3.length - 2] & 255) << 8) + (var3[var3.length - 1] & 255);
-            if (var5 == super.groupCrcs[var2] && var6 == super.groupVersions[var2]) {
+            int var9 = ((var3[var3.length - 2] & 255) << 8) + (var3[var3.length - 1] & 255);
+            if (var5 == super.groupCrcs[var2] && var9 == super.groupVersions[var2]) {
                this.validGroups[var2] = true;
                if (var4) {
                   super.groups[var2] = Projectile.byteArrayToObject(var3, false);
                }
-
             } else {
                this.validGroups[var2] = false;
                if (this.field404 || var4) {
                   PacketBuffer.requestNetFile(this, this.index, var2, super.groupCrcs[var2], (byte)2, var4);
                }
-
             }
          } else {
             this.validGroups[var2] = false;
             if (this.field404 || var4) {
                PacketBuffer.requestNetFile(this, this.index, var2, super.groupCrcs[var2], (byte)2, var4);
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("dt")

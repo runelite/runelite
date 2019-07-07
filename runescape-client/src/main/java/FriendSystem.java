@@ -240,15 +240,15 @@ public class FriendSystem {
       garbageValue = "-2122207917"
    )
    @Export("removeFriend")
-   final void removeFriend(String var1) {
-      if (var1 != null) {
-         Username var2 = new Username(var1, this.loginType);
+   final void removeFriend(String name) {
+      if (name != null) {
+         Username var2 = new Username(name, this.loginType);
          if (var2.hasCleanName()) {
             if (this.friendsList.removeByUsername(var2)) {
                WorldMapManager.method668();
                PacketBufferNode var3 = Interpreter.method1915(ClientPacket.field276, Client.packetWriter.isaacCipher);
-               var3.packetBuffer.writeByte(WorldMapRegion.method550(var1));
-               var3.packetBuffer.writeStringCp1252NullTerminated(var1);
+               var3.packetBuffer.writeByte(WorldMapRegion.method550(name));
+               var3.packetBuffer.writeStringCp1252NullTerminated(name);
                Client.packetWriter.method241(var3);
             }
 
@@ -264,15 +264,15 @@ public class FriendSystem {
       garbageValue = "-1673636127"
    )
    @Export("removeIgnore")
-   final void removeIgnore(String var1) {
-      if (var1 != null) {
-         Username var2 = new Username(var1, this.loginType);
+   final void removeIgnore(String name) {
+      if (name != null) {
+         Username var2 = new Username(name, this.loginType);
          if (var2.hasCleanName()) {
             if (this.ignoreList.removeByUsername(var2)) {
                WorldMapManager.method668();
                PacketBufferNode var3 = Interpreter.method1915(ClientPacket.field250, Client.packetWriter.isaacCipher);
-               var3.packetBuffer.writeByte(WorldMapRegion.method550(var1));
-               var3.packetBuffer.writeStringCp1252NullTerminated(var1);
+               var3.packetBuffer.writeByte(WorldMapRegion.method550(name));
+               var3.packetBuffer.writeStringCp1252NullTerminated(name);
                Client.packetWriter.method241(var3);
             }
 

@@ -112,11 +112,11 @@ public abstract class class21 {
       garbageValue = "-2111523326"
    )
    void method282() {
-      this.field151 = (short[][][])null;
-      this.field145 = (short[][][])null;
-      this.field154 = (byte[][][])null;
-      this.field155 = (byte[][][])null;
-      this.field144 = (WorldMapDecoration[][][][])null;
+      this.field151 = (short[][][])((short[][][])null);
+      this.field145 = (short[][][])((short[][][])null);
+      this.field154 = ((byte[][][])null);
+      this.field155 = ((byte[][][])null);
+      this.field144 = (WorldMapDecoration[][][][])((WorldMapDecoration[][][][])null);
       this.field157 = false;
       this.field153 = false;
    }

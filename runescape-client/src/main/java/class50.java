@@ -78,8 +78,8 @@ public class class50 {
       garbageValue = "83"
    )
    @Export("loadRegions")
-   static final void loadRegions(boolean var0, PacketBuffer var1) {
-      Client.isInInstance = var0;
+   static final void loadRegions(boolean isInInstance, PacketBuffer packetBuffer) {
+      Client.isInInstance = isInInstance;
       int var2;
       int var3;
       int var4;
@@ -87,14 +87,14 @@ public class class50 {
       int var6;
       int var7;
       if (!Client.isInInstance) {
-         var2 = var1.method67();
-         var3 = var1.method66();
-         int var8 = var1.readUnsignedShort();
+         var2 = packetBuffer.method67();
+         var3 = packetBuffer.method66();
+         int var8 = packetBuffer.readUnsignedShort();
          class190.xteaKeys = new int[var8][4];
 
          for (var4 = 0; var4 < var8; ++var4) {
             for (var5 = 0; var5 < 4; ++var5) {
-               class190.xteaKeys[var4][var5] = var1.readInt();
+               class190.xteaKeys[var4][var5] = packetBuffer.readInt();
             }
          }
 
@@ -128,19 +128,19 @@ public class class50 {
 
          DynamicObject.method2224(var3, var2, true);
       } else {
-         var2 = var1.method66();
-         var3 = var1.method67();
-         boolean var15 = var1.readUnsignedByte() == 1;
-         var4 = var1.readUnsignedShort();
-         var1.importIndex();
+         var2 = packetBuffer.method66();
+         var3 = packetBuffer.method67();
+         boolean var15 = packetBuffer.readUnsignedByte() == 1;
+         var4 = packetBuffer.readUnsignedShort();
+         packetBuffer.importIndex();
 
          int var16;
          for (var5 = 0; var5 < 4; ++var5) {
             for (var6 = 0; var6 < 13; ++var6) {
                for (var7 = 0; var7 < 13; ++var7) {
-                  var16 = var1.readBits(1);
+                  var16 = packetBuffer.readBits(1);
                   if (var16 == 1) {
-                     Client.instanceChunkTemplates[var5][var6][var7] = var1.readBits(26);
+                     Client.instanceChunkTemplates[var5][var6][var7] = packetBuffer.readBits(26);
                   } else {
                      Client.instanceChunkTemplates[var5][var6][var7] = -1;
                   }
@@ -148,12 +148,12 @@ public class class50 {
             }
          }
 
-         var1.exportIndex();
+         packetBuffer.exportIndex();
          class190.xteaKeys = new int[var4][4];
 
          for (var5 = 0; var5 < var4; ++var5) {
             for (var6 = 0; var6 < 4; ++var6) {
-               class190.xteaKeys[var5][var6] = var1.readInt();
+               class190.xteaKeys[var5][var6] = packetBuffer.readInt();
             }
          }
 

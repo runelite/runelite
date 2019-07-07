@@ -477,7 +477,7 @@ public class ServerPacket {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.spritePixels = (byte[][])null;
+      class328.spritePixels = ((byte[][])null);
       return var0;
    }
 

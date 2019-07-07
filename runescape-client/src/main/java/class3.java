@@ -100,7 +100,7 @@ public class class3 implements Enumerated {
          NodeDeque var0 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue;
          ArchiveDiskAction var1;
          synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
-            var1 = (ArchiveDiskAction) ArchiveDiskActionHandler.ArchiveDiskActionHandler_responseQueue.removeLast();
+            var1 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_responseQueue.removeLast();
          }
 
          if (var1 == null) {

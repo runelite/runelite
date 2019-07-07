@@ -136,9 +136,9 @@ public final class Occluder {
       garbageValue = "-1164060583"
    )
    @Export("newScript")
-   static Script newScript(byte[] var0) {
+   static Script newScript(byte[] bytes) {
       Script var1 = new Script();
-      Buffer var2 = new Buffer(var0);
+      Buffer var2 = new Buffer(bytes);
       var2.index = var2.array.length - 2;
       int var3 = var2.readUnsignedShort();
       int var4 = var2.array.length - 2 - var3 - 12;

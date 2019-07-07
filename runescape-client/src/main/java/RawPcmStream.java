@@ -101,9 +101,9 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("e")
-   public synchronized void vmethod263(int[] var1, int var2, int var3) {
+   public synchronized void fill(int[] var1, int var2, int var3) {
       if (this.field746 == 0 && this.field752 == 0) {
-         this.vmethod264(var3);
+         this.skip(var3);
       } else {
          RawSound var4 = (RawSound)super.sound;
          int var5 = this.start << 8;
@@ -290,7 +290,7 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("d")
-   public synchronized void vmethod264(int var1) {
+   public synchronized void skip(int var1) {
       if (this.field752 > 0) {
          if (var1 >= this.field752) {
             if (this.field746 == Integer.MIN_VALUE) {

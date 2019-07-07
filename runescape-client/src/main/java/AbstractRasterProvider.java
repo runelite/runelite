@@ -32,7 +32,7 @@ public abstract class AbstractRasterProvider {
       garbageValue = "-430495007"
    )
    @Export("drawFull")
-   public abstract void drawFull(int var1, int var2);
+   public abstract void drawFull(int x, int y);
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
@@ -40,7 +40,7 @@ public abstract class AbstractRasterProvider {
       garbageValue = "18"
    )
    @Export("draw")
-   public abstract void draw(int var1, int var2, int var3, int var4);
+   public abstract void draw(int x, int y, int width, int height);
 
    @ObfuscatedName("b")
    @ObfuscatedSignature(

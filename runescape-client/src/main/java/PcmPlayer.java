@@ -121,7 +121,7 @@ public class PcmPlayer {
       garbageValue = "-1738349775"
    )
    @Export("open")
-   protected void open(int var1) throws Exception {
+   protected void open(int bufferSize) throws Exception {
    }
 
    @ObfuscatedName("q")
@@ -163,8 +163,8 @@ public class PcmPlayer {
       garbageValue = "2106357590"
    )
    @Export("setStream")
-   public final synchronized void setStream(PcmStream var1) {
-      this.stream0 = var1;
+   public final synchronized void setStream(PcmStream stream) {
+      this.stream0 = stream;
    }
 
    @ObfuscatedName("ar")
@@ -324,28 +324,28 @@ public class PcmPlayer {
       garbageValue = "-424358259"
    )
    @Export("skip")
-   final void skip(int var1) {
-      this.field686 -= var1;
+   final void skip(int length) {
+      this.field686 -= length;
       if (this.field686 < 0) {
          this.field686 = 0;
       }
 
       if (this.stream0 != null) {
-         this.stream0.vmethod264(var1);
+         this.stream0.skip(length);
       }
 
    }
 
    @ObfuscatedName("aw")
    @Export("fill")
-   final void fill(int[] var1, int var2) {
-      int var3 = var2;
+   final void fill(int[] buffer, int length) {
+      int var3 = length;
       if (isStereo) {
-         var3 = var2 << 1;
+         var3 = length << 1;
       }
 
-      class212.clearIntArray(var1, 0, var3);
-      this.field686 -= var2;
+      class212.clearIntArray(buffer, 0, var3);
+      this.field686 -= length;
       if (this.stream0 != null && this.field686 <= 0) {
          this.field686 += class309.PcmPlayer_sampleRate >> 4;
          MidiPcmStream.PcmStream_disable(this.stream0);
@@ -444,7 +444,7 @@ public class PcmPlayer {
       }
 
       if (this.stream0 != null) {
-         this.stream0.vmethod263(var1, 0, var2);
+         this.stream0.fill(buffer, 0, length);
       }
 
       this.timeMs = class203.currentTimeMs();

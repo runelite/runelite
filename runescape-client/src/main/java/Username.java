@@ -50,8 +50,8 @@ public class Username implements Comparable {
       garbageValue = "8"
    )
    @Export("compareTo0")
-   public int compareTo0(Username var1) {
-      return this.cleanName == null ? (var1.cleanName == null ? 0 : 1) : (var1.cleanName == null ? -1 : this.cleanName.compareTo(var1.cleanName));
+   public int compareTo0(Username other) {
+      return this.cleanName == null ? (other.cleanName == null ? 0 : 1) : (other.cleanName == null ? -1 : this.cleanName.compareTo(other.cleanName));
    }
 
    @Export("equals")

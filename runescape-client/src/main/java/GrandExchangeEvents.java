@@ -78,15 +78,15 @@ public class GrandExchangeEvents {
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "1601363438"
    )
-   @Export("addMessage")
-   static void addMessage(int var0, String var1, String var2, String var3) {
-      ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(var0);
+   @Export("addChatMessage")
+   static void addChatMessage(int type, String sender, String text, String prefix) {
+      ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(type);
       if (var4 == null) {
          var4 = new ChatChannel();
-         Messages.Messages_channels.put(var0, var4);
+         Messages.Messages_channels.put(type, var4);
       }
 
-      Message var5 = var4.addMessage(var0, var1, var2, var3);
+      Message var5 = var4.addMessage(type, sender, text, prefix);
       Messages.Messages_hashTable.put(var5, (long)var5.count);
       Messages.Messages_queue.add(var5);
       Client.chatCycle = Client.cycleCntr;
@@ -153,7 +153,7 @@ public class GrandExchangeEvents {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
          return 1;
       } else if (var0 == 2614) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.field964 ? 1 : 0;
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0;
          return 1;
       } else {
          return 2;

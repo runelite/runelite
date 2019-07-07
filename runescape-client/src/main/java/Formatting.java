@@ -51,33 +51,33 @@ public class Formatting {
       int var3;
       int var4;
       int var5;
-      EnumDefinition var9;
+      EnumDefinition var6;
       if (var0 == ScriptOpcodes.ENUM_STRING) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         var9 = Interpreter.getEnum(var3);
-         if (var9.outputType != 's') {
+         var6 = Interpreter.getEnum(var3);
+         if (var6.outputType != 's') {
          }
 
-         for (var5 = 0; var5 < var9.outputCount; ++var5) {
-            if (var4 == var9.keys[var5]) {
-               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var9.strVals[var5];
-               var9 = null;
+         for (var5 = 0; var5 < var6.outputCount; ++var5) {
+            if (var4 == var6.keys[var5]) {
+               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.strVals[var5];
+               var6 = null;
                break;
             }
          }
 
-         if (var9 != null) {
-            Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var9.defaultStr;
+         if (var6 != null) {
+            Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.defaultStr;
          }
 
          return 1;
       } else if (var0 != ScriptOpcodes.ENUM) {
          if (var0 == ScriptOpcodes.ENUM_GETOUTPUTCOUNT) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-            var9 = Interpreter.getEnum(var3);
-            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var9.size();
+            var6 = Interpreter.getEnum(var3);
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.size();
             return 1;
          } else {
             return 2;
@@ -86,28 +86,28 @@ public class Formatting {
          RouteStrategy.Interpreter_intStackSize -= 4;
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         int var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
+         int var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
          var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 3];
-         EnumDefinition var7 = Interpreter.getEnum(var6);
-         if (var3 == var7.inputType && var4 == var7.outputType) {
-            for (int var8 = 0; var8 < var7.outputCount; ++var8) {
-               if (var5 == var7.keys[var8]) {
+         EnumDefinition var8 = Interpreter.getEnum(var7);
+         if (var3 == var8.inputType && var4 == var8.outputType) {
+            for (int var9 = 0; var9 < var8.outputCount; ++var9) {
+               if (var5 == var8.keys[var9]) {
                   if (var4 == 115) {
-                     Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var7.strVals[var8];
+                     Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var8.strVals[var9];
                   } else {
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var7.intVals[var8];
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var8.intVals[var9];
                   }
 
-                  var7 = null;
+                  var8 = null;
                   break;
                }
             }
 
-            if (var7 != null) {
+            if (var8 != null) {
                if (var4 == 115) {
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var7.defaultStr;
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var8.defaultStr;
                } else {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var7.defaultInt;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var8.defaultInt;
                }
             }
 

@@ -176,18 +176,18 @@ public class ParamDefinition extends DualNode {
             int var17;
             int var39;
             if (var5 != 1 && var5 != 3) {
-               var39 = var38.sizeX;
-               var17 = var38.sizeY;
-            } else {
-               var39 = var38.sizeY;
                var17 = var38.sizeX;
+               var39 = var38.sizeY;
+            } else {
+               var17 = var38.sizeY;
+               var39 = var38.sizeX;
             }
 
             int var18;
             int var19;
-            if (var39 + var2 <= 104) {
-               var18 = (var39 >> 1) + var2;
-               var19 = var2 + (var39 + 1 >> 1);
+            if (var17 + var2 <= 104) {
+               var18 = (var17 >> 1) + var2;
+               var19 = var2 + (var17 + 1 >> 1);
             } else {
                var18 = var2;
                var19 = var2 + 1;
@@ -195,9 +195,9 @@ public class ParamDefinition extends DualNode {
 
             int var20;
             int var21;
-            if (var3 + var17 <= 104) {
-               var20 = var3 + (var17 >> 1);
-               var21 = var3 + (var17 + 1 >> 1);
+            if (var3 + var39 <= 104) {
+               var20 = var3 + (var39 >> 1);
+               var21 = var3 + (var39 + 1 >> 1);
             } else {
                var20 = var3;
                var21 = var3 + 1;
@@ -205,8 +205,8 @@ public class ParamDefinition extends DualNode {
 
             int[][] var22 = Tiles.Tiles_heights[var12];
             int var23 = var22[var18][var21] + var22[var19][var20] + var22[var18][var20] + var22[var19][var21] >> 2;
-            int var24 = (var2 << 7) + (var39 << 6);
-            int var25 = (var3 << 7) + (var17 << 6);
+            int var24 = (var2 << 7) + (var17 << 6);
+            int var25 = (var3 << 7) + (var39 << 6);
             long var26 = FontName.calculateTag(var2, var3, 2, var38.int1 == 0, var4);
             int var28 = (var5 << 6) + var6;
             if (var38.int3 == 1) {
@@ -235,7 +235,7 @@ public class ParamDefinition extends DualNode {
 
                   var36.method284(var0, var2, var3, var23, 1, 1, (Entity)var29, 0, var26, var28);
                   if (var38.interactType != 0) {
-                     var37.method91(var2, var3, var39, var17, var38.boolean1);
+                     var37.method91(var2, var3, var17, var39, var38.boolean1);
                   }
                } else if (var6 == 0) {
                   if (var38.animationId == -1 && var38.transforms == null) {
@@ -297,7 +297,7 @@ public class ParamDefinition extends DualNode {
 
                      var36.method284(var0, var2, var3, var23, 1, 1, (Entity)var29, 0, var26, var28);
                      if (var38.interactType != 0) {
-                        var37.method91(var2, var3, var39, var17, var38.boolean1);
+                        var37.method91(var2, var3, var17, var39, var38.boolean1);
                      }
                   } else if (var6 == 4) {
                      if (var38.animationId == -1 && var38.transforms == null) {
@@ -378,11 +378,11 @@ public class ParamDefinition extends DualNode {
                }
 
                if (var29 != null) {
-                  var36.method284(var0, var2, var3, var23, var39, var17, (Entity)var29, var6 == 11 ? 256 : 0, var26, var28);
+                  var36.method284(var0, var2, var3, var23, var17, var39, (Entity)var29, var6 == 11 ? 256 : 0, var26, var28);
                }
 
                if (var38.interactType != 0) {
-                  var37.method91(var2, var3, var39, var17, var38.boolean1);
+                  var37.method91(var2, var3, var17, var39, var38.boolean1);
                }
             }
          }

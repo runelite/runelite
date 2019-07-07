@@ -100,10 +100,10 @@ public class FloorUnderlayDefinition extends DualNode {
       garbageValue = "-107"
    )
    @Export("setHsl")
-   void setHsl(int var1) {
-      double var2 = (double)(var1 >> 16 & 255) / 256.0D;
-      double var4 = (double)(var1 >> 8 & 255) / 256.0D;
-      double var6 = (double)(var1 & 255) / 256.0D;
+   void setHsl(int rgb) {
+      double var2 = (double)(rgb >> 16 & 255) / 256.0D;
+      double var4 = (double)(rgb >> 8 & 255) / 256.0D;
+      double var6 = (double)(rgb & 255) / 256.0D;
       double var8 = var2;
       if (var4 < var2) {
          var8 = var4;

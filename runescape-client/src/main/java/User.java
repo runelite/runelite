@@ -55,12 +55,12 @@ public class User implements Comparable {
       garbageValue = "1156866388"
    )
    @Export("set")
-   void set(Username var1, Username var2) {
-      if (var1 == null) {
+   void set(Username username, Username previousUsername) {
+      if (username == null) {
          throw new NullPointerException();
       } else {
-         this.username0 = var1;
-         this.previousUsername = var2;
+         this.username0 = username;
+         this.previousUsername = previousUsername;
       }
    }
 
@@ -70,8 +70,8 @@ public class User implements Comparable {
       garbageValue = "1627362569"
    )
    @Export("compareTo0")
-   public int compareTo0(User var1) {
-      return this.username0.compareTo0(var1.username0);
+   public int compareTo0(User other) {
+      return this.username0.compareTo0(other.username0);
    }
 
    @Export("compareTo")

@@ -154,18 +154,18 @@ final class class4 implements class0 {
                   var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   Interpreter.Interpreter_stringStackSize -= 2;
                   var6 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize];
-                  String var10 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1];
+                  String var9 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1];
                   if (var6.length() > 500) {
                      return 1;
-                  } else if (var10.length() > 500) {
+                  } else if (var9.length() > 500) {
                      return 1;
                   } else {
-                     PacketBufferNode var9 = Interpreter.method1915(ClientPacket.field238, Client.packetWriter.isaacCipher);
-                     var9.packetBuffer.writeShort(1 + WorldMapRegion.method550(var6) + WorldMapRegion.method550(var10));
-                     var9.packetBuffer.writeStringCp1252NullTerminated(var6);
-                     var9.packetBuffer.writeByte(var7);
-                     var9.packetBuffer.writeStringCp1252NullTerminated(var10);
-                     Client.packetWriter.method241(var9);
+                     PacketBufferNode var10 = Interpreter.method1915(ClientPacket.field238, Client.packetWriter.isaacCipher);
+                     var10.packetBuffer.writeShort(1 + WorldMapRegion.method550(var6) + WorldMapRegion.method550(var9));
+                     var10.packetBuffer.writeStringCp1252NullTerminated(var6);
+                     var10.packetBuffer.writeByte(var7);
+                     var10.packetBuffer.writeStringCp1252NullTerminated(var9);
+                     Client.packetWriter.method241(var10);
                      return 1;
                   }
                } else if (var0 == ScriptOpcodes.SETSHIFTCLICKDROP) {

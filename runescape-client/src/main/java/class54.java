@@ -153,25 +153,25 @@ public final class class54 {
                      }
                   }
                } else {
-                  short var9;
-                  int var20;
+                  int var9;
+                  short var20;
                   if (Login.loginIndex != 1) {
                      boolean var10;
                      int var11;
                      short var12;
                      if (Login.loginIndex == 2) {
                         var12 = 201;
-                        var20 = var12 + 52;
-                        if (var1 == 1 && var17 >= var20 - 12 && var17 < var20 + 2) {
+                        var9 = var12 + 52;
+                        if (var1 == 1 && var17 >= var9 - 12 && var17 < var9 + 2) {
                            Login.currentLoginField = 0;
                         }
 
-                        var20 += 15;
-                        if (var1 == 1 && var17 >= var20 - 12 && var17 < var20 + 2) {
+                        var9 += 15;
+                        if (var1 == 1 && var17 >= var9 - 12 && var17 < var9 + 2) {
                            Login.currentLoginField = 1;
                         }
 
-                        var20 += 15;
+                        var9 += 15;
                         var12 = 361;
                         if (TilePaint.field907 != null) {
                            var18 = TilePaint.field907.field43 / 2;
@@ -310,15 +310,15 @@ public final class class54 {
                      }
 
                      if (Login.loginIndex == 3) {
-                        var20 = Login.loginBoxX + 180;
-                        var9 = 276;
-                        if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                        var9 = Login.loginBoxX + 180;
+                        var20 = 276;
+                        if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                            MouseHandler.method1084(false);
                         }
 
-                        var20 = Login.loginBoxX + 180;
-                        var9 = 326;
-                        if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                        var9 = Login.loginBoxX + 180;
+                        var20 = 326;
+                        if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                            method1089("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
                            Login.loginIndex = 5;
                            return;
@@ -326,9 +326,9 @@ public final class class54 {
                      } else {
                         int var13;
                         if (Login.loginIndex == 4) {
-                           var20 = Login.loginBoxX + 180 - 80;
-                           var9 = 321;
-                           if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                           var9 = Login.loginBoxX + 180 - 80;
+                           var20 = 321;
+                           if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                               Login.otp.trim();
                               if (Login.otp.length() != 6) {
                                  method1089("", "Please enter a 6-digit PIN.", "");
@@ -351,8 +351,8 @@ public final class class54 {
                               WorldMapCacheName.openURL(Message.method1227("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
                            }
 
-                           var20 = Login.loginBoxX + 180 + 80;
-                           if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                           var9 = Login.loginBoxX + 180 + 80;
+                           if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                               Login.loginIndex = 0;
                               Login.Login_username = "";
                               Login.Login_password = "";
@@ -402,15 +402,15 @@ public final class class54 {
                               }
                            }
                         } else if (Login.loginIndex == 5) {
-                           var20 = Login.loginBoxX + 180 - 80;
-                           var9 = 321;
-                           if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                           var9 = Login.loginBoxX + 180 - 80;
+                           var20 = 321;
+                           if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                               NPCDefinition.method5162();
                               return;
                            }
 
-                           var20 = Login.loginBoxX + 180 + 80;
-                           if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                           var9 = Login.loginBoxX + 180 + 80;
+                           if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                               MouseHandler.method1084(true);
                            }
 
@@ -468,31 +468,31 @@ public final class class54 {
                            }
 
                            if (Login.loginIndex == 7) {
-                              var20 = Login.loginBoxX + 180 - 80;
-                              var9 = 321;
-                              if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                              var9 = Login.loginBoxX + 180 - 80;
+                              var20 = 321;
+                              if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                                  WorldMapCacheName.openURL(Message.method1227("secure", true) + "m=dob/set_dob.ws", true, false);
                                  method1089("", "Page has opened in a new window.", "(Please check your popup blocker.)");
                                  Login.loginIndex = 6;
                                  return;
                               }
 
-                              var20 = Login.loginBoxX + 180 + 80;
-                              if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                              var9 = Login.loginBoxX + 180 + 80;
+                              if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                                  MouseHandler.method1084(true);
                               }
                            } else if (Login.loginIndex == 8) {
-                              var20 = Login.loginBoxX + 180 - 80;
-                              var9 = 321;
-                              if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                              var9 = Login.loginBoxX + 180 - 80;
+                              var20 = 321;
+                              if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                                  WorldMapCacheName.openURL("https://www.jagex.com/terms/privacy/#eight", true, false);
                                  method1089("", "Page has opened in a new window.", "(Please check your popup blocker.)");
                                  Login.loginIndex = 6;
                                  return;
                               }
 
-                              var20 = Login.loginBoxX + 180 + 80;
-                              if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                              var9 = Login.loginBoxX + 180 + 80;
+                              if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                                  MouseHandler.method1084(true);
                               }
                            } else if (Login.loginIndex == 12) {
@@ -534,14 +534,14 @@ public final class class54 {
                         }
                      }
 
-                     var20 = Varps.loginBoxCenter - 80;
-                     var9 = 321;
-                     if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                     var9 = Varps.loginBoxCenter - 80;
+                     var20 = 321;
+                     if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                         MouseHandler.method1084(false);
                      }
 
-                     var20 = Varps.loginBoxCenter + 80;
-                     if (var1 == 1 && var2 >= var20 - 75 && var2 <= var20 + 75 && var17 >= var9 - 20 && var17 <= var9 + 20) {
+                     var9 = Varps.loginBoxCenter + 80;
+                     if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                         Login.loginIndex = 0;
                      }
                   }
@@ -906,7 +906,7 @@ public final class class54 {
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                  } else {
-                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.vmethod395();
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.element();
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.coord2.packed();
                                  }
 
@@ -917,7 +917,7 @@ public final class class54 {
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                  } else {
-                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.vmethod395();
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.element();
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.coord2.packed();
                                  }
 

@@ -68,37 +68,37 @@ public final class GroundItemPile {
       garbageValue = "-60"
    )
    @Export("loadInterface")
-   public static boolean loadInterface(int var0) {
-      if (Widget.loadedInterfaces[var0]) {
+   public static boolean loadInterface(int itf) {
+      if (Widget.loadedInterfaces[itf]) {
          return true;
-      } else if (!Widget.Widget_archive.tryLoadGroup(var0)) {
+      } else if (!Widget.Widget_archive.tryLoadGroup(itf)) {
          return false;
       } else {
-         int var1 = Widget.Widget_archive.method4(var0);
+         int var1 = Widget.Widget_archive.method4(itf);
          if (var1 == 0) {
-            Widget.loadedInterfaces[var0] = true;
+            Widget.loadedInterfaces[itf] = true;
             return true;
          } else {
-            if (Widget.interfaceComponents[var0] == null) {
-               Widget.interfaceComponents[var0] = new Widget[var1];
+            if (Widget.interfaceComponents[itf] == null) {
+               Widget.interfaceComponents[itf] = new Widget[var1];
             }
 
             for (int var2 = 0; var2 < var1; ++var2) {
-               if (Widget.interfaceComponents[var0][var2] == null) {
-                  byte[] var3 = Widget.Widget_archive.takeFile(var0, var2);
+               if (Widget.interfaceComponents[itf][var2] == null) {
+                  byte[] var3 = Widget.Widget_archive.takeFile(itf, var2);
                   if (var3 != null) {
-                     Widget.interfaceComponents[var0][var2] = new Widget();
-                     Widget.interfaceComponents[var0][var2].id = var2 + (var0 << 16);
+                     Widget.interfaceComponents[itf][var2] = new Widget();
+                     Widget.interfaceComponents[itf][var2].id = var2 + (itf << 16);
                      if (var3[0] == -1) {
-                        Widget.interfaceComponents[var0][var2].decode(new Buffer(var3));
+                        Widget.interfaceComponents[itf][var2].decode(new Buffer(var3));
                      } else {
-                        Widget.interfaceComponents[var0][var2].decodeLegacy(new Buffer(var3));
+                        Widget.interfaceComponents[itf][var2].decodeLegacy(new Buffer(var3));
                      }
                   }
                }
             }
 
-            Widget.loadedInterfaces[var0] = true;
+            Widget.loadedInterfaces[itf] = true;
             return true;
          }
       }

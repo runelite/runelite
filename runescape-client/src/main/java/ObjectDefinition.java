@@ -687,6 +687,7 @@ public class ObjectDefinition extends DualNode {
       int var5;
       int var6;
       int var7;
+      boolean var8;
       if (this.field645 == null) {
          if (var1 != 10) {
             return null;
@@ -746,7 +747,7 @@ public class ObjectDefinition extends DualNode {
          }
 
          var5 = this.field644[var7];
-         boolean var8 = this.isRotated ^ var2 > 3;
+         var8 = this.isRotated ^ var2 > 3;
          if (var8) {
             var5 += 65536;
          }
@@ -772,14 +773,13 @@ public class ObjectDefinition extends DualNode {
          var4 = true;
       }
 
-      boolean var10;
       if (this.offsetX == 0 && this.offsetHeight == 0 && this.offsetY == 0) {
-         var10 = false;
+         var8 = false;
       } else {
-         var10 = true;
+         var8 = true;
       }
 
-      ModelData var9 = new ModelData(var3, var2 == 0 && !var4 && !var10, this.recolorFrom == null, null == this.retextureFrom, true);
+      ModelData var9 = new ModelData(var3, var2 == 0 && !var4 && !var8, this.recolorFrom == null, null == this.retextureFrom, true);
       if (var1 == 4 && var2 > 3) {
          var9.method212(256);
          var9.method213(45, 0, -45);
@@ -810,7 +810,7 @@ public class ObjectDefinition extends DualNode {
          var9.method215(this.modelSizeX, this.modelHeight, this.modelSizeY);
       }
 
-      if (var10) {
+      if (var8) {
          var9.method213(this.offsetX, this.offsetHeight, this.offsetY);
       }
 

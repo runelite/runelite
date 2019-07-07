@@ -6,13 +6,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ka")
 @Implements("DefaultsGroup")
-public class DefaultsGroup
-{
+public class DefaultsGroup {
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lka;"
    )
-   static final DefaultsGroup field3810;
+   @Export("DefaultsGroup_graphics")
+   static final DefaultsGroup DefaultsGroup_graphics;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -2077113503
@@ -39,6 +39,6 @@ public class DefaultsGroup
    }
 
    static {
-      field3810 = new DefaultsGroup(3);
+      DefaultsGroup_graphics = new DefaultsGroup(3);
    }
 }

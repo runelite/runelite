@@ -21,8 +21,8 @@ public class Friend extends Buddy {
       garbageValue = "-1559116693"
    )
    @Export("compareTo00")
-   int compareTo00(Friend var1) {
-      return super.world0 == Client.worldId && Client.worldId != var1.world0 ? -1 : (Client.worldId == var1.world0 && super.world0 != Client.worldId ? 1 : (super.world0 != 0 && var1.world0 == 0 ? -1 : (var1.world0 != 0 && super.world0 == 0 ? 1 : (this.field354 && !var1.field354 ? -1 : (!this.field354 && var1.field354 ? 1 : (this.field355 && !var1.field355 ? -1 : (!this.field355 && var1.field355 ? 1 : (super.world0 != 0 ? super.int2 - var1.int2 : var1.int2 - super.int2))))))));
+   int compareTo00(Friend other) {
+      return super.world0 == Client.worldId && Client.worldId != other.world0 ? -1 : (Client.worldId == other.world0 && super.world0 != Client.worldId ? 1 : (super.world0 != 0 && other.world0 == 0 ? -1 : (other.world0 != 0 && super.world0 == 0 ? 1 : (this.field354 && !other.field354 ? -1 : (!this.field354 && other.field354 ? 1 : (this.field355 && !other.field355 ? -1 : (!this.field355 && other.field355 ? 1 : (super.world0 != 0 ? super.int2 - other.int2 : other.int2 - super.int2))))))));
    }
 
    @ObfuscatedName("aj")

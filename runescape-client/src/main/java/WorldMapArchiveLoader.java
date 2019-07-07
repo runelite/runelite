@@ -6,8 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ls")
 @Implements("WorldMapArchiveLoader")
-public class WorldMapArchiveLoader
-{
+public class WorldMapArchiveLoader {
    @ObfuscatedName("o")
    @Export("cacheName")
    String cacheName;

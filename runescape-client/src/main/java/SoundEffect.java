@@ -66,8 +66,8 @@ public class SoundEffect {
       if (var1 != 9999999 && var1 != 0) {
          for (var2 = 0; var2 < 10; ++var2) {
             if (this.instruments[var2] != null) {
-               Instrument var10000 = this.instruments[var2];
-               var10000.offset -= var1 * 20;
+               Instrument var3 = this.instruments[var2];
+               var3.offset -= var1 * 20;
             }
          }
 

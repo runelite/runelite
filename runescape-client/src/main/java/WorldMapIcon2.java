@@ -56,7 +56,7 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       signature = "(I)I",
       garbageValue = "1990181988"
    )
-   public int vmethod395() {
+   public int element() {
       return this.field1036;
    }
 
@@ -65,7 +65,7 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       signature = "(I)Laj;",
       garbageValue = "1159446036"
    )
-   WorldMapLabel vmethod396() {
+   WorldMapLabel label() {
       return this.label0;
    }
 
@@ -95,7 +95,7 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
    void method399() {
       this.field1036 = class50.getObjectDefinition(this.field1034).transform().mapIconId;
       this.label0 = this.field1035.method420(ViewportMouse.getWorldMapElement(this.field1036));
-      WorldMapElement var1 = ViewportMouse.getWorldMapElement(this.vmethod395());
+      WorldMapElement var1 = ViewportMouse.getWorldMapElement(this.element());
       Sprite var2 = var1.getSprite(false);
       if (var2 != null) {
          this.field1037 = var2.subWidth;

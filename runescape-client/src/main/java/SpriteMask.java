@@ -39,10 +39,10 @@ public class SpriteMask extends DualNode {
       garbageValue = "781236044"
    )
    @Export("contains")
-   public boolean contains(int var1, int var2) {
-      if (var2 >= 0 && var2 < this.xStarts.length) {
-         int var3 = this.xStarts[var2];
-         if (var1 >= var3 && var1 <= var3 + this.xWidths[var2]) {
+   public boolean contains(int x, int y) {
+      if (y >= 0 && y < this.xStarts.length) {
+         int var3 = this.xStarts[y];
+         if (x >= var3 && x <= var3 + this.xWidths[y]) {
             return true;
          }
       }

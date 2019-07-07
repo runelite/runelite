@@ -6,8 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("lg")
 @Implements("GraphicsDefaults")
-public class GraphicsDefaults
-{
+public class GraphicsDefaults {
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1673796151
@@ -93,8 +92,8 @@ public class GraphicsDefaults
       garbageValue = "1764356022"
    )
    @Export("decode")
-   public void decode(AbstractArchive var1) {
-      byte[] var2 = var1.takeFileFlat(DefaultsGroup.field3810.group);
+   public void decode(AbstractArchive index) {
+      byte[] var2 = index.takeFileFlat(DefaultsGroup.DefaultsGroup_graphics.group);
       Buffer var3 = new Buffer(var2);
 
       while (true) {
@@ -143,7 +142,7 @@ public class GraphicsDefaults
             VarbitDefinition.indexedSpriteWidths = null;
             SecureRandomCallable.indexedSpriteHeights = null;
             class328.indexedSpritePalette = null;
-            class328.spritePixels = (byte[][])null;
+            class328.spritePixels = ((byte[][])null);
             var5 = var6;
          }
 

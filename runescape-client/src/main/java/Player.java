@@ -190,11 +190,11 @@ public final class Player extends Actor {
       garbageValue = "-801926003"
    )
    @Export("read")
-   final void read(Buffer var1) {
-      var1.index = 0;
-      int var2 = var1.readUnsignedByte();
-      this.headIconPk = var1.readByte();
-      this.headIconPrayer = var1.readByte();
+   final void read(Buffer buffer) {
+      buffer.index = 0;
+      int var2 = buffer.readUnsignedByte();
+      this.headIconPk = buffer.readByte();
+      this.headIconPrayer = buffer.readByte();
       int var3 = -1;
       this.team = 0;
       int[] var4 = new int[12];
@@ -202,14 +202,14 @@ public final class Player extends Actor {
       int var5;
       int var6;
       for (int var7 = 0; var7 < 12; ++var7) {
-         var5 = var1.readUnsignedByte();
+         var5 = buffer.readUnsignedByte();
          if (var5 == 0) {
             var4[var7] = 0;
          } else {
-            var6 = var1.readUnsignedByte();
+            var6 = buffer.readUnsignedByte();
             var4[var7] = var6 + (var5 << 8);
             if (var7 == 0 && var4[0] == 65535) {
-               var3 = var1.readUnsignedShort();
+               var3 = buffer.readUnsignedShort();
                break;
             }
 
@@ -225,7 +225,7 @@ public final class Player extends Actor {
       int[] var9 = new int[5];
 
       for (var5 = 0; var5 < 5; ++var5) {
-         var6 = var1.readUnsignedByte();
+         var6 = buffer.readUnsignedByte();
          if (var6 < 0 || var6 >= class229.field1137[var5].length) {
             var6 = 0;
          }
@@ -233,52 +233,52 @@ public final class Player extends Actor {
          var9[var5] = var6;
       }
 
-      super.readySequence = var1.readUnsignedShort();
+      super.readySequence = buffer.readUnsignedShort();
       if (super.readySequence == 65535) {
          super.readySequence = -1;
       }
 
-      super.turnLeftSequence = var1.readUnsignedShort();
+      super.turnLeftSequence = buffer.readUnsignedShort();
       if (super.turnLeftSequence == 65535) {
          super.turnLeftSequence = -1;
       }
 
       super.turnRightSequence = super.turnLeftSequence;
-      super.walkSequence = var1.readUnsignedShort();
+      super.walkSequence = buffer.readUnsignedShort();
       if (super.walkSequence == 65535) {
          super.walkSequence = -1;
       }
 
-      super.walkBackSequence = var1.readUnsignedShort();
+      super.walkBackSequence = buffer.readUnsignedShort();
       if (super.walkBackSequence == 65535) {
          super.walkBackSequence = -1;
       }
 
-      super.walkLeftSequence = var1.readUnsignedShort();
+      super.walkLeftSequence = buffer.readUnsignedShort();
       if (super.walkLeftSequence == 65535) {
          super.walkLeftSequence = -1;
       }
 
-      super.walkRightSequence = var1.readUnsignedShort();
+      super.walkRightSequence = buffer.readUnsignedShort();
       if (super.walkRightSequence == 65535) {
          super.walkRightSequence = -1;
       }
 
-      super.runSequence = var1.readUnsignedShort();
+      super.runSequence = buffer.readUnsignedShort();
       if (super.runSequence == 65535) {
          super.runSequence = -1;
       }
 
-      this.username = new Username(var1.readStringCp1252NullTerminated(), KeyHandler.loginType);
+      this.username = new Username(buffer.readStringCp1252NullTerminated(), KeyHandler.loginType);
       this.clearIsFriend();
       this.clearIsInClanChat();
       if (this == Canvas.localPlayer) {
          RunException.localPlayerName = this.username.getName();
       }
 
-      this.combatLevel = var1.readUnsignedByte();
-      this.skillLevel = var1.readUnsignedShort();
-      this.isHidden = var1.readUnsignedByte() == 1;
+      this.combatLevel = buffer.readUnsignedByte();
+      this.skillLevel = buffer.readUnsignedShort();
+      this.isHidden = buffer.readUnsignedByte() == 1;
       if (Client.gameBuild == 0 && Client.staffModLevel >= 2) {
          this.isHidden = false;
       }
@@ -379,7 +379,7 @@ public final class Player extends Actor {
          return null;
       } else {
          SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? WorldMapAreaData.getSequenceDefinition(super.sequence) : null;
-         SequenceDefinition var2 = super.movementSequence != -1 && !this.isUnanimated && (super.readySequence != super.movementSequence || var1 == null) ? WorldMapAreaData.getSequenceDefinition(super.movementSequence) : null;
+         SequenceDefinition var2 = super.movementSequence == -1 || this.isUnanimated || super.readySequence == super.movementSequence && var1 != null ? null : WorldMapAreaData.getSequenceDefinition(super.movementSequence);
          Model var3 = this.appearance.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
          if (var3 == null) {
             return null;
@@ -472,12 +472,12 @@ public final class Player extends Actor {
       garbageValue = "1966552419"
    )
    @Export("resetPath")
-   void resetPath(int var1, int var2) {
+   void resetPath(int x, int y) {
       super.pathLength = 0;
       super.field25 = 0;
       super.field24 = 0;
-      super.pathX[0] = var1;
-      super.pathY[0] = var2;
+      super.pathX[0] = x;
+      super.pathY[0] = y;
       int var3 = this.transformedSize();
       super.x = super.pathX[0] * 128 + var3 * 64;
       super.y = super.pathY[0] * 128 + var3 * 64;

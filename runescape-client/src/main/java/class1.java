@@ -271,8 +271,8 @@ final class class1 implements class0 {
       garbageValue = "1809366429"
    )
    @Export("getWidgetClickMask")
-   static int getWidgetClickMask(Widget var0) {
-      IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.get(((long)var0.id << 32) + (long)var0.childIndex);
-      return var1 != null ? var1.integer : var0.clickMask;
+   static int getWidgetClickMask(Widget component) {
+      IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.get(((long)component.id << 32) + (long)component.childIndex);
+      return var1 != null ? var1.integer : component.clickMask;
    }
 }

@@ -77,12 +77,12 @@ public class InterfaceParent extends Node {
       garbageValue = "619422509"
    )
    @Export("decodeStringCp1252")
-   public static String decodeStringCp1252(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
+   public static String decodeStringCp1252(byte[] src, int srcStart, int length) {
+      char[] var3 = new char[length];
       int var4 = 0;
 
-      for (int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var5 + var1] & 255;
+      for (int var5 = 0; var5 < length; ++var5) {
+         int var6 = src[var5 + srcStart] & 255;
          if (var6 != 0) {
             if (var6 >= 128 && var6 < 160) {
                char var7 = class304.cp1252AsciiExtension[var6 - 128];

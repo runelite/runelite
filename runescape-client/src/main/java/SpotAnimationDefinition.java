@@ -105,14 +105,14 @@ public class SpotAnimationDefinition extends DualNode {
       garbageValue = "906815828"
    )
    @Export("decode")
-   void decode(Buffer var1) {
+   void decode(Buffer buffer) {
       while (true) {
-         int var2 = var1.readUnsignedByte();
+         int var2 = buffer.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.decodeNext(var1, var2);
+         this.decodeNext(buffer, var2);
       }
    }
 
@@ -122,41 +122,41 @@ public class SpotAnimationDefinition extends DualNode {
       garbageValue = "2099681848"
    )
    @Export("decodeNext")
-   void decodeNext(Buffer var1, int var2) {
+   void decodeNext(Buffer buffer, int var2) {
       if (var2 == 1) {
-         this.archive = var1.readUnsignedShort();
+         this.archive = buffer.readUnsignedShort();
       } else if (var2 == 2) {
-         this.sequence = var1.readUnsignedShort();
+         this.sequence = buffer.readUnsignedShort();
       } else if (var2 == 4) {
-         this.widthScale = var1.readUnsignedShort();
+         this.widthScale = buffer.readUnsignedShort();
       } else if (var2 == 5) {
-         this.heightScale = var1.readUnsignedShort();
+         this.heightScale = buffer.readUnsignedShort();
       } else if (var2 == 6) {
-         this.orientation = var1.readUnsignedShort();
+         this.orientation = buffer.readUnsignedShort();
       } else if (var2 == 7) {
-         this.field876 = var1.readUnsignedByte();
+         this.field876 = buffer.readUnsignedByte();
       } else if (var2 == 8) {
-         this.field877 = var1.readUnsignedByte();
+         this.field877 = buffer.readUnsignedByte();
       } else {
          int var3;
          int var4;
          if (var2 == 40) {
-            var3 = var1.readUnsignedByte();
+            var3 = buffer.readUnsignedByte();
             this.recolorFrom = new short[var3];
             this.recolorTo = new short[var3];
 
             for (var4 = 0; var4 < var3; ++var4) {
-               this.recolorFrom[var4] = (short)var1.readUnsignedShort();
-               this.recolorTo[var4] = (short)var1.readUnsignedShort();
+               this.recolorFrom[var4] = (short)buffer.readUnsignedShort();
+               this.recolorTo[var4] = (short)buffer.readUnsignedShort();
             }
          } else if (var2 == 41) {
-            var3 = var1.readUnsignedByte();
+            var3 = buffer.readUnsignedByte();
             this.retextureFrom = new short[var3];
             this.retextureTo = new short[var3];
 
             for (var4 = 0; var4 < var3; ++var4) {
-               this.retextureFrom[var4] = (short)var1.readUnsignedShort();
-               this.retextureTo[var4] = (short)var1.readUnsignedShort();
+               this.retextureFrom[var4] = (short)buffer.readUnsignedShort();
+               this.retextureTo[var4] = (short)buffer.readUnsignedShort();
             }
          }
       }

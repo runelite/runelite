@@ -708,28 +708,28 @@ public abstract class AbstractArchive {
       garbageValue = "15597880"
    )
    @Export("readStringIntParameters")
-   static final IterableNodeHashTable readStringIntParameters(Buffer var0, IterableNodeHashTable var1) {
-      int var2 = var0.readUnsignedByte();
+   static final IterableNodeHashTable readStringIntParameters(Buffer buffer, IterableNodeHashTable hashTable) {
+      int var2 = buffer.readUnsignedByte();
       int var3;
-      if (var1 == null) {
+      if (hashTable == null) {
          var3 = World.method1759(var2);
-         var1 = new IterableNodeHashTable(var3);
+         hashTable = new IterableNodeHashTable(var3);
       }
 
       for (var3 = 0; var3 < var2; ++var3) {
-         boolean var4 = var0.readUnsignedByte() == 1;
-         int var5 = var0.readMedium();
+         boolean var4 = buffer.readUnsignedByte() == 1;
+         int var5 = buffer.readMedium();
          Object var6;
          if (var4) {
-            var6 = new ObjectNode(var0.readStringCp1252NullTerminated());
+            var6 = new ObjectNode(buffer.readStringCp1252NullTerminated());
          } else {
-            var6 = new IntegerNode(var0.readInt());
+            var6 = new IntegerNode(buffer.readInt());
          }
 
-         var1.put((Node)var6, (long)var5);
+         hashTable.put((Node)var6, (long)var5);
       }
 
-      return var1;
+      return hashTable;
    }
 
    @ObfuscatedName("m")
@@ -738,8 +738,8 @@ public abstract class AbstractArchive {
       garbageValue = "-4702"
    )
    @Export("runScript")
-   public static void runScript(ScriptEvent var0) {
-      GrandExchangeEvent.runScript0(var0, 500000);
+   public static void runScript(ScriptEvent scriptEvent) {
+      GrandExchangeEvent.runScript0(scriptEvent, 500000);
    }
 
    @ObfuscatedName("eg")

@@ -22,8 +22,8 @@ public class Ignored extends User {
       garbageValue = "-842469150"
    )
    @Export("compareTo00")
-   int compareTo00(Ignored var1) {
-      return this.id - var1.id;
+   int compareTo00(Ignored other) {
+      return this.id - other.id;
    }
 
    @ObfuscatedName("aj")
