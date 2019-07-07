@@ -28,8 +28,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -106,7 +106,7 @@ public class ArrowMinimapOverlay extends Overlay
 				else if (arrowPoint.types.contains(ArrowType.OBJECT))
 				{
 
-					ArrayList<GameObject> objects = ArrowUtil.getObjects(client, arrowPoint.getObjectIDs());
+					List<GameObject> objects = ArrowUtil.getObjects(client, arrowPoint.getObjectIDs());
 					if (objects.isEmpty() && fallBackPoint != null)
 					{
 						renderMinimapArrow(graphics, arrowPoint, null, localPlayerPos, worldPlayerPos);
