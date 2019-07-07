@@ -332,13 +332,11 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if ((worldPoint.getX() & (REGION_SIZE - 1)) == objectPoint.getRegionX()
-				&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
+				&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY()
+				&& objectPoint.getName().equals(client.getObjectDefinition(object.getId()).getName()))
 			{
-				if (objectPoint.getName().equals(client.getObjectDefinition(object.getId()).getName()))
-				{
-					objects.add(object);
-					break;
-				}
+				objects.add(object);
+				break;
 			}
 		}
 	}
