@@ -26,6 +26,7 @@ package net.runelite.client.plugins.skillcalculator.banked.beans;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -377,7 +378,7 @@ public enum Activity
 
 	private static final Map<CriticalItem, ArrayList<Activity>> byCriticalItem = buildItemMap();
 
-	public static ArrayList<Activity> getByCriticalItem(CriticalItem item)
+	public static List<Activity> getByCriticalItem(CriticalItem item)
 	{
 
 		return byCriticalItem.getOrDefault(item, new ArrayList<>());
@@ -390,10 +391,10 @@ public enum Activity
 	 * @param limitLevel Level to check Activitiy requirements against. -1 or 0 value disables limits
 	 * @return an empty list if no activities
 	 */
-	public static ArrayList<Activity> getByCriticalItem(CriticalItem item, int limitLevel)
+	public static List<Activity> getByCriticalItem(CriticalItem item, int limitLevel)
 	{
-		ArrayList<Activity> activities = getByCriticalItem(item);
-		ArrayList<Activity> l = new ArrayList<>();
+		List<Activity> activities = getByCriticalItem(item);
+		List<Activity> l = new ArrayList<>();
 		if (limitLevel <= 0)
 		{
 			return l;

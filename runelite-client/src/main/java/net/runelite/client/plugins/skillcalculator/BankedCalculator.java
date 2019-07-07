@@ -256,7 +256,7 @@ public class BankedCalculator extends JPanel
 	private void calculatedBankedMaps()
 	{
 		// Grab all CriticalItems for this skill
-		ArrayList<CriticalItem> items = CriticalItem.getBySkillName(currentSkill);
+		List<CriticalItem> items = CriticalItem.getBySkillName(currentSkill);
 
 		// Loop over all Critical Items for this skill and determine how many are in the bank
 		for (CriticalItem item : items)
@@ -414,7 +414,7 @@ public class BankedCalculator extends JPanel
 
 		for (String category : CriticalItem.getSkillCategories(currentSkill))
 		{
-			ArrayList<CriticalItem> items = CriticalItem.getItemsForSkillCategories(currentSkill, category);
+			List<CriticalItem> items = CriticalItem.getItemsForSkillCategories(currentSkill, category);
 			for (CriticalItem item : items)
 			{
 				Integer amount = bankMap.get(item.getItemID());

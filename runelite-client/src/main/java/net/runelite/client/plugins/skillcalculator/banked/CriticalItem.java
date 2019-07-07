@@ -27,6 +27,7 @@ package net.runelite.client.plugins.skillcalculator.banked;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import lombok.Getter;
@@ -320,9 +321,9 @@ public enum CriticalItem
 	}
 
 	// Builds a Map to reduce looping frequency
-	private static Map<Skill, ArrayList<CriticalItem>> buildSkillItemMap()
+	private static Map<Skill, List<CriticalItem>> buildSkillItemMap()
 	{
-		Map<Skill, ArrayList<CriticalItem>> map = new HashMap<>();
+		Map<Skill, List<CriticalItem>> map = new HashMap<>();
 		for (CriticalItem item : values())
 		{
 			map.computeIfAbsent(item.getSkill(), e -> new ArrayList<>()).add(item);
@@ -331,9 +332,9 @@ public enum CriticalItem
 		return map;
 	}
 
-	private static final Map<Skill, ArrayList<CriticalItem>> bySkillName = buildSkillItemMap();
+	private static final Map<Skill, List<CriticalItem>> bySkillName = buildSkillItemMap();
 
-	public static ArrayList<CriticalItem> getBySkillName(Skill skill)
+	public static List<CriticalItem> getBySkillName(Skill skill)
 	{
 		return bySkillName.get(skill);
 	}
@@ -358,9 +359,9 @@ public enum CriticalItem
 	}
 
 	// Builds a Map to reduce looping frequency
-	private static Map<String, ArrayList<CriticalItem>> buildItemSkillCategoryMap()
+	private static Map<String, List<CriticalItem>> buildItemSkillCategoryMap()
 	{
-		Map<String, ArrayList<CriticalItem>> map = new HashMap<>();
+		Map<String, List<CriticalItem>> map = new HashMap<>();
 		for (CriticalItem item : values())
 		{
 			String key = item.getCategory() + item.skill.getName();
@@ -370,9 +371,9 @@ public enum CriticalItem
 		return map;
 	}
 
-	private static final Map<String, ArrayList<CriticalItem>> itemsBySkillCategory = buildItemSkillCategoryMap();
+	private static final Map<String, List<CriticalItem>> itemsBySkillCategory = buildItemSkillCategoryMap();
 
-	public static ArrayList<CriticalItem> getItemsForSkillCategories(Skill skill, String category)
+	public static List<CriticalItem> getItemsForSkillCategories(Skill skill, String category)
 	{
 		return itemsBySkillCategory.get(category + skill.getName());
 	}
