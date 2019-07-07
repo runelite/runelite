@@ -63,12 +63,9 @@ public class FlinchingTarget
 	void TargetHit()
 	{
 		boolean shouldHit = true;
-		if (usingHitDelay)
+		if (usingHitDelay && GetRemainingTime() > displayLength)
 		{
-			if (GetRemainingTime() > displayLength)
-			{
-				shouldHit = false;
-			}
+			shouldHit = false;
 		}
 
 		if (shouldHit)

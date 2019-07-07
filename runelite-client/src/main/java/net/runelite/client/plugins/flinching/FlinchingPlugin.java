@@ -198,12 +198,9 @@ public class FlinchingPlugin extends Plugin
 				else
 				{
 					FlinchingTarget currentTarget = flinchingTargets.get(hitId);
-					if (currentTarget != null)
+					if (currentTarget != null && resetOnHit)
 					{
-						if (resetOnHit)
-						{
-							currentTarget.TargetHit();
-						}
+						currentTarget.TargetHit();
 					}
 				}
 			}
@@ -224,13 +221,10 @@ public class FlinchingPlugin extends Plugin
 			NPC newTarget = (NPC) interacting;
 			currentInteractingId = newTarget.getId();
 
-			if (newTarget.getHealth() <= 0 || newTarget.isDead())
+			if ((newTarget.getHealth() <= 0 || newTarget.isDead()) && flinchingTargets.containsKey(currentInteractingId))
 			{
-				if (flinchingTargets.containsKey(currentInteractingId))
-				{
-					flinchingTargets.remove(currentInteractingId);
-					currentInteractingId = -1;
-				}
+				flinchingTargets.remove(currentInteractingId);
+				currentInteractingId = -1;
 			}
 		}
 	}
