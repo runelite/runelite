@@ -1107,7 +1107,7 @@ public class RaidsPlugin extends Plugin
 			builder.append((int) Math.floor(seconds / 3600)).append(";");
 		}
 		seconds %= 3600;
-		if (builder.toString().equals(""))
+		if (builder.length() == 0)
 		{
 			builder.append((int) Math.floor(seconds / 60));
 		}
