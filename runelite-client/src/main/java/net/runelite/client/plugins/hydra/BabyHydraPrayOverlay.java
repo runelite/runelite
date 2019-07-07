@@ -78,62 +78,56 @@ public class BabyHydraPrayOverlay extends Overlay
 			PRAY_RANGED = spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MISSILES, 0);
 		}
 
-		if (plugin.getHydra() != null)
+		if (plugin.getHydra() != null && plugin.getHydras().containsKey(plugin.getHydra().getIndex()))
 		{
-			if (plugin.getHydras().containsKey(plugin.getHydra().getIndex()))
+			int val = plugin.getHydras().get(plugin.getHydra().getIndex());
+			if (val != 0 && plugin.getHydraattacks().containsKey(plugin.getHydra().getIndex()))
 			{
-				int val = plugin.getHydras().get(plugin.getHydra().getIndex());
-				if (val != 0)
+				int attack = plugin.getHydraattacks().get(plugin.getHydra().getIndex());
+				if (attack == 8261)
 				{
-					if (plugin.getHydraattacks().containsKey(plugin.getHydra().getIndex()))
+					if (val == 3)
 					{
-						int attack = plugin.getHydraattacks().get(plugin.getHydra().getIndex());
-						if (attack == 8261)
-						{
-							if (val == 3)
-							{
-								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_MAGE));
-								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-									? ComponentConstants.STANDARD_BACKGROUND_COLOR
-									: NOT_ACTIVATED_BACKGROUND_COLOR);
+						imagePanelComponent.getChildren().clear();
+						imagePanelComponent.getChildren().add(new ImageComponent(PRAY_MAGE));
+						imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+							? ComponentConstants.STANDARD_BACKGROUND_COLOR
+							: NOT_ACTIVATED_BACKGROUND_COLOR);
 
-								return imagePanelComponent.render(graphics);
-							}
-							else
-							{
-								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_RANGED));
-								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES)
-									? ComponentConstants.STANDARD_BACKGROUND_COLOR
-									: NOT_ACTIVATED_BACKGROUND_COLOR);
+						return imagePanelComponent.render(graphics);
+					}
+					else
+					{
+						imagePanelComponent.getChildren().clear();
+						imagePanelComponent.getChildren().add(new ImageComponent(PRAY_RANGED));
+						imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES)
+							? ComponentConstants.STANDARD_BACKGROUND_COLOR
+							: NOT_ACTIVATED_BACKGROUND_COLOR);
 
-								return imagePanelComponent.render(graphics);
-							}
-						}
-						else if (attack == 8262)
-						{
-							if (val == 3)
-							{
-								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_RANGED));
-								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES)
-									? ComponentConstants.STANDARD_BACKGROUND_COLOR
-									: NOT_ACTIVATED_BACKGROUND_COLOR);
+						return imagePanelComponent.render(graphics);
+					}
+				}
+				else if (attack == 8262)
+				{
+					if (val == 3)
+					{
+						imagePanelComponent.getChildren().clear();
+						imagePanelComponent.getChildren().add(new ImageComponent(PRAY_RANGED));
+						imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES)
+							? ComponentConstants.STANDARD_BACKGROUND_COLOR
+							: NOT_ACTIVATED_BACKGROUND_COLOR);
 
-								return imagePanelComponent.render(graphics);
-							}
-							else
-							{
-								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_MAGE));
-								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-									? ComponentConstants.STANDARD_BACKGROUND_COLOR
-									: NOT_ACTIVATED_BACKGROUND_COLOR);
+						return imagePanelComponent.render(graphics);
+					}
+					else
+					{
+						imagePanelComponent.getChildren().clear();
+						imagePanelComponent.getChildren().add(new ImageComponent(PRAY_MAGE));
+						imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+							? ComponentConstants.STANDARD_BACKGROUND_COLOR
+							: NOT_ACTIVATED_BACKGROUND_COLOR);
 
-								return imagePanelComponent.render(graphics);
-							}
-						}
+						return imagePanelComponent.render(graphics);
 					}
 				}
 			}
