@@ -138,7 +138,6 @@ public class VerzikHandler extends RoomHandler
 			{
 				if (plugin.isP3attacks())
 				{
-					Model model = npc.getModel();
 					if (versikCounter > 0 && versikCounter < 8)
 					{
 						String str = Math.max(versikCounter, 0) + "";// + " | " + model.getModelHeight();// + " | " + model.getRadius();
@@ -408,7 +407,6 @@ public class VerzikHandler extends RoomHandler
 				long minutes = seconds / 60L;
 				seconds = seconds % 60;
 
-				int attackTick = this.client.getTickCount() - 4;
 				this.versikCounter = -1;
 				this.attacksLeft = 9;
 				if (plugin.isExtraTimers())

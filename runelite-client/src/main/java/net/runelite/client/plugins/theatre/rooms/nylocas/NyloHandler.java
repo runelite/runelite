@@ -399,10 +399,6 @@ public class NyloHandler extends RoomHandler
 			int centerX = minX + 5;
 			int centerY = minY + 5;
 
-			Point south = new Point(centerX + 1, centerY - 14);
-			Point east = new Point(centerX + 15, centerY);
-			Point west = new Point(centerX - 14, centerY);
-
 			if (this.predictor != null)
 			{
 				this.predictor.southBound = centerY - 12;
