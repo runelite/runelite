@@ -89,9 +89,9 @@ public class CombatCounter extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Map<String, Long> counter = new HashMap<>();
 
-	private Map<String, Long> blowpipe = new HashMap<>();
+	private final Map<String, Long> blowpipe = new HashMap<>();
 
-	private Map<NPC, NPCDamageCounter> npcDamageMap = new HashMap<>();
+	private final Map<NPC, NPCDamageCounter> npcDamageMap = new HashMap<>();
 	Map<String, Double> playerDamage = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
