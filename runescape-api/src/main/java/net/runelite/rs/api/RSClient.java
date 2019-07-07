@@ -441,11 +441,11 @@ public interface RSClient extends RSGameShell, Client
 	@Import("indexedSpritePalette")
 	void setIndexedSpritePalette(int[] indexedSpritePalette);
 
-	@Import("indexCache8")
+	@Import("archive8")
 	@Override
 	RSAbstractArchive getIndexSprites();
 
-	@Import("indexCache12")
+	@Import("archive12")
 	@Override
 	RSAbstractArchive getIndexScripts();
 
@@ -1023,7 +1023,7 @@ public interface RSClient extends RSGameShell, Client
 	@Import("pcmStreamMixer")
 	RSPcmStreamMixer getSoundEffectAudioQueue();
 
-	@Import("indexCache4")
+	@Import("archive4")
 	RSAbstractArchive getIndexCache4();
 
 	@Import("decimator")

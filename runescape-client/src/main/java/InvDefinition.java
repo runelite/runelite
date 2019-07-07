@@ -29,15 +29,15 @@ public class InvDefinition extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "628080573"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -46,8 +46,8 @@ public class InvDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "1763455566"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       if (var2 == 2) {
          this.size = var1.readUnsignedShort();
       }

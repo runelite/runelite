@@ -481,7 +481,7 @@ public abstract class Actor extends Entity {
          byte[] var9 = HealthBarDefinition.field379.takeFile(33, var1);
          var7 = new HealthBarDefinition();
          if (var9 != null) {
-            var7.read(new Buffer(var9));
+            var7.decode(new Buffer(var9));
          }
 
          HealthBarDefinition.HealthBarDefinition_cached.put(var7, (long)var1);
@@ -543,7 +543,7 @@ public abstract class Actor extends Entity {
          byte[] var4 = HealthBarDefinition.field379.takeFile(33, var1);
          var2 = new HealthBarDefinition();
          if (var4 != null) {
-            var2.read(new Buffer(var4));
+            var2.decode(new Buffer(var4));
          }
 
          HealthBarDefinition.HealthBarDefinition_cached.put(var2, (long)var1);

@@ -9,8 +9,8 @@ final class class2 implements class0 {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache14")
-   static Archive indexCache14;
+   @Export("archive14")
+   static Archive archive14;
    @ObfuscatedName("ee")
    @ObfuscatedGetter(
       intValue = -753026759
@@ -74,7 +74,7 @@ final class class2 implements class0 {
          }
 
          Login.titleboxSprite = MenuAction.loadIndexedSpriteByName(var1, "titlebox", "");
-         IndexCacheLoader.titlebuttonSprite = MenuAction.loadIndexedSpriteByName(var1, "titlebutton", "");
+         ArchiveLoader.titlebuttonSprite = MenuAction.loadIndexedSpriteByName(var1, "titlebutton", "");
          int var5 = var1.getGroupId("runes");
          int var6 = var1.getFileId(var5, "");
          IndexedSprite[] var7;
@@ -112,7 +112,7 @@ final class class2 implements class0 {
          Login.field470 = true;
          Login.worldSelectOpen = false;
          if (!ReflectionCheck.clientPreferences.titleMusicDisabled) {
-            Canvas.method858(2, UserComparator3.indexCache6, "scape main", "", 255, false);
+            Canvas.method858(2, UserComparator3.archive6, "scape main", "", 255, false);
          } else {
             AbstractSocket.method3488(2);
          }

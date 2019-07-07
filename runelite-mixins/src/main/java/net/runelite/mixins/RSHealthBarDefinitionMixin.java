@@ -15,7 +15,7 @@ public abstract class RSHealthBarDefinitionMixin implements RSHealthBarDefinitio
 	@Shadow("client")
 	private static RSClient client;
 
-	@MethodHook(value = "read", end = true)
+	@MethodHook(value = "decode", end = true)
 	@Inject
 	public void onRead(RSBuffer buffer)
 	{

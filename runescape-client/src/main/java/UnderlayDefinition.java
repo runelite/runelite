@@ -11,8 +11,8 @@ public class UnderlayDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("UnderlayDefinition_indexCache")
-   static AbstractArchive UnderlayDefinition_indexCache;
+   @Export("UnderlayDefinition_archive")
+   static AbstractArchive UnderlayDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -69,15 +69,15 @@ public class UnderlayDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-336010991"
    )
-   @Export("read")
-   void read(Buffer var1, int var2) {
+   @Export("decode")
+   void decode(Buffer var1, int var2) {
       while (true) {
          int var3 = var1.readUnsignedByte();
          if (var3 == 0) {
             return;
          }
 
-         this.readNext(var1, var3, var2);
+         this.decodeNext(var1, var3, var2);
       }
    }
 
@@ -86,8 +86,8 @@ public class UnderlayDefinition extends DualNode {
       signature = "(Lgr;III)V",
       garbageValue = "137131494"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2, int var3) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2, int var3) {
       if (var2 == 1) {
          this.rgb = var1.readMedium();
       }

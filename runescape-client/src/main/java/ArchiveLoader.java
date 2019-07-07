@@ -5,8 +5,9 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bd")
-@Implements("IndexCacheLoader")
-public class IndexCacheLoader {
+@Implements("ArchiveLoader")
+public class ArchiveLoader
+{
    @ObfuscatedName("pf")
    @ObfuscatedSignature(
       signature = "Lko;"
@@ -32,8 +33,8 @@ public class IndexCacheLoader {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache")
-   final Archive indexCache;
+   @Export("archive")
+   final Archive archive;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1459455501
@@ -48,9 +49,9 @@ public class IndexCacheLoader {
    @ObfuscatedSignature(
       signature = "(Lit;Ljava/lang/String;)V"
    )
-   IndexCacheLoader(Archive var1, String var2) {
+   ArchiveLoader(Archive var1, String var2) {
       this.field409 = 0;
-      this.indexCache = var1;
+      this.archive = var1;
       this.field408 = var1.method5();
    }
 
@@ -63,7 +64,7 @@ public class IndexCacheLoader {
       this.field409 = 0;
 
       for (int var1 = 0; var1 < this.field408; ++var1) {
-         if (!this.indexCache.method133(var1) || this.indexCache.method132(var1)) {
+         if (!this.archive.method133(var1) || this.archive.method132(var1)) {
             ++this.field409;
          }
       }
@@ -92,7 +93,7 @@ public class IndexCacheLoader {
       boolean var20;
       if (Login.worldSelectOpen) {
          if (class30.worldSelectBackSprites == null) {
-            class30.worldSelectBackSprites = class2.method20(WorldMapSection3.indexCache8, "sl_back", "");
+            class30.worldSelectBackSprites = class2.method20(WorldMapSection3.archive8, "sl_back", "");
          }
 
          Archive var11;
@@ -100,7 +101,7 @@ public class IndexCacheLoader {
          int var13;
          IndexedSprite[] var14;
          if (Frames.worldSelectFlagSprites == null) {
-            var11 = WorldMapSection3.indexCache8;
+            var11 = WorldMapSection3.archive8;
             var13 = var11.getGroupId("sl_flags");
             var12 = var11.getFileId(var13, "");
             if (!SpriteMask.loadSprite(var11, var13, var12)) {
@@ -113,7 +114,7 @@ public class IndexCacheLoader {
          }
 
          if (AttackOption.worldSelectArrows == null) {
-            var11 = WorldMapSection3.indexCache8;
+            var11 = WorldMapSection3.archive8;
             var13 = var11.getGroupId("sl_arrows");
             var12 = var11.getFileId(var13, "");
             if (!SpriteMask.loadSprite(var11, var13, var12)) {
@@ -126,7 +127,7 @@ public class IndexCacheLoader {
          }
 
          if (UrlRequest.worldSelectStars == null) {
-            var11 = WorldMapSection3.indexCache8;
+            var11 = WorldMapSection3.archive8;
             var13 = var11.getGroupId("sl_stars");
             var12 = var11.getFileId(var13, "");
             if (!SpriteMask.loadSprite(var11, var13, var12)) {
@@ -139,11 +140,11 @@ public class IndexCacheLoader {
          }
 
          if (SecureRandomFuture.worldSelectLeftSprite == null) {
-            SecureRandomFuture.worldSelectLeftSprite = MenuAction.loadIndexedSpriteByName(WorldMapSection3.indexCache8, "leftarrow", "");
+            SecureRandomFuture.worldSelectLeftSprite = MenuAction.loadIndexedSpriteByName(WorldMapSection3.archive8, "leftarrow", "");
          }
 
          if (NetSocket.worldSelectRightSprite == null) {
-            NetSocket.worldSelectRightSprite = MenuAction.loadIndexedSpriteByName(WorldMapSection3.indexCache8, "rightarrow", "");
+            NetSocket.worldSelectRightSprite = MenuAction.loadIndexedSpriteByName(WorldMapSection3.archive8, "rightarrow", "");
          }
 
          Rasterizer2D.Rasterizer2D_fillRectangle(Login.xPadding, 23, 765, 480, 0);
@@ -698,7 +699,7 @@ public class IndexCacheLoader {
                   var1.drawCentered("Click to switch", var39 / 2 + var10, var42 / 2 + var34 + 12, 16777215, 0);
                }
             } else {
-               class277.field1144 = MenuAction.loadIndexedSpriteByName(WorldMapSection3.indexCache8, "sl_button", "");
+               class277.field1144 = MenuAction.loadIndexedSpriteByName(WorldMapSection3.archive8, "sl_button", "");
             }
          }
       }

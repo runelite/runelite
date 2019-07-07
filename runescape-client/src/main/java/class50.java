@@ -31,11 +31,11 @@ public class class50 {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = SpotAnimationDefinition.SpotAnimationDefinition_indexCache.takeFile(13, var0);
+         byte[] var2 = SpotAnimationDefinition.SpotAnimationDefinition_archive.takeFile(13, var0);
          var1 = new SpotAnimationDefinition();
          var1.id = var0;
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          SpotAnimationDefinition.SpotAnimationDefinition_cached.put(var1, (long)var0);
@@ -54,11 +54,11 @@ public class class50 {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = ObjectDefinition.ObjectDefinition_indexCache.takeFile(6, var0);
+         byte[] var2 = ObjectDefinition.ObjectDefinition_archive.takeFile(6, var0);
          var1 = new ObjectDefinition();
          var1.id = var0;
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          var1.init();
@@ -99,7 +99,7 @@ public class class50 {
          }
 
          class308.regions = new int[var8];
-         IndexCacheLoader.regionMapArchiveIds = new int[var8];
+         ArchiveLoader.regionMapArchiveIds = new int[var8];
          MouseHandler.regionLandArchiveIds = new int[var8];
          class40.regionLandArchives = new byte[var8][];
          HealthBarUpdate.regionMapArchives = new byte[var8][];
@@ -119,8 +119,8 @@ public class class50 {
                var7 = var6 + (var5 << 8);
                if (!var9 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
                   class308.regions[var8] = var7;
-                  IndexCacheLoader.regionMapArchiveIds[var8] = SecureRandomFuture.indexCache5.getGroupId("m" + var5 + "_" + var6);
-                  MouseHandler.regionLandArchiveIds[var8] = SecureRandomFuture.indexCache5.getGroupId("l" + var5 + "_" + var6);
+                  ArchiveLoader.regionMapArchiveIds[var8] = SecureRandomFuture.archive5.getGroupId("m" + var5 + "_" + var6);
+                  MouseHandler.regionLandArchiveIds[var8] = SecureRandomFuture.archive5.getGroupId("l" + var5 + "_" + var6);
                   ++var8;
                }
             }
@@ -158,7 +158,7 @@ public class class50 {
          }
 
          class308.regions = new int[var4];
-         IndexCacheLoader.regionMapArchiveIds = new int[var4];
+         ArchiveLoader.regionMapArchiveIds = new int[var4];
          MouseHandler.regionLandArchiveIds = new int[var4];
          class40.regionLandArchives = new byte[var4][];
          HealthBarUpdate.regionMapArchives = new byte[var4][];
@@ -185,8 +185,8 @@ public class class50 {
                         class308.regions[var4] = var12;
                         var13 = var12 >> 8 & 255;
                         int var14 = var12 & 255;
-                        IndexCacheLoader.regionMapArchiveIds[var4] = SecureRandomFuture.indexCache5.getGroupId("m" + var13 + "_" + var14);
-                        MouseHandler.regionLandArchiveIds[var4] = SecureRandomFuture.indexCache5.getGroupId("l" + var13 + "_" + var14);
+                        ArchiveLoader.regionMapArchiveIds[var4] = SecureRandomFuture.archive5.getGroupId("m" + var13 + "_" + var14);
+                        MouseHandler.regionLandArchiveIds[var4] = SecureRandomFuture.archive5.getGroupId("l" + var13 + "_" + var14);
                         ++var4;
                      }
                   }

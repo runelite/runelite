@@ -119,10 +119,10 @@ public final class Occluder {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = VarbitDefinition.VarbitDefinition_indexCache.takeFile(14, var0);
+         byte[] var2 = VarbitDefinition.VarbitDefinition_archive.takeFile(14, var0);
          var1 = new VarbitDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          VarbitDefinition.VarbitDefinition_cached.put(var1, (long)var0);

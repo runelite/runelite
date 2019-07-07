@@ -139,8 +139,8 @@ public class Login {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache11")
-   static Archive indexCache11;
+   @Export("archive11")
+   static Archive archive11;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(

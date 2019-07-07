@@ -37,8 +37,8 @@ public abstract class AbstractArchive {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache0")
-   static Archive indexCache0;
+   @Export("archive0")
+   static Archive archive0;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1694798923
@@ -750,7 +750,7 @@ public abstract class AbstractArchive {
    static boolean method4585() {
       if (Client.indexCacheLoaders != null && Client.indexCacheLoaderIndex < Client.indexCacheLoaders.size()) {
          while (Client.indexCacheLoaderIndex < Client.indexCacheLoaders.size()) {
-            IndexCacheLoader var0 = (IndexCacheLoader)Client.indexCacheLoaders.get(Client.indexCacheLoaderIndex);
+            ArchiveLoader var0 = (ArchiveLoader)Client.indexCacheLoaders.get(Client.indexCacheLoaderIndex);
             if (!var0.method134()) {
                return false;
             }

@@ -303,8 +303,8 @@ public class PlayerAppearance {
                      var18.recolor(field726[var12], class229.field1137[var12][this.bodyColors[var12]]);
                   }
 
-                  if (this.bodyColors[var12] < IndexCacheLoader.field406[var12].length) {
-                     var18.recolor(class227.field1136[var12], IndexCacheLoader.field406[var12][this.bodyColors[var12]]);
+                  if (this.bodyColors[var12] < ArchiveLoader.field406[var12].length) {
+                     var18.recolor(class227.field1136[var12], ArchiveLoader.field406[var12][this.bodyColors[var12]]);
                   }
                }
 
@@ -387,8 +387,8 @@ public class PlayerAppearance {
                   var8.recolor(field726[var4], class229.field1137[var4][this.bodyColors[var4]]);
                }
 
-               if (this.bodyColors[var4] < IndexCacheLoader.field406[var4].length) {
-                  var8.recolor(class227.field1136[var4], IndexCacheLoader.field406[var4][this.bodyColors[var4]]);
+               if (this.bodyColors[var4] < ArchiveLoader.field406[var4].length) {
+                  var8.recolor(class227.field1136[var4], ArchiveLoader.field406[var4][this.bodyColors[var4]]);
                }
             }
 

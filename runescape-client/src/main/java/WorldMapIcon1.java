@@ -17,8 +17,8 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache3")
-   static Archive indexCache3;
+   @Export("archive3")
+   static Archive archive3;
    @ObfuscatedName("ec")
    @Export("secureRandom")
    static SecureRandom secureRandom;
@@ -127,7 +127,7 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
             SoundEffect var10 = Client.soundEffects[var0];
             if (var10 == null) {
                Object var2 = null;
-               var10 = SoundEffect.readSoundEffect(WorldMapDecoration.indexCache4, Client.soundEffectIds[var0], 0);
+               var10 = SoundEffect.readSoundEffect(WorldMapDecoration.archive4, Client.soundEffectIds[var0], 0);
                if (var10 == null) {
                   continue;
                }
@@ -202,7 +202,7 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
 
          if (!var9) {
             if (Client.field128 != 0 && Client.field112 != -1) {
-               Login.method2076(UserComparator3.indexCache6, Client.field112, 0, Client.field128, false);
+               Login.method2076(UserComparator3.archive6, Client.field112, 0, Client.field128, false);
             }
 
             Client.field107 = false;

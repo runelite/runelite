@@ -163,7 +163,7 @@ public abstract class AbstractWorldMapIcon {
       garbageValue = "-1018878027"
    )
    static void method625(Archive var0, String var1) {
-      IndexCacheLoader var2 = new IndexCacheLoader(var0, var1);
+      ArchiveLoader var2 = new ArchiveLoader(var0, var1);
       Client.indexCacheLoaders.add(var2);
       Client.field140 += var2.field408;
    }

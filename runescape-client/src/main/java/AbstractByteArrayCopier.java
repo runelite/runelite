@@ -61,7 +61,7 @@ public abstract class AbstractByteArrayCopier {
    @Export("unloadWidgetGroup")
    public static void unloadWidgetGroup(int var0) {
       if (var0 != -1 && Widget.loadedWidgetGroups[var0]) {
-         Widget.Widget_indexCache.method7(var0);
+         Widget.Widget_archive.method7(var0);
          if (Widget.widgets[var0] != null) {
             boolean var1 = true;
 

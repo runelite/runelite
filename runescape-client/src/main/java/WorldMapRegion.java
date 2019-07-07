@@ -452,7 +452,7 @@ public class WorldMapRegion {
             byte[] var13 = OverlayDefinition.field663.takeFile(4, var7);
             var11 = new OverlayDefinition();
             if (var13 != null) {
-               var11.read(new Buffer(var13), var7);
+               var11.decode(new Buffer(var13), var7);
             }
 
             var11.init();
@@ -557,7 +557,7 @@ public class WorldMapRegion {
                byte[] var10 = OverlayDefinition.field663.takeFile(4, var6);
                var8 = new OverlayDefinition();
                if (var10 != null) {
-                  var8.read(new Buffer(var10), var6);
+                  var8.decode(new Buffer(var10), var6);
                }
 
                var8.init();

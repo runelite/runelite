@@ -21,8 +21,8 @@ public class SecureRandomFuture {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache5")
-   static Archive indexCache5;
+   @Export("archive5")
+   static Archive archive5;
    @ObfuscatedName("jn")
    @ObfuscatedSignature(
       signature = "Ldl;"

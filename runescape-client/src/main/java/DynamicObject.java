@@ -215,15 +215,15 @@ public class DynamicObject extends Entity {
       } else if (var0 == ScriptOpcodes.CHAT_SETFILTER) {
          RouteStrategy.Interpreter_intStackSize -= 3;
          Client.publicChatMode = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         IndexCacheLoader.field512 = WorldMapElement.method4783(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
-         if (IndexCacheLoader.field512 == null) {
-            IndexCacheLoader.field512 = class310.field3805;
+         ArchiveLoader.field512 = WorldMapElement.method4783(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
+         if (ArchiveLoader.field512 == null) {
+            ArchiveLoader.field512 = class310.field3805;
          }
 
          Client.field138 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
          PacketBufferNode var15 = Interpreter.method1915(ClientPacket.field237, Client.packetWriter.isaacCipher);
          var15.packetBuffer.writeByte(Client.publicChatMode);
-         var15.packetBuffer.writeByte(IndexCacheLoader.field512.field3804);
+         var15.packetBuffer.writeByte(ArchiveLoader.field512.field3804);
          var15.packetBuffer.writeByte(Client.field138);
          Client.packetWriter.method241(var15);
          return 1;
@@ -288,10 +288,10 @@ public class DynamicObject extends Entity {
 
                return 1;
             } else if (var0 == ScriptOpcodes.CHAT_GETFILTER_PRIVATE) {
-               if (IndexCacheLoader.field512 == null) {
+               if (ArchiveLoader.field512 == null) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                } else {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = IndexCacheLoader.field512.field3804;
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ArchiveLoader.field512.field3804;
                }
 
                return 1;

@@ -8,8 +8,8 @@ public final class class238 {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache9")
-   static Archive indexCache9;
+   @Export("archive9")
+   static Archive archive9;
 
    @ObfuscatedName("im")
    @ObfuscatedSignature(

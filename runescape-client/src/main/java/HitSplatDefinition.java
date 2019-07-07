@@ -141,15 +141,15 @@ public class HitSplatDefinition extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "1963348982"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -158,8 +158,8 @@ public class HitSplatDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "1789835753"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       if (var2 == 1) {
          this.fontId = var1.method51();
       } else if (var2 == 2) {

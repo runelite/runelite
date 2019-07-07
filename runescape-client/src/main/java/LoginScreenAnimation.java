@@ -619,7 +619,7 @@ public class LoginScreenAnimation {
          byte[] var2 = HitSplatDefinition.field382.takeFile(32, var0);
          var1 = new HitSplatDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          HitSplatDefinition.HitSplatDefinition_cached.put(var1, (long)var0);

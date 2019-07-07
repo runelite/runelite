@@ -52,15 +52,15 @@ public class ParamKeyDefinition extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "-975533635"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -69,8 +69,8 @@ public class ParamKeyDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "1664350313"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       if (var2 == 1) {
          this.type = class14.method171(var1.readByte());
       } else if (var2 == 2) {

@@ -239,7 +239,7 @@ public final class IsaacCipher {
       garbageValue = "75867683"
    )
    public static void method4082(AbstractArchive var0, AbstractArchive var1) {
-      NPCDefinition.NpcDefinition_indexCache = var0;
+      NPCDefinition.NpcDefinition_archive = var0;
       NPCDefinition.NpcDefinition_modelIndexCache = var1;
    }
 

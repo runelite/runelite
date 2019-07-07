@@ -103,15 +103,15 @@ public class OverlayDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-424203051"
    )
-   @Export("read")
-   public void read(Buffer var1, int var2) {
+   @Export("decode")
+   public void decode(Buffer var1, int var2) {
       while (true) {
          int var3 = var1.readUnsignedByte();
          if (var3 == 0) {
             return;
          }
 
-         this.readNext(var1, var3, var2);
+         this.decodeNext(var1, var3, var2);
       }
    }
 
@@ -120,8 +120,8 @@ public class OverlayDefinition extends DualNode {
       signature = "(Lgr;III)V",
       garbageValue = "2094105763"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2, int var3) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2, int var3) {
       if (var2 == 1) {
          this.rgb = var1.readMedium();
       } else if (var2 == 2) {

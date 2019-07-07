@@ -478,18 +478,18 @@ public class FontName {
       class157.method3382();
       ((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).clear();
       Script.Script_cached.clear();
-      AbstractArchive.indexCache0.method8();
-      Skeleton.indexCache1.method8();
-      WorldMapIcon1.indexCache3.method8();
-      WorldMapDecoration.indexCache4.method8();
-      SecureRandomFuture.indexCache5.method8();
-      UserComparator3.indexCache6.method8();
-      class40.indexCache7.method8();
-      WorldMapSection3.indexCache8.method8();
-      class238.indexCache9.method8();
-      class16.indexCache10.method8();
-      Login.indexCache11.method8();
-      Formatting.indexCache12.method8();
+      AbstractArchive.archive0.method8();
+      Skeleton.archive1.method8();
+      WorldMapIcon1.archive3.method8();
+      WorldMapDecoration.archive4.method8();
+      SecureRandomFuture.archive5.method8();
+      UserComparator3.archive6.method8();
+      class40.archive7.method8();
+      WorldMapSection3.archive8.method8();
+      class238.archive9.method8();
+      class16.archive10.method8();
+      Login.archive11.method8();
+      Formatting.archive12.method8();
    }
 
    @ObfuscatedName("gg")

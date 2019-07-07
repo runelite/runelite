@@ -74,7 +74,7 @@ public class Archive extends AbstractArchive {
          this.loadIndexReference(var8, var9);
       } else {
          PacketBuffer.requestNetFile((Archive)null, 255, 255, 0, (byte)0, true);
-         NetCache.NetCache_indexCaches[var7] = this;
+         NetCache.NetCache_archives[var7] = this;
       }
 
    }
@@ -448,7 +448,7 @@ public class Archive extends AbstractArchive {
 
             if (var3 != Client.field128) {
                if (Client.field128 == 0 && Client.field112 != -1) {
-                  Login.method2076(UserComparator3.indexCache6, Client.field112, 0, var3, false);
+                  Login.method2076(UserComparator3.archive6, Client.field112, 0, var3, false);
                   Client.field107 = false;
                } else if (var3 == 0) {
                   class214.midiPcmStream.clear();

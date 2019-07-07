@@ -11,8 +11,8 @@ public class WorldMapDecoration {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache4")
-   static Archive indexCache4;
+   @Export("archive4")
+   static Archive archive4;
    @ObfuscatedName("kw")
    @ObfuscatedGetter(
       intValue = -12041645

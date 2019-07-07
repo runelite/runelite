@@ -172,7 +172,7 @@ public final class NPC extends Actor {
       var3.type = 1;
       var3.key = (long)var0;
       var3.archiveDisk = var1;
-      var3.indexCache = var2;
+      var3.archive = var2;
       NodeDeque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
       synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
          IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFirst(var3);

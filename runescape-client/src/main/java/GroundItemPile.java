@@ -71,10 +71,10 @@ public final class GroundItemPile {
    public static boolean loadWidgetGroup(int var0) {
       if (Widget.loadedWidgetGroups[var0]) {
          return true;
-      } else if (!Widget.Widget_indexCache.tryLoadGroup(var0)) {
+      } else if (!Widget.Widget_archive.tryLoadGroup(var0)) {
          return false;
       } else {
-         int var1 = Widget.Widget_indexCache.method4(var0);
+         int var1 = Widget.Widget_archive.method4(var0);
          if (var1 == 0) {
             Widget.loadedWidgetGroups[var0] = true;
             return true;
@@ -85,7 +85,7 @@ public final class GroundItemPile {
 
             for (int var2 = 0; var2 < var1; ++var2) {
                if (Widget.widgets[var0][var2] == null) {
-                  byte[] var3 = Widget.Widget_indexCache.takeFile(var0, var2);
+                  byte[] var3 = Widget.Widget_archive.takeFile(var0, var2);
                   if (var3 != null) {
                      Widget.widgets[var0][var2] = new Widget();
                      Widget.widgets[var0][var2].id = var2 + (var0 << 16);

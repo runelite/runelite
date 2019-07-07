@@ -14,8 +14,8 @@ public class WorldMapSection1 implements WorldMapSection {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache15")
-   static Archive indexCache15;
+   @Export("archive15")
+   static Archive archive15;
    @ObfuscatedName("ey")
    @ObfuscatedGetter(
       intValue = -1516124929
@@ -193,10 +193,10 @@ public class WorldMapSection1 implements WorldMapSection {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = KitDefinition.KitDefinition_indexCache.takeFile(3, var0);
+         byte[] var2 = KitDefinition.KitDefinition_archive.takeFile(3, var0);
          var1 = new KitDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          KitDefinition.KitDefinition_cached.put(var1, (long)var0);

@@ -13,8 +13,8 @@ public class Formatting {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache12")
-   static Archive indexCache12;
+   @Export("archive12")
+   static Archive archive12;
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
@@ -57,19 +57,19 @@ public class Formatting {
          var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          var9 = Interpreter.getEnum(var3);
-         if (var9.valType != 's') {
+         if (var9.outputType != 's') {
          }
 
-         for (var5 = 0; var5 < var9.size0; ++var5) {
+         for (var5 = 0; var5 < var9.outputCount; ++var5) {
             if (var4 == var9.keys[var5]) {
-               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var9.stringVals[var5];
+               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var9.strVals[var5];
                var9 = null;
                break;
             }
          }
 
          if (var9 != null) {
-            Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var9.defaultString;
+            Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var9.defaultStr;
          }
 
          return 1;
@@ -89,11 +89,11 @@ public class Formatting {
          int var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
          var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 3];
          EnumDefinition var7 = Interpreter.getEnum(var6);
-         if (var3 == var7.keyType && var4 == var7.valType) {
-            for (int var8 = 0; var8 < var7.size0; ++var8) {
+         if (var3 == var7.inputType && var4 == var7.outputType) {
+            for (int var8 = 0; var8 < var7.outputCount; ++var8) {
                if (var5 == var7.keys[var8]) {
                   if (var4 == 115) {
-                     Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var7.stringVals[var8];
+                     Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var7.strVals[var8];
                   } else {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var7.intVals[var8];
                   }
@@ -105,7 +105,7 @@ public class Formatting {
 
             if (var7 != null) {
                if (var4 == 115) {
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var7.defaultString;
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var7.defaultStr;
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var7.defaultInt;
                }

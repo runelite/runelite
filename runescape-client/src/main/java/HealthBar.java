@@ -177,7 +177,7 @@ public class HealthBar extends Node {
    )
    static void method1994(int var0, int var1) {
       if (Client.field128 != 0 && var0 != -1) {
-         Login.method2076(Login.indexCache11, var0, 0, Client.field128, false);
+         Login.method2076(Login.archive11, var0, 0, Client.field128, false);
          Client.field107 = true;
       }
 

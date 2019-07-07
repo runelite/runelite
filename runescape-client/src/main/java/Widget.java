@@ -26,8 +26,8 @@ public class Widget extends Node {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("Widget_indexCache")
-   public static AbstractArchive Widget_indexCache;
+   @Export("Widget_archive")
+   public static AbstractArchive Widget_archive;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lir;"

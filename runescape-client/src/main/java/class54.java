@@ -43,7 +43,7 @@ public final class class54 {
             ReflectionCheck.clientPreferences.titleMusicDisabled = !ReflectionCheck.clientPreferences.titleMusicDisabled;
             WorldMapSection0.savePreferences();
             if (!ReflectionCheck.clientPreferences.titleMusicDisabled) {
-               class204.method4011(UserComparator3.indexCache6, "scape main", "", 255, false);
+               class204.method4011(UserComparator3.archive6, "scape main", "", 255, false);
             } else {
                class214.midiPcmStream.clear();
                class214.field1129 = 1;

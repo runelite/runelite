@@ -50,7 +50,7 @@ public class SoundSystem implements Runnable {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Formatting.indexCache12.takeFile(var0, 0);
+         byte[] var2 = Formatting.archive12.takeFile(var0, 0);
          if (var2 == null) {
             return null;
          } else {

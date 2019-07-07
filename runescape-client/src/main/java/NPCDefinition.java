@@ -16,8 +16,8 @@ public class NPCDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("NpcDefinition_indexCache")
-   static AbstractArchive NpcDefinition_indexCache;
+   @Export("NpcDefinition_archive")
+   static AbstractArchive NpcDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
@@ -230,15 +230,15 @@ public class NPCDefinition extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "-893102766"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -247,8 +247,8 @@ public class NPCDefinition extends DualNode {
       signature = "(Lgr;IB)V",
       garbageValue = "-98"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       int var3;
       int var4;
       if (var2 == 1) {

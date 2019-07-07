@@ -46,7 +46,7 @@ final class UnitPriceComparator implements Comparator {
       garbageValue = "23"
    )
    public static void method135(AbstractArchive var0) {
-      VarbitDefinition.VarbitDefinition_indexCache = var0;
+      VarbitDefinition.VarbitDefinition_archive = var0;
    }
 
    @ObfuscatedName("m")

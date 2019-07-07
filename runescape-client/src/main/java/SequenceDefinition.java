@@ -11,8 +11,8 @@ public class SequenceDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("SequenceDefinition_indexCache")
-   public static AbstractArchive SequenceDefinition_indexCache;
+   @Export("SequenceDefinition_archive")
+   public static AbstractArchive SequenceDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
@@ -110,15 +110,15 @@ public class SequenceDefinition extends DualNode {
       signature = "(Lgr;S)V",
       garbageValue = "259"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -127,8 +127,8 @@ public class SequenceDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "154075720"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       int[] var10000;
       int var3;
       int var4;

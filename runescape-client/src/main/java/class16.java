@@ -21,8 +21,8 @@ public class class16 {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache10")
-   static Archive indexCache10;
+   @Export("archive10")
+   static Archive archive10;
    @ObfuscatedName("ga")
    @ObfuscatedSignature(
       signature = "[Lln;"

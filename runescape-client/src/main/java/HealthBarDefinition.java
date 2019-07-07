@@ -112,15 +112,15 @@ public class HealthBarDefinition extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "280763431"
    )
-   @Export("read")
-   public void read(Buffer var1) {
+   @Export("decode")
+   public void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -129,8 +129,8 @@ public class HealthBarDefinition extends DualNode {
       signature = "(Lgr;IB)V",
       garbageValue = "10"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       if (var2 == 1) {
          var1.readUnsignedShort();
       } else if (var2 == 2) {

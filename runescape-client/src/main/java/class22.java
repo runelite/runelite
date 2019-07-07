@@ -21,8 +21,8 @@ public final class class22 {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache16")
-   static Archive indexCache16;
+   @Export("archive16")
+   static Archive archive16;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1976624405

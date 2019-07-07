@@ -14,8 +14,8 @@ public class ObjectDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("ObjectDefinition_indexCache")
-   static AbstractArchive ObjectDefinition_indexCache;
+   @Export("ObjectDefinition_archive")
+   static AbstractArchive ObjectDefinition_archive;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
@@ -320,15 +320,15 @@ public class ObjectDefinition extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "1210669830"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -337,8 +337,8 @@ public class ObjectDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-2044409717"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       int var3;
       int var4;
       if (var2 == 1) {
@@ -907,11 +907,11 @@ public class ObjectDefinition extends DualNode {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = NPCDefinition.NpcDefinition_indexCache.takeFile(9, var0);
+         byte[] var2 = NPCDefinition.NpcDefinition_archive.takeFile(9, var0);
          var1 = new NPCDefinition();
          var1.id = var0;
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          var1.init();

@@ -74,8 +74,8 @@ public class WorldMap {
    @ObfuscatedSignature(
       signature = "Lag;"
    )
-   @Export("currentMapArea0")
-   WorldMapArea currentMapArea0;
+   @Export("currentMapArea")
+   WorldMapArea currentMapArea;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Lag;"
@@ -92,7 +92,7 @@ public class WorldMap {
       signature = "Lls;"
    )
    @Export("cacheLoader")
-   WorldMapIndexCacheLoader cacheLoader;
+   WorldMapArchiveLoader cacheLoader;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = 1711576969
@@ -322,7 +322,7 @@ public class WorldMap {
       this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_small, var5.get(fontNameVerdana11));
       this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_medium, var5.get(fontNameVerdana13));
       this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_large, var5.get(fontNameVerdana15));
-      this.cacheLoader = new WorldMapIndexCacheLoader(var1);
+      this.cacheLoader = new WorldMapArchiveLoader(var1);
       int var7 = this.field989.getGroupId(WorldMapCacheName.WorldMapCacheName_details.name);
       int[] var8 = this.field989.method3(var7);
       this.mapAreas = new HashMap(var8.length);
@@ -357,7 +357,7 @@ public class WorldMap {
    )
    @Export("onCycle")
    public void onCycle(int var1, int var2, boolean var3, int var4, int var5, int var6, int var7) {
-      if (this.cacheLoader.isLoaded()) {
+      if (this.cacheLoader.getIsLoaded()) {
          this.smoothZoom();
          this.method363();
          if (var3) {
@@ -437,10 +437,10 @@ public class WorldMap {
 
    @ObfuscatedName("o")
    void method362(int var1, int var2, boolean var3, long var4) {
-      if (this.currentMapArea0 != null) {
+      if (this.currentMapArea != null) {
          int var6 = (int)((float)this.worldMapX + ((float)(var1 - this.worldMapDisplayX) - (float)this.method377() * this.zoom / 2.0F) / this.zoom);
          int var7 = (int)((float)this.worldMapY - ((float)(var2 - this.worldMapDisplayY) - (float)this.method378() * this.zoom / 2.0F) / this.zoom);
-         this.mouseCoord = this.currentMapArea0.coord(var6 + this.currentMapArea0.minX() * 64, var7 + this.currentMapArea0.minY() * 64);
+         this.mouseCoord = this.currentMapArea.coord(var6 + this.currentMapArea.minX() * 64, var7 + this.currentMapArea.minY() * 64);
          if (this.mouseCoord != null && var3) {
             int var8;
             int var9;
@@ -631,7 +631,7 @@ public class WorldMap {
    )
    @Export("currentMapAreaId")
    public int currentMapAreaId() {
-      return this.currentMapArea0 == null ? -1 : this.currentMapArea0.id();
+      return this.currentMapArea == null ? -1 : this.currentMapArea.id();
    }
 
    @ObfuscatedName("s")
@@ -641,7 +641,7 @@ public class WorldMap {
    )
    @Export("getCurrentMapArea")
    public WorldMapArea getCurrentMapArea() {
-      return this.currentMapArea0;
+      return this.currentMapArea;
    }
 
    @ObfuscatedName("t")
@@ -651,7 +651,7 @@ public class WorldMap {
    )
    @Export("setCurrentMapArea")
    void setCurrentMapArea(WorldMapArea var1) {
-      if (this.currentMapArea0 == null || var1 != this.currentMapArea0) {
+      if (this.currentMapArea == null || var1 != this.currentMapArea) {
          this.initializeWorldMap(var1);
          this.jump(-1, -1, -1);
       }
@@ -665,9 +665,9 @@ public class WorldMap {
    )
    @Export("initializeWorldMap")
    void initializeWorldMap(WorldMapArea var1) {
-      this.currentMapArea0 = var1;
+      this.currentMapArea = var1;
       this.worldMapManager = new WorldMapManager(this.mapSceneSprites, this.fonts, this.field990, this.field991);
-      this.cacheLoader.reset(this.currentMapArea0.archiveName());
+      this.cacheLoader.reset(this.currentMapArea.archiveName());
    }
 
    @ObfuscatedName("h")
@@ -677,11 +677,11 @@ public class WorldMap {
    )
    public void method367(WorldMapArea var1, TileLocation var2, TileLocation var3, boolean var4) {
       if (var1 != null) {
-         if (this.currentMapArea0 == null || var1 != this.currentMapArea0) {
+         if (this.currentMapArea == null || var1 != this.currentMapArea) {
             this.initializeWorldMap(var1);
          }
 
-         if (!var4 && this.currentMapArea0.containsCoord(var2.plane, var2.x, var2.y)) {
+         if (!var4 && this.currentMapArea.containsCoord(var2.plane, var2.x, var2.y)) {
             this.jump(var2.plane, var2.x, var2.y);
          } else {
             this.jump(var3.plane, var3.x, var3.y);
@@ -697,16 +697,16 @@ public class WorldMap {
    )
    @Export("jump")
    void jump(int var1, int var2, int var3) {
-      if (this.currentMapArea0 != null) {
-         int[] var4 = this.currentMapArea0.position(var1, var2, var3);
+      if (this.currentMapArea != null) {
+         int[] var4 = this.currentMapArea.position(var1, var2, var3);
          if (var4 == null) {
-            var4 = this.currentMapArea0.position(this.currentMapArea0.originPlane(), this.currentMapArea0.originX(), this.currentMapArea0.originY());
+            var4 = this.currentMapArea.position(this.currentMapArea.originPlane(), this.currentMapArea.originX(), this.currentMapArea.originY());
          }
 
-         this.setWorldMapPosition(var4[0] - this.currentMapArea0.minX() * 64, var4[1] - this.currentMapArea0.minY() * 64, true);
+         this.setWorldMapPosition(var4[0] - this.currentMapArea.minX() * 64, var4[1] - this.currentMapArea.minY() * 64, true);
          this.worldMapTargetX = -1;
          this.worldMapTargetY = -1;
-         this.zoom = this.method370(this.currentMapArea0.zoom());
+         this.zoom = this.method370(this.currentMapArea.zoom());
          this.zoomTarget = this.zoom;
          this.field1009 = null;
          this.iconIterator = null;
@@ -726,12 +726,12 @@ public class WorldMap {
       Rasterizer2D.Rasterizer2D_getClipArray(var6);
       Rasterizer2D.Rasterizer2D_setClip(var1, var2, var3 + var1, var2 + var4);
       Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var4, -16777216);
-      int var7 = this.cacheLoader.percentLoaded();
+      int var7 = this.cacheLoader.getPercentLoaded();
       if (var7 < 100) {
          this.drawLoading(var1, var2, var3, var4, var7);
       } else {
          if (!this.worldMapManager.isLoaded()) {
-            this.worldMapManager.load(this.field989, this.currentMapArea0.archiveName(), Client.isMembersWorld);
+            this.worldMapManager.load(this.field989, this.currentMapArea.archiveName(), Client.isMembersWorld);
             if (!this.worldMapManager.isLoaded()) {
                return;
             }
@@ -835,9 +835,9 @@ public class WorldMap {
    )
    @Export("drawOverview")
    public void drawOverview(int var1, int var2, int var3, int var4) {
-      if (this.cacheLoader.isLoaded()) {
+      if (this.cacheLoader.getIsLoaded()) {
          if (!this.worldMapManager.isLoaded()) {
-            this.worldMapManager.load(this.field989, this.currentMapArea0.archiveName(), Client.isMembersWorld);
+            this.worldMapManager.load(this.field989, this.currentMapArea.archiveName(), Client.isMembersWorld);
             if (!this.worldMapManager.isLoaded()) {
                return;
             }
@@ -910,7 +910,7 @@ public class WorldMap {
    )
    @Export("isCacheLoaded")
    public boolean isCacheLoaded() {
-      return this.cacheLoader.isLoaded();
+      return this.cacheLoader.getIsLoaded();
    }
 
    @ObfuscatedName("ah")
@@ -939,9 +939,9 @@ public class WorldMap {
    )
    @Export("setWorldMapPositionTarget")
    public void setWorldMapPositionTarget(int var1, int var2) {
-      if (this.currentMapArea0 != null && this.currentMapArea0.containsPosition(var1, var2)) {
-         this.worldMapTargetX = var1 - this.currentMapArea0.minX() * 64;
-         this.worldMapTargetY = var2 - this.currentMapArea0.minY() * 64;
+      if (this.currentMapArea != null && this.currentMapArea.containsPosition(var1, var2)) {
+         this.worldMapTargetX = var1 - this.currentMapArea.minX() * 64;
+         this.worldMapTargetY = var2 - this.currentMapArea.minY() * 64;
       }
 
    }
@@ -952,8 +952,8 @@ public class WorldMap {
       garbageValue = "-2147142500"
    )
    public void method371(int var1, int var2) {
-      if (this.currentMapArea0 != null) {
-         this.setWorldMapPosition(var1 - this.currentMapArea0.minX() * 64, var2 - this.currentMapArea0.minY() * 64, true);
+      if (this.currentMapArea != null) {
+         this.setWorldMapPosition(var1 - this.currentMapArea.minX() * 64, var2 - this.currentMapArea.minY() * 64, true);
          this.worldMapTargetX = -1;
          this.worldMapTargetY = -1;
       }
@@ -966,8 +966,8 @@ public class WorldMap {
       garbageValue = "-40"
    )
    public void method372(int var1, int var2, int var3) {
-      if (this.currentMapArea0 != null) {
-         int[] var4 = this.currentMapArea0.position(var1, var2, var3);
+      if (this.currentMapArea != null) {
+         int[] var4 = this.currentMapArea.position(var1, var2, var3);
          if (var4 != null) {
             this.setWorldMapPositionTarget(var4[0], var4[1]);
          }
@@ -981,8 +981,8 @@ public class WorldMap {
       garbageValue = "1808854561"
    )
    public void method373(int var1, int var2, int var3) {
-      if (this.currentMapArea0 != null) {
-         int[] var4 = this.currentMapArea0.position(var1, var2, var3);
+      if (this.currentMapArea != null) {
+         int[] var4 = this.currentMapArea.position(var1, var2, var3);
          if (var4 != null) {
             this.method371(var4[0], var4[1]);
          }
@@ -996,7 +996,7 @@ public class WorldMap {
       garbageValue = "-659556919"
    )
    public int method374() {
-      return this.currentMapArea0 == null ? -1 : this.worldMapX + this.currentMapArea0.minX() * 64;
+      return this.currentMapArea == null ? -1 : this.worldMapX + this.currentMapArea.minX() * 64;
    }
 
    @ObfuscatedName("at")
@@ -1005,7 +1005,7 @@ public class WorldMap {
       garbageValue = "1893257871"
    )
    public int method375() {
-      return this.currentMapArea0 == null ? -1 : this.worldMapY + this.currentMapArea0.minY() * 64;
+      return this.currentMapArea == null ? -1 : this.worldMapY + this.currentMapArea.minY() * 64;
    }
 
    @ObfuscatedName("ad")
@@ -1014,7 +1014,7 @@ public class WorldMap {
       garbageValue = "-2005824064"
    )
    public TileLocation method376() {
-      return this.currentMapArea0 == null ? null : this.currentMapArea0.coord(this.method374(), this.method375());
+      return this.currentMapArea == null ? null : this.currentMapArea.coord(this.method374(), this.method375());
    }
 
    @ObfuscatedName("ap")
@@ -1229,7 +1229,7 @@ public class WorldMap {
       garbageValue = "-73"
    )
    public void method384(int var1, int var2, int var3, int var4, int var5, int var6) {
-      if (this.cacheLoader.isLoaded()) {
+      if (this.cacheLoader.getIsLoaded()) {
          int var7 = (int)Math.ceil((double)((float)var3 / this.zoom));
          int var8 = (int)Math.ceil((double)((float)var4 / this.zoom));
          List var9 = this.worldMapManager.method403(this.worldMapX - var7 / 2 - 1, this.worldMapY - var8 / 2 - 1, var7 / 2 + this.worldMapX + 1, var8 / 2 + this.worldMapY + 1, var1, var2, var3, var4, var5, var6);
@@ -1264,11 +1264,11 @@ public class WorldMap {
       garbageValue = "333454230"
    )
    public TileLocation method385(int var1, TileLocation var2) {
-      if (!this.cacheLoader.isLoaded()) {
+      if (!this.cacheLoader.getIsLoaded()) {
          return null;
       } else if (!this.worldMapManager.isLoaded()) {
          return null;
-      } else if (!this.currentMapArea0.containsPosition(var2.x, var2.y)) {
+      } else if (!this.currentMapArea.containsPosition(var2.x, var2.y)) {
          return null;
       } else {
          HashMap var3 = this.worldMapManager.buildIcons();
@@ -1337,7 +1337,7 @@ public class WorldMap {
    )
    @Export("iconStart")
    public AbstractWorldMapIcon iconStart() {
-      if (!this.cacheLoader.isLoaded()) {
+      if (!this.cacheLoader.getIsLoaded()) {
          return null;
       } else if (!this.worldMapManager.isLoaded()) {
          return null;

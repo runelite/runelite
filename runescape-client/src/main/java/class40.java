@@ -9,8 +9,8 @@ public class class40 {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache7")
-   static Archive indexCache7;
+   @Export("archive7")
+   static Archive archive7;
    @ObfuscatedName("gs")
    @Export("regionLandArchives")
    static byte[][] regionLandArchives;

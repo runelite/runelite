@@ -198,7 +198,7 @@ public final class PacketBuffer extends Buffer {
                }
 
                var8 = new NetFileRequest();
-               var8.indexCache = var0;
+               var8.archive = var0;
                var8.crc = var3;
                var8.padding = var4;
                if (var5) {

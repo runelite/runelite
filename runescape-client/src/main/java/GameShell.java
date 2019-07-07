@@ -718,6 +718,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(I)V",
       garbageValue = "1445885427"
    )
+   @Export("packetHandler")
    protected abstract void packetHandler();
 
    @ObfuscatedName("ab")
@@ -1064,14 +1065,14 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
          if (var0 != 5 && var0 != 10) {
             if (var0 == 20) {
-               class2.method27(class16.indexCache10, WorldMapSection3.indexCache8, true, Client.gameState == 11 ? 4 : 0);
+               class2.method27(class16.archive10, WorldMapSection3.archive8, true, Client.gameState == 11 ? 4 : 0);
             } else if (var0 == 11) {
-               class2.method27(class16.indexCache10, WorldMapSection3.indexCache8, false, 4);
+               class2.method27(class16.archive10, WorldMapSection3.archive8, false, 4);
             } else {
                class80.method2015();
             }
          } else {
-            class2.method27(class16.indexCache10, WorldMapSection3.indexCache8, true, 0);
+            class2.method27(class16.archive10, WorldMapSection3.archive8, true, 0);
          }
 
          Client.gameState = var0;

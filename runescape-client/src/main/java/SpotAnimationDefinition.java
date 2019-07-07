@@ -11,8 +11,8 @@ public class SpotAnimationDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("SpotAnimationDefinition_indexCache")
-   public static AbstractArchive SpotAnimationDefinition_indexCache;
+   @Export("SpotAnimationDefinition_archive")
+   public static AbstractArchive SpotAnimationDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
@@ -104,15 +104,15 @@ public class SpotAnimationDefinition extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "906815828"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -121,8 +121,8 @@ public class SpotAnimationDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "2099681848"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       if (var2 == 1) {
          this.archive = var1.readUnsignedShort();
       } else if (var2 == 2) {

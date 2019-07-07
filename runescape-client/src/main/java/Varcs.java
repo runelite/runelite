@@ -33,7 +33,7 @@ public class Varcs {
 
    Varcs() {
       this.unwrittenChanges = false;
-      int var1 = ObjectSound.indexCache2.method4(19);
+      int var1 = ObjectSound.archive2.method4(19);
       this.map = new HashMap();
       this.intsPersistence = new boolean[var1];
 
@@ -44,8 +44,8 @@ public class Varcs {
       }
 
       var2 = 0;
-      if (ObjectSound.indexCache2.method133(15)) {
-         var2 = ObjectSound.indexCache2.method4(15);
+      if (ObjectSound.archive2.method133(15)) {
+         var2 = ObjectSound.archive2.method4(15);
       }
 
       this.strings = new String[var2];

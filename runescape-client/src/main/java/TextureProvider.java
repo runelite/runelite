@@ -51,8 +51,8 @@ public class TextureProvider implements TextureLoader {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("indexCache")
-   AbstractArchive indexCache;
+   @Export("archive")
+   AbstractArchive archive;
 
    @ObfuscatedSignature(
       signature = "(Lir;Lir;IDI)V"
@@ -62,7 +62,7 @@ public class TextureProvider implements TextureLoader {
       this.remaining = 0;
       this.brightness0 = 1.0D;
       this.textureSize = 128;
-      this.indexCache = var2;
+      this.archive = var2;
       this.capacity = var3;
       this.remaining = this.capacity;
       this.brightness0 = var4;
@@ -96,7 +96,7 @@ public class TextureProvider implements TextureLoader {
 
             for (int var7 = 0; var7 < var6.length; ++var7) {
                int var8 = var6[var7];
-               if (this.indexCache.method1(var8)) {
+               if (this.archive.method1(var8)) {
                   ++var2;
                }
             }
@@ -132,7 +132,7 @@ public class TextureProvider implements TextureLoader {
             return var2.pixels;
          }
 
-         boolean var3 = var2.method320(this.brightness0, this.textureSize, this.indexCache);
+         boolean var3 = var2.method320(this.brightness0, this.textureSize, this.archive);
          if (var3) {
             if (this.remaining == 0) {
                Texture var4 = (Texture)this.deque.removeFirst();

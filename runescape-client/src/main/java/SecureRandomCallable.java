@@ -39,7 +39,7 @@ public class SecureRandomCallable implements Callable {
          byte[] var2 = VarpDefinition.field943.takeFile(16, var0);
          var1 = new VarpDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          VarpDefinition.VarpDefinition_cached.put(var1, (long)var0);

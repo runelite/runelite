@@ -11,8 +11,8 @@ public class KitDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("KitDefinition_indexCache")
-   public static AbstractArchive KitDefinition_indexCache;
+   @Export("KitDefinition_archive")
+   public static AbstractArchive KitDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
@@ -68,15 +68,15 @@ public class KitDefinition extends DualNode {
       signature = "(Lgr;S)V",
       garbageValue = "22753"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -85,8 +85,8 @@ public class KitDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-1828581673"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       if (var2 == 1) {
          this.bodypartID = var1.readUnsignedByte();
       } else {

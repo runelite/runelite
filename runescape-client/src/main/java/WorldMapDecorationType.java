@@ -168,7 +168,7 @@ public enum WorldMapDecorationType implements Enumerated {
          byte[] var2 = class4.field1158.takeFile(5, var0);
          var1 = new InvDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          InvDefinition.InvDefinition_cached.put(var1, (long)var0);
