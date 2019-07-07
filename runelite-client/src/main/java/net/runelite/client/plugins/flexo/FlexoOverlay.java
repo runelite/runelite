@@ -34,6 +34,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
@@ -65,7 +66,7 @@ public class FlexoOverlay extends Overlay
 
 		if (plugin.isDebugNPCs() || plugin.isDebugGroundItems() || plugin.isDebugPlayers())
 		{
-			ArrayList<Rectangle> clickAreas = plugin.getClickAreas();
+			List<Rectangle> clickAreas = plugin.getClickAreas();
 			if (clickAreas != null)
 			{
 				for (Rectangle clickArea : clickAreas)
@@ -77,7 +78,7 @@ public class FlexoOverlay extends Overlay
 				}
 			}
 
-			ArrayList<Point> clickPoints = plugin.getClickPoints();
+			List<Point> clickPoints = plugin.getClickPoints();
 			if (clickPoints != null)
 			{
 				for (Point p : clickPoints)
