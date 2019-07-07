@@ -101,7 +101,7 @@ class Library
 	@Getter(AccessLevel.PACKAGE)
 	private LibraryCustomer customer;
 
-	private Library()
+	Library()
 	{
 		populateBooks();
 		step = byIndex.size() / Book.values().length;
