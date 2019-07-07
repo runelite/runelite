@@ -41,7 +41,7 @@ import net.runelite.client.ui.ColorScheme;
 @Singleton
 abstract class InventorySetupContainerPanel extends JPanel
 {
-	protected ItemManager itemManager;
+	protected final ItemManager itemManager;
 
 	private final InventorySetupPlugin plugin;
 

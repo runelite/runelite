@@ -108,7 +108,7 @@ public class InventorySetupPlugin extends Plugin
 
 	private InventorySetupPluginPanel panel;
 
-	private Map<String, InventorySetup> inventorySetups = new HashMap<>();
+	private final Map<String, InventorySetup> inventorySetups = new HashMap<>();
 
 	private NavigationButton navButton;
 
