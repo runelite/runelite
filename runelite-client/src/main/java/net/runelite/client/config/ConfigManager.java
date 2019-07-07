@@ -81,7 +81,6 @@ public class ConfigManager
 	@Inject
 	EventBus eventBus;
 
-	private final ScheduledExecutorService executor;
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
 	private final Map<String, Object> configObjectCache = new HashMap<>();
@@ -90,9 +89,8 @@ public class ConfigManager
 	@Inject
 	public ConfigManager(ScheduledExecutorService scheduledExecutorService)
 	{
-		this.executor = scheduledExecutorService;
 
-		executor.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
 
 	public final void switchSession()
