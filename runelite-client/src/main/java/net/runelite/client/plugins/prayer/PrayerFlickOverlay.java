@@ -77,14 +77,13 @@ class PrayerFlickOverlay extends Overlay
 
 		//Purposefully using height twice here as the bounds of the prayer orb includes the number sticking out the side
 		int orbInnerHeight = (int) bounds.getHeight();
-		int orbInnerWidth = orbInnerHeight;
 
 		int orbInnerX = (int) (bounds.getX() + 24);//x pos of the inside of the prayer orb
 		int orbInnerY = (int) (bounds.getY() - 1);//y pos of the inside of the prayer orb
 
 		double t = plugin.getTickProgress();
 
-		int xOffset = (int) (-Math.cos(t) * orbInnerWidth / 2) + orbInnerWidth / 2;
+		int xOffset = (int) (-Math.cos(t) * orbInnerHeight / 2) + orbInnerHeight / 2;
 		int indicatorHeight = (int) (Math.sin(t) * orbInnerHeight);
 
 		int yOffset = (orbInnerHeight / 2) - (indicatorHeight / 2);
