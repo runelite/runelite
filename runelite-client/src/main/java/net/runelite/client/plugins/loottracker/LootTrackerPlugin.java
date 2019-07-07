@@ -175,7 +175,6 @@ public class LootTrackerPlugin extends Plugin
 	private Multiset<Integer> inventorySnapshot;
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
-	private BufferedReader bufferedReader;
 	private JsonStreamParser jsonStreamParser;
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
@@ -305,7 +304,7 @@ public class LootTrackerPlugin extends Plugin
 
 		AccountSession accountSession = sessionManager.getAccountSession();
 		LOOT_RECORDS_FILE.createNewFile();
-		bufferedReader = Files.newBufferedReader(LOOT_RECORDS_FILE.toPath());
+		BufferedReader bufferedReader = Files.newBufferedReader(LOOT_RECORDS_FILE.toPath());
 		if (accountSession != null || this.localPersistence)
 		{
 
