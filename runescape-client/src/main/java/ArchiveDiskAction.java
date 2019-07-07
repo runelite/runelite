@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ik")
-@Implements("IndexStoreAction")
-public class IndexStoreAction extends Node {
+@Implements("ArchiveDiskAction")
+public class ArchiveDiskAction extends Node {
    @ObfuscatedName("rt")
    @ObfuscatedGetter(
       intValue = -1086790653

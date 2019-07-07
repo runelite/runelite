@@ -253,8 +253,8 @@ public final class Client extends GameShell implements Usernamed {
    @Export("soundEffectIds")
    static int[] soundEffectIds;
    @ObfuscatedName("sy")
-   @Export("indexCacheLoaders")
-   static ArrayList indexCacheLoaders;
+   @Export("archiveLoaders")
+   static ArrayList archiveLoaders;
    @ObfuscatedName("sl")
    @ObfuscatedGetter(
       intValue = -1605855913
@@ -270,8 +270,8 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = -1546210597
    )
-   @Export("indexCacheLoaderIndex")
-   static int indexCacheLoaderIndex;
+   @Export("archiveLoaderArchive")
+   static int archiveLoaderArchive;
    @ObfuscatedName("qn")
    @Export("queuedSoundEffectLoops")
    static int[] queuedSoundEffectLoops;
@@ -2378,7 +2378,7 @@ public final class Client extends GameShell implements Usernamed {
          class168.dat2File.close();
 
          for (int var9 = 0; var9 < class168.idxCount; ++var9) {
-            IndexStoreAction.idxFiles[var9].close();
+            ArchiveDiskAction.idxFiles[var9].close();
          }
 
          class168.idx255File.close();
@@ -2600,10 +2600,10 @@ public final class Client extends GameShell implements Usernamed {
                      Interpreter.method1976();
                      class168.dat2File = new BufferedFile(new AccessFile(WorldMapIcon2.method315("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
                      class168.idx255File = new BufferedFile(new AccessFile(WorldMapIcon2.method315("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
-                     IndexStoreAction.idxFiles = new BufferedFile[class168.idxCount];
+                     ArchiveDiskAction.idxFiles = new BufferedFile[class168.idxCount];
 
                      for (int var35 = 0; var35 < class168.idxCount; ++var35) {
-                        IndexStoreAction.idxFiles[var35] = new BufferedFile(new AccessFile(WorldMapIcon2.method315("main_file_cache.idx" + var35), "rw", 1048576L), 6000, 0);
+                        ArchiveDiskAction.idxFiles[var35] = new BufferedFile(new AccessFile(WorldMapIcon2.method315("main_file_cache.idx" + var35), "rw", 1048576L), 6000, 0);
                      }
                   } catch (Exception var23) {
                      NPCDefinition.sendStackTrace((String)null, var23);
@@ -3899,11 +3899,11 @@ public final class Client extends GameShell implements Usernamed {
                   field137 = 0;
 
                   while (Decimator.method2490() && field137 < 128) {
-                     if (rights >= 2 && KeyHandler.KeyHandler_pressedKeys[82] && IndexStoreAction.field411 == 66) {
+                     if (rights >= 2 && KeyHandler.KeyHandler_pressedKeys[82] && ArchiveDiskAction.field411 == 66) {
                         String var22 = KeyHandler.method839();
                         TextureProvider.client.clipboardSetString(var22);
                      } else if (oculusOrbState != 1 || GzipDecompressor.field378 <= 0) {
-                        field145[field137] = IndexStoreAction.field411;
+                        field145[field137] = ArchiveDiskAction.field411;
                         field146[field137] = GzipDecompressor.field378;
                         ++field137;
                      }
@@ -4121,7 +4121,7 @@ public final class Client extends GameShell implements Usernamed {
 
                                                 var4 = GrandExchangeOffer.field376 * 128 + 64;
                                                 var9 = KeyHandler.field445 * 128 + 64;
-                                                var10 = class32.getTileHeight(var4, var9, SoundSystem.plane) - IndexStoreAction.field410;
+                                                var10 = class32.getTileHeight(var4, var9, SoundSystem.plane) - ArchiveDiskAction.field410;
                                                 var11 = var4 - WorldMapSection1.cameraX;
                                                 var12 = var10 - GrandExchangeEvents.cameraY;
                                                 var13 = var9 - class11.cameraZ;
@@ -5428,13 +5428,13 @@ public final class Client extends GameShell implements Usernamed {
                isCameraLocked = true;
                GrandExchangeOffer.field376 = var3.readUnsignedByte();
                KeyHandler.field445 = var3.readUnsignedByte();
-               IndexStoreAction.field410 = var3.readUnsignedShort();
+               ArchiveDiskAction.field410 = var3.readUnsignedShort();
                VertexNormal.field946 = var3.readUnsignedByte();
                class171.field1116 = var3.readUnsignedByte();
                if (class171.field1116 >= 100) {
                   var37 = GrandExchangeOffer.field376 * 128 + 64;
                   var6 = KeyHandler.field445 * 128 + 64;
-                  var5 = class32.getTileHeight(var37, var6, SoundSystem.plane) - IndexStoreAction.field410;
+                  var5 = class32.getTileHeight(var37, var6, SoundSystem.plane) - ArchiveDiskAction.field410;
                   var10 = var37 - WorldMapSection1.cameraX;
                   var11 = var5 - GrandExchangeEvents.cameraY;
                   var12 = var6 - class11.cameraZ;
@@ -6511,8 +6511,8 @@ public final class Client extends GameShell implements Usernamed {
       grandExchangeOffers = new GrandExchangeOffer[8];
       field159 = new OwnWorldComparator();
       field104 = -1;
-      indexCacheLoaders = new ArrayList(10);
-      indexCacheLoaderIndex = 0;
+      archiveLoaders = new ArrayList(10);
+      archiveLoaderArchive = 0;
       field140 = 0;
       field895 = new class65();
       field113 = new int[50];

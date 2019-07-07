@@ -215,7 +215,7 @@ public class FontName {
                return 1;
             } else if (var0 == ScriptOpcodes.CLAN_KICKUSER) {
                var4 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-               IndexStoreActionHandler.method4655(var4);
+               ArchiveDiskActionHandler.method4655(var4);
                return 1;
             } else if (var0 == ScriptOpcodes.CLAN_GETCHATRANK) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = PacketWriter.clanChat != null ? PacketWriter.clanChat.rank : 0;

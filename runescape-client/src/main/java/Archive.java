@@ -9,8 +9,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Archive")
 public class Archive extends AbstractArchive {
    @ObfuscatedName("aj")
-   @Export("IndexCache_crc")
-   static CRC32 IndexCache_crc;
+   @Export("Archive_crc")
+   static CRC32 Archive_crc;
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "Lff;"
@@ -114,9 +114,9 @@ public class Archive extends AbstractArchive {
       if (this.archiveDisk != null && this.validGroups != null && this.validGroups[group]) {
          ArchiveDisk var2 = this.archiveDisk;
          byte[] var3 = null;
-         NodeDeque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-         synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-            for (IndexStoreAction var6 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.last(); var6 != null; var6 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.previous()) {
+         NodeDeque var4 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue;
+         synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
+            for (ArchiveDiskAction var6 = (ArchiveDiskAction) ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.last(); var6 != null; var6 = (ArchiveDiskAction) ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.previous()) {
                if (var6.key == (long) group && var2 == var6.archiveDisk && var6.type == 0) {
                   var3 = var6.data;
                   break;
@@ -179,9 +179,9 @@ public class Archive extends AbstractArchive {
          int var3 = this.index;
          ArchiveDisk var4 = this.masterDisk;
          byte[] var5 = null;
-         NodeDeque var6 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-         synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-            for (IndexStoreAction var8 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.last(); var8 != null; var8 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.previous()) {
+         NodeDeque var6 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue;
+         synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
+            for (ArchiveDiskAction var8 = (ArchiveDiskAction) ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.last(); var8 != null; var8 = (ArchiveDiskAction) ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.previous()) {
                if (var8.key == (long)var3 && var4 == var8.archiveDisk && var8.type == 0) {
                   var5 = var8.data;
                   break;
@@ -248,9 +248,9 @@ public class Archive extends AbstractArchive {
          } else if (var3 == null) {
             PacketBuffer.requestNetFile(this, 255, this.index, this.indexCrc, (byte)0, true);
          } else {
-            IndexCache_crc.reset();
-            IndexCache_crc.update(var3, 0, var3.length);
-            var5 = (int)IndexCache_crc.getValue();
+            Archive_crc.reset();
+            Archive_crc.update(var3, 0, var3.length);
+            var5 = (int)Archive_crc.getValue();
             if (var5 != this.indexCrc) {
                PacketBuffer.requestNetFile(this, 255, this.index, this.indexCrc, (byte)0, true);
             } else {
@@ -279,9 +279,9 @@ public class Archive extends AbstractArchive {
          }
 
          if (var3 != null && var3.length > 2) {
-            IndexCache_crc.reset();
-            IndexCache_crc.update(var3, 0, var3.length - 2);
-            var5 = (int)IndexCache_crc.getValue();
+            Archive_crc.reset();
+            Archive_crc.update(var3, 0, var3.length - 2);
+            var5 = (int)Archive_crc.getValue();
             int var6 = ((var3[var3.length - 2] & 255) << 8) + (var3[var3.length - 1] & 255);
             if (var5 == super.groupCrcs[var2] && var6 == super.groupVersions[var2]) {
                this.validGroups[var2] = true;
@@ -549,6 +549,6 @@ public class Archive extends AbstractArchive {
    }
 
    static {
-      IndexCache_crc = new CRC32();
+      Archive_crc = new CRC32();
    }
 }

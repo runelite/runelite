@@ -1530,26 +1530,26 @@ public class Widget extends Node {
       garbageValue = "-1287305716"
    )
    static void method4499(int var0, byte[] var1, ArchiveDisk var2) {
-      IndexStoreAction var3 = new IndexStoreAction();
+      ArchiveDiskAction var3 = new ArchiveDiskAction();
       var3.type = 0;
       var3.key = (long)var0;
       var3.data = var1;
       var3.archiveDisk = var2;
-      NodeDeque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-         IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFirst(var3);
+      NodeDeque var4 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue;
+      synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
+         ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.addFirst(var3);
       }
 
-      Object var5 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
-         if (IndexStoreActionHandler.field412 == 0) {
-            Frames.IndexStoreActionHandler_thread = new Thread(new IndexStoreActionHandler());
-            Frames.IndexStoreActionHandler_thread.setDaemon(true);
-            Frames.IndexStoreActionHandler_thread.start();
-            Frames.IndexStoreActionHandler_thread.setPriority(5);
+      Object var5 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock;
+      synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock) {
+         if (ArchiveDiskActionHandler.field412 == 0) {
+            Frames.ArchiveDiskActionHandler_thread = new Thread(new ArchiveDiskActionHandler());
+            Frames.ArchiveDiskActionHandler_thread.setDaemon(true);
+            Frames.ArchiveDiskActionHandler_thread.start();
+            Frames.ArchiveDiskActionHandler_thread.setPriority(5);
          }
 
-         IndexStoreActionHandler.field412 = 600;
+         ArchiveDiskActionHandler.field412 = 600;
       }
    }
 

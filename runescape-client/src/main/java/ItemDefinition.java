@@ -17,8 +17,8 @@ public class ItemDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("ItemDefinition_modelIndexCache")
-   public static AbstractArchive ItemDefinition_modelIndexCache;
+   @Export("ItemDefinition_modelArchive")
+   public static AbstractArchive ItemDefinition_modelArchive;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -590,7 +590,7 @@ public class ItemDefinition extends DualNode {
          }
       }
 
-      ModelData var4 = ModelData.method2788(ItemDefinition_modelIndexCache, this.field435, 0);
+      ModelData var4 = ModelData.method2788(ItemDefinition_modelArchive, this.field435, 0);
       if (var4 == null) {
          return null;
       } else {
@@ -639,7 +639,7 @@ public class ItemDefinition extends DualNode {
       if (var5 != null) {
          return var5;
       } else {
-         ModelData var6 = ModelData.method2788(ItemDefinition_modelIndexCache, this.field435, 0);
+         ModelData var6 = ModelData.method2788(ItemDefinition_modelArchive, this.field435, 0);
          if (var6 == null) {
             return null;
          } else {
@@ -710,15 +710,15 @@ public class ItemDefinition extends DualNode {
          return true;
       } else {
          boolean var5 = true;
-         if (!ItemDefinition_modelIndexCache.tryLoadFile(var2, 0)) {
+         if (!ItemDefinition_modelArchive.tryLoadFile(var2, 0)) {
             var5 = false;
          }
 
-         if (var3 != -1 && !ItemDefinition_modelIndexCache.tryLoadFile(var3, 0)) {
+         if (var3 != -1 && !ItemDefinition_modelArchive.tryLoadFile(var3, 0)) {
             var5 = false;
          }
 
-         if (var4 != -1 && !ItemDefinition_modelIndexCache.tryLoadFile(var4, 0)) {
+         if (var4 != -1 && !ItemDefinition_modelArchive.tryLoadFile(var4, 0)) {
             var5 = false;
          }
 
@@ -744,11 +744,11 @@ public class ItemDefinition extends DualNode {
       if (var2 == -1) {
          return null;
       } else {
-         ModelData var5 = ModelData.method2788(ItemDefinition_modelIndexCache, var2, 0);
+         ModelData var5 = ModelData.method2788(ItemDefinition_modelArchive, var2, 0);
          if (var3 != -1) {
-            ModelData var6 = ModelData.method2788(ItemDefinition_modelIndexCache, var3, 0);
+            ModelData var6 = ModelData.method2788(ItemDefinition_modelArchive, var3, 0);
             if (var4 != -1) {
-               ModelData var7 = ModelData.method2788(ItemDefinition_modelIndexCache, var4, 0);
+               ModelData var7 = ModelData.method2788(ItemDefinition_modelArchive, var4, 0);
                ModelData[] var8 = new ModelData[]{var5, var6, var7};
                var5 = new ModelData(var8, 3);
             } else {
@@ -799,11 +799,11 @@ public class ItemDefinition extends DualNode {
          return true;
       } else {
          boolean var4 = true;
-         if (!ItemDefinition_modelIndexCache.tryLoadFile(var2, 0)) {
+         if (!ItemDefinition_modelArchive.tryLoadFile(var2, 0)) {
             var4 = false;
          }
 
-         if (var3 != -1 && !ItemDefinition_modelIndexCache.tryLoadFile(var3, 0)) {
+         if (var3 != -1 && !ItemDefinition_modelArchive.tryLoadFile(var3, 0)) {
             var4 = false;
          }
 
@@ -827,9 +827,9 @@ public class ItemDefinition extends DualNode {
       if (var2 == -1) {
          return null;
       } else {
-         ModelData var4 = ModelData.method2788(ItemDefinition_modelIndexCache, var2, 0);
+         ModelData var4 = ModelData.method2788(ItemDefinition_modelArchive, var2, 0);
          if (var3 != -1) {
-            ModelData var5 = ModelData.method2788(ItemDefinition_modelIndexCache, var3, 0);
+            ModelData var5 = ModelData.method2788(ItemDefinition_modelArchive, var3, 0);
             ModelData[] var6 = new ModelData[]{var4, var5};
             var4 = new ModelData(var6, 2);
          }

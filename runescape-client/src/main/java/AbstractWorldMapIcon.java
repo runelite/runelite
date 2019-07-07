@@ -164,7 +164,7 @@ public abstract class AbstractWorldMapIcon {
    )
    static void method625(Archive var0, String var1) {
       ArchiveLoader var2 = new ArchiveLoader(var0, var1);
-      Client.indexCacheLoaders.add(var2);
+      Client.archiveLoaders.add(var2);
       Client.field140 += var2.field408;
    }
 }

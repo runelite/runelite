@@ -5,61 +5,61 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("iv")
-@Implements("IndexStoreActionHandler")
-public class IndexStoreActionHandler implements Runnable {
+@Implements("ArchiveDiskActionHandler")
+public class ArchiveDiskActionHandler implements Runnable {
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lje;"
    )
-   @Export("IndexStoreActionHandler_requestQueue")
-   static NodeDeque IndexStoreActionHandler_requestQueue;
+   @Export("ArchiveDiskActionHandler_requestQueue")
+   static NodeDeque ArchiveDiskActionHandler_requestQueue;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lje;"
    )
-   @Export("IndexStoreActionHandler_responseQueue")
-   static NodeDeque IndexStoreActionHandler_responseQueue;
+   @Export("ArchiveDiskActionHandler_responseQueue")
+   static NodeDeque ArchiveDiskActionHandler_responseQueue;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1282224505
    )
    static int field412;
    @ObfuscatedName("w")
-   @Export("IndexStoreActionHandler_lock")
-   static Object IndexStoreActionHandler_lock;
+   @Export("ArchiveDiskActionHandler_lock")
+   static Object ArchiveDiskActionHandler_lock;
 
    @Export("run")
    @ObfuscatedName("run")
    public void run() {
       try {
          while (true) {
-            NodeDeque var1 = IndexStoreActionHandler_requestQueue;
-            IndexStoreAction var2;
-            synchronized(IndexStoreActionHandler_requestQueue) {
-               var2 = (IndexStoreAction)IndexStoreActionHandler_requestQueue.last();
+            NodeDeque var1 = ArchiveDiskActionHandler_requestQueue;
+            ArchiveDiskAction var2;
+            synchronized(ArchiveDiskActionHandler_requestQueue) {
+               var2 = (ArchiveDiskAction)ArchiveDiskActionHandler_requestQueue.last();
             }
 
             Object var3;
             if (var2 != null) {
                if (var2.type == 0) {
                   var2.archiveDisk.write((int)var2.key, var2.data, var2.data.length);
-                  var1 = IndexStoreActionHandler_requestQueue;
-                  synchronized(IndexStoreActionHandler_requestQueue) {
+                  var1 = ArchiveDiskActionHandler_requestQueue;
+                  synchronized(ArchiveDiskActionHandler_requestQueue) {
                      var2.remove();
                   }
                } else if (var2.type == 1) {
                   var2.data = var2.archiveDisk.read((int)var2.key);
-                  var1 = IndexStoreActionHandler_requestQueue;
-                  synchronized(IndexStoreActionHandler_requestQueue) {
-                     IndexStoreActionHandler_responseQueue.addFirst(var2);
+                  var1 = ArchiveDiskActionHandler_requestQueue;
+                  synchronized(ArchiveDiskActionHandler_requestQueue) {
+                     ArchiveDiskActionHandler_responseQueue.addFirst(var2);
                   }
                }
 
-               var3 = IndexStoreActionHandler_lock;
-               synchronized(IndexStoreActionHandler_lock) {
+               var3 = ArchiveDiskActionHandler_lock;
+               synchronized(ArchiveDiskActionHandler_lock) {
                   if (field412 <= 1) {
                      field412 = 0;
-                     IndexStoreActionHandler_lock.notifyAll();
+                     ArchiveDiskActionHandler_lock.notifyAll();
                      return;
                   }
 
@@ -67,11 +67,11 @@ public class IndexStoreActionHandler implements Runnable {
                }
             } else {
                class203.method4010(100L);
-               var3 = IndexStoreActionHandler_lock;
-               synchronized(IndexStoreActionHandler_lock) {
+               var3 = ArchiveDiskActionHandler_lock;
+               synchronized(ArchiveDiskActionHandler_lock) {
                   if (field412 <= 1) {
                      field412 = 0;
-                     IndexStoreActionHandler_lock.notifyAll();
+                     ArchiveDiskActionHandler_lock.notifyAll();
                      return;
                   }
 
@@ -100,9 +100,9 @@ public class IndexStoreActionHandler implements Runnable {
    }
 
    static {
-      IndexStoreActionHandler_requestQueue = new NodeDeque();
-      IndexStoreActionHandler_responseQueue = new NodeDeque();
+      ArchiveDiskActionHandler_requestQueue = new NodeDeque();
+      ArchiveDiskActionHandler_responseQueue = new NodeDeque();
       field412 = 0;
-      IndexStoreActionHandler_lock = new Object();
+      ArchiveDiskActionHandler_lock = new Object();
    }
 }

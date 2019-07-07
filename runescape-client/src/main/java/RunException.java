@@ -52,13 +52,13 @@ public class RunException extends RuntimeException {
       garbageValue = "-2146928006"
    )
    public static void method3431() {
-      Object var0 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
-         if (IndexStoreActionHandler.field412 != 0) {
-            IndexStoreActionHandler.field412 = 1;
+      Object var0 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock;
+      synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock) {
+         if (ArchiveDiskActionHandler.field412 != 0) {
+            ArchiveDiskActionHandler.field412 = 1;
 
             try {
-               IndexStoreActionHandler.IndexStoreActionHandler_lock.wait();
+               ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock.wait();
             } catch (InterruptedException var4) {
             }
          }

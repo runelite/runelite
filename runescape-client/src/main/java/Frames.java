@@ -7,8 +7,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Frames")
 public class Frames extends DualNode {
    @ObfuscatedName("o")
-   @Export("IndexStoreActionHandler_thread")
-   static Thread IndexStoreActionHandler_thread;
+   @Export("ArchiveDiskActionHandler_thread")
+   static Thread ArchiveDiskActionHandler_thread;
    @ObfuscatedName("bc")
    @ObfuscatedSignature(
       signature = "[Llq;"

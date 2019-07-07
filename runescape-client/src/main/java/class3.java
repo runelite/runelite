@@ -97,10 +97,10 @@ public class class3 implements Enumerated {
    )
    public static void method41() {
       while (true) {
-         NodeDeque var0 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-         IndexStoreAction var1;
-         synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-            var1 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_responseQueue.removeLast();
+         NodeDeque var0 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue;
+         ArchiveDiskAction var1;
+         synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
+            var1 = (ArchiveDiskAction) ArchiveDiskActionHandler.ArchiveDiskActionHandler_responseQueue.removeLast();
          }
 
          if (var1 == null) {

@@ -22,8 +22,8 @@ public class NPCDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("NpcDefinition_modelIndexCache")
-   static AbstractArchive NpcDefinition_modelIndexCache;
+   @Export("NpcDefinition_modelArchive")
+   static AbstractArchive NpcDefinition_modelArchive;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -383,7 +383,7 @@ public class NPCDefinition extends DualNode {
             boolean var6 = false;
 
             for (int var7 = 0; var7 < this.archives.length; ++var7) {
-               if (!NpcDefinition_modelIndexCache.tryLoadFile(this.archives[var7], 0)) {
+               if (!NpcDefinition_modelArchive.tryLoadFile(this.archives[var7], 0)) {
                   var6 = true;
                }
             }
@@ -396,7 +396,7 @@ public class NPCDefinition extends DualNode {
 
             int var8;
             for (var8 = 0; var8 < this.archives.length; ++var8) {
-               var12[var8] = ModelData.method2788(NpcDefinition_modelIndexCache, this.archives[var8], 0);
+               var12[var8] = ModelData.method2788(NpcDefinition_modelArchive, this.archives[var8], 0);
             }
 
             ModelData var9;
@@ -457,7 +457,7 @@ public class NPCDefinition extends DualNode {
          boolean var1 = false;
 
          for (int var2 = 0; var2 < this.field636.length; ++var2) {
-            if (!NpcDefinition_modelIndexCache.tryLoadFile(this.field636[var2], 0)) {
+            if (!NpcDefinition_modelArchive.tryLoadFile(this.field636[var2], 0)) {
                var1 = true;
             }
          }
@@ -468,7 +468,7 @@ public class NPCDefinition extends DualNode {
             ModelData[] var6 = new ModelData[this.field636.length];
 
             for (int var3 = 0; var3 < this.field636.length; ++var3) {
-               var6[var3] = ModelData.method2788(NpcDefinition_modelIndexCache, this.field636[var3], 0);
+               var6[var3] = ModelData.method2788(NpcDefinition_modelArchive, this.field636[var3], 0);
             }
 
             ModelData var7;

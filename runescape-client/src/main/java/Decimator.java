@@ -159,7 +159,7 @@ public class Decimator {
          if (KeyHandler.field453 == KeyHandler.field455) {
             return false;
          } else {
-            IndexStoreAction.field411 = KeyHandler.field450[KeyHandler.field453];
+            ArchiveDiskAction.field411 = KeyHandler.field450[KeyHandler.field453];
             GzipDecompressor.field378 = KeyHandler.field449[KeyHandler.field453];
             KeyHandler.field453 = KeyHandler.field453 + 1 & 127;
             return true;

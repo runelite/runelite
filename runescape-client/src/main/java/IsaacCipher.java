@@ -240,7 +240,7 @@ public final class IsaacCipher {
    )
    public static void method4082(AbstractArchive var0, AbstractArchive var1) {
       NPCDefinition.NpcDefinition_archive = var0;
-      NPCDefinition.NpcDefinition_modelIndexCache = var1;
+      NPCDefinition.NpcDefinition_modelArchive = var1;
    }
 
    @ObfuscatedName("fl")

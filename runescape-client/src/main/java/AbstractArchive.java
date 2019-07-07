@@ -748,14 +748,14 @@ public abstract class AbstractArchive {
       garbageValue = "308670894"
    )
    static boolean method4585() {
-      if (Client.indexCacheLoaders != null && Client.indexCacheLoaderIndex < Client.indexCacheLoaders.size()) {
-         while (Client.indexCacheLoaderIndex < Client.indexCacheLoaders.size()) {
-            ArchiveLoader var0 = (ArchiveLoader)Client.indexCacheLoaders.get(Client.indexCacheLoaderIndex);
+      if (Client.archiveLoaders != null && Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
+         while (Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
+            ArchiveLoader var0 = (ArchiveLoader)Client.archiveLoaders.get(Client.archiveLoaderArchive);
             if (!var0.method134()) {
                return false;
             }
 
-            ++Client.indexCacheLoaderIndex;
+            ++Client.archiveLoaderArchive;
          }
 
          return true;

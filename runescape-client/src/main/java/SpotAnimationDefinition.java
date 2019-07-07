@@ -17,8 +17,8 @@ public class SpotAnimationDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("SpotAnimationDefinition_modelIndexCache")
-   public static AbstractArchive SpotAnimationDefinition_modelIndexCache;
+   @Export("SpotAnimationDefinition_modelArchive")
+   public static AbstractArchive SpotAnimationDefinition_modelArchive;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -172,7 +172,7 @@ public class SpotAnimationDefinition extends DualNode {
    public final Model getModel(int var1) {
       Model var2 = (Model)SpotAnimationDefinition_cachedModels.get((long)this.id);
       if (var2 == null) {
-         ModelData var3 = ModelData.method2788(SpotAnimationDefinition_modelIndexCache, this.archive, 0);
+         ModelData var3 = ModelData.method2788(SpotAnimationDefinition_modelArchive, this.archive, 0);
          if (var3 == null) {
             return null;
          }

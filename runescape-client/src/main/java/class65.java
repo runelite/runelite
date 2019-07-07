@@ -232,7 +232,7 @@ public class class65 extends RouteStrategy {
          var0.method23();
       }
 
-      IndexStoreAction.method4553(var0);
+      ArchiveDiskAction.method4553(var0);
       ChatChannel.method2225(var0);
    }
 }

@@ -81,11 +81,11 @@ public final class class22 {
       signature = "(IZZZB)Lit;",
       garbageValue = "-15"
    )
-   @Export("newIndexCache")
-   static Archive newIndexCache(int var0, boolean var1, boolean var2, boolean var3) {
+   @Export("newArchive")
+   static Archive newArchive(int var0, boolean var1, boolean var2, boolean var3) {
       ArchiveDisk var4 = null;
       if (class168.dat2File != null) {
-         var4 = new ArchiveDisk(var0, class168.dat2File, IndexStoreAction.idxFiles[var0], 1000000);
+         var4 = new ArchiveDisk(var0, class168.dat2File, ArchiveDiskAction.idxFiles[var0], 1000000);
       }
 
       return new Archive(var4, Fonts.archiveDisk255, var0, var1, var2, var3);

@@ -107,7 +107,7 @@ public final class class54 {
                   boolean var8 = false;
 
                   while (Decimator.method2490()) {
-                     if (IndexStoreAction.field411 == 84) {
+                     if (ArchiveDiskAction.field411 == 84) {
                         var8 = true;
                      }
                   }
@@ -253,7 +253,7 @@ public final class class54 {
                                  }
                               }
 
-                              if (IndexStoreAction.field411 == 13) {
+                              if (ArchiveDiskAction.field411 == 13) {
                                  Login.loginIndex = 0;
                                  Login.Login_username = "";
                                  Login.Login_password = "";
@@ -261,11 +261,11 @@ public final class class54 {
                                  Login.otp = "";
                                  Login.field470 = true;
                               } else if (Login.currentLoginField == 0) {
-                                 if (IndexStoreAction.field411 == 85 && Login.Login_username.length() > 0) {
+                                 if (ArchiveDiskAction.field411 == 85 && Login.Login_username.length() > 0) {
                                     Login.Login_username = Login.Login_username.substring(0, Login.Login_username.length() - 1);
                                  }
 
-                                 if (IndexStoreAction.field411 == 84 || IndexStoreAction.field411 == 80) {
+                                 if (ArchiveDiskAction.field411 == 84 || ArchiveDiskAction.field411 == 80) {
                                     Login.currentLoginField = 1;
                                  }
 
@@ -273,15 +273,15 @@ public final class class54 {
                                     Login.Login_username = Login.Login_username + GzipDecompressor.field378;
                                  }
                               } else if (Login.currentLoginField == 1) {
-                                 if (IndexStoreAction.field411 == 85 && Login.Login_password.length() > 0) {
+                                 if (ArchiveDiskAction.field411 == 85 && Login.Login_password.length() > 0) {
                                     Login.Login_password = Login.Login_password.substring(0, Login.Login_password.length() - 1);
                                  }
 
-                                 if (IndexStoreAction.field411 == 84 || IndexStoreAction.field411 == 80) {
+                                 if (ArchiveDiskAction.field411 == 84 || ArchiveDiskAction.field411 == 80) {
                                     Login.currentLoginField = 0;
                                  }
 
-                                 if (IndexStoreAction.field411 == 84) {
+                                 if (ArchiveDiskAction.field411 == 84) {
                                     Login.Login_username = Login.Login_username.trim();
                                     if (Login.Login_username.length() == 0) {
                                        method1089("", "Please enter your username/email address.", "");
@@ -370,18 +370,18 @@ public final class class54 {
                                  }
                               }
 
-                              if (IndexStoreAction.field411 == 13) {
+                              if (ArchiveDiskAction.field411 == 13) {
                                  Login.loginIndex = 0;
                                  Login.Login_username = "";
                                  Login.Login_password = "";
                                  class13.otpInt = 0;
                                  Login.otp = "";
                               } else {
-                                 if (IndexStoreAction.field411 == 85 && Login.otp.length() > 0) {
+                                 if (ArchiveDiskAction.field411 == 85 && Login.otp.length() > 0) {
                                     Login.otp = Login.otp.substring(0, Login.otp.length() - 1);
                                  }
 
-                                 if (IndexStoreAction.field411 == 84) {
+                                 if (ArchiveDiskAction.field411 == 84) {
                                     Login.otp.trim();
                                     if (Login.otp.length() != 6) {
                                        method1089("", "Please enter a 6-digit PIN.", "");
@@ -432,14 +432,14 @@ public final class class54 {
                                  }
                               }
 
-                              if (IndexStoreAction.field411 == 13) {
+                              if (ArchiveDiskAction.field411 == 13) {
                                  MouseHandler.method1084(true);
                               } else {
-                                 if (IndexStoreAction.field411 == 85 && Login.Login_username.length() > 0) {
+                                 if (ArchiveDiskAction.field411 == 85 && Login.Login_username.length() > 0) {
                                     Login.Login_username = Login.Login_username.substring(0, Login.Login_username.length() - 1);
                                  }
 
-                                 if (IndexStoreAction.field411 == 84) {
+                                 if (ArchiveDiskAction.field411 == 84) {
                                     NPCDefinition.method5162();
                                     return;
                                  }
@@ -461,7 +461,7 @@ public final class class54 {
 
                                        return;
                                     }
-                                 } while(IndexStoreAction.field411 != 84 && IndexStoreAction.field411 != 13);
+                                 } while(ArchiveDiskAction.field411 != 84 && ArchiveDiskAction.field411 != 13);
 
                                  MouseHandler.method1084(true);
                               }
@@ -527,9 +527,9 @@ public final class class54 {
                      }
                   } else {
                      while (Decimator.method2490()) {
-                        if (IndexStoreAction.field411 == 84) {
+                        if (ArchiveDiskAction.field411 == 84) {
                            MouseHandler.method1084(false);
-                        } else if (IndexStoreAction.field411 == 13) {
+                        } else if (ArchiveDiskAction.field411 == 13) {
                            Login.loginIndex = 0;
                         }
                      }
@@ -597,16 +597,16 @@ public final class class54 {
                break;
             }
 
-            if (IndexStoreAction.field411 == 13) {
+            if (ArchiveDiskAction.field411 == 13) {
                FontName.closeWorldSelect();
                break;
             }
 
-            if (IndexStoreAction.field411 == 96) {
+            if (ArchiveDiskAction.field411 == 96) {
                if (Login.worldSelectPage > 0 && SecureRandomFuture.worldSelectLeftSprite != null) {
                   --Login.worldSelectPage;
                }
-            } else if (IndexStoreAction.field411 == 97 && Login.worldSelectPage < Login.worldSelectPagesCount && NetSocket.worldSelectRightSprite != null) {
+            } else if (ArchiveDiskAction.field411 == 97 && Login.worldSelectPage < Login.worldSelectPagesCount && NetSocket.worldSelectRightSprite != null) {
                ++Login.worldSelectPage;
             }
          }
