@@ -51,6 +51,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
@@ -322,7 +323,10 @@ public class LootTrackerPlugin extends Plugin
 
 					if (this.syncPanel && lootTrackerClient != null)
 					{
-						lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
+						if (accountSession != null)
+						{
+							lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
+						}
 						try
 						{
 							lootRecords = lootTrackerClient.get();
@@ -628,7 +632,7 @@ public class LootTrackerPlugin extends Plugin
 					Multiset<Integer> currentInventory = HashMultiset.create();
 					if (inventory != null)
 					{
-						Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems())
+						Arrays.stream(Objects.requireNonNull(client.getItemContainer(InventoryID.INVENTORY)).getItems())
 							.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
 					}
 
