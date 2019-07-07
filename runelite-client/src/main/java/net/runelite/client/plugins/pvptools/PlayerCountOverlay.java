@@ -52,25 +52,23 @@ public class PlayerCountOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (pvpToolsPlugin.isCountPlayers())
-		{
-			if ((client.getVar(Varbits.IN_WILDERNESS) == 1) || WorldType.isPvpWorld(client.getWorldType())
+		if (pvpToolsPlugin.isCountPlayers() &&
+			(client.getVar(Varbits.IN_WILDERNESS) == 1 || WorldType.isPvpWorld(client.getWorldType())
 				|| ArrayUtils.contains(CLAN_WARS_REGIONS, client.getMapRegions()[0]) ||
-				WorldType.isDeadmanWorld(client.getWorldType()))
-			{
-				// Make this stop showing up when its not relevant
-				TableComponent tableComponent = new TableComponent();
-				TableElement[] firstRowElements = {
-					TableElement.builder().content("Friendly").color(Color.GREEN).build(),
-					TableElement.builder().content(String.valueOf(pvpToolsPlugin.getFriendlyPlayerCount())).build()};
-				TableRow firstRow = TableRow.builder().elements(Arrays.asList(firstRowElements)).build();
-				TableElement[] secondRowElements = {
-					TableElement.builder().content("Enemy").color(Color.RED).build(),
-					TableElement.builder().content(String.valueOf(pvpToolsPlugin.getEnemyPlayerCount())).build()};
-				TableRow secondRow = TableRow.builder().elements(Arrays.asList(secondRowElements)).build();
-				tableComponent.addRows(firstRow, secondRow);
-				return tableComponent.render(graphics);
-			}
+				WorldType.isDeadmanWorld(client.getWorldType())))
+		{
+			// Make this stop showing up when its not relevant
+			TableComponent tableComponent = new TableComponent();
+			TableElement[] firstRowElements = {
+				TableElement.builder().content("Friendly").color(Color.GREEN).build(),
+				TableElement.builder().content(String.valueOf(pvpToolsPlugin.getFriendlyPlayerCount())).build()};
+			TableRow firstRow = TableRow.builder().elements(Arrays.asList(firstRowElements)).build();
+			TableElement[] secondRowElements = {
+				TableElement.builder().content("Enemy").color(Color.RED).build(),
+				TableElement.builder().content(String.valueOf(pvpToolsPlugin.getEnemyPlayerCount())).build()};
+			TableRow secondRow = TableRow.builder().elements(Arrays.asList(secondRowElements)).build();
+			tableComponent.addRows(firstRow, secondRow);
+			return tableComponent.render(graphics);
 		}
 		return null;
 	}
