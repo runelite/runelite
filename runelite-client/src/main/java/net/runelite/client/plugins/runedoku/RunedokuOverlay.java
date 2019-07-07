@@ -70,17 +70,13 @@ class RunedokuOverlay extends Overlay
 
 		final Widget sudokuScreen = client.getWidget(288, 131);
 
-		if (sudokuScreen != null)
+		if (sudokuScreen != null && !sudokuScreen.isHidden())
 		{
-			if (!sudokuScreen.isHidden())
-			{
-				Sudoku sudoku = new Sudoku(util.createTable(client));
-				boolean solved = sudoku.solve();
+			Sudoku sudoku = new Sudoku(util.createTable(client));
+			boolean solved = sudoku.solve();
 
-				renderReferenceRunes(graphics, solved);
-				renderSolvedPuzzle(graphics, sudoku, solved);
-			}
-
+			renderReferenceRunes(graphics, solved);
+			renderSolvedPuzzle(graphics, sudoku, solved);
 		}
 
 		return null;
