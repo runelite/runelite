@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -177,7 +178,7 @@ public class RaidsOverlay extends Overlay
 				case COMBAT:
 					combatCount++;
 					roomName = room.getBoss().getName();
-					switch (RaidRoom.Boss.fromString(roomName))
+					switch (Objects.requireNonNull(RaidRoom.Boss.fromString(roomName)))
 					{
 						case VANGUARDS:
 							vanguards = true;
@@ -189,7 +190,7 @@ public class RaidsOverlay extends Overlay
 					break;
 				case PUZZLE:
 					roomName = room.getPuzzle().getName();
-					switch (RaidRoom.Puzzle.fromString(roomName))
+					switch (Objects.requireNonNull(RaidRoom.Puzzle.fromString(roomName)))
 					{
 						case CRABS:
 							crabs = true;
