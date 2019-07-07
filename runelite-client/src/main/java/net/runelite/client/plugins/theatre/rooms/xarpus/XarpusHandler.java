@@ -158,35 +158,34 @@ public class XarpusHandler extends RoomHandler
 
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (client.getVar(Varbits.MULTICOMBAT_AREA) == 1 || client.getVarbitValue(client.getVarps(), TheatreConstant.DOOR_VARP) == 2)
+		if ((client.getVar(Varbits.MULTICOMBAT_AREA) == 1 ||
+			client.getVarbitValue(client.getVarps(), TheatreConstant.DOOR_VARP) == 2) &&
+			!xarpusFlag)
 		{
-			if (!xarpusFlag)
+			int players = client.getPlayers().size();
+
+			if (players == 5)
 			{
-				int players = client.getPlayers().size();
-
-				if (players == 5)
-				{
-					exhumesCount = 18;
-				}
-				else if (players == 4)
-				{
-					exhumesCount = 15;
-				}
-				else if (players == 3)
-				{
-					exhumesCount = 12;
-				}
-				else if (players == 2)
-				{
-					exhumesCount = 9;
-				}
-				else
-				{
-					exhumesCount = 7;
-				}
-
-				xarpusFlag = true;
+				exhumesCount = 18;
 			}
+			else if (players == 4)
+			{
+				exhumesCount = 15;
+			}
+			else if (players == 3)
+			{
+				exhumesCount = 12;
+			}
+			else if (players == 2)
+			{
+				exhumesCount = 9;
+			}
+			else
+			{
+				exhumesCount = 7;
+			}
+
+			xarpusFlag = true;
 		}
 	}
 

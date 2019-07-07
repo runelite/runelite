@@ -134,13 +134,10 @@ public class BloatHandler extends RoomHandler
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (client.getVar(Varbits.BLOAT_DOOR) == 1)
+		if (client.getVar(Varbits.BLOAT_DOOR) == 1 && !bloatFlag)
 		{
-			if (!bloatFlag)
-			{
-				bloatTimer = 0;
-				bloatFlag = true;
-			}
+			bloatTimer = 0;
+			bloatFlag = true;
 		}
 	}
 

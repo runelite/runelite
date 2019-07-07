@@ -240,12 +240,9 @@ public class MaidenHandler extends RoomHandler
 	{
 		NPC npc = event.getNpc();
 
-		if (npc.getName() != null && npc.getName().equals("Nylocas Matomenos"))
+		if (npc.getName() != null && npc.getName().equals("Nylocas Matomenos") && npc.getId() == -1)
 		{
-			if (npc.getId() == -1)
-			{
-				nylos.removeIf(c -> c.getNpc() == npc);
-			}
+			nylos.removeIf(c -> c.getNpc() == npc);
 		}
 	}
 

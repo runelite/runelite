@@ -95,12 +95,9 @@ public class NyloHandler extends RoomHandler
 		long minutes = seconds / 60L;
 		seconds = seconds % 60;
 
-		if (this.startTime != 0)
+		if (this.startTime != 0 && plugin.isExtraTimers())
 		{
-			if (plugin.isExtraTimers())
-			{
-				this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Nylocas - Waves' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
-			}
+			this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Nylocas - Waves' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 		}
 		System.out.println("Stopping Nylocas Room");
 	}
@@ -267,25 +264,22 @@ public class NyloHandler extends RoomHandler
 			this.pillars.put(npc, 100);
 			this.recalculateLocal();
 		}
-		else if (npc.getName() != null)
+		else if (npc.getName() != null && this.plugin.getRoom() == TheatreRoom.NYLOCAS)
 		{
-			if (this.plugin.getRoom() == TheatreRoom.NYLOCAS)
+			Pattern p = Pattern.compile("Nylocas (Hagios|Toxobolos|Ischyros)");
+			Matcher m = p.matcher(npc.getName());
+			if (m.matches())
 			{
-				Pattern p = Pattern.compile("Nylocas (Hagios|Toxobolos|Ischyros)");
-				Matcher m = p.matcher(npc.getName());
-				if (m.matches())
-				{
-					this.spiders.put(npc, 52);
+				this.spiders.put(npc, 52);
 
-					if (this.predictor != null)
-					{
-						this.predictor.onNpcSpawned(event);
-					}
-				}
-				else if (npc.getName().equals("Nylocas Vasilias"))
+				if (this.predictor != null)
 				{
-					this.onStop();
+					this.predictor.onNpcSpawned(event);
 				}
+			}
+			else if (npc.getName().equals("Nylocas Vasilias"))
+			{
+				this.onStop();
 			}
 		}
 	}
