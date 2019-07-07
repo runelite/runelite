@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
@@ -79,7 +80,7 @@ public class GrotesqueGuardiansPrayerOverlay extends Overlay
 			imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
 
 
-			LocalPoint duskPoint = new LocalPoint(dusk.getLocalLocation().getX() + 128 * (dusk.getTransformedDefinition().getSize() - 1) / 2, dusk.getLocalLocation().getY() + 128 * (dusk.getTransformedDefinition().getSize() - 1) / 2);
+			LocalPoint duskPoint = new LocalPoint(dusk.getLocalLocation().getX() + 128 * (Objects.requireNonNull(dusk.getTransformedDefinition()).getSize() - 1) / 2, dusk.getLocalLocation().getY() + 128 * (dusk.getTransformedDefinition().getSize() - 1) / 2);
 			net.runelite.api.Point duskLoc = Perspective.getCanvasImageLocation(client, duskPoint, prayerImage, 400);
 			if (duskLoc != null)
 			{

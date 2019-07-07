@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
@@ -104,7 +105,7 @@ class GrotesqueGuardiansOverlay extends Overlay
 				TextComponent textComponent = new TextComponent();
 				LocalPoint duskPoint;
 
-				duskPoint = new LocalPoint(plugin.getDusk().getLocalLocation().getX() + 128 * (plugin.getDusk().getTransformedDefinition().getSize() - 1) / 2, plugin.getDusk().getLocalLocation().getY() + 128 * (plugin.getDusk().getTransformedDefinition().getSize() - 1) / 2);
+				duskPoint = new LocalPoint(plugin.getDusk().getLocalLocation().getX() + 128 * (Objects.requireNonNull(plugin.getDusk().getTransformedDefinition()).getSize() - 1) / 2, plugin.getDusk().getLocalLocation().getY() + 128 * (plugin.getDusk().getTransformedDefinition().getSize() - 1) / 2);
 				net.runelite.api.Point duskLoc = Perspective.getCanvasTextLocation(client, graphics, duskPoint, "RUN AWAY", 500);
 				if (duskLoc != null)
 				{
