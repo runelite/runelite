@@ -151,7 +151,7 @@ public class ClanChatPlugin extends Plugin
 	public void startUp()
 	{
 		updateConfig();
-		chats = new ArrayList<>(Text.fromCSV(config.chatsData()));
+		chats = new ArrayList<>(Text.fromCSV(this.chatsData));
 	}
 
 	@Override
