@@ -274,9 +274,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translation);
 
 					clientThread.invoke(() ->
-					{
-						client.runScript(96, 0, translation);
-					});
+						client.runScript(96, 0, translation));
 				}
 				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 			}
