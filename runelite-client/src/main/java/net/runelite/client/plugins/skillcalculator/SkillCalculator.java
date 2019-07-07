@@ -270,7 +270,7 @@ class SkillCalculator extends JPanel
 
 				for (JCheckBox checkBox : uiCheckBoxList)
 				{
-					if (checkBox != uiCheckBox)
+					if (checkBox != null && !checkBox.equals(uiCheckBox))
 					{
 						checkBox.setSelected(false);
 					}

@@ -123,7 +123,7 @@ class SkillCalculatorPanel extends PluginPanel
 			MaterialTab tab = new MaterialTab(icon, skillGroup, null);
 			tab.setOnSelectEvent(() ->
 			{
-				if (currentCalc == calculatorType)
+				if (currentCalc != null && currentCalc.equals(calculatorType))
 				{
 					return true;
 				}

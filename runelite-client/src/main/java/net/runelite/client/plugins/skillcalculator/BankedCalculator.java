@@ -438,7 +438,7 @@ public class BankedCalculator extends JPanel
 	{
 		// This is triggered on every click so don't update if activity didn't actually change
 		Activity cur = activityMap.get(i);
-		if (cur == a)
+		if (cur != null && cur.equals(a))
 		{
 			return;
 		}
