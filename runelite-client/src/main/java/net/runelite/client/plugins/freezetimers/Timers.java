@@ -35,6 +35,11 @@ class Timers
 {
 	private final Map<Actor, HashMap<TimerType, Long>> timerMap = new HashMap<>();
 
+	void gameTick()
+	{
+
+	}
+
 	void setTimerEnd(Actor actor, TimerType type, long n)
 	{
 		if (!timerMap.containsKey(actor))
