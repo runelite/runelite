@@ -122,7 +122,7 @@ public class BanListPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("banlist")&& event.getKey().equals("bannedPlayers"))
+		if (event.getGroup().equals("banlist") && event.getKey().equals("bannedPlayers"))
 		{
 			for (String manual : Text.fromCSV(config.getBannedPlayers()))
 			{
