@@ -83,8 +83,6 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class IdleNotifierPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(IdleNotifierPlugin.class);
-
 	// This must be more than 500 client ticks (10 seconds) before you get AFK kicked
 	private static final int LOGOUT_WARNING_MILLIS = (4 * 60 + 40) * 1000; // 4 minutes and 40 seconds
 	private static final int COMBAT_WARNING_MILLIS = 19 * 60 * 1000; // 19 minutes
