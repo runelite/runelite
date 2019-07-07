@@ -54,7 +54,7 @@ public class NavigationButton
 	 * Tooltip to show when hovered.
 	 */
 	@Builder.Default
-	private final String tooltip = "";
+	private final static String tooltip = "";
 
 	/**
 	 * Button selection state
