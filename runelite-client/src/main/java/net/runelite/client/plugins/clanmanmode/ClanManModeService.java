@@ -44,7 +44,7 @@ public class ClanManModeService
 				continue;
 			}
 
-			if (player == localPlayer)
+			if (player.equals(localPlayer))
 			{
 				continue;
 			}
