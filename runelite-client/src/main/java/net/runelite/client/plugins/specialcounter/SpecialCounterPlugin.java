@@ -159,20 +159,17 @@ public class SpecialCounterPlugin extends Plugin
 			int deltaExperience = hpXp - specialHitpointsExperience;
 			specialHitpointsExperience = -1;
 
-			if (deltaExperience > 0)
+			if (deltaExperience > 0 && specialWeapon != null)
 			{
-				if (specialWeapon != null)
+				int hit = getHit(specialWeapon, deltaExperience);
+
+				updateCounter(specialWeapon, null, hit);
+
+				if (!party.getMembers().isEmpty())
 				{
-					int hit = getHit(specialWeapon, deltaExperience);
-
-					updateCounter(specialWeapon, null, hit);
-
-					if (!party.getMembers().isEmpty())
-					{
-						final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit);
-						specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
-						wsClient.send(specialCounterUpdate);
-					}
+					final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit);
+					specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
+					wsClient.send(specialCounterUpdate);
 				}
 			}
 		}
