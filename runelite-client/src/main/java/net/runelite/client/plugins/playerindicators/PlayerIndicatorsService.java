@@ -64,7 +64,7 @@ public class PlayerIndicatorsService
 
 			boolean isClanMember = player.isClanMember();
 
-			if (player == localPlayer)
+			if (player.equals(localPlayer))
 			{
 				if (plugin.isHighlightOwnPlayer())
 				{
