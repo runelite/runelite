@@ -32,7 +32,7 @@ import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseWheelListener;
 
 @Singleton
-public class SpellbookMouseListener extends MouseAdapter implements MouseWheelListener
+class SpellbookMouseListener extends MouseAdapter implements MouseWheelListener
 {
 	private final SpellbookPlugin plugin;
 
