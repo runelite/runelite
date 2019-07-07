@@ -134,9 +134,9 @@ public class XarpusHandler extends RoomHandler
 
 		if (npc.getId() == NpcID.XARPUS_8339 && plugin.isShowXarpusHeals())
 		{
-			for (GroundObject o : exhumes.keySet())
+			for (Map.Entry<GroundObject, Integer> exhum : exhumes.entrySet())
 			{
-				Polygon poly = o.getCanvasTilePoly();
+				Polygon poly = exhum.getKey().getCanvasTilePoly();
 				if (poly != null)
 				{
 					Color c = new Color(0, 255, 0, 130);
@@ -144,8 +144,8 @@ public class XarpusHandler extends RoomHandler
 					graphics.setStroke(new BasicStroke(1));
 					graphics.draw(poly);
 
-					String count = Integer.toString(exhumes.get(o) + 1);
-					LocalPoint lp = o.getLocalLocation();
+					String count = Integer.toString(exhum.getValue() + 1);
+					LocalPoint lp = exhum.getKey().getLocalLocation();
 					Point point = Perspective.getCanvasTextLocation(client, graphics, lp, count, 0);
 					if (point != null)
 					{

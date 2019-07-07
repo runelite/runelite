@@ -152,11 +152,11 @@ public class NyloHandler extends RoomHandler
 	{
 		if (plugin.isShowNyloPillarHealth())
 		{
-			for (NPC npc : pillars.keySet())
+			for (Map.Entry<NPC, Integer> pillars : pillars.entrySet())
 			{
-				final int health = pillars.get(npc);
+				final int health = pillars.getValue();
 				final String healthStr = health + "%";
-				WorldPoint p = npc.getWorldLocation();
+				WorldPoint p = pillars.getKey().getWorldLocation();
 				LocalPoint lp = LocalPoint.fromWorld(client, p.getX() + 1, p.getY() + 1);
 
 				Color c = this.healthColorCode(health);
@@ -172,15 +172,15 @@ public class NyloHandler extends RoomHandler
 		switch (plugin.getShowNylocasExplosions())
 		{
 			case TILE:
-				for (NPC npc : spiders.keySet())
+				for (Map.Entry<NPC, Integer> spiders : spiders.entrySet())
 				{
-					int ticksLeft = spiders.get(npc);
+					int ticksLeft = spiders.getValue();
 					if (ticksLeft > -1 && ticksLeft < 6)
 					{
 						Color color = new Color(255, 255, 0, 180);
 						int outlineWidth = 2;
 						int outlineAlpha = 150;
-						renderNpcOverlay(graphics, npc, color, outlineWidth, outlineAlpha, 15);
+						renderNpcOverlay(graphics, spiders.getKey(), color, outlineWidth, outlineAlpha, 15);
 					}
 				}
 				break;

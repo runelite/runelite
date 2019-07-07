@@ -152,18 +152,18 @@ public class NyloPredictor
 				handler.setWave(currentIndex);
 				System.out.println("Nylocas Wave #" + currentIndex + " has spawned @ " + (this.client.getTickCount() - this.handler.startTick) + " | " + npcs.size() + " size.");
 
-				for (NPC npc : npcs.keySet())
+				for (Map.Entry<NPC, Nylocas> nylocas : npcs.entrySet())
 				{
-					Nylocas nylo = npcs.get(npc);
+					Nylocas nylo = nylocas.getValue();
 
-					if (!this.handler.waveSpawns.contains(npc))
+					if (!this.handler.waveSpawns.contains(nylocas.getKey()))
 					{
-						this.handler.waveSpawns.add(npc);
+						this.handler.waveSpawns.add(nylocas.getKey());
 					}
 
-					if (this.isAgressive(nylo.getType(), nylo.getSpawn(), currentIndex) && !this.handler.waveAgros.contains(npc))
+					if (this.isAgressive(nylo.getType(), nylo.getSpawn(), currentIndex) && !this.handler.waveAgros.contains(nylocas.getKey()))
 					{
-						this.handler.waveAgros.add(npc);
+						this.handler.waveAgros.add(nylocas.getKey());
 					}
 				}
 
