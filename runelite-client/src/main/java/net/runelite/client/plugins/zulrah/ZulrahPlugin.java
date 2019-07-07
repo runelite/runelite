@@ -214,7 +214,7 @@ public class ZulrahPlugin extends Plugin
 		Actor actor = event.getActor();
 		if (config.sounds())
 		{
-			if (zulrah == actor)
+			if (zulrah != null && zulrah.equals(actor))
 			{
 				if (zulrah.getAnimation() == AnimationID.ZULRAH_PHASE)
 				{
