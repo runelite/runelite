@@ -35,6 +35,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -118,7 +119,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	private static final int[] RUNE_IDS = new int[]{AIR_RUNE, WATER_RUNE, EARTH_RUNE, MIND_RUNE, BODY_RUNE, COSMIC_RUNE, CHAOS_RUNE, NATURE_RUNE, LAW_RUNE, DEATH_RUNE, ASTRAL_RUNE, BLOOD_RUNE, SOUL_RUNE, WRATH_RUNE, MIST_RUNE, DUST_RUNE, MUD_RUNE, SMOKE_RUNE, STEAM_RUNE, LAVA_RUNE};
 
 	//Hold Supply Data
-	private static final HashMap<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
+	private static final Map<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
 	private ItemContainer old;
 	private final Deque<MenuAction> actionStack = new ArrayDeque<>();
 	private int ammoId = 0;
