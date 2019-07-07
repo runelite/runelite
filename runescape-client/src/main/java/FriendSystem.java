@@ -129,7 +129,8 @@ public class FriendSystem {
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "-1721017960"
    )
-   final void method103(String var1) {
+   @Export("addFriend")
+   final void addFriend(String var1) {
       if (var1 != null) {
          Username var2 = new Username(var1, this.loginType);
          if (var2.hasCleanName()) {

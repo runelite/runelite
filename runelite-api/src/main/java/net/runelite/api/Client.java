@@ -1685,4 +1685,13 @@ public interface Client extends GameShell
 	 */
 	void sortMenuEntries();
 
+	/**
+	 * Add player to friendlist
+	 */
+	void addFriend(String name);
+
+	/**
+	 * Remove player from friendlist
+	 */
+	void removeFriend(String name);
 }

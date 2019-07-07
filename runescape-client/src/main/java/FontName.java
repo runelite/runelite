@@ -147,7 +147,7 @@ public class FontName {
                return 1;
             } else if (var0 == 3605) {
                var4 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-               WorldMapArea.friendSystem.method103(var4);
+               WorldMapArea.friendSystem.addFriend(var4);
                return 1;
             } else if (var0 == 3606) {
                var4 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
