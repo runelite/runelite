@@ -134,9 +134,9 @@ public class FlexoPlugin extends Plugin
 	private int scalingFactor;
 
 	@Getter(AccessLevel.PACKAGE)
-	private ArrayList<Rectangle> clickAreas = new ArrayList<>();
+	private List<Rectangle> clickAreas = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
-	private ArrayList<Point> clickPoints = new ArrayList<>();
+	private List<Point> clickPoints = new ArrayList<>();
 
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
