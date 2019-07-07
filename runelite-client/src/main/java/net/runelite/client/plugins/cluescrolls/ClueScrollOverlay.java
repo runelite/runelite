@@ -78,13 +78,10 @@ public class ClueScrollOverlay extends Overlay
 
 		clue.makeOverlayHint(panelComponent, plugin);
 
-		if (clue.isRequiresSpade() && plugin.getInventoryItems() != null)
+		if (clue.isRequiresSpade() && plugin.getInventoryItems() != null && !HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
 		{
-			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
-			{
-				panelComponent.getChildren().add(LineComponent.builder().left("").build());
-				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
-			}
+			panelComponent.getChildren().add(LineComponent.builder().left("").build());
+			panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
 		}
 
 		return panelComponent.render(graphics);

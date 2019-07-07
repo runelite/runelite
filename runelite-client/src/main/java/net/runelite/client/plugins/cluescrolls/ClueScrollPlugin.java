@@ -211,12 +211,9 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		if (clue instanceof HotColdClue)
+		if (clue instanceof HotColdClue && ((HotColdClue) clue).update(event.getMessage(), this))
 		{
-			if (((HotColdClue) clue).update(event.getMessage(), this))
-			{
-				worldMapPointsSet = false;
-			}
+			worldMapPointsSet = false;
 		}
 
 		if (!event.getMessage().equals("The strange device cools as you find your treasure.")
@@ -272,20 +269,17 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		// if three step clue check for clue scroll pieces
-		if (clue instanceof ThreeStepCrypticClue)
+		if (clue instanceof ThreeStepCrypticClue && ((ThreeStepCrypticClue) clue).update(client, event, itemManager))
 		{
-			if (((ThreeStepCrypticClue) clue).update(client, event, itemManager))
+			worldMapPointsSet = false;
+			npcsToMark.clear();
+
+			if (this.displayHintArrows)
 			{
-				worldMapPointsSet = false;
-				npcsToMark.clear();
-
-				if (this.displayHintArrows)
-				{
-					client.clearHintArrow();
-				}
-
-				checkClueNPCs(clue, client.getCachedNPCs());
+				client.clearHintArrow();
 			}
+
+			checkClueNPCs(clue, client.getCachedNPCs());
 		}
 	}
 
@@ -483,12 +477,9 @@ public class ClueScrollPlugin extends Plugin
 		final String text = Text.sanitizeMultilineText(clueScrollText.getText()).toLowerCase();
 
 		// Early return if this is same clue as already existing one
-		if (clue instanceof TextClueScroll)
+		if (clue instanceof TextClueScroll && ((TextClueScroll) clue).getText().equalsIgnoreCase(text))
 		{
-			if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
-			{
-				return clue;
-			}
+			return clue;
 		}
 
 		// (This|The) anagram reveals who to speak to next:
