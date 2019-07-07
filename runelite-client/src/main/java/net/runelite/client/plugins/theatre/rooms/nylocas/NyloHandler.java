@@ -163,7 +163,11 @@ public class NyloHandler extends RoomHandler
 				LocalPoint lp = LocalPoint.fromWorld(client, p.getX() + 1, p.getY() + 1);
 
 				Color c = this.healthColorCode(health);
-				Point canvasPoint = Perspective.localToCanvas(client, lp, client.getPlane(), 65);
+				Point canvasPoint = null;
+				if (lp != null)
+				{
+					canvasPoint = Perspective.localToCanvas(client, lp, client.getPlane(), 65);
+				}
 				renderTextLocation(graphics, healthStr, 13, Font.BOLD, c, canvasPoint);
 			}
 		}
