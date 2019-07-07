@@ -146,7 +146,7 @@ public class LootTrackerPlugin extends Plugin
 		11062 // Camelot
 	);
 	// Player deaths
-	public static HashSet<String> usernameSet = new HashSet<String>(Arrays.stream(new String[]{"All Records"}).collect(Collectors.toList()));
+	public static HashSet<String> usernameSet = new HashSet<>(Arrays.stream(new String[]{"All Records"}).collect(Collectors.toList()));
 	@Inject
 	public Client client;
 	@VisibleForTesting
@@ -371,7 +371,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient = null;
-		lootRecords = new ArrayList<LootRecord>();
+		lootRecords = new ArrayList<>();
 	}
 
 	@Subscribe
