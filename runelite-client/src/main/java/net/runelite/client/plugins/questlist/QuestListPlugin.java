@@ -359,7 +359,7 @@ public class QuestListPlugin extends Plugin
 			else
 			{
 				// Otherwise hide if it doesn't match the filter state
-				hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
+				hidden = currentFilterState != QuestState.ALL && questState != null && !questState.equals(currentFilterState);
 			}
 
 			quest.setHidden(hidden);
