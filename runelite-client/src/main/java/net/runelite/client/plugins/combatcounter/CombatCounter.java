@@ -114,7 +114,7 @@ public class CombatCounter extends Plugin
 		return configManager.getConfig(CombatCounterConfig.class);
 	}
 
-	private Map<Integer, Integer> variables = new HashMap<Integer, Integer>()
+	private final Map<Integer, Integer> VARIABLES = new HashMap<Integer, Integer>()
 	{
 		{
 		this.put(422, 4); // Unarmed Punch, Block
@@ -173,7 +173,7 @@ public class CombatCounter extends Plugin
 		}
 	};
 
-	private List<Integer> MELEE_ANIMATIONS = new ArrayList<Integer>()
+	private final List<Integer> MELEE_ANIMATIONS = new ArrayList<Integer>()
 	{
 		{
 		this.add(422); // Unarmed Punch, Block
@@ -217,7 +217,7 @@ public class CombatCounter extends Plugin
 		}
 	};
 
-	private List<Integer> RANGE_ANIMATIONS = new ArrayList<Integer>()
+	private final List<Integer> RANGE_ANIMATIONS = new ArrayList<Integer>()
 	{
 		{
 		this.add(7552); // Armadyl Crossbow Accurate, Rapid, Longrange, Special
@@ -230,7 +230,7 @@ public class CombatCounter extends Plugin
 		}
 	};
 
-	private List<Integer> MAGE_ANIMATIONS = new ArrayList<Integer>()
+	private final List<Integer> MAGE_ANIMATIONS = new ArrayList<Integer>()
 	{
 		{
 		this.add(1167); // Trident Accurate, Accurate, Longrange
@@ -279,12 +279,12 @@ public class CombatCounter extends Plugin
 				int animation = p.getAnimation();
 				if (animation != -1)
 				{
-					if (variables.containsKey(animation))
+					if (VARIABLES.containsKey(animation))
 					{
 						/*
 						 * This part handles the Tick Counter.
 						 */
-						long ticks = variables.get(animation);
+						long ticks = VARIABLES.get(animation);
 						if (((Player) actor).getPlayerAppearance().getEquipmentId(KitType.WEAPON) == 23360)
 						{
 							ticks = 3;
