@@ -181,17 +181,4 @@ public class InjectUtil
 
 		throw new InjectionException(String.format("Mapped field \"%s\" could not be found.", name));
 	}
-
-	public static Method findStaticDeob(Inject inject, String name) throws InjectionException
-	{
-		for (ClassFile cf : inject.getDeobfuscated().getClasses())
-		{
-			if (cf.findMethod(name) != null)
-			{
-				return cf.findMethod(name);
-			}
-		}
-
-		throw new InjectionException("Fycj you");
-	}
 }
