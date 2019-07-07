@@ -51,6 +51,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
@@ -58,6 +59,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "NPC Status Timer",
 	description = "Adds a timer on NPC's for their attacks and flinching.",
 	tags = {"flinch", "npc"},
+	type = PluginType.PVM,
 	enabledByDefault = false
 )
 @Singleton
