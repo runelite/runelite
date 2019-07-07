@@ -228,9 +228,9 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != null && event.getMenuAction().equals("Read"))
+		if ("read".equalsIgnoreCase(event.getOption()))
 		{
-			final ItemDefinition itemComposition = itemManager.getItemDefinition(event.hashCode());
+			final ItemDefinition itemComposition = itemManager.getItemDefinition(event.getIdentifier());
 
 			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
 			{
@@ -764,7 +764,7 @@ public class ClueScrollPlugin extends Plugin
 		textComponent.render(graphics);
 	}
 
-	void scrollToWidget(WidgetInfo list, WidgetInfo scrollbar, Widget ... toHighlight)
+	void scrollToWidget(WidgetInfo list, WidgetInfo scrollbar, Widget... toHighlight)
 	{
 		final Widget parent = client.getWidget(list);
 		int averageCentralY = 0;
