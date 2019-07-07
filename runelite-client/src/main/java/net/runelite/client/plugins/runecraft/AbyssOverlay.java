@@ -163,7 +163,7 @@ class AbyssOverlay extends Overlay
 		}
 	}
 
-	public BufferedImage getImage(AbyssRifts rift)
+	private BufferedImage getImage(AbyssRifts rift)
 	{
 		BufferedImage image = abyssIcons.get(rift);
 		if (image != null)
