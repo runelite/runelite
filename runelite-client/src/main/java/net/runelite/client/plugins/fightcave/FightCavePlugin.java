@@ -171,14 +171,11 @@ public class FightCavePlugin extends Plugin
 	{
 		updateConfig();
 
-		if (client.getGameState() == GameState.LOGGED_IN)
+		if (client.getGameState() == GameState.LOGGED_IN && regionCheck())
 		{
-			if (regionCheck())
-			{
-				validRegion = true;
-				overlayManager.add(waveOverlay);
-				overlayManager.add(fightCaveOverlay);
-			}
+			validRegion = true;
+			overlayManager.add(waveOverlay);
+			overlayManager.add(fightCaveOverlay);
 		}
 	}
 
