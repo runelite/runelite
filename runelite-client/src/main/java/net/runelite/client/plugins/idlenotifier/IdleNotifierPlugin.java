@@ -68,8 +68,6 @@ import net.runelite.client.game.SoundManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.PvPUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 //import java.io.IOException;
 //import javax.sound.sampled.LineUnavailableException;

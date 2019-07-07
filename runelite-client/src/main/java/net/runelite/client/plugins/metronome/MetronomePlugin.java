@@ -32,8 +32,6 @@ import net.runelite.api.SoundEffectVolume;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
 import net.runelite.api.Client;
