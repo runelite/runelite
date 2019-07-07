@@ -201,7 +201,7 @@ public class Game
 
 	List<Portal> getPortals()
 	{
-		List<Portal> portalList = new ArrayList<Portal>();
+		List<Portal> portalList = new ArrayList<>();
 
 		portalList.add(getPurplePortal());
 		portalList.add(getBluePortal());
