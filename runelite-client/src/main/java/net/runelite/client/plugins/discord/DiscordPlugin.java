@@ -445,7 +445,7 @@ public class DiscordPlugin extends Plugin
 		return false;
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.actionTimeout = config.actionTimeout();
 		this.hideElapsedTime = config.hideElapsedTime();
