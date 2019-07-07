@@ -101,8 +101,6 @@ public class DamageCounterPlugin extends Plugin
 		NpcID.VERZIK_VITUR, NpcID.VERZIK_VITUR_8369, NpcID.VERZIK_VITUR_8370, NpcID.VERZIK_VITUR_8371,
 		NpcID.VERZIK_VITUR_8372, NpcID.VERZIK_VITUR_8373, NpcID.VERZIK_VITUR_8374, NpcID.VERZIK_VITUR_8375};
 
-	private int[] HEALTHARRAY = {MAIDENHP, NYLOHP, VERZIKHP};
-
 	@Inject
 	private Client client;
 	@Inject
@@ -193,7 +191,6 @@ public class DamageCounterPlugin extends Plugin
 			if (interacting instanceof NPC)
 			{
 				String interactingName = interacting.getName();
-				int NPC = ((NPC) interacting).getId();
 				if (interactingName.equals(BossName))
 				{
 					DamageCount += (XPtoDamage() * BOSS_MODIFIER);
