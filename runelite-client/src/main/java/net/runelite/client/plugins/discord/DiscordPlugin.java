@@ -110,7 +110,7 @@ public class DiscordPlugin extends Plugin
 	@Inject
 	private WSClient wsClient;
 
-	private Map<Skill, Integer> skillExp = new HashMap<>();
+	private final Map<Skill, Integer> skillExp = new HashMap<>();
 	private NavigationButton discordButton;
 	private boolean loginFlag;
 

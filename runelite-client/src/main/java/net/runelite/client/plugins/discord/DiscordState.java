@@ -57,7 +57,7 @@ class DiscordState
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
 	private final DiscordPlugin plugin;
-	private PartyService party;
+	private final PartyService party;
 	private final RuneLiteProperties properties;
 	private DiscordPresence lastPresence;
 
