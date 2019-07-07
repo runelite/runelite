@@ -143,13 +143,11 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			case MODPRIVATECHAT:
 				final String name = Text.removeTags(chatMessage.getName());
 				// Remove to ensure uniqueness & its place in history
-				if (!friends.remove(name))
-				{
+				if (!friends.remove(name) &&
 					// If the friend didn't previously exist ensure deque capacity doesn't increase by adding them
-					if (friends.size() >= FRIENDS_MAX_SIZE)
-					{
-						friends.remove();
-					}
+					friends.size() >= FRIENDS_MAX_SIZE)
+				{
+					friends.remove();
 				}
 				friends.add(name);
 				// intentional fall-through
