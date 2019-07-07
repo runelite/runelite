@@ -84,7 +84,7 @@ public class MetronomePlugin extends Plugin
 		File audioFile = new File(path);
 		if (audioFile.exists())
 		{
-			AudioInputStream audioStream = null;
+			AudioInputStream audioStream;
 			try
 			{
 				audioStream = AudioSystem.getAudioInputStream(audioFile);
