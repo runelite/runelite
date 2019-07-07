@@ -841,7 +841,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// Re-create fbo
 			if (lastStretchedCanvasWidth != stretchedCanvasWidth
 				|| lastStretchedCanvasHeight != stretchedCanvasHeight
-				|| lastAntiAliasingMode != antiAliasingMode)
+				|| !lastAntiAliasingMode.equals(antiAliasingMode))
 			{
 				shutdownSceneFbo();
 
@@ -1012,7 +1012,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			final AnisotropicFilteringMode anisotropicFilteringMode = this.anisotropicFilteringMode;
 			final boolean afEnabled = anisotropicFilteringMode != AnisotropicFilteringMode.DISABLED;
 
-			if (lastAnisotropicFilteringMode != anisotropicFilteringMode)
+			if (!lastAnisotropicFilteringMode.equals(anisotropicFilteringMode))
 			{
 				if (afEnabled)
 				{
