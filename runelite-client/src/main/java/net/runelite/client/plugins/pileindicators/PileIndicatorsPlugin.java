@@ -27,6 +27,7 @@ package net.runelite.client.plugins.pileindicators;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -103,11 +104,11 @@ public class PileIndicatorsPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
-	ArrayList<ArrayList<Actor>> getStacks()
+	List<List<Actor>> getStacks()
 	{
-		ArrayList<ArrayList<Actor>> outerArrayList = new ArrayList<>();
+		List<List<Actor>> outerArrayList = new ArrayList<>();
 
-		ArrayList<Actor> pileList = new ArrayList<>();
+		List<Actor> pileList = new ArrayList<>();
 
 		if (this.enableNPCS)
 		{
@@ -175,7 +176,7 @@ public class PileIndicatorsPlugin extends Plugin
 		return null;
 	}
 
-	PileType getPileType(ArrayList<Actor> pile)
+	PileType getPileType(List<Actor> pile)
 	{
 		PileType pileType = null;
 

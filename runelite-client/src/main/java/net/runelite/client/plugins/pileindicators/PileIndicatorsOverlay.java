@@ -27,7 +27,7 @@ package net.runelite.client.plugins.pileindicators;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Actor;
@@ -56,11 +56,11 @@ public class PileIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		ArrayList<ArrayList<Actor>> stackList = plugin.getStacks();
+		List<List<Actor>> stackList = plugin.getStacks();
 
 		if (stackList != null)
 		{
-			for (ArrayList<Actor> actorArrayList : stackList)
+			for (List<Actor> actorArrayList : stackList)
 			{
 				PileType pileType = plugin.getPileType(actorArrayList);
 				Color pileColor = plugin.getColorByPileType(pileType);
