@@ -92,7 +92,7 @@ class ProfilesPanel extends PluginPanel
 	private final JPasswordField txtAccountLogin = new JPasswordField(ACCOUNT_USERNAME);
 	private final JPasswordField txtPasswordLogin = new JPasswordField(PASSWORD_LABEL);
 	private final JPanel profilesPanel = new JPanel();
-	private GridBagConstraints c;
+	private final GridBagConstraints c;
 
 	@Inject
 	public ProfilesPanel(final Client client, final ProfilesConfig config)
