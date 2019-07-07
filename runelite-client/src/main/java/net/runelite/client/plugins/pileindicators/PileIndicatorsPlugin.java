@@ -121,16 +121,13 @@ public class PileIndicatorsPlugin extends Plugin
 			}
 		}
 
-		if (this.enablePlayers)
+		if (this.enablePlayers && (client.getVar(Varbits.IN_WILDERNESS) > 0 && this.wildyOnlyPlayer) ^ (!this.wildyOnlyPlayer))
 		{
-			if ((client.getVar(Varbits.IN_WILDERNESS) > 0 && this.wildyOnlyPlayer) ^ (!this.wildyOnlyPlayer))
+			for (Player player : client.getPlayers())
 			{
-				for (Player player : client.getPlayers())
+				if (player != null)
 				{
-					if (player != null)
-					{
-						pileList.add(player);
-					}
+					pileList.add(player);
 				}
 			}
 		}
@@ -145,12 +142,9 @@ public class PileIndicatorsPlugin extends Plugin
 			ArrayList<Actor> potentialStackArrayList = new ArrayList<>();
 			for (Actor actorToCompareTo : pileList)
 			{
-				if (!potentialStackArrayList.contains(actorToCompareTo))
+				if (!potentialStackArrayList.contains(actorToCompareTo) && actor.getWorldLocation().distanceTo(actorToCompareTo.getWorldLocation()) == 0)
 				{
-					if (actor.getWorldLocation().distanceTo(actorToCompareTo.getWorldLocation()) == 0)
-					{
-						potentialStackArrayList.add(actorToCompareTo);
-					}
+					potentialStackArrayList.add(actorToCompareTo);
 				}
 			}
 			if (potentialStackArrayList.size() >= this.minimumPileSize)
