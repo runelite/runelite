@@ -219,7 +219,7 @@ public class TelekineticRoom extends MTARoom
 	{
 		NPC npc = event.getNpc();
 
-		if (npc == guardian)
+		if (npc.equals(guardian))
 		{
 			guardian = null;
 		}

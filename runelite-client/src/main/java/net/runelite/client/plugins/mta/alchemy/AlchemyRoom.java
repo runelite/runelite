@@ -121,7 +121,7 @@ public class AlchemyRoom extends MTARoom
 		}
 
 		AlchemyItem bestItem = getBest();
-		if (best == null || best != bestItem)
+		if (best == null || !best.equals(bestItem))
 		{
 			if (best != null)
 			{
@@ -396,7 +396,7 @@ public class AlchemyRoom extends MTARoom
 				continue;
 			}
 
-			if (alchemyItem == best)
+			if (alchemyItem.equals(best))
 			{
 				client.setHintArrow(object.getWorldLocation());
 				found = true;
