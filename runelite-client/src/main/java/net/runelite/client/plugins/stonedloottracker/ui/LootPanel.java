@@ -52,12 +52,12 @@ import net.runelite.client.ui.ColorScheme;
 @Singleton
 class LootPanel extends JPanel
 {
-	private Collection<LootRecordCustom> records;
-	private Map<Integer, Collection<UniqueItemPrepared>> uniqueMap;
-	private boolean hideUniques;
-	private ItemSortTypes sortType;
-	private boolean itemBreakdown;
-	private ItemManager itemManager;
+	private final Collection<LootRecordCustom> records;
+	private final Map<Integer, Collection<UniqueItemPrepared>> uniqueMap;
+	private final boolean hideUniques;
+	private final ItemSortTypes sortType;
+	private final boolean itemBreakdown;
+	private final ItemManager itemManager;
 	// Consolidate LTItemEntries stored by ItemID
 	private Map<Integer, LootTrackerItemEntry> consolidated;
 

@@ -44,7 +44,7 @@ class LootGrid extends JPanel
 	private static final int ITEMS_PER_ROW = 5;
 	private static final Dimension ITEM_SIZE = new Dimension(40, 40);
 	private final LootTrackerItemEntry[] itemsToDisplay;
-	private ItemManager itemManager;
+	private final ItemManager itemManager;
 
 	LootGrid(final LootTrackerItemEntry[] itemsToDisplay, final ItemManager itemManager)
 	{

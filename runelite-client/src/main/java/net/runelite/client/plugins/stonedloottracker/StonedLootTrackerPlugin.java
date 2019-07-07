@@ -161,9 +161,9 @@ public class StonedLootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 
-	private Multimap<String, LootRecordCustom> lootRecordMultimap = ArrayListMultimap.create();
-	private Multimap<String, UniqueItemPrepared> uniques = ArrayListMultimap.create();
-	private Map<String, Integer> killCountMap = new HashMap<>();
+	private final Multimap<String, LootRecordCustom> lootRecordMultimap = ArrayListMultimap.create();
+	private final Multimap<String, UniqueItemPrepared> uniques = ArrayListMultimap.create();
+	private final Map<String, Integer> killCountMap = new HashMap<>();
 
 	// key = name, value=current killCount
 	private boolean loaded = false;

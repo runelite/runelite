@@ -53,15 +53,15 @@ import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 @Singleton
 class SelectionPanel extends JPanel
 {
-	private TreeSet<String> names;
-	private LootTrackerPanel parent;
-	private ItemManager itemManager;
+	private final TreeSet<String> names;
+	private final LootTrackerPanel parent;
+	private final ItemManager itemManager;
 
 	private final static Color BACKGROUND_COLOR = ColorScheme.DARK_GRAY_COLOR;
 	private final static Color BUTTON_COLOR = ColorScheme.DARKER_GRAY_COLOR;
 	private final static Color BUTTON_HOVER_COLOR = ColorScheme.DARKER_GRAY_HOVER_COLOR;
 
-	private boolean configToggle;
+	private final boolean configToggle;
 
 	SelectionPanel(final boolean configToggle, final TreeSet<String> names, final LootTrackerPanel parent, final ItemManager itemManager)
 	{
