@@ -117,12 +117,9 @@ public class BlackjackPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.SPAM)
+		if (event.getType() == ChatMessageType.SPAM && event.getMessage().equals(SUCCESS_BLACKJACK) ^ (event.getMessage().equals(FAILED_BLACKJACK) && this.pickpocketOnAggro))
 		{
-			if (event.getMessage().equals(SUCCESS_BLACKJACK) ^ (event.getMessage().equals(FAILED_BLACKJACK) && this.pickpocketOnAggro))
-			{
-				nextKnockOutTick = client.getTickCount() + RandomUtils.nextInt(3, 4);
-			}
+			nextKnockOutTick = client.getTickCount() + RandomUtils.nextInt(3, 4);
 		}
 	}
 }
