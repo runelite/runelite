@@ -167,7 +167,7 @@ public class CorpPlugin extends Plugin
 	{
 		NPC npc = npcDespawned.getNpc();
 
-		if (npc == corp)
+		if (npc.equals(corp))
 		{
 			log.debug("Corporeal beast despawn: {}", npc);
 			corp = null;
@@ -193,7 +193,7 @@ public class CorpPlugin extends Plugin
 					.build());
 			}
 		}
-		else if (npc == core)
+		else if (npc.equals(core))
 		{
 			core = null;
 		}
@@ -204,7 +204,7 @@ public class CorpPlugin extends Plugin
 	{
 		Actor actor = hitsplatApplied.getActor();
 
-		if (actor != corp)
+		if (!actor.equals(corp))
 		{
 			return;
 		}
@@ -224,7 +224,7 @@ public class CorpPlugin extends Plugin
 		Actor source = interactingChanged.getSource();
 		Actor target = interactingChanged.getTarget();
 
-		if (corp == null || target != corp)
+		if (!target.equals(corp))
 		{
 			return;
 		}
