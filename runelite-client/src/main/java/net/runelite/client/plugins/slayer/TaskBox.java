@@ -277,8 +277,8 @@ class TaskBox extends JPanel
 			return Long.MAX_VALUE;
 		}
 		double timePerKill = ((double) taskData.getElapsedTime()) / ((double) killsInElapsedTime);
-		double remainingTime = timePerKill * taskData.getAmount();
-		return (long) remainingTime;
+
+		return (long) timePerKill * taskData.getAmount();
 	}
 
 	private static String htmlLabel(long timeMillis)
