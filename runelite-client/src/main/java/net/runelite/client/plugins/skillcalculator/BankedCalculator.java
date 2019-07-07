@@ -331,12 +331,9 @@ public class BankedCalculator extends JPanel
 				}
 
 				// One activity and rewards no xp ignore.
-				if (activities.size() == 1)
+				if (activities.size() == 1 && activities.get(0).getXp() <= 0)
 				{
-					if (activities.get(0).getXp() <= 0)
-					{
-						return;
-					}
+					return;
 				}
 			}
 
@@ -448,19 +445,16 @@ public class BankedCalculator extends JPanel
 
 		// If had a previous selection and this item links to another check for item prevention change.
 		// If there are changes adjust the Linked panel quantity as well
-		if (cur != null && i.getLinkedItemId() != -1)
+		if (cur != null && i.getLinkedItemId() != -1 && cur.isPreventLinked() != a.isPreventLinked())
 		{
-			if (cur.isPreventLinked() != a.isPreventLinked())
+			CriticalItem linked = CriticalItem.getByItemId(i.getLinkedItemId());
+			CriticalItemPanel l = panelMap.get(linked);
+			if (l != null)
 			{
-				CriticalItem linked = CriticalItem.getByItemId(i.getLinkedItemId());
-				CriticalItemPanel l = panelMap.get(linked);
-				if (l != null)
-				{
-					l.updateLinkedMap(getLinkedTotalMap(linked));
-					int amount = config.limitedBankedSecondaries() ? limitToActivitySecondaries(a, l.getAmount()) : l.getAmount();
-					l.updateAmount(amount, false);
-					l.recalculate();
-				}
+				l.updateLinkedMap(getLinkedTotalMap(linked));
+				int amount = config.limitedBankedSecondaries() ? limitToActivitySecondaries(a, l.getAmount()) : l.getAmount();
+				l.updateAmount(amount, false);
+				l.recalculate();
 			}
 		}
 
@@ -500,13 +494,11 @@ public class BankedCalculator extends JPanel
 
 		// This item has an activity selected and its preventing linked functionality?
 		Activity selected = activityMap.get(i);
-		if (selected != null && selected.isPreventLinked())
-		{
+		if (selected != null && selected.isPreventLinked()
 			// If initial request is for this item
-			if (!first)
-			{
-				return map;
-			}
+			&& !first)
+		{
+			return map;
 		}
 
 		// Add self to map
