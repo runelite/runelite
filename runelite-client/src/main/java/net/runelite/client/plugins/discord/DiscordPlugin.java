@@ -342,17 +342,14 @@ public class DiscordPlugin extends Plugin
 	{
 		final PartyMember localMember = partyService.getLocalMember();
 
-		if (localMember != null)
+		if (localMember != null && discordService.getCurrentUser() != null)
 		{
-			if (discordService.getCurrentUser() != null)
-			{
-				final DiscordUserInfo userInfo = new DiscordUserInfo(
-					discordService.getCurrentUser().userId,
-					discordService.getCurrentUser().avatar);
+			final DiscordUserInfo userInfo = new DiscordUserInfo(
+				discordService.getCurrentUser().userId,
+				discordService.getCurrentUser().avatar);
 
-				userInfo.setMemberId(localMember.getMemberId());
-				wsClient.send(userInfo);
-			}
+			userInfo.setMemberId(localMember.getMemberId());
+			wsClient.send(userInfo);
 		}
 	}
 
