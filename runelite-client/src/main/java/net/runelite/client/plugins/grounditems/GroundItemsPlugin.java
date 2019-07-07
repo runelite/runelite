@@ -751,11 +751,11 @@ public class GroundItemsPlugin extends Plugin
 		if (entries.length > 1)
 		{
 			MenuEntry[] newEntries = new MenuEntry[entries.length - 1];
-			for (int i = 0; i < entries.length; ++i)
+			for (MenuEntry entry : entries)
 			{
-				if (!(entries[i].getOption().equals(option) && entries[i].getTarget().equals(target)))
+				if (!(entry.getOption().equals(option) && entry.getTarget().equals(target)))
 				{
-					newEntries[j++] = entries[i];
+					newEntries[j++] = entry;
 				}
 			}
 
