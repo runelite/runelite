@@ -221,9 +221,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean swapBones;
 	private boolean swapChase;
 	private boolean swapHarpoon;
-	private boolean swapOccult;
 	private OccultAltarMode swapOccultMode;
-	private boolean swapHomePortal;
 	private HouseMode swapHomePortalMode;
 	private boolean swapPrivate;
 	private boolean swapPick;
@@ -275,9 +273,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean swapPlank;
 	private boolean swapMetamorphosis;
 	private boolean swapEnchant;
-	private boolean swapFairyRing;
 	private FairyRingMode swapFairyRingMode;
-	private boolean swapObelisk;
 	private ObeliskMode swapObeliskMode;
 	private boolean swapTeleportItem;
 	private boolean swapWildernessLever;
@@ -1730,9 +1726,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.swapBones = config.swapBones();
 		this.swapChase = config.swapChase();
 		this.swapHarpoon = config.swapHarpoon();
-		this.swapOccult = config.swapOccult();
 		this.swapOccultMode = config.swapOccultMode();
-		this.swapHomePortal = config.swapHomePortal();
 		this.swapHomePortalMode = config.swapHomePortalMode();
 		this.swapPrivate = config.swapPrivate();
 		this.swapPick = config.swapPick();
@@ -1784,9 +1778,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.swapPlank = config.swapPlank();
 		this.swapMetamorphosis = config.swapMetamorphosis();
 		this.swapEnchant = config.swapEnchant();
-		this.swapFairyRing = config.swapFairyRing();
 		this.swapFairyRingMode = config.swapFairyRingMode();
-		this.swapObelisk = config.swapObelisk();
 		this.swapObeliskMode = config.swapObeliskMode();
 		this.swapTeleportItem = config.swapTeleportItem();
 		this.swapWildernessLever = config.swapWildernessLever();
