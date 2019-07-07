@@ -1253,9 +1253,16 @@ public abstract class RSClientMixin implements RSClient
 	@Replace("menuAction")
 	static void rl$menuAction(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
+		boolean authentic = true;
+		if (menuTarget != null && menuTarget.startsWith("!AUTHENTIC"))
+		{
+			authentic = false;
+			menuTarget = menuTarget.substring(10);
+		}
+
 		if (printMenuActions && client.getLogger().isDebugEnabled())
 		{
-			client.getLogger().debug("Menuaction: {} {} {} {} {} {} {} {}", actionParam, widgetId, menuAction, id, menuOption, menuTarget, var6, var7);
+			client.getLogger().debug("Menuaction: {} {} {} {} {} {} {} {} {}", actionParam, widgetId, menuAction, id, menuOption, menuTarget, var6, var7, authentic);
 		}
 
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
@@ -1275,7 +1282,8 @@ public abstract class RSClientMixin implements RSClient
 				actionParam,
 				widgetId,
 				false
-			)
+			),
+			authentic
 		);
 
 		client.getCallbacks().post(menuOptionClicked);
@@ -1287,6 +1295,13 @@ public abstract class RSClientMixin implements RSClient
 
 		rs$menuAction(menuOptionClicked.getActionParam0(), menuOptionClicked.getActionParam1(), menuOptionClicked.getType(),
 			menuOptionClicked.getIdentifier(), menuOptionClicked.getOption(), menuOptionClicked.getTarget(), var6, var7);
+	}
+
+	@Override
+	@Inject
+	public void invokeMenuAction(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
+	{
+		client.sendMenuAction(actionParam, widgetId, menuAction, id, menuOption, "!AUTHENTIC" + menuTarget, var6, var7);
 	}
 
 	@FieldHook("Login_username")
