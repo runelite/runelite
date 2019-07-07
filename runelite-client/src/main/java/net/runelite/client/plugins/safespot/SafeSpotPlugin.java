@@ -173,16 +173,14 @@ public class SafeSpotPlugin extends Plugin
 			{
 				bit = Objects.requireNonNull(client.getCollisionMaps())[plane].getFlags()[toPoint.getSceneX()][toPoint.getSceneY()];
 			}
-			if (toTile != null && toTile.hasLineOfSightTo(fromTile) && !fromTile.hasLineOfSightTo(toTile))
-			{
-				if (!((bit & CollisionDataFlag.BLOCK_MOVEMENT_OBJECT) == CollisionDataFlag.BLOCK_MOVEMENT_OBJECT ||
+			if (toTile != null && toTile.hasLineOfSightTo(fromTile) && !fromTile.hasLineOfSightTo(toTile) &&
+				(!((bit & CollisionDataFlag.BLOCK_MOVEMENT_OBJECT) == CollisionDataFlag.BLOCK_MOVEMENT_OBJECT ||
 					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FLOOR_DECORATION)
 						== CollisionDataFlag.BLOCK_MOVEMENT_FLOOR_DECORATION ||
 					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FLOOR) == CollisionDataFlag.BLOCK_MOVEMENT_FLOOR ||
-					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FULL) == CollisionDataFlag.BLOCK_MOVEMENT_FULL))
-				{
-					safeSpotList.add(toTile);
-				}
+					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FULL) == CollisionDataFlag.BLOCK_MOVEMENT_FULL)))
+			{
+				safeSpotList.add(toTile);
 			}
 		}
 		return safeSpotList;

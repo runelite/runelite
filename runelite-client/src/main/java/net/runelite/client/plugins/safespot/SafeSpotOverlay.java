@@ -42,25 +42,19 @@ public class SafeSpotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (safeSpotPlugin.isSafeSpotsRenderable())
+		if (safeSpotPlugin.isSafeSpotsRenderable() && safeSpotPlugin.getSafeSpotList() != null && safeSpotPlugin.getSafeSpotList().size() > 0)
 		{
-			if (safeSpotPlugin.getSafeSpotList() != null)
+			safeSpotPlugin.getSafeSpotList().forEach(tile ->
 			{
-				if (safeSpotPlugin.getSafeSpotList().size() > 0)
+				if (tile != null && tile.getLocalLocation() != null)
 				{
-					safeSpotPlugin.getSafeSpotList().forEach(tile ->
+					final Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
+					if (poly != null)
 					{
-						if (tile != null && tile.getLocalLocation() != null)
-						{
-							final Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
-							if (poly != null)
-							{
-								OverlayUtil.renderPolygon(graphics, poly, safeSpotPlugin.getTileColor());
-							}
-						}
-					});
+						OverlayUtil.renderPolygon(graphics, poly, safeSpotPlugin.getTileColor());
+					}
 				}
-			}
+			});
 		}
 		return null;
 	}
