@@ -50,7 +50,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Kick");
 
-	private List<String> playerNames = new ArrayList<>();
+	private final List<String> playerNames = new ArrayList<>();
 
 	@Inject
 	private Client client;
