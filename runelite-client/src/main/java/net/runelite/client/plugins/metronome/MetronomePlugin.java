@@ -93,8 +93,7 @@ public class MetronomePlugin extends Plugin
 			{
 				return null;
 			}
-			AudioFormat audioFormat = audioStream.getFormat();
-			DataLine.Info audioInfo = new DataLine.Info(Clip.class, audioFormat);
+
 			try
 			{
 				Clip audioClip = AudioSystem.getClip();
