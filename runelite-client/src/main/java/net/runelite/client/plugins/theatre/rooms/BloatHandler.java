@@ -59,7 +59,7 @@ public class BloatHandler extends RoomHandler
 		System.out.println("Stopping Bloat Room");
 	}
 
-	public void reset()
+	private void reset()
 	{
 		bloat = null;
 		bloatFlag = false;

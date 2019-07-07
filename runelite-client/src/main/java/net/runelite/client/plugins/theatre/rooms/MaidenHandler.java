@@ -94,7 +94,7 @@ public class MaidenHandler extends RoomHandler
 		log.debug("Stopping Maiden Room");
 	}
 
-	public void reset()
+	private void reset()
 	{
 		this.bloodThrows.clear();
 		this.bloodSpawns.clear();

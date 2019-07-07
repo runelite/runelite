@@ -88,7 +88,7 @@ public class XarpusHandler extends RoomHandler
 		System.out.println("Stopping Xarpus Room");
 	}
 
-	public void reset()
+	private void reset()
 	{
 		exhumesCount = 0;
 		xarpusFlag = false;

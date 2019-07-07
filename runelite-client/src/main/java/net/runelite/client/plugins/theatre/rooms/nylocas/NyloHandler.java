@@ -107,7 +107,7 @@ public class NyloHandler extends RoomHandler
 		System.out.println("Stopping Nylocas Room");
 	}
 
-	public void reset()
+	private void reset()
 	{
 		this.pillars.clear();
 		this.spiders.clear();

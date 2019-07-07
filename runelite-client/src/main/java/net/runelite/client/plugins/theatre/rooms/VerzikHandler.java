@@ -72,7 +72,7 @@ public class VerzikHandler extends RoomHandler
 		System.out.println("Stopping Verzik Room");
 	}
 
-	public void reset()
+	private void reset()
 	{
 		this.redCrabsTimer = 13;
 		this.Verzik_RangeProjectiles.clear();

@@ -72,7 +72,7 @@ public class SotetsegHandler extends RoomHandler
 		System.out.println("Stopping Sotetseg Room");
 	}
 
-	public void reset()
+	private void reset()
 	{
 		npc = null;
 		soteyProjectiles.clear();
