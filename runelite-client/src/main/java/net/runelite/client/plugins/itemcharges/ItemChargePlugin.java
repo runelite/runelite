@@ -567,13 +567,10 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
-		if (event.getActor() == client.getLocalPlayer())
+		if (event.getActor() == client.getLocalPlayer() && client.getLocalPlayer().getSpotAnimation() == GraphicID.XERIC_TELEPORT)
 		{
-			if (client.getLocalPlayer().getSpotAnimation() == GraphicID.XERIC_TELEPORT)
-			{
-				final int xericCharges = Math.max(this.xericTalisman - 1, 0);
-				updateXericCharges(xericCharges);
-			}
+			final int xericCharges = Math.max(this.xericTalisman - 1, 0);
+			updateXericCharges(xericCharges);
 		}
 	}
 
