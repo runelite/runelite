@@ -30,6 +30,7 @@ import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -84,10 +85,10 @@ public class BanListPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private ArrayList<String> wdrScamArrayList = new ArrayList<>();
-	private ArrayList<String> wdrToxicArrayList = new ArrayList<>();
-	private ArrayList<String> runeWatchArrayList = new ArrayList<>();
-	private ArrayList<String> manualBans = new ArrayList<>();
+	private List<String> wdrScamArrayList = new ArrayList<>();
+	private List<String> wdrToxicArrayList = new ArrayList<>();
+	private List<String> runeWatchArrayList = new ArrayList<>();
+	private List<String> manualBans = new ArrayList<>();
 
 	@Provides
 	BanListConfig getConfig(ConfigManager configManager)
