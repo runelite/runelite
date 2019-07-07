@@ -1,8 +1,8 @@
 package net.runelite.client.plugins.theatre.timers;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public interface Timeable
 {
-	HashMap<String, Long> getTimes();
+	Map<String, Long> getTimes();
 }
