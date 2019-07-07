@@ -34,7 +34,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseWheelListener;
 
-public class InstanceMapInputListener extends MouseAdapter implements KeyListener, MouseWheelListener
+class InstanceMapInputListener extends MouseAdapter implements KeyListener, MouseWheelListener
 {
 	@Inject
 	private InstanceMapPlugin plugin;
