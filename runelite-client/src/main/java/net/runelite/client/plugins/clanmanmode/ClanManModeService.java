@@ -25,7 +25,7 @@ public class ClanManModeService
 		this.plugin = plugin;
 	}
 
-	private Map<String, String> interactors = new HashMap<>();
+	private final Map<String, String> interactors = new HashMap<>();
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{

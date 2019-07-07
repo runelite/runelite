@@ -94,7 +94,7 @@ public class ClanManModePlugin extends Plugin
 	int clanmax;
 	int inwildy;
 	int ticks;
-	Map<String, Integer> clan = new HashMap<>();
+	final Map<String, Integer> clan = new HashMap<>();
 
 	@Override
 	protected void startUp() throws Exception
