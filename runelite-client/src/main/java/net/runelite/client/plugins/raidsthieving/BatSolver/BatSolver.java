@@ -101,7 +101,7 @@ public class BatSolver
 		return matchesAll && everMatched;
 	}
 
-	public ThievingRoomType getType()
+	private ThievingRoomType getType()
 	{
 		return solution.getType();
 	}
