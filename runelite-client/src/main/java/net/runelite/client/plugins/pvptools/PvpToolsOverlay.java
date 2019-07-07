@@ -25,7 +25,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Singleton
 public class PvpToolsOverlay extends Overlay
 {
-	private PvpToolsPlugin pvpToolsPlugin;
+	private final PvpToolsPlugin pvpToolsPlugin;
 
 	@Inject
 	private PvpToolsOverlay(final PvpToolsPlugin pvpToolsPlugin)

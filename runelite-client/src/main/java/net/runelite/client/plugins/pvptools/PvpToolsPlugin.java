@@ -97,7 +97,7 @@ public class PvpToolsPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	private PvpToolsPlugin uhPvpToolsPlugin = this;
+	private final PvpToolsPlugin uhPvpToolsPlugin = this;
 
 	/**
 	 * ActionListener for the missing cc members and refresh buttons

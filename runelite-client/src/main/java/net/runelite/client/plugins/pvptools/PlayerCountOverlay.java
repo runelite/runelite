@@ -32,7 +32,7 @@ import org.apache.commons.lang3.ArrayUtils;
 @Singleton
 public class PlayerCountOverlay extends Overlay
 {
-	private static int[] CLAN_WARS_REGIONS = {9520, 13135, 13134, 13133, 13131, 13130, 13387, 13386};
+	private static final int[] CLAN_WARS_REGIONS = {9520, 13135, 13134, 13133, 13131, 13130, 13387, 13386};
 
 	private final PvpToolsPlugin pvpToolsPlugin;
 	private final Client client;
