@@ -188,15 +188,24 @@ public class ZulrahOverlay extends Overlay
 		Point zulrahMinimapPoint = Perspective.localToMinimap(client, zulrahLocalTile);
 		Color color = phase.getColor();
 		graphics.setColor(color);
-		graphics.fillOval(zulrahMinimapPoint.getX() - 2, zulrahMinimapPoint.getY() - 2, 4, 4);
+		if (zulrahMinimapPoint != null)
+		{
+			graphics.fillOval(zulrahMinimapPoint.getX() - 2, zulrahMinimapPoint.getY() - 2, 4, 4);
+		}
 		graphics.setColor(TILE_BORDER_COLOR);
 		graphics.setStroke(new BasicStroke(1));
-		graphics.drawOval(zulrahMinimapPoint.getX() - 2, zulrahMinimapPoint.getY() - 2, 4, 4);
+		if (zulrahMinimapPoint != null)
+		{
+			graphics.drawOval(zulrahMinimapPoint.getX() - 2, zulrahMinimapPoint.getY() - 2, 4, 4);
+		}
 		if (next)
 		{
 			graphics.setColor(NEXT_TEXT_COLOR);
 			FontMetrics fm = graphics.getFontMetrics();
-			graphics.drawString("Next", zulrahMinimapPoint.getX() - fm.stringWidth("Next") / 2, zulrahMinimapPoint.getY() - 2);
+			if (zulrahMinimapPoint != null)
+			{
+				graphics.drawString("Next", zulrahMinimapPoint.getX() - fm.stringWidth("Next") / 2, zulrahMinimapPoint.getY() - 2);
+			}
 		}
 	}
 
