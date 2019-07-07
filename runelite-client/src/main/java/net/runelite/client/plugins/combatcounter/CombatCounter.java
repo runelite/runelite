@@ -290,7 +290,9 @@ public class CombatCounter extends Plugin
 							ticks = 3;
 						}
 						if (counter.containsKey(name))
+						{
 							ticks += counter.get(name);
+						}
 						counter.put(name, ticks);
 						counter = sortByValue(counter);
 
@@ -379,13 +381,17 @@ public class CombatCounter extends Plugin
 								{
 									NPCDamageCounter dc = new NPCDamageCounter();
 									if (this.npcDamageMap.containsKey(target))
+									{
 										dc = this.npcDamageMap.get(target);
+									}
 
 									for (Integer tick : ticksToAdd)
 									{
 										List<String> attackers = new ArrayList<>();
 										if (dc.attackers.containsKey(tick))
+										{
 											attackers = dc.attackers.get(tick);
+										}
 
 										attackers.add(name);
 										dc.attackers.put(tick, attackers);
@@ -425,7 +431,9 @@ public class CombatCounter extends Plugin
 		for (Player p : this.client.getPlayers())
 		{
 			if (p.getName() != null)
+			{
 				visible.put(p.getName(), p);
+			}
 		}
 
 		for (NPC npc : new ArrayList<>(this.npcDamageMap.keySet()))
@@ -442,7 +450,9 @@ public class CombatCounter extends Plugin
 
 			double totalDamage = 0d;
 			for (Integer damage : counter.damage)
+			{
 				totalDamage += damage;
+			}
 
 			if (attackers.containsKey(-1))
 			{
@@ -454,7 +464,9 @@ public class CombatCounter extends Plugin
 				{
 					double count = 0d;
 					if (this.playerDamage.containsKey(name))
+					{
 						count = this.playerDamage.get(name);
+					}
 
 					count += damagePerPlayer;
 					this.playerDamage.put(name, count);
@@ -475,11 +487,17 @@ public class CombatCounter extends Plugin
 //			}
 
 			for (Integer i : new ArrayList<>(attackers.keySet()))
+			{
 				if (i <= -1)
+				{
 					attackers.remove(i);
+				}
+			}
 
 			if (attackers.isEmpty())
+			{
 				this.npcDamageMap.remove(npc);
+			}
 		}
 
 		this.playerDamage = sortByValue(this.playerDamage);
@@ -508,20 +526,26 @@ public class CombatCounter extends Plugin
 
 						NPCDamageCounter dc = new NPCDamageCounter();
 						if (this.npcDamageMap.containsKey(npc))
+						{
 							dc = this.npcDamageMap.get(npc);
+						}
 
 						int delay = this.calculateBPDelay(distance);
 
 						List<Integer> counts = new ArrayList<>();
 						counts.add(delay);
 						if (delay > 2)
+						{
 							counts.add(delay - 1);
+						}
 
 						for (int tick : counts)
 						{
 							List<String> attackers = new ArrayList<>();
 							if (dc.attackers.containsKey(tick))
+							{
 								attackers = dc.attackers.get(tick);
+							}
 
 							attackers.add(user);
 							dc.attackers.put(tick, attackers);
@@ -545,12 +569,16 @@ public class CombatCounter extends Plugin
 		Actor actor = event.getActor();
 
 		if (!(actor instanceof NPC))
+		{
 			return;
+		}
 
 		NPC npc = (NPC) actor;
 
 		if (!this.npcDamageMap.containsKey(npc))
+		{
 			return;
+		}
 
 		Hitsplat splat = event.getHitsplat();
 		NPCDamageCounter dc = this.npcDamageMap.get(npc);
@@ -586,6 +614,7 @@ public class CombatCounter extends Plugin
 		int distance = wpNPC.distanceTo(wpPlayer);
 
 		if (size > 1)
+		{
 			for (int x = 0; x < size; x++)
 			{
 				for (int y = 0; y < size; y++)
@@ -598,6 +627,8 @@ public class CombatCounter extends Plugin
 					}
 				}
 			}
+		}
+
 		return distance;
 	}
 
