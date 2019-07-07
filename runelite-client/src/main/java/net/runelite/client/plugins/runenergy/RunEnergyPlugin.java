@@ -335,7 +335,6 @@ public class RunEnergyPlugin extends Plugin
 		}
 
 		// Calculate the number of seconds left
-		final double secondsLeft = (100 - client.getEnergy()) / recoverRate;
-		return (int) secondsLeft;
+		return (int) ((100 - client.getEnergy()) / recoverRate);
 	}
 }
