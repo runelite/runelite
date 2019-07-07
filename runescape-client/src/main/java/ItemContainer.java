@@ -22,7 +22,7 @@ public class ItemContainer extends Node {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   static IndexCache field434;
+   static Archive field434;
    @ObfuscatedName("f")
    @Export("ids")
    int[] ids;
@@ -55,18 +55,18 @@ public class ItemContainer extends Node {
       if (var1 != null) {
          return var1;
       } else {
-         AbstractIndexCache var2 = SequenceDefinition.field773;
-         AbstractIndexCache var3 = SequenceDefinition.field774;
+         AbstractArchive var2 = SequenceDefinition.field773;
+         AbstractArchive var3 = SequenceDefinition.field774;
          boolean var4 = true;
          int[] var5 = var2.method3(var0);
 
          for (int var6 = 0; var6 < var5.length; ++var6) {
-            byte[] var7 = var2.getRecord(var0, var5[var6]);
+            byte[] var7 = var2.getFile(var0, var5[var6]);
             if (var7 == null) {
                var4 = false;
             } else {
                int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
-               byte[] var9 = var3.getRecord(var8, 0);
+               byte[] var9 = var3.getFile(var8, 0);
                if (var9 == null) {
                   var4 = false;
                }

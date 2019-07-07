@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bx")
-@Implements("WidgetGroupParent")
-public class WidgetGroupParent extends Node {
+@Implements("InterfaceParent")
+public class InterfaceParent extends Node {
    @ObfuscatedName("px")
    @ObfuscatedSignature(
       signature = "Lln;"
@@ -34,7 +34,7 @@ public class WidgetGroupParent extends Node {
    @Export("keep")
    boolean keep;
 
-   WidgetGroupParent() {
+   InterfaceParent() {
       this.keep = false;
    }
 
@@ -49,11 +49,11 @@ public class WidgetGroupParent extends Node {
          return var2;
       } else {
          String var3 = String.valueOf(var0);
-         int var4 = Formatting.indexCache12.getArchiveId(var3);
+         int var4 = Formatting.archive12.getGroupId(var3);
          if (var4 == -1) {
             return null;
          } else {
-            byte[] var5 = Formatting.indexCache12.takeRecordFlat(var4);
+            byte[] var5 = Formatting.archive12.takeFileFlat(var4);
             if (var5 != null) {
                if (var5.length <= 1) {
                   return null;
@@ -77,12 +77,12 @@ public class WidgetGroupParent extends Node {
       garbageValue = "619422509"
    )
    @Export("decodeStringCp1252")
-   public static String decodeStringCp1252(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
+   public static String decodeStringCp1252(byte[] src, int srcStart, int length) {
+      char[] var3 = new char[length];
       int var4 = 0;
 
-      for (int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var5 + var1] & 255;
+      for (int var5 = 0; var5 < length; ++var5) {
+         int var6 = src[var5 + srcStart] & 255;
          if (var6 != 0) {
             if (var6 >= 128 && var6 < 160) {
                char var7 = class304.cp1252AsciiExtension[var6 - 128];

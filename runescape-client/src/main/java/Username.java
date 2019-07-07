@@ -10,8 +10,8 @@ public class Username implements Comparable {
    @Export("Interpreter_intLocals")
    static int[] Interpreter_intLocals;
    @ObfuscatedName("m")
-   @Export("name0")
-   String name0;
+   @Export("name")
+   String name;
    @ObfuscatedName("f")
    @Export("cleanName")
    String cleanName;
@@ -20,7 +20,7 @@ public class Username implements Comparable {
       signature = "(Ljava/lang/String;Llx;)V"
    )
    public Username(String var1, LoginType var2) {
-      this.name0 = var1;
+      this.name = var1;
       this.cleanName = Message.method1229(var1, var2);
    }
 
@@ -31,7 +31,7 @@ public class Username implements Comparable {
    )
    @Export("getName")
    public String getName() {
-      return this.name0;
+      return this.name;
    }
 
    @ObfuscatedName("f")
@@ -49,39 +49,33 @@ public class Username implements Comparable {
       signature = "(Lkp;B)I",
       garbageValue = "8"
    )
-   @Export("compareTo0")
-   public int compareTo0(Username var1) {
-      return this.cleanName == null ? (var1.cleanName == null ? 0 : 1) : (var1.cleanName == null ? -1 : this.cleanName.compareTo(var1.cleanName));
+   @Export("compareToTyped")
+   public int compareToTyped(Username other) {
+      return this.cleanName == null ? (other.cleanName == null ? 0 : 1) : (other.cleanName == null ? -1 : this.cleanName.compareTo(other.cleanName));
    }
 
-   @Export("equals")
-   @ObfuscatedName("equals")
    public boolean equals(Object var1) {
       if (var1 instanceof Username) {
          Username var2 = (Username)var1;
          if (this.cleanName == null) {
             return var2.cleanName == null;
          } else {
-            return var2.cleanName != null && this.method352() == var2.method352() && this.cleanName.equals(var2.cleanName);
+            return var2.cleanName != null && this.hashCode() == var2.hashCode() && this.cleanName.equals(var2.cleanName);
          }
       } else {
          return false;
       }
    }
 
-   @ObfuscatedName("hashCode")
-   public int method352() {
+   public int hashCode() {
       return this.cleanName == null ? 0 : this.cleanName.hashCode();
    }
 
-   @ObfuscatedName("toString")
-   public String method353() {
+   public String toString() {
       return this.getName();
    }
 
-   @Export("compareTo")
-   @ObfuscatedName("compareTo")
    public int compareTo(Object var1) {
-      return this.compareTo0((Username)var1);
+      return this.compareToTyped((Username)var1);
    }
 }

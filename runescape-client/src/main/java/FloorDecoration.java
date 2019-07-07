@@ -61,57 +61,57 @@ public final class FloorDecoration {
       signature = "(Lir;Lir;I)I",
       garbageValue = "-1749538901"
    )
-   static int method2853(AbstractIndexCache var0, AbstractIndexCache var1) {
+   static int method2853(AbstractArchive var0, AbstractArchive var1) {
       int var2 = 0;
-      if (var0.tryLoadRecordByNames("title.jpg", "")) {
+      if (var0.tryLoadFileByNames("title.jpg", "")) {
          ++var2;
       }
 
-      if (var1.tryLoadRecordByNames("logo", "")) {
+      if (var1.tryLoadFileByNames("logo", "")) {
          ++var2;
       }
 
-      if (var1.tryLoadRecordByNames("logo_deadman_mode", "")) {
+      if (var1.tryLoadFileByNames("logo_deadman_mode", "")) {
          ++var2;
       }
 
-      if (var1.tryLoadRecordByNames("titlebox", "")) {
+      if (var1.tryLoadFileByNames("titlebox", "")) {
          ++var2;
       }
 
-      if (var1.tryLoadRecordByNames("titlebutton", "")) {
+      if (var1.tryLoadFileByNames("titlebutton", "")) {
          ++var2;
       }
 
-      if (var1.tryLoadRecordByNames("runes", "")) {
+      if (var1.tryLoadFileByNames("runes", "")) {
          ++var2;
       }
 
-      if (var1.tryLoadRecordByNames("title_mute", "")) {
+      if (var1.tryLoadFileByNames("title_mute", "")) {
          ++var2;
       }
 
-      if (var1.tryLoadRecordByNames("options_radio_buttons,0", "")) {
+      if (var1.tryLoadFileByNames("options_radio_buttons,0", "")) {
          ++var2;
       }
 
-      if (var1.tryLoadRecordByNames("options_radio_buttons,2", "")) {
+      if (var1.tryLoadFileByNames("options_radio_buttons,2", "")) {
          ++var2;
       }
 
-      if (var1.tryLoadRecordByNames("options_radio_buttons,4", "")) {
+      if (var1.tryLoadFileByNames("options_radio_buttons,4", "")) {
          ++var2;
       }
 
-      if (var1.tryLoadRecordByNames("options_radio_buttons,6", "")) {
+      if (var1.tryLoadFileByNames("options_radio_buttons,6", "")) {
          ++var2;
       }
 
-      var1.tryLoadRecordByNames("sl_back", "");
-      var1.tryLoadRecordByNames("sl_flags", "");
-      var1.tryLoadRecordByNames("sl_arrows", "");
-      var1.tryLoadRecordByNames("sl_stars", "");
-      var1.tryLoadRecordByNames("sl_button", "");
+      var1.tryLoadFileByNames("sl_back", "");
+      var1.tryLoadFileByNames("sl_flags", "");
+      var1.tryLoadFileByNames("sl_arrows", "");
+      var1.tryLoadFileByNames("sl_stars", "");
+      var1.tryLoadFileByNames("sl_button", "");
       return var2;
    }
 }

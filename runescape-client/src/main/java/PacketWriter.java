@@ -156,8 +156,8 @@ public class PacketWriter {
       garbageValue = "111"
    )
    @Export("setSocket")
-   void setSocket(AbstractSocket var1) {
-      this.socket0 = var1;
+   void setSocket(AbstractSocket socket) {
+      this.socket0 = socket;
    }
 
    @ObfuscatedName("o")

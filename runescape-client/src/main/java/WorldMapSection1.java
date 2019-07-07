@@ -14,8 +14,8 @@ public class WorldMapSection1 implements WorldMapSection {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache15")
-   static IndexCache indexCache15;
+   @Export("archive15")
+   static Archive archive15;
    @ObfuscatedName("ey")
    @ObfuscatedGetter(
       intValue = -1516124929
@@ -144,13 +144,13 @@ public class WorldMapSection1 implements WorldMapSection {
       garbageValue = "-1916486802"
    )
    @Export("coord")
-   public TileLocation coord(int var1, int var2) {
+   public Coord coord(int var1, int var2) {
       if (!this.containsPosition(var1, var2)) {
          return null;
       } else {
          int var3 = this.field1074 * 64 - this.field1076 * 64 + (this.field1078 * 8 - this.field1080 * 8) + var1;
          int var4 = this.field1075 * 64 - this.field1077 * 64 + var2 + (this.field1079 * 8 - this.field1081 * 8);
-         return new TileLocation(this.field1072, var3, var4);
+         return new Coord(this.field1072, var3, var4);
       }
    }
 
@@ -193,10 +193,10 @@ public class WorldMapSection1 implements WorldMapSection {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = KitDefinition.KitDefinition_indexCache.takeRecord(3, var0);
+         byte[] var2 = KitDefinition.KitDefinition_archive.takeFile(3, var0);
          var1 = new KitDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          KitDefinition.KitDefinition_cached.put(var1, (long)var0);
@@ -234,7 +234,7 @@ public class WorldMapSection1 implements WorldMapSection {
       Client.isItemSelected = 0;
       Client.isSpellSelected = false;
       Client.soundEffectCount = 0;
-      Client.minimapOrientation = 0;
+      Client.camAngleY = 0;
       Client.oculusOrbState = 0;
       ClientParameter.field3645 = null;
       Client.minimapState = 0;
@@ -285,16 +285,16 @@ public class WorldMapSection1 implements WorldMapSection {
 
       class196.varcs.clearTransient();
       Client.followerIndex = -1;
-      if (Client.rootWidgetGroup != -1) {
-         AbstractByteArrayCopier.unloadWidgetGroup(Client.rootWidgetGroup);
+      if (Client.rootInterface != -1) {
+         AbstractByteArrayCopier.unloadInterface(Client.rootInterface);
       }
 
-      for (WidgetGroupParent var4 = (WidgetGroupParent)Client.widgetGroupParents.first(); var4 != null; var4 = (WidgetGroupParent)Client.widgetGroupParents.next()) {
-         MenuAction.closeWidgetGroup(var4, true);
+      for (InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.first(); var4 != null; var4 = (InterfaceParent)Client.interfaceParents.next()) {
+         MenuAction.closeInterface(var4, true);
       }
 
-      Client.rootWidgetGroup = -1;
-      Client.widgetGroupParents = new NodeHashTable(8);
+      Client.rootInterface = -1;
+      Client.interfaceParents = new NodeHashTable(8);
       Client.field127 = null;
       Client.menuOptionsCount = 0;
       Client.isMenuOpen = false;

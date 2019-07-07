@@ -115,4 +115,15 @@ public interface NpcAggroAreaConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "sendNotification",
+		name = "Send notification",
+		description = "Send a notification when the timer runs out",
+		position = 7
+	)
+	default boolean sendNotification()
+	{
+		return false;
+	}
 }

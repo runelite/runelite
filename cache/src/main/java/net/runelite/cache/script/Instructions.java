@@ -78,6 +78,7 @@ public class Instructions
 		add(CC_SETSIZE, "cc_setsize");
 		add(CC_SETHIDE, "cc_sethide");
 		add(CC_SETNOCLICKTHROUGH, "cc_setnoclickthrough");
+		add(CC_SETNOSCROLLTHROUGH, "cc_setnoscrollthrough");
 		add(CC_SETSCROLLPOS, "cc_setscrollpos");
 		add(CC_SETCOLOUR, "cc_setcolour");
 		add(CC_SETFILL, "cc_setfill");
@@ -287,11 +288,14 @@ public class Instructions
 		add(SETSHOWLOADINGMESSAGES, "setshowloadingmessages");
 		add(SETTAPTODROP, "settaptodrop");
 		add(GETTAPTODROP, "gettaptodrop");
+		add(SETOCULUSORBSPEED, "setoculusorbspeed");
 		add(GETCANVASSIZE, "getcanvassize");
 		add(SETHIDEUSERNAME, "sethideusername");
 		add(GETHIDEUSERNAME, "gethideusername");
 		add(SETREMEMBERUSERNAME, "setrememberusername");
 		add(GETREMEMBERUSERNAME, "getrememberusername");
+		add(SETTITLEMUSICENABLED, "settitlemusicenabled");
+		add(GETTITLEMUSICENABLED, "gettitlemusicenabled");
 		add(SOUND_SYNTH, "sound_synth");
 		add(SOUND_SONG, "sound_song");
 		add(SOUND_JINGLE, "sound_jingle");
@@ -411,6 +415,7 @@ public class Instructions
 		add(REMOVETAGS, "removetags");
 		add(STRING_INDEXOF_CHAR, "string_indexof_char");
 		add(STRING_INDEXOF_STRING, "string_indexof_string");
+		add(UPPERCASE, "uppercase");
 		add(OC_NAME, "oc_name");
 		add(OC_OP, "oc_op");
 		add(OC_IOP, "oc_iop");
@@ -461,6 +466,7 @@ public class Instructions
 		add(WORLDLIST_NEXT, "worldlist_next");
 		add(WORLDLIST_SPECIFIC, "worldlist_specific");
 		add(WORLDLIST_SORT, "worldlist_sort");
+		add(GETWORLDINFO, "getworldinfo");
 		add(SETFOLLOWEROPSLOWPRIORITY, "setfolloweropslowpriority");
 		add(NC_PARAM, "nc_param");
 		add(LC_PARAM, "lc_param");

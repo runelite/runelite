@@ -8,10 +8,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("UserComparator10")
 public class UserComparator10 extends AbstractUserComparator {
    @ObfuscatedName("m")
-   final boolean field932;
+   @Export("reversed")
+   final boolean reversed;
 
    public UserComparator10(boolean var1) {
-      this.field932 = var1;
+      this.reversed = var1;
    }
 
    @ObfuscatedName("m")
@@ -19,14 +20,13 @@ public class UserComparator10 extends AbstractUserComparator {
       signature = "(Lke;Lke;B)I",
       garbageValue = "-15"
    )
-   int method341(Buddy var1, Buddy var2) {
-      return Client.worldId == var1.world0 && var2.world0 == Client.worldId ? (this.field932 ? var1.int2 - var2.int2 : var2.int2 - var1.int2) : this.method12(var1, var2);
+   @Export("compareBuddy")
+   int compareBuddy(Buddy var1, Buddy var2) {
+      return Client.worldId == var1.world && var2.world == Client.worldId ? (this.reversed ? var1.int2 - var2.int2 : var2.int2 - var1.int2) : this.compareUser(var1, var2);
    }
 
-   @Export("compare")
-   @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.method341((Buddy)var1, (Buddy)var2);
+      return this.compareBuddy((Buddy)var1, (Buddy)var2);
    }
 
    @ObfuscatedName("hn")

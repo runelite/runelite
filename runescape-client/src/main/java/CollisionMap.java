@@ -249,8 +249,8 @@ public class CollisionMap {
    public void method92(int var1, int var2) {
       var1 -= this.xInset;
       var2 -= this.yInset;
-      int[] var10000 = this.flags[var1];
-      var10000[var2] |= 2097152;
+      int[] var3 = this.flags[var1];
+      var3[var2] |= 2097152;
    }
 
    @ObfuscatedName("o")
@@ -261,8 +261,8 @@ public class CollisionMap {
    public void method93(int var1, int var2) {
       var1 -= this.xInset;
       var2 -= this.yInset;
-      int[] var10000 = this.flags[var1];
-      var10000[var2] |= 262144;
+      int[] var3 = this.flags[var1];
+      var3[var2] |= 262144;
    }
 
    @ObfuscatedName("u")
@@ -271,8 +271,8 @@ public class CollisionMap {
       garbageValue = "953350100"
    )
    void method94(int var1, int var2, int var3) {
-      int[] var10000 = this.flags[var1];
-      var10000[var2] |= var3;
+      int[] var4 = this.flags[var1];
+      var4[var2] |= var3;
    }
 
    @ObfuscatedName("g")
@@ -465,8 +465,8 @@ public class CollisionMap {
       garbageValue = "52290294"
    )
    void method97(int var1, int var2, int var3) {
-      int[] var10000 = this.flags[var1];
-      var10000[var2] &= ~var3;
+      int[] var4 = this.flags[var1];
+      var4[var2] &= ~var3;
    }
 
    @ObfuscatedName("x")
@@ -477,8 +477,8 @@ public class CollisionMap {
    public void method98(int var1, int var2) {
       var1 -= this.xInset;
       var2 -= this.yInset;
-      int[] var10000 = this.flags[var1];
-      var10000[var2] &= -262145;
+      int[] var3 = this.flags[var1];
+      var3[var2] &= -262145;
    }
 
    @ObfuscatedName("m")

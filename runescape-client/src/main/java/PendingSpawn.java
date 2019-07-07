@@ -11,8 +11,8 @@ public final class PendingSpawn extends Node {
    @ObfuscatedGetter(
       intValue = 1439936951
    )
-   @Export("level")
-   int level;
+   @Export("plane")
+   int plane;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1471611383
@@ -97,9 +97,9 @@ public final class PendingSpawn extends Node {
    )
    public static void method1695(int var0, int var1) {
       VarbitDefinition var2 = Occluder.method3255(var0);
-      int var3 = var2.varp;
-      int var4 = var2.lowBit;
-      int var5 = var2.highBit;
+      int var3 = var2.baseVar;
+      int var4 = var2.startBit;
+      int var5 = var2.endBit;
       int var6 = Varps.Varps_masks[var5 - var4];
       if (var1 < 0 || var1 > var6) {
          var1 = 0;

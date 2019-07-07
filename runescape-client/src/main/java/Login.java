@@ -139,16 +139,16 @@ public class Login {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache11")
-   static IndexCache indexCache11;
+   @Export("archive11")
+   static Archive archive11;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(Lir;II)Lhl;",
       garbageValue = "-1625685874"
    )
-   static MusicPatch method2045(AbstractIndexCache var0, int var1) {
-      byte[] var2 = var0.takeRecordFlat(var1);
+   static MusicPatch method2045(AbstractArchive var0, int var1) {
+      byte[] var2 = var0.takeFileFlat(var1);
       return var2 == null ? null : new MusicPatch(var2);
    }
 
@@ -186,10 +186,10 @@ public class Login {
       signature = "(Lir;IIIZB)V",
       garbageValue = "45"
    )
-   public static void method2076(AbstractIndexCache var0, int var1, int var2, int var3, boolean var4) {
+   public static void method2076(AbstractArchive var0, int var1, int var2, int var3, boolean var4) {
       class214.field1129 = 1;
       class214.field1130 = var0;
-      class30.musicTrackArchiveId = var1;
+      class30.musicTrackGroupId = var1;
       GrandExchangeOffer.musicTrackFileId = var2;
       WorldMapLabel.field1039 = var3;
       RectangleMode.musicTrackBoolean = var4;
@@ -205,8 +205,8 @@ public class Login {
       if (ReflectionCheck.clientPreferences.roofsHidden) {
          return SoundSystem.plane;
       } else {
-         int var0 = class32.getTileHeight(WorldMapSection1.cameraX, class11.cameraZ, SoundSystem.plane);
-         return var0 - GrandExchangeEvents.cameraY < 800 && (Tiles.Tiles_renderFlags[SoundSystem.plane][WorldMapSection1.cameraX >> 7][class11.cameraZ >> 7] & 4) != 0 ? SoundSystem.plane : 3;
+         int var0 = class32.getTileHeight(WorldMapSection1.cameraX, GrandExchangeOfferNameComparator.cameraZ, SoundSystem.plane);
+         return var0 - GrandExchangeEvents.cameraY < 800 && (Tiles.Tiles_renderFlags[SoundSystem.plane][WorldMapSection1.cameraX >> 7][GrandExchangeOfferNameComparator.cameraZ >> 7] & 4) != 0 ? SoundSystem.plane : 3;
       }
    }
 

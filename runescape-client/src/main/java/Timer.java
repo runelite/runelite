@@ -140,7 +140,7 @@ public class Timer {
       garbageValue = "805398419"
    )
    @Export("write")
-   public void write(Buffer var1) {
+   public void write(Buffer buffer) {
       long var2 = this.field923;
       var2 /= 10L;
       if (var2 < 0L) {
@@ -149,7 +149,7 @@ public class Timer {
          var2 = 65535L;
       }
 
-      var1.writeShort((int)var2);
+      buffer.writeShort((int)var2);
       long var4 = this.field922;
       var4 /= 10L;
       if (var4 < 0L) {
@@ -158,7 +158,7 @@ public class Timer {
          var4 = 65535L;
       }
 
-      var1.writeShort((int)var4);
+      buffer.writeShort((int)var4);
       long var6 = this.field924;
       var6 /= 10L;
       if (var6 < 0L) {
@@ -167,10 +167,10 @@ public class Timer {
          var6 = 65535L;
       }
 
-      var1.writeShort((int)var6);
-      var1.writeShort(this.field925);
-      var1.writeShort(this.field926);
-      var1.writeShort(this.field927);
-      var1.writeShort(this.field928);
+      buffer.writeShort((int)var6);
+      buffer.writeShort(this.field925);
+      buffer.writeShort(this.field926);
+      buffer.writeShort(this.field927);
+      buffer.writeShort(this.field928);
    }
 }

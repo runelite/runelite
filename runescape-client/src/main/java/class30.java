@@ -24,8 +24,8 @@ public class class30 {
    @ObfuscatedGetter(
       intValue = -18917723
    )
-   @Export("musicTrackArchiveId")
-   public static int musicTrackArchiveId;
+   @Export("musicTrackGroupId")
+   public static int musicTrackGroupId;
    @ObfuscatedName("l")
    @Export("inMembersWorld")
    public static boolean inMembersWorld;
@@ -84,21 +84,21 @@ public class class30 {
                   method570(var3.children, var1);
                }
 
-               WidgetGroupParent var4 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var3.id);
+               InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var3.id);
                if (var4 != null) {
                   GrandExchangeEvents.method74(var4.group, var1);
                }
             }
 
             ScriptEvent var6;
-            if (var1 == 0 && var3.onDialogAbortListener != null) {
+            if (var1 == 0 && var3.onDialogAbort != null) {
                var6 = new ScriptEvent();
                var6.widget = var3;
-               var6.args0 = var3.onDialogAbortListener;
-               AbstractIndexCache.runScript(var6);
+               var6.args0 = var3.onDialogAbort;
+               AbstractArchive.runScript(var6);
             }
 
-            if (var1 == 1 && var3.field974 != null) {
+            if (var1 == 1 && var3.onSubChange != null) {
                if (var3.childIndex >= 0) {
                   Widget var5 = Huffman.getWidget(var3.id);
                   if (var5 == null || var5.children == null || var3.childIndex >= var5.children.length || var3 != var5.children[var3.childIndex]) {
@@ -108,8 +108,8 @@ public class class30 {
 
                var6 = new ScriptEvent();
                var6.widget = var3;
-               var6.args0 = var3.field974;
-               AbstractIndexCache.runScript(var6);
+               var6.args0 = var3.onSubChange;
+               AbstractArchive.runScript(var6);
             }
          }
       }

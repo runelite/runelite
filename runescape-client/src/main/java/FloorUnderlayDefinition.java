@@ -5,20 +5,20 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ih")
-@Implements("UnderlayDefinition")
-public class UnderlayDefinition extends DualNode {
+@Implements("FloorUnderlayDefinition")
+public class FloorUnderlayDefinition extends DualNode {
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("UnderlayDefinition_indexCache")
-   static AbstractIndexCache UnderlayDefinition_indexCache;
+   @Export("FloorUnderlayDefinition_archive")
+   static AbstractArchive FloorUnderlayDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("UnderlayDefinition_cached")
-   static EvictingDualNodeHashTable UnderlayDefinition_cached;
+   @Export("FloorUnderlayDefinition_cached")
+   static EvictingDualNodeHashTable FloorUnderlayDefinition_cached;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -635678213
@@ -50,7 +50,7 @@ public class UnderlayDefinition extends DualNode {
    @Export("hueMultiplier")
    public int hueMultiplier;
 
-   UnderlayDefinition() {
+   FloorUnderlayDefinition() {
       this.rgb = 0;
    }
 
@@ -59,8 +59,8 @@ public class UnderlayDefinition extends DualNode {
       signature = "(I)V",
       garbageValue = "-782326269"
    )
-   @Export("init")
-   void init() {
+   @Export("postDecode")
+   void postDecode() {
       this.setHsl(this.rgb);
    }
 
@@ -69,15 +69,15 @@ public class UnderlayDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-336010991"
    )
-   @Export("read")
-   void read(Buffer var1, int var2) {
+   @Export("decode")
+   void decode(Buffer var1, int var2) {
       while (true) {
          int var3 = var1.readUnsignedByte();
          if (var3 == 0) {
             return;
          }
 
-         this.readNext(var1, var3, var2);
+         this.decodeNext(var1, var3, var2);
       }
    }
 
@@ -86,8 +86,8 @@ public class UnderlayDefinition extends DualNode {
       signature = "(Lgr;III)V",
       garbageValue = "137131494"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2, int var3) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2, int var3) {
       if (var2 == 1) {
          this.rgb = var1.readMedium();
       }
@@ -100,10 +100,10 @@ public class UnderlayDefinition extends DualNode {
       garbageValue = "-107"
    )
    @Export("setHsl")
-   void setHsl(int var1) {
-      double var2 = (double)(var1 >> 16 & 255) / 256.0D;
-      double var4 = (double)(var1 >> 8 & 255) / 256.0D;
-      double var6 = (double)(var1 & 255) / 256.0D;
+   void setHsl(int rgb) {
+      double var2 = (double)(rgb >> 16 & 255) / 256.0D;
+      double var4 = (double)(rgb >> 8 & 255) / 256.0D;
+      double var6 = (double)(rgb & 255) / 256.0D;
       double var8 = var2;
       if (var4 < var2) {
          var8 = var4;
@@ -181,6 +181,6 @@ public class UnderlayDefinition extends DualNode {
    }
 
    static {
-      UnderlayDefinition_cached = new EvictingDualNodeHashTable(64);
+      FloorUnderlayDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

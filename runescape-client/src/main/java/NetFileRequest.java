@@ -11,8 +11,8 @@ public class NetFileRequest extends DualNode {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache")
-   public IndexCache indexCache;
+   @Export("archive")
+   public Archive archive;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1487103265
@@ -42,7 +42,7 @@ public class NetFileRequest extends DualNode {
                   method4555(var3.children, var3.id);
                }
 
-               WidgetGroupParent var4 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var3.id);
+               InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var3.id);
                if (var4 != null) {
                   ClientPreferences.method1809(var4.group);
                }
@@ -96,7 +96,7 @@ public class NetFileRequest extends DualNode {
    )
    static final void method4554(int var0, int var1, int var2, int var3, Sprite var4, SpriteMask var5) {
       if (var4 != null) {
-         int var6 = Client.minimapOrientation & 2047;
+         int var6 = Client.camAngleY & 2047;
          int var7 = var3 * var3 + var2 * var2;
          if (var7 <= 6400) {
             int var8 = Rasterizer3D.Rasterizer3D_sine[var6];

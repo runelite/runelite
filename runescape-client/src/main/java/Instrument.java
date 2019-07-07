@@ -159,7 +159,7 @@ public class Instrument {
          int var13;
          int var14;
          int var15;
-         int[] var10000;
+         int[] var16;
          for (var11 = 0; var11 < var1; ++var11) {
             var12 = this.field413.doStep(var1);
             var13 = this.field414.doStep(var1);
@@ -181,39 +181,39 @@ public class Instrument {
                if (this.oscillatorVolume[var14] != 0) {
                   var15 = Instrument_delays[var14] + var11;
                   if (var15 < var1) {
-                     var10000 = Instrument_samples;
-                     var10000[var15] += this.evaluateWave(Instrument_phases[var14], var13 * Instrument_volumeSteps[var14] >> 15, this.field413.form);
-                     var10000 = Instrument_phases;
-                     var10000[var14] += (var12 * Instrument_pitchSteps[var14] >> 16) + Instrument_pitchBaseSteps[var14];
+                     var16 = Instrument_samples;
+                     var16[var15] += this.evaluateWave(Instrument_phases[var14], var13 * Instrument_volumeSteps[var14] >> 15, this.field413.form);
+                     var16 = Instrument_phases;
+                     var16[var14] += (var12 * Instrument_pitchSteps[var14] >> 16) + Instrument_pitchBaseSteps[var14];
                   }
                }
             }
          }
 
-         int var16;
+         int var17;
          if (this.field419 != null) {
             this.field419.reset();
             this.field420.reset();
             var11 = 0;
-            boolean var17 = false;
-            boolean var18 = true;
+            boolean var18 = false;
+            boolean var19 = true;
 
             for (var14 = 0; var14 < var1; ++var14) {
                var15 = this.field419.doStep(var1);
-               var16 = this.field420.doStep(var1);
-               if (var18) {
+               var17 = this.field420.doStep(var1);
+               if (var19) {
                   var12 = (var15 * (this.field419.end - this.field419.start) >> 8) + this.field419.start;
                } else {
-                  var12 = (var16 * (this.field419.end - this.field419.start) >> 8) + this.field419.start;
+                  var12 = (var17 * (this.field419.end - this.field419.start) >> 8) + this.field419.start;
                }
 
                var11 += 256;
                if (var11 >= var12) {
                   var11 = 0;
-                  var18 = !var18;
+                  var19 = !var19;
                }
 
-               if (var18) {
+               if (var19) {
                   Instrument_samples[var14] = 0;
                }
             }
@@ -223,8 +223,8 @@ public class Instrument {
             var11 = (int)((double)this.delayTime * var3);
 
             for (var12 = var11; var12 < var1; ++var12) {
-               var10000 = Instrument_samples;
-               var10000[var12] += Instrument_samples[var12 - var11] * this.delayDecay / 100;
+               var16 = Instrument_samples;
+               var16[var12] += Instrument_samples[var12 - var11] * this.delayDecay / 100;
             }
          }
 
@@ -240,19 +240,19 @@ public class Instrument {
                   var15 = var1 - var12;
                }
 
-               int var19;
+               int var20;
                while (var14 < var15) {
-                  var16 = (int)((long)Instrument_samples[var14 + var12] * (long)AudioFilter.field35 >> 16);
+                  var17 = (int)((long)Instrument_samples[var14 + var12] * (long)AudioFilter.field35 >> 16);
 
-                  for (var19 = 0; var19 < var12; ++var19) {
-                     var16 += (int)((long)Instrument_samples[var14 + var12 - 1 - var19] * (long)AudioFilter.field33[0][var19] >> 16);
+                  for (var20 = 0; var20 < var12; ++var20) {
+                     var17 += (int)((long)Instrument_samples[var14 + var12 - 1 - var20] * (long)AudioFilter.field33[0][var20] >> 16);
                   }
 
-                  for (var19 = 0; var19 < var14; ++var19) {
-                     var16 -= (int)((long)Instrument_samples[var14 - 1 - var19] * (long)AudioFilter.field33[1][var19] >> 16);
+                  for (var20 = 0; var20 < var14; ++var20) {
+                     var17 -= (int)((long)Instrument_samples[var14 - 1 - var20] * (long)AudioFilter.field33[1][var20] >> 16);
                   }
 
-                  Instrument_samples[var14] = var16;
+                  Instrument_samples[var14] = var17;
                   var11 = this.field421.doStep(var1 + 1);
                   ++var14;
                }
@@ -264,36 +264,36 @@ public class Instrument {
                      var15 = var1 - var12;
                   }
 
-                  int var20;
+                  int var21;
                   while (var14 < var15) {
-                     var19 = (int)((long)Instrument_samples[var14 + var12] * (long)AudioFilter.field35 >> 16);
+                     var20 = (int)((long)Instrument_samples[var14 + var12] * (long)AudioFilter.field35 >> 16);
 
-                     for (var20 = 0; var20 < var12; ++var20) {
-                        var19 += (int)((long)Instrument_samples[var14 + var12 - 1 - var20] * (long)AudioFilter.field33[0][var20] >> 16);
+                     for (var21 = 0; var21 < var12; ++var21) {
+                        var20 += (int)((long)Instrument_samples[var14 + var12 - 1 - var21] * (long)AudioFilter.field33[0][var21] >> 16);
                      }
 
-                     for (var20 = 0; var20 < var13; ++var20) {
-                        var19 -= (int)((long)Instrument_samples[var14 - 1 - var20] * (long)AudioFilter.field33[1][var20] >> 16);
+                     for (var21 = 0; var21 < var13; ++var21) {
+                        var20 -= (int)((long)Instrument_samples[var14 - 1 - var21] * (long)AudioFilter.field33[1][var21] >> 16);
                      }
 
-                     Instrument_samples[var14] = var19;
+                     Instrument_samples[var14] = var20;
                      var11 = this.field421.doStep(var1 + 1);
                      ++var14;
                   }
 
                   if (var14 >= var1 - var12) {
                      while (var14 < var1) {
-                        var19 = 0;
+                        var20 = 0;
 
-                        for (var20 = var14 + var12 - var1; var20 < var12; ++var20) {
-                           var19 += (int)((long)Instrument_samples[var14 + var12 - 1 - var20] * (long)AudioFilter.field33[0][var20] >> 16);
+                        for (var21 = var14 + var12 - var1; var21 < var12; ++var21) {
+                           var20 += (int)((long)Instrument_samples[var14 + var12 - 1 - var21] * (long)AudioFilter.field33[0][var21] >> 16);
                         }
 
-                        for (var20 = 0; var20 < var13; ++var20) {
-                           var19 -= (int)((long)Instrument_samples[var14 - 1 - var20] * (long)AudioFilter.field33[1][var20] >> 16);
+                        for (var21 = 0; var21 < var13; ++var21) {
+                           var20 -= (int)((long)Instrument_samples[var14 - 1 - var21] * (long)AudioFilter.field33[1][var21] >> 16);
                         }
 
-                        Instrument_samples[var14] = var19;
+                        Instrument_samples[var14] = var20;
                         this.field421.doStep(var1 + 1);
                         ++var14;
                      }
@@ -332,56 +332,56 @@ public class Instrument {
       signature = "(Lgr;)V"
    )
    @Export("decode")
-   final void decode(Buffer var1) {
+   final void decode(Buffer buffer) {
       this.field413 = new SoundEnvelope();
-      this.field413.decode(var1);
+      this.field413.decode(buffer);
       this.field414 = new SoundEnvelope();
-      this.field414.decode(var1);
-      int var2 = var1.readUnsignedByte();
+      this.field414.decode(buffer);
+      int var2 = buffer.readUnsignedByte();
       if (var2 != 0) {
-         --var1.index;
+         --buffer.index;
          this.field415 = new SoundEnvelope();
-         this.field415.decode(var1);
+         this.field415.decode(buffer);
          this.field416 = new SoundEnvelope();
-         this.field416.decode(var1);
+         this.field416.decode(buffer);
       }
 
-      var2 = var1.readUnsignedByte();
+      var2 = buffer.readUnsignedByte();
       if (var2 != 0) {
-         --var1.index;
+         --buffer.index;
          this.field417 = new SoundEnvelope();
-         this.field417.decode(var1);
+         this.field417.decode(buffer);
          this.field418 = new SoundEnvelope();
-         this.field418.decode(var1);
+         this.field418.decode(buffer);
       }
 
-      var2 = var1.readUnsignedByte();
+      var2 = buffer.readUnsignedByte();
       if (var2 != 0) {
-         --var1.index;
+         --buffer.index;
          this.field419 = new SoundEnvelope();
-         this.field419.decode(var1);
+         this.field419.decode(buffer);
          this.field420 = new SoundEnvelope();
-         this.field420.decode(var1);
+         this.field420.decode(buffer);
       }
 
       for (int var3 = 0; var3 < 10; ++var3) {
-         int var4 = var1.method48();
+         int var4 = buffer.method48();
          if (var4 == 0) {
             break;
          }
 
          this.oscillatorVolume[var3] = var4;
-         this.oscillatorPitch[var3] = var1.method47();
-         this.oscillatorDelays[var3] = var1.method48();
+         this.oscillatorPitch[var3] = buffer.method47();
+         this.oscillatorDelays[var3] = buffer.method48();
       }
 
-      this.delayTime = var1.method48();
-      this.delayDecay = var1.method48();
-      this.duration = var1.readUnsignedShort();
-      this.offset = var1.readUnsignedShort();
+      this.delayTime = buffer.method48();
+      this.delayDecay = buffer.method48();
+      this.duration = buffer.readUnsignedShort();
+      this.offset = buffer.readUnsignedShort();
       this.filter = new AudioFilter();
       this.field421 = new SoundEnvelope();
-      this.filter.method27(var1, this.field421);
+      this.filter.method27(buffer, this.field421);
    }
 
    static {

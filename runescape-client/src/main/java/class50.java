@@ -31,11 +31,11 @@ public class class50 {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = SpotAnimationDefinition.SpotAnimationDefinition_indexCache.takeRecord(13, var0);
+         byte[] var2 = SpotAnimationDefinition.SpotAnimationDefinition_archive.takeFile(13, var0);
          var1 = new SpotAnimationDefinition();
          var1.id = var0;
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
          SpotAnimationDefinition.SpotAnimationDefinition_cached.put(var1, (long)var0);
@@ -54,14 +54,14 @@ public class class50 {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = ObjectDefinition.ObjectDefinition_indexCache.takeRecord(6, var0);
+         byte[] var2 = ObjectDefinition.ObjectDefinition_archive.takeFile(6, var0);
          var1 = new ObjectDefinition();
          var1.id = var0;
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
-         var1.init();
+         var1.postDecode();
          if (var1.isSolid) {
             var1.interactType = 0;
             var1.boolean1 = false;
@@ -78,8 +78,8 @@ public class class50 {
       garbageValue = "83"
    )
    @Export("loadRegions")
-   static final void loadRegions(boolean var0, PacketBuffer var1) {
-      Client.isInInstance = var0;
+   static final void loadRegions(boolean isInInstance, PacketBuffer packetBuffer) {
+      Client.isInInstance = isInInstance;
       int var2;
       int var3;
       int var4;
@@ -87,19 +87,19 @@ public class class50 {
       int var6;
       int var7;
       if (!Client.isInInstance) {
-         var2 = var1.method67();
-         var3 = var1.method66();
-         int var8 = var1.readUnsignedShort();
+         var2 = packetBuffer.method67();
+         var3 = packetBuffer.method66();
+         int var8 = packetBuffer.readUnsignedShort();
          class190.xteaKeys = new int[var8][4];
 
          for (var4 = 0; var4 < var8; ++var4) {
             for (var5 = 0; var5 < 4; ++var5) {
-               class190.xteaKeys[var4][var5] = var1.readInt();
+               class190.xteaKeys[var4][var5] = packetBuffer.readInt();
             }
          }
 
          class308.regions = new int[var8];
-         IndexCacheLoader.regionMapArchiveIds = new int[var8];
+         ArchiveLoader.regionMapArchiveIds = new int[var8];
          MouseHandler.regionLandArchiveIds = new int[var8];
          class40.regionLandArchives = new byte[var8][];
          HealthBarUpdate.regionMapArchives = new byte[var8][];
@@ -119,8 +119,8 @@ public class class50 {
                var7 = var6 + (var5 << 8);
                if (!var9 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
                   class308.regions[var8] = var7;
-                  IndexCacheLoader.regionMapArchiveIds[var8] = SecureRandomFuture.indexCache5.getArchiveId("m" + var5 + "_" + var6);
-                  MouseHandler.regionLandArchiveIds[var8] = SecureRandomFuture.indexCache5.getArchiveId("l" + var5 + "_" + var6);
+                  ArchiveLoader.regionMapArchiveIds[var8] = SecureRandomFuture.archive5.getGroupId("m" + var5 + "_" + var6);
+                  MouseHandler.regionLandArchiveIds[var8] = SecureRandomFuture.archive5.getGroupId("l" + var5 + "_" + var6);
                   ++var8;
                }
             }
@@ -128,19 +128,19 @@ public class class50 {
 
          DynamicObject.method2224(var3, var2, true);
       } else {
-         var2 = var1.method66();
-         var3 = var1.method67();
-         boolean var15 = var1.readUnsignedByte() == 1;
-         var4 = var1.readUnsignedShort();
-         var1.importIndex();
+         var2 = packetBuffer.method66();
+         var3 = packetBuffer.method67();
+         boolean var15 = packetBuffer.readUnsignedByte() == 1;
+         var4 = packetBuffer.readUnsignedShort();
+         packetBuffer.importIndex();
 
          int var16;
          for (var5 = 0; var5 < 4; ++var5) {
             for (var6 = 0; var6 < 13; ++var6) {
                for (var7 = 0; var7 < 13; ++var7) {
-                  var16 = var1.readBits(1);
+                  var16 = packetBuffer.readBits(1);
                   if (var16 == 1) {
-                     Client.instanceChunkTemplates[var5][var6][var7] = var1.readBits(26);
+                     Client.instanceChunkTemplates[var5][var6][var7] = packetBuffer.readBits(26);
                   } else {
                      Client.instanceChunkTemplates[var5][var6][var7] = -1;
                   }
@@ -148,17 +148,17 @@ public class class50 {
             }
          }
 
-         var1.exportIndex();
+         packetBuffer.exportIndex();
          class190.xteaKeys = new int[var4][4];
 
          for (var5 = 0; var5 < var4; ++var5) {
             for (var6 = 0; var6 < 4; ++var6) {
-               class190.xteaKeys[var5][var6] = var1.readInt();
+               class190.xteaKeys[var5][var6] = packetBuffer.readInt();
             }
          }
 
          class308.regions = new int[var4];
-         IndexCacheLoader.regionMapArchiveIds = new int[var4];
+         ArchiveLoader.regionMapArchiveIds = new int[var4];
          MouseHandler.regionLandArchiveIds = new int[var4];
          class40.regionLandArchives = new byte[var4][];
          HealthBarUpdate.regionMapArchives = new byte[var4][];
@@ -185,8 +185,8 @@ public class class50 {
                         class308.regions[var4] = var12;
                         var13 = var12 >> 8 & 255;
                         int var14 = var12 & 255;
-                        IndexCacheLoader.regionMapArchiveIds[var4] = SecureRandomFuture.indexCache5.getArchiveId("m" + var13 + "_" + var14);
-                        MouseHandler.regionLandArchiveIds[var4] = SecureRandomFuture.indexCache5.getArchiveId("l" + var13 + "_" + var14);
+                        ArchiveLoader.regionMapArchiveIds[var4] = SecureRandomFuture.archive5.getGroupId("m" + var13 + "_" + var14);
+                        MouseHandler.regionLandArchiveIds[var4] = SecureRandomFuture.archive5.getGroupId("l" + var13 + "_" + var14);
                         ++var4;
                      }
                   }

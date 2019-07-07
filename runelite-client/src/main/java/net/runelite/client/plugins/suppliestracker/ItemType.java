@@ -66,7 +66,7 @@ public enum ItemType
 		{
 			return ItemType.AMMO;
 		}
-		if (item.getName().contains("rune"))
+		if (item.getName().toLowerCase().contains("rune"))
 		{
 			return ItemType.RUNE;
 		}

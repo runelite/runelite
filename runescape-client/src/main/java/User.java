@@ -10,8 +10,8 @@ public class User implements Comparable {
    @ObfuscatedSignature(
       signature = "Lkp;"
    )
-   @Export("username0")
-   Username username0;
+   @Export("username")
+   Username username;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lkp;"
@@ -24,9 +24,9 @@ public class User implements Comparable {
       signature = "(I)Lkp;",
       garbageValue = "1922393088"
    )
-   @Export("username")
-   public Username username() {
-      return this.username0;
+   @Export("getUsername")
+   public Username getUsername() {
+      return this.username;
    }
 
    @ObfuscatedName("v")
@@ -34,9 +34,9 @@ public class User implements Comparable {
       signature = "(B)Ljava/lang/String;",
       garbageValue = "-60"
    )
-   @Export("name")
-   public String name() {
-      return this.username0 == null ? "" : this.username0.getName();
+   @Export("getName")
+   public String getName() {
+      return this.username == null ? "" : this.username.getName();
    }
 
    @ObfuscatedName("ag")
@@ -44,8 +44,8 @@ public class User implements Comparable {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "1204003359"
    )
-   @Export("previousName")
-   public String previousName() {
+   @Export("getPreviousName")
+   public String getPreviousName() {
       return this.previousUsername == null ? "" : this.previousUsername.getName();
    }
 
@@ -55,12 +55,12 @@ public class User implements Comparable {
       garbageValue = "1156866388"
    )
    @Export("set")
-   void set(Username var1, Username var2) {
-      if (var1 == null) {
+   void set(Username username, Username previousUsername) {
+      if (username == null) {
          throw new NullPointerException();
       } else {
-         this.username0 = var1;
-         this.previousUsername = var2;
+         this.username = username;
+         this.previousUsername = previousUsername;
       }
    }
 
@@ -69,14 +69,12 @@ public class User implements Comparable {
       signature = "(Ljs;I)I",
       garbageValue = "1627362569"
    )
-   @Export("compareTo0")
-   public int compareTo0(User var1) {
-      return this.username0.compareTo0(var1.username0);
+   @Export("compareToUser")
+   public int compareToUser(User other) {
+      return this.username.compareToTyped(other.username);
    }
 
-   @Export("compareTo")
-   @ObfuscatedName("compareTo")
    public int compareTo(Object var1) {
-      return this.compareTo0((User)var1);
+      return this.compareToUser((User)var1);
    }
 }

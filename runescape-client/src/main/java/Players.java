@@ -144,22 +144,22 @@ public class Players {
       garbageValue = "-1991202495"
    )
    @Export("clickWidget")
-   static final void clickWidget(Widget var0, int var1, int var2) {
-      if (Client.clickedWidget == null && !Client.isMenuOpen && var0 != null && class48.method869(var0) != null) {
-         Client.clickedWidget = var0;
-         Client.clickedWidgetParent = class48.method869(var0);
-         Client.widgetClickX = var1;
-         Client.widgetClickY = var2;
+   static final void clickWidget(Widget component, int x, int y) {
+      if (Client.clickedWidget == null && !Client.isMenuOpen && component != null && class48.method869(component) != null) {
+         Client.clickedWidget = component;
+         Client.clickedWidgetParent = class48.method869(component);
+         Client.widgetClickX = x;
+         Client.widgetClickY = y;
          MouseRecorder.widgetDragDuration = 0;
          Client.isDraggingWidget = false;
          int var3 = Client.menuOptionsCount - 1;
          if (var3 != -1) {
-            UnitPriceComparator.tempMenuAction = new MenuAction();
-            UnitPriceComparator.tempMenuAction.argument1 = Client.menuArguments1[var3];
-            UnitPriceComparator.tempMenuAction.argument2 = Client.menuArguments2[var3];
-            UnitPriceComparator.tempMenuAction.opcode = Client.menuOpcodes[var3];
-            UnitPriceComparator.tempMenuAction.argument0 = Client.menuArguments0[var3];
-            UnitPriceComparator.tempMenuAction.action = Client.menuActions[var3];
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction = new MenuAction();
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction.argument1 = Client.menuArguments1[var3];
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction.argument2 = Client.menuArguments2[var3];
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction.opcode = Client.menuOpcodes[var3];
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction.argument0 = Client.menuArguments0[var3];
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction.action = Client.menuActions[var3];
          }
       }
 

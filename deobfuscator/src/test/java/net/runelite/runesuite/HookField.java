@@ -5,7 +5,6 @@ public class HookField
 	String field;
 	String owner;
 	String name;
-	int access;
 
 	@Override
 	public String toString()

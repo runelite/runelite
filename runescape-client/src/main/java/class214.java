@@ -9,12 +9,12 @@ public class class214 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field1127;
+   public static AbstractArchive field1127;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field1128;
+   public static AbstractArchive field1128;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lhm;"
@@ -30,7 +30,7 @@ public class class214 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field1130;
+   public static AbstractArchive field1130;
    @ObfuscatedName("k")
    static int[] field1131;
    @ObfuscatedName("ko")

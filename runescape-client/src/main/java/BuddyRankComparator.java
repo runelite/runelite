@@ -1,19 +1,23 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fw")
-public class class157 extends AbstractUserComparator {
+@Implements("BuddyRankComparator")
+public class BuddyRankComparator extends AbstractUserComparator {
    @ObfuscatedName("nm")
    @ObfuscatedGetter(
       intValue = 1006519291
    )
    static int field1114;
    @ObfuscatedName("m")
-   final boolean field1969;
+   @Export("reversed")
+   final boolean reversed;
 
-   public class157(boolean var1) {
-      this.field1969 = var1;
+   public BuddyRankComparator(boolean var1) {
+      this.reversed = var1;
    }
 
    @ObfuscatedName("m")
@@ -21,12 +25,13 @@ public class class157 extends AbstractUserComparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "884616259"
    )
-   int method3381(Buddy var1, Buddy var2) {
-      return var2.rank != var1.rank ? (this.field1969 ? var1.rank - var2.rank : var2.rank - var1.rank) : this.method12(var1, var2);
+   @Export("compareBuddy")
+   int compareBuddy(Buddy var1, Buddy var2) {
+      return var2.rank != var1.rank ? (this.reversed ? var1.rank - var2.rank : var2.rank - var1.rank) : this.compareUser(var1, var2);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method3381((Buddy)var1, (Buddy)var2);
+      return this.compareBuddy((Buddy)var1, (Buddy)var2);
    }
 
    @ObfuscatedName("s")

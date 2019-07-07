@@ -1,9 +1,12 @@
 import java.util.Comparator;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("n")
-final class class12 implements Comparator {
+@Implements("GrandExchangeOfferAgeComparator")
+final class GrandExchangeOfferAgeComparator implements Comparator {
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lho;"
@@ -15,7 +18,8 @@ final class class12 implements Comparator {
       signature = "(Ll;Ll;B)I",
       garbageValue = "-86"
    )
-   int method149(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+   @Export("compareTyped")
+   int compareTyped(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.field370 < var2.field370 ? -1 : (var1.field370 == var2.field370 ? 0 : 1);
    }
 
@@ -24,7 +28,7 @@ final class class12 implements Comparator {
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method149((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+      return this.compareTyped((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    @ObfuscatedName("m")
@@ -123,11 +127,11 @@ final class class12 implements Comparator {
       garbageValue = "1731524026"
    )
    static void method159() {
-      for (WidgetGroupParent var0 = (WidgetGroupParent)Client.widgetGroupParents.first(); var0 != null; var0 = (WidgetGroupParent)Client.widgetGroupParents.next()) {
+      for (InterfaceParent var0 = (InterfaceParent)Client.interfaceParents.first(); var0 != null; var0 = (InterfaceParent)Client.interfaceParents.next()) {
          int var1 = var0.group;
-         if (GroundItemPile.loadWidgetGroup(var1)) {
+         if (GroundItemPile.loadInterface(var1)) {
             boolean var2 = true;
-            Widget[] var3 = Widget.widgets[var1];
+            Widget[] var3 = Widget.interfaceComponents[var1];
 
             int var4;
             for (var4 = 0; var4 < var3.length; ++var4) {

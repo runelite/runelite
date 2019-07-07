@@ -59,8 +59,8 @@ public enum RectangleMode implements Enumerated {
       signature = "(Lir;Lir;ZB)V",
       garbageValue = "1"
    )
-   public static void method6028(AbstractIndexCache var0, AbstractIndexCache var1, boolean var2) {
-      ObjectDefinition.ObjectDefinition_indexCache = var0;
+   public static void method6028(AbstractArchive var0, AbstractArchive var1, boolean var2) {
+      ObjectDefinition.ObjectDefinition_archive = var0;
       ObjectDefinition.field640 = var1;
       ObjectDefinition.ObjectDefinition_isLowDetail = var2;
    }

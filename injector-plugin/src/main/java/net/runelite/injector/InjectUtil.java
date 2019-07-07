@@ -27,6 +27,33 @@ public class InjectUtil
 
 	public static Method findMethod(Inject inject, String name) throws InjectionException
 	{
+		return findMethod(inject, name, null);
+	}
+
+	public static Method findMethod(Inject inject, String name, String hint) throws InjectionException
+	{
+		if (hint != null)
+		{
+			ClassFile c = inject.getDeobfuscated().findClass(hint);
+
+			if (c == null)
+			{
+				throw new InjectionException("Class " + hint + " doesn't exist. (check capitalization)");
+			}
+
+			Method deob = c.findMethod(name);
+
+			if (deob != null)
+			{
+				String obfuscatedName = DeobAnnotations.getObfuscatedName(deob.getAnnotations());
+				Signature obfuscatedSignature = DeobAnnotations.getObfuscatedSignature(deob);
+
+				ClassFile ob = inject.toObClass(c);
+
+				return ob.findMethod(obfuscatedName, (obfuscatedSignature != null) ? obfuscatedSignature : deob.getDescriptor());
+			}
+		}
+
 		for (ClassFile c : inject.getDeobfuscated().getClasses())
 		{
 			for (Method m : c.getMethods())

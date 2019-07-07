@@ -19,7 +19,7 @@ public class class211 {
       signature = "Llg;"
    )
    @Export("spriteIds")
-   static SpriteIds spriteIds;
+   static GraphicsDefaults spriteIds;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -90,7 +90,7 @@ public class class211 {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var8 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var9 = ByteArrayPool.indexCache13.takeRecord(var8, 0);
+                     var9 = ByteArrayPool.archive13.takeFile(var8, 0);
                      var10 = new Font(var9);
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var10.lineCount(var3, var4);
                      return 1;
@@ -99,7 +99,7 @@ public class class211 {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var8 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var9 = ByteArrayPool.indexCache13.takeRecord(var8, 0);
+                     var9 = ByteArrayPool.archive13.takeFile(var8, 0);
                      var10 = new Font(var9);
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var10.lineWidth(var3, var4);
                      return 1;
@@ -125,7 +125,7 @@ public class class211 {
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAR_ISPRINTABLE) {
                      var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ChatChannel.method2238((char)var7) ? 1 : 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ChatChannel.isCharPrintable((char)var7) ? 1 : 0;
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAR_ISALPHANUMERIC) {
                      var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
@@ -133,11 +133,11 @@ public class class211 {
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAR_ISALPHA) {
                      var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = UrlRequest.method3271((char)var7) ? 1 : 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = UrlRequest.isCharAlphabetic((char)var7) ? 1 : 0;
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAR_ISNUMERIC) {
                      var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class159.method3394((char)var7) ? 1 : 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class159.isCharDigit((char)var7) ? 1 : 0;
                      return 1;
                   } else if (var0 == ScriptOpcodes.STRING_LENGTH) {
                      var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
@@ -185,7 +185,7 @@ public class class211 {
                      var8 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.indexOf(var5, var8);
                      return 1;
-                  } else if (var0 == 4122) {
+                  } else if (var0 == ScriptOpcodes.UPPERCASE) {
                      var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                      Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.toUpperCase();
                      return 1;

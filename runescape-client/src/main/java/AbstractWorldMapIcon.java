@@ -23,13 +23,13 @@ public abstract class AbstractWorldMapIcon {
       signature = "Lhu;"
    )
    @Export("coord2")
-   public final TileLocation coord2;
+   public final Coord coord2;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lhu;"
    )
    @Export("coord1")
-   public final TileLocation coord1;
+   public final Coord coord1;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -521086143
@@ -44,7 +44,7 @@ public abstract class AbstractWorldMapIcon {
    @ObfuscatedSignature(
       signature = "(Lhu;Lhu;)V"
    )
-   AbstractWorldMapIcon(TileLocation var1, TileLocation var2) {
+   AbstractWorldMapIcon(Coord var1, Coord var2) {
       this.coord1 = var1;
       this.coord2 = var2;
    }
@@ -54,14 +54,16 @@ public abstract class AbstractWorldMapIcon {
       signature = "(I)I",
       garbageValue = "1990181988"
    )
-   public abstract int vmethod395();
+   @Export("getElement")
+   public abstract int getElement();
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)Laj;",
       garbageValue = "1159446036"
    )
-   abstract WorldMapLabel vmethod396();
+   @Export("getLabel")
+   abstract WorldMapLabel getLabel();
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
@@ -92,7 +94,7 @@ public abstract class AbstractWorldMapIcon {
       garbageValue = "1150380891"
    )
    boolean method19() {
-      return this.vmethod395() >= 0;
+      return this.getElement() >= 0;
    }
 
    @ObfuscatedName("b")
@@ -104,7 +106,7 @@ public abstract class AbstractWorldMapIcon {
       if (!this.method19()) {
          return false;
       } else {
-         WorldMapElement var3 = ViewportMouse.getWorldMapElement(this.vmethod395());
+         WorldMapElement var3 = ViewportMouse.getWorldMapElement(this.getElement());
          int var4 = this.vmethod397();
          int var5 = this.vmethod398();
          switch(var3.field3287.field3528) {
@@ -153,7 +155,7 @@ public abstract class AbstractWorldMapIcon {
       garbageValue = "1201712205"
    )
    boolean method21(int var1, int var2) {
-      WorldMapLabel var3 = this.vmethod396();
+      WorldMapLabel var3 = this.getLabel();
       return var3 == null ? false : (var1 >= this.field5 - var3.width / 2 && var1 <= var3.width / 2 + this.field5 ? var2 >= this.field6 && var2 <= var3.height + this.field6 : false);
    }
 
@@ -162,9 +164,9 @@ public abstract class AbstractWorldMapIcon {
       signature = "(Lit;Ljava/lang/String;I)V",
       garbageValue = "-1018878027"
    )
-   static void method625(IndexCache var0, String var1) {
-      IndexCacheLoader var2 = new IndexCacheLoader(var0, var1);
-      Client.indexCacheLoaders.add(var2);
+   static void method625(Archive var0, String var1) {
+      ArchiveLoader var2 = new ArchiveLoader(var0, var1);
+      Client.archiveLoaders.add(var2);
       Client.field140 += var2.field408;
    }
 }

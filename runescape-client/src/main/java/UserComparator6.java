@@ -18,10 +18,11 @@ public class UserComparator6 extends AbstractUserComparator {
    )
    static Widget field937;
    @ObfuscatedName("m")
-   final boolean field938;
+   @Export("reversed")
+   final boolean reversed;
 
    public UserComparator6(boolean var1) {
-      this.field938 = var1;
+      this.reversed = var1;
    }
 
    @ObfuscatedName("m")
@@ -29,14 +30,13 @@ public class UserComparator6 extends AbstractUserComparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "750521759"
    )
-   int method348(Buddy var1, Buddy var2) {
-      return var1.world0 != 0 && var2.world0 != 0 ? (this.field938 ? var1.username().compareTo0(var2.username()) : var2.username().compareTo0(var1.username())) : this.method12(var1, var2);
+   @Export("compareBuddy")
+   int compareBuddy(Buddy var1, Buddy var2) {
+      return var1.world != 0 && var2.world != 0 ? (this.reversed ? var1.getUsername().compareToTyped(var2.getUsername()) : var2.getUsername().compareToTyped(var1.getUsername())) : this.compareUser(var1, var2);
    }
 
-   @Export("compare")
-   @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.method348((Buddy)var1, (Buddy)var2);
+      return this.compareBuddy((Buddy)var1, (Buddy)var2);
    }
 
    @ObfuscatedName("f")

@@ -63,7 +63,7 @@ public class FriendsList extends UserList {
    @Export("isFriended")
    public boolean isFriended(Username var1, boolean var2) {
       Friend var3 = (Friend)this.getByUsername(var1);
-      return var3 != null && (!var2 || var3.world0 != 0);
+      return var3 != null && (!var2 || var3.world != 0);
    }
 
    @ObfuscatedName("x")
@@ -72,24 +72,24 @@ public class FriendsList extends UserList {
       garbageValue = "-11"
    )
    @Export("read")
-   public void read(Buffer var1, int var2) {
+   public void read(Buffer buffer, int var2) {
       while (true) {
-         if (var1.index < var2) {
-            boolean var3 = var1.readUnsignedByte() == 1;
-            Username var4 = new Username(var1.readStringCp1252NullTerminated(), this.loginType);
-            Username var5 = new Username(var1.readStringCp1252NullTerminated(), this.loginType);
-            int var6 = var1.readUnsignedShort();
-            int var7 = var1.readUnsignedByte();
-            int var8 = var1.readUnsignedByte();
+         if (buffer.index < var2) {
+            boolean var3 = buffer.readUnsignedByte() == 1;
+            Username var4 = new Username(buffer.readStringCp1252NullTerminated(), this.loginType);
+            Username var5 = new Username(buffer.readStringCp1252NullTerminated(), this.loginType);
+            int var6 = buffer.readUnsignedShort();
+            int var7 = buffer.readUnsignedByte();
+            int var8 = buffer.readUnsignedByte();
             boolean var9 = (var8 & 2) != 0;
             boolean var10 = (var8 & 1) != 0;
             if (var6 > 0) {
-               var1.readStringCp1252NullTerminated();
-               var1.readUnsignedByte();
-               var1.readInt();
+               buffer.readStringCp1252NullTerminated();
+               buffer.readUnsignedByte();
+               buffer.readInt();
             }
 
-            var1.readStringCp1252NullTerminated();
+            buffer.readStringCp1252NullTerminated();
             if (var4 != null && var4.hasCleanName()) {
                Friend var11 = (Friend)this.getByCurrentUsername(var4);
                if (var3) {
@@ -105,7 +105,7 @@ public class FriendsList extends UserList {
 
                if (var11 != null) {
                   this.changeName(var11, var4, var5);
-                  if (var6 != var11.world0) {
+                  if (var6 != var11.world) {
                      boolean var14 = true;
 
                      for (FriendLoginUpdate var13 = (FriendLoginUpdate)this.friendLoginUpdates.last(); var13 != null; var13 = (FriendLoginUpdate)this.friendLoginUpdates.previous()) {
@@ -132,13 +132,13 @@ public class FriendsList extends UserList {
                   var11 = (Friend)this.addLast(var4, var5);
                }
 
-               if (var6 != var11.world0) {
+               if (var6 != var11.world) {
                   var11.int2 = ++this.field358 - 1;
-                  if (var11.world0 == -1 && var6 == 0) {
+                  if (var11.world == -1 && var6 == 0) {
                      var11.int2 = -(var11.int2 * -1377538447) * 120689297;
                   }
 
-                  var11.world0 = var6;
+                  var11.world = var6;
                }
 
                var11.rank = var7;

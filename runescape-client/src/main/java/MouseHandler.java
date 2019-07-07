@@ -136,9 +136,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
       garbageValue = "-965288682"
    )
    @Export("getButton")
-   final int getButton(MouseEvent var1) {
-      int var2 = var1.getButton();
-      return !var1.isAltDown() && var2 != 2 ? (!var1.isMetaDown() && var2 != 3 ? 1 : 2) : 4;
+   final int getButton(MouseEvent mouseEvent) {
+      int var2 = mouseEvent.getButton();
+      return !mouseEvent.isAltDown() && var2 != 2 ? (!mouseEvent.isMetaDown() && var2 != 3 ? 1 : 2) : 4;
    }
 
    @Export("mouseMoved")

@@ -26,18 +26,18 @@ public class GrandExchangeEvent {
    @Export("grandExchangeOffer")
    public final GrandExchangeOffer grandExchangeOffer;
    @ObfuscatedName("w")
-   @Export("string1")
-   String string1;
+   @Export("offerName")
+   String offerName;
    @ObfuscatedName("o")
-   @Export("string2")
-   String string2;
+   @Export("previousOfferName")
+   String previousOfferName;
 
    @ObfuscatedSignature(
       signature = "(Lgr;BI)V"
    )
    GrandExchangeEvent(Buffer var1, byte var2, int var3) {
-      this.string1 = var1.readStringCp1252NullTerminated();
-      this.string2 = var1.readStringCp1252NullTerminated();
+      this.offerName = var1.readStringCp1252NullTerminated();
+      this.previousOfferName = var1.readStringCp1252NullTerminated();
       this.world = var1.readUnsignedShort();
       this.field370 = var1.readLong();
       int var4 = var1.readInt();
@@ -57,8 +57,9 @@ public class GrandExchangeEvent {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "1672323214"
    )
-   public String method119() {
-      return this.string1;
+   @Export("getOfferName")
+   public String getOfferName() {
+      return this.offerName;
    }
 
    @ObfuscatedName("f")
@@ -66,8 +67,9 @@ public class GrandExchangeEvent {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "-271438207"
    )
-   public String method120() {
-      return this.string2;
+   @Export("getPreviousOfferName")
+   public String getPreviousOfferName() {
+      return this.previousOfferName;
    }
 
    @ObfuscatedName("f")
@@ -76,14 +78,14 @@ public class GrandExchangeEvent {
       garbageValue = "-1003049523"
    )
    @Export("runScript0")
-   static void runScript0(ScriptEvent var0, int var1) {
-      Object[] var2 = var0.args0;
+   static void runScript0(ScriptEvent scriptEvent, int var1) {
+      Object[] var2 = scriptEvent.args0;
       Script var3;
       int var4;
-      if (class12.method162(var0.type0)) {
+      if (GrandExchangeOfferAgeComparator.method162(scriptEvent.type0)) {
          class15.worldMapEvent = (WorldMapEvent)var2[0];
          WorldMapElement var5 = ViewportMouse.getWorldMapElement(class15.worldMapEvent.mapElement);
-         var3 = FaceNormal.method3236(var0.type0, var5.field1020, var5.category);
+         var3 = FaceNormal.method3236(scriptEvent.type0, var5.field1020, var5.category);
       } else {
          var4 = (Integer)var2[0];
          var3 = SoundSystem.method2451(var4);
@@ -113,46 +115,46 @@ public class GrandExchangeEvent {
                   if (var2[var8] instanceof Integer) {
                      var11 = (Integer)var2[var8];
                      if (var11 == -2147483647) {
-                        var11 = var0.mouseX;
+                        var11 = scriptEvent.mouseX;
                      }
 
                      if (var11 == -2147483646) {
-                        var11 = var0.mouseY;
+                        var11 = scriptEvent.mouseY;
                      }
 
                      if (var11 == -2147483645) {
-                        var11 = var0.widget != null ? var0.widget.id : -1;
+                        var11 = scriptEvent.widget != null ? scriptEvent.widget.id : -1;
                      }
 
                      if (var11 == -2147483644) {
-                        var11 = var0.opIndex;
+                        var11 = scriptEvent.opIndex;
                      }
 
                      if (var11 == -2147483643) {
-                        var11 = var0.widget != null ? var0.widget.childIndex : -1;
+                        var11 = scriptEvent.widget != null ? scriptEvent.widget.childIndex : -1;
                      }
 
                      if (var11 == -2147483642) {
-                        var11 = var0.dragTarget != null ? var0.dragTarget.id : -1;
+                        var11 = scriptEvent.dragTarget != null ? scriptEvent.dragTarget.id : -1;
                      }
 
                      if (var11 == -2147483641) {
-                        var11 = var0.dragTarget != null ? var0.dragTarget.childIndex : -1;
+                        var11 = scriptEvent.dragTarget != null ? scriptEvent.dragTarget.childIndex : -1;
                      }
 
                      if (var11 == -2147483640) {
-                        var11 = var0.keyTyped;
+                        var11 = scriptEvent.keyTyped;
                      }
 
                      if (var11 == -2147483639) {
-                        var11 = var0.keyPressed;
+                        var11 = scriptEvent.keyPressed;
                      }
 
                      Username.Interpreter_intLocals[var9++] = var11;
                   } else if (var2[var8] instanceof String) {
                      var12 = (String)var2[var8];
                      if (var12.equals("event_opbase")) {
-                        var12 = var0.targetName;
+                        var12 = scriptEvent.targetName;
                      }
 
                      Interpreter.Interpreter_stringLocals[var26++] = var12;
@@ -160,7 +162,7 @@ public class GrandExchangeEvent {
                }
 
                var8 = 0;
-               Interpreter.field425 = var0.field772;
+               Interpreter.field425 = scriptEvent.field772;
 
                while (true) {
                   ++var8;
@@ -197,7 +199,7 @@ public class GrandExchangeEvent {
                   } else if (var13 == ScriptOpcodes.SET_VARP) {
                      var11 = var6[var4];
                      Varps.Varps_main[var11] = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     IndexCache.method4703(var11);
+                     Archive.method4703(var11);
                   } else if (var13 == ScriptOpcodes.SCONST) {
                      Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.stringOperands[var4];
                   } else if (var13 == ScriptOpcodes.JUMP) {

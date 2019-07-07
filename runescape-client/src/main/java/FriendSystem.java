@@ -161,7 +161,7 @@ public class FriendSystem {
                   WorldMapIcon1.addGameMessage(30, "", var4);
                } else {
                   PacketBufferNode var6 = Interpreter.method1915(ClientPacket.field310, Client.packetWriter.isaacCipher);
-                  var6.packetBuffer.writeByte(WorldMapRegion.method550(var1));
+                  var6.packetBuffer.writeByte(WorldMapRegion.stringCp1252NullTerminatedByteSize(var1));
                   var6.packetBuffer.writeStringCp1252NullTerminated(var1);
                   Client.packetWriter.method241(var6);
                }
@@ -214,7 +214,7 @@ public class FriendSystem {
                   WorldMapIcon1.addGameMessage(30, "", var4);
                } else {
                   var5 = Interpreter.method1915(ClientPacket.field312, Client.packetWriter.isaacCipher);
-                  var5.packetBuffer.writeByte(WorldMapRegion.method550(var1));
+                  var5.packetBuffer.writeByte(WorldMapRegion.stringCp1252NullTerminatedByteSize(var1));
                   var5.packetBuffer.writeStringCp1252NullTerminated(var1);
                   Client.packetWriter.method241(var5);
                }
@@ -240,15 +240,15 @@ public class FriendSystem {
       garbageValue = "-2122207917"
    )
    @Export("removeFriend")
-   final void removeFriend(String var1) {
-      if (var1 != null) {
-         Username var2 = new Username(var1, this.loginType);
+   final void removeFriend(String name) {
+      if (name != null) {
+         Username var2 = new Username(name, this.loginType);
          if (var2.hasCleanName()) {
             if (this.friendsList.removeByUsername(var2)) {
                WorldMapManager.method668();
                PacketBufferNode var3 = Interpreter.method1915(ClientPacket.field276, Client.packetWriter.isaacCipher);
-               var3.packetBuffer.writeByte(WorldMapRegion.method550(var1));
-               var3.packetBuffer.writeStringCp1252NullTerminated(var1);
+               var3.packetBuffer.writeByte(WorldMapRegion.stringCp1252NullTerminatedByteSize(name));
+               var3.packetBuffer.writeStringCp1252NullTerminated(name);
                Client.packetWriter.method241(var3);
             }
 
@@ -264,15 +264,15 @@ public class FriendSystem {
       garbageValue = "-1673636127"
    )
    @Export("removeIgnore")
-   final void removeIgnore(String var1) {
-      if (var1 != null) {
-         Username var2 = new Username(var1, this.loginType);
+   final void removeIgnore(String name) {
+      if (name != null) {
+         Username var2 = new Username(name, this.loginType);
          if (var2.hasCleanName()) {
             if (this.ignoreList.removeByUsername(var2)) {
                WorldMapManager.method668();
                PacketBufferNode var3 = Interpreter.method1915(ClientPacket.field250, Client.packetWriter.isaacCipher);
-               var3.packetBuffer.writeByte(WorldMapRegion.method550(var1));
-               var3.packetBuffer.writeStringCp1252NullTerminated(var1);
+               var3.packetBuffer.writeByte(WorldMapRegion.stringCp1252NullTerminatedByteSize(name));
+               var3.packetBuffer.writeStringCp1252NullTerminated(name);
                Client.packetWriter.method241(var3);
             }
 
@@ -304,18 +304,18 @@ public class FriendSystem {
          var0 -= 1000;
          var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
       } else {
-         var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+         var3 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       }
 
       if (var0 == ScriptOpcodes.CC_CALLONRESIZE) {
          if (Interpreter.field425 >= 10) {
             throw new RuntimeException();
-         } else if (var3.field975 == null) {
+         } else if (var3.onResize == null) {
             return 0;
          } else {
             ScriptEvent var4 = new ScriptEvent();
             var4.widget = var3;
-            var4.args0 = var3.field975;
+            var4.args0 = var3.onResize;
             var4.field772 = Interpreter.field425 + 1;
             Client.scriptEvents.addFirst(var4);
             return 1;
@@ -332,6 +332,6 @@ public class FriendSystem {
    )
    @Export("jmodCheck")
    public static boolean jmodCheck() {
-      return Client.rights >= 2;
+      return Client.staffModLevel >= 2;
    }
 }

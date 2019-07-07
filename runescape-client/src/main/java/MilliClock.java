@@ -73,7 +73,7 @@ public class MilliClock extends Clock {
       garbageValue = "-126803683"
    )
    @Export("wait")
-   public int wait(int var1, int var2) {
+   public int wait(int cycleMs, int minSleepMs) {
       int var3 = this.field518;
       int var4 = this.field519;
       this.field518 = 300;
@@ -83,7 +83,7 @@ public class MilliClock extends Clock {
          this.field518 = var3;
          this.field519 = var4;
       } else if (this.field520 > this.field517[this.field522]) {
-         this.field518 = (int)((long)(var1 * 2560) / (this.field520 - this.field517[this.field522]));
+         this.field518 = (int)((long)(cycleMs * 2560) / (this.field520 - this.field517[this.field522]));
       }
 
       if (this.field518 < 25) {
@@ -92,11 +92,11 @@ public class MilliClock extends Clock {
 
       if (this.field518 > 256) {
          this.field518 = 256;
-         this.field519 = (int)((long)var1 - (this.field520 - this.field517[this.field522]) / 10L);
+         this.field519 = (int)((long)cycleMs - (this.field520 - this.field517[this.field522]) / 10L);
       }
 
-      if (this.field519 > var1) {
-         this.field519 = var1;
+      if (this.field519 > cycleMs) {
+         this.field519 = cycleMs;
       }
 
       this.field517[this.field522] = this.field520;
@@ -105,14 +105,14 @@ public class MilliClock extends Clock {
       if (this.field519 > 1) {
          for (var5 = 0; var5 < 10; ++var5) {
             if (this.field517[var5] != 0L) {
-               long[] var10000 = this.field517;
-               var10000[var5] += (long)this.field519;
+               long[] var6 = this.field517;
+               var6[var5] += (long)this.field519;
             }
          }
       }
 
-      if (this.field519 < var2) {
-         this.field519 = var2;
+      if (this.field519 < minSleepMs) {
+         this.field519 = minSleepMs;
       }
 
       class203.method4010((long)this.field519);

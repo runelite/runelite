@@ -11,7 +11,8 @@ public class WorldMapElement extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field1019;
+   @Export("WorldMapElement_archive")
+   public static AbstractArchive WorldMapElement_archive;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -123,15 +124,15 @@ public class WorldMapElement extends DualNode {
       signature = "(Lgr;B)V",
       garbageValue = "81"
    )
-   @Export("read")
-   public void read(Buffer var1) {
+   @Export("decode")
+   public void decode(Buffer buffer) {
       while (true) {
-         int var2 = var1.readUnsignedByte();
+         int var2 = buffer.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(buffer, var2);
       }
    }
 
@@ -140,83 +141,83 @@ public class WorldMapElement extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-1197630144"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
-      if (var2 == 1) {
-         this.sprite1 = var1.method51();
-      } else if (var2 == 2) {
-         this.sprite2 = var1.method51();
-      } else if (var2 == 3) {
-         this.field1021 = var1.readStringCp1252NullTerminated();
-      } else if (var2 == 4) {
-         this.field1022 = var1.readMedium();
-      } else if (var2 == 5) {
-         var1.readMedium();
-      } else if (var2 == 6) {
-         this.textSize = var1.readUnsignedByte();
+   @Export("decodeNext")
+   void decodeNext(Buffer buffer, int opcode) {
+      if (opcode == 1) {
+         this.sprite1 = buffer.method51();
+      } else if (opcode == 2) {
+         this.sprite2 = buffer.method51();
+      } else if (opcode == 3) {
+         this.field1021 = buffer.readStringCp1252NullTerminated();
+      } else if (opcode == 4) {
+         this.field1022 = buffer.readMedium();
+      } else if (opcode == 5) {
+         buffer.readMedium();
+      } else if (opcode == 6) {
+         this.textSize = buffer.readUnsignedByte();
       } else {
          int var3;
-         if (var2 == 7) {
-            var3 = var1.readUnsignedByte();
+         if (opcode == 7) {
+            var3 = buffer.readUnsignedByte();
             if ((var3 & 1) == 0) {
             }
 
             if ((var3 & 2) == 2) {
             }
-         } else if (var2 == 8) {
-            var1.readUnsignedByte();
-         } else if (var2 >= 10 && var2 <= 14) {
-            this.strings[var2 - 10] = var1.readStringCp1252NullTerminated();
-         } else if (var2 == 15) {
-            var3 = var1.readUnsignedByte();
+         } else if (opcode == 8) {
+            buffer.readUnsignedByte();
+         } else if (opcode >= 10 && opcode <= 14) {
+            this.strings[opcode - 10] = buffer.readStringCp1252NullTerminated();
+         } else if (opcode == 15) {
+            var3 = buffer.readUnsignedByte();
             this.field1023 = new int[var3 * 2];
 
             int var4;
             for (var4 = 0; var4 < var3 * 2; ++var4) {
-               this.field1023[var4] = var1.method44();
+               this.field1023[var4] = buffer.method44();
             }
 
-            var1.readInt();
-            var4 = var1.readUnsignedByte();
+            buffer.readInt();
+            var4 = buffer.readUnsignedByte();
             this.field1028 = new int[var4];
 
             int var5;
             for (var5 = 0; var5 < this.field1028.length; ++var5) {
-               this.field1028[var5] = var1.readInt();
+               this.field1028[var5] = buffer.readInt();
             }
 
             this.field1029 = new byte[var3];
 
             for (var5 = 0; var5 < var3; ++var5) {
-               this.field1029[var5] = var1.readByte();
+               this.field1029[var5] = buffer.readByte();
             }
-         } else if (var2 != 16) {
-            if (var2 == 17) {
-               this.string1 = var1.readStringCp1252NullTerminated();
-            } else if (var2 == 18) {
-               var1.method51();
-            } else if (var2 == 19) {
-               this.category = var1.readUnsignedShort();
-            } else if (var2 == 21) {
-               var1.readInt();
-            } else if (var2 == 22) {
-               var1.readInt();
-            } else if (var2 == 23) {
-               var1.readUnsignedByte();
-               var1.readUnsignedByte();
-               var1.readUnsignedByte();
-            } else if (var2 == 24) {
-               var1.method44();
-               var1.method44();
-            } else if (var2 == 25) {
-               var1.method51();
-            } else if (var2 == 28) {
-               var1.readUnsignedByte();
-            } else if (var2 == 29) {
+         } else if (opcode != 16) {
+            if (opcode == 17) {
+               this.string1 = buffer.readStringCp1252NullTerminated();
+            } else if (opcode == 18) {
+               buffer.method51();
+            } else if (opcode == 19) {
+               this.category = buffer.readUnsignedShort();
+            } else if (opcode == 21) {
+               buffer.readInt();
+            } else if (opcode == 22) {
+               buffer.readInt();
+            } else if (opcode == 23) {
+               buffer.readUnsignedByte();
+               buffer.readUnsignedByte();
+               buffer.readUnsignedByte();
+            } else if (opcode == 24) {
+               buffer.method44();
+               buffer.method44();
+            } else if (opcode == 25) {
+               buffer.method51();
+            } else if (opcode == 28) {
+               buffer.readUnsignedByte();
+            } else if (opcode == 29) {
                class266[] var6 = new class266[]{class266.field3527, class266.field3526, class266.field3529};
-               this.field3287 = (class266)ScriptFrame.findEnumerated(var6, var1.readUnsignedByte());
-            } else if (var2 == 30) {
-               this.field3301 = (class249)ScriptFrame.findEnumerated(UnderlayDefinition.method4839(), var1.readUnsignedByte());
+               this.field3287 = (class266)ScriptFrame.findEnumerated(var6, buffer.readUnsignedByte());
+            } else if (opcode == 30) {
+               this.field3301 = (class249)ScriptFrame.findEnumerated(FloorUnderlayDefinition.method4839(), buffer.readUnsignedByte());
             }
          }
       }
@@ -272,7 +273,7 @@ public class WorldMapElement extends DualNode {
          if (var2 != null) {
             return var2;
          } else {
-            var2 = class322.readSprite(field1019, var1, 0);
+            var2 = class322.readSprite(WorldMapElement_archive, var1, 0);
             if (var2 != null) {
                WorldMapElement_cachedSprites.put(var2, (long)var1);
             }

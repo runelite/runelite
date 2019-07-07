@@ -51,12 +51,12 @@ public final class WorldMapManager {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   final AbstractIndexCache field1046;
+   final AbstractArchive field1046;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   final AbstractIndexCache field1047;
+   final AbstractArchive field1047;
    @ObfuscatedName("d")
    @Export("fonts")
    final HashMap fonts;
@@ -91,7 +91,7 @@ public final class WorldMapManager {
    @ObfuscatedSignature(
       signature = "([Llq;Ljava/util/HashMap;Lir;Lir;)V"
    )
-   public WorldMapManager(IndexedSprite[] var1, HashMap var2, AbstractIndexCache var3, AbstractIndexCache var4) {
+   public WorldMapManager(IndexedSprite[] var1, HashMap var2, AbstractArchive var3, AbstractArchive var4) {
       this.isLoaded0 = false;
       this.loadStarted = false;
       this.field1045 = new HashMap();
@@ -108,21 +108,21 @@ public final class WorldMapManager {
       garbageValue = "32"
    )
    @Export("load")
-   public void load(AbstractIndexCache var1, String var2, boolean var3) {
+   public void load(AbstractArchive indexCache, String cacheName, boolean isMembersWorld) {
       if (!this.loadStarted) {
          this.isLoaded0 = false;
          this.loadStarted = true;
          System.nanoTime();
-         int var4 = var1.getArchiveId(WorldMapCacheName.WorldMapCacheName_details.name);
-         int var5 = var1.getRecordId(var4, var2);
-         Buffer var6 = new Buffer(var1.takeRecordByNames(WorldMapCacheName.WorldMapCacheName_details.name, var2));
-         Buffer var7 = new Buffer(var1.takeRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, var2));
+         int var4 = indexCache.getGroupId(WorldMapCacheName.WorldMapCacheName_details.name);
+         int var5 = indexCache.getFileId(var4, cacheName);
+         Buffer var6 = new Buffer(indexCache.takeFileByNames(WorldMapCacheName.WorldMapCacheName_details.name, cacheName));
+         Buffer var7 = new Buffer(indexCache.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, cacheName));
          System.nanoTime();
          System.nanoTime();
          this.mapAreaData = new WorldMapAreaData();
 
          try {
-            this.mapAreaData.method387(var6, var7, var5, var3);
+            this.mapAreaData.method387(var6, var7, var5, isMembersWorld);
          } catch (IllegalStateException var16) {
             return;
          }
@@ -142,36 +142,36 @@ public final class WorldMapManager {
          this.regions = new WorldMapRegion[var8][var9];
          Iterator var10 = this.mapAreaData.field1016.iterator();
 
-         int var12;
+         int var11;
          while (var10.hasNext()) {
-            class15 var11 = (class15)var10.next();
-            var12 = var11.field149;
-            int var13 = var11.field146;
-            int var14 = var12 - this.mapAreaData.minX();
+            class15 var12 = (class15)var10.next();
+            var11 = var12.field149;
+            int var13 = var12.field146;
+            int var14 = var11 - this.mapAreaData.minX();
             int var15 = var13 - this.mapAreaData.minY();
-            this.regions[var14][var15] = new WorldMapRegion(var12, var13, this.mapAreaData.method386(), this.fonts);
-            this.regions[var14][var15].method447(var11, this.mapAreaData.field1018);
+            this.regions[var14][var15] = new WorldMapRegion(var11, var13, this.mapAreaData.method386(), this.fonts);
+            this.regions[var14][var15].method447(var12, this.mapAreaData.field1018);
          }
 
          for (int var17 = 0; var17 < var8; ++var17) {
-            for (var12 = 0; var12 < var9; ++var12) {
-               if (this.regions[var17][var12] == null) {
-                  this.regions[var17][var12] = new WorldMapRegion(this.mapAreaData.minX() + var17, this.mapAreaData.minY() + var12, this.mapAreaData.method386(), this.fonts);
-                  this.regions[var17][var12].method405(this.mapAreaData.field1017, this.mapAreaData.field1018);
+            for (var11 = 0; var11 < var9; ++var11) {
+               if (this.regions[var17][var11] == null) {
+                  this.regions[var17][var11] = new WorldMapRegion(this.mapAreaData.minX() + var17, this.mapAreaData.minY() + var11, this.mapAreaData.method386(), this.fonts);
+                  this.regions[var17][var11].method405(this.mapAreaData.field1017, this.mapAreaData.field1018);
                }
             }
          }
 
          System.nanoTime();
          System.nanoTime();
-         if (var1.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, var2)) {
-            byte[] var18 = var1.takeRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, var2);
+         if (indexCache.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName)) {
+            byte[] var18 = indexCache.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName);
             this.overviewSprite = class27.convertJpgToSprite(var18);
          }
 
          System.nanoTime();
-         var1.method6();
-         var1.method8();
+         indexCache.method6();
+         indexCache.method8();
          this.isLoaded0 = true;
       }
 
@@ -421,7 +421,7 @@ public final class WorldMapManager {
             while (var4.hasNext()) {
                AbstractWorldMapIcon var5 = (AbstractWorldMapIcon)var4.next();
                if (var5.method19()) {
-                  int var6 = var5.vmethod395();
+                  int var6 = var5.getElement();
                   if (!this.icons.containsKey(var6)) {
                      LinkedList var7 = new LinkedList();
                      var7.add(var5);
@@ -461,16 +461,16 @@ public final class WorldMapManager {
       garbageValue = "514181856"
    )
    @Export("itemContainerSetItem")
-   static void itemContainerSetItem(int var0, int var1, int var2, int var3) {
-      ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+   static void itemContainerSetItem(int itemContainerId, int index, int itemId, int itemQuantity) {
+      ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)itemContainerId);
       if (var4 == null) {
          var4 = new ItemContainer();
-         ItemContainer.itemContainers.put(var4, (long)var0);
+         ItemContainer.itemContainers.put(var4, (long)itemContainerId);
       }
 
-      if (var4.ids.length <= var1) {
-         int[] var5 = new int[var1 + 1];
-         int[] var6 = new int[var1 + 1];
+      if (var4.ids.length <= index) {
+         int[] var5 = new int[index + 1];
+         int[] var6 = new int[index + 1];
 
          int var7;
          for (var7 = 0; var7 < var4.ids.length; ++var7) {
@@ -478,7 +478,7 @@ public final class WorldMapManager {
             var6[var7] = var4.quantities[var7];
          }
 
-         for (var7 = var4.ids.length; var7 < var1; ++var7) {
+         for (var7 = var4.ids.length; var7 < index; ++var7) {
             var5[var7] = -1;
             var6[var7] = 0;
          }
@@ -487,8 +487,8 @@ public final class WorldMapManager {
          var4.quantities = var6;
       }
 
-      var4.ids[var1] = var2;
-      var4.quantities[var1] = var3;
+      var4.ids[index] = itemId;
+      var4.quantities[index] = itemQuantity;
    }
 
    @ObfuscatedName("s")

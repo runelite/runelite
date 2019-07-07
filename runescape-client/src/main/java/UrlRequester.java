@@ -47,8 +47,8 @@ public class UrlRequester implements Runnable {
       garbageValue = "1097505066"
    )
    @Export("request")
-   public UrlRequest request(URL var1) {
-      UrlRequest var2 = new UrlRequest(var1);
+   public UrlRequest request(URL url) {
+      UrlRequest var2 = new UrlRequest(url);
       synchronized(this) {
          this.requests.add(var2);
          this.notify();
@@ -76,8 +76,6 @@ public class UrlRequester implements Runnable {
 
    }
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       while (!this.isClosed) {
          try {

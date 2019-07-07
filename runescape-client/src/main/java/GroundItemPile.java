@@ -67,38 +67,38 @@ public final class GroundItemPile {
       signature = "(IB)Z",
       garbageValue = "-60"
    )
-   @Export("loadWidgetGroup")
-   public static boolean loadWidgetGroup(int var0) {
-      if (Widget.loadedWidgetGroups[var0]) {
+   @Export("loadInterface")
+   public static boolean loadInterface(int itf) {
+      if (Widget.loadedInterfaces[itf]) {
          return true;
-      } else if (!Widget.Widget_indexCache.tryLoadArchive(var0)) {
+      } else if (!Widget.Widget_archive.tryLoadGroup(itf)) {
          return false;
       } else {
-         int var1 = Widget.Widget_indexCache.method4(var0);
+         int var1 = Widget.Widget_archive.method4(itf);
          if (var1 == 0) {
-            Widget.loadedWidgetGroups[var0] = true;
+            Widget.loadedInterfaces[itf] = true;
             return true;
          } else {
-            if (Widget.widgets[var0] == null) {
-               Widget.widgets[var0] = new Widget[var1];
+            if (Widget.interfaceComponents[itf] == null) {
+               Widget.interfaceComponents[itf] = new Widget[var1];
             }
 
             for (int var2 = 0; var2 < var1; ++var2) {
-               if (Widget.widgets[var0][var2] == null) {
-                  byte[] var3 = Widget.Widget_indexCache.takeRecord(var0, var2);
+               if (Widget.interfaceComponents[itf][var2] == null) {
+                  byte[] var3 = Widget.Widget_archive.takeFile(itf, var2);
                   if (var3 != null) {
-                     Widget.widgets[var0][var2] = new Widget();
-                     Widget.widgets[var0][var2].id = var2 + (var0 << 16);
+                     Widget.interfaceComponents[itf][var2] = new Widget();
+                     Widget.interfaceComponents[itf][var2].id = var2 + (itf << 16);
                      if (var3[0] == -1) {
-                        Widget.widgets[var0][var2].decode(new Buffer(var3));
+                        Widget.interfaceComponents[itf][var2].decode(new Buffer(var3));
                      } else {
-                        Widget.widgets[var0][var2].decodeLegacy(new Buffer(var3));
+                        Widget.interfaceComponents[itf][var2].decodeLegacy(new Buffer(var3));
                      }
                   }
                }
             }
 
-            Widget.loadedWidgetGroups[var0] = true;
+            Widget.loadedInterfaces[itf] = true;
             return true;
          }
       }

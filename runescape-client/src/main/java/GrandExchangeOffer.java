@@ -139,11 +139,11 @@ public class GrandExchangeOffer {
       garbageValue = "50"
    )
    static int method101() {
-      if (Client.indexCacheLoaders != null && Client.indexCacheLoaderIndex < Client.indexCacheLoaders.size()) {
+      if (Client.archiveLoaders != null && Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
          int var0 = 0;
 
-         for (int var1 = 0; var1 <= Client.indexCacheLoaderIndex; ++var1) {
-            var0 += ((IndexCacheLoader)Client.indexCacheLoaders.get(var1)).field409;
+         for (int var1 = 0; var1 <= Client.archiveLoaderArchive; ++var1) {
+            var0 += ((ArchiveLoader)Client.archiveLoaders.get(var1)).field409;
          }
 
          return var0 * 10000 / Client.field140;

@@ -17,7 +17,7 @@ public class class80 {
    static void method2015() {
       if (Login.field465) {
          Login.titleboxSprite = null;
-         IndexCacheLoader.titlebuttonSprite = null;
+         ArchiveLoader.titlebuttonSprite = null;
          WorldMapEvent.runesSprite = null;
          Login.leftTitleSprite = null;
          Fonts.rightTitleSprite = null;

@@ -40,8 +40,8 @@ public class BufferedSink implements Runnable {
    @Export("exception")
    IOException exception;
    @ObfuscatedName("l")
-   @Export("isClosed0")
-   boolean isClosed0;
+   @Export("closed")
+   boolean closed;
 
    BufferedSink(OutputStream var1, int var2) {
       this.position = 0;
@@ -61,7 +61,7 @@ public class BufferedSink implements Runnable {
    )
    @Export("isClosed")
    boolean isClosed() {
-      if (this.isClosed0) {
+      if (this.closed) {
          try {
             this.outputStream.close();
             if (this.exception == null) {
@@ -85,8 +85,8 @@ public class BufferedSink implements Runnable {
       garbageValue = "0"
    )
    @Export("write")
-   void write(byte[] var1, int var2, int var3) throws IOException {
-      if (var3 >= 0 && var2 >= 0 && var3 + var2 <= var1.length) {
+   void write(byte[] src, int srcIndex, int length) throws IOException {
+      if (length >= 0 && srcIndex >= 0 && length + srcIndex <= src.length) {
          synchronized(this) {
             if (this.exception != null) {
                throw new IOException(this.exception.toString());
@@ -98,18 +98,18 @@ public class BufferedSink implements Runnable {
                   var5 = this.position - this.limit - 1;
                }
 
-               if (var5 < var3) {
+               if (var5 < length) {
                   throw new IOException("");
                } else {
-                  if (var3 + this.limit <= this.capacity) {
-                     System.arraycopy(var1, var2, this.buffer, this.limit, var3);
+                  if (length + this.limit <= this.capacity) {
+                     System.arraycopy(src, srcIndex, this.buffer, this.limit, length);
                   } else {
                      int var6 = this.capacity - this.limit;
-                     System.arraycopy(var1, var2, this.buffer, this.limit, var6);
-                     System.arraycopy(var1, var6 + var2, this.buffer, 0, var3 - var6);
+                     System.arraycopy(src, srcIndex, this.buffer, this.limit, var6);
+                     System.arraycopy(src, var6 + srcIndex, this.buffer, 0, length - var6);
                   }
 
-                  this.limit = (var3 + this.limit) % this.capacity;
+                  this.limit = (length + this.limit) % this.capacity;
                   this.notifyAll();
                }
             }
@@ -127,7 +127,7 @@ public class BufferedSink implements Runnable {
    @Export("close")
    void close() {
       synchronized(this) {
-         this.isClosed0 = true;
+         this.closed = true;
          this.notifyAll();
       }
 
@@ -138,33 +138,33 @@ public class BufferedSink implements Runnable {
 
    }
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       while (true) {
-         synchronized(this){}
+         synchronized(this) {
+            ;
+         }
 
          while (true) {
-            boolean var13 = false;
+            boolean var1 = false;
 
-            int var1;
+            int var2;
             try {
-               var13 = true;
+               var1 = true;
                if (this.exception != null) {
                   return;
                }
 
                if (this.position <= this.limit) {
-                  var1 = this.limit - this.position;
+                  var2 = this.limit - this.position;
                } else {
-                  var1 = this.capacity - this.position + this.limit;
+                  var2 = this.capacity - this.position + this.limit;
                }
 
-               if (var1 <= 0) {
+               if (var2 <= 0) {
                   try {
                      this.outputStream.flush();
-                  } catch (IOException var17) {
-                     this.exception = var17;
+                  } catch (IOException var20) {
+                     this.exception = var20;
                      return;
                   }
 
@@ -179,31 +179,31 @@ public class BufferedSink implements Runnable {
                   continue;
                }
 
-               var13 = false;
+               var1 = false;
             } finally {
-               if (var13) {
-                  ;
+               if (var1) {
                }
+
             }
 
             try {
-               if (var1 + this.position <= this.capacity) {
-                  this.outputStream.write(this.buffer, this.position, var1);
-               } else {
-                  int var2 = this.capacity - this.position;
+               if (var2 + this.position <= this.capacity) {
                   this.outputStream.write(this.buffer, this.position, var2);
-                  this.outputStream.write(this.buffer, 0, var1 - var2);
+               } else {
+                  int var3 = this.capacity - this.position;
+                  this.outputStream.write(this.buffer, this.position, var3);
+                  this.outputStream.write(this.buffer, 0, var2 - var3);
                }
-            } catch (IOException var16) {
-               IOException var3 = var16;
+            } catch (IOException var17) {
+               IOException var4 = var17;
                synchronized(this) {
-                  this.exception = var3;
+                  this.exception = var4;
                   return;
                }
             }
 
             synchronized(this) {
-               this.position = (var1 + this.position) % this.capacity;
+               this.position = (var2 + this.position) % this.capacity;
             }
 
             if (!this.isClosed()) {
@@ -221,13 +221,13 @@ public class BufferedSink implements Runnable {
       garbageValue = "449588720"
    )
    static void method3603() {
-      Tiles.field908 = (byte[][][])null;
-      Fonts.field350 = (byte[][][])null;
-      class32.field1157 = (byte[][][])null;
-      class307.field1155 = (byte[][][])null;
-      Tiles.field910 = (int[][][])null;
-      Tiles.field909 = (byte[][][])null;
-      Huffman.field398 = (int[][])null;
+      Tiles.field908 = ((byte[][][])null);
+      Fonts.field350 = ((byte[][][])null);
+      class32.field1157 = ((byte[][][])null);
+      class307.field1155 = ((byte[][][])null);
+      Tiles.field910 = ((int[][][])null);
+      Tiles.field909 = ((byte[][][])null);
+      Huffman.field398 = ((int[][])null);
       class13.field1112 = null;
       Formatting.field353 = null;
       class214.field1131 = null;

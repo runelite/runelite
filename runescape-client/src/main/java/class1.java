@@ -9,7 +9,7 @@ final class class1 implements class0 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field1105;
+   public static AbstractArchive field1105;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -84,7 +84,7 @@ final class class1 implements class0 {
          var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          var4 = Huffman.getWidget(var3);
       } else {
-         var4 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+         var4 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       }
 
       if (var0 == ScriptOpcodes.CC_SETPOSITION) {
@@ -96,7 +96,7 @@ final class class1 implements class0 {
          class22.method295(var4);
          TextureProvider.client.alignWidget(var4);
          if (var3 != -1 && var4.type == 0) {
-            class39.revalidateWidgetScroll(Widget.widgets[var3 >> 16], var4, false);
+            class39.revalidateWidgetScroll(Widget.interfaceComponents[var3 >> 16], var4, false);
          }
 
          return 1;
@@ -109,7 +109,7 @@ final class class1 implements class0 {
          class22.method295(var4);
          TextureProvider.client.alignWidget(var4);
          if (var3 != -1 && var4.type == 0) {
-            class39.revalidateWidgetScroll(Widget.widgets[var3 >> 16], var4, false);
+            class39.revalidateWidgetScroll(Widget.interfaceComponents[var3 >> 16], var4, false);
          }
 
          return 1;
@@ -124,7 +124,7 @@ final class class1 implements class0 {
       } else if (var0 == ScriptOpcodes.CC_SETNOCLICKTHROUGH) {
          var4.noClickThrough = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
          return 1;
-      } else if (var0 == 1006) {
+      } else if (var0 == ScriptOpcodes.CC_SETNOSCROLLTHROUGH) {
          var4.noScrollThrough = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
          return 1;
       } else {
@@ -271,8 +271,8 @@ final class class1 implements class0 {
       garbageValue = "1809366429"
    )
    @Export("getWidgetClickMask")
-   static int getWidgetClickMask(Widget var0) {
-      IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.get(((long)var0.id << 32) + (long)var0.childIndex);
-      return var1 != null ? var1.integer : var0.clickMask;
+   static int getWidgetClickMask(Widget component) {
+      IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.get(((long)component.id << 32) + (long)component.childIndex);
+      return var1 != null ? var1.integer : component.clickMask;
    }
 }

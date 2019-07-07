@@ -149,8 +149,8 @@ public class ClientPreferences {
       garbageValue = "0"
    )
    static final void method1809(int var0) {
-      if (GroundItemPile.loadWidgetGroup(var0)) {
-         NetFileRequest.method4555(Widget.widgets[var0], -1);
+      if (GroundItemPile.loadInterface(var0)) {
+         NetFileRequest.method4555(Widget.interfaceComponents[var0], -1);
       }
 
    }

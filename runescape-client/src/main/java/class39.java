@@ -145,10 +145,10 @@ public class class39 extends class21 {
       garbageValue = "-1"
    )
    @Export("drawActor2d")
-   static final void drawActor2d(Actor var0, int var1, int var2, int var3, int var4, int var5) {
-      if (var0 != null && var0.isVisible()) {
-         if (var0 instanceof NPC) {
-            NPCDefinition var6 = ((NPC)var0).definition;
+   static final void drawActor2d(Actor actor, int var1, int var2, int var3, int var4, int var5) {
+      if (actor != null && actor.isVisible()) {
+         if (actor instanceof NPC) {
+            NPCDefinition var6 = ((NPC)actor).definition;
             if (var6.transforms != null) {
                var6 = var6.transform();
             }
@@ -162,8 +162,8 @@ public class class39 extends class21 {
          int[] var7 = Players.Players_indices;
          byte var8 = 0;
          Player var9;
-         if (var1 < var77 && var0.playerCycle == Client.cycle) {
-            var9 = (Player)var0;
+         if (var1 < var77 && actor.playerCycle == Client.cycle) {
+            var9 = (Player)actor;
             boolean var10;
             if (Client.field210 == 0) {
                var10 = false;
@@ -188,87 +188,87 @@ public class class39 extends class21 {
             }
 
             if (var10) {
-               Player var79 = (Player)var0;
+               Player var79 = (Player)actor;
                if (var1 < var77) {
-                  DevicePcmPlayerProvider.method840(var0, var0.defaultHeight + 15);
+                  DevicePcmPlayerProvider.method840(actor, actor.defaultHeight + 15);
                   AbstractFont var81 = (AbstractFont)Client.fontsMap.get(FontName.FontName_plain12);
-                  byte var84 = 9;
-                  var81.drawCentered(var79.username.getName(), var2 + Client.viewportTempX, var3 + Client.viewportTempY - var84, 16777215, 0);
+                  byte var83 = 9;
+                  var81.drawCentered(var79.username.getName(), var2 + Client.viewportTempX, var3 + Client.viewportTempY - var83, 16777215, 0);
                   var8 = 18;
                }
             }
          }
 
          int var78 = -2;
-         int var24;
-         int var25;
+         int var15;
          int var80;
          int var82;
+         int var84;
          int var85;
-         if (!var0.healthBars.isEmpty()) {
-            DevicePcmPlayerProvider.method840(var0, var0.defaultHeight + 15);
+         if (!actor.healthBars.isEmpty()) {
+            DevicePcmPlayerProvider.method840(actor, actor.defaultHeight + 15);
 
-            for (HealthBar var83 = (HealthBar)var0.healthBars.last(); var83 != null; var83 = (HealthBar)var0.healthBars.previous()) {
-               HealthBarUpdate var15 = var83.get(Client.cycle);
-               if (var15 == null) {
-                  if (var83.isEmpty()) {
-                     var83.remove();
+            for (HealthBar var16 = (HealthBar)actor.healthBars.last(); var16 != null; var16 = (HealthBar)actor.healthBars.previous()) {
+               HealthBarUpdate var17 = var16.get(Client.cycle);
+               if (var17 == null) {
+                  if (var16.isEmpty()) {
+                     var16.remove();
                   }
                } else {
-                  HealthBarDefinition var16 = var83.definition;
-                  Sprite var17 = var16.getSprite2();
-                  Sprite var18 = var16.getSprite1();
-                  int var19 = 0;
-                  if (var17 != null && var18 != null) {
-                     if (var16.widthPadding * 2 < var18.subWidth) {
-                        var19 = var16.widthPadding;
+                  HealthBarDefinition var18 = var16.definition;
+                  Sprite var19 = var18.getSprite2();
+                  Sprite var20 = var18.getSprite1();
+                  int var21 = 0;
+                  if (var19 != null && var20 != null) {
+                     if (var18.widthPadding * 2 < var20.subWidth) {
+                        var21 = var18.widthPadding;
                      }
 
-                     var80 = var18.subWidth - var19 * 2;
+                     var85 = var20.subWidth - var21 * 2;
                   } else {
-                     var80 = var16.width;
+                     var85 = var18.width;
                   }
 
-                  int var20 = 255;
-                  boolean var21 = true;
-                  int var22 = Client.cycle - var15.cycle;
-                  int var23 = var80 * var15.health2 / var16.width;
-                  if (var15.cycleOffset > var22) {
-                     var24 = var16.int4 == 0 ? 0 : var16.int4 * (var22 / var16.int4);
-                     var82 = var80 * var15.health / var16.width;
-                     var25 = var24 * (var23 - var82) / var15.cycleOffset + var82;
+                  int var22 = 255;
+                  boolean var23 = true;
+                  int var24 = Client.cycle - var17.cycle;
+                  int var25 = var85 * var17.health2 / var18.width;
+                  if (var17.cycleOffset > var24) {
+                     var80 = var18.int4 == 0 ? 0 : var18.int4 * (var24 / var18.int4);
+                     var84 = var85 * var17.health / var18.width;
+                     var82 = var80 * (var25 - var84) / var17.cycleOffset + var84;
                   } else {
-                     var25 = var23;
-                     var24 = var15.cycleOffset + var16.int5 - var22;
-                     if (var16.int3 >= 0) {
-                        var20 = (var24 << 8) / (var16.int5 - var16.int3);
+                     var82 = var25;
+                     var80 = var17.cycleOffset + var18.int5 - var24;
+                     if (var18.int3 >= 0) {
+                        var22 = (var80 << 8) / (var18.int5 - var18.int3);
                      }
                   }
 
-                  if (var15.health2 > 0 && var25 < 1) {
-                     var25 = 1;
+                  if (var17.health2 > 0 && var82 < 1) {
+                     var82 = 1;
                   }
 
-                  if (var17 != null && var18 != null) {
-                     if (var80 == var25) {
-                        var25 += var19 * 2;
+                  if (var19 != null && var20 != null) {
+                     if (var85 == var82) {
+                        var82 += var21 * 2;
                      } else {
-                        var25 += var19;
+                        var82 += var21;
                      }
 
-                     var24 = var17.subHeight;
-                     var78 += var24;
-                     var82 = var2 + Client.viewportTempX - (var80 >> 1);
-                     var85 = var3 + Client.viewportTempY - var78;
-                     var82 -= var19;
-                     if (var20 >= 0 && var20 < 255) {
-                        var17.method310(var82, var85, var20);
-                        Rasterizer2D.Rasterizer2D_expandClip(var82, var85, var82 + var25, var85 + var24);
-                        var18.method310(var82, var85, var20);
+                     var80 = var19.subHeight;
+                     var78 += var80;
+                     var84 = var2 + Client.viewportTempX - (var85 >> 1);
+                     var15 = var3 + Client.viewportTempY - var78;
+                     var84 -= var21;
+                     if (var22 >= 0 && var22 < 255) {
+                        var19.method310(var84, var15, var22);
+                        Rasterizer2D.Rasterizer2D_expandClip(var84, var15, var84 + var82, var15 + var80);
+                        var20.method310(var84, var15, var22);
                      } else {
-                        var17.drawAt2(var82, var85);
-                        Rasterizer2D.Rasterizer2D_expandClip(var82, var85, var25 + var82, var24 + var85);
-                        var18.drawAt2(var82, var85);
+                        var19.drawAt2(var84, var15);
+                        Rasterizer2D.Rasterizer2D_expandClip(var84, var15, var82 + var84, var80 + var15);
+                        var20.drawAt2(var84, var15);
                      }
 
                      Rasterizer2D.Rasterizer2D_setClip(var2, var3, var2 + var4, var3 + var5);
@@ -276,10 +276,10 @@ public class class39 extends class21 {
                   } else {
                      var78 += 5;
                      if (Client.viewportTempX > -1) {
-                        var24 = var2 + Client.viewportTempX - (var80 >> 1);
-                        var82 = var3 + Client.viewportTempY - var78;
-                        Rasterizer2D.Rasterizer2D_fillRectangle(var24, var82, var25, 5, 65280);
-                        Rasterizer2D.Rasterizer2D_fillRectangle(var24 + var25, var82, var80 - var25, 5, 16711680);
+                        var80 = var2 + Client.viewportTempX - (var85 >> 1);
+                        var84 = var3 + Client.viewportTempY - var78;
+                        Rasterizer2D.Rasterizer2D_fillRectangle(var80, var84, var82, 5, 65280);
+                        Rasterizer2D.Rasterizer2D_fillRectangle(var80 + var82, var84, var85 - var82, 5, 16711680);
                      }
 
                      var78 += 2;
@@ -294,13 +294,13 @@ public class class39 extends class21 {
 
          var78 += var8;
          if (var1 < var77) {
-            var9 = (Player)var0;
+            var9 = (Player)actor;
             if (var9.isHidden) {
                return;
             }
 
             if (var9.headIconPk != -1 || var9.headIconPrayer != -1) {
-               DevicePcmPlayerProvider.method840(var0, var0.defaultHeight + 15);
+               DevicePcmPlayerProvider.method840(actor, actor.defaultHeight + 15);
                if (Client.viewportTempX > -1) {
                   if (var9.headIconPk != -1) {
                      var78 += 25;
@@ -315,51 +315,51 @@ public class class39 extends class21 {
             }
 
             if (var1 >= 0 && Client.hintArrowType == 10 && var7[var1] == Client.hintArrowPlayerIndex) {
-               DevicePcmPlayerProvider.method840(var0, var0.defaultHeight + 15);
+               DevicePcmPlayerProvider.method840(actor, actor.defaultHeight + 15);
                if (Client.viewportTempX > -1) {
                   var78 += Player.headIconHintSprites[1].subHeight;
                   Player.headIconHintSprites[1].drawAt2(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - var78);
                }
             }
          } else {
-            NPCDefinition var86 = ((NPC)var0).definition;
+            NPCDefinition var86 = ((NPC)actor).definition;
             if (var86.transforms != null) {
                var86 = var86.transform();
             }
 
             if (var86.headIconPrayer >= 0 && var86.headIconPrayer < ClientPreferences.headIconPrayerSprites.length) {
-               DevicePcmPlayerProvider.method840(var0, var0.defaultHeight + 15);
+               DevicePcmPlayerProvider.method840(actor, actor.defaultHeight + 15);
                if (Client.viewportTempX > -1) {
                   ClientPreferences.headIconPrayerSprites[var86.headIconPrayer].drawAt2(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - 30);
                }
             }
 
             if (Client.hintArrowType == 1 && Client.npcIndices[var1 - var77] == Client.hintArrowNpcIndex && Client.cycle % 20 < 10) {
-               DevicePcmPlayerProvider.method840(var0, var0.defaultHeight + 15);
+               DevicePcmPlayerProvider.method840(actor, actor.defaultHeight + 15);
                if (Client.viewportTempX > -1) {
                   Player.headIconHintSprites[0].drawAt2(var2 + Client.viewportTempX - 12, var3 + Client.viewportTempY - 28);
                }
             }
          }
 
-         if (var0.overheadText != null && (var1 >= var77 || !var0.field11 && (Client.publicChatMode == 4 || !var0.isAutoChatting && (Client.publicChatMode == 0 || Client.publicChatMode == 3 || Client.publicChatMode == 1 && ((Player)var0).isFriend())))) {
-            DevicePcmPlayerProvider.method840(var0, var0.defaultHeight);
+         if (actor.overheadText != null && (var1 >= var77 || !actor.field11 && (Client.publicChatMode == 4 || !actor.isAutoChatting && (Client.publicChatMode == 0 || Client.publicChatMode == 3 || Client.publicChatMode == 1 && ((Player)actor).isFriend())))) {
+            DevicePcmPlayerProvider.method840(actor, actor.defaultHeight);
             if (Client.viewportTempX > -1 && Client.overheadTextCount < Client.overheadTextLimit) {
-               Client.overheadTextXOffsets[Client.overheadTextCount] = class2.fontBold12.stringWidth(var0.overheadText) / 2;
+               Client.overheadTextXOffsets[Client.overheadTextCount] = class2.fontBold12.stringWidth(actor.overheadText) / 2;
                Client.overheadTextAscents[Client.overheadTextCount] = class2.fontBold12.ascent;
                Client.overheadTextXs[Client.overheadTextCount] = Client.viewportTempX;
                Client.overheadTextYs[Client.overheadTextCount] = Client.viewportTempY;
-               Client.overheadTextColors[Client.overheadTextCount] = var0.overheadTextColor;
-               Client.overheadTextEffects[Client.overheadTextCount] = var0.overheadTextEffect;
-               Client.overheadTextCyclesRemaining[Client.overheadTextCount] = var0.overheadTextCyclesRemaining;
-               Client.overheadText[Client.overheadTextCount] = var0.overheadText;
+               Client.overheadTextColors[Client.overheadTextCount] = actor.overheadTextColor;
+               Client.overheadTextEffects[Client.overheadTextCount] = actor.overheadTextEffect;
+               Client.overheadTextCyclesRemaining[Client.overheadTextCount] = actor.overheadTextCyclesRemaining;
+               Client.overheadText[Client.overheadTextCount] = actor.overheadText;
                ++Client.overheadTextCount;
             }
          }
 
          for (int var88 = 0; var88 < 4; ++var88) {
-            int var87 = var0.hitSplatCycles[var88];
-            int var89 = var0.hitSplatTypes[var88];
+            int var87 = actor.hitSplatCycles[var88];
+            int var89 = actor.hitSplatTypes[var88];
             HitSplatDefinition var90 = null;
             int var91 = 0;
             if (var89 >= 0) {
@@ -367,12 +367,12 @@ public class class39 extends class21 {
                   continue;
                }
 
-               var90 = LoginScreenAnimation.getHitSplatDefinition(var0.hitSplatTypes[var88]);
+               var90 = LoginScreenAnimation.getHitSplatDefinition(actor.hitSplatTypes[var88]);
                var91 = var90.field387;
                if (var90 != null && var90.transforms != null) {
                   var90 = var90.transform();
                   if (var90 == null) {
-                     var0.hitSplatCycles[var88] = -1;
+                     actor.hitSplatCycles[var88] = -1;
                      continue;
                   }
                }
@@ -380,10 +380,10 @@ public class class39 extends class21 {
                continue;
             }
 
-            var80 = var0.hitSplatTypes2[var88];
+            var85 = actor.hitSplatTypes2[var88];
             HitSplatDefinition var92 = null;
-            if (var80 >= 0) {
-               var92 = LoginScreenAnimation.getHitSplatDefinition(var80);
+            if (var85 >= 0) {
+               var92 = LoginScreenAnimation.getHitSplatDefinition(var85);
                if (var92 != null && var92.transforms != null) {
                   var92 = var92.transform();
                }
@@ -391,9 +391,9 @@ public class class39 extends class21 {
 
             if (var87 - var91 <= Client.cycle) {
                if (var90 == null) {
-                  var0.hitSplatCycles[var88] = -1;
+                  actor.hitSplatCycles[var88] = -1;
                } else {
-                  DevicePcmPlayerProvider.method840(var0, var0.defaultHeight / 2);
+                  DevicePcmPlayerProvider.method840(actor, actor.defaultHeight / 2);
                   if (Client.viewportTempX > -1) {
                      if (var88 == 1) {
                         Client.viewportTempY -= 20;
@@ -413,10 +413,10 @@ public class class39 extends class21 {
                      Sprite var94 = null;
                      Sprite var95 = null;
                      Sprite var96 = null;
+                     var84 = 0;
+                     var15 = 0;
+                     var80 = 0;
                      var82 = 0;
-                     var85 = 0;
-                     var24 = 0;
-                     var25 = 0;
                      int var26 = 0;
                      int var27 = 0;
                      int var28 = 0;
@@ -437,7 +437,7 @@ public class class39 extends class21 {
                      var93 = var90.method123();
                      int var43;
                      if (var93 != null) {
-                        var82 = var93.subWidth;
+                        var84 = var93.subWidth;
                         var43 = var93.subHeight;
                         if (var43 > var42) {
                            var42 = var43;
@@ -448,7 +448,7 @@ public class class39 extends class21 {
 
                      var94 = var90.method124();
                      if (var94 != null) {
-                        var85 = var94.subWidth;
+                        var15 = var94.subWidth;
                         var43 = var94.subHeight;
                         if (var43 > var42) {
                            var42 = var43;
@@ -459,7 +459,7 @@ public class class39 extends class21 {
 
                      var95 = var90.method125();
                      if (var95 != null) {
-                        var24 = var95.subWidth;
+                        var80 = var95.subWidth;
                         var43 = var95.subHeight;
                         if (var43 > var42) {
                            var42 = var43;
@@ -470,7 +470,7 @@ public class class39 extends class21 {
 
                      var96 = var90.method126();
                      if (var96 != null) {
-                        var25 = var96.subWidth;
+                        var82 = var96.subWidth;
                         var43 = var96.subHeight;
                         if (var43 > var42) {
                            var42 = var43;
@@ -544,20 +544,20 @@ public class class39 extends class21 {
                      String var47 = null;
                      boolean var48 = false;
                      int var49 = 0;
-                     var46 = var90.getString(var0.hitSplatValues[var88]);
+                     var46 = var90.getString(actor.hitSplatValues[var88]);
                      int var50 = var44.stringWidth(var46);
                      if (var92 != null) {
-                        var47 = var92.getString(var0.hitSplatValues2[var88]);
+                        var47 = var92.getString(actor.hitSplatValues2[var88]);
                         var49 = var45.stringWidth(var47);
                      }
 
                      int var51 = 0;
                      int var52 = 0;
-                     if (var85 > 0) {
+                     if (var15 > 0) {
                         if (var95 == null && var96 == null) {
                            var51 = 1;
                         } else {
-                           var51 = var50 / var85 + 1;
+                           var51 = var50 / var15 + 1;
                         }
                      }
 
@@ -571,21 +571,21 @@ public class class39 extends class21 {
 
                      int var53 = 0;
                      int var54 = var53;
-                     if (var82 > 0) {
-                        var53 += var82;
+                     if (var84 > 0) {
+                        var53 += var84;
                      }
 
                      var53 += 2;
                      int var55 = var53;
-                     if (var24 > 0) {
-                        var53 += var24;
+                     if (var80 > 0) {
+                        var53 += var80;
                      }
 
                      int var56 = var53;
                      int var57 = var53;
                      int var58;
-                     if (var85 > 0) {
-                        var58 = var85 * var51;
+                     if (var15 > 0) {
+                        var58 = var15 * var51;
                         var53 += var58;
                         var57 += (var58 - var50) / 2;
                      } else {
@@ -593,8 +593,8 @@ public class class39 extends class21 {
                      }
 
                      var58 = var53;
-                     if (var25 > 0) {
-                        var53 += var25;
+                     if (var82 > 0) {
+                        var53 += var82;
                      }
 
                      int var59 = 0;
@@ -632,7 +632,7 @@ public class class39 extends class21 {
                         }
                      }
 
-                     var64 = var0.hitSplatCycles[var88] - Client.cycle;
+                     var64 = actor.hitSplatCycles[var88] - Client.cycle;
                      int var65 = var90.field392 - var64 * var90.field392 / var90.field387;
                      int var66 = var64 * var90.field393 / var90.field387 + -var90.field393;
                      int var67 = var65 + (var2 + Client.viewportTempX - (var53 >> 1));
@@ -680,7 +680,7 @@ public class class39 extends class21 {
 
                         if (var94 != null) {
                            for (var76 = 0; var76 < var51; ++var76) {
-                              var94.method310(var85 * var76 + (var67 + var56 - var27), var68, var75);
+                              var94.method310(var15 * var76 + (var67 + var56 - var27), var68, var75);
                            }
                         }
 
@@ -721,7 +721,7 @@ public class class39 extends class21 {
 
                         if (var94 != null) {
                            for (var76 = 0; var76 < var51; ++var76) {
-                              var94.drawAt2(var85 * var76 + (var56 + var67 - var27), var68);
+                              var94.drawAt2(var15 * var76 + (var56 + var67 - var27), var68);
                            }
                         }
 
@@ -810,11 +810,11 @@ public class class39 extends class21 {
          WorldMapRegion.notRevalidateWidgetScroll(var1.children, var1.id, var3, var4, var2);
       }
 
-      WidgetGroupParent var5 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var1.id);
+      InterfaceParent var5 = (InterfaceParent)Client.interfaceParents.get((long)var1.id);
       if (var5 != null) {
          int var6 = var5.group;
-         if (GroundItemPile.loadWidgetGroup(var6)) {
-            WorldMapRegion.notRevalidateWidgetScroll(Widget.widgets[var6], -1, var3, var4, var2);
+         if (GroundItemPile.loadInterface(var6)) {
+            WorldMapRegion.notRevalidateWidgetScroll(Widget.interfaceComponents[var6], -1, var3, var4, var2);
          }
       }
 

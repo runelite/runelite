@@ -47,7 +47,8 @@ public final class GroundItem extends Entity {
       signature = "(II)V",
       garbageValue = "411352848"
    )
-   static void method2095(int var0) {
+   @Export("setWindowedMode")
+   static void setWindowedMode(int var0) {
       Client.field99 = 0L;
       if (var0 >= 2) {
          Client.isResizable = true;
@@ -55,7 +56,7 @@ public final class GroundItem extends Entity {
          Client.isResizable = false;
       }
 
-      if (SpotAnimationDefinition.method4822() == 1) {
+      if (SpotAnimationDefinition.getWindowedMode() == 1) {
          TextureProvider.client.setMaxCanvasSize(765, 503);
       } else {
          TextureProvider.client.setMaxCanvasSize(7680, 2160);

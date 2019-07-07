@@ -11,8 +11,8 @@ public class EnumDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("EnumDefinition_indexCache")
-   public static AbstractIndexCache EnumDefinition_indexCache;
+   @Export("EnumDefinition_archive")
+   public static AbstractArchive EnumDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -20,14 +20,14 @@ public class EnumDefinition extends DualNode {
    @Export("EnumDefinition_cached")
    static EvictingDualNodeHashTable EnumDefinition_cached;
    @ObfuscatedName("q")
-   @Export("keyType")
-   public char keyType;
+   @Export("inputType")
+   public char inputType;
    @ObfuscatedName("w")
-   @Export("valType")
-   public char valType;
+   @Export("outputType")
+   public char outputType;
    @ObfuscatedName("o")
-   @Export("defaultString")
-   public String defaultString;
+   @Export("defaultStr")
+   public String defaultStr;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1948115527
@@ -38,8 +38,8 @@ public class EnumDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -12324053
    )
-   @Export("size0")
-   public int size0;
+   @Export("outputCount")
+   public int outputCount;
    @ObfuscatedName("l")
    @Export("keys")
    public int[] keys;
@@ -47,12 +47,12 @@ public class EnumDefinition extends DualNode {
    @Export("intVals")
    public int[] intVals;
    @ObfuscatedName("x")
-   @Export("stringVals")
-   public String[] stringVals;
+   @Export("strVals")
+   public String[] strVals;
 
    EnumDefinition() {
-      this.defaultString = "null";
-      this.size0 = 0;
+      this.defaultStr = "null";
+      this.outputCount = 0;
    }
 
    @ObfuscatedName("f")
@@ -60,15 +60,15 @@ public class EnumDefinition extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "-230039710"
    )
-   @Export("read")
-   void read(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while (true) {
          int var2 = var1.readUnsignedByte();
          if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -77,33 +77,33 @@ public class EnumDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-1255400805"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
       if (var2 == 1) {
-         this.keyType = (char)var1.readUnsignedByte();
+         this.inputType = (char)var1.readUnsignedByte();
       } else if (var2 == 2) {
-         this.valType = (char)var1.readUnsignedByte();
+         this.outputType = (char)var1.readUnsignedByte();
       } else if (var2 == 3) {
-         this.defaultString = var1.readStringCp1252NullTerminated();
+         this.defaultStr = var1.readStringCp1252NullTerminated();
       } else if (var2 == 4) {
          this.defaultInt = var1.readInt();
       } else {
          int var3;
          if (var2 == 5) {
-            this.size0 = var1.readUnsignedShort();
-            this.keys = new int[this.size0];
-            this.stringVals = new String[this.size0];
+            this.outputCount = var1.readUnsignedShort();
+            this.keys = new int[this.outputCount];
+            this.strVals = new String[this.outputCount];
 
-            for (var3 = 0; var3 < this.size0; ++var3) {
+            for (var3 = 0; var3 < this.outputCount; ++var3) {
                this.keys[var3] = var1.readInt();
-               this.stringVals[var3] = var1.readStringCp1252NullTerminated();
+               this.strVals[var3] = var1.readStringCp1252NullTerminated();
             }
          } else if (var2 == 6) {
-            this.size0 = var1.readUnsignedShort();
-            this.keys = new int[this.size0];
-            this.intVals = new int[this.size0];
+            this.outputCount = var1.readUnsignedShort();
+            this.keys = new int[this.outputCount];
+            this.intVals = new int[this.outputCount];
 
-            for (var3 = 0; var3 < this.size0; ++var3) {
+            for (var3 = 0; var3 < this.outputCount; ++var3) {
                this.keys[var3] = var1.readInt();
                this.intVals[var3] = var1.readInt();
             }
@@ -119,7 +119,7 @@ public class EnumDefinition extends DualNode {
    )
    @Export("size")
    public int size() {
-      return this.size0;
+      return this.outputCount;
    }
 
    static {

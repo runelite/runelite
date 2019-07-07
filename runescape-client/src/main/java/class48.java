@@ -42,16 +42,21 @@ public class class48 {
       if (var2 == 0) {
          var3 = null;
       } else {
-         label29: {
-            for (int var4 = 0; var4 < var2; ++var4) {
-               var1 = Huffman.getWidget(var1.parentId);
-               if (var1 == null) {
-                  var3 = null;
-                  break label29;
-               }
+         int var4 = 0;
+
+         while (true) {
+            if (var4 >= var2) {
+               var3 = var1;
+               break;
             }
 
-            var3 = var1;
+            var1 = Huffman.getWidget(var1.parentId);
+            if (var1 == null) {
+               var3 = null;
+               break;
+            }
+
+            ++var4;
          }
       }
 

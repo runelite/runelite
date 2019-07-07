@@ -8,10 +8,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("UserComparator9")
 public class UserComparator9 extends AbstractUserComparator {
    @ObfuscatedName("m")
-   final boolean field941;
+   @Export("reversed")
+   final boolean reversed;
 
    public UserComparator9(boolean var1) {
-      this.field941 = var1;
+      this.reversed = var1;
    }
 
    @ObfuscatedName("m")
@@ -19,14 +20,13 @@ public class UserComparator9 extends AbstractUserComparator {
       signature = "(Lke;Lke;I)I",
       garbageValue = "1966780392"
    )
-   int method351(Buddy var1, Buddy var2) {
-      return Client.worldId == var1.world0 && var2.world0 == Client.worldId ? (this.field941 ? var1.username().compareTo0(var2.username()) : var2.username().compareTo0(var1.username())) : this.method12(var1, var2);
+   @Export("compareBuddy")
+   int compareBuddy(Buddy var1, Buddy var2) {
+      return Client.worldId == var1.world && var2.world == Client.worldId ? (this.reversed ? var1.getUsername().compareToTyped(var2.getUsername()) : var2.getUsername().compareToTyped(var1.getUsername())) : this.compareUser(var1, var2);
    }
 
-   @Export("compare")
-   @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.method351((Buddy)var1, (Buddy)var2);
+      return this.compareBuddy((Buddy)var1, (Buddy)var2);
    }
 
    @ObfuscatedName("m")
@@ -85,7 +85,7 @@ public class UserComparator9 extends AbstractUserComparator {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.spritePixels = (byte[][])null;
+      class328.spritePixels = ((byte[][])null);
       return var0;
    }
 }

@@ -24,8 +24,6 @@ public class SoundSystem implements Runnable {
       this.players = new PcmPlayer[2];
    }
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       try {
          for (int var1 = 0; var1 < 2; ++var1) {
@@ -50,7 +48,7 @@ public class SoundSystem implements Runnable {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Formatting.indexCache12.takeRecord(var0, 0);
+         byte[] var2 = Formatting.archive12.takeFile(var0, 0);
          if (var2 == null) {
             return null;
          } else {

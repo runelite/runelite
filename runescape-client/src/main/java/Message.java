@@ -67,15 +67,15 @@ public class Message extends DualNode {
       garbageValue = "0"
    )
    @Export("set")
-   void set(int var1, String var2, String var3, String var4) {
+   void set(int type, String sender, String prefix, String text) {
       int var5 = ++Messages.Messages_count - 1;
       this.count = var5;
       this.cycle = Client.cycle;
-      this.type = var1;
-      this.sender = var2;
+      this.type = type;
+      this.sender = sender;
       this.fillSenderUsername();
-      this.prefix = var3;
-      this.text = var4;
+      this.prefix = prefix;
+      this.text = text;
       this.clearIsFromFriend();
       this.clearIsFromIgnored();
    }
@@ -221,7 +221,7 @@ public class Message extends DualNode {
                   } else if (VarcInt.isAlphaNumeric(var10)) {
                      var11 = true;
                   } else {
-                     label149: {
+                     label151: {
                         char[] var12 = class305.field1149;
 
                         int var13;
@@ -230,27 +230,21 @@ public class Message extends DualNode {
                            var14 = var12[var13];
                            if (var10 == var14) {
                               var11 = true;
-                              break label149;
+                              break label151;
                            }
                         }
 
                         var12 = class305.field1150;
-                        var13 = 0;
 
-                        while (true) {
-                           if (var13 >= var12.length) {
-                              var11 = false;
-                              break;
-                           }
-
+                        for (var13 = 0; var13 < var12.length; ++var13) {
                            var14 = var12[var13];
                            if (var10 == var14) {
                               var11 = true;
-                              break;
+                              break label151;
                            }
-
-                           ++var13;
                         }
+
+                        var11 = false;
                      }
                   }
 
@@ -376,7 +370,7 @@ public class Message extends DualNode {
       if (SoundSystem.plane != Client.field125) {
          Client.field125 = SoundSystem.plane;
          int var0 = SoundSystem.plane;
-         int[] var1 = WidgetGroupParent.sceneMinimapSprite.pixels;
+         int[] var1 = InterfaceParent.sceneMinimapSprite.pixels;
          int var2 = var1.length;
 
          int var3;
@@ -404,7 +398,7 @@ public class Message extends DualNode {
 
          var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
          var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
-         WidgetGroupParent.sceneMinimapSprite.setRaster();
+         InterfaceParent.sceneMinimapSprite.setRaster();
 
          int var6;
          for (var5 = 1; var5 < 103; ++var5) {
@@ -467,6 +461,6 @@ public class Message extends DualNode {
       }
 
       String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.language + "/a=" + AbstractIndexCache.field2 + var3 + "/";
+      return var2 + var0 + "." + var4 + "/l=" + Client.language + "/a=" + AbstractArchive.field2 + var3 + "/";
    }
 }

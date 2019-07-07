@@ -69,10 +69,10 @@ public class WorldMapAreaData extends WorldMapArea {
 
       for (int var4 = 0; var4 < var3; ++var4) {
          int var5 = var1.method51();
-         TileLocation var6 = new TileLocation(var1.readInt());
+         Coord var6 = new Coord(var1.readInt());
          boolean var7 = var1.readUnsignedByte() == 1;
          if (var2 || !var7) {
-            this.field1018.add(new WorldMapIcon1((TileLocation)null, var6, var5, (WorldMapLabel)null));
+            this.field1018.add(new WorldMapIcon1((Coord)null, var6, var5, (WorldMapLabel)null));
          }
       }
 
@@ -89,13 +89,13 @@ public class WorldMapAreaData extends WorldMapArea {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = SequenceDefinition.SequenceDefinition_indexCache.takeRecord(12, var0);
+         byte[] var2 = SequenceDefinition.SequenceDefinition_archive.takeFile(12, var0);
          var1 = new SequenceDefinition();
          if (var2 != null) {
-            var1.read(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
-         var1.init();
+         var1.postDecode();
          SequenceDefinition.SequenceDefinition_cached.put(var1, (long)var0);
          return var1;
       }
@@ -132,7 +132,7 @@ public class WorldMapAreaData extends WorldMapArea {
          var4 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
          var3 = false;
       } else {
-         var4 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+         var4 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       }
 
       int var5;
