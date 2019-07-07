@@ -8,7 +8,7 @@ package net.runelite.client.plugins.runedoku;
 class Sudoku
 {
 
-	private int[][] board;
+	private final int[][] board;
 	private static final int EMPTY = 0;
 	private static final int SIZE = 9;
 
