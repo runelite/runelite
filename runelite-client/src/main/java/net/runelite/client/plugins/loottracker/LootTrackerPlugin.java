@@ -620,7 +620,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (pvpDeath && RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID()))
 		{
-			Multiset snapshot = HashMultiset.create();
+			Multiset snapshot;
 			snapshot = inventorySnapshot;
 			deathInventorySnapshot();
 			if (inventorySnapshot != snapshot)
