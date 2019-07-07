@@ -818,7 +818,7 @@ public class ChatCommandsPlugin extends Plugin
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+				log.error(e.toString());
 			}
 
 			int itemId = item.getId();
