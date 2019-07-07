@@ -33,7 +33,7 @@ import net.runelite.api.Actor;
 @Singleton
 class Timers
 {
-	private Map<Actor, HashMap<TimerType, Long>> timerMap = new HashMap<>();
+	private final Map<Actor, HashMap<TimerType, Long>> timerMap = new HashMap<>();
 
 	void setTimerEnd(Actor actor, TimerType type, long n)
 	{

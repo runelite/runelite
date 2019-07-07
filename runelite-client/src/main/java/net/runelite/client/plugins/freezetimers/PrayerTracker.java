@@ -41,8 +41,8 @@ class PrayerTracker
 	@Inject
 	private Client client;
 
-	private Map<Actor, HashMap<String, Integer>> lastTick = new HashMap<>();
-	private Map<Actor, HashMap<String, Integer>> newTick = new HashMap<>();
+	private final Map<Actor, HashMap<String, Integer>> lastTick = new HashMap<>();
+	private final Map<Actor, HashMap<String, Integer>> newTick = new HashMap<>();
 
 	public void gameTick()
 	{
