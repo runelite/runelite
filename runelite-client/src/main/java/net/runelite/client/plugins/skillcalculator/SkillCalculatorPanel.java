@@ -65,10 +65,10 @@ class SkillCalculatorPanel extends PluginPanel
 	private final MaterialTabGroup skillGroup;
 	private final MaterialTabGroup tabGroup;
 	private String currentTab;
-	private List<String> tabs = new ArrayList<>();
+	private final List<String> tabs = new ArrayList<>();
 	@Getter
 	private Map<Integer, Integer> bankMap = new HashMap<>();
-	private GridBagConstraints c;
+	private final GridBagConstraints c;
 
 	SkillCalculatorPanel(final SkillIconManager iconManager, final Client client, final SkillCalculatorConfig config, final SpriteManager spriteManager, final ItemManager itemManager)
 	{

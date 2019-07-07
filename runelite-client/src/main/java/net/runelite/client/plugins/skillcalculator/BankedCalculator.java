@@ -77,17 +77,17 @@ public class BankedCalculator extends JPanel
 	private Skill currentSkill;
 
 	private double totalBankedXp = 0.0f;
-	private JLabel totalLabel = new JLabel();
-	private JPanel detailConfigContainer;
-	private JPanel detailContainer;
+	private final JLabel totalLabel = new JLabel();
+	private final JPanel detailConfigContainer;
+	private final JPanel detailContainer;
 
 	// Banked Experience magic
 	private Map<Integer, Integer> bankMap = new HashMap<>();
-	private Map<String, Boolean> categoryMap = new HashMap<>();            // Check if CriticalItem Category is enabled
-	private Map<CriticalItem, CriticalItemPanel> panelMap = new HashMap<>();
-	private Map<CriticalItem, Integer> criticalMap = new HashMap<>();    // Quantity of CriticalItem inside bankMap
-	private Map<CriticalItem, Activity> activityMap = new HashMap<>();    // Selected Activity used for calculating xp
-	private Map<CriticalItem, Integer> linkedMap = new HashMap<>();        // ItemID of item that links to the CriticalItem
+	private final Map<String, Boolean> categoryMap = new HashMap<>();            // Check if CriticalItem Category is enabled
+	private final Map<CriticalItem, CriticalItemPanel> panelMap = new HashMap<>();
+	private final Map<CriticalItem, Integer> criticalMap = new HashMap<>();    // Quantity of CriticalItem inside bankMap
+	private final Map<CriticalItem, Activity> activityMap = new HashMap<>();    // Selected Activity used for calculating xp
+	private final Map<CriticalItem, Integer> linkedMap = new HashMap<>();        // ItemID of item that links to the CriticalItem
 
 	BankedCalculator(
 		final SkillCalculatorPanel parent,
