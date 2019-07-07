@@ -97,7 +97,7 @@ class BarrowsOverlay extends Overlay
 			final List<Player> players = client.getPlayers();
 			for (Player player : players)
 			{
-				if (player == local)
+				if (player.equals(local))
 				{
 					// Skip local player as we draw square for it later
 					continue;
