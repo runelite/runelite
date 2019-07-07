@@ -186,7 +186,7 @@ public class PluginListItem extends JPanel
 		buttonPanel.add(configButton);
 
 		// add a listener to configButton only if there are config items to show
-		if (config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
+		if (configDescriptor != null && config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
 		{
 			configButton.addActionListener(e ->
 			{
