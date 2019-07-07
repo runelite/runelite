@@ -1162,7 +1162,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "quick-travel", option, target, true);
 			}
 
-<<<<<<< HEAD
 			if (this.swapEnchant)
 			{
 				swap(client, "enchant", option, target, true);
@@ -1178,10 +1177,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (this.swapMetamorphosis && target.contains("baby chinchompa"))
 		{
 			swap(client, "metamorphosis", option, target, true);
-			if (config.swapEnchant())
-			{
-				swap("enchant", option, target, true);
-			}
 		}
 
 		else if (this.swapStun && target.contains("hoop snake"))
