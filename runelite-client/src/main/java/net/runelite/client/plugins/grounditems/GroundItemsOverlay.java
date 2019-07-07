@@ -352,7 +352,7 @@ public class GroundItemsOverlay extends Overlay
 					plugin.setHighlightBoxBounds(new SimpleEntry<>(itemHighlightBox, item));
 				}
 
-				boolean topItem = topGroundItem == item;
+				boolean topItem = topGroundItem.equals(item);
 
 				// Draw background if hovering
 				if (topItem && (mouseInBox || mouseInHiddenBox || mouseInHighlightBox))
