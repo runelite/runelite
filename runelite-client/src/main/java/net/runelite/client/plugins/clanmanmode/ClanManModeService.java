@@ -37,12 +37,7 @@ public class ClanManModeService
 		int selfmax = localPlayer.getCombatLevel() + plugin.wildernessLevel;
 		for (Player player : client.getPlayers())
 		{
-			if (player == null || player.getName() == null)
-			{
-				continue;
-			}
-
-			if (player.equals(localPlayer))
+			if (player == null || player.getName() == null || player.equals(localPlayer))
 			{
 				continue;
 			}
@@ -55,15 +50,9 @@ public class ClanManModeService
 				interactor = ((Player) interacting);
 			}
 
-			if (plugin.isShowAttackers())
+			if (plugin.isShowAttackers() && interactor != null && interactor.getName().equals(localName))
 			{
-				if (interactor != null)
-				{
-					if (interactor.getName().equals(localName))
-					{
-						consumer.accept(player, plugin.getGetAttackerColor());
-					}
-				}
+				consumer.accept(player, plugin.getGetAttackerColor());
 			}
 
 			if (plugin.inwildy == 1)
@@ -74,90 +63,78 @@ public class ClanManModeService
 					{
 						plugin.clan.put(player.getName(), player.getCombatLevel());
 					}
-					if (plugin.isHighlightAttacked())
+					if (plugin.isHighlightAttacked() && interactor != null && !interactors.containsKey(interactor.getName()))
 					{
-						if (interactor != null)
+						WorldPoint a = interactor.getWorldLocation();
+						int underLevel = ((a.getY() - 9920) / 8) + 1;
+						int upperLevel = ((a.getY() - 3520) / 8) + 1;
+						int wildernessLevel = a.getY() > 6400 ? underLevel : upperLevel;
+						int wildydiff = plugin.wildernessLevel - wildernessLevel;
+						if (wildydiff < 0)
 						{
-							if (!interactors.containsKey(interactor.getName()))
+							wildydiff = 0;
+						}
+						if (plugin.isCalcSelfCB())
+						{
+							if (interacting.getCombatLevel() <= selfmax && interacting.getCombatLevel() - wildydiff >= selfmin && !interactor.isClanMember())
 							{
-								WorldPoint a = interactor.getWorldLocation();
-								int underLevel = ((a.getY() - 9920) / 8) + 1;
-								int upperLevel = ((a.getY() - 3520) / 8) + 1;
-								int wildernessLevel = a.getY() > 6400 ? underLevel : upperLevel;
-								int wildydiff = plugin.wildernessLevel - wildernessLevel;
-								if (wildydiff < 0)
-								{
-									wildydiff = 0;
-								}
-								if (plugin.isCalcSelfCB())
-								{
-									if (interacting.getCombatLevel() <= selfmax && interacting.getCombatLevel() - wildydiff >= selfmin && !interactor.isClanMember())
-									{
-										interactors.put(interactor.getName(), player.getName());
-										consumer.accept(interactor, plugin.getGetClanAttackableColor());
-									}
-								}
-								else
-								{
-									if (interacting.getCombatLevel() <= maxatk && interacting.getCombatLevel() - wildydiff >= minatk && !interactor.isClanMember())
-									{
-										interactors.put(interactor.getName(), player.getName());
-										consumer.accept(interactor, plugin.getGetClanAttackableColor());
-									}
-								}
+								interactors.put(interactor.getName(), player.getName());
+								consumer.accept(interactor, plugin.getGetClanAttackableColor());
+							}
+						}
+						else
+						{
+							if (interacting.getCombatLevel() <= maxatk && interacting.getCombatLevel() - wildydiff >= minatk && !interactor.isClanMember())
+							{
+								interactors.put(interactor.getName(), player.getName());
+								consumer.accept(interactor, plugin.getGetClanAttackableColor());
 							}
 						}
 					}
 				}
 				else
 				{
-					if (plugin.isPersistentClan())
+					if (plugin.isPersistentClan() && plugin.clan.containsKey(player.getName()))
 					{
-						if (plugin.clan.containsKey(player.getName()))
-						{
-							consumer.accept(player, plugin.getGetClanMemberColor());
-						}
+						consumer.accept(player, plugin.getGetClanMemberColor());
 					}
-					if (plugin.isHighlightAttacked())
-					{
-						if (interactors.containsKey(player.getName()))
+					if (plugin.isHighlightAttacked() && interactors.containsKey(player.getName()))
 						{
-							String attackername = interactors.get(player.getName());
-							boolean found = false;
-							for (Player attacker : client.getPlayers())
+						String attackername = interactors.get(player.getName());
+						boolean found = false;
+						for (Player attacker : client.getPlayers())
+						{
+							if (attacker == null || attacker.getName() == null)
 							{
-								if (attacker == null || attacker.getName() == null)
+								continue;
+							}
+							if (attacker.getName().equals(attackername))
+							{
+								found = true;
+								Actor ainteract = attacker.getInteracting();
+								if (ainteract != null)
 								{
-									continue;
-								}
-								if (attacker.getName().equals(attackername))
-								{
-									found = true;
-									Actor ainteract = attacker.getInteracting();
-									if (ainteract != null)
+									if (ainteract.getName().equals(player.getName()))
 									{
-										if (ainteract.getName().equals(player.getName()))
-										{
-											consumer.accept(player, plugin.getGetClanAttackableColor());
-										}
-										else
-										{
-											interactors.remove(player.getName());
-										}
+										consumer.accept(player, plugin.getGetClanAttackableColor());
 									}
 									else
 									{
 										interactors.remove(player.getName());
 									}
-									break;
 								}
+								else
+								{
+									interactors.remove(player.getName());
+								}
+								break;
 							}
-							if (!found)
-							{
-								interactors.remove(player.getName());
-							}
-							continue;
 						}
+						if (!found)
+						{
+							interactors.remove(player.getName());
+						}
+						continue;
 					}
 					if (plugin.isHighlightAttackable())
 					{
