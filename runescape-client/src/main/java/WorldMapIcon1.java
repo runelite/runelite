@@ -110,7 +110,8 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "-460290173"
    )
-   static void method219(int var0, String var1, String var2) {
+   @Export("addGameMessage")
+   static void addGameMessage(int var0, String var1, String var2) {
       GrandExchangeEvents.addChatMessage(var0, var1, var2, (String)null);
    }
 

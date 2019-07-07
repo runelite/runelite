@@ -6,6 +6,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("cf")
 @Implements("DynamicObject")
@@ -208,10 +209,10 @@ public class DynamicObject extends Entity {
       garbageValue = "-83"
    )
    static int method2223(int var0, Script var1, boolean var2) {
-      if (var0 == 5000) {
+      if (var0 == ScriptOpcodes.CHAT_GETFILTER_PUBLIC) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.publicChatMode;
          return 1;
-      } else if (var0 == 5001) {
+      } else if (var0 == ScriptOpcodes.CHAT_SETFILTER) {
          RouteStrategy.Interpreter_intStackSize -= 3;
          Client.publicChatMode = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          IndexCacheLoader.field512 = WorldMapElement.method4783(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
@@ -230,7 +231,7 @@ public class DynamicObject extends Entity {
          String var3;
          int var4;
          int var5;
-         if (var0 == 5002) {
+         if (var0 == ScriptOpcodes.CHAT_SENDABUSEREPORT) {
             var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
             RouteStrategy.Interpreter_intStackSize -= 2;
             var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
@@ -244,7 +245,7 @@ public class DynamicObject extends Entity {
             return 1;
          } else {
             Message var11;
-            if (var0 == 5003) {
+            if (var0 == ScriptOpcodes.CHAT_GETHISTORY_BYTYPEANDLINE) {
                RouteStrategy.Interpreter_intStackSize -= 2;
                var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -266,7 +267,7 @@ public class DynamicObject extends Entity {
                }
 
                return 1;
-            } else if (var0 == 5004) {
+            } else if (var0 == ScriptOpcodes.CHAT_GETHISTORY_BYUID) {
                var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                var11 = NetCache.method4708(var5);
                if (var11 != null) {
@@ -286,7 +287,7 @@ public class DynamicObject extends Entity {
                }
 
                return 1;
-            } else if (var0 == 5005) {
+            } else if (var0 == ScriptOpcodes.CHAT_GETFILTER_PRIVATE) {
                if (IndexCacheLoader.field512 == null) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                } else {
@@ -296,7 +297,7 @@ public class DynamicObject extends Entity {
                return 1;
             } else {
                String var6;
-               if (var0 == 5008) {
+               if (var0 == ScriptOpcodes.CHAT_SENDPUBLIC) {
                   var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                   var4 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   var6 = var3.toLowerCase();
@@ -423,7 +424,7 @@ public class DynamicObject extends Entity {
                   var9.packetBuffer.method41(var9.packetBuffer.index - var10);
                   Client.packetWriter.method241(var9);
                   return 1;
-               } else if (var0 == 5009) {
+               } else if (var0 == ScriptOpcodes.CHAT_SENDPRIVATE) {
                   Interpreter.Interpreter_stringStackSize -= 2;
                   var3 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize];
                   var6 = Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1];
@@ -435,30 +436,30 @@ public class DynamicObject extends Entity {
                   var7.packetBuffer.method40(var7.packetBuffer.index - var8);
                   Client.packetWriter.method241(var7);
                   return 1;
-               } else if (var0 != 5015) {
-                  if (var0 == 5016) {
+               } else if (var0 != ScriptOpcodes.CHAT_PLAYERNAME) {
+                  if (var0 == ScriptOpcodes.CHAT_GETFILTER_TRADE) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.field138;
                      return 1;
-                  } else if (var0 == 5017) {
+                  } else if (var0 == ScriptOpcodes.CHAT_GETHISTORYLENGTH) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WidgetGroupParent.method1174(var5);
                      return 1;
-                  } else if (var0 == 5018) {
+                  } else if (var0 == ScriptOpcodes.CHAT_GETNEXTUID) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class12.method161(var5);
                      return 1;
-                  } else if (var0 == 5019) {
+                  } else if (var0 == ScriptOpcodes.CHAT_GETPREVUID) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = SpriteMask.method4391(var5);
                      return 1;
-                  } else if (var0 == 5020) {
+                  } else if (var0 == ScriptOpcodes.DOCHEAT) {
                      var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                      BoundaryObject.doCheat(var3);
                      return 1;
-                  } else if (var0 == 5021) {
+                  } else if (var0 == ScriptOpcodes.CHAT_SETMESSAGEFILTER) {
                      Client.field158 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize].toLowerCase().trim();
                      return 1;
-                  } else if (var0 == 5022) {
+                  } else if (var0 == ScriptOpcodes.CHAT_GETMESSAGEFILTER) {
                      Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Client.field158;
                      return 1;
                   } else if (var0 == 5023) {

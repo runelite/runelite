@@ -4967,7 +4967,7 @@ public final class Client extends GameShell implements Usernamed {
 
                String var41 = var3.readStringCp1252NullTerminated();
                if (!var18) {
-                  WorldMapIcon1.method219(var37, var17, var41);
+                  WorldMapIcon1.addGameMessage(var37, var17, var41);
                }
 
                var1.serverPacket0 = null;
@@ -5562,7 +5562,7 @@ public final class Client extends GameShell implements Usernamed {
                var3.method237(var54, 0, var54.length);
                Buffer var52 = new Buffer(var54);
                var17 = var52.readStringCp1252NullTerminated();
-               WorldMapCacheName.method635(var17, true, false);
+               WorldMapCacheName.openURL(var17, true, false);
                var1.serverPacket0 = null;
                return true;
             }
@@ -5793,9 +5793,9 @@ public final class Client extends GameShell implements Usernamed {
                   }
 
                   if (var29.modIcon != -1) {
-                     WorldMapIcon1.method219(var34, ItemContainer.method1170(var29.modIcon) + var21, var57);
+                     WorldMapIcon1.addGameMessage(var34, ItemContainer.method1170(var29.modIcon) + var21, var57);
                   } else {
-                     WorldMapIcon1.method219(var34, var21, var57);
+                     WorldMapIcon1.addGameMessage(var34, var21, var57);
                   }
                }
 
@@ -5823,7 +5823,7 @@ public final class Client extends GameShell implements Usernamed {
             if (ServerPacket.field827 == var1.serverPacket0) {
                var21 = var3.readStringCp1252NullTerminated();
                var4 = AbstractFont.escapeBrackets(class233.method4527(KitDefinition.method4866(var3)));
-               WorldMapIcon1.method219(6, var21, var4);
+               WorldMapIcon1.addGameMessage(6, var21, var4);
                var1.serverPacket0 = null;
                return true;
             }

@@ -4,6 +4,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("ev")
 @Implements("UserComparator4")
@@ -56,22 +57,22 @@ public class UserComparator4 implements Comparator {
       garbageValue = "-2050984400"
    )
    static int method3335(int var0, Script var1, boolean var2) {
-      if (var0 == 5306) {
+      if (var0 == ScriptOpcodes.GETWINDOWMODE) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = SpotAnimationDefinition.method4822();
          return 1;
       } else {
          int var3;
-         if (var0 == 5307) {
+         if (var0 == ScriptOpcodes.SETWINDOWMODE) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             if (var3 == 1 || var3 == 2) {
                GroundItem.method2095(var3);
             }
 
             return 1;
-         } else if (var0 == 5308) {
+         } else if (var0 == ScriptOpcodes.GETDEFAULTWINDOWMODE) {
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.windowMode;
             return 1;
-         } else if (var0 != 5309) {
+         } else if (var0 != ScriptOpcodes.SETDEFAULTWINDOWMODE) {
             if (var0 == 5310) {
                --RouteStrategy.Interpreter_intStackSize;
                return 1;

@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("hz")
 public class class229 {
@@ -36,7 +37,7 @@ public class class229 {
       garbageValue = "1886084106"
    )
    static int method4513(int var0, Script var1, boolean var2) {
-      if (var0 == 6200) {
+      if (var0 == ScriptOpcodes.VIEWPORT_SETFOV) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          Client.field130 = (short)class161.method3395(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize]);
          if (Client.field130 <= 0) {
@@ -49,7 +50,7 @@ public class class229 {
          }
 
          return 1;
-      } else if (var0 == 6201) {
+      } else if (var0 == ScriptOpcodes.VIEWPORT_SETZOOM) {
          RouteStrategy.Interpreter_intStackSize -= 2;
          Client.field150 = (short)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          if (Client.field150 <= 0) {
@@ -62,7 +63,7 @@ public class class229 {
          }
 
          return 1;
-      } else if (var0 == 6202) {
+      } else if (var0 == ScriptOpcodes.VIEWPORT_CLAMPFOV) {
          RouteStrategy.Interpreter_intStackSize -= 4;
          Client.field135 = (short)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
          if (Client.field135 <= 0) {
@@ -89,7 +90,7 @@ public class class229 {
          }
 
          return 1;
-      } else if (var0 == 6203) {
+      } else if (var0 == ScriptOpcodes.VIEWPORT_GETEFFECTIVESIZE) {
          if (Client.viewportWidget != null) {
             FontName.setViewportShape(0, 0, Client.viewportWidget.width, Client.viewportWidget.height, false);
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.viewportWidth;
@@ -100,11 +101,11 @@ public class class229 {
          }
 
          return 1;
-      } else if (var0 == 6204) {
+      } else if (var0 == ScriptOpcodes.VIEWPORT_GETZOOM) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.field150;
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Client.field149;
          return 1;
-      } else if (var0 == 6205) {
+      } else if (var0 == ScriptOpcodes.VIEWPORT_GETFOV) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class30.method571(Client.field130);
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class30.method571(Client.field131);
          return 1;

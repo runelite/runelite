@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -8,7 +9,8 @@ public class class206 {
       signature = "(I)Z",
       garbageValue = "-1763054678"
    )
-   static boolean method4028() {
+   @Export("getTapToDrop")
+   static boolean getTapToDrop() {
       return Client.tapToDrop;
    }
 }

@@ -83,9 +83,9 @@ public final class BoundaryObject {
          ReflectionCheck.clientPreferences.roofsHidden = !ReflectionCheck.clientPreferences.roofsHidden;
          WorldMapSection0.savePreferences();
          if (ReflectionCheck.clientPreferences.roofsHidden) {
-            WorldMapIcon1.method219(99, "", "Roofs are now all hidden");
+            WorldMapIcon1.addGameMessage(99, "", "Roofs are now all hidden");
          } else {
-            WorldMapIcon1.method219(99, "", "Roofs will only be removed selectively");
+            WorldMapIcon1.addGameMessage(99, "", "Roofs will only be removed selectively");
          }
       }
 
