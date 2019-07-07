@@ -60,7 +60,7 @@ public class Keybind
 	private final int keyCode;
 	private final int modifiers;
 
-	protected Keybind(int keyCode, int modifiers, boolean ignoreModifiers)
+	Keybind(int keyCode, int modifiers, boolean ignoreModifiers)
 	{
 		modifiers &= KEYBOARD_MODIFIER_MASK;
 
@@ -108,7 +108,7 @@ public class Keybind
 		return matches(e, false);
 	}
 
-	protected boolean matches(KeyEvent e, boolean ignoreModifiers)
+	boolean matches(KeyEvent e, boolean ignoreModifiers)
 	{
 		if (NOT_SET.equals(this))
 		{
@@ -177,7 +177,7 @@ public class Keybind
 		return mod;
 	}
 
-	public static String getModifiersExText(int modifiers)
+	private static String getModifiersExText(int modifiers)
 	{
 		StringBuilder buf = new StringBuilder();
 		if ((modifiers & InputEvent.META_DOWN_MASK) != 0)
