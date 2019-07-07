@@ -269,7 +269,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.alwaysShowStyle = config.alwaysShowStyle();
 		this.warnForDefence = config.warnForDefence();
