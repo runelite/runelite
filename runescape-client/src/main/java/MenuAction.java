@@ -66,7 +66,7 @@ public class MenuAction {
       garbageValue = "1537219807"
    )
    @Export("closeWidgetGroup")
-   static final void closeWidgetGroup(WidgetGroupParent var0, boolean var1) {
+   static final void closeWidgetGroup(InterfaceParent var0, boolean var1) {
       int var2 = var0.group;
       int var3 = (int)var0.key;
       var0.remove();

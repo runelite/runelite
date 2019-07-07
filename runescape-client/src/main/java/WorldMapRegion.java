@@ -173,13 +173,13 @@ public class WorldMapRegion {
       garbageValue = "-896662600"
    )
    void method479(ObjectDefinition var1, int var2, int var3, int var4, class21 var5) {
-      TileLocation var6 = new TileLocation(var2, var3 + this.x * 64, this.y * 64 + var4);
-      TileLocation var7 = null;
+      Coord var6 = new Coord(var2, var3 + this.x * 64, this.y * 64 + var4);
+      Coord var7 = null;
       if (this.field239 != null) {
-         var7 = new TileLocation(this.field239.field148 + var2, var3 + this.field239.field149 * 64, var4 + this.field239.field146 * 64);
+         var7 = new Coord(this.field239.field148 + var2, var3 + this.field239.field149 * 64, var4 + this.field239.field146 * 64);
       } else {
          class39 var8 = (class39)var5;
-         var7 = new TileLocation(var2 + var8.field148, var3 + var8.field149 * 64 + var8.method717() * 8, var4 + var8.field146 * 64 + var8.method718() * 8);
+         var7 = new Coord(var2 + var8.field148, var3 + var8.field149 * 64 + var8.method717() * 8, var4 + var8.field146 * 64 + var8.method718() * 8);
       }
 
       Object var10;
@@ -190,7 +190,7 @@ public class WorldMapRegion {
          var10 = new WorldMapIcon1(var7, var6, var9.field1020, this.method420(var9));
       }
 
-      this.iconsMap.put(new TileLocation(0, var3, var4), var10);
+      this.iconsMap.put(new Coord(0, var3, var4), var10);
    }
 
    @ObfuscatedName("e")
@@ -444,19 +444,19 @@ public class WorldMapRegion {
       int var9;
       if (var7 != -1) {
          int var10 = this.field1053;
-         OverlayDefinition var11 = (OverlayDefinition)OverlayDefinition.field664.get((long)var7);
-         OverlayDefinition var12;
+         FloorOverlayDefinition var11 = (FloorOverlayDefinition) FloorOverlayDefinition.field664.get((long)var7);
+         FloorOverlayDefinition var12;
          if (var11 != null) {
             var12 = var11;
          } else {
-            byte[] var13 = OverlayDefinition.field663.takeFile(4, var7);
-            var11 = new OverlayDefinition();
+            byte[] var13 = FloorOverlayDefinition.field663.takeFile(4, var7);
+            var11 = new FloorOverlayDefinition();
             if (var13 != null) {
                var11.decode(new Buffer(var13), var7);
             }
 
-            var11.init();
-            OverlayDefinition.field664.put(var11, (long)var7);
+            var11.postDecode();
+            FloorOverlayDefinition.field664.put(var11, (long)var7);
             var12 = var11;
          }
 
@@ -549,19 +549,19 @@ public class WorldMapRegion {
          int var6 = var3.field145[var5][var1][var2] - 1;
          if (var6 > -1) {
             int var7 = this.field1053;
-            OverlayDefinition var8 = (OverlayDefinition)OverlayDefinition.field664.get((long)var6);
-            OverlayDefinition var9;
+            FloorOverlayDefinition var8 = (FloorOverlayDefinition) FloorOverlayDefinition.field664.get((long)var6);
+            FloorOverlayDefinition var9;
             if (var8 != null) {
                var9 = var8;
             } else {
-               byte[] var10 = OverlayDefinition.field663.takeFile(4, var6);
-               var8 = new OverlayDefinition();
+               byte[] var10 = FloorOverlayDefinition.field663.takeFile(4, var6);
+               var8 = new FloorOverlayDefinition();
                if (var10 != null) {
                   var8.decode(new Buffer(var10), var6);
                }
 
-               var8.init();
-               OverlayDefinition.field664.put(var8, (long)var6);
+               var8.postDecode();
+               FloorOverlayDefinition.field664.put(var8, (long)var6);
                var9 = var8;
             }
 
@@ -754,7 +754,7 @@ public class WorldMapRegion {
 
       while (var7.hasNext()) {
          Entry var8 = (Entry)var7.next();
-         TileLocation var9 = (TileLocation)var8.getKey();
+         Coord var9 = (Coord)var8.getKey();
          int var10 = (int)((float)var1 + var5 * (float)var9.x - var6);
          int var11 = (int)((float)(var2 + var4) - var5 * (float)var9.y - var6);
          AbstractWorldMapIcon var12 = (AbstractWorldMapIcon)var8.getValue();
@@ -1102,7 +1102,7 @@ public class WorldMapRegion {
          Widget var6 = var0[var5];
          if (var6 != null && var6.parentId == var1) {
             WorldMapSection3.alignWidgetSize(var6, var2, var3, var4);
-            OverlayDefinition.alignWidgetPosition(var6, var2, var3);
+            FloorOverlayDefinition.alignWidgetPosition(var6, var2, var3);
             if (var6.scrollX > var6.scrollWidth - var6.width) {
                var6.scrollX = var6.scrollWidth - var6.width;
             }

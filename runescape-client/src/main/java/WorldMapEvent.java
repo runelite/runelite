@@ -24,18 +24,18 @@ public class WorldMapEvent {
       signature = "Lhu;"
    )
    @Export("coord1")
-   public TileLocation coord1;
+   public Coord coord1;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lhu;"
    )
    @Export("coord2")
-   public TileLocation coord2;
+   public Coord coord2;
 
    @ObfuscatedSignature(
       signature = "(ILhu;Lhu;)V"
    )
-   public WorldMapEvent(int var1, TileLocation var2, TileLocation var3) {
+   public WorldMapEvent(int var1, Coord var2, Coord var3) {
       this.mapElement = var1;
       this.coord1 = var2;
       this.coord2 = var3;

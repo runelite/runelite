@@ -442,7 +442,7 @@ public class DynamicObject extends Entity {
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAT_GETHISTORYLENGTH) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WidgetGroupParent.method1174(var5);
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = InterfaceParent.method1174(var5);
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAT_GETNEXTUID) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];

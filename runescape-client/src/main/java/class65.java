@@ -33,7 +33,7 @@ public class class65 extends RouteStrategy {
    )
    static final void method1232(Actor var0, int var1) {
       if (var0.field19 > Client.cycle) {
-         SpriteIds.method5828(var0);
+         GraphicsDefaults.method5828(var0);
       } else {
          int var2;
          int var3;

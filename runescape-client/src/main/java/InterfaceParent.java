@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bx")
-@Implements("WidgetGroupParent")
-public class WidgetGroupParent extends Node {
+@Implements("InterfaceParent")
+public class InterfaceParent extends Node {
    @ObfuscatedName("px")
    @ObfuscatedSignature(
       signature = "Lln;"
@@ -34,7 +34,7 @@ public class WidgetGroupParent extends Node {
    @Export("keep")
    boolean keep;
 
-   WidgetGroupParent() {
+   InterfaceParent() {
       this.keep = false;
    }
 

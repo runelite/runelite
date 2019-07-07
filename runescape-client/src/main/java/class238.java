@@ -566,7 +566,7 @@ public final class class238 {
                         updateWidgetGroup(var9.children, var9.id, var12, var13, var14, var15, var10 - var9.scrollX, var11 - var9.scrollY);
                      }
 
-                     WidgetGroupParent var33 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var9.id);
+                     InterfaceParent var33 = (InterfaceParent)Client.interfaceParents.get((long)var9.id);
                      if (var33 != null) {
                         if (var33.type == 0 && MouseHandler.MouseHandler_x >= var12 && MouseHandler.MouseHandler_y >= var13 && MouseHandler.MouseHandler_x < var14 && MouseHandler.MouseHandler_y < var15 && !Client.isMenuOpen) {
                            for (var32 = (ScriptEvent)Client.scriptEvents.last(); var32 != null; var32 = (ScriptEvent)Client.scriptEvents.previous()) {

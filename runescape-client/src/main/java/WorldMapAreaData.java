@@ -69,10 +69,10 @@ public class WorldMapAreaData extends WorldMapArea {
 
       for (int var4 = 0; var4 < var3; ++var4) {
          int var5 = var1.method51();
-         TileLocation var6 = new TileLocation(var1.readInt());
+         Coord var6 = new Coord(var1.readInt());
          boolean var7 = var1.readUnsignedByte() == 1;
          if (var2 || !var7) {
-            this.field1018.add(new WorldMapIcon1((TileLocation)null, var6, var5, (WorldMapLabel)null));
+            this.field1018.add(new WorldMapIcon1((Coord)null, var6, var5, (WorldMapLabel)null));
          }
       }
 

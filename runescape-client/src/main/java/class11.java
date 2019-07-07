@@ -210,7 +210,7 @@ final class class11 implements Comparator {
          return 1;
       } else if (var0 == ScriptOpcodes.IF_HASSUB) {
          int var4 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-         WidgetGroupParent var5 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var4);
+         InterfaceParent var5 = (InterfaceParent)Client.interfaceParents.get((long)var4);
          if (var5 != null) {
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
          } else {

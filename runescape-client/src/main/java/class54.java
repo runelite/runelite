@@ -665,21 +665,21 @@ public final class class54 {
             Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isCacheLoaded() ? 1 : 0;
             return 1;
          } else {
-            TileLocation var5;
+            Coord var5;
             if (var0 == ScriptOpcodes.WORLDMAP_JUMPTODISPLAYCOORD) {
-               var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+               var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().setWorldMapPositionTarget(var5.x, var5.y);
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTODISPLAYCOORD_INSTANT) {
-               var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+               var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().method371(var5.x, var5.y);
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTOSOURCECOORD) {
-               var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+               var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().method372(var5.plane, var5.x, var5.y);
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTOSOURCECOORD_INSTANT) {
-               var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+               var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                BufferedFile.worldMap().method373(var5.plane, var5.x, var5.y);
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISPLAYPOSITION) {
@@ -751,7 +751,7 @@ public final class class54 {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().currentMapAreaId();
                   return 1;
                } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISPLAYCOORD) {
-                  var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+                  var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                   var6 = BufferedFile.worldMap().getCurrentMapArea();
                   if (var6 == null) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
@@ -770,9 +770,9 @@ public final class class54 {
                      return 1;
                   }
                } else {
-                  TileLocation var7;
+                  Coord var7;
                   if (var0 == 6618) {
-                     var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+                     var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                      var6 = BufferedFile.worldMap().getCurrentMapArea();
                      if (var6 == null) {
                         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
@@ -789,23 +789,23 @@ public final class class54 {
                         return 1;
                      }
                   } else {
-                     TileLocation var8;
+                     Coord var8;
                      if (var0 == 6619) {
                         RouteStrategy.Interpreter_intStackSize -= 2;
                         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-                        var8 = new TileLocation(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
+                        var8 = new Coord(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
                         TotalQuantityComparator.method96(var3, var8, false);
                         return 1;
                      } else if (var0 == 6620) {
                         RouteStrategy.Interpreter_intStackSize -= 2;
                         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-                        var8 = new TileLocation(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
+                        var8 = new Coord(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
                         TotalQuantityComparator.method96(var3, var8, true);
                         return 1;
                      } else if (var0 == ScriptOpcodes.WORLDMAP_COORDINMAP) {
                         RouteStrategy.Interpreter_intStackSize -= 2;
                         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-                        var8 = new TileLocation(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
+                        var8 = new Coord(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
                         var4 = BufferedFile.worldMap().getMapArea(var3);
                         if (var4 == null) {
                            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -819,7 +819,7 @@ public final class class54 {
                         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().method378();
                         return 1;
                      } else if (var0 == 6623) {
-                        var5 = new TileLocation(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+                        var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                         var6 = BufferedFile.worldMap().mapAreaAtCoord(var5.plane, var5.x, var5.y);
                         if (var6 == null) {
                            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
@@ -889,7 +889,7 @@ public final class class54 {
                            } else if (var0 == 6638) {
                               RouteStrategy.Interpreter_intStackSize -= 2;
                               var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-                              var8 = new TileLocation(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
+                              var8 = new Coord(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
                               var7 = BufferedFile.worldMap().method385(var3, var8);
                               if (var7 == null) {
                                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;

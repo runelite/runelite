@@ -376,7 +376,7 @@ public class Message extends DualNode {
       if (SoundSystem.plane != Client.field125) {
          Client.field125 = SoundSystem.plane;
          int var0 = SoundSystem.plane;
-         int[] var1 = WidgetGroupParent.sceneMinimapSprite.pixels;
+         int[] var1 = InterfaceParent.sceneMinimapSprite.pixels;
          int var2 = var1.length;
 
          int var3;
@@ -404,7 +404,7 @@ public class Message extends DualNode {
 
          var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
          var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
-         WidgetGroupParent.sceneMinimapSprite.setRaster();
+         InterfaceParent.sceneMinimapSprite.setRaster();
 
          int var6;
          for (var5 = 1; var5 < 103; ++var5) {

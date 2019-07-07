@@ -64,7 +64,7 @@ public class Fonts {
             String var8 = var5.field349;
             int var9 = var6.getGroupId(var8);
             int var10 = var6.getFileId(var9, "");
-            Font var11 = SpriteIds.method5823(var6, var7, var9, var10);
+            Font var11 = GraphicsDefaults.method5823(var6, var7, var9, var10);
             if (var11 != null) {
                this.map.put(var5, var11);
                var2.put(var5, var11);

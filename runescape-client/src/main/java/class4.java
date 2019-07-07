@@ -52,7 +52,7 @@ final class class4 implements class0 {
       garbageValue = "-843046456"
    )
    public static void method55() {
-      OverlayDefinition.field664.clear();
+      FloorOverlayDefinition.field664.clear();
    }
 
    @ObfuscatedName("v")

@@ -333,7 +333,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                         drawWidgetGroup(var10.children, var10.id, var15, var16, var17, var18, var12 - var10.scrollX, var13 - var10.scrollY, var11);
                      }
 
-                     WidgetGroupParent var23 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var10.id);
+                     InterfaceParent var23 = (InterfaceParent)Client.interfaceParents.get((long)var10.id);
                      if (var23 != null) {
                         Interpreter.drawWidgets(var23.group, var15, var16, var17, var18, var12, var13, var11);
                      }

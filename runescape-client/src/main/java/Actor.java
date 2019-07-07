@@ -1306,7 +1306,7 @@ public abstract class Actor extends Entity {
 
                                  if (var2 != 1007) {
                                     if (var2 == 1008 || var2 == 1011 || var2 == 1010 || var2 == 1009 || var2 == 1012) {
-                                       class60.worldMap0.menuAction(var2, var3, new TileLocation(var0), new TileLocation(var1));
+                                       class60.worldMap0.menuAction(var2, var3, new Coord(var0), new Coord(var1));
                                     }
                                     break label415;
                                  }

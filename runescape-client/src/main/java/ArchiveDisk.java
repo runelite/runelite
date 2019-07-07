@@ -316,7 +316,7 @@ public final class ArchiveDisk
          int var15 = var5 - var4.xInset;
          int var16 = var6 - var4.yInset;
          if (var3.vmethod3644(var2, var5, var6, var4)) {
-            WidgetGroupParent.field986 = var5;
+            InterfaceParent.field986 = var5;
             UrlRequester.field929 = var6;
             return true;
          }
@@ -485,7 +485,7 @@ public final class ArchiveDisk
          }
       }
 
-      WidgetGroupParent.field986 = var5;
+      InterfaceParent.field986 = var5;
       UrlRequester.field929 = var6;
       return false;
    }

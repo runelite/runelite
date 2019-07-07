@@ -388,7 +388,7 @@ public class Buffer extends Node {
       }
 
       int var2 = this.index - var1 - 1;
-      return var2 == 0 ? "" : WidgetGroupParent.decodeStringCp1252(this.array, var1, var2);
+      return var2 == 0 ? "" : InterfaceParent.decodeStringCp1252(this.array, var1, var2);
    }
 
    @ObfuscatedName("ak")
@@ -408,7 +408,7 @@ public class Buffer extends Node {
          }
 
          int var3 = this.index - var2 - 1;
-         return var3 == 0 ? "" : WidgetGroupParent.decodeStringCp1252(this.array, var2, var3);
+         return var3 == 0 ? "" : InterfaceParent.decodeStringCp1252(this.array, var2, var3);
       }
    }
 

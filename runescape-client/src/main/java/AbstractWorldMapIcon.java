@@ -23,13 +23,13 @@ public abstract class AbstractWorldMapIcon {
       signature = "Lhu;"
    )
    @Export("coord2")
-   public final TileLocation coord2;
+   public final Coord coord2;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lhu;"
    )
    @Export("coord1")
-   public final TileLocation coord1;
+   public final Coord coord1;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -521086143
@@ -44,7 +44,7 @@ public abstract class AbstractWorldMapIcon {
    @ObfuscatedSignature(
       signature = "(Lhu;Lhu;)V"
    )
-   AbstractWorldMapIcon(TileLocation var1, TileLocation var2) {
+   AbstractWorldMapIcon(Coord var1, Coord var2) {
       this.coord1 = var1;
       this.coord2 = var2;
    }

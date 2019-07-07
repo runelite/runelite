@@ -5,8 +5,9 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("lg")
-@Implements("SpriteIds")
-public class SpriteIds {
+@Implements("GraphicsDefaults")
+public class GraphicsDefaults
+{
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1673796151
@@ -72,7 +73,7 @@ public class SpriteIds {
    @Export("modIcons")
    public int modIcons;
 
-   public SpriteIds() {
+   public GraphicsDefaults() {
       this.field878 = -1;
       this.field879 = -1;
       this.mapScenes = -1;
@@ -91,8 +92,8 @@ public class SpriteIds {
       signature = "(Lir;I)V",
       garbageValue = "1764356022"
    )
-   @Export("read")
-   public void read(AbstractArchive var1) {
+   @Export("decode")
+   public void decode(AbstractArchive var1) {
       byte[] var2 = var1.takeFileFlat(DefaultsGroup.field3810.group);
       Buffer var3 = new Buffer(var2);
 

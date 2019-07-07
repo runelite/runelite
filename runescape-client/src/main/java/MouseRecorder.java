@@ -96,7 +96,7 @@ public class MouseRecorder implements Runnable {
             var10 = var4;
          }
 
-         int[] var20 = WidgetGroupParent.sceneMinimapSprite.pixels;
+         int[] var20 = InterfaceParent.sceneMinimapSprite.pixels;
          var12 = var1 * 4 + (103 - var2) * 2048 + 24624;
          var11 = HitSplatDefinition.method4972(var5);
          ObjectDefinition var15 = class50.getObjectDefinition(var11);
@@ -198,7 +198,7 @@ public class MouseRecorder implements Runnable {
                var22 = 15597568;
             }
 
-            int[] var26 = WidgetGroupParent.sceneMinimapSprite.pixels;
+            int[] var26 = InterfaceParent.sceneMinimapSprite.pixels;
             var17 = var1 * 4 + (103 - var2) * 2048 + 24624;
             if (var8 != 0 && var8 != 2) {
                var26[var17] = var22;
@@ -275,7 +275,7 @@ public class MouseRecorder implements Runnable {
             int var5 = Client.minimapOrientation & 2047;
             int var6 = Canvas.localPlayer.x / 32 + 48;
             int var7 = 464 - Canvas.localPlayer.y / 32;
-            WidgetGroupParent.sceneMinimapSprite.method315(var1, var2, var4.width, var4.height, var6, var7, var5, 256, var4.xStarts, var4.xWidths);
+            InterfaceParent.sceneMinimapSprite.method315(var1, var2, var4.width, var4.height, var6, var7, var5, 256, var4.xStarts, var4.xWidths);
 
             int var8;
             int var9;

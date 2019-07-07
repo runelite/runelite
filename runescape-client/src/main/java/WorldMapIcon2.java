@@ -44,7 +44,7 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
    @ObfuscatedSignature(
       signature = "(Lhu;Lhu;ILav;)V"
    )
-   WorldMapIcon2(TileLocation var1, TileLocation var2, int var3, WorldMapRegion var4) {
+   WorldMapIcon2(Coord var1, Coord var2, int var3, WorldMapRegion var4) {
       super(var1, var2);
       this.field1034 = var3;
       this.field1035 = var4;

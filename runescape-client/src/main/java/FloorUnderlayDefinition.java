@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ih")
-@Implements("UnderlayDefinition")
-public class UnderlayDefinition extends DualNode {
+@Implements("FloorUnderlayDefinition")
+public class FloorUnderlayDefinition extends DualNode {
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lir;"
@@ -50,7 +50,7 @@ public class UnderlayDefinition extends DualNode {
    @Export("hueMultiplier")
    public int hueMultiplier;
 
-   UnderlayDefinition() {
+   FloorUnderlayDefinition() {
       this.rgb = 0;
    }
 
@@ -59,8 +59,8 @@ public class UnderlayDefinition extends DualNode {
       signature = "(I)V",
       garbageValue = "-782326269"
    )
-   @Export("init")
-   void init() {
+   @Export("postDecode")
+   void postDecode() {
       this.setHsl(this.rgb);
    }
 

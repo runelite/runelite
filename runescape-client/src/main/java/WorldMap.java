@@ -242,7 +242,7 @@ public class WorldMap {
       signature = "Lhu;"
    )
    @Export("mouseCoord")
-   TileLocation mouseCoord;
+   Coord mouseCoord;
    @ObfuscatedName("bc")
    @Export("showCoord")
    public boolean showCoord;
@@ -675,7 +675,7 @@ public class WorldMap {
       signature = "(Lag;Lhu;Lhu;ZI)V",
       garbageValue = "-1430939646"
    )
-   public void method367(WorldMapArea var1, TileLocation var2, TileLocation var3, boolean var4) {
+   public void method367(WorldMapArea var1, Coord var2, Coord var3, boolean var4) {
       if (var1 != null) {
          if (this.currentMapArea == null || var1 != this.currentMapArea) {
             this.initializeWorldMap(var1);
@@ -1013,7 +1013,7 @@ public class WorldMap {
       signature = "(I)Lhu;",
       garbageValue = "-2005824064"
    )
-   public TileLocation method376() {
+   public Coord method376() {
       return this.currentMapArea == null ? null : this.currentMapArea.coord(this.method374(), this.method375());
    }
 
@@ -1263,7 +1263,7 @@ public class WorldMap {
       signature = "(ILhu;I)Lhu;",
       garbageValue = "333454230"
    )
-   public TileLocation method385(int var1, TileLocation var2) {
+   public Coord method385(int var1, Coord var2) {
       if (!this.cacheLoader.getIsLoaded()) {
          return null;
       } else if (!this.worldMapManager.isLoaded()) {
@@ -1306,7 +1306,7 @@ public class WorldMap {
       garbageValue = "94"
    )
    @Export("menuAction")
-   public void menuAction(int var1, int var2, TileLocation var3, TileLocation var4) {
+   public void menuAction(int var1, int var2, Coord var3, Coord var4) {
       ScriptEvent var5 = new ScriptEvent();
       WorldMapEvent var6 = new WorldMapEvent(var2, var3, var4);
       var5.setArgs(new Object[]{var6});

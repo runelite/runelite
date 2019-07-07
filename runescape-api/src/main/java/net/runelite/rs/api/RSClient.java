@@ -453,7 +453,7 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	RSNodeHashTable getWidgetFlags();
 
-	@Import("widgetGroupParents")
+	@Import("interfaceParents")
 	@Override
 	RSNodeHashTable getComponentTable();
 

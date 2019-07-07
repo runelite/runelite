@@ -109,13 +109,13 @@ public class WorldMapSection2 implements WorldMapSection {
       garbageValue = "-1916486802"
    )
    @Export("coord")
-   public TileLocation coord(int var1, int var2) {
+   public Coord coord(int var1, int var2) {
       if (!this.containsPosition(var1, var2)) {
          return null;
       } else {
          int var3 = this.field1085 * 64 - this.field1087 * 64 + var1;
          int var4 = this.field1086 * 64 - this.field1088 * 64 + var2;
-         return new TileLocation(this.field1083, var3, var4);
+         return new Coord(this.field1083, var3, var4);
       }
    }
 
@@ -188,7 +188,7 @@ public class WorldMapSection2 implements WorldMapSection {
          int var17 = var4 - var3.xInset;
          int var18 = var5 - var3.yInset;
          if (var2.vmethod3644(2, var4, var5, var3)) {
-            WidgetGroupParent.field986 = var4;
+            InterfaceParent.field986 = var4;
             UrlRequester.field929 = var5;
             return true;
          }
@@ -259,7 +259,7 @@ public class WorldMapSection2 implements WorldMapSection {
          }
       }
 
-      WidgetGroupParent.field986 = var4;
+      InterfaceParent.field986 = var4;
       UrlRequester.field929 = var5;
       return false;
    }

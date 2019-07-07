@@ -49,7 +49,7 @@ public class WorldMapArea {
       signature = "Lhu;"
    )
    @Export("origin0")
-   TileLocation origin0;
+   Coord origin0;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 1238532539
@@ -103,7 +103,7 @@ public class WorldMapArea {
       this.id0 = var2;
       this.archiveName0 = var1.readStringCp1252NullTerminated();
       this.name0 = var1.readStringCp1252NullTerminated();
-      this.origin0 = new TileLocation(var1.readInt());
+      this.origin0 = new Coord(var1.readInt());
       this.field1015 = var1.readInt();
       var1.readUnsignedByte();
       this.isMain0 = var1.readUnsignedByte() == 1;
@@ -223,7 +223,7 @@ public class WorldMapArea {
       garbageValue = "1509069978"
    )
    @Export("coord")
-   public TileLocation coord(int var1, int var2) {
+   public Coord coord(int var1, int var2) {
       Iterator var3 = this.sections.iterator();
 
       while (var3.hasNext()) {
@@ -387,8 +387,8 @@ public class WorldMapArea {
       garbageValue = "-1411761003"
    )
    @Export("origin")
-   public TileLocation origin() {
-      return new TileLocation(this.origin0);
+   public Coord origin() {
+      return new Coord(this.origin0);
    }
 
    @ObfuscatedName("m")

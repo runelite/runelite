@@ -84,7 +84,7 @@ public class class30 {
                   method570(var3.children, var1);
                }
 
-               WidgetGroupParent var4 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var3.id);
+               InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var3.id);
                if (var4 != null) {
                   GrandExchangeEvents.method74(var4.group, var1);
                }

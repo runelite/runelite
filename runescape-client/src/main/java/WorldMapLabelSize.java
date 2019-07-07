@@ -108,7 +108,7 @@ public class WorldMapLabelSize {
       PacketBufferNode var0 = Interpreter.method1915(ClientPacket.field242, Client.packetWriter.isaacCipher);
       Client.packetWriter.method241(var0);
 
-      for (WidgetGroupParent var1 = (WidgetGroupParent)Client.widgetGroupParents.first(); var1 != null; var1 = (WidgetGroupParent)Client.widgetGroupParents.next()) {
+      for (InterfaceParent var1 = (InterfaceParent)Client.interfaceParents.first(); var1 != null; var1 = (InterfaceParent)Client.interfaceParents.next()) {
          if (var1.type == 0 || var1.type == 3) {
             MenuAction.closeWidgetGroup(var1, true);
          }

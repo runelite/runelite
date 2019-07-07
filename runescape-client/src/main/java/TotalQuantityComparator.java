@@ -109,12 +109,12 @@ final class TotalQuantityComparator implements Comparator {
       signature = "(ILhu;ZI)V",
       garbageValue = "466862614"
    )
-   static void method96(int var0, TileLocation var1, boolean var2) {
+   static void method96(int var0, Coord var1, boolean var2) {
       WorldMapArea var3 = BufferedFile.worldMap().getMapArea(var0);
       int var4 = Canvas.localPlayer.plane;
       int var5 = (Canvas.localPlayer.x >> 7) + class50.baseX;
       int var6 = (Canvas.localPlayer.y >> 7) + GraphicsObject.baseY;
-      TileLocation var7 = new TileLocation(var4, var5, var6);
+      Coord var7 = new Coord(var4, var5, var6);
       BufferedFile.worldMap().method367(var3, var7, var1, var2);
    }
 

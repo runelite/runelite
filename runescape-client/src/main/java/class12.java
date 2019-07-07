@@ -123,7 +123,7 @@ final class class12 implements Comparator {
       garbageValue = "1731524026"
    )
    static void method159() {
-      for (WidgetGroupParent var0 = (WidgetGroupParent)Client.widgetGroupParents.first(); var0 != null; var0 = (WidgetGroupParent)Client.widgetGroupParents.next()) {
+      for (InterfaceParent var0 = (InterfaceParent)Client.interfaceParents.first(); var0 != null; var0 = (InterfaceParent)Client.interfaceParents.next()) {
          int var1 = var0.group;
          if (GroundItemPile.loadWidgetGroup(var1)) {
             boolean var2 = true;

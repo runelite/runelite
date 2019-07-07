@@ -371,7 +371,7 @@ public class HitSplatDefinition extends DualNode {
          if (var1 != null) {
             return var1;
          } else {
-            var1 = SpriteIds.method5823(field383, field384, this.fontId, 0);
+            var1 = GraphicsDefaults.method5823(field383, field384, this.fontId, 0);
             if (var1 != null) {
                HitSplatDefinition_cachedFonts.put(var1, (long)this.fontId);
             }

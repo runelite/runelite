@@ -810,7 +810,7 @@ public class class39 extends class21 {
          WorldMapRegion.notRevalidateWidgetScroll(var1.children, var1.id, var3, var4, var2);
       }
 
-      WidgetGroupParent var5 = (WidgetGroupParent)Client.widgetGroupParents.get((long)var1.id);
+      InterfaceParent var5 = (InterfaceParent)Client.interfaceParents.get((long)var1.id);
       if (var5 != null) {
          int var6 = var5.group;
          if (GroundItemPile.loadWidgetGroup(var6)) {

@@ -1318,7 +1318,7 @@ public class Widget extends Node {
          if (var1 != null) {
             return var1;
          } else {
-            var1 = SpriteIds.method5823(field955, class27.field1143, this.fontId, 0);
+            var1 = GraphicsDefaults.method5823(field955, class27.field1143, this.fontId, 0);
             if (var1 != null) {
                Widget_cachedFonts.put(var1, (long)this.fontId);
             } else {

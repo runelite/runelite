@@ -44,7 +44,7 @@ public interface WorldMapSection {
       garbageValue = "-1916486802"
    )
    @Export("coord")
-   TileLocation coord(int var1, int var2);
+   Coord coord(int var1, int var2);
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(

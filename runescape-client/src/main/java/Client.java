@@ -103,8 +103,8 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedSignature(
       signature = "Lld;"
    )
-   @Export("widgetGroupParents")
-   static NodeHashTable widgetGroupParents;
+   @Export("interfaceParents")
+   static NodeHashTable interfaceParents;
    @ObfuscatedName("oy")
    @Export("rootWidgetXs")
    static int[] rootWidgetXs;
@@ -1732,7 +1732,7 @@ public final class Client extends GameShell implements Usernamed {
                         for (var13 = 0; var13 < 104; ++var13) {
                            var14 = var12 + 5;
                            int var10002;
-                           UnderlayDefinition var29;
+                           FloorUnderlayDefinition var29;
                            if (var14 >= 0 && var14 < 104) {
                               var15 = Tiles.field908[var6][var14][var13] & 255;
                               if (var15 > 0) {
@@ -1830,7 +1830,7 @@ public final class Client extends GameShell implements Usernamed {
                                        var39 = WorldMapAreaData.method712(var40, var41, var42);
                                     }
 
-                                    OverlayDefinition var43;
+                                    FloorOverlayDefinition var43;
                                     if (var6 > 0) {
                                        boolean var44 = true;
                                        if (var28 == 0 && class32.field1157[var6][var12][var18] != 0) {
@@ -1839,19 +1839,19 @@ public final class Client extends GameShell implements Usernamed {
 
                                        if (var65 > 0) {
                                           var42 = var65 - 1;
-                                          var43 = (OverlayDefinition)OverlayDefinition.field664.get((long)var42);
-                                          OverlayDefinition var45;
+                                          var43 = (FloorOverlayDefinition) FloorOverlayDefinition.field664.get((long)var42);
+                                          FloorOverlayDefinition var45;
                                           if (var43 != null) {
                                              var45 = var43;
                                           } else {
-                                             byte[] var46 = OverlayDefinition.field663.takeFile(4, var42);
-                                             var43 = new OverlayDefinition();
+                                             byte[] var46 = FloorOverlayDefinition.field663.takeFile(4, var42);
+                                             var43 = new FloorOverlayDefinition();
                                              if (var46 != null) {
                                                 var43.decode(new Buffer(var46), var42);
                                              }
 
-                                             var43.init();
-                                             OverlayDefinition.field664.put(var43, (long)var42);
+                                             var43.postDecode();
+                                             FloorOverlayDefinition.field664.put(var43, (long)var42);
                                              var45 = var43;
                                           }
 
@@ -1877,18 +1877,18 @@ public final class Client extends GameShell implements Usernamed {
                                        var41 = class32.field1157[var6][var12][var18] + 1;
                                        byte var66 = class307.field1155[var6][var12][var18];
                                        int var67 = var65 - 1;
-                                       OverlayDefinition var68 = (OverlayDefinition)OverlayDefinition.field664.get((long)var67);
+                                       FloorOverlayDefinition var68 = (FloorOverlayDefinition) FloorOverlayDefinition.field664.get((long)var67);
                                        if (var68 != null) {
                                           var43 = var68;
                                        } else {
-                                          byte[] var47 = OverlayDefinition.field663.takeFile(4, var67);
-                                          var68 = new OverlayDefinition();
+                                          byte[] var47 = FloorOverlayDefinition.field663.takeFile(4, var67);
+                                          var68 = new FloorOverlayDefinition();
                                           if (var47 != null) {
                                              var68.decode(new Buffer(var47), var67);
                                           }
 
-                                          var68.init();
-                                          OverlayDefinition.field664.put(var68, (long)var67);
+                                          var68.postDecode();
+                                          FloorOverlayDefinition.field664.put(var68, (long)var67);
                                           var43 = var68;
                                        }
 
@@ -5226,19 +5226,19 @@ public final class Client extends GameShell implements Usernamed {
                return true;
             }
 
-            WidgetGroupParent var22;
+            InterfaceParent var22;
             if (ServerPacket.field871 == var1.serverPacket0) {
                var37 = var3.readInt();
                var6 = var3.readInt();
-               WidgetGroupParent var48 = (WidgetGroupParent)widgetGroupParents.get((long)var6);
-               var22 = (WidgetGroupParent)widgetGroupParents.get((long)var37);
+               InterfaceParent var48 = (InterfaceParent)interfaceParents.get((long)var6);
+               var22 = (InterfaceParent)interfaceParents.get((long)var37);
                if (var22 != null) {
                   MenuAction.closeWidgetGroup(var22, var48 == null || var48.group != var22.group);
                }
 
                if (var48 != null) {
                   var48.remove();
-                  widgetGroupParents.put(var48, (long)var37);
+                  interfaceParents.put(var48, (long)var37);
                }
 
                var15 = Huffman.getWidget(var6);
@@ -5574,7 +5574,7 @@ public final class Client extends GameShell implements Usernamed {
                return true;
             }
 
-            WidgetGroupParent var50;
+            InterfaceParent var50;
             if (ServerPacket.field845 == var1.serverPacket0) {
                var37 = var3.index + var1.serverPacket0Length;
                var6 = var3.readUnsignedShort();
@@ -5594,7 +5594,7 @@ public final class Client extends GameShell implements Usernamed {
                   var10 = var3.readInt();
                   var11 = var3.readUnsignedShort();
                   var12 = var3.readUnsignedByte();
-                  var50 = (WidgetGroupParent)widgetGroupParents.get((long)var10);
+                  var50 = (InterfaceParent)interfaceParents.get((long)var10);
                   if (var50 != null && var11 != var50.group) {
                      MenuAction.closeWidgetGroup(var50, true);
                      var50 = null;
@@ -5605,7 +5605,7 @@ public final class Client extends GameShell implements Usernamed {
                   }
                }
 
-               for (var22 = (WidgetGroupParent)widgetGroupParents.first(); var22 != null; var22 = (WidgetGroupParent)widgetGroupParents.next()) {
+               for (var22 = (InterfaceParent)interfaceParents.first(); var22 != null; var22 = (InterfaceParent)interfaceParents.next()) {
                   if (var22.keep) {
                      var22.keep = false;
                   } else {
@@ -5692,7 +5692,7 @@ public final class Client extends GameShell implements Usernamed {
 
             if (ServerPacket.field798 == var1.serverPacket0) {
                var37 = var3.readInt();
-               var50 = (WidgetGroupParent)widgetGroupParents.get((long)var37);
+               var50 = (InterfaceParent)interfaceParents.get((long)var37);
                if (var50 != null) {
                   MenuAction.closeWidgetGroup(var50, true);
                }
@@ -5753,7 +5753,7 @@ public final class Client extends GameShell implements Usernamed {
                var37 = var3.method58();
                var6 = var3.method72();
                var5 = var3.method67();
-               var22 = (WidgetGroupParent)widgetGroupParents.get((long)var6);
+               var22 = (InterfaceParent)interfaceParents.get((long)var6);
                if (var22 != null) {
                   MenuAction.closeWidgetGroup(var22, var5 != var22.group);
                }
@@ -6093,7 +6093,7 @@ public final class Client extends GameShell implements Usernamed {
       }
 
       WorldMapSection3.alignWidgetSize(var1, var3, var4, false);
-      OverlayDefinition.alignWidgetPosition(var1, var3, var4);
+      FloorOverlayDefinition.alignWidgetPosition(var1, var3, var4);
    }
 
    @ObfuscatedName("jh")
@@ -6402,7 +6402,7 @@ public final class Client extends GameShell implements Usernamed {
       selectedSpellActionName = null;
       selectedSpellName = null;
       rootWidgetGroup = -1;
-      widgetGroupParents = new NodeHashTable(8);
+      interfaceParents = new NodeHashTable(8);
       field151 = 0;
       field153 = -1;
       chatEffects = 0;

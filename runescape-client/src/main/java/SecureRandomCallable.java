@@ -52,11 +52,11 @@ public class SecureRandomCallable implements Callable {
       signature = "(IIII)Lbx;",
       garbageValue = "329127611"
    )
-   static final WidgetGroupParent method1143(int var0, int var1, int var2) {
-      WidgetGroupParent var3 = new WidgetGroupParent();
+   static final InterfaceParent method1143(int var0, int var1, int var2) {
+      InterfaceParent var3 = new InterfaceParent();
       var3.group = var1;
       var3.type = var2;
-      Client.widgetGroupParents.put(var3, (long)var0);
+      Client.interfaceParents.put(var3, (long)var0);
       DevicePcmPlayerProvider.method845(var1);
       Widget var4 = Huffman.getWidget(var0);
       class22.method295(var4);

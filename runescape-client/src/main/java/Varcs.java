@@ -357,7 +357,7 @@ public class Varcs {
       garbageValue = "321265868"
    )
    public static void method2160(AbstractArchive var0) {
-      OverlayDefinition.field663 = var0;
+      FloorOverlayDefinition.field663 = var0;
    }
 
    @ObfuscatedName("q")

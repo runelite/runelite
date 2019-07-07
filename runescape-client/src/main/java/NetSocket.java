@@ -357,7 +357,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
                var15 = var9 - var4.xInset;
                var16 = var10 - var4.yInset;
                if (var3.vmethod3644(1, var9, var10, var4)) {
-                  WidgetGroupParent.field986 = var9;
+                  InterfaceParent.field986 = var9;
                   UrlRequester.field929 = var10;
                   var25 = true;
                   break label226;
@@ -429,7 +429,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
                }
             }
 
-            WidgetGroupParent.field986 = var9;
+            InterfaceParent.field986 = var9;
             UrlRequester.field929 = var10;
             var25 = false;
          }
@@ -443,7 +443,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
       var8 = var0 - 64;
       var9 = var1 - 64;
-      var10 = WidgetGroupParent.field986;
+      var10 = InterfaceParent.field986;
       var19 = UrlRequester.field929;
       if (!var18) {
          var20 = Integer.MAX_VALUE;

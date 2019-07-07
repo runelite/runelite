@@ -216,7 +216,7 @@ public class WorldMapElement extends DualNode {
                class266[] var6 = new class266[]{class266.field3527, class266.field3526, class266.field3529};
                this.field3287 = (class266)ScriptFrame.findEnumerated(var6, var1.readUnsignedByte());
             } else if (var2 == 30) {
-               this.field3301 = (class249)ScriptFrame.findEnumerated(UnderlayDefinition.method4839(), var1.readUnsignedByte());
+               this.field3301 = (class249)ScriptFrame.findEnumerated(FloorUnderlayDefinition.method4839(), var1.readUnsignedByte());
             }
          }
       }

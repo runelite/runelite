@@ -18,8 +18,8 @@ public class class211 {
    @ObfuscatedSignature(
       signature = "Llg;"
    )
-   @Export("spriteIds")
-   static SpriteIds spriteIds;
+   @Export("graphicsDefaults")
+   static GraphicsDefaults graphicsDefaults;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
