@@ -449,7 +449,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.swapLadder = config.swapLadder();
 		this.showTimer = config.showTimer();
