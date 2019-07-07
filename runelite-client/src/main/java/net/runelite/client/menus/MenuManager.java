@@ -438,7 +438,7 @@ public class MenuManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!client.isMenuOpen())
+		if (!client.isMenuOpen() && event.isAuthentic())
 		{
 			rebuildLeftClickMenu();
 
