@@ -9,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
@@ -41,6 +42,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	type = PluginType.UTILITY
 )
 @Singleton
+@Slf4j
 public class ChatTranslationPlugin extends Plugin implements KeyListener
 {
 
@@ -220,7 +222,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
+					log.warn(e.toString());
 				}
 
 				client.refreshChat();
@@ -256,7 +258,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
+					log.warn(e.toString());
 				}
 				return;
 			}
@@ -280,7 +282,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
+				log.warn(e.toString());
 			}
 		}
 	}
