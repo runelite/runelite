@@ -93,7 +93,7 @@ public class SpriteIds {
    )
    @Export("read")
    public void read(AbstractArchive var1) {
-      byte[] var2 = var1.takeFileFlat(class311.field3810.field3809);
+      byte[] var2 = var1.takeFileFlat(DefaultsGroup.field3810.group);
       Buffer var3 = new Buffer(var2);
 
       while (true) {

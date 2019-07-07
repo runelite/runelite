@@ -1,14 +1,18 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ka")
-public class class311 {
+@Implements("DefaultsGroup")
+public class DefaultsGroup
+{
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lka;"
    )
-   static final class311 field3810;
+   static final DefaultsGroup field3810;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -2077113503
@@ -18,10 +22,11 @@ public class class311 {
    @ObfuscatedGetter(
       intValue = -800980069
    )
-   final int field3809;
+   @Export("group")
+   final int group;
 
-   class311(int var1) {
-      this.field3809 = var1;
+   DefaultsGroup(int var1) {
+      this.group = var1;
    }
 
    @ObfuscatedName("m")
@@ -34,6 +39,6 @@ public class class311 {
    }
 
    static {
-      field3810 = new class311(3);
+      field3810 = new DefaultsGroup(3);
    }
 }

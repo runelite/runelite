@@ -212,10 +212,10 @@ public class Decimator {
             ViewportMouse.field951 = (var16 + var10) / 2;
             ViewportMouse.field952 = (var13 + var12) / 2;
             ViewportMouse.field953 = (var17 - var9) / 2;
-            class311.field1156 = (var16 - var10) / 2;
+            DefaultsGroup.field1156 = (var16 - var10) / 2;
             Skeleton.field874 = (var13 - var12) / 2;
             GraphicsObject.field377 = Math.abs(ViewportMouse.field953);
-            ViewportMouse.field954 = Math.abs(class311.field1156);
+            ViewportMouse.field954 = Math.abs(DefaultsGroup.field1156);
             class248.field1142 = Math.abs(Skeleton.field874);
          }
 
@@ -228,7 +228,7 @@ public class Decimator {
          var9 = AccessFile.field7 - var5;
          var10 = ViewportMouse.field951 - var6;
          var11 = ViewportMouse.field952 - var7;
-         return Math.abs(var9) > var8 + GraphicsObject.field377 ? false : (Math.abs(var10) > var12 + ViewportMouse.field954 ? false : (Math.abs(var11) > var13 + class248.field1142 ? false : (Math.abs(var11 * class311.field1156 - var10 * Skeleton.field874) > var13 * ViewportMouse.field954 + var12 * class248.field1142 ? false : (Math.abs(var9 * Skeleton.field874 - var11 * ViewportMouse.field953) > var8 * class248.field1142 + var13 * GraphicsObject.field377 ? false : Math.abs(var10 * ViewportMouse.field953 - var9 * class311.field1156) <= var8 * ViewportMouse.field954 + var12 * GraphicsObject.field377))));
+         return Math.abs(var9) > var8 + GraphicsObject.field377 ? false : (Math.abs(var10) > var12 + ViewportMouse.field954 ? false : (Math.abs(var11) > var13 + class248.field1142 ? false : (Math.abs(var11 * DefaultsGroup.field1156 - var10 * Skeleton.field874) > var13 * ViewportMouse.field954 + var12 * class248.field1142 ? false : (Math.abs(var9 * Skeleton.field874 - var11 * ViewportMouse.field953) > var8 * class248.field1142 + var13 * GraphicsObject.field377 ? false : Math.abs(var10 * ViewportMouse.field953 - var9 * DefaultsGroup.field1156) <= var8 * ViewportMouse.field954 + var12 * GraphicsObject.field377))));
       }
    }
 

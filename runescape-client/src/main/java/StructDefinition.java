@@ -261,7 +261,7 @@ public class StructDefinition extends DualNode {
             return 1;
          } else if (var0 == 1125) {
             var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-            RectangleMode var7 = (RectangleMode)ScriptFrame.findEnumerated(class311.method5822(), var5);
+            RectangleMode var7 = (RectangleMode)ScriptFrame.findEnumerated(DefaultsGroup.method5822(), var5);
             if (var7 != null) {
                var4.rectangleMode = var7;
                class22.method295(var4);
