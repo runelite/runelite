@@ -76,8 +76,8 @@ public class RaidsOverlay extends Overlay
 	private final ItemManager itemManager;
 	private final SpriteManager spriteManager;
 	private final PanelComponent panelImages = new PanelComponent();
-	private Client client;
-	private RaidsPlugin plugin;
+	private final Client client;
+	private final RaidsPlugin plugin;
 	@Setter(AccessLevel.PACKAGE)
 	private boolean sharable = false;
 	@Getter(AccessLevel.PACKAGE)
