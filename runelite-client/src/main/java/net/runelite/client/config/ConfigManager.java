@@ -243,12 +243,10 @@ public class ConfigManager
 			throw new RuntimeException("Non-public configuration classes can't have default methods invoked");
 		}
 
-		T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
+		return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
 			{
 				clazz
 			}, handler);
-
-		return t;
 	}
 
 	public List<String> getConfigurationKeys(String prefix)
