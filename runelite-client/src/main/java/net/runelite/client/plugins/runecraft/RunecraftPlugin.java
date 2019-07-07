@@ -353,7 +353,7 @@ public class RunecraftPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned event)
 	{
 		final NPC npc = event.getNpc();
-		if (npc == darkMage)
+		if (npc != null && npc.equals(darkMage))
 		{
 			darkMage = null;
 		}
