@@ -382,8 +382,8 @@ public class BanListPlugin extends Plugin
 				{
 					if (x.contains("title"))
 					{
-						x = x.substring(x.indexOf("title"), x.indexOf(">"));
-						x = x.substring(x.indexOf("=") + 2, x.length() - 1);
+						x = x.substring(x.indexOf("title"), x.indexOf('>'));
+						x = x.substring(x.indexOf('=') + 2, x.length() - 1);
 						runeWatchArrayList.add(Text.standardize(x));
 					}
 				}
