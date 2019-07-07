@@ -51,8 +51,8 @@ public class VorkathOverlay extends Overlay
 	private static final int OVERLAY_ICON_DISTANCE = 30;
 	private static final int OVERLAY_ICON_MARGIN = 1;
 
-	private Client client;
-	private VorkathPlugin plugin;
+	private final Client client;
+	private final VorkathPlugin plugin;
 
 	@Inject
 	public VorkathOverlay(final Client client, final VorkathPlugin plugin)

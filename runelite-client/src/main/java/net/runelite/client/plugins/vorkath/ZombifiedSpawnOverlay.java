@@ -37,7 +37,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Singleton
 public class ZombifiedSpawnOverlay extends Overlay
 {
-	private VorkathPlugin plugin;
+	private final VorkathPlugin plugin;
 
 	@Inject
 	public ZombifiedSpawnOverlay(final VorkathPlugin plugin)
