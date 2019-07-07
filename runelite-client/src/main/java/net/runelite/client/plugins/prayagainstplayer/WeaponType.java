@@ -87,7 +87,7 @@ enum WeaponType
 
 	}
 
-	private static String[] meleeWeaponNames = {
+	private static final String[] meleeWeaponNames = {
 		"sword",
 		"scimitar",
 		"dagger",
@@ -119,7 +119,7 @@ enum WeaponType
 		"bulwark"
 	};
 
-	private static String[] rangedWeaponNames = {
+	private static final String[] rangedWeaponNames = {
 		"bow",
 		"blowpipe",
 		"xil-ul",
@@ -130,7 +130,7 @@ enum WeaponType
 		"ballista"
 	};
 
-	private static String[] magicWeaponNames = {
+	private static final String[] magicWeaponNames = {
 		"staff",
 		"trident",
 		"wand",
