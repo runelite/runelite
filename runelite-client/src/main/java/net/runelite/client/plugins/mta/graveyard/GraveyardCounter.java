@@ -29,7 +29,7 @@ import java.awt.image.BufferedImage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
-public class GraveyardCounter extends Counter
+class GraveyardCounter extends Counter
 {
 	GraveyardCounter(final BufferedImage image, final Plugin plugin)
 	{
