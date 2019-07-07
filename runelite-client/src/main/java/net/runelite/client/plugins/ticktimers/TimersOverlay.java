@@ -45,8 +45,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Singleton
 public class TimersOverlay extends Overlay
 {
-	private TickTimersPlugin plugin;
-	private Client client;
+	private final TickTimersPlugin plugin;
+	private final Client client;
 
 	@Inject
 	TimersOverlay(final TickTimersPlugin plugin, final Client client)
