@@ -159,8 +159,8 @@ class QuestGuideLinks
 	private static class Link
 	{
 
-		private String questName;
-		private String url;
+		private final String questName;
+		private final String url;
 
 		Link(String questName, String url)
 		{
