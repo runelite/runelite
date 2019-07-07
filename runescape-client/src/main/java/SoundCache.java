@@ -18,13 +18,13 @@ public class SoundCache {
       signature = "Lir;"
    )
    @Export("soundEffectIndex")
-   AbstractIndexCache soundEffectIndex;
+   AbstractArchive soundEffectIndex;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
    @Export("musicSampleIndex")
-   AbstractIndexCache musicSampleIndex;
+   AbstractArchive musicSampleIndex;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lld;"
@@ -41,7 +41,7 @@ public class SoundCache {
    @ObfuscatedSignature(
       signature = "(Lir;Lir;)V"
    )
-   public SoundCache(AbstractIndexCache var1, AbstractIndexCache var2) {
+   public SoundCache(AbstractArchive var1, AbstractArchive var2) {
       this.musicSamples = new NodeHashTable(256);
       this.rawSounds = new NodeHashTable(256);
       this.soundEffectIndex = var1;

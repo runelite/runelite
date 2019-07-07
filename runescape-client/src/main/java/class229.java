@@ -19,7 +19,7 @@ public class class229 {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = ParamKeyDefinition.field679.takeRecord(11, var0);
+         byte[] var2 = ParamKeyDefinition.field679.takeFile(11, var0);
          var1 = new ParamKeyDefinition();
          if (var2 != null) {
             var1.read(new Buffer(var2));

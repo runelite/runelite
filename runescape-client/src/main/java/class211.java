@@ -90,7 +90,7 @@ public class class211 {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var8 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var9 = ByteArrayPool.indexCache13.takeRecord(var8, 0);
+                     var9 = ByteArrayPool.indexCache13.takeFile(var8, 0);
                      var10 = new Font(var9);
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var10.lineCount(var3, var4);
                      return 1;
@@ -99,7 +99,7 @@ public class class211 {
                      RouteStrategy.Interpreter_intStackSize -= 2;
                      var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                      var8 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                     var9 = ByteArrayPool.indexCache13.takeRecord(var8, 0);
+                     var9 = ByteArrayPool.indexCache13.takeFile(var8, 0);
                      var10 = new Font(var9);
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var10.lineWidth(var3, var4);
                      return 1;

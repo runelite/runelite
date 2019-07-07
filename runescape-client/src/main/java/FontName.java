@@ -478,7 +478,7 @@ public class FontName {
       class157.method3382();
       ((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).clear();
       Script.Script_cached.clear();
-      AbstractIndexCache.indexCache0.method8();
+      AbstractArchive.indexCache0.method8();
       Skeleton.indexCache1.method8();
       WorldMapIcon1.indexCache3.method8();
       WorldMapDecoration.indexCache4.method8();

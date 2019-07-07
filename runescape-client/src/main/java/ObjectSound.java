@@ -18,7 +18,7 @@ public final class ObjectSound extends Node {
       signature = "Lit;"
    )
    @Export("indexCache2")
-   static IndexCache indexCache2;
+   static Archive indexCache2;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 647270745

@@ -11,7 +11,7 @@ public class ParamKeyDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field679;
+   public static AbstractArchive field679;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"

@@ -167,7 +167,7 @@ public final class NPC extends Actor {
       signature = "(ILff;Lit;B)V",
       garbageValue = "-51"
    )
-   static void method2009(int var0, IndexStore var1, IndexCache var2) {
+   static void method2009(int var0, IndexStore var1, Archive var2) {
       IndexStoreAction var3 = new IndexStoreAction();
       var3.type = 1;
       var3.key = (long)var0;

@@ -35,7 +35,7 @@ public class WorldMapLabelSize {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   static IndexCache field1040;
+   static Archive field1040;
    @ObfuscatedName("fi")
    @ObfuscatedGetter(
       intValue = 1577759565

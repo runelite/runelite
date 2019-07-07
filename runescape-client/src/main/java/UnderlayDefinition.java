@@ -12,7 +12,7 @@ public class UnderlayDefinition extends DualNode {
       signature = "Lir;"
    )
    @Export("UnderlayDefinition_indexCache")
-   static AbstractIndexCache UnderlayDefinition_indexCache;
+   static AbstractArchive UnderlayDefinition_indexCache;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"

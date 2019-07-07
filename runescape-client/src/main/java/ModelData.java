@@ -1606,8 +1606,8 @@ public class ModelData extends Entity {
    @ObfuscatedSignature(
       signature = "(Lir;II)Ldw;"
    )
-   public static ModelData method2788(AbstractIndexCache var0, int var1, int var2) {
-      byte[] var3 = var0.takeRecord(var1, var2);
+   public static ModelData method2788(AbstractArchive var0, int var1, int var2) {
+      byte[] var3 = var0.takeFile(var1, var2);
       return var3 == null ? null : new ModelData(var3);
    }
 

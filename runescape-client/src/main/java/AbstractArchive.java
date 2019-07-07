@@ -6,8 +6,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ir")
-@Implements("AbstractIndexCache")
-public abstract class AbstractIndexCache {
+@Implements("AbstractArchive")
+public abstract class AbstractArchive {
    @ObfuscatedName("qb")
    @ObfuscatedSignature(
       signature = "Lco;"
@@ -38,52 +38,52 @@ public abstract class AbstractIndexCache {
       signature = "Lit;"
    )
    @Export("indexCache0")
-   static IndexCache indexCache0;
+   static Archive indexCache0;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1694798923
    )
-   @Export("archiveCount")
-   int archiveCount;
+   @Export("groupCount")
+   int groupCount;
    @ObfuscatedName("q")
-   @Export("archiveIds")
-   int[] archiveIds;
+   @Export("groupIds")
+   int[] groupIds;
    @ObfuscatedName("w")
-   @Export("archiveNameHashes")
-   int[] archiveNameHashes;
+   @Export("groupNameHashes")
+   int[] groupNameHashes;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Llv;"
    )
-   @Export("archiveNameHashTable")
-   IntHashTable archiveNameHashTable;
+   @Export("groupNameHashTable")
+   IntHashTable groupNameHashTable;
    @ObfuscatedName("u")
-   @Export("archiveCrcs")
-   int[] archiveCrcs;
+   @Export("groupCrcs")
+   int[] groupCrcs;
    @ObfuscatedName("g")
-   @Export("archiveVersions")
-   int[] archiveVersions;
+   @Export("groupVersions")
+   int[] groupVersions;
    @ObfuscatedName("l")
-   @Export("recordCounts")
-   int[] recordCounts;
+   @Export("fileCounts")
+   int[] fileCounts;
    @ObfuscatedName("e")
-   @Export("recordIds")
-   int[][] recordIds;
+   @Export("fileIds")
+   int[][] fileIds;
    @ObfuscatedName("x")
-   @Export("recordNameHashes")
-   int[][] recordNameHashes;
+   @Export("fileNameHashes")
+   int[][] fileNameHashes;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "[Llv;"
    )
-   @Export("recordNameHashTables")
-   IntHashTable[] recordNameHashTables;
+   @Export("fileNameHashTables")
+   IntHashTable[] fileNameHashTables;
    @ObfuscatedName("k")
-   @Export("archives")
-   Object[] archives;
+   @Export("groups")
+   Object[] groups;
    @ObfuscatedName("n")
-   @Export("records")
-   Object[][] records;
+   @Export("files")
+   Object[][] files;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -530370811
@@ -91,15 +91,15 @@ public abstract class AbstractIndexCache {
    @Export("hash")
    public int hash;
    @ObfuscatedName("z")
-   @Export("releaseArchives")
-   boolean releaseArchives;
+   @Export("releaseGroups")
+   boolean releaseGroups;
    @ObfuscatedName("j")
-   @Export("shallowRecords")
-   boolean shallowRecords;
+   @Export("shallowFiles")
+   boolean shallowFiles;
 
-   AbstractIndexCache(boolean var1, boolean var2) {
-      this.releaseArchives = var1;
-      this.shallowRecords = var2;
+   AbstractArchive(boolean var1, boolean var2) {
+      this.releaseGroups = var1;
+      this.shallowFiles = var2;
    }
 
    @ObfuscatedName("m")
@@ -107,8 +107,8 @@ public abstract class AbstractIndexCache {
       signature = "([BB)V",
       garbageValue = "0"
    )
-   @Export("setIndexReference")
-   void setIndexReference(byte[] var1) {
+   @Export("decodeIndex")
+   void decodeIndex(byte[] var1) {
       this.hash = WallDecoration.method3257(var1, var1.length);
       Buffer var2 = new Buffer(Strings.decompressBytes(var1));
       int var3 = var2.readUnsignedByte();
@@ -119,57 +119,57 @@ public abstract class AbstractIndexCache {
 
          int var4 = var2.readUnsignedByte();
          if (var3 >= 7) {
-            this.archiveCount = var2.method50();
+            this.groupCount = var2.method50();
          } else {
-            this.archiveCount = var2.readUnsignedShort();
+            this.groupCount = var2.readUnsignedShort();
          }
 
          int var5 = 0;
          int var6 = -1;
-         this.archiveIds = new int[this.archiveCount];
+         this.groupIds = new int[this.groupCount];
          int var7;
          if (var3 >= 7) {
-            for (var7 = 0; var7 < this.archiveCount; ++var7) {
-               this.archiveIds[var7] = var5 += var2.method50();
-               if (this.archiveIds[var7] > var6) {
-                  var6 = this.archiveIds[var7];
+            for (var7 = 0; var7 < this.groupCount; ++var7) {
+               this.groupIds[var7] = var5 += var2.method50();
+               if (this.groupIds[var7] > var6) {
+                  var6 = this.groupIds[var7];
                }
             }
          } else {
-            for (var7 = 0; var7 < this.archiveCount; ++var7) {
-               this.archiveIds[var7] = var5 += var2.readUnsignedShort();
-               if (this.archiveIds[var7] > var6) {
-                  var6 = this.archiveIds[var7];
+            for (var7 = 0; var7 < this.groupCount; ++var7) {
+               this.groupIds[var7] = var5 += var2.readUnsignedShort();
+               if (this.groupIds[var7] > var6) {
+                  var6 = this.groupIds[var7];
                }
             }
          }
 
-         this.archiveCrcs = new int[var6 + 1];
-         this.archiveVersions = new int[var6 + 1];
-         this.recordCounts = new int[var6 + 1];
-         this.recordIds = new int[var6 + 1][];
-         this.archives = new Object[var6 + 1];
-         this.records = new Object[var6 + 1][];
+         this.groupCrcs = new int[var6 + 1];
+         this.groupVersions = new int[var6 + 1];
+         this.fileCounts = new int[var6 + 1];
+         this.fileIds = new int[var6 + 1][];
+         this.groups = new Object[var6 + 1];
+         this.files = new Object[var6 + 1][];
          if (var4 != 0) {
-            this.archiveNameHashes = new int[var6 + 1];
+            this.groupNameHashes = new int[var6 + 1];
 
-            for (var7 = 0; var7 < this.archiveCount; ++var7) {
-               this.archiveNameHashes[this.archiveIds[var7]] = var2.readInt();
+            for (var7 = 0; var7 < this.groupCount; ++var7) {
+               this.groupNameHashes[this.groupIds[var7]] = var2.readInt();
             }
 
-            this.archiveNameHashTable = new IntHashTable(this.archiveNameHashes);
+            this.groupNameHashTable = new IntHashTable(this.groupNameHashes);
          }
 
-         for (var7 = 0; var7 < this.archiveCount; ++var7) {
-            this.archiveCrcs[this.archiveIds[var7]] = var2.readInt();
+         for (var7 = 0; var7 < this.groupCount; ++var7) {
+            this.groupCrcs[this.groupIds[var7]] = var2.readInt();
          }
 
-         for (var7 = 0; var7 < this.archiveCount; ++var7) {
-            this.archiveVersions[this.archiveIds[var7]] = var2.readInt();
+         for (var7 = 0; var7 < this.groupCount; ++var7) {
+            this.groupVersions[this.groupIds[var7]] = var2.readInt();
          }
 
-         for (var7 = 0; var7 < this.archiveCount; ++var7) {
-            this.recordCounts[this.archiveIds[var7]] = var2.readUnsignedShort();
+         for (var7 = 0; var7 < this.groupCount; ++var7) {
+            this.fileCounts[this.groupIds[var7]] = var2.readUnsignedShort();
          }
 
          int var8;
@@ -178,55 +178,55 @@ public abstract class AbstractIndexCache {
          int var11;
          int var12;
          if (var3 >= 7) {
-            for (var7 = 0; var7 < this.archiveCount; ++var7) {
-               var8 = this.archiveIds[var7];
-               var9 = this.recordCounts[var8];
+            for (var7 = 0; var7 < this.groupCount; ++var7) {
+               var8 = this.groupIds[var7];
+               var9 = this.fileCounts[var8];
                var5 = 0;
                var10 = -1;
-               this.recordIds[var8] = new int[var9];
+               this.fileIds[var8] = new int[var9];
 
                for (var11 = 0; var11 < var9; ++var11) {
-                  var12 = this.recordIds[var8][var11] = var5 += var2.method50();
+                  var12 = this.fileIds[var8][var11] = var5 += var2.method50();
                   if (var12 > var10) {
                      var10 = var12;
                   }
                }
 
-               this.records[var8] = new Object[var10 + 1];
+               this.files[var8] = new Object[var10 + 1];
             }
          } else {
-            for (var7 = 0; var7 < this.archiveCount; ++var7) {
-               var8 = this.archiveIds[var7];
-               var9 = this.recordCounts[var8];
+            for (var7 = 0; var7 < this.groupCount; ++var7) {
+               var8 = this.groupIds[var7];
+               var9 = this.fileCounts[var8];
                var5 = 0;
                var10 = -1;
-               this.recordIds[var8] = new int[var9];
+               this.fileIds[var8] = new int[var9];
 
                for (var11 = 0; var11 < var9; ++var11) {
-                  var12 = this.recordIds[var8][var11] = var5 += var2.readUnsignedShort();
+                  var12 = this.fileIds[var8][var11] = var5 += var2.readUnsignedShort();
                   if (var12 > var10) {
                      var10 = var12;
                   }
                }
 
-               this.records[var8] = new Object[var10 + 1];
+               this.files[var8] = new Object[var10 + 1];
             }
          }
 
          if (var4 != 0) {
-            this.recordNameHashes = new int[var6 + 1][];
-            this.recordNameHashTables = new IntHashTable[var6 + 1];
+            this.fileNameHashes = new int[var6 + 1][];
+            this.fileNameHashTables = new IntHashTable[var6 + 1];
 
-            for (var7 = 0; var7 < this.archiveCount; ++var7) {
-               var8 = this.archiveIds[var7];
-               var9 = this.recordCounts[var8];
-               this.recordNameHashes[var8] = new int[this.records[var8].length];
+            for (var7 = 0; var7 < this.groupCount; ++var7) {
+               var8 = this.groupIds[var7];
+               var9 = this.fileCounts[var8];
+               this.fileNameHashes[var8] = new int[this.files[var8].length];
 
                for (var10 = 0; var10 < var9; ++var10) {
-                  this.recordNameHashes[var8][this.recordIds[var8][var10]] = var2.readInt();
+                  this.fileNameHashes[var8][this.fileIds[var8][var10]] = var2.readInt();
                }
 
-               this.recordNameHashTables[var8] = new IntHashTable(this.recordNameHashes[var8]);
+               this.fileNameHashTables[var8] = new IntHashTable(this.fileNameHashes[var8]);
             }
          }
 
@@ -248,9 +248,9 @@ public abstract class AbstractIndexCache {
       signature = "(III)[B",
       garbageValue = "1945577069"
    )
-   @Export("takeRecord")
-   public byte[] takeRecord(int var1, int var2) {
-      return this.takeRecordEncrypted(var1, var2, (int[])null);
+   @Export("takeFile")
+   public byte[] takeFile(int group, int file) {
+      return this.takeFileEncrypted(group, file, (int[])null);
    }
 
    @ObfuscatedName("w")
@@ -258,23 +258,23 @@ public abstract class AbstractIndexCache {
       signature = "(II[II)[B",
       garbageValue = "-1363136655"
    )
-   @Export("takeRecordEncrypted")
-   public byte[] takeRecordEncrypted(int var1, int var2, int[] var3) {
-      if (var1 >= 0 && var1 < this.records.length && this.records[var1] != null && var2 >= 0 && var2 < this.records[var1].length) {
-         if (this.records[var1][var2] == null) {
-            boolean var4 = this.buildRecords(var1, var3);
+   @Export("takeFileEncrypted")
+   public byte[] takeFileEncrypted(int group, int file, int[] xteaKey) {
+      if (group >= 0 && group < this.files.length && this.files[group] != null && file >= 0 && file < this.files[group].length) {
+         if (this.files[group][file] == null) {
+            boolean var4 = this.buildFiles(group, xteaKey);
             if (!var4) {
-               this.loadArchive(var1);
-               var4 = this.buildRecords(var1, var3);
+               this.loadGroup(group);
+               var4 = this.buildFiles(group, xteaKey);
                if (!var4) {
                   return null;
                }
             }
          }
 
-         byte[] var5 = TextureProvider.byteArrayFromObject(this.records[var1][var2], false);
-         if (this.shallowRecords) {
-            this.records[var1][var2] = null;
+         byte[] var5 = TextureProvider.byteArrayFromObject(this.files[group][file], false);
+         if (this.shallowFiles) {
+            this.files[group][file] = null;
          }
 
          return var5;
@@ -288,16 +288,16 @@ public abstract class AbstractIndexCache {
       signature = "(III)Z",
       garbageValue = "-1822260214"
    )
-   @Export("tryLoadRecord")
-   public boolean tryLoadRecord(int var1, int var2) {
-      if (var1 >= 0 && var1 < this.records.length && this.records[var1] != null && var2 >= 0 && var2 < this.records[var1].length) {
-         if (this.records[var1][var2] != null) {
+   @Export("tryLoadFile")
+   public boolean tryLoadFile(int group, int file) {
+      if (group >= 0 && group < this.files.length && this.files[group] != null && file >= 0 && file < this.files[group].length) {
+         if (this.files[group][file] != null) {
             return true;
-         } else if (this.archives[var1] != null) {
+         } else if (this.groups[group] != null) {
             return true;
          } else {
-            this.loadArchive(var1);
-            return this.archives[var1] != null;
+            this.loadGroup(group);
+            return this.groups[group] != null;
          }
       } else {
          return false;
@@ -310,10 +310,10 @@ public abstract class AbstractIndexCache {
       garbageValue = "-1923759754"
    )
    public boolean method1(int var1) {
-      if (this.records.length == 1) {
-         return this.tryLoadRecord(0, var1);
-      } else if (this.records[var1].length == 1) {
-         return this.tryLoadRecord(var1, 0);
+      if (this.files.length == 1) {
+         return this.tryLoadFile(0, var1);
+      } else if (this.files[var1].length == 1) {
+         return this.tryLoadFile(var1, 0);
       } else {
          throw new RuntimeException();
       }
@@ -324,13 +324,13 @@ public abstract class AbstractIndexCache {
       signature = "(II)Z",
       garbageValue = "-374594123"
    )
-   @Export("tryLoadArchive")
-   public boolean tryLoadArchive(int var1) {
-      if (this.archives[var1] != null) {
+   @Export("tryLoadGroup")
+   public boolean tryLoadGroup(int group) {
+      if (this.groups[group] != null) {
          return true;
       } else {
-         this.loadArchive(var1);
-         return this.archives[var1] != null;
+         this.loadGroup(group);
+         return this.groups[group] != null;
       }
    }
 
@@ -342,11 +342,11 @@ public abstract class AbstractIndexCache {
    public boolean method2() {
       boolean var1 = true;
 
-      for (int var2 = 0; var2 < this.archiveIds.length; ++var2) {
-         int var3 = this.archiveIds[var2];
-         if (this.archives[var3] == null) {
-            this.loadArchive(var3);
-            if (this.archives[var3] == null) {
+      for (int var2 = 0; var2 < this.groupIds.length; ++var2) {
+         int var3 = this.groupIds[var2];
+         if (this.groups[var3] == null) {
+            this.loadGroup(var3);
+            if (this.groups[var3] == null) {
                var1 = false;
             }
          }
@@ -360,9 +360,9 @@ public abstract class AbstractIndexCache {
       signature = "(II)I",
       garbageValue = "-1809769865"
    )
-   @Export("archiveLoadPercent")
-   int archiveLoadPercent(int var1) {
-      return this.archives[var1] != null ? 100 : 0;
+   @Export("groupLoadPercent")
+   int groupLoadPercent(int var1) {
+      return this.groups[var1] != null ? 100 : 0;
    }
 
    @ObfuscatedName("x")
@@ -370,12 +370,12 @@ public abstract class AbstractIndexCache {
       signature = "(IS)[B",
       garbageValue = "-10015"
    )
-   @Export("takeRecordFlat")
-   public byte[] takeRecordFlat(int var1) {
-      if (this.records.length == 1) {
-         return this.takeRecord(0, var1);
-      } else if (this.records[var1].length == 1) {
-         return this.takeRecord(var1, 0);
+   @Export("takeFileFlat")
+   public byte[] takeFileFlat(int groupOrFile) {
+      if (this.files.length == 1) {
+         return this.takeFile(0, groupOrFile);
+      } else if (this.files[groupOrFile].length == 1) {
+         return this.takeFile(groupOrFile, 0);
       } else {
          throw new RuntimeException();
       }
@@ -386,21 +386,21 @@ public abstract class AbstractIndexCache {
       signature = "(III)[B",
       garbageValue = "-755739011"
    )
-   @Export("getRecord")
-   public byte[] getRecord(int var1, int var2) {
-      if (var1 >= 0 && var1 < this.records.length && this.records[var1] != null && var2 >= 0 && var2 < this.records[var1].length) {
-         if (this.records[var1][var2] == null) {
-            boolean var3 = this.buildRecords(var1, (int[])null);
+   @Export("getFile")
+   public byte[] getFile(int group, int file) {
+      if (group >= 0 && group < this.files.length && this.files[group] != null && file >= 0 && file < this.files[group].length) {
+         if (this.files[group][file] == null) {
+            boolean var3 = this.buildFiles(group, (int[])null);
             if (!var3) {
-               this.loadArchive(var1);
-               var3 = this.buildRecords(var1, (int[])null);
+               this.loadGroup(group);
+               var3 = this.buildFiles(group, (int[])null);
                if (!var3) {
                   return null;
                }
             }
          }
 
-         byte[] var4 = TextureProvider.byteArrayFromObject(this.records[var1][var2], false);
+         byte[] var4 = TextureProvider.byteArrayFromObject(this.files[group][file], false);
          return var4;
       } else {
          return null;
@@ -412,12 +412,12 @@ public abstract class AbstractIndexCache {
       signature = "(IB)[B",
       garbageValue = "68"
    )
-   @Export("getRecordFlat")
-   public byte[] getRecordFlat(int var1) {
-      if (this.records.length == 1) {
-         return this.getRecord(0, var1);
-      } else if (this.records[var1].length == 1) {
-         return this.getRecord(var1, 0);
+   @Export("getFileFlat")
+   public byte[] getFileFlat(int groupOrFile) {
+      if (this.files.length == 1) {
+         return this.getFile(0, groupOrFile);
+      } else if (this.files[groupOrFile].length == 1) {
+         return this.getFile(groupOrFile, 0);
       } else {
          throw new RuntimeException();
       }
@@ -428,8 +428,8 @@ public abstract class AbstractIndexCache {
       signature = "(II)V",
       garbageValue = "-1829145107"
    )
-   @Export("loadArchive")
-   void loadArchive(int var1) {
+   @Export("loadGroup")
+   void loadGroup(int group) {
    }
 
    @ObfuscatedName("j")
@@ -438,7 +438,7 @@ public abstract class AbstractIndexCache {
       garbageValue = "28"
    )
    public int[] method3(int var1) {
-      return var1 >= 0 && var1 < this.recordIds.length ? this.recordIds[var1] : null;
+      return var1 >= 0 && var1 < this.fileIds.length ? this.fileIds[var1] : null;
    }
 
    @ObfuscatedName("s")
@@ -447,7 +447,7 @@ public abstract class AbstractIndexCache {
       garbageValue = "1178362496"
    )
    public int method4(int var1) {
-      return this.records[var1].length;
+      return this.files[var1].length;
    }
 
    @ObfuscatedName("t")
@@ -456,7 +456,7 @@ public abstract class AbstractIndexCache {
       garbageValue = "1702434573"
    )
    public int method5() {
-      return this.records.length;
+      return this.files.length;
    }
 
    @ObfuscatedName("y")
@@ -465,8 +465,8 @@ public abstract class AbstractIndexCache {
       garbageValue = "38"
    )
    public void method6() {
-      for (int var1 = 0; var1 < this.archives.length; ++var1) {
-         this.archives[var1] = null;
+      for (int var1 = 0; var1 < this.groups.length; ++var1) {
+         this.groups[var1] = null;
       }
 
    }
@@ -477,8 +477,8 @@ public abstract class AbstractIndexCache {
       garbageValue = "330258899"
    )
    public void method7(int var1) {
-      for (int var2 = 0; var2 < this.records[var1].length; ++var2) {
-         this.records[var1][var2] = null;
+      for (int var2 = 0; var2 < this.files[var1].length; ++var2) {
+         this.files[var1][var2] = null;
       }
 
    }
@@ -489,10 +489,10 @@ public abstract class AbstractIndexCache {
       garbageValue = "-709581639"
    )
    public void method8() {
-      for (int var1 = 0; var1 < this.records.length; ++var1) {
-         if (this.records[var1] != null) {
-            for (int var2 = 0; var2 < this.records[var1].length; ++var2) {
-               this.records[var1][var2] = null;
+      for (int var1 = 0; var1 < this.files.length; ++var1) {
+         if (this.files[var1] != null) {
+            for (int var2 = 0; var2 < this.files[var1].length; ++var2) {
+               this.files[var1][var2] = null;
             }
          }
       }
@@ -504,14 +504,14 @@ public abstract class AbstractIndexCache {
       signature = "(I[II)Z",
       garbageValue = "-1835696874"
    )
-   @Export("buildRecords")
-   boolean buildRecords(int var1, int[] var2) {
-      if (this.archives[var1] == null) {
+   @Export("buildFiles")
+   boolean buildFiles(int group, int[] xteaKey) {
+      if (this.groups[group] == null) {
          return false;
       } else {
-         int var3 = this.recordCounts[var1];
-         int[] var4 = this.recordIds[var1];
-         Object[] var5 = this.records[var1];
+         int var3 = this.fileCounts[group];
+         int[] var4 = this.fileIds[group];
+         Object[] var5 = this.files[group];
          boolean var6 = true;
 
          for (int var7 = 0; var7 < var3; ++var7) {
@@ -525,17 +525,17 @@ public abstract class AbstractIndexCache {
             return true;
          } else {
             byte[] var18;
-            if (var2 == null || var2[0] == 0 && var2[1] == 0 && var2[2] == 0 && var2[3] == 0) {
-               var18 = TextureProvider.byteArrayFromObject(this.archives[var1], false);
+            if (xteaKey == null || xteaKey[0] == 0 && xteaKey[1] == 0 && xteaKey[2] == 0 && xteaKey[3] == 0) {
+               var18 = TextureProvider.byteArrayFromObject(this.groups[group], false);
             } else {
-               var18 = TextureProvider.byteArrayFromObject(this.archives[var1], true);
+               var18 = TextureProvider.byteArrayFromObject(this.groups[group], true);
                Buffer var8 = new Buffer(var18);
-               var8.xteaDecrypt(var2, 5, var8.array.length);
+               var8.xteaDecrypt(xteaKey, 5, var8.array.length);
             }
 
             byte[] var19 = Strings.decompressBytes(var18);
-            if (this.releaseArchives) {
-               this.archives[var1] = null;
+            if (this.releaseGroups) {
+               this.groups[group] = null;
             }
 
             if (var3 > 1) {
@@ -580,13 +580,13 @@ public abstract class AbstractIndexCache {
                }
 
                for (var14 = 0; var14 < var3; ++var14) {
-                  if (!this.shallowRecords) {
+                  if (!this.shallowFiles) {
                      var5[var4[var14]] = Projectile.byteArrayToObject(var20[var14], false);
                   } else {
                      var5[var4[var14]] = var20[var14];
                   }
                }
-            } else if (!this.shallowRecords) {
+            } else if (!this.shallowFiles) {
                var5[var4[0]] = Projectile.byteArrayToObject(var19, false);
             } else {
                var5[var4[0]] = var19;
@@ -602,10 +602,10 @@ public abstract class AbstractIndexCache {
       signature = "(Ljava/lang/String;I)I",
       garbageValue = "-224510300"
    )
-   @Export("getArchiveId")
-   public int getArchiveId(String var1) {
-      var1 = var1.toLowerCase();
-      return this.archiveNameHashTable.get(Client.hashString(var1));
+   @Export("getGroupId")
+   public int getGroupId(String groupName) {
+      groupName = groupName.toLowerCase();
+      return this.groupNameHashTable.get(Client.hashString(groupName));
    }
 
    @ObfuscatedName("v")
@@ -613,10 +613,10 @@ public abstract class AbstractIndexCache {
       signature = "(ILjava/lang/String;I)I",
       garbageValue = "-443631072"
    )
-   @Export("getRecordId")
-   public int getRecordId(int var1, String var2) {
-      var2 = var2.toLowerCase();
-      return this.recordNameHashTables[var1].get(Client.hashString(var2));
+   @Export("getFileId")
+   public int getFileId(int group, String fileName) {
+      fileName = fileName.toLowerCase();
+      return this.fileNameHashTables[group].get(Client.hashString(fileName));
    }
 
    @ObfuscatedName("ag")
@@ -627,11 +627,11 @@ public abstract class AbstractIndexCache {
    public boolean method9(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
-      int var3 = this.archiveNameHashTable.get(Client.hashString(var1));
+      int var3 = this.groupNameHashTable.get(Client.hashString(var1));
       if (var3 < 0) {
          return false;
       } else {
-         int var4 = this.recordNameHashTables[var3].get(Client.hashString(var2));
+         int var4 = this.fileNameHashTables[var3].get(Client.hashString(var2));
          return var4 >= 0;
       }
    }
@@ -641,13 +641,13 @@ public abstract class AbstractIndexCache {
       signature = "(Ljava/lang/String;Ljava/lang/String;S)[B",
       garbageValue = "-22726"
    )
-   @Export("takeRecordByNames")
-   public byte[] takeRecordByNames(String var1, String var2) {
-      var1 = var1.toLowerCase();
-      var2 = var2.toLowerCase();
-      int var3 = this.archiveNameHashTable.get(Client.hashString(var1));
-      int var4 = this.recordNameHashTables[var3].get(Client.hashString(var2));
-      return this.takeRecord(var3, var4);
+   @Export("takeFileByNames")
+   public byte[] takeFileByNames(String groupName, String fileName) {
+      groupName = groupName.toLowerCase();
+      fileName = fileName.toLowerCase();
+      int var3 = this.groupNameHashTable.get(Client.hashString(groupName));
+      int var4 = this.fileNameHashTables[var3].get(Client.hashString(fileName));
+      return this.takeFile(var3, var4);
    }
 
    @ObfuscatedName("aj")
@@ -655,13 +655,13 @@ public abstract class AbstractIndexCache {
       signature = "(Ljava/lang/String;Ljava/lang/String;I)Z",
       garbageValue = "2140743930"
    )
-   @Export("tryLoadRecordByNames")
-   public boolean tryLoadRecordByNames(String var1, String var2) {
-      var1 = var1.toLowerCase();
-      var2 = var2.toLowerCase();
-      int var3 = this.archiveNameHashTable.get(Client.hashString(var1));
-      int var4 = this.recordNameHashTables[var3].get(Client.hashString(var2));
-      return this.tryLoadRecord(var3, var4);
+   @Export("tryLoadFileByNames")
+   public boolean tryLoadFileByNames(String groupName, String fileName) {
+      groupName = groupName.toLowerCase();
+      fileName = fileName.toLowerCase();
+      int var3 = this.groupNameHashTable.get(Client.hashString(groupName));
+      int var4 = this.fileNameHashTables[var3].get(Client.hashString(fileName));
+      return this.tryLoadFile(var3, var4);
    }
 
    @ObfuscatedName("av")
@@ -669,11 +669,11 @@ public abstract class AbstractIndexCache {
       signature = "(Ljava/lang/String;I)Z",
       garbageValue = "-1282569336"
    )
-   @Export("tryLoadArchiveByName")
-   public boolean tryLoadArchiveByName(String var1) {
-      var1 = var1.toLowerCase();
-      int var2 = this.archiveNameHashTable.get(Client.hashString(var1));
-      return this.tryLoadArchive(var2);
+   @Export("tryLoadGroupByName")
+   public boolean tryLoadGroupByName(String groupName) {
+      groupName = groupName.toLowerCase();
+      int var2 = this.groupNameHashTable.get(Client.hashString(groupName));
+      return this.tryLoadGroup(var2);
    }
 
    @ObfuscatedName("ar")
@@ -683,7 +683,7 @@ public abstract class AbstractIndexCache {
    )
    public void method10(String var1) {
       var1 = var1.toLowerCase();
-      int var2 = this.archiveNameHashTable.get(Client.hashString(var1));
+      int var2 = this.groupNameHashTable.get(Client.hashString(var1));
       if (var2 >= 0) {
          this.vmethod129(var2);
       }
@@ -695,11 +695,11 @@ public abstract class AbstractIndexCache {
       signature = "(Ljava/lang/String;I)I",
       garbageValue = "-1645224643"
    )
-   @Export("archiveLoadPercentByName")
-   public int archiveLoadPercentByName(String var1) {
-      var1 = var1.toLowerCase();
-      int var2 = this.archiveNameHashTable.get(Client.hashString(var1));
-      return this.archiveLoadPercent(var2);
+   @Export("groupLoadPercentByName")
+   public int groupLoadPercentByName(String groupName) {
+      groupName = groupName.toLowerCase();
+      int var2 = this.groupNameHashTable.get(Client.hashString(groupName));
+      return this.groupLoadPercent(var2);
    }
 
    @ObfuscatedName("m")

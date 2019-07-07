@@ -218,9 +218,9 @@ public final class Canvas extends java.awt.Canvas {
       signature = "(ILir;Ljava/lang/String;Ljava/lang/String;IZS)V",
       garbageValue = "-9124"
    )
-   public static void method858(int var0, AbstractIndexCache var1, String var2, String var3, int var4, boolean var5) {
-      int var6 = var1.getArchiveId(var2);
-      int var7 = var1.getRecordId(var6, var3);
+   public static void method858(int var0, AbstractArchive var1, String var2, String var3, int var4, boolean var5) {
+      int var6 = var1.getGroupId(var2);
+      int var7 = var1.getFileId(var6, var3);
       class214.field1129 = 1;
       class214.field1130 = var1;
       class30.musicTrackArchiveId = var6;

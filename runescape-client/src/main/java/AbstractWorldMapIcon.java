@@ -162,7 +162,7 @@ public abstract class AbstractWorldMapIcon {
       signature = "(Lit;Ljava/lang/String;I)V",
       garbageValue = "-1018878027"
    )
-   static void method625(IndexCache var0, String var1) {
+   static void method625(Archive var0, String var1) {
       IndexCacheLoader var2 = new IndexCacheLoader(var0, var1);
       Client.indexCacheLoaders.add(var2);
       Client.field140 += var2.field408;

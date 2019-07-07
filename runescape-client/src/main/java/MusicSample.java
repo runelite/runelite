@@ -597,9 +597,9 @@ public class MusicSample extends Node {
    @ObfuscatedSignature(
       signature = "(Lir;)Z"
    )
-   static boolean method2343(AbstractIndexCache var0) {
+   static boolean method2343(AbstractArchive var0) {
       if (!field610) {
-         byte[] var1 = var0.takeRecord(0, 0);
+         byte[] var1 = var0.takeFile(0, 0);
          if (var1 == null) {
             return false;
          }
@@ -616,12 +616,12 @@ public class MusicSample extends Node {
       signature = "(Lir;II)Lcd;"
    )
    @Export("readMusicSample")
-   static MusicSample readMusicSample(AbstractIndexCache var0, int var1, int var2) {
+   static MusicSample readMusicSample(AbstractArchive var0, int var1, int var2) {
       if (!method2343(var0)) {
-         var0.tryLoadRecord(var1, var2);
+         var0.tryLoadFile(var1, var2);
          return null;
       } else {
-         byte[] var3 = var0.takeRecord(var1, var2);
+         byte[] var3 = var0.takeFile(var1, var2);
          return var3 == null ? null : new MusicSample(var3);
       }
    }

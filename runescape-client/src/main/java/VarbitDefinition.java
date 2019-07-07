@@ -12,7 +12,7 @@ public class VarbitDefinition extends DualNode {
       signature = "Lir;"
    )
    @Export("VarbitDefinition_indexCache")
-   static AbstractIndexCache VarbitDefinition_indexCache;
+   static AbstractArchive VarbitDefinition_indexCache;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"

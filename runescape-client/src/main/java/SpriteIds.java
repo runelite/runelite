@@ -92,8 +92,8 @@ public class SpriteIds {
       garbageValue = "1764356022"
    )
    @Export("read")
-   public void read(AbstractIndexCache var1) {
-      byte[] var2 = var1.takeRecordFlat(class311.field3810.field3809);
+   public void read(AbstractArchive var1) {
+      byte[] var2 = var1.takeFileFlat(class311.field3810.field3809);
       Buffer var3 = new Buffer(var2);
 
       while (true) {
@@ -127,11 +127,11 @@ public class SpriteIds {
       signature = "(Lir;Lir;III)Lkk;",
       garbageValue = "195396240"
    )
-   public static Font method5823(AbstractIndexCache var0, AbstractIndexCache var1, int var2, int var3) {
+   public static Font method5823(AbstractArchive var0, AbstractArchive var1, int var2, int var3) {
       if (!SpriteMask.loadSprite(var0, var2, var3)) {
          return null;
       } else {
-         byte[] var4 = var1.takeRecord(var2, var3);
+         byte[] var4 = var1.takeFile(var2, var3);
          Font var5;
          if (var4 == null) {
             var5 = null;

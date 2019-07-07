@@ -11,7 +11,7 @@ public class WorldMapElement extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field1019;
+   public static AbstractArchive field1019;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"

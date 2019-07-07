@@ -11,7 +11,8 @@ public class InvDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   static EvictingDualNodeHashTable field427;
+   @Export("InvDefinition_cached")
+   static EvictingDualNodeHashTable InvDefinition_cached;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1358868971
@@ -63,6 +64,6 @@ public class InvDefinition extends DualNode {
    }
 
    static {
-      field427 = new EvictingDualNodeHashTable(64);
+      InvDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

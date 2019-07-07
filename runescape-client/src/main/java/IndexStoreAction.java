@@ -43,7 +43,7 @@ public class IndexStoreAction extends Node {
       signature = "Lit;"
    )
    @Export("indexCache")
-   IndexCache indexCache;
+   Archive indexCache;
 
    @ObfuscatedName("fn")
    @ObfuscatedSignature(

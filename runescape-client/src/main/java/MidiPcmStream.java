@@ -150,7 +150,7 @@ public class MidiPcmStream extends PcmStream {
       garbageValue = "-324121369"
    )
    @Export("loadMusicTrack")
-   public synchronized boolean loadMusicTrack(MusicTrack var1, AbstractIndexCache var2, SoundCache var3, int var4) {
+   public synchronized boolean loadMusicTrack(MusicTrack var1, AbstractArchive var2, SoundCache var3, int var4) {
       var1.method226();
       boolean var5 = true;
       int[] var6 = null;

@@ -12,12 +12,12 @@ public class KitDefinition extends DualNode {
       signature = "Lir;"
    )
    @Export("KitDefinition_indexCache")
-   public static AbstractIndexCache KitDefinition_indexCache;
+   public static AbstractArchive KitDefinition_indexCache;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field456;
+   public static AbstractArchive field456;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 235389995
@@ -139,7 +139,7 @@ public class KitDefinition extends DualNode {
          boolean var1 = true;
 
          for (int var2 = 0; var2 < this.modelIDs.length; ++var2) {
-            if (!field456.tryLoadRecord(this.modelIDs[var2], 0)) {
+            if (!field456.tryLoadFile(this.modelIDs[var2], 0)) {
                var1 = false;
             }
          }
@@ -197,7 +197,7 @@ public class KitDefinition extends DualNode {
       boolean var1 = true;
 
       for (int var2 = 0; var2 < 5; ++var2) {
-         if (this.archives[var2] != -1 && !field456.tryLoadRecord(this.archives[var2], 0)) {
+         if (this.archives[var2] != -1 && !field456.tryLoadFile(this.archives[var2], 0)) {
             var1 = false;
          }
       }

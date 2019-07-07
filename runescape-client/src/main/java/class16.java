@@ -22,7 +22,7 @@ public class class16 {
       signature = "Lit;"
    )
    @Export("indexCache10")
-   static IndexCache indexCache10;
+   static Archive indexCache10;
    @ObfuscatedName("ga")
    @ObfuscatedSignature(
       signature = "[Lln;"

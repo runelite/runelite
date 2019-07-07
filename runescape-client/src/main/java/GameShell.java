@@ -598,7 +598,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
          class230.field1138 = hasFocus;
       }
 
-      this.vmethod112();
+      this.packetHandler();
    }
 
    @ObfuscatedName("ar")
@@ -718,7 +718,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       signature = "(I)V",
       garbageValue = "1445885427"
    )
-   protected abstract void vmethod112();
+   protected abstract void packetHandler();
 
    @ObfuscatedName("ab")
    @ObfuscatedSignature(

@@ -252,7 +252,7 @@ public class WorldMapRegion {
       signature = "(Lir;B)Z",
       garbageValue = "2"
    )
-   boolean method409(AbstractIndexCache var1) {
+   boolean method409(AbstractArchive var1) {
       if (this.field239 != null) {
          this.field239.method263(var1);
          if (this.field239.method271()) {
@@ -289,7 +289,7 @@ public class WorldMapRegion {
       signature = "(ILad;[Llq;Lir;Lir;I)V",
       garbageValue = "518389076"
    )
-   void method455(int var1, class40 var2, IndexedSprite[] var3, AbstractIndexCache var4, AbstractIndexCache var5) {
+   void method455(int var1, class40 var2, IndexedSprite[] var3, AbstractArchive var4, AbstractArchive var5) {
       this.field1054 = var1;
       if ((this.field239 != null || !this.field1052.isEmpty()) && class13.method164(this.x, this.y, var1) == null) {
          boolean var6 = true;
@@ -301,9 +301,9 @@ public class WorldMapRegion {
             var7 = ((class21)this.field1052.getFirst()).field150;
          }
 
-         var6 &= var5.tryLoadArchive(var7);
+         var6 &= var5.tryLoadGroup(var7);
          if (var6) {
-            byte[] var8 = var5.takeRecordFlat(var7);
+            byte[] var8 = var5.takeFileFlat(var7);
             class27 var9 = SecureRandomCallable.method1145(var8);
             Sprite var10 = new Sprite(this.field1054 * 64, this.field1054 * 64);
             var10.setRaster();
@@ -449,7 +449,7 @@ public class WorldMapRegion {
          if (var11 != null) {
             var12 = var11;
          } else {
-            byte[] var13 = OverlayDefinition.field663.takeRecord(4, var7);
+            byte[] var13 = OverlayDefinition.field663.takeFile(4, var7);
             var11 = new OverlayDefinition();
             if (var13 != null) {
                var11.read(new Buffer(var13), var7);
@@ -554,7 +554,7 @@ public class WorldMapRegion {
             if (var8 != null) {
                var9 = var8;
             } else {
-               byte[] var10 = OverlayDefinition.field663.takeRecord(4, var6);
+               byte[] var10 = OverlayDefinition.field663.takeFile(4, var6);
                var8 = new OverlayDefinition();
                if (var10 != null) {
                   var8.read(new Buffer(var10), var6);

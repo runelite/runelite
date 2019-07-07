@@ -94,9 +94,9 @@ public abstract class class21 {
       signature = "(Lir;B)V",
       garbageValue = "-108"
    )
-   void method263(AbstractIndexCache var1) {
+   void method263(AbstractArchive var1) {
       if (!this.method271()) {
-         byte[] var2 = var1.takeRecord(this.field150, this.field152);
+         byte[] var2 = var1.takeFile(this.field150, this.field152);
          if (var2 != null) {
             this.vmethod715(new Buffer(var2));
             this.field157 = true;

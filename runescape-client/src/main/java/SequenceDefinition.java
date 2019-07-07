@@ -12,17 +12,17 @@ public class SequenceDefinition extends DualNode {
       signature = "Lir;"
    )
    @Export("SequenceDefinition_indexCache")
-   public static AbstractIndexCache SequenceDefinition_indexCache;
+   public static AbstractArchive SequenceDefinition_indexCache;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field773;
+   public static AbstractArchive field773;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field774;
+   public static AbstractArchive field774;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"

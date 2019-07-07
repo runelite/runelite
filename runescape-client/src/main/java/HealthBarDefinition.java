@@ -11,12 +11,12 @@ public class HealthBarDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field379;
+   public static AbstractArchive field379;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field380;
+   public static AbstractArchive field380;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Ler;"

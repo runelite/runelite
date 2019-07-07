@@ -526,7 +526,7 @@ public final class Player extends Actor {
             ScriptEvent var1 = new ScriptEvent();
             var1.widget = var0;
             var1.args0 = var0.onTargetLeave;
-            AbstractIndexCache.runScript(var1);
+            AbstractArchive.runScript(var1);
          }
 
          Client.isSpellSelected = false;

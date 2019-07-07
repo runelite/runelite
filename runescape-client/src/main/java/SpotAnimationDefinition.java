@@ -12,13 +12,13 @@ public class SpotAnimationDefinition extends DualNode {
       signature = "Lir;"
    )
    @Export("SpotAnimationDefinition_indexCache")
-   public static AbstractIndexCache SpotAnimationDefinition_indexCache;
+   public static AbstractArchive SpotAnimationDefinition_indexCache;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
    @Export("SpotAnimationDefinition_modelIndexCache")
-   public static AbstractIndexCache SpotAnimationDefinition_modelIndexCache;
+   public static AbstractArchive SpotAnimationDefinition_modelIndexCache;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Ler;"

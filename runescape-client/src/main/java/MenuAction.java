@@ -47,9 +47,9 @@ public class MenuAction {
       garbageValue = "0"
    )
    @Export("loadIndexedSpriteByName")
-   public static IndexedSprite loadIndexedSpriteByName(AbstractIndexCache var0, String var1, String var2) {
-      int var3 = var0.getArchiveId(var1);
-      int var4 = var0.getRecordId(var3, var2);
+   public static IndexedSprite loadIndexedSpriteByName(AbstractArchive var0, String var1, String var2) {
+      int var3 = var0.getGroupId(var1);
+      int var4 = var0.getFileId(var3, var2);
       IndexedSprite var5;
       if (!SpriteMask.loadSprite(var0, var3, var4)) {
          var5 = null;

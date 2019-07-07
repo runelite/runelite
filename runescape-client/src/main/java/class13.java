@@ -36,8 +36,8 @@ public class class13 {
    )
    @Export("playPcmPlayers")
    static final void playPcmPlayers() {
-      if (AbstractIndexCache.pcmPlayer1 != null) {
-         AbstractIndexCache.pcmPlayer1.run();
+      if (AbstractArchive.pcmPlayer1 != null) {
+         AbstractArchive.pcmPlayer1.run();
       }
 
       if (WorldMapCacheName.pcmPlayer0 != null) {

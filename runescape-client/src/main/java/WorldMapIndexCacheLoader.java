@@ -15,7 +15,7 @@ public class WorldMapIndexCacheLoader {
       signature = "Lir;"
    )
    @Export("indexCache")
-   AbstractIndexCache indexCache;
+   AbstractArchive indexCache;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 624113115
@@ -29,7 +29,7 @@ public class WorldMapIndexCacheLoader {
    @ObfuscatedSignature(
       signature = "(Lir;)V"
    )
-   WorldMapIndexCacheLoader(AbstractIndexCache var1) {
+   WorldMapIndexCacheLoader(AbstractArchive var1) {
       this.percentLoaded0 = 0;
       this.isLoaded0 = false;
       this.indexCache = var1;
@@ -59,7 +59,7 @@ public class WorldMapIndexCacheLoader {
    @Export("load")
    int load() {
       if (this.percentLoaded0 < 33) {
-         if (!this.indexCache.tryLoadRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, this.cacheName)) {
+         if (!this.indexCache.tryLoadFileByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, this.cacheName)) {
             return this.percentLoaded0;
          }
 
@@ -67,7 +67,7 @@ public class WorldMapIndexCacheLoader {
       }
 
       if (this.percentLoaded0 == 33) {
-         if (this.indexCache.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName) && !this.indexCache.tryLoadRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName)) {
+         if (this.indexCache.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName) && !this.indexCache.tryLoadFileByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName)) {
             return this.percentLoaded0;
          }
 
@@ -75,7 +75,7 @@ public class WorldMapIndexCacheLoader {
       }
 
       if (this.percentLoaded0 == 66) {
-         if (!this.indexCache.tryLoadRecordByNames(this.cacheName, WorldMapCacheName.WorldMapCacheName_labels.name)) {
+         if (!this.indexCache.tryLoadFileByNames(this.cacheName, WorldMapCacheName.WorldMapCacheName_labels.name)) {
             return this.percentLoaded0;
          }
 

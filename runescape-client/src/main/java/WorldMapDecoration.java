@@ -12,7 +12,7 @@ public class WorldMapDecoration {
       signature = "Lit;"
    )
    @Export("indexCache4")
-   static IndexCache indexCache4;
+   static Archive indexCache4;
    @ObfuscatedName("kw")
    @ObfuscatedGetter(
       intValue = -12041645
@@ -96,7 +96,7 @@ public class WorldMapDecoration {
          ScriptEvent var5 = new ScriptEvent();
          var5.widget = var4;
          var5.args0 = var4.onTargetEnter;
-         AbstractIndexCache.runScript(var5);
+         AbstractArchive.runScript(var5);
       }
 
       Client.field157 = var3;

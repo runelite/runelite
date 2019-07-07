@@ -60,7 +60,7 @@ public class GzipDecompressor {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = StructDefinition.field885.takeRecord(34, var0);
+         byte[] var2 = StructDefinition.field885.takeFile(34, var0);
          var1 = new StructDefinition();
          if (var2 != null) {
             var1.read(new Buffer(var2));

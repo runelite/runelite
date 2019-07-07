@@ -175,7 +175,7 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "-1562700981"
    )
    @Export("requestNetFile")
-   static void requestNetFile(IndexCache var0, int var1, int var2, int var3, byte var4, boolean var5) {
+   static void requestNetFile(Archive var0, int var1, int var2, int var3, byte var4, boolean var5) {
       long var6 = (long)((var1 << 16) + var2);
       NetFileRequest var8 = (NetFileRequest)NetCache.NetCache_pendingPriorityWrites.get(var6);
       if (var8 == null) {

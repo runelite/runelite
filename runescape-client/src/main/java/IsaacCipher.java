@@ -238,7 +238,7 @@ public final class IsaacCipher {
       signature = "(Lir;Lir;I)V",
       garbageValue = "75867683"
    )
-   public static void method4082(AbstractIndexCache var0, AbstractIndexCache var1) {
+   public static void method4082(AbstractArchive var0, AbstractArchive var1) {
       NPCDefinition.NpcDefinition_indexCache = var0;
       NPCDefinition.NpcDefinition_modelIndexCache = var1;
    }

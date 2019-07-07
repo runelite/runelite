@@ -48,7 +48,7 @@ public abstract class AbstractUserComparator implements Comparator {
          class214.field1129 = 1;
          class214.field1130 = null;
       } else if (var0 != -1 && var0 != Client.field112 && Client.field128 != 0 && !Client.field107) {
-         IndexCache var1 = UserComparator3.indexCache6;
+         Archive var1 = UserComparator3.indexCache6;
          int var2 = Client.field128;
          class214.field1129 = 1;
          class214.field1130 = var1;

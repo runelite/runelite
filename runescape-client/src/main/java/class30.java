@@ -95,7 +95,7 @@ public class class30 {
                var6 = new ScriptEvent();
                var6.widget = var3;
                var6.args0 = var3.onDialogAbortListener;
-               AbstractIndexCache.runScript(var6);
+               AbstractArchive.runScript(var6);
             }
 
             if (var1 == 1 && var3.field974 != null) {
@@ -109,7 +109,7 @@ public class class30 {
                var6 = new ScriptEvent();
                var6.widget = var3;
                var6.args0 = var3.field974;
-               AbstractIndexCache.runScript(var6);
+               AbstractArchive.runScript(var6);
             }
          }
       }

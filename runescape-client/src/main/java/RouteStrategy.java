@@ -73,8 +73,8 @@ public abstract class RouteStrategy {
       garbageValue = "-602741260"
    )
    @Export("loadSpriteFlat")
-   static boolean loadSpriteFlat(AbstractIndexCache var0, int var1) {
-      byte[] var2 = var0.takeRecordFlat(var1);
+   static boolean loadSpriteFlat(AbstractArchive var0, int var1) {
+      byte[] var2 = var0.takeFileFlat(var1);
       if (var2 == null) {
          return false;
       } else {

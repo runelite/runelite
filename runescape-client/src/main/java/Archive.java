@@ -6,8 +6,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("it")
-@Implements("IndexCache")
-public class IndexCache extends AbstractIndexCache {
+@Implements("Archive")
+public class Archive extends AbstractArchive {
    @ObfuscatedName("aj")
    @Export("IndexCache_crc")
    static CRC32 IndexCache_crc;
@@ -57,7 +57,7 @@ public class IndexCache extends AbstractIndexCache {
    @ObfuscatedSignature(
       signature = "(Lff;Lff;IZZZ)V"
    )
-   public IndexCache(IndexStore var1, IndexStore var2, int var3, boolean var4, boolean var5, boolean var6) {
+   public Archive(IndexStore var1, IndexStore var2, int var3, boolean var4, boolean var5, boolean var6) {
       super(var4, var5);
       this.field403 = false;
       this.field404 = false;
@@ -73,7 +73,7 @@ public class IndexCache extends AbstractIndexCache {
          int var9 = Players.NetCache_reference.readInt();
          this.loadIndexReference(var8, var9);
       } else {
-         PacketBuffer.requestNetFile((IndexCache)null, 255, 255, 0, (byte)0, true);
+         PacketBuffer.requestNetFile((Archive)null, 255, 255, 0, (byte)0, true);
          NetCache.NetCache_indexCaches[var7] = this;
       }
 
@@ -99,9 +99,9 @@ public class IndexCache extends AbstractIndexCache {
       signature = "(II)I",
       garbageValue = "-1809769865"
    )
-   @Export("archiveLoadPercent")
-   int archiveLoadPercent(int var1) {
-      return super.archives[var1] != null ? 100 : (this.validArchives[var1] ? 100 : class54.method1086(this.index, var1));
+   @Export("groupLoadPercent")
+   int groupLoadPercent(int var1) {
+      return super.groups[var1] != null ? 100 : (this.validArchives[var1] ? 100 : class54.method1086(this.index, var1));
    }
 
    @ObfuscatedName("z")
@@ -109,15 +109,15 @@ public class IndexCache extends AbstractIndexCache {
       signature = "(II)V",
       garbageValue = "-1829145107"
    )
-   @Export("loadArchive")
-   void loadArchive(int var1) {
-      if (this.indexStore != null && this.validArchives != null && this.validArchives[var1]) {
+   @Export("loadGroup")
+   void loadGroup(int group) {
+      if (this.indexStore != null && this.validArchives != null && this.validArchives[group]) {
          IndexStore var2 = this.indexStore;
          byte[] var3 = null;
          NodeDeque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
          synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
             for (IndexStoreAction var6 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.last(); var6 != null; var6 = (IndexStoreAction)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.previous()) {
-               if (var6.key == (long)var1 && var2 == var6.indexStore && var6.type == 0) {
+               if (var6.key == (long) group && var2 == var6.indexStore && var6.type == 0) {
                   var3 = var6.data;
                   break;
                }
@@ -125,13 +125,13 @@ public class IndexCache extends AbstractIndexCache {
          }
 
          if (var3 != null) {
-            this.load(var2, var1, var3, true);
+            this.load(var2, group, var3, true);
          } else {
-            byte[] var5 = var2.read(var1);
-            this.load(var2, var1, var5, true);
+            byte[] var5 = var2.read(group);
+            this.load(var2, group, var5, true);
          }
       } else {
-         PacketBuffer.requestNetFile(this, this.index, var1, super.archiveCrcs[var1], (byte)2, true);
+         PacketBuffer.requestNetFile(this, this.index, group, super.groupCrcs[group], (byte)2, true);
       }
 
    }
@@ -150,10 +150,11 @@ public class IndexCache extends AbstractIndexCache {
       signature = "(I)I",
       garbageValue = "1671499504"
    )
-   public int method131() {
+   @Export("percentage")
+   public int percentage() {
       if (this.field403) {
          return 100;
-      } else if (super.archives != null) {
+      } else if (super.groups != null) {
          return 99;
       } else {
          int var1 = class54.method1086(255, this.index);
@@ -216,18 +217,18 @@ public class IndexCache extends AbstractIndexCache {
             Widget.method4499(this.index, var2, this.referenceStore);
          }
 
-         this.setIndexReference(var2);
+         this.decodeIndex(var2);
          this.loadAllLocal();
       } else {
-         var2[var2.length - 2] = (byte)(super.archiveVersions[var1] >> 8);
-         var2[var2.length - 1] = (byte)super.archiveVersions[var1];
+         var2[var2.length - 2] = (byte)(super.groupVersions[var1] >> 8);
+         var2[var2.length - 1] = (byte)super.groupVersions[var1];
          if (this.indexStore != null) {
             Widget.method4499(var1, var2, this.indexStore);
             this.validArchives[var1] = true;
          }
 
          if (var4) {
-            super.archives[var1] = Projectile.byteArrayToObject(var2, false);
+            super.groups[var1] = Projectile.byteArrayToObject(var2, false);
          }
       }
 
@@ -266,7 +267,7 @@ public class IndexCache extends AbstractIndexCache {
                   if (var8 != this.indexReferenceVersion) {
                      PacketBuffer.requestNetFile(this, 255, this.index, this.indexReferenceCrc, (byte)0, true);
                   } else {
-                     this.setIndexReference(var3);
+                     this.decodeIndex(var3);
                      this.loadAllLocal();
                   }
                }
@@ -282,23 +283,23 @@ public class IndexCache extends AbstractIndexCache {
             IndexCache_crc.update(var3, 0, var3.length - 2);
             var5 = (int)IndexCache_crc.getValue();
             int var6 = ((var3[var3.length - 2] & 255) << 8) + (var3[var3.length - 1] & 255);
-            if (var5 == super.archiveCrcs[var2] && var6 == super.archiveVersions[var2]) {
+            if (var5 == super.groupCrcs[var2] && var6 == super.groupVersions[var2]) {
                this.validArchives[var2] = true;
                if (var4) {
-                  super.archives[var2] = Projectile.byteArrayToObject(var3, false);
+                  super.groups[var2] = Projectile.byteArrayToObject(var3, false);
                }
 
             } else {
                this.validArchives[var2] = false;
                if (this.field404 || var4) {
-                  PacketBuffer.requestNetFile(this, this.index, var2, super.archiveCrcs[var2], (byte)2, var4);
+                  PacketBuffer.requestNetFile(this, this.index, var2, super.groupCrcs[var2], (byte)2, var4);
                }
 
             }
          } else {
             this.validArchives[var2] = false;
             if (this.field404 || var4) {
-               PacketBuffer.requestNetFile(this, this.index, var2, super.archiveCrcs[var2], (byte)2, var4);
+               PacketBuffer.requestNetFile(this, this.index, var2, super.groupCrcs[var2], (byte)2, var4);
             }
 
          }
@@ -312,7 +313,7 @@ public class IndexCache extends AbstractIndexCache {
    )
    @Export("loadAllLocal")
    void loadAllLocal() {
-      this.validArchives = new boolean[super.archives.length];
+      this.validArchives = new boolean[super.groups.length];
 
       int var1;
       for (var1 = 0; var1 < this.validArchives.length; ++var1) {
@@ -325,7 +326,7 @@ public class IndexCache extends AbstractIndexCache {
          this.field405 = -1;
 
          for (var1 = 0; var1 < this.validArchives.length; ++var1) {
-            if (super.recordCounts[var1] > 0) {
+            if (super.fileCounts[var1] > 0) {
                NPC.method2009(var1, this.indexStore, this);
                this.field405 = var1;
             }
@@ -367,10 +368,10 @@ public class IndexCache extends AbstractIndexCache {
       int var2 = 0;
 
       int var3;
-      for (var3 = 0; var3 < super.archives.length; ++var3) {
-         if (super.recordCounts[var3] > 0) {
+      for (var3 = 0; var3 < super.groups.length; ++var3) {
+         if (super.fileCounts[var3] > 0) {
             var1 += 100;
-            var2 += this.archiveLoadPercent(var3);
+            var2 += this.groupLoadPercent(var3);
          }
       }
 

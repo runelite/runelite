@@ -36,7 +36,7 @@ public class SecureRandomCallable implements Callable {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = VarpDefinition.field943.takeRecord(16, var0);
+         byte[] var2 = VarpDefinition.field943.takeFile(16, var0);
          var1 = new VarpDefinition();
          if (var2 != null) {
             var1.read(new Buffer(var2));

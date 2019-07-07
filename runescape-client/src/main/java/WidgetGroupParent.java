@@ -49,11 +49,11 @@ public class WidgetGroupParent extends Node {
          return var2;
       } else {
          String var3 = String.valueOf(var0);
-         int var4 = Formatting.indexCache12.getArchiveId(var3);
+         int var4 = Formatting.indexCache12.getGroupId(var3);
          if (var4 == -1) {
             return null;
          } else {
-            byte[] var5 = Formatting.indexCache12.takeRecordFlat(var4);
+            byte[] var5 = Formatting.indexCache12.takeFileFlat(var4);
             if (var5 != null) {
                if (var5.length <= 1) {
                   return null;

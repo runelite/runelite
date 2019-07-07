@@ -13,7 +13,7 @@ public final class class27 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field1143;
+   public static AbstractArchive field1143;
    @ObfuscatedName("f")
    final int[] field225;
 

@@ -12,13 +12,13 @@ public class ItemDefinition extends DualNode {
       signature = "Lir;"
    )
    @Export("ItemDefinition_indexCache")
-   public static AbstractIndexCache ItemDefinition_indexCache;
+   public static AbstractArchive ItemDefinition_indexCache;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
    @Export("ItemDefinition_modelIndexCache")
-   public static AbstractIndexCache ItemDefinition_modelIndexCache;
+   public static AbstractArchive ItemDefinition_modelIndexCache;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -473,7 +473,7 @@ public class ItemDefinition extends DualNode {
          } else if (var2 == 149) {
             this.placeholderTemplate = var1.readUnsignedShort();
          } else if (var2 == 249) {
-            this.params = AbstractIndexCache.readStringIntParameters(var1, this.params);
+            this.params = AbstractArchive.readStringIntParameters(var1, this.params);
          }
       }
 
@@ -710,15 +710,15 @@ public class ItemDefinition extends DualNode {
          return true;
       } else {
          boolean var5 = true;
-         if (!ItemDefinition_modelIndexCache.tryLoadRecord(var2, 0)) {
+         if (!ItemDefinition_modelIndexCache.tryLoadFile(var2, 0)) {
             var5 = false;
          }
 
-         if (var3 != -1 && !ItemDefinition_modelIndexCache.tryLoadRecord(var3, 0)) {
+         if (var3 != -1 && !ItemDefinition_modelIndexCache.tryLoadFile(var3, 0)) {
             var5 = false;
          }
 
-         if (var4 != -1 && !ItemDefinition_modelIndexCache.tryLoadRecord(var4, 0)) {
+         if (var4 != -1 && !ItemDefinition_modelIndexCache.tryLoadFile(var4, 0)) {
             var5 = false;
          }
 
@@ -799,11 +799,11 @@ public class ItemDefinition extends DualNode {
          return true;
       } else {
          boolean var4 = true;
-         if (!ItemDefinition_modelIndexCache.tryLoadRecord(var2, 0)) {
+         if (!ItemDefinition_modelIndexCache.tryLoadFile(var2, 0)) {
             var4 = false;
          }
 
-         if (var3 != -1 && !ItemDefinition_modelIndexCache.tryLoadRecord(var3, 0)) {
+         if (var3 != -1 && !ItemDefinition_modelIndexCache.tryLoadFile(var3, 0)) {
             var4 = false;
          }
 

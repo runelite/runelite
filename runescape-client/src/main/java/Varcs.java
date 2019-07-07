@@ -356,7 +356,7 @@ public class Varcs {
       signature = "(Lir;I)V",
       garbageValue = "321265868"
    )
-   public static void method2160(AbstractIndexCache var0) {
+   public static void method2160(AbstractArchive var0) {
       OverlayDefinition.field663 = var0;
    }
 

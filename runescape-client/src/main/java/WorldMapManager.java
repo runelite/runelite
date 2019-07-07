@@ -51,12 +51,12 @@ public final class WorldMapManager {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   final AbstractIndexCache field1046;
+   final AbstractArchive field1046;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   final AbstractIndexCache field1047;
+   final AbstractArchive field1047;
    @ObfuscatedName("d")
    @Export("fonts")
    final HashMap fonts;
@@ -91,7 +91,7 @@ public final class WorldMapManager {
    @ObfuscatedSignature(
       signature = "([Llq;Ljava/util/HashMap;Lir;Lir;)V"
    )
-   public WorldMapManager(IndexedSprite[] var1, HashMap var2, AbstractIndexCache var3, AbstractIndexCache var4) {
+   public WorldMapManager(IndexedSprite[] var1, HashMap var2, AbstractArchive var3, AbstractArchive var4) {
       this.isLoaded0 = false;
       this.loadStarted = false;
       this.field1045 = new HashMap();
@@ -108,15 +108,15 @@ public final class WorldMapManager {
       garbageValue = "32"
    )
    @Export("load")
-   public void load(AbstractIndexCache var1, String var2, boolean var3) {
+   public void load(AbstractArchive var1, String var2, boolean var3) {
       if (!this.loadStarted) {
          this.isLoaded0 = false;
          this.loadStarted = true;
          System.nanoTime();
-         int var4 = var1.getArchiveId(WorldMapCacheName.WorldMapCacheName_details.name);
-         int var5 = var1.getRecordId(var4, var2);
-         Buffer var6 = new Buffer(var1.takeRecordByNames(WorldMapCacheName.WorldMapCacheName_details.name, var2));
-         Buffer var7 = new Buffer(var1.takeRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, var2));
+         int var4 = var1.getGroupId(WorldMapCacheName.WorldMapCacheName_details.name);
+         int var5 = var1.getFileId(var4, var2);
+         Buffer var6 = new Buffer(var1.takeFileByNames(WorldMapCacheName.WorldMapCacheName_details.name, var2));
+         Buffer var7 = new Buffer(var1.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, var2));
          System.nanoTime();
          System.nanoTime();
          this.mapAreaData = new WorldMapAreaData();
@@ -165,7 +165,7 @@ public final class WorldMapManager {
          System.nanoTime();
          System.nanoTime();
          if (var1.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, var2)) {
-            byte[] var18 = var1.takeRecordByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, var2);
+            byte[] var18 = var1.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, var2);
             this.overviewSprite = class27.convertJpgToSprite(var18);
          }
 

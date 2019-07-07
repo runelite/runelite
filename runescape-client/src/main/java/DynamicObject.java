@@ -491,14 +491,14 @@ public class DynamicObject extends Entity {
    )
    protected static int method2222() {
       int var0 = 0;
-      if (AbstractIndexCache.garbageCollector == null || !AbstractIndexCache.garbageCollector.isValid()) {
+      if (AbstractArchive.garbageCollector == null || !AbstractArchive.garbageCollector.isValid()) {
          try {
             Iterator var1 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
 
             while (var1.hasNext()) {
                GarbageCollectorMXBean var2 = (GarbageCollectorMXBean)var1.next();
                if (var2.isValid()) {
-                  AbstractIndexCache.garbageCollector = var2;
+                  AbstractArchive.garbageCollector = var2;
                   GameShell.garbageCollectorLastCheckTimeMs = -1L;
                   GameShell.garbageCollectorLastCollectionTime = -1L;
                }
@@ -507,9 +507,9 @@ public class DynamicObject extends Entity {
          }
       }
 
-      if (AbstractIndexCache.garbageCollector != null) {
+      if (AbstractArchive.garbageCollector != null) {
          long var10 = class203.currentTimeMs();
-         long var3 = AbstractIndexCache.garbageCollector.getCollectionTime();
+         long var3 = AbstractArchive.garbageCollector.getCollectionTime();
          if (GameShell.garbageCollectorLastCollectionTime != -1L) {
             long var5 = var3 - GameShell.garbageCollectorLastCollectionTime;
             long var7 = var10 - GameShell.garbageCollectorLastCheckTimeMs;

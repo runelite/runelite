@@ -99,7 +99,7 @@ public class class171 {
          Login.Login_loadingPercent = 10;
          Client.titleLoadingStage = 30;
       } else if (Client.titleLoadingStage == 30) {
-         AbstractIndexCache.indexCache0 = class22.newIndexCache(0, false, true, true);
+         AbstractArchive.indexCache0 = class22.newIndexCache(0, false, true, true);
          Skeleton.indexCache1 = class22.newIndexCache(1, false, true, true);
          ObjectSound.indexCache2 = class22.newIndexCache(2, true, false, true);
          WorldMapIcon1.indexCache3 = class22.newIndexCache(3, false, true, true);
@@ -124,25 +124,25 @@ public class class171 {
          Client.titleLoadingStage = 40;
       } else if (Client.titleLoadingStage == 40) {
          byte var1 = 0;
-         var0 = var1 + AbstractIndexCache.indexCache0.method131() * 4 / 100;
-         var0 += Skeleton.indexCache1.method131() * 4 / 100;
-         var0 += ObjectSound.indexCache2.method131() * 2 / 100;
-         var0 += WorldMapIcon1.indexCache3.method131() * 2 / 100;
-         var0 += WorldMapDecoration.indexCache4.method131() * 6 / 100;
-         var0 += SecureRandomFuture.indexCache5.method131() * 4 / 100;
-         var0 += UserComparator3.indexCache6.method131() * 2 / 100;
-         var0 += class40.indexCache7.method131() * 56 / 100;
-         var0 += WorldMapSection3.indexCache8.method131() * 2 / 100;
-         var0 += class238.indexCache9.method131() * 2 / 100;
-         var0 += class16.indexCache10.method131() * 2 / 100;
-         var0 += Login.indexCache11.method131() * 2 / 100;
-         var0 += Formatting.indexCache12.method131() * 2 / 100;
-         var0 += ByteArrayPool.indexCache13.method131() * 2 / 100;
-         var0 += class2.indexCache14.method131() * 2 / 100;
-         var0 += WorldMapSection1.indexCache15.method131() * 2 / 100;
-         var0 += ItemContainer.field434.method131() / 100;
-         var0 += WorldMapLabelSize.field1040.method131() / 100;
-         var0 += AbstractByteArrayCopier.field0.method131() / 100;
+         var0 = var1 + AbstractArchive.indexCache0.percentage() * 4 / 100;
+         var0 += Skeleton.indexCache1.percentage() * 4 / 100;
+         var0 += ObjectSound.indexCache2.percentage() * 2 / 100;
+         var0 += WorldMapIcon1.indexCache3.percentage() * 2 / 100;
+         var0 += WorldMapDecoration.indexCache4.percentage() * 6 / 100;
+         var0 += SecureRandomFuture.indexCache5.percentage() * 4 / 100;
+         var0 += UserComparator3.indexCache6.percentage() * 2 / 100;
+         var0 += class40.indexCache7.percentage() * 56 / 100;
+         var0 += WorldMapSection3.indexCache8.percentage() * 2 / 100;
+         var0 += class238.indexCache9.percentage() * 2 / 100;
+         var0 += class16.indexCache10.percentage() * 2 / 100;
+         var0 += Login.indexCache11.percentage() * 2 / 100;
+         var0 += Formatting.indexCache12.percentage() * 2 / 100;
+         var0 += ByteArrayPool.indexCache13.percentage() * 2 / 100;
+         var0 += class2.indexCache14.percentage() * 2 / 100;
+         var0 += WorldMapSection1.indexCache15.percentage() * 2 / 100;
+         var0 += ItemContainer.field434.percentage() / 100;
+         var0 += WorldMapLabelSize.field1040.percentage() / 100;
+         var0 += AbstractByteArrayCopier.field0.percentage() / 100;
          var0 += class22.indexCache16.method130() && class22.indexCache16.method2() ? 1 : 0;
          if (var0 != 100) {
             if (var0 != 0) {
@@ -151,7 +151,7 @@ public class class171 {
 
             Login.Login_loadingPercent = 30;
          } else {
-            AbstractWorldMapIcon.method625(AbstractIndexCache.indexCache0, "Animations");
+            AbstractWorldMapIcon.method625(AbstractArchive.indexCache0, "Animations");
             AbstractWorldMapIcon.method625(Skeleton.indexCache1, "Skeletons");
             AbstractWorldMapIcon.method625(WorldMapDecoration.indexCache4, "Sound FX");
             AbstractWorldMapIcon.method625(SecureRandomFuture.indexCache5, "Maps");
@@ -177,9 +177,9 @@ public class class171 {
          WorldMapCacheName.pcmPlayer0 = Players.newPcmPlayer(GameShell.taskHandler, 0, 22050);
          WorldMapCacheName.pcmPlayer0.setStream(var28);
          NetSocket.method3537(WorldMapSection1.indexCache15, class2.indexCache14, WorldMapDecoration.indexCache4, var28);
-         AbstractIndexCache.pcmPlayer1 = Players.newPcmPlayer(GameShell.taskHandler, 1, 2048);
+         AbstractArchive.pcmPlayer1 = Players.newPcmPlayer(GameShell.taskHandler, 1, 2048);
          TaskHandler.pcmStreamMixer = new PcmStreamMixer();
-         AbstractIndexCache.pcmPlayer1.setStream(TaskHandler.pcmStreamMixer);
+         AbstractArchive.pcmPlayer1.setStream(TaskHandler.pcmStreamMixer);
          MilliClock.decimator = new Decimator(22050, class309.PcmPlayer_sampleRate);
          Login.Login_loadingText = "Prepared sound engine";
          Login.Login_loadingPercent = 35;
@@ -218,7 +218,7 @@ public class class171 {
                Client.titleLoadingStage = 70;
             }
          } else {
-            IndexCache var30;
+            Archive var30;
             if (Client.titleLoadingStage == 70) {
                if (!ObjectSound.indexCache2.method2()) {
                   Login.Login_loadingText = "Loading config - " + ObjectSound.indexCache2.loadPercent() + "%";
@@ -226,8 +226,8 @@ public class class171 {
                } else {
                   Varcs.method2160(ObjectSound.indexCache2);
                   Varps.method4393(ObjectSound.indexCache2);
-                  IndexCache var31 = ObjectSound.indexCache2;
-                  IndexCache var33 = class40.indexCache7;
+                  Archive var31 = ObjectSound.indexCache2;
+                  Archive var33 = class40.indexCache7;
                   KitDefinition.KitDefinition_indexCache = var31;
                   KitDefinition.field456 = var33;
                   KitDefinition.field457 = KitDefinition.KitDefinition_indexCache.method4(3);
@@ -235,8 +235,8 @@ public class class171 {
                   IsaacCipher.method4082(ObjectSound.indexCache2, class40.indexCache7);
                   var30 = ObjectSound.indexCache2;
                   StructDefinition.field885 = var30;
-                  IndexCache var5 = ObjectSound.indexCache2;
-                  IndexCache var6 = class40.indexCache7;
+                  Archive var5 = ObjectSound.indexCache2;
+                  Archive var6 = class40.indexCache7;
                   boolean var7 = Client.isMembersWorld;
                   Font var8 = ScriptEvent.fontPlain11;
                   ItemDefinition.ItemDefinition_indexCache = var5;
@@ -244,52 +244,52 @@ public class class171 {
                   class30.inMembersWorld = var7;
                   class83.field1167 = ItemDefinition.ItemDefinition_indexCache.method4(10);
                   class204.field1122 = var8;
-                  IndexCache var9 = ObjectSound.indexCache2;
-                  IndexCache var10 = AbstractIndexCache.indexCache0;
-                  IndexCache var11 = Skeleton.indexCache1;
+                  Archive var9 = ObjectSound.indexCache2;
+                  Archive var10 = AbstractArchive.indexCache0;
+                  Archive var11 = Skeleton.indexCache1;
                   SequenceDefinition.SequenceDefinition_indexCache = var9;
                   SequenceDefinition.field773 = var10;
                   SequenceDefinition.field774 = var11;
-                  IndexCache var12 = ObjectSound.indexCache2;
-                  IndexCache var13 = class40.indexCache7;
+                  Archive var12 = ObjectSound.indexCache2;
+                  Archive var13 = class40.indexCache7;
                   SpotAnimationDefinition.SpotAnimationDefinition_indexCache = var12;
                   SpotAnimationDefinition.SpotAnimationDefinition_modelIndexCache = var13;
                   UnitPriceComparator.method135(ObjectSound.indexCache2);
-                  IndexCache var14 = ObjectSound.indexCache2;
+                  Archive var14 = ObjectSound.indexCache2;
                   VarpDefinition.field943 = var14;
                   VarpDefinition.field944 = VarpDefinition.field943.method4(16);
-                  IndexCache var15 = WorldMapIcon1.indexCache3;
-                  IndexCache var16 = class40.indexCache7;
-                  IndexCache var17 = WorldMapSection3.indexCache8;
-                  IndexCache var18 = ByteArrayPool.indexCache13;
+                  Archive var15 = WorldMapIcon1.indexCache3;
+                  Archive var16 = class40.indexCache7;
+                  Archive var17 = WorldMapSection3.indexCache8;
+                  Archive var18 = ByteArrayPool.indexCache13;
                   Widget.Widget_indexCache = var15;
                   BufferedSource.field54 = var16;
                   Widget.field955 = var17;
                   class27.field1143 = var18;
                   Widget.widgets = new Widget[Widget.Widget_indexCache.method5()][];
                   Widget.loadedWidgetGroups = new boolean[Widget.Widget_indexCache.method5()];
-                  IndexCache var19 = ObjectSound.indexCache2;
+                  Archive var19 = ObjectSound.indexCache2;
                   class4.field1158 = var19;
-                  IndexCache var20 = ObjectSound.indexCache2;
+                  Archive var20 = ObjectSound.indexCache2;
                   EnumDefinition.EnumDefinition_indexCache = var20;
                   Frames.method3241(ObjectSound.indexCache2);
-                  IndexCache var21 = ObjectSound.indexCache2;
+                  Archive var21 = ObjectSound.indexCache2;
                   ParamKeyDefinition.field679 = var21;
                   class196.varcs = new Varcs();
                   class60.method1172(ObjectSound.indexCache2, WorldMapSection3.indexCache8, ByteArrayPool.indexCache13);
-                  IndexCache var22 = ObjectSound.indexCache2;
-                  IndexCache var23 = WorldMapSection3.indexCache8;
+                  Archive var22 = ObjectSound.indexCache2;
+                  Archive var23 = WorldMapSection3.indexCache8;
                   HealthBarDefinition.field379 = var22;
                   HealthBarDefinition.field380 = var23;
-                  IndexCache var24 = ObjectSound.indexCache2;
-                  IndexCache var25 = WorldMapSection3.indexCache8;
+                  Archive var24 = ObjectSound.indexCache2;
+                  Archive var25 = WorldMapSection3.indexCache8;
                   WorldMapElement.field1019 = var25;
                   if (var24.method2()) {
                      UserComparator4.WorldMapElement_count = var24.method4(35);
                      Widget.WorldMapElement_cached = new WorldMapElement[UserComparator4.WorldMapElement_count];
 
                      for (int var26 = 0; var26 < UserComparator4.WorldMapElement_count; ++var26) {
-                        byte[] var27 = var24.takeRecord(35, var26);
+                        byte[] var27 = var24.takeFile(35, var26);
                         Widget.WorldMapElement_cached[var26] = new WorldMapElement(var26);
                         if (var27 != null) {
                            Widget.WorldMapElement_cached[var26].read(new Buffer(var27));
@@ -487,11 +487,11 @@ public class class171 {
                Login.Login_loadingPercent = 92;
                Client.titleLoadingStage = 120;
             } else if (Client.titleLoadingStage == 120) {
-               if (!class16.indexCache10.tryLoadRecordByNames("huffman", "")) {
+               if (!class16.indexCache10.tryLoadFileByNames("huffman", "")) {
                   Login.Login_loadingText = "Loading wordpack - 0%";
                   Login.Login_loadingPercent = 94;
                } else {
-                  Huffman var37 = new Huffman(class16.indexCache10.takeRecordByNames("huffman", ""));
+                  Huffman var37 = new Huffman(class16.indexCache10.takeFileByNames("huffman", ""));
                   class303.huffman = var37;
                   Login.Login_loadingText = "Loaded wordpack";
                   Login.Login_loadingPercent = 94;
@@ -514,8 +514,8 @@ public class class171 {
                }
             } else if (Client.titleLoadingStage == 140) {
                Login.Login_loadingPercent = 100;
-               if (!ItemContainer.field434.tryLoadArchiveByName(WorldMapCacheName.WorldMapCacheName_details.name)) {
-                  Login.Login_loadingText = "Loading world map - " + ItemContainer.field434.archiveLoadPercentByName(WorldMapCacheName.WorldMapCacheName_details.name) / 10 + "%";
+               if (!ItemContainer.field434.tryLoadGroupByName(WorldMapCacheName.WorldMapCacheName_details.name)) {
+                  Login.Login_loadingText = "Loading world map - " + ItemContainer.field434.groupLoadPercentByName(WorldMapCacheName.WorldMapCacheName_details.name) / 10 + "%";
                } else {
                   if (class60.worldMap0 == null) {
                      class60.worldMap0 = new WorldMap();
@@ -547,7 +547,7 @@ public class class171 {
             var6.opIndex = var0;
             var6.targetName = var4;
             var6.args0 = var5.onOp;
-            AbstractIndexCache.runScript(var6);
+            AbstractArchive.runScript(var6);
          }
 
          boolean var11 = true;

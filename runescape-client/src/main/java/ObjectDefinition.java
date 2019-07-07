@@ -15,12 +15,12 @@ public class ObjectDefinition extends DualNode {
       signature = "Lir;"
    )
    @Export("ObjectDefinition_indexCache")
-   static AbstractIndexCache ObjectDefinition_indexCache;
+   static AbstractArchive ObjectDefinition_indexCache;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache field640;
+   static AbstractArchive field640;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -470,7 +470,7 @@ public class ObjectDefinition extends DualNode {
          } else if (var2 == 82) {
             this.mapIconId = var1.readUnsignedShort();
          } else if (var2 == 249) {
-            this.params = AbstractIndexCache.readStringIntParameters(var1, this.params);
+            this.params = AbstractArchive.readStringIntParameters(var1, this.params);
          }
       } else {
          this.transformVarbit = var1.readUnsignedShort();
@@ -515,7 +515,7 @@ public class ObjectDefinition extends DualNode {
       if (this.field645 != null) {
          for (int var4 = 0; var4 < this.field645.length; ++var4) {
             if (this.field645[var4] == var1) {
-               return field640.tryLoadRecord(this.field644[var4] & 65535, 0);
+               return field640.tryLoadFile(this.field644[var4] & 65535, 0);
             }
          }
 
@@ -528,7 +528,7 @@ public class ObjectDefinition extends DualNode {
          boolean var2 = true;
 
          for (int var3 = 0; var3 < this.field644.length; ++var3) {
-            var2 &= field640.tryLoadRecord(this.field644[var3] & 65535, 0);
+            var2 &= field640.tryLoadFile(this.field644[var3] & 65535, 0);
          }
 
          return var2;
@@ -547,7 +547,7 @@ public class ObjectDefinition extends DualNode {
          boolean var1 = true;
 
          for (int var2 = 0; var2 < this.field644.length; ++var2) {
-            var1 &= field640.tryLoadRecord(this.field644[var2] & 65535, 0);
+            var1 &= field640.tryLoadFile(this.field644[var2] & 65535, 0);
          }
 
          return var1;
@@ -907,7 +907,7 @@ public class ObjectDefinition extends DualNode {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = NPCDefinition.NpcDefinition_indexCache.takeRecord(9, var0);
+         byte[] var2 = NPCDefinition.NpcDefinition_indexCache.takeFile(9, var0);
          var1 = new NPCDefinition();
          var1.id = var0;
          if (var2 != null) {

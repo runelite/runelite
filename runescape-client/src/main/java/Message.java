@@ -467,6 +467,6 @@ public class Message extends DualNode {
       }
 
       String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.language + "/a=" + AbstractIndexCache.field2 + var3 + "/";
+      return var2 + var0 + "." + var4 + "/l=" + Client.language + "/a=" + AbstractArchive.field2 + var3 + "/";
    }
 }

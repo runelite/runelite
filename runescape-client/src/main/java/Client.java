@@ -1299,7 +1299,8 @@ public final class Client extends GameShell implements Usernamed {
       signature = "(I)V",
       garbageValue = "1445885427"
    )
-   protected final void vmethod112() {
+   @Export("packetHandler")
+   protected final void packetHandler() {
       ++cycle;
       this.doCycleJs5();
       class3.method41();
@@ -1376,7 +1377,7 @@ public final class Client extends GameShell implements Usernamed {
             int var4;
             for (var4 = 0; var4 < class40.regionLandArchives.length; ++var4) {
                if (IndexCacheLoader.regionMapArchiveIds[var4] != -1 && class40.regionLandArchives[var4] == null) {
-                  class40.regionLandArchives[var4] = SecureRandomFuture.indexCache5.takeRecord(IndexCacheLoader.regionMapArchiveIds[var4], 0);
+                  class40.regionLandArchives[var4] = SecureRandomFuture.indexCache5.takeFile(IndexCacheLoader.regionMapArchiveIds[var4], 0);
                   if (class40.regionLandArchives[var4] == null) {
                      var3 = false;
                      ++field177;
@@ -1384,7 +1385,7 @@ public final class Client extends GameShell implements Usernamed {
                }
 
                if (MouseHandler.regionLandArchiveIds[var4] != -1 && HealthBarUpdate.regionMapArchives[var4] == null) {
-                  HealthBarUpdate.regionMapArchives[var4] = SecureRandomFuture.indexCache5.takeRecordEncrypted(MouseHandler.regionLandArchiveIds[var4], 0, class190.xteaKeys[var4]);
+                  HealthBarUpdate.regionMapArchives[var4] = SecureRandomFuture.indexCache5.takeFileEncrypted(MouseHandler.regionLandArchiveIds[var4], 0, class190.xteaKeys[var4]);
                   if (HealthBarUpdate.regionMapArchives[var4] == null) {
                      var3 = false;
                      ++field177;
@@ -1843,7 +1844,7 @@ public final class Client extends GameShell implements Usernamed {
                                           if (var43 != null) {
                                              var45 = var43;
                                           } else {
-                                             byte[] var46 = OverlayDefinition.field663.takeRecord(4, var42);
+                                             byte[] var46 = OverlayDefinition.field663.takeFile(4, var42);
                                              var43 = new OverlayDefinition();
                                              if (var46 != null) {
                                                 var43.read(new Buffer(var46), var42);
@@ -1880,7 +1881,7 @@ public final class Client extends GameShell implements Usernamed {
                                        if (var68 != null) {
                                           var43 = var68;
                                        } else {
-                                          byte[] var47 = OverlayDefinition.field663.takeRecord(4, var67);
+                                          byte[] var47 = OverlayDefinition.field663.takeFile(4, var67);
                                           var68 = new OverlayDefinition();
                                           if (var47 != null) {
                                              var68.read(new Buffer(var47), var67);
@@ -2359,8 +2360,8 @@ public final class Client extends GameShell implements Usernamed {
          WorldMapCacheName.pcmPlayer0.shutdown();
       }
 
-      if (AbstractIndexCache.pcmPlayer1 != null) {
-         AbstractIndexCache.pcmPlayer1.shutdown();
+      if (AbstractArchive.pcmPlayer1 != null) {
+         AbstractArchive.pcmPlayer1.shutdown();
       }
 
       if (NetCache.NetCache_socket != null) {
@@ -2687,7 +2688,7 @@ public final class Client extends GameShell implements Usernamed {
                      worldId = Integer.parseInt(var5);
                      break;
                   case 14:
-                     AbstractIndexCache.field2 = Integer.parseInt(var5);
+                     AbstractArchive.field2 = Integer.parseInt(var5);
                      break;
                   case 15:
                      gameBuild = Integer.parseInt(var5);
@@ -2866,7 +2867,7 @@ public final class Client extends GameShell implements Usernamed {
                               Players.NetCache_reference = class22.NetCache_responseArchiveBuffer;
 
                               for (var12 = 0; var12 < 256; ++var12) {
-                                 IndexCache var22 = NetCache.NetCache_indexCaches[var12];
+                                 Archive var22 = NetCache.NetCache_indexCaches[var12];
                                  if (var22 != null) {
                                     Players.NetCache_reference.index = var12 * 8 + 5;
                                     var13 = Players.NetCache_reference.readInt();
@@ -3196,8 +3197,8 @@ public final class Client extends GameShell implements Usernamed {
                WorldMapCacheName.pcmPlayer0.method242();
             }
 
-            if (AbstractIndexCache.pcmPlayer1 != null) {
-               AbstractIndexCache.pcmPlayer1.method242();
+            if (AbstractArchive.pcmPlayer1 != null) {
+               AbstractArchive.pcmPlayer1.method242();
             }
 
             var16 = true;
@@ -3211,8 +3212,8 @@ public final class Client extends GameShell implements Usernamed {
                   WorldMapCacheName.pcmPlayer0.method242();
                }
 
-               if (AbstractIndexCache.pcmPlayer1 != null) {
-                  AbstractIndexCache.pcmPlayer1.method242();
+               if (AbstractArchive.pcmPlayer1 != null) {
+                  AbstractArchive.pcmPlayer1.method242();
                }
 
                if (var4 != 0) {
@@ -3314,13 +3315,13 @@ public final class Client extends GameShell implements Usernamed {
             var8.packetBuffer.writeShort(Huffman.canvasHeight);
             Varps.method4400(var8.packetBuffer);
             var8.packetBuffer.writeStringCp1252NullTerminated(class21.field1123);
-            var8.packetBuffer.writeInt(AbstractIndexCache.field2);
+            var8.packetBuffer.writeInt(AbstractArchive.field2);
             Buffer var11 = new Buffer(WorldMapLabelSize.platformInfo.size());
             WorldMapLabelSize.platformInfo.write(var11);
             var8.packetBuffer.method38(var11.array, 0, var11.array.length);
             var8.packetBuffer.writeByte(clientType);
             var8.packetBuffer.writeInt(0);
-            var8.packetBuffer.writeInt(AbstractIndexCache.indexCache0.hash);
+            var8.packetBuffer.writeInt(AbstractArchive.indexCache0.hash);
             var8.packetBuffer.writeInt(Skeleton.indexCache1.hash);
             var8.packetBuffer.writeInt(ObjectSound.indexCache2.hash);
             var8.packetBuffer.writeInt(WorldMapIcon1.indexCache3.hash);
@@ -4220,7 +4221,7 @@ public final class Client extends GameShell implements Usernamed {
                                           var34 = Huffman.getWidget(var23.parentId);
                                        } while(var34 == null || var34.children == null || var23.childIndex >= var34.children.length || var23 != var34.children[var23.childIndex]);
 
-                                       AbstractIndexCache.runScript(var24);
+                                       AbstractArchive.runScript(var24);
                                     }
                                  }
 
@@ -4232,7 +4233,7 @@ public final class Client extends GameShell implements Usernamed {
                                  var34 = Huffman.getWidget(var23.parentId);
                               } while(var34 == null || var34.children == null || var23.childIndex >= var34.children.length || var23 != var34.children[var23.childIndex]);
 
-                              AbstractIndexCache.runScript(var24);
+                              AbstractArchive.runScript(var24);
                            }
                         }
 
@@ -4244,7 +4245,7 @@ public final class Client extends GameShell implements Usernamed {
                         var34 = Huffman.getWidget(var23.parentId);
                      } while(var34 == null || var34.children == null || var23.childIndex >= var34.children.length || var23 != var34.children[var23.childIndex]);
 
-                     AbstractIndexCache.runScript(var24);
+                     AbstractArchive.runScript(var24);
                   }
                }
 
@@ -4751,7 +4752,7 @@ public final class Client extends GameShell implements Usernamed {
                   Varps.Varps_main[var6] = var39;
                }
 
-               IndexCache.method4703(var6);
+               Archive.method4703(var6);
                field121[++field123 - 1 & 31] = var6;
                var1.serverPacket0 = null;
                return true;
@@ -5066,7 +5067,7 @@ public final class Client extends GameShell implements Usernamed {
                var46[0] = new Integer(var3.readInt());
                ScriptEvent var49 = new ScriptEvent();
                var49.args0 = var46;
-               AbstractIndexCache.runScript(var49);
+               AbstractArchive.runScript(var49);
                var1.serverPacket0 = null;
                return true;
             }
@@ -5677,7 +5678,7 @@ public final class Client extends GameShell implements Usernamed {
                   Varps.Varps_main[var37] = var6;
                }
 
-               IndexCache.method4703(var37);
+               Archive.method4703(var37);
                field121[++field123 - 1 & 31] = var37;
                var1.serverPacket0 = null;
                return true;
@@ -5709,7 +5710,7 @@ public final class Client extends GameShell implements Usernamed {
                for (var37 = 0; var37 < Varps.Varps_main.length; ++var37) {
                   if (Varps.Varps_temp[var37] != Varps.Varps_main[var37]) {
                      Varps.Varps_main[var37] = Varps.Varps_temp[var37];
-                     IndexCache.method4703(var37);
+                     Archive.method4703(var37);
                      field121[++field123 - 1 & 31] = var37;
                   }
                }
@@ -6140,7 +6141,7 @@ public final class Client extends GameShell implements Usernamed {
             var8.mouseX = var6;
             var8.mouseY = var7;
             var8.args0 = clickedWidget.onDrag;
-            AbstractIndexCache.runScript(var8);
+            AbstractArchive.runScript(var8);
          }
 
          if (MouseHandler.MouseHandler_currentButton == 0) {
@@ -6153,7 +6154,7 @@ public final class Client extends GameShell implements Usernamed {
                   var8.mouseY = var7;
                   var8.dragTarget = draggedOnWidget;
                   var8.args0 = clickedWidget.onDragComplete;
-                  AbstractIndexCache.runScript(var8);
+                  AbstractArchive.runScript(var8);
                }
 
                if (draggedOnWidget != null) {

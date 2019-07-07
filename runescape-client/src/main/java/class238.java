@@ -9,7 +9,7 @@ public final class class238 {
       signature = "Lit;"
    )
    @Export("indexCache9")
-   static IndexCache indexCache9;
+   static Archive indexCache9;
 
    @ObfuscatedName("im")
    @ObfuscatedSignature(

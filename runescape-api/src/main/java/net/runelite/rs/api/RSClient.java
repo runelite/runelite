@@ -443,11 +443,11 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("indexCache8")
 	@Override
-	RSAbstractIndexCache getIndexSprites();
+	RSAbstractArchive getIndexSprites();
 
 	@Import("indexCache12")
 	@Override
-	RSAbstractIndexCache getIndexScripts();
+	RSAbstractArchive getIndexScripts();
 
 	@Import("widgetClickMasks")
 	@Override
@@ -1015,7 +1015,7 @@ public interface RSClient extends RSGameShell, Client
 	boolean isSpellSelected();
 
 	@Import("readSoundEffect")
-	RSSoundEffect getTrack(RSAbstractIndexCache indexData, int id, int var0);
+	RSSoundEffect getTrack(RSAbstractArchive indexData, int id, int var0);
 
 	@Import("createRawPcmStream")
 	RSRawPcmStream createRawPcmStream(RSRawSound audioNode, int var0, int volume);
@@ -1024,7 +1024,7 @@ public interface RSClient extends RSGameShell, Client
 	RSPcmStreamMixer getSoundEffectAudioQueue();
 
 	@Import("indexCache4")
-	RSAbstractIndexCache getIndexCache4();
+	RSAbstractArchive getIndexCache4();
 
 	@Import("decimator")
 	RSDecimator getSoundEffectResampler();

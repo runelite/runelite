@@ -11,7 +11,7 @@ public class StructDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field885;
+   public static AbstractArchive field885;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -58,7 +58,7 @@ public class StructDefinition extends DualNode {
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
       if (var2 == 249) {
-         this.params = AbstractIndexCache.readStringIntParameters(var1, this.params);
+         this.params = AbstractArchive.readStringIntParameters(var1, this.params);
       }
 
    }

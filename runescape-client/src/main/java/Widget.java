@@ -27,12 +27,12 @@ public class Widget extends Node {
       signature = "Lir;"
    )
    @Export("Widget_indexCache")
-   public static AbstractIndexCache Widget_indexCache;
+   public static AbstractArchive Widget_indexCache;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field955;
+   public static AbstractArchive field955;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Ler;"

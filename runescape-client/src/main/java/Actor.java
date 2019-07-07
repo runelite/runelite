@@ -478,7 +478,7 @@ public abstract class Actor extends Entity {
       if (var7 != null) {
          var8 = var7;
       } else {
-         byte[] var9 = HealthBarDefinition.field379.takeRecord(33, var1);
+         byte[] var9 = HealthBarDefinition.field379.takeFile(33, var1);
          var7 = new HealthBarDefinition();
          if (var9 != null) {
             var7.read(new Buffer(var9));
@@ -540,7 +540,7 @@ public abstract class Actor extends Entity {
       if (var2 != null) {
          var3 = var2;
       } else {
-         byte[] var4 = HealthBarDefinition.field379.takeRecord(33, var1);
+         byte[] var4 = HealthBarDefinition.field379.takeFile(33, var1);
          var2 = new HealthBarDefinition();
          if (var4 != null) {
             var2.read(new Buffer(var4));
@@ -949,7 +949,7 @@ public abstract class Actor extends Entity {
                         if (var15.cs1Instructions != null && var15.cs1Instructions[0][0] == 5) {
                            var17 = var15.cs1Instructions[0][1];
                            Varps.Varps_main[var17] = 1 - Varps.Varps_main[var17];
-                           IndexCache.method4703(var17);
+                           Archive.method4703(var17);
                         }
                      } else if (var2 == 29) {
                         var8 = Interpreter.method1915(ClientPacket.field291, Client.packetWriter.isaacCipher);
@@ -960,7 +960,7 @@ public abstract class Actor extends Entity {
                            var17 = var15.cs1Instructions[0][1];
                            if (Varps.Varps_main[var17] != var15.cs1ComparisonValues[0]) {
                               Varps.Varps_main[var17] = var15.cs1ComparisonValues[0];
-                              IndexCache.method4703(var17);
+                              Archive.method4703(var17);
                            }
                         }
                      } else if (var2 == 30) {

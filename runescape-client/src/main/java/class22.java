@@ -22,7 +22,7 @@ public final class class22 {
       signature = "Lit;"
    )
    @Export("indexCache16")
-   static IndexCache indexCache16;
+   static Archive indexCache16;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1976624405
@@ -82,13 +82,13 @@ public final class class22 {
       garbageValue = "-15"
    )
    @Export("newIndexCache")
-   static IndexCache newIndexCache(int var0, boolean var1, boolean var2, boolean var3) {
+   static Archive newIndexCache(int var0, boolean var1, boolean var2, boolean var3) {
       IndexStore var4 = null;
       if (class168.dat2File != null) {
          var4 = new IndexStore(var0, class168.dat2File, IndexStoreAction.idxFiles[var0], 1000000);
       }
 
-      return new IndexCache(var4, Fonts.indexStore255, var0, var1, var2, var3);
+      return new Archive(var4, Fonts.indexStore255, var0, var1, var2, var3);
    }
 
    @ObfuscatedName("jp")

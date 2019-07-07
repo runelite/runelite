@@ -8,7 +8,7 @@ final class class4 implements class0 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field1158;
+   public static AbstractArchive field1158;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(

@@ -15,7 +15,7 @@ public class WorldMapSection3 implements WorldMapSection {
       signature = "Lit;"
    )
    @Export("indexCache8")
-   static IndexCache indexCache8;
+   static Archive indexCache8;
    @ObfuscatedName("go")
    @ObfuscatedGetter(
       intValue = -948290091

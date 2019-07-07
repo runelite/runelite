@@ -11,7 +11,7 @@ public class VarpDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field943;
+   public static AbstractArchive field943;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 510774535

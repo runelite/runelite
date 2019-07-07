@@ -26,7 +26,7 @@ public class Skills {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = ItemDefinition.ItemDefinition_indexCache.takeRecord(10, var0);
+         byte[] var2 = ItemDefinition.ItemDefinition_indexCache.takeFile(10, var0);
          var1 = new ItemDefinition();
          var1.id = var0;
          if (var2 != null) {

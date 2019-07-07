@@ -33,7 +33,7 @@ public class IndexCacheLoader {
       signature = "Lit;"
    )
    @Export("indexCache")
-   final IndexCache indexCache;
+   final Archive indexCache;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1459455501
@@ -48,7 +48,7 @@ public class IndexCacheLoader {
    @ObfuscatedSignature(
       signature = "(Lit;Ljava/lang/String;)V"
    )
-   IndexCacheLoader(IndexCache var1, String var2) {
+   IndexCacheLoader(Archive var1, String var2) {
       this.field409 = 0;
       this.indexCache = var1;
       this.field408 = var1.method5();
@@ -95,14 +95,14 @@ public class IndexCacheLoader {
             class30.worldSelectBackSprites = class2.method20(WorldMapSection3.indexCache8, "sl_back", "");
          }
 
-         IndexCache var11;
+         Archive var11;
          int var12;
          int var13;
          IndexedSprite[] var14;
          if (Frames.worldSelectFlagSprites == null) {
             var11 = WorldMapSection3.indexCache8;
-            var13 = var11.getArchiveId("sl_flags");
-            var12 = var11.getRecordId(var13, "");
+            var13 = var11.getGroupId("sl_flags");
+            var12 = var11.getFileId(var13, "");
             if (!SpriteMask.loadSprite(var11, var13, var12)) {
                var14 = null;
             } else {
@@ -114,8 +114,8 @@ public class IndexCacheLoader {
 
          if (AttackOption.worldSelectArrows == null) {
             var11 = WorldMapSection3.indexCache8;
-            var13 = var11.getArchiveId("sl_arrows");
-            var12 = var11.getRecordId(var13, "");
+            var13 = var11.getGroupId("sl_arrows");
+            var12 = var11.getFileId(var13, "");
             if (!SpriteMask.loadSprite(var11, var13, var12)) {
                var14 = null;
             } else {
@@ -127,8 +127,8 @@ public class IndexCacheLoader {
 
          if (UrlRequest.worldSelectStars == null) {
             var11 = WorldMapSection3.indexCache8;
-            var13 = var11.getArchiveId("sl_stars");
-            var12 = var11.getRecordId(var13, "");
+            var13 = var11.getGroupId("sl_stars");
+            var12 = var11.getFileId(var13, "");
             if (!SpriteMask.loadSprite(var11, var13, var12)) {
                var14 = null;
             } else {

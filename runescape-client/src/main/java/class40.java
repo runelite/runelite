@@ -10,7 +10,7 @@ public class class40 {
       signature = "Lit;"
    )
    @Export("indexCache7")
-   static IndexCache indexCache7;
+   static Archive indexCache7;
    @ObfuscatedName("gs")
    @Export("regionLandArchives")
    static byte[][] regionLandArchives;

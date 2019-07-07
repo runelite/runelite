@@ -57,7 +57,7 @@ public final class class54 {
             }
 
             long var15 = class203.currentTimeMs();
-            if (AbstractIndexCache.method4585() && -1L == Login.field472) {
+            if (AbstractArchive.method4585() && -1L == Login.field472) {
                Login.field472 = var15;
                if (Login.field472 > Login.field471) {
                   Login.field471 = Login.field472;

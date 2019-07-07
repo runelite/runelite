@@ -18,7 +18,7 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "Lit;"
    )
    @Export("indexCache3")
-   static IndexCache indexCache3;
+   static Archive indexCache3;
    @ObfuscatedName("ec")
    @Export("secureRandom")
    static SecureRandom secureRandom;

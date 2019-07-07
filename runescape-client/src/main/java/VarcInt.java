@@ -11,7 +11,7 @@ public class VarcInt extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache field942;
+   static AbstractArchive field942;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"

@@ -11,17 +11,17 @@ public class HitSplatDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache field382;
+   static AbstractArchive field382;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache field383;
+   static AbstractArchive field383;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractIndexCache field384;
+   static AbstractArchive field384;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"

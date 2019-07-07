@@ -17,13 +17,13 @@ public class NPCDefinition extends DualNode {
       signature = "Lir;"
    )
    @Export("NpcDefinition_indexCache")
-   static AbstractIndexCache NpcDefinition_indexCache;
+   static AbstractArchive NpcDefinition_indexCache;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
    @Export("NpcDefinition_modelIndexCache")
-   static AbstractIndexCache NpcDefinition_modelIndexCache;
+   static AbstractArchive NpcDefinition_modelIndexCache;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -331,7 +331,7 @@ public class NPCDefinition extends DualNode {
          } else if (var2 == 111) {
             this.isFollower = true;
          } else if (var2 == 249) {
-            this.params = AbstractIndexCache.readStringIntParameters(var1, this.params);
+            this.params = AbstractArchive.readStringIntParameters(var1, this.params);
          }
       } else {
          this.transformVarbit = var1.readUnsignedShort();
@@ -383,7 +383,7 @@ public class NPCDefinition extends DualNode {
             boolean var6 = false;
 
             for (int var7 = 0; var7 < this.archives.length; ++var7) {
-               if (!NpcDefinition_modelIndexCache.tryLoadRecord(this.archives[var7], 0)) {
+               if (!NpcDefinition_modelIndexCache.tryLoadFile(this.archives[var7], 0)) {
                   var6 = true;
                }
             }
@@ -457,7 +457,7 @@ public class NPCDefinition extends DualNode {
          boolean var1 = false;
 
          for (int var2 = 0; var2 < this.field636.length; ++var2) {
-            if (!NpcDefinition_modelIndexCache.tryLoadRecord(this.field636[var2], 0)) {
+            if (!NpcDefinition_modelIndexCache.tryLoadFile(this.field636[var2], 0)) {
                var1 = true;
             }
          }

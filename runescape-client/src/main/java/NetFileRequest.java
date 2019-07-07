@@ -12,7 +12,7 @@ public class NetFileRequest extends DualNode {
       signature = "Lit;"
    )
    @Export("indexCache")
-   public IndexCache indexCache;
+   public Archive indexCache;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1487103265

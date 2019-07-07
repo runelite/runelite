@@ -536,7 +536,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
       signature = "(Lir;Lir;Lir;Lhm;I)Z",
       garbageValue = "-590103687"
    )
-   public static boolean method3537(AbstractIndexCache var0, AbstractIndexCache var1, AbstractIndexCache var2, MidiPcmStream var3) {
+   public static boolean method3537(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2, MidiPcmStream var3) {
       class1.field1105 = var0;
       class214.field1127 = var1;
       class214.field1128 = var2;

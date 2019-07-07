@@ -616,7 +616,7 @@ public class LoginScreenAnimation {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = HitSplatDefinition.field382.takeRecord(32, var0);
+         byte[] var2 = HitSplatDefinition.field382.takeFile(32, var0);
          var1 = new HitSplatDefinition();
          if (var2 != null) {
             var1.read(new Buffer(var2));

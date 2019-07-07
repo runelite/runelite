@@ -35,17 +35,17 @@ public class WorldMap {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   AbstractIndexCache field989;
+   AbstractArchive field989;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   AbstractIndexCache field990;
+   AbstractArchive field990;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   AbstractIndexCache field991;
+   AbstractArchive field991;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lkk;"
@@ -312,7 +312,7 @@ public class WorldMap {
       garbageValue = "1887817097"
    )
    @Export("init")
-   public void init(AbstractIndexCache var1, AbstractIndexCache var2, AbstractIndexCache var3, Font var4, HashMap var5, IndexedSprite[] var6) {
+   public void init(AbstractArchive var1, AbstractArchive var2, AbstractArchive var3, Font var4, HashMap var5, IndexedSprite[] var6) {
       this.mapSceneSprites = var6;
       this.field989 = var1;
       this.field990 = var2;
@@ -323,12 +323,12 @@ public class WorldMap {
       this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_medium, var5.get(fontNameVerdana13));
       this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_large, var5.get(fontNameVerdana15));
       this.cacheLoader = new WorldMapIndexCacheLoader(var1);
-      int var7 = this.field989.getArchiveId(WorldMapCacheName.WorldMapCacheName_details.name);
+      int var7 = this.field989.getGroupId(WorldMapCacheName.WorldMapCacheName_details.name);
       int[] var8 = this.field989.method3(var7);
       this.mapAreas = new HashMap(var8.length);
 
       for (int var9 = 0; var9 < var8.length; ++var9) {
-         Buffer var10 = new Buffer(this.field989.takeRecord(var7, var8[var9]));
+         Buffer var10 = new Buffer(this.field989.takeFile(var7, var8[var9]));
          WorldMapArea var11 = new WorldMapArea();
          var11.read(var10, var8[var9]);
          this.mapAreas.put(var11.archiveName(), var11);
@@ -370,7 +370,7 @@ public class WorldMap {
             AbstractWorldMapIcon var13;
             ScriptEvent var14;
             WorldMapEvent var15;
-            for (var12 = var10.iterator(); var12.hasNext(); AbstractIndexCache.runScript(var14)) {
+            for (var12 = var10.iterator(); var12.hasNext(); AbstractArchive.runScript(var14)) {
                var13 = (AbstractWorldMapIcon)var12.next();
                var11.add(var13);
                var14 = new ScriptEvent();
@@ -392,7 +392,7 @@ public class WorldMap {
                   var15 = new WorldMapEvent(var13.vmethod395(), var13.coord1, var13.coord2);
                   var14.setArgs(new Object[]{var15, var1, var2});
                   var14.setType(16);
-                  AbstractIndexCache.runScript(var14);
+                  AbstractArchive.runScript(var14);
                }
             }
 
@@ -1327,7 +1327,7 @@ public class WorldMap {
          var5.setType(14);
       }
 
-      AbstractIndexCache.runScript(var5);
+      AbstractArchive.runScript(var5);
    }
 
    @ObfuscatedName("bx")

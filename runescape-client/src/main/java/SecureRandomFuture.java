@@ -22,7 +22,7 @@ public class SecureRandomFuture {
       signature = "Lit;"
    )
    @Export("indexCache5")
-   static IndexCache indexCache5;
+   static Archive indexCache5;
    @ObfuscatedName("jn")
    @ObfuscatedSignature(
       signature = "Ldl;"

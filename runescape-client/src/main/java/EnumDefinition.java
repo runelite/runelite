@@ -12,7 +12,7 @@ public class EnumDefinition extends DualNode {
       signature = "Lir;"
    )
    @Export("EnumDefinition_indexCache")
-   public static AbstractIndexCache EnumDefinition_indexCache;
+   public static AbstractArchive EnumDefinition_indexCache;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"

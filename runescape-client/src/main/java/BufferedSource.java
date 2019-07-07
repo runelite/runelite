@@ -14,7 +14,7 @@ public class BufferedSource implements Runnable {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field54;
+   public static AbstractArchive field54;
    @ObfuscatedName("m")
    @Export("thread")
    Thread thread;

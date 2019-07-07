@@ -11,7 +11,7 @@ public class UserComparator3 extends AbstractUserComparator {
       signature = "Lit;"
    )
    @Export("indexCache6")
-   static IndexCache indexCache6;
+   static Archive indexCache6;
    @ObfuscatedName("fl")
    @ObfuscatedSignature(
       signature = "Lfm;"

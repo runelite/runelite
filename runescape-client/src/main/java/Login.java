@@ -140,15 +140,15 @@ public class Login {
       signature = "Lit;"
    )
    @Export("indexCache11")
-   static IndexCache indexCache11;
+   static Archive indexCache11;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(Lir;II)Lhl;",
       garbageValue = "-1625685874"
    )
-   static MusicPatch method2045(AbstractIndexCache var0, int var1) {
-      byte[] var2 = var0.takeRecordFlat(var1);
+   static MusicPatch method2045(AbstractArchive var0, int var1) {
+      byte[] var2 = var0.takeFileFlat(var1);
       return var2 == null ? null : new MusicPatch(var2);
    }
 
@@ -186,7 +186,7 @@ public class Login {
       signature = "(Lir;IIIZB)V",
       garbageValue = "45"
    )
-   public static void method2076(AbstractIndexCache var0, int var1, int var2, int var3, boolean var4) {
+   public static void method2076(AbstractArchive var0, int var1, int var2, int var3, boolean var4) {
       class214.field1129 = 1;
       class214.field1130 = var0;
       class30.musicTrackArchiveId = var1;

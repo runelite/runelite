@@ -45,7 +45,7 @@ final class UnitPriceComparator implements Comparator {
       signature = "(Lir;B)V",
       garbageValue = "23"
    )
-   public static void method135(AbstractIndexCache var0) {
+   public static void method135(AbstractArchive var0) {
       VarbitDefinition.VarbitDefinition_indexCache = var0;
    }
 

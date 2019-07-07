@@ -52,12 +52,12 @@ public class TextureProvider implements TextureLoader {
       signature = "Lir;"
    )
    @Export("indexCache")
-   AbstractIndexCache indexCache;
+   AbstractArchive indexCache;
 
    @ObfuscatedSignature(
       signature = "(Lir;Lir;IDI)V"
    )
-   public TextureProvider(AbstractIndexCache var1, AbstractIndexCache var2, int var3, double var4, int var6) {
+   public TextureProvider(AbstractArchive var1, AbstractArchive var2, int var3, double var4, int var6) {
       this.deque = new NodeDeque();
       this.remaining = 0;
       this.brightness0 = 1.0D;
@@ -72,7 +72,7 @@ public class TextureProvider implements TextureLoader {
       this.textures = new Texture[var1.method4(0)];
 
       for (int var9 = 0; var9 < var8; ++var9) {
-         Buffer var10 = new Buffer(var1.takeRecord(0, var7[var9]));
+         Buffer var10 = new Buffer(var1.takeFile(0, var7[var9]));
          this.textures[var7[var9]] = new Texture(var10);
       }
 

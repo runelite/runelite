@@ -11,7 +11,7 @@ public class OverlayDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache field663;
+   public static AbstractArchive field663;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"

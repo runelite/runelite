@@ -14,7 +14,7 @@ public class Formatting {
       signature = "Lit;"
    )
    @Export("indexCache12")
-   static IndexCache indexCache12;
+   static Archive indexCache12;
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(

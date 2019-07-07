@@ -197,7 +197,7 @@ public class GrandExchangeEvent {
                   } else if (var13 == ScriptOpcodes.SET_VARP) {
                      var11 = var6[var4];
                      Varps.Varps_main[var11] = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     IndexCache.method4703(var11);
+                     Archive.method4703(var11);
                   } else if (var13 == ScriptOpcodes.SCONST) {
                      Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.stringOperands[var4];
                   } else if (var13 == ScriptOpcodes.JUMP) {
