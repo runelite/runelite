@@ -82,7 +82,7 @@ public class ChatNotificationsPlugin extends Plugin
 	private Pattern highlightMatcher = null;
 
 	// Private message cache used to avoid duplicate notifications from ChatHistory.
-	private Set<Integer> privateMessageHashes = new HashSet<>();
+	private final Set<Integer> privateMessageHashes = new HashSet<>();
 
 	private boolean highlightOwnName;
 	private String highlightWordsString;
