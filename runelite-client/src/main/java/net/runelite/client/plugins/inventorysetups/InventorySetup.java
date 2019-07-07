@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.inventorysetups;
 
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
