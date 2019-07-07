@@ -214,7 +214,7 @@ public class FontManager
 
 	public static String[] getAvailableFontNames()
 	{
-		return fontMap.keySet().toArray(new String[fontMap.keySet().size()]);
+		return fontMap.keySet().toArray(new String[0]);
 	}
 
 	public static boolean isAvailable(Font font)
