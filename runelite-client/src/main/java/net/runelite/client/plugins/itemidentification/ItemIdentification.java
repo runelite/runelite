@@ -90,7 +90,7 @@ enum ItemIdentification
 	final Type type;
 	final String medName;
 	final String shortName;
-	final int[] itemIDs;
+	private final int[] itemIDs;
 
 	ItemIdentification(Type type, String medName, String shortName, int... ids)
 	{
