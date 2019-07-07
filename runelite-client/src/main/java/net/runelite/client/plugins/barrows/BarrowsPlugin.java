@@ -207,7 +207,7 @@ public class BarrowsPlugin extends Plugin
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.showMinimap = config.showMinimap();
 		this.showBrotherLoc = config.showBrotherLoc();
