@@ -58,7 +58,7 @@ class BarbarianAssaultMenu
 
 	private boolean isHornOptionHidden(String option)
 	{
-		if (game.isInGame() && game.getRole() != null && game.getRole().getTell(game.getLastCallText()).toLowerCase().equals(option))
+		if (game.isInGame() && game.getRole() != null && game.getRole().getTell(game.getLastCallText()).equalsIgnoreCase(option))
 		{
 			// This will force the menu to be rebuilt after the correct tell is found
 			// medic will be added to the menu if it wasn't there before
