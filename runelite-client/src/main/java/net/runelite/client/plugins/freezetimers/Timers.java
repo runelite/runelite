@@ -24,6 +24,7 @@
 package net.runelite.client.plugins.freezetimers;
 
 import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -32,7 +33,7 @@ import net.runelite.api.Actor;
 @Singleton
 public class Timers
 {
-	private HashMap<Actor, HashMap<TimerType, Long>> timerMap = new HashMap<>();
+	private Map<Actor, HashMap<TimerType, Long>> timerMap = new HashMap<>();
 
 	void gameTick()
 	{
