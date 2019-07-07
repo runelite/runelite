@@ -108,7 +108,7 @@ public class FontManager
 		}
 	}
 
-	public static Font getFontOffCorrectSize(Font f)
+	private static Font getFontOffCorrectSize(Font f)
 	{
 		// Size of the font is already set
 		if (f.getSize2D() > 1)

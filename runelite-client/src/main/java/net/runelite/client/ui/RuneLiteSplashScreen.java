@@ -54,8 +54,8 @@ public class RuneLiteSplashScreen
 {
 	private final RuneLiteProperties runeLiteProperties = new RuneLiteProperties();
 
-	public JFrame frame;
-	public final JPanel panel = new JPanel();
+	private JFrame frame;
+	private final JPanel panel = new JPanel();
 	private JLabel messageLabel;
 	private JLabel subMessageLabel;
 	private final JProgressBar progressBar = new JProgressBar();
