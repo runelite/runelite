@@ -203,7 +203,7 @@ public class BankPlugin extends Plugin
 		updateConfig();
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.showGE = config.showGE();
 		this.showHA = config.showHA();
