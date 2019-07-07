@@ -30,6 +30,7 @@ import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Hitsplat;
@@ -64,6 +65,7 @@ import java.util.Map;
 		enabledByDefault = false
 )
 @Singleton
+@Slf4j
 public class CombatCounter extends Plugin 
 {
 
@@ -356,7 +358,7 @@ public class CombatCounter extends Plugin
 							}
 							else
 							{
-								System.out.println("Unclassified Animation: " + animation);
+								log.debug("Unclassified Animation: {}", animation);
 							}
 
 							if (delay != -1)
