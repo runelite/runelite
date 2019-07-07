@@ -62,7 +62,7 @@ public class ClockManager
 	@Getter
 	private ClockTabPanel clockTabPanel;
 
-	ClockManager()
+	private ClockManager()
 	{
 		try
 		{
