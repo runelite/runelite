@@ -285,7 +285,7 @@ public class MiningPlugin extends Plugin
 	 * @param delta How much to add/subtract from the amount.
 	 *              Supply a negative number to subtract, or positive number to add.
 	 */
-	protected void updateAmountOfCoalInBag(int delta)
+	private void updateAmountOfCoalInBag(int delta)
 	{
 		// check for upper/lower bounds of amount of coal in a bag
 		// 0 <= X <= 27
