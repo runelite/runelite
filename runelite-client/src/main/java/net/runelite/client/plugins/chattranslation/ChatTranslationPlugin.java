@@ -5,6 +5,7 @@ import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -47,7 +48,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Kick");
 
-	private ArrayList<String> playerNames = new ArrayList<>();
+	private List<String> playerNames = new ArrayList<>();
 
 	@Inject
 	private Client client;
