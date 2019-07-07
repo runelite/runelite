@@ -376,7 +376,7 @@ public enum EquipmentBonusConfig
 		this.operation = operation;
 	}
 
-	public static ArrayList<EquipmentBonusConfig> getBonusByType(BonusType bonusType)
+	public static List<EquipmentBonusConfig> getBonusByType(BonusType bonusType)
 	{
 		if (!bonusTypes.containsKey(bonusType))
 		{

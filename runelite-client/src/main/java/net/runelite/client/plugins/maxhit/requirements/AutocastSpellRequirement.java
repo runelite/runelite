@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.maxhit.requirements;
 
-import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.maxhit.config.SpellBaseDamageConfig;
@@ -32,9 +32,9 @@ import net.runelite.client.plugins.maxhit.config.SpellBaseDamageConfig;
 public class AutocastSpellRequirement implements Requirement
 {
 
-	private final ArrayList<SpellBaseDamageConfig> autocastSpells;
+	private final List<SpellBaseDamageConfig> autocastSpells;
 
-	public AutocastSpellRequirement(ArrayList<SpellBaseDamageConfig> autocastSpells)
+	public AutocastSpellRequirement(List<SpellBaseDamageConfig> autocastSpells)
 	{
 		this.autocastSpells = autocastSpells;
 	}
