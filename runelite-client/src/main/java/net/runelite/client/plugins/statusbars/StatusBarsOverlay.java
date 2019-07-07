@@ -90,9 +90,13 @@ public class StatusBarsOverlay extends Overlay
 			}
 		}
 
-		if (curViewport == null || curWidget.isHidden())
+		if (curViewport == null)
 		{
 			return null;
+		}
+		else
+		{
+			curWidget.isHidden();
 		}
 
 		final Point offsetLeft = curViewport.getOffsetLeft();
