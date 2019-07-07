@@ -43,9 +43,7 @@ class HotkeyButton extends JButton
 	{
 		setValue(value);
 		addActionListener(e ->
-		{
-			setValue(Keybind.NOT_SET);
-		});
+			setValue(Keybind.NOT_SET));
 		addKeyListener(new KeyAdapter()
 		{
 			@Override
