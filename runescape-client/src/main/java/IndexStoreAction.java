@@ -36,8 +36,8 @@ public class IndexStoreAction extends Node {
    @ObfuscatedSignature(
       signature = "Lff;"
    )
-   @Export("indexStore")
-   IndexStore indexStore;
+   @Export("archiveDisk")
+   ArchiveDisk archiveDisk;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lit;"

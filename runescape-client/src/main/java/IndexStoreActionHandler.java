@@ -42,13 +42,13 @@ public class IndexStoreActionHandler implements Runnable {
             Object var3;
             if (var2 != null) {
                if (var2.type == 0) {
-                  var2.indexStore.write((int)var2.key, var2.data, var2.data.length);
+                  var2.archiveDisk.write((int)var2.key, var2.data, var2.data.length);
                   var1 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      var2.remove();
                   }
                } else if (var2.type == 1) {
-                  var2.data = var2.indexStore.read((int)var2.key);
+                  var2.data = var2.archiveDisk.read((int)var2.key);
                   var1 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      IndexStoreActionHandler_responseQueue.addFirst(var2);

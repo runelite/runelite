@@ -107,7 +107,7 @@ public class class3 implements Enumerated {
             return;
          }
 
-         var1.indexCache.load(var1.indexStore, (int)var1.key, var1.data, false);
+         var1.indexCache.load(var1.archiveDisk, (int)var1.key, var1.data, false);
       }
    }
 

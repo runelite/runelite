@@ -11,8 +11,8 @@ public class Fonts {
    @ObfuscatedSignature(
       signature = "Lff;"
    )
-   @Export("indexStore255")
-   static IndexStore indexStore255;
+   @Export("archiveDisk255")
+   static ArchiveDisk archiveDisk255;
    @ObfuscatedName("o")
    static byte[][][] field350;
    @ObfuscatedName("l")

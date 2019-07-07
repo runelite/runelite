@@ -1529,12 +1529,12 @@ public class Widget extends Node {
       signature = "(I[BLff;I)V",
       garbageValue = "-1287305716"
    )
-   static void method4499(int var0, byte[] var1, IndexStore var2) {
+   static void method4499(int var0, byte[] var1, ArchiveDisk var2) {
       IndexStoreAction var3 = new IndexStoreAction();
       var3.type = 0;
       var3.key = (long)var0;
       var3.data = var1;
-      var3.indexStore = var2;
+      var3.archiveDisk = var2;
       NodeDeque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
       synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
          IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFirst(var3);

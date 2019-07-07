@@ -1277,7 +1277,7 @@ public final class Client extends GameShell implements Usernamed {
       this.setUpKeyboard();
       this.setUpMouse();
       class16.mouseWheel = this.mouseWheel();
-      Fonts.indexStore255 = new IndexStore(255, class168.dat2File, class168.idx255File, 500000);
+      Fonts.archiveDisk255 = new ArchiveDisk(255, class168.dat2File, class168.idx255File, 500000);
       ReflectionCheck.clientPreferences = class306.method5780();
       this.setUpClipboard();
       String var1 = Ignored.field402;

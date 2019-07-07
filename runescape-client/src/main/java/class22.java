@@ -83,12 +83,12 @@ public final class class22 {
    )
    @Export("newIndexCache")
    static Archive newIndexCache(int var0, boolean var1, boolean var2, boolean var3) {
-      IndexStore var4 = null;
+      ArchiveDisk var4 = null;
       if (class168.dat2File != null) {
-         var4 = new IndexStore(var0, class168.dat2File, IndexStoreAction.idxFiles[var0], 1000000);
+         var4 = new ArchiveDisk(var0, class168.dat2File, IndexStoreAction.idxFiles[var0], 1000000);
       }
 
-      return new Archive(var4, Fonts.indexStore255, var0, var1, var2, var3);
+      return new Archive(var4, Fonts.archiveDisk255, var0, var1, var2, var3);
    }
 
    @ObfuscatedName("jp")

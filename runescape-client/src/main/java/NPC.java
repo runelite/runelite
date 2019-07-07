@@ -167,11 +167,11 @@ public final class NPC extends Actor {
       signature = "(ILff;Lit;B)V",
       garbageValue = "-51"
    )
-   static void method2009(int var0, IndexStore var1, Archive var2) {
+   static void method2009(int var0, ArchiveDisk var1, Archive var2) {
       IndexStoreAction var3 = new IndexStoreAction();
       var3.type = 1;
       var3.key = (long)var0;
-      var3.indexStore = var1;
+      var3.archiveDisk = var1;
       var3.indexCache = var2;
       NodeDeque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
       synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
