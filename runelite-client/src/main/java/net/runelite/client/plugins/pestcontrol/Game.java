@@ -41,9 +41,9 @@ import net.runelite.api.events.GameTick;
 @Slf4j
 public class Game
 {
-	private Client client;
+	private final Client client;
 
-	private PestControlPlugin plugin;
+	private final PestControlPlugin plugin;
 
 	@Getter(AccessLevel.PACKAGE)
 	private Portal bluePortal = new Portal(PortalColor.BLUE, WidgetPortal.BLUE);
@@ -66,7 +66,7 @@ public class Game
 	private boolean portalLocationsSet = false;
 
 
-	private Instant startTime = Instant.now();
+	private final Instant startTime = Instant.now();
 
 	public Game(Client client, PestControlPlugin plugin)
 	{
