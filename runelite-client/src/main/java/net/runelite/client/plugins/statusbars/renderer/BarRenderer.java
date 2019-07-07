@@ -58,10 +58,10 @@ public abstract class BarRenderer
 	protected final StatusBarsPlugin plugin;
 	int maximumValue;
 	int currentValue;
-	protected int restore;
+	int restore;
 	Color standardColor;
 	Color restoreColor;
-	protected Image icon;
+	Image icon;
 
 	protected abstract void update(Client client, StatusBarsOverlay overlay);
 
