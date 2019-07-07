@@ -122,16 +122,13 @@ public class BanListPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("banlist"))
+		if (event.getGroup().equals("banlist")&& event.getKey().equals("bannedPlayers"))
 		{
-			if (event.getKey().equals("bannedPlayers"))
+			for (String manual : Text.fromCSV(config.getBannedPlayers()))
 			{
-				for (String manual : Text.fromCSV(config.getBannedPlayers()))
+				if (!manualBans.contains(manual))
 				{
-					if (!manualBans.contains(manual))
-					{
-						manualBans.add(Text.standardize(manual));
-					}
+					manualBans.add(Text.standardize(manual));
 				}
 			}
 		}
@@ -202,24 +199,21 @@ public class BanListPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (this.highlightInTrade)
-		{
-			if (widgetLoaded.getGroupId() == 335)
-			{ //if trading window was loaded
-				clientThread.invokeLater(() ->
+		if (this.highlightInTrade && widgetLoaded.getGroupId() == 335)
+		{ //if trading window was loaded
+			clientThread.invokeLater(() ->
+			{
+				Widget tradingWith = client.getWidget(335, 31);
+				String name = tradingWith.getText().replaceAll("Trading With: ", "");
+				if (checkScamList(name) != null)
 				{
-					Widget tradingWith = client.getWidget(335, 31);
-					String name = tradingWith.getText().replaceAll("Trading With: ", "");
-					if (checkScamList(name) != null)
-					{
-						tradingWith.setText(tradingWith.getText().replaceAll(name, "<col=ff0000>" + name + " (Scammer)" + "</col>"));
-					}
-					if (checkToxicList(name) != null)
-					{
-						tradingWith.setText(tradingWith.getText().replaceAll(name, "<col=ff6400>" + name + " (Toxic)" + "</col>"));
-					}
-				});
-			}
+					tradingWith.setText(tradingWith.getText().replaceAll(name, "<col=ff0000>" + name + " (Scammer)" + "</col>"));
+				}
+				if (checkToxicList(name) != null)
+				{
+					tradingWith.setText(tradingWith.getText().replaceAll(name, "<col=ff6400>" + name + " (Toxic)" + "</col>"));
+				}
+			});
 		}
 	}
 
@@ -228,28 +222,19 @@ public class BanListPlugin extends Plugin
 	 */
 	private ListType checkScamList(String nameToBeChecked)
 	{
-		if (wdrScamArrayList.size() > 0 && this.enableWDR)
+		if (wdrScamArrayList.size() > 0 && this.enableWDR && wdrScamArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
 		{
-			if (wdrScamArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
-			{
-				return ListType.WEDORAIDSSCAM_LIST;
-			}
+			return ListType.WEDORAIDSSCAM_LIST;
 		}
 
-		if (runeWatchArrayList.size() > 0 && this.enableRuneWatch)
+		if (runeWatchArrayList.size() > 0 && this.enableRuneWatch && runeWatchArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
 		{
-			if (runeWatchArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
-			{
-				return ListType.RUNEWATCH_LIST;
-			}
+			return ListType.RUNEWATCH_LIST;
 		}
 
-		if (manualBans.size() > 0)
+		if (manualBans.size() > 0 && manualBans.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
 		{
-			if (manualBans.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
-			{
-				return ListType.MANUAL_LIST;
-			}
+			return ListType.MANUAL_LIST;
 		}
 
 		return null;
@@ -258,12 +243,9 @@ public class BanListPlugin extends Plugin
 	private ListType checkToxicList(String nameToBeChecked)
 	{
 
-		if (wdrToxicArrayList.size() > 0 && this.enableWDR)
+		if (wdrToxicArrayList.size() > 0 && this.enableWDR && wdrToxicArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
 		{
-			if (wdrToxicArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
-			{
-				return ListType.WEDORAIDSTOXIC_LIST;
-			}
+			return ListType.WEDORAIDSTOXIC_LIST;
 		}
 
 		return null;
