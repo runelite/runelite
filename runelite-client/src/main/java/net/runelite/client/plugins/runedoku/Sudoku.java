@@ -5,11 +5,11 @@ package net.runelite.client.plugins.runedoku;
  *
  * @author ?
  */
-public class Sudoku
+class Sudoku
 {
 
 	private int[][] board;
-	public static final int EMPTY = 0;
+	private static final int EMPTY = 0;
 	private static final int SIZE = 9;
 
 	Sudoku(final int[][] board)
