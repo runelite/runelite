@@ -35,7 +35,7 @@ import net.runelite.api.Player;
 
 @Slf4j
 @Singleton
-public class PrayerTracker
+class PrayerTracker
 {
 
 	@Inject

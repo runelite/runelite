@@ -257,7 +257,7 @@ public class FreezeTimersOverlay extends Overlay
 			xOffset);
 	}
 
-	public void renderImageLocation(Graphics2D graphics, Point imgLoc, BufferedImage image)
+	private void renderImageLocation(Graphics2D graphics, Point imgLoc, BufferedImage image)
 	{
 		int x = imgLoc.getX();
 		int y = imgLoc.getY();
