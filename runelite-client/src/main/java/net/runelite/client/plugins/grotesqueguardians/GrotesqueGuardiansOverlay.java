@@ -74,7 +74,7 @@ class GrotesqueGuardiansOverlay extends Overlay
 		// TODO: Awaiting GraphicsObjectDespawn event to be tracked to make this more efficient.
 		for (GraphicsObject graphicsObject : client.getGraphicsObjects())
 		{
-			Color color = null;
+			Color color;
 
 			if (graphicsObject.getId() >= GROTESQUE_GUARDIANS_LIGHTNING_START && graphicsObject.getId() <= GROTESQUE_GUARDIANS_LIGHTNING_END)
 			{

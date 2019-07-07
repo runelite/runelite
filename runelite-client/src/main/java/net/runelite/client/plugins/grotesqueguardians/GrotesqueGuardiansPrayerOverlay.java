@@ -71,7 +71,7 @@ public class GrotesqueGuardiansPrayerOverlay extends Overlay
 		if ((plugin.isInGargs()) && (plugin.getPrayAgainst() != null) && (plugin.getDusk() != null))
 		{
 			DuskAttack attack = plugin.getPrayAgainst();
-			BufferedImage prayerImage = null;
+			BufferedImage prayerImage;
 			prayerImage = getPrayerImage(attack);
 			imagePanelComponent.setBackgroundColor(client
 					.isPrayerActive(attack.getPrayer()) ? ComponentConstants.STANDARD_BACKGROUND_COLOR : NOT_ACTIVATED_BACKGROUND_COLOR);
