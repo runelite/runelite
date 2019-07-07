@@ -34,7 +34,7 @@ import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 
 @Singleton
-public class HotkeyButton extends JButton
+class HotkeyButton extends JButton
 {
 	@Getter(AccessLevel.PACKAGE)
 	private Keybind value;
@@ -63,7 +63,7 @@ public class HotkeyButton extends JButton
 		});
 	}
 
-	public void setValue(Keybind value)
+	private void setValue(Keybind value)
 	{
 		if (value == null)
 		{

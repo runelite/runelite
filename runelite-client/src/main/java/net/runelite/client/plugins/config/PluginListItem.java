@@ -62,7 +62,7 @@ public class PluginListItem extends JPanel
 	private static final ImageIcon OFF_STAR;
 
 	private final ConfigPanel configPanel;
-	public final ConfigManager configManager;
+	private final ConfigManager configManager;
 
 	@Getter
 	@Nullable
