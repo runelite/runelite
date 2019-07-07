@@ -162,7 +162,7 @@ public class Game
 		portal.setPortalState(PortalState.DEAD);
 	}
 
-	private boolean loadPortalLocations()
+	private void loadPortalLocations()
 	{
 		NPC squire = null;
 
@@ -180,10 +180,8 @@ public class Game
 			log.debug("In-game Squire found: {}", squire);
 			setPortalLocations(squire.getWorldLocation());
 
-			return true;
 		}
 
-		return false;
 	}
 
 	private void setPortalLocations(WorldPoint squireLocation)
