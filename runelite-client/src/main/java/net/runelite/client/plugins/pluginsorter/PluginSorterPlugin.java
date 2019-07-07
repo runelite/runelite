@@ -51,7 +51,7 @@ import net.runelite.client.plugins.config.PluginListItem;
 public class PluginSorterPlugin extends Plugin
 {
 	//Cache the hidden plugins
-	private static List<PluginListItem> removedPlugins = new ArrayList<>();
+	private static final List<PluginListItem> removedPlugins = new ArrayList<>();
 
 	@Inject
 	private PluginSorterConfig config;
