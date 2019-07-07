@@ -56,7 +56,7 @@ public class SafeSpotPlugin extends Plugin
 	private SafeSpotConfig config;
 
 	@Getter(AccessLevel.PACKAGE)
-	private ArrayList<Tile> safeSpotList;
+	private List<Tile> safeSpotList;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean safeSpotsRenderable = false;
@@ -152,9 +152,9 @@ public class SafeSpotPlugin extends Plugin
 	 * @param worldPoints - Worldpoints in the current scene
 	 * @return an ArrayList of Tiles where current player can attack actor but actor cannot attack local player
 	 */
-	private ArrayList<Tile> getSafeSpotList(Actor actor, List<WorldPoint> worldPoints)
+	private List<Tile> getSafeSpotList(Actor actor, List<WorldPoint> worldPoints)
 	{
-		ArrayList<Tile> safeSpotList = new ArrayList<>();
+		List<Tile> safeSpotList = new ArrayList<>();
 		Tile[][][] tiles = client.getScene().getTiles();
 		for (WorldPoint w : worldPoints)
 		{
