@@ -158,12 +158,9 @@ public class StatusBarsPlugin extends Plugin
 				overlayManager.add(overlay);
 			}
 		}
-		else if (lastCombatAction != null)
+		else if (lastCombatAction != null && Duration.between(getLastCombatAction(), Instant.now()).getSeconds() > combatTimeout)
 		{
-			if (Duration.between(getLastCombatAction(), Instant.now()).getSeconds() > combatTimeout)
-			{
-				overlayManager.remove(overlay);
-			}
+			overlayManager.remove(overlay);
 		}
 	}
 
