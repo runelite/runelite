@@ -817,7 +817,7 @@ public class LootTrackerPlugin extends Plugin
 			.toArray(LootTrackerItem[]::new);
 	}
 
-	public Collection<LootTrackerRecord> convertToLootTrackerRecord(final Collection<LootRecord> records)
+	private Collection<LootTrackerRecord> convertToLootTrackerRecord(final Collection<LootRecord> records)
 	{
 		Collection<LootTrackerRecord> trackerRecords = new ArrayList<>();
 		for (LootRecord record : records)
