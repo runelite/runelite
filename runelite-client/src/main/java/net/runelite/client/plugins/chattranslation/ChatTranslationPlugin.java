@@ -142,8 +142,6 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 
 		if (groupId == WidgetInfo.CHATBOX.getGroupId())
 		{
-			boolean after;
-
 			if (!AFTER_OPTIONS.contains(option))
 			{
 				return;
