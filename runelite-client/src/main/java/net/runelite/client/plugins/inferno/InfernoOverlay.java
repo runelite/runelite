@@ -88,7 +88,7 @@ public class InfernoOverlay extends Overlay
 	}
 
 	// renders text location
-	public static void renderTextLocation(Graphics2D graphics, InfernoNPC actor, String text, Color color)
+	private static void renderTextLocation(Graphics2D graphics, InfernoNPC actor, String text, Color color)
 	{
 		graphics.setFont(new Font("Arial", Font.BOLD, 15));
 		Point textLocation = actor.getNpc().getCanvasTextLocation(graphics, text, actor.textLocHeight + 40);

@@ -120,7 +120,7 @@ public class InfernoPlugin extends Plugin
 
 	private List<Actor> waveMonsters;
 
-	public InfernoPlugin()
+	private InfernoPlugin()
 	{
 		waveMonsters = new ArrayList<>();
 	}
