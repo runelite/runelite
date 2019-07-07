@@ -45,9 +45,6 @@ public class NyloHandler extends RoomHandler
 	private int wave = 0;
 	private NyloOverlay overlay = null;
 	private NyloPredictor predictor = null;
-	private Point south = new Point(64, 41);
-	private Point west = new Point(49, 56);
-	private Point east = new Point(78, 56);
 
 	public NyloHandler(final Client client, final TheatrePlugin plugin)
 	{
@@ -401,9 +398,9 @@ public class NyloHandler extends RoomHandler
 			int centerX = minX + 5;
 			int centerY = minY + 5;
 
-			south = new Point(centerX + 1, centerY - 14);
-			east = new Point(centerX + 15, centerY);
-			west = new Point(centerX - 14, centerY);
+			Point south = new Point(centerX + 1, centerY - 14);
+			Point east = new Point(centerX + 15, centerY);
+			Point west = new Point(centerX - 14, centerY);
 
 			if (this.predictor != null)
 			{
