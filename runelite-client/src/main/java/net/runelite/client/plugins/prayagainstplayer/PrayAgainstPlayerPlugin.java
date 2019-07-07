@@ -361,9 +361,7 @@ public class PrayAgainstPlayerPlugin extends Plugin
 	//All of the methods below are from the Zulrah plugin!!! Credits to it's respective owner
 	private void loadProtectionIcons()
 	{
-		int curPosition = 0;
-
-		for (int i = 0; i < PROTECTION_ICONS.length; i++, curPosition++)
+		for (int i = 0; i < PROTECTION_ICONS.length; i++)
 		{
 			final int resource = PROTECTION_ICONS[i];
 			ProtectionIcons[i] = rgbaToIndexedBufferedImage(ProtectionIconFromSprite(spriteManager.getSprite(resource, 0)));
