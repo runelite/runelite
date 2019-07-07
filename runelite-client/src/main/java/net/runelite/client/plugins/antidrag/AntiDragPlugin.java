@@ -144,7 +144,7 @@ public class AntiDragPlugin extends Plugin
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.alwaysOn = config.alwaysOn();
 		this.keybind = config.keybind();
