@@ -42,7 +42,7 @@ import net.runelite.client.ui.ColorScheme;
 @Singleton
 abstract class InventorySetupContainerPanel extends JPanel
 {
-	protected final ItemManager itemManager;
+	private final ItemManager itemManager;
 
 	private final InventorySetupPlugin plugin;
 
@@ -128,5 +128,5 @@ abstract class InventorySetupContainerPanel extends JPanel
 		containerSlot.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 	}
 
-	abstract public void setupContainerPanel(final JPanel containerSlotsPanel);
+	protected abstract void setupContainerPanel(final JPanel containerSlotsPanel);
 }
