@@ -165,7 +165,7 @@ public class ClanChat extends UserList {
          }
 
          var6 = (ClanMate)this.getByCurrentUsername(var2);
-         if (var6 != null && var6.world() == var3) {
+         if (var6 != null && var6.getWorld() == var3) {
             this.remove(var6);
          }
       } else {
@@ -218,7 +218,7 @@ public class ClanChat extends UserList {
       garbageValue = "-128608554"
    )
    final void method79(ClanMate var1) {
-      if (var1.username().equals(this.localUser.username())) {
+      if (var1.getUsername().equals(this.localUser.username())) {
          this.rank = var1.rank;
       }
 

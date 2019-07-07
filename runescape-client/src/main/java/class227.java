@@ -299,7 +299,7 @@ public class class227 {
                      long var33;
                      if (var5 == 5) {
                         var25 = 16;
-                        var33 = var6.method290(var0, var1, var2);
+                        var33 = var6.getBoundaryObjectTag(var0, var1, var2);
                         if (var33 != 0L) {
                            var25 = class50.getObjectDefinition(HitSplatDefinition.method4972(var33)).int2;
                         }
@@ -313,7 +313,7 @@ public class class227 {
                         var6.newWallDecoration(var0, var1, var2, var16, (Entity)var27, (Entity)null, Tiles.field911[var4], 0, var25 * Tiles.field913[var4], var25 * Tiles.field914[var4], var19, var21);
                      } else if (var5 == 6) {
                         var25 = 8;
-                        var33 = var6.method290(var0, var1, var2);
+                        var33 = var6.getBoundaryObjectTag(var0, var1, var2);
                         if (var33 != 0L) {
                            var25 = class50.getObjectDefinition(HitSplatDefinition.method4972(var33)).int2 / 2;
                         }
@@ -336,7 +336,7 @@ public class class227 {
                         var6.newWallDecoration(var0, var1, var2, var16, (Entity)var32, (Entity)null, 256, var22, 0, 0, var19, var21);
                      } else if (var5 == 8) {
                         var25 = 8;
-                        var33 = var6.method290(var0, var1, var2);
+                        var33 = var6.getBoundaryObjectTag(var0, var1, var2);
                         if (var33 != 0L) {
                            var25 = class50.getObjectDefinition(HitSplatDefinition.method4972(var33)).int2 / 2;
                         }

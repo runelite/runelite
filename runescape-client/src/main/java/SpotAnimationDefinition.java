@@ -230,7 +230,8 @@ public class SpotAnimationDefinition extends DualNode {
       signature = "(B)I",
       garbageValue = "95"
    )
-   static int method4822() {
+   @Export("getWindowedMode")
+   static int getWindowedMode() {
       return Client.isResizable ? 2 : 1;
    }
 

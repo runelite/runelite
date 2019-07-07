@@ -17,8 +17,8 @@ public class PcmPlayer {
    @ObfuscatedSignature(
       signature = "Ldc;"
    )
-   @Export("stream0")
-   PcmStream stream0;
+   @Export("stream")
+   PcmStream stream;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = 1125788887
@@ -164,7 +164,7 @@ public class PcmPlayer {
    )
    @Export("setStream")
    public final synchronized void setStream(PcmStream stream) {
-      this.stream0 = stream;
+      this.stream = stream;
    }
 
    @ObfuscatedName("ar")
@@ -330,8 +330,8 @@ public class PcmPlayer {
          this.field686 = 0;
       }
 
-      if (this.stream0 != null) {
-         this.stream0.skip(length);
+      if (this.stream != null) {
+         this.stream.skip(length);
       }
 
    }
@@ -346,10 +346,10 @@ public class PcmPlayer {
 
       class212.clearIntArray(buffer, 0, var3);
       this.field686 -= length;
-      if (this.stream0 != null && this.field686 <= 0) {
+      if (this.stream != null && this.field686 <= 0) {
          this.field686 += class309.PcmPlayer_sampleRate >> 4;
-         MidiPcmStream.PcmStream_disable(this.stream0);
-         this.method243(this.stream0, this.stream0.vmethod282());
+         MidiPcmStream.PcmStream_disable(this.stream);
+         this.method243(this.stream, this.stream.vmethod282());
          int var4 = 0;
          int var5 = 255;
 
@@ -443,8 +443,8 @@ public class PcmPlayer {
          this.field686 = 0;
       }
 
-      if (this.stream0 != null) {
-         this.stream0.fill(buffer, 0, length);
+      if (this.stream != null) {
+         this.stream.fill(buffer, 0, length);
       }
 
       this.timeMs = class203.currentTimeMs();

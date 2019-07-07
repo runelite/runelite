@@ -221,8 +221,6 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
    }
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       try {
          while (true) {

@@ -1,4 +1,5 @@
 import java.util.Comparator;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -7,18 +8,20 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("AbstractUserComparator")
 public abstract class AbstractUserComparator implements Comparator {
    @ObfuscatedName("f")
-   Comparator field3;
+   @Export("nextComparator")
+   Comparator nextComparator;
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;B)V",
       garbageValue = "-2"
    )
-   final void method11(Comparator var1) {
-      if (this.field3 == null) {
-         this.field3 = var1;
-      } else if (this.field3 instanceof AbstractUserComparator) {
-         ((AbstractUserComparator)this.field3).method11(var1);
+   @Export("addComparator")
+   final void addComparator(Comparator var1) {
+      if (this.nextComparator == null) {
+         this.nextComparator = var1;
+      } else if (this.nextComparator instanceof AbstractUserComparator) {
+         ((AbstractUserComparator)this.nextComparator).addComparator(var1);
       }
 
    }
@@ -28,12 +31,12 @@ public abstract class AbstractUserComparator implements Comparator {
       signature = "(Ljs;Ljs;I)I",
       garbageValue = "-962181316"
    )
-   protected final int method12(User var1, User var2) {
-      return this.field3 == null ? 0 : this.field3.compare(var1, var2);
+   @Export("compareUser")
+   protected final int compareUser(User var1, User var2) {
+      return this.nextComparator == null ? 0 : this.nextComparator.compare(var1, var2);
    }
 
-   @ObfuscatedName("equals")
-   public boolean method13(Object var1) {
+   public boolean equals(Object var1) {
       return super.equals(var1);
    }
 

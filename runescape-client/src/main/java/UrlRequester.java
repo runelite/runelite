@@ -76,8 +76,6 @@ public class UrlRequester implements Runnable {
 
    }
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       while (!this.isClosed) {
          try {

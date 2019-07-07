@@ -191,7 +191,7 @@ public class Interpreter {
          class279.field1145 = null;
          DevicePcmPlayerProvider.drawInterface(Widget.interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6, var7);
          if (class279.field1145 != null) {
-            DevicePcmPlayerProvider.drawInterface(class279.field1145, -1412584499, var1, var2, var3, var4, class54.field1161, class157.field1114, var7);
+            DevicePcmPlayerProvider.drawInterface(class279.field1145, -1412584499, var1, var2, var3, var4, class54.field1161, BuddyRankComparator.field1114, var7);
             class279.field1145 = null;
          }
       } else if (var7 != -1) {

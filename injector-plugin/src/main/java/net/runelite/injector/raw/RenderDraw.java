@@ -21,7 +21,7 @@ public class RenderDraw
 	private static final Logger log = LoggerFactory.getLogger(RenderDraw.class);
 	private static final net.runelite.asm.pool.Method renderDraw = new net.runelite.asm.pool.Method(
 		new Class("net.runelite.client.callback.Hooks"),
-		"draw",
+		"renderDraw",
 		new Signature("(Lnet/runelite/api/Renderable;IIIIIIIIJ)V")
 	);
 	private final Inject inject;

@@ -130,8 +130,7 @@ public class Bounds {
       return this.field42 + this.field44;
    }
 
-   @ObfuscatedName("toString")
-   public String method35() {
+   public String toString() {
       return null;
    }
 

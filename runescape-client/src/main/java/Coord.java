@@ -67,8 +67,8 @@ public class Coord {
       signature = "(Lhu;B)Z",
       garbageValue = "-1"
    )
-   @Export("equals0")
-   boolean equals0(Coord other) {
+   @Export("equalsCoord")
+   boolean equalsCoord(Coord other) {
       return this.plane != other.plane ? false : (this.x != other.x ? false : this.y == other.y);
    }
 
@@ -77,23 +77,20 @@ public class Coord {
       signature = "(Ljava/lang/String;I)Ljava/lang/String;",
       garbageValue = "997364398"
    )
-   @Export("toString0")
-   String toString0(String separator) {
+   @Export("toString")
+   String toString(String separator) {
       return this.plane + separator + (this.x >> 6) + separator + (this.y >> 6) + separator + (this.x & 63) + separator + (this.y & 63);
    }
 
-   @ObfuscatedName("equals")
-   public boolean method326(Object var1) {
-      return this == var1 ? true : (!(var1 instanceof Coord) ? false : this.equals0((Coord)var1));
+   public boolean equals(Object var1) {
+      return this == var1 ? true : (!(var1 instanceof Coord) ? false : this.equalsCoord((Coord)var1));
    }
 
-   @ObfuscatedName("hashCode")
-   public int method327() {
+   public int hashCode() {
       return this.packed();
    }
 
-   @ObfuscatedName("toString")
-   public String method328() {
-      return this.toString0(",");
+   public String toString() {
+      return this.toString(",");
    }
 }

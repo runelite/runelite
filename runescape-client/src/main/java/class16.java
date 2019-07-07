@@ -62,7 +62,7 @@ public class class16 {
       garbageValue = "1394688825"
    )
    static int method188(int var0, Script var1, boolean var2) {
-      Widget var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+      Widget var3 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       if (var0 == ScriptOpcodes.CC_GETTARGETMASK) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class211.method4107(class1.getWidgetClickMask(var3));
          return 1;

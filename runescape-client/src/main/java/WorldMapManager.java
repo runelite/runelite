@@ -421,7 +421,7 @@ public final class WorldMapManager {
             while (var4.hasNext()) {
                AbstractWorldMapIcon var5 = (AbstractWorldMapIcon)var4.next();
                if (var5.method19()) {
-                  int var6 = var5.element();
+                  int var6 = var5.getElement();
                   if (!this.icons.containsKey(var6)) {
                      LinkedList var7 = new LinkedList();
                      var7.add(var5);

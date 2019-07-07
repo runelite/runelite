@@ -524,7 +524,8 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedSignature(
       signature = "Lbj;"
    )
-   static OwnWorldComparator field159;
+   @Export("geOwnWorldComparator")
+   static GrandExchangeOfferOwnWorldComparator geOwnWorldComparator;
    @ObfuscatedName("pv")
    static int[] field160;
    @ObfuscatedName("w")
@@ -572,7 +573,8 @@ public final class Client extends GameShell implements Usernamed {
    @Export("clientType")
    static int clientType;
    @ObfuscatedName("bl")
-   static boolean field162;
+   @Export("onMobile")
+   static boolean onMobile;
    @ObfuscatedName("br")
    @ObfuscatedGetter(
       intValue = 244995961
@@ -926,7 +928,8 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedGetter(
       intValue = 351193663
    )
-   static int field197;
+   @Export("oculusOrbSlowedSpeed")
+   static int oculusOrbSlowedSpeed;
    @ObfuscatedName("il")
    @ObfuscatedGetter(
       intValue = -1063713523
@@ -1291,7 +1294,7 @@ public final class Client extends GameShell implements Usernamed {
          displayFps = true;
       }
 
-      GroundItem.method2095(ReflectionCheck.clientPreferences.windowMode);
+      GroundItem.setWindowedMode(ReflectionCheck.clientPreferences.windowMode);
       WorldMapArea.friendSystem = new FriendSystem(KeyHandler.loginType);
    }
 
@@ -1361,11 +1364,11 @@ public final class Client extends GameShell implements Usernamed {
 
       if (gameState == 0) {
          class171.method3497();
-         class11.method145();
+         GrandExchangeOfferNameComparator.method145();
       } else if (gameState == 5) {
          class54.method1092(this);
          class171.method3497();
-         class11.method145();
+         GrandExchangeOfferNameComparator.method145();
       } else if (gameState != 10 && gameState != 11) {
          if (gameState == 20) {
             class54.method1092(this);
@@ -2194,7 +2197,7 @@ public final class Client extends GameShell implements Usernamed {
                   BufferedSink.method3603();
                   var65 = Interpreter.method1915(ClientPacket.field298, packetWriter.isaacCipher);
                   packetWriter.method241(var65);
-                  class11.method145();
+                  GrandExchangeOfferNameComparator.method145();
                }
             }
          }
@@ -2262,7 +2265,7 @@ public final class Client extends GameShell implements Usernamed {
       }
 
       if ((gameState == 10 || gameState == 20 || gameState == 30) && field99 != 0L && class203.currentTimeMs() > field99) {
-         GroundItem.method2095(SpotAnimationDefinition.method4822());
+         GroundItem.setWindowedMode(SpotAnimationDefinition.getWindowedMode());
       }
 
       int var3;
@@ -2825,10 +2828,10 @@ public final class Client extends GameShell implements Usernamed {
                            var13 = NetCache.NetCache_responseHeaderBuffer.readInt();
                            long var18 = (long)(var12 + (var11 << 16));
                            NetFileRequest var20 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.get(var18);
-                           WorldComparator.field988 = true;
+                           GrandExchangeOfferWorldComparator.field988 = true;
                            if (var20 == null) {
                               var20 = (NetFileRequest)NetCache.NetCache_pendingResponses.get(var18);
-                              WorldComparator.field988 = false;
+                              GrandExchangeOfferWorldComparator.field988 = false;
                            }
 
                            if (var20 == null) {
@@ -2905,11 +2908,11 @@ public final class Client extends GameShell implements Usernamed {
 
                               NetCache.NetCache_crcMismatches = 0;
                               NetCache.NetCache_ioExceptions = 0;
-                              ModelData0.NetCache_currentResponse.archive.write((int)(ModelData0.NetCache_currentResponse.key & 65535L), class22.NetCache_responseArchiveBuffer.array, 16711680L == (ModelData0.NetCache_currentResponse.key & 16711680L), WorldComparator.field988);
+                              ModelData0.NetCache_currentResponse.archive.write((int)(ModelData0.NetCache_currentResponse.key & 65535L), class22.NetCache_responseArchiveBuffer.array, 16711680L == (ModelData0.NetCache_currentResponse.key & 16711680L), GrandExchangeOfferWorldComparator.field988);
                            }
 
                            ModelData0.NetCache_currentResponse.remove();
-                           if (WorldComparator.field988) {
+                           if (GrandExchangeOfferWorldComparator.field988) {
                               --NetCache.NetCache_pendingPriorityResponsesCount;
                            } else {
                               --NetCache.NetCache_pendingResponsesCount;
@@ -3482,7 +3485,7 @@ public final class Client extends GameShell implements Usernamed {
                   ((AbstractSocket)var1).read(var2.array, 0, packetWriter.serverPacket0Length);
                   timer.method332();
                   WorldMapSection1.method808();
-                  class11.updatePlayer(var2);
+                  GrandExchangeOfferNameComparator.updatePlayer(var2);
                   GameObject.field359 = -1;
                   class50.loadRegions(false, var2);
                   packetWriter.serverPacket0 = null;
@@ -3575,7 +3578,7 @@ public final class Client extends GameShell implements Usernamed {
                      }
 
                      AbstractByteArrayCopier.method4024();
-                     class11.updatePlayer(var2);
+                     GrandExchangeOfferNameComparator.updatePlayer(var2);
                      if (var5 != var2.index) {
                         throw new RuntimeException();
                      }
@@ -4022,8 +4025,8 @@ public final class Client extends GameShell implements Usernamed {
                                                    } else if (menuOptionsCount > 0) {
                                                       var4 = field205;
                                                       var9 = field206;
-                                                      WorldMapDecorationType.processTempMenuAction(UnitPriceComparator.tempMenuAction, var4, var9);
-                                                      UnitPriceComparator.tempMenuAction = null;
+                                                      WorldMapDecorationType.processTempMenuAction(GrandExchangeOfferUnitPriceComparator.tempMenuAction, var4, var9);
+                                                      GrandExchangeOfferUnitPriceComparator.tempMenuAction = null;
                                                    }
 
                                                    field203 = 10;
@@ -4116,17 +4119,17 @@ public final class Client extends GameShell implements Usernamed {
                                                    }
                                                 }
 
-                                                if (class11.cameraZ < var9) {
-                                                   class11.cameraZ = (var9 - class11.cameraZ) * class30.field1148 / 1000 + class11.cameraZ + ClientPacket.field221;
-                                                   if (class11.cameraZ > var9) {
-                                                      class11.cameraZ = var9;
+                                                if (GrandExchangeOfferNameComparator.cameraZ < var9) {
+                                                   GrandExchangeOfferNameComparator.cameraZ = (var9 - GrandExchangeOfferNameComparator.cameraZ) * class30.field1148 / 1000 + GrandExchangeOfferNameComparator.cameraZ + ClientPacket.field221;
+                                                   if (GrandExchangeOfferNameComparator.cameraZ > var9) {
+                                                      GrandExchangeOfferNameComparator.cameraZ = var9;
                                                    }
                                                 }
 
-                                                if (class11.cameraZ > var9) {
-                                                   class11.cameraZ -= class30.field1148 * (class11.cameraZ - var9) / 1000 + ClientPacket.field221;
-                                                   if (class11.cameraZ < var9) {
-                                                      class11.cameraZ = var9;
+                                                if (GrandExchangeOfferNameComparator.cameraZ > var9) {
+                                                   GrandExchangeOfferNameComparator.cameraZ -= class30.field1148 * (GrandExchangeOfferNameComparator.cameraZ - var9) / 1000 + ClientPacket.field221;
+                                                   if (GrandExchangeOfferNameComparator.cameraZ < var9) {
+                                                      GrandExchangeOfferNameComparator.cameraZ = var9;
                                                    }
                                                 }
 
@@ -4135,7 +4138,7 @@ public final class Client extends GameShell implements Usernamed {
                                                 var10 = class32.getTileHeight(var4, var9, SoundSystem.plane) - ArchiveDiskAction.field410;
                                                 var11 = var4 - WorldMapSection1.cameraX;
                                                 var12 = var10 - GrandExchangeEvents.cameraY;
-                                                var13 = var9 - class11.cameraZ;
+                                                var13 = var9 - GrandExchangeOfferNameComparator.cameraZ;
                                                 var14 = (int)Math.sqrt((double)(var13 * var13 + var11 * var11));
                                                 var15 = (int)(Math.atan2((double)var12, (double)var14) * 325.949D) & 2047;
                                                 var16 = (int)(Math.atan2((double)var11, (double)var13) * -325.949D) & 2047;
@@ -4291,7 +4294,7 @@ public final class Client extends GameShell implements Usernamed {
       if (ReflectionCheck.clientPreferences != null) {
          try {
             Client var3 = TextureProvider.client;
-            Object[] var4 = new Object[]{SpotAnimationDefinition.method4822()};
+            Object[] var4 = new Object[]{SpotAnimationDefinition.getWindowedMode()};
             JSObject.getWindow(var3).call("resize", var4);
          } catch (Throwable var5) {
          }
@@ -4583,8 +4586,8 @@ public final class Client extends GameShell implements Usernamed {
                class30.field1148 = var3.readUnsignedByte();
                if (class30.field1148 >= 100) {
                   WorldMapSection1.cameraX = class3.field1146 * 128 + 64;
-                  class11.cameraZ = MusicPatchPcmStream.field602 * 128 + 64;
-                  GrandExchangeEvents.cameraY = class32.getTileHeight(WorldMapSection1.cameraX, class11.cameraZ, SoundSystem.plane) - AbstractWorldMapIcon.field4;
+                  GrandExchangeOfferNameComparator.cameraZ = MusicPatchPcmStream.field602 * 128 + 64;
+                  GrandExchangeEvents.cameraY = class32.getTileHeight(WorldMapSection1.cameraX, GrandExchangeOfferNameComparator.cameraZ, SoundSystem.plane) - AbstractWorldMapIcon.field4;
                }
 
                var1.serverPacket0 = null;
@@ -4716,7 +4719,7 @@ public final class Client extends GameShell implements Usernamed {
                   class22.method295(var8);
                }
 
-               class12.method159();
+               GrandExchangeOfferAgeComparator.method159();
                field116[++field117 - 1 & 31] = var6 & 32767;
                var1.serverPacket0 = null;
                return true;
@@ -4806,7 +4809,7 @@ public final class Client extends GameShell implements Usernamed {
             }
 
             if (ServerPacket.field849 == var1.serverPacket0) {
-               class12.method159();
+               GrandExchangeOfferAgeComparator.method159();
                runEnergy = var3.readUnsignedByte();
                field124 = cycleCntr;
                var1.serverPacket0 = null;
@@ -5119,7 +5122,7 @@ public final class Client extends GameShell implements Usernamed {
                   }
                }
 
-               class12.method159();
+               GrandExchangeOfferAgeComparator.method159();
                field123 += 32;
                var1.serverPacket0 = null;
                return true;
@@ -5159,7 +5162,7 @@ public final class Client extends GameShell implements Usernamed {
                   class22.method295(var8);
                }
 
-               class12.method159();
+               GrandExchangeOfferAgeComparator.method159();
                field116[++field117 - 1 & 31] = var6 & 32767;
                var1.serverPacket0 = null;
                return true;
@@ -5330,7 +5333,7 @@ public final class Client extends GameShell implements Usernamed {
                }
 
                for (PendingSpawn var46 = (PendingSpawn)pendingSpawns.last(); var46 != null; var46 = (PendingSpawn)pendingSpawns.previous()) {
-                  if (var46.x >= WorldMapSection3.field1089 && var46.x < WorldMapSection3.field1089 + 8 && var46.y >= Canvas.field95 && var46.y < Canvas.field95 + 8 && var46.level == SoundSystem.plane) {
+                  if (var46.x >= WorldMapSection3.field1089 && var46.x < WorldMapSection3.field1089 + 8 && var46.y >= Canvas.field95 && var46.y < Canvas.field95 + 8 && var46.plane == SoundSystem.plane) {
                      var46.hitpoints = 0;
                   }
                }
@@ -5449,7 +5452,7 @@ public final class Client extends GameShell implements Usernamed {
                   var5 = class32.getTileHeight(var38, var6, SoundSystem.plane) - ArchiveDiskAction.field410;
                   var10 = var38 - WorldMapSection1.cameraX;
                   var11 = var5 - GrandExchangeEvents.cameraY;
-                  var12 = var6 - class11.cameraZ;
+                  var12 = var6 - GrandExchangeOfferNameComparator.cameraZ;
                   var13 = (int)Math.sqrt((double)(var12 * var12 + var10 * var10));
                   WorldMapIcon1.cameraPitch = (int)(Math.atan2((double)var11, (double)var13) * 325.949D) & 2047;
                   MusicPatchNode.cameraYaw = (int)(Math.atan2((double)var10, (double)var12) * -325.949D) & 2047;
@@ -5508,7 +5511,7 @@ public final class Client extends GameShell implements Usernamed {
             }
 
             if (ServerPacket.field811 == var1.serverPacket0) {
-               class12.method159();
+               GrandExchangeOfferAgeComparator.method159();
                var38 = var3.method71();
                var6 = var3.readUnsignedByteNegate();
                var5 = var3.readUnsignedByte();
@@ -5542,7 +5545,7 @@ public final class Client extends GameShell implements Usernamed {
             }
 
             if (ServerPacket.field860 == var1.serverPacket0) {
-               class12.method159();
+               GrandExchangeOfferAgeComparator.method159();
                weight = var3.method44();
                field124 = cycleCntr;
                var1.serverPacket0 = null;
@@ -5979,8 +5982,8 @@ public final class Client extends GameShell implements Usernamed {
             if (DevicePcmPlayerProvider.dragInventoryWidget != null && !field207 && menuOptionsCount > 0 && !this.shouldLeftClickOpenMenu()) {
                var11 = field205;
                var7 = field206;
-               WorldMapDecorationType.processTempMenuAction(UnitPriceComparator.tempMenuAction, var11, var7);
-               UnitPriceComparator.tempMenuAction = null;
+               WorldMapDecorationType.processTempMenuAction(GrandExchangeOfferUnitPriceComparator.tempMenuAction, var11, var7);
+               GrandExchangeOfferUnitPriceComparator.tempMenuAction = null;
             }
 
             field207 = false;
@@ -5994,12 +5997,12 @@ public final class Client extends GameShell implements Usernamed {
             field205 = MouseHandler.MouseHandler_lastPressedX;
             field206 = MouseHandler.MouseHandler_lastPressedY;
             if (var2 >= 0) {
-               UnitPriceComparator.tempMenuAction = new MenuAction();
-               UnitPriceComparator.tempMenuAction.argument1 = menuArguments1[var2];
-               UnitPriceComparator.tempMenuAction.argument2 = menuArguments2[var2];
-               UnitPriceComparator.tempMenuAction.opcode = menuOpcodes[var2];
-               UnitPriceComparator.tempMenuAction.argument0 = menuArguments0[var2];
-               UnitPriceComparator.tempMenuAction.action = menuActions[var2];
+               GrandExchangeOfferUnitPriceComparator.tempMenuAction = new MenuAction();
+               GrandExchangeOfferUnitPriceComparator.tempMenuAction.argument1 = menuArguments1[var2];
+               GrandExchangeOfferUnitPriceComparator.tempMenuAction.argument2 = menuArguments2[var2];
+               GrandExchangeOfferUnitPriceComparator.tempMenuAction.opcode = menuOpcodes[var2];
+               GrandExchangeOfferUnitPriceComparator.tempMenuAction.argument0 = menuArguments0[var2];
+               GrandExchangeOfferUnitPriceComparator.tempMenuAction.action = menuActions[var2];
             }
 
             class22.method295(DevicePcmPlayerProvider.dragInventoryWidget);
@@ -6214,8 +6217,8 @@ public final class Client extends GameShell implements Usernamed {
             } else if (menuOptionsCount > 0) {
                int var10 = widgetClickX + field110;
                var9 = widgetClickY + field111;
-               WorldMapDecorationType.processTempMenuAction(UnitPriceComparator.tempMenuAction, var10, var9);
-               UnitPriceComparator.tempMenuAction = null;
+               WorldMapDecorationType.processTempMenuAction(GrandExchangeOfferUnitPriceComparator.tempMenuAction, var10, var9);
+               GrandExchangeOfferUnitPriceComparator.tempMenuAction = null;
             }
 
             clickedWidget = null;
@@ -6271,7 +6274,7 @@ public final class Client extends GameShell implements Usernamed {
       isLowDetail = false;
       language = 0;
       clientType = -1;
-      field162 = false;
+      onMobile = false;
       gameState = 0;
       isLoading = true;
       cycle = 0;
@@ -6343,7 +6346,7 @@ public final class Client extends GameShell implements Usernamed {
       field195 = 0;
       field196 = 0;
       oculusOrbNormalSpeed = 12;
-      field197 = 6;
+      oculusOrbSlowedSpeed = 6;
       field198 = 0;
       field199 = false;
       field200 = 0;
@@ -6530,7 +6533,7 @@ public final class Client extends GameShell implements Usernamed {
       field120 = -1;
       platformInfoProvider = new DesktopPlatformInfoProvider();
       grandExchangeOffers = new GrandExchangeOffer[8];
-      field159 = new OwnWorldComparator();
+      geOwnWorldComparator = new GrandExchangeOfferOwnWorldComparator();
       field104 = -1;
       archiveLoaders = new ArrayList(10);
       archiveLoaderArchive = 0;

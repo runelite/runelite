@@ -1,12 +1,14 @@
 import java.util.Comparator;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("k")
-final class class11 implements Comparator {
+@Implements("GrandExchangeOfferNameComparator")
+final class GrandExchangeOfferNameComparator implements Comparator {
    @ObfuscatedName("hl")
    @ObfuscatedGetter(
       intValue = -1945589829
@@ -19,8 +21,9 @@ final class class11 implements Comparator {
       signature = "(Ll;Ll;B)I",
       garbageValue = "1"
    )
-   int method138(GrandExchangeEvent var1, GrandExchangeEvent var2) {
-      return var1.method119().compareTo(var2.method119());
+   @Export("compareTyped")
+   int compareTyped(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+      return var1.getOfferName().compareTo(var2.getOfferName());
    }
 
    public boolean equals(Object var1) {
@@ -28,7 +31,7 @@ final class class11 implements Comparator {
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method138((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+      return this.compareTyped((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    @ObfuscatedName("m")
@@ -88,7 +91,7 @@ final class class11 implements Comparator {
          var0 -= 1000;
          var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
       } else {
-         var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+         var3 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       }
 
       String var4 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
@@ -181,7 +184,7 @@ final class class11 implements Comparator {
             return 2;
          }
 
-         var3.field975 = var8;
+         var3.onResize = var8;
       }
 
       var3.hasListener = true;

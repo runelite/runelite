@@ -11,8 +11,8 @@ public final class PendingSpawn extends Node {
    @ObfuscatedGetter(
       intValue = 1439936951
    )
-   @Export("level")
-   int level;
+   @Export("plane")
+   int plane;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1471611383

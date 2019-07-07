@@ -754,20 +754,23 @@ public class Scene {
    }
 
    @ObfuscatedName("ar")
-   public long method290(int var1, int var2, int var3) {
-      Tile var4 = this.tiles[var1][var2][var3];
+   @Export("getBoundaryObjectTag")
+   public long getBoundaryObjectTag(int plane, int x, int y) {
+      Tile var4 = this.tiles[plane][x][y];
       return var4 != null && var4.boundaryObject != null ? var4.boundaryObject.tag : 0L;
    }
 
    @ObfuscatedName("ac")
-   public long method291(int var1, int var2, int var3) {
-      Tile var4 = this.tiles[var1][var2][var3];
+   @Export("getWallDecorationTag")
+   public long getWallDecorationTag(int plane, int x, int y) {
+      Tile var4 = this.tiles[plane][x][y];
       return var4 != null && var4.wallDecoration != null ? var4.wallDecoration.tag : 0L;
    }
 
    @ObfuscatedName("ay")
-   public long method292(int var1, int var2, int var3) {
-      Tile var4 = this.tiles[var1][var2][var3];
+   @Export("getGameObjectTag")
+   public long getGameObjectTag(int plane, int x, int y) {
+      Tile var4 = this.tiles[plane][x][y];
       if (var4 == null) {
          return 0L;
       } else {
@@ -776,7 +779,7 @@ public class Scene {
             long var7 = var6.tag;
             int var9 = (int)(var7 >>> 14 & 3L);
             boolean var10 = var9 == 2;
-            if (var10 && var2 == var6.startX && var3 == var6.startY) {
+            if (var10 && x == var6.startX && y == var6.startY) {
                return var6.tag;
             }
          }
@@ -794,19 +797,19 @@ public class Scene {
 
    @ObfuscatedName("ak")
    @Export("getObjectFlags")
-   public int getObjectFlags(int plane, int x, int y, long var4) {
+   public int getObjectFlags(int plane, int x, int y, long tag) {
       Tile var6 = this.tiles[plane][x][y];
       if (var6 == null) {
          return -1;
-      } else if (var6.boundaryObject != null && var6.boundaryObject.tag == var4) {
+      } else if (var6.boundaryObject != null && var6.boundaryObject.tag == tag) {
          return var6.boundaryObject.flags & 255;
-      } else if (var6.wallDecoration != null && var6.wallDecoration.tag == var4) {
+      } else if (var6.wallDecoration != null && var6.wallDecoration.tag == tag) {
          return var6.wallDecoration.flags & 255;
-      } else if (var6.floorDecoration != null && var6.floorDecoration.tag == var4) {
+      } else if (var6.floorDecoration != null && var6.floorDecoration.tag == tag) {
          return var6.floorDecoration.flags & 255;
       } else {
          for (int var7 = 0; var7 < var6.gameObjectsCount; ++var7) {
-            if (var6.gameObjects[var7].tag == var4) {
+            if (var6.gameObjects[var7].tag == tag) {
                return var6.gameObjects[var7].flags & 255;
             }
          }

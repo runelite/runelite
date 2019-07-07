@@ -757,7 +757,7 @@ public class class40 {
 
          WorldMapSection1.cameraX = var6 - var11;
          GrandExchangeEvents.cameraY = var14 - var12;
-         class11.cameraZ = var15 - var16;
+         GrandExchangeOfferNameComparator.cameraZ = var15 - var16;
          WorldMapIcon1.cameraPitch = var4;
          MusicPatchNode.cameraYaw = var13;
          if (Client.oculusOrbState == 1 && Client.staffModLevel >= 2 && Client.cycle % 50 == 0 && (MouseHandler.oculusOrbFocalPointX >> 7 != Canvas.localPlayer.x >> 7 || ScriptEvent.oculusOrbFocalPointY >> 7 != Canvas.localPlayer.y >> 7)) {
@@ -774,14 +774,14 @@ public class class40 {
       }
 
       if (!Client.isCameraLocked) {
-         var4 = UnitPriceComparator.method131();
+         var4 = GrandExchangeOfferUnitPriceComparator.method131();
       } else {
          var4 = Login.method2061();
       }
 
       var13 = WorldMapSection1.cameraX;
       var6 = GrandExchangeEvents.cameraY;
-      var14 = class11.cameraZ;
+      var14 = GrandExchangeOfferNameComparator.cameraZ;
       var15 = WorldMapIcon1.cameraPitch;
       var22 = MusicPatchNode.cameraYaw;
 
@@ -797,7 +797,7 @@ public class class40 {
             }
 
             if (var24 == 2) {
-               class11.cameraZ += var9;
+               GrandExchangeOfferNameComparator.cameraZ += var9;
             }
 
             if (var24 == 3) {
@@ -842,12 +842,12 @@ public class class40 {
       class13.playPcmPlayers();
       var10 = Rasterizer3D.Rasterizer3D_zoom;
       Rasterizer3D.Rasterizer3D_zoom = Client.viewportZoom;
-      class65.scene.draw(WorldMapSection1.cameraX, GrandExchangeEvents.cameraY, class11.cameraZ, WorldMapIcon1.cameraPitch, MusicPatchNode.cameraYaw, var4);
+      class65.scene.draw(WorldMapSection1.cameraX, GrandExchangeEvents.cameraY, GrandExchangeOfferNameComparator.cameraZ, WorldMapIcon1.cameraPitch, MusicPatchNode.cameraYaw, var4);
       Rasterizer3D.Rasterizer3D_zoom = var10;
       class13.playPcmPlayers();
       class65.scene.clearTempGameObjects();
       UrlRequester.method3258(var0, var1, var2, var3);
-      UnitPriceComparator.method136(var0, var1);
+      GrandExchangeOfferUnitPriceComparator.method136(var0, var1);
       ((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).animate(Client.field183);
       Client.field208 = 0;
       var11 = (Canvas.localPlayer.x >> 7) + class50.baseX;
@@ -866,7 +866,7 @@ public class class40 {
 
       WorldMapSection1.cameraX = var13;
       GrandExchangeEvents.cameraY = var6;
-      class11.cameraZ = var14;
+      GrandExchangeOfferNameComparator.cameraZ = var14;
       WorldMapIcon1.cameraPitch = var15;
       MusicPatchNode.cameraYaw = var22;
       if (Client.isLoading) {

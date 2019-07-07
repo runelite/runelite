@@ -171,7 +171,7 @@ public class Varcs {
                if (var7 instanceof Integer) {
                   var2 += 4;
                } else if (var7 instanceof String) {
-                  var2 += WorldMapRegion.method550((String)var7);
+                  var2 += WorldMapRegion.stringCp1252NullTerminatedByteSize((String)var7);
                }
 
                ++var3;
@@ -392,7 +392,7 @@ public class Varcs {
       for (var6 = 0; var6 < 4; ++var6) {
          for (var7 = 0; var7 < 64; ++var7) {
             for (int var11 = 0; var11 < 64; ++var11) {
-               TotalQuantityComparator.loadTerrain(var10, var6, var7 + var1, var11 + var2, var3, var4, 0);
+               GrandExchangeOfferTotalQuantityComparator.loadTerrain(var10, var6, var7 + var1, var11 + var2, var3, var4, 0);
             }
          }
       }

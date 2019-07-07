@@ -24,8 +24,6 @@ public class SoundSystem implements Runnable {
       this.players = new PcmPlayer[2];
    }
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       try {
          for (int var1 = 0; var1 < 2; ++var1) {

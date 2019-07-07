@@ -672,19 +672,19 @@ public final class class54 {
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTODISPLAYCOORD_INSTANT) {
                var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-               BufferedFile.worldMap().method371(var5.x, var5.y);
+               BufferedFile.worldMap().setWorldMapPositionTargetInstant(var5.x, var5.y);
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTOSOURCECOORD) {
                var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-               BufferedFile.worldMap().method372(var5.plane, var5.x, var5.y);
+               BufferedFile.worldMap().jumpToSourceCoord(var5.plane, var5.x, var5.y);
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTOSOURCECOORD_INSTANT) {
                var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-               BufferedFile.worldMap().method373(var5.plane, var5.x, var5.y);
+               BufferedFile.worldMap().jumpToSourceCoordInstant(var5.plane, var5.x, var5.y);
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISPLAYPOSITION) {
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().method374();
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().method375();
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getDisplayX();
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getDisplayY();
                return 1;
             } else {
                WorldMapArea var6;
@@ -737,7 +737,7 @@ public final class class54 {
 
                   return 1;
                } else if (var0 == 6615) {
-                  var5 = BufferedFile.worldMap().method376();
+                  var5 = BufferedFile.worldMap().getDisplayCoord();
                   if (var5 == null) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
@@ -794,13 +794,13 @@ public final class class54 {
                         RouteStrategy.Interpreter_intStackSize -= 2;
                         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                         var8 = new Coord(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
-                        TotalQuantityComparator.method96(var3, var8, false);
+                        GrandExchangeOfferTotalQuantityComparator.method96(var3, var8, false);
                         return 1;
                      } else if (var0 == 6620) {
                         RouteStrategy.Interpreter_intStackSize -= 2;
                         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                         var8 = new Coord(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
-                        TotalQuantityComparator.method96(var3, var8, true);
+                        GrandExchangeOfferTotalQuantityComparator.method96(var3, var8, true);
                         return 1;
                      } else if (var0 == ScriptOpcodes.WORLDMAP_COORDINMAP) {
                         RouteStrategy.Interpreter_intStackSize -= 2;
@@ -815,8 +815,8 @@ public final class class54 {
                            return 1;
                         }
                      } else if (var0 == ScriptOpcodes.WORLDMAP_GETSIZE) {
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().method377();
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().method378();
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getDisplayWith();
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getDisplayHeight();
                         return 1;
                      } else if (var0 == 6623) {
                         var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
@@ -844,7 +844,7 @@ public final class class54 {
                         boolean var9;
                         if (var0 == ScriptOpcodes.WORLDMAP_PERPETUALFLASH) {
                            var9 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
-                           BufferedFile.worldMap().perpetualFlash(var9);
+                           BufferedFile.worldMap().setPerpetualFlash(var9);
                            return 1;
                         } else if (var0 == ScriptOpcodes.WORLDMAP_FLASHELEMENT) {
                            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
@@ -906,7 +906,7 @@ public final class class54 {
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                  } else {
-                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.element();
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.getElement();
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.coord2.packed();
                                  }
 
@@ -917,7 +917,7 @@ public final class class54 {
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                  } else {
-                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.element();
+                                    Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.getElement();
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var11.coord2.packed();
                                  }
 
@@ -1097,7 +1097,7 @@ public final class class54 {
 
          var2 = 0;
          if (var11 >= 0 || var10 != 0) {
-            var2 = KeyHandler.KeyHandler_pressedKeys[81] ? Client.field197 : Client.oculusOrbNormalSpeed;
+            var2 = KeyHandler.KeyHandler_pressedKeys[81] ? Client.oculusOrbSlowedSpeed : Client.oculusOrbNormalSpeed;
             var2 *= 16;
             Client.field195 = var11;
             Client.field196 = var10;

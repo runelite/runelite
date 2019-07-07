@@ -1,5 +1,6 @@
 package net.runelite.deob.updater;
 
+import com.google.common.base.Strings;
 import java.io.File;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
@@ -39,6 +40,12 @@ public class AnnotationCleaner
 
 			log.debug("Checking {}", c.toString());
 
+			String implementingName = DeobAnnotations.getImplements(c);
+			if (!Strings.isNullOrEmpty(implementingName))
+			{
+				assertEquals(c + " implements " + implementingName + " but is called " + c.getClassName(), implementingName, c.getClassName());
+			}
+
 			for (Field f : c.getFields())
 			{
 				Annotations an = f.getAnnotations();
@@ -48,11 +55,11 @@ public class AnnotationCleaner
 
 				if (exportedName == null)
 				{
-					assertTrue("Field " + fieldName + " isn't obfuscated but doesn't have @Export.", Deob.isObfuscated(fieldName) || fieldName.contains("$"));
+					assertTrue("Field " + c.getClassName() + '.' + fieldName + " isn't obfuscated but doesn't have @Export.", Deob.isObfuscated(fieldName) || fieldName.equals(DeobAnnotations.getObfuscatedName(an)) || DeobAnnotations.getObfuscatedName(an) == null);
 					continue;
 				}
 
-				assertEquals("Field " + fieldName + " has " + exportedName + " in @Export", fieldName, exportedName);
+				assertEquals("Field " + c.getClassName() + '.' + fieldName + " has " + exportedName + " in @Export", fieldName, exportedName);
 			}
 
 			for (Method m : c.getMethods())
@@ -64,11 +71,11 @@ public class AnnotationCleaner
 
 				if (exportedName == null)
 				{
-					assertTrue("Method " + fieldName + " isn't obfuscated but doesn't have @Export.", Deob.isObfuscated(fieldName) || fieldName.endsWith("init>") || fieldName.equals("values") || fieldName.equals("valueOf") || fieldName.startsWith("compareTo") || fieldName.equals("equals") || fieldName.equals("hashCode") || fieldName.equals("compare"));
+					assertTrue("Method " + c.getClassName() + '.' + fieldName + " isn't obfuscated but doesn't have @Export.", Deob.isObfuscated(fieldName) || fieldName.equals(DeobAnnotations.getObfuscatedName(an)) || DeobAnnotations.getObfuscatedName(an) == null);
 					continue;
 				}
 
-				assertEquals("Method " + fieldName + " has " + exportedName + " in @Export", fieldName, exportedName);
+				assertEquals("Method " + c.getClassName() + '.' + fieldName + " has " + exportedName + " in @Export", fieldName, exportedName);
 			}
 		}
 	}

@@ -184,7 +184,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                   if (var1 != -1412584499 && !var10.isScrollBar) {
                      class279.field1145 = var0;
                      class54.field1161 = var6;
-                     class157.field1114 = var7;
+                     BuddyRankComparator.field1114 = var7;
                      continue;
                   }
 
@@ -344,7 +344,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
 
                   if (Client.isResizable || Client.field101[var11] || Client.gameDrawingMode > 1) {
                      if (var10.type == 0 && !var10.isIf3 && var10.scrollHeight > var10.height) {
-                        class11.method148(var12 + var10.width, var13, var10.scrollY, var10.height, var10.scrollHeight);
+                        GrandExchangeOfferNameComparator.method148(var12 + var10.width, var13, var10.scrollY, var10.height, var10.scrollHeight);
                      }
 
                      if (var10.type != 1) {

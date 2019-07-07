@@ -54,16 +54,16 @@ public abstract class AbstractWorldMapIcon {
       signature = "(I)I",
       garbageValue = "1990181988"
    )
-   @Export("element")
-   public abstract int element();
+   @Export("getElement")
+   public abstract int getElement();
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)Laj;",
       garbageValue = "1159446036"
    )
-   @Export("label")
-   abstract WorldMapLabel label();
+   @Export("getLabel")
+   abstract WorldMapLabel getLabel();
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
@@ -94,7 +94,7 @@ public abstract class AbstractWorldMapIcon {
       garbageValue = "1150380891"
    )
    boolean method19() {
-      return this.element() >= 0;
+      return this.getElement() >= 0;
    }
 
    @ObfuscatedName("b")
@@ -106,7 +106,7 @@ public abstract class AbstractWorldMapIcon {
       if (!this.method19()) {
          return false;
       } else {
-         WorldMapElement var3 = ViewportMouse.getWorldMapElement(this.element());
+         WorldMapElement var3 = ViewportMouse.getWorldMapElement(this.getElement());
          int var4 = this.vmethod397();
          int var5 = this.vmethod398();
          switch(var3.field3287.field3528) {
@@ -155,7 +155,7 @@ public abstract class AbstractWorldMapIcon {
       garbageValue = "1201712205"
    )
    boolean method21(int var1, int var2) {
-      WorldMapLabel var3 = this.label();
+      WorldMapLabel var3 = this.getLabel();
       return var3 == null ? false : (var1 >= this.field5 - var3.width / 2 && var1 <= var3.width / 2 + this.field5 ? var2 >= this.field6 && var2 <= var3.height + this.field6 : false);
    }
 

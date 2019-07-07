@@ -11,7 +11,8 @@ public class WorldMapElement extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field1019;
+   @Export("WorldMapElement_archive")
+   public static AbstractArchive WorldMapElement_archive;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -272,7 +273,7 @@ public class WorldMapElement extends DualNode {
          if (var2 != null) {
             return var2;
          } else {
-            var2 = class322.readSprite(field1019, var1, 0);
+            var2 = class322.readSprite(WorldMapElement_archive, var1, 0);
             if (var2 != null) {
                WorldMapElement_cachedSprites.put(var2, (long)var1);
             }

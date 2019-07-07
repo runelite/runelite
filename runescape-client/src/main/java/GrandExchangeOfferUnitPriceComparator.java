@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("d")
-@Implements("UnitPriceComparator")
-final class UnitPriceComparator implements Comparator {
+@Implements("GrandExchangeOfferUnitPriceComparator")
+final class GrandExchangeOfferUnitPriceComparator implements Comparator {
    @ObfuscatedName("gz")
    @ObfuscatedSignature(
       signature = "Lln;"
@@ -25,18 +25,16 @@ final class UnitPriceComparator implements Comparator {
       signature = "(Ll;Ll;I)I",
       garbageValue = "-120071238"
    )
-   int method337(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+   @Export("compareTyped")
+   int compareTyped(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.grandExchangeOffer.unitPrice < var2.grandExchangeOffer.unitPrice ? -1 : (var2.grandExchangeOffer.unitPrice == var1.grandExchangeOffer.unitPrice ? 0 : 1);
    }
 
-   @Export("compare")
-   @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.method337((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+      return this.compareTyped((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
-   @ObfuscatedName("equals")
-   public boolean method338(Object var1) {
+   public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
@@ -45,7 +43,8 @@ final class UnitPriceComparator implements Comparator {
       signature = "(Lir;B)V",
       garbageValue = "23"
    )
-   public static void method135(AbstractArchive var0) {
+   @Export("setVarbitDefinitionArchive")
+   public static void setVarbitDefinitionArchive(AbstractArchive var0) {
       VarbitDefinition.VarbitDefinition_archive = var0;
    }
 
@@ -85,7 +84,7 @@ final class UnitPriceComparator implements Comparator {
             }
 
             int var3 = WorldMapSection1.cameraX >> 7;
-            int var4 = class11.cameraZ >> 7;
+            int var4 = GrandExchangeOfferNameComparator.cameraZ >> 7;
             if (var3 < 0 || var4 < 0 || var3 >= 104 || var4 >= 104) {
                return SoundSystem.plane;
             }

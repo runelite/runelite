@@ -221,7 +221,7 @@ public class WorldMapRegion {
       while (var2.hasNext()) {
          WorldMapIcon1 var3 = (WorldMapIcon1)var2.next();
          if (var3.coord2.x >> 6 == this.x && var3.coord2.y >> 6 == this.y) {
-            WorldMapIcon1 var4 = new WorldMapIcon1(var3.coord2, var3.coord2, var3.field1031, this.method419(var3.field1031));
+            WorldMapIcon1 var4 = new WorldMapIcon1(var3.coord2, var3.coord2, var3.element, this.method419(var3.element));
             this.iconsList.add(var4);
          }
       }
@@ -348,7 +348,7 @@ public class WorldMapRegion {
       while (var4.hasNext()) {
          AbstractWorldMapIcon var5 = (AbstractWorldMapIcon)var4.next();
          if (var5.method19()) {
-            int var6 = var5.element();
+            int var6 = var5.getElement();
             if (var1.contains(var6)) {
                WorldMapElement var7 = ViewportMouse.getWorldMapElement(var6);
                this.method414(var7, var5.field5, var5.field6, var2, var3);
@@ -761,7 +761,7 @@ public class WorldMapRegion {
          if (var12 != null && var12.method19()) {
             var12.field5 = var10;
             var12.field6 = var11;
-            WorldMapElement var13 = ViewportMouse.getWorldMapElement(var12.element());
+            WorldMapElement var13 = ViewportMouse.getWorldMapElement(var12.getElement());
             if (!var3.contains(var13.method390())) {
                this.method415(var12, var10, var11, var5);
             }
@@ -781,7 +781,7 @@ public class WorldMapRegion {
       while (var4.hasNext()) {
          AbstractWorldMapIcon var5 = (AbstractWorldMapIcon)var4.next();
          if (var5.method19()) {
-            WorldMapElement var6 = ViewportMouse.getWorldMapElement(var5.element());
+            WorldMapElement var6 = ViewportMouse.getWorldMapElement(var5.getElement());
             if (var6 != null && var1.contains(var6.method390())) {
                this.method414(var6, var5.field5, var5.field6, var2, var3);
             }
@@ -813,7 +813,7 @@ public class WorldMapRegion {
       garbageValue = "-1283733783"
    )
    void method415(AbstractWorldMapIcon var1, int var2, int var3, float var4) {
-      WorldMapElement var5 = ViewportMouse.getWorldMapElement(var1.element());
+      WorldMapElement var5 = ViewportMouse.getWorldMapElement(var1.getElement());
       this.method416(var5, var2, var3);
       this.method417(var1, var5, var2, var3, var4);
    }
@@ -839,7 +839,7 @@ public class WorldMapRegion {
       garbageValue = "-1237576843"
    )
    void method417(AbstractWorldMapIcon var1, WorldMapElement var2, int var3, int var4, float var5) {
-      WorldMapLabel var6 = var1.label();
+      WorldMapLabel var6 = var1.getLabel();
       if (var6 != null && var6.size.method400(var5)) {
          Font var7 = (Font)this.fonts.get(var6.size);
          var7.drawLines(var6.text, var3 - var6.width / 2, var4, var6.width, var6.height, -16777216 | var2.field1022, 0, 1, 0, var7.ascent / 2);
@@ -863,7 +863,7 @@ public class WorldMapRegion {
             int var9 = var7.coord2.y % 64;
             var7.field5 = (int)((float)var8 * var5 + (float)var1);
             var7.field6 = (int)(var5 * (float)(63 - var9) + (float)var2);
-            if (!var3.contains(var7.element())) {
+            if (!var3.contains(var7.getElement())) {
                this.method415(var7, var7.field5, var7.field6, var5);
             }
          }
@@ -1040,7 +1040,8 @@ public class WorldMapRegion {
       signature = "(Ljava/lang/String;I)I",
       garbageValue = "1877870965"
    )
-   public static int method550(String var0) {
+   @Export("stringCp1252NullTerminatedByteSize")
+   public static int stringCp1252NullTerminatedByteSize(String var0) {
       return var0.length() + 1;
    }
 

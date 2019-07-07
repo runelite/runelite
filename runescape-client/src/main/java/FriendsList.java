@@ -63,7 +63,7 @@ public class FriendsList extends UserList {
    @Export("isFriended")
    public boolean isFriended(Username var1, boolean var2) {
       Friend var3 = (Friend)this.getByUsername(var1);
-      return var3 != null && (!var2 || var3.world0 != 0);
+      return var3 != null && (!var2 || var3.world != 0);
    }
 
    @ObfuscatedName("x")
@@ -105,7 +105,7 @@ public class FriendsList extends UserList {
 
                if (var11 != null) {
                   this.changeName(var11, var4, var5);
-                  if (var6 != var11.world0) {
+                  if (var6 != var11.world) {
                      boolean var14 = true;
 
                      for (FriendLoginUpdate var13 = (FriendLoginUpdate)this.friendLoginUpdates.last(); var13 != null; var13 = (FriendLoginUpdate)this.friendLoginUpdates.previous()) {
@@ -132,13 +132,13 @@ public class FriendsList extends UserList {
                   var11 = (Friend)this.addLast(var4, var5);
                }
 
-               if (var6 != var11.world0) {
+               if (var6 != var11.world) {
                   var11.int2 = ++this.field358 - 1;
-                  if (var11.world0 == -1 && var6 == 0) {
+                  if (var11.world == -1 && var6 == 0) {
                      var11.int2 = -(var11.int2 * -1377538447) * 120689297;
                   }
 
-                  var11.world0 = var6;
+                  var11.world = var6;
                }
 
                var11.rank = var7;

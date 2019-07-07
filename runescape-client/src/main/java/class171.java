@@ -234,7 +234,7 @@ public class class171 {
                   RectangleMode.method6028(ObjectSound.archive2, class40.archive7, Client.isLowDetail);
                   IsaacCipher.method4082(ObjectSound.archive2, class40.archive7);
                   var30 = ObjectSound.archive2;
-                  StructDefinition.field885 = var30;
+                  StructDefinition.StructDefinition_archive = var30;
                   Archive var5 = ObjectSound.archive2;
                   Archive var6 = class40.archive7;
                   boolean var7 = Client.isMembersWorld;
@@ -254,7 +254,7 @@ public class class171 {
                   Archive var13 = class40.archive7;
                   SpotAnimationDefinition.SpotAnimationDefinition_archive = var12;
                   SpotAnimationDefinition.SpotAnimationDefinition_modelArchive = var13;
-                  UnitPriceComparator.method135(ObjectSound.archive2);
+                  GrandExchangeOfferUnitPriceComparator.setVarbitDefinitionArchive(ObjectSound.archive2);
                   Archive var14 = ObjectSound.archive2;
                   VarpDefinition.field943 = var14;
                   VarpDefinition.field944 = VarpDefinition.field943.method4(16);
@@ -274,7 +274,7 @@ public class class171 {
                   EnumDefinition.EnumDefinition_archive = var20;
                   Frames.method3241(ObjectSound.archive2);
                   Archive var21 = ObjectSound.archive2;
-                  ParamDefinition.field679 = var21;
+                  ParamDefinition.ParamDefinition_archive = var21;
                   class196.varcs = new Varcs();
                   class60.method1172(ObjectSound.archive2, WorldMapSection3.archive8, ByteArrayPool.archive13);
                   Archive var22 = ObjectSound.archive2;
@@ -283,7 +283,7 @@ public class class171 {
                   HealthBarDefinition.field380 = var23;
                   Archive var24 = ObjectSound.archive2;
                   Archive var25 = WorldMapSection3.archive8;
-                  WorldMapElement.field1019 = var25;
+                  WorldMapElement.WorldMapElement_archive = var25;
                   if (var24.method2()) {
                      UserComparator4.WorldMapElement_count = var24.method4(35);
                      Widget.WorldMapElement_cached = new WorldMapElement[UserComparator4.WorldMapElement_count];
@@ -304,8 +304,8 @@ public class class171 {
                }
             } else if (Client.titleLoadingStage == 80) {
                var0 = 0;
-               if (UnitPriceComparator.compass == null) {
-                  UnitPriceComparator.compass = class322.readSprite(WorldMapSection3.archive8, class211.spriteIds.field878, 0);
+               if (GrandExchangeOfferUnitPriceComparator.compass == null) {
+                  GrandExchangeOfferUnitPriceComparator.compass = class322.readSprite(WorldMapSection3.archive8, class211.spriteIds.field878, 0);
                } else {
                   ++var0;
                }

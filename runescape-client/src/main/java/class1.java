@@ -84,7 +84,7 @@ final class class1 implements class0 {
          var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          var4 = Huffman.getWidget(var3);
       } else {
-         var4 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+         var4 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       }
 
       if (var0 == ScriptOpcodes.CC_SETPOSITION) {
@@ -124,7 +124,7 @@ final class class1 implements class0 {
       } else if (var0 == ScriptOpcodes.CC_SETNOCLICKTHROUGH) {
          var4.noClickThrough = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
          return 1;
-      } else if (var0 == 1006) {
+      } else if (var0 == ScriptOpcodes.CC_SETNOSCROLLTHROUGH) {
          var4.noScrollThrough = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
          return 1;
       } else {

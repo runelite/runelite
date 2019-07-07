@@ -92,7 +92,7 @@ public abstract class AbstractByteArrayCopier {
    )
    static void method4024() {
       PacketBufferNode var0 = Interpreter.method1915(ClientPacket.field257, Client.packetWriter.isaacCipher);
-      var0.packetBuffer.writeByte(SpotAnimationDefinition.method4822());
+      var0.packetBuffer.writeByte(SpotAnimationDefinition.getWindowedMode());
       var0.packetBuffer.writeShort(SoundCache.canvasWidth);
       var0.packetBuffer.writeShort(Huffman.canvasHeight);
       Client.packetWriter.method241(var0);

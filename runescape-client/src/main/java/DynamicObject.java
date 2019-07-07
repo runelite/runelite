@@ -237,7 +237,7 @@ public class DynamicObject extends Entity {
             var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
             var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
             PacketBufferNode var12 = Interpreter.method1915(ClientPacket.field260, Client.packetWriter.isaacCipher);
-            var12.packetBuffer.writeByte(WorldMapRegion.method550(var3) + 2);
+            var12.packetBuffer.writeByte(WorldMapRegion.stringCp1252NullTerminatedByteSize(var3) + 2);
             var12.packetBuffer.writeStringCp1252NullTerminated(var3);
             var12.packetBuffer.writeByte(var4 - 1);
             var12.packetBuffer.writeByte(var5);
@@ -446,7 +446,7 @@ public class DynamicObject extends Entity {
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAT_GETNEXTUID) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class12.method161(var5);
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = GrandExchangeOfferAgeComparator.method161(var5);
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAT_GETPREVUID) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
@@ -628,7 +628,7 @@ public class DynamicObject extends Entity {
          Client.soundEffectCount = 0;
          Client.isCameraLocked = false;
          WorldMapSection1.cameraX -= var5 << 7;
-         class11.cameraZ -= var6 << 7;
+         GrandExchangeOfferNameComparator.cameraZ -= var6 << 7;
          MouseHandler.oculusOrbFocalPointX -= var5 << 7;
          ScriptEvent.oculusOrbFocalPointY -= var6 << 7;
          Client.field125 = -1;

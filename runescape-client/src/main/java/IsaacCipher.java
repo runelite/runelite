@@ -263,7 +263,7 @@ public final class IsaacCipher {
       } else if (var0 == 5) {
          Login.field467 = 2;
          class54.method1089("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
-      } else if (var0 != 68 && (Client.field162 || var0 != 6)) {
+      } else if (var0 != 68 && (Client.onMobile || var0 != 6)) {
          if (var0 == 7) {
             class54.method1089("This world is full.", "Please use a different world.", "");
          } else if (var0 == 8) {

@@ -49,8 +49,6 @@ public class MouseRecorder implements Runnable {
       this.millis = new long[500];
    }
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       for (; this.isRunning; class203.method4010(50L)) {
          Object var1 = this.lock;
@@ -73,7 +71,7 @@ public class MouseRecorder implements Runnable {
    )
    @Export("drawObject")
    static final void drawObject(int var0, int var1, int var2, int var3, int var4) {
-      long var5 = class65.scene.method290(var0, var1, var2);
+      long var5 = class65.scene.getBoundaryObjectTag(var0, var1, var2);
       int var7;
       int var8;
       int var9;
@@ -170,7 +168,7 @@ public class MouseRecorder implements Runnable {
          }
       }
 
-      var5 = class65.scene.method292(var0, var1, var2);
+      var5 = class65.scene.getGameObjectTag(var0, var1, var2);
       ObjectDefinition var19;
       IndexedSprite var21;
       int var22;

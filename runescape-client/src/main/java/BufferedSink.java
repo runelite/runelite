@@ -40,8 +40,8 @@ public class BufferedSink implements Runnable {
    @Export("exception")
    IOException exception;
    @ObfuscatedName("l")
-   @Export("isClosed0")
-   boolean isClosed0;
+   @Export("closed")
+   boolean closed;
 
    BufferedSink(OutputStream var1, int var2) {
       this.position = 0;
@@ -61,7 +61,7 @@ public class BufferedSink implements Runnable {
    )
    @Export("isClosed")
    boolean isClosed() {
-      if (this.isClosed0) {
+      if (this.closed) {
          try {
             this.outputStream.close();
             if (this.exception == null) {
@@ -127,7 +127,7 @@ public class BufferedSink implements Runnable {
    @Export("close")
    void close() {
       synchronized(this) {
-         this.isClosed0 = true;
+         this.closed = true;
          this.notifyAll();
       }
 
@@ -138,8 +138,6 @@ public class BufferedSink implements Runnable {
 
    }
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       while (true) {
          synchronized(this) {

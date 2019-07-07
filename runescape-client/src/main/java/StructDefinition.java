@@ -11,12 +11,14 @@ public class StructDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field885;
+   @Export("StructDefinition_archive")
+   public static AbstractArchive StructDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   public static EvictingDualNodeHashTable field886;
+   @Export("StructDefinition_cached")
+   public static EvictingDualNodeHashTable StructDefinition_cached;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Llh;"
@@ -109,7 +111,7 @@ public class StructDefinition extends DualNode {
          var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          var4 = Huffman.getWidget(var3);
       } else {
-         var4 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+         var4 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       }
 
       if (var0 == ScriptOpcodes.CC_SETSCROLLPOS) {
@@ -286,6 +288,6 @@ public class StructDefinition extends DualNode {
    }
 
    static {
-      field886 = new EvictingDualNodeHashTable(64);
+      StructDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

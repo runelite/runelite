@@ -87,9 +87,10 @@ public enum WorldMapSectionType implements Enumerated {
       signature = "(IZIZI)V",
       garbageValue = "2102950996"
    )
-   static void method248(int var0, boolean var1, int var2, boolean var3) {
+   @Export("sortWorlds")
+   static void sortWorlds(int primaryMode, boolean primaryReversed, int secondaryMode, boolean secondaryReversed) {
       if (ItemContainer.worlds != null) {
-         class3.method42(0, ItemContainer.worlds.length - 1, var0, var1, var2, var3);
+         class3.doWorldSorting(0, ItemContainer.worlds.length - 1, primaryMode, primaryReversed, secondaryMode, secondaryReversed);
       }
 
    }
@@ -100,7 +101,7 @@ public enum WorldMapSectionType implements Enumerated {
       garbageValue = "-1520594673"
    )
    static int method253(int var0, Script var1, boolean var2) {
-      Widget var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+      Widget var3 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       if (var0 == ScriptOpcodes.CC_GETX) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.x;
          return 1;

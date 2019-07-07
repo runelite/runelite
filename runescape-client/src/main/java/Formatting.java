@@ -22,7 +22,7 @@ public class Formatting {
       garbageValue = "1654486766"
    )
    static int method2023(int var0, Script var1, boolean var2) {
-      Widget var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+      Widget var3 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       if (var0 == ScriptOpcodes.CC_GETINVOBJECT) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.itemId;
          return 1;

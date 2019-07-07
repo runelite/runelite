@@ -47,7 +47,7 @@ public class WorldMapEvent {
       garbageValue = "-782761258"
    )
    public static int method780(int var0) {
-      return UnitPriceComparator.method134(ViewportMouse.ViewportMouse_entityTags[var0]);
+      return GrandExchangeOfferUnitPriceComparator.method134(ViewportMouse.ViewportMouse_entityTags[var0]);
    }
 
    @ObfuscatedName("iy")
@@ -69,10 +69,10 @@ public class WorldMapEvent {
          int var9 = ViewportMouse.ViewportMouse_entityCount;
          if (var8 >= var9) {
             if (-1L != var4) {
-               var8 = UnitPriceComparator.method134(var4);
+               var8 = GrandExchangeOfferUnitPriceComparator.method134(var4);
                int var29 = (int)(var4 >>> 7 & 127L);
                Player var11 = Client.players[Client.combatTargetPlayerIndex];
-               TotalQuantityComparator.addPlayerToMenu(var11, Client.combatTargetPlayerIndex, var8, var29);
+               GrandExchangeOfferTotalQuantityComparator.addPlayerToMenu(var11, Client.combatTargetPlayerIndex, var8, var29);
             }
 
             return;
@@ -164,7 +164,7 @@ public class WorldMapEvent {
                      for (var30 = 0; var30 < var31; ++var30) {
                         var34 = Client.players[var22[var30]];
                         if (var34 != null && var34.x == var23.x && var34.y == var23.y) {
-                           TotalQuantityComparator.addPlayerToMenu(var34, var22[var30], var12, var15);
+                           GrandExchangeOfferTotalQuantityComparator.addPlayerToMenu(var34, var22[var30], var12, var15);
                         }
                      }
                   }
@@ -192,13 +192,13 @@ public class WorldMapEvent {
                      for (var30 = 0; var30 < var31; ++var30) {
                         var34 = Client.players[var22[var30]];
                         if (var34 != null && var34 != var33 && var34.x == var33.x && var34.y == var33.y) {
-                           TotalQuantityComparator.addPlayerToMenu(var34, var22[var30], var12, var15);
+                           GrandExchangeOfferTotalQuantityComparator.addPlayerToMenu(var34, var22[var30], var12, var15);
                         }
                      }
                   }
 
                   if (var17 != Client.combatTargetPlayerIndex) {
-                     TotalQuantityComparator.addPlayerToMenu(var33, var17, var12, var15);
+                     GrandExchangeOfferTotalQuantityComparator.addPlayerToMenu(var33, var17, var12, var15);
                   } else {
                      var4 = var10;
                   }

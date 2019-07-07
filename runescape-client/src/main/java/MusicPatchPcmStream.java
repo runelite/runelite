@@ -152,6 +152,7 @@ public class MusicPatchPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("e")
+   @Export("fill")
    protected void fill(int[] var1, int var2, int var3) {
       this.mixer.fill(var1, var2, var3);
 
@@ -177,6 +178,7 @@ public class MusicPatchPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("d")
+   @Export("skip")
    protected void skip(int var1) {
       this.mixer.skip(var1);
 

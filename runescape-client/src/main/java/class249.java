@@ -30,11 +30,12 @@ public enum class249 implements Enumerated {
    @ObfuscatedGetter(
       intValue = 1686539261
    )
-   final int field3276;
+   @Export("id")
+   final int id;
 
    private class249(int var3, int var4) {
       this.field3275 = var3;
-      this.field3276 = var4;
+      this.id = var4;
    }
 
    @ObfuscatedName("f")
@@ -44,6 +45,6 @@ public enum class249 implements Enumerated {
    )
    @Export("rsOrdinal")
    public int rsOrdinal() {
-      return this.field3276;
+      return this.id;
    }
 }

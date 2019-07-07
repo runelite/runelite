@@ -113,7 +113,7 @@ public class ScriptEvent extends Node {
       garbageValue = "0"
    )
    static int method1185(int var0, Script var1, boolean var2) {
-      Widget var3 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+      Widget var3 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       if (var0 == ScriptOpcodes.CC_GETSCROLLX) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.scrollX;
          return 1;

@@ -154,7 +154,7 @@ public final class Canvas extends java.awt.Canvas {
                if (var2) {
                   WorldMapIcon1.field1030 = var10;
                } else {
-                  class12.field1111 = var10;
+                  GrandExchangeOfferAgeComparator.field1111 = var10;
                }
 
                class22.method295(var5);
@@ -164,7 +164,7 @@ public final class Canvas extends java.awt.Canvas {
       } else {
          Widget var6;
          if (var0 == ScriptOpcodes.CC_DELETE) {
-            var6 = var2 ? WorldMapIcon1.field1030 : class12.field1111;
+            var6 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
             var5 = Huffman.getWidget(var6.id);
             var5.children[var6.childIndex] = null;
             class22.method295(var5);
@@ -182,7 +182,7 @@ public final class Canvas extends java.awt.Canvas {
                   if (var2) {
                      WorldMapIcon1.field1030 = var6;
                   } else {
-                     class12.field1111 = var6;
+                     GrandExchangeOfferAgeComparator.field1111 = var6;
                   }
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -202,7 +202,7 @@ public final class Canvas extends java.awt.Canvas {
                if (var2) {
                   WorldMapIcon1.field1030 = var5;
                } else {
-                  class12.field1111 = var5;
+                  GrandExchangeOfferAgeComparator.field1111 = var5;
                }
             } else {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -218,9 +218,9 @@ public final class Canvas extends java.awt.Canvas {
       signature = "(ILir;Ljava/lang/String;Ljava/lang/String;IZS)V",
       garbageValue = "-9124"
    )
-   public static void method858(int var0, AbstractArchive var1, String var2, String var3, int var4, boolean var5) {
-      int var6 = var1.getGroupId(var2);
-      int var7 = var1.getFileId(var6, var3);
+   public static void method858(int var0, AbstractArchive var1, String groupName, String fileName, int var4, boolean var5) {
+      int var6 = var1.getGroupId(groupName);
+      int var7 = var1.getFileId(var6, fileName);
       class214.field1129 = 1;
       class214.field1130 = var1;
       class30.musicTrackGroupId = var6;
@@ -243,7 +243,7 @@ public final class Canvas extends java.awt.Canvas {
 
          if (var0.hitpoints == 0) {
             if (var0.field903 < 0 || VarbitDefinition.method4910(var0.field903, var0.field905)) {
-               ParamDefinition.method4933(var0.level, var0.type, var0.x, var0.y, var0.field903, var0.field904, var0.field905);
+               ParamDefinition.addPendingSpawnToScene(var0.plane, var0.type, var0.x, var0.y, var0.field903, var0.field904, var0.field905);
                var0.remove();
             }
          } else {
@@ -252,7 +252,7 @@ public final class Canvas extends java.awt.Canvas {
             }
 
             if (var0.delay == 0 && var0.x >= 1 && var0.y >= 1 && var0.x <= 102 && var0.y <= 102 && (var0.id < 0 || VarbitDefinition.method4910(var0.id, var0.field908))) {
-               ParamDefinition.method4933(var0.level, var0.type, var0.x, var0.y, var0.id, var0.orientation, var0.field908);
+               ParamDefinition.addPendingSpawnToScene(var0.plane, var0.type, var0.x, var0.y, var0.id, var0.orientation, var0.field908);
                var0.delay = -1;
                if (var0.field903 == var0.id && var0.field903 == -1) {
                   var0.remove();

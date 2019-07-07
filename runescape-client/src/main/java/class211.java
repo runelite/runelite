@@ -125,7 +125,7 @@ public class class211 {
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAR_ISPRINTABLE) {
                      var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ChatChannel.method2238((char)var7) ? 1 : 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ChatChannel.isCharPrintable((char)var7) ? 1 : 0;
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAR_ISALPHANUMERIC) {
                      var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
@@ -133,11 +133,11 @@ public class class211 {
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAR_ISALPHA) {
                      var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = UrlRequest.method3271((char)var7) ? 1 : 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = UrlRequest.isCharAlphabetic((char)var7) ? 1 : 0;
                      return 1;
                   } else if (var0 == ScriptOpcodes.CHAR_ISNUMERIC) {
                      var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class159.method3394((char)var7) ? 1 : 0;
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class159.isCharDigit((char)var7) ? 1 : 0;
                      return 1;
                   } else if (var0 == ScriptOpcodes.STRING_LENGTH) {
                      var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
@@ -185,7 +185,7 @@ public class class211 {
                      var8 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.indexOf(var5, var8);
                      return 1;
-                  } else if (var0 == 4122) {
+                  } else if (var0 == ScriptOpcodes.UPPERCASE) {
                      var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                      Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.toUpperCase();
                      return 1;

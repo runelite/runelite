@@ -85,7 +85,7 @@ public class FontName {
    )
    static final void method5638(String var0, int var1) {
       PacketBufferNode var2 = Interpreter.method1915(ClientPacket.field299, Client.packetWriter.isaacCipher);
-      var2.packetBuffer.writeByte(WorldMapRegion.method550(var0) + 1);
+      var2.packetBuffer.writeByte(WorldMapRegion.stringCp1252NullTerminatedByteSize(var0) + 1);
       var2.packetBuffer.writeStringCp1252NullTerminated(var0);
       var2.packetBuffer.writeByte(var1);
       Client.packetWriter.method241(var2);
@@ -113,8 +113,8 @@ public class FontName {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             if (WorldMapArea.friendSystem.method99() && var3 >= 0 && var3 < WorldMapArea.friendSystem.friendsList.size()) {
                Friend var6 = (Friend)WorldMapArea.friendSystem.friendsList.get(var3);
-               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.name();
-               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.previousName();
+               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.getName();
+               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6.getPreviousName();
             } else {
                Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
                Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
@@ -124,7 +124,7 @@ public class FontName {
          } else if (var0 == ScriptOpcodes.FRIEND_GETWORLD) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             if (WorldMapArea.friendSystem.method99() && var3 >= 0 && var3 < WorldMapArea.friendSystem.friendsList.size()) {
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ((Buddy)WorldMapArea.friendSystem.friendsList.get(var3)).world0;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ((Buddy)WorldMapArea.friendSystem.friendsList.get(var3)).world;
             } else {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
             }
@@ -186,7 +186,7 @@ public class FontName {
             } else if (var0 == ScriptOpcodes.CLAN_GETCHATUSERNAME) {
                var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                if (PacketWriter.clanChat != null && var3 < PacketWriter.clanChat.size()) {
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = PacketWriter.clanChat.get(var3).username().getName();
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = PacketWriter.clanChat.get(var3).getUsername().getName();
                } else {
                   Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
                }
@@ -195,7 +195,7 @@ public class FontName {
             } else if (var0 == ScriptOpcodes.CLAN_GETCHATUSERWORLD) {
                var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                if (PacketWriter.clanChat != null && var3 < PacketWriter.clanChat.size()) {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ((Buddy)PacketWriter.clanChat.get(var3)).world();
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ((Buddy)PacketWriter.clanChat.get(var3)).getWorld();
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                }
@@ -215,7 +215,7 @@ public class FontName {
                return 1;
             } else if (var0 == ScriptOpcodes.CLAN_KICKUSER) {
                var4 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-               ArchiveDiskActionHandler.method4655(var4);
+               ArchiveDiskActionHandler.clanKickUser(var4);
                return 1;
             } else if (var0 == ScriptOpcodes.CLAN_GETCHATRANK) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = PacketWriter.clanChat != null ? PacketWriter.clanChat.rank : 0;
@@ -225,7 +225,7 @@ public class FontName {
                class31.method574(var4);
                return 1;
             } else if (var0 == ScriptOpcodes.CLAN_LEAVECHAT) {
-               class12.method158();
+               GrandExchangeOfferAgeComparator.method158();
                return 1;
             } else if (var0 == ScriptOpcodes.IGNORE_COUNT) {
                if (!WorldMapArea.friendSystem.method99()) {
@@ -239,8 +239,8 @@ public class FontName {
                var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                if (WorldMapArea.friendSystem.method99() && var3 >= 0 && var3 < WorldMapArea.friendSystem.ignoreList.size()) {
                   Ignored var7 = (Ignored)WorldMapArea.friendSystem.ignoreList.get(var3);
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var7.name();
-                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var7.previousName();
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var7.getName();
+                  Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var7.getPreviousName();
                } else {
                   Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
                   Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
@@ -254,7 +254,7 @@ public class FontName {
                return 1;
             } else if (var0 == ScriptOpcodes.CLAN_ISSELF) {
                var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-               if (PacketWriter.clanChat != null && var3 < PacketWriter.clanChat.size() && PacketWriter.clanChat.get(var3).username().equals(Canvas.localPlayer.username)) {
+               if (PacketWriter.clanChat != null && var3 < PacketWriter.clanChat.size() && PacketWriter.clanChat.get(var3).getUsername().equals(Canvas.localPlayer.username)) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 1;
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -425,12 +425,12 @@ public class FontName {
                      return 1;
                   } else if (var0 == 3656) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
-                     WorldMapArea.friendSystem.friendsList.addComparator(new class157(var5));
+                     WorldMapArea.friendSystem.friendsList.addComparator(new BuddyRankComparator(var5));
                      return 1;
                   } else if (var0 == 3657) {
                      var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                      if (PacketWriter.clanChat != null) {
-                        PacketWriter.clanChat.addComparator(new class157(var5));
+                        PacketWriter.clanChat.addComparator(new BuddyRankComparator(var5));
                      }
 
                      return 1;
@@ -471,11 +471,11 @@ public class FontName {
       VarpDefinition.VarpDefinition_cached.clear();
       GrandExchangeEvents.method69();
       Buffer.clearHealthbarCaches();
-      StructDefinition.field886.clear();
+      StructDefinition.StructDefinition_cached.clear();
       InvDefinition.method4754();
       Projectile.method2089();
       PlayerAppearance.PlayerAppearance_cachedModels.clear();
-      class157.method3382();
+      BuddyRankComparator.method3382();
       ((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).clear();
       Script.Script_cached.clear();
       AbstractArchive.archive0.method8();

@@ -283,7 +283,7 @@ public abstract class UserList {
    )
    @Export("mapPut")
    final void mapPut(User user) {
-      this.usernamesMap.put(user.username0, user);
+      this.usernamesMap.put(user.username, user);
       if (user.previousUsername != null) {
          User var2 = (User)this.previousUsernamesMap.put(user.previousUsername, user);
          if (var2 != null && var2 != user) {
@@ -327,7 +327,7 @@ public abstract class UserList {
       if (this.comparator == null) {
          this.comparator = var1;
       } else if (this.comparator instanceof AbstractUserComparator) {
-         ((AbstractUserComparator)this.comparator).method11(var1);
+         ((AbstractUserComparator)this.comparator).addComparator(var1);
       }
 
    }

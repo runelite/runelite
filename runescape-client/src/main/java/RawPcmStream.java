@@ -101,6 +101,7 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("e")
+   @Export("fill")
    public synchronized void fill(int[] var1, int var2, int var3) {
       if (this.field746 == 0 && this.field752 == 0) {
          this.skip(var3);
@@ -290,6 +291,7 @@ public class RawPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("d")
+   @Export("skip")
    public synchronized void skip(int var1) {
       if (this.field752 > 0) {
          if (var1 >= this.field752) {

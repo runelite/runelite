@@ -5,25 +5,23 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("e")
-@Implements("TotalQuantityComparator")
-final class TotalQuantityComparator implements Comparator {
+@Implements("GrandExchangeOfferTotalQuantityComparator")
+final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(Ll;Ll;I)I",
       garbageValue = "-573736433"
    )
-   int method335(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+   @Export("compareTyped")
+   int compareTyped(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.grandExchangeOffer.totalQuantity < var2.grandExchangeOffer.totalQuantity ? -1 : (var2.grandExchangeOffer.totalQuantity == var1.grandExchangeOffer.totalQuantity ? 0 : 1);
    }
 
-   @Export("compare")
-   @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.method335((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+      return this.compareTyped((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
-   @ObfuscatedName("equals")
-   public boolean method336(Object var1) {
+   public boolean equals(Object var1) {
       return super.equals(var1);
    }
 

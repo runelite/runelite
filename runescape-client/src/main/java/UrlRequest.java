@@ -52,7 +52,8 @@ public class UrlRequest {
       signature = "(CI)Z",
       garbageValue = "-476632347"
    )
-   public static boolean method3271(char var0) {
+   @Export("isCharAlphabetic")
+   public static boolean isCharAlphabetic(char var0) {
       return var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
    }
 }

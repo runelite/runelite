@@ -73,9 +73,9 @@ public class class204 {
                      var17 = var14;
                   }
 
-                  TotalQuantityComparator.loadTerrain(var18, var1, var13, var3 + var17, 0, 0, var7);
+                  GrandExchangeOfferTotalQuantityComparator.loadTerrain(var18, var1, var13, var3 + var17, 0, 0, var7);
                } else {
-                  TotalQuantityComparator.loadTerrain(var18, 0, -1, -1, 0, 0, 0);
+                  GrandExchangeOfferTotalQuantityComparator.loadTerrain(var18, 0, -1, -1, 0, 0, 0);
                }
             }
          }

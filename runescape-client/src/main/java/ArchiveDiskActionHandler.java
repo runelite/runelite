@@ -28,8 +28,6 @@ public class ArchiveDiskActionHandler implements Runnable {
    @Export("ArchiveDiskActionHandler_lock")
    static Object ArchiveDiskActionHandler_lock;
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       try {
          while (true) {
@@ -89,10 +87,11 @@ public class ArchiveDiskActionHandler implements Runnable {
       signature = "(Ljava/lang/String;B)V",
       garbageValue = "67"
    )
-   static final void method4655(String var0) {
+   @Export("clanKickUser")
+   static final void clanKickUser(String var0) {
       if (PacketWriter.clanChat != null) {
          PacketBufferNode var1 = Interpreter.method1915(ClientPacket.field235, Client.packetWriter.isaacCipher);
-         var1.packetBuffer.writeByte(WorldMapRegion.method550(var0));
+         var1.packetBuffer.writeByte(WorldMapRegion.stringCp1252NullTerminatedByteSize(var0));
          var1.packetBuffer.writeStringCp1252NullTerminated(var0);
          Client.packetWriter.method241(var1);
       }

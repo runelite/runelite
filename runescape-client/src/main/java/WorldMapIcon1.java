@@ -32,13 +32,14 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = -1722323621
    )
-   final int field1031;
+   @Export("element")
+   final int element;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Laj;"
    )
-   @Export("label0")
-   final WorldMapLabel label0;
+   @Export("label")
+   final WorldMapLabel label;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 364253793
@@ -55,9 +56,9 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
    )
    WorldMapIcon1(Coord var1, Coord var2, int var3, WorldMapLabel var4) {
       super(var1, var2);
-      this.field1031 = var3;
-      this.label0 = var4;
-      WorldMapElement var5 = ViewportMouse.getWorldMapElement(this.element());
+      this.element = var3;
+      this.label = var4;
+      WorldMapElement var5 = ViewportMouse.getWorldMapElement(this.getElement());
       Sprite var6 = var5.getSprite(false);
       if (var6 != null) {
          this.field1032 = var6.subWidth;
@@ -74,8 +75,9 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "(I)I",
       garbageValue = "1990181988"
    )
-   public int element() {
-      return this.field1031;
+   @Export("getElement")
+   public int getElement() {
+      return this.element;
    }
 
    @ObfuscatedName("f")
@@ -83,8 +85,9 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
       signature = "(I)Laj;",
       garbageValue = "1159446036"
    )
-   WorldMapLabel label() {
-      return this.label0;
+   @Export("getLabel")
+   WorldMapLabel getLabel() {
+      return this.label;
    }
 
    @ObfuscatedName("q")

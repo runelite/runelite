@@ -869,8 +869,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
    )
    protected abstract void vmethod114();
 
-   @ObfuscatedName("destroy")
-   public final void method115() {
+   public final void destroy() {
       if (this == gameShell && !isKilled) {
          stopTimeMs = class203.currentTimeMs();
          class203.method4010(5000L);
@@ -879,8 +878,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
    }
 
-   @Export("paint")
-   @ObfuscatedName("paint")
    public final synchronized void paint(Graphics var1) {
       if (this == gameShell && !isKilled) {
          this.field369 = true;
@@ -894,8 +891,6 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
    }
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       try {
          if (TaskHandler.javaVendor != null) {
@@ -909,7 +904,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
                if (var2.startsWith("1.6.0_")) {
                   int var3;
-                  for (var3 = 6; var3 < var2.length() && class159.method3394(var2.charAt(var3)); ++var3) {
+                  for (var3 = 6; var3 < var2.length() && class159.isCharDigit(var2.charAt(var3)); ++var3) {
                   }
 
                   String var4 = var2.substring(6, var3);
@@ -954,76 +949,53 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
       this.kill();
    }
 
-   @ObfuscatedName("start")
-   public final void method116() {
+   public final void start() {
       if (this == gameShell && !isKilled) {
          stopTimeMs = 0L;
       }
 
    }
 
-   @Export("update")
-   @ObfuscatedName("update")
    public final void update(Graphics var1) {
       this.paint(var1);
    }
 
-   @Export("focusGained")
-   @ObfuscatedName("focusGained")
    public final void focusGained(FocusEvent var1) {
       hasFocus = true;
       this.field369 = true;
    }
 
-   @Export("windowActivated")
-   @ObfuscatedName("windowActivated")
    public final void windowActivated(WindowEvent var1) {
    }
 
-   @Export("windowClosed")
-   @ObfuscatedName("windowClosed")
    public final void windowClosed(WindowEvent var1) {
    }
 
-   @Export("windowClosing")
-   @ObfuscatedName("windowClosing")
    public final void windowClosing(WindowEvent var1) {
-      this.method115();
+      this.destroy();
    }
 
-   @Export("windowDeiconified")
-   @ObfuscatedName("windowDeiconified")
    public final void windowDeiconified(WindowEvent var1) {
    }
 
-   @Export("windowOpened")
-   @ObfuscatedName("windowOpened")
    public final void windowOpened(WindowEvent var1) {
    }
 
-   @ObfuscatedName("postDecode")
    public abstract void init();
 
-   @ObfuscatedName("stop")
-   public final void method118() {
+   public final void stop() {
       if (this == gameShell && !isKilled) {
          stopTimeMs = class203.currentTimeMs() + 4000L;
       }
 
    }
 
-   @Export("windowIconified")
-   @ObfuscatedName("windowIconified")
    public final void windowIconified(WindowEvent var1) {
    }
 
-   @Export("windowDeactivated")
-   @ObfuscatedName("windowDeactivated")
    public final void windowDeactivated(WindowEvent var1) {
    }
 
-   @Export("focusLost")
-   @ObfuscatedName("focusLost")
    public final void focusLost(FocusEvent var1) {
       hasFocus = false;
    }

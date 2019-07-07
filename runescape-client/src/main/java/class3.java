@@ -116,29 +116,30 @@ public class class3 implements Enumerated {
       signature = "(IIIZIZI)V",
       garbageValue = "653716649"
    )
-   static void method42(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
-      if (var0 < var1) {
-         int var6 = (var0 + var1) / 2;
-         int var7 = var0;
+   @Export("doWorldSorting")
+   static void doWorldSorting(int lowestUnsorted, int highestUnsorted, int primaryMode, boolean primaryReversed, int secondaryMode, boolean secondaryReversed) {
+      if (lowestUnsorted < highestUnsorted) {
+         int var6 = (lowestUnsorted + highestUnsorted) / 2;
+         int var7 = lowestUnsorted;
          World var8 = ItemContainer.worlds[var6];
-         ItemContainer.worlds[var6] = ItemContainer.worlds[var1];
-         ItemContainer.worlds[var1] = var8;
+         ItemContainer.worlds[var6] = ItemContainer.worlds[highestUnsorted];
+         ItemContainer.worlds[highestUnsorted] = var8;
 
-         for (int var9 = var0; var9 < var1; ++var9) {
+         for (int var9 = lowestUnsorted; var9 < highestUnsorted; ++var9) {
             World var10 = ItemContainer.worlds[var9];
-            int var11 = WorldMapLabel.compareWorlds(var10, var8, var2, var3);
+            int var11 = WorldMapLabel.compareWorlds(var10, var8, primaryMode, primaryReversed);
             int var12;
             if (var11 != 0) {
-               if (var3) {
+               if (primaryReversed) {
                   var12 = -var11;
                } else {
                   var12 = var11;
                }
-            } else if (var4 == -1) {
+            } else if (secondaryMode == -1) {
                var12 = 0;
             } else {
-               int var13 = WorldMapLabel.compareWorlds(var10, var8, var4, var5);
-               if (var5) {
+               int var13 = WorldMapLabel.compareWorlds(var10, var8, secondaryMode, secondaryReversed);
+               if (secondaryReversed) {
                   var12 = -var13;
                } else {
                   var12 = var13;
@@ -152,10 +153,10 @@ public class class3 implements Enumerated {
             }
          }
 
-         ItemContainer.worlds[var1] = ItemContainer.worlds[var7];
+         ItemContainer.worlds[highestUnsorted] = ItemContainer.worlds[var7];
          ItemContainer.worlds[var7] = var8;
-         method42(var0, var7 - 1, var2, var3, var4, var5);
-         method42(var7 + 1, var1, var2, var3, var4, var5);
+         doWorldSorting(lowestUnsorted, var7 - 1, primaryMode, primaryReversed, secondaryMode, secondaryReversed);
+         doWorldSorting(var7 + 1, highestUnsorted, primaryMode, primaryReversed, secondaryMode, secondaryReversed);
       }
 
    }
@@ -299,7 +300,7 @@ public class class3 implements Enumerated {
          }
 
          var1.exportIndex();
-         WorldComparator.method67(var1);
+         GrandExchangeOfferWorldComparator.method67(var1);
 
          for (var13 = 0; var13 < Client.field211; ++var13) {
             var3 = Client.field212[var13];

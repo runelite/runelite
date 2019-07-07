@@ -510,7 +510,7 @@ public class LoginScreenAnimation {
       Varps.method4400(var5);
       var5.writeLong(var3.nextLong());
       var5.encryptRsa(class80.field1163, class80.field1164);
-      var7 = WorldMapRegion.method550(var2);
+      var7 = WorldMapRegion.stringCp1252NullTerminatedByteSize(var2);
       if (var7 % 8 != 0) {
          var7 += 8 - var7 % 8;
       }

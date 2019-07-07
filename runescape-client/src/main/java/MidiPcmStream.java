@@ -233,6 +233,7 @@ public class MidiPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("e")
+   @Export("fill")
    protected synchronized void fill(int[] var1, int var2, int var3) {
       if (this.midiFile.isReady()) {
          int var4 = this.midiFile.division * this.field496 / class309.PcmPlayer_sampleRate;
@@ -281,6 +282,7 @@ public class MidiPcmStream extends PcmStream {
    }
 
    @ObfuscatedName("d")
+   @Export("skip")
    protected synchronized void skip(int var1) {
       if (this.midiFile.isReady()) {
          int var2 = this.midiFile.division * this.field496 / class309.PcmPlayer_sampleRate;

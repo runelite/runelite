@@ -26,18 +26,18 @@ public class GrandExchangeEvent {
    @Export("grandExchangeOffer")
    public final GrandExchangeOffer grandExchangeOffer;
    @ObfuscatedName("w")
-   @Export("string1")
-   String string1;
+   @Export("offerName")
+   String offerName;
    @ObfuscatedName("o")
-   @Export("string2")
-   String string2;
+   @Export("previousOfferName")
+   String previousOfferName;
 
    @ObfuscatedSignature(
       signature = "(Lgr;BI)V"
    )
    GrandExchangeEvent(Buffer var1, byte var2, int var3) {
-      this.string1 = var1.readStringCp1252NullTerminated();
-      this.string2 = var1.readStringCp1252NullTerminated();
+      this.offerName = var1.readStringCp1252NullTerminated();
+      this.previousOfferName = var1.readStringCp1252NullTerminated();
       this.world = var1.readUnsignedShort();
       this.field370 = var1.readLong();
       int var4 = var1.readInt();
@@ -57,8 +57,9 @@ public class GrandExchangeEvent {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "1672323214"
    )
-   public String method119() {
-      return this.string1;
+   @Export("getOfferName")
+   public String getOfferName() {
+      return this.offerName;
    }
 
    @ObfuscatedName("f")
@@ -66,8 +67,9 @@ public class GrandExchangeEvent {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "-271438207"
    )
-   public String method120() {
-      return this.string2;
+   @Export("getPreviousOfferName")
+   public String getPreviousOfferName() {
+      return this.previousOfferName;
    }
 
    @ObfuscatedName("f")
@@ -80,7 +82,7 @@ public class GrandExchangeEvent {
       Object[] var2 = scriptEvent.args0;
       Script var3;
       int var4;
-      if (class12.method162(scriptEvent.type0)) {
+      if (GrandExchangeOfferAgeComparator.method162(scriptEvent.type0)) {
          class15.worldMapEvent = (WorldMapEvent)var2[0];
          WorldMapElement var5 = ViewportMouse.getWorldMapElement(class15.worldMapEvent.mapElement);
          var3 = FaceNormal.method3236(scriptEvent.type0, var5.field1020, var5.category);

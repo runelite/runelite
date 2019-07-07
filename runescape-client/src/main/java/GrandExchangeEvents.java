@@ -13,13 +13,17 @@ import net.runelite.rs.ScriptOpcodes;
 @Implements("GrandExchangeEvents")
 public class GrandExchangeEvents {
    @ObfuscatedName("f")
-   public static Comparator field371;
+   @Export("geAgeComparator")
+   public static Comparator geAgeComparator;
    @ObfuscatedName("q")
-   public static Comparator field372;
+   @Export("geUnitPriceComparator")
+   public static Comparator geUnitPriceComparator;
    @ObfuscatedName("w")
-   public static Comparator field373;
+   @Export("geItemNameComparator")
+   public static Comparator geItemNameComparator;
    @ObfuscatedName("o")
-   public static Comparator field374;
+   @Export("geTotalQuantityComparator")
+   public static Comparator geTotalQuantityComparator;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1605454211
@@ -173,10 +177,10 @@ public class GrandExchangeEvents {
    }
 
    static {
-      field371 = new class12();
-      new WorldComparator();
-      field372 = new UnitPriceComparator();
-      field373 = new class11();
-      field374 = new TotalQuantityComparator();
+      geAgeComparator = new GrandExchangeOfferAgeComparator();
+      new GrandExchangeOfferWorldComparator();
+      geUnitPriceComparator = new GrandExchangeOfferUnitPriceComparator();
+      geItemNameComparator = new GrandExchangeOfferNameComparator();
+      geTotalQuantityComparator = new GrandExchangeOfferTotalQuantityComparator();
    }
 }

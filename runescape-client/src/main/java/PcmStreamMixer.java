@@ -113,6 +113,7 @@ public class PcmStreamMixer extends PcmStream {
    }
 
    @ObfuscatedName("e")
+   @Export("fill")
    public final synchronized void fill(int[] var1, int var2, int var3) {
       do {
          if (this.field692 < 0) {
@@ -157,6 +158,7 @@ public class PcmStreamMixer extends PcmStream {
    }
 
    @ObfuscatedName("d")
+   @Export("skip")
    public final synchronized void skip(int var1) {
       do {
          if (this.field692 < 0) {

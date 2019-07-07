@@ -154,12 +154,12 @@ public class Players {
          Client.isDraggingWidget = false;
          int var3 = Client.menuOptionsCount - 1;
          if (var3 != -1) {
-            UnitPriceComparator.tempMenuAction = new MenuAction();
-            UnitPriceComparator.tempMenuAction.argument1 = Client.menuArguments1[var3];
-            UnitPriceComparator.tempMenuAction.argument2 = Client.menuArguments2[var3];
-            UnitPriceComparator.tempMenuAction.opcode = Client.menuOpcodes[var3];
-            UnitPriceComparator.tempMenuAction.argument0 = Client.menuArguments0[var3];
-            UnitPriceComparator.tempMenuAction.action = Client.menuActions[var3];
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction = new MenuAction();
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction.argument1 = Client.menuArguments1[var3];
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction.argument2 = Client.menuArguments2[var3];
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction.opcode = Client.menuOpcodes[var3];
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction.argument0 = Client.menuArguments0[var3];
+            GrandExchangeOfferUnitPriceComparator.tempMenuAction.action = Client.menuActions[var3];
          }
       }
 

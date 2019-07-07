@@ -389,7 +389,7 @@ public class Archive extends AbstractArchive {
       garbageValue = "-34"
    )
    static final void method4703(int var0) {
-      class12.method159();
+      GrandExchangeOfferAgeComparator.method159();
 
       for (ObjectSound var1 = (ObjectSound)ObjectSound.objectSounds.last(); var1 != null; var1 = (ObjectSound)ObjectSound.objectSounds.previous()) {
          if (var1.obj != null) {

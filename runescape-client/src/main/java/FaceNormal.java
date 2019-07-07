@@ -41,7 +41,7 @@ public class FaceNormal {
       garbageValue = "-1788849120"
    )
    static Script method3236(int var0, int var1, int var2) {
-      int var3 = UnitPriceComparator.method125(var1, var0);
+      int var3 = GrandExchangeOfferUnitPriceComparator.method125(var1, var0);
       Script var4 = InterfaceParent.method1175(var3, var0);
       if (var4 != null) {
          return var4;

@@ -253,10 +253,10 @@ public class WorldMapSection3 implements WorldMapSection {
          Client.viewportWidget = component;
       }
 
-      if (var3 && component.field975 != null && (var4 != component.width || var5 != component.height)) {
+      if (var3 && component.onResize != null && (var4 != component.width || var5 != component.height)) {
          ScriptEvent var6 = new ScriptEvent();
          var6.widget = component;
-         var6.args0 = component.field975;
+         var6.args0 = component.onResize;
          Client.scriptEvents.addFirst(var6);
       }
 

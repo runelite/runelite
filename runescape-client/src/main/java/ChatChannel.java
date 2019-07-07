@@ -80,7 +80,8 @@ public class ChatChannel {
       signature = "(CI)Z",
       garbageValue = "-1857344803"
    )
-   public static boolean method2238(char var0) {
+   @Export("isCharPrintable")
+   public static boolean isCharPrintable(char var0) {
       return var0 >= ' ' && var0 <= '~' ? true : (var0 >= 160 && var0 <= 255 ? true : var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
    }
 
@@ -317,7 +318,7 @@ public class ChatChannel {
 
       if (var0.isIf3) {
          if (Client.isSpellSelected) {
-            if (WorldComparator.method58(class1.getWidgetClickMask(var0)) && (FloorDecoration.selectedSpellFlags & 32) == 32) {
+            if (GrandExchangeOfferWorldComparator.method58(class1.getWidgetClickMask(var0)) && (FloorDecoration.selectedSpellFlags & 32) == 32) {
                Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + var0.dataText, 58, 0, var0.childIndex, var0.id);
             }
          } else {

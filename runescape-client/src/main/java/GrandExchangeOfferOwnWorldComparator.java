@@ -6,21 +6,23 @@ import net.runelite.mapping.ObfuscatedSignature;
 import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("bj")
-@Implements("OwnWorldComparator")
-public class OwnWorldComparator implements Comparator {
+@Implements("GrandExchangeOfferOwnWorldComparator")
+public class GrandExchangeOfferOwnWorldComparator implements Comparator {
    @ObfuscatedName("m")
-   boolean field666;
+   @Export("compareOwnWorld")
+   boolean compareOwnWorld;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(Ll;Ll;B)I",
       garbageValue = "21"
    )
-   int method234(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+   @Export("compareTyped")
+   int compareTyped(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       if (var2.world == var1.world) {
          return 0;
       } else {
-         if (this.field666) {
+         if (this.compareOwnWorld) {
             if (Client.worldId == var1.world) {
                return -1;
             }
@@ -34,15 +36,12 @@ public class OwnWorldComparator implements Comparator {
       }
    }
 
-   @ObfuscatedName("equals")
-   public boolean method235(Object var1) {
+   public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @Export("compare")
-   @ObfuscatedName("compare")
    public int compare(Object var1, Object var2) {
-      return this.method234((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+      return this.compareTyped((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    @ObfuscatedName("al")
