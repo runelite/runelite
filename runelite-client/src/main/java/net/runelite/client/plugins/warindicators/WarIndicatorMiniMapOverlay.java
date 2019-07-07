@@ -68,12 +68,9 @@ public class WarIndicatorMiniMapOverlay extends Overlay
 		String[] callers = plugin.getGetActiveCallers().split(", ");
 		String[] targets = plugin.getGetTargetedSnipes().split(", ");
 
-		if (plugin.isCallerMinimap() && ArrayUtils.contains(callers, actor.getName()))
+		if (plugin.isCallerMinimap() && ArrayUtils.contains(callers, actor.getName()) && minimapLocation != null)
 		{
-			if (minimapLocation != null)
-			{
-				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
-			}
+			OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
 		}
 
 		if (plugin.isSnipeMinimap() && ArrayUtils.contains(targets, actor.getName()))
