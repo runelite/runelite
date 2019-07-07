@@ -325,12 +325,9 @@ public class RaidsOverlay extends Overlay
 
 					String bossName = room.getBoss().getName();
 					String bossNameLC = bossName.toLowerCase();
-					if (plugin.isShowRecommendedItems())
+					if (plugin.isShowRecommendedItems() && plugin.getRecommendedItemsList().get(bossNameLC) != null)
 					{
-						if (plugin.getRecommendedItemsList().get(bossNameLC) != null)
-						{
-							imageIds.addAll(plugin.getRecommendedItemsList().get(bossNameLC));
-						}
+						imageIds.addAll(plugin.getRecommendedItemsList().get(bossNameLC));
 					}
 
 					tableComponent.addRow(plugin.isShowRecommendedItems() ? "" : room.getType().getName(), ColorUtil.prependColorTag(bossName, color));

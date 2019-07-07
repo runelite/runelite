@@ -1218,12 +1218,10 @@ public class RaidsPlugin extends Plugin
 	{
 		if (raid.getRotationString().toLowerCase().equals("vasa,tekton,vespula")
 			&& raid.getFullRotationString().toLowerCase().contains("crabs")
-			&& raid.getFullRotationString().toLowerCase().contains("tightrope"))
+			&& raid.getFullRotationString().toLowerCase().contains("tightrope")
+			&& goodCrabs != null)
 		{
-			if (goodCrabs != null)
-			{
-				return goodCrabs;
-			}
+			return goodCrabs;
 		}
 		return null;
 	}
