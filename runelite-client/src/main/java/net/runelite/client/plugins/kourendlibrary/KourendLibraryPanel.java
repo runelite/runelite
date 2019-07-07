@@ -151,7 +151,7 @@ class KourendLibraryPanel extends PluginPanel
 				}
 				else
 				{
-					e.getValue().setLocation("<html>" + locs.stream().collect(Collectors.joining("<br>")) + "</html>");
+					e.getValue().setLocation("<html>" + String.join("<br>", locs) + "</html>");
 				}
 			}
 		});
