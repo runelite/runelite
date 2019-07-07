@@ -22,8 +22,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Singleton
 public class LootAssistOverlay extends Overlay
 {
-	private Client client;
-	private DecimalFormat d = new DecimalFormat("##.#");
+	private final Client client;
+	private final DecimalFormat d = new DecimalFormat("##.#");
 
 	@Inject
 	public LootAssistOverlay(final Client client)

@@ -31,7 +31,7 @@ public class LootAssistPlugin extends Plugin
 	@Inject
 	LootAssistOverlay lootAssistOverlay;
 
-	static ConcurrentHashMap<WorldPoint, LootPile> lootPiles = new ConcurrentHashMap<>();
+	static final ConcurrentHashMap<WorldPoint, LootPile> lootPiles = new ConcurrentHashMap<>();
 
 	@Override
 	protected void startUp() throws Exception
