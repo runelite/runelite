@@ -203,7 +203,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 	@Getter
 	private String lastListenText = null;
 
-	private String lastClickedTell = null;
+	// private String lastClickedTell = null;
 
 	private int lastCallColor = -1;
 
@@ -213,7 +213,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 
 	private int tickNum = 0;
 
-	private int gameTick = -1;
+	// private int gameTick = -1;
 
 	private int inGameBit = 0;
 
@@ -338,7 +338,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		controlDown = false;
 		resetWave();
 		wave = null;
-		gameTick = client.getTickCount();
+		// gameTick = client.getTickCount();
 		menu.disableSwaps(true);
 		menu.clearHiddenMenus();
 	}
@@ -1250,7 +1250,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 				lastListenText = null;
 				lastCallText = null;
 				lastCallColor = -1;
-				lastClickedTell = null;
+				// lastClickedTell = null;
 			}
 			else
 			{
@@ -1372,12 +1372,12 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 			if (newCallColor == COLOR_CALL_CALLED)
 			{
 				lastCallColor = COLOR_CALL_CALLED;
-				lastClickedTell = lastCallText;
+				// lastClickedTell = lastCallText;
 			}
 			else if (callTimer == null)
 			{
 				lastCallColor = COLOR_CALL_UPDATED;
-				lastClickedTell = null;
+				// lastClickedTell = null;
 			}
 
 			if (callWidget != null)
