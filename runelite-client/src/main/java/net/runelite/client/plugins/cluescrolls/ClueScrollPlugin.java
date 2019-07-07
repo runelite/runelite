@@ -101,6 +101,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.ItemUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -259,10 +260,8 @@ public class ClueScrollPlugin extends Plugin
 		// Check if item was removed from inventory
 		if (clue != null && clueItemId != null)
 		{
-			final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
-
 			// Check if clue was removed from inventory
-			if (items.noneMatch(item -> itemManager.getItemDefinition(item.getId()).getId() == clueItemId))
+			if (!ItemUtil.containsItemId(event.getItemContainer().getItems(), clueItemId))
 			{
 				resetClue(true);
 			}
