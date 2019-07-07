@@ -105,7 +105,6 @@ public class CoxOverlay extends Overlay
 							if (plugin.isTektonTickCounter())
 							{
 								ticksLeft = npcs.getTicksUntilAttack();
-								int attackTicksleft = plugin.getTektonAttackTicks();
 								if (ticksLeft > 0)
 								{
 									if (ticksLeft == 1)
@@ -363,26 +362,26 @@ public class CoxOverlay extends Overlay
 		graphics.fill(poly);
 	}
 
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color, int outlineWidth, int outlineAlpha, int fillAlpha)
-	{
-		int size = 1;
-		NPCDefinition composition = actor.getTransformedDefinition();
-		if (composition != null)
-		{
-			size = composition.getSize();
-		}
-		LocalPoint lp = actor.getLocalLocation();
-		Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
-
-		if (tilePoly != null)
-		{
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
-			graphics.setStroke(new BasicStroke(outlineWidth));
-			graphics.draw(tilePoly);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
-			graphics.fill(tilePoly);
-		}
-	}
+//	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color, int outlineWidth, int outlineAlpha, int fillAlpha)
+//	{
+//		int size = 1;
+//		NPCDefinition composition = actor.getTransformedDefinition();
+//		if (composition != null)
+//		{
+//			size = composition.getSize();
+//		}
+//		LocalPoint lp = actor.getLocalLocation();
+//		Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+//
+//		if (tilePoly != null)
+//		{
+//			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
+//			graphics.setStroke(new BasicStroke(outlineWidth));
+//			graphics.draw(tilePoly);
+//			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
+//			graphics.fill(tilePoly);
+//		}
+//	}
 
 	private void renderActorOverlay(Graphics2D graphics, Actor actor, Color color, int outlineWidth, int outlineAlpha, int fillAlpha)
 	{
