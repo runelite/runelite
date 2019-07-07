@@ -229,14 +229,12 @@ public class CannonPlugin extends Plugin
 		GameObject gameObject = event.getGameObject();
 
 		Player localPlayer = client.getLocalPlayer();
-		if (gameObject.getId() == CANNON_BASE && !cannonPlaced)
+		if (gameObject.getId() == CANNON_BASE && !cannonPlaced &&
+			localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2 &&
+			localPlayer.getAnimation() == AnimationID.BURYING_BONES)
 		{
-			if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
-				&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
-			{
-				cannonPosition = gameObject.getWorldLocation();
-				cannon = gameObject;
-			}
+			cannonPosition = gameObject.getWorldLocation();
+			cannon = gameObject;
 		}
 	}
 
@@ -250,17 +248,15 @@ public class CannonPlugin extends Plugin
 			WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
 
 			//Check to see if projectile x,y is 0 else it will continuously decrease while ball is flying.
-			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0)
-			{
+			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0 &&
 				// When there's a chat message about cannon reloaded/unloaded/out of ammo,
 				// the message event runs before the projectile event. However they run
 				// in the opposite order on the server. So if both fires in the same tick,
 				// we don't want to update the cannonball counter if it was set to a specific
 				// amount.
-				if (!skipProjectileCheckThisTick)
-				{
-					cballsLeft--;
-				}
+				!skipProjectileCheckThisTick)
+			{
+				cballsLeft--;
 			}
 		}
 	}
@@ -366,13 +362,10 @@ public class CannonPlugin extends Plugin
 		{
 			return Color.orange;
 		}
-		else if (cballsLeft <= this.ammoAmount)
+		else if (cballsLeft <= this.ammoAmount && this.notifyAmmoLeft && !lock)
 		{
-			if (this.notifyAmmoLeft && !lock)
-			{
-				notifier.notify("Your cannon has " + this.ammoAmount + " balls left!");
-				lock = true;
-			}
+			notifier.notify("Your cannon has " + this.ammoAmount + " balls left!");
+			lock = true;
 		}
 
 		return Color.red;
