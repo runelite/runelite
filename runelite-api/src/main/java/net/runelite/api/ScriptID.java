@@ -94,11 +94,6 @@ public final class ScriptID
 	 * Builds the chatbox input widget
 	 */
 	public static final int CHAT_PROMPT_INIT = 223;
-	
-	/**
-	 * Joins the corresponding minigame chat
-	 */
-	public static final int FORCE_JOIN_CC = 437;
 
 	/**
 	 * Displays the game messages when clicking on an item inside the Items Kept on Death interface
@@ -207,7 +202,7 @@ public final class ScriptID
 	public static final int PUBLICMSG = 13337;
 
 	/**
-	 * TExt typed in the chatbox
+	 * Clicking bank pin buttons runs this
 	 */
-	public static final int CHATBOX_TEXT = 96;
+	public static final int BANK_PIN_OP = 685;
 }
