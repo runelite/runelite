@@ -40,7 +40,7 @@ public class SkillIconManager
 	public BufferedImage getSkillImage(Skill skill, boolean small)
 	{
 		int skillIdx = skill.ordinal() + (small ? Skill.values().length : 0);
-		BufferedImage skillImage = null;
+		BufferedImage skillImage;
 
 		if (imgCache[skillIdx] != null)
 		{
