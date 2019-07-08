@@ -43,7 +43,7 @@ import net.runelite.api.Nameable;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NameableNameChanged;
-import net.runelite.api.events.RemovedFriend;
+import net.runelite.api.events.FriendRemoved;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -250,7 +250,7 @@ public class FriendNotesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onRemovedFriend(RemovedFriend event)
+	public void onFriendRemoved(FriendRemoved event)
 	{
 		// Delete a friend's note if they are removed
 		final String displayName = Text.toJagexName(event.getName());

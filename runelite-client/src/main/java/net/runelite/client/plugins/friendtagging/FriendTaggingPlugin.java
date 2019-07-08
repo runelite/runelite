@@ -30,7 +30,7 @@ import net.runelite.api.Nameable;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NameableNameChanged;
-import net.runelite.api.events.RemovedFriend;
+import net.runelite.api.events.FriendRemoved;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -128,7 +128,7 @@ public class FriendTaggingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onRemovedFriend(RemovedFriend event)
+	public void onFriendRemoved(FriendRemoved event)
 	{
 		final String displayName = event.getName().trim().toLowerCase();
 		deleteTag(displayName);
