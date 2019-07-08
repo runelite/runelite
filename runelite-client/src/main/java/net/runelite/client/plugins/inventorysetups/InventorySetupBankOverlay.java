@@ -42,21 +42,19 @@ public class InventorySetupBankOverlay extends WidgetItemOverlay
 {
 	private final ItemManager itemManager;
 	private final InventorySetupPlugin plugin;
-	private final InventorySetupConfig config;
 
 	@Inject
-	public InventorySetupBankOverlay(ItemManager itemManager, InventorySetupPlugin plugin, InventorySetupConfig config)
+	public InventorySetupBankOverlay(ItemManager itemManager, InventorySetupPlugin plugin)
 	{
 		this.itemManager = itemManager;
 		this.plugin = plugin;
-		this.config = config;
 		showOnBank();
 	}
 
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		if (config.getBankHighlight())
+		if (plugin.isGetBankHighlight())
 		{
 			int[] ids = plugin.getCurrentInventorySetupIds();
 			if (ids == null)
@@ -70,7 +68,7 @@ public class InventorySetupBankOverlay extends WidgetItemOverlay
 			}
 
 
-			final Color color = config.getBankHighlightColor();
+			final Color color = plugin.getGetBankHighlightColor();
 
 			if (color != null)
 			{

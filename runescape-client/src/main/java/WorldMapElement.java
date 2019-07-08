@@ -11,7 +11,8 @@ public class WorldMapElement extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache __ic_m;
+   @Export("WorldMapElement_archive")
+   public static AbstractArchive WorldMapElement_archive;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -22,13 +23,13 @@ public class WorldMapElement extends DualNode {
    @ObfuscatedSignature(
       signature = "Lkz;"
    )
-   @Export("fonts")
-   static Fonts fonts;
+   @Export("WorldMapElement_fonts")
+   static Fonts WorldMapElement_fonts;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1579051565
    )
-   public final int __o;
+   public final int field1020;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 2012857993
@@ -42,12 +43,13 @@ public class WorldMapElement extends DualNode {
    @Export("sprite2")
    int sprite2;
    @ObfuscatedName("l")
-   public String __l;
+   @Export("name")
+   public String name;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -231067
    )
-   public int __e;
+   public int field1022;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 1184517129
@@ -61,41 +63,43 @@ public class WorldMapElement extends DualNode {
    @Export("string1")
    public String string1;
    @ObfuscatedName("i")
-   int[] __i;
+   int[] field1023;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1336803515
    )
-   int __a;
+   int field1024;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1825795359
    )
-   int __z;
+   int field1025;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1007121521
    )
-   int __j;
+   int field1026;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1209054101
    )
-   int __s;
+   int field1027;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Lju;"
    )
-   public class266 field3287;
+   @Export("horizontalAlignment")
+   public HorizontalAlignment horizontalAlignment;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Lip;"
    )
-   public class249 field3301;
+   @Export("verticalAlignment")
+   public VerticalAlignment verticalAlignment;
    @ObfuscatedName("h")
-   int[] __h;
+   int[] field1028;
    @ObfuscatedName("b")
-   byte[] __b;
+   byte[] field1029;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = -653112729
@@ -103,23 +107,19 @@ public class WorldMapElement extends DualNode {
    @Export("category")
    public int category;
 
-   static {
-      WorldMapElement_cachedSprites = new EvictingDualNodeHashTable(256);
-   }
-
    public WorldMapElement(int var1) {
       this.sprite1 = -1;
       this.sprite2 = -1;
       this.textSize = 0;
       this.strings = new String[5];
-      this.__a = Integer.MAX_VALUE;
-      this.__z = Integer.MAX_VALUE;
-      this.__j = Integer.MIN_VALUE;
-      this.__s = Integer.MIN_VALUE;
-      this.field3287 = class266.field3527;
-      this.field3301 = class249.field3273;
+      this.field1024 = Integer.MAX_VALUE;
+      this.field1025 = Integer.MAX_VALUE;
+      this.field1026 = Integer.MIN_VALUE;
+      this.field1027 = Integer.MIN_VALUE;
+      this.horizontalAlignment = HorizontalAlignment.field3527;
+      this.verticalAlignment = VerticalAlignment.field3273;
       this.category = -1;
-      this.__o = var1;
+      this.field1020 = var1;
    }
 
    @ObfuscatedName("f")
@@ -127,15 +127,15 @@ public class WorldMapElement extends DualNode {
       signature = "(Lgr;B)V",
       garbageValue = "81"
    )
-   @Export("read")
-   public void read(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+   @Export("decode")
+   public void decode(Buffer buffer) {
+      while (true) {
+         int var2 = buffer.readUnsignedByte();
+         if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(buffer, var2);
       }
    }
 
@@ -144,85 +144,83 @@ public class WorldMapElement extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-1197630144"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
-      if(var2 == 1) {
-         this.sprite1 = var1.__ap_310();
-      } else if(var2 == 2) {
-         this.sprite2 = var1.__ap_310();
-      } else if(var2 == 3) {
-         this.__l = var1.readStringCp1252NullTerminated();
-      } else if(var2 == 4) {
-         this.__e = var1.readMedium();
-      } else if(var2 == 5) {
-         var1.readMedium();
-      } else if(var2 == 6) {
-         this.textSize = var1.readUnsignedByte();
+   @Export("decodeNext")
+   void decodeNext(Buffer buffer, int opcode) {
+      if (opcode == 1) {
+         this.sprite1 = buffer.method51();
+      } else if (opcode == 2) {
+         this.sprite2 = buffer.method51();
+      } else if (opcode == 3) {
+         this.name = buffer.readStringCp1252NullTerminated();
+      } else if (opcode == 4) {
+         this.field1022 = buffer.readMedium();
+      } else if (opcode == 5) {
+         buffer.readMedium();
+      } else if (opcode == 6) {
+         this.textSize = buffer.readUnsignedByte();
       } else {
          int var3;
-         if(var2 == 7) {
-            var3 = var1.readUnsignedByte();
-            if((var3 & 1) == 0) {
-               ;
+         if (opcode == 7) {
+            var3 = buffer.readUnsignedByte();
+            if ((var3 & 1) == 0) {
             }
 
-            if((var3 & 2) == 2) {
-               ;
+            if ((var3 & 2) == 2) {
             }
-         } else if(var2 == 8) {
-            var1.readUnsignedByte();
-         } else if(var2 >= 10 && var2 <= 14) {
-            this.strings[var2 - 10] = var1.readStringCp1252NullTerminated();
-         } else if(var2 == 15) {
-            var3 = var1.readUnsignedByte();
-            this.__i = new int[var3 * 2];
+         } else if (opcode == 8) {
+            buffer.readUnsignedByte();
+         } else if (opcode >= 10 && opcode <= 14) {
+            this.strings[opcode - 10] = buffer.readStringCp1252NullTerminated();
+         } else if (opcode == 15) {
+            var3 = buffer.readUnsignedByte();
+            this.field1023 = new int[var3 * 2];
 
             int var4;
-            for(var4 = 0; var4 < var3 * 2; ++var4) {
-               this.__i[var4] = var1.__aq_303();
+            for (var4 = 0; var4 < var3 * 2; ++var4) {
+               this.field1023[var4] = buffer.readShort();
             }
 
-            var1.readInt();
-            var4 = var1.readUnsignedByte();
-            this.__h = new int[var4];
+            buffer.readInt();
+            var4 = buffer.readUnsignedByte();
+            this.field1028 = new int[var4];
 
             int var5;
-            for(var5 = 0; var5 < this.__h.length; ++var5) {
-               this.__h[var5] = var1.readInt();
+            for (var5 = 0; var5 < this.field1028.length; ++var5) {
+               this.field1028[var5] = buffer.readInt();
             }
 
-            this.__b = new byte[var3];
+            this.field1029 = new byte[var3];
 
-            for(var5 = 0; var5 < var3; ++var5) {
-               this.__b[var5] = var1.readByte();
+            for (var5 = 0; var5 < var3; ++var5) {
+               this.field1029[var5] = buffer.readByte();
             }
-         } else if(var2 != 16) {
-            if(var2 == 17) {
-               this.string1 = var1.readStringCp1252NullTerminated();
-            } else if(var2 == 18) {
-               var1.__ap_310();
-            } else if(var2 == 19) {
-               this.category = var1.__ag_302();
-            } else if(var2 == 21) {
-               var1.readInt();
-            } else if(var2 == 22) {
-               var1.readInt();
-            } else if(var2 == 23) {
-               var1.readUnsignedByte();
-               var1.readUnsignedByte();
-               var1.readUnsignedByte();
-            } else if(var2 == 24) {
-               var1.__aq_303();
-               var1.__aq_303();
-            } else if(var2 == 25) {
-               var1.__ap_310();
-            } else if(var2 == 28) {
-               var1.readUnsignedByte();
-            } else if(var2 == 29) {
-               class266[] var6 = new class266[]{class266.field3527, class266.field3526, class266.field3529};
-               this.field3287 = (class266)ScriptFrame.findEnumerated(var6, var1.readUnsignedByte());
-            } else if(var2 == 30) {
-               this.field3301 = (class249)ScriptFrame.findEnumerated(UnderlayDefinition.method4839(), var1.readUnsignedByte());
+         } else if (opcode != 16) {
+            if (opcode == 17) {
+               this.string1 = buffer.readStringCp1252NullTerminated();
+            } else if (opcode == 18) {
+               buffer.method51();
+            } else if (opcode == 19) {
+               this.category = buffer.readUnsignedShort();
+            } else if (opcode == 21) {
+               buffer.readInt();
+            } else if (opcode == 22) {
+               buffer.readInt();
+            } else if (opcode == 23) {
+               buffer.readUnsignedByte();
+               buffer.readUnsignedByte();
+               buffer.readUnsignedByte();
+            } else if (opcode == 24) {
+               buffer.readShort();
+               buffer.readShort();
+            } else if (opcode == 25) {
+               buffer.method51();
+            } else if (opcode == 28) {
+               buffer.readUnsignedByte();
+            } else if (opcode == 29) {
+               HorizontalAlignment[] var6 = new HorizontalAlignment[]{HorizontalAlignment.field3527, HorizontalAlignment.field3526, HorizontalAlignment.field3529};
+               this.horizontalAlignment = (HorizontalAlignment)ScriptFrame.findEnumerated(var6, buffer.readUnsignedByte());
+            } else if (opcode == 30) {
+               this.verticalAlignment = (VerticalAlignment)ScriptFrame.findEnumerated(FloorUnderlayDefinition.method4839(), buffer.readUnsignedByte());
             }
          }
       }
@@ -234,19 +232,19 @@ public class WorldMapElement extends DualNode {
       signature = "(I)V",
       garbageValue = "1799485224"
    )
-   public void __w_409() {
-      if(this.__i != null) {
-         for(int var1 = 0; var1 < this.__i.length; var1 += 2) {
-            if(this.__i[var1] < this.__a) {
-               this.__a = this.__i[var1];
-            } else if(this.__i[var1] > this.__j) {
-               this.__j = this.__i[var1];
+   public void method389() {
+      if (this.field1023 != null) {
+         for (int var1 = 0; var1 < this.field1023.length; var1 += 2) {
+            if (this.field1023[var1] < this.field1024) {
+               this.field1024 = this.field1023[var1];
+            } else if (this.field1023[var1] > this.field1026) {
+               this.field1026 = this.field1023[var1];
             }
 
-            if(this.__i[var1 + 1] < this.__z) {
-               this.__z = this.__i[var1 + 1];
-            } else if(this.__i[var1 + 1] > this.__s) {
-               this.__s = this.__i[var1 + 1];
+            if (this.field1023[var1 + 1] < this.field1025) {
+               this.field1025 = this.field1023[var1 + 1];
+            } else if (this.field1023[var1 + 1] > this.field1027) {
+               this.field1027 = this.field1023[var1 + 1];
             }
          }
       }
@@ -271,15 +269,15 @@ public class WorldMapElement extends DualNode {
    )
    @Export("getSprite0")
    Sprite getSprite0(int var1) {
-      if(var1 < 0) {
+      if (var1 < 0) {
          return null;
       } else {
          Sprite var2 = (Sprite)WorldMapElement_cachedSprites.get((long)var1);
-         if(var2 != null) {
+         if (var2 != null) {
             return var2;
          } else {
-            var2 = class322.readSprite(__ic_m, var1, 0);
-            if(var2 != null) {
+            var2 = class322.readSprite(WorldMapElement_archive, var1, 0);
+            if (var2 != null) {
                WorldMapElement_cachedSprites.put(var2, (long)var1);
             }
 
@@ -293,8 +291,8 @@ public class WorldMapElement extends DualNode {
       signature = "(I)I",
       garbageValue = "821701099"
    )
-   public int __g_410() {
-      return this.__o;
+   public int method390() {
+      return this.field1020;
    }
 
    @ObfuscatedName("m")
@@ -306,13 +304,17 @@ public class WorldMapElement extends DualNode {
       class310[] var1 = new class310[]{class310.field3805, class310.field3807, class310.field3806};
       class310[] var2 = var1;
 
-      for(int var3 = 0; var3 < var2.length; ++var3) {
+      for (int var3 = 0; var3 < var2.length; ++var3) {
          class310 var4 = var2[var3];
-         if(var0 == var4.field3804) {
+         if (var0 == var4.field3804) {
             return var4;
          }
       }
 
       return null;
+   }
+
+   static {
+      WorldMapElement_cachedSprites = new EvictingDualNodeHashTable(256);
    }
 }

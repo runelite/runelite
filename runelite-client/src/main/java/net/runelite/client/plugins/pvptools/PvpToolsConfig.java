@@ -85,20 +85,6 @@ public interface PvpToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideAttackMode",
-		name = "Mode",
-		description = "",
-		position = 6,
-		group = "Right-Click Attack Options",
-		hidden = true,
-		unhide = "hideAttack"
-	)
-	default AttackMode hideAttackMode()
-	{
-		return AttackMode.FRIENDS;
-	}
-
-	@ConfigItem(
 		keyName = "hideCast",
 		name = "Hide cast",
 		description = "Hides the cast option for clanmates, friends, or both",
@@ -106,70 +92,6 @@ public interface PvpToolsConfig extends Config
 		group = "Right-Click Attack Options"
 	)
 	default boolean hideCast()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "hideCastMode",
-		name = "Mode",
-		description = "",
-		position = 8,
-		group = "Right-Click Attack Options",
-		hidden = true,
-		unhide = "hideCast"
-	)
-	default AttackMode hideCastMode()
-	{
-		return AttackMode.FRIENDS;
-	}
-
-	@ConfigItem(
-		keyName = "hideCastIgnored",
-		name = "Ignored spells",
-		description = "Spells that should not be hidden from being cast, separated by a comma",
-		position = 9,
-		group = "Right-Click Attack Options",
-		hidden = true,
-		unhide = "hideCast"
-	)
-	default String hideCastIgnored()
-	{
-		return "cure other, energy transfer, heal other, vengeance other";
-	}
-
-	@ConfigItem(
-		keyName = "attackOptionsClan",
-		name = "Move CC Attack Option",
-		description = "Moves the attack option for people in the same CC",
-		position = 10,
-		group = "Right-Click Attack Options"
-	)
-	default boolean attackOptionsClan()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "attackOptionsFriend",
-		name = "Move Friend Attack Options",
-		description = "Moves the attack option for people on your friends list",
-		position = 11,
-		group = "Right-Click Attack Options"
-	)
-	default boolean attackOptionsFriend()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "levelRangeAttackOptions",
-		name = "Moves Other Attack Options",
-		description = "Moves the attack option for people that are outside your level range",
-		position = 12,
-		group = "Right-Click Attack Options"
-	)
-	default boolean levelRangeAttackOptions()
 	{
 		return false;
 	}
@@ -206,5 +128,4 @@ public interface PvpToolsConfig extends Config
 	{
 		return true;
 	}
-
 }

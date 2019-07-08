@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.implings;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum ImplingType
 {
 	BABY("Baby"),

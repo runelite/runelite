@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
@@ -40,22 +41,21 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
+@Singleton
 class CannonOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2500;
 
 	private final Client client;
-	private final CannonConfig config;
 	private final CannonPlugin plugin;
 	private final TextComponent textComponent = new TextComponent();
 
 	@Inject
-	CannonOverlay(Client client, CannonConfig config, CannonPlugin plugin)
+	CannonOverlay(final Client client, final CannonPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 	}
 
@@ -91,9 +91,9 @@ class CannonOverlay extends Overlay
 				textComponent.render(graphics);
 			}
 
-			if (config.showDoubleHitSpot())
+			if (plugin.isShowDoubleHitSpot())
 			{
-				Color color = config.highlightDoubleHitColor();
+				Color color = plugin.getHighlightDoubleHitColor();
 				drawDoubleHitSpots(graphics, cannonPoint, color);
 			}
 		}

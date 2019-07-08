@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -1661,12 +1662,22 @@ public interface Client extends GameShell
 	
 	String getSelectedSpellName();
 	
-	boolean getIsSpellSelected();
+	boolean isSpellSelected();
 
 	/**
 	 * Set whether or not player attack options will be hidden for clanmembers/friends
 	 */
 	void setHideFriendAttackOptions(boolean yes);
+
+	/**
+	 * Set whether or not player cast options will be hidden for clanmembers/friends
+	 */
+	void setHideFriendCastOptions(boolean yes);
+
+	/**
+	 * Set spells excluded from above hiding
+	 */
+	void setUnhiddenCasts(Set<String> casts);
 	
 	/**
 	 * Sorts the current menu entries in the same way the client does this.
@@ -1674,4 +1685,13 @@ public interface Client extends GameShell
 	 */
 	void sortMenuEntries();
 
+	/**
+	 * Add player to friendlist
+	 */
+	void addFriend(String name);
+
+	/**
+	 * Remove player from friendlist
+	 */
+	void removeFriend(String name);
 }

@@ -77,12 +77,12 @@ public enum WildernessLocation
 		this.worldArea = new WorldArea(location.x, location.y, location.width, location.height, plane);
 	}
 
-	public static class Location
+	static class Location
 	{
-		public int x;
-		public int y;
-		public int width;
-		public int height;
+		final int x;
+		final int y;
+		final int width;
+		final int height;
 
 		Location(int x, int y, int x1, int y1)
 		{

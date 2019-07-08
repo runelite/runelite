@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.kourendlibrary;
 
 import java.awt.Color;
+import javax.inject.Singleton;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,11 +33,12 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 
+@Singleton
 class BookPanel extends JPanel
 {
-	private JLabel location = new JLabel();
+	private final JLabel location = new JLabel();
 
-	BookPanel(Book b)
+	BookPanel(final Book b)
 	{
 		setBorder(new EmptyBorder(3, 3, 3, 3));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);

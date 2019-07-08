@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.raidsthieving;
 
 import java.util.Objects;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
@@ -9,20 +10,20 @@ import net.runelite.api.coords.WorldPoint;
 /**
  * Represents a point in the instance chunk, invariant of rotation.
  */
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public class InstancePoint
 {
 	private static final int CHUNK_SIZE = 8;
 	private static final double CHUNK_OFFSET = 3.5;
 
-	private InstancePoint(int x, int y, int rot)
+	private InstancePoint(final int x, final int y, final int rot)
 	{
 		this.x = x;
 		this.y = y;
 		this.rot = rot;
 	}
 
-	public InstancePoint(int x, int y)
+	public InstancePoint(final int x, final int y)
 	{
 		this.x = x;
 		this.y = y;
@@ -97,7 +98,9 @@ public class InstancePoint
 		return Objects.hash(x, y);
 	}
 
+	@Getter(AccessLevel.PUBLIC)
 	private int x;
+	@Getter(AccessLevel.PUBLIC)
 	private int y;
 	private int rot;
 }

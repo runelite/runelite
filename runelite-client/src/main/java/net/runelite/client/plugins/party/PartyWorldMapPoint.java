@@ -37,9 +37,9 @@ class PartyWorldMapPoint extends WorldMapPoint
 	private static final BufferedImage ARROW = ImageUtil.getResourceStreamFromClass(PartyWorldMapPoint.class, "/util/clue_arrow.png");
 
 	private BufferedImage partyImage;
-	private PartyMember member;
+	private final PartyMember member;
 
-	PartyWorldMapPoint(WorldPoint worldPoint, PartyMember member)
+	PartyWorldMapPoint(final WorldPoint worldPoint, final PartyMember member)
 	{
 		super(worldPoint, null);
 		this.member = member;

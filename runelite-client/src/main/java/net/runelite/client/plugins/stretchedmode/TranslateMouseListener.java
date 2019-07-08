@@ -29,15 +29,17 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.client.input.MouseListener;
 
+@Singleton
 public class TranslateMouseListener implements MouseListener
 {
 	private final Client client;
 
 	@Inject
-	public TranslateMouseListener(Client client)
+	public TranslateMouseListener(final Client client)
 	{
 		this.client = client;
 	}

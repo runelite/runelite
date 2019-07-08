@@ -24,18 +24,18 @@ public class WorldMapEvent {
       signature = "Lhu;"
    )
    @Export("coord1")
-   public TileLocation coord1;
+   public Coord coord1;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lhu;"
    )
    @Export("coord2")
-   public TileLocation coord2;
+   public Coord coord2;
 
    @ObfuscatedSignature(
       signature = "(ILhu;Lhu;)V"
    )
-   public WorldMapEvent(int var1, TileLocation var2, TileLocation var3) {
+   public WorldMapEvent(int var1, Coord var2, Coord var3) {
       this.mapElement = var1;
       this.coord1 = var2;
       this.coord2 = var3;
@@ -47,7 +47,7 @@ public class WorldMapEvent {
       garbageValue = "-782761258"
    )
    public static int method780(int var0) {
-      return UnitPriceComparator.method134(ViewportMouse.ViewportMouse_entityTags[var0]);
+      return GrandExchangeOfferUnitPriceComparator.method134(ViewportMouse.ViewportMouse_entityTags[var0]);
    }
 
    @ObfuscatedName("iy")
@@ -55,8 +55,9 @@ public class WorldMapEvent {
       signature = "(IIIIB)V",
       garbageValue = "2"
    )
-   static final void method781(int var0, int var1, int var2, int var3) {
-      if(Client.isItemSelected == 0 && !Client.isSpellSelected) {
+   @Export("addSceneMenuOptions")
+   static final void addSceneMenuOptions(int var0, int var1, int var2, int var3) {
+      if (Client.isItemSelected == 0 && !Client.isSpellSelected) {
          Tiles.insertMenuItemNoShift("Walk here", "", 23, 0, var0 - var2, var1 - var3);
       }
 
@@ -64,189 +65,189 @@ public class WorldMapEvent {
       long var6 = -1L;
       int var8 = 0;
 
-      while(true) {
-         int var10 = ViewportMouse.ViewportMouse_entityCount;
-         if(var8 >= var10) {
-            if(-1L != var4) {
-               var8 = UnitPriceComparator.method134(var4);
-               int var9 = (int)(var4 >>> 7 & 127L);
+      while (true) {
+         int var9 = ViewportMouse.ViewportMouse_entityCount;
+         if (var8 >= var9) {
+            if (-1L != var4) {
+               var8 = GrandExchangeOfferUnitPriceComparator.method134(var4);
+               int var29 = (int)(var4 >>> 7 & 127L);
                Player var11 = Client.players[Client.combatTargetPlayerIndex];
-               TotalQuantityComparator.addPlayerToMenu(var11, Client.combatTargetPlayerIndex, var8, var9);
+               GrandExchangeOfferTotalQuantityComparator.addPlayerToMenu(var11, Client.combatTargetPlayerIndex, var8, var29);
             }
 
             return;
          }
 
-         long var26 = ViewportMouse.ViewportMouse_entityTags[var8];
-         if(var6 != var26) {
-            label338: {
-               var6 = var26;
-               int var15 = method780(var8);
-               long var18 = ViewportMouse.ViewportMouse_entityTags[var8];
-               int var17 = (int)(var18 >>> 7 & 127L);
-               var17 = var17;
-               int var28 = GrandExchangeEvent.method80(var8);
-               int var19 = ClientPreferences.method1808(var8);
-               if(var28 == 2 && class65.scene.getObjectFlags(SoundSystem.plane, var15, var17, var26) >= 0) {
-                  ObjectDefinition var20 = class50.getObjectDefinition(var19);
-                  if(var20.transforms != null) {
-                     var20 = var20.transform();
+         long var10 = ViewportMouse.ViewportMouse_entityTags[var8];
+         if (var6 != var10) {
+            label276: {
+               var6 = var10;
+               int var12 = method780(var8);
+               long var13 = ViewportMouse.ViewportMouse_entityTags[var8];
+               int var15 = (int)(var13 >>> 7 & 127L);
+               var15 = var15;
+               int var16 = GrandExchangeEvent.method80(var8);
+               int var17 = ClientPreferences.method1808(var8);
+               if (var16 == 2 && class65.scene.getObjectFlags(SoundSystem.plane, var12, var15, var10) >= 0) {
+                  ObjectDefinition var18 = class50.getObjectDefinition(var17);
+                  if (var18.transforms != null) {
+                     var18 = var18.transform();
                   }
 
-                  if(var20 == null) {
-                     break label338;
+                  if (var18 == null) {
+                     break label276;
                   }
 
-                  if(Client.isItemSelected == 1) {
-                     Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + BufferedFile.colorStartTag(65535) + var20.name, 1, var19, var15, var17);
-                  } else if(Client.isSpellSelected) {
-                     if((FloorDecoration.selectedSpellFlags & 4) == 4) {
-                        Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + BufferedFile.colorStartTag(65535) + var20.name, 2, var19, var15, var17);
+                  if (Client.isItemSelected == 1) {
+                     Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " -> " + BufferedFile.colorStartTag(65535) + var18.name, 1, var17, var12, var15);
+                  } else if (Client.isSpellSelected) {
+                     if ((FloorDecoration.selectedSpellFlags & 4) == 4) {
+                        Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + BufferedFile.colorStartTag(65535) + var18.name, 2, var17, var12, var15);
                      }
                   } else {
-                     String[] var29 = var20.actions;
-                     if(var29 != null) {
-                        for(int var30 = 4; var30 >= 0; --var30) {
-                           if(var29[var30] != null) {
-                              short var23 = 0;
-                              if(var30 == 0) {
-                                 var23 = 3;
+                     String[] var19 = var18.actions;
+                     if (var19 != null) {
+                        for (int var20 = 4; var20 >= 0; --var20) {
+                           if (var19[var20] != null) {
+                              short var21 = 0;
+                              if (var20 == 0) {
+                                 var21 = 3;
                               }
 
-                              if(var30 == 1) {
-                                 var23 = 4;
+                              if (var20 == 1) {
+                                 var21 = 4;
                               }
 
-                              if(var30 == 2) {
-                                 var23 = 5;
+                              if (var20 == 2) {
+                                 var21 = 5;
                               }
 
-                              if(var30 == 3) {
-                                 var23 = 6;
+                              if (var20 == 3) {
+                                 var21 = 6;
                               }
 
-                              if(var30 == 4) {
-                                 var23 = 1001;
+                              if (var20 == 4) {
+                                 var21 = 1001;
                               }
 
-                              Tiles.insertMenuItemNoShift(var29[var30], BufferedFile.colorStartTag(65535) + var20.name, var23, var19, var15, var17);
+                              Tiles.insertMenuItemNoShift(var19[var20], BufferedFile.colorStartTag(65535) + var18.name, var21, var17, var12, var15);
                            }
                         }
                      }
 
-                     Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(65535) + var20.name, 1002, var20.id, var15, var17);
+                     Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(65535) + var18.name, 1002, var18.id, var12, var15);
                   }
                }
 
-               int var21;
-               Npc var22;
-               Player var24;
-               int[] var36;
-               int var38;
-               if(var28 == 1) {
-                  Npc var33 = Client.npcs[var19];
-                  if(var33 == null) {
-                     break label338;
+               int[] var22;
+               int var30;
+               int var31;
+               NPC var32;
+               Player var34;
+               if (var16 == 1) {
+                  NPC var23 = Client.npcs[var17];
+                  if (var23 == null) {
+                     break label276;
                   }
 
-                  if(var33.definition.size == 1 && (var33.x & 127) == 64 && (var33.y & 127) == 64) {
-                     for(var21 = 0; var21 < Client.npcCount; ++var21) {
-                        var22 = Client.npcs[Client.npcIndices[var21]];
-                        if(var22 != null && var33 != var22 && var22.definition.size == 1 && var22.x == var33.x && var22.y == var33.y) {
-                           Tile.addNpcToMenu(var22.definition, Client.npcIndices[var21], var15, var17);
+                  if (var23.definition.size == 1 && (var23.x & 127) == 64 && (var23.y & 127) == 64) {
+                     for (var31 = 0; var31 < Client.npcCount; ++var31) {
+                        var32 = Client.npcs[Client.npcIndices[var31]];
+                        if (var32 != null && var23 != var32 && var32.definition.size == 1 && var32.x == var23.x && var32.y == var23.y) {
+                           Tile.addNpcToMenu(var32.definition, Client.npcIndices[var31], var12, var15);
                         }
                      }
 
-                     var21 = Players.Players_count;
-                     var36 = Players.Players_indices;
+                     var31 = Players.Players_count;
+                     var22 = Players.Players_indices;
 
-                     for(var38 = 0; var38 < var21; ++var38) {
-                        var24 = Client.players[var36[var38]];
-                        if(var24 != null && var24.x == var33.x && var24.y == var33.y) {
-                           TotalQuantityComparator.addPlayerToMenu(var24, var36[var38], var15, var17);
+                     for (var30 = 0; var30 < var31; ++var30) {
+                        var34 = Client.players[var22[var30]];
+                        if (var34 != null && var34.x == var23.x && var34.y == var23.y) {
+                           GrandExchangeOfferTotalQuantityComparator.addPlayerToMenu(var34, var22[var30], var12, var15);
                         }
                      }
                   }
 
-                  Tile.addNpcToMenu(var33.definition, var19, var15, var17);
+                  Tile.addNpcToMenu(var23.definition, var17, var12, var15);
                }
 
-               if(var28 == 0) {
-                  Player var34 = Client.players[var19];
-                  if(var34 == null) {
-                     break label338;
+               if (var16 == 0) {
+                  Player var33 = Client.players[var17];
+                  if (var33 == null) {
+                     break label276;
                   }
 
-                  if((var34.x & 127) == 64 && (var34.y & 127) == 64) {
-                     for(var21 = 0; var21 < Client.npcCount; ++var21) {
-                        var22 = Client.npcs[Client.npcIndices[var21]];
-                        if(var22 != null && var22.definition.size == 1 && var34.x == var22.x && var34.y == var22.y) {
-                           Tile.addNpcToMenu(var22.definition, Client.npcIndices[var21], var15, var17);
+                  if ((var33.x & 127) == 64 && (var33.y & 127) == 64) {
+                     for (var31 = 0; var31 < Client.npcCount; ++var31) {
+                        var32 = Client.npcs[Client.npcIndices[var31]];
+                        if (var32 != null && var32.definition.size == 1 && var33.x == var32.x && var33.y == var32.y) {
+                           Tile.addNpcToMenu(var32.definition, Client.npcIndices[var31], var12, var15);
                         }
                      }
 
-                     var21 = Players.Players_count;
-                     var36 = Players.Players_indices;
+                     var31 = Players.Players_count;
+                     var22 = Players.Players_indices;
 
-                     for(var38 = 0; var38 < var21; ++var38) {
-                        var24 = Client.players[var36[var38]];
-                        if(var24 != null && var24 != var34 && var24.x == var34.x && var24.y == var34.y) {
-                           TotalQuantityComparator.addPlayerToMenu(var24, var36[var38], var15, var17);
+                     for (var30 = 0; var30 < var31; ++var30) {
+                        var34 = Client.players[var22[var30]];
+                        if (var34 != null && var34 != var33 && var34.x == var33.x && var34.y == var33.y) {
+                           GrandExchangeOfferTotalQuantityComparator.addPlayerToMenu(var34, var22[var30], var12, var15);
                         }
                      }
                   }
 
-                  if(var19 != Client.combatTargetPlayerIndex) {
-                     TotalQuantityComparator.addPlayerToMenu(var34, var19, var15, var17);
+                  if (var17 != Client.combatTargetPlayerIndex) {
+                     GrandExchangeOfferTotalQuantityComparator.addPlayerToMenu(var33, var17, var12, var15);
                   } else {
-                     var4 = var26;
+                     var4 = var10;
                   }
                }
 
-               if(var28 == 3) {
-                  NodeDeque var35 = Client.groundItems[SoundSystem.plane][var15][var17];
-                  if(var35 != null) {
-                     for(GroundItem var39 = (GroundItem)var35.first(); var39 != null; var39 = (GroundItem)var35.next()) {
-                        ItemDefinition var37 = Skills.getItemDefinition(var39.id);
-                        if(Client.isItemSelected == 1) {
-                           Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var37.name, 16, var39.id, var15, var17);
-                        } else if(Client.isSpellSelected) {
-                           if((FloorDecoration.selectedSpellFlags & 1) == 1) {
-                              Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + BufferedFile.colorStartTag(16748608) + var37.name, 17, var39.id, var15, var17);
+               if (var16 == 3) {
+                  NodeDeque var35 = Client.groundItems[SoundSystem.plane][var12][var15];
+                  if (var35 != null) {
+                     for (GroundItem var24 = (GroundItem)var35.first(); var24 != null; var24 = (GroundItem)var35.next()) {
+                        ItemDefinition var25 = Skills.getItemDefinition(var24.id);
+                        if (Client.isItemSelected == 1) {
+                           Tiles.insertMenuItemNoShift("Use", Client.selectedItemName + " -> " + BufferedFile.colorStartTag(16748608) + var25.name, 16, var24.id, var12, var15);
+                        } else if (Client.isSpellSelected) {
+                           if ((FloorDecoration.selectedSpellFlags & 1) == 1) {
+                              Tiles.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " -> " + BufferedFile.colorStartTag(16748608) + var25.name, 17, var24.id, var12, var15);
                            }
                         } else {
-                           String[] var31 = var37.groundActions;
+                           String[] var26 = var25.groundActions;
 
-                           for(int var32 = 4; var32 >= 0; --var32) {
-                              if(var31 != null && var31[var32] != null) {
-                                 byte var25 = 0;
-                                 if(var32 == 0) {
-                                    var25 = 18;
+                           for (int var27 = 4; var27 >= 0; --var27) {
+                              if (var26 != null && var26[var27] != null) {
+                                 byte var28 = 0;
+                                 if (var27 == 0) {
+                                    var28 = 18;
                                  }
 
-                                 if(var32 == 1) {
-                                    var25 = 19;
+                                 if (var27 == 1) {
+                                    var28 = 19;
                                  }
 
-                                 if(var32 == 2) {
-                                    var25 = 20;
+                                 if (var27 == 2) {
+                                    var28 = 20;
                                  }
 
-                                 if(var32 == 3) {
-                                    var25 = 21;
+                                 if (var27 == 3) {
+                                    var28 = 21;
                                  }
 
-                                 if(var32 == 4) {
-                                    var25 = 22;
+                                 if (var27 == 4) {
+                                    var28 = 22;
                                  }
 
-                                 Tiles.insertMenuItemNoShift(var31[var32], BufferedFile.colorStartTag(16748608) + var37.name, var25, var39.id, var15, var17);
-                              } else if(var32 == 2) {
-                                 Tiles.insertMenuItemNoShift("Take", BufferedFile.colorStartTag(16748608) + var37.name, 20, var39.id, var15, var17);
+                                 Tiles.insertMenuItemNoShift(var26[var27], BufferedFile.colorStartTag(16748608) + var25.name, var28, var24.id, var12, var15);
+                              } else if (var27 == 2) {
+                                 Tiles.insertMenuItemNoShift("Take", BufferedFile.colorStartTag(16748608) + var25.name, 20, var24.id, var12, var15);
                               }
                            }
 
-                           Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(16748608) + var37.name, 1004, var39.id, var15, var17);
+                           Tiles.insertMenuItemNoShift("Examine", BufferedFile.colorStartTag(16748608) + var25.name, 1004, var24.id, var12, var15);
                         }
                      }
                   }
@@ -263,7 +264,8 @@ public class WorldMapEvent {
       signature = "(B)Z",
       garbageValue = "43"
    )
-   static boolean method779() {
+   @Export("isShiftPressed")
+   static boolean isShiftPressed() {
       return Client.tapToDrop || KeyHandler.KeyHandler_pressedKeys[81];
    }
 }

@@ -159,7 +159,7 @@ public class ProgressBar extends DimmableJPanel
 		centerLabel.setText(isDimmed() ? txt : centerLabelText);
 	}
 
-	public int getPercentage()
+	private int getPercentage()
 	{
 		if (value == 0)
 		{

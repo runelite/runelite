@@ -26,9 +26,11 @@
 package net.runelite.client.plugins.wintertodt;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -42,16 +44,20 @@ import static net.runelite.api.ItemID.BRUMA_KINDLING;
 import static net.runelite.api.ItemID.BRUMA_ROOT;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
@@ -61,6 +67,7 @@ import net.runelite.client.util.ColorUtil;
 	tags = {"minigame", "firemaking", "boss"}
 )
 @Slf4j
+@Singleton
 public class WintertodtPlugin extends Plugin
 {
 	private static final int WINTERTODT_REGION = 6462;
@@ -100,6 +107,10 @@ public class WintertodtPlugin extends Plugin
 
 	private Instant lastActionTime;
 
+	private int previousTimerValue;
+	private WintertodtNotifyMode notifyCondition;
+	private Color damageNotificationColor;
+
 	@Provides
 	WintertodtConfig getConfig(ConfigManager configManager)
 	{
@@ -109,6 +120,9 @@ public class WintertodtPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		this.notifyCondition = config.notifyCondition();
+		this.damageNotificationColor = config.damageNotificationColor();
+
 		reset();
 		overlayManager.add(overlay);
 	}
@@ -118,6 +132,18 @@ public class WintertodtPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		reset();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("wintertodt"))
+		{
+			return;
+		}
+
+		this.notifyCondition = config.notifyCondition();
+		this.damageNotificationColor = config.damageNotificationColor();
 	}
 
 	private void reset()
@@ -161,6 +187,30 @@ public class WintertodtPlugin extends Plugin
 		isInWintertodt = true;
 
 		checkActionTimeout();
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged varbitChanged)
+	{
+		int timerValue = client.getVar(Varbits.WINTERTODT_TIMER);
+		if (timerValue != previousTimerValue)
+		{
+			int timeToNotify = config.roundNotification();
+			if (timeToNotify > 0)
+			{
+				int timeInSeconds = timerValue * 30 / 50;
+				int prevTimeInSeconds = previousTimerValue * 30 / 50;
+
+				log.debug("Seconds left until round start: {}", timeInSeconds);
+
+				if (prevTimeInSeconds > timeToNotify && timeInSeconds <= timeToNotify)
+				{
+					notifier.notify("Wintertodt round is about to start");
+				}
+			}
+
+			previousTimerValue = timerValue;
+		}
 	}
 
 	private void checkActionTimeout()
@@ -253,7 +303,7 @@ public class WintertodtPlugin extends Plugin
 				wasDamaged = true;
 
 				// Recolor message for damage notification
-				messageNode.setRuneLiteFormatMessage(ColorUtil.wrapWithColorTag(messageNode.getValue(), config.damageNotificationColor()));
+				messageNode.setRuneLiteFormatMessage(ColorUtil.wrapWithColorTag(messageNode.getValue(), this.damageNotificationColor));
 				chatMessageManager.update(messageNode);
 				client.refreshChat();
 
@@ -280,7 +330,7 @@ public class WintertodtPlugin extends Plugin
 		{
 			boolean shouldNotify = false;
 
-			switch (config.notifyCondition())
+			switch (this.notifyCondition)
 			{
 				case ONLY_WHEN_INTERRUPTED:
 					if (wasInterrupted)

@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("z")
 public class class15 extends class21 {
@@ -9,7 +10,7 @@ public class class15 extends class21 {
    @ObfuscatedGetter(
       longValue = 3423502126894795079L
    )
-   static long __z_si;
+   static long field1113;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "Lap;"
@@ -36,17 +37,17 @@ public class class15 extends class21 {
    )
    void method173(Buffer var1) {
       int var2 = var1.readUnsignedByte();
-      if(var2 != class31.field259.field255) {
+      if (var2 != class31.field259.field255) {
          throw new IllegalStateException("");
       } else {
          super.field148 = var1.readUnsignedByte();
          super.field156 = var1.readUnsignedByte();
-         super.field149 = var1.__ag_302();
-         super.field146 = var1.__ag_302();
-         super.field159 = var1.__ag_302();
-         super.field147 = var1.__ag_302();
-         super.field150 = var1.__ap_310();
-         super.field152 = var1.__ap_310();
+         super.field149 = var1.readUnsignedShort();
+         super.field146 = var1.readUnsignedShort();
+         super.field159 = var1.readUnsignedShort();
+         super.field147 = var1.readUnsignedShort();
+         super.field150 = var1.method51();
+         super.field152 = var1.method51();
       }
    }
 
@@ -61,16 +62,16 @@ public class class15 extends class21 {
       super.field145 = new short[super.field156][64][64];
       super.field154 = new byte[super.field156][64][64];
       super.field155 = new byte[super.field156][64][64];
-      super.field144 = new class25[super.field156][64][64][];
+      super.decorations = new WorldMapDecoration[super.field156][64][64][];
       int var2 = var1.readUnsignedByte();
-      if(var2 != class30.field246.field248) {
+      if (var2 != class30.field246.field248) {
          throw new IllegalStateException("");
       } else {
          int var3 = var1.readUnsignedByte();
          int var4 = var1.readUnsignedByte();
-         if(var3 == super.field159 && var4 == super.field147) {
-            for(int var5 = 0; var5 < 64; ++var5) {
-               for(int var6 = 0; var6 < 64; ++var6) {
+         if (var3 == super.field159 && var4 == super.field147) {
+            for (int var5 = 0; var5 < 64; ++var5) {
+               for (int var6 = 0; var6 < 64; ++var6) {
                   this.method259(var5, var6, var1);
                }
             }
@@ -82,7 +83,7 @@ public class class15 extends class21 {
    }
 
    public boolean equals(Object var1) {
-      if(!(var1 instanceof class15)) {
+      if (!(var1 instanceof class15)) {
          return false;
       } else {
          class15 var2 = (class15)var1;
@@ -100,13 +101,13 @@ public class class15 extends class21 {
       garbageValue = "3"
    )
    static final int method183(int var0, int var1) {
-      if(var0 == -1) {
+      if (var0 == -1) {
          return 12345678;
       } else {
          var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
+         if (var1 < 2) {
             var1 = 2;
-         } else if(var1 > 126) {
+         } else if (var1 > 126) {
             var1 = 126;
          }
 
@@ -121,12 +122,12 @@ public class class15 extends class21 {
    )
    static int method182(int var0, Script var1, boolean var2) {
       Widget var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-      if(var0 == 2800) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class211.method4107(class1.getWidgetClickMask(var3));
+      if (var0 == ScriptOpcodes.IF_GETTARGETMASK) {
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Calendar.method4107(class1.getWidgetClickMask(var3));
          return 1;
-      } else if(var0 != 2801) {
-         if(var0 == 2802) {
-            if(var3.dataText == null) {
+      } else if (var0 != ScriptOpcodes.IF_GETOP) {
+         if (var0 == ScriptOpcodes.IF_GETOPBASE) {
+            if (var3.dataText == null) {
                Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
             } else {
                Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.dataText;
@@ -139,7 +140,7 @@ public class class15 extends class21 {
       } else {
          int var4 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
          --var4;
-         if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
+         if (var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
             Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.actions[var4];
          } else {
             Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
@@ -155,10 +156,10 @@ public class class15 extends class21 {
       garbageValue = "-1757982583"
    )
    static final void method184(boolean var0) {
-      if(var0) {
-         Client.field658 = Login.__cu_ba?class159.field1980:class159.field1983;
+      if (var0) {
+         Client.field658 = Login.field470 ? class159.field1980 : class159.field1983;
       } else {
-         Client.field658 = ReflectionCheck.clientPreferences.parameters.containsKey(Integer.valueOf(class279.method5357(Login.Login_username)))?class159.field1982:class159.field1985;
+         Client.field658 = ReflectionCheck.clientPreferences.parameters.containsKey(class279.method5357(Login.Login_username)) ? class159.field1982 : class159.field1985;
       }
 
    }
@@ -168,42 +169,41 @@ public class class15 extends class21 {
       signature = "(Lho;I)V",
       garbageValue = "1585987978"
    )
-   static final void method186(Widget var0) {
-      int var1 = var0.contentType;
-      if(var1 == 324) {
-         if(Client.__client_sd == -1) {
-            Client.__client_sd = var0.spriteId2;
-            Client.__client_sl = var0.spriteId;
+   static final void method186(Widget component) {
+      int var1 = component.contentType;
+      if (var1 == 324) {
+         if (Client.field118 == -1) {
+            Client.field118 = component.spriteId2;
+            Client.field120 = component.spriteId;
          }
 
-         if(Client.__client_ru.isFemale) {
-            var0.spriteId2 = Client.__client_sd;
+         if (Client.playerAppearance.isFemale) {
+            component.spriteId2 = Client.field118;
          } else {
-            var0.spriteId2 = Client.__client_sl;
+            component.spriteId2 = Client.field120;
+         }
+      } else if (var1 == 325) {
+         if (Client.field118 == -1) {
+            Client.field118 = component.spriteId2;
+            Client.field120 = component.spriteId;
          }
 
-      } else if(var1 == 325) {
-         if(Client.__client_sd == -1) {
-            Client.__client_sd = var0.spriteId2;
-            Client.__client_sl = var0.spriteId;
-         }
-
-         if(Client.__client_ru.isFemale) {
-            var0.spriteId2 = Client.__client_sl;
+         if (Client.playerAppearance.isFemale) {
+            component.spriteId2 = Client.field120;
          } else {
-            var0.spriteId2 = Client.__client_sd;
+            component.spriteId2 = Client.field118;
          }
-
-      } else if(var1 == 327) {
-         var0.modelAngleX = 150;
-         var0.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 0;
-      } else if(var1 == 328) {
-         var0.modelAngleX = 150;
-         var0.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 1;
+      } else if (var1 == 327) {
+         component.modelAngleX = 150;
+         component.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
+         component.modelType = 5;
+         component.modelId = 0;
+      } else if (var1 == 328) {
+         component.modelAngleX = 150;
+         component.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
+         component.modelType = 5;
+         component.modelId = 1;
       }
+
    }
 }

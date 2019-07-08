@@ -26,13 +26,16 @@
 package net.runelite.client.plugins.metronome;
 
 import com.google.inject.Provides;
+import java.io.IOException;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.SoundEffectVolume;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
 import net.runelite.api.Client;
@@ -50,6 +53,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"skilling", "tick", "timers"},
 	enabledByDefault = false
 )
+@Slf4j
+@Singleton
 public class MetronomePlugin extends Plugin
 {
 	@Inject
@@ -63,6 +68,14 @@ public class MetronomePlugin extends Plugin
 	private Clip tickClip;
 	private Clip tockClip;
 
+	private int tickCount;
+	private boolean enableTock;
+	private int tockNumber;
+	private int tickOffset;
+	private String tickPath;
+	private String tockPath;
+	private int volume;
+
 	@Provides
 	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
 	{
@@ -72,41 +85,35 @@ public class MetronomePlugin extends Plugin
 	private Clip GetAudioClip(String path)
 	{
 		File audioFile = new File(path);
-		if (audioFile.exists())
+		if (!audioFile.exists())
 		{
-			AudioInputStream audioStream = null;
-			try
-			{
-				audioStream = AudioSystem.getAudioInputStream(audioFile);
-			}
-			catch (Exception e)
-			{
-				return null;
-			}
-			AudioFormat audioFormat = audioStream.getFormat();
-			DataLine.Info audioInfo = new DataLine.Info(Clip.class, audioFormat);
-			try
-			{
-				Clip audioClip = AudioSystem.getClip();
-				audioClip.open(audioStream);
-				FloatControl gainControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
-				float gainValue = (((float) config.volume()) * 40f / 100f) - 35f;
-				gainControl.setValue(gainValue);
-				return audioClip;
-			}
-			catch (Exception e)
-			{
-				return null;
-			}
+			return null;
 		}
-		return null;
+
+		try (AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile))
+		{
+			Clip audioClip = AudioSystem.getClip();
+			audioClip.open(audioStream);
+			FloatControl gainControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
+			float gainValue = (((float) this.volume) * 40f / 100f) - 35f;
+			gainControl.setValue(gainValue);
+
+			return audioClip;
+		}
+		catch (IOException | LineUnavailableException | UnsupportedAudioFileException e)
+		{
+			log.warn("Error opening audiostream from " + audioFile, e);
+			return null;
+		}
 	}
 
 	@Override
 	protected void startUp()
 	{
-		tickClip = GetAudioClip(config.tickPath());
-		tockClip = GetAudioClip(config.tockPath());
+		updateConfig();
+
+		tickClip = GetAudioClip(this.tickPath);
+		tockClip = GetAudioClip(this.tockPath);
 	}
 
 	@Override
@@ -125,11 +132,19 @@ public class MetronomePlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		if (!event.getGroup().equals("metronome"))
+		{
+			return;
+		}
+
+		updateConfig();
+
 		if (event.getKey().equals("volume"))
 		{
-			float gainValue = (((float) config.volume()) * 40f / 100f) - 35f;
+			float gainValue = (((float) this.volume) * 40f / 100f) - 35f;
 			FloatControl gainControlTick = (FloatControl) tickClip.getControl(FloatControl.Type.MASTER_GAIN);
 			gainControlTick.setValue(gainValue);
+
 			FloatControl gainControlTock = (FloatControl) tockClip.getControl(FloatControl.Type.MASTER_GAIN);
 			gainControlTock.setValue(gainValue);
 		}
@@ -139,7 +154,7 @@ public class MetronomePlugin extends Plugin
 			{
 				tickClip.close();
 			}
-			tickClip = GetAudioClip(config.tickPath());
+			tickClip = GetAudioClip(this.tickPath);
 		}
 		if (event.getKey().equals("tockSoundFilePath"))
 		{
@@ -147,21 +162,21 @@ public class MetronomePlugin extends Plugin
 			{
 				tockClip.close();
 			}
-			tockClip = GetAudioClip(config.tockPath());
+			tockClip = GetAudioClip(this.tockPath);
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (config.tickCount() == 0)
+		if (this.tickCount == 0)
 		{
 			return;
 		}
 
-		if ((++tickCounter + config.tickOffset()) % config.tickCount() == 0)
+		if ((++tickCounter + this.tickOffset) % this.tickCount == 0)
 		{
-			if (++tockCounter % config.tockNumber() == 0 & config.enableTock())
+			if (++tockCounter % this.tockNumber == 0 & this.enableTock)
 			{
 				if (tockClip == null)
 				{
@@ -194,5 +209,16 @@ public class MetronomePlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	private void updateConfig()
+	{
+		this.tickCount = config.tickCount();
+		this.enableTock = config.enableTock();
+		this.tockNumber = config.tockNumber();
+		this.tickOffset = config.tickOffset();
+		this.tickPath = config.tickPath();
+		this.tockPath = config.tockPath();
+		this.volume = config.volume();
 	}
 }

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,7 +51,7 @@ import lombok.extern.slf4j.Slf4j;
 @Singleton
 public class LayoutSolver
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final List<Layout> layouts = new ArrayList<>();
 	private static final Pattern regex = Pattern.compile("^([A-Z]*)\\.([A-Z]*) - #([A-Z]*)#([A-Z]*)$");
 	private static final String[] codes =
@@ -211,7 +212,10 @@ public class LayoutSolver
 
 				room = new Room(position, '¤');
 				room.setPrevious(lastRoom);
-				lastRoom.setNext(room);
+				if (lastRoom != null)
+				{
+					lastRoom.setNext(room);
+				}
 				layout.add(room);
 				layout.setCode(code);
 				position += 8;

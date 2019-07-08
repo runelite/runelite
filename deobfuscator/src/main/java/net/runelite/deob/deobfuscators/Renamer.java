@@ -216,6 +216,8 @@ public class Renamer implements Deobfuscator
 					field.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_NAME, "value", field.getName());
 				}
 
+				assert DeobAnnotations.getExportedName(field.getAnnotations()) == null || DeobAnnotations.getExportedName(field.getAnnotations()).equals(newName) : "Tried changing field name to something other than the exported name!";
+
 				field.setName(newName);
 				++fields;
 			}

@@ -45,7 +45,7 @@ public class VetionOverlay extends Overlay
 	private static final Color RED_ALPHA = new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 100);
 	private static final Duration MAX_TIME = Duration.ofSeconds(9);
 	private final VetionPlugin plugin;
-	private Client client;
+	private final Client client;
 
 	@Inject
 	private VetionOverlay(Client client, VetionPlugin plugin)

@@ -10,8 +10,8 @@ import javax.swing.event.DocumentListener;
 
 class DeferredDocumentChangedListener implements DocumentListener
 {
-	private Timer timer;
-	private List<ChangeListener> listeners;
+	private final Timer timer;
+	private final List<ChangeListener> listeners;
 
 	DeferredDocumentChangedListener()
 	{

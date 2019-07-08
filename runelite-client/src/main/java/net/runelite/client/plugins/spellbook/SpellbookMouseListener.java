@@ -26,15 +26,17 @@ package net.runelite.client.plugins.spellbook;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseWheelListener;
 
-public class SpellbookMouseListener extends MouseAdapter implements MouseWheelListener
+@Singleton
+class SpellbookMouseListener extends MouseAdapter implements MouseWheelListener
 {
 	private final SpellbookPlugin plugin;
 
-	SpellbookMouseListener(SpellbookPlugin plugin)
+	SpellbookMouseListener(final SpellbookPlugin plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -42,7 +44,7 @@ public class SpellbookMouseListener extends MouseAdapter implements MouseWheelLi
 	@Override
 	public MouseEvent mouseClicked(MouseEvent event)
 	{
-		if (!plugin.isOnSpellWidget(event.getPoint()))
+		if (plugin.isNotOnSpellWidget(event.getPoint()))
 		{
 			return event;
 		}
@@ -59,7 +61,7 @@ public class SpellbookMouseListener extends MouseAdapter implements MouseWheelLi
 	@Override
 	public MouseEvent mousePressed(MouseEvent event)
 	{
-		if (!SwingUtilities.isLeftMouseButton(event) || !plugin.isOnSpellWidget(event.getPoint()) || plugin.isDragging())
+		if (!SwingUtilities.isLeftMouseButton(event) || plugin.isNotOnSpellWidget(event.getPoint()) || plugin.isDragging())
 		{
 			return event;
 		}
@@ -87,7 +89,7 @@ public class SpellbookMouseListener extends MouseAdapter implements MouseWheelLi
 	@Override
 	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
-		if (!plugin.isOnSpellWidget(event.getPoint()))
+		if (plugin.isNotOnSpellWidget(event.getPoint()))
 		{
 			return event;
 		}

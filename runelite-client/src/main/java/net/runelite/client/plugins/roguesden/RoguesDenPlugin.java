@@ -25,7 +25,9 @@
 package net.runelite.client.plugins.roguesden;
 
 import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -53,13 +55,14 @@ import net.runelite.client.ui.overlay.OverlayManager;
 		description = "Mark tiles and clickboxes to help traverse the maze",
 		tags = {"agility", "maze", "minigame", "overlay", "thieving"}
 )
+@Singleton
 public class RoguesDenPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
-	private final HashMap<TileObject, Tile> obstaclesHull = new HashMap<>();
+	private final Map<TileObject, Tile> obstaclesHull = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private final HashMap<TileObject, Tile> obstaclesTile = new HashMap<>();
+	private final Map<TileObject, Tile> obstaclesTile = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean hasGem;

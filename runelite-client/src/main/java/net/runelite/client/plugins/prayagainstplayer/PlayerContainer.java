@@ -34,11 +34,11 @@ import net.runelite.api.Player;
 public class PlayerContainer
 {
 
-	private Player player;
-	private long whenTheyAttackedMe;
-	private int millisToExpireHighlight;
+	private final Player player;
+	private final long whenTheyAttackedMe;
+	private final int millisToExpireHighlight;
 
-	PlayerContainer(Player player, long whenTheyAttackedMe, int millisToExpireHighlight)
+	PlayerContainer(final Player player, final long whenTheyAttackedMe, final int millisToExpireHighlight)
 	{
 		this.player = player;
 		this.whenTheyAttackedMe = whenTheyAttackedMe;

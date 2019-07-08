@@ -44,8 +44,9 @@ public enum PlayerType implements Enumerated {
    )
    @Export("PlayerType_hardcoreIronman")
    PlayerType_hardcoreIronman(5, 10, false, false, true);
+
    @ObfuscatedName("ak")
-   static Image __ij_ak;
+   static Image field730;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 1999564657
@@ -65,7 +66,7 @@ public enum PlayerType implements Enumerated {
    @Export("isUser")
    public final boolean isUser;
 
-   PlayerType(int var3, int var4, boolean var5, boolean var6, boolean var7) {
+   private PlayerType(int var3, int var4, boolean var5, boolean var6, boolean var7) {
       this.id = var3;
       this.modIcon = var4;
       this.isPrivileged = var6;
@@ -90,12 +91,12 @@ public enum PlayerType implements Enumerated {
    @Export("clearItemContainer")
    static void clearItemContainer(int var0) {
       ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      if(var1 != null) {
-         for(int var2 = 0; var2 < var1.ids.length; ++var2) {
+      if (var1 != null) {
+         for (int var2 = 0; var2 < var1.ids.length; ++var2) {
             var1.ids[var2] = -1;
             var1.quantities[var2] = 0;
          }
-
       }
+
    }
 }

@@ -26,6 +26,7 @@ package net.runelite.client.plugins.kourendlibrary;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.NpcID;
 
@@ -35,10 +36,10 @@ enum LibraryCustomer
 	PROFESSOR_GRACKLEBONE(NpcID.PROFESSOR_GRACKLEBONE, "Prof. Gracklebone"),
 	SAM(NpcID.SAM_7049, "Sam");
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int id;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String name;
 
 	private static final Map<Integer, LibraryCustomer> byId = buildIdMap();

@@ -1,28 +1,31 @@
 package net.runelite.client.plugins.inferno;
 
-import java.awt.Color;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import lombok.AccessLevel;
 import lombok.Setter;
 import static net.runelite.client.plugins.inferno.InfernoWaveMappings.addWaveComponent;
-import java.awt.Graphics2D;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import java.awt.Dimension;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
+@Singleton
 public class InfernoWaveOverlay extends Overlay
-	{
+{
 	private final InfernoPlugin plugin;
 	private final PanelComponent panelComponent;
 
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private Color waveHeaderColor;
 
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private Color waveTextColor;
 
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private InfernoWaveDisplayMode displayMode;
 
 	@Inject

@@ -54,7 +54,7 @@ class HydraOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	HydraOverlay(HydraPlugin plugin, Client client, SpriteManager spriteManager)
+	HydraOverlay(final HydraPlugin plugin, final Client client, final SpriteManager spriteManager)
 	{
 		this.plugin = plugin;
 		this.client = client;

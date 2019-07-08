@@ -29,17 +29,19 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 
+@Singleton
 public class InventoryTagsOverlay extends WidgetItemOverlay
 {
 	private final ItemManager itemManager;
 	private final InventoryTagsPlugin plugin;
 
 	@Inject
-	private InventoryTagsOverlay(ItemManager itemManager, InventoryTagsPlugin plugin)
+	private InventoryTagsOverlay(final ItemManager itemManager, final InventoryTagsPlugin plugin)
 	{
 		this.itemManager = itemManager;
 		this.plugin = plugin;

@@ -30,11 +30,13 @@ import java.awt.event.MouseEvent;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 
-public class GroundItemInputListener extends MouseAdapter implements KeyListener
+@Singleton
+class GroundItemInputListener extends MouseAdapter implements KeyListener
 {
 	private static final int HOTKEY = KeyEvent.VK_ALT;
 
@@ -42,9 +44,6 @@ public class GroundItemInputListener extends MouseAdapter implements KeyListener
 
 	@Inject
 	private GroundItemsPlugin plugin;
-
-	@Inject
-	private GroundItemsConfig config;
 
 	@Override
 	public void keyTyped(KeyEvent e)
@@ -63,7 +62,7 @@ public class GroundItemInputListener extends MouseAdapter implements KeyListener
 				plugin.setHotKeyPressed(true);
 				lastPress = null;
 			}
-			else if (lastPress != null && !plugin.isHotKeyPressed() && config.doubleTapDelay() > 0 && Duration.between(lastPress, Instant.now()).compareTo(Duration.ofMillis(config.doubleTapDelay())) < 0)
+			else if (lastPress != null && !plugin.isHotKeyPressed() && plugin.getDoubleTapDelay() > 0 && Duration.between(lastPress, Instant.now()).compareTo(Duration.ofMillis(plugin.getDoubleTapDelay())) < 0)
 			{
 				plugin.setHideAll(true);
 				lastPress = null;
@@ -120,14 +119,11 @@ public class GroundItemInputListener extends MouseAdapter implements KeyListener
 					return e;
 				}
 			}
-			else if (SwingUtilities.isRightMouseButton(e))
+			else if (SwingUtilities.isRightMouseButton(e) && plugin.getTextBoxBounds() != null && plugin.getTextBoxBounds().getKey().contains(mousePos))
 			{
-				if (plugin.getTextBoxBounds() != null && plugin.getTextBoxBounds().getKey().contains(mousePos))
-				{
-					plugin.updateList(plugin.getTextBoxBounds().getValue().getName(), true);
-					e.consume();
-					return e;
-				}
+				plugin.updateList(plugin.getTextBoxBounds().getValue().getName(), true);
+				e.consume();
+				return e;
 			}
 		}
 

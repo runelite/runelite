@@ -26,13 +26,15 @@ package net.runelite.client.plugins.skillcalculator.banked.beans;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.skillcalculator.banked.CriticalItem;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum Activity
 {
 	/**
@@ -350,7 +352,7 @@ public enum Activity
 		this.preventLinked = false;
 	}
 
-	Activity(int Icon, String name, Skill skill, int level, double xp, CriticalItem criticalItem, ActivitySecondaries secondaries, boolean preventLinked)
+	Activity(final int Icon, final String name, final Skill skill, final int level, final double xp, final CriticalItem criticalItem, final ActivitySecondaries secondaries, final boolean preventLinked)
 	{
 		this.icon = Icon;
 		this.name = name;
@@ -368,7 +370,7 @@ public enum Activity
 		Map<CriticalItem, ArrayList<Activity>> map = new HashMap<>();
 		for (Activity item : values())
 		{
-			map.computeIfAbsent(item.getCriticalItem(), e -> new ArrayList<Activity>()).add(item);
+			map.computeIfAbsent(item.getCriticalItem(), e -> new ArrayList<>()).add(item);
 		}
 
 		return map;
@@ -376,7 +378,7 @@ public enum Activity
 
 	private static final Map<CriticalItem, ArrayList<Activity>> byCriticalItem = buildItemMap();
 
-	public static ArrayList<Activity> getByCriticalItem(CriticalItem item)
+	public static List<Activity> getByCriticalItem(CriticalItem item)
 	{
 
 		return byCriticalItem.getOrDefault(item, new ArrayList<>());
@@ -389,10 +391,10 @@ public enum Activity
 	 * @param limitLevel Level to check Activitiy requirements against. -1 or 0 value disables limits
 	 * @return an empty list if no activities
 	 */
-	public static ArrayList<Activity> getByCriticalItem(CriticalItem item, int limitLevel)
+	public static List<Activity> getByCriticalItem(CriticalItem item, int limitLevel)
 	{
-		ArrayList<Activity> activities = getByCriticalItem(item);
-		ArrayList<Activity> l = new ArrayList<>();
+		List<Activity> activities = getByCriticalItem(item);
+		List<Activity> l = new ArrayList<>();
 		if (limitLevel <= 0)
 		{
 			return l;

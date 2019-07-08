@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.aoewarnings;
 
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
@@ -33,20 +34,20 @@ import net.runelite.api.coords.WorldPoint;
 @Slf4j
 class CrystalBomb
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Instant plantedOn;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Instant lastClockUpdate;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int objectId;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int tickStarted;
 	//
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private WorldPoint worldLocation;
 
 	CrystalBomb(GameObject gameObject, int startTick)

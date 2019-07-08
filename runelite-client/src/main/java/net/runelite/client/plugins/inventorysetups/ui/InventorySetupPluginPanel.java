@@ -33,7 +33,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -51,12 +52,13 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ImageUtil;
 
+@Singleton
 public class InventorySetupPluginPanel extends PluginPanel
 {
-	private static ImageIcon ADD_ICON;
-	private static ImageIcon ADD_HOVER_ICON;
-	private static ImageIcon REMOVE_ICON;
-	private static ImageIcon REMOVE_HOVER_ICON;
+	private static final ImageIcon ADD_ICON;
+	private static final ImageIcon ADD_HOVER_ICON;
+	private static final ImageIcon REMOVE_ICON;
+	private static final ImageIcon REMOVE_HOVER_ICON;
 
 	private final JPanel noSetupsPanel;
 	private final JPanel invEqPanel;
@@ -252,8 +254,8 @@ public class InventorySetupPluginPanel extends PluginPanel
 
 		if (plugin.getHighlightDifference())
 		{
-			final ArrayList<InventorySetupItem> normInv = plugin.getNormalizedContainer(InventoryID.INVENTORY);
-			final ArrayList<InventorySetupItem> normEqp = plugin.getNormalizedContainer(InventoryID.EQUIPMENT);
+			final List<InventorySetupItem> normInv = plugin.getNormalizedContainer(InventoryID.INVENTORY);
+			final List<InventorySetupItem> normEqp = plugin.getNormalizedContainer(InventoryID.EQUIPMENT);
 
 			highlightDifferences(normInv, inventorySetup, InventoryID.INVENTORY);
 			highlightDifferences(normEqp, inventorySetup, InventoryID.EQUIPMENT);
@@ -285,7 +287,7 @@ public class InventorySetupPluginPanel extends PluginPanel
 		repaint();
 	}
 
-	public void highlightDifferences(final ArrayList<InventorySetupItem> container,
+	public void highlightDifferences(final List<InventorySetupItem> container,
 									final InventorySetup setupToCheck,
 									final InventoryID type)
 	{

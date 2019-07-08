@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.skybox;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.io.IOException;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -42,6 +43,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	enabledByDefault = false,
 	tags = {"sky"}
 )
+@Singleton
 public class SkyboxPlugin extends Plugin
 {
 	@Inject

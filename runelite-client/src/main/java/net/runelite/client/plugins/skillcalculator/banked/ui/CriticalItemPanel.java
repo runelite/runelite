@@ -36,10 +36,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -48,6 +48,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
@@ -61,6 +62,7 @@ import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.StackFormatter;
 
+@Singleton
 public class CriticalItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(36, 36);
@@ -93,9 +95,9 @@ public class CriticalItemPanel extends JPanel
 	private final CriticalItem item;
 	private final ItemManager itemManager;
 	private double xp;
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private int amount;
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private double total;
 	private Map<CriticalItem, Integer> linkedMap;
 	private JShadowedLabel labelValue;
@@ -295,7 +297,7 @@ public class CriticalItemPanel extends JPanel
 
 	private JPanel createActivitiesPanel()
 	{
-		ArrayList<Activity> activities = Activity.getByCriticalItem(item);
+		List<Activity> activities = Activity.getByCriticalItem(item);
 		if (activities == null || activities.size() == 1)
 		{
 			return null;

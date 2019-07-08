@@ -28,6 +28,7 @@
 package net.runelite.client.plugins.coxhelper;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,7 @@ import net.runelite.api.ProjectileID;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -154,6 +156,47 @@ public class CoxPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Map<NPC, NPCContainer> npcContainer = new HashMap<>();
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean muttadile;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean tekton;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean tektonTickCounter;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean guardians;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean guardinTickCounter;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean vangHighlight;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean vangHealth;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean configPrayAgainstOlm;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean timers;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean tpOverlay;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean olmTick;
+	@Getter(AccessLevel.PACKAGE)
+	private Color muttaColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color guardColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color tektonColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color burnColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color acidColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color tpColor;
+	@Getter(AccessLevel.PACKAGE)
+	private CoxConfig.FontStyle fontStyle;
+	@Getter(AccessLevel.PACKAGE)
+	private int textSize;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean shadows;
+
 	@Provides
 	CoxConfig getConfig(ConfigManager configManager)
 	{
@@ -163,6 +206,8 @@ public class CoxPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+
 		overlayManager.add(coxOverlay);
 		overlayManager.add(coxInfoBox);
 		HandCripple = false;
@@ -649,5 +694,38 @@ public class CoxPlugin extends Plugin
 	boolean inRaid()
 	{
 		return client.getVar(Varbits.IN_RAID) == 1;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (configChanged.getGroup().equals("Cox"))
+		{
+			updateConfig();
+		}
+	}
+
+	private void updateConfig()
+	{
+		this.muttadile = config.muttadile();
+		this.tekton = config.tekton();
+		this.tektonTickCounter = config.tektonTickCounter();
+		this.guardians = config.guardians();
+		this.guardinTickCounter = config.guardinTickCounter();
+		this.vangHighlight = config.vangHighlight();
+		this.vangHealth = config.vangHealth();
+		this.configPrayAgainstOlm = config.prayAgainstOlm();
+		this.timers = config.timers();
+		this.tpOverlay = config.tpOverlay();
+		this.olmTick = config.olmTick();
+		this.muttaColor = config.muttaColor();
+		this.guardColor = config.guardColor();
+		this.tektonColor = config.tektonColor();
+		this.burnColor = config.burnColor();
+		this.acidColor = config.acidColor();
+		this.tpColor = config.tpColor();
+		this.fontStyle = config.fontStyle();
+		this.textSize = config.textSize();
+		this.shadows = config.shadows();
 	}
 }

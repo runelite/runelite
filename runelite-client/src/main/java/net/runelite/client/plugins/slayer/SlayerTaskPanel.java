@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -23,6 +24,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
+@Singleton
 public class SlayerTaskPanel extends PluginPanel
 {
 	private static final long MILLIS_PER_SECOND = 1000;
@@ -193,8 +195,8 @@ public class SlayerTaskPanel extends PluginPanel
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallInfo.setLayout(new GridLayout(2, 1));
 		overallInfo.setBorder(new EmptyBorder(2, 10, 2, 0));
-		overallKillsLabel.setFont(FontManager.getRunescapeSmallFont());
-		overallTimeLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallKillsLabel.setFont(FontManager.getSmallFont(getFont()));
+		overallTimeLabel.setFont(FontManager.getSmallFont(getFont()));
 		overallInfo.add(overallKillsLabel);
 		overallInfo.add(overallTimeLabel);
 		overallPanel.add(overallIcon, BorderLayout.WEST);

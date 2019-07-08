@@ -29,37 +29,38 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 class Bookcase
 {
-	Bookcase(WorldPoint location)
+	Bookcase(final WorldPoint location)
 	{
 		this.location = location;
 		this.index = new ArrayList<>();
 	}
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final WorldPoint location;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<Integer> index;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean isBookSet;
 
 	/**
 	 * Book in this bookcase as found by the player.
 	 * Will be correct as long as isBookSet is true, unless the library has reset;
 	 */
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Book book;
 
 	/**
 	 * Books that can be in this slot. Will only be populated if library.state != SolvedState.NO_DATA
 	 */
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Set<Book> possibleBooks = new HashSet<>();
 
 	void clearBook()

@@ -54,6 +54,7 @@ import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GroundObjectSpawned;
@@ -84,11 +85,15 @@ public class TelekineticRoom extends MTARoom
 	private NPC guardian;
 	private Maze maze;
 
+	private boolean telekinetic;
+
 	@Inject
-	private TelekineticRoom(MTAConfig config, Client client)
+	private TelekineticRoom(final MTAConfig config, final Client client)
 	{
 		super(config);
 		this.client = client;
+
+		this.telekinetic = config.telekinetic();
 	}
 
 	public void resetRoom()
@@ -133,7 +138,7 @@ public class TelekineticRoom extends MTARoom
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!config.telekinetic()
+		if (!this.telekinetic
 			|| !inside()
 			|| client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -214,10 +219,21 @@ public class TelekineticRoom extends MTARoom
 	{
 		NPC npc = event.getNpc();
 
-		if (npc == guardian)
+		if (npc.equals(guardian))
 		{
 			guardian = null;
 		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("mta") || !event.getKey().equals("telekinetic"))
+		{
+			return;
+		}
+
+		this.telekinetic = config.telekinetic();
 	}
 
 	@Override
@@ -270,7 +286,11 @@ public class TelekineticRoom extends MTARoom
 
 		Direction next = moves.pop();
 		WorldArea areaNext = getIndicatorLine(next);
-		WorldPoint nearestNext = nearest(areaNext, current);
+		WorldPoint nearestNext = null;
+		if (areaNext != null)
+		{
+			nearestNext = nearest(areaNext, current);
+		}
 
 		if (moves.isEmpty())
 		{
@@ -282,9 +302,20 @@ public class TelekineticRoom extends MTARoom
 		Direction after = moves.peek();
 		moves.push(next);
 		WorldArea areaAfter = getIndicatorLine(after);
-		WorldPoint nearestAfter = nearest(areaAfter, nearestNext);
+		WorldPoint nearestAfter = null;
+		if (areaAfter != null)
+		{
+			nearestAfter = nearest(areaAfter, nearestNext);
+		}
 
-		return nearest(areaNext, nearestAfter);
+		if (areaNext != null)
+		{
+			return nearest(areaNext, nearestAfter);
+		}
+		else
+		{
+			return nearestAfter;
+		}
 	}
 
 	private static int manhattan(WorldPoint point1, WorldPoint point2)

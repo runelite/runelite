@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
@@ -36,12 +38,12 @@ import net.runelite.api.widgets.WidgetItem;
 class RunedokuUtil
 {
 
-	private final RunedokuConfig config;
+	private final RunedokuPlugin plugin;
 
 	@Inject
-	RunedokuUtil(final RunedokuConfig config)
+	RunedokuUtil(final RunedokuPlugin plugin)
 	{
-		this.config = config;
+		this.plugin = plugin;
 	}
 
 	Color sudokuPieceToColor(int i)
@@ -49,23 +51,23 @@ class RunedokuUtil
 		switch (i)
 		{
 			case 1:
-				return config.mindRuneColor();
+				return plugin.getMindRuneColor();
 			case 2:
-				return config.fireRuneColor();
+				return plugin.getFireRuneColor();
 			case 3:
-				return config.bodyRuneColor();
+				return plugin.getBodyRuneColor();
 			case 4:
-				return config.airRuneColor();
+				return plugin.getAirRuneColor();
 			case 5:
-				return config.deathRuneColor();
+				return plugin.getDeathRuneColor();
 			case 6:
-				return config.waterRuneColor();
+				return plugin.getWaterRuneColor();
 			case 7:
-				return config.chaosRuneColor();
+				return plugin.getChaosRuneColor();
 			case 8:
-				return config.earthRuneColor();
+				return plugin.getEarthRuneColor();
 			case 9:
-				return config.lawRuneColor();
+				return plugin.getLawRuneColor();
 			default:
 				return Color.RED;
 		}
@@ -76,23 +78,23 @@ class RunedokuUtil
 		switch (i)
 		{
 			case 121: //earth
-				return config.earthRuneColor();
+				return plugin.getEarthRuneColor();
 			case 122: //water
-				return config.waterRuneColor();
+				return plugin.getWaterRuneColor();
 			case 123: //air
-				return config.airRuneColor();
+				return plugin.getAirRuneColor();
 			case 124: //mind
-				return config.mindRuneColor();
+				return plugin.getMindRuneColor();
 			case 125: //fire
-				return config.fireRuneColor();
+				return plugin.getFireRuneColor();
 			case 126: //body
-				return config.bodyRuneColor();
+				return plugin.getBodyRuneColor();
 			case 127: //death
-				return config.deathRuneColor();
+				return plugin.getDeathRuneColor();
 			case 128: //chaos
-				return config.chaosRuneColor();
-			case 129: //law
-				return config.lawRuneColor();
+				return plugin.getChaosRuneColor();
+			case 129: //plugin
+				return plugin.getLawRuneColor();
 			default:
 				return Color.RED;
 		}
@@ -104,9 +106,9 @@ class RunedokuUtil
 	 * @param board
 	 * @return
 	 */
-	ArrayList<Integer> makeSimple(int[][] board)
+	List<Integer> makeSimple(int[][] board)
 	{
-		ArrayList<Integer> list = new ArrayList<>();
+		List<Integer> list = new ArrayList<>();
 		for (int i = 0; i < 9; i++)
 		{
 			for (int ii = 0; ii < 9; ii++)
@@ -123,7 +125,7 @@ class RunedokuUtil
 	 * @param rect
 	 * @return
 	 */
-	public static Polygon rectangleToPolygon(Rectangle rect)
+	static Polygon rectangleToPolygon(Rectangle rect)
 	{
 		int[] xpoints = {rect.x, rect.x + rect.width, rect.x + rect.width, rect.x};
 		int[] ypoints = {rect.y, rect.y, rect.y + rect.height, rect.y + rect.height};
@@ -164,7 +166,7 @@ class RunedokuUtil
 				{
 					if (item.getId() != -1)
 					{
-						myArr[i][ii] = RunedokuPiece.getById(item.getId()).getPieceForSudoku();
+						myArr[i][ii] = Objects.requireNonNull(RunedokuPiece.getById(item.getId())).getPieceForSudoku();
 					}
 					else
 					{

@@ -49,14 +49,14 @@ import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
 @Singleton
-public class EquipmentInspectorPanel extends PluginPanel
+class EquipmentInspectorPanel extends PluginPanel
 {
 	private final static String NO_PLAYER_SELECTED = "No player selected";
 
-	private GridBagConstraints c;
-	private JPanel equipmentPanels;
-	private JPanel header;
-	private JLabel nameLabel;
+	private final GridBagConstraints c;
+	private final JPanel equipmentPanels;
+	private final JPanel header;
+	private final JLabel nameLabel;
 
 	@Inject
 	private ItemManager itemManager;

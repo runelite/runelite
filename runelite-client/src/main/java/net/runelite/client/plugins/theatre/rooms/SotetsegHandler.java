@@ -24,7 +24,6 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.plugins.theatre.RoomHandler;
-import net.runelite.client.plugins.theatre.TheatreConfig;
 import net.runelite.client.plugins.theatre.TheatreConstant;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
@@ -40,17 +39,16 @@ public class SotetsegHandler extends RoomHandler
 	private int playerY;
 	@Getter(AccessLevel.PUBLIC)
 	private List<WorldPoint> redOverworld = new ArrayList<>();
-	private List<WorldPoint> blackOverworld = new ArrayList<>();
-	private List<WorldPoint> blackUnderworld = new ArrayList<>();
-	private List<WorldPoint> redUnderworld = new ArrayList<>();
-	private List<Point> gridPath = new ArrayList<>();
-	private Map<Projectile, WorldPoint> soteyProjectiles = new HashMap<>();
+	private final List<WorldPoint> blackOverworld = new ArrayList<>();
+	private final List<WorldPoint> blackUnderworld = new ArrayList<>();
+	private final List<WorldPoint> redUnderworld = new ArrayList<>();
+	private final List<Point> gridPath = new ArrayList<>();
+	private final Map<Projectile, WorldPoint> soteyProjectiles = new HashMap<>();
 	private NPC npc;
-	private long startTime = 0;
 
-	public SotetsegHandler(Client client, TheatrePlugin plugin, TheatreConfig config)
+	public SotetsegHandler(final Client client, final TheatrePlugin plugin)
 	{
-		super(client, plugin, config);
+		super(client, plugin);
 	}
 
 	@Override
@@ -63,7 +61,6 @@ public class SotetsegHandler extends RoomHandler
 
 		this.reset();
 		this.plugin.setRoom(TheatreRoom.SOTETSEG);
-		System.out.println("Starting Sotetseg Room");
 	}
 
 	@Override
@@ -71,12 +68,10 @@ public class SotetsegHandler extends RoomHandler
 	{
 		this.reset();
 		this.plugin.setRoom(TheatreRoom.UNKNOWN);
-		System.out.println("Stopping Sotetseg Room");
 	}
 
-	public void reset()
+	private void reset()
 	{
-		startTime = 0;
 		npc = null;
 		soteyProjectiles.clear();
 		redTiles.clear();
@@ -89,7 +84,7 @@ public class SotetsegHandler extends RoomHandler
 
 	public void render(Graphics2D graphics)
 	{
-		if (config.showSotetsegMaze())
+		if (plugin.isShowSotetsegMaze())
 		{
 			int i = 1;
 			for (GroundObject o : redTiles.keySet())
@@ -98,7 +93,7 @@ public class SotetsegHandler extends RoomHandler
 
 				if (poly != null)
 				{
-					graphics.setColor(config.mazeTileColour());
+					graphics.setColor(plugin.getMazeTileColour());
 					graphics.setStroke(new BasicStroke(2));
 					graphics.draw(poly);
 				}
@@ -113,15 +108,15 @@ public class SotetsegHandler extends RoomHandler
 			}
 		}
 
-		if (config.showSotetsegSolo())
+		if (plugin.isShowSotetsegSolo())
 		{
 			for (WorldPoint p : redOverworld)
 			{
-				drawTile(graphics, p, config.mazeTileColour(), 2, 255, 10);
+				drawTile(graphics, p, plugin.getMazeTileColour(), 2, 255, 10);
 			}
 		}
 
-		if (config.showSotetsegAttacks())
+		if (plugin.isShowSotetsegAttacks())
 		{
 
 			Map<Projectile, String> projectileMap = new HashMap<>();

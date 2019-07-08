@@ -30,6 +30,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -40,23 +41,23 @@ import net.runelite.api.events.GameTick;
 @Slf4j
 public class Game
 {
-	private Client client;
+	private final Client client;
 
-	private PestControlPlugin plugin;
+	private final PestControlPlugin plugin;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Portal bluePortal = new Portal(PortalColor.BLUE, WidgetPortal.BLUE);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Portal purplePortal = new Portal(PortalColor.PURPLE, WidgetPortal.PURPLE);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Portal yellowPortal = new Portal(PortalColor.YELLOW, WidgetPortal.YELLOW);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Portal redPortal = new Portal(PortalColor.RED, WidgetPortal.RED);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int shieldsDropped = 0;
 
 	// Game starts with all possible rotations
@@ -65,7 +66,7 @@ public class Game
 	private boolean portalLocationsSet = false;
 
 
-	private Instant startTime = Instant.now();
+	private final Instant startTime = Instant.now();
 
 	public Game(Client client, PestControlPlugin plugin)
 	{
@@ -103,7 +104,7 @@ public class Game
 		}
 	}
 
-	public void lowerPortalShield(String portalColor)
+	void lowerPortalShield(String portalColor)
 	{
 		switch (portalColor.toLowerCase())
 		{
@@ -124,7 +125,7 @@ public class Game
 
 	private void lowerPortalShield(Portal portal)
 	{
-		if (!portal.isShielded())
+		if (portal.isNotShielded())
 		{
 			return;
 		}
@@ -146,10 +147,10 @@ public class Game
 			}
 		}
 
-		possibleRotations = rotations.toArray(new PortalRotation[rotations.size()]);
+		possibleRotations = rotations.toArray(new PortalRotation[0]);
 	}
 
-	public void killPortal(Portal portal)
+	private void killPortal(Portal portal)
 	{
 		if (portal.isDead())
 		{
@@ -161,7 +162,7 @@ public class Game
 		portal.setPortalState(PortalState.DEAD);
 	}
 
-	private boolean loadPortalLocations()
+	private void loadPortalLocations()
 	{
 		NPC squire = null;
 
@@ -179,13 +180,11 @@ public class Game
 			log.debug("In-game Squire found: {}", squire);
 			setPortalLocations(squire.getWorldLocation());
 
-			return true;
 		}
 
-		return false;
 	}
 
-	public void setPortalLocations(WorldPoint squireLocation)
+	private void setPortalLocations(WorldPoint squireLocation)
 	{
 		int x = squireLocation.getX();
 		int y = squireLocation.getY();
@@ -198,9 +197,9 @@ public class Game
 		portalLocationsSet = true;
 	}
 
-	public List<Portal> getPortals()
+	List<Portal> getPortals()
 	{
-		List<Portal> portalList = new ArrayList<Portal>();
+		List<Portal> portalList = new ArrayList<>();
 
 		portalList.add(getPurplePortal());
 		portalList.add(getBluePortal());
@@ -210,7 +209,7 @@ public class Game
 		return portalList;
 	}
 
-	public Portal getPortal(PortalColor portalColor)
+	Portal getPortal(PortalColor portalColor)
 	{
 		if (bluePortal.getColor() == portalColor)
 		{
@@ -232,7 +231,7 @@ public class Game
 		return null;
 	}
 
-	public Collection<Portal> getNextPortals()
+	Collection<Portal> getNextPortals()
 	{
 		List<Portal> portals = new ArrayList<>();
 
@@ -249,7 +248,7 @@ public class Game
 		return portals;
 	}
 
-	public Collection<Portal> getActivePortals()
+	Collection<Portal> getActivePortals()
 	{
 		List<Portal> portals = new ArrayList<>();
 
@@ -264,7 +263,7 @@ public class Game
 		return portals;
 	}
 
-	public Duration getTimeTillNextPortal()
+	Duration getTimeTillNextPortal()
 	{
 		Instant nextShieldDrop;
 

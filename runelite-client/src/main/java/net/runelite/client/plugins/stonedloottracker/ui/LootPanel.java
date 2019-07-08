@@ -32,9 +32,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.inject.Singleton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -48,14 +50,15 @@ import net.runelite.client.plugins.stonedloottracker.data.UniqueItemPrepared;
 import net.runelite.client.ui.ColorScheme;
 
 @Slf4j
+@Singleton
 class LootPanel extends JPanel
 {
-	private Collection<LootRecordCustom> records;
-	private Map<Integer, Collection<UniqueItemPrepared>> uniqueMap;
-	private boolean hideUniques;
-	private ItemSortTypes sortType;
-	private boolean itemBreakdown;
-	private ItemManager itemManager;
+	private final Collection<LootRecordCustom> records;
+	private final Map<Integer, Collection<UniqueItemPrepared>> uniqueMap;
+	private final boolean hideUniques;
+	private final ItemSortTypes sortType;
+	private final boolean itemBreakdown;
+	private final ItemManager itemManager;
 	// Consolidate LTItemEntries stored by ItemID
 	private Map<Integer, LootTrackerItemEntry> consolidated;
 
@@ -63,7 +66,7 @@ class LootPanel extends JPanel
 	private boolean playbackPlaying = false;
 	private boolean cancelPlayback = false;
 
-	LootPanel(Collection<LootRecordCustom> records, Map<Integer, Collection<UniqueItemPrepared>> uniqueMap, boolean hideUnqiues, ItemSortTypes sort, boolean itemBreakdown, ItemManager itemManager)
+	LootPanel(final Collection<LootRecordCustom> records, final Map<Integer, Collection<UniqueItemPrepared>> uniqueMap, final boolean hideUnqiues, final ItemSortTypes sort, final boolean itemBreakdown, final ItemManager itemManager)
 	{
 		this.records = (records == null ? new ArrayList<>() : records);
 		this.uniqueMap = (uniqueMap == null ? new HashMap<>() : uniqueMap);
@@ -185,7 +188,7 @@ class LootPanel extends JPanel
 
 
 		Collection<LootTrackerItemEntry> itemsToDisplay = new ArrayList<>();
-		ArrayList<LootTrackerItemEntry> items = LootTrackerBox.dedupeClues(new ArrayList<>(consolidated.values()));
+		List<LootTrackerItemEntry> items = LootTrackerBox.dedupeClues(new ArrayList<>(consolidated.values()));
 		for (LootTrackerItemEntry item : items)
 		{
 			totalValue += item.getTotal();

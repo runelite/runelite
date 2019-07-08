@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nullable;
+import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -47,7 +48,8 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
 
-@Getter
+@Singleton
+@Getter(AccessLevel.PACKAGE)
 class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
@@ -58,7 +60,7 @@ class LootTrackerBox extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<LootRecordCustom> records = new ArrayList<>();
 
 	private long totalPrice;
@@ -78,12 +80,12 @@ class LootTrackerBox extends JPanel
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
 		final JLabel titleLabel = new JLabel(Text.removeTags(id));
-		titleLabel.setFont(FontManager.getRunescapeSmallFont());
+		titleLabel.setFont(FontManager.getSmallFont(getFont()));
 		titleLabel.setForeground(Color.WHITE);
 
 		logTitle.add(titleLabel, BorderLayout.WEST);
 
-		subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
+		subTitleLabel.setFont(FontManager.getSmallFont(getFont()));
 		subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		logTitle.add(subTitleLabel, BorderLayout.CENTER);
 
@@ -92,7 +94,7 @@ class LootTrackerBox extends JPanel
 			subTitleLabel.setText(subtitle);
 		}
 
-		priceLabel.setFont(FontManager.getRunescapeSmallFont());
+		priceLabel.setFont(FontManager.getSmallFont(getFont()));
 		priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		logTitle.add(priceLabel, BorderLayout.EAST);
 
@@ -182,9 +184,9 @@ class LootTrackerBox extends JPanel
 		repaint();
 	}
 
-	static ArrayList<LootTrackerItemEntry> dedupeClues(List<LootTrackerItemEntry> items)
+	static List<LootTrackerItemEntry> dedupeClues(List<LootTrackerItemEntry> items)
 	{
-		final ArrayList<LootTrackerItemEntry> newItems = new ArrayList<>();
+		final List<LootTrackerItemEntry> newItems = new ArrayList<>();
 
 		int eliteClues = 0;
 		int hardClues = 0;

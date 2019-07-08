@@ -37,27 +37,27 @@ public class Messages {
    @Export("soundSystem")
    static SoundSystem soundSystem;
 
-   static {
-      Messages_channels = new HashMap();
-      Messages_hashTable = new IterableNodeHashTable(1024);
-      Messages_queue = new IterableDualNodeQueue();
-      Messages_count = 0;
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "103402661"
    )
    static void method2200() {
-      if(Login.Login_username == null || Login.Login_username.length() <= 0) {
-         if(ReflectionCheck.clientPreferences.rememberedUsername != null) {
+      if (Login.Login_username == null || Login.Login_username.length() <= 0) {
+         if (ReflectionCheck.clientPreferences.rememberedUsername != null) {
             Login.Login_username = ReflectionCheck.clientPreferences.rememberedUsername;
             Client.Login_isUsernameRemembered = true;
          } else {
             Client.Login_isUsernameRemembered = false;
          }
-
       }
+
+   }
+
+   static {
+      Messages_channels = new HashMap();
+      Messages_hashTable = new IterableNodeHashTable(1024);
+      Messages_queue = new IterableDualNodeQueue();
+      Messages_count = 0;
    }
 }

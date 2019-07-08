@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.npcunaggroarea;
 
+import javax.inject.Singleton;
 import net.runelite.api.geometry.Geometry;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -42,19 +43,18 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
+@Singleton
 class NpcAggroAreaOverlay extends Overlay
 {
 	private static final int MAX_LOCAL_DRAW_LENGTH = 20 * Perspective.LOCAL_TILE_SIZE;
 
 	private final Client client;
-	private final NpcAggroAreaConfig config;
 	private final NpcAggroAreaPlugin plugin;
 
 	@Inject
-	private NpcAggroAreaOverlay(Client client, NpcAggroAreaConfig config, NpcAggroAreaPlugin plugin)
+	private NpcAggroAreaOverlay(final Client client, final NpcAggroAreaPlugin plugin)
 	{
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -76,7 +76,7 @@ class NpcAggroAreaOverlay extends Overlay
 			return null;
 		}
 
-		Color outlineColor = config.aggroAreaColor();
+		Color outlineColor = plugin.getAggroAreaColor();
 		AggressionTimer timer = plugin.getCurrentTimer();
 		if (timer == null || Instant.now().compareTo(timer.getEndTime()) < 0)
 		{
@@ -85,6 +85,10 @@ class NpcAggroAreaOverlay extends Overlay
 				outlineColor.getGreen(),
 				outlineColor.getBlue(),
 				100);
+		}
+		else
+		{
+			plugin.doNotification();
 		}
 
 		renderPath(graphics, lines, outlineColor);
@@ -110,8 +114,11 @@ class NpcAggroAreaOverlay extends Overlay
 		path = Geometry.transformPath(path, coords ->
 		{
 			Point point = Perspective.localToCanvas(client, new LocalPoint((int) coords[0], (int) coords[1]), client.getPlane());
-			coords[0] = point.getX();
-			coords[1] = point.getY();
+			if (point != null)
+			{
+				coords[0] = point.getX();
+				coords[1] = point.getY();
+			}
 		});
 
 		graphics.draw(path);

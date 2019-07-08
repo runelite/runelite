@@ -36,7 +36,7 @@ public final class NodeHashTable {
       this.size = var1;
       this.buckets = new Node[var1];
 
-      for(int var2 = 0; var2 < var1; ++var2) {
+      for (int var2 = 0; var2 < var1; ++var2) {
          Node var3 = this.buckets[var2] = new Node();
          var3.previous = var3;
          var3.next = var3;
@@ -49,11 +49,11 @@ public final class NodeHashTable {
       signature = "(J)Lgw;"
    )
    @Export("get")
-   public Node get(long var1) {
-      Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
+   public Node get(long key) {
+      Node var3 = this.buckets[(int)(key & (long)(this.size - 1))];
 
-      for(this.currentGet = var3.previous; var3 != this.currentGet; this.currentGet = this.currentGet.previous) {
-         if(this.currentGet.key == var1) {
+      for (this.currentGet = var3.previous; var3 != this.currentGet; this.currentGet = this.currentGet.previous) {
+         if (this.currentGet.key == key) {
             Node var4 = this.currentGet;
             this.currentGet = this.currentGet.previous;
             return var4;
@@ -69,28 +69,28 @@ public final class NodeHashTable {
       signature = "(Lgw;J)V"
    )
    @Export("put")
-   public void put(Node var1, long var2) {
-      if(var1.next != null) {
-         var1.remove();
+   public void put(Node node, long key) {
+      if (node.next != null) {
+         node.remove();
       }
 
-      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
-      var1.next = var4.next;
-      var1.previous = var4;
-      var1.next.previous = var1;
-      var1.previous.next = var1;
-      var1.key = var2;
+      Node var4 = this.buckets[(int)(key & (long)(this.size - 1))];
+      node.next = var4.next;
+      node.previous = var4;
+      node.next.previous = node;
+      node.previous.next = node;
+      node.key = key;
    }
 
    @ObfuscatedName("q")
    @Export("clear")
    public void clear() {
-      for(int var1 = 0; var1 < this.size; ++var1) {
+      for (int var1 = 0; var1 < this.size; ++var1) {
          Node var2 = this.buckets[var1];
 
-         while(true) {
+         while (true) {
             Node var3 = var2.previous;
-            if(var3 == var2) {
+            if (var3 == var2) {
                break;
             }
 
@@ -119,13 +119,13 @@ public final class NodeHashTable {
    @Export("next")
    public Node next() {
       Node var1;
-      if(this.index > 0 && this.buckets[this.index - 1] != this.current) {
+      if (this.index > 0 && this.buckets[this.index - 1] != this.current) {
          var1 = this.current;
          this.current = var1.previous;
          return var1;
       } else {
          do {
-            if(this.index >= this.size) {
+            if (this.index >= this.size) {
                return null;
             }
 

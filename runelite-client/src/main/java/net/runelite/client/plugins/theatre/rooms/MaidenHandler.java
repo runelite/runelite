@@ -20,7 +20,6 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.plugins.theatre.RoomHandler;
-import net.runelite.client.plugins.theatre.TheatreConfig;
 import net.runelite.client.plugins.theatre.TheatreConstant;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
@@ -55,22 +54,22 @@ public class MaidenHandler extends RoomHandler
 	);
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private static final Color FREEZE = new Color(0, 226, 255, 255);
-	private List<WorldPoint> bloodThrows = new ArrayList<>();
-	private List<NPC> bloodSpawns = new ArrayList<>();
+	private final List<WorldPoint> bloodThrows = new ArrayList<>();
+	private final List<NPC> bloodSpawns = new ArrayList<>();
 	private List<WorldPoint> bloodSpawnLocation = new ArrayList<>();
-	private List<WorldPoint> bloodSpawnTarget = new ArrayList<>();
+	private final List<WorldPoint> bloodSpawnTarget = new ArrayList<>();
 	private NPC maiden;
 	private String nyloCall;
-	private Set<Nylos> nylos = new HashSet<>();
-	private List<NPC> healers = new ArrayList<>();
+	private final Set<Nylos> nylos = new HashSet<>();
+	private final List<NPC> healers = new ArrayList<>();
 	private int healerCount = 0;
 	private int wave = 1;
 	private long startTime = 0;
-	private ModelOutlineRenderer modelOutline;
+	private final ModelOutlineRenderer modelOutline;
 
-	public MaidenHandler(Client client, TheatrePlugin plugin, TheatreConfig config, ModelOutlineRenderer modelOutline)
+	public MaidenHandler(final Client client, final TheatrePlugin plugin, final ModelOutlineRenderer modelOutline)
 	{
-		super(client, plugin, config);
+		super(client, plugin);
 		this.modelOutline = modelOutline;
 	}
 
@@ -95,7 +94,7 @@ public class MaidenHandler extends RoomHandler
 		log.debug("Stopping Maiden Room");
 	}
 
-	public void reset()
+	private void reset()
 	{
 		this.bloodThrows.clear();
 		this.bloodSpawns.clear();
@@ -139,7 +138,7 @@ public class MaidenHandler extends RoomHandler
 			}
 		}
 
-		if (config.showMaidenBloodToss())
+		if (plugin.isShowMaidenBloodToss())
 		{
 			for (WorldPoint point : bloodThrows)
 			{
@@ -147,7 +146,7 @@ public class MaidenHandler extends RoomHandler
 			}
 		}
 
-		if (config.showMaidenBloodSpawns())
+		if (plugin.isShowMaidenBloodSpawns())
 		{
 			for (WorldPoint point : bloodSpawnLocation)
 			{
@@ -197,7 +196,7 @@ public class MaidenHandler extends RoomHandler
 				maiden = npc;
 				break;
 			case "Nylocas Matomenos":
-				if (!config.showNyloFreezeHighlights())
+				if (!plugin.isShowNyloFreezeHighlights())
 				{
 					return;
 				}
@@ -241,12 +240,9 @@ public class MaidenHandler extends RoomHandler
 	{
 		NPC npc = event.getNpc();
 
-		if (npc.getName() != null && npc.getName().equals("Nylocas Matomenos"))
+		if (npc.getName() != null && npc.getName().equals("Nylocas Matomenos") && npc.getId() == -1)
 		{
-			if (npc.getId() == -1)
-			{
-				nylos.removeIf(c -> c.getNpc() == npc);
-			}
+			nylos.removeIf(c -> c.getNpc() == npc);
 		}
 	}
 
@@ -327,7 +323,7 @@ public class MaidenHandler extends RoomHandler
 			seconds = seconds % 60;
 
 			int percentage = 70 - (20 * ((wave++) - 1));
-			if (config.extraTimers())
+			if (plugin.isExtraTimers())
 			{
 				this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Maiden of Sugadinti - " + percentage + "%' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 			}

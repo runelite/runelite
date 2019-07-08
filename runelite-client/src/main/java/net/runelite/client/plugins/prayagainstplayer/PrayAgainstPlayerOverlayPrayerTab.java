@@ -31,6 +31,7 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ConcurrentModificationException;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.widgets.Widget;
@@ -41,19 +42,18 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 class PrayAgainstPlayerOverlayPrayerTab extends Overlay
 {
 
 	private final PrayAgainstPlayerPlugin plugin;
-	private final PrayAgainstPlayerConfig config;
 	private final Client client;
 
 	@Inject
-	private PrayAgainstPlayerOverlayPrayerTab(PrayAgainstPlayerPlugin plugin, PrayAgainstPlayerConfig config, Client client)
+	private PrayAgainstPlayerOverlayPrayerTab(final PrayAgainstPlayerPlugin plugin, final Client client)
 	{
 		super(plugin);
 		this.plugin = plugin;
-		this.config = config;
 		this.client = client;
 
 		setPosition(OverlayPosition.DETACHED);
@@ -73,13 +73,10 @@ class PrayAgainstPlayerOverlayPrayerTab extends Overlay
 				{
 					for (PlayerContainer container : plugin.getPlayersAttackingMe())
 					{
-						if (plugin.getPlayersAttackingMe() != null && plugin.getPlayersAttackingMe().size() > 0)
+						if (plugin.getPlayersAttackingMe() != null && plugin.getPlayersAttackingMe().size() == 1 &&
+							plugin.isDrawTargetPrayAgainstPrayerTab())
 						{
-							// no reason to show you what prayers to pray in your prayer tab if multiple people are attacking you
-							if ((plugin.getPlayersAttackingMe().size() == 1) && (config.drawTargetPrayAgainstPrayerTab()))
-							{
-								renderPrayerToClick(graphics, container.getPlayer());
-							}
+							renderPrayerToClick(graphics, container.getPlayer());
 						}
 					}
 				}

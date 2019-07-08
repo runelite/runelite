@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.freezetimers;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -42,20 +43,20 @@ public enum PlayerSpellEffect
 	VENG_OTHER("Vengeance Other", 725, 30000, false, 9, TimerType.VENG),
 	NONE("Nothing", -69, 420, true, 9999, TimerType.THIS_SHIT_BROKE);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String name;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int spotAnimId;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int timerLengthTicks;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean halvable;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int spriteIdx;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final TimerType type;
 
-	public static PlayerSpellEffect getFromSpotAnim(int spotAnim)
+	static PlayerSpellEffect getFromSpotAnim(int spotAnim)
 	{
 		for (PlayerSpellEffect effect : values())
 		{

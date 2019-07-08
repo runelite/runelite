@@ -36,21 +36,19 @@ import net.runelite.client.util.PvPUtil;
 public class PlayerIndicatorsService
 {
 	private final Client client;
-	private final PlayerIndicatorsConfig config;
-	private final PlayerIndicatorsPlugin playerIndicatorsPlugin;
+	private final PlayerIndicatorsPlugin plugin;
 
 	@Inject
-	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config, PlayerIndicatorsPlugin plugin)
+	private PlayerIndicatorsService(final Client client, final PlayerIndicatorsPlugin plugin)
 	{
-		this.config = config;
 		this.client = client;
-		this.playerIndicatorsPlugin = plugin;
+		this.plugin = plugin;
 	}
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
-		if (!config.highlightOwnPlayer() && !config.drawClanMemberNames()
-			&& !config.highlightFriends() && !config.highlightNonClanMembers() && !config.highlightTargets() && !config.highlightCallers() && !config.highlightTeamMembers())
+		if (!plugin.isHighlightOwnPlayer() && !plugin.isDrawClanMemberNames()
+			&& !plugin.isHighlightFriends() && !plugin.isHighlightNonClanMembers() && !plugin.isHighlightTargets() && !plugin.isHighlightCallers() && !plugin.isHighlightTeamMembers())
 		{
 			return;
 		}
@@ -66,45 +64,45 @@ public class PlayerIndicatorsService
 
 			boolean isClanMember = player.isClanMember();
 
-			if (player == localPlayer)
+			if (player.equals(localPlayer))
 			{
-				if (config.highlightOwnPlayer())
+				if (plugin.isHighlightOwnPlayer())
 				{
-					consumer.accept(player, config.getOwnPlayerColor());
+					consumer.accept(player, plugin.getGetOwnPlayerColor());
 				}
 			}
-			else if (config.highlightFriends() && client.isFriended(player.getName(), false))
+			else if (plugin.isHighlightFriends() && client.isFriended(player.getName(), false))
 			{
-				consumer.accept(player, config.getFriendColor());
+				consumer.accept(player, plugin.getGetFriendColor());
 			}
-			else if (config.drawClanMemberNames() && isClanMember)
+			else if (plugin.isDrawClanMemberNames() && isClanMember)
 			{
-				consumer.accept(player, config.getClanMemberColor());
+				consumer.accept(player, plugin.getGetClanMemberColor());
 			}
-			else if (config.highlightTeamMembers() && localPlayer.getTeam() > 0 &&
+			else if (plugin.isHighlightTeamMembers() && localPlayer.getTeam() > 0 &&
 				localPlayer.getTeam() == player.getTeam())
 			{
-				consumer.accept(player, config.getTeamMemberColor());
+				consumer.accept(player, plugin.getGetTeamMemberColor());
 			}
-			else if (config.highlightNonClanMembers() && !isClanMember)
+			else if (plugin.isHighlightNonClanMembers() && !isClanMember)
 			{
-				consumer.accept(player, config.getNonClanMemberColor());
+				consumer.accept(player, plugin.getGetNonClanMemberColor());
 			}
-			else if (config.highlightTargets() && PvPUtil.isAttackable(client, player) &&
+			else if (plugin.isHighlightTargets() && PvPUtil.isAttackable(client, player) &&
 				!client.isFriended(player.getName(), false) && !player.isClanMember())
 			{
-				if (config.skulledTargetsOnly() && player.getSkullIcon() != null)
+				if (plugin.isSkulledTargetsOnly() && player.getSkullIcon() != null)
 				{
-					consumer.accept(player, config.getTargetColor());
+					consumer.accept(player, plugin.getGetTargetColor());
 				}
-				else if (!config.skulledTargetsOnly())
+				else if (!plugin.isSkulledTargetsOnly())
 				{
-					consumer.accept(player, config.getTargetColor());
+					consumer.accept(player, plugin.getGetTargetColor());
 				}
 			}
-			if (config.highlightCallers() && config.callers() != null && playerIndicatorsPlugin.isCaller(player))
+			if (plugin.isHighlightCallers() && plugin.getConfigCallers() != null && plugin.isCaller(player))
 			{
-				consumer.accept(player, config.callerColor());
+				consumer.accept(player, plugin.getCallerColor());
 			}
 		}
 	}

@@ -27,13 +27,14 @@ package net.runelite.client.plugins.vorkath;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ProjectileID;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public enum VorkathAttack
 {
 	/**

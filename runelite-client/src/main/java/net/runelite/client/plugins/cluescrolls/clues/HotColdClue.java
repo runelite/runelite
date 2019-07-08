@@ -171,11 +171,11 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 			if (digLocations.size() > 10)
 			{
-				for (HotColdArea area : locationCounts.keySet())
+				for (Map.Entry<HotColdArea, Integer> locationCount : locationCounts.entrySet())
 				{
 					panelComponent.getChildren().add(LineComponent.builder()
-						.left(area.getName())
-						.right(Integer.toString(locationCounts.get(area)))
+						.left(locationCount.getKey().getName())
+						.right(Integer.toString(locationCount.getValue()))
 						.build());
 				}
 			}
@@ -296,10 +296,10 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		else
 		{
 			location = null;
-
-			final HotColdTemperatureChange temperatureChange = HotColdTemperatureChange.of(message);
-			hotColdSolver.signal(localWorld, temperature, temperatureChange);
 		}
+
+		final HotColdTemperatureChange temperatureChange = HotColdTemperatureChange.of(message);
+		hotColdSolver.signal(localWorld, temperature, temperatureChange);
 
 		return true;
 	}
@@ -307,6 +307,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	@Override
 	public void reset()
 	{
+		location = null;
 		initializeSolver();
 	}
 
@@ -339,7 +340,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	private void markFinalSpot(WorldPoint wp)
 	{
 		this.location = wp;
-		reset();
 	}
 
 	public String[] getNpcs()

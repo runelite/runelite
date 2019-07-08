@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
@@ -80,19 +81,19 @@ public class CannonPlugin extends Plugin
 	private CannonCounter counter;
 	private boolean skipProjectileCheckThisTick;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int cballsLeft;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean cannonPlaced;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private WorldPoint cannonPosition;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private GameObject cannon;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> spotPoints = new ArrayList<>();
 
 	@Inject
@@ -124,6 +125,17 @@ public class CannonPlugin extends Plugin
 
 	private boolean lock;
 
+	private boolean showEmptyCannonNotification;
+	private boolean showInfobox;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showDoubleHitSpot;
+	@Getter(AccessLevel.PACKAGE)
+	private Color highlightDoubleHitColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showCannonSpots;
+	private int ammoAmount;
+	private boolean notifyAmmoLeft;
+
 	@Provides
 	CannonConfig provideConfig(ConfigManager configManager)
 	{
@@ -133,6 +145,8 @@ public class CannonPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(cannonOverlay);
 		overlayManager.add(cannonSpotOverlay);
 		lock = false;
@@ -169,7 +183,9 @@ public class CannonPlugin extends Plugin
 	{
 		if (event.getGroup().equals("cannon"))
 		{
-			if (!config.showInfobox())
+			updateConfig();
+
+			if (!this.showInfobox)
 			{
 				removeCounter();
 			}
@@ -190,7 +206,7 @@ public class CannonPlugin extends Plugin
 	)
 	public void checkSpots()
 	{
-		if (!config.showCannonSpots())
+		if (!this.showCannonSpots)
 		{
 			return;
 		}
@@ -213,14 +229,12 @@ public class CannonPlugin extends Plugin
 		GameObject gameObject = event.getGameObject();
 
 		Player localPlayer = client.getLocalPlayer();
-		if (gameObject.getId() == CANNON_BASE && !cannonPlaced)
+		if (gameObject.getId() == CANNON_BASE && !cannonPlaced &&
+			localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2 &&
+			localPlayer.getAnimation() == AnimationID.BURYING_BONES)
 		{
-			if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
-				&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
-			{
-				cannonPosition = gameObject.getWorldLocation();
-				cannon = gameObject;
-			}
+			cannonPosition = gameObject.getWorldLocation();
+			cannon = gameObject;
 		}
 	}
 
@@ -234,17 +248,15 @@ public class CannonPlugin extends Plugin
 			WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
 
 			//Check to see if projectile x,y is 0 else it will continuously decrease while ball is flying.
-			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0)
-			{
+			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0 &&
 				// When there's a chat message about cannon reloaded/unloaded/out of ammo,
 				// the message event runs before the projectile event. However they run
 				// in the opposite order on the server. So if both fires in the same tick,
 				// we don't want to update the cannonball counter if it was set to a specific
 				// amount.
-				if (!skipProjectileCheckThisTick)
-				{
-					cballsLeft--;
-				}
+				!skipProjectileCheckThisTick)
+			{
+				cballsLeft--;
 			}
 		}
 	}
@@ -318,7 +330,7 @@ public class CannonPlugin extends Plugin
 			// extra check is a good idea.
 			cballsLeft = 0;
 
-			if (config.showEmptyCannonNotification())
+			if (this.showEmptyCannonNotification)
 			{
 				notifier.notify("Your cannon is out of ammo!");
 			}
@@ -350,13 +362,10 @@ public class CannonPlugin extends Plugin
 		{
 			return Color.orange;
 		}
-		else if (cballsLeft <= config.ammoAmount())
+		else if (cballsLeft <= this.ammoAmount && this.notifyAmmoLeft && !lock)
 		{
-			if (config.notifyAmmoLeft() && !lock)
-			{
-				notifier.notify("Your cannon has " + config.ammoAmount() + " balls left!");
-				lock = true;
-			}
+			notifier.notify("Your cannon has " + this.ammoAmount + " balls left!");
+			lock = true;
 		}
 
 		return Color.red;
@@ -364,7 +373,7 @@ public class CannonPlugin extends Plugin
 
 	private void addCounter()
 	{
-		if (!config.showInfobox() || counter != null)
+		if (!this.showInfobox || counter != null)
 		{
 			return;
 		}
@@ -384,5 +393,16 @@ public class CannonPlugin extends Plugin
 
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
+	}
+
+	private void updateConfig()
+	{
+		this.showEmptyCannonNotification = config.showEmptyCannonNotification();
+		this.showInfobox = config.showInfobox();
+		this.showDoubleHitSpot = config.showDoubleHitSpot();
+		this.highlightDoubleHitColor = config.highlightDoubleHitColor();
+		this.showCannonSpots = config.showCannonSpots();
+		this.ammoAmount = config.ammoAmount();
+		this.notifyAmmoLeft = config.notifyAmmoLeft();
 	}
 }

@@ -8,13 +8,13 @@ import net.runelite.api.coords.WorldPoint;
 
 public class MiscUtils
 {
-	private static int[] abovePointsX = {2944, 3392, 3392, 2944};
-	private static int[] abovePointsY = {3523, 3523, 3971, 3971};
-	private static int[] belowPointsX = {2944, 2944, 3264, 3264};
-	private static int[] belowPointsY = {9918, 10360, 10360, 9918};
+	private static final int[] abovePointsX = {2944, 3392, 3392, 2944};
+	private static final int[] abovePointsY = {3523, 3523, 3971, 3971};
+	private static final int[] belowPointsX = {2944, 2944, 3264, 3264};
+	private static final int[] belowPointsY = {9918, 10360, 10360, 9918};
 
-	private static Polygon abovePoly = new Polygon(abovePointsX, abovePointsY, abovePointsX.length);
-	private static Polygon belowPoly = new Polygon(belowPointsX, belowPointsY, belowPointsX.length);
+	private static final Polygon abovePoly = new Polygon(abovePointsX, abovePointsY, abovePointsX.length);
+	private static final Polygon belowPoly = new Polygon(belowPointsX, belowPointsY, belowPointsX.length);
 
 	//test replacement so private for now
 	private static boolean inWildy(WorldPoint point)
@@ -50,12 +50,9 @@ public class MiscUtils
 		//v underground        //v above ground
 		int wildernessLevel = clamp(y > 6400 ? ((y - 9920) / 8) + 1 : ((y - 3520) / 8) + 1, 0, 56);
 
-		if (point.getPlane() > 0)
+		if (point.getPlane() > 0 && y < 9920)
 		{
-			if (y < 9920)
-			{
-				wildernessLevel = 0;
-			}
+			wildernessLevel = 0;
 		}
 
 		if (client.getWorldType().stream().anyMatch(worldType -> worldType == WorldType.PVP || worldType == WorldType.HIGH_RISK))

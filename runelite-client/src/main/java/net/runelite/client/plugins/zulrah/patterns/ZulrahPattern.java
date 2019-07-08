@@ -39,12 +39,12 @@ public abstract class ZulrahPattern
 {
 	private final List<ZulrahPhase> pattern = new ArrayList<>();
 
-	protected final void add(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, Prayer prayer)
+	final void add(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, Prayer prayer)
 	{
 		add(loc, type, standLocation, false, prayer);
 	}
 
-	protected final void addJad(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, Prayer prayer)
+	final void addJad(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, Prayer prayer)
 	{
 		add(loc, type, standLocation, true, prayer);
 	}

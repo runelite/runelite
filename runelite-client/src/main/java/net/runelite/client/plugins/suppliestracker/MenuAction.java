@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.suppliestracker;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Item;
@@ -34,20 +35,20 @@ import net.runelite.api.Item;
 @AllArgsConstructor
 public class MenuAction
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private ActionType type;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Item[] oldInventory;
 
 	static class ItemAction extends MenuAction
 	{
 
-		@Getter
+		@Getter(AccessLevel.PACKAGE)
 		private int itemID;
-		@Getter
+		@Getter(AccessLevel.PACKAGE)
 		private int slot;
 
-		ItemAction(ActionType type, Item[] oldInventory, int itemID, int slot)
+		ItemAction(final ActionType type, final Item[] oldInventory, final int itemID, final int slot)
 		{
 			super(type, oldInventory);
 			this.itemID = itemID;

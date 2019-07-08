@@ -75,6 +75,7 @@ class XpInfoBox extends JPanel
 
 	// Instance members
 	private final JPanel panel;
+	private final XpTrackerPlugin plugin;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Skill skill;
@@ -98,8 +99,6 @@ class XpInfoBox extends JPanel
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 	private final JMenuItem canvasItem = new JMenuItem(ADD_STATE);
 
-	private final XpTrackerConfig xpTrackerConfig;
-
 	private boolean paused = false;
 
 	private Style style = Style.FULL;
@@ -110,9 +109,9 @@ class XpInfoBox extends JPanel
 		SIMPLE
 	}
 
-	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, JPanel panel, Skill skill, SkillIconManager iconManager)
+	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager)
 	{
-		this.xpTrackerConfig = xpTrackerConfig;
+		this.plugin = xpTrackerPlugin;
 		this.panel = panel;
 		this.skill = skill;
 
@@ -276,7 +275,7 @@ class XpInfoBox extends JPanel
 				: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
 			// Add intermediate level positions to progressBar
-			if (xpTrackerConfig.showIntermediateLevels() && xpSnapshotSingle.getEndLevel() - xpSnapshotSingle.getStartLevel() > 1)
+			if (plugin.isShowIntermediateLevels() && xpSnapshotSingle.getEndLevel() - xpSnapshotSingle.getStartLevel() > 1)
 			{
 				final List<Integer> positions = new ArrayList<>();
 

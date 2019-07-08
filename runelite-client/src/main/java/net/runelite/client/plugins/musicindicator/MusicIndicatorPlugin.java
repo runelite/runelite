@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EnumDefinition;
@@ -55,7 +56,7 @@ import net.runelite.client.plugins.PluginType;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 public class MusicIndicatorPlugin extends Plugin
 {
 	private static final List<VarPlayer> MUSIC_TRACK_VARPS = ImmutableList.of(

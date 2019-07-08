@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import javax.inject.Singleton;
 import net.runelite.api.vars.AccountType;
 import com.google.inject.Provides;
 import java.io.IOException;
@@ -81,6 +82,7 @@ import org.apache.commons.text.WordUtils;
 	description = "Enable chat commands",
 	tags = {"grand", "exchange", "level", "prices"}
 )
+@Singleton
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
@@ -816,7 +818,7 @@ public class ChatCommandsPlugin extends Plugin
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+				log.error("Error looking up prices", e);
 			}
 
 			int itemId = item.getId();
@@ -1164,7 +1166,7 @@ public class ChatCommandsPlugin extends Plugin
 		ItemPrice shortest = null;
 		for (ItemPrice item : items)
 		{
-			if (item.getName().toLowerCase().equals(originalInput.toLowerCase()))
+			if (item.getName().equalsIgnoreCase(originalInput.toLowerCase()))
 			{
 				return item;
 			}

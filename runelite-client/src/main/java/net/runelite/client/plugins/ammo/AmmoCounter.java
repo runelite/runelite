@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
@@ -36,11 +37,11 @@ import net.runelite.client.util.StackFormatter;
 
 class AmmoCounter extends Counter
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int itemID;
-	private String name;
-	private int total;
-	private Instant time;
+	private final String name;
+	private final int total;
+	private final Instant time;
 	private BigDecimal ammoPerHour;
 
 	AmmoCounter(Plugin plugin, int itemID, int count, String name, BufferedImage image)

@@ -100,7 +100,7 @@ public interface RSActor extends RSEntity, Actor
 
 	// Idle animation
 
-	@Import("idleSequence")
+	@Import("readySequence")
 	@Override
 	void setIdlePoseAnimation(int animation);
 

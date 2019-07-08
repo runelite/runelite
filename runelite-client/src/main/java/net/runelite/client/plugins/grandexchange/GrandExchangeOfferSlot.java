@@ -37,6 +37,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -54,7 +55,8 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
-public class GrandExchangeOfferSlot extends JPanel
+@Singleton
+class GrandExchangeOfferSlot extends JPanel
 {
 	private static final String FACE_CARD = "FACE_CARD";
 	private static final String DETAILS_CARD = "DETAILS_CARD";

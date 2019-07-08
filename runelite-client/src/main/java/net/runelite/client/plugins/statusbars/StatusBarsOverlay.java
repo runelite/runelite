@@ -26,6 +26,7 @@ package net.runelite.client.plugins.statusbars;
 
 import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
@@ -44,6 +45,7 @@ import javax.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
+@Singleton
 public class StatusBarsOverlay extends Overlay
 {
 	private static final int HEIGHT = 252;
@@ -53,17 +55,15 @@ public class StatusBarsOverlay extends Overlay
 
 	private final Client client;
 	private final StatusBarsPlugin plugin;
-	private final StatusBarsConfig config;
 	private final ItemStatChangesService itemStatService;
 
 	@Inject
-	private StatusBarsOverlay(Client client, StatusBarsPlugin plugin, StatusBarsConfig config, ItemStatChangesService itemstatservice)
+	private StatusBarsOverlay(final Client client, final StatusBarsPlugin plugin, final ItemStatChangesService itemstatservice)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 		this.itemStatService = itemstatservice;
 	}
 
@@ -90,9 +90,13 @@ public class StatusBarsOverlay extends Overlay
 			}
 		}
 
-		if (curViewport == null || curWidget.isHidden())
+		if (curViewport == null)
 		{
 			return null;
+		}
+		else
+		{
+			curWidget.isHidden();
 		}
 
 		final Point offsetLeft = curViewport.getOffsetLeft();
@@ -117,8 +121,8 @@ public class StatusBarsOverlay extends Overlay
 			offsetRightBarY = (location.getY() - offsetRight.getY());
 		}
 
-		BarRenderer left = plugin.getBarRenderers().get(config.leftBarMode());
-		BarRenderer right = plugin.getBarRenderers().get(config.rightBarMode());
+		BarRenderer left = plugin.getBarRenderers().get(plugin.getLeftBarMode());
+		BarRenderer right = plugin.getBarRenderers().get(plugin.getRightBarMode());
 
 		if (left != null)
 		{

@@ -28,9 +28,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class LootRecordCustom
 {
 	private final int id;
@@ -39,7 +40,7 @@ public class LootRecordCustom
 	private final int killCount;
 	final Collection<LootTrackerItemEntry> drops;
 
-	public LootRecordCustom(int id, String name, int level, int kc, Collection<LootTrackerItemEntry> drops)
+	public LootRecordCustom(final int id, final String name, final int level, final int kc, final Collection<LootTrackerItemEntry> drops)
 	{
 		this.id = id;
 		this.name = name;

@@ -75,8 +75,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 	private String offPrediction = null;
 
 	@Inject
-	public WikiSearchChatboxTextInput(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
-									ScheduledExecutorService scheduledExecutorService, @Named("developerMode") final boolean developerMode)
+	public WikiSearchChatboxTextInput(final ChatboxPanelManager chatboxPanelManager, final ClientThread clientThread, final ScheduledExecutorService scheduledExecutorService, @Named("developerMode") final boolean developerMode)
 	{
 		super(chatboxPanelManager, clientThread);
 		this.chatboxPanelManager = chatboxPanelManager;

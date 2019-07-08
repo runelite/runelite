@@ -40,7 +40,7 @@ import net.runelite.api.NPCDefinition;
 import net.runelite.api.NpcID;
 import net.runelite.api.Prayer;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 class FightCaveContainer
 {
 	private NPC npc;
@@ -50,11 +50,11 @@ class FightCaveContainer
 	private int attackSpeed;
 	private int priority;
 	private ImmutableSet<Integer> animations;
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private int ticksUntilAttack;
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private Actor npcInteracting;
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private AttackStyle attackStyle;
 
 	FightCaveContainer(NPC npc, int attackSpeed)
@@ -97,7 +97,7 @@ class FightCaveContainer
 		TZTOKJAD1(NpcID.TZTOKJAD, AttackStyle.UNKNOWN, ImmutableSet.of(AnimationID.TZTOK_JAD_MAGIC_ATTACK, AnimationID.TZTOK_JAD_RANGE_ATTACK, AnimationID.TZTOK_JAD_MELEE_ATTACK), 0),
 		TZTOKJAD2(NpcID.TZTOKJAD_6506, AttackStyle.UNKNOWN, ImmutableSet.of(AnimationID.TZTOK_JAD_MAGIC_ATTACK, AnimationID.TZTOK_JAD_RANGE_ATTACK, AnimationID.TZTOK_JAD_MELEE_ATTACK), 0);
 
-		private static ImmutableMap<Integer, BossMonsters> idMap;
+		private static final ImmutableMap<Integer, BossMonsters> idMap;
 
 		static
 		{

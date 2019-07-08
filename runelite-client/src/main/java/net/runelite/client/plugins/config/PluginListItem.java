@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -47,6 +48,7 @@ import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.util.ImageUtil;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 
+@Singleton
 public class PluginListItem extends JPanel
 {
 	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
@@ -60,7 +62,6 @@ public class PluginListItem extends JPanel
 	private static final ImageIcon OFF_STAR;
 
 	private final ConfigPanel configPanel;
-	public final ConfigManager configManager;
 
 	@Getter
 	@Nullable
@@ -74,10 +75,10 @@ public class PluginListItem extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	public final ConfigDescriptor configDescriptor;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final String name;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final String description;
 
 	private final List<String> keywords = new ArrayList<>();
@@ -142,7 +143,6 @@ public class PluginListItem extends JPanel
 						@Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
 	{
 		this.configPanel = configPanel;
-		this.configManager = configManager;
 		this.plugin = plugin;
 		this.config = config;
 		this.configDescriptor = configDescriptor;
@@ -184,7 +184,7 @@ public class PluginListItem extends JPanel
 		buttonPanel.add(configButton);
 
 		// add a listener to configButton only if there are config items to show
-		if (config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
+		if (configDescriptor != null && config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
 		{
 			configButton.addActionListener(e ->
 			{

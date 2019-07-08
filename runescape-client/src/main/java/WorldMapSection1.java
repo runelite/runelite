@@ -4,79 +4,73 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("as")
+@ObfuscatedName("p")
 @Implements("WorldMapSection1")
 public class WorldMapSection1 implements WorldMapSection {
-   @ObfuscatedName("c")
-   @Export("userHomeDirectory")
-   public static String userHomeDirectory;
-   @ObfuscatedName("du")
+   @ObfuscatedName("h")
+   @Export("osNameLowerCase")
+   public static String osNameLowerCase;
+   @ObfuscatedName("dr")
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache15")
-   static IndexCache indexCache15;
-   @ObfuscatedName("ey")
+   @Export("archive8")
+   static Archive archive8;
+   @ObfuscatedName("go")
    @ObfuscatedGetter(
-      intValue = -1516124929
+      intValue = -948290091
    )
-   static int __as_ey;
-   @ObfuscatedName("ha")
-   @ObfuscatedGetter(
-      intValue = 1052834531
-   )
-   @Export("cameraX")
-   static int cameraX;
+   static int field1089;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1971304641
+      intValue = 1389733201
    )
-   int __m;
+   int field1090;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1483447179
+      intValue = -1622972483
    )
-   int __f;
+   int field1091;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1875803617
+      intValue = 702057599
    )
-   int __q;
+   int field1092;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 284566685
+      intValue = -1068088609
    )
-   int __w;
+   int field1093;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1513010233
+      intValue = 1257151629
    )
-   int __o;
+   int field1094;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1383826035
+      intValue = -1351623663
    )
-   int __u;
+   int field1095;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1526007343
+      intValue = 1016557381
    )
-   int __g;
+   int field1096;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -890169045
+      intValue = 884736611
    )
-   int __l;
+   int field1097;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1797724181
+      intValue = 395786901
    )
-   int __e;
+   int field1098;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 325777555
+      intValue = -627081155
    )
-   int __x;
+   int field1099;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -84,21 +78,21 @@ public class WorldMapSection1 implements WorldMapSection {
       garbageValue = "1384899025"
    )
    @Export("expandBounds")
-   public void expandBounds(WorldMapArea var1) {
-      if(var1.minX0 > this.__o) {
-         var1.minX0 = this.__o;
+   public void expandBounds(WorldMapArea area) {
+      if (area.minX0 > this.field1096) {
+         area.minX0 = this.field1096;
       }
 
-      if(var1.maxX0 < this.__o) {
-         var1.maxX0 = this.__o;
+      if (area.maxX0 < this.field1098) {
+         area.maxX0 = this.field1098;
       }
 
-      if(var1.minY0 > this.__u) {
-         var1.minY0 = this.__u;
+      if (area.minY0 > this.field1097) {
+         area.minY0 = this.field1097;
       }
 
-      if(var1.maxY0 < this.__u) {
-         var1.maxY0 = this.__u;
+      if (area.maxY0 < this.field1099) {
+         area.maxY0 = this.field1099;
       }
 
    }
@@ -109,8 +103,8 @@ public class WorldMapSection1 implements WorldMapSection {
       garbageValue = "93"
    )
    @Export("containsCoord")
-   public boolean containsCoord(int var1, int var2, int var3) {
-      return var1 >= this.__m && var1 < this.__m + this.__f?var2 >= (this.__q << 6) + (this.__g << 3) && var2 <= (this.__q << 6) + (this.__g << 3) + 7 && var3 >= (this.__w << 6) + (this.__l << 3) && var3 <= (this.__w << 6) + (this.__l << 3) + 7:false;
+   public boolean containsCoord(int plane, int x, int y) {
+      return plane >= this.field1090 && plane < this.field1090 + this.field1091 ? x >> 6 >= this.field1092 && x >> 6 <= this.field1094 && y >> 6 >= this.field1093 && y >> 6 <= this.field1095 : false;
    }
 
    @ObfuscatedName("q")
@@ -119,8 +113,8 @@ public class WorldMapSection1 implements WorldMapSection {
       garbageValue = "4"
    )
    @Export("containsPosition")
-   public boolean containsPosition(int var1, int var2) {
-      return var1 >= (this.__o << 6) + (this.__e << 3) && var1 <= (this.__o << 6) + (this.__e << 3) + 7 && var2 >= (this.__u << 6) + (this.__x << 3) && var2 <= (this.__u << 6) + (this.__x << 3) + 7;
+   public boolean containsPosition(int x, int y) {
+      return x >> 6 >= this.field1096 && x >> 6 <= this.field1098 && y >> 6 >= this.field1097 && y >> 6 <= this.field1099;
    }
 
    @ObfuscatedName("w")
@@ -129,11 +123,11 @@ public class WorldMapSection1 implements WorldMapSection {
       garbageValue = "1545934424"
    )
    @Export("position")
-   public int[] position(int var1, int var2, int var3) {
-      if(!this.containsCoord(var1, var2, var3)) {
+   public int[] position(int plane, int x, int y) {
+      if (!this.containsCoord(plane, x, y)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.__o * 64 - this.__q * 64 + var2 + (this.__e * 8 - this.__g * 8), var3 + (this.__u * 64 - this.__w * 64) + (this.__x * 8 - this.__l * 8)};
+         int[] var4 = new int[]{this.field1096 * 64 - this.field1092 * 64 + x, y + (this.field1097 * 64 - this.field1093 * 64)};
          return var4;
       }
    }
@@ -144,13 +138,13 @@ public class WorldMapSection1 implements WorldMapSection {
       garbageValue = "-1916486802"
    )
    @Export("coord")
-   public TileLocation coord(int var1, int var2) {
-      if(!this.containsPosition(var1, var2)) {
+   public Coord coord(int x, int y) {
+      if (!this.containsPosition(x, y)) {
          return null;
       } else {
-         int var3 = this.__q * 64 - this.__o * 64 + (this.__g * 8 - this.__e * 8) + var1;
-         int var4 = this.__w * 64 - this.__u * 64 + var2 + (this.__l * 8 - this.__x * 8);
-         return new TileLocation(this.__m, var3, var4);
+         int var3 = this.field1092 * 64 - this.field1096 * 64 + x;
+         int var4 = this.field1093 * 64 - this.field1097 * 64 + y;
+         return new Coord(this.field1090, var3, var4);
       }
    }
 
@@ -160,165 +154,111 @@ public class WorldMapSection1 implements WorldMapSection {
       garbageValue = "-113"
    )
    @Export("read")
-   public void read(Buffer var1) {
-      this.__m = var1.readUnsignedByte();
-      this.__f = var1.readUnsignedByte();
-      this.__q = var1.__ag_302();
-      this.__g = var1.readUnsignedByte();
-      this.__w = var1.__ag_302();
-      this.__l = var1.readUnsignedByte();
-      this.__o = var1.__ag_302();
-      this.__e = var1.readUnsignedByte();
-      this.__u = var1.__ag_302();
-      this.__x = var1.readUnsignedByte();
-      this.__g_84();
+   public void read(Buffer buffer) {
+      this.field1090 = buffer.readUnsignedByte();
+      this.field1091 = buffer.readUnsignedByte();
+      this.field1092 = buffer.readUnsignedShort();
+      this.field1093 = buffer.readUnsignedShort();
+      this.field1094 = buffer.readUnsignedShort();
+      this.field1095 = buffer.readUnsignedShort();
+      this.field1096 = buffer.readUnsignedShort();
+      this.field1097 = buffer.readUnsignedShort();
+      this.field1098 = buffer.readUnsignedShort();
+      this.field1099 = buffer.readUnsignedShort();
+      this.method426();
    }
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2026323437"
+      signature = "(B)V",
+      garbageValue = "-126"
    )
-   void __g_84() {
+   void method426() {
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(II)Lim;",
-      garbageValue = "-205156540"
+      signature = "(Lho;II)V",
+      garbageValue = "1115233428"
    )
-   @Export("getKitDefinition")
-   public static KitDefinition getKitDefinition(int var0) {
-      KitDefinition var1 = (KitDefinition)KitDefinition.KitDefinition_cached.get((long)var0);
-      if(var1 != null) {
-         return var1;
+   static final void method345(Widget var0, int var1) {
+      if (var0.field966 == null) {
+         throw new RuntimeException();
       } else {
-         byte[] var2 = KitDefinition.KitDefinition_indexCache.takeRecord(3, var0);
-         var1 = new KitDefinition();
-         if(var2 != null) {
-            var1.read(new Buffer(var2));
+         if (var0.field984 == null) {
+            var0.field984 = new int[var0.field966.length];
          }
 
-         KitDefinition.KitDefinition_cached.put(var1, (long)var0);
-         return var1;
+         var0.field984[var1] = Integer.MAX_VALUE;
       }
    }
 
-   @ObfuscatedName("fc")
+   @ObfuscatedName("am")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2142100332"
+      signature = "(IB)V",
+      garbageValue = "23"
    )
-   static void method808() {
-      Client.mouseLastLastPressedTimeMillis = 1L;
-      Projectile.mouseRecorder.index = 0;
-      class230.__hy_az = true;
-      Client.__client_cw = true;
-      Client.__client_pp = -1L;
-      class68.method1694();
-      Client.packetWriter.__m_165();
-      Client.packetWriter.packetBuffer.index = 0;
-      Client.packetWriter.serverPacket0 = null;
-      Client.packetWriter.__k = null;
-      Client.packetWriter.__n = null;
-      Client.packetWriter.__i = null;
-      Client.packetWriter.serverPacket0Length = 0;
-      Client.packetWriter.__x = 0;
-      Client.rebootTimer = 0;
-      Client.__client_fd = 0;
-      Client.hintArrowType = 0;
-      Client.menuOptionsCount = 0;
-      Client.isMenuOpen = false;
-      MouseHandler.MouseHandler_idleCycles = 0;
-      GroundItem.method2094();
-      Client.isItemSelected = 0;
-      Client.isSpellSelected = false;
-      Client.soundEffectCount = 0;
-      Client.minimapOrientation = 0;
-      Client.oculusOrbState = 0;
-      ClientParameter.field3645 = null;
-      Client.minimapState = 0;
-      Client.__client_ph = -1;
-      Client.destinationX = 0;
-      Client.destinationY = 0;
-      Client.playerAttackOption = AttackOption.AttackOption_hidden;
-      Client.npcAttackOption = AttackOption.AttackOption_hidden;
-      Client.npcCount = 0;
-      Players.Players_count = 0;
+   @Export("runWidgetOnLoadListener")
+   static void runWidgetOnLoadListener(int var0) {
+      if (var0 != -1 && GroundItemPile.loadInterface(var0)) {
+         Widget[] var1 = Widget.interfaceComponents[var0];
 
-      int var0;
-      for(var0 = 0; var0 < 2048; ++var0) {
-         Players.__cq_o[var0] = null;
-         Players.__cq_w[var0] = 1;
-      }
-
-      for(var0 = 0; var0 < 2048; ++var0) {
-         Client.players[var0] = null;
-      }
-
-      for(var0 = 0; var0 < 32768; ++var0) {
-         Client.npcs[var0] = null;
-      }
-
-      Client.combatTargetPlayerIndex = -1;
-      Client.projectiles.clear();
-      Client.graphicsObjects.clear();
-
-      for(var0 = 0; var0 < 4; ++var0) {
-         for(int var1 = 0; var1 < 104; ++var1) {
-            for(int var2 = 0; var2 < 104; ++var2) {
-               Client.groundItems[var0][var1][var2] = null;
+         for (int var2 = 0; var2 < var1.length; ++var2) {
+            Widget var3 = var1[var2];
+            if (var3.onLoad != null) {
+               ScriptEvent var4 = new ScriptEvent();
+               var4.widget = var3;
+               var4.args0 = var3.onLoad;
+               GrandExchangeEvent.runScript0(var4, 5000000);
             }
          }
       }
 
-      Client.__client_kh = new NodeDeque();
-      WorldMapArea.friendSystem.clear();
+   }
 
-      for(var0 = 0; var0 < VarpDefinition.__ix_f; ++var0) {
-         VarpDefinition var3 = SecureRandomCallable.method1140(var0);
-         if(var3 != null) {
-            Varps.Varps_temp[var0] = 0;
-            Varps.Varps_main[var0] = 0;
-         }
+   @ObfuscatedName("ic")
+   @ObfuscatedSignature(
+      signature = "(Lho;IIZB)V",
+      garbageValue = "-35"
+   )
+   @Export("alignWidgetSize")
+   static void alignWidgetSize(Widget component, int parentWidth, int parentHeight, boolean var3) {
+      int var4 = component.width;
+      int var5 = component.height;
+      if (component.widthAlignment == 0) {
+         component.width = component.rawWidth;
+      } else if (component.widthAlignment == 1) {
+         component.width = parentWidth - component.rawWidth;
+      } else if (component.widthAlignment == 2) {
+         component.width = component.rawWidth * parentWidth >> 14;
       }
 
-      class196.varcs.clearTransient();
-      Client.followerIndex = -1;
-      if(Client.rootWidgetGroup != -1) {
-         AbstractByteArrayCopier.unloadWidgetGroup(Client.rootWidgetGroup);
+      if (component.heightAlignment == 0) {
+         component.height = component.rawHeight;
+      } else if (component.heightAlignment == 1) {
+         component.height = parentHeight - component.rawHeight;
+      } else if (component.heightAlignment == 2) {
+         component.height = parentHeight * component.rawHeight >> 14;
       }
 
-      for(WidgetGroupParent var4 = (WidgetGroupParent)Client.widgetGroupParents.first(); var4 != null; var4 = (WidgetGroupParent)Client.widgetGroupParents.next()) {
-         MenuAction.closeWidgetGroup(var4, true);
+      if (component.widthAlignment == 4) {
+         component.width = component.height * component.field958 / component.field959;
       }
 
-      Client.rootWidgetGroup = -1;
-      Client.widgetGroupParents = new NodeHashTable(8);
-      Client.__client_mo = null;
-      Client.menuOptionsCount = 0;
-      Client.isMenuOpen = false;
-      Client.__client_ru.__m_385((int[])null, new int[]{0, 0, 0, 0, 0}, false, -1);
-
-      for(var0 = 0; var0 < 8; ++var0) {
-         Client.playerMenuActions[var0] = null;
-         Client.playerOptionsPriorities[var0] = false;
+      if (component.heightAlignment == 4) {
+         component.height = component.width * component.field959 / component.field958;
       }
 
-      SpriteMask.method4389();
-      Client.isLoading = true;
-
-      for(var0 = 0; var0 < 100; ++var0) {
-         Client.__client_od[var0] = true;
+      if (component.contentType == 1337) {
+         Client.viewportWidget = component;
       }
 
-      AbstractByteArrayCopier.method4024();
-      PacketWriter.clanChat = null;
-
-      for(var0 = 0; var0 < 8; ++var0) {
-         Client.grandExchangeOffers[var0] = new GrandExchangeOffer();
+      if (var3 && component.onResize != null && (var4 != component.width || var5 != component.height)) {
+         ScriptEvent var6 = new ScriptEvent();
+         var6.widget = component;
+         var6.args0 = component.onResize;
+         Client.scriptEvents.addFirst(var6);
       }
 
-      FloorDecoration.grandExchangeEvents = null;
    }
 }

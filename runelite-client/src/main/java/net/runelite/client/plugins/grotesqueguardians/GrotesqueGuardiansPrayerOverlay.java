@@ -29,7 +29,9 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import java.util.Objects;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
@@ -43,6 +45,7 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+@Singleton
 public class GrotesqueGuardiansPrayerOverlay extends Overlay
 {
 	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
@@ -52,7 +55,7 @@ public class GrotesqueGuardiansPrayerOverlay extends Overlay
 	private final PanelComponent imagePanelComponent = new PanelComponent();
 
 	@Inject
-	private GrotesqueGuardiansPrayerOverlay(Client client, GrotesqueGuardiansPlugin plugin, SpriteManager spriteManager)
+	private GrotesqueGuardiansPrayerOverlay(final Client client, final GrotesqueGuardiansPlugin plugin, final SpriteManager spriteManager)
 	{
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPriority(OverlayPriority.HIGH);
@@ -68,7 +71,7 @@ public class GrotesqueGuardiansPrayerOverlay extends Overlay
 		if ((plugin.isInGargs()) && (plugin.getPrayAgainst() != null) && (plugin.getDusk() != null))
 		{
 			DuskAttack attack = plugin.getPrayAgainst();
-			BufferedImage prayerImage = null;
+			BufferedImage prayerImage;
 			prayerImage = getPrayerImage(attack);
 			imagePanelComponent.setBackgroundColor(client
 					.isPrayerActive(attack.getPrayer()) ? ComponentConstants.STANDARD_BACKGROUND_COLOR : NOT_ACTIVATED_BACKGROUND_COLOR);
@@ -77,7 +80,7 @@ public class GrotesqueGuardiansPrayerOverlay extends Overlay
 			imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
 
 
-			LocalPoint duskPoint = new LocalPoint(dusk.getLocalLocation().getX() + 128 * (dusk.getTransformedDefinition().getSize() - 1) / 2, dusk.getLocalLocation().getY() + 128 * (dusk.getTransformedDefinition().getSize() - 1) / 2);
+			LocalPoint duskPoint = new LocalPoint(dusk.getLocalLocation().getX() + 128 * (Objects.requireNonNull(dusk.getTransformedDefinition()).getSize() - 1) / 2, dusk.getLocalLocation().getY() + 128 * (dusk.getTransformedDefinition().getSize() - 1) / 2);
 			net.runelite.api.Point duskLoc = Perspective.getCanvasImageLocation(client, duskPoint, prayerImage, 400);
 			if (duskLoc != null)
 			{

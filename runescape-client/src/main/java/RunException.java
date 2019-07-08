@@ -24,7 +24,7 @@ public class RunException extends RuntimeException {
    @ObfuscatedGetter(
       intValue = 121013503
    )
-   public static int __fx_w;
+   public static int field761;
    @ObfuscatedName("o")
    @Export("string")
    String string;
@@ -52,15 +52,14 @@ public class RunException extends RuntimeException {
       garbageValue = "-2146928006"
    )
    public static void method3431() {
-      Object var0 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
-         if(IndexStoreActionHandler.__iv_q != 0) {
-            IndexStoreActionHandler.__iv_q = 1;
+      Object var0 = ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock;
+      synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock) {
+         if (ArchiveDiskActionHandler.field412 != 0) {
+            ArchiveDiskActionHandler.field412 = 1;
 
             try {
-               IndexStoreActionHandler.IndexStoreActionHandler_lock.wait();
-            } catch (InterruptedException var3) {
-               ;
+               ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock.wait();
+            } catch (InterruptedException var4) {
             }
          }
 

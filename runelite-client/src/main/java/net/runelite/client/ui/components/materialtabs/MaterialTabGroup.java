@@ -75,7 +75,7 @@ public class MaterialTabGroup extends JPanel
 	public MaterialTab getTab(int index)
 	{
 
-		if (tabs == null || tabs.isEmpty())
+		if (tabs.isEmpty())
 		{
 			return null;
 		}

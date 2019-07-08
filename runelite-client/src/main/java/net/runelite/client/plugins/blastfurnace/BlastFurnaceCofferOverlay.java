@@ -27,6 +27,7 @@ package net.runelite.client.plugins.blastfurnace;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import static net.runelite.api.Varbits.BLAST_FURNACE_COFFER;
@@ -41,6 +42,7 @@ import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.util.StackFormatter;
 
+@Singleton
 class BlastFurnaceCofferOverlay extends Overlay
 {
 	private final Client client;
@@ -48,7 +50,7 @@ class BlastFurnaceCofferOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private BlastFurnaceCofferOverlay(Client client, BlastFurnacePlugin plugin)
+	private BlastFurnaceCofferOverlay(final Client client, final BlastFurnacePlugin plugin)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);

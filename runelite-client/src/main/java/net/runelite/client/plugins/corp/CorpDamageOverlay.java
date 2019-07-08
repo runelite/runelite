@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
@@ -48,16 +49,16 @@ import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
 
+@Singleton
 class CorpDamageOverlay extends Overlay
 {
 	private final Client client;
 	private final CorpPlugin corpPlugin;
-	private final CorpConfig config;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private CorpDamageOverlay(Client client, CorpPlugin corpPlugin, CorpConfig config)
+	private CorpDamageOverlay(final Client client, final CorpPlugin corpPlugin)
 	{
 		super(corpPlugin);
 		setPosition(OverlayPosition.TOP_LEFT);
@@ -65,7 +66,6 @@ class CorpDamageOverlay extends Overlay
 		setPriority(OverlayPriority.LOW);
 		this.client = client;
 		this.corpPlugin = corpPlugin;
-		this.config = config;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Corp overlay"));
 	}
 
@@ -122,7 +122,7 @@ class CorpDamageOverlay extends Overlay
 			}
 		}
 
-		if (config.showDamage())
+		if (corpPlugin.isShowDamage())
 		{
 			tableComponent.addRow("Your damage", ColorUtil.prependColorTag(Integer.toString(myDamage), damageForKill > 0 && myDamage >= damageForKill ? Color.GREEN : Color.RED));
 			tableComponent.addRow("Total damage:", Integer.toString(totalDamage));

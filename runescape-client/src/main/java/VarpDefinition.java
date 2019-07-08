@@ -11,12 +11,12 @@ public class VarpDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache __ix_m;
+   public static AbstractArchive field943;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 510774535
    )
-   public static int __ix_f;
+   public static int field944;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -30,10 +30,6 @@ public class VarpDefinition extends DualNode {
    @Export("type")
    public int type;
 
-   static {
-      VarpDefinition_cached = new EvictingDualNodeHashTable(64);
-   }
-
    VarpDefinition() {
       this.type = 0;
    }
@@ -43,15 +39,15 @@ public class VarpDefinition extends DualNode {
       signature = "(Lgr;B)V",
       garbageValue = "-41"
    )
-   @Export("read")
-   void read(Buffer var1) {
-      while(true) {
+   @Export("decode")
+   void decode(Buffer var1) {
+      while (true) {
          int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+         if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -60,11 +56,15 @@ public class VarpDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "-1859920822"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
-      if(var2 == 5) {
-         this.type = var1.__ag_302();
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
+      if (var2 == 5) {
+         this.type = var1.readUnsignedShort();
       }
 
+   }
+
+   static {
+      VarpDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

@@ -27,12 +27,15 @@ package net.runelite.client.plugins.pestcontrol;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -71,6 +74,7 @@ import net.runelite.client.util.Text;
 	description = "Show helpful information for the Pest Control minigame",
 	tags = {"minigame", "overlay"}
 )
+@Singleton
 public class PestControlPlugin extends Plugin
 {
 	private static final int VOID_KNIGHTS_OUTPOST = 10537;
@@ -86,7 +90,7 @@ public class PestControlPlugin extends Plugin
 	private final Pattern PURCHASE_PATTERN = Pattern.compile("Remaining Void Knight Commendation Points: ([0-9]+)");
 
 	@Inject
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Client client;
 
 	@Inject
@@ -99,15 +103,15 @@ public class PestControlPlugin extends Plugin
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private ItemManager itemManager;
 
 	@Inject
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private PestControlConfig config;
 
 	@Inject
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private WidgetOverlay widgetOverlay;
 
 	@Inject
@@ -128,25 +132,25 @@ public class PestControlPlugin extends Plugin
 	@Inject
 	private PortalWeaknessOverlay portalWeaknessOverlay;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Game game;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private HashMap<Integer, NpcHighlightContext> highlightedNpcList = new HashMap<>();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private List<TileObject> highlightedRepairList = new ArrayList<>();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Tile noviceGangplankTile;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Tile intermediateGangplankTile;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Tile veteranGangplankTile;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Integer commendationPoints;
 
 	private String userConfigKey;
@@ -155,6 +159,21 @@ public class PestControlPlugin extends Plugin
 
 	private PointsInfoboxCounter pointsInfoboxCounter;
 
+	private boolean showHintArrow;
+	private boolean showPortalWeakness;
+	private boolean highlightGangplanks;
+	private HighlightPortalOption portalHighlight;
+	private Color activePortalColor;
+	private Color shieldedPortalColor;
+	private NpcHighlightStyle highlightSpinners;
+	private Color spinnerColor;
+	private NpcHighlightStyle highlightBrawlers;
+	private Color brawlerColor;
+	private boolean highlightRepairables;
+	@Getter(AccessLevel.PACKAGE)
+	private Color repairableColor;
+	private boolean showPoints;
+	private boolean showTimeTillNextPortal;
 
 	@Provides
 	PestControlConfig provideConfig(ConfigManager configManager)
@@ -165,6 +184,7 @@ public class PestControlPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
 		loadPlugin();
 	}
 
@@ -179,6 +199,7 @@ public class PestControlPlugin extends Plugin
 	{
 		if (configEvent.getGroup().equals("pestcontrol"))
 		{
+			updateConfig();
 			unloadPlugin();
 			loadPlugin();
 		}
@@ -210,53 +231,53 @@ public class PestControlPlugin extends Plugin
 
 		overlayManager.add(widgetOverlay);
 
-		if (config.highlightSpinners() != NpcHighlightStyle.OFF)
+		if (this.highlightSpinners != NpcHighlightStyle.OFF)
 		{
 			for (Integer npcId : PestControlNpc.getSpinnerIdSet())
 			{
 				highlightedNpcList.put(npcId, new NpcHighlightContext(
-					config.highlightSpinners(),
-					config.spinnerColor(),
+					this.highlightSpinners,
+					this.spinnerColor,
 					true
 				));
 			}
 		}
 
-		if (config.highlightBrawlers() != NpcHighlightStyle.OFF)
+		if (this.highlightBrawlers != NpcHighlightStyle.OFF)
 		{
 			for (Integer npcId : PestControlNpc.getBrawlerIdSet())
 			{
 				highlightedNpcList.put(npcId, new NpcHighlightContext(
-					config.highlightBrawlers(),
-					config.brawlerColor(),
+					this.highlightBrawlers,
+					this.brawlerColor,
 					false
 				));
 			}
 		}
 
-		if (config.portalHighlight() != HighlightPortalOption.OFF)
+		if (this.portalHighlight != HighlightPortalOption.OFF)
 		{
-			if (config.portalHighlight() == HighlightPortalOption.ACTIVE ||
-				config.portalHighlight() == HighlightPortalOption.ALL)
+			if (this.portalHighlight == HighlightPortalOption.ACTIVE ||
+				this.portalHighlight == HighlightPortalOption.ALL)
 			{
 				for (Integer portalNpcId : PestControlNpc.getActivePortalIdSet())
 				{
 					highlightedNpcList.put(portalNpcId, new NpcHighlightContext(
 						NpcHighlightStyle.HULL,
-						config.activePortalColor(),
+						this.activePortalColor,
 						false
 					));
 				}
 			}
 
-			if (config.portalHighlight() == HighlightPortalOption.SHIELDED ||
-				config.portalHighlight() == HighlightPortalOption.ALL)
+			if (this.portalHighlight == HighlightPortalOption.SHIELDED ||
+				this.portalHighlight == HighlightPortalOption.ALL)
 			{
 				for (Integer portalNpcId : PestControlNpc.getShieldedPortalIdSet())
 				{
 					highlightedNpcList.put(portalNpcId, new NpcHighlightContext(
 						NpcHighlightStyle.HULL,
-						config.shieldedPortalColor(),
+						this.shieldedPortalColor,
 						false
 					));
 				}
@@ -268,12 +289,12 @@ public class PestControlPlugin extends Plugin
 			overlayManager.add(npcHighlightOverlay);
 		}
 
-		if (config.highlightRepairables())
+		if (this.highlightRepairables)
 		{
 			overlayManager.add(repairOverlay);
 		}
 
-		if (config.showHintArrow())
+		if (this.showHintArrow)
 		{
 			overlayManager.add(hintArrowOverlay);
 
@@ -283,17 +304,17 @@ public class PestControlPlugin extends Plugin
 			}
 		}
 
-		if (config.highlightGangplanks())
+		if (this.highlightGangplanks)
 		{
 			overlayManager.add(gangplankOverlay);
 		}
 
-		if (config.showTimeTillNextPortal())
+		if (this.showTimeTillNextPortal)
 		{
 			overlayManager.add(timerOverlay);
 		}
 
-		if (config.showPortalWeakness())
+		if (this.showPortalWeakness)
 		{
 			overlayManager.add(portalWeaknessOverlay);
 		}
@@ -314,7 +335,7 @@ public class PestControlPlugin extends Plugin
 
 		highlightedNpcList.clear();
 
-		if (game != null && config.showHintArrow() && client.hasHintArrow())
+		if (game != null && this.showHintArrow && client.hasHintArrow())
 		{
 			client.clearHintArrow();
 		}
@@ -332,7 +353,7 @@ public class PestControlPlugin extends Plugin
 
 	private void handlePointsInfoboxCounter()
 	{
-		if (!config.showPoints())
+		if (!this.showPoints)
 		{
 			return;
 		}
@@ -669,5 +690,23 @@ public class PestControlPlugin extends Plugin
 			return client.getLocalPlayer().getWorldLocation().getRegionID() == VOID_KNIGHTS_OUTPOST;
 		}
 		return false;
+	}
+
+	private void updateConfig()
+	{
+		this.showHintArrow = config.showHintArrow();
+		this.showPortalWeakness = config.showPortalWeakness();
+		this.highlightGangplanks = config.highlightGangplanks();
+		this.portalHighlight = config.portalHighlight();
+		this.activePortalColor = config.activePortalColor();
+		this.shieldedPortalColor = config.shieldedPortalColor();
+		this.highlightSpinners = config.highlightSpinners();
+		this.spinnerColor = config.spinnerColor();
+		this.highlightBrawlers = config.highlightBrawlers();
+		this.brawlerColor = config.brawlerColor();
+		this.highlightRepairables = config.highlightRepairables();
+		this.repairableColor = config.repairableColor();
+		this.showPoints = config.showPoints();
+		this.showTimeTillNextPortal = config.showTimeTillNextPortal();
 	}
 }

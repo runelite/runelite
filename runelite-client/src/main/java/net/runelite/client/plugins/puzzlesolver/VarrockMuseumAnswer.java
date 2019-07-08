@@ -27,13 +27,14 @@ package net.runelite.client.plugins.puzzlesolver;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor
 enum VarrockMuseumAnswer
 {

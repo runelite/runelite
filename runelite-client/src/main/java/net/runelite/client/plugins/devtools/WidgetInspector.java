@@ -63,7 +63,6 @@ class WidgetInspector extends JFrame
 	private final ClientThread clientThread;
 	private final DevToolsConfig config;
 	private final DevToolsOverlay overlay;
-	private final DevToolsPlugin plugin;
 
 	private final JTree widgetTree;
 	private final WidgetInfoTableModel infoTableModel;
@@ -86,7 +85,6 @@ class WidgetInspector extends JFrame
 		this.infoTableModel = infoTableModel;
 		this.config = config;
 		this.overlay = overlay;
-		this.plugin = plugin;
 
 		eventBus.register(this);
 

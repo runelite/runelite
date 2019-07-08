@@ -51,6 +51,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -66,6 +67,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
+@Singleton
 class ProfilesPanel extends PluginPanel
 {
 	private static final int iterations = 100000;
@@ -75,8 +77,8 @@ class ProfilesPanel extends PluginPanel
 	private static final String ACCOUNT_LABEL = "Account Label";
 	private static final String PASSWORD_LABEL = "Account Password";
 	private static final String HELP = "To add and load accounts, first enter a password into the Encryption Password " +
-		"field then press Load Accounts. You can now add as many accounts as you would like. The next time you restart" +
-		"Runelite, enter your encryption password and click load accounts to see the accounts you entered";
+		"field then press Load Accounts. You can now add as many accounts as you would like. The next time you restart " +
+		"RunelitePlus, enter your encryption password and click load accounts to see the accounts you entered";
 	private static final Dimension PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 20, 30);
 	private static final Dimension HELP_PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 20, 130);
 
@@ -90,10 +92,10 @@ class ProfilesPanel extends PluginPanel
 	private final JPasswordField txtAccountLogin = new JPasswordField(ACCOUNT_USERNAME);
 	private final JPasswordField txtPasswordLogin = new JPasswordField(PASSWORD_LABEL);
 	private final JPanel profilesPanel = new JPanel();
-	private GridBagConstraints c;
+	private final GridBagConstraints c;
 
 	@Inject
-	public ProfilesPanel(Client client, ProfilesConfig config)
+	public ProfilesPanel(final Client client, final ProfilesConfig config)
 	{
 		super();
 		this.client = client;
@@ -114,7 +116,7 @@ class ProfilesPanel extends PluginPanel
 		JPanel helpPanel = new JPanel(new BorderLayout());
 		helpPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		JLabel helpLabel = new JLabel("<html> <p>" + HELP + "</p></html>");
-		helpLabel.setFont(FontManager.getRunescapeSmallFont());
+		helpLabel.setFont(FontManager.getSmallFont(getFont()));
 		helpPanel.setPreferredSize(HELP_PREFERRED_SIZE);
 		// helpPanel.setSize(MINIMUM_SIZE);
 		helpPanel.add(helpLabel, BorderLayout.NORTH);
@@ -344,7 +346,7 @@ class ProfilesPanel extends PluginPanel
 			}
 			catch (InvalidKeySpecException | NoSuchAlgorithmException ex)
 			{
-				ex.printStackTrace();
+				log.error(e.toString());
 			}
 
 			this.addAccount(data);
@@ -550,7 +552,7 @@ class ProfilesPanel extends PluginPanel
 		}
 		catch (NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException e)
 		{
-			e.printStackTrace();
+			log.error(e.toString());
 		}
 		return new byte[0];
 	}
@@ -566,7 +568,7 @@ class ProfilesPanel extends PluginPanel
 		}
 		catch (NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException e)
 		{
-			e.printStackTrace();
+			log.error(e.toString());
 		}
 		return "";
 	}

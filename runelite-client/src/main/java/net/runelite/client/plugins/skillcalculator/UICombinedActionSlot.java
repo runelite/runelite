@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,13 +40,14 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
+@Singleton
 class UICombinedActionSlot extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 	private final JShadowedLabel uiLabelActions;
 	private final JShadowedLabel uiLabelTitle;
 
-	UICombinedActionSlot(SpriteManager spriteManager)
+	UICombinedActionSlot(final SpriteManager spriteManager)
 	{
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);

@@ -28,7 +28,7 @@ import java.awt.Color;
 import net.runelite.api.Client;
 import net.runelite.api.Sprite;
 
-public class MinimapDot
+class MinimapDot
 {
 	private static final int MAP_DOT_WIDTH = 4;
 	private static final int MAP_DOT_HEIGHT = 5;

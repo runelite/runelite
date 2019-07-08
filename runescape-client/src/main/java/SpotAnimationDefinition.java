@@ -11,14 +11,14 @@ public class SpotAnimationDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("SpotAnimationDefinition_indexCache")
-   public static AbstractIndexCache SpotAnimationDefinition_indexCache;
+   @Export("SpotAnimationDefinition_archive")
+   public static AbstractArchive SpotAnimationDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("SpotAnimationDefinition_modelIndexCache")
-   public static AbstractIndexCache SpotAnimationDefinition_modelIndexCache;
+   @Export("SpotAnimationDefinition_modelArchive")
+   public static AbstractArchive SpotAnimationDefinition_modelArchive;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -83,25 +83,20 @@ public class SpotAnimationDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -20619847
    )
-   int __a;
+   int field876;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = 1866148625
    )
-   int __z;
-
-   static {
-      SpotAnimationDefinition_cached = new EvictingDualNodeHashTable(64);
-      SpotAnimationDefinition_cachedModels = new EvictingDualNodeHashTable(30);
-   }
+   int field877;
 
    SpotAnimationDefinition() {
       this.sequence = -1;
       this.widthScale = 128;
       this.heightScale = 128;
       this.orientation = 0;
-      this.__a = 0;
-      this.__z = 0;
+      this.field876 = 0;
+      this.field877 = 0;
    }
 
    @ObfuscatedName("f")
@@ -109,15 +104,15 @@ public class SpotAnimationDefinition extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "906815828"
    )
-   @Export("read")
-   void read(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+   @Export("decode")
+   void decode(Buffer buffer) {
+      while (true) {
+         int var2 = buffer.readUnsignedByte();
+         if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(buffer, var2);
       }
    }
 
@@ -126,42 +121,42 @@ public class SpotAnimationDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "2099681848"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
-      if(var2 == 1) {
-         this.archive = var1.__ag_302();
-      } else if(var2 == 2) {
-         this.sequence = var1.__ag_302();
-      } else if(var2 == 4) {
-         this.widthScale = var1.__ag_302();
-      } else if(var2 == 5) {
-         this.heightScale = var1.__ag_302();
-      } else if(var2 == 6) {
-         this.orientation = var1.__ag_302();
-      } else if(var2 == 7) {
-         this.__a = var1.readUnsignedByte();
-      } else if(var2 == 8) {
-         this.__z = var1.readUnsignedByte();
+   @Export("decodeNext")
+   void decodeNext(Buffer buffer, int var2) {
+      if (var2 == 1) {
+         this.archive = buffer.readUnsignedShort();
+      } else if (var2 == 2) {
+         this.sequence = buffer.readUnsignedShort();
+      } else if (var2 == 4) {
+         this.widthScale = buffer.readUnsignedShort();
+      } else if (var2 == 5) {
+         this.heightScale = buffer.readUnsignedShort();
+      } else if (var2 == 6) {
+         this.orientation = buffer.readUnsignedShort();
+      } else if (var2 == 7) {
+         this.field876 = buffer.readUnsignedByte();
+      } else if (var2 == 8) {
+         this.field877 = buffer.readUnsignedByte();
       } else {
          int var3;
          int var4;
-         if(var2 == 40) {
-            var3 = var1.readUnsignedByte();
+         if (var2 == 40) {
+            var3 = buffer.readUnsignedByte();
             this.recolorFrom = new short[var3];
             this.recolorTo = new short[var3];
 
-            for(var4 = 0; var4 < var3; ++var4) {
-               this.recolorFrom[var4] = (short)var1.__ag_302();
-               this.recolorTo[var4] = (short)var1.__ag_302();
+            for (var4 = 0; var4 < var3; ++var4) {
+               this.recolorFrom[var4] = (short)buffer.readUnsignedShort();
+               this.recolorTo[var4] = (short)buffer.readUnsignedShort();
             }
-         } else if(var2 == 41) {
-            var3 = var1.readUnsignedByte();
+         } else if (var2 == 41) {
+            var3 = buffer.readUnsignedByte();
             this.retextureFrom = new short[var3];
             this.retextureTo = new short[var3];
 
-            for(var4 = 0; var4 < var3; ++var4) {
-               this.retextureFrom[var4] = (short)var1.__ag_302();
-               this.retextureTo[var4] = (short)var1.__ag_302();
+            for (var4 = 0; var4 < var3; ++var4) {
+               this.retextureFrom[var4] = (short)buffer.readUnsignedShort();
+               this.retextureTo[var4] = (short)buffer.readUnsignedShort();
             }
          }
       }
@@ -176,51 +171,51 @@ public class SpotAnimationDefinition extends DualNode {
    @Export("getModel")
    public final Model getModel(int var1) {
       Model var2 = (Model)SpotAnimationDefinition_cachedModels.get((long)this.id);
-      if(var2 == null) {
-         ModelData var3 = ModelData.method2788(SpotAnimationDefinition_modelIndexCache, this.archive, 0);
-         if(var3 == null) {
+      if (var2 == null) {
+         ModelData var3 = ModelData.method2788(SpotAnimationDefinition_modelArchive, this.archive, 0);
+         if (var3 == null) {
             return null;
          }
 
          int var4;
-         if(this.recolorFrom != null) {
-            for(var4 = 0; var4 < this.recolorFrom.length; ++var4) {
+         if (this.recolorFrom != null) {
+            for (var4 = 0; var4 < this.recolorFrom.length; ++var4) {
                var3.recolor(this.recolorFrom[var4], this.recolorTo[var4]);
             }
          }
 
-         if(this.retextureFrom != null) {
-            for(var4 = 0; var4 < this.retextureFrom.length; ++var4) {
+         if (this.retextureFrom != null) {
+            for (var4 = 0; var4 < this.retextureFrom.length; ++var4) {
                var3.retexture(this.retextureFrom[var4], this.retextureTo[var4]);
             }
          }
 
-         var2 = var3.toModel(this.__a + 64, this.__z + 850, -30, -50, -30);
+         var2 = var3.toModel(this.field876 + 64, this.field877 + 850, -30, -50, -30);
          SpotAnimationDefinition_cachedModels.put(var2, (long)this.id);
       }
 
       Model var5;
-      if(this.sequence != -1 && var1 != -1) {
+      if (this.sequence != -1 && var1 != -1) {
          var5 = WorldMapAreaData.getSequenceDefinition(this.sequence).animateSpotAnimation(var2, var1);
       } else {
          var5 = var2.toSharedSpotAnimationModel(true);
       }
 
-      if(this.widthScale != 128 || this.heightScale != 128) {
+      if (this.widthScale != 128 || this.heightScale != 128) {
          var5.scale(this.widthScale, this.heightScale, this.widthScale);
       }
 
-      if(this.orientation != 0) {
-         if(this.orientation == 90) {
+      if (this.orientation != 0) {
+         if (this.orientation == 90) {
             var5.rotateY90Ccw();
          }
 
-         if(this.orientation == 180) {
+         if (this.orientation == 180) {
             var5.rotateY90Ccw();
             var5.rotateY90Ccw();
          }
 
-         if(this.orientation == 270) {
+         if (this.orientation == 270) {
             var5.rotateY90Ccw();
             var5.rotateY90Ccw();
             var5.rotateY90Ccw();
@@ -235,7 +230,13 @@ public class SpotAnimationDefinition extends DualNode {
       signature = "(B)I",
       garbageValue = "95"
    )
-   static int method4822() {
-      return Client.isResizable?2:1;
+   @Export("getWindowedMode")
+   static int getWindowedMode() {
+      return Client.isResizable ? 2 : 1;
+   }
+
+   static {
+      SpotAnimationDefinition_cached = new EvictingDualNodeHashTable(64);
+      SpotAnimationDefinition_cachedModels = new EvictingDualNodeHashTable(30);
    }
 }

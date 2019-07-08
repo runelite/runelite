@@ -30,6 +30,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,6 +41,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.ImageUtil;
 
+@Singleton
 public class ScreenMarkerCreationPanel extends JPanel
 {
 	private static final ImageIcon CONFIRM_ICON;
@@ -63,7 +65,7 @@ public class ScreenMarkerCreationPanel extends JPanel
 		CANCEL_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(ImageUtil.bufferedImageFromImage(CANCEL_ICON.getImage()), 0.6f));
 	}
 
-	ScreenMarkerCreationPanel(ScreenMarkerPlugin plugin)
+	ScreenMarkerCreationPanel(final ScreenMarkerPlugin plugin)
 	{
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		setBorder(new EmptyBorder(8, 8, 8, 8));

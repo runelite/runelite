@@ -25,13 +25,14 @@
 package net.runelite.client.plugins.xpglobes;
 
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Skill;
 
-@Getter
-@Setter
+@Getter(AccessLevel.PACKAGE)
+@Setter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 class XpGlobe
 {

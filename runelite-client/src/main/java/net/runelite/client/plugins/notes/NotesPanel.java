@@ -29,6 +29,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import javax.inject.Singleton;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -44,12 +45,13 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
+@Singleton
 class NotesPanel extends PluginPanel
 {
 	private final JTextArea notesEditor = new JTextArea();
 	private final UndoManager undoRedo = new UndoManager();
 
-	void init(NotesConfig config)
+	void init(final NotesConfig config)
 	{
 		// this may or may not qualify as a hack
 		// but this lets the editor pane expand to fill the whole parent panel

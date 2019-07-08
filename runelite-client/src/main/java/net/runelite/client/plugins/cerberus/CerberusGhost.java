@@ -27,13 +27,14 @@ package net.runelite.client.plugins.cerberus;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import java.util.Optional;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Skill;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor
 public enum CerberusGhost
 {

@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.client.ui.overlay.Overlay;
@@ -21,19 +22,18 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class SafeSpotOverlay extends Overlay
 {
 
 	private final Client client;
 	private final SafeSpotPlugin safeSpotPlugin;
-	private final SafeSpotConfig config;
 
 	@Inject
-	public SafeSpotOverlay(Client client, SafeSpotPlugin safeSpotPlugin, SafeSpotConfig config)
+	public SafeSpotOverlay(final Client client, final SafeSpotPlugin safeSpotPlugin)
 	{
 		this.client = client;
 		this.safeSpotPlugin = safeSpotPlugin;
-		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -42,25 +42,19 @@ public class SafeSpotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (safeSpotPlugin.isSafeSpotsRenderable())
+		if (safeSpotPlugin.isSafeSpotsRenderable() && safeSpotPlugin.getSafeSpotList() != null && safeSpotPlugin.getSafeSpotList().size() > 0)
 		{
-			if (safeSpotPlugin.getSafeSpotList() != null)
+			safeSpotPlugin.getSafeSpotList().forEach(tile ->
 			{
-				if (safeSpotPlugin.getSafeSpotList().size() > 0)
+				if (tile != null && tile.getLocalLocation() != null)
 				{
-					safeSpotPlugin.getSafeSpotList().forEach(tile ->
+					final Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
+					if (poly != null)
 					{
-						if (tile != null && tile.getLocalLocation() != null)
-						{
-							final Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
-							if (poly != null)
-							{
-								OverlayUtil.renderPolygon(graphics, poly, config.tileColor());
-							}
-						}
-					});
+						OverlayUtil.renderPolygon(graphics, poly, safeSpotPlugin.getTileColor());
+					}
 				}
-			}
+			});
 		}
 		return null;
 	}

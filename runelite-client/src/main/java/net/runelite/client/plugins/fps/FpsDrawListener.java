@@ -54,12 +54,12 @@ public class FpsDrawListener implements Runnable
 
 	// Working set
 	private long lastMillis = 0;
-	private long[] lastDelays = new long[SAMPLE_SIZE];
+	private final long[] lastDelays = new long[SAMPLE_SIZE];
 	private int lastDelayIndex = 0;
 	private long sleepDelay = 0;
 
 	@Inject
-	private FpsDrawListener(FpsConfig config, FpsPlugin plugin)
+	private FpsDrawListener(final FpsConfig config, final FpsPlugin plugin)
 	{
 		this.config = config;
 		this.plugin = plugin;

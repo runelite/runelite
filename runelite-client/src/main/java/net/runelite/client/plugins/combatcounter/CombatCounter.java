@@ -24,10 +24,26 @@
  */
 package net.runelite.client.plugins.combatcounter;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
+import static net.runelite.api.AnimationID.BARRAGE_ANIMATION;
+import static net.runelite.api.AnimationID.BLOWPIPE_ATTACK;
+import static net.runelite.api.AnimationID.CHIN_ANIMATION;
 import net.runelite.api.Client;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
@@ -35,6 +51,7 @@ import net.runelite.api.NPCDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.kit.KitType;
@@ -45,13 +62,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 @PluginDescriptor(
 		name = "Tick Counter",
 		description = "Count the amount of perfect combat ticks performed by each player.",
@@ -59,7 +69,8 @@ import java.util.Map;
 		type = PluginType.UTILITY,
 		enabledByDefault = false
 )
-
+@Singleton
+@Slf4j
 public class CombatCounter extends Plugin 
 {
 
@@ -79,16 +90,30 @@ public class CombatCounter extends Plugin
 	private CombatCounterConfig config;
 
 	private boolean instanced = false;
-	private boolean prevInstance = false;
-	@Setter
-	@Getter
-	private Map<String, Long> counter = new HashMap<String, Long>();
-	private long BLOWPIPE_ID = 5061;
+	@Setter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.PACKAGE)
+	private Map<String, Long> counter = new HashMap<>();
 
-	private Map<String, Long> blowpipe = new HashMap<>();
+	private final Map<String, Long> blowpipe = new HashMap<>();
 
-	public Map<NPC, NPCDamageCounter> npcDamageMap = new HashMap<NPC, NPCDamageCounter>();
-	public Map<String, Double> playerDamage = new HashMap<String, Double>();
+	private final Map<NPC, NPCDamageCounter> npcDamageMap = new HashMap<>();
+	Map<String, Double> playerDamage = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showTickCounter;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showDamageCounter;
+	private boolean resetOnNewInstance;
+	@Getter(AccessLevel.PACKAGE)
+	private Color selfColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color totalColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color otherColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color bgColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color titleColor;
 
 	@Provides
 	CombatCounterConfig provideConfig(ConfigManager configManager)
@@ -96,136 +121,122 @@ public class CombatCounter extends Plugin
 		return configManager.getConfig(CombatCounterConfig.class);
 	}
 
+	private static final Map<Integer, Integer> VARIABLES = ImmutableMap.<Integer, Integer>builder()
+		.put(422, 4) // Unarmed Punch, Block
+		.put(423, 4) // Unarmed Kick
+
+		.put(8145, 4) // Rapier Stab, Lunge, Block
+		.put(390, 4) // Rapier Slash
+
+		.put(7552, 5) // Armadyl Crossbow Accurate, Rapid, Longrange, Special
+
+		.put(1167, 4) // Trident Accurate, Accurate, Longrange
+
+		.put(401, 6) // Dragon Warhammer Pound, Pummel, Block
+		.put(1378, 6) // Dragon Warhammer Special
+
+		.put(393, 4) // Dragon Claws Chop, Slash, Block
+		.put(1067, 4) // Dragon Claws Lunge
+		.put(7514, 4) // Dragon Claws Special
+
+		.put(8288, 4) // Dragon Hunter Lance Lunge, Block
+		.put(8289, 4) // Dragon Hunter Lance Swipe
+		.put(8290, 4) // Dragon Hunter Lance Pound
+
+		.put(7516, 6) // Elder maul Pound, Pummel, Block
+
+		.put(8056, 5) // Scythe of Vitur Reap, Chop, Jab, Block
+
+		.put(7045, 6) // Bandos Godsword Chop, Slash
+		.put(7054, 6) // Bandos Godsword Smash
+		.put(7055, 6) // Bandos Godsword Block
+		.put(7642, 6) // Bandos Godsword Special
+		.put(7643, 6) // Bandos Godsword Special (Ornamate)
+
+		.put(426, 5) // Twisted Bow Accurate, Rapid, Longrange
+
+		.put(414, 5) // Kodai Bash, Pound, Focus
+
+		// .put(428, 4) // Staff of Light Jab
+		.put(440, 4) // Staff of Light Swipe
+		//.put(419, 4) // Staff of Light Fend
+		.put(7967, 4) // Staff of Light Special
+
+		.put(428, 7) // Crystal Halberd Jab, Fend
+		.put(419, 7) // Crystal Halberd Swipe
+		.put(1203, 7) // Crystal Halberd Special
+
+		.put(5061, 2) // Toxic Blowpipe Accurate, Rapid, Longrange, Special
+
+		.put(1979, 5) // Ancient Magicks Barrage
+		.put(1978, 5) // Ancient Magicks Blitz
+
+		.put(7618, 3) // Chinchompa Short, Medium, Long Fuse
+		.put(1658, 4) // Whip Flick, Lash, Deflect
+
+		.put(7555, 6) // Ballista Accurate, Rapid, Longrange
+		.build();
 
 
-	private Map<Integer, Integer> variables = new HashMap<Integer, Integer>()
-	{
-		{
-		this.put(422, 4); // Unarmed Punch, Block
-		this.put(423, 4); // Unarmed Kick
+	private static final Set<Integer> MELEE_ANIMATIONS = ImmutableSet.<Integer>builder()
+		.add(422) // Unarmed Punch, Block
+		.add(423) // Unarmed Kick
 
-		this.put(8145, 4); // Rapier Stab, Lunge, Block
-		this.put(390, 4); // Rapier Slash
+		.add(8145) // Rapier Stab, Lunge, Block
+		.add(390) // Rapier Slash
 
-		this.put(7552, 5); // Armadyl Crossbow Accurate, Rapid, Longrange, Special
+		.add(401) // Dragon Warhammer Pound, Pummel, Block
+		.add(1378) // Dragon Warhammer Special
 
-		this.put(1167, 4); // Trident Accurate, Accurate, Longrange
+		.add(393) // Dragon Claws Chop, Slash, Block
+		.add(1067) // Dragon Claws Lunge
+		.add(7514) // Dragon Claws Special
 
-		this.put(401, 6); // Dragon Warhammer Pound, Pummel, Block
-		this.put(1378, 6); // Dragon Warhammer Special
+		.add(8288) // Dragon Hunter Lance Lunge, Block
+		.add(8289) // Dragon Hunter Lance Swipe
+		.add(8290) // Dragon Hunter Lance Pound
 
-		this.put(393, 4); // Dragon Claws Chop, Slash, Block
-		this.put(1067, 4); // Dragon Claws Lunge
-		this.put(7514, 4); // Dragon Claws Special
+		.add(7516) // Elder maul Pound, Pummel, Block
 
-		this.put(8288, 4); // Dragon Hunter Lance Lunge, Block
-		this.put(8289, 4); // Dragon Hunter Lance Swipe
-		this.put(8290, 4); // Dragon Hunter Lance Pound
+		.add(8056) // Scythe of Vitur Reap, Chop, Jab, Block
 
-		this.put(7516, 6); // Elder maul Pound, Pummel, Block
+		.add(7045) // Bandos Godsword Chop, Slash
+		.add(7054) // Bandos Godsword Smash
+		.add(7055) // Bandos Godsword Block
+		.add(7642) // Bandos Godsword Special
+		.add(7643) // Bandos Godsword Special (Ornamate)
 
-		this.put(8056, 5); // Scythe of Vitur Reap, Chop, Jab, Block
+		.add(414) // Kodai Bash, Pound, Focus
 
-		this.put(7045, 6); // Bandos Godsword Chop, Slash
-		this.put(7054, 6); // Bandos Godsword Smash
-		this.put(7055, 6); // Bandos Godsword Block
-		this.put(7642, 6); // Bandos Godsword Special
-		this.put(7643, 6); // Bandos Godsword Special (Ornamate)
+		.add(428) // Staff of Light Jab
+		.add(440) // Staff of Light Swipe
+		.add(419) // Staff of Light Fend
 
-		this.put(426, 5); // Twisted Bow Accurate, Rapid, Longrange
+		.add(428) // Crystal Halberd Jab, Fend
+		.add(419) // Crystal Halberd Swipe
+		.add(1203) // Crystal Halberd Special
 
-		this.put(414, 5); // Kodai Bash, Pound, Focus
+		.add(1658) // Whip Flick, Lash, Deflect
+		.build();
 
-		this.put(428, 4); // Staff of Light Jab
-		this.put(440, 4); // Staff of Light Swipe
-		this.put(419, 4); // Staff of Light Fend
-		this.put(7967, 4); // Staff of Light Special
+	private static final Set<Integer> RANGE_ANIMATIONS = ImmutableSet.of(
+		7552, // Armadyl Crossbow Accurate, Rapid, Longrange, Special
+		426, // Twisted Bow Accurate, Rapid, Longrange
+		7618, // Chinchompa Short, Medium, Long Fuse
+		7555 // Ballista Accurate, Rapid, Longrange
+	);
 
-		this.put(428, 7); // Crystal Halberd Jab, Fend
-		this.put(419, 7); // Crystal Halberd Swipe
-		this.put(1203, 7); // Crystal Halberd Special
-
-		this.put(5061, 2); // Toxic Blowpipe Accurate, Rapid, Longrange, Special
-
-		this.put(1979, 5); // Ancient Magicks Barrage
-		this.put(1978, 5); // Ancient Magicks Blitz
-
-		this.put(7618, 3); // Chinchompa Short, Medium, Long Fuse
-		this.put(1658, 4); // Whip Flick, Lash, Deflect
-
-		this.put(7555, 6); // Ballista Accurate, Rapid, Longrange
-		}
-	};
-
-	public List<Integer> MELEE_ANIMATIONS = new ArrayList<Integer>()
-	{
-		{
-		this.add(422); // Unarmed Punch, Block
-		this.add(423); // Unarmed Kick
-
-		this.add(8145); // Rapier Stab, Lunge, Block
-		this.add(390); // Rapier Slash
-
-		this.add(401); // Dragon Warhammer Pound, Pummel, Block
-		this.add(1378); // Dragon Warhammer Special
-
-		this.add(393); // Dragon Claws Chop, Slash, Block
-		this.add(1067); // Dragon Claws Lunge
-		this.add(7514); // Dragon Claws Special
-
-		this.add(8288); // Dragon Hunter Lance Lunge, Block
-		this.add(8289); // Dragon Hunter Lance Swipe
-		this.add(8290); // Dragon Hunter Lance Pound
-
-		this.add(7516); // Elder maul Pound, Pummel, Block
-
-		this.add(8056); // Scythe of Vitur Reap, Chop, Jab, Block
-
-		this.add(7045); // Bandos Godsword Chop, Slash
-		this.add(7054); // Bandos Godsword Smash
-		this.add(7055); // Bandos Godsword Block
-		this.add(7642); // Bandos Godsword Special
-		this.add(7643); // Bandos Godsword Special (Ornamate)
-
-		this.add(414); // Kodai Bash, Pound, Focus
-
-		this.add(428); // Staff of Light Jab
-		this.add(440); // Staff of Light Swipe
-		this.add(419); // Staff of Light Fend
-
-		this.add(428); // Crystal Halberd Jab, Fend
-		this.add(419); // Crystal Halberd Swipe
-		this.add(1203); // Crystal Halberd Special
-
-		this.add(1658); // Whip Flick, Lash, Deflect
-		}
-	};
-
-	public List<Integer> RANGE_ANIMATIONS = new ArrayList<Integer>()
-	{
-		{
-		this.add(7552); // Armadyl Crossbow Accurate, Rapid, Longrange, Special
-
-		this.add(426); // Twisted Bow Accurate, Rapid, Longrange
-
-		this.add(7618); // Chinchompa Short, Medium, Long Fuse
-
-		this.add(7555); // Ballista Accurate, Rapid, Longrange
-		}
-	};
-
-	public List<Integer> MAGE_ANIMATIONS = new ArrayList<Integer>() 
-	{
-		{
-		this.add(1167); // Trident Accurate, Accurate, Longrange
-		this.add(1978); // Ancient Magicks Blitz
-		this.add(1979); // Ancient Magicks Barrage
-		}
-	};
+	private static final Set<Integer> MAGE_ANIMATIONS = ImmutableSet.of(
+		1167, // Trident Accurate, Accurate, Longrange
+		1978, // Ancient Magicks Blitz
+		1979 // Ancient Magicks Barrage
+	);
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(tickOverlay);
 		overlayManager.add(damageOverlay);
 
@@ -252,7 +263,7 @@ public class CombatCounter extends Plugin
 	{
 		Actor actor = event.getActor();
 
-		if (actor != null && actor instanceof Player)
+		if (actor instanceof Player)
 		{
 			Player p = (Player) actor;
 			String name = actor.getName();
@@ -261,22 +272,24 @@ public class CombatCounter extends Plugin
 				int animation = p.getAnimation();
 				if (animation != -1)
 				{
-					if (variables.containsKey(animation))
+					if (VARIABLES.containsKey(animation))
 					{
 						/*
 						 * This part handles the Tick Counter.
 						 */
-						long ticks = variables.get(animation);
+						long ticks = VARIABLES.get(animation);
 						if (((Player) actor).getPlayerAppearance().getEquipmentId(KitType.WEAPON) == 23360)
 						{
 							ticks = 3;
 						}
 						if (counter.containsKey(name))
+						{
 							ticks += counter.get(name);
+						}
 						counter.put(name, ticks);
 						counter = sortByValue(counter);
 
-						if (animation == BLOWPIPE_ID)
+						if (animation == BLOWPIPE_ATTACK)
 						{
 							this.blowpipe.put(name, -4L);
 						}
@@ -285,14 +298,14 @@ public class CombatCounter extends Plugin
 						 * This part handles the Damage Counter.
 						 */
 						Actor interacting = actor.getInteracting();
-						if (interacting != null && interacting instanceof NPC)
+						if (interacting instanceof NPC)
 						{
 							NPC npc = (NPC) interacting;
 
-							List<NPC> actives = new ArrayList<NPC>();
+							List<NPC> actives = new ArrayList<>();
 							actives.add(npc);
 
-							if (animation == 1979 || animation == 7618)
+							if (BARRAGE_ANIMATION == 1979 || CHIN_ANIMATION == 7618)
 							{ // Barrage or chin.
 								for (NPC nearby : this.client.getNpcs())
 								{
@@ -335,12 +348,12 @@ public class CombatCounter extends Plugin
 							}
 							else
 							{
-								System.out.println("Unclassified Animation: " + animation);
+								log.debug("Unclassified Animation: {}", animation);
 							}
 
 							if (delay != -1)
 							{
-								List<Integer> ticksToAdd = new ArrayList<Integer>();
+								List<Integer> ticksToAdd = new ArrayList<>();
 								ticksToAdd.add(delay);
 
 								if (canFarcast && delay > 2)
@@ -348,7 +361,7 @@ public class CombatCounter extends Plugin
 									ticksToAdd.add(delay - 1);
 								}
 
-								/**
+								/*
 								 * Dragon Claw Specials are 2 ticks long.
 								 */
 								if (animation == 7514)
@@ -360,13 +373,17 @@ public class CombatCounter extends Plugin
 								{
 									NPCDamageCounter dc = new NPCDamageCounter();
 									if (this.npcDamageMap.containsKey(target))
+									{
 										dc = this.npcDamageMap.get(target);
+									}
 
 									for (Integer tick : ticksToAdd)
 									{
-										List<String> attackers = new ArrayList<String>();
+										List<String> attackers = new ArrayList<>();
 										if (dc.attackers.containsKey(tick))
+										{
 											attackers = dc.attackers.get(tick);
+										}
 
 										attackers.add(name);
 										dc.attackers.put(tick, attackers);
@@ -389,9 +406,9 @@ public class CombatCounter extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (config.resetOnNewInstance())
+		if (this.resetOnNewInstance)
 		{
-			prevInstance = instanced;
+			boolean prevInstance = instanced;
 			instanced = client.isInInstancedRegion();
 			if (!prevInstance && instanced) 
 			{
@@ -402,19 +419,21 @@ public class CombatCounter extends Plugin
 			}
 		}
 
-		Map<String, Player> visible = new HashMap<String, Player>();
+		Map<String, Player> visible = new HashMap<>();
 		for (Player p : this.client.getPlayers())
 		{
 			if (p.getName() != null)
+			{
 				visible.put(p.getName(), p);
+			}
 		}
 
-		for (NPC npc : new ArrayList<NPC>(this.npcDamageMap.keySet()))
+		for (NPC npc : new ArrayList<>(this.npcDamageMap.keySet()))
 		{
 			NPCDamageCounter counter = this.npcDamageMap.get(npc);
 
 			Map<Integer, List<String>> attackers = counter.attackers;
-			for (Integer i : new ArrayList<Integer>(attackers.keySet()))
+			for (Integer i : new ArrayList<>(attackers.keySet()))
 			{
 				List<String> p = attackers.get(i);
 				attackers.put(i - 1, p);
@@ -423,7 +442,9 @@ public class CombatCounter extends Plugin
 
 			double totalDamage = 0d;
 			for (Integer damage : counter.damage)
+			{
 				totalDamage += damage;
+			}
 
 			if (attackers.containsKey(-1))
 			{
@@ -435,7 +456,9 @@ public class CombatCounter extends Plugin
 				{
 					double count = 0d;
 					if (this.playerDamage.containsKey(name))
+					{
 						count = this.playerDamage.get(name);
+					}
 
 					count += damagePerPlayer;
 					this.playerDamage.put(name, count);
@@ -455,17 +478,23 @@ public class CombatCounter extends Plugin
 //				this.playerDamage.put(name, count);
 //			}
 
-			for (Integer i : new ArrayList<Integer>(attackers.keySet()))
+			for (Integer i : new ArrayList<>(attackers.keySet()))
+			{
 				if (i <= -1)
+				{
 					attackers.remove(i);
+				}
+			}
 
 			if (attackers.isEmpty())
+			{
 				this.npcDamageMap.remove(npc);
+			}
 		}
 
 		this.playerDamage = sortByValue(this.playerDamage);
 
-		for (String user : new ArrayList<String>(blowpipe.keySet()))
+		for (String user : new ArrayList<>(blowpipe.keySet()))
 		{
 			if (visible.containsKey(user))
 			{
@@ -481,7 +510,7 @@ public class CombatCounter extends Plugin
 
 					Player p = visible.get(user);
 					Actor interacting = p.getInteracting();
-					if (interacting != null && interacting instanceof NPC)
+					if (interacting instanceof NPC)
 					{
 						NPC npc = (NPC) interacting;
 
@@ -489,20 +518,26 @@ public class CombatCounter extends Plugin
 
 						NPCDamageCounter dc = new NPCDamageCounter();
 						if (this.npcDamageMap.containsKey(npc))
+						{
 							dc = this.npcDamageMap.get(npc);
+						}
 
 						int delay = this.calculateBPDelay(distance);
 
-						List<Integer> counts = new ArrayList<Integer>();
+						List<Integer> counts = new ArrayList<>();
 						counts.add(delay);
 						if (delay > 2)
+						{
 							counts.add(delay - 1);
+						}
 
 						for (int tick : counts)
 						{
-							List<String> attackers = new ArrayList<String>();
+							List<String> attackers = new ArrayList<>();
 							if (dc.attackers.containsKey(tick))
+							{
 								attackers = dc.attackers.get(tick);
+							}
 
 							attackers.add(user);
 							dc.attackers.put(tick, attackers);
@@ -526,12 +561,16 @@ public class CombatCounter extends Plugin
 		Actor actor = event.getActor();
 
 		if (!(actor instanceof NPC))
+		{
 			return;
+		}
 
 		NPC npc = (NPC) actor;
 
 		if (!this.npcDamageMap.containsKey(npc))
+		{
 			return;
+		}
 
 		Hitsplat splat = event.getHitsplat();
 		NPCDamageCounter dc = this.npcDamageMap.get(npc);
@@ -553,7 +592,7 @@ public class CombatCounter extends Plugin
 		return result;
 	}
 
-	public int calculateDistance(Player p, NPC npc)
+	private int calculateDistance(Player p, NPC npc)
 	{
 		int size = 1;
 		NPCDefinition comp = npc.getTransformedDefinition();
@@ -567,6 +606,7 @@ public class CombatCounter extends Plugin
 		int distance = wpNPC.distanceTo(wpPlayer);
 
 		if (size > 1)
+		{
 			for (int x = 0; x < size; x++)
 			{
 				for (int y = 0; y < size; y++)
@@ -579,26 +619,49 @@ public class CombatCounter extends Plugin
 					}
 				}
 			}
+		}
+
 		return distance;
 	}
 
-	public int calculateBPDelay(double distance)
+	private int calculateBPDelay(double distance)
 	{
 		return 2 + (int) Math.floor(distance / 6d);
 	}
 
-	public int calculateChinDelay(double distance)
+	private int calculateChinDelay(double distance)
 	{
 		return 2 + (int) Math.floor(distance / 6d);
 	}
 
-	public int calculateMageDelay(double distance)
+	private int calculateMageDelay(double distance)
 	{
 		return 2 + (int) Math.floor((1d + distance) / 3d);
 	}
 
-	public int calculateRangedDelay(double distance)
+	private int calculateRangedDelay(double distance)
 	{
 		return 2 + (int) Math.floor((3d + distance) / 6d);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("combatcounter"))
+		{
+			updateConfig();
+		}
+	}
+
+	private void updateConfig()
+	{
+		this.showTickCounter = config.showTickCounter();
+		this.showDamageCounter = config.showDamageCounter();
+		this.resetOnNewInstance = config.resetOnNewInstance();
+		this.selfColor = config.selfColor();
+		this.totalColor = config.totalColor();
+		this.otherColor = config.otherColor();
+		this.bgColor = config.bgColor();
+		this.titleColor = config.titleColor();
 	}
 }

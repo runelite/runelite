@@ -19,7 +19,7 @@ public class RawSound extends AbstractSound {
    @Export("end")
    int end;
    @ObfuscatedName("o")
-   public boolean __o;
+   public boolean field756;
 
    RawSound(int var1, byte[] var2, int var3, int var4) {
       this.sampleRate = var1;
@@ -33,7 +33,7 @@ public class RawSound extends AbstractSound {
       this.samples = var2;
       this.start = var3;
       this.end = var4;
-      this.__o = var5;
+      this.field756 = var5;
    }
 
    @ObfuscatedName("m")
@@ -41,15 +41,15 @@ public class RawSound extends AbstractSound {
       signature = "(Ldp;)Lcx;"
    )
    @Export("resample")
-   public RawSound resample(Decimator var1) {
-      this.samples = var1.resample(this.samples);
-      this.sampleRate = var1.scaleRate(this.sampleRate);
-      if(this.start == this.end) {
-         this.start = this.end = var1.scalePosition(this.start);
+   public RawSound resample(Decimator decimator) {
+      this.samples = decimator.resample(this.samples);
+      this.sampleRate = decimator.scaleRate(this.sampleRate);
+      if (this.start == this.end) {
+         this.start = this.end = decimator.scalePosition(this.start);
       } else {
-         this.start = var1.scalePosition(this.start);
-         this.end = var1.scalePosition(this.end);
-         if(this.start == this.end) {
+         this.start = decimator.scalePosition(this.start);
+         this.end = decimator.scalePosition(this.end);
+         if (this.start == this.end) {
             --this.start;
          }
       }

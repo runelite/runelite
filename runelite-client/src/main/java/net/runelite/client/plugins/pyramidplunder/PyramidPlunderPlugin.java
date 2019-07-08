@@ -32,23 +32,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.GAME_TICK_LENGTH;
 import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE;
-import static net.runelite.api.ObjectID.GRAND_GOLD_CHEST;
-import static net.runelite.api.ObjectID.OPENED_GOLD_CHEST;
-import static net.runelite.api.ObjectID.SARCOPHAGUS_21255;
-import static net.runelite.api.ObjectID.SARCOPHAGUS_21256;
 import static net.runelite.api.ObjectID.SPEARTRAP_21280;
 import static net.runelite.api.ObjectID.TOMB_DOOR_20948;
 import static net.runelite.api.ObjectID.TOMB_DOOR_20949;
-import static net.runelite.api.ObjectID.URN_21261;
-import static net.runelite.api.ObjectID.URN_21262;
-import static net.runelite.api.ObjectID.URN_21263;
-import static net.runelite.api.ObjectID.URN_21265;
-import static net.runelite.api.ObjectID.URN_21266;
-import static net.runelite.api.ObjectID.URN_21267;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
@@ -79,7 +71,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 public class PyramidPlunderPlugin extends Plugin
 {
 	private static final int PYRAMID_PLUNDER_REGION_ID = 7749;
@@ -88,21 +80,21 @@ public class PyramidPlunderPlugin extends Plugin
 	static final int CLOSED_DOOR = TOMB_DOOR_20948;
 	static final int OPENED_DOOR = TOMB_DOOR_20949;
 
-	// Next 2 are in here for anyone who wants to spend more time on this
-	private static final Set<Integer> LOOTABLE = ImmutableSet.of(
-		GRAND_GOLD_CHEST,
-		SARCOPHAGUS_21255,
-		URN_21261,
-		URN_21262,
-		URN_21263
-	);
-	private static final Set<Integer> LOOTED = ImmutableSet.of(
-		OPENED_GOLD_CHEST,
-		SARCOPHAGUS_21256,
-		URN_21265,
-		URN_21266,
-		URN_21267
-	);
+//	// Next 2 are in here for anyone who wants to spend more time on this
+//	private static final Set<Integer> LOOTABLE = ImmutableSet.of(
+//		GRAND_GOLD_CHEST,
+//		SARCOPHAGUS_21255,
+//		URN_21261,
+//		URN_21262,
+//		URN_21263
+//	);
+//	private static final Set<Integer> LOOTED = ImmutableSet.of(
+//		OPENED_GOLD_CHEST,
+//		SARCOPHAGUS_21256,
+//		URN_21265,
+//		URN_21266,
+//		URN_21267
+//	);
 	private static final Set<Integer> DOOR_WALL_IDS = ImmutableSet.of(
 		26618, 26619, 26620, 26621
 	);
@@ -133,6 +125,18 @@ public class PyramidPlunderPlugin extends Plugin
 
 	private int pyramidTimer;
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showPlunderStatus;
+	private boolean highlightDoors;
+	private boolean highlightSpearTrap;
+	private boolean showTimer;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean hideWidget;
+	@Getter(AccessLevel.PACKAGE)
+	private int firstWarningTime;
+	@Getter(AccessLevel.PACKAGE)
+	private int secondWarningTime;
+
 	@Provides
 	PyramidPlunderConfig getConfig(ConfigManager configManager)
 	{
@@ -142,6 +146,7 @@ public class PyramidPlunderPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
 	}
 
 	@Override
@@ -160,12 +165,14 @@ public class PyramidPlunderPlugin extends Plugin
 			return;
 		}
 
-		if (!config.showTimer())
+		updateConfig();
+
+		if (!this.showTimer)
 		{
 			removeTimer();
 		}
 
-		if (config.showTimer() && isInGame)
+		if (this.showTimer && isInGame)
 		{
 			int remainingTime = GAME_TICK_LENGTH * (PYRAMID_PLUNDER_TIMER_MAX - pyramidTimer);
 
@@ -255,7 +262,7 @@ public class PyramidPlunderPlugin extends Plugin
 		{
 			overlayManager.add(pyramidPlunderOverlay);
 			isInGame = true;
-			if (config.showTimer())
+			if (this.showTimer)
 			{
 				showTimer();
 			}
@@ -315,10 +322,21 @@ public class PyramidPlunderPlugin extends Plugin
 		}
 
 		int id = newObject.getId();
-		if (id == TRAP && config.highlightSpearTrap() ||
-			(DOOR_WALL_IDS.contains(id) || id == OPENED_DOOR || id == CLOSED_DOOR) && config.highlightDoors())
+		if (id == TRAP && this.highlightSpearTrap ||
+			(DOOR_WALL_IDS.contains(id) || id == OPENED_DOOR || id == CLOSED_DOOR) && this.highlightDoors)
 		{
 			highlighted.put(newObject, tile);
 		}
+	}
+
+	private void updateConfig()
+	{
+		this.showPlunderStatus = config.showPlunderStatus();
+		this.highlightDoors = config.highlightDoors();
+		this.highlightSpearTrap = config.highlightSpearTrap();
+		this.showTimer = config.showTimer();
+		this.hideWidget = config.hideWidget();
+		this.firstWarningTime = config.firstWarningTime();
+		this.secondWarningTime = config.secondWarningTime();
 	}
 }

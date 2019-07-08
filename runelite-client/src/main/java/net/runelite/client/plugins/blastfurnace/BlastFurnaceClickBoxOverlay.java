@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameObject;
@@ -42,21 +43,20 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Singleton
 class BlastFurnaceClickBoxOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
 
 	private final Client client;
 	private final BlastFurnacePlugin plugin;
-	private final BlastFurnaceConfig config;
 
 	@Inject
-	private BlastFurnaceClickBoxOverlay(Client client, BlastFurnacePlugin plugin, BlastFurnaceConfig config)
+	private BlastFurnaceClickBoxOverlay(final Client client, final BlastFurnacePlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
@@ -64,13 +64,13 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 	{
 		int dispenserState = client.getVar(Varbits.BAR_DISPENSER);
 
-		if (config.showConveyorBelt() && plugin.getConveyorBelt() != null)
+		if (plugin.isShowConveyorBelt() && plugin.getConveyorBelt() != null)
 		{
 			Color color = dispenserState == 1 ? Color.RED : Color.GREEN;
 			renderObject(plugin.getConveyorBelt(), graphics, color);
 		}
 
-		if (config.showBarDispenser() && plugin.getBarDispenser() != null)
+		if (plugin.isShowBarDispenser() && plugin.getBarDispenser() != null)
 		{
 			boolean hasIceGloves = hasIceGloves();
 			Color color = dispenserState == 2 && hasIceGloves ? Color.GREEN : (dispenserState == 3 ? Color.GREEN : Color.RED);

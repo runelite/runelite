@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.maxhit.calculators;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
@@ -97,9 +98,9 @@ public abstract class MaxHitCalculator
 	double applyEquipmentBonus(double maxhit, EquipmentBonusConfig.BonusType bonusType)
 	{
 		double bonus = 1;
-		ArrayList<Double> addList = new ArrayList<>();
+		List<Double> addList = new ArrayList<>();
 
-		ArrayList<EquipmentBonusConfig> equipmentBonuses = EquipmentBonusConfig.getBonusByType(bonusType);
+		List<EquipmentBonusConfig> equipmentBonuses = EquipmentBonusConfig.getBonusByType(bonusType);
 
 		for (EquipmentBonusConfig equipmentBonus : equipmentBonuses)
 		{

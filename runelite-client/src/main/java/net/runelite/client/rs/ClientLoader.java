@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ClientLoader
 {
 	private final ClientConfigLoader clientConfigLoader;
-	private ClientUpdateCheckMode updateCheckMode;
+	private final ClientUpdateCheckMode updateCheckMode;
 	public static boolean useLocalInjected = false;
 
 	@Inject
@@ -69,14 +69,16 @@ public class ClientLoader
 					return null;
 			}
 		}
-		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
+		catch (IOException | InstantiationException | IllegalAccessException e)
 		{
-			if (e instanceof ClassNotFoundException)
-			{
-				log.error("Unable to load client - class not found. This means you"
-					+ " are not running RuneLite with Maven as the injected client"
-					+ " is not in your classpath.");
-			}
+			log.error("Error loading RS!", e);
+			return null;
+		}
+		catch (ClassNotFoundException e)
+		{
+			log.error("Unable to load client - class not found. This means you"
+				+ " are not running RuneLite with Maven as the injected client"
+				+ " is not in your classpath.");
 
 			log.error("Error loading RS!", e);
 			return null;

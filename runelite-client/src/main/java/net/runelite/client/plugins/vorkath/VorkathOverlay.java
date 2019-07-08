@@ -33,6 +33,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -41,6 +42,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Singleton
 public class VorkathOverlay extends Overlay
 {
 	private static final Color COLOR_ICON_BACKGROUND = new Color(0, 0, 0, 128);
@@ -49,11 +51,11 @@ public class VorkathOverlay extends Overlay
 	private static final int OVERLAY_ICON_DISTANCE = 30;
 	private static final int OVERLAY_ICON_MARGIN = 1;
 
-	private Client client;
-	private VorkathPlugin plugin;
+	private final Client client;
+	private final VorkathPlugin plugin;
 
 	@Inject
-	public VorkathOverlay(Client client, VorkathPlugin plugin)
+	public VorkathOverlay(final Client client, final VorkathPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -78,7 +80,11 @@ public class VorkathOverlay extends Overlay
 
 					BufferedImage currentPhaseIcon = getIcon(vorkath);
 
-					int totalWidth = currentPhaseIcon.getWidth() * OVERLAY_ICON_MARGIN;
+					int totalWidth = 0;
+					if (currentPhaseIcon != null)
+					{
+						totalWidth = currentPhaseIcon.getWidth() * OVERLAY_ICON_MARGIN;
+					}
 					int bgPadding = 8;
 					int currentPosX = 0;
 

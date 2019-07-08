@@ -4,26 +4,23 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Map;
 import javax.inject.Inject;
-import net.runelite.api.Client;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+@Singleton
 public class ImplingCounterOverlay extends Overlay
 {
-	private final Client client;
 	private final ImplingsPlugin plugin;
-	private final ImplingsConfig config;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	public ImplingCounterOverlay(Client client, ImplingsConfig config, ImplingsPlugin plugin)
+	public ImplingCounterOverlay(final ImplingsPlugin plugin)
 	{
-		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.TOP_LEFT);
 	}
@@ -31,8 +28,10 @@ public class ImplingCounterOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showCounter() || plugin.getImplings().isEmpty())
+		if (!plugin.isShowSpawn() || plugin.getImplings().isEmpty())
+		{
 			return null;
+		}
 
 		panelComponent.getChildren().clear();
 

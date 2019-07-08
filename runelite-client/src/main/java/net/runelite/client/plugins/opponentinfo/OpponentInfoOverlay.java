@@ -32,6 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
@@ -52,6 +53,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.hiscore.HiscoreResult;
 
+@Singleton
 class OpponentInfoOverlay extends Overlay
 {
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
@@ -59,7 +61,6 @@ class OpponentInfoOverlay extends Overlay
 
 	private final Client client;
 	private final OpponentInfoPlugin opponentInfoPlugin;
-	private final OpponentInfoConfig opponentInfoConfig;
 	private final HiscoreManager hiscoreManager;
 	private final NPCManager npcManager;
 
@@ -73,16 +74,14 @@ class OpponentInfoOverlay extends Overlay
 
 	@Inject
 	private OpponentInfoOverlay(
-		Client client,
-		OpponentInfoPlugin opponentInfoPlugin,
-		OpponentInfoConfig opponentInfoConfig,
-		HiscoreManager hiscoreManager,
-		NPCManager npcManager)
+		final Client client,
+		final OpponentInfoPlugin opponentInfoPlugin,
+		final HiscoreManager hiscoreManager,
+		final NPCManager npcManager)
 	{
 		super(opponentInfoPlugin);
 		this.client = client;
 		this.opponentInfoPlugin = opponentInfoPlugin;
-		this.opponentInfoConfig = opponentInfoConfig;
 		this.hiscoreManager = hiscoreManager;
 		this.npcManager = npcManager;
 
@@ -164,7 +163,7 @@ class OpponentInfoOverlay extends Overlay
 			progressBarComponent.setBackgroundColor(HP_RED);
 			progressBarComponent.setForegroundColor(HP_GREEN);
 
-			final HitpointsDisplayStyle displayStyle = opponentInfoConfig.hitpointsDisplayStyle();
+			final HitpointsDisplayStyle displayStyle = opponentInfoPlugin.getHitpointsDisplayStyle();
 
 			if ((displayStyle == HitpointsDisplayStyle.HITPOINTS || displayStyle == HitpointsDisplayStyle.BOTH)
 				&& lastMaxHealth != -1)
@@ -219,7 +218,7 @@ class OpponentInfoOverlay extends Overlay
 		}
 
 		// Opponents opponent
-		if (opponentsOpponentName != null && opponentInfoConfig.showOpponentsOpponent())
+		if (opponentsOpponentName != null && opponentInfoPlugin.isShowOpponentsOpponent())
 		{
 			textWidth = Math.max(textWidth, fontMetrics.stringWidth(opponentsOpponentName));
 			panelComponent.setPreferredSize(new Dimension(textWidth, 0));

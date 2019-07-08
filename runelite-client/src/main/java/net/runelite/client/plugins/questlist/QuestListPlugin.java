@@ -32,6 +32,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -63,6 +64,7 @@ import net.runelite.client.util.Text;
 	name = "Quest List",
 	description = "Adds searching and filtering to the quest list"
 )
+@Singleton
 public class QuestListPlugin extends Plugin
 {
 	private static final int ENTRY_PADDING = 8;
@@ -171,7 +173,7 @@ public class QuestListPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (isChatboxOpen() && !isOnQuestTab())
+		if (isChatboxOpen() && isNotOnQuestTab())
 		{
 			chatboxPanelManager.close();
 		}
@@ -180,12 +182,9 @@ public class QuestListPlugin extends Plugin
 	@Subscribe
 	public void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
-		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex())
+		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex() && isChatboxOpen() && isNotOnQuestTab())
 		{
-			if (isChatboxOpen() && !isOnQuestTab())
-			{
-				chatboxPanelManager.close();
-			}
+			chatboxPanelManager.close();
 		}
 	}
 
@@ -207,9 +206,9 @@ public class QuestListPlugin extends Plugin
 		questHideButton.setName(MENU_SHOW + " " + currentFilterState.getName());
 	}
 
-	private boolean isOnQuestTab()
+	private boolean isNotOnQuestTab()
 	{
-		return client.getVar(Varbits.QUEST_TAB) == 0 && client.getVar(VarClientInt.INVENTORY_TAB) == 2;
+		return client.getVar(Varbits.QUEST_TAB) != 0 || client.getVar(VarClientInt.INVENTORY_TAB) != 2;
 	}
 
 	private boolean isChatboxOpen()
@@ -312,11 +311,10 @@ public class QuestListPlugin extends Plugin
 
 		Collection<QuestWidget> quests = questSet.get(questContainer);
 
-		if (quests != null)
-		{
+		if (quests != null &&
 			// Check to make sure the list hasn't been rebuild since we were last her
 			// Do this by making sure the list's dynamic children are the same as when we last saw them
-			if (quests.stream().noneMatch(w ->
+			quests.stream().noneMatch(w ->
 			{
 				Widget codeWidget = w.getQuest();
 				if (codeWidget == null)
@@ -325,9 +323,8 @@ public class QuestListPlugin extends Plugin
 				}
 				return list.getChild(codeWidget.getIndex()) == codeWidget;
 			}))
-			{
-				quests = null;
-			}
+		{
+			quests = null;
 		}
 
 		if (quests == null)
@@ -357,7 +354,7 @@ public class QuestListPlugin extends Plugin
 			else
 			{
 				// Otherwise hide if it doesn't match the filter state
-				hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
+				hidden = currentFilterState != QuestState.ALL && questState != null && !questState.equals(currentFilterState);
 			}
 
 			quest.setHidden(hidden);

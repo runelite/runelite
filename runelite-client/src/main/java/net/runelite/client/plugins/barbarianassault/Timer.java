@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
 import java.time.Duration;
@@ -33,7 +34,7 @@ import java.time.format.DateTimeFormatter;
 
 class Timer
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Instant startTime;
 
 	Timer()

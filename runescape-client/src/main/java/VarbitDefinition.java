@@ -11,8 +11,8 @@ public class VarbitDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("VarbitDefinition_indexCache")
-   static AbstractIndexCache VarbitDefinition_indexCache;
+   @Export("VarbitDefinition_archive")
+   static AbstractArchive VarbitDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -26,39 +26,35 @@ public class VarbitDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 1552575189
    )
-   @Export("varp")
-   public int varp;
+   @Export("baseVar")
+   public int baseVar;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -870948181
    )
-   @Export("lowBit")
-   public int lowBit;
+   @Export("startBit")
+   public int startBit;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1710935305
    )
-   @Export("highBit")
-   public int highBit;
-
-   static {
-      VarbitDefinition_cached = new EvictingDualNodeHashTable(64);
-   }
+   @Export("endBit")
+   public int endBit;
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(Lgr;I)V",
       garbageValue = "-1888757206"
    )
-   @Export("read")
-   void read(Buffer var1) {
-      while(true) {
+   @Export("decode")
+   void decode(Buffer var1) {
+      while (true) {
          int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+         if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -67,12 +63,12 @@ public class VarbitDefinition extends DualNode {
       signature = "(Lgr;IB)V",
       garbageValue = "-76"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
-      if(var2 == 1) {
-         this.varp = var1.__ag_302();
-         this.lowBit = var1.readUnsignedByte();
-         this.highBit = var1.readUnsignedByte();
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
+      if (var2 == 1) {
+         this.baseVar = var1.readUnsignedShort();
+         this.startBit = var1.readUnsignedByte();
+         this.endBit = var1.readUnsignedByte();
       }
 
    }
@@ -84,14 +80,18 @@ public class VarbitDefinition extends DualNode {
    )
    static final boolean method4910(int var0, int var1) {
       ObjectDefinition var2 = class50.getObjectDefinition(var0);
-      if(var1 == 11) {
+      if (var1 == 11) {
          var1 = 10;
       }
 
-      if(var1 >= 5 && var1 <= 8) {
+      if (var1 >= 5 && var1 <= 8) {
          var1 = 4;
       }
 
-      return var2.__u_421(var1);
+      return var2.method230(var1);
+   }
+
+   static {
+      VarbitDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

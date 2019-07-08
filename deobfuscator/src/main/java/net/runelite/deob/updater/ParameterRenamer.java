@@ -24,9 +24,12 @@
  */
 package net.runelite.deob.updater;
 
+import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.LocalVariable;
+import net.runelite.asm.attributes.code.Parameter;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class ParameterRenamer
@@ -49,9 +52,39 @@ public class ParameterRenamer
 			for (Method sourceM : sourceCF.getMethods())
 			{
 				Method destM = (Method) mapping.get(sourceM);
-				if (destM != null)
+				if (sourceM.getParameters() != null && !sourceM.getParameters().isEmpty() && destM.getParameters().size() >= 1)
 				{
-					destM.setParameters(sourceM.getParameters());
+					List<Parameter> oldParams = destM.getParameters();
+					for (int i = 0; i < sourceM.getParameters().size(); i++)
+					{
+						String name = sourceM.getParameters().get(i).getName();
+						if (name.matches("arg[0-9]") || name.length() <= 2 && (name.charAt(0) != 'x' || name.charAt(0) != 'y'))
+						{
+							continue;
+						}
+
+						Parameter oldParam = oldParams.get(i);
+						LocalVariable oldVar = oldParam.getLocalVariable();
+
+						Parameter newParam = new Parameter(name, oldParam.getAccess());
+						oldParams.set(i, newParam);
+
+						if (oldVar == null)
+						{
+							continue;
+						}
+
+						LocalVariable newVar = new LocalVariable(
+							name,
+							oldVar.getDesc(),
+							oldVar.getSignature(),
+							oldVar.getStart(),
+							oldVar.getEnd(),
+							oldVar.getIndex()
+						);
+
+						newParam.setLocalVariable(newVar);
+					}
 				}
 			}
 		}

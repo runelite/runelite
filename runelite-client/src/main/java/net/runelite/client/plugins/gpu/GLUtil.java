@@ -37,33 +37,33 @@ class GLUtil
 	private static final int[] buf = new int[1];
 	private static final float[] fbuf = new float[1];
 
-	static int glGetInteger(GL4 gl, int pname)
+	static int glGetInteger(GL4 gl)
 	{
-		gl.glGetIntegerv(pname, buf, 0);
+		gl.glGetIntegerv(com.jogamp.opengl.GL.GL_MAX_SAMPLES, buf, 0);
 		return buf[0];
 	}
 
-	static float glGetFloat(GL4 gl, int pname)
+	static float glGetFloat(GL4 gl)
 	{
-		gl.glGetFloatv(pname, fbuf, 0);
+		gl.glGetFloatv(com.jogamp.opengl.GL.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, fbuf, 0);
 		return fbuf[0];
 	}
 
-	static int glGetShader(GL4 gl, int shader, int pname)
+	private static int glGetShader(GL4 gl, int shader)
 	{
-		gl.glGetShaderiv(shader, pname, buf, 0);
+		gl.glGetShaderiv(shader, com.jogamp.opengl.GL2ES2.GL_COMPILE_STATUS, buf, 0);
 		assert buf[0] > -1;
 		return buf[0];
 	}
 
-	static int glGetProgram(GL4 gl, int program, int pname)
+	private static int glGetProgram(GL4 gl, int program, int pname)
 	{
 		gl.glGetProgramiv(program, pname, buf, 0);
 		assert buf[0] > -1;
 		return buf[0];
 	}
 
-	static String glGetShaderInfoLog(GL4 gl, int shader)
+	private static String glGetShaderInfoLog(GL4 gl, int shader)
 	{
 		byte[] err = new byte[ERR_LEN];
 		gl.glGetShaderInfoLog(shader, ERR_LEN, buf, 0, err, 0);
@@ -192,7 +192,7 @@ class GLUtil
 		gl.glShaderSource(shader, 1, new String[]{source}, null);
 		gl.glCompileShader(shader);
 
-		if (glGetShader(gl, shader, gl.GL_COMPILE_STATUS) == gl.GL_TRUE)
+		if (glGetShader(gl, shader) == gl.GL_TRUE)
 		{
 			gl.glAttachShader(program, shader);
 		}

@@ -1,4 +1,3 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -8,7 +7,7 @@ public class class279 {
    @ObfuscatedSignature(
       signature = "[Lho;"
    )
-   static Widget[] __jx_ne;
+   static Widget[] field1145;
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
@@ -19,7 +18,7 @@ public class class279 {
       int var1 = var0.length();
       int var2 = 0;
 
-      for(int var3 = 0; var3 < var1; ++var3) {
+      for (int var3 = 0; var3 < var1; ++var3) {
          var2 = (var2 << 5) - var2 + var0.charAt(var3);
       }
 

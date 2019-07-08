@@ -32,12 +32,14 @@ import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.Map;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
@@ -46,19 +48,20 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
-@Getter
+@Singleton
+@Getter(AccessLevel.PACKAGE)
 class UniqueItemPanel extends JPanel
 {
 	private ItemManager itemManager;
 
-	private final float alphaMissing = 0.35f;
-	private final float alphaHas = 1.0f;
+	private final static float alphaMissing = 0.35f;
+	private final static float alphaHas = 1.0f;
 
 	private static final Dimension panelSize = new Dimension(215, 50);
 	private static final Border panelBorder = new EmptyBorder(3, 0, 3, 0);
 	private static final Color panelBackgroundColor = ColorScheme.DARK_GRAY_COLOR;
 
-	UniqueItemPanel(Collection<UniqueItemPrepared> items, Map<UniqueItemPrepared, Integer> uniqueMap, ItemManager itemManager)
+	UniqueItemPanel(final Collection<UniqueItemPrepared> items, final Map<UniqueItemPrepared, Integer> uniqueMap, final ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
 

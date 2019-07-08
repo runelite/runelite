@@ -26,9 +26,11 @@ package net.runelite.client.plugins.shiftwalker;
 
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.input.KeyListener;
 
-public class ShiftWalkerInputListener implements KeyListener
+@Singleton
+class ShiftWalkerInputListener implements KeyListener
 {
 
 	@Inject

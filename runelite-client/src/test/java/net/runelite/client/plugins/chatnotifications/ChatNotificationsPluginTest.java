@@ -36,6 +36,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.RuneLitePlusConfig;
 import net.runelite.client.util.Text;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -65,6 +66,10 @@ public class ChatNotificationsPluginTest
 	@Mock
 	@Bind
 	private Notifier notifier;
+
+	@Mock
+	@Bind
+	private RuneLitePlusConfig runeLitePlusConfig;
 
 	@Inject
 	private ChatNotificationsPlugin chatNotificationsPlugin;

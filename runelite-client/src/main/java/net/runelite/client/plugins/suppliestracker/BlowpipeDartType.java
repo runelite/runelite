@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.suppliestracker;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.ItemID.ADAMANT_DART;
@@ -45,7 +46,7 @@ public enum BlowpipeDartType
 	ADAMANT(ADAMANT_DART), RUNE(RUNE_DART),
 	DRAGON(DRAGON_DART);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int dartID;
 
 }

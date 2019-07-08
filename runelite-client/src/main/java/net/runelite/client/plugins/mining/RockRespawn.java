@@ -25,12 +25,13 @@
 package net.runelite.client.plugins.mining;
 
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 class RockRespawn
 {
 	private final Rock rock;

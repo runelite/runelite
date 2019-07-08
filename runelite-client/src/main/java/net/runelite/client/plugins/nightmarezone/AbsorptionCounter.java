@@ -26,11 +26,12 @@ package net.runelite.client.plugins.nightmarezone;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
-@Setter
+@Setter(AccessLevel.PACKAGE)
 public class AbsorptionCounter extends Counter
 {
 	private int threshold;

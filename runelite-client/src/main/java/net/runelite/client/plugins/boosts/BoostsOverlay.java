@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
@@ -41,20 +42,19 @@ import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
 
+@Singleton
 class BoostsOverlay extends Overlay
 {
 	private final Client client;
-	private final BoostsConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 	private final BoostsPlugin plugin;
 
 	@Inject
-	private BoostsOverlay(Client client, BoostsConfig config, BoostsPlugin plugin)
+	private BoostsOverlay(final Client client, final BoostsPlugin plugin)
 	{
 		super(plugin);
 		this.plugin = plugin;
 		this.client = client;
-		this.config = config;
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.MED);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Boosts overlay"));
@@ -63,7 +63,7 @@ class BoostsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.displayInfoboxes() || config.displayIcons())
+		if (plugin.isDisplayInfoboxes() || plugin.isDisplayIcons())
 		{
 			return null;
 		}
@@ -103,7 +103,7 @@ class BoostsOverlay extends Overlay
 				final Color strColor = getTextColor(boost);
 				String str;
 
-				if (config.useRelativeBoost())
+				if (plugin.isUseRelativeBoost())
 				{
 					str = String.valueOf(boost);
 					if (boost > 0)
@@ -133,7 +133,7 @@ class BoostsOverlay extends Overlay
 			return new Color(238, 51, 51);
 		}
 
-		return boost <= config.boostThreshold() ? Color.YELLOW : Color.GREEN;
+		return boost <= plugin.getBoostThreshold() ? Color.YELLOW : Color.GREEN;
 
 	}
 }

@@ -30,7 +30,7 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
-import net.runelite.api.Client;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -38,29 +38,26 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+@Singleton
 class MotherlodeOverlay extends Overlay
 {
-	private final Client client;
 	private final MotherlodePlugin plugin;
 	private final MotherlodeSession motherlodeSession;
-	private final MotherlodeConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MotherlodeOverlay(Client client, MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config)
+	MotherlodeOverlay(final MotherlodePlugin plugin, final MotherlodeSession motherlodeSession)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
-		this.client = client;
 		this.plugin = plugin;
 		this.motherlodeSession = motherlodeSession;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isInMlm() || !config.showMiningStats())
+		if (!plugin.isInMlm() || !plugin.isShowMiningStats())
 		{
 			return null;
 		}
@@ -72,7 +69,7 @@ class MotherlodeOverlay extends Overlay
 			return null;
 		}
 
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration statTimeout = Duration.ofMinutes(plugin.getStatTimeout());
 		Duration sinceCut = Duration.between(session.getLastPayDirtMined(), Instant.now());
 
 		if (sinceCut.compareTo(statTimeout) >= 0)
@@ -82,7 +79,7 @@ class MotherlodeOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
-		if (config.showMiningState())
+		if (plugin.isShowMiningState())
 		{
 			if (plugin.isMining())
 			{

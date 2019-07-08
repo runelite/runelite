@@ -28,8 +28,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -106,7 +106,7 @@ public class ArrowMinimapOverlay extends Overlay
 				else if (arrowPoint.types.contains(ArrowType.OBJECT))
 				{
 
-					ArrayList<GameObject> objects = ArrowUtil.getObjects(client, arrowPoint.getObjectIDs());
+					List<GameObject> objects = ArrowUtil.getObjects(client, arrowPoint.getObjectIDs());
 					if (objects.isEmpty() && fallBackPoint != null)
 					{
 						renderMinimapArrow(graphics, arrowPoint, null, localPlayerPos, worldPlayerPos);
@@ -163,7 +163,10 @@ public class ArrowMinimapOverlay extends Overlay
 			AffineTransform at = new AffineTransform();
 			if (arrowPoint.isMinimapImagePointToTarget())
 			{
-				at.translate(minimapPlayerPos.getX(), minimapPlayerPos.getY());
+				if (minimapPlayerPos != null)
+				{
+					at.translate(minimapPlayerPos.getX(), minimapPlayerPos.getY());
+				}
 				at.rotate(cameraAngle - theta);
 				at.translate(0, 66);
 				at.translate(minimapImageOffset.getX() - minimapImage.getWidth() / 2, minimapImageOffset.getY() - minimapImage.getHeight() / 2);
@@ -177,7 +180,10 @@ public class ArrowMinimapOverlay extends Overlay
 				double dY = at.getTranslateY();
 				//Then apply that position to an un-rotated transform
 				at = new AffineTransform();
-				at.translate(minimapPlayerPos.getX(), minimapPlayerPos.getY());
+				if (minimapPlayerPos != null)
+				{
+					at.translate(minimapPlayerPos.getX(), minimapPlayerPos.getY());
+				}
 				at.translate(dX, dY);
 				at.translate(minimapImageOffset.getX() - minimapImage.getWidth() / 2, minimapImageOffset.getY() - minimapImage.getHeight() / 2);
 			}

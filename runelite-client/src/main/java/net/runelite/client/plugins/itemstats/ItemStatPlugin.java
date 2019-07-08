@@ -30,10 +30,13 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.FontMetrics;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.FontID;
@@ -97,6 +100,30 @@ public class ItemStatPlugin extends Plugin
 
 	private Widget itemInformationTitle;
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean consumableStats;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean equipmentStats;
+	private boolean geStats;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean relative;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean absolute;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean theoretical;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showWeight;
+	@Getter(AccessLevel.PACKAGE)
+	private Color colorBetterUncapped;
+	@Getter(AccessLevel.PACKAGE)
+	private Color colorBetterSomeCapped;
+	@Getter(AccessLevel.PACKAGE)
+	private Color colorBetterCapped;
+	@Getter(AccessLevel.PACKAGE)
+	private Color colorNoChange;
+	@Getter(AccessLevel.PACKAGE)
+	private Color colorWorse;
+
 	@Provides
 	ItemStatConfig getConfig(ConfigManager configManager)
 	{
@@ -112,6 +139,7 @@ public class ItemStatPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
 		overlayManager.add(overlay);
 	}
 
@@ -127,6 +155,7 @@ public class ItemStatPlugin extends Plugin
 	{
 		if (event.getKey().equals("geStats"))
 		{
+			updateConfig();
 			clientThread.invokeLater(this::resetGEInventory);
 		}
 	}
@@ -134,7 +163,7 @@ public class ItemStatPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (itemInformationTitle != null && config.geStats()
+		if (itemInformationTitle != null && this.geStats
 			&& (client.getWidget(WidgetInfo.GRAND_EXCHANGE_WINDOW_CONTAINER) == null
 			|| client.getWidget(WidgetInfo.GRAND_EXCHANGE_WINDOW_CONTAINER).isHidden()))
 		{
@@ -145,7 +174,7 @@ public class ItemStatPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (client.getVar(VarPlayer.CURRENT_GE_ITEM) == -1 && config.geStats())
+		if (client.getVar(VarPlayer.CURRENT_GE_ITEM) == -1 && this.geStats)
 		{
 			resetGEInventory();
 		}
@@ -154,7 +183,7 @@ public class ItemStatPlugin extends Plugin
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		if (event.getEventName().equals("geBuilt") && config.geStats())
+		if (event.getEventName().equals("geBuilt") && this.geStats)
 		{
 			int currentGeItem = client.getVar(VarPlayer.CURRENT_GE_ITEM);
 			if (currentGeItem != -1 && client.getVar(Varbits.GE_OFFER_CREATION_TYPE) == 0)
@@ -430,5 +459,21 @@ public class ItemStatPlugin extends Plugin
 		{
 			return client.getWidget(WidgetInfo.FIXED_VIEWPORT_INVENTORY_CONTAINER);
 		}
+	}
+
+	private void updateConfig()
+	{
+		this.consumableStats = config.consumableStats();
+		this.equipmentStats = config.equipmentStats();
+		this.geStats = config.geStats();
+		this.relative = config.relative();
+		this.absolute = config.absolute();
+		this.theoretical = config.theoretical();
+		this.showWeight = config.showWeight();
+		this.colorBetterUncapped = config.colorBetterUncapped();
+		this.colorBetterSomeCapped = config.colorBetterSomeCapped();
+		this.colorBetterCapped = config.colorBetterCapped();
+		this.colorNoChange = config.colorNoChange();
+		this.colorWorse = config.colorWorse();
 	}
 }

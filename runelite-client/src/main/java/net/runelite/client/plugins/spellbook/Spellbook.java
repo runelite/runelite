@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.spellbook;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -36,10 +37,10 @@ public enum Spellbook
 	LUNAR(2, "lunar"),
 	ARCEUUS(3, "arceuus");
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int id;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String configKey;
 
 	private static final ImmutableMap<Integer, Spellbook> map;

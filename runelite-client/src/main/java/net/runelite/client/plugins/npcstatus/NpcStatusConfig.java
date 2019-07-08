@@ -32,9 +32,9 @@ import net.runelite.client.config.ConfigItem;
 public interface NpcStatusConfig extends Config
 {
 	@ConfigItem(
-			keyName = "AttackRange",
-			name = "NPC Attack range",
-			description = "The attack range of the NPC"
+		keyName = "AttackRange",
+		name = "NPC Attack range",
+		description = "The attack range of the NPC"
 	)
 	default int getRange()
 	{

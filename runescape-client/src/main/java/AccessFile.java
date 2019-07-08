@@ -16,12 +16,12 @@ public final class AccessFile {
    @ObfuscatedGetter(
       intValue = -1762891465
    )
-   static int __dk_o;
+   static int field7;
    @ObfuscatedName("lm")
    @ObfuscatedSignature(
       signature = "Lho;"
    )
-   static Widget __dk_lm;
+   static Widget field8;
    @ObfuscatedName("m")
    @Export("file")
    RandomAccessFile file;
@@ -39,11 +39,11 @@ public final class AccessFile {
    long index;
 
    public AccessFile(File var1, String var2, long var3) throws IOException {
-      if(var3 == -1L) {
+      if (var3 == -1L) {
          var3 = Long.MAX_VALUE;
       }
 
-      if(var1.length() >= var3) {
+      if (var1.length() >= var3) {
          var1.delete();
       }
 
@@ -51,7 +51,7 @@ public final class AccessFile {
       this.capacity = var3;
       this.index = 0L;
       int var5 = this.file.read();
-      if(var5 != -1 && !var2.equals("r")) {
+      if (var5 != -1 && !var2.equals("r")) {
          this.file.seek(0L);
          this.file.write(var5);
       }
@@ -61,9 +61,9 @@ public final class AccessFile {
 
    @ObfuscatedName("m")
    @Export("seek")
-   final void seek(long var1) throws IOException {
-      this.file.seek(var1);
-      this.index = var1;
+   final void seek(long index) throws IOException {
+      this.file.seek(index);
+      this.index = index;
    }
 
    @ObfuscatedName("f")
@@ -72,14 +72,14 @@ public final class AccessFile {
       garbageValue = "-86"
    )
    @Export("write")
-   public final void write(byte[] var1, int var2, int var3) throws IOException {
-      if((long)var3 + this.index > this.capacity) {
+   public final void write(byte[] src, int srcIndex, int length) throws IOException {
+      if ((long)length + this.index > this.capacity) {
          this.file.seek(this.capacity + 1L);
          this.file.write(1);
          throw new EOFException();
       } else {
-         this.file.write(var1, var2, var3);
-         this.index += (long)var3;
+         this.file.write(src, srcIndex, length);
+         this.index += (long)length;
       }
    }
 
@@ -99,13 +99,12 @@ public final class AccessFile {
       garbageValue = "166642884"
    )
    @Export("closeSync")
-   public final void closeSync(boolean var1) throws IOException {
-      if(this.file != null) {
-         if(var1) {
+   public final void closeSync(boolean sync) throws IOException {
+      if (this.file != null) {
+         if (sync) {
             try {
                this.file.getFD().sync();
             } catch (SyncFailedException var3) {
-               ;
             }
          }
 
@@ -131,9 +130,9 @@ public final class AccessFile {
       garbageValue = "971670468"
    )
    @Export("read")
-   public final int read(byte[] var1, int var2, int var3) throws IOException {
-      int var4 = this.file.read(var1, var2, var3);
-      if(var4 > 0) {
+   public final int read(byte[] dst, int dstIndex, int length) throws IOException {
+      int var4 = this.file.read(dst, dstIndex, length);
+      if (var4 > 0) {
          this.index += (long)var4;
       }
 
@@ -141,8 +140,8 @@ public final class AccessFile {
    }
 
    @ObfuscatedName("finalize")
-   protected void __finalize_211() throws Throwable {
-      if(this.file != null) {
+   protected void method22() throws Throwable {
+      if (this.file != null) {
          System.out.println("");
          this.close();
       }
@@ -155,31 +154,31 @@ public final class AccessFile {
       garbageValue = "-728558316"
    )
    @Export("addWidgetItemMenuItem")
-   static final void addWidgetItemMenuItem(Widget widget, ItemDefinition definition, int var2, int actionIndex, boolean shiftClick) {
-      String[] var5 = definition.inventoryActions;
-      byte opcode = -1;
-      String action = null;
-      if(var5 != null && var5[actionIndex] != null) {
-         if(actionIndex == 0) {
-            opcode = 33;
-         } else if(actionIndex == 1) {
-            opcode = 34;
-         } else if(actionIndex == 2) {
-            opcode = 35;
-         } else if(actionIndex == 3) {
-            opcode = 36;
+   static final void addWidgetItemMenuItem(Widget var0, ItemDefinition var1, int var2, int var3, boolean var4) {
+      String[] var5 = var1.inventoryActions;
+      byte var6 = -1;
+      String var7 = null;
+      if (var5 != null && var5[var3] != null) {
+         if (var3 == 0) {
+            var6 = 33;
+         } else if (var3 == 1) {
+            var6 = 34;
+         } else if (var3 == 2) {
+            var6 = 35;
+         } else if (var3 == 3) {
+            var6 = 36;
          } else {
-            opcode = 37;
+            var6 = 37;
          }
 
-         action = var5[actionIndex];
-      } else if(actionIndex == 4) {
-         opcode = 37;
-         action = "Drop";
+         var7 = var5[var3];
+      } else if (var3 == 4) {
+         var6 = 37;
+         var7 = "Drop";
       }
 
-      if(opcode != -1 && action != null) {
-         class16.insertMenuItem(action, BufferedFile.colorStartTag(0xff9040) + definition.name, opcode, definition.id, var2, widget.id, shiftClick);
+      if (var6 != -1 && var7 != null) {
+         class16.insertMenuItem(var7, BufferedFile.colorStartTag(16748608) + var1.name, var6, var1.id, var2, var0.id, var4);
       }
 
    }

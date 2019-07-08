@@ -164,6 +164,7 @@ public final class AnimationID
 	public static final int BLOCK_SHIELD = 1156;
 	public static final int BLOCK_SWORD = 388;
 	public static final int BLOCK_UNARMED = 424; // Same Animation as failed pickpocked
+	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
 
 	// NPC animations
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
@@ -312,4 +313,11 @@ public final class AnimationID
 	public static final int DAG_REX = 2853;
 	public static final int DAG_PRIME = 2854;
 	public static final int DAG_SUPREME = 2855;
+
+	// Lizardman shaman
+	public static final int LIZARDMAN_SHAMAN_SPAWN = 2855;
+
+	// Combat counter
+	public static final int BARRAGE_ANIMATION = 1979;
+	public static final int CHIN_ANIMATION = 7618;
 }

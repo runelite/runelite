@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,7 +55,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
-
+@Singleton
 @Slf4j
 public class TheatrePlugin extends Plugin
 {
@@ -98,6 +99,59 @@ public class TheatrePlugin extends Plugin
 	@Inject
 	private ModelOutlineRenderer modelOutline;
 
+	@Getter
+	private boolean showMaidenBloodToss;
+	@Getter
+	private boolean showMaidenBloodSpawns;
+	@Getter
+	private boolean showNyloFreezeHighlights;
+	@Getter
+	private boolean showBloatIndicator;
+	@Getter
+	private boolean showBloatHands;
+	@Getter
+	private boolean BloatFeetIndicatorRaveEdition;
+	@Getter
+	private boolean showBloatTimer;
+	@Getter
+	private boolean showNyloPillarHealth;
+	@Getter
+	private TheatreConfig.NYLOOPTION showNylocasExplosions;
+	@Getter
+	private boolean showNylocasAmount;
+	@Getter
+	private boolean highlightNyloAgros;
+	@Getter
+	private boolean showSotetsegAttacks;
+	@Getter
+	private boolean showSotetsegMaze;
+	@Getter
+	private boolean showSotetsegSolo;
+	@Getter
+	private Color mazeTileColour;
+	@Getter
+	private boolean showXarpusHeals;
+	@Getter
+	private boolean showXarpusTick;
+	@Getter
+	private boolean showVerzikAttacks;
+	@Getter
+	private boolean showVerzikYellows;
+	@Getter
+	private boolean showCrabTargets;
+	@Getter
+	private boolean VerzikTankTile;
+	@Getter
+	private boolean verzikRangeAttacks;
+	@Getter
+	private boolean extraTimers;
+	@Getter
+	private boolean p1attacks;
+	@Getter
+	private boolean p2attacks;
+	@Getter
+	private boolean p3attacks;
+
 	@Provides
 	TheatreConfig getConfig(ConfigManager configManager)
 	{
@@ -107,14 +161,16 @@ public class TheatrePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+		
 		room = TheatreRoom.UNKNOWN;
 
-		maidenHandler = new MaidenHandler(client, this, config, modelOutline);
-		bloatHandler = new BloatHandler(client, this, config);
-		nyloHandler = new NyloHandler(client, this, config);
-		sotetsegHandler = new SotetsegHandler(client, this, config);
-		xarpusHandler = new XarpusHandler(client, this, config);
-		verzikHandler = new VerzikHandler(client, this, config);
+		maidenHandler = new MaidenHandler(client, this, modelOutline);
+		bloatHandler = new BloatHandler(client, this);
+		nyloHandler = new NyloHandler(client, this);
+		sotetsegHandler = new SotetsegHandler(client, this);
+		xarpusHandler = new XarpusHandler(client, this);
+		verzikHandler = new VerzikHandler(client, this);
 
 		overlayManager.add(overlay);
 	}
@@ -406,6 +462,11 @@ public class TheatrePlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		if (!event.getGroup().equals("Theatre"))
+		{
+			return;
+		}
+
 		if (nyloHandler != null)
 		{
 			nyloHandler.onConfigChanged();
@@ -438,5 +499,35 @@ public class TheatrePlugin extends Plugin
 		{
 			verzikHandler.onProjectileMoved(event);
 		}
+	}
+	
+	private void updateConfig()
+	{
+		this.showMaidenBloodToss = config.showMaidenBloodToss();
+		this.showMaidenBloodSpawns = config.showMaidenBloodSpawns();
+		this.showNyloFreezeHighlights = config.showNyloFreezeHighlights();
+		this.showBloatIndicator = config.showBloatIndicator();
+		this.showBloatHands = config.showBloatHands();
+		this.BloatFeetIndicatorRaveEdition = config.BloatFeetIndicatorRaveEdition();
+		this.showBloatTimer = config.showBloatTimer();
+		this.showNyloPillarHealth = config.showNyloPillarHealth();
+		this.showNylocasExplosions = config.showNylocasExplosions();
+		this.showNylocasAmount = config.showNylocasAmount();
+		this.highlightNyloAgros = config.highlightNyloAgros();
+		this.showSotetsegAttacks = config.showSotetsegAttacks();
+		this.showSotetsegMaze = config.showSotetsegMaze();
+		this.showSotetsegSolo = config.showSotetsegSolo();
+		this.mazeTileColour = config.mazeTileColour();
+		this.showXarpusHeals = config.showXarpusHeals();
+		this.showXarpusTick = config.showXarpusTick();
+		this.showVerzikAttacks = config.showVerzikAttacks();
+		this.showVerzikYellows = config.showVerzikYellows();
+		this.showCrabTargets = config.showCrabTargets();
+		this.VerzikTankTile = config.VerzikTankTile();
+		this.verzikRangeAttacks = config.verzikRangeAttacks();
+		this.extraTimers = config.extraTimers();
+		this.p1attacks = config.p1attacks();
+		this.p2attacks = config.p2attacks();
+		this.p3attacks = config.p3attacks();
 	}
 }

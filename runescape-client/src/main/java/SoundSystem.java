@@ -24,18 +24,16 @@ public class SoundSystem implements Runnable {
       this.players = new PcmPlayer[2];
    }
 
-   @Export("run")
-   @ObfuscatedName("run")
    public void run() {
       try {
-         for(int var1 = 0; var1 < 2; ++var1) {
+         for (int var1 = 0; var1 < 2; ++var1) {
             PcmPlayer var2 = this.players[var1];
-            if(var2 != null) {
+            if (var2 != null) {
                var2.run();
             }
          }
-      } catch (Exception var4) {
-         NpcDefinition.sendStackTrace((String)null, var4);
+      } catch (Exception var3) {
+         NPCDefinition.sendStackTrace((String)null, var3);
       }
 
    }
@@ -47,11 +45,11 @@ public class SoundSystem implements Runnable {
    )
    static Script method2451(int var0) {
       Script var1 = (Script)Script.Script_cached.get((long)var0);
-      if(var1 != null) {
+      if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Formatting.indexCache12.takeRecord(var0, 0);
-         if(var2 == null) {
+         byte[] var2 = Formatting.archive12.takeFile(var0, 0);
+         if (var2 == null) {
             return null;
          } else {
             var1 = Occluder.newScript(var2);
@@ -67,6 +65,6 @@ public class SoundSystem implements Runnable {
       garbageValue = "20"
    )
    static void method2456() {
-      WorldMapRegion.__av_o.clear();
+      WorldMapRegion.field1051.clear();
    }
 }

@@ -29,7 +29,7 @@ public class LightboxSolver
 	private LightboxState initial;
 	private final LightboxState[] switches = new LightboxState[LightBox.COMBINATIONS_POWER];
 
-	static boolean isBitSet(int num, int bit)
+	private static boolean isBitSet(int num, int bit)
 	{
 		return ((num >>> bit) & 1) != 0;
 	}

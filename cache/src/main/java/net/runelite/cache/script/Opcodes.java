@@ -69,6 +69,7 @@ public class Opcodes
 	public static final int CC_SETSIZE = 1001;
 	public static final int CC_SETHIDE = 1003;
 	public static final int CC_SETNOCLICKTHROUGH = 1005;
+	public static final int CC_SETNOSCROLLTHROUGH = 1006;
 	public static final int CC_SETSCROLLPOS = 1100;
 	public static final int CC_SETCOLOUR = 1101;
 	public static final int CC_SETFILL = 1102;
@@ -278,11 +279,14 @@ public class Opcodes
 	public static final int SETSHOWLOADINGMESSAGES = 3126;
 	public static final int SETTAPTODROP = 3127;
 	public static final int GETTAPTODROP = 3128;
+	public static final int SETOCULUSORBSPEED = 3129;
 	public static final int GETCANVASSIZE = 3132;
 	public static final int SETHIDEUSERNAME = 3141;
 	public static final int GETHIDEUSERNAME = 3142;
 	public static final int SETREMEMBERUSERNAME = 3143;
 	public static final int GETREMEMBERUSERNAME = 3144;
+	public static final int SETTITLEMUSICENABLED = 3146;
+	public static final int GETTITLEMUSICENABLED = 3147;
 	public static final int SOUND_SYNTH = 3200;
 	public static final int SOUND_SONG = 3201;
 	public static final int SOUND_JINGLE = 3202;
@@ -402,6 +406,7 @@ public class Opcodes
 	public static final int REMOVETAGS = 4119;
 	public static final int STRING_INDEXOF_CHAR = 4120;
 	public static final int STRING_INDEXOF_STRING = 4121;
+	public static final int UPPERCASE = 4122;
 	public static final int OC_NAME = 4200;
 	public static final int OC_OP = 4201;
 	public static final int OC_IOP = 4202;
@@ -452,6 +457,7 @@ public class Opcodes
 	public static final int WORLDLIST_NEXT = 6502;
 	public static final int WORLDLIST_SPECIFIC = 6506;
 	public static final int WORLDLIST_SORT = 6507;
+	public static final int GETWORLDINFO = 6511;
 	public static final int SETFOLLOWEROPSLOWPRIORITY = 6512;
 	public static final int NC_PARAM = 6513;
 	public static final int LC_PARAM = 6514;

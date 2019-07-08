@@ -35,23 +35,23 @@ import net.runelite.api.Player;
 public class WarIndicatorService
 {
 	private final Client client;
-	private final WarIndicatorConfig config;
+	private final WarIndicatorPlugin plugin;
 
 	@Inject
-	private WarIndicatorService(Client client, WarIndicatorConfig config)
+	private WarIndicatorService(final Client client, final WarIndicatorPlugin plugin)
 	{
-		this.config = config;
+		this.plugin = plugin;
 		this.client = client;
 	}
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
-		if (!config.highlightSnipes() && !config.highLightCallers())
+		if (!plugin.isHighlightSnipes() && !plugin.isHighLightCallers())
 		{
 			return;
 		}
 
-		if (config.highlightSnipes())
+		if (plugin.isHighlightSnipes())
 		{
 			for (Player player : client.getPlayers())
 			{
@@ -60,19 +60,19 @@ public class WarIndicatorService
 					continue;
 				}
 
-				String[] targets = config.getTargetedSnipes().split(", ");
+				String[] targets = plugin.getGetTargetedSnipes().split(", ");
 
 				for (String target : targets)
 				{
 					if (player.getName().equalsIgnoreCase(target))
 					{
-						consumer.accept(player, config.getSnipeColor());
+						consumer.accept(player, plugin.getGetSnipeColor());
 					}
 				}
 			}
 		}
 
-		if (config.highLightCallers())
+		if (plugin.isHighLightCallers())
 		{
 			for (Player player : client.getPlayers())
 			{
@@ -81,13 +81,13 @@ public class WarIndicatorService
 					continue;
 				}
 
-				String[] callers = config.getActiveCallers().split(", ");
+				String[] callers = plugin.getGetActiveCallers().split(", ");
 
 				for (String caller : callers)
 				{
 					if (player.getName().equalsIgnoreCase(caller))
 					{
-						consumer.accept(player, config.getCallerColor());
+						consumer.accept(player, plugin.getGetCallerColor());
 					}
 				}
 			}

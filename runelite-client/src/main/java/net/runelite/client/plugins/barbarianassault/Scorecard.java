@@ -28,6 +28,7 @@ package net.runelite.client.plugins.barbarianassault;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.ChatMessage;
@@ -35,13 +36,13 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.eventbus.Subscribe;
 
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public class Scorecard
 {
 	private BarbarianAssaultPlugin game;
 
 	@Getter(AccessLevel.NONE)
-	private ArrayList<Wave> waves = new ArrayList<>();
+	private List<Wave> waves = new ArrayList<>();
 	private String[] totalDescriptions = {
 		"A: ",
 		"; D: ",
@@ -67,13 +68,10 @@ public class Scorecard
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (chatMessage.getMessage().startsWith("---- Points:"))
+		if (chatMessage.getMessage().startsWith("---- Points:") && game.getStage() == 1)
 		{
-			if (game.getStage() == 1)
-			{
-				totalPoints = new int[6];
-				totalAmounts = new int[6];
-			}
+			totalPoints = new int[6];
+			totalAmounts = new int[6];
 		}
 	}
 

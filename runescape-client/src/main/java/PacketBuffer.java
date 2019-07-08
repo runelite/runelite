@@ -14,23 +14,19 @@ public final class PacketBuffer extends Buffer {
    @ObfuscatedGetter(
       intValue = 701739159
    )
-   public static int __hx_z;
+   public static int field667;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lhn;"
    )
-   @Export("isaacCipher0")
-   IsaacCipher isaacCipher0;
+   @Export("isaacCipher")
+   IsaacCipher isaacCipher;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -1048718919
    )
    @Export("bitIndex")
    int bitIndex;
-
-   static {
-      PacketBuffer_masks = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
-   }
 
    public PacketBuffer(int var1) {
       super(var1);
@@ -42,8 +38,8 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "-763699765"
    )
    @Export("newIsaacCipher")
-   public void newIsaacCipher(int[] var1) {
-      this.isaacCipher0 = new IsaacCipher(var1);
+   public void newIsaacCipher(int[] array) {
+      this.isaacCipher = new IsaacCipher(array);
    }
 
    @ObfuscatedName("ih")
@@ -52,8 +48,8 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "0"
    )
    @Export("setIsaacCipher")
-   public void setIsaacCipher(IsaacCipher var1) {
-      this.isaacCipher0 = var1;
+   public void setIsaacCipher(IsaacCipher isaacCipher) {
+      this.isaacCipher = isaacCipher;
    }
 
    @ObfuscatedName("im")
@@ -63,7 +59,7 @@ public final class PacketBuffer extends Buffer {
    )
    @Export("writeByteIsaac")
    public void writeByteIsaac(int var1) {
-      super.array[++super.index - 1] = (byte)(var1 + this.isaacCipher0.__m_336());
+      super.array[++super.index - 1] = (byte)(var1 + this.isaacCipher.nextInt());
    }
 
    @ObfuscatedName("ii")
@@ -73,7 +69,7 @@ public final class PacketBuffer extends Buffer {
    )
    @Export("readByteIsaac")
    public int readByteIsaac() {
-      return super.array[++super.index - 1] - this.isaacCipher0.__m_336() & 255;
+      return super.array[++super.index - 1] - this.isaacCipher.nextInt() & 255;
    }
 
    @ObfuscatedName("ig")
@@ -81,8 +77,8 @@ public final class PacketBuffer extends Buffer {
       signature = "(B)Z",
       garbageValue = "101"
    )
-   public boolean __ig_334() {
-      int var1 = super.array[super.index] - this.isaacCipher0.__f_337() & 255;
+   public boolean method236() {
+      int var1 = super.array[super.index] - this.isaacCipher.method137() & 255;
       return var1 >= 128;
    }
 
@@ -93,8 +89,8 @@ public final class PacketBuffer extends Buffer {
    )
    @Export("readSmartByteShortIsaac")
    public int readSmartByteShortIsaac() {
-      int var1 = super.array[++super.index - 1] - this.isaacCipher0.__m_336() & 255;
-      return var1 < 128?var1:(var1 - 128 << 8) + (super.array[++super.index - 1] - this.isaacCipher0.__m_336() & 255);
+      int var1 = super.array[++super.index - 1] - this.isaacCipher.nextInt() & 255;
+      return var1 < 128 ? var1 : (var1 - 128 << 8) + (super.array[++super.index - 1] - this.isaacCipher.nextInt() & 255);
    }
 
    @ObfuscatedName("jb")
@@ -102,9 +98,9 @@ public final class PacketBuffer extends Buffer {
       signature = "([BIII)V",
       garbageValue = "-1168019189"
    )
-   public void __jb_335(byte[] var1, int var2, int var3) {
-      for(int var4 = 0; var4 < var3; ++var4) {
-         var1[var4 + var2] = (byte)(super.array[++super.index - 1] - this.isaacCipher0.__m_336());
+   public void method237(byte[] var1, int var2, int var3) {
+      for (int var4 = 0; var4 < var3; ++var4) {
+         var1[var4 + var2] = (byte)(super.array[++super.index - 1] - this.isaacCipher.nextInt());
       }
 
    }
@@ -125,20 +121,20 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "1710439720"
    )
    @Export("readBits")
-   public int readBits(int var1) {
+   public int readBits(int bits) {
       int var2 = this.bitIndex >> 3;
       int var3 = 8 - (this.bitIndex & 7);
       int var4 = 0;
 
-      for(this.bitIndex += var1; var1 > var3; var3 = 8) {
-         var4 += (super.array[var2++] & PacketBuffer_masks[var3]) << var1 - var3;
-         var1 -= var3;
+      for (this.bitIndex += bits; bits > var3; var3 = 8) {
+         var4 += (super.array[var2++] & PacketBuffer_masks[var3]) << bits - var3;
+         bits -= var3;
       }
 
-      if(var3 == var1) {
+      if (var3 == bits) {
          var4 += super.array[var2] & PacketBuffer_masks[var3];
       } else {
-         var4 += super.array[var2] >> var3 - var1 & PacketBuffer_masks[var1];
+         var4 += super.array[var2] >> var3 - bits & PacketBuffer_masks[bits];
       }
 
       return var4;
@@ -160,8 +156,8 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "-141269845"
    )
    @Export("bitsRemaining")
-   public int bitsRemaining(int var1) {
-      return var1 * 8 - this.bitIndex;
+   public int bitsRemaining(int index) {
+      return index * 8 - this.bitIndex;
    }
 
    @ObfuscatedName("m")
@@ -179,34 +175,33 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "-1562700981"
    )
    @Export("requestNetFile")
-   static void requestNetFile(IndexCache var0, int var1, int var2, int var3, byte var4, boolean var5) {
+   static void requestNetFile(Archive archive, int var1, int var2, int var3, byte var4, boolean priority) {
       long var6 = (long)((var1 << 16) + var2);
       NetFileRequest var8 = (NetFileRequest)NetCache.NetCache_pendingPriorityWrites.get(var6);
-      if(var8 == null) {
+      if (var8 == null) {
          var8 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.get(var6);
-         if(var8 == null) {
+         if (var8 == null) {
             var8 = (NetFileRequest)NetCache.NetCache_pendingWrites.get(var6);
-            if(var8 != null) {
-               if(var5) {
+            if (var8 != null) {
+               if (priority) {
                   var8.removeDual();
                   NetCache.NetCache_pendingPriorityWrites.put(var8, var6);
                   --NetCache.NetCache_pendingWritesCount;
                   ++NetCache.NetCache_pendingPriorityWritesCount;
                }
-
             } else {
-               if(!var5) {
+               if (!priority) {
                   var8 = (NetFileRequest)NetCache.NetCache_pendingResponses.get(var6);
-                  if(var8 != null) {
+                  if (var8 != null) {
                      return;
                   }
                }
 
                var8 = new NetFileRequest();
-               var8.indexCache = var0;
+               var8.archive = archive;
                var8.crc = var3;
                var8.padding = var4;
-               if(var5) {
+               if (priority) {
                   NetCache.NetCache_pendingPriorityWrites.put(var8, var6);
                   ++NetCache.NetCache_pendingPriorityWritesCount;
                } else {
@@ -214,10 +209,10 @@ public final class PacketBuffer extends Buffer {
                   NetCache.NetCache_pendingWrites.put(var8, var6);
                   ++NetCache.NetCache_pendingWritesCount;
                }
-
             }
          }
       }
+
    }
 
    @ObfuscatedName("f")
@@ -227,5 +222,9 @@ public final class PacketBuffer extends Buffer {
    )
    public static int method4081(int var0, int var1) {
       return (var0 + 40000 << 8) + var1;
+   }
+
+   static {
+      PacketBuffer_masks = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
    }
 }

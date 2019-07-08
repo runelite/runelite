@@ -25,9 +25,12 @@
 package net.runelite.client.plugins.blastmine;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -49,9 +52,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show helpful information for the Blast Mine minigame",
 	tags = {"explode", "explosive", "mining", "minigame", "skilling"}
 )
+@Singleton
 public class BlastMinePlugin extends Plugin
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<WorldPoint, BlastMineRock> rocks = new HashMap<>();
 
 	@Inject
@@ -66,15 +70,33 @@ public class BlastMinePlugin extends Plugin
 	@Inject
 	private BlastMineOreCountOverlay blastMineOreCountOverlay;
 
+	@Inject
+	private BlastMinePluginConfig config;
+
 	@Provides
 	BlastMinePluginConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(BlastMinePluginConfig.class);
 	}
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showOreOverlay;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showRockIconOverlay;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showTimerOverlay;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showWarningOverlay;
+	@Getter(AccessLevel.PACKAGE)
+	private Color timerColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color warningColor;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		overlayManager.add(blastMineRockOverlay);
 		overlayManager.add(blastMineOreCountOverlay);
 	}
@@ -131,5 +153,15 @@ public class BlastMinePlugin extends Plugin
 		rocks.values().removeIf(rock ->
 			(rock.getRemainingTimeRelative() == 1 && rock.getType() != BlastMineRockType.NORMAL) ||
 				(rock.getRemainingFuseTimeRelative() == 1 && rock.getType() == BlastMineRockType.LIT));
+	}
+
+	private void updateConfig()
+	{
+		this.showOreOverlay = config.showOreOverlay();
+		this.showRockIconOverlay = config.showRockIconOverlay();
+		this.showTimerOverlay = config.showTimerOverlay();
+		this.showWarningOverlay = config.showWarningOverlay();
+		this.timerColor = config.getTimerColor();
+		this.warningColor = config.getWarningColor();
 	}
 }

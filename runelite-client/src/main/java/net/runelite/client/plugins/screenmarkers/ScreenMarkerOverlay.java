@@ -28,19 +28,22 @@ package net.runelite.client.plugins.screenmarkers;
 import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
+@Singleton
 public class ScreenMarkerOverlay extends Overlay
 {
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final ScreenMarker marker;
 	private final ScreenMarkerRenderable screenMarkerRenderable;
 
-	ScreenMarkerOverlay(ScreenMarker marker)
+	ScreenMarkerOverlay(final ScreenMarker marker)
 	{
 		this.marker = marker;
 		this.screenMarkerRenderable = new ScreenMarkerRenderable();

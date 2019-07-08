@@ -39,6 +39,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -63,6 +64,7 @@ import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.loottracker.LootTrackerClient;
 
 @Slf4j
+@Singleton
 class LootTrackerPanel extends PluginPanel
 {
 	private static final int MAX_LOOT_BOXES = 500;
@@ -153,8 +155,6 @@ class LootTrackerPanel extends PluginPanel
 		INVISIBLE_ICON = new ImageIcon(invisibleImg);
 		INVISIBLE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -220));
 	}
-
-	private final JPanel displaySelector;
 
 	@Getter @Setter
 	private LootRecordSortType lootRecordSortType = LootRecordSortType.TIMESTAMP;
@@ -355,7 +355,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
-		displaySelector = new JPanel();
+		JPanel displaySelector = new JPanel();
 		displaySelector.setLayout(new GridLayout(1, 1));
 		displaySelector.setBorder(new EmptyBorder(2, 10, 10, 10));
 		displaySelector.setBackground(ColorScheme.DARKER_GRAY_COLOR);

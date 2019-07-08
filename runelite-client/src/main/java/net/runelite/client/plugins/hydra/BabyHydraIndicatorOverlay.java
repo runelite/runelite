@@ -27,12 +27,14 @@ package net.runelite.client.plugins.hydra;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+@Singleton
 public class BabyHydraIndicatorOverlay extends Overlay
 {
 	private final BabyHydraPlugin plugin;
@@ -40,7 +42,7 @@ public class BabyHydraIndicatorOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private BabyHydraIndicatorOverlay(BabyHydraPlugin plugin)
+	private BabyHydraIndicatorOverlay(final BabyHydraPlugin plugin)
 	{
 		this.plugin = plugin;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
@@ -51,17 +53,14 @@ public class BabyHydraIndicatorOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.getHydra() != null)
+		if (plugin.getHydra() != null && plugin.getHydras().containsKey(plugin.getHydra().getIndex()))
 		{
-			if (plugin.getHydras().containsKey(plugin.getHydra().getIndex()))
+			int val = plugin.getHydras().get(plugin.getHydra().getIndex());
+			if (val != 0)
 			{
-				int val = plugin.getHydras().get(plugin.getHydra().getIndex());
-				if (val != 0)
-				{
-					panelComponent.getChildren().clear();
-					panelComponent.getChildren().add(LineComponent.builder().right(Integer.toString(val)).build());
-					return panelComponent.render(graphics);
-				}
+				panelComponent.getChildren().clear();
+				panelComponent.getChildren().add(LineComponent.builder().right(Integer.toString(val)).build());
+				return panelComponent.render(graphics);
 			}
 		}
 		return null;

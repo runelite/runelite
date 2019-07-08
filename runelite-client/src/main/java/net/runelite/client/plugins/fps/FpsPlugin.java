@@ -26,6 +26,7 @@ package net.runelite.client.plugins.fps;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -64,6 +66,7 @@ import net.runelite.client.util.ping.Ping;
 	tags = {"frames", "framerate", "limit", "overlay", "ping"},
 	enabledByDefault = false
 )
+@Singleton
 public class FpsPlugin extends Plugin
 {
 	static final String CONFIG_GROUP_KEY = "fpscontrol";
@@ -90,6 +93,10 @@ public class FpsPlugin extends Plugin
 	private FpsConfig fpsConfig;
 
 	private final ScheduledExecutorService pingExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
+
+	private boolean loaded = false;
+
+	private boolean shutdown;
 
 	@Getter(AccessLevel.PACKAGE)
 	private FpsLimitMode limitMode;
@@ -126,6 +133,12 @@ public class FpsPlugin extends Plugin
 		overlay.onFocusChanged(event);
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		shutdown = event.getGameState() != GameState.LOGGED_IN;
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -135,7 +148,13 @@ public class FpsPlugin extends Plugin
 		overlayManager.add(overlay);
 		drawManager.registerEveryFrameListener(drawListener);
 		drawListener.reloadConfig();
-		pingExecutorService.scheduleAtFixedRate(this::getPingToCurrentWorld, 5, 5, TimeUnit.SECONDS);
+		shutdown = client.getGameState() != GameState.LOGGED_IN;
+
+		if (!loaded)
+		{
+			pingExecutorService.scheduleAtFixedRate(this::getPingToCurrentWorld, 5, 5, TimeUnit.SECONDS);
+			loaded = true;
+		}
 	}
 
 	@Override
@@ -143,12 +162,12 @@ public class FpsPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		drawManager.unregisterEveryFrameListener(drawListener);
-		pingExecutorService.shutdown();
+		shutdown = true;
 	}
 
 	private void getPingToCurrentWorld()
 	{
-		if (client.getGameState().equals(GameState.LOGGED_IN) && drawPing)
+		if (!shutdown && drawPing)
 		{
 			ping = Ping.ping(String.format("oldschool%d.runescape.com", client.getWorld() - 300));
 		}

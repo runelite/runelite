@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -38,13 +39,14 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
+@Singleton
 class ShamanSpawnOverlay extends Overlay
 {
 	private final Client client;
 	private final LizardmenShamanPlugin plugin;
 
 	@Inject
-	private ShamanSpawnOverlay(Client client, LizardmenShamanPlugin plugin)
+	private ShamanSpawnOverlay(final Client client, final LizardmenShamanPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -61,12 +63,9 @@ class ShamanSpawnOverlay extends Overlay
 			final long startCountdown = Duration.between(spawn.getStart(), now).getSeconds();
 			final double certainSec = spawn.getCountdownTimer() - startCountdown;
 
-			if (certainSec <= 0)
+			if (certainSec <= 0 && spawn.getEnd() == null)
 			{
-				if (spawn.getEnd() == null)
-				{
-					spawn.setEnd(Instant.now());
-				}
+				spawn.setEnd(Instant.now());
 			}
 
 			final ProgressPieComponent pieComponent = new ProgressPieComponent();

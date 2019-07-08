@@ -4,17 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import javax.inject.Singleton;
 
-public class NPCDamageCounter 
+@Singleton
+class NPCDamageCounter
 {
 
-	public Map<Integer, List<String>> attackers;
+	final Map<Integer, List<String>> attackers;
 
-	public List<Integer> damage;
+	final List<Integer> damage;
 
-	public NPCDamageCounter()
+	NPCDamageCounter()
 	{
-		this.attackers = new TreeMap<Integer, List<String>>();
-		this.damage = new ArrayList<Integer>();
+		this.attackers = new TreeMap<>();
+		this.damage = new ArrayList<>();
 	}
 }

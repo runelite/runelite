@@ -40,7 +40,7 @@ enum PrayerRestoreType
 
 	private final int[] items;
 
-	PrayerRestoreType(int... items)
+	PrayerRestoreType(final int... items)
 	{
 		this.items = items;
 	}

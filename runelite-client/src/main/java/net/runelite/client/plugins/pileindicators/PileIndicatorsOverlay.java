@@ -24,47 +24,43 @@
 
 package net.runelite.client.plugins.pileindicators;
 
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.util.List;
 import javax.inject.Inject;
-import java.awt.*;
-import java.util.ArrayList;
+import javax.inject.Singleton;
+import net.runelite.api.Actor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class PileIndicatorsOverlay extends Overlay
 {
-
-	private final Client client;
 	private final PileIndicatorsPlugin plugin;
-	private final PileIndicatorsConfig config;
 
 	@Inject
-	PileIndicatorsOverlay(final Client client, final PileIndicatorsPlugin plugin, final PileIndicatorsConfig config)
+	PileIndicatorsOverlay(final PileIndicatorsPlugin plugin)
 	{
 		super(plugin);
-		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
 	}
 
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		ArrayList<ArrayList<Actor>> stackList = plugin.getStacks();
+		List<List<Actor>> stackList = plugin.getStacks();
 
 		if (stackList != null)
 		{
-			for (ArrayList<Actor> actorArrayList : stackList)
+			for (List<Actor> actorArrayList : stackList)
 			{
 				PileType pileType = plugin.getPileType(actorArrayList);
 				Color pileColor = plugin.getColorByPileType(pileType);
@@ -73,12 +69,12 @@ public class PileIndicatorsOverlay extends Overlay
 				{
 					Actor actorToRender = actorArrayList.get(0); //guaranteed to have at least two players
 					final String pileTypeStr = pileType == PileType.PLAYER_PILE ? "PLAYER" : pileType == PileType.NPC_PILE ? "NPC" : pileType == PileType.MIXED_PILE ? "MIXED" : "";
-					final String text = config.numberOnly() ? "" + actorArrayList.size() : (pileTypeStr + " PILE SIZE: " + actorArrayList.size());
-					if (config.drawPileTile())
+					final String text = plugin.isNumberOnly() ? "" + actorArrayList.size() : (pileTypeStr + " PILE SIZE: " + actorArrayList.size());
+					if (plugin.isDrawPileTile())
 					{
 						OverlayUtil.renderPolygon(graphics, actorToRender.getCanvasTilePoly(), pileColor);
 					}
-					if (config.drawPileHull())
+					if (plugin.isDrawPileHull())
 					{
 						OverlayUtil.renderPolygon(graphics, actorToRender.getConvexHull(), pileColor);
 					}

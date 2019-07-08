@@ -30,7 +30,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.api.Client;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ImageComponent;
@@ -38,20 +38,19 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+@Singleton
 class ItemRecoilOverlay extends Overlay
 {
 	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
 	private static final Color ACTIVATED_BACKGROUND_COLOR = new Color(0, 150, 0, 150);
 	private final ItemChargePlugin plugin;
-	private final ItemChargeConfig config;
 	private final PanelComponent imagePanelComponent = new PanelComponent();
 
 	@Inject
-	public ItemRecoilOverlay(Client client, ItemChargePlugin plugin, ItemChargeConfig config)
+	public ItemRecoilOverlay(final ItemChargePlugin plugin)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
@@ -61,19 +60,17 @@ class ItemRecoilOverlay extends Overlay
 		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
 		this.imagePanelComponent.getChildren().clear();
-		if (config.showrecoil())
+		if (plugin.isShowrecoil() && plugin.isRingOfRecoilAvailable())
 		{
-			if (plugin.isRingOfRecoilAvailable())
-			{
-				BufferedImage recoilImage = plugin.getRecoilRingImage();
-				imagePanelComponent.setBackgroundColor(plugin
-						.isRingOfRecoilEquipped() ? ACTIVATED_BACKGROUND_COLOR : NOT_ACTIVATED_BACKGROUND_COLOR);
-				imagePanelComponent.getChildren().add(new ImageComponent(recoilImage));
+			BufferedImage recoilImage = plugin.getRecoilRingImage();
+			imagePanelComponent.setBackgroundColor(plugin
+					.isRingOfRecoilEquipped() ? ACTIVATED_BACKGROUND_COLOR : NOT_ACTIVATED_BACKGROUND_COLOR);
+			imagePanelComponent.getChildren().add(new ImageComponent(recoilImage));
 
-				imagePanelComponent.getChildren().add(tableComponent);
-				return imagePanelComponent.render(graphics);
-			}
+			imagePanelComponent.getChildren().add(tableComponent);
+			return imagePanelComponent.render(graphics);
 		}
+
 		return null;
 	}
 }

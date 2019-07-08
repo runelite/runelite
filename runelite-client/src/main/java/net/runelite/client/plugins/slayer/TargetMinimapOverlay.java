@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
@@ -38,15 +39,14 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class TargetMinimapOverlay extends Overlay
 {
-	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
 
 	@Inject
-	TargetMinimapOverlay(SlayerConfig config, SlayerPlugin plugin)
+	TargetMinimapOverlay(final SlayerPlugin plugin)
 	{
-		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -55,7 +55,7 @@ public class TargetMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.highlightTargets())
+		if (!plugin.isHighlightTargets())
 		{
 			return null;
 		}
@@ -68,11 +68,11 @@ public class TargetMinimapOverlay extends Overlay
 				continue;
 			}
 
-			Color coloration = config.getTargetColor();
+			Color coloration = plugin.getGetTargetColor();
 
 			if (plugin.isSuperior(target.getName()))
 			{
-				coloration = config.getSuperiorColor();
+				coloration = plugin.getGetSuperiorColor();
 			}
 
 			renderTargetOverlay(graphics, target, target.getName(), coloration);
@@ -88,7 +88,7 @@ public class TargetMinimapOverlay extends Overlay
 		{
 			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color);
 
-			if (config.drawMinimapNames())
+			if (plugin.isDrawMinimapNames())
 			{
 				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
 			}

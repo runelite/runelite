@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.coxhelper;
 
 import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,40 +37,40 @@ import net.runelite.api.NPCDefinition;
 class NPCContainer
 {
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private NPC npc;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int npcIndex;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private String npcName;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int npcSize;
 
-	@Setter
-	@Getter
+	@Setter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.PACKAGE)
 	private int ticksUntilAttack;
 
-	@Setter
-	@Getter
+	@Setter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.PACKAGE)
 	private int intermissionPeriod;
 
-	@Setter
-	@Getter
+	@Setter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.PACKAGE)
 	private int npcSpeed;
 
-	@Setter
-	@Getter
+	@Setter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.PACKAGE)
 	private Actor npcInteracting;
 
-	@Setter
-	@Getter
+	@Setter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.PACKAGE)
 	private Specials specials;
 
-	@Setter
-	@Getter
+	@Setter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.PACKAGE)
 	private Attackstyle attackStyle;
 
 
@@ -93,7 +94,7 @@ class NPCContainer
 	}
 
 	@AllArgsConstructor
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	public enum Specials
 	{
 		PORTALS("Portals"),
@@ -106,7 +107,7 @@ class NPCContainer
 	}
 
 	@AllArgsConstructor
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	public enum Attackstyle
 	{
 		MAGE("Mage", Color.CYAN),

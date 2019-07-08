@@ -11,17 +11,14 @@ public class InvDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   static EvictingDualNodeHashTable __ib_f;
+   @Export("InvDefinition_cached")
+   static EvictingDualNodeHashTable InvDefinition_cached;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1358868971
    )
    @Export("size")
    public int size;
-
-   static {
-      __ib_f = new EvictingDualNodeHashTable(64);
-   }
 
    InvDefinition() {
       this.size = 0;
@@ -32,15 +29,15 @@ public class InvDefinition extends DualNode {
       signature = "(Lgr;I)V",
       garbageValue = "628080573"
    )
-   @Export("read")
-   void read(Buffer var1) {
-      while(true) {
+   @Export("decode")
+   void decode(Buffer var1) {
+      while (true) {
          int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+         if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -49,10 +46,10 @@ public class InvDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "1763455566"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.size = var1.__ag_302();
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
+      if (var2 == 2) {
+         this.size = var1.readUnsignedShort();
       }
 
    }
@@ -63,6 +60,10 @@ public class InvDefinition extends DualNode {
       garbageValue = "-121177696"
    )
    public static void method4754() {
-      ParamKeyDefinition.ParamKeyDefinition_cached.clear();
+      ParamDefinition.ParamDefinition_cached.clear();
+   }
+
+   static {
+      InvDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

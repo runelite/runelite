@@ -36,10 +36,13 @@ import com.github.joonasvali.naturalmouse.support.SinusoidalDeviationProvider;
 import com.github.joonasvali.naturalmouse.util.FlowTemplates;
 import com.google.inject.Provides;
 import java.awt.AWTException;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
@@ -64,7 +67,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Flexo Config",
 	description = "Customizes the flexo api",
 	tags = {"flexo", "null"},
-	type = PluginType.UTILITY
+	type = PluginType.EXTERNAL,
+	enabledByDefault = false
 )
 
 public class FlexoPlugin extends Plugin
@@ -97,26 +101,52 @@ public class FlexoPlugin extends Plugin
 	@Inject
 	private FlexoOverlay overlay;
 
+	@Inject
+	private FlexoConfig config;
+
 	@Provides
 	FlexoConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(FlexoConfig.class);
 	}
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean overlayEnabled;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean debugNPCs;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean debugPlayers;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean debugGroundItems;
+	private int minDelayAmt;
+	private int getReactionTimeVariation;
+	private int getMouseDragSpeed;
+	private int getOvershoots;
+	private boolean getVariatingFlow;
+	private boolean getSlowStartupFlow;
+	private boolean getSlowStartup2Flow;
+	private boolean getJaggedFlow;
+	private boolean getInterruptedFlow;
+	private boolean getInterruptedFlow2;
+	private boolean getStoppingFlow;
+	private int getDeviationSlope;
+	private String getNoisinessDivider;
+	private int scalingFactor;
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<Rectangle> clickAreas = new ArrayList<>();
+	@Getter(AccessLevel.PACKAGE)
+	private List<Point> clickPoints = new ArrayList<>();
+
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getKey().compareTo("overlayEnabled") == 0)
+		if (!event.getGroup().equals("flexo") || (!event.getGroup().equals("stretchedmode")) )
 		{
-			if (getConfig(configManager).overlayEnabled())
-			{
-				overlayManager.add(overlay);
-			}
-			else
-			{
-				overlayManager.remove(overlay);
-			}
+			return;
 		}
+
+		updateConfig();
 		updateMouseMotionFactory();
 	}
 
@@ -132,79 +162,67 @@ public class FlexoPlugin extends Plugin
 		{
 			Flexo.clientUI = clientUI;
 		}
-		overlay.clickAreas = new ArrayList<>();
-		overlay.clickPoints = new ArrayList<>();
-		if (getConfig(configManager).getDebugNPCs())
+		this.clickAreas = new ArrayList<>();
+		this.clickPoints = new ArrayList<>();
+		if (this.debugNPCs)
 		{
 			Flexo.isStretched = client.isStretchedEnabled();
-			Flexo.scale = configManager.getConfig(StretchedModeConfig.class).scalingFactor();
+			Flexo.scale = this.scalingFactor;
 			if (flexo != null)
 			{
 				for (NPC npc : client.getNpcs())
 				{
-					if (npc != null)
+					if (npc != null && npc.getConvexHull() != null)
 					{
-						if (npc.getConvexHull() != null)
-						{
-							Rectangle r = FlexoMouse.getClickArea(npc.getConvexHull().getBounds());
-							overlay.clickAreas.add(r);
-							java.awt.Point p = FlexoMouse.getClickPoint(r);
-							overlay.clickPoints.add(p);
-						}
+						Rectangle r = FlexoMouse.getClickArea(npc.getConvexHull().getBounds());
+						this.clickAreas.add(r);
+						java.awt.Point p = FlexoMouse.getClickPoint(r);
+						this.clickPoints.add(p);
 					}
 				}
 			}
 		}
 
-		if (getConfig(configManager).getDebugPlayers())
+		if (this.debugPlayers)
 		{
 			Flexo.isStretched = client.isStretchedEnabled();
-			Flexo.scale = configManager.getConfig(StretchedModeConfig.class).scalingFactor();
+			Flexo.scale = this.scalingFactor;
 			if (flexo != null)
 			{
 				for (Player player : client.getPlayers())
 				{
-					if (player != null)
+					if (player != null && player.getConvexHull() != null)
 					{
-						if (player.getConvexHull() != null)
-						{
-							Rectangle r = FlexoMouse.getClickArea(player.getConvexHull().getBounds());
-							overlay.clickAreas.add(r);
-							java.awt.Point p = FlexoMouse.getClickPoint(r);
-							overlay.clickPoints.add(p);
-						}
+						Rectangle r = FlexoMouse.getClickArea(player.getConvexHull().getBounds());
+						this.clickAreas.add(r);
+						java.awt.Point p = FlexoMouse.getClickPoint(r);
+						this.clickPoints.add(p);
 					}
 				}
 			}
 		}
 
 		// Could still use some improvement
-		if (getConfig(configManager).getDebugGroundItems())
+		if (this.debugGroundItems)
 		{
 			Flexo.isStretched = client.isStretchedEnabled();
-			Flexo.scale = configManager.getConfig(StretchedModeConfig.class).scalingFactor();
+			Flexo.scale = this.scalingFactor;
 
-			if (flexo != null)
+			if (flexo != null && GroundItemsPlugin.getCollectedGroundItems() != null)
 			{
-				if (GroundItemsPlugin.getCollectedGroundItems() != null)
+				for (GroundItem gi : GroundItemsPlugin.getCollectedGroundItems().values())
 				{
-					for (GroundItem gi : GroundItemsPlugin.getCollectedGroundItems().values())
+					if (gi != null)
 					{
-						if (gi != null)
+						LocalPoint lp = LocalPoint.fromWorld(client, gi.getLocation());
+						if (lp != null && Perspective.getCanvasTilePoly(client, lp) != null)
 						{
-							LocalPoint lp = LocalPoint.fromWorld(client, gi.getLocation());
-							if (lp != null)
-							{
-								if (Perspective.getCanvasTilePoly(client, lp) != null)
-								{
-									Rectangle r1 = FlexoMouse.getClickArea(Perspective.getCanvasTilePoly(client, lp).getBounds());
-									Rectangle r2 = FlexoMouse.getClickArea(r1);
-									Rectangle r3 = FlexoMouse.getClickArea(r2);
-									overlay.clickAreas.add(r3);
-									java.awt.Point p = FlexoMouse.getClickPoint(r3);
-									overlay.clickPoints.add(p);
-								}
-							}
+							Rectangle r1 = FlexoMouse.getClickArea(Perspective.getCanvasTilePoly(client, lp).getBounds());
+							Rectangle r2 = FlexoMouse.getClickArea(r1);
+							Rectangle r3 = FlexoMouse.getClickArea(r2);
+							this.clickAreas.add(r3);
+							java.awt.Point p = FlexoMouse.getClickPoint(r3);
+							this.clickPoints.add(p);
 						}
 					}
 				}
@@ -214,7 +232,7 @@ public class FlexoPlugin extends Plugin
 
 	private void updateMouseMotionFactory()
 	{
-		Flexo.minDelay = getConfig(configManager).minDelayAmt();
+		Flexo.minDelay = this.minDelayAmt;
 		MouseMotionFactory factory = new MouseMotionFactory();
 		// TODO:Add Options for various flows to allow more personalization
 		List<Flow> flows = new ArrayList<>();
@@ -222,50 +240,50 @@ public class FlexoPlugin extends Plugin
 		// Always add random
 		flows.add(new Flow(FlowTemplates.random()));
 
-		if (getConfig(configManager).getVariatingFlow())
+		if (this.getVariatingFlow)
 		{
 			flows.add(new Flow(FlowTemplates.variatingFlow()));
 		}
 
-		if (getConfig(configManager).getSlowStartupFlow())
+		if (this.getSlowStartupFlow)
 		{
 			flows.add(new Flow(FlowTemplates.slowStartupFlow()));
 		}
 
-		if (getConfig(configManager).getSlowStartup2Flow())
+		if (this.getSlowStartup2Flow)
 		{
 			flows.add(new Flow(FlowTemplates.slowStartup2Flow()));
 		}
 
-		if (getConfig(configManager).getJaggedFlow())
+		if (this.getJaggedFlow)
 		{
 			flows.add(new Flow(FlowTemplates.jaggedFlow()));
 		}
 
-		if (getConfig(configManager).getInterruptedFlow())
+		if (this.getInterruptedFlow)
 		{
 			flows.add(new Flow(FlowTemplates.interruptedFlow()));
 		}
 
-		if (getConfig(configManager).getInterruptedFlow2())
+		if (this.getInterruptedFlow2)
 		{
 			flows.add(new Flow(FlowTemplates.interruptedFlow2()));
 		}
 
-		if (getConfig(configManager).getStoppingFlow())
+		if (this.getStoppingFlow)
 		{
 			flows.add(new Flow(FlowTemplates.stoppingFlow()));
 		}
 
 		DefaultSpeedManager manager = new DefaultSpeedManager(flows);
 		//TODO:Add options for custom Deviation Provider and Noise Provider
-		factory.setDeviationProvider(new SinusoidalDeviationProvider(getConfig(configManager).getDeviationSlope()));
-		factory.setNoiseProvider(new DefaultNoiseProvider(Double.valueOf(getConfig(configManager).getNoisinessDivider())));
-		factory.getNature().setReactionTimeVariationMs(getConfig(configManager).getReactionTimeVariation());
-		manager.setMouseMovementBaseTimeMs(getConfig(configManager).getMouseDragSpeed());
+		factory.setDeviationProvider(new SinusoidalDeviationProvider(this.getDeviationSlope));
+		factory.setNoiseProvider(new DefaultNoiseProvider(Double.valueOf(this.getNoisinessDivider)));
+		factory.getNature().setReactionTimeVariationMs(this.getReactionTimeVariation);
+		manager.setMouseMovementBaseTimeMs(this.getMouseDragSpeed);
 
 		DefaultOvershootManager overshootManager = (DefaultOvershootManager) factory.getOvershootManager();
-		overshootManager.setOvershoots(getConfig(configManager).getOvershoots());
+		overshootManager.setOvershoots(this.getOvershoots);
 
 		factory.setSpeedManager(manager);
 		Flexo.currentMouseMotionFactory = factory;
@@ -274,6 +292,8 @@ public class FlexoPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+
 		Flexo.isStretched = client.isStretchedEnabled();
 		overlayManager.add(overlay);
 		updateMouseMotionFactory();
@@ -283,5 +303,27 @@ public class FlexoPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+	}
+
+	private void updateConfig()
+	{
+		this.overlayEnabled = config.overlayEnabled();
+		this.debugNPCs = config.getDebugNPCs();
+		this.debugPlayers = config.getDebugPlayers();
+		this.debugGroundItems = config.getDebugGroundItems();
+		this.minDelayAmt = config.minDelayAmt();
+		this.getReactionTimeVariation = config.getReactionTimeVariation();
+		this.getMouseDragSpeed = config.getMouseDragSpeed();
+		this.getOvershoots = config.getOvershoots();
+		this.getVariatingFlow = config.getVariatingFlow();
+		this.getSlowStartupFlow = config.getSlowStartupFlow();
+		this.getSlowStartup2Flow = config.getSlowStartup2Flow();
+		this.getJaggedFlow = config.getJaggedFlow();
+		this.getInterruptedFlow = config.getInterruptedFlow();
+		this.getInterruptedFlow2 = config.getInterruptedFlow2();
+		this.getStoppingFlow = config.getStoppingFlow();
+		this.getDeviationSlope = config.getDeviationSlope();
+		this.getNoisinessDivider = config.getNoisinessDivider();
+		this.scalingFactor = configManager.getConfig(StretchedModeConfig.class).scalingFactor();
 	}
 }

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.profiles;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -44,7 +45,7 @@ import net.runelite.client.util.ImageUtil;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
-
+@Singleton
 public class ProfilesPlugin extends Plugin
 {
 	@Inject
@@ -86,14 +87,11 @@ public class ProfilesPlugin extends Plugin
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event) throws Exception
 	{
-		if (event.getGroup().equals("profiles"))
+		if (event.getGroup().equals("profiles") && event.getKey().equals("rememberPassword"))
 		{
-			if (event.getKey().equals("rememberPassword"))
-			{
-				panel = injector.getInstance(ProfilesPanel.class);
-				this.shutDown();
-				this.startUp();
-			}
+			panel = injector.getInstance(ProfilesPanel.class);
+			this.shutDown();
+			this.startUp();
 		}
 	}
 

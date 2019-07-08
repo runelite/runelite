@@ -30,7 +30,7 @@ import java.time.Instant;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-public class ThievingSession
+class ThievingSession
 {
 	@Getter(AccessLevel.PACKAGE)
 	private Instant lastTheivingAction;

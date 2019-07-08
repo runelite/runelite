@@ -27,6 +27,7 @@ package net.runelite.client.plugins.tobdamagecount;
 
 import java.text.DecimalFormat;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -59,7 +60,7 @@ import net.runelite.client.plugins.PluginType;
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
-
+@Singleton
 public class DamageCounterPlugin extends Plugin
 {
 	private int currentWorld = -1;
@@ -92,15 +93,13 @@ public class DamageCounterPlugin extends Plugin
 	private static final int[] ToB_Region = {MAIDEN_REGION, MAIDEN_REGION_1, BLOAT_REGION, NYLOCAS_REGION,
 		SOTETSEG_REGION, SOTETSEG_REGION2, XARPUS_REGION, VERZIK_REGION};
 	//setting up the array for a check list
-	private static int[] NPCARRAY = {NpcID.THE_MAIDEN_OF_SUGADINTI, NpcID.THE_MAIDEN_OF_SUGADINTI_8361,
+	private static final int[] NPCARRAY = {NpcID.THE_MAIDEN_OF_SUGADINTI, NpcID.THE_MAIDEN_OF_SUGADINTI_8361,
 		NpcID.THE_MAIDEN_OF_SUGADINTI_8362, NpcID.THE_MAIDEN_OF_SUGADINTI_8363, NpcID.THE_MAIDEN_OF_SUGADINTI_8364,
 		NpcID.THE_MAIDEN_OF_SUGADINTI_8365, NpcID.PESTILENT_BLOAT, NpcID.NYLOCAS_VASILIAS,
 		NpcID.NYLOCAS_VASILIAS_8355, NpcID.NYLOCAS_VASILIAS_8356, NpcID.NYLOCAS_VASILIAS_8357, NpcID.SOTETSEG,
 		NpcID.SOTETSEG_8388, NpcID.XARPUS, NpcID.XARPUS_8339, NpcID.XARPUS_8340, NpcID.XARPUS_8341,
 		NpcID.VERZIK_VITUR, NpcID.VERZIK_VITUR_8369, NpcID.VERZIK_VITUR_8370, NpcID.VERZIK_VITUR_8371,
 		NpcID.VERZIK_VITUR_8372, NpcID.VERZIK_VITUR_8373, NpcID.VERZIK_VITUR_8374, NpcID.VERZIK_VITUR_8375};
-
-	private int[] HEALTHARRAY = {MAIDENHP, NYLOHP, VERZIKHP};
 
 	@Inject
 	private Client client;
@@ -127,21 +126,15 @@ public class DamageCounterPlugin extends Plugin
 	{
 		Player localPlayer = client.getLocalPlayer();
 		Actor interacting = localPlayer.getInteracting();
-		if (client.getGameState() == GameState.LOGGED_IN)
+		if (client.getGameState() == GameState.LOGGED_IN && BossName == null && interacting instanceof NPC)
 		{
-			if (BossName == null)
+			int interactingId = ((NPC) interacting).getId();
+			String interactingName = interacting.getName();
+			for (int aNPCARRAY : NPCARRAY)
 			{
-				if (interacting instanceof NPC)
+				if (aNPCARRAY == interactingId)
 				{
-					int interactingId = ((NPC) interacting).getId();
-					String interactingName = interacting.getName();
-					for (int aNPCARRAY : NPCARRAY)
-					{
-						if (aNPCARRAY == interactingId)
-						{
-							BossName = interactingName;
-						}
-					}
+					BossName = interactingName;
 				}
 			}
 		}
@@ -187,17 +180,13 @@ public class DamageCounterPlugin extends Plugin
 	{
 		Player localPlayer = client.getLocalPlayer();
 		Actor interacting = localPlayer.getInteracting();
-		if (client.getGameState() == GameState.LOGGED_IN)
+		if (client.getGameState() == GameState.LOGGED_IN && interacting instanceof NPC)
 		{
-			if (interacting instanceof NPC)
+			String interactingName = interacting.getName();
+			if (interactingName.equals(BossName))
 			{
-				String interactingName = interacting.getName();
-				int NPC = ((NPC) interacting).getId();
-				if (interactingName.equals(BossName))
-				{
-					DamageCount += (XPtoDamage() * BOSS_MODIFIER);
+				DamageCount += (XPtoDamage() * BOSS_MODIFIER);
 
-				}
 			}
 		}
 	}
@@ -329,10 +318,10 @@ public class DamageCounterPlugin extends Plugin
 		String DeathMessage = "You have died! You did " + DAMAGEFORMAT.format(DamageCount) + " damage to " +
 			BossName + "!";
 		String MessageTaken = "You have taken " + DAMAGEFORMAT.format(DamageTaken) + " damage from this fight!";
-		for (int i = 0; i < ToB_Region.length; i++)
+		for (int value : ToB_Region)
 		{
 			if (WorldPoint.fromLocalInstance(client,
-				client.getLocalPlayer().getLocalLocation()).getRegionID() == ToB_Region[i])
+				client.getLocalPlayer().getLocalLocation()).getRegionID() == value)
 			{
 				sendChatMessage(DeathMessage);
 				sendChatMessage(MessageTaken);

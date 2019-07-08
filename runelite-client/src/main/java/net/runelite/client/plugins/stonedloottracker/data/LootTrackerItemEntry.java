@@ -25,9 +25,10 @@
  */
 package net.runelite.client.plugins.stonedloottracker.data;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class LootTrackerItemEntry
 {
 	private final String name;
@@ -39,7 +40,7 @@ public class LootTrackerItemEntry
 	private long haTotal;
 	private final boolean stackable;
 
-	public LootTrackerItemEntry(String name, int id, int quantity, long price, long haPrice, boolean stackable)
+	public LootTrackerItemEntry(final String name, final int id, final int quantity, final long price, final long haPrice, final boolean stackable)
 	{
 		this.name = name;
 		this.id = id;

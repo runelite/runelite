@@ -28,8 +28,9 @@ import java.awt.Color;
 import static java.awt.Color.RED;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
@@ -41,23 +42,22 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 /**
  * @author gazivodag
  */
+@Singleton
 class RunedokuOverlay extends Overlay
 {
 
 	private final RunedokuPlugin plugin;
 	private final Client client;
 	private final RunedokuUtil util;
-	private final RunedokuConfig config;
 
 
 	@Inject
-	private RunedokuOverlay(final RunedokuPlugin plugin, final Client client, final RunedokuUtil util, final RunedokuConfig config)
+	private RunedokuOverlay(final RunedokuPlugin plugin, final Client client, final RunedokuUtil util)
 	{
 		super(plugin);
 		this.plugin = plugin;
 		this.client = client;
 		this.util = util;
-		this.config = config;
 
 		setPosition(OverlayPosition.DETACHED);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
@@ -70,17 +70,13 @@ class RunedokuOverlay extends Overlay
 
 		final Widget sudokuScreen = client.getWidget(288, 131);
 
-		if (sudokuScreen != null)
+		if (sudokuScreen != null && !sudokuScreen.isHidden())
 		{
-			if (!sudokuScreen.isHidden())
-			{
-				Sudoku sudoku = new Sudoku(util.createTable(client));
-				boolean solved = sudoku.solve();
+			Sudoku sudoku = new Sudoku(util.createTable(client));
+			boolean solved = sudoku.solve();
 
-				renderReferenceRunes(graphics, solved);
-				renderSolvedPuzzle(graphics, sudoku, solved);
-			}
-
+			renderReferenceRunes(graphics, solved);
+			renderSolvedPuzzle(graphics, sudoku, solved);
 		}
 
 		return null;
@@ -126,7 +122,7 @@ class RunedokuOverlay extends Overlay
 	 */
 	private void renderSolvedPuzzle(Graphics2D graphics, Sudoku sudoku, boolean solved)
 	{
-		ArrayList<Integer> simpleArr = util.makeSimple(sudoku.getBoard());
+		List<Integer> simpleArr = util.makeSimple(sudoku.getBoard());
 		//highlight each cell to tell you which piece to place
 		int iteration = 0;
 		for (int i = 10; i < 91; i++)
@@ -140,7 +136,7 @@ class RunedokuOverlay extends Overlay
 				}
 				else
 				{
-					if (!config.onlyHighlightSelectedPiece() ^ (config.onlyHighlightSelectedPiece() && util.getSelectedPiece(client) == simpleArr.get(iteration)))
+					if (!plugin.isOnlyHighlightSelectedPiece() ^ (plugin.isOnlyHighlightSelectedPiece() && util.getSelectedPiece(client) == simpleArr.get(iteration)))
 					{
 						OverlayUtil.renderPolygon(graphics, RunedokuUtil.rectangleToPolygon(squareToHighlight.getBounds()), util.sudokuPieceToColor(simpleArr.get(iteration)));
 					}

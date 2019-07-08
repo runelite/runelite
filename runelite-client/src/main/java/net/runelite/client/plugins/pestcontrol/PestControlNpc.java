@@ -26,13 +26,14 @@ package net.runelite.client.plugins.pestcontrol;
 
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.NpcID;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public class PestControlNpc
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> splatterIdSet = ImmutableSet.of(
 		NpcID.SPLATTER,
 		NpcID.SPLATTER_1690,
@@ -41,7 +42,7 @@ public class PestControlNpc
 		NpcID.SPLATTER_1693
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	public static final Set<Integer> shifterIdSet = ImmutableSet.of(
 		NpcID.SHIFTER,
 		NpcID.SHIFTER_1695,
@@ -55,7 +56,7 @@ public class PestControlNpc
 		NpcID.SHIFTER_1703
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> spinnerIdSet = ImmutableSet.of(
 		NpcID.SPINNER,
 		NpcID.SPINNER_1710,
@@ -64,7 +65,7 @@ public class PestControlNpc
 		NpcID.SPINNER_1713
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> torcherIdSet = ImmutableSet.of(
 		NpcID.TORCHER,
 		NpcID.TORCHER_1715,
@@ -78,7 +79,7 @@ public class PestControlNpc
 		NpcID.TORCHER_1723
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> defilerIdSet = ImmutableSet.of(
 		NpcID.DEFILER,
 		NpcID.DEFILER_1725,
@@ -92,7 +93,7 @@ public class PestControlNpc
 		NpcID.DEFILER_1733
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> brawlerIdSet = ImmutableSet.of(
 		NpcID.BRAWLER,
 		NpcID.BRAWLER_1735,
@@ -101,7 +102,7 @@ public class PestControlNpc
 		NpcID.BRAWLER_1738
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> ravagerIdSet = ImmutableSet.of(
 		NpcID.RAVAGER,
 		NpcID.RAVAGER_1705,
@@ -110,7 +111,7 @@ public class PestControlNpc
 		NpcID.RAVAGER_1708
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> activePortalIdSet = ImmutableSet.of(
 		NpcID.PORTAL_1747, // Novice Purple Active
 		NpcID.PORTAL_1748, // Novice Blue Active
@@ -122,7 +123,7 @@ public class PestControlNpc
 		NpcID.PORTAL_1742 // Intermediate Red Active
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> shieldedPortalIdSet = ImmutableSet.of(
 		NpcID.PORTAL_1751, // Novice Purple Shielded
 		NpcID.PORTAL_1752, // Novice Blue Shielded
@@ -134,7 +135,7 @@ public class PestControlNpc
 		NpcID.PORTAL_1746 // Intermediate Red Shielded
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> purplePortalIdSet = ImmutableSet.of(
 		NpcID.PORTAL_1747, // Novice Purple Active
 		NpcID.PORTAL_1751, // Novice Purple Shielded
@@ -142,7 +143,7 @@ public class PestControlNpc
 		NpcID.PORTAL_1743 // Intermediate Purple Shielded
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> bluePortalIdSet = ImmutableSet.of(
 		NpcID.PORTAL_1748, // Novice Blue Active
 		NpcID.PORTAL_1752, // Novice Blue Shielded
@@ -150,7 +151,7 @@ public class PestControlNpc
 		NpcID.PORTAL_1744 // Intermediate Blue Shielded
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> yellowPortalIdSet = ImmutableSet.of(
 		NpcID.PORTAL_1749, // Novice Yellow Active
 		NpcID.PORTAL_1753, // Novice Yellow Shielded
@@ -158,7 +159,7 @@ public class PestControlNpc
 		NpcID.PORTAL_1745 // Intermediate Yellow Shielded
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> redPortalIdSet = ImmutableSet.of(
 		NpcID.PORTAL_1750, // Novice Red Active
 		NpcID.PORTAL_1754, // Novice Red Shielded
@@ -166,7 +167,7 @@ public class PestControlNpc
 		NpcID.PORTAL_1746 // Intermediate Red Shielded
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> ingameVoidKnightIdSet = ImmutableSet.of(
 		NpcID.VOID_KNIGHT_2950,
 		NpcID.VOID_KNIGHT_2951,
@@ -174,85 +175,85 @@ public class PestControlNpc
 		NpcID.VOID_KNIGHT_2953
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final Integer ingameSquireId = NpcID.SQUIRE_2949;
 
-	public static boolean isSplatterId(int npcId)
+	static boolean isSplatterId(int npcId)
 	{
 		return splatterIdSet.contains(npcId);
 	}
 
-	public static boolean isShifterId(int npcId)
+	static boolean isShifterId(int npcId)
 	{
 		return shifterIdSet.contains(npcId);
 	}
 
-	public static boolean isSpinnerId(int npcId)
+	static boolean isSpinnerId(int npcId)
 	{
 		return brawlerIdSet.contains(npcId);
 	}
 
-	public static boolean isTorcherId(int npcId)
+	static boolean isTorcherId(int npcId)
 	{
 		return torcherIdSet.contains(npcId);
 	}
 
-	public static boolean isDefilerId(int npcId)
+	static boolean isDefilerId(int npcId)
 	{
 		return defilerIdSet.contains(npcId);
 	}
 
-	public static boolean isBrawlerId(int npcId)
+	static boolean isBrawlerId(int npcId)
 	{
 		return brawlerIdSet.contains(npcId);
 	}
 
-	public static boolean isRavagerId(int npcId)
+	static boolean isRavagerId(int npcId)
 	{
 		return ravagerIdSet.contains(npcId);
 	}
 
-	public static boolean isIngameVoidKnightId(int npcId)
+	static boolean isIngameVoidKnightId(int npcId)
 	{
 		return ingameVoidKnightIdSet.contains(npcId);
 	}
 
-	public static boolean isIngameSquireId(int npcId)
+	static boolean isIngameSquireId(int npcId)
 	{
 		return ingameSquireId == npcId;
 	}
 
-	public static boolean isPortalId(int npcId)
+	static boolean isPortalId(int npcId)
 	{
 		return (isActivePortalId(npcId) || isShieldedPortalId(npcId));
 	}
 
-	public static boolean isActivePortalId(int npcId)
+	static boolean isActivePortalId(int npcId)
 	{
 		return activePortalIdSet.contains(npcId);
 	}
 
-	public static boolean isShieldedPortalId(int npcId)
+	private static boolean isShieldedPortalId(int npcId)
 	{
 		return shieldedPortalIdSet.contains(npcId);
 	}
 
-	public static boolean isPurplePortalId(int npcId)
+	static boolean isPurplePortalId(int npcId)
 	{
 		return purplePortalIdSet.contains(npcId);
 	}
 
-	public static boolean isBluePortalId(int npcId)
+	static boolean isBluePortalId(int npcId)
 	{
 		return bluePortalIdSet.contains(npcId);
 	}
 
-	public static boolean isYellowPortalId(int npcId)
+	static boolean isYellowPortalId(int npcId)
 	{
 		return yellowPortalIdSet.contains(npcId);
 	}
 
-	public static boolean isRedPortalId(int npcId)
+	static boolean isRedPortalId(int npcId)
 	{
 		return redPortalIdSet.contains(npcId);
 	}

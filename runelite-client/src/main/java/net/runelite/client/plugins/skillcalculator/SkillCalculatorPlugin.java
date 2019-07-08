@@ -31,6 +31,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -60,6 +61,7 @@ import net.runelite.client.util.ImageUtil;
 	description = "Enable the Skill Calculator panel",
 	tags = {"panel", "skilling"}
 )
+@Singleton
 public class SkillCalculatorPlugin extends Plugin
 {
 	@Inject

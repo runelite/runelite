@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.28-SNAPSHOT</version>
+		<version>1.5.29-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -284,11 +284,12 @@
 			<artifactId>asm-all</artifactId>
 			<version>6.0_BETA</version>
 		</dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20180813</version>
-		</dependency>
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>3.0.21</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 	<build>

@@ -65,7 +65,7 @@ class LootTrackerBox extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<LootTrackerRecord> records = new ArrayList<>();
 
 	private long totalPrice;

@@ -4,12 +4,12 @@ import net.runelite.mapping.Import;
 
 public interface RSVarbitDefinition extends RSDualNode
 {
-	@Import("varp")
+	@Import("baseVar")
 	int getIndex();
 
-	@Import("lowBit")
+	@Import("startBit")
 	int getLeastSignificantBit();
 
-	@Import("highBit")
+	@Import("endBit")
 	int getMostSignificantBit();
 }

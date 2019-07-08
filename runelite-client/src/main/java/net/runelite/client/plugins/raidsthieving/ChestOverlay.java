@@ -28,8 +28,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Map;
-import java.util.TreeSet;
+import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -40,25 +41,25 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import static net.runelite.client.util.ColorUtil.setAlphaComponent;
 
 /**
  * Represents the overlay that shows timers on traps that are placed by the
  * player.
  */
+@Singleton
 public class ChestOverlay extends Overlay
 {
 
 	private final Client client;
 	private final RaidsThievingPlugin plugin;
-	private final RaidsThievingConfig config;
 
 	@Inject
-	ChestOverlay(Client client, RaidsThievingPlugin plugin, RaidsThievingConfig config)
+	ChestOverlay(final Client client, final RaidsThievingPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
-		this.config = config;
 		this.client = client;
 	}
 
@@ -93,20 +94,14 @@ public class ChestOverlay extends Overlay
 
 			if (chest != null)
 			{
-				if (!plugin.isBatsFound() && !chest.isEverOpened())
+				if (!plugin.isBatsFound() && !chest.isEverOpened() && shouldDrawChest(pos))
 				{
-					if (shouldDrawChest(pos))
-					{
-						Color drawColor = new Color(config.getPotentialBatColor().getRed(),
-							config.getPotentialBatColor().getGreen(),
-							config.getPotentialBatColor().getBlue(),
-							getChestOpacity(pos));
-						drawCircleOnTrap(graphics, chest, drawColor);
-					}
+					Color drawColor = new Color(setAlphaComponent(plugin.getGetPotentialBatColor().getRGB(), getChestOpacity(pos)));
+					drawCircleOnTrap(graphics, chest, drawColor);
 				}
 				if (chest.isPoison())
 				{
-					drawCircleOnTrap(graphics, chest, config.getPoisonTrapColor());
+					drawCircleOnTrap(graphics, chest, plugin.getGetPoisonTrapColor());
 				}
 			}
 		}
@@ -122,7 +117,7 @@ public class ChestOverlay extends Overlay
 		BatSolver solver = plugin.getSolver();
 		if (solver != null && chestId != -1)
 		{
-			TreeSet<Integer> matches = solver.matchSolutions();
+			Set<Integer> matches = solver.matchSolutions();
 			return matches.contains(chestId) || matches.size() == 0;
 		}
 		return true;

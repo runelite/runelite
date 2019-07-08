@@ -27,6 +27,7 @@ package net.runelite.client.plugins.runenergy;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
@@ -145,6 +146,7 @@ import org.apache.commons.lang3.StringUtils;
 	description = "Show various information related to run energy",
 	tags = {"overlay", "stamina"}
 )
+@Singleton
 public class RunEnergyPlugin extends Plugin
 {
 	// TODO It would be nice if we have the IDs for just the equipped variants of the Graceful set items.
@@ -333,7 +335,6 @@ public class RunEnergyPlugin extends Plugin
 		}
 
 		// Calculate the number of seconds left
-		final double secondsLeft = (100 - client.getEnergy()) / recoverRate;
-		return (int) secondsLeft;
+		return (int) ((100 - client.getEnergy()) / recoverRate);
 	}
 }

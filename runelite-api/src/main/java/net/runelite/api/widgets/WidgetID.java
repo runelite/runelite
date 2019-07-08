@@ -151,6 +151,7 @@ public class WidgetID
 	public static final int BEGINNER_CLUE_MAP_WIZARDS_TOWER = 356;
 	public static final int SEED_BOX_GROUP_ID = 128;
 	public static final int ITEMS_KEPT_ON_DEATH_GROUP_ID = 4;
+	public static final int TRADING_SCREEN = 335;
 
 	static class WorldMap
 	{
@@ -253,6 +254,7 @@ public class WidgetID
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 4;
 		static final int CONTENT_CONTAINER = 10;
+		static final int TAB_CONTAINER = 11;
 		static final int ITEM_CONTAINER = 13;
 		static final int SEARCH_BUTTON_BACKGROUND = 40;
 		static final int DEPOSIT_INVENTORY = 42;
@@ -665,6 +667,7 @@ public class WidgetID
 
 	static class TheatreOfBlood
 	{
+		static final int RAIDING_PARTY = 9;
 		static final int ORB_BOX = 10;
 		static final int BOSS_HEALTH_BAR = 35;
 	}

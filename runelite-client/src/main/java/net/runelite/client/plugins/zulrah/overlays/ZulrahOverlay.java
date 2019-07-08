@@ -31,11 +31,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -48,6 +48,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 @Slf4j
+@Singleton
 public class ZulrahOverlay extends Overlay
 {
 	private static final Color TILE_BORDER_COLOR = new Color(0, 0, 0, 100);
@@ -57,7 +58,7 @@ public class ZulrahOverlay extends Overlay
 	private final ZulrahPlugin plugin;
 
 	@Inject
-	ZulrahOverlay(@Nullable Client client, ZulrahPlugin plugin)
+	ZulrahOverlay(final @Nullable Client client, final ZulrahPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
@@ -121,10 +122,10 @@ public class ZulrahOverlay extends Overlay
 		}
 		if (nextPhase.isJad())
 		{
-			Image jadPrayerImg = ZulrahImageManager.getProtectionPrayerBufferedImage(nextPhase.getPrayer());
+			BufferedImage jadPrayerImg = ZulrahImageManager.getProtectionPrayerBufferedImage(nextPhase.getPrayer());
 			if (jadPrayerImg != null)
 			{
-				Point imageLoc = Perspective.getCanvasImageLocation(client, localTile, (BufferedImage) jadPrayerImg, 0);
+				Point imageLoc = Perspective.getCanvasImageLocation(client, localTile, jadPrayerImg, 0);
 				if (imageLoc != null)
 				{
 					graphics.drawImage(jadPrayerImg, imageLoc.getX(), imageLoc.getY(), null);
@@ -165,10 +166,10 @@ public class ZulrahOverlay extends Overlay
 
 		if (phase.isJad())
 		{
-			Image jadPrayerImg = ZulrahImageManager.getProtectionPrayerBufferedImage(phase.getPrayer());
+			BufferedImage jadPrayerImg = ZulrahImageManager.getProtectionPrayerBufferedImage(phase.getPrayer());
 			if (jadPrayerImg != null)
 			{
-				Point imageLoc = Perspective.getCanvasImageLocation(client, localTile, (BufferedImage) jadPrayerImg, 0);
+				Point imageLoc = Perspective.getCanvasImageLocation(client, localTile, jadPrayerImg, 0);
 				if (imageLoc != null)
 				{
 					graphics.drawImage(jadPrayerImg, imageLoc.getX(), imageLoc.getY(), null);
@@ -187,15 +188,24 @@ public class ZulrahOverlay extends Overlay
 		Point zulrahMinimapPoint = Perspective.localToMinimap(client, zulrahLocalTile);
 		Color color = phase.getColor();
 		graphics.setColor(color);
-		graphics.fillOval(zulrahMinimapPoint.getX() - 2, zulrahMinimapPoint.getY() - 2, 4, 4);
+		if (zulrahMinimapPoint != null)
+		{
+			graphics.fillOval(zulrahMinimapPoint.getX() - 2, zulrahMinimapPoint.getY() - 2, 4, 4);
+		}
 		graphics.setColor(TILE_BORDER_COLOR);
 		graphics.setStroke(new BasicStroke(1));
-		graphics.drawOval(zulrahMinimapPoint.getX() - 2, zulrahMinimapPoint.getY() - 2, 4, 4);
+		if (zulrahMinimapPoint != null)
+		{
+			graphics.drawOval(zulrahMinimapPoint.getX() - 2, zulrahMinimapPoint.getY() - 2, 4, 4);
+		}
 		if (next)
 		{
 			graphics.setColor(NEXT_TEXT_COLOR);
 			FontMetrics fm = graphics.getFontMetrics();
-			graphics.drawString("Next", zulrahMinimapPoint.getX() - fm.stringWidth("Next") / 2, zulrahMinimapPoint.getY() - 2);
+			if (zulrahMinimapPoint != null)
+			{
+				graphics.drawString("Next", zulrahMinimapPoint.getX() - fm.stringWidth("Next") / 2, zulrahMinimapPoint.getY() - 2);
+			}
 		}
 	}
 

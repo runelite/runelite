@@ -11,18 +11,18 @@ public class SequenceDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   @Export("SequenceDefinition_indexCache")
-   public static AbstractIndexCache SequenceDefinition_indexCache;
+   @Export("SequenceDefinition_archive")
+   public static AbstractArchive SequenceDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache __jh_f;
+   public static AbstractArchive field773;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractIndexCache __jh_q;
+   public static AbstractArchive field774;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -33,7 +33,7 @@ public class SequenceDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   public static EvictingDualNodeHashTable __jh_o;
+   public static EvictingDualNodeHashTable field775;
    @ObfuscatedName("u")
    @Export("frameIds")
    public int[] frameIds;
@@ -44,7 +44,7 @@ public class SequenceDefinition extends DualNode {
    @Export("frameLengths")
    public int[] frameLengths;
    @ObfuscatedName("e")
-   public int[] __e;
+   public int[] field776;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -736885973
@@ -52,14 +52,14 @@ public class SequenceDefinition extends DualNode {
    @Export("frameCount")
    public int frameCount;
    @ObfuscatedName("d")
-   int[] __d;
+   int[] field777;
    @ObfuscatedName("k")
-   public boolean __k;
+   public boolean field778;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 1309695045
    )
-   public int __n;
+   public int field779;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -1308226131
@@ -76,38 +76,33 @@ public class SequenceDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = -28345361
    )
-   public int __z;
+   public int field780;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1339014215
    )
-   public int __j;
+   public int field781;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 2012242069
    )
-   public int __s;
+   public int field782;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 1147391369
    )
-   public int __t;
-
-   static {
-      SequenceDefinition_cached = new EvictingDualNodeHashTable(64);
-      __jh_o = new EvictingDualNodeHashTable(100);
-   }
+   public int field783;
 
    SequenceDefinition() {
       this.frameCount = -1;
-      this.__k = false;
-      this.__n = 5;
+      this.field778 = false;
+      this.field779 = 5;
       this.shield = -1;
       this.weapon = -1;
-      this.__z = 99;
-      this.__j = -1;
-      this.__s = -1;
-      this.__t = 2;
+      this.field780 = 99;
+      this.field781 = -1;
+      this.field782 = -1;
+      this.field783 = 2;
    }
 
    @ObfuscatedName("f")
@@ -115,15 +110,15 @@ public class SequenceDefinition extends DualNode {
       signature = "(Lgr;S)V",
       garbageValue = "259"
    )
-   @Export("read")
-   void read(Buffer var1) {
-      while(true) {
+   @Export("decode")
+   void decode(Buffer var1) {
+      while (true) {
          int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
+         if (var2 == 0) {
             return;
          }
 
-         this.readNext(var1, var2);
+         this.decodeNext(var1, var2);
       }
    }
 
@@ -132,71 +127,74 @@ public class SequenceDefinition extends DualNode {
       signature = "(Lgr;II)V",
       garbageValue = "154075720"
    )
-   @Export("readNext")
-   void readNext(Buffer var1, int var2) {
-      int var3;
+   @Export("decodeNext")
+   void decodeNext(Buffer var1, int var2) {
+      int[] var3;
       int var4;
-      if(var2 == 1) {
-         var3 = var1.__ag_302();
-         this.frameLengths = new int[var3];
+      int var5;
+      if (var2 == 1) {
+         var4 = var1.readUnsignedShort();
+         this.frameLengths = new int[var4];
 
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.frameLengths[var4] = var1.__ag_302();
+         for (var5 = 0; var5 < var4; ++var5) {
+            this.frameLengths[var5] = var1.readUnsignedShort();
          }
 
-         this.frameIds = new int[var3];
+         this.frameIds = new int[var4];
 
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.frameIds[var4] = var1.__ag_302();
+         for (var5 = 0; var5 < var4; ++var5) {
+            this.frameIds[var5] = var1.readUnsignedShort();
          }
 
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.frameIds[var4] += var1.__ag_302() << 16;
+         for (var5 = 0; var5 < var4; ++var5) {
+            var3 = this.frameIds;
+            var3[var5] += var1.readUnsignedShort() << 16;
          }
-      } else if(var2 == 2) {
-         this.frameCount = var1.__ag_302();
-      } else if(var2 == 3) {
-         var3 = var1.readUnsignedByte();
-         this.__d = new int[var3 + 1];
+      } else if (var2 == 2) {
+         this.frameCount = var1.readUnsignedShort();
+      } else if (var2 == 3) {
+         var4 = var1.readUnsignedByte();
+         this.field777 = new int[var4 + 1];
 
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.__d[var4] = var1.readUnsignedByte();
-         }
-
-         this.__d[var3] = 9999999;
-      } else if(var2 == 4) {
-         this.__k = true;
-      } else if(var2 == 5) {
-         this.__n = var1.readUnsignedByte();
-      } else if(var2 == 6) {
-         this.shield = var1.__ag_302();
-      } else if(var2 == 7) {
-         this.weapon = var1.__ag_302();
-      } else if(var2 == 8) {
-         this.__z = var1.readUnsignedByte();
-      } else if(var2 == 9) {
-         this.__j = var1.readUnsignedByte();
-      } else if(var2 == 10) {
-         this.__s = var1.readUnsignedByte();
-      } else if(var2 == 11) {
-         this.__t = var1.readUnsignedByte();
-      } else if(var2 == 12) {
-         var3 = var1.readUnsignedByte();
-         this.frameIds2 = new int[var3];
-
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.frameIds2[var4] = var1.__ag_302();
+         for (var5 = 0; var5 < var4; ++var5) {
+            this.field777[var5] = var1.readUnsignedByte();
          }
 
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.frameIds2[var4] += var1.__ag_302() << 16;
-         }
-      } else if(var2 == 13) {
-         var3 = var1.readUnsignedByte();
-         this.__e = new int[var3];
+         this.field777[var4] = 9999999;
+      } else if (var2 == 4) {
+         this.field778 = true;
+      } else if (var2 == 5) {
+         this.field779 = var1.readUnsignedByte();
+      } else if (var2 == 6) {
+         this.shield = var1.readUnsignedShort();
+      } else if (var2 == 7) {
+         this.weapon = var1.readUnsignedShort();
+      } else if (var2 == 8) {
+         this.field780 = var1.readUnsignedByte();
+      } else if (var2 == 9) {
+         this.field781 = var1.readUnsignedByte();
+      } else if (var2 == 10) {
+         this.field782 = var1.readUnsignedByte();
+      } else if (var2 == 11) {
+         this.field783 = var1.readUnsignedByte();
+      } else if (var2 == 12) {
+         var4 = var1.readUnsignedByte();
+         this.frameIds2 = new int[var4];
 
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.__e[var4] = var1.readMedium();
+         for (var5 = 0; var5 < var4; ++var5) {
+            this.frameIds2[var5] = var1.readUnsignedShort();
+         }
+
+         for (var5 = 0; var5 < var4; ++var5) {
+            var3 = this.frameIds2;
+            var3[var5] += var1.readUnsignedShort() << 16;
+         }
+      } else if (var2 == 13) {
+         var4 = var1.readUnsignedByte();
+         this.field776 = new int[var4];
+
+         for (var5 = 0; var5 < var4; ++var5) {
+            this.field776[var5] = var1.readMedium();
          }
       }
 
@@ -207,21 +205,21 @@ public class SequenceDefinition extends DualNode {
       signature = "(B)V",
       garbageValue = "1"
    )
-   @Export("init")
-   void init() {
-      if(this.__j == -1) {
-         if(this.__d != null) {
-            this.__j = 2;
+   @Export("postDecode")
+   void postDecode() {
+      if (this.field781 == -1) {
+         if (this.field777 != null) {
+            this.field781 = 2;
          } else {
-            this.__j = 0;
+            this.field781 = 0;
          }
       }
 
-      if(this.__s == -1) {
-         if(this.__d != null) {
-            this.__s = 2;
+      if (this.field782 == -1) {
+         if (this.field777 != null) {
+            this.field782 = 2;
          } else {
-            this.__s = 0;
+            this.field782 = 0;
          }
       }
 
@@ -233,15 +231,15 @@ public class SequenceDefinition extends DualNode {
       garbageValue = "128527714"
    )
    @Export("animateSequence")
-   public Model animateSequence(Model var1, int var2) {
-      var2 = this.frameIds[var2];
-      Frames var3 = ItemContainer.getFrames(var2 >> 16);
-      var2 &= 65535;
-      if(var3 == null) {
-         return var1.toSharedSequenceModel(true);
+   public Model animateSequence(Model model, int frame) {
+      frame = this.frameIds[frame];
+      Frames var3 = ItemContainer.getFrames(frame >> 16);
+      frame &= 65535;
+      if (var3 == null) {
+         return model.toSharedSequenceModel(true);
       } else {
-         Model var4 = var1.toSharedSequenceModel(!var3.hasAlphaTransform(var2));
-         var4.animate(var3, var2);
+         Model var4 = model.toSharedSequenceModel(!var3.hasAlphaTransform(frame));
+         var4.animate(var3, frame);
          return var4;
       }
    }
@@ -252,29 +250,29 @@ public class SequenceDefinition extends DualNode {
       garbageValue = "-65"
    )
    @Export("animateObject")
-   Model animateObject(Model var1, int var2, int var3) {
-      var2 = this.frameIds[var2];
-      Frames var4 = ItemContainer.getFrames(var2 >> 16);
-      var2 &= 65535;
-      if(var4 == null) {
-         return var1.toSharedSequenceModel(true);
+   Model animateObject(Model model, int frame, int orientation) {
+      frame = this.frameIds[frame];
+      Frames var4 = ItemContainer.getFrames(frame >> 16);
+      frame &= 65535;
+      if (var4 == null) {
+         return model.toSharedSequenceModel(true);
       } else {
-         Model var5 = var1.toSharedSequenceModel(!var4.hasAlphaTransform(var2));
-         var3 &= 3;
-         if(var3 == 1) {
+         Model var5 = model.toSharedSequenceModel(!var4.hasAlphaTransform(frame));
+         orientation &= 3;
+         if (orientation == 1) {
             var5.rotateY270Ccw();
-         } else if(var3 == 2) {
+         } else if (orientation == 2) {
             var5.rotateY180();
-         } else if(var3 == 3) {
+         } else if (orientation == 3) {
             var5.rotateY90Ccw();
          }
 
-         var5.animate(var4, var2);
-         if(var3 == 1) {
+         var5.animate(var4, frame);
+         if (orientation == 1) {
             var5.rotateY90Ccw();
-         } else if(var3 == 2) {
+         } else if (orientation == 2) {
             var5.rotateY180();
-         } else if(var3 == 3) {
+         } else if (orientation == 3) {
             var5.rotateY270Ccw();
          }
 
@@ -288,15 +286,15 @@ public class SequenceDefinition extends DualNode {
       garbageValue = "-1692496767"
    )
    @Export("animateSpotAnimation")
-   Model animateSpotAnimation(Model var1, int var2) {
-      var2 = this.frameIds[var2];
-      Frames var3 = ItemContainer.getFrames(var2 >> 16);
-      var2 &= 65535;
-      if(var3 == null) {
-         return var1.toSharedSpotAnimationModel(true);
+   Model animateSpotAnimation(Model model, int frame) {
+      frame = this.frameIds[frame];
+      Frames var3 = ItemContainer.getFrames(frame >> 16);
+      frame &= 65535;
+      if (var3 == null) {
+         return model.toSharedSpotAnimationModel(true);
       } else {
-         Model var4 = var1.toSharedSpotAnimationModel(!var3.hasAlphaTransform(var2));
-         var4.animate(var3, var2);
+         Model var4 = model.toSharedSpotAnimationModel(!var3.hasAlphaTransform(frame));
+         var4.animate(var3, frame);
          return var4;
       }
    }
@@ -307,24 +305,24 @@ public class SequenceDefinition extends DualNode {
       garbageValue = "-386360993"
    )
    @Export("animateSequence2")
-   public Model animateSequence2(Model var1, int var2, SequenceDefinition var3, int var4) {
-      var2 = this.frameIds[var2];
-      Frames var5 = ItemContainer.getFrames(var2 >> 16);
-      var2 &= 65535;
-      if(var5 == null) {
-         return var3.animateSequence(var1, var4);
+   public Model animateSequence2(Model model, int frame, SequenceDefinition sequence, int sequenceFrame) {
+      frame = this.frameIds[frame];
+      Frames var5 = ItemContainer.getFrames(frame >> 16);
+      frame &= 65535;
+      if (var5 == null) {
+         return sequence.animateSequence(model, sequenceFrame);
       } else {
-         var4 = var3.frameIds[var4];
-         Frames var6 = ItemContainer.getFrames(var4 >> 16);
-         var4 &= 65535;
+         sequenceFrame = sequence.frameIds[sequenceFrame];
+         Frames var6 = ItemContainer.getFrames(sequenceFrame >> 16);
+         sequenceFrame &= 65535;
          Model var7;
-         if(var6 == null) {
-            var7 = var1.toSharedSequenceModel(!var5.hasAlphaTransform(var2));
-            var7.animate(var5, var2);
+         if (var6 == null) {
+            var7 = model.toSharedSequenceModel(!var5.hasAlphaTransform(frame));
+            var7.animate(var5, frame);
             return var7;
          } else {
-            var7 = var1.toSharedSequenceModel(!var5.hasAlphaTransform(var2) & !var6.hasAlphaTransform(var4));
-            var7.animate2(var5, var2, var6, var4, this.__d);
+            var7 = model.toSharedSequenceModel(!var5.hasAlphaTransform(frame) & !var6.hasAlphaTransform(sequenceFrame));
+            var7.animate2(var5, frame, var6, sequenceFrame, this.field777);
             return var7;
          }
       }
@@ -336,32 +334,37 @@ public class SequenceDefinition extends DualNode {
       garbageValue = "-15433768"
    )
    @Export("animateWidget")
-   public Model animateWidget(Model var1, int var2) {
-      int var3 = this.frameIds[var2];
+   public Model animateWidget(Model model, int frame) {
+      int var3 = this.frameIds[frame];
       Frames var4 = ItemContainer.getFrames(var3 >> 16);
       var3 &= 65535;
-      if(var4 == null) {
-         return var1.toSharedSequenceModel(true);
+      if (var4 == null) {
+         return model.toSharedSequenceModel(true);
       } else {
          Frames var5 = null;
          int var6 = 0;
-         if(this.frameIds2 != null && var2 < this.frameIds2.length) {
-            var6 = this.frameIds2[var2];
+         if (this.frameIds2 != null && frame < this.frameIds2.length) {
+            var6 = this.frameIds2[frame];
             var5 = ItemContainer.getFrames(var6 >> 16);
             var6 &= 65535;
          }
 
          Model var7;
-         if(var5 != null && var6 != 65535) {
-            var7 = var1.toSharedSequenceModel(!var4.hasAlphaTransform(var3) & !var5.hasAlphaTransform(var6));
+         if (var5 != null && var6 != 65535) {
+            var7 = model.toSharedSequenceModel(!var4.hasAlphaTransform(var3) & !var5.hasAlphaTransform(var6));
             var7.animate(var4, var3);
             var7.animate(var5, var6);
             return var7;
          } else {
-            var7 = var1.toSharedSequenceModel(!var4.hasAlphaTransform(var3));
+            var7 = model.toSharedSequenceModel(!var4.hasAlphaTransform(var3));
             var7.animate(var4, var3);
             return var7;
          }
       }
+   }
+
+   static {
+      SequenceDefinition_cached = new EvictingDualNodeHashTable(64);
+      field775 = new EvictingDualNodeHashTable(100);
    }
 }

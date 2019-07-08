@@ -210,17 +210,17 @@ public interface PlayerIndicatorsConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		position = 16,
-		keyName = "highlightOverheadTargets",
-		name = "Highlights attackable players over their head",
-		description = "Highlights players over their head that the current player can attack based on combat/wilderness levels",
-		group = "Target Indicator"
-	)
-	default boolean highlightOverheadTargets()
-	{
-		return false;
-	}
+//	@ConfigItem(
+//		position = 16,
+//		keyName = "highlightOverheadTargets",
+//		name = "Highlights attackable players over their head",
+//		description = "Highlights players over their head that the current player can attack based on combat/wilderness levels",
+//		group = "Target Indicator"
+//	)
+//	default boolean highlightOverheadTargets()
+//	{
+//		return false;
+//	}
 
 	@ConfigItem(
 		position = 17,

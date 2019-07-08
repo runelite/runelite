@@ -8,7 +8,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Ignored")
 public class Ignored extends User {
    @ObfuscatedName("at")
-   protected static String __ks_at;
+   protected static String field402;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 344024525
@@ -21,9 +21,9 @@ public class Ignored extends User {
       signature = "(Lks;I)I",
       garbageValue = "-842469150"
    )
-   @Export("compareTo00")
-   int compareTo00(Ignored var1) {
-      return this.id - var1.id;
+   @Export("compareToIgnored")
+   int compareToIgnored(Ignored other) {
+      return this.id - other.id;
    }
 
    @ObfuscatedName("aj")
@@ -31,13 +31,13 @@ public class Ignored extends User {
       signature = "(Ljs;I)I",
       garbageValue = "1627362569"
    )
-   public int compareTo0(User var1) {
-      return this.compareTo00((Ignored)var1);
+   @Export("compareToUser")
+   public int compareToUser(User var1) {
+      return this.compareToIgnored((Ignored)var1);
    }
 
-   @ObfuscatedName("compareTo")
    public int compareTo(Object var1) {
-      return this.compareTo00((Ignored)var1);
+      return this.compareToIgnored((Ignored)var1);
    }
 
    @ObfuscatedName("fv")
@@ -47,7 +47,7 @@ public class Ignored extends User {
    )
    @Export("queueSoundEffect")
    static void queueSoundEffect(int var0, int var1, int var2) {
-      if(Client.soundEffectVolume != 0 && var1 != 0 && Client.soundEffectCount < 50) {
+      if (Client.soundEffectVolume != 0 && var1 != 0 && Client.soundEffectCount < 50) {
          Client.soundEffectIds[Client.soundEffectCount] = var0;
          Client.queuedSoundEffectLoops[Client.soundEffectCount] = var1;
          Client.queuedSoundEffectDelays[Client.soundEffectCount] = var2;

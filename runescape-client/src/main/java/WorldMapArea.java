@@ -37,7 +37,7 @@ public class WorldMapArea {
    @ObfuscatedGetter(
       intValue = 986239133
    )
-   int __w;
+   int field1015;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 196514055
@@ -49,7 +49,7 @@ public class WorldMapArea {
       signature = "Lhu;"
    )
    @Export("origin0")
-   TileLocation origin0;
+   Coord origin0;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 1238532539
@@ -83,7 +83,7 @@ public class WorldMapArea {
 
    public WorldMapArea() {
       this.id0 = -1;
-      this.__w = -1;
+      this.field1015 = -1;
       this.zoom0 = -1;
       this.origin0 = null;
       this.minX0 = Integer.MAX_VALUE;
@@ -103,15 +103,15 @@ public class WorldMapArea {
       this.id0 = var2;
       this.archiveName0 = var1.readStringCp1252NullTerminated();
       this.name0 = var1.readStringCp1252NullTerminated();
-      this.origin0 = new TileLocation(var1.readInt());
-      this.__w = var1.readInt();
+      this.origin0 = new Coord(var1.readInt());
+      this.field1015 = var1.readInt();
       var1.readUnsignedByte();
       this.isMain0 = var1.readUnsignedByte() == 1;
       this.zoom0 = var1.readUnsignedByte();
       int var3 = var1.readUnsignedByte();
       this.sections = new LinkedList();
 
-      for(int var4 = 0; var4 < var3; ++var4) {
+      for (int var4 = 0; var4 < var3; ++var4) {
          this.sections.add(this.readWorldMapSection(var1));
       }
 
@@ -126,21 +126,21 @@ public class WorldMapArea {
    @Export("readWorldMapSection")
    WorldMapSection readWorldMapSection(Buffer var1) {
       int var2 = var1.readUnsignedByte();
-      WorldMapSectionType[] var3 = new WorldMapSectionType[]{WorldMapSectionType.__h_f, WorldMapSectionType.__h_w, WorldMapSectionType.__h_m, WorldMapSectionType.__h_q};
+      WorldMapSectionType[] var3 = new WorldMapSectionType[]{WorldMapSectionType.WORLDMAPSECTIONTYPE1, WorldMapSectionType.WORLDMAPSECTIONTYPE3, WorldMapSectionType.WORLDMAPSECTIONTYPE0, WorldMapSectionType.WORLDMAPSECTIONTYPE2};
       WorldMapSectionType var4 = (WorldMapSectionType)ScriptFrame.findEnumerated(var3, var2);
       Object var5 = null;
       switch(var4.type) {
       case 0:
-         var5 = new WorldMapSection2();
+         var5 = new WorldMapSection0();
          break;
       case 1:
-         var5 = new WorldMapSection3();
-         break;
-      case 2:
          var5 = new WorldMapSection1();
          break;
+      case 2:
+         var5 = new WorldMapSection2();
+         break;
       case 3:
-         var5 = new WorldMapSection0();
+         var5 = new WorldMapSection3();
          break;
       default:
          throw new IllegalStateException("");
@@ -156,17 +156,17 @@ public class WorldMapArea {
       garbageValue = "1843012457"
    )
    @Export("containsCoord")
-   public boolean containsCoord(int var1, int var2, int var3) {
+   public boolean containsCoord(int plane, int x, int y) {
       Iterator var4 = this.sections.iterator();
 
       WorldMapSection var5;
       do {
-         if(!var4.hasNext()) {
+         if (!var4.hasNext()) {
             return false;
          }
 
          var5 = (WorldMapSection)var4.next();
-      } while(!var5.containsCoord(var1, var2, var3));
+      } while(!var5.containsCoord(plane, x, y));
 
       return true;
    }
@@ -177,21 +177,21 @@ public class WorldMapArea {
       garbageValue = "-693447297"
    )
    @Export("containsPosition")
-   public boolean containsPosition(int var1, int var2) {
-      int var3 = var1 / 64;
-      int var4 = var2 / 64;
-      if(var3 >= this.minX0 && var3 <= this.maxX0) {
-         if(var4 >= this.minY0 && var4 <= this.maxY0) {
+   public boolean containsPosition(int x, int y) {
+      int var3 = x / 64;
+      int var4 = y / 64;
+      if (var3 >= this.minX0 && var3 <= this.maxX0) {
+         if (var4 >= this.minY0 && var4 <= this.maxY0) {
             Iterator var5 = this.sections.iterator();
 
             WorldMapSection var6;
             do {
-               if(!var5.hasNext()) {
+               if (!var5.hasNext()) {
                   return false;
                }
 
                var6 = (WorldMapSection)var5.next();
-            } while(!var6.containsPosition(var1, var2));
+            } while(!var6.containsPosition(x, y));
 
             return true;
          } else {
@@ -208,19 +208,19 @@ public class WorldMapArea {
       garbageValue = "745399916"
    )
    @Export("position")
-   public int[] position(int var1, int var2, int var3) {
+   public int[] position(int plane, int x, int y) {
       Iterator var4 = this.sections.iterator();
 
       WorldMapSection var5;
       do {
-         if(!var4.hasNext()) {
+         if (!var4.hasNext()) {
             return null;
          }
 
          var5 = (WorldMapSection)var4.next();
-      } while(!var5.containsCoord(var1, var2, var3));
+      } while(!var5.containsCoord(plane, x, y));
 
-      return var5.position(var1, var2, var3);
+      return var5.position(plane, x, y);
    }
 
    @ObfuscatedName("u")
@@ -229,19 +229,19 @@ public class WorldMapArea {
       garbageValue = "1509069978"
    )
    @Export("coord")
-   public TileLocation coord(int var1, int var2) {
+   public Coord coord(int x, int y) {
       Iterator var3 = this.sections.iterator();
 
       WorldMapSection var4;
       do {
-         if(!var3.hasNext()) {
+         if (!var3.hasNext()) {
             return null;
          }
 
          var4 = (WorldMapSection)var3.next();
-      } while(!var4.containsPosition(var1, var2));
+      } while(!var4.containsPosition(x, y));
 
-      return var4.coord(var1, var2);
+      return var4.coord(x, y);
    }
 
    @ObfuscatedName("g")
@@ -253,7 +253,7 @@ public class WorldMapArea {
    void setBounds() {
       Iterator var1 = this.sections.iterator();
 
-      while(var1.hasNext()) {
+      while (var1.hasNext()) {
          WorldMapSection var2 = (WorldMapSection)var1.next();
          var2.expandBounds(this);
       }
@@ -305,8 +305,8 @@ public class WorldMapArea {
       signature = "(I)I",
       garbageValue = "-1657905623"
    )
-   int __a_39() {
-      return this.__w;
+   int method386() {
+      return this.field1015;
    }
 
    @ObfuscatedName("z")
@@ -395,8 +395,8 @@ public class WorldMapArea {
       garbageValue = "-1411761003"
    )
    @Export("origin")
-   public TileLocation origin() {
-      return new TileLocation(this.origin0);
+   public Coord origin() {
+      return new Coord(this.origin0);
    }
 
    @ObfuscatedName("m")
@@ -405,12 +405,12 @@ public class WorldMapArea {
       garbageValue = "-1490951132"
    )
    static int method427(int var0, int var1) {
-      if(var0 == -2) {
+      if (var0 == -2) {
          return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 0) {
+      } else if (var0 == -1) {
+         if (var1 < 0) {
             var1 = 0;
-         } else if(var1 > 127) {
+         } else if (var1 > 127) {
             var1 = 127;
          }
 
@@ -418,9 +418,9 @@ public class WorldMapArea {
          return var1;
       } else {
          var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
+         if (var1 < 2) {
             var1 = 2;
-         } else if(var1 > 126) {
+         } else if (var1 > 126) {
             var1 = 126;
          }
 
@@ -434,8 +434,8 @@ public class WorldMapArea {
       garbageValue = "-26"
    )
    static void method428() {
-      if(Client.oculusOrbState == 1) {
-         Client.__client_ij = true;
+      if (Client.oculusOrbState == 1) {
+         Client.field199 = true;
       }
 
    }

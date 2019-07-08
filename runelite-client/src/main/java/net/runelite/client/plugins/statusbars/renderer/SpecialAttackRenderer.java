@@ -27,24 +27,25 @@
 
 package net.runelite.client.plugins.statusbars.renderer;
 
+import java.awt.Color;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.plugins.statusbars.StatusBarsConfig;
 import net.runelite.client.plugins.statusbars.StatusBarsOverlay;
+import net.runelite.client.plugins.statusbars.StatusBarsPlugin;
 
-import javax.inject.Inject;
-import java.awt.Color;
-
+@Singleton
 public class SpecialAttackRenderer extends BarRenderer
 {
 	private final SpriteManager spriteManager;
 
 	@Inject
-	public SpecialAttackRenderer(StatusBarsConfig config, SpriteManager spriteManager)
+	public SpecialAttackRenderer(final StatusBarsPlugin plugin, final SpriteManager spriteManager)
 	{
-		super(config);
+		super(plugin);
 		maximumValue = 100;
 		this.spriteManager = spriteManager;
 		standardColor = restoreColor = new Color(3, 153, 0, 195);

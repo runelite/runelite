@@ -37,8 +37,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Point;
@@ -56,6 +58,7 @@ import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
 
+@Singleton
 public class XpGlobesOverlay extends Overlay
 {
 	private static final int MINIMUM_STEP = 10;
@@ -66,24 +69,22 @@ public class XpGlobesOverlay extends Overlay
 
 	private final Client client;
 	private final XpGlobesPlugin plugin;
-	private final XpGlobesConfig config;
 	private final XpTrackerService xpTrackerService;
 	private final PanelComponent xpTooltip = new PanelComponent();
 	private final SkillIconManager iconManager;
 
 	@Inject
 	private XpGlobesOverlay(
-		Client client,
-		XpGlobesPlugin plugin,
-		XpGlobesConfig config,
-		XpTrackerService xpTrackerService,
-		SkillIconManager iconManager)
+		final Client client,
+		final XpGlobesPlugin plugin,
+		final XpTrackerService xpTrackerService,
+		final SkillIconManager iconManager)
 	{
 		super(plugin);
 		this.iconManager = iconManager;
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
+
 		this.xpTrackerService = xpTrackerService;
 		setPosition(OverlayPosition.TOP_CENTER);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "XP Globes overlay"));
@@ -99,7 +100,7 @@ public class XpGlobesOverlay extends Overlay
 		}
 
 		final List<XpGlobe> sortedXpGlobes = plugin.getXpGlobes();
-		sortedXpGlobes.sort((a, b) -> a.getSkill().compareTo(b.getSkill()));
+		sortedXpGlobes.sort(Comparator.comparing(XpGlobe::getSkill));
 
 		int curDrawX = 0;
 		for (final XpGlobe xpGlobe : sortedXpGlobes)
@@ -107,12 +108,12 @@ public class XpGlobesOverlay extends Overlay
 			int startXp = xpTrackerService.getStartGoalXp(xpGlobe.getSkill());
 			int goalXp = xpTrackerService.getEndGoalXp(xpGlobe.getSkill());
 			renderProgressCircle(graphics, xpGlobe, startXp, goalXp, curDrawX, 0, getBounds());
-			curDrawX += MINIMUM_STEP + config.xpOrbSize();
+			curDrawX += MINIMUM_STEP + plugin.getXpOrbSize();
 		}
 
 		// Get width of markers
-		final int markersLength = (queueSize * (config.xpOrbSize())) + ((MINIMUM_STEP) * (queueSize - 1));
-		return new Dimension(markersLength, config.xpOrbSize());
+		final int markersLength = (queueSize * (plugin.getXpOrbSize())) + ((MINIMUM_STEP) * (queueSize - 1));
+		return new Dimension(markersLength, plugin.getXpOrbSize());
 	}
 
 	private double getSkillProgress(int startXp, int currentXp, int goalXp)
@@ -150,7 +151,7 @@ public class XpGlobesOverlay extends Overlay
 
 			drawProgressLabel(graphics, skillToDraw, startXp, goalXp, x, y);
 
-			if (config.enableTooltips())
+			if (plugin.isEnableTooltips())
 			{
 				drawTooltip(graphics, skillToDraw, goalXp, backgroundCircle);
 			}
@@ -161,18 +162,18 @@ public class XpGlobesOverlay extends Overlay
 		drawProgressArc(
 			graphics,
 			x, y,
-			config.xpOrbSize(), config.xpOrbSize(),
+			plugin.getXpOrbSize(), plugin.getXpOrbSize(),
 			PROGRESS_RADIUS_REMAINDER, radiusToGoalXp,
 			5,
-			config.progressOrbOutLineColor()
+			plugin.getProgressOrbOutLineColor()
 		);
 		drawProgressArc(
 			graphics,
 			x, y,
-			config.xpOrbSize(), config.xpOrbSize(),
+			plugin.getXpOrbSize(), plugin.getXpOrbSize(),
 			PROGRESS_RADIUS_START, radiusCurrentXp,
-			config.progressArcStrokeWidth(),
-			config.enableCustomArcColor() ? config.progressArcColor() : SkillColor.find(skillToDraw.getSkill()).getColor());
+			plugin.getProgressArcStrokeWidth(),
+			plugin.isEnableCustomArcColor() ? plugin.getProgressArcColor() : SkillColor.find(skillToDraw.getSkill()).getColor());
 	}
 
 	private void drawProgressLabel(Graphics2D graphics, XpGlobe globe, int startXp, int goalXp, int x, int y)
@@ -186,8 +187,8 @@ public class XpGlobesOverlay extends Overlay
 		String progress = (int) (getSkillProgress(startXp, globe.getCurrentXp(), goalXp)) + "%";
 
 		final FontMetrics metrics = graphics.getFontMetrics();
-		int drawX = x + (config.xpOrbSize() / 2) - (metrics.stringWidth(progress) / 2);
-		int drawY = y + (config.xpOrbSize() / 2) + (metrics.getHeight() / 2) - metrics.getMaxDescent();
+		int drawX = x + (plugin.getXpOrbSize() / 2) - (metrics.stringWidth(progress) / 2);
+		int drawY = y + (plugin.getXpOrbSize() / 2) + (metrics.getHeight() / 2) - metrics.getMaxDescent();
 
 		OverlayUtil.renderTextLocation(graphics, new Point(drawX, drawY), progress, Color.WHITE);
 	}
@@ -207,8 +208,8 @@ public class XpGlobesOverlay extends Overlay
 
 	private Ellipse2D drawEllipse(Graphics2D graphics, int x, int y)
 	{
-		graphics.setColor(config.progressOrbBackgroundColor());
-		Ellipse2D ellipse = new Ellipse2D.Double(x, y, config.xpOrbSize(), config.xpOrbSize());
+		graphics.setColor(plugin.getProgressOrbBackgroundColor());
+		Ellipse2D ellipse = new Ellipse2D.Double(x, y, plugin.getXpOrbSize(), plugin.getXpOrbSize());
 		graphics.fill(ellipse);
 		graphics.draw(ellipse);
 		return ellipse;
@@ -225,8 +226,8 @@ public class XpGlobesOverlay extends Overlay
 
 		graphics.drawImage(
 			skillImage,
-			x + (config.xpOrbSize() / 2) - (skillImage.getWidth() / 2),
-			y + (config.xpOrbSize() / 2) - (skillImage.getHeight() / 2),
+			x + (plugin.getXpOrbSize() / 2) - (skillImage.getWidth() / 2),
+			y + (plugin.getXpOrbSize() / 2) - (skillImage.getHeight() / 2),
 			null
 		);
 	}
@@ -234,8 +235,8 @@ public class XpGlobesOverlay extends Overlay
 	private void drawTooltip(Graphics2D graphics, XpGlobe mouseOverSkill, int goalXp, Ellipse2D drawnGlobe)
 	{
 		//draw tooltip under the globe of the mouse location
-		int x = (int) drawnGlobe.getX() - (TOOLTIP_RECT_SIZE_X / 2) + (config.xpOrbSize() / 2);
-		int y = (int) drawnGlobe.getY() + config.xpOrbSize() + 10;
+		int x = (int) drawnGlobe.getX() - (TOOLTIP_RECT_SIZE_X / 2) + (plugin.getXpOrbSize() / 2);
+		int y = (int) drawnGlobe.getY() + plugin.getXpOrbSize() + 10;
 
 		// reset the timer on XpGlobe to prevent it from disappearing while hovered over it
 		mouseOverSkill.setTime(Instant.now());
@@ -279,7 +280,7 @@ public class XpGlobesOverlay extends Overlay
 				tableComponent.addRow(ColorUtil.prependColorTag("XP per hour:", Color.ORANGE), xpHrString);
 			}
 			
-			if (config.enableTimeToLevel())
+			if (plugin.isEnableTimeToLevel())
 			{
 				String timeLeft = xpTrackerService.getTimeTillGoal(mouseOverSkill.getSkill());
 				tableComponent.addRow(ColorUtil.prependColorTag("TimeLeft:", Color.ORANGE), timeLeft);

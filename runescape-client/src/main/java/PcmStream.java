@@ -16,7 +16,7 @@ public abstract class PcmStream extends Node {
    @Export("after")
    PcmStream after;
    @ObfuscatedName("s")
-   int __s;
+   int field689;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Ldd;"
@@ -43,26 +43,28 @@ public abstract class PcmStream extends Node {
    protected abstract PcmStream nextSubStream();
 
    @ObfuscatedName("l")
-   protected abstract int __l_171();
+   protected abstract int vmethod262();
 
    @ObfuscatedName("e")
-   protected abstract void __e_172(int[] var1, int var2, int var3);
+   @Export("fill")
+   protected abstract void fill(int[] buffer, int start, int end);
 
    @ObfuscatedName("d")
-   protected abstract void __d_173(int var1);
+   @Export("skip")
+   protected abstract void skip(int length);
 
    @ObfuscatedName("az")
-   int __az_179() {
+   int vmethod282() {
       return 255;
    }
 
    @ObfuscatedName("ef")
    @Export("update")
-   final void update(int[] var1, int var2, int var3) {
-      if(this.active) {
-         this.__e_172(var1, var2, var3);
+   final void update(int[] buffer, int start, int end) {
+      if (this.active) {
+         this.fill(buffer, start, end);
       } else {
-         this.__d_173(var3);
+         this.skip(end);
       }
 
    }

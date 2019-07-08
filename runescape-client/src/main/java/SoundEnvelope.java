@@ -55,11 +55,11 @@ public class SoundEnvelope {
       signature = "(Lgr;)V"
    )
    @Export("decode")
-   final void decode(Buffer var1) {
-      this.form = var1.readUnsignedByte();
-      this.start = var1.readInt();
-      this.end = var1.readInt();
-      this.decodeSegments(var1);
+   final void decode(Buffer buffer) {
+      this.form = buffer.readUnsignedByte();
+      this.start = buffer.readInt();
+      this.end = buffer.readInt();
+      this.decodeSegments(buffer);
    }
 
    @ObfuscatedName("f")
@@ -67,14 +67,14 @@ public class SoundEnvelope {
       signature = "(Lgr;)V"
    )
    @Export("decodeSegments")
-   final void decodeSegments(Buffer var1) {
-      this.segments = var1.readUnsignedByte();
+   final void decodeSegments(Buffer buffer) {
+      this.segments = buffer.readUnsignedByte();
       this.durations = new int[this.segments];
       this.phases = new int[this.segments];
 
-      for(int var2 = 0; var2 < this.segments; ++var2) {
-         this.durations[var2] = var1.__ag_302();
-         this.phases[var2] = var1.__ag_302();
+      for (int var2 = 0; var2 < this.segments; ++var2) {
+         this.durations[var2] = buffer.readUnsignedShort();
+         this.phases[var2] = buffer.readUnsignedShort();
       }
 
    }
@@ -92,14 +92,14 @@ public class SoundEnvelope {
    @ObfuscatedName("w")
    @Export("doStep")
    final int doStep(int var1) {
-      if(this.max >= this.ticks) {
+      if (this.max >= this.ticks) {
          this.amplitude = this.phases[this.phaseIndex++] << 15;
-         if(this.phaseIndex >= this.segments) {
+         if (this.phaseIndex >= this.segments) {
             this.phaseIndex = this.segments - 1;
          }
 
          this.ticks = (int)((double)this.durations[this.phaseIndex] / 65536.0D * (double)var1);
-         if(this.ticks > this.max) {
+         if (this.ticks > this.max) {
             this.step = ((this.phases[this.phaseIndex] << 15) - this.amplitude) / (this.ticks - this.max);
          }
       }

@@ -26,7 +26,9 @@ package net.runelite.client.plugins.slayer;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Singleton;
 
+@Singleton
 class KnapsackSolver
 {
 

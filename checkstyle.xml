@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <!--
  Copyright (c) 2017, Adam <Adam@sigterm.info>
+ Copyright (c) 2019, ThatGamerBlue <thatgamerblue@gmail.com>
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -38,6 +39,11 @@
 		<module name="RegexpSinglelineJava">
 			<property name="format" value="^\t* "/>
 			<property name="message" value="Indent must use tab characters"/>
+			<property name="ignoreComments" value="true"/>
+		</module>
+		<module name="RegexpSinglelineJava">
+			<property name="format" value="import (?!static|java\.awt).*\*"/>
+			<property name="message" value="Multiline imports are disallowed if they are not static"/>
 			<property name="ignoreComments" value="true"/>
 		</module>
 		<module name="WhitespaceAround"/>

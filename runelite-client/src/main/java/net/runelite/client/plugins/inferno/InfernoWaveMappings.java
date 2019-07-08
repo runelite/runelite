@@ -28,16 +28,17 @@ package net.runelite.client.plugins.inferno;
 
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class InfernoWaveMappings
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final ImmutableMap<Integer, int[]> waveMapping;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final ImmutableMap<Integer, String> npcNameMapping;
 
 	static
@@ -88,7 +89,7 @@ class InfernoWaveMappings
 		waveMapBuilder.put(42, new int[]{32, 32, 32, 240, 490});
 		waveMapBuilder.put(43, new int[]{32, 32, 32, 85, 240, 490});
 		waveMapBuilder.put(44, new int[]{32, 32, 32, 85, 85, 240, 490});
-		waveMapBuilder.put(45, new int[]{32, 32, 32, 165, 240, 490 });
+		waveMapBuilder.put(45, new int[]{32, 32, 32, 165, 240, 490});
 		waveMapBuilder.put(46, new int[]{32, 32, 32, 85, 165, 240, 490});
 		waveMapBuilder.put(47, new int[]{32, 32, 32, 85, 85, 165, 240, 490});
 		waveMapBuilder.put(48, new int[]{32, 32, 32, 165, 165, 240, 490});

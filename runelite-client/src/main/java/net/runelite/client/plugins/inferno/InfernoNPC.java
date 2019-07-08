@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.inferno;
 
 import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.NPC;
@@ -39,10 +40,10 @@ public class InfernoNPC
 		MELEE("Melee", Color.WHITE),
 		RANDOM("Random", Color.ORANGE);
 
-		@Getter
-		private String name = "";
+		@Getter(AccessLevel.PACKAGE)
+		private String name;
 
-		@Getter
+		@Getter(AccessLevel.PACKAGE)
 		private Color color;
 
 		Attackstyle(String s, Color c)
@@ -52,44 +53,44 @@ public class InfernoNPC
 		}
 	}
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private NPC npc;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private String name;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private Attackstyle attackstyle;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int attackTicks;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int priority;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int ticksTillAttack = -1;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private boolean attacking = false;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int attackAnimation;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean isMidAttack = false;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int distanceToPlayer = 0;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	int textLocHeight;
 
-	public InfernoNPC(NPC npc)
+	InfernoNPC(NPC npc)
 	{
 		this.npc = npc;
 		textLocHeight = npc.getLogicalHeight() + 40;
@@ -177,7 +178,7 @@ public class InfernoNPC
 		return info;
 	}
 
-	public void attacked()
+	void attacked()
 	{
 		ticksTillAttack = attackTicks;
 		attacking = true;

@@ -115,7 +115,7 @@ public class ChatMessageManager
 
 		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
 		Color usernameColor = null;
-		Color senderColor = null;
+		Color senderColor;
 
 		switch (chatMessageType)
 		{

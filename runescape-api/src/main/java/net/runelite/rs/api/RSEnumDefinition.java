@@ -13,13 +13,13 @@ public interface RSEnumDefinition extends EnumDefinition, RSDualNode
 	@Override
 	int[] getIntVals();
 
-	@Import("stringVals")
+	@Import("strVals")
 	@Override
 	String[] getStringVals();
 
 	@Import("defaultInt")
 	int getDefaultInt();
 
-	@Import("defaultString")
+	@Import("defaultStr")
 	String getDefaultString();
 }

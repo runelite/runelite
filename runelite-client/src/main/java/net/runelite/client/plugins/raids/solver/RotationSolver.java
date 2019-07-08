@@ -40,14 +40,14 @@ public class RotationSolver
 			new Rotation<>(Arrays.asList(Boss.MYSTICS, Boss.VANGUARDS, Boss.VASA, Boss.SHAMANS, Boss.VESPULA, Boss.GUARDIANS, Boss.MUTTADILES, Boss.TEKTON))
 		};
 
-	public static boolean solve(RaidRoom[] rooms)
+	public static void solve(RaidRoom[] rooms)
 	{
 		if (rooms == null)
 		{
-			return false;
+			return;
 		}
 
-		Rotation<Boss> match = null;
+		Rotation match = null;
 		Integer start = null;
 		Integer index = null;
 		int known = 0;
@@ -69,12 +69,12 @@ public class RotationSolver
 
 		if (known < 2)
 		{
-			return false;
+			return;
 		}
 
 		if (known == rooms.length)
 		{
-			return true;
+			return;
 		}
 
 		for (Rotation rotation : ROTATIONS)
@@ -97,9 +97,9 @@ public class RotationSolver
 						}
 					}
 
-					if (match != null && match != rotation)
+					if (match != null && match.equals(rotation))
 					{
-						return false;
+						return;
 					}
 
 					index = i - start;
@@ -110,7 +110,7 @@ public class RotationSolver
 
 		if (match == null)
 		{
-			return false;
+			return;
 		}
 
 		for (int i = 0; i < rooms.length; i++)
@@ -122,16 +122,15 @@ public class RotationSolver
 
 			if (rooms[i].getBoss() == null || rooms[i].getBoss() == Boss.UNKNOWN)
 			{
-				rooms[i].setBoss(match.get(index + i));
+				rooms[i].setBoss((Boss) match.get(index + i));
 			}
 		}
 
-		return true;
 	}
 
 	private static class Rotation<E> extends ArrayList<E>
 	{
-		Rotation(Collection<? extends E> bosses)
+		Rotation(final Collection<? extends E> bosses)
 		{
 			super(bosses);
 		}

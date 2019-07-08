@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.28-SNAPSHOT</version>
+		<version>1.5.29-SNAPSHOT</version>
 	</parent>
 
     <artifactId>deobfuscator</artifactId>
@@ -65,6 +65,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.12</version>
+			<scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>

@@ -138,10 +138,7 @@ public class OverlayManager
 			Optional<OverlayMenuEntry> optionalOverlayMenuEntry = menuEntries.stream()
 				.filter(me -> me.getOption().equals(event.getOption()))
 				.findAny();
-			if (optionalOverlayMenuEntry.isPresent())
-			{
-				eventBus.post(new OverlayMenuClicked(optionalOverlayMenuEntry.get(), overlay));
-			}
+			optionalOverlayMenuEntry.ifPresent(overlayMenuEntry -> eventBus.post(new OverlayMenuClicked(overlayMenuEntry, overlay)));
 		}
 	}
 

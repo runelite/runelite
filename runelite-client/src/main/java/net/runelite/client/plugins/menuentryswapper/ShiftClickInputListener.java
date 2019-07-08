@@ -26,9 +26,11 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.input.KeyListener;
 
-public class ShiftClickInputListener implements KeyListener
+@Singleton
+class ShiftClickInputListener implements KeyListener
 {
 	@Inject
 	private MenuEntrySwapperPlugin plugin;

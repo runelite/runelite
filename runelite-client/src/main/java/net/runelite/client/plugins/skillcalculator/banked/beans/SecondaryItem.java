@@ -24,21 +24,22 @@
  */
 package net.runelite.client.plugins.skillcalculator.banked.beans;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class SecondaryItem
 {
 	private final int id;
 	private final int qty;
 
-	public SecondaryItem(int id, int qty)
+	SecondaryItem(int id, int qty)
 	{
 		this.id = id;
 		this.qty = qty;
 	}
 
-	public SecondaryItem(int id)
+	SecondaryItem(int id)
 	{
 		this(id, 1);
 	}

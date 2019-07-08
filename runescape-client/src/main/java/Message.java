@@ -8,7 +8,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Message")
 public class Message extends DualNode {
    @ObfuscatedName("i")
-   static int[] __bm_i;
+   static int[] field490;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1597147817
@@ -67,15 +67,15 @@ public class Message extends DualNode {
       garbageValue = "0"
    )
    @Export("set")
-   void set(int var1, String var2, String var3, String var4) {
+   void set(int type, String sender, String prefix, String text) {
       int var5 = ++Messages.Messages_count - 1;
       this.count = var5;
       this.cycle = Client.cycle;
-      this.type = var1;
-      this.sender = var2;
+      this.type = type;
+      this.sender = sender;
       this.fillSenderUsername();
-      this.prefix = var3;
-      this.text = var4;
+      this.prefix = prefix;
+      this.text = text;
       this.clearIsFromFriend();
       this.clearIsFromIgnored();
    }
@@ -97,7 +97,7 @@ public class Message extends DualNode {
    )
    @Export("isFromFriend")
    final boolean isFromFriend() {
-      if(this.isFromFriend0 == TriBool.TriBool_unknown) {
+      if (this.isFromFriend0 == TriBool.TriBool_unknown) {
          this.fillIsFromFriend();
       }
 
@@ -111,7 +111,7 @@ public class Message extends DualNode {
    )
    @Export("fillIsFromFriend")
    void fillIsFromFriend() {
-      this.isFromFriend0 = WorldMapArea.friendSystem.friendsList.contains(this.senderUsername)?TriBool.TriBool_true:TriBool.TriBool_false;
+      this.isFromFriend0 = WorldMapArea.friendSystem.friendsList.contains(this.senderUsername) ? TriBool.TriBool_true : TriBool.TriBool_false;
    }
 
    @ObfuscatedName("o")
@@ -131,7 +131,7 @@ public class Message extends DualNode {
    )
    @Export("isFromIgnored")
    final boolean isFromIgnored() {
-      if(this.isFromIgnored0 == TriBool.TriBool_unknown) {
+      if (this.isFromIgnored0 == TriBool.TriBool_unknown) {
          this.fillIsFromIgnored();
       }
 
@@ -145,7 +145,7 @@ public class Message extends DualNode {
    )
    @Export("fillIsFromIgnored")
    void fillIsFromIgnored() {
-      this.isFromIgnored0 = WorldMapArea.friendSystem.ignoreList.contains(this.senderUsername)?TriBool.TriBool_true:TriBool.TriBool_false;
+      this.isFromIgnored0 = WorldMapArea.friendSystem.ignoreList.contains(this.senderUsername) ? TriBool.TriBool_true : TriBool.TriBool_false;
    }
 
    @ObfuscatedName("l")
@@ -155,8 +155,8 @@ public class Message extends DualNode {
    )
    @Export("fillSenderUsername")
    final void fillSenderUsername() {
-      if(this.sender != null) {
-         this.senderUsername = new Username(NpcDefinition.method5161(this.sender), KeyHandler.loginType);
+      if (this.sender != null) {
+         this.senderUsername = new Username(NPCDefinition.method5161(this.sender), KeyHandler.loginType);
       } else {
          this.senderUsername = null;
       }
@@ -169,7 +169,7 @@ public class Message extends DualNode {
       garbageValue = "-1905151806"
    )
    public static String method1229(CharSequence var0, LoginType var1) {
-      if(var0 == null) {
+      if (var0 == null) {
          return null;
       } else {
          int var2 = 0;
@@ -177,94 +177,90 @@ public class Message extends DualNode {
          int var3;
          boolean var4;
          char var5;
-         for(var3 = var0.length(); var2 < var3; ++var2) {
+         for (var3 = var0.length(); var2 < var3; ++var2) {
             var5 = var0.charAt(var2);
             var4 = var5 == 160 || var5 == ' ' || var5 == '_' || var5 == '-';
-            if(!var4) {
+            if (!var4) {
                break;
             }
          }
 
-         while(var3 > var2) {
+         while (var3 > var2) {
             var5 = var0.charAt(var3 - 1);
             var4 = var5 == 160 || var5 == ' ' || var5 == '_' || var5 == '-';
-            if(!var4) {
+            if (!var4) {
                break;
             }
 
             --var3;
          }
 
-         int var14 = var3 - var2;
-         if(var14 >= 1) {
-            byte var6;
-            if(var1 == null) {
-               var6 = 12;
+         int var6 = var3 - var2;
+         if (var6 >= 1) {
+            byte var7;
+            if (var1 == null) {
+               var7 = 12;
             } else {
-               switch(var1.__x) {
+               switch(var1.field488) {
                case 7:
-                  var6 = 20;
+                  var7 = 20;
                   break;
                default:
-                  var6 = 12;
+                  var7 = 12;
                }
             }
 
-            if(var14 <= var6) {
-               StringBuilder var12 = new StringBuilder(var14);
+            if (var6 <= var7) {
+               StringBuilder var8 = new StringBuilder(var6);
 
-               for(int var15 = var2; var15 < var3; ++var15) {
-                  char var7 = var0.charAt(var15);
-                  boolean var8;
-                  if(Character.isISOControl(var7)) {
-                     var8 = false;
-                  } else if(VarcInt.isAlphaNumeric(var7)) {
-                     var8 = true;
+               for (int var9 = var2; var9 < var3; ++var9) {
+                  char var10 = var0.charAt(var9);
+                  boolean var11;
+                  if (Character.isISOControl(var10)) {
+                     var11 = false;
+                  } else if (VarcInt.isAlphaNumeric(var10)) {
+                     var11 = true;
                   } else {
-                     char[] var13 = class305.__kb_q;
-                     int var10 = 0;
+                     label151: {
+                        char[] var12 = class305.field1149;
 
-                     label118:
-                     while(true) {
-                        char var11;
-                        if(var10 >= var13.length) {
-                           var13 = class305.__kb_w;
-
-                           for(var10 = 0; var10 < var13.length; ++var10) {
-                              var11 = var13[var10];
-                              if(var7 == var11) {
-                                 var8 = true;
-                                 break label118;
-                              }
+                        int var13;
+                        char var14;
+                        for (var13 = 0; var13 < var12.length; ++var13) {
+                           var14 = var12[var13];
+                           if (var10 == var14) {
+                              var11 = true;
+                              break label151;
                            }
-
-                           var8 = false;
-                           break;
                         }
 
-                        var11 = var13[var10];
-                        if(var7 == var11) {
-                           var8 = true;
-                           break;
+                        var12 = class305.field1150;
+
+                        for (var13 = 0; var13 < var12.length; ++var13) {
+                           var14 = var12[var13];
+                           if (var10 == var14) {
+                              var11 = true;
+                              break label151;
+                           }
                         }
 
-                        ++var10;
+                        var11 = false;
                      }
                   }
 
-                  if(var8) {
-                     char var9;
-                     switch(var7) {
+                  if (var11) {
+                     char var15;
+                     switch(var10) {
                      case ' ':
                      case '-':
                      case '_':
                      case ' ':
-                        var9 = '_';
+                        var15 = '_';
                         break;
                      case '#':
                      case '[':
                      case ']':
-                        var9 = var7;
+                        var15 = var10;
                         break;
                      case 'À':
                      case 'Á':
@@ -276,11 +272,11 @@ public class Message extends DualNode {
                      case 'â':
                      case 'ã':
                      case 'ä':
-                        var9 = 'a';
+                        var15 = 'a';
                         break;
                      case 'Ç':
                      case 'ç':
-                        var9 = 'c';
+                        var15 = 'c';
                         break;
                      case 'È':
                      case 'É':
@@ -290,7 +286,7 @@ public class Message extends DualNode {
                      case 'é':
                      case 'ê':
                      case 'ë':
-                        var9 = 'e';
+                        var15 = 'e';
                         break;
                      case 'Í':
                      case 'Î':
@@ -298,11 +294,11 @@ public class Message extends DualNode {
                      case 'í':
                      case 'î':
                      case 'ï':
-                        var9 = 'i';
+                        var15 = 'i';
                         break;
                      case 'Ñ':
                      case 'ñ':
-                        var9 = 'n';
+                        var15 = 'n';
                         break;
                      case 'Ò':
                      case 'Ó':
@@ -314,7 +310,7 @@ public class Message extends DualNode {
                      case 'ô':
                      case 'õ':
                      case 'ö':
-                        var9 = 'o';
+                        var15 = 'o';
                         break;
                      case 'Ù':
                      case 'Ú':
@@ -324,30 +320,30 @@ public class Message extends DualNode {
                      case 'ú':
                      case 'û':
                      case 'ü':
-                        var9 = 'u';
+                        var15 = 'u';
                         break;
                      case 'ß':
-                        var9 = 'b';
+                        var15 = 'b';
                         break;
                      case 'ÿ':
                      case 'Ÿ':
-                        var9 = 'y';
+                        var15 = 'y';
                         break;
                      default:
-                        var9 = Character.toLowerCase(var7);
+                        var15 = Character.toLowerCase(var10);
                      }
 
-                     if(var9 != 0) {
-                        var12.append(var9);
+                     if (var15 != 0) {
+                        var8.append(var15);
                      }
                   }
                }
 
-               if(var12.length() == 0) {
+               if (var8.length() == 0) {
                   return null;
                }
 
-               return var12.toString();
+               return var8.toString();
             }
          }
 
@@ -361,7 +357,7 @@ public class Message extends DualNode {
       garbageValue = "-1262174034"
    )
    static Message method1226(int var0, int var1) {
-      ChatChannel var2 = (ChatChannel)Messages.Messages_channels.get(Integer.valueOf(var0));
+      ChatChannel var2 = (ChatChannel)Messages.Messages_channels.get(var0);
       return var2.getMessage(var1);
    }
 
@@ -371,28 +367,28 @@ public class Message extends DualNode {
       garbageValue = "-2007966264"
    )
    static final void method1228() {
-      if(SoundSystem.plane != Client.__client_ph) {
-         Client.__client_ph = SoundSystem.plane;
+      if (SoundSystem.plane != Client.field125) {
+         Client.field125 = SoundSystem.plane;
          int var0 = SoundSystem.plane;
-         int[] var1 = WidgetGroupParent.sceneMinimapSprite.pixels;
+         int[] var1 = InterfaceParent.sceneMinimapSprite.pixels;
          int var2 = var1.length;
 
          int var3;
-         for(var3 = 0; var3 < var2; ++var3) {
+         for (var3 = 0; var3 < var2; ++var3) {
             var1[var3] = 0;
          }
 
          int var4;
          int var5;
-         for(var3 = 1; var3 < 103; ++var3) {
+         for (var3 = 1; var3 < 103; ++var3) {
             var4 = (103 - var3) * 2048 + 24628;
 
-            for(var5 = 1; var5 < 103; ++var5) {
-               if((Tiles.Tiles_renderFlags[var0][var5][var3] & 24) == 0) {
+            for (var5 = 1; var5 < 103; ++var5) {
+               if ((Tiles.Tiles_renderFlags[var0][var5][var3] & 24) == 0) {
                   class65.scene.drawTileMinimap(var1, var4, 512, var0, var5, var3);
                }
 
-               if(var0 < 3 && (Tiles.Tiles_renderFlags[var0 + 1][var5][var3] & 8) != 0) {
+               if (var0 < 3 && (Tiles.Tiles_renderFlags[var0 + 1][var5][var3] & 8) != 0) {
                   class65.scene.drawTileMinimap(var1, var4, 512, var0 + 1, var5, var3);
                }
 
@@ -402,16 +398,16 @@ public class Message extends DualNode {
 
          var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
          var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
-         WidgetGroupParent.sceneMinimapSprite.setRaster();
+         InterfaceParent.sceneMinimapSprite.setRaster();
 
          int var6;
-         for(var5 = 1; var5 < 103; ++var5) {
-            for(var6 = 1; var6 < 103; ++var6) {
-               if((Tiles.Tiles_renderFlags[var0][var6][var5] & 24) == 0) {
+         for (var5 = 1; var5 < 103; ++var5) {
+            for (var6 = 1; var6 < 103; ++var6) {
+               if ((Tiles.Tiles_renderFlags[var0][var6][var5] & 24) == 0) {
                   MouseRecorder.drawObject(var0, var6, var5, var3, var4);
                }
 
-               if(var0 < 3 && (Tiles.Tiles_renderFlags[var0 + 1][var6][var5] & 8) != 0) {
+               if (var0 < 3 && (Tiles.Tiles_renderFlags[var0 + 1][var6][var5] & 8) != 0) {
                   MouseRecorder.drawObject(var0 + 1, var6, var5, var3, var4);
                }
             }
@@ -419,13 +415,13 @@ public class Message extends DualNode {
 
          Client.mapIconCount = 0;
 
-         for(var5 = 0; var5 < 104; ++var5) {
-            for(var6 = 0; var6 < 104; ++var6) {
+         for (var5 = 0; var5 < 104; ++var5) {
+            for (var6 = 0; var6 < 104; ++var6) {
                long var7 = class65.scene.getFloorDecorationTag(SoundSystem.plane, var5, var6);
-               if(var7 != 0L) {
+               if (var7 != 0L) {
                   int var9 = HitSplatDefinition.method4972(var7);
                   int var10 = class50.getObjectDefinition(var9).mapIconId;
-                  if(var10 >= 0) {
+                  if (var10 >= 0) {
                      Client.mapIcons[Client.mapIconCount] = ViewportMouse.getWorldMapElement(var10).getSprite(false);
                      Client.mapIconXs[Client.mapIconCount] = var5;
                      Client.mapIconYs[Client.mapIconCount] = var6;
@@ -446,25 +442,25 @@ public class Message extends DualNode {
       garbageValue = "1047910257"
    )
    static String method1227(String var0, boolean var1) {
-      String var2 = var1?"https://":"http://";
-      if(Client.gameBuild == 1) {
+      String var2 = var1 ? "https://" : "http://";
+      if (Client.gameBuild == 1) {
          var0 = var0 + "-wtrc";
-      } else if(Client.gameBuild == 2) {
+      } else if (Client.gameBuild == 2) {
          var0 = var0 + "-wtqa";
-      } else if(Client.gameBuild == 3) {
+      } else if (Client.gameBuild == 3) {
          var0 = var0 + "-wtwip";
-      } else if(Client.gameBuild == 5) {
+      } else if (Client.gameBuild == 5) {
          var0 = var0 + "-wti";
-      } else if(Client.gameBuild == 4) {
+      } else if (Client.gameBuild == 4) {
          var0 = "local";
       }
 
       String var3 = "";
-      if(class21.__b_by != null) {
-         var3 = "/p=" + class21.__b_by;
+      if (class21.field1123 != null) {
+         var3 = "/p=" + class21.field1123;
       }
 
       String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.language + "/a=" + AbstractIndexCache.__ir_bu + var3 + "/";
+      return var2 + var0 + "." + var4 + "/l=" + Client.language + "/a=" + AbstractArchive.field2 + var3 + "/";
    }
 }

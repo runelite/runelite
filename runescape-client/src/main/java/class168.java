@@ -7,7 +7,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fs")
 public class class168 {
    @ObfuscatedName("o")
-   public static File __fs_o;
+   public static File field1115;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -2051451755
@@ -39,12 +39,6 @@ public class class168 {
    @Export("optionButtonSpriteSubWidth")
    static int optionButtonSpriteSubWidth;
 
-   static {
-      randomDat = null;
-      dat2File = null;
-      idx255File = null;
-   }
-
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(II)Z",
@@ -62,10 +56,16 @@ public class class168 {
    public static String method3450(char var0, int var1) {
       char[] var2 = new char[var1];
 
-      for(int var3 = 0; var3 < var1; ++var3) {
+      for (int var3 = 0; var3 < var1; ++var3) {
          var2[var3] = var0;
       }
 
       return new String(var2);
+   }
+
+   static {
+      randomDat = null;
+      dat2File = null;
+      idx255File = null;
    }
 }

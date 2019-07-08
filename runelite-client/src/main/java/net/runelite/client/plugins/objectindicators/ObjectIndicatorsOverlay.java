@@ -32,6 +32,7 @@ import java.awt.Polygon;
 import java.awt.geom.Area;
 import static java.lang.Math.floor;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
@@ -43,20 +44,19 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 class ObjectIndicatorsOverlay extends Overlay
 {
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
 	private final Client client;
-	private final ObjectIndicatorsConfig config;
 	private final ObjectIndicatorsPlugin plugin;
 	private final ModelOutlineRenderer modelOutliner;
 
 	@Inject
-	private ObjectIndicatorsOverlay(Client client, ObjectIndicatorsConfig config, ObjectIndicatorsPlugin plugin, ModelOutlineRenderer modelOutliner)
+	private ObjectIndicatorsOverlay(final Client client, final ObjectIndicatorsPlugin plugin, final ModelOutlineRenderer modelOutliner)
 	{
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 		this.modelOutliner = modelOutliner;
 		setPosition(OverlayPosition.DYNAMIC);
@@ -74,14 +74,14 @@ class ObjectIndicatorsOverlay extends Overlay
 				continue;
 			}
 
-			Color color = config.objectMarkerColor();
-			int opacity = (int) floor(config.objectMarkerAlpha() * 2.55);
+			Color color = plugin.getObjectMarkerColor();
+			int opacity = (int) floor(plugin.getObjectMarkerAlpha() * 2.55);
 			Color objectColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
 
-			switch (config.objectMarkerRenderStyle())
+			switch (plugin.getObjectMarkerRenderStyle())
 			{
 				case OUTLINE:
-					switch (config.objectMarkerOutlineRenderStyle())
+					switch (plugin.getObjectMarkerOutlineRenderStyle())
 					{
 						case THIN_OUTLINE:
 							modelOutliner.drawOutline(object, 1, objectColor);

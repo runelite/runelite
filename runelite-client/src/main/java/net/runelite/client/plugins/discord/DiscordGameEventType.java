@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -36,7 +37,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum DiscordGameEventType
 {
 
@@ -300,7 +301,6 @@ enum DiscordGameEventType
 		this.details = training(skill);
 		this.priority = priority;
 		this.imageKey = imageKeyOf(skill);
-		this.priority = priority;
 		this.shouldTimeout = true;
 	}
 

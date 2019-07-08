@@ -2,7 +2,7 @@ package net.runelite.client.plugins.spawntimer;
 
 import net.runelite.api.NPC;
 
-public class thing 
+class thing
 {
 	private NPC npc;
 	private int tick;

@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -82,6 +83,7 @@ import net.runelite.client.util.Text;
 	tags = {"searching", "tagging"}
 )
 @PluginDependency(ClueScrollPlugin.class)
+@Singleton
 public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyListener
 {
 	public static final String CONFIG_GROUP = "banktags";
@@ -244,10 +246,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				intStack[intStackSize - 1] = 0;
 				break;
 			case "hideLine":
-				// hide the widget for the line separator
-				intStack[intStackSize - 1] = 1;
-				break;
 			case "hideTabText":
+				// hide the widget for the line separator
 				// hide the widget for the "Tab x" text
 				intStack[intStackSize - 1] = 1;
 				break;

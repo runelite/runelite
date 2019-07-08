@@ -26,8 +26,9 @@ package net.runelite.client.plugins.stonedloottracker.ui;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -37,14 +38,15 @@ import net.runelite.client.plugins.stonedloottracker.data.LootTrackerItemEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.StackFormatter;
 
+@Singleton
 class LootGrid extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
 	private static final Dimension ITEM_SIZE = new Dimension(40, 40);
 	private final LootTrackerItemEntry[] itemsToDisplay;
-	private ItemManager itemManager;
+	private final ItemManager itemManager;
 
-	LootGrid(LootTrackerItemEntry[] itemsToDisplay, ItemManager itemManager)
+	LootGrid(final LootTrackerItemEntry[] itemsToDisplay, final ItemManager itemManager)
 	{
 		this.itemsToDisplay = itemsToDisplay;
 		this.itemManager = itemManager;
@@ -60,7 +62,7 @@ class LootGrid extends JPanel
 	 */
 	private void buildItems()
 	{
-		ArrayList<LootTrackerItemEntry> items = LootTrackerBox.dedupeClues(Arrays.asList(itemsToDisplay));
+		List<LootTrackerItemEntry> items = LootTrackerBox.dedupeClues(Arrays.asList(itemsToDisplay));
 
 		// Calculates how many rows need to be display to fit all items
 		final int rowSize = LootTrackerBox.rowSize(items.size());

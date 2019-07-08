@@ -5,22 +5,19 @@ package net.runelite.client.plugins.runedoku;
  *
  * @author ?
  */
-public class Sudoku
+class Sudoku
 {
 
-	private int[][] board;
-	public static final int EMPTY = 0;
-	public static final int SIZE = 9;
+	private final int[][] board;
+	private static final int EMPTY = 0;
+	private static final int SIZE = 9;
 
-	Sudoku(int[][] board)
+	Sudoku(final int[][] board)
 	{
 		this.board = new int[SIZE][SIZE];
 		for (int i = 0; i < SIZE; i++)
 		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				this.board[i][j] = board[i][j];
-			}
+			System.arraycopy(board[i], 0, this.board[i], 0, SIZE);
 		}
 	}
 
@@ -74,7 +71,7 @@ public class Sudoku
 		return !isInRow(row, number) && !isInCol(col, number) && !isInBox(row, col, number);
 	}
 
-	public boolean solve()
+	boolean solve()
 	{
 		for (int row = 0; row < SIZE; row++)
 		{
@@ -105,18 +102,7 @@ public class Sudoku
 		return true;
 	}
 
-	public void display()
-	{
-		for (int i = 0; i < SIZE; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				System.out.print(" " + board[i][j]);
-			}
-		}
-	}
-
-	public int[][] getBoard()
+	int[][] getBoard()
 	{
 		return board;
 	}

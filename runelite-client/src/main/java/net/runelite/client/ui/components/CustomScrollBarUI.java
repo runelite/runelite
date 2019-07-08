@@ -76,7 +76,7 @@ public class CustomScrollBarUI extends BasicScrollBarUI
 	/**
 	 * Creates an empty JButton to be used as the scroll bar's arrows (to disable the arrows).
 	 */
-	protected JButton createEmptyButton()
+	private JButton createEmptyButton()
 	{
 		JButton button = new JButton();
 		Dimension zeroDim = new Dimension(0, 0);

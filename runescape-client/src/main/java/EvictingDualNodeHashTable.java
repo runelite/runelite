@@ -10,7 +10,7 @@ public final class EvictingDualNodeHashTable {
    @ObfuscatedSignature(
       signature = "Lfn;"
    )
-   DualNode __m;
+   DualNode field343;
    @ObfuscatedName("f")
    @Export("capacity")
    int capacity;
@@ -31,14 +31,13 @@ public final class EvictingDualNodeHashTable {
    DualNodeDeque deque;
 
    public EvictingDualNodeHashTable(int var1) {
-      this.__m = new DualNode();
+      this.field343 = new DualNode();
       this.deque = new DualNodeDeque();
       this.capacity = var1;
       this.remainingCapacity = var1;
 
       int var2;
-      for(var2 = 1; var2 + var2 < var1; var2 += var2) {
-         ;
+      for (var2 = 1; var2 + var2 < var1; var2 += var2) {
       }
 
       this.hashTable = new NodeHashTable(var2);
@@ -49,9 +48,9 @@ public final class EvictingDualNodeHashTable {
       signature = "(J)Lfn;"
    )
    @Export("get")
-   public DualNode get(long var1) {
-      DualNode var3 = (DualNode)this.hashTable.get(var1);
-      if(var3 != null) {
+   public DualNode get(long key) {
+      DualNode var3 = (DualNode)this.hashTable.get(key);
+      if (var3 != null) {
          this.deque.addFirst(var3);
       }
 
@@ -60,9 +59,9 @@ public final class EvictingDualNodeHashTable {
 
    @ObfuscatedName("f")
    @Export("remove")
-   public void remove(long var1) {
-      DualNode var3 = (DualNode)this.hashTable.get(var1);
-      if(var3 != null) {
+   public void remove(long key) {
+      DualNode var3 = (DualNode)this.hashTable.get(key);
+      if (var3 != null) {
          var3.remove();
          var3.removeDual();
          ++this.remainingCapacity;
@@ -75,12 +74,12 @@ public final class EvictingDualNodeHashTable {
       signature = "(Lfn;J)V"
    )
    @Export("put")
-   public void put(DualNode var1, long var2) {
-      if(this.remainingCapacity == 0) {
+   public void put(DualNode value, long key) {
+      if (this.remainingCapacity == 0) {
          DualNode var4 = this.deque.removeLast();
          var4.remove();
          var4.removeDual();
-         if(var4 == this.__m) {
+         if (var4 == this.field343) {
             var4 = this.deque.removeLast();
             var4.remove();
             var4.removeDual();
@@ -89,8 +88,8 @@ public final class EvictingDualNodeHashTable {
          --this.remainingCapacity;
       }
 
-      this.hashTable.put(var1, var2);
-      this.deque.addFirst(var1);
+      this.hashTable.put(value, key);
+      this.deque.addFirst(value);
    }
 
    @ObfuscatedName("w")
@@ -98,7 +97,7 @@ public final class EvictingDualNodeHashTable {
    public void clear() {
       this.deque.clear();
       this.hashTable.clear();
-      this.__m = new DualNode();
+      this.field343 = new DualNode();
       this.remainingCapacity = this.capacity;
    }
 }

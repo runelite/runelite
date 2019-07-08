@@ -35,7 +35,7 @@ public abstract class MTARoom
 	protected final MTAConfig config;
 
 	@Inject
-	protected MTARoom(MTAConfig config)
+	protected MTARoom(final MTAConfig config)
 	{
 		this.config = config;
 	}

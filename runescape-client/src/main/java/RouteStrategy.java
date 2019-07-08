@@ -1,11 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fe")
-public abstract class RouteStrategy
-{
+@Implements("RouteStrategy")
+public abstract class RouteStrategy {
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -1237576843
@@ -13,7 +14,7 @@ public abstract class RouteStrategy
    @Export("Interpreter_intStackSize")
    static int Interpreter_intStackSize;
    @ObfuscatedName("e")
-   static byte[][][] __fe_e;
+   static byte[][][] field760;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 123677543
@@ -53,15 +54,15 @@ public abstract class RouteStrategy
    )
    public static int method3642(int var0, int var1) {
       int var2;
-      for(var2 = 1; var1 > 1; var1 >>= 1) {
-         if((var1 & 1) != 0) {
+      for (var2 = 1; var1 > 1; var1 >>= 1) {
+         if ((var1 & 1) != 0) {
             var2 = var0 * var2;
          }
 
          var0 *= var0;
       }
 
-      if(var1 == 1) {
+      if (var1 == 1) {
          return var0 * var2;
       } else {
          return var2;
@@ -74,9 +75,9 @@ public abstract class RouteStrategy
       garbageValue = "-602741260"
    )
    @Export("loadSpriteFlat")
-   static boolean loadSpriteFlat(AbstractIndexCache var0, int var1) {
-      byte[] var2 = var0.takeRecordFlat(var1);
-      if(var2 == null) {
+   static boolean loadSpriteFlat(AbstractArchive var0, int var1) {
+      byte[] var2 = var0.takeFileFlat(var1);
+      if (var2 == null) {
          return false;
       } else {
          DevicePcmPlayerProvider.decodeSprite(var2);

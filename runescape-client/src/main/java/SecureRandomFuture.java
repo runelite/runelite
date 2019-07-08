@@ -21,8 +21,8 @@ public class SecureRandomFuture {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("indexCache5")
-   static IndexCache indexCache5;
+   @Export("archive5")
+   static Archive archive5;
    @ObfuscatedName("jn")
    @ObfuscatedSignature(
       signature = "Ldl;"
@@ -84,7 +84,7 @@ public class SecureRandomFuture {
    static void method2104() {
       Iterator var0 = Messages.Messages_hashTable.iterator();
 
-      while(var0.hasNext()) {
+      while (var0.hasNext()) {
          Message var1 = (Message)var0.next();
          var1.clearIsFromIgnored();
       }

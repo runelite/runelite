@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import static net.runelite.api.AnimationID.SMITHING_CANNONBALL;
 import static net.runelite.api.AnimationID.SMITHING_SMELTING;
 import net.runelite.api.Client;
@@ -45,6 +46,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+@Singleton
 class SmeltingOverlay extends Overlay
 {
 	private static final int SMELT_TIMEOUT = 5;
@@ -56,7 +58,7 @@ class SmeltingOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	SmeltingOverlay(Client client, SmeltingPlugin plugin, XpTrackerService xpTrackerService)
+	SmeltingOverlay(final Client client, final SmeltingPlugin plugin, final XpTrackerService xpTrackerService)
 	{
 		super(plugin);
 		this.client = client;

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.account;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.account.AccountSession;
@@ -47,6 +48,7 @@ import net.runelite.client.util.ImageUtil;
 	loadWhenOutdated = true
 )
 @Slf4j
+@Singleton
 public class AccountPlugin extends Plugin
 {
 	@Inject

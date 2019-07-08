@@ -28,6 +28,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -45,7 +46,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
-
+@Singleton
 public class VetionPlugin extends Plugin
 {
 

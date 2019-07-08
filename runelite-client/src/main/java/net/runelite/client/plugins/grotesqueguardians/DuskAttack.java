@@ -34,7 +34,7 @@ public enum DuskAttack
 	private final int animation;
 	private final Prayer prayer;
 
-	DuskAttack(int animation, Prayer prayer)
+	DuskAttack(final int animation, final Prayer prayer)
 	{
 		this.animation = animation;
 		this.prayer = prayer;

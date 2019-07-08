@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.vorkath;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.awt.image.BufferedImage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
+@Singleton
 @Slf4j
 public class VorkathPlugin extends Plugin
 {

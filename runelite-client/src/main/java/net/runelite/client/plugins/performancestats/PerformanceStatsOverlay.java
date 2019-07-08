@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.MenuAction;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -38,6 +39,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+@Singleton
 public class PerformanceStatsOverlay extends Overlay
 {
 	private static final String TARGET = "Performance Stats";
@@ -50,7 +52,7 @@ public class PerformanceStatsOverlay extends Overlay
 	private final TableComponent tableComponent = new TableComponent();
 
 	@Inject
-	PerformanceStatsOverlay(PerformanceStatsPlugin tracker)
+	PerformanceStatsOverlay(final PerformanceStatsPlugin tracker)
 	{
 		super(tracker);
 		setPosition(OverlayPosition.TOP_RIGHT);
@@ -111,8 +113,8 @@ public class PerformanceStatsOverlay extends Overlay
 		return new String[]
 		{
 			performance.getUsername(),
-			String.valueOf((int) Math.round(performance.getDamageDealt())) + " | " + String.valueOf((int) Math.round(performance.getHighestHitDealt())),
-			String.valueOf((int) Math.round(performance.getDamageTaken())) + " | " + String.valueOf((int) Math.round(performance.getHighestHitTaken())),
+			(int) Math.round(performance.getDamageDealt()) + " | " + (int) Math.round(performance.getHighestHitDealt()),
+			(int) Math.round(performance.getDamageTaken()) + " | " + (int) Math.round(performance.getHighestHitTaken()),
 			String.valueOf(performance.getDPS()),
 			performance.getHumanReadableSecondsSpent()
 		};

@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -56,6 +57,7 @@ import net.runelite.client.task.Schedule;
 	enabledByDefault = false
 )
 @Slf4j
+@Singleton
 public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInputListener
 {
 	@Inject

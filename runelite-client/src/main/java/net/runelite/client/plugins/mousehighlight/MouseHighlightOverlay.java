@@ -28,6 +28,7 @@ import com.google.common.base.Strings;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -39,19 +40,20 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
+@Singleton
 class MouseHighlightOverlay extends Overlay
 {
 	private final TooltipManager tooltipManager;
 	private final Client client;
-	private final MouseHighlightConfig config;
+	private final MouseHighlightPlugin plugin;
 
 	@Inject
-	MouseHighlightOverlay(Client client, TooltipManager tooltipManager, MouseHighlightConfig config)
+	MouseHighlightOverlay(final Client client, final TooltipManager tooltipManager, final MouseHighlightPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.tooltipManager = tooltipManager;
-		this.config = config;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -105,12 +107,12 @@ class MouseHighlightOverlay extends Overlay
 		final int childId = WidgetInfo.TO_CHILD(widgetId);
 		final Widget widget = client.getWidget(groupId, childId);
 
-		if (!config.uiTooltip() && widget != null)
+		if (!plugin.isUiTooltip() && widget != null)
 		{
 			return null;
 		}
 
-		if (!config.chatboxTooltip() && groupId == WidgetInfo.CHATBOX.getGroupId())
+		if (!plugin.isChatboxTooltip() && groupId == WidgetInfo.CHATBOX.getGroupId())
 		{
 			return null;
 		}
@@ -125,7 +127,7 @@ class MouseHighlightOverlay extends Overlay
 			}
 		}
 
-		if (widget == null && !config.mainTooltip())
+		if (widget == null && !plugin.isMainTooltip())
 		{
 			return null;
 		}
@@ -144,7 +146,7 @@ class MouseHighlightOverlay extends Overlay
 	private boolean shouldNotRenderMenuAction(int type)
 	{
 		return type == MenuAction.RUNELITE_OVERLAY.getId()
-				|| (!config.isRightClickTooltipEnabled() && isMenuActionRightClickOnly(type));
+				|| (!plugin.isRightClickTooltipEnabled() && isMenuActionRightClickOnly(type));
 	}
 
 	private boolean isMenuActionRightClickOnly(int type)

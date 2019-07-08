@@ -32,7 +32,7 @@ public enum AttackMode
 
 	private final String name;
 
-	AttackMode(String name)
+	AttackMode(final String name)
 	{
 		this.name = name;
 	}

@@ -26,10 +26,11 @@
  */
 package net.runelite.client.plugins.interfacestyles;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.widgets.WidgetInfo;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum WidgetOverride
 {
 	FIXED_CORNER_TOP_LEFT_2005(Skin.AROUND_2005, "1026", WidgetInfo.FIXED_VIEWPORT_COMBAT_TAB),
@@ -47,7 +48,7 @@ enum WidgetOverride
 	private String name;
 	private WidgetInfo[] widgetInfo;
 
-	WidgetOverride(Skin skin, String name, WidgetInfo... widgetInfo)
+	WidgetOverride(final Skin skin, final String name, final WidgetInfo... widgetInfo)
 	{
 		this.skin = skin;
 		this.name = name;

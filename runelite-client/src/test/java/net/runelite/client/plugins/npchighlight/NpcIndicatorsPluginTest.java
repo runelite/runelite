@@ -37,7 +37,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -67,7 +66,7 @@ public class NpcIndicatorsPluginTest
 	@Test
 	public void getHighlights()
 	{
-		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin, , zulrah   , *wyvern, ,");
+		npcIndicatorsPlugin.setGetNpcToHighlight("goblin, , zulrah   , *wyvern, ,");
 		final List<String> highlightedNpcs = npcIndicatorsPlugin.getHighlights();
 		assertEquals("Length of parsed NPCs is incorrect", 3, highlightedNpcs.size());
 
