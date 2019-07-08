@@ -31,6 +31,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -62,6 +63,7 @@ import net.runelite.api.events.NpcActionChanged;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.events.WidgetPressed;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -97,6 +99,7 @@ public class MenuManager
 	private final LinkedHashSet<MenuEntry> entries = Sets.newLinkedHashSet();
 
 	private MenuEntry leftClickEntry = null;
+	private MenuEntry firstEntry = null;
 
 	@Inject
 	private MenuManager(Client client, EventBus eventBus)
@@ -150,7 +153,7 @@ public class MenuManager
 		// Need to reorder the list to normal, then rebuild with swaps
 		MenuEntry[] oldEntries = event.getMenuEntries();
 
-		leftClickEntry = null;
+		firstEntry = null;
 
 		client.sortMenuEntries();
 
@@ -280,24 +283,23 @@ public class MenuManager
 	@Subscribe
 	public void onBeforeRender(BeforeRender event)
 	{
-		leftClickEntry = null;
-
-		if (client.isMenuOpen())
-		{
-			return;
-		}
-
 		rebuildLeftClickMenu();
 	}
 
-	private void rebuildLeftClickMenu()
+	private MenuEntry rebuildLeftClickMenu()
 	{
+		if (client.isMenuOpen())
+		{
+			return null;
+		}
+
+		firstEntry = null;
 		entries.clear();
 		entries.addAll(Arrays.asList(client.getMenuEntries()));
 
 		if (entries.size() < 2)
 		{
-			return;
+			return null;
 		}
 
 		if (!hiddenEntries.isEmpty())
@@ -316,22 +318,24 @@ public class MenuManager
 			indexPriorityEntries(entries);
 		}
 
-		if (leftClickEntry == null && !swaps.isEmpty())
+		if (firstEntry == null && !swaps.isEmpty())
 		{
 			indexSwapEntries(entries);
 		}
 
-		if (leftClickEntry != null)
+		if (firstEntry != null)
 		{
-			entries.remove(leftClickEntry);
-			entries.add(leftClickEntry);
+			entries.remove(firstEntry);
+			entries.add(firstEntry);
 		}
 		else if (!currentHiddenEntries.isEmpty())
 		{
-			leftClickEntry = Iterables.getLast(entries, null);
+			firstEntry = Iterables.getLast(entries, null);
 		}
 
 		client.setMenuEntries(entries.toArray(new MenuEntry[0]));
+
+		return firstEntry;
 	}
 
 	public void addPlayerMenuItem(String menuText)
@@ -436,11 +440,22 @@ public class MenuManager
 	}
 
 	@Subscribe
+	public void onWidgetPressed(WidgetPressed event)
+	{
+		leftClickEntry = rebuildLeftClickMenu();
+	}
+
+	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (!client.isMenuOpen() && event.isAuthentic())
 		{
-			rebuildLeftClickMenu();
+			// The mouse button will not be 0 if a non draggable widget was clicked,
+			// otherwise the left click entry will have been set in onWidgetPressed
+			if (client.getMouseCurrentButton() != 0)
+			{
+				leftClickEntry = rebuildLeftClickMenu();
+			}
 
 			if (leftClickEntry != null)
 			{
@@ -808,21 +823,31 @@ public class MenuManager
 			}
 		});
 
-		leftClickEntry = Iterables.getLast(safeCurrentPriorityEntries.entrySet().stream()
+		firstEntry = Iterables.getLast(safeCurrentPriorityEntries.entrySet().stream()
 			.sorted(Comparator.comparingInt(e -> e.getValue().getPriority()))
 			.map(Map.Entry::getKey)
 			.collect(Collectors.toList()), null);
 	}
 
-	private void indexSwapEntries(Set<MenuEntry>  entries)
+	private void indexSwapEntries(Set<MenuEntry> entries)
 	{
 		MenuEntry first = Iterables.getLast(entries);
 
-		leftClickEntry = entries.parallelStream().filter(entry ->
+		List<ComparableEntry> values = new ArrayList<>();
+
+		for (Map.Entry<ComparableEntry, ComparableEntry> pair : swaps.entrySet())
 		{
-			for (Map.Entry<ComparableEntry, ComparableEntry> p : swaps.entrySet())
+			if (pair.getKey().matches(first))
 			{
-				if (p.getKey().matches(first) && p.getValue().matches(entry))
+				values.add(pair.getValue());
+			}
+		}
+
+		firstEntry = entries.parallelStream().filter(entry ->
+		{
+			for (ComparableEntry value : values)
+			{
+				if (value.matches(entry))
 				{
 					return true;
 				}
