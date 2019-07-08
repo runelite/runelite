@@ -24,7 +24,14 @@
  */
 package net.runelite.client.plugins.maxhit.calculators.testconfig;
 
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.maxhit.attackstyle.WeaponType;
