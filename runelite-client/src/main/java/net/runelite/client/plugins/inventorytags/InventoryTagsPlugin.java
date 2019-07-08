@@ -227,6 +227,8 @@ public class InventoryTagsPlugin extends Plugin
 				menuList[num++] = newMenu;
 			}
 
+			// Need to set the event entries to prevent conflicts
+			event.setMenuEntries(menuList);
 			client.setMenuEntries(menuList);
 		}
 	}
