@@ -722,9 +722,6 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				newPos++;
 				break;
 			case KeyEvent.VK_UP:
-				ev.consume();
-				newPos = getLineOffset.applyAsInt(code);
-				break;
 			case KeyEvent.VK_DOWN:
 				ev.consume();
 				newPos = getLineOffset.applyAsInt(code);
