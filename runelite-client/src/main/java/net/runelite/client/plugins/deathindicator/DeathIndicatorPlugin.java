@@ -112,12 +112,9 @@ public class DeathIndicatorPlugin extends Plugin
 			return;
 		}
 
-		if (config.showDeathHintArrow())
+		if (config.showDeathHintArrow() && !client.hasHintArrow())
 		{
-			if (!client.hasHintArrow())
-			{
-				client.setHintArrow(new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane()));
-			}
+			client.setHintArrow(new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane()));
 		}
 
 		if (config.showDeathOnWorldMap())

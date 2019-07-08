@@ -28,7 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Map;
-import java.util.TreeSet;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
@@ -94,13 +94,10 @@ public class ChestOverlay extends Overlay
 
 			if (chest != null)
 			{
-				if (!plugin.isBatsFound() && !chest.isEverOpened())
+				if (!plugin.isBatsFound() && !chest.isEverOpened() && shouldDrawChest(pos))
 				{
-					if (shouldDrawChest(pos))
-					{
-						Color drawColor = new Color(setAlphaComponent(plugin.getGetPotentialBatColor().getRGB(), getChestOpacity(pos)));
-						drawCircleOnTrap(graphics, chest, drawColor);
-					}
+					Color drawColor = new Color(setAlphaComponent(plugin.getGetPotentialBatColor().getRGB(), getChestOpacity(pos)));
+					drawCircleOnTrap(graphics, chest, drawColor);
 				}
 				if (chest.isPoison())
 				{
@@ -120,7 +117,7 @@ public class ChestOverlay extends Overlay
 		BatSolver solver = plugin.getSolver();
 		if (solver != null && chestId != -1)
 		{
-			TreeSet<Integer> matches = solver.matchSolutions();
+			Set<Integer> matches = solver.matchSolutions();
 			return matches.contains(chestId) || matches.size() == 0;
 		}
 		return true;

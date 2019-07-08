@@ -53,8 +53,8 @@ public class DemonicGorillaOverlay extends Overlay
 	private static final int OVERLAY_ICON_DISTANCE = 50;
 	private static final int OVERLAY_ICON_MARGIN = 8;
 
-	private Client client;
-	private DemonicGorillaPlugin plugin;
+	private final Client client;
+	private final DemonicGorillaPlugin plugin;
 
 	@Inject
 	private SkillIconManager iconManager;

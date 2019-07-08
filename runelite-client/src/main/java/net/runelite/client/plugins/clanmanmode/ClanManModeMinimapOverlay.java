@@ -16,12 +16,12 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class ClanManModeMinimapOverlay extends Overlay
 {
 	private final ClanManModeService ClanManModeService;
-	private final ClanManModeConfig config;
+	private final ClanManModePlugin plugin;
 
 	@Inject
-	private ClanManModeMinimapOverlay(final ClanManModeConfig config, final ClanManModeService ClanManModeService)
+	private ClanManModeMinimapOverlay(final ClanManModePlugin plugin, final ClanManModeService ClanManModeService)
 	{
-		this.config = config;
+		this.plugin = plugin;
 		this.ClanManModeService = ClanManModeService;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -39,7 +39,7 @@ public class ClanManModeMinimapOverlay extends Overlay
 	{
 		final String name = actor.getName().replace('\u00A0', ' ');
 
-		if (config.drawMinimapNames())
+		if (plugin.isDrawMinimapNames())
 		{
 			final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
 

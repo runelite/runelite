@@ -53,8 +53,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
@@ -579,11 +579,14 @@ public class TabInterface
 			if (event.getOption().startsWith(CHANGE_ICON + " ("))
 			{
 				ItemDefinition item = getItem(event.getActionParam0());
-				int itemId = itemManager.canonicalize(item.getId());
-				iconToSet.setIconItemId(itemId);
-				iconToSet.getIcon().setItemId(itemId);
-				tabManager.setIcon(iconToSet.getTag(), itemId + "");
-				event.consume();
+				if (item != null)
+				{
+					int itemId = itemManager.canonicalize(item.getId());
+					iconToSet.setIconItemId(itemId);
+					iconToSet.getIcon().setItemId(itemId);
+					tabManager.setIcon(iconToSet.getTag(), itemId + "");
+					event.consume();
+				}
 			}
 
 			// Reset icon selection even when we do not clicked item with icon
@@ -613,9 +616,13 @@ public class TabInterface
 			// Add "remove" menu entry to all items in bank while tab is selected
 			event.consume();
 			final ItemDefinition item = getItem(event.getActionParam0());
-			final int itemId = item.getId();
-			tagManager.removeTag(itemId, activeTab.getTag());
-			bankSearch.search(InputType.SEARCH, TAG_SEARCH + activeTab.getTag(), true);
+			final int itemId;
+			if (item != null)
+			{
+				itemId = item.getId();
+				tagManager.removeTag(itemId, activeTab.getTag());
+				bankSearch.search(InputType.SEARCH, TAG_SEARCH + activeTab.getTag(), true);
+			}
 		}
 		else if (event.getMenuAction() == MenuAction.RUNELITE
 			&& ((event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getOption().equals(TAG_INVENTORY))
@@ -669,15 +676,11 @@ public class TabInterface
 					updateTabIfActive(Lists.newArrayList(Text.standardize(draggedOn.getName())));
 				}
 			}
-			else if (parent.getId() == draggedOn.getId() && parent.getId() == draggedWidget.getId())
+			else if (parent.getId() == draggedOn.getId() && parent.getId() == draggedWidget.getId() && !Strings.isNullOrEmpty(draggedOn.getName()))
 			{
-				// Reorder tag tabs
-				if (!Strings.isNullOrEmpty(draggedOn.getName()))
-				{
-					tabManager.move(draggedWidget.getName(), draggedOn.getName());
-					tabManager.save();
-					updateTabs();
-				}
+				tabManager.move(draggedWidget.getName(), draggedOn.getName());
+				tabManager.save();
+				updateTabs();
 			}
 		}
 		else if (draggedWidget.getItemId() > 0)
@@ -1010,8 +1013,17 @@ public class TabInterface
 	private ItemDefinition getItem(int idx)
 	{
 		ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
-		Item item = bankContainer.getItems()[idx];
-		return itemManager.getItemDefinition(item.getId());
+		Item item = null;
+		if (bankContainer != null)
+		{
+			item = bankContainer.getItems()[idx];
+		}
+		if (item != null)
+		{
+			return itemManager.getItemDefinition(item.getId());
+		}
+
+		return null;
 	}
 
 	private void openTag(final String tag)

@@ -36,7 +36,6 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -298,7 +297,7 @@ public class CriticalItemPanel extends JPanel
 
 	private JPanel createActivitiesPanel()
 	{
-		ArrayList<Activity> activities = Activity.getByCriticalItem(item);
+		List<Activity> activities = Activity.getByCriticalItem(item);
 		if (activities == null || activities.size() == 1)
 		{
 			return null;

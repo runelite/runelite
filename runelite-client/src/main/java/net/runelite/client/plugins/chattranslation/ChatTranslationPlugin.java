@@ -3,8 +3,20 @@ package net.runelite.client.plugins.chattranslation;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
+import java.awt.event.KeyEvent;
+import java.util.HashSet;
+import java.util.Set;
+import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
-import net.runelite.api.*;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.MessageNode;
+import static net.runelite.api.ScriptID.CHATBOX_TEXT;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -24,11 +36,6 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-
 @PluginDescriptor(
 	name = "Chat Translator",
 	description = "Translates messages from one Language to another.",
@@ -36,6 +43,7 @@ import java.util.ArrayList;
 	type = PluginType.UTILITY
 )
 @Singleton
+@Slf4j
 public class ChatTranslationPlugin extends Plugin implements KeyListener
 {
 
@@ -43,7 +51,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Kick");
 
-	private ArrayList<String> playerNames = new ArrayList<>();
+	private final Set<String> playerNames = new HashSet<>();
 
 	@Inject
 	private Client client;
@@ -84,12 +92,9 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	{
 		updateConfig();
 
-		if (client != null)
+		if (client != null && this.translateOptionVisable)
 		{
-			if (this.translateOptionVisable)
-			{
-				menuManager.get().addPlayerMenuItem(TRANSLATE);
-			}
+			menuManager.get().addPlayerMenuItem(TRANSLATE);
 		}
 		keyManager.registerKeyListener(this);
 
@@ -99,12 +104,9 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown() throws Exception
 	{
-		if (client != null)
+		if (client != null && this.translateOptionVisable)
 		{
-			if (this.translateOptionVisable)
-			{
-				menuManager.get().removePlayerMenuItem(TRANSLATE);
-			}
+			menuManager.get().removePlayerMenuItem(TRANSLATE);
 		}
 		keyManager.unregisterKeyListener(this);
 
@@ -143,8 +145,6 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 
 		if (groupId == WidgetInfo.CHATBOX.getGroupId())
 		{
-			boolean after;
-
 			if (!AFTER_OPTIONS.contains(option))
 			{
 				return;
@@ -223,7 +223,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
+					log.warn(e.toString());
 				}
 
 				client.refreshChat();
@@ -246,47 +246,42 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 
 		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
 
-		if (chatboxParent != null && chatboxParent.getOnKeyListener() != null)
+		if (chatboxParent != null && chatboxParent.getOnKeyListener() != null && event.getKeyCode() == 0xA)
 		{
-			if (event.getKeyCode() == 0xA)
+			Translator translator = new Translator();
+			String message = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+
+			if (message.startsWith("/"))
 			{
-				Translator translator = new Translator();
-				String message = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-
-				if (message.startsWith("/"))
-				{
-					try
-					{
-						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translator.translate("auto", config.playerTargetLanguage().toString(), message));
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-					return;
-				}
-
-				event.consume();
-
 				try
 				{
-					//Automatically check language of message and translate to selected language.
-					String translation = translator.translate("auto", this.playerTargetLanguage.toString(), message);
-					if (translation != null)
-					{
-						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translation);
-
-						clientThread.invoke(() ->
-						{
-							client.runScript(96, 0, translation);
-						});
-					}
-					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translator.translate("auto", config.playerTargetLanguage().toString(), message));
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
+					log.warn("Translation error", e);
 				}
+				return;
+			}
+
+			event.consume();
+
+			try
+			{
+				//Automatically check language of message and translate to selected language.
+				String translation = translator.translate("auto", this.playerTargetLanguage.toString(), message);
+				if (translation != null)
+				{
+					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translation);
+
+					clientThread.invoke(() ->
+						client.runScript(CHATBOX_TEXT, 0, translation));
+				}
+				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+			}
+			catch (Exception e)
+			{
+				log.warn(e.toString());
 			}
 		}
 	}

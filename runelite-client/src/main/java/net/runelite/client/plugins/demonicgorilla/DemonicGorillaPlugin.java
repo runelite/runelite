@@ -206,7 +206,8 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 		boolean correctPrayer =
 			target == null || // If player is out of memory, assume prayer was correct
-				attackStyle == protectedStyle;
+				(attackStyle != null &&
+					attackStyle.equals(protectedStyle));
 
 		if (attackStyle == DemonicGorilla.AttackStyle.BOULDER)
 		{

@@ -9,7 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class Translator
+class Translator
 {
 
 	public String translate(String source, String target, String message) throws Exception
@@ -23,7 +23,7 @@ public class Translator
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;
-		StringBuffer response = new StringBuffer();
+		StringBuilder response = new StringBuilder();
 
 		while ((inputLine = in.readLine()) != null)
 		{

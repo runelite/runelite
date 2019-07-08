@@ -103,7 +103,7 @@ public class SpicyStew implements Effect
 		}
 
 		StatsChanges changesReturn = new StatsChanges(4);
-		changesReturn.setStatChanges(changes.toArray(new StatChange[changes.size()]));
+		changesReturn.setStatChanges(changes.toArray(new StatChange[0]));
 
 		return changesReturn;
 	}

@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
@@ -73,7 +74,7 @@ class GrotesqueGuardiansOverlay extends Overlay
 		// TODO: Awaiting GraphicsObjectDespawn event to be tracked to make this more efficient.
 		for (GraphicsObject graphicsObject : client.getGraphicsObjects())
 		{
-			Color color = null;
+			Color color;
 
 			if (graphicsObject.getId() >= GROTESQUE_GUARDIANS_LIGHTNING_START && graphicsObject.getId() <= GROTESQUE_GUARDIANS_LIGHTNING_END)
 			{
@@ -99,22 +100,19 @@ class GrotesqueGuardiansOverlay extends Overlay
 			{
 				OverlayUtil.renderPolygon(graphics, poly, color);
 			}
-			if ((plugin.isInGargs()) && (plugin.isNeedingToRun()))
+			if (plugin.isInGargs() && plugin.isNeedingToRun() && plugin.getDusk() != null && plugin.getDusk().getLocalLocation() != null)
 			{
-				if ((plugin.getDusk() != null) && (plugin.getDusk().getLocalLocation() != null))
-				{
-					TextComponent textComponent = new TextComponent();
-					LocalPoint duskPoint;
+				TextComponent textComponent = new TextComponent();
+				LocalPoint duskPoint;
 
-					duskPoint = new LocalPoint(plugin.getDusk().getLocalLocation().getX() + 128 * (plugin.getDusk().getTransformedDefinition().getSize() - 1) / 2, plugin.getDusk().getLocalLocation().getY() + 128 * (plugin.getDusk().getTransformedDefinition().getSize() - 1) / 2);
-					net.runelite.api.Point duskLoc = Perspective.getCanvasTextLocation(client, graphics, duskPoint, "RUN AWAY", 500);
-					if (duskLoc != null)
-					{
-						textComponent.setText("RUN AWAY");
-						textComponent.setPosition(new java.awt.Point(duskLoc.getX(), duskLoc.getY()));
-						textComponent.setColor(Color.red);
-						textComponent.render(graphics);
-					}
+				duskPoint = new LocalPoint(plugin.getDusk().getLocalLocation().getX() + 128 * (Objects.requireNonNull(plugin.getDusk().getTransformedDefinition()).getSize() - 1) / 2, plugin.getDusk().getLocalLocation().getY() + 128 * (plugin.getDusk().getTransformedDefinition().getSize() - 1) / 2);
+				net.runelite.api.Point duskLoc = Perspective.getCanvasTextLocation(client, graphics, duskPoint, "RUN AWAY", 500);
+				if (duskLoc != null)
+				{
+					textComponent.setText("RUN AWAY");
+					textComponent.setPosition(new java.awt.Point(duskLoc.getX(), duskLoc.getY()));
+					textComponent.setColor(Color.red);
+					textComponent.render(graphics);
 				}
 			}
 		}

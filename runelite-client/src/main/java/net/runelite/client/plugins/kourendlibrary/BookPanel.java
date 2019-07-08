@@ -36,7 +36,7 @@ import net.runelite.client.ui.FontManager;
 @Singleton
 class BookPanel extends JPanel
 {
-	private JLabel location = new JLabel();
+	private final JLabel location = new JLabel();
 
 	BookPanel(final Book b)
 	{

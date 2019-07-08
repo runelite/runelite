@@ -92,7 +92,7 @@ class ProfilesPanel extends PluginPanel
 	private final JPasswordField txtAccountLogin = new JPasswordField(ACCOUNT_USERNAME);
 	private final JPasswordField txtPasswordLogin = new JPasswordField(PASSWORD_LABEL);
 	private final JPanel profilesPanel = new JPanel();
-	private GridBagConstraints c;
+	private final GridBagConstraints c;
 
 	@Inject
 	public ProfilesPanel(final Client client, final ProfilesConfig config)
@@ -346,7 +346,7 @@ class ProfilesPanel extends PluginPanel
 			}
 			catch (InvalidKeySpecException | NoSuchAlgorithmException ex)
 			{
-				ex.printStackTrace();
+				log.error(e.toString());
 			}
 
 			this.addAccount(data);
@@ -552,7 +552,7 @@ class ProfilesPanel extends PluginPanel
 		}
 		catch (NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException e)
 		{
-			e.printStackTrace();
+			log.error(e.toString());
 		}
 		return new byte[0];
 	}
@@ -568,7 +568,7 @@ class ProfilesPanel extends PluginPanel
 		}
 		catch (NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException e)
 		{
-			e.printStackTrace();
+			log.error(e.toString());
 		}
 		return "";
 	}

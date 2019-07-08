@@ -73,13 +73,10 @@ class PrayAgainstPlayerOverlayPrayerTab extends Overlay
 				{
 					for (PlayerContainer container : plugin.getPlayersAttackingMe())
 					{
-						if (plugin.getPlayersAttackingMe() != null && plugin.getPlayersAttackingMe().size() > 0)
+						if (plugin.getPlayersAttackingMe() != null && plugin.getPlayersAttackingMe().size() == 1 &&
+							plugin.isDrawTargetPrayAgainstPrayerTab())
 						{
-							// no reason to show you what prayers to pray in your prayer tab if multiple people are attacking you
-							if ((plugin.getPlayersAttackingMe().size() == 1) && (plugin.isDrawTargetPrayAgainstPrayerTab()))
-							{
-								renderPrayerToClick(graphics, container.getPlayer());
-							}
+							renderPrayerToClick(graphics, container.getPlayer());
 						}
 					}
 				}

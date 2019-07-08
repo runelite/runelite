@@ -96,6 +96,7 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 @PluginDescriptor(
 	name = "CoX Scouter",
@@ -148,13 +149,13 @@ public class RaidsPlugin extends Plugin
 	private static final String TRIPLE_PUZZLE = "SFCCPC.PCSCPF - #WSEENES#WWWNEEE"; //good crabs first rare crabs second rare crabs third
 	private static final Pattern PUZZLES = Pattern.compile("Puzzle - (\\w+)");
 	@Getter(AccessLevel.PACKAGE)
-	private final ArrayList<String> roomWhitelist = new ArrayList<>();
+	private final List<String> roomWhitelist = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
-	private final ArrayList<String> roomBlacklist = new ArrayList<>();
+	private final List<String> roomBlacklist = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
-	private final ArrayList<String> rotationWhitelist = new ArrayList<>();
+	private final List<String> rotationWhitelist = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
-	private final ArrayList<String> layoutWhitelist = new ArrayList<>();
+	private final List<String> layoutWhitelist = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, List<Integer>> recommendedItemsList = new HashMap<>();
 	@Inject
@@ -814,11 +815,11 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void updateList(ArrayList<String> list, String input)
+	private void updateList(List<String> list, String input)
 	{
 		list.clear();
 
-		if (list == rotationWhitelist)
+		if (list.equals(rotationWhitelist))
 		{
 			Matcher m = ROTATION_REGEX.matcher(input);
 			while (m.find())
@@ -1103,10 +1104,10 @@ public class RaidsPlugin extends Plugin
 		StringBuilder builder = new StringBuilder();
 		if (seconds >= 3600)
 		{
-			builder.append((int) Math.floor(seconds / 3600) + ";");
+			builder.append((int) Math.floor(seconds / 3600)).append(";");
 		}
 		seconds %= 3600;
-		if (builder.toString().equals(""))
+		if (builder.length() == 0)
 		{
 			builder.append((int) Math.floor(seconds / 60));
 		}
@@ -1216,14 +1217,12 @@ public class RaidsPlugin extends Plugin
 
 	String recordRaid()
 	{
-		if (raid.getRotationString().toLowerCase().equals("vasa,tekton,vespula")
-			&& raid.getFullRotationString().toLowerCase().contains("crabs")
-			&& raid.getFullRotationString().toLowerCase().contains("tightrope"))
+		if (raid.getRotationString().equalsIgnoreCase("vasa,tekton,vespula")
+			&& containsIgnoreCase(raid.getFullRotationString(), "crabs")
+			&& containsIgnoreCase(raid.getFullRotationString(), "tightrope")
+			&& goodCrabs != null)
 		{
-			if (goodCrabs != null)
-			{
-				return goodCrabs;
-			}
+			return goodCrabs;
 		}
 		return null;
 	}

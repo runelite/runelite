@@ -210,7 +210,7 @@ public class BlastFurnacePlugin extends Plugin
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.showBarDispenser = config.showBarDispenser();
 		this.showConveyorBelt = config.showConveyorBelt();

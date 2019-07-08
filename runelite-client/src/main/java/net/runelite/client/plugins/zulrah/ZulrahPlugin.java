@@ -212,26 +212,20 @@ public class ZulrahPlugin extends Plugin
 		}
 
 		Actor actor = event.getActor();
-		if (config.sounds())
+		if (config.sounds() && zulrah != null && zulrah.equals(actor) && zulrah.getAnimation() == AnimationID.ZULRAH_PHASE)
 		{
-			if (zulrah == actor)
-			{
-				if (zulrah.getAnimation() == AnimationID.ZULRAH_PHASE)
-				{
-					Prayer prayer = instance.getNextPhase().getPrayer();
+			Prayer prayer = instance.getNextPhase().getPrayer();
 
-					if (prayer != null)
-					{
-						switch (prayer)
-						{
-							case PROTECT_FROM_MAGIC:
-								soundManager.playSound(Sound.PRAY_MAGIC);
-								break;
-							case PROTECT_FROM_MISSILES:
-								soundManager.playSound(Sound.PRAY_RANGED);
-								break;
-						}
-					}
+			if (prayer != null)
+			{
+				switch (prayer)
+				{
+					case PROTECT_FROM_MAGIC:
+						soundManager.playSound(Sound.PRAY_MAGIC);
+						break;
+					case PROTECT_FROM_MISSILES:
+						soundManager.playSound(Sound.PRAY_RANGED);
+						break;
 				}
 			}
 		}

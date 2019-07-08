@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.raidsthieving;
 
-public class RaidsThievingConstants
+class RaidsThievingConstants
 {
 	static final int CLOSED_CHEST_ID = 29742;
 	static final int OPEN_EMPTY_CHEST = 29743;

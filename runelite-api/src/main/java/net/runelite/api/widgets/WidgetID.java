@@ -151,6 +151,7 @@ public class WidgetID
 	public static final int BEGINNER_CLUE_MAP_WIZARDS_TOWER = 356;
 	public static final int SEED_BOX_GROUP_ID = 128;
 	public static final int ITEMS_KEPT_ON_DEATH_GROUP_ID = 4;
+	public static final int TRADING_SCREEN = 335;
 
 	static class WorldMap
 	{

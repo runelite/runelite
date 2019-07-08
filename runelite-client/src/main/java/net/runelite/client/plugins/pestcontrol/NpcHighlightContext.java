@@ -38,5 +38,5 @@ class NpcHighlightContext
 {
 	private NpcHighlightStyle npcRenderStyle;
 	private Color color;
-	private boolean showNpcName = false;
+	private boolean showNpcName;
 }

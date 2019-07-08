@@ -163,13 +163,12 @@ public class OpponentInfoPlugin extends Plugin
 	{
 		if (lastOpponent != null
 			&& lastTime != null
-			&& client.getLocalPlayer().getInteracting() == null)
+			&& client.getLocalPlayer().getInteracting() == null
+			&& Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
 		{
-			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
-			{
-				lastOpponent = null;
-			}
+			lastOpponent = null;
 		}
+
 	}
 
 	@Subscribe

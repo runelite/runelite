@@ -56,7 +56,7 @@ public class SafeSpotPlugin extends Plugin
 	private SafeSpotConfig config;
 
 	@Getter(AccessLevel.PACKAGE)
-	private ArrayList<Tile> safeSpotList;
+	private List<Tile> safeSpotList;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean safeSpotsRenderable = false;
@@ -151,9 +151,9 @@ public class SafeSpotPlugin extends Plugin
 	 * @param worldPoints - Worldpoints in the current scene
 	 * @return an ArrayList of Tiles where current player can attack actor but actor cannot attack local player
 	 */
-	private ArrayList<Tile> getSafeSpotList(Actor actor, List<WorldPoint> worldPoints)
+	private List<Tile> getSafeSpotList(Actor actor, List<WorldPoint> worldPoints)
 	{
-		ArrayList<Tile> safeSpotList = new ArrayList<>();
+		List<Tile> safeSpotList = new ArrayList<>();
 		Tile[][][] tiles = client.getScene().getTiles();
 		for (WorldPoint w : worldPoints)
 		{
@@ -172,16 +172,14 @@ public class SafeSpotPlugin extends Plugin
 			{
 				bit = Objects.requireNonNull(client.getCollisionMaps())[plane].getFlags()[toPoint.getSceneX()][toPoint.getSceneY()];
 			}
-			if (toTile != null && toTile.hasLineOfSightTo(fromTile) && !fromTile.hasLineOfSightTo(toTile))
-			{
-				if (!((bit & CollisionDataFlag.BLOCK_MOVEMENT_OBJECT) == CollisionDataFlag.BLOCK_MOVEMENT_OBJECT ||
+			if (toTile != null && toTile.hasLineOfSightTo(fromTile) && !fromTile.hasLineOfSightTo(toTile) &&
+				(!((bit & CollisionDataFlag.BLOCK_MOVEMENT_OBJECT) == CollisionDataFlag.BLOCK_MOVEMENT_OBJECT ||
 					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FLOOR_DECORATION)
 						== CollisionDataFlag.BLOCK_MOVEMENT_FLOOR_DECORATION ||
 					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FLOOR) == CollisionDataFlag.BLOCK_MOVEMENT_FLOOR ||
-					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FULL) == CollisionDataFlag.BLOCK_MOVEMENT_FULL))
-				{
-					safeSpotList.add(toTile);
-				}
+					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FULL) == CollisionDataFlag.BLOCK_MOVEMENT_FULL)))
+			{
+				safeSpotList.add(toTile);
 			}
 		}
 		return safeSpotList;

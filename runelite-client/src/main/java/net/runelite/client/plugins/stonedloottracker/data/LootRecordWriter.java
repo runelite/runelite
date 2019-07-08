@@ -124,7 +124,7 @@ public class LootRecordWriter
 		return data;
 	}
 
-	public synchronized boolean addLootTrackerRecord(LootRecordCustom rec)
+	public synchronized void addLootTrackerRecord(LootRecordCustom rec)
 	{
 		// Grab file
 		String fileName = npcNameToFileName(rec.getName());
@@ -141,17 +141,15 @@ public class LootRecordWriter
 			file.newLine();
 			file.close();
 			bus.post(new LootTrackerRecordStored(rec));
-			return true;
 		}
 		catch (IOException ioe)
 		{
 			log.warn("Error writing loot data to file {}: {}", fileName, ioe.getMessage());
-			return false;
 		}
 	}
 
 	// Mostly used to adjust previous loot entries such as adding pet drops/abyssal sire drops
-	public synchronized boolean writeLootTrackerFile(String npcName, Collection<LootRecordCustom> loots)
+	public synchronized void writeLootTrackerFile(String npcName, Collection<LootRecordCustom> loots)
 	{
 		String fileName = npcNameToFileName(npcName);
 		File lootFile = new File(playerFolder, fileName);
@@ -168,16 +166,14 @@ public class LootRecordWriter
 			}
 			file.close();
 
-			return true;
 		}
 		catch (IOException ioe)
 		{
 			log.warn("Error rewriting loot data to file {}: {}", fileName, ioe.getMessage());
-			return false;
 		}
 	}
 
-	public synchronized boolean deleteLootTrackerRecords(String npcName)
+	public synchronized void deleteLootTrackerRecords(String npcName)
 	{
 		String fileName = npcNameToFileName(npcName);
 
@@ -186,12 +182,10 @@ public class LootRecordWriter
 		if (lootFile.delete())
 		{
 			log.debug("Deleted loot file: {}", fileName);
-			return true;
 		}
 		else
 		{
 			log.debug("Couldn't delete file: {}", fileName);
-			return false;
 		}
 	}
 

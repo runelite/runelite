@@ -57,7 +57,7 @@ public enum RunedokuPiece
 		this.pieceForSudoku = pieceForSudoku;
 	}
 
-	int getId()
+	private int getId()
 	{
 		return pieceID;
 	}

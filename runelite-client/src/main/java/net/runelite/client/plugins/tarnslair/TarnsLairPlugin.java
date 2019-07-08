@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.tarnslair;
 
 import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -63,13 +64,13 @@ public class TarnsLairPlugin extends Plugin
 	private static final int TARNS_LAIR_SOUTH_REGION = 12615;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final HashMap<TileObject, Tile> staircases = new HashMap<>();
+	private final Map<TileObject, Tile> staircases = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private final HashMap<TileObject, Tile> wallTraps = new HashMap<>();
+	private final Map<TileObject, Tile> wallTraps = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private final HashMap<TileObject, Tile> floorTraps = new HashMap<>();
+	private final Map<TileObject, Tile> floorTraps = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inLair;

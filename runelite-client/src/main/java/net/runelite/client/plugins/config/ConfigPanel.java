@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import javax.inject.Singleton;
@@ -992,7 +993,7 @@ public class ConfigPanel extends PluginPanel
 						if (e.getStateChange() == ItemEvent.SELECTED)
 						{
 							changeConfiguration(listItem, config, box, cd, cid);
-							box.setToolTipText(box.getSelectedItem().toString());
+							box.setToolTipText(Objects.requireNonNull(box.getSelectedItem()).toString());
 						}
 					});
 					item.add(box, BorderLayout.EAST);
@@ -1175,7 +1176,7 @@ public class ConfigPanel extends PluginPanel
 		else if (component instanceof JComboBox)
 		{
 			JComboBox jComboBox = (JComboBox) component;
-			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), ((Enum) Objects.requireNonNull(jComboBox.getSelectedItem())).name());
 
 			for (ConfigItemDescriptor cid2 : cd.getItems())
 			{

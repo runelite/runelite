@@ -1,11 +1,14 @@
 package net.runelite.client.plugins.clanmanmode;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -49,6 +52,37 @@ public class ClanManModePlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightAttackable;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getAttackableColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightAttacked;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getClanAttackableColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawTiles;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawOverheadPlayerNames;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawMinimapNames;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showAttackers;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getAttackerColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean ShowBold;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean hideAttackable;
+	@Getter(AccessLevel.PACKAGE)
+	private int hideTime;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean CalcSelfCB;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean PersistentClan;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getClanMemberColor;
+
 	@Provides
 	ClanManModeConfig provideConfig(ConfigManager configManager)
 	{
@@ -60,11 +94,13 @@ public class ClanManModePlugin extends Plugin
 	int clanmax;
 	int inwildy;
 	int ticks;
-	Map<String, Integer> clan = new HashMap<>();
+	final Map<String, Integer> clan = new HashMap<>();
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		
 		overlayManager.add(ClanManModeOverlay);
 		overlayManager.add(ClanManModeTileOverlay);
 		overlayManager.add(ClanManModeMinimapOverlay);
@@ -91,6 +127,8 @@ public class ClanManModePlugin extends Plugin
 		{
 			return;
 		}
+		
+		updateConfig();
 	}
 
 	@Subscribe
@@ -121,5 +159,24 @@ public class ClanManModePlugin extends Plugin
 			clanmin = Collections.min(clan.values());
 			clanmax = Collections.max(clan.values());
 		}
+	}
+	
+	private void updateConfig()
+	{
+		this.highlightAttackable = config.highlightAttackable();
+		this.getAttackableColor = config.getAttackableColor();
+		this.highlightAttacked = config.highlightAttacked();
+		this.getClanAttackableColor = config.getClanAttackableColor();
+		this.drawTiles = config.drawTiles();
+		this.drawOverheadPlayerNames = config.drawOverheadPlayerNames();
+		this.drawMinimapNames = config.drawMinimapNames();
+		this.showAttackers = config.showAttackers();
+		this.getAttackerColor = config.getAttackerColor();
+		this.ShowBold = config.ShowBold();
+		this.hideAttackable = config.hideAttackable();
+		this.hideTime = config.hideTime();
+		this.CalcSelfCB = config.CalcSelfCB();
+		this.PersistentClan = config.PersistentClan();
+		this.getClanMemberColor = config.getClanMemberColor();
 	}
 }

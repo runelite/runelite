@@ -33,11 +33,9 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonStreamParser;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,6 +49,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
@@ -145,12 +144,10 @@ public class LootTrackerPlugin extends Plugin
 		12342, // Edgeville
 		11062 // Camelot
 	);
-	// Player deaths
-	public static HashSet<String> usernameSet = new HashSet<String>(Arrays.stream(new String[]{"All Records"}).collect(Collectors.toList()));
 	@Inject
 	public Client client;
 	@VisibleForTesting
-	public Collection<LootRecord> lootRecords = new ArrayList<>();
+	private Collection<LootRecord> lootRecords = new ArrayList<>();
 	private boolean pvpDeath = false;
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -175,8 +172,6 @@ public class LootTrackerPlugin extends Plugin
 	private Multiset<Integer> inventorySnapshot;
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
-	private BufferedReader bufferedReader;
-	private JsonStreamParser jsonStreamParser;
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -305,7 +300,7 @@ public class LootTrackerPlugin extends Plugin
 
 		AccountSession accountSession = sessionManager.getAccountSession();
 		LOOT_RECORDS_FILE.createNewFile();
-		bufferedReader = Files.newBufferedReader(LOOT_RECORDS_FILE.toPath());
+		// BufferedReader bufferedReader = Files.newBufferedReader(LOOT_RECORDS_FILE.toPath());
 		if (accountSession != null || this.localPersistence)
 		{
 
@@ -323,7 +318,10 @@ public class LootTrackerPlugin extends Plugin
 
 					if (this.syncPanel && lootTrackerClient != null)
 					{
-						lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
+						if (accountSession != null)
+						{
+							lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
+						}
 						try
 						{
 							lootRecords = lootTrackerClient.get();
@@ -372,7 +370,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient = null;
-		lootRecords = new ArrayList<LootRecord>();
+		lootRecords = new ArrayList<>();
 	}
 
 	@Subscribe
@@ -613,11 +611,9 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		final ItemContainer itemContainer = event.getItemContainer();
-
 		if (pvpDeath && RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID()))
 		{
-			Multiset snapshot = HashMultiset.create();
+			Multiset snapshot;
 			snapshot = inventorySnapshot;
 			deathInventorySnapshot();
 			if (inventorySnapshot != snapshot)
@@ -629,7 +625,7 @@ public class LootTrackerPlugin extends Plugin
 					Multiset<Integer> currentInventory = HashMultiset.create();
 					if (inventory != null)
 					{
-						Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems())
+						Arrays.stream(Objects.requireNonNull(client.getItemContainer(InventoryID.INVENTORY)).getItems())
 							.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
 					}
 
@@ -818,7 +814,7 @@ public class LootTrackerPlugin extends Plugin
 			.toArray(LootTrackerItem[]::new);
 	}
 
-	public Collection<LootTrackerRecord> convertToLootTrackerRecord(final Collection<LootRecord> records)
+	private Collection<LootTrackerRecord> convertToLootTrackerRecord(final Collection<LootRecord> records)
 	{
 		Collection<LootTrackerRecord> trackerRecords = new ArrayList<>();
 		for (LootRecord record : records)

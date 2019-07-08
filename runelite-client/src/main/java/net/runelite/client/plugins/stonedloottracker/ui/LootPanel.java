@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,12 +53,12 @@ import net.runelite.client.ui.ColorScheme;
 @Singleton
 class LootPanel extends JPanel
 {
-	private Collection<LootRecordCustom> records;
-	private Map<Integer, Collection<UniqueItemPrepared>> uniqueMap;
-	private boolean hideUniques;
-	private ItemSortTypes sortType;
-	private boolean itemBreakdown;
-	private ItemManager itemManager;
+	private final Collection<LootRecordCustom> records;
+	private final Map<Integer, Collection<UniqueItemPrepared>> uniqueMap;
+	private final boolean hideUniques;
+	private final ItemSortTypes sortType;
+	private final boolean itemBreakdown;
+	private final ItemManager itemManager;
 	// Consolidate LTItemEntries stored by ItemID
 	private Map<Integer, LootTrackerItemEntry> consolidated;
 
@@ -187,7 +188,7 @@ class LootPanel extends JPanel
 
 
 		Collection<LootTrackerItemEntry> itemsToDisplay = new ArrayList<>();
-		ArrayList<LootTrackerItemEntry> items = LootTrackerBox.dedupeClues(new ArrayList<>(consolidated.values()));
+		List<LootTrackerItemEntry> items = LootTrackerBox.dedupeClues(new ArrayList<>(consolidated.values()));
 		for (LootTrackerItemEntry item : items)
 		{
 			totalValue += item.getTotal();

@@ -68,18 +68,15 @@ public class JRichTextPane extends JEditorPane
 			{
 				linkHandler = e ->
 				{
-					if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()) && e.getURL() != null)
+					if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()) && e.getURL() != null && Desktop.isDesktopSupported())
 					{
-						if (Desktop.isDesktopSupported())
+						try
 						{
-							try
-							{
-								Desktop.getDesktop().browse(e.getURL().toURI());
-							}
-							catch (URISyntaxException | IOException ex)
-							{
-								log.warn("Error opening link", ex);
-							}
+							Desktop.getDesktop().browse(e.getURL().toURI());
+						}
+						catch (URISyntaxException | IOException ex)
+						{
+							log.warn("Error opening link", ex);
 						}
 					}
 				};

@@ -129,7 +129,7 @@ public class SpellbookPlugin extends Plugin
 	@Getter
 	private Point draggingLocation;
 
-	private Map<Integer, Spell> spells = new HashMap<>();
+	private final Map<Integer, Spell> spells = new HashMap<>();
 	private Map<Integer, Spell> tmp = null;
 	private ImmutableSet<String> notFilteredSpells;
 	private Spellbook spellbook;
@@ -586,11 +586,11 @@ public class SpellbookPlugin extends Plugin
 	{
 		ImmutableSet<String> tmp = ImmutableSet.copyOf(notFilteredSpells);
 
-		for (int id : spells.keySet())
+		for (Map.Entry<Integer, Spell> spell : spells.entrySet())
 		{
-			Widget w = client.getWidget(WidgetInfo.TO_GROUP(id), WidgetInfo.TO_CHILD(id)); // y tho let me just plop in id
+			Widget w = client.getWidget(WidgetInfo.TO_GROUP(spell.getKey()), WidgetInfo.TO_CHILD(spell.getKey())); // y tho let me just plop in id
 
-			if (w == null || !w.getBounds().contains(point) || !isUnfiltered(spells.get(id).getName(), tmp))
+			if (w == null || !w.getBounds().contains(point) || !isUnfiltered(spell.getValue().getName(), tmp))
 			{
 				continue;
 			}

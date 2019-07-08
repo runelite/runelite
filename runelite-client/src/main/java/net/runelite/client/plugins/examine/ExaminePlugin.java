@@ -354,7 +354,7 @@ public class ExaminePlugin extends Plugin
 				}
 				catch (IOException e)
 				{
-					e.printStackTrace();
+					log.error(e.toString());
 				}
 				message
 					.append(ChatColorType.NORMAL)

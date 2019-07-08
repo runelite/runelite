@@ -52,13 +52,13 @@ import org.pushingpixels.substance.internal.SubstanceSynapse;
 @Singleton
 public class RuneLiteSplashScreen
 {
-	private RuneLiteProperties runeLiteProperties = new RuneLiteProperties();
+	private final RuneLiteProperties runeLiteProperties = new RuneLiteProperties();
 
-	public JFrame frame;
-	public JPanel panel = new JPanel();
+	private JFrame frame;
+	private final JPanel panel = new JPanel();
 	private JLabel messageLabel;
 	private JLabel subMessageLabel;
-	private JProgressBar progressBar = new JProgressBar();
+	private final JProgressBar progressBar = new JProgressBar();
 
 	/**
 	 * This is not done in the constructor in order to avoid processing in case the user chooses to not load

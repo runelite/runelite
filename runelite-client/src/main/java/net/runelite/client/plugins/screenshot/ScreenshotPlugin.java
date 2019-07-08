@@ -199,7 +199,7 @@ public class ScreenshotPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage reportButton;
 
-	private Map<Player, Integer> dying = new HashMap<>();
+	private final Map<Player, Integer> dying = new HashMap<>();
 
 	private NavigationButton titleBarButton;
 

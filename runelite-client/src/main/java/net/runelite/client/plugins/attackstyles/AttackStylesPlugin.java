@@ -269,7 +269,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.alwaysShowStyle = config.alwaysShowStyle();
 		this.warnForDefence = config.warnForDefence();
@@ -320,10 +320,10 @@ public class AttackStylesPlugin extends Plugin
 			{
 				if (warnedSkills.contains(skill))
 				{
-					if (weaponSwitch)
-					{
-						// TODO : chat message to warn players that their weapon switch also caused an unwanted attack style change
-					}
+//					if (weaponSwitch)
+//					{
+//						// TODO : chat message to warn players that their weapon switch also caused an unwanted attack style change
+//					}
 					warnedSkillSelected = true;
 					break;
 				}

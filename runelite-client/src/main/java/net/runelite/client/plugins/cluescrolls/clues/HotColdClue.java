@@ -171,11 +171,11 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 			if (digLocations.size() > 10)
 			{
-				for (HotColdArea area : locationCounts.keySet())
+				for (Map.Entry<HotColdArea, Integer> locationCount : locationCounts.entrySet())
 				{
 					panelComponent.getChildren().add(LineComponent.builder()
-						.left(area.getName())
-						.right(Integer.toString(locationCounts.get(area)))
+						.left(locationCount.getKey().getName())
+						.right(Integer.toString(locationCount.getValue()))
 						.build());
 				}
 			}

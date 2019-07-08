@@ -73,20 +73,14 @@ public class WarIndicatorOverlay extends Overlay
 		String[] callers = plugin.getGetActiveCallers().split(", ");
 		String[] targets = plugin.getGetTargetedSnipes().split(", ");
 
-		if (plugin.isCallerTile() && ArrayUtils.contains(callers, actor.getName()))
+		if (plugin.isCallerTile() && ArrayUtils.contains(callers, actor.getName()) && poly != null)
 		{
-			if (poly != null)
-			{
-				OverlayUtil.renderPolygon(graphics, poly, color);
-			}
+			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
 
-		if (plugin.isSnipeTile() && ArrayUtils.contains(targets, actor.getName()))
+		if (plugin.isSnipeTile() && ArrayUtils.contains(targets, actor.getName()) && poly != null)
 		{
-			if (poly != null)
-			{
-				OverlayUtil.renderPolygon(graphics, poly, color);
-			}
+			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
 
 		String name = actor.getName().replace('\u00A0', ' ');

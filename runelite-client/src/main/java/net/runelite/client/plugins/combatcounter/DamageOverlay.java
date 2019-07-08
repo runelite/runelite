@@ -97,16 +97,16 @@ class DamageOverlay extends Overlay
 					return null;
 				}
 
-				for (String name : map.keySet())
+				for (Map.Entry<String, Double> damage : map.entrySet())
 				{
-					String val = String.format("%.1f", map.get(name));
-					if (client.getLocalPlayer().getName().contains(name))
+					String val = String.format("%.1f", damage.getValue());
+					if (client.getLocalPlayer().getName().contains(damage.getKey()))
 					{
-						tableComponent.addRow(ColorUtil.prependColorTag(name, plugin.getSelfColor()), ColorUtil.prependColorTag(val, plugin.getSelfColor()));
+						tableComponent.addRow(ColorUtil.prependColorTag(damage.getKey(), plugin.getSelfColor()), ColorUtil.prependColorTag(val, plugin.getSelfColor()));
 					}
 					else
 					{
-						tableComponent.addRow(ColorUtil.prependColorTag(name, plugin.getOtherColor()), ColorUtil.prependColorTag(val, plugin.getOtherColor()));
+						tableComponent.addRow(ColorUtil.prependColorTag(damage.getKey(), plugin.getOtherColor()), ColorUtil.prependColorTag(val, plugin.getOtherColor()));
 					}
 				}
 

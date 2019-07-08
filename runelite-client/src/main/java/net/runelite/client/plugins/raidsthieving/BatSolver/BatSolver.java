@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 import static net.runelite.client.plugins.raidsthieving.BatSolver.SolutionSet.SOLUTION_SETS;
 
@@ -37,7 +38,7 @@ public class BatSolver
 	private Map<Integer, Integer> numberOfSolutionsWithPoison;
 	private final SolutionSet solution;
 
-	private final HashSet<Integer> grubsChests;
+	private final Set<Integer> grubsChests;
 
 	public BatSolver(final ThievingRoomType roomType)
 	{
@@ -59,9 +60,9 @@ public class BatSolver
 		calculateChanceOfPoison();
 	}
 
-	public TreeSet<Integer> matchSolutions()
+	public Set<Integer> matchSolutions()
 	{
-		TreeSet<Integer> possibleEmptyChests = new TreeSet<>();
+		Set<Integer> possibleEmptyChests = new TreeSet<>();
 		for (SolutionSet knownSolution : SolutionSet.SOLUTION_SETS)
 		{
 			if (knownSolution.getType() == solution.getType() && matchSolution(knownSolution))
@@ -100,7 +101,7 @@ public class BatSolver
 		return matchesAll && everMatched;
 	}
 
-	public ThievingRoomType getType()
+	private ThievingRoomType getType()
 	{
 		return solution.getType();
 	}

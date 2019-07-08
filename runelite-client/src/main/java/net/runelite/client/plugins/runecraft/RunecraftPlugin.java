@@ -206,12 +206,9 @@ public class RunecraftPlugin extends Plugin
 			return;
 		}
 
-		if (this.degradingNotification)
+		if (this.degradingNotification && event.getMessage().contains(POUCH_DECAYED_MESSAGE))
 		{
-			if (event.getMessage().contains(POUCH_DECAYED_MESSAGE))
-			{
-				notifier.notify(POUCH_DECAYED_NOTIFICATION_MESSAGE);
-			}
+			notifier.notify(POUCH_DECAYED_NOTIFICATION_MESSAGE);
 		}
 	}
 
@@ -356,7 +353,7 @@ public class RunecraftPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned event)
 	{
 		final NPC npc = event.getNpc();
-		if (npc == darkMage)
+		if (npc != null && npc.equals(darkMage))
 		{
 			darkMage = null;
 		}

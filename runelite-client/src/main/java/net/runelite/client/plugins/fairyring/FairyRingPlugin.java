@@ -252,11 +252,10 @@ public class FairyRingPlugin extends Plugin
 			return;
 		}
 
-		if (codes != null)
-		{
+		if (codes != null &&
 			// Check to make sure the list hasn't been rebuild since we were last her
 			// Do this by making sure the list's dynamic children are the same as when we last saw them
-			if (codes.stream().noneMatch(w ->
+			codes.stream().noneMatch(w ->
 			{
 				Widget codeWidget = w.getCode();
 				if (codeWidget == null)
@@ -265,9 +264,8 @@ public class FairyRingPlugin extends Plugin
 				}
 				return list.getChild(codeWidget.getIndex()) == codeWidget;
 			}))
-			{
-				codes = null;
-			}
+		{
+			codes = null;
 		}
 
 		if (codes == null)

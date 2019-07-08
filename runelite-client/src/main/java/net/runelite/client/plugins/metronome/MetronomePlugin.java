@@ -26,14 +26,16 @@
 package net.runelite.client.plugins.metronome;
 
 import com.google.inject.Provides;
+import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.SoundEffectVolume;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
 import net.runelite.api.Client;
@@ -51,6 +53,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"skilling", "tick", "timers"},
 	enabledByDefault = false
 )
+@Slf4j
 @Singleton
 public class MetronomePlugin extends Plugin
 {
@@ -82,34 +85,26 @@ public class MetronomePlugin extends Plugin
 	private Clip GetAudioClip(String path)
 	{
 		File audioFile = new File(path);
-		if (audioFile.exists())
+		if (!audioFile.exists())
 		{
-			AudioInputStream audioStream = null;
-			try
-			{
-				audioStream = AudioSystem.getAudioInputStream(audioFile);
-			}
-			catch (Exception e)
-			{
-				return null;
-			}
-			AudioFormat audioFormat = audioStream.getFormat();
-			DataLine.Info audioInfo = new DataLine.Info(Clip.class, audioFormat);
-			try
-			{
-				Clip audioClip = AudioSystem.getClip();
-				audioClip.open(audioStream);
-				FloatControl gainControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
-				float gainValue = (((float) this.volume) * 40f / 100f) - 35f;
-				gainControl.setValue(gainValue);
-				return audioClip;
-			}
-			catch (Exception e)
-			{
-				return null;
-			}
+			return null;
 		}
-		return null;
+
+		try (AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile))
+		{
+			Clip audioClip = AudioSystem.getClip();
+			audioClip.open(audioStream);
+			FloatControl gainControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
+			float gainValue = (((float) this.volume) * 40f / 100f) - 35f;
+			gainControl.setValue(gainValue);
+
+			return audioClip;
+		}
+		catch (IOException | LineUnavailableException | UnsupportedAudioFileException e)
+		{
+			log.warn("Error opening audiostream from " + audioFile, e);
+			return null;
+		}
 	}
 
 	@Override
@@ -149,6 +144,7 @@ public class MetronomePlugin extends Plugin
 			float gainValue = (((float) this.volume) * 40f / 100f) - 35f;
 			FloatControl gainControlTick = (FloatControl) tickClip.getControl(FloatControl.Type.MASTER_GAIN);
 			gainControlTick.setValue(gainValue);
+
 			FloatControl gainControlTock = (FloatControl) tockClip.getControl(FloatControl.Type.MASTER_GAIN);
 			gainControlTock.setValue(gainValue);
 		}

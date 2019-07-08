@@ -83,13 +83,10 @@ public class GraveyardRoom extends MTARoom
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (!inside() || !this.graveyard)
+		if ((!inside() || !this.graveyard) && this.counter != null)
 		{
-			if (this.counter != null)
-			{
-				infoBoxManager.removeIf(e -> e instanceof GraveyardCounter);
-				this.counter = null;
-			}
+			infoBoxManager.removeIf(e -> e instanceof GraveyardCounter);
+			this.counter = null;
 		}
 	}
 

@@ -76,7 +76,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Singleton
 public class MiningPlugin extends Plugin
 {
-	private static final int ROCK_DISTANCE = 14;
+	// private static final int ROCK_DISTANCE = 14;
 	private static final int MINING_GUILD_REGION = 12183;
 
 	private static final Pattern COAL_BAG_EMPTY_MESSAGE = Pattern.compile("^The coal bag is (now )?empty\\.$");
@@ -285,7 +285,7 @@ public class MiningPlugin extends Plugin
 	 * @param delta How much to add/subtract from the amount.
 	 *              Supply a negative number to subtract, or positive number to add.
 	 */
-	protected void updateAmountOfCoalInBag(int delta)
+	private void updateAmountOfCoalInBag(int delta)
 	{
 		// check for upper/lower bounds of amount of coal in a bag
 		// 0 <= X <= 27

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.maxhit.config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.function.BiFunction;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -205,10 +206,10 @@ public enum CustomFormulaConfig
 	);
 
 	private final MaxHitCalculator.CombatMethod requiredCombatMethod;
-	private final ArrayList<Requirement> requirements;
+	private final List<Requirement> requirements;
 	private final BiFunction<Client, MaxHitCalculator, Double> customFormula;
 
-	CustomFormulaConfig(MaxHitCalculator.CombatMethod requiredCombatMethod, ArrayList<Requirement> requirements, BiFunction<Client, MaxHitCalculator, Double> customFormula)
+	CustomFormulaConfig(MaxHitCalculator.CombatMethod requiredCombatMethod, List<Requirement> requirements, BiFunction<Client, MaxHitCalculator, Double> customFormula)
 	{
 		this.requiredCombatMethod = requiredCombatMethod;
 		this.requirements = requirements;
@@ -225,7 +226,7 @@ public enum CustomFormulaConfig
 		return customFormula;
 	}
 
-	public ArrayList<Requirement> getRequirements()
+	public List<Requirement> getRequirements()
 	{
 		return this.requirements;
 	}

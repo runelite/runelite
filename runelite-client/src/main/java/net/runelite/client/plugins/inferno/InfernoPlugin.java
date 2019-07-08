@@ -118,7 +118,7 @@ public class InfernoPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int currentWaveNumber;
 
-	private List<Actor> waveMonsters;
+	private final List<Actor> waveMonsters;
 
 	public InfernoPlugin()
 	{

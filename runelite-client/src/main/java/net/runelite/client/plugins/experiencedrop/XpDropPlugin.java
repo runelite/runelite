@@ -103,7 +103,7 @@ public class XpDropPlugin extends Plugin
 	private boolean hasDropped = false;
 	private boolean correctPrayer;
 	private Skill lastSkill = null;
-	private Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
+	private final Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
 	private PrayerType currentTickPrayer;
 	private XpDropConfig.DamageMode damageMode;
 
@@ -401,12 +401,10 @@ public class XpDropPlugin extends Plugin
 			final String[] stringStack = client.getStringStack();
 			final int stringStackSize = client.getStringStackSize();
 
-			StringBuilder builder = new StringBuilder()
-				.append(stringStack[stringStackSize - 1])
-				.append(ColorUtil.colorTag(this.damageColor))
-				.append(" (").append(damage).append(")");
-
-			stringStack[stringStackSize - 1] = builder.toString();
+			String builder = stringStack[stringStackSize - 1] +
+				ColorUtil.colorTag(this.damageColor) +
+				" (" + damage + ")";
+			stringStack[stringStackSize - 1] = builder;
 		}
 	}
 

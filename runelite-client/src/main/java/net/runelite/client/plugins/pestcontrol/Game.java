@@ -41,9 +41,9 @@ import net.runelite.api.events.GameTick;
 @Slf4j
 public class Game
 {
-	private Client client;
+	private final Client client;
 
-	private PestControlPlugin plugin;
+	private final PestControlPlugin plugin;
 
 	@Getter(AccessLevel.PACKAGE)
 	private Portal bluePortal = new Portal(PortalColor.BLUE, WidgetPortal.BLUE);
@@ -66,7 +66,7 @@ public class Game
 	private boolean portalLocationsSet = false;
 
 
-	private Instant startTime = Instant.now();
+	private final Instant startTime = Instant.now();
 
 	public Game(Client client, PestControlPlugin plugin)
 	{
@@ -147,7 +147,7 @@ public class Game
 			}
 		}
 
-		possibleRotations = rotations.toArray(new PortalRotation[rotations.size()]);
+		possibleRotations = rotations.toArray(new PortalRotation[0]);
 	}
 
 	private void killPortal(Portal portal)
@@ -162,7 +162,7 @@ public class Game
 		portal.setPortalState(PortalState.DEAD);
 	}
 
-	private boolean loadPortalLocations()
+	private void loadPortalLocations()
 	{
 		NPC squire = null;
 
@@ -180,10 +180,8 @@ public class Game
 			log.debug("In-game Squire found: {}", squire);
 			setPortalLocations(squire.getWorldLocation());
 
-			return true;
 		}
 
-		return false;
 	}
 
 	private void setPortalLocations(WorldPoint squireLocation)
@@ -201,7 +199,7 @@ public class Game
 
 	List<Portal> getPortals()
 	{
-		List<Portal> portalList = new ArrayList<Portal>();
+		List<Portal> portalList = new ArrayList<>();
 
 		portalList.add(getPurplePortal());
 		portalList.add(getBluePortal());

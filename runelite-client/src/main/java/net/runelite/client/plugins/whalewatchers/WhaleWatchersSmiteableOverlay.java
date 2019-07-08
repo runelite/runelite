@@ -28,8 +28,8 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Singleton
 public class WhaleWatchersSmiteableOverlay extends Overlay
 {
-	private WhaleWatchersPlugin plugin;
-	private PanelComponent panelComponent;
+	private final WhaleWatchersPlugin plugin;
+	private final PanelComponent panelComponent;
 
 
 	@Inject

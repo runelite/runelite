@@ -121,13 +121,13 @@ public class ClanChatPlugin extends Plugin
 		return (CopyOnWriteArrayList<Player>) clanMembers.clone();
 	}
 
-	private static CopyOnWriteArrayList<Player> clanMembers = new CopyOnWriteArrayList<>();
+	private static final CopyOnWriteArrayList<Player> clanMembers = new CopyOnWriteArrayList<>();
 	private ClanChatIndicator clanMemberCounter;
 	/**
 	 * queue of temporary messages added to the client
 	 */
 	private final Deque<ClanJoinMessage> clanJoinMessages = new ArrayDeque<>();
-	private Map<String, ClanMemberActivity> activityBuffer = new HashMap<>();
+	private final Map<String, ClanMemberActivity> activityBuffer = new HashMap<>();
 	private int clanJoinedTick;
 
 	private boolean clanChatIcons;
@@ -151,7 +151,7 @@ public class ClanChatPlugin extends Plugin
 	public void startUp()
 	{
 		updateConfig();
-		chats = new ArrayList<>(Text.fromCSV(config.chatsData()));
+		chats = new ArrayList<>(Text.fromCSV(this.chatsData));
 	}
 
 	@Override
@@ -485,7 +485,7 @@ public class ClanChatPlugin extends Plugin
 		final Player local = client.getLocalPlayer();
 		final Player player = event.getPlayer();
 
-		if (player != local && player.isClanMember())
+		if (player != null && !player.equals(local) && player.isClanMember())
 		{
 			clanMembers.add(player);
 			addClanCounter();

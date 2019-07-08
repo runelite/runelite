@@ -103,7 +103,7 @@ class ProfilePanel extends JPanel
 				}
 				catch (InvalidKeySpecException | NoSuchAlgorithmException ex)
 				{
-					ex.printStackTrace();
+					log.error(e.toString());
 				}
 			}
 

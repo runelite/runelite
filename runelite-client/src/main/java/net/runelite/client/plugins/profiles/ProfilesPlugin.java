@@ -87,14 +87,11 @@ public class ProfilesPlugin extends Plugin
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event) throws Exception
 	{
-		if (event.getGroup().equals("profiles"))
+		if (event.getGroup().equals("profiles") && event.getKey().equals("rememberPassword"))
 		{
-			if (event.getKey().equals("rememberPassword"))
-			{
-				panel = injector.getInstance(ProfilesPanel.class);
-				this.shutDown();
-				this.startUp();
-			}
+			panel = injector.getInstance(ProfilesPanel.class);
+			this.shutDown();
+			this.startUp();
 		}
 	}
 

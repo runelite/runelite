@@ -29,7 +29,9 @@ public class ImplingCounterOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		if (!plugin.isShowSpawn() || plugin.getImplings().isEmpty())
+		{
 			return null;
+		}
 
 		panelComponent.getChildren().clear();
 

@@ -97,7 +97,7 @@ public class RotationSolver
 						}
 					}
 
-					if (match != null && match != rotation)
+					if (match != null && match.equals(rotation))
 					{
 						return;
 					}

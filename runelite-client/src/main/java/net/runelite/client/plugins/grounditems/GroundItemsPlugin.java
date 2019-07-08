@@ -273,7 +273,10 @@ public class GroundItemsPlugin extends Plugin
 	{
 		for (GroundItem item : collectedGroundItems.values())
 		{
-			if (item.getTicks() == -1) continue;
+			if (item.getTicks() == -1)
+			{
+				continue;
+			}
 			item.setTicks(item.getTicks() - 1);
 		}
 	}
@@ -488,21 +491,31 @@ public class GroundItemsPlugin extends Plugin
 					if (this.rightClickHidden)
 					{
 						if (aHidden && bMenuType == WALK)
+						{
 							return -1;
+						}
 						if (bHidden && aMenuType == WALK)
+						{
 							return 1;
+						}
 					}
 
 					// sort hidden items below non-hidden items
 					if (aHidden && !bHidden && bMenuType != WALK)
+					{
 						return -1;
+					}
 					if (bHidden && !aHidden && aMenuType != WALK)
+					{
 						return 1;
+					}
 
 
 					// RS sorts by alch price by private, so no need to sort if config not set
 					if (this.sortByGEPrice)
+					{
 						return (getGePriceFromItemId(aId) * aQuantity) - (getGePriceFromItemId(bId) * bQuantity);
+					}
 				}
 			}
 
@@ -738,11 +751,11 @@ public class GroundItemsPlugin extends Plugin
 		if (entries.length > 1)
 		{
 			MenuEntry[] newEntries = new MenuEntry[entries.length - 1];
-			for (int i = 0; i < entries.length; ++i)
+			for (MenuEntry entry : entries)
 			{
-				if (!(entries[i].getOption().equals(option) && entries[i].getTarget().equals(target)))
+				if (!(entry.getOption().equals(option) && entry.getTarget().equals(target)))
 				{
-					newEntries[j++] = entries[i];
+					newEntries[j++] = entry;
 				}
 			}
 
@@ -867,7 +880,9 @@ public class GroundItemsPlugin extends Plugin
 		{
 			// so that "Prayer Potion (4)" returns 1 instead of 4 and "Coins (25)" returns 25 instead of 1
 			if (!itemNameIncludesQuantity || matches >= 1)
+			{
 				lastMatch = matcher.group(1);
+			}
 
 			matches++;
 		}

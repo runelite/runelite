@@ -207,7 +207,7 @@ public class BarrowsPlugin extends Plugin
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.showMinimap = config.showMinimap();
 		this.showBrotherLoc = config.showBrotherLoc();
@@ -289,19 +289,16 @@ public class BarrowsPlugin extends Plugin
 			ladders.clear();
 			puzzleAnswer = null;
 		}
-		else if (event.getGameState() == GameState.LOGGED_IN)
+		else if (event.getGameState() == GameState.LOGGED_IN && client.getLocalPlayer() != null)
 		{
-			if (client.getLocalPlayer() != null)
+			boolean isInCrypt = isInCrypt();
+			if (wasInCrypt && !isInCrypt)
 			{
-				boolean isInCrypt = isInCrypt();
-				if (wasInCrypt && !isInCrypt)
-				{
-					stopPrayerDrainTimer();
-				}
-				else if (!wasInCrypt && isInCrypt)
-				{
-					startPrayerDrainTimer();
-				}
+				stopPrayerDrainTimer();
+			}
+			else if (!wasInCrypt && isInCrypt)
+			{
+				startPrayerDrainTimer();
 			}
 		}
 	}

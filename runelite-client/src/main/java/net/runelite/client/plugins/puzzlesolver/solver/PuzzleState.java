@@ -84,67 +84,55 @@ public class PuzzleState
 		int emptyPieceY = emptyPiece / DIMENSION;
 
 		// Move left if there is space to the left
-		if (emptyPieceX > 0)
+		if (emptyPieceX > 0 && (parent == null || parent.emptyPiece != emptyPiece - 1))
 		{
-			if (parent == null || parent.emptyPiece != emptyPiece - 1)
-			{
-				PuzzleState state = new PuzzleState(this);
-				state.parent = this;
+			PuzzleState state = new PuzzleState(this);
+			state.parent = this;
 
-				state.pieces[emptyPiece - 1] = BLANK_TILE_VALUE;
-				state.pieces[emptyPiece] = pieces[emptyPiece - 1];
-				state.emptyPiece--;
+			state.pieces[emptyPiece - 1] = BLANK_TILE_VALUE;
+			state.pieces[emptyPiece] = pieces[emptyPiece - 1];
+			state.emptyPiece--;
 
-				moves.add(state);
-			}
+			moves.add(state);
 		}
 
 		// Move right if there is space to the right
-		if (emptyPieceX < DIMENSION - 1)
+		if (emptyPieceX < DIMENSION - 1 && (parent == null || parent.emptyPiece != emptyPiece + 1))
 		{
-			if (parent == null || parent.emptyPiece != emptyPiece + 1)
-			{
-				PuzzleState state = new PuzzleState(this);
-				state.parent = this;
+			PuzzleState state = new PuzzleState(this);
+			state.parent = this;
 
-				state.pieces[emptyPiece + 1] = BLANK_TILE_VALUE;
-				state.pieces[emptyPiece] = pieces[emptyPiece + 1];
-				state.emptyPiece++;
+			state.pieces[emptyPiece + 1] = BLANK_TILE_VALUE;
+			state.pieces[emptyPiece] = pieces[emptyPiece + 1];
+			state.emptyPiece++;
 
-				moves.add(state);
-			}
+			moves.add(state);
 		}
 
 		// Move up if there is space upwards
-		if (emptyPieceY > 0)
+		if (emptyPieceY > 0 && (parent == null || parent.emptyPiece != emptyPiece - DIMENSION))
 		{
-			if (parent == null || parent.emptyPiece != emptyPiece - DIMENSION)
-			{
-				PuzzleState state = new PuzzleState(this);
-				state.parent = this;
+			PuzzleState state = new PuzzleState(this);
+			state.parent = this;
 
-				state.pieces[emptyPiece - DIMENSION] = BLANK_TILE_VALUE;
-				state.pieces[emptyPiece] = pieces[emptyPiece - DIMENSION];
-				state.emptyPiece -= DIMENSION;
+			state.pieces[emptyPiece - DIMENSION] = BLANK_TILE_VALUE;
+			state.pieces[emptyPiece] = pieces[emptyPiece - DIMENSION];
+			state.emptyPiece -= DIMENSION;
 
-				moves.add(state);
-			}
+			moves.add(state);
 		}
 
 		// Move down if there is space downwards
-		if (emptyPieceY < DIMENSION - 1)
+		if (emptyPieceY < DIMENSION - 1 && (parent == null || parent.emptyPiece != emptyPiece + DIMENSION))
 		{
-			if (parent == null || parent.emptyPiece != emptyPiece + DIMENSION)
-			{
-				PuzzleState state = new PuzzleState(this);
-				state.parent = this;
+			PuzzleState state = new PuzzleState(this);
+			state.parent = this;
 
-				state.pieces[emptyPiece + DIMENSION] = BLANK_TILE_VALUE;
-				state.pieces[emptyPiece] = pieces[emptyPiece + DIMENSION];
-				state.emptyPiece += DIMENSION;
+			state.pieces[emptyPiece + DIMENSION] = BLANK_TILE_VALUE;
+			state.pieces[emptyPiece] = pieces[emptyPiece + DIMENSION];
+			state.emptyPiece += DIMENSION;
 
-				moves.add(state);
-			}
+			moves.add(state);
 		}
 
 		return moves;

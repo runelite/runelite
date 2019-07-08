@@ -53,7 +53,7 @@ public class RegenMeterOverlay extends Overlay
 	private static final Stroke STROKE = new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 
 	private final Client client;
-	private RegenMeterPlugin plugin;
+	private final RegenMeterPlugin plugin;
 
 	private Rectangle getBounds(WidgetInfo widgetInfo)
 	{

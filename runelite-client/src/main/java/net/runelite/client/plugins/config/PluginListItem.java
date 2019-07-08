@@ -62,7 +62,6 @@ public class PluginListItem extends JPanel
 	private static final ImageIcon OFF_STAR;
 
 	private final ConfigPanel configPanel;
-	public final ConfigManager configManager;
 
 	@Getter
 	@Nullable
@@ -144,7 +143,6 @@ public class PluginListItem extends JPanel
 						@Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
 	{
 		this.configPanel = configPanel;
-		this.configManager = configManager;
 		this.plugin = plugin;
 		this.config = config;
 		this.configDescriptor = configDescriptor;
@@ -186,7 +184,7 @@ public class PluginListItem extends JPanel
 		buttonPanel.add(configButton);
 
 		// add a listener to configButton only if there are config items to show
-		if (config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
+		if (configDescriptor != null && config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
 		{
 			configButton.addActionListener(e ->
 			{

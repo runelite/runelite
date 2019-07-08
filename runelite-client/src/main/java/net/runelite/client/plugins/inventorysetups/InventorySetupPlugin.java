@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
@@ -108,7 +109,7 @@ public class InventorySetupPlugin extends Plugin
 
 	private InventorySetupPluginPanel panel;
 
-	private Map<String, InventorySetup> inventorySetups = new HashMap<>();
+	private final Map<String, InventorySetup> inventorySetups = new HashMap<>();
 
 	private NavigationButton navButton;
 
@@ -205,8 +206,8 @@ public class InventorySetupPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			ArrayList<InventorySetupItem> inv = getNormalizedContainer(InventoryID.INVENTORY);
-			ArrayList<InventorySetupItem> eqp = getNormalizedContainer(InventoryID.EQUIPMENT);
+			List<InventorySetupItem> inv = getNormalizedContainer(InventoryID.INVENTORY);
+			List<InventorySetupItem> eqp = getNormalizedContainer(InventoryID.EQUIPMENT);
 
 			final InventorySetup invSetup = new InventorySetup(inv, eqp);
 			SwingUtilities.invokeLater(() ->
@@ -333,13 +334,13 @@ public class InventorySetupPlugin extends Plugin
 
 		if (container == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			ArrayList<InventorySetupItem> normContainer = getNormalizedContainer(InventoryID.INVENTORY);
+			List<InventorySetupItem> normContainer = getNormalizedContainer(InventoryID.INVENTORY);
 			final InventorySetup setup = inventorySetups.get(selectedInventorySetup);
 			panel.highlightDifferences(normContainer, setup, InventoryID.INVENTORY);
 		}
 		else if (container == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
-			ArrayList<InventorySetupItem> normContainer = getNormalizedContainer(InventoryID.EQUIPMENT);
+			List<InventorySetupItem> normContainer = getNormalizedContainer(InventoryID.EQUIPMENT);
 			final InventorySetup setup = inventorySetups.get(selectedInventorySetup);
 			panel.highlightDifferences(normContainer, setup, InventoryID.EQUIPMENT);
 		}
@@ -371,13 +372,13 @@ public class InventorySetupPlugin extends Plugin
 		}
 	}
 
-	public ArrayList<InventorySetupItem> getNormalizedContainer(final InventoryID id)
+	public List<InventorySetupItem> getNormalizedContainer(final InventoryID id)
 	{
 		assert id == InventoryID.INVENTORY || id == InventoryID.EQUIPMENT : "invalid inventory ID";
 
 		final ItemContainer container = client.getItemContainer(id);
 
-		ArrayList<InventorySetupItem> newContainer = new ArrayList<>();
+		List<InventorySetupItem> newContainer = new ArrayList<>();
 
 		Item[] items = null;
 		if (container != null)

@@ -59,13 +59,11 @@ public class TileIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.isHighlightHoveredTile())
-		{
+		if (plugin.isHighlightHoveredTile() &&
 			// If we have tile "selected" render it
-			if (client.getSelectedSceneTile() != null)
-			{
-				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), plugin.getHighlightHoveredColor());
-			}
+			client.getSelectedSceneTile() != null)
+		{
+			renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), plugin.getHighlightHoveredColor());
 		}
 
 		if (plugin.isHighlightDestinationTile())

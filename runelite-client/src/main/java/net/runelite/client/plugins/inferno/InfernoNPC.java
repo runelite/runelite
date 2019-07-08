@@ -41,7 +41,7 @@ public class InfernoNPC
 		RANDOM("Random", Color.ORANGE);
 
 		@Getter(AccessLevel.PACKAGE)
-		private String name = "";
+		private String name;
 
 		@Getter(AccessLevel.PACKAGE)
 		private Color color;

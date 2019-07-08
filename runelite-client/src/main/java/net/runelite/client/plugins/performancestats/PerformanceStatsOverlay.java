@@ -113,8 +113,8 @@ public class PerformanceStatsOverlay extends Overlay
 		return new String[]
 		{
 			performance.getUsername(),
-			(int) Math.round(performance.getDamageDealt()) + " | " + String.valueOf((int) Math.round(performance.getHighestHitDealt())),
-			(int) Math.round(performance.getDamageTaken()) + " | " + String.valueOf((int) Math.round(performance.getHighestHitTaken())),
+			(int) Math.round(performance.getDamageDealt()) + " | " + (int) Math.round(performance.getHighestHitDealt()),
+			(int) Math.round(performance.getDamageTaken()) + " | " + (int) Math.round(performance.getHighestHitTaken()),
 			String.valueOf(performance.getDPS()),
 			performance.getHumanReadableSecondsSpent()
 		};

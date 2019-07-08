@@ -32,6 +32,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -81,8 +82,8 @@ public class PrayAgainstPlayerPlugin extends Plugin
 	private static final Color PROTECTION_ICON_OUTLINE_COLOR = new Color(33, 33, 33);
 	private final BufferedImage[] ProtectionIcons = new BufferedImage[PROTECTION_ICONS.length];
 
-	private ArrayList<PlayerContainer> potentialPlayersAttackingMe;
-	private ArrayList<PlayerContainer> playersAttackingMe;
+	private List<PlayerContainer> potentialPlayersAttackingMe;
+	private List<PlayerContainer> playersAttackingMe;
 
 	@Inject
 	private Client client;
@@ -347,12 +348,12 @@ public class PrayAgainstPlayerPlugin extends Plugin
 		}
 	}
 
-	ArrayList<PlayerContainer> getPotentialPlayersAttackingMe()
+	List<PlayerContainer> getPotentialPlayersAttackingMe()
 	{
 		return potentialPlayersAttackingMe;
 	}
 
-	ArrayList<PlayerContainer> getPlayersAttackingMe()
+	List<PlayerContainer> getPlayersAttackingMe()
 	{
 		return playersAttackingMe;
 	}
@@ -360,9 +361,7 @@ public class PrayAgainstPlayerPlugin extends Plugin
 	//All of the methods below are from the Zulrah plugin!!! Credits to it's respective owner
 	private void loadProtectionIcons()
 	{
-		int curPosition = 0;
-
-		for (int i = 0; i < PROTECTION_ICONS.length; i++, curPosition++)
+		for (int i = 0; i < PROTECTION_ICONS.length; i++)
 		{
 			final int resource = PROTECTION_ICONS[i];
 			ProtectionIcons[i] = rgbaToIndexedBufferedImage(ProtectionIconFromSprite(spriteManager.getSprite(resource, 0)));

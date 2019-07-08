@@ -30,7 +30,7 @@ import javax.inject.Singleton;
 import net.runelite.client.input.KeyListener;
 
 @Singleton
-public class ShiftClickInputListener implements KeyListener
+class ShiftClickInputListener implements KeyListener
 {
 	@Inject
 	private MenuEntrySwapperPlugin plugin;

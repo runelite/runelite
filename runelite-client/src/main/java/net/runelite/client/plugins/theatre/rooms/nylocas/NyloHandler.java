@@ -8,6 +8,7 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -34,8 +35,8 @@ public class NyloHandler extends RoomHandler
 
 	public long startTime = 0L;
 	int startTick = 0;
-	ArrayList<NPC> waveSpawns = new ArrayList<NPC>();
-	ArrayList<NPC> waveAgros = new ArrayList<NPC>();
+	final List<NPC> waveSpawns = new ArrayList<>();
+	final List<NPC> waveAgros = new ArrayList<>();
 	@Getter(AccessLevel.PUBLIC)
 	private Map<NPC, Integer> pillars = new HashMap<>();
 	@Getter(AccessLevel.PUBLIC)
@@ -45,9 +46,6 @@ public class NyloHandler extends RoomHandler
 	private int wave = 0;
 	private NyloOverlay overlay = null;
 	private NyloPredictor predictor = null;
-	private Point south = new Point(64, 41);
-	private Point west = new Point(49, 56);
-	private Point east = new Point(78, 56);
 
 	public NyloHandler(final Client client, final TheatrePlugin plugin)
 	{
@@ -71,7 +69,6 @@ public class NyloHandler extends RoomHandler
 			plugin.getOverlayManager().add(overlay);
 		}
 
-		System.out.println("Starting Nylocas Room");
 		this.startTime = System.currentTimeMillis();
 		this.startTick = this.client.getTickCount();
 	}
@@ -97,17 +94,13 @@ public class NyloHandler extends RoomHandler
 		long minutes = seconds / 60L;
 		seconds = seconds % 60;
 
-		if (this.startTime != 0)
+		if (this.startTime != 0 && plugin.isExtraTimers())
 		{
-			if (plugin.isExtraTimers())
-			{
-				this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Nylocas - Waves' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
-			}
+			this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Nylocas - Waves' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 		}
-		System.out.println("Stopping Nylocas Room");
 	}
 
-	public void reset()
+	private void reset()
 	{
 		this.pillars.clear();
 		this.spiders.clear();
@@ -155,15 +148,19 @@ public class NyloHandler extends RoomHandler
 	{
 		if (plugin.isShowNyloPillarHealth())
 		{
-			for (NPC npc : pillars.keySet())
+			for (Map.Entry<NPC, Integer> pillars : pillars.entrySet())
 			{
-				final int health = pillars.get(npc);
+				final int health = pillars.getValue();
 				final String healthStr = health + "%";
-				WorldPoint p = npc.getWorldLocation();
+				WorldPoint p = pillars.getKey().getWorldLocation();
 				LocalPoint lp = LocalPoint.fromWorld(client, p.getX() + 1, p.getY() + 1);
 
 				Color c = this.healthColorCode(health);
-				Point canvasPoint = Perspective.localToCanvas(client, lp, client.getPlane(), 65);
+				Point canvasPoint = null;
+				if (lp != null)
+				{
+					canvasPoint = Perspective.localToCanvas(client, lp, client.getPlane(), 65);
+				}
 				renderTextLocation(graphics, healthStr, 13, Font.BOLD, c, canvasPoint);
 			}
 		}
@@ -171,15 +168,15 @@ public class NyloHandler extends RoomHandler
 		switch (plugin.getShowNylocasExplosions())
 		{
 			case TILE:
-				for (NPC npc : spiders.keySet())
+				for (Map.Entry<NPC, Integer> spiders : spiders.entrySet())
 				{
-					int ticksLeft = spiders.get(npc);
+					int ticksLeft = spiders.getValue();
 					if (ticksLeft > -1 && ticksLeft < 6)
 					{
 						Color color = new Color(255, 255, 0, 180);
 						int outlineWidth = 2;
 						int outlineAlpha = 150;
-						renderNpcOverlay(graphics, npc, color, outlineWidth, outlineAlpha, 15);
+						renderNpcOverlay(graphics, spiders.getKey(), color, outlineWidth, outlineAlpha, 15);
 					}
 				}
 				break;
@@ -265,25 +262,22 @@ public class NyloHandler extends RoomHandler
 			this.pillars.put(npc, 100);
 			this.recalculateLocal();
 		}
-		else if (npc.getName() != null)
+		else if (npc.getName() != null && this.plugin.getRoom() == TheatreRoom.NYLOCAS)
 		{
-			if (this.plugin.getRoom() == TheatreRoom.NYLOCAS)
+			Pattern p = Pattern.compile("Nylocas (Hagios|Toxobolos|Ischyros)");
+			Matcher m = p.matcher(npc.getName());
+			if (m.matches())
 			{
-				Pattern p = Pattern.compile("Nylocas (Hagios|Toxobolos|Ischyros)");
-				Matcher m = p.matcher(npc.getName());
-				if (m.matches())
-				{
-					this.spiders.put(npc, 52);
+				this.spiders.put(npc, 52);
 
-					if (this.predictor != null)
-					{
-						this.predictor.onNpcSpawned(event);
-					}
-				}
-				else if (npc.getName().equals("Nylocas Vasilias"))
+				if (this.predictor != null)
 				{
-					this.onStop();
+					this.predictor.onNpcSpawned(event);
 				}
+			}
+			else if (npc.getName().equals("Nylocas Vasilias"))
+			{
+				this.onStop();
 			}
 		}
 	}
@@ -396,10 +390,6 @@ public class NyloHandler extends RoomHandler
 
 			int centerX = minX + 5;
 			int centerY = minY + 5;
-
-			south = new Point(centerX + 1, centerY - 14);
-			east = new Point(centerX + 15, centerY);
-			west = new Point(centerX - 14, centerY);
 
 			if (this.predictor != null)
 			{

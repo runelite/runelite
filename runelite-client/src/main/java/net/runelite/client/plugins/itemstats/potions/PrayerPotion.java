@@ -63,7 +63,7 @@ public class PrayerPotion extends StatBoost
 			final int ring = ItemUtil.safeGetItemIdAtIndex(equip, EquipmentInventorySlot.RING.getSlotIdx());
 			final int cape = ItemUtil.safeGetItemIdAtIndex(equip, EquipmentInventorySlot.CAPE.getSlotIdx());
 
-			hasHolyWrench |= ring == ItemID.RING_OF_THE_GODS_I;
+			hasHolyWrench = ring == ItemID.RING_OF_THE_GODS_I;
 			hasHolyWrench |= HOLY_WRENCH_IDS.contains(cape);
 		}
 		if (!hasHolyWrench)

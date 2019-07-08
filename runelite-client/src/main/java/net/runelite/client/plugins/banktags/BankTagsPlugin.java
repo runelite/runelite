@@ -246,10 +246,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				intStack[intStackSize - 1] = 0;
 				break;
 			case "hideLine":
-				// hide the widget for the line separator
-				intStack[intStackSize - 1] = 1;
-				break;
 			case "hideTabText":
+				// hide the widget for the line separator
 				// hide the widget for the "Tab x" text
 				intStack[intStackSize - 1] = 1;
 				break;

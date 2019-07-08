@@ -182,12 +182,9 @@ public class QuestListPlugin extends Plugin
 	@Subscribe
 	public void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
-		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex())
+		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex() && isChatboxOpen() && isNotOnQuestTab())
 		{
-			if (isChatboxOpen() && isNotOnQuestTab())
-			{
-				chatboxPanelManager.close();
-			}
+			chatboxPanelManager.close();
 		}
 	}
 
@@ -314,11 +311,10 @@ public class QuestListPlugin extends Plugin
 
 		Collection<QuestWidget> quests = questSet.get(questContainer);
 
-		if (quests != null)
-		{
+		if (quests != null &&
 			// Check to make sure the list hasn't been rebuild since we were last her
 			// Do this by making sure the list's dynamic children are the same as when we last saw them
-			if (quests.stream().noneMatch(w ->
+			quests.stream().noneMatch(w ->
 			{
 				Widget codeWidget = w.getQuest();
 				if (codeWidget == null)
@@ -327,9 +323,8 @@ public class QuestListPlugin extends Plugin
 				}
 				return list.getChild(codeWidget.getIndex()) == codeWidget;
 			}))
-			{
-				quests = null;
-			}
+		{
+			quests = null;
 		}
 
 		if (quests == null)
@@ -359,7 +354,7 @@ public class QuestListPlugin extends Plugin
 			else
 			{
 				// Otherwise hide if it doesn't match the filter state
-				hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
+				hidden = currentFilterState != QuestState.ALL && questState != null && !questState.equals(currentFilterState);
 			}
 
 			quest.setHidden(hidden);

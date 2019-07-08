@@ -74,7 +74,7 @@ class SkillCalculator extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	private final UICombinedActionSlot combinedActionSlot;
 	@Getter(AccessLevel.PACKAGE)
-	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
+	private final List<UIActionSlot> combinedActionSlots = new ArrayList<>();
 	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
 	private final IconTextField searchBar = new IconTextField();
 
@@ -270,7 +270,7 @@ class SkillCalculator extends JPanel
 
 				for (JCheckBox checkBox : uiCheckBoxList)
 				{
-					if (checkBox != uiCheckBox)
+					if (checkBox != null && !checkBox.equals(uiCheckBox))
 					{
 						checkBox.setSelected(false);
 					}

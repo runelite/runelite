@@ -24,14 +24,10 @@
  */
 package net.runelite.client.plugins.npcunaggroarea;
 
-import java.awt.Color;
-import javax.inject.Singleton;
-import lombok.AccessLevel;
-import net.runelite.api.Player;
-import net.runelite.api.geometry.Geometry;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
@@ -42,6 +38,8 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -50,6 +48,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -57,6 +56,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.geometry.Geometry;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -354,20 +354,17 @@ public class NpcAggroAreaPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		WorldPoint newLocation = client.getLocalPlayer().getWorldLocation();
-		if (lastPlayerLocation != null)
+		if (lastPlayerLocation != null && safeCenters[1] == null && newLocation.distanceTo2D(lastPlayerLocation) > SAFE_AREA_RADIUS * 4)
 		{
-			if (safeCenters[1] == null && newLocation.distanceTo2D(lastPlayerLocation) > SAFE_AREA_RADIUS * 4)
-			{
-				safeCenters[0] = null;
-				safeCenters[1] = newLocation;
-				resetTimer();
-				calculateLinesToDisplay();
+			safeCenters[0] = null;
+			safeCenters[1] = newLocation;
+			resetTimer();
+			calculateLinesToDisplay();
 
-				// We don't know where the previous area was, so if the player e.g.
-				// entered a dungeon and then goes back out, he/she may enter the previous
-				// area which is unknown and would make the plugin inaccurate
-				previousUnknownCenter = lastPlayerLocation;
-			}
+			// We don't know where the previous area was, so if the player e.g.
+			// entered a dungeon and then goes back out, he/she may enter the previous
+			// area which is unknown and would make the plugin inaccurate
+			previousUnknownCenter = lastPlayerLocation;
 		}
 
 		if (safeCenters[0] == null && previousUnknownCenter != null &&
@@ -380,17 +377,14 @@ public class NpcAggroAreaPlugin extends Plugin
 			calculateLinesToDisplay();
 		}
 
-		if (safeCenters[1] != null)
+		if (safeCenters[1] != null && Arrays.stream(safeCenters).noneMatch(
+			x -> x != null && x.distanceTo2D(newLocation) <= SAFE_AREA_RADIUS))
 		{
-			if (Arrays.stream(safeCenters).noneMatch(
-				x -> x != null && x.distanceTo2D(newLocation) <= SAFE_AREA_RADIUS))
-			{
-				safeCenters[0] = safeCenters[1];
-				safeCenters[1] = newLocation;
-				resetTimer();
-				calculateLinesToDisplay();
-				previousUnknownCenter = null;
-			}
+			safeCenters[0] = safeCenters[1];
+			safeCenters[1] = newLocation;
+			resetTimer();
+			calculateLinesToDisplay();
+			previousUnknownCenter = null;
 		}
 
 		lastPlayerLocation = newLocation;

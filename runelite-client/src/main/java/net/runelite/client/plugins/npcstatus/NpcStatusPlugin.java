@@ -148,21 +148,19 @@ public class NpcStatusPlugin extends Plugin
 			return;
 		}
 		final Hitsplat hitsplat = event.getHitsplat();
-		if (hitsplat.getHitsplatType() == Hitsplat.HitsplatType.DAMAGE || hitsplat.getHitsplatType() == Hitsplat.HitsplatType.BLOCK)
+		if ((hitsplat.getHitsplatType() == Hitsplat.HitsplatType.DAMAGE || hitsplat.getHitsplatType() == Hitsplat.HitsplatType.BLOCK) && event.getActor() instanceof NPC)
 		{
-			if (event.getActor() instanceof NPC)
+			for (MemorizedNPC mn : memorizedNPCs)
 			{
-				for (MemorizedNPC mn : memorizedNPCs)
+				if (mn.getStatus() == MemorizedNPC.Status.OUT_OF_COMBAT || (mn.getStatus() == MemorizedNPC.Status.IN_COMBAT && mn.getCombatTimerEnd() - client.getTickCount() < 1) || mn.getLastinteracted() == null)
 				{
-					if (mn.getStatus() == MemorizedNPC.Status.OUT_OF_COMBAT || (mn.getStatus() == MemorizedNPC.Status.IN_COMBAT && mn.getCombatTimerEnd() - client.getTickCount() < 1) || mn.getLastinteracted() == null)
-					{
-						mn.setStatus(MemorizedNPC.Status.FLINCHING);
-						mn.setCombatTimerEnd(-1);
-						mn.setFlinchTimerEnd(client.getTickCount() + mn.getAttackSpeed() / 2 + 1);
-					}
+					mn.setStatus(MemorizedNPC.Status.FLINCHING);
+					mn.setCombatTimerEnd(-1);
+					mn.setFlinchTimerEnd(client.getTickCount() + mn.getAttackSpeed() / 2 + 1);
 				}
 			}
 		}
+
 	}
 
 	private void checkStatus()

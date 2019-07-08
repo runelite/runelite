@@ -219,7 +219,7 @@ public class TelekineticRoom extends MTARoom
 	{
 		NPC npc = event.getNpc();
 
-		if (npc == guardian)
+		if (npc.equals(guardian))
 		{
 			guardian = null;
 		}
@@ -286,7 +286,11 @@ public class TelekineticRoom extends MTARoom
 
 		Direction next = moves.pop();
 		WorldArea areaNext = getIndicatorLine(next);
-		WorldPoint nearestNext = nearest(areaNext, current);
+		WorldPoint nearestNext = null;
+		if (areaNext != null)
+		{
+			nearestNext = nearest(areaNext, current);
+		}
 
 		if (moves.isEmpty())
 		{
@@ -298,9 +302,20 @@ public class TelekineticRoom extends MTARoom
 		Direction after = moves.peek();
 		moves.push(next);
 		WorldArea areaAfter = getIndicatorLine(after);
-		WorldPoint nearestAfter = nearest(areaAfter, nearestNext);
+		WorldPoint nearestAfter = null;
+		if (areaAfter != null)
+		{
+			nearestAfter = nearest(areaAfter, nearestNext);
+		}
 
-		return nearest(areaNext, nearestAfter);
+		if (areaNext != null)
+		{
+			return nearest(areaNext, nearestAfter);
+		}
+		else
+		{
+			return nearestAfter;
+		}
 	}
 
 	private static int manhattan(WorldPoint point1, WorldPoint point2)

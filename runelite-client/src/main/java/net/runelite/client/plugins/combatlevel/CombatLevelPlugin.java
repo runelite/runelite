@@ -119,7 +119,7 @@ public class CombatLevelPlugin extends Plugin
 
 			if (widgetText.contains("."))
 			{
-				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
+				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf('.')));
 			}
 		}
 

@@ -77,7 +77,7 @@ public class SaradominBrew implements Effect
 			)
 		).toArray(StatChange[]::new));
 		changes.setPositivity(Stream.of(changes.getStatChanges())
-			.map(sc -> sc.getPositivity())
+			.map(StatChange::getPositivity)
 			.max(Comparator.comparing(Enum::ordinal)).get());
 		return changes;
 	}

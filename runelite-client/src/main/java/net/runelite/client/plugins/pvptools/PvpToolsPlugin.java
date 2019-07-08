@@ -97,7 +97,7 @@ public class PvpToolsPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	private PvpToolsPlugin uhPvpToolsPlugin = this;
+	private final PvpToolsPlugin uhPvpToolsPlugin = this;
 
 	/**
 	 * ActionListener for the missing cc members and refresh buttons
@@ -195,12 +195,9 @@ public class PvpToolsPlugin extends Plugin
 			if (!Objects.isNull(clanMember))
 			{
 				List<String> arrayList = ccMembers.stream().map(player -> Text.removeTags(Text.standardize(player.getName()))).collect(Collectors.toList());
-				if (!arrayList.contains(Text.removeTags(Text.standardize(clanMember.getUsername()))))
+				if (!arrayList.contains(Text.removeTags(Text.standardize(clanMember.getUsername()))) && !missingMembers.contains(clanMember.getUsername()))
 				{
-					if (!missingMembers.contains(clanMember.getUsername()))
-					{
-						missingMembers.add("[W" + clanMember.getWorld() + "] - " + clanMember.getUsername());
-					}
+					missingMembers.add("[W" + clanMember.getWorld() + "] - " + clanMember.getUsername());
 				}
 			}
 		}
@@ -217,12 +214,9 @@ public class PvpToolsPlugin extends Plugin
 			if (!Objects.isNull(clanMember))
 			{
 				List<String> arrayList = ccMembers.stream().map(player -> Text.removeTags(Text.standardize(player.getName()))).collect(Collectors.toList());
-				if (arrayList.contains(Text.removeTags(Text.standardize(clanMember.getUsername()))))
+				if (arrayList.contains(Text.removeTags(Text.standardize(clanMember.getUsername()))) && !currentMembers.contains(clanMember.getUsername()))
 				{
-					if (!currentMembers.contains(clanMember.getUsername()))
-					{
-						currentMembers.add(clanMember.getUsername());
-					}
+					currentMembers.add(clanMember.getUsername());
 				}
 			}
 		}
@@ -370,12 +364,9 @@ public class PvpToolsPlugin extends Plugin
 		{
 			getCarriedWealth();
 		}
-		if (event.getGameState().equals(GameState.LOGGED_IN))
+		if (event.getGameState().equals(GameState.LOGGED_IN) && this.countPlayers)
 		{
-			if (this.countPlayers)
-			{
-				updatePlayers();
-			}
+			updatePlayers();
 		}
 	}
 
@@ -478,25 +469,20 @@ public class PvpToolsPlugin extends Plugin
 		overheadCount = new int[]{0, 0, 0};
 		for (Player p : client.getPlayers())
 		{
-			if (Objects.nonNull(p))
+			if (Objects.nonNull(p) && PvPUtil.isAttackable(client, p) &&
+				!p.isClanMember() && !(p.getOverheadIcon() == null))
 			{
-				if (PvPUtil.isAttackable(client, p))
+				switch (p.getOverheadIcon())
 				{
-					if (!p.isClanMember() && !(p.getOverheadIcon() == null))
-					{
-						switch (p.getOverheadIcon())
-						{
-							case MAGIC:
-								overheadCount[0]++;
-								break;
-							case RANGED:
-								overheadCount[1]++;
-								break;
-							case MELEE:
-								overheadCount[2]++;
-								break;
-						}
-					}
+					case MAGIC:
+						overheadCount[0]++;
+						break;
+					case RANGED:
+						overheadCount[1]++;
+						break;
+					case MELEE:
+						overheadCount[2]++;
+						break;
 				}
 			}
 		}
@@ -548,12 +534,9 @@ public class PvpToolsPlugin extends Plugin
 		panel.totalRiskLabel.repaint();
 
 		int itemLimit = 0;
-		if (client.getLocalPlayer().getSkullIcon() != null)
+		if (client.getLocalPlayer().getSkullIcon() != null && client.getLocalPlayer().getSkullIcon() == SkullIcon.SKULL)
 		{
-			if (client.getLocalPlayer().getSkullIcon() == SkullIcon.SKULL)
-			{
-				itemLimit = 1;
-			}
+			itemLimit = 1;
 		}
 		if (client.getLocalPlayer().getSkullIcon() == null)
 		{

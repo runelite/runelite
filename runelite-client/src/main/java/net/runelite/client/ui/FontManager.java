@@ -34,6 +34,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
+import java.util.Map;
 import lombok.Getter;
 import net.runelite.client.config.FontType;
 
@@ -59,7 +60,7 @@ public class FontManager
 	}
 
 	private static final ImmutableBiMap<String, Font> fontMap;
-	private static final HashMap<Font, CachedFont> derivedFontMap = new HashMap<>();
+	private static final Map<Font, CachedFont> derivedFontMap = new HashMap<>();
 
 	static
 	{
@@ -108,7 +109,7 @@ public class FontManager
 		}
 	}
 
-	public static Font getFontOffCorrectSize(Font f)
+	private static Font getFontOffCorrectSize(Font f)
 	{
 		// Size of the font is already set
 		if (f.getSize2D() > 1)
@@ -214,7 +215,7 @@ public class FontManager
 
 	public static String[] getAvailableFontNames()
 	{
-		return fontMap.keySet().toArray(new String[fontMap.keySet().size()]);
+		return fontMap.keySet().toArray(new String[0]);
 	}
 
 	public static boolean isAvailable(Font font)

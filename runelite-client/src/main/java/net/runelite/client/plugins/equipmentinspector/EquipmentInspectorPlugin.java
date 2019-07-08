@@ -306,7 +306,7 @@ public class EquipmentInspectorPlugin extends Plugin
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.ShowValue = config.ShowValue();
 		this.protecteditems = config.protecteditems();

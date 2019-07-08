@@ -27,6 +27,7 @@ package net.runelite.client.plugins.pileindicators;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -103,11 +104,11 @@ public class PileIndicatorsPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
-	ArrayList<ArrayList<Actor>> getStacks()
+	List<List<Actor>> getStacks()
 	{
-		ArrayList<ArrayList<Actor>> outerArrayList = new ArrayList<>();
+		List<List<Actor>> outerArrayList = new ArrayList<>();
 
-		ArrayList<Actor> pileList = new ArrayList<>();
+		List<Actor> pileList = new ArrayList<>();
 
 		if (this.enableNPCS)
 		{
@@ -120,16 +121,13 @@ public class PileIndicatorsPlugin extends Plugin
 			}
 		}
 
-		if (this.enablePlayers)
+		if (this.enablePlayers && (client.getVar(Varbits.IN_WILDERNESS) > 0 && this.wildyOnlyPlayer) ^ (!this.wildyOnlyPlayer))
 		{
-			if ((client.getVar(Varbits.IN_WILDERNESS) > 0 && this.wildyOnlyPlayer) ^ (!this.wildyOnlyPlayer))
+			for (Player player : client.getPlayers())
 			{
-				for (Player player : client.getPlayers())
+				if (player != null)
 				{
-					if (player != null)
-					{
-						pileList.add(player);
-					}
+					pileList.add(player);
 				}
 			}
 		}
@@ -144,12 +142,9 @@ public class PileIndicatorsPlugin extends Plugin
 			ArrayList<Actor> potentialStackArrayList = new ArrayList<>();
 			for (Actor actorToCompareTo : pileList)
 			{
-				if (!potentialStackArrayList.contains(actorToCompareTo))
+				if (!potentialStackArrayList.contains(actorToCompareTo) && actor.getWorldLocation().distanceTo(actorToCompareTo.getWorldLocation()) == 0)
 				{
-					if (actor.getWorldLocation().distanceTo(actorToCompareTo.getWorldLocation()) == 0)
-					{
-						potentialStackArrayList.add(actorToCompareTo);
-					}
+					potentialStackArrayList.add(actorToCompareTo);
 				}
 			}
 			if (potentialStackArrayList.size() >= this.minimumPileSize)
@@ -175,7 +170,7 @@ public class PileIndicatorsPlugin extends Plugin
 		return null;
 	}
 
-	PileType getPileType(ArrayList<Actor> pile)
+	PileType getPileType(List<Actor> pile)
 	{
 		PileType pileType = null;
 

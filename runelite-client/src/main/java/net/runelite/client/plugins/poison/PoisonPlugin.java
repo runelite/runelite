@@ -488,7 +488,7 @@ public class PoisonPlugin extends Plugin
 		}
 
 		// Only update sprites when the heart icon actually changes
-		if (newHeart != heart)
+		if (newHeart != null && !newHeart.equals(heart))
 		{
 			heart = newHeart;
 			client.getWidgetSpriteCache().reset();

@@ -69,8 +69,6 @@ public class XarpusHandler extends RoomHandler
 			overlay = new XarpusCounter(plugin, this);
 			plugin.getOverlayManager().add(overlay);
 		}
-
-		System.out.println("Starting Xarpus Room");
 	}
 
 	@Override
@@ -84,11 +82,9 @@ public class XarpusHandler extends RoomHandler
 			plugin.getOverlayManager().remove(overlay);
 			overlay = null;
 		}
-
-		System.out.println("Stopping Xarpus Room");
 	}
 
-	public void reset()
+	private void reset()
 	{
 		exhumesCount = 0;
 		xarpusFlag = false;
@@ -134,9 +130,9 @@ public class XarpusHandler extends RoomHandler
 
 		if (npc.getId() == NpcID.XARPUS_8339 && plugin.isShowXarpusHeals())
 		{
-			for (GroundObject o : exhumes.keySet())
+			for (Map.Entry<GroundObject, Integer> exhum : exhumes.entrySet())
 			{
-				Polygon poly = o.getCanvasTilePoly();
+				Polygon poly = exhum.getKey().getCanvasTilePoly();
 				if (poly != null)
 				{
 					Color c = new Color(0, 255, 0, 130);
@@ -144,8 +140,8 @@ public class XarpusHandler extends RoomHandler
 					graphics.setStroke(new BasicStroke(1));
 					graphics.draw(poly);
 
-					String count = Integer.toString(exhumes.get(o) + 1);
-					LocalPoint lp = o.getLocalLocation();
+					String count = Integer.toString(exhum.getValue() + 1);
+					LocalPoint lp = exhum.getKey().getLocalLocation();
 					Point point = Perspective.getCanvasTextLocation(client, graphics, lp, count, 0);
 					if (point != null)
 					{
@@ -158,35 +154,34 @@ public class XarpusHandler extends RoomHandler
 
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (client.getVar(Varbits.MULTICOMBAT_AREA) == 1 || client.getVarbitValue(client.getVarps(), TheatreConstant.DOOR_VARP) == 2)
+		if ((client.getVar(Varbits.MULTICOMBAT_AREA) == 1 ||
+			client.getVarbitValue(client.getVarps(), TheatreConstant.DOOR_VARP) == 2) &&
+			!xarpusFlag)
 		{
-			if (!xarpusFlag)
+			int players = client.getPlayers().size();
+
+			if (players == 5)
 			{
-				int players = client.getPlayers().size();
-
-				if (players == 5)
-				{
-					exhumesCount = 18;
-				}
-				else if (players == 4)
-				{
-					exhumesCount = 15;
-				}
-				else if (players == 3)
-				{
-					exhumesCount = 12;
-				}
-				else if (players == 2)
-				{
-					exhumesCount = 9;
-				}
-				else
-				{
-					exhumesCount = 7;
-				}
-
-				xarpusFlag = true;
+				exhumesCount = 18;
 			}
+			else if (players == 4)
+			{
+				exhumesCount = 15;
+			}
+			else if (players == 3)
+			{
+				exhumesCount = 12;
+			}
+			else if (players == 2)
+			{
+				exhumesCount = 9;
+			}
+			else
+			{
+				exhumesCount = 7;
+			}
+
+			xarpusFlag = true;
 		}
 	}
 

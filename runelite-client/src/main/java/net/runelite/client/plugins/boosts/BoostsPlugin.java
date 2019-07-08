@@ -106,7 +106,7 @@ public class BoostsPlugin extends Plugin
 	private int lastChangeUp = -1;
 	private boolean preserveBeenActive = false;
 	private long lastTickMillis;
-	private List<String> boostedSkillsChanged = new ArrayList<>();
+	private final List<String> boostedSkillsChanged = new ArrayList<>();
 
 	private boolean enableSkill;
 	@Getter(AccessLevel.PACKAGE)

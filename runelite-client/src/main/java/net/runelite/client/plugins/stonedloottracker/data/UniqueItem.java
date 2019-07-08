@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -874,14 +875,14 @@ public enum UniqueItem
 	}
 
 	// Returns an array of UniqueItems by an individual `activities` name
-	private static final Map<String, ArrayList<UniqueItem>> byActivityName = buildActivityMap();
-	public static ArrayList<UniqueItem> getByActivityName(String name)
+	private static final Map<String, List<UniqueItem>> byActivityName = buildActivityMap();
+	public static List<UniqueItem> getByActivityName(String name)
 	{
 		return byActivityName.get(name.toUpperCase());
 	}
-	private static Map<String, ArrayList<UniqueItem>> buildActivityMap()
+	private static Map<String, List<UniqueItem>> buildActivityMap()
 	{
-		Map<String, ArrayList<UniqueItem>> byName = new HashMap<>();
+		Map<String, List<UniqueItem>> byName = new HashMap<>();
 		for (UniqueItem item : values())
 		{
 			String[] activities = item.getActivities();
@@ -897,14 +898,14 @@ public enum UniqueItem
 
 	// Return an array of UniqueItems by `setName`
 	// Unused ATM
-	private static final Map<String, ArrayList<UniqueItem>> bySetName = buildSetMap();
-	public static ArrayList<UniqueItem> getBySetName(String name)
+	private static final Map<String, List<UniqueItem>> bySetName = buildSetMap();
+	public static List<UniqueItem> getBySetName(String name)
 	{
 		return bySetName.get(name.toUpperCase());
 	}
-	private static Map<String, ArrayList<UniqueItem>> buildSetMap()
+	private static Map<String, List<UniqueItem>> buildSetMap()
 	{
-		Map<String, ArrayList<UniqueItem>> byName = new HashMap<>();
+		Map<String, List<UniqueItem>> byName = new HashMap<>();
 		for (UniqueItem item : values())
 		{
 			byName.computeIfAbsent(item.getSetName().toUpperCase(), e -> new ArrayList<>()).add(item);

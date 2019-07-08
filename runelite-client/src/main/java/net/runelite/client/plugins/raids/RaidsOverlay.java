@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -75,8 +76,8 @@ public class RaidsOverlay extends Overlay
 	private final ItemManager itemManager;
 	private final SpriteManager spriteManager;
 	private final PanelComponent panelImages = new PanelComponent();
-	private Client client;
-	private RaidsPlugin plugin;
+	private final Client client;
+	private final RaidsPlugin plugin;
 	@Setter(AccessLevel.PACKAGE)
 	private boolean sharable = false;
 	@Getter(AccessLevel.PACKAGE)
@@ -161,7 +162,7 @@ public class RaidsOverlay extends Overlay
 		boolean vanguards = false;
 		boolean unknownCombat = false;
 		String puzzles = "";
-		String roomName = "";
+		String roomName;
 		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
 		{
 			int position = layoutRoom.getPosition();
@@ -177,7 +178,7 @@ public class RaidsOverlay extends Overlay
 				case COMBAT:
 					combatCount++;
 					roomName = room.getBoss().getName();
-					switch (RaidRoom.Boss.fromString(roomName))
+					switch (Objects.requireNonNull(RaidRoom.Boss.fromString(roomName)))
 					{
 						case VANGUARDS:
 							vanguards = true;
@@ -189,7 +190,7 @@ public class RaidsOverlay extends Overlay
 					break;
 				case PUZZLE:
 					roomName = room.getPuzzle().getName();
-					switch (RaidRoom.Puzzle.fromString(roomName))
+					switch (Objects.requireNonNull(RaidRoom.Puzzle.fromString(roomName)))
 					{
 						case CRABS:
 							crabs = true;
@@ -324,12 +325,9 @@ public class RaidsOverlay extends Overlay
 
 					String bossName = room.getBoss().getName();
 					String bossNameLC = bossName.toLowerCase();
-					if (plugin.isShowRecommendedItems())
+					if (plugin.isShowRecommendedItems() && plugin.getRecommendedItemsList().get(bossNameLC) != null)
 					{
-						if (plugin.getRecommendedItemsList().get(bossNameLC) != null)
-						{
-							imageIds.addAll(plugin.getRecommendedItemsList().get(bossNameLC));
-						}
+						imageIds.addAll(plugin.getRecommendedItemsList().get(bossNameLC));
 					}
 
 					tableComponent.addRow(plugin.isShowRecommendedItems() ? "" : room.getType().getName(), ColorUtil.prependColorTag(bossName, color));

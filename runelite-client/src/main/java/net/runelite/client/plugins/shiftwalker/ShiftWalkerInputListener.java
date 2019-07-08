@@ -30,7 +30,7 @@ import javax.inject.Singleton;
 import net.runelite.client.input.KeyListener;
 
 @Singleton
-public class ShiftWalkerInputListener implements KeyListener
+class ShiftWalkerInputListener implements KeyListener
 {
 
 	@Inject

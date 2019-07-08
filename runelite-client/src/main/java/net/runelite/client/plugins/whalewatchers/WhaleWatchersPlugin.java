@@ -98,12 +98,9 @@ public class WhaleWatchersPlugin extends Plugin
 	@Subscribe
 	public void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
-		if (event.getOverlay().equals(overlay))
+		if (event.getOverlay().equals(overlay) && event.getEntry().getOption().equals("Reset"))
 		{
-			if (event.getEntry().getOption().equals("Reset"))
-			{
-				resetDamageCounter();
-			}
+			resetDamageCounter();
 		}
 	}
 
@@ -207,16 +204,10 @@ public class WhaleWatchersPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (this.showDamageCounter)
-		{
-			if (client.getVar(VarPlayer.ATTACKING_PLAYER) == -1)
+		if (this.showDamageCounter && client.getVar(VarPlayer.ATTACKING_PLAYER) == -1 && inCombat)
 			{
-				if (inCombat)
-				{
-					tickCountdown = 10;
-				}
+				tickCountdown = 10;
 			}
-		}
 
 		if (this.protectItemWarning)
 		{
@@ -254,17 +245,14 @@ public class WhaleWatchersPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (this.showDamageCounter)
+		if (this.showDamageCounter && tickCountdown > 0 && tickCountdown < 11)
 		{
-			if (tickCountdown > 0 && tickCountdown < 11)
+			tickCountdown--;
+			if (tickCountdown == 1)
 			{
-				tickCountdown--;
-				if (tickCountdown == 1)
-				{
-					inCombat = false;
-					resetDamageCounter();
-					return;
-				}
+				inCombat = false;
+				resetDamageCounter();
+				return;
 			}
 		}
 		if (this.smiteableWarning && (client.getVar(Varbits.IN_WILDERNESS) == 1 || isPvpWorld(client.getWorldType())))

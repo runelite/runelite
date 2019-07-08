@@ -159,15 +159,9 @@ public class BabyHydraPlugin extends Plugin
 	public void onNpcSpawned(NpcSpawned event)
 	{
 		NPC hydra = event.getNpc();
-		if (hydra.getCombatLevel() != 0 && hydra.getName() != null)
+		if (hydra.getCombatLevel() != 0 && hydra.getName() != null && hydra.getName().equalsIgnoreCase("Hydra") && !hydras.containsKey(hydra.getIndex()))
 		{
-			if (hydra.getName().equalsIgnoreCase("Hydra"))
-			{
-				if (!hydras.containsKey(hydra.getIndex()))
-				{
-					hydras.put(hydra.getIndex(), 3);
-				}
-			}
+			hydras.put(hydra.getIndex(), 3);
 		}
 	}
 
@@ -175,13 +169,10 @@ public class BabyHydraPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned event)
 	{
 		NPC hydra = event.getNpc();
-		if (hydra.getCombatLevel() != 0 && hydra.getName() != null)
+		if (hydra.getCombatLevel() != 0 && hydra.getName() != null && hydra.getName().equalsIgnoreCase("Hydra"))
 		{
-			if (hydra.getName().equalsIgnoreCase("Hydra"))
-			{
-				hydras.remove(hydra.getIndex());
-				hydraattacks.remove(hydra.getIndex());
-			}
+			hydras.remove(hydra.getIndex());
+			hydraattacks.remove(hydra.getIndex());
 		}
 	}
 

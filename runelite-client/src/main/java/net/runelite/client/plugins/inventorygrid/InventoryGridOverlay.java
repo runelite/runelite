@@ -69,7 +69,7 @@ class InventoryGridOverlay extends Overlay
 		final Widget if1DraggingWidget = client.getIf1DraggedWidget();
 		final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 
-		if (if1DraggingWidget == null || if1DraggingWidget != inventoryWidget
+		if (if1DraggingWidget == null || if1DraggingWidget.equals(inventoryWidget)
 			|| client.getItemPressedDuration() < plugin.getDragDelay() / Constants.CLIENT_TICK_LENGTH)
 		{
 			return null;

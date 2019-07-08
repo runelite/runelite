@@ -28,6 +28,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -172,7 +173,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
 	}
 
-	private ArrayList<String> callers = new ArrayList<>();
+	private List<String> callers = new ArrayList<>();
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)

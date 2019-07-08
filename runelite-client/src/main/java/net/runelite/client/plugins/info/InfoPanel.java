@@ -147,12 +147,9 @@ public class InfoPanel extends PluginPanel
 		emailLabel.enableAutoLinkHandler(false);
 		emailLabel.addHyperlinkListener(e ->
 		{
-			if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()) && e.getURL() != null)
+			if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()) && e.getURL() != null && e.getURL().toString().equals(RUNELITE_LOGIN))
 			{
-				if (e.getURL().toString().equals(RUNELITE_LOGIN))
-				{
-					executor.execute(sessionManager::login);
-				}
+				executor.execute(sessionManager::login);
 			}
 		});
 

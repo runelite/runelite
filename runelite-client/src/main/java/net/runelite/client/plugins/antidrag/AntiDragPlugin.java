@@ -144,7 +144,7 @@ public class AntiDragPlugin extends Plugin
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.alwaysOn = config.alwaysOn();
 		this.keybind = config.keybind();
@@ -160,13 +160,10 @@ public class AntiDragPlugin extends Plugin
 	@Subscribe
 	public void onFocusChanged(FocusChanged focusChanged)
 	{
-		if (!this.alwaysOn)
+		if (!this.alwaysOn && !focusChanged.isFocused() && this.reqfocus)
 		{
-			if (!focusChanged.isFocused() && this.reqfocus)
-			{
-				client.setInventoryDragDelay(DEFAULT_DELAY);
-				overlayManager.remove(overlay);
-			}
+			client.setInventoryDragDelay(DEFAULT_DELAY);
+			overlayManager.remove(overlay);
 		}
 	}
 

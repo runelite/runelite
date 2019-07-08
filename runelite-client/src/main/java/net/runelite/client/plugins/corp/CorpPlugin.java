@@ -224,7 +224,7 @@ public class CorpPlugin extends Plugin
 		Actor source = interactingChanged.getSource();
 		Actor target = interactingChanged.getTarget();
 
-		if (corp == null || target != corp)
+		if (target != corp)
 		{
 			return;
 		}

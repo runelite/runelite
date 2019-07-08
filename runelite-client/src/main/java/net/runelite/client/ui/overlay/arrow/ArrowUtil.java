@@ -1,7 +1,8 @@
 package net.runelite.client.ui.overlay.arrow;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectDefinition;
@@ -10,7 +11,7 @@ import net.runelite.api.Tile;
 
 class ArrowUtil
 {
-	static ArrayList<GameObject> getObjects(final Client client, HashSet<Integer> objectIDs)
+	static List<GameObject> getObjects(final Client client, Set<Integer> objectIDs)
 	{
 		final Scene scene = client.getScene();
 		final Tile[][] tiles = scene.getTiles()[client.getPlane()];

@@ -42,7 +42,7 @@ import static net.runelite.api.ObjectID.WALL_7249;
 
 class Obstacles
 {
-	public static final Set<Integer> OBSTACLE_IDS_HULL = Sets.newHashSet(
+	static final Set<Integer> OBSTACLE_IDS_HULL = Sets.newHashSet(
 		SPINNING_BLADES_7224,
 		CONTORTION_BARS,
 		PENDULUM,
@@ -52,7 +52,7 @@ class Obstacles
 		NULL_7235    /*Wall safe*/
 	);
 
-	public static final Set<Integer> OBSTACLE_IDS_TILE = Sets.newHashSet(
+	static final Set<Integer> OBSTACLE_IDS_TILE = Sets.newHashSet(
 		FLOOR,        /*Floor spikes*/
 		WALL_7228,    /*Wall spikes*/
 		WALL_7229,    /*Wall spears*/

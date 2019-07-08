@@ -55,7 +55,7 @@ public class FreezeTimersOverlay extends Overlay
 	private final BufferedImage FREEZE_IMAGE = ImageUtil.getResourceStreamFromClass(getClass(), "freeze.png");
 	private final BufferedImage TB_IMAGE = ImageUtil.getResourceStreamFromClass(getClass(), "teleblock.png");
 	private final BufferedImage VENG_IMAGE = ImageUtil.getResourceStreamFromClass(getClass(), "veng.png");
-	private Timers timers;
+	private final Timers timers;
 
 
 	@Inject
@@ -257,7 +257,7 @@ public class FreezeTimersOverlay extends Overlay
 			xOffset);
 	}
 
-	public void renderImageLocation(Graphics2D graphics, Point imgLoc, BufferedImage image)
+	private void renderImageLocation(Graphics2D graphics, Point imgLoc, BufferedImage image)
 	{
 		int x = imgLoc.getX();
 		int y = imgLoc.getY();

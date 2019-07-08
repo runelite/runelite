@@ -157,14 +157,12 @@ public class AoeWarningOverlay extends Overlay
 				graphics.setColor(new Color(setAlphaComponent(plugin.getOverlayColor().getRGB(), outlineAlpha), true));
 				graphics.drawPolygon(tilePoly);
 			}
-			if (plugin.isTickTimers())
+			if (plugin.isTickTimers() && tickProgress >= 0)
 			{
-				if (tickProgress >= 0)
-				{
-					OverlayUtil.renderTextLocation(graphics, Integer.toString(tickProgress), plugin.getTextSize(),
-						plugin.getFontStyle(), color, centerPoint(tilePoly.getBounds()), plugin.isShadows(), 0);
-				}
+				OverlayUtil.renderTextLocation(graphics, Integer.toString(tickProgress), plugin.getTextSize(),
+					plugin.getFontStyle(), color, centerPoint(tilePoly.getBounds()), plugin.isShadows(), 0);
 			}
+
 			graphics.setColor(new Color(setAlphaComponent(plugin.getOverlayColor().getRGB(), fillAlpha), true));
 			graphics.fillPolygon(tilePoly);
 		}

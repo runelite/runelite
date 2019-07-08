@@ -256,5 +256,5 @@ public class ChestIdentifier
 		chest.setChestId(id);
 	}
 
-	private Map<InstancePoint, Integer> chestIds;
+	private final Map<InstancePoint, Integer> chestIds;
 }

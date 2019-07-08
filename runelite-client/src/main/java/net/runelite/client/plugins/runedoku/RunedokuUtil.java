@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -105,9 +106,9 @@ class RunedokuUtil
 	 * @param board
 	 * @return
 	 */
-	ArrayList<Integer> makeSimple(int[][] board)
+	List<Integer> makeSimple(int[][] board)
 	{
-		ArrayList<Integer> list = new ArrayList<>();
+		List<Integer> list = new ArrayList<>();
 		for (int i = 0; i < 9; i++)
 		{
 			for (int ii = 0; ii < 9; ii++)

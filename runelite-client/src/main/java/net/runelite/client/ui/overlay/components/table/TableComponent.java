@@ -341,7 +341,7 @@ public class TableComponent implements LayoutableRenderableEntity
 			defaultColor);
 	}
 
-	public void setColumnAlignment(final int col, final TableAlignment alignment)
+	private void setColumnAlignment(final int col, final TableAlignment alignment)
 	{
 		assert columns.size() > col;
 		columns.get(col).setAlignment(alignment);
@@ -409,7 +409,7 @@ public class TableComponent implements LayoutableRenderableEntity
 		this.rows.add(row);
 	}
 
-	public void addRows(@Nonnull final String[]... rows)
+	private void addRows(@Nonnull final String[]... rows)
 	{
 		for (String[] row : rows)
 		{
@@ -434,7 +434,7 @@ public class TableComponent implements LayoutableRenderableEntity
 		this.rows.addAll(Arrays.asList(elements));
 	}
 
-	public void addColumn(@Nonnull final String col)
+	private void addColumn(@Nonnull final String col)
 	{
 		this.columns.add(TableElement.builder().content(col).build());
 	}

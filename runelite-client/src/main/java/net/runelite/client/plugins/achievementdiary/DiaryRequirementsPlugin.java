@@ -124,10 +124,6 @@ public class DiaryRequirementsPlugin extends Plugin
 		}
 
 		Map<String, String> skillRequirements = buildRequirements(requirements.getRequirements());
-		if (skillRequirements == null)
-		{
-			return;
-		}
 
 		int offset = 0;
 		String taskBuffer = "";

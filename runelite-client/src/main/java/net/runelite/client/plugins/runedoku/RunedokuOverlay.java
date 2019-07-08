@@ -28,7 +28,7 @@ import java.awt.Color;
 import static java.awt.Color.RED;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
@@ -70,17 +70,13 @@ class RunedokuOverlay extends Overlay
 
 		final Widget sudokuScreen = client.getWidget(288, 131);
 
-		if (sudokuScreen != null)
+		if (sudokuScreen != null && !sudokuScreen.isHidden())
 		{
-			if (!sudokuScreen.isHidden())
-			{
-				Sudoku sudoku = new Sudoku(util.createTable(client));
-				boolean solved = sudoku.solve();
+			Sudoku sudoku = new Sudoku(util.createTable(client));
+			boolean solved = sudoku.solve();
 
-				renderReferenceRunes(graphics, solved);
-				renderSolvedPuzzle(graphics, sudoku, solved);
-			}
-
+			renderReferenceRunes(graphics, solved);
+			renderSolvedPuzzle(graphics, sudoku, solved);
 		}
 
 		return null;
@@ -126,7 +122,7 @@ class RunedokuOverlay extends Overlay
 	 */
 	private void renderSolvedPuzzle(Graphics2D graphics, Sudoku sudoku, boolean solved)
 	{
-		ArrayList<Integer> simpleArr = util.makeSimple(sudoku.getBoard());
+		List<Integer> simpleArr = util.makeSimple(sudoku.getBoard());
 		//highlight each cell to tell you which piece to place
 		int iteration = 0;
 		for (int i = 10; i < 91; i++)

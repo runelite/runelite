@@ -41,6 +41,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -161,9 +162,9 @@ public class StonedLootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 
-	private Multimap<String, LootRecordCustom> lootRecordMultimap = ArrayListMultimap.create();
-	private Multimap<String, UniqueItemPrepared> uniques = ArrayListMultimap.create();
-	private Map<String, Integer> killCountMap = new HashMap<>();
+	private final Multimap<String, LootRecordCustom> lootRecordMultimap = ArrayListMultimap.create();
+	private final Multimap<String, UniqueItemPrepared> uniques = ArrayListMultimap.create();
+	private final Map<String, Integer> killCountMap = new HashMap<>();
 
 	// key = name, value=current killCount
 	private boolean loaded = false;
@@ -572,7 +573,7 @@ public class StonedLootTrackerPlugin extends Plugin
 		writer.deleteLootTrackerRecords(name);
 	}
 
-	public TreeSet<String> getNames()
+	public Set<String> getNames()
 	{
 		return new TreeSet<>(lootRecordMultimap.keySet());
 	}

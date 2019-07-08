@@ -31,9 +31,9 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Singleton
 public class WhaleWatchersOverlay extends Overlay
 {
-	private Client client;
-	private WhaleWatchersPlugin plugin;
-	private PanelComponent panelComponent;
+	private final Client client;
+	private final WhaleWatchersPlugin plugin;
+	private final PanelComponent panelComponent;
 	private String lastOpponent = "-";
 
 

@@ -34,8 +34,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class WhaleWatchersProtOverlay extends Overlay
 {
 
-	private Client client;
-	private WhaleWatchersPlugin plugin;
+	private final Client client;
+	private final WhaleWatchersPlugin plugin;
 
 	@Inject
 	public WhaleWatchersProtOverlay(final Client client, final WhaleWatchersPlugin plugin)

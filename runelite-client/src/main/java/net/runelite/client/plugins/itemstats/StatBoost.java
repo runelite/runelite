@@ -38,13 +38,13 @@ public abstract class StatBoost extends SingleEffect
 	@Setter
 	private boolean boost;
 
-	public StatBoost(Stat stat, boolean boost)
+	protected StatBoost(Stat stat, boolean boost)
 	{
 		this.stat = stat;
 		this.boost = boost;
 	}
 
-	public abstract int heals(Client client);
+	protected abstract int heals(Client client);
 
 	@Override
 	public StatChange effect(Client client)

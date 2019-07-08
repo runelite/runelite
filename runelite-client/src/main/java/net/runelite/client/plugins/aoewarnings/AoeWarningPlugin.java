@@ -450,7 +450,7 @@ public class AoeWarningPlugin extends Plugin
 		return false;
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.aoeNotifyAll = config.aoeNotifyAll();
 		this.overlayColor = config.overlayColor();

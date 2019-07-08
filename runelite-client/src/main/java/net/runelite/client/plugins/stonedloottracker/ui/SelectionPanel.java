@@ -33,7 +33,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.inject.Singleton;
@@ -53,17 +53,17 @@ import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 @Singleton
 class SelectionPanel extends JPanel
 {
-	private TreeSet<String> names;
-	private LootTrackerPanel parent;
-	private ItemManager itemManager;
+	private final Set<String> names;
+	private final LootTrackerPanel parent;
+	private final ItemManager itemManager;
 
 	private final static Color BACKGROUND_COLOR = ColorScheme.DARK_GRAY_COLOR;
 	private final static Color BUTTON_COLOR = ColorScheme.DARKER_GRAY_COLOR;
 	private final static Color BUTTON_HOVER_COLOR = ColorScheme.DARKER_GRAY_HOVER_COLOR;
 
-	private boolean configToggle;
+	private final boolean configToggle;
 
-	SelectionPanel(final boolean configToggle, final TreeSet<String> names, final LootTrackerPanel parent, final ItemManager itemManager)
+	SelectionPanel(final boolean configToggle, final Set<String> names, final LootTrackerPanel parent, final ItemManager itemManager)
 	{
 		this.names = names == null ? new TreeSet<>() : names;
 		this.parent = parent;
@@ -168,7 +168,7 @@ class SelectionPanel extends JPanel
 		name.setForeground(Color.WHITE);
 		name.setVerticalAlignment(SwingConstants.CENTER);
 
-		ArrayList<BossTab> categoryTabs = BossTab.getByCategoryName(categoryName);
+		List<BossTab> categoryTabs = BossTab.getByCategoryName(categoryName);
 		for (BossTab tab : categoryTabs)
 		{
 			// Create tab (with hover effects/text)

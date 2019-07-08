@@ -48,9 +48,9 @@ import net.runelite.client.util.ImageUtil;
 @Singleton
 public class FightCaveOverlay extends Overlay
 {
-	private FightCavePlugin plugin;
-	private Client client;
-	private SpriteManager spriteManager;
+	private final FightCavePlugin plugin;
+	private final Client client;
+	private final SpriteManager spriteManager;
 
 	@Inject
 	FightCaveOverlay(final Client client, final FightCavePlugin plugin, final SpriteManager spriteManager)

@@ -38,7 +38,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 @Singleton
 public class ScreenMarkerCreationOverlay extends Overlay
 {
-	private ScreenMarkerPlugin plugin;
+	private final ScreenMarkerPlugin plugin;
 
 	@Inject
 	private ScreenMarkerCreationOverlay(final ScreenMarkerPlugin plugin)

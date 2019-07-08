@@ -46,7 +46,7 @@ import static net.runelite.client.ws.PartyService.PARTY_MAX;
 class DiscordState
 {
 	@Data
-	private class EventWithTime
+	private static class EventWithTime
 	{
 		private final DiscordGameEventType type;
 		private final Instant start;
@@ -57,7 +57,7 @@ class DiscordState
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
 	private final DiscordPlugin plugin;
-	private PartyService party;
+	private final PartyService party;
 	private final RuneLiteProperties properties;
 	private DiscordPresence lastPresence;
 

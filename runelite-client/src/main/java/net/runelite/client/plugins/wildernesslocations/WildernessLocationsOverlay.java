@@ -23,7 +23,7 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 public class WildernessLocationsOverlay extends Overlay
 {
 	private final WildernessLocationsPlugin plugin;
-	private TextComponent textComponent;
+	private final TextComponent textComponent;
 
 	@Inject
 	public WildernessLocationsOverlay(final WildernessLocationsPlugin plugin)

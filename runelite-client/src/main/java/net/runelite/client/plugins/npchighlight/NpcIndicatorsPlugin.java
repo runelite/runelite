@@ -562,13 +562,10 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			for (NPC npc : despawnedNpcsThisTick)
 			{
-				if (!teleportGraphicsObjectSpawnedThisTick.isEmpty())
+				if (!teleportGraphicsObjectSpawnedThisTick.isEmpty() && teleportGraphicsObjectSpawnedThisTick.contains(npc.getWorldLocation()))
 				{
-					if (teleportGraphicsObjectSpawnedThisTick.contains(npc.getWorldLocation()))
-					{
-						// NPC teleported away, so we don't want to add the respawn timer
-						continue;
-					}
+					// NPC teleported away, so we don't want to add the respawn timer
+					continue;
 				}
 
 				if (isInViewRange(client.getLocalPlayer().getWorldLocation(), npc.getWorldLocation()))
@@ -590,14 +587,12 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			for (NPC npc : spawnedNpcsThisTick)
 			{
-				if (!teleportGraphicsObjectSpawnedThisTick.isEmpty())
+				if (!teleportGraphicsObjectSpawnedThisTick.isEmpty() &&
+					(teleportGraphicsObjectSpawnedThisTick.contains(npc.getWorldLocation()) ||
+						teleportGraphicsObjectSpawnedThisTick.contains(getWorldLocationBehind(npc))))
 				{
-					if (teleportGraphicsObjectSpawnedThisTick.contains(npc.getWorldLocation()) ||
-						teleportGraphicsObjectSpawnedThisTick.contains(getWorldLocationBehind(npc)))
-					{
-						// NPC teleported here, so we don't want to update the respawn timer
-						continue;
-					}
+					// NPC teleported here, so we don't want to update the respawn timer
+					continue;
 				}
 
 				if (lastPlayerLocation != null && isInViewRange(lastPlayerLocation, npc.getWorldLocation()))

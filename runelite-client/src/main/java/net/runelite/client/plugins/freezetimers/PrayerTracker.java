@@ -24,6 +24,7 @@
 package net.runelite.client.plugins.freezetimers;
 
 import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -34,14 +35,14 @@ import net.runelite.api.Player;
 
 @Slf4j
 @Singleton
-public class PrayerTracker
+class PrayerTracker
 {
 
 	@Inject
 	private Client client;
 
-	private HashMap<Actor, HashMap<String, Integer>> lastTick = new HashMap<>();
-	private HashMap<Actor, HashMap<String, Integer>> newTick = new HashMap<>();
+	private final Map<Actor, HashMap<String, Integer>> lastTick = new HashMap<>();
+	private final Map<Actor, HashMap<String, Integer>> newTick = new HashMap<>();
 
 	public void gameTick()
 	{

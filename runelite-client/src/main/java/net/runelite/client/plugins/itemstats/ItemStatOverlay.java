@@ -53,11 +53,11 @@ public class ItemStatOverlay extends Overlay
 			.aspeed(6)
 			.build());
 
-	private Client client;
-	private ItemManager itemManager;
-	private TooltipManager tooltipManager;
-	private ItemStatChanges statChanges;
-	private ItemStatPlugin plugin;
+	private final Client client;
+	private final ItemManager itemManager;
+	private final TooltipManager tooltipManager;
+	private final ItemStatChanges statChanges;
+	private final ItemStatPlugin plugin;
 
 	@Inject
 	ItemStatOverlay(Client client, ItemStatPlugin plugin, ItemManager itemManager, TooltipManager tooltipManager, ItemStatChanges itemStatChanges)

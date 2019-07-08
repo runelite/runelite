@@ -86,7 +86,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
 	}
 
-	public void init()
+	private void init()
 	{
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(10, 10, 10, 10));

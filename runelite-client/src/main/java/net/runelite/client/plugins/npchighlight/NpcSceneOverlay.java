@@ -153,7 +153,11 @@ public class NpcSceneOverlay extends Overlay
 		{
 			case SOUTH_WEST_TILE:
 				LocalPoint lp1 = LocalPoint.fromWorld(client, actor.getWorldLocation());
-				Polygon tilePoly1 = Perspective.getCanvasTilePoly(client, lp1);
+				Polygon tilePoly1 = null;
+				if (lp1 != null)
+				{
+					tilePoly1 = Perspective.getCanvasTilePoly(client, lp1);
+				}
 
 				renderPoly(graphics, color, tilePoly1);
 				break;

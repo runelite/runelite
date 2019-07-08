@@ -47,8 +47,8 @@ public class BabyHydraPrayOverlay extends Overlay
 	private final BabyHydraPlugin plugin;
 
 	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
-	private BufferedImage PRAY_MAGE;
-	private BufferedImage PRAY_RANGED;
+	private BufferedImage prayMage;
+	private BufferedImage prayRanged;
 	private final PanelComponent imagePanelComponent = new PanelComponent();
 
 	@Inject
@@ -69,71 +69,65 @@ public class BabyHydraPrayOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (PRAY_MAGE == null)
+		if (prayMage == null)
 		{
-			PRAY_MAGE = spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MAGIC, 0);
+			prayMage = spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MAGIC, 0);
 		}
-		if (PRAY_RANGED == null)
+		if (prayRanged == null)
 		{
-			PRAY_RANGED = spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MISSILES, 0);
+			prayRanged = spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MISSILES, 0);
 		}
 
-		if (plugin.getHydra() != null)
+		if (plugin.getHydra() != null && plugin.getHydras().containsKey(plugin.getHydra().getIndex()))
 		{
-			if (plugin.getHydras().containsKey(plugin.getHydra().getIndex()))
+			int val = plugin.getHydras().get(plugin.getHydra().getIndex());
+			if (val != 0 && plugin.getHydraattacks().containsKey(plugin.getHydra().getIndex()))
 			{
-				int val = plugin.getHydras().get(plugin.getHydra().getIndex());
-				if (val != 0)
+				int attack = plugin.getHydraattacks().get(plugin.getHydra().getIndex());
+				if (attack == 8261)
 				{
-					if (plugin.getHydraattacks().containsKey(plugin.getHydra().getIndex()))
+					if (val == 3)
 					{
-						int attack = plugin.getHydraattacks().get(plugin.getHydra().getIndex());
-						if (attack == 8261)
-						{
-							if (val == 3)
-							{
-								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_MAGE));
-								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-									? ComponentConstants.STANDARD_BACKGROUND_COLOR
-									: NOT_ACTIVATED_BACKGROUND_COLOR);
+						imagePanelComponent.getChildren().clear();
+						imagePanelComponent.getChildren().add(new ImageComponent(prayMage));
+						imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+							? ComponentConstants.STANDARD_BACKGROUND_COLOR
+							: NOT_ACTIVATED_BACKGROUND_COLOR);
 
-								return imagePanelComponent.render(graphics);
-							}
-							else
-							{
-								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_RANGED));
-								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES)
-									? ComponentConstants.STANDARD_BACKGROUND_COLOR
-									: NOT_ACTIVATED_BACKGROUND_COLOR);
+						return imagePanelComponent.render(graphics);
+					}
+					else
+					{
+						imagePanelComponent.getChildren().clear();
+						imagePanelComponent.getChildren().add(new ImageComponent(prayRanged));
+						imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES)
+							? ComponentConstants.STANDARD_BACKGROUND_COLOR
+							: NOT_ACTIVATED_BACKGROUND_COLOR);
 
-								return imagePanelComponent.render(graphics);
-							}
-						}
-						else if (attack == 8262)
-						{
-							if (val == 3)
-							{
-								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_RANGED));
-								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES)
-									? ComponentConstants.STANDARD_BACKGROUND_COLOR
-									: NOT_ACTIVATED_BACKGROUND_COLOR);
+						return imagePanelComponent.render(graphics);
+					}
+				}
+				else if (attack == 8262)
+				{
+					if (val == 3)
+					{
+						imagePanelComponent.getChildren().clear();
+						imagePanelComponent.getChildren().add(new ImageComponent(prayRanged));
+						imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES)
+							? ComponentConstants.STANDARD_BACKGROUND_COLOR
+							: NOT_ACTIVATED_BACKGROUND_COLOR);
 
-								return imagePanelComponent.render(graphics);
-							}
-							else
-							{
-								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_MAGE));
-								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-									? ComponentConstants.STANDARD_BACKGROUND_COLOR
-									: NOT_ACTIVATED_BACKGROUND_COLOR);
+						return imagePanelComponent.render(graphics);
+					}
+					else
+					{
+						imagePanelComponent.getChildren().clear();
+						imagePanelComponent.getChildren().add(new ImageComponent(prayMage));
+						imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+							? ComponentConstants.STANDARD_BACKGROUND_COLOR
+							: NOT_ACTIVATED_BACKGROUND_COLOR);
 
-								return imagePanelComponent.render(graphics);
-							}
-						}
+						return imagePanelComponent.render(graphics);
 					}
 				}
 			}

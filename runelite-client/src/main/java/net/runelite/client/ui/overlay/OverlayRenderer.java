@@ -91,8 +91,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private boolean isResizeable;
 	private OverlayBounds snapCorners;
 
-	// Overlay Fonts
-	private Font clientFont;
 	private Font standardFont;
 	private Font tooltipFont;
 	private Font interfaceFont;
@@ -115,10 +113,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 	private void updateConfig()
 	{
-		this.clientFont = runeLiteConfig.clientFont();
-		this.standardFont = FontManager.getFontFromType(this.clientFont, runeLiteConfig.fontType());
-		this.tooltipFont = FontManager.getFontFromType(this.clientFont, runeLiteConfig.tooltipFontType());
-		this.interfaceFont = FontManager.getFontFromType(this.clientFont, runeLiteConfig.interfaceFontType());
+		// Overlay Fonts
+		Font clientFont = runeLiteConfig.clientFont();
+		this.standardFont = FontManager.getFontFromType(clientFont, runeLiteConfig.fontType());
+		this.tooltipFont = FontManager.getFontFromType(clientFont, runeLiteConfig.tooltipFontType());
+		this.interfaceFont = FontManager.getFontFromType(clientFont, runeLiteConfig.interfaceFontType());
 	}
 
 	@Subscribe

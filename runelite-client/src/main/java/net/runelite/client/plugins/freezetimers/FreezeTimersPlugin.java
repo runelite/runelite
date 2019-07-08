@@ -162,7 +162,7 @@ public class FreezeTimersPlugin extends Plugin
 		this.remove(player);
 	}
 
-	public void remove(Actor actor)
+	private void remove(Actor actor)
 	{
 		freezes.remove(actor.getName());
 	}

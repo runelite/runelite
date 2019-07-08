@@ -54,18 +54,18 @@ public class MaidenHandler extends RoomHandler
 	);
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private static final Color FREEZE = new Color(0, 226, 255, 255);
-	private List<WorldPoint> bloodThrows = new ArrayList<>();
-	private List<NPC> bloodSpawns = new ArrayList<>();
+	private final List<WorldPoint> bloodThrows = new ArrayList<>();
+	private final List<NPC> bloodSpawns = new ArrayList<>();
 	private List<WorldPoint> bloodSpawnLocation = new ArrayList<>();
-	private List<WorldPoint> bloodSpawnTarget = new ArrayList<>();
+	private final List<WorldPoint> bloodSpawnTarget = new ArrayList<>();
 	private NPC maiden;
 	private String nyloCall;
-	private Set<Nylos> nylos = new HashSet<>();
-	private List<NPC> healers = new ArrayList<>();
+	private final Set<Nylos> nylos = new HashSet<>();
+	private final List<NPC> healers = new ArrayList<>();
 	private int healerCount = 0;
 	private int wave = 1;
 	private long startTime = 0;
-	private ModelOutlineRenderer modelOutline;
+	private final ModelOutlineRenderer modelOutline;
 
 	public MaidenHandler(final Client client, final TheatrePlugin plugin, final ModelOutlineRenderer modelOutline)
 	{
@@ -94,7 +94,7 @@ public class MaidenHandler extends RoomHandler
 		log.debug("Stopping Maiden Room");
 	}
 
-	public void reset()
+	private void reset()
 	{
 		this.bloodThrows.clear();
 		this.bloodSpawns.clear();
@@ -240,12 +240,9 @@ public class MaidenHandler extends RoomHandler
 	{
 		NPC npc = event.getNpc();
 
-		if (npc.getName() != null && npc.getName().equals("Nylocas Matomenos"))
+		if (npc.getName() != null && npc.getName().equals("Nylocas Matomenos") && npc.getId() == -1)
 		{
-			if (npc.getId() == -1)
-			{
-				nylos.removeIf(c -> c.getNpc() == npc);
-			}
+			nylos.removeIf(c -> c.getNpc() == npc);
 		}
 	}
 

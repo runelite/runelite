@@ -184,9 +184,9 @@ class LootTrackerBox extends JPanel
 		repaint();
 	}
 
-	static ArrayList<LootTrackerItemEntry> dedupeClues(List<LootTrackerItemEntry> items)
+	static List<LootTrackerItemEntry> dedupeClues(List<LootTrackerItemEntry> items)
 	{
-		final ArrayList<LootTrackerItemEntry> newItems = new ArrayList<>();
+		final List<LootTrackerItemEntry> newItems = new ArrayList<>();
 
 		int eliteClues = 0;
 		int hardClues = 0;

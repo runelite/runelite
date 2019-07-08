@@ -17,12 +17,12 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class ClanManModeOverlay extends Overlay
 {
 	private final ClanManModeService ClanManModeService;
-	private final ClanManModeConfig config;
+	private final ClanManModePlugin plugin;
 
 	@Inject
-	private ClanManModeOverlay(final ClanManModeConfig config, final ClanManModeService ClanManModeService)
+	private ClanManModeOverlay(final ClanManModePlugin plugin, final ClanManModeService ClanManModeService)
 	{
-		this.config = config;
+		this.plugin = plugin;
 		this.ClanManModeService = ClanManModeService;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
@@ -37,7 +37,7 @@ public class ClanManModeOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		if (!config.drawOverheadPlayerNames())
+		if (!plugin.isDrawOverheadPlayerNames())
 		{
 			return;
 		}
@@ -48,7 +48,7 @@ public class ClanManModeOverlay extends Overlay
 
 		if (textLocation != null)
 		{
-			if (config.getClanAttackableColor().equals(color) && config.ShowBold())
+			if (plugin.getGetClanAttackableColor().equals(color) && plugin.isShowBold())
 			{
 				graphics.setFont(FontManager.getRunescapeBoldFont());
 			}

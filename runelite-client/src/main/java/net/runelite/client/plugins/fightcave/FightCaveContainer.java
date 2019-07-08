@@ -97,7 +97,7 @@ class FightCaveContainer
 		TZTOKJAD1(NpcID.TZTOKJAD, AttackStyle.UNKNOWN, ImmutableSet.of(AnimationID.TZTOK_JAD_MAGIC_ATTACK, AnimationID.TZTOK_JAD_RANGE_ATTACK, AnimationID.TZTOK_JAD_MELEE_ATTACK), 0),
 		TZTOKJAD2(NpcID.TZTOKJAD_6506, AttackStyle.UNKNOWN, ImmutableSet.of(AnimationID.TZTOK_JAD_MAGIC_ATTACK, AnimationID.TZTOK_JAD_RANGE_ATTACK, AnimationID.TZTOK_JAD_MELEE_ATTACK), 0);
 
-		private static ImmutableMap<Integer, BossMonsters> idMap;
+		private static final ImmutableMap<Integer, BossMonsters> idMap;
 
 		static
 		{

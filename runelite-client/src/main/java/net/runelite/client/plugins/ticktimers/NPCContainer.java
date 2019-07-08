@@ -110,7 +110,7 @@ class NPCContainer
 		DAGANNOTH_SUPREME(NpcID.DAGANNOTH_SUPREME, AttackStyle.RANGE, ImmutableSet.of(AnimationID.DAG_SUPREME)),
 		DAGANNOTH_PRIME(NpcID.DAGANNOTH_PRIME, AttackStyle.MAGE, ImmutableSet.of(AnimationID.DAG_PRIME));
 
-		private static ImmutableMap<Integer, BossMonsters> idMap;
+		private static final ImmutableMap<Integer, BossMonsters> idMap;
 
 		static
 		{

@@ -96,17 +96,18 @@ class CombatOverlay extends Overlay
 					return null;
 				}
 
-				for (String name : map.keySet())
+				for (Map.Entry<String, Long> counter : map.entrySet())
 				{
+					String name = counter.getKey();
 					if (client.getLocalPlayer().getName().contains(name))
 					{
-						tableComponent.addRow(ColorUtil.prependColorTag(name, plugin.getSelfColor()), ColorUtil.prependColorTag(Long.toString(map.get(name)), plugin.getSelfColor()));
+						tableComponent.addRow(ColorUtil.prependColorTag(name, plugin.getSelfColor()), ColorUtil.prependColorTag(Long.toString(counter.getValue()), plugin.getSelfColor()));
 					}
 					else
 					{
-						tableComponent.addRow(ColorUtil.prependColorTag(name, plugin.getOtherColor()), ColorUtil.prependColorTag(Long.toString(map.get(name)), plugin.getOtherColor()));
+						tableComponent.addRow(ColorUtil.prependColorTag(name, plugin.getOtherColor()), ColorUtil.prependColorTag(Long.toString(counter.getValue()), plugin.getOtherColor()));
 					}
-					total += map.get(name);
+					total += counter.getValue();
 				}
 
 				if (!map.containsKey(local.getName()))

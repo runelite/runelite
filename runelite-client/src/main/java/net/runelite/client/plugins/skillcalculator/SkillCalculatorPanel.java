@@ -32,6 +32,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.inject.Singleton;
@@ -64,10 +65,10 @@ class SkillCalculatorPanel extends PluginPanel
 	private final MaterialTabGroup skillGroup;
 	private final MaterialTabGroup tabGroup;
 	private String currentTab;
-	private ArrayList<String> tabs = new ArrayList<>();
+	private final List<String> tabs = new ArrayList<>();
 	@Getter
 	private Map<Integer, Integer> bankMap = new HashMap<>();
-	private GridBagConstraints c;
+	private final GridBagConstraints c;
 
 	SkillCalculatorPanel(final SkillIconManager iconManager, final Client client, final SkillCalculatorConfig config, final SpriteManager spriteManager, final ItemManager itemManager)
 	{
@@ -123,7 +124,7 @@ class SkillCalculatorPanel extends PluginPanel
 			MaterialTab tab = new MaterialTab(icon, skillGroup, null);
 			tab.setOnSelectEvent(() ->
 			{
-				if (currentCalc == calculatorType)
+				if (currentCalc != null && currentCalc.equals(calculatorType))
 				{
 					return true;
 				}

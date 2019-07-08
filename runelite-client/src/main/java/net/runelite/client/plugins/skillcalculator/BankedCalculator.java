@@ -77,17 +77,17 @@ public class BankedCalculator extends JPanel
 	private Skill currentSkill;
 
 	private double totalBankedXp = 0.0f;
-	private JLabel totalLabel = new JLabel();
-	private JPanel detailConfigContainer;
-	private JPanel detailContainer;
+	private final JLabel totalLabel = new JLabel();
+	private final JPanel detailConfigContainer;
+	private final JPanel detailContainer;
 
 	// Banked Experience magic
 	private Map<Integer, Integer> bankMap = new HashMap<>();
-	private Map<String, Boolean> categoryMap = new HashMap<>();            // Check if CriticalItem Category is enabled
-	private Map<CriticalItem, CriticalItemPanel> panelMap = new HashMap<>();
-	private Map<CriticalItem, Integer> criticalMap = new HashMap<>();    // Quantity of CriticalItem inside bankMap
-	private Map<CriticalItem, Activity> activityMap = new HashMap<>();    // Selected Activity used for calculating xp
-	private Map<CriticalItem, Integer> linkedMap = new HashMap<>();        // ItemID of item that links to the CriticalItem
+	private final Map<String, Boolean> categoryMap = new HashMap<>();            // Check if CriticalItem Category is enabled
+	private final Map<CriticalItem, CriticalItemPanel> panelMap = new HashMap<>();
+	private final Map<CriticalItem, Integer> criticalMap = new HashMap<>();    // Quantity of CriticalItem inside bankMap
+	private final Map<CriticalItem, Activity> activityMap = new HashMap<>();    // Selected Activity used for calculating xp
+	private final Map<CriticalItem, Integer> linkedMap = new HashMap<>();        // ItemID of item that links to the CriticalItem
 
 	BankedCalculator(
 		final SkillCalculatorPanel parent,
@@ -256,7 +256,7 @@ public class BankedCalculator extends JPanel
 	private void calculatedBankedMaps()
 	{
 		// Grab all CriticalItems for this skill
-		ArrayList<CriticalItem> items = CriticalItem.getBySkillName(currentSkill);
+		List<CriticalItem> items = CriticalItem.getBySkillName(currentSkill);
 
 		// Loop over all Critical Items for this skill and determine how many are in the bank
 		for (CriticalItem item : items)
@@ -331,12 +331,9 @@ public class BankedCalculator extends JPanel
 				}
 
 				// One activity and rewards no xp ignore.
-				if (activities.size() == 1)
+				if (activities.size() == 1 && activities.get(0).getXp() <= 0)
 				{
-					if (activities.get(0).getXp() <= 0)
-					{
-						return;
-					}
+					return;
 				}
 			}
 
@@ -414,7 +411,7 @@ public class BankedCalculator extends JPanel
 
 		for (String category : CriticalItem.getSkillCategories(currentSkill))
 		{
-			ArrayList<CriticalItem> items = CriticalItem.getItemsForSkillCategories(currentSkill, category);
+			List<CriticalItem> items = CriticalItem.getItemsForSkillCategories(currentSkill, category);
 			for (CriticalItem item : items)
 			{
 				Integer amount = bankMap.get(item.getItemID());
@@ -438,7 +435,7 @@ public class BankedCalculator extends JPanel
 	{
 		// This is triggered on every click so don't update if activity didn't actually change
 		Activity cur = activityMap.get(i);
-		if (cur == a)
+		if (cur != null && cur.equals(a))
 		{
 			return;
 		}
@@ -448,19 +445,16 @@ public class BankedCalculator extends JPanel
 
 		// If had a previous selection and this item links to another check for item prevention change.
 		// If there are changes adjust the Linked panel quantity as well
-		if (cur != null && i.getLinkedItemId() != -1)
+		if (cur != null && i.getLinkedItemId() != -1 && cur.isPreventLinked() != a.isPreventLinked())
 		{
-			if (cur.isPreventLinked() != a.isPreventLinked())
+			CriticalItem linked = CriticalItem.getByItemId(i.getLinkedItemId());
+			CriticalItemPanel l = panelMap.get(linked);
+			if (l != null)
 			{
-				CriticalItem linked = CriticalItem.getByItemId(i.getLinkedItemId());
-				CriticalItemPanel l = panelMap.get(linked);
-				if (l != null)
-				{
-					l.updateLinkedMap(getLinkedTotalMap(linked));
-					int amount = config.limitedBankedSecondaries() ? limitToActivitySecondaries(a, l.getAmount()) : l.getAmount();
-					l.updateAmount(amount, false);
-					l.recalculate();
-				}
+				l.updateLinkedMap(getLinkedTotalMap(linked));
+				int amount = config.limitedBankedSecondaries() ? limitToActivitySecondaries(a, l.getAmount()) : l.getAmount();
+				l.updateAmount(amount, false);
+				l.recalculate();
 			}
 		}
 
@@ -500,13 +494,11 @@ public class BankedCalculator extends JPanel
 
 		// This item has an activity selected and its preventing linked functionality?
 		Activity selected = activityMap.get(i);
-		if (selected != null && selected.isPreventLinked())
-		{
+		if (selected != null && selected.isPreventLinked()
 			// If initial request is for this item
-			if (!first)
-			{
-				return map;
-			}
+			&& !first)
+		{
+			return map;
 		}
 
 		// Add self to map
@@ -547,7 +539,13 @@ public class BankedCalculator extends JPanel
 		if (oldMapFlag)
 		{
 			CalculatorType calc = CalculatorType.getBySkill(currentSkill);
-			SwingUtilities.invokeLater(() -> openBanked(calc));
+			SwingUtilities.invokeLater(() ->
+			{
+				if (calc != null)
+				{
+					openBanked(calc);
+				}
+			});
 			return;
 		}
 

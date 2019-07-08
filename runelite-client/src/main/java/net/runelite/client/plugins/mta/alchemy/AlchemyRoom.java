@@ -37,22 +37,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import static net.runelite.api.ObjectID.CUPBOARD_23678;
-import static net.runelite.api.ObjectID.CUPBOARD_23679;
-import static net.runelite.api.ObjectID.CUPBOARD_23680;
-import static net.runelite.api.ObjectID.CUPBOARD_23681;
-import static net.runelite.api.ObjectID.CUPBOARD_23682;
-import static net.runelite.api.ObjectID.CUPBOARD_23683;
-import static net.runelite.api.ObjectID.CUPBOARD_23684;
-import static net.runelite.api.ObjectID.CUPBOARD_23685;
-import static net.runelite.api.ObjectID.CUPBOARD_23686;
-import static net.runelite.api.ObjectID.CUPBOARD_23687;
-import static net.runelite.api.ObjectID.CUPBOARD_23688;
-import static net.runelite.api.ObjectID.CUPBOARD_23689;
-import static net.runelite.api.ObjectID.CUPBOARD_23690;
-import static net.runelite.api.ObjectID.CUPBOARD_23691;
-import static net.runelite.api.ObjectID.CUPBOARD_23692;
-import static net.runelite.api.ObjectID.CUPBOARD_23693;
+import static net.runelite.api.ObjectID.*;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -121,7 +106,7 @@ public class AlchemyRoom extends MTARoom
 		}
 
 		AlchemyItem bestItem = getBest();
-		if (best == null || best != bestItem)
+		if (best == null || !best.equals(bestItem))
 		{
 			if (best != null)
 			{
@@ -240,40 +225,37 @@ public class AlchemyRoom extends MTARoom
 
 		String message = wrapper.getMessage();
 
-		if (wrapper.getType() == ChatMessageType.GAMEMESSAGE)
+		if (wrapper.getType() == ChatMessageType.GAMEMESSAGE && message.contains(YOU_FOUND))
 		{
-			if (message.contains(YOU_FOUND))
+			String item = message.replace(YOU_FOUND, "").trim();
+			AlchemyItem alchemyItem = AlchemyItem.find(item);
+			Cupboard clicked = getClicked();
+			if (clicked.alchemyItem != alchemyItem && alchemyItem != null)
 			{
-				String item = message.replace(YOU_FOUND, "").trim();
-				AlchemyItem alchemyItem = AlchemyItem.find(item);
-				Cupboard clicked = getClicked();
-				if (clicked.alchemyItem != alchemyItem)
-				{
-					fill(clicked, alchemyItem);
-				}
+				fill(clicked, alchemyItem);
 			}
-			else if (message.equals(EMPTY))
+		}
+		else if (message.equals(EMPTY))
+		{
+			Cupboard clicked = getClicked();
+
+			int idx = Arrays.asList(cupboards).indexOf(clicked);
+			for (int i = -2; i <= 2; ++i)
 			{
-				Cupboard clicked = getClicked();
-
-				int idx = Arrays.asList(cupboards).indexOf(clicked);
-				for (int i = -2; i <= 2; ++i)
+				int j = (idx + i) % 8;
+				if (j < 0)
 				{
-					int j = (idx + i) % 8;
-					if (j < 0)
-					{
-						j = 8 + j;
-					}
-
-					Cupboard cupboard = cupboards[j];
-					if (cupboard != null && cupboard.alchemyItem == AlchemyItem.UNKNOWN)
-					{
-						cupboard.alchemyItem = AlchemyItem.POSSIBLY_EMPTY;
-					}
+					j = 8 + j;
 				}
 
-				clicked.alchemyItem = AlchemyItem.EMPTY;
+				Cupboard cupboard = cupboards[j];
+				if (cupboard != null && cupboard.alchemyItem == AlchemyItem.UNKNOWN)
+				{
+					cupboard.alchemyItem = AlchemyItem.POSSIBLY_EMPTY;
+				}
 			}
+
+			clicked.alchemyItem = AlchemyItem.EMPTY;
 		}
 	}
 
@@ -393,7 +375,7 @@ public class AlchemyRoom extends MTARoom
 				continue;
 			}
 
-			if (alchemyItem == best)
+			if (alchemyItem.equals(best))
 			{
 				client.setHintArrow(object.getWorldLocation());
 				found = true;

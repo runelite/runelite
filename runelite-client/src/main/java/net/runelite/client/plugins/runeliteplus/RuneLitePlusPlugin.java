@@ -36,7 +36,6 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLitePlusConfig;
 import net.runelite.client.discord.DiscordService;
@@ -92,9 +91,6 @@ public class RuneLitePlusPlugin extends Plugin
 	}
 
 	@Inject
-	private RuneLiteProperties runeLiteProperties;
-
-	@Inject
 	private RuneLitePlusConfig config;
 
 	@Inject
@@ -109,7 +105,7 @@ public class RuneLitePlusPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	private RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
+	private final RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
 	private int entered = -1;
 	private int enterIdx;
 	private boolean expectInput;

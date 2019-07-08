@@ -25,7 +25,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Singleton
 public class PvpToolsOverlay extends Overlay
 {
-	private PvpToolsPlugin pvpToolsPlugin;
+	private final PvpToolsPlugin pvpToolsPlugin;
 
 	@Inject
 	private PvpToolsOverlay(final PvpToolsPlugin pvpToolsPlugin)
@@ -40,13 +40,10 @@ public class PvpToolsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (pvpToolsPlugin.isFallInHelper())
+		if (pvpToolsPlugin.isFallInHelper() && pvpToolsPlugin.fallinHelperEnabled)
 		{
-			if (pvpToolsPlugin.fallinHelperEnabled)
-			{
-				graphics.setFont(FontManager.getRunescapeFont().deriveFont(28));
-				OverlayUtil.renderTextLocation(graphics, new Point(200, 80), "FALL IN HELPER ENABLED", Color.YELLOW);
-			}
+			graphics.setFont(FontManager.getRunescapeFont().deriveFont(28));
+			OverlayUtil.renderTextLocation(graphics, new Point(200, 80), "FALL IN HELPER ENABLED", Color.YELLOW);
 		}
 		return null;
 	}

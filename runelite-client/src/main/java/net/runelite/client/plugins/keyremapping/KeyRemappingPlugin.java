@@ -197,12 +197,9 @@ public class KeyRemappingPlugin extends Plugin
 		{
 			case SCRIPT_EVENT_SET_CHATBOX_INPUT:
 				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-				if (chatboxInput != null)
+				if (chatboxInput != null && chatboxFocused() && !typing)
 				{
-					if (chatboxFocused() && !typing)
-					{
-						chatboxInput.setText(getWaitingText());
-					}
+					chatboxInput.setText(getWaitingText());
 				}
 				break;
 			case SCRIPT_EVENT_BLOCK_CHAT_INPUT:
@@ -230,14 +227,11 @@ public class KeyRemappingPlugin extends Plugin
 	void unlockChat()
 	{
 		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-		if (chatboxInput != null)
+		if (chatboxInput != null && client.getGameState() == GameState.LOGGED_IN)
 		{
-			if (client.getGameState() == GameState.LOGGED_IN)
-			{
-				final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
-				final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
-				chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
-			}
+			final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+			final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
+			chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 		}
 	}
 

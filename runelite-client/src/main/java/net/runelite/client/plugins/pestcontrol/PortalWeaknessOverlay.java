@@ -53,11 +53,11 @@ public class PortalWeaknessOverlay extends Overlay
 	private final PestControlPlugin plugin;
 	private final Client client;
 
-	private BufferedImage magicImage;
-	private BufferedImage rangedImage;
-	private BufferedImage stabImage;
-	private BufferedImage slashImage;
-	private BufferedImage crushImage;
+	private final BufferedImage magicImage;
+	private final BufferedImage rangedImage;
+	private final BufferedImage stabImage;
+	private final BufferedImage slashImage;
+	private final BufferedImage crushImage;
 
 	@Inject
 	PortalWeaknessOverlay(

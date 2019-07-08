@@ -10,9 +10,9 @@ import javax.inject.Singleton;
 class NPCDamageCounter
 {
 
-	Map<Integer, List<String>> attackers;
+	final Map<Integer, List<String>> attackers;
 
-	List<Integer> damage;
+	final List<Integer> damage;
 
 	NPCDamageCounter()
 	{

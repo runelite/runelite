@@ -153,7 +153,7 @@ public class PrayerPlugin extends Plugin
 		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 
-		if (container == inventory || container == equipment)
+		if (container != null && (container.equals(inventory) || container.equals(equipment)))
 		{
 			doseOverlay.setHasHolyWrench(false);
 			doseOverlay.setHasPrayerRestore(false);

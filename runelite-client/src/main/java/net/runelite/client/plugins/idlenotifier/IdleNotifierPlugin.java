@@ -27,100 +27,18 @@ package net.runelite.client.plugins.idlenotifier;
 
 import com.google.inject.Provides;
 import java.awt.TrayIcon;
-//import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import javax.inject.Inject;
-//import javax.sound.sampled.LineUnavailableException;
-//import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Setter;
-import net.runelite.api.events.ConfigChanged;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
-import static net.runelite.api.AnimationID.COOKING_FIRE;
-import static net.runelite.api.AnimationID.COOKING_RANGE;
-import static net.runelite.api.AnimationID.COOKING_WINE;
-import static net.runelite.api.AnimationID.CRAFTING_BATTLESTAVES;
-import static net.runelite.api.AnimationID.CRAFTING_GLASSBLOWING;
-import static net.runelite.api.AnimationID.CRAFTING_LEATHER;
-import static net.runelite.api.AnimationID.CRAFTING_POTTERS_WHEEL;
-import static net.runelite.api.AnimationID.CRAFTING_POTTERY_OVEN;
-import static net.runelite.api.AnimationID.CRAFTING_SPINNING;
-import static net.runelite.api.AnimationID.DENSE_ESSENCE_CHIPPING;
-import static net.runelite.api.AnimationID.DENSE_ESSENCE_CHISELING;
-import static net.runelite.api.AnimationID.FARMING_MIX_ULTRACOMPOST;
-import static net.runelite.api.AnimationID.FISHING_CRUSHING_INFERNAL_EELS;
-import static net.runelite.api.AnimationID.FISHING_CUTTING_SACRED_EELS;
-import static net.runelite.api.AnimationID.FLETCHING_BOW_CUTTING;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_MAGIC_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_MAGIC_SHORTBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_MAPLE_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_MAPLE_SHORTBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_NORMAL_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_NORMAL_SHORTBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_OAK_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_OAK_SHORTBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_WILLOW_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_WILLOW_SHORTBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_YEW_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_YEW_SHORTBOW;
-import static net.runelite.api.AnimationID.GEM_CUTTING_AMETHYST;
-import static net.runelite.api.AnimationID.GEM_CUTTING_DIAMOND;
-import static net.runelite.api.AnimationID.GEM_CUTTING_EMERALD;
-import static net.runelite.api.AnimationID.GEM_CUTTING_JADE;
-import static net.runelite.api.AnimationID.GEM_CUTTING_OPAL;
-import static net.runelite.api.AnimationID.GEM_CUTTING_REDTOPAZ;
-import static net.runelite.api.AnimationID.GEM_CUTTING_RUBY;
-import static net.runelite.api.AnimationID.GEM_CUTTING_SAPPHIRE;
-import static net.runelite.api.AnimationID.HERBLORE_MAKE_TAR;
-import static net.runelite.api.AnimationID.HERBLORE_PESTLE_AND_MORTAR;
-import static net.runelite.api.AnimationID.HERBLORE_POTIONMAKING;
-import static net.runelite.api.AnimationID.HOME_MAKE_TABLET;
-import static net.runelite.api.AnimationID.IDLE;
-import static net.runelite.api.AnimationID.MAGIC_CHARGING_ORBS;
-import static net.runelite.api.AnimationID.MAGIC_ENCHANTING_AMULET_1;
-import static net.runelite.api.AnimationID.MAGIC_ENCHANTING_AMULET_2;
-import static net.runelite.api.AnimationID.MAGIC_ENCHANTING_AMULET_3;
-import static net.runelite.api.AnimationID.MAGIC_ENCHANTING_JEWELRY;
-import static net.runelite.api.AnimationID.MAGIC_LUNAR_PLANK_MAKE;
-import static net.runelite.api.AnimationID.MAGIC_LUNAR_SHARED;
-import static net.runelite.api.AnimationID.MAGIC_LUNAR_STRING_JEWELRY;
-import static net.runelite.api.AnimationID.MAGIC_MAKE_TABLET;
-import static net.runelite.api.AnimationID.MINING_3A_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_ADAMANT_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_BLACK_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_BRONZE_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_ORN;
-import static net.runelite.api.AnimationID.MINING_INFERNAL_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_IRON_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_MITHRIL_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
-import static net.runelite.api.AnimationID.PISCARILIUS_CRANE_REPAIR;
-import static net.runelite.api.AnimationID.SAND_COLLECTION;
-import static net.runelite.api.AnimationID.SMITHING_ANVIL;
-import static net.runelite.api.AnimationID.SMITHING_CANNONBALL;
-import static net.runelite.api.AnimationID.SMITHING_SMELTING;
-import static net.runelite.api.AnimationID.USING_GILDED_ALTAR;
-import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
-import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
-import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
-import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
-import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
-import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
-import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
-import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
-import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
+import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
@@ -135,12 +53,13 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -150,6 +69,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.PvPUtil;
 
+//import java.io.IOException;
+//import javax.sound.sampled.LineUnavailableException;
+//import javax.sound.sampled.UnsupportedAudioFileException;
+
 @PluginDescriptor(
 	name = "Idle Notifier",
 	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
@@ -158,8 +81,6 @@ import net.runelite.client.util.PvPUtil;
 @Singleton
 public class IdleNotifierPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(IdleNotifierPlugin.class);
-
 	// This must be more than 500 client ticks (10 seconds) before you get AFK kicked
 	private static final int LOGOUT_WARNING_MILLIS = (4 * 60 + 40) * 1000; // 4 minutes and 40 seconds
 	private static final int COMBAT_WARNING_MILLIS = 19 * 60 * 1000; // 19 minutes
@@ -362,22 +283,14 @@ public class IdleNotifierPlugin extends Plugin
 	private void onPlayerSpawned(PlayerSpawned event)
 	{
 		final Player p = event.getPlayer();
-		if (this.notifyPkers)
+		if (this.notifyPkers && p != null && p != client.getLocalPlayer()
+			&& PvPUtil.isAttackable(client, p) && !client.isFriended(p.getName(), false)
+			&& !client.isClanMember(p.getName()))
 		{
-			if (p != null)
-			{
-				if (p != client.getLocalPlayer())
-				{
-					if (PvPUtil.isAttackable(client, p) && !client.isFriended(p.getName(), false)
-						&& !client.isClanMember(p.getName()))
-					{
-						String playerName = p.getName();
-						int combat = p.getCombatLevel();
-						notifier.notify("PK'er warning! A level " + combat + " player named " + playerName +
-							" appeared!", TrayIcon.MessageType.WARNING);
-					}
-				}
-			}
+			String playerName = p.getName();
+			int combat = p.getCombatLevel();
+			notifier.notify("PK'er warning! A level " + combat + " player named " + playerName +
+				" appeared!", TrayIcon.MessageType.WARNING);
 		}
 	}
 

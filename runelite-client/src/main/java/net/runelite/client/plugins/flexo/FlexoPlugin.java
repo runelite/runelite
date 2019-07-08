@@ -134,9 +134,9 @@ public class FlexoPlugin extends Plugin
 	private int scalingFactor;
 
 	@Getter(AccessLevel.PACKAGE)
-	private ArrayList<Rectangle> clickAreas = new ArrayList<>();
+	private List<Rectangle> clickAreas = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
-	private ArrayList<Point> clickPoints = new ArrayList<>();
+	private List<Point> clickPoints = new ArrayList<>();
 
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
@@ -172,15 +172,12 @@ public class FlexoPlugin extends Plugin
 			{
 				for (NPC npc : client.getNpcs())
 				{
-					if (npc != null)
+					if (npc != null && npc.getConvexHull() != null)
 					{
-						if (npc.getConvexHull() != null)
-						{
-							Rectangle r = FlexoMouse.getClickArea(npc.getConvexHull().getBounds());
-							this.clickAreas.add(r);
-							java.awt.Point p = FlexoMouse.getClickPoint(r);
-							this.clickPoints.add(p);
-						}
+						Rectangle r = FlexoMouse.getClickArea(npc.getConvexHull().getBounds());
+						this.clickAreas.add(r);
+						java.awt.Point p = FlexoMouse.getClickPoint(r);
+						this.clickPoints.add(p);
 					}
 				}
 			}
@@ -194,15 +191,12 @@ public class FlexoPlugin extends Plugin
 			{
 				for (Player player : client.getPlayers())
 				{
-					if (player != null)
+					if (player != null && player.getConvexHull() != null)
 					{
-						if (player.getConvexHull() != null)
-						{
-							Rectangle r = FlexoMouse.getClickArea(player.getConvexHull().getBounds());
-							this.clickAreas.add(r);
-							java.awt.Point p = FlexoMouse.getClickPoint(r);
-							this.clickPoints.add(p);
-						}
+						Rectangle r = FlexoMouse.getClickArea(player.getConvexHull().getBounds());
+						this.clickAreas.add(r);
+						java.awt.Point p = FlexoMouse.getClickPoint(r);
+						this.clickPoints.add(p);
 					}
 				}
 			}
@@ -214,27 +208,21 @@ public class FlexoPlugin extends Plugin
 			Flexo.isStretched = client.isStretchedEnabled();
 			Flexo.scale = this.scalingFactor;
 
-			if (flexo != null)
+			if (flexo != null && GroundItemsPlugin.getCollectedGroundItems() != null)
 			{
-				if (GroundItemsPlugin.getCollectedGroundItems() != null)
+				for (GroundItem gi : GroundItemsPlugin.getCollectedGroundItems().values())
 				{
-					for (GroundItem gi : GroundItemsPlugin.getCollectedGroundItems().values())
+					if (gi != null)
 					{
-						if (gi != null)
+						LocalPoint lp = LocalPoint.fromWorld(client, gi.getLocation());
+						if (lp != null && Perspective.getCanvasTilePoly(client, lp) != null)
 						{
-							LocalPoint lp = LocalPoint.fromWorld(client, gi.getLocation());
-							if (lp != null)
-							{
-								if (Perspective.getCanvasTilePoly(client, lp) != null)
-								{
-									Rectangle r1 = FlexoMouse.getClickArea(Perspective.getCanvasTilePoly(client, lp).getBounds());
-									Rectangle r2 = FlexoMouse.getClickArea(r1);
-									Rectangle r3 = FlexoMouse.getClickArea(r2);
-									this.clickAreas.add(r3);
-									java.awt.Point p = FlexoMouse.getClickPoint(r3);
-									this.clickPoints.add(p);
-								}
-							}
+							Rectangle r1 = FlexoMouse.getClickArea(Perspective.getCanvasTilePoly(client, lp).getBounds());
+							Rectangle r2 = FlexoMouse.getClickArea(r1);
+							Rectangle r3 = FlexoMouse.getClickArea(r2);
+							this.clickAreas.add(r3);
+							java.awt.Point p = FlexoMouse.getClickPoint(r3);
+							this.clickPoints.add(p);
 						}
 					}
 				}

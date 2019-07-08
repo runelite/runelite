@@ -160,7 +160,7 @@ class DevToolsOverlay extends Overlay
 
 		for (Player p : players)
 		{
-			if (p != local)
+			if (!p.equals(local))
 			{
 				String text = p.getName() + " (A: " + p.getAnimation() + ") (G: " + p.getSpotAnimation() + ")";
 				OverlayUtil.renderActorOverlay(graphics, p, text, BLUE);

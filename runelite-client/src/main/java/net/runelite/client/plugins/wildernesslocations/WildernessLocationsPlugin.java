@@ -81,7 +81,7 @@ public class WildernessLocationsPlugin extends Plugin
 	private String oldChat = "";
 	private int currentCooldown = 0;
 	private WorldPoint worldPoint = null;
-	private final HashMap<WorldArea, String> wildLocs = getLocationMap();
+	private final Map<WorldArea, String> wildLocs = getLocationMap();
 
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
 	{
@@ -202,9 +202,9 @@ public class WildernessLocationsPlugin extends Plugin
 		return s;
 	}
 
-	private static HashMap<WorldArea, String> getLocationMap()
+	private static Map<WorldArea, String> getLocationMap()
 	{
-		HashMap<WorldArea, String> hashMap = new HashMap<>();
+		Map<WorldArea, String> hashMap = new HashMap<>();
 		Arrays.stream(WildernessLocation.values()).forEach(wildernessLocation ->
 			hashMap.put(wildernessLocation.getWorldArea(), wildernessLocation.getName()));
 		return hashMap;

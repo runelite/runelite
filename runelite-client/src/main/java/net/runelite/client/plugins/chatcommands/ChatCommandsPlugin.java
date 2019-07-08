@@ -818,7 +818,7 @@ public class ChatCommandsPlugin extends Plugin
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+				log.error("Error looking up prices", e);
 			}
 
 			int itemId = item.getId();
@@ -1166,7 +1166,7 @@ public class ChatCommandsPlugin extends Plugin
 		ItemPrice shortest = null;
 		for (ItemPrice item : items)
 		{
-			if (item.getName().toLowerCase().equals(originalInput.toLowerCase()))
+			if (item.getName().equalsIgnoreCase(originalInput.toLowerCase()))
 			{
 				return item;
 			}

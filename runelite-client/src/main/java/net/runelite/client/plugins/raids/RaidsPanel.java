@@ -46,9 +46,9 @@ class RaidsPanel extends PluginPanel
 	@Inject
 	private RaidsPlugin raidsPlugin;
 
-	private JButton reloadButton = new JButton("Reload Instance");
-	private JButton reloadScouter = new JButton("Reload Raid Overlay");
-	private JLabel reloadMessage = new JLabel("<html><center><h3>Instance Reload Helper </h3>Reloading an instance will cause your client to disconnect temporarily.<br></center></html>");
+	private final JButton reloadButton = new JButton("Reload Instance");
+	private final JButton reloadScouter = new JButton("Reload Raid Overlay");
+	private final JLabel reloadMessage = new JLabel("<html><center><h3>Instance Reload Helper </h3>Reloading an instance will cause your client to disconnect temporarily.<br></center></html>");
 
 	void init()
 	{
