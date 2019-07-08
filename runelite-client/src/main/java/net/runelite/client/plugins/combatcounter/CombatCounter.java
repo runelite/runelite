@@ -157,9 +157,9 @@ public class CombatCounter extends Plugin
 
 		.put(414, 5) // Kodai Bash, Pound, Focus
 
-		.put(428, 4) // Staff of Light Jab
+		// .put(428, 4) // Staff of Light Jab
 		.put(440, 4) // Staff of Light Swipe
-		.put(419, 4) // Staff of Light Fend
+		//.put(419, 4) // Staff of Light Fend
 		.put(7967, 4) // Staff of Light Special
 
 		.put(428, 7) // Crystal Halberd Jab, Fend
