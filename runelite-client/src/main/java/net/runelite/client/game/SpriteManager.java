@@ -54,7 +54,7 @@ public class SpriteManager
 	@Inject
 	private ClientThread clientThread;
 
-	private Cache<Long, BufferedImage> cache = CacheBuilder.newBuilder()
+	private final Cache<Long, BufferedImage> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.expireAfterAccess(1, TimeUnit.HOURS)
 		.build();

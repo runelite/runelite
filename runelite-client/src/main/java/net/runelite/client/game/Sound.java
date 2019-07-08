@@ -20,8 +20,8 @@ public enum Sound
 	RESTORED_SPECIAL_ATTACK(16, "net/runelite/client/game/sounds/restorespec.wav"),
 	IDLE(17, "net/runelite/client/game/sounds/idle.wav");
 
-	private String filePath;
-	private int id;
+	private final String filePath;
+	private final int id;
 
 	Sound(int id, String filePath)
 	{
