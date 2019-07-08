@@ -30,7 +30,7 @@ import lombok.Value;
  * An event where a request to remove a friend is sent to the server.
  */
 @Value
-public class RemovedFriend
+public class FriendRemoved
 {
 	/**
 	 * The name of the removed friend.
