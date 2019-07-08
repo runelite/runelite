@@ -143,7 +143,7 @@ public class GrandExchangeOffer {
          int var0 = 0;
 
          for (int var1 = 0; var1 <= Client.archiveLoaderArchive; ++var1) {
-            var0 += ((ArchiveLoader)Client.archiveLoaders.get(var1)).field409;
+            var0 += ((ArchiveLoader)Client.archiveLoaders.get(var1)).loadedCount;
          }
 
          return var0 * 10000 / Client.field140;

@@ -83,7 +83,7 @@ final class GrandExchangeOfferUnitPriceComparator implements Comparator {
                var2 = Canvas.localPlayer.y >> 7;
             }
 
-            int var3 = WorldMapSection1.cameraX >> 7;
+            int var3 = WorldMapSection2.cameraX >> 7;
             int var4 = GrandExchangeOfferNameComparator.cameraZ >> 7;
             if (var3 < 0 || var4 < 0 || var3 >= 104 || var4 >= 104) {
                return SoundSystem.plane;

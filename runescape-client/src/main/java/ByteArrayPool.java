@@ -83,9 +83,9 @@ public class ByteArrayPool {
             if (field55[var3] != var0) {
                if (var0 < field55[var3]) {
                }
-            } else if (WorldMapSection2.field1082[var3] > 0) {
-               byte[] var4 = RouteStrategy.field760[var3][--WorldMapSection2.field1082[var3]];
-               RouteStrategy.field760[var3][WorldMapSection2.field1082[var3]] = null;
+            } else if (WorldMapSection0.field1082[var3] > 0) {
+               byte[] var4 = RouteStrategy.field760[var3][--WorldMapSection0.field1082[var3]];
+               RouteStrategy.field760[var3][WorldMapSection0.field1082[var3]] = null;
                return var4;
             }
          }

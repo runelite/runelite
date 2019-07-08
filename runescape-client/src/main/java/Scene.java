@@ -1848,7 +1848,7 @@ public class Scene {
                            Rasterizer3D.method3012(var27, var29, var25, var26, var28, var24, var1.neColor, var1.nwColor, var1.seColor, var13, var9, var14, var19, var21, var18, var16, var15, var11, var1.texture);
                         }
                      } else {
-                        var30 = Rasterizer3D.Rasterizer3D_textureLoader.vmethod324(var1.texture);
+                        var30 = Rasterizer3D.Rasterizer3D_textureLoader.getAverageTextureRGB(var1.texture);
                         Rasterizer3D.method3037(var27, var29, var25, var26, var28, var24, method3108(var30, var1.neColor), method3108(var30, var1.nwColor), method3108(var30, var1.seColor));
                      }
                   }
@@ -1871,7 +1871,7 @@ public class Scene {
                      } else if (!Scene_isLowDetail) {
                         Rasterizer3D.method3012(var23, var25, var29, var22, var24, var28, var1.swColor, var1.seColor, var1.nwColor, var10, var14, var9, var17, var18, var21, var12, var11, var15, var1.texture);
                      } else {
-                        var30 = Rasterizer3D.Rasterizer3D_textureLoader.vmethod324(var1.texture);
+                        var30 = Rasterizer3D.Rasterizer3D_textureLoader.getAverageTextureRGB(var1.texture);
                         Rasterizer3D.method3037(var23, var25, var29, var22, var24, var28, method3108(var30, var1.swColor), method3108(var30, var1.seColor), method3108(var30, var1.nwColor));
                      }
                   }
@@ -1950,7 +1950,7 @@ public class Scene {
                      Rasterizer3D.method3012(var16, var17, var18, var13, var14, var15, var1.triangleColorA[var9], var1.triangleColorB[var9], var1.triangleColorC[var9], TileModel.field902[var10], TileModel.field902[var11], TileModel.field902[var12], TileModel.field903[var10], TileModel.field903[var11], TileModel.field903[var12], TileModel.field904[var10], TileModel.field904[var11], TileModel.field904[var12], var1.triangleTextureId[var9]);
                   }
                } else {
-                  int var19 = Rasterizer3D.Rasterizer3D_textureLoader.vmethod324(var1.triangleTextureId[var9]);
+                  int var19 = Rasterizer3D.Rasterizer3D_textureLoader.getAverageTextureRGB(var1.triangleTextureId[var9]);
                   Rasterizer3D.method3037(var16, var17, var18, var13, var14, var15, method3108(var19, var1.triangleColorA[var9]), method3108(var19, var1.triangleColorB[var9]), method3108(var19, var1.triangleColorC[var9]));
                }
             } else if (var1.triangleColorA[var9] != 12345678) {

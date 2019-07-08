@@ -34,12 +34,14 @@ public abstract class AbstractWorldMapIcon {
    @ObfuscatedGetter(
       intValue = -521086143
    )
-   int field5;
+   @Export("screenX")
+   int screenX;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1065362217
    )
-   int field6;
+   @Export("screenY")
+   int screenY;
 
    @ObfuscatedSignature(
       signature = "(Lhu;Lhu;)V"
@@ -109,38 +111,38 @@ public abstract class AbstractWorldMapIcon {
          WorldMapElement var3 = ViewportMouse.getWorldMapElement(this.getElement());
          int var4 = this.vmethod397();
          int var5 = this.vmethod398();
-         switch(var3.field3287.field3528) {
+         switch(var3.horizontalAlignment.value) {
          case 0:
-            if (var1 >= this.field5 - var4 / 2 && var1 <= var4 / 2 + this.field5) {
+            if (var1 >= this.screenX - var4 / 2 && var1 <= var4 / 2 + this.screenX) {
                break;
             }
 
             return false;
          case 1:
-            if (var1 >= this.field5 && var1 < var4 + this.field5) {
+            if (var1 >= this.screenX && var1 < var4 + this.screenX) {
                break;
             }
 
             return false;
          case 2:
-            if (var1 <= this.field5 - var4 || var1 > this.field5) {
+            if (var1 <= this.screenX - var4 || var1 > this.screenX) {
                return false;
             }
          }
 
-         switch(var3.field3301.field3275) {
+         switch(var3.verticalAlignment.value) {
          case 0:
-            if (var2 <= this.field6 - var5 || var2 > this.field6) {
+            if (var2 <= this.screenY - var5 || var2 > this.screenY) {
                return false;
             }
             break;
          case 1:
-            if (var2 < this.field6 - var5 / 2 || var2 > var5 / 2 + this.field6) {
+            if (var2 < this.screenY - var5 / 2 || var2 > var5 / 2 + this.screenY) {
                return false;
             }
             break;
          case 2:
-            if (var2 < this.field6 || var2 >= var5 + this.field6) {
+            if (var2 < this.screenY || var2 >= var5 + this.screenY) {
                return false;
             }
          }
@@ -156,7 +158,7 @@ public abstract class AbstractWorldMapIcon {
    )
    boolean method21(int var1, int var2) {
       WorldMapLabel var3 = this.getLabel();
-      return var3 == null ? false : (var1 >= this.field5 - var3.width / 2 && var1 <= var3.width / 2 + this.field5 ? var2 >= this.field6 && var2 <= var3.height + this.field6 : false);
+      return var3 == null ? false : (var1 >= this.screenX - var3.width / 2 && var1 <= var3.width / 2 + this.screenX ? var2 >= this.screenY && var2 <= var3.height + this.screenY : false);
    }
 
    @ObfuscatedName("es")
@@ -167,6 +169,6 @@ public abstract class AbstractWorldMapIcon {
    static void method625(Archive var0, String var1) {
       ArchiveLoader var2 = new ArchiveLoader(var0, var1);
       Client.archiveLoaders.add(var2);
-      Client.field140 += var2.field408;
+      Client.field140 += var2.groupCount;
    }
 }

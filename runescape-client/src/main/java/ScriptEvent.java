@@ -196,7 +196,7 @@ public class ScriptEvent extends Node {
             return 1;
          } else if (var0 == ScriptOpcodes.INV_SIZE) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapDecorationType.method4523(var3).size;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapDecorationType.getInvDefinition(var3).size;
             return 1;
          } else if (var0 == ScriptOpcodes.STAT) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];

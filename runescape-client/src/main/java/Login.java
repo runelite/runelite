@@ -205,8 +205,8 @@ public class Login {
       if (ReflectionCheck.clientPreferences.roofsHidden) {
          return SoundSystem.plane;
       } else {
-         int var0 = class32.getTileHeight(WorldMapSection1.cameraX, GrandExchangeOfferNameComparator.cameraZ, SoundSystem.plane);
-         return var0 - GrandExchangeEvents.cameraY < 800 && (Tiles.Tiles_renderFlags[SoundSystem.plane][WorldMapSection1.cameraX >> 7][GrandExchangeOfferNameComparator.cameraZ >> 7] & 4) != 0 ? SoundSystem.plane : 3;
+         int var0 = class32.getTileHeight(WorldMapSection2.cameraX, GrandExchangeOfferNameComparator.cameraZ, SoundSystem.plane);
+         return var0 - GrandExchangeEvents.cameraY < 800 && (Tiles.Tiles_renderFlags[SoundSystem.plane][WorldMapSection2.cameraX >> 7][GrandExchangeOfferNameComparator.cameraZ >> 7] & 4) != 0 ? SoundSystem.plane : 3;
       }
    }
 

@@ -181,7 +181,8 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("l")
-   public void method307(int var1) {
+   @Export("outline")
+   public void outline(int color) {
       int[] var2 = new int[this.subWidth * this.subHeight];
       int var3 = 0;
 
@@ -190,13 +191,13 @@ public final class Sprite extends Rasterizer2D {
             int var6 = this.pixels[var3];
             if (var6 == 0) {
                if (var5 > 0 && this.pixels[var3 - 1] != 0) {
-                  var6 = var1;
+                  var6 = color;
                } else if (var4 > 0 && this.pixels[var3 - this.subWidth] != 0) {
-                  var6 = var1;
+                  var6 = color;
                } else if (var5 < this.subWidth - 1 && this.pixels[var3 + 1] != 0) {
-                  var6 = var1;
+                  var6 = color;
                } else if (var4 < this.subHeight - 1 && this.pixels[var3 + this.subWidth] != 0) {
-                  var6 = var1;
+                  var6 = color;
                }
             }
 
@@ -208,13 +209,14 @@ public final class Sprite extends Rasterizer2D {
    }
 
    @ObfuscatedName("e")
-   public void method308(int var1) {
+   @Export("shadow")
+   public void shadow(int color) {
       for (int var2 = this.subHeight - 1; var2 > 0; --var2) {
          int var3 = var2 * this.subWidth;
 
          for (int var4 = this.subWidth - 1; var4 > 0; --var4) {
             if (this.pixels[var4 + var3] == 0 && this.pixels[var4 + var3 - 1 - this.subWidth] != 0) {
-               this.pixels[var4 + var3] = var1;
+               this.pixels[var4 + var3] = color;
             }
          }
       }

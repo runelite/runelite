@@ -35,7 +35,7 @@ public class DefaultsGroup {
       garbageValue = "-2017595575"
    )
    public static RectangleMode[] method5822() {
-      return new RectangleMode[]{RectangleMode.field758, RectangleMode.field757, RectangleMode.field759};
+      return new RectangleMode[]{RectangleMode.GRADIENT_COLOR, RectangleMode.SOLID, RectangleMode.GRADIENT_ALPHA};
    }
 
    static {

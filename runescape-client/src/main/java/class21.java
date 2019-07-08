@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -59,7 +60,8 @@ public abstract class class21 {
    @ObfuscatedSignature(
       signature = "[[[[Lv;"
    )
-   WorldMapDecoration[][][][] field144;
+   @Export("decorations")
+   WorldMapDecoration[][][][] decorations;
    @ObfuscatedName("i")
    boolean field157;
    @ObfuscatedName("a")
@@ -112,11 +114,11 @@ public abstract class class21 {
       garbageValue = "-2111523326"
    )
    void method282() {
-      this.field151 = (short[][][])((short[][][])null);
-      this.field145 = (short[][][])((short[][][])null);
+      this.field151 = ((short[][][])null);
+      this.field145 = ((short[][][])null);
       this.field154 = ((byte[][][])null);
       this.field155 = ((byte[][][])null);
-      this.field144 = (WorldMapDecoration[][][][])((WorldMapDecoration[][][][])null);
+      this.decorations = ((WorldMapDecoration[][][][])null);
       this.field157 = false;
       this.field153 = false;
    }
@@ -183,7 +185,7 @@ public abstract class class21 {
          for (var8 = 0; var8 < var5; ++var8) {
             var9 = var3.readUnsignedByte();
             if (var9 != 0) {
-               WorldMapDecoration[] var14 = this.field144[var8][var1][var2] = new WorldMapDecoration[var9];
+               WorldMapDecoration[] var14 = this.decorations[var8][var1][var2] = new WorldMapDecoration[var9];
 
                for (var10 = 0; var10 < var9; ++var10) {
                   int var12 = var3.method51();
@@ -244,19 +246,19 @@ public abstract class class21 {
                   var8 = -1;
                   var9 = -1;
                   var12 = -1;
-                  var11 = var0.method48();
+                  var11 = var0.readUShortSmart();
                   if (var11 == 32767) {
-                     var11 = var0.method48();
-                     var9 = var0.method48();
-                     var8 = var0.method48();
-                     var12 = var0.method48();
+                     var11 = var0.readUShortSmart();
+                     var9 = var0.readUShortSmart();
+                     var8 = var0.readUShortSmart();
+                     var12 = var0.readUShortSmart();
                   } else if (var11 != 32766) {
-                     var9 = var0.method48();
+                     var9 = var0.readUShortSmart();
                   } else {
                      var11 = -1;
                   }
 
-                  var13 = var0.method48();
+                  var13 = var0.readUShortSmart();
                   var3.addHitSplat(var11, var9, var8, var12, Client.cycle, var13);
                }
             }
@@ -264,10 +266,10 @@ public abstract class class21 {
             var7 = var0.readUnsignedByteNegate();
             if (var7 > 0) {
                for (var11 = 0; var11 < var7; ++var11) {
-                  var8 = var0.method48();
-                  var9 = var0.method48();
+                  var8 = var0.readUShortSmart();
+                  var9 = var0.readUShortSmart();
                   if (var9 != 32767) {
-                     var12 = var0.method48();
+                     var12 = var0.readUShortSmart();
                      var13 = var0.method58();
                      var10 = var9 > 0 ? var0.readUnsignedByte() : var13;
                      var3.addHealthBar(var8, Client.cycle, var9, var12, var13, var10);
@@ -380,7 +382,7 @@ public abstract class class21 {
 
                if (!var19 && Client.field208 == 0 && !var3.isHidden) {
                   Players.field738.index = 0;
-                  var0.method46(Players.field738.array, 0, var8);
+                  var0.readBytes(Players.field738.array, 0, var8);
                   Players.field738.index = 0;
                   String var14 = AbstractFont.escapeBrackets(class233.method4527(KitDefinition.method4866(Players.field738)));
                   var3.overheadText = var14.trim();

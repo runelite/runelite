@@ -31,7 +31,7 @@ public class Strings {
          throw new RuntimeException();
       } else if (var2 == 0) {
          byte[] var6 = new byte[var3];
-         var1.method46(var6, 0, var3);
+         var1.readBytes(var6, 0, var3);
          return var6;
       } else {
          int var4 = var1.readInt();

@@ -71,7 +71,7 @@ public class UserComparator7 extends AbstractUserComparator {
                      for (int var12 = 0; var12 < var7; ++var12) {
                         var11 = var0.readInt();
                         var10[var12] = new byte[var11];
-                        var0.method46(var10[var12], 0, var11);
+                        var0.readBytes(var10[var12], 0, var11);
                      }
                   }
 

@@ -62,7 +62,7 @@ public class class15 extends class21 {
       super.field145 = new short[super.field156][64][64];
       super.field154 = new byte[super.field156][64][64];
       super.field155 = new byte[super.field156][64][64];
-      super.field144 = new WorldMapDecoration[super.field156][64][64][];
+      super.decorations = new WorldMapDecoration[super.field156][64][64][];
       int var2 = var1.readUnsignedByte();
       if (var2 != class30.field246.field248) {
          throw new IllegalStateException("");
@@ -123,7 +123,7 @@ public class class15 extends class21 {
    static int method182(int var0, Script var1, boolean var2) {
       Widget var3 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
       if (var0 == ScriptOpcodes.IF_GETTARGETMASK) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class211.method4107(class1.getWidgetClickMask(var3));
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Calendar.method4107(class1.getWidgetClickMask(var3));
          return 1;
       } else if (var0 != ScriptOpcodes.IF_GETOP) {
          if (var0 == ScriptOpcodes.IF_GETOPBASE) {
@@ -169,40 +169,40 @@ public class class15 extends class21 {
       signature = "(Lho;I)V",
       garbageValue = "1585987978"
    )
-   static final void method186(Widget var0) {
-      int var1 = var0.contentType;
+   static final void method186(Widget component) {
+      int var1 = component.contentType;
       if (var1 == 324) {
          if (Client.field118 == -1) {
-            Client.field118 = var0.spriteId2;
-            Client.field120 = var0.spriteId;
+            Client.field118 = component.spriteId2;
+            Client.field120 = component.spriteId;
          }
 
-         if (Client.field119.isFemale) {
-            var0.spriteId2 = Client.field118;
+         if (Client.playerAppearance.isFemale) {
+            component.spriteId2 = Client.field118;
          } else {
-            var0.spriteId2 = Client.field120;
+            component.spriteId2 = Client.field120;
          }
       } else if (var1 == 325) {
          if (Client.field118 == -1) {
-            Client.field118 = var0.spriteId2;
-            Client.field120 = var0.spriteId;
+            Client.field118 = component.spriteId2;
+            Client.field120 = component.spriteId;
          }
 
-         if (Client.field119.isFemale) {
-            var0.spriteId2 = Client.field120;
+         if (Client.playerAppearance.isFemale) {
+            component.spriteId2 = Client.field120;
          } else {
-            var0.spriteId2 = Client.field118;
+            component.spriteId2 = Client.field118;
          }
       } else if (var1 == 327) {
-         var0.modelAngleX = 150;
-         var0.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 0;
+         component.modelAngleX = 150;
+         component.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
+         component.modelType = 5;
+         component.modelId = 0;
       } else if (var1 == 328) {
-         var0.modelAngleX = 150;
-         var0.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 1;
+         component.modelAngleX = 150;
+         component.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
+         component.modelType = 5;
+         component.modelId = 1;
       }
 
    }

@@ -64,7 +64,7 @@ public class class16 {
    static int method188(int var0, Script var1, boolean var2) {
       Widget var3 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
       if (var0 == ScriptOpcodes.CC_GETTARGETMASK) {
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class211.method4107(class1.getWidgetClickMask(var3));
+         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Calendar.method4107(class1.getWidgetClickMask(var3));
          return 1;
       } else if (var0 != ScriptOpcodes.CC_GETOP) {
          if (var0 == ScriptOpcodes.CC_GETOPBASE) {
@@ -122,7 +122,7 @@ public class class16 {
          var9 = var1.method65();
          var10 = var1.method61();
          var11 = var1.readUnsignedByteNegate();
-         int var15 = (var11 >> 4 & 7) + WorldMapSection3.field1089;
+         int var15 = (var11 >> 4 & 7) + WorldMapSection1.field1089;
          int var16 = (var11 & 7) + Canvas.field95;
          Player var17;
          if (var9 == Client.localPlayerIndex) {
@@ -185,7 +185,7 @@ public class class16 {
       int var32;
       if (class190.field2349 == var0) {
          var31 = var1.method58();
-         var2 = (var31 >> 4 & 7) + WorldMapSection3.field1089;
+         var2 = (var31 >> 4 & 7) + WorldMapSection1.field1089;
          var32 = (var31 & 7) + Canvas.field95;
          var3 = var1.method59();
          var4 = var3 >> 2;
@@ -198,7 +198,7 @@ public class class16 {
       } else {
          if (class190.field2345 == var0) {
             var31 = var1.readUnsignedByte();
-            var2 = (var31 >> 4 & 7) + WorldMapSection3.field1089;
+            var2 = (var31 >> 4 & 7) + WorldMapSection1.field1089;
             var32 = (var31 & 7) + Canvas.field95;
             var3 = var1.method59();
             var4 = var1.method58();
@@ -223,7 +223,7 @@ public class class16 {
             var2 = var1.method58();
             var32 = var1.method66();
             var3 = var1.readUnsignedByte();
-            var4 = (var3 >> 4 & 7) + WorldMapSection3.field1089;
+            var4 = (var3 >> 4 & 7) + WorldMapSection1.field1089;
             var5 = (var3 & 7) + Canvas.field95;
             if (var4 >= 0 && var5 >= 0 && var4 < 104 && var5 < 104) {
                var4 = var4 * 128 + 64;
@@ -239,7 +239,7 @@ public class class16 {
                var32 = var31 & 3;
                var3 = Client.field182[var2];
                var4 = var1.readUnsignedByteNegate();
-               var5 = (var4 >> 4 & 7) + WorldMapSection3.field1089;
+               var5 = (var4 >> 4 & 7) + WorldMapSection1.field1089;
                var6 = (var4 & 7) + Canvas.field95;
                var7 = var1.readUnsignedShort();
                if (var5 >= 0 && var6 >= 0 && var5 < 103 && var6 < 103) {
@@ -298,7 +298,7 @@ public class class16 {
                NodeDeque var40;
                if (class190.field2347 == var0) {
                   var31 = var1.method58();
-                  var2 = (var31 >> 4 & 7) + WorldMapSection3.field1089;
+                  var2 = (var31 >> 4 & 7) + WorldMapSection1.field1089;
                   var32 = (var31 & 7) + Canvas.field95;
                   var3 = var1.method67();
                   if (var2 >= 0 && var32 >= 0 && var2 < 104 && var32 < 104) {
@@ -324,7 +324,7 @@ public class class16 {
                   var32 = var31 & 3;
                   var3 = Client.field182[var2];
                   var4 = var1.method59();
-                  var5 = (var4 >> 4 & 7) + WorldMapSection3.field1089;
+                  var5 = (var4 >> 4 & 7) + WorldMapSection1.field1089;
                   var6 = (var4 & 7) + Canvas.field95;
                   if (var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
                      class258.method4898(SoundSystem.plane, var5, var6, var3, -1, var2, var32, 0, -1);
@@ -339,7 +339,7 @@ public class class16 {
                   var6 = var1.method59();
                   var7 = var1.method65();
                   var8 = var1.method58();
-                  var35 = (var8 >> 4 & 7) + WorldMapSection3.field1089;
+                  var35 = (var8 >> 4 & 7) + WorldMapSection1.field1089;
                   var9 = (var8 & 7) + Canvas.field95;
                   var10 = var1.method60();
                   byte var41 = var1.method61();
@@ -359,7 +359,7 @@ public class class16 {
                      var31 = var1.method66();
                      var2 = var1.method67();
                      var32 = var1.method58();
-                     var3 = (var32 >> 4 & 7) + WorldMapSection3.field1089;
+                     var3 = (var32 >> 4 & 7) + WorldMapSection1.field1089;
                      var4 = (var32 & 7) + Canvas.field95;
                      if (var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104) {
                         var38 = new GroundItem();
@@ -378,7 +378,7 @@ public class class16 {
                   var2 = var1.method67();
                   var32 = var1.method65();
                   var3 = var1.method58();
-                  var4 = (var3 >> 4 & 7) + WorldMapSection3.field1089;
+                  var4 = (var3 >> 4 & 7) + WorldMapSection1.field1089;
                   var5 = (var3 & 7) + Canvas.field95;
                   if (var4 >= 0 && var5 >= 0 && var4 < 104 && var5 < 104) {
                      var40 = Client.groundItems[SoundSystem.plane][var4][var5];
@@ -526,7 +526,7 @@ public class class16 {
 
                if (var6 == 14) {
                   var9 = var2[var4++];
-                  var7 = WorldMapSection2.getVarbit(var9);
+                  var7 = WorldMapSection0.getVarbit(var9);
                }
 
                if (var6 == 15) {

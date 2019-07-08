@@ -80,7 +80,8 @@ public class Fonts {
       signature = "(I)Lbt;",
       garbageValue = "2102006478"
    )
-   static World method5647() {
-      return World.field987 < World.worldsCount ? ItemContainer.worlds[++World.field987 - 1] : null;
+   @Export("getNextWorldListWorld")
+   static World getNextWorldListWorld() {
+      return World.worldListWorldCount < World.worldsCount ? ItemContainer.worlds[++World.worldListWorldCount - 1] : null;
    }
 }

@@ -287,7 +287,7 @@ public final class Player extends Actor {
          this.appearance = new PlayerAppearance();
       }
 
-      this.appearance.method256(var4, var9, var2 == 1, var3);
+      this.appearance.update(var4, var9, var2 == 1, var3);
    }
 
    @ObfuscatedName("f")
@@ -530,7 +530,7 @@ public final class Player extends Actor {
          }
 
          Client.isSpellSelected = false;
-         class22.method295(var0);
+         WorldMapRectangle.method295(var0);
       }
 
    }

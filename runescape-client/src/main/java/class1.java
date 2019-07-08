@@ -93,7 +93,7 @@ final class class1 implements class0 {
          var4.rawY = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          var4.xAlignment = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
          var4.yAlignment = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 3];
-         class22.method295(var4);
+         WorldMapRectangle.method295(var4);
          TextureProvider.client.alignWidget(var4);
          if (var3 != -1 && var4.type == 0) {
             class39.revalidateWidgetScroll(Widget.interfaceComponents[var3 >> 16], var4, false);
@@ -106,7 +106,7 @@ final class class1 implements class0 {
          var4.rawHeight = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
          var4.widthAlignment = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
          var4.heightAlignment = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 3];
-         class22.method295(var4);
+         WorldMapRectangle.method295(var4);
          TextureProvider.client.alignWidget(var4);
          if (var3 != -1 && var4.type == 0) {
             class39.revalidateWidgetScroll(Widget.interfaceComponents[var3 >> 16], var4, false);
@@ -117,7 +117,7 @@ final class class1 implements class0 {
          boolean var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
          if (var5 != var4.isHidden) {
             var4.isHidden = var5;
-            class22.method295(var4);
+            WorldMapRectangle.method295(var4);
          }
 
          return 1;
@@ -228,7 +228,7 @@ final class class1 implements class0 {
                String var7 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                var4 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                class50.method900(var7, var4 == 1);
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapSection0.field1055;
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapSection3.field1055;
                return 1;
             } else if (var0 != ScriptOpcodes.OC_FINDNEXT) {
                if (var0 == ScriptOpcodes.OC_FINDRESET) {
@@ -238,7 +238,7 @@ final class class1 implements class0 {
                   return 2;
                }
             } else {
-               if (AttackOption.field30 != null && WorldMapDecorationType.field1139 < WorldMapSection0.field1055) {
+               if (AttackOption.field30 != null && WorldMapDecorationType.field1139 < WorldMapSection3.field1055) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = AttackOption.field30[++WorldMapDecorationType.field1139 - 1] & '\uffff';
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;

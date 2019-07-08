@@ -57,14 +57,14 @@ public class Archive extends AbstractArchive {
    @ObfuscatedSignature(
       signature = "(Lff;Lff;IZZZ)V"
    )
-   public Archive(ArchiveDisk var1, ArchiveDisk var2, int var3, boolean var4, boolean var5, boolean var6) {
-      super(var4, var5);
+   public Archive(ArchiveDisk archiveDisk, ArchiveDisk masterDisk, int index, boolean releaseGroups, boolean shallowFiles, boolean var6) {
+      super(releaseGroups, shallowFiles);
       this.field403 = false;
       this.field404 = false;
       this.field405 = -1;
-      this.archiveDisk = var1;
-      this.masterDisk = var2;
-      this.index = var3;
+      this.archiveDisk = archiveDisk;
+      this.masterDisk = masterDisk;
+      this.index = index;
       this.field404 = var6;
       int var7 = this.index;
       if (Players.NetCache_reference != null) {
@@ -240,26 +240,26 @@ public class Archive extends AbstractArchive {
       garbageValue = "-2045340856"
    )
    @Export("load")
-   void load(ArchiveDisk var1, int var2, byte[] var3, boolean var4) {
+   void load(ArchiveDisk var1, int group, byte[] data, boolean var4) {
       int var5;
       if (var1 == this.masterDisk) {
          if (this.field403) {
             throw new RuntimeException();
          }
 
-         if (var3 == null) {
+         if (data == null) {
             PacketBuffer.requestNetFile(this, 255, this.index, this.indexCrc, (byte)0, true);
          } else {
             Archive_crc.reset();
-            Archive_crc.update(var3, 0, var3.length);
+            Archive_crc.update(data, 0, data.length);
             var5 = (int)Archive_crc.getValue();
             if (var5 != this.indexCrc) {
                PacketBuffer.requestNetFile(this, 255, this.index, this.indexCrc, (byte)0, true);
             } else {
-               Buffer var6 = new Buffer(Strings.decompressBytes(var3));
+               Buffer var6 = new Buffer(Strings.decompressBytes(data));
                int var7 = var6.readUnsignedByte();
                if (var7 != 5 && var7 != 6) {
-                  throw new RuntimeException(var7 + "," + this.index + "," + var2);
+                  throw new RuntimeException(var7 + "," + this.index + "," + group);
                }
 
                int var8 = 0;
@@ -270,36 +270,36 @@ public class Archive extends AbstractArchive {
                if (var8 != this.indexVersion) {
                   PacketBuffer.requestNetFile(this, 255, this.index, this.indexCrc, (byte)0, true);
                } else {
-                  this.decodeIndex(var3);
+                  this.decodeIndex(data);
                   this.loadAllLocal();
                }
             }
          }
       } else {
-         if (!var4 && var2 == this.field405) {
+         if (!var4 && group == this.field405) {
             this.field403 = true;
          }
 
-         if (var3 != null && var3.length > 2) {
+         if (data != null && data.length > 2) {
             Archive_crc.reset();
-            Archive_crc.update(var3, 0, var3.length - 2);
+            Archive_crc.update(data, 0, data.length - 2);
             var5 = (int)Archive_crc.getValue();
-            int var9 = ((var3[var3.length - 2] & 255) << 8) + (var3[var3.length - 1] & 255);
-            if (var5 == super.groupCrcs[var2] && var9 == super.groupVersions[var2]) {
-               this.validGroups[var2] = true;
+            int var9 = ((data[data.length - 2] & 255) << 8) + (data[data.length - 1] & 255);
+            if (var5 == super.groupCrcs[group] && var9 == super.groupVersions[group]) {
+               this.validGroups[group] = true;
                if (var4) {
-                  super.groups[var2] = Projectile.byteArrayToObject(var3, false);
+                  super.groups[group] = Projectile.byteArrayToObject(data, false);
                }
             } else {
-               this.validGroups[var2] = false;
+               this.validGroups[group] = false;
                if (this.field404 || var4) {
-                  PacketBuffer.requestNetFile(this, this.index, var2, super.groupCrcs[var2], (byte)2, var4);
+                  PacketBuffer.requestNetFile(this, this.index, group, super.groupCrcs[group], (byte)2, var4);
                }
             }
          } else {
-            this.validGroups[var2] = false;
+            this.validGroups[group] = false;
             if (this.field404 || var4) {
-               PacketBuffer.requestNetFile(this, this.index, var2, super.groupCrcs[var2], (byte)2, var4);
+               PacketBuffer.requestNetFile(this, this.index, group, super.groupCrcs[group], (byte)2, var4);
             }
          }
       }

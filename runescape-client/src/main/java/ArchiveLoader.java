@@ -38,20 +38,22 @@ public class ArchiveLoader {
    @ObfuscatedGetter(
       intValue = 1459455501
    )
-   final int field408;
+   @Export("groupCount")
+   final int groupCount;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 782003089
    )
-   int field409;
+   @Export("loadedCount")
+   int loadedCount;
 
    @ObfuscatedSignature(
       signature = "(Lit;Ljava/lang/String;)V"
    )
-   ArchiveLoader(Archive var1, String var2) {
-      this.field409 = 0;
-      this.archive = var1;
-      this.field408 = var1.method5();
+   ArchiveLoader(Archive archive, String name) {
+      this.loadedCount = 0;
+      this.archive = archive;
+      this.groupCount = archive.getGroupCount();
    }
 
    @ObfuscatedName("m")
@@ -59,16 +61,17 @@ public class ArchiveLoader {
       signature = "(I)Z",
       garbageValue = "1352221725"
    )
-   boolean method134() {
-      this.field409 = 0;
+   @Export("isLoaded")
+   boolean isLoaded() {
+      this.loadedCount = 0;
 
-      for (int var1 = 0; var1 < this.field408; ++var1) {
+      for (int var1 = 0; var1 < this.groupCount; ++var1) {
          if (!this.archive.method133(var1) || this.archive.method132(var1)) {
-            ++this.field409;
+            ++this.loadedCount;
          }
       }
 
-      return this.field409 >= this.field408;
+      return this.loadedCount >= this.groupCount;
    }
 
    @ObfuscatedName("x")
@@ -92,7 +95,7 @@ public class ArchiveLoader {
       boolean var11;
       if (Login.worldSelectOpen) {
          if (class30.worldSelectBackSprites == null) {
-            class30.worldSelectBackSprites = class2.method20(WorldMapSection3.archive8, "sl_back", "");
+            class30.worldSelectBackSprites = class2.method20(WorldMapSection1.archive8, "sl_back", "");
          }
 
          Archive var12;
@@ -100,7 +103,7 @@ public class ArchiveLoader {
          int var14;
          IndexedSprite[] var15;
          if (Frames.worldSelectFlagSprites == null) {
-            var12 = WorldMapSection3.archive8;
+            var12 = WorldMapSection1.archive8;
             var14 = var12.getGroupId("sl_flags");
             var13 = var12.getFileId(var14, "");
             if (!SpriteMask.loadSprite(var12, var14, var13)) {
@@ -113,7 +116,7 @@ public class ArchiveLoader {
          }
 
          if (AttackOption.worldSelectArrows == null) {
-            var12 = WorldMapSection3.archive8;
+            var12 = WorldMapSection1.archive8;
             var14 = var12.getGroupId("sl_arrows");
             var13 = var12.getFileId(var14, "");
             if (!SpriteMask.loadSprite(var12, var14, var13)) {
@@ -126,7 +129,7 @@ public class ArchiveLoader {
          }
 
          if (UrlRequest.worldSelectStars == null) {
-            var12 = WorldMapSection3.archive8;
+            var12 = WorldMapSection1.archive8;
             var14 = var12.getGroupId("sl_stars");
             var13 = var12.getFileId(var14, "");
             if (!SpriteMask.loadSprite(var12, var14, var13)) {
@@ -139,16 +142,16 @@ public class ArchiveLoader {
          }
 
          if (SecureRandomFuture.worldSelectLeftSprite == null) {
-            SecureRandomFuture.worldSelectLeftSprite = MenuAction.loadIndexedSpriteByName(WorldMapSection3.archive8, "leftarrow", "");
+            SecureRandomFuture.worldSelectLeftSprite = MenuAction.loadIndexedSpriteByName(WorldMapSection1.archive8, "leftarrow", "");
          }
 
          if (NetSocket.worldSelectRightSprite == null) {
-            NetSocket.worldSelectRightSprite = MenuAction.loadIndexedSpriteByName(WorldMapSection3.archive8, "rightarrow", "");
+            NetSocket.worldSelectRightSprite = MenuAction.loadIndexedSpriteByName(WorldMapSection1.archive8, "rightarrow", "");
          }
 
          Rasterizer2D.Rasterizer2D_fillRectangle(Login.xPadding, 23, 765, 480, 0);
-         Rasterizer2D.drawGradient(Login.xPadding, 0, 125, 23, 12425273, 9135624);
-         Rasterizer2D.drawGradient(Login.xPadding + 125, 0, 640, 23, 5197647, 2697513);
+         Rasterizer2D.Rasterizer2D_fillRectangleGradient(Login.xPadding, 0, 125, 23, 0xbd9839, 0x8b6608);
+         Rasterizer2D.Rasterizer2D_fillRectangleGradient(Login.xPadding + 125, 0, 640, 23, 0x4f4f4f, 0x292929);
          var0.drawCentered("Select a world", Login.xPadding + 62, 15, 0, -1);
          if (UrlRequest.worldSelectStars != null) {
             UrlRequest.worldSelectStars[1].drawAt(Login.xPadding + 140, 1);
@@ -700,7 +703,7 @@ public class ArchiveLoader {
                   var1.drawCentered("Click to switch", var39 / 2 + var10, var41 / 2 + var34 + 12, 16777215, 0);
                }
             } else {
-               class277.field1144 = MenuAction.loadIndexedSpriteByName(WorldMapSection3.archive8, "sl_button", "");
+               class277.field1144 = MenuAction.loadIndexedSpriteByName(WorldMapSection1.archive8, "sl_button", "");
             }
          }
       }

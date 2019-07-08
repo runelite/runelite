@@ -160,12 +160,13 @@ public enum WorldMapDecorationType implements Enumerated {
       signature = "(IB)Lib;",
       garbageValue = "1"
    )
-   public static InvDefinition method4523(int var0) {
+   @Export("getInvDefinition")
+   public static InvDefinition getInvDefinition(int var0) {
       InvDefinition var1 = (InvDefinition)InvDefinition.InvDefinition_cached.get((long)var0);
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class4.field1158.takeFile(5, var0);
+         byte[] var2 = class4.InvDefinition_archive.takeFile(5, var0);
          var1 = new InvDefinition();
          if (var2 != null) {
             var1.decode(new Buffer(var2));

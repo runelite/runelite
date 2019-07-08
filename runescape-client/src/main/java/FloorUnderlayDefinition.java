@@ -176,8 +176,8 @@ public class FloorUnderlayDefinition extends DualNode {
       signature = "(I)[Lip;",
       garbageValue = "618327716"
    )
-   static class249[] method4839() {
-      return new class249[]{class249.field3277, class249.field3273, class249.field3274};
+   static VerticalAlignment[] method4839() {
+      return new VerticalAlignment[]{VerticalAlignment.field3277, VerticalAlignment.field3273, VerticalAlignment.field3274};
    }
 
    static {

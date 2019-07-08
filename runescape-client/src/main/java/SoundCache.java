@@ -123,9 +123,9 @@ public class SoundCache {
    )
    @Export("getSoundEffect")
    public RawSound getSoundEffect(int var1, int[] var2) {
-      if (this.soundEffectIndex.method5() == 1) {
+      if (this.soundEffectIndex.getGroupCount() == 1) {
          return this.getSoundEffect0(0, var1, var2);
-      } else if (this.soundEffectIndex.method4(var1) == 1) {
+      } else if (this.soundEffectIndex.getGroupFileCount(var1) == 1) {
          return this.getSoundEffect0(var1, 0, var2);
       } else {
          throw new RuntimeException();
@@ -139,9 +139,9 @@ public class SoundCache {
    )
    @Export("getMusicSample")
    public RawSound getMusicSample(int var1, int[] var2) {
-      if (this.musicSampleIndex.method5() == 1) {
+      if (this.musicSampleIndex.getGroupCount() == 1) {
          return this.getMusicSample0(0, var1, var2);
-      } else if (this.musicSampleIndex.method4(var1) == 1) {
+      } else if (this.musicSampleIndex.getGroupFileCount(var1) == 1) {
          return this.getMusicSample0(var1, 0, var2);
       } else {
          throw new RuntimeException();

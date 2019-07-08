@@ -177,7 +177,7 @@ public class MusicPatch extends Node {
                var21 = -1;
             }
 
-            var23 = var2.method52();
+            var23 = var2.readVarInt();
          }
 
          this.field568[var24] = (short)(this.field568[var24] + ((var23 - 1 & 2) << 14));

@@ -435,7 +435,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
          var18 = var25;
       } else if (var2 == 2) {
-         var18 = WorldMapSection2.method593(var0, var1, var3, var4);
+         var18 = WorldMapSection0.method593(var0, var1, var3, var4);
       } else {
          var18 = ArchiveDisk.method3585(var0, var1, var2, var3, var4);
       }

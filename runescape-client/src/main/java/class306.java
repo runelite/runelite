@@ -58,7 +58,7 @@ public final class class306 {
       ClientPreferences var1 = new ClientPreferences();
 
       try {
-         var0 = LoginPacket.getPreferencesFile("", class22.studioGame.name, false);
+         var0 = LoginPacket.getPreferencesFile("", WorldMapRectangle.studioGame.name, false);
          byte[] var2 = new byte[(int)var0.length()];
 
          int var3;

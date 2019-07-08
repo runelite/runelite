@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 import net.runelite.rs.ScriptOpcodes;
@@ -8,7 +9,8 @@ final class class4 implements class0 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field1158;
+   @Export("InvDefinition_archive")
+   public static AbstractArchive InvDefinition_archive;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -52,7 +54,7 @@ final class class4 implements class0 {
       garbageValue = "-843046456"
    )
    public static void method55() {
-      FloorOverlayDefinition.field664.clear();
+      FloorOverlayDefinition.FloorOverlayDefinition_cached.clear();
    }
 
    @ObfuscatedName("v")
@@ -110,7 +112,7 @@ final class class4 implements class0 {
             if (var0 == ScriptOpcodes.OPPLAYER) {
                var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                var6 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-               WorldMapSection2.method583(var7, var6);
+               WorldMapSection0.method583(var7, var6);
                return 1;
             } else if (var0 == ScriptOpcodes.IF_DRAGPICKUP) {
                RouteStrategy.Interpreter_intStackSize -= 3;
@@ -135,7 +137,7 @@ final class class4 implements class0 {
                return 1;
             } else if (var0 == ScriptOpcodes.SETREMOVEROOFS) {
                ReflectionCheck.clientPreferences.roofsHidden = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
-               WorldMapSection0.savePreferences();
+               WorldMapSection3.savePreferences();
                return 1;
             } else {
                boolean var8;
@@ -268,7 +270,7 @@ final class class4 implements class0 {
                } else if (var0 == ScriptOpcodes.SETHIDEUSERNAME) {
                   var8 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   ReflectionCheck.clientPreferences.hideUsername = var8;
-                  WorldMapSection0.savePreferences();
+                  WorldMapSection3.savePreferences();
                   return 1;
                } else if (var0 == ScriptOpcodes.GETHIDEUSERNAME) {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = ReflectionCheck.clientPreferences.hideUsername ? 1 : 0;
@@ -278,7 +280,7 @@ final class class4 implements class0 {
                   Client.Login_isUsernameRemembered = var8;
                   if (!var8) {
                      ReflectionCheck.clientPreferences.rememberedUsername = "";
-                     WorldMapSection0.savePreferences();
+                     WorldMapSection3.savePreferences();
                   }
 
                   return 1;
@@ -291,7 +293,7 @@ final class class4 implements class0 {
                   var8 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
                   if (var8 == ReflectionCheck.clientPreferences.titleMusicDisabled) {
                      ReflectionCheck.clientPreferences.titleMusicDisabled = !var8;
-                     WorldMapSection0.savePreferences();
+                     WorldMapSection3.savePreferences();
                   }
 
                   return 1;

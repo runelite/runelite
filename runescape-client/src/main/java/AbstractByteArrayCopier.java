@@ -13,7 +13,8 @@ public abstract class AbstractByteArrayCopier {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   static Archive field0;
+   @Export("archive20")
+   static Archive archive20;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(

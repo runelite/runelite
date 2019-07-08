@@ -57,8 +57,9 @@ public class PacketBufferNode extends Node {
       signature = "(Lho;I)Z",
       garbageValue = "-739353556"
    )
-   static boolean method3673(Widget var0) {
-      return var0.isHidden;
+   @Export("isComponentHidden")
+   static boolean isComponentHidden(Widget component) {
+      return component.isHidden;
    }
 
    static {

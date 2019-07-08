@@ -97,9 +97,9 @@ public abstract class AbstractArchive {
    @Export("shallowFiles")
    boolean shallowFiles;
 
-   AbstractArchive(boolean var1, boolean var2) {
-      this.releaseGroups = var1;
-      this.shallowFiles = var2;
+   AbstractArchive(boolean releaseGroups, boolean shallowFiles) {
+      this.releaseGroups = releaseGroups;
+      this.shallowFiles = shallowFiles;
    }
 
    @ObfuscatedName("m")
@@ -446,8 +446,9 @@ public abstract class AbstractArchive {
       signature = "(II)I",
       garbageValue = "1178362496"
    )
-   public int method4(int var1) {
-      return this.files[var1].length;
+   @Export("getGroupFileCount")
+   public int getGroupFileCount(int group) {
+      return this.files[group].length;
    }
 
    @ObfuscatedName("t")
@@ -455,7 +456,8 @@ public abstract class AbstractArchive {
       signature = "(I)I",
       garbageValue = "1702434573"
    )
-   public int method5() {
+   @Export("getGroupCount")
+   public int getGroupCount() {
       return this.files.length;
    }
 
@@ -751,7 +753,7 @@ public abstract class AbstractArchive {
       if (Client.archiveLoaders != null && Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
          while (Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
             ArchiveLoader var0 = (ArchiveLoader)Client.archiveLoaders.get(Client.archiveLoaderArchive);
-            if (!var0.method134()) {
+            if (!var0.isLoaded()) {
                return false;
             }
 

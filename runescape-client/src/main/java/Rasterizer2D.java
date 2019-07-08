@@ -228,19 +228,19 @@ public class Rasterizer2D extends DualNode {
 
    @ObfuscatedName("dk")
    @Export("Rasterizer2D_drawCircleAlpha")
-   public static void Rasterizer2D_drawCircleAlpha(int var0, int var1, int var2, int var3, int var4) {
-      if (var4 != 0) {
-         if (var4 == 256) {
+   public static void Rasterizer2D_drawCircleAlpha(int var0, int var1, int var2, int var3, int opacity) {
+      if (opacity != 0) {
+         if (opacity == 256) {
             drawCircle(var0, var1, var2, var3);
          } else {
             if (var2 < 0) {
                var2 = -var2;
             }
 
-            int var5 = 256 - var4;
-            int var6 = (var3 >> 16 & 255) * var4;
-            int var7 = (var3 >> 8 & 255) * var4;
-            int var8 = var4 * (var3 & 255);
+            int var5 = 256 - opacity;
+            int var6 = (var3 >> 16 & 255) * opacity;
+            int var7 = (var3 >> 8 & 255) * opacity;
+            int var8 = opacity * (var3 & 255);
             int var9 = var1 - var2;
             if (var9 < Rasterizer2D_yClipStart) {
                var9 = Rasterizer2D_yClipStart;
@@ -411,40 +411,40 @@ public class Rasterizer2D extends DualNode {
 
    }
 
-   @Export("drawGradient")
+   @Export("Rasterizer2D_fillRectangleGradient")
    @ObfuscatedName("dw")
-   public static void drawGradient(int var0, int var1, int var2, int var3, int var4, int var5) {
-      if (var2 > 0 && var3 > 0) {
+   public static void Rasterizer2D_fillRectangleGradient(int x, int y, int width, int height, int rgbTop, int rgbBot) {
+      if (width > 0 && height > 0) {
          int var6 = 0;
-         int var7 = 65536 / var3;
-         if (var0 < Rasterizer2D_xClipStart) {
-            var2 -= Rasterizer2D_xClipStart - var0;
-            var0 = Rasterizer2D_xClipStart;
+         int var7 = 65536 / height;
+         if (x < Rasterizer2D_xClipStart) {
+            width -= Rasterizer2D_xClipStart - x;
+            x = Rasterizer2D_xClipStart;
          }
 
-         if (var1 < Rasterizer2D_yClipStart) {
-            var6 += (Rasterizer2D_yClipStart - var1) * var7;
-            var3 -= Rasterizer2D_yClipStart - var1;
-            var1 = Rasterizer2D_yClipStart;
+         if (y < Rasterizer2D_yClipStart) {
+            var6 += (Rasterizer2D_yClipStart - y) * var7;
+            height -= Rasterizer2D_yClipStart - y;
+            y = Rasterizer2D_yClipStart;
          }
 
-         if (var0 + var2 > Rasterizer2D_xClipEnd) {
-            var2 = Rasterizer2D_xClipEnd - var0;
+         if (x + width > Rasterizer2D_xClipEnd) {
+            width = Rasterizer2D_xClipEnd - x;
          }
 
-         if (var3 + var1 > Rasterizer2D_yClipEnd) {
-            var3 = Rasterizer2D_yClipEnd - var1;
+         if (height + y > Rasterizer2D_yClipEnd) {
+            height = Rasterizer2D_yClipEnd - y;
          }
 
-         int var8 = Rasterizer2D_width - var2;
-         int var9 = var0 + Rasterizer2D_width * var1;
+         int var8 = Rasterizer2D_width - width;
+         int var9 = x + Rasterizer2D_width * y;
 
-         for (int var10 = -var3; var10 < 0; ++var10) {
+         for (int var10 = -height; var10 < 0; ++var10) {
             int var11 = 65536 - var6 >> 8;
             int var12 = var6 >> 8;
-            int var13 = (var12 * (var5 & 16711935) + var11 * (var4 & 16711935) & -16711936) + (var12 * (var5 & 65280) + var11 * (var4 & 65280) & 16711680) >>> 8;
+            int var13 = (var12 * (rgbBot & 16711935) + var11 * (rgbTop & 16711935) & -16711936) + (var12 * (rgbBot & 65280) + var11 * (rgbTop & 65280) & 16711680) >>> 8;
 
-            for (int var14 = -var2; var14 < 0; ++var14) {
+            for (int var14 = -width; var14 < 0; ++var14) {
                Rasterizer2D_pixels[var9++] = var13;
             }
 
@@ -456,46 +456,46 @@ public class Rasterizer2D extends DualNode {
    }
 
    @ObfuscatedName("dv")
-   @Export("drawGradientAlpha")
-   public static void drawGradientAlpha(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      if (var2 > 0 && var3 > 0) {
+   @Export("Rasterizer2D_fillRectangleGradientAlpha")
+   public static void Rasterizer2D_fillRectangleGradientAlpha(int x, int y, int width, int height, int rgbTop, int rgbBot, int alphaTop, int alphaBot) {
+      if (width > 0 && height > 0) {
          int var8 = 0;
-         int var9 = 65536 / var3;
-         if (var0 < Rasterizer2D_xClipStart) {
-            var2 -= Rasterizer2D_xClipStart - var0;
-            var0 = Rasterizer2D_xClipStart;
+         int var9 = 65536 / height;
+         if (x < Rasterizer2D_xClipStart) {
+            width -= Rasterizer2D_xClipStart - x;
+            x = Rasterizer2D_xClipStart;
          }
 
-         if (var1 < Rasterizer2D_yClipStart) {
-            var8 += (Rasterizer2D_yClipStart - var1) * var9;
-            var3 -= Rasterizer2D_yClipStart - var1;
-            var1 = Rasterizer2D_yClipStart;
+         if (y < Rasterizer2D_yClipStart) {
+            var8 += (Rasterizer2D_yClipStart - y) * var9;
+            height -= Rasterizer2D_yClipStart - y;
+            y = Rasterizer2D_yClipStart;
          }
 
-         if (var0 + var2 > Rasterizer2D_xClipEnd) {
-            var2 = Rasterizer2D_xClipEnd - var0;
+         if (x + width > Rasterizer2D_xClipEnd) {
+            width = Rasterizer2D_xClipEnd - x;
          }
 
-         if (var3 + var1 > Rasterizer2D_yClipEnd) {
-            var3 = Rasterizer2D_yClipEnd - var1;
+         if (height + y > Rasterizer2D_yClipEnd) {
+            height = Rasterizer2D_yClipEnd - y;
          }
 
-         int var10 = Rasterizer2D_width - var2;
-         int var11 = var0 + Rasterizer2D_width * var1;
+         int var10 = Rasterizer2D_width - width;
+         int var11 = x + Rasterizer2D_width * y;
 
-         for (int var12 = -var3; var12 < 0; ++var12) {
+         for (int var12 = -height; var12 < 0; ++var12) {
             int var13 = 65536 - var8 >> 8;
             int var14 = var8 >> 8;
-            int var15 = (var13 * var6 + var14 * var7 & 65280) >>> 8;
+            int var15 = (var13 * alphaTop + var14 * alphaBot & 65280) >>> 8;
             if (var15 == 0) {
                var11 += Rasterizer2D_width;
                var8 += var9;
             } else {
-               int var16 = (var14 * (var5 & 16711935) + var13 * (var4 & 16711935) & -16711936) + (var14 * (var5 & 65280) + var13 * (var4 & 65280) & 16711680) >>> 8;
+               int var16 = (var14 * (rgbBot & 16711935) + var13 * (rgbTop & 16711935) & -16711936) + (var14 * (rgbBot & 65280) + var13 * (rgbTop & 65280) & 16711680) >>> 8;
                int var17 = 255 - var15;
                int var18 = ((var16 & 16711935) * var15 >> 8 & 16711935) + (var15 * (var16 & 65280) >> 8 & 65280);
 
-               for (int var19 = -var2; var19 < 0; ++var19) {
+               for (int var19 = -width; var19 < 0; ++var19) {
                   int var20 = Rasterizer2D_pixels[var11];
                   if (var20 == 0) {
                      Rasterizer2D_pixels[var11++] = var18;
@@ -519,30 +519,30 @@ public class Rasterizer2D extends DualNode {
       garbageValue = "1"
    )
    @Export("raster2d7")
-   public static void raster2d7(int var0, int var1, int var2, int var3, int var4, int var5, byte[] var6, int var7) {
-      if (var0 + var2 >= 0 && var3 + var1 >= 0 && var0 < Rasterizer2D_width && var1 < Rasterizer2D_height) {
+   public static void raster2d7(int x, int y, int width, int height, int var4, int var5, byte[] var6, int var7) {
+      if (x + width >= 0 && height + y >= 0 && x < Rasterizer2D_width && y < Rasterizer2D_height) {
          int var8 = 0;
          int var9 = 0;
-         if (var0 < 0) {
-            var8 -= var0;
-            var2 += var0;
+         if (x < 0) {
+            var8 -= x;
+            width += x;
          }
 
-         if (var1 < 0) {
-            var9 -= var1;
-            var3 += var1;
+         if (y < 0) {
+            var9 -= y;
+            height += y;
          }
 
-         if (var0 + var2 > Rasterizer2D_width) {
-            var2 = Rasterizer2D_width - var0;
+         if (x + width > Rasterizer2D_width) {
+            width = Rasterizer2D_width - x;
          }
 
-         if (var3 + var1 > Rasterizer2D_height) {
-            var3 = Rasterizer2D_height - var1;
+         if (height + y > Rasterizer2D_height) {
+            height = Rasterizer2D_height - y;
          }
 
          int var10 = var6.length / var7;
-         int var11 = Rasterizer2D_width - var2;
+         int var11 = Rasterizer2D_width - width;
          int var12 = var4 >>> 24;
          int var13 = var5 >>> 24;
          int var14;
@@ -551,12 +551,12 @@ public class Rasterizer2D extends DualNode {
          int var17;
          int var18;
          if (var12 == 255 && var13 == 255) {
-            var14 = var0 + var8 + (var9 + var1) * Rasterizer2D_width;
+            var14 = x + var8 + (var9 + y) * Rasterizer2D_width;
 
-            for (var15 = var9 + var1; var15 < var3 + var9 + var1; ++var15) {
-               for (var16 = var0 + var8; var16 < var0 + var8 + var2; ++var16) {
-                  var17 = (var15 - var1) % var10;
-                  var18 = (var16 - var0) % var7;
+            for (var15 = var9 + y; var15 < height + var9 + y; ++var15) {
+               for (var16 = x + var8; var16 < x + var8 + width; ++var16) {
+                  var17 = (var15 - y) % var10;
+                  var18 = (var16 - x) % var7;
                   if (var6[var18 + var17 * var7] != 0) {
                      Rasterizer2D_pixels[var14++] = var5;
                   } else {
@@ -567,12 +567,12 @@ public class Rasterizer2D extends DualNode {
                var14 += var11;
             }
          } else {
-            var14 = var0 + var8 + (var9 + var1) * Rasterizer2D_width;
+            var14 = x + var8 + (var9 + y) * Rasterizer2D_width;
 
-            for (var15 = var9 + var1; var15 < var3 + var9 + var1; ++var15) {
-               for (var16 = var0 + var8; var16 < var0 + var8 + var2; ++var16) {
-                  var17 = (var15 - var1) % var10;
-                  var18 = (var16 - var0) % var7;
+            for (var15 = var9 + y; var15 < height + var9 + y; ++var15) {
+               for (var16 = x + var8; var16 < x + var8 + width; ++var16) {
+                  var17 = (var15 - y) % var10;
+                  var18 = (var16 - x) % var7;
                   int var19 = var4;
                   if (var6[var18 + var17 * var7] != 0) {
                      var19 = var5;

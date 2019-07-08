@@ -13,8 +13,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("WorldMapManager")
 public final class WorldMapManager {
    @ObfuscatedName("m")
-   @Export("isLoaded0")
-   boolean isLoaded0;
+   @Export("loaded")
+   boolean loaded;
    @ObfuscatedName("f")
    @Export("loadStarted")
    boolean loadStarted;
@@ -92,7 +92,7 @@ public final class WorldMapManager {
       signature = "([Llq;Ljava/util/HashMap;Lir;Lir;)V"
    )
    public WorldMapManager(IndexedSprite[] var1, HashMap var2, AbstractArchive var3, AbstractArchive var4) {
-      this.isLoaded0 = false;
+      this.loaded = false;
       this.loadStarted = false;
       this.field1045 = new HashMap();
       this.field1050 = 0;
@@ -108,15 +108,15 @@ public final class WorldMapManager {
       garbageValue = "32"
    )
    @Export("load")
-   public void load(AbstractArchive indexCache, String cacheName, boolean isMembersWorld) {
+   public void load(AbstractArchive archive, String cacheName, boolean isMembersWorld) {
       if (!this.loadStarted) {
-         this.isLoaded0 = false;
+         this.loaded = false;
          this.loadStarted = true;
          System.nanoTime();
-         int var4 = indexCache.getGroupId(WorldMapCacheName.WorldMapCacheName_details.name);
-         int var5 = indexCache.getFileId(var4, cacheName);
-         Buffer var6 = new Buffer(indexCache.takeFileByNames(WorldMapCacheName.WorldMapCacheName_details.name, cacheName));
-         Buffer var7 = new Buffer(indexCache.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, cacheName));
+         int var4 = archive.getGroupId(WorldMapCacheName.WorldMapCacheName_details.name);
+         int var5 = archive.getFileId(var4, cacheName);
+         Buffer var6 = new Buffer(archive.takeFileByNames(WorldMapCacheName.WorldMapCacheName_details.name, cacheName));
+         Buffer var7 = new Buffer(archive.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, cacheName));
          System.nanoTime();
          System.nanoTime();
          this.mapAreaData = new WorldMapAreaData();
@@ -164,15 +164,15 @@ public final class WorldMapManager {
 
          System.nanoTime();
          System.nanoTime();
-         if (indexCache.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName)) {
-            byte[] var18 = indexCache.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName);
+         if (archive.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName)) {
+            byte[] var18 = archive.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName);
             this.overviewSprite = class27.convertJpgToSprite(var18);
          }
 
          System.nanoTime();
-         indexCache.method6();
-         indexCache.method8();
-         this.isLoaded0 = true;
+         archive.method6();
+         archive.method8();
+         this.loaded = true;
       }
 
    }
@@ -198,7 +198,7 @@ public final class WorldMapManager {
       int var11 = Rasterizer2D.Rasterizer2D_height;
       int[] var12 = new int[4];
       Rasterizer2D.Rasterizer2D_getClipArray(var12);
-      class22 var13 = this.method643(var1, var2, var3, var4);
+      WorldMapRectangle var13 = this.method643(var1, var2, var3, var4);
       float var14 = this.getPixelsPerTile(var7 - var5, var3 - var1);
       int var15 = (int)Math.ceil((double)var14);
       this.field1050 = var15;
@@ -208,13 +208,13 @@ public final class WorldMapManager {
          this.field1045.put(var15, var16);
       }
 
-      int var23 = var13.field166 + var13.field169 - 1;
-      int var17 = var13.field167 + var13.field164 - 1;
+      int var23 = var13.worldMapRegionX + var13.worldMapRegionWidth - 1;
+      int var17 = var13.worldMapRegionY + var13.worldMapRegionHeight - 1;
 
       int var18;
       int var19;
-      for (var18 = var13.field166; var18 <= var23; ++var18) {
-         for (var19 = var13.field167; var19 <= var17; ++var19) {
+      for (var18 = var13.worldMapRegionX; var18 <= var23; ++var18) {
+         for (var19 = var13.worldMapRegionY; var19 <= var17; ++var19) {
             this.regions[var18][var19].method455(var15, (class40)this.field1045.get(var15), this.mapSceneSprites, this.field1046, this.field1047);
          }
       }
@@ -225,8 +225,8 @@ public final class WorldMapManager {
       var19 = this.surfaceOffsetX + var1;
       int var20 = var2 + this.surfaceOffsetY;
 
-      for (int var21 = var13.field166; var21 < var13.field166 + var13.field169; ++var21) {
-         for (int var22 = var13.field167; var22 < var13.field167 + var13.field164; ++var22) {
+      for (int var21 = var13.worldMapRegionX; var21 < var13.worldMapRegionX + var13.worldMapRegionWidth; ++var21) {
+         for (int var22 = var13.worldMapRegionY; var22 < var13.worldMapRegionY + var13.worldMapRegionHeight; ++var22) {
             this.regions[var21][var22].method404(var5 + var18 * (this.regions[var21][var22].x * 64 - var19) / 64, var8 - var18 * (this.regions[var21][var22].y * 64 - var20 + 64) / 64, var18);
          }
       }
@@ -239,7 +239,7 @@ public final class WorldMapManager {
       garbageValue = "-71"
    )
    public final void method402(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
-      class22 var14 = this.method643(var1, var2, var3, var4);
+      WorldMapRectangle var14 = this.method643(var1, var2, var3, var4);
       float var15 = this.getPixelsPerTile(var7 - var5, var3 - var1);
       int var16 = (int)(var15 * 64.0F);
       int var17 = this.surfaceOffsetX + var1;
@@ -247,8 +247,8 @@ public final class WorldMapManager {
 
       int var19;
       int var20;
-      for (var19 = var14.field166; var19 < var14.field169 + var14.field166; ++var19) {
-         for (var20 = var14.field167; var20 < var14.field164 + var14.field167; ++var20) {
+      for (var19 = var14.worldMapRegionX; var19 < var14.worldMapRegionWidth + var14.worldMapRegionX; ++var19) {
+         for (var20 = var14.worldMapRegionY; var20 < var14.worldMapRegionHeight + var14.worldMapRegionY; ++var20) {
             if (var13) {
                this.regions[var19][var20].method406();
             }
@@ -258,8 +258,8 @@ public final class WorldMapManager {
       }
 
       if (var10 != null && var11 > 0) {
-         for (var19 = var14.field166; var19 < var14.field169 + var14.field166; ++var19) {
-            for (var20 = var14.field167; var20 < var14.field167 + var14.field164; ++var20) {
+         for (var19 = var14.worldMapRegionX; var19 < var14.worldMapRegionWidth + var14.worldMapRegionX; ++var19) {
+            for (var20 = var14.worldMapRegionY; var20 < var14.worldMapRegionY + var14.worldMapRegionHeight; ++var20) {
                this.regions[var19][var20].method411(var10, var11, var12);
             }
          }
@@ -315,17 +315,17 @@ public final class WorldMapManager {
    )
    public List method403(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
       LinkedList var11 = new LinkedList();
-      if (!this.isLoaded0) {
+      if (!this.loaded) {
          return var11;
       } else {
-         class22 var12 = this.method643(var1, var2, var3, var4);
+         WorldMapRectangle var12 = this.method643(var1, var2, var3, var4);
          float var13 = this.getPixelsPerTile(var7, var3 - var1);
          int var14 = (int)(var13 * 64.0F);
          int var15 = this.surfaceOffsetX + var1;
          int var16 = var2 + this.surfaceOffsetY;
 
-         for (int var17 = var12.field166; var17 < var12.field166 + var12.field169; ++var17) {
-            for (int var18 = var12.field167; var18 < var12.field164 + var12.field167; ++var18) {
+         for (int var17 = var12.worldMapRegionX; var17 < var12.worldMapRegionX + var12.worldMapRegionWidth; ++var17) {
+            for (int var18 = var12.worldMapRegionY; var18 < var12.worldMapRegionHeight + var12.worldMapRegionY; ++var18) {
                List var19 = this.regions[var17][var18].method421(var5 + var14 * (this.regions[var17][var18].x * 64 - var15) / 64, var8 + var6 - var14 * (this.regions[var17][var18].y * 64 - var16 + 64) / 64, var14, var9, var10);
                if (!var19.isEmpty()) {
                   var11.addAll(var19);
@@ -342,8 +342,8 @@ public final class WorldMapManager {
       signature = "(IIIII)Lc;",
       garbageValue = "-1455088394"
    )
-   class22 method643(int var1, int var2, int var3, int var4) {
-      class22 var5 = new class22(this);
+   WorldMapRectangle method643(int var1, int var2, int var3, int var4) {
+      WorldMapRectangle var5 = new WorldMapRectangle(this);
       int var6 = this.surfaceOffsetX + var1;
       int var7 = var2 + this.surfaceOffsetY;
       int var8 = var3 + this.surfaceOffsetX;
@@ -352,30 +352,30 @@ public final class WorldMapManager {
       int var11 = var7 / 64;
       int var12 = var8 / 64;
       int var13 = var9 / 64;
-      var5.field169 = var12 - var10 + 1;
-      var5.field164 = var13 - var11 + 1;
-      var5.field166 = var10 - this.mapAreaData.minX();
-      var5.field167 = var11 - this.mapAreaData.minY();
-      if (var5.field166 < 0) {
-         var5.field169 += var5.field166;
-         var5.field166 = 0;
+      var5.worldMapRegionWidth = var12 - var10 + 1;
+      var5.worldMapRegionHeight = var13 - var11 + 1;
+      var5.worldMapRegionX = var10 - this.mapAreaData.minX();
+      var5.worldMapRegionY = var11 - this.mapAreaData.minY();
+      if (var5.worldMapRegionX < 0) {
+         var5.worldMapRegionWidth += var5.worldMapRegionX;
+         var5.worldMapRegionX = 0;
       }
 
-      if (var5.field166 > this.regions.length - var5.field169) {
-         var5.field169 = this.regions.length - var5.field166;
+      if (var5.worldMapRegionX > this.regions.length - var5.worldMapRegionWidth) {
+         var5.worldMapRegionWidth = this.regions.length - var5.worldMapRegionX;
       }
 
-      if (var5.field167 < 0) {
-         var5.field164 += var5.field167;
-         var5.field167 = 0;
+      if (var5.worldMapRegionY < 0) {
+         var5.worldMapRegionHeight += var5.worldMapRegionY;
+         var5.worldMapRegionY = 0;
       }
 
-      if (var5.field167 > this.regions[0].length - var5.field164) {
-         var5.field164 = this.regions[0].length - var5.field167;
+      if (var5.worldMapRegionY > this.regions[0].length - var5.worldMapRegionHeight) {
+         var5.worldMapRegionHeight = this.regions[0].length - var5.worldMapRegionY;
       }
 
-      var5.field169 = Math.min(var5.field169, this.regions.length);
-      var5.field164 = Math.min(var5.field164, this.regions[0].length);
+      var5.worldMapRegionWidth = Math.min(var5.worldMapRegionWidth, this.regions.length);
+      var5.worldMapRegionHeight = Math.min(var5.worldMapRegionHeight, this.regions[0].length);
       return var5;
    }
 
@@ -386,7 +386,7 @@ public final class WorldMapManager {
    )
    @Export("isLoaded")
    public boolean isLoaded() {
-      return this.isLoaded0;
+      return this.loaded;
    }
 
    @ObfuscatedName("e")

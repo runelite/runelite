@@ -40,8 +40,7 @@ public abstract class ClickboxMixin implements RSClient
 			return;
 		}
 
-		boolean bb = boundingboxCheck(model, _x, _y, _z);
-		if (!bb)
+		if (!boundingboxCheck(model, _x, _y, _z))
 		{
 			return;
 		}

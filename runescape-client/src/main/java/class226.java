@@ -19,23 +19,23 @@ public class class226 {
       garbageValue = "-76173898"
    )
    @Export("getItemSprite")
-   public static final Sprite getItemSprite(int var0, int quantity, int var2, int var3, int var4, boolean var5) {
+   public static final Sprite getItemSprite(int id, int quantity, int outline, int shadow, int quantityMode, boolean noted) {
       if (quantity == -1) {
-         var4 = 0;
-      } else if (var4 == 2 && quantity != 1) {
-         var4 = 1;
+         quantityMode = 0;
+      } else if (quantityMode == 2 && quantity != 1) {
+         quantityMode = 1;
       }
 
-      long var6 = ((long)quantity << 16) + (long)var0 + ((long)var2 << 38) + ((long)var4 << 40) + ((long)var3 << 42);
+      long var6 = ((long)quantity << 16) + (long)id + ((long)outline << 38) + ((long)quantityMode << 40) + ((long)shadow << 42);
       Sprite var8;
-      if (!var5) {
+      if (!noted) {
          var8 = (Sprite)ItemDefinition.Sprite_cached.get(var6);
          if (var8 != null) {
             return var8;
          }
       }
 
-      ItemDefinition var9 = Skills.getItemDefinition(var0);
+      ItemDefinition var9 = Skills.getItemDefinition(id);
       if (quantity > 1 && var9.countobj != null) {
          int var10 = -1;
 
@@ -61,7 +61,7 @@ public class class226 {
                return null;
             }
          } else if (var9.notedId != -1) {
-            var20 = getItemSprite(var9.unnotedId, quantity, var2, var3, 0, false);
+            var20 = getItemSprite(var9.unnotedId, quantity, outline, shadow, 0, false);
             if (var20 == null) {
                return null;
             }
@@ -80,7 +80,7 @@ public class class226 {
          var8 = new Sprite(36, 32);
          Rasterizer2D.Rasterizer2D_replace(var8.pixels, 36, 32);
          Rasterizer2D.Rasterizer2D_clear();
-         Rasterizer3D.Rasterizer3D_method1();
+         Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
          Rasterizer3D.method2989(16, 16);
          Rasterizer3D.field741 = false;
          if (var9.placeholderTemplate != -1) {
@@ -88,9 +88,9 @@ public class class226 {
          }
 
          int var16 = var9.zoom2d;
-         if (var5) {
+         if (noted) {
             var16 = (int)((double)var16 * 1.5D);
-         } else if (var2 == 2) {
+         } else if (outline == 2) {
             var16 = (int)((double)var16 * 1.04D);
          }
 
@@ -102,16 +102,16 @@ public class class226 {
             var20.drawAt2(0, 0);
          }
 
-         if (var2 >= 1) {
-            var8.method307(1);
+         if (outline >= 1) {
+            var8.outline(1);
          }
 
-         if (var2 >= 2) {
-            var8.method307(16777215);
+         if (outline >= 2) {
+            var8.outline(16777215);
          }
 
-         if (var3 != 0) {
-            var8.method308(var3);
+         if (shadow != 0) {
+            var8.shadow(shadow);
          }
 
          Rasterizer2D.Rasterizer2D_replace(var8.pixels, 36, 32);
@@ -119,17 +119,17 @@ public class class226 {
             var20.drawAt2(0, 0);
          }
 
-         if (var4 == 1 || var4 == 2 && var9.isStackable == 1) {
+         if (quantityMode == 1 || quantityMode == 2 && var9.isStackable == 1) {
             class204.field1122.draw(class196.method3735(quantity), 0, 9, 16776960, 1);
          }
 
-         if (!var5) {
+         if (!noted) {
             ItemDefinition.Sprite_cached.put(var8, var6);
          }
 
          Rasterizer2D.Rasterizer2D_replace(var12, var13, var14);
          Rasterizer2D.Rasterizer2D_setClipArray(var15);
-         Rasterizer3D.Rasterizer3D_method1();
+         Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
          Rasterizer3D.field741 = true;
          return var8;
       }

@@ -96,7 +96,7 @@ public final class PendingSpawn extends Node {
       garbageValue = "1641191614"
    )
    public static void method1695(int var0, int var1) {
-      VarbitDefinition var2 = Occluder.method3255(var0);
+      VarbitDefinition var2 = Occluder.getVarbitDefinition(var0);
       int var3 = var2.baseVar;
       int var4 = var2.startBit;
       int var5 = var2.endBit;

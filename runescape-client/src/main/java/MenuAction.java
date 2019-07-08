@@ -82,7 +82,7 @@ public class MenuAction {
 
       Widget var12 = Huffman.getWidget(var3);
       if (var12 != null) {
-         class22.method295(var12);
+         WorldMapRectangle.method295(var12);
       }
 
       int var5;

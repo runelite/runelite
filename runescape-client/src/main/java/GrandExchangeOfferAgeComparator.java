@@ -145,7 +145,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
                var4 = (int)var0.key;
                Widget var5 = Huffman.getWidget(var4);
                if (var5 != null) {
-                  class22.method295(var5);
+                  WorldMapRectangle.method295(var5);
                }
             }
          }

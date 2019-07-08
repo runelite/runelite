@@ -49,7 +49,8 @@ public class SoundEffect {
    }
 
    @ObfuscatedName("q")
-   public final int method303() {
+   @Export("calculateDelay")
+   public final int calculateDelay() {
       int var1 = 9999999;
 
       int var2;

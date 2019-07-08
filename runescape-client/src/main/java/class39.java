@@ -68,7 +68,7 @@ public class class39 extends class21 {
       super.field145 = new short[super.field156][64][64];
       super.field154 = new byte[super.field156][64][64];
       super.field155 = new byte[super.field156][64][64];
-      super.field144 = new WorldMapDecoration[super.field156][64][64][];
+      super.decorations = new WorldMapDecoration[super.field156][64][64][];
       int var2 = var1.readUnsignedByte();
       if (var2 != class30.field247.field248) {
          throw new IllegalStateException("");

@@ -48,7 +48,8 @@ public class Interpreter {
    @Export("Interpreter_calendar")
    static Calendar Interpreter_calendar;
    @ObfuscatedName("z")
-   static final String[] field422;
+   @Export("Interpreter_MONTHS")
+   static final String[] Interpreter_MONTHS;
    @ObfuscatedName("s")
    static boolean field423;
    @ObfuscatedName("t")
@@ -139,7 +140,7 @@ public class Interpreter {
 
       World.sortOption1 = var2;
       World.sortOption2 = var3;
-      MilliClock.method3400(ItemContainer.worlds, 0, ItemContainer.worlds.length - 1, World.sortOption1, World.sortOption2);
+      MilliClock.sortWorlds(ItemContainer.worlds, 0, ItemContainer.worlds.length - 1, World.sortOption1, World.sortOption2);
    }
 
    @ObfuscatedName("w")
@@ -149,15 +150,15 @@ public class Interpreter {
    )
    public static void method1976() {
       try {
-         File var0 = new File(WorldMapSection1.userHomeDirectory, "random.dat");
+         File var0 = new File(WorldMapSection2.userHomeDirectory, "random.dat");
          int var1;
          if (var0.exists()) {
             class168.randomDat = new BufferedFile(new AccessFile(var0, "rw", 25L), 24, 0);
          } else {
             label34:
             for (int var2 = 0; var2 < Canvas.field94.length; ++var2) {
-               for (var1 = 0; var1 < WorldMapSection2.cacheDirectoryLocations.length; ++var1) {
-                  File var3 = new File(WorldMapSection2.cacheDirectoryLocations[var1] + Canvas.field94[var2] + File.separatorChar + "random.dat");
+               for (var1 = 0; var1 < WorldMapSection0.cacheDirectoryLocations.length; ++var1) {
+                  File var3 = new File(WorldMapSection0.cacheDirectoryLocations[var1] + Canvas.field94[var2] + File.separatorChar + "random.dat");
                   if (var3.exists()) {
                      class168.randomDat = new BufferedFile(new AccessFile(var3, "rw", 25L), 24, 0);
                      break label34;
@@ -186,12 +187,12 @@ public class Interpreter {
       garbageValue = "-10"
    )
    @Export("drawWidgets")
-   static final void drawWidgets(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      if (GroundItemPile.loadInterface(var0)) {
+   static final void drawWidgets(int interfaceID, int xStart, int yStart, int xEnd, int yEnd, int var5, int var6, int var7) {
+      if (GroundItemPile.loadInterface(interfaceID)) {
          class279.field1145 = null;
-         DevicePcmPlayerProvider.drawInterface(Widget.interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6, var7);
+         DevicePcmPlayerProvider.drawInterface(Widget.interfaceComponents[interfaceID], -1, xStart, yStart, xEnd, yEnd, var5, var6, var7);
          if (class279.field1145 != null) {
-            DevicePcmPlayerProvider.drawInterface(class279.field1145, -1412584499, var1, var2, var3, var4, class54.field1161, BuddyRankComparator.field1114, var7);
+            DevicePcmPlayerProvider.drawInterface(class279.field1145, -1412584499, xStart, yStart, xEnd, yEnd, class54.field1161, BuddyRankComparator.field1114, var7);
             class279.field1145 = null;
          }
       } else if (var7 != -1) {
@@ -212,7 +213,7 @@ public class Interpreter {
       Interpreter_frameDepth = 0;
       Interpreter_frames = new ScriptFrame[50];
       Interpreter_calendar = Calendar.getInstance();
-      field422 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      Interpreter_MONTHS = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
       field423 = false;
       field424 = false;
       field425 = 0;

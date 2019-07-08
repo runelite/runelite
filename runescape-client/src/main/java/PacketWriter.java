@@ -128,7 +128,7 @@ public class PacketWriter {
                break;
             }
 
-            this.buffer.method38(var1.packetBuffer.array, 0, var1.field671);
+            this.buffer.writeBytes(var1.packetBuffer.array, 0, var1.field671);
             this.field672 -= var1.field671;
             var1.remove();
             var1.packetBuffer.method36();

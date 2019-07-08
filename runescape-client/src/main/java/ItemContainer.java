@@ -22,7 +22,8 @@ public class ItemContainer extends Node {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   static Archive field434;
+   @Export("archive19")
+   static Archive archive19;
    @ObfuscatedName("f")
    @Export("ids")
    int[] ids;

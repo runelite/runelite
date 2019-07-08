@@ -56,10 +56,10 @@ public final class class238 {
          Widget var9 = components[var8];
          if (var9 != null && var9.parentId == parentId && (!var9.isIf3 || var9.type == 0 || var9.hasListener || class1.getWidgetClickMask(var9) != 0 || var9 == Client.clickedWidgetParent || var9.contentType == 1338)) {
             if (var9.isIf3) {
-               if (PacketBufferNode.method3673(var9)) {
+               if (PacketBufferNode.isComponentHidden(var9)) {
                   continue;
                }
-            } else if (var9.type == 0 && var9 != Clock.mousedOverWidgetIf1 && PacketBufferNode.method3673(var9)) {
+            } else if (var9.type == 0 && var9 != Clock.mousedOverWidgetIf1 && PacketBufferNode.isComponentHidden(var9)) {
                continue;
             }
 
@@ -226,7 +226,7 @@ public final class class238 {
                               class171.method3494(var22 + 1, var9.id, var9.childIndex, var9.itemId, "");
                            } else if (var22 == 10) {
                               Player.method1281();
-                              WorldMapDecoration.method350(var9.id, var9.childIndex, class211.method4107(class1.getWidgetClickMask(var9)), var9.itemId);
+                              WorldMapDecoration.method350(var9.id, var9.childIndex, Calendar.method4107(class1.getWidgetClickMask(var9)), var9.itemId);
                               Client.selectedSpellActionName = class198.method3745(var9);
                               if (Client.selectedSpellActionName == null) {
                                  Client.selectedSpellActionName = "null";
@@ -557,7 +557,7 @@ public final class class238 {
                      }
 
                      if (var9.scrollHeight > var9.height) {
-                        WorldMapSection0.method246(var9, var10 + var9.width, var11, var9.height, var9.scrollHeight, MouseHandler.MouseHandler_x, MouseHandler.MouseHandler_y);
+                        WorldMapSection3.method246(var9, var10 + var9.width, var11, var9.height, var9.scrollHeight, MouseHandler.MouseHandler_x, MouseHandler.MouseHandler_y);
                      }
                   }
 

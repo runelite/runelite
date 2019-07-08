@@ -39,10 +39,10 @@ public class Varps {
    )
    static void method4400(Buffer var0) {
       if (Client.field172 != null) {
-         var0.method38(Client.field172, 0, Client.field172.length);
+         var0.writeBytes(Client.field172, 0, Client.field172.length);
       } else {
          byte[] var1 = AttackOption.method2032();
-         var0.method38(var1, 0, var1.length);
+         var0.writeBytes(var1, 0, var1.length);
       }
 
    }

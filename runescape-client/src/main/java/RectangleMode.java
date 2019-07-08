@@ -11,17 +11,20 @@ public enum RectangleMode implements Enumerated {
    @ObfuscatedSignature(
       signature = "Llj;"
    )
-   field757(0, 0),
+   @Export("SOLID")
+   SOLID(0, 0),
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Llj;"
    )
-   field758(1, 1),
+   @Export("GRADIENT_COLOR")
+   GRADIENT_COLOR(1, 1),
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Llj;"
    )
-   field759(2, 2);
+   @Export("GRADIENT_ALPHA")
+   GRADIENT_ALPHA(2, 2);
 
    @ObfuscatedName("d")
    @Export("musicTrackBoolean")
@@ -30,18 +33,18 @@ public enum RectangleMode implements Enumerated {
    @ObfuscatedGetter(
       intValue = -1391612747
    )
-   @Export("id")
-   public final int id;
+   @Export("value")
+   public final int value;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1204297807
    )
-   @Export("id2")
-   final int id2;
+   @Export("id")
+   final int id;
 
    private RectangleMode(int var3, int var4) {
-      this.id = var3;
-      this.id2 = var4;
+      this.value = var3;
+      this.id = var4;
    }
 
    @ObfuscatedName("f")
@@ -51,7 +54,7 @@ public enum RectangleMode implements Enumerated {
    )
    @Export("rsOrdinal")
    public int rsOrdinal() {
-      return this.id2;
+      return this.id;
    }
 
    @ObfuscatedName("m")
@@ -59,9 +62,10 @@ public enum RectangleMode implements Enumerated {
       signature = "(Lir;Lir;ZB)V",
       garbageValue = "1"
    )
-   public static void method6028(AbstractArchive var0, AbstractArchive var1, boolean var2) {
+   @Export("setObjectDefinitionArchives")
+   public static void setObjectDefinitionArchives(AbstractArchive var0, AbstractArchive var1, boolean isLowDetail) {
       ObjectDefinition.ObjectDefinition_archive = var0;
       ObjectDefinition.field640 = var1;
-      ObjectDefinition.ObjectDefinition_isLowDetail = var2;
+      ObjectDefinition.ObjectDefinition_isLowDetail = isLowDetail;
    }
 }

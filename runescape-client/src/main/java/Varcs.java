@@ -33,7 +33,7 @@ public class Varcs {
 
    Varcs() {
       this.unwrittenChanges = false;
-      int var1 = ObjectSound.archive2.method4(19);
+      int var1 = ObjectSound.archive2.getGroupFileCount(19);
       this.map = new HashMap();
       this.intsPersistence = new boolean[var1];
 
@@ -45,7 +45,7 @@ public class Varcs {
 
       var2 = 0;
       if (ObjectSound.archive2.method133(15)) {
-         var2 = ObjectSound.archive2.method4(15);
+         var2 = ObjectSound.archive2.getGroupFileCount(15);
       }
 
       this.strings = new String[var2];
@@ -145,7 +145,7 @@ public class Varcs {
    )
    @Export("getPreferencesFile")
    AccessFile getPreferencesFile(boolean var1) {
-      return LoginPacket.getPreferencesFile("2", class22.studioGame.name, var1);
+      return LoginPacket.getPreferencesFile("2", WorldMapRectangle.studioGame.name, var1);
    }
 
    @ObfuscatedName("e")
@@ -365,7 +365,7 @@ public class Varcs {
       garbageValue = "321265868"
    )
    public static void method2160(AbstractArchive var0) {
-      FloorOverlayDefinition.field663 = var0;
+      FloorOverlayDefinition.FloorOverlayDefinition_archive = var0;
    }
 
    @ObfuscatedName("q")

@@ -82,7 +82,7 @@ public class UserComparator4 implements Comparator {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             if (var3 == 1 || var3 == 2) {
                ReflectionCheck.clientPreferences.windowMode = var3;
-               WorldMapSection0.savePreferences();
+               WorldMapSection3.savePreferences();
             }
 
             return 1;

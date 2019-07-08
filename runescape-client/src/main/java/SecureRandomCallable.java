@@ -59,9 +59,9 @@ public class SecureRandomCallable implements Callable {
       Client.interfaceParents.put(var3, (long)var0);
       DevicePcmPlayerProvider.method845(var1);
       Widget var4 = Huffman.getWidget(var0);
-      class22.method295(var4);
+      WorldMapRectangle.method295(var4);
       if (Client.field127 != null) {
-         class22.method295(Client.field127);
+         WorldMapRectangle.method295(Client.field127);
          Client.field127 = null;
       }
 
@@ -133,7 +133,7 @@ public class SecureRandomCallable implements Callable {
       class214.menuWidth = var7;
       AbstractWorldMapIcon.menuHeight = Client.menuOptionsCount * 15 + 22;
       class39.revalidateWidgetScroll(Widget.interfaceComponents[var0 >> 16], var4, false);
-      WorldMapSection3.runWidgetOnLoadListener(var1);
+      WorldMapSection1.runWidgetOnLoadListener(var1);
       if (Client.rootInterface != -1) {
          GrandExchangeEvents.method74(Client.rootInterface, 1);
       }

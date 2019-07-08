@@ -500,7 +500,7 @@ public class ServerPacket {
          int var13 = 0;
 
          while (true) {
-            int var14 = var10.method48();
+            int var14 = var10.readUShortSmart();
             if (var14 == 0) {
                break;
             }

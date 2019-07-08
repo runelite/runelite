@@ -31,11 +31,11 @@ public class class40 {
       signature = "(IIIIIIIIB)V",
       garbageValue = "125"
    )
-   void method743(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   void method743(int x, int y, int var3, int var4, int width, int height, int var7, int var8) {
       if (var7 != 0 && this.field326 != 0 && this.field329 != null) {
          var8 = this.method744(var8, var7);
          var7 = this.method774(var7);
-         Rasterizer2D.raster2d7(var1, var2, var5, var6, var3, var4, this.field329[var7 - 1][var8], this.field326);
+         Rasterizer2D.raster2d7(x, y, width, height, var3, var4, this.field329[var7 - 1][var8], this.field326);
       }
 
    }
@@ -705,7 +705,7 @@ public class class40 {
       var2 = Client.viewportWidth;
       var3 = Client.viewportHeight;
       Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
-      Rasterizer3D.Rasterizer3D_method1();
+      Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
       int var9;
       int var10;
       int var11;
@@ -755,7 +755,7 @@ public class class40 {
             var11 = var19;
          }
 
-         WorldMapSection1.cameraX = var6 - var11;
+         WorldMapSection2.cameraX = var6 - var11;
          GrandExchangeEvents.cameraY = var14 - var12;
          GrandExchangeOfferNameComparator.cameraZ = var15 - var16;
          WorldMapIcon1.cameraPitch = var4;
@@ -779,7 +779,7 @@ public class class40 {
          var4 = Login.method2061();
       }
 
-      var13 = WorldMapSection1.cameraX;
+      var13 = WorldMapSection2.cameraX;
       var6 = GrandExchangeEvents.cameraY;
       var14 = GrandExchangeOfferNameComparator.cameraZ;
       var15 = WorldMapIcon1.cameraPitch;
@@ -789,7 +789,7 @@ public class class40 {
          if (Client.field139[var24]) {
             var9 = (int)(Math.random() * (double)(Client.field141[var24] * 2 + 1) - (double)Client.field141[var24] + Math.sin((double)Client.field144[var24] * ((double)Client.field143[var24] / 100.0D)) * (double)Client.field142[var24]);
             if (var24 == 0) {
-               WorldMapSection1.cameraX += var9;
+               WorldMapSection2.cameraX += var9;
             }
 
             if (var24 == 1) {
@@ -842,7 +842,7 @@ public class class40 {
       class13.playPcmPlayers();
       var10 = Rasterizer3D.Rasterizer3D_zoom;
       Rasterizer3D.Rasterizer3D_zoom = Client.viewportZoom;
-      class65.scene.draw(WorldMapSection1.cameraX, GrandExchangeEvents.cameraY, GrandExchangeOfferNameComparator.cameraZ, WorldMapIcon1.cameraPitch, MusicPatchNode.cameraYaw, var4);
+      class65.scene.draw(WorldMapSection2.cameraX, GrandExchangeEvents.cameraY, GrandExchangeOfferNameComparator.cameraZ, WorldMapIcon1.cameraPitch, MusicPatchNode.cameraYaw, var4);
       Rasterizer3D.Rasterizer3D_zoom = var10;
       class13.playPcmPlayers();
       class65.scene.clearTempGameObjects();
@@ -864,7 +864,7 @@ public class class40 {
          Client.field208 = 0;
       }
 
-      WorldMapSection1.cameraX = var13;
+      WorldMapSection2.cameraX = var13;
       GrandExchangeEvents.cameraY = var6;
       GrandExchangeOfferNameComparator.cameraZ = var14;
       WorldMapIcon1.cameraPitch = var15;

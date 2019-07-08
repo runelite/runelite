@@ -148,7 +148,7 @@ public class WorldMapLabel {
             }
          }
 
-         var0.method53(var2);
+         var0.writeCrc(var2);
          var1.remove();
       }
 
@@ -239,7 +239,7 @@ public class WorldMapLabel {
    static final void worldToScreen(int var0, int var1, int var2) {
       if (var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
          int var3 = class32.getTileHeight(var0, var1, SoundSystem.plane) - var2;
-         var0 -= WorldMapSection1.cameraX;
+         var0 -= WorldMapSection2.cameraX;
          var3 -= GrandExchangeEvents.cameraY;
          var1 -= GrandExchangeOfferNameComparator.cameraZ;
          int var4 = Rasterizer3D.Rasterizer3D_sine[WorldMapIcon1.cameraPitch];

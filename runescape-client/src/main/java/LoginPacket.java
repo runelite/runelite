@@ -38,7 +38,8 @@ public class LoginPacket implements ClientPacketMarker {
    @ObfuscatedSignature(
       signature = "[Lgl;"
    )
-   static final LoginPacket[] field478;
+   @Export("LoginPacket_indexedValues")
+   static final LoginPacket[] LoginPacket_indexedValues;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1743806243
@@ -77,7 +78,7 @@ public class LoginPacket implements ClientPacketMarker {
          var4 = "_wip";
       }
 
-      File var5 = new File(WorldMapSection1.userHomeDirectory, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
+      File var5 = new File(WorldMapSection2.userHomeDirectory, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
       AccessFile var6;
       if (!var2 && var5.exists()) {
          try {
@@ -101,11 +102,11 @@ public class LoginPacket implements ClientPacketMarker {
       field475 = new LoginPacket(16, -2);
       field476 = new LoginPacket(18, -2);
       field477 = new LoginPacket(27, 0);
-      field478 = new LoginPacket[32];
-      LoginPacket[] var0 = WorldMapIcon2.method300();
+      LoginPacket_indexedValues = new LoginPacket[32];
+      LoginPacket[] var0 = WorldMapIcon2.LoginPacket_values();
 
       for (int var1 = 0; var1 < var0.length; ++var1) {
-         field478[var0[var1].id] = var0[var1];
+         LoginPacket_indexedValues[var0[var1].id] = var0[var1];
       }
 
    }

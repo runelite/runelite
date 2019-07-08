@@ -15,11 +15,11 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
    @Export("get")
    public PlatformInfo get() {
       byte var1;
-      if (WorldMapSection3.osNameLowerCase.startsWith("win")) {
+      if (WorldMapSection1.osNameLowerCase.startsWith("win")) {
          var1 = 1;
-      } else if (WorldMapSection3.osNameLowerCase.startsWith("mac")) {
+      } else if (WorldMapSection1.osNameLowerCase.startsWith("mac")) {
          var1 = 2;
-      } else if (WorldMapSection3.osNameLowerCase.startsWith("linux")) {
+      } else if (WorldMapSection1.osNameLowerCase.startsWith("linux")) {
          var1 = 3;
       } else {
          var1 = 4;

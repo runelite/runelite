@@ -1,10 +1,13 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("c")
-public final class class22 {
+@Implements("WorldMapRectangle")
+public final class WorldMapRectangle
+{
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lgr;"
@@ -21,28 +24,32 @@ public final class class22 {
    @ObfuscatedSignature(
       signature = "Lit;"
    )
-   @Export("archive16")
-   static Archive archive16;
+   @Export("archive17")
+   static Archive archive17;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1976624405
    )
-   int field169;
+   @Export("worldMapRegionWidth")
+   int worldMapRegionWidth;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -698663527
    )
-   int field164;
+   @Export("worldMapRegionHeight")
+   int worldMapRegionHeight;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1588021801
    )
-   int field166;
+   @Export("worldMapRegionX")
+   int worldMapRegionX;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 2138505015
    )
-   int field167;
+   @Export("worldMapRegionY")
+   int worldMapRegionY;
    @ObfuscatedSignature(
       signature = "Lal;"
    )
@@ -51,7 +58,7 @@ public final class class22 {
    @ObfuscatedSignature(
       signature = "(Lal;)V"
    )
-   class22(WorldMapManager var1) {
+   WorldMapRectangle(WorldMapManager var1) {
       this.this$0 = var1;
    }
 
@@ -82,13 +89,13 @@ public final class class22 {
       garbageValue = "-15"
    )
    @Export("newArchive")
-   static Archive newArchive(int var0, boolean var1, boolean var2, boolean var3) {
+   static Archive newArchive(int index, boolean releaseGroups, boolean shallowFiles, boolean var3) {
       ArchiveDisk var4 = null;
       if (class168.dat2File != null) {
-         var4 = new ArchiveDisk(var0, class168.dat2File, ArchiveDiskAction.idxFiles[var0], 1000000);
+         var4 = new ArchiveDisk(index, class168.dat2File, ArchiveDiskAction.idxFiles[index], 1000000);
       }
 
-      return new Archive(var4, Fonts.masterDisk, var0, var1, var2, var3);
+      return new Archive(var4, Fonts.masterDisk, index, releaseGroups, shallowFiles, var3);
    }
 
    @ObfuscatedName("jp")

@@ -1,19 +1,23 @@
-import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("hg")
-public class class211 {
+@Implements("Calendar")
+public class Calendar {
    @ObfuscatedName("m")
-   static final String[][] field1124;
+   @Export("MONTH_NAMES_ENGLISH_GERMAN")
+   static final String[][] MONTH_NAMES_ENGLISH_GERMAN;
    @ObfuscatedName("f")
-   static final String[] field1125;
+   @Export("DAYS_OF_THE_WEEK")
+   static final String[] DAYS_OF_THE_WEEK;
    @ObfuscatedName("q")
-   static Calendar field1126;
+   @Export("Calendar_calendar")
+   static java.util.Calendar Calendar_calendar;
    @ObfuscatedName("em")
    @ObfuscatedSignature(
       signature = "Llg;"
@@ -70,7 +74,7 @@ public class class211 {
                var6 = Interpreter.Interpreter_calendar.get(5);
                int var15 = Interpreter.Interpreter_calendar.get(2);
                int var16 = Interpreter.Interpreter_calendar.get(1);
-               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6 + "-" + Interpreter.field422[var15] + "-" + var16;
+               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6 + "-" + Interpreter.Interpreter_MONTHS[var15] + "-" + var16;
                return 1;
             } else if (var0 != ScriptOpcodes.TEXT_GENDER) {
                if (var0 == ScriptOpcodes.TOSTRING) {
@@ -210,9 +214,9 @@ public class class211 {
    }
 
    static {
-      field1124 = new String[][]{{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"}};
-      field1125 = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-      Calendar.getInstance(TimeZone.getTimeZone("Europe/London"));
-      field1126 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+      MONTH_NAMES_ENGLISH_GERMAN = new String[][]{{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"}};
+      DAYS_OF_THE_WEEK = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+      java.util.Calendar.getInstance(TimeZone.getTimeZone("Europe/London"));
+      Calendar_calendar = java.util.Calendar.getInstance(TimeZone.getTimeZone("GMT"));
    }
 }

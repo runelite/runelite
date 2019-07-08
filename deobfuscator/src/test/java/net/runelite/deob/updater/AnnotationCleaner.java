@@ -45,6 +45,10 @@ public class AnnotationCleaner
 			{
 				assertEquals(c + " implements " + implementingName + " but is called " + c.getClassName(), implementingName, c.getClassName());
 			}
+			else
+			{
+				assertTrue(c + " isn't obfuscated but doesn't have @Implements", Deob.isObfuscated(c.getClassName()));
+			}
 
 			for (Field f : c.getFields())
 			{

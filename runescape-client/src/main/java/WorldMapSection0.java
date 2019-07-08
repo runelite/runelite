@@ -4,86 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("y")
+@ObfuscatedName("ah")
 @Implements("WorldMapSection0")
 public class WorldMapSection0 implements WorldMapSection {
-   @ObfuscatedName("sn")
-   @ObfuscatedGetter(
-      intValue = -1946112139
-   )
-   static int field1055;
-   @ObfuscatedName("p")
-   static int[] field1056;
+   @ObfuscatedName("l")
+   static int[] field1082;
+   @ObfuscatedName("j")
+   @Export("cacheDirectoryLocations")
+   public static String[] cacheDirectoryLocations;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -2011838881
+      intValue = -1561552223
    )
-   int field1057;
+   @Export("minPlane")
+   int minPlane;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1299225715
+      intValue = -245382089
    )
-   int field1058;
+   @Export("planes")
+   int planes;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 82600709
+      intValue = -1024859679
    )
-   int field1059;
+   @Export("xRegion")
+   int xRegion;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -477370575
+      intValue = 40495485
    )
-   int field1060;
+   @Export("yRegion")
+   int yRegion;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -671345527
+      intValue = 982234927
    )
-   int field1061;
+   int field1087;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 529427495
+      intValue = -1272330125
    )
-   int field1062;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -150870205
-   )
-   int field1063;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1009718107
-   )
-   int field1064;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1022177315
-   )
-   int field1065;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1397517463
-   )
-   int field1066;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -799353317
-   )
-   int field1067;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1388959491
-   )
-   int field1068;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1657956317
-   )
-   int field1069;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1345061881
-   )
-   int field1070;
+   int field1088;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -91,21 +53,21 @@ public class WorldMapSection0 implements WorldMapSection {
       garbageValue = "1384899025"
    )
    @Export("expandBounds")
-   public void expandBounds(WorldMapArea var1) {
-      if (var1.minX0 > this.field1061) {
-         var1.minX0 = this.field1061;
+   public void expandBounds(WorldMapArea area) {
+      if (area.minX0 > this.field1087) {
+         area.minX0 = this.field1087;
       }
 
-      if (var1.maxX0 < this.field1061) {
-         var1.maxX0 = this.field1061;
+      if (area.maxX0 < this.field1087) {
+         area.maxX0 = this.field1087;
       }
 
-      if (var1.minY0 > this.field1062) {
-         var1.minY0 = this.field1062;
+      if (area.minY0 > this.field1088) {
+         area.minY0 = this.field1088;
       }
 
-      if (var1.maxY0 < this.field1062) {
-         var1.maxY0 = this.field1062;
+      if (area.maxY0 < this.field1088) {
+         area.maxY0 = this.field1088;
       }
 
    }
@@ -116,8 +78,8 @@ public class WorldMapSection0 implements WorldMapSection {
       garbageValue = "93"
    )
    @Export("containsCoord")
-   public boolean containsCoord(int var1, int var2, int var3) {
-      return var1 >= this.field1057 && var1 < this.field1057 + this.field1058 ? var2 >= (this.field1059 << 6) + (this.field1063 << 3) && var2 <= (this.field1059 << 6) + (this.field1065 << 3) + 7 && var3 >= (this.field1060 << 6) + (this.field1064 << 3) && var3 <= (this.field1060 << 6) + (this.field1066 << 3) + 7 : false;
+   public boolean containsCoord(int plane, int x, int y) {
+      return plane >= this.minPlane && plane < this.minPlane + this.planes ? x >> 6 == this.xRegion && y >> 6 == this.yRegion : false;
    }
 
    @ObfuscatedName("q")
@@ -126,8 +88,8 @@ public class WorldMapSection0 implements WorldMapSection {
       garbageValue = "4"
    )
    @Export("containsPosition")
-   public boolean containsPosition(int var1, int var2) {
-      return var1 >= (this.field1061 << 6) + (this.field1067 << 3) && var1 <= (this.field1061 << 6) + (this.field1069 << 3) + 7 && var2 >= (this.field1062 << 6) + (this.field1068 << 3) && var2 <= (this.field1062 << 6) + (this.field1070 << 3) + 7;
+   public boolean containsPosition(int x, int y) {
+      return x >> 6 == this.field1087 && y >> 6 == this.field1088;
    }
 
    @ObfuscatedName("w")
@@ -136,11 +98,11 @@ public class WorldMapSection0 implements WorldMapSection {
       garbageValue = "1545934424"
    )
    @Export("position")
-   public int[] position(int var1, int var2, int var3) {
-      if (!this.containsCoord(var1, var2, var3)) {
+   public int[] position(int plane, int x, int y) {
+      if (!this.containsCoord(plane, x, y)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.field1061 * 64 - this.field1059 * 64 + var2 + (this.field1067 * 8 - this.field1063 * 8), var3 + (this.field1062 * 64 - this.field1060 * 64) + (this.field1068 * 8 - this.field1064 * 8)};
+         int[] var4 = new int[]{this.field1087 * 64 - this.xRegion * 64 + x, y + (this.field1088 * 64 - this.yRegion * 64)};
          return var4;
       }
    }
@@ -151,13 +113,13 @@ public class WorldMapSection0 implements WorldMapSection {
       garbageValue = "-1916486802"
    )
    @Export("coord")
-   public Coord coord(int var1, int var2) {
-      if (!this.containsPosition(var1, var2)) {
+   public Coord coord(int x, int y) {
+      if (!this.containsPosition(x, y)) {
          return null;
       } else {
-         int var3 = this.field1059 * 64 - this.field1061 * 64 + (this.field1063 * 8 - this.field1067 * 8) + var1;
-         int var4 = this.field1060 * 64 - this.field1062 * 64 + var2 + (this.field1064 * 8 - this.field1068 * 8);
-         return new Coord(this.field1057, var3, var4);
+         int var3 = this.xRegion * 64 - this.field1087 * 64 + x;
+         int var4 = this.yRegion * 64 - this.field1088 * 64 + y;
+         return new Coord(this.minPlane, var3, var4);
       }
    }
 
@@ -167,116 +129,189 @@ public class WorldMapSection0 implements WorldMapSection {
       garbageValue = "-113"
    )
    @Export("read")
-   public void read(Buffer var1) {
-      this.field1057 = var1.readUnsignedByte();
-      this.field1058 = var1.readUnsignedByte();
-      this.field1059 = var1.readUnsignedShort();
-      this.field1063 = var1.readUnsignedByte();
-      this.field1065 = var1.readUnsignedByte();
-      this.field1060 = var1.readUnsignedShort();
-      this.field1064 = var1.readUnsignedByte();
-      this.field1066 = var1.readUnsignedByte();
-      this.field1061 = var1.readUnsignedShort();
-      this.field1067 = var1.readUnsignedByte();
-      this.field1069 = var1.readUnsignedByte();
-      this.field1062 = var1.readUnsignedShort();
-      this.field1068 = var1.readUnsignedByte();
-      this.field1070 = var1.readUnsignedByte();
-      this.method423();
+   public void read(Buffer buffer) {
+      this.minPlane = buffer.readUnsignedByte();
+      this.planes = buffer.readUnsignedByte();
+      this.xRegion = buffer.readUnsignedShort();
+      this.yRegion = buffer.readUnsignedShort();
+      this.field1087 = buffer.readUnsignedShort();
+      this.field1088 = buffer.readUnsignedShort();
+      this.method425();
    }
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1967186894"
+      garbageValue = "-1602858772"
    )
-   void method423() {
+   void method425() {
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2102591569"
+      signature = "(II)I",
+      garbageValue = "409746497"
    )
-   @Export("savePreferences")
-   static void savePreferences() {
-      AccessFile var0 = null;
+   @Export("getVarbit")
+   public static int getVarbit(int var0) {
+      VarbitDefinition var1 = Occluder.getVarbitDefinition(var0);
+      int var2 = var1.baseVar;
+      int var3 = var1.startBit;
+      int var4 = var1.endBit;
+      int var5 = Varps.Varps_masks[var4 - var3];
+      return Varps.Varps_main[var2] >> var3 & var5;
+   }
 
-      try {
-         var0 = LoginPacket.getPreferencesFile("", class22.studioGame.name, true);
-         Buffer var1 = ReflectionCheck.clientPreferences.toBuffer();
-         var0.write(var1.array, 0, var1.index);
-      } catch (Exception var3) {
-      }
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(IILfe;Lfy;I)Z",
+      garbageValue = "-2025028346"
+   )
+   static final boolean method593(int var0, int var1, RouteStrategy var2, CollisionMap var3) {
+      int var4 = var0;
+      int var5 = var1;
+      byte var6 = 64;
+      byte var7 = 64;
+      int var8 = var0 - var6;
+      int var9 = var1 - var7;
+      class178.directions[var6][var7] = 99;
+      class178.distances[var6][var7] = 0;
+      byte var10 = 0;
+      int var11 = 0;
+      class178.bufferX[var10] = var0;
+      int var12 = var10 + 1;
+      class178.bufferY[var10] = var1;
+      int[][] var13 = var3.flags;
 
-      try {
-         if (var0 != null) {
-            var0.closeSync(true);
+      while (var12 != var11) {
+         var4 = class178.bufferX[var11];
+         var5 = class178.bufferY[var11];
+         var11 = var11 + 1 & 4095;
+         int var14 = var4 - var8;
+         int var15 = var5 - var9;
+         int var16 = var4 - var3.xInset;
+         int var17 = var5 - var3.yInset;
+         if (var2.vmethod3644(2, var4, var5, var3)) {
+            InterfaceParent.field986 = var4;
+            UrlRequester.field929 = var5;
+            return true;
          }
-      } catch (Exception var2) {
+
+         int var18 = class178.distances[var14][var15] + 1;
+         if (var14 > 0 && class178.directions[var14 - 1][var15] == 0 && (var13[var16 - 1][var17] & 19136782) == 0 && (var13[var16 - 1][var17 + 1] & 19136824) == 0) {
+            class178.bufferX[var12] = var4 - 1;
+            class178.bufferY[var12] = var5;
+            var12 = var12 + 1 & 4095;
+            class178.directions[var14 - 1][var15] = 2;
+            class178.distances[var14 - 1][var15] = var18;
+         }
+
+         if (var14 < 126 && class178.directions[var14 + 1][var15] == 0 && (var13[var16 + 2][var17] & 19136899) == 0 && (var13[var16 + 2][var17 + 1] & 19136992) == 0) {
+            class178.bufferX[var12] = var4 + 1;
+            class178.bufferY[var12] = var5;
+            var12 = var12 + 1 & 4095;
+            class178.directions[var14 + 1][var15] = 8;
+            class178.distances[var14 + 1][var15] = var18;
+         }
+
+         if (var15 > 0 && class178.directions[var14][var15 - 1] == 0 && (var13[var16][var17 - 1] & 19136782) == 0 && (var13[var16 + 1][var17 - 1] & 19136899) == 0) {
+            class178.bufferX[var12] = var4;
+            class178.bufferY[var12] = var5 - 1;
+            var12 = var12 + 1 & 4095;
+            class178.directions[var14][var15 - 1] = 1;
+            class178.distances[var14][var15 - 1] = var18;
+         }
+
+         if (var15 < 126 && class178.directions[var14][var15 + 1] == 0 && (var13[var16][var17 + 2] & 19136824) == 0 && (var13[var16 + 1][var17 + 2] & 19136992) == 0) {
+            class178.bufferX[var12] = var4;
+            class178.bufferY[var12] = var5 + 1;
+            var12 = var12 + 1 & 4095;
+            class178.directions[var14][var15 + 1] = 4;
+            class178.distances[var14][var15 + 1] = var18;
+         }
+
+         if (var14 > 0 && var15 > 0 && class178.directions[var14 - 1][var15 - 1] == 0 && (var13[var16 - 1][var17] & 19136830) == 0 && (var13[var16 - 1][var17 - 1] & 19136782) == 0 && (var13[var16][var17 - 1] & 19136911) == 0) {
+            class178.bufferX[var12] = var4 - 1;
+            class178.bufferY[var12] = var5 - 1;
+            var12 = var12 + 1 & 4095;
+            class178.directions[var14 - 1][var15 - 1] = 3;
+            class178.distances[var14 - 1][var15 - 1] = var18;
+         }
+
+         if (var14 < 126 && var15 > 0 && class178.directions[var14 + 1][var15 - 1] == 0 && (var13[var16 + 1][var17 - 1] & 19136911) == 0 && (var13[var16 + 2][var17 - 1] & 19136899) == 0 && (var13[var16 + 2][var17] & 19136995) == 0) {
+            class178.bufferX[var12] = var4 + 1;
+            class178.bufferY[var12] = var5 - 1;
+            var12 = var12 + 1 & 4095;
+            class178.directions[var14 + 1][var15 - 1] = 9;
+            class178.distances[var14 + 1][var15 - 1] = var18;
+         }
+
+         if (var14 > 0 && var15 < 126 && class178.directions[var14 - 1][var15 + 1] == 0 && (var13[var16 - 1][var17 + 1] & 19136830) == 0 && (var13[var16 - 1][var17 + 2] & 19136824) == 0 && (var13[var16][var17 + 2] & 19137016) == 0) {
+            class178.bufferX[var12] = var4 - 1;
+            class178.bufferY[var12] = var5 + 1;
+            var12 = var12 + 1 & 4095;
+            class178.directions[var14 - 1][var15 + 1] = 6;
+            class178.distances[var14 - 1][var15 + 1] = var18;
+         }
+
+         if (var14 < 126 && var15 < 126 && class178.directions[var14 + 1][var15 + 1] == 0 && (var13[var16 + 1][var17 + 2] & 19137016) == 0 && (var13[var16 + 2][var17 + 2] & 19136992) == 0 && (var13[var16 + 2][var17 + 1] & 19136995) == 0) {
+            class178.bufferX[var12] = var4 + 1;
+            class178.bufferY[var12] = var5 + 1;
+            var12 = var12 + 1 & 4095;
+            class178.directions[var14 + 1][var15 + 1] = 12;
+            class178.distances[var14 + 1][var15 + 1] = var18;
+         }
       }
 
+      InterfaceParent.field986 = var4;
+      UrlRequester.field929 = var5;
+      return false;
    }
 
-   @ObfuscatedName("hz")
+   @ObfuscatedName("hc")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1886145284"
+      signature = "(ILjava/lang/String;I)V",
+      garbageValue = "-1850233906"
    )
-   static final void method245(int var0) {
-      if (var0 >= 0) {
-         int var1 = Client.menuArguments1[var0];
-         int var2 = Client.menuArguments2[var0];
-         int var3 = Client.menuOpcodes[var0];
-         int var4 = Client.menuArguments0[var0];
-         String var5 = Client.menuActions[var0];
-         String var6 = Client.menuTargetNames[var0];
-         Actor.menuAction(var1, var2, var3, var4, var5, var6, MouseHandler.MouseHandler_lastPressedX, MouseHandler.MouseHandler_lastPressedY);
-      }
+   static void method583(int var0, String var1) {
+      int var2 = Players.Players_count;
+      int[] var3 = Players.Players_indices;
+      boolean var4 = false;
+      Username var5 = new Username(var1, KeyHandler.loginType);
 
-   }
-
-   @ObfuscatedName("io")
-   @ObfuscatedSignature(
-      signature = "(Lho;IIIIIII)V",
-      garbageValue = "-1723792771"
-   )
-   static final void method246(Widget var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if (Client.field188) {
-         Client.field189 = 32;
-      } else {
-         Client.field189 = 0;
-      }
-
-      Client.field188 = false;
-      int var7;
-      if (MouseHandler.MouseHandler_currentButton == 1 || !AbstractRasterProvider.mouseCam && MouseHandler.MouseHandler_currentButton == 4) {
-         if (var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
-            var0.scrollY -= 4;
-            class22.method295(var0);
-         } else if (var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
-            var0.scrollY += 4;
-            class22.method295(var0);
-         } else if (var5 >= var1 - Client.field189 && var5 < Client.field189 + var1 + 16 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
-            var7 = var3 * (var3 - 32) / var4;
-            if (var7 < 8) {
-               var7 = 8;
+      for (int var6 = 0; var6 < var2; ++var6) {
+         Player var7 = Client.players[var3[var6]];
+         if (var7 != null && var7 != Canvas.localPlayer && var7.username != null && var7.username.equals(var5)) {
+            PacketBufferNode var8;
+            if (var0 == 1) {
+               var8 = Interpreter.method1915(ClientPacket.field269, Client.packetWriter.isaacCipher);
+               var8.packetBuffer.writeShort(var3[var6]);
+               var8.packetBuffer.method56(0);
+               Client.packetWriter.method241(var8);
+            } else if (var0 == 4) {
+               var8 = Interpreter.method1915(ClientPacket.field249, Client.packetWriter.isaacCipher);
+               var8.packetBuffer.method64(var3[var6]);
+               var8.packetBuffer.method56(0);
+               Client.packetWriter.method241(var8);
+            } else if (var0 == 6) {
+               var8 = Interpreter.method1915(ClientPacket.field315, Client.packetWriter.isaacCipher);
+               var8.packetBuffer.method63(var3[var6]);
+               var8.packetBuffer.method57(0);
+               Client.packetWriter.method241(var8);
+            } else if (var0 == 7) {
+               var8 = Interpreter.method1915(ClientPacket.field297, Client.packetWriter.isaacCipher);
+               var8.packetBuffer.method57(0);
+               var8.packetBuffer.writeShortLE(var3[var6]);
+               Client.packetWriter.method241(var8);
             }
 
-            int var8 = var6 - var2 - 16 - var7 / 2;
-            int var9 = var3 - 32 - var7;
-            var0.scrollY = var8 * (var4 - var3) / var9;
-            class22.method295(var0);
-            Client.field188 = true;
+            var4 = true;
+            break;
          }
       }
 
-      if (Client.mouseWheelRotation != 0) {
-         var7 = var0.width;
-         if (var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
-            var0.scrollY += Client.mouseWheelRotation * 45;
-            class22.method295(var0);
-         }
+      if (!var4) {
+         WorldMapIcon1.addGameMessage(4, "", "Unable to find " + var1);
       }
 
    }

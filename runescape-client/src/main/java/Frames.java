@@ -28,7 +28,7 @@ public class Frames extends DualNode {
    )
    public Frames(AbstractArchive var1, AbstractArchive var2, int var3, boolean var4) {
       NodeDeque var5 = new NodeDeque();
-      int var6 = var1.method4(var3);
+      int var6 = var1.getGroupFileCount(var3);
       this.frames = new Animation[var6];
       int[] var7 = var1.method3(var3);
 

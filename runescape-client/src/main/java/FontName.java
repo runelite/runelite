@@ -485,7 +485,7 @@ public class FontName {
       SecureRandomFuture.archive5.method8();
       UserComparator3.archive6.method8();
       class40.archive7.method8();
-      WorldMapSection3.archive8.method8();
+      WorldMapSection1.archive8.method8();
       class238.archive9.method8();
       class16.archive10.method8();
       Login.archive11.method8();

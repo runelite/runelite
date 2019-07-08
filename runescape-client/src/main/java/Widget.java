@@ -724,7 +724,7 @@ public class Widget extends Node {
       this.mouseOverColor = 0;
       this.mouseOverColor2 = 0;
       this.fill = false;
-      this.rectangleMode = RectangleMode.field757;
+      this.rectangleMode = RectangleMode.SOLID;
       this.transparency = 0;
       this.field960 = 0;
       this.lineWid = 1;
@@ -801,8 +801,8 @@ public class Widget extends Node {
       this.type = buffer.readUnsignedByte();
       this.buttonType = buffer.readUnsignedByte();
       this.contentType = buffer.readUnsignedShort();
-      this.rawX = buffer.method44();
-      this.rawY = buffer.method44();
+      this.rawX = buffer.readShort();
+      this.rawY = buffer.readShort();
       this.rawWidth = buffer.readUnsignedShort();
       this.rawHeight = buffer.readUnsignedShort();
       this.transparency = buffer.readUnsignedByte();
@@ -893,8 +893,8 @@ public class Widget extends Node {
          for (var8 = 0; var8 < 20; ++var8) {
             int var9 = buffer.readUnsignedByte();
             if (var9 == 1) {
-               this.inventoryXOffsets[var8] = buffer.method44();
-               this.inventoryYOffsets[var8] = buffer.method44();
+               this.inventoryXOffsets[var8] = buffer.readShort();
+               this.inventoryYOffsets[var8] = buffer.readShort();
                this.inventorySprites[var8] = buffer.readInt();
             } else {
                this.inventorySprites[var8] = -1;
@@ -987,8 +987,8 @@ public class Widget extends Node {
 
          this.textShadowed = buffer.readUnsignedByte() == 1;
          this.color = buffer.readInt();
-         this.paddingX = buffer.method44();
-         this.paddingY = buffer.method44();
+         this.paddingX = buffer.readShort();
+         this.paddingY = buffer.readShort();
          var4 = buffer.readUnsignedByte();
          if (var4 == 1) {
             this.clickMask |= 1073741824;
@@ -1058,11 +1058,11 @@ public class Widget extends Node {
       this.isIf3 = true;
       this.type = buffer.readUnsignedByte();
       this.contentType = buffer.readUnsignedShort();
-      this.rawX = buffer.method44();
-      this.rawY = buffer.method44();
+      this.rawX = buffer.readShort();
+      this.rawY = buffer.readShort();
       this.rawWidth = buffer.readUnsignedShort();
       if (this.type == 9) {
-         this.rawHeight = buffer.method44();
+         this.rawHeight = buffer.readShort();
       } else {
          this.rawHeight = buffer.readUnsignedShort();
       }
@@ -1103,8 +1103,8 @@ public class Widget extends Node {
             this.modelId = -1;
          }
 
-         this.modelOffsetX = buffer.method44();
-         this.modelOffsetY = buffer.method44();
+         this.modelOffsetX = buffer.readShort();
+         this.modelOffsetY = buffer.readShort();
          this.modelAngleX = buffer.readUnsignedShort();
          this.modelAngleY = buffer.readUnsignedShort();
          this.modelAngleZ = buffer.readUnsignedShort();
@@ -1293,15 +1293,15 @@ public class Widget extends Node {
                }
 
                if (this.outline >= 1) {
-                  var5.method307(1);
+                  var5.outline(1);
                }
 
                if (this.outline >= 2) {
-                  var5.method307(16777215);
+                  var5.outline(16777215);
                }
 
                if (this.spriteShadow != 0) {
-                  var5.method308(this.spriteShadow);
+                  var5.shadow(this.spriteShadow);
                }
 
                widgetSpriteCache.put(var5, var3);

@@ -22,7 +22,8 @@ public class KitDefinition extends DualNode {
    @ObfuscatedGetter(
       intValue = 235389995
    )
-   public static int field457;
+   @Export("KitDefinition_totalCount")
+   public static int KitDefinition_totalCount;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -245,13 +246,13 @@ public class KitDefinition extends DualNode {
    public static String method4866(Buffer var0) {
       String var1;
       try {
-         int var2 = var0.method48();
+         int var2 = var0.readUShortSmart();
          if (var2 > 32767) {
             var2 = 32767;
          }
 
          byte[] var3 = new byte[var2];
-         var0.index += class303.huffman.method128(var0.array, var0.index, var3, 0, var2);
+         var0.index += class303.huffman.decompress(var0.array, var0.index, var3, 0, var2);
          String var4 = InterfaceParent.decodeStringCp1252(var3, 0, var2);
          var1 = var4;
       } catch (Exception var5) {

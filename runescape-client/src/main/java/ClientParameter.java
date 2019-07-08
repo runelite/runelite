@@ -145,10 +145,10 @@ public class ClientParameter {
                var2.host = var1.readStringCp1252NullTerminated();
                var2.activity = var1.readStringCp1252NullTerminated();
                var2.location = var1.readUnsignedByte();
-               var2.population = var1.method44();
+               var2.population = var1.readShort();
             }
 
-            MilliClock.method3400(ItemContainer.worlds, 0, ItemContainer.worlds.length - 1, World.sortOption1, World.sortOption2);
+            MilliClock.sortWorlds(ItemContainer.worlds, 0, ItemContainer.worlds.length - 1, World.sortOption1, World.sortOption2);
             FriendLoginUpdate.field356 = null;
             return true;
          }

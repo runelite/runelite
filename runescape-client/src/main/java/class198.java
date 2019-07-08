@@ -9,6 +9,6 @@ public class class198 {
       garbageValue = "1713547686"
    )
    static String method3745(Widget var0) {
-      return class211.method4107(class1.getWidgetClickMask(var0)) == 0 ? null : (var0.spellActionName != null && var0.spellActionName.trim().length() != 0 ? var0.spellActionName : null);
+      return Calendar.method4107(class1.getWidgetClickMask(var0)) == 0 ? null : (var0.spellActionName != null && var0.spellActionName.trim().length() != 0 ? var0.spellActionName : null);
    }
 }

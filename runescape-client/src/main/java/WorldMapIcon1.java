@@ -136,7 +136,7 @@ public class WorldMapIcon1 extends AbstractWorldMapIcon {
                }
 
                int[] var4 = Client.queuedSoundEffectDelays;
-               var4[var0] += var11.method303();
+               var4[var0] += var11.calculateDelay();
                Client.soundEffects[var0] = var11;
             }
 

@@ -421,7 +421,7 @@ public class DynamicObject extends Entity {
                   var10.packetBuffer.writeByte(var13);
                   var10.packetBuffer.writeByte(var14);
                   TextureProvider.method2777(var10.packetBuffer, var3);
-                  var10.packetBuffer.method41(var10.packetBuffer.index - var11);
+                  var10.packetBuffer.writeLengthByte(var10.packetBuffer.index - var11);
                   Client.packetWriter.method241(var10);
                   return 1;
                } else if (var0 == ScriptOpcodes.CHAT_SENDPRIVATE) {
@@ -433,7 +433,7 @@ public class DynamicObject extends Entity {
                   int var9 = var8.packetBuffer.index;
                   var8.packetBuffer.writeStringCp1252NullTerminated(var3);
                   TextureProvider.method2777(var8.packetBuffer, var7);
-                  var8.packetBuffer.method40(var8.packetBuffer.index - var9);
+                  var8.packetBuffer.writeLengthShort(var8.packetBuffer.index - var9);
                   Client.packetWriter.method241(var8);
                   return 1;
                } else if (var0 != ScriptOpcodes.CHAT_PLAYERNAME) {
@@ -627,7 +627,7 @@ public class DynamicObject extends Entity {
 
          Client.soundEffectCount = 0;
          Client.isCameraLocked = false;
-         WorldMapSection1.cameraX -= var5 << 7;
+         WorldMapSection2.cameraX -= var5 << 7;
          GrandExchangeOfferNameComparator.cameraZ -= var6 << 7;
          MouseHandler.oculusOrbFocalPointX -= var5 << 7;
          ScriptEvent.oculusOrbFocalPointY -= var6 << 7;
