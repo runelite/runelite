@@ -67,7 +67,10 @@ public class DeferredEventBus extends EventBus
 		while (size-- > 0)
 		{
 			Object object = pendingEvents.poll();
-			eventBus.post(object);
+			if (object != null)
+			{
+				eventBus.post(object);
+			}
 		}
 	}
 }
