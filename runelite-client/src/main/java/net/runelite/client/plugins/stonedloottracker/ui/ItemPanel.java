@@ -91,7 +91,7 @@ class ItemPanel extends JPanel
 		}
 
 		JShadowedLabel labelValue = new JShadowedLabel(gpLabel);
-		labelValue.setFont(FontManager.getRunescapeSmallFont());
+		labelValue.setFont(FontManager.getSmallFont(getFont()));
 		colorLabel(labelValue, this.record.getTotal());
 		labelValue.setVerticalAlignment(SwingUtilities.TOP);
 
