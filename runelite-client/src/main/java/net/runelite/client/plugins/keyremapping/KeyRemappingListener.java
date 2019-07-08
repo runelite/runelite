@@ -158,6 +158,11 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 					modified.put(e.getKeyCode(), KeyEvent.VK_F12);
 					e.setKeyCode(KeyEvent.VK_F12);
 				}
+				else if (config.esc().matches(e))
+				{
+					modified.put(e.getKeyCode(), KeyEvent.VK_ESCAPE);
+					e.setKeyCode(KeyEvent.VK_ESCAPE);
+				}
 			}
 
 			switch (e.getKeyCode())
@@ -278,6 +283,10 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 				else if (config.f12().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F12);
+				}
+				else if (config.esc().matches(e))
+				{
+					e.setKeyCode(KeyEvent.VK_ESCAPE);
 				}
 			}
 		}

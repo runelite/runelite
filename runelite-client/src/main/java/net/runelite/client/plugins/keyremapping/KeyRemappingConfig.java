@@ -230,4 +230,15 @@ public interface KeyRemappingConfig extends Config
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_EQUALS, 0);
 	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "esc",
+		name = "ESC",
+		description = "The key which will replace {ESC}."
+	)
+	default ModifierlessKeybind esc()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_ESCAPE, 0);
+	}
 }
