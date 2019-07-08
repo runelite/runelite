@@ -27,7 +27,6 @@ package net.runelite.api;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
