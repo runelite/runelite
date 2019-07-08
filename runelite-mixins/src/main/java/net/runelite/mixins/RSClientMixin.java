@@ -25,6 +25,7 @@
 package net.runelite.mixins;
 
 import java.util.HashSet;
+import java.util.Set;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.EnumDefinition;
@@ -207,7 +208,7 @@ public abstract class RSClientMixin implements RSClient
 	private static boolean hideFriendCastOptions = false;
 
 	@Inject
-	private static HashSet<String> unhiddenCasts = new HashSet<String>();
+	private static Set<String> unhiddenCasts = new HashSet<String>();
 
 	@Inject
 	@Override
@@ -225,7 +226,7 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public void setUnhiddenCasts(HashSet<String> casts)
+	public void setUnhiddenCasts(Set<String> casts)
 	{
 		unhiddenCasts = casts;
 	}
