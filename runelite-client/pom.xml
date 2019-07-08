@@ -284,6 +284,12 @@
 			<artifactId>asm-all</artifactId>
 			<version>6.0_BETA</version>
 		</dependency>
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>3.0.21</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 	<build>
