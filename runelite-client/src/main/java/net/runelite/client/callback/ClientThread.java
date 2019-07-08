@@ -36,7 +36,7 @@ import net.runelite.api.Client;
 @Slf4j
 public class ClientThread
 {
-	private ConcurrentLinkedQueue<BooleanSupplier> invokes = new ConcurrentLinkedQueue<>();
+	private final ConcurrentLinkedQueue<BooleanSupplier> invokes = new ConcurrentLinkedQueue<>();
 
 	@Inject
 	private Client client;
