@@ -8,13 +8,13 @@ import net.runelite.api.coords.WorldPoint;
 
 public class MiscUtils
 {
-	private static int[] abovePointsX = {2944, 3392, 3392, 2944};
-	private static int[] abovePointsY = {3523, 3523, 3971, 3971};
-	private static int[] belowPointsX = {2944, 2944, 3264, 3264};
-	private static int[] belowPointsY = {9918, 10360, 10360, 9918};
+	private static final int[] abovePointsX = {2944, 3392, 3392, 2944};
+	private static final int[] abovePointsY = {3523, 3523, 3971, 3971};
+	private static final int[] belowPointsX = {2944, 2944, 3264, 3264};
+	private static final int[] belowPointsY = {9918, 10360, 10360, 9918};
 
-	private static Polygon abovePoly = new Polygon(abovePointsX, abovePointsY, abovePointsX.length);
-	private static Polygon belowPoly = new Polygon(belowPointsX, belowPointsY, belowPointsX.length);
+	private static final Polygon abovePoly = new Polygon(abovePointsX, abovePointsY, abovePointsX.length);
+	private static final Polygon belowPoly = new Polygon(belowPointsX, belowPointsY, belowPointsX.length);
 
 	//test replacement so private for now
 	private static boolean inWildy(WorldPoint point)

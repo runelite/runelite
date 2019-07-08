@@ -79,10 +79,10 @@ public enum WildernessLocation
 
 	public static class Location
 	{
-		public int x;
-		public int y;
-		public int width;
-		public int height;
+		public final int x;
+		public final int y;
+		public final int width;
+		public final int height;
 
 		Location(int x, int y, int x1, int y1)
 		{
