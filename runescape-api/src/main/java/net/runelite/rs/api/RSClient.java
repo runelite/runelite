@@ -392,6 +392,9 @@ public interface RSClient extends RSGameShell, Client
 	@Import("menuAction")
 	void sendMenuAction(int n2, int n3, int n4, int n5, String string, String string2, int n6, int n7);
 
+	@Import("tempMenuAction")
+	RSMenuAction getTempMenuAction();
+
 	@Import("decodeSprite")
 	void decodeSprite(byte[] data);
 
