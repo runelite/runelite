@@ -26,11 +26,14 @@
  */
 package net.runelite.client.plugins.banlist;
 
+import com.google.common.base.Splitter;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +46,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.TRADING_SCREEN;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
@@ -85,10 +89,10 @@ public class BanListPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private final List<String> wdrScamArrayList = new ArrayList<>();
-	private final List<String> wdrToxicArrayList = new ArrayList<>();
-	private final List<String> runeWatchArrayList = new ArrayList<>();
-	private final List<String> manualBans = new ArrayList<>();
+	private final Set<String> wdrScamSet = new HashSet<>();
+	private final Set<String> wdrToxicSet = new HashSet<>();
+	private final Set<String> runeWatchSet = new HashSet<>();
+	private final Set<String> manualBans = new HashSet<>();
 
 	@Provides
 	BanListConfig getConfig(ConfigManager configManager)
@@ -113,9 +117,9 @@ public class BanListPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		wdrScamArrayList.clear();
-		wdrToxicArrayList.clear();
-		runeWatchArrayList.clear();
+		wdrScamSet.clear();
+		wdrToxicSet.clear();
+		runeWatchSet.clear();
 		manualBans.clear();
 	}
 
@@ -124,11 +128,17 @@ public class BanListPlugin extends Plugin
 	{
 		if (event.getGroup().equals("banlist") && event.getKey().equals("bannedPlayers"))
 		{
-			for (String manual : Text.fromCSV(config.getBannedPlayers()))
+			List<String> bannedPlayers = Splitter
+				.on(",")
+				.trimResults()
+				.omitEmptyStrings()
+				.splitToList(config.getBannedPlayers());
+
+			for (String bannedPlayer : bannedPlayers)
 			{
-				if (!manualBans.contains(manual))
+				if (!manualBans.contains(bannedPlayer))
 				{
-					manualBans.add(Text.standardize(manual));
+					manualBans.add(Text.standardize(bannedPlayer));
 				}
 			}
 		}
@@ -171,12 +181,14 @@ public class BanListPlugin extends Plugin
 	public void onClanMemberJoined(ClanMemberJoined event)
 	{
 		ClanMember member = event.getMember();
-		ListType scamList = checkScamList(Text.standardize(member.getUsername()));
-		ListType toxicList = checkToxicList(Text.standardize(member.getUsername()));
+		String memberUsername = Text.standardize(member.getUsername().toLowerCase());
+
+		ListType scamList = checkScamList(memberUsername);
+		ListType toxicList = checkToxicList(memberUsername);
 
 		if (scamList != null)
 		{
-			sendWarning(Text.standardize(member.getUsername()), scamList);
+			sendWarning(memberUsername, scamList);
 			if (this.highlightInClan)
 			{
 				highlightRedInCC();
@@ -185,7 +197,7 @@ public class BanListPlugin extends Plugin
 
 		if (toxicList != null)
 		{
-			sendWarning(Text.standardize(member.getUsername()), toxicList);
+			sendWarning(memberUsername, toxicList);
 			if (this.highlightInClan)
 			{
 				highlightRedInCC();
@@ -199,12 +211,12 @@ public class BanListPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (this.highlightInTrade && widgetLoaded.getGroupId() == 335)
+		if (this.highlightInTrade && widgetLoaded.getGroupId() == TRADING_SCREEN)
 		{ //if trading window was loaded
 			clientThread.invokeLater(() ->
 			{
 				Widget tradingWith = client.getWidget(335, 31);
-				String name = tradingWith.getText().replaceAll("Trading With: ", "");
+				String name = tradingWith.getText().replaceAll("Trading With: ", "").toLowerCase();
 				if (checkScamList(name) != null)
 				{
 					tradingWith.setText(tradingWith.getText().replaceAll(name, "<col=ff0000>" + name + " (Scammer)" + "</col>"));
@@ -222,17 +234,17 @@ public class BanListPlugin extends Plugin
 	 */
 	private ListType checkScamList(String nameToBeChecked)
 	{
-		if (wdrScamArrayList.size() > 0 && this.enableWDR && wdrScamArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
+		if (wdrScamSet.size() > 0 && this.enableWDR && wdrScamSet.contains(nameToBeChecked))
 		{
 			return ListType.WEDORAIDSSCAM_LIST;
 		}
 
-		if (runeWatchArrayList.size() > 0 && this.enableRuneWatch && runeWatchArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
+		if (runeWatchSet.size() > 0 && this.enableRuneWatch && runeWatchSet.contains(nameToBeChecked))
 		{
 			return ListType.RUNEWATCH_LIST;
 		}
 
-		if (manualBans.size() > 0 && manualBans.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
+		if (manualBans.size() > 0 && manualBans.contains(nameToBeChecked))
 		{
 			return ListType.MANUAL_LIST;
 		}
@@ -243,7 +255,7 @@ public class BanListPlugin extends Plugin
 	private ListType checkToxicList(String nameToBeChecked)
 	{
 
-		if (wdrToxicArrayList.size() > 0 && this.enableWDR && wdrToxicArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
+		if (wdrToxicSet.size() > 0 && this.enableWDR && wdrToxicSet.contains(nameToBeChecked))
 		{
 			return ListType.WEDORAIDSTOXIC_LIST;
 		}
@@ -337,9 +349,9 @@ public class BanListPlugin extends Plugin
 
 				ArrayList<String> wdrList = new ArrayList<>(Arrays.asList(text.split(",")));
 				ArrayList<String> wdrList2 = new ArrayList<>();
-				wdrList.forEach((name) -> wdrList2.add(Text.standardize(name)));
+				wdrList.forEach((name) -> wdrList2.add(Text.standardize(name).toLowerCase()));
 
-				wdrScamArrayList.addAll(wdrList2);
+				wdrScamSet.addAll(wdrList2);
 			}
 		});
 
@@ -367,7 +379,7 @@ public class BanListPlugin extends Plugin
 					{
 						x = x.substring(x.indexOf("title"), x.indexOf('>'));
 						x = x.substring(x.indexOf('=') + 2, x.length() - 1);
-						runeWatchArrayList.add(Text.standardize(x));
+						runeWatchSet.add(Text.standardize(x).toLowerCase());
 					}
 				}
 			}
@@ -394,9 +406,9 @@ public class BanListPlugin extends Plugin
 
 				ArrayList<String> wdrToxicList = new ArrayList<>(Arrays.asList(text.split(",")));
 				ArrayList<String> wdrToxicList2 = new ArrayList<>();
-				wdrToxicList.forEach((name) -> wdrToxicList2.add(Text.standardize(name)));
+				wdrToxicList.forEach((name) -> wdrToxicList2.add(Text.standardize(name).toLowerCase()));
 
-				wdrToxicArrayList.addAll(wdrToxicList2);
+				wdrToxicSet.addAll(wdrToxicList2);
 			}
 		});
 	}
@@ -411,8 +423,8 @@ public class BanListPlugin extends Plugin
 			Widget widget = client.getWidget(WidgetInfo.CLAN_CHAT_LIST);
 			for (Widget widgetChild : widget.getDynamicChildren())
 			{
-				ListType scamList = checkScamList(widgetChild.getText());
-				ListType toxicList = checkToxicList(widgetChild.getText());
+				ListType scamList = checkScamList(widgetChild.getText().toLowerCase());
+				ListType toxicList = checkToxicList(widgetChild.getText().toLowerCase());
 
 				if (scamList != null)
 				{

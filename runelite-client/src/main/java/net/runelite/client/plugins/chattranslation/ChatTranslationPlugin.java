@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -15,6 +15,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.MessageNode;
+import static net.runelite.api.ScriptID.CHATBOX_TEXT;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -50,7 +51,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Kick");
 
-	private final List<String> playerNames = new ArrayList<>();
+	private final Set<String> playerNames = new HashSet<>();
 
 	@Inject
 	private Client client;
@@ -258,7 +259,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 				}
 				catch (Exception e)
 				{
-					log.warn(e.toString());
+					log.warn("Translation error", e);
 				}
 				return;
 			}
@@ -274,7 +275,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translation);
 
 					clientThread.invoke(() ->
-						client.runScript(96, 0, translation));
+						client.runScript(CHATBOX_TEXT, 0, translation));
 				}
 				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 			}

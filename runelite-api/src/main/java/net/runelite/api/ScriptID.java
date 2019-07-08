@@ -205,4 +205,9 @@ public final class ScriptID
 	 * Send a public message
 	 */
 	public static final int PUBLICMSG = 13337;
+
+	/**
+	 * TExt typed in the chatbox
+	 */
+	public static final int CHATBOX_TEXT = 96;
 }

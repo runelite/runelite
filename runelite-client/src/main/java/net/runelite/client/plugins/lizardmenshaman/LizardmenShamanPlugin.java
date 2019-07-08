@@ -33,6 +33,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
+import static net.runelite.api.AnimationID.LIZARDMAN_SHAMAN_SPAWN;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -117,7 +118,7 @@ public class LizardmenShamanPlugin extends Plugin
 			return;
 		}
 
-		if (actor.getName().equals(SHAMAN) && actor.getAnimation() == 7157 && this.showTimer)
+		if (actor.getName().equals(SHAMAN) && actor.getAnimation() == LIZARDMAN_SHAMAN_SPAWN && this.showTimer)
 		{
 			spawns.put(event.getActor().getLocalLocation(), new LizardmenShamanSpawn(8.4, null));
 		}

@@ -818,7 +818,7 @@ public class ChatCommandsPlugin extends Plugin
 			}
 			catch (IOException e)
 			{
-				log.error(e.toString());
+				log.error("Error looking up prices", e);
 			}
 
 			int itemId = item.getId();
