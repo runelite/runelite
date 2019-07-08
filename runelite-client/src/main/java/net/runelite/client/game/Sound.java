@@ -23,7 +23,7 @@ public enum Sound
 	private String filePath;
 	private int id;
 
-	private Sound(int id, String filePath)
+	Sound(int id, String filePath)
 	{
 		this.id = id;
 		this.filePath = filePath;
