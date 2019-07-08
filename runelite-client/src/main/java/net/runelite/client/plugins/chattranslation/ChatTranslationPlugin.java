@@ -15,7 +15,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.MessageNode;
-import static net.runelite.api.ScriptID.CHATBOX_TEXT;
+import static net.runelite.api.ScriptID.CHATBOX_INPUT;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -275,7 +275,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translation);
 
 					clientThread.invoke(() ->
-						client.runScript(CHATBOX_TEXT, 0, translation));
+						client.runScript(CHATBOX_INPUT, 0, translation));
 				}
 				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 			}

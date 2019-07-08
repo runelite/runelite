@@ -28,14 +28,14 @@ package net.runelite.client.plugins.runeliteplus;
 
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
-
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import static net.runelite.api.ScriptID.BANK_PIN_OP;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLitePlusConfig;
 import net.runelite.client.discord.DiscordService;
@@ -209,18 +209,11 @@ public class RuneLitePlusPlugin extends Plugin
 
 	private void handleKey(char c)
 	{
-		if (client.getWidget(WidgetID.BANK_PIN_GROUP_ID, 0) == null
-				|| !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Bank of Gielinor")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Chambers of Xeric")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Grand Exchange")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Housing Security System")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Dominic's Coffer")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Dominic's Reward Shop")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Seed Vault")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Leprechaun Protection")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Access Bond Pouch")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Miscellania Security System")
-				&& !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("STASH Security"))
+		if (client.getWidget(WidgetID.BANK_PIN_GROUP_ID, BANK_PIN_INSTRUCTION_TEXT.getChildId()) == null
+				|| !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("First click the FIRST digit.")
+				&& !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("Now click the SECOND digit.")
+				&& !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("Time for the THIRD digit.")
+				&& !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("Finally, the FOURTH digit."))
 
 		{
 			entered = 0;
@@ -242,7 +235,7 @@ public class RuneLitePlusPlugin extends Plugin
 
 		// Script 685 will call 653, which in turn will set expectInput to true
 		expectInput = false;
-		client.runScript(685, num, enterIdx, entered, 13959181, 13959183, 13959184, 13959186, 13959188, 13959190, 13959192, 13959194, 13959196, 13959198, 13959200, 13959202, 13959171, 13959172, 13959173, 13959174, 13959178);
+		client.runScript(BANK_PIN_OP, num, enterIdx, entered, BANK_PIN_EXIT_BUTTON.getId(), BANK_PIN_FORGOT_BUTTON.getId(), BANK_PIN_1.getId(), BANK_PIN_2.getId(), BANK_PIN_3.getId(), BANK_PIN_4.getId(), BANK_PIN_5.getId(), BANK_PIN_6.getId(), BANK_PIN_7.getId(), BANK_PIN_8.getId(), BANK_PIN_9.getId(), BANK_PIN_0.getId(), BANK_PIN_FIRST_ENTERED.getId(), BANK_PIN_SECOND_ENTERED.getId(), BANK_PIN_THIRD_ENTERED.getId(), BANK_PIN_FOURTH_ENTERED.getId(), BANK_PIN_INSTRUCTION_TEXT.getId());
 
 		if (oldEnterIdx == 0)
 		{
