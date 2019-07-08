@@ -169,6 +169,7 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 	private List<String> ignoredItems = new ArrayList<>();
+	private List<String> ignoredNPCs = new ArrayList<>();
 	private Multiset<Integer> inventorySnapshot;
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
@@ -269,6 +270,11 @@ public class LootTrackerPlugin extends Plugin
 				ignoredItems = Text.fromCSV(this.getIgnoredItems);
 				SwingUtilities.invokeLater(panel::updateIgnoredRecords);
 			}
+			if (event.getKey().equals("ignoredNPCs"))
+			{
+				ignoredNPCs = Text.fromCSV(config.getIgnoredNPCs());
+				SwingUtilities.invokeLater(panel::updateIgnoredRecords);
+			}
 			if (event.getKey().equals("sortType"))
 			{
 				panel.setLootRecordSortType(this.sortType);
@@ -281,9 +287,9 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		ignoredItems = Text.fromCSV(config.getIgnoredItems());
+		ignoredNPCs = Text.fromCSV(config.getIgnoredNPCs());
 		updateConfig();
-
-		ignoredItems = Text.fromCSV(this.getIgnoredItems);
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
@@ -315,7 +321,6 @@ public class LootTrackerPlugin extends Plugin
 
 				executor.submit(() ->
 				{
-
 					if (this.syncPanel && lootTrackerClient != null)
 					{
 						if (accountSession != null)
@@ -406,7 +411,7 @@ public class LootTrackerPlugin extends Plugin
 		LootRecord lootRecord = new LootRecord(name, localUsername, LootRecordType.NPC,
 			toGameItems(items), Instant.now());
 
-		if (lootTrackerClient != null && this.saveLoot)
+		if (config.saveLoot() && lootTrackerClient != null)
 		{
 			lootTrackerClient.submit(lootRecord);
 		}
@@ -430,7 +435,8 @@ public class LootTrackerPlugin extends Plugin
 	{
 		if (this.sendLootValueMessages)
 		{
-			if (WorldType.isDeadmanWorld(client.getWorldType()) || WorldType.isHighRiskWorld(client.getWorldType()) || WorldType.isPvpWorld(client.getWorldType()) || client.getVar(Varbits.IN_WILDERNESS) == 1)
+			if (WorldType.isDeadmanWorld(client.getWorldType()) || WorldType.isHighRiskWorld(client.getWorldType()) ||
+					WorldType.isPvpWorld(client.getWorldType()) || client.getVar(Varbits.IN_WILDERNESS) == 1)
 			{
 				final String totalValue = StackFormatter.quantityToRSStackSize(playerLootReceived.getItems().stream()
 					.mapToInt(itemStack -> itemManager.getItemPrice(itemStack.getId()) * itemStack.getQuantity()).sum());
@@ -453,7 +459,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			lootTrackerClient.submit(lootRecord);
 		}
-		if (this.localPersistence && lootTrackerClient == null)
+		if (config.localPersistence())
 		{
 			saveLocalLootRecord(lootRecord);
 		}
@@ -537,13 +543,18 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		final LootTrackerItem[] entries = buildEntries(stack(items));
+
 		SwingUtilities.invokeLater(() -> panel.add(eventType, client.getLocalPlayer().getName(), -1, entries));
+		LootRecord lootRecord = new LootRecord(eventType, client.getLocalPlayer().getName(), LootRecordType.EVENT,
+			toGameItems(items), Instant.now());
 
 		if (lootTrackerClient != null && this.saveLoot)
 		{
-			LootRecord lootRecord = new LootRecord(eventType, client.getLocalPlayer().getName(), LootRecordType.EVENT,
-				toGameItems(items), Instant.now());
 			lootTrackerClient.submit(lootRecord);
+		}
+		if (config.localPersistence())
+		{
+			saveLocalLootRecord(lootRecord);
 		}
 	}
 
@@ -698,6 +709,20 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	public void deleteLocalRecords()
+	{
+		try
+		{
+			lootRecords.clear();
+			Files.deleteIfExists(LOOT_RECORDS_FILE.toPath());
+		}
+		catch (IOException e)
+		{
+			log.debug("Error deleting local loot records file.");
+			log.debug(Arrays.toString(e.getStackTrace()));
+		}
+	}
+
 	/**
 	 * Takes a snapshot of the local player's inventory and equipment right before respawn.
 	 */
@@ -748,11 +773,16 @@ public class LootTrackerPlugin extends Plugin
 			final LootTrackerItem[] entries = buildEntries(stack(items));
 			SwingUtilities.invokeLater(() -> panel.add(chestType, client.getLocalPlayer().getName(), -1, entries));
 
-			if (lootTrackerClient != null && this.saveLoot)
+			LootRecord lootRecord = new LootRecord(chestType, client.getLocalPlayer().getName(),
+				LootRecordType.EVENT, toGameItems(items), Instant.now());
+			if (lootTrackerClient != null && config.saveLoot())
 			{
-				LootRecord lootRecord = new LootRecord(chestType, client.getLocalPlayer().getName(),
-					LootRecordType.EVENT, toGameItems(items), Instant.now());
 				lootTrackerClient.submit(lootRecord);
+			}
+
+			if (config.localPersistence())
+			{
+				saveLocalLootRecord(lootRecord);
 			}
 
 			inventorySnapshot = null;
@@ -780,6 +810,37 @@ public class LootTrackerPlugin extends Plugin
 	boolean isIgnored(String name)
 	{
 		return ignoredItems.contains(name);
+	}
+
+	/**
+	 * Toggles the hidden status for a particular record
+	 * @param name - The String name of the record to toggle the hidden status of
+	 * @param ignore - true to ignore, false to remove
+	 */
+	public void toggleNPC(String name, boolean ignore)
+	{
+		final Set<String> ignoredNPCSet = new HashSet<>(ignoredNPCs);
+		if (ignore)
+		{
+			ignoredNPCSet.add(name);
+		}
+		else
+		{
+			ignoredNPCSet.remove(name);
+		}
+
+		config.setIgnoredNPCs(Text.toCSV(ignoredNPCSet));
+		panel.rebuild();
+	}
+
+	/**
+	 * Checks to see if a record name is in the list of ignored NPCs
+	 * @param name - The String of the name to check
+	 * @return - true if it is being ignored, false otherwise
+	 */
+	public boolean isIgnoredNPC(String name)
+	{
+		return ignoredNPCs.contains(name);
 	}
 
 	@VisibleForTesting
@@ -824,7 +885,7 @@ public class LootTrackerPlugin extends Plugin
 			).toArray(LootTrackerItem[]::new);
 
 			trackerRecords.add(new LootTrackerRecord(record.getEventId(), record.getUsername(),
-				"", drops, -1));
+				"", drops, record.getTime()));
 		}
 
 		return trackerRecords;

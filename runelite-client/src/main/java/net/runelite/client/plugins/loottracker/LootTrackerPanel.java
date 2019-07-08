@@ -32,14 +32,18 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Vector;
 import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -77,6 +81,10 @@ class LootTrackerPanel extends PluginPanel
 	private static final ImageIcon VISIBLE_ICON_HOVER;
 	private static final ImageIcon INVISIBLE_ICON;
 	private static final ImageIcon INVISIBLE_ICON_HOVER;
+	private static final ImageIcon RESET_ICON;
+	private static final ImageIcon RESET_ICON_FADED;
+	private static final ImageIcon RESET_ICON_HOVER;
+
 
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -100,6 +108,8 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel viewHiddenBtn = new JLabel();
 	private final JLabel singleLootBtn = new JLabel();
 	private final JLabel groupedLootBtn = new JLabel();
+	private final JLabel resetIcon = new JLabel();
+	private JComboBox dateFilterComboBox = new JComboBox<>(new Vector<LootRecordDateFilter>(Arrays.asList(LootRecordDateFilter.values())));
 
 	// Log collection
 	private final List<LootTrackerRecord> records = new ArrayList<>();
@@ -110,6 +120,7 @@ class LootTrackerPanel extends PluginPanel
 	private final LootTrackerConfig config;
 
 	private boolean groupLoot;
+	private LootRecordDateFilter dateFilter = LootRecordDateFilter.ALL;
 	private boolean hideIgnoredItems;
 	private String currentView;
 
@@ -120,10 +131,16 @@ class LootTrackerPanel extends PluginPanel
 		final BufferedImage backArrowImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "back_icon.png");
 		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "visible_icon.png");
 		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "invisible_icon.png");
+		final BufferedImage resetImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "reset.png");
 
 		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
 		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -180));
 		SINGLE_LOOT_VIEW_HOVER = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -220));
+
+		RESET_ICON = new ImageIcon(resetImg);
+		RESET_ICON_FADED = new ImageIcon(ImageUtil.alphaOffset(resetImg, -180));
+		RESET_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(resetImg, -220));
+
 
 		GROUPED_LOOT_VIEW = new ImageIcon(groupedLootImg);
 		GROUPED_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(groupedLootImg, -180));
@@ -164,7 +181,7 @@ class LootTrackerPanel extends PluginPanel
 		actionsContainer.setBorder(new EmptyBorder(5, 5, 5, 10));
 		actionsContainer.setVisible(false);
 
-		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
+		final JPanel viewControls = new JPanel(new GridLayout(1, 5, 5, 0));
 		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		singleLootBtn.setIcon(SINGLE_LOOT_VIEW);
@@ -236,6 +253,43 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
+		resetIcon.setIcon(RESET_ICON);
+		resetIcon.setToolTipText("Resets all locally saved data (cannot be undone)");
+		resetIcon.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				resetRecords();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				resetIcon.setIcon(RESET_ICON_HOVER);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				resetIcon.setIcon(records.isEmpty() ? RESET_ICON_FADED : RESET_ICON);
+			}
+		});
+
+		dateFilterComboBox.setSelectedItem(LootRecordDateFilter.ALL);
+		dateFilterComboBox.setToolTipText("Filter the displayed loot records by date");
+		dateFilterComboBox.setMaximumSize(new Dimension(15, 0));
+		dateFilterComboBox.setMaximumRowCount(3);
+		dateFilterComboBox.addItemListener(e ->
+		{
+			final LootRecordDateFilter dateFilterSelected = (LootRecordDateFilter) e.getItem();
+			dateFilter = dateFilterSelected;
+			rebuild();
+		}
+		);
+
+		//viewControls.add(dateFilterComboBox);
+		viewControls.add(resetIcon);
 		viewControls.add(groupedLootBtn);
 		viewControls.add(singleLootBtn);
 		viewControls.add(viewHiddenBtn);
@@ -276,6 +330,7 @@ class LootTrackerPanel extends PluginPanel
 		leftTitleContainer.add(backBtn, BorderLayout.WEST);
 		leftTitleContainer.add(detailsTitle, BorderLayout.CENTER);
 
+		actionsContainer.add(dateFilterComboBox);
 		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
 		actionsContainer.add(viewControls, BorderLayout.EAST);
 
@@ -355,7 +410,7 @@ class LootTrackerPanel extends PluginPanel
 	void add(final String eventName, final String localUsername, final int actorLevel, LootTrackerItem[] items)
 	{
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerRecord record = new LootTrackerRecord( eventName, localUsername, subTitle, items, System.currentTimeMillis());
+		final LootTrackerRecord record = new LootTrackerRecord( eventName, localUsername, subTitle, items, Instant.now());
 		records.add(record);
 		LootTrackerBox box = buildBox(record);
 		if (box != null)
@@ -400,6 +455,21 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	/**
+	 * Clears all loaded records. This will also attempt to delete the local storage file
+	 */
+	private void resetRecords()
+	{
+		records.clear();
+		boxes.clear();
+		logsContainer.removeAll();
+		logsContainer.repaint();
+		if (config.localPersistence())
+		{
+			plugin.deleteLocalRecords();
+		}
+	}
+
+	/**
 	 * After an item changed it's ignored state, iterate all the records and make
 	 * sure all items of the same name also get updated
 	 */
@@ -407,6 +477,7 @@ class LootTrackerPanel extends PluginPanel
 	{
 		for (LootTrackerRecord r : records)
 		{
+			if (plugin.isIgnoredNPC(r.getTitle()))
 			for (LootTrackerItem item : r.getItems())
 			{
 				if (plugin.isIgnored(item.getName()) != item.isIgnored())
@@ -436,6 +507,15 @@ class LootTrackerPanel extends PluginPanel
 		for (int i = start; i < records.size(); i++)
 		{
 
+			// Check to see if we should even show this record
+			if (this.hideIgnoredItems)
+			{
+				if (this.plugin.isIgnoredNPC(records.get(i).getTitle()))
+				{
+					continue;
+				}
+			}
+
 			if (this.plugin.client.getGameState().equals(GameState.LOGGED_IN))
 			{
 				if (!(this.plugin.client.getLocalPlayer().getName().equals(records.get(i).getLocalUsername())))
@@ -443,7 +523,15 @@ class LootTrackerPanel extends PluginPanel
 					continue;
 				}
 			}
-			buildBox(records.get(i));
+			if (this.dateFilter.equals(LootRecordDateFilter.ALL))
+			{
+				buildBox(records.get(i));
+				continue;
+			}
+			if (Instant.now().toEpochMilli() - records.get(i).getTimestamp().toEpochMilli() <= this.dateFilter.getDuration().toMillis())
+			{
+				buildBox(records.get(i));
+			}
 
 		}
 		boxes.forEach(LootTrackerBox::rebuild);
@@ -476,6 +564,16 @@ class LootTrackerPanel extends PluginPanel
 			}
 		}
 
+		// Check to see if we should even show this record
+		if (this.hideIgnoredItems)
+		{
+			if (this.plugin.isIgnoredNPC(record.getTitle()))
+			{
+				return null;
+			}
+		}
+
+
 		// Group all similar loot together
 		if (groupLoot)
 		{
@@ -495,14 +593,34 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(),  record.getSubTitle(),
-			hideIgnoredItems, plugin::toggleItem);
+		final LootTrackerBox box = new LootTrackerBox(record.getTimestamp().toEpochMilli(), itemManager, record.getTitle(),  record.getSubTitle(),
+			hideIgnoredItems, config.displayDate(), plugin::toggleItem);
 		box.combine(record);
 
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		box.setComponentPopupMenu(popupMenu);
+
+		// Create Hide Menu item
+
+		final JMenuItem hide;
+		if (this.hideIgnoredItems)
+		{
+			hide = new JMenuItem("Hide " + box.getId());
+		}
+		else
+		{
+			hide = new JMenuItem("Unhide " + box.getId());
+		}
+
+		hide.addActionListener(e ->
+		{
+			this.plugin.toggleNPC(box.getId(), this.hideIgnoredItems);
+			rebuild();
+		});
+
+		popupMenu.add(hide);
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
@@ -563,7 +681,14 @@ class LootTrackerPanel extends PluginPanel
 			{
 				if (!record.getLocalUsername().equals(plugin.client.getLocalPlayer().getName()))
 				{
-
+					continue;
+				}
+			}
+			if (!dateFilter.equals(LootRecordDateFilter.ALL))
+			{
+				if (Instant.now().toEpochMilli() - record.getTimestamp().toEpochMilli()
+					> this.dateFilter.getDuration().toMillis())
+				{
 					continue;
 				}
 			}
