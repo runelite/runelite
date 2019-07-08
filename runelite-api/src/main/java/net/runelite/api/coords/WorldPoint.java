@@ -370,16 +370,12 @@ public class WorldPoint
 	 */
 	public static boolean isInZone(WorldPoint lowerBound, WorldPoint upperBound, WorldPoint userLocation)
 	{
-		if (userLocation.getX() < lowerBound.getX()
-				|| userLocation.getX() > upperBound.getX()
-				|| userLocation.getY() < lowerBound.getY()
-				|| userLocation.getY() > upperBound.getY()
-				|| userLocation.getPlane() < lowerBound.getPlane()
-				|| userLocation.getPlane() > upperBound.getPlane())
-		{
-			return false;
-		}
-		return true;
+		return userLocation.getX() >= lowerBound.getX()
+			&& userLocation.getX() <= upperBound.getX()
+			&& userLocation.getY() >= lowerBound.getY()
+			&& userLocation.getY() <= upperBound.getY()
+			&& userLocation.getPlane() >= lowerBound.getPlane()
+			&& userLocation.getPlane() <= upperBound.getPlane();
 	}
 
 	/**

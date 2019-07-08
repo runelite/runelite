@@ -427,11 +427,8 @@ public class WorldArea
 			}
 			if (height == 1)
 			{
-				if ((collisionDataFlags[checkX - dx][checkY] & yFlags) != 0 &&
-					extraCondition.test(WorldPoint.fromScene(client, startX, checkY, client.getPlane())))
-				{
-					return false;
-				}
+				return (collisionDataFlags[checkX - dx][checkY] & yFlags) == 0 ||
+					!extraCondition.test(WorldPoint.fromScene(client, startX, checkY, client.getPlane()));
 			}
 		}
 
