@@ -667,6 +667,7 @@ public class WidgetID
 
 	static class TheatreOfBlood
 	{
+		static final int RAIDING_PARTY = 9;
 		static final int ORB_BOX = 10;
 		static final int BOSS_HEALTH_BAR = 35;
 	}

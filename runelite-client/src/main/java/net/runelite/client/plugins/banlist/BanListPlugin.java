@@ -41,8 +41,10 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ClanMemberJoined;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -77,34 +79,30 @@ import okhttp3.Response;
 @Slf4j
 public class BanListPlugin extends Plugin
 {
-	@Inject
-	private Client client;
-
-	@Inject
-	private ClientThread clientThread;
-
-	@Inject
-	private BanListConfig config;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
-
 	private final Set<String> wdrScamSet = new HashSet<>();
 	private final Set<String> wdrToxicSet = new HashSet<>();
 	private final Set<String> runeWatchSet = new HashSet<>();
 	private final Set<String> manualBans = new HashSet<>();
+	@Inject
+	private Client client;
+	@Inject
+	private ClientThread clientThread;
+	@Inject
+	private BanListConfig config;
+	@Inject
+	private ChatMessageManager chatMessageManager;
+	private String tobNames = "";
+	private boolean enableWDRScam;
+	private boolean enableWDRToxic;
+	private boolean enableRuneWatch;
+	private boolean highlightInClan;
+	private boolean highlightInTrade;
 
 	@Provides
 	BanListConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(BanListConfig.class);
 	}
-
-	// save config values
-	private boolean enableWDR;
-	private boolean enableRuneWatch;
-	private boolean highlightInClan;
-	private boolean highlightInTrade;
 
 	@Override
 	protected void startUp() throws Exception
@@ -151,7 +149,8 @@ public class BanListPlugin extends Plugin
 
 	private void updateConfig()
 	{
-		this.enableWDR = config.enableWDR();
+		this.enableWDRScam = config.enableWDRScam();
+		this.enableWDRToxic = config.enableWDRToxic();
 		this.enableRuneWatch = config.enableRuneWatch();
 		this.highlightInClan = config.highlightInClan();
 		this.highlightInTrade = config.highlightInTrade();
@@ -234,12 +233,63 @@ public class BanListPlugin extends Plugin
 		}
 	}
 
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+
+		if (client.getWidget(WidgetInfo.THEATRE_OF_BLOOD_RAIDING_PARTY) == null)
+		{
+			return;
+		}
+
+		Widget raidingParty = client.getWidget(WidgetInfo.THEATRE_OF_BLOOD_RAIDING_PARTY);
+		String allNames = raidingParty.getText();
+
+		if (allNames.equalsIgnoreCase(tobNames))
+		{
+			return;
+		}
+
+		tobNames = allNames;
+
+		String[] split = allNames.split("<br>");
+
+		for (int i = 0; i < 5; i++)
+		{
+			String name = split[i];
+			if (!name.equalsIgnoreCase("-"))
+			{
+				ListType scamList = checkScamList(Text.standardize(name));
+
+				if (scamList != null)
+				{
+					sendWarning(name, scamList);
+				}
+
+				ListType toxicList = checkToxicList(Text.standardize(name));
+
+				if (toxicList != null)
+				{
+					sendWarning(name, toxicList);
+				}
+			}
+		}
+	}
+
+
+	boolean inTobParty()
+	{
+		return client.getVar(Varbits.THEATRE_OF_BLOOD) == 1;
+	}
+
+
 	/**
 	 * Compares player name to everything in the ban lists
 	 */
 	private ListType checkScamList(String nameToBeChecked)
 	{
-		if (wdrScamSet.size() > 0 && this.enableWDR && wdrScamSet.contains(nameToBeChecked))
+		if (wdrScamSet.size() > 0 && this.enableWDRScam && wdrScamSet.contains(nameToBeChecked))
 		{
 			return ListType.WEDORAIDSSCAM_LIST;
 		}
@@ -260,7 +310,7 @@ public class BanListPlugin extends Plugin
 	private ListType checkToxicList(String nameToBeChecked)
 	{
 
-		if (wdrToxicSet.size() > 0 && this.enableWDR && wdrToxicSet.contains(nameToBeChecked))
+		if (wdrToxicSet.size() > 0 && this.enableWDRToxic && wdrToxicSet.contains(nameToBeChecked))
 		{
 			return ListType.WEDORAIDSTOXIC_LIST;
 		}
@@ -304,7 +354,7 @@ public class BanListPlugin extends Plugin
 			case RUNEWATCH_LIST:
 				final String rw_message = new ChatMessageBuilder()
 					.append(ChatColorType.HIGHLIGHT)
-					.append("Warning! " + playerName + " is on the Runewatch\'s scammer list!")
+					.append("Warning! " + playerName + " is on the Runewatch\'s potential scammer list!")
 					.build();
 
 				chatMessageManager.queue(
