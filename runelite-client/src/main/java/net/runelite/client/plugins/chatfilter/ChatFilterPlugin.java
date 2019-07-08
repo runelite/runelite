@@ -97,12 +97,14 @@ public class ChatFilterPlugin extends Plugin
 	{
 		updateConfig();
 		updateFilteredPatterns();
+		client.refreshChat();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		filteredPatterns.clear();
+		client.refreshChat();
 	}
 
 	@Subscribe
@@ -255,6 +257,9 @@ public class ChatFilterPlugin extends Plugin
 
 		updateConfig();
 		updateFilteredPatterns();
+
+		//Refresh chat after config change to reflect current rules
+		client.refreshChat();
 	}
 
 	private void updateConfig()
