@@ -110,7 +110,12 @@ public class BanListPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		manualBans.addAll(Text.fromCSV(config.getBannedPlayers()));
+		List<String> bannedPlayers = Splitter
+			.on(",")
+			.trimResults()
+			.omitEmptyStrings()
+			.splitToList(config.getBannedPlayers());
+		manualBans.addAll(bannedPlayers);
 		fetchFromWebsites();
 	}
 
