@@ -49,7 +49,7 @@ class ItemPanel extends JPanel
 		JLabel name = new JLabel(item.getName());
 
 		JLabel location = new JLabel(StringUtils.capitalize(kitType.toString().toLowerCase()));
-		location.setFont(FontManager.getRunescapeSmallFont());
+		location.setFont(FontManager.getSmallFont(getFont()));
 
 		JLabel imageLabel = new JLabel();
 		icon.addTo(imageLabel);

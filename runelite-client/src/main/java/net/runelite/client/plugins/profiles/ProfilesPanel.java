@@ -77,8 +77,8 @@ class ProfilesPanel extends PluginPanel
 	private static final String ACCOUNT_LABEL = "Account Label";
 	private static final String PASSWORD_LABEL = "Account Password";
 	private static final String HELP = "To add and load accounts, first enter a password into the Encryption Password " +
-		"field then press Load Accounts. You can now add as many accounts as you would like. The next time you restart" +
-		"Runelite, enter your encryption password and click load accounts to see the accounts you entered";
+		"field then press Load Accounts. You can now add as many accounts as you would like. The next time you restart " +
+		"RunelitePlus, enter your encryption password and click load accounts to see the accounts you entered";
 	private static final Dimension PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 20, 30);
 	private static final Dimension HELP_PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 20, 130);
 
@@ -116,7 +116,7 @@ class ProfilesPanel extends PluginPanel
 		JPanel helpPanel = new JPanel(new BorderLayout());
 		helpPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		JLabel helpLabel = new JLabel("<html> <p>" + HELP + "</p></html>");
-		helpLabel.setFont(FontManager.getRunescapeSmallFont());
+		helpLabel.setFont(FontManager.getSmallFont(getFont()));
 		helpPanel.setPreferredSize(HELP_PREFERRED_SIZE);
 		// helpPanel.setSize(MINIMUM_SIZE);
 		helpPanel.add(helpLabel, BorderLayout.NORTH);
