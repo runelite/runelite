@@ -4,11 +4,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Random;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bp")
+@Implements("LoginScreenAnimation")
 public class LoginScreenAnimation {
    @ObfuscatedName("m")
    @ObfuscatedSignature(

@@ -295,7 +295,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                      }
 
                      if (var10.contentType == 1339) {
-                        class22.method296(var10, var12, var13, var11);
+                        WorldMapRectangle.method296(var10, var12, var13, var11);
                         Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
                         continue;
                      }
@@ -370,7 +370,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                        if (var36 != null) {
                                           var36.drawAt2(var21, var26);
                                        } else if (Widget.field957) {
-                                          class22.method295(var10);
+                                          WorldMapRectangle.method295(var10);
                                        }
                                     }
                                  } else {
@@ -418,7 +418,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
 
                                                    var47.scrollY -= var45;
                                                    Client.field206 += var45;
-                                                   class22.method295(var47);
+                                                   WorldMapRectangle.method295(var47);
                                                 }
 
                                                 if (var24 + var26 + 32 > Rasterizer2D.Rasterizer2D_yClipEnd && var47.scrollY < var47.scrollHeight - var47.height) {
@@ -433,7 +433,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
 
                                                    var47.scrollY += var45;
                                                    Client.field206 -= var45;
-                                                   class22.method295(var47);
+                                                   WorldMapRectangle.method295(var47);
                                                 }
                                              }
                                           } else if (var10 == BoundaryObject.field40 && var22 == Client.field204) {
@@ -442,7 +442,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                              var42.drawAt2(var21, var26);
                                           }
                                        } else {
-                                          class22.method295(var10);
+                                          WorldMapRectangle.method295(var10);
                                        }
                                     }
                                  }
@@ -466,7 +466,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                            if (var10.fill) {
                               switch(var10.rectangleMode.id) {
                               case 1:
-                                 Rasterizer2D.drawGradient(var12, var13, var10.width, var10.height, var10.color, var10.color2);
+                                 Rasterizer2D.Rasterizer2D_drawGradient(var12, var13, var10.width, var10.height, var10.color, var10.color2);
                                  break;
                               case 2:
                                  Rasterizer2D.drawGradientAlpha(var12, var13, var10.width, var10.height, var10.color, var10.color2, 255 - (var10.transparency & 255), 255 - (var10.field960 & 255));
@@ -489,7 +489,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                               var27 = var10.getFont();
                               if (var27 == null) {
                                  if (Widget.field957) {
-                                    class22.method295(var10);
+                                    WorldMapRectangle.method295(var10);
                                  }
                               } else {
                                  String var38 = var10.text;
@@ -539,7 +539,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                  if (var37 != null) {
                                     var37.drawAt2(var12, var13);
                                  } else if (Widget.field957) {
-                                    class22.method295(var10);
+                                    WorldMapRectangle.method295(var10);
                                  }
                               } else {
                                  if (var10.itemId != -1) {
@@ -550,7 +550,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
 
                                  if (var37 == null) {
                                     if (Widget.field957) {
-                                       class22.method295(var10);
+                                       WorldMapRectangle.method295(var10);
                                     }
                                  } else {
                                     var19 = var37.width;
@@ -608,7 +608,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                           var43.calculateBoundsCylinder();
                                           var21 = var43.height / 2;
                                        } else {
-                                          class22.method295(var10);
+                                          WorldMapRectangle.method295(var10);
                                        }
                                     }
                                  } else if (var10.modelType == 5) {
@@ -620,13 +620,13 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                  } else if (var19 == -1) {
                                     var43 = var10.getModel((SequenceDefinition)null, -1, var40, Canvas.localPlayer.appearance);
                                     if (var43 == null && Widget.field957) {
-                                       class22.method295(var10);
+                                       WorldMapRectangle.method295(var10);
                                     }
                                  } else {
                                     SequenceDefinition var44 = WorldMapAreaData.getSequenceDefinition(var19);
                                     var43 = var10.getModel(var44, var10.modelFrame, var40, Canvas.localPlayer.appearance);
                                     if (var43 == null && Widget.field957) {
-                                       class22.method295(var10);
+                                       WorldMapRectangle.method295(var10);
                                     }
                                  }
 
@@ -652,7 +652,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                                     var27 = var10.getFont();
                                     if (var27 == null) {
                                        if (Widget.field957) {
-                                          class22.method295(var10);
+                                          WorldMapRectangle.method295(var10);
                                        }
                                        continue;
                                     }

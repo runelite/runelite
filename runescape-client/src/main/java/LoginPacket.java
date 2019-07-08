@@ -77,7 +77,7 @@ public class LoginPacket implements ClientPacketMarker {
          var4 = "_wip";
       }
 
-      File var5 = new File(WorldMapSection1.userHomeDirectory, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
+      File var5 = new File(WorldMapSection2.userHomeDirectory, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
       AccessFile var6;
       if (!var2 && var5.exists()) {
          try {

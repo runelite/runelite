@@ -114,7 +114,8 @@ public final class Occluder {
       signature = "(IB)Lia;",
       garbageValue = "16"
    )
-   public static VarbitDefinition method3255(int var0) {
+   @Export("getVarbitDefinition")
+   public static VarbitDefinition getVarbitDefinition(int var0) {
       VarbitDefinition var1 = (VarbitDefinition)VarbitDefinition.VarbitDefinition_cached.get((long)var0);
       if (var1 != null) {
          return var1;

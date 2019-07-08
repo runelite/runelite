@@ -919,7 +919,7 @@ public abstract class Actor extends Entity {
                      var13 = class204.getWidgetChild(argument2, argument1);
                      if (var13 != null) {
                         Player.method1281();
-                        WorldMapDecoration.method350(argument2, argument1, class211.method4107(class1.getWidgetClickMask(var13)), var13.itemId);
+                        WorldMapDecoration.method350(argument2, argument1, Calendar.method4107(class1.getWidgetClickMask(var13)), var13.itemId);
                         Client.isItemSelected = 0;
                         Client.selectedSpellActionName = class198.method3745(var13);
                         if (Client.selectedSpellActionName == null) {
@@ -967,7 +967,7 @@ public abstract class Actor extends Entity {
                         if (Client.field127 == null) {
                            TilePaint.method3060(argument2, argument1);
                            Client.field127 = class204.getWidgetChild(argument2, argument1);
-                           class22.method295(Client.field127);
+                           WorldMapRectangle.method295(Client.field127);
                         }
                      } else if (opcode == 31) {
                         var8 = Interpreter.method1915(ClientPacket.field285, Client.packetWriter.isaacCipher);
@@ -1045,7 +1045,7 @@ public abstract class Actor extends Entity {
                            HealthBarDefinition.selectedItemSlot = argument1;
                            ServerPacket.selectedItemWidget = argument2;
                            MenuAction.selectedItemId = argument0;
-                           class22.method295(var13);
+                           WorldMapRectangle.method295(var13);
                            Client.selectedItemName = BufferedFile.colorStartTag(16748608) + Skills.getItemDefinition(argument0).name + BufferedFile.colorStartTag(16777215);
                            if (Client.selectedItemName == null) {
                               Client.selectedItemName = "null";
@@ -1327,7 +1327,7 @@ public abstract class Actor extends Entity {
 
       if (Client.isItemSelected != 0) {
          Client.isItemSelected = 0;
-         class22.method295(Huffman.getWidget(ServerPacket.selectedItemWidget));
+         WorldMapRectangle.method295(Huffman.getWidget(ServerPacket.selectedItemWidget));
       }
 
       if (Client.isSpellSelected) {
@@ -1335,7 +1335,7 @@ public abstract class Actor extends Entity {
       }
 
       if (BoundaryObject.field40 != null && Client.field203 == 0) {
-         class22.method295(BoundaryObject.field40);
+         WorldMapRectangle.method295(BoundaryObject.field40);
       }
 
    }

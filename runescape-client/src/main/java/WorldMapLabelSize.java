@@ -77,7 +77,8 @@ public class WorldMapLabelSize {
       signature = "(I)[Ls;",
       garbageValue = "1579674051"
    )
-   static WorldMapLabelSize[] method192() {
+   @Export("values")
+   static WorldMapLabelSize[] values() {
       return new WorldMapLabelSize[]{WorldMapLabelSize_small, WorldMapLabelSize_medium, WorldMapLabelSize_large};
    }
 
@@ -86,8 +87,9 @@ public class WorldMapLabelSize {
       signature = "(IB)Ls;",
       garbageValue = "-67"
    )
-   static WorldMapLabelSize method195(int var0) {
-      WorldMapLabelSize[] var1 = method192();
+   @Export("valueOf")
+   static WorldMapLabelSize valueOf(int var0) {
+      WorldMapLabelSize[] var1 = values();
 
       for (int var2 = 0; var2 < var1.length; ++var2) {
          WorldMapLabelSize var3 = var1[var2];
@@ -115,7 +117,7 @@ public class WorldMapLabelSize {
       }
 
       if (Client.field127 != null) {
-         class22.method295(Client.field127);
+         WorldMapRectangle.method295(Client.field127);
          Client.field127 = null;
       }
 

@@ -23,8 +23,8 @@ public class WorldMapElement extends DualNode {
    @ObfuscatedSignature(
       signature = "Lkz;"
    )
-   @Export("fonts")
-   static Fonts fonts;
+   @Export("WorldMapElement_fonts")
+   static Fonts WorldMapElement_fonts;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1579051565
@@ -43,7 +43,8 @@ public class WorldMapElement extends DualNode {
    @Export("sprite2")
    int sprite2;
    @ObfuscatedName("l")
-   public String field1021;
+   @Export("name")
+   public String name;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -231067
@@ -87,12 +88,14 @@ public class WorldMapElement extends DualNode {
    @ObfuscatedSignature(
       signature = "Lju;"
    )
-   public class266 field3287;
+   @Export("horizontalAlignment")
+   public HorizontalAlignment horizontalAlignment;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Lip;"
    )
-   public class249 field3301;
+   @Export("verticalAlignment")
+   public VerticalAlignment verticalAlignment;
    @ObfuscatedName("h")
    int[] field1028;
    @ObfuscatedName("b")
@@ -113,8 +116,8 @@ public class WorldMapElement extends DualNode {
       this.field1025 = Integer.MAX_VALUE;
       this.field1026 = Integer.MIN_VALUE;
       this.field1027 = Integer.MIN_VALUE;
-      this.field3287 = class266.field3527;
-      this.field3301 = class249.field3273;
+      this.horizontalAlignment = HorizontalAlignment.field3527;
+      this.verticalAlignment = VerticalAlignment.field3273;
       this.category = -1;
       this.field1020 = var1;
    }
@@ -148,7 +151,7 @@ public class WorldMapElement extends DualNode {
       } else if (opcode == 2) {
          this.sprite2 = buffer.method51();
       } else if (opcode == 3) {
-         this.field1021 = buffer.readStringCp1252NullTerminated();
+         this.name = buffer.readStringCp1252NullTerminated();
       } else if (opcode == 4) {
          this.field1022 = buffer.readMedium();
       } else if (opcode == 5) {
@@ -214,10 +217,10 @@ public class WorldMapElement extends DualNode {
             } else if (opcode == 28) {
                buffer.readUnsignedByte();
             } else if (opcode == 29) {
-               class266[] var6 = new class266[]{class266.field3527, class266.field3526, class266.field3529};
-               this.field3287 = (class266)ScriptFrame.findEnumerated(var6, buffer.readUnsignedByte());
+               HorizontalAlignment[] var6 = new HorizontalAlignment[]{HorizontalAlignment.field3527, HorizontalAlignment.field3526, HorizontalAlignment.field3529};
+               this.horizontalAlignment = (HorizontalAlignment)ScriptFrame.findEnumerated(var6, buffer.readUnsignedByte());
             } else if (opcode == 30) {
-               this.field3301 = (class249)ScriptFrame.findEnumerated(FloorUnderlayDefinition.method4839(), buffer.readUnsignedByte());
+               this.verticalAlignment = (VerticalAlignment)ScriptFrame.findEnumerated(FloorUnderlayDefinition.method4839(), buffer.readUnsignedByte());
             }
          }
       }

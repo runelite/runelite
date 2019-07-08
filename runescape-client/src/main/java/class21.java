@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -59,7 +60,8 @@ public abstract class class21 {
    @ObfuscatedSignature(
       signature = "[[[[Lv;"
    )
-   WorldMapDecoration[][][][] field144;
+   @Export("decorations")
+   WorldMapDecoration[][][][] decorations;
    @ObfuscatedName("i")
    boolean field157;
    @ObfuscatedName("a")
@@ -112,11 +114,11 @@ public abstract class class21 {
       garbageValue = "-2111523326"
    )
    void method282() {
-      this.field151 = (short[][][])((short[][][])null);
-      this.field145 = (short[][][])((short[][][])null);
+      this.field151 = ((short[][][])null);
+      this.field145 = ((short[][][])null);
       this.field154 = ((byte[][][])null);
       this.field155 = ((byte[][][])null);
-      this.field144 = (WorldMapDecoration[][][][])((WorldMapDecoration[][][][])null);
+      this.decorations = ((WorldMapDecoration[][][][])null);
       this.field157 = false;
       this.field153 = false;
    }
@@ -183,7 +185,7 @@ public abstract class class21 {
          for (var8 = 0; var8 < var5; ++var8) {
             var9 = var3.readUnsignedByte();
             if (var9 != 0) {
-               WorldMapDecoration[] var14 = this.field144[var8][var1][var2] = new WorldMapDecoration[var9];
+               WorldMapDecoration[] var14 = this.decorations[var8][var1][var2] = new WorldMapDecoration[var9];
 
                for (var10 = 0; var10 < var9; ++var10) {
                   int var12 = var3.method51();

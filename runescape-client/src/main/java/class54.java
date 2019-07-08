@@ -18,7 +18,7 @@ public final class class54 {
    )
    static int method1086(int var0, int var1) {
       long var2 = (long)((var0 << 16) + var1);
-      return ModelData0.NetCache_currentResponse != null && var2 == ModelData0.NetCache_currentResponse.key ? class22.NetCache_responseArchiveBuffer.index * 99 / (class22.NetCache_responseArchiveBuffer.array.length - ModelData0.NetCache_currentResponse.padding) + 1 : 0;
+      return ModelData0.NetCache_currentResponse != null && var2 == ModelData0.NetCache_currentResponse.key ? WorldMapRectangle.NetCache_responseArchiveBuffer.index * 99 / (WorldMapRectangle.NetCache_responseArchiveBuffer.array.length - ModelData0.NetCache_currentResponse.padding) + 1 : 0;
    }
 
    @ObfuscatedName("q")
@@ -41,7 +41,7 @@ public final class class54 {
       if (!Login.worldSelectOpen) {
          if ((MouseHandler.MouseHandler_lastButton == 1 || !AbstractRasterProvider.mouseCam && MouseHandler.MouseHandler_lastButton == 4) && MouseHandler.MouseHandler_lastPressedX >= Login.xPadding + 765 - 50 && MouseHandler.MouseHandler_lastPressedY >= 453) {
             ReflectionCheck.clientPreferences.titleMusicDisabled = !ReflectionCheck.clientPreferences.titleMusicDisabled;
-            WorldMapSection0.savePreferences();
+            WorldMapSection3.savePreferences();
             if (!ReflectionCheck.clientPreferences.titleMusicDisabled) {
                class204.method4011(UserComparator3.archive6, "scape main", "", 255, false);
             } else {
@@ -224,7 +224,7 @@ public final class class54 {
                            Client.Login_isUsernameRemembered = !Client.Login_isUsernameRemembered;
                            if (!Client.Login_isUsernameRemembered && ReflectionCheck.clientPreferences.rememberedUsername != null) {
                               ReflectionCheck.clientPreferences.rememberedUsername = null;
-                              WorldMapSection0.savePreferences();
+                              WorldMapSection3.savePreferences();
                            }
                         }
 
@@ -239,7 +239,7 @@ public final class class54 {
                               class196.method3740();
                            }
 
-                           WorldMapSection0.savePreferences();
+                           WorldMapSection3.savePreferences();
                         }
 
                         while (true) {
@@ -927,10 +927,10 @@ public final class class54 {
                                  if (var0 == ScriptOpcodes.MEC_TEXT) {
                                     var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                                     var12 = ViewportMouse.getWorldMapElement(var3);
-                                    if (var12.field1021 == null) {
+                                    if (var12.name == null) {
                                        Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
                                     } else {
-                                       Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var12.field1021;
+                                       Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var12.name;
                                     }
 
                                     return 1;

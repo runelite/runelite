@@ -1037,14 +1037,14 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
          if (gameState != 5 && gameState != 10) {
             if (gameState == 20) {
-               class2.method27(class16.archive10, WorldMapSection3.archive8, true, Client.gameState == 11 ? 4 : 0);
+               class2.method27(class16.archive10, WorldMapSection1.archive8, true, Client.gameState == 11 ? 4 : 0);
             } else if (gameState == 11) {
-               class2.method27(class16.archive10, WorldMapSection3.archive8, false, 4);
+               class2.method27(class16.archive10, WorldMapSection1.archive8, false, 4);
             } else {
                class80.method2015();
             }
          } else {
-            class2.method27(class16.archive10, WorldMapSection3.archive8, true, 0);
+            class2.method27(class16.archive10, WorldMapSection1.archive8, true, 0);
          }
 
          Client.gameState = gameState;

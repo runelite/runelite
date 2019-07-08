@@ -97,7 +97,7 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
    )
    void method399() {
       this.element = class50.getObjectDefinition(this.field1034).transform().mapIconId;
-      this.label = this.field1035.method420(ViewportMouse.getWorldMapElement(this.element));
+      this.label = this.field1035.createMapLabel(ViewportMouse.getWorldMapElement(this.element));
       WorldMapElement var1 = ViewportMouse.getWorldMapElement(this.getElement());
       Sprite var2 = var1.getSprite(false);
       if (var2 != null) {

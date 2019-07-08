@@ -126,21 +126,21 @@ public class WorldMapArea {
    @Export("readWorldMapSection")
    WorldMapSection readWorldMapSection(Buffer var1) {
       int var2 = var1.readUnsignedByte();
-      WorldMapSectionType[] var3 = new WorldMapSectionType[]{WorldMapSectionType.field1101, WorldMapSectionType.field1103, WorldMapSectionType.field1100, WorldMapSectionType.field1102};
+      WorldMapSectionType[] var3 = new WorldMapSectionType[]{WorldMapSectionType.WORLDMAPSECTIONTYPE1, WorldMapSectionType.WORLDMAPSECTIONTYPE3, WorldMapSectionType.WORLDMAPSECTIONTYPE0, WorldMapSectionType.WORLDMAPSECTIONTYPE2};
       WorldMapSectionType var4 = (WorldMapSectionType)ScriptFrame.findEnumerated(var3, var2);
       Object var5 = null;
       switch(var4.type) {
       case 0:
-         var5 = new WorldMapSection2();
+         var5 = new WorldMapSection0();
          break;
       case 1:
-         var5 = new WorldMapSection3();
-         break;
-      case 2:
          var5 = new WorldMapSection1();
          break;
+      case 2:
+         var5 = new WorldMapSection2();
+         break;
       case 3:
-         var5 = new WorldMapSection0();
+         var5 = new WorldMapSection3();
          break;
       default:
          throw new IllegalStateException("");

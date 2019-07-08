@@ -1,10 +1,13 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("c")
-public final class class22 {
+@Implements("WorldMapRectangle")
+public final class WorldMapRectangle
+{
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lgr;"
@@ -27,22 +30,26 @@ public final class class22 {
    @ObfuscatedGetter(
       intValue = 1976624405
    )
-   int field169;
+   @Export("worldMapRegionWidth")
+   int worldMapRegionWidth;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -698663527
    )
-   int field164;
+   @Export("worldMapRegionHeight")
+   int worldMapRegionHeight;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1588021801
    )
-   int field166;
+   @Export("worldMapRegionX")
+   int worldMapRegionX;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 2138505015
    )
-   int field167;
+   @Export("worldMapRegionY")
+   int worldMapRegionY;
    @ObfuscatedSignature(
       signature = "Lal;"
    )
@@ -51,7 +58,7 @@ public final class class22 {
    @ObfuscatedSignature(
       signature = "(Lal;)V"
    )
-   class22(WorldMapManager var1) {
+   WorldMapRectangle(WorldMapManager var1) {
       this.this$0 = var1;
    }
 

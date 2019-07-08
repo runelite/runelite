@@ -16,18 +16,21 @@ public class Huffman {
    @Export("canvasHeight")
    public static int canvasHeight;
    @ObfuscatedName("m")
-   int[] field399;
+   @Export("masks")
+   int[] masks;
    @ObfuscatedName("f")
-   byte[] field400;
+   @Export("bits")
+   byte[] bits;
    @ObfuscatedName("q")
-   int[] field401;
+   @Export("keys")
+   int[] keys;
 
    public Huffman(byte[] var1) {
       int var2 = var1.length;
-      this.field399 = new int[var2];
-      this.field400 = var1;
+      this.masks = new int[var2];
+      this.bits = var1;
       int[] var3 = new int[33];
-      this.field401 = new int[8];
+      this.keys = new int[8];
       int var4 = 0;
 
       for (int var5 = 0; var5 < var2; ++var5) {
@@ -35,7 +38,7 @@ public class Huffman {
          if (var6 != 0) {
             int var7 = 1 << 32 - var6;
             int var8 = var3[var6];
-            this.field399[var5] = var8;
+            this.masks[var5] = var8;
             int var9;
             int var10;
             int var11;
@@ -74,29 +77,29 @@ public class Huffman {
             for (var11 = 0; var11 < var6; ++var11) {
                var12 = Integer.MIN_VALUE >>> var11;
                if ((var8 & var12) != 0) {
-                  if (this.field401[var10] == 0) {
-                     this.field401[var10] = var4;
+                  if (this.keys[var10] == 0) {
+                     this.keys[var10] = var4;
                   }
 
-                  var10 = this.field401[var10];
+                  var10 = this.keys[var10];
                } else {
                   ++var10;
                }
 
-               if (var10 >= this.field401.length) {
-                  int[] var13 = new int[this.field401.length * 2];
+               if (var10 >= this.keys.length) {
+                  int[] var13 = new int[this.keys.length * 2];
 
-                  for (int var14 = 0; var14 < this.field401.length; ++var14) {
-                     var13[var14] = this.field401[var14];
+                  for (int var14 = 0; var14 < this.keys.length; ++var14) {
+                     var13[var14] = this.keys[var14];
                   }
 
-                  this.field401 = var13;
+                  this.keys = var13;
                }
 
                var12 >>>= 1;
             }
 
-            this.field401[var10] = ~var5;
+            this.keys[var10] = ~var5;
             if (var10 >= var4) {
                var4 = var10 + 1;
             }
@@ -110,14 +113,15 @@ public class Huffman {
       signature = "([BII[BIB)I",
       garbageValue = "64"
    )
-   public int method127(byte[] var1, int var2, int var3, byte[] var4, int var5) {
+   @Export("compress")
+   public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
       int var6 = 0;
       int var7 = var5 << 3;
 
       for (var3 += var2; var2 < var3; ++var2) {
          int var8 = var1[var2] & 255;
-         int var9 = this.field399[var8];
-         byte var10 = this.field400[var8];
+         int var9 = this.masks[var8];
+         byte var10 = this.bits[var8];
          if (var10 == 0) {
             throw new RuntimeException("");
          }
@@ -160,7 +164,8 @@ public class Huffman {
       signature = "([BI[BIII)I",
       garbageValue = "-2094399899"
    )
-   public int method128(byte[] var1, int var2, byte[] var3, int var4, int var5) {
+   @Export("decompress")
+   public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
       if (var5 == 0) {
          return 0;
       } else {
@@ -171,13 +176,13 @@ public class Huffman {
          while (true) {
             byte var8 = var1[var7];
             if (var8 < 0) {
-               var6 = this.field401[var6];
+               var6 = this.keys[var6];
             } else {
                ++var6;
             }
 
             int var9;
-            if ((var9 = this.field401[var6]) < 0) {
+            if ((var9 = this.keys[var6]) < 0) {
                var3[var4++] = (byte)(~var9);
                if (var4 >= var5) {
                   break;
@@ -187,12 +192,12 @@ public class Huffman {
             }
 
             if ((var8 & 64) != 0) {
-               var6 = this.field401[var6];
+               var6 = this.keys[var6];
             } else {
                ++var6;
             }
 
-            if ((var9 = this.field401[var6]) < 0) {
+            if ((var9 = this.keys[var6]) < 0) {
                var3[var4++] = (byte)(~var9);
                if (var4 >= var5) {
                   break;
@@ -202,12 +207,12 @@ public class Huffman {
             }
 
             if ((var8 & 32) != 0) {
-               var6 = this.field401[var6];
+               var6 = this.keys[var6];
             } else {
                ++var6;
             }
 
-            if ((var9 = this.field401[var6]) < 0) {
+            if ((var9 = this.keys[var6]) < 0) {
                var3[var4++] = (byte)(~var9);
                if (var4 >= var5) {
                   break;
@@ -217,12 +222,12 @@ public class Huffman {
             }
 
             if ((var8 & 16) != 0) {
-               var6 = this.field401[var6];
+               var6 = this.keys[var6];
             } else {
                ++var6;
             }
 
-            if ((var9 = this.field401[var6]) < 0) {
+            if ((var9 = this.keys[var6]) < 0) {
                var3[var4++] = (byte)(~var9);
                if (var4 >= var5) {
                   break;
@@ -232,12 +237,12 @@ public class Huffman {
             }
 
             if ((var8 & 8) != 0) {
-               var6 = this.field401[var6];
+               var6 = this.keys[var6];
             } else {
                ++var6;
             }
 
-            if ((var9 = this.field401[var6]) < 0) {
+            if ((var9 = this.keys[var6]) < 0) {
                var3[var4++] = (byte)(~var9);
                if (var4 >= var5) {
                   break;
@@ -247,12 +252,12 @@ public class Huffman {
             }
 
             if ((var8 & 4) != 0) {
-               var6 = this.field401[var6];
+               var6 = this.keys[var6];
             } else {
                ++var6;
             }
 
-            if ((var9 = this.field401[var6]) < 0) {
+            if ((var9 = this.keys[var6]) < 0) {
                var3[var4++] = (byte)(~var9);
                if (var4 >= var5) {
                   break;
@@ -262,12 +267,12 @@ public class Huffman {
             }
 
             if ((var8 & 2) != 0) {
-               var6 = this.field401[var6];
+               var6 = this.keys[var6];
             } else {
                ++var6;
             }
 
-            if ((var9 = this.field401[var6]) < 0) {
+            if ((var9 = this.keys[var6]) < 0) {
                var3[var4++] = (byte)(~var9);
                if (var4 >= var5) {
                   break;
@@ -277,12 +282,12 @@ public class Huffman {
             }
 
             if ((var8 & 1) != 0) {
-               var6 = this.field401[var6];
+               var6 = this.keys[var6];
             } else {
                ++var6;
             }
 
-            if ((var9 = this.field401[var6]) < 0) {
+            if ((var9 = this.keys[var6]) < 0) {
                var3[var4++] = (byte)(~var9);
                if (var4 >= var5) {
                   break;

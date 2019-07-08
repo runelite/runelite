@@ -213,7 +213,7 @@ public class class50 {
          ItemDefinition var5 = Skills.getItemDefinition(var4);
          if ((!var1 || var5.isTradable) && var5.noteTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
             if (var3 >= 250) {
-               WorldMapSection0.field1055 = -1;
+               WorldMapSection3.field1055 = -1;
                AttackOption.field30 = null;
                return;
             }
@@ -234,10 +234,10 @@ public class class50 {
 
       AttackOption.field30 = var2;
       WorldMapDecorationType.field1139 = 0;
-      WorldMapSection0.field1055 = var3;
-      String[] var8 = new String[WorldMapSection0.field1055];
+      WorldMapSection3.field1055 = var3;
+      String[] var8 = new String[WorldMapSection3.field1055];
 
-      for (int var9 = 0; var9 < WorldMapSection0.field1055; ++var9) {
+      for (int var9 = 0; var9 < WorldMapSection3.field1055; ++var9) {
          var8[var9] = Skills.getItemDefinition(var2[var9]).name;
       }
 

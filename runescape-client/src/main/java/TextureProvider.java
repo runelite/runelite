@@ -155,8 +155,9 @@ public class TextureProvider implements TextureLoader {
       signature = "(II)I",
       garbageValue = "-1641984961"
    )
-   public int vmethod324(int var1) {
-      return this.textures[var1] != null ? this.textures[var1].int1 : 0;
+   @Export("getAverageTextureRGB")
+   public int getAverageTextureRGB(int var1) {
+      return this.textures[var1] != null ? this.textures[var1].averageRGB : 0;
    }
 
    @ObfuscatedName("o")
@@ -221,7 +222,7 @@ public class TextureProvider implements TextureLoader {
       int var2 = var0.index;
       byte[] var3 = class230.method4516(var1);
       var0.writeSmartByteShort(var3.length);
-      var0.index += class303.huffman.method127(var3, 0, var3.length, var0.array, var0.index);
+      var0.index += class303.huffman.compress(var3, 0, var3.length, var0.array, var0.index);
       return var0.index - var2;
    }
 

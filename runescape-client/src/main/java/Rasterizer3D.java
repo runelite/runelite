@@ -1397,7 +1397,7 @@ public class Rasterizer3D extends Rasterizer2D {
       int[] var19 = Rasterizer3D_textureLoader.load(var18);
       int var20;
       if (var19 == null) {
-         var20 = Rasterizer3D_textureLoader.vmethod324(var18);
+         var20 = Rasterizer3D_textureLoader.getAverageTextureRGB(var18);
          method3037(var0, var1, var2, var3, var4, var5, method3040(var20, var6), method3040(var20, var7), method3040(var20, var8));
       } else {
          Rasterizer3D_isLowDetailTexture = Rasterizer3D_textureLoader.isLowDetail(var18);
@@ -2440,7 +2440,7 @@ public class Rasterizer3D extends Rasterizer2D {
       int[] var19 = Rasterizer3D_textureLoader.load(var18);
       int var20;
       if (var19 == null) {
-         var20 = Rasterizer3D_textureLoader.vmethod324(var18);
+         var20 = Rasterizer3D_textureLoader.getAverageTextureRGB(var18);
          method3037(var0, var1, var2, var3, var4, var5, method3040(var20, var6), method3040(var20, var7), method3040(var20, var8));
       } else {
          Rasterizer3D_isLowDetailTexture = Rasterizer3D_textureLoader.isLowDetail(var18);

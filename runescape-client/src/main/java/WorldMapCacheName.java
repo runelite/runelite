@@ -61,7 +61,7 @@ public class WorldMapCacheName {
    public static void method633(int[] var0, int[] var1) {
       if (var0 != null && var1 != null) {
          ByteArrayPool.field55 = var0;
-         WorldMapSection2.field1082 = new int[var0.length];
+         WorldMapSection0.field1082 = new int[var0.length];
          RouteStrategy.field760 = new byte[var0.length][][];
 
          for (int var2 = 0; var2 < ByteArrayPool.field55.length; ++var2) {
@@ -69,7 +69,7 @@ public class WorldMapCacheName {
          }
       } else {
          ByteArrayPool.field55 = null;
-         WorldMapSection2.field1082 = null;
+         WorldMapSection0.field1082 = null;
          RouteStrategy.field760 = ((byte[][][])null);
       }
 

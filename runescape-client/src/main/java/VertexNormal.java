@@ -61,8 +61,8 @@ public class VertexNormal {
          ByteArrayPool.ByteArrayPool_large[++ByteArrayPool.ByteArrayPool_largeCount - 1] = var0;
       } else if (RouteStrategy.field760 != null) {
          for (int var1 = 0; var1 < ByteArrayPool.field55.length; ++var1) {
-            if (var0.length == ByteArrayPool.field55[var1] && WorldMapSection2.field1082[var1] < RouteStrategy.field760[var1].length) {
-               RouteStrategy.field760[var1][WorldMapSection2.field1082[var1]++] = var0;
+            if (var0.length == ByteArrayPool.field55[var1] && WorldMapSection0.field1082[var1] < RouteStrategy.field760[var1].length) {
+               RouteStrategy.field760[var1][WorldMapSection0.field1082[var1]++] = var0;
                return;
             }
          }

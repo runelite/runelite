@@ -207,14 +207,14 @@ public class WorldMapAreaData extends WorldMapArea {
                   --RouteStrategy.Interpreter_intStackSize;
                   var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] - 1;
                   if (var5 >= 0 && var5 <= 9) {
-                     WorldMapSection3.method345(var4, var5);
+                     WorldMapSection1.method345(var4, var5);
                      return 1;
                   } else {
                      throw new RuntimeException();
                   }
                } else if (var0 == 1355) {
                   var11 = 10;
-                  WorldMapSection3.method345(var4, var11);
+                  WorldMapSection1.method345(var4, var11);
                   return 1;
                } else {
                   return 2;

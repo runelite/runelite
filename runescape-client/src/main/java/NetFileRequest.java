@@ -61,7 +61,7 @@ public class NetFileRequest extends DualNode {
                   if (var7 != -1) {
                      SequenceDefinition var6 = WorldMapAreaData.getSequenceDefinition(var7);
 
-                     for (var3.modelFrameCycle += Client.field183; var3.modelFrameCycle > var6.frameLengths[var3.modelFrame]; class22.method295(var3)) {
+                     for (var3.modelFrameCycle += Client.field183; var3.modelFrameCycle > var6.frameLengths[var3.modelFrame]; WorldMapRectangle.method295(var3)) {
                         var3.modelFrameCycle -= var6.frameLengths[var3.modelFrame];
                         ++var3.modelFrame;
                         if (var3.modelFrame >= var6.frameIds.length) {
@@ -81,7 +81,7 @@ public class NetFileRequest extends DualNode {
                   var7 *= Client.field183;
                   var3.modelAngleX = var8 + var3.modelAngleX & 2047;
                   var3.modelAngleY = var7 + var3.modelAngleY & 2047;
-                  class22.method295(var3);
+                  WorldMapRectangle.method295(var3);
                }
             }
          }

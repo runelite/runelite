@@ -11,12 +11,14 @@ public class FloorOverlayDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field663;
+   @Export("FloorOverlayDefinition_archive")
+   public static AbstractArchive FloorOverlayDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   public static EvictingDualNodeHashTable field664;
+   @Export("FloorOverlayDefinition_cached")
+   public static EvictingDualNodeHashTable FloorOverlayDefinition_cached;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -111851793
@@ -240,6 +242,6 @@ public class FloorOverlayDefinition extends DualNode {
    }
 
    static {
-      field664 = new EvictingDualNodeHashTable(64);
+      FloorOverlayDefinition_cached = new EvictingDualNodeHashTable(64);
    }
 }

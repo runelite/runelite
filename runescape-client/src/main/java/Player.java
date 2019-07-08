@@ -530,7 +530,7 @@ public final class Player extends Actor {
          }
 
          Client.isSpellSelected = false;
-         class22.method295(var0);
+         WorldMapRectangle.method295(var0);
       }
 
    }

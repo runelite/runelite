@@ -251,7 +251,7 @@ public class KitDefinition extends DualNode {
          }
 
          byte[] var3 = new byte[var2];
-         var0.index += class303.huffman.method128(var0.array, var0.index, var3, 0, var2);
+         var0.index += class303.huffman.decompress(var0.array, var0.index, var3, 0, var2);
          String var4 = InterfaceParent.decodeStringCp1252(var3, 0, var2);
          var1 = var4;
       } catch (Exception var5) {

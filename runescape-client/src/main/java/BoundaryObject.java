@@ -81,7 +81,7 @@ public final class BoundaryObject {
    static final void doCheat(String var0) {
       if (var0.equalsIgnoreCase("toggleroof")) {
          ReflectionCheck.clientPreferences.roofsHidden = !ReflectionCheck.clientPreferences.roofsHidden;
-         WorldMapSection0.savePreferences();
+         WorldMapSection3.savePreferences();
          if (ReflectionCheck.clientPreferences.roofsHidden) {
             WorldMapIcon1.addGameMessage(99, "", "Roofs are now all hidden");
          } else {

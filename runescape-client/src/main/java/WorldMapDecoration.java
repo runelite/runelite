@@ -104,6 +104,6 @@ public class WorldMapDecoration {
       ServerBuild.field788 = var0;
       Client.field220 = var1;
       FloorDecoration.selectedSpellFlags = var2;
-      class22.method295(var4);
+      WorldMapRectangle.method295(var4);
    }
 }

@@ -202,7 +202,7 @@ public class FriendSystem {
                var4 = "You can't add yourself to your own ignore list";
                WorldMapIcon1.addGameMessage(30, "", var4);
             } else if (this.isIgnored(var2)) {
-               class22.method294(var1);
+               WorldMapRectangle.method294(var1);
             } else {
                PacketBufferNode var5;
                if (this.isFriended(var2, false)) {

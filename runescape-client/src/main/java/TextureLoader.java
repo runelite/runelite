@@ -19,7 +19,8 @@ public interface TextureLoader {
       signature = "(II)I",
       garbageValue = "-1641984961"
    )
-   int vmethod324(int var1);
+   @Export("getAverageTextureRGB")
+   int getAverageTextureRGB(int var1);
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(

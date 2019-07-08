@@ -238,7 +238,7 @@ public class GrandExchangeEvent {
                      Interpreter.Interpreter_stringLocals = var30.stringLocals;
                   } else if (var13 == ScriptOpcodes.GET_VARBIT) {
                      var11 = var6[var4];
-                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapSection2.getVarbit(var11);
+                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapSection0.getVarbit(var11);
                   } else if (var13 == ScriptOpcodes.SET_VARBIT) {
                      var11 = var6[var4];
                      PendingSpawn.method1695(var11, Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);

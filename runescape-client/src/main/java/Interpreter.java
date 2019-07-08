@@ -149,15 +149,15 @@ public class Interpreter {
    )
    public static void method1976() {
       try {
-         File var0 = new File(WorldMapSection1.userHomeDirectory, "random.dat");
+         File var0 = new File(WorldMapSection2.userHomeDirectory, "random.dat");
          int var1;
          if (var0.exists()) {
             class168.randomDat = new BufferedFile(new AccessFile(var0, "rw", 25L), 24, 0);
          } else {
             label34:
             for (int var2 = 0; var2 < Canvas.field94.length; ++var2) {
-               for (var1 = 0; var1 < WorldMapSection2.cacheDirectoryLocations.length; ++var1) {
-                  File var3 = new File(WorldMapSection2.cacheDirectoryLocations[var1] + Canvas.field94[var2] + File.separatorChar + "random.dat");
+               for (var1 = 0; var1 < WorldMapSection0.cacheDirectoryLocations.length; ++var1) {
+                  File var3 = new File(WorldMapSection0.cacheDirectoryLocations[var1] + Canvas.field94[var2] + File.separatorChar + "random.dat");
                   if (var3.exists()) {
                      class168.randomDat = new BufferedFile(new AccessFile(var3, "rw", 25L), 24, 0);
                      break label34;

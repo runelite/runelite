@@ -505,7 +505,7 @@ public class NPCDefinition extends DualNode {
    public final NPCDefinition transform() {
       int var1 = -1;
       if (this.transformVarbit != -1) {
-         var1 = WorldMapSection2.getVarbit(this.transformVarbit);
+         var1 = WorldMapSection0.getVarbit(this.transformVarbit);
       } else if (this.transformVarp != -1) {
          var1 = Varps.Varps_main[this.transformVarp];
       }
@@ -531,7 +531,7 @@ public class NPCDefinition extends DualNode {
       } else {
          int var1 = -1;
          if (this.transformVarbit != -1) {
-            var1 = WorldMapSection2.getVarbit(this.transformVarbit);
+            var1 = WorldMapSection0.getVarbit(this.transformVarbit);
          } else if (this.transformVarp != -1) {
             var1 = Varps.Varps_main[this.transformVarp];
          }

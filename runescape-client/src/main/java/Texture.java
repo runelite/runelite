@@ -10,8 +10,8 @@ public class Texture extends Node {
    @Export("Texture_animatedPixels")
    static int[] Texture_animatedPixels;
    @ObfuscatedName("o")
-   @Export("int1")
-   int int1;
+   @Export("averageRGB")
+   int averageRGB;
    @ObfuscatedName("u")
    boolean field893;
    @ObfuscatedName("g")
@@ -41,7 +41,7 @@ public class Texture extends Node {
    )
    Texture(Buffer var1) {
       this.isLoaded = false;
-      this.int1 = var1.readUnsignedShort();
+      this.averageRGB = var1.readUnsignedShort();
       this.field893 = var1.readUnsignedByte() == 1;
       int var2 = var1.readUnsignedByte();
       if (var2 >= 1 && var2 <= 4) {

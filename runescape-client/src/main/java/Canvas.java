@@ -157,7 +157,7 @@ public final class Canvas extends java.awt.Canvas {
                   GrandExchangeOfferAgeComparator.field1111 = var10;
                }
 
-               class22.method295(var5);
+               WorldMapRectangle.method295(var5);
                return 1;
             }
          }
@@ -167,12 +167,12 @@ public final class Canvas extends java.awt.Canvas {
             var6 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
             var5 = Huffman.getWidget(var6.id);
             var5.children[var6.childIndex] = null;
-            class22.method295(var5);
+            WorldMapRectangle.method295(var5);
             return 1;
          } else if (var0 == ScriptOpcodes.CC_DELETEALL) {
             var6 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
             var6.children = null;
-            class22.method295(var6);
+            WorldMapRectangle.method295(var6);
             return 1;
          } else if (var0 != ScriptOpcodes.CC_FIND) {
             if (var0 == ScriptOpcodes.IF_FIND) {

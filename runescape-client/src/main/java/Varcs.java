@@ -145,7 +145,7 @@ public class Varcs {
    )
    @Export("getPreferencesFile")
    AccessFile getPreferencesFile(boolean var1) {
-      return LoginPacket.getPreferencesFile("2", class22.studioGame.name, var1);
+      return LoginPacket.getPreferencesFile("2", WorldMapRectangle.studioGame.name, var1);
    }
 
    @ObfuscatedName("e")
@@ -365,7 +365,7 @@ public class Varcs {
       garbageValue = "321265868"
    )
    public static void method2160(AbstractArchive var0) {
-      FloorOverlayDefinition.field663 = var0;
+      FloorOverlayDefinition.FloorOverlayDefinition_archive = var0;
    }
 
    @ObfuscatedName("q")
