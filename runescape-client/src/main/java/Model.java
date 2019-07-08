@@ -1529,19 +1529,19 @@ public class Model extends Entity {
 
    @ObfuscatedName("cy")
    @Export("draw")
-   void draw(int yaw, int cameraPitchSine, int cameraPitchCosine, int cameraYawSine, int cameraYawCosine, int x, int y, int var8, long tag) {
+   void draw(int yaw, int cameraPitchSine, int cameraPitchCosine, int cameraYawSine, int cameraYawCosine, int x, int y, int z, long tag) {
       field529[0] = -1;
       if (this.boundsType != 1) {
          this.calculateBoundsCylinder();
       }
 
       this.calculateBoundingBox(yaw);
-      int var11 = cameraYawCosine * var8 - cameraYawSine * x >> 16;
+      int var11 = cameraYawCosine * z - cameraYawSine * x >> 16;
       int var12 = cameraPitchSine * y + cameraPitchCosine * var11 >> 16;
       int var13 = cameraPitchCosine * this.xzRadius >> 16;
       int var14 = var12 + var13;
       if (var14 > 50 && var12 < 3500) {
-         int var15 = var8 * cameraYawSine + cameraYawCosine * x >> 16;
+         int var15 = z * cameraYawSine + cameraYawCosine * x >> 16;
          int var16 = (var15 - this.xzRadius) * Rasterizer3D.Rasterizer3D_zoom;
          if (var16 / var14 < Rasterizer3D.Rasterizer3D_clipMidX2) {
             int var17 = (var15 + this.xzRadius) * Rasterizer3D.Rasterizer3D_zoom;
@@ -1578,7 +1578,7 @@ public class Model extends Entity {
                      if (var30 && var29) {
                         boolean var35 = false;
                         if (field539) {
-                           var35 = Decimator.method2491(this, x, y, var8);
+                           var35 = Decimator.boundingBoxCheck(this, x, y, z);
                         } else {
                            var32 = var12 - var13;
                            if (var32 <= 50) {
@@ -1639,7 +1639,7 @@ public class Model extends Entity {
 
                         var37 += x;
                         var38 += y;
-                        var39 += var8;
+                        var39 += z;
                         var40 = var39 * cameraYawSine + cameraYawCosine * var37 >> 16;
                         var39 = cameraYawCosine * var39 - var37 * cameraYawSine >> 16;
                         var37 = var40;

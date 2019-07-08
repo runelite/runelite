@@ -62,7 +62,7 @@ public class class31 {
       } else {
          World var3;
          if (var0 == ScriptOpcodes.WORLDLIST_START) {
-            var3 = class190.method3672();
+            var3 = class190.worldListStart();
             if (var3 != null) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.id;
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.properties;
@@ -81,7 +81,7 @@ public class class31 {
 
             return 1;
          } else if (var0 == ScriptOpcodes.WORLDLIST_NEXT) {
-            var3 = Fonts.method5647();
+            var3 = Fonts.getNextWorldListWorld();
             if (var3 != null) {
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.id;
                Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.properties;
@@ -137,7 +137,7 @@ public class class31 {
                boolean var9 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1] == 1;
                var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
                boolean var10 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 3] == 1;
-               WorldMapSectionType.sortWorlds(var6, var9, var5, var10);
+               WorldMapSectionType.sortWorldList(var6, var9, var5, var10);
                return 1;
             } else if (var0 != ScriptOpcodes.GETWORLDINFO) {
                if (var0 == ScriptOpcodes.SETFOLLOWEROPSLOWPRIORITY) {

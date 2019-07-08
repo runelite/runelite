@@ -69,8 +69,8 @@ public class Rasterizer3D extends Rasterizer2D {
    public static int[] Rasterizer3D_cosine;
 
    @ObfuscatedName("m")
-   @Export("Rasterizer3D_method1")
-   public static final void Rasterizer3D_method1() {
+   @Export("Rasterizer3D_setClipFromRasterizer2D")
+   public static final void Rasterizer3D_setClipFromRasterizer2D() {
       Rasterizer3D_setClip(Rasterizer2D.Rasterizer2D_xClipStart, Rasterizer2D.Rasterizer2D_yClipStart, Rasterizer2D.Rasterizer2D_xClipEnd, Rasterizer2D.Rasterizer2D_yClipEnd);
    }
 

@@ -10,7 +10,8 @@ public class PlayerAppearance {
    @ObfuscatedName("g")
    public static short[] field726;
    @ObfuscatedName("d")
-   static final int[] field727;
+   @Export("equipmentIndices")
+   static final int[] equipmentIndices;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -48,25 +49,26 @@ public class PlayerAppearance {
       signature = "([I[IZII)V",
       garbageValue = "727056871"
    )
-   public void method256(int[] var1, int[] var2, boolean var3, int var4) {
-      if (var1 == null) {
-         var1 = new int[12];
+   @Export("update")
+   public void update(int[] equipment, int[] bodyColors, boolean isFemale, int npcTransformId) {
+      if (equipment == null) {
+         equipment = new int[12];
 
          for (int var5 = 0; var5 < 7; ++var5) {
-            for (int var6 = 0; var6 < KitDefinition.field457; ++var6) {
+            for (int var6 = 0; var6 < KitDefinition.KitDefinition_totalCount; ++var6) {
                KitDefinition var7 = WorldMapSection2.getKitDefinition(var6);
-               if (var7 != null && !var7.nonSelectable && var5 + (var3 ? 7 : 0) == var7.bodypartID) {
-                  var1[field727[var5]] = var6 + 256;
+               if (var7 != null && !var7.nonSelectable && var5 + (isFemale ? 7 : 0) == var7.bodypartID) {
+                  equipment[equipmentIndices[var5]] = var6 + 256;
                   break;
                }
             }
          }
       }
 
-      this.equipment = var1;
-      this.bodyColors = var2;
-      this.isFemale = var3;
-      this.npcTransformId = var4;
+      this.equipment = equipment;
+      this.bodyColors = bodyColors;
+      this.isFemale = isFemale;
+      this.npcTransformId = npcTransformId;
       this.setHash();
    }
 
@@ -77,7 +79,7 @@ public class PlayerAppearance {
    )
    public void method257(int var1, boolean var2) {
       if (var1 != 1 || !this.isFemale) {
-         int var3 = this.equipment[field727[var1]];
+         int var3 = this.equipment[equipmentIndices[var1]];
          if (var3 != 0) {
             var3 -= 256;
 
@@ -88,11 +90,11 @@ public class PlayerAppearance {
                      if (!var2) {
                         --var3;
                         if (var3 < 0) {
-                           var3 = KitDefinition.field457 - 1;
+                           var3 = KitDefinition.KitDefinition_totalCount - 1;
                         }
                      } else {
                         ++var3;
-                        if (var3 >= KitDefinition.field457) {
+                        if (var3 >= KitDefinition.KitDefinition_totalCount) {
                            var3 = 0;
                         }
                      }
@@ -102,7 +104,7 @@ public class PlayerAppearance {
                } while(var4.nonSelectable);
             } while(var1 + (this.isFemale ? 7 : 0) != var4.bodypartID);
 
-            this.equipment[field727[var1]] = var3 + 256;
+            this.equipment[equipmentIndices[var1]] = var3 + 256;
             this.setHash();
          }
       }
@@ -143,7 +145,7 @@ public class PlayerAppearance {
    )
    public void method259(boolean var1) {
       if (this.isFemale != var1) {
-         this.method256((int[])null, this.bodyColors, var1, -1);
+         this.update((int[])null, this.bodyColors, var1, -1);
       }
 
    }
@@ -158,7 +160,7 @@ public class PlayerAppearance {
 
       int var2;
       for (var2 = 0; var2 < 7; ++var2) {
-         int var3 = this.equipment[field727[var2]];
+         int var3 = this.equipment[equipmentIndices[var2]];
          if (var3 == 0) {
             var1.writeByte(-1);
          } else {
@@ -408,7 +410,7 @@ public class PlayerAppearance {
    }
 
    static {
-      field727 = new int[]{8, 11, 4, 6, 9, 7, 10};
+      equipmentIndices = new int[]{8, 11, 4, 6, 9, 7, 10};
       PlayerAppearance_cachedModels = new EvictingDualNodeHashTable(260);
    }
 }

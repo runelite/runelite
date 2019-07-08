@@ -440,11 +440,11 @@ public class ObjectDefinition extends DualNode {
       } else if (var2 == 69) {
          var1.readUnsignedByte();
       } else if (var2 == 70) {
-         this.offsetX = var1.method44();
+         this.offsetX = var1.readShort();
       } else if (var2 == 71) {
-         this.offsetHeight = var1.method44();
+         this.offsetHeight = var1.readShort();
       } else if (var2 == 72) {
-         this.offsetY = var1.method44();
+         this.offsetY = var1.readShort();
       } else if (var2 == 73) {
          this.boolean2 = true;
       } else if (var2 == 74) {

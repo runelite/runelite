@@ -177,7 +177,7 @@ public class WorldMapElement extends DualNode {
 
             int var4;
             for (var4 = 0; var4 < var3 * 2; ++var4) {
-               this.field1023[var4] = buffer.method44();
+               this.field1023[var4] = buffer.readShort();
             }
 
             buffer.readInt();
@@ -210,8 +210,8 @@ public class WorldMapElement extends DualNode {
                buffer.readUnsignedByte();
                buffer.readUnsignedByte();
             } else if (opcode == 24) {
-               buffer.method44();
-               buffer.method44();
+               buffer.readShort();
+               buffer.readShort();
             } else if (opcode == 25) {
                buffer.method51();
             } else if (opcode == 28) {

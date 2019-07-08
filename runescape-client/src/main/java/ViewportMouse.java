@@ -112,26 +112,26 @@ public class ViewportMouse {
          if (var1 >= 300 && var1 <= 313) {
             var2 = (var1 - 300) / 2;
             var3 = var1 & 1;
-            Client.field119.method257(var2, var3 == 1);
+            Client.playerAppearance.method257(var2, var3 == 1);
          }
 
          if (var1 >= 314 && var1 <= 323) {
             var2 = (var1 - 314) / 2;
             var3 = var1 & 1;
-            Client.field119.method258(var2, var3 == 1);
+            Client.playerAppearance.method258(var2, var3 == 1);
          }
 
          if (var1 == 324) {
-            Client.field119.method259(false);
+            Client.playerAppearance.method259(false);
          }
 
          if (var1 == 325) {
-            Client.field119.method259(true);
+            Client.playerAppearance.method259(true);
          }
 
          if (var1 == 326) {
             PacketBufferNode var4 = Interpreter.method1915(ClientPacket.field234, Client.packetWriter.isaacCipher);
-            Client.field119.method260(var4.packetBuffer);
+            Client.playerAppearance.method260(var4.packetBuffer);
             Client.packetWriter.method241(var4);
             return true;
          } else {

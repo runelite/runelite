@@ -705,7 +705,7 @@ public class class40 {
       var2 = Client.viewportWidth;
       var3 = Client.viewportHeight;
       Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
-      Rasterizer3D.Rasterizer3D_method1();
+      Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
       int var9;
       int var10;
       int var11;

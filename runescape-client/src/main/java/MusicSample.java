@@ -122,7 +122,7 @@ public class MusicSample extends Node {
          } while(var6 >= 255);
 
          byte[] var7 = new byte[var5];
-         var2.method46(var7, 0, var5);
+         var2.readBytes(var7, 0, var5);
          this.field620[var4] = var7;
       }
 

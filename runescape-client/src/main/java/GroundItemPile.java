@@ -74,7 +74,7 @@ public final class GroundItemPile {
       } else if (!Widget.Widget_archive.tryLoadGroup(itf)) {
          return false;
       } else {
-         int var1 = Widget.Widget_archive.method4(itf);
+         int var1 = Widget.Widget_archive.getGroupFileCount(itf);
          if (var1 == 0) {
             Widget.loadedInterfaces[itf] = true;
             return true;

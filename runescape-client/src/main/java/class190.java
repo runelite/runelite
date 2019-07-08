@@ -70,9 +70,10 @@ public class class190 {
       signature = "(I)Lbt;",
       garbageValue = "-68901151"
    )
-   static World method3672() {
-      World.field987 = 0;
-      return Fonts.method5647();
+   @Export("worldListStart")
+   static World worldListStart() {
+      World.worldListWorldCount = 0;
+      return Fonts.getNextWorldListWorld();
    }
 
    @ObfuscatedName("iv")

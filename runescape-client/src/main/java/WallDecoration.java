@@ -88,7 +88,7 @@ public final class WallDecoration {
       int var2 = -1;
 
       for (int var3 = 0; var3 < var1; ++var3) {
-         var2 = var2 >>> 8 ^ Buffer.field45[(var2 ^ var0[var3]) & 255];
+         var2 = var2 >>> 8 ^ Buffer.crc32Table[(var2 ^ var0[var3]) & 255];
       }
 
       var2 = ~var2;

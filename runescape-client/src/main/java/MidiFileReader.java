@@ -120,7 +120,7 @@ public class MidiFileReader {
    @ObfuscatedName("l")
    @Export("readTrackLength")
    void readTrackLength(int trackId) {
-      int var2 = this.buffer.method52();
+      int var2 = this.buffer.readVarInt();
       int[] var3 = this.trackLengths;
       var3[trackId] += var2;
    }
@@ -148,7 +148,7 @@ public class MidiFileReader {
       if (var3 != 240 && var3 != 247) {
          return this.method167(trackId, var3);
       } else {
-         int var4 = this.buffer.method52();
+         int var4 = this.buffer.readVarInt();
          if (var3 == 247 && var4 > 0) {
             int var5 = this.buffer.array[this.buffer.index] & 255;
             if (var5 >= 241 && var5 <= 243 || var5 == 246 || var5 == 248 || var5 >= 250 && var5 <= 252 || var5 == 254) {
@@ -169,7 +169,7 @@ public class MidiFileReader {
       int var3;
       if (var2 == 255) {
          int var8 = this.buffer.readUnsignedByte();
-         var3 = this.buffer.method52();
+         var3 = this.buffer.readVarInt();
          Buffer var5;
          if (var8 == 47) {
             var5 = this.buffer;

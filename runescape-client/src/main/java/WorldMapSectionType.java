@@ -91,8 +91,8 @@ public enum WorldMapSectionType implements Enumerated {
       signature = "(IZIZI)V",
       garbageValue = "2102950996"
    )
-   @Export("sortWorlds")
-   static void sortWorlds(int primaryMode, boolean primaryReversed, int secondaryMode, boolean secondaryReversed) {
+   @Export("sortWorldList")
+   static void sortWorldList(int primaryMode, boolean primaryReversed, int secondaryMode, boolean secondaryReversed) {
       if (ItemContainer.worlds != null) {
          class3.doWorldSorting(0, ItemContainer.worlds.length - 1, primaryMode, primaryReversed, secondaryMode, secondaryReversed);
       }

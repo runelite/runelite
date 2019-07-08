@@ -16,9 +16,9 @@ public class class14 {
          Buffer var3 = new Buffer(500);
          var3.writeByte(3);
          var3.writeByte(var1 != null ? 1 : 0);
-         var3.method37(var0.getPath());
+         var3.writeCESU8(var0.getPath());
          if (var1 != null) {
-            var3.method37("");
+            var3.writeCESU8("");
          }
 
          var2.write(var3.array, 0, var3.index);

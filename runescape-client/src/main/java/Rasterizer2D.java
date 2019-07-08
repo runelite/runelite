@@ -411,9 +411,9 @@ public class Rasterizer2D extends DualNode {
 
    }
 
-   @Export("Rasterizer2D_drawGradient")
+   @Export("Rasterizer2D_fillRectangleGradient")
    @ObfuscatedName("dw")
-   public static void Rasterizer2D_drawGradient(int x, int y, int width, int height, int rgbTop, int rgbBot) {
+   public static void Rasterizer2D_fillRectangleGradient(int x, int y, int width, int height, int rgbTop, int rgbBot) {
       if (width > 0 && height > 0) {
          int var6 = 0;
          int var7 = 65536 / height;
@@ -456,8 +456,8 @@ public class Rasterizer2D extends DualNode {
    }
 
    @ObfuscatedName("dv")
-   @Export("drawGradientAlpha")
-   public static void drawGradientAlpha(int x, int y, int width, int height, int rgbTop, int rgbBot, int alphaTop, int alphaBot) {
+   @Export("Rasterizer2D_fillRectangleGradientAlpha")
+   public static void Rasterizer2D_fillRectangleGradientAlpha(int x, int y, int width, int height, int rgbTop, int rgbBot, int alphaTop, int alphaBot) {
       if (width > 0 && height > 0) {
          int var8 = 0;
          int var9 = 65536 / height;

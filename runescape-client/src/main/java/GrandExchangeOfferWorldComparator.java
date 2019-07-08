@@ -143,19 +143,19 @@ final class GrandExchangeOfferWorldComparator implements Comparator {
                   var8 = -1;
                   var9 = -1;
                   var10 = -1;
-                  var7 = var0.method48();
+                  var7 = var0.readUShortSmart();
                   if (var7 == 32767) {
-                     var7 = var0.method48();
-                     var9 = var0.method48();
-                     var8 = var0.method48();
-                     var10 = var0.method48();
+                     var7 = var0.readUShortSmart();
+                     var9 = var0.readUShortSmart();
+                     var8 = var0.readUShortSmart();
+                     var10 = var0.readUShortSmart();
                   } else if (var7 != 32766) {
-                     var9 = var0.method48();
+                     var9 = var0.readUShortSmart();
                   } else {
                      var7 = -1;
                   }
 
-                  var11 = var0.method48();
+                  var11 = var0.readUShortSmart();
                   var3.addHitSplat(var7, var9, var8, var10, Client.cycle, var11);
                }
             }
@@ -163,10 +163,10 @@ final class GrandExchangeOfferWorldComparator implements Comparator {
             var6 = var0.method58();
             if (var6 > 0) {
                for (var7 = 0; var7 < var6; ++var7) {
-                  var8 = var0.method48();
-                  var9 = var0.method48();
+                  var8 = var0.readUShortSmart();
+                  var9 = var0.readUShortSmart();
                   if (var9 != 32767) {
-                     var10 = var0.method48();
+                     var10 = var0.readUShortSmart();
                      var11 = var0.readUnsignedByte();
                      int var12 = var9 > 0 ? var0.method59() : var11;
                      var3.addHealthBar(var8, Client.cycle, var9, var10, var11, var12);

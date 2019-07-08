@@ -30,10 +30,10 @@ public class class204 {
       signature = "(Lir;Ljava/lang/String;Ljava/lang/String;IZB)V",
       garbageValue = "0"
    )
-   public static void method4011(AbstractArchive var0, String var1, String var2, int var3, boolean var4) {
-      int var5 = var0.getGroupId(var1);
-      int var6 = var0.getFileId(var5, var2);
-      Login.method2076(var0, var5, var6, var3, var4);
+   public static void method4011(AbstractArchive archive, String groupName, String fileName, int var3, boolean var4) {
+      int var5 = archive.getGroupId(groupName);
+      int var6 = archive.getFileId(var5, fileName);
+      Login.method2076(archive, var5, var6, var3, var4);
    }
 
    @ObfuscatedName("w")

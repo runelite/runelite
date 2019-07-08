@@ -38,20 +38,22 @@ public class ArchiveLoader {
    @ObfuscatedGetter(
       intValue = 1459455501
    )
-   final int field408;
+   @Export("groupCount")
+   final int groupCount;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 782003089
    )
-   int field409;
+   @Export("loadedCount")
+   int loadedCount;
 
    @ObfuscatedSignature(
       signature = "(Lit;Ljava/lang/String;)V"
    )
-   ArchiveLoader(Archive var1, String var2) {
-      this.field409 = 0;
-      this.archive = var1;
-      this.field408 = var1.method5();
+   ArchiveLoader(Archive archive, String name) {
+      this.loadedCount = 0;
+      this.archive = archive;
+      this.groupCount = archive.getGroupCount();
    }
 
    @ObfuscatedName("m")
@@ -59,16 +61,17 @@ public class ArchiveLoader {
       signature = "(I)Z",
       garbageValue = "1352221725"
    )
-   boolean method134() {
-      this.field409 = 0;
+   @Export("isLoaded")
+   boolean isLoaded() {
+      this.loadedCount = 0;
 
-      for (int var1 = 0; var1 < this.field408; ++var1) {
+      for (int var1 = 0; var1 < this.groupCount; ++var1) {
          if (!this.archive.method133(var1) || this.archive.method132(var1)) {
-            ++this.field409;
+            ++this.loadedCount;
          }
       }
 
-      return this.field409 >= this.field408;
+      return this.loadedCount >= this.groupCount;
    }
 
    @ObfuscatedName("x")
@@ -147,8 +150,8 @@ public class ArchiveLoader {
          }
 
          Rasterizer2D.Rasterizer2D_fillRectangle(Login.xPadding, 23, 765, 480, 0);
-         Rasterizer2D.Rasterizer2D_drawGradient(Login.xPadding, 0, 125, 23, 0xbd9839, 0x8b6608);
-         Rasterizer2D.Rasterizer2D_drawGradient(Login.xPadding + 125, 0, 640, 23, 0x4f4f4f, 0x292929);
+         Rasterizer2D.Rasterizer2D_fillRectangleGradient(Login.xPadding, 0, 125, 23, 0xbd9839, 0x8b6608);
+         Rasterizer2D.Rasterizer2D_fillRectangleGradient(Login.xPadding + 125, 0, 640, 23, 0x4f4f4f, 0x292929);
          var0.drawCentered("Select a world", Login.xPadding + 62, 15, 0, -1);
          if (UrlRequest.worldSelectStars != null) {
             UrlRequest.worldSelectStars[1].drawAt(Login.xPadding + 140, 1);

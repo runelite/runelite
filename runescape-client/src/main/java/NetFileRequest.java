@@ -31,9 +31,9 @@ public class NetFileRequest extends DualNode {
    static final void method4555(Widget[] var0, int var1) {
       for (int var2 = 0; var2 < var0.length; ++var2) {
          Widget var3 = var0[var2];
-         if (var3 != null && var3.parentId == var1 && (!var3.isIf3 || !PacketBufferNode.method3673(var3))) {
+         if (var3 != null && var3.parentId == var1 && (!var3.isIf3 || !PacketBufferNode.isComponentHidden(var3))) {
             if (var3.type == 0) {
-               if (!var3.isIf3 && PacketBufferNode.method3673(var3) && var3 != Clock.mousedOverWidgetIf1) {
+               if (!var3.isIf3 && PacketBufferNode.isComponentHidden(var3) && var3 != Clock.mousedOverWidgetIf1) {
                   continue;
                }
 

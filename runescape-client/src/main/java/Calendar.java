@@ -74,7 +74,7 @@ public class Calendar {
                var6 = Interpreter.Interpreter_calendar.get(5);
                int var15 = Interpreter.Interpreter_calendar.get(2);
                int var16 = Interpreter.Interpreter_calendar.get(1);
-               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6 + "-" + Interpreter.field422[var15] + "-" + var16;
+               Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var6 + "-" + Interpreter.Interpreter_MONTHS[var15] + "-" + var16;
                return 1;
             } else if (var0 != ScriptOpcodes.TEXT_GENDER) {
                if (var0 == ScriptOpcodes.TOSTRING) {

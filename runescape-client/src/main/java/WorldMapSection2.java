@@ -298,7 +298,7 @@ public class WorldMapSection2 implements WorldMapSection {
       Client.field127 = null;
       Client.menuOptionsCount = 0;
       Client.isMenuOpen = false;
-      Client.field119.method256((int[])null, new int[]{0, 0, 0, 0, 0}, false, -1);
+      Client.playerAppearance.update((int[])null, new int[]{0, 0, 0, 0, 0}, false, -1);
 
       for (var0 = 0; var0 < 8; ++var0) {
          Client.playerMenuActions[var0] = null;

@@ -532,17 +532,17 @@ public class ModelData extends Entity {
          var50 = var2.readUnsignedByte();
          var51 = 0;
          if ((var50 & 1) != 0) {
-            var51 = var3.method47();
+            var51 = var3.readShortSmart();
          }
 
          var52 = 0;
          if ((var50 & 2) != 0) {
-            var52 = var4.method47();
+            var52 = var4.readShortSmart();
          }
 
          var53 = 0;
          if ((var50 & 4) != 0) {
-            var53 = var5.method47();
+            var53 = var5.readShortSmart();
          }
 
          this.verticesX[var49] = var46 + var51;
@@ -602,9 +602,9 @@ public class ModelData extends Entity {
       for (var53 = 0; var53 < var10; ++var53) {
          var54 = var3.readUnsignedByte();
          if (var54 == 1) {
-            var49 = var2.method47() + var52;
-            var50 = var2.method47() + var49;
-            var51 = var2.method47() + var50;
+            var49 = var2.readShortSmart() + var52;
+            var50 = var2.readShortSmart() + var49;
+            var51 = var2.readShortSmart() + var50;
             var52 = var51;
             this.indices1[var53] = var49;
             this.indices2[var53] = var50;
@@ -613,7 +613,7 @@ public class ModelData extends Entity {
 
          if (var54 == 2) {
             var50 = var51;
-            var51 = var2.method47() + var52;
+            var51 = var2.readShortSmart() + var52;
             var52 = var51;
             this.indices1[var53] = var49;
             this.indices2[var53] = var50;
@@ -622,7 +622,7 @@ public class ModelData extends Entity {
 
          if (var54 == 3) {
             var49 = var51;
-            var51 = var2.method47() + var52;
+            var51 = var2.readShortSmart() + var52;
             var52 = var51;
             this.indices1[var53] = var49;
             this.indices2[var53] = var50;
@@ -633,7 +633,7 @@ public class ModelData extends Entity {
             int var55 = var49;
             var49 = var50;
             var50 = var55;
-            var51 = var2.method47() + var52;
+            var51 = var2.readShortSmart() + var52;
             var52 = var51;
             this.indices1[var53] = var49;
             this.indices2[var53] = var55;
@@ -790,17 +790,17 @@ public class ModelData extends Entity {
          var39 = var4.readUnsignedByte();
          var40 = 0;
          if ((var39 & 1) != 0) {
-            var40 = var5.method47();
+            var40 = var5.readShortSmart();
          }
 
          var41 = 0;
          if ((var39 & 2) != 0) {
-            var41 = var6.method47();
+            var41 = var6.readShortSmart();
          }
 
          var42 = 0;
          if ((var39 & 4) != 0) {
-            var42 = var7.method47();
+            var42 = var7.readShortSmart();
          }
 
          this.verticesX[var38] = var35 + var40;
@@ -869,9 +869,9 @@ public class ModelData extends Entity {
       for (var42 = 0; var42 < var10; ++var42) {
          var43 = var5.readUnsignedByte();
          if (var43 == 1) {
-            var38 = var4.method47() + var41;
-            var39 = var4.method47() + var38;
-            var40 = var4.method47() + var39;
+            var38 = var4.readShortSmart() + var41;
+            var39 = var4.readShortSmart() + var38;
+            var40 = var4.readShortSmart() + var39;
             var41 = var40;
             this.indices1[var42] = var38;
             this.indices2[var42] = var39;
@@ -880,7 +880,7 @@ public class ModelData extends Entity {
 
          if (var43 == 2) {
             var39 = var40;
-            var40 = var4.method47() + var41;
+            var40 = var4.readShortSmart() + var41;
             var41 = var40;
             this.indices1[var42] = var38;
             this.indices2[var42] = var39;
@@ -889,7 +889,7 @@ public class ModelData extends Entity {
 
          if (var43 == 3) {
             var38 = var40;
-            var40 = var4.method47() + var41;
+            var40 = var4.readShortSmart() + var41;
             var41 = var40;
             this.indices1[var42] = var38;
             this.indices2[var42] = var39;
@@ -900,7 +900,7 @@ public class ModelData extends Entity {
             var44 = var38;
             var38 = var39;
             var39 = var44;
-            var40 = var4.method47() + var41;
+            var40 = var4.readShortSmart() + var41;
             var41 = var40;
             this.indices1[var42] = var38;
             this.indices2[var42] = var44;

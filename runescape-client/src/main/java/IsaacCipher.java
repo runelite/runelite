@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -10,33 +11,39 @@ public final class IsaacCipher {
    @ObfuscatedGetter(
       intValue = 1514845493
    )
-   int field428;
+   @Export("valuesRemaining")
+   int valuesRemaining;
    @ObfuscatedName("o")
-   int[] field429;
+   @Export("results")
+   int[] results;
    @ObfuscatedName("u")
-   int[] field430;
+   @Export("mm")
+   int[] mm;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -1670027699
    )
-   int field431;
+   @Export("aa")
+   int aa;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -325762649
    )
-   int field432;
+   @Export("bb")
+   int bb;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -1951204929
    )
-   int field433;
+   @Export("cc")
+   int cc;
 
-   public IsaacCipher(int[] var1) {
-      this.field430 = new int[256];
-      this.field429 = new int[256];
+   public IsaacCipher(int[] seed) {
+      this.mm = new int[256];
+      this.results = new int[256];
 
-      for (int var2 = 0; var2 < var1.length; ++var2) {
-         this.field429[var2] = var1[var2];
+      for (int var2 = 0; var2 < seed.length; ++var2) {
+         this.results[var2] = seed[var2];
       }
 
       this.method139();
@@ -47,13 +54,14 @@ public final class IsaacCipher {
       signature = "(I)I",
       garbageValue = "-7509790"
    )
-   final int method136() {
-      if (0 == --this.field428 + 1) {
-         this.method138();
-         this.field428 = 255;
+   @Export("nextInt")
+   final int nextInt() {
+      if (0 == --this.valuesRemaining + 1) {
+         this.generateMoreResults();
+         this.valuesRemaining = 255;
       }
 
-      return this.field429[this.field428];
+      return this.results[this.valuesRemaining];
    }
 
    @ObfuscatedName("f")
@@ -62,12 +70,12 @@ public final class IsaacCipher {
       garbageValue = "-506873526"
    )
    final int method137() {
-      if (this.field428 == 0) {
-         this.method138();
-         this.field428 = 256;
+      if (this.valuesRemaining == 0) {
+         this.generateMoreResults();
+         this.valuesRemaining = 256;
       }
 
-      return this.field429[this.field428 - 1];
+      return this.results[this.valuesRemaining - 1];
    }
 
    @ObfuscatedName("q")
@@ -75,27 +83,28 @@ public final class IsaacCipher {
       signature = "(B)V",
       garbageValue = "124"
    )
-   final void method138() {
-      this.field432 += ++this.field433;
+   @Export("generateMoreResults")
+   final void generateMoreResults() {
+      this.bb += ++this.cc;
 
       for (int var1 = 0; var1 < 256; ++var1) {
-         int var2 = this.field430[var1];
+         int var2 = this.mm[var1];
          if ((var1 & 2) == 0) {
             if ((var1 & 1) == 0) {
-               this.field431 ^= this.field431 << 13;
+               this.aa ^= this.aa << 13;
             } else {
-               this.field431 ^= this.field431 >>> 6;
+               this.aa ^= this.aa >>> 6;
             }
          } else if ((var1 & 1) == 0) {
-            this.field431 ^= this.field431 << 2;
+            this.aa ^= this.aa << 2;
          } else {
-            this.field431 ^= this.field431 >>> 16;
+            this.aa ^= this.aa >>> 16;
          }
 
-         this.field431 += this.field430[128 + var1 & 255];
+         this.aa += this.mm[128 + var1 & 255];
          int var3;
-         this.field430[var1] = var3 = this.field430[(var2 & 1020) >> 2] + this.field432 + this.field431;
-         this.field429[var1] = this.field432 = this.field430[(var3 >> 8 & 1020) >> 2] + var2;
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.bb + this.aa;
+         this.results[var1] = this.bb = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
@@ -106,14 +115,14 @@ public final class IsaacCipher {
       garbageValue = "579890110"
    )
    final void method139() {
-      int var1 = -1640531527;
-      int var2 = -1640531527;
-      int var3 = -1640531527;
-      int var4 = -1640531527;
-      int var5 = -1640531527;
-      int var6 = -1640531527;
-      int var7 = -1640531527;
-      int var8 = -1640531527;
+      int var1 = 0x9e3779b9;
+      int var2 = 0x9e3779b9;
+      int var3 = 0x9e3779b9;
+      int var4 = 0x9e3779b9;
+      int var5 = 0x9e3779b9;
+      int var6 = 0x9e3779b9;
+      int var7 = 0x9e3779b9;
+      int var8 = 0x9e3779b9;
 
       int var9;
       for (var9 = 0; var9 < 4; ++var9) {
@@ -144,14 +153,14 @@ public final class IsaacCipher {
       }
 
       for (var9 = 0; var9 < 256; var9 += 8) {
-         var8 += this.field429[var9];
-         var7 += this.field429[var9 + 1];
-         var6 += this.field429[var9 + 2];
-         var5 += this.field429[var9 + 3];
-         var4 += this.field429[var9 + 4];
-         var3 += this.field429[var9 + 5];
-         var2 += this.field429[var9 + 6];
-         var1 += this.field429[var9 + 7];
+         var8 += this.results[var9];
+         var7 += this.results[var9 + 1];
+         var6 += this.results[var9 + 2];
+         var5 += this.results[var9 + 3];
+         var4 += this.results[var9 + 4];
+         var3 += this.results[var9 + 5];
+         var2 += this.results[var9 + 6];
+         var1 += this.results[var9 + 7];
          var8 ^= var7 << 11;
          var5 += var8;
          var7 += var6;
@@ -176,25 +185,25 @@ public final class IsaacCipher {
          var1 ^= var8 >>> 9;
          var6 += var1;
          var8 += var7;
-         this.field430[var9] = var8;
-         this.field430[var9 + 1] = var7;
-         this.field430[var9 + 2] = var6;
-         this.field430[var9 + 3] = var5;
-         this.field430[var9 + 4] = var4;
-         this.field430[var9 + 5] = var3;
-         this.field430[var9 + 6] = var2;
-         this.field430[var9 + 7] = var1;
+         this.mm[var9] = var8;
+         this.mm[var9 + 1] = var7;
+         this.mm[var9 + 2] = var6;
+         this.mm[var9 + 3] = var5;
+         this.mm[var9 + 4] = var4;
+         this.mm[var9 + 5] = var3;
+         this.mm[var9 + 6] = var2;
+         this.mm[var9 + 7] = var1;
       }
 
       for (var9 = 0; var9 < 256; var9 += 8) {
-         var8 += this.field430[var9];
-         var7 += this.field430[var9 + 1];
-         var6 += this.field430[var9 + 2];
-         var5 += this.field430[var9 + 3];
-         var4 += this.field430[var9 + 4];
-         var3 += this.field430[var9 + 5];
-         var2 += this.field430[var9 + 6];
-         var1 += this.field430[var9 + 7];
+         var8 += this.mm[var9];
+         var7 += this.mm[var9 + 1];
+         var6 += this.mm[var9 + 2];
+         var5 += this.mm[var9 + 3];
+         var4 += this.mm[var9 + 4];
+         var3 += this.mm[var9 + 5];
+         var2 += this.mm[var9 + 6];
+         var1 += this.mm[var9 + 7];
          var8 ^= var7 << 11;
          var5 += var8;
          var7 += var6;
@@ -219,18 +228,18 @@ public final class IsaacCipher {
          var1 ^= var8 >>> 9;
          var6 += var1;
          var8 += var7;
-         this.field430[var9] = var8;
-         this.field430[var9 + 1] = var7;
-         this.field430[var9 + 2] = var6;
-         this.field430[var9 + 3] = var5;
-         this.field430[var9 + 4] = var4;
-         this.field430[var9 + 5] = var3;
-         this.field430[var9 + 6] = var2;
-         this.field430[var9 + 7] = var1;
+         this.mm[var9] = var8;
+         this.mm[var9 + 1] = var7;
+         this.mm[var9 + 2] = var6;
+         this.mm[var9 + 3] = var5;
+         this.mm[var9 + 4] = var4;
+         this.mm[var9 + 5] = var3;
+         this.mm[var9 + 6] = var2;
+         this.mm[var9 + 7] = var1;
       }
 
-      this.method138();
-      this.field428 = 256;
+      this.generateMoreResults();
+      this.valuesRemaining = 256;
    }
 
    @ObfuscatedName("m")
@@ -238,7 +247,8 @@ public final class IsaacCipher {
       signature = "(Lir;Lir;I)V",
       garbageValue = "75867683"
    )
-   public static void method4082(AbstractArchive var0, AbstractArchive var1) {
+   @Export("setNpcDefinitionArchives")
+   public static void setNpcDefinitionArchives(AbstractArchive var0, AbstractArchive var1) {
       NPCDefinition.NpcDefinition_archive = var0;
       NPCDefinition.NpcDefinition_modelArchive = var1;
    }

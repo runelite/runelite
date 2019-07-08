@@ -115,10 +115,10 @@ public class class171 {
          ByteArrayPool.archive13 = WorldMapRectangle.newArchive(13, true, false, true);
          class2.archive14 = WorldMapRectangle.newArchive(14, false, true, true);
          WorldMapSection2.archive15 = WorldMapRectangle.newArchive(15, false, true, true);
-         WorldMapRectangle.archive16 = WorldMapRectangle.newArchive(17, true, true, true);
-         WorldMapLabelSize.field1040 = WorldMapRectangle.newArchive(18, false, true, true);
-         ItemContainer.field434 = WorldMapRectangle.newArchive(19, false, true, true);
-         AbstractByteArrayCopier.field0 = WorldMapRectangle.newArchive(20, false, true, true);
+         WorldMapRectangle.archive17 = WorldMapRectangle.newArchive(17, true, true, true);
+         WorldMapLabelSize.archive18 = WorldMapRectangle.newArchive(18, false, true, true);
+         ItemContainer.archive19 = WorldMapRectangle.newArchive(19, false, true, true);
+         AbstractByteArrayCopier.archive20 = WorldMapRectangle.newArchive(20, false, true, true);
          Login.Login_loadingText = "Connecting to update server";
          Login.Login_loadingPercent = 20;
          Client.titleLoadingStage = 40;
@@ -140,10 +140,10 @@ public class class171 {
          var0 += ByteArrayPool.archive13.percentage() * 2 / 100;
          var0 += class2.archive14.percentage() * 2 / 100;
          var0 += WorldMapSection2.archive15.percentage() * 2 / 100;
-         var0 += ItemContainer.field434.percentage() / 100;
-         var0 += WorldMapLabelSize.field1040.percentage() / 100;
-         var0 += AbstractByteArrayCopier.field0.percentage() / 100;
-         var0 += WorldMapRectangle.archive16.method130() && WorldMapRectangle.archive16.method2() ? 1 : 0;
+         var0 += ItemContainer.archive19.percentage() / 100;
+         var0 += WorldMapLabelSize.archive18.percentage() / 100;
+         var0 += AbstractByteArrayCopier.archive20.percentage() / 100;
+         var0 += WorldMapRectangle.archive17.method130() && WorldMapRectangle.archive17.method2() ? 1 : 0;
          if (var0 != 100) {
             if (var0 != 0) {
                Login.Login_loadingText = "Checking for updates - " + var0 + "%";
@@ -161,11 +161,11 @@ public class class171 {
             AbstractWorldMapIcon.method625(Login.archive11, "Music Jingles");
             AbstractWorldMapIcon.method625(class2.archive14, "Music Samples");
             AbstractWorldMapIcon.method625(WorldMapSection2.archive15, "Music Patches");
-            AbstractWorldMapIcon.method625(ItemContainer.field434, "World Map");
-            AbstractWorldMapIcon.method625(WorldMapLabelSize.field1040, "World Map Geography");
-            AbstractWorldMapIcon.method625(AbstractByteArrayCopier.field0, "World Map Ground");
+            AbstractWorldMapIcon.method625(ItemContainer.archive19, "World Map");
+            AbstractWorldMapIcon.method625(WorldMapLabelSize.archive18, "World Map Geography");
+            AbstractWorldMapIcon.method625(AbstractByteArrayCopier.archive20, "World Map Ground");
             Calendar.spriteIds = new GraphicsDefaults();
-            Calendar.spriteIds.decode(WorldMapRectangle.archive16);
+            Calendar.spriteIds.decode(WorldMapRectangle.archive17);
             Login.Login_loadingText = "Loaded update list";
             Login.Login_loadingPercent = 30;
             Client.titleLoadingStage = 45;
@@ -230,9 +230,9 @@ public class class171 {
                   Archive var33 = class40.archive7;
                   KitDefinition.KitDefinition_archive = var31;
                   KitDefinition.field456 = var33;
-                  KitDefinition.field457 = KitDefinition.KitDefinition_archive.method4(3);
-                  RectangleMode.method6028(ObjectSound.archive2, class40.archive7, Client.isLowDetail);
-                  IsaacCipher.method4082(ObjectSound.archive2, class40.archive7);
+                  KitDefinition.KitDefinition_totalCount = KitDefinition.KitDefinition_archive.getGroupFileCount(3);
+                  RectangleMode.setObjectDefinitionArchives(ObjectSound.archive2, class40.archive7, Client.isLowDetail);
+                  IsaacCipher.setNpcDefinitionArchives(ObjectSound.archive2, class40.archive7);
                   var30 = ObjectSound.archive2;
                   StructDefinition.StructDefinition_archive = var30;
                   Archive var5 = ObjectSound.archive2;
@@ -242,7 +242,7 @@ public class class171 {
                   ItemDefinition.ItemDefinition_archive = var5;
                   ItemDefinition.ItemDefinition_modelArchive = var6;
                   class30.inMembersWorld = var7;
-                  class83.field1167 = ItemDefinition.ItemDefinition_archive.method4(10);
+                  class83.field1167 = ItemDefinition.ItemDefinition_archive.getGroupFileCount(10);
                   class204.field1122 = var8;
                   Archive var9 = ObjectSound.archive2;
                   Archive var10 = AbstractArchive.archive0;
@@ -257,7 +257,7 @@ public class class171 {
                   GrandExchangeOfferUnitPriceComparator.setVarbitDefinitionArchive(ObjectSound.archive2);
                   Archive var14 = ObjectSound.archive2;
                   VarpDefinition.field943 = var14;
-                  VarpDefinition.field944 = VarpDefinition.field943.method4(16);
+                  VarpDefinition.field944 = VarpDefinition.field943.getGroupFileCount(16);
                   Archive var15 = WorldMapIcon1.archive3;
                   Archive var16 = class40.archive7;
                   Archive var17 = WorldMapSection1.archive8;
@@ -266,8 +266,8 @@ public class class171 {
                   BufferedSource.field54 = var16;
                   Widget.field955 = var17;
                   class27.field1143 = var18;
-                  Widget.interfaceComponents = new Widget[Widget.Widget_archive.method5()][];
-                  Widget.loadedInterfaces = new boolean[Widget.Widget_archive.method5()];
+                  Widget.interfaceComponents = new Widget[Widget.Widget_archive.getGroupCount()][];
+                  Widget.loadedInterfaces = new boolean[Widget.Widget_archive.getGroupCount()];
                   Archive var19 = ObjectSound.archive2;
                   class4.InvDefinition_archive = var19;
                   Archive var20 = ObjectSound.archive2;
@@ -285,7 +285,7 @@ public class class171 {
                   Archive var25 = WorldMapSection1.archive8;
                   WorldMapElement.WorldMapElement_archive = var25;
                   if (var24.method2()) {
-                     UserComparator4.WorldMapElement_count = var24.method4(35);
+                     UserComparator4.WorldMapElement_count = var24.getGroupFileCount(35);
                      Widget.WorldMapElement_cached = new WorldMapElement[UserComparator4.WorldMapElement_count];
 
                      for (int var26 = 0; var26 < UserComparator4.WorldMapElement_count; ++var26) {
@@ -514,12 +514,12 @@ public class class171 {
                }
             } else if (Client.titleLoadingStage == 140) {
                Login.Login_loadingPercent = 100;
-               if (!ItemContainer.field434.tryLoadGroupByName(WorldMapCacheName.WorldMapCacheName_details.name)) {
-                  Login.Login_loadingText = "Loading world map - " + ItemContainer.field434.groupLoadPercentByName(WorldMapCacheName.WorldMapCacheName_details.name) / 10 + "%";
+               if (!ItemContainer.archive19.tryLoadGroupByName(WorldMapCacheName.WorldMapCacheName_details.name)) {
+                  Login.Login_loadingText = "Loading world map - " + ItemContainer.archive19.groupLoadPercentByName(WorldMapCacheName.WorldMapCacheName_details.name) / 10 + "%";
                } else {
                   if (class60.worldMap0 == null) {
                      class60.worldMap0 = new WorldMap();
-                     class60.worldMap0.init(ItemContainer.field434, WorldMapLabelSize.field1040, AbstractByteArrayCopier.field0, class2.fontBold12, Client.fontsMap, class192.mapSceneSprites);
+                     class60.worldMap0.init(ItemContainer.archive19, WorldMapLabelSize.archive18, AbstractByteArrayCopier.archive20, class2.fontBold12, Client.fontsMap, class192.mapSceneSprites);
                   }
 
                   Login.Login_loadingText = "Loaded world map";

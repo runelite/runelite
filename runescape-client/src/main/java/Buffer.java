@@ -9,9 +9,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Buffer")
 public class Buffer extends Node {
    @ObfuscatedName("q")
-   static int[] field45;
+   @Export("crc32Table")
+   static int[] crc32Table;
    @ObfuscatedName("o")
-   static long[] field46;
+   @Export("crc64Table")
+   static long[] crc64Table;
    @ObfuscatedName("m")
    @Export("array")
    public byte[] array;
@@ -163,7 +165,8 @@ public class Buffer extends Node {
       signature = "(Ljava/lang/CharSequence;B)V",
       garbageValue = "58"
    )
-   public void method37(CharSequence var1) {
+   @Export("writeCESU8")
+   public void writeCESU8(CharSequence var1) {
       int var2 = var1.length();
       int var3 = 0;
 
@@ -179,7 +182,7 @@ public class Buffer extends Node {
       }
 
       this.array[++this.index - 1] = 0;
-      this.method42(var3);
+      this.writeVarInt(var3);
       this.index += class16.method190(this.array, this.index, var1);
    }
 
@@ -188,9 +191,10 @@ public class Buffer extends Node {
       signature = "([BIII)V",
       garbageValue = "-1915344405"
    )
-   public void method38(byte[] var1, int var2, int var3) {
-      for (int var4 = var2; var4 < var3 + var2; ++var4) {
-         this.array[++this.index - 1] = var1[var4];
+   @Export("writeBytes")
+   public void writeBytes(byte[] bytes, int startIdx, int endIdx) {
+      for (int var4 = startIdx; var4 < endIdx + startIdx; ++var4) {
+         this.array[++this.index - 1] = bytes[var4];
       }
 
    }
@@ -200,7 +204,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-225163682"
    )
-   public void method39(int var1) {
+   @Export("writeLengthInt")
+   public void writeLengthInt(int var1) {
       this.array[this.index - var1 - 4] = (byte)(var1 >> 24);
       this.array[this.index - var1 - 3] = (byte)(var1 >> 16);
       this.array[this.index - var1 - 2] = (byte)(var1 >> 8);
@@ -212,7 +217,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-1298210761"
    )
-   public void method40(int var1) {
+   @Export("writeLengthShort")
+   public void writeLengthShort(int var1) {
       this.array[this.index - var1 - 2] = (byte)(var1 >> 8);
       this.array[this.index - var1 - 1] = (byte)var1;
    }
@@ -222,7 +228,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-1839722163"
    )
-   public void method41(int var1) {
+   @Export("writeLengthByte")
+   public void writeLengthByte(int var1) {
       this.array[this.index - var1 - 1] = (byte)var1;
    }
 
@@ -250,7 +257,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "820873705"
    )
-   public void method42(int var1) {
+   @Export("writeVarInt")
+   public void writeVarInt(int var1) {
       if ((var1 & -128) != 0) {
          if ((var1 & -16384) != 0) {
             if ((var1 & -2097152) != 0) {
@@ -306,7 +314,8 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "1"
    )
-   public int method44() {
+   @Export("readShort")
+   public int readShort() {
       this.index += 2;
       int var1 = (this.array[this.index - 1] & 255) + ((this.array[this.index - 2] & 255) << 8);
       if (var1 > 32767) {
@@ -417,12 +426,13 @@ public class Buffer extends Node {
       signature = "(B)Ljava/lang/String;",
       garbageValue = "-14"
    )
-   public String method45() {
+   @Export("readCESU8")
+   public String readCESU8() {
       byte var1 = this.array[++this.index - 1];
       if (var1 != 0) {
          throw new IllegalStateException("");
       } else {
-         int var2 = this.method52();
+         int var2 = this.readVarInt();
          if (var2 + this.index > this.array.length) {
             throw new IllegalStateException("");
          } else {
@@ -489,7 +499,8 @@ public class Buffer extends Node {
       signature = "([BIIB)V",
       garbageValue = "-122"
    )
-   public void method46(byte[] var1, int var2, int var3) {
+   @Export("readBytes")
+   public void readBytes(byte[] var1, int var2, int var3) {
       for (int var4 = var2; var4 < var3 + var2; ++var4) {
          var1[var4] = this.array[++this.index - 1];
       }
@@ -501,7 +512,8 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "-24"
    )
-   public int method47() {
+   @Export("readShortSmart")
+   public int readShortSmart() {
       int var1 = this.array[this.index] & 255;
       return var1 < 128 ? this.readUnsignedByte() - 64 : this.readUnsignedShort() - 49152;
    }
@@ -511,7 +523,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "1370512869"
    )
-   public int method48() {
+   @Export("readUShortSmart")
+   public int readUShortSmart() {
       int var1 = this.array[this.index] & 255;
       return var1 < 128 ? this.readUnsignedByte() : this.readUnsignedShort() - 32768;
    }
@@ -525,7 +538,7 @@ public class Buffer extends Node {
       int var1 = 0;
 
       int var2;
-      for (var2 = this.method48(); var2 == 32767; var2 = this.method48()) {
+      for (var2 = this.readUShortSmart(); var2 == 32767; var2 = this.readUShortSmart()) {
          var1 += 32767;
       }
 
@@ -561,7 +574,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "984135559"
    )
-   public int method52() {
+   @Export("readVarInt")
+   public int readVarInt() {
       byte var1 = this.array[++this.index - 1];
 
       int var2;
@@ -698,13 +712,13 @@ public class Buffer extends Node {
       int var3 = this.index;
       this.index = 0;
       byte[] var4 = new byte[var3];
-      this.method46(var4, 0, var3);
+      this.readBytes(var4, 0, var3);
       BigInteger var5 = new BigInteger(var4);
       BigInteger var6 = var5.modPow(var1, var2);
       byte[] var7 = var6.toByteArray();
       this.index = 0;
       this.writeShort(var7.length);
-      this.method38(var7, 0, var7.length);
+      this.writeBytes(var7, 0, var7.length);
    }
 
    @ObfuscatedName("aa")
@@ -712,13 +726,14 @@ public class Buffer extends Node {
       signature = "(II)I",
       garbageValue = "-484928770"
    )
-   public int method53(int var1) {
+   @Export("writeCrc")
+   public int writeCrc(int var1) {
       byte[] var2 = this.array;
       int var3 = this.index;
       int var4 = -1;
 
       for (int var5 = var1; var5 < var3; ++var5) {
-         var4 = var4 >>> 8 ^ field45[(var4 ^ var2[var5]) & 255];
+         var4 = var4 >>> 8 ^ crc32Table[(var4 ^ var2[var5]) & 255];
       }
 
       var4 = ~var4;
@@ -731,7 +746,8 @@ public class Buffer extends Node {
       signature = "(B)Z",
       garbageValue = "-11"
    )
-   public boolean method54() {
+   @Export("checkCrc")
+   public boolean checkCrc() {
       this.index -= 4;
       byte[] var1 = this.array;
       int var2 = this.index;
@@ -739,7 +755,7 @@ public class Buffer extends Node {
 
       int var4;
       for (var4 = 0; var4 < var2; ++var4) {
-         var3 = var3 >>> 8 ^ field45[(var3 ^ var1[var4]) & 255];
+         var3 = var3 >>> 8 ^ crc32Table[(var3 ^ var1[var4]) & 255];
       }
 
       var3 = ~var3;
@@ -1023,7 +1039,7 @@ public class Buffer extends Node {
    }
 
    static {
-      field45 = new int[256];
+      crc32Table = new int[256];
 
       int var0;
       for (int var1 = 0; var1 < 256; ++var1) {
@@ -1037,10 +1053,10 @@ public class Buffer extends Node {
             }
          }
 
-         field45[var1] = var2;
+         crc32Table[var1] = var2;
       }
 
-      field46 = new long[256];
+      crc64Table = new long[256];
 
       for (var0 = 0; var0 < 256; ++var0) {
          long var4 = (long)var0;
@@ -1053,7 +1069,7 @@ public class Buffer extends Node {
             }
          }
 
-         field46[var0] = var4;
+         crc64Table[var0] = var4;
       }
 
    }

@@ -172,7 +172,8 @@ public class Decimator {
       signature = "(Ldu;IIII)Z",
       garbageValue = "555449756"
    )
-   static final boolean method2491(Model var0, int var1, int var2, int var3) {
+   @Export("boundingBoxCheck")
+   static final boolean boundingBoxCheck(Model model, int x, int y, int z) {
       boolean var4 = ViewportMouse.ViewportMouse_isInViewport;
       if (!var4) {
          return false;
@@ -219,12 +220,12 @@ public class Decimator {
             class248.field1142 = Math.abs(Skeleton.field874);
          }
 
-         var5 = var0.xMid + var1;
-         var6 = var2 + var0.yMid;
-         var7 = var3 + var0.zMid;
-         var8 = var0.xMidOffset;
-         var12 = var0.yMidOffset;
-         var13 = var0.zMidOffset;
+         var5 = model.xMid + x;
+         var6 = y + model.yMid;
+         var7 = z + model.zMid;
+         var8 = model.xMidOffset;
+         var12 = model.yMidOffset;
+         var13 = model.zMidOffset;
          var9 = AccessFile.field7 - var5;
          var10 = ViewportMouse.field951 - var6;
          var11 = ViewportMouse.field952 - var7;

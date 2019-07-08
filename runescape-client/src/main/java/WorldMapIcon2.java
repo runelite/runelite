@@ -115,7 +115,8 @@ public class WorldMapIcon2 extends AbstractWorldMapIcon {
       signature = "(I)[Lgl;",
       garbageValue = "1026409510"
    )
-   static LoginPacket[] method300() {
+   @Export("LoginPacket_values")
+   static LoginPacket[] LoginPacket_values() {
       return new LoginPacket[]{LoginPacket.field475, LoginPacket.field476, LoginPacket.field473, LoginPacket.field477, LoginPacket.field474};
    }
 

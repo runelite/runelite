@@ -246,19 +246,19 @@ public abstract class class21 {
                   var8 = -1;
                   var9 = -1;
                   var12 = -1;
-                  var11 = var0.method48();
+                  var11 = var0.readUShortSmart();
                   if (var11 == 32767) {
-                     var11 = var0.method48();
-                     var9 = var0.method48();
-                     var8 = var0.method48();
-                     var12 = var0.method48();
+                     var11 = var0.readUShortSmart();
+                     var9 = var0.readUShortSmart();
+                     var8 = var0.readUShortSmart();
+                     var12 = var0.readUShortSmart();
                   } else if (var11 != 32766) {
-                     var9 = var0.method48();
+                     var9 = var0.readUShortSmart();
                   } else {
                      var11 = -1;
                   }
 
-                  var13 = var0.method48();
+                  var13 = var0.readUShortSmart();
                   var3.addHitSplat(var11, var9, var8, var12, Client.cycle, var13);
                }
             }
@@ -266,10 +266,10 @@ public abstract class class21 {
             var7 = var0.readUnsignedByteNegate();
             if (var7 > 0) {
                for (var11 = 0; var11 < var7; ++var11) {
-                  var8 = var0.method48();
-                  var9 = var0.method48();
+                  var8 = var0.readUShortSmart();
+                  var9 = var0.readUShortSmart();
                   if (var9 != 32767) {
-                     var12 = var0.method48();
+                     var12 = var0.readUShortSmart();
                      var13 = var0.method58();
                      var10 = var9 > 0 ? var0.readUnsignedByte() : var13;
                      var3.addHealthBar(var8, Client.cycle, var9, var12, var13, var10);
@@ -382,7 +382,7 @@ public abstract class class21 {
 
                if (!var19 && Client.field208 == 0 && !var3.isHidden) {
                   Players.field738.index = 0;
-                  var0.method46(Players.field738.array, 0, var8);
+                  var0.readBytes(Players.field738.array, 0, var8);
                   Players.field738.index = 0;
                   String var14 = AbstractFont.escapeBrackets(class233.method4527(KitDefinition.method4866(Players.field738)));
                   var3.overheadText = var14.trim();

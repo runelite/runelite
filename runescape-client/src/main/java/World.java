@@ -17,7 +17,8 @@ public class World {
    @ObfuscatedGetter(
       intValue = 1143875805
    )
-   static int field987;
+   @Export("worldListWorldCount")
+   static int worldListWorldCount;
    @ObfuscatedName("l")
    @Export("sortOption2")
    static int[] sortOption2;
@@ -136,7 +137,7 @@ public class World {
 
    static {
       worldsCount = 0;
-      field987 = 0;
+      worldListWorldCount = 0;
       sortOption2 = new int[]{1, 1, 1, 1};
       sortOption1 = new int[]{0, 1, 2, 3};
    }

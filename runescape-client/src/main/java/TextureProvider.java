@@ -69,7 +69,7 @@ public class TextureProvider implements TextureLoader {
       this.textureSize = var6;
       int[] var7 = var1.method3(0);
       int var8 = var7.length;
-      this.textures = new Texture[var1.method4(0)];
+      this.textures = new Texture[var1.getGroupFileCount(0)];
 
       for (int var9 = 0; var9 < var8; ++var9) {
          Buffer var10 = new Buffer(var1.takeFile(0, var7[var9]));
@@ -277,7 +277,7 @@ public class TextureProvider implements TextureLoader {
          while (true) {
             int var13;
             while (!var8) {
-               var13 = var4.method48();
+               var13 = var4.readUShortSmart();
                if (var13 == 0) {
                   continue label56;
                }
@@ -301,7 +301,7 @@ public class TextureProvider implements TextureLoader {
                }
             }
 
-            var13 = var4.method48();
+            var13 = var4.readUShortSmart();
             if (var13 == 0) {
                break;
             }

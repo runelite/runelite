@@ -56,10 +56,10 @@ public final class class238 {
          Widget var9 = components[var8];
          if (var9 != null && var9.parentId == parentId && (!var9.isIf3 || var9.type == 0 || var9.hasListener || class1.getWidgetClickMask(var9) != 0 || var9 == Client.clickedWidgetParent || var9.contentType == 1338)) {
             if (var9.isIf3) {
-               if (PacketBufferNode.method3673(var9)) {
+               if (PacketBufferNode.isComponentHidden(var9)) {
                   continue;
                }
-            } else if (var9.type == 0 && var9 != Clock.mousedOverWidgetIf1 && PacketBufferNode.method3673(var9)) {
+            } else if (var9.type == 0 && var9 != Clock.mousedOverWidgetIf1 && PacketBufferNode.isComponentHidden(var9)) {
                continue;
             }
 

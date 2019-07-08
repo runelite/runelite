@@ -236,7 +236,8 @@ public final class Client extends GameShell implements Usernamed {
    @ObfuscatedSignature(
       signature = "Lhi;"
    )
-   static PlayerAppearance field119;
+   @Export("playerAppearance")
+   static PlayerAppearance playerAppearance;
    @ObfuscatedName("qa")
    @ObfuscatedGetter(
       intValue = -1481002083
@@ -1518,7 +1519,7 @@ public final class Client extends GameShell implements Usernamed {
                               var10 = 0;
 
                               while (true) {
-                                 var11 = var26.method48();
+                                 var11 = var26.readUShortSmart();
                                  if (var11 == 0) {
                                     break;
                                  }
@@ -2499,9 +2500,9 @@ public final class Client extends GameShell implements Usernamed {
                                     var31 = var15.readStringCp1252NullCircumfixed();
                                  }
                               } else {
-                                 var30 = var15.method45();
+                                 var30 = var15.readCESU8();
                                  if (var11 == 1) {
-                                    var31 = var15.method45();
+                                    var31 = var15.readCESU8();
                                  }
                               }
 
@@ -3321,7 +3322,7 @@ public final class Client extends GameShell implements Usernamed {
             var8.packetBuffer.writeInt(180);
             var8.packetBuffer.writeInt(1);
             var8.packetBuffer.writeByte(clientType);
-            var8.packetBuffer.method38(var6.array, 0, var6.index);
+            var8.packetBuffer.writeBytes(var6.array, 0, var6.index);
             int var10 = var8.packetBuffer.index;
             var8.packetBuffer.writeStringCp1252NullTerminated(Login.Login_username);
             var8.packetBuffer.writeByte((isResizable ? 1 : 0) << 1 | (isLowDetail ? 1 : 0));
@@ -3332,7 +3333,7 @@ public final class Client extends GameShell implements Usernamed {
             var8.packetBuffer.writeInt(AbstractArchive.field2);
             Buffer var11 = new Buffer(WorldMapLabelSize.platformInfo.size());
             WorldMapLabelSize.platformInfo.write(var11);
-            var8.packetBuffer.method38(var11.array, 0, var11.array.length);
+            var8.packetBuffer.writeBytes(var11.array, 0, var11.array.length);
             var8.packetBuffer.writeByte(clientType);
             var8.packetBuffer.writeInt(0);
             var8.packetBuffer.writeInt(AbstractArchive.archive0.hash);
@@ -3352,12 +3353,12 @@ public final class Client extends GameShell implements Usernamed {
             var8.packetBuffer.writeInt(class2.archive14.hash);
             var8.packetBuffer.writeInt(WorldMapSection2.archive15.hash);
             var8.packetBuffer.writeInt(0);
-            var8.packetBuffer.writeInt(WorldMapRectangle.archive16.hash);
-            var8.packetBuffer.writeInt(WorldMapLabelSize.field1040.hash);
-            var8.packetBuffer.writeInt(ItemContainer.field434.hash);
-            var8.packetBuffer.writeInt(AbstractByteArrayCopier.field0.hash);
+            var8.packetBuffer.writeInt(WorldMapRectangle.archive17.hash);
+            var8.packetBuffer.writeInt(WorldMapLabelSize.archive18.hash);
+            var8.packetBuffer.writeInt(ItemContainer.archive19.hash);
+            var8.packetBuffer.writeInt(AbstractByteArrayCopier.archive20.hash);
             var8.packetBuffer.xteaEncrypt(var7, var10, var8.packetBuffer.index);
-            var8.packetBuffer.method40(var8.packetBuffer.index - var9);
+            var8.packetBuffer.writeLengthShort(var8.packetBuffer.index - var9);
             packetWriter.method241(var8);
             packetWriter.method240();
             packetWriter.isaacCipher = new IsaacCipher(var7);
@@ -3650,7 +3651,7 @@ public final class Client extends GameShell implements Usernamed {
                      var6.packetBuffer.writeByte(0);
                      var7 = var6.packetBuffer.index;
                      timer.write(var6.packetBuffer);
-                     var6.packetBuffer.method41(var6.packetBuffer.index - var7);
+                     var6.packetBuffer.writeLengthByte(var6.packetBuffer.index - var7);
                      packetWriter.method241(var6);
                      timer.method333();
                   }
@@ -3746,7 +3747,7 @@ public final class Client extends GameShell implements Usernamed {
                         }
 
                         if (var5 != null) {
-                           var5.packetBuffer.method41(var5.packetBuffer.index - var4);
+                           var5.packetBuffer.writeLengthByte(var5.packetBuffer.index - var4);
                            var12 = var5.packetBuffer.index;
                            var5.packetBuffer.index = var4;
                            var5.packetBuffer.writeByte(var10 / var11);
@@ -3815,7 +3816,7 @@ public final class Client extends GameShell implements Usernamed {
                         var6.packetBuffer.writeMedium((int)var21);
                      }
 
-                     var6.packetBuffer.method40(var6.packetBuffer.index - var7);
+                     var6.packetBuffer.writeLengthShort(var6.packetBuffer.index - var7);
                      packetWriter.method241(var6);
                   }
 
@@ -4267,7 +4268,7 @@ public final class Client extends GameShell implements Usernamed {
                var5.packetBuffer.writeByte(0);
                var4 = var5.packetBuffer.index;
                WorldMapLabel.method443(var5.packetBuffer);
-               var5.packetBuffer.method41(var5.packetBuffer.index - var4);
+               var5.packetBuffer.writeLengthByte(var5.packetBuffer.index - var4);
                packetWriter.method241(var5);
             }
          }
@@ -4628,7 +4629,7 @@ public final class Client extends GameShell implements Usernamed {
 
             Widget var8;
             if (ServerPacket.field850 == var1.serverPacket0) {
-               var38 = var3.method44();
+               var38 = var3.readShort();
                var6 = var3.method73();
                var8 = Huffman.getWidget(var6);
                if (var38 != var8.sequenceId || var38 == -1) {
@@ -4969,7 +4970,7 @@ public final class Client extends GameShell implements Usernamed {
             String var17;
             boolean var18;
             if (ServerPacket.field792 == var1.serverPacket0) {
-               var38 = var3.method48();
+               var38 = var3.readUShortSmart();
                var14 = var3.readUnsignedByte() == 1;
                var17 = "";
                var18 = false;
@@ -5142,7 +5143,7 @@ public final class Client extends GameShell implements Usernamed {
                }
 
                for (; var3.index < var1.serverPacket0Length; WorldMapManager.itemContainerSetItem(var6, var10, var11 - 1, var12)) {
-                  var10 = var3.method48();
+                  var10 = var3.readUShortSmart();
                   var11 = var3.readUnsignedShort();
                   var12 = 0;
                   if (var11 != 0) {
@@ -5502,7 +5503,7 @@ public final class Client extends GameShell implements Usernamed {
 
             if (ServerPacket.field846 == var1.serverPacket0) {
                var3.index += 28;
-               if (var3.method54()) {
+               if (var3.checkCrc()) {
                   class234.method4535(var3, var3.index - 28);
                }
 
@@ -5546,7 +5547,7 @@ public final class Client extends GameShell implements Usernamed {
 
             if (ServerPacket.field860 == var1.serverPacket0) {
                GrandExchangeOfferAgeComparator.method159();
-               weight = var3.method44();
+               weight = var3.readShort();
                field124 = cycleCntr;
                var1.serverPacket0 = null;
                return true;
@@ -6528,7 +6529,7 @@ public final class Client extends GameShell implements Usernamed {
       viewportWidth = 0;
       viewportHeight = 0;
       viewportZoom = 0;
-      field119 = new PlayerAppearance();
+      playerAppearance = new PlayerAppearance();
       field118 = -1;
       field120 = -1;
       platformInfoProvider = new DesktopPlatformInfoProvider();

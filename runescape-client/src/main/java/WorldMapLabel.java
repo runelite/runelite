@@ -148,7 +148,7 @@ public class WorldMapLabel {
             }
          }
 
-         var0.method53(var2);
+         var0.writeCrc(var2);
          var1.remove();
       }
 

@@ -13,8 +13,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("WorldMapManager")
 public final class WorldMapManager {
    @ObfuscatedName("m")
-   @Export("isLoaded0")
-   boolean isLoaded0;
+   @Export("loaded")
+   boolean loaded;
    @ObfuscatedName("f")
    @Export("loadStarted")
    boolean loadStarted;
@@ -92,7 +92,7 @@ public final class WorldMapManager {
       signature = "([Llq;Ljava/util/HashMap;Lir;Lir;)V"
    )
    public WorldMapManager(IndexedSprite[] var1, HashMap var2, AbstractArchive var3, AbstractArchive var4) {
-      this.isLoaded0 = false;
+      this.loaded = false;
       this.loadStarted = false;
       this.field1045 = new HashMap();
       this.field1050 = 0;
@@ -108,15 +108,15 @@ public final class WorldMapManager {
       garbageValue = "32"
    )
    @Export("load")
-   public void load(AbstractArchive indexCache, String cacheName, boolean isMembersWorld) {
+   public void load(AbstractArchive archive, String cacheName, boolean isMembersWorld) {
       if (!this.loadStarted) {
-         this.isLoaded0 = false;
+         this.loaded = false;
          this.loadStarted = true;
          System.nanoTime();
-         int var4 = indexCache.getGroupId(WorldMapCacheName.WorldMapCacheName_details.name);
-         int var5 = indexCache.getFileId(var4, cacheName);
-         Buffer var6 = new Buffer(indexCache.takeFileByNames(WorldMapCacheName.WorldMapCacheName_details.name, cacheName));
-         Buffer var7 = new Buffer(indexCache.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, cacheName));
+         int var4 = archive.getGroupId(WorldMapCacheName.WorldMapCacheName_details.name);
+         int var5 = archive.getFileId(var4, cacheName);
+         Buffer var6 = new Buffer(archive.takeFileByNames(WorldMapCacheName.WorldMapCacheName_details.name, cacheName));
+         Buffer var7 = new Buffer(archive.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeMap.name, cacheName));
          System.nanoTime();
          System.nanoTime();
          this.mapAreaData = new WorldMapAreaData();
@@ -164,15 +164,15 @@ public final class WorldMapManager {
 
          System.nanoTime();
          System.nanoTime();
-         if (indexCache.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName)) {
-            byte[] var18 = indexCache.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName);
+         if (archive.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName)) {
+            byte[] var18 = archive.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName);
             this.overviewSprite = class27.convertJpgToSprite(var18);
          }
 
          System.nanoTime();
-         indexCache.method6();
-         indexCache.method8();
-         this.isLoaded0 = true;
+         archive.method6();
+         archive.method8();
+         this.loaded = true;
       }
 
    }
@@ -315,7 +315,7 @@ public final class WorldMapManager {
    )
    public List method403(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
       LinkedList var11 = new LinkedList();
-      if (!this.isLoaded0) {
+      if (!this.loaded) {
          return var11;
       } else {
          WorldMapRectangle var12 = this.method643(var1, var2, var3, var4);
@@ -386,7 +386,7 @@ public final class WorldMapManager {
    )
    @Export("isLoaded")
    public boolean isLoaded() {
-      return this.isLoaded0;
+      return this.loaded;
    }
 
    @ObfuscatedName("e")

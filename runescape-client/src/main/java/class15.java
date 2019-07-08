@@ -169,40 +169,40 @@ public class class15 extends class21 {
       signature = "(Lho;I)V",
       garbageValue = "1585987978"
    )
-   static final void method186(Widget var0) {
-      int var1 = var0.contentType;
+   static final void method186(Widget component) {
+      int var1 = component.contentType;
       if (var1 == 324) {
          if (Client.field118 == -1) {
-            Client.field118 = var0.spriteId2;
-            Client.field120 = var0.spriteId;
+            Client.field118 = component.spriteId2;
+            Client.field120 = component.spriteId;
          }
 
-         if (Client.field119.isFemale) {
-            var0.spriteId2 = Client.field118;
+         if (Client.playerAppearance.isFemale) {
+            component.spriteId2 = Client.field118;
          } else {
-            var0.spriteId2 = Client.field120;
+            component.spriteId2 = Client.field120;
          }
       } else if (var1 == 325) {
          if (Client.field118 == -1) {
-            Client.field118 = var0.spriteId2;
-            Client.field120 = var0.spriteId;
+            Client.field118 = component.spriteId2;
+            Client.field120 = component.spriteId;
          }
 
-         if (Client.field119.isFemale) {
-            var0.spriteId2 = Client.field120;
+         if (Client.playerAppearance.isFemale) {
+            component.spriteId2 = Client.field120;
          } else {
-            var0.spriteId2 = Client.field118;
+            component.spriteId2 = Client.field118;
          }
       } else if (var1 == 327) {
-         var0.modelAngleX = 150;
-         var0.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 0;
+         component.modelAngleX = 150;
+         component.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
+         component.modelType = 5;
+         component.modelId = 0;
       } else if (var1 == 328) {
-         var0.modelAngleX = 150;
-         var0.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 1;
+         component.modelAngleX = 150;
+         component.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
+         component.modelType = 5;
+         component.modelId = 1;
       }
 
    }
