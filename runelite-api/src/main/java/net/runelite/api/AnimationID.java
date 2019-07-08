@@ -164,6 +164,7 @@ public final class AnimationID
 	public static final int BLOCK_SHIELD = 1156;
 	public static final int BLOCK_SWORD = 388;
 	public static final int BLOCK_UNARMED = 424; // Same Animation as failed pickpocked
+	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
 
 	// NPC animations
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;

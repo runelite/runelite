@@ -119,14 +119,13 @@ public class SafeSpotPlugin extends Plugin
 				updateSafeSpots();
 			}
 		}
+		else if (tickCount > 0)
+		{
+			tickCount--;
+		}
 		else
 		{
 			safeSpotsRenderable = false;
-		}
-		if (tickCount > 0)
-		{
-			tickCount--;
-			safeSpotsRenderable = true;
 		}
 	}
 

@@ -1622,4 +1622,20 @@ public abstract class RSClientMixin implements RSClient
 
 		return hideFriendAttackOptions && (p.isFriended() || p.isClanMember());
 	}
+
+	@Inject
+	@Override
+	public void addFriend(String friend)
+	{
+		RSFriendSystem friendSystem = getFriendManager();
+		friendSystem.addFriend(friend);
+	}
+
+	@Inject
+	@Override
+	public void removeFriend(String friend)
+	{
+		RSFriendSystem friendSystem = getFriendManager();
+		friendSystem.removeFriend(friend);
+	}
 }

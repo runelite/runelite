@@ -515,10 +515,16 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	void doNotification()
 	{
+		if (!this.sendNotification)
+		{
+			return;
+		}
+
 		if (hasSentNotification)
 		{
 			return;
 		}
+
 		final Player local = client.getLocalPlayer();
 		hasSentNotification = true;
 		notifier.notify("[" + local.getName() + "]'s aggression timer has run out!");
