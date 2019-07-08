@@ -271,8 +271,16 @@ public class WorldArea
 
 		LocalPoint lp = LocalPoint.fromWorld(client, x, y);
 
-		int startX = lp.getSceneX() + dx;
-		int startY = lp.getSceneY() + dy;
+		int startX = 0;
+		if (lp != null)
+		{
+			startX = lp.getSceneX() + dx;
+		}
+		int startY = 0;
+		if (lp != null)
+		{
+			startY = lp.getSceneY() + dy;
+		}
 		int checkX = startX + (dx > 0 ? width - 1 : 0);
 		int checkY = startY + (dy > 0 ? height - 1 : 0);
 		int endX = startX + width - 1;
