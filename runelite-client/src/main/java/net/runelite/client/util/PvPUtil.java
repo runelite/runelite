@@ -36,7 +36,7 @@ public class PvPUtil
 	 * @param point the point in the world to get the wilderness level for
 	 * @return the int representing the wilderness level
 	 */
-	public static int getWildernessLevelFrom(WorldPoint point)
+	private static int getWildernessLevelFrom(WorldPoint point)
 	{
 		int y = point.getY();
 
