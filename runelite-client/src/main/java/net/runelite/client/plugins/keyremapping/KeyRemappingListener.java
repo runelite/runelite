@@ -190,8 +190,12 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 		{
 			switch (e.getKeyCode())
 			{
-				case KeyEvent.VK_ENTER:
 				case KeyEvent.VK_ESCAPE:
+					// When existing typing mode, block the escape key
+					// so that it doesn't trigger the in-game hotkeys
+					e.consume();
+					// FALLTHROUGH
+				case KeyEvent.VK_ENTER:
 					plugin.setTyping(false);
 					clientThread.invoke(plugin::lockChat);
 					break;
