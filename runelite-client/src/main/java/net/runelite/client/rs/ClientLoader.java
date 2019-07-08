@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ClientLoader
 {
 	private final ClientConfigLoader clientConfigLoader;
-	private ClientUpdateCheckMode updateCheckMode;
+	private final ClientUpdateCheckMode updateCheckMode;
 	public static boolean useLocalInjected = false;
 
 	@Inject
