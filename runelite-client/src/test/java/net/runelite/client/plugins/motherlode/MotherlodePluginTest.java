@@ -101,6 +101,8 @@ public class MotherlodePluginTest
 	{
 		// set inMlm
 		GameStateChanged gameStateChanged = new GameStateChanged();
+		gameStateChanged.setGameState(GameState.LOADING);
+		motherlodePlugin.onGameStateChanged(gameStateChanged);
 		gameStateChanged.setGameState(GameState.LOGGED_IN);
 		motherlodePlugin.onGameStateChanged(gameStateChanged);
 
