@@ -27,7 +27,6 @@ package net.runelite.client.plugins.chatfilter;
 
 import com.google.common.base.Splitter;
 import com.google.inject.Provides;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
