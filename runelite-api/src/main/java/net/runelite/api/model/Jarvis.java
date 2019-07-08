@@ -125,8 +125,7 @@ public class Jarvis
 
 	private static long crossProduct(Point p, Point q, Point r)
 	{
-		long val = (long)(q.getY() - p.getY()) * (r.getX() - q.getX())
+		return (long)(q.getY() - p.getY()) * (r.getX() - q.getX())
 			- (long)(q.getX() - p.getX()) * (r.getY() - q.getY());
-		return val;
 	}
 }

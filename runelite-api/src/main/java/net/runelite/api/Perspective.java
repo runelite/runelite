@@ -317,12 +317,6 @@ public class Perspective
 		final int neX = localLocation.getX() + (size * LOCAL_TILE_SIZE / 2);
 		final int neY = localLocation.getY() + (size * LOCAL_TILE_SIZE / 2);
 
-		final int seX = swX;
-		final int seY = neY;
-
-		final int nwX = neX;
-		final int nwY = swY;
-
 		final byte[][][] tileSettings = client.getTileSettings();
 
 		final int sceneX = localLocation.getSceneX();
@@ -340,14 +334,14 @@ public class Perspective
 		}
 
 		final int swHeight = getHeight(client, swX, swY, tilePlane);
-		final int nwHeight = getHeight(client, nwX, nwY, tilePlane);
+		final int nwHeight = getHeight(client, neX, swY, tilePlane);
 		final int neHeight = getHeight(client, neX, neY, tilePlane);
-		final int seHeight = getHeight(client, seX, seY, tilePlane);
+		final int seHeight = getHeight(client, swX, neY, tilePlane);
 
 		Point p1 = localToCanvas(client, swX, swY, swHeight);
-		Point p2 = localToCanvas(client, nwX, nwY, nwHeight);
+		Point p2 = localToCanvas(client, neX, swY, nwHeight);
 		Point p3 = localToCanvas(client, neX, neY, neHeight);
-		Point p4 = localToCanvas(client, seX, seY, seHeight);
+		Point p4 = localToCanvas(client, swX, neY, seHeight);
 
 		if (p1 == null || p2 == null || p3 == null || p4 == null)
 		{
