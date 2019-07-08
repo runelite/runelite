@@ -130,6 +130,7 @@ public class RaidsPlugin extends Plugin
 		"FSCCP.PCSCF - #WNWSWN#ESEENW", //both good crabs
 		"SCSPF.CCSPF - #ESWWNW#ESENES", //both good crabs
 		"SPCFC.CSPCF - #WWNEEE#WSWNWS", //both good crabs
+		"SCPFC.CSPCF - #NEEESW#WWNEEE", //rare crabs first good crabs second
 		"SCFCP.CCSPF - #ESEENW#ESWWNW", //bad crabs first good crabs second
 		"SCPFC.CSPSF - #WWSEEE#NWSWWN", //bad crabs first good crabs second
 		"SFCCS.PCPSF - #ENWWSW#ENESEN", //bad crabs first good crabs second
@@ -143,6 +144,7 @@ public class RaidsPlugin extends Plugin
 		"SCPFC.CCPSF - #NWWWSE#WNEESE" //both rare crabs
 	);
 	private static final ImmutableSet<String> RARE_CRABS_SECOND = ImmutableSet.of(
+		"SCPFC.CCPSF - #NWWWSE#WNEESE", //both rare crabs
 		"FSCPC.CSCPF - #WNWWSE#EENWWW", //bad crabs first rare crabs second
 		"SCFPC.PCCSF - #WSEENE#WWWSEE", //bad crabs first rare crabs second
 		"SCFPC.SCPCF - #NESENE#WSWWNE", //bad crabs first rare crabs second
