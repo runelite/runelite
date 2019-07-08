@@ -15,16 +15,7 @@ import org.codehaus.plexus.util.FileUtils;
 
 public class Bootstrap
 {
-	class Artifact
-	{
-		String hash;
-		String name;
-		String path;
-		String size;
-	}
-
-	String buildCommit = "2d0c2b8eb66a8088b41b29d42ec2a58ead460581";
-	private Artifact[] artifacts = getArtifacts();
+	String buildCommit = "b82c8903c64695d44b255d45b449440e4eaa17ef";
 	Client client = new Client();
 	String[] clientJvm9Arguments = new String[]{
 		"-XX:+DisableAttachMechanism",
@@ -53,7 +44,7 @@ public class Bootstrap
 		"-XX:+UseConcMarkSweepGC",
 		"-XX:+UseParNewGC",
 		"-Djna.nosys=true"};
-
+	private Artifact[] artifacts = getArtifacts();
 	Bootstrap()
 	{
 	}
@@ -77,20 +68,14 @@ public class Bootstrap
 		try (DigestInputStream dis = new DigestInputStream(new FileInputStream(filepath), md))
 		{
 			//empty loop to clear the data
-			while (dis.read() != -1);
+			while (dis.read() != -1)
+			{
+			}
 			md = dis.getMessageDigest();
 		}
 
 		return bytesToHex(md.digest());
 
-	}
-
-	public void copyTodir(String origPath, String newPath) {
-		try {
-			FileUtils.copyFileToDirectory(new File(origPath), new File(newPath));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private static String bytesToHex(byte[] hashInBytes)
@@ -103,6 +88,18 @@ public class Bootstrap
 		}
 		return sb.toString();
 
+	}
+
+	public void copyTodir(String origPath, String newPath)
+	{
+		try
+		{
+			FileUtils.copyFileToDirectory(new File(origPath), new File(newPath));
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	private Artifact[] getArtifacts()
@@ -346,6 +343,14 @@ public class Bootstrap
 	{
 		File f = new File(fileLocation);
 		return f.length();
+	}
+
+	class Artifact
+	{
+		String hash;
+		String name;
+		String path;
+		String size;
 	}
 
 }
