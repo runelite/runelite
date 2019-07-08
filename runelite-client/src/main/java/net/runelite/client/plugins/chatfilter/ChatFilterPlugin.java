@@ -27,9 +27,8 @@ package net.runelite.client.plugins.chatfilter;
 
 import com.google.common.base.Splitter;
 import com.google.inject.Provides;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -81,12 +80,14 @@ public class ChatFilterPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateFilteredPatterns();
+		client.refreshChat();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		filteredPatterns.clear();
+		client.refreshChat();
 	}
 
 	@Subscribe
