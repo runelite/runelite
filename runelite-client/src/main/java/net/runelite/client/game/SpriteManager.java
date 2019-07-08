@@ -54,7 +54,7 @@ public class SpriteManager
 	@Inject
 	private ClientThread clientThread;
 
-	public Cache<Long, BufferedImage> cache = CacheBuilder.newBuilder()
+	private final Cache<Long, BufferedImage> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.expireAfterAccess(1, TimeUnit.HOURS)
 		.build();
@@ -110,12 +110,8 @@ public class SpriteManager
 	public void addSpriteTo(JButton c, int archive, int file)
 	{
 		getSpriteAsync(archive, file, img ->
-		{
 			SwingUtilities.invokeLater(() ->
-			{
-				c.setIcon(new ImageIcon(img));
-			});
-		});
+				c.setIcon(new ImageIcon(img))));
 	}
 
 	/**
@@ -124,12 +120,8 @@ public class SpriteManager
 	public void addSpriteTo(JLabel c, int archive, int file)
 	{
 		getSpriteAsync(archive, file, img ->
-		{
 			SwingUtilities.invokeLater(() ->
-			{
-				c.setIcon(new ImageIcon(img));
-			});
-		});
+				c.setIcon(new ImageIcon(img))));
 	}
 
 	public void addSpriteOverrides(SpriteOverride[] add)

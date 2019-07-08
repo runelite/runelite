@@ -156,12 +156,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		return this;
 	}
 
-	public ChatboxTextInput cursorAt(int index)
+	private ChatboxTextInput cursorAt(int index)
 	{
 		return cursorAt(index, index);
 	}
 
-	public ChatboxTextInput cursorAt(int indexA, int indexB)
+	private ChatboxTextInput cursorAt(int indexA, int indexB)
 	{
 		if (indexA < 0)
 		{
@@ -722,9 +722,6 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				newPos++;
 				break;
 			case KeyEvent.VK_UP:
-				ev.consume();
-				newPos = getLineOffset.applyAsInt(code);
-				break;
 			case KeyEvent.VK_DOWN:
 				ev.consume();
 				newPos = getLineOffset.applyAsInt(code);

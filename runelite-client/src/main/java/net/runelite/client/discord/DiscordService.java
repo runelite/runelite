@@ -49,7 +49,7 @@ import net.runelite.discord.DiscordUser;
 public class DiscordService implements AutoCloseable
 {
 	private final EventBus eventBus;
-	public final RuneLiteProperties runeLiteProperties;
+	private final RuneLiteProperties runeLiteProperties;
 	private final ScheduledExecutorService executorService;
 	private final DiscordRPC discordRPC;
 

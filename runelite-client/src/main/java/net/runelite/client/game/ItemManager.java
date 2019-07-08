@@ -168,6 +168,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemStats;
+import org.jetbrains.annotations.NotNull;
 
 @Singleton
 @Slf4j
@@ -279,7 +280,7 @@ public class ItemManager
 			.build(new CacheLoader<ImageKey, AsyncBufferedImage>()
 			{
 				@Override
-				public AsyncBufferedImage load(ImageKey key) throws Exception
+				public AsyncBufferedImage load(@NotNull ImageKey key) throws Exception
 				{
 					return loadImage(key.itemId, key.itemQuantity, key.stackable);
 				}
@@ -291,7 +292,7 @@ public class ItemManager
 			.build(new CacheLoader<Integer, ItemDefinition>()
 			{
 				@Override
-				public ItemDefinition load(Integer key) throws Exception
+				public ItemDefinition load(@NotNull Integer key) throws Exception
 				{
 					return client.getItemDefinition(key);
 				}
@@ -303,7 +304,7 @@ public class ItemManager
 			.build(new CacheLoader<OutlineKey, BufferedImage>()
 			{
 				@Override
-				public BufferedImage load(OutlineKey key) throws Exception
+				public BufferedImage load(@NotNull OutlineKey key) throws Exception
 				{
 					return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor);
 				}
