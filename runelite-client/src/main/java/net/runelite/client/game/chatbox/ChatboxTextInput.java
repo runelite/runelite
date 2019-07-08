@@ -156,12 +156,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		return this;
 	}
 
-	public ChatboxTextInput cursorAt(int index)
+	private ChatboxTextInput cursorAt(int index)
 	{
 		return cursorAt(index, index);
 	}
 
-	public ChatboxTextInput cursorAt(int indexA, int indexB)
+	private ChatboxTextInput cursorAt(int indexA, int indexB)
 	{
 		if (indexA < 0)
 		{
