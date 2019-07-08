@@ -50,6 +50,8 @@ import static net.runelite.api.ObjectID.ROCKS_11377;
 import static net.runelite.api.ObjectID.ROCKS_11386;
 import static net.runelite.api.ObjectID.ROCKS_11387;
 import static net.runelite.api.ObjectID.ASH_PILE;
+import static net.runelite.api.ObjectID.ROCKS_11380;
+import static net.runelite.api.ObjectID.ROCKS_11381;
 
 enum Rock
 {
@@ -101,7 +103,8 @@ enum Rock
 		},
 	ORE_VEIN(Duration.ofSeconds(MiningOverlay.ORE_VEIN_MAX_RESPAWN_TIME), 150),
 	AMETHYST(Duration.ofSeconds(75), 120),
-	ASH_VEIN(Duration.ofSeconds(30), 0, ASH_PILE);
+	ASH_VEIN(Duration.ofSeconds(30), 0, ASH_PILE),
+    GEM_ROCK(Duration.ofMinutes(1), 0, ROCKS_11380, ROCKS_11381);
 
 	private static final Map<Integer, Rock> ROCKS;
 
