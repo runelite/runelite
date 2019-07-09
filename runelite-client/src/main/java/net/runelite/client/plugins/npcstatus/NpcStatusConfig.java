@@ -33,7 +33,7 @@ import net.runelite.client.config.Range;
 public interface NpcStatusConfig extends Config
 {
 	@Range(
-			min = 1
+		min = 1
 	)
 	@ConfigItem(
 		keyName = "AttackRange",
