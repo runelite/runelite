@@ -241,12 +241,12 @@ final class class4 implements class0 {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = SoundCache.canvasWidth;
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Huffman.canvasHeight;
                   return 1;
-               } else if (var0 == 3133) {
+               } else if (var0 == ScriptOpcodes.MOBILE_SETFPS) {
                   --RouteStrategy.Interpreter_intStackSize;
                   return 1;
-               } else if (var0 == 3134) {
+               } else if (var0 == ScriptOpcodes.MOBILE_OPENSTORE) {
                   return 1;
-               } else if (var0 == 3135) {
+               } else if (var0 == ScriptOpcodes.MOBILE_OPENSTORECATEGORY) {
                   RouteStrategy.Interpreter_intStackSize -= 2;
                   return 1;
                } else if (var0 == 3136) {

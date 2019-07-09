@@ -103,6 +103,7 @@ public class Instructions
 		add(CC_RESUME_PAUSEBUTTON, "cc_resume_pausebutton");
 		add(CC_SETFILLCOLOUR, "cc_setfillcolour");
 		add(CC_SETLINEDIRECTION, "cc_setlinedirection");
+		add(CC_SETMODELTRANSPARENT, "cc_setmodeltransparent");
 		add(CC_SETOBJECT, "cc_setobject");
 		add(CC_SETNPCHEAD, "cc_setnpchead");
 		add(CC_SETPLAYERHEAD_SELF, "cc_setplayerhead_self");
@@ -116,6 +117,12 @@ public class Instructions
 		add(CC_SETOPBASE, "cc_setopbase");
 		add(CC_SETTARGETVERB, "cc_settargetverb");
 		add(CC_CLEAROPS, "cc_clearops");
+		add(CC_SETOPKEY, "cc_setopkey");
+		add(CC_SETOPTKEY, "cc_setoptkey");
+		add(CC_SETOPKEYRATE, "cc_setopkeyrate");
+		add(CC_SETOPTKEYRATE, "cc_setoptkeyrate");
+		add(CC_SETOPKEYIGNOREHELD, "cc_setopkeyignoreheld");
+		add(CC_SETOPTKEYIGNOREHELD, "cc_setoptkeyignoreheld");
 		add(CC_SETONCLICK, "cc_setonclick");
 		add(CC_SETONHOLD, "cc_setonhold");
 		add(CC_SETONRELEASE, "cc_setonrelease");
@@ -160,6 +167,7 @@ public class Instructions
 		add(CC_GETTRANS, "cc_gettrans");
 		add(CC_GETCOLOUR, "cc_getcolour");
 		add(CC_GETFILLCOLOUR, "cc_getfillcolour");
+		add(CC_GETMODELTRANSPARENT, "cc_getmodeltransparent");
 		add(CC_GETINVOBJECT, "cc_getinvobject");
 		add(CC_GETINVCOUNT, "cc_getinvcount");
 		add(CC_GETID, "cc_getid");
@@ -195,6 +203,7 @@ public class Instructions
 		add(IF_RESUME_PAUSEBUTTON, "if_resume_pausebutton");
 		add(IF_SETFILLCOLOUR, "if_setfillcolour");
 		add(IF_SETLINEDIRECTION, "if_setlinedirection");
+		add(IF_SETMODELTRANSPARENT, "if_setmodeltransparent");
 		add(IF_SETOBJECT, "if_setobject");
 		add(IF_SETNPCHEAD, "if_setnpchead");
 		add(IF_SETPLAYERHEAD_SELF, "if_setplayerhead_self");
@@ -258,6 +267,7 @@ public class Instructions
 		add(IF_GETTRANS, "if_gettrans");
 		add(IF_GETCOLOUR, "if_getcolour");
 		add(IF_GETFILLCOLOUR, "if_getfillcolour");
+		add(IF_GETMODELTRANSPARENT, "if_getmodeltransparent");
 		add(IF_GETINVOBJECT, "if_getinvobject");
 		add(IF_GETINVCOUNT, "if_getinvcount");
 		add(IF_HASSUB, "if_hassub");
@@ -290,6 +300,9 @@ public class Instructions
 		add(GETTAPTODROP, "gettaptodrop");
 		add(SETOCULUSORBSPEED, "setoculusorbspeed");
 		add(GETCANVASSIZE, "getcanvassize");
+		add(MOBILE_SETFPS, "mobile_setfps");
+		add(MOBILE_OPENSTORE, "mobile_openstore");
+		add(MOBILE_OPENSTORECATEGORY, "mobile_openstorecategory");
 		add(SETHIDEUSERNAME, "sethideusername");
 		add(GETHIDEUSERNAME, "gethideusername");
 		add(SETREMEMBERUSERNAME, "setrememberusername");
@@ -474,6 +487,7 @@ public class Instructions
 		add(STRUCT_PARAM, "struct_param");
 		add(ON_MOBILE, "on_mobile");
 		add(CLIENTTYPE, "clienttype");
+		add(MOBILE_KEYBOARDHIDE, "mobile_keyboardhide");
 		add(BATTERYLEVEL, "batterylevel");
 		add(BATTERYCHARGING, "batterycharging");
 		add(WIFIAVAILABLE, "wifiavailable");
@@ -511,6 +525,8 @@ public class Instructions
 		add(MEC_TEXTSIZE, "mec_textsize");
 		add(MEC_CATEGORY, "mec_category");
 		add(MEC_SPRITE, "mec_sprite");
+		add(WORLDMAP_ELEMENT, "worldmap_element");
+		add(WORLDMAP_ELEMENTCOORD, "worldmap_elementcoord");
 	}
 
 	protected void add(int opcode, String name)

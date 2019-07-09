@@ -959,13 +959,13 @@ public final class class54 {
                                     }
 
                                     return 1;
-                                 } else if (var0 == 6697) {
+                                 } else if (var0 == ScriptOpcodes.WORLDMAP_ELEMENT) {
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class15.worldMapEvent.mapElement;
                                     return 1;
                                  } else if (var0 == 6698) {
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class15.worldMapEvent.coord1.packed();
                                     return 1;
-                                 } else if (var0 == 6699) {
+                                 } else if (var0 == ScriptOpcodes.WORLDMAP_ELEMENTCOORD) {
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = class15.worldMapEvent.coord2.packed();
                                     return 1;
                                  } else {

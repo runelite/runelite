@@ -156,7 +156,7 @@ public class ScriptEvent extends Node {
       } else if (var0 == 1613) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
          return 1;
-      } else if (var0 == 1614) {
+      } else if (var0 == ScriptOpcodes.CC_GETMODELTRANSPARENT) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0;
          return 1;
       } else {
