@@ -51,7 +51,17 @@ public class ParameterRenamer
 		{
 			for (Method sourceM : sourceCF.getMethods())
 			{
-				Method destM = (Method) mapping.get(sourceM);
+				Method destM;
+				if (sourceM.getName().equals("<init>"))
+				{
+					ClassFile destCF = (ClassFile) mapping.get(sourceCF);
+					destM = destCF.findMethod("<init>", sourceM.getDescriptor());
+				}
+				else
+				{
+					destM = (Method) mapping.get(sourceM);
+				}
+
 				if (sourceM.getParameters() != null && !sourceM.getParameters().isEmpty() && destM.getParameters().size() >= 1)
 				{
 					List<Parameter> oldParams = destM.getParameters();
