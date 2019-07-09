@@ -1,6 +1,5 @@
 package net.runelite.client.plugins.theatre;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -8,7 +7,6 @@ import java.awt.Polygon;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
@@ -51,11 +49,7 @@ public abstract class RoomHandler
 			return;
 		}
 		//OverlayUtil.renderPolygon(graphics, poly, color);
-		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
-		graphics.setStroke(new BasicStroke(strokeWidth));
-		graphics.draw(poly);
-		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
-		graphics.fill(poly);
+		OverlayUtil.drawStrokeAndFillPoly(graphics, color, strokeWidth, outlineAlpha, fillAlpha, poly);
 
 	}
 
@@ -91,51 +85,12 @@ public abstract class RoomHandler
 	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
-		if (point.distanceTo(playerLocation) >= 32)
-		{
-			return;
-		}
-
-		LocalPoint lp = LocalPoint.fromWorld(client, point);
-		if (lp == null)
-		{
-			return;
-		}
-
-		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
-		if (poly == null)
-		{
-			return;
-		}
-
-		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
-		graphics.setStroke(new BasicStroke(strokeWidth));
-		graphics.draw(poly);
-		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
-		graphics.fill(poly);
+		OverlayUtil.drawTiles(graphics, client, point, playerLocation, color, strokeWidth, outlineAlpha, fillAlpha);
 	}
 
 	protected void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color, int outlineWidth, int outlineAlpha, int fillAlpha)
 	{
-		int size = 1;
-
-		NPCDefinition composition = actor.getTransformedDefinition();
-		if (composition != null)
-		{
-			size = composition.getSize();
-		}
-
-		LocalPoint lp = actor.getLocalLocation();
-		Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
-
-		if (tilePoly != null)
-		{
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
-			graphics.setStroke(new BasicStroke(outlineWidth));
-			graphics.draw(tilePoly);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
-			graphics.fill(tilePoly);
-		}
+		OverlayUtil.renderNpcOverlay(graphics, actor, color, outlineWidth, outlineAlpha, fillAlpha, client);
 	}
 
 	protected void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)

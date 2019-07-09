@@ -33,6 +33,19 @@ import net.runelite.client.config.ConfigItem;
 public interface AgilityConfig extends Config
 {
 	@ConfigItem(
+		keyName = "removeDistanceCap",
+		name = "Remove Distance Cap",
+		description = "This will remove the distance cap on rendering overlays for agility.",
+		warning = "<html><center>Enabling this setting on a low end machine may severely affect your fps." +
+			"<br>Click yes to enable this setting, knowing it might affect performance.</center></html>",
+		position = 0
+	)
+	default boolean removeDistanceCap()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showLapCount",
 		name = "Show Lap Count",
 		description = "Enable/disable the lap counter",
