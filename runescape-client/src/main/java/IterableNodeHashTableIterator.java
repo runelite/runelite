@@ -46,8 +46,6 @@ public class IterableNodeHashTableIterator implements Iterator {
       this.last = null;
    }
 
-   @Export("next")
-   @ObfuscatedName("next")
    public Object next() {
       Node var1;
       if (this.hashTable.buckets[this.index - 1] != this.head) {
@@ -70,8 +68,6 @@ public class IterableNodeHashTableIterator implements Iterator {
       }
    }
 
-   @Export("hasNext")
-   @ObfuscatedName("hasNext")
    public boolean hasNext() {
       if (this.hashTable.buckets[this.index - 1] != this.head) {
          return true;
@@ -89,8 +85,6 @@ public class IterableNodeHashTableIterator implements Iterator {
       }
    }
 
-   @ObfuscatedName("remove")
-   @Export("remove")
    public void remove() {
       if (this.last == null) {
          throw new IllegalStateException();

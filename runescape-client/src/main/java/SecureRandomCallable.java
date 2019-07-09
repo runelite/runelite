@@ -11,8 +11,6 @@ public class SecureRandomCallable implements Callable {
    @Export("indexedSpriteHeights")
    static int[] indexedSpriteHeights;
 
-   @Export("call")
-   @ObfuscatedName("call")
    public Object call() {
       return AttackOption.method2034();
    }

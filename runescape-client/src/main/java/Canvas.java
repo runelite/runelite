@@ -36,14 +36,10 @@ public final class Canvas extends java.awt.Canvas {
       this.component = var1;
    }
 
-   @Export("update")
-   @ObfuscatedName("update")
    public final void update(Graphics var1) {
       this.component.update(var1);
    }
 
-   @Export("paint")
-   @ObfuscatedName("paint")
    public final void paint(Graphics var1) {
       this.component.paint(var1);
    }

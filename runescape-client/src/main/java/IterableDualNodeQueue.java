@@ -113,8 +113,6 @@ public class IterableDualNodeQueue implements Iterable {
       }
    }
 
-   @Export("iterator")
-   @ObfuscatedName("iterator")
    public Iterator iterator() {
       return new IterableDualNodeQueueIterator(this);
    }

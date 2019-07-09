@@ -293,8 +293,6 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
    }
 
-   @Export("finalize")
-   @ObfuscatedName("finalize")
    protected void finalize() {
       this.close();
    }

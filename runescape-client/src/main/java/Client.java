@@ -2401,8 +2401,6 @@ public final class Client extends GameShell implements Usernamed {
    protected final void vmethod114() {
    }
 
-   @ObfuscatedName("init")
-   @Export("init")
    public final void init() {
       try {
          if (this.checkHost()) {

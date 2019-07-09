@@ -181,8 +181,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 
    }
 
-   @Export("mouseClicked")
-   @ObfuscatedName("mouseClicked")
    public final void mouseClicked(MouseEvent var1) {
       if (var1.isPopupTrigger()) {
          var1.consume();
@@ -190,8 +188,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 
    }
 
-   @Export("mouseExited")
-   @ObfuscatedName("mouseExited")
    public final synchronized void mouseExited(MouseEvent var1) {
       if (MouseHandler_instance != null) {
          MouseHandler_idleCycles = 0;

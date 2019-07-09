@@ -36,8 +36,6 @@ public class IterableDualNodeQueueIterator implements Iterator {
       this.last = null;
    }
 
-   @Export("next")
-   @ObfuscatedName("next")
    public Object next() {
       DualNode var1 = this.head;
       if (var1 == this.queue.sentinel) {
@@ -51,14 +49,10 @@ public class IterableDualNodeQueueIterator implements Iterator {
       return var1;
    }
 
-   @Export("hasNext")
-   @ObfuscatedName("hasNext")
    public boolean hasNext() {
       return this.queue.sentinel != this.head;
    }
 
-   @ObfuscatedName("remove")
-   @Export("remove")
    public void remove() {
       if (this.last == null) {
          throw new IllegalStateException();
