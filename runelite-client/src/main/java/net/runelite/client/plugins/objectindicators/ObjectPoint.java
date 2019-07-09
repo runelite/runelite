@@ -30,9 +30,13 @@ import lombok.Value;
 @Value
 class ObjectPoint
 {
+	public static final int STYLE_OUTLINE = 0;
+	public static final int STYLE_CLICKBOX = 1;
+
 	private String name;
 	private int regionId;
 	private int regionX;
 	private int regionY;
 	private int z;
+	private int style;
 }

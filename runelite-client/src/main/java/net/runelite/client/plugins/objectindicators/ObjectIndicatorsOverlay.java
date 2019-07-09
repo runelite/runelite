@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.objectindicators;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
+import java.awt.*;
+import java.awt.geom.Area;
 import javax.inject.Inject;
+
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
@@ -37,6 +37,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import org.apache.commons.lang3.tuple.Pair;
 
 class ObjectIndicatorsOverlay extends Overlay
 {
@@ -58,10 +59,24 @@ class ObjectIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		for (TileObject object : plugin.getObjects())
+		Color markerColor = config.markerColor();
+		Color fillColor = new Color(markerColor.getRed(), markerColor.getGreen(), markerColor.getBlue(), 50); // Based on agility plugin
+		for (Pair<TileObject, ObjectPoint> pair : plugin.getObjects())
 		{
+			TileObject object = pair.getLeft();
+			ObjectPoint objectPoint = pair.getRight();
 			if (object.getPlane() != client.getPlane())
 			{
+				continue;
+			}
+
+			if (objectPoint.getStyle() == ObjectPoint.STYLE_CLICKBOX)
+			{
+				Area clickbox = object.getClickbox();
+				if (clickbox != null)
+				{
+					OverlayUtil.renderHoverableArea(graphics, object.getClickbox(), client.getMouseCanvasPosition(), fillColor, markerColor, markerColor.darker());
+				}
 				continue;
 			}
 
@@ -84,12 +99,12 @@ class ObjectIndicatorsOverlay extends Overlay
 
 			if (polygon != null)
 			{
-				OverlayUtil.renderPolygon(graphics, polygon, config.markerColor());
+				OverlayUtil.renderPolygon(graphics, polygon, markerColor);
 			}
 
 			if (polygon2 != null)
 			{
-				OverlayUtil.renderPolygon(graphics, polygon2, config.markerColor());
+				OverlayUtil.renderPolygon(graphics, polygon2, markerColor);
 			}
 		}
 
