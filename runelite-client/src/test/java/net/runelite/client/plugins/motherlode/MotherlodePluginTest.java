@@ -147,7 +147,7 @@ public class MotherlodePluginTest
 		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(inventory);
 
 		// Trigger comparison
-		motherlodePlugin.onItemContainerChanged(new ItemContainerChanged(inventory));
+		motherlodePlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), inventory));
 
 		verify(motherlodeSession).updateOreFound(ItemID.RUNITE_ORE, 1);
 		verify(motherlodeSession).updateOreFound(ItemID.GOLDEN_NUGGET, 4);
