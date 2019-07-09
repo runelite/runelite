@@ -29,7 +29,6 @@ import java.time.Duration;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
-
 import static net.runelite.api.ObjectID.*;
 
 enum Rock
