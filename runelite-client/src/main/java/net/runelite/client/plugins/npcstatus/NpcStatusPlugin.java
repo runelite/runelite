@@ -203,6 +203,10 @@ public class NpcStatusPlugin extends Plugin
 
 	private void checkStatus()
 	{
+		if (lastPlayerLocation == null)
+		{
+			return;
+		}
 		for (MemorizedNPC npc : memorizedNPCs)
 		{
 			final double CombatTime = npc.getCombatTimerEnd() - client.getTickCount();
