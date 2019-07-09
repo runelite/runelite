@@ -52,14 +52,14 @@ public class ItemContainer extends Node {
    )
    @Export("getFrames")
    static Frames getFrames(int var0) {
-      Frames var1 = (Frames)SequenceDefinition.field775.get((long)var0);
+      Frames var1 = (Frames)SequenceDefinition.SequenceDefinition_cachedFrames.get((long)var0);
       if (var1 != null) {
          return var1;
       } else {
-         AbstractArchive var2 = SequenceDefinition.field773;
-         AbstractArchive var3 = SequenceDefinition.field774;
+         AbstractArchive var2 = SequenceDefinition.SequenceDefinition_animationsArchive;
+         AbstractArchive var3 = SequenceDefinition.SequenceDefinition_skeletonsArchive;
          boolean var4 = true;
-         int[] var5 = var2.method3(var0);
+         int[] var5 = var2.getGroupFileIds(var0);
 
          for (int var6 = 0; var6 < var5.length; ++var6) {
             byte[] var7 = var2.getFile(var0, var5[var6]);
@@ -86,7 +86,7 @@ public class ItemContainer extends Node {
          }
 
          if (var11 != null) {
-            SequenceDefinition.field775.put(var11, (long)var0);
+            SequenceDefinition.SequenceDefinition_cachedFrames.put(var11, (long)var0);
          }
 
          return var11;

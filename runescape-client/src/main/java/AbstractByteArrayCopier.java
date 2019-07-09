@@ -39,17 +39,17 @@ public abstract class AbstractByteArrayCopier {
    )
    @Export("getVarcInt")
    public static VarcInt getVarcInt(int var0) {
-      VarcInt var1 = (VarcInt)VarcInt.cachedVarcInts.get((long)var0);
+      VarcInt var1 = (VarcInt)VarcInt.VarcInt_cached.get((long)var0);
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = VarcInt.field942.takeFile(19, var0);
+         byte[] var2 = VarcInt.VarcInt_archive.takeFile(19, var0);
          var1 = new VarcInt();
          if (var2 != null) {
             var1.method354(new Buffer(var2));
          }
 
-         VarcInt.cachedVarcInts.put(var1, (long)var0);
+         VarcInt.VarcInt_cached.put(var1, (long)var0);
          return var1;
       }
    }
@@ -62,7 +62,7 @@ public abstract class AbstractByteArrayCopier {
    @Export("unloadInterface")
    public static void unloadInterface(int var0) {
       if (var0 != -1 && Widget.loadedInterfaces[var0]) {
-         Widget.Widget_archive.method7(var0);
+         Widget.Widget_archive.clearFilesGroup(var0);
          if (Widget.interfaceComponents[var0] != null) {
             boolean var1 = true;
 

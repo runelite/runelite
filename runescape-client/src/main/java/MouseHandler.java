@@ -230,8 +230,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
       signature = "(Ljava/lang/CharSequence;I)I",
       garbageValue = "1860098743"
    )
-   public static int method1085(CharSequence var0) {
-      return IgnoreList.method5438(var0, 10, true);
+   @Export("parseInt")
+   public static int parseInt(CharSequence var0) {
+      return IgnoreList.parseIntCustomRadix(var0, 10, true);
    }
 
    @ObfuscatedName("l")

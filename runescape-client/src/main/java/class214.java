@@ -9,12 +9,14 @@ public class class214 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field1127;
+   @Export("musicSamplesArchive")
+   public static AbstractArchive musicSamplesArchive;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field1128;
+   @Export("soundEffectsArchive")
+   public static AbstractArchive soundEffectsArchive;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lhm;"
@@ -30,7 +32,8 @@ public class class214 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field1130;
+   @Export("musicTrackArchive")
+   public static AbstractArchive musicTrackArchive;
    @ObfuscatedName("k")
    static int[] field1131;
    @ObfuscatedName("ko")
@@ -106,8 +109,9 @@ public class class214 {
       signature = "(Ljava/lang/CharSequence;II)I",
       garbageValue = "2125526115"
    )
-   public static int method4157(CharSequence var0, int var1) {
-      return IgnoreList.method5438(var0, var1, true);
+   @Export("parseIntCustomRadix")
+   public static int parseIntCustomRadix(CharSequence var0, int radix) {
+      return IgnoreList.parseIntCustomRadix(var0, radix, true);
    }
 
    static {

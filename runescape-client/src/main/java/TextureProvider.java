@@ -57,22 +57,22 @@ public class TextureProvider implements TextureLoader {
    @ObfuscatedSignature(
       signature = "(Lir;Lir;IDI)V"
    )
-   public TextureProvider(AbstractArchive var1, AbstractArchive var2, int var3, double var4, int var6) {
+   public TextureProvider(AbstractArchive texturesArchive, AbstractArchive spritesArchive, int var3, double var4, int var6) {
       this.deque = new NodeDeque();
       this.remaining = 0;
       this.brightness0 = 1.0D;
       this.textureSize = 128;
-      this.archive = var2;
+      this.archive = spritesArchive;
       this.capacity = var3;
       this.remaining = this.capacity;
       this.brightness0 = var4;
       this.textureSize = var6;
-      int[] var7 = var1.method3(0);
+      int[] var7 = texturesArchive.getGroupFileIds(0);
       int var8 = var7.length;
-      this.textures = new Texture[var1.getGroupFileCount(0)];
+      this.textures = new Texture[texturesArchive.getGroupFileCount(0)];
 
       for (int var9 = 0; var9 < var8; ++var9) {
-         Buffer var10 = new Buffer(var1.takeFile(0, var7[var9]));
+         Buffer var10 = new Buffer(texturesArchive.takeFile(0, var7[var9]));
          this.textures[var7[var9]] = new Texture(var10);
       }
 
@@ -83,7 +83,8 @@ public class TextureProvider implements TextureLoader {
       signature = "(I)I",
       garbageValue = "-1996487053"
    )
-   public int method323() {
+   @Export("getLoadedPercentage")
+   public int getLoadedPercentage() {
       int var1 = 0;
       int var2 = 0;
       Texture[] var3 = this.textures;

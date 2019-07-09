@@ -14,7 +14,8 @@ public class BufferedSource implements Runnable {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field54;
+   @Export("Widget_modelsArchive")
+   public static AbstractArchive Widget_modelsArchive;
    @ObfuscatedName("m")
    @Export("thread")
    Thread thread;

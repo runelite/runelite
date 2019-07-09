@@ -7,7 +7,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("af")
 public class class50 {
    @ObfuscatedName("m")
-   public static Applet field1159;
+   @Export("applet")
+   public static Applet applet;
    @ObfuscatedName("f")
    public static String field1160;
    @ObfuscatedName("ei")
@@ -204,17 +205,18 @@ public class class50 {
       signature = "(Ljava/lang/String;ZI)V",
       garbageValue = "-2128641115"
    )
-   static void method900(String var0, boolean var1) {
-      var0 = var0.toLowerCase();
+   @Export("findItemDefinitions")
+   static void findItemDefinitions(String itemName, boolean tradableOnly) {
+      itemName = itemName.toLowerCase();
       short[] var2 = new short[16];
       int var3 = 0;
 
-      for (int var4 = 0; var4 < class83.field1167; ++var4) {
+      for (int var4 = 0; var4 < class83.ItemDefinition_fileCount; ++var4) {
          ItemDefinition var5 = Skills.getItemDefinition(var4);
-         if ((!var1 || var5.isTradable) && var5.noteTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
+         if ((!tradableOnly || var5.isTradable) && var5.noteTemplate == -1 && var5.name.toLowerCase().indexOf(itemName) != -1) {
             if (var3 >= 250) {
-               WorldMapSection3.field1055 = -1;
-               AttackOption.field30 = null;
+               WorldMapSection3.foundItemIdCount = -1;
+               AttackOption.foundItemIds = null;
                return;
             }
 
@@ -232,16 +234,16 @@ public class class50 {
          }
       }
 
-      AttackOption.field30 = var2;
-      WorldMapDecorationType.field1139 = 0;
-      WorldMapSection3.field1055 = var3;
-      String[] var8 = new String[WorldMapSection3.field1055];
+      AttackOption.foundItemIds = var2;
+      WorldMapDecorationType.foundItemIndex = 0;
+      WorldMapSection3.foundItemIdCount = var3;
+      String[] var8 = new String[WorldMapSection3.foundItemIdCount];
 
-      for (int var9 = 0; var9 < WorldMapSection3.field1055; ++var9) {
+      for (int var9 = 0; var9 < WorldMapSection3.foundItemIdCount; ++var9) {
          var8[var9] = Skills.getItemDefinition(var2[var9]).name;
       }
 
-      Huffman.method3695(var8, AttackOption.field30);
+      Huffman.startSortingItemsByName(var8, AttackOption.foundItemIds);
    }
 
    @ObfuscatedName("kk")
@@ -258,7 +260,7 @@ public class class50 {
    }
 
    static {
-      field1159 = null;
+      applet = null;
       field1160 = "";
    }
 }

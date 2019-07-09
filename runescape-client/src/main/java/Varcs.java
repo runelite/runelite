@@ -364,7 +364,8 @@ public class Varcs {
       signature = "(Lir;I)V",
       garbageValue = "321265868"
    )
-   public static void method2160(AbstractArchive var0) {
+   @Export("setFloorOverlayDefinitionArchive")
+   public static void setFloorOverlayDefinitionArchive(AbstractArchive var0) {
       FloorOverlayDefinition.FloorOverlayDefinition_archive = var0;
    }
 

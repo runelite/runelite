@@ -30,7 +30,7 @@ public class Frames extends DualNode {
       NodeDeque var5 = new NodeDeque();
       int var6 = var1.getGroupFileCount(var3);
       this.frames = new Animation[var6];
-      int[] var7 = var1.method3(var3);
+      int[] var7 = var1.getGroupFileIds(var3);
 
       for (int var8 = 0; var8 < var7.length; ++var8) {
          byte[] var9 = var1.takeFile(var3, var7[var8]);
@@ -70,8 +70,9 @@ public class Frames extends DualNode {
       signature = "(Lir;I)V",
       garbageValue = "1204337492"
    )
-   public static void method3241(AbstractArchive var0) {
-      VarcInt.field942 = var0;
+   @Export("setVarcIntArchive")
+   public static void setVarcIntArchive(AbstractArchive var0) {
+      VarcInt.VarcInt_archive = var0;
    }
 
    @ObfuscatedName("f")

@@ -171,34 +171,35 @@ public class DynamicObject extends Entity {
       signature = "([Ljava/lang/String;[SIII)V",
       garbageValue = "1172859329"
    )
-   static void method2218(String[] var0, short[] var1, int var2, int var3) {
-      if (var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
+   @Export("sortItemsByName")
+   static void sortItemsByName(String[] itemNames, short[] itemIds, int lowestUnsorted, int highestUnsorted) {
+      if (lowestUnsorted < highestUnsorted) {
+         int var4 = (highestUnsorted + lowestUnsorted) / 2;
+         int var5 = lowestUnsorted;
+         String var6 = itemNames[var4];
+         itemNames[var4] = itemNames[highestUnsorted];
+         itemNames[highestUnsorted] = var6;
+         short var7 = itemIds[var4];
+         itemIds[var4] = itemIds[highestUnsorted];
+         itemIds[highestUnsorted] = var7;
 
-         for (int var8 = var2; var8 < var3; ++var8) {
-            if (var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
+         for (int var8 = lowestUnsorted; var8 < highestUnsorted; ++var8) {
+            if (var6 == null || itemNames[var8] != null && itemNames[var8].compareTo(var6) < (var8 & 1)) {
+               String var9 = itemNames[var8];
+               itemNames[var8] = itemNames[var5];
+               itemNames[var5] = var9;
+               short var10 = itemIds[var8];
+               itemIds[var8] = itemIds[var5];
+               itemIds[var5++] = var10;
             }
          }
 
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method2218(var0, var1, var2, var5 - 1);
-         method2218(var0, var1, var5 + 1, var3);
+         itemNames[highestUnsorted] = itemNames[var5];
+         itemNames[var5] = var6;
+         itemIds[highestUnsorted] = itemIds[var5];
+         itemIds[var5] = var7;
+         sortItemsByName(itemNames, itemIds, lowestUnsorted, var5 - 1);
+         sortItemsByName(itemNames, itemIds, var5 + 1, highestUnsorted);
       }
 
    }

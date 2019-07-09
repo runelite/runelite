@@ -17,12 +17,14 @@ public class SequenceDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field773;
+   @Export("SequenceDefinition_animationsArchive")
+   public static AbstractArchive SequenceDefinition_animationsArchive;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field774;
+   @Export("SequenceDefinition_skeletonsArchive")
+   public static AbstractArchive SequenceDefinition_skeletonsArchive;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -33,7 +35,8 @@ public class SequenceDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   public static EvictingDualNodeHashTable field775;
+   @Export("SequenceDefinition_cachedFrames")
+   public static EvictingDualNodeHashTable SequenceDefinition_cachedFrames;
    @ObfuscatedName("u")
    @Export("frameIds")
    public int[] frameIds;
@@ -365,6 +368,6 @@ public class SequenceDefinition extends DualNode {
 
    static {
       SequenceDefinition_cached = new EvictingDualNodeHashTable(64);
-      field775 = new EvictingDualNodeHashTable(100);
+      SequenceDefinition_cachedFrames = new EvictingDualNodeHashTable(100);
    }
 }

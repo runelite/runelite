@@ -211,7 +211,8 @@ public final class KeyHandler implements KeyListener, FocusListener {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "-345222494"
    )
-   static String method839() {
+   @Export("getChatMessagesAsString")
+   static String getChatMessagesAsString() {
       String var0 = "";
 
       Message var1;

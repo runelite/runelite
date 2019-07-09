@@ -9,8 +9,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("RunException")
 public class RunException extends RuntimeException {
    @ObfuscatedName("m")
-   @Export("applet")
-   public static Applet applet;
+   @Export("RunException_applet")
+   public static Applet RunException_applet;
    @ObfuscatedName("f")
    @Export("localPlayerName")
    public static String localPlayerName;

@@ -85,7 +85,7 @@ final class class4 implements class0 {
             var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
             var4 = 0;
             if (UserComparator4.method3336(var3)) {
-               var4 = MouseHandler.method1085(var3);
+               var4 = MouseHandler.parseInt(var3);
             }
 
             var5 = Interpreter.method1915(ClientPacket.field239, Client.packetWriter.isaacCipher);

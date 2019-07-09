@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -8,12 +9,15 @@ public class AudioFilter {
    @ObfuscatedName("u")
    static float[][] field32;
    @ObfuscatedName("g")
+   @Export("coefficients")
    static int[][] coefficients;
    @ObfuscatedName("l")
    static float field34;
    @ObfuscatedName("e")
+   @Export("forwardMultiplier")
    static int forwardMultiplier;
    @ObfuscatedName("m")
+   @Export("pairs")
    int[] pairs;
    @ObfuscatedName("q")
    int[][][] field37;
@@ -44,6 +48,7 @@ public class AudioFilter {
    }
 
    @ObfuscatedName("w")
+   @Export("compute")
    int compute(int var1, float var2) {
       float var3;
       if (var1 == 0) {

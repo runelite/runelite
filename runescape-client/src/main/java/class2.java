@@ -66,7 +66,7 @@ final class class2 implements class0 {
          Rasterizer2D.Rasterizer2D_clear();
          byte[] var4 = var0.takeFileByNames("title.jpg", "");
          Login.leftTitleSprite = class27.convertJpgToSprite(var4);
-         Fonts.rightTitleSprite = Login.leftTitleSprite.copy();
+         Fonts.rightTitleSprite = Login.leftTitleSprite.mirrorHorizontally();
          if ((Client.worldProperties & 536870912) != 0) {
             WorldMapSectionType.logoSprite = MenuAction.loadIndexedSpriteByName(var1, "logo_deadman_mode", "");
          } else {

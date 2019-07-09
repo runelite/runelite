@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -9,7 +10,8 @@ public class class48 {
       signature = "(I)[Lij;",
       garbageValue = "-818052349"
    )
-   public static PlayerType[] method865() {
+   @Export("PlayerType_values")
+   public static PlayerType[] PlayerType_values() {
       return new PlayerType[]{PlayerType.PlayerType_normal, PlayerType.PlayerType_ironman, PlayerType.PlayerType_hardcoreIronman, PlayerType.PlayerType_ultimateIronman, PlayerType.PlayerType_playerModerator, PlayerType.PlayerType_jagexModerator};
    }
 

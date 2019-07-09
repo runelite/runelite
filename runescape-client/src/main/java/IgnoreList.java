@@ -93,7 +93,8 @@ public class IgnoreList extends UserList {
       signature = "(Ljava/lang/CharSequence;IZB)I",
       garbageValue = "5"
    )
-   static int method5438(CharSequence var0, int var1, boolean var2) {
+   @Export("parseIntCustomRadix")
+   static int parseIntCustomRadix(CharSequence var0, int var1, boolean var2) {
       if (var1 >= 2 && var1 <= 36) {
          boolean var3 = false;
          boolean var4 = false;

@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -47,7 +48,7 @@ public final class class54 {
             } else {
                class214.midiPcmStream.clear();
                class214.field1129 = 1;
-               class214.field1130 = null;
+               class214.musicTrackArchive = null;
             }
          }
 
@@ -178,7 +179,7 @@ public final class class54 {
                            if (var1 == 1 && var2 >= TilePaint.field907.field41 - var18 && var2 <= var18 + TilePaint.field907.field41 && var17 >= var12 - 15 && var17 < var12) {
                               switch(Login.field467) {
                               case 1:
-                                 method1089("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+                                 setLoginResponseString("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
                                  Login.loginIndex = 5;
                                  return;
                               case 2:
@@ -192,16 +193,16 @@ public final class class54 {
                         if (var1 == 1 && var2 >= var18 - 75 && var2 <= var18 + 75 && var17 >= var19 - 20 && var17 <= var19 + 20) {
                            Login.Login_username = Login.Login_username.trim();
                            if (Login.Login_username.length() == 0) {
-                              method1089("", "Please enter your username/email address.", "");
+                              setLoginResponseString("", "Please enter your username/email address.", "");
                               return;
                            }
 
                            if (Login.Login_password.length() == 0) {
-                              method1089("", "Please enter your password.", "");
+                              setLoginResponseString("", "Please enter your password.", "");
                               return;
                            }
 
-                           method1089("", "Connecting to server...", "");
+                           setLoginResponseString("", "Connecting to server...", "");
                            class15.method184(false);
                            GameShell.updateGameState(20);
                            return;
@@ -284,16 +285,16 @@ public final class class54 {
                                  if (ArchiveDiskAction.field411 == 84) {
                                     Login.Login_username = Login.Login_username.trim();
                                     if (Login.Login_username.length() == 0) {
-                                       method1089("", "Please enter your username/email address.", "");
+                                       setLoginResponseString("", "Please enter your username/email address.", "");
                                        return;
                                     }
 
                                     if (Login.Login_password.length() == 0) {
-                                       method1089("", "Please enter your password.", "");
+                                       setLoginResponseString("", "Please enter your password.", "");
                                        return;
                                     }
 
-                                    method1089("", "Connecting to server...", "");
+                                    setLoginResponseString("", "Connecting to server...", "");
                                     class15.method184(false);
                                     GameShell.updateGameState(20);
                                     return;
@@ -319,7 +320,7 @@ public final class class54 {
                         var9 = Login.loginBoxX + 180;
                         var20 = 326;
                         if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
-                           method1089("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+                           setLoginResponseString("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
                            Login.loginIndex = 5;
                            return;
                         }
@@ -331,14 +332,14 @@ public final class class54 {
                            if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                               Login.otp.trim();
                               if (Login.otp.length() != 6) {
-                                 method1089("", "Please enter a 6-digit PIN.", "");
+                                 setLoginResponseString("", "Please enter a 6-digit PIN.", "");
                                  return;
                               }
 
                               class13.otpInt = Integer.parseInt(Login.otp);
                               Login.otp = "";
                               class15.method184(true);
-                              method1089("", "Connecting to server...", "");
+                              setLoginResponseString("", "Connecting to server...", "");
                               GameShell.updateGameState(20);
                               return;
                            }
@@ -384,14 +385,14 @@ public final class class54 {
                                  if (ArchiveDiskAction.field411 == 84) {
                                     Login.otp.trim();
                                     if (Login.otp.length() != 6) {
-                                       method1089("", "Please enter a 6-digit PIN.", "");
+                                       setLoginResponseString("", "Please enter a 6-digit PIN.", "");
                                        return;
                                     }
 
                                     class13.otpInt = Integer.parseInt(Login.otp);
                                     Login.otp = "";
                                     class15.method184(true);
-                                    method1089("", "Connecting to server...", "");
+                                    setLoginResponseString("", "Connecting to server...", "");
                                     GameShell.updateGameState(20);
                                     return;
                                  }
@@ -472,7 +473,7 @@ public final class class54 {
                               var20 = 321;
                               if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                                  WorldMapCacheName.openURL(Message.method1227("secure", true) + "m=dob/set_dob.ws", true, false);
-                                 method1089("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+                                 setLoginResponseString("", "Page has opened in a new window.", "(Please check your popup blocker.)");
                                  Login.loginIndex = 6;
                                  return;
                               }
@@ -486,7 +487,7 @@ public final class class54 {
                               var20 = 321;
                               if (var1 == 1 && var2 >= var9 - 75 && var2 <= var9 + 75 && var17 >= var20 - 20 && var17 <= var20 + 20) {
                                  WorldMapCacheName.openURL("https://www.jagex.com/terms/privacy/#eight", true, false);
-                                 method1089("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+                                 setLoginResponseString("", "Page has opened in a new window.", "(Please check your popup blocker.)");
                                  Login.loginIndex = 6;
                                  return;
                               }
@@ -512,7 +513,7 @@ public final class class54 {
                               var19 = 276;
                               if (var1 == 1 && var2 >= var18 - 75 && var2 <= var18 + 75 && var17 >= var19 - 20 && var17 <= var19 + 20) {
                                  WorldMapCacheName.openURL(var21, true, false);
-                                 method1089("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+                                 setLoginResponseString("", "Page has opened in a new window.", "(Please check your popup blocker.)");
                                  Login.loginIndex = 6;
                                  return;
                               }
@@ -619,7 +620,8 @@ public final class class54 {
       signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
       garbageValue = "-14"
    )
-   static void method1089(String var0, String var1, String var2) {
+   @Export("setLoginResponseString")
+   static void setLoginResponseString(String var0, String var1, String var2) {
       Login.Login_response1 = var0;
       Login.Login_response2 = var1;
       Login.Login_response3 = var2;
@@ -636,61 +638,61 @@ public final class class54 {
          var3 = SoundSystem.plane;
          int var13 = (Canvas.localPlayer.x >> 7) + class50.baseX;
          int var16 = (Canvas.localPlayer.y >> 7) + GraphicsObject.baseY;
-         BufferedFile.worldMap().method366(var3, var13, var16, true);
+         BufferedFile.getWorldMap().method366(var3, var13, var16, true);
          return 1;
       } else {
          WorldMapArea var4;
          if (var0 == ScriptOpcodes.WORLDMAP_GETMAPNAME) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
             String var14 = "";
-            var4 = BufferedFile.worldMap().getMapArea(var3);
+            var4 = BufferedFile.getWorldMap().getMapArea(var3);
             if (var4 != null) {
-               var14 = var4.name();
+               var14 = var4.getName();
             }
 
             Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var14;
             return 1;
          } else if (var0 == ScriptOpcodes.WORLDMAP_SETMAP) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-            BufferedFile.worldMap().setCurrentMapAreaId(var3);
+            BufferedFile.getWorldMap().setCurrentMapAreaId(var3);
             return 1;
          } else if (var0 == ScriptOpcodes.WORLDMAP_GETZOOM) {
-            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getZoomLevel();
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.getWorldMap().getZoomLevel();
             return 1;
          } else if (var0 == ScriptOpcodes.WORLDMAP_SETZOOM) {
             var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-            BufferedFile.worldMap().setZoomLevel(var3);
+            BufferedFile.getWorldMap().setZoomLevel(var3);
             return 1;
          } else if (var0 == ScriptOpcodes.WORLDMAP_ISLOADED) {
-            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isCacheLoaded() ? 1 : 0;
+            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.getWorldMap().isCacheLoaded() ? 1 : 0;
             return 1;
          } else {
             Coord var5;
             if (var0 == ScriptOpcodes.WORLDMAP_JUMPTODISPLAYCOORD) {
                var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-               BufferedFile.worldMap().setWorldMapPositionTarget(var5.x, var5.y);
+               BufferedFile.getWorldMap().setWorldMapPositionTarget(var5.x, var5.y);
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTODISPLAYCOORD_INSTANT) {
                var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-               BufferedFile.worldMap().setWorldMapPositionTargetInstant(var5.x, var5.y);
+               BufferedFile.getWorldMap().setWorldMapPositionTargetInstant(var5.x, var5.y);
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTOSOURCECOORD) {
                var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-               BufferedFile.worldMap().jumpToSourceCoord(var5.plane, var5.x, var5.y);
+               BufferedFile.getWorldMap().jumpToSourceCoord(var5.plane, var5.x, var5.y);
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_JUMPTOSOURCECOORD_INSTANT) {
                var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-               BufferedFile.worldMap().jumpToSourceCoordInstant(var5.plane, var5.x, var5.y);
+               BufferedFile.getWorldMap().jumpToSourceCoordInstant(var5.plane, var5.x, var5.y);
                return 1;
             } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISPLAYPOSITION) {
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getDisplayX();
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getDisplayY();
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.getWorldMap().getDisplayX();
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.getWorldMap().getDisplayY();
                return 1;
             } else {
                WorldMapArea var6;
                if (var0 == ScriptOpcodes.WORLDMAP_GETCONFIGORIGIN) {
                   var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                  var6 = BufferedFile.worldMap().getMapArea(var3);
+                  var6 = BufferedFile.getWorldMap().getMapArea(var3);
                   if (var6 == null) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                   } else {
@@ -700,7 +702,7 @@ public final class class54 {
                   return 1;
                } else if (var0 == ScriptOpcodes.WORLDMAP_GETCONFIGSIZE) {
                   var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                  var6 = BufferedFile.worldMap().getMapArea(var3);
+                  var6 = BufferedFile.getWorldMap().getMapArea(var3);
                   if (var6 == null) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -712,7 +714,7 @@ public final class class54 {
                   return 1;
                } else if (var0 == ScriptOpcodes.WORLDMAP_GETCONFIGBOUNDS) {
                   var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                  var6 = BufferedFile.worldMap().getMapArea(var3);
+                  var6 = BufferedFile.getWorldMap().getMapArea(var3);
                   if (var6 == null) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
@@ -728,7 +730,7 @@ public final class class54 {
                   return 1;
                } else if (var0 == ScriptOpcodes.WORLDMAP_GETCONFIGZOOM) {
                   var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                  var6 = BufferedFile.worldMap().getMapArea(var3);
+                  var6 = BufferedFile.getWorldMap().getMapArea(var3);
                   if (var6 == null) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                   } else {
@@ -737,7 +739,7 @@ public final class class54 {
 
                   return 1;
                } else if (var0 == 6615) {
-                  var5 = BufferedFile.worldMap().getDisplayCoord();
+                  var5 = BufferedFile.getWorldMap().getDisplayCoord();
                   if (var5 == null) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
@@ -748,11 +750,11 @@ public final class class54 {
 
                   return 1;
                } else if (var0 == ScriptOpcodes.WORLDMAP_GETCURRENTMAP) {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().currentMapAreaId();
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.getWorldMap().currentMapAreaId();
                   return 1;
                } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISPLAYCOORD) {
                   var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-                  var6 = BufferedFile.worldMap().getCurrentMapArea();
+                  var6 = BufferedFile.getWorldMap().getCurrentMapArea();
                   if (var6 == null) {
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                      Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
@@ -773,7 +775,7 @@ public final class class54 {
                   Coord var7;
                   if (var0 == 6618) {
                      var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-                     var6 = BufferedFile.worldMap().getCurrentMapArea();
+                     var6 = BufferedFile.getWorldMap().getCurrentMapArea();
                      if (var6 == null) {
                         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
@@ -806,7 +808,7 @@ public final class class54 {
                         RouteStrategy.Interpreter_intStackSize -= 2;
                         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                         var8 = new Coord(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
-                        var4 = BufferedFile.worldMap().getMapArea(var3);
+                        var4 = BufferedFile.getWorldMap().getMapArea(var3);
                         if (var4 == null) {
                            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
                            return 1;
@@ -815,51 +817,51 @@ public final class class54 {
                            return 1;
                         }
                      } else if (var0 == ScriptOpcodes.WORLDMAP_GETSIZE) {
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getDisplayWith();
-                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getDisplayHeight();
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.getWorldMap().getDisplayWith();
+                        Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.getWorldMap().getDisplayHeight();
                         return 1;
                      } else if (var0 == 6623) {
                         var5 = new Coord(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-                        var6 = BufferedFile.worldMap().mapAreaAtCoord(var5.plane, var5.x, var5.y);
+                        var6 = BufferedFile.getWorldMap().mapAreaAtCoord(var5.plane, var5.x, var5.y);
                         if (var6 == null) {
                            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                         } else {
-                           Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.id();
+                           Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var6.getId();
                         }
 
                         return 1;
                      } else if (var0 == 6624) {
-                        BufferedFile.worldMap().method379(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+                        BufferedFile.getWorldMap().method379(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                         return 1;
                      } else if (var0 == 6625) {
-                        BufferedFile.worldMap().method380();
+                        BufferedFile.getWorldMap().method380();
                         return 1;
                      } else if (var0 == 6626) {
-                        BufferedFile.worldMap().method381(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
+                        BufferedFile.getWorldMap().method381(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
                         return 1;
                      } else if (var0 == 6627) {
-                        BufferedFile.worldMap().method382();
+                        BufferedFile.getWorldMap().method382();
                         return 1;
                      } else {
                         boolean var9;
                         if (var0 == ScriptOpcodes.WORLDMAP_PERPETUALFLASH) {
                            var9 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
-                           BufferedFile.worldMap().setPerpetualFlash(var9);
+                           BufferedFile.getWorldMap().setPerpetualFlash(var9);
                            return 1;
                         } else if (var0 == ScriptOpcodes.WORLDMAP_FLASHELEMENT) {
                            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                           BufferedFile.worldMap().flashElement(var3);
+                           BufferedFile.getWorldMap().flashElement(var3);
                            return 1;
                         } else if (var0 == ScriptOpcodes.WORLDMAP_FLASHELEMENTCATEGORY) {
                            var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                           BufferedFile.worldMap().flashCategory(var3);
+                           BufferedFile.getWorldMap().flashCategory(var3);
                            return 1;
                         } else if (var0 == ScriptOpcodes.WORLDMAP_STOPCURRENTFLASHES) {
-                           BufferedFile.worldMap().stopCurrentFlashes();
+                           BufferedFile.getWorldMap().stopCurrentFlashes();
                            return 1;
                         } else if (var0 == ScriptOpcodes.WORLDMAP_DISABLEELEMENTS) {
                            var9 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
-                           BufferedFile.worldMap().setElementsEnabled(var9);
+                           BufferedFile.getWorldMap().setElementsEnabled(var9);
                            return 1;
                         } else {
                            boolean var10;
@@ -867,30 +869,30 @@ public final class class54 {
                               RouteStrategy.Interpreter_intStackSize -= 2;
                               var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                               var10 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1] == 1;
-                              BufferedFile.worldMap().disableElement(var3, var10);
+                              BufferedFile.getWorldMap().disableElement(var3, var10);
                               return 1;
                            } else if (var0 == ScriptOpcodes.WORLDMAP_DISABLEELEMENTCATEGORY) {
                               RouteStrategy.Interpreter_intStackSize -= 2;
                               var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                               var10 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1] == 1;
-                              BufferedFile.worldMap().disableCategory(var3, var10);
+                              BufferedFile.getWorldMap().disableCategory(var3, var10);
                               return 1;
                            } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISABLEELEMENTS) {
-                              Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().getElementsEnabled() ? 1 : 0;
+                              Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.getWorldMap().getElementsEnabled() ? 1 : 0;
                               return 1;
                            } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISABLEELEMENT) {
                               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                              Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isElementDisabled(var3) ? 1 : 0;
+                              Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.getWorldMap().isElementDisabled(var3) ? 1 : 0;
                               return 1;
                            } else if (var0 == ScriptOpcodes.WORLDMAP_GETDISABLEELEMENTCATEGORY) {
                               var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                              Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.worldMap().isCategoryDisabled(var3) ? 1 : 0;
+                              Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = BufferedFile.getWorldMap().isCategoryDisabled(var3) ? 1 : 0;
                               return 1;
                            } else if (var0 == 6638) {
                               RouteStrategy.Interpreter_intStackSize -= 2;
                               var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
                               var8 = new Coord(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
-                              var7 = BufferedFile.worldMap().method385(var3, var8);
+                              var7 = BufferedFile.getWorldMap().method385(var3, var8);
                               if (var7 == null) {
                                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                               } else {
@@ -901,7 +903,7 @@ public final class class54 {
                            } else {
                               AbstractWorldMapIcon var11;
                               if (var0 == ScriptOpcodes.WORLDMAP_LISTELEMENT_START) {
-                                 var11 = BufferedFile.worldMap().iconStart();
+                                 var11 = BufferedFile.getWorldMap().iconStart();
                                  if (var11 == null) {
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
@@ -912,7 +914,7 @@ public final class class54 {
 
                                  return 1;
                               } else if (var0 == ScriptOpcodes.WORLDMAP_LISTELEMENT_NEXT) {
-                                 var11 = BufferedFile.worldMap().iconNext();
+                                 var11 = BufferedFile.getWorldMap().iconNext();
                                  if (var11 == null) {
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                                     Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;

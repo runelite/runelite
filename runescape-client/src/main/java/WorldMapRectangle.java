@@ -119,7 +119,7 @@ public final class WorldMapRectangle
       SpriteMask var4 = var0.getSpriteMask(false);
       if (var4 != null) {
          if (Client.minimapState < 3) {
-            GrandExchangeOfferUnitPriceComparator.compass.method315(var1, var2, var4.width, var4.height, 25, 25, Client.camAngleY, 256, var4.xStarts, var4.xWidths);
+            GrandExchangeOfferUnitPriceComparator.compass.drawRotatedMaskedCenteredAround(var1, var2, var4.width, var4.height, 25, 25, Client.camAngleY, 256, var4.xStarts, var4.xWidths);
          } else {
             Rasterizer2D.method5948(var1, var2, 0, var4.xStarts, var4.xWidths);
          }

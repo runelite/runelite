@@ -103,7 +103,7 @@ public class GrandExchangeEvents {
    )
    public static void method69() {
       HitSplatDefinition.HitSplatDefinition_cached.clear();
-      HitSplatDefinition.field385.clear();
+      HitSplatDefinition.HitSplatDefinition_cachedSprites.clear();
       HitSplatDefinition.HitSplatDefinition_cachedFonts.clear();
    }
 

@@ -11,12 +11,14 @@ public class HealthBarDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field379;
+   @Export("HealthBarDefinition_archive")
+   public static AbstractArchive HealthBarDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field380;
+   @Export("HealthBarDefinition_spritesArchive")
+   public static AbstractArchive HealthBarDefinition_spritesArchive;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -171,7 +173,7 @@ public class HealthBarDefinition extends DualNode {
          if (var1 != null) {
             return var1;
          } else {
-            var1 = class322.readSprite(field380, this.spriteId1, 0);
+            var1 = class322.readSprite(HealthBarDefinition_spritesArchive, this.spriteId1, 0);
             if (var1 != null) {
                HealthBarDefinition_cachedSprites.put(var1, (long)this.spriteId1);
             }
@@ -195,7 +197,7 @@ public class HealthBarDefinition extends DualNode {
          if (var1 != null) {
             return var1;
          } else {
-            var1 = class322.readSprite(field380, this.spriteId2, 0);
+            var1 = class322.readSprite(HealthBarDefinition_spritesArchive, this.spriteId2, 0);
             if (var1 != null) {
                HealthBarDefinition_cachedSprites.put(var1, (long)this.spriteId2);
             }

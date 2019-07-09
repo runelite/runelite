@@ -32,7 +32,8 @@ public class Widget extends Node {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field955;
+   @Export("Widget_spritesArchive")
+   public static AbstractArchive Widget_spritesArchive;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -1275,7 +1276,7 @@ public class Widget extends Node {
          if (var5 != null) {
             return var5;
          } else {
-            var5 = class322.readSprite(field955, var2, 0);
+            var5 = class322.readSprite(Widget_spritesArchive, var2, 0);
             if (var5 == null) {
                field957 = true;
                return null;
@@ -1326,7 +1327,7 @@ public class Widget extends Node {
          if (var1 != null) {
             return var1;
          } else {
-            var1 = GraphicsDefaults.method5823(field955, class27.field1143, this.fontId, 0);
+            var1 = GraphicsDefaults.loadFont(Widget_spritesArchive, class27.Widget_fontsArchive, this.fontId, 0);
             if (var1 != null) {
                Widget_cachedFonts.put(var1, (long)this.fontId);
             } else {
@@ -1355,7 +1356,7 @@ public class Widget extends Node {
             if (var3 != null) {
                return var3;
             } else {
-               var3 = class322.readSprite(field955, var2, 0);
+               var3 = class322.readSprite(Widget_spritesArchive, var2, 0);
                if (var3 != null) {
                   widgetSpriteCache.put(var3, (long)var2);
                } else {
@@ -1397,7 +1398,7 @@ public class Widget extends Node {
          if (var7 == null) {
             ModelData var8;
             if (var5 == 1) {
-               var8 = ModelData.method2788(BufferedSource.field54, var6, 0);
+               var8 = ModelData.method2788(BufferedSource.Widget_modelsArchive, var6, 0);
                if (var8 == null) {
                   field957 = true;
                   return null;

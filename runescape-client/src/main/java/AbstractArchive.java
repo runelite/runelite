@@ -339,7 +339,8 @@ public abstract class AbstractArchive {
       signature = "(I)Z",
       garbageValue = "1694975256"
    )
-   public boolean method2() {
+   @Export("isFullyLoaded")
+   public boolean isFullyLoaded() {
       boolean var1 = true;
 
       for (int var2 = 0; var2 < this.groupIds.length; ++var2) {
@@ -437,7 +438,8 @@ public abstract class AbstractArchive {
       signature = "(IB)[I",
       garbageValue = "28"
    )
-   public int[] method3(int var1) {
+   @Export("getGroupFileIds")
+   public int[] getGroupFileIds(int var1) {
       return var1 >= 0 && var1 < this.fileIds.length ? this.fileIds[var1] : null;
    }
 
@@ -466,7 +468,8 @@ public abstract class AbstractArchive {
       signature = "(B)V",
       garbageValue = "38"
    )
-   public void method6() {
+   @Export("clearGroups")
+   public void clearGroups() {
       for (int var1 = 0; var1 < this.groups.length; ++var1) {
          this.groups[var1] = null;
       }
@@ -478,9 +481,10 @@ public abstract class AbstractArchive {
       signature = "(II)V",
       garbageValue = "330258899"
    )
-   public void method7(int var1) {
-      for (int var2 = 0; var2 < this.files[var1].length; ++var2) {
-         this.files[var1][var2] = null;
+   @Export("clearFilesGroup")
+   public void clearFilesGroup(int group) {
+      for (int var2 = 0; var2 < this.files[group].length; ++var2) {
+         this.files[group][var2] = null;
       }
 
    }
@@ -490,7 +494,8 @@ public abstract class AbstractArchive {
       signature = "(I)V",
       garbageValue = "-709581639"
    )
-   public void method8() {
+   @Export("clearFiles")
+   public void clearFiles() {
       for (int var1 = 0; var1 < this.files.length; ++var1) {
          if (this.files[var1] != null) {
             for (int var2 = 0; var2 < this.files[var1].length; ++var2) {
@@ -626,14 +631,15 @@ public abstract class AbstractArchive {
       signature = "(Ljava/lang/String;Ljava/lang/String;B)Z",
       garbageValue = "68"
    )
-   public boolean method9(String var1, String var2) {
-      var1 = var1.toLowerCase();
-      var2 = var2.toLowerCase();
-      int var3 = this.groupNameHashTable.get(Client.hashString(var1));
+   @Export("isValidFileName")
+   public boolean isValidFileName(String groupName, String fileName) {
+      groupName = groupName.toLowerCase();
+      fileName = fileName.toLowerCase();
+      int var3 = this.groupNameHashTable.get(Client.hashString(groupName));
       if (var3 < 0) {
          return false;
       } else {
-         int var4 = this.fileNameHashTables[var3].get(Client.hashString(var2));
+         int var4 = this.fileNameHashTables[var3].get(Client.hashString(fileName));
          return var4 >= 0;
       }
    }

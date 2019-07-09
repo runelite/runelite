@@ -35,8 +35,8 @@ public class ItemDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("Sprite_cached")
-   static EvictingDualNodeHashTable Sprite_cached;
+   @Export("ItemDefinition_cachedSprites")
+   static EvictingDualNodeHashTable ItemDefinition_cachedSprites;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -590103687
@@ -904,6 +904,6 @@ public class ItemDefinition extends DualNode {
    static {
       ItemDefinition_cached = new EvictingDualNodeHashTable(64);
       ItemDefinition_cachedModels = new EvictingDualNodeHashTable(50);
-      Sprite_cached = new EvictingDualNodeHashTable(200);
+      ItemDefinition_cachedSprites = new EvictingDualNodeHashTable(200);
    }
 }

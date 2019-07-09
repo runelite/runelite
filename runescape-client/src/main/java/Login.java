@@ -188,7 +188,7 @@ public class Login {
    )
    public static void method2076(AbstractArchive var0, int var1, int var2, int var3, boolean var4) {
       class214.field1129 = 1;
-      class214.field1130 = var0;
+      class214.musicTrackArchive = var0;
       class30.musicTrackGroupId = var1;
       GrandExchangeOffer.musicTrackFileId = var2;
       WorldMapLabel.field1039 = var3;

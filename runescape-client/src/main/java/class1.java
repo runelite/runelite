@@ -9,7 +9,8 @@ final class class1 implements class0 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field1105;
+   @Export("musicPatchesArchive")
+   public static AbstractArchive musicPatchesArchive;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
@@ -227,19 +228,19 @@ final class class1 implements class0 {
             } else if (var0 == ScriptOpcodes.OC_FIND) {
                String var7 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
                var4 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-               class50.method900(var7, var4 == 1);
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapSection3.field1055;
+               class50.findItemDefinitions(var7, var4 == 1);
+               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = WorldMapSection3.foundItemIdCount;
                return 1;
             } else if (var0 != ScriptOpcodes.OC_FINDNEXT) {
                if (var0 == ScriptOpcodes.OC_FINDRESET) {
-                  WorldMapDecorationType.field1139 = 0;
+                  WorldMapDecorationType.foundItemIndex = 0;
                   return 1;
                } else {
                   return 2;
                }
             } else {
-               if (AttackOption.field30 != null && WorldMapDecorationType.field1139 < WorldMapSection3.field1055) {
-                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = AttackOption.field30[++WorldMapDecorationType.field1139 - 1] & '\uffff';
+               if (AttackOption.foundItemIds != null && WorldMapDecorationType.foundItemIndex < WorldMapSection3.foundItemIdCount) {
+                  Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = AttackOption.foundItemIds[++WorldMapDecorationType.foundItemIndex - 1] & '\uffff';
                } else {
                   Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = -1;
                }

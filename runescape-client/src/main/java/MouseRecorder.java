@@ -265,16 +265,17 @@ public class MouseRecorder implements Runnable {
       signature = "(Lho;IIII)V",
       garbageValue = "-335916694"
    )
-   static final void method1189(Widget var0, int var1, int var2, int var3) {
+   @Export("drawMinimap")
+   static final void drawMinimap(Widget minimapComponent, int x, int y, int rootIndex) {
       class13.playPcmPlayers();
-      SpriteMask var4 = var0.getSpriteMask(false);
+      SpriteMask var4 = minimapComponent.getSpriteMask(false);
       if (var4 != null) {
-         Rasterizer2D.Rasterizer2D_setClip(var1, var2, var4.width + var1, var2 + var4.height);
+         Rasterizer2D.Rasterizer2D_setClip(x, y, var4.width + x, y + var4.height);
          if (Client.minimapState != 2 && Client.minimapState != 5) {
             int var5 = Client.camAngleY & 2047;
             int var6 = Canvas.localPlayer.x / 32 + 48;
             int var7 = 464 - Canvas.localPlayer.y / 32;
-            InterfaceParent.sceneMinimapSprite.method315(var1, var2, var4.width, var4.height, var6, var7, var5, 256, var4.xStarts, var4.xWidths);
+            InterfaceParent.sceneMinimapSprite.drawRotatedMaskedCenteredAround(x, y, var4.width, var4.height, var6, var7, var5, 256, var4.xStarts, var4.xWidths);
 
             int var8;
             int var9;
@@ -282,7 +283,7 @@ public class MouseRecorder implements Runnable {
             for (var8 = 0; var8 < Client.mapIconCount; ++var8) {
                var9 = Client.mapIconXs[var8] * 4 + 2 - Canvas.localPlayer.x / 32;
                var10 = Client.mapIconYs[var8] * 4 + 2 - Canvas.localPlayer.y / 32;
-               NetFileRequest.method4554(var1, var2, var9, var10, Client.mapIcons[var8], var4);
+               NetFileRequest.drawSpriteOnMinimap(x, y, var9, var10, Client.mapIcons[var8], var4);
             }
 
             var8 = 0;
@@ -302,7 +303,7 @@ public class MouseRecorder implements Runnable {
                         if (var14 != null && var14.drawMapDot && var14.isInteractable) {
                            var11 = var17.x / 32 - Canvas.localPlayer.x / 32;
                            var12 = var17.y / 32 - Canvas.localPlayer.y / 32;
-                           NetFileRequest.method4554(var1, var2, var11, var12, class39.mapDotSprites[1], var4);
+                           NetFileRequest.drawSpriteOnMinimap(x, y, var11, var12, class39.mapDotSprites[1], var4);
                         }
                      }
                   }
@@ -322,13 +323,13 @@ public class MouseRecorder implements Runnable {
                         }
 
                         if (var19.isFriend()) {
-                           NetFileRequest.method4554(var1, var2, var12, var15, class39.mapDotSprites[3], var4);
+                           NetFileRequest.drawSpriteOnMinimap(x, y, var12, var15, class39.mapDotSprites[3], var4);
                         } else if (var16) {
-                           NetFileRequest.method4554(var1, var2, var12, var15, class39.mapDotSprites[4], var4);
+                           NetFileRequest.drawSpriteOnMinimap(x, y, var12, var15, class39.mapDotSprites[4], var4);
                         } else if (var19.isClanMember()) {
-                           NetFileRequest.method4554(var1, var2, var12, var15, class39.mapDotSprites[5], var4);
+                           NetFileRequest.drawSpriteOnMinimap(x, y, var12, var15, class39.mapDotSprites[5], var4);
                         } else {
-                           NetFileRequest.method4554(var1, var2, var12, var15, class39.mapDotSprites[2], var4);
+                           NetFileRequest.drawSpriteOnMinimap(x, y, var12, var15, class39.mapDotSprites[2], var4);
                         }
                      }
                   }
@@ -339,14 +340,14 @@ public class MouseRecorder implements Runnable {
                         if (var20 != null) {
                            var11 = var20.x / 32 - Canvas.localPlayer.x / 32;
                            var12 = var20.y / 32 - Canvas.localPlayer.y / 32;
-                           UserComparator5.worldToMinimap(var1, var2, var11, var12, class16.mapMarkerSprites[1], var4);
+                           UserComparator5.worldToMinimap(x, y, var11, var12, class16.mapMarkerSprites[1], var4);
                         }
                      }
 
                      if (Client.hintArrowType == 2) {
                         var10 = Client.hintArrowX * 4 - class50.baseX * 4 + 2 - Canvas.localPlayer.x / 32;
                         var11 = Client.hintArrowY * 4 - GraphicsObject.baseY * 4 + 2 - Canvas.localPlayer.y / 32;
-                        UserComparator5.worldToMinimap(var1, var2, var10, var11, class16.mapMarkerSprites[1], var4);
+                        UserComparator5.worldToMinimap(x, y, var10, var11, class16.mapMarkerSprites[1], var4);
                      }
 
                      if (Client.hintArrowType == 10 && Client.hintArrowPlayerIndex >= 0 && Client.hintArrowPlayerIndex < Client.players.length) {
@@ -354,7 +355,7 @@ public class MouseRecorder implements Runnable {
                         if (var19 != null) {
                            var11 = var19.x / 32 - Canvas.localPlayer.x / 32;
                            var12 = var19.y / 32 - Canvas.localPlayer.y / 32;
-                           UserComparator5.worldToMinimap(var1, var2, var11, var12, class16.mapMarkerSprites[1], var4);
+                           UserComparator5.worldToMinimap(x, y, var11, var12, class16.mapMarkerSprites[1], var4);
                         }
                      }
                   }
@@ -362,11 +363,11 @@ public class MouseRecorder implements Runnable {
                   if (Client.destinationX != 0) {
                      var10 = Client.destinationX * 4 + 2 - Canvas.localPlayer.x / 32;
                      var11 = Client.destinationY * 4 + 2 - Canvas.localPlayer.y / 32;
-                     NetFileRequest.method4554(var1, var2, var10, var11, class16.mapMarkerSprites[0], var4);
+                     NetFileRequest.drawSpriteOnMinimap(x, y, var10, var11, class16.mapMarkerSprites[0], var4);
                   }
 
                   if (!Canvas.localPlayer.isHidden) {
-                     Rasterizer2D.Rasterizer2D_fillRectangle(var4.width / 2 + var1 - 1, var4.height / 2 + var2 - 1, 3, 3, 16777215);
+                     Rasterizer2D.Rasterizer2D_fillRectangle(var4.width / 2 + x - 1, var4.height / 2 + y - 1, 3, 3, 16777215);
                   }
                   break;
                }
@@ -376,17 +377,17 @@ public class MouseRecorder implements Runnable {
                   if (var13 != null) {
                      var11 = var8 * 4 + 2 - Canvas.localPlayer.x / 32;
                      var12 = var9 * 4 + 2 - Canvas.localPlayer.y / 32;
-                     NetFileRequest.method4554(var1, var2, var11, var12, class39.mapDotSprites[0], var4);
+                     NetFileRequest.drawSpriteOnMinimap(x, y, var11, var12, class39.mapDotSprites[0], var4);
                   }
                }
 
                ++var8;
             }
          } else {
-            Rasterizer2D.method5948(var1, var2, 0, var4.xStarts, var4.xWidths);
+            Rasterizer2D.method5948(x, y, 0, var4.xStarts, var4.xWidths);
          }
 
-         Client.field102[var3] = true;
+         Client.field102[rootIndex] = true;
       }
 
    }

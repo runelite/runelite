@@ -370,7 +370,7 @@ public abstract class class21 {
 
          if ((var4 & 16) != 0) {
             var6 = var0.method66();
-            PlayerType var17 = (PlayerType)ScriptFrame.findEnumerated(class48.method865(), var0.readUnsignedByte());
+            PlayerType var17 = (PlayerType)ScriptFrame.findEnumerated(class48.PlayerType_values(), var0.readUnsignedByte());
             boolean var18 = var0.readUnsignedByteNegate() == 1;
             var8 = var0.readUnsignedByte();
             var9 = var0.index;

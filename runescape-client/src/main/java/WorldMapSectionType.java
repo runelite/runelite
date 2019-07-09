@@ -74,8 +74,9 @@ public enum WorldMapSectionType implements Enumerated {
    }
 
    @ObfuscatedName("m")
-   public static String method252(long var0) {
-      Calendar.Calendar_calendar.setTime(new Date(var0));
+   @Export("getDateString")
+   public static String getDateString(long millis) {
+      Calendar.Calendar_calendar.setTime(new Date(millis));
       int var2 = Calendar.Calendar_calendar.get(7);
       int var3 = Calendar.Calendar_calendar.get(5);
       int var4 = Calendar.Calendar_calendar.get(2);
@@ -135,9 +136,9 @@ public enum WorldMapSectionType implements Enumerated {
       garbageValue = "1187868759"
    )
    static void method254() {
-      if (class60.worldMap0 != null) {
-         class60.worldMap0.method366(SoundSystem.plane, (Canvas.localPlayer.x >> 7) + class50.baseX, (Canvas.localPlayer.y >> 7) + GraphicsObject.baseY, false);
-         class60.worldMap0.loadCache();
+      if (class60.worldMap != null) {
+         class60.worldMap.method366(SoundSystem.plane, (Canvas.localPlayer.x >> 7) + class50.baseX, (Canvas.localPlayer.y >> 7) + GraphicsObject.baseY, false);
+         class60.worldMap.loadCache();
       }
 
    }

@@ -77,15 +77,15 @@ public abstract class AbstractFont extends Rasterizer2D {
    @Export("kerning")
    byte[] kerning;
 
-   AbstractFont(byte[] var1, int[] var2, int[] var3, int[] var4, int[] var5, int[] var6, byte[][] var7) {
+   AbstractFont(byte[] data, int[] leftBearings, int[] topBearings, int[] widths, int[] heights, int[] var6, byte[][] pixels) {
       this.pixels = new byte[256][];
       this.ascent = 0;
-      this.leftBearings = var2;
-      this.topBearings = var3;
-      this.widths = var4;
-      this.heights = var5;
-      this.readMetrics(var1);
-      this.pixels = var7;
+      this.leftBearings = leftBearings;
+      this.topBearings = topBearings;
+      this.widths = widths;
+      this.heights = heights;
+      this.readMetrics(data);
+      this.pixels = pixels;
       int var8 = Integer.MAX_VALUE;
       int var9 = Integer.MIN_VALUE;
 
@@ -224,7 +224,7 @@ public abstract class AbstractFont extends Rasterizer2D {
                      if (!var7.equals("gt")) {
                         if (var7.startsWith("img=")) {
                            try {
-                              int var8 = MouseHandler.method1085(var7.substring(4));
+                              int var8 = MouseHandler.parseInt(var7.substring(4));
                               var4 += AbstractFont_modIconSprites[var8].width;
                               var3 = -1;
                            } catch (Exception var9) {
@@ -307,7 +307,7 @@ public abstract class AbstractFont extends Rasterizer2D {
                      var11 = '>';
                   } else if (var16.startsWith("img=")) {
                      try {
-                        int var17 = MouseHandler.method1085(var16.substring(4));
+                        int var17 = MouseHandler.parseInt(var16.substring(4));
                         var4 += AbstractFont_modIconSprites[var17].width;
                         var11 = 0;
                      } catch (Exception var18) {
@@ -581,23 +581,23 @@ public abstract class AbstractFont extends Rasterizer2D {
    void decodeTag(String var1) {
       try {
          if (var1.startsWith("col=")) {
-            AbstractFont_color = class214.method4157(var1.substring(4), 16);
+            AbstractFont_color = class214.parseIntCustomRadix(var1.substring(4), 16);
          } else if (var1.equals("/col")) {
             AbstractFont_color = AbstractFont_previousColor;
          } else if (var1.startsWith("str=")) {
-            AbstractFont_strike = class214.method4157(var1.substring(4), 16);
+            AbstractFont_strike = class214.parseIntCustomRadix(var1.substring(4), 16);
          } else if (var1.equals("str")) {
             AbstractFont_strike = 8388608;
          } else if (var1.equals("/str")) {
             AbstractFont_strike = -1;
          } else if (var1.startsWith("u=")) {
-            AbstractFont_underline = class214.method4157(var1.substring(2), 16);
+            AbstractFont_underline = class214.parseIntCustomRadix(var1.substring(2), 16);
          } else if (var1.equals("u")) {
             AbstractFont_underline = 0;
          } else if (var1.equals("/u")) {
             AbstractFont_underline = -1;
          } else if (var1.startsWith("shad=")) {
-            AbstractFont_shadow = class214.method4157(var1.substring(5), 16);
+            AbstractFont_shadow = class214.parseIntCustomRadix(var1.substring(5), 16);
          } else if (var1.equals("shad")) {
             AbstractFont_shadow = 0;
          } else if (var1.equals("/shad")) {
@@ -656,7 +656,7 @@ public abstract class AbstractFont extends Rasterizer2D {
                      if (!var9.equals("gt")) {
                         if (var9.startsWith("img=")) {
                            try {
-                              var8 = MouseHandler.method1085(var9.substring(4));
+                              var8 = MouseHandler.parseInt(var9.substring(4));
                               IndexedSprite var13 = AbstractFont_modIconSprites[var8];
                               var13.drawAt(x, y + this.ascent - var13.height);
                               x += var13.width;
@@ -761,7 +761,7 @@ public abstract class AbstractFont extends Rasterizer2D {
                               }
 
                               ++var8;
-                              var13 = MouseHandler.method1085(var14.substring(4));
+                              var13 = MouseHandler.parseInt(var14.substring(4));
                               IndexedSprite var18 = AbstractFont_modIconSprites[var13];
                               var18.drawAt(var11 + x, var12 + (y + this.ascent - var18.height));
                               x += var18.width;

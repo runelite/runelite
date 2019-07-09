@@ -486,7 +486,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
          SoundCache.canvasWidth = width;
          Huffman.canvasHeight = height;
          RunException.revision = revision;
-         RunException.applet = this;
+         RunException.RunException_applet = this;
          if (taskHandler == null) {
             taskHandler = new TaskHandler();
          }
@@ -908,7 +908,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
                   }
 
                   String var4 = var2.substring(6, var3);
-                  if (UserComparator4.method3336(var4) && MouseHandler.method1085(var4) < 10) {
+                  if (UserComparator4.method3336(var4) && MouseHandler.parseInt(var4) < 10) {
                      this.error("wrongjava");
                      return;
                   }

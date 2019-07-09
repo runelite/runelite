@@ -602,11 +602,11 @@ public class NPCDefinition extends DualNode {
             var2 = var2.replace('@', '_');
             var2 = var2.replace('&', '_');
             var2 = var2.replace('#', '_');
-            if (RunException.applet == null) {
+            if (RunException.RunException_applet == null) {
                return;
             }
 
-            URL var3 = new URL(RunException.applet.getCodeBase(), "clienterror.ws?c=" + RunException.revision + "&u=" + RunException.localPlayerName + "&v1=" + TaskHandler.javaVendor + "&v2=" + TaskHandler.javaVersion + "&ct=" + RunException.field761 + "&e=" + var2);
+            URL var3 = new URL(RunException.RunException_applet.getCodeBase(), "clienterror.ws?c=" + RunException.revision + "&u=" + RunException.localPlayerName + "&v1=" + TaskHandler.javaVendor + "&v2=" + TaskHandler.javaVersion + "&ct=" + RunException.field761 + "&e=" + var2);
             DataInputStream var4 = new DataInputStream(var3.openStream());
             var4.read();
             var4.close();
@@ -649,7 +649,7 @@ public class NPCDefinition extends DualNode {
    static void method5162() {
       Login.Login_username = Login.Login_username.trim();
       if (Login.Login_username.length() == 0) {
-         class54.method1089("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+         class54.setLoginResponseString("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
          long var0;
          try {
@@ -693,23 +693,23 @@ public class NPCDefinition extends DualNode {
 
          switch(var11) {
          case 2:
-            class54.method1089(Strings.field882, Strings.field883, Strings.field884);
+            class54.setLoginResponseString(Strings.field882, Strings.field883, Strings.field884);
             Login.loginIndex = 6;
             break;
          case 3:
-            class54.method1089("", "Error connecting to server.", "");
+            class54.setLoginResponseString("", "Error connecting to server.", "");
             break;
          case 4:
-            class54.method1089("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
+            class54.setLoginResponseString("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
             break;
          case 5:
-            class54.method1089("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
+            class54.setLoginResponseString("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
             break;
          case 6:
-            class54.method1089("", "Error connecting to server.", "");
+            class54.setLoginResponseString("", "Error connecting to server.", "");
             break;
          case 7:
-            class54.method1089("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
+            class54.setLoginResponseString("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
          }
       }
 
@@ -721,7 +721,7 @@ public class NPCDefinition extends DualNode {
       garbageValue = "1100306484"
    )
    static String method5161(String var0) {
-      PlayerType[] var1 = class48.method865();
+      PlayerType[] var1 = class48.PlayerType_values();
 
       for (int var2 = 0; var2 < var1.length; ++var2) {
          PlayerType var3 = var1[var2];

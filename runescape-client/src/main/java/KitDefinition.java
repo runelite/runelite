@@ -17,13 +17,14 @@ public class KitDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field456;
+   @Export("KitDefinition_modelsArchive")
+   public static AbstractArchive KitDefinition_modelsArchive;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 235389995
    )
-   @Export("KitDefinition_totalCount")
-   public static int KitDefinition_totalCount;
+   @Export("KitDefinition_fileCount")
+   public static int KitDefinition_fileCount;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -140,7 +141,7 @@ public class KitDefinition extends DualNode {
          boolean var1 = true;
 
          for (int var2 = 0; var2 < this.models2.length; ++var2) {
-            if (!field456.tryLoadFile(this.models2[var2], 0)) {
+            if (!KitDefinition_modelsArchive.tryLoadFile(this.models2[var2], 0)) {
                var1 = false;
             }
          }
@@ -162,7 +163,7 @@ public class KitDefinition extends DualNode {
          ModelData[] var1 = new ModelData[this.models2.length];
 
          for (int var2 = 0; var2 < this.models2.length; ++var2) {
-            var1[var2] = ModelData.method2788(field456, this.models2[var2], 0);
+            var1[var2] = ModelData.method2788(KitDefinition_modelsArchive, this.models2[var2], 0);
          }
 
          ModelData var4;
@@ -198,7 +199,7 @@ public class KitDefinition extends DualNode {
       boolean var1 = true;
 
       for (int var2 = 0; var2 < 5; ++var2) {
-         if (this.models[var2] != -1 && !field456.tryLoadFile(this.models[var2], 0)) {
+         if (this.models[var2] != -1 && !KitDefinition_modelsArchive.tryLoadFile(this.models[var2], 0)) {
             var1 = false;
          }
       }
@@ -217,7 +218,7 @@ public class KitDefinition extends DualNode {
 
       for (int var3 = 0; var3 < 5; ++var3) {
          if (this.models[var3] != -1) {
-            var1[var2++] = ModelData.method2788(field456, this.models[var3], 0);
+            var1[var2++] = ModelData.method2788(KitDefinition_modelsArchive, this.models[var3], 0);
          }
       }
 

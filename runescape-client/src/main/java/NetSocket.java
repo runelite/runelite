@@ -533,10 +533,11 @@ public final class NetSocket extends AbstractSocket implements Runnable {
       signature = "(Lir;Lir;Lir;Lhm;I)Z",
       garbageValue = "-590103687"
    )
-   public static boolean method3537(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2, MidiPcmStream var3) {
-      class1.field1105 = var0;
-      class214.field1127 = var1;
-      class214.field1128 = var2;
+   @Export("setAudioArchives")
+   public static boolean setAudioArchives(AbstractArchive patches, AbstractArchive samples, AbstractArchive fx, MidiPcmStream var3) {
+      class1.musicPatchesArchive = patches;
+      class214.musicSamplesArchive = samples;
+      class214.soundEffectsArchive = fx;
       class214.midiPcmStream = var3;
       return true;
    }

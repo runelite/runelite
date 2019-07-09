@@ -49,12 +49,12 @@ public abstract class AbstractUserComparator implements Comparator {
       if (var0 == -1 && !Client.field107) {
          class214.midiPcmStream.clear();
          class214.field1129 = 1;
-         class214.field1130 = null;
+         class214.musicTrackArchive = null;
       } else if (var0 != -1 && var0 != Client.field112 && Client.field128 != 0 && !Client.field107) {
          Archive var1 = UserComparator3.archive6;
          int var2 = Client.field128;
          class214.field1129 = 1;
-         class214.field1130 = var1;
+         class214.musicTrackArchive = var1;
          class30.musicTrackGroupId = var0;
          GrandExchangeOffer.musicTrackFileId = 0;
          WorldMapLabel.field1039 = var2;

@@ -275,7 +275,7 @@ public class WorldMapSection2 implements WorldMapSection {
       Client.pendingSpawns = new NodeDeque();
       WorldMapArea.friendSystem.clear();
 
-      for (var0 = 0; var0 < VarpDefinition.field944; ++var0) {
+      for (var0 = 0; var0 < VarpDefinition.VarpDefinition_fileCount; ++var0) {
          VarpDefinition var3 = SecureRandomCallable.method1140(var0);
          if (var3 != null) {
             Varps.Varps_temp[var0] = 0;

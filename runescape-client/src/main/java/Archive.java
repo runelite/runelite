@@ -354,7 +354,7 @@ public class Archive extends AbstractArchive {
       garbageValue = "1419648188"
    )
    public boolean method133(int var1) {
-      return this.method3(var1) != null;
+      return this.getGroupFileIds(var1) != null;
    }
 
    @ObfuscatedName("da")
@@ -453,7 +453,7 @@ public class Archive extends AbstractArchive {
                } else if (var3 == 0) {
                   class214.midiPcmStream.clear();
                   class214.field1129 = 1;
-                  class214.field1130 = null;
+                  class214.musicTrackArchive = null;
                   Client.field107 = false;
                } else {
                   class203.method4008(var3);
