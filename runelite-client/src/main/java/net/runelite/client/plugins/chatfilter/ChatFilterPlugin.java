@@ -116,6 +116,13 @@ public class ChatFilterPlugin extends Plugin
 			case MODPRIVATECHAT:
 			case FRIENDSCHAT:
 				break;
+			case LOGINLOGOUTNOTIFICATION:
+				if (config.filterLogin())
+				{
+					// Block the message
+					intStack[intStackSize - 3] = 0;
+				}
+				return;
 			default:
 				return;
 		}
