@@ -675,9 +675,9 @@ public class GroundItemsPlugin extends Plugin
 	{
 		if (this.itemHighlightMode != OVERLAY
 			&& event.getOption().equals("Take")
-			&& event.getIdentifier() == THIRD_OPTION)
+			&& event.getType() == THIRD_OPTION)
 		{
-			int itemId = event.getType();
+			int itemId = event.getIdentifier();
 			Scene scene = client.getScene();
 			Tile tile = scene.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
 			ItemLayer itemLayer = tile.getItemLayer();
