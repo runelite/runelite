@@ -283,10 +283,11 @@ public class ItemManager
 			return 1000;
 		}
 
-		UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
-		if (p != null)
+		UntradeableItemMapping untradeableItemMapping = getUntradeableItemMapping(itemID, ItemVariationMapping.map(itemID));
+
+		if (untradeableItemMapping != null)
 		{
-			return getItemPrice(p.getPriceID()) * p.getQuantity();
+			return Math.round(getItemPrice(untradeableItemMapping.getPriceID()) * untradeableItemMapping.getQuantity());
 		}
 
 		int price = 0;
@@ -300,6 +301,16 @@ public class ItemManager
 		}
 
 		return price;
+	}
+
+	private static UntradeableItemMapping getUntradeableItemMapping(int itemId, int itemVariationMappedId)
+	{
+		UntradeableItemMapping mapping = UntradeableItemMapping.map(itemId);
+		if (mapping != null || itemId == itemVariationMappedId)
+		{
+			return mapping;
+		}
+		return UntradeableItemMapping.map(itemVariationMappedId);
 	}
 
 	/**

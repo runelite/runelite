@@ -46,12 +46,15 @@ public enum UntradeableItemMapping
 	PROSPECTOR_HELMET(ItemID.PROSPECTOR_HELMET, 32, ItemID.GOLDEN_NUGGET),
 	PROSPECTOR_JACKET(ItemID.PROSPECTOR_JACKET, 48, ItemID.GOLDEN_NUGGET),
 	PROSPECTOR_LEGS(ItemID.PROSPECTOR_LEGS, 40, ItemID.GOLDEN_NUGGET),
-	PROSPECTOR_BOOTS(ItemID.PROSPECTOR_BOOTS, 24, ItemID.GOLDEN_NUGGET);
+	PROSPECTOR_BOOTS(ItemID.PROSPECTOR_BOOTS, 24, ItemID.GOLDEN_NUGGET),
+
+	// 1 untradeable bond = 0.9 * tradable bond = tradable bond - 1/10th of a tradable bond
+	OLD_SCHOOL_BOND_UNTRADEABLE(ItemID.OLD_SCHOOL_BOND_UNTRADEABLE, 0.90f, ItemID.OLD_SCHOOL_BOND);
 
 	private static final ImmutableMap<Integer, UntradeableItemMapping> UNTRADEABLE_RECLAIM_MAP;
 
 	private final int itemID;
-	private final int quantity;
+	private final float quantity;
 	private final int priceID;
 
 	static
