@@ -373,14 +373,7 @@ public class QuestListPlugin extends Plugin
 		long hiddenCount = quests.stream()
 			.filter(q -> q.getQuest().isHidden())
 			.count();
-		if (hiddenCount == quests.size())
-		{
-			list.setOriginalHeight(0);
-		}
-		else
-		{
-			list.setOriginalHeight(y);
-		}
+		list.setOriginalHeight(hiddenCount == quests.size() ? 0 : y);
 	}
 
 	@AllArgsConstructor
