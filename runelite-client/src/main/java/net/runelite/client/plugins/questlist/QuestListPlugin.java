@@ -370,7 +370,6 @@ public class QuestListPlugin extends Plugin
 			}
 		}
 
-
 		long hiddenCount = quests.stream()
 			.filter(q -> q.getQuest().isHidden())
 			.count();
