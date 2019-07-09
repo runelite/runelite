@@ -55,7 +55,7 @@ public class NpcStatusOverlay extends Overlay
 	{
 		for (MemorizedNPC npc : plugin.getMemorizedNPCs())
 		{
-			if (npc.getNpc().getInteracting() == null)
+			if ((npc.getNpc().getInteracting() == null && client.getLocalPlayer().getInteracting() == null))
 			{
 				continue;
 			}

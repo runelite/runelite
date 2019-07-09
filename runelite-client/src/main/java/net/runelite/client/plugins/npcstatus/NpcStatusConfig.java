@@ -27,17 +27,49 @@ package net.runelite.client.plugins.npcstatus;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("npcstatus")
 public interface NpcStatusConfig extends Config
 {
+	@Range(
+			min = 1
+	)
 	@ConfigItem(
 		keyName = "AttackRange",
-		name = "NPC Attack range",
-		description = "The attack range of the NPC"
+		name = "NPC attack range",
+		description = "The attack range of the NPC.",
+		position = 1
 	)
 	default int getRange()
 	{
 		return 1;
+	}
+
+	@ConfigItem(
+			keyName = "CustomAttSpeedEnabled",
+			name = "Custom attack speed",
+			description = "Use this if the timer is wrong.",
+			position = 2
+	)
+	default boolean isCustomAttSpeed()
+	{
+		return false;
+	}
+
+	@Range(
+			min = 1
+	)
+	@ConfigItem(
+			keyName = "CustomAttSpeed",
+			name = "Custom NPC att speed",
+			description = "The attack speed of the NPC (amount of ticks between their attacks).",
+			position = 3,
+			hidden = true,
+			unhide = "CustomAttSpeedEnabled"
+	)
+	default int getCustomAttSpeed()
+	{
+		return 4;
 	}
 }
