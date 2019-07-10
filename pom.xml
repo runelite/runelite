@@ -303,7 +303,7 @@
 				<configuration>
 					<configLocation>checkstyle.xml</configLocation>
 					<!-- exclude generated sources from checkstyle https://stackoverflow.com/a/30406454/7189686 -->
-						<sourceDirectories>${project.build.sourceDirectory}</sourceDirectories>
+					<sourceDirectories>${project.build.sourceDirectory}</sourceDirectories>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 				</configuration>
 			</plugin>
