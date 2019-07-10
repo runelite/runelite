@@ -262,7 +262,7 @@
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.24.1-GA</version>
+            <version>3.25.0-GA</version>
         </dependency>
 		<dependency>
 			<groupId>org.xeustechnologies</groupId>
@@ -287,7 +287,7 @@
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
-            <version>3.0.21</version>
+            <version>3.2.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
