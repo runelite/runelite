@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -107,7 +108,8 @@ class LootTrackerBox extends JPanel
 
 		dateLabel.setFont(FontManager.getRunescapeSmallFont().deriveFont(FontManager.getRunescapeSmallFont().getSize() - 2));
 		dateLabel.setForeground(Color.LIGHT_GRAY);
-		dateLabel.setText(new Date(timeStamp).toLocaleString());
+		dateLabel.setText(DateFormat.getDateInstance().format(new Date(timeStamp)));
+
 		if (showDate)
 		{
 			logTitle.add(dateLabel, BorderLayout.SOUTH);
