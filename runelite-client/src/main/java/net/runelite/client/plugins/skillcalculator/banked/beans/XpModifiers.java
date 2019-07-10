@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.skillcalculator.beans;
+package net.runelite.client.plugins.skillcalculator.banked.beans;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import java.util.Collection;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.Skill;
 
+@AllArgsConstructor
 @Getter
-public class SkillData
+public enum XpModifiers
 {
-	private SkillDataEntry[] actions;
-	private SkillDataBonus[] bonuses;
+	LIT_GILDER_ALTAR(Skill.PRAYER, "Lit Gilded Altar (350%)", 3.5f),
+	ECTOFUNTUS(Skill.PRAYER, "Ectofuntus (400%)", 4),
+	WILDY_ALTAR(Skill.PRAYER, "Wildy Altar (700%)", 7),
+
+	FARMERS_OUTFIT(Skill.FARMING, "Farmer's Outfit (+2.5%)", 1.025f);
+
+	private final Skill skill;
+	private final String name;
+	private final float modifier;
+
+	private final static Multimap<Skill, XpModifiers> MODIFIERS_MAP;
+
+	static
+	{
+		final ImmutableMultimap.Builder<Skill, XpModifiers> map = ImmutableMultimap.builder();
+		for (final XpModifiers m : values())
+		{
+			map.put(m.skill, m);
+		}
+		MODIFIERS_MAP = map.build();
+	}
+
+	public static Collection<XpModifiers> getModifiersBySkill(final Skill skill)
+	{
+		return MODIFIERS_MAP.get(skill);
+	}
 }

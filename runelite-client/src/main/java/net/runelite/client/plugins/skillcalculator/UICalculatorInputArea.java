@@ -28,27 +28,24 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
 
-@Getter(AccessLevel.PACKAGE)
-@Singleton
-class UICalculatorInputArea extends JPanel
+@Getter
+public class UICalculatorInputArea extends JPanel
 {
 	private final JTextField uiFieldCurrentLevel;
 	private final JTextField uiFieldCurrentXP;
 	private final JTextField uiFieldTargetLevel;
 	private final JTextField uiFieldTargetXP;
 
-	UICalculatorInputArea()
+	public UICalculatorInputArea()
 	{
 		setLayout(new GridLayout(2, 2, 7, 7));
 		uiFieldCurrentLevel = addComponent("Current Level");
@@ -62,7 +59,7 @@ class UICalculatorInputArea extends JPanel
 		return getInput(uiFieldCurrentLevel);
 	}
 
-	void setCurrentLevelInput(int value)
+	public void setCurrentLevelInput(int value)
 	{
 		setInput(uiFieldCurrentLevel, value);
 	}
@@ -72,7 +69,7 @@ class UICalculatorInputArea extends JPanel
 		return getInput(uiFieldCurrentXP);
 	}
 
-	void setCurrentXPInput(Object value)
+	public void setCurrentXPInput(Object value)
 	{
 		setInput(uiFieldCurrentXP, value);
 	}
@@ -82,7 +79,7 @@ class UICalculatorInputArea extends JPanel
 		return getInput(uiFieldTargetLevel);
 	}
 
-	void setTargetLevelInput(Object value)
+	public void setTargetLevelInput(Object value)
 	{
 		setInput(uiFieldTargetLevel, value);
 	}
@@ -92,7 +89,7 @@ class UICalculatorInputArea extends JPanel
 		return getInput(uiFieldTargetXP);
 	}
 
-	void setTargetXPInput(Object value)
+	public void setTargetXPInput(Object value)
 	{
 		setInput(uiFieldTargetXP, value);
 	}
@@ -126,7 +123,7 @@ class UICalculatorInputArea extends JPanel
 		uiInput.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
 
-		uiLabel.setFont(FontManager.getSmallFont(getFont()));
+		uiLabel.setFont(FontManager.getRunescapeSmallFont());
 		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
 		uiLabel.setForeground(Color.WHITE);
 

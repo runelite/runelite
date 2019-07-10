@@ -34,18 +34,13 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
-import net.runelite.api.Skill;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
@@ -59,7 +54,6 @@ import net.runelite.client.ui.components.IconTextField;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-@Singleton
 class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
@@ -71,9 +65,7 @@ class SkillCalculator extends JPanel
 	private final ItemManager itemManager;
 	private final List<UIActionSlot> uiActionSlots = new ArrayList<>();
 	private final CacheSkillData cacheSkillData = new CacheSkillData();
-	@Getter(AccessLevel.PACKAGE)
 	private final UICombinedActionSlot combinedActionSlot;
-	@Getter(AccessLevel.PACKAGE)
 	private final List<UIActionSlot> combinedActionSlots = new ArrayList<>();
 	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
 	private final IconTextField searchBar = new IconTextField();
@@ -85,9 +77,8 @@ class SkillCalculator extends JPanel
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
 	private float lastBonus = 0.0f;
-	private CalculatorType calculatorType;
 
-	SkillCalculator(final Client client, final UICalculatorInputArea uiInput, final SpriteManager spriteManager, final ItemManager itemManager)
+	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
 		this.client = client;
 		this.uiInput = uiInput;
@@ -123,8 +114,6 @@ class SkillCalculator extends JPanel
 
 	void openCalculator(CalculatorType calculatorType)
 	{
-		this.calculatorType = calculatorType;
-
 		// Load the skill data.
 		skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
 
@@ -132,17 +121,13 @@ class SkillCalculator extends JPanel
 		xpFactor = 1.0f;
 
 		// Update internal skill/XP values.
-		updateInternalValues();
-
-		// BankedCalculator prevents these from being editable so just ensure they are editable.
-		uiInput.getUiFieldTargetLevel().setEditable(true);
-		uiInput.getUiFieldTargetXP().setEditable(true);
+		currentXP = client.getSkillExperience(calculatorType.getSkill());
+		currentLevel = Experience.getLevelForXp(currentXP);
+		targetLevel = enforceSkillBounds(currentLevel + 1);
+		targetXP = Experience.getXpForLevel(targetLevel);
 
 		// Remove all components (action slots) from this panel.
 		removeAll();
-
-		// Clear the search bar
-		searchBar.setText(null);
 
 		// Clear the search bar
 		searchBar.setText(null);
@@ -161,24 +146,6 @@ class SkillCalculator extends JPanel
 
 		// Update the input fields.
 		updateInputFields();
-	}
-
-	private void updateInternalValues()
-	{
-		updateCurrentValues();
-		updateTargetValues();
-	}
-
-	private void updateCurrentValues()
-	{
-		currentXP = client.getSkillExperience(calculatorType.getSkill());
-		currentLevel = Experience.getLevelForXp(currentXP);
-	}
-
-	private void updateTargetValues()
-	{
-		targetLevel = enforceSkillBounds(currentLevel + 1);
-		targetXP = Experience.getXpForLevel(targetLevel);
 	}
 
 	private void updateCombinedAction()
@@ -254,7 +221,7 @@ class SkillCalculator extends JPanel
 		JCheckBox uiCheckbox = new JCheckBox();
 
 		uiLabel.setForeground(Color.WHITE);
-		uiLabel.setFont(FontManager.getSmallFont(getFont()));
+		uiLabel.setFont(FontManager.getRunescapeSmallFont());
 
 		uiOption.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 0));
 		uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -270,7 +237,7 @@ class SkillCalculator extends JPanel
 
 				for (JCheckBox checkBox : uiCheckBoxList)
 				{
-					if (checkBox != null && !checkBox.equals(uiCheckBox))
+					if (checkBox != uiCheckBox)
 					{
 						checkBox.setSelected(false);
 					}
@@ -466,25 +433,4 @@ class SkillCalculator extends JPanel
 		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
 	}
 
-	/**
-	 * Updates the current skill calculator (if present)
-	 * <p>
-	 * This method is invoked by the {@link SkillCalculatorPlugin} event subscriber
-	 * when an {@link ExperienceChanged} object is posted to the event bus
-	 */
-	void updateSkillCalculator(Skill skill)
-	{
-		// If the user has selected a calculator, update its fields
-		Optional.ofNullable(calculatorType).ifPresent(calc ->
-		{
-			if (skill.equals(calculatorType.getSkill()))
-			{
-				// Update our model "current" values
-				updateCurrentValues();
-
-				// Update the UI to reflect our new model
-				updateInputFields();
-			}
-		});
-	}
 }
