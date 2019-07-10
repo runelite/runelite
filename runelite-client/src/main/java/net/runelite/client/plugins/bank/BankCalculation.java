@@ -86,30 +86,9 @@ class BankCalculation
 	 */
 	void calculate()
 	{
-		ItemContainer bankInventory = client.getItemContainer(InventoryID.BANK);
+		Item[] items = getBankItems();
 
-		if (bankInventory == null)
-		{
-			return;
-		}
-
-		Item[] items = bankInventory.getItems();
-		int currentTab = client.getVar(Varbits.CURRENT_BANK_TAB);
-
-		if (currentTab > 0)
-		{
-			int startIndex = 0;
-
-			for (int i = currentTab - 1; i > 0; i--)
-			{
-				startIndex += client.getVar(TAB_VARBITS.get(i - 1));
-			}
-
-			int itemCount = client.getVar(TAB_VARBITS.get(currentTab - 1));
-			items = Arrays.copyOfRange(items, startIndex, startIndex + itemCount);
-		}
-
-		if (items.length == 0 || !isBankDifferent(items))
+		if (items == null || items.length == 0 || !isBankDifferent(items))
 		{
 			return;
 		}
@@ -182,7 +161,35 @@ class BankCalculation
 		}
 	}
 
-	private boolean isBankDifferent(Item[] items)
+	Item[] getBankItems()
+	{
+		ItemContainer bankInventory = client.getItemContainer(InventoryID.BANK);
+
+		if (bankInventory == null)
+		{
+			return null;
+		}
+
+		Item[] items = bankInventory.getItems();
+		int currentTab = client.getVar(Varbits.CURRENT_BANK_TAB);
+
+		if (currentTab > 0)
+		{
+			int startIndex = 0;
+
+			for (int i = currentTab - 1; i > 0; i--)
+			{
+				startIndex += client.getVar(TAB_VARBITS.get(i - 1));
+			}
+
+			int itemCount = client.getVar(TAB_VARBITS.get(currentTab - 1));
+			items = Arrays.copyOfRange(items, startIndex, startIndex + itemCount);
+		}
+
+		return items;
+	}
+
+	boolean isBankDifferent(Item[] items)
 	{
 		Map<Integer, Integer> mapCheck = new HashMap<>();
 
