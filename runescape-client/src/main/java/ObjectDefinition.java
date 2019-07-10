@@ -662,7 +662,7 @@ public class ObjectDefinition extends DualNode {
          return var11;
       } else {
          if (var7 != null) {
-            var11 = var7.animateObject(var11, var8, var2);
+            var11 = var7.transformObjectModel(var11, var8, var2);
          } else {
             var11 = var11.toSharedSequenceModel(true);
          }

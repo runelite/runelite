@@ -69,6 +69,7 @@ public class AnimationSmoothingPlugin extends Plugin
 		client.setInterpolatePlayerAnimations(false);
 		client.setInterpolateNpcAnimations(false);
 		client.setInterpolateObjectAnimations(false);
+		client.setInterpolateWidgetAnimations(false);
 	}
 
 	@Subscribe
@@ -85,5 +86,6 @@ public class AnimationSmoothingPlugin extends Plugin
 		client.setInterpolatePlayerAnimations(config.smoothPlayerAnimations());
 		client.setInterpolateNpcAnimations(config.smoothNpcAnimations());
 		client.setInterpolateObjectAnimations(config.smoothObjectAnimations());
+		client.setInterpolateWidgetAnimations(config.smoothWidgetAnimations());
 	}
 }

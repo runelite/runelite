@@ -38,8 +38,8 @@ public class SequenceDefinition extends DualNode {
    @Export("frameIds")
    public int[] frameIds;
    @ObfuscatedName("g")
-   @Export("frameIds2")
-   int[] frameIds2;
+   @Export("chatFrameIds")
+   int[] chatFrameIds;
    @ObfuscatedName("l")
    @Export("frameLengths")
    public int[] frameLengths;
@@ -179,14 +179,14 @@ public class SequenceDefinition extends DualNode {
          this.field783 = var1.readUnsignedByte();
       } else if (var2 == 12) {
          var4 = var1.readUnsignedByte();
-         this.frameIds2 = new int[var4];
+         this.chatFrameIds = new int[var4];
 
          for (var5 = 0; var5 < var4; ++var5) {
-            this.frameIds2[var5] = var1.readUnsignedShort();
+            this.chatFrameIds[var5] = var1.readUnsignedShort();
          }
 
          for (var5 = 0; var5 < var4; ++var5) {
-            var3 = this.frameIds2;
+            var3 = this.chatFrameIds;
             var3[var5] += var1.readUnsignedShort() << 16;
          }
       } else if (var2 == 13) {
@@ -230,8 +230,8 @@ public class SequenceDefinition extends DualNode {
       signature = "(Ldu;II)Ldu;",
       garbageValue = "128527714"
    )
-   @Export("animateSequence")
-   public Model animateSequence(Model model, int frame) {
+   @Export("transformActorModel")
+   public Model transformActorModel(Model model, int frame) {
       frame = this.frameIds[frame];
       Frames var3 = ItemContainer.getFrames(frame >> 16);
       frame &= 65535;
@@ -249,8 +249,8 @@ public class SequenceDefinition extends DualNode {
       signature = "(Ldu;IIB)Ldu;",
       garbageValue = "-65"
    )
-   @Export("animateObject")
-   Model animateObject(Model model, int frame, int orientation) {
+   @Export("transformObjectModel")
+   Model transformObjectModel(Model model, int frame, int orientation) {
       frame = this.frameIds[frame];
       Frames var4 = ItemContainer.getFrames(frame >> 16);
       frame &= 65535;
@@ -285,8 +285,8 @@ public class SequenceDefinition extends DualNode {
       signature = "(Ldu;II)Ldu;",
       garbageValue = "-1692496767"
    )
-   @Export("animateSpotAnimation")
-   Model animateSpotAnimation(Model model, int frame) {
+   @Export("transformSpotAnimationModel")
+   Model transformSpotAnimationModel(Model model, int frame) {
       frame = this.frameIds[frame];
       Frames var3 = ItemContainer.getFrames(frame >> 16);
       frame &= 65535;
@@ -304,13 +304,13 @@ public class SequenceDefinition extends DualNode {
       signature = "(Ldu;ILjh;II)Ldu;",
       garbageValue = "-386360993"
    )
-   @Export("animateSequence2")
-   public Model animateSequence2(Model model, int frame, SequenceDefinition sequence, int sequenceFrame) {
+   @Export("applyTransformations")
+   public Model applyTransformations(Model model, int frame, SequenceDefinition sequence, int sequenceFrame) {
       frame = this.frameIds[frame];
       Frames var5 = ItemContainer.getFrames(frame >> 16);
       frame &= 65535;
       if (var5 == null) {
-         return sequence.animateSequence(model, sequenceFrame);
+         return sequence.transformActorModel(model, sequenceFrame);
       } else {
          sequenceFrame = sequence.frameIds[sequenceFrame];
          Frames var6 = ItemContainer.getFrames(sequenceFrame >> 16);
@@ -333,8 +333,8 @@ public class SequenceDefinition extends DualNode {
       signature = "(Ldu;II)Ldu;",
       garbageValue = "-15433768"
    )
-   @Export("animateWidget")
-   public Model animateWidget(Model model, int frame) {
+   @Export("transformWidgetModel")
+   public Model transformWidgetModel(Model model, int frame) {
       int var3 = this.frameIds[frame];
       Frames var4 = ItemContainer.getFrames(var3 >> 16);
       var3 &= 65535;
@@ -343,8 +343,8 @@ public class SequenceDefinition extends DualNode {
       } else {
          Frames var5 = null;
          int var6 = 0;
-         if (this.frameIds2 != null && frame < this.frameIds2.length) {
-            var6 = this.frameIds2[frame];
+         if (this.chatFrameIds != null && frame < this.chatFrameIds.length) {
+            var6 = this.chatFrameIds[frame];
             var5 = ItemContainer.getFrames(var6 >> 16);
             var6 &= 65535;
          }
