@@ -47,10 +47,10 @@ public interface NpcStatusConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "CustomAttSpeedEnabled",
-			name = "Custom attack speed",
-			description = "Use this if the timer is wrong.",
-			position = 2
+		keyName = "CustomAttSpeedEnabled",
+		name = "Custom attack speed",
+		description = "Use this if the timer is wrong.",
+		position = 2
 	)
 	default boolean isCustomAttSpeed()
 	{
@@ -58,15 +58,15 @@ public interface NpcStatusConfig extends Config
 	}
 
 	@Range(
-			min = 1
+		min = 1
 	)
 	@ConfigItem(
-			keyName = "CustomAttSpeed",
-			name = "Custom NPC att speed",
-			description = "The attack speed of the NPC (amount of ticks between their attacks).",
-			position = 3,
-			hidden = true,
-			unhide = "CustomAttSpeedEnabled"
+		keyName = "CustomAttSpeed",
+		name = "Custom NPC att speed",
+		description = "The attack speed of the NPC (amount of ticks between their attacks).",
+		position = 3,
+		hidden = true,
+		unhide = "CustomAttSpeedEnabled"
 	)
 	default int getCustomAttSpeed()
 	{
