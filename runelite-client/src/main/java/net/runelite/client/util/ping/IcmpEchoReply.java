@@ -30,7 +30,7 @@ import com.sun.jna.platform.win32.WinDef;
 import java.util.Arrays;
 import java.util.List;
 
-class IcmpEchoReply extends Structure
+public class IcmpEchoReply extends Structure
 {
 	private static final int IP_OPTION_INFO_SIZE = 1 + 1 + 1 + 1 + (Pointer.SIZE == 8 ? 12 : 4); // on 64bit vms add 4 byte padding
 	public static final int SIZE = 4 + 4 + 4 + 2 + 2 + Pointer.SIZE + IP_OPTION_INFO_SIZE;
