@@ -50,7 +50,7 @@
 		<mockito.version>1.10.19</mockito.version>
 		<sql2o.version>1.5.4</sql2o.version>
 		<minio.version>3.0.6</minio.version>
-		<okhttp3.version>4.0.0</okhttp3.version>
+		<okhttp3.version>3.14.0</okhttp3.version>
 		<zlika.reproducible.build.maven.plugin.version>0.7</zlika.reproducible.build.maven.plugin.version>
 
 		<maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
