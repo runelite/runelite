@@ -1,5 +1,6 @@
 import java.applet.Applet;
 import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -18,7 +19,8 @@ public class FaceNormal {
    @ObfuscatedSignature(
       signature = "Lln;"
    )
-   static Sprite field345;
+   @Export("redHintArrowSprite")
+   static Sprite redHintArrowSprite;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -2074333261

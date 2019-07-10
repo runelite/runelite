@@ -55,7 +55,7 @@ public class UserComparator5 extends AbstractUserComparator {
          int var15 = (int)(Math.sin(var12) * (double)var14);
          int var16 = (int)(Math.cos(var12) * (double)var14);
          byte var17 = 20;
-         FaceNormal.field345.method316(var15 + (var0 + var5.width / 2 - var17 / 2), var5.height / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
+         FaceNormal.redHintArrowSprite.method316(var15 + (var0 + var5.width / 2 - var17 / 2), var5.height / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
       } else {
          NetFileRequest.drawSpriteOnMinimap(var0, var1, var2, var3, var4, var5);
       }

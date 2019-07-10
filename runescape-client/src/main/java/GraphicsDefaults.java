@@ -17,7 +17,8 @@ public class GraphicsDefaults {
    @ObfuscatedGetter(
       intValue = 159591367
    )
-   public int field879;
+   @Export("redHintArrow")
+   public int redHintArrow;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -104203005
@@ -75,7 +76,7 @@ public class GraphicsDefaults {
 
    public GraphicsDefaults() {
       this.compass = -1;
-      this.field879 = -1;
+      this.redHintArrow = -1;
       this.mapScenes = -1;
       this.headIconsPk = -1;
       this.headIconsPrayer = -1;
@@ -109,7 +110,7 @@ public class GraphicsDefaults {
             break;
          case 2:
             this.compass = var3.method51();
-            this.field879 = var3.method51();
+            this.redHintArrow = var3.method51();
             this.mapScenes = var3.method51();
             this.headIconsPk = var3.method51();
             this.headIconsPrayer = var3.method51();

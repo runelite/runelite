@@ -312,8 +312,8 @@ public class class171 {
                   ++var0;
                }
 
-               if (FaceNormal.field345 == null) {
-                  FaceNormal.field345 = class322.readSprite(WorldMapSection1.archive8, Calendar.spriteIds.field879, 0);
+               if (FaceNormal.redHintArrowSprite == null) {
+                  FaceNormal.redHintArrowSprite = class322.readSprite(WorldMapSection1.archive8, Calendar.spriteIds.redHintArrow, 0);
                } else {
                   ++var0;
                }
@@ -452,7 +452,7 @@ public class class171 {
                   Login.Login_loadingPercent = 70;
                } else {
                   AbstractFont.AbstractFont_modIconSprites = WorldMapSectionType.modIconSprites;
-                  FaceNormal.field345.normalize();
+                  FaceNormal.redHintArrowSprite.normalize();
                   var29 = (int)(Math.random() * 21.0D) - 10;
                   int var36 = (int)(Math.random() * 21.0D) - 10;
                   var34 = (int)(Math.random() * 21.0D) - 10;
