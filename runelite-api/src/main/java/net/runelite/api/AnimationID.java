@@ -315,7 +315,7 @@ public final class AnimationID
 	public static final int DAG_SUPREME = 2855;
 
 	// Lizardman shaman
-	public static final int LIZARDMAN_SHAMAN_SPAWN = 2855;
+	public static final int LIZARDMAN_SHAMAN_SPAWN = 7157;
 
 	// Combat counter
 	public static final int BARRAGE_ANIMATION = 1979;
