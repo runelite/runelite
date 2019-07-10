@@ -103,8 +103,6 @@ public class MotherlodePluginTest
 		GameStateChanged gameStateChanged = new GameStateChanged();
 		gameStateChanged.setGameState(GameState.LOADING);
 		motherlodePlugin.onGameStateChanged(gameStateChanged);
-		gameStateChanged.setGameState(GameState.LOGGED_IN);
-		motherlodePlugin.onGameStateChanged(gameStateChanged);
 
 		// Initial sack count
 		when(client.getVar(Varbits.SACK_NUMBER)).thenReturn(42);
