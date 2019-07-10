@@ -459,8 +459,9 @@ public class MotherlodePlugin extends Plugin
 
 	private boolean checkInMlm()
 	{
-		if (client.getGameState() != GameState.LOGGED_IN
-			&& client.getGameState() != GameState.LOADING)
+		GameState gameState = client.getGameState();
+		if (gameState != GameState.LOGGED_IN
+			&& gameState != GameState.LOADING)
 		{
 			return false;
 		}
