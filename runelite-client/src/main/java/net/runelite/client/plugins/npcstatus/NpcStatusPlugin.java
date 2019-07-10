@@ -159,6 +159,10 @@ public class NpcStatusPlugin extends Plugin
 		{
 			for (MemorizedNPC mn : memorizedNPCs)
 			{
+				if (mn.getNpcIndex() != ((NPC) event.getActor()).getIndex())
+				{
+					continue;
+				}
 				if (mn.getStatus() == MemorizedNPC.Status.OUT_OF_COMBAT || (mn.getStatus() == MemorizedNPC.Status.IN_COMBAT && mn.getCombatTimerEnd() - client.getTickCount() < 1) || mn.getLastinteracted() == null)
 				{
 					mn.setStatus(MemorizedNPC.Status.FLINCHING);
@@ -184,7 +188,11 @@ public class NpcStatusPlugin extends Plugin
 		{
 			for (MemorizedNPC mn : memorizedNPCs)
 			{
-				if (mn.getStatus() == MemorizedNPC.Status.OUT_OF_COMBAT || (mn.getStatus() == MemorizedNPC.Status.IN_COMBAT && mn.getCombatTimerEnd() - client.getTickCount() < 2) || mn.getLastinteracted() == null)
+				if (mn.getNpcIndex() != ((NPC) event.getActor()).getIndex())
+				{
+					continue;
+				}
+				if (mn.getStatus() == MemorizedNPC.Status.OUT_OF_COMBAT || (mn.getStatus() == MemorizedNPC.Status.IN_COMBAT && mn.getCombatTimerEnd() - client.getTickCount() < 2) || event.getActor().getInteracting() == null)
 				{
 					mn.setStatus(MemorizedNPC.Status.FLINCHING);
 					mn.setCombatTimerEnd(-1);
