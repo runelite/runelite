@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2019, Mikhail <mikhail@huizenvlees.nl>
  * All rights reserved.
  *
@@ -25,37 +24,17 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import java.util.Arrays;
-import java.util.List;
+import lombok.Data;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
-
-public class WildcardMatchLoaderTest
+@Data
+class ItemNameWithQuantity
 {
-	@Test
-	public void testLoad()
-	{
-		List<FilterItem> filterItemList = Arrays.asList(
-				new FilterItem("rune*"),
-				new FilterItem("Abyssal whip"),
-				new FilterItem("Egg", "<", 5, ""),
-				new FilterItem("Coins", ">", 2, "m"),
-				new FilterItem("Arrow", "=", 2, "")
-		);
+	private String name;
+	private int quantity;
 
-		WildcardMatchLoader loader = new WildcardMatchLoader(filterItemList);
-		assertTrue(loader.load(new ItemNameWithQuantity("rune pouch", 1)));
-		assertTrue(loader.load(new ItemNameWithQuantity("Rune pouch", 1)));
-		assertFalse(loader.load(new ItemNameWithQuantity("Adamant dagger", 1)));
-		assertTrue(loader.load(new ItemNameWithQuantity("Runeite Ore", 1)));
-		assertTrue(loader.load(new ItemNameWithQuantity("Abyssal whip", 1)));
-		assertFalse(loader.load(new ItemNameWithQuantity("Abyssal dagger", 1)));
-		assertTrue(loader.load(new ItemNameWithQuantity("Egg", 4)));
-		assertFalse(loader.load(new ItemNameWithQuantity("Egg", 6)));
-		assertFalse(loader.load(new ItemNameWithQuantity("Coins", 1500000)));
-		assertTrue(loader.load(new ItemNameWithQuantity("coins", 2000001)));
-		assertTrue(loader.load(new ItemNameWithQuantity("Arrow", 2)));
+	ItemNameWithQuantity(String name, int quantity)
+	{
+		this.name = name.trim();
+		this.quantity = quantity;
 	}
 }

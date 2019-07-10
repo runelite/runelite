@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, Mikhail <mikhail@huizenvlees.nl>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,30 +31,26 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import net.runelite.client.util.WildcardMatcher;
 
-class WildcardMatchLoader extends CacheLoader<String, Boolean>
+class WildcardMatchLoader extends CacheLoader<ItemNameWithQuantity, Boolean>
 {
-	private final List<String> nameFilters;
-
-	WildcardMatchLoader(List<String> nameFilters)
+	private final List<FilterItem> nameFilters;
+	WildcardMatchLoader(List<FilterItem> nameFilters)
 	{
 		this.nameFilters = nameFilters;
 	}
-
 	@Override
-	public Boolean load(@Nonnull final String key)
+	public Boolean load(@Nonnull final ItemNameWithQuantity itemNameWithQuantity)
 	{
-		if (Strings.isNullOrEmpty(key))
+		if (Strings.isNullOrEmpty(itemNameWithQuantity.getName()))
 		{
 			return false;
 		}
 
-		final String filteredName = key.trim();
-
-		for (final String filter : nameFilters)
+		for (final FilterItem filter : nameFilters)
 		{
-			if (WildcardMatcher.matches(filter, filteredName))
+			if (WildcardMatcher.matches(filter.getPattern(), itemNameWithQuantity.getName()))
 			{
-				return true;
+				return filter.checkAmount(itemNameWithQuantity.getQuantity());
 			}
 		}
 
