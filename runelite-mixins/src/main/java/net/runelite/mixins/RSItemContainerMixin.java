@@ -46,6 +46,9 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 	static private int rl$lastCycle;
 
 	@Inject
+	static private int rl$lastContainer;
+
+	@Inject
 	@Override
 	public Item[] getItems()
 	{
@@ -76,14 +79,16 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 		rs$itemContainerSetItem(itemContainerId, index, itemId, itemQuantity);
 
 		int cycle = client.getGameCycle();
-		if (rl$lastCycle == cycle)
+
+		if (rl$lastCycle == cycle && rl$lastContainer == itemContainerId)
 		{
-			// Limit item container updates to one per cycle
-			// No need to repeatedly update. The game just needs to know that containers changed once per cycle
+			// Limit item container updates to one per cycle per container
 			return;
 		}
 
 		rl$lastCycle = cycle;
+		rl$lastContainer = itemContainerId;
+
 		ItemContainerChanged event = new ItemContainerChanged(itemContainerId, client.getItemContainer(InventoryID.getValue(itemContainerId)));
 		client.getCallbacks().postDeferred(event);
 	}

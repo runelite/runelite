@@ -46,9 +46,6 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 	private KeyRemappingPlugin plugin;
 
 	@Inject
-	private KeyRemappingConfig config;
-
-	@Inject
 	private Client client;
 
 	@Inject
@@ -100,67 +97,67 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 			// to select options
 			if (plugin.isFkeyRemap() && !plugin.isDialogOpen())
 			{
-				if (config.f1().matches(e))
+				if (plugin.getF1().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F1);
 					e.setKeyCode(KeyEvent.VK_F1);
 				}
-				else if (config.f2().matches(e))
+				else if (plugin.getF2().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F2);
 					e.setKeyCode(KeyEvent.VK_F2);
 				}
-				else if (config.f3().matches(e))
+				else if (plugin.getF3().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F3);
 					e.setKeyCode(KeyEvent.VK_F3);
 				}
-				else if (config.f4().matches(e))
+				else if (plugin.getF4().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F4);
 					e.setKeyCode(KeyEvent.VK_F4);
 				}
-				else if (config.f5().matches(e))
+				else if (plugin.getF5().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F5);
 					e.setKeyCode(KeyEvent.VK_F5);
 				}
-				else if (config.f6().matches(e))
+				else if (plugin.getF6().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F6);
 					e.setKeyCode(KeyEvent.VK_F6);
 				}
-				else if (config.f7().matches(e))
+				else if (plugin.getF7().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F7);
 					e.setKeyCode(KeyEvent.VK_F7);
 				}
-				else if (config.f8().matches(e))
+				else if (plugin.getF8().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F8);
 					e.setKeyCode(KeyEvent.VK_F8);
 				}
-				else if (config.f9().matches(e))
+				else if (plugin.getF9().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F9);
 					e.setKeyCode(KeyEvent.VK_F9);
 				}
-				else if (config.f10().matches(e))
+				else if (plugin.getF10().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F10);
 					e.setKeyCode(KeyEvent.VK_F10);
 				}
-				else if (config.f11().matches(e))
+				else if (plugin.getF11().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F11);
 					e.setKeyCode(KeyEvent.VK_F11);
 				}
-				else if (config.f12().matches(e))
+				else if (plugin.getF12().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_F12);
 					e.setKeyCode(KeyEvent.VK_F12);
 				}
-				else if (config.esc().matches(e))
+				else if (plugin.getEsc().matches(e))
 				{
 					modified.put(e.getKeyCode(), KeyEvent.VK_ESCAPE);
 					e.setKeyCode(KeyEvent.VK_ESCAPE);
@@ -238,55 +235,55 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 
 			if (plugin.isFkeyRemap())
 			{
-				if (config.f1().matches(e))
+				if (plugin.getF1().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F1);
 				}
-				else if (config.f2().matches(e))
+				else if (plugin.getF2().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F2);
 				}
-				else if (config.f3().matches(e))
+				else if (plugin.getF3().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F3);
 				}
-				else if (config.f4().matches(e))
+				else if (plugin.getF4().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F4);
 				}
-				else if (config.f5().matches(e))
+				else if (plugin.getF5().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F5);
 				}
-				else if (config.f6().matches(e))
+				else if (plugin.getF6().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F6);
 				}
-				else if (config.f7().matches(e))
+				else if (plugin.getF7().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F7);
 				}
-				else if (config.f8().matches(e))
+				else if (plugin.getF8().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F8);
 				}
-				else if (config.f9().matches(e))
+				else if (plugin.getF9().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F9);
 				}
-				else if (config.f10().matches(e))
+				else if (plugin.getF10().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F10);
 				}
-				else if (config.f11().matches(e))
+				else if (plugin.getF11().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F11);
 				}
-				else if (config.f12().matches(e))
+				else if (plugin.getF12().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_F12);
 				}
-				else if (config.esc().matches(e))
+				else if (plugin.getEsc().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_ESCAPE);
 				}
