@@ -1,5 +1,41 @@
 {
   "buildCommit": "b82c8903c64695d44b255d45b449440e4eaa17ef",
+  "client": {
+    "artifactId": "client",
+    "classifier": "",
+    "extension": "jar",
+    "groupId": "net.runelite",
+    "properties": "",
+    "version": "1.5.28"
+  },
+  "clientJvm9Arguments": [
+    "-XX:+DisableAttachMechanism",
+    "-Xmx512m",
+    "-Xss2m",
+    "-XX:CompileThreshold=1500",
+    "-Djna.nosys=true"
+  ],
+  "clientJvmArguments": [
+    "-XX:+DisableAttachMechanism",
+    "-Xmx512m",
+    "-Xss2m",
+    "-XX:CompileThreshold=1500",
+    "-Xincgc",
+    "-XX:+UseConcMarkSweepGC",
+    "-XX:+UseParNewGC",
+    "-Djna.nosys=true"
+  ],
+  "launcherArguments": [
+    "-XX:+DisableAttachMechanism",
+    "-Drunelite.launcher.nojvm=true",
+    "-Xmx512m",
+    "-Xss2m",
+    "-XX:CompileThreshold=1500",
+    "-Xincgc",
+    "-XX:+UseConcMarkSweepGC",
+    "-XX:+UseParNewGC",
+    "-Djna.nosys=true"
+  ],
   "artifacts": [
     {
       "hash": "b12331da8683e5f107d294adeebb83ecf9124abc1db533554d2a8d3c62832d75",
@@ -20,10 +56,10 @@
       "size": "3168921"
     },
     {
-      "hash": "bc9ad97e68f88e53d6e5844a5b02e8b874cb7f0bbdd08a99c4529caf9148e99f",
+      "hash": "49b13a23e5bef24bfe2c48574ae0f1a782075ab6f11fb587ee0c70cf0e808fba",
       "name": "client-1.5.29-SNAPSHOT.jar",
       "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/client-1.5.29-SNAPSHOT.jar",
-      "size": "6018354"
+      "size": "6043808"
     },
     {
       "hash": "18c4a0095d5c1da6b817592e767bb23d29dd2f560ad74df75ff3961dbde25b79",
@@ -212,22 +248,22 @@
       "size": "2327547"
     },
     {
-      "hash": "aa603ad557917ad4c14f0683195c481e84760e2c12cf7564f4ad9a22f66fe9d6",
+      "hash": "adddf7e024c391b0f10fb2a1d5ec5c3064348caa08a41f1219031da86d2b30a1",
       "name": "runelite-api-1.5.29-SNAPSHOT.jar",
       "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/runelite-api-1.5.29-SNAPSHOT.jar",
-      "size": "1027726"
+      "size": "1031030"
     },
     {
-      "hash": "051f8c8fb6dfbcdf35c6b266bf4dddbfb1eca44ea3e5319b622dda57a83b0eea",
+      "hash": "84863671e050f7146da8cba37401aaadfb37427e6f51bca0e282ead45f6130f6",
       "name": "runescape-api-1.5.29-SNAPSHOT.jar",
       "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/runescape-api-1.5.29-SNAPSHOT.jar",
-      "size": "58029"
+      "size": "58377"
     },
     {
-      "hash": "9084498c38d640206ec099578ec21f0e52ff1afab5d77580e12e27f59b9987c8",
+      "hash": "666e607343914fb98a0feb80b5067b4ff043e30aa1e6fb0878bf3796971250b6",
       "name": "http-api-1.5.29-SNAPSHOT.jar",
       "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/http-api-1.5.29-SNAPSHOT.jar",
-      "size": "115763"
+      "size": "115783"
     },
     {
       "hash": "f55abda036da75e1af45bd43b9dfa79b2a3d90905be9cb38687c6621597a8165",
@@ -254,46 +290,10 @@
       "size": "617294"
     },
     {
-      "hash": "48bfa99ac87f3c3b8d555efd2ac3a84f636e8f9fd282284f87df77cd9feacfa6",
+      "hash": "2a84d3f3be4c4c7475cbbe437051bfb5bf6295b8b3ffed0f6f76937eb500109e",
       "name": "injected-client-1.5.29-SNAPSHOT.jar",
       "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/injected-client-1.5.29-SNAPSHOT.jar",
-      "size": "2196574"
+      "size": "2197676"
     }
-  ],
-  "client": {
-    "artifactId": "client",
-    "classifier": "",
-    "extension": "jar",
-    "groupId": "net.runelite",
-    "properties": "",
-    "version": "1.5.28"
-  },
-  "clientJvm9Arguments": [
-    "-XX:+DisableAttachMechanism",
-    "-Xmx512m",
-    "-Xss2m",
-    "-XX:CompileThreshold=1500",
-    "-Djna.nosys=true"
-  ],
-  "clientJvmArguments": [
-    "-XX:+DisableAttachMechanism",
-    "-Xmx512m",
-    "-Xss2m",
-    "-XX:CompileThreshold=1500",
-    "-Xincgc",
-    "-XX:+UseConcMarkSweepGC",
-    "-XX:+UseParNewGC",
-    "-Djna.nosys=true"
-  ],
-  "launcherArguments": [
-    "-XX:+DisableAttachMechanism",
-    "-Drunelite.launcher.nojvm=true",
-    "-Xmx512m",
-    "-Xss2m",
-    "-XX:CompileThreshold=1500",
-    "-Xincgc",
-    "-XX:+UseConcMarkSweepGC",
-    "-XX:+UseParNewGC",
-    "-Djna.nosys=true"
   ]
 }
