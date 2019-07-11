@@ -231,12 +231,14 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT) || !config.showInfoboxes())
+		final ItemContainer container = event.getItemContainer();
+
+		if (container == null || container != client.getItemContainer(InventoryID.EQUIPMENT) || !config.showInfoboxes())
 		{
 			return;
 		}
 
-		final Item[] items = event.getItemContainer().getItems();
+		final Item[] items = container.getItems();
 
 		if (config.showTeleportCharges())
 		{

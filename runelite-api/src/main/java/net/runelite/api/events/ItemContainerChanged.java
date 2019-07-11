@@ -24,6 +24,7 @@
  */
 package net.runelite.api.events;
 
+import javax.annotation.Nullable;
 import lombok.Value;
 import net.runelite.api.ItemContainer;
 
@@ -49,5 +50,6 @@ public class ItemContainerChanged
 	/**
 	 * The modified item container.
 	 */
+	@Nullable
 	private final ItemContainer itemContainer;
 }

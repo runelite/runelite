@@ -806,7 +806,7 @@ public class TimersPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
 		ItemContainer container = itemContainerChanged.getItemContainer();
-		if (container == client.getItemContainer(InventoryID.EQUIPMENT))
+		if (container != null && container == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
 			Item[] items = container.getItems();
 			int weaponIdx = EquipmentInventorySlot.WEAPON.getSlotIdx();

@@ -431,7 +431,7 @@ public class WintertodtPlugin extends Plugin
 	{
 		final ItemContainer container = event.getItemContainer();
 
-		if (!isInWintertodt || container != client.getItemContainer(InventoryID.INVENTORY))
+		if (!isInWintertodt || container == null || container != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
 		}

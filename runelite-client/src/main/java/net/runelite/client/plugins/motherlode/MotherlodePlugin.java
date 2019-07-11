@@ -391,7 +391,7 @@ public class MotherlodePlugin extends Plugin
 	{
 		final ItemContainer container = event.getItemContainer();
 
-		if (!inMlm || !shouldUpdateOres || inventorySnapshot == null || container != client.getItemContainer(InventoryID.INVENTORY))
+		if (!inMlm || !shouldUpdateOres || inventorySnapshot == null || container == null || container != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
 		}

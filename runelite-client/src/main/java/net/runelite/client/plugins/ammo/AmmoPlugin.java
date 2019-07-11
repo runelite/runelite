@@ -85,12 +85,14 @@ public class AmmoPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
+		final ItemContainer container = event.getItemContainer();
+
+		if (container == null || container != client.getItemContainer(InventoryID.EQUIPMENT))
 		{
 			return;
 		}
 
-		checkInventory(event.getItemContainer().getItems());
+		checkInventory(container.getItems());
 	}
 
 	private void checkInventory(final Item[] items)

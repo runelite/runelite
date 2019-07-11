@@ -37,6 +37,7 @@ import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import static net.runelite.api.ItemID.TORN_CLUE_SCROLL_PART_1;
 import static net.runelite.api.ItemID.TORN_CLUE_SCROLL_PART_2;
 import static net.runelite.api.ItemID.TORN_CLUE_SCROLL_PART_3;
@@ -138,7 +139,14 @@ public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, 
 
 	private boolean checkForPart(final ItemContainerChanged event, ItemManager itemManager, int clueScrollPart, int index)
 	{
-		final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
+		final ItemContainer container = event.getItemContainer();
+
+		if (container == null)
+		{
+			return false;
+		}
+
+		final Stream<Item> items = Arrays.stream(container.getItems());
 
 		// If we have the part then that step is done
 		if (items.anyMatch(item -> itemManager.getItemComposition(item.getId()).getId() == clueScrollPart))

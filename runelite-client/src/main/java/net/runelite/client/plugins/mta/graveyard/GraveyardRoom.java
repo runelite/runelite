@@ -100,7 +100,7 @@ public class GraveyardRoom extends MTARoom
 
 		ItemContainer container = event.getItemContainer();
 
-		if (container == client.getItemContainer(InventoryID.INVENTORY))
+		if (container != null && container == client.getItemContainer(InventoryID.INVENTORY))
 		{
 			this.score = score(container.getItems());
 

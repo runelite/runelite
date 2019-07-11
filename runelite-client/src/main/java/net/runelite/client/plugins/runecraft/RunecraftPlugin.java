@@ -39,6 +39,7 @@ import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
@@ -178,12 +179,14 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		final ItemContainer container = event.getItemContainer();
+
+		if (container == null || container != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
 		}
 
-		final Item[] items = event.getItemContainer().getItems();
+		final Item[] items = container.getItems();
 		degradedPouchInInventory = Stream.of(items).anyMatch(i -> DEGRADED_POUCHES.contains(i.getId()));
 	}
 

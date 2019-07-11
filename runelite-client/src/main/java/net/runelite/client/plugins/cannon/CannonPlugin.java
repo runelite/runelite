@@ -39,6 +39,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ObjectID.CANNON_BASE;
 import net.runelite.api.Player;
@@ -148,7 +149,8 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		final ItemContainer container = event.getItemContainer();
+		if (container == null || container != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
 		}
@@ -161,7 +163,7 @@ public class CannonPlugin extends Plugin
 
 		if (!cannonPlaced)
 		{
-			for (Item item : event.getItemContainer().getItems())
+			for (Item item : container.getItems())
 			{
 				if (item == null)
 				{

@@ -32,6 +32,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
@@ -91,12 +92,14 @@ public class RoguesDenPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		final ItemContainer container = event.getItemContainer();
+
+		if (container == null || container != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
 		}
 
-		for (Item item : event.getItemContainer().getItems())
+		for (Item item : container.getItems())
 		{
 			if (item.getId() == ItemID.MYSTIC_JEWEL)
 			{
