@@ -86,10 +86,17 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 			return;
 		}
 
+		InventoryID container = InventoryID.getValue(itemContainerId);
+
+		if (container == null)
+		{
+			return;
+		}
+
 		rl$lastCycle = cycle;
 		rl$lastContainer = itemContainerId;
 
-		ItemContainerChanged event = new ItemContainerChanged(itemContainerId, client.getItemContainer(InventoryID.getValue(itemContainerId)));
+		ItemContainerChanged event = new ItemContainerChanged(itemContainerId, client.getItemContainer(container));
 		client.getCallbacks().postDeferred(event);
 	}
 }
