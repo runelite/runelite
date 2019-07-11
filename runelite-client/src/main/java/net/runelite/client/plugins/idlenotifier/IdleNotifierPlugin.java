@@ -236,7 +236,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_3A_PICKAXE:
 			case DENSE_ESSENCE_CHIPPING:
 			case DENSE_ESSENCE_CHISELING:
-			/* Herblore */
+				/* Herblore */
 			case HERBLORE_PESTLE_AND_MORTAR:
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
@@ -258,7 +258,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FARMING_HARVEST_FRUIT_TREE:
 			case FARMING_HARVEST_FLOWER:
 			case FARMING_HARVEST_ALLOTMENT:
-			/* Misc */
+				/* Misc */
 			case PISCARILIUS_CRANE_REPAIR:
 			case HOME_MAKE_TABLET:
 			case SAND_COLLECTION:
