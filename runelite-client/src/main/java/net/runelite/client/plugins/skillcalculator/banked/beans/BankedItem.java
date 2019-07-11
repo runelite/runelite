@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.skillcalculator.beans;
+package net.runelite.client.plugins.skillcalculator.banked.beans;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
-public class SkillData
+public class BankedItem
 {
-	private SkillDataEntry[] actions;
-	private SkillDataBonus[] bonuses;
+	private final CriticalItem item;
+	private final int qty;
+
+	public double getXpRate()
+	{
+		final Activity selectedActivity = item.getSelectedActivity();
+		if (selectedActivity == null)
+		{
+			return 0;
+		}
+
+		return selectedActivity.getXp();
+	}
+
+	@Override
+	public String toString()
+	{
+		return item.name() + " x " + qty;
+	}
 }

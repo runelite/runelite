@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,23 +24,13 @@
  */
 package net.runelite.client.plugins.skillcalculator.banked.beans;
 
-import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter(AccessLevel.PUBLIC)
-public class SecondaryItem
+@Data
+@AllArgsConstructor
+class ItemStack
 {
-	private final int id;
-	private final int qty;
-
-	SecondaryItem(int id, int qty)
-	{
-		this.id = id;
-		this.qty = qty;
-	}
-
-	SecondaryItem(int id)
-	{
-		this(id, 1);
-	}
+	private int id;
+	private int qty;
 }

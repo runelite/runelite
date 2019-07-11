@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2019, TheStonedTurtle <http://www.github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.skillcalculator.beans;
+package net.runelite.client.ui.components;
 
+import javax.annotation.Nullable;
+import javax.swing.Icon;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Used with ComboBoxListRenderer to render an icon next to the text of the list entry.
+ * Also supports adding a data object to be used for more complex selection logic
+ */
+@AllArgsConstructor
 @Getter
-public class SkillData
+public class ComboBoxIconEntry
 {
-	private SkillDataEntry[] actions;
-	private SkillDataBonus[] bonuses;
+	private Icon icon;
+	private String text;
+	@Nullable
+	private Object data;
 }
