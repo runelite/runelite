@@ -22,12 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.sound;
+package net.runelite.cache.definitions.loaders.sound;
 
-public class SoundEffect3Definition
+import net.runelite.cache.definitions.sound.SoundEffectTrackDefinition;
+import net.runelite.cache.definitions.sound.InstrumentDefinition;
+import net.runelite.cache.io.InputStream;
+
+public class SoundEffectTrackLoader
 {
-	public int[][][] field1154 = new int[2][2][4];
-	public int[] field1155 = new int[2];
-	public int[] field1156 = new int[2];
-	public int[][][] field1159 = new int[2][2][4];
+	public SoundEffectTrackDefinition load(byte[] b)
+	{
+		SoundEffectTrackDefinition soundEffect = new SoundEffectTrackDefinition();
+		InputStream in = new InputStream(b);
+
+		load(soundEffect, in);
+
+		return soundEffect;
+	}
+
+	private void load(SoundEffectTrackDefinition soundEffect, InputStream in)
+	{
+		for (int i = 0; i < 10; ++i)
+		{
+			int volume = in.readUnsignedByte();
+			if (volume != 0)
+			{
+				in.setOffset(in.getOffset() - 1);
+
+				InstrumentLoader instrumentLoader = new InstrumentLoader();
+				InstrumentDefinition instrument = instrumentLoader.load(in);
+
+				soundEffect.instruments[i] = instrument;
+			}
+		}
+
+		soundEffect.start = in.readUnsignedShort();
+		soundEffect.end = in.readUnsignedShort();
+	}
 }

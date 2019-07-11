@@ -25,11 +25,14 @@
 package net.runelite.client.plugins.config;
 
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Method;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import net.runelite.api.MenuAction;
+import net.runelite.client.RuneLite;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
@@ -41,6 +44,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -97,9 +101,25 @@ public class ConfigPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	public void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(navButton);
+		RuneLite.getInjector().getInstance(ClientThread.class).invokeLater(() ->
+		{
+			try
+			{
+				ConfigPanel.pluginList.clear();
+				pluginManager.setPluginEnabled(this, true);
+				pluginManager.startPlugin(this);
+				Method expand = ClientUI.class.getDeclaredMethod("expand", NavigationButton.class);
+				expand.setAccessible(true);
+				expand.invoke(RuneLite.getInjector().getInstance(ClientUI.class), navButton);
+			}
+			catch (Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+		});
 	}
 
 	@Subscribe
