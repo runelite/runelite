@@ -42,13 +42,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-/**
- * @author robin
- */
 @PluginDescriptor(
 	name = "Implings",
 	description = "Highlight nearby implings on the minimap and on-screen",
-	tags = {"hunter", "minimap", "overlay"}
+	tags = {"hunter", "minimap", "overlay", "imp"}
 )
 public class ImplingsPlugin extends Plugin
 {
@@ -73,17 +70,17 @@ public class ImplingsPlugin extends Plugin
 		return configManager.getConfig(ImplingsConfig.class);
 	}
 
-
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
+		implings.clear();
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
 	}
