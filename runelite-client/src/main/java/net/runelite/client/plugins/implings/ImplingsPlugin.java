@@ -34,6 +34,7 @@ import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
@@ -92,6 +93,18 @@ public class ImplingsPlugin extends Plugin
 		Impling impling = Impling.findImpling(npc.getId());
 
 		if (impling != null)
+		{
+			implings.add(npc);
+		}
+	}
+
+	@Subscribe
+	public void onNpcChanged(NpcChanged npcCompositionChanged)
+	{
+		NPC npc = npcCompositionChanged.getNpc();
+		Impling impling = Impling.findImpling(npc.getId());
+
+		if (impling != null && !implings.contains(npc))
 		{
 			implings.add(npc);
 		}
