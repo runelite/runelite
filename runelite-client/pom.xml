@@ -42,6 +42,13 @@
 		<jarsigner.skip>true</jarsigner.skip>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -206,6 +213,11 @@
 			<artifactId>orange-extensions</artifactId>
 			<version>1.0</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.Thestonedturtle</groupId>
+			<artifactId>splashscreen</artifactId>
+			<version>master-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

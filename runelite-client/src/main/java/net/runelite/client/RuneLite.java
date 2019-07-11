@@ -37,6 +37,7 @@ import java.util.Locale;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -68,6 +69,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.ws.PartyService;
+import net.runelite.splashscreen.RuneLiteSplashScreen;
 import org.slf4j.LoggerFactory;
 
 @Singleton
@@ -77,6 +79,8 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
+	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
+	private static final RuneLiteProperties PROPERTIES = new RuneLiteProperties();
 
 	@Getter
 	private static Injector injector;
@@ -151,6 +155,8 @@ public class RuneLite
 	@Nullable
 	private Client client;
 
+	private static RuneLiteSplashScreen SPLASH_SCREEN;
+
 	public static void main(String[] args) throws Exception
 	{
 		Locale.setDefault(Locale.ENGLISH);
@@ -158,6 +164,7 @@ public class RuneLite
 		final OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
+		parser.accepts("no-splash", "Disables the splash screen");
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
@@ -196,6 +203,21 @@ public class RuneLite
 				log.error("Classes are out of date; Build with maven again.");
 			}
 		});
+
+		SwingUtilities.invokeAndWait(() ->
+		{
+			RuneLiteSplashScreen.setTheme();
+			if (options.has("no-splash"))
+			{
+				SPLASH_SCREEN = new RuneLiteSplashScreen(new File(LOGS_DIR, "client.log"));
+			}
+			else
+			{
+				SPLASH_SCREEN = new RuneLiteSplashScreen("Runelite " + PROPERTIES.getVersion(), new File(LOGS_DIR, "client.log"));
+			}
+		});
+
+		SPLASH_SCREEN.setMessage("Initializing client", 0);
 
 		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
 
@@ -245,9 +267,11 @@ public class RuneLite
 		}
 
 		// Load user configuration
+		SPLASH_SCREEN.setMessage("Loading user config", 25);
 		configManager.load();
 
 		// Load the session, including saved configuration
+		SPLASH_SCREEN.setMessage("Loading session data", 50);
 		sessionManager.loadSession();
 
 		// Tell the plugin manager if client is outdated or not
@@ -255,6 +279,7 @@ public class RuneLite
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
+		SPLASH_SCREEN.setMessage("Initializing plugins", 75);
 		pluginManager.loadCorePlugins();
 
 		// Plugins have provided their config, so set default config
@@ -262,10 +287,12 @@ public class RuneLite
 		pluginManager.loadDefaultPluginConfiguration();
 
 		// Start client session
+		SPLASH_SCREEN.setMessage("Starting client", 100);
 		clientSessionManager.start();
 
 		// Initialize UI
 		clientUI.open(this);
+		SPLASH_SCREEN.close();
 
 		// Initialize Discord service
 		discordService.init();
