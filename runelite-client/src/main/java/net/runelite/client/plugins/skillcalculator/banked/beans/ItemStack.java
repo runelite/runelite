@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.regenmeter;
+package net.runelite.client.plugins.skillcalculator.banked.beans;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@ConfigGroup("regenmeter")
-public interface RegenMeterConfig extends Config
+@Data
+@AllArgsConstructor
+class ItemStack
 {
-	@ConfigItem(
-		keyName = "showHitpoints",
-		name = "Show hitpoints regen",
-		description = "Show a ring around the hitpoints orb")
-	default boolean showHitpoints()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSpecial",
-		name = "Show Spec. Attack regen",
-		description = "Show a ring around the Special Attack orb")
-	default boolean showSpecial()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showWhenNoChange",
-		name = "Show hitpoints regen at full hitpoints",
-		description = "Always show the hitpoints regen orb, even if there will be no stat change")
-	default boolean showWhenNoChange()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "notifyBeforeHpRegenDuration",
-		name = "Hitpoint Regen Notification (seconds)",
-		description = "Notify approximately when your next hitpoint is about to regen. A value of 0 will disable notification."
-	)
-	default int getNotifyBeforeHpRegenSeconds()
-	{
-		return 0;
-	}
+	private int id;
+	private int qty;
 }

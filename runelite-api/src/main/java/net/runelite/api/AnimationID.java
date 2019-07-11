@@ -197,6 +197,7 @@ public final class AnimationID
 	public static final int FARMING_PLANT_SEED = 2291;
 	public static final int FARMING_HARVEST_FLOWER = 2292;
 	public static final int FARMING_MIX_ULTRACOMPOST = 7699;
+	public static final int FARMING_HARVEST_ALLOTMENT = 830;
 
 	// Lunar spellbook
 	public static final int ENERGY_TRANSFER_VENGEANCE_OTHER = 4411;
@@ -315,7 +316,7 @@ public final class AnimationID
 	public static final int DAG_SUPREME = 2855;
 
 	// Lizardman shaman
-	public static final int LIZARDMAN_SHAMAN_SPAWN = 2855;
+	public static final int LIZARDMAN_SHAMAN_SPAWN = 7157;
 
 	// Combat counter
 	public static final int BARRAGE_ANIMATION = 1979;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,41 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.loaders.sound;
+package net.runelite.client.plugins.itemskeptondeath;
 
-import net.runelite.cache.definitions.sound.SoundEffect2Definition;
-import net.runelite.cache.io.InputStream;
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
+import net.runelite.api.ItemID;
 
-public class SoundEffect2Loader
+final class LostIfNotProtected
 {
-	public SoundEffect2Definition load(InputStream in)
+	private static final Set<Integer> ITEMS = ImmutableSet.of(
+		ItemID.AMULET_OF_THE_DAMNED,
+		ItemID.RING_OF_CHAROS, ItemID.RING_OF_CHAROSA,
+		ItemID.LUNAR_STAFF,
+		ItemID.SHADOW_SWORD,
+		ItemID.KERIS, ItemID.KERISP, ItemID.KERISP_10583, ItemID.KERISP_10584
+	);
+
+	public static boolean isLostIfNotProtected(int id)
 	{
-		SoundEffect2Definition se = new SoundEffect2Definition();
-
-		load(se, in);
-
-		return se;
-	}
-
-	private void load(SoundEffect2Definition se, InputStream var1)
-	{
-		se.field1087 = var1.readUnsignedByte();
-		se.field1088 = var1.readInt();
-		se.field1089 = var1.readInt();
-		this.method1144(se, var1);
-	}
-
-	final void method1144(SoundEffect2Definition se, InputStream var1)
-	{
-		se.field1092 = var1.readUnsignedByte();
-		se.field1086 = new int[se.field1092];
-		se.field1090 = new int[se.field1092];
-
-		for (int var2 = 0; var2 < se.field1092; ++var2)
-		{
-			se.field1086[var2] = var1.readUnsignedShort();
-			se.field1090[var2] = var1.readUnsignedShort();
-		}
-
+		return ITEMS.contains(id);
 	}
 }

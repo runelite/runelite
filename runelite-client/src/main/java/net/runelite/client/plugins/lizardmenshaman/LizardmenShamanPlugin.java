@@ -34,7 +34,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import static net.runelite.api.AnimationID.LIZARDMAN_SHAMAN_SPAWN;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -104,7 +103,8 @@ public class LizardmenShamanPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (this.notifyOnSpawn && event.getType() == ChatMessageType.GAMEMESSAGE && event.getMessage().contains(MESSAGE))
+		if (this.notifyOnSpawn && /* event.getType() == ChatMessageType.GAMEMESSAGE && */event.getMessage().contains(MESSAGE))
+		// ChatMessageType should probably be SPAM <- should be tested first though
 		{
 			notifier.notify(MESSAGE);
 		}

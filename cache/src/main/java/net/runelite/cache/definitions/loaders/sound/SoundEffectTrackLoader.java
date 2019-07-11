@@ -22,27 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.sound;
+package net.runelite.cache.definitions.loaders.sound;
 
-public class SoundEffect2Definition
+import net.runelite.cache.definitions.sound.SoundEffectTrackDefinition;
+import net.runelite.cache.definitions.sound.InstrumentDefinition;
+import net.runelite.cache.io.InputStream;
+
+public class SoundEffectTrackLoader
 {
-	public int field1085;
-	public int[] field1086 = new int[2];
-	public int field1087;
-	public int field1088;
-	public int field1089;
-	public int[] field1090 = new int[2];
-	public int field1091;
-	public int field1092 = 2;
-	public int field1093;
-	public int field1094;
-	public int field1095;
-
-	public SoundEffect2Definition()
+	public SoundEffectTrackDefinition load(byte[] b)
 	{
-		this.field1086[0] = 0;
-		this.field1086[1] = '\uffff';
-		this.field1090[0] = 0;
-		this.field1090[1] = '\uffff';
+		SoundEffectTrackDefinition soundEffect = new SoundEffectTrackDefinition();
+		InputStream in = new InputStream(b);
+
+		load(soundEffect, in);
+
+		return soundEffect;
+	}
+
+	private void load(SoundEffectTrackDefinition soundEffect, InputStream in)
+	{
+		for (int i = 0; i < 10; ++i)
+		{
+			int volume = in.readUnsignedByte();
+			if (volume != 0)
+			{
+				in.setOffset(in.getOffset() - 1);
+
+				InstrumentLoader instrumentLoader = new InstrumentLoader();
+				InstrumentDefinition instrument = instrumentLoader.load(in);
+
+				soundEffect.instruments[i] = instrument;
+			}
+		}
+
+		soundEffect.start = in.readUnsignedShort();
+		soundEffect.end = in.readUnsignedShort();
 	}
 }

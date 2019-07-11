@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.sound;
+package net.runelite.client.plugins.skillcalculator.banked.beans;
 
-public class SoundEffect3Definition
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+public class BankedItem
 {
-	public int[][][] field1154 = new int[2][2][4];
-	public int[] field1155 = new int[2];
-	public int[] field1156 = new int[2];
-	public int[][][] field1159 = new int[2][2][4];
+	private final CriticalItem item;
+	private final int qty;
+
+	public double getXpRate()
+	{
+		final Activity selectedActivity = item.getSelectedActivity();
+		if (selectedActivity == null)
+		{
+			return 0;
+		}
+
+		return selectedActivity.getXp();
+	}
+
+	@Override
+	public String toString()
+	{
+		return item.name() + " x " + qty;
+	}
 }

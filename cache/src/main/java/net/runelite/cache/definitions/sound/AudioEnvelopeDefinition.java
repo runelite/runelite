@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Sean Dewar <https://github.com/seandewar>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.runenergy;
+package net.runelite.cache.definitions.sound;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup("runenergy")
-public interface RunEnergyConfig extends Config
+public class AudioEnvelopeDefinition
 {
-	@ConfigItem(
-		keyName = "replaceOrbText",
-		name = "Replace orb text with run time left",
-		description = "Show the remaining run time (in seconds) next in the energy orb."
-	)
-	default boolean replaceOrbText()
+	public int segments = 2;
+	public int[] durations = new int[2];
+	public int[] phases = new int[2];
+	public int start;
+	public int end;
+	public int form;
+	public int ticks;
+	public int phaseIndex;
+	public int step;
+	public int amplitude;
+	public int max;
+
+	public AudioEnvelopeDefinition()
 	{
-		return false;
+		this.durations[0] = 0;
+		this.durations[1] = '\uffff';
+		this.phases[0] = 0;
+		this.phases[1] = '\uffff';
+	}
+
+	public final int step(int var1)
+	{
+		if (this.max >= this.ticks)
+		{
+			this.amplitude = this.phases[this.phaseIndex++] << 15;
+
+			if (this.phaseIndex >= this.segments)
+			{
+				this.phaseIndex = this.segments - 1;
+			}
+
+			this.ticks = (int) ((double) this.durations[this.phaseIndex] / 65536.0 * (double) var1);
+
+			if (this.ticks > this.max)
+			{
+				this.step = ((this.phases[this.phaseIndex] << 15) - this.amplitude) / (this.ticks - this.max);
+			}
+		}
+		this.amplitude += this.step;
+		++this.max;
+
+		return this.amplitude - this.step >> 15;
+	}
+
+	public final void reset()
+	{
+		this.ticks = 0;
+		this.phaseIndex = 0;
+		this.step = 0;
+		this.amplitude = 0;
+		this.max = 0;
 	}
 }

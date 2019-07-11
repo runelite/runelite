@@ -424,11 +424,11 @@ public class NPCDefinition extends DualNode {
 
          Model var10;
          if (var1 != null && var3 != null) {
-            var10 = var1.animateSequence2(var5, var2, var3, var4);
+            var10 = var1.applyTransformations(var5, var2, var3, var4);
          } else if (var1 != null) {
-            var10 = var1.animateSequence(var5, var2);
+            var10 = var1.transformActorModel(var5, var2);
          } else if (var3 != null) {
-            var10 = var3.animateSequence(var5, var4);
+            var10 = var3.transformActorModel(var5, var4);
          } else {
             var10 = var5.toSharedSequenceModel(true);
          }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.skillcalculator.banked.beans;
+package net.runelite.cache.definitions.loaders.sound;
 
-import lombok.AccessLevel;
-import lombok.Getter;
+import net.runelite.cache.definitions.sound.AudioEnvelopeDefinition;
+import net.runelite.cache.io.InputStream;
 
-@Getter(AccessLevel.PUBLIC)
-public class SecondaryItem
+public class AudioEnvelopeLoader
 {
-	private final int id;
-	private final int qty;
-
-	SecondaryItem(int id, int qty)
+	public AudioEnvelopeDefinition load(InputStream in)
 	{
-		this.id = id;
-		this.qty = qty;
+		AudioEnvelopeDefinition audioEnvelope = new AudioEnvelopeDefinition();
+
+		load(audioEnvelope, in);
+
+		return audioEnvelope;
 	}
 
-	SecondaryItem(int id)
+	private void load(AudioEnvelopeDefinition audioEnvelope, InputStream in)
 	{
-		this(id, 1);
+		audioEnvelope.form = in.readUnsignedByte();
+		audioEnvelope.start = in.readInt();
+		audioEnvelope.end = in.readInt();
+		this.loadSegments(audioEnvelope, in);
+	}
+
+	final void loadSegments(AudioEnvelopeDefinition audioEnvelope, InputStream in)
+	{
+		audioEnvelope.segments = in.readUnsignedByte();
+		audioEnvelope.durations = new int[audioEnvelope.segments];
+		audioEnvelope.phases = new int[audioEnvelope.segments];
+
+		for (int i = 0; i < audioEnvelope.segments; ++i)
+		{
+			audioEnvelope.durations[i] = in.readUnsignedShort();
+			audioEnvelope.phases[i] = in.readUnsignedShort();
+		}
+
 	}
 }

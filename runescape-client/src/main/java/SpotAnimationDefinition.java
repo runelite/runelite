@@ -196,7 +196,7 @@ public class SpotAnimationDefinition extends DualNode {
 
       Model var5;
       if (this.sequence != -1 && var1 != -1) {
-         var5 = WorldMapAreaData.getSequenceDefinition(this.sequence).animateSpotAnimation(var2, var1);
+         var5 = WorldMapAreaData.getSequenceDefinition(this.sequence).transformSpotAnimationModel(var2, var1);
       } else {
          var5 = var2.toSharedSpotAnimationModel(true);
       }
