@@ -97,6 +97,32 @@ public class KeyRemappingPlugin extends Plugin
 	private ModifierlessKeybind right;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean fkeyRemap;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f1;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f2;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f3;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f4;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f5;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f6;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f7;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f8;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f9;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f10;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f11;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f12;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind esc;
 
 	@Override
 	protected void startUp() throws Exception
@@ -276,5 +302,18 @@ public class KeyRemappingPlugin extends Plugin
 		this.left = config.left();
 		this.right = config.right();
 		this.fkeyRemap = config.fkeyRemap();
+		this.f1 = config.f1();
+		this.f2 = config.f2();
+		this.f3 = config.f3();
+		this.f4 = config.f4();
+		this.f5 = config.f5();
+		this.f6 = config.f6();
+		this.f7 = config.f7();
+		this.f8 = config.f8();
+		this.f9 = config.f9();
+		this.f10 = config.f10();
+		this.f11 = config.f11();
+		this.f12 = config.f12();
+		this.esc = config.esc();
 	}
 }
