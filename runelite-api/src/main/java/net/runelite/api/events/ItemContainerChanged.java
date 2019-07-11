@@ -42,6 +42,11 @@ import net.runelite.api.ItemContainer;
 public class ItemContainerChanged
 {
 	/**
+	 * The modified container's ID.
+	 */
+	private final int containerId;
+
+	/**
 	 * The modified item container.
 	 */
 	private final ItemContainer itemContainer;

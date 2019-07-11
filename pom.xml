@@ -117,9 +117,7 @@
 		<module>cache-updater</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
-		<module>runelite-mixins</module>
 		<module>runelite-script-assembler-plugin</module>
-		<module>runescape-api</module>
 		<module>http-api</module>
 		<module>http-service</module>
 		<module>protocol-api</module>

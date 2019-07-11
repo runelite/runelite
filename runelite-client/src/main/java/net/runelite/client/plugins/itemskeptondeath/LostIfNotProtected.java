@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,44 +24,22 @@
  */
 package net.runelite.client.plugins.itemskeptondeath;
 
-import com.google.common.collect.ImmutableMap;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
 import net.runelite.api.ItemID;
 
-/**
- * Certain Items receive a white outline by Jagex as they are always lost on death. This is sometimes incorrectly
- * added to Items by Jagex as the item is actually kept in non-pvp areas of the game, such as the Rune Pouch.
- *
- * The white outline will be added to these items when they are lost on death.
- */
-@AllArgsConstructor
-@Getter
-enum AlwaysLostItem
+final class LostIfNotProtected
 {
-	RUNE_POUCH(ItemID.RUNE_POUCH, true),
-	LOOTING_BAG(ItemID.LOOTING_BAG, false),
-	CLUE_BOX(ItemID.CLUE_BOX, false),
-	BRACELET_OF_ETHEREUM(ItemID.BRACELET_OF_ETHEREUM, false),
-	BRACELET_OF_ETHEREUM_UNCHARGED(ItemID.BRACELET_OF_ETHEREUM_UNCHARGED, false);
+	private static final Set<Integer> ITEMS = ImmutableSet.of(
+		ItemID.AMULET_OF_THE_DAMNED,
+		ItemID.RING_OF_CHAROS, ItemID.RING_OF_CHAROSA,
+		ItemID.LUNAR_STAFF,
+		ItemID.SHADOW_SWORD,
+		ItemID.KERIS, ItemID.KERISP, ItemID.KERISP_10583, ItemID.KERISP_10584
+	);
 
-	private final int itemID;
-	private final boolean keptOutsideOfWilderness;
-
-	private static final ImmutableMap<Integer, AlwaysLostItem> ID_MAP;
-
-	static
+	public static boolean isLostIfNotProtected(int id)
 	{
-		final ImmutableMap.Builder<Integer, AlwaysLostItem> map = ImmutableMap.builder();
-		for (final AlwaysLostItem p : values())
-		{
-			map.put(p.itemID, p);
-		}
-		ID_MAP = map.build();
-	}
-
-	static AlwaysLostItem getByItemID(final int itemID)
-	{
-		return ID_MAP.get(itemID);
+		return ITEMS.contains(id);
 	}
 }

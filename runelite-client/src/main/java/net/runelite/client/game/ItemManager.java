@@ -274,6 +274,18 @@ public class ItemManager
 	 */
 	public int getItemPrice(int itemID)
 	{
+		return getItemPrice(itemID, false);
+	}
+
+	/**
+	 * Look up an item's price
+	 *
+	 * @param itemID item id
+	 * @param ignoreUntradeableMap should the price returned ignore the {@link UntradeableItemMapping}
+	 * @return item price
+	 */
+	public int getItemPrice(int itemID, boolean ignoreUntradeableMap)
+	{
 		if (itemID == ItemID.COINS_995)
 		{
 			return 1;
@@ -283,10 +295,13 @@ public class ItemManager
 			return 1000;
 		}
 
-		UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
-		if (p != null)
+		if (!ignoreUntradeableMap)
 		{
-			return getItemPrice(p.getPriceID()) * p.getQuantity();
+			UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
+			if (p != null)
+			{
+				return getItemPrice(p.getPriceID()) * p.getQuantity();
+			}
 		}
 
 		int price = 0;

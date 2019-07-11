@@ -26,7 +26,6 @@ package net.runelite.http.service.worlds;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.worlds.WorldResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
@@ -38,7 +37,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/worlds")
-@Slf4j
 public class WorldController
 {
 	@Autowired
