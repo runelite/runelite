@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.itemskeptondeath.ItemsKeptOnDeathPlugin.DeathItems;
@@ -80,7 +80,7 @@ public class ItemsKeptOnDeathPluginTest
 	private Item mItem(final int id, final int qty, final String name, final boolean tradeable, final int price)
 	{
 		// Mock Item Composition and necessary ItemManager methods for this item
-		ItemComposition c = mock(ItemComposition.class);
+		ItemDefinition c = mock(ItemDefinition.class);
 		when(c.getId())
 			.thenReturn(id);
 		when(c.getName())
@@ -96,7 +96,7 @@ public class ItemsKeptOnDeathPluginTest
 			when(c.getLinkedNoteId()).thenReturn(-1);
 		}
 
-		when(itemManager.getItemComposition(id)).thenReturn(c);
+		when(itemManager.getItemDefinition(id)).thenReturn(c);
 		when(itemManager.canonicalize(id)).thenReturn(id);
 		when(itemManager.getItemPrice(id, true)).thenReturn(price);
 

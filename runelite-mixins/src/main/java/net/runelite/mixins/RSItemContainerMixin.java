@@ -64,7 +64,7 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 
 	@FieldHook("quantities")
 	@Inject
-	public void stackSizesChanged(int idx)
+	public void stackSizesChanged(int containerID)
 	{
 		int cycle = client.getGameCycle();
 		if (rl$lastCycle == cycle)
@@ -75,7 +75,7 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 
 		rl$lastCycle = cycle;
 
-		ItemContainerChanged event = new ItemContainerChanged(this);
+		ItemContainerChanged event = new ItemContainerChanged(containerID, this);
 		client.getCallbacks().postDeferred(event);
 	}
 

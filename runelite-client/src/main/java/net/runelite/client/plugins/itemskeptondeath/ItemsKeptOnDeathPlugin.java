@@ -706,7 +706,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	{
 		final int id = item.getId();
 		final int qty = item.getQty();
-		final ItemDefinition c = itemManager.getItemComposition(id);
+		final ItemDefinition c = itemManager.getItemDefinition(id);
 
 		final Widget itemWidget = parent.createChild(-1, WidgetType.GRAPHIC);
 		itemWidget.setOriginalWidth(Constants.ITEM_SPRITE_WIDTH);

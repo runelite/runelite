@@ -46,6 +46,9 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 	private KeyRemappingPlugin plugin;
 
 	@Inject
+	private KeyRemappingConfig config;
+
+	@Inject
 	private Client client;
 
 	@Inject
