@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.itemskeptondeath;
 
-import net.runelite.api.ItemContainer;
-import lombok.Value;
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
+import net.runelite.api.ItemID;
 
-/**
- * An event called whenever the stack size of an {@link net.runelite.api.Item}
- * in an {@link ItemContainer} is modified.
- * <p>
- * Examples of when this event may trigger include:
- * <ul>
- *     <li>Withdrawing an item from bank (triggers for both bank and player inv)
- *     <li>Picking up an item</li>
- *     <li>Dropping an item</li>
- * </ul>
- */
-@Value
-public class ItemContainerChanged
+final class LostIfNotProtected
 {
-	/**
-	 * The modified container's ID.
-	 */
-	private final int containerId;
+	private static final Set<Integer> ITEMS = ImmutableSet.of(
+		ItemID.AMULET_OF_THE_DAMNED,
+		ItemID.RING_OF_CHAROS, ItemID.RING_OF_CHAROSA,
+		ItemID.LUNAR_STAFF,
+		ItemID.SHADOW_SWORD,
+		ItemID.KERIS, ItemID.KERISP, ItemID.KERISP_10583, ItemID.KERISP_10584
+	);
 
-	/**
-	 * The modified item container.
-	 */
-	private final ItemContainer itemContainer;
+	public static boolean isLostIfNotProtected(int id)
+	{
+		return ITEMS.contains(id);
+	}
 }
