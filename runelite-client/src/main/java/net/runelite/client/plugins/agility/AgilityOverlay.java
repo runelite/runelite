@@ -77,8 +77,8 @@ class AgilityOverlay extends Overlay
 			}
 
 			Tile tile = obstacle.getTile();
-			if (tile.getPlane() == client.getPlane()
-				&& object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+
+			if (tile.getPlane() == client.getPlane() && checkDistance(object.getLocalLocation(), playerLocation))
 			{
 				// This assumes that the obstacle is not clickable.
 				if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
@@ -100,18 +100,7 @@ class AgilityOverlay extends Overlay
 						configColor = plugin.getMarkColor();
 					}
 
-					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
-					{
-						graphics.setColor(configColor.darker());
-					}
-					else
-					{
-						graphics.setColor(configColor);
-					}
-
-					graphics.draw(objectClickbox);
-					graphics.setColor(new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 50));
-					graphics.fill(objectClickbox);
+					OverlayUtil.renderClickBox(graphics, mousePosition, objectClickbox, configColor);
 				}
 			}
 
@@ -122,7 +111,7 @@ class AgilityOverlay extends Overlay
 			for (Tile markOfGraceTile : marksOfGrace)
 			{
 				if (markOfGraceTile.getPlane() == client.getPlane() && markOfGraceTile.getItemLayer() != null
-					&& markOfGraceTile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+					&& checkDistance(markOfGraceTile.getLocalLocation(), playerLocation))
 				{
 					final Polygon poly = markOfGraceTile.getItemLayer().getCanvasTilePoly();
 
@@ -137,5 +126,14 @@ class AgilityOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private boolean checkDistance(LocalPoint localPoint, LocalPoint playerPoint)
+	{
+		if (plugin.isRemoveDistanceCap())
+		{
+			return true;
+		}
+		return localPoint.distanceTo(playerPoint) < MAX_DISTANCE;
 	}
 }

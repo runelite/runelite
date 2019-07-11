@@ -33,7 +33,6 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Map;
 import javax.inject.Inject;
-
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.ObjectDefinition;
@@ -42,19 +41,19 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.CLOSED_DOOR;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.OPENED_DOOR;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.TRAP;
-
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.table.TableAlignment;
-import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
 
 @Singleton
@@ -135,18 +134,7 @@ public class PyramidPlunderOverlay extends Overlay
 							break;
 					}
 
-					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
-					{
-						graphics.setColor(configColor.darker());
-					}
-					else
-					{
-						graphics.setColor(configColor);
-					}
-
-					graphics.draw(objectClickbox);
-					graphics.setColor(new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 50));
-					graphics.fill(objectClickbox);
+					OverlayUtil.renderClickBox(graphics, mousePosition, objectClickbox, configColor);
 				}
 			}
 		}

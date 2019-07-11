@@ -34,7 +34,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
-import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -69,14 +68,14 @@ public class TimersOverlay extends Overlay
 			}
 
 			int ticksLeft = npc.getTicksUntilAttack();
-			final List<WorldPoint> hitSquares = getHitSquares(npc.getNpc().getWorldLocation(), npc.getNpcSize(), 1, false);
+			final List<WorldPoint> hitSquares = OverlayUtil.getHitSquares(npc.getNpc().getWorldLocation(), npc.getNpcSize(), 1, false);
 			final NPCContainer.AttackStyle attackStyle = npc.getAttackStyle();
 
 			if (plugin.isShowHitSquares() && attackStyle.getName().equals("Melee"))
 			{
 				for (WorldPoint p : hitSquares)
 				{
-					OverlayUtil.drawTile(graphics, client, p, client.getLocalPlayer().getWorldLocation(), attackStyle.getColor(), 0, 0, 50);
+					OverlayUtil.drawTiles(graphics, client, p, client.getLocalPlayer().getWorldLocation(), attackStyle.getColor(), 0, 0, 50);
 				}
 			}
 
@@ -129,17 +128,6 @@ public class TimersOverlay extends Overlay
 			}
 			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
 		}
-	}
-
-	private List<WorldPoint> getHitSquares(WorldPoint npcLoc, int npcSize, int thickness, boolean includeUnder)
-	{
-		List<WorldPoint> little = new WorldArea(npcLoc, npcSize, npcSize).toWorldPointList();
-		List<WorldPoint> big = new WorldArea(npcLoc.getX() - thickness, npcLoc.getY() - thickness, npcSize + (thickness * 2), npcSize + (thickness * 2), npcLoc.getPlane()).toWorldPointList();
-		if (!includeUnder)
-		{
-			big.removeIf(little::contains);
-		}
-		return big;
 	}
 
 	private Point centerPoint(Rectangle rect)
