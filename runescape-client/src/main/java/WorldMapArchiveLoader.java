@@ -67,7 +67,7 @@ public class WorldMapArchiveLoader {
       }
 
       if (this.percentLoaded == 33) {
-         if (this.archive.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName) && !this.archive.tryLoadFileByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName)) {
+         if (this.archive.isValidFileName(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName) && !this.archive.tryLoadFileByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, this.cacheName)) {
             return this.percentLoaded;
          }
 

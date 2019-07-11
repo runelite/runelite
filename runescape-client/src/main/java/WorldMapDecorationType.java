@@ -127,7 +127,8 @@ public enum WorldMapDecorationType implements Enumerated {
    @ObfuscatedGetter(
       intValue = -745071109
    )
-   static int field1139;
+   @Export("foundItemIndex")
+   static int foundItemIndex;
    @ObfuscatedName("av")
    static java.awt.Font field1140;
    @ObfuscatedName("r")
@@ -141,8 +142,8 @@ public enum WorldMapDecorationType implements Enumerated {
       signature = "(II)V",
       garbageValue = "0"
    )
-   private WorldMapDecorationType(int var3, int var4) {
-      this.id = var3;
+   private WorldMapDecorationType(int id, int var4) {
+      this.id = id;
    }
 
    @ObfuscatedName("f")
@@ -192,9 +193,10 @@ public enum WorldMapDecorationType implements Enumerated {
       signature = "(IIIIIIII)V",
       garbageValue = "1521012895"
    )
-   static final void method4517(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if (GroundItemPile.loadInterface(var0)) {
-         class238.updateInterface(Widget.interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6);
+   @Export("updateRootInterface")
+   static final void updateRootInterface(int rootIndex, int x, int y, int width, int height, int xOffset, int yOffset) {
+      if (GroundItemPile.loadInterface(rootIndex)) {
+         class238.updateInterface(Widget.interfaceComponents[rootIndex], -1, x, y, width, height, xOffset, yOffset);
       }
 
    }

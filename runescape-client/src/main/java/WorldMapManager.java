@@ -51,12 +51,14 @@ public final class WorldMapManager {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   final AbstractArchive field1046;
+   @Export("geographyArchive")
+   final AbstractArchive geographyArchive;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   final AbstractArchive field1047;
+   @Export("groundArchive")
+   final AbstractArchive groundArchive;
    @ObfuscatedName("d")
    @Export("fonts")
    final HashMap fonts;
@@ -98,8 +100,8 @@ public final class WorldMapManager {
       this.field1050 = 0;
       this.mapSceneSprites = var1;
       this.fonts = var2;
-      this.field1046 = var3;
-      this.field1047 = var4;
+      this.geographyArchive = var3;
+      this.groundArchive = var4;
    }
 
    @ObfuscatedName("m")
@@ -164,14 +166,14 @@ public final class WorldMapManager {
 
          System.nanoTime();
          System.nanoTime();
-         if (archive.method9(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName)) {
+         if (archive.isValidFileName(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName)) {
             byte[] var18 = archive.takeFileByNames(WorldMapCacheName.WorldMapCacheName_compositeTexture.name, cacheName);
             this.overviewSprite = class27.convertJpgToSprite(var18);
          }
 
          System.nanoTime();
-         archive.method6();
-         archive.method8();
+         archive.clearGroups();
+         archive.clearFiles();
          this.loaded = true;
       }
 
@@ -215,7 +217,7 @@ public final class WorldMapManager {
       int var19;
       for (var18 = var13.worldMapRegionX; var18 <= var23; ++var18) {
          for (var19 = var13.worldMapRegionY; var19 <= var17; ++var19) {
-            this.regions[var18][var19].method455(var15, (class40)this.field1045.get(var15), this.mapSceneSprites, this.field1046, this.field1047);
+            this.regions[var18][var19].method455(var15, (class40)this.field1045.get(var15), this.mapSceneSprites, this.geographyArchive, this.groundArchive);
          }
       }
 
@@ -498,8 +500,8 @@ public final class WorldMapManager {
    )
    public static void method673() {
       ObjectDefinition.ObjectDefinition_cached.clear();
-      ObjectDefinition.field641.clear();
-      ObjectDefinition.field642.clear();
+      ObjectDefinition.ObjectDefinition_cachedModelData.clear();
+      ObjectDefinition.ObjectDefinition_cachedEntities.clear();
       ObjectDefinition.ObjectDefinition_cachedModels.clear();
    }
 

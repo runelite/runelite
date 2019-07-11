@@ -107,7 +107,7 @@ public final class BoundaryObject {
          }
 
          if (var0.equalsIgnoreCase("showcoord")) {
-            class60.worldMap0.showCoord = !class60.worldMap0.showCoord;
+            class60.worldMap.showCoord = !class60.worldMap.showCoord;
          }
 
          if (var0.equalsIgnoreCase("fpson")) {

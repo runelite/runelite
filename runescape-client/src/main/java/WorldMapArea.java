@@ -25,14 +25,14 @@ public class WorldMapArea {
    @ObfuscatedGetter(
       intValue = 1232579503
    )
-   @Export("id0")
-   int id0;
+   @Export("id")
+   int id;
    @ObfuscatedName("f")
-   @Export("archiveName0")
-   String archiveName0;
+   @Export("archiveName")
+   String archiveName;
    @ObfuscatedName("q")
-   @Export("name0")
-   String name0;
+   @Export("name")
+   String name;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 986239133
@@ -75,14 +75,14 @@ public class WorldMapArea {
    @Export("maxY0")
    int maxY0;
    @ObfuscatedName("d")
-   @Export("isMain0")
-   boolean isMain0;
+   @Export("isMain")
+   boolean isMain;
    @ObfuscatedName("k")
    @Export("sections")
    LinkedList sections;
 
    public WorldMapArea() {
-      this.id0 = -1;
+      this.id = -1;
       this.field1015 = -1;
       this.zoom0 = -1;
       this.origin0 = null;
@@ -90,7 +90,7 @@ public class WorldMapArea {
       this.maxX0 = 0;
       this.minY0 = Integer.MAX_VALUE;
       this.maxY0 = 0;
-      this.isMain0 = false;
+      this.isMain = false;
    }
 
    @ObfuscatedName("m")
@@ -99,14 +99,14 @@ public class WorldMapArea {
       garbageValue = "1854512327"
    )
    @Export("read")
-   public void read(Buffer var1, int var2) {
-      this.id0 = var2;
-      this.archiveName0 = var1.readStringCp1252NullTerminated();
-      this.name0 = var1.readStringCp1252NullTerminated();
+   public void read(Buffer var1, int fileId) {
+      this.id = fileId;
+      this.archiveName = var1.readStringCp1252NullTerminated();
+      this.name = var1.readStringCp1252NullTerminated();
       this.origin0 = new Coord(var1.readInt());
       this.field1015 = var1.readInt();
       var1.readUnsignedByte();
-      this.isMain0 = var1.readUnsignedByte() == 1;
+      this.isMain = var1.readUnsignedByte() == 1;
       this.zoom0 = var1.readUnsignedByte();
       int var3 = var1.readUnsignedByte();
       this.sections = new LinkedList();
@@ -265,9 +265,9 @@ public class WorldMapArea {
       signature = "(I)I",
       garbageValue = "-628294476"
    )
-   @Export("id")
-   public int id() {
-      return this.id0;
+   @Export("getId")
+   public int getId() {
+      return this.id;
    }
 
    @ObfuscatedName("e")
@@ -275,9 +275,9 @@ public class WorldMapArea {
       signature = "(B)Z",
       garbageValue = "-39"
    )
-   @Export("isMain")
-   public boolean isMain() {
-      return this.isMain0;
+   @Export("getIsMain")
+   public boolean getIsMain() {
+      return this.isMain;
    }
 
    @ObfuscatedName("x")
@@ -285,9 +285,9 @@ public class WorldMapArea {
       signature = "(B)Ljava/lang/String;",
       garbageValue = "-65"
    )
-   @Export("archiveName")
-   public String archiveName() {
-      return this.archiveName0;
+   @Export("getArchiveName")
+   public String getArchiveName() {
+      return this.archiveName;
    }
 
    @ObfuscatedName("d")
@@ -295,9 +295,9 @@ public class WorldMapArea {
       signature = "(B)Ljava/lang/String;",
       garbageValue = "-66"
    )
-   @Export("name")
-   public String name() {
-      return this.name0;
+   @Export("getName")
+   public String getName() {
+      return this.name;
    }
 
    @ObfuscatedName("a")

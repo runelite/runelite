@@ -20,7 +20,8 @@ public class ObjectDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractArchive field640;
+   @Export("ObjectDefinition_modelsArchive")
+   static AbstractArchive ObjectDefinition_modelsArchive;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -31,12 +32,14 @@ public class ObjectDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   public static EvictingDualNodeHashTable field641;
+   @Export("ObjectDefinition_cachedModelData")
+   public static EvictingDualNodeHashTable ObjectDefinition_cachedModelData;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   static EvictingDualNodeHashTable field642;
+   @Export("ObjectDefinition_cachedEntities")
+   static EvictingDualNodeHashTable ObjectDefinition_cachedEntities;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Ler;"
@@ -515,7 +518,7 @@ public class ObjectDefinition extends DualNode {
       if (this.field645 != null) {
          for (int var4 = 0; var4 < this.field645.length; ++var4) {
             if (this.field645[var4] == var1) {
-               return field640.tryLoadFile(this.field644[var4] & 65535, 0);
+               return ObjectDefinition_modelsArchive.tryLoadFile(this.field644[var4] & 65535, 0);
             }
          }
 
@@ -528,7 +531,7 @@ public class ObjectDefinition extends DualNode {
          boolean var2 = true;
 
          for (int var3 = 0; var3 < this.field644.length; ++var3) {
-            var2 &= field640.tryLoadFile(this.field644[var3] & 65535, 0);
+            var2 &= ObjectDefinition_modelsArchive.tryLoadFile(this.field644[var3] & 65535, 0);
          }
 
          return var2;
@@ -547,7 +550,7 @@ public class ObjectDefinition extends DualNode {
          boolean var1 = true;
 
          for (int var2 = 0; var2 < this.field644.length; ++var2) {
-            var1 &= field640.tryLoadFile(this.field644[var2] & 65535, 0);
+            var1 &= ObjectDefinition_modelsArchive.tryLoadFile(this.field644[var2] & 65535, 0);
          }
 
          return var1;
@@ -567,7 +570,7 @@ public class ObjectDefinition extends DualNode {
          var7 = (long)(var2 + (var1 << 3) + (this.id << 10));
       }
 
-      Object var9 = (Entity)field642.get(var7);
+      Object var9 = (Entity) ObjectDefinition_cachedEntities.get(var7);
       if (var9 == null) {
          ModelData var10 = this.getModelData(var1, var2);
          if (var10 == null) {
@@ -583,7 +586,7 @@ public class ObjectDefinition extends DualNode {
             var9 = var10;
          }
 
-         field642.put((DualNode)var9, var7);
+         ObjectDefinition_cachedEntities.put((DualNode)var9, var7);
       }
 
       if (this.nonFlatShading) {
@@ -710,9 +713,9 @@ public class ObjectDefinition extends DualNode {
                var6 += 65536;
             }
 
-            var3 = (ModelData)field641.get((long)var6);
+            var3 = (ModelData) ObjectDefinition_cachedModelData.get((long)var6);
             if (var3 == null) {
-               var3 = ModelData.method2788(field640, var6 & 65535, 0);
+               var3 = ModelData.method2788(ObjectDefinition_modelsArchive, var6 & 65535, 0);
                if (var3 == null) {
                   return null;
                }
@@ -721,7 +724,7 @@ public class ObjectDefinition extends DualNode {
                   var3.method214();
                }
 
-               field641.put(var3, (long)var6);
+               ObjectDefinition_cachedModelData.put(var3, (long)var6);
             }
 
             if (var5 > 1) {
@@ -752,9 +755,9 @@ public class ObjectDefinition extends DualNode {
             var5 += 65536;
          }
 
-         var3 = (ModelData)field641.get((long)var5);
+         var3 = (ModelData) ObjectDefinition_cachedModelData.get((long)var5);
          if (var3 == null) {
-            var3 = ModelData.method2788(field640, var5 & 65535, 0);
+            var3 = ModelData.method2788(ObjectDefinition_modelsArchive, var5 & 65535, 0);
             if (var3 == null) {
                return null;
             }
@@ -763,7 +766,7 @@ public class ObjectDefinition extends DualNode {
                var3.method214();
             }
 
-            field641.put(var3, (long)var5);
+            ObjectDefinition_cachedModelData.put(var3, (long)var5);
          }
       }
 
@@ -926,14 +929,14 @@ public class ObjectDefinition extends DualNode {
       garbageValue = "0"
    )
    public static void method5041() {
-      ItemDefinition.Sprite_cached.clear();
+      ItemDefinition.ItemDefinition_cachedSprites.clear();
    }
 
    static {
       ObjectDefinition_isLowDetail = false;
       ObjectDefinition_cached = new EvictingDualNodeHashTable(4096);
-      field641 = new EvictingDualNodeHashTable(500);
-      field642 = new EvictingDualNodeHashTable(30);
+      ObjectDefinition_cachedModelData = new EvictingDualNodeHashTable(500);
+      ObjectDefinition_cachedEntities = new EvictingDualNodeHashTable(30);
       ObjectDefinition_cachedModels = new EvictingDualNodeHashTable(30);
       field643 = new ModelData[4];
    }

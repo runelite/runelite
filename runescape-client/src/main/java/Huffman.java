@@ -327,7 +327,8 @@ public class Huffman {
       signature = "([Ljava/lang/String;[SB)V",
       garbageValue = "-20"
    )
-   public static void method3695(String[] var0, short[] var1) {
-      DynamicObject.method2218(var0, var1, 0, var0.length - 1);
+   @Export("startSortingItemsByName")
+   public static void startSortingItemsByName(String[] var0, short[] var1) {
+      DynamicObject.sortItemsByName(var0, var1, 0, var0.length - 1);
    }
 }

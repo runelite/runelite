@@ -138,8 +138,6 @@ public final class IterableNodeHashTable implements Iterable {
       }
    }
 
-   @Export("iterator")
-   @ObfuscatedName("iterator")
    public Iterator iterator() {
       return new IterableNodeHashTableIterator(this);
    }

@@ -25,12 +25,14 @@ public class Fonts {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   AbstractArchive field351;
+   @Export("spritesArchive")
+   AbstractArchive spritesArchive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   AbstractArchive field352;
+   @Export("fontsArchive")
+   AbstractArchive fontsArchive;
    @ObfuscatedName("q")
    @Export("map")
    HashMap map;
@@ -39,8 +41,8 @@ public class Fonts {
       signature = "(Lir;Lir;)V"
    )
    public Fonts(AbstractArchive var1, AbstractArchive var2) {
-      this.field351 = var1;
-      this.field352 = var2;
+      this.spritesArchive = var1;
+      this.fontsArchive = var2;
       this.map = new HashMap();
    }
 
@@ -59,12 +61,12 @@ public class Fonts {
          if (this.map.containsKey(var5)) {
             var2.put(var5, this.map.get(var5));
          } else {
-            AbstractArchive var6 = this.field351;
-            AbstractArchive var7 = this.field352;
+            AbstractArchive var6 = this.spritesArchive;
+            AbstractArchive var7 = this.fontsArchive;
             String var8 = var5.field349;
             int var9 = var6.getGroupId(var8);
             int var10 = var6.getFileId(var9, "");
-            Font var11 = GraphicsDefaults.method5823(var6, var7, var9, var10);
+            Font var11 = GraphicsDefaults.loadFont(var6, var7, var9, var10);
             if (var11 != null) {
                this.map.put(var5, var11);
                var2.put(var5, var11);

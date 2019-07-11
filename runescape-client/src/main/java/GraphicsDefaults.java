@@ -11,12 +11,14 @@ public class GraphicsDefaults {
    @ObfuscatedGetter(
       intValue = 1673796151
    )
-   public int field878;
+   @Export("compass")
+   public int compass;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 159591367
    )
-   public int field879;
+   @Export("redHintArrow")
+   public int redHintArrow;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -104203005
@@ -73,8 +75,8 @@ public class GraphicsDefaults {
    public int modIcons;
 
    public GraphicsDefaults() {
-      this.field878 = -1;
-      this.field879 = -1;
+      this.compass = -1;
+      this.redHintArrow = -1;
       this.mapScenes = -1;
       this.headIconsPk = -1;
       this.headIconsPrayer = -1;
@@ -107,8 +109,8 @@ public class GraphicsDefaults {
             var3.readMedium();
             break;
          case 2:
-            this.field878 = var3.method51();
-            this.field879 = var3.method51();
+            this.compass = var3.method51();
+            this.redHintArrow = var3.method51();
             this.mapScenes = var3.method51();
             this.headIconsPk = var3.method51();
             this.headIconsPrayer = var3.method51();
@@ -127,7 +129,8 @@ public class GraphicsDefaults {
       signature = "(Lir;Lir;III)Lkk;",
       garbageValue = "195396240"
    )
-   public static Font method5823(AbstractArchive var0, AbstractArchive var1, int var2, int var3) {
+   @Export("loadFont")
+   public static Font loadFont(AbstractArchive var0, AbstractArchive var1, int var2, int var3) {
       if (!SpriteMask.loadSprite(var0, var2, var3)) {
          return null;
       } else {

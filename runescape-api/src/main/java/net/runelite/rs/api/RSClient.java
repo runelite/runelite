@@ -713,7 +713,7 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	int getCenterY();
 
-	@Import("worldMap0")
+	@Import("getWorldMap")
 	RSWorldMap getRenderOverview();
 
 	@Import("changeWorld")

@@ -139,8 +139,7 @@ public final class AccessFile {
       return var4;
    }
 
-   @ObfuscatedName("finalize")
-   protected void method22() throws Throwable {
+   protected void finalize() throws Throwable {
       if (this.file != null) {
          System.out.println("");
          this.close();

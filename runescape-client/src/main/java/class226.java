@@ -29,7 +29,7 @@ public class class226 {
       long var6 = ((long)quantity << 16) + (long)id + ((long)outline << 38) + ((long)quantityMode << 40) + ((long)shadow << 42);
       Sprite var8;
       if (!noted) {
-         var8 = (Sprite)ItemDefinition.Sprite_cached.get(var6);
+         var8 = (Sprite)ItemDefinition.ItemDefinition_cachedSprites.get(var6);
          if (var8 != null) {
             return var8;
          }
@@ -120,11 +120,11 @@ public class class226 {
          }
 
          if (quantityMode == 1 || quantityMode == 2 && var9.isStackable == 1) {
-            class204.field1122.draw(class196.method3735(quantity), 0, 9, 16776960, 1);
+            class204.ItemDefinition_fontPlain11.draw(class196.method3735(quantity), 0, 9, 16776960, 1);
          }
 
          if (!noted) {
-            ItemDefinition.Sprite_cached.put(var8, var6);
+            ItemDefinition.ItemDefinition_cachedSprites.put(var8, var6);
          }
 
          Rasterizer2D.Rasterizer2D_replace(var12, var13, var14);

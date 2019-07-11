@@ -202,7 +202,7 @@ public class class31 {
                      return 1;
                   } else if (var0 == 6520) {
                      return 1;
-                  } else if (var0 == 6521) {
+                  } else if (var0 == ScriptOpcodes.MOBILE_KEYBOARDHIDE) {
                      return 1;
                   } else if (var0 == 6522) {
                      --Interpreter.Interpreter_stringStackSize;

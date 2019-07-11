@@ -11,12 +11,14 @@ public class VarpDefinition extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field943;
+   @Export("VarpDefinition_archive")
+   public static AbstractArchive VarpDefinition_archive;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 510774535
    )
-   public static int field944;
+   @Export("VarpDefinition_fileCount")
+   public static int VarpDefinition_fileCount;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Ler;"

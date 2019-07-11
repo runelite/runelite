@@ -78,7 +78,7 @@ public abstract class Clock {
          if (var0.length() == 0) {
             var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
          } else {
-            var3 = var3 + "; Expires=" + WorldMapSectionType.method252(class203.currentTimeMs() + 94608000000L) + "; Max-Age=" + 94608000L;
+            var3 = var3 + "; Expires=" + WorldMapSectionType.getDateString(class203.currentTimeMs() + 94608000000L) + "; Max-Age=" + 94608000L;
          }
 
          class46.method850(TextureProvider.client, "document.cookie=\"" + var3 + "\"");

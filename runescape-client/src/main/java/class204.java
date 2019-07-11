@@ -12,7 +12,8 @@ public class class204 {
    @ObfuscatedSignature(
       signature = "Lkk;"
    )
-   public static Font field1122;
+   @Export("ItemDefinition_fontPlain11")
+   public static Font ItemDefinition_fontPlain11;
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(

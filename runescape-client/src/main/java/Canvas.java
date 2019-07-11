@@ -36,14 +36,10 @@ public final class Canvas extends java.awt.Canvas {
       this.component = var1;
    }
 
-   @Export("update")
-   @ObfuscatedName("update")
    public final void update(Graphics var1) {
       this.component.update(var1);
    }
 
-   @Export("paint")
-   @ObfuscatedName("paint")
    public final void paint(Graphics var1) {
       this.component.paint(var1);
    }
@@ -222,7 +218,7 @@ public final class Canvas extends java.awt.Canvas {
       int var6 = var1.getGroupId(groupName);
       int var7 = var1.getFileId(var6, fileName);
       class214.field1129 = 1;
-      class214.field1130 = var1;
+      class214.musicTrackArchive = var1;
       class30.musicTrackGroupId = var6;
       GrandExchangeOffer.musicTrackFileId = var7;
       WorldMapLabel.field1039 = var4;

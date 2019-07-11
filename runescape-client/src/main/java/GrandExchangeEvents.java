@@ -103,7 +103,7 @@ public class GrandExchangeEvents {
    )
    public static void method69() {
       HitSplatDefinition.HitSplatDefinition_cached.clear();
-      HitSplatDefinition.field385.clear();
+      HitSplatDefinition.HitSplatDefinition_cachedSprites.clear();
       HitSplatDefinition.HitSplatDefinition_cachedFonts.clear();
    }
 
@@ -156,7 +156,7 @@ public class GrandExchangeEvents {
       } else if (var0 == 2613) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.rectangleMode.rsOrdinal();
          return 1;
-      } else if (var0 == 2614) {
+      } else if (var0 == ScriptOpcodes.IF_GETMODELTRANSPARENT) {
          Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0;
          return 1;
       } else {

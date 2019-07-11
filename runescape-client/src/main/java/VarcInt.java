@@ -11,13 +11,14 @@ public class VarcInt extends DualNode {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   static AbstractArchive field942;
+   @Export("VarcInt_archive")
+   static AbstractArchive VarcInt_archive;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   @Export("cachedVarcInts")
-   static EvictingDualNodeHashTable cachedVarcInts;
+   @Export("VarcInt_cached")
+   static EvictingDualNodeHashTable VarcInt_cached;
    @ObfuscatedName("q")
    @Export("persist")
    public boolean persist;
@@ -75,6 +76,6 @@ public class VarcInt extends DualNode {
    }
 
    static {
-      cachedVarcInts = new EvictingDualNodeHashTable(64);
+      VarcInt_cached = new EvictingDualNodeHashTable(64);
    }
 }

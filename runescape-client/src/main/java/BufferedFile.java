@@ -396,8 +396,8 @@ public class BufferedFile {
       signature = "(I)Llz;",
       garbageValue = "-1653835085"
    )
-   @Export("worldMap")
-   static WorldMap worldMap() {
-      return class60.worldMap0;
+   @Export("getWorldMap")
+   static WorldMap getWorldMap() {
+      return class60.worldMap;
    }
 }

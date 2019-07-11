@@ -1286,7 +1286,7 @@ public final class Client extends GameShell implements Usernamed {
       ReflectionCheck.clientPreferences = class306.method5780();
       this.setUpClipboard();
       String var1 = Ignored.field402;
-      class50.field1159 = this;
+      class50.applet = this;
       if (var1 != null) {
          class50.field1160 = var1;
       }
@@ -1324,7 +1324,7 @@ public final class Client extends GameShell implements Usernamed {
             } else {
                class214.midiPcmStream.clear();
                class214.midiPcmStream.removeAll();
-               if (class214.field1130 != null) {
+               if (class214.musicTrackArchive != null) {
                   class214.field1129 = 2;
                } else {
                   class214.field1129 = 0;
@@ -1340,7 +1340,7 @@ public final class Client extends GameShell implements Usernamed {
          class214.field1129 = 0;
          class13.musicTrack = null;
          class307.soundCache = null;
-         class214.field1130 = null;
+         class214.musicTrackArchive = null;
       }
 
       class13.playPcmPlayers();
@@ -1364,11 +1364,11 @@ public final class Client extends GameShell implements Usernamed {
       }
 
       if (gameState == 0) {
-         class171.method3497();
+         class171.load();
          GrandExchangeOfferNameComparator.method145();
       } else if (gameState == 5) {
          class54.method1092(this);
-         class171.method3497();
+         class171.load();
          GrandExchangeOfferNameComparator.method145();
       } else if (gameState != 10 && gameState != 11) {
          if (gameState == 20) {
@@ -2169,7 +2169,7 @@ public final class Client extends GameShell implements Usernamed {
 
                   class13.playPcmPlayers();
                   ScriptEvent.method1179();
-                  ObjectDefinition.field641.clear();
+                  ObjectDefinition.ObjectDefinition_cachedModelData.clear();
                   PacketBufferNode var65;
                   if (TextureProvider.client.hasFrame()) {
                      var65 = Interpreter.method1915(ClientPacket.field231, packetWriter.isaacCipher);
@@ -2226,7 +2226,7 @@ public final class Client extends GameShell implements Usernamed {
          try {
             if (class214.field1129 == 2) {
                if (class13.musicTrack == null) {
-                  class13.musicTrack = MusicTrack.readTrack(class214.field1130, class30.musicTrackGroupId, GrandExchangeOffer.musicTrackFileId);
+                  class13.musicTrack = MusicTrack.readTrack(class214.musicTrackArchive, class30.musicTrackGroupId, GrandExchangeOffer.musicTrackFileId);
                   if (class13.musicTrack == null) {
                      var2 = false;
                      break label139;
@@ -2234,17 +2234,17 @@ public final class Client extends GameShell implements Usernamed {
                }
 
                if (class307.soundCache == null) {
-                  class307.soundCache = new SoundCache(class214.field1128, class214.field1127);
+                  class307.soundCache = new SoundCache(class214.soundEffectsArchive, class214.musicSamplesArchive);
                }
 
-               if (class214.midiPcmStream.loadMusicTrack(class13.musicTrack, class1.field1105, class307.soundCache, 22050)) {
+               if (class214.midiPcmStream.loadMusicTrack(class13.musicTrack, class1.musicPatchesArchive, class307.soundCache, 22050)) {
                   class214.midiPcmStream.clearAll();
                   class214.midiPcmStream.method169(WorldMapLabel.field1039);
                   class214.midiPcmStream.setMusicTrack(class13.musicTrack, RectangleMode.musicTrackBoolean);
                   class214.field1129 = 0;
                   class13.musicTrack = null;
                   class307.soundCache = null;
-                  class214.field1130 = null;
+                  class214.musicTrackArchive = null;
                   var2 = true;
                   break label139;
                }
@@ -2255,7 +2255,7 @@ public final class Client extends GameShell implements Usernamed {
             class214.field1129 = 0;
             class13.musicTrack = null;
             class307.soundCache = null;
-            class214.field1130 = null;
+            class214.musicTrackArchive = null;
          }
 
          var2 = false;
@@ -2401,8 +2401,6 @@ public final class Client extends GameShell implements Usernamed {
    protected final void vmethod114() {
    }
 
-   @ObfuscatedName("init")
-   @Export("init")
    public final void init() {
       try {
          if (this.checkHost()) {
@@ -2662,7 +2660,7 @@ public final class Client extends GameShell implements Usernamed {
                      break;
                   case 7:
                      var6 = Integer.parseInt(var5);
-                     ServerBuild[] var7 = new ServerBuild[]{ServerBuild.field786, ServerBuild.field787, ServerBuild.field784, ServerBuild.field785};
+                     ServerBuild[] var7 = new ServerBuild[]{ServerBuild.RC, ServerBuild.WIP, ServerBuild.LIVE, ServerBuild.BUILDLIVE};
                      ServerBuild[] var8 = var7;
                      var3 = 0;
 
@@ -3414,7 +3412,7 @@ public final class Client extends GameShell implements Usernamed {
 
          if (loginState == 10) {
             field168 = 0;
-            class54.method1089("You have only just left another world.", "Your profile will be transferred in:", field170 / 60 + " seconds.");
+            class54.setLoginResponseString("You have only just left another world.", "Your profile will be transferred in:", field170 / 60 + " seconds.");
             if (--field170 <= 0) {
                loginState = 0;
             }
@@ -3507,7 +3505,7 @@ public final class Client extends GameShell implements Usernamed {
                   String var18 = var2.readStringCp1252NullTerminated();
                   String var22 = var2.readStringCp1252NullTerminated();
                   String var26 = var2.readStringCp1252NullTerminated();
-                  class54.method1089(var18, var22, var26);
+                  class54.setLoginResponseString(var18, var22, var26);
                   GameShell.updateGameState(10);
                }
 
@@ -3851,8 +3849,8 @@ public final class Client extends GameShell implements Usernamed {
                      packetWriter.method241(var6);
                   }
 
-                  if (class60.worldMap0 != null) {
-                     class60.worldMap0.method360();
+                  if (class60.worldMap != null) {
+                     class60.worldMap.method360();
                   }
 
                   HorizontalAlignment.method5120();
@@ -3915,7 +3913,7 @@ public final class Client extends GameShell implements Usernamed {
 
                   while (Decimator.method2490() && field137 < 128) {
                      if (staffModLevel >= 2 && KeyHandler.KeyHandler_pressedKeys[82] && ArchiveDiskAction.field411 == 66) {
-                        String var24 = KeyHandler.method839();
+                        String var24 = KeyHandler.getChatMessagesAsString();
                         TextureProvider.client.clipboardSetString(var24);
                      } else if (oculusOrbState != 1 || GzipDecompressor.field378 <= 0) {
                         field145[field137] = ArchiveDiskAction.field411;
@@ -3947,7 +3945,7 @@ public final class Client extends GameShell implements Usernamed {
                   }
 
                   if (rootInterface != -1) {
-                     WorldMapDecorationType.method4517(rootInterface, 0, 0, SoundCache.canvasWidth, Huffman.canvasHeight, 0, 0);
+                     WorldMapDecorationType.updateRootInterface(rootInterface, 0, 0, SoundCache.canvasWidth, Huffman.canvasHeight, 0, 0);
                   }
 
                   ++cycleCntr;
@@ -5115,7 +5113,7 @@ public final class Client extends GameShell implements Usernamed {
             }
 
             if (ServerPacket.field867 == var1.serverPacket0) {
-               for (var38 = 0; var38 < VarpDefinition.field944; ++var38) {
+               for (var38 = 0; var38 < VarpDefinition.VarpDefinition_fileCount; ++var38) {
                   VarpDefinition var45 = SecureRandomCallable.method1140(var38);
                   if (var45 != null) {
                      Varps.Varps_temp[var38] = 0;
@@ -5374,7 +5372,7 @@ public final class Client extends GameShell implements Usernamed {
                var25 = var3.readLong();
                var27 = (long)var3.readUnsignedShort();
                var19 = (long)var3.readMedium();
-               var29 = (PlayerType)ScriptFrame.findEnumerated(class48.method865(), var3.readUnsignedByte());
+               var29 = (PlayerType)ScriptFrame.findEnumerated(class48.PlayerType_values(), var3.readUnsignedByte());
                var23 = (var27 << 32) + var19;
                boolean var55 = false;
 
@@ -5783,7 +5781,7 @@ public final class Client extends GameShell implements Usernamed {
                var21 = var3.readStringCp1252NullTerminated();
                var25 = (long)var3.readUnsignedShort();
                var27 = (long)var3.readMedium();
-               var29 = (PlayerType)ScriptFrame.findEnumerated(class48.method865(), var3.readUnsignedByte());
+               var29 = (PlayerType)ScriptFrame.findEnumerated(class48.PlayerType_values(), var3.readUnsignedByte());
                long var31 = (var25 << 32) + var27;
                boolean var33 = false;
 

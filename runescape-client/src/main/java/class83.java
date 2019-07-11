@@ -1,6 +1,7 @@
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -15,7 +16,8 @@ public class class83 {
    @ObfuscatedGetter(
       intValue = 533653621
    )
-   public static int field1167;
+   @Export("ItemDefinition_fileCount")
+   public static int ItemDefinition_fileCount;
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(

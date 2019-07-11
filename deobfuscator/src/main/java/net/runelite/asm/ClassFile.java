@@ -94,7 +94,7 @@ public class ClassFile
 
 	public void accept(ClassVisitor visitor)
 	{
-		String[] ints = interfaces.getInterfaces().stream().map(i -> i.getName()).toArray(String[]::new);
+		String[] ints = interfaces.getInterfaces().stream().map(Class::getName).toArray(String[]::new);
 
 		visitor.visit(version, access, name.getName(), null, super_class.getName(), ints);
 		visitor.visitSource(source, null);
@@ -113,7 +113,7 @@ public class ClassFile
 
 		for (Method method : methods)
 		{
-			String[] exceptions = method.getExceptions().getExceptions().stream().map(cl -> cl.getName()).toArray(String[]::new);
+			String[] exceptions = method.getExceptions().getExceptions().stream().map(Class::getName).toArray(String[]::new);
 			if (exceptions.length == 0)
 			{
 				exceptions = null;
@@ -294,11 +294,37 @@ public class ClassFile
 		return null;
 	}
 
+	public Method findStaticMethod(String name, Signature type)
+	{
+		for (Method m : methods)
+		{
+			if (m.isStatic() &&
+				m.getName().equals(name) &&
+				m.getDescriptor().equals(type))
+			{
+				return m;
+			}
+		}
+		return null;
+	}
+
 	public Method findMethod(String name)
 	{
 		for (Method m : methods)
 		{
 			if (m.getName().equals(name))
+			{
+				return m;
+			}
+		}
+		return null;
+	}
+
+	public Method findStaticMethod(String name)
+	{
+		for (Method m : methods)
+		{
+			if (m.isStatic() && m.getName().equals(name))
 			{
 				return m;
 			}
@@ -325,8 +351,8 @@ public class ClassFile
 
 	public Method findMethodDeepStatic(String name, Signature type)
 	{
-		Method m = findMethod(name, type);
-		if (m != null && m.isStatic())
+		Method m = findStaticMethod(name, type);
+		if (m != null)
 		{
 			return m;
 		}

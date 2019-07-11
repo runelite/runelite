@@ -98,8 +98,6 @@ public final class KeyHandler implements KeyListener, FocusListener {
    @Export("crossSprites")
    static Sprite[] crossSprites;
 
-   @Export("keyPressed")
-   @ObfuscatedName("keyPressed")
    public final synchronized void keyPressed(KeyEvent var1) {
       if (KeyHandler_instance != null) {
          int var2 = var1.getKeyCode();
@@ -138,13 +136,9 @@ public final class KeyHandler implements KeyListener, FocusListener {
 
    }
 
-   @Export("focusGained")
-   @ObfuscatedName("focusGained")
    public final void focusGained(FocusEvent var1) {
    }
 
-   @Export("focusLost")
-   @ObfuscatedName("focusLost")
    public final synchronized void focusLost(FocusEvent var1) {
       if (KeyHandler_instance != null) {
          field448 = -1;
@@ -152,8 +146,6 @@ public final class KeyHandler implements KeyListener, FocusListener {
 
    }
 
-   @Export("keyReleased")
-   @ObfuscatedName("keyReleased")
    public final synchronized void keyReleased(KeyEvent var1) {
       if (KeyHandler_instance != null) {
          int var2 = var1.getKeyCode();
@@ -175,8 +167,6 @@ public final class KeyHandler implements KeyListener, FocusListener {
       var1.consume();
    }
 
-   @Export("keyTyped")
-   @ObfuscatedName("keyTyped")
    public final void keyTyped(KeyEvent var1) {
       if (KeyHandler_instance != null) {
          char var2 = var1.getKeyChar();
@@ -221,7 +211,8 @@ public final class KeyHandler implements KeyListener, FocusListener {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "-345222494"
    )
-   static String method839() {
+   @Export("getChatMessagesAsString")
+   static String getChatMessagesAsString() {
       String var0 = "";
 
       Message var1;

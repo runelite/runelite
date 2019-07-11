@@ -35,7 +35,8 @@ public enum AttackOption implements Enumerated {
    AttackOption_hidden(3);
 
    @ObfuscatedName("sp")
-   static short[] field30;
+   @Export("foundItemIds")
+   static short[] foundItemIds;
    @ObfuscatedName("ay")
    static String field31;
    @ObfuscatedName("bo")

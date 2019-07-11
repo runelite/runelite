@@ -120,8 +120,6 @@ public class IterableNodeDeque implements Iterable {
       return this.sentinel.previous == this.sentinel;
    }
 
-   @Export("iterator")
-   @ObfuscatedName("iterator")
    public Iterator iterator() {
       return new IterableNodeDequeDescendingIterator(this);
    }

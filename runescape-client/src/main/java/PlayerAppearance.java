@@ -55,7 +55,7 @@ public class PlayerAppearance {
          equipment = new int[12];
 
          for (int var5 = 0; var5 < 7; ++var5) {
-            for (int var6 = 0; var6 < KitDefinition.KitDefinition_totalCount; ++var6) {
+            for (int var6 = 0; var6 < KitDefinition.KitDefinition_fileCount; ++var6) {
                KitDefinition var7 = WorldMapSection2.getKitDefinition(var6);
                if (var7 != null && !var7.nonSelectable && var5 + (isFemale ? 7 : 0) == var7.bodypartID) {
                   equipment[equipmentIndices[var5]] = var6 + 256;
@@ -90,11 +90,11 @@ public class PlayerAppearance {
                      if (!var2) {
                         --var3;
                         if (var3 < 0) {
-                           var3 = KitDefinition.KitDefinition_totalCount - 1;
+                           var3 = KitDefinition.KitDefinition_fileCount - 1;
                         }
                      } else {
                         ++var3;
-                        if (var3 >= KitDefinition.KitDefinition_totalCount) {
+                        if (var3 >= KitDefinition.KitDefinition_fileCount) {
                            var3 = 0;
                         }
                      }

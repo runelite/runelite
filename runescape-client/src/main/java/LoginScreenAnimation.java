@@ -618,7 +618,7 @@ public class LoginScreenAnimation {
       if (var1 != null) {
          return var1;
       } else {
-         byte[] var2 = HitSplatDefinition.field382.takeFile(32, var0);
+         byte[] var2 = HitSplatDefinition.HitSplatDefinition_archive.takeFile(32, var0);
          var1 = new HitSplatDefinition();
          if (var2 != null) {
             var1.decode(new Buffer(var2));
@@ -637,6 +637,6 @@ public class LoginScreenAnimation {
    public static void method1780() {
       ItemDefinition.ItemDefinition_cached.clear();
       ItemDefinition.ItemDefinition_cachedModels.clear();
-      ItemDefinition.Sprite_cached.clear();
+      ItemDefinition.ItemDefinition_cachedSprites.clear();
    }
 }

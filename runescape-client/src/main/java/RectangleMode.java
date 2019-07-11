@@ -65,7 +65,7 @@ public enum RectangleMode implements Enumerated {
    @Export("setObjectDefinitionArchives")
    public static void setObjectDefinitionArchives(AbstractArchive var0, AbstractArchive var1, boolean isLowDetail) {
       ObjectDefinition.ObjectDefinition_archive = var0;
-      ObjectDefinition.field640 = var1;
+      ObjectDefinition.ObjectDefinition_modelsArchive = var1;
       ObjectDefinition.ObjectDefinition_isLowDetail = isLowDetail;
    }
 }

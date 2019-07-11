@@ -150,7 +150,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
       garbageValue = "-1516599170"
    )
    @Export("drawInterface")
-   static final void drawInterface(Widget[] components, int interfaceID, int xStart, int yStart, int xEnd, int yEnd, int var6, int var7, int var8) {
+   static final void drawInterface(Widget[] components, int interfaceID, int xStart, int yStart, int xEnd, int yEnd, int var6, int var7, int rootIndex) {
       Rasterizer2D.Rasterizer2D_setClip(xStart, yStart, xEnd, yEnd);
       Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
 
@@ -158,14 +158,14 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
          Widget var10 = components[var9];
          if (var10 != null && (var10.parentId == interfaceID || interfaceID == 0xabcdabcd && var10 == Client.clickedWidget)) {
             int var11;
-            if (var8 == -1) {
+            if (rootIndex == -1) {
                Client.rootWidgetXs[Client.rootWidgetCount] = var10.x + var6;
                Client.rootWidgetYs[Client.rootWidgetCount] = var7 + var10.y;
                Client.rootWidgetWidths[Client.rootWidgetCount] = var10.width;
                Client.rootWidgetHeights[Client.rootWidgetCount] = var10.height;
                var11 = ++Client.rootWidgetCount - 1;
             } else {
-               var11 = var8;
+               var11 = rootIndex;
             }
 
             var10.rootIndex = var11;
@@ -181,7 +181,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                int var15;
                int var16;
                if (var10 == Client.clickedWidget) {
-                  if (interfaceID != -1412584499 && !var10.isScrollBar) {
+                  if (interfaceID != 0xabcdabcd && !var10.isScrollBar) {
                      class279.field1145 = components;
                      class54.field1161 = var6;
                      BuddyRankComparator.field1114 = var7;
@@ -289,7 +289,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                      }
 
                      if (var10.contentType == 1338) {
-                        MouseRecorder.method1189(var10, var12, var13, var11);
+                        MouseRecorder.drawMinimap(var10, var12, var13, var11);
                         Rasterizer2D.Rasterizer2D_setClip(xStart, yStart, xEnd, yEnd);
                         continue;
                      }
@@ -301,11 +301,11 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
                      }
 
                      if (var10.contentType == 1400) {
-                        class60.worldMap0.draw(var12, var13, var10.width, var10.height, Client.cycle);
+                        class60.worldMap.draw(var12, var13, var10.width, var10.height, Client.cycle);
                      }
 
                      if (var10.contentType == 1401) {
-                        class60.worldMap0.drawOverview(var12, var13, var10.width, var10.height);
+                        class60.worldMap.drawOverview(var12, var13, var10.width, var10.height);
                      }
 
                      if (var10.contentType == 1402) {

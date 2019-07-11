@@ -11,7 +11,8 @@ public class WorldMapSection3 implements WorldMapSection {
    @ObfuscatedGetter(
       intValue = -1946112139
    )
-   static int field1055;
+   @Export("foundItemIdCount")
+   static int foundItemIdCount;
    @ObfuscatedName("p")
    static int[] field1056;
    @ObfuscatedName("m")

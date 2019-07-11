@@ -478,7 +478,7 @@ public abstract class Actor extends Entity {
       if (var7 != null) {
          var8 = var7;
       } else {
-         byte[] var9 = HealthBarDefinition.field379.takeFile(33, healthBarDefinition);
+         byte[] var9 = HealthBarDefinition.HealthBarDefinition_archive.takeFile(33, healthBarDefinition);
          var7 = new HealthBarDefinition();
          if (var9 != null) {
             var7.decode(new Buffer(var9));
@@ -540,7 +540,7 @@ public abstract class Actor extends Entity {
       if (var2 != null) {
          var3 = var2;
       } else {
-         byte[] var4 = HealthBarDefinition.field379.takeFile(33, healthBarDefinition);
+         byte[] var4 = HealthBarDefinition.HealthBarDefinition_archive.takeFile(33, healthBarDefinition);
          var2 = new HealthBarDefinition();
          if (var4 != null) {
             var2.decode(new Buffer(var4));
@@ -1306,7 +1306,7 @@ public abstract class Actor extends Entity {
 
                                  if (opcode != 1007) {
                                     if (opcode == 1008 || opcode == 1011 || opcode == 1010 || opcode == 1009 || opcode == 1012) {
-                                       class60.worldMap0.menuAction(opcode, argument0, new Coord(argument1), new Coord(argument2));
+                                       class60.worldMap.menuAction(opcode, argument0, new Coord(argument1), new Coord(argument2));
                                     }
                                     break label415;
                                  }

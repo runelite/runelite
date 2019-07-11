@@ -51,14 +51,10 @@ public class IterableNodeDequeDescendingIterator implements Iterator {
       this.last = null;
    }
 
-   @Export("hasNext")
-   @ObfuscatedName("hasNext")
    public boolean hasNext() {
       return this.deque.sentinel != this.head;
    }
 
-   @Export("next")
-   @ObfuscatedName("next")
    public Object next() {
       Node var1 = this.head;
       if (var1 == this.deque.sentinel) {
@@ -72,8 +68,6 @@ public class IterableNodeDequeDescendingIterator implements Iterator {
       return var1;
    }
 
-   @ObfuscatedName("remove")
-   @Export("remove")
    public void remove() {
       if (this.last == null) {
          throw new IllegalStateException();

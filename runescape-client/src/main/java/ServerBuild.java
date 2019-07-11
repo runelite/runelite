@@ -11,22 +11,26 @@ public class ServerBuild {
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   public static final ServerBuild field784;
+   @Export("LIVE")
+   public static final ServerBuild LIVE;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   public static final ServerBuild field785;
+   @Export("BUILDLIVE")
+   public static final ServerBuild BUILDLIVE;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   public static final ServerBuild field786;
+   @Export("RC")
+   public static final ServerBuild RC;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Liy;"
    )
-   public static final ServerBuild field787;
+   @Export("WIP")
+   public static final ServerBuild WIP;
    @ObfuscatedName("bx")
    @Export("worldsUrl")
    static String worldsUrl;
@@ -51,9 +55,9 @@ public class ServerBuild {
    }
 
    static {
-      field784 = new ServerBuild("LIVE", 0);
-      field785 = new ServerBuild("BUILDLIVE", 3);
-      field786 = new ServerBuild("RC", 1);
-      field787 = new ServerBuild("WIP", 2);
+      LIVE = new ServerBuild("LIVE", 0);
+      BUILDLIVE = new ServerBuild("BUILDLIVE", 3);
+      RC = new ServerBuild("RC", 1);
+      WIP = new ServerBuild("WIP", 2);
    }
 }

@@ -181,8 +181,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 
    }
 
-   @Export("mouseClicked")
-   @ObfuscatedName("mouseClicked")
    public final void mouseClicked(MouseEvent var1) {
       if (var1.isPopupTrigger()) {
          var1.consume();
@@ -190,8 +188,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 
    }
 
-   @Export("mouseExited")
-   @ObfuscatedName("mouseExited")
    public final synchronized void mouseExited(MouseEvent var1) {
       if (MouseHandler_instance != null) {
          MouseHandler_idleCycles = 0;
@@ -234,8 +230,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
       signature = "(Ljava/lang/CharSequence;I)I",
       garbageValue = "1860098743"
    )
-   public static int method1085(CharSequence var0) {
-      return IgnoreList.method5438(var0, 10, true);
+   @Export("parseInt")
+   public static int parseInt(CharSequence var0) {
+      return IgnoreList.parseIntCustomRadix(var0, 10, true);
    }
 
    @ObfuscatedName("l")

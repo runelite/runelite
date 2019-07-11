@@ -13,7 +13,8 @@ public final class class27 {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   public static AbstractArchive field1143;
+   @Export("Widget_fontsArchive")
+   public static AbstractArchive Widget_fontsArchive;
    @ObfuscatedName("f")
    final int[] field225;
 

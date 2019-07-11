@@ -9,8 +9,8 @@ public class class60 {
    @ObfuscatedSignature(
       signature = "Llz;"
    )
-   @Export("worldMap0")
-   static WorldMap worldMap0;
+   @Export("worldMap")
+   static WorldMap worldMap;
    @ObfuscatedName("ar")
    static FontMetrics field1162;
 
@@ -19,9 +19,10 @@ public class class60 {
       signature = "(Lir;Lir;Lir;I)V",
       garbageValue = "1583108922"
    )
-   public static void method1172(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2) {
-      HitSplatDefinition.field382 = var0;
-      HitSplatDefinition.field383 = var1;
-      HitSplatDefinition.field384 = var2;
+   @Export("setHitSplatDefinitionArchives")
+   public static void setHitSplatDefinitionArchives(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2) {
+      HitSplatDefinition.HitSplatDefinition_archive = var0;
+      HitSplatDefinition.HitSplatDefinition_spritesArchive = var1;
+      HitSplatDefinition.HitSplatDefinition_fontsArchive = var2;
    }
 }

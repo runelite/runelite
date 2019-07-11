@@ -51,7 +51,7 @@ public final class class238 {
       garbageValue = "1706481742"
    )
    @Export("updateInterface")
-   static final void updateInterface(Widget[] components, int parentId, int var2, int var3, int var4, int var5, int x, int y) {
+   static final void updateInterface(Widget[] components, int parentId, int x, int y, int width, int height, int xOffset, int yOffset) {
       for (int var8 = 0; var8 < components.length; ++var8) {
          Widget var9 = components[var8];
          if (var9 != null && var9.parentId == parentId && (!var9.isIf3 || var9.type == 0 || var9.hasListener || class1.getWidgetClickMask(var9) != 0 || var9 == Client.clickedWidgetParent || var9.contentType == 1338)) {
@@ -63,8 +63,8 @@ public final class class238 {
                continue;
             }
 
-            int var10 = var9.x + x;
-            int var11 = y + var9.y;
+            int var10 = var9.x + xOffset;
+            int var11 = yOffset + var9.y;
             int var12;
             int var13;
             int var14;
@@ -72,10 +72,10 @@ public final class class238 {
             int var16;
             int var17;
             if (var9.type == 2) {
-               var12 = var2;
-               var13 = var3;
-               var14 = var4;
-               var15 = var5;
+               var12 = x;
+               var13 = y;
+               var14 = width;
+               var15 = height;
             } else {
                int var18;
                if (var9.type == 9) {
@@ -95,17 +95,17 @@ public final class class238 {
 
                   ++var17;
                   ++var19;
-                  var12 = var18 > var2 ? var18 : var2;
-                  var13 = var16 > var3 ? var16 : var3;
-                  var14 = var17 < var4 ? var17 : var4;
-                  var15 = var19 < var5 ? var19 : var5;
+                  var12 = var18 > x ? var18 : x;
+                  var13 = var16 > y ? var16 : y;
+                  var14 = var17 < width ? var17 : width;
+                  var15 = var19 < height ? var19 : height;
                } else {
                   var18 = var10 + var9.width;
                   var16 = var11 + var9.height;
-                  var12 = var10 > var2 ? var10 : var2;
-                  var13 = var11 > var3 ? var11 : var3;
-                  var14 = var18 < var4 ? var18 : var4;
-                  var15 = var16 < var5 ? var16 : var5;
+                  var12 = var10 > x ? var10 : x;
+                  var13 = var11 > y ? var11 : y;
+                  var14 = var18 < width ? var18 : width;
+                  var15 = var16 < height ? var16 : height;
                }
             }
 
@@ -181,12 +181,12 @@ public final class class238 {
                   WorldMapRegion.method567(var9, var10, var11);
                } else {
                   if (var9.contentType == 1400) {
-                     class60.worldMap0.onCycle(MouseHandler.MouseHandler_x, MouseHandler.MouseHandler_y, var30, var10, var11, var9.width, var9.height);
+                     class60.worldMap.onCycle(MouseHandler.MouseHandler_x, MouseHandler.MouseHandler_y, var30, var10, var11, var9.width, var9.height);
                   }
 
                   if (!Client.isMenuOpen && var30) {
                      if (var9.contentType == 1400) {
-                        class60.worldMap0.method384(var10, var11, var9.width, var9.height, var16, var17);
+                        class60.worldMap.method384(var10, var11, var9.width, var9.height, var16, var17);
                      } else {
                         ChatChannel.method2237(var9, var16 - var10, var17 - var11);
                      }
@@ -284,7 +284,7 @@ public final class class238 {
                      }
 
                      if (var9.contentType == 1400) {
-                        class60.worldMap0.method361(var16, var17, var30 & var23, var30 & var20);
+                        class60.worldMap.method361(var16, var17, var30 & var23, var30 & var20);
                      }
 
                      if (Client.clickedWidget != null && var9 != Client.clickedWidget && var30 && class54.method1090(class1.getWidgetClickMask(var9))) {
@@ -587,7 +587,7 @@ public final class class238 {
                            }
                         }
 
-                        WorldMapDecorationType.method4517(var34.group, var12, var13, var14, var15, var10, var11);
+                        WorldMapDecorationType.updateRootInterface(var34.group, var12, var13, var14, var15, var10, var11);
                      }
                   }
                }

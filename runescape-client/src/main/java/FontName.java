@@ -465,7 +465,7 @@ public class FontName {
       WorldMapLabel.method440();
       LoginScreenAnimation.method1780();
       SequenceDefinition.SequenceDefinition_cached.clear();
-      SequenceDefinition.field775.clear();
+      SequenceDefinition.SequenceDefinition_cachedFrames.clear();
       UserComparator3.method3379();
       VarbitDefinition.VarbitDefinition_cached.clear();
       VarpDefinition.VarpDefinition_cached.clear();
@@ -478,18 +478,18 @@ public class FontName {
       BuddyRankComparator.method3382();
       ((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).clear();
       Script.Script_cached.clear();
-      AbstractArchive.archive0.method8();
-      Skeleton.archive1.method8();
-      WorldMapIcon1.archive3.method8();
-      WorldMapDecoration.archive4.method8();
-      SecureRandomFuture.archive5.method8();
-      UserComparator3.archive6.method8();
-      class40.archive7.method8();
-      WorldMapSection1.archive8.method8();
-      class238.archive9.method8();
-      class16.archive10.method8();
-      Login.archive11.method8();
-      Formatting.archive12.method8();
+      AbstractArchive.archive0.clearFiles();
+      Skeleton.archive1.clearFiles();
+      WorldMapIcon1.archive3.clearFiles();
+      WorldMapDecoration.archive4.clearFiles();
+      SecureRandomFuture.archive5.clearFiles();
+      UserComparator3.archive6.clearFiles();
+      class40.archive7.clearFiles();
+      WorldMapSection1.archive8.clearFiles();
+      class238.archive9.clearFiles();
+      class16.archive10.clearFiles();
+      Login.archive11.clearFiles();
+      Formatting.archive12.clearFiles();
    }
 
    @ObfuscatedName("gg")

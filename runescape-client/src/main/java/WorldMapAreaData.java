@@ -177,16 +177,16 @@ public class WorldMapAreaData extends WorldMapArea {
          } else {
             int var7;
             byte[] var8;
-            if (var0 != 1350) {
+            if (var0 != ScriptOpcodes.CC_SETOPKEY) {
                byte var11;
-               if (var0 == 1351) {
+               if (var0 == ScriptOpcodes.CC_SETOPTKEY) {
                   RouteStrategy.Interpreter_intStackSize -= 2;
                   var11 = 10;
                   var8 = new byte[]{(byte)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize]};
                   byte[] var10 = new byte[]{(byte)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]};
                   BufferedSink.method3595(var4, var11, var8, var10);
                   return 1;
-               } else if (var0 == 1352) {
+               } else if (var0 == ScriptOpcodes.CC_SETOPKEYRATE) {
                   RouteStrategy.Interpreter_intStackSize -= 3;
                   var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] - 1;
                   var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
@@ -197,13 +197,13 @@ public class WorldMapAreaData extends WorldMapArea {
                   } else {
                      throw new RuntimeException();
                   }
-               } else if (var0 == 1353) {
+               } else if (var0 == ScriptOpcodes.CC_SETOPTKEYRATE) {
                   var11 = 10;
                   var6 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
                   Varcs.method2168(var4, var11, var6, var7);
                   return 1;
-               } else if (var0 == 1354) {
+               } else if (var0 == ScriptOpcodes.CC_SETOPKEYIGNOREHELD) {
                   --RouteStrategy.Interpreter_intStackSize;
                   var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] - 1;
                   if (var5 >= 0 && var5 <= 9) {
@@ -212,7 +212,7 @@ public class WorldMapAreaData extends WorldMapArea {
                   } else {
                      throw new RuntimeException();
                   }
-               } else if (var0 == 1355) {
+               } else if (var0 == ScriptOpcodes.CC_SETOPTKEYIGNOREHELD) {
                   var11 = 10;
                   WorldMapSection1.method345(var4, var11);
                   return 1;

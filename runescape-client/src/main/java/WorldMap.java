@@ -35,17 +35,20 @@ public class WorldMap {
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   AbstractArchive field989;
+   @Export("WorldMap_archive")
+   AbstractArchive WorldMap_archive;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   AbstractArchive field990;
+   @Export("WorldMap_geographyArchive")
+   AbstractArchive WorldMap_geographyArchive;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lir;"
    )
-   AbstractArchive field991;
+   @Export("WorldMap_groundArchive")
+   AbstractArchive WorldMap_groundArchive;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lkk;"
@@ -312,27 +315,27 @@ public class WorldMap {
       garbageValue = "1887817097"
    )
    @Export("init")
-   public void init(AbstractArchive var1, AbstractArchive var2, AbstractArchive var3, Font var4, HashMap var5, IndexedSprite[] var6) {
-      this.mapSceneSprites = var6;
-      this.field989 = var1;
-      this.field990 = var2;
-      this.field991 = var3;
-      this.font = var4;
+   public void init(AbstractArchive archive19, AbstractArchive archive18, AbstractArchive archive20, Font fontBold12, HashMap fontsMap, IndexedSprite[] mapSceneSprites) {
+      this.mapSceneSprites = mapSceneSprites;
+      this.WorldMap_archive = archive19;
+      this.WorldMap_geographyArchive = archive18;
+      this.WorldMap_groundArchive = archive20;
+      this.font = fontBold12;
       this.fonts = new HashMap();
-      this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_small, var5.get(fontNameVerdana11));
-      this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_medium, var5.get(fontNameVerdana13));
-      this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_large, var5.get(fontNameVerdana15));
-      this.cacheLoader = new WorldMapArchiveLoader(var1);
-      int var7 = this.field989.getGroupId(WorldMapCacheName.WorldMapCacheName_details.name);
-      int[] var8 = this.field989.method3(var7);
+      this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_small, fontsMap.get(fontNameVerdana11));
+      this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_medium, fontsMap.get(fontNameVerdana13));
+      this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_large, fontsMap.get(fontNameVerdana15));
+      this.cacheLoader = new WorldMapArchiveLoader(archive19);
+      int var7 = this.WorldMap_archive.getGroupId(WorldMapCacheName.WorldMapCacheName_details.name);
+      int[] var8 = this.WorldMap_archive.getGroupFileIds(var7);
       this.mapAreas = new HashMap(var8.length);
 
       for (int var9 = 0; var9 < var8.length; ++var9) {
-         Buffer var10 = new Buffer(this.field989.takeFile(var7, var8[var9]));
+         Buffer var10 = new Buffer(this.WorldMap_archive.takeFile(var7, var8[var9]));
          WorldMapArea var11 = new WorldMapArea();
          var11.read(var10, var8[var9]);
-         this.mapAreas.put(var11.archiveName(), var11);
-         if (var11.isMain()) {
+         this.mapAreas.put(var11.getArchiveName(), var11);
+         if (var11.getIsMain()) {
             this.mainMapArea = var11;
          }
       }
@@ -633,7 +636,7 @@ public class WorldMap {
    )
    @Export("currentMapAreaId")
    public int currentMapAreaId() {
-      return this.currentMapArea == null ? -1 : this.currentMapArea.id();
+      return this.currentMapArea == null ? -1 : this.currentMapArea.getId();
    }
 
    @ObfuscatedName("s")
@@ -668,8 +671,8 @@ public class WorldMap {
    @Export("initializeWorldMapManager")
    void initializeWorldMapManager(WorldMapArea mapArea) {
       this.currentMapArea = mapArea;
-      this.worldMapManager = new WorldMapManager(this.mapSceneSprites, this.fonts, this.field990, this.field991);
-      this.cacheLoader.reset(this.currentMapArea.archiveName());
+      this.worldMapManager = new WorldMapManager(this.mapSceneSprites, this.fonts, this.WorldMap_geographyArchive, this.WorldMap_groundArchive);
+      this.cacheLoader.reset(this.currentMapArea.getArchiveName());
    }
 
    @ObfuscatedName("h")
@@ -733,7 +736,7 @@ public class WorldMap {
          this.drawLoading(x, y, width, height, var7);
       } else {
          if (!this.worldMapManager.isLoaded()) {
-            this.worldMapManager.load(this.field989, this.currentMapArea.archiveName(), Client.isMembersWorld);
+            this.worldMapManager.load(this.WorldMap_archive, this.currentMapArea.getArchiveName(), Client.isMembersWorld);
             if (!this.worldMapManager.isLoaded()) {
                return;
             }
@@ -839,7 +842,7 @@ public class WorldMap {
    public void drawOverview(int x, int y, int width, int height) {
       if (this.cacheLoader.getIsLoaded()) {
          if (!this.worldMapManager.isLoaded()) {
-            this.worldMapManager.load(this.field989, this.currentMapArea.archiveName(), Client.isMembersWorld);
+            this.worldMapManager.load(this.WorldMap_archive, this.currentMapArea.getArchiveName(), Client.isMembersWorld);
             if (!this.worldMapManager.isLoaded()) {
                return;
             }
@@ -931,7 +934,7 @@ public class WorldMap {
          }
 
          var3 = (WorldMapArea)var2.next();
-      } while(var3.id() != var1);
+      } while(var3.getId() != var1);
 
       return var3;
    }

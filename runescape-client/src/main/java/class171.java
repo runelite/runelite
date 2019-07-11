@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.Hashtable;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -81,7 +82,8 @@ public class class171 {
       signature = "(B)V",
       garbageValue = "-36"
    )
-   static void method3497() {
+   @Export("load")
+   static void load() {
       int var0;
       if (Client.titleLoadingStage == 0) {
          class65.scene = new Scene(4, 104, 104, Tiles.Tiles_heights);
@@ -143,7 +145,7 @@ public class class171 {
          var0 += ItemContainer.archive19.percentage() / 100;
          var0 += WorldMapLabelSize.archive18.percentage() / 100;
          var0 += AbstractByteArrayCopier.archive20.percentage() / 100;
-         var0 += WorldMapRectangle.archive17.method130() && WorldMapRectangle.archive17.method2() ? 1 : 0;
+         var0 += WorldMapRectangle.archive17.method130() && WorldMapRectangle.archive17.isFullyLoaded() ? 1 : 0;
          if (var0 != 100) {
             if (var0 != 0) {
                Login.Login_loadingText = "Checking for updates - " + var0 + "%";
@@ -176,7 +178,7 @@ public class class171 {
          var28.method174(9, 128);
          WorldMapCacheName.pcmPlayer0 = Players.newPcmPlayer(GameShell.taskHandler, 0, 22050);
          WorldMapCacheName.pcmPlayer0.setStream(var28);
-         NetSocket.method3537(WorldMapSection2.archive15, class2.archive14, WorldMapDecoration.archive4, var28);
+         NetSocket.setAudioArchives(WorldMapSection2.archive15, class2.archive14, WorldMapDecoration.archive4, var28);
          AbstractArchive.pcmPlayer1 = Players.newPcmPlayer(GameShell.taskHandler, 1, 2048);
          TaskHandler.pcmStreamMixer = new PcmStreamMixer();
          AbstractArchive.pcmPlayer1.setStream(TaskHandler.pcmStreamMixer);
@@ -220,17 +222,17 @@ public class class171 {
          } else {
             Archive var30;
             if (Client.titleLoadingStage == 70) {
-               if (!ObjectSound.archive2.method2()) {
+               if (!ObjectSound.archive2.isFullyLoaded()) {
                   Login.Login_loadingText = "Loading config - " + ObjectSound.archive2.loadPercent() + "%";
                   Login.Login_loadingPercent = 60;
                } else {
-                  Varcs.method2160(ObjectSound.archive2);
-                  Varps.method4393(ObjectSound.archive2);
+                  Varcs.setFloorOverlayDefinitionArchive(ObjectSound.archive2);
+                  Varps.setFloorUnderlayDefinitionArchive(ObjectSound.archive2);
                   Archive var31 = ObjectSound.archive2;
                   Archive var33 = class40.archive7;
                   KitDefinition.KitDefinition_archive = var31;
-                  KitDefinition.field456 = var33;
-                  KitDefinition.KitDefinition_totalCount = KitDefinition.KitDefinition_archive.getGroupFileCount(3);
+                  KitDefinition.KitDefinition_modelsArchive = var33;
+                  KitDefinition.KitDefinition_fileCount = KitDefinition.KitDefinition_archive.getGroupFileCount(3);
                   RectangleMode.setObjectDefinitionArchives(ObjectSound.archive2, class40.archive7, Client.isLowDetail);
                   IsaacCipher.setNpcDefinitionArchives(ObjectSound.archive2, class40.archive7);
                   var30 = ObjectSound.archive2;
@@ -242,49 +244,49 @@ public class class171 {
                   ItemDefinition.ItemDefinition_archive = var5;
                   ItemDefinition.ItemDefinition_modelArchive = var6;
                   class30.inMembersWorld = var7;
-                  class83.field1167 = ItemDefinition.ItemDefinition_archive.getGroupFileCount(10);
-                  class204.field1122 = var8;
+                  class83.ItemDefinition_fileCount = ItemDefinition.ItemDefinition_archive.getGroupFileCount(10);
+                  class204.ItemDefinition_fontPlain11 = var8;
                   Archive var9 = ObjectSound.archive2;
                   Archive var10 = AbstractArchive.archive0;
                   Archive var11 = Skeleton.archive1;
                   SequenceDefinition.SequenceDefinition_archive = var9;
-                  SequenceDefinition.field773 = var10;
-                  SequenceDefinition.field774 = var11;
+                  SequenceDefinition.SequenceDefinition_animationsArchive = var10;
+                  SequenceDefinition.SequenceDefinition_skeletonsArchive = var11;
                   Archive var12 = ObjectSound.archive2;
                   Archive var13 = class40.archive7;
                   SpotAnimationDefinition.SpotAnimationDefinition_archive = var12;
                   SpotAnimationDefinition.SpotAnimationDefinition_modelArchive = var13;
                   GrandExchangeOfferUnitPriceComparator.setVarbitDefinitionArchive(ObjectSound.archive2);
                   Archive var14 = ObjectSound.archive2;
-                  VarpDefinition.field943 = var14;
-                  VarpDefinition.field944 = VarpDefinition.field943.getGroupFileCount(16);
+                  VarpDefinition.VarpDefinition_archive = var14;
+                  VarpDefinition.VarpDefinition_fileCount = VarpDefinition.VarpDefinition_archive.getGroupFileCount(16);
                   Archive var15 = WorldMapIcon1.archive3;
                   Archive var16 = class40.archive7;
                   Archive var17 = WorldMapSection1.archive8;
                   Archive var18 = ByteArrayPool.archive13;
                   Widget.Widget_archive = var15;
-                  BufferedSource.field54 = var16;
-                  Widget.field955 = var17;
-                  class27.field1143 = var18;
+                  BufferedSource.Widget_modelsArchive = var16;
+                  Widget.Widget_spritesArchive = var17;
+                  class27.Widget_fontsArchive = var18;
                   Widget.interfaceComponents = new Widget[Widget.Widget_archive.getGroupCount()][];
                   Widget.loadedInterfaces = new boolean[Widget.Widget_archive.getGroupCount()];
                   Archive var19 = ObjectSound.archive2;
                   class4.InvDefinition_archive = var19;
                   Archive var20 = ObjectSound.archive2;
                   EnumDefinition.EnumDefinition_archive = var20;
-                  Frames.method3241(ObjectSound.archive2);
+                  Frames.setVarcIntArchive(ObjectSound.archive2);
                   Archive var21 = ObjectSound.archive2;
                   ParamDefinition.ParamDefinition_archive = var21;
                   class196.varcs = new Varcs();
-                  class60.method1172(ObjectSound.archive2, WorldMapSection1.archive8, ByteArrayPool.archive13);
+                  class60.setHitSplatDefinitionArchives(ObjectSound.archive2, WorldMapSection1.archive8, ByteArrayPool.archive13);
                   Archive var22 = ObjectSound.archive2;
                   Archive var23 = WorldMapSection1.archive8;
-                  HealthBarDefinition.field379 = var22;
-                  HealthBarDefinition.field380 = var23;
+                  HealthBarDefinition.HealthBarDefinition_archive = var22;
+                  HealthBarDefinition.HealthBarDefinition_spritesArchive = var23;
                   Archive var24 = ObjectSound.archive2;
                   Archive var25 = WorldMapSection1.archive8;
                   WorldMapElement.WorldMapElement_archive = var25;
-                  if (var24.method2()) {
+                  if (var24.isFullyLoaded()) {
                      UserComparator4.WorldMapElement_count = var24.getGroupFileCount(35);
                      Widget.WorldMapElement_cached = new WorldMapElement[UserComparator4.WorldMapElement_count];
 
@@ -305,13 +307,13 @@ public class class171 {
             } else if (Client.titleLoadingStage == 80) {
                var0 = 0;
                if (GrandExchangeOfferUnitPriceComparator.compass == null) {
-                  GrandExchangeOfferUnitPriceComparator.compass = class322.readSprite(WorldMapSection1.archive8, Calendar.spriteIds.field878, 0);
+                  GrandExchangeOfferUnitPriceComparator.compass = class322.readSprite(WorldMapSection1.archive8, Calendar.spriteIds.compass, 0);
                } else {
                   ++var0;
                }
 
-               if (FaceNormal.field345 == null) {
-                  FaceNormal.field345 = class322.readSprite(WorldMapSection1.archive8, Calendar.spriteIds.field879, 0);
+               if (FaceNormal.redHintArrowSprite == null) {
+                  FaceNormal.redHintArrowSprite = class322.readSprite(WorldMapSection1.archive8, Calendar.spriteIds.redHintArrow, 0);
                } else {
                   ++var0;
                }
@@ -450,7 +452,7 @@ public class class171 {
                   Login.Login_loadingPercent = 70;
                } else {
                   AbstractFont.AbstractFont_modIconSprites = WorldMapSectionType.modIconSprites;
-                  FaceNormal.field345.normalize();
+                  FaceNormal.redHintArrowSprite.normalize();
                   var29 = (int)(Math.random() * 21.0D) - 10;
                   int var36 = (int)(Math.random() * 21.0D) - 10;
                   var34 = (int)(Math.random() * 21.0D) - 10;
@@ -461,7 +463,7 @@ public class class171 {
                   Client.titleLoadingStage = 90;
                }
             } else if (Client.titleLoadingStage == 90) {
-               if (!class238.archive9.method2()) {
+               if (!class238.archive9.isFullyLoaded()) {
                   Login.Login_loadingText = "Loading textures - 0%";
                   Login.Login_loadingPercent = 90;
                } else {
@@ -471,7 +473,7 @@ public class class171 {
                   Client.titleLoadingStage = 100;
                }
             } else if (Client.titleLoadingStage == 100) {
-               var0 = SecureRandomFuture.textureProvider.method323();
+               var0 = SecureRandomFuture.textureProvider.getLoadedPercentage();
                if (var0 < 100) {
                   Login.Login_loadingText = "Loading textures - " + var0 + "%";
                   Login.Login_loadingPercent = 90;
@@ -498,13 +500,13 @@ public class class171 {
                   Client.titleLoadingStage = 130;
                }
             } else if (Client.titleLoadingStage == 130) {
-               if (!WorldMapIcon1.archive3.method2()) {
+               if (!WorldMapIcon1.archive3.isFullyLoaded()) {
                   Login.Login_loadingText = "Loading interfaces - " + WorldMapIcon1.archive3.loadPercent() * 4 / 5 + "%";
                   Login.Login_loadingPercent = 96;
-               } else if (!Formatting.archive12.method2()) {
+               } else if (!Formatting.archive12.isFullyLoaded()) {
                   Login.Login_loadingText = "Loading interfaces - " + (80 + Formatting.archive12.loadPercent() / 6) + "%";
                   Login.Login_loadingPercent = 96;
-               } else if (!ByteArrayPool.archive13.method2()) {
+               } else if (!ByteArrayPool.archive13.isFullyLoaded()) {
                   Login.Login_loadingText = "Loading interfaces - " + (96 + ByteArrayPool.archive13.loadPercent() / 50) + "%";
                   Login.Login_loadingPercent = 96;
                } else {
@@ -517,9 +519,9 @@ public class class171 {
                if (!ItemContainer.archive19.tryLoadGroupByName(WorldMapCacheName.WorldMapCacheName_details.name)) {
                   Login.Login_loadingText = "Loading world map - " + ItemContainer.archive19.groupLoadPercentByName(WorldMapCacheName.WorldMapCacheName_details.name) / 10 + "%";
                } else {
-                  if (class60.worldMap0 == null) {
-                     class60.worldMap0 = new WorldMap();
-                     class60.worldMap0.init(ItemContainer.archive19, WorldMapLabelSize.archive18, AbstractByteArrayCopier.archive20, class2.fontBold12, Client.fontsMap, class192.mapSceneSprites);
+                  if (class60.worldMap == null) {
+                     class60.worldMap = new WorldMap();
+                     class60.worldMap.init(ItemContainer.archive19, WorldMapLabelSize.archive18, AbstractByteArrayCopier.archive20, class2.fontBold12, Client.fontsMap, class192.mapSceneSprites);
                   }
 
                   Login.Login_loadingText = "Loaded world map";
