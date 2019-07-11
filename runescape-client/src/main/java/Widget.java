@@ -1376,11 +1376,11 @@ public class Widget extends Node {
       garbageValue = "1082545676"
    )
    @Export("getModel")
-   public Model getModel(SequenceDefinition sequence, int frame, boolean var3, PlayerAppearance appearance) {
+   public Model getModel(SequenceDefinition sequence, int frame, boolean alternate, PlayerAppearance appearance) {
       field957 = false;
       int var5;
       int var6;
-      if (var3) {
+      if (alternate) {
          var5 = this.modelType2;
          var6 = this.modelId2;
       } else {
@@ -1445,7 +1445,7 @@ public class Widget extends Node {
          }
 
          if (sequence != null) {
-            var7 = sequence.animateWidget(var7, frame);
+            var7 = sequence.transformWidgetModel(var7, frame);
          }
 
          return var7;

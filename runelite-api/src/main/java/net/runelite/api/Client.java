@@ -1354,6 +1354,20 @@ public interface Client extends GameShell
 	void setInterpolateObjectAnimations(boolean interpolate);
 
 	/**
+	 * Checks whether animation smoothing is enabled for widgets.
+	 *
+	 * @return true if widget animation smoothing is enabled, false otherwise
+	 */
+	boolean isInterpolateWidgetAnimations();
+
+	/**
+	 * Sets the animation smoothing state for widgets.
+	 *
+	 * @param interpolate the new smoothing state
+	 */
+	void setInterpolateWidgetAnimations(boolean interpolate);
+
+	/**
 	 * Checks whether the logged in player is in an instanced region.
 	 *
 	 * @return true if the player is in instanced region, false otherwise

@@ -321,11 +321,11 @@ public class PlayerAppearance {
          } else {
             Model var16;
             if (var1 != null && var3 != null) {
-               var16 = var1.animateSequence2(var15, var2, var3, var4);
+               var16 = var1.applyTransformations(var15, var2, var3, var4);
             } else if (var1 != null) {
-               var16 = var1.animateSequence(var15, var2);
+               var16 = var1.transformActorModel(var15, var2);
             } else {
-               var16 = var3.animateSequence(var15, var4);
+               var16 = var3.transformActorModel(var15, var4);
             }
 
             return var16;
