@@ -139,49 +139,46 @@ public class StatusOrbsOverlay extends Overlay
 			renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, percentSpec, SPECIAL_COLOR);
 		}
 
-		if (plugin.isReplaceOrbText())
+		final Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
+
+		if (runOrb == null || runOrb.isHidden())
 		{
-			final Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
+			return null;
+		}
 
-			if (runOrb == null || runOrb.isHidden())
+		final Rectangle bounds = runOrb.getBounds();
+
+		if (bounds.getX() <= 0)
+		{
+			return null;
+		}
+
+		final Point mousePosition = client.getMouseCanvasPosition();
+
+		if (bounds.contains(mousePosition.getX(), mousePosition.getY()))
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.append("Weight: ").append(client.getWeight()).append(" kg</br>");
+
+			if (plugin.isReplaceOrbText())
 			{
-				return null;
+				sb.append("Run Energy: ").append(client.getEnergy()).append("%");
+			}
+			else
+			{
+				sb.append("Run Time Remaining: ").append(plugin.getEstimatedRunTimeRemaining(false));
 			}
 
-			final Rectangle bounds = runOrb.getBounds();
-
-			if (bounds.getX() <= 0)
+			int secondsUntil100 = plugin.getEstimatedRecoverTimeRemaining();
+			if (secondsUntil100 > 0)
 			{
-				return null;
+				final int minutes = (int) Math.floor(secondsUntil100 / 60.0);
+				final int seconds = (int) Math.floor(secondsUntil100 - (minutes * 60.0));
+
+				sb.append("</br>").append("100% Energy In: ").append(minutes).append(':').append(StringUtils.leftPad(Integer.toString(seconds), 2, "0"));
 			}
 
-			final Point mousePosition = client.getMouseCanvasPosition();
-
-			if (bounds.contains(mousePosition.getX(), mousePosition.getY()))
-			{
-				StringBuilder sb = new StringBuilder();
-				sb.append("Weight: ").append(client.getWeight()).append(" kg</br>");
-
-				if (plugin.isReplaceOrbText())
-				{
-					sb.append("Run Energy: ").append(client.getEnergy()).append("%");
-				}
-				else
-				{
-					sb.append("Run Time Remaining: ").append(plugin.getEstimatedRunTimeRemaining(false));
-				}
-
-				int secondsUntil100 = plugin.getEstimatedRecoverTimeRemaining();
-				if (secondsUntil100 > 0)
-				{
-					final int minutes = (int) Math.floor(secondsUntil100 / 60.0);
-					final int seconds = (int) Math.floor(secondsUntil100 - (minutes * 60.0));
-
-					sb.append("</br>").append("100% Energy In: ").append(minutes).append(':').append(StringUtils.leftPad(Integer.toString(seconds), 2, "0"));
-				}
-
-				tooltipManager.add(new Tooltip(sb.toString()));
-			}
+			tooltipManager.add(new Tooltip(sb.toString()));
 		}
 
 		if (plugin.isShowRun())
