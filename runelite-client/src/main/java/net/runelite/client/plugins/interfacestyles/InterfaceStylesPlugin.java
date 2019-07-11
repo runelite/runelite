@@ -31,11 +31,13 @@ import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.HealthBar;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostHealthBar;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
@@ -69,6 +71,8 @@ public class InterfaceStylesPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
+	private SpritePixels[] defaultCrossSprites;
+
 	@Provides
 	InterfaceStylesConfig provideConfig(ConfigManager configManager)
 	{
@@ -89,6 +93,7 @@ public class InterfaceStylesPlugin extends Plugin
 			restoreWidgetDimensions();
 			removeGameframe();
 			restoreHealthBars();
+			restoreCrossSprites();
 		});
 	}
 
@@ -126,6 +131,22 @@ public class InterfaceStylesPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() != GameState.LOGIN_SCREEN)
+		{
+			return;
+		}
+
+		/*
+		 * The cross sprites aren't loaded yet when the initial config change event is received.
+		 * So run the overriding for cross sprites when we reach the login screen,
+		 * at which point the cross sprites will have been loaded.
+		 */
+		overrideCrossSprites();
+	}
+
 	private void updateAllOverrides()
 	{
 		removeGameframe();
@@ -134,6 +155,7 @@ public class InterfaceStylesPlugin extends Plugin
 		restoreWidgetDimensions();
 		adjustWidgetDimensions();
 		overrideHealthBars();
+		overrideCrossSprites();
 	}
 
 	@Subscribe
@@ -281,6 +303,62 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		spriteManager.removeSpriteOverrides(HealthbarOverride.values());
 		clientThread.invokeLater(client::resetHealthBarCaches);
+	}
+
+	private void overrideCrossSprites()
+	{
+		if (config.rsCrossSprites())
+		{
+			// If we've already replaced them,
+			// we don't need to replace them again
+			if (defaultCrossSprites != null)
+			{
+				return;
+			}
+
+			SpritePixels[] crossSprites = client.getCrossSprites();
+
+			if (crossSprites == null)
+			{
+				return;
+			}
+
+			defaultCrossSprites = new SpritePixels[crossSprites.length];
+			System.arraycopy(crossSprites, 0, defaultCrossSprites, 0, defaultCrossSprites.length);
+
+			for (int i = 0; i < crossSprites.length; i++)
+			{
+				SpritePixels newSprite = getFileSpritePixels("rs3/cross_sprites/" + i + ".png");
+
+				if (newSprite == null)
+				{
+					continue;
+				}
+
+				crossSprites[i] = newSprite;
+			}
+		}
+		else
+		{
+			restoreCrossSprites();
+		}
+	}
+
+	private void restoreCrossSprites()
+	{
+		if (defaultCrossSprites == null)
+		{
+			return;
+		}
+
+		SpritePixels[] crossSprites = client.getCrossSprites();
+
+		if (crossSprites != null && defaultCrossSprites.length == crossSprites.length)
+		{
+			System.arraycopy(defaultCrossSprites, 0, crossSprites, 0, defaultCrossSprites.length);
+		}
+
+		defaultCrossSprites = null;
 	}
 
 	private void restoreWidgetDimensions()

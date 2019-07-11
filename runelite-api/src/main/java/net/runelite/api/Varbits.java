@@ -217,6 +217,7 @@ public enum Varbits
 	 * Barbarian Assault
 	 */
 	IN_GAME_BA(3923),
+	BA_GC(4768),
 
 	/**
 	 * 0 = Outside wilderness
@@ -495,7 +496,9 @@ public enum Varbits
 	EXPLORER_RING_ALCHTYPE(5398),
 	EXPLORER_RING_TELEPORTS(4552),
 	EXPLORER_RING_ALCHS(4554),
-	EXPLORER_RING_RUNENERGY(4553);
+	EXPLORER_RING_RUNENERGY(4553),
+
+	WINTERTODT_TIMER(7980);
 
 	/**
 	 * The raw varbit ID.

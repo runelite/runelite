@@ -1,10 +1,38 @@
+/*
+ * Copyright (c) 2019, Slay to Stay <https://github.com/slaytostay>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package net.runelite.client.plugins.regionlocker;
 
 import com.google.inject.Provides;
+import java.awt.Rectangle;
+import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.MessageNode;
 import net.runelite.api.Point;
+import net.runelite.api.RenderOverview;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
@@ -23,153 +51,160 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
-import javax.inject.Inject;
-import java.awt.*;
-
 @PluginDescriptor(
-    name = RegionLockerPlugin.PLUGIN_NAME,
-    description = "Adds graphical effect to locked regions.",
-    tags = {"region", "locker", "chunk", "map square"}
+		name = RegionLockerPlugin.PLUGIN_NAME,
+		description = "Adds graphical effect to locked regions.",
+		tags = {"region", "locker", "chunk", "map square"}
 )
-public class RegionLockerPlugin extends Plugin {
-    static final String PLUGIN_NAME = "Region Locker";
-    static final String CONFIG_KEY = "regionlocker";
-    private static final String CHUNK_COMMAND = "!chunks";
+public class RegionLockerPlugin extends Plugin
+{
+	static final String PLUGIN_NAME = "Region Locker";
+	static final String CONFIG_KEY = "regionlocker";
+	private static final String CHUNK_COMMAND = "!chunks";
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private OverlayManager overlayManager;
+	@Inject
+	private OverlayManager overlayManager;
 
-    @Inject
-    private RegionLockerConfig config;
+	@Inject
+	private RegionLockerConfig config;
 
-    @Inject
-    private RegionLockerOverlay regionLockerOverlay;
+	@Inject
+	private RegionLockerOverlay regionLockerOverlay;
 
-    @Inject
-    private RegionLockerInput inputListener;
+	@Inject
+	private RegionBorderOverlay regionBorderOverlay;
 
-    @Inject
-    private KeyManager keyManager;
+	@Inject
+	private RegionLockerInput inputListener;
 
-    @Inject
-    private ConfigManager configManager;
+	@Inject
+	private KeyManager keyManager;
 
-    @Inject
-    private ChatMessageManager chatMessageManager;
+	@Inject
+	private ConfigManager configManager;
 
-    @Inject
-    private ChatCommandManager chatCommandManager;
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
-    @Setter(AccessLevel.PACKAGE)
-    private boolean unlockKeyPressed = false;
+	@Inject
+	private ChatCommandManager chatCommandManager;
 
-    @Setter(AccessLevel.PACKAGE)
-    private boolean blockKeyPressed = false;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean unlockKeyPressed = false;
 
-    private RegionLocker regionLocker;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean blockKeyPressed = false;
 
-    @Provides
-    RegionLockerConfig provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(RegionLockerConfig.class);
-    }
+	private RegionLocker regionLocker;
 
-    @Override
-    protected void startUp() throws Exception {
-        chatCommandManager.registerCommandAsync(CHUNK_COMMAND, this::chunkAmountLookup);
-        regionLocker = new RegionLocker(client, config, configManager);
-        overlayManager.add(regionLockerOverlay);
-        keyManager.registerKeyListener(inputListener);
-        setKeys();
-    }
+	@Provides
+	RegionLockerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(RegionLockerConfig.class);
+	}
 
-    @Override
-    protected void shutDown() throws Exception {
-        chatCommandManager.unregisterCommand(CHUNK_COMMAND);
-        overlayManager.remove(regionLockerOverlay);
-        keyManager.unregisterKeyListener(inputListener);
-        RegionLocker.renderLockedRegions = false;
-    }
+	@Override
+	protected void startUp() throws Exception
+	{
+		chatCommandManager.registerCommandAsync(CHUNK_COMMAND, this::chunkAmountLookup);
+		regionLocker = new RegionLocker(client, config, configManager);
+		overlayManager.add(regionLockerOverlay);
+		overlayManager.add(regionBorderOverlay);
+		keyManager.registerKeyListener(inputListener);
+		setKeys();
+	}
 
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event)
-    {
-        if (!event.getGroup().equals(RegionLockerPlugin.CONFIG_KEY))
-        {
-            return;
-        }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		chatCommandManager.unregisterCommand(CHUNK_COMMAND);
+		overlayManager.remove(regionLockerOverlay);
+		overlayManager.remove(regionBorderOverlay);
+		keyManager.unregisterKeyListener(inputListener);
+		RegionLocker.renderLockedRegions = false;
+	}
 
-        setKeys();
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(RegionLockerPlugin.CONFIG_KEY))
+		{
+			return;
+		}
 
-        regionLocker.readConfig();
-    }
+		setKeys();
 
-    @Subscribe
-    public void onFocusChanged(FocusChanged focusChanged)
-    {
-        if (!focusChanged.isFocused())
-        {
-            unlockKeyPressed = false;
-            blockKeyPressed = false;
-        }
-    }
+		regionLocker.readConfig();
+	}
 
-    @Subscribe
-    public void onMenuOptionClicked(MenuOptionClicked event) {
-        Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
-        if (!(unlockKeyPressed || blockKeyPressed) || map == null) return;
+	@Subscribe
+	public void onFocusChanged(FocusChanged focusChanged)
+	{
+		if (!focusChanged.isFocused())
+		{
+			unlockKeyPressed = false;
+			blockKeyPressed = false;
+		}
+	}
 
-        RenderOverview ro = client.getRenderOverview();
-        Float pixelsPerTile = ro.getWorldMapZoom();
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
+		if (!(unlockKeyPressed || blockKeyPressed) || map == null) return;
 
-        Rectangle worldMapRect = map.getBounds();
-        int widthInTiles = (int) Math.ceil(worldMapRect.getWidth() / pixelsPerTile);
-        int heightInTiles = (int) Math.ceil(worldMapRect.getHeight() / pixelsPerTile);
+		RenderOverview ro = client.getRenderOverview();
+		Float pixelsPerTile = ro.getWorldMapZoom();
 
-        Point worldMapPosition = ro.getWorldMapPosition();
+		Rectangle worldMapRect = map.getBounds();
+		int widthInTiles = (int) Math.ceil(worldMapRect.getWidth() / pixelsPerTile);
+		int heightInTiles = (int) Math.ceil(worldMapRect.getHeight() / pixelsPerTile);
 
-        int yTileMin = worldMapPosition.getY() - heightInTiles / 2;
+		Point worldMapPosition = ro.getWorldMapPosition();
 
-        Point mousePos = client.getMouseCanvasPosition();
+		int yTileMin = worldMapPosition.getY() - heightInTiles / 2;
 
-        int tx = (int)((mousePos.getX() - worldMapRect.getX()) / pixelsPerTile);
-        int ty = (int)((mousePos.getY() - worldMapRect.getX() - worldMapRect.height) / pixelsPerTile);
+		Point mousePos = client.getMouseCanvasPosition();
 
-        int x = tx - widthInTiles/2 + worldMapPosition.getX();
-        int y = -ty + yTileMin;
+		int tx = (int) ((mousePos.getX() - worldMapRect.getX()) / pixelsPerTile);
+		int ty = (int) ((mousePos.getY() - worldMapRect.getX() - worldMapRect.height) / pixelsPerTile);
 
-        int regionId = ((x >> 6) << 8) | (y >> 6);
+		int x = tx - widthInTiles / 2 + worldMapPosition.getX();
+		int y = -ty + yTileMin;
 
-        if (unlockKeyPressed) regionLocker.addRegion(regionId);
-        if (blockKeyPressed) regionLocker.blockRegion(regionId);
-    }
+		int regionId = ((x >> 6) << 8) | (y >> 6);
 
-    private void setKeys() {
-        RegionLockerInput.UNLOCK_KEY = config.unlockKey();
-        RegionLockerInput.BLOCK_KEY = config.blacklistKey();
-    }
+		if (unlockKeyPressed) regionLocker.addRegion(regionId);
+		if (blockKeyPressed) regionLocker.blockRegion(regionId);
+	}
 
-    private void chunkAmountLookup(ChatMessage chatMessage, String message)
-    {
-        if (!config.chunkCommand()) return;
+	private void setKeys()
+	{
+		RegionLockerInput.UNLOCK_KEY = config.unlockKey();
+		RegionLockerInput.BLOCK_KEY = config.blacklistKey();
+	}
 
-        int totalChunks = Text.fromCSV(config.unlockedRegions()).size();
+	private void chunkAmountLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.chunkCommand()) return;
 
-        String response = new ChatMessageBuilder()
-                .append(ChatColorType.NORMAL)
-                .append("Total chunks")
-                .append(ChatColorType.NORMAL)
-                .append(" unlocked: ")
-                .append(ChatColorType.HIGHLIGHT)
-                .append(String.valueOf(totalChunks))
-                .build();
+		int totalChunks = Text.fromCSV(config.unlockedRegions()).size();
 
-        final MessageNode messageNode = chatMessage.getMessageNode();
-        messageNode.setRuneLiteFormatMessage(response);
-        chatMessageManager.update(messageNode);
-        client.refreshChat();
-    }
+		String response = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Total chunks")
+				.append(ChatColorType.NORMAL)
+				.append(" unlocked: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(totalChunks))
+				.build();
+
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
 }
