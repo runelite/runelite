@@ -62,7 +62,8 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> {
+		playerIndicatorsService.forEachPlayer((player, color) -> 
+		{
 			if (plugin.isDrawFriendMinimapNames() && !player.isFriend())
 			{
 				return;
