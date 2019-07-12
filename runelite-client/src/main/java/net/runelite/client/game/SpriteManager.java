@@ -37,14 +37,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Sprite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.util.ImageUtil;
 
-@Slf4j
 @Singleton
 public class SpriteManager
 {

@@ -775,6 +775,14 @@ public class ScreenshotPlugin extends Plugin
 		{
 			File screenshotFile = new File(playerFolder, fileName + ".png");
 
+			// To make sure that screenshots don't get overwritten, check if file exists,
+			// and if it does create file with same name and suffix.
+			int i = 1;
+			while (screenshotFile.exists())
+			{
+				screenshotFile = new File(playerFolder, fileName + String.format("(%d)", i++) + ".png");
+			}
+
 			ImageIO.write(screenshot, "PNG", screenshotFile);
 
 			if (this.uploadScreenshot)

@@ -64,6 +64,10 @@ public class ItemIdentificationPlugin extends Plugin
 	private boolean showHerbs;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showSaplings;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showOres;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showGems;
 
 	@Provides
 	ItemIdentificationConfig getConfig(ConfigManager configManager)
@@ -102,5 +106,7 @@ public class ItemIdentificationPlugin extends Plugin
 		this.showSeeds = config.showSeeds();
 		this.showHerbs = config.showHerbs();
 		this.showSaplings = config.showSaplings();
+		this.showOres = config.showOres();
+		this.showGems = config.showGems();
 	}
 }

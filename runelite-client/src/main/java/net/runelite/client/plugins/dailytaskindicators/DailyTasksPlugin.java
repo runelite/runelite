@@ -174,7 +174,7 @@ public class DailyTasksPlugin extends Plugin
 			{
 				checkArrows(dailyReset);
 			}
-
+			
 			if (this.showDynamite)
 			{
 				checkDynamite(dailyReset);
@@ -245,8 +245,9 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkArrows(boolean dailyReset)
 	{
-		if ((client.getVar(Varbits.DIARY_WESTERN_EASY) == 1)
-			&& (dailyReset || client.getVar(Varbits.DAILY_ARROWS_STATE) == 0))
+		if (client.getVar(Varbits.DIARY_WESTERN_EASY) == 1
+			&& (client.getVar(Varbits.DAILY_ARROWS_STATE) == 0
+			|| dailyReset))
 		{
 			sendChatMessage(ARROWS_MESSAGE);
 		}

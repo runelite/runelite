@@ -39,14 +39,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
 
-@Slf4j
 class WorldSwitcherPanel extends PluginPanel
 {
 	private static final Color ODD_ROW = new Color(44, 44, 44);
