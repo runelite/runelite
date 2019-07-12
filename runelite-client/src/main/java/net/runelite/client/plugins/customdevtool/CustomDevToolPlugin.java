@@ -124,7 +124,7 @@ public class CustomDevToolPlugin extends Plugin {
         final boolean isNpc = target instanceof NPC;
         if (!isNpc)
         {
-            System.out.println("not in combat");
+            //System.out.println("not in combat");
             return false;
         }
         final NPC npc = (NPC) target;
@@ -132,7 +132,7 @@ public class CustomDevToolPlugin extends Plugin {
         final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
         if (npcMenuActions.contains("Attack"))
         {
-            System.out.println("in combat");
+            //System.out.println("in combat");
             return true;
         }
         return false;
