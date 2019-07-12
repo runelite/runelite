@@ -164,12 +164,7 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return PlayerNameLocation.ABOVE_HEAD;
 	}
-
-
-	/**
-	 * HERE
-	 */
-
+	
 	@ConfigItem(
 		position = 12,
 		keyName = "drawMinimapNames",
@@ -209,12 +204,6 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return false;
 	}
-
-	/**
-	 * To Here
-	 */
-
-
 
 	@ConfigItem(
 		position = 13,
