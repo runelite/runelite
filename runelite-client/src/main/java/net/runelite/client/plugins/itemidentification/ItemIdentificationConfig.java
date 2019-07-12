@@ -103,4 +103,14 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showPotions",
+		name = "Potions",
+		description = "Show identification on Potions and Weapon poison"
+	)
+	default boolean showPotions()
+	{
+		return false;
+	}
 }
