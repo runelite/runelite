@@ -127,6 +127,7 @@ public class IdleNotifierPlugin extends Plugin
 	private List<Integer> itemQuantitiesPrevious = new ArrayList<>();
 	private final List<Integer> itemQuantitiesChange = new ArrayList<>();
 	private boolean lastInteractWasCombat;
+	private boolean interactingNotified;
 	private SkullIcon lastTickSkull = null;
 	private boolean isFirstTick = true;
 
@@ -232,6 +233,17 @@ public class IdleNotifierPlugin extends Plugin
 				/* Fishing */
 			case FISHING_CRUSHING_INFERNAL_EELS:
 			case FISHING_CUTTING_SACRED_EELS:
+			case FISHING_BIG_NET:
+			case FISHING_NET:
+			case FISHING_POLE_CAST:
+			case FISHING_CAGE:
+			case FISHING_HARPOON:
+			case FISHING_BARBTAIL_HARPOON:
+			case FISHING_DRAGON_HARPOON:
+			case FISHING_INFERNAL_HARPOON:
+			case FISHING_OILY_ROD:
+			case FISHING_KARAMBWAN:
+			case FISHING_BAREHAND:
 				/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
@@ -275,6 +287,7 @@ public class IdleNotifierPlugin extends Plugin
 				resetTimers();
 				lastAnimation = animation;
 				lastAnimating = Instant.now();
+				interactingNotified = false;
 				break;
 			case MAGIC_LUNAR_SHARED:
 				if (graphic == GraphicID.BAKE_PIE)
@@ -282,10 +295,12 @@ public class IdleNotifierPlugin extends Plugin
 					resetTimers();
 					lastAnimation = animation;
 					lastAnimating = Instant.now();
+					interactingNotified = false;
 					break;
 				}
 			case IDLE:
 				lastAnimating = Instant.now();
+				interactingNotified = false;
 				break;
 			default:
 				// On unknown animation simply assume the animation is invalid and dont throw notification
@@ -541,14 +556,6 @@ public class IdleNotifierPlugin extends Plugin
 			lastAnimation = IDLE;
 		}
 
-		if (this.animationIdle && checkAnimationIdle(waitDuration, local))
-		{
-			notifier.notify("[" + local.getName() + "] is now idle!");
-			if (this.animationIdleSound)
-			{
-				soundManager.playSound(Sound.IDLE);
-			}
-		}
 		if (this.interactionIdle && checkInteractionIdle(waitDuration, local))
 		{
 			if (lastInteractWasCombat)
@@ -566,6 +573,16 @@ public class IdleNotifierPlugin extends Plugin
 				{
 					soundManager.playSound(Sound.IDLE);
 				}
+			}
+			interactingNotified = true;
+		}
+
+		if (this.animationIdle && checkAnimationIdle(waitDuration, local))
+		{
+			notifier.notify("[" + local.getName() + "] is now idle!");
+			if (this.animationIdleSound)
+			{
+				soundManager.playSound(Sound.IDLE);
 			}
 		}
 
@@ -785,7 +802,7 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkAnimationIdle(Duration waitDuration, Player local)
 	{
-		if (lastAnimation == IDLE)
+		if (lastAnimation == IDLE || interactingNotified)
 		{
 			return false;
 		}
