@@ -164,14 +164,43 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return PlayerNameLocation.ABOVE_HEAD;
 	}
-
+	
 	@ConfigItem(
 		position = 12,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
-		description = "Configures whether or not minimap names for players with rendered names should be drawn"
+		description = "Configures whether or not minimap names for players with rendered names should be drawn",
+		group = "Minimap"
 	)
 	default boolean drawMinimapNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "drawFriendMinimapNames",
+		name = "Draw Friendnames on minimap",
+		description = "Configures whether or not minimap names for Friends with rendered names should be drawn",
+		group = "Minimap",
+		hidden = true,
+		unhide = "drawMinimapNames"
+	)
+	default boolean drawFriendMinimapNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "drawClanMinimapNames",
+		name = "Draw clan Friend names on minimap",
+		description = "Configures whether or not minimap names for Clan Members with rendered names should be drawn",
+		group = "Minimap",
+		hidden = true,
+		unhide = "drawMinimapNames"
+	)
+	default boolean drawClanMinimapNames()
 	{
 		return false;
 	}

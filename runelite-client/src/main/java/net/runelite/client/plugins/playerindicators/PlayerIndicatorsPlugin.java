@@ -120,6 +120,10 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private PlayerNameLocation playerNamePosition;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean drawMinimapNames;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawFriendMinimapNames;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawClanMinimapNames;
 	private boolean colorPlayerMenu;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showClanRanks;
@@ -407,6 +411,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 		this.drawTiles = config.drawTiles();
 		this.playerNamePosition = config.playerNamePosition();
 		this.drawMinimapNames = config.drawMinimapNames();
+		this.drawFriendMinimapNames = config.drawFriendMinimapNames();
+		this.drawClanMinimapNames = config.drawClanMinimapNames();
 		this.colorPlayerMenu = config.colorPlayerMenu();
 		this.showClanRanks = config.showClanRanks();
 		this.highlightTargets = config.highlightTargets();

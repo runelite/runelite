@@ -62,7 +62,18 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		playerIndicatorsService.forEachPlayer((player, color) -> 
+		{
+			if (plugin.isDrawFriendMinimapNames() && !player.isFriend())
+			{
+				return;
+			}
+			if (plugin.isDrawClanMinimapNames() && !player.isClanMember())
+			{
+				return;
+			}
+			renderPlayerOverlay(graphics, player, color);
+		});
 		return null;
 	}
 
@@ -90,6 +101,7 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 				}
 				if (plugin.isDrawMinimapNames())
 				{
+
 					if (actor.getSkullIcon() != null && plugin.isPlayerSkull() && actor.getSkullIcon() == SkullIcon.SKULL)
 					{
 						int width = graphics.getFontMetrics().stringWidth(name);
