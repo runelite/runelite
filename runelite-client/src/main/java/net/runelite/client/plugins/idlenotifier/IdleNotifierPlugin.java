@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import java.awt.TrayIcon;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
@@ -44,6 +45,9 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.Player;
@@ -58,6 +62,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.client.Notifier;
@@ -117,6 +122,10 @@ public class IdleNotifierPlugin extends Plugin
 	private int lastCombatCountdown = 0;
 	private Instant sixHourWarningTime;
 	private boolean ready;
+	private Instant lastTimeItemsUsedUp;
+	private List<Integer> itemIdsPrevious = new ArrayList<>();
+	private List<Integer> itemQuantitiesPrevious = new ArrayList<>();
+	private final List<Integer> itemQuantitiesChange = new ArrayList<>();
 	private boolean lastInteractWasCombat;
 	private SkullIcon lastTickSkull = null;
 	private boolean isFirstTick = true;
@@ -146,6 +155,7 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean getSpecSound;
 	private boolean getOverSpecEnergy;
 	private boolean notifyPkers;
+	private boolean outOfItemsIdle;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -300,6 +310,84 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		ItemContainer itemContainer = event.getItemContainer();
+
+		if (itemContainer != client.getItemContainer(InventoryID.INVENTORY) || !config.outOfItemsIdle())
+		{
+			return;
+		}
+
+		Item[] items = itemContainer.getItems();
+		ArrayList<Integer> itemQuantities = new ArrayList<>();
+		ArrayList<Integer> itemIds = new ArrayList<>();
+
+		// Populate list of items in inventory without duplicates
+		for (Item value : items)
+		{
+			int itemId = OutOfItemsMapping.mapFirst(value.getId());
+			if (itemIds.indexOf(itemId) == -1) // -1 if item not yet in list
+			{
+				itemIds.add(itemId);
+			}
+		}
+
+		// Populate quantity of each item in inventory
+		for (int j = 0; j < itemIds.size(); j++)
+		{
+			itemQuantities.add(0);
+			for (Item item : items)
+			{
+				if (itemIds.get(j) == OutOfItemsMapping.mapFirst(item.getId()))
+				{
+					itemQuantities.set(j, itemQuantities.get(j) + item.getQuantity());
+				}
+			}
+		}
+
+		itemQuantitiesChange.clear();
+
+		// Calculate the quantity of each item consumed by the last action
+		if (!itemIdsPrevious.isEmpty())
+		{
+			for (int i = 0; i < itemIdsPrevious.size(); i++)
+			{
+				int id = itemIdsPrevious.get(i);
+				int currentIndex = itemIds.indexOf(id);
+				int currentQuantity;
+				if (currentIndex != -1) // -1 if item is no longer in inventory
+				{
+					currentQuantity = itemQuantities.get(currentIndex);
+				}
+				else
+				{
+					currentQuantity = 0;
+				}
+				itemQuantitiesChange.add(currentQuantity - itemQuantitiesPrevious.get(i));
+			}
+		}
+		else
+		{
+			itemIdsPrevious = itemIds;
+			itemQuantitiesPrevious = itemQuantities;
+			return;
+		}
+
+		// Check we have enough items left for another action.
+		for (int i = 0; i < itemQuantitiesPrevious.size(); i++)
+		{
+			if (-itemQuantitiesChange.get(i) * 2 > itemQuantitiesPrevious.get(i))
+			{
+				lastTimeItemsUsedUp = Instant.now();
+				return;
+			}
+		}
+		itemIdsPrevious = itemIds;
+		itemQuantitiesPrevious = itemQuantities;
+	}
+
+	@Subscribe
 	public void onInteractingChanged(InteractingChanged event)
 	{
 		final Actor source = event.getSource();
@@ -432,6 +520,7 @@ public class IdleNotifierPlugin extends Plugin
 			|| client.getKeyboardIdleTicks() < 10)
 		{
 			resetTimers();
+			resetOutOfItemsIdleChecks();
 			return;
 		}
 
@@ -443,6 +532,13 @@ public class IdleNotifierPlugin extends Plugin
 		if (check6hrLogout())
 		{
 			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
+		}
+
+		if (this.outOfItemsIdle && checkOutOfItemsIdle(waitDuration))
+		{
+			notifier.notify("[" + local.getName() + "] has run out of items!");
+			// If this triggers, don't also trigger animation idle notification afterwards.
+			lastAnimation = IDLE;
 		}
 
 		if (this.animationIdle && checkAnimationIdle(waitDuration, local))
@@ -713,6 +809,23 @@ public class IdleNotifierPlugin extends Plugin
 		return false;
 	}
 
+	private boolean checkOutOfItemsIdle(Duration waitDuration)
+	{
+		if (lastTimeItemsUsedUp == null)
+		{
+			return false;
+		}
+
+		if (Instant.now().compareTo(lastTimeItemsUsedUp.plus(waitDuration)) >= 0)
+		{
+			resetTimers();
+			resetOutOfItemsIdleChecks();
+			return true;
+		}
+
+		return false;
+	}
+
 	private void resetTimers()
 	{
 		final Player local = client.getLocalPlayer();
@@ -730,6 +843,14 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			lastInteract = null;
 		}
+	}
+
+	private void resetOutOfItemsIdleChecks()
+	{
+		lastTimeItemsUsedUp = null;
+		itemQuantitiesChange.clear();
+		itemIdsPrevious.clear();
+		itemQuantitiesPrevious.clear();
 	}
 
 	private void skullNotifier()
@@ -796,5 +917,6 @@ public class IdleNotifierPlugin extends Plugin
 		this.getSpecSound = config.getSpecSound();
 		this.getOverSpecEnergy = config.getOverSpecEnergy();
 		this.notifyPkers = config.notifyPkers();
+		this.outOfItemsIdle = config.outOfItemsIdle();
 	}
 }

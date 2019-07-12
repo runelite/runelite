@@ -43,10 +43,21 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "outOfItemsIdle",
+		name = "Out of Items Idle Notifications",
+		position = 2,
+		description = "Configures if notifications for running out of items for another action are enabled."
+	)
+	default boolean outOfItemsIdle()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "animationidlesound",
 		name = "Idle Animation Sound",
 		description = "Plays a custom sound accompanying Idle Animation notifications",
-		position = 2
+		position = 3
 	)
 	default boolean animationIdleSound()
 	{
@@ -57,7 +68,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "interactionidle",
 		name = "Idle Interaction Notifications",
 		description = "Configures if idle interaction notifications are enabled e.g. combat, fishing",
-		position = 3
+		position = 4
 	)
 	default boolean interactionIdle()
 	{
@@ -68,7 +79,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "interactionidlesound",
 		name = "Idle Interaction Sound",
 		description = "Plays a custom sound accompanying Idle Interaction notifications",
-		position = 4
+		position = 5
 	)
 	default boolean interactionIdleSound()
 	{
@@ -79,7 +90,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "logoutidle",
 		name = "Idle Logout Notifications",
 		description = "Configures if the idle logout notifications are enabled",
-		position = 5
+		position = 6
 	)
 	default boolean logoutIdle()
 	{
@@ -90,7 +101,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "outofcombatsound",
 		name = "Out of Combat Sound",
 		description = "Plays a custom sound whenever you leave combat",
-		position = 6
+		position = 7
 	)
 	default boolean outOfCombatSound()
 	{
@@ -98,7 +109,7 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "skullNotification",
 		name = "Skull Notification",
 		description = "Receive a notification when you skull."
@@ -109,7 +120,7 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "unskullNotification",
 		name = "Unskull Notification",
 		description = "Receive a notification when you unskull."
@@ -123,7 +134,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "timeout",
 		name = "Idle Notification Delay (ms)",
 		description = "The notification delay after the player is idle",
-		position = 9
+		position = 10
 	)
 	default int getIdleNotificationDelay()
 	{
@@ -134,7 +145,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "hitpoints",
 		name = "Hitpoints Notification Threshold",
 		description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification.",
-		position = 10
+		position = 11
 	)
 	default int getHitpointsThreshold()
 	{
@@ -156,7 +167,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "prayer",
 		name = "Prayer Notification Threshold",
 		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
-		position = 12
+		position = 13
 	)
 	default int getPrayerThreshold()
 	{
@@ -167,7 +178,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "playPrayerSound",
 		name = "Play sound for Low Prayer",
 		description = "Will play a sound for every Low Prayer notification sent",
-		position = 13
+		position = 14
 	)
 	default boolean getPlayPrayerSound()
 	{
@@ -177,7 +188,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "oxygen",
 		name = "Oxygen Notification Threshold",
-		position = 14,
+		position = 15,
 		description = "The amount of remaining oxygen to send a notification at. A value of 0 will disable notification."
 	)
 	default int getOxygenThreshold()
@@ -188,7 +199,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "spec",
 		name = "Special Attack Energy Notification Threshold",
-		position = 15,
+		position = 16,
 		description = "The amount of spec energy reached to send a notification at. A value of 0 will disable notification."
 	)
 	default int getSpecEnergyThreshold()
@@ -200,7 +211,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "specSound",
 		name = "Special Attack Energy Sound",
 		description = "Plays a custom sound accompanying Special Attack energy notifications",
-		position = 16
+		position = 17
 	)
 	default boolean getSpecSound()
 	{
@@ -211,7 +222,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "overspec",
 		name = "Over Special Energy Notification",
 		description = "Will repeat notifications for any value over the special energy threshold",
-		position = 17
+		position = 18
 	)
 	default boolean getOverSpecEnergy()
 	{
@@ -221,7 +232,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "pkers",
 		name = "PKer Notifier",
-		position = 18,
+		position = 19,
 		description = "Notifies if an attackable player based on your level range appears on screen.",
 		group = "PvP",
 		warning = "This will not notify you if the player is in your cc or is online on your friends list."
