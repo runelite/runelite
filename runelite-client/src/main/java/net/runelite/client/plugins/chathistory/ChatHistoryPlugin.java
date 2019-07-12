@@ -159,8 +159,8 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 					.type(chatMessage.getType())
 					.name(chatMessage.getName())
 					.sender(chatMessage.getSender())
-					.value(nbsp(chatMessage.getMessage()))
-					.runeLiteFormattedMessage(nbsp(chatMessage.getMessageNode().getRuneLiteFormatMessage()))
+					.value(tweakSpaces(chatMessage.getMessage()))
+					.runeLiteFormattedMessage(tweakSpaces(chatMessage.getMessageNode().getRuneLiteFormatMessage()))
 					.timestamp(chatMessage.getTimestamp())
 					.build();
 
@@ -192,16 +192,18 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	}
 
 	/**
-	 * Small hack to prevent plugins checking for specific messages to match
+	 * Small hack to prevent plugins checking for specific messages to match. This works because the "—" character
+	 * cannot be seen in-game. This replacement preserves wrapping on chat history messages.
 	 *
 	 * @param message message
-	 * @return message with nbsp
+	 * @return message with invisible character before every space
 	 */
-	private static String nbsp(final String message)
+	private static String tweakSpaces(final String message)
 	{
 		if (message != null)
 		{
-			return message.replace(' ', '\u00A0');
+			// First replacement cleans up prior applications of this so as not to keep extending the message
+			return message.replace("— ", " ").replace(" ", "— ");
 		}
 
 		return null;
