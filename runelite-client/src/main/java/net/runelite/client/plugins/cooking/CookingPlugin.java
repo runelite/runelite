@@ -28,19 +28,27 @@ package net.runelite.client.plugins.cooking;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GraphicID;
+import net.runelite.api.ItemID;
+import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GraphicChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Cooking",
@@ -50,25 +58,26 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDependency(XpTrackerPlugin.class)
 public class CookingPlugin extends Plugin
 {
-	private static final String WINE_MESSAGE = "You squeeze the grapes into the jug";
+	@Inject
+	private Client client;
 
 	@Inject
 	private CookingConfig config;
 
 	@Inject
-	private CookingOverlay cookingOverlay;
-
-	@Inject
-	private FermentTimerOverlay fermentTimerOverlay;
+	private CookingOverlay overlay;
 
 	@Inject
 	private OverlayManager overlayManager;
 
-	@Getter(AccessLevel.PACKAGE)
-	private CookingSession cookingSession;
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Getter(AccessLevel.PACKAGE)
-	private FermentTimerSession fermentTimerSession;
+	private CookingSession session;
 
 	@Provides
 	CookingConfig getConfig(ConfigManager configManager)
@@ -79,47 +88,61 @@ public class CookingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		cookingSession = null;
-		fermentTimerSession = null;
-		overlayManager.add(cookingOverlay);
-		overlayManager.add(fermentTimerOverlay);
+		session = null;
+		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(fermentTimerOverlay);
-		overlayManager.remove(cookingOverlay);
-		fermentTimerSession = null;
-		cookingSession = null;
+		infoBoxManager.removeIf(FermentTimer.class::isInstance);
+		overlayManager.remove(overlay);
+		session = null;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (config.statTimeout() == 0)
+		if (session == null || config.statTimeout() == 0)
 		{
 			return;
 		}
 
-		if (cookingSession != null)
-		{
-			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-			Duration sinceCut = Duration.between(cookingSession.getLastCookingAction(), Instant.now());
+		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration sinceCut = Duration.between(session.getLastCookingAction(), Instant.now());
 
-			if (sinceCut.compareTo(statTimeout) >= 0)
-			{
-				cookingSession = null;
-			}
+		if (sinceCut.compareTo(statTimeout) >= 0)
+		{
+			session = null;
 		}
-		if (fermentTimerSession != null)
-		{
-			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-			Duration sinceCut = Duration.between(fermentTimerSession.getLastWineMakingAction(), Instant.now());
+	}
 
-			if (sinceCut.compareTo(statTimeout) >= 0)
+	@Subscribe
+	public void onGraphicChanged(GraphicChanged graphicChanged)
+	{
+		Player player = client.getLocalPlayer();
+
+		if (graphicChanged.getActor() != player)
+		{
+			return;
+		}
+
+		if (player.getGraphic() == GraphicID.WINE_MAKE && config.fermentTimer())
+		{
+			Optional<FermentTimer> fermentTimerOpt = infoBoxManager.getInfoBoxes().stream()
+				.filter(FermentTimer.class::isInstance)
+				.map(FermentTimer.class::cast)
+				.findAny();
+
+			if (fermentTimerOpt.isPresent())
 			{
-				fermentTimerSession = null;
+				FermentTimer fermentTimer = fermentTimerOpt.get();
+				fermentTimer.reset();
+			}
+			else
+			{
+				FermentTimer fermentTimer = new FermentTimer(itemManager.getImage(ItemID.JUG_OF_WINE), this);
+				infoBoxManager.addInfoBox(fermentTimer);
 			}
 		}
 	}
@@ -134,41 +157,31 @@ public class CookingPlugin extends Plugin
 
 		final String message = event.getMessage();
 
-		if (message.startsWith(WINE_MESSAGE) && config.fermentTimer())
-		{
-			if (fermentTimerSession == null)
-			{
-				fermentTimerSession = new FermentTimerSession();
-			}
-
-			fermentTimerSession.updateLastWineMakingAction();
-		}
-
 		if (message.startsWith("You successfully cook")
 			|| message.startsWith("You successfully bake")
 			|| message.startsWith("You manage to cook")
 			|| message.startsWith("You roast a")
-			|| message.startsWith("You cook")
-			|| message.startsWith(WINE_MESSAGE))
+			|| message.startsWith("You cook"))
 		{
-			if (cookingSession == null)
+			if (session == null)
 			{
-				cookingSession = new CookingSession();
+				session = new CookingSession();
 			}
 
-			cookingSession.updateLastCookingAction();
-			cookingSession.increaseCookAmount();
+			session.updateLastCookingAction();
+			session.increaseCookAmount();
 
 		}
-		else if (message.startsWith("You accidentally burn"))
+		else if (message.startsWith("You accidentally burn")
+			|| message.startsWith("You accidentally spoil"))
 		{
-			if (cookingSession == null)
+			if (session == null)
 			{
-				cookingSession = new CookingSession();
+				session = new CookingSession();
 			}
 
-			cookingSession.updateLastCookingAction();
-			cookingSession.increaseBurnAmount();
+			session.updateLastCookingAction();
+			session.increaseBurnAmount();
 		}
 	}
 }

@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.5.24-SNAPSHOT</version>
+	<version>1.5.29-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -43,7 +43,7 @@
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 
-		<rs.version>179</rs.version>
+		<rs.version>180</rs.version>
 	</properties>
 
 	<licenses>
@@ -117,9 +117,7 @@
 		<module>cache-updater</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
-		<module>runelite-mixins</module>
 		<module>runelite-script-assembler-plugin</module>
-		<module>runescape-api</module>
 		<module>http-api</module>
 		<module>http-service</module>
 		<module>protocol-api</module>

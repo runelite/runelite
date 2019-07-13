@@ -96,6 +96,29 @@ public final class ScriptID
 	public static final int CHAT_PROMPT_INIT = 223;
 
 	/**
+	 * Displays the game messages when clicking on an item inside the Items Kept on Death interface
+	 * <ul>
+	 * <li> int (boolean) Item kept on death </li>
+	 * <li> int Item Quantity </li>
+	 * <li> String Item Name </li>
+	 * </ul>
+	 */
+	public static final int DEATH_KEEP_ITEM_EXAMINE = 1603;
+
+	/**
+	 * Checks the state of the given stash unit.
+	 * <ul>
+	 * <li>int (loc) The stash unit object id</li>
+	 *  <li>int Bitpacked stash unit states</li>
+	 *  <li>int Bitpacked stash unit states 2</li>
+	 *  <li>int Bitpacked stash unit states 3</li>
+	 * </ul>
+	 *
+	 * Returns a pair of booleans indicating if the stash unit is built and if it is filled
+	 */
+	public static final int WATSON_STASH_UNIT_CHECK = 1479;
+
+	/**
 	 * Queries the completion state of a quest by its struct id
 	 * <ul>
 	 * <li> int (struct) The id of the quest

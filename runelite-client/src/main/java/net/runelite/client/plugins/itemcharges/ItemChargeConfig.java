@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2019, Aleios <https://github.com/aleios>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -203,10 +204,17 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+<<<<<<< HEAD
 			keyName = "showBellowCharges",
 			name = "Show Bellow Charges",
 			description = "Configures if ogre bellow item charge is shown",
 			position = 14
+=======
+		keyName = "showBellowCharges",
+		name = "Show Bellow Charges",
+		description = "Configures if ogre bellow item charge is shown",
+		position = 12
+>>>>>>> upstream/master
 	)
 	default boolean showBellowCharges()
 	{
@@ -214,10 +222,39 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+<<<<<<< HEAD
 			keyName = "showAbyssalBraceletCharges",
 			name = "Show Abyssal Bracelet Charges",
 			description = "Configures if abyssal bracelet item charge is shown",
 			position = 15
+=======
+		keyName = "showBasketCharges",
+		name = "Show Basket Charges",
+		description = "Configures if fruit basket item charge is shown",
+		position = 13
+	)
+	default boolean showBasketCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSackCharges",
+		name = "Show Sack Charges",
+		description = "Configures if sack item charge is shown",
+		position = 14
+	)
+	default boolean showSackCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showAbyssalBraceletCharges",
+		name = "Show Abyssal Bracelet Charges",
+		description = "Configures if abyssal bracelet item charge is shown",
+		position = 15
+>>>>>>> upstream/master
 	)
 	default boolean showAbyssalBraceletCharges()
 	{
@@ -276,10 +313,43 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showExplorerRingCharges",
+		name = "Show Explorer's Ring Alch Charges",
+		description = "Configures if explorer's ring alchemy charges are shown",
+		position = 19
+	)
+	default boolean showExplorerRingCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "explorerRing",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int explorerRing()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "explorerRing",
+		name = "",
+		description = ""
+	)
+	void explorerRing(int explorerRing);
+
+	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
+<<<<<<< HEAD
 		position = 19
+=======
+		position = 20
+>>>>>>> upstream/master
 	)
 	default boolean showInfoboxes()
 	{

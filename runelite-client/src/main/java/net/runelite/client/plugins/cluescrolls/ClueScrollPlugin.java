@@ -68,7 +68,9 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -76,6 +78,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.cluescrolls.clues.AnagramClue;
+import net.runelite.client.plugins.cluescrolls.clues.BeginnerMapClue;
 import net.runelite.client.plugins.cluescrolls.clues.CipherClue;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
@@ -387,6 +390,18 @@ public class ClueScrollPlugin extends Plugin
 		// If we have a clue, save that knowledge
 		// so the clue window doesn't have to be open.
 		updateClue(findClueScroll());
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() < WidgetID.BEGINNER_CLUE_MAP_CHAMPIONS_GUILD
+			|| event.getGroupId() > WidgetID.BEGINNER_CLUE_MAP_WIZARDS_TOWER)
+		{
+			return;
+		}
+
+		updateClue(BeginnerMapClue.forWidgetID(event.getGroupId()));
 	}
 
 	public BufferedImage getClueScrollImage()

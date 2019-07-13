@@ -134,6 +134,13 @@ public class WidgetID
 	public static final int KEPT_ON_DEATH_GROUP_ID = 4;
 	public static final int GUIDE_PRICE_GROUP_ID = 464;
 	public static final int SEED_VAULT_INVENTORY_GROUP_ID = 630;
+	public static final int BEGINNER_CLUE_MAP_CHAMPIONS_GUILD = 346;
+	public static final int BEGINNER_CLUE_MAP_VARROCK_EAST_MINE = 347;
+	public static final int BEGINNER_CLUE_MAP_DRAYNOR = 348;
+	public static final int BEGINNER_CLUE_MAP_NORTH_OF_FALADOR = 351;
+	public static final int BEGINNER_CLUE_MAP_WIZARDS_TOWER = 356;
+	public static final int SEED_BOX_GROUP_ID = 128;
+	public static final int ITEMS_KEPT_ON_DEATH_GROUP_ID = 4;
 
 	static class WorldMap
 	{
@@ -216,6 +223,7 @@ public class WidgetID
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 4;
 		static final int CONTENT_CONTAINER = 10;
+		static final int TAB_CONTAINER = 11;
 		static final int ITEM_CONTAINER = 13;
 		static final int SEARCH_BUTTON_BACKGROUND = 40;
 		static final int DEPOSIT_INVENTORY = 42;
@@ -514,20 +522,20 @@ public class WidgetID
 	static class Combat
 	{
 		static final int WEAPON_NAME = 1;
-		static final int LEVEL = 2;
-		static final int STYLE_ONE = 3;
-		static final int STYLE_TWO = 7;
-		static final int STYLE_THREE = 11;
-		static final int STYLE_FOUR = 15;
-		static final int SPELLS = 19;
-		static final int DEFENSIVE_SPELL_BOX = 20;
-		static final int DEFENSIVE_SPELL_ICON = 22;
-		static final int DEFENSIVE_SPELL_SHIELD = 23;
-		static final int DEFENSIVE_SPELL_TEXT = 24;
-		static final int SPELL_BOX = 25;
-		static final int SPELL_ICON = 27;
-		static final int SPELL_TEXT = 28;
-		static final int AUTO_RETALIATE = 29;
+		static final int LEVEL = 3;
+		static final int STYLE_ONE = 4;
+		static final int STYLE_TWO = 8;
+		static final int STYLE_THREE = 12;
+		static final int STYLE_FOUR = 16;
+		static final int SPELLS = 20;
+		static final int DEFENSIVE_SPELL_BOX = 21;
+		static final int DEFENSIVE_SPELL_ICON = 23;
+		static final int DEFENSIVE_SPELL_SHIELD = 24;
+		static final int DEFENSIVE_SPELL_TEXT = 25;
+		static final int SPELL_BOX = 26;
+		static final int SPELL_ICON = 28;
+		static final int SPELL_TEXT = 29;
+		static final int AUTO_RETALIATE = 30;
 	}
 
 	static class VolcanicMine
@@ -725,11 +733,11 @@ public class WidgetID
 
 	static class Pvp
 	{
-		static final int BOUNTY_HUNTER_INFO = 19;
+		static final int BOUNTY_HUNTER_INFO = 18;
 		static final int KILLDEATH_RATIO = 15;
-		static final int SKULL_CONTAINER = 62;
-		static final int SAFE_ZONE = 64;
-		static final int WILDERNESS_LEVEL = 67; // this can also be the Deadman Mode "Protection" text
+		static final int SKULL_CONTAINER = 61;
+		static final int SAFE_ZONE = 63;
+		static final int WILDERNESS_LEVEL = 66; // this can also be the Deadman Mode "Protection" text
 	}
 
 	static class KourendFavour
@@ -799,5 +807,17 @@ public class WidgetID
 		static final int ANSWER2 = 15;
 		static final int ANSWER3_CONTAINER = 16;
 		static final int ANSWER3 = 17;
+	}
+
+	static class KeptOnDeath
+	{
+		static final int KEPT_ITEMS_TEXT = 17;
+		static final int KEPT_ITEMS_CONTAINER = 18;
+		static final int LOST_ITEMS_TEXT = 20;
+		static final int LOST_ITEMS_CONTAINER = 21;
+		static final int LOST_ITEMS_VALUE = 23;
+		static final int INFORMATION_CONTAINER = 29;
+		static final int MAX_ITEMS_KEPT_ON_DEATH = 30;
+		static final int SAFE_ZONE_CONTAINER = 31;
 	}
 }

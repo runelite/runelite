@@ -523,7 +523,10 @@ public class ConfigManager
 
 			String current = getConfiguration(group.value(), item.keyName());
 			String valueString = objectToString(defaultValue);
-			if (Objects.equals(current, valueString))
+			// null and the empty string are treated identically in sendConfig and treated as an unset
+			// If a config value defaults to "" and the current value is null, it will cause an extra
+			// unset to be sent, so treat them as equal
+			if (Objects.equals(current, valueString) || (Strings.isNullOrEmpty(current) && Strings.isNullOrEmpty(valueString)))
 			{
 				continue; // already set to the default value
 			}

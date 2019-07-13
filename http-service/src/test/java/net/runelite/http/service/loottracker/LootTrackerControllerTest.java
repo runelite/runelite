@@ -29,7 +29,6 @@ import java.time.Instant;
 import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
@@ -57,7 +56,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(LootTrackerController.class)
-@Slf4j
 @ActiveProfiles("test")
 public class LootTrackerControllerTest
 {

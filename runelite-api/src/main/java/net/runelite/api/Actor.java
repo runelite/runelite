@@ -154,13 +154,6 @@ public interface Actor extends Renderable
 	void setSpotAnimFrame(int spotAnimFrame);
 
 	/**
-	 * Gets the height of the actors model.
-	 *
-	 * @return the height
-	 */
-	int getModelHeight();
-
-	/**
 	 * Gets the canvas area of the current tile the actor is standing on.
 	 *
 	 * @return the current tile canvas area

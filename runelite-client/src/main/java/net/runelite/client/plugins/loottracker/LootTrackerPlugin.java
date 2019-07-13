@@ -51,6 +51,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
@@ -60,6 +61,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -105,9 +107,12 @@ public class LootTrackerPlugin extends Plugin
 
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
+	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = ImmutableMap.of(
 		5179, "Brimstone Chest",
-		11573, "Crystal Chest"
+		11573, "Crystal Chest",
+		12093, "Larran's big chest",
+		13113, "Larran's small chest"
 	);
 
 	@Inject
@@ -137,6 +142,7 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
+	private boolean chestLooted;
 
 	private List<String> ignoredItems = new ArrayList<>();
 
@@ -279,6 +285,16 @@ public class LootTrackerPlugin extends Plugin
 	{
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient = null;
+		chestLooted = false;
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOADING)
+		{
+			chestLooted = false;
+		}
 	}
 
 	@Subscribe
@@ -326,10 +342,19 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.BARROWS_REWARD);
 				break;
 			case (WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID):
+				if (chestLooted)
+				{
+					return;
+				}
 				eventType = "Chambers of Xeric";
 				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
+				chestLooted = true;
 				break;
 			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
+				if (chestLooted)
+				{
+					return;
+				}
 				int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
 				if (region != THEATRE_OF_BLOOD_REGION)
 				{
@@ -337,6 +362,7 @@ public class LootTrackerPlugin extends Plugin
 				}
 				eventType = "Theatre of Blood";
 				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
+				chestLooted = true;
 				break;
 			case (WidgetID.CLUE_SCROLL_REWARD_GROUP_ID):
 				// event type should be set via ChatMessage for clue scrolls.
@@ -384,7 +410,7 @@ public class LootTrackerPlugin extends Plugin
 
 		final String message = event.getMessage();
 
-		if (message.equals(CHEST_LOOTED_MESSAGE))
+		if (message.equals(CHEST_LOOTED_MESSAGE) || LARRAN_LOOTED_PATTERN.matcher(message).matches())
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 			if (!CHEST_EVENT_TYPES.containsKey(regionID))

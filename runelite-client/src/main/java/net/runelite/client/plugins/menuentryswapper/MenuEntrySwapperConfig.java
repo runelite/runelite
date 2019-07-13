@@ -163,6 +163,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapHardWoodGrove",
+		name = "Hardwood Grove",
+		description = "Swap Quick-Pay(100) and Send-Parcel at Hardwood Grove"
+	)
+	default boolean swapHardWoodGrove()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapHarpoon",
 		name = "Harpoon",
 		description = "Swap Cage, Big Net with Harpoon on Fishing spot"
@@ -278,6 +288,16 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
 	)
 	default boolean swapTravel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapEnchant",
+		name = "Enchant",
+		description = "Swap Talk-to with Enchant for Eluned"
+	)
+	default boolean swapEnchant()
 	{
 		return true;
 	}

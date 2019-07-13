@@ -44,6 +44,7 @@ import javax.inject.Singleton;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
@@ -273,6 +274,18 @@ public class ItemManager
 	 */
 	public int getItemPrice(int itemID)
 	{
+		return getItemPrice(itemID, false);
+	}
+
+	/**
+	 * Look up an item's price
+	 *
+	 * @param itemID item id
+	 * @param ignoreUntradeableMap should the price returned ignore the {@link UntradeableItemMapping}
+	 * @return item price
+	 */
+	public int getItemPrice(int itemID, boolean ignoreUntradeableMap)
+	{
 		if (itemID == ItemID.COINS_995)
 		{
 			return 1;
@@ -282,10 +295,13 @@ public class ItemManager
 			return 1000;
 		}
 
-		UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
-		if (p != null)
+		if (!ignoreUntradeableMap)
 		{
-			return getItemPrice(p.getPriceID()) * p.getQuantity();
+			UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
+			if (p != null)
+			{
+				return getItemPrice(p.getPriceID()) * p.getQuantity();
+			}
 		}
 
 		int price = 0;
@@ -381,7 +397,7 @@ public class ItemManager
 	 */
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		AsyncBufferedImage img = new AsyncBufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
+		AsyncBufferedImage img = new AsyncBufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		clientThread.invoke(() ->
 		{
 			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())

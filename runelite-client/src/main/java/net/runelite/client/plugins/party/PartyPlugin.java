@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -86,7 +85,6 @@ import net.runelite.http.api.ws.messages.party.UserSync;
 	name = "Party",
 	description = "Shows useful information about current party"
 )
-@Slf4j
 public class PartyPlugin extends Plugin implements KeyListener
 {
 	@Inject
