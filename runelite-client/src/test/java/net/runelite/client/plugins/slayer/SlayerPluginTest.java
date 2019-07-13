@@ -681,4 +681,26 @@ public class SlayerPluginTest
 
 		verify(chatMessageManager, never()).update(any(MessageNode.class));
 	}
+
+	@Test
+	public void testNewAccountSlayerKill()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		final ExperienceChanged experienceChanged = new ExperienceChanged();
+		experienceChanged.setSkill(Skill.SLAYER);
+
+		slayerPlugin.setTaskName("Bears");
+		slayerPlugin.setAmount(35);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(0);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(27);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(34, slayerPlugin.getAmount());
+	}
 }
