@@ -33,7 +33,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.chat.ChatMessageBuilder;
-import net.runelite.client.eventbus.Subscribe;
 
 
 @Getter(AccessLevel.PACKAGE)

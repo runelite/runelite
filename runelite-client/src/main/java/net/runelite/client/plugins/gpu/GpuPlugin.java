@@ -66,12 +66,17 @@ import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -120,6 +125,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	@Inject
 	private PluginManager pluginManager;
+
+	@Inject
+	private EventBusImplementation eventbus;
 
 	private Canvas canvas;
 	private JAWTWindow jawtWindow;
@@ -238,8 +246,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int fogCircularity;
 	private int fogDensity;
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("gpu"))
 		{
@@ -259,9 +266,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	@Override
-	protected void startUp()
+	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
+
 		clientThread.invoke(() ->
 		{
 			try
@@ -353,15 +362,23 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					log.error("error stopping plugin", ex);
 				}
 
-				shutDown();
+				try
+				{
+					shutDown();
+				}
+				catch (Exception ex)
+				{
+				}
 			}
 
 		});
 	}
 
 	@Override
-	protected void shutDown()
+	protected void shutDown() throws Exception
 	{
+		super.shutDown();
+
 		clientThread.invoke(() ->
 		{
 			client.setGpu(false);
@@ -429,6 +446,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// force main buffer provider rebuild to turn off alpha channel
 			client.resizeCanvas();
 		});
+	}
+
+	private void addSubscriptions()
+	{
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(GameStateChanged.class)
+				.subscribe(this::onGameStateChanged)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(ConfigChanged.class)
+				.subscribe(this::onConfigChanged)
+		);
 	}
 
 	@Provides
@@ -800,8 +832,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// We inject code in the game engine mixin to prevent the client from doing canvas replacement,
 			// so this should not ever be hit
 			log.warn("Canvas invalidated!");
-			shutDown();
-			startUp();
+			try
+			{
+				shutDown();
+				startUp();
+			}
+			catch (Exception e)
+			{
+			}
 			return;
 		}
 
@@ -1282,8 +1320,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		textureManager.animate(texture, diff);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{

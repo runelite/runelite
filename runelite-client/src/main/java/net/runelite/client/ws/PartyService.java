@@ -33,10 +33,10 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.http.api.ws.messages.party.Join;
 import net.runelite.http.api.ws.messages.party.Part;
@@ -52,7 +52,7 @@ public class PartyService
 
 	private final WSClient wsClient;
 	private final SessionManager sessionManager;
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 	private final List<PartyMember> members = new ArrayList<>();
 
 	@Getter
@@ -65,11 +65,17 @@ public class PartyService
 	private String username;
 
 	@Inject
-	private PartyService(final WSClient wsClient, final SessionManager sessionManager, final EventBus eventBus)
+	private PartyService(final WSClient wsClient, final SessionManager sessionManager, final EventBusImplementation eventBus)
 	{
 		this.wsClient = wsClient;
 		this.sessionManager = sessionManager;
 		this.eventBus = eventBus;
+
+		eventBus.observableOfType(UserJoin.class)
+			.subscribe(this::onUserJoin);
+
+		eventBus.observableOfType(UserPart.class)
+			.subscribe(this::onUserPart);
 	}
 
 	public void changeParty(UUID newParty)
@@ -111,8 +117,7 @@ public class PartyService
 		wsClient.send(new Join(partyId, username));
 	}
 
-	@Subscribe
-	public void onUserJoin(final UserJoin message)
+	private void onUserJoin(final UserJoin message)
 	{
 		if (!partyId.equals(message.getPartyId()))
 		{
@@ -135,8 +140,7 @@ public class PartyService
 		}
 	}
 
-	@Subscribe
-	public void onUserPart(final UserPart message)
+	private void onUserPart(final UserPart message)
 	{
 		members.removeIf(member -> member.getMemberId().equals(message.getMemberId()));
 	}

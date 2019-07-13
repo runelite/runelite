@@ -29,6 +29,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 
@@ -38,11 +39,11 @@ import net.runelite.client.events.NavigationButtonRemoved;
 @Singleton
 public class ClientToolbar
 {
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 	private final Set<NavigationButton> buttons = new HashSet<>();
 
 	@Inject
-	private ClientToolbar(final EventBus eventBus)
+	private ClientToolbar(final EventBusImplementation eventBus)
 	{
 		this.eventBus = eventBus;
 	}

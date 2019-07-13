@@ -67,8 +67,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -87,7 +86,7 @@ public class PluginManager
 	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
 
 	private final boolean developerMode;
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 	private final Scheduler scheduler;
 	private final ConfigManager configManager;
 	private final ScheduledExecutorService executor;
@@ -107,7 +106,7 @@ public class PluginManager
 	@VisibleForTesting
 	PluginManager(
 		@Named("developerMode") final boolean developerMode,
-		final EventBus eventBus,
+		final EventBusImplementation eventBus,
 		final Scheduler scheduler,
 		final ConfigManager configManager,
 		final ScheduledExecutorService executor,
@@ -119,6 +118,12 @@ public class PluginManager
 		this.configManager = configManager;
 		this.executor = executor;
 		this.sceneTileManager = sceneTileManager;
+
+		eventBus.observableOfType(SessionOpen.class)
+			.subscribe(this::onSessionOpen);
+
+		eventBus.observableOfType(SessionClose.class)
+			.subscribe(this::onSessionClose);
 	}
 
 	public void watch()
@@ -126,14 +131,12 @@ public class PluginManager
 		pluginWatcher.start();
 	}
 
-	@Subscribe
-	public void onSessionOpen(SessionOpen event)
+	private void onSessionOpen(SessionOpen event)
 	{
 		refreshPlugins();
 	}
 
-	@Subscribe
-	public void onSessionClose(SessionClose event)
+	private void onSessionClose(SessionClose event)
 	{
 		refreshPlugins();
 	}
@@ -368,7 +371,7 @@ public class PluginManager
 				}
 			}
 
-			eventBus.register(plugin);
+			// eventBus.register(plugin);
 			schedule(plugin);
 			eventBus.post(new PluginChanged(plugin, true));
 		}
@@ -392,7 +395,7 @@ public class PluginManager
 		try
 		{
 			unschedule(plugin);
-			eventBus.unregister(plugin);
+			// eventBus.unregister(plugin);
 
 			// plugins always stop in the event thread
 			SwingUtilities.invokeAndWait(() ->

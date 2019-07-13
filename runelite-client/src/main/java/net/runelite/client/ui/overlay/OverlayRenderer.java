@@ -50,7 +50,7 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
@@ -59,6 +59,7 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.MiscUtils;
+import net.runelite.http.api.ws.messages.party.UserPart;
 
 @Singleton
 public class OverlayRenderer extends MouseAdapter implements KeyListener
@@ -101,7 +102,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		final OverlayManager overlayManager,
 		final RuneLiteConfig runeLiteConfig,
 		final MouseManager mouseManager,
-		final KeyManager keyManager)
+		final KeyManager keyManager,
+		final EventBusImplementation eventbus)
 	{
 		this.client = client;
 		this.overlayManager = overlayManager;
@@ -109,6 +111,18 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		this.updateConfig();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
+
+		eventbus.observableOfType(ConfigChanged.class)
+			.subscribe(this::onConfigChanged);
+
+		eventbus.observableOfType(FocusChanged.class)
+			.subscribe(this::onFocusChanged);
+
+		eventbus.observableOfType(ClientTick.class)
+			.subscribe(this::onClientTick);
+
+		eventbus.observableOfType(BeforeRender.class)
+			.subscribe(this::onBeforeRender);
 	}
 
 	private void updateConfig()
@@ -120,8 +134,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		this.interfaceFont = FontManager.getFontFromType(clientFont, runeLiteConfig.interfaceFontType());
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("runelite"))
 		{
@@ -129,8 +142,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
 		{
@@ -140,7 +152,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 	}
 
-	@Subscribe
 	protected void onClientTick(ClientTick t)
 	{
 		if (menuEntries == null)
@@ -167,8 +178,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		client.setMenuEntries(newEntries);
 	}
 
-	@Subscribe
-	public void onBeforeRender(BeforeRender event)
+	private void onBeforeRender(BeforeRender event)
 	{
 		menuEntries = null;
 	}

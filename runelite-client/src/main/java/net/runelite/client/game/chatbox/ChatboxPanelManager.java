@@ -40,8 +40,7 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
@@ -54,7 +53,7 @@ public class ChatboxPanelManager
 {
 	private final Client client;
 	private final ClientThread clientThread;
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 
 	private final KeyManager keyManager;
 	private final MouseManager mouseManager;
@@ -66,7 +65,7 @@ public class ChatboxPanelManager
 	private ChatboxInput currentInput = null;
 
 	@Inject
-	private ChatboxPanelManager(EventBus eventBus, Client client, ClientThread clientThread,
+	private ChatboxPanelManager(EventBusImplementation eventBus, Client client, ClientThread clientThread,
 								KeyManager keyManager, MouseManager mouseManager,
 								Provider<ChatboxTextMenuInput> chatboxTextMenuInputProvider, Provider<ChatboxTextInput> chatboxTextInputProvider)
 	{
@@ -79,6 +78,12 @@ public class ChatboxPanelManager
 
 		this.chatboxTextMenuInputProvider = chatboxTextMenuInputProvider;
 		this.chatboxTextInputProvider = chatboxTextInputProvider;
+
+		eventBus.observableOfType(ScriptCallbackEvent.class)
+			.subscribe(this::onScriptCallbackEvent);
+
+		eventBus.observableOfType(GameStateChanged.class)
+			.subscribe(this::onGameStateChanged);
 	}
 
 	public void close()
@@ -103,7 +108,7 @@ public class ChatboxPanelManager
 	{
 		client.runScript(ScriptID.CLEAR_CHATBOX_PANEL);
 
-		eventBus.register(input);
+		// eventBus.register(input);
 		if (input instanceof KeyListener)
 		{
 			keyManager.registerKeyListener((KeyListener) input);
@@ -150,8 +155,7 @@ public class ChatboxPanelManager
 			.prompt(prompt);
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent ev)
+	private void onScriptCallbackEvent(ScriptCallbackEvent ev)
 	{
 		if (currentInput != null && "resetChatboxInput".equals(ev.getEventName()))
 		{
@@ -159,7 +163,6 @@ public class ChatboxPanelManager
 		}
 	}
 
-	@Subscribe
 	private void onGameStateChanged(GameStateChanged ev)
 	{
 		if (currentInput != null && ev.getGameState() == GameState.LOGIN_SCREEN)
@@ -179,7 +182,7 @@ public class ChatboxPanelManager
 			log.warn("Exception closing {}", currentInput.getClass(), e);
 		}
 
-		eventBus.unregister(currentInput);
+		// eventBus.unregister(currentInput);
 		if (currentInput instanceof KeyListener)
 		{
 			keyManager.unregisterKeyListener((KeyListener) currentInput);

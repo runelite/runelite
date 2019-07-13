@@ -51,11 +51,12 @@ import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.EventBusImplementation;
 
 @Singleton
 public class GameEventManager
 {
-	private final EventBus eventBus = new EventBus();
+	private final EventBusImplementation eventBus = new EventBusImplementation();
 	private final Client client;
 	private final ClientThread clientThread;
 
@@ -110,7 +111,7 @@ public class GameEventManager
 		clientThread.invoke(() ->
 		{
 
-			eventBus.register(subscriber);
+			// eventBus.register(subscriber);
 
 			for (final InventoryID inventory : InventoryID.values())
 			{
@@ -192,7 +193,7 @@ public class GameEventManager
 				});
 			});
 
-			eventBus.unregister(subscriber);
+			// eventBus.unregister(subscriber);
 		});
 	}
 }

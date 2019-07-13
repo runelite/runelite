@@ -66,6 +66,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import static net.runelite.client.RuneLite.PROFILES_DIR;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.ui.FontManager;
 
@@ -79,7 +80,7 @@ public class ConfigManager
 	private static final File STANDARD_SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, STANDARD_SETTINGS_FILE_NAME);
 
 	@Inject
-	EventBus eventBus;
+	EventBusImplementation eventBus;
 
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();

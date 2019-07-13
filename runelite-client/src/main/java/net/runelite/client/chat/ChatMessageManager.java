@@ -52,7 +52,7 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
@@ -70,17 +70,32 @@ public class ChatMessageManager
 
 	@Inject
 	private ChatMessageManager(
-		Client client,
-		ChatColorConfig chatColorConfig,
-		ClientThread clientThread)
+		final Client client,
+		final ChatColorConfig chatColorConfig,
+		final ClientThread clientThread,
+		final EventBusImplementation eventbus)
 	{
 		this.client = client;
 		this.chatColorConfig = chatColorConfig;
 		this.clientThread = clientThread;
+
+		eventbus.observableOfType(VarbitChanged.class)
+			.subscribe(this::onVarbitChanged);
+
+		eventbus.observableOfType(ResizeableChanged.class)
+			.subscribe(this::onResizeableChanged);
+
+		eventbus.observableOfType(ConfigChanged.class)
+			.subscribe(this::onConfigChanged);
+
+		eventbus.observableOfType(ChatMessage.class)
+			.subscribe(this::onChatMessage);
+
+		eventbus.observableOfType(ScriptCallbackEvent.class)
+			.subscribe(this::onScriptCallbackEvent);
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		int setting = client.getVar(Varbits.TRANSPARENT_CHATBOX);
 
@@ -91,14 +106,12 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe
-	public void onResizeableChanged(ResizeableChanged event)
+	private void onResizeableChanged(ResizeableChanged event)
 	{
 		refreshAll();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("textrecolor"))
 		{
@@ -107,8 +120,7 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		MessageNode messageNode = chatMessage.getMessageNode();
 		ChatMessageType chatMessageType = chatMessage.getType();
@@ -173,8 +185,7 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	private void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		final String eventName = scriptCallbackEvent.getEventName();
 

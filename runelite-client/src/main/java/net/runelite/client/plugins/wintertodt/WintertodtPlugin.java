@@ -54,7 +54,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyMode;
@@ -93,6 +93,9 @@ public class WintertodtPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private EventBusImplementation eventbus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private WintertodtActivity currentActivity = WintertodtActivity.IDLE;
 
@@ -123,6 +126,8 @@ public class WintertodtPlugin extends Plugin
 		this.notifyCondition = config.notifyCondition();
 		this.damageNotificationColor = config.damageNotificationColor();
 
+		addSubscriptions();
+
 		reset();
 		overlayManager.add(overlay);
 	}
@@ -130,12 +135,52 @@ public class WintertodtPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		super.shutDown();
+
 		overlayManager.remove(overlay);
 		reset();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(ConfigChanged.class)
+				.subscribe(this::onConfigChanged)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(GameTick.class)
+				.subscribe(this::onGameTick)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(VarbitChanged.class)
+				.subscribe(this::onVarbitChanged)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(ChatMessage.class)
+				.subscribe(this::onChatMessage)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(AnimationChanged.class)
+				.subscribe(this::onAnimationChanged)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(ItemContainerChanged.class)
+				.subscribe(this::onItemContainerChanged)
+		);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("wintertodt"))
 		{
@@ -164,8 +209,7 @@ public class WintertodtPlugin extends Plugin
 		return false;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (!isInWintertodtRegion())
 		{
@@ -189,8 +233,7 @@ public class WintertodtPlugin extends Plugin
 		checkActionTimeout();
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		int timerValue = client.getVar(Varbits.WINTERTODT_TIMER);
 		if (timerValue != previousTimerValue)
@@ -236,8 +279,7 @@ public class WintertodtPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (!isInWintertodt)
 		{
@@ -380,8 +422,7 @@ public class WintertodtPlugin extends Plugin
 		notifier.notify(notification);
 	}
 
-	@Subscribe
-	public void onAnimationChanged(final AnimationChanged event)
+	private void onAnimationChanged(final AnimationChanged event)
 	{
 		if (!isInWintertodt)
 		{
@@ -429,8 +470,7 @@ public class WintertodtPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();
 

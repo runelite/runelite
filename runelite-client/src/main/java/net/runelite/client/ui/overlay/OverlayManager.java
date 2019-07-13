@@ -47,7 +47,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
 
@@ -104,24 +104,28 @@ public class OverlayManager
 	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new EnumMap<>(OverlayLayer.class);
 
 	private final ConfigManager configManager;
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 
 	@Inject
-	private OverlayManager(final ConfigManager configManager, final EventBus eventBus)
+	private OverlayManager(final ConfigManager configManager, final EventBusImplementation eventBus)
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
+
+		eventBus.observableOfType(PluginChanged.class)
+			.subscribe(this::onPluginChanged);
+
+		eventBus.observableOfType(MenuOptionClicked.class)
+			.subscribe(this::onMenuOptionClicked);
 	}
 
-	@Subscribe
-	public void onPluginChanged(final PluginChanged event)
+	private void onPluginChanged(final PluginChanged event)
 	{
 		overlays.forEach(this::loadOverlay);
 		rebuildOverlayLayers();
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE_OVERLAY)
 		{

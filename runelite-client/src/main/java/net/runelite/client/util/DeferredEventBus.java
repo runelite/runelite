@@ -28,35 +28,22 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.client.eventbus.EventBus;
-import org.jetbrains.annotations.NotNull;
+import net.runelite.client.eventbus.EventBusImplementation;
 
 @Singleton
-public class DeferredEventBus extends EventBus
+public class DeferredEventBus extends EventBusImplementation
 {
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 	private final Queue<Object> pendingEvents = new ConcurrentLinkedQueue<>();
 
 	@Inject
-	private DeferredEventBus(EventBus eventBus)
+	private DeferredEventBus(EventBusImplementation eventBus)
 	{
 		this.eventBus = eventBus;
 	}
 
 	@Override
-	public void register(@NotNull Object object)
-	{
-		eventBus.register(object);
-	}
-
-	@Override
-	public void unregister(@NotNull Object object)
-	{
-		eventBus.unregister(object);
-	}
-
-	@Override
-	public void post(@NotNull Object object)
+	public void post(Object object)
 	{
 		pendingEvents.add(object);
 	}

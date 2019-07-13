@@ -44,7 +44,7 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
@@ -97,10 +97,20 @@ public class ClanManager
 	private int modIconsLength;
 
 	@Inject
-	private ClanManager(Client client, SpriteManager spriteManager)
+	private ClanManager(
+		final Client client,
+		final SpriteManager spriteManager,
+		final EventBusImplementation eventbus
+	)
 	{
 		this.client = client;
 		this.spriteManager = spriteManager;
+
+		eventbus.observableOfType(GameStateChanged.class)
+			.subscribe(this::onGameStateChanged);
+
+		eventbus.observableOfType(ClanChanged.class)
+			.subscribe(this::onClanChanged);
 	}
 
 	public ClanMemberRank getRank(String playerName)
@@ -123,8 +133,7 @@ public class ClanManager
 		return modIconsLength - CLANCHAT_IMAGES.length + clanMemberRank.ordinal() - 1;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN
 			&& modIconsLength == 0)
@@ -133,8 +142,7 @@ public class ClanManager
 		}
 	}
 
-	@Subscribe
-	public void onClanChanged(ClanChanged clanChanged)
+	private void onClanChanged(ClanChanged clanChanged)
 	{
 		clanRanksCache.invalidateAll();
 	}

@@ -37,8 +37,7 @@ import net.runelite.api.VarClientStr;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
 
@@ -51,18 +50,25 @@ public class CommandManager
 	private static final String PRIVMATE_MESSAGE = "privateMessage";
 
 	private final Client client;
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 	private final ClientThread clientThread;
 	private boolean sending;
 
 	private final List<ChatboxInputListener> chatboxInputListenerList = new ArrayList<>();
 
 	@Inject
-	private CommandManager(Client client, EventBus eventBus, ClientThread clientThread)
+	private CommandManager(
+		final Client client,
+		final EventBusImplementation eventBus,
+		final ClientThread clientThread
+	)
 	{
 		this.client = client;
 		this.eventBus = eventBus;
 		this.clientThread = clientThread;
+
+		eventBus.observableOfType(ScriptCallbackEvent.class)
+			.subscribe(this::onScriptCallbackEvent);
 	}
 
 	public void register(ChatboxInputListener chatboxInputListener)
@@ -75,7 +81,6 @@ public class CommandManager
 		chatboxInputListenerList.remove(chatboxInputListener);
 	}
 
-	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (sending)

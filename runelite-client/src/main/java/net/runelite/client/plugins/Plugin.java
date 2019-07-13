@@ -27,7 +27,10 @@ package net.runelite.client.plugins;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import io.reactivex.disposables.Disposable;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Plugin implements Module
 {
@@ -35,6 +38,7 @@ public abstract class Plugin implements Module
 
 	public File file;
 	public PluginClassLoader loader;
+	private List<Disposable> disposables = new ArrayList<>();
 
 	@Override
 	public void configure(Binder binder)
@@ -47,6 +51,12 @@ public abstract class Plugin implements Module
 
 	protected void shutDown() throws Exception
 	{
+		this.disposables.forEach(Disposable::dispose);
+	}
+
+	protected void addSubscription(Disposable disposable)
+	{
+		this.disposables.add(disposable);
 	}
 
 	public final Injector getInjector()

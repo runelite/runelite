@@ -56,7 +56,7 @@ import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -123,6 +123,9 @@ public class CannonPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private EventBusImplementation eventbus;
+
 	private boolean lock;
 
 	private boolean showEmptyCannonNotification;
@@ -146,6 +149,7 @@ public class CannonPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(cannonOverlay);
 		overlayManager.add(cannonSpotOverlay);
@@ -155,6 +159,8 @@ public class CannonPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		super.shutDown();
+
 		cannonSpotOverlay.setHidden(true);
 		overlayManager.remove(cannonOverlay);
 		overlayManager.remove(cannonSpotOverlay);
@@ -167,8 +173,46 @@ public class CannonPlugin extends Plugin
 		spotPoints.clear();
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void addSubscriptions()
+	{
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(ItemContainerChanged.class)
+				.subscribe(this::onItemContainerChanged)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(ConfigChanged.class)
+				.subscribe(this::onConfigChanged)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(GameObjectSpawned.class)
+				.subscribe(this::onGameObjectSpawned)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(ProjectileMoved.class)
+				.subscribe(this::onProjectileMoved)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(ChatMessage.class)
+				.subscribe(this::onChatMessage)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(GameTick.class)
+				.subscribe(this::onGameTick)
+		);
+	}
+
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 		{
@@ -178,8 +222,7 @@ public class CannonPlugin extends Plugin
 		cannonSpotOverlay.setHidden(!ItemUtil.containsAllItemIds(event.getItemContainer().getItems(), CANNON_PARTS));
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("cannon"))
 		{
@@ -223,8 +266,7 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 
@@ -238,8 +280,7 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileMoved(ProjectileMoved event)
 	{
 		Projectile projectile = event.getProjectile();
 
@@ -261,8 +302,7 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
@@ -345,8 +385,7 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		skipProjectileCheckThisTick = false;
 	}

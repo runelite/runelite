@@ -56,6 +56,7 @@ import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
@@ -86,7 +87,7 @@ class VarInspector extends JFrame
 	private final static int MAX_LOG_ENTRIES = 10_000;
 
 	private final Client client;
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 
 	private final JPanel tracker = new JPanel();
 
@@ -99,7 +100,7 @@ class VarInspector extends JFrame
 	private Map<Integer, Object> varcs = null;
 
 	@Inject
-	VarInspector(Client client, EventBus eventBus, DevToolsPlugin plugin)
+	VarInspector(Client client, EventBusImplementation eventBus, DevToolsPlugin plugin)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
@@ -348,7 +349,7 @@ class VarInspector extends JFrame
 		System.arraycopy(client.getVarps(), 0, oldVarps2, 0, oldVarps2.length);
 		varcs = new HashMap<>(client.getVarcMap());
 
-		eventBus.register(this);
+		// eventBus.register(this);
 		setVisible(true);
 		toFront();
 		repaint();
@@ -357,7 +358,7 @@ class VarInspector extends JFrame
 	public void close()
 	{
 		tracker.removeAll();
-		eventBus.unregister(this);
+		// eventBus.unregister(this);
 		setVisible(false);
 	}
 }

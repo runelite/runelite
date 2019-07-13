@@ -53,8 +53,7 @@ import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PlayerDespawned;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 
@@ -66,7 +65,7 @@ public class LootManager
 		NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH
 	);
 
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 	private final Client client;
 	private final ListMultimap<Integer, ItemStack> itemSpawns = ArrayListMultimap.create();
 	private final Set<LocalPoint> killPoints = new HashSet<>();
@@ -74,14 +73,37 @@ public class LootManager
 	private WorldPoint krakenPlayerLocation;
 
 	@Inject
-	private LootManager(EventBus eventBus, Client client)
+	private LootManager(
+		final EventBusImplementation eventBus,
+		final Client client
+	)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
+
+		eventBus.observableOfType(GameTick.class)
+			.subscribe(this::onGameTick);
+
+		eventBus.observableOfType(NpcDespawned.class)
+			.subscribe(this::onNpcDespawned);
+
+		eventBus.observableOfType(PlayerDespawned.class)
+			.subscribe(this::onPlayerDespawned);
+
+		eventBus.observableOfType(ItemSpawned.class)
+			.subscribe(this::onItemSpawned);
+
+		eventBus.observableOfType(ItemDespawned.class)
+			.subscribe(this::onItemDespawned);
+
+		eventBus.observableOfType(ItemQuantityChanged.class)
+			.subscribe(this::onItemQuantityChanged);
+
+		eventBus.observableOfType(AnimationChanged.class)
+			.subscribe(this::onAnimationChanged);
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		final NPC npc = npcDespawned.getNpc();
 		if (!npc.isDead())
@@ -123,8 +145,7 @@ public class LootManager
 		processNpcLoot(npc);
 	}
 
-	@Subscribe
-	public void onPlayerDespawned(PlayerDespawned playerDespawned)
+	private void onPlayerDespawned(PlayerDespawned playerDespawned)
 	{
 		final Player player = playerDespawned.getPlayer();
 		// Only care about dead Players
@@ -153,8 +174,7 @@ public class LootManager
 		eventBus.post(new PlayerLootReceived(player, items));
 	}
 
-	@Subscribe
-	public void onItemSpawned(ItemSpawned itemSpawned)
+	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		final Item item = itemSpawned.getItem();
 		final Tile tile = itemSpawned.getTile();
@@ -164,16 +184,14 @@ public class LootManager
 		log.debug("Item spawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
 	}
 
-	@Subscribe
-	public void onItemDespawned(ItemDespawned itemDespawned)
+	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		final Item item = itemDespawned.getItem();
 		final LocalPoint location = itemDespawned.getTile().getLocalLocation();
 		log.debug("Item despawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
 	}
 
-	@Subscribe
-	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
+	private void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
 	{
 		final Item item = itemQuantityChanged.getItem();
 		final Tile tile = itemQuantityChanged.getTile();
@@ -189,8 +207,7 @@ public class LootManager
 		itemSpawns.put(packed, new ItemStack(item.getId(), diff, location));
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged e)
+	private void onAnimationChanged(AnimationChanged e)
 	{
 		if (!(e.getActor() instanceof NPC))
 		{
@@ -219,8 +236,7 @@ public class LootManager
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
 		itemSpawns.clear();

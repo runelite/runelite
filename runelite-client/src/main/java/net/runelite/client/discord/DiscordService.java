@@ -39,6 +39,7 @@ import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.discord.events.DiscordReady;
 import net.runelite.client.discord.events.DiscordSpectateGame;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.discord.DiscordEventHandlers;
 import net.runelite.discord.DiscordRPC;
 import net.runelite.discord.DiscordRichPresence;
@@ -48,7 +49,7 @@ import net.runelite.discord.DiscordUser;
 @Slf4j
 public class DiscordService implements AutoCloseable
 {
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 	private final RuneLiteProperties runeLiteProperties;
 	private final ScheduledExecutorService executorService;
 	private final DiscordRPC discordRPC;
@@ -61,7 +62,7 @@ public class DiscordService implements AutoCloseable
 
 	@Inject
 	private DiscordService(
-		final EventBus eventBus,
+		final EventBusImplementation eventBus,
 		final RuneLiteProperties runeLiteProperties,
 		final ScheduledExecutorService executorService)
 	{

@@ -25,6 +25,7 @@
 package net.runelite.client.account;
 
 import com.google.gson.Gson;
+import io.reactivex.disposables.Disposable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -39,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.util.LinkBrowser;
@@ -57,17 +58,20 @@ public class SessionManager
 	@Getter
 	private AccountSession accountSession;
 
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 	private final ConfigManager configManager;
 	private final WSClient wsClient;
 
 	@Inject
-	private SessionManager(ConfigManager configManager, EventBus eventBus, WSClient wsClient)
+	private SessionManager(ConfigManager configManager, EventBusImplementation eventBus, WSClient wsClient)
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
 		this.wsClient = wsClient;
-		eventBus.register(this);
+
+		this.eventBus
+			.observableOfType(LoginResponse.class)
+			.subscribe(this::onLoginResponse);
 	}
 
 	public void loadSession()
@@ -207,8 +211,7 @@ public class SessionManager
 		LinkBrowser.browse(login.getOauthUrl());
 	}
 
-	@Subscribe
-	public void onLoginResponse(LoginResponse loginResponse)
+	private void onLoginResponse(LoginResponse loginResponse)
 	{
 		log.debug("Now logged in as {}", loginResponse.getUsername());
 

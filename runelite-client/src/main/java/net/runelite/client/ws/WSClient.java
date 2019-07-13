@@ -35,6 +35,7 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
@@ -49,7 +50,7 @@ import okhttp3.WebSocketListener;
 @Singleton
 public class WSClient extends WebSocketListener implements AutoCloseable
 {
-	private final EventBus eventBus;
+	private final EventBusImplementation eventBus;
 	private final Collection<Class<? extends WebsocketMessage>> messages = new HashSet<>();
 
 	private volatile Gson gson;
@@ -58,7 +59,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	private WebSocket webSocket;
 
 	@Inject
-	private WSClient(EventBus eventBus)
+	private WSClient(EventBusImplementation eventBus)
 	{
 		this.eventBus = eventBus;
 		this.gson = WebsocketGsonFactory.build(WebsocketGsonFactory.factory(messages));

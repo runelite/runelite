@@ -52,8 +52,7 @@ import static net.runelite.client.RuneLite.LOGS_DIR;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.ui.ColorScheme;
@@ -87,7 +86,7 @@ public class InfoPanel extends PluginPanel
 	private RuneLiteProperties runeLiteProperties;
 
 	@Inject
-	private EventBus eventBus;
+	private EventBusImplementation eventBus;
 
 	@Inject
 	private SessionManager sessionManager;
@@ -187,7 +186,7 @@ public class InfoPanel extends PluginPanel
 		add(actionsContainer, BorderLayout.CENTER);
 
 		updateLoggedIn();
-		eventBus.register(this);
+		// eventBus.register(this);
 	}
 
 	/**
@@ -316,13 +315,11 @@ public class InfoPanel extends PluginPanel
 		return "<html><body style = 'color:#a5a5a5'>" + key + "<span style = 'color:white'>" + value + "</span></body></html>";
 	}
 
-	@Subscribe
 	public void onSessionOpen(SessionOpen sessionOpen)
 	{
 		updateLoggedIn();
 	}
 
-	@Subscribe
 	public void onSessionClose(SessionClose e)
 	{
 		updateLoggedIn();

@@ -64,7 +64,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -108,6 +108,9 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private EventBusImplementation eventbus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private RenderStyle objectMarkerRenderStyle;
 	@Getter(AccessLevel.PACKAGE)
@@ -127,6 +130,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(overlay);
 		keyManager.registerKeyListener(this);
@@ -135,11 +139,82 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown()
 	{
+		try
+		{
+			super.shutDown();
+		}
+		catch (Exception e)
+		{
+		}
+
 		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(this);
 		points.clear();
 		objects.clear();
 		hotKeyPressed = false;
+	}
+
+	private void addSubscriptions()
+	{
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(FocusChanged.class)
+				.subscribe(this::onFocusChanged)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(GameObjectSpawned.class)
+				.subscribe(this::onGameObjectSpawned)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(DecorativeObjectSpawned.class)
+				.subscribe(this::onDecorativeObjectSpawned)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(GameObjectDespawned.class)
+				.subscribe(this::onGameObjectDespawned)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(DecorativeObjectDespawned.class)
+				.subscribe(this::onDecorativeObjectDespawned)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(GameStateChanged.class)
+				.subscribe(this::onGameStateChanged)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(MenuOptionClicked.class)
+				.subscribe(this::onMenuOptionClicked)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(GameStateChanged.class)
+				.subscribe(this::onGameStateChanged)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(MenuEntryAdded.class)
+				.subscribe(this::onMenuEntryAdded)
+		);
+
+		this.addSubscription(
+			this.eventbus
+				.observableOfType(ConfigChanged.class)
+				.subscribe(this::onConfigChanged)
+		);
 	}
 
 	@Override
@@ -166,8 +241,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(final FocusChanged event)
+	private void onFocusChanged(final FocusChanged event)
 	{
 		if (!event.isFocused())
 		{
@@ -175,34 +249,29 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject eventObject = event.getGameObject();
 		checkObjectPoints(eventObject);
 	}
 
-	@Subscribe
-	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		final DecorativeObject eventObject = event.getDecorativeObject();
 		checkObjectPoints(eventObject);
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		objects.remove(event.getGameObject());
 	}
 
-	@Subscribe
-	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		objects.remove(event.getDecorativeObject());
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState gameState = gameStateChanged.getGameState();
 		if (gameState == GameState.LOADING)
@@ -227,8 +296,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (!hotKeyPressed || event.getType() != MenuAction.EXAMINE_OBJECT.getId())
 		{
@@ -284,8 +352,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		client.setMenuEntries(menuEntries);
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE
 			|| (!event.getOption().equals(MARK)
@@ -443,8 +510,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}.getType());
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("objectindicators"))
 		{
