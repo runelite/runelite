@@ -88,10 +88,41 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showRingOfForgingCount",
+			name = "Ring of Forging Count",
+			description = "Configures if the Ring of Forging charge count is shown",
+			position = 6
+	)
+	default boolean showRingOfForgingCount() { return true; }
+
+	@ConfigItem(
+			keyName = "RingOfForgingNotification",
+			name = "Ring of Forging Notification",
+			description = "Configures if the Ring of Forging breaking notification is shown",
+			position = 7
+	)
+	default boolean ringOfForgingNotification() { return true; }
+
+	@ConfigItem(
+			keyName = "ringOfForging",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	default int ringOfForging() { return -1; }
+
+	@ConfigItem(
+			keyName = "ringOfForging",
+			name = "",
+			description = ""
+	)
+	void ringOfForging(int ringOfForging);
+
+	@ConfigItem(
 		keyName = "showDodgyCount",
 		name = "Dodgy Necklace Count",
 		description = "Configures if Dodgy Necklace charge count is shown",
-		position = 6
+		position = 8
 	)
 	default boolean showDodgyCount()
 	{
@@ -102,7 +133,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "dodgyNotification",
 		name = "Dodgy Necklace Notification",
 		description = "Configures if the dodgy necklace breaking notification is shown",
-		position = 7
+		position = 9
 	)
 	default boolean dodgyNotification()
 	{
@@ -131,7 +162,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showImpCharges",
 		name = "Show Imp-in-a-box charges",
 		description = "Configures if imp-in-a-box item charges is shown",
-		position = 8
+		position = 10
 	)
 	default boolean showImpCharges()
 	{
@@ -142,7 +173,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showFungicideCharges",
 		name = "Show Fungicide Charges",
 		description = "Configures if fungicide item charges is shown",
-		position = 9
+		position = 11
 	)
 	default boolean showFungicideCharges()
 	{
@@ -153,7 +184,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showWateringCanCharges",
 		name = "Show Watering Can Charges",
 		description = "Configures if watering can item charge is shown",
-		position = 10
+		position = 12
 	)
 	default boolean showWateringCanCharges()
 	{
@@ -164,7 +195,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showWaterskinCharges",
 		name = "Show Waterskin Charges",
 		description = "Configures if waterskin item charge is shown",
-		position = 11
+		position = 13
 	)
 	default boolean showWaterskinCharges()
 	{
@@ -175,7 +206,7 @@ public interface ItemChargeConfig extends Config
 			keyName = "showBellowCharges",
 			name = "Show Bellow Charges",
 			description = "Configures if ogre bellow item charge is shown",
-			position = 12
+			position = 14
 	)
 	default boolean showBellowCharges()
 	{
@@ -186,7 +217,7 @@ public interface ItemChargeConfig extends Config
 			keyName = "showAbyssalBraceletCharges",
 			name = "Show Abyssal Bracelet Charges",
 			description = "Configures if abyssal bracelet item charge is shown",
-			position = 13
+			position = 15
 	)
 	default boolean showAbyssalBraceletCharges()
 	{
@@ -197,7 +228,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "recoilNotification",
 		name = "Ring of Recoil Notification",
 		description = "Configures if the ring of recoil breaking notification is shown",
-		position = 14
+		position = 16
 	)
 	default boolean recoilNotification()
 	{
@@ -208,7 +239,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showBindingNecklaceCharges",
 		name = "Show Binding Necklace Charges",
 		description = "Configures if binding necklace item charge is shown",
-		position = 15
+		position = 17
 	)
 	default boolean showBindingNecklaceCharges()
 	{
@@ -237,7 +268,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "bindingNotification",
 		name = "Binding Necklace Notification",
 		description = "Configures if the binding necklace breaking notification is shown",
-		position = 16
+		position = 18
 	)
 	default boolean bindingNotification()
 	{
@@ -248,7 +279,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 17
+		position = 19
 	)
 	default boolean showInfoboxes()
 	{
