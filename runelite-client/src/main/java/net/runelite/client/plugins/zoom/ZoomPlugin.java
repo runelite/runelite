@@ -56,6 +56,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	 * Larger values trigger an overflow in the engine's fov to scale code.
 	 */
 	private static final int INNER_ZOOM_LIMIT = 1004;
+	private static final int DEFAULT_ZOOM_INCREMENT = 25;
 
 	private boolean controlDown;
 	
@@ -106,6 +107,12 @@ public class ZoomPlugin extends Plugin implements KeyListener
 			int outerLimit = Ints.constrainToRange(zoomConfig.outerLimit(), ZoomConfig.OUTER_LIMIT_MIN, ZoomConfig.OUTER_LIMIT_MAX);
 			int outerZoomLimit = 128 - outerLimit;
 			intStack[intStackSize - 1] = outerZoomLimit;
+			return;
+		}
+
+		if ("scrollWheelZoomIncrement".equals(event.getEventName()) && zoomConfig.zoomIncrement() != DEFAULT_ZOOM_INCREMENT)
+		{
+			intStack[intStackSize - 1] = zoomConfig.zoomIncrement();
 			return;
 		}
 
