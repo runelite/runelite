@@ -35,11 +35,8 @@ enum ItemChargeType
 	WATERSKIN,
 	DODGY_NECKLACE,
 	BINDING_NECKLACE,
-<<<<<<< HEAD
-	RING_OF_FORGING
-=======
+	RING_OF_FORGING,
 	EXPLORER_RING,
 	FRUIT_BASKET,
 	SACK
->>>>>>> upstream/master
 }
