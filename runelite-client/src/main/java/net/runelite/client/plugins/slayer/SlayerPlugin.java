@@ -204,7 +204,7 @@ public class SlayerPlugin extends Plugin
 	private int points;
 
 	private TaskCounter counter;
-	private int cachedXp;
+	private int cachedXp = -1;
 	private Instant infoTimer;
 	private boolean loginFlag;
 	private List<String> targetNames = new ArrayList<>();
@@ -217,15 +217,19 @@ public class SlayerPlugin extends Plugin
 		overlayManager.add(targetWeaknessOverlay);
 		overlayManager.add(targetMinimapOverlay);
 
-		if (client.getGameState() == GameState.LOGGED_IN
-			&& config.amount() != -1
-			&& !config.taskName().isEmpty())
+		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			points = config.points();
-			streak = config.streak();
-			setExpeditiousChargeCount(config.expeditious());
-			setSlaughterChargeCount(config.slaughter());
-			clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation()));
+			cachedXp = client.getSkillExperience(SLAYER);
+
+			if (config.amount() != -1
+				&& !config.taskName().isEmpty())
+			{
+				points = config.points();
+				streak = config.streak();
+				setExpeditiousChargeCount(config.expeditious());
+				setSlaughterChargeCount(config.slaughter());
+				clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation()));
+			}
 		}
 
 		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
@@ -240,6 +244,7 @@ public class SlayerPlugin extends Plugin
 		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
 		highlightedTargets.clear();
+		cachedXp = -1;
 
 		chatCommandManager.unregisterCommand(TASK_COMMAND_STRING);
 	}
@@ -257,7 +262,7 @@ public class SlayerPlugin extends Plugin
 		{
 			case HOPPING:
 			case LOGGING_IN:
-				cachedXp = 0;
+				cachedXp = -1;
 				taskName = "";
 				amount = 0;
 				loginFlag = true;
@@ -528,7 +533,7 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		if (cachedXp == 0)
+		if (cachedXp == -1)
 		{
 			// this is the initial xp sent on login
 			cachedXp = slayerExp;
