@@ -73,13 +73,28 @@ public interface ZoomConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "requireControlDown",
-		name = "Require control down",
-		description = "Configures if holding control is required for zooming",
+		keyName = "controlFunction",
+		name = "Control Function",
+		description = "Configures the zoom function when control is pressed",
 		position = 4
 	)
-	default boolean requireControlDown()
+	default ControlFunction controlFunction()
 	{
-		return false;
+		return ControlFunction.NONE;
+	}
+
+	@ConfigItem(
+		keyName = "ctrlZoomValue",
+		name = "Reset zoom position",
+		description = "Position of zoom when it is reset",
+		position = 5
+	)
+	@Range(
+		min = OUTER_LIMIT_MIN,
+		max = OUTER_LIMIT_MAX
+	)
+	default int ctrlZoomValue()
+	{
+		return 512;
 	}
 }

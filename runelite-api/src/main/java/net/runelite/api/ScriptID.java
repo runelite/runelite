@@ -140,6 +140,17 @@ public final class ScriptID
 	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
 
 	/**
+	 * Handles zoom input
+	 *
+	 * Updates the VarClientInts (73, 74) to this same value
+	 * <ul>
+	 * <li> int  Reset zoom position </li>
+	 * <li> int  Reset zoom position </li>
+	 * </ul>
+	 */
+	public static final int CAMERA_DO_ZOOM = 42;
+
+	/**
 	 * Does nothing
 	 *
 	 * This is used to eat events when you want a menu action attached to it
