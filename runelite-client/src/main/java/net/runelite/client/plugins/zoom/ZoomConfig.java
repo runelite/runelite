@@ -97,4 +97,16 @@ public interface ZoomConfig extends Config
 	{
 		return 512;
 	}
+
+	@ConfigItem(
+		keyName = "zoomIncrement",
+		name = "Zoom Speed",
+		description = "Speed of zoom",
+		position = 6
+	)
+	default int zoomIncrement()
+	{
+		return 25;
+	}
+
 }
