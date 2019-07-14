@@ -66,6 +66,7 @@ public class EntityHiderPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
 		addSubscriptions();
 	}
 
@@ -75,9 +76,12 @@ public class EntityHiderPlugin extends Plugin
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
-	public void onConfigChanged(ConfigChanged e)
+	public void onConfigChanged(ConfigChanged event)
 	{
-		updateConfig();
+		if (event.getGroup().equals("entityhider"))
+		{
+			updateConfig();
+		}
 	}
 
 	public void onGameStateChanged(GameStateChanged event)
