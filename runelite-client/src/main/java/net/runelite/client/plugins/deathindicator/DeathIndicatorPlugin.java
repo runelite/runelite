@@ -43,7 +43,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -83,6 +83,9 @@ public class DeathIndicatorPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private BufferedImage mapArrow;
 
 	private Timer deathTimer;
@@ -100,6 +103,8 @@ public class DeathIndicatorPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
 		if (!hasDied())
 		{
 			return;
@@ -127,6 +132,8 @@ public class DeathIndicatorPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		if (client.hasHintArrow())
 		{
 			client.clearHintArrow();
@@ -141,8 +148,15 @@ public class DeathIndicatorPlugin extends Plugin
 		worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
 	}
 
-	@Subscribe
-	public void onLocalPlayerDeath(LocalPlayerDeath death)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+	}
+
+	private void onLocalPlayerDeath(LocalPlayerDeath death)
 	{
 		if (client.isInInstancedRegion())
 		{
@@ -154,8 +168,7 @@ public class DeathIndicatorPlugin extends Plugin
 		lastDeathTime = Instant.now();
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		// Check if player respawned in a death respawn location
 		if (lastDeath != null && !client.getLocalPlayer().getWorldLocation().equals(lastDeath))
@@ -219,8 +232,7 @@ public class DeathIndicatorPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("deathIndicator"))
 		{
@@ -251,8 +263,7 @@ public class DeathIndicatorPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (!hasDied())
 		{

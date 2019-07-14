@@ -63,7 +63,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -141,6 +141,9 @@ public class BarrowsPlugin extends Plugin
 	@Inject
 	private BarrowsConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	BarrowsConfig provideConfig(ConfigManager configManager)
 	{
@@ -164,6 +167,8 @@ public class BarrowsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(barrowsOverlay);
 		overlayManager.add(brotherOverlay);
 	}
@@ -171,6 +176,8 @@ public class BarrowsPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(barrowsOverlay);
 		overlayManager.remove(brotherOverlay);
 		walls.clear();
@@ -193,8 +200,20 @@ public class BarrowsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
+		eventBus.subscribe(WallObjectChanged.class, this, this::onWallObjectChanged);
+		eventBus.subscribe(WallObjectDespawned.class, this, this::onWallObjectDespawned);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventBus.subscribe(GameObjectChanged.class, this, this::onGameObjectChanged);
+		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("barrows"))
 		{
@@ -218,8 +237,7 @@ public class BarrowsPlugin extends Plugin
 		this.showPrayerDrainTimer = config.showPrayerDrainTimer();
 	}
 
-	@Subscribe
-	public void onWallObjectSpawned(WallObjectSpawned event)
+	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		WallObject wallObject = event.getWallObject();
 		if (BARROWS_WALLS.contains(wallObject.getId()))
@@ -228,8 +246,7 @@ public class BarrowsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
+	private void onWallObjectChanged(WallObjectChanged event)
 	{
 		WallObject previous = event.getPrevious();
 		WallObject wallObject = event.getWallObject();
@@ -241,15 +258,13 @@ public class BarrowsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWallObjectDespawned(WallObjectDespawned event)
+	private void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		WallObject wallObject = event.getWallObject();
 		walls.remove(wallObject);
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 		if (BARROWS_LADDERS.contains(gameObject.getId()))
@@ -258,8 +273,7 @@ public class BarrowsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
+	private void onGameObjectChanged(GameObjectChanged event)
 	{
 		GameObject previous = event.getPrevious();
 		GameObject gameObject = event.getGameObject();
@@ -271,15 +285,13 @@ public class BarrowsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 		ladders.remove(gameObject);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
 		{
@@ -303,8 +315,7 @@ public class BarrowsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && this.showChestValue)
 		{

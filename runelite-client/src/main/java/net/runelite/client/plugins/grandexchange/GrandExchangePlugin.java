@@ -67,7 +67,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.ItemManager;
@@ -150,6 +150,9 @@ public class GrandExchangePlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private Widget grandExchangeText;
 	private Widget grandExchangeItem;
 	private Map<Integer, Integer> itemGELimits;
@@ -191,6 +194,7 @@ public class GrandExchangePlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
 
 		itemGELimits = loadGELimits();
 		panel = injector.getInstance(GrandExchangePanel.class);
@@ -223,6 +227,8 @@ public class GrandExchangePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		clientToolbar.removeNavigation(button);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
@@ -232,8 +238,23 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeClient = null;
 	}
 
-	@Subscribe
-	public void onSessionOpen(SessionOpen sessionOpen)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
+		eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
+		eventBus.subscribe(GrandExchangeOfferChanged.class, this, this::onGrandExchangeOfferChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onSessionOpen(SessionOpen sessionOpen)
 	{
 		AccountSession accountSession = sessionManager.getAccountSession();
 		if (accountSession.getUuid() != null)
@@ -254,14 +275,12 @@ public class GrandExchangePlugin extends Plugin
 		this.enableGELimits = config.enableGELimits();
 	}
 
-	@Subscribe
-	public void onSessionClose(SessionClose sessionClose)
+	private void onSessionClose(SessionClose sessionClose)
 	{
 		grandExchangeClient = null;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("grandexchange"))
 		{
@@ -282,8 +301,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged offerEvent)
+	private void onGrandExchangeOfferChanged(GrandExchangeOfferChanged offerEvent)
 	{
 		final int slot = offerEvent.getSlot();
 		final GrandExchangeOffer offer = offerEvent.getOffer();
@@ -360,8 +378,7 @@ public class GrandExchangePlugin extends Plugin
 		return savedOffer.getState() != grandExchangeOffer.getState();
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (!this.enableNotifications || event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
@@ -376,8 +393,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -385,8 +401,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		// At the moment, if the user disables quick lookup, the input listener gets disabled. Thus, isHotKeyPressed()
 		// should always return false when quick lookup is disabled.
@@ -419,8 +434,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
+	private void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
 		{
@@ -428,8 +442,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		switch (event.getGroupId())
 		{
@@ -447,8 +460,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!event.getEventName().equals("setGETitle") || !config.showTotal())
 		{
@@ -490,8 +502,7 @@ public class GrandExchangePlugin extends Plugin
 		stringStack[stringStackSize - 1] += titleBuilder.toString();
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (grandExchangeText == null || grandExchangeItem == null || grandExchangeItem.isHidden())
 		{

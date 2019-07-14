@@ -38,7 +38,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -68,6 +68,8 @@ public class BlackjackPlugin extends Plugin
 	private Client client;
 	@Inject
 	private BlackjackConfig config;
+	@Inject
+	private EventBus eventBus;
 
 	private boolean pickpocketOnAggro;
 
@@ -80,11 +82,25 @@ public class BlackjackPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		this.pickpocketOnAggro = config.pickpocketOnAggro();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("blackjack"))
 		{
@@ -92,8 +108,7 @@ public class BlackjackPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN ||
 				client.getVar(Varbits.QUEST_THE_FEUD) < 13 ||
@@ -114,8 +129,7 @@ public class BlackjackPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.SPAM && event.getMessage().equals(SUCCESS_BLACKJACK) ^ (event.getMessage().equals(FAILED_BLACKJACK) && this.pickpocketOnAggro))
 		{

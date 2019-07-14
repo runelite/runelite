@@ -38,7 +38,7 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -71,6 +71,9 @@ public class VorkathPlugin extends Plugin
 	@Inject
 	private ZombifiedSpawnOverlay SpawnOverlay;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter
 	private Vorkath vorkath;
 
@@ -95,8 +98,27 @@ public class VorkathPlugin extends Plugin
 		SPAWN = ImageUtil.getResourceStreamFromClass(VorkathPlugin.class, "ice.png");
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	@Override
+	protected void startUp() throws Exception
+	{
+		addSubscriptions();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(ProjectileMoved.class, this, this::onProjectileMoved);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+	}
+
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (isAtVorkath())
 		{
@@ -114,8 +136,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (isAtVorkath())
 		{
@@ -133,8 +154,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileMoved(ProjectileMoved event)
 	{
 		// Only capture initial projectile
 		if (!isAtVorkath() || event.getProjectile().getStartMovementCycle() == lastProjectileCycle)
@@ -191,8 +211,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	private void onAnimationChanged(AnimationChanged event)
 	{
 		if (isAtVorkath() && vorkath != null && event.getActor().equals(vorkath.getVorkath())
 			&& event.getActor().getAnimation() == VorkathAttack.SLASH_ATTACK.getVorkathAnimationID())

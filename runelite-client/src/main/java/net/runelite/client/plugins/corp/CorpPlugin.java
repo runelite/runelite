@@ -53,7 +53,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -102,6 +102,9 @@ public class CorpPlugin extends Plugin
 	@Inject
 	private CorpConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	private boolean leftClickCore;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showDamage;
@@ -116,6 +119,7 @@ public class CorpPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(corpOverlay);
 		overlayManager.add(coreOverlay);
@@ -124,6 +128,8 @@ public class CorpPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(corpOverlay);
 		overlayManager.remove(coreOverlay);
 
@@ -133,8 +139,18 @@ public class CorpPlugin extends Plugin
 		players.clear();
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
+		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+	}
+
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOADING)
 		{
@@ -142,8 +158,7 @@ public class CorpPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned npcSpawned)
+	private void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
 
@@ -162,8 +177,7 @@ public class CorpPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
 
@@ -199,8 +213,7 @@ public class CorpPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	private void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
 		Actor actor = hitsplatApplied.getActor();
 
@@ -218,8 +231,7 @@ public class CorpPlugin extends Plugin
 		totalDamage += hitsplatApplied.getHitsplat().getAmount();
 	}
 
-	@Subscribe
-	public void onInteractingChanged(InteractingChanged interactingChanged)
+	private void onInteractingChanged(InteractingChanged interactingChanged)
 	{
 		Actor source = interactingChanged.getSource();
 		Actor target = interactingChanged.getTarget();
@@ -232,8 +244,7 @@ public class CorpPlugin extends Plugin
 		players.add(source);
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	private void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		if (menuEntryAdded.getType() != NPC_SECTION_ACTION
 			|| !this.leftClickCore || !menuEntryAdded.getOption().equals(ATTACK))
@@ -256,8 +267,7 @@ public class CorpPlugin extends Plugin
 		client.setMenuEntries(menuEntries);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals("corp"))
 		{

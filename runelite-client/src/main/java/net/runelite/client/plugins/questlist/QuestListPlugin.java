@@ -53,7 +53,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
@@ -87,6 +87,9 @@ public class QuestListPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private EventBus eventBus;
+
 	private ChatboxTextInput searchInput;
 	private Widget questSearchButton;
 	private Widget questHideButton;
@@ -98,12 +101,15 @@ public class QuestListPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
 		clientThread.invoke(this::addQuestButtons);
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
 		if (header != null)
 		{
@@ -111,8 +117,15 @@ public class QuestListPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged e)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(VarClientIntChanged.class, this, this::onVarClientIntChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged e)
 	{
 		if (e.getGameState() == GameState.LOGGING_IN)
 		{
@@ -120,8 +133,7 @@ public class QuestListPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!event.getEventName().equals("questProgressUpdated"))
 		{
@@ -170,8 +182,7 @@ public class QuestListPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		if (isChatboxOpen() && isNotOnQuestTab())
 		{
@@ -179,8 +190,7 @@ public class QuestListPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
+	private void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
 		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex() && isChatboxOpen() && isNotOnQuestTab())
 		{

@@ -35,7 +35,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -83,6 +83,9 @@ public class TheatrePlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private EventBus eventBus;
 
 	private Widget widget = null;
 
@@ -162,6 +165,7 @@ public class TheatrePlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
 		
 		room = TheatreRoom.UNKNOWN;
 
@@ -178,6 +182,8 @@ public class TheatrePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		maidenHandler.onStop();
 		maidenHandler = null;
 
@@ -202,8 +208,23 @@ public class TheatrePlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
-	@Subscribe
-	public void onSpotAnimationChanged(SpotAnimationChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
+		eventBus.subscribe(NpcDefinitionChanged.class, this, this::onNpcDefinitionChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GroundObjectSpawned.class, this, this::onGroundObjectSpawned);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(ProjectileMoved.class, this, this::onProjectileMoved);
+	}
+
+	private void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
 		if (maidenHandler != null)
 		{
@@ -211,8 +232,7 @@ public class TheatrePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDefinitionChanged(NpcDefinitionChanged event)
+	private void onNpcDefinitionChanged(NpcDefinitionChanged event)
 	{
 		if (maidenHandler != null)
 		{
@@ -220,8 +240,7 @@ public class TheatrePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (maidenHandler != null)
 		{
@@ -255,8 +274,7 @@ public class TheatrePlugin extends Plugin
 
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (maidenHandler != null)
 		{
@@ -285,8 +303,7 @@ public class TheatrePlugin extends Plugin
 
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	private void onAnimationChanged(AnimationChanged event)
 	{
 		if (verzikHandler != null)
 		{
@@ -294,8 +311,7 @@ public class TheatrePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (maidenHandler != null)
 		{
@@ -303,8 +319,7 @@ public class TheatrePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() != WidgetID.PERFORMERS_FOR_THE_THEATRE_GROUPS_GROUP_ID && event.getGroupId() != WidgetID.PERFORMERS_FOR_THE_THEATRE_PLAYERS_GROUP_ID)
 		{
@@ -322,8 +337,7 @@ public class TheatrePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (maidenHandler != null)
 		{
@@ -445,8 +459,7 @@ public class TheatrePlugin extends Plugin
 		widget = null;
 	}
 
-	@Subscribe
-	public void onGroundObjectSpawned(GroundObjectSpawned event)
+	private void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		if (sotetsegHandler != null)
 		{
@@ -459,8 +472,7 @@ public class TheatrePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("Theatre"))
 		{
@@ -473,8 +485,7 @@ public class TheatrePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (bloatHandler != null)
 		{
@@ -487,8 +498,7 @@ public class TheatrePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileMoved(ProjectileMoved event)
 	{
 		if (sotetsegHandler != null)
 		{

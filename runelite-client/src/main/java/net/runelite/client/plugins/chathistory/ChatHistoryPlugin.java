@@ -46,7 +46,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -85,6 +85,9 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private boolean retainChatHistory;
 	private boolean pmTargetCycling;
 
@@ -98,6 +101,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
 
 		messageQueue = EvictingQueue.create(100);
 		friends = new ArrayDeque<>(FRIENDS_MAX_SIZE + 1);
@@ -107,6 +111,8 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		messageQueue.clear();
 		messageQueue = null;
 		friends.clear();
@@ -114,8 +120,14 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		keyManager.unregisterKeyListener(this);
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+	}
+
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		// Start sending old messages right after the welcome message, as that is most reliable source
 		// of information that chat history was reset
@@ -171,8 +183,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		String menuOption = event.getOption();
 
@@ -269,8 +280,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		return friends.getLast();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"chathistory".equals(event.getGroup()))
 		{

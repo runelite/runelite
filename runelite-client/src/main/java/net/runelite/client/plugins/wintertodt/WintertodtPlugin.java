@@ -54,7 +54,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyMode;
@@ -94,7 +94,7 @@ public class WintertodtPlugin extends Plugin
 	private ChatMessageManager chatMessageManager;
 
 	@Inject
-	private EventBusImplementation eventbus;
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private WintertodtActivity currentActivity = WintertodtActivity.IDLE;
@@ -143,41 +143,12 @@ public class WintertodtPlugin extends Plugin
 
 	private void addSubscriptions()
 	{
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ConfigChanged.class)
-				.subscribe(this::onConfigChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameTick.class)
-				.subscribe(this::onGameTick)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(VarbitChanged.class)
-				.subscribe(this::onVarbitChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ChatMessage.class)
-				.subscribe(this::onChatMessage)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(AnimationChanged.class)
-				.subscribe(this::onAnimationChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ItemContainerChanged.class)
-				.subscribe(this::onItemContainerChanged)
-		);
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
 	}
 
 	private void onConfigChanged(ConfigChanged event)

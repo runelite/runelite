@@ -36,7 +36,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -81,6 +81,9 @@ public class AntiDragPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	AntiDragConfig getConfig(ConfigManager configManager)
 	{
@@ -103,6 +106,8 @@ public class AntiDragPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
+
 		if (this.keybind)
 		{
 			keyManager.registerKeyListener(hotkeyListener);
@@ -113,14 +118,21 @@ public class AntiDragPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		client.setInventoryDragDelay(DEFAULT_DELAY);
 		keyManager.unregisterKeyListener(hotkeyListener);
 		toggleDrag = false;
 		overlayManager.remove(overlay);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("antiDrag"))
 		{
@@ -157,8 +169,7 @@ public class AntiDragPlugin extends Plugin
 		this.selectedCursor = config.selectedCursor();
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
+	private void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!this.alwaysOn && !focusChanged.isFocused() && this.reqfocus)
 		{

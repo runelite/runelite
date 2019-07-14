@@ -52,7 +52,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
@@ -94,6 +94,10 @@ public class EquipmentInspectorPlugin extends Plugin
 
 	@Inject
 	private ClientToolbar pluginToolbar;
+
+	@Inject
+	private EventBus eventBus;
+
 	private NavigationButton navButton;
 	private EquipmentInspectorPanel equipmentInspectorPanel;
 	private int TotalPrice = 0;
@@ -116,6 +120,7 @@ public class EquipmentInspectorPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		equipmentInspectorPanel = injector.getInstance(EquipmentInspectorPanel.class);
 		if (client != null)
@@ -140,12 +145,18 @@ public class EquipmentInspectorPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
 
 		menuManager.removePlayerMenuItem(INSPECT_EQUIPMENT);
 	}
 
-	@Subscribe
-	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(PlayerMenuOptionClicked.class, this, this::onPlayerMenuOptionClicked);
+	}
+
+	private void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
 	{
 		if (event.getMenuOption().equals(INSPECT_EQUIPMENT))
 		{
@@ -297,8 +308,7 @@ public class EquipmentInspectorPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equalsIgnoreCase("equipmentinspector"))
 		{

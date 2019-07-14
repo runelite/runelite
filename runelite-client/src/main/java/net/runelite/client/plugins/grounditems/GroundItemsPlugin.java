@@ -74,7 +74,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
@@ -180,6 +180,9 @@ public class GroundItemsPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PUBLIC)
 	public static final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
@@ -247,6 +250,8 @@ public class GroundItemsPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(overlay);
 		reset();
 		mouseManager.registerMouseListener(inputListener);
@@ -256,6 +261,8 @@ public class GroundItemsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
@@ -268,8 +275,22 @@ public class GroundItemsPlugin extends Plugin
 		collectedGroundItems.clear();
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ItemSpawned.class, this, this::onItemSpawned);
+		eventBus.subscribe(ItemDespawned.class, this, this::onItemDespawned);
+		eventBus.subscribe(ItemQuantityChanged.class, this, this::onItemQuantityChanged);
+		eventBus.subscribe(NpcLootReceived.class, this, this::onNpcLootReceived);
+		eventBus.subscribe(PlayerLootReceived.class, this, this::onPlayerLootReceived);
+		eventBus.subscribe(ClientTick.class, this, this::onClientTick);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+	}
+
+	private void onGameTick(GameTick event)
 	{
 		for (GroundItem item : collectedGroundItems.values())
 		{
@@ -281,8 +302,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("grounditems"))
 		{
@@ -291,8 +311,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
 		{
@@ -300,8 +319,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemSpawned(ItemSpawned itemSpawned)
+	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		Item item = itemSpawned.getItem();
 		Tile tile = itemSpawned.getTile();
@@ -326,8 +344,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemDespawned(ItemDespawned itemDespawned)
+	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		Item item = itemDespawned.getItem();
 		Tile tile = itemDespawned.getTile();
@@ -349,8 +366,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
+	private void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
 	{
 		Item item = itemQuantityChanged.getItem();
 		Tile tile = itemQuantityChanged.getTile();
@@ -366,8 +382,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
+	private void onNpcLootReceived(NpcLootReceived npcLootReceived)
 	{
 		npcLootReceived.getItems().forEach(item ->
 			{
@@ -384,8 +399,7 @@ public class GroundItemsPlugin extends Plugin
 		lootNotifier(items);
 	}
 
-	@Subscribe
-	public void onPlayerLootReceived(PlayerLootReceived playerLootReceived)
+	private void onPlayerLootReceived(PlayerLootReceived playerLootReceived)
 	{
 		Collection<ItemStack> items = playerLootReceived.getItems();
 		lootReceived(items);
@@ -432,8 +446,7 @@ public class GroundItemsPlugin extends Plugin
 		notifier.notify(notification);
 	}
 
-	@Subscribe
-	public void onClientTick(ClientTick event)
+	private void onClientTick(ClientTick event)
 	{
 		final MenuEntry[] menuEntries = client.getMenuEntries();
 		final List<MenuEntryWithCount> newEntries = new ArrayList<>(menuEntries.length);
@@ -670,8 +683,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (this.itemHighlightMode != OVERLAY
 			&& event.getOption().equals("Take")
@@ -905,8 +917,7 @@ public class GroundItemsPlugin extends Plugin
 		return this.defaultColor;
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
+	private void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
 		{

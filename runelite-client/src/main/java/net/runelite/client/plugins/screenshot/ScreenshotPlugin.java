@@ -58,7 +58,6 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -91,7 +90,7 @@ import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
@@ -196,6 +195,9 @@ public class ScreenshotPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage reportButton;
 
@@ -244,6 +246,7 @@ public class ScreenshotPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 		
 		overlayManager.add(screenshotOverlay);
 		SCREENSHOT_DIR.mkdirs();
@@ -278,13 +281,25 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(screenshotOverlay);
 		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(PlayerLootReceived.class, this, this::onPlayerLootReceived);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN
 				&& reportButton == null)
@@ -293,8 +308,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (this.screenshotFriendDeath)
 		{
@@ -342,8 +356,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged e)
+	private void onAnimationChanged(AnimationChanged e)
 	{
 		//this got refactored somewhere, but some things were missing
 		if (!this.screenshotFriendDeath || !this.screenshotPlayerDeath)
@@ -383,8 +396,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
+	private void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		if (this.screenshotKills)
 		{
@@ -395,8 +407,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.TRADE)
 		{
@@ -509,8 +520,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		String fileName;
 		int groupId = event.getGroupId();
@@ -894,8 +904,7 @@ public class ScreenshotPlugin extends Plugin
 		return theatreOfBloodNumber;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("screenshot"))
 		{

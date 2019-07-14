@@ -72,7 +72,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -158,6 +158,9 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private BufferedImage emoteImage;
 	private BufferedImage mapArrow;
 	private Integer clueItemId;
@@ -182,6 +185,8 @@ public class ClueScrollPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		this.displayHintArrows = config.displayHintArrows();
 		overlayManager.add(clueScrollOverlay);
 		overlayManager.add(clueScrollEmoteOverlay);
@@ -192,6 +197,8 @@ public class ClueScrollPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(clueScrollOverlay);
 		overlayManager.remove(clueScrollEmoteOverlay);
 		overlayManager.remove(clueScrollWorldOverlay);
@@ -202,8 +209,20 @@ public class ClueScrollPlugin extends Plugin
 		resetClue(true);
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+	}
+
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
 		{
@@ -224,8 +243,7 @@ public class ClueScrollPlugin extends Plugin
 		resetClue(true);
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(final MenuOptionClicked event)
+	private void onMenuOptionClicked(final MenuOptionClicked event)
 	{
 		if ("read".equalsIgnoreCase(event.getOption()))
 		{
@@ -239,8 +257,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(final ItemContainerChanged event)
+	private void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
@@ -280,15 +297,13 @@ public class ClueScrollPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(final NpcSpawned event)
+	private void onNpcSpawned(final NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
 		checkClueNPCs(clue, npc);
 	}
 
-	@Subscribe
-	public void onNpcDespawned(final NpcDespawned event)
+	private void onNpcDespawned(final NpcDespawned event)
 	{
 		final boolean removed = npcsToMark.remove(event.getNpc());
 
@@ -306,8 +321,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("cluescroll"))
 		{
@@ -319,8 +333,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -328,8 +341,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(final GameTick event)
+	private void onGameTick(final GameTick event)
 	{
 		objectsToMark.clear();
 
@@ -392,8 +404,7 @@ public class ClueScrollPlugin extends Plugin
 		updateClue(findClueScroll());
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() < WidgetID.BEGINNER_CLUE_MAP_CHAMPIONS_GUILD
 			|| event.getGroupId() > WidgetID.BEGINNER_CLUE_MAP_WIZARDS_TOWER)

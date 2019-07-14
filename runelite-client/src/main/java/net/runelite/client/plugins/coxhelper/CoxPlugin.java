@@ -63,7 +63,7 @@ import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -105,6 +105,8 @@ public class CoxPlugin extends Plugin
 	private CoxConfig config;
 	@Inject
 	private OverlayManager overlayManager;
+	@Inject
+	private EventBus eventBus;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean HandCripple;
 	@Getter(AccessLevel.PACKAGE)
@@ -207,6 +209,7 @@ public class CoxPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(coxOverlay);
 		overlayManager.add(coxInfoBox);
@@ -227,12 +230,24 @@ public class CoxPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(coxOverlay);
 		overlayManager.remove(coxInfoBox);
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(ProjectileMoved.class, this, this::onProjectileMoved);
+		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (inRaid())
 		{
@@ -305,8 +320,7 @@ public class CoxPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileMoved(ProjectileMoved event)
 	{
 		if (inRaid())
 		{
@@ -328,8 +342,7 @@ public class CoxPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
+	private void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
 	{
 		if (inRaid())
 		{
@@ -344,8 +357,7 @@ public class CoxPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned npcSpawned)
+	private void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		if (inRaid())
 		{
@@ -384,8 +396,7 @@ public class CoxPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (inRaid())
 		{
@@ -429,8 +440,7 @@ public class CoxPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (!inRaid())
 		{
@@ -696,8 +706,7 @@ public class CoxPlugin extends Plugin
 		return client.getVar(Varbits.IN_RAID) == 1;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals("Cox"))
 		{

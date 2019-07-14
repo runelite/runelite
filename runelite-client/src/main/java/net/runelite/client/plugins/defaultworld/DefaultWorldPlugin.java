@@ -33,7 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -57,6 +57,9 @@ public class DefaultWorldPlugin extends Plugin
 	@Inject
 	private DefaultWorldConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	private final WorldClient worldClient = new WorldClient();
 	private int worldCache;
 	private boolean worldChangeRequired;
@@ -64,6 +67,8 @@ public class DefaultWorldPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		worldChangeRequired = true;
 		applyWorld();
 	}
@@ -71,8 +76,16 @@ public class DefaultWorldPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		worldChangeRequired = true;
 		changeWorld(worldCache);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
 	@Provides
@@ -81,15 +94,13 @@ public class DefaultWorldPlugin extends Plugin
 		return configManager.getConfig(DefaultWorldConfig.class);
 	}
 
-	@Subscribe
-	public void onSessionOpen(SessionOpen event)
+	private void onSessionOpen(SessionOpen event)
 	{
 		worldChangeRequired = true;
 		applyWorld();
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		applyWorld();
 	}

@@ -50,7 +50,7 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -96,15 +96,34 @@ public class ExaminePlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
+	@Inject
+	private EventBus eventBus;
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	@Override
+	protected void startUp() throws Exception
+	{
+		addSubscriptions();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		pending.clear();
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (!event.getOption().equals("Examine"))
 		{
@@ -161,8 +180,7 @@ public class ExaminePlugin extends Plugin
 		pending.push(pendingExamine);
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		ExamineType type;
 		switch (event.getType())

@@ -39,7 +39,7 @@ import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
@@ -72,6 +72,9 @@ public class BankPlugin extends Plugin
 	@Inject
 	private BankSearch bankSearch;
 
+	@Inject
+	private EventBus eventBus;
+
 	private boolean forceRightClickFlag;
 
 	@Provides
@@ -93,17 +96,26 @@ public class BankPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
 	}
 
-	@Subscribe
-	public void onMenuShouldLeftClick(MenuShouldLeftClick event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(MenuShouldLeftClick.class, this, this::onMenuShouldLeftClick);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+	}
+
+	private void onMenuShouldLeftClick(MenuShouldLeftClick event)
 	{
 		if (!forceRightClickFlag)
 		{
@@ -124,8 +136,7 @@ public class BankPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if ((event.getOption().equals(DEPOSIT_WORN) && this.rightClickBankEquip)
 			|| (event.getOption().equals(DEPOSIT_INVENTORY) && this.rightClickBankInventory)
@@ -135,8 +146,7 @@ public class BankPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!event.getEventName().equals("setBankTitle"))
 		{
@@ -192,8 +202,7 @@ public class BankPlugin extends Plugin
 		stringStack[stringStackSize - 1] += strCurrentTab;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("bank"))
 		{

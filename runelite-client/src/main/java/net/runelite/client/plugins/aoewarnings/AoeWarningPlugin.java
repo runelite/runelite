@@ -182,7 +182,7 @@ public class AoeWarningPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		super.shutDown();
+		eventbus.unregister(this);
 
 		overlayManager.remove(coreOverlay);
 		overlayManager.remove(bombOverlay);

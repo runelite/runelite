@@ -58,7 +58,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -132,6 +132,9 @@ public class PestControlPlugin extends Plugin
 	@Inject
 	private PortalWeaknessOverlay portalWeaknessOverlay;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private Game game;
 
@@ -185,17 +188,33 @@ public class PestControlPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 		loadPlugin();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
 		unloadPlugin();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configEvent)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventBus.subscribe(GameObjectChanged.class, this, this::onGameObjectChanged);
+		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventBus.subscribe(GroundObjectSpawned.class, this, this::onGroundObjectSpawned);
+		eventBus.subscribe(GroundObjectChanged.class, this, this::onGroundObjectChanged);
+		eventBus.subscribe(GroundObjectDespawned.class, this, this::onGroundObjectDespawned);
+	}
+
+	private void onConfigChanged(ConfigChanged configEvent)
 	{
 		if (configEvent.getGroup().equals("pestcontrol"))
 		{
@@ -341,7 +360,6 @@ public class PestControlPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		// LOGGED_IN also triggers when teleporting to the island
@@ -486,8 +504,7 @@ public class PestControlPlugin extends Plugin
 		handlePointsInfoboxCounter();
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTickEvent)
+	private void onGameTick(GameTick gameTickEvent)
 	{
 		// Check for widgets on main island
 		if (game == null && isOnPestControlMainIsland())
@@ -551,8 +568,7 @@ public class PestControlPlugin extends Plugin
 		game.onGameTick(gameTickEvent);
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (game != null && chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
@@ -564,8 +580,7 @@ public class PestControlPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (game != null)
 		{
@@ -640,40 +655,34 @@ public class PestControlPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		handleTileObject(event.getTile(), event.getGameObject());
 	}
 
-	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
+	private void onGameObjectChanged(GameObjectChanged event)
 	{
 		unlistTileObject(event.getPrevious());
 		handleTileObject(event.getTile(), event.getGameObject());
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		unlistTileObject(event.getGameObject());
 	}
 
-	@Subscribe
-	public void onGroundObjectSpawned(GroundObjectSpawned event)
+	private void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		handleTileObject(event.getTile(), event.getGroundObject());
 	}
 
-	@Subscribe
-	public void onGroundObjectChanged(GroundObjectChanged event)
+	private void onGroundObjectChanged(GroundObjectChanged event)
 	{
 		unlistTileObject(event.getPrevious());
 		handleTileObject(event.getTile(), event.getGroundObject());
 	}
 
-	@Subscribe
-	public void onGroundObjectDespawned(GroundObjectDespawned event)
+	private void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		unlistTileObject(event.getGroundObject());
 	}

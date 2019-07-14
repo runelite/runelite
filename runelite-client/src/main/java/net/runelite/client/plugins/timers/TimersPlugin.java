@@ -72,7 +72,7 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -150,6 +150,9 @@ public class TimersPlugin extends Plugin
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private EventBus eventBus;
 	
 	private boolean showHomeMinigameTeleports;
 	private boolean showAntiPoison;
@@ -181,11 +184,14 @@ public class TimersPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 	}
 	
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer);
 		lastRaidVarb = -1;
 		lastPoint = null;
@@ -198,8 +204,24 @@ public class TimersPlugin extends Plugin
 		imbuedHeartClicked = false;
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
+		eventBus.subscribe(BoostedLevelChanged.class, this, this::onBoostedLevelChanged);
+	}
+
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		int raidVarb = client.getVar(Varbits.IN_RAID);
 		int vengCooldownVarb = client.getVar(Varbits.VENGEANCE_COOLDOWN);
@@ -286,8 +308,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		Widget widget = event.getWidget();
 		if (WorldType.isPvpWorld(client.getWorldType())
@@ -297,8 +318,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("timers"))
 		{
@@ -397,8 +417,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (this.showStamina
 			&& event.getOption().contains("Drink")
@@ -464,8 +483,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
@@ -620,8 +638,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		loggedInRace = false;
 
@@ -670,8 +687,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		switch (gameStateChanged.getGameState())
 		{
@@ -685,8 +701,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	private void onAnimationChanged(AnimationChanged event)
 	{
 		Actor actor = event.getActor();
 
@@ -744,8 +759,7 @@ public class TimersPlugin extends Plugin
 		lastAnimation = client.getLocalPlayer().getAnimation();
 	}
 
-	@Subscribe
-	public void onSpotAnimationChanged(SpotAnimationChanged event)
+	private void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
 		Actor actor = event.getActor();
 
@@ -832,8 +846,7 @@ public class TimersPlugin extends Plugin
 	 *
 	 * @param itemContainerChanged
 	 */
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
+	private void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
 		ItemContainer container = itemContainerChanged.getItemContainer();
 		if (container == client.getItemContainer(InventoryID.EQUIPMENT))
@@ -868,8 +881,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
 
@@ -886,14 +898,12 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onLocalPlayerDeath(LocalPlayerDeath event)
+	private void onLocalPlayerDeath(LocalPlayerDeath event)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer().isRemovedOnDeath());
 	}
 
-	@Subscribe
-	public void onBoostedLevelChanged(BoostedLevelChanged event)
+	private void onBoostedLevelChanged(BoostedLevelChanged event)
 	{
 		Skill skill = event.getSkill();
 

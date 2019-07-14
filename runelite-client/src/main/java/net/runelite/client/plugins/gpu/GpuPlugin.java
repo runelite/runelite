@@ -366,7 +366,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	protected void shutDown()
 	{
-		super.shutDown();
+		eventbus.unregister(this);
 
 		clientThread.invoke(() ->
 		{

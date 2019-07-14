@@ -48,7 +48,7 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -76,6 +76,9 @@ public class HunterPlugin extends Plugin
 
 	@Inject
 	private HunterConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
@@ -105,6 +108,7 @@ public class HunterPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(overlay);
 		overlay.updateConfig();
@@ -113,13 +117,21 @@ public class HunterPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		lastActionTime = Instant.ofEpochMilli(0);
 		traps.clear();
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+	}
+
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();
 		final WorldPoint trapLocation = gameObject.getWorldLocation();
@@ -309,8 +321,7 @@ public class HunterPlugin extends Plugin
 	 * checks if the trap is still there. If the trap is gone, it removes
 	 * the trap from the local players trap collection.
 	 */
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		// Check if all traps are still there, and remove the ones that are not.
 		Iterator<Map.Entry<WorldPoint, HunterTrap>> it = traps.entrySet().iterator();
@@ -387,8 +398,7 @@ public class HunterPlugin extends Plugin
 		lastTickLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("hunterplugin"))
 		{

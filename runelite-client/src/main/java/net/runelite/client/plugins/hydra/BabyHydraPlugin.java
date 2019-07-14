@@ -39,7 +39,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -73,6 +73,9 @@ public class BabyHydraPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	BabyHydraConfig provideConfig(ConfigManager configManager)
 	{
@@ -97,6 +100,7 @@ public class BabyHydraPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		if (this.TextIndicator)
 		{
@@ -112,6 +116,8 @@ public class BabyHydraPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(hydraOverlay);
 		overlayManager.remove(hydraPrayOverlay);
 		overlayManager.remove(hydraIndicatorOverlay);
@@ -119,8 +125,15 @@ public class BabyHydraPlugin extends Plugin
 		hydraattacks.clear();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("hydra"))
 		{
@@ -155,8 +168,7 @@ public class BabyHydraPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		NPC hydra = event.getNpc();
 		if (hydra.getCombatLevel() != 0 && hydra.getName() != null && hydra.getName().equalsIgnoreCase("Hydra") && !hydras.containsKey(hydra.getIndex()))
@@ -165,8 +177,7 @@ public class BabyHydraPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		NPC hydra = event.getNpc();
 		if (hydra.getCombatLevel() != 0 && hydra.getName() != null && hydra.getName().equalsIgnoreCase("Hydra"))
@@ -176,8 +187,7 @@ public class BabyHydraPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	private void onAnimationChanged(AnimationChanged event)
 	{
 		Actor monster = event.getActor();
 		Actor local = client.getLocalPlayer();

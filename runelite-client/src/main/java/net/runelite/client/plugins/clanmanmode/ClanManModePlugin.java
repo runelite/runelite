@@ -18,7 +18,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -51,6 +51,9 @@ public class ClanManModePlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean highlightAttackable;
@@ -100,6 +103,7 @@ public class ClanManModePlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 		
 		overlayManager.add(ClanManModeOverlay);
 		overlayManager.add(ClanManModeTileOverlay);
@@ -109,6 +113,8 @@ public class ClanManModePlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(ClanManModeOverlay);
 		overlayManager.remove(ClanManModeTileOverlay);
 		overlayManager.remove(ClanManModeMinimapOverlay);
@@ -120,7 +126,13 @@ public class ClanManModePlugin extends Plugin
 		inwildy = 0;
 	}
 
-	@Subscribe
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"clanmanmode".equals(event.getGroup()))
@@ -131,8 +143,7 @@ public class ClanManModePlugin extends Plugin
 		updateConfig();
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN || gameStateChanged.getGameState() == GameState.HOPPING)
 		{
@@ -140,8 +151,7 @@ public class ClanManModePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		ticks++;
 		final Player localPlayer = client.getLocalPlayer();

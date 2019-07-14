@@ -38,9 +38,9 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -68,6 +68,9 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private String usernameCache;
 
 	private boolean syncUsername;
@@ -78,6 +81,8 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
+
 		applyUsername();
 		keyManager.registerKeyListener(this);
 	}
@@ -85,6 +90,8 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		if (this.syncUsername)
 		{
 			client.getPreferences().setRememberedUsername(usernameCache);
@@ -93,14 +100,20 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		keyManager.unregisterKeyListener(this);
 	}
 
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
+	}
+
 	@Provides
 	LoginScreenConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(LoginScreenConfig.class);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (!this.syncUsername)
 		{
@@ -131,8 +144,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onSessionOpen(SessionOpen event)
+	private void onSessionOpen(SessionOpen event)
 	{
 		// configuation for the account is available now, so update the username
 		applyUsername();
@@ -230,8 +242,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("loginscreen"))
 		{

@@ -64,7 +64,6 @@ public class Scorecard
 		this.game = game;
 	}
 
-	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getMessage().startsWith("---- Points:") && game.getStage() == 1)

@@ -9,7 +9,7 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -26,34 +26,45 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class LootAssistPlugin extends Plugin
 {
 	@Inject
-	OverlayManager overlayManager;
+	private OverlayManager overlayManager;
 
 	@Inject
-	LootAssistOverlay lootAssistOverlay;
+	private LootAssistOverlay lootAssistOverlay;
+
+	@Inject
+	private EventBus eventBus;
 
 	static final ConcurrentHashMap<WorldPoint, LootPile> lootPiles = new ConcurrentHashMap<>();
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		overlayManager.add(lootAssistOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		lootPiles.clear();
 		overlayManager.remove(lootAssistOverlay);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		lootPiles.clear();
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	private void onAnimationChanged(AnimationChanged event)
 	{
 		final Actor actor = event.getActor();
 		if (actor.getAnimation() == AnimationID.DEATH && actor instanceof Player)

@@ -31,7 +31,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.mta.alchemy.AlchemyRoom;
@@ -61,7 +60,7 @@ public class MTAPlugin extends Plugin
 	private EnchantmentRoom enchantmentRoom;
 
 	@Inject
-	private EventBusImplementation eventBus;
+	private EventBus eventBus;
 	@Inject
 	private MTASceneOverlay sceneOverlay;
 	@Inject
@@ -83,11 +82,6 @@ public class MTAPlugin extends Plugin
 		overlayManager.add(inventoryOverlay);
 
 		this.rooms = new MTARoom[]{alchemyRoom, graveyardRoom, telekineticRoom, enchantmentRoom};
-
-		for (MTARoom room : rooms)
-		{
-			// eventBus.register(room);
-		}
 	}
 
 	@Override
@@ -98,10 +92,9 @@ public class MTAPlugin extends Plugin
 
 		for (MTARoom room : rooms)
 		{
-			// eventBus.unregister(room);
+			eventBus.unregister(room);
 		}
 
 		telekineticRoom.resetRoom();
 	}
-
 }

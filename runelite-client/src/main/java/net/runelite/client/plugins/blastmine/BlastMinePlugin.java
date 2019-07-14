@@ -42,7 +42,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -73,6 +73,9 @@ public class BlastMinePlugin extends Plugin
 	@Inject
 	private BlastMinePluginConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	BlastMinePluginConfig getConfig(ConfigManager configManager)
 	{
@@ -96,6 +99,7 @@ public class BlastMinePlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(blastMineRockOverlay);
 		overlayManager.add(blastMineOreCountOverlay);
@@ -104,6 +108,8 @@ public class BlastMinePlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(blastMineRockOverlay);
 		overlayManager.remove(blastMineOreCountOverlay);
 		final Widget blastMineWidget = client.getWidget(WidgetInfo.BLAST_MINE);
@@ -114,8 +120,14 @@ public class BlastMinePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();
 		BlastMineRockType blastMineRockType = BlastMineRockType.getRockType(gameObject.getId());
@@ -133,8 +145,7 @@ public class BlastMinePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
 		{
@@ -142,8 +153,7 @@ public class BlastMinePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (rocks.isEmpty())
 		{

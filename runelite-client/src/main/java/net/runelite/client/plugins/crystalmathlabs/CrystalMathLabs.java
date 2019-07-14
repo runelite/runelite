@@ -35,7 +35,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.RuneLiteAPI;
@@ -64,12 +64,27 @@ public class CrystalMathLabs extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private EventBus eventBus;
+
 	private String lastUsername;
 	private boolean fetchXp;
 	private long lastXp;
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	@Override
+	protected void startUp() throws Exception
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState state = gameStateChanged.getGameState();
 		if (state == GameState.LOGGED_IN)
@@ -98,8 +113,7 @@ public class CrystalMathLabs extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (fetchXp)
 		{

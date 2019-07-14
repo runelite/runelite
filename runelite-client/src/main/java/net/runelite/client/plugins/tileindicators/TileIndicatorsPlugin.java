@@ -32,7 +32,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -54,6 +54,9 @@ public class TileIndicatorsPlugin extends Plugin
 
 	@Inject
 	private TileIndicatorsConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private Color highlightDestinationColor;
@@ -78,17 +81,20 @@ public class TileIndicatorsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+
 		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"tileindicators".equals(event.getGroup()))
 		{

@@ -51,7 +51,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -93,6 +93,9 @@ public class InfernoPlugin extends Plugin
 
 	@Inject
 	private InfernoConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int currentWave = -1;
@@ -143,6 +146,8 @@ public class InfernoPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
+
 		waveOverlay.setDisplayMode(this.waveDisplay);
 
 		if (isInInferno())
@@ -177,6 +182,8 @@ public class InfernoPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(infernoInfobox);
 		overlayManager.remove(infernoOverlay);
 		overlayManager.remove(nibblerOverlay);
@@ -188,7 +195,17 @@ public class InfernoPlugin extends Plugin
 		currentWaveNumber = -1;
 	}
 
-	@Subscribe
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+	}
+
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"inferno".equals(event.getGroup()))
@@ -216,8 +233,7 @@ public class InfernoPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (client.getMapRegions()[0] != 9043)
 		{
@@ -251,8 +267,7 @@ public class InfernoPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (client.getMapRegions()[0] != 9043)
 		{
@@ -283,8 +298,7 @@ public class InfernoPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() != GameState.LOGGED_IN)
 		{
@@ -316,8 +330,7 @@ public class InfernoPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (!isInInferno() || event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
@@ -333,8 +346,7 @@ public class InfernoPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (client.getMapRegions()[0] != 9043)
 		{
@@ -403,8 +415,7 @@ public class InfernoPlugin extends Plugin
 		calculatePriorityNPC();
 	}
 
-	@Subscribe
-	public void onAnimationChanged(final AnimationChanged event)
+	private void onAnimationChanged(final AnimationChanged event)
 	{
 		if (event.getActor() != jad)
 		{

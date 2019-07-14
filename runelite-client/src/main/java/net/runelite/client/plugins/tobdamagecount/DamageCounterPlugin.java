@@ -46,11 +46,10 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-
 
 @PluginDescriptor(
 	name = "ToB Damage Counter",
@@ -105,9 +104,27 @@ public class DamageCounterPlugin extends Plugin
 	private Client client;
 	@Inject
 	private ChatMessageManager chatMessangerManager;
+	@Inject
+	private EventBus eventBus;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
+	}
+
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
 
 	//every game tick it will go through methods
-	@Subscribe
 	private void onGameTick(GameTick tick)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -140,9 +157,8 @@ public class DamageCounterPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	//if you hop it will reset the counter
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
@@ -192,7 +208,6 @@ public class DamageCounterPlugin extends Plugin
 	}
 
 
-	@Subscribe
 	//will add the damage that you have taken from the current boss fight
 	private void onHitsplatApplied(HitsplatApplied Hit)
 	{
@@ -208,8 +223,7 @@ public class DamageCounterPlugin extends Plugin
 	because every time she phases she "dies" so making sure the counter doesn't print out the damage for phase 1, 2,
 	and 3.
 	 */
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned npc)
+	private void onNpcDespawned(NpcDespawned npc)
 	{
 		NPC actor = npc.getNpc();
 		double Percent = calculatePercent(WorldPoint.fromLocalInstance(client,
@@ -310,7 +324,6 @@ public class DamageCounterPlugin extends Plugin
 		sendChatMessage(MessageTaken);
 	}
 
-	@Subscribe
 	//whenever you have died in tob you will get a death message with damage
 	// made sure the message works at ToB area or else it will message every where
 	private void onLocalPlayerDeath(LocalPlayerDeath death)

@@ -70,7 +70,7 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
@@ -141,6 +141,9 @@ public class StonedLootTrackerPlugin extends Plugin
 	@Inject
 	private LootRecordWriter writer;
 
+	@Inject
+	private EventBus eventBus;
+
 	private Multiset<Integer> inventorySnapshot;
 
 	@Provides
@@ -149,8 +152,7 @@ public class StonedLootTrackerPlugin extends Plugin
 		return configManager.getConfig(StonedLootTrackerConfig.class);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("stonedloottracker"))
 		{
@@ -173,6 +175,8 @@ public class StonedLootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		panel = new LootTrackerPanel(itemManager, this);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
@@ -224,25 +228,37 @@ public class StonedLootTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		clientToolbar.removeNavigation(navButton);
 	}
 
-	@Subscribe
-	public void onLootTrackerRecordStored(LootTrackerRecordStored s)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(LootTrackerRecordStored.class, this, this::onLootTrackerRecordStored);
+		eventBus.subscribe(LootTrackerNameChange.class, this, this::onLootTrackerNameChange);
+		eventBus.subscribe(NpcLootReceived.class, this, this::onNpcLootReceived);
+		eventBus.subscribe(PlayerLootReceived.class, this, this::onPlayerLootReceived);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+	}
+
+	private void onLootTrackerRecordStored(LootTrackerRecordStored s)
 	{
 		SwingUtilities.invokeLater(() -> panel.addLog(s.getRecord()));
 	}
 
 
-	@Subscribe
-	public void onLootTrackerNameChange(LootTrackerNameChange c)
+	private void onLootTrackerNameChange(LootTrackerNameChange c)
 	{
 		refreshData();
 		SwingUtilities.invokeLater(() -> panel.updateNames());
 	}
 
-	@Subscribe
-	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
+	private void onNpcLootReceived(final NpcLootReceived npcLootReceived)
 	{
 		final NPC npc = npcLootReceived.getNpc();
 		final Collection<ItemStack> items = npcLootReceived.getItems();
@@ -268,8 +284,7 @@ public class StonedLootTrackerPlugin extends Plugin
 		addLog(name, rec);
 	}
 
-	@Subscribe
-	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
+	private void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		final Player player = playerLootReceived.getPlayer();
 		final Collection<ItemStack> items = playerLootReceived.getItems();
@@ -281,8 +296,7 @@ public class StonedLootTrackerPlugin extends Plugin
 		addLog(name, rec);
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		final ItemContainer container;
 		switch (event.getGroupId())
@@ -350,8 +364,7 @@ public class StonedLootTrackerPlugin extends Plugin
 		writer.addLootTrackerRecord(record);
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
 		{
@@ -471,8 +484,7 @@ public class StonedLootTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOR_EVENT.equals(eventType)))
 		{
@@ -671,8 +683,7 @@ public class StonedLootTrackerPlugin extends Plugin
 		});
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged c)
+	private void onGameStateChanged(GameStateChanged c)
 	{
 		if (c.getGameState().equals(GameState.LOGGED_IN))
 		{

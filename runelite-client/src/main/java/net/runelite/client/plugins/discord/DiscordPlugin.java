@@ -56,7 +56,7 @@ import net.runelite.client.discord.DiscordService;
 import net.runelite.client.discord.events.DiscordJoinGame;
 import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.discord.events.DiscordReady;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -110,6 +110,9 @@ public class DiscordPlugin extends Plugin
 	@Inject
 	private WSClient wsClient;
 
+	@Inject
+	private EventBus eventBus;
+
 	private final Map<Skill, Integer> skillExp = new HashMap<>();
 	private NavigationButton discordButton;
 	private boolean loginFlag;
@@ -137,6 +140,7 @@ public class DiscordPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "discord.png");
 
@@ -162,14 +166,31 @@ public class DiscordPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		clientToolbar.removeNavigation(discordButton);
 		discordState.reset();
 		partyService.changeParty(null);
 		wsClient.unregisterMessage(DiscordUserInfo.class);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ExperienceChanged.class, this, this::onExperienceChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(DiscordReady.class, this, this::onDiscordReady);
+		eventBus.subscribe(DiscordJoinRequest.class, this, this::onDiscordJoinRequest);
+		eventBus.subscribe(DiscordJoinGame.class, this, this::onDiscordJoinGame);
+		eventBus.subscribe(DiscordUserInfo.class, this, this::onDiscordUserInfo);
+		eventBus.subscribe(UserJoin.class, this, this::onUserJoin);
+		eventBus.subscribe(UserSync.class, this, this::onUserSync);
+		eventBus.subscribe(UserPart.class, this, this::onUserPart);
+		eventBus.subscribe(PartyChanged.class, this, this::onPartyChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -192,8 +213,7 @@ public class DiscordPlugin extends Plugin
 		checkForAreaUpdate();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equalsIgnoreCase("discord"))
 		{
@@ -205,8 +225,7 @@ public class DiscordPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	private void onExperienceChanged(ExperienceChanged event)
 	{
 		final int exp = client.getSkillExperience(event.getSkill());
 		final Integer previous = skillExp.put(event.getSkill(), exp);
@@ -224,8 +243,7 @@ public class DiscordPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (!this.showRaidingActivity)
 		{
@@ -240,14 +258,12 @@ public class DiscordPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onDiscordReady(DiscordReady event)
+	private void onDiscordReady(DiscordReady event)
 	{
 		partyService.setUsername(event.getUsername() + "#" + event.getDiscriminator());
 	}
 
-	@Subscribe
-	public void onDiscordJoinRequest(DiscordJoinRequest request)
+	private void onDiscordJoinRequest(DiscordJoinRequest request)
 	{
 		log.debug("Got discord join request {}", request);
 		if (partyService.isOwner() && partyService.getMembers().isEmpty())
@@ -258,8 +274,7 @@ public class DiscordPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onDiscordJoinGame(DiscordJoinGame joinGame)
+	private void onDiscordJoinGame(DiscordJoinGame joinGame)
 	{
 		log.debug("Got discord join game {}", joinGame);
 		UUID partyId = UUID.fromString(joinGame.getJoinSecret());
@@ -267,8 +282,7 @@ public class DiscordPlugin extends Plugin
 		updatePresence();
 	}
 
-	@Subscribe
-	public void onDiscordUserInfo(final DiscordUserInfo event)
+	private void onDiscordUserInfo(final DiscordUserInfo event)
 	{
 		final PartyMember memberById = partyService.getMemberById(event.getMemberId());
 
@@ -327,14 +341,12 @@ public class DiscordPlugin extends Plugin
 		});
 	}
 
-	@Subscribe
-	public void onUserJoin(final UserJoin event)
+	private void onUserJoin(final UserJoin event)
 	{
 		updatePresence();
 	}
 
-	@Subscribe
-	public void onUserSync(final UserSync event)
+	private void onUserSync(final UserSync event)
 	{
 		final PartyMember localMember = partyService.getLocalMember();
 
@@ -349,14 +361,12 @@ public class DiscordPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onUserPart(final UserPart event)
+	private void onUserPart(final UserPart event)
 	{
 		updatePresence();
 	}
 
-	@Subscribe
-	public void onPartyChanged(final PartyChanged event)
+	private void onPartyChanged(final PartyChanged event)
 	{
 		updatePresence();
 	}

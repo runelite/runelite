@@ -32,7 +32,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -52,16 +52,26 @@ public class FriendListPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private EventBus eventBus;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		final int world = client.getWorld();
 		setFriendsListTitle("Friends List - World " + world);
 		setIgnoreListTitle("Ignore List - World " + world);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		final int world = client.getWorld();
 		final boolean isMember = client.getVar(VarPlayer.MEMBERSHIP_DAYS) > 0;

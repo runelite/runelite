@@ -38,7 +38,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.DrawManager;
@@ -92,6 +92,9 @@ public class FpsPlugin extends Plugin
 	@Inject
 	private FpsConfig fpsConfig;
 
+	@Inject
+	private EventBus eventBus;
+
 	private final ScheduledExecutorService pingExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
 
 	private boolean loaded = false;
@@ -113,8 +116,7 @@ public class FpsPlugin extends Plugin
 		return configManager.getConfig(FpsConfig.class);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
 		{
@@ -126,15 +128,13 @@ public class FpsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private void onFocusChanged(FocusChanged event)
 	{
 		drawListener.onFocusChanged(event);
 		overlay.onFocusChanged(event);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		shutdown = event.getGameState() != GameState.LOGGED_IN;
 	}
@@ -142,6 +142,8 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		limitMode = fpsConfig.limitMode();
 		drawFps = fpsConfig.drawFps();
 		drawPing = fpsConfig.drawPing();
@@ -160,9 +162,18 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		drawManager.unregisterEveryFrameListener(drawListener);
 		shutdown = true;
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
 	private void getPingToCurrentWorld()

@@ -58,7 +58,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -111,6 +111,9 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private GroundMarkerMinimapOverlay minimapOverlay;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Inject
 	private KeyManager keyManager;
@@ -272,8 +275,7 @@ public class GroundMarkerPlugin extends Plugin
 		return point;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
@@ -284,8 +286,7 @@ public class GroundMarkerPlugin extends Plugin
 		loadPoints();
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
+	private void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
 		{
@@ -293,8 +294,7 @@ public class GroundMarkerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
@@ -328,8 +328,7 @@ public class GroundMarkerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (!event.getOption().contains(MARK) && !event.getOption().contains(UNMARK))
 		{
@@ -356,6 +355,7 @@ public class GroundMarkerPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
@@ -366,10 +366,20 @@ public class GroundMarkerPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
 		keyManager.unregisterKeyListener(inputListener);
 		points.clear();
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
 	private void markTile(LocalPoint localPoint, int group)
@@ -424,8 +434,7 @@ public class GroundMarkerPlugin extends Plugin
 		return color;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("groundMarker"))
 		{

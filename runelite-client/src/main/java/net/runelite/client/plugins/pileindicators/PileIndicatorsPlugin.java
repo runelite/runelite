@@ -40,7 +40,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -71,6 +71,9 @@ public class PileIndicatorsPlugin extends Plugin
 	@Inject
 	private PileIndicatorsOverlay overlay;
 
+	@Inject
+	private EventBus eventBus;
+
 	private boolean enablePlayers;
 	private boolean wildyOnlyPlayer;
 	private Color playerPileColor;
@@ -95,12 +98,16 @@ public class PileIndicatorsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+
 		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
 		overlayManager.remove(overlay);
 	}
 
@@ -196,8 +203,7 @@ public class PileIndicatorsPlugin extends Plugin
 		return pileType;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("pileindicators"))
 		{

@@ -47,7 +47,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -87,6 +87,9 @@ public class HiscorePlugin extends Plugin
 	@Inject
 	private HiscoreConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	private NavigationButton navButton;
 	private HiscorePanel hiscorePanel;
 
@@ -102,6 +105,8 @@ public class HiscorePlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		hiscorePanel = injector.getInstance(HiscorePanel.class);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "normal.png");
@@ -128,6 +133,8 @@ public class HiscorePlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		hiscorePanel.removeInputKeyListener(autocompleter);
 		clientToolbar.removeNavigation(navButton);
 
@@ -137,8 +144,15 @@ public class HiscorePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(PlayerMenuOptionClicked.class, this, this::onPlayerMenuOptionClicked);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("hiscore"))
 		{
@@ -166,8 +180,7 @@ public class HiscorePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (!config.menuOption())
 		{
@@ -201,8 +214,7 @@ public class HiscorePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
+	private void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
 	{
 		if (event.getMenuOption().equals(LOOKUP))
 		{
@@ -210,8 +222,7 @@ public class HiscorePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (!config.bountylookup() || !event.getType().equals(ChatMessageType.GAMEMESSAGE))
 		{

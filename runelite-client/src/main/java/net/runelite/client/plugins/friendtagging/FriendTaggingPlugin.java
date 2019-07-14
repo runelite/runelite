@@ -34,7 +34,7 @@ import net.runelite.api.events.FriendRemoved;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.menus.MenuManager;
@@ -84,9 +84,14 @@ public class FriendTaggingPlugin extends Plugin
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		menuManager.addManagedCustomMenu(friendsTabMenuOption);
 		menuManager.addManagedCustomMenu(ignoreTabMenuOption);
 		menuManager.addManagedCustomMenu(friendTabResizableOption);
@@ -97,14 +102,24 @@ public class FriendTaggingPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		menuManager.removeManagedCustomMenu(friendsTabMenuOption);
 		menuManager.removeManagedCustomMenu(ignoreTabMenuOption);
 		menuManager.removeManagedCustomMenu(friendTabResizableOption);
 		menuManager.removeManagedCustomMenu(ignoreTabResizableOption);
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(FriendRemoved.class, this, this::onFriendRemoved);
+		eventBus.subscribe(NameableNameChanged.class, this, this::onNameableNameChanged);
+		eventBus.subscribe(WidgetMenuOptionClicked.class, this, this::onWidgetMenuOptionClicked);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+	}
+
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		final int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 
@@ -127,15 +142,13 @@ public class FriendTaggingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onFriendRemoved(FriendRemoved event)
+	private void onFriendRemoved(FriendRemoved event)
 	{
 		final String displayName = event.getName().trim().toLowerCase();
 		deleteTag(displayName);
 	}
 
-	@Subscribe
-	public void onNameableNameChanged(NameableNameChanged event)
+	private void onNameableNameChanged(NameableNameChanged event)
 	{
 		final Nameable nameable = event.getNameable();
 
@@ -150,8 +163,7 @@ public class FriendTaggingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
+	private void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
 		if (event.getWidget().getId() == WidgetInfo.FIXED_VIEWPORT_FRIENDS_TAB.getId() &&
 			Text.standardize(event.getMenuTarget()).equals(Text.standardize("clipboard")))
@@ -160,8 +172,7 @@ public class FriendTaggingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (WidgetInfo.TO_GROUP(event.getActionParam1()) == WidgetInfo.FRIENDS_LIST.getGroupId())
 		{

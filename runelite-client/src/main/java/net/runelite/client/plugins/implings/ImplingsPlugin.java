@@ -42,7 +42,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -77,7 +77,6 @@ public class ImplingsPlugin extends Plugin
 	@Inject
 	private ImplingCounterOverlay implingCounterOverlay;
 
-
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -86,6 +85,9 @@ public class ImplingsPlugin extends Plugin
 
 	@Inject
 	private ImplingsConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	private boolean showBaby;
 	private Color getBabyColor;
@@ -128,6 +130,7 @@ public class ImplingsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		dynamicSpawns.put(DYNAMIC_SPAWN_NATURE_DRAGON, "T3 Nature-Lucky Dynamic");
 		dynamicSpawns.put(DYNAMIC_SPAWN_ECLECTIC, "T2 Eclectic Dynamic");
@@ -141,13 +144,23 @@ public class ImplingsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
 		overlayManager.remove(implingCounterOverlay);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+	}
+
+	private void onGameTick(GameTick event)
 	{
 		implingCounterMap.clear();
 		for (NPC npc : implings)
@@ -171,8 +184,7 @@ public class ImplingsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned npcSpawned)
+	private void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
 		Impling impling = Impling.findImpling(npc.getId());
@@ -183,8 +195,7 @@ public class ImplingsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
 		{
@@ -193,8 +204,7 @@ public class ImplingsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		if (implings.isEmpty())
 		{
@@ -291,8 +301,7 @@ public class ImplingsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("implings"))
 		{

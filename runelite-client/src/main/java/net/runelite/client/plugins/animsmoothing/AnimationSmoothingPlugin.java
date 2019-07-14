@@ -30,7 +30,7 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -51,6 +51,9 @@ public class AnimationSmoothingPlugin extends Plugin
 	@Inject
 	private AnimationSmoothingConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	AnimationSmoothingConfig getConfig(ConfigManager configManager)
 	{
@@ -60,20 +63,23 @@ public class AnimationSmoothingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+
 		update();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		client.setInterpolatePlayerAnimations(false);
 		client.setInterpolateNpcAnimations(false);
 		client.setInterpolateObjectAnimations(false);
 		client.setInterpolateWidgetAnimations(false);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(CONFIG_GROUP))
 		{

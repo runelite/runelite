@@ -46,7 +46,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -92,21 +92,36 @@ public class SpecialCounterPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
 		wsClient.registerMessage(SpecialCounterUpdate.class);
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		removeCounters();
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(SpecialCounterUpdate.class, this, this::onSpecialCounterUpdate);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
@@ -122,8 +137,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		int specialPercentage = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
 
@@ -142,7 +156,6 @@ public class SpecialCounterPlugin extends Plugin
 		specialHitpointsExperience = client.getSkillExperience(Skill.HITPOINTS);
 	}
 
-	@Subscribe
 	private void onGameTick(GameTick tick)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -219,8 +232,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC actor = npcDespawned.getNpc();
 
@@ -230,8 +242,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onSpecialCounterUpdate(SpecialCounterUpdate event)
+	private void onSpecialCounterUpdate(SpecialCounterUpdate event)
 	{
 		if (party.getLocalMember().getMemberId().equals(event.getMemberId()))
 		{

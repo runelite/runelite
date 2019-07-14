@@ -51,7 +51,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTAPlugin;
@@ -79,6 +79,7 @@ public class AlchemyRoom extends MTARoom
 	private final Client client;
 	private final ItemManager itemManager;
 	private final InfoBoxManager infoBoxManager;
+	private final EventBus eventBus;
 
 	private AlchemyItem best;
 	private Cupboard suggestion;
@@ -86,19 +87,30 @@ public class AlchemyRoom extends MTARoom
 	private boolean alchemy;
 
 	@Inject
-	private AlchemyRoom(final Client client, final MTAConfig config, final MTAPlugin plugin, final ItemManager itemManager, final InfoBoxManager infoBoxManager)
+	private AlchemyRoom(final Client client, final MTAConfig config, final MTAPlugin plugin, final ItemManager itemManager, final InfoBoxManager infoBoxManager, final EventBus eventBus)
 	{
 		super(config);
 		this.client = client;
 		this.plugin = plugin;
 		this.itemManager = itemManager;
 		this.infoBoxManager = infoBoxManager;
+		this.eventBus = eventBus;
 
 		this.alchemy = config.alchemy();
+
+		addSubscriptions();
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+	}
+
+	private void onGameTick(GameTick event)
 	{
 		if (!inside() || !this.alchemy)
 		{
@@ -130,9 +142,7 @@ public class AlchemyRoom extends MTARoom
 		}
 	}
 
-
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		if (!inside())
 		{
@@ -203,8 +213,7 @@ public class AlchemyRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
@@ -215,8 +224,7 @@ public class AlchemyRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage wrapper)
+	private void onChatMessage(ChatMessage wrapper)
 	{
 		if (!inside() || !config.alchemy())
 		{
@@ -259,8 +267,7 @@ public class AlchemyRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("mta") || !event.getKey().equals("alchemy"))
 		{

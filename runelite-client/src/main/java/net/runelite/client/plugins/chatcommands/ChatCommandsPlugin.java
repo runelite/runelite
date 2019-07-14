@@ -56,7 +56,7 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -140,9 +140,14 @@ public class ChatCommandsPlugin extends Plugin
 	@Inject
 	private ChatKeyboardListener chatKeyboardListener;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Override
 	public void startUp()
 	{
+		addSubscriptions();
+
 		keyManager.registerKeyListener(chatKeyboardListener);
 
 		chatCommandManager.registerCommandAsync(TOTAL_LEVEL_COMMAND_STRING, this::playerSkillLookup);
@@ -160,6 +165,8 @@ public class ChatCommandsPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
+		eventBus.unregister(this);
+
 		lastBossKill = null;
 
 		keyManager.unregisterKeyListener(chatKeyboardListener);
@@ -174,6 +181,14 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(PB_COMMAND);
 		chatCommandManager.unregisterCommand(GC_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
 	}
 
 	@Provides
@@ -208,8 +223,7 @@ public class ChatCommandsPlugin extends Plugin
 		return personalBest == null ? 0 : personalBest;
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() != ChatMessageType.TRADE
 			&& chatMessage.getType() != ChatMessageType.GAMEMESSAGE
@@ -324,8 +338,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (!logKills)
 		{
@@ -361,8 +374,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widget)
+	private void onWidgetLoaded(WidgetLoaded widget)
 	{
 		// don't load kc if in an instance, if the player is in another players poh
 		// and reading their boss log
@@ -374,8 +386,7 @@ public class ChatCommandsPlugin extends Plugin
 		logKills = true;
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		hiscoreEndpoint = getLocalHiscoreEndpointType();
 	}

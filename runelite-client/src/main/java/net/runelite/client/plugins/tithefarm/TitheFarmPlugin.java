@@ -39,7 +39,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -62,6 +62,9 @@ public class TitheFarmPlugin extends Plugin
 	@Inject
 	private TitheFarmPluginConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<TitheFarmPlant> plants = new HashSet<>();
 
@@ -82,6 +85,8 @@ public class TitheFarmPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(titheFarmOverlay);
 		titheFarmOverlay.updateConfig();
 	}
@@ -89,11 +94,19 @@ public class TitheFarmPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(titheFarmOverlay);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("tithefarmplugin"))
 		{
@@ -103,14 +116,12 @@ public class TitheFarmPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(final GameTick event)
+	private void onGameTick(final GameTick event)
 	{
 		plants.removeIf(plant -> plant.getPlantTimeRelative() == 1);
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 

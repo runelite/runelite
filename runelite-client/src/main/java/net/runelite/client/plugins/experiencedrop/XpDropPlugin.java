@@ -55,7 +55,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -88,6 +88,9 @@ public class XpDropPlugin extends Plugin
 
 	@Inject
 	private XpDropOverlay overlay;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int damage = 0;
@@ -126,6 +129,7 @@ public class XpDropPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		damageMode = config.showdamagedrops();
 
@@ -138,11 +142,22 @@ public class XpDropPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(ExperienceChanged.class, this, this::onExperienceChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("xpdrop"))
 		{
@@ -171,15 +186,13 @@ public class XpDropPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		damage = 0;
 		tickShow = 0;
 	}
 
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		Widget widget = event.getWidget();
 
@@ -303,8 +316,7 @@ public class XpDropPlugin extends Plugin
 		return null;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		lastOpponent = client.getLocalPlayer().getInteracting();
 
@@ -339,8 +351,7 @@ public class XpDropPlugin extends Plugin
 		client.runScript(XPDROP_DISABLED, lastSkill.ordinal(), previousExpGained);
 	}
 
-	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	private void onExperienceChanged(ExperienceChanged event)
 	{
 		final Skill skill = event.getSkill();
 		final int xp = client.getSkillExperience(skill);
@@ -355,8 +366,7 @@ public class XpDropPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent e)
+	private void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
 		if (this.showdamagedrops == XpDropConfig.DamageMode.NONE)
 		{

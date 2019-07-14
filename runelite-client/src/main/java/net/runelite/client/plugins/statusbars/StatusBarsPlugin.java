@@ -42,7 +42,7 @@ import net.runelite.api.NPCDefinition;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -94,6 +94,9 @@ public class StatusBarsPlugin extends Plugin
 	@Inject
 	private StatusBarsConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private Instant lastCombatAction;
 
@@ -114,6 +117,7 @@ public class StatusBarsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(overlay);
 		barRenderers.put(BarMode.DISABLED, null);
@@ -128,8 +132,7 @@ public class StatusBarsPlugin extends Plugin
 		this.lastCombatAction = Instant.now();
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (!this.toggleRestorationBars)
 		{
@@ -167,8 +170,16 @@ public class StatusBarsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		barRenderers.clear();
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
 	@Provides
@@ -177,8 +188,7 @@ public class StatusBarsPlugin extends Plugin
 		return configManager.getConfig(StatusBarsConfig.class);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"statusbars".equals(event.getGroup()))
 		{

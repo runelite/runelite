@@ -43,7 +43,7 @@ import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -62,6 +62,9 @@ public class MetronomePlugin extends Plugin
 
 	@Inject
 	private MetronomePluginConfiguration config;
+
+	@Inject
+	private EventBus eventBus;
 
 	private int tickCounter = 0;
 	private int tockCounter = 0;
@@ -111,6 +114,7 @@ public class MetronomePlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
 
 		tickClip = GetAudioClip(this.tickPath);
 		tockClip = GetAudioClip(this.tockPath);
@@ -119,6 +123,8 @@ public class MetronomePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		if (tickClip != null)
 		{
 			tickClip.close();
@@ -129,8 +135,13 @@ public class MetronomePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("metronome"))
 		{
@@ -166,8 +177,7 @@ public class MetronomePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		if (this.tickCount == 0)
 		{

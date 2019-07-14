@@ -30,7 +30,7 @@ import javax.inject.Singleton;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
@@ -65,6 +65,9 @@ public class ShiftWalkerPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private boolean shiftWalk;
 	private boolean shiftLoot;
 
@@ -80,17 +83,26 @@ public class ShiftWalkerPlugin extends Plugin
 		this.shiftWalk = config.shiftWalk();
 		this.shiftLoot = config.shiftLoot();
 
+		addSubscriptions();
+
 		keyManager.registerKeyListener(inputListener);
 	}
 
 	@Override
 	public void shutDown()
 	{
+		eventBus.unregister(this);
+
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+	}
+
+	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
 		{
@@ -117,8 +129,7 @@ public class ShiftWalkerPlugin extends Plugin
 		menuManager.removePriorityEntry(WALK_HERE);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("shiftwalkhere"))
 		{

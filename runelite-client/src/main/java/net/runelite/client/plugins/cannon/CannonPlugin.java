@@ -159,7 +159,7 @@ public class CannonPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		super.shutDown();
+		eventbus.unregister(this);
 
 		cannonSpotOverlay.setHidden(true);
 		overlayManager.remove(cannonOverlay);

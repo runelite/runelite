@@ -48,7 +48,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
@@ -70,6 +70,9 @@ public class MusicListPlugin extends Plugin
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private ChatboxTextInput searchInput;
 
 	private Widget musicSearchButton;
@@ -82,12 +85,16 @@ public class MusicListPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
 		clientThread.invoke(this::addMusicButtons);
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		Widget header = client.getWidget(WidgetInfo.MUSIC_WINDOW);
 		if (header != null)
 		{
@@ -97,8 +104,14 @@ public class MusicListPlugin extends Plugin
 		tracks = null;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(VarClientIntChanged.class, this, this::onVarClientIntChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -108,8 +121,7 @@ public class MusicListPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() == WidgetID.MUSIC_GROUP_ID)
 		{
@@ -160,8 +172,7 @@ public class MusicListPlugin extends Plugin
 		musicFilterButton.revalidate();
 	}
 
-	@Subscribe
-	public void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
+	private void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
 		if (isChatboxOpen() && !isOnMusicTab())
 		{

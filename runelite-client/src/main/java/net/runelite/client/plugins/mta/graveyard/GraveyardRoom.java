@@ -38,7 +38,7 @@ import net.runelite.api.Player;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTAPlugin;
@@ -55,21 +55,32 @@ public class GraveyardRoom extends MTARoom
 	private final MTAPlugin plugin;
 	private final ItemManager itemManager;
 	private final InfoBoxManager infoBoxManager;
+	private final EventBus eventBus;
 
 	private GraveyardCounter counter;
 
 	private boolean graveyard;
 
 	@Inject
-	private GraveyardRoom(final MTAConfig config, final Client client, final MTAPlugin plugin, final ItemManager itemManager, final InfoBoxManager infoBoxManager)
+	private GraveyardRoom(final MTAConfig config, final Client client, final MTAPlugin plugin, final ItemManager itemManager, final InfoBoxManager infoBoxManager, final EventBus eventBus)
 	{
 		super(config);
 		this.client = client;
 		this.plugin = plugin;
 		this.itemManager = itemManager;
 		this.infoBoxManager = infoBoxManager;
+		this.eventBus = eventBus;
 
 		this.graveyard = config.graveyard();
+
+		addSubscriptions();
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
 	}
 
 	@Override
@@ -80,8 +91,7 @@ public class GraveyardRoom extends MTARoom
 			&& player.getWorldLocation().getPlane() == 1;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		if ((!inside() || !this.graveyard) && this.counter != null)
 		{
@@ -90,8 +100,7 @@ public class GraveyardRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (!inside())
 		{
@@ -114,8 +123,7 @@ public class GraveyardRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("mta") || !event.getKey().equals("graveyard"))
 		{

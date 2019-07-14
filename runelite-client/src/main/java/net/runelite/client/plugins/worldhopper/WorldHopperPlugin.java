@@ -72,7 +72,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -130,6 +130,9 @@ public class WorldHopperPlugin extends Plugin
 	@Inject
 	private WorldHopperConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	private ScheduledExecutorService hopperExecutorService;
 
 	private NavigationButton navButton;
@@ -183,6 +186,7 @@ public class WorldHopperPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 		
 		firstRun = true;
 
@@ -219,6 +223,8 @@ public class WorldHopperPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		pingFuture.cancel(true);
 		pingFuture = null;
 
@@ -236,8 +242,19 @@ public class WorldHopperPlugin extends Plugin
 		hopperExecutorService = null;
 	}
 
-	@Subscribe
-	public void onConfigChanged(final ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(PlayerMenuOptionClicked.class, this, this::onPlayerMenuOptionClicked);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(WorldListLoad.class, this, this::onWorldListLoad);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+	}
+
+	private void onConfigChanged(final ConfigChanged event)
 	{
 		if (event.getGroup().equals(WorldHopperConfig.GROUP))
 		{
@@ -320,8 +337,7 @@ public class WorldHopperPlugin extends Plugin
 		panel.updateFavoriteMenu(world.getId(), false);
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		int old1 = favoriteWorld1;
 		int old2 = favoriteWorld2;
@@ -335,8 +351,7 @@ public class WorldHopperPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (!config.menuOption())
 		{
@@ -405,8 +420,7 @@ public class WorldHopperPlugin extends Plugin
 		client.setMenuEntries(newMenu);
 	}
 
-	@Subscribe
-	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
+	private void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
 	{
 		if (!event.getMenuOption().equals(HOP_TO))
 		{
@@ -421,8 +435,7 @@ public class WorldHopperPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		// If the player has disabled the side bar plugin panel, do not update the UI
 		if (this.showSidebar && gameStateChanged.getGameState() == GameState.LOGGED_IN)
@@ -436,8 +449,7 @@ public class WorldHopperPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWorldListLoad(WorldListLoad worldListLoad)
+	private void onWorldListLoad(WorldListLoad worldListLoad)
 	{
 		if (!this.showSidebar)
 		{
@@ -672,8 +684,7 @@ public class WorldHopperPlugin extends Plugin
 		displaySwitcherAttempts = 0;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (quickHopTargetWorld == null)
 		{
@@ -711,8 +722,7 @@ public class WorldHopperPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE)
 		{

@@ -44,7 +44,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -80,6 +80,9 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private long lastReset;
 	private boolean loggingIn;
 
@@ -103,6 +106,9 @@ public class DailyTasksPlugin extends Plugin
 	public void startUp()
 	{
 		updateConfig();
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+
+		addSubscriptions();
 
 		loggingIn = true;
 	}
@@ -110,11 +116,19 @@ public class DailyTasksPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
+		eventBus.unregister(this);
+
+		eventBus.unregister(this);
 		lastReset = 0L;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGING_IN)
 		{
@@ -122,8 +136,7 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		long currentTime = System.currentTimeMillis();
 		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
@@ -298,8 +311,7 @@ public class DailyTasksPlugin extends Plugin
 				.build());
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals("dailytaskindicators"))
 		{

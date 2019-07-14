@@ -53,7 +53,6 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ClientUI;
 
 @Slf4j
@@ -86,8 +85,6 @@ class WidgetInspector extends JFrame
 		this.config = config;
 		this.overlay = overlay;
 
-		eventBus.register(this);
-
 		setTitle("RuneLite Widget Inspector");
 		setIconImage(ClientUI.ICON);
 
@@ -97,6 +94,7 @@ class WidgetInspector extends JFrame
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
+				eventBus.unregister(this);
 				close();
 				plugin.getWidgetInspector().setActive(false);
 			}
@@ -165,9 +163,10 @@ class WidgetInspector extends JFrame
 		add(split, BorderLayout.CENTER);
 
 		pack();
+
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 	}
 
-	@Subscribe
 	private void onConfigChanged(ConfigChanged ev)
 	{
 		boolean onTop = config.inspectorAlwaysOnTop();
