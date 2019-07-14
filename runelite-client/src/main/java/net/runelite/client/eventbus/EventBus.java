@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Singleton
 public class EventBus implements EventBusInterface
 {
@@ -43,7 +45,10 @@ public class EventBus implements EventBusInterface
 		Disposable disposable = getSubject(eventClass)
 			.filter(Objects::nonNull) // Filter out null objects, better safe than sorry
 			.cast(eventClass) // Cast it for easier usage
-			.subscribe(action);
+			.subscribe(action, error ->
+			{
+				log.error("Error in eventbus: {}", error.getMessage());
+			});
 
 		getCompositeDisposable(lifecycle).add(disposable);
 	}
