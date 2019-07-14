@@ -85,6 +85,8 @@ class WidgetInspector extends JFrame
 		this.config = config;
 		this.overlay = overlay;
 
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+
 		setTitle("RuneLite Widget Inspector");
 		setIconImage(ClientUI.ICON);
 
@@ -164,7 +166,6 @@ class WidgetInspector extends JFrame
 
 		pack();
 
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 	}
 
 	private void onConfigChanged(ConfigChanged ev)

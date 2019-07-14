@@ -171,14 +171,6 @@ class VarInspector extends JFrame
 
 		pack();
 
-		addSubscriptions();
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(VarClientIntChanged.class, this, this::onVarClientIntChanged);
-		eventBus.subscribe(VarClientStrChanged.class, this, this::onVarClientStrChanged);
 	}
 
 	private void addVarLog(VarType type, String name, int old, int neew)
@@ -355,6 +347,10 @@ class VarInspector extends JFrame
 		varcs = new HashMap<>(client.getVarcMap());
 
 		// eventBus.register(this);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(VarClientIntChanged.class, this, this::onVarClientIntChanged);
+		eventBus.subscribe(VarClientStrChanged.class, this, this::onVarClientStrChanged);
+
 		setVisible(true);
 		toFront();
 		repaint();
