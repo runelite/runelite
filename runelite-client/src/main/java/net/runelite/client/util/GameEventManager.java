@@ -191,8 +191,6 @@ public class GameEventManager
 					}
 				});
 			});
-
-			eventBus.unregister(subscriber);
 		});
 	}
 }
