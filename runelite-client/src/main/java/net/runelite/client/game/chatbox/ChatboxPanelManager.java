@@ -180,7 +180,7 @@ public class ChatboxPanelManager
 			log.warn("Exception closing {}", currentInput.getClass(), e);
 		}
 
-		// eventBus.unregister(currentInput);
+		eventBus.unregister(currentInput);
 		if (currentInput instanceof KeyListener)
 		{
 			keyManager.unregisterKeyListener((KeyListener) currentInput);

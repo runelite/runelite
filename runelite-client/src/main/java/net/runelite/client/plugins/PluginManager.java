@@ -392,7 +392,7 @@ public class PluginManager
 		try
 		{
 			unschedule(plugin);
-			// eventBus.unregister(plugin);
+			eventBus.unregister(plugin);
 
 			// plugins always stop in the event thread
 			SwingUtilities.invokeAndWait(() ->
