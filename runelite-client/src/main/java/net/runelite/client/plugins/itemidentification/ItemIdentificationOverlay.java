@@ -68,6 +68,12 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case SACK:
+				if (!config.showSacks())
+				{
+					return;
+				}
+				break;
 			case HERB:
 				if (!config.showHerbs())
 				{

@@ -65,6 +65,16 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showSacks",
+			name = "Sacks",
+			description = "Show identification on Sacks"
+	)
+	default boolean showSacks()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showHerbs",
 		name = "Herbs",
 		description = "Show identification on Herbs"
