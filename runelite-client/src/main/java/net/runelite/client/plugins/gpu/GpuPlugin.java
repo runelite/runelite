@@ -66,17 +66,12 @@ import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -127,7 +122,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private PluginManager pluginManager;
 
 	@Inject
-	private EventBusImplementation eventbus;
+	private EventBus eventbus;
 
 	private Canvas canvas;
 	private JAWTWindow jawtWindow;
@@ -450,17 +445,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void addSubscriptions()
 	{
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameStateChanged.class)
-				.subscribe(this::onGameStateChanged)
-		);
 
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ConfigChanged.class)
-				.subscribe(this::onConfigChanged)
-		);
+		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
+		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
 	}
 
 	@Provides

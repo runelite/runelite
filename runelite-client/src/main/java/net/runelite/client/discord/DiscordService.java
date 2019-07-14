@@ -39,7 +39,6 @@ import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.discord.events.DiscordReady;
 import net.runelite.client.discord.events.DiscordSpectateGame;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.discord.DiscordEventHandlers;
 import net.runelite.discord.DiscordRPC;
 import net.runelite.discord.DiscordRichPresence;
@@ -49,7 +48,7 @@ import net.runelite.discord.DiscordUser;
 @Slf4j
 public class DiscordService implements AutoCloseable
 {
-	private final EventBusImplementation eventBus;
+	private final EventBus eventBus;
 	private final RuneLiteProperties runeLiteProperties;
 	private final ScheduledExecutorService executorService;
 	private final DiscordRPC discordRPC;
@@ -62,7 +61,7 @@ public class DiscordService implements AutoCloseable
 
 	@Inject
 	private DiscordService(
-		final EventBusImplementation eventBus,
+		final EventBus eventBus,
 		final RuneLiteProperties runeLiteProperties,
 		final ScheduledExecutorService executorService)
 	{
@@ -199,7 +198,7 @@ public class DiscordService implements AutoCloseable
 	{
 		log.info("Discord RPC service is ready with user {}.", user.username);
 		currentUser = user;
-		eventBus.post(new DiscordReady(
+		eventBus.post(DiscordReady.class, new DiscordReady(
 			user.userId,
 			user.username,
 			user.discriminator,
@@ -208,28 +207,28 @@ public class DiscordService implements AutoCloseable
 
 	private void disconnected(int errorCode, String message)
 	{
-		eventBus.post(new DiscordDisconnected(errorCode, message));
+		eventBus.post(DiscordDisconnected.class, new DiscordDisconnected(errorCode, message));
 	}
 
 	private void errored(int errorCode, String message)
 	{
 		log.warn("Discord error: {} - {}", errorCode, message);
-		eventBus.post(new DiscordErrored(errorCode, message));
+		eventBus.post(DiscordErrored.class, new DiscordErrored(errorCode, message));
 	}
 
 	private void joinGame(String joinSecret)
 	{
-		eventBus.post(new DiscordJoinGame(joinSecret));
+		eventBus.post(DiscordJoinGame.class, new DiscordJoinGame(joinSecret));
 	}
 
 	private void spectateGame(String spectateSecret)
 	{
-		eventBus.post(new DiscordSpectateGame(spectateSecret));
+		eventBus.post(DiscordSpectateGame.class, new DiscordSpectateGame(spectateSecret));
 	}
 
 	private void joinRequest(DiscordUser user)
 	{
-		eventBus.post(new DiscordJoinRequest(
+		eventBus.post(DiscordJoinRequest.class, new DiscordJoinRequest(
 			user.userId,
 			user.username,
 			user.discriminator,

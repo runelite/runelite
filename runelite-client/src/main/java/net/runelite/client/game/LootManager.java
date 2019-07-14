@@ -53,7 +53,7 @@ import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PlayerDespawned;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 
@@ -65,7 +65,7 @@ public class LootManager
 		NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH
 	);
 
-	private final EventBusImplementation eventBus;
+	private final EventBus eventBus;
 	private final Client client;
 	private final ListMultimap<Integer, ItemStack> itemSpawns = ArrayListMultimap.create();
 	private final Set<LocalPoint> killPoints = new HashSet<>();
@@ -74,33 +74,20 @@ public class LootManager
 
 	@Inject
 	private LootManager(
-		final EventBusImplementation eventBus,
+		final EventBus eventBus,
 		final Client client
 	)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
 
-		eventBus.observableOfType(GameTick.class)
-			.subscribe(this::onGameTick);
-
-		eventBus.observableOfType(NpcDespawned.class)
-			.subscribe(this::onNpcDespawned);
-
-		eventBus.observableOfType(PlayerDespawned.class)
-			.subscribe(this::onPlayerDespawned);
-
-		eventBus.observableOfType(ItemSpawned.class)
-			.subscribe(this::onItemSpawned);
-
-		eventBus.observableOfType(ItemDespawned.class)
-			.subscribe(this::onItemDespawned);
-
-		eventBus.observableOfType(ItemQuantityChanged.class)
-			.subscribe(this::onItemQuantityChanged);
-
-		eventBus.observableOfType(AnimationChanged.class)
-			.subscribe(this::onAnimationChanged);
+		eventBus.subscribe(GameTick.class, this, o -> this.onGameTick((GameTick) o));
+		eventBus.subscribe(NpcDespawned.class, this, o -> this.onNpcDespawned((NpcDespawned) o));
+		eventBus.subscribe(PlayerDespawned.class, this, o -> this.onPlayerDespawned((PlayerDespawned) o));
+		eventBus.subscribe(ItemSpawned.class, this, o -> this.onItemSpawned((ItemSpawned) o));
+		eventBus.subscribe(ItemDespawned.class, this, o -> this.onItemDespawned((ItemDespawned) o));
+		eventBus.subscribe(ItemQuantityChanged.class, this, o -> this.onItemQuantityChanged((ItemQuantityChanged) o));
+		eventBus.subscribe(AnimationChanged.class, this, o -> this.onAnimationChanged((AnimationChanged) o));
 	}
 
 	private void onNpcDespawned(NpcDespawned npcDespawned)
@@ -171,7 +158,7 @@ public class LootManager
 		}
 
 		killPoints.add(location);
-		eventBus.post(new PlayerLootReceived(player, items));
+		eventBus.post(PlayerLootReceived.class, new PlayerLootReceived(player, items));
 	}
 
 	private void onItemSpawned(ItemSpawned itemSpawned)
@@ -273,7 +260,7 @@ public class LootManager
 		}
 
 		killPoints.add(location);
-		eventBus.post(new NpcLootReceived(npc, allItems));
+		eventBus.post(NpcLootReceived.class, new NpcLootReceived(npc, allItems));
 	}
 
 	private WorldPoint getDropLocation(NPC npc, WorldPoint worldLocation)

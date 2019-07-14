@@ -66,7 +66,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -117,7 +117,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private EventBusImplementation eventbus;
+	private EventBus eventbus;
 
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hotKeyPressed = false;
@@ -226,7 +226,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		super.shutDown();
+		eventbus.unregister(this);
 
 		overlayManager.remove(npcSceneOverlay);
 		overlayManager.remove(npcMinimapOverlay);
@@ -242,65 +242,16 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private void addSubscriptions()
 	{
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameStateChanged.class)
-				.subscribe(this::onGameStateChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ConfigChanged.class)
-				.subscribe(this::onConfigChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(FocusChanged.class)
-				.subscribe(this::onFocusChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(MenuEntryAdded.class)
-				.subscribe(this::onMenuEntryAdded)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(MenuOptionClicked.class)
-				.subscribe(this::onMenuOptionClicked)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(NpcSpawned.class)
-				.subscribe(this::onNpcSpawned)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(NpcDefinitionChanged.class)
-				.subscribe(this::onNpcDefinitionChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(NpcDespawned.class)
-				.subscribe(this::onNpcDespawned)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GraphicsObjectCreated.class)
-				.subscribe(this::onGraphicsObjectCreated)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameTick.class)
-				.subscribe(this::onGameTick)
-		);
+		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
+		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
+		eventbus.subscribe(FocusChanged.class, this, o -> this.onFocusChanged((FocusChanged) o));
+		eventbus.subscribe(MenuEntryAdded.class, this, o -> this.onMenuEntryAdded((MenuEntryAdded) o));
+		eventbus.subscribe(MenuOptionClicked.class, this, o -> this.onMenuOptionClicked((MenuOptionClicked) o));
+		eventbus.subscribe(NpcSpawned.class, this, o -> this.onNpcSpawned((NpcSpawned) o));
+		eventbus.subscribe(NpcDefinitionChanged.class, this, o -> this.onNpcDefinitionChanged((NpcDefinitionChanged) o));
+		eventbus.subscribe(NpcDespawned.class, this, o -> this.onNpcDespawned((NpcDespawned) o));
+		eventbus.subscribe(GraphicsObjectCreated.class, this, o -> this.onGraphicsObjectCreated((GraphicsObjectCreated) o));
+		eventbus.subscribe(GameTick.class, this, o -> this.onGameTick((GameTick) o));
 	}
 
 	private void onGameStateChanged(GameStateChanged event)

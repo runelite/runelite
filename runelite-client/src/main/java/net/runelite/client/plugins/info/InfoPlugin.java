@@ -27,9 +27,7 @@ package net.runelite.client.plugins.info;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
@@ -50,7 +48,7 @@ public class InfoPlugin extends Plugin
 	private ClientToolbar clientToolbar;
 
 	@Inject
-	private EventBusImplementation eventbus;
+	private EventBus eventbus;
 
 	private NavigationButton navButton;
 
@@ -80,23 +78,14 @@ public class InfoPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		super.shutDown();
+		eventbus.unregister(this);
 
 		clientToolbar.removeNavigation(navButton);
 	}
 
 	private void addSubscriptions()
 	{
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(SessionOpen.class)
-				.subscribe(panel::onSessionOpen)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(SessionClose.class)
-				.subscribe(panel::onSessionClose)
-		);
+		eventbus.subscribe(SessionOpen.class, this, o -> panel.onSessionOpen((SessionOpen) o));
+		eventbus.subscribe(SessionClose.class, this, o -> panel.onSessionClose((SessionClose) o));
 	}
 }

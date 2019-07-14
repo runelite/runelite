@@ -64,7 +64,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -109,7 +109,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private KeyManager keyManager;
 
 	@Inject
-	private EventBusImplementation eventbus;
+	private EventBus eventbus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private RenderStyle objectMarkerRenderStyle;
@@ -139,13 +139,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown()
 	{
-		try
-		{
-			super.shutDown();
-		}
-		catch (Exception e)
-		{
-		}
+		eventbus.unregister(this);
 
 		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(this);
@@ -156,65 +150,15 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 	private void addSubscriptions()
 	{
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(FocusChanged.class)
-				.subscribe(this::onFocusChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameObjectSpawned.class)
-				.subscribe(this::onGameObjectSpawned)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(DecorativeObjectSpawned.class)
-				.subscribe(this::onDecorativeObjectSpawned)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameObjectDespawned.class)
-				.subscribe(this::onGameObjectDespawned)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(DecorativeObjectDespawned.class)
-				.subscribe(this::onDecorativeObjectDespawned)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameStateChanged.class)
-				.subscribe(this::onGameStateChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(MenuOptionClicked.class)
-				.subscribe(this::onMenuOptionClicked)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameStateChanged.class)
-				.subscribe(this::onGameStateChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(MenuEntryAdded.class)
-				.subscribe(this::onMenuEntryAdded)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ConfigChanged.class)
-				.subscribe(this::onConfigChanged)
-		);
+		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
+		eventbus.subscribe(FocusChanged.class, this, o -> this.onFocusChanged((FocusChanged) o));
+		eventbus.subscribe(GameObjectSpawned.class, this, o -> this.onGameObjectSpawned((GameObjectSpawned) o));
+		eventbus.subscribe(DecorativeObjectSpawned.class, this, o -> this.onDecorativeObjectSpawned((DecorativeObjectSpawned) o));
+		eventbus.subscribe(GameObjectDespawned.class, this, o -> this.onGameObjectDespawned((GameObjectDespawned) o));
+		eventbus.subscribe(DecorativeObjectDespawned.class, this, o -> this.onDecorativeObjectDespawned((DecorativeObjectDespawned) o));
+		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
+		eventbus.subscribe(MenuOptionClicked.class, this, o -> this.onMenuOptionClicked((MenuOptionClicked) o));
+		eventbus.subscribe(MenuEntryAdded.class, this, o -> this.onMenuEntryAdded((MenuEntryAdded) o));
 	}
 
 	@Override

@@ -56,7 +56,7 @@ import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -124,7 +124,7 @@ public class CannonPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private EventBusImplementation eventbus;
+	private EventBus eventbus;
 
 	private boolean lock;
 
@@ -175,41 +175,12 @@ public class CannonPlugin extends Plugin
 
 	private void addSubscriptions()
 	{
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ItemContainerChanged.class)
-				.subscribe(this::onItemContainerChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ConfigChanged.class)
-				.subscribe(this::onConfigChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameObjectSpawned.class)
-				.subscribe(this::onGameObjectSpawned)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ProjectileMoved.class)
-				.subscribe(this::onProjectileMoved)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ChatMessage.class)
-				.subscribe(this::onChatMessage)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameTick.class)
-				.subscribe(this::onGameTick)
-		);
+		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
+		eventbus.subscribe(ItemContainerChanged.class, this, o -> this.onItemContainerChanged((ItemContainerChanged) o));
+		eventbus.subscribe(GameObjectSpawned.class, this, o -> this.onGameObjectSpawned((GameObjectSpawned) o));
+		eventbus.subscribe(ProjectileMoved.class, this, o -> this.onProjectileMoved((ProjectileMoved) o));
+		eventbus.subscribe(ChatMessage.class, this, o -> this.onChatMessage((ChatMessage) o));
+		eventbus.subscribe(GameTick.class, this, o -> this.onGameTick((GameTick) o));
 	}
 
 	private void onItemContainerChanged(ItemContainerChanged event)

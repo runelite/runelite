@@ -96,7 +96,7 @@ public abstract class RSDynamicObjectMixin implements RSDynamicObject
 			DynamicObjectAnimationChanged dynamicObjectAnimationChanged = new DynamicObjectAnimationChanged();
 			dynamicObjectAnimationChanged.setObject(id);
 			dynamicObjectAnimationChanged.setAnimation(animationID);
-			client.getCallbacks().post(dynamicObjectAnimationChanged);
+			client.getCallbacks().post(DynamicObjectAnimationChanged.class, dynamicObjectAnimationChanged);
 		}
 	}
 

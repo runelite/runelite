@@ -20,7 +20,7 @@ public abstract class RSFriendSystemMixin implements RSFriendSystem
 	public void rl$removeFriend(String friendName)
 	{
 		FriendRemoved friendRemoved = new FriendRemoved(friendName);
-		client.getCallbacks().post(friendRemoved);
+		client.getCallbacks().post(FriendRemoved.class, friendRemoved);
 	}
 
 	@MethodHook("addFriend")
@@ -28,6 +28,6 @@ public abstract class RSFriendSystemMixin implements RSFriendSystem
 	public void rl$addFriend(String friendName)
 	{
 		FriendAdded friendAdded = new FriendAdded(friendName);
-		client.getCallbacks().post(friendAdded);
+		client.getCallbacks().post(FriendAdded.class, friendAdded);
 	}
 }

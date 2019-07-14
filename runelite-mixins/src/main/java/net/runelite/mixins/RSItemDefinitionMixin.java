@@ -62,6 +62,6 @@ public abstract class RSItemDefinitionMixin implements RSItemDefinition
 	{
 		final PostItemDefinition event = new PostItemDefinition();
 		event.setItemDefinition(this);
-		client.getCallbacks().post(event);
+		client.getCallbacks().post(PostItemDefinition.class, event);
 	}
 }

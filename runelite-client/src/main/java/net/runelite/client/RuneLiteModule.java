@@ -42,7 +42,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.RuneLitePlusConfig;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
@@ -85,7 +84,7 @@ public class RuneLiteModule extends AbstractModule
 		bind(Callbacks.class).to(Hooks.class);
 
 		bind(EventBus.class)
-			.toInstance(new EventBusImplementation());
+			.toInstance(new EventBus());
 
 		bind(EventBus.class)
 			.annotatedWith(Names.named("Deferred EventBus"))

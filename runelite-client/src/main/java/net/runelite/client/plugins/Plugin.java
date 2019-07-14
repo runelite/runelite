@@ -38,7 +38,6 @@ public abstract class Plugin implements Module
 
 	public File file;
 	public PluginClassLoader loader;
-	private List<Disposable> disposables = new ArrayList<>();
 
 	@Override
 	public void configure(Binder binder)
@@ -51,12 +50,6 @@ public abstract class Plugin implements Module
 
 	protected void shutDown() throws Exception
 	{
-		this.disposables.forEach(Disposable::dispose);
-	}
-
-	protected void addSubscription(Disposable disposable)
-	{
-		this.disposables.add(disposable);
 	}
 
 	public final Injector getInjector()

@@ -698,7 +698,7 @@ public abstract class RSClientMixin implements RSClient
 				)
 			);
 
-			client.getCallbacks().post(event);
+			client.getCallbacks().post(MenuEntryAdded.class, event);
 		}
 	}
 
@@ -909,7 +909,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		DraggingWidgetChanged draggingWidgetChanged = new DraggingWidgetChanged();
 		draggingWidgetChanged.setDraggingWidget(client.isDraggingWidget());
-		client.getCallbacks().post(draggingWidgetChanged);
+		client.getCallbacks().post(DraggingWidgetChanged.class, draggingWidgetChanged);
 	}
 
 	@Inject
@@ -947,7 +947,7 @@ public abstract class RSClientMixin implements RSClient
 		{
 			WidgetLoaded event = new WidgetLoaded();
 			event.setGroupId(groupId);
-			client.getCallbacks().post(event);
+			client.getCallbacks().post(WidgetLoaded.class, event);
 		}
 	}
 
@@ -985,7 +985,7 @@ public abstract class RSClientMixin implements RSClient
 		{
 			Skill updatedSkill = possibleSkills[idx];
 			experienceChanged.setSkill(updatedSkill);
-			client.getCallbacks().post(experienceChanged);
+			client.getCallbacks().post(ExperienceChanged.class, experienceChanged);
 		}
 	}
 
@@ -1000,7 +1000,7 @@ public abstract class RSClientMixin implements RSClient
 			Skill updatedSkill = skills[idx];
 			BoostedLevelChanged boostedLevelChanged = new BoostedLevelChanged();
 			boostedLevelChanged.setSkill(updatedSkill);
-			client.getCallbacks().post(boostedLevelChanged);
+			client.getCallbacks().post(BoostedLevelChanged.class, boostedLevelChanged);
 		}
 	}
 
@@ -1019,7 +1019,7 @@ public abstract class RSClientMixin implements RSClient
 
 		PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
 		optionsChanged.setIndex(idx);
-		client.getCallbacks().post(optionsChanged);
+		client.getCallbacks().post(PlayerMenuOptionsChanged.class, optionsChanged);
 	}
 
 	@FieldHook("gameState")
@@ -1028,7 +1028,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		GameStateChanged gameStateChange = new GameStateChanged();
 		gameStateChange.setGameState(client.getGameState());
-		client.getCallbacks().post(gameStateChange);
+		client.getCallbacks().post(GameStateChanged.class, gameStateChange);
 	}
 
 
@@ -1047,7 +1047,7 @@ public abstract class RSClientMixin implements RSClient
 		{
 			npc.setIndex(idx);
 
-			client.getCallbacks().postDeferred(new NpcSpawned(npc));
+			client.getCallbacks().postDeferred(NpcSpawned.class, new NpcSpawned(npc));
 		}
 	}
 
@@ -1067,11 +1067,11 @@ public abstract class RSClientMixin implements RSClient
 
 		if (oldPlayer != null)
 		{
-			client.getCallbacks().post(new PlayerDespawned(oldPlayer));
+			client.getCallbacks().post(PlayerDespawned.class, new PlayerDespawned(oldPlayer));
 		}
 		if (player != null)
 		{
-			client.getCallbacks().postDeferred(new PlayerSpawned(player));
+			client.getCallbacks().postDeferred(PlayerSpawned.class, new PlayerSpawned(player));
 		}
 	}
 
@@ -1094,7 +1094,7 @@ public abstract class RSClientMixin implements RSClient
 		GrandExchangeOfferChanged offerChangedEvent = new GrandExchangeOfferChanged();
 		offerChangedEvent.setOffer(internalOffer);
 		offerChangedEvent.setSlot(idx);
-		client.getCallbacks().post(offerChangedEvent);
+		client.getCallbacks().post(GrandExchangeOfferChanged.class, offerChangedEvent);
 	}
 
 	@FieldHook("Varps_main")
@@ -1103,7 +1103,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setIndex(idx);
-		client.getCallbacks().post(varbitChanged);
+		client.getCallbacks().post(VarbitChanged.class, varbitChanged);
 	}
 
 	@FieldHook("isResizable")
@@ -1117,7 +1117,7 @@ public abstract class RSClientMixin implements RSClient
 		{
 			ResizeableChanged resizeableChanged = new ResizeableChanged();
 			resizeableChanged.setResized(isResized);
-			client.getCallbacks().post(resizeableChanged);
+			client.getCallbacks().post(ResizeableChanged.class, resizeableChanged);
 
 			oldIsResized = isResized;
 		}
@@ -1127,21 +1127,21 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void clanMemberManagerChanged(int idx)
 	{
-		client.getCallbacks().post(new ClanChanged(client.getClanMemberManager() != null));
+		client.getCallbacks().post(ClanChanged.class, new ClanChanged(client.getClanMemberManager() != null));
 	}
 
 	@FieldHook("canvasWidth")
 	@Inject
 	public static void canvasWidthChanged(int idx)
 	{
-		client.getCallbacks().post(CanvasSizeChanged.INSTANCE);
+		client.getCallbacks().post(CanvasSizeChanged.class, CanvasSizeChanged.INSTANCE);
 	}
 
 	@FieldHook("canvasHeight")
 	@Inject
 	public static void canvasHeightChanged(int idx)
 	{
-		client.getCallbacks().post(CanvasSizeChanged.INSTANCE);
+		client.getCallbacks().post(CanvasSizeChanged.class, CanvasSizeChanged.INSTANCE);
 	}
 
 	@Inject
@@ -1305,7 +1305,7 @@ public abstract class RSClientMixin implements RSClient
 			authentic
 		);
 
-		client.getCallbacks().post(menuOptionClicked);
+		client.getCallbacks().post(MenuOptionClicked.class, menuOptionClicked);
 
 		if (menuOptionClicked.isConsumed())
 		{
@@ -1329,7 +1329,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		if (client.getTempMenuAction() != null)
 		{
-			client.getCallbacks().post(WidgetPressed.INSTANCE);
+			client.getCallbacks().post(WidgetPressed.class, WidgetPressed.INSTANCE);
 		}
 	}
 
@@ -1337,7 +1337,7 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void onUsernameChanged(int idx)
 	{
-		client.getCallbacks().post(UsernameChanged.INSTANCE);
+		client.getCallbacks().post(UsernameChanged.class, UsernameChanged.INSTANCE);
 	}
 
 	@Override
@@ -1368,7 +1368,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		final MenuOpened event = new MenuOpened();
 		event.setMenuEntries(getMenuEntries());
-		callbacks.post(event);
+		callbacks.post(MenuOpened.class, event);
 	}
 
 	@Inject
@@ -1395,7 +1395,7 @@ public abstract class RSClientMixin implements RSClient
 
 		final ChatMessageType chatMessageType = ChatMessageType.of(type);
 		final ChatMessage chatMessage = new ChatMessage(messageNode, chatMessageType, name, message, sender, messageNode.getTimestamp());
-		client.getCallbacks().post(chatMessage);
+		client.getCallbacks().post(ChatMessage.class, chatMessage);
 	}
 
 	@Inject
@@ -1579,7 +1579,7 @@ public abstract class RSClientMixin implements RSClient
 	@FieldHook("cycleCntr")
 	public static void onCycleCntrChanged(int idx)
 	{
-		client.getCallbacks().post(ClientTick.INSTANCE);
+		client.getCallbacks().post(ClientTick.class, ClientTick.INSTANCE);
 	}
 
 	@Copy("shouldLeftClickOpenMenu")
@@ -1597,7 +1597,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		MenuShouldLeftClick menuShouldLeftClick = new MenuShouldLeftClick();
-		client.getCallbacks().post(menuShouldLeftClick);
+		client.getCallbacks().post(MenuShouldLeftClick.class, menuShouldLeftClick);
 
 		if (menuShouldLeftClick.isForceRightClick())
 		{

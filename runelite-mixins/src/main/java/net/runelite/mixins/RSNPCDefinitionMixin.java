@@ -45,6 +45,6 @@ public abstract class RSNPCDefinitionMixin implements RSNPCDefinition
 		NpcActionChanged npcActionChanged = new NpcActionChanged();
 		npcActionChanged.setNpcDefinition(this);
 		npcActionChanged.setIdx(idx);
-		client.getCallbacks().post(npcActionChanged);
+		client.getCallbacks().post(NpcActionChanged.class, npcActionChanged);
 	}
 }

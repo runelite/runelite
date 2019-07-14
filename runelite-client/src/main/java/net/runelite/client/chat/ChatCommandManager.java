@@ -35,7 +35,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
@@ -49,15 +48,14 @@ public class ChatCommandManager implements ChatboxInputListener
 	private final ScheduledExecutorService scheduledExecutorService;
 
 	@Inject
-	private ChatCommandManager(EventBusImplementation eventBus, CommandManager commandManager, Client client, ScheduledExecutorService scheduledExecutorService)
+	private ChatCommandManager(EventBus eventBus, CommandManager commandManager, Client client, ScheduledExecutorService scheduledExecutorService)
 	{
 		this.client = client;
 		this.scheduledExecutorService = scheduledExecutorService;
 		// eventBus.register(this);
 		commandManager.register(this);
 
-		eventBus.observableOfType(ChatMessage.class)
-			.subscribe(this::onChatMessage);
+		eventBus.subscribe(ChatMessage.class, this, o -> this.onChatMessage((ChatMessage) o));
 	}
 
 	public void registerCommand(String command, BiConsumer<ChatMessage, String> execute)

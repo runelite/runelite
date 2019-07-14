@@ -52,7 +52,7 @@ import static net.runelite.client.RuneLite.LOGS_DIR;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.ui.ColorScheme;
@@ -86,7 +86,7 @@ public class InfoPanel extends PluginPanel
 	private RuneLiteProperties runeLiteProperties;
 
 	@Inject
-	private EventBusImplementation eventBus;
+	private EventBus eventBus;
 
 	@Inject
 	private SessionManager sessionManager;

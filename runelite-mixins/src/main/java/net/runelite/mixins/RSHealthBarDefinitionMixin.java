@@ -21,6 +21,6 @@ public abstract class RSHealthBarDefinitionMixin implements RSHealthBarDefinitio
 	{
 		PostHealthBar postHealthBar = new PostHealthBar();
 		postHealthBar.setHealthBar(this);
-		client.getCallbacks().post(postHealthBar);
+		client.getCallbacks().post(PostHealthBar.class, postHealthBar);
 	}
 }

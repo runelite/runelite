@@ -63,7 +63,7 @@ public abstract class RSWorldMixin implements RSWorld
 		{
 			// this is the last world in the list.
 			WorldListLoad worldLoad = new WorldListLoad(worlds);
-			client.getCallbacks().post(worldLoad);
+			client.getCallbacks().post(WorldListLoad.class, worldLoad);
 		}
 	}
 }

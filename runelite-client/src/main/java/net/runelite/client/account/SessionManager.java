@@ -25,7 +25,7 @@
 package net.runelite.client.account;
 
 import com.google.gson.Gson;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -40,7 +40,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.util.LinkBrowser;
@@ -58,20 +57,18 @@ public class SessionManager
 	@Getter
 	private AccountSession accountSession;
 
-	private final EventBusImplementation eventBus;
+	private final EventBus eventBus;
 	private final ConfigManager configManager;
 	private final WSClient wsClient;
 
 	@Inject
-	private SessionManager(ConfigManager configManager, EventBusImplementation eventBus, WSClient wsClient)
+	private SessionManager(ConfigManager configManager, EventBus eventBus, WSClient wsClient)
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
 		this.wsClient = wsClient;
 
-		this.eventBus
-			.observableOfType(LoginResponse.class)
-			.subscribe(this::onLoginResponse);
+		this.eventBus.subscribe(LoginResponse.class, this, o -> this.onLoginResponse((LoginResponse) o));
 	}
 
 	public void loadSession()
@@ -154,7 +151,7 @@ public class SessionManager
 			configManager.switchSession();
 		}
 
-		eventBus.post(new SessionOpen());
+		eventBus.post(SessionOpen.class, new SessionOpen());
 	}
 
 	private void closeSession()
@@ -183,7 +180,7 @@ public class SessionManager
 		// Restore config
 		configManager.switchSession();
 
-		eventBus.post(new SessionClose());
+		eventBus.post(SessionClose.class, new SessionClose());
 	}
 
 	public void login()

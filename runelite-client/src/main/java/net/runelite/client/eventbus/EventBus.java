@@ -1,38 +1,58 @@
-/*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018, Abex
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package net.runelite.client.eventbus;
 
-import io.reactivex.Observable;
-import java.util.List;
+import com.jakewharton.rxrelay2.PublishRelay;
+import com.jakewharton.rxrelay2.Relay;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import java.util.HashMap;
+import java.util.Map;
+import javax.inject.Singleton;
 
-public interface EventBus
+@Singleton
+public class EventBus
 {
-	void post(Object event);
+	private Map<Class<?>, Relay<Object>> subjectList = new HashMap<>();
+	private Map<Object, CompositeDisposable> subscriptionsMap = new HashMap<>();
 
-	<T> Observable<T> observableOfType(Class<T> eventClass);
+	@NonNull
+	private <T> Relay<Object> getSubject(Class<T> eventClass)
+	{
+		return subjectList.computeIfAbsent(eventClass, k -> PublishRelay.create().toSerialized());
+	}
 
-	<T> Observable<Object> observableOfTypes(List<Class<T>> eventClasses);
+	@NonNull
+	private CompositeDisposable getCompositeDisposable(@NonNull Object object)
+	{
+		CompositeDisposable compositeDisposable = subscriptionsMap.get(object);
+		if (compositeDisposable == null)
+		{
+			compositeDisposable = new CompositeDisposable();
+			subscriptionsMap.put(object, compositeDisposable);
+		}
+
+		return compositeDisposable;
+	}
+
+	public <T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<Object> action)
+	{
+		Disposable disposable = getSubject(eventClass).subscribe(action);
+		getCompositeDisposable(lifecycle).add(disposable);
+	}
+
+	public void unregister(@NonNull Object lifecycle)
+	{
+		//We have to remove the composition from the map, because once you dispose it can't be used anymore
+		CompositeDisposable compositeDisposable = subscriptionsMap.remove(lifecycle);
+		if (compositeDisposable != null)
+		{
+			compositeDisposable.dispose();
+		}
+	}
+
+	public <T> void post(Class<T> eventClass, @NonNull Object event)
+	{
+		getSubject(eventClass).accept(event);
+	}
 }

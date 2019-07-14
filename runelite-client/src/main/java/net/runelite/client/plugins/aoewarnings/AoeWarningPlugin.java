@@ -59,7 +59,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -93,7 +93,7 @@ public class AoeWarningPlugin extends Plugin
 	@Inject
 	private Client client;
 	@Inject
-	private EventBusImplementation eventbus;
+	private EventBus eventbus;
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> LightningTrail = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
@@ -191,41 +191,12 @@ public class AoeWarningPlugin extends Plugin
 
 	private void addSubscriptions()
 	{
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ConfigChanged.class)
-				.subscribe(this::onConfigChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ProjectileMoved.class)
-				.subscribe(this::onProjectileMoved)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameObjectSpawned.class)
-				.subscribe(this::onGameObjectSpawned)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameObjectDespawned.class)
-				.subscribe(this::onGameObjectDespawned)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameStateChanged.class)
-				.subscribe(this::onGameStateChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(GameTick.class)
-				.subscribe(this::onGameTick)
-		);
+		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
+		eventbus.subscribe(ProjectileMoved.class, this, o -> this.onProjectileMoved((ProjectileMoved) o));
+		eventbus.subscribe(GameObjectSpawned.class, this, o -> this.onGameObjectSpawned((GameObjectSpawned) o));
+		eventbus.subscribe(GameObjectDespawned.class, this, o -> this.onGameObjectDespawned((GameObjectDespawned) o));
+		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
+		eventbus.subscribe(GameTick.class, this, o -> this.onGameTick((GameTick) o));
 	}
 
 	private void onConfigChanged(ConfigChanged event)

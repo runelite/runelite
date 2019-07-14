@@ -44,7 +44,7 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
@@ -100,17 +100,14 @@ public class ClanManager
 	private ClanManager(
 		final Client client,
 		final SpriteManager spriteManager,
-		final EventBusImplementation eventbus
+		final EventBus eventbus
 	)
 	{
 		this.client = client;
 		this.spriteManager = spriteManager;
 
-		eventbus.observableOfType(GameStateChanged.class)
-			.subscribe(this::onGameStateChanged);
-
-		eventbus.observableOfType(ClanChanged.class)
-			.subscribe(this::onClanChanged);
+		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
+		eventbus.subscribe(ClanChanged.class, this, o -> this.onClanChanged((ClanChanged) o));
 	}
 
 	public ClanMemberRank getRank(String playerName)

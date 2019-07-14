@@ -39,7 +39,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @Singleton
@@ -50,11 +50,11 @@ public class InfoBoxManager
 	private final RuneLiteConfig runeLiteConfig;
 
 	@Inject
-	private InfoBoxManager(final RuneLiteConfig runeLiteConfig, final EventBusImplementation eventbus)
+	private InfoBoxManager(final RuneLiteConfig runeLiteConfig, final EventBus eventbus)
 	{
 		this.runeLiteConfig = runeLiteConfig;
-		eventbus.observableOfType(ConfigChanged.class)
-			.subscribe(this::onConfigChanged);
+
+		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
 	}
 
 	private void onConfigChanged(ConfigChanged event)

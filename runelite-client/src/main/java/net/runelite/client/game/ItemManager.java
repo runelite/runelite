@@ -164,7 +164,7 @@ import net.runelite.api.Sprite;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostItemDefinition;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemStats;
@@ -269,7 +269,7 @@ public class ItemManager
 		Client client,
 		ScheduledExecutorService executor,
 		ClientThread clientThread,
-		EventBusImplementation eventbus
+		EventBus eventbus
 	)
 	{
 		this.client = client;
@@ -315,11 +315,9 @@ public class ItemManager
 				}
 			});
 
-		eventbus.observableOfType(GameStateChanged.class)
-			.subscribe(this::onGameStateChanged);
 
-		eventbus.observableOfType(PostItemDefinition.class)
-			.subscribe(this::onPostItemDefinition);
+		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
+		eventbus.subscribe(PostItemDefinition.class, this, o -> this.onPostItemDefinition((PostItemDefinition) o));
 	}
 
 	private void loadPrices()

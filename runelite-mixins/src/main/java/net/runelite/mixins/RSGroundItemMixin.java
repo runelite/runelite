@@ -67,7 +67,7 @@ public abstract class RSGroundItemMixin implements RSGroundItem
 			client.getLogger().debug("Item quantity changed: {} ({} -> {})", getId(), getQuantity(), quantity);
 
 			ItemQuantityChanged itemQuantityChanged = new ItemQuantityChanged(this, getTile(), getQuantity(), quantity);
-			client.getCallbacks().post(itemQuantityChanged);
+			client.getCallbacks().post(ItemQuantityChanged.class, itemQuantityChanged);
 		}
 	}
 

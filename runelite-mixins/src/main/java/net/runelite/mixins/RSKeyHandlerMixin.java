@@ -66,6 +66,6 @@ public abstract class RSKeyHandlerMixin implements RSKeyHandler
 	{
 		final FocusChanged focusChanged = new FocusChanged();
 		focusChanged.setFocused(false);
-		client.getCallbacks().post(focusChanged);
+		client.getCallbacks().post(FocusChanged.class, focusChanged);
 	}
 }

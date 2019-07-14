@@ -40,7 +40,7 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
@@ -53,7 +53,7 @@ public class ChatboxPanelManager
 {
 	private final Client client;
 	private final ClientThread clientThread;
-	private final EventBusImplementation eventBus;
+	private final EventBus eventBus;
 
 	private final KeyManager keyManager;
 	private final MouseManager mouseManager;
@@ -65,7 +65,7 @@ public class ChatboxPanelManager
 	private ChatboxInput currentInput = null;
 
 	@Inject
-	private ChatboxPanelManager(EventBusImplementation eventBus, Client client, ClientThread clientThread,
+	private ChatboxPanelManager(EventBus eventBus, Client client, ClientThread clientThread,
 								KeyManager keyManager, MouseManager mouseManager,
 								Provider<ChatboxTextMenuInput> chatboxTextMenuInputProvider, Provider<ChatboxTextInput> chatboxTextInputProvider)
 	{
@@ -79,11 +79,9 @@ public class ChatboxPanelManager
 		this.chatboxTextMenuInputProvider = chatboxTextMenuInputProvider;
 		this.chatboxTextInputProvider = chatboxTextInputProvider;
 
-		eventBus.observableOfType(ScriptCallbackEvent.class)
-			.subscribe(this::onScriptCallbackEvent);
 
-		eventBus.observableOfType(GameStateChanged.class)
-			.subscribe(this::onGameStateChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, o -> this.onScriptCallbackEvent((ScriptCallbackEvent) o));
+		eventBus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
 	}
 
 	public void close()

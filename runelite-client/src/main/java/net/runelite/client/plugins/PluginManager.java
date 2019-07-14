@@ -67,7 +67,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -86,7 +86,7 @@ public class PluginManager
 	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
 
 	private final boolean developerMode;
-	private final EventBusImplementation eventBus;
+	private final EventBus eventBus;
 	private final Scheduler scheduler;
 	private final ConfigManager configManager;
 	private final ScheduledExecutorService executor;
@@ -106,7 +106,7 @@ public class PluginManager
 	@VisibleForTesting
 	PluginManager(
 		@Named("developerMode") final boolean developerMode,
-		final EventBusImplementation eventBus,
+		final EventBus eventBus,
 		final Scheduler scheduler,
 		final ConfigManager configManager,
 		final ScheduledExecutorService executor,
@@ -119,11 +119,8 @@ public class PluginManager
 		this.executor = executor;
 		this.sceneTileManager = sceneTileManager;
 
-		eventBus.observableOfType(SessionOpen.class)
-			.subscribe(this::onSessionOpen);
-
-		eventBus.observableOfType(SessionClose.class)
-			.subscribe(this::onSessionClose);
+		eventBus.subscribe(SessionOpen.class, this, o -> this.onSessionOpen((SessionOpen) o));
+		eventBus.subscribe(SessionClose.class, this, o -> this.onSessionClose((SessionClose) o));
 	}
 
 	public void watch()
@@ -373,7 +370,7 @@ public class PluginManager
 
 			// eventBus.register(plugin);
 			schedule(plugin);
-			eventBus.post(new PluginChanged(plugin, true));
+			eventBus.post(PluginChanged.class, new PluginChanged(plugin, true));
 		}
 		catch (InterruptedException | InvocationTargetException | IllegalArgumentException ex)
 		{
@@ -411,7 +408,7 @@ public class PluginManager
 			});
 
 			log.debug("Plugin {} is now stopped", plugin.getClass().getSimpleName());
-			eventBus.post(new PluginChanged(plugin, false));
+			eventBus.post(PluginChanged.class, new PluginChanged(plugin, false));
 
 		}
 		catch (InterruptedException | InvocationTargetException ex)

@@ -84,7 +84,7 @@ import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
@@ -159,7 +159,7 @@ public class ClientUI
 		@Nullable Applet client,
 		ConfigManager configManager,
 		Provider<ClientThread> clientThreadProvider,
-		EventBusImplementation eventbus)
+		EventBus eventbus)
 	{
 		this.properties = properties;
 		this.config = config;
@@ -169,17 +169,10 @@ public class ClientUI
 		this.configManager = configManager;
 		this.clientThreadProvider = clientThreadProvider;
 
-		eventbus.observableOfType(ConfigChanged.class)
-			.subscribe(this::onConfigChanged);
-
-		eventbus.observableOfType(NavigationButtonAdded.class)
-			.subscribe(this::onNavigationButtonAdded);
-
-		eventbus.observableOfType(NavigationButtonRemoved.class)
-			.subscribe(this::onNavigationButtonRemoved);
-
-		eventbus.observableOfType(GameStateChanged.class)
-			.subscribe(this::onGameStateChanged);
+		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
+		eventbus.subscribe(NavigationButtonAdded.class, this, o -> this.onNavigationButtonAdded((NavigationButtonAdded) o));
+		eventbus.subscribe(NavigationButtonRemoved.class, this, o -> this.onNavigationButtonRemoved((NavigationButtonRemoved) o));
+		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
 	}
 
 	private void onConfigChanged(ConfigChanged event)

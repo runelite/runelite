@@ -29,7 +29,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.EventBusImplementation;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 
@@ -39,11 +38,11 @@ import net.runelite.client.events.NavigationButtonRemoved;
 @Singleton
 public class ClientToolbar
 {
-	private final EventBusImplementation eventBus;
+	private final EventBus eventBus;
 	private final Set<NavigationButton> buttons = new HashSet<>();
 
 	@Inject
-	private ClientToolbar(final EventBusImplementation eventBus)
+	private ClientToolbar(final EventBus eventBus)
 	{
 		this.eventBus = eventBus;
 	}
@@ -62,7 +61,7 @@ public class ClientToolbar
 
 		if (buttons.add(button))
 		{
-			eventBus.post(new NavigationButtonAdded(button));
+			eventBus.post(NavigationButtonAdded.class, new NavigationButtonAdded(button));
 		}
 	}
 
@@ -75,7 +74,7 @@ public class ClientToolbar
 	{
 		if (buttons.remove(button))
 		{
-			eventBus.post(new NavigationButtonRemoved(button));
+			eventBus.post(NavigationButtonRemoved.class, new NavigationButtonRemoved(button));
 		}
 	}
 }

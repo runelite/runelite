@@ -52,7 +52,7 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
@@ -73,26 +73,17 @@ public class ChatMessageManager
 		final Client client,
 		final ChatColorConfig chatColorConfig,
 		final ClientThread clientThread,
-		final EventBusImplementation eventbus)
+		final EventBus eventbus)
 	{
 		this.client = client;
 		this.chatColorConfig = chatColorConfig;
 		this.clientThread = clientThread;
 
-		eventbus.observableOfType(VarbitChanged.class)
-			.subscribe(this::onVarbitChanged);
-
-		eventbus.observableOfType(ResizeableChanged.class)
-			.subscribe(this::onResizeableChanged);
-
-		eventbus.observableOfType(ConfigChanged.class)
-			.subscribe(this::onConfigChanged);
-
-		eventbus.observableOfType(ChatMessage.class)
-			.subscribe(this::onChatMessage);
-
-		eventbus.observableOfType(ScriptCallbackEvent.class)
-			.subscribe(this::onScriptCallbackEvent);
+		eventbus.subscribe(VarbitChanged.class, this, o -> this.onVarbitChanged((VarbitChanged) o));
+		eventbus.subscribe(ResizeableChanged.class, this, o -> this.onResizeableChanged((ResizeableChanged) o));
+		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
+		eventbus.subscribe(ChatMessage.class, this, o -> this.onChatMessage((ChatMessage) o));
+		eventbus.subscribe(ScriptCallbackEvent.class, this, o -> this.onScriptCallbackEvent((ScriptCallbackEvent) o));
 	}
 
 	private void onVarbitChanged(VarbitChanged event)

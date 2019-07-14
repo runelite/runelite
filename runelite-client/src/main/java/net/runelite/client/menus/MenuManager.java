@@ -65,7 +65,7 @@ import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.events.WidgetPressed;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.util.Text;
 
 @Singleton
@@ -80,7 +80,7 @@ public class MenuManager
 	static final Pattern LEVEL_PATTERN = Pattern.compile("\\(level-[0-9]*\\)");
 
 	private final Client client;
-	private final EventBusImplementation eventBus;
+	private final EventBus eventBus;
 
 	//Maps the indexes that are being used to the menu option.
 	private final Map<Integer, String> playerMenuIndexMap = new HashMap<>();
@@ -101,31 +101,19 @@ public class MenuManager
 	private MenuEntry firstEntry = null;
 
 	@Inject
-	private MenuManager(Client client, EventBusImplementation eventBus)
+	private MenuManager(Client client, EventBus eventBus)
 	{
 		this.client = client;
 		this.eventBus = eventBus;
 
-		eventBus.observableOfType(MenuOpened.class)
-			.subscribe(this::onMenuOpened);
 
-		eventBus.observableOfType(MenuEntryAdded.class)
-			.subscribe(this::onMenuEntryAdded);
-
-		eventBus.observableOfType(BeforeRender.class)
-			.subscribe(this::onBeforeRender);
-
-		eventBus.observableOfType(PlayerMenuOptionsChanged.class)
-			.subscribe(this::onPlayerMenuOptionsChanged);
-
-		eventBus.observableOfType(NpcActionChanged.class)
-			.subscribe(this::onNpcActionChanged);
-
-		eventBus.observableOfType(WidgetPressed.class)
-			.subscribe(this::onWidgetPressed);
-
-		eventBus.observableOfType(MenuOptionClicked.class)
-			.subscribe(this::onMenuOptionClicked);
+		eventBus.subscribe(MenuOpened.class, this, o -> this.onMenuOpened((MenuOpened) o));
+		eventBus.subscribe(MenuEntryAdded.class, this, o -> this.onMenuEntryAdded((MenuEntryAdded) o));
+		eventBus.subscribe(BeforeRender.class, this, o -> this.onBeforeRender((BeforeRender) o));
+		eventBus.subscribe(PlayerMenuOptionsChanged.class, this, o -> this.onPlayerMenuOptionsChanged((PlayerMenuOptionsChanged) o));
+		eventBus.subscribe(NpcActionChanged.class, this, o -> this.onNpcActionChanged((NpcActionChanged) o));
+		eventBus.subscribe(WidgetPressed.class, this, o -> this.onWidgetPressed((WidgetPressed) o));
+		eventBus.subscribe(MenuOptionClicked.class, this, o -> this.onMenuOptionClicked((MenuOptionClicked) o));
 	}
 
 	/**
@@ -494,7 +482,7 @@ public class MenuManager
 				customMenu.setMenuOption(event.getOption());
 				customMenu.setMenuTarget(event.getTarget());
 				customMenu.setWidget(curMenuOption.getWidget());
-				eventBus.post(customMenu);
+				eventBus.post(WidgetMenuOptionClicked.class, customMenu);
 				return; // don't continue because it's not a player option
 			}
 		}
@@ -509,7 +497,7 @@ public class MenuManager
 		playerMenuOptionClicked.setMenuOption(event.getOption());
 		playerMenuOptionClicked.setMenuTarget(username);
 
-		eventBus.post(playerMenuOptionClicked);
+		eventBus.post(PlayerMenuOptionClicked.class, playerMenuOptionClicked);
 	}
 
 	private void addPlayerMenuItem(int playerOptionIndex, String menuText)

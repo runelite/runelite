@@ -39,7 +39,7 @@ import static net.runelite.api.widgets.WidgetInfo.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLitePlusConfig;
 import net.runelite.client.discord.DiscordService;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -106,7 +106,7 @@ public class RuneLitePlusPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private EventBusImplementation eventbus;
+	private EventBus eventbus;
 
 	private final RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
 	private int entered = -1;
@@ -169,7 +169,7 @@ public class RuneLitePlusPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		super.shutDown();
+		eventbus.unregister(this);
 
 		entered = 0;
 		enterIdx = 0;
@@ -179,17 +179,8 @@ public class RuneLitePlusPlugin extends Plugin
 
 	private void addSubscriptions()
 	{
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ConfigChanged.class)
-				.subscribe(this::onConfigChanged)
-		);
-
-		this.addSubscription(
-			this.eventbus
-				.observableOfType(ScriptCallbackEvent.class)
-				.subscribe(this::onScriptCallbackEvent)
-		);
+		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
+		eventbus.subscribe(ScriptCallbackEvent.class, this, o -> this.onScriptCallbackEvent((ScriptCallbackEvent) o));
 	}
 
 	private void onScriptCallbackEvent(ScriptCallbackEvent e)

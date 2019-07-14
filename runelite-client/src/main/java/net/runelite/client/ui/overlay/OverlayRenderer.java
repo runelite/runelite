@@ -50,16 +50,15 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.eventbus.EventBusImplementation;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.MiscUtils;
-import net.runelite.http.api.ws.messages.party.UserPart;
 
 @Singleton
 public class OverlayRenderer extends MouseAdapter implements KeyListener
@@ -103,7 +102,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		final RuneLiteConfig runeLiteConfig,
 		final MouseManager mouseManager,
 		final KeyManager keyManager,
-		final EventBusImplementation eventbus)
+		final EventBus eventbus)
 	{
 		this.client = client;
 		this.overlayManager = overlayManager;
@@ -112,17 +111,10 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
 
-		eventbus.observableOfType(ConfigChanged.class)
-			.subscribe(this::onConfigChanged);
-
-		eventbus.observableOfType(FocusChanged.class)
-			.subscribe(this::onFocusChanged);
-
-		eventbus.observableOfType(ClientTick.class)
-			.subscribe(this::onClientTick);
-
-		eventbus.observableOfType(BeforeRender.class)
-			.subscribe(this::onBeforeRender);
+		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
+		eventbus.subscribe(FocusChanged.class, this, o -> this.onFocusChanged((FocusChanged) o));
+		eventbus.subscribe(ClientTick.class, this, o -> this.onClientTick((ClientTick) o));
+		eventbus.subscribe(BeforeRender.class, this, o -> this.onBeforeRender((BeforeRender) o));
 	}
 
 	private void updateConfig()
