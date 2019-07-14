@@ -316,8 +316,8 @@ public class ItemManager
 			});
 
 
-		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
-		eventbus.subscribe(PostItemDefinition.class, this, o -> this.onPostItemDefinition((PostItemDefinition) o));
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventbus.subscribe(PostItemDefinition.class, this, this::onPostItemDefinition);
 	}
 
 	private void loadPrices()

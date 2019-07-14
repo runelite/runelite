@@ -80,8 +80,8 @@ public class ChatboxPanelManager
 		this.chatboxTextInputProvider = chatboxTextInputProvider;
 
 
-		eventBus.subscribe(ScriptCallbackEvent.class, this, o -> this.onScriptCallbackEvent((ScriptCallbackEvent) o));
-		eventBus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
 	public void close()

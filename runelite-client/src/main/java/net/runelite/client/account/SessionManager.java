@@ -68,7 +68,7 @@ public class SessionManager
 		this.eventBus = eventBus;
 		this.wsClient = wsClient;
 
-		this.eventBus.subscribe(LoginResponse.class, this, o -> this.onLoginResponse((LoginResponse) o));
+		this.eventBus.subscribe(LoginResponse.class, this, this::onLoginResponse);
 	}
 
 	public void loadSession()

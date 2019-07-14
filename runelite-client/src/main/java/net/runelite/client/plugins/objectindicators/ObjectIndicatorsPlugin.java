@@ -150,15 +150,15 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 	private void addSubscriptions()
 	{
-		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
-		eventbus.subscribe(FocusChanged.class, this, o -> this.onFocusChanged((FocusChanged) o));
-		eventbus.subscribe(GameObjectSpawned.class, this, o -> this.onGameObjectSpawned((GameObjectSpawned) o));
-		eventbus.subscribe(DecorativeObjectSpawned.class, this, o -> this.onDecorativeObjectSpawned((DecorativeObjectSpawned) o));
-		eventbus.subscribe(GameObjectDespawned.class, this, o -> this.onGameObjectDespawned((GameObjectDespawned) o));
-		eventbus.subscribe(DecorativeObjectDespawned.class, this, o -> this.onDecorativeObjectDespawned((DecorativeObjectDespawned) o));
-		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
-		eventbus.subscribe(MenuOptionClicked.class, this, o -> this.onMenuOptionClicked((MenuOptionClicked) o));
-		eventbus.subscribe(MenuEntryAdded.class, this, o -> this.onMenuEntryAdded((MenuEntryAdded) o));
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+		eventbus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventbus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
+		eventbus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventbus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventbus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventbus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
 	}
 
 	@Override

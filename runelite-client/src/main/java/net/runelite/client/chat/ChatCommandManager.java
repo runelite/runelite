@@ -55,7 +55,7 @@ public class ChatCommandManager implements ChatboxInputListener
 		// eventBus.register(this);
 		commandManager.register(this);
 
-		eventBus.subscribe(ChatMessage.class, this, o -> this.onChatMessage((ChatMessage) o));
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
 	}
 
 	public void registerCommand(String command, BiConsumer<ChatMessage, String> execute)

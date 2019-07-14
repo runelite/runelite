@@ -119,8 +119,8 @@ public class PluginManager
 		this.executor = executor;
 		this.sceneTileManager = sceneTileManager;
 
-		eventBus.subscribe(SessionOpen.class, this, o -> this.onSessionOpen((SessionOpen) o));
-		eventBus.subscribe(SessionClose.class, this, o -> this.onSessionClose((SessionClose) o));
+		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
+		eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
 	}
 
 	public void watch()

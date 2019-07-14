@@ -242,16 +242,16 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private void addSubscriptions()
 	{
-		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
-		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
-		eventbus.subscribe(FocusChanged.class, this, o -> this.onFocusChanged((FocusChanged) o));
-		eventbus.subscribe(MenuEntryAdded.class, this, o -> this.onMenuEntryAdded((MenuEntryAdded) o));
-		eventbus.subscribe(MenuOptionClicked.class, this, o -> this.onMenuOptionClicked((MenuOptionClicked) o));
-		eventbus.subscribe(NpcSpawned.class, this, o -> this.onNpcSpawned((NpcSpawned) o));
-		eventbus.subscribe(NpcDefinitionChanged.class, this, o -> this.onNpcDefinitionChanged((NpcDefinitionChanged) o));
-		eventbus.subscribe(NpcDespawned.class, this, o -> this.onNpcDespawned((NpcDespawned) o));
-		eventbus.subscribe(GraphicsObjectCreated.class, this, o -> this.onGraphicsObjectCreated((GraphicsObjectCreated) o));
-		eventbus.subscribe(GameTick.class, this, o -> this.onGameTick((GameTick) o));
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventbus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+		eventbus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventbus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventbus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventbus.subscribe(NpcDefinitionChanged.class, this, this::onNpcDefinitionChanged);
+		eventbus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventbus.subscribe(GraphicsObjectCreated.class, this, this::onGraphicsObjectCreated);
+		eventbus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
 	private void onGameStateChanged(GameStateChanged event)

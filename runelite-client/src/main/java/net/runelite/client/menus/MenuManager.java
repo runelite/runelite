@@ -107,13 +107,13 @@ public class MenuManager
 		this.eventBus = eventBus;
 
 
-		eventBus.subscribe(MenuOpened.class, this, o -> this.onMenuOpened((MenuOpened) o));
-		eventBus.subscribe(MenuEntryAdded.class, this, o -> this.onMenuEntryAdded((MenuEntryAdded) o));
-		eventBus.subscribe(BeforeRender.class, this, o -> this.onBeforeRender((BeforeRender) o));
-		eventBus.subscribe(PlayerMenuOptionsChanged.class, this, o -> this.onPlayerMenuOptionsChanged((PlayerMenuOptionsChanged) o));
-		eventBus.subscribe(NpcActionChanged.class, this, o -> this.onNpcActionChanged((NpcActionChanged) o));
-		eventBus.subscribe(WidgetPressed.class, this, o -> this.onWidgetPressed((WidgetPressed) o));
-		eventBus.subscribe(MenuOptionClicked.class, this, o -> this.onMenuOptionClicked((MenuOptionClicked) o));
+		eventBus.subscribe(MenuOpened.class, this, this::onMenuOpened);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(BeforeRender.class, this, this::onBeforeRender);
+		eventBus.subscribe(PlayerMenuOptionsChanged.class, this, this::onPlayerMenuOptionsChanged);
+		eventBus.subscribe(NpcActionChanged.class, this, this::onNpcActionChanged);
+		eventBus.subscribe(WidgetPressed.class, this, this::onWidgetPressed);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
 	/**

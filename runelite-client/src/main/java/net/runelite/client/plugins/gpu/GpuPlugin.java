@@ -357,20 +357,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					log.error("error stopping plugin", ex);
 				}
 
-				try
-				{
-					shutDown();
-				}
-				catch (Exception ex)
-				{
-				}
+				shutDown();
 			}
 
 		});
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		super.shutDown();
 
@@ -445,9 +439,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void addSubscriptions()
 	{
-
-		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
-		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
 	@Provides

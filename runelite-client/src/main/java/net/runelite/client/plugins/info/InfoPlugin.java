@@ -85,7 +85,7 @@ public class InfoPlugin extends Plugin
 
 	private void addSubscriptions()
 	{
-		eventbus.subscribe(SessionOpen.class, this, o -> panel.onSessionOpen((SessionOpen) o));
-		eventbus.subscribe(SessionClose.class, this, o -> panel.onSessionClose((SessionClose) o));
+		eventbus.subscribe(SessionOpen.class, this, event -> panel.onSessionOpen(event));
+		eventbus.subscribe(SessionClose.class, this, event -> panel.onSessionClose(event));
 	}
 }

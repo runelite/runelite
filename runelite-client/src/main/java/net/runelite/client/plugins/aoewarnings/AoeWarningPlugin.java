@@ -191,12 +191,12 @@ public class AoeWarningPlugin extends Plugin
 
 	private void addSubscriptions()
 	{
-		eventbus.subscribe(ConfigChanged.class, this, o -> this.onConfigChanged((ConfigChanged) o));
-		eventbus.subscribe(ProjectileMoved.class, this, o -> this.onProjectileMoved((ProjectileMoved) o));
-		eventbus.subscribe(GameObjectSpawned.class, this, o -> this.onGameObjectSpawned((GameObjectSpawned) o));
-		eventbus.subscribe(GameObjectDespawned.class, this, o -> this.onGameObjectDespawned((GameObjectDespawned) o));
-		eventbus.subscribe(GameStateChanged.class, this, o -> this.onGameStateChanged((GameStateChanged) o));
-		eventbus.subscribe(GameTick.class, this, o -> this.onGameTick((GameTick) o));
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(ProjectileMoved.class, this, this::onProjectileMoved);
+		eventbus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventbus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventbus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
 	private void onConfigChanged(ConfigChanged event)

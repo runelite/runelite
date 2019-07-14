@@ -111,8 +111,8 @@ public class OverlayManager
 		this.configManager = configManager;
 		this.eventBus = eventBus;
 
-		eventBus.subscribe(PluginChanged.class, this, o -> this.onPluginChanged((PluginChanged) o));
-		eventBus.subscribe(MenuOptionClicked.class, this, o -> this.onMenuOptionClicked((MenuOptionClicked) o));
+		eventBus.subscribe(PluginChanged.class, this, this::onPluginChanged);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
 	private void onPluginChanged(final PluginChanged event)
