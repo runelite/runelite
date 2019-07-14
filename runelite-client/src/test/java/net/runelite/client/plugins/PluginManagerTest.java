@@ -50,7 +50,6 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
