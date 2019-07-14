@@ -8,10 +8,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import javax.inject.Singleton;
 
 @Singleton
-public class EventBus
+public class EventBus implements EventBusInterface
 {
 	private Map<Class<?>, Relay<Object>> subjectList = new HashMap<>();
 	private Map<Object, CompositeDisposable> subscriptionsMap = new HashMap<>();
@@ -35,12 +36,19 @@ public class EventBus
 		return compositeDisposable;
 	}
 
-	public <T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<Object> action)
+	@Override
+	// Subscribe on lifecycle (for example from plugin startUp -> shutdown)
+	public <T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action)
 	{
-		Disposable disposable = getSubject(eventClass).subscribe(action);
+		Disposable disposable = getSubject(eventClass)
+			.filter(Objects::nonNull) // Filter out null objects, better safe than sorry
+			.cast(eventClass) // Cast it for easier usage
+			.subscribe(action);
+
 		getCompositeDisposable(lifecycle).add(disposable);
 	}
 
+	@Override
 	public void unregister(@NonNull Object lifecycle)
 	{
 		//We have to remove the composition from the map, because once you dispose it can't be used anymore
@@ -51,6 +59,7 @@ public class EventBus
 		}
 	}
 
+	@Override
 	public <T> void post(Class<T> eventClass, @NonNull Object event)
 	{
 		getSubject(eventClass).accept(event);
