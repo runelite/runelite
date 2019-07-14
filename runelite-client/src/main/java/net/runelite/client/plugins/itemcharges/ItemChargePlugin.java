@@ -64,11 +64,11 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class ItemChargePlugin extends Plugin
 {
 	private static final Pattern RING_OF_FORGING_CHECK_PATTERN = Pattern.compile(
-		"You can smelt ([0-9+]+|one) more pieces of iron before a ring melts\\.");
+		"You can smelt ([0-9+]+|one) more pieces of iron ore before a ring melts\\.");
 	private static final Pattern RING_OF_FORGING_USED_PATTERN = Pattern.compile(
-		"You smelt the iron in the furnace\\..*You retrieve a bar of iron\\.");
+		"You retrieve a bar of iron\\.");
 	private static final Pattern RING_OF_FORGING_BREAK_PATTERN = Pattern.compile(
-		"Your ring of forging has melted\\.");
+		"Your Ring of Forging has melted\\.");
 	private static final Pattern DODGY_CHECK_PATTERN = Pattern.compile(
 		"Your dodgy necklace has (\\d+) charges? left\\.");
 	private static final Pattern DODGY_PROTECT_PATTERN = Pattern.compile(
