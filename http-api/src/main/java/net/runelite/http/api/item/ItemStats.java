@@ -29,6 +29,7 @@ import lombok.Value;
 @Value
 public class ItemStats
 {
+	private String name;
 	private boolean quest;
 	private boolean equipable;
 	private double weight;
@@ -76,7 +77,7 @@ public class ItemStats
 			newEquipment = equipment;
 		}
 
-		return new ItemStats(quest, equipable, newWeight, newEquipment);
+		return new ItemStats(name, quest, equipable, newWeight, newEquipment);
 	}
 }
 
