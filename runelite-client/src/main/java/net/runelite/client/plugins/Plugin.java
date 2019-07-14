@@ -27,10 +27,7 @@ package net.runelite.client.plugins;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import io.reactivex.disposables.Disposable;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class Plugin implements Module
 {

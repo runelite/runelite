@@ -25,7 +25,6 @@
 package net.runelite.client.account;
 
 import com.google.gson.Gson;
-import io.reactivex.functions.Consumer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
