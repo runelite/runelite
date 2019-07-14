@@ -204,7 +204,7 @@ public class WintertodtPlugin extends Plugin
 		checkActionTimeout();
 	}
 
-	private void onVarbitChanged(VarbitChanged varbitChanged)
+	void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		int timerValue = client.getVar(Varbits.WINTERTODT_TIMER);
 		if (timerValue != previousTimerValue)

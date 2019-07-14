@@ -123,7 +123,7 @@ public class ExaminePlugin extends Plugin
 		pending.clear();
 	}
 
-	private void onMenuOptionClicked(MenuOptionClicked event)
+	void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (!event.getOption().equals("Examine"))
 		{
@@ -180,7 +180,7 @@ public class ExaminePlugin extends Plugin
 		pending.push(pendingExamine);
 	}
 
-	private void onChatMessage(ChatMessage event)
+	void onChatMessage(ChatMessage event)
 	{
 		ExamineType type;
 		switch (event.getType())

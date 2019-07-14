@@ -90,7 +90,7 @@ public class TimestampPlugin extends Plugin
 		formatter = null;
 	}
 
-	private void onConfigChanged(ConfigChanged event)
+	void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("timestamp") && event.getKey().equals("format"))
 		{

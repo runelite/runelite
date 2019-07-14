@@ -167,7 +167,7 @@ public class IdleNotifierPlugin extends Plugin
 		return configManager.getConfig(IdleNotifierConfig.class);
 	}
 
-	private void onAnimationChanged(AnimationChanged event)
+	void onAnimationChanged(AnimationChanged event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -402,7 +402,7 @@ public class IdleNotifierPlugin extends Plugin
 		itemQuantitiesPrevious = itemQuantities;
 	}
 
-	private void onInteractingChanged(InteractingChanged event)
+	void onInteractingChanged(InteractingChanged event)
 	{
 		final Actor source = event.getSource();
 		if (source != client.getLocalPlayer())
@@ -452,7 +452,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	private void onGameStateChanged(GameStateChanged gameStateChanged)
+	void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		lastInteracting = null;
 
@@ -484,7 +484,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	private void onHitsplatApplied(HitsplatApplied event)
+	void onHitsplatApplied(HitsplatApplied event)
 	{
 		if (event.getActor() != client.getLocalPlayer())
 		{
@@ -515,7 +515,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	private void onGameTick(GameTick event)
+	void onGameTick(GameTick event)
 	{
 		skullNotifier();
 

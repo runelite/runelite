@@ -436,7 +436,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	private void onVarbitChanged(VarbitChanged event)
+	void onVarbitChanged(VarbitChanged event)
 	{
 		if (client.getVar(Varbits.SLAYER_REWARD_POINTS) == cachedPoints)
 		{
@@ -543,7 +543,7 @@ public class SlayerPlugin extends Plugin
 	private static final int FORCED_WAIT = 2;
 	private int forcedWait = -1;
 
-	private void onGameTick(GameTick tick)
+	void onGameTick(GameTick tick)
 	{
 		loginTick = false;
 
@@ -624,7 +624,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	private void onChatMessage(ChatMessage event)
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
 		{

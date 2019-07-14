@@ -129,10 +129,6 @@ public class PluginManagerTest
 		pluginManager.loadCorePlugins();
 		plugins = pluginManager.getPlugins();
 
-		// Check that the plugins register with the eventbus without errors
-		EventBus eventBus = new EventBus();
-		plugins.forEach(eventBus::register);
-
 		expected = pluginClasses.stream()
 			.map(cl -> (PluginDescriptor) cl.getAnnotation(PluginDescriptor.class))
 			.filter(Objects::nonNull)

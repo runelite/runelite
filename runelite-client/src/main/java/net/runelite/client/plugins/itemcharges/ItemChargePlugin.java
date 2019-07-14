@@ -312,7 +312,7 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
-	private void onChatMessage(ChatMessage event)
+	void onChatMessage(ChatMessage event)
 	{
 		String message = event.getMessage();
 		Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);

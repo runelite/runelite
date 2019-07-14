@@ -293,7 +293,7 @@ public class MotherlodePlugin extends Plugin
 		eventBus.subscribe(OverheadTextChanged.class, this, this::onOverheadTextChanged);
 	}
 
-	private void onVarbitChanged(VarbitChanged event)
+	void onVarbitChanged(VarbitChanged event)
 	{
 		if (inMlm)
 		{
@@ -621,7 +621,7 @@ public class MotherlodePlugin extends Plugin
 		rocks.remove(gameObject);
 	}
 
-	private void onGameStateChanged(GameStateChanged event)
+	void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
 		{
@@ -638,7 +638,7 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
-	private void onItemContainerChanged(ItemContainerChanged event)
+	void onItemContainerChanged(ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();
 

@@ -223,7 +223,7 @@ public class ChatCommandsPlugin extends Plugin
 		return personalBest == null ? 0 : personalBest;
 	}
 
-	private void onChatMessage(ChatMessage chatMessage)
+	void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() != ChatMessageType.TRADE
 			&& chatMessage.getType() != ChatMessageType.GAMEMESSAGE

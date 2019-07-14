@@ -308,7 +308,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	private void onGameTick(GameTick event)
+	void onGameTick(GameTick event)
 	{
 		if (this.screenshotFriendDeath)
 		{
@@ -407,7 +407,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	private void onChatMessage(ChatMessage event)
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.TRADE)
 		{
@@ -520,7 +520,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	private void onWidgetLoaded(WidgetLoaded event)
+	void onWidgetLoaded(WidgetLoaded event)
 	{
 		String fileName;
 		int groupId = event.getGroupId();

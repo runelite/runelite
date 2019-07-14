@@ -101,7 +101,7 @@ public class SmeltingPlugin extends Plugin
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
-	private void onChatMessage(ChatMessage event)
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM)
 		{

@@ -162,7 +162,7 @@ public class ChatNotificationsPlugin extends Plugin
 		}
 	}
 
-	private void onChatMessage(ChatMessage chatMessage)
+	void onChatMessage(ChatMessage chatMessage)
 	{
 		MessageNode messageNode = chatMessage.getMessageNode();
 		boolean update = false;

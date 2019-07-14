@@ -220,7 +220,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	private void onVarbitChanged(VarbitChanged event)
+	void onVarbitChanged(VarbitChanged event)
 	{
 		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
 		{
@@ -247,7 +247,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	private void onConfigChanged(ConfigChanged event)
+	void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("attackIndicator"))
 		{

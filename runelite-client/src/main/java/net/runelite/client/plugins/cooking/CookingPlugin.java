@@ -140,7 +140,7 @@ public class CookingPlugin extends Plugin
 		}
 	}
 
-	private void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
+	void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
 	{
 		Player player = client.getLocalPlayer();
 
@@ -169,7 +169,7 @@ public class CookingPlugin extends Plugin
 		}
 	}
 
-	private void onChatMessage(ChatMessage event)
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM)
 		{

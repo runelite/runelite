@@ -106,7 +106,7 @@ public class CerberusPlugin extends Plugin
 		ghosts.remove(event.getNpc());
 	}
 
-	private void onGameTick(GameTick gameTick)
+	void onGameTick(GameTick gameTick)
 	{
 		if (ghosts.isEmpty())
 		{

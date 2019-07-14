@@ -89,7 +89,7 @@ public class EmojiPlugin extends Plugin
 		eventBus.subscribe(OverheadTextChanged.class, this, this::onOverheadTextChanged);
 	}
 
-	private void onGameStateChanged(GameStateChanged gameStateChanged)
+	void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
@@ -129,7 +129,7 @@ public class EmojiPlugin extends Plugin
 		client.setModIcons(newModIcons);
 	}
 
-	private void onChatMessage(ChatMessage chatMessage)
+	void onChatMessage(ChatMessage chatMessage)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN || modIconsStart == -1)
 		{
