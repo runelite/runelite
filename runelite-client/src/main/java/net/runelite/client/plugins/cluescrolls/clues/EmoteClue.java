@@ -215,8 +215,8 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	}
 
 	private final String text;
-	@Nullable
 	private final String locationName;
+	@Nullable
 	private final STASHUnit stashUnit;
 	private final WorldPoint location;
 	private final Emote firstEmote;
