@@ -69,16 +69,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		int charges;
-		if (itemId == ItemID.RING_OF_FORGING)
-		{
-			if (!config.showRingOfForgingCount())
-			{
-				return;
-			}
-
-			charges = config.ringOfForging();
-		}
-		else if (itemId == ItemID.DODGY_NECKLACE)
+		if (itemId == ItemID.DODGY_NECKLACE)
 		{
 			if (!config.showDodgyCount())
 			{
@@ -104,6 +95,15 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			}
 
 			charges = config.explorerRing();
+		}
+		else if (itemId == ItemID.RING_OF_FORGING)
+		{
+			if (!config.showRingOfForgingCount())
+			{
+				return;
+			}
+
+			charges = config.ringOfForging();
 		}
 		else
 		{
@@ -140,9 +140,9 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 	private boolean displayOverlay()
 	{
-		return config.showTeleportCharges() || config.showRingOfForgingCount() || config.showDodgyCount() || config.showFungicideCharges()
+		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
 			|| config.showBellowCharges() || config.showBasketCharges() || config.showSackCharges()
-			|| config.showAbyssalBraceletCharges() || config.showExplorerRingCharges();
+			|| config.showAbyssalBraceletCharges() || config.showExplorerRingCharges() || config.showRingOfForgingCount();
 	}
 }
