@@ -27,7 +27,7 @@ package net.runelite.client.plugins.statusbars;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
@@ -83,7 +83,7 @@ class StatusBarsOverlay extends Overlay
 	private final TextComponent textComponent = new TextComponent();
 	private final ItemStatChangesService itemStatService;
 
-	private final Image prayerImage;
+	private final BufferedImage prayerImage;
 
 	@Inject
 	private StatusBarsOverlay(Client client, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice)
@@ -225,7 +225,7 @@ class StatusBarsOverlay extends Overlay
 
 		if (config.enableSkillIcon() || config.enableCounter())
 		{
-			final Image healthImage = skillIconManager.getSkillImage(Skill.HITPOINTS, true);
+			final BufferedImage healthImage = skillIconManager.getSkillImage(Skill.HITPOINTS, true);
 			final int counterHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
 			final int counterPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
 			final String counterHealthText = Integer.toString(counterHealth);
@@ -294,7 +294,7 @@ class StatusBarsOverlay extends Overlay
 		return (int) Math.round(ratio * size);
 	}
 
-	private void renderIconsAndCounters(Graphics2D graphics, int x, int y, Image image, String counterText, int counterPadding)
+	private void renderIconsAndCounters(Graphics2D graphics, int x, int y, BufferedImage image, String counterText, int counterPadding)
 	{
 		final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
 		final int centerText = (WIDTH - PADDING) / 2 - (widthOfCounter / 2);
