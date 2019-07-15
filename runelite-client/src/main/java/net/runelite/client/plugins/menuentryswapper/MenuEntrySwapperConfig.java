@@ -1,7 +1,8 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
- * Copyright (c) 2018, lucouswin <https://github.com/lucouswin>
+ * Copyright (c) 2019, alanbaumgartner <https://github.com/alanbaumgartner>
+ * Copyright (c) 2019, Kyle <https://github.com/kyleeld>
+ * Copyright (c) 2019, lucouswin <https://github.com/lucouswin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
