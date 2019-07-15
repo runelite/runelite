@@ -27,28 +27,47 @@
 package net.runelite.client.plugins.vorkath;
 
 import com.google.inject.Inject;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.Projectile;
+import net.runelite.api.ProjectileID;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.ProjectileSpawned;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.ImageUtil;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Vorkath Helper",
-	description = "Count vorkath attacks, and which phase is coming next",
+	description = "Count vorkath attacks, indicate next phase, wooxwalk timer, indicate path through acid",
 	tags = {"combat", "overlay", "pve", "pvm"},
 	type = PluginType.PVM,
 	enabledByDefault = false
@@ -61,93 +80,133 @@ public class VorkathPlugin extends Plugin
 
 	@Inject
 	private Client client;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private VorkathOverlay overlay;
-
 	@Inject
-	private ZombifiedSpawnOverlay SpawnOverlay;
-
-	@Getter
+	private AcidPathOverlay acidPathOverlay;
+	@Inject
+	private VorkathConfig config;
+	@Getter(AccessLevel.PACKAGE)
 	private Vorkath vorkath;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private NPC zombifiedSpawn;
+	@Getter(AccessLevel.PACKAGE)
+	private List<WorldPoint> acidSpots = new ArrayList<>();
+	@Getter(AccessLevel.PACKAGE)
+	private List<WorldPoint> acidFreePath = new ArrayList<>();
+	@Getter(AccessLevel.PACKAGE)
+	private WorldPoint[] wooxWalkPath = new WorldPoint[2];
+	@Getter(AccessLevel.PACKAGE)
+	private long wooxWalkTimer = -1;
+	@Getter(AccessLevel.PACKAGE)
+	private Rectangle wooxWalkBar;
+	private int lastAcidSpotsSize = 0;
+	// Config values
+	@Getter(AccessLevel.PACKAGE)
+	private boolean indicateAcidPools;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean indicateAcidFreePath;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean indicateWooxWalkPath;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean indicateWooxWalkTick;
+	private int acidFreePathLength;
 
-	/**
-	 * The last projectile's starting movement cycle
-	 */
-	private int lastProjectileCycle;
-
-	static final BufferedImage UNKNOWN;
-	static final BufferedImage ACID;
-	static final BufferedImage FIRE_BALL;
-	static final BufferedImage SPAWN;
-
-	static
+	@Provides
+	VorkathConfig provideConfig(ConfigManager configManager)
 	{
-		UNKNOWN = ImageUtil.getResourceStreamFromClass(VorkathPlugin.class, "magerange.png");
-		ACID = ImageUtil.getResourceStreamFromClass(VorkathPlugin.class, "acid.png");
-		FIRE_BALL = ImageUtil.getResourceStreamFromClass(VorkathPlugin.class, "fire_strike.png");
-		SPAWN = ImageUtil.getResourceStreamFromClass(VorkathPlugin.class, "ice.png");
+		return configManager.getConfig(VorkathConfig.class);
+	}
+
+	@Override
+	protected void startUp()
+	{
+		updateConfig();
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		reset();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("vorkath"))
+		{
+			return;
+		}
+
+		updateConfig();
 	}
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (isAtVorkath())
+		if (!isAtVorkath())
 		{
-			if (isVorkath(event.getNpc().getId()))
-			{
-				vorkath = new Vorkath(event.getNpc());
-				lastProjectileCycle = -1;
-				overlayManager.add(overlay);
-			}
-			else if (isZombifiedSpawn(event.getNpc().getId()))
-			{
-				zombifiedSpawn = event.getNpc();
-				overlayManager.add(SpawnOverlay);
-			}
+			return;
+		}
+
+		final NPC npc = event.getNpc();
+
+		if (npc.getName() == null)
+		{
+			return;
+		}
+
+		if (npc.getName().equals("Vorkath"))
+		{
+			vorkath = new Vorkath(npc);
+			overlayManager.add(overlay);
+		}
+		else if (npc.getName().equals("Zombified Spawn"))
+		{
+			zombifiedSpawn = npc;
 		}
 	}
 
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		if (isAtVorkath())
-		{
-			if (isVorkath(event.getNpc().getId()))
-			{
-				vorkath = null;
-				lastProjectileCycle = -1;
-				overlayManager.remove(overlay);
-			}
-			else if (isZombifiedSpawn(event.getNpc().getId()))
-			{
-				zombifiedSpawn = null;
-				overlayManager.remove(SpawnOverlay);
-			}
-		}
-	}
-
-	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event)
-	{
-		// Only capture initial projectile
-		if (!isAtVorkath() || event.getProjectile().getStartMovementCycle() == lastProjectileCycle)
+		if (!isAtVorkath())
 		{
 			return;
 		}
 
-		VorkathAttack vorkathAttack = VorkathAttack.getVorkathAttack(event.getProjectile().getId());
+		final NPC npc = event.getNpc();
+
+		if (npc.getName() == null)
+		{
+			return;
+		}
+
+		if (npc.getName().equals("Vorkath"))
+		{
+			reset();
+		}
+		else if (npc.getName().equals("Zombified Spawn"))
+		{
+			zombifiedSpawn = null;
+		}
+	}
+
+	@Subscribe
+	public void onProjectileSpawned(ProjectileSpawned event)
+	{
+		if (!isAtVorkath())
+		{
+			return;
+		}
+
+		final Projectile proj = event.getProjectile();
+		final VorkathAttack vorkathAttack = VorkathAttack.getVorkathAttack(proj.getId());
+
 		if (vorkathAttack != null)
 		{
-			/*log.debug("[Projectile ({})] Game Tick: {}, Game Cycle: {}, Starting Cyle: {} Last Cycle: {}, Initial Projectile?: {}",
-				vorkathAttack, client.getTickCount(), client.getGameCycle(), event.getProjectile().getStartMovementCycle(),
-				lastProjectileCycle, event.getProjectile().getStartMovementCycle() == client.getGameCycle());*/
 			if (VorkathAttack.isBasicAttack(vorkathAttack.getProjectileID()) && vorkath.getAttacksLeft() > 0)
 			{
 				vorkath.setAttacksLeft(vorkath.getAttacksLeft() - 1);
@@ -155,47 +214,94 @@ public class VorkathPlugin extends Plugin
 			else if (vorkathAttack == VorkathAttack.ACID)
 			{
 				vorkath.updatePhase(Vorkath.Phase.ACID);
-				// Sets the phase's progress indicator to done
 				vorkath.setAttacksLeft(0);
 			}
 			else if (vorkathAttack == VorkathAttack.FIRE_BALL)
 			{
 				vorkath.updatePhase(Vorkath.Phase.FIRE_BALL);
-				// Decrement to account for this fire ball
 				vorkath.setAttacksLeft(vorkath.getAttacksLeft() - 1);
 			}
 			else if (vorkathAttack == VorkathAttack.FREEZE_BREATH && vorkath.getLastAttack() != VorkathAttack.ZOMBIFIED_SPAWN)
 			{
-				// Filters out second invisible freeze attack that is immediately after the Zombified Spawn
 				vorkath.updatePhase(Vorkath.Phase.SPAWN);
-				// Sets progress of the phase to half
 				vorkath.setAttacksLeft(vorkath.getAttacksLeft() - (vorkath.getAttacksLeft() / 2));
 			}
 			else if (vorkathAttack == VorkathAttack.ZOMBIFIED_SPAWN || (vorkath.getLastAttack() == VorkathAttack.ZOMBIFIED_SPAWN))
 			{
-				// Also consumes the second invisible freeze attack that is immediately after the Zombified Spawn
-				// Sets progress of the phase to done as there are no more attacks within this phase
 				vorkath.setAttacksLeft(0);
 			}
 			else
 			{
-				// Vorkath fired a basic attack AND there are no more attacks left, typically after phases are over
 				vorkath.updatePhase(vorkath.getNextPhase());
-				// Decrement to account for this basic attack
 				vorkath.setAttacksLeft(vorkath.getAttacksLeft() - 1);
 			}
 
 			log.debug("[Vorkath ({})] {}", vorkathAttack, vorkath);
 			vorkath.setLastAttack(vorkathAttack);
-			lastProjectileCycle = event.getProjectile().getStartMovementCycle();
+		}
+	}
+
+	@Subscribe
+	public void onProjectileMoved(ProjectileMoved event)
+	{
+		if (!isAtVorkath())
+		{
+			return;
+		}
+
+		final Projectile proj = event.getProjectile();
+		final LocalPoint loc = event.getPosition();
+
+		if (proj.getId() == ProjectileID.VORKATH_POISON_POOL_AOE)
+		{
+			addAcidSpot(WorldPoint.fromLocal(client, loc));
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		if (!isAtVorkath())
+		{
+			return;
+		}
+
+		final GameObject obj = event.getGameObject();
+
+		if (obj.getId() == ObjectID.ACID_POOL || obj.getId() == ObjectID.ACID_POOL_32000)
+		{
+			addAcidSpot(obj.getWorldLocation());
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(GameObjectDespawned event)
+	{
+		if (!isAtVorkath())
+		{
+			return;
+		}
+
+		final GameObject obj = event.getGameObject();
+
+		if (obj.getId() == ObjectID.ACID_POOL || obj.getId() == ObjectID.ACID_POOL_32000)
+		{
+			acidSpots.remove(obj.getWorldLocation());
 		}
 	}
 
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
-		if (isAtVorkath() && vorkath != null && event.getActor().equals(vorkath.getVorkath())
-			&& event.getActor().getAnimation() == VorkathAttack.SLASH_ATTACK.getVorkathAnimationID())
+		if (!isAtVorkath())
+		{
+			return;
+		}
+
+		final Actor actor = event.getActor();
+
+		if (isAtVorkath() && vorkath != null && actor.equals(vorkath.getVorkath())
+			&& actor.getAnimation() == VorkathAttack.SLASH_ATTACK.getVorkathAnimationID())
 		{
 			if (vorkath.getAttacksLeft() > 0)
 			{
@@ -203,12 +309,82 @@ public class VorkathPlugin extends Plugin
 			}
 			else
 			{
-				// No more attacks left, typically after phases are over
 				vorkath.updatePhase(vorkath.getNextPhase());
-				// Decrement to account for this basic attack
 				vorkath.setAttacksLeft(vorkath.getAttacksLeft() - 1);
 			}
 			log.debug("[Vorkath (SLASH_ATTACK)] {}", vorkath);
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!isAtVorkath())
+		{
+			return;
+		}
+
+		// Update the acid free path every tick to account for player movement
+		if (this.indicateAcidFreePath && !acidSpots.isEmpty())
+		{
+			calculateAcidFreePath();
+		}
+
+		// Start the timer when the player walks into the WooxWalk zone
+		if (this.indicateWooxWalkPath && this.indicateWooxWalkTick && wooxWalkPath[0] != null && wooxWalkPath[1] != null)
+		{
+			final WorldPoint playerLoc = client.getLocalPlayer().getWorldLocation();
+
+			if (playerLoc.getX() == wooxWalkPath[0].getX() && playerLoc.getY() == wooxWalkPath[0].getY()
+				&& playerLoc.getPlane() == wooxWalkPath[0].getPlane())
+			{
+				if (wooxWalkTimer == -1)
+				{
+					wooxWalkTimer = System.currentTimeMillis() - 400;
+				}
+			}
+			else if (playerLoc.getX() == wooxWalkPath[1].getX() && playerLoc.getY() == wooxWalkPath[1].getY()
+				&& playerLoc.getPlane() == wooxWalkPath[1].getPlane())
+			{
+				if (wooxWalkTimer == -1)
+				{
+					wooxWalkTimer = System.currentTimeMillis() - 1000;
+				}
+			}
+			else if (wooxWalkTimer != -1)
+			{
+				wooxWalkTimer = -1;
+			}
+		}
+	}
+
+	@Subscribe
+	private void onClientTick(ClientTick event)
+	{
+		if (acidSpots.size() != lastAcidSpotsSize)
+		{
+			if (acidSpots.size() == 0)
+			{
+				overlayManager.remove(acidPathOverlay);
+				acidFreePath.clear();
+				Arrays.fill(wooxWalkPath, null);
+				wooxWalkTimer = -1;
+			}
+			else
+			{
+				if (this.indicateAcidFreePath)
+				{
+					calculateAcidFreePath();
+				}
+				if (this.indicateWooxWalkPath)
+				{
+					calculateWooxWalkPath();
+				}
+
+				overlayManager.add(acidPathOverlay);
+			}
+
+			lastAcidSpotsSize = acidSpots.size();
 		}
 	}
 
@@ -220,28 +396,209 @@ public class VorkathPlugin extends Plugin
 		return ArrayUtils.contains(client.getMapRegions(), VORKATH_REGION);
 	}
 
-	/**
-	 * @param npcID
-	 * @return true if the npc is Vorkath, false otherwise
-	 */
-	private boolean isVorkath(int npcID)
+	private void addAcidSpot(WorldPoint acidSpotLocation)
 	{
-		// Could be done with a a simple name check instead...
-		return npcID == NpcID.VORKATH ||
-			npcID == NpcID.VORKATH_8058 ||
-			npcID == NpcID.VORKATH_8059 ||
-			npcID == NpcID.VORKATH_8060 ||
-			npcID == NpcID.VORKATH_8061;
+		if (!acidSpots.contains(acidSpotLocation))
+		{
+			acidSpots.add(acidSpotLocation);
+		}
 	}
 
-	/**
-	 * @param npcID
-	 * @return true if the npc is a Zombified Spawn, otherwise false
-	 */
-	private boolean isZombifiedSpawn(int npcID)
+	private void calculateAcidFreePath()
 	{
-		// Could be done with a a simple name check instead...
-		return npcID == NpcID.ZOMBIFIED_SPAWN ||
-			npcID == NpcID.ZOMBIFIED_SPAWN_8063;
+		acidFreePath.clear();
+
+		final int[][][] directions = {
+			{
+				{0, 1}, {0, -1} // Positive and negative Y
+			},
+			{
+				{1, 0}, {-1, 0} // Positive and negative X
+			}
+		};
+
+		List<WorldPoint> bestPath = new ArrayList<>();
+		double bestClicksRequired = 99;
+
+		final WorldPoint playerLoc = client.getLocalPlayer().getWorldLocation();
+		final WorldPoint vorkLoc = vorkath.getVorkath().getWorldLocation();
+		final int maxX = vorkLoc.getX() + 14;
+		final int minX = vorkLoc.getX() - 8;
+		final int maxY = vorkLoc.getY() - 1;
+		final int minY = vorkLoc.getY() - 8;
+
+		// Attempt to search an acid free path, beginning at a location
+		// adjacent to the player's location (including diagonals)
+		for (int x = -1; x < 2; x++)
+		{
+			for (int y = -1; y < 2; y++)
+			{
+				final WorldPoint baseLocation = new WorldPoint(playerLoc.getX() + x,
+					playerLoc.getY() + y, playerLoc.getPlane());
+
+				if (acidSpots.contains(baseLocation) || baseLocation.getY() < minY || baseLocation.getY() > maxY)
+				{
+					continue;
+				}
+
+				// Search in X and Y direction
+				for (int d = 0; d < directions.length; d++)
+				{
+					// Calculate the clicks required to start walking on the path
+					double currentClicksRequired = Math.abs(x) + Math.abs(y);
+					if (currentClicksRequired < 2)
+					{
+						currentClicksRequired += Math.abs(y * directions[d][0][0]) + Math.abs(x * directions[d][0][1]);
+					}
+					if (d == 0)
+					{
+						// Prioritize a path in the X direction (sideways)
+						currentClicksRequired += 0.5;
+					}
+
+					List<WorldPoint> currentPath = new ArrayList<>();
+					currentPath.add(baseLocation);
+
+					// Positive X (first iteration) or positive Y (second iteration)
+					for (int i = 1; i < 25; i++)
+					{
+						final WorldPoint testingLocation = new WorldPoint(baseLocation.getX() + i * directions[d][0][0],
+							baseLocation.getY() + i * directions[d][0][1], baseLocation.getPlane());
+
+						if (acidSpots.contains(testingLocation) || testingLocation.getY() < minY || testingLocation.getY() > maxY
+							|| testingLocation.getX() < minX || testingLocation.getX() > maxX)
+						{
+							break;
+						}
+
+						currentPath.add(testingLocation);
+					}
+
+					// Negative X (first iteration) or positive Y (second iteration)
+					for (int i = 1; i < 25; i++)
+					{
+						final WorldPoint testingLocation = new WorldPoint(baseLocation.getX() + i * directions[d][1][0],
+							baseLocation.getY() + i * directions[d][1][1], baseLocation.getPlane());
+
+						if (acidSpots.contains(testingLocation) || testingLocation.getY() < minY || testingLocation.getY() > maxY
+							|| testingLocation.getX() < minX || testingLocation.getX() > maxX)
+						{
+							break;
+						}
+
+						currentPath.add(testingLocation);
+					}
+
+					if (currentPath.size() >= this.acidFreePathLength && currentClicksRequired < bestClicksRequired
+						|| (currentClicksRequired == bestClicksRequired && currentPath.size() > bestPath.size()))
+					{
+						bestPath = currentPath;
+						bestClicksRequired = currentClicksRequired;
+					}
+				}
+			}
+		}
+
+		if (bestClicksRequired != 99)
+		{
+			acidFreePath = bestPath;
+		}
+	}
+
+	private void calculateWooxWalkPath()
+	{
+		wooxWalkTimer = -1;
+
+		updateWooxWalkBar();
+
+		final WorldPoint playerLoc = client.getLocalPlayer().getWorldLocation();
+		final WorldPoint vorkLoc = vorkath.getVorkath().getWorldLocation();
+		final int maxX = vorkLoc.getX() + 14;
+		final int minX = vorkLoc.getX() - 8;
+		final int baseX = playerLoc.getX();
+		final int baseY = vorkLoc.getY() - 5;
+		final int middleX = vorkLoc.getX() + 3;
+
+		// Loop through the arena tiles in the x-direction and
+		// alternate between positive and negative x direction
+		for (int i = 0; i < 50; i++)
+		{
+			// Make sure we always choose the spot closest to
+			// the middle of the arena
+			int directionRemainder = 0;
+			if (playerLoc.getX() < middleX)
+			{
+				directionRemainder = 1;
+			}
+
+			int deviation = (int) Math.floor(i / 2.0);
+			if (i % 2 == directionRemainder)
+			{
+				deviation = -deviation;
+			}
+
+			final WorldPoint attackLocation = new WorldPoint(baseX + deviation, baseY, playerLoc.getPlane());
+			final WorldPoint outOfRangeLocation = new WorldPoint(baseX + deviation, baseY - 1, playerLoc.getPlane());
+
+			if (acidSpots.contains(attackLocation) || acidSpots.contains(outOfRangeLocation)
+				|| attackLocation.getX() < minX || attackLocation.getX() > maxX)
+			{
+				continue;
+			}
+
+			wooxWalkPath[0] = attackLocation;
+			wooxWalkPath[1] = outOfRangeLocation;
+
+			break;
+		}
+	}
+
+	private void updateWooxWalkBar()
+	{
+		// Update the WooxWalk tick indicator's dimensions
+		// based on the canvas dimensions
+		final Widget exp = client.getWidget(WidgetInfo.EXPERIENCE_TRACKER);
+
+		if (exp == null)
+		{
+			return;
+		}
+
+		final Rectangle screen = exp.getBounds();
+
+		int width = (int) Math.floor(screen.getWidth() / 2.0);
+		if (width % 2 == 1)
+		{
+			width++;
+		}
+		int height = (int) Math.floor(width / 20.0);
+		if (height % 2 == 1)
+		{
+			height++;
+		}
+		final int x = (int) Math.floor(screen.getX() + width / 2.0);
+		final int y = (int) Math.floor(screen.getY() + screen.getHeight() - 2 * height);
+		wooxWalkBar = new Rectangle(x, y, width, height);
+	}
+
+	private void updateConfig()
+	{
+		this.indicateAcidPools = config.indicateAcidPools();
+		this.indicateAcidFreePath = config.indicateAcidFreePath();
+		this.indicateWooxWalkPath = config.indicateWooxWalkPath();
+		this.indicateWooxWalkTick = config.indicateWooxWalkTick();
+		this.acidFreePathLength = config.acidFreePathLength();
+	}
+
+	private void reset()
+	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(acidPathOverlay);
+		vorkath = null;
+		acidSpots.clear();
+		acidFreePath.clear();
+		Arrays.fill(wooxWalkPath, null);
+		wooxWalkTimer = -1;
+		zombifiedSpawn = null;
 	}
 }
