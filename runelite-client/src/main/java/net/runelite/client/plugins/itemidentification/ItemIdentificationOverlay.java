@@ -92,6 +92,26 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case NET:
+				if (!config.showNets())
+				{
+					return;
+				}
+			case GREEGREE:
+				if (!config.showGreegrees())
+				{
+					return;
+				}
+			case BONE:
+				if (!config.showBones())
+				{
+					return;
+				}
+			case WATERSKIN:
+				if (!config.showWaterskin())
+				{
+					return;
+				}
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
