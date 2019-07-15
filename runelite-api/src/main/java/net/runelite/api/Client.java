@@ -1679,14 +1679,24 @@ public interface Client extends GameShell
 	boolean isSpellSelected();
 
 	/**
-	 * Set whether or not player attack options will be hidden for clanmembers/friends
+	 * Set whether or not player attack options will be hidden for friends
 	 */
 	void setHideFriendAttackOptions(boolean yes);
 
 	/**
-	 * Set whether or not player cast options will be hidden for clanmembers/friends
+	 * Set whether or not player cast options will be hidden for friends
 	 */
 	void setHideFriendCastOptions(boolean yes);
+
+	/**
+	 * Set whether or not player attack options will be hidden for clanmates
+	 */
+	void setHideClanmateAttackOptions(boolean yes);
+
+	/**
+	 * Set whether or not player cast options will be hidden for clanmates
+	 */
+	void setHideClanmateCastOptions(boolean yes);
 
 	/**
 	 * Set spells excluded from above hiding

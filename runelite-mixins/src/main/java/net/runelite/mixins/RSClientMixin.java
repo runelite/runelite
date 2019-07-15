@@ -209,7 +209,13 @@ public abstract class RSClientMixin implements RSClient
 	private static boolean hideFriendAttackOptions = false;
 
 	@Inject
+	private static boolean hideClanmateAttackOptions = false;
+
+	@Inject
 	private static boolean hideFriendCastOptions = false;
+
+	@Inject
+	private static boolean hideClanmateCastOptions = false;
 
 	@Inject
 	private static Set<String> unhiddenCasts = new HashSet<String>();
@@ -226,6 +232,20 @@ public abstract class RSClientMixin implements RSClient
 	public void setHideFriendCastOptions(boolean yes)
 	{
 		hideFriendCastOptions = yes;
+	}
+
+	@Inject
+	@Override
+	public void setHideClanmateAttackOptions(boolean yes)
+	{
+		hideClanmateAttackOptions = yes;
+	}
+
+	@Inject
+	@Override
+	public void setHideClanmateCastOptions(boolean yes)
+	{
+		hideClanmateCastOptions = yes;
 	}
 
 	@Inject
@@ -1644,12 +1664,11 @@ public abstract class RSClientMixin implements RSClient
 	{
 		if (client.isSpellSelected())
 		{
-			return hideFriendCastOptions
-				&& (p.isFriended() || p.isClanMember())
-				&& !unhiddenCasts.contains(client.getSelectedSpellName());
+			return ((hideFriendCastOptions && p.isFriended()) || (hideClanmateCastOptions && p.isClanMember()))
+				&& !unhiddenCasts.contains(client.getSelectedSpellName().replaceAll("<[^>]*>", "").toLowerCase());
 		}
 
-		return hideFriendAttackOptions && (p.isFriended() || p.isClanMember());
+		return ((hideFriendAttackOptions && p.isFriended()) || (hideClanmateAttackOptions && p.isClanMember()));
 	}
 
 	@Inject

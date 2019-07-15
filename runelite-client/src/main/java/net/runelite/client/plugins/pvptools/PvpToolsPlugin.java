@@ -11,6 +11,7 @@
 
 package net.runelite.client.plugins.pvptools;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Provides;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -36,11 +38,14 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.SkullIcon;
+import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.Subscribe;
@@ -87,12 +92,16 @@ public class PvpToolsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hideAll;
+	private boolean loaded;
 
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ItemManager itemManager;
@@ -149,7 +158,10 @@ public class PvpToolsPlugin extends Plugin
 	private boolean missingPlayersEnabled;
 	private boolean currentPlayersEnabled;
 	private boolean hideAttack;
+	private AttackMode hideAttackMode;
 	private boolean hideCast;
+	private AttackMode hideCastMode;
+	private Set<String> unhiddenCasts;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -238,8 +250,6 @@ public class PvpToolsPlugin extends Plugin
 
 		overlayManager.add(pvpToolsOverlay);
 		overlayManager.add(playerCountOverlay);
-		client.setHideFriendAttackOptions(this.hideAttack);
-		client.setHideFriendCastOptions(this.hideCast);
 		keyManager.registerKeyListener(fallinHotkeyListener);
 		keyManager.registerKeyListener(renderselfHotkeyListener);
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "skull.png");
@@ -258,7 +268,6 @@ public class PvpToolsPlugin extends Plugin
 		panel.currentPlayers.addActionListener(currentPlayersActionListener);
 		clientToolbar.addNavigation(navButton);
 
-
 		if (this.missingPlayersEnabled)
 		{
 			panel.missingPlayers.setVisible(true);
@@ -269,6 +278,10 @@ public class PvpToolsPlugin extends Plugin
 			panel.currentPlayers.setVisible(true);
 		}
 
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			setCastOptions();
+		}
 	}
 
 	@Override
@@ -279,8 +292,13 @@ public class PvpToolsPlugin extends Plugin
 		keyManager.unregisterKeyListener(fallinHotkeyListener);
 		keyManager.unregisterKeyListener(renderselfHotkeyListener);
 		clientToolbar.removeNavigation(navButton);
-		client.setHideFriendAttackOptions(false);
-		client.setHideFriendCastOptions(false);
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			resetCastOptions();
+		}
+
+		loaded = false;
 	}
 
 	@Subscribe
@@ -290,60 +308,72 @@ public class PvpToolsPlugin extends Plugin
 		{
 			return;
 		}
-		client.setHideFriendAttackOptions(this.hideAttack);
-		client.setHideFriendCastOptions(this.hideCast);
 
-		if (configChanged.getGroup().equals("pvptools"))
+		updateConfig();
+
+		switch (configChanged.getKey())
 		{
-			updateConfig();
-
-			switch (configChanged.getKey())
-			{
-				case "countPlayers":
-					if (this.countPlayers)
-					{
-						updatePlayers();
-					}
-					if (!this.countPlayers)
-					{
-						panel.disablePlayerCount();
-					}
-					break;
-				case "countOverHeads":
-					if (this.countOverHeads)
-					{
-						countOverHeads();
-					}
-					if (!this.countOverHeads)
-					{
-						panel.disablePrayerCount();
-					}
-					break;
-				case "riskCalculator":
-					if (this.riskCalculatorEnabled)
-					{
-						getCarriedWealth();
-					}
-					if (!this.riskCalculatorEnabled)
-					{
-						panel.disableRiskCalculator();
-					}
-					break;
-				case "missingPlayers":
-					if (this.missingPlayersEnabled)
-					{
-						panel.missingPlayers.setVisible(true);
-					}
-					break;
-				case "currentPlayers":
-					if (this.currentPlayersEnabled)
-					{
-						panel.currentPlayers.setVisible(true);
-					}
-					break;
-				default:
-					break;
-			}
+			case "countPlayers":
+				if (this.countPlayers)
+				{
+					updatePlayers();
+				}
+				if (!this.countPlayers)
+				{
+					panel.disablePlayerCount();
+				}
+				break;
+			case "countOverHeads":
+				if (this.countOverHeads)
+				{
+					countOverHeads();
+				}
+				if (!this.countOverHeads)
+				{
+					panel.disablePrayerCount();
+				}
+				break;
+			case "riskCalculator":
+				if (this.riskCalculatorEnabled)
+				{
+					getCarriedWealth();
+				}
+				if (!this.riskCalculatorEnabled)
+				{
+					panel.disableRiskCalculator();
+				}
+				break;
+			case "missingPlayers":
+				if (this.missingPlayersEnabled)
+				{
+					panel.missingPlayers.setVisible(true);
+				}
+				break;
+			case "currentPlayers":
+				if (this.currentPlayersEnabled)
+				{
+					panel.currentPlayers.setVisible(true);
+				}
+				break;
+			case "hideAttack":
+			case "hideAttackMode":
+				if (this.hideAttack)
+				{
+					hideAttackOptions(this.hideAttackMode);
+				}
+				else
+				{
+					client.setHideFriendAttackOptions(false);
+					client.setHideClanmateAttackOptions(false);
+				}
+				break;
+			case "hideCast":
+			case "hideCastMode":
+			case "hideCastIgnored":
+				setCastOptions();
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -360,13 +390,20 @@ public class PvpToolsPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState().equals(GameState.LOGGED_IN) && this.riskCalculatorEnabled)
+		if (event.getGameState().equals(GameState.LOGGED_IN))
 		{
-			getCarriedWealth();
-		}
-		if (event.getGameState().equals(GameState.LOGGED_IN) && this.countPlayers)
-		{
-			updatePlayers();
+			if (this.riskCalculatorEnabled)
+			{
+				getCarriedWealth();
+			}
+			if (this.countPlayers)
+			{
+				updatePlayers();
+			}
+			if (!loaded)
+			{
+				setCastOptions();
+			}
 		}
 	}
 
@@ -577,6 +614,101 @@ public class PvpToolsPlugin extends Plugin
 		panel.biggestItemLabel.repaint();
 	}
 
+	/**
+	 * Given an AttackMode, hides the appropriate attack options.
+	 * @param mode The {@link AttackMode} specifying clanmates, friends, or both.
+	 */
+	public void hideAttackOptions(AttackMode mode)
+	{
+		switch (mode)
+		{
+			case CLAN:
+				client.setHideClanmateAttackOptions(true);
+				client.setHideFriendAttackOptions(false);
+				break;
+			case FRIENDS:
+				client.setHideFriendAttackOptions(true);
+				client.setHideClanmateAttackOptions(false);
+				break;
+			case BOTH:
+				client.setHideClanmateAttackOptions(true);
+				client.setHideFriendAttackOptions(true);
+				break;
+		}
+	}
+
+	/**
+	 * Given an AttackMode, hides the appropriate cast options.
+	 * @param mode The {@link AttackMode} specifying clanmates, friends, or both.
+	 */
+	public void hideCastOptions(AttackMode mode)
+	{
+		switch (mode)
+		{
+			case CLAN:
+				client.setHideClanmateCastOptions(true);
+				client.setHideFriendCastOptions(false);
+				break;
+			case FRIENDS:
+				client.setHideFriendCastOptions(true);
+				client.setHideClanmateCastOptions(false);
+				break;
+			case BOTH:
+				client.setHideClanmateCastOptions(true);
+				client.setHideFriendCastOptions(true);
+				break;
+		}
+	}
+
+	public void setCastOptions()
+	{
+		clientThread.invoke(() ->
+		{
+			if ((client.getVar(Varbits.IN_RAID) == 1 || client.getVar(Varbits.THEATRE_OF_BLOOD) == 2)
+				|| (client.getVar(Varbits.IN_WILDERNESS) != 1 && !WorldType.isAllPvpWorld(client.getWorldType())))
+			{
+				return;
+			}
+
+			if (this.hideAttack)
+			{
+				hideAttackOptions(this.hideAttackMode);
+			}
+			else
+			{
+				client.setHideFriendAttackOptions(false);
+				client.setHideClanmateAttackOptions(false);
+			}
+
+			if (this.hideCast)
+			{
+				hideCastOptions(this.hideCastMode);
+			}
+			else
+			{
+				client.setHideFriendCastOptions(false);
+				client.setHideClanmateCastOptions(false);
+			}
+
+			client.setUnhiddenCasts(this.unhiddenCasts);
+
+			loaded = true;
+		});
+	}
+
+	private void resetCastOptions()
+	{
+		clientThread.invoke(() ->
+		{
+			if (client.getVar(Varbits.IN_RAID) == 1 || client.getVar(Varbits.THEATRE_OF_BLOOD) == 2)
+			{
+				return;
+			}
+
+			client.setHideFriendAttackOptions(false);
+			client.setHideFriendCastOptions(false);
+		});
+	}
 
 	private void updateConfig()
 	{
@@ -589,6 +721,9 @@ public class PvpToolsPlugin extends Plugin
 		this.missingPlayersEnabled = config.missingPlayersEnabled();
 		this.currentPlayersEnabled = config.currentPlayersEnabled();
 		this.hideAttack = config.hideAttack();
+		this.hideAttackMode = config.hideAttackMode();
 		this.hideCast = config.hideCast();
+		this.hideCastMode = config.hideCastMode();
+		this.unhiddenCasts = Sets.newHashSet(Text.fromCSV(config.hideCastIgnored().toLowerCase()));
 	}
 }
