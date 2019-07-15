@@ -135,7 +135,7 @@ public class ItemChargePluginTest
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-        verify(config).ringOfForging(eq(140));
+		verify(config).ringOfForging(eq(140));
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_BINDING_NECKLACE_FULL, "", 0);
