@@ -63,12 +63,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 public class ItemChargePlugin extends Plugin
 {
-	private static final Pattern RING_OF_FORGING_CHECK_PATTERN = Pattern.compile(
-		"You can smelt ([0-9+]+|one) more pieces of iron ore before a ring melts\\.");
-	private static final Pattern RING_OF_FORGING_USED_PATTERN = Pattern.compile(
-		"You retrieve a bar of iron\\.");
-	private static final Pattern RING_OF_FORGING_BREAK_PATTERN = Pattern.compile(
-		"Your Ring of Forging has melted\\.");
 	private static final Pattern DODGY_CHECK_PATTERN = Pattern.compile(
 		"Your dodgy necklace has (\\d+) charges? left\\.");
 	private static final Pattern DODGY_PROTECT_PATTERN = Pattern.compile(
@@ -81,11 +75,17 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern BINDING_USED_PATTERN = Pattern.compile(
 		"You bind the temple's power into (mud|lava|steam|dust|smoke|mist) runes\\.");
 	private static final String BINDING_BREAK_TEXT = "Your Binding necklace has disintegrated.";
+	private static final Pattern RING_OF_FORGING_CHECK_PATTERN = Pattern.compile(
+			"You can smelt ([0-9+]+|one) more pieces of iron ore before a ring melts\\.");
+	private static final Pattern RING_OF_FORGING_USED_PATTERN = Pattern.compile(
+			"You retrieve a bar of iron\\.");
+	private static final Pattern RING_OF_FORGING_BREAK_PATTERN = Pattern.compile(
+			"Your Ring of Forging has melted\\.");
 
-	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
 	private static final int MAX_EXPLORER_RING_CHARGES = 30;
+	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -162,11 +162,6 @@ public class ItemChargePlugin extends Plugin
 			removeInfobox(ItemWithSlot.DODGY_NECKLACE);
 		}
 
-		if (!config.showRingOfForgingCount())
-		{
-			removeInfobox(ItemWithSlot.RING_OF_FORGING);
-		}
-
 		if (!config.showBindingNecklaceCharges())
 		{
 			removeInfobox(ItemWithSlot.BINDING_NECKLACE);
@@ -176,20 +171,25 @@ public class ItemChargePlugin extends Plugin
 		{
 			removeInfobox(ItemWithSlot.EXPLORER_RING);
 		}
+
+		if (!config.showRingOfForgingCount())
+		{
+			removeInfobox(ItemWithSlot.RING_OF_FORGING);
+		}
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		String message = event.getMessage();
-		Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
-		Matcher ringOfForgingUsedMatcher = RING_OF_FORGING_USED_PATTERN.matcher(message);
-		Matcher ringOfForgingBreakMatcher = RING_OF_FORGING_BREAK_PATTERN.matcher(message);
 		Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);
 		Matcher dodgyProtectMatcher = DODGY_PROTECT_PATTERN.matcher(message);
 		Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
 		Matcher bindingNecklaceCheckMatcher = BINDING_CHECK_PATTERN.matcher(event.getMessage());
 		Matcher bindingNecklaceUsedMatcher = BINDING_USED_PATTERN.matcher(event.getMessage());
+		Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
+		Matcher ringOfForgingUsedMatcher = RING_OF_FORGING_USED_PATTERN.matcher(message);
+		Matcher ringOfForgingBreakMatcher = RING_OF_FORGING_BREAK_PATTERN.matcher(message);
 
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
@@ -197,32 +197,6 @@ public class ItemChargePlugin extends Plugin
 			{
 				notifier.notify("Your Ring of Recoil has shattered");
 			}
-			else if (ringOfForgingCheckMatcher.find())
-			{
-
-				final String match = ringOfForgingCheckMatcher.group(1);
-
-				int charges = 1;
-				if (!match.equals("one"))
-				{
-					charges = Integer.parseInt(match);
-				}
-				updateRingOfForgingCharges(charges);
-			}
-			else if (ringOfForgingUsedMatcher.find())
-			{
-				updateRingOfForgingCharges(config.ringOfForging() - 1);
-			}
-			else if (ringOfForgingBreakMatcher.find())
-			{
-				if (config.ringOfForgingNotification())
-				{
-					notifier.notify("Your ring of forging has melted.");
-				}
-
-				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);
-			}
-
 			else if (dodgyBreakMatcher.find())
 			{
 				if (config.dodgyNotification())
@@ -266,6 +240,31 @@ public class ItemChargePlugin extends Plugin
 
 				updateBindingNecklaceCharges(charges);
 			}
+			else if (ringOfForgingCheckMatcher.find())
+			{
+
+				final String match = ringOfForgingCheckMatcher.group(1);
+
+				int charges = 1;
+				if (!match.equals("one"))
+				{
+					charges = Integer.parseInt(match);
+				}
+				updateRingOfForgingCharges(charges);
+			}
+			else if (ringOfForgingUsedMatcher.find())
+			{
+				updateRingOfForgingCharges(config.ringOfForging() - 1);
+			}
+			else if (ringOfForgingBreakMatcher.find())
+			{
+				if (config.ringOfForgingNotification())
+				{
+					notifier.notify("Your ring of forging has melted.");
+				}
+
+				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);
+			}
 		}
 	}
 
@@ -289,11 +288,6 @@ public class ItemChargePlugin extends Plugin
 			updateJewelleryInfobox(ItemWithSlot.DODGY_NECKLACE, items);
 		}
 
-		if (config.showRingOfForgingCount())
-		{
-			updateJewelleryInfobox(ItemWithSlot.RING_OF_FORGING, items);
-		}
-
 		if (config.showAbyssalBraceletCharges())
 		{
 			updateJewelleryInfobox(ItemWithSlot.ABYSSAL_BRACELET, items);
@@ -307,6 +301,11 @@ public class ItemChargePlugin extends Plugin
 		if (config.showExplorerRingCharges())
 		{
 			updateJewelleryInfobox(ItemWithSlot.EXPLORER_RING, items);
+		}
+
+		if (config.showRingOfForgingCount())
+		{
+			updateJewelleryInfobox(ItemWithSlot.RING_OF_FORGING, items);
 		}
 	}
 
@@ -352,23 +351,6 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
-	private void updateRingOfForgingCharges(final int value)
-	{
-		config.ringOfForging(value);
-
-		if (config.showInfoboxes() && config.showRingOfForgingCount())
-		{
-			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
-
-			if (itemContainer == null)
-			{
-				return;
-			}
-
-			updateJewelleryInfobox(ItemWithSlot.RING_OF_FORGING, itemContainer.getItems());
-		}
-	}
-
 	private void updateBindingNecklaceCharges(final int value)
 	{
 		config.bindingNecklace(value);
@@ -401,6 +383,23 @@ public class ItemChargePlugin extends Plugin
 			}
 
 			updateJewelleryInfobox(ItemWithSlot.EXPLORER_RING, itemContainer.getItems());
+		}
+	}
+
+	private void updateRingOfForgingCharges(final int value)
+	{
+		config.ringOfForging(value);
+
+		if (config.showInfoboxes() && config.showRingOfForgingCount())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.RING_OF_FORGING, itemContainer.getItems());
 		}
 	}
 
