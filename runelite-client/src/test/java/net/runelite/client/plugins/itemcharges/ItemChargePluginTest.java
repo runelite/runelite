@@ -115,7 +115,7 @@ public class ItemChargePluginTest
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_ONE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-        verify(config).ringOfForging(eq(1));
+		verify(config).ringOfForging(eq(1));
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_FULL, "", 0);
