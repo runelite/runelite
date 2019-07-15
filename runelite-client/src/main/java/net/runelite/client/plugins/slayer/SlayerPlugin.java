@@ -535,7 +535,15 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		killedOne();
+		final int taskKillExp = Task.getTask(taskName).getExpectedKillExp();
+
+		// Only count exp gain as a kill if the task either has no expected exp for a kill, or if the exp gain is equal
+		// to the expected exp gain for the task.
+		if (taskKillExp == 0 || taskKillExp == slayerExp - cachedXp)
+		{
+			killedOne();
+		}
+
 		cachedXp = slayerExp;
 	}
 
