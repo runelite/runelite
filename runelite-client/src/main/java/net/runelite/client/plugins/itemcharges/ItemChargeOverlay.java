@@ -78,7 +78,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 			charges = config.ringOfForging();
 		}
-		if (itemId == ItemID.DODGY_NECKLACE)
+		else if (itemId == ItemID.DODGY_NECKLACE)
 		{
 			if (!config.showDodgyCount())
 			{

@@ -199,7 +199,15 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (ringOfForgingCheckMatcher.find())
 			{
-				updateRingOfForgingCharges(Integer.parseInt(ringOfForgingCheckMatcher.group(1)));
+
+				final String match = ringOfForgingCheckMatcher.group(1);
+
+				int charges = 1;
+				if (!match.equals("one"))
+				{
+					charges = Integer.parseInt(match);
+				}
+				updateRingOfForgingCharges(charges);
 			}
 			else if (ringOfForgingUsedMatcher.find())
 			{
