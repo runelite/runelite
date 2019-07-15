@@ -461,10 +461,6 @@ public class ItemChargePlugin extends Plugin
 
 		if (itemWithCharge == null)
 		{
-			if (id == ItemID.RING_OF_FORGING && type == ItemWithSlot.RING_OF_FORGING)
-			{
-				charges = config.ringOfForging();
-			}
 			if (id == ItemID.DODGY_NECKLACE && type == ItemWithSlot.DODGY_NECKLACE)
 			{
 				charges = config.dodgyNecklace();
@@ -476,6 +472,10 @@ public class ItemChargePlugin extends Plugin
 			else if ((id >= ItemID.EXPLORERS_RING_1 && id <= ItemID.EXPLORERS_RING_4) && type == ItemWithSlot.EXPLORER_RING)
 			{
 				charges = config.explorerRing();
+			}
+			else if (id == ItemID.RING_OF_FORGING && type == ItemWithSlot.RING_OF_FORGING)
+			{
+				charges = config.ringOfForging();
 			}
 		}
 		else if (itemWithCharge.getType() == type.getType())
