@@ -71,7 +71,7 @@ public interface ItemIdentificationConfig extends Config
 	)
 	default boolean showSacks()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
