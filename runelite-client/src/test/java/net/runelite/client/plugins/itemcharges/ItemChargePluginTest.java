@@ -52,6 +52,16 @@ public class ItemChargePluginTest
 	private static final String PROTECT_1 = "Your dodgy necklace protects you. <col=ff0000>It has 1 charge left.</col>";
 	private static final String BREAK = "Your dodgy necklace protects you. <col=ff0000>It then crumbles to dust.</col>";
 
+	private static final String CHECK_RING_OF_FORGING_FULL = "You can smelt 140 more pieces of iron ore before a ring melts.";
+	private static final String CHECK_RING_OF_FORGING_ONE = "You can smelt one more pieces of iron ore before a ring melts.";
+	private static final String USED_RING_OF_FORGING = "You retrieve a bar of iron.";
+	private static final String BREAK_RING_OF_FORGING = "Your Ring of Forging has melted.";
+
+	private static final String CHECK_BINDING_NECKLACE_FULL = "You have 16 charges left before your Binding necklace disintegrates.";
+	private static final String CHECK_BINDING_NECKLACE_ONE = "You have one charges left before your Binding necklace disintegrates.";
+	private static final String USED_BINDING_NECKLACE = "You bind the temple's power into mud runes.";
+	private static final String BREAK_BINDING_NECKLACE = "Your Binding necklace has disintegrated.";
+
 	@Mock
 	@Bind
 	private Client client;
@@ -106,6 +116,46 @@ public class ItemChargePluginTest
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(config).dodgyNecklace(eq(10));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_ONE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+        verify(config).ringOfForging(eq(1));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_FULL, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).ringOfForging(eq(140));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).ringOfForging(eq(-1));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+        verify(config).ringOfForging(eq(140));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_BINDING_NECKLACE_FULL, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).bindingNecklace(eq(16));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_BINDING_NECKLACE_ONE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).bindingNecklace(eq(1));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_BINDING_NECKLACE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).bindingNecklace(eq(-1));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_BINDING_NECKLACE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).bindingNecklace(eq(17));
 		reset(config);
 	}
 }
