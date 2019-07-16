@@ -102,11 +102,11 @@ public class AntiDragPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		updateConfig();
 		if (this.keybind)
 		{
 			keyManager.registerKeyListener(hotkeyListener);
 		}
+		updateConfig();
 		client.setInventoryDragDelay(this.alwaysOn ? this.dragDelay : DEFAULT_DELAY);
 	}
 
@@ -140,6 +140,10 @@ public class AntiDragPlugin extends Plugin
 			if (event.getKey().equals("alwaysOn"))
 			{
 				client.setInventoryDragDelay(this.alwaysOn ? this.dragDelay : DEFAULT_DELAY);
+			}
+			if (event.getKey().equals("dragDelay") && this.alwaysOn)
+			{
+				client.setInventoryDragDelay(this.dragDelay);
 			}
 		}
 	}
