@@ -25,25 +25,24 @@
 package net.runelite.client.plugins.freezetimers;
 
 import com.google.inject.Provides;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.Player;
+import net.runelite.api.NPC;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.SpotAnimationChanged;
-import net.runelite.api.events.PlayerDespawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Freeze Timers",
@@ -55,7 +54,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Singleton
 public class FreezeTimersPlugin extends Plugin
 {
-	private final Map<String, FreezeInfo> freezes = new HashMap<>();
+	private static final int VORKATH_REGION = 9023;
 
 	@Inject
 	private Client client;
@@ -155,18 +154,31 @@ public class FreezeTimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPlayerDespawned(PlayerDespawned playerDespawned)
+	public void onNpcDespawned(NpcDespawned event)
 	{
-		final Player player = playerDespawned.getPlayer();
-		// All despawns ok: death, teleports, log out, runs away from screen
-		this.remove(player);
+		if (!isAtVorkath())
+		{
+			return;
+		}
+
+		final NPC npc = event.getNpc();
+
+		if (npc.getName() == null)
+		{
+			return;
+		}
+
+		if (npc.getName().equals("Zombified Spawn"))
+		{
+			timers.setTimerEnd(client.getLocalPlayer(), TimerType.FREEZE,
+					System.currentTimeMillis());
+		}
 	}
 
-	private void remove(Actor actor)
+	private boolean isAtVorkath()
 	{
-		freezes.remove(actor.getName());
+		return ArrayUtils.contains(client.getMapRegions(), VORKATH_REGION);
 	}
-
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)

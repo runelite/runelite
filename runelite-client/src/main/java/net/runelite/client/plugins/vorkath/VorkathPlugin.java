@@ -221,13 +221,9 @@ public class VorkathPlugin extends Plugin
 				vorkath.updatePhase(Vorkath.Phase.FIRE_BALL);
 				vorkath.setAttacksLeft(vorkath.getAttacksLeft() - 1);
 			}
-			else if (vorkathAttack == VorkathAttack.FREEZE_BREATH && vorkath.getLastAttack() != VorkathAttack.ZOMBIFIED_SPAWN)
+			else if (vorkathAttack == VorkathAttack.FREEZE_BREATH || vorkathAttack == VorkathAttack.ZOMBIFIED_SPAWN)
 			{
 				vorkath.updatePhase(Vorkath.Phase.SPAWN);
-				vorkath.setAttacksLeft(vorkath.getAttacksLeft() - (vorkath.getAttacksLeft() / 2));
-			}
-			else if (vorkathAttack == VorkathAttack.ZOMBIFIED_SPAWN || (vorkath.getLastAttack() == VorkathAttack.ZOMBIFIED_SPAWN))
-			{
 				vorkath.setAttacksLeft(0);
 			}
 			else
