@@ -1,8 +1,9 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Kamiel
- * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
- * Copyright (c) 2018, lucouswin <https://github.com/lucouswin>
+ * Copyright (c) 2019, alanbaumgartner <https://github.com/alanbaumgartner>
+ * Copyright (c) 2019, Kyle <https://github.com/kyleeld>
+ * Copyright (c) 2019, lucouswin <https://github.com/lucouswin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,6 +31,7 @@ package net.runelite.client.plugins.menuentryswapper;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +59,8 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import static net.runelite.api.Varbits.BUILDING_MODE;
+
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
@@ -78,7 +82,9 @@ import net.runelite.client.menus.ComparableEntry;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.menuentryswapper.util.BurningAmuletMode;
 import net.runelite.client.plugins.menuentryswapper.util.CombatBraceletMode;
@@ -100,6 +106,9 @@ import net.runelite.client.plugins.menuentryswapper.util.SlayerRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.XericsTalismanMode;
 import net.runelite.client.plugins.menuentryswapper.util.teleEquippedMode;
 import static net.runelite.client.util.MenuUtil.swap;
+
+import net.runelite.client.plugins.pvptools.PvpToolsConfig;
+import net.runelite.client.plugins.pvptools.PvpToolsPlugin;
 import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
@@ -112,6 +121,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	enabledByDefault = false
 )
 @Singleton
+@PluginDependency(PvpToolsPlugin.class)
 public class MenuEntrySwapperPlugin extends Plugin
 {
 	private static final String CONFIGURE = "Configure";
@@ -127,6 +137,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private MenuEntry[] entries;
 	private final Set<String> leftClickConstructionItems = new HashSet<>();
 	private boolean buildingMode;
+	private boolean inTobRaid = false;
+	private boolean inCoxRaid = false;
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
@@ -177,6 +189,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private ConfigManager configManager;
 
 	@Inject
+	private PluginManager pluginManager;
+
+	@Inject
 	private KeyManager keyManager;
 
 	@Inject
@@ -187,6 +202,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Inject
 	private EventBus eventBus;
+
+	@Inject
+	private PvpToolsPlugin pvpTools;
+
+	@Inject
+	private PvpToolsConfig pvpToolsConfig;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean configuringShiftClick = false;
@@ -315,8 +336,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean hideDestroyBoltpouch;
 	private boolean hideDestroyGembag;
 	private boolean hideDropRunecraftingPouch;
-	private boolean getRemoveFreezePlayerToB;
-	private boolean getRemoveFreezePlayerCoX;
+	private boolean hideCastToB;
+	private Set<String> hideCastIgnoredToB;
+	private boolean hideCastCoX;
+	private Set<String> hideCastIgnoredCoX;
 
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
@@ -332,8 +355,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		addSwaps();
 		loadConstructionItems(config.getEasyConstructionItems());
-		client.setHideFriendCastOptions(config.getRemoveFreezePlayerToB());
-		client.setHideFriendCastOptions(config.getRemoveFreezePlayerCoX());
 
 		if (config.shiftClickCustomization())
 		{
@@ -341,6 +362,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		loadCustomSwaps(config.customSwaps());
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			setCastOptions(true);
+		}
 	}
 
 	@Override
@@ -348,11 +374,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		eventBus.unregister(this);
 
-		client.setHideFriendCastOptions(false);
 		disableCustomization();
 		loadConstructionItems("");
 		loadCustomSwaps(""); // Removes all custom swaps
 		removeSwaps();
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			resetCastOptions();
+		}
 	}
 
 	private void addSubscriptions()
@@ -374,7 +404,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			return;
 		}
-		
+
 		updateConfig();
 
 		loadConstructionItems(this.getEasyConstructionItems);
@@ -387,8 +417,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				loadCustomSwaps(this.configCustomSwaps);
 			}
-
-			return;
 		}
 
 		if (event.getKey().equals("shiftClickCustomization"))
@@ -407,19 +435,27 @@ public class MenuEntrySwapperPlugin extends Plugin
 			clientThread.invoke(this::resetItemDefinitionCache);
 		}
 
-		if (event.getKey().equals("removeFreezePlayerToB"))
+		else if ((event.getKey().equals("hideCastToB") || event.getKey().equals("hideCastIgnoredToB")))
 		{
-			if (this.getRemoveFreezePlayerToB && client.getVar(Varbits.THEATRE_OF_BLOOD) == 2)
+			if (this.hideCastToB)
 			{
-				client.setHideFriendCastOptions(config.getRemoveFreezePlayerToB());
+				setCastOptions(true);
+			}
+			else
+			{
+				resetCastOptions();
 			}
 		}
 
-		if (event.getKey().equals("removeFreezePlayerCoX"))
+		else if ((event.getKey().equals("hideCastCoX") || event.getKey().equals("hideCastIgnoredCoX")))
 		{
-			if (this.getRemoveFreezePlayerCoX && client.getVar(Varbits.IN_RAID) == 1)
+			if (this.hideCastCoX)
 			{
-				client.setHideFriendCastOptions(config.getRemoveFreezePlayerCoX());
+				setCastOptions(true);
+			}
+			else
+			{
+				resetCastOptions();
 			}
 		}
 	}
@@ -493,6 +529,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		buildingMode = client.getVar(BUILDING_MODE) == 1;
+
+		setCastOptions(false);
 	}
 
 	private void onMenuOpened(MenuOpened event)
@@ -1709,6 +1747,59 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("climb-down");
 	}
 
+	private void setCastOptions(boolean force)
+	{
+		clientThread.invoke(() ->
+		{
+			boolean tmpInCoxRaid = client.getVar(Varbits.IN_RAID) == 1;
+			if (tmpInCoxRaid != inCoxRaid || force)
+			{
+				if (tmpInCoxRaid && this.hideCastCoX)
+				{
+					client.setHideFriendCastOptions(true);
+					client.setHideClanmateCastOptions(true);
+					client.setUnhiddenCasts(this.hideCastIgnoredCoX);
+				}
+
+				inCoxRaid = tmpInCoxRaid;
+			}
+
+			boolean tmpInTobRaid = client.getVar(Varbits.THEATRE_OF_BLOOD) == 2;
+			if (tmpInTobRaid != inTobRaid || force)
+			{
+				if (tmpInTobRaid && this.hideCastToB)
+				{
+					client.setHideFriendCastOptions(true);
+					client.setHideClanmateCastOptions(true);
+					client.setUnhiddenCasts(this.hideCastIgnoredToB);
+				}
+
+				inTobRaid = tmpInTobRaid;
+			}
+
+			if (!inCoxRaid && !inTobRaid)
+			{
+				resetCastOptions();
+			}
+		});
+	}
+
+	private void resetCastOptions()
+	{
+		clientThread.invoke(() ->
+		{
+			if (client.getVar(Varbits.IN_WILDERNESS) == 1 || WorldType.isAllPvpWorld(client.getWorldType()) && pluginManager.isPluginEnabled(pvpTools) && pvpToolsConfig.hideCast())
+			{
+				pvpTools.setCastOptions();
+			}
+			else
+			{
+				client.setHideFriendCastOptions(false);
+				client.setHideClanmateCastOptions(false);
+			}
+		});
+	}
+
 	private void updateConfig()
 	{
 		this.getWithdrawOne = config.getWithdrawOne();
@@ -1832,7 +1923,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.hideDestroyBoltpouch = config.hideDestroyBoltpouch();
 		this.hideDestroyGembag = config.hideDestroyGembag();
 		this.hideDropRunecraftingPouch = config.hideDropRunecraftingPouch();
-		this.getRemoveFreezePlayerToB = config.getRemoveFreezePlayerToB();
-		this.getRemoveFreezePlayerCoX = config.getRemoveFreezePlayerCoX();
+		this.hideCastToB = config.hideCastToB();
+		this.hideCastIgnoredToB = Sets.newHashSet(Text.fromCSV(config.hideCastIgnoredToB().toLowerCase()));
+		this.hideCastCoX = config.hideCastCoX();
+		this.hideCastIgnoredCoX = Sets.newHashSet(Text.fromCSV(config.hideCastIgnoredCoX().toLowerCase()));
 	}
 }

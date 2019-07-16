@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,37 +24,67 @@
  */
 package net.runelite.client.plugins.vorkath;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Singleton
-public class ZombifiedSpawnOverlay extends Overlay
+@ConfigGroup("vorkath")
+public interface VorkathConfig extends Config
 {
-	private final VorkathPlugin plugin;
-
-	@Inject
-	public ZombifiedSpawnOverlay(final VorkathPlugin plugin)
+	@ConfigItem(
+		keyName = "indicateAcidPools",
+		name = "Acid Pools",
+		description = "Indicate the acid pools",
+		position = 0
+	)
+	default boolean indicateAcidPools()
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
-		this.plugin = plugin;
+		return false;
 	}
 
-	@Override
-	public Dimension render(Graphics2D graphics)
+	@ConfigItem(
+		keyName = "indicateAcidFreePath",
+		name = "Acid Free Path",
+		description = "Indicate the most efficient acid free path",
+		position = 1
+	)
+	default boolean indicateAcidFreePath()
 	{
-		if (plugin.getZombifiedSpawn() != null)
-		{
-			OverlayUtil.renderActorOverlayImage(graphics, plugin.getZombifiedSpawn(), VorkathPlugin.SPAWN, Color.green, 10);
-		}
+		return true;
+	}
 
-		return null;
+	@ConfigItem(
+		keyName = "acidFreePathMinLength",
+		name = "Minimum Length Acid Free Path",
+		description = "The minimum length of an acid free path",
+		position = 2,
+		hidden = true,
+		unhide = "indicateAcidFreePath"
+	)
+	default int acidFreePathLength()
+	{
+		return 5;
+	}
+
+	@ConfigItem(
+		keyName = "indicateWooxWalkPath",
+		name = "WooxWalk Path",
+		description = "Indicate the closest WooxWalk path",
+		position = 3
+	)
+	default boolean indicateWooxWalkPath()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "indicateWooxWalkTick",
+		name = "WooxWalk Tick",
+		description = "Indicate on which tile to click during each game tick",
+		position = 4
+	)
+	default boolean indicateWooxWalkTick()
+	{
+		return true;
 	}
 }
