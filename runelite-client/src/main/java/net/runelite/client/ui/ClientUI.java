@@ -871,7 +871,15 @@ public class ClientUI
 		}
 
 		frame.setExpandResizeType(config.automaticResizeType());
-		frame.setContainedInScreen(config.containInScreen() && withTitleBar);
+
+		ContainableFrame.Mode containMode = config.containInScreen();
+		if (containMode == ContainableFrame.Mode.ALWAYS && !withTitleBar)
+		{
+			// When native window decorations are enabled we don't have a way to receive window move events
+			// so we can't contain to screen always.
+			containMode = ContainableFrame.Mode.RESIZING;
+		}
+		frame.setContainedInScreen(containMode);
 
 		if (!config.rememberScreenBounds())
 		{

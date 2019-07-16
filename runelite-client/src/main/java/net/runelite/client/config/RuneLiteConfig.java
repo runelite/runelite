@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import net.runelite.api.Constants;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.ContainableFrame;
 
 @ConfigGroup("runelite")
 public interface RuneLiteConfig extends Config
@@ -66,14 +67,14 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "containInScreen",
+		keyName = "containInScreen2",
 		name = "Contain in screen",
-		description = "Makes the client stay contained in the screen when attempted to move out of it.<br>Note: Only works if custom chrome is enabled.",
+		description = "Makes the client stay contained in the screen when attempted to move out of it.<br>Note: 'Always' only works if custom chrome is enabled.",
 		position = 13
 	)
-	default boolean containInScreen()
+	default ContainableFrame.Mode containInScreen()
 	{
-		return false;
+		return ContainableFrame.Mode.RESIZING;
 	}
 
 	@ConfigItem(

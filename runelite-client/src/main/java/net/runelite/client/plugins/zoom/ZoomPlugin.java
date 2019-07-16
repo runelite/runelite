@@ -52,10 +52,11 @@ public class ZoomPlugin extends Plugin implements KeyListener
 {
 	/**
 	 * The largest (most zoomed in) value that can be used without the client crashing.
-	 * <p>
+	 *
 	 * Larger values trigger an overflow in the engine's fov to scale code.
 	 */
 	private static final int INNER_ZOOM_LIMIT = 1004;
+	private static final int DEFAULT_ZOOM_INCREMENT = 25;
 
 	private boolean controlDown;
 
@@ -90,7 +91,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
 
-		if ("scrollWheelZoom".equals(event.getEventName()) && zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_ZOOM && !controlDown)
+		if (!controlDown && "scrollWheelZoom".equals(event.getEventName()) && zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_ZOOM)
 		{
 			intStack[intStackSize - 1] = 1;
 		}
@@ -109,9 +110,10 @@ public class ZoomPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		if ("scrollWheelZoomIncrement".equals(event.getEventName()) && zoomConfig.zoomIncrement() != 25)
+		if ("scrollWheelZoomIncrement".equals(event.getEventName()) && zoomConfig.zoomIncrement() != DEFAULT_ZOOM_INCREMENT)
 		{
 			intStack[intStackSize - 1] = zoomConfig.zoomIncrement();
+			return;
 		}
 
 		if (zoomConfig.innerLimit())
@@ -190,6 +192,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
 		{
 			controlDown = false;
+
 			if (zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_RESET)
 			{
 				final int zoomValue = MiscUtils.clamp(zoomConfig.ctrlZoomValue(), zoomConfig.OUTER_LIMIT_MIN, INNER_ZOOM_LIMIT);

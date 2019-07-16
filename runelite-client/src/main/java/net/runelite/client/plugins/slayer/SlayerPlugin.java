@@ -1144,7 +1144,7 @@ public class SlayerPlugin extends Plugin
 		else
 		{
 			player = Text.removeTags(chatMessage.getName())
-					.replace('\u00A0', ' ');
+				.replace('\u00A0', ' ');
 		}
 
 		if (Integer.toString(getPoints()) == null)
@@ -1153,11 +1153,11 @@ public class SlayerPlugin extends Plugin
 		}
 
 		String response = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Slayer Points: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(Integer.toString(getPoints()))
-				.build();
+			.append(ChatColorType.NORMAL)
+			.append("Slayer Points: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(getPoints()))
+			.build();
 
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);

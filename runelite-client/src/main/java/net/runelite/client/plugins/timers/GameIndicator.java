@@ -25,22 +25,17 @@
 package net.runelite.client.plugins.timers;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.SpriteID;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.SpriteManager;
 
+@Getter(AccessLevel.PACKAGE)
 enum GameIndicator
 {
 	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active");
 
-	@Getter(AccessLevel.PACKAGE)
 	private final String description;
-	@Getter(AccessLevel.PACKAGE)
 	private String text;
-	@Getter(AccessLevel.PACKAGE)
 	private Color textColor;
 	private final int imageId;
 	private final GameTimerImageType imageType;
@@ -57,18 +52,5 @@ enum GameIndicator
 	GameIndicator(final int imageId, final GameTimerImageType idType, final String description)
 	{
 		this(imageId, idType, description, "", null);
-	}
-
-	BufferedImage getImage(ItemManager itemManager, SpriteManager spriteManager)
-	{
-		switch (imageType)
-		{
-			case ITEM:
-				return itemManager.getImage(imageId);
-			case SPRITE:
-				return spriteManager.getSprite(imageId, 0);
-			default:
-				return null;
-		}
 	}
 }

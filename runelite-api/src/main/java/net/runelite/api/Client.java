@@ -363,6 +363,7 @@ public interface Client extends GameShell
 	 * @param scale the scale of the sprite
 	 * @return the created sprite
 	 */
+	@Nullable
 	Sprite createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
 
 	/**
@@ -373,6 +374,7 @@ public interface Client extends GameShell
 	 * @param fileId the sprites file ID
 	 * @return the sprite image of the file
 	 */
+	@Nullable
 	Sprite[] getSprites(IndexDataBase source, int archiveId, int fileId);
 
 	/**

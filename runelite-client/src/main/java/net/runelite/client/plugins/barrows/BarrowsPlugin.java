@@ -359,9 +359,11 @@ public class BarrowsPlugin extends Plugin
 			final LoopTimer loopTimer = new LoopTimer(
 				PRAYER_DRAIN_INTERVAL_MS,
 				ChronoUnit.MILLIS,
-				spriteManager.getSprite(SpriteID.TAB_PRAYER, 0),
+				null,
 				this,
 				true);
+
+			spriteManager.getSpriteAsync(SpriteID.TAB_PRAYER, 0, loopTimer);
 
 			loopTimer.setPriority(InfoBoxPriority.MED);
 			loopTimer.setTooltip("Prayer Drain");
