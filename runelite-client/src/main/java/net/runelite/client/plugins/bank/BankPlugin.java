@@ -26,10 +26,17 @@
  */
 package net.runelite.client.plugins.bank;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -48,6 +55,18 @@ import net.runelite.client.util.StackFormatter;
 )
 public class BankPlugin extends Plugin
 {
+	private static final List<Varbits> TAB_VARBITS = ImmutableList.of(
+		Varbits.BANK_TAB_ONE_COUNT,
+		Varbits.BANK_TAB_TWO_COUNT,
+		Varbits.BANK_TAB_THREE_COUNT,
+		Varbits.BANK_TAB_FOUR_COUNT,
+		Varbits.BANK_TAB_FIVE_COUNT,
+		Varbits.BANK_TAB_SIX_COUNT,
+		Varbits.BANK_TAB_SEVEN_COUNT,
+		Varbits.BANK_TAB_EIGHT_COUNT,
+		Varbits.BANK_TAB_NINE_COUNT
+	);
+
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
 	private static final String DEPOSIT_LOOT = "Deposit loot";
@@ -59,13 +78,13 @@ public class BankPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private BankCalculation bankCalculation;
-
-	@Inject
 	private BankConfig config;
 
 	@Inject
 	private BankSearch bankSearch;
+
+	@Inject
+	private ContainerCalculation bankCalculation;
 
 	private boolean forceRightClickFlag;
 
@@ -123,11 +142,26 @@ public class BankPlugin extends Plugin
 			return;
 		}
 
-		String strCurrentTab = "";
-		bankCalculation.calculate();
-		long gePrice = bankCalculation.getGePrice();
-		long haPrice = bankCalculation.getHaPrice();
+		final ContainerPrices prices = bankCalculation.calculate(getBankTabItems());
+		if (prices == null)
+		{
+			return;
+		}
 
+		final String strCurrentTab = createValueText(prices);
+
+		String[] stringStack = client.getStringStack();
+		int stringStackSize = client.getStringStackSize();
+
+		stringStack[stringStackSize - 1] += strCurrentTab;
+	}
+
+	private String createValueText(final ContainerPrices prices)
+	{
+		final long gePrice = prices.getGePrice();
+		final long haPrice = prices.getHighAlchPrice();
+
+		String strCurrentTab = "";
 		if (config.showGE() && gePrice != 0)
 		{
 			strCurrentTab += " (";
@@ -166,9 +200,33 @@ public class BankPlugin extends Plugin
 			}
 		}
 
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
+		return strCurrentTab;
+	}
 
-		stringStack[stringStackSize - 1] += strCurrentTab;
+	private Item[] getBankTabItems()
+	{
+		final ItemContainer container = client.getItemContainer(InventoryID.BANK);
+		if (container == null)
+		{
+			return null;
+		}
+
+		final Item[] items = container.getItems();
+		int currentTab = client.getVar(Varbits.CURRENT_BANK_TAB);
+
+		if (currentTab > 0)
+		{
+			int startIndex = 0;
+
+			for (int i = currentTab - 1; i > 0; i--)
+			{
+				startIndex += client.getVar(TAB_VARBITS.get(i - 1));
+			}
+
+			int itemCount = client.getVar(TAB_VARBITS.get(currentTab - 1));
+			return Arrays.copyOfRange(items, startIndex, startIndex + itemCount);
+		}
+
+		return items;
 	}
 }
