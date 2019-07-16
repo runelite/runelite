@@ -81,6 +81,7 @@ public class RuneLite
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	private static final RuneLiteProperties PROPERTIES = new RuneLiteProperties();
+	private static final String EXPECTED_LAUNCHER_VERSION = "Launcher 1.6.0";
 
 	@Getter
 	private static Injector injector;
@@ -217,7 +218,18 @@ public class RuneLite
 			}
 		});
 
-		SPLASH_SCREEN.setMessage("Initializing client", 0);
+		SPLASH_SCREEN.setMessage("Checking launcher version", 0);
+		final String launcherVersion = RuneLiteProperties.getLauncherVersion();
+		if (launcherVersion != null &&
+			!EXPECTED_LAUNCHER_VERSION.equalsIgnoreCase(launcherVersion))
+		{
+			SwingUtilities.invokeAndWait(SPLASH_SCREEN::invalidVersion);
+			SPLASH_SCREEN.close();
+			log.info("Launcher version mismatch, closing client...");
+			System.exit(1);
+		}
+
+		SPLASH_SCREEN.setMessage("Initializing client", 20);
 
 		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
 
@@ -267,11 +279,11 @@ public class RuneLite
 		}
 
 		// Load user configuration
-		SPLASH_SCREEN.setMessage("Loading user config", 25);
+		SPLASH_SCREEN.setMessage("Loading user config", 40);
 		configManager.load();
 
 		// Load the session, including saved configuration
-		SPLASH_SCREEN.setMessage("Loading session data", 50);
+		SPLASH_SCREEN.setMessage("Loading session data", 60);
 		sessionManager.loadSession();
 
 		// Tell the plugin manager if client is outdated or not
@@ -279,7 +291,7 @@ public class RuneLite
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
-		SPLASH_SCREEN.setMessage("Initializing plugins", 75);
+		SPLASH_SCREEN.setMessage("Initializing plugins", 80);
 		pluginManager.loadCorePlugins();
 
 		// Plugins have provided their config, so set default config
