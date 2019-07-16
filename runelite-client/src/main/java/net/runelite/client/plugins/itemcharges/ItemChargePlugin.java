@@ -79,8 +79,7 @@ public class ItemChargePlugin extends Plugin
 		"You can smelt ([0-9+]+|one) more pieces of iron ore before a ring melts\\.");
 	private static final Pattern RING_OF_FORGING_USED_PATTERN = Pattern.compile(
 		"You retrieve a bar of iron\\.");
-	private static final Pattern RING_OF_FORGING_BREAK_PATTERN = Pattern.compile(
-		"Your Ring of Forging has melted\\.");
+	private static final String RING_OF_FORGING_BREAK_TEXT = "Your Ring of Forging has melted.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -189,7 +188,6 @@ public class ItemChargePlugin extends Plugin
 		Matcher bindingNecklaceUsedMatcher = BINDING_USED_PATTERN.matcher(event.getMessage());
 		Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
 		Matcher ringOfForgingUsedMatcher = RING_OF_FORGING_USED_PATTERN.matcher(message);
-		Matcher ringOfForgingBreakMatcher = RING_OF_FORGING_BREAK_PATTERN.matcher(message);
 
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
@@ -255,7 +253,7 @@ public class ItemChargePlugin extends Plugin
 			{
 				updateRingOfForgingCharges(config.ringOfForging() - 1);
 			}
-			else if (ringOfForgingBreakMatcher.find())
+			else if (message.contains(RING_OF_FORGING_BREAK_TEXT))
 			{
 				if (config.ringOfForgingNotification())
 				{
