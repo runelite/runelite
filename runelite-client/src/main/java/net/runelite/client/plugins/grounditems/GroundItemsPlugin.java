@@ -128,7 +128,9 @@ public class GroundItemsPlugin extends Plugin
 	private static final int FIFTH_OPTION = MenuAction.GROUND_ITEM_FIFTH_OPTION.getId();
 	private static final int EXAMINE_ITEM = MenuAction.EXAMINE_ITEM_GROUND.getId();
 	private static final int WALK = MenuAction.WALK.getId();
+	private static final int CAST_ON_ITEM = MenuAction.SPELL_CAST_ON_GROUND_ITEM.getId();
 
+	private static final String TELEGRAB_TEXT = ColorUtil.wrapWithColorTag("Telekinetic Grab", Color.GREEN) + ColorUtil.prependColorTag(" -> ", Color.WHITE);
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -673,10 +675,14 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (this.itemHighlightMode != OVERLAY
-			&& event.getOption().equals("Take")
-			&& event.getType() == THIRD_OPTION)
+		if (this.itemHighlightMode != OVERLAY)
 		{
+			final boolean telegrabEntry = event.getOption().equals("Cast") && event.getTarget().startsWith(TELEGRAB_TEXT) && event.getType() == CAST_ON_ITEM;
+			if (!(event.getOption().equals("Take") && event.getType() == THIRD_OPTION) && !telegrabEntry)
+			{
+				return;
+			}
+
 			int itemId = event.getIdentifier();
 			Scene scene = client.getScene();
 			Tile tile = scene.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
@@ -720,13 +726,27 @@ public class GroundItemsPlugin extends Plugin
 
 				if (mode == BOTH || mode == OPTION)
 				{
-					lastEntry.setOption(ColorUtil.prependColorTag("Take", color));
+					final String optionText = telegrabEntry ? "Cast" : "Take";
+					lastEntry.setOption(ColorUtil.prependColorTag(optionText, color));
 				}
 
 				if (mode == BOTH || mode == NAME)
 				{
-					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
-					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
+					String target = lastEntry.getTarget();
+
+					if (telegrabEntry)
+					{
+						target = target.substring(TELEGRAB_TEXT.length());
+					}
+
+					target = ColorUtil.prependColorTag(target.substring(target.indexOf('>') + 1), color);
+
+					if (telegrabEntry)
+					{
+						target = TELEGRAB_TEXT + target;
+					}
+
+					lastEntry.setTarget(target);
 				}
 			}
 

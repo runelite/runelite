@@ -11,9 +11,9 @@
    iconst                 0
    iload                  0
    iconst                 25
-   sconst            	  "scrollWheelZoomIncrement"
+   sconst                 "scrollWheelZoomIncrement"
    runelite_callback
-   multiply
+   multiply              
    sub
    istore                 1
    iconst                 512

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jacob M <https://github.com/jacoblairm>
+ * Copyright (c) 2019, Jacob M <https://github.com/jacoblairm>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ public enum ControlFunction
 	CONTROL_TO_ZOOM("Hold to zoom"),
 	CONTROL_TO_RESET("Reset zoom");
 
-	private String name;
+	private final String name;
 
 	@Override
 	public String toString()
