@@ -37,9 +37,14 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -70,6 +75,7 @@ public class BankPlugin extends Plugin
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
 	private static final String DEPOSIT_LOOT = "Deposit loot";
+	private static final String SEED_VAULT_TITLE = "Seed Vault";
 
 	@Inject
 	private Client client;
@@ -85,6 +91,9 @@ public class BankPlugin extends Plugin
 
 	@Inject
 	private ContainerCalculation bankCalculation;
+
+	@Inject
+	private ContainerCalculation seedVaultCalculation;
 
 	private boolean forceRightClickFlag;
 
@@ -154,6 +163,28 @@ public class BankPlugin extends Plugin
 		int stringStackSize = client.getStringStackSize();
 
 		stringStack[stringStackSize - 1] += strCurrentTab;
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() != WidgetID.SEED_VAULT_GROUP_ID || !config.seedVaultValue())
+		{
+			return;
+		}
+
+		updateSeedVaultTotal();
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getContainerId() != InventoryID.SEED_VAULT.getId() || !config.seedVaultValue())
+		{
+			return;
+		}
+
+		updateSeedVaultTotal();
 	}
 
 	private String createValueText(final ContainerPrices prices)
@@ -228,5 +259,42 @@ public class BankPlugin extends Plugin
 		}
 
 		return items;
+	}
+
+	private void updateSeedVaultTotal()
+	{
+		final Widget titleContainer = client.getWidget(WidgetInfo.SEED_VAULT_TITLE_CONTAINER);
+		if (titleContainer == null)
+		{
+			return;
+		}
+
+		final Widget[] children = titleContainer.getDynamicChildren();
+		if (children == null || children.length < 2)
+		{
+			return;
+		}
+
+		final ContainerPrices prices = seedVaultCalculation.calculate(getSeedVaultItems());
+		if (prices == null)
+		{
+			return;
+		}
+
+		final String titleText = createValueText(prices);
+
+		final Widget title = children[1];
+		title.setText(SEED_VAULT_TITLE + titleText);
+	}
+
+	private Item[] getSeedVaultItems()
+	{
+		final ItemContainer itemContainer = client.getItemContainer(InventoryID.SEED_VAULT);
+		if (itemContainer == null)
+		{
+			return null;
+		}
+
+		return itemContainer.getItems();
 	}
 }
