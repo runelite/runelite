@@ -32,8 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -47,9 +45,8 @@ import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 @Singleton
 class MiningOverlay extends Overlay
 {
-	// Range of Motherlode vein respawn time not 100% confirmed but based on observation
-	@Getter(AccessLevel.PACKAGE)
-	public static final int ORE_VEIN_MAX_RESPAWN_TIME = 123;
+	// Range of Motherlode vein respawn time - not 100% confirmed but based on observation
+	static final int ORE_VEIN_MAX_RESPAWN_TIME = 166;
 	private static final int ORE_VEIN_MIN_RESPAWN_TIME = 90;
 	private static final float ORE_VEIN_RANDOM_PERCENT_THRESHOLD = (float) ORE_VEIN_MIN_RESPAWN_TIME / ORE_VEIN_MAX_RESPAWN_TIME;
 	private static final Color DARK_GREEN = new Color(0, 100, 0);

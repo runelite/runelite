@@ -46,6 +46,7 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.util.ImageUtil;
@@ -81,6 +82,9 @@ public class ConfigPlugin extends Plugin
 	private ChatColorConfig chatColorConfig;
 
 	@Inject
+	private ColorPickerManager colorPickerManager;
+
+	@Inject
 	private EventBus eventBus;
 
 	private ConfigPanel configPanel;
@@ -91,7 +95,7 @@ public class ConfigPlugin extends Plugin
 	{
 		addSubscriptions();
 
-		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig, runeLitePlusConfig, chatColorConfig);
+		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig, runeLitePlusConfig, chatColorConfig, colorPickerManager);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "config_icon.png");
 

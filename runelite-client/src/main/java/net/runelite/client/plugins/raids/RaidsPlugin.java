@@ -389,9 +389,9 @@ public class RaidsPlugin extends Plugin
 			{
 				if (this.raidsTimer)
 				{
-					timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
+					timer = new RaidsTimer(this, Instant.now());
+					spriteManager.getSpriteAsync(TAB_QUESTS_BROWN_RAIDING_PARTY, 0, timer);
 					infoBoxManager.addInfoBox(timer);
-					raidStarted = true;
 				}
 				if (this.partyDisplay)
 				{

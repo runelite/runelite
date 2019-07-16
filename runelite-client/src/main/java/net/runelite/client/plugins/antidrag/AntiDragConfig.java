@@ -80,9 +80,7 @@ public interface AntiDragConfig extends Config
 		keyName = "dragDelay",
 		name = "Drag Delay",
 		description = "Configures the inventory drag delay in client ticks (20ms)",
-		position = 3,
-		hidden = true,
-		unhide = "keybind"
+		position = 3
 	)
 	default int dragDelay()
 	{
