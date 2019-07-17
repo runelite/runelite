@@ -105,8 +105,8 @@ public class AntiDragPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		updateConfig();
 		addSubscriptions();
+		updateConfig();
 
 		if (this.keybind)
 		{
@@ -152,6 +152,10 @@ public class AntiDragPlugin extends Plugin
 			if (event.getKey().equals("alwaysOn"))
 			{
 				client.setInventoryDragDelay(this.alwaysOn ? this.dragDelay : DEFAULT_DELAY);
+			}
+			if (event.getKey().equals("dragDelay") && this.alwaysOn)
+			{
+				client.setInventoryDragDelay(this.dragDelay);
 			}
 		}
 	}
