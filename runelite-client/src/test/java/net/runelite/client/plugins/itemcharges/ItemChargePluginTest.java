@@ -55,7 +55,7 @@ public class ItemChargePluginTest
 	private static final String CHECK_RING_OF_FORGING_FULL = "You can smelt 140 more pieces of iron ore before a ring melts.";
 	private static final String CHECK_RING_OF_FORGING_ONE = "You can smelt one more pieces of iron ore before a ring melts.";
 	private static final String USED_RING_OF_FORGING = "You retrieve a bar of iron.";
-	private static final String BREAK_RING_OF_FORGING = "Your Ring of Forging has melted.";
+	private static final String BREAK_RING_OF_FORGING = "<col=7f007f>Your Ring of Forging has melted.</col>";
 
 	@Mock
 	@Bind

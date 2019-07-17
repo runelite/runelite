@@ -76,9 +76,9 @@ public class ItemChargePlugin extends Plugin
 		"You bind the temple's power into (mud|lava|steam|dust|smoke|mist) runes\\.");
 	private static final String BINDING_BREAK_TEXT = "Your Binding necklace has disintegrated.";
 	private static final Pattern RING_OF_FORGING_CHECK_PATTERN = Pattern.compile(
-		"You can smelt ([0-9+]+|one) more pieces of iron ore before a ring melts\\.");
+		"You can smelt ([0-9+]+|one) more pieces? of iron ore before a ring melts\\.");
 	private static final String RING_OF_FORGING_USED_TEXT = "You retrieve a bar of iron.";
-	private static final String RING_OF_FORGING_BREAK_TEXT = "Your Ring of Forging has melted.";
+	private static final String RING_OF_FORGING_BREAK_TEXT = "<col=7f007f>Your Ring of Forging has melted.</col>";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
