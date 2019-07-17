@@ -50,14 +50,14 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.MiscUtils;
 
 @Singleton
@@ -101,7 +101,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		final OverlayManager overlayManager,
 		final RuneLiteConfig runeLiteConfig,
 		final MouseManager mouseManager,
-		final KeyManager keyManager)
+		final KeyManager keyManager,
+		final EventBus eventbus)
 	{
 		this.client = client;
 		this.overlayManager = overlayManager;
@@ -109,6 +110,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		this.updateConfig();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
+
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+		eventbus.subscribe(ClientTick.class, this, this::onClientTick);
+		eventbus.subscribe(BeforeRender.class, this, this::onBeforeRender);
 	}
 
 	private void updateConfig()
@@ -120,8 +126,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		this.interfaceFont = FontManager.getFontFromType(clientFont, runeLiteConfig.interfaceFontType());
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("runelite"))
 		{
@@ -129,8 +134,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
 		{
@@ -140,7 +144,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 	}
 
-	@Subscribe
 	protected void onClientTick(ClientTick t)
 	{
 		if (menuEntries == null)
@@ -167,8 +170,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		client.setMenuEntries(newEntries);
 	}
 
-	@Subscribe
-	public void onBeforeRender(BeforeRender event)
+	private void onBeforeRender(BeforeRender event)
 	{
 		menuEntries = null;
 	}

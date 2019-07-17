@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -51,6 +51,9 @@ public class ProfilesPlugin extends Plugin
 	@Inject
 	private ClientToolbar clientToolbar;
 
+	@Inject
+	private EventBus eventBus;
+
 	private ProfilesPanel panel;
 	private NavigationButton navButton;
 
@@ -64,6 +67,8 @@ public class ProfilesPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+
 		panel = injector.getInstance(ProfilesPanel.class);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "profiles_icon.png");
@@ -81,10 +86,11 @@ public class ProfilesPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		clientToolbar.removeNavigation(navButton);
 	}
 
-	@Subscribe
 	private void onConfigChanged(ConfigChanged event) throws Exception
 	{
 		if (event.getGroup().equals("profiles") && event.getKey().equals("rememberPassword"))

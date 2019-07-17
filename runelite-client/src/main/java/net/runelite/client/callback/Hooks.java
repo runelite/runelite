@@ -128,15 +128,15 @@ public class Hooks implements Callbacks
 	private boolean shouldProcessGameTick;
 
 	@Override
-	public void post(Object event)
+	public <T> void post(Class<T> eventClass, Object event)
 	{
-		eventBus.post(event);
+		eventBus.post(eventClass, event);
 	}
 
 	@Override
-	public void postDeferred(Object event)
+	public <T> void postDeferred(Class<T> eventClass, Object event)
 	{
-		deferredEventBus.post(event);
+		deferredEventBus.post(eventClass, event);
 	}
 
 	@Override
@@ -148,13 +148,13 @@ public class Hooks implements Callbacks
 
 			deferredEventBus.replay();
 
-			eventBus.post(GameTick.INSTANCE);
+			eventBus.post(GameTick.class, GameTick.INSTANCE);
 
 			int tick = client.getTickCount();
 			client.setTickCount(tick + 1);
 		}
 
-		eventBus.post(BeforeRender.INSTANCE);
+		eventBus.post(BeforeRender.class, BeforeRender.INSTANCE);
 
 		clientThread.invoke();
 
@@ -509,7 +509,7 @@ public class Hooks implements Callbacks
 	public static boolean drawMenu()
 	{
 		BeforeMenuRender event = new BeforeMenuRender();
-		client.getCallbacks().post(event);
+		client.getCallbacks().post(BeforeMenuRender.class, event);
 		return event.isConsumed();
 	}
 }

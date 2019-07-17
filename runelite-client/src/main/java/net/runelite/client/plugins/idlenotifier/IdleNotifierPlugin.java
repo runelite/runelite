@@ -67,7 +67,7 @@ import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.Sound;
 import net.runelite.client.game.SoundManager;
 import net.runelite.client.plugins.Plugin;
@@ -108,6 +108,9 @@ public class IdleNotifierPlugin extends Plugin
 
 	@Inject
 	private IdleNotifierConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	private Instant lastAnimating;
 	private int lastAnimation = AnimationID.IDLE;
@@ -164,8 +167,7 @@ public class IdleNotifierPlugin extends Plugin
 		return configManager.getConfig(IdleNotifierConfig.class);
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	void onAnimationChanged(AnimationChanged event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -309,7 +311,6 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	private void onPlayerSpawned(PlayerSpawned event)
 	{
 		final Player p = event.getPlayer();
@@ -324,8 +325,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		ItemContainer itemContainer = event.getItemContainer();
 
@@ -402,8 +402,7 @@ public class IdleNotifierPlugin extends Plugin
 		itemQuantitiesPrevious = itemQuantities;
 	}
 
-	@Subscribe
-	public void onInteractingChanged(InteractingChanged event)
+	void onInteractingChanged(InteractingChanged event)
 	{
 		final Actor source = event.getSource();
 		if (source != client.getLocalPlayer())
@@ -453,8 +452,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		lastInteracting = null;
 
@@ -486,8 +484,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied event)
+	void onHitsplatApplied(HitsplatApplied event)
 	{
 		if (event.getActor() != client.getLocalPlayer())
 		{
@@ -503,8 +500,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onSpotAnimationChanged(SpotAnimationChanged event)
+	private void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
 		Actor actor = event.getActor();
 
@@ -519,8 +515,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	void onGameTick(GameTick event)
 	{
 		skullNotifier();
 
@@ -903,8 +898,26 @@ public class IdleNotifierPlugin extends Plugin
 		updateConfig();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
+		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("idlenotifier"))
 		{

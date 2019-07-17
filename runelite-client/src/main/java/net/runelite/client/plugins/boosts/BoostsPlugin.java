@@ -45,7 +45,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -98,6 +98,8 @@ public class BoostsPlugin extends Plugin
 	private SkillIconManager skillIconManager;
 	@Inject
 	private CombatIconsOverlay combatIconsOverlay;
+	@Inject
+	private EventBus eventBus;
 
 	private boolean isChangedDown = false;
 	private boolean isChangedUp = false;
@@ -133,6 +135,7 @@ public class BoostsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(boostsOverlay);
 		overlayManager.add(combatIconsOverlay);
@@ -156,6 +159,7 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
 		overlayManager.remove(boostsOverlay);
 		overlayManager.remove(combatIconsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
@@ -166,8 +170,15 @@ public class BoostsPlugin extends Plugin
 		isChangedDown = false;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(BoostedLevelChanged.class, this, this::onBoostedLevelChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -179,8 +190,7 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("boosts"))
 		{
@@ -201,8 +211,7 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
+	private void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
 	{
 		Skill skill = boostedLevelChanged.getSkill();
 
@@ -251,8 +260,7 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		lastTickMillis = System.currentTimeMillis();
 

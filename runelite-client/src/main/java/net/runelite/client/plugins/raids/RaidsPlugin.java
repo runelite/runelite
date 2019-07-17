@@ -75,7 +75,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -195,6 +195,9 @@ public class RaidsPlugin extends Plugin
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private ItemManager itemManager;
+	@Getter(AccessLevel.NONE)
+	@Inject
+	private EventBus eventBus;
 	private boolean raidStarted;
 	private boolean inRaidChambers;
 	private boolean enhanceScouterTitle;
@@ -266,6 +269,7 @@ public class RaidsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(overlay);
 		overlayManager.add(pointsOverlay);
@@ -291,6 +295,8 @@ public class RaidsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		overlayManager.remove(pointsOverlay);
 		clientToolbar.removeNavigation(navButton);
@@ -307,8 +313,17 @@ public class RaidsPlugin extends Plugin
 		reset();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(ClientTick.class, this, this::onClientTick);
+		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("raids"))
 		{
@@ -339,8 +354,7 @@ public class RaidsPlugin extends Plugin
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
 
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		if (!inRaidChambers || event.isHidden())
 		{
@@ -355,8 +369,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		checkRaidPresence(false);
 		if (this.partyDisplay)
@@ -365,8 +378,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (inRaidChambers && event.getType() == ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
@@ -498,8 +510,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onClientTick(ClientTick event)
+	private void onClientTick(ClientTick event)
 	{
 		if (!this.raidsTimer
 			|| !client.getGameState().equals(GameState.LOGGED_IN)
@@ -515,8 +526,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onOverlayMenuClicked(OverlayMenuClicked event)
+	private void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
 		OverlayMenuEntry entry = event.getEntry();
 		if (entry.getMenuAction() == MenuAction.RUNELITE_OVERLAY &&

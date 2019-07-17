@@ -33,7 +33,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -56,6 +56,9 @@ public class PluginSorterPlugin extends Plugin
 	@Inject
 	private PluginSorterConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	private boolean hidePlugins;
 	private Color externalColor;
 	private Color pvmColor;
@@ -73,17 +76,24 @@ public class PluginSorterPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
+
 		updateColors();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-
+		eventBus.unregister(this);
 	}
 
-	@Subscribe
-	public void onPluginChanged(PluginChanged pluginChanged)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(PluginChanged.class, this, this::onPluginChanged);
+	}
+
+	private void onPluginChanged(PluginChanged pluginChanged)
 	{
 		validatePlugins();
 	}
@@ -102,8 +112,7 @@ public class PluginSorterPlugin extends Plugin
 		updateColors();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!configChanged.getGroup().equals("pluginsorter"))
 		{

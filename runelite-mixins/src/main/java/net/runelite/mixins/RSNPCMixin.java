@@ -110,11 +110,11 @@ public abstract class RSNPCMixin implements RSNPC
 	{
 		if (composition == null)
 		{
-			client.getCallbacks().post(new NpcDespawned(this));
+			client.getCallbacks().post(NpcDespawned.class, new NpcDespawned(this));
 		}
 		else if (this.getId() != -1)
 		{
-			client.getCallbacks().post(new NpcDefinitionChanged(this));
+			client.getCallbacks().post(NpcDefinitionChanged.class, new NpcDefinitionChanged(this));
 		}
 	}
 

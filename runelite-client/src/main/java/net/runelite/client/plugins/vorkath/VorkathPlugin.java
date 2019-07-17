@@ -58,7 +58,7 @@ import net.runelite.api.events.ProjectileSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -88,6 +88,8 @@ public class VorkathPlugin extends Plugin
 	private AcidPathOverlay acidPathOverlay;
 	@Inject
 	private VorkathConfig config;
+	@Inject
+	private EventBus eventBus;
 	@Getter(AccessLevel.PACKAGE)
 	private Vorkath vorkath;
 	@Getter(AccessLevel.PACKAGE)
@@ -123,6 +125,7 @@ public class VorkathPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
 		updateConfig();
 	}
 
@@ -132,8 +135,21 @@ public class VorkathPlugin extends Plugin
 		reset();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(ProjectileMoved.class, this, this::onProjectileMoved);
+		eventBus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventBus.subscribe(ClientTick.class, this, this::onClientTick);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("vorkath"))
 		{
@@ -143,8 +159,7 @@ public class VorkathPlugin extends Plugin
 		updateConfig();
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (!isAtVorkath())
 		{
@@ -169,8 +184,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (!isAtVorkath())
 		{
@@ -194,8 +208,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onProjectileSpawned(ProjectileSpawned event)
+	private void onProjectileSpawned(ProjectileSpawned event)
 	{
 		if (!isAtVorkath())
 		{
@@ -237,8 +250,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileMoved(ProjectileMoved event)
 	{
 		if (!isAtVorkath())
 		{
@@ -254,8 +266,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		if (!isAtVorkath())
 		{
@@ -270,8 +281,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		if (!isAtVorkath())
 		{
@@ -286,8 +296,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	private void onAnimationChanged(AnimationChanged event)
 	{
 		if (!isAtVorkath())
 		{
@@ -312,8 +321,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (!isAtVorkath())
 		{
@@ -354,7 +362,6 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	private void onClientTick(ClientTick event)
 	{
 		if (acidSpots.size() != lastAcidSpotsSize)

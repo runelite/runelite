@@ -91,7 +91,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.events.SessionClose;
@@ -167,6 +167,8 @@ public class LootTrackerPlugin extends Plugin
 	private SessionManager sessionManager;
 	@Inject
 	private ScheduledExecutorService executor;
+	@Inject
+	private EventBus eventBus;
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
@@ -232,8 +234,7 @@ public class LootTrackerPlugin extends Plugin
 		return configManager.getConfig(LootTrackerConfig.class);
 	}
 
-	@Subscribe
-	public void onSessionOpen(SessionOpen sessionOpen)
+	private void onSessionOpen(SessionOpen sessionOpen)
 	{
 		AccountSession accountSession = sessionManager.getAccountSession();
 		if (accountSession.getUuid() != null)
@@ -246,14 +247,12 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onSessionClose(SessionClose sessionClose)
+	private void onSessionClose(SessionClose sessionClose)
 	{
 		lootTrackerClient = null;
 	}
 
-	@Subscribe
-	public void onLocalPlayerDeath(LocalPlayerDeath event)
+	private void onLocalPlayerDeath(LocalPlayerDeath event)
 	{
 		if (client.getVar(Varbits.IN_WILDERNESS) == 1 || WorldType.isPvpWorld(client.getWorldType()))
 		{
@@ -262,8 +261,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("loottracker"))
 		{
@@ -291,6 +289,8 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
 		ignoredNPCs = Text.fromCSV(config.getIgnoredNPCs());
 		updateConfig();
@@ -377,14 +377,30 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient = null;
 		lootRecords = new ArrayList<>();
 		chestLooted = false;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
+		eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
+		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(NpcLootReceived.class, this, this::onNpcLootReceived);
+		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
+		eventBus.subscribe(PlayerLootReceived.class, this, this::onPlayerLootReceived);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+	}
+
+	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
 		{
@@ -392,8 +408,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
+	private void onNpcLootReceived(final NpcLootReceived npcLootReceived)
 	{
 		final NPC npc = npcLootReceived.getNpc();
 		final Collection<ItemStack> items = npcLootReceived.getItems();
@@ -435,8 +450,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onPlayerSpawned(PlayerSpawned event)
+	private void onPlayerSpawned(PlayerSpawned event)
 	{
 		if (event.getPlayer().equals(client.getLocalPlayer()))
 		{
@@ -444,8 +458,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
+	private void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		if (this.sendLootValueMessages)
 		{
@@ -479,8 +492,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		final ItemContainer container;
 		switch (event.getGroupId())
@@ -582,8 +594,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
 		{
@@ -643,7 +654,6 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (pvpDeath && RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID()))

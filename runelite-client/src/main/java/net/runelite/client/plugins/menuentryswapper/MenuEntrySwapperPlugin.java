@@ -74,7 +74,7 @@ import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.input.KeyManager;
@@ -199,6 +199,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Inject
 	private PvpToolsPlugin pvpTools;
@@ -348,6 +351,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
+
 		addSwaps();
 		loadConstructionItems(config.getEasyConstructionItems());
 
@@ -367,6 +372,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
+		eventBus.unregister(this);
+
 		disableCustomization();
 		loadConstructionItems("");
 		loadCustomSwaps(""); // Removes all custom swaps
@@ -378,8 +385,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(WidgetMenuOptionClicked.class, this, this::onWidgetMenuOptionClicked);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(MenuOpened.class, this, this::onMenuOpened);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(PostItemDefinition.class, this, this::onPostItemDefinition);
+		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"menuentryswapper".equals(event.getGroup()))
 		{
@@ -486,8 +505,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		clientThread.invoke(this::resetItemDefinitionCache);
 	}
 
-	@Subscribe
-	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
+	private void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
 		if (event.getWidget() == WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB
 			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB
@@ -498,8 +516,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -509,16 +526,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		loadConstructionItems(this.getEasyConstructionItems);
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		buildingMode = client.getVar(BUILDING_MODE) == 1;
 
 		setCastOptions(false);
 	}
 
-	@Subscribe
-	public void onMenuOpened(MenuOpened event)
+	private void onMenuOpened(MenuOpened event)
 	{
 		Player localPlayer = client.getLocalPlayer();
 
@@ -670,8 +685,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		client.setMenuEntries(ArrayUtils.addAll(entries, resetShiftClickEntry));
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE || event.getActionParam1() != WidgetInfo.INVENTORY.getId())
 		{
@@ -727,7 +741,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -1426,8 +1439,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onPostItemDefinition(PostItemDefinition event)
+	private void onPostItemDefinition(PostItemDefinition event)
 	{
 		ItemDefinition itemComposition = event.getItemDefinition();
 		Integer option = getSwapConfig(itemComposition.getId());
@@ -1438,8 +1450,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
 		{

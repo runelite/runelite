@@ -56,7 +56,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -88,6 +88,9 @@ public class CombatCounter extends Plugin
 
 	@Inject
 	private CombatCounterConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	private boolean instanced = false;
 	@Setter(AccessLevel.PACKAGE)
@@ -236,6 +239,7 @@ public class CombatCounter extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(tickOverlay);
 		overlayManager.add(damageOverlay);
@@ -249,6 +253,8 @@ public class CombatCounter extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(tickOverlay);
 		overlayManager.remove(damageOverlay);
 
@@ -258,8 +264,15 @@ public class CombatCounter extends Plugin
 		this.playerDamage.clear();
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
+	}
+
+	private void onAnimationChanged(AnimationChanged event)
 	{
 		Actor actor = event.getActor();
 
@@ -403,8 +416,7 @@ public class CombatCounter extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (this.resetOnNewInstance)
 		{
@@ -554,9 +566,7 @@ public class CombatCounter extends Plugin
 		}
 	}
 
-
-	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied event)
+	private void onHitsplatApplied(HitsplatApplied event)
 	{
 		Actor actor = event.getActor();
 
@@ -644,8 +654,7 @@ public class CombatCounter extends Plugin
 		return 2 + (int) Math.floor((3d + distance) / 6d);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("combatcounter"))
 		{

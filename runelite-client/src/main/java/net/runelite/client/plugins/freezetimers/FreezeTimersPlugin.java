@@ -37,7 +37,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -74,6 +74,9 @@ public class FreezeTimersPlugin extends Plugin
 	@Inject
 	private FreezeTimersConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showPlayers;
 	@Getter(AccessLevel.PACKAGE)
@@ -96,11 +99,14 @@ public class FreezeTimersPlugin extends Plugin
 	public void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(overlay);
 	}
 
 	public void shutDown()
 	{
+		eventBus.unregister(this);
 		overlayManager.remove(overlay);
 	}
 
@@ -110,8 +116,15 @@ public class FreezeTimersPlugin extends Plugin
 		return configManager.getConfig(FreezeTimersConfig.class);
 	}
 
-	@Subscribe
-	public void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+	}
+
+	private void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
 	{
 		int oldGraphic = prayerTracker.getSpotanimLastTick(graphicChanged.getActor());
 		int newGraphic = graphicChanged.getActor().getSpotAnimation();
@@ -137,8 +150,7 @@ public class FreezeTimersPlugin extends Plugin
 			System.currentTimeMillis() + length);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick tickEvent)
+	private void onGameTick(GameTick tickEvent)
 	{
 		timers.gameTick();
 		prayerTracker.gameTick();
@@ -148,13 +160,12 @@ public class FreezeTimersPlugin extends Plugin
 			{
 				SpotAnimationChanged callback = new SpotAnimationChanged();
 				callback.setActor(actor);
-				client.getCallbacks().post(callback);
+				client.getCallbacks().post(SpotAnimationChanged.class, callback);
 			}
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (!isAtVorkath())
 		{
@@ -180,8 +191,7 @@ public class FreezeTimersPlugin extends Plugin
 		return ArrayUtils.contains(client.getMapRegions(), VORKATH_REGION);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("freezetimers"))
 		{

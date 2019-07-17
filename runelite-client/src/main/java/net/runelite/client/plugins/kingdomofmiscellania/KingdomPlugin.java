@@ -37,7 +37,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -64,19 +64,35 @@ public class KingdomPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private int favor = 0, coffer = 0;
 
 	private KingdomCounter counter;
 
 	@Override
+	protected void startUp() throws Exception
+	{
+		addSubscriptions();
+	}
+
+	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		removeKingdomInfobox();
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+	}
+
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (isInKingdom())
 		{
@@ -86,7 +102,6 @@ public class KingdomPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)

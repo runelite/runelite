@@ -417,7 +417,7 @@ public abstract class RSWidgetMixin implements RSWidget
 		event.setWidget(this);
 		event.setHidden(hidden);
 
-		client.getCallbacks().post(event);
+		client.getCallbacks().post(WidgetHiddenChanged.class, event);
 
 		RSWidget[] children = getChildren();
 
@@ -502,7 +502,7 @@ public abstract class RSWidgetMixin implements RSWidget
 		client.getLogger().trace("Posting widget position changed");
 
 		WidgetPositioned widgetPositioned = WidgetPositioned.INSTANCE;
-		client.getCallbacks().postDeferred(widgetPositioned);
+		client.getCallbacks().postDeferred(WidgetPositioned.class, widgetPositioned);
 	}
 
 	@Inject

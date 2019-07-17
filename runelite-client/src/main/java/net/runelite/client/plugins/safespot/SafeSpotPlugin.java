@@ -30,7 +30,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -54,6 +54,9 @@ public class SafeSpotPlugin extends Plugin
 
 	@Inject
 	private SafeSpotConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<Tile> safeSpotList;
@@ -79,6 +82,7 @@ public class SafeSpotPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		safeSpotOverlay = new SafeSpotOverlay(client, this);
 		overlayManager.add(safeSpotOverlay);
@@ -87,10 +91,18 @@ public class SafeSpotPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(safeSpotOverlay);
 	}
 
-	@Subscribe
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
 	private void onInteractingChanged(InteractingChanged event)
 	{
 		if (event.getSource() != client.getLocalPlayer())
@@ -103,8 +115,7 @@ public class SafeSpotPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (client.getLocalPlayer().getInteracting() != null)
 		{
@@ -185,8 +196,7 @@ public class SafeSpotPlugin extends Plugin
 		return safeSpotList;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("safespot"))
 		{

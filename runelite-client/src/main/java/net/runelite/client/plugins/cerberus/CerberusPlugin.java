@@ -37,7 +37,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -59,21 +59,34 @@ public class CerberusPlugin extends Plugin
 	@Inject
 	private CerberusOverlay overlay;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		addSubscriptions();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		ghosts.clear();
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gameState = event.getGameState();
 		if (gameState == GameState.LOGIN_SCREEN || gameState == GameState.HOPPING || gameState == GameState.CONNECTION_LOST)
@@ -82,21 +95,18 @@ public class CerberusPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(final NpcSpawned event)
+	private void onNpcSpawned(final NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
 		CerberusGhost.fromNPC(npc).ifPresent(ghost -> ghosts.add(npc));
 	}
 
-	@Subscribe
-	public void onNpcDespawned(final NpcDespawned event)
+	private void onNpcDespawned(final NpcDespawned event)
 	{
 		ghosts.remove(event.getNpc());
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	void onGameTick(GameTick gameTick)
 	{
 		if (ghosts.isEmpty())
 		{

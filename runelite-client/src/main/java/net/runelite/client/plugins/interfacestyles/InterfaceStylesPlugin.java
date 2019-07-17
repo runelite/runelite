@@ -45,7 +45,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -73,6 +73,9 @@ public class InterfaceStylesPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private Sprite[] defaultCrossSprites;
 
 	private Skin skin;
@@ -90,12 +93,15 @@ public class InterfaceStylesPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 		clientThread.invoke(this::updateAllOverrides);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		clientThread.invoke(() ->
 		{
 			restoreWidgetDimensions();
@@ -105,8 +111,16 @@ public class InterfaceStylesPlugin extends Plugin
 		});
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged config)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(WidgetPositioned.class, this, this::onWidgetPositioned);
+		eventBus.subscribe(PostHealthBar.class, this, this::onPostHealthBar);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(BeforeMenuRender.class, this, this::onBeforeMenuRender);
+	}
+
+	private void onConfigChanged(ConfigChanged config)
 	{
 		if (config.getGroup().equals("interfaceStyles"))
 		{
@@ -115,14 +129,12 @@ public class InterfaceStylesPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetPositioned(WidgetPositioned widgetPositioned)
+	private void onWidgetPositioned(WidgetPositioned widgetPositioned)
 	{
 		adjustWidgetDimensions();
 	}
 
-	@Subscribe
-	public void onPostHealthBar(PostHealthBar postHealthBar)
+	private void onPostHealthBar(PostHealthBar postHealthBar)
 	{
 		if (!this.hdHealthBars)
 		{
@@ -140,8 +152,7 @@ public class InterfaceStylesPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGIN_SCREEN)
 		{
@@ -167,8 +178,7 @@ public class InterfaceStylesPlugin extends Plugin
 		overrideCrossSprites();
 	}
 
-	@Subscribe
-	public void onBeforeMenuRender(BeforeMenuRender event)
+	private void onBeforeMenuRender(BeforeMenuRender event)
 	{
 		if (this.hdMenu)
 		{

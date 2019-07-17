@@ -51,7 +51,7 @@ import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_G;
 import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_H;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.puzzlesolver.lightbox.Combination;
@@ -86,6 +86,9 @@ public class PuzzleSolverPlugin extends Plugin
 	@Inject
 	private PuzzleSolverConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	private LightboxState lightbox;
 	private final LightboxState[] changes = new LightboxState[LightBox.COMBINATIONS_POWER];
 	private Combination lastClick;
@@ -102,13 +105,25 @@ public class PuzzleSolverPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
 	@Provides
@@ -117,8 +132,7 @@ public class PuzzleSolverPlugin extends Plugin
 		return configManager.getConfig(PuzzleSolverConfig.class);
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widget)
+	private void onWidgetLoaded(WidgetLoaded widget)
 	{
 		if (widget.getGroupId() != WidgetID.VARROCK_MUSEUM_QUIZ_GROUP_ID)
 		{
@@ -151,8 +165,7 @@ public class PuzzleSolverPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		int widgetId = menuOptionClicked.getActionParam1();
 		if (TO_GROUP(widgetId) != WidgetID.LIGHT_BOX_GROUP_ID)
@@ -208,7 +221,6 @@ public class PuzzleSolverPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		Widget lightboxWidget = client.getWidget(WidgetInfo.LIGHT_BOX_CONTENTS);
@@ -297,7 +309,6 @@ public class PuzzleSolverPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("puzzlesolver"))

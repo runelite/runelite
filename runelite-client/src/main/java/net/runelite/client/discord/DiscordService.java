@@ -198,7 +198,7 @@ public class DiscordService implements AutoCloseable
 	{
 		log.info("Discord RPC service is ready with user {}.", user.username);
 		currentUser = user;
-		eventBus.post(new DiscordReady(
+		eventBus.post(DiscordReady.class, new DiscordReady(
 			user.userId,
 			user.username,
 			user.discriminator,
@@ -207,28 +207,28 @@ public class DiscordService implements AutoCloseable
 
 	private void disconnected(int errorCode, String message)
 	{
-		eventBus.post(new DiscordDisconnected(errorCode, message));
+		eventBus.post(DiscordDisconnected.class, new DiscordDisconnected(errorCode, message));
 	}
 
 	private void errored(int errorCode, String message)
 	{
 		log.warn("Discord error: {} - {}", errorCode, message);
-		eventBus.post(new DiscordErrored(errorCode, message));
+		eventBus.post(DiscordErrored.class, new DiscordErrored(errorCode, message));
 	}
 
 	private void joinGame(String joinSecret)
 	{
-		eventBus.post(new DiscordJoinGame(joinSecret));
+		eventBus.post(DiscordJoinGame.class, new DiscordJoinGame(joinSecret));
 	}
 
 	private void spectateGame(String spectateSecret)
 	{
-		eventBus.post(new DiscordSpectateGame(spectateSecret));
+		eventBus.post(DiscordSpectateGame.class, new DiscordSpectateGame(spectateSecret));
 	}
 
 	private void joinRequest(DiscordUser user)
 	{
-		eventBus.post(new DiscordJoinRequest(
+		eventBus.post(DiscordJoinRequest.class, new DiscordJoinRequest(
 			user.userId,
 			user.username,
 			user.discriminator,

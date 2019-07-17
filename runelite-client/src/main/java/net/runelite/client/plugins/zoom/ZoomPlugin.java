@@ -35,7 +35,7 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -72,14 +72,16 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	ZoomConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ZoomConfig.class);
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (client.getIndexScripts().isOverlayOutdated())
 		{
@@ -142,8 +144,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
 		{
@@ -154,6 +155,8 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
 		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
 		keyManager.registerKeyListener(this);
 	}
@@ -161,13 +164,21 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		client.setCameraPitchRelaxerEnabled(false);
 		keyManager.unregisterKeyListener(this);
 		controlDown = false;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged ev)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+	}
+
+	private void onConfigChanged(ConfigChanged ev)
 	{
 		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
 	}

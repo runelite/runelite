@@ -84,7 +84,7 @@ import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
@@ -158,7 +158,8 @@ public class ClientUI
 		MouseManager mouseManager,
 		@Nullable Applet client,
 		ConfigManager configManager,
-		Provider<ClientThread> clientThreadProvider)
+		Provider<ClientThread> clientThreadProvider,
+		EventBus eventbus)
 	{
 		this.properties = properties;
 		this.config = config;
@@ -167,10 +168,14 @@ public class ClientUI
 		this.client = client;
 		this.configManager = configManager;
 		this.clientThreadProvider = clientThreadProvider;
+
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(NavigationButtonAdded.class, this, this::onNavigationButtonAdded);
+		eventbus.subscribe(NavigationButtonRemoved.class, this, this::onNavigationButtonRemoved);
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(CONFIG_GROUP)
 			&& !(event.getGroup().equals(PLUS_CONFIG_GROUP)
@@ -185,8 +190,7 @@ public class ClientUI
 		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
 	}
 
-	@Subscribe
-	public void onNavigationButtonAdded(final NavigationButtonAdded event)
+	private void onNavigationButtonAdded(final NavigationButtonAdded event)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
@@ -252,8 +256,7 @@ public class ClientUI
 		});
 	}
 
-	@Subscribe
-	public void onNavigationButtonRemoved(final NavigationButtonRemoved event)
+	private void onNavigationButtonRemoved(final NavigationButtonRemoved event)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
@@ -270,8 +273,7 @@ public class ClientUI
 		});
 	}
 
-	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() != GameState.LOGGED_IN || !(client instanceof Client) || !config.usernameInTitle())
 		{

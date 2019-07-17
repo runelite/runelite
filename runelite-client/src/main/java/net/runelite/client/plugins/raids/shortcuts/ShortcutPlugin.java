@@ -16,7 +16,7 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -39,6 +39,8 @@ public class ShortcutPlugin extends Plugin
 	private ShortcutOverlay overlay;
 	@Inject
 	private ShortcutConfig config;
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean highlightShortcuts;
@@ -57,6 +59,8 @@ public class ShortcutPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
 		this.highlightShortcuts = config.highlightShortcuts();
 		overlayManager.add(overlay);
 	}
@@ -64,11 +68,19 @@ public class ShortcutPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
 		overlayManager.remove(overlay);
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, event.getGameObject().getLocalLocation());
 		if (worldPoint == null)
@@ -81,20 +93,17 @@ public class ShortcutPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		shortcut.remove(event.getGameObject());
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		shortcut.removeIf(object -> object.getCanvasLocation() == null);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("shortcut"))
 		{

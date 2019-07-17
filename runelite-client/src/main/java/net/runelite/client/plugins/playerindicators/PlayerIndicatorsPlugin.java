@@ -57,7 +57,7 @@ import net.runelite.api.events.ClanMemberLeft;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -93,6 +93,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ClanManager clanManager;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean highlightOwnPlayer;
@@ -162,6 +165,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 		
 		overlayManager.add(playerIndicatorsOverlay);
 		overlayManager.add(playerIndicatorsTileOverlay);
@@ -172,15 +176,24 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(playerIndicatorsOverlay);
 		overlayManager.remove(playerIndicatorsTileOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
 	}
 
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ClanMemberJoined.class, this, this::onClanMemberJoined);
+		eventBus.subscribe(ClanMemberLeft.class, this, this::onClanMemberLeft);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+	}
+
 	private List<String> callers = new ArrayList<>();
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("playerindicators"))
 		{
@@ -195,14 +208,12 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onClanMemberJoined(ClanMemberJoined event)
+	private void onClanMemberJoined(ClanMemberJoined event)
 	{
 		getCallerList();
 	}
 
-	@Subscribe
-	public void onClanMemberLeft(ClanMemberLeft event)
+	private void onClanMemberLeft(ClanMemberLeft event)
 	{
 		getCallerList();
 	}
@@ -250,9 +261,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		return false;
 	}
 
-
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	private void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		int type = menuEntryAdded.getType();
 

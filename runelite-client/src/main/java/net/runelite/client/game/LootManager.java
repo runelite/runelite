@@ -54,7 +54,6 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 
@@ -74,14 +73,24 @@ public class LootManager
 	private WorldPoint krakenPlayerLocation;
 
 	@Inject
-	private LootManager(EventBus eventBus, Client client)
+	private LootManager(
+		final EventBus eventBus,
+		final Client client
+	)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
+
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(PlayerDespawned.class, this, this::onPlayerDespawned);
+		eventBus.subscribe(ItemSpawned.class, this, this::onItemSpawned);
+		eventBus.subscribe(ItemDespawned.class, this, this::onItemDespawned);
+		eventBus.subscribe(ItemQuantityChanged.class, this, this::onItemQuantityChanged);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		final NPC npc = npcDespawned.getNpc();
 		if (!npc.isDead())
@@ -123,8 +132,7 @@ public class LootManager
 		processNpcLoot(npc);
 	}
 
-	@Subscribe
-	public void onPlayerDespawned(PlayerDespawned playerDespawned)
+	private void onPlayerDespawned(PlayerDespawned playerDespawned)
 	{
 		final Player player = playerDespawned.getPlayer();
 		// Only care about dead Players
@@ -150,11 +158,10 @@ public class LootManager
 		}
 
 		killPoints.add(location);
-		eventBus.post(new PlayerLootReceived(player, items));
+		eventBus.post(PlayerLootReceived.class, new PlayerLootReceived(player, items));
 	}
 
-	@Subscribe
-	public void onItemSpawned(ItemSpawned itemSpawned)
+	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		final Item item = itemSpawned.getItem();
 		final Tile tile = itemSpawned.getTile();
@@ -164,16 +171,14 @@ public class LootManager
 		log.debug("Item spawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
 	}
 
-	@Subscribe
-	public void onItemDespawned(ItemDespawned itemDespawned)
+	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		final Item item = itemDespawned.getItem();
 		final LocalPoint location = itemDespawned.getTile().getLocalLocation();
 		log.debug("Item despawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
 	}
 
-	@Subscribe
-	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
+	private void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
 	{
 		final Item item = itemQuantityChanged.getItem();
 		final Tile tile = itemQuantityChanged.getTile();
@@ -189,8 +194,7 @@ public class LootManager
 		itemSpawns.put(packed, new ItemStack(item.getId(), diff, location));
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged e)
+	private void onAnimationChanged(AnimationChanged e)
 	{
 		if (!(e.getActor() instanceof NPC))
 		{
@@ -219,8 +223,7 @@ public class LootManager
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
 		itemSpawns.clear();
@@ -257,7 +260,7 @@ public class LootManager
 		}
 
 		killPoints.add(location);
-		eventBus.post(new NpcLootReceived(npc, allItems));
+		eventBus.post(NpcLootReceived.class, new NpcLootReceived(npc, allItems));
 	}
 
 	private WorldPoint getDropLocation(NPC npc, WorldPoint worldLocation)

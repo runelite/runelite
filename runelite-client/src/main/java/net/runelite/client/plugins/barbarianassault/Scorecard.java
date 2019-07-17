@@ -33,7 +33,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.chat.ChatMessageBuilder;
-import net.runelite.client.eventbus.Subscribe;
 
 
 @Getter(AccessLevel.PACKAGE)
@@ -65,7 +64,6 @@ public class Scorecard
 		this.game = game;
 	}
 
-	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getMessage().startsWith("---- Points:") && game.getStage() == 1)

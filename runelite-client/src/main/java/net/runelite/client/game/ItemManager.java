@@ -60,7 +60,7 @@ import net.runelite.api.Sprite;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostItemDefinition;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemStats;
@@ -143,7 +143,12 @@ public class ItemManager
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
 	@Inject
-	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
+	public ItemManager(
+		Client client,
+		ScheduledExecutorService executor,
+		ClientThread clientThread,
+		EventBus eventbus
+	)
 	{
 		this.client = client;
 		this.scheduledExecutorService = executor;
@@ -197,6 +202,9 @@ public class ItemManager
 		final InputStream statsFile = getClass().getResourceAsStream("/item_stats.json");
 		final Map<Integer, ItemStats> stats = gson.fromJson(new InputStreamReader(statsFile), typeToken);
 		itemStatMap = ImmutableMap.copyOf(stats);
+
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventbus.subscribe(PostItemDefinition.class, this, this::onPostItemDefinition);
 	}
 
 	private void loadPrices()
@@ -240,8 +248,7 @@ public class ItemManager
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -249,8 +256,7 @@ public class ItemManager
 		}
 	}
 
-	@Subscribe
-	public void onPostItemDefinition(PostItemDefinition event)
+	private void onPostItemDefinition(PostItemDefinition event)
 	{
 		itemDefinitions.put(event.getItemDefinition().getId(), event.getItemDefinition());
 	}

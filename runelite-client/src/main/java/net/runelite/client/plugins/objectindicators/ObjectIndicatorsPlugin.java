@@ -64,7 +64,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -108,6 +108,9 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private EventBus eventbus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private RenderStyle objectMarkerRenderStyle;
 	@Getter(AccessLevel.PACKAGE)
@@ -127,6 +130,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(overlay);
 		keyManager.registerKeyListener(this);
@@ -135,11 +139,26 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown()
 	{
+		eventbus.unregister(this);
+
 		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(this);
 		points.clear();
 		objects.clear();
 		hotKeyPressed = false;
+	}
+
+	private void addSubscriptions()
+	{
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+		eventbus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventbus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
+		eventbus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventbus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventbus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventbus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
 	}
 
 	@Override
@@ -166,8 +185,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(final FocusChanged event)
+	private void onFocusChanged(final FocusChanged event)
 	{
 		if (!event.isFocused())
 		{
@@ -175,34 +193,29 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject eventObject = event.getGameObject();
 		checkObjectPoints(eventObject);
 	}
 
-	@Subscribe
-	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		final DecorativeObject eventObject = event.getDecorativeObject();
 		checkObjectPoints(eventObject);
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		objects.remove(event.getGameObject());
 	}
 
-	@Subscribe
-	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		objects.remove(event.getDecorativeObject());
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState gameState = gameStateChanged.getGameState();
 		if (gameState == GameState.LOADING)
@@ -227,8 +240,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (!hotKeyPressed || event.getType() != MenuAction.EXAMINE_OBJECT.getId())
 		{
@@ -284,8 +296,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		client.setMenuEntries(menuEntries);
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE
 			|| (!event.getOption().equals(MARK)
@@ -443,8 +454,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}.getType());
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("objectindicators"))
 		{

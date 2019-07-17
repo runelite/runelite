@@ -41,14 +41,14 @@ public interface Callbacks
 	 *
 	 * @param event the event
 	 */
-	void post(Object event);
+	<T> void post(Class<T> eventClass, Object event);
 
 	/**
 	 * Post a deferred event, which gets delayed until the next cycle.
 	 *
 	 * @param event the event
 	 */
-	void postDeferred(Object event);
+	<T> void postDeferred(Class<T> eventClass, Object event);
 
 	/**
 	 * Called each client cycle.

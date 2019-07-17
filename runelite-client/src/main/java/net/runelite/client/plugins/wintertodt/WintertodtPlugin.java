@@ -37,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import static net.runelite.api.GameState.LOADING;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -49,12 +50,13 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyMode;
@@ -93,6 +95,9 @@ public class WintertodtPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private WintertodtActivity currentActivity = WintertodtActivity.IDLE;
 
@@ -111,6 +116,8 @@ public class WintertodtPlugin extends Plugin
 	private WintertodtNotifyMode notifyCondition;
 	private Color damageNotificationColor;
 
+	private boolean subscribed;
+
 	@Provides
 	WintertodtConfig getConfig(ConfigManager configManager)
 	{
@@ -123,19 +130,47 @@ public class WintertodtPlugin extends Plugin
 		this.notifyCondition = config.notifyCondition();
 		this.damageNotificationColor = config.damageNotificationColor();
 
+		addSubscriptions();
+
 		reset();
 		overlayManager.add(overlay);
+
+		handleWintertodtRegion();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+		eventBus.unregister("inside-wintertodt");
+
 		overlayManager.remove(overlay);
 		reset();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+	}
+
+	private void wintertodtSubscriptions(boolean subscribe)
+	{
+		if (subscribe)
+		{
+			eventBus.subscribe(GameTick.class, "inside-wintertodt", this::onGameTick);
+			eventBus.subscribe(ChatMessage.class, "inside-wintertodt", this::onChatMessage);
+			eventBus.subscribe(AnimationChanged.class, "inside-wintertodt", this::onAnimationChanged);
+			eventBus.subscribe(ItemContainerChanged.class, "inside-wintertodt", this::onItemContainerChanged);
+		}
+		else
+		{
+			eventBus.unregister("inside-wintertodt");
+		}
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("wintertodt"))
 		{
@@ -164,10 +199,24 @@ public class WintertodtPlugin extends Plugin
 		return false;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void handleWintertodtRegion()
 	{
-		if (!isInWintertodtRegion())
+		if (isInWintertodtRegion())
+		{
+			if (!isInWintertodt)
+			{
+				reset();
+				log.debug("Entered Wintertodt!");
+			}
+			isInWintertodt = true;
+
+			if (!subscribed)
+			{
+				wintertodtSubscriptions(true);
+				subscribed = true;
+			}
+		}
+		else
 		{
 			if (isInWintertodt)
 			{
@@ -176,21 +225,29 @@ public class WintertodtPlugin extends Plugin
 			}
 
 			isInWintertodt = false;
-			return;
-		}
 
-		if (!isInWintertodt)
+			if (subscribed)
+			{
+				wintertodtSubscriptions(false);
+				subscribed = false;
+			}
+		}
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == LOADING)
 		{
-			reset();
-			log.debug("Entered Wintertodt!");
+			handleWintertodtRegion();
 		}
-		isInWintertodt = true;
+	}
 
+	private void onGameTick(GameTick gameTick)
+	{
 		checkActionTimeout();
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		int timerValue = client.getVar(Varbits.WINTERTODT_TIMER);
 		if (timerValue != previousTimerValue)
@@ -236,14 +293,8 @@ public class WintertodtPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
-		if (!isInWintertodt)
-		{
-			return;
-		}
-
 		ChatMessageType chatMessageType = chatMessage.getType();
 
 		if (chatMessageType != ChatMessageType.GAMEMESSAGE && chatMessageType != ChatMessageType.SPAM)
@@ -380,14 +431,8 @@ public class WintertodtPlugin extends Plugin
 		notifier.notify(notification);
 	}
 
-	@Subscribe
-	public void onAnimationChanged(final AnimationChanged event)
+	private void onAnimationChanged(final AnimationChanged event)
 	{
-		if (!isInWintertodt)
-		{
-			return;
-		}
-
 		final Player local = client.getLocalPlayer();
 
 		if (event.getActor() != local)
@@ -429,12 +474,11 @@ public class WintertodtPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();
 
-		if (!isInWintertodt || container != client.getItemContainer(InventoryID.INVENTORY))
+		if (container != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
 		}

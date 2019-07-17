@@ -56,7 +56,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -115,6 +115,9 @@ public class RunecraftPlugin extends Plugin
 	@Inject
 	private MenuManager menuManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private boolean Lavas;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean essPouch;
@@ -162,6 +165,7 @@ public class RunecraftPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(abyssOverlay);
 		abyssOverlay.updateConfig();
@@ -172,6 +176,8 @@ public class RunecraftPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(abyssOverlay);
 		abyssObjects.clear();
 		darkMage = null;
@@ -180,8 +186,20 @@ public class RunecraftPlugin extends Plugin
 		removeSwaps();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
+		eventBus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("runecraft"))
 		{
@@ -198,8 +216,7 @@ public class RunecraftPlugin extends Plugin
 		abyssOverlay.updateConfig();
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
@@ -212,8 +229,7 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded entry)
+	private void onMenuEntryAdded(MenuEntryAdded entry)
 	{
 		if (wearingCape || wearingTiara)
 		{
@@ -287,9 +303,7 @@ public class RunecraftPlugin extends Plugin
 		return -1;
 	}
 
-
-	@Subscribe
-	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		DecorativeObject decorativeObject = event.getDecorativeObject();
 		if (AbyssRifts.getRift(decorativeObject.getId()) != null)
@@ -298,15 +312,13 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		DecorativeObject decorativeObject = event.getDecorativeObject();
 		abyssObjects.remove(decorativeObject);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gameState = event.getGameState();
 		switch (gameState)
@@ -322,8 +334,7 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
@@ -339,8 +350,7 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
 		if (npc.getId() == NpcID.DARK_MAGE)
@@ -349,8 +359,7 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		final NPC npc = event.getNpc();
 		if (npc != null && npc.equals(darkMage))

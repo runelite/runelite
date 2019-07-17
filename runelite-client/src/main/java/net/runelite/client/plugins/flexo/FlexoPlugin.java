@@ -51,7 +51,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.flexo.Flexo;
 import net.runelite.client.flexo.FlexoMouse;
 import net.runelite.client.plugins.Plugin;
@@ -104,6 +104,9 @@ public class FlexoPlugin extends Plugin
 	@Inject
 	private FlexoConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	FlexoConfig getConfig(ConfigManager configManager)
 	{
@@ -138,7 +141,6 @@ public class FlexoPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private List<Point> clickPoints = new ArrayList<>();
 
-	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("flexo") || (!event.getGroup().equals("stretchedmode")) )
@@ -150,9 +152,7 @@ public class FlexoPlugin extends Plugin
 		updateMouseMotionFactory();
 	}
 
-
-	@Subscribe
-	public void onBeforeRender(BeforeRender event)
+	private void onBeforeRender(BeforeRender event)
 	{
 		if (Flexo.client == null)
 		{
@@ -293,6 +293,7 @@ public class FlexoPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		Flexo.isStretched = client.isStretchedEnabled();
 		overlayManager.add(overlay);
@@ -302,7 +303,15 @@ public class FlexoPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(BeforeRender.class, this, this::onBeforeRender);
 	}
 
 	private void updateConfig()

@@ -41,7 +41,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ColorUtil;
@@ -61,6 +61,9 @@ public class TimestampPlugin extends Plugin
 	@Inject
 	private TimestampConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter
 	private SimpleDateFormat formatter;
 
@@ -73,17 +76,21 @@ public class TimestampPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+
 		updateFormatter();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		formatter = null;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("timestamp") && event.getKey().equals("format"))
 		{
@@ -91,8 +98,7 @@ public class TimestampPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!event.getEventName().equals("addTimestamp"))
 		{
