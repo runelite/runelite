@@ -104,6 +104,7 @@ class ItemPricesOverlay extends Overlay
 				// Item tooltip values
 				switch (groupId)
 				{
+					case WidgetID.BANK_INVENTORY_GROUP_ID:
 					case WidgetID.INVENTORY_GROUP_ID:
 						if (config.hideInventory())
 						{
@@ -111,7 +112,6 @@ class ItemPricesOverlay extends Overlay
 						}
 						// intentional fallthrough
 					case WidgetID.BANK_GROUP_ID:
-					case WidgetID.BANK_INVENTORY_GROUP_ID:
 						// Make tooltip
 						final String text = makeValueTooltip(menuEntry);
 						if (text != null)
