@@ -247,11 +247,11 @@ public class ItemChargePlugin extends Plugin
 				}
 				updateRingOfForgingCharges(charges);
 			}
-			else if (message.contains(RING_OF_FORGING_USED_TEXT))
+			else if (message.equals(RING_OF_FORGING_USED_TEXT))
 			{
 				updateRingOfForgingCharges(config.ringOfForging() - 1);
 			}
-			else if (message.contains(RING_OF_FORGING_BREAK_TEXT))
+			else if (message.equals(RING_OF_FORGING_BREAK_TEXT))
 			{
 				if (config.ringOfForgingNotification())
 				{

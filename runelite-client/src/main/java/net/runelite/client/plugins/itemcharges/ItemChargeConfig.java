@@ -326,7 +326,7 @@ public interface ItemChargeConfig extends Config
 	void ringOfForging(int ringOfForging);
 
 	@ConfigItem(
-		keyName = "RingOfForgingNotification",
+		keyName = "ringOfForgingNotification",
 		name = "Ring of Forging Notification",
 		description = "Configures if the Ring of Forging breaking notification is shown",
 		position = 21
