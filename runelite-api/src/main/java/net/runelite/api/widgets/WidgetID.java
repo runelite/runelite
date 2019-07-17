@@ -239,6 +239,8 @@ public class WidgetID
 		static final int WINDOW_BORDERS = 2;
 		static final int HISTORY_BUTTON = 3;
 		static final int BACK_BUTTON = 4;
+		static final int OFFER_STATUS_CONTAINER = 15;
+		static final int OFFER_STATUS_DESCRIPTION = 16;
 		static final int OFFER_CONTAINER = 24;
 		static final int OFFER_DESCRIPTION = 25;
 		static final int OFFER_PRICE = 26;

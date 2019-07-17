@@ -92,6 +92,7 @@ import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 @Slf4j
 public class GrandExchangePlugin extends Plugin
 {
+	private static final int OFFER_STATUS_ITEM = 7;
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
@@ -149,7 +150,9 @@ public class GrandExchangePlugin extends Plugin
 	private ConfigManager configManager;
 
 	private Widget grandExchangeText;
+	private Widget grandExchangeTextStatus;
 	private Widget grandExchangeItem;
+	private Widget grandExchangeItemStatus;
 	private Map<Integer, Integer> itemGELimits;
 
 	private GrandExchangeClient grandExchangeClient;
@@ -418,13 +421,18 @@ public class GrandExchangePlugin extends Plugin
 			// Grand exchange was opened.
 			case WidgetID.GRAND_EXCHANGE_GROUP_ID:
 				Widget grandExchangeOffer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
+				Widget grandExchangeOfferStatus = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_STATUS_CONTAINER);
 				grandExchangeText = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TEXT);
+				grandExchangeTextStatus = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_STATUS_TEXT);
 				grandExchangeItem = grandExchangeOffer.getDynamicChildren()[OFFER_CONTAINER_ITEM];
+				grandExchangeItemStatus = grandExchangeOfferStatus.getDynamicChildren()[OFFER_STATUS_ITEM];
 				break;
 			// Grand exchange was closed (if it was open before).
 			case WidgetID.INVENTORY_GROUP_ID:
 				grandExchangeText = null;
+				grandExchangeTextStatus = null;
 				grandExchangeItem = null;
+				grandExchangeItemStatus = null;
 				break;
 		}
 	}
@@ -475,14 +483,32 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (grandExchangeText == null || grandExchangeItem == null || grandExchangeItem.isHidden())
+		if (grandExchangeText == null || grandExchangeItem == null || grandExchangeTextStatus == null || grandExchangeItemStatus == null)
 		{
 			return;
 		}
 
-		final Widget geText = grandExchangeText;
+		Widget localGEText;
+		Widget localGEItem;
+
+		if (!grandExchangeItem.isHidden())
+		{
+			localGEItem = grandExchangeItem;
+			localGEText = grandExchangeText;
+		}
+		else if (!grandExchangeItemStatus.isHidden())
+		{
+			localGEItem = grandExchangeItemStatus;
+			localGEText = grandExchangeTextStatus;
+		}
+		else
+		{
+			return;
+		}
+
+		final Widget geText = localGEText;
 		final String geTextString = geText.getText();
-		final int itemId = grandExchangeItem.getItemId();
+		final int itemId = localGEItem.getItemId();
 
 		if (itemId == OFFER_DEFAULT_ITEM_ID || itemId == -1)
 		{
