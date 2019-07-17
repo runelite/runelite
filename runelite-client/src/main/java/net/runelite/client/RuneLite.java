@@ -80,6 +80,7 @@ public class RuneLite
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
+	private static final File LOG_FILE = new File(LOGS_DIR, "client.log");
 	private static final RuneLiteProperties PROPERTIES = new RuneLiteProperties();
 	private static final String EXPECTED_LAUNCHER_VERSION = "Launcher 1.6.0";
 
@@ -205,31 +206,38 @@ public class RuneLite
 			}
 		});
 
-		SwingUtilities.invokeAndWait(() ->
+		if (!options.has("no-splash"))
 		{
-			RuneLiteSplashScreen.setTheme();
-			if (options.has("no-splash"))
+			SwingUtilities.invokeAndWait(() ->
 			{
-				SPLASH_SCREEN = new RuneLiteSplashScreen(new File(LOGS_DIR, "client.log"));
-			}
-			else
-			{
-				SPLASH_SCREEN = new RuneLiteSplashScreen("Runelite " + PROPERTIES.getVersion(), new File(LOGS_DIR, "client.log"));
-			}
-		});
+				RuneLiteSplashScreen.setTheme();
+				SPLASH_SCREEN = new RuneLiteSplashScreen(LOG_FILE, "Runelite " + PROPERTIES.getVersion());
 
-		SPLASH_SCREEN.setMessage("Checking launcher version", 0);
+			});
+		}
+
+		setSplashMessage("Checking launcher version", 0);
 		final String launcherVersion = RuneLiteProperties.getLauncherVersion();
 		if (launcherVersion != null &&
 			!EXPECTED_LAUNCHER_VERSION.equalsIgnoreCase(launcherVersion))
 		{
-			SwingUtilities.invokeAndWait(SPLASH_SCREEN::invalidVersion);
-			SPLASH_SCREEN.close();
+			SwingUtilities.invokeAndWait(() ->
+			{
+				if (SPLASH_SCREEN == null)
+				{
+					RuneLiteSplashScreen.invalidVersion(null);
+				}
+				else
+				{
+					SPLASH_SCREEN.invalidVersion();
+					SPLASH_SCREEN.close();
+				}
+			});
 			log.info("Launcher version mismatch, closing client...");
 			System.exit(1);
 		}
 
-		SPLASH_SCREEN.setMessage("Initializing client", 20);
+		setSplashMessage("Initializing client", 20);
 
 		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
 
@@ -279,11 +287,11 @@ public class RuneLite
 		}
 
 		// Load user configuration
-		SPLASH_SCREEN.setMessage("Loading user config", 40);
+		setSplashMessage("Loading user config", 40);
 		configManager.load();
 
 		// Load the session, including saved configuration
-		SPLASH_SCREEN.setMessage("Loading session data", 60);
+		setSplashMessage("Loading session data", 60);
 		sessionManager.loadSession();
 
 		// Tell the plugin manager if client is outdated or not
@@ -291,7 +299,7 @@ public class RuneLite
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
-		SPLASH_SCREEN.setMessage("Initializing plugins", 80);
+		setSplashMessage("Initializing plugins", 80);
 		pluginManager.loadCorePlugins();
 
 		// Plugins have provided their config, so set default config
@@ -299,12 +307,15 @@ public class RuneLite
 		pluginManager.loadDefaultPluginConfiguration();
 
 		// Start client session
-		SPLASH_SCREEN.setMessage("Starting client", 100);
+		setSplashMessage("Starting client", 100);
 		clientSessionManager.start();
 
 		// Initialize UI
 		clientUI.open(this);
-		SPLASH_SCREEN.close();
+		if (SPLASH_SCREEN != null)
+		{
+			SPLASH_SCREEN.close();
+		}
 
 		// Initialize Discord service
 		discordService.init();
@@ -347,6 +358,14 @@ public class RuneLite
 		configManager.sendConfig();
 		clientSessionManager.shutdown();
 		discordService.close();
+	}
+
+	private static void setSplashMessage(final String msg, final int value)
+	{
+		if (SPLASH_SCREEN != null)
+		{
+			SPLASH_SCREEN.setMessage(msg, value);
+		}
 	}
 
 	@VisibleForTesting
