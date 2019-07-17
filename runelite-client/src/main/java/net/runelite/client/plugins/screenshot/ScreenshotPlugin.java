@@ -646,7 +646,7 @@ public class ScreenshotPlugin extends Plugin
 			{
 				playerDir += "-Deadman";
 			}
-			playerFolder = new File(SCREENSHOT_DIR, playerDir + "/" + subDir);
+			playerFolder = new File(SCREENSHOT_DIR, playerDir + File.separator + subDir);
 		}
 		else
 		{
