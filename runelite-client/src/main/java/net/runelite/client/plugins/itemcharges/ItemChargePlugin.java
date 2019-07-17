@@ -49,8 +49,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import java.util.Arrays;
-import java.util.stream.Stream;
 
 @PluginDescriptor(
 	name = "Item Charges",
@@ -246,6 +244,7 @@ public class ItemChargePlugin extends Plugin
 			else if (message.equals(RING_OF_FORGING_USED_TEXT))
 			{
 				final Item[] items = client.getItemContainer(InventoryID.EQUIPMENT).getItems();
+
 				if (items[EquipmentInventorySlot.RING.getSlotIdx()].getId() == ItemID.RING_OF_FORGING);
 				{
 					updateRingOfForgingCharges(config.ringOfForging() - 1);
