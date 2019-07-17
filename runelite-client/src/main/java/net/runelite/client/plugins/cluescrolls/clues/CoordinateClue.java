@@ -96,7 +96,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2542, 3031, 0), "Gu'Tanoth.")
 		.put(new WorldPoint(2581, 3030, 0), "Gu'Tanoth island, enter cave north-west of Feldip Hills (AKS).")
 		.put(new WorldPoint(2961, 3024, 0), "Ship yard (DKP).")
-		.put(new WorldPoint(2339, 3311, 0), "East of Tirannwn on Arandar mountain pass.")
+		.put(new WorldPoint(2339, 3311, 0), "East of Prifddinas on Arandar mountain pass.")
 		.put(new WorldPoint(3440, 3341, 0), "Nature Spirit's grotto.")
 		.put(new WorldPoint(2763, 2974, 0), "Cairn Isle, west of Shilo Village.")
 		.put(new WorldPoint(3138, 2969, 0), "West of Bandit Camp.")

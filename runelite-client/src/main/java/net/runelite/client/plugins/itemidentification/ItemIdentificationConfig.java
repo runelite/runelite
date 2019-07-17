@@ -83,4 +83,24 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showOres",
+		name = "Ores",
+		description = "Show identification on Ores"
+	)
+	default boolean showOres()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showGems",
+		name = "Gems",
+		description = "Show identification on Gems"
+	)
+	default boolean showGems()
+	{
+		return false;
+	}
 }
