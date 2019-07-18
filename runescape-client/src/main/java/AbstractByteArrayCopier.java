@@ -3,103 +3,74 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gu")
+@ObfuscatedName("gz")
 @Implements("AbstractByteArrayCopier")
 public abstract class AbstractByteArrayCopier {
-   @ObfuscatedName("f")
-   @Export("directBufferUnavailable")
-   static boolean directBufferUnavailable;
-   @ObfuscatedName("et")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   @Export("archive20")
-   static Archive archive20;
+	AbstractByteArrayCopier() {
+	}
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(I)[B",
-      garbageValue = "-1219910462"
-   )
-   @Export("get")
-   abstract byte[] get();
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(I)[B",
+		garbageValue = "1071129091"
+	)
+	@Export("get")
+	abstract byte[] get();
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "([BI)V",
-      garbageValue = "-2034091753"
-   )
-   @Export("set")
-   abstract void set(byte[] array);
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "([BI)V",
+		garbageValue = "594076777"
+	)
+	public abstract void set(byte[] var1);
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(II)Liw;",
-      garbageValue = "1102198559"
-   )
-   @Export("getVarcInt")
-   public static VarcInt getVarcInt(int var0) {
-      VarcInt var1 = (VarcInt)VarcInt.VarcInt_cached.get((long)var0);
-      if (var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = VarcInt.VarcInt_archive.takeFile(19, var0);
-         var1 = new VarcInt();
-         if (var2 != null) {
-            var1.method354(new Buffer(var2));
-         }
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		signature = "([BIILer;[Lfv;I)V",
+		garbageValue = "95070993"
+	)
+	static final void method3933(byte[] var0, int var1, int var2, Scene var3, CollisionMap[] var4) {
+		Buffer var5 = new Buffer(var0);
+		int var6 = -1;
 
-         VarcInt.VarcInt_cached.put(var1, (long)var0);
-         return var1;
-      }
-   }
+		while (true) {
+			int var7 = var5.method5509();
+			if (var7 == 0) {
+				return;
+			}
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1941491045"
-   )
-   @Export("unloadInterface")
-   public static void unloadInterface(int var0) {
-      if (var0 != -1 && Widget.loadedInterfaces[var0]) {
-         Widget.Widget_archive.clearFilesGroup(var0);
-         if (Widget.interfaceComponents[var0] != null) {
-            boolean var1 = true;
+			var6 += var7;
+			int var8 = 0;
 
-            for (int var2 = 0; var2 < Widget.interfaceComponents[var0].length; ++var2) {
-               if (Widget.interfaceComponents[var0][var2] != null) {
-                  if (Widget.interfaceComponents[var0][var2].type != 2) {
-                     Widget.interfaceComponents[var0][var2] = null;
-                  } else {
-                     var1 = false;
-                  }
-               }
-            }
+			while (true) {
+				int var9 = var5.readUShortSmart();
+				if (var9 == 0) {
+					break;
+				}
 
-            if (var1) {
-               Widget.interfaceComponents[var0] = null;
-            }
+				var8 += var9 - 1;
+				int var10 = var8 & 63;
+				int var11 = var8 >> 6 & 63;
+				int var12 = var8 >> 12;
+				int var13 = var5.readUnsignedByte();
+				int var14 = var13 >> 2;
+				int var15 = var13 & 3;
+				int var16 = var11 + var1;
+				int var17 = var10 + var2;
+				if (var16 > 0 && var17 > 0 && var16 < 103 && var17 < 103) {
+					int var18 = var12;
+					if ((Tiles.Tiles_renderFlags[1][var16][var17] & 2) == 2) {
+						var18 = var12 - 1;
+					}
 
-            Widget.loadedInterfaces[var0] = false;
-         }
-      }
+					CollisionMap var19 = null;
+					if (var18 >= 0) {
+						var19 = var4[var18];
+					}
 
-   }
-
-   @ObfuscatedName("gb")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1256278627"
-   )
-   static void method4024() {
-      PacketBufferNode var0 = Interpreter.method1915(ClientPacket.field257, Client.packetWriter.isaacCipher);
-      var0.packetBuffer.writeByte(SpotAnimationDefinition.getWindowedMode());
-      var0.packetBuffer.writeShort(SoundCache.canvasWidth);
-      var0.packetBuffer.writeShort(Huffman.canvasHeight);
-      Client.packetWriter.method241(var0);
-   }
-
-   static {
-      directBufferUnavailable = false;
-   }
+					GrandExchangeOfferOwnWorldComparator.method1236(var12, var16, var17, var6, var15, var14, var3, var19);
+				}
+			}
+		}
+	}
 }

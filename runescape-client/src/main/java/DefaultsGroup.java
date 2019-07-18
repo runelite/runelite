@@ -4,41 +4,40 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ka")
+@ObfuscatedName("kt")
 @Implements("DefaultsGroup")
 public class DefaultsGroup {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lka;"
-   )
-   @Export("DefaultsGroup_graphics")
-   static final DefaultsGroup DefaultsGroup_graphics;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -2077113503
-   )
-   static int field1156;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -800980069
-   )
-   @Export("group")
-   final int group;
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "Lkt;"
+	)
+	static final DefaultsGroup field3821;
+	@ObfuscatedName("go")
+	@ObfuscatedGetter(
+		intValue = -909445377
+	)
+	static int field3819;
+	@ObfuscatedName("w")
+	@ObfuscatedGetter(
+		intValue = 1207021413
+	)
+	@Export("group")
+	final int group;
 
-   DefaultsGroup(int var1) {
-      this.group = var1;
-   }
+	static {
+		field3821 = new DefaultsGroup(3);
+	}
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(I)[Llj;",
-      garbageValue = "-2017595575"
-   )
-   public static RectangleMode[] method5822() {
-      return new RectangleMode[]{RectangleMode.GRADIENT_COLOR, RectangleMode.SOLID, RectangleMode.GRADIENT_ALPHA};
-   }
+	DefaultsGroup(int var1) {
+		this.group = var1;
+	}
 
-   static {
-      DefaultsGroup_graphics = new DefaultsGroup(3);
-   }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(Lkf;B)Ljava/lang/String;",
+		garbageValue = "39"
+	)
+	public static String method5898(Buffer var0) {
+		return WorldMapIcon_0.method194(var0, 32767);
+	}
 }

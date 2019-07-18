@@ -42,6 +42,6 @@ public interface RSRasterProvider extends RSAbstractRasterProvider, MainBufferPr
 	@Import("image")
 	void setImage(Image image);
 
-	@Import("component0")
+	@Import("component")
 	Component getCanvas();
 }

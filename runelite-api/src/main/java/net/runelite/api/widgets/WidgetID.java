@@ -970,6 +970,7 @@ public class WidgetID
 
 	static class Pvp
 	{
+		static final int FOG_OVERLAY = 1;
 		static final int PVP_WIDGET_CONTAINER = 54;  // OUTDATED?
 		static final int SKULL = 56;  // OUTDATED?
 		static final int ATTACK_RANGE = 59;  // OUTDATED?

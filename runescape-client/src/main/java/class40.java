@@ -3,884 +3,843 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ad")
+@ObfuscatedName("ap")
 public class class40 {
-   @ObfuscatedName("dl")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   @Export("archive7")
-   static Archive archive7;
-   @ObfuscatedName("gs")
-   @Export("regionLandArchives")
-   static byte[][] regionLandArchives;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1443846573
-   )
-   int field326;
-   @ObfuscatedName("f")
-   byte[][][] field329;
-
-   class40(int var1) {
-      this.field326 = var1;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIIB)V",
-      garbageValue = "125"
-   )
-   void method743(int x, int y, int var3, int var4, int width, int height, int var7, int var8) {
-      if (var7 != 0 && this.field326 != 0 && this.field329 != null) {
-         var8 = this.method744(var8, var7);
-         var7 = this.method774(var7);
-         Rasterizer2D.raster2d7(x, y, width, height, var3, var4, this.field329[var7 - 1][var8], this.field326);
-      }
-
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-203451964"
-   )
-   int method744(int var1, int var2) {
-      if (var2 == 9) {
-         var1 = var1 + 1 & 3;
-      }
-
-      if (var2 == 10) {
-         var1 = var1 + 3 & 3;
-      }
-
-      if (var2 == 11) {
-         var1 = var1 + 3 & 3;
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "-63"
-   )
-   int method774(int var1) {
-      return var1 != 9 && var1 != 10 ? (var1 == 11 ? 8 : var1) : 1;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1551779144"
-   )
-   void method763() {
-      if (this.field329 == null) {
-         this.field329 = new byte[8][4][];
-         this.method745();
-         this.method748();
-         this.method751();
-         this.method750();
-         this.method762();
-         this.method752();
-         this.method753();
-         this.method754();
-      }
-
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "196149319"
-   )
-   void method745() {
-      byte[] var1 = new byte[this.field326 * this.field326];
-      int var2 = 0;
-
-      int var3;
-      int var4;
-      for (var3 = 0; var3 < this.field326; ++var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var4 <= var3) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[0][0] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var4 <= var3) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[0][1] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = 0; var3 < this.field326; ++var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var4 >= var3) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[0][2] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var4 >= var3) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[0][3] = var1;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1590087827"
-   )
-   void method748() {
-      byte[] var1 = new byte[this.field326 * this.field326];
-      int var2 = 0;
-
-      int var3;
-      int var4;
-      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var4 <= var3 >> 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[1][0] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = 0; var3 < this.field326; ++var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var2 >= 0 && var2 < var1.length) {
-               if (var4 >= var3 << 1) {
-                  var1[var2] = -1;
-               }
-
-               ++var2;
-            } else {
-               ++var2;
-            }
-         }
-      }
-
-      this.field329[1][1] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = 0; var3 < this.field326; ++var3) {
-         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if (var4 <= var3 >> 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[1][2] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if (var4 >= var3 << 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[1][3] = var1;
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "530017326"
-   )
-   void method751() {
-      byte[] var1 = new byte[this.field326 * this.field326];
-      int var2 = 0;
-
-      int var3;
-      int var4;
-      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if (var4 <= var3 >> 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[2][0] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var4 >= var3 << 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[2][1] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = 0; var3 < this.field326; ++var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var4 <= var3 >> 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[2][2] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = 0; var3 < this.field326; ++var3) {
-         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if (var4 >= var3 << 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[2][3] = var1;
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-40"
-   )
-   void method750() {
-      byte[] var1 = new byte[this.field326 * this.field326];
-      int var2 = 0;
-
-      int var3;
-      int var4;
-      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var4 >= var3 >> 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[3][0] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = 0; var3 < this.field326; ++var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var4 <= var3 << 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[3][1] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = 0; var3 < this.field326; ++var3) {
-         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if (var4 >= var3 >> 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[3][2] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if (var4 <= var3 << 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[3][3] = var1;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-545325116"
-   )
-   void method762() {
-      byte[] var1 = new byte[this.field326 * this.field326];
-      int var2 = 0;
-
-      int var3;
-      int var4;
-      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if (var4 >= var3 >> 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[4][0] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = this.field326 - 1; var3 >= 0; --var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var4 <= var3 << 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[4][1] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = 0; var3 < this.field326; ++var3) {
-         for (var4 = 0; var4 < this.field326; ++var4) {
-            if (var4 >= var3 >> 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[4][2] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var2 = 0;
-
-      for (var3 = 0; var3 < this.field326; ++var3) {
-         for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-            if (var4 <= var3 << 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field329[4][3] = var1;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2005544109"
-   )
-   void method752() {
-      byte[] var1 = new byte[this.field326 * this.field326];
-      boolean var2 = false;
-      var1 = new byte[this.field326 * this.field326];
-      int var3 = 0;
-
-      int var4;
-      int var5;
-      for (var4 = 0; var4 < this.field326; ++var4) {
-         for (var5 = 0; var5 < this.field326; ++var5) {
-            if (var5 <= this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[5][0] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var3 = 0;
-
-      for (var4 = 0; var4 < this.field326; ++var4) {
-         for (var5 = 0; var5 < this.field326; ++var5) {
-            if (var4 <= this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[5][1] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var3 = 0;
-
-      for (var4 = 0; var4 < this.field326; ++var4) {
-         for (var5 = 0; var5 < this.field326; ++var5) {
-            if (var5 >= this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[5][2] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var3 = 0;
-
-      for (var4 = 0; var4 < this.field326; ++var4) {
-         for (var5 = 0; var5 < this.field326; ++var5) {
-            if (var4 >= this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[5][3] = var1;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-105"
-   )
-   void method753() {
-      byte[] var1 = new byte[this.field326 * this.field326];
-      boolean var2 = false;
-      var1 = new byte[this.field326 * this.field326];
-      int var3 = 0;
-
-      int var4;
-      int var5;
-      for (var4 = 0; var4 < this.field326; ++var4) {
-         for (var5 = 0; var5 < this.field326; ++var5) {
-            if (var5 <= var4 - this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[6][0] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var3 = 0;
-
-      for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-         for (var5 = 0; var5 < this.field326; ++var5) {
-            if (var5 <= var4 - this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[6][1] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var3 = 0;
-
-      for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-         for (var5 = this.field326 - 1; var5 >= 0; --var5) {
-            if (var5 <= var4 - this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[6][2] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var3 = 0;
-
-      for (var4 = 0; var4 < this.field326; ++var4) {
-         for (var5 = this.field326 - 1; var5 >= 0; --var5) {
-            if (var5 <= var4 - this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[6][3] = var1;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2013517896"
-   )
-   void method754() {
-      byte[] var1 = new byte[this.field326 * this.field326];
-      boolean var2 = false;
-      var1 = new byte[this.field326 * this.field326];
-      int var3 = 0;
-
-      int var4;
-      int var5;
-      for (var4 = 0; var4 < this.field326; ++var4) {
-         for (var5 = 0; var5 < this.field326; ++var5) {
-            if (var5 >= var4 - this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[7][0] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var3 = 0;
-
-      for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-         for (var5 = 0; var5 < this.field326; ++var5) {
-            if (var5 >= var4 - this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[7][1] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var3 = 0;
-
-      for (var4 = this.field326 - 1; var4 >= 0; --var4) {
-         for (var5 = this.field326 - 1; var5 >= 0; --var5) {
-            if (var5 >= var4 - this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[7][2] = var1;
-      var1 = new byte[this.field326 * this.field326];
-      var3 = 0;
-
-      for (var4 = 0; var4 < this.field326; ++var4) {
-         for (var5 = this.field326 - 1; var5 >= 0; --var5) {
-            if (var5 >= var4 - this.field326 / 2) {
-               var1[var3] = -1;
-            }
-
-            ++var3;
-         }
-      }
-
-      this.field329[7][3] = var1;
-   }
-
-   @ObfuscatedName("gf")
-   @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-1557475479"
-   )
-   @Export("drawEntities")
-   static final void drawEntities(int var0, int var1, int var2, int var3) {
-      ++Client.viewportDrawCount;
-      class229.method4514();
-      WorldMapDecoration.addLocalPlayerToScene();
-      TriBool.addTargetPlayerToScene();
-      BufferedSource.method3423(true);
-      int var4 = Players.Players_count;
-      int[] var5 = Players.Players_indices;
-
-      int var6;
-      for (var6 = 0; var6 < var4; ++var6) {
-         if (var5[var6] != Client.combatTargetPlayerIndex && var5[var6] != Client.localPlayerIndex) {
-            WorldMapCacheName.addPlayerToScene(Client.players[var5[var6]], true);
-         }
-      }
-
-      BufferedSource.method3423(false);
-
-      for (Projectile var7 = (Projectile)Client.projectiles.last(); var7 != null; var7 = (Projectile)Client.projectiles.previous()) {
-         if (var7.plane == SoundSystem.plane && Client.cycle <= var7.cycleEnd) {
-            if (Client.cycle >= var7.cycleStart) {
-               if (var7.targetIndex > 0) {
-                  NPC var8 = Client.npcs[var7.targetIndex - 1];
-                  if (var8 != null && var8.x >= 0 && var8.x < 13312 && var8.y >= 0 && var8.y < 13312) {
-                     var7.setDestination(var8.x, var8.y, class32.getTileHeight(var8.x, var8.y, var7.plane) - var7.endHeight, Client.cycle);
-                  }
-               }
-
-               if (var7.targetIndex < 0) {
-                  var6 = -var7.targetIndex - 1;
-                  Player var23;
-                  if (var6 == Client.localPlayerIndex) {
-                     var23 = Canvas.localPlayer;
-                  } else {
-                     var23 = Client.players[var6];
-                  }
-
-                  if (var23 != null && var23.x >= 0 && var23.x < 13312 && var23.y >= 0 && var23.y < 13312) {
-                     var7.setDestination(var23.x, var23.y, class32.getTileHeight(var23.x, var23.y, var7.plane) - var7.endHeight, Client.cycle);
-                  }
-               }
-
-               var7.advance(Client.field183);
-               class65.scene.method285(SoundSystem.plane, (int)var7.x, (int)var7.y, (int)var7.z, 60, var7, var7.yaw, -1L, false);
-            }
-         } else {
-            var7.remove();
-         }
-      }
-
-      for (GraphicsObject var21 = (GraphicsObject)Client.graphicsObjects.last(); var21 != null; var21 = (GraphicsObject)Client.graphicsObjects.previous()) {
-         if (var21.plane == SoundSystem.plane && !var21.isFinished) {
-            if (Client.cycle >= var21.cycleStart) {
-               var21.advance(Client.field183);
-               if (var21.isFinished) {
-                  var21.remove();
-               } else {
-                  class65.scene.method285(var21.plane, var21.x, var21.y, var21.height, 60, var21, 0, -1L, false);
-               }
-            }
-         } else {
-            var21.remove();
-         }
-      }
-
-      FontName.setViewportShape(var0, var1, var2, var3, true);
-      var0 = Client.viewportOffsetX;
-      var1 = Client.viewportOffsetY;
-      var2 = Client.viewportWidth;
-      var3 = Client.viewportHeight;
-      Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
-      Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
-      int var9;
-      int var10;
-      int var11;
-      int var12;
-      int var13;
-      int var14;
-      int var15;
-      int var22;
-      int var24;
-      if (!Client.isCameraLocked) {
-         var4 = Client.camAngleX;
-         if (Client.field202 / 256 > var4) {
-            var4 = Client.field202 / 256;
-         }
-
-         if (Client.field139[4] && Client.field142[4] + 128 > var4) {
-            var4 = Client.field142[4] + 128;
-         }
-
-         var13 = Client.camAngleY & 2047;
-         var6 = MouseHandler.oculusOrbFocalPointX;
-         var14 = MouseRecorder.field566;
-         var15 = ScriptEvent.oculusOrbFocalPointY;
-         var22 = var4 * 3 + 600;
-         var24 = ScriptEvent.method1176(var22, var3);
-         var9 = 2048 - var4 & 2047;
-         var10 = 2048 - var13 & 2047;
-         var11 = 0;
-         var12 = 0;
-         int var16 = var24;
-         int var17;
-         int var18;
-         int var19;
-         if (var9 != 0) {
-            var17 = Rasterizer3D.Rasterizer3D_sine[var9];
-            var18 = Rasterizer3D.Rasterizer3D_cosine[var9];
-            var19 = var12 * var18 - var17 * var24 >> 16;
-            var16 = var18 * var24 + var17 * var12 >> 16;
-            var12 = var19;
-         }
-
-         if (var10 != 0) {
-            var17 = Rasterizer3D.Rasterizer3D_sine[var10];
-            var18 = Rasterizer3D.Rasterizer3D_cosine[var10];
-            var19 = var16 * var17 + var18 * var11 >> 16;
-            var16 = var16 * var18 - var17 * var11 >> 16;
-            var11 = var19;
-         }
-
-         WorldMapSection2.cameraX = var6 - var11;
-         GrandExchangeEvents.cameraY = var14 - var12;
-         GrandExchangeOfferNameComparator.cameraZ = var15 - var16;
-         WorldMapIcon1.cameraPitch = var4;
-         MusicPatchNode.cameraYaw = var13;
-         if (Client.oculusOrbState == 1 && Client.staffModLevel >= 2 && Client.cycle % 50 == 0 && (MouseHandler.oculusOrbFocalPointX >> 7 != Canvas.localPlayer.x >> 7 || ScriptEvent.oculusOrbFocalPointY >> 7 != Canvas.localPlayer.y >> 7)) {
-            var17 = Canvas.localPlayer.plane;
-            var18 = (MouseHandler.oculusOrbFocalPointX >> 7) + class50.baseX;
-            var19 = (ScriptEvent.oculusOrbFocalPointY >> 7) + GraphicsObject.baseY;
-            PacketBufferNode var20 = Interpreter.method1915(ClientPacket.field283, Client.packetWriter.isaacCipher);
-            var20.packetBuffer.writeIntME(Client.field198);
-            var20.packetBuffer.writeShortLE(var19);
-            var20.packetBuffer.method56(var17);
-            var20.packetBuffer.writeShort(var18);
-            Client.packetWriter.method241(var20);
-         }
-      }
-
-      if (!Client.isCameraLocked) {
-         var4 = GrandExchangeOfferUnitPriceComparator.method131();
-      } else {
-         var4 = Login.method2061();
-      }
-
-      var13 = WorldMapSection2.cameraX;
-      var6 = GrandExchangeEvents.cameraY;
-      var14 = GrandExchangeOfferNameComparator.cameraZ;
-      var15 = WorldMapIcon1.cameraPitch;
-      var22 = MusicPatchNode.cameraYaw;
-
-      for (var24 = 0; var24 < 5; ++var24) {
-         if (Client.field139[var24]) {
-            var9 = (int)(Math.random() * (double)(Client.field141[var24] * 2 + 1) - (double)Client.field141[var24] + Math.sin((double)Client.field144[var24] * ((double)Client.field143[var24] / 100.0D)) * (double)Client.field142[var24]);
-            if (var24 == 0) {
-               WorldMapSection2.cameraX += var9;
-            }
-
-            if (var24 == 1) {
-               GrandExchangeEvents.cameraY += var9;
-            }
-
-            if (var24 == 2) {
-               GrandExchangeOfferNameComparator.cameraZ += var9;
-            }
-
-            if (var24 == 3) {
-               MusicPatchNode.cameraYaw = var9 + MusicPatchNode.cameraYaw & 2047;
-            }
-
-            if (var24 == 4) {
-               WorldMapIcon1.cameraPitch += var9;
-               if (WorldMapIcon1.cameraPitch < 128) {
-                  WorldMapIcon1.cameraPitch = 128;
-               }
-
-               if (WorldMapIcon1.cameraPitch > 383) {
-                  WorldMapIcon1.cameraPitch = 383;
-               }
-            }
-         }
-      }
-
-      var24 = MouseHandler.MouseHandler_x;
-      var9 = MouseHandler.MouseHandler_y;
-      if (MouseHandler.MouseHandler_lastButton != 0) {
-         var24 = MouseHandler.MouseHandler_lastPressedX;
-         var9 = MouseHandler.MouseHandler_lastPressedY;
-      }
-
-      if (var24 >= var0 && var24 < var0 + var2 && var9 >= var1 && var9 < var3 + var1) {
-         var10 = var24 - var0;
-         var11 = var9 - var1;
-         ViewportMouse.ViewportMouse_x = var10;
-         ViewportMouse.ViewportMouse_y = var11;
-         ViewportMouse.ViewportMouse_isInViewport = true;
-         ViewportMouse.ViewportMouse_entityCount = 0;
-         ViewportMouse.ViewportMouse_false0 = false;
-      } else {
-         ViewportMouse.ViewportMouse_isInViewport = false;
-         ViewportMouse.ViewportMouse_entityCount = 0;
-      }
-
-      class13.playPcmPlayers();
-      Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var3, 0);
-      class13.playPcmPlayers();
-      var10 = Rasterizer3D.Rasterizer3D_zoom;
-      Rasterizer3D.Rasterizer3D_zoom = Client.viewportZoom;
-      class65.scene.draw(WorldMapSection2.cameraX, GrandExchangeEvents.cameraY, GrandExchangeOfferNameComparator.cameraZ, WorldMapIcon1.cameraPitch, MusicPatchNode.cameraYaw, var4);
-      Rasterizer3D.Rasterizer3D_zoom = var10;
-      class13.playPcmPlayers();
-      class65.scene.clearTempGameObjects();
-      UrlRequester.method3258(var0, var1, var2, var3);
-      GrandExchangeOfferUnitPriceComparator.method136(var0, var1);
-      ((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).animate(Client.field183);
-      Client.field208 = 0;
-      var11 = (Canvas.localPlayer.x >> 7) + class50.baseX;
-      var12 = (Canvas.localPlayer.y >> 7) + GraphicsObject.baseY;
-      if (var11 >= 3053 && var11 <= 3156 && var12 >= 3056 && var12 <= 3136) {
-         Client.field208 = 1;
-      }
-
-      if (var11 >= 3072 && var11 <= 3118 && var12 >= 9492 && var12 <= 9535) {
-         Client.field208 = 1;
-      }
-
-      if (Client.field208 == 1 && var11 >= 3139 && var11 <= 3199 && var12 >= 3008 && var12 <= 3062) {
-         Client.field208 = 0;
-      }
-
-      WorldMapSection2.cameraX = var13;
-      GrandExchangeEvents.cameraY = var6;
-      GrandExchangeOfferNameComparator.cameraZ = var14;
-      WorldMapIcon1.cameraPitch = var15;
-      MusicPatchNode.cameraYaw = var22;
-      if (Client.isLoading) {
-         byte var25 = 0;
-         var12 = var25 + NetCache.NetCache_pendingPriorityWritesCount + NetCache.NetCache_pendingPriorityResponsesCount;
-         if (var12 == 0) {
-            Client.isLoading = false;
-         }
-      }
-
-      if (Client.isLoading) {
-         Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var3, 0);
-         PendingSpawn.drawLoadingMessage("Loading - please wait.", false);
-      }
-
-   }
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = 813115417
+	)
+	@Export("idxCount")
+	public static int idxCount;
+	@ObfuscatedName("bm")
+	@ObfuscatedSignature(
+		signature = "Lmu;"
+	)
+	@Export("loginType")
+	static LoginType loginType;
+	@ObfuscatedName("ch")
+	@ObfuscatedSignature(
+		signature = "Lbs;"
+	)
+	@Export("mouseRecorder")
+	static MouseRecorder mouseRecorder;
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = 1740646861
+	)
+	@Export("pixelsPerTile")
+	int pixelsPerTile;
+	@ObfuscatedName("w")
+	@Export("tileTemplates")
+	byte[][][] tileTemplates;
+
+	class40(int var1) {
+		this.pixelsPerTile = var1;
+	}
+
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(IIIIIIIII)V",
+		garbageValue = "1804465340"
+	)
+	void method698(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+		if (var7 != 0 && this.pixelsPerTile != 0 && this.tileTemplates != null) {
+			var8 = this.method699(var8, var7);
+			var7 = this.method712(var7);
+			Rasterizer2D.raster2d7(var1, var2, var5, var6, var3, var4, this.tileTemplates[var7 - 1][var8], this.pixelsPerTile);
+		}
+	}
+
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(III)I",
+		garbageValue = "-500571874"
+	)
+	int method699(int var1, int var2) {
+		if (var2 == 9) {
+			var1 = var1 + 1 & 3;
+		}
+
+		if (var2 == 10) {
+			var1 = var1 + 3 & 3;
+		}
+
+		if (var2 == 11) {
+			var1 = var1 + 3 & 3;
+		}
+
+		return var1;
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(IB)I",
+		garbageValue = "-128"
+	)
+	int method712(int var1) {
+		if (var1 != 9 && var1 != 10) {
+			return var1 == 11 ? 8 : var1;
+		} else {
+			return 1;
+		}
+	}
+
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "4"
+	)
+	@Export("init")
+	void init() {
+		if (this.tileTemplates == null) {
+			this.tileTemplates = new byte[8][4][];
+			this.init0();
+			this.init1();
+			this.init2();
+			this.init3();
+			this.init4();
+			this.init5();
+			this.init6();
+			this.init7();
+		}
+	}
+
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "-21"
+	)
+	@Export("init0")
+	void init0() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var2 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[0][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[0][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[0][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[0][3] = var1;
+	}
+
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-566933569"
+	)
+	@Export("init1")
+	void init1() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var2 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[1][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var2 >= 0 && var2 < var1.length) {
+					if (var4 >= var3 << 1) {
+						var1[var2] = -1;
+					}
+
+					++var2;
+				} else {
+					++var2;
+				}
+			}
+		}
+
+		this.tileTemplates[1][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[1][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[1][3] = var1;
+	}
+
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "1948794690"
+	)
+	@Export("init2")
+	void init2() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var2 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[2][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[2][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[2][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[2][3] = var1;
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "501834296"
+	)
+	@Export("init3")
+	void init3() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var2 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[3][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[3][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[3][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[3][3] = var1;
+	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-413902072"
+	)
+	@Export("init4")
+	void init4() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var2 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[4][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[4][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[4][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[4][3] = var1;
+	}
+
+	@ObfuscatedName("u")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "448498588"
+	)
+	@Export("init5")
+	void init5() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		boolean var2 = false;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var5 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[5][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var3 <= this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[5][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[5][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var3 >= this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[5][3] = var1;
+	}
+
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1961864087"
+	)
+	@Export("init6")
+	void init6() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		boolean var2 = false;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var5 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[6][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[6][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[6][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[6][3] = var1;
+	}
+
+	@ObfuscatedName("r")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "0"
+	)
+	@Export("init7")
+	void init7() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		boolean var2 = false;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var5 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[7][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[7][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[7][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[7][3] = var1;
+	}
+
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		signature = "(IB)V",
+		garbageValue = "14"
+	)
+	public static void method729(int var0) {
+		class197.field2402 = 1;
+		GrandExchangeOfferNameComparator.musicTrackArchive = null;
+		class197.musicTrackGroupId = -1;
+		class197.musicTrackFileId = -1;
+		ScriptFrame.field529 = 0;
+		BuddyRankComparator.musicTrackBoolean = false;
+		class197.field2404 = var0;
+	}
+
+	@ObfuscatedName("ew")
+	@ObfuscatedSignature(
+		signature = "(IB)I",
+		garbageValue = "-68"
+	)
+	static int method700(int var0) {
+		return var0 * 3 + 600;
+	}
+
+	@ObfuscatedName("io")
+	@ObfuscatedSignature(
+		signature = "(Lhj;III)V",
+		garbageValue = "-641953545"
+	)
+	static final void method703(Widget var0, int var1, int var2) {
+		if (var0.buttonType == 1) {
+			class188.insertMenuItemNoShift(var0.buttonText, "", 24, 0, 0, var0.id);
+		}
+
+		String var3;
+		if (var0.buttonType == 2 && !Client.isSpellSelected) {
+			var3 = FontName.method5318(var0);
+			if (var3 != null) {
+				class188.insertMenuItemNoShift(var3, ClientPreferences.colorStartTag(65280) + var0.spellName, 25, 0, -1, var0.id);
+			}
+		}
+
+		if (var0.buttonType == 3) {
+			class188.insertMenuItemNoShift("Close", "", 26, 0, 0, var0.id);
+		}
+
+		if (var0.buttonType == 4) {
+			class188.insertMenuItemNoShift(var0.buttonText, "", 28, 0, 0, var0.id);
+		}
+
+		if (var0.buttonType == 5) {
+			class188.insertMenuItemNoShift(var0.buttonText, "", 29, 0, 0, var0.id);
+		}
+
+		if (var0.buttonType == 6 && Client.field850 == null) {
+			class188.insertMenuItemNoShift(var0.buttonText, "", 30, 0, -1, var0.id);
+		}
+
+		int var4;
+		int var13;
+		if (var0.type == 2) {
+			var13 = 0;
+
+			for (var4 = 0; var4 < var0.height; ++var4) {
+				for (int var5 = 0; var5 < var0.width; ++var5) {
+					int var6 = (var0.paddingX + 32) * var5;
+					int var7 = (var0.paddingY + 32) * var4;
+					if (var13 < 20) {
+						var6 += var0.inventoryXOffsets[var13];
+						var7 += var0.inventoryYOffsets[var13];
+					}
+
+					if (var1 >= var6 && var2 >= var7 && var1 < var6 + 32 && var2 < var7 + 32) {
+						Client.dragItemSlotDestination = var13;
+						class294.field3697 = var0;
+						if (var0.itemIds[var13] > 0) {
+							ItemDefinition var8 = WorldMapArea.getItemDefinition(var0.itemIds[var13] - 1);
+							if (Client.isItemSelected == 1 && Script.method2185(class268.getWidgetClickMask(var0))) {
+								if (var0.id != MouseRecorder.selectedItemWidget || var13 != WorldMapIcon_1.selectedItemSlot) {
+									class188.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + ClientPreferences.colorStartTag(16748608) + var8.name, 31, var8.id, var13, var0.id);
+								}
+							} else if (Client.isSpellSelected && Script.method2185(class268.getWidgetClickMask(var0))) {
+								if ((WorldMapCacheName.selectedSpellFlags & 16) == 16) {
+									class188.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + ClientPreferences.colorStartTag(16748608) + var8.name, 32, var8.id, var13, var0.id);
+								}
+							} else {
+								String[] var9 = var8.inventoryActions;
+								int var10 = -1;
+								if (Client.shiftClickDrop) {
+									boolean var11 = Client.tapToDrop || KeyHandler.KeyHandler_pressedKeys[81];
+									if (var11) {
+										var10 = var8.getShiftClickIndex();
+									}
+								}
+
+								int var16;
+								if (Script.method2185(class268.getWidgetClickMask(var0))) {
+									for (var16 = 4; var16 >= 3; --var16) {
+										if (var16 != var10) {
+											WorldMapRectangle.addWidgetItemMenuItem(var0, var8, var13, var16, false);
+										}
+									}
+								}
+
+								if (class195.method3685(class268.getWidgetClickMask(var0))) {
+									class188.insertMenuItemNoShift("Use", ClientPreferences.colorStartTag(16748608) + var8.name, 38, var8.id, var13, var0.id);
+								}
+
+								if (Script.method2185(class268.getWidgetClickMask(var0))) {
+									for (var16 = 2; var16 >= 0; --var16) {
+										if (var10 != var16) {
+											WorldMapRectangle.addWidgetItemMenuItem(var0, var8, var13, var16, false);
+										}
+									}
+
+									if (var10 >= 0) {
+										WorldMapRectangle.addWidgetItemMenuItem(var0, var8, var13, var10, true);
+									}
+								}
+
+								var9 = var0.itemActions;
+								if (var9 != null) {
+									for (var16 = 4; var16 >= 0; --var16) {
+										if (var9[var16] != null) {
+											byte var12 = 0;
+											if (var16 == 0) {
+												var12 = 39;
+											}
+
+											if (var16 == 1) {
+												var12 = 40;
+											}
+
+											if (var16 == 2) {
+												var12 = 41;
+											}
+
+											if (var16 == 3) {
+												var12 = 42;
+											}
+
+											if (var16 == 4) {
+												var12 = 43;
+											}
+
+											class188.insertMenuItemNoShift(var9[var16], ClientPreferences.colorStartTag(16748608) + var8.name, var12, var8.id, var13, var0.id);
+										}
+									}
+								}
+
+								class188.insertMenuItemNoShift("Examine", ClientPreferences.colorStartTag(16748608) + var8.name, 1005, var8.id, var13, var0.id);
+							}
+						}
+					}
+
+					++var13;
+				}
+			}
+		}
+
+		if (var0.isIf3) {
+			if (Client.isSpellSelected) {
+				if (class96.method2266(class268.getWidgetClickMask(var0)) && (WorldMapCacheName.selectedSpellFlags & 32) == 32) {
+					class188.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + var0.dataText, 58, 0, var0.childIndex, var0.id);
+				}
+			} else {
+				for (var13 = 9; var13 >= 5; --var13) {
+					String var14 = UserComparator10.method3407(var0, var13);
+					if (var14 != null) {
+						class188.insertMenuItemNoShift(var14, var0.dataText, 1007, var13 + 1, var0.childIndex, var0.id);
+					}
+				}
+
+				var3 = FontName.method5318(var0);
+				if (var3 != null) {
+					class188.insertMenuItemNoShift(var3, var0.dataText, 25, 0, var0.childIndex, var0.id);
+				}
+
+				for (var4 = 4; var4 >= 0; --var4) {
+					String var15 = UserComparator10.method3407(var0, var4);
+					if (var15 != null) {
+						Entity.insertMenuItem(var15, var0.dataText, 57, var4 + 1, var0.childIndex, var0.id, var0.field2691);
+					}
+				}
+
+				if (InterfaceParent.method1119(class268.getWidgetClickMask(var0))) {
+					class188.insertMenuItemNoShift("Continue", "", 30, 0, var0.childIndex, var0.id);
+				}
+			}
+		}
+
+	}
 }

@@ -5,289 +5,101 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("ae")
+@ObfuscatedName("at")
 @Implements("WorldMapAreaData")
 public class WorldMapAreaData extends WorldMapArea {
-   @ObfuscatedName("n")
-   HashSet field1016;
-   @ObfuscatedName("i")
-   HashSet field1017;
-   @ObfuscatedName("a")
-   List field1018;
+	@ObfuscatedName("ae")
+	@ObfuscatedSignature(
+		signature = "Lls;"
+	)
+	static Bounds field332;
+	@ObfuscatedName("x")
+	@Export("worldMapData0Set")
+	HashSet worldMapData0Set;
+	@ObfuscatedName("r")
+	@Export("worldMapData1Set")
+	HashSet worldMapData1Set;
+	@ObfuscatedName("v")
+	@Export("iconList")
+	List iconList;
 
-   @ObfuscatedName("ce")
-   @ObfuscatedSignature(
-      signature = "(Lgr;Lgr;IZI)V",
-      garbageValue = "-1999841505"
-   )
-   void method387(Buffer var1, Buffer var2, int var3, boolean var4) {
-      this.read(var1, var3);
-      int var5 = var2.readUnsignedShort();
-      this.field1016 = new HashSet(var5);
+	WorldMapAreaData() {
+	}
 
-      int var6;
-      for (var6 = 0; var6 < var5; ++var6) {
-         class15 var7 = new class15();
+	@ObfuscatedName("cy")
+	@ObfuscatedSignature(
+		signature = "(Lkf;Lkf;IZB)V",
+		garbageValue = "-52"
+	)
+	@Export("init")
+	void init(Buffer var1, Buffer var2, int var3, boolean var4) {
+		this.read(var1, var3);
+		int var5 = var2.readUnsignedShort();
+		this.worldMapData0Set = new HashSet(var5);
 
-         try {
-            var7.method173(var2);
-         } catch (IllegalStateException var11) {
-            continue;
-         }
+		int var6;
+		for (var6 = 0; var6 < var5; ++var6) {
+			WorldMapData_0 var7 = new WorldMapData_0();
 
-         this.field1016.add(var7);
-      }
+			try {
+				var7.init(var2);
+			} catch (IllegalStateException var12) {
+				continue;
+			}
 
-      var6 = var2.readUnsignedShort();
-      this.field1017 = new HashSet(var6);
+			this.worldMapData0Set.add(var7);
+		}
 
-      for (int var12 = 0; var12 < var6; ++var12) {
-         class39 var8 = new class39();
+		var6 = var2.readUnsignedShort();
+		this.worldMapData1Set = new HashSet(var6);
 
-         try {
-            var8.method714(var2);
-         } catch (IllegalStateException var10) {
-            continue;
-         }
+		for (int var10 = 0; var10 < var6; ++var10) {
+			WorldMapData_1 var8 = new WorldMapData_1();
 
-         this.field1017.add(var8);
-      }
+			try {
+				var8.init(var2);
+			} catch (IllegalStateException var11) {
+				continue;
+			}
 
-      this.method388(var2, var4);
-   }
+			this.worldMapData1Set.add(var8);
+		}
 
-   @ObfuscatedName("cy")
-   @ObfuscatedSignature(
-      signature = "(Lgr;ZB)V",
-      garbageValue = "48"
-   )
-   void method388(Buffer var1, boolean var2) {
-      this.field1018 = new LinkedList();
-      int var3 = var1.readUnsignedShort();
+		this.initIconsList(var2, var4);
+	}
 
-      for (int var4 = 0; var4 < var3; ++var4) {
-         int var5 = var1.method51();
-         Coord var6 = new Coord(var1.readInt());
-         boolean var7 = var1.readUnsignedByte() == 1;
-         if (var2 || !var7) {
-            this.field1018.add(new WorldMapIcon1((Coord)null, var6, var5, (WorldMapLabel)null));
-         }
-      }
+	@ObfuscatedName("ct")
+	@ObfuscatedSignature(
+		signature = "(Lkf;ZI)V",
+		garbageValue = "2146657354"
+	)
+	@Export("initIconsList")
+	void initIconsList(Buffer var1, boolean var2) {
+		this.iconList = new LinkedList();
+		int var3 = var1.readUnsignedShort();
 
-   }
+		for (int var4 = 0; var4 < var3; ++var4) {
+			int var5 = var1.method5511();
+			Coord var6 = new Coord(var1.readInt());
+			boolean var7 = var1.readUnsignedByte() == 1;
+			if (var2 || !var7) {
+				this.iconList.add(new WorldMapIcon_0((Coord)null, var6, var5, (WorldMapLabel)null));
+			}
+		}
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(II)Ljh;",
-      garbageValue = "1432369110"
-   )
-   @Export("getSequenceDefinition")
-   public static SequenceDefinition getSequenceDefinition(int var0) {
-      SequenceDefinition var1 = (SequenceDefinition)SequenceDefinition.SequenceDefinition_cached.get((long)var0);
-      if (var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = SequenceDefinition.SequenceDefinition_archive.takeFile(12, var0);
-         var1 = new SequenceDefinition();
-         if (var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
+	}
 
-         var1.postDecode();
-         SequenceDefinition.SequenceDefinition_cached.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1767097678"
-   )
-   public static boolean method711(int var0) {
-      return var0 >= WorldMapDecorationType.field2810.id && var0 <= WorldMapDecorationType.field2822.id;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "15"
-   )
-   public static boolean method708(int var0) {
-      return (var0 >> 30 & 1) != 0;
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(ILcg;ZI)I",
-      garbageValue = "-714719812"
-   )
-   static int method710(int var0, Script var1, boolean var2) {
-      boolean var3 = true;
-      Widget var4;
-      if (var0 >= 2000) {
-         var0 -= 1000;
-         var4 = Huffman.getWidget(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-         var3 = false;
-      } else {
-         var4 = var2 ? WorldMapIcon1.field1030 : GrandExchangeOfferAgeComparator.field1111;
-      }
-
-      int var5;
-      if (var0 == ScriptOpcodes.CC_SETOP) {
-         var5 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] - 1;
-         if (var5 >= 0 && var5 <= 9) {
-            var4.setAction(var5, Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize]);
-            return 1;
-         } else {
-            --Interpreter.Interpreter_stringStackSize;
-            return 1;
-         }
-      } else {
-         int var6;
-         if (var0 == ScriptOpcodes.CC_SETDRAGGABLE) {
-            RouteStrategy.Interpreter_intStackSize -= 2;
-            var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-            var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-            var4.parent = class204.getWidgetChild(var5, var6);
-            return 1;
-         } else if (var0 == ScriptOpcodes.CC_SETDRAGGABLEBEHAVIOR) {
-            var4.isScrollBar = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
-            return 1;
-         } else if (var0 == ScriptOpcodes.CC_SETDRAGDEADZONE) {
-            var4.dragZoneSize = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-            return 1;
-         } else if (var0 == ScriptOpcodes.CC_SETDRAGDEADTIME) {
-            var4.dragThreshold = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-            return 1;
-         } else if (var0 == ScriptOpcodes.CC_SETOPBASE) {
-            var4.dataText = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-            return 1;
-         } else if (var0 == ScriptOpcodes.CC_SETTARGETVERB) {
-            var4.spellActionName = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
-            return 1;
-         } else if (var0 == ScriptOpcodes.CC_CLEAROPS) {
-            var4.actions = null;
-            return 1;
-         } else if (var0 == 1308) {
-            var4.field985 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] == 1;
-            return 1;
-         } else {
-            int var7;
-            byte[] var8;
-            if (var0 != ScriptOpcodes.CC_SETOPKEY) {
-               byte var11;
-               if (var0 == ScriptOpcodes.CC_SETOPTKEY) {
-                  RouteStrategy.Interpreter_intStackSize -= 2;
-                  var11 = 10;
-                  var8 = new byte[]{(byte)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize]};
-                  byte[] var10 = new byte[]{(byte)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]};
-                  BufferedSink.method3595(var4, var11, var8, var10);
-                  return 1;
-               } else if (var0 == ScriptOpcodes.CC_SETOPKEYRATE) {
-                  RouteStrategy.Interpreter_intStackSize -= 3;
-                  var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] - 1;
-                  var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-                  var7 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
-                  if (var5 >= 0 && var5 <= 9) {
-                     Varcs.method2168(var4, var5, var6, var7);
-                     return 1;
-                  } else {
-                     throw new RuntimeException();
-                  }
-               } else if (var0 == ScriptOpcodes.CC_SETOPTKEYRATE) {
-                  var11 = 10;
-                  var6 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                  var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-                  Varcs.method2168(var4, var11, var6, var7);
-                  return 1;
-               } else if (var0 == ScriptOpcodes.CC_SETOPKEYIGNOREHELD) {
-                  --RouteStrategy.Interpreter_intStackSize;
-                  var5 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize] - 1;
-                  if (var5 >= 0 && var5 <= 9) {
-                     WorldMapSection1.method345(var4, var5);
-                     return 1;
-                  } else {
-                     throw new RuntimeException();
-                  }
-               } else if (var0 == ScriptOpcodes.CC_SETOPTKEYIGNOREHELD) {
-                  var11 = 10;
-                  WorldMapSection1.method345(var4, var11);
-                  return 1;
-               } else {
-                  return 2;
-               }
-            } else {
-               byte[] var9 = null;
-               var8 = null;
-               if (var3) {
-                  RouteStrategy.Interpreter_intStackSize -= 10;
-
-                  for (var7 = 0; var7 < 10 && Interpreter.Interpreter_intStack[var7 + RouteStrategy.Interpreter_intStackSize] >= 0; var7 += 2) {
-                  }
-
-                  if (var7 > 0) {
-                     var9 = new byte[var7 / 2];
-                     var8 = new byte[var7 / 2];
-
-                     for (var7 -= 2; var7 >= 0; var7 -= 2) {
-                        var9[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + RouteStrategy.Interpreter_intStackSize];
-                        var8[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + RouteStrategy.Interpreter_intStackSize + 1];
-                     }
-                  }
-               } else {
-                  RouteStrategy.Interpreter_intStackSize -= 2;
-                  var9 = new byte[]{(byte)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize]};
-                  var8 = new byte[]{(byte)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]};
-               }
-
-               var7 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize] - 1;
-               if (var7 >= 0 && var7 <= 9) {
-                  BufferedSink.method3595(var4, var7, var9, var8);
-                  return 1;
-               } else {
-                  throw new RuntimeException();
-               }
-            }
-         }
-      }
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "1705746695"
-   )
-   static final int method712(int var0, int var1, int var2) {
-      if (var2 > 179) {
-         var1 /= 2;
-      }
-
-      if (var2 > 192) {
-         var1 /= 2;
-      }
-
-      if (var2 > 217) {
-         var1 /= 2;
-      }
-
-      if (var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
-   }
-
-   @ObfuscatedName("jb")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-1746120861"
-   )
-   @Export("setTapToDrop")
-   static void setTapToDrop(boolean var0) {
-      Client.tapToDrop = var0;
-   }
+	@ObfuscatedName("hu")
+	@ObfuscatedSignature(
+		signature = "(III)Lfl;",
+		garbageValue = "2134464513"
+	)
+	static RouteStrategy method667(int var0, int var1) {
+		Client.field735.approxDestinationX = var0;
+		Client.field735.approxDestinationY = var1;
+		Client.field735.approxDestinationSizeX = 1;
+		Client.field735.approxDestinationSizeY = 1;
+		return Client.field735;
+	}
 }

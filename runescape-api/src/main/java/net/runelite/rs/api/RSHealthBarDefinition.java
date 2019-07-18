@@ -8,14 +8,14 @@ public interface RSHealthBarDefinition extends RSDualNode, HealthBar
 	@Import("width")
 	int getHealthScale();
 
-	@Import("spriteId1")
+	@Import("frontSpriteID")
 	@Override
 	int getHealthBarFrontSpriteId();
 
-	@Import("getSprite1")
+	@Import("getFrontSprite")
 	RSSprite getHealthBarFrontSprite();
 
-	@Import("getSprite2")
+	@Import("getBackSprite")
 	RSSprite getHealthBarBackSprite();
 
 	@Import("widthPadding")

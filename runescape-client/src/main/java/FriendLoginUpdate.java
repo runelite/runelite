@@ -4,36 +4,30 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kn")
+@ObfuscatedName("kc")
 @Implements("FriendLoginUpdate")
 public class FriendLoginUpdate extends Link {
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Ley;"
-   )
-   static UrlRequest field356;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -1390885889
-   )
-   @Export("time")
-   public int time;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lkp;"
-   )
-   @Export("username")
-   public Username username;
-   @ObfuscatedName("o")
-   @Export("world")
-   public short world;
+	@ObfuscatedName("e")
+	@ObfuscatedGetter(
+		intValue = 1546177207
+	)
+	public int field3661;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "Ljv;"
+	)
+	@Export("username")
+	public Username username;
+	@ObfuscatedName("k")
+	@Export("world")
+	public short world;
 
-   @ObfuscatedSignature(
-      signature = "(Lkp;I)V"
-   )
-   FriendLoginUpdate(Username var1, int var2) {
-      this.time = (int)(class203.currentTimeMs() / 1000L);
-      this.username = var1;
-      this.world = (short)var2;
-   }
+	@ObfuscatedSignature(
+		signature = "(Ljv;I)V"
+	)
+	FriendLoginUpdate(Username var1, int var2) {
+		this.field3661 = (int)(DirectByteArrayCopier.currentTimeMs() / 1000L);
+		this.username = var1;
+		this.world = (short)var2;
+	}
 }

@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
@@ -5,476 +7,423 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("dl")
+@ObfuscatedName("do")
 @Implements("TextureProvider")
 public class TextureProvider implements TextureLoader {
-   @ObfuscatedName("af")
-   @Export("client")
-   @ObfuscatedSignature(
-      signature = "Lclient;"
-   )
-   static Client client;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "[Ldh;"
-   )
-   @Export("textures")
-   Texture[] textures;
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lje;"
-   )
-   @Export("deque")
-   NodeDeque deque;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 762273989
-   )
-   @Export("capacity")
-   int capacity;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 1130378699
-   )
-   @Export("remaining")
-   int remaining;
-   @ObfuscatedName("o")
-   @Export("brightness0")
-   double brightness0;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1124790219
-   )
-   @Export("textureSize")
-   int textureSize;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lir;"
-   )
-   @Export("archive")
-   AbstractArchive archive;
+	@ObfuscatedName("y")
+	@ObfuscatedGetter(
+		intValue = -95819679
+	)
+	static int field1539;
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "[Ldb;"
+	)
+	@Export("textures")
+	Texture[] textures;
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "Ljh;"
+	)
+	@Export("deque")
+	NodeDeque deque;
+	@ObfuscatedName("e")
+	@ObfuscatedGetter(
+		intValue = 1484225311
+	)
+	@Export("capacity")
+	int capacity;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = -1374200931
+	)
+	@Export("remaining")
+	int remaining;
+	@ObfuscatedName("k")
+	@Export("brightness")
+	double brightness;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = -907088153
+	)
+	@Export("textureSize")
+	int textureSize;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "Lhp;"
+	)
+	@Export("archive")
+	AbstractArchive archive;
 
-   @ObfuscatedSignature(
-      signature = "(Lir;Lir;IDI)V"
-   )
-   public TextureProvider(AbstractArchive texturesArchive, AbstractArchive spritesArchive, int var3, double var4, int var6) {
-      this.deque = new NodeDeque();
-      this.remaining = 0;
-      this.brightness0 = 1.0D;
-      this.textureSize = 128;
-      this.archive = spritesArchive;
-      this.capacity = var3;
-      this.remaining = this.capacity;
-      this.brightness0 = var4;
-      this.textureSize = var6;
-      int[] var7 = texturesArchive.getGroupFileIds(0);
-      int var8 = var7.length;
-      this.textures = new Texture[texturesArchive.getGroupFileCount(0)];
+	@ObfuscatedSignature(
+		signature = "(Lhp;Lhp;IDI)V"
+	)
+	public TextureProvider(AbstractArchive var1, AbstractArchive var2, int var3, double var4, int var6) {
+		this.deque = new NodeDeque();
+		this.remaining = 0;
+		this.brightness = 1.0D;
+		this.textureSize = 128;
+		this.archive = var2;
+		this.capacity = var3;
+		this.remaining = this.capacity;
+		this.brightness = var4;
+		this.textureSize = var6;
+		int[] var7 = var1.getGroupFileIds(0);
+		int var8 = var7.length;
+		this.textures = new Texture[var1.getGroupFileCount(0)];
 
-      for (int var9 = 0; var9 < var8; ++var9) {
-         Buffer var10 = new Buffer(texturesArchive.takeFile(0, var7[var9]));
-         this.textures[var7[var9]] = new Texture(var10);
-      }
+		for (int var9 = 0; var9 < var8; ++var9) {
+			Buffer var10 = new Buffer(var1.takeFile(0, var7[var9]));
+			this.textures[var7[var9]] = new Texture(var10);
+		}
 
-   }
+	}
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1996487053"
-   )
-   @Export("getLoadedPercentage")
-   public int getLoadedPercentage() {
-      int var1 = 0;
-      int var2 = 0;
-      Texture[] var3 = this.textures;
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(I)I",
+		garbageValue = "2052170496"
+	)
+	@Export("getLoadedPercentage")
+	public int getLoadedPercentage() {
+		int var1 = 0;
+		int var2 = 0;
+		Texture[] var3 = this.textures;
 
-      for (int var4 = 0; var4 < var3.length; ++var4) {
-         Texture var5 = var3[var4];
-         if (var5 != null && var5.records != null) {
-            var1 += var5.records.length;
-            int[] var6 = var5.records;
+		for (int var4 = 0; var4 < var3.length; ++var4) {
+			Texture var5 = var3[var4];
+			if (var5 != null && var5.records != null) {
+				var1 += var5.records.length;
+				int[] var6 = var5.records;
 
-            for (int var7 = 0; var7 < var6.length; ++var7) {
-               int var8 = var6[var7];
-               if (this.archive.method1(var8)) {
-                  ++var2;
-               }
-            }
-         }
-      }
+				for (int var7 = 0; var7 < var6.length; ++var7) {
+					int var8 = var6[var7];
+					if (this.archive.method4147(var8)) {
+						++var2;
+					}
+				}
+			}
+		}
 
-      if (var1 == 0) {
-         return 0;
-      } else {
-         return var2 * 100 / var1;
-      }
-   }
+		if (var1 == 0) {
+			return 0;
+		} else {
+			return var2 * 100 / var1;
+		}
+	}
 
-   @ObfuscatedName("f")
-   @Export("setBrightness")
-   public void setBrightness(double brightness) {
-      this.brightness0 = brightness;
-      this.clear();
-   }
+	@ObfuscatedName("w")
+	@Export("setBrightness")
+	public void setBrightness(double var1) {
+		this.brightness = var1;
+		this.clear();
+	}
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(II)[I",
-      garbageValue = "-905309626"
-   )
-   @Export("load")
-   public int[] load(int var1) {
-      Texture var2 = this.textures[var1];
-      if (var2 != null) {
-         if (var2.pixels != null) {
-            this.deque.addLast(var2);
-            var2.isLoaded = true;
-            return var2.pixels;
-         }
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(II)[I",
+		garbageValue = "726289343"
+	)
+	@Export("load")
+	public int[] load(int var1) {
+		Texture var2 = this.textures[var1];
+		if (var2 != null) {
+			if (var2.pixels != null) {
+				this.deque.addLast(var2);
+				var2.isLoaded = true;
+				return var2.pixels;
+			}
 
-         boolean var3 = var2.method320(this.brightness0, this.textureSize, this.archive);
-         if (var3) {
-            if (this.remaining == 0) {
-               Texture var4 = (Texture)this.deque.removeFirst();
-               var4.reset();
-            } else {
-               --this.remaining;
-            }
+			boolean var3 = var2.method2846(this.brightness, this.textureSize, this.archive);
+			if (var3) {
+				if (this.remaining == 0) {
+					Texture var4 = (Texture)this.deque.removeFirst();
+					var4.reset();
+				} else {
+					--this.remaining;
+				}
 
-            this.deque.addLast(var2);
-            var2.isLoaded = true;
-            return var2.pixels;
-         }
-      }
+				this.deque.addLast(var2);
+				var2.isLoaded = true;
+				return var2.pixels;
+			}
+		}
 
-      return null;
-   }
+		return null;
+	}
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1641984961"
-   )
-   @Export("getAverageTextureRGB")
-   public int getAverageTextureRGB(int var1) {
-      return this.textures[var1] != null ? this.textures[var1].averageRGB : 0;
-   }
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(II)I",
+		garbageValue = "1833085397"
+	)
+	@Export("getAverageTextureRGB")
+	public int getAverageTextureRGB(int var1) {
+		return this.textures[var1] != null ? this.textures[var1].averageRGB : 0;
+	}
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "14"
-   )
-   public boolean vmethod325(int var1) {
-      return this.textures[var1].field893;
-   }
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "(IB)Z",
+		garbageValue = "100"
+	)
+	public boolean vmethod3278(int var1) {
+		return this.textures[var1].field1624;
+	}
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1427873761"
-   )
-   @Export("isLowDetail")
-   public boolean isLowDetail(int var1) {
-      return this.textureSize == 64;
-   }
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		signature = "(IB)Z",
+		garbageValue = "0"
+	)
+	@Export("isLowDetail")
+	public boolean isLowDetail(int var1) {
+		return this.textureSize == 64;
+	}
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-692582552"
-   )
-   @Export("clear")
-   public void clear() {
-      for (int var1 = 0; var1 < this.textures.length; ++var1) {
-         if (this.textures[var1] != null) {
-            this.textures[var1].reset();
-         }
-      }
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "1945022462"
+	)
+	@Export("clear")
+	public void clear() {
+		for (int var1 = 0; var1 < this.textures.length; ++var1) {
+			if (this.textures[var1] != null) {
+				this.textures[var1].reset();
+			}
+		}
 
-      this.deque = new NodeDeque();
-      this.remaining = this.capacity;
-   }
+		this.deque = new NodeDeque();
+		this.remaining = this.capacity;
+	}
 
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1044108445"
-   )
-   @Export("animate")
-   public void animate(int var1) {
-      for (int var2 = 0; var2 < this.textures.length; ++var2) {
-         Texture var3 = this.textures[var2];
-         if (var3 != null && var3.animationDirection != 0 && var3.isLoaded) {
-            var3.animate(var1);
-            var3.isLoaded = false;
-         }
-      }
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "1054980439"
+	)
+	@Export("animate")
+	public void animate(int var1) {
+		for (int var2 = 0; var2 < this.textures.length; ++var2) {
+			Texture var3 = this.textures[var2];
+			if (var3 != null && var3.animationDirection != 0 && var3.isLoaded) {
+				var3.animate(var1);
+				var3.isLoaded = false;
+			}
+		}
 
-   }
+	}
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lgr;Ljava/lang/String;B)I",
-      garbageValue = "16"
-   )
-   public static int method2777(Buffer var0, String var1) {
-      int var2 = var0.index;
-      byte[] var3 = class230.method4516(var1);
-      var0.writeSmartByteShort(var3.length);
-      var0.index += class303.huffman.compress(var3, 0, var3.length, var0.array, var0.index);
-      return var0.index - var2;
-   }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(II)[B",
+		garbageValue = "506694111"
+	)
+	public static synchronized byte[] method2729(int var0) {
+		return ByteArrayPool.ByteArrayPool_get(var0, false);
+	}
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZB)[B",
-      garbageValue = "-8"
-   )
-   @Export("byteArrayFromObject")
-   public static byte[] byteArrayFromObject(Object var0, boolean copyArray) {
-      if (var0 == null) {
-         return null;
-      } else if (var0 instanceof byte[]) {
-         byte[] var5 = ((byte[])var0);
-         if (copyArray) {
-            int var3 = var5.length;
-            byte[] var4 = new byte[var3];
-            System.arraycopy(var5, 0, var4, 0, var3);
-            return var4;
-         } else {
-            return var5;
-         }
-      } else if (var0 instanceof AbstractByteArrayCopier) {
-         AbstractByteArrayCopier var2 = (AbstractByteArrayCopier)var0;
-         return var2.get();
-      } else {
-         throw new IllegalArgumentException();
-      }
-   }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;Ljava/lang/String;II)Ljava/io/File;",
+		garbageValue = "-1682877008"
+	)
+	static File method2760(String var0, String var1, int var2) {
+		String var3 = var2 == 0 ? "" : "" + var2;
+		class167.field2038 = new File(PlayerType.userHomeDirectory, "jagex_cl_" + var0 + "_" + var1 + var3 + ".dat");
+		String var4 = null;
+		String var5 = null;
+		boolean var6 = false;
+		Buffer var8;
+		File var23;
+		if (class167.field2038.exists()) {
+			try {
+				AccessFile var7 = new AccessFile(class167.field2038, "rw", 10000L);
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "([BIIB)Z",
-      garbageValue = "1"
-   )
-   static final boolean method2774(byte[] var0, int var1, int var2) {
-      boolean var3 = true;
-      Buffer var4 = new Buffer(var0);
-      int var5 = -1;
+				int var9;
+				for (var8 = new Buffer((int)var7.length()); var8.offset < var8.array.length; var8.offset += var9) {
+					var9 = var7.read(var8.array, var8.offset, var8.array.length - var8.offset);
+					if (var9 == -1) {
+						throw new IOException();
+					}
+				}
 
-      label56:
-      while (true) {
-         int var6 = var4.method49();
-         if (var6 == 0) {
-            return var3;
-         }
+				var8.offset = 0;
+				var9 = var8.readUnsignedByte();
+				if (var9 < 1 || var9 > 3) {
+					throw new IOException("" + var9);
+				}
 
-         var5 += var6;
-         int var7 = 0;
-         boolean var8 = false;
+				int var10 = 0;
+				if (var9 > 1) {
+					var10 = var8.readUnsignedByte();
+				}
 
-         while (true) {
-            int var13;
-            while (!var8) {
-               var13 = var4.readUShortSmart();
-               if (var13 == 0) {
-                  continue label56;
-               }
+				if (var9 <= 2) {
+					var4 = var8.readStringCp1252NullCircumfixed();
+					if (var10 == 1) {
+						var5 = var8.readStringCp1252NullCircumfixed();
+					}
+				} else {
+					var4 = var8.readCESU8();
+					if (var10 == 1) {
+						var5 = var8.readCESU8();
+					}
+				}
 
-               var7 += var13 - 1;
-               int var14 = var7 & 63;
-               int var15 = var7 >> 6 & 63;
-               int var9 = var4.readUnsignedByte() >> 2;
-               int var11 = var15 + var1;
-               int var12 = var14 + var2;
-               if (var11 > 0 && var12 > 0 && var11 < 103 && var12 < 103) {
-                  ObjectDefinition var10 = class50.getObjectDefinition(var5);
-                  if (var9 != 22 || !Client.isLowDetail || var10.int1 != 0 || var10.interactType == 1 || var10.boolean2) {
-                     if (!var10.method231()) {
-                        ++Client.field179;
-                        var3 = false;
-                     }
+				var7.close();
+			} catch (IOException var21) {
+				var21.printStackTrace();
+			}
 
-                     var8 = true;
-                  }
-               }
-            }
+			if (var4 != null) {
+				var23 = new File(var4);
+				if (!var23.exists()) {
+					var4 = null;
+				}
+			}
 
-            var13 = var4.readUShortSmart();
-            if (var13 == 0) {
-               break;
-            }
+			if (var4 != null) {
+				var23 = new File(var4, "test.dat");
+				if (!class186.method3618(var23, true)) {
+					var4 = null;
+				}
+			}
+		}
 
-            var4.readUnsignedByte();
-         }
-      }
-   }
+		if (var4 == null && var2 == 0) {
+			label139:
+			for (int var15 = 0; var15 < LoginPacket.field2309.length; ++var15) {
+				for (int var16 = 0; var16 < class167.field2043.length; ++var16) {
+					File var17 = new File(class167.field2043[var16] + LoginPacket.field2309[var15] + File.separatorChar + var0 + File.separatorChar);
+					if (var17.exists() && class186.method3618(new File(var17, "test.dat"), true)) {
+						var4 = var17.toString();
+						var6 = true;
+						break label139;
+					}
+				}
+			}
+		}
 
-   @ObfuscatedName("ac")
-   @ObfuscatedSignature(
-      signature = "(ILcg;ZI)I",
-      garbageValue = "-1177246760"
-   )
-   static int method2752(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      if (var0 == ScriptOpcodes.ADD) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 + var4;
-         return 1;
-      } else if (var0 == ScriptOpcodes.SUB) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 - var4;
-         return 1;
-      } else if (var0 == ScriptOpcodes.MULTIPLY) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var4 * var3;
-         return 1;
-      } else if (var0 == ScriptOpcodes.DIV) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 / var4;
-         return 1;
-      } else if (var0 == ScriptOpcodes.RANDOM) {
-         var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)(Math.random() * (double)var3);
-         return 1;
-      } else if (var0 == ScriptOpcodes.RANDOMINC) {
-         var3 = Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)(Math.random() * (double)(var3 + 1));
-         return 1;
-      } else if (var0 == ScriptOpcodes.INTERPOLATE) {
-         RouteStrategy.Interpreter_intStackSize -= 5;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         int var11 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
-         int var6 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 3];
-         int var12 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 4];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 + (var12 - var11) * (var4 - var3) / (var6 - var11);
-         return 1;
-      } else if (var0 == ScriptOpcodes.ADDPERCENT) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 + var3 * var4 / 100;
-         return 1;
-      } else if (var0 == ScriptOpcodes.SETBIT) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 | 1 << var4;
-         return 1;
-      } else if (var0 == ScriptOpcodes.CLEARBIT) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 & -1 - (1 << var4);
-         return 1;
-      } else if (var0 == ScriptOpcodes.TESTBIT) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (var3 & 1 << var4) != 0 ? 1 : 0;
-         return 1;
-      } else if (var0 == ScriptOpcodes.MOD) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 % var4;
-         return 1;
-      } else if (var0 == ScriptOpcodes.POW) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         if (var3 == 0) {
-            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
-         } else {
-            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)Math.pow((double)var3, (double)var4);
-         }
+		if (var4 == null) {
+			var4 = PlayerType.userHomeDirectory + File.separatorChar + "jagexcache" + var3 + File.separatorChar + var0 + File.separatorChar + var1 + File.separatorChar;
+			var6 = true;
+		}
 
-         return 1;
-      } else if (var0 == ScriptOpcodes.INVPOW) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         if (var3 == 0) {
-            Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = 0;
-            return 1;
-         } else {
-            switch(var4) {
-            case 0:
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = Integer.MAX_VALUE;
-               break;
-            case 1:
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3;
-               break;
-            case 2:
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)Math.sqrt((double)var3);
-               break;
-            case 3:
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)Math.cbrt((double)var3);
-               break;
-            case 4:
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)Math.sqrt(Math.sqrt((double)var3));
-               break;
-            default:
-               Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)Math.pow((double)var3, 1.0D / (double)var4);
-            }
+		File var22;
+		if (var5 != null) {
+			var22 = new File(var5);
+			var23 = new File(var4);
 
-            return 1;
-         }
-      } else if (var0 == ScriptOpcodes.AND) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 & var4;
-         return 1;
-      } else if (var0 == ScriptOpcodes.OR) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         var4 = Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = var3 | var4;
-         return 1;
-      } else if (var0 == ScriptOpcodes.SCALE) {
-         RouteStrategy.Interpreter_intStackSize -= 3;
-         long var5 = (long)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize];
-         long var7 = (long)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1];
-         long var9 = (long)Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2];
-         Interpreter.Interpreter_intStack[++RouteStrategy.Interpreter_intStackSize - 1] = (int)(var9 * var5 / var7);
-         return 1;
-      } else {
-         return 2;
-      }
-   }
+			try {
+				File[] var24 = var22.listFiles();
+				File[] var18 = var24;
 
-   @ObfuscatedName("fj")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-853047987"
-   )
-   static final void method2773() {
-      Client.packetWriter.close();
-      FontName.method5641();
-      class65.scene.clear();
+				for (int var11 = 0; var11 < var18.length; ++var11) {
+					File var12 = var18[var11];
+					File var13 = new File(var23, var12.getName());
+					boolean var14 = var12.renameTo(var13);
+					if (!var14) {
+						throw new IOException();
+					}
+				}
+			} catch (Exception var20) {
+				var20.printStackTrace();
+			}
 
-      for (int var0 = 0; var0 < 4; ++var0) {
-         Client.collisionMaps[var0].clear();
-      }
+			var6 = true;
+		}
 
-      System.gc();
-      AbstractSocket.method3488(2);
-      Client.field112 = -1;
-      Client.field107 = false;
-      SpriteMask.method4390();
-      GameShell.updateGameState(10);
-   }
+		if (var6) {
+			var22 = new File(var4);
+			var8 = null;
+
+			try {
+				AccessFile var25 = new AccessFile(class167.field2038, "rw", 10000L);
+				Buffer var26 = new Buffer(500);
+				var26.writeByte(3);
+				var26.writeByte(var8 != null ? 1 : 0);
+				var26.writeCESU8(var22.getPath());
+				if (var8 != null) {
+					var26.writeCESU8("");
+				}
+
+				var25.write(var26.array, 0, var26.offset);
+				var25.close();
+			} catch (IOException var19) {
+				var19.printStackTrace();
+			}
+		}
+
+		return new File(var4);
+	}
+
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(Lhp;Ljava/lang/String;Ljava/lang/String;IZB)V",
+		garbageValue = "-92"
+	)
+	public static void method2761(AbstractArchive var0, String var1, String var2, int var3, boolean var4) {
+		int var5 = var0.getGroupId(var1);
+		int var6 = var0.getFileId(var5, var2);
+		class169.method3503(var0, var5, var6, var3, var4);
+	}
+
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		signature = "(ILcx;ZI)I",
+		garbageValue = "465921756"
+	)
+	static int method2743(int var0, Script var1, boolean var2) {
+		Widget var3 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
+		if (var0 == ScriptOpcodes.IF_GETSCROLLX) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.scrollX;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETSCROLLY) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.scrollY;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETTEXT) {
+			Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var3.text;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETSCROLLWIDTH) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.scrollWidth;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETSCROLLHEIGHT) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.scrollHeight;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETMODELZOOM) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.modelZoom;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETMODELANGLE_X) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.modelAngleX;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETMODELANGLE_Z) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.modelAngleZ;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETMODELANGLE_Y) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.modelAngleY;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETTRANSTOP) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.transparencyTop;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETTRANSBOT) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.transparencyBot;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETCOLOUR) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.color;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETFILLCOLOUR) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.color2;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETFILLMODE) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.fillMode.rsOrdinal();
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETMODELTRANSPARENT) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0;
+			return 1;
+		} else {
+			return 2;
+		}
+	}
 }

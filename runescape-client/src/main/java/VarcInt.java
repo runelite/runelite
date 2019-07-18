@@ -2,80 +2,96 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("iw")
+@ObfuscatedName("id")
 @Implements("VarcInt")
 public class VarcInt extends DualNode {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lir;"
-   )
-   @Export("VarcInt_archive")
-   static AbstractArchive VarcInt_archive;
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Ler;"
-   )
-   @Export("VarcInt_cached")
-   static EvictingDualNodeHashTable VarcInt_cached;
-   @ObfuscatedName("q")
-   @Export("persist")
-   public boolean persist;
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "Lhp;"
+	)
+	@Export("VarcInt_archive")
+	public static AbstractArchive VarcInt_archive;
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "Lel;"
+	)
+	@Export("VarcInt_cached")
+	public static EvictingDualNodeHashTable VarcInt_cached;
+	@ObfuscatedName("e")
+	@Export("persist")
+	public boolean persist;
 
-   VarcInt() {
-      this.persist = false;
-   }
+	static {
+		VarcInt_cached = new EvictingDualNodeHashTable(64);
+	}
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lgr;I)V",
-      garbageValue = "1023420886"
-   )
-   void method354(Buffer var1) {
-      while (true) {
-         int var2 = var1.readUnsignedByte();
-         if (var2 == 0) {
-            return;
-         }
+	public VarcInt() {
+		this.persist = false;
+	}
 
-         this.method355(var1, var2);
-      }
-   }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(Lkf;B)V",
+		garbageValue = "22"
+	)
+	public void method4401(Buffer var1) {
+		while (true) {
+			int var2 = var1.readUnsignedByte();
+			if (var2 == 0) {
+				return;
+			}
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Lgr;II)V",
-      garbageValue = "-202810982"
-   )
-   void method355(Buffer var1, int var2) {
-      if (var2 == 2) {
-         this.persist = true;
-      }
+			this.method4396(var1, var2);
+		}
+	}
 
-   }
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(Lkf;II)V",
+		garbageValue = "958337922"
+	)
+	void method4396(Buffer var1, int var2) {
+		if (var2 == 2) {
+			this.persist = true;
+		}
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
-      garbageValue = "1680587190"
-   )
-   @Export("loadClassFromDescriptor")
-   static Class loadClassFromDescriptor(String descriptor) throws ClassNotFoundException {
-      return descriptor.equals("B") ? Byte.TYPE : (descriptor.equals("I") ? Integer.TYPE : (descriptor.equals("S") ? Short.TYPE : (descriptor.equals("J") ? Long.TYPE : (descriptor.equals("Z") ? Boolean.TYPE : (descriptor.equals("F") ? Float.TYPE : (descriptor.equals("D") ? Double.TYPE : (descriptor.equals("C") ? Character.TYPE : (descriptor.equals("void") ? Void.TYPE : Reflection.findClass(descriptor)))))))));
-   }
+	}
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "1367119425"
-   )
-   @Export("isAlphaNumeric")
-   public static boolean isAlphaNumeric(char var0) {
-      return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
-   }
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;S)Ljava/lang/String;",
+		garbageValue = "-32757"
+	)
+	public static String method4403(CharSequence var0) {
+		long var3 = 0L;
+		int var5 = var0.length();
 
-   static {
-      VarcInt_cached = new EvictingDualNodeHashTable(64);
-   }
+		for (int var6 = 0; var6 < var5; ++var6) {
+			var3 *= 37L;
+			char var7 = var0.charAt(var6);
+			if (var7 >= 'A' && var7 <= 'Z') {
+				var3 += (long)(var7 + 1 - 65);
+			} else if (var7 >= 'a' && var7 <= 'z') {
+				var3 += (long)(var7 + 1 - 97);
+			} else if (var7 >= '0' && var7 <= '9') {
+				var3 += (long)(var7 + 27 - 48);
+			}
+
+			if (var3 >= 177917621779460413L) {
+				break;
+			}
+		}
+
+		while (var3 % 37L == 0L && 0L != var3) {
+			var3 /= 37L;
+		}
+
+		String var8 = class215.method4023(var3);
+		if (var8 == null) {
+			var8 = "";
+		}
+
+		return var8;
+	}
 }

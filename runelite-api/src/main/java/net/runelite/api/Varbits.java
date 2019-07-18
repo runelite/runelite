@@ -653,7 +653,32 @@ public enum Varbits
 	 */
 	BUILDING_MODE(2176),
 
-	WINTERTODT_TIMER(7980);
+	WINTERTODT_TIMER(7980),
+
+	/**
+	 * 1 if in game, 0 if not
+	 */
+	LMS_IN_GAME(5314),
+
+	/**
+	 * Amount of pvp kills in current game
+	 */
+	LMS_KILLS(5315),
+
+	/**
+	 * The x coordinate of the final safespace (world coord)
+	 */
+	LMS_SAFE_X(5316),
+
+	/**
+	 * Starts at 100, counts down every 10 ticks (6 seconds)
+	 */
+	LMS_POISON_PROGRESS(5317),
+
+	/**
+	 * The y coordinate of the final safespace (world coord)
+	 */
+	LMS_SAFE_Y(5320);
 
 	/**
 	 * The raw varbit ID.

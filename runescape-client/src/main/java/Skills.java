@@ -1,92 +1,54 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hc")
+@ObfuscatedName("hz")
 @Implements("Skills")
 public class Skills {
-   @ObfuscatedName("f")
-   @Export("Skills_enabled")
-   public static final boolean[] Skills_enabled;
-   @ObfuscatedName("q")
-   @Export("Skills_experienceTable")
-   public static int[] Skills_experienceTable;
-   @ObfuscatedName("ef")
-   static int[] field875;
+	@ObfuscatedName("w")
+	@Export("Skills_enabled")
+	public static final boolean[] Skills_enabled;
+	@ObfuscatedName("e")
+	@Export("Skills_experienceTable")
+	public static int[] Skills_experienceTable;
+	@ObfuscatedName("f")
+	@ObfuscatedGetter(
+		intValue = 1622531909
+	)
+	@Export("Interpreter_stringStackSize")
+	static int Interpreter_stringStackSize;
+	@ObfuscatedName("gz")
+	@ObfuscatedSignature(
+		signature = "[Lly;"
+	)
+	@Export("mapDotSprites")
+	static Sprite[] mapDotSprites;
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(II)Ljv;",
-      garbageValue = "-1410801622"
-   )
-   @Export("getItemDefinition")
-   public static ItemDefinition getItemDefinition(int var0) {
-      ItemDefinition var1 = (ItemDefinition)ItemDefinition.ItemDefinition_cached.get((long)var0);
-      if (var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = ItemDefinition.ItemDefinition_archive.takeFile(10, var0);
-         var1 = new ItemDefinition();
-         var1.id = var0;
-         if (var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
+	static {
+		Skills_enabled = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
+		Skills_experienceTable = new int[99];
+		int var0 = 0;
 
-         var1.post();
-         if (var1.noteTemplate != -1) {
-            var1.genCert(getItemDefinition(var1.noteTemplate), getItemDefinition(var1.note));
-         }
+		for (int var1 = 0; var1 < 99; ++var1) {
+			int var2 = var1 + 1;
+			int var3 = (int)((double)var2 + 300.0D * Math.pow(2.0D, (double)var2 / 7.0D));
+			var0 += var3;
+			Skills_experienceTable[var1] = var0 / 4;
+		}
 
-         if (var1.notedId != -1) {
-            var1.genBought(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
-         }
+	}
 
-         if (var1.placeholderTemplate != -1) {
-            var1.genPlaceholder(getItemDefinition(var1.placeholderTemplate), getItemDefinition(var1.placeholder));
-         }
-
-         if (!class30.inMembersWorld && var1.isMembersOnly) {
-            var1.name = "Members object";
-            var1.isTradable = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.shiftClickIndex = -1;
-            var1.team = 0;
-            if (var1.params != null) {
-               boolean var3 = false;
-
-               for (Node var4 = var1.params.first(); var4 != null; var4 = var1.params.next()) {
-                  ParamDefinition var5 = class229.getParamDefinition((int)var4.key);
-                  if (var5.autoDisable) {
-                     var4.remove();
-                  } else {
-                     var3 = true;
-                  }
-               }
-
-               if (!var3) {
-                  var1.params = null;
-               }
-            }
-         }
-
-         ItemDefinition.ItemDefinition_cached.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   static {
-      Skills_enabled = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
-      Skills_experienceTable = new int[99];
-      int var0 = 0;
-
-      for (int var1 = 0; var1 < 99; ++var1) {
-         int var2 = var1 + 1;
-         int var3 = (int)((double)var2 + 300.0D * Math.pow(2.0D, (double)var2 / 7.0D));
-         var0 += var3;
-         Skills_experienceTable[var1] = var0 / 4;
-      }
-
-   }
+	@ObfuscatedName("iz")
+	@ObfuscatedSignature(
+		signature = "(IIIIIIII)V",
+		garbageValue = "-1917255225"
+	)
+	@Export("updateRootInterface")
+	static final void updateRootInterface(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+		if (class162.loadInterface(var0)) {
+			class2.updateInterface(Widget.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6);
+		}
+	}
 }

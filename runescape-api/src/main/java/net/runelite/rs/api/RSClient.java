@@ -187,7 +187,7 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	void setDraggedOnWidget(Widget widget);
 
-	@Import("interfaceComponents")
+	@Import("Widget_interfaceComponents")
 	RSWidget[][] getWidgets();
 
 	/**
@@ -395,52 +395,52 @@ public interface RSClient extends RSGameShell, Client
 	@Import("tempMenuAction")
 	RSMenuAction getTempMenuAction();
 
-	@Import("decodeSprite")
+	@Import("SpriteBuffer_decode")
 	void decodeSprite(byte[] data);
 
-	@Import("indexedSpriteCount")
+	@Import("SpriteBuffer_spriteCount")
 	int getIndexedSpriteCount();
 
-	@Import("indexedSpriteWidth")
+	@Import("SpriteBuffer_spriteWidth")
 	int getIndexedSpriteWidth();
 
-	@Import("indexedSpriteHeight")
+	@Import("SpriteBuffer_spriteHeight")
 	int getIndexedSpriteHeight();
 
-	@Import("indexedSpriteOffsetXs")
+	@Import("SpriteBuffer_xOffsets")
 	int[] getIndexedSpriteOffsetXs();
 
-	@Import("indexedSpriteOffsetXs")
+	@Import("SpriteBuffer_xOffsets")
 	void setIndexedSpriteOffsetXs(int[] indexedSpriteOffsetXs);
 
-	@Import("indexedSpriteOffsetYs")
+	@Import("SpriteBuffer_yOffsets")
 	int[] getIndexedSpriteOffsetYs();
 
-	@Import("indexedSpriteOffsetYs")
+	@Import("SpriteBuffer_yOffsets")
 	void setIndexedSpriteOffsetYs(int[] indexedSpriteOffsetYs);
 
-	@Import("indexedSpriteWidths")
+	@Import("SpriteBuffer_spriteWidths")
 	int[] getIndexedSpriteWidths();
 
-	@Import("indexedSpriteWidths")
+	@Import("SpriteBuffer_spriteWidths")
 	void setIndexedSpriteWidths(int[] indexedSpriteWidths);
 
-	@Import("indexedSpriteHeights")
+	@Import("SpriteBuffer_spriteHeights")
 	int[] getIndexedSpriteHeights();
 
-	@Import("indexedSpriteHeights")
+	@Import("SpriteBuffer_spriteHeights")
 	void setIndexedSpriteHeights(int[] indexedSpriteHeights);
 
-	@Import("spritePixels")
+	@Import("SpriteBuffer_pixels")
 	byte[][] getSpritePixels();
 
-	@Import("spritePixels")
+	@Import("SpriteBuffer_pixels")
 	void setSpritePixels(byte[][] spritePixels);
 
-	@Import("indexedSpritePalette")
+	@Import("SpriteBuffer_spritePalette")
 	int[] getIndexedSpritePalette();
 
-	@Import("indexedSpritePalette")
+	@Import("SpriteBuffer_spritePalette")
 	void setIndexedSpritePalette(int[] indexedSpritePalette);
 
 	@Import("archive8")
@@ -748,7 +748,7 @@ public interface RSClient extends RSGameShell, Client
 	@Construct
 	RSScriptEvent createScriptEvent();
 
-	@Import("runScript0")
+	@Import("runScript")
 	void runScript(RSScriptEvent ev, int ex);
 
 	@Import("hintArrowType")
@@ -804,7 +804,7 @@ public interface RSClient extends RSGameShell, Client
 	@Import("compass")
 	void setCompass(Sprite spritePixels);
 
-	@Import("widgetSpriteCache")
+	@Import("Widget_cachedSprites")
 	@Override
 	RSEvictingDualNodeHashTable getWidgetSpriteCache();
 

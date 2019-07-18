@@ -33,6 +33,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import net.runelite.api.Client;
+import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
 
 public class Geometry
 {
@@ -450,5 +453,15 @@ public class Geometry
 	public static GeneralPath clipPath(GeneralPath path, Shape shape)
 	{
 		return clipPath(path.getPathIterator(new AffineTransform()), shape);
+	}
+
+	public static void transformWorldToLocal(final Client client, final float[] coords)
+	{
+		LocalPoint lp = LocalPoint.fromWorld(client, (int) coords[0], (int) coords[1]);
+		if (lp != null)
+		{
+			coords[0] = lp.getX() - Perspective.LOCAL_TILE_SIZE / 2;
+			coords[1] = lp.getY() - Perspective.LOCAL_TILE_SIZE / 2;
+		}
 	}
 }
