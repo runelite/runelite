@@ -565,6 +565,14 @@ public class TabInterface
 			return;
 		}
 
+		if (chatboxPanelManager.getCurrentInput() != null
+			&& event.getMenuAction() != MenuAction.CANCEL
+			&& !event.getMenuOption().equals(SCROLL_UP)
+			&& !event.getMenuOption().equals(SCROLL_DOWN))
+		{
+			chatboxPanelManager.close();
+		}
+
 		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ
 			&& event.getMenuOption().equalsIgnoreCase("withdraw-x"))

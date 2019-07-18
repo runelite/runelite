@@ -532,6 +532,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, true);
 		}
+		else if (config.swapQuick() && option.equals("enter"))
+		{
+			swap("quick-enter", option, target, true);
+		}
 		else if (config.swapQuick() && option.equals("ring"))
 		{
 			swap("quick-start", option, target, true);

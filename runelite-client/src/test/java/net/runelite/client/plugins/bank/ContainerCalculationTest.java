@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,13 +30,12 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +45,7 @@ import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BankCalculationTest
+public class ContainerCalculationTest
 {
 	@Mock
 	@Bind
@@ -56,12 +55,8 @@ public class BankCalculationTest
 	@Bind
 	private ItemManager itemManager;
 
-	@Mock
-	@Bind
-	private BankConfig bankConfig;
-
 	@Inject
-	private BankCalculation bankCalculation;
+	private ContainerCalculation containerCalculation;
 
 	@Before
 	public void before()
@@ -72,9 +67,6 @@ public class BankCalculationTest
 	@Test
 	public void testCalculate()
 	{
-		when(bankConfig.showHA())
-			.thenReturn(true);
-
 		Item coins = mock(Item.class);
 		when(coins.getId())
 			.thenReturn(ItemID.COINS_995);
@@ -92,13 +84,6 @@ public class BankCalculationTest
 			whip
 		).toArray(new Item[0]);
 
-		ItemContainer bankContainer = mock(ItemContainer.class);
-		when(bankContainer.getItems())
-			.thenReturn(items);
-
-		when(client.getItemContainer(InventoryID.BANK))
-			.thenReturn(bankContainer);
-
 		ItemComposition whipComp = mock(ItemComposition.class);
 		when(whipComp.getId())
 			.thenReturn(ItemID.ABYSSAL_WHIP);
@@ -107,9 +92,10 @@ public class BankCalculationTest
 		when(itemManager.getItemComposition(ItemID.ABYSSAL_WHIP))
 			.thenReturn(whipComp);
 
-		bankCalculation.calculate();
+		final ContainerPrices prices = containerCalculation.calculate(items);
+		assertNotNull(prices);
 
-		long value = bankCalculation.getHaPrice();
+		long value = prices.getHighAlchPrice();
 		assertTrue(value > Integer.MAX_VALUE);
 	}
 }

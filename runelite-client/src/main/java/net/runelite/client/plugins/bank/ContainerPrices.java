@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.bank;
 
-import java.awt.Color;
-import lombok.Getter;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import lombok.Value;
 
-public class IndicatorIndicator extends InfoBox
+@Value
+class ContainerPrices
 {
-	@Getter
-	private final GameIndicator indicator;
-
-	IndicatorIndicator(GameIndicator indicator, Plugin plugin)
-	{
-		super(null, plugin);
-		this.indicator = indicator;
-		setPriority(InfoBoxPriority.MED);
-	}
-
-	@Override
-	public String getText()
-	{
-		return indicator.getText();
-	}
-
-	@Override
-	public Color getTextColor()
-	{
-		return indicator.getTextColor();
-	}
+	private long gePrice;
+	private long highAlchPrice;
 }
