@@ -77,14 +77,14 @@ LABEL60:
    iload                  5
    iload                  6
    if_icmplt              LABEL64
-   jump                   LABEL108
+   jump                   LABEL119
 LABEL64:
    iload                  1
    iload                  5
    cc_find               
    iconst                 1
    if_icmpeq              LABEL70
-   jump                   LABEL103
+   jump                   LABEL114
 LABEL70:
    iload                  5
    invoke                 1358
@@ -96,7 +96,7 @@ LABEL70:
 LABEL77:
    iconst                 901389
    istore                 4
-   jump                   LABEL89
+   jump                   LABEL100
 LABEL80:
    iload                  3
    iconst                 0
@@ -105,11 +105,24 @@ LABEL80:
 LABEL84:
    iconst                 16776960
    istore                 4
-   jump                   LABEL89
+   jump                   LABEL100
 LABEL87:
+   iconst                 105
+   iconst                 74
+   iconst                 2099
+   iload                  5
+   enum                  
+   iconst                 603
+   if_icmpeq              LABEL95
+   jump                   LABEL98
+LABEL95:
+   iconst                 10461087
+   istore                 4
+   jump                   LABEL100
+LABEL98:
    iconst                 16711680
    istore                 4
-LABEL89:
+LABEL100:
    iload                  4
    cc_setcolour          
    iconst                 85
@@ -124,54 +137,54 @@ LABEL89:
    iload                  4
    sconst                 "Iii"
    cc_setonmouseleave    
-LABEL103:
+LABEL114:
    iload                  5
    iconst                 1
    add                   
    istore                 5
    jump                   LABEL60
-LABEL108:
+LABEL119:
    iconst                 0
    invoke                 2265
    istore                 6
    istore                 5
-LABEL112:
+LABEL123:
    iload                  5
    iload                  6
-   if_icmplt              LABEL116
-   jump                   LABEL160
-LABEL116:
+   if_icmplt              LABEL127
+   jump                   LABEL171
+LABEL127:
    iload                  2
    iload                  5
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL122
-   jump                   LABEL155
-LABEL122:
+   if_icmpeq              LABEL133
+   jump                   LABEL166
+LABEL133:
    iload                  5
    invoke                 1359
    istore                 3
    iload                  3
    iconst                 2
-   if_icmpeq              LABEL129
-   jump                   LABEL132
-LABEL129:
+   if_icmpeq              LABEL140
+   jump                   LABEL143
+LABEL140:
    iconst                 901389
    istore                 4
-   jump                   LABEL141
-LABEL132:
+   jump                   LABEL152
+LABEL143:
    iload                  3
    iconst                 0
-   if_icmpeq              LABEL136
-   jump                   LABEL139
-LABEL136:
+   if_icmpeq              LABEL147
+   jump                   LABEL150
+LABEL147:
    iconst                 16776960
    istore                 4
-   jump                   LABEL141
-LABEL139:
+   jump                   LABEL152
+LABEL150:
    iconst                 16711680
    istore                 4
-LABEL141:
+LABEL152:
    iload                  4
    cc_setcolour          
    iconst                 85
@@ -186,13 +199,13 @@ LABEL141:
    iload                  4
    sconst                 "Iii"
    cc_setonmouseleave    
-LABEL155:
+LABEL166:
    iload                  5
    iconst                 1
    add                   
    istore                 5
-   jump                   LABEL112
-LABEL160:
+   jump                   LABEL123
+LABEL171:
    sconst                 "questProgressUpdated"
-   runelite_callback
+   runelite_callback     
    return                
