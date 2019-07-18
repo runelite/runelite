@@ -41,7 +41,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.ItemID;
@@ -59,7 +58,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.geometry.Geometry;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -67,7 +66,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.WildcardMatcher;
 
-@Slf4j
 @PluginDescriptor(
 	name = "NPC Aggression Timer",
 	description = "Highlights the unaggressive area of NPCs nearby and timer until it becomes active",
@@ -121,6 +119,9 @@ public class NpcAggroAreaPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final WorldPoint[] safeCenters = new WorldPoint[2];
 
@@ -162,6 +163,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(overlay);
 		if (this.showNotWorkingOverlay)
@@ -177,6 +179,8 @@ public class NpcAggroAreaPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		removeTimer();
 		overlayManager.remove(overlay);
 		if (notWorkingOverlayShown)
@@ -192,6 +196,14 @@ public class NpcAggroAreaPlugin extends Plugin
 		active = false;
 
 		Arrays.fill(linesToDisplay, null);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
 	private Area generateSafeArea()
@@ -339,8 +351,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		checkAreaNpcs(client.getCachedNPCs());
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (this.alwaysActive)
 		{
@@ -350,8 +361,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		checkAreaNpcs(event.getNpc());
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		WorldPoint newLocation = client.getLocalPlayer().getWorldLocation();
 		if (lastPlayerLocation != null && safeCenters[1] == null && newLocation.distanceTo2D(lastPlayerLocation) > SAFE_AREA_RADIUS * 4)
@@ -390,8 +400,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		lastPlayerLocation = newLocation;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("npcUnaggroArea"))
 		{
@@ -481,8 +490,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{

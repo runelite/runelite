@@ -66,8 +66,8 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import static net.runelite.client.RuneLite.PROFILES_DIR;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.util.ColorUtil;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.ColorUtil;
 
 @Singleton
 @Slf4j
@@ -89,7 +89,6 @@ public class ConfigManager
 	@Inject
 	public ConfigManager(ScheduledExecutorService scheduledExecutorService)
 	{
-
 		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
 
@@ -194,7 +193,7 @@ public class ConfigManager
 				configChanged.setKey(key);
 				configChanged.setOldValue(null);
 				configChanged.setNewValue(value);
-				eventBus.post(configChanged);
+				eventBus.post(ConfigChanged.class, configChanged);
 			});
 		}
 		catch (Exception ex)
@@ -233,7 +232,7 @@ public class ConfigManager
 	private void postConfigChanged(ConfigChanged configChanged)
 	{
 		configObjectCache.remove(configChanged.getGroup() + "." + configChanged.getKey());
-		eventBus.post(configChanged);
+		eventBus.post(ConfigChanged.class, configChanged);
 	}
 
 	public <T> T getConfig(Class<T> clazz)
@@ -332,7 +331,7 @@ public class ConfigManager
 		configChanged.setKey(key);
 		configChanged.setOldValue(oldValue);
 
-		eventBus.post(configChanged);
+		eventBus.post(ConfigChanged.class, configChanged);
 	}
 
 	public ConfigDescriptor getConfigDescriptor(Object configurationProxy)

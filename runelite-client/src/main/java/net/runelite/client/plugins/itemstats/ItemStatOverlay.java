@@ -48,7 +48,7 @@ import net.runelite.http.api.item.ItemStats;
 public class ItemStatOverlay extends Overlay
 {
 	// Unarmed attack speed is 6
-	private static final ItemStats UNARMED = new ItemStats(false, true, 0,
+	private static final ItemStats UNARMED = new ItemStats("", false, true, 0,
 		ItemEquipmentStats.builder()
 			.aspeed(6)
 			.build());

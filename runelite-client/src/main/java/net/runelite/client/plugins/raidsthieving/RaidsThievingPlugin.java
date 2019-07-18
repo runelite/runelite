@@ -46,7 +46,7 @@ import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -80,6 +80,9 @@ public class RaidsThievingPlugin extends Plugin
 
 	@Inject
 	private RaidsThievingConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<WorldPoint, ThievingChest> chests = new HashMap<>();
@@ -115,6 +118,7 @@ public class RaidsThievingPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
 
 		overlayManager.add(overlay);
 		overlay.updateConfig();
@@ -124,14 +128,22 @@ public class RaidsThievingPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		lastActionTime = Instant.ofEpochMilli(0);
 		chests.clear();
 	}
 
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventBus.subscribe(GraphicsObjectCreated.class, this, this::onGraphicsObjectCreated);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject obj = event.getGameObject();
 		WorldPoint loc = obj.getWorldLocation();
@@ -203,9 +215,7 @@ public class RaidsThievingPlugin extends Plugin
 		}
 	}
 
-
-	@Subscribe
-	public void onGraphicsObjectCreated(GraphicsObjectCreated event)
+	private void onGraphicsObjectCreated(GraphicsObjectCreated event)
 	{
 		GraphicsObject obj = event.getGraphicsObject();
 		if (obj.getId() == 184)
@@ -222,8 +232,7 @@ public class RaidsThievingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		boolean setting = client.getVar(Varbits.IN_RAID) == 1;
 
@@ -235,8 +244,7 @@ public class RaidsThievingPlugin extends Plugin
 
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("raidsthievingplugin"))
 		{

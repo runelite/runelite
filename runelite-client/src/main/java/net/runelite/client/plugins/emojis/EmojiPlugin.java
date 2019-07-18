@@ -42,7 +42,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ImageUtil;
@@ -64,16 +64,32 @@ public class EmojiPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private int modIconsStart = -1;
 
 	@Override
 	protected void startUp()
 	{
 		loadEmojiIcons();
+		addSubscriptions();
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(OverheadTextChanged.class, this, this::onOverheadTextChanged);
+	}
+
+	void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
@@ -113,8 +129,7 @@ public class EmojiPlugin extends Plugin
 		client.setModIcons(newModIcons);
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	void onChatMessage(ChatMessage chatMessage)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN || modIconsStart == -1)
 		{
@@ -148,8 +163,7 @@ public class EmojiPlugin extends Plugin
 		client.refreshChat();
 	}
 
-	@Subscribe
-	public void onOverheadTextChanged(final OverheadTextChanged event)
+	private void onOverheadTextChanged(final OverheadTextChanged event)
 	{
 		if (!(event.getActor() instanceof Player))
 		{

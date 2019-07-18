@@ -53,7 +53,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -98,6 +98,9 @@ public class KourendLibraryPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
 	private boolean buttonAttached = false;
@@ -118,6 +121,8 @@ public class KourendLibraryPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		hideButton = config.hideButton();
 		hideDuplicateBook = config.hideDuplicateBook();
 
@@ -148,6 +153,8 @@ public class KourendLibraryPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		overlay.setHidden(true);
 		overlayManager.remove(overlay);
 		clientToolbar.removeNavigation(navButton);
@@ -157,8 +164,17 @@ public class KourendLibraryPlugin extends Plugin
 		playerBooks = null;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged ev)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+	}
+
+	private void onConfigChanged(ConfigChanged ev)
 	{
 		if (!KourendLibraryConfig.GROUP_KEY.equals(ev.getGroup()))
 		{
@@ -190,8 +206,7 @@ public class KourendLibraryPlugin extends Plugin
 		});
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOpt)
+	private void onMenuOptionClicked(MenuOptionClicked menuOpt)
 	{
 		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getTarget().contains("Bookshelf"))
 		{
@@ -200,8 +215,7 @@ public class KourendLibraryPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged anim)
+	private void onAnimationChanged(AnimationChanged anim)
 	{
 		if (anim.getActor() == client.getLocalPlayer() && anim.getActor().getAnimation() == AnimationID.LOOKING_INTO)
 		{
@@ -209,8 +223,7 @@ public class KourendLibraryPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (lastBookcaseAnimatedOn != null && event.getType() == ChatMessageType.GAMEMESSAGE)
 		{
@@ -223,8 +236,7 @@ public class KourendLibraryPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
 		if (this.hideButton && inRegion != buttonAttached)
@@ -295,8 +307,7 @@ public class KourendLibraryPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged itemContainerChangedEvent)
+	private void onItemContainerChanged(ItemContainerChanged itemContainerChangedEvent)
 	{
 		updatePlayerBooks();
 	}

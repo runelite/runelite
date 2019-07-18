@@ -33,7 +33,6 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.SoundEffectPlayed;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -74,14 +73,8 @@ class SoundEffectOverlay extends Overlay
 		return panelComponent.render(graphics);
 	}
 
-	@Subscribe
-	public void onSoundEffectPlayed(SoundEffectPlayed event)
+	void onSoundEffectPlayed(SoundEffectPlayed event)
 	{
-		if (!plugin.getSoundEffects().isActive())
-		{
-			return;
-		}
-
 		String text =
 			"Id: " + event.getSoundId() +
 			" - D: " + event.getDelay();
@@ -94,14 +87,8 @@ class SoundEffectOverlay extends Overlay
 		checkMaxLines();
 	}
 
-	@Subscribe
-	public void onAreaSoundEffectPlayed(AreaSoundEffectPlayed event)
+	void onAreaSoundEffectPlayed(AreaSoundEffectPlayed event)
 	{
-		if (!plugin.getSoundEffects().isActive())
-		{
-			return;
-		}
-
 		Color textColor = COLOR_AREA_SOUND_EFFECT;
 
 		// Check if the player is within range to hear the sound

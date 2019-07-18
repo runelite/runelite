@@ -116,7 +116,7 @@ public class MotherlodePluginTest
 	{
 		// set inMlm
 		GameStateChanged gameStateChanged = new GameStateChanged();
-		gameStateChanged.setGameState(GameState.LOGGED_IN);
+		gameStateChanged.setGameState(GameState.LOADING);
 		motherlodePlugin.onGameStateChanged(gameStateChanged);
 
 		// Initial sack count

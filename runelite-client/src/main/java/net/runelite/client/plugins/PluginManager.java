@@ -68,7 +68,6 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -126,14 +125,12 @@ public class PluginManager
 		pluginWatcher.start();
 	}
 
-	@Subscribe
-	public void onSessionOpen(SessionOpen event)
+	private void onSessionOpen(SessionOpen event)
 	{
 		refreshPlugins();
 	}
 
-	@Subscribe
-	public void onSessionClose(SessionClose event)
+	private void onSessionClose(SessionClose event)
 	{
 		refreshPlugins();
 	}
@@ -368,9 +365,9 @@ public class PluginManager
 				}
 			}
 
-			eventBus.register(plugin);
+			// eventBus.register(plugin);
 			schedule(plugin);
-			eventBus.post(new PluginChanged(plugin, true));
+			eventBus.post(PluginChanged.class, new PluginChanged(plugin, true));
 		}
 		catch (InterruptedException | InvocationTargetException | IllegalArgumentException ex)
 		{
@@ -392,7 +389,6 @@ public class PluginManager
 		try
 		{
 			unschedule(plugin);
-			eventBus.unregister(plugin);
 
 			// plugins always stop in the event thread
 			SwingUtilities.invokeAndWait(() ->
@@ -408,7 +404,7 @@ public class PluginManager
 			});
 
 			log.debug("Plugin {} is now stopped", plugin.getClass().getSimpleName());
-			eventBus.post(new PluginChanged(plugin, false));
+			eventBus.post(PluginChanged.class, new PluginChanged(plugin, false));
 
 		}
 		catch (InterruptedException | InvocationTargetException ex)

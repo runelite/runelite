@@ -27,7 +27,6 @@ package net.runelite.client.ui.overlay.infobox;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ComparisonChain;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +38,8 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @Singleton
@@ -50,13 +50,14 @@ public class InfoBoxManager
 	private final RuneLiteConfig runeLiteConfig;
 
 	@Inject
-	private InfoBoxManager(final RuneLiteConfig runeLiteConfig)
+	private InfoBoxManager(final RuneLiteConfig runeLiteConfig, final EventBus eventbus)
 	{
 		this.runeLiteConfig = runeLiteConfig;
+
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("runelite") && event.getKey().equals("infoBoxSize"))
 		{
@@ -72,6 +73,14 @@ public class InfoBoxManager
 		updateInfoBoxImage(infoBox);
 		infoBoxes.add(infoBox);
 		refreshInfoBoxes();
+
+		BufferedImage image = infoBox.getImage();
+
+		if (image instanceof AsyncBufferedImage)
+		{
+			AsyncBufferedImage abi = (AsyncBufferedImage) image;
+			abi.onChanged(() -> updateInfoBoxImage(infoBox));
+		}
 	}
 
 	public void removeInfoBox(InfoBox infoBox)
@@ -118,7 +127,7 @@ public class InfoBoxManager
 		}
 	}
 
-	private void updateInfoBoxImage(final InfoBox infoBox)
+	public void updateInfoBoxImage(final InfoBox infoBox)
 	{
 		if (infoBox.getImage() == null)
 		{
@@ -126,8 +135,8 @@ public class InfoBoxManager
 		}
 
 		// Set scaled InfoBox image
-		final Image image = infoBox.getImage();
-		Image resultImage = image;
+		final BufferedImage image = infoBox.getImage();
+		BufferedImage resultImage = image;
 		final double width = image.getWidth(null);
 		final double height = image.getHeight(null);
 		final double size = Math.max(2, runeLiteConfig.infoBoxSize()); // Limit size to 2 as that is minimum size not causing breakage

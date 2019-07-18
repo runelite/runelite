@@ -37,7 +37,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -67,12 +66,11 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@Slf4j
 @PluginDescriptor(
 	name = "Mining",
 	description = "Show ore respawn timers and coal bag overlay",
@@ -110,6 +108,9 @@ public class MiningPlugin extends Plugin
 	@Inject
 	private MiningConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<RockRespawn> respawns = new ArrayList<>();
 	private boolean recentlyLoggedIn;
@@ -122,6 +123,8 @@ public class MiningPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
 		this.showCoalBagOverlay = config.showCoalBagOverlay();
 		this.amountOfCoalInCoalBag = config.amountOfCoalInCoalBag();
 
@@ -132,9 +135,21 @@ public class MiningPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(miningOverlay);
 		overlayManager.remove(coalBagOverlay);
 		respawns.clear();
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
 	}
 
 	@Provides
@@ -143,8 +158,7 @@ public class MiningPlugin extends Plugin
 		return configManager.getConfig(MiningConfig.class);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -161,14 +175,12 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		recentlyLoggedIn = false;
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
 		{
@@ -185,8 +197,7 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWallObjectSpawned(WallObjectSpawned event)
+	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -227,8 +238,7 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		//TODO: should work hopefully
 		if (event.getMenuAction() != MenuAction.RUNELITE || event.getActionParam1() != WidgetInfo.INVENTORY.getId())
@@ -258,8 +268,7 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
@@ -305,8 +314,7 @@ public class MiningPlugin extends Plugin
 		return client.getLocalPlayer().getWorldLocation().getRegionID() == MINING_GUILD_REGION;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("mining"))
 		{

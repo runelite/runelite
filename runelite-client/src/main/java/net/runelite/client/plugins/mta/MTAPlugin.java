@@ -82,11 +82,6 @@ public class MTAPlugin extends Plugin
 		overlayManager.add(inventoryOverlay);
 
 		this.rooms = new MTARoom[]{alchemyRoom, graveyardRoom, telekineticRoom, enchantmentRoom};
-
-		for (MTARoom room : rooms)
-		{
-			eventBus.register(room);
-		}
 	}
 
 	@Override
@@ -102,5 +97,4 @@ public class MTAPlugin extends Plugin
 
 		telekineticRoom.resetRoom();
 	}
-
 }

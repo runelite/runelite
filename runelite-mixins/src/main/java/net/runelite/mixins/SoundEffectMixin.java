@@ -123,7 +123,7 @@ public abstract class SoundEffectMixin implements RSClient
 				SoundEffectPlayed event = new SoundEffectPlayed();
 				event.setSoundId(client.getQueuedSoundEffectIDs()[soundIndex]);
 				event.setDelay(client.getQueuedSoundEffectDelays()[soundIndex]);
-				client.getCallbacks().post(event);
+				client.getCallbacks().post(SoundEffectPlayed.class, event);
 			}
 			else
 			{
@@ -139,7 +139,7 @@ public abstract class SoundEffectMixin implements RSClient
 				event.setSceneY(y);
 				event.setRange(range);
 				event.setDelay(client.getQueuedSoundEffectDelays()[soundIndex]);
-				client.getCallbacks().post(event);
+				client.getCallbacks().post(AreaSoundEffectPlayed.class, event);
 			}
 		}
 

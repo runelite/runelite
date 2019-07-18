@@ -52,7 +52,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.game.NPCManager;
@@ -109,6 +109,9 @@ public class PerformanceStatsPlugin extends Plugin
 	@Inject
 	private WSClient wsClient;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private boolean enabled = false;
 	@Getter(AccessLevel.PACKAGE)
@@ -138,6 +141,8 @@ public class PerformanceStatsPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
 		this.submitTimeout = config.submitTimeout();
 
 		overlayManager.add(performanceTrackerOverlay);
@@ -147,14 +152,30 @@ public class PerformanceStatsPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(performanceTrackerOverlay);
 		wsClient.unregisterMessage(Performance.class);
 		disable();
 		reset();
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
+		eventBus.subscribe(ExperienceChanged.class, this, this::onExperienceChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
+		eventBus.subscribe(Performance.class, this, this::onPerformance);
+		eventBus.subscribe(UserSync.class, this, this::onUserSync);
+		eventBus.subscribe(UserPart.class, this, this::onUserPart);
+		eventBus.subscribe(PartyChanged.class, this, this::onPartyChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -167,8 +188,7 @@ public class PerformanceStatsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied e)
+	private void onHitsplatApplied(HitsplatApplied e)
 	{
 		if (isPaused())
 		{
@@ -187,8 +207,7 @@ public class PerformanceStatsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onExperienceChanged(ExperienceChanged c)
+	private void onExperienceChanged(ExperienceChanged c)
 	{
 		if (isPaused() || hopping)
 		{
@@ -223,8 +242,7 @@ public class PerformanceStatsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent e)
+	private void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
 		// Handles Fake XP drops (Ironman in PvP, DMM Cap, 200m xp, etc)
 		if (isPaused())
@@ -255,8 +273,7 @@ public class PerformanceStatsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick t)
+	private void onGameTick(GameTick t)
 	{
 		oldTarget = client.getLocalPlayer().getInteracting();
 
@@ -295,8 +312,7 @@ public class PerformanceStatsPlugin extends Plugin
 		sendPerformance();
 	}
 
-	@Subscribe
-	public void onOverlayMenuClicked(OverlayMenuClicked c)
+	private void onOverlayMenuClicked(OverlayMenuClicked c)
 	{
 		if (!c.getOverlay().equals(performanceTrackerOverlay))
 		{
@@ -429,14 +445,12 @@ public class PerformanceStatsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onPerformance(final Performance performance)
+	private void onPerformance(final Performance performance)
 	{
 		partyDataMap.put(performance.getMemberId(), performance);
 	}
 
-	@Subscribe
-	public void onUserSync(final UserSync event)
+	private void onUserSync(final UserSync event)
 	{
 		if (isEnabled())
 		{
@@ -444,21 +458,18 @@ public class PerformanceStatsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onUserPart(final UserPart event)
+	private void onUserPart(final UserPart event)
 	{
 		partyDataMap.remove(event.getMemberId());
 	}
 
-	@Subscribe
-	public void onPartyChanged(final PartyChanged event)
+	private void onPartyChanged(final PartyChanged event)
 	{
 		// Reset party
 		partyDataMap.clear();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("performancestats"))
 		{

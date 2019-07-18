@@ -393,4 +393,30 @@ public class OverlayUtil
 			OverlayUtil.drawStrokeAndFillPoly(graphics, color, outlineWidth, outlineAlpha, fillAlpha, tilePoly);
 		}
 	}
+
+	public static void setProgressIcon(Graphics2D graphics, Point point, BufferedImage currentPhaseIcon, int totalWidth, int bgPadding, int currentPosX, Color colorIconBackground, int overlayIconDistance, Color colorIconBorder, Color colorIconBorderFill)
+	{
+		graphics.setStroke(new BasicStroke(2));
+		graphics.setColor(colorIconBackground);
+		graphics.fillOval(
+			point.getX() - totalWidth / 2 + currentPosX - bgPadding,
+			point.getY() - currentPhaseIcon.getHeight() / 2 - overlayIconDistance - bgPadding,
+			currentPhaseIcon.getWidth() + bgPadding * 2,
+			currentPhaseIcon.getHeight() + bgPadding * 2);
+
+		graphics.setColor(colorIconBorder);
+		graphics.drawOval(
+			point.getX() - totalWidth / 2 + currentPosX - bgPadding,
+			point.getY() - currentPhaseIcon.getHeight() / 2 - overlayIconDistance - bgPadding,
+			currentPhaseIcon.getWidth() + bgPadding * 2,
+			currentPhaseIcon.getHeight() + bgPadding * 2);
+
+		graphics.drawImage(
+			currentPhaseIcon,
+			point.getX() - totalWidth / 2 + currentPosX,
+			point.getY() - currentPhaseIcon.getHeight() / 2 - overlayIconDistance,
+			null);
+
+		graphics.setColor(colorIconBorderFill);
+	}
 }

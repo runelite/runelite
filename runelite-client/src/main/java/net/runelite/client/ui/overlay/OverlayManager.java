@@ -47,7 +47,6 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
 
@@ -111,17 +110,18 @@ public class OverlayManager
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
+
+		eventBus.subscribe(PluginChanged.class, this, this::onPluginChanged);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
-	@Subscribe
-	public void onPluginChanged(final PluginChanged event)
+	private void onPluginChanged(final PluginChanged event)
 	{
 		overlays.forEach(this::loadOverlay);
 		rebuildOverlayLayers();
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE_OVERLAY)
 		{
@@ -138,7 +138,7 @@ public class OverlayManager
 			Optional<OverlayMenuEntry> optionalOverlayMenuEntry = menuEntries.stream()
 				.filter(me -> me.getOption().equals(event.getOption()))
 				.findAny();
-			optionalOverlayMenuEntry.ifPresent(overlayMenuEntry -> eventBus.post(new OverlayMenuClicked(overlayMenuEntry, overlay)));
+			optionalOverlayMenuEntry.ifPresent(overlayMenuEntry -> eventBus.post(OverlayMenuClicked.class, new OverlayMenuClicked(overlayMenuEntry, overlay)));
 		}
 	}
 

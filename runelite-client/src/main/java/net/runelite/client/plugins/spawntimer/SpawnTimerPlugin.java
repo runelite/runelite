@@ -19,7 +19,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -39,6 +39,8 @@ public class SpawnTimerPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<NPC> highlightedNpcs = new HashSet<>();
@@ -68,6 +70,8 @@ public class SpawnTimerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		this.getNpcToHighlight = config.getNpcToHighlight();
 		this.getHighlightColor = config.getHighlightColor();
 
@@ -79,19 +83,28 @@ public class SpawnTimerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		ticks.clear();
 		highlightedNpcs.clear();
 		overlayManager.remove(SpawnTimerOverlay);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick g)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+	}
+
+	private void onGameTick(GameTick g)
 	{
 		currentTick++;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN ||
 			event.getGameState() == GameState.HOPPING)
@@ -101,8 +114,7 @@ public class SpawnTimerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned n)
+	private void onNpcSpawned(NpcSpawned n)
 	{
 		if (n.getNpc() != null)
 		{
@@ -115,8 +127,7 @@ public class SpawnTimerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned n)
+	private void onNpcDespawned(NpcDespawned n)
 	{
 		final NPC npc = n.getNpc();
 		if (highlightedNpcs.contains(npc))
@@ -140,7 +151,6 @@ public class SpawnTimerPlugin extends Plugin
 		return Text.fromCSV(configNpcs);
 	}
 
-	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("spawntimer"))

@@ -7,7 +7,7 @@
 
 [![Build Status](https://travis-ci.org/runelite-extended/runelite.svg?branch=master)](https://travis-ci.org/runelite-extended/runelite) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![HitCount](http://hits.dwyl.io/runelite-extended/runelite.svg)](http://hits.dwyl.io/runelite-extended/runelite) [![saythanks](https://img.shields.io/badge/say-thanks-32cd32.svg)](https://www.patreon.com/RuneLitePlus)
 
-[RuneLitePlus](https://runelitepl.us)  is a extended version of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying more open-source.
+[RuneLitePlus](https://runelitepl.us)  is an extended version of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying more open-source.
 
 
 

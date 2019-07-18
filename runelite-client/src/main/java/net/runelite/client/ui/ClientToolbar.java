@@ -61,7 +61,7 @@ public class ClientToolbar
 
 		if (buttons.add(button))
 		{
-			eventBus.post(new NavigationButtonAdded(button));
+			eventBus.post(NavigationButtonAdded.class, new NavigationButtonAdded(button));
 		}
 	}
 
@@ -74,7 +74,7 @@ public class ClientToolbar
 	{
 		if (buttons.remove(button))
 		{
-			eventBus.post(new NavigationButtonRemoved(button));
+			eventBus.post(NavigationButtonRemoved.class, new NavigationButtonRemoved(button));
 		}
 	}
 }

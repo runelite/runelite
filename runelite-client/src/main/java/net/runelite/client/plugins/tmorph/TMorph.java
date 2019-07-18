@@ -35,7 +35,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.kit.KitType;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -56,6 +56,9 @@ public class TMorph extends Plugin
 
 	@Inject
 	private TMorphConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	private boolean mageSwap;
 	private boolean rangeSwap;
@@ -128,10 +131,23 @@ public class TMorph extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("TMorph"))
 		{
@@ -139,8 +155,7 @@ public class TMorph extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	private void onAnimationChanged(AnimationChanged event)
 	{
 		if (this.animationTarget <= 0 && this.animationSwap <= 0 && this.globalAnimSwap > 0)
 		{
@@ -158,8 +173,7 @@ public class TMorph extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{

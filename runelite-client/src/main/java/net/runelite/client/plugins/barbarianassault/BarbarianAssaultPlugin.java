@@ -82,7 +82,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -154,6 +154,9 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 
 	@Inject
 	private KeyManager keyManager;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter
 	private boolean inGame = false;
@@ -306,6 +309,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 24);
 		torsoImage = itemManager.getImage(ItemID.FIGHTER_TORSO);
@@ -323,6 +327,8 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(widgetsOverlay);
 		overlayManager.remove(sceneOverlay);
 		keyManager.unregisterKeyListener(this);
@@ -341,6 +347,24 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		// gameTick = client.getTickCount();
 		menu.disableSwaps(true);
 		menu.clearHiddenMenus();
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(ItemSpawned.class, this, this::onItemSpawned);
+		eventBus.subscribe(ItemDespawned.class, this, this::onItemDespawned);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(BeforeRender.class, this, this::onBeforeRender);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
+		eventBus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
 	}
 
 	@Override
@@ -376,8 +400,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		//not client thread be careful
 		if (!configChanged.getGroup().equals("barbarianAssault"))
@@ -487,8 +510,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		this.showEggCountOverlay = config.showEggCountOverlay();
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		switch (event.getGroupId())
 		{
@@ -558,8 +580,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (!chatMessage.getType().equals(ChatMessageType.GAMEMESSAGE))
 		{
@@ -578,6 +599,11 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		}
 		else if (isInGame())
 		{
+			if (scorecard != null)
+			{
+				scorecard.onChatMessage(chatMessage);
+			}
+
 			if (message.contains("exploded") && wave != null)
 			{
 				wave.setWrongEggs(wave.getWrongEggs() + 1);
@@ -637,8 +663,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onItemSpawned(ItemSpawned itemSpawned)
+	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		if (!isInGame())
 		{
@@ -657,8 +682,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onItemDespawned(ItemDespawned itemDespawned)
+	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		if (!isInGame())
 		{
@@ -708,8 +732,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		// Keep in mind isInGame is delayed by a tick when a wave ends
 		if (!isInGame() || getRole() == null)
@@ -740,8 +763,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (!isInGame())
 		{
@@ -763,8 +785,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (!isInGame())
 		{
@@ -779,8 +800,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 	// This was almost certainly a waste of time to get working, because almost nobody
 	// actually uses the horn of glory. At least now there shouldn't be anyone complaining
 	// about the horn of glory breaking anything and everything that should never break.
-	@Subscribe
-	public void onBeforeRender(BeforeRender event)
+	private void onBeforeRender(BeforeRender event)
 	{
 		if (!isInGame())
 		{
@@ -953,8 +973,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 	// onMenuEntryAdded is being used for conditional entry changes that are not
 	// easily achievable using MenuManager, all other changes use MenuManager in
 	// the BarbarianAssaultMenu/Menus classes
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (!isInGame())
 		{
@@ -1144,8 +1163,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		client.setMenuEntries(menu.toArray(new MenuEntry[0]));
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (!isInGame() && getRole() != null)
 		{
@@ -1177,8 +1195,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 	}
 
 	// Interacting changed has a slight delay until after the hitsplat is applied
-	@Subscribe
-	public void onInteractingChanged(InteractingChanged event)
+	private void onInteractingChanged(InteractingChanged event)
 	{
 		if (!isInGame() || getRole() != Role.HEALER)
 		{
@@ -1213,8 +1230,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 
 	}
 
-	@Subscribe
-	public void onProjectileSpawned(ProjectileSpawned event)
+	private void onProjectileSpawned(ProjectileSpawned event)
 	{
 		if (!isInGame())
 		{
@@ -1234,8 +1250,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		int newInGameBit = client.getVar(Varbits.IN_GAME_BA);
 

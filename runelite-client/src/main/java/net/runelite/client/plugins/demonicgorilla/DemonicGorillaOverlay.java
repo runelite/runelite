@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.demonicgorilla;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -43,6 +42,7 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 @Singleton
 public class DemonicGorillaOverlay extends Overlay
@@ -118,31 +118,11 @@ public class DemonicGorillaOverlay extends Overlay
 					int currentPosX = 0;
 					for (BufferedImage icon : icons)
 					{
-						graphics.setStroke(new BasicStroke(2));
-						graphics.setColor(COLOR_ICON_BACKGROUND);
-						graphics.fillOval(
-							point.getX() - totalWidth / 2 + currentPosX - bgPadding,
-							point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
-							icon.getWidth() + bgPadding * 2,
-							icon.getHeight() + bgPadding * 2);
-
-						graphics.setColor(COLOR_ICON_BORDER);
-						graphics.drawOval(
-							point.getX() - totalWidth / 2 + currentPosX - bgPadding,
-							point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
-							icon.getWidth() + bgPadding * 2,
-							icon.getHeight() + bgPadding * 2);
-
-						graphics.drawImage(
-							icon,
-							point.getX() - totalWidth / 2 + currentPosX,
-							point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE,
-							null);
-
-						graphics.setColor(COLOR_ICON_BORDER_FILL);
+						OverlayUtil.setProgressIcon(graphics, point, icon, totalWidth, bgPadding, currentPosX,
+							COLOR_ICON_BACKGROUND, OVERLAY_ICON_DISTANCE, COLOR_ICON_BORDER, COLOR_ICON_BORDER_FILL);
 						Arc2D.Double arc = new Arc2D.Double(
 							point.getX() - totalWidth / 2 + currentPosX - bgPadding,
-							point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
+							point.getY() - (float) (icon.getHeight() / 2) - OVERLAY_ICON_DISTANCE - bgPadding,
 							icon.getWidth() + bgPadding * 2,
 							icon.getHeight() + bgPadding * 2,
 							90.0,

@@ -37,14 +37,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Sprite;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
 
-@Slf4j
 @Singleton
 public class SpriteManager
 {
@@ -54,7 +54,10 @@ public class SpriteManager
 	@Inject
 	private ClientThread clientThread;
 
-	private final Cache<Long, BufferedImage> cache = CacheBuilder.newBuilder()
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	public Cache<Long, BufferedImage> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.expireAfterAccess(1, TimeUnit.HOURS)
 		.build();
@@ -76,6 +79,11 @@ public class SpriteManager
 		}
 
 		Sprite[] sp = client.getSprites(client.getIndexSprites(), archive, 0);
+		if (sp == null)
+		{
+			return null;
+		}
+
 		BufferedImage img = sp[file].toBufferedImage();
 
 		cache.put(key, img);
@@ -101,6 +109,15 @@ public class SpriteManager
 			}
 			user.accept(img);
 			return true;
+		});
+	}
+
+	public void getSpriteAsync(int archive, int file, InfoBox infoBox)
+	{
+		getSpriteAsync(archive, file, img ->
+		{
+			infoBox.setImage(img);
+			infoBoxManager.updateInfoBoxImage(infoBox);
 		});
 	}
 

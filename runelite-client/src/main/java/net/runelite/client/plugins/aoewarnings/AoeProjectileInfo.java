@@ -123,7 +123,12 @@ public enum AoeProjectileInfo
 	/**
 	 * Demonic gorilla
 	 */
-	DEMONIC_GORILLA_BOULDER(ProjectileID.DEMONIC_GORILLA_BOULDER, 1);
+	DEMONIC_GORILLA_BOULDER(ProjectileID.DEMONIC_GORILLA_BOULDER, 1),
+
+	/**
+	 * Marble gargoyle (Superior Gargoyle)
+	 */
+	MARBLE_GARGOYLE_AOE(ProjectileID.MARBLE_GARGOYLE_AOE, 1);
 
 	private static final Map<Integer, AoeProjectileInfo> map = new HashMap<>();
 

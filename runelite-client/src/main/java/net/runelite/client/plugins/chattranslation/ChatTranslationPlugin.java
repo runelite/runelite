@@ -26,7 +26,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
@@ -74,6 +74,9 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	@Inject
 	private ChatTranslationConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	private boolean translateOptionVisable;
 	private boolean publicChat;
 	private String getPlayerNames;
@@ -91,6 +94,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 
 		if (client != null && this.translateOptionVisable)
 		{
@@ -104,6 +108,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
 		if (client != null && this.translateOptionVisable)
 		{
 			menuManager.get().removePlayerMenuItem(TRANSLATE);
@@ -113,8 +118,15 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 		playerNames.clear();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(PlayerMenuOptionClicked.class, this, this::onPlayerMenuOptionClicked);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("chattranslation"))
 		{
@@ -132,8 +144,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (!this.translateOptionVisable)
 		{
@@ -165,8 +176,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
+	private void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
 	{
 		if (event.getMenuOption().equals(TRANSLATE))
 		{
@@ -181,8 +191,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
 		{

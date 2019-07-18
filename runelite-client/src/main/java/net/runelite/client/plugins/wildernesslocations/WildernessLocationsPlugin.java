@@ -33,7 +33,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -78,6 +78,9 @@ public class WildernessLocationsPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private String oldChat = "";
 	private int currentCooldown = 0;
 	private WorldPoint worldPoint = null;
@@ -105,6 +108,8 @@ public class WildernessLocationsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		this.drawOverlay = wildyConfig.drawOverlay();
 		this.keybind = wildyConfig.keybind();
 
@@ -112,8 +117,14 @@ public class WildernessLocationsPlugin extends Plugin
 		keyManager.registerKeyListener(hotkeyListener);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(VarClientStrChanged.class, this, this::onVarClientStrChanged);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("wildernesslocations"))
 		{
@@ -127,12 +138,13 @@ public class WildernessLocationsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (currentCooldown != 0)
 		{
@@ -210,8 +222,7 @@ public class WildernessLocationsPlugin extends Plugin
 		return hashMap;
 	}
 
-	@Subscribe
-	public void onVarClientStrChanged(VarClientStrChanged varClient)
+	private void onVarClientStrChanged(VarClientStrChanged varClient)
 	{
 		String newChat = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
 		if (varClient.getIndex() == VarClientStr.CHATBOX_TYPED_TEXT.getIndex() && !newChat.equals(oldChat))

@@ -27,7 +27,6 @@
  */
 package net.runelite.client.plugins.timers;
 
-import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import lombok.AccessLevel;
@@ -35,9 +34,8 @@ import lombok.Getter;
 import net.runelite.api.GraphicID;
 import net.runelite.api.ItemID;
 import net.runelite.api.SpriteID;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.SpriteManager;
 
+@Getter(AccessLevel.PACKAGE)
 enum GameTimer
 {
 	STAMINA(ItemID.STAMINA_POTION4, GameTimerImageType.ITEM, "Stamina", 2, ChronoUnit.MINUTES, true),
@@ -77,13 +75,9 @@ enum GameTimer
 	ANTIVENOM(ItemID.ANTIVENOM4, GameTimerImageType.ITEM, "Anti-venom"),
 	DRAGON_FIRE_SHIELD(ItemID.DRAGONFIRE_SHIELD_11284, GameTimerImageType.ITEM, "Dragonfire Shield Special", 2, ChronoUnit.MINUTES);
 
-	@Getter(AccessLevel.PACKAGE)
 	private final Duration duration;
-	@Getter(AccessLevel.PACKAGE)
 	private final Integer graphicId;
-	@Getter(AccessLevel.PACKAGE)
 	private final String description;
-	@Getter(AccessLevel.PACKAGE)
 	private final boolean removedOnDeath;
 
 	private final int imageId;
@@ -117,18 +111,5 @@ enum GameTimer
 	GameTimer(final int imageId, final GameTimerImageType idType, final String description)
 	{
 		this(imageId, idType, description, null, 1, ChronoUnit.MILLIS, false);
-	}
-
-	BufferedImage getImage(ItemManager itemManager, SpriteManager spriteManager)
-	{
-		switch (imageType)
-		{
-			case ITEM:
-				return itemManager.getImage(imageId);
-			case SPRITE:
-				return spriteManager.getSprite(imageId, 0);
-			default:
-				return null;
-		}
 	}
 }

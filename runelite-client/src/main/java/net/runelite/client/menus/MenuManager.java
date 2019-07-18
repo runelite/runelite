@@ -66,7 +66,6 @@ import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.events.WidgetPressed;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.Text;
 
 @Singleton
@@ -106,6 +105,15 @@ public class MenuManager
 	{
 		this.client = client;
 		this.eventBus = eventBus;
+
+
+		eventBus.subscribe(MenuOpened.class, this, this::onMenuOpened);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(BeforeRender.class, this, this::onBeforeRender);
+		eventBus.subscribe(PlayerMenuOptionsChanged.class, this, this::onPlayerMenuOptionsChanged);
+		eventBus.subscribe(NpcActionChanged.class, this, this::onNpcActionChanged);
+		eventBus.subscribe(WidgetPressed.class, this, this::onWidgetPressed);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
 	/**
@@ -145,8 +153,7 @@ public class MenuManager
 		return false;
 	}
 
-	@Subscribe
-	public void onMenuOpened(MenuOpened event)
+	private void onMenuOpened(MenuOpened event)
 	{
 		currentPriorityEntries.clear();
 
@@ -256,8 +263,7 @@ public class MenuManager
 		client.setMenuEntries(arrayEntries);
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		int widgetId = event.getActionParam1();
 		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
@@ -280,8 +286,7 @@ public class MenuManager
 		}
 	}
 
-	@Subscribe
-	public void onBeforeRender(BeforeRender event)
+	private void onBeforeRender(BeforeRender event)
 	{
 		rebuildLeftClickMenu();
 	}
@@ -364,8 +369,7 @@ public class MenuManager
 		}
 	}
 
-	@Subscribe
-	public void onPlayerMenuOptionsChanged(PlayerMenuOptionsChanged event)
+	private void onPlayerMenuOptionsChanged(PlayerMenuOptionsChanged event)
 	{
 		int idx = event.getIndex();
 
@@ -389,8 +393,7 @@ public class MenuManager
 		addPlayerMenuItem(newIdx, menuText);
 	}
 
-	@Subscribe
-	public void onNpcActionChanged(NpcActionChanged event)
+	private void onNpcActionChanged(NpcActionChanged event)
 	{
 		NPCDefinition composition = event.getNpcDefinition();
 		for (String npcOption : npcMenuOptions)
@@ -439,14 +442,12 @@ public class MenuManager
 		}
 	}
 
-	@Subscribe
-	public void onWidgetPressed(WidgetPressed event)
+	private void onWidgetPressed(WidgetPressed event)
 	{
 		leftClickEntry = rebuildLeftClickMenu();
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (!client.isMenuOpen() && event.isAuthentic())
 		{
@@ -481,7 +482,7 @@ public class MenuManager
 				customMenu.setMenuOption(event.getOption());
 				customMenu.setMenuTarget(event.getTarget());
 				customMenu.setWidget(curMenuOption.getWidget());
-				eventBus.post(customMenu);
+				eventBus.post(WidgetMenuOptionClicked.class, customMenu);
 				return; // don't continue because it's not a player option
 			}
 		}
@@ -496,7 +497,7 @@ public class MenuManager
 		playerMenuOptionClicked.setMenuOption(event.getOption());
 		playerMenuOptionClicked.setMenuTarget(username);
 
-		eventBus.post(playerMenuOptionClicked);
+		eventBus.post(PlayerMenuOptionClicked.class, playerMenuOptionClicked);
 	}
 
 	private void addPlayerMenuItem(int playerOptionIndex, String menuText)

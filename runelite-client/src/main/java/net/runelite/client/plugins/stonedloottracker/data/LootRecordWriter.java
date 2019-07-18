@@ -73,7 +73,7 @@ public class LootRecordWriter
 	{
 		playerFolder = new File(LOOT_RECORD_DIR, username);
 		playerFolder.mkdir();
-		bus.post(new LootTrackerNameChange());
+		bus.post(LootTrackerNameChange.class, new LootTrackerNameChange());
 	}
 
 	public Set<String> getKnownFileNames()
@@ -140,7 +140,7 @@ public class LootRecordWriter
 			file.append(dataAsString);
 			file.newLine();
 			file.close();
-			bus.post(new LootTrackerRecordStored(rec));
+			bus.post(LootTrackerRecordStored.class, new LootTrackerRecordStored(rec));
 		}
 		catch (IOException ioe)
 		{

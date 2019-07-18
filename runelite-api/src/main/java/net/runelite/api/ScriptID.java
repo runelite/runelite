@@ -160,9 +160,11 @@ public final class ScriptID
 
 	/**
 	 * Handles zoom input
+	 *
+	 * Updates the VarClientInts (73, 74) to this same value
 	 * <ul>
-	 * <li> int  zoom value </li>
-	 * <li> int  zoom value </li>
+	 * <li> int  Reset zoom position </li>
+	 * <li> int  Reset zoom position </li>
 	 * </ul>
 	 */
 	public static final int CAMERA_DO_ZOOM = 42;

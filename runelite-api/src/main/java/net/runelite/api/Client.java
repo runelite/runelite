@@ -363,6 +363,7 @@ public interface Client extends GameShell
 	 * @param scale the scale of the sprite
 	 * @return the created sprite
 	 */
+	@Nullable
 	Sprite createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
 
 	/**
@@ -373,6 +374,7 @@ public interface Client extends GameShell
 	 * @param fileId the sprites file ID
 	 * @return the sprite image of the file
 	 */
+	@Nullable
 	Sprite[] getSprites(IndexDataBase source, int archiveId, int fileId);
 
 	/**
@@ -1679,14 +1681,24 @@ public interface Client extends GameShell
 	boolean isSpellSelected();
 
 	/**
-	 * Set whether or not player attack options will be hidden for clanmembers/friends
+	 * Set whether or not player attack options will be hidden for friends
 	 */
 	void setHideFriendAttackOptions(boolean yes);
 
 	/**
-	 * Set whether or not player cast options will be hidden for clanmembers/friends
+	 * Set whether or not player cast options will be hidden for friends
 	 */
 	void setHideFriendCastOptions(boolean yes);
+
+	/**
+	 * Set whether or not player attack options will be hidden for clanmates
+	 */
+	void setHideClanmateAttackOptions(boolean yes);
+
+	/**
+	 * Set whether or not player cast options will be hidden for clanmates
+	 */
+	void setHideClanmateCastOptions(boolean yes);
 
 	/**
 	 * Set spells excluded from above hiding

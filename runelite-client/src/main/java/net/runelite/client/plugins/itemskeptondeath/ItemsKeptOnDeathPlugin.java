@@ -57,7 +57,7 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemMapping;
 import net.runelite.client.plugins.Plugin;
@@ -112,6 +112,9 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private WidgetButton deepWildyButton;
 	private WidgetButton lowWildyButton;
 
@@ -122,8 +125,19 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	@VisibleForTesting
 	int wildyLevel;
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	@Override
+	protected void startUp() throws Exception
+	{
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (event.getEventName().equals("itemsKeptOnDeath"))
 		{

@@ -46,7 +46,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -89,9 +89,14 @@ public class HydraPlugin extends Plugin
 	@Inject
 	private HydraSceneOverlay poisonOverlay;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
 		inHydraInstance = checkArea();
 		lastAttackTick = -1;
 		poisonProjectiles.clear();
@@ -100,6 +105,8 @@ public class HydraPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		inHydraInstance = false;
 		hydra = null;
 		poisonProjectiles.clear();
@@ -107,7 +114,15 @@ public class HydraPlugin extends Plugin
 		lastAttackTick = -1;
 	}
 
-	@Subscribe
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(ProjectileMoved.class, this, this::onProjectileMoved);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+	}
+
 	private void onGameStateChanged(GameStateChanged state)
 	{
 		if (state.getGameState() != GameState.LOGGED_IN)
@@ -140,7 +155,6 @@ public class HydraPlugin extends Plugin
 		addOverlays();
 	}
 
-	@Subscribe
 	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (!inHydraInstance || event.getNpc().getId() != NpcID.ALCHEMICAL_HYDRA)
@@ -152,8 +166,7 @@ public class HydraPlugin extends Plugin
 		addOverlays();
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged animationChanged)
+	private void onAnimationChanged(AnimationChanged animationChanged)
 	{
 		Actor actor = animationChanged.getActor();
 
@@ -215,8 +228,7 @@ public class HydraPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileMoved(ProjectileMoved event)
 	{
 		if (!inHydraInstance || hydra == null
 			|| client.getGameCycle() >= event.getProjectile().getStartMovementCycle())
@@ -245,8 +257,7 @@ public class HydraPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (!event.getMessage().equals("The chemicals neutralise the Alchemical Hydra's defences!"))
 		{

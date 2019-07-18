@@ -40,7 +40,7 @@ import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -80,6 +80,9 @@ public class LootingBagViewerPlugin extends Plugin
 	@Inject
 	private LootingBagViewerConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private int valueToShow = -1;
@@ -93,6 +96,8 @@ public class LootingBagViewerPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+		addSubscriptions();
+
 		if (config.renderViewer())
 		{
 			overlayManager.add(overlay);
@@ -107,12 +112,19 @@ public class LootingBagViewerPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		overlayManager.remove(widgetOverlay);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
+	}
+
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getKey().equals("renderViewer"))
 		{
@@ -142,8 +154,7 @@ public class LootingBagViewerPlugin extends Plugin
 	/**
 	 * @param widgetHiddenChanged
 	 */
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged widgetHiddenChanged)
+	private void onWidgetHiddenChanged(WidgetHiddenChanged widgetHiddenChanged)
 	{
 		Widget widget = widgetHiddenChanged.getWidget();
 		if (widget.getParentId() == 5308416 && !widget.isHidden())

@@ -25,25 +25,24 @@
 package net.runelite.client.plugins.freezetimers;
 
 import com.google.inject.Provides;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.Player;
+import net.runelite.api.NPC;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.SpotAnimationChanged;
-import net.runelite.api.events.PlayerDespawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Freeze Timers",
@@ -55,7 +54,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Singleton
 public class FreezeTimersPlugin extends Plugin
 {
-	private final Map<String, FreezeInfo> freezes = new HashMap<>();
+	private static final int VORKATH_REGION = 9023;
 
 	@Inject
 	private Client client;
@@ -74,6 +73,9 @@ public class FreezeTimersPlugin extends Plugin
 
 	@Inject
 	private FreezeTimersConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showPlayers;
@@ -97,11 +99,14 @@ public class FreezeTimersPlugin extends Plugin
 	public void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(overlay);
 	}
 
 	public void shutDown()
 	{
+		eventBus.unregister(this);
 		overlayManager.remove(overlay);
 	}
 
@@ -111,8 +116,15 @@ public class FreezeTimersPlugin extends Plugin
 		return configManager.getConfig(FreezeTimersConfig.class);
 	}
 
-	@Subscribe
-	public void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+	}
+
+	private void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
 	{
 		int oldGraphic = prayerTracker.getSpotanimLastTick(graphicChanged.getActor());
 		int newGraphic = graphicChanged.getActor().getSpotAnimation();
@@ -138,8 +150,7 @@ public class FreezeTimersPlugin extends Plugin
 			System.currentTimeMillis() + length);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick tickEvent)
+	private void onGameTick(GameTick tickEvent)
 	{
 		timers.gameTick();
 		prayerTracker.gameTick();
@@ -149,27 +160,38 @@ public class FreezeTimersPlugin extends Plugin
 			{
 				SpotAnimationChanged callback = new SpotAnimationChanged();
 				callback.setActor(actor);
-				client.getCallbacks().post(callback);
+				client.getCallbacks().post(SpotAnimationChanged.class, callback);
 			}
 		}
 	}
 
-	@Subscribe
-	public void onPlayerDespawned(PlayerDespawned playerDespawned)
+	private void onNpcDespawned(NpcDespawned event)
 	{
-		final Player player = playerDespawned.getPlayer();
-		// All despawns ok: death, teleports, log out, runs away from screen
-		this.remove(player);
+		if (!isAtVorkath())
+		{
+			return;
+		}
+
+		final NPC npc = event.getNpc();
+
+		if (npc.getName() == null)
+		{
+			return;
+		}
+
+		if (npc.getName().equals("Zombified Spawn"))
+		{
+			timers.setTimerEnd(client.getLocalPlayer(), TimerType.FREEZE,
+					System.currentTimeMillis());
+		}
 	}
 
-	private void remove(Actor actor)
+	private boolean isAtVorkath()
 	{
-		freezes.remove(actor.getName());
+		return ArrayUtils.contains(client.getMapRegions(), VORKATH_REGION);
 	}
 
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("freezetimers"))
 		{

@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
@@ -87,7 +86,7 @@ public class CoxInfoBox extends Overlay
 			if (System.currentTimeMillis() < (plugin.getLastPrayTime() + 120000) && plugin.getPrayAgainstOlm() != null)
 			{
 				InfoBoxComponent prayComponent = new InfoBoxComponent();
-				Image prayImg = scaleImg(getPrayerImage(plugin.prayAgainstOlm));
+				BufferedImage prayImg = scaleImg(getPrayerImage(plugin.prayAgainstOlm));
 				prayComponent.setImage(prayImg);
 				prayComponent.setColor(Color.WHITE);
 				prayComponent.setBackgroundColor(client.isPrayerActive(prayAgainst.getPrayer())
@@ -160,7 +159,7 @@ public class CoxInfoBox extends Overlay
 		return null;
 	}
 
-	private Image scaleImg(final Image img)
+	private BufferedImage scaleImg(final BufferedImage img)
 	{
 		if (img == null)
 		{

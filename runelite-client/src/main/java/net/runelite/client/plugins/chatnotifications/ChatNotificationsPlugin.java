@@ -47,7 +47,7 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
@@ -76,6 +76,9 @@ public class ChatNotificationsPlugin extends Plugin
 	@Inject
 	private RuneLiteProperties runeLiteProperties;
 
+	@Inject
+	private EventBus eventBus;
+
 	//Custom Highlights
 	private Pattern usernameMatcher = null;
 	private String usernameReplacer = "";
@@ -102,17 +105,27 @@ public class ChatNotificationsPlugin extends Plugin
 	public void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
+
 		updateHighlights();
 	}
 
 	@Override
 	public void shutDown()
 	{
+		eventBus.unregister(this);
+
 		this.privateMessageHashes.clear();
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -123,8 +136,7 @@ public class ChatNotificationsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("chatnotification"))
 		{
@@ -150,8 +162,7 @@ public class ChatNotificationsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	void onChatMessage(ChatMessage chatMessage)
 	{
 		MessageNode messageNode = chatMessage.getMessageNode();
 		boolean update = false;

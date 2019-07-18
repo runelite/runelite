@@ -1,7 +1,8 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
- * Copyright (c) 2018, lucouswin <https://github.com/lucouswin>
+ * Copyright (c) 2019, alanbaumgartner <https://github.com/alanbaumgartner>
+ * Copyright (c) 2019, Kyle <https://github.com/kyleeld>
+ * Copyright (c) 2019, lucouswin <https://github.com/lucouswin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1668,28 +1669,56 @@ default CharterOption charterOption()
 	//------------------------------------------------------------//
 
 	@ConfigItem(
-		keyName = "removeFreezePlayerToB",
-		name = "Remove freeze in ToB",
-		description = "Removes the freeze option for ice barrage, ice blitz, entangle etc. in ToB",
+		keyName = "hideCastToB",
+		name = "Hide cast in ToB",
+		description = "Hides the cast option for clanmates and friends in ToB",
 		position = 0,
 		group = "PVM"
 	)
 
-	default boolean getRemoveFreezePlayerToB()
+	default boolean hideCastToB()
 		{
 			return true;
 		}
 
 	@ConfigItem(
-		keyName = "removeFreezePlayerCoX",
-		name = "Remove freeze in CoX",
-		description = "Removes the freeze option for ice barrage, ice blitz, entangle etc. in CoX",
+		keyName = "hideCastIgnoredToB",
+		name = "Ignored spells",
+		description = "Spells that should not be hidden from being cast, separated by a comma",
 		position = 1,
+		group = "PVM",
+		hidden = true,
+		unhide = "hideCastToB"
+	)
+	default String hideCastIgnoredToB()
+	{
+		return "cure other, energy transfer, heal other, vengeance other";
+	}
+
+	@ConfigItem(
+		keyName = "hideCastCoX",
+		name = "Hide cast in CoX",
+		description = "Hides the cast option for clanmates and friends in CoX",
+		position = 2,
 		group = "PVM"
 	)
 
-	default boolean getRemoveFreezePlayerCoX()
-		{
-			return true;
-		}
+	default boolean hideCastCoX()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "hideCastIgnoredCoX",
+		name = "Ignored spells",
+		description = "Spells that should not be hidden from being cast, separated by a comma",
+		position = 3,
+		group = "PVM",
+		hidden = true,
+		unhide = "hideCastCoX"
+	)
+	default String hideCastIgnoredCoX()
+	{
+		return "cure other, energy transfer, heal other, vengeance other";
+	}
 }

@@ -50,7 +50,6 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -128,10 +127,6 @@ public class PluginManagerTest
 		pluginManager = new PluginManager(false, null, null, null, null, null);
 		pluginManager.loadCorePlugins();
 		plugins = pluginManager.getPlugins();
-
-		// Check that the plugins register with the eventbus without errors
-		EventBus eventBus = new EventBus();
-		plugins.forEach(eventBus::register);
 
 		expected = pluginClasses.stream()
 			.map(cl -> (PluginDescriptor) cl.getAnnotation(PluginDescriptor.class))

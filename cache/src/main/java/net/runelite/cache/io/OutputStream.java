@@ -27,6 +27,7 @@ package net.runelite.cache.io;
 import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 public final class OutputStream extends java.io.OutputStream
@@ -56,7 +57,7 @@ public final class OutputStream extends java.io.OutputStream
 			int newCapacity = buffer.capacity() * 2;
 
 			ByteBuffer old = buffer;
-			old.flip();
+			((Buffer) old).flip();
 
 			buffer = ByteBuffer.allocate(newCapacity);
 
@@ -196,7 +197,7 @@ public final class OutputStream extends java.io.OutputStream
 
 	public byte[] flip()
 	{
-		buffer.flip();
+		((Buffer) buffer).flip();
 		byte[] b = new byte[buffer.limit()];
 		buffer.get(b);
 		return b;

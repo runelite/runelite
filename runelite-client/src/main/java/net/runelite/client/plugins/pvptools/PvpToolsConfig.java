@@ -76,8 +76,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "hideAttack",
 		name = "Hide attack",
 		description = "Hides the attack option for clanmates, friends, or both",
-		position = 5,
-		group = "Right-Click Attack Options"
+		position = 5
 	)
 	default boolean hideAttack()
 	{
@@ -85,11 +84,23 @@ public interface PvpToolsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideAttackMode",
+		name = "Mode",
+		description = "",
+		position = 6,
+		hidden = true,
+		unhide = "hideAttack"
+	)
+	default AttackMode hideAttackMode()
+	{
+		return AttackMode.FRIENDS;
+	}
+
+	@ConfigItem(
 		keyName = "hideCast",
 		name = "Hide cast",
 		description = "Hides the cast option for clanmates, friends, or both",
-		position = 7,
-		group = "Right-Click Attack Options"
+		position = 7
 	)
 	default boolean hideCast()
 	{
@@ -97,10 +108,36 @@ public interface PvpToolsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideCastMode",
+		name = "Mode",
+		description = "",
+		position = 8,
+		hidden = true,
+		unhide = "hideCast"
+	)
+	default AttackMode hideCastMode()
+	{
+		return AttackMode.FRIENDS;
+	}
+
+	@ConfigItem(
+		keyName = "hideCastIgnored",
+		name = "Ignored spells",
+		description = "Spells that should not be hidden from being cast, separated by a comma",
+		position = 9,
+		hidden = true,
+		unhide = "hideCast"
+	)
+	default String hideCastIgnored()
+	{
+		return "cure other, energy transfer, heal other, vengeance other";
+	}
+
+	@ConfigItem(
 		keyName = "riskCalculator",
 		name = "Risk Calculator",
 		description = "Enables a panel in the PvP Tools Panel that shows the players current risk",
-		position = 13
+		position = 10
 	)
 	default boolean riskCalculatorEnabled()
 	{
@@ -111,7 +148,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "missingPlayers",
 		name = "Missing CC Players",
 		description = "Adds a button to the PvP Tools panel that opens a window showing which CC members are not at the current players location",
-		position = 14
+		position = 11
 	)
 	default boolean missingPlayersEnabled()
 	{
@@ -122,7 +159,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "currentPlayers",
 		name = "Current CC Players",
 		description = "Adds a button to the PvP Tools panel that opens a window showing which CC members currently at the players location",
-		position = 15
+		position = 12
 	)
 	default boolean currentPlayersEnabled()
 	{
