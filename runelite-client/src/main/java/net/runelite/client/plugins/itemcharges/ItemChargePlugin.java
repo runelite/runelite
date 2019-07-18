@@ -32,8 +32,14 @@ import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
-
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
@@ -49,6 +55,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+
+
 
 @PluginDescriptor(
 	name = "Item Charges",
@@ -243,9 +251,14 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.equals(RING_OF_FORGING_USED_TEXT))
 			{
-				final Item[] items = client.getItemContainer(InventoryID.EQUIPMENT).getItems();
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 
-				if (items[EquipmentInventorySlot.RING.getSlotIdx()].getId() == ItemID.RING_OF_FORGING);
+				// Determine if the player smelted with a Ring of Forging equipped.
+				if (equipment == null)
+				{
+					return;
+				}
+				else if (equipment.getItems()[EquipmentInventorySlot.RING.getSlotIdx()].getId() == ItemID.RING_OF_FORGING);
 				{
 					updateRingOfForgingCharges(config.ringOfForging() - 1);
 				}

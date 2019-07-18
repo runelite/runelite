@@ -29,8 +29,8 @@ import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
+
+import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
