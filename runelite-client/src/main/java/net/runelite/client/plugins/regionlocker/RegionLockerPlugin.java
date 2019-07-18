@@ -53,12 +53,12 @@ import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 		name = RegionLockerPlugin.PLUGIN_NAME,
-		description = "Adds graphical effect to locked regions.",
-		tags = {"region", "locker", "chunk", "map square"}
+		description = "Settings for the ChunkLite client.",
+		tags = {"region", "locker", "chunk", "map", "square"}
 )
 public class RegionLockerPlugin extends Plugin
 {
-	static final String PLUGIN_NAME = "Region Locker";
+	static final String PLUGIN_NAME = "ChunkLite";
 	static final String CONFIG_KEY = "regionlocker";
 	private static final String CHUNK_COMMAND = "!chunks";
 

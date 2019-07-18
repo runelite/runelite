@@ -35,8 +35,8 @@ public interface RegionLockerConfig extends Config
 {
 	@ConfigItem(
 			keyName = "renderLockedRegions",
-			name = "Render locked regions",
-			description = "Adds graphical change to all regions that are not in the unlocked region list",
+			name = "Enable gray chunks",
+			description = "Adds graphical change to all chunk that are locked",
 			position = 0
 	)
 	default boolean renderLockedRegions()
@@ -46,8 +46,8 @@ public interface RegionLockerConfig extends Config
 
 	@ConfigItem(
 			keyName = "renderRegionBorders",
-			name = "Render region borders",
-			description = "Draws the region borders in the environment",
+			name = "Render chunk borders",
+			description = "Draws the chunk borders in the environment",
 			position = 1
 	)
 	default boolean renderRegionBorders()
@@ -57,8 +57,8 @@ public interface RegionLockerConfig extends Config
 
 	@ConfigItem(
 			keyName = "chunkCommand",
-			name = "Chunk command",
-			description = "Configures whether the chunk command is enabled<br> This command shows your total unlocked chunks<br> !chunk",
+			name = "Chunks command",
+			description = "Configures whether the chunk command is enabled<br> This command shows your total unlocked chunks<br> !chunks",
 			position = 2
 	)
 	default boolean chunkCommand()
@@ -69,7 +69,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "unlockUnderground",
 			name = "Unlock underground",
-			description = "Unlock all underground areas",
+			description = "Unlock all underground chunks",
 			position = 4
 	)
 	default boolean unlockUnderground()
@@ -80,7 +80,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "unlockRealms",
 			name = "Unlock realms",
-			description = "Unlock all realms like Zanaris and the TzHaar area",
+			description = "Unlock all realm chunks like Zanaris and the TzHaar area",
 			position = 5
 	)
 	default boolean unlockRealms()
@@ -90,8 +90,8 @@ public interface RegionLockerConfig extends Config
 
 	@ConfigItem(
 			keyName = "drawMapOverlay",
-			name = "Draw regions on map",
-			description = "Draw a color overlay for each locked/unlocked region",
+			name = "Draw chunks on map",
+			description = "Draw a color overlay for each locked/unlocked chunk",
 			position = 6
 	)
 	default boolean drawMapOverlay()
@@ -102,7 +102,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "invertMapOverlay",
 			name = "Invert map overlay",
-			description = "Switches which regions the map will draw the color overlay for (true = locked, false = unlocked)",
+			description = "Switches which chunks the map will draw the color overlay for (true = locked, false = unlocked)",
 			position = 7
 	)
 	default boolean invertMapOverlay()
@@ -113,7 +113,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "mapOverlayColor",
 			name = "Map overlay color",
-			description = "The color the map overlay will draw the regions in",
+			description = "The color the map overlay will draw the chunks in",
 			position = 8
 	)
 	default Color mapOverlayColor()
@@ -135,7 +135,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "unlockableOverlayColor",
 			name = "Unlockable overlay color",
-			description = "The color the map overlay will draw the unlockable regions in",
+			description = "The color the map overlay will draw the unlockable chunks in",
 			position = 10
 	)
 	default Color unlockableOverlayColor()
@@ -146,7 +146,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "unlockableOverlayAlpha",
 			name = "Map overlay alpha",
-			description = "How transparent the map overlay for unlockable regions will be (0-255)",
+			description = "How transparent the map overlay for unlockable chunks will be (0-255)",
 			position = 11
 	)
 	default int unlockableOverlayAlpha()
@@ -157,7 +157,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "blacklistedOverlayColor",
 			name = "Blacklisted overlay color",
-			description = "The color the map overlay will draw the blacklisted regions in",
+			description = "The color the map overlay will draw the blacklisted chunks in",
 			position = 12
 	)
 	default Color blacklistedOverlayColor()
@@ -168,7 +168,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "blacklistedOverlayAlpha",
 			name = "Blacklisted overlay alpha",
-			description = "How transparent the map overlay for blacklisted regions will be (0-255)",
+			description = "How transparent the map overlay for blacklisted chunks will be (0-255)",
 			position = 13
 	)
 	default int blacklistedOverlayAlpha()
@@ -178,8 +178,8 @@ public interface RegionLockerConfig extends Config
 
 	@ConfigItem(
 			keyName = "regionBorderColor",
-			name = "Region border color",
-			description = "The color of the region borders",
+			name = "Chunk border color",
+			description = "The color of the chunk borders",
 			position = 14
 	)
 	default Color regionBorderColor()
@@ -189,8 +189,8 @@ public interface RegionLockerConfig extends Config
 
 	@ConfigItem(
 			keyName = "regionBorderAlpha",
-			name = "Region border alpha",
-			description = "How transparent the region borders will be (0-255)",
+			name = "Chunk border alpha",
+			description = "How transparent the chunk borders will be (0-255)",
 			position = 15
 	)
 	default int regionBorderAlpha()
@@ -200,7 +200,7 @@ public interface RegionLockerConfig extends Config
 
 	@ConfigItem(
 			keyName = "regionBorderWidth",
-			name = "Region border width",
+			name = "Chunk border width",
 			description = "How wide the region border will be",
 			position = 16
 	)
@@ -212,7 +212,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "drawMapGrid",
 			name = "Draw map grid",
-			description = "Draw the grid of regions on the map",
+			description = "Draw the grid of chunks on the map",
 			position = 17
 	)
 	default boolean drawMapGrid()
@@ -223,7 +223,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "drawRegionId",
 			name = "Draw region IDs",
-			description = "Draw the region ID for each region on the map",
+			description = "Draw the chunk ID for each chunk on the map",
 			position = 18
 	)
 	default boolean drawRegionId()
@@ -234,7 +234,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "unlockKey",
 			name = "Unlock hotkey",
-			description = "When you hold this key you can click on the map to unlock a region",
+			description = "When you hold this key you can click on the map to unlock a chunk",
 			position = 19
 	)
 	default Keybind unlockKey()
@@ -245,7 +245,7 @@ public interface RegionLockerConfig extends Config
 	@ConfigItem(
 			keyName = "blacklistKey",
 			name = "Blacklist hotkey",
-			description = "When you hold this key you can click on the map to blacklist a region",
+			description = "When you hold this key you can click on the map to blacklist a chunk",
 			position = 20
 	)
 	default Keybind blacklistKey()
@@ -255,7 +255,7 @@ public interface RegionLockerConfig extends Config
 
 	@ConfigItem(
 			keyName = "unlockedRegions",
-			name = "Unlocked regions",
+			name = "Unlocked chunks",
 			description = "List of unlocked regions seperated by a ',' symbol",
 			position = 21
 	)
@@ -266,7 +266,7 @@ public interface RegionLockerConfig extends Config
 
 	@ConfigItem(
 			keyName = "unlockableRegions",
-			name = "Unlockable regions",
+			name = "Unlockable chunks",
 			description = "List of unlockable regions seperated by a ',' symbol",
 			position = 22
 	)
@@ -277,7 +277,7 @@ public interface RegionLockerConfig extends Config
 
 	@ConfigItem(
 			keyName = "blacklistedRegions",
-			name = "Blacklisted regions",
+			name = "Blacklisted chunks",
 			description = "List of blacklisted regions seperated by a ',' symbol",
 			position = 23
 	)
