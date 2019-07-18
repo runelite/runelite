@@ -5,7 +5,7 @@ cache:
   directories:
     - $HOME/.m2
 jdk:
-- openjdk8
+- oraclejdk8
 install: true
 script: ./travis/build.sh
 before_install:
