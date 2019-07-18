@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.29-SNAPSHOT</version>
+		<version>1.5.30-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>mixins</artifactId>
