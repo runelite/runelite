@@ -97,4 +97,15 @@ public interface BankConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "seedVaultValue",
+		name = "Show seed vault value",
+		description = "Adds the total value of all seeds inside the seed vault to the title",
+		position = 7
+	)
+	default boolean seedVaultValue()
+	{
+		return true;
+	}
 }
