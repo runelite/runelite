@@ -4,200 +4,193 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("d")
+@ObfuscatedName("m")
 @Implements("GrandExchangeOfferUnitPriceComparator")
 final class GrandExchangeOfferUnitPriceComparator implements Comparator {
-   @ObfuscatedName("gz")
-   @ObfuscatedSignature(
-      signature = "Lln;"
-   )
-   @Export("compass")
-   static Sprite compass;
-   @ObfuscatedName("lr")
-   @ObfuscatedSignature(
-      signature = "Lcs;"
-   )
-   @Export("tempMenuAction")
-   static MenuAction tempMenuAction;
+	@ObfuscatedName("w")
+	@Export("localPlayerName")
+	public static String localPlayerName;
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Ll;Ll;I)I",
-      garbageValue = "-120071238"
-   )
-   @Export("compareTyped")
-   int compareTyped(GrandExchangeEvent var1, GrandExchangeEvent var2) {
-      return var1.grandExchangeOffer.unitPrice < var2.grandExchangeOffer.unitPrice ? -1 : (var2.grandExchangeOffer.unitPrice == var1.grandExchangeOffer.unitPrice ? 0 : 1);
-   }
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(Li;Li;B)I",
+		garbageValue = "-46"
+	)
+	@Export("compare_bridged")
+	int compare_bridged(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+		return var1.grandExchangeOffer.unitPrice < var2.grandExchangeOffer.unitPrice ? -1 : (var2.grandExchangeOffer.unitPrice == var1.grandExchangeOffer.unitPrice ? 0 : 1);
+	}
 
-   public int compare(Object var1, Object var2) {
-      return this.compareTyped((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
-   }
+	public int compare(Object var1, Object var2) {
+		return this.compare_bridged((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+	}
 
-   public boolean equals(Object var1) {
-      return super.equals(var1);
-   }
+	public boolean equals(Object var1) {
+		return super.equals(var1);
+	}
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lir;B)V",
-      garbageValue = "23"
-   )
-   @Export("setVarbitDefinitionArchive")
-   public static void setVarbitDefinitionArchive(AbstractArchive var0) {
-      VarbitDefinition.VarbitDefinition_archive = var0;
-   }
+	@ObfuscatedName("jp")
+	@ObfuscatedSignature(
+		signature = "(IB)V",
+		garbageValue = "31"
+	)
+	static final void method124(int var0) {
+		class65.method1176();
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1500839037"
-   )
-   public static int method125(int var0, int var1) {
-      return (var0 << 8) + var1;
-   }
+		for (ObjectSound var1 = (ObjectSound)ObjectSound.objectSounds.last(); var1 != null; var1 = (ObjectSound)ObjectSound.objectSounds.previous()) {
+			if (var1.obj != null) {
+				var1.set();
+			}
+		}
 
-   @ObfuscatedName("f")
-   public static int method134(long var0) {
-      return (int)(var0 >>> 0 & 127L);
-   }
+		int var4 = GrandExchangeOfferWorldComparator.method61(var0).type;
+		if (var4 != 0) {
+			int var2 = Varps.Varps_main[var0];
+			if (var4 == 1) {
+				if (var2 == 1) {
+					Rasterizer3D.Rasterizer3D_setBrightness(0.9D);
+					((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).setBrightness(0.9D);
+				}
 
-   @ObfuscatedName("gz")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "2032203362"
-   )
-   static final int method131() {
-      if (ReflectionCheck.clientPreferences.roofsHidden) {
-         return SoundSystem.plane;
-      } else {
-         int var0 = 3;
-         if (WorldMapIcon1.cameraPitch < 310) {
-            int var1;
-            int var2;
-            if (Client.oculusOrbState == 1) {
-               var1 = MouseHandler.oculusOrbFocalPointX >> 7;
-               var2 = ScriptEvent.oculusOrbFocalPointY >> 7;
-            } else {
-               var1 = Canvas.localPlayer.x >> 7;
-               var2 = Canvas.localPlayer.y >> 7;
-            }
+				if (var2 == 2) {
+					Rasterizer3D.Rasterizer3D_setBrightness(0.8D);
+					((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).setBrightness(0.8D);
+				}
 
-            int var3 = WorldMapSection2.cameraX >> 7;
-            int var4 = GrandExchangeOfferNameComparator.cameraZ >> 7;
-            if (var3 < 0 || var4 < 0 || var3 >= 104 || var4 >= 104) {
-               return SoundSystem.plane;
-            }
+				if (var2 == 3) {
+					Rasterizer3D.Rasterizer3D_setBrightness(0.7D);
+					((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).setBrightness(0.7D);
+				}
 
-            if (var1 < 0 || var2 < 0 || var1 >= 104 || var2 >= 104) {
-               return SoundSystem.plane;
-            }
+				if (var2 == 4) {
+					Rasterizer3D.Rasterizer3D_setBrightness(0.6D);
+					((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).setBrightness(0.6D);
+				}
 
-            if ((Tiles.Tiles_renderFlags[SoundSystem.plane][var3][var4] & 4) != 0) {
-               var0 = SoundSystem.plane;
-            }
+				FontName.method5317();
+			}
 
-            int var5;
-            if (var1 > var3) {
-               var5 = var1 - var3;
-            } else {
-               var5 = var3 - var1;
-            }
+			if (var4 == 3) {
+				short var3 = 0;
+				if (var2 == 0) {
+					var3 = 255;
+				}
 
-            int var6;
-            if (var2 > var4) {
-               var6 = var2 - var4;
-            } else {
-               var6 = var4 - var2;
-            }
+				if (var2 == 1) {
+					var3 = 192;
+				}
 
-            int var7;
-            int var8;
-            if (var5 > var6) {
-               var7 = var6 * 65536 / var5;
-               var8 = 32768;
+				if (var2 == 2) {
+					var3 = 128;
+				}
 
-               while (var3 != var1) {
-                  if (var3 < var1) {
-                     ++var3;
-                  } else if (var3 > var1) {
-                     --var3;
-                  }
+				if (var2 == 3) {
+					var3 = 64;
+				}
 
-                  if ((Tiles.Tiles_renderFlags[SoundSystem.plane][var3][var4] & 4) != 0) {
-                     var0 = SoundSystem.plane;
-                  }
+				if (var2 == 4) {
+					var3 = 0;
+				}
 
-                  var8 += var7;
-                  if (var8 >= 65536) {
-                     var8 -= 65536;
-                     if (var4 < var2) {
-                        ++var4;
-                     } else if (var4 > var2) {
-                        --var4;
-                     }
+				if (var3 != Client.field911) {
+					if (Client.field911 == 0 && Client.field889 != -1) {
+						class169.method3503(WorldMapRegion.archive6, Client.field889, 0, var3, false);
+						Client.field699 = false;
+					} else if (var3 == 0) {
+						NetSocket.method3553();
+						Client.field699 = false;
+					} else if (class197.field2402 != 0) {
+						ScriptFrame.field529 = var3;
+					} else {
+						Interpreter.midiPcmStream.method3706(var3);
+					}
 
-                     if ((Tiles.Tiles_renderFlags[SoundSystem.plane][var3][var4] & 4) != 0) {
-                        var0 = SoundSystem.plane;
-                     }
-                  }
-               }
-            } else if (var6 > 0) {
-               var7 = var5 * 65536 / var6;
-               var8 = 32768;
+					Client.field911 = var3;
+				}
+			}
 
-               while (var4 != var2) {
-                  if (var4 < var2) {
-                     ++var4;
-                  } else if (var4 > var2) {
-                     --var4;
-                  }
+			if (var4 == 4) {
+				if (var2 == 0) {
+					Client.soundEffectVolume = 127;
+				}
 
-                  if ((Tiles.Tiles_renderFlags[SoundSystem.plane][var3][var4] & 4) != 0) {
-                     var0 = SoundSystem.plane;
-                  }
+				if (var2 == 1) {
+					Client.soundEffectVolume = 96;
+				}
 
-                  var8 += var7;
-                  if (var8 >= 65536) {
-                     var8 -= 65536;
-                     if (var3 < var1) {
-                        ++var3;
-                     } else if (var3 > var1) {
-                        --var3;
-                     }
+				if (var2 == 2) {
+					Client.soundEffectVolume = 64;
+				}
 
-                     if ((Tiles.Tiles_renderFlags[SoundSystem.plane][var3][var4] & 4) != 0) {
-                        var0 = SoundSystem.plane;
-                     }
-                  }
-               }
-            }
-         }
+				if (var2 == 3) {
+					Client.soundEffectVolume = 32;
+				}
 
-         if (Canvas.localPlayer.x >= 0 && Canvas.localPlayer.y >= 0 && Canvas.localPlayer.x < 13312 && Canvas.localPlayer.y < 13312) {
-            if ((Tiles.Tiles_renderFlags[SoundSystem.plane][Canvas.localPlayer.x >> 7][Canvas.localPlayer.y >> 7] & 4) != 0) {
-               var0 = SoundSystem.plane;
-            }
+				if (var2 == 4) {
+					Client.soundEffectVolume = 0;
+				}
+			}
 
-            return var0;
-         } else {
-            return SoundSystem.plane;
-         }
-      }
-   }
+			if (var4 == 5) {
+				Client.field789 = var2;
+			}
 
-   @ObfuscatedName("gv")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-239357025"
-   )
-   static final void method136(int var0, int var1) {
-      if (Client.hintArrowType == 2) {
-         WorldMapLabel.worldToScreen((Client.hintArrowX - class50.baseX << 7) + Client.hintArrowSubX, (Client.hintArrowY - GraphicsObject.baseY << 7) + Client.hintArrowSubY, Client.hintArrowHeight * 2);
-         if (Client.viewportTempX > -1 && Client.cycle % 20 < 10) {
-            Player.headIconHintSprites[0].drawAt2(var0 + Client.viewportTempX - 12, Client.viewportTempY + var1 - 28);
-         }
-      }
+			if (var4 == 6) {
+				Client.chatEffects = var2;
+			}
 
-   }
+			if (var4 == 9) {
+				Client.field809 = var2;
+			}
+
+			if (var4 == 10) {
+				if (var2 == 0) {
+					Client.field892 = 127;
+				}
+
+				if (var2 == 1) {
+					Client.field892 = 96;
+				}
+
+				if (var2 == 2) {
+					Client.field892 = 64;
+				}
+
+				if (var2 == 3) {
+					Client.field892 = 32;
+				}
+
+				if (var2 == 4) {
+					Client.field892 = 0;
+				}
+			}
+
+			if (var4 == 17) {
+				Client.followerIndex = var2 & 65535;
+			}
+
+			if (var4 == 18) {
+				Client.playerAttackOption = (AttackOption)SoundSystem.findEnumerated(AbstractArchive.method4141(), var2);
+				if (Client.playerAttackOption == null) {
+					Client.playerAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
+				}
+			}
+
+			if (var4 == 19) {
+				if (var2 == -1) {
+					Client.combatTargetPlayerIndex = -1;
+				} else {
+					Client.combatTargetPlayerIndex = var2 & 2047;
+				}
+			}
+
+			if (var4 == 22) {
+				Client.npcAttackOption = (AttackOption)SoundSystem.findEnumerated(AbstractArchive.method4141(), var2);
+				if (Client.npcAttackOption == null) {
+					Client.npcAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
+				}
+			}
+
+		}
+	}
 }

@@ -107,11 +107,11 @@ public interface RSWidget extends Widget
 	@Override
 	void setTextColor(int textColor);
 
-	@Import("transparency")
+	@Import("transparencyTop")
 	@Override
 	int getOpacity();
 
-	@Import("transparency")
+	@Import("transparencyTop")
 	@Override
 	void setOpacity(int opacity);
 

@@ -1,113 +1,83 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gl")
+@ObfuscatedName("gh")
 @Implements("LoginPacket")
-public class LoginPacket implements ClientPacketMarker {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lgl;"
-   )
-   public static final LoginPacket field473;
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lgl;"
-   )
-   static final LoginPacket field474;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lgl;"
-   )
-   public static final LoginPacket field475;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lgl;"
-   )
-   public static final LoginPacket field476;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lgl;"
-   )
-   static final LoginPacket field477;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "[Lgl;"
-   )
-   @Export("LoginPacket_indexedValues")
-   static final LoginPacket[] LoginPacket_indexedValues;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1743806243
-   )
-   @Export("id")
-   public final int id;
+public class LoginPacket implements class181 {
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "Lgh;"
+	)
+	public static final LoginPacket field2306;
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "Lgh;"
+	)
+	static final LoginPacket field2307;
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "Lgh;"
+	)
+	public static final LoginPacket field2308;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "Lgh;"
+	)
+	public static final LoginPacket field2311;
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "Lgh;"
+	)
+	static final LoginPacket field2310;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "[Lgh;"
+	)
+	@Export("LoginPacket_indexedValues")
+	static final LoginPacket[] LoginPacket_indexedValues;
+	@ObfuscatedName("a")
+	static String[] field2309;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = 1829786709
+	)
+	@Export("id")
+	public final int id;
 
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "0"
-   )
-   LoginPacket(int var1, int var2) {
-      this.id = var1;
-   }
+	static {
+		field2306 = new LoginPacket(14, 0);
+		field2307 = new LoginPacket(15, 4);
+		field2308 = new LoginPacket(16, -2);
+		field2311 = new LoginPacket(18, -2);
+		field2310 = new LoginPacket(27, 0);
+		LoginPacket_indexedValues = new LoginPacket[32];
+		LoginPacket[] var0 = new LoginPacket[]{field2310, field2306, field2308, field2311, field2307};
+		LoginPacket[] var1 = var0;
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZS)Ldk;",
-      garbageValue = "15345"
-   )
-   @Export("getPreferencesFile")
-   public static AccessFile getPreferencesFile(String var0, String var1, boolean var2) {
-      File var3 = new File(class168.field1115, "preferences" + var0 + ".dat");
-      if (var3.exists()) {
-         try {
-            AccessFile var11 = new AccessFile(var3, "rw", 10000L);
-            return var11;
-         } catch (IOException var10) {
-         }
-      }
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			LoginPacket_indexedValues[var1[var2].id] = var1[var2];
+		}
 
-      String var4 = "";
-      if (PacketBuffer.field667 == 33) {
-         var4 = "_rc";
-      } else if (PacketBuffer.field667 == 34) {
-         var4 = "_wip";
-      }
+	}
 
-      File var5 = new File(WorldMapSection2.userHomeDirectory, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      AccessFile var6;
-      if (!var2 && var5.exists()) {
-         try {
-            var6 = new AccessFile(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var9) {
-         }
-      }
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "0"
+	)
+	LoginPacket(int var1, int var2) {
+		this.id = var1;
+	}
 
-      try {
-         var6 = new AccessFile(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var8) {
-         throw new RuntimeException();
-      }
-   }
-
-   static {
-      field473 = new LoginPacket(14, 0);
-      field474 = new LoginPacket(15, 4);
-      field475 = new LoginPacket(16, -2);
-      field476 = new LoginPacket(18, -2);
-      field477 = new LoginPacket(27, 0);
-      LoginPacket_indexedValues = new LoginPacket[32];
-      LoginPacket[] var0 = WorldMapIcon2.LoginPacket_values();
-
-      for (int var1 = 0; var1 < var0.length; ++var1) {
-         LoginPacket_indexedValues[var0[var1].id] = var0[var1];
-      }
-
-   }
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(Lbb;B)V",
+		garbageValue = "-119"
+	)
+	@Export("runScriptEvent")
+	public static void runScriptEvent(ScriptEvent var0) {
+		class96.runScript(var0, 500000);
+	}
 }

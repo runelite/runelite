@@ -159,6 +159,14 @@ public class Mapper
 				continue;
 			}
 
+			//if (cf.getInterfaces().getMyInterfaces().size() != 0)
+			//{
+			//	for (Method m : cf.getMethods())
+			//	{
+			//		if (m.)
+			//	}
+			//}
+
 			List<Method> methods1 = cf.getMethods().stream()
 				.filter(m -> !m.isStatic())
 				.filter(m -> !m.getName().equals("<init>"))

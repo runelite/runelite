@@ -4,7 +4,7 @@ import net.runelite.mapping.Import;
 
 public interface RSUserList<T extends RSUser>
 {
-	@Import("size0")
+	@Import("getSize")
 	int getCount();
 
 	@Import("array")

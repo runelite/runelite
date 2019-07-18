@@ -4,261 +4,227 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("p")
+@ObfuscatedName("ax")
 @Implements("WorldMapSection1")
 public class WorldMapSection1 implements WorldMapSection {
-   @ObfuscatedName("h")
-   @Export("osNameLowerCase")
-   public static String osNameLowerCase;
-   @ObfuscatedName("dr")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   @Export("archive8")
-   static Archive archive8;
-   @ObfuscatedName("go")
-   @ObfuscatedGetter(
-      intValue = -948290091
-   )
-   static int field1089;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1389733201
-   )
-   int field1090;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1622972483
-   )
-   int field1091;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 702057599
-   )
-   int field1092;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1068088609
-   )
-   int field1093;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1257151629
-   )
-   int field1094;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1351623663
-   )
-   int field1095;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1016557381
-   )
-   int field1096;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 884736611
-   )
-   int field1097;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 395786901
-   )
-   int field1098;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -627081155
-   )
-   int field1099;
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = -309142761
+	)
+	@Export("minPlane")
+	int minPlane;
+	@ObfuscatedName("w")
+	@ObfuscatedGetter(
+		intValue = 993590079
+	)
+	@Export("planes")
+	int planes;
+	@ObfuscatedName("e")
+	@ObfuscatedGetter(
+		intValue = 1911619349
+	)
+	@Export("regionStartX")
+	int regionStartX;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = -1414952525
+	)
+	@Export("regionStartY")
+	int regionStartY;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = 586024271
+	)
+	@Export("regionEndX")
+	int regionEndX;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = 875825551
+	)
+	@Export("regionEndY")
+	int regionEndY;
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lag;I)V",
-      garbageValue = "1384899025"
-   )
-   @Export("expandBounds")
-   public void expandBounds(WorldMapArea area) {
-      if (area.minX0 > this.field1096) {
-         area.minX0 = this.field1096;
-      }
+	WorldMapSection1() {
+	}
 
-      if (area.maxX0 < this.field1098) {
-         area.maxX0 = this.field1098;
-      }
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(Lal;B)V",
+		garbageValue = "-53"
+	)
+	@Export("expandBounds")
+	public void expandBounds(WorldMapArea var1) {
+		if (var1.regionLowX > this.regionEndX) {
+			var1.regionLowX = this.regionEndX;
+		}
 
-      if (area.minY0 > this.field1097) {
-         area.minY0 = this.field1097;
-      }
+		if (var1.regionHighX < this.regionEndX) {
+			var1.regionHighX = this.regionEndX;
+		}
 
-      if (area.maxY0 < this.field1099) {
-         area.maxY0 = this.field1099;
-      }
+		if (var1.regionLowY > this.regionEndY) {
+			var1.regionLowY = this.regionEndY;
+		}
 
-   }
+		if (var1.regionHighY < this.regionEndY) {
+			var1.regionHighY = this.regionEndY;
+		}
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(IIIB)Z",
-      garbageValue = "93"
-   )
-   @Export("containsCoord")
-   public boolean containsCoord(int plane, int x, int y) {
-      return plane >= this.field1090 && plane < this.field1090 + this.field1091 ? x >> 6 >= this.field1092 && x >> 6 <= this.field1094 && y >> 6 >= this.field1093 && y >> 6 <= this.field1095 : false;
-   }
+	}
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "4"
-   )
-   @Export("containsPosition")
-   public boolean containsPosition(int x, int y) {
-      return x >> 6 >= this.field1096 && x >> 6 <= this.field1098 && y >> 6 >= this.field1097 && y >> 6 <= this.field1099;
-   }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(IIII)Z",
+		garbageValue = "59484528"
+	)
+	@Export("containsCoord")
+	public boolean containsCoord(int var1, int var2, int var3) {
+		if (var1 >= this.minPlane && var1 < this.planes + this.minPlane) {
+			return var2 >> 6 == this.regionStartX && var3 >> 6 == this.regionStartY;
+		} else {
+			return false;
+		}
+	}
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "1545934424"
-   )
-   @Export("position")
-   public int[] position(int plane, int x, int y) {
-      if (!this.containsCoord(plane, x, y)) {
-         return null;
-      } else {
-         int[] var4 = new int[]{this.field1096 * 64 - this.field1092 * 64 + x, y + (this.field1097 * 64 - this.field1093 * 64)};
-         return var4;
-      }
-   }
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(IIB)Z",
+		garbageValue = "56"
+	)
+	@Export("containsPosition")
+	public boolean containsPosition(int var1, int var2) {
+		return var1 >> 6 == this.regionEndX && var2 >> 6 == this.regionEndY;
+	}
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(III)Lhu;",
-      garbageValue = "-1916486802"
-   )
-   @Export("coord")
-   public Coord coord(int x, int y) {
-      if (!this.containsPosition(x, y)) {
-         return null;
-      } else {
-         int var3 = this.field1092 * 64 - this.field1096 * 64 + x;
-         int var4 = this.field1093 * 64 - this.field1097 * 64 + y;
-         return new Coord(this.field1090, var3, var4);
-      }
-   }
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(IIIB)[I",
+		garbageValue = "12"
+	)
+	@Export("getBorderTileLengths")
+	public int[] getBorderTileLengths(int var1, int var2, int var3) {
+		if (!this.containsCoord(var1, var2, var3)) {
+			return null;
+		} else {
+			int[] var4 = new int[]{this.regionEndX * 64 - this.regionStartX * 64 + var2, var3 + (this.regionEndY * 64 - this.regionStartY * 64)};
+			return var4;
+		}
+	}
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Lgr;B)V",
-      garbageValue = "-113"
-   )
-   @Export("read")
-   public void read(Buffer buffer) {
-      this.field1090 = buffer.readUnsignedByte();
-      this.field1091 = buffer.readUnsignedByte();
-      this.field1092 = buffer.readUnsignedShort();
-      this.field1093 = buffer.readUnsignedShort();
-      this.field1094 = buffer.readUnsignedShort();
-      this.field1095 = buffer.readUnsignedShort();
-      this.field1096 = buffer.readUnsignedShort();
-      this.field1097 = buffer.readUnsignedShort();
-      this.field1098 = buffer.readUnsignedShort();
-      this.field1099 = buffer.readUnsignedShort();
-      this.method426();
-   }
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "(IIB)Lhv;",
+		garbageValue = "-13"
+	)
+	@Export("coord")
+	public Coord coord(int var1, int var2) {
+		if (!this.containsPosition(var1, var2)) {
+			return null;
+		} else {
+			int var3 = this.regionStartX * 64 - this.regionEndX * 64 + var1;
+			int var4 = this.regionStartY * 64 - this.regionEndY * 64 + var2;
+			return new Coord(this.minPlane, var3, var4);
+		}
+	}
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-126"
-   )
-   void method426() {
-   }
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		signature = "(Lkf;I)V",
+		garbageValue = "1767519038"
+	)
+	@Export("read")
+	public void read(Buffer var1) {
+		this.minPlane = var1.readUnsignedByte();
+		this.planes = var1.readUnsignedByte();
+		this.regionStartX = var1.readUnsignedShort();
+		this.regionStartY = var1.readUnsignedShort();
+		this.regionEndX = var1.readUnsignedShort();
+		this.regionEndY = var1.readUnsignedShort();
+		this.postRead();
+	}
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Lho;II)V",
-      garbageValue = "1115233428"
-   )
-   static final void method345(Widget var0, int var1) {
-      if (var0.field966 == null) {
-         throw new RuntimeException();
-      } else {
-         if (var0.field984 == null) {
-            var0.field984 = new int[var0.field966.length];
-         }
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-209894164"
+	)
+	@Export("postRead")
+	void postRead() {
+	}
 
-         var0.field984[var1] = Integer.MAX_VALUE;
-      }
-   }
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(IB)Ljava/lang/String;",
+		garbageValue = "-57"
+	)
+	@Export("getModIconString")
+	static String getModIconString(int var0) {
+		return "<img=" + var0 + ">";
+	}
 
-   @ObfuscatedName("am")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "23"
-   )
-   @Export("runWidgetOnLoadListener")
-   static void runWidgetOnLoadListener(int var0) {
-      if (var0 != -1 && GroundItemPile.loadInterface(var0)) {
-         Widget[] var1 = Widget.interfaceComponents[var0];
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;IZI)I",
+		garbageValue = "-2067134672"
+	)
+	@Export("parseIntCustomRadix")
+	static int parseIntCustomRadix(CharSequence var0, int var1, boolean var2) {
+		if (var1 >= 2 && var1 <= 36) {
+			boolean var3 = false;
+			boolean var4 = false;
+			int var5 = 0;
+			int var6 = var0.length();
 
-         for (int var2 = 0; var2 < var1.length; ++var2) {
-            Widget var3 = var1[var2];
-            if (var3.onLoad != null) {
-               ScriptEvent var4 = new ScriptEvent();
-               var4.widget = var3;
-               var4.args0 = var3.onLoad;
-               GrandExchangeEvent.runScript0(var4, 5000000);
-            }
-         }
-      }
+			for (int var7 = 0; var7 < var6; ++var7) {
+				char var8 = var0.charAt(var7);
+				if (var7 == 0) {
+					if (var8 == '-') {
+						var3 = true;
+						continue;
+					}
 
-   }
+					if (var8 == '+') {
+						continue;
+					}
+				}
 
-   @ObfuscatedName("ic")
-   @ObfuscatedSignature(
-      signature = "(Lho;IIZB)V",
-      garbageValue = "-35"
-   )
-   @Export("alignWidgetSize")
-   static void alignWidgetSize(Widget component, int parentWidth, int parentHeight, boolean var3) {
-      int var4 = component.width;
-      int var5 = component.height;
-      if (component.widthAlignment == 0) {
-         component.width = component.rawWidth;
-      } else if (component.widthAlignment == 1) {
-         component.width = parentWidth - component.rawWidth;
-      } else if (component.widthAlignment == 2) {
-         component.width = component.rawWidth * parentWidth >> 14;
-      }
+				int var10;
+				if (var8 >= '0' && var8 <= '9') {
+					var10 = var8 - '0';
+				} else if (var8 >= 'A' && var8 <= 'Z') {
+					var10 = var8 - '7';
+				} else {
+					if (var8 < 'a' || var8 > 'z') {
+						throw new NumberFormatException();
+					}
 
-      if (component.heightAlignment == 0) {
-         component.height = component.rawHeight;
-      } else if (component.heightAlignment == 1) {
-         component.height = parentHeight - component.rawHeight;
-      } else if (component.heightAlignment == 2) {
-         component.height = parentHeight * component.rawHeight >> 14;
-      }
+					var10 = var8 - 'W';
+				}
 
-      if (component.widthAlignment == 4) {
-         component.width = component.height * component.field958 / component.field959;
-      }
+				if (var10 >= var1) {
+					throw new NumberFormatException();
+				}
 
-      if (component.heightAlignment == 4) {
-         component.height = component.width * component.field959 / component.field958;
-      }
+				if (var3) {
+					var10 = -var10;
+				}
 
-      if (component.contentType == 1337) {
-         Client.viewportWidget = component;
-      }
+				int var9 = var10 + var5 * var1;
+				if (var9 / var1 != var5) {
+					throw new NumberFormatException();
+				}
 
-      if (var3 && component.onResize != null && (var4 != component.width || var5 != component.height)) {
-         ScriptEvent var6 = new ScriptEvent();
-         var6.widget = component;
-         var6.args0 = component.onResize;
-         Client.scriptEvents.addFirst(var6);
-      }
+				var5 = var9;
+				var4 = true;
+			}
 
-   }
+			if (!var4) {
+				throw new NumberFormatException();
+			} else {
+				return var5;
+			}
+		} else {
+			throw new IllegalArgumentException("" + var1);
+		}
+	}
 }

@@ -3,201 +3,185 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("u")
+@ObfuscatedName("l")
 @Implements("GrandExchangeOfferWorldComparator")
 final class GrandExchangeOfferWorldComparator implements Comparator {
-   @ObfuscatedName("n")
-   public static boolean field988;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "Lly;"
+	)
+	@Export("leftTitleSprite")
+	static Sprite leftTitleSprite;
+	@ObfuscatedName("gu")
+	@ObfuscatedSignature(
+		signature = "Ler;"
+	)
+	@Export("scene")
+	static Scene scene;
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Ll;Ll;I)I",
-      garbageValue = "707844889"
-   )
-   @Export("compareTyped")
-   int compareTyped(GrandExchangeEvent var1, GrandExchangeEvent var2) {
-      return var1.world < var2.world ? -1 : (var2.world == var1.world ? 0 : 1);
-   }
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(Li;Li;I)I",
+		garbageValue = "1850890964"
+	)
+	@Export("compare_bridged")
+	int compare_bridged(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+		return var1.world < var2.world ? -1 : (var2.world == var1.world ? 0 : 1);
+	}
 
-   public int compare(Object var1, Object var2) {
-      return this.compareTyped((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
-   }
+	public int compare(Object var1, Object var2) {
+		return this.compare_bridged((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+	}
 
-   public boolean equals(Object var1) {
-      return super.equals(var1);
-   }
+	public boolean equals(Object var1) {
+		return super.equals(var1);
+	}
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1032556606"
-   )
-   public static boolean method58(int var0) {
-      return (var0 >> 21 & 1) != 0;
-   }
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(Lhp;B)V",
+		garbageValue = "0"
+	)
+	@Export("setVarcIntArchive")
+	public static void setVarcIntArchive(AbstractArchive var0) {
+		VarcInt.VarcInt_archive = var0;
+	}
 
-   @ObfuscatedName("ag")
-   @ObfuscatedSignature(
-      signature = "(ILcg;ZB)I",
-      garbageValue = "108"
-   )
-   static int method68(int var0, Script var1, boolean var2) {
-      if (var0 == ScriptOpcodes.SOUND_SYNTH) {
-         RouteStrategy.Interpreter_intStackSize -= 3;
-         Ignored.queueSoundEffect(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 2]);
-         return 1;
-      } else if (var0 == ScriptOpcodes.SOUND_SONG) {
-         AbstractUserComparator.method5437(Interpreter.Interpreter_intStack[--RouteStrategy.Interpreter_intStackSize]);
-         return 1;
-      } else if (var0 == ScriptOpcodes.SOUND_JINGLE) {
-         RouteStrategy.Interpreter_intStackSize -= 2;
-         HealthBar.method1994(Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize], Interpreter.Interpreter_intStack[RouteStrategy.Interpreter_intStackSize + 1]);
-         return 1;
-      } else {
-         return 2;
-      }
-   }
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+		garbageValue = "-2102370448"
+	)
+	public static String method63(CharSequence var0) {
+		int var1 = var0.length();
+		StringBuilder var2 = new StringBuilder(var1);
 
-   @ObfuscatedName("he")
-   @ObfuscatedSignature(
-      signature = "(Lhx;B)V",
-      garbageValue = "96"
-   )
-   static final void method67(PacketBuffer var0) {
-      for (int var1 = 0; var1 < Client.field173; ++var1) {
-         int var2 = Client.field174[var1];
-         NPC var3 = Client.npcs[var2];
-         int var4 = var0.readUnsignedByte();
-         if ((var4 & 1) != 0) {
-            var3.targetIndex = var0.method65();
-            if (var3.targetIndex == 65535) {
-               var3.targetIndex = -1;
-            }
-         }
+		for (int var3 = 0; var3 < var1; ++var3) {
+			char var4 = var0.charAt(var3);
+			if ((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
+				if (var4 == ' ') {
+					var2.append('+');
+				} else {
+					byte var5 = ItemDefinition.charToByteCp1252(var4);
+					var2.append('%');
+					int var6 = var5 >> 4 & 15;
+					if (var6 >= 10) {
+						var2.append((char)(var6 + 55));
+					} else {
+						var2.append((char)(var6 + 48));
+					}
 
-         int var5;
-         int var6;
-         int var7;
-         int var8;
-         if ((var4 & 64) != 0) {
-            var5 = var0.method67();
-            var6 = var0.method67();
-            var7 = var3.x - (var5 - class50.baseX - class50.baseX) * 64;
-            var8 = var3.y - (var6 - GraphicsObject.baseY - GraphicsObject.baseY) * 64;
-            if (var7 != 0 || var8 != 0) {
-               var3.field12 = (int)(Math.atan2((double)var7, (double)var8) * 325.949D) & 2047;
-            }
-         }
+					var6 = var5 & 15;
+					if (var6 >= 10) {
+						var2.append((char)(var6 + 55));
+					} else {
+						var2.append((char)(var6 + 48));
+					}
+				}
+			} else {
+				var2.append(var4);
+			}
+		}
 
-         if ((var4 & 32) != 0) {
-            var5 = var0.readUnsignedShort();
-            if (var5 == 65535) {
-               var5 = -1;
-            }
+		return var2.toString();
+	}
 
-            var6 = var0.method59();
-            if (var5 == var3.sequence && var5 != -1) {
-               var7 = WorldMapAreaData.getSequenceDefinition(var5).field783;
-               if (var7 == 1) {
-                  var3.sequenceFrame = 0;
-                  var3.sequenceFrameCycle = 0;
-                  var3.sequenceDelay = var6;
-                  var3.field13 = 0;
-               }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(Lla;ILjava/lang/String;B)Ljava/lang/String;",
+		garbageValue = "-9"
+	)
+	static String method54(IterableNodeHashTable var0, int var1, String var2) {
+		if (var0 == null) {
+			return var2;
+		} else {
+			ObjectNode var3 = (ObjectNode)var0.get((long)var1);
+			return var3 == null ? var2 : (String)var3.obj;
+		}
+	}
 
-               if (var7 == 2) {
-                  var3.field13 = 0;
-               }
-            } else if (var5 == -1 || var3.sequence == -1 || WorldMapAreaData.getSequenceDefinition(var5).field779 >= WorldMapAreaData.getSequenceDefinition(var3.sequence).field779) {
-               var3.sequence = var5;
-               var3.sequenceFrame = 0;
-               var3.sequenceFrameCycle = 0;
-               var3.sequenceDelay = var6;
-               var3.field13 = 0;
-               var3.field25 = var3.pathLength;
-            }
-         }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(II)Lik;",
+		garbageValue = "-1961052460"
+	)
+	public static VarpDefinition method61(int var0) {
+		VarpDefinition var1 = (VarpDefinition)VarpDefinition.VarpDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = VarpDefinition.VarpDefinition_archive.takeFile(16, var0);
+			var1 = new VarpDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
+			}
 
-         if ((var4 & 4) != 0) {
-            var3.definition = ObjectDefinition.getNpcDefinition(var0.readUnsignedShort());
-            var3.size = var3.definition.size;
-            var3.field23 = var3.definition.field639;
-            var3.walkSequence = var3.definition.walkSequence;
-            var3.walkBackSequence = var3.definition.walkBackSequence;
-            var3.walkLeftSequence = var3.definition.walkLeftSequence;
-            var3.walkRightSequence = var3.definition.walkRightSequence;
-            var3.readySequence = var3.definition.readySequence;
-            var3.turnLeftSequence = var3.definition.turnLeftSequence;
-            var3.turnRightSequence = var3.definition.turnRightSequence;
-         }
+			VarpDefinition.VarpDefinition_cached.put(var1, (long)var0);
+			return var1;
+		}
+	}
 
-         if ((var4 & 16) != 0) {
-            var5 = var0.readUnsignedByteNegate();
-            int var9;
-            int var10;
-            int var11;
-            if (var5 > 0) {
-               for (var6 = 0; var6 < var5; ++var6) {
-                  var8 = -1;
-                  var9 = -1;
-                  var10 = -1;
-                  var7 = var0.readUShortSmart();
-                  if (var7 == 32767) {
-                     var7 = var0.readUShortSmart();
-                     var9 = var0.readUShortSmart();
-                     var8 = var0.readUShortSmart();
-                     var10 = var0.readUShortSmart();
-                  } else if (var7 != 32766) {
-                     var9 = var0.readUShortSmart();
-                  } else {
-                     var7 = -1;
-                  }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;ZZI)V",
+		garbageValue = "-1344972354"
+	)
+	@Export("openURL")
+	public static void openURL(String var0, boolean var1, boolean var2) {
+		class326.method6243(var0, var1, "openjs", var2);
+	}
 
-                  var11 = var0.readUShortSmart();
-                  var3.addHitSplat(var7, var9, var8, var10, Client.cycle, var11);
-               }
-            }
+	@ObfuscatedName("gn")
+	@ObfuscatedSignature(
+		signature = "(IIB)V",
+		garbageValue = "-51"
+	)
+	@Export("updateItemPile")
+	static final void updateItemPile(int var0, int var1) {
+		NodeDeque var2 = Client.groundItems[class42.plane][var0][var1];
+		if (var2 == null) {
+			scene.removeGroundItemPile(class42.plane, var0, var1);
+		} else {
+			long var3 = -99999999L;
+			GroundItem var5 = null;
 
-            var6 = var0.method58();
-            if (var6 > 0) {
-               for (var7 = 0; var7 < var6; ++var7) {
-                  var8 = var0.readUShortSmart();
-                  var9 = var0.readUShortSmart();
-                  if (var9 != 32767) {
-                     var10 = var0.readUShortSmart();
-                     var11 = var0.readUnsignedByte();
-                     int var12 = var9 > 0 ? var0.method59() : var11;
-                     var3.addHealthBar(var8, Client.cycle, var9, var10, var11, var12);
-                  } else {
-                     var3.removeHealthBar(var8);
-                  }
-               }
-            }
-         }
+			GroundItem var6;
+			for (var6 = (GroundItem)var2.last(); var6 != null; var6 = (GroundItem)var2.previous()) {
+				ItemDefinition var7 = WorldMapArea.getItemDefinition(var6.id);
+				long var8 = (long)var7.price;
+				if (var7.isStackable == 1) {
+					var8 *= (long)(var6.quantity + 1);
+				}
 
-         if ((var4 & 8) != 0) {
-            var3.spotAnimation = var0.method65();
-            var5 = var0.method72();
-            var3.heightOffset = var5 >> 16;
-            var3.field14 = (var5 & 65535) + Client.cycle;
-            var3.spotAnimationFrame = 0;
-            var3.spotAnimationFrameCycle = 0;
-            if (var3.field14 > Client.cycle) {
-               var3.spotAnimationFrame = -1;
-            }
+				if (var8 > var3) {
+					var3 = var8;
+					var5 = var6;
+				}
+			}
 
-            if (var3.spotAnimation == 65535) {
-               var3.spotAnimation = -1;
-            }
-         }
+			if (var5 == null) {
+				scene.removeGroundItemPile(class42.plane, var0, var1);
+			} else {
+				var2.addLast(var5);
+				GroundItem var12 = null;
+				GroundItem var11 = null;
 
-         if ((var4 & 2) != 0) {
-            var3.overheadText = var0.readStringCp1252NullTerminated();
-            var3.overheadTextCyclesRemaining = 100;
-         }
-      }
+				for (var6 = (GroundItem)var2.last(); var6 != null; var6 = (GroundItem)var2.previous()) {
+					if (var5.id != var6.id) {
+						if (var12 == null) {
+							var12 = var6;
+						}
 
-   }
+						if (var6.id != var12.id && var11 == null) {
+							var11 = var6;
+						}
+					}
+				}
+
+				long var9 = Tile.calculateTag(var0, var1, 3, false, 0);
+				scene.newGroundItemPile(class42.plane, var0, var1, ScriptEvent.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class42.plane), var5, var9, var12, var11);
+			}
+		}
+	}
 }

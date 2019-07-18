@@ -4,57 +4,68 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ks")
+@ObfuscatedName("jo")
 @Implements("Ignored")
 public class Ignored extends User {
-   @ObfuscatedName("at")
-   protected static String field402;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 344024525
-   )
-   @Export("id")
-   int id;
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "Lbr;"
+	)
+	@Export("loginScreenRunesAnimation")
+	static LoginScreenAnimation loginScreenRunesAnimation;
+	@ObfuscatedName("fn")
+	@ObfuscatedSignature(
+		signature = "Lfa;"
+	)
+	@Export("socketTask")
+	static Task socketTask;
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = -361646417
+	)
+	@Export("id")
+	int id;
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lks;I)I",
-      garbageValue = "-842469150"
-   )
-   @Export("compareToIgnored")
-   int compareToIgnored(Ignored other) {
-      return this.id - other.id;
-   }
+	Ignored() {
+	}
 
-   @ObfuscatedName("aj")
-   @ObfuscatedSignature(
-      signature = "(Ljs;I)I",
-      garbageValue = "1627362569"
-   )
-   @Export("compareToUser")
-   public int compareToUser(User var1) {
-      return this.compareToIgnored((Ignored)var1);
-   }
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(Ljo;I)I",
+		garbageValue = "-1242016495"
+	)
+	@Export("compareTo_ignored")
+	int compareTo_ignored(Ignored var1) {
+		return this.id - var1.id;
+	}
 
-   public int compareTo(Object var1) {
-      return this.compareToIgnored((Ignored)var1);
-   }
+	@ObfuscatedName("ax")
+	@ObfuscatedSignature(
+		signature = "(Ljd;I)I",
+		garbageValue = "-1938562722"
+	)
+	@Export("compareTo_user")
+	public int compareTo_user(User var1) {
+		return this.compareTo_ignored((Ignored)var1);
+	}
 
-   @ObfuscatedName("fv")
-   @ObfuscatedSignature(
-      signature = "(IIIB)V",
-      garbageValue = "-68"
-   )
-   @Export("queueSoundEffect")
-   static void queueSoundEffect(int var0, int var1, int var2) {
-      if (Client.soundEffectVolume != 0 && var1 != 0 && Client.soundEffectCount < 50) {
-         Client.soundEffectIds[Client.soundEffectCount] = var0;
-         Client.queuedSoundEffectLoops[Client.soundEffectCount] = var1;
-         Client.queuedSoundEffectDelays[Client.soundEffectCount] = var2;
-         Client.soundEffects[Client.soundEffectCount] = null;
-         Client.soundLocations[Client.soundEffectCount] = 0;
-         ++Client.soundEffectCount;
-      }
+	public int compareTo(Object var1) {
+		return this.compareTo_ignored((Ignored)var1);
+	}
 
-   }
+	@ObfuscatedName("y")
+	@ObfuscatedSignature(
+		signature = "(CB)Z",
+		garbageValue = "103"
+	)
+	@Export("isCharPrintable")
+	public static boolean isCharPrintable(char var0) {
+		if (var0 >= ' ' && var0 <= '~') {
+			return true;
+		} else if (var0 >= 160 && var0 <= 255) {
+			return true;
+		} else {
+			return var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376;
+		}
+	}
 }

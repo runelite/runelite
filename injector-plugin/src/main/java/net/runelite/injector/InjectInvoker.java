@@ -90,7 +90,7 @@ class InjectInvoker
 			obfuscatedName = m.getName();
 		}
 
-		String garbage = DeobAnnotations.getObfuscatedValue(m);
+		String garbage = DeobAnnotations.getDecoder(m);
 		Method otherm = other.findMethod(obfuscatedName, inject.getMethodSignature(m));
 
 		assert otherm != null;

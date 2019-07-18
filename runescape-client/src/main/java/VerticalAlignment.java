@@ -4,50 +4,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ip")
+@ObfuscatedName("if")
 @Implements("VerticalAlignment")
 public enum VerticalAlignment implements Enumerated {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   field3277(0, 0),
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   field3273(1, 1),
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   field3274(2, 2);
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "Lif;"
+	)
+	field3195(1, 0),
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "Lif;"
+	)
+	@Export("VerticalAlignment_centered")
+	VerticalAlignment_centered(0, 1),
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "Lif;"
+	)
+	field3194(2, 2);
 
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 2070321655
-   )
-   @Export("value")
-   public final int value;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1686539261
-   )
-   @Export("id")
-   final int id;
+	@ObfuscatedName("g")
+	@ObfuscatedGetter(
+		intValue = -899877695
+	)
+	static int field3192;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = -513284045
+	)
+	@Export("value")
+	public final int value;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = -404264531
+	)
+	@Export("id")
+	final int id;
 
-   private VerticalAlignment(int var3, int var4) {
-      this.value = var3;
-      this.id = var4;
-   }
+	VerticalAlignment(int var3, int var4) {
+		this.value = var3;
+		this.id = var4;
+	}
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "83"
-   )
-   @Export("rsOrdinal")
-   public int rsOrdinal() {
-      return this.id;
-   }
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(I)I",
+		garbageValue = "320353268"
+	)
+	@Export("rsOrdinal")
+	public int rsOrdinal() {
+		return this.id;
+	}
 }

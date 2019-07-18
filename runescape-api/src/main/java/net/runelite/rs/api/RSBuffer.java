@@ -7,6 +7,6 @@ public interface RSBuffer extends RSNode
 	@Import("array")
 	byte[] getPayload();
 
-	@Import("index")
+	@Import("offset")
 	int getOffset();
 }
