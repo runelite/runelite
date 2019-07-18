@@ -110,7 +110,7 @@ public class ScriptVM
 		 */
 		final String scriptObName = DeobAnnotations.getObfuscatedName(inject.getDeobfuscated().findClass("Script").getAnnotations());
 
-		final Method runScript = findStaticMethod(vanilla, "copy$runScript0");
+		final Method runScript = findStaticMethod(vanilla, "copy$runScript");
 		final Method vmExecuteOpcode = findStaticMethod(vanilla, "vmExecuteOpcode");
 
 		final Field scriptInstructions = findDeobField(inject, "opcodes");

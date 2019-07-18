@@ -17541,14 +17541,14 @@
     "access" : 0,
     "descriptor" : "(Lgr;IB)V"
   }, {
-    "method" : "getSprite1",
+    "method" : "getFrontSprite",
     "owner" : "ii",
     "name" : "q",
     "access" : 1,
     "parameters" : [ ],
     "descriptor" : "(B)Lln;"
   }, {
-    "method" : "getSprite2",
+    "method" : "getBackSprite",
     "owner" : "ii",
     "name" : "w",
     "access" : 1,

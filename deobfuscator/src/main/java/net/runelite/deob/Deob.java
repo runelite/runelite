@@ -81,11 +81,9 @@ public class Deob
 
 		ClassGroup group = JarUtil.loadJar(new File(args[0]));
 
-		if (args.length > 2 && args[2].equals("rl"))
-		{
-			run(group, new StaticShouldBeInstance());
-		}
-		else
+		run(group, new StaticShouldBeInstance());
+
+		if (args.length <= 2 || !args[2].equals("rl"))
 		{
 			// remove except RuntimeException
 			run(group, new RuntimeExceptions());

@@ -34,13 +34,13 @@ public abstract class SpriteMixin implements RSClient
 		return widgetSpriteOverrides;
 	}
 
-	@Copy("readSprite")
+	@Copy("SpriteBuffer_loadSprite")
 	public static RSSprite rs$loadSprite(RSAbstractArchive var0, int var1, int var2)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("readSprite")
+	@Replace("SpriteBuffer_loadSprite")
 	public static RSSprite rl$loadSprite(RSAbstractArchive var0, int var1, int var2)
 	{
 		Sprite sprite = spriteOverrides.get(var1);

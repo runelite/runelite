@@ -246,7 +246,8 @@ public class AnnotationIntegrityChecker
 			Import im = method.getAnnotation(Import.class);
 			if (im != null && im.value().equals(name))
 			{
-				return true;
+				logger.debug(name);
+				return false;
 			}
 		}
 
