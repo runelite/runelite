@@ -52,6 +52,7 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -115,6 +116,9 @@ public class ChatCommandsPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ChatCommandsConfig config;
@@ -826,41 +830,42 @@ public class ChatCommandsPlugin extends Plugin
 				.subscribeOn(Schedulers.single())
 				.subscribe(
 					(osbresult) ->
-					{
-						int itemId = item.getId();
-						int itemPrice = itemManager.getItemPrice(itemId);
-
-						final ChatMessageBuilder builder = new ChatMessageBuilder();
-						builder.append(ChatColorType.NORMAL);
-						builder.append(ChatColorType.HIGHLIGHT);
-						builder.append(item.getName());
-						builder.append(ChatColorType.NORMAL);
-						builder.append(": GE ");
-						builder.append(ChatColorType.HIGHLIGHT);
-						builder.append(StackFormatter.formatNumber(itemPrice));
-						builder.append(ChatColorType.NORMAL);
-						builder.append(": OSB ");
-						builder.append(ChatColorType.HIGHLIGHT);
-						builder.append(StackFormatter.formatNumber(osbresult.getOverall_average()));
-
-						ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
-						if (itemComposition != null)
+						clientThread.invoke(() ->
 						{
-							int alchPrice = itemManager.getAlchValue(itemId);
-							builder
-								.append(ChatColorType.NORMAL)
-								.append(" HA value ")
-								.append(ChatColorType.HIGHLIGHT)
-								.append(StackFormatter.formatNumber(alchPrice));
-						}
+							int itemId = item.getId();
+							int itemPrice = itemManager.getItemPrice(itemId);
 
-						String response = builder.build();
+							final ChatMessageBuilder builder = new ChatMessageBuilder();
+							builder.append(ChatColorType.NORMAL);
+							builder.append(ChatColorType.HIGHLIGHT);
+							builder.append(item.getName());
+							builder.append(ChatColorType.NORMAL);
+							builder.append(": GE ");
+							builder.append(ChatColorType.HIGHLIGHT);
+							builder.append(StackFormatter.formatNumber(itemPrice));
+							builder.append(ChatColorType.NORMAL);
+							builder.append(": OSB ");
+							builder.append(ChatColorType.HIGHLIGHT);
+							builder.append(StackFormatter.formatNumber(osbresult.getOverall_average()));
 
-						log.debug("Setting response {}", response);
-						messageNode.setRuneLiteFormatMessage(response);
-						chatMessageManager.update(messageNode);
-						client.refreshChat();
-					}
+							ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
+							if (itemComposition != null)
+							{
+								int alchPrice = itemManager.getAlchValue(itemId);
+								builder
+									.append(ChatColorType.NORMAL)
+									.append(" HA value ")
+									.append(ChatColorType.HIGHLIGHT)
+									.append(StackFormatter.formatNumber(alchPrice));
+							}
+
+							String response = builder.build();
+
+							log.debug("Setting response {}", response);
+							messageNode.setRuneLiteFormatMessage(response);
+							chatMessageManager.update(messageNode);
+							client.refreshChat();
+						})
 				);
 		}
 	}
