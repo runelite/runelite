@@ -60,6 +60,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -102,9 +103,8 @@ public class GrandExchangePlugin extends Plugin
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
-
-	private static final String BUY_LIMIT_GE_TEXT = "Buy limit: ";
-	private static final String AFFORD_GE_TEXT = "<br>Afford: ";
+	private static final String AFFORD_GE_TEXT = "<br>Can Afford: ";
+	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
 	private static final Gson GSON = new Gson();
 	private static final TypeToken<Map<Integer, Integer>> BUY_LIMIT_TOKEN = new TypeToken<Map<Integer, Integer>>()
 	{
@@ -168,11 +168,7 @@ public class GrandExchangePlugin extends Plugin
 	private GrandExchangeClient grandExchangeClient;
 
 	private int coins = 0;
-	private int lastAmount = -1;
-	private int lastItem = -1;
 
-	private int osbItem = -1;
-	private String osbText = "";
 
 	private SavedOffer getOffer(int slot)
 	{
@@ -257,6 +253,7 @@ public class GrandExchangePlugin extends Plugin
 	private void addSubscriptions()
 	{
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
 		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
 		eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
@@ -266,6 +263,7 @@ public class GrandExchangePlugin extends Plugin
 		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
 		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
 		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
 	private void onSessionOpen(SessionOpen sessionOpen)
@@ -477,11 +475,6 @@ public class GrandExchangePlugin extends Plugin
 
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		if (event.getEventName().equals("geBuilt"))
-		{
-			rebuildGeText();
-		}
-
 		if (!event.getEventName().equals("setGETitle") || !config.showTotal())
 		{
 			return;
@@ -522,7 +515,7 @@ public class GrandExchangePlugin extends Plugin
 		stringStack[stringStackSize - 1] += titleBuilder.toString();
 	}
 
-	public void rebuildGeText()
+	private void onGameTick(GameTick event)
 	{
 		if (grandExchangeText == null || grandExchangeItem == null || grandExchangeItem.isHidden())
 		{
@@ -530,29 +523,20 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		final Widget geText = grandExchangeText;
+		final String geTextString = geText.getText();
 		final int itemId = grandExchangeItem.getItemId();
 
 		if (itemId == OFFER_DEFAULT_ITEM_ID || itemId == -1)
 		{
-			lastAmount = osbItem = lastItem = -1;
+
 			// This item is invalid/nothing has been searched for
 			return;
 		}
 
+
 		final int currentItemPrice = client.getVar(Varbits.GRAND_EXCHANGE_PRICE_PER_ITEM);
 
-		if (lastItem == itemId && lastAmount == currentItemPrice )
-		{
-			return;
-		}
-
-		lastItem = itemId;
-		lastAmount = currentItemPrice;
-
-		String[] texts = geText.getText().split("<br>");
-		String text = texts[0];
-
-		if (this.enableAfford)
+		if (this.enableAfford && itemGELimits != null && !geTextString.contains(AFFORD_GE_TEXT))
 		{
 			final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
 			final Item[] items = itemContainer.getItems();
@@ -565,50 +549,52 @@ public class GrandExchangePlugin extends Plugin
 				}
 			}
 
-			text += AFFORD_GE_TEXT + StackFormatter.formatNumber(coins / currentItemPrice) + "   ";
+			final String text = geText.getText() + AFFORD_GE_TEXT + StackFormatter.formatNumber(coins / currentItemPrice) + "   ";
+			geText.setText(text);
 		}
 
-		if (this.enableGELimits && itemGELimits != null)
+
+		if (this.enableGELimits && itemGELimits != null && !geTextString.contains(BUY_LIMIT_GE_TEXT))
 		{
 			final Integer itemLimit = itemGELimits.get(itemId);
 
 			// If we have item buy limit, append it
 			if (itemLimit != null)
 			{
-				text += (!this.enableAfford ? "<br>" : "") + BUY_LIMIT_GE_TEXT + StackFormatter.formatNumber(itemLimit);
+				final String text = geText.getText() + BUY_LIMIT_GE_TEXT + StackFormatter.formatNumber(itemLimit);
+				geText.setText(text);
 			}
 		}
 
-		if (!this.enableOsbPrices)
-
+		if (!this.enableOsbPrices || geTextString.contains(OSB_GE_TEXT))
 		{
-			geText.setText(text);
+			// OSB prices are disabled or price was already looked up, so no need to set it again
 			return;
 		}
-
-		geText.setText(text + osbText);
 
 		log.debug("Looking up OSB item price {}", itemId);
-		if (osbItem == lastItem)
-		{
-			// OSB Item was already looked up
-			return;
-		}
-
-		osbItem = lastItem;
-
-		final String str = text;
 
 		executorService.submit(() ->
 		{
+			if (geText.getText().contains(OSB_GE_TEXT))
+			{
+				// If there are multiple tasks queued and one of them have already added the price
+				return;
+			}
+
 			CLIENT.lookupItem(itemId)
 				.subscribeOn(Schedulers.io())
 				.observeOn(Schedulers.from(clientThread))
 				.subscribe(
 					(osbresult) ->
 					{
-						osbText = OSB_GE_TEXT + StackFormatter.formatNumber(osbresult.getOverall_average());
-						geText.setText(str + osbText);
+						final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(osbresult.getOverall_average());
+						if (geText.getText().contains(OSB_GE_TEXT))
+						{
+							// If there are multiple tasks queued and one of them have already added the price
+							return;
+						}
+						geText.setText(text);
 					},
 					(e) -> log.debug("Error getting price of item {}", itemId, e)
 				);
