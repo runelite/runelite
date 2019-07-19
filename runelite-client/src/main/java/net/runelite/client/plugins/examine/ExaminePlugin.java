@@ -370,7 +370,7 @@ public class ExaminePlugin extends Plugin
 			{
 				int finalQuantity = quantity;
 				CLIENT.lookupItem(id)
-					.subscribeOn(Schedulers.single())
+					.subscribeOn(Schedulers.io())
 					.subscribe(
 						(osbresult) ->
 							clientThread.invoke(() ->

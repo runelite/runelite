@@ -551,7 +551,7 @@ public class GrandExchangePlugin extends Plugin
 			}
 
 			CLIENT.lookupItem(itemId)
-				.subscribeOn(Schedulers.single())
+				.subscribeOn(Schedulers.io())
 				.subscribe(
 					(osbresult) ->
 						clientThread.invoke(() ->
