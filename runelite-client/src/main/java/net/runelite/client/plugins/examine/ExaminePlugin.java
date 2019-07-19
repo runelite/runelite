@@ -400,12 +400,33 @@ public class ExaminePlugin extends Plugin
 									.append(ChatColorType.NORMAL)
 									.append("ea)");
 							}
+
+							message
+								.append(ChatColorType.NORMAL)
+								.append(" HA value ")
+								.append(ChatColorType.HIGHLIGHT)
+								.append(StackFormatter.formatNumber(alchPrice * finalQuantity));
+
+							if (finalQuantity > 1)
+							{
+								message
+									.append(ChatColorType.NORMAL)
+									.append(" (")
+									.append(ChatColorType.HIGHLIGHT)
+									.append(StackFormatter.formatNumber(alchPrice))
+									.append(ChatColorType.NORMAL)
+									.append("ea)");
+							}
+
+							chatMessageManager.queue(QueuedMessage.builder()
+								.type(ChatMessageType.ITEM_EXAMINE)
+								.runeLiteFormattedMessage(message.build())
+								.build());
 						},
 						(e) -> log.error(e.toString())
 					);
 			}
-
-			if (alchPrice > 0)
+			else
 			{
 				message
 					.append(ChatColorType.NORMAL)
@@ -423,12 +444,12 @@ public class ExaminePlugin extends Plugin
 						.append(ChatColorType.NORMAL)
 						.append("ea)");
 				}
-			}
 
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.ITEM_EXAMINE)
-				.runeLiteFormattedMessage(message.build())
-				.build());
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.ITEM_EXAMINE)
+					.runeLiteFormattedMessage(message.build())
+					.build());
+			}
 		}
 	}
 
