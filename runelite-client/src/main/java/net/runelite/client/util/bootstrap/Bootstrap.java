@@ -299,6 +299,11 @@ public class Bootstrap
 			artifacts[41].name = "discord-1.1.jar";
 			artifacts[41].path = "https://repo.runelite.net/net/runelite/discord/1.1/discord-1.1.jar";
 			artifacts[41].size = "617294";
+			artifacts[43] = new Artifact();
+			artifacts[43].hash = "21b5cac673a156cd8d6cf9efe15ff267b6353eeb129678aa4b39542683ba0dc2";
+			artifacts[43].name = "rxjava-2.2.10";
+			artifacts[43].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/" + artifacts[43].name;
+			artifacts[43].size = "2348810";
 
 			//Dynamic artifacts
 			artifacts[3] = new Artifact();
