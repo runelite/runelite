@@ -334,10 +334,20 @@ public class TabInterface
 					bankSearch.reset(true);
 
 					clientThread.invokeLater(() -> client.runScript(ScriptID.RESET_CHATBOX_INPUT));
+
+					if (config.rememberTab())
+					{
+						config.tab("");
+					}
 				}
 				else
 				{
-					openTag(Text.removeTags(clicked.getName()));
+					final String tagName = Text.removeTags(clicked.getName());
+					openTag(tagName);
+					if (config.rememberTab())
+					{
+						config.tab(tagName);
+					}
 				}
 
 				client.playSoundEffect(SoundEffectID.UI_BOOP);
