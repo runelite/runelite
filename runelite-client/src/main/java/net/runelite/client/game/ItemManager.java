@@ -142,6 +142,7 @@ public class ItemManager
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
+
 	@Inject
 	public ItemManager(
 		Client client,
@@ -235,7 +236,8 @@ public class ItemManager
 		itemClient.getStats()
 			.subscribeOn(Schedulers.io())
 			.subscribe(
-				(stats) -> {
+				(stats) ->
+				{
 					if (stats != null)
 					{
 						itemStats = ImmutableMap.copyOf(stats);
@@ -284,7 +286,7 @@ public class ItemManager
 	/**
 	 * Look up an item's price
 	 *
-	 * @param itemID item id
+	 * @param itemID               item id
 	 * @param ignoreUntradeableMap should the price returned ignore the {@link UntradeableItemMapping}
 	 * @return item price
 	 */

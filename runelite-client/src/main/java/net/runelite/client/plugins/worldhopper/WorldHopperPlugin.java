@@ -31,7 +31,6 @@ import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import io.reactivex.schedulers.Schedulers;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;

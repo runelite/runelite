@@ -26,7 +26,6 @@ package net.runelite.client.plugins.defaultworld;
 
 import com.google.inject.Provides;
 import io.reactivex.schedulers.Schedulers;
-import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +41,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
-import net.runelite.http.api.worlds.WorldResult;
 
 @PluginDescriptor(
 	name = "Default World",
