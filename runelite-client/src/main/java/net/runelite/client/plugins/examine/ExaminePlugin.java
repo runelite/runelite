@@ -46,6 +46,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -85,6 +86,9 @@ public class ExaminePlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ItemManager itemManager;
@@ -369,33 +373,34 @@ public class ExaminePlugin extends Plugin
 					.subscribeOn(Schedulers.single())
 					.subscribe(
 						(osbresult) ->
-						{
-							message
-								.append(ChatColorType.NORMAL)
-								.append(" GE  ")
-								.append(ChatColorType.HIGHLIGHT)
-								.append(StackFormatter.formatNumber(gePrice * finalQuantity));
-
-							if (osbresult != null)
+							clientThread.invoke(() ->
 							{
 								message
 									.append(ChatColorType.NORMAL)
-									.append(" OSB  ")
+									.append(" GE  ")
 									.append(ChatColorType.HIGHLIGHT)
-									.append(StackFormatter.formatNumber(osbresult.getOverall_average() * finalQuantity));
-							}
+									.append(StackFormatter.formatNumber(gePrice * finalQuantity));
 
-							if (finalQuantity > 1)
-							{
-								message
-									.append(ChatColorType.NORMAL)
-									.append(" (")
-									.append(ChatColorType.HIGHLIGHT)
-									.append(StackFormatter.formatNumber(gePrice))
-									.append(ChatColorType.NORMAL)
-									.append("ea)");
-							}
-						},
+								if (osbresult != null)
+								{
+									message
+										.append(ChatColorType.NORMAL)
+										.append(" OSB  ")
+										.append(ChatColorType.HIGHLIGHT)
+										.append(StackFormatter.formatNumber(osbresult.getOverall_average() * finalQuantity));
+								}
+
+								if (finalQuantity > 1)
+								{
+									message
+										.append(ChatColorType.NORMAL)
+										.append(" (")
+										.append(ChatColorType.HIGHLIGHT)
+										.append(StackFormatter.formatNumber(gePrice))
+										.append(ChatColorType.NORMAL)
+										.append("ea)");
+								}
+							}),
 						(e) -> log.error(e.toString())
 					);
 			}

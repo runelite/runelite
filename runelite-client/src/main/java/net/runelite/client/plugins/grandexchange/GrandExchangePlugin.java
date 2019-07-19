@@ -66,6 +66,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.SessionClose;
@@ -130,6 +131,9 @@ public class GrandExchangePlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -550,10 +554,11 @@ public class GrandExchangePlugin extends Plugin
 				.subscribeOn(Schedulers.single())
 				.subscribe(
 					(osbresult) ->
-					{
-						final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(osbresult.getOverall_average());
-						geText.setText(text);
-					},
+						clientThread.invoke(() ->
+						{
+							final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(osbresult.getOverall_average());
+							geText.setText(text);
+						}),
 					(e) -> log.debug("Error getting price of item {}", itemId, e)
 				);
 		});
