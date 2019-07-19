@@ -283,7 +283,7 @@ public class WorldMapElement extends DualNode {
 			if (var2 != null) {
 				return var2;
 			} else {
-				var2 = class65.SpriteBuffer_tryCreateSprite(WorldMapElement_archive, var1, 0);
+				var2 = class65.loadSprite(WorldMapElement_archive, var1, 0);
 				if (var2 != null) {
 					WorldMapElement_cachedSprites.put(var2, (long)var1);
 				}

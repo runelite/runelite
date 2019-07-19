@@ -1271,7 +1271,7 @@ public class Widget extends Node {
 			if (var5 != null) {
 				return var5;
 			} else {
-				var5 = class65.SpriteBuffer_tryCreateSprite(class216.Widget_spritesArchive, var2, 0);
+				var5 = class65.loadSprite(class216.Widget_spritesArchive, var2, 0);
 				if (var5 == null) {
 					field2562 = true;
 					return null;
@@ -1351,7 +1351,7 @@ public class Widget extends Node {
 				if (var3 != null) {
 					return var3;
 				} else {
-					var3 = class65.SpriteBuffer_tryCreateSprite(class216.Widget_spritesArchive, var2, 0);
+					var3 = class65.loadSprite(class216.Widget_spritesArchive, var2, 0);
 					if (var3 != null) {
 						Widget_cachedSprites.put(var3, (long)var2);
 					} else {

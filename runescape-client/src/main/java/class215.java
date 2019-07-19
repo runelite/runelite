@@ -71,7 +71,7 @@ public class class215 {
 	public static IndexedSprite loadIndexedSpriteByName(AbstractArchive var0, String var1, String var2) {
 		int var3 = var0.getGroupId(var1);
 		int var4 = var0.getFileId(var3, var2);
-		return PacketBuffer.method5474(var0, var3, var4);
+		return PacketBuffer.loadIndexedSprite(var0, var3, var4);
 	}
 
 	@ObfuscatedName("eg")

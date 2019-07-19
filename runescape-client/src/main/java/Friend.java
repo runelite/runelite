@@ -61,8 +61,8 @@ public class Friend extends Buddy {
 		signature = "(Lhp;IIB)Z",
 		garbageValue = "-3"
 	)
-	@Export("SpriteBuffer_loadSprite")
-	public static boolean SpriteBuffer_loadSprite(AbstractArchive var0, int var1, int var2) {
+	@Export("doesSpriteExist")
+	public static boolean doesSpriteExist(AbstractArchive var0, int var1, int var2) {
 		byte[] var3 = var0.takeFile(var1, var2);
 		if (var3 == null) {
 			return false;

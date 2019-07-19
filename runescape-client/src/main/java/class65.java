@@ -69,9 +69,9 @@ public class class65 extends RouteStrategy {
 		signature = "(Lhp;III)Lly;",
 		garbageValue = "300652258"
 	)
-	@Export("SpriteBuffer_tryCreateSprite")
-	public static Sprite SpriteBuffer_tryCreateSprite(AbstractArchive var0, int var1, int var2) {
-		if (!Friend.SpriteBuffer_loadSprite(var0, var1, var2)) {
+	@Export("loadSprite")
+	public static Sprite loadSprite(AbstractArchive var0, int var1, int var2) {
+		if (!Friend.doesSpriteExist(var0, var1, var2)) {
 			return null;
 		} else {
 			Sprite var4 = new Sprite();
