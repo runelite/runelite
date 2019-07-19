@@ -33,11 +33,13 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.Instant;
 import java.util.Locale;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -53,13 +55,24 @@ public class BombOverlay extends Overlay
 {
 
 	private static final String SAFE = "#00cc00";
+	//safe
 	private static final String CAUTION = "#ffff00";
+	//1 tile in range (minor damage)
 	private static final String WARNING = "#ff9933";
+	//2 tiles in range (moderate damage)
 	private static final String DANGER = "#ff6600";
+	//3 tiles in range/adjacent to bomb (major damage)
 	private static final String LETHAL = "#cc0000";
+	//On the bomb, using it as a makeshift space launch vehicle. (massive damage)
+
 	private static final int BOMB_AOE = 7;
 	private static final int BOMB_DETONATE_TIME = 8;
+	//This is in ticks. It should be 10, but it varies from 8 to 11.
 	private static final double ESTIMATED_TICK_LENGTH = .6;
+	//Thank you Woox & co. for this assumption. .6 seconds/tick.
+
+
+	//Utilized from the npc highlight code for formatting text being displayed on the client canvas.
 	private static final NumberFormat TIME_LEFT_FORMATTER =
 		DecimalFormat.getInstance(Locale.US);
 
@@ -86,72 +99,84 @@ public class BombOverlay extends Overlay
 	{
 		if (plugin.isConfigbombDisplay())
 		{
-			drawDangerZone(graphics);
+			drawBombs(graphics);
 		}
 		return null;
 	}
 
-	private void drawDangerZone(Graphics2D graphics)
+	private void drawBombs(Graphics2D graphics)
+	//I can condense drawDangerZone into this. Ambivalent though.
 	{
-		final WorldPoint loc = client.getLocalPlayer().getWorldLocation();
-		plugin.getBombs().forEach((k, v) ->
+		for (Map.Entry<WorldPoint, CrystalBomb> entry : plugin.getBombs().entrySet())
 		{
-			LocalPoint localLoc = LocalPoint.fromWorld(client, v.getWorldLocation());
+			CrystalBomb bomb = entry.getValue();
+			drawDangerZone(graphics, bomb);
+		}
+	}
 
-			if (localLoc == null)
-			{
-				return;
-			}
+	private void drawDangerZone(Graphics2D graphics, CrystalBomb bomb)
+	{
+		final Player localPlayer = client.getLocalPlayer();
+		LocalPoint localLoc = LocalPoint.fromWorld(client, bomb.getWorldLocation());
+		if (localLoc == null)
+		{
+			return;
+		}
+		double distance_x = Math.abs(bomb.getWorldLocation().getX() - localPlayer.getWorldLocation().getX());
+		double distance_y = Math.abs(bomb.getWorldLocation().getY() - localPlayer.getWorldLocation().getY());
+		Color color_code = Color.decode(SAFE);
+		//defaults to this unless conditionals met below.
 
-			final double distance_x = Math.abs(v.getWorldLocation().getX() - loc.getX());
-			final double distance_y = Math.abs(v.getWorldLocation().getY() - loc.getY());
+		if (distance_x < 1 && distance_y < 1)
+		{
+			color_code = Color.decode(LETHAL);
+		}
+		else if (distance_x < 2 && distance_y < 2)
+		{
+			color_code = Color.decode(DANGER);
+		}
+		else if (distance_x < 3 && distance_y < 3)
+		{
+			color_code = Color.decode(WARNING);
+		}
+		else if (distance_x < 4 && distance_y < 4)
+		{
+			color_code = Color.decode(CAUTION);
+		}
+		LocalPoint CenterPoint = new LocalPoint(localLoc.getX(), localLoc.getY());
+		Polygon poly = Perspective.getCanvasTileAreaPoly(client, CenterPoint, BOMB_AOE);
 
-			Color color_code = Color.decode(SAFE);
+		if (poly != null)
+		{
+			//manually generating the polygon so as to assign a custom alpha value. Request adtl' arg for alpha maybe?
+			graphics.setColor(color_code);
+			graphics.setStroke(new BasicStroke(1));
+			graphics.drawPolygon(poly);
+			graphics.setColor(new Color(0, 0, 0, 10));
+			graphics.fillPolygon(poly);
+		}
 
-			if (distance_x < 1 && distance_y < 1)
-			{
-				color_code = Color.decode(LETHAL);
-			}
-			else if (distance_x < 2 && distance_y < 2)
-			{
-				color_code = Color.decode(DANGER);
-			}
-			else if (distance_x < 3 && distance_y < 3)
-			{
-				color_code = Color.decode(WARNING);
-			}
-			else if (distance_x < 4 && distance_y < 4)
-			{
-				color_code = Color.decode(CAUTION);
-			}
-			final LocalPoint CenterPoint = new LocalPoint(localLoc.getX(), localLoc.getY());
-			final Polygon poly = Perspective.getCanvasTileAreaPoly(client, CenterPoint, BOMB_AOE);
+		Instant now = Instant.now();
+		double timeLeft = ((BOMB_DETONATE_TIME - (client.getTickCount() -
+			bomb.getTickStarted())) * ESTIMATED_TICK_LENGTH) -
+			(now.toEpochMilli() - bomb.getLastClockUpdate().toEpochMilli()) / 1000.0;
+		//divided by 1000.00 because of milliseconds :)
 
-			if (poly != null)
-			{
-				graphics.setColor(color_code);
-				graphics.setStroke(new BasicStroke(1));
-				graphics.drawPolygon(poly);
-				graphics.setColor(new Color(0, 0, 0, 10));
-				graphics.fillPolygon(poly);
-			}
+		timeLeft = Math.max(0.0, timeLeft);
+		String bombTimerString = TIME_LEFT_FORMATTER.format(timeLeft);
+		int textWidth = graphics.getFontMetrics().stringWidth(bombTimerString);
+		int textHeight = graphics.getFontMetrics().getAscent();
+		Point canvasPoint = Perspective.localToCanvas(client, localLoc.getX(),
+			localLoc.getY(), bomb.getWorldLocation().getPlane());
 
-			final Instant now = Instant.now();
-			double timeLeft = ((BOMB_DETONATE_TIME - (client.getTickCount() - v.getTickStarted())) * ESTIMATED_TICK_LENGTH) -
-				(now.toEpochMilli() - v.getLastClockUpdate().toEpochMilli()) / 1000.0;
+		if (canvasPoint != null)
+		{
+			Point canvasCenterPoint = new Point(
+				canvasPoint.getX() - textWidth / 2,
+				canvasPoint.getY() + textHeight / 2);
+			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, bombTimerString, color_code);
+		}
 
-			timeLeft = Math.max(0.0, timeLeft);
-			final String bombTimerString = TIME_LEFT_FORMATTER.format(timeLeft);
-			final int textWidth = graphics.getFontMetrics().stringWidth(bombTimerString);
-			final int textHeight = graphics.getFontMetrics().getAscent();
-			final Point canvasPoint = Perspective.localToCanvas(client, localLoc.getX(), localLoc.getY(), v.getWorldLocation().getPlane());
-
-			if (canvasPoint != null)
-			{
-				Point canvasCenterPoint = new Point(canvasPoint.getX() - textWidth / 2, canvasPoint.getY() + textHeight / 2);
-				OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, bombTimerString, color_code);
-			}
-		});
 	}
 
 }
