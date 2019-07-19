@@ -64,7 +64,7 @@ public final class TilePaint {
 		garbageValue = "1591290793"
 	)
 	public static Sprite[] method3062(AbstractArchive var0, int var1, int var2) {
-		if (!Friend.SpriteBuffer_loadSprite(var0, var1, var2)) {
+		if (!Friend.doesSpriteExist(var0, var1, var2)) {
 			return null;
 		} else {
 			Sprite[] var4 = new Sprite[class326.SpriteBuffer_spriteCount];

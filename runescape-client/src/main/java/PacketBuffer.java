@@ -169,8 +169,9 @@ public class PacketBuffer extends Buffer {
 		signature = "(Lhp;III)Llx;",
 		garbageValue = "-1232611828"
 	)
-	static IndexedSprite method5474(AbstractArchive var0, int var1, int var2) {
-		if (!Friend.SpriteBuffer_loadSprite(var0, var1, var2)) {
+	@Export("loadIndexedSprite")
+	static IndexedSprite loadIndexedSprite(AbstractArchive var0, int var1, int var2) {
+		if (!Friend.doesSpriteExist(var0, var1, var2)) {
 			return null;
 		} else {
 			IndexedSprite var4 = new IndexedSprite();

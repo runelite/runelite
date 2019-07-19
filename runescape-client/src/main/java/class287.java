@@ -12,7 +12,7 @@ public class class287 {
 		int var4 = var0.getGroupId(var2);
 		int var5 = var0.getFileId(var4, var3);
 		Font var6;
-		if (!Friend.SpriteBuffer_loadSprite(var0, var4, var5)) {
+		if (!Friend.doesSpriteExist(var0, var4, var5)) {
 			var6 = null;
 		} else {
 			var6 = WallDecoration.getWorldMapSprite(var1.takeFile(var4, var5));

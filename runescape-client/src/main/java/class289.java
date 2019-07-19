@@ -26,7 +26,7 @@ public final class class289 {
 		garbageValue = "1777014825"
 	)
 	public static IndexedSprite[] method5281(AbstractArchive var0, int var1, int var2) {
-		if (!Friend.SpriteBuffer_loadSprite(var0, var1, var2)) {
+		if (!Friend.doesSpriteExist(var0, var1, var2)) {
 			return null;
 		} else {
 			IndexedSprite[] var4 = new IndexedSprite[class326.SpriteBuffer_spriteCount];
