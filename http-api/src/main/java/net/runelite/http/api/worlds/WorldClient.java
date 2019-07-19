@@ -27,16 +27,14 @@ package net.runelite.http.api.worlds;
 
 import com.google.gson.JsonParseException;
 import io.reactivex.Observable;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class WorldClient
 {
