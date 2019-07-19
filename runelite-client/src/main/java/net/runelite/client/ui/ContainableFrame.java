@@ -32,18 +32,25 @@ import net.runelite.client.config.ExpandResizeType;
 
 public class ContainableFrame extends JFrame
 {
+	public enum Mode
+	{
+		ALWAYS,
+		RESIZING,
+		NEVER;
+	}
+
 	private static final int SCREEN_EDGE_CLOSE_DISTANCE = 40;
 
 	@Setter
 	private ExpandResizeType expandResizeType;
-	private boolean containedInScreen;
+	private Mode containedInScreen;
 	private boolean expandedClientOppositeDirection;
 
-	public void setContainedInScreen(boolean value)
+	public void setContainedInScreen(Mode value)
 	{
 		this.containedInScreen = value;
 
-		if (value)
+		if (this.containedInScreen == Mode.ALWAYS)
 		{
 			// Reposition the frame if it is intersecting with the bounds
 			this.setLocation(this.getX(), this.getY());
@@ -54,13 +61,13 @@ public class ContainableFrame extends JFrame
 	@Override
 	public void setLocation(int x, int y)
 	{
-		if (containedInScreen)
+		if (this.containedInScreen == Mode.ALWAYS)
 		{
 			Rectangle bounds = this.getGraphicsConfiguration().getBounds();
-			x = Math.max(x, (int)bounds.getX());
-			x = Math.min(x, (int)(bounds.getX() + bounds.getWidth() - this.getWidth()));
-			y = Math.max(y, (int)bounds.getY());
-			y = Math.min(y, (int)(bounds.getY() + bounds.getHeight() - this.getHeight()));
+			x = Math.max(x, (int) bounds.getX());
+			x = Math.min(x, (int) (bounds.getX() + bounds.getWidth() - this.getWidth()));
+			y = Math.max(y, (int) bounds.getY());
+			y = Math.min(y, (int) (bounds.getY() + bounds.getHeight() - this.getHeight()));
 		}
 
 		super.setLocation(x, y);
@@ -69,15 +76,17 @@ public class ContainableFrame extends JFrame
 	@Override
 	public void setBounds(int x, int y, int width, int height)
 	{
-		if (containedInScreen)
+		if (this.containedInScreen == Mode.ALWAYS)
 		{
+			// XXX: this is wrong if setSize/resize is called because Component::resize sets private state that is read
+			// in Window::setBounds
 			Rectangle bounds = this.getGraphicsConfiguration().getBounds();
-			width = Math.min(width, width - (int)bounds.getX() + x);
-			x = Math.max(x, (int)bounds.getX());
-			height = Math.min(height, height - (int)bounds.getY() + y);
-			y = Math.max(y, (int)bounds.getY());
-			width = Math.min(width, (int)(bounds.getX() + bounds.getWidth()) - x);
-			height = Math.min(height, (int)(bounds.getY() + bounds.getHeight()) - y);
+			width = Math.min(width, width - (int) bounds.getX() + x);
+			x = Math.max(x, (int) bounds.getX());
+			height = Math.min(height, height - (int) bounds.getY() + y);
+			y = Math.max(y, (int) bounds.getY());
+			width = Math.min(width, (int) (bounds.getX() + bounds.getWidth()) - x);
+			height = Math.min(height, (int) (bounds.getY() + bounds.getHeight()) - y);
 		}
 
 		super.setBounds(x, y, width, height);
@@ -115,7 +124,7 @@ public class ContainableFrame extends JFrame
 			final int newWindowWidth = getWidth() + increment;
 			int newWindowX = getX();
 
-			if (containedInScreen)
+			if (this.containedInScreen != Mode.NEVER)
 			{
 				final Rectangle screenBounds = getGraphicsConfiguration().getBounds();
 				final boolean wouldExpandThroughEdge = getX() + newWindowWidth > screenBounds.getX() + screenBounds.getWidth();

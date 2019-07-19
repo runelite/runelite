@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.itemskeptondeath;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,7 +33,10 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -54,6 +58,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemMapping;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
@@ -68,6 +73,16 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 {
 	private static final int DEEP_WILDY = 20;
 	private static final Pattern WILDERNESS_LEVEL_PATTERN = Pattern.compile("^Level: (\\d+).*");
+
+	@AllArgsConstructor
+	@Getter
+	@VisibleForTesting
+	static class DeathItems
+	{
+		private final List<ItemStack> keptItems;
+		private final List<ItemStack> lostItems;
+		private final boolean hasAlwaysLost;
+	}
 
 	// Item Container helpers
 	private static final int MAX_ROW_ITEMS = 8;
@@ -98,9 +113,12 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	private WidgetButton deepWildyButton;
 	private WidgetButton lowWildyButton;
 
-	private boolean isSkulled;
-	private boolean protectingItem;
-	private int wildyLevel;
+	@VisibleForTesting
+	boolean isSkulled;
+	@VisibleForTesting
+	boolean protectingItem;
+	@VisibleForTesting
+	int wildyLevel;
 
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
@@ -223,97 +241,12 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 		final Item[] equip = equipment == null ? new Item[0] : equipment.getItems();
 
-		final List<Item> items = new ArrayList<>();
-		Collections.addAll(items, inv);
-		Collections.addAll(items, equip);
+		final DeathItems deathItems = calculateKeptLostItems(inv, equip);
 
-		// Sort by item price
-		items.sort(Comparator.comparing(this::getDeathPrice).reversed());
-
-		boolean hasAlwaysLost = false;
-		int keepCount = getDefaultItemsKept();
-
-		final List<Widget> keptItems = new ArrayList<>();
-		final List<Widget> lostItems = new ArrayList<>();
-		for (final Item i : items)
-		{
-			final int id = i.getId();
-			int itemQuantity = i.getQuantity();
-
-			if (id == -1)
-			{
-				continue;
-			}
-
-			final ItemComposition c = itemManager.getItemComposition(i.getId());
-
-			// Bonds are always kept and do not count towards the limit.
-			if (id == ItemID.OLD_SCHOOL_BOND || id == ItemID.OLD_SCHOOL_BOND_UNTRADEABLE)
-			{
-				final Widget itemWidget = createItemWidget(kept, itemQuantity, c);
-				itemWidget.setOnOpListener(ScriptID.DEATH_KEEP_ITEM_EXAMINE, 1, itemQuantity, c.getName());
-				keptItems.add(itemWidget);
-				continue;
-			}
-
-			// Certain items are always lost on death and have a white outline which we need to add
-			final AlwaysLostItem alwaysLostItem = AlwaysLostItem.getByItemID(i.getId());
-			if (alwaysLostItem != null)
-			{
-				// Some of these items are kept on death (outside wildy), like the Rune pouch. Ignore them
-				if (!alwaysLostItem.isKeptOutsideOfWilderness() || wildyLevel > 0)
-				{
-					final Widget itemWidget = createItemWidget(lost, itemQuantity, c);
-					itemWidget.setOnOpListener(ScriptID.DEATH_KEEP_ITEM_EXAMINE, 0, itemQuantity, c.getName());
-					itemWidget.setBorderType(2); // white outline
-					lostItems.add(itemWidget);
-					hasAlwaysLost = true;
-					continue;
-				}
-				// the rune pouch is "always lost" but its kept outside of pvp, and does not count towards your keep count
-			}
-			else if (keepCount > 0)
-			{
-				// Keep most valuable items regardless of trade-ability.
-				if (i.getQuantity() > keepCount)
-				{
-					final Widget itemWidget = createItemWidget(kept, keepCount, c);
-					itemWidget.setOnOpListener(ScriptID.DEATH_KEEP_ITEM_EXAMINE, 1, keepCount, c.getName());
-					keptItems.add(itemWidget);
-					itemQuantity -= keepCount;
-					keepCount = 0;
-					// Fall through to below to drop the rest of the stack
-				}
-				else
-				{
-					final Widget itemWidget = createItemWidget(kept, itemQuantity, c);
-					itemWidget.setOnOpListener(ScriptID.DEATH_KEEP_ITEM_EXAMINE, 1, itemQuantity, c.getName());
-					keptItems.add(itemWidget);
-					keepCount -= i.getQuantity();
-					continue;
-				}
-			}
-
-			// Items are kept if:
-			// 1) is not tradeable
-			// 2) is under the deep wilderness line
-			// 3) is outside of the wilderness, or item has a broken form
-			if (!Pets.isPet(id)
-				&& !isTradeable(c) && wildyLevel <= DEEP_WILDY
-				&& (wildyLevel <= 0 || BrokenOnDeathItem.isBrokenOnDeath(i.getId())))
-			{
-				final Widget itemWidget = createItemWidget(kept, itemQuantity, c);
-				itemWidget.setOnOpListener(ScriptID.DEATH_KEEP_ITEM_EXAMINE, 1, itemQuantity, c.getName());
-				keptItems.add(itemWidget);
-			}
-			else
-			{
-				// Otherwise, the item is lost
-				final Widget itemWidget = createItemWidget(lost, itemQuantity, c);
-				itemWidget.setOnOpListener(ScriptID.DEATH_KEEP_ITEM_EXAMINE, 0, itemQuantity, c.getName());
-				lostItems.add(itemWidget);
-			}
-		}
+		final List<Widget> keptItems = deathItems.getKeptItems().stream()
+			.map(item -> createItemWidget(kept, item, true)).collect(Collectors.toList());
+		final List<Widget> lostItems = deathItems.getLostItems().stream()
+			.map(item -> createItemWidget(lost, item, false)).collect(Collectors.toList());
 
 		int rows = (keptItems.size() + MAX_ROW_ITEMS - 1) / MAX_ROW_ITEMS;
 		// Show an empty row if there isn't anything
@@ -328,36 +261,205 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 		positionWidgetItems(kept, keptItems);
 		positionWidgetItems(lost, lostItems);
 
-		updateKeptWidgetInfoText(hasAlwaysLost, keptItems, lostItems);
+		updateKeptWidgetInfoText(deathItems.isHasAlwaysLost(), keptItems, lostItems);
+	}
+
+	/**
+	 * Calculates which items will be kept/lost. first list is kept items, second is lost.
+	 *
+	 * @param inv   players inventory
+	 * @param equip players equipement
+	 * @return list of items kept followed by a list of items lost
+	 */
+	@VisibleForTesting
+	DeathItems calculateKeptLostItems(final Item[] inv, final Item[] equip)
+	{
+		final List<Item> items = new ArrayList<>();
+		Collections.addAll(items, inv);
+		Collections.addAll(items, equip);
+
+		// Sort by item price
+		items.sort(Comparator.comparing(this::getDeathPrice).reversed());
+
+		boolean hasClueBox = false;
+		boolean hasAlwaysLost = false;
+		int keepCount = getDefaultItemsKept();
+
+		final List<ItemStack> keptItems = new ArrayList<>();
+		final List<ItemStack> lostItems = new ArrayList<>();
+
+		for (final Item i : items)
+		{
+			final int id = i.getId();
+			int qty = i.getQuantity();
+			if (id == -1)
+			{
+				continue;
+			}
+
+			// Bonds are always kept and do not count towards the limit.
+			if (id == ItemID.OLD_SCHOOL_BOND || id == ItemID.OLD_SCHOOL_BOND_UNTRADEABLE)
+			{
+				keptItems.add(new ItemStack(id, qty));
+				continue;
+			}
+
+			final AlwaysLostItem alwaysLostItem = AlwaysLostItem.getByItemID(id);
+			if (alwaysLostItem != null && (!alwaysLostItem.isKeptOutsideOfWilderness() || wildyLevel > 0))
+			{
+				hasAlwaysLost = true;
+				hasClueBox = hasClueBox || id == ItemID.CLUE_BOX;
+				lostItems.add(new ItemStack(id, qty));
+				continue;
+			}
+
+			if (keepCount > 0)
+			{
+				// Keep most valuable items regardless of trade-ability.
+				if (i.getQuantity() > keepCount)
+				{
+					keptItems.add(new ItemStack(id, keepCount));
+					qty -= keepCount;
+					keepCount = 0;
+					// Fall through to determine if the rest of the stack should drop
+				}
+				else
+				{
+					keptItems.add(new ItemStack(id, qty));
+					keepCount -= qty;
+					continue;
+				}
+			}
+
+			// Items are kept if:
+			// 1) is not tradeable
+			// 2) is under the deep wilderness line
+			// 3) is outside of the wilderness, or item has a broken form
+			if (!Pets.isPet(id)
+				&& !LostIfNotProtected.isLostIfNotProtected(id)
+				&& !isTradeable(itemManager.getItemComposition(id)) && wildyLevel <= DEEP_WILDY
+				&& (wildyLevel <= 0 || BrokenOnDeathItem.isBrokenOnDeath(i.getId())))
+			{
+				keptItems.add(new ItemStack(id, qty));
+			}
+			else
+			{
+				// Otherwise, the item is lost
+				lostItems.add(new ItemStack(id, qty));
+			}
+		}
+
+		if (hasClueBox)
+		{
+			boolean alreadyProtectingClue = false;
+			for (final ItemStack item : keptItems)
+			{
+				if (isClueBoxable(item.getId()))
+				{
+					alreadyProtectingClue = true;
+					break;
+				}
+			}
+
+			if (!alreadyProtectingClue)
+			{
+				int clueId = -1;
+				// Clue box protects the last clue in your inventory so loop over the players inv
+				for (final Item i : inv)
+				{
+					final int id = i.getId();
+					if (id != -1 && isClueBoxable(id))
+					{
+						clueId = id;
+					}
+				}
+
+				if (clueId != -1)
+				{
+					// Move the boxed item to the kept items container and remove it from the lost items container
+					for (final ItemStack boxableItem : lostItems)
+					{
+						if (boxableItem.getId() == clueId)
+						{
+							if (boxableItem.getQty() > 1)
+							{
+								boxableItem.setQty(boxableItem.getQty() - 1);
+								keptItems.add(new ItemStack(clueId, 1));
+							}
+							else
+							{
+								lostItems.remove(boxableItem);
+								keptItems.add(boxableItem);
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		return new DeathItems(keptItems, lostItems, hasAlwaysLost);
+	}
+
+	@VisibleForTesting
+	boolean isClueBoxable(final int itemID)
+	{
+		final String name = itemManager.getItemComposition(itemID).getName();
+		return name.contains("Clue scroll (") || name.contains("Reward casket (");
 	}
 
 	/**
 	 * Get the price of an item
+	 *
 	 * @param item
 	 * @return
 	 */
-	private int getDeathPrice(Item item)
+	@VisibleForTesting
+	int getDeathPrice(Item item)
 	{
+		// 1) Check if the death price is dynamically calculated, if so return that value
+		// 2) If death price is based off another item default to that price, otherwise apply normal ItemMapping GE price
+		// 3) If still no price, default to store price
+		// 4) Apply fixed price offset if applicable
+
 		int itemId = item.getId();
 		// Unnote/unplaceholder item
 		int canonicalizedItemId = itemManager.canonicalize(itemId);
-		int exchangePrice = itemManager.getItemPrice(canonicalizedItemId);
+		int exchangePrice = 0;
+
+		final DynamicPriceItem dynamicPrice = DynamicPriceItem.find(canonicalizedItemId);
+		if (dynamicPrice != null)
+		{
+			final int basePrice = itemManager.getItemPrice(dynamicPrice.getChargedId(), true);
+			return dynamicPrice.calculateDeathPrice(basePrice);
+		}
+
+		// Some items have artificially offset death prices - such as ring imbues
+		// which are +2k over the non imbues. Check if the item has a fixed price offset
+		final FixedPriceItem fixedPrice = FixedPriceItem.find(canonicalizedItemId);
+		if (fixedPrice != null && fixedPrice.getBaseId() != -1)
+		{
+			// Grab base item price
+			exchangePrice = itemManager.getItemPrice(fixedPrice.getBaseId(), true);
+		}
+		else
+		{
+			// Account for items whose death value comes from their tradeable variant (barrows) or components (ornate kits)
+			for (final int mappedID : ItemMapping.map(canonicalizedItemId))
+			{
+				exchangePrice += itemManager.getItemPrice(mappedID, true);
+			}
+		}
+
 		if (exchangePrice == 0)
 		{
 			final ItemComposition c1 = itemManager.getItemComposition(canonicalizedItemId);
 			exchangePrice = c1.getPrice();
 		}
-		else
-		{
-			// Some items have artifically applied death prices - such as ring imbues
-			// which are +2k over the non imbues. Check if the item has a fixed price.
-			FixedPriceItem fixedPrice = FixedPriceItem.find(canonicalizedItemId);
-			if (fixedPrice != null)
-			{
-				// Apply fixed price offset
-				exchangePrice += fixedPrice.getOffset();
-			}
-		}
+
+		// Apply fixed price offset
+		exchangePrice += fixedPrice == null ? 0 : fixedPrice.getOffset();
+
 		return exchangePrice;
 	}
 
@@ -589,21 +691,29 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	/**
 	 * Creates an Item Widget for use inside the Kept on Death Interface
 	 *
-	 * @param qty Amount of item
-	 * @param c   Items Composition
-	 * @return
+	 * @param parent Widget to add element too as a child
+	 * @param item   the TempItem representing the item
+	 * @param kept   is the item being shown in the kept items container
+	 * @return the Widget that was added to the `parent`
 	 */
-	private static Widget createItemWidget(final Widget parent, final int qty, final ItemComposition c)
+	private Widget createItemWidget(final Widget parent, final ItemStack item, boolean kept)
 	{
+		final int id = item.getId();
+		final int qty = item.getQty();
+		final ItemComposition c = itemManager.getItemComposition(id);
+
 		final Widget itemWidget = parent.createChild(-1, WidgetType.GRAPHIC);
-		itemWidget.setItemId(c.getId());
-		itemWidget.setItemQuantity(qty);
-		itemWidget.setHasListener(true);
 		itemWidget.setOriginalWidth(Constants.ITEM_SPRITE_WIDTH);
 		itemWidget.setOriginalHeight(Constants.ITEM_SPRITE_HEIGHT);
-		itemWidget.setBorderType(1);
-
+		itemWidget.setItemId(id);
+		itemWidget.setItemQuantity(qty);
 		itemWidget.setAction(1, String.format("Item: <col=ff981f>%s", c.getName()));
+		itemWidget.setOnOpListener(ScriptID.DEATH_KEEP_ITEM_EXAMINE, kept ? 1 : 0, qty, c.getName());
+		itemWidget.setHasListener(true);
+
+		final AlwaysLostItem alwaysLostItem = AlwaysLostItem.getByItemID(id);
+		final boolean whiteBorder = alwaysLostItem != null && (!alwaysLostItem.isKeptOutsideOfWilderness() || wildyLevel > 0);
+		itemWidget.setBorderType(whiteBorder ? 2 : 1);
 
 		return itemWidget;
 	}

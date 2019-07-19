@@ -29,27 +29,7 @@ import java.time.Duration;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
-import static net.runelite.api.ObjectID.ROCKS_10943;
-import static net.runelite.api.ObjectID.ROCKS_11161;
-import static net.runelite.api.ObjectID.ROCKS_11360;
-import static net.runelite.api.ObjectID.ROCKS_11361;
-import static net.runelite.api.ObjectID.ROCKS_11364;
-import static net.runelite.api.ObjectID.ROCKS_11365;
-import static net.runelite.api.ObjectID.ROCKS_11366;
-import static net.runelite.api.ObjectID.ROCKS_11367;
-import static net.runelite.api.ObjectID.ROCKS_11368;
-import static net.runelite.api.ObjectID.ROCKS_11369;
-import static net.runelite.api.ObjectID.ROCKS_11370;
-import static net.runelite.api.ObjectID.ROCKS_11371;
-import static net.runelite.api.ObjectID.ROCKS_11372;
-import static net.runelite.api.ObjectID.ROCKS_11373;
-import static net.runelite.api.ObjectID.ROCKS_11374;
-import static net.runelite.api.ObjectID.ROCKS_11375;
-import static net.runelite.api.ObjectID.ROCKS_11376;
-import static net.runelite.api.ObjectID.ROCKS_11377;
-import static net.runelite.api.ObjectID.ROCKS_11386;
-import static net.runelite.api.ObjectID.ROCKS_11387;
-import static net.runelite.api.ObjectID.ASH_PILE;
+import static net.runelite.api.ObjectID.*;
 
 enum Rock
 {
@@ -101,7 +81,8 @@ enum Rock
 		},
 	ORE_VEIN(Duration.ofSeconds(MiningOverlay.ORE_VEIN_MAX_RESPAWN_TIME), 150),
 	AMETHYST(Duration.ofSeconds(75), 120),
-	ASH_VEIN(Duration.ofSeconds(30), 0, ASH_PILE);
+	ASH_VEIN(Duration.ofSeconds(30), 0, ASH_PILE),
+	GEM_ROCK(Duration.ofMinutes(1), 0, ROCKS_11380, ROCKS_11381);
 
 	private static final Map<Integer, Rock> ROCKS;
 
