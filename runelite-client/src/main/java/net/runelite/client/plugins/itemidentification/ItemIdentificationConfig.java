@@ -103,4 +103,14 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showSacks",
+		name = "Sacks",
+		description = "Show identifications on Sacks"
+	)
+	default boolean showSacks()
+	{
+		return false;
+	}
 }

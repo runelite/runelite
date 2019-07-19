@@ -119,7 +119,40 @@ enum ItemIdentification
 	RED_TOPAZ(Type.GEM, "Topaz", "T", ItemID.UNCUT_RED_TOPAZ, ItemID.RED_TOPAZ),
 	DRAGONSTONE(Type.GEM, "Dragon", "DR", ItemID.UNCUT_DRAGONSTONE, ItemID.DRAGONSTONE),
 	ONYX(Type.GEM, "Onyx", "ON", ItemID.UNCUT_ONYX, ItemID.ONYX),
-	ZENYTE(Type.GEM, "Zenyte", "Z", ItemID.UNCUT_ZENYTE, ItemID.ZENYTE);
+	ZENYTE(Type.GEM, "Zenyte", "Z", ItemID.UNCUT_ZENYTE, ItemID.ZENYTE),
+
+	//Sacks
+	EMPTY_SACK(Type.SACK,"Empty", "E",ItemID.EMPTY_SACK),
+	POTATO_SACK_10(Type.SACK,"Pots (10)","P(10)",ItemID.POTATOES10),
+	POTATO_SACK_9(Type.SACK,"Pots (9)","P(9)",ItemID.POTATOES9),
+	POTATO_SACK_8(Type.SACK,"Pots (8)","P(8)",ItemID.POTATOES8),
+	POTATO_SACK_7(Type.SACK,"Pots (7)","P(7)",ItemID.POTATOES7),
+	POTATO_SACK_6(Type.SACK,"Pots (6)","P(6)",ItemID.POTATOES6),
+	POTATO_SACK_5(Type.SACK,"Pots (5)","P(5)",ItemID.POTATOES5),
+	POTATO_SACK_4(Type.SACK,"Pots (4)","P(4)",ItemID.POTATOES4),
+	POTATO_SACK_3(Type.SACK,"Pots (3)","P(3)",ItemID.POTATOES3),
+	POTATO_SACK_2(Type.SACK,"Pots (2)","P(2)",ItemID.POTATOES2),
+	POTATO_SACK_1(Type.SACK,"Pot (1)","P(1)",ItemID.POTATOES1),
+	ONION_SACK_10(Type.SACK, "Onions (10)", "O(10)", ItemID.ONIONS10),
+	ONION_SACK_9(Type.SACK, "Onions (9)", "O(9)", ItemID.ONIONS9),
+	ONION_SACK_8(Type.SACK, "Onions (8)", "O(8)", ItemID.ONIONS8),
+	ONION_SACK_7(Type.SACK, "Onions (7)", "O(7)", ItemID.ONIONS7),
+	ONION_SACK_6(Type.SACK, "Onions (6)", "O(6)", ItemID.ONIONS6),
+	ONION_SACK_5(Type.SACK, "Onions (5)", "O(5)", ItemID.ONIONS5),
+	ONION_SACK_4(Type.SACK, "Onions (4)", "O(4)", ItemID.ONIONS4),
+	ONION_SACK_3(Type.SACK, "Onions (3)", "O(3)", ItemID.ONIONS3),
+	ONION_SACK_2(Type.SACK, "Onions (2)", "O(2)", ItemID.ONIONS2),
+	ONION_SACK_1(Type.SACK, "Onion (1)", "O(1)", ItemID.ONIONS1),
+	CABBAGE_SACK_10(Type.SACK, "Cabbs (10)", "C(10)", ItemID.CABBAGES10),
+	CABBAGE_SACK_9(Type.SACK, "Cabbs (9)", "C(9)", ItemID.CABBAGES9),
+	CABBAGE_SACK_8(Type.SACK, "Cabbs (8)", "C(8)", ItemID.CABBAGES8),
+	CABBAGE_SACK_7(Type.SACK, "Cabbs (7)", "C(7)", ItemID.CABBAGES7),
+	CABBAGE_SACK_6(Type.SACK, "Cabbs(6)", "C(6)", ItemID.CABBAGES6),
+	CABBAGE_SACK_5(Type.SACK, "Cabbs (5)", "C(5)", ItemID.CABBAGES5),
+	CABBAGE_SACK_4(Type.SACK, "Cabbs (4)", "C(4)", ItemID.CABBAGES4),
+	CABBAGE_SACK_3(Type.SACK, "Cabbs(3)", "C(3)", ItemID.CABBAGES3),
+	CABBAGE_SACK_2(Type.SACK, "Cabbs(2)", "C(2)", ItemID.CABBAGES2),
+	CABBAGE_SACK_1(Type.SACK, "Cabb (1)", "C(1)", ItemID.CABBAGES1);
 
 	final Type type;
 	final String medName;
@@ -162,6 +195,7 @@ enum ItemIdentification
 		HERB,
 		SAPLING,
 		ORE,
-		GEM
+		GEM,
+		SACK
 	}
 }
