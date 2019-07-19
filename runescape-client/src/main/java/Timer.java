@@ -491,13 +491,13 @@ public class Timer {
 				} else if (Client.titleLoadingStage == 80) {
 					var0 = 0;
 					if (Message.compass == null) {
-						Message.compass = class65.SpriteBuffer_tryCreateSprite(Client.archive8, UserComparator6.spriteIds.compass, 0);
+						Message.compass = class65.loadSprite(Client.archive8, UserComparator6.spriteIds.compass, 0);
 					} else {
 						++var0;
 					}
 
 					if (UserComparator4.redHintArrowSprite == null) {
-						UserComparator4.redHintArrowSprite = class65.SpriteBuffer_tryCreateSprite(Client.archive8, UserComparator6.spriteIds.field3823, 0);
+						UserComparator4.redHintArrowSprite = class65.loadSprite(Client.archive8, UserComparator6.spriteIds.field3823, 0);
 					} else {
 						++var0;
 					}

@@ -498,7 +498,7 @@ class Utils
 		return "No Target Detected";
 	}
 
-	static void scoutPlayer(PlayerContainer player, HttpUrl url, DiscordClient discordClient, ItemManager itemManager, Client client, int minimumValue)
+	static void scoutPlayer(PlayerContainer player, HttpUrl url, DiscordClient discordClient, ItemManager itemManager, Client client, int minimumValue, boolean outputItems)
 	{
 		if (player.isScouted())
 		{
@@ -571,43 +571,46 @@ class Utils
 			.inline(true)
 			.build());
 
-		fieldList.add(FieldEmbed.builder()
-			.name("Risked Items Sorted by Value")
-			.value("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-			.build());
-
-		final int[] items = {0};
-
-		player.getRiskedGear().forEach((gear, value) ->
-		{
-			if (value <= 0 || value <= minimumValue)
-			{
-				items[0]++;
-				return;
-			}
-
-			ItemStats item = itemManager.getItemStats(gear, false);
-
-			if (item == null)
-			{
-				log.error("Item is Null: {}", gear);
-				return;
-			}
-
-			fieldList.add(FieldEmbed.builder()
-				.name(item.getName())
-				.value("Value: " + StackFormatter.quantityToRSDecimalStack(value))
-				.inline(true)
-				.build());
-		});
-
-		if (items[0] > 0)
+		if (outputItems)
 		{
 			fieldList.add(FieldEmbed.builder()
-				.name("Items below value: " + minimumValue)
-				.value(Integer.toString(items[0]))
-				.inline(true)
+				.name("Risked Items Sorted by Value")
+				.value("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 				.build());
+
+			final int[] items = {0};
+
+			player.getRiskedGear().forEach((gear, value) ->
+			{
+				if (value <= 0 || value <= minimumValue)
+				{
+					items[0]++;
+					return;
+				}
+
+				ItemStats item = itemManager.getItemStats(gear, false);
+
+				if (item == null)
+				{
+					log.error("Item is Null: {}", gear);
+					return;
+				}
+
+				fieldList.add(FieldEmbed.builder()
+					.name(item.getName())
+					.value("Value: " + StackFormatter.quantityToRSDecimalStack(value))
+					.inline(true)
+					.build());
+			});
+
+			if (items[0] > 0)
+			{
+				fieldList.add(FieldEmbed.builder()
+					.name("Items below value: " + minimumValue)
+					.value(Integer.toString(items[0]))
+					.inline(true)
+					.build());
+			}
 		}
 
 		message(player.getPlayer().getName(), " ", ICONBASEURL + Objects.requireNonNull(getEntry(player.getGear())).getKey() + ".png", image, fieldList, url, discordClient, color);

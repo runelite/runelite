@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, PallasDieKatze (Pallas Cat)
+ * Copyright (c) 2018, Connor <contact@connor-parks.email>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,44 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.aoewarnings;
 
-import java.time.Instant;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.GameObject;
-import net.runelite.api.coords.WorldPoint;
+package net.runelite.client.util;
 
-@Slf4j
-class CrystalBomb
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
+
+public class Clipboard
 {
-	@Getter(AccessLevel.PACKAGE)
-	private Instant plantedOn;
-
-	@Getter(AccessLevel.PACKAGE)
-	private Instant lastClockUpdate;
-
-	@Getter(AccessLevel.PACKAGE)
-	private int objectId;
-
-	@Getter(AccessLevel.PACKAGE)
-	private int tickStarted;
-	//
-
-	@Getter(AccessLevel.PACKAGE)
-	private WorldPoint worldLocation;
-
-	CrystalBomb(GameObject gameObject, int startTick)
+	public static String retrieve()
 	{
-		this.plantedOn = Instant.now();
-		this.objectId = gameObject.getId();
-		this.worldLocation = gameObject.getWorldLocation();
-		this.tickStarted = startTick;
+		Transferable contents = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+
+		if (contents == null || ! contents.isDataFlavorSupported(DataFlavor.stringFlavor))
+		{
+			return null;
+		}
+
+		try
+		{
+			return (String) contents.getTransferData(DataFlavor.stringFlavor);
+		}
+		catch (UnsupportedFlavorException | IOException ex)
+		{
+			return null;
+		}
 	}
 
-	void bombClockUpdate()
+	public static void store(String contents)
 	{
-		lastClockUpdate = Instant.now();
+		final StringSelection selection = new StringSelection(contents);
+
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
 	}
 }

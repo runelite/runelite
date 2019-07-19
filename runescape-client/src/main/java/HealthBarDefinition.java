@@ -172,7 +172,7 @@ public class HealthBarDefinition extends DualNode {
 			if (var1 != null) {
 				return var1;
 			} else {
-				var1 = class65.SpriteBuffer_tryCreateSprite(HealthBarDefinition_spritesArchive, this.frontSpriteID, 0);
+				var1 = class65.loadSprite(HealthBarDefinition_spritesArchive, this.frontSpriteID, 0);
 				if (var1 != null) {
 					HealthBarDefinition_cachedSprites.put(var1, (long)this.frontSpriteID);
 				}
@@ -196,7 +196,7 @@ public class HealthBarDefinition extends DualNode {
 			if (var1 != null) {
 				return var1;
 			} else {
-				var1 = class65.SpriteBuffer_tryCreateSprite(HealthBarDefinition_spritesArchive, this.backSpriteID, 0);
+				var1 = class65.loadSprite(HealthBarDefinition_spritesArchive, this.backSpriteID, 0);
 				if (var1 != null) {
 					HealthBarDefinition_cachedSprites.put(var1, (long)this.backSpriteID);
 				}

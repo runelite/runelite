@@ -29,8 +29,8 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
+import io.reactivex.schedulers.Schedulers;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
@@ -502,22 +502,21 @@ public class WorldHopperPlugin extends Plugin
 	{
 		log.debug("Fetching worlds");
 
-		try
-		{
-			WorldResult worldResult = new WorldClient().lookupWorlds();
-
-			if (worldResult != null)
-			{
-				worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
-				this.worldResult = worldResult;
-				this.lastFetch = Instant.now();
-				updateList();
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("Error looking up worlds", ex);
-		}
+		new WorldClient().lookupWorlds()
+			.subscribeOn(Schedulers.io())
+			.subscribe(
+				(worldResult) ->
+				{
+					if (worldResult != null)
+					{
+						worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
+						this.worldResult = worldResult;
+						this.lastFetch = Instant.now();
+						updateList();
+					}
+				},
+				(ex) -> log.warn("Error looking up worlds", ex)
+			);
 	}
 
 	/**

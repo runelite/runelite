@@ -1,12 +1,12 @@
 {
-  "buildCommit": "b82c8903c64695d44b255d45b449440e4eaa17ef",
+  "buildCommit": "6fe334c02648d3f8b38625e3175e3f547d54aa37",
   "client": {
     "artifactId": "client",
     "classifier": "",
     "extension": "jar",
     "groupId": "net.runelite",
     "properties": "",
-    "version": "1.5.29"
+    "version": "1.5.30"
   },
   "clientJvm9Arguments": [
     "-XX:+DisableAttachMechanism",
@@ -56,10 +56,10 @@
       "size": "3168921"
     },
     {
-      "hash": "08774848b10e8f76f96f364150a956d13c798e7c266d88cd0a0534e1f2f26c30",
-      "name": "client-1.5.29-SNAPSHOT.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/client-1.5.29-SNAPSHOT.jar",
-      "size": "6185577"
+      "hash": "d982191ebbd930b573e6d2242cdfefefdf1c610f1f046e204866749eefde1c5f",
+      "name": "client-1.5.30-SNAPSHOT.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/client-1.5.30-SNAPSHOT.jar",
+      "size": "6280727"
     },
     {
       "hash": "18c4a0095d5c1da6b817592e767bb23d29dd2f560ad74df75ff3961dbde25b79",
@@ -248,22 +248,22 @@
       "size": "2327547"
     },
     {
-      "hash": "b98cb800d9013cb3d84ba89a8ea8d54b88d66a2010f282cbf0265953b3f37491",
-      "name": "runelite-api-1.5.29-SNAPSHOT.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/runelite-api-1.5.29-SNAPSHOT.jar",
-      "size": "1031527"
+      "hash": "c0a81abdd6a7486851ef7f0df2ce70d7e362fb033eb5c4267a4a476e35a1824a",
+      "name": "runelite-api-1.5.30-SNAPSHOT.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/runelite-api-1.5.30-SNAPSHOT.jar",
+      "size": "1033784"
     },
     {
-      "hash": "bfbd1bdea706a23799f9630adad9825acc358b8185a1cb8356853032f99d1a22",
-      "name": "runescape-api-1.5.29-SNAPSHOT.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/runescape-api-1.5.29-SNAPSHOT.jar",
-      "size": "58397"
+      "hash": "e8e743c2eb9e59f2990a5bdc48f061b7138890f065c0d603ecb8cdf0b0b158f7",
+      "name": "runescape-api-1.5.30-SNAPSHOT.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/runescape-api-1.5.30-SNAPSHOT.jar",
+      "size": "58398"
     },
     {
-      "hash": "7ad65d4043416ddb09769c0b554fd43a9aa906d6934de03639310c6c552ecc6e",
-      "name": "http-api-1.5.29-SNAPSHOT.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/http-api-1.5.29-SNAPSHOT.jar",
-      "size": "138036"
+      "hash": "fea59d29ac883248bcc77a5f05b0cefebc226583d291f52d377e39db06fe7d19",
+      "name": "http-api-1.5.30-SNAPSHOT.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/http-api-1.5.30-SNAPSHOT.jar",
+      "size": "139678"
     },
     {
       "hash": "f55abda036da75e1af45bd43b9dfa79b2a3d90905be9cb38687c6621597a8165",
@@ -290,10 +290,28 @@
       "size": "617294"
     },
     {
-      "hash": "01521c7b56e2f76aa7adef5082c2f8ee8cf9e93b02d3b2f4101a30f750db9db4",
-      "name": "injected-client-1.5.29-SNAPSHOT.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/injected-client-1.5.29-SNAPSHOT.jar",
-      "size": "2252769"
+      "hash": "9f5333cb045ebd90b1ee457f1ceafc1a085265232926a24fb582ff1960bef703",
+      "name": "injected-client-1.5.30-SNAPSHOT.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/injected-client-1.5.30-SNAPSHOT.jar",
+      "size": "2253443"
+    },
+    {
+      "hash": "21b5cac673a156cd8d6cf9efe15ff267b6353eeb129678aa4b39542683ba0dc2",
+      "name": "rxjava-2.2.10.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/rxjava-2.2.10.jar",
+      "size": "2348810"
+    },
+    {
+      "hash": "830a08b9d5c20ab8e2033c16fc6ee067e6ffcd0c730f303d648aadfa81210d62",
+      "name": "rxrelay-2.1.0.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/rxrelay-2.1.0.jar",
+      "size": "27750"
+    },
+    {
+      "hash": "830a08b9d5c20ab8e2033c16fc6ee067e6ffcd0c730f303d648aadfa81210d62",
+      "name": "reactive-streams-1.0.2.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/reactive-streams-1.0.2.jar",
+      "size": "27750"
     }
   ]
 }

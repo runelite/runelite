@@ -50,6 +50,11 @@ public enum Varbits
 	CHAT_SCROLLBAR_ON_LEFT(6374),
 
 	/**
+	 * Grand Exchange
+	 */
+	GRAND_EXCHANGE_PRICE_PER_ITEM(4398),
+
+	/**
 	 * Runepouch
 	 */
 	RUNE_POUCH_RUNE1(29),

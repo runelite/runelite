@@ -290,7 +290,7 @@ public class HitSplatDefinition extends DualNode {
 			if (var1 != null) {
 				return var1;
 			} else {
-				var1 = class65.SpriteBuffer_tryCreateSprite(HitSplatDefinition_spritesArchive, this.field3334, 0);
+				var1 = class65.loadSprite(HitSplatDefinition_spritesArchive, this.field3334, 0);
 				if (var1 != null) {
 					HitSplatDefinition_cachedSprites.put(var1, (long)this.field3334);
 				}
@@ -313,7 +313,7 @@ public class HitSplatDefinition extends DualNode {
 			if (var1 != null) {
 				return var1;
 			} else {
-				var1 = class65.SpriteBuffer_tryCreateSprite(HitSplatDefinition_spritesArchive, this.field3336, 0);
+				var1 = class65.loadSprite(HitSplatDefinition_spritesArchive, this.field3336, 0);
 				if (var1 != null) {
 					HitSplatDefinition_cachedSprites.put(var1, (long)this.field3336);
 				}
@@ -336,7 +336,7 @@ public class HitSplatDefinition extends DualNode {
 			if (var1 != null) {
 				return var1;
 			} else {
-				var1 = class65.SpriteBuffer_tryCreateSprite(HitSplatDefinition_spritesArchive, this.field3337, 0);
+				var1 = class65.loadSprite(HitSplatDefinition_spritesArchive, this.field3337, 0);
 				if (var1 != null) {
 					HitSplatDefinition_cachedSprites.put(var1, (long)this.field3337);
 				}
@@ -359,7 +359,7 @@ public class HitSplatDefinition extends DualNode {
 			if (var1 != null) {
 				return var1;
 			} else {
-				var1 = class65.SpriteBuffer_tryCreateSprite(HitSplatDefinition_spritesArchive, this.field3338, 0);
+				var1 = class65.loadSprite(HitSplatDefinition_spritesArchive, this.field3338, 0);
 				if (var1 != null) {
 					HitSplatDefinition_cachedSprites.put(var1, (long)this.field3338);
 				}
@@ -387,7 +387,7 @@ public class HitSplatDefinition extends DualNode {
 				AbstractArchive var4 = HitSplatDefinition_fontsArchive;
 				int var5 = this.fontId;
 				Font var2;
-				if (!Friend.SpriteBuffer_loadSprite(var3, var5, 0)) {
+				if (!Friend.doesSpriteExist(var3, var5, 0)) {
 					var2 = null;
 				} else {
 					var2 = WallDecoration.getWorldMapSprite(var4.takeFile(var5, 0));

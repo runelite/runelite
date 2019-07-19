@@ -56,7 +56,7 @@ public interface PlayerScouterConfig extends Config
 		keyName = "onlyWildy",
 		name = "Only Scout in Wildy",
 		description = "This will only scout players in the wilderness.",
-		position = 1
+		position = 2
 	)
 	default boolean onlyWildy()
 	{
@@ -64,10 +64,21 @@ public interface PlayerScouterConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "outputItems",
+		name = "Output Items",
+		description = "This will output all of their risked gear to the webhook.",
+		position = 3
+	)
+	default boolean outputItems()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "minimumRisk",
 		name = "Minimum Risk",
 		description = "Minimum risk for the player to be scouted.",
-		position = 2
+		position = 4
 	)
 	default int minimumRisk()
 	{
@@ -78,7 +89,7 @@ public interface PlayerScouterConfig extends Config
 		keyName = "minimumValue",
 		name = "Minimum Value",
 		description = "Minimum value for the item to be posted on discord.",
-		position = 3
+		position = 5
 	)
 	default int minimumValue()
 	{
@@ -89,7 +100,7 @@ public interface PlayerScouterConfig extends Config
 		keyName = "timeout",
 		name = "Timeout",
 		description = "Minimum amount of ticks before the player can be scouted again. (1 tick = 600ms)",
-		position = 4
+		position = 6
 	)
 	default int timeout()
 	{

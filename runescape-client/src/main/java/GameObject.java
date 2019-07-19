@@ -103,6 +103,6 @@ public final class GameObject {
 	)
 	@Export("loadFont")
 	public static Font loadFont(AbstractArchive var0, AbstractArchive var1, int var2, int var3) {
-		return !Friend.SpriteBuffer_loadSprite(var0, var2, var3) ? null : WallDecoration.getWorldMapSprite(var1.takeFile(var2, var3));
+		return !Friend.doesSpriteExist(var0, var2, var3) ? null : WallDecoration.getWorldMapSprite(var1.takeFile(var2, var3));
 	}
 }

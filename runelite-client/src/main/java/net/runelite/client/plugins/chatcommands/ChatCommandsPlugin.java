@@ -827,45 +827,45 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			ItemPrice item = retrieveFromList(results, search);
 			CLIENT.lookupItem(item.getId())
-				.subscribeOn(Schedulers.single())
+				.subscribeOn(Schedulers.io())
+				.observeOn(Schedulers.from(clientThread))
 				.subscribe(
 					(osbresult) ->
-						clientThread.invoke(() ->
+					{
+						int itemId = item.getId();
+						int itemPrice = itemManager.getItemPrice(itemId);
+
+						final ChatMessageBuilder builder = new ChatMessageBuilder();
+						builder.append(ChatColorType.NORMAL);
+						builder.append(ChatColorType.HIGHLIGHT);
+						builder.append(item.getName());
+						builder.append(ChatColorType.NORMAL);
+						builder.append(": GE ");
+						builder.append(ChatColorType.HIGHLIGHT);
+						builder.append(StackFormatter.formatNumber(itemPrice));
+						builder.append(ChatColorType.NORMAL);
+						builder.append(": OSB ");
+						builder.append(ChatColorType.HIGHLIGHT);
+						builder.append(StackFormatter.formatNumber(osbresult.getOverall_average()));
+
+						ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
+						if (itemComposition != null)
 						{
-							int itemId = item.getId();
-							int itemPrice = itemManager.getItemPrice(itemId);
+							int alchPrice = itemManager.getAlchValue(itemId);
+							builder
+								.append(ChatColorType.NORMAL)
+								.append(" HA value ")
+								.append(ChatColorType.HIGHLIGHT)
+								.append(StackFormatter.formatNumber(alchPrice));
+						}
 
-							final ChatMessageBuilder builder = new ChatMessageBuilder();
-							builder.append(ChatColorType.NORMAL);
-							builder.append(ChatColorType.HIGHLIGHT);
-							builder.append(item.getName());
-							builder.append(ChatColorType.NORMAL);
-							builder.append(": GE ");
-							builder.append(ChatColorType.HIGHLIGHT);
-							builder.append(StackFormatter.formatNumber(itemPrice));
-							builder.append(ChatColorType.NORMAL);
-							builder.append(": OSB ");
-							builder.append(ChatColorType.HIGHLIGHT);
-							builder.append(StackFormatter.formatNumber(osbresult.getOverall_average()));
+						String response = builder.build();
 
-							ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
-							if (itemComposition != null)
-							{
-								int alchPrice = itemManager.getAlchValue(itemId);
-								builder
-									.append(ChatColorType.NORMAL)
-									.append(" HA value ")
-									.append(ChatColorType.HIGHLIGHT)
-									.append(StackFormatter.formatNumber(alchPrice));
-							}
-
-							String response = builder.build();
-
-							log.debug("Setting response {}", response);
-							messageNode.setRuneLiteFormatMessage(response);
-							chatMessageManager.update(messageNode);
-							client.refreshChat();
-						})
+						log.debug("Setting response {}", response);
+						messageNode.setRuneLiteFormatMessage(response);
+						chatMessageManager.update(messageNode);
+						client.refreshChat();
+					}
 				);
 		}
 	}

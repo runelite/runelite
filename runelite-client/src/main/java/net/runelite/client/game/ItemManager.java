@@ -30,9 +30,9 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import io.reactivex.schedulers.Schedulers;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -142,6 +142,7 @@ public class ItemManager
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
+
 	@Inject
 	public ItemManager(
 		Client client,
@@ -209,43 +210,43 @@ public class ItemManager
 
 	private void loadPrices()
 	{
-		try
-		{
-			ItemPrice[] prices = itemClient.getPrices();
-			if (prices != null)
-			{
-				ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
-				for (ItemPrice price : prices)
+		itemClient.getPrices()
+			.subscribeOn(Schedulers.io())
+			.subscribe(
+				(prices) ->
 				{
-					map.put(price.getId(), price);
-				}
-				itemPrices = map.build();
-			}
+					if (prices != null)
+					{
+						ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
+						for (ItemPrice price : prices)
+						{
+							map.put(price.getId(), price);
+						}
+						itemPrices = map.build();
+					}
 
-			log.debug("Loaded {} prices", itemPrices.size());
-		}
-		catch (IOException e)
-		{
-			log.warn("error loading prices!", e);
-		}
+					log.debug("Loaded {} prices", itemPrices.size());
+				},
+				(e) -> log.warn("error loading prices!", e)
+			);
 	}
 
 	private void loadStats()
 	{
-		try
-		{
-			final Map<Integer, ItemStats> stats = itemClient.getStats();
-			if (stats != null)
-			{
-				itemStats = ImmutableMap.copyOf(stats);
-			}
+		itemClient.getStats()
+			.subscribeOn(Schedulers.io())
+			.subscribe(
+				(stats) ->
+				{
+					if (stats != null)
+					{
+						itemStats = ImmutableMap.copyOf(stats);
+					}
 
-			log.debug("Loaded {} stats", itemStats.size());
-		}
-		catch (IOException e)
-		{
-			log.warn("error loading stats!", e);
-		}
+					log.debug("Loaded {} stats", itemStats.size());
+				},
+				(e) -> log.warn("error loading stats!", e)
+			);
 	}
 
 	private void onGameStateChanged(final GameStateChanged event)
@@ -285,7 +286,7 @@ public class ItemManager
 	/**
 	 * Look up an item's price
 	 *
-	 * @param itemID item id
+	 * @param itemID               item id
 	 * @param ignoreUntradeableMap should the price returned ignore the {@link UntradeableItemMapping}
 	 * @return item price
 	 */

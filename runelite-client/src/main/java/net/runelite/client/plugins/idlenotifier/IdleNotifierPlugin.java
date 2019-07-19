@@ -896,6 +896,7 @@ public class IdleNotifierPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
+		addSubscriptions();
 	}
 
 	@Override

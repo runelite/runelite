@@ -58,7 +58,7 @@ public class OSBGrandExchangeClient
 			{
 				if (!response.isSuccessful())
 				{
-					throw new IOException("Error looking up item id: " + response);
+					return Observable.error(new IOException("Error looking up item id: " + response));
 				}
 
 				final InputStream in = response.body().byteStream();

@@ -96,4 +96,15 @@ public interface GrandExchangeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "enableAfford",
+		name = "Enable Afford quantity on GE",
+		description = "Shows the quantity you can buy on the GE"
+	)
+	default boolean enableAfford()
+	{
+		return true;
+	}
 }

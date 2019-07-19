@@ -27,14 +27,16 @@ package net.runelite.client.callback;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executor;
 import java.util.function.BooleanSupplier;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import org.jetbrains.annotations.NotNull;
 
 @Singleton
 @Slf4j
-public class ClientThread
+public class ClientThread implements Executor
 {
 	private final ConcurrentLinkedQueue<BooleanSupplier> invokes = new ConcurrentLinkedQueue<>();
 
@@ -111,5 +113,15 @@ public class ClientThread
 				ir.remove();
 			}
 		}
+	}
+
+	@Override
+	public void execute(@NotNull Runnable r)
+	{
+		invoke(() ->
+		{
+			r.run();
+			return true;
+		});
 	}
 }

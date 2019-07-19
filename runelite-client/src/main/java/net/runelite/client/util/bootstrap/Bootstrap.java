@@ -15,7 +15,7 @@ import org.codehaus.plexus.util.FileUtils;
 
 public class Bootstrap
 {
-	String buildCommit = "b82c8903c64695d44b255d45b449440e4eaa17ef";
+	String buildCommit = "6fe334c02648d3f8b38625e3175e3f547d54aa37";
 	Client client = new Client();
 	String[] clientJvm9Arguments = new String[]{
 		"-XX:+DisableAttachMechanism",
@@ -106,7 +106,7 @@ public class Bootstrap
 	{
 		try
 		{
-			artifacts = new Artifact[43];
+			artifacts = new Artifact[46];
 
 			//Static artifacts
 			artifacts[0] = new Artifact();
@@ -301,9 +301,19 @@ public class Bootstrap
 			artifacts[41].size = "617294";
 			artifacts[43] = new Artifact();
 			artifacts[43].hash = "21b5cac673a156cd8d6cf9efe15ff267b6353eeb129678aa4b39542683ba0dc2";
-			artifacts[43].name = "rxjava-2.2.10";
-			artifacts[43].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/" + artifacts[43].name;
+			artifacts[43].name = "rxjava-2.2.10.jar";
+			artifacts[43].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/" + artifacts[43].name;
 			artifacts[43].size = "2348810";
+			artifacts[44] = new Artifact();
+			artifacts[44].hash = "830a08b9d5c20ab8e2033c16fc6ee067e6ffcd0c730f303d648aadfa81210d62";
+			artifacts[44].name = "rxrelay-2.1.0.jar";
+			artifacts[44].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/" + artifacts[44].name;
+			artifacts[44].size = "27750";
+			artifacts[45] = new Artifact();
+			artifacts[45].hash = "cc09ab0b140e0d0496c2165d4b32ce24f4d6446c0a26c5dc77b06bdf99ee8fae";
+			artifacts[45].name = "reactive-streams-1.0.2.jar";
+			artifacts[45].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/" + artifacts[45].name;
+			artifacts[45].size = "27750";
 
 			//Dynamic artifacts
 			artifacts[3] = new Artifact();
