@@ -551,14 +551,14 @@ public class GrandExchangePlugin extends Plugin
 			}
 
 			CLIENT.lookupItem(itemId)
-				.subscribeOn(Schedulers.single())
+				.subscribeOn(Schedulers.io())
+				.observeOn(Schedulers.from(clientThread))
 				.subscribe(
 					(osbresult) ->
-						clientThread.invoke(() ->
-						{
-							final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(osbresult.getOverall_average());
-							geText.setText(text);
-						}),
+					{
+						final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(osbresult.getOverall_average());
+						geText.setText(text);
+					},
 					(e) -> log.debug("Error getting price of item {}", itemId, e)
 				);
 		});
