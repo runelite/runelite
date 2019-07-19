@@ -29,9 +29,11 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
+import net.runelite.api.GameState;
 import net.runelite.api.VarClientStr;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
+import net.runelite.client.util.Clipboard;
 
 @Singleton
 class ChatKeyboardListener implements KeyListener
@@ -54,15 +56,45 @@ class ChatKeyboardListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!e.isControlDown() || !chatCommandsConfig.clearShortcuts())
+		if (!e.isControlDown() || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
+		String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+
 		switch (e.getKeyCode())
 		{
+			case KeyEvent.VK_C:
+				if (!chatCommandsConfig.clipboardShortcuts())
+				{
+					break;
+				}
+
+				Clipboard.store(input);
+
+				break;
+			case KeyEvent.VK_V:
+				if (!chatCommandsConfig.clipboardShortcuts())
+				{
+					break;
+				}
+
+				final String clipboard = Clipboard.retrieve();
+				if (clipboard != null && !clipboard.isEmpty())
+				{
+					final String replacement = input + clipboard;
+
+					clientThread.invoke(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement));
+				}
+
+				break;
 			case KeyEvent.VK_W:
-				String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+				if (!chatCommandsConfig.clearShortcuts())
+				{
+					break;
+				}
+
 				if (input != null)
 				{
 					// remove trailing space
@@ -96,6 +128,12 @@ class ChatKeyboardListener implements KeyListener
 					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 					client.runScript(ScriptID.CHAT_PROMPT_INIT);
 				});
+				if (!chatCommandsConfig.clearShortcuts())
+				{
+					break;
+				}
+
+				clientThread.invoke(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, ""));
 				break;
 		}
 	}

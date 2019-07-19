@@ -32,10 +32,7 @@ import com.google.inject.Provides;
 import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -103,6 +100,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Clipboard;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
@@ -247,7 +245,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		updateConfig();
 		addSubscriptions();
-		
+
 		overlayManager.add(screenshotOverlay);
 		SCREENSHOT_DIR.mkdirs();
 		keyManager.registerKeyListener(hotkeyListener);
@@ -855,9 +853,7 @@ public class ScreenshotPlugin extends Plugin
 						{
 							String link = imageUploadResponse.getData().getLink();
 
-							StringSelection selection = new StringSelection(link);
-							Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-							clipboard.setContents(selection, selection);
+						Clipboard.store(link);
 
 							if (notifyWhenTaken)
 							{
@@ -915,7 +911,7 @@ public class ScreenshotPlugin extends Plugin
 
 		updateConfig();
 	}
-	
+
 	private void updateConfig()
 	{
 		this.includeFrame = config.includeFrame();

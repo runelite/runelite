@@ -26,8 +26,6 @@ package net.runelite.client.util;
 
 import com.google.common.base.Strings;
 import java.awt.Desktop;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -144,8 +142,7 @@ public class LinkBrowser
 
 			if (result == JOptionPane.OK_OPTION)
 			{
-				final StringSelection stringSelection = new StringSelection(data);
-				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+				Clipboard.store(data);
 			}
 		});
 	}
