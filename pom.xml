@@ -37,7 +37,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.useIncrementalCompilation>false</maven.compiler.useIncrementalCompilation>
 		<java.version>1.8</java.version>
 		<lombok.version>1.18.8</lombok.version>
 		<checkstyle.version>8.22</checkstyle.version>
