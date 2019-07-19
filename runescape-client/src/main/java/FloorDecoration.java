@@ -1,117 +1,121 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("do")
+@ObfuscatedName("dq")
 @Implements("FloorDecoration")
 public final class FloorDecoration {
-   @ObfuscatedName("sm")
-   @ObfuscatedSignature(
-      signature = "Lg;"
-   )
-   @Export("grandExchangeEvents")
-   static GrandExchangeEvents grandExchangeEvents;
-   @ObfuscatedName("my")
-   @ObfuscatedGetter(
-      intValue = -1344682613
-   )
-   @Export("selectedSpellFlags")
-   static int selectedSpellFlags;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      longValue = -5063688075016130813L
-   )
-   @Export("tag")
-   public long tag;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1358154703
-   )
-   @Export("tileHeight")
-   int tileHeight;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1309467119
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 318503957
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lex;"
-   )
-   @Export("entity")
-   public Entity entity;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1241982749
-   )
-   @Export("flags")
-   int flags;
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = -311515591
+	)
+	@Export("tileHeight")
+	int tileHeight;
+	@ObfuscatedName("w")
+	@ObfuscatedGetter(
+		intValue = -1344271777
+	)
+	@Export("x")
+	int x;
+	@ObfuscatedName("e")
+	@ObfuscatedGetter(
+		intValue = -779439179
+	)
+	@Export("y")
+	int y;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "Leo;"
+	)
+	@Export("entity")
+	public Entity entity;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		longValue = -3653968665269180135L
+	)
+	@Export("tag")
+	public long tag;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = -1094759427
+	)
+	@Export("flags")
+	int flags;
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lir;Lir;I)I",
-      garbageValue = "-1749538901"
-   )
-   static int method2853(AbstractArchive var0, AbstractArchive var1) {
-      int var2 = 0;
-      if (var0.tryLoadFileByNames("title.jpg", "")) {
-         ++var2;
-      }
+	FloorDecoration() {
+	}
 
-      if (var1.tryLoadFileByNames("logo", "")) {
-         ++var2;
-      }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(S)V",
+		garbageValue = "3762"
+	)
+	public static void method2842() {
+		if (KeyHandler.KeyHandler_instance != null) {
+			synchronized(KeyHandler.KeyHandler_instance) {
+				KeyHandler.KeyHandler_instance = null;
+			}
+		}
 
-      if (var1.tryLoadFileByNames("logo_deadman_mode", "")) {
-         ++var2;
-      }
+	}
 
-      if (var1.tryLoadFileByNames("titlebox", "")) {
-         ++var2;
-      }
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/Throwable;B)Ljava/lang/String;",
+		garbageValue = "1"
+	)
+	static String method2843(Throwable var0) throws IOException {
+		String var1;
+		if (var0 instanceof RunException) {
+			RunException var2 = (RunException)var0;
+			var1 = var2.string + " | ";
+			var0 = var2.throwable;
+		} else {
+			var1 = "";
+		}
 
-      if (var1.tryLoadFileByNames("titlebutton", "")) {
-         ++var2;
-      }
+		StringWriter var12 = new StringWriter();
+		PrintWriter var3 = new PrintWriter(var12);
+		var0.printStackTrace(var3);
+		var3.close();
+		String var4 = var12.toString();
+		BufferedReader var5 = new BufferedReader(new StringReader(var4));
+		String var6 = var5.readLine();
 
-      if (var1.tryLoadFileByNames("runes", "")) {
-         ++var2;
-      }
+		while (true) {
+			while (true) {
+				String var7 = var5.readLine();
+				if (var7 == null) {
+					var1 = var1 + "| " + var6;
+					return var1;
+				}
 
-      if (var1.tryLoadFileByNames("title_mute", "")) {
-         ++var2;
-      }
+				int var8 = var7.indexOf(40);
+				int var9 = var7.indexOf(41, var8 + 1);
+				if (var8 >= 0 && var9 >= 0) {
+					String var10 = var7.substring(var8 + 1, var9);
+					int var11 = var10.indexOf(".java:");
+					if (var11 >= 0) {
+						var10 = var10.substring(0, var11) + var10.substring(var11 + 5);
+						var1 = var1 + var10 + ' ';
+						continue;
+					}
 
-      if (var1.tryLoadFileByNames("options_radio_buttons,0", "")) {
-         ++var2;
-      }
+					var7 = var7.substring(0, var8);
+				}
 
-      if (var1.tryLoadFileByNames("options_radio_buttons,2", "")) {
-         ++var2;
-      }
-
-      if (var1.tryLoadFileByNames("options_radio_buttons,4", "")) {
-         ++var2;
-      }
-
-      if (var1.tryLoadFileByNames("options_radio_buttons,6", "")) {
-         ++var2;
-      }
-
-      var1.tryLoadFileByNames("sl_back", "");
-      var1.tryLoadFileByNames("sl_flags", "");
-      var1.tryLoadFileByNames("sl_arrows", "");
-      var1.tryLoadFileByNames("sl_stars", "");
-      var1.tryLoadFileByNames("sl_button", "");
-      return var2;
-   }
+				var7 = var7.trim();
+				var7 = var7.substring(var7.lastIndexOf(32) + 1);
+				var7 = var7.substring(var7.lastIndexOf(9) + 1);
+				var1 = var1 + var7 + ' ';
+			}
+		}
+	}
 }

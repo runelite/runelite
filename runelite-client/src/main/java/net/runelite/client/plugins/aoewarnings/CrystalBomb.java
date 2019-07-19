@@ -32,22 +32,13 @@ import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
 
 @Slf4j
+@Getter(AccessLevel.PACKAGE)
 class CrystalBomb
 {
-	@Getter(AccessLevel.PACKAGE)
 	private Instant plantedOn;
-
-	@Getter(AccessLevel.PACKAGE)
 	private Instant lastClockUpdate;
-
-	@Getter(AccessLevel.PACKAGE)
 	private int objectId;
-
-	@Getter(AccessLevel.PACKAGE)
 	private int tickStarted;
-	//
-
-	@Getter(AccessLevel.PACKAGE)
 	private WorldPoint worldLocation;
 
 	CrystalBomb(GameObject gameObject, int startTick)

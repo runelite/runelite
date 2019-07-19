@@ -4,143 +4,151 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bi")
+@ObfuscatedName("bt")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1439936951
-   )
-   @Export("plane")
-   int plane;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1471611383
-   )
-   @Export("type")
-   int type;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1059464897
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1306474107
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1889242993
-   )
-   int field903;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 318288659
-   )
-   int field904;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 629071861
-   )
-   int field905;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1986990761
-   )
-   @Export("id")
-   int id;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1768602131
-   )
-   @Export("orientation")
-   int orientation;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1989829133
-   )
-   int field908;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -715662659
-   )
-   @Export("delay")
-   int delay;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -2141472019
-   )
-   @Export("hitpoints")
-   int hitpoints;
+	@ObfuscatedName("sq")
+	@ObfuscatedSignature(
+		signature = "Lih;"
+	)
+	public static class237 field944;
+	@ObfuscatedName("sw")
+	@ObfuscatedSignature(
+		signature = "Lb;"
+	)
+	@Export("grandExchangeEvents")
+	static GrandExchangeEvents grandExchangeEvents;
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = 1117563783
+	)
+	@Export("plane")
+	int plane;
+	@ObfuscatedName("w")
+	@ObfuscatedGetter(
+		intValue = -1026352463
+	)
+	@Export("type")
+	int type;
+	@ObfuscatedName("e")
+	@ObfuscatedGetter(
+		intValue = -1124430139
+	)
+	@Export("x")
+	int x;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = 1248195559
+	)
+	@Export("y")
+	int y;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = 160620695
+	)
+	int field935;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = 1900923625
+	)
+	int field936;
+	@ObfuscatedName("b")
+	@ObfuscatedGetter(
+		intValue = 1207440287
+	)
+	int field933;
+	@ObfuscatedName("i")
+	@ObfuscatedGetter(
+		intValue = -1651150405
+	)
+	@Export("id")
+	int id;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = -1876574001
+	)
+	@Export("orientation")
+	int orientation;
+	@ObfuscatedName("f")
+	@ObfuscatedGetter(
+		intValue = -884568825
+	)
+	int field940;
+	@ObfuscatedName("m")
+	@ObfuscatedGetter(
+		intValue = -1567883817
+	)
+	@Export("delay")
+	int delay;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = 783887651
+	)
+	@Export("hitpoints")
+	int hitpoints;
 
-   PendingSpawn() {
-      this.delay = 0;
-      this.hitpoints = -1;
-   }
+	PendingSpawn() {
+		this.delay = 0;
+		this.hitpoints = -1;
+	}
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "100"
-   )
-   public static void method1694() {
-      class322.reflectionChecks = new IterableNodeDeque();
-   }
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(III)V",
+		garbageValue = "-1833847542"
+	)
+	static void method1653(int var0, int var1) {
+		long var2 = (long)((var0 << 16) + var1);
+		NetFileRequest var4 = (NetFileRequest)NetCache.NetCache_pendingWrites.get(var2);
+		if (var4 != null) {
+			NetCache.NetCache_pendingWritesQueue.addLast(var4);
+		}
+	}
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1641191614"
-   )
-   public static void method1695(int var0, int var1) {
-      VarbitDefinition var2 = Occluder.getVarbitDefinition(var0);
-      int var3 = var2.baseVar;
-      int var4 = var2.startBit;
-      int var5 = var2.endBit;
-      int var6 = Varps.Varps_masks[var5 - var4];
-      if (var1 < 0 || var1 > var6) {
-         var1 = 0;
-      }
+	@ObfuscatedName("jr")
+	@ObfuscatedSignature(
+		signature = "(IIIB)Lbo;",
+		garbageValue = "124"
+	)
+	static final InterfaceParent method1652(int var0, int var1, int var2) {
+		InterfaceParent var3 = new InterfaceParent();
+		var3.group = var1;
+		var3.type = var2;
+		Client.interfaceParents.put(var3, (long)var0);
+		GrandExchangeOfferAgeComparator.method146(var1);
+		Widget var4 = class80.getWidget(var0);
+		Strings.method4120(var4);
+		if (Client.field850 != null) {
+			Strings.method4120(Client.field850);
+			Client.field850 = null;
+		}
 
-      var6 <<= var4;
-      Varps.Varps_main[var3] = Varps.Varps_main[var3] & ~var6 | var1 << var4 & var6;
-   }
+		for (int var5 = 0; var5 < Client.menuOptionsCount; ++var5) {
+			if (class1.isWidgetMenuOpcode(Client.menuOpcodes[var5])) {
+				if (var5 < Client.menuOptionsCount - 1) {
+					for (int var6 = var5; var6 < Client.menuOptionsCount - 1; ++var6) {
+						Client.menuActions[var6] = Client.menuActions[var6 + 1];
+						Client.menuTargetNames[var6] = Client.menuTargetNames[var6 + 1];
+						Client.menuOpcodes[var6] = Client.menuOpcodes[var6 + 1];
+						Client.menuArguments0[var6] = Client.menuArguments0[var6 + 1];
+						Client.menuArguments1[var6] = Client.menuArguments1[var6 + 1];
+						Client.menuArguments2[var6] = Client.menuArguments2[var6 + 1];
+						Client.menuShiftClick[var6] = Client.menuShiftClick[var6 + 1];
+					}
+				}
 
-   @ObfuscatedName("gl")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "-1792684945"
-   )
-   @Export("drawLoadingMessage")
-   static final void drawLoadingMessage(String var0, boolean var1) {
-      if (Client.showLoadingMessages) {
-         byte var2 = 4;
-         int var3 = var2 + 6;
-         int var4 = var2 + 6;
-         int var5 = DevicePcmPlayerProvider.fontPlain12.lineWidth(var0, 250);
-         int var6 = DevicePcmPlayerProvider.fontPlain12.lineCount(var0, 250) * 13;
-         Rasterizer2D.Rasterizer2D_fillRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
-         Rasterizer2D.Rasterizer2D_drawRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var2 + var6, 16777215);
-         DevicePcmPlayerProvider.fontPlain12.drawLines(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-         Players.method2112(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2);
-         if (var1) {
-            class197.rasterProvider.drawFull(0, 0);
-         } else {
-            int var7 = var3;
-            int var8 = var4;
-            int var9 = var5;
-            int var10 = var6;
+				--var5;
+				--Client.menuOptionsCount;
+			}
+		}
 
-            for (int var11 = 0; var11 < Client.rootWidgetCount; ++var11) {
-               if (Client.rootWidgetWidths[var11] + Client.rootWidgetXs[var11] > var7 && Client.rootWidgetXs[var11] < var9 + var7 && Client.rootWidgetHeights[var11] + Client.rootWidgetYs[var11] > var8 && Client.rootWidgetYs[var11] < var10 + var8) {
-                  Client.field102[var11] = true;
-               }
-            }
-         }
-      }
+		GrandExchangeOfferAgeComparator.method145();
+		WorldMapSprite.revalidateWidgetScroll(Widget.Widget_interfaceComponents[var0 >> 16], var4, false);
+		Canvas.runWidgetOnLoadListener(var1);
+		if (Client.rootInterface != -1) {
+			WorldMapLabelSize.method175(Client.rootInterface, 1);
+		}
 
-   }
+		return var3;
+	}
 }

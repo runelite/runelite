@@ -1,79 +1,79 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ll")
+@ObfuscatedName("ln")
 public enum class313 implements Enumerated {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lll;"
-   )
-   field3834(2, 0),
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lll;"
-   )
-   field3825(7, 1),
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lll;"
-   )
-   field3826(8, 2),
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lll;"
-   )
-   field3830(0, 3),
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lll;"
-   )
-   field3831(4, 4),
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Lll;"
-   )
-   field3829(1, 5),
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lll;"
-   )
-   field3828(6, 6),
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lll;"
-   )
-   field3824(5, 7),
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lll;"
-   )
-   field3832(3, 8);
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "Lln;"
+	)
+	field3837(3, 0),
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "Lln;"
+	)
+	field3833(4, 1),
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "Lln;"
+	)
+	field3834(8, 2),
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "Lln;"
+	)
+	field3843(5, 3),
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "Lln;"
+	)
+	field3835(7, 4),
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		signature = "Lln;"
+	)
+	field3838(2, 5),
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "Lln;"
+	)
+	field3839(6, 6),
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "Lln;"
+	)
+	field3840(0, 7),
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "Lln;"
+	)
+	field3841(1, 8);
 
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -561869045
-   )
-   final int field3833;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1246567185
-   )
-   final int field3827;
+	@ObfuscatedName("aw")
+	static java.awt.Font field3844;
+	@ObfuscatedName("f")
+	@ObfuscatedGetter(
+		intValue = -1731817037
+	)
+	final int field3842;
+	@ObfuscatedName("m")
+	@ObfuscatedGetter(
+		intValue = 1422970915
+	)
+	final int field3836;
 
-   private class313(int var3, int var4) {
-      this.field3833 = var3;
-      this.field3827 = var4;
-   }
+	class313(int var3, int var4) {
+		this.field3842 = var3;
+		this.field3836 = var4;
+	}
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "83"
-   )
-   @Export("rsOrdinal")
-   public int rsOrdinal() {
-      return this.field3827;
-   }
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(I)I",
+		garbageValue = "320353268"
+	)
+	public int rsOrdinal() {
+		return this.field3836;
+	}
 }

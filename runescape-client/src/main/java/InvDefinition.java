@@ -4,66 +4,68 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ib")
+@ObfuscatedName("ig")
 @Implements("InvDefinition")
 public class InvDefinition extends DualNode {
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Ler;"
-   )
-   @Export("InvDefinition_cached")
-   static EvictingDualNodeHashTable InvDefinition_cached;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1358868971
-   )
-   @Export("size")
-   public int size;
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "Lhp;"
+	)
+	@Export("InvDefinition_archive")
+	static AbstractArchive InvDefinition_archive;
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "Lel;"
+	)
+	@Export("InvDefinition_cached")
+	static EvictingDualNodeHashTable InvDefinition_cached;
+	@ObfuscatedName("bs")
+	@ObfuscatedGetter(
+		intValue = 1665309649
+	)
+	static int field3199;
+	@ObfuscatedName("e")
+	@ObfuscatedGetter(
+		intValue = 2126077973
+	)
+	@Export("size")
+	public int size;
 
-   InvDefinition() {
-      this.size = 0;
-   }
+	static {
+		InvDefinition_cached = new EvictingDualNodeHashTable(64);
+	}
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(Lgr;I)V",
-      garbageValue = "628080573"
-   )
-   @Export("decode")
-   void decode(Buffer var1) {
-      while (true) {
-         int var2 = var1.readUnsignedByte();
-         if (var2 == 0) {
-            return;
-         }
+	InvDefinition() {
+		this.size = 0;
+	}
 
-         this.decodeNext(var1, var2);
-      }
-   }
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(Lkf;I)V",
+		garbageValue = "-1922259569"
+	)
+	@Export("decode")
+	void decode(Buffer var1) {
+		while (true) {
+			int var2 = var1.readUnsignedByte();
+			if (var2 == 0) {
+				return;
+			}
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lgr;II)V",
-      garbageValue = "1763455566"
-   )
-   @Export("decodeNext")
-   void decodeNext(Buffer var1, int var2) {
-      if (var2 == 2) {
-         this.size = var1.readUnsignedShort();
-      }
+			this.decodeNext(var1, var2);
+		}
+	}
 
-   }
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(Lkf;II)V",
+		garbageValue = "-745252030"
+	)
+	@Export("decodeNext")
+	void decodeNext(Buffer var1, int var2) {
+		if (var2 == 2) {
+			this.size = var1.readUnsignedShort();
+		}
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-121177696"
-   )
-   public static void method4754() {
-      ParamDefinition.ParamDefinition_cached.clear();
-   }
-
-   static {
-      InvDefinition_cached = new EvictingDualNodeHashTable(64);
-   }
+	}
 }

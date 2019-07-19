@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.29-SNAPSHOT</version>
+		<version>1.5.30-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -38,18 +38,6 @@
 	<properties>
 		<guice.version>4.1.0</guice.version>
 		<jogl.version>2.3.2</jogl.version>
-		<hamcrest.version>1.3</hamcrest.version>
-		<jopt.version>5.0.1</jopt.version>
-		<commons.text.version>1.2</commons.text.version>
-		<sigpipe.jbsdiff.version>1.0</sigpipe.jbsdiff.version>
-		<java.dev.jna.version>4.5.1</java.dev.jna.version>
-		<runelite.pushingpixels.substance.version>8.0.02</runelite.pushingpixels.substance.version>
-		<runelite.pushingpixels.trident.version>1.5.00</runelite.pushingpixels.trident.version>
-		<runelite.discord.version>1.1</runelite.discord.version>
-		<runelite.orange.extensions.version>1.0</runelite.orange.extensions.version>
-		<maven.resources.plugin.version>3.0.2</maven.resources.plugin.version>
-		<maven.jarsigner.plugin.version>1.4</maven.jarsigner.plugin.version>
-		<maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
 
 		<jarsigner.skip>true</jarsigner.skip>
 	</properties>
@@ -74,7 +62,7 @@
 		<dependency>
 			<groupId>net.sf.jopt-simple</groupId>
 			<artifactId>jopt-simple</artifactId>
-			<version>${jopt.version}</version>
+			<version>5.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -93,12 +81,12 @@
 		<dependency>
 			<groupId>net.runelite.pushingpixels</groupId>
 			<artifactId>substance</artifactId>
-			<version>${runelite.pushingpixels.substance.version}</version>
+			<version>8.0.02</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.pushingpixels</groupId>
 			<artifactId>trident</artifactId>
-			<version>${runelite.pushingpixels.trident.version}</version>
+			<version>1.5.00</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -109,7 +97,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-text</artifactId>
-			<version>${commons.text.version}</version>
+			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jogamp.jogl</groupId>
@@ -180,7 +168,7 @@
 		<dependency>
 			<groupId>io.sigpipe</groupId>
 			<artifactId>jbsdiff</artifactId>
-			<version>${sigpipe.jbsdiff.version}</version>
+			<version>1.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.tukaani</groupId>
@@ -192,12 +180,12 @@
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
-			<version>${java.dev.jna.version}</version>
+			<version>4.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna-platform</artifactId>
-			<version>${java.dev.jna.version}</version>
+			<version>4.5.1</version>
 		</dependency>
 
 		<dependency>
@@ -225,26 +213,30 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>discord</artifactId>
-			<version>${runelite.discord.version}</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>orange-extensions</artifactId>
-			<version>${runelite.orange.extensions.version}</version>
+			<version>1.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-library</artifactId>
-			<version>${hamcrest.version}</version>
+			<version>1.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -333,7 +325,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>${maven.resources.plugin.version}</version>
+				<version>3.0.2</version>
 				<configuration>
 					<nonFilteredFileExtensions>
 						<nonFilteredFileExtension>ttf</nonFilteredFileExtension>
@@ -346,7 +338,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>${maven.shade.plugin.version}</version>
+				<version>3.0.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -422,7 +414,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jarsigner-plugin</artifactId>
-				<version>${maven.jarsigner.plugin.version}</version>
+				<version>1.4</version>
 				<executions>
 					<execution>
 						<id>sign</id>

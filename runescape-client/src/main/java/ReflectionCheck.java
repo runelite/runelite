@@ -6,52 +6,70 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lw")
+@ObfuscatedName("ce")
 @Implements("ReflectionCheck")
 public class ReflectionCheck extends Node {
-   @ObfuscatedName("su")
-   @ObfuscatedSignature(
-      signature = "Lbf;"
-   )
-   @Export("clientPreferences")
-   static ClientPreferences clientPreferences;
-   @ObfuscatedName("m")
-   @Export("arguments")
-   byte[][][] arguments;
-   @ObfuscatedName("f")
-   @Export("intReplaceValues")
-   int[] intReplaceValues;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -1955146989
-   )
-   @Export("id")
-   int id;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1091722075
-   )
-   @Export("size")
-   int size;
-   @ObfuscatedName("o")
-   @Export("operations")
-   int[] operations;
-   @ObfuscatedName("u")
-   @Export("creationErrors")
-   int[] creationErrors;
-   @ObfuscatedName("g")
-   @Export("fields")
-   Field[] fields;
-   @ObfuscatedName("l")
-   @Export("methods")
-   Method[] methods;
+	@ObfuscatedName("co")
+	@ObfuscatedGetter(
+		intValue = 749425319
+	)
+	public static int field1338;
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = -1523966437
+	)
+	@Export("id")
+	int id;
+	@ObfuscatedName("w")
+	@ObfuscatedGetter(
+		intValue = 970491183
+	)
+	@Export("size")
+	int size;
+	@ObfuscatedName("e")
+	@Export("operations")
+	int[] operations;
+	@ObfuscatedName("p")
+	@Export("creationErrors")
+	int[] creationErrors;
+	@ObfuscatedName("k")
+	@Export("fields")
+	Field[] fields;
+	@ObfuscatedName("l")
+	@Export("intReplaceValues")
+	int[] intReplaceValues;
+	@ObfuscatedName("b")
+	@Export("methods")
+	Method[] methods;
+	@ObfuscatedName("i")
+	@Export("arguments")
+	byte[][][] arguments;
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Z",
-      garbageValue = "384237837"
-   )
-   static boolean method5920(String var0, int var1) {
-      return FaceNormal.method3237(var0, var1, "openjs");
-   }
+	ReflectionCheck() {
+	}
+
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "2118101811"
+	)
+	@Export("savePreferences")
+	static void savePreferences() {
+		AccessFile var0 = null;
+
+		try {
+			var0 = WorldMapIcon_0.getPreferencesFile("", WorldMapRegion.field248.name, true);
+			Buffer var1 = WorldMapLabelSize.clientPreferences.toBuffer();
+			var0.write(var1.array, 0, var1.offset);
+		} catch (Exception var3) {
+		}
+
+		try {
+			if (var0 != null) {
+				var0.closeSync(true);
+			}
+		} catch (Exception var2) {
+		}
+
+	}
 }

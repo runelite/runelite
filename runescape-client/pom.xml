@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.29-SNAPSHOT</version>
+		<version>1.5.30-SNAPSHOT</version>
 	</parent>
 
 	<groupId>net.runelite.rs</groupId>
@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>runescape-api</artifactId>
-			<version>1.5.29-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>

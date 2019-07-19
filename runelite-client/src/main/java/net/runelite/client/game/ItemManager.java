@@ -285,7 +285,7 @@ public class ItemManager
 	/**
 	 * Look up an item's price
 	 *
-	 * @param itemID               item id
+	 * @param itemID item id
 	 * @param ignoreUntradeableMap should the price returned ignore the {@link UntradeableItemMapping}
 	 * @return item price
 	 */
@@ -348,6 +348,18 @@ public class ItemManager
 		}
 
 		return (int) Math.max(1, getItemDefinition(itemID).getPrice() * HIGH_ALCHEMY_MULTIPLIER);
+	}
+
+	public int getBrokenValue(int itemId)
+	{
+		PvPValueBrokenItem b = PvPValueBrokenItem.of(itemId);
+
+		if (b != null)
+		{
+			return (int) (b.getValue() * (75.0f / 100.0f));
+		}
+
+		return 0;
 	}
 
 	/**

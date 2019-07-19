@@ -1,137 +1,204 @@
+import java.util.Locale;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gf")
-public class class190 {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lgf;"
-   )
-   public static final class190 field2346;
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lgf;"
-   )
-   public static final class190 field2352;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lgf;"
-   )
-   public static final class190 field2342;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lgf;"
-   )
-   public static final class190 field2341;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lgf;"
-   )
-   public static final class190 field2344;
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Lgf;"
-   )
-   public static final class190 field2345;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lgf;"
-   )
-   public static final class190 field2350;
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lgf;"
-   )
-   public static final class190 field2347;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lgf;"
-   )
-   public static final class190 field2343;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lgf;"
-   )
-   public static final class190 field2349;
-   @ObfuscatedName("ge")
-   @Export("xteaKeys")
-   static int[][] xteaKeys;
+@ObfuscatedName("gu")
+public class class190 implements Enumerated {
+	@ObfuscatedName("qk")
+	@ObfuscatedSignature(
+		signature = "Ldn;"
+	)
+	@Export("pcmPlayer1")
+	static PcmPlayer pcmPlayer1;
+	@ObfuscatedName("qb")
+	@ObfuscatedGetter(
+		intValue = -429347521
+	)
+	static int field2345;
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "Lgu;"
+	)
+	public static final class190 field2348;
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "Lgu;"
+	)
+	static final class190 field2351;
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "Lgu;"
+	)
+	public static final class190 field2347;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "Lgu;"
+	)
+	static final class190 field2352;
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "Lgu;"
+	)
+	static final class190 field2349;
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		signature = "Lgu;"
+	)
+	public static final class190 field2350;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "Lgu;"
+	)
+	static final class190 field2360;
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		signature = "[Lgu;"
+	)
+	public static final class190[] field2355;
+	@ObfuscatedName("eg")
+	@ObfuscatedGetter(
+		intValue = -1179519055
+	)
+	@Export("port1")
+	static int port1;
+	@ObfuscatedName("i")
+	final String field2346;
+	@ObfuscatedName("c")
+	final String field2353;
+	@ObfuscatedName("f")
+	@ObfuscatedGetter(
+		intValue = 1003386863
+	)
+	final int field2354;
 
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "7"
-   )
-   class190(int var1) {
-   }
+	static {
+		field2348 = new class190("EN", "en", "English", class192.field2375, 0, "GB");
+		field2351 = new class190("DE", "de", "German", class192.field2375, 1, "DE");
+		field2347 = new class190("FR", "fr", "French", class192.field2375, 2, "FR");
+		field2352 = new class190("PT", "pt", "Portuguese", class192.field2375, 3, "BR");
+		field2349 = new class190("NL", "nl", "Dutch", class192.field2381, 4, "NL");
+		field2350 = new class190("ES", "es", "Spanish", class192.field2381, 5, "ES");
+		field2360 = new class190("ES_MX", "es-mx", "Spanish (Latin American)", class192.field2375, 6, "MX");
+		class190[] var0 = method3664();
+		field2355 = new class190[var0.length];
+		class190[] var1 = var0;
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(I)Lbt;",
-      garbageValue = "-68901151"
-   )
-   @Export("worldListStart")
-   static World worldListStart() {
-      World.worldListWorldCount = 0;
-      return Fonts.getNextWorldListWorld();
-   }
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			class190 var3 = var1[var2];
+			if (field2355[var3.field2354] != null) {
+				throw new IllegalStateException();
+			}
 
-   @ObfuscatedName("iv")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIB)V",
-      garbageValue = "0"
-   )
-   static final void method3669(int var0, int var1, int var2, int var3, int var4, int var5) {
-      int var6 = var2 - var0;
-      int var7 = var3 - var1;
-      int var8 = var6 >= 0 ? var6 : -var6;
-      int var9 = var7 >= 0 ? var7 : -var7;
-      int var10 = var8;
-      if (var8 < var9) {
-         var10 = var9;
-      }
+			field2355[var3.field2354] = var3;
+		}
 
-      if (var10 != 0) {
-         int var11 = (var6 << 16) / var10;
-         int var12 = (var7 << 16) / var10;
-         if (var12 <= var11) {
-            var11 = -var11;
-         } else {
-            var12 = -var12;
-         }
+	}
 
-         int var13 = var5 * var12 >> 17;
-         int var14 = var5 * var12 + 1 >> 17;
-         int var15 = var5 * var11 >> 17;
-         int var16 = var5 * var11 + 1 >> 17;
-         var0 -= Rasterizer2D.Rasterizer2D_xClipStart;
-         var1 -= Rasterizer2D.Rasterizer2D_yClipStart;
-         int var17 = var0 + var13;
-         int var18 = var0 - var14;
-         int var19 = var0 + var6 - var14;
-         int var20 = var0 + var13 + var6;
-         int var21 = var15 + var1;
-         int var22 = var1 - var16;
-         int var23 = var7 + var1 - var16;
-         int var24 = var15 + var7 + var1;
-         Rasterizer3D.method2985(var17, var18, var19);
-         Rasterizer3D.method3020(var21, var22, var23, var17, var18, var19, var4);
-         Rasterizer3D.method2985(var17, var19, var20);
-         Rasterizer3D.method3020(var21, var23, var24, var17, var19, var20, var4);
-      }
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lgd;ILjava/lang/String;)V"
+	)
+	class190(String var1, String var2, String var3, class192 var4, int var5, String var6) {
+		this.field2346 = var1;
+		this.field2353 = var2;
+		this.field2354 = var5;
+		if (var6 != null) {
+			new Locale(var2.substring(0, 2), var6);
+		} else {
+			new Locale(var2.substring(0, 2));
+		}
 
-   }
+	}
 
-   static {
-      field2346 = new class190(7);
-      field2352 = new class190(15);
-      field2342 = new class190(14);
-      field2341 = new class190(6);
-      field2344 = new class190(4);
-      field2345 = new class190(5);
-      field2350 = new class190(2);
-      field2347 = new class190(3);
-      field2343 = new class190(5);
-      field2349 = new class190(4);
-   }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(I)Ljava/lang/String;",
+		garbageValue = "1097353533"
+	)
+	String method3656() {
+		return this.field2353;
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(I)I",
+		garbageValue = "320353268"
+	)
+	public int rsOrdinal() {
+		return this.field2354;
+	}
+
+	public String toString() {
+		return this.method3656().toLowerCase(Locale.ENGLISH);
+	}
+
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(B)[Lgu;",
+		garbageValue = "99"
+	)
+	static class190[] method3664() {
+		return new class190[]{field2351, field2349, field2347, field2350, field2348, field2360, field2352};
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1942171448"
+	)
+	public static final void method3665() {
+		ViewportMouse.ViewportMouse_isInViewport = false;
+		ViewportMouse.ViewportMouse_entityCount = 0;
+	}
+
+	@ObfuscatedName("ep")
+	@ObfuscatedSignature(
+		signature = "(I)Z",
+		garbageValue = "1477910272"
+	)
+	static boolean method3667() {
+		if (Client.archiveLoaders != null && Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
+			while (Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
+				ArchiveLoader var0 = (ArchiveLoader)Client.archiveLoaders.get(Client.archiveLoaderArchive);
+				if (!var0.isLoaded()) {
+					return false;
+				}
+
+				++Client.archiveLoaderArchive;
+			}
+
+			return true;
+		} else {
+			return true;
+		}
+	}
+
+	@ObfuscatedName("ko")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
+		garbageValue = "-1044311329"
+	)
+	static String method3666(String var0, boolean var1) {
+		String var2 = var1 ? "https://" : "http://";
+		if (Client.gameBuild == 1) {
+			var0 = var0 + "-wtrc";
+		} else if (Client.gameBuild == 2) {
+			var0 = var0 + "-wtqa";
+		} else if (Client.gameBuild == 3) {
+			var0 = var0 + "-wtwip";
+		} else if (Client.gameBuild == 5) {
+			var0 = var0 + "-wti";
+		} else if (Client.gameBuild == 4) {
+			var0 = "local";
+		}
+
+		String var3 = "";
+		if (class294.field3695 != null) {
+			var3 = "/p=" + class294.field3695;
+		}
+
+		String var4 = "runescape.com";
+		return var2 + var0 + "." + var4 + "/l=" + ScriptFrame.field528 + "/a=" + InvDefinition.field3199 + var3 + "/";
+	}
 }

@@ -24,30 +24,267 @@
  */
 package net.runelite.deob.deobfuscators.mapping;
 
+import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.Instant;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.Type;
+import net.runelite.asm.attributes.code.Parameter;
 import net.runelite.asm.signature.Signature;
+import net.runelite.deob.Deob;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.DeobTestProperties;
+import net.runelite.deob.deobfuscators.mapping.mappingdumper.MappedClass;
+import net.runelite.deob.deobfuscators.mapping.mappingdumper.MappedField;
+import net.runelite.deob.deobfuscators.mapping.mappingdumper.MappedMethod;
+import net.runelite.deob.deobfuscators.mapping.mappingdumper.MappingDump;
 import net.runelite.deob.util.JarUtil;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MappingDumper
 {
 	@Rule
 	public DeobTestProperties properties = new DeobTestProperties();
+
+	private final Logger log = LoggerFactory.getLogger(MappingDumper.class);
+
+	private MappingDump dump;
+	private Map<String, MappedClass> classMap;
+	private static final String OUTDIR = "";
+	private final File OUTFILE = new File(OUTDIR, "rlplushooks.json");
+
+	@Before
+	public void before()
+	{
+		dump = new MappingDump();
+		dump.revision = properties.getRsVersion();
+		dump.classes = new ArrayList<>();
+		dump.staticFields = new ArrayList<>();
+		dump.staticMethods = new ArrayList<>();
+		classMap = new HashMap<>();
+	}
+
+	@Test
+	@Ignore
+	public void newDump() throws IOException
+	{
+		final ClassGroup group = JarUtil.loadJar(new File(properties.getRsClient()));
+
+
+		// First create all the mappedclasses, so we can add static methods to their lists
+		for (ClassFile c : group.getClasses())
+		{
+			if (c.getName().contains("runelite"))
+			{
+				continue;
+			}
+
+			final MappedClass mc = new MappedClass();
+
+			mc.obfuscatedName = DeobAnnotations.getObfuscatedName(c.getAnnotations());
+			mc.implementingName = DeobAnnotations.getImplements(c);
+			mc.superClass = c.getSuperName();
+			mc.interfaces = c.getInterfaces().getIntfNames();
+			mc.constructors = new ArrayList<>();
+			mc.fields = new ArrayList<>();
+			mc.methods = new ArrayList<>();
+			mc.access = c.getAccess();
+			mc.staticMethods = new ArrayList<>();
+			mc.staticFields = new ArrayList<>();
+
+			dump.classes.add(mc);
+			classMap.put(c.getName(), mc);
+
+			dump.totalClasses++;
+			if (mc.implementingName != null)
+			{
+				dump.totalNamedClasses++;
+			}
+		}
+
+		for (ClassFile c : group.getClasses())
+		{
+			if (c.getName().contains("runelite"))
+			{
+				continue;
+			}
+
+			final MappedClass mc = classMap.get(c.getName());
+
+			getFields(c, mc);
+
+			getMethods(c, mc);
+		}
+
+		dump.totalNonStaticFields = dump.totalFields - dump.totalStaticFields;
+		dump.totalNamedNonStaticFields = dump.totalNamedFields - dump.totalNamedStaticFields;
+		dump.totalNonStaticMethods = dump.totalMethods - dump.totalStaticMethods;
+		dump.totalNamedNonStaticMethods = dump.totalNamedMethods - dump.totalNamedStaticMethods;
+
+		final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Files.asCharSink(OUTFILE, Charset.defaultCharset()).write(gson.toJson(dump));
+
+		log.info("Dumped current mappings. revision {}", dump.revision);
+		log.info("Total classes: {}. Total mapped classes: {}. ({}%)", dump.totalClasses, dump.totalNamedClasses, dump.totalNamedClasses * 100 / dump.totalClasses);
+		log.info("Total non static methods: {}. Total mapped non static methods: {}. ({}%)", dump.totalNonStaticMethods, dump.totalNamedNonStaticMethods, dump.totalNamedNonStaticMethods * 100 / dump.totalNamedMethods);
+		log.info("Total methods: {}. Total mapped methods: {}. ({}%)", dump.totalMethods, dump.totalNamedMethods, dump.totalNamedMethods * 100 / dump.totalMethods);
+		log.info("Total fields: {}. Total mapped fields: {}. ({}%)", dump.totalFields, dump.totalNamedFields, dump.totalNamedFields * 100 / dump.totalFields);
+		log.info("Total non static fields: {}. Total mapped non static fields: {}. ({}%)", dump.totalNonStaticFields, dump.totalNamedNonStaticFields, dump.totalNamedNonStaticFields * 100 / dump.totalNamedFields);
+
+	}
+
+	private void getFields(final ClassFile c, final MappedClass mc)
+	{
+		for (Field f : c.getFields())
+		{
+			dump.totalFields++;
+
+			if (f.isStatic())
+			{
+				dump.totalStaticFields++;
+			}
+
+			if (Deob.isObfuscated(f.getName()))
+			{
+				continue;
+			}
+
+			dump.totalNamedFields++;
+
+			final MappedField mf = new MappedField();
+
+			mf.exportedName = f.getName();
+			mf.owner = mc.obfuscatedName;
+			mf.obfuscatedName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
+			mf.access = f.getAccessFlags();
+			mf.descriptor = DeobAnnotations.getAnnotationValue(f.getAnnotations(), DeobAnnotations.OBFUSCATED_SIGNATURE);
+
+			Number decoder = DeobAnnotations.getObfuscatedGetter(f);
+			if (decoder != null)
+			{
+				mf.decoder = decoder.longValue();
+			}
+
+			if (mf.descriptor == null)
+			{
+				mf.descriptor = f.getType().toString();
+			}
+
+			if (f.isStatic())
+			{
+				dump.staticFields.add(mf);
+				dump.totalNamedStaticFields++;
+
+				int _index = mf.exportedName.indexOf('_');
+
+				if (_index != -1)
+				{
+					String className = mf.exportedName.substring(0, _index);
+					MappedClass staticOwner = classMap.get(className);
+
+					if (staticOwner != null)
+					{
+						staticOwner.staticFields.add(mf);
+					}
+				}
+			}
+			else
+			{
+				mc.fields.add(mf);
+			}
+		}
+	}
+
+	private void getMethods(final ClassFile c, final MappedClass mc)
+	{
+		for (Method m : c.getMethods())
+		{
+			dump.totalMethods++;
+
+			if (m.isStatic())
+			{
+				dump.totalStaticMethods++;
+			}
+
+			if (Deob.isObfuscated(m.getName()) || m.getName().equals("<clinit>"))
+			{
+				continue;
+			}
+
+			dump.totalNamedMethods++;
+
+			final MappedMethod mm = new MappedMethod();
+
+			mm.exportedName = m.getName();
+			mm.owner = mc.obfuscatedName;
+			mm.obfuscatedName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
+			mm.access = m.getAccessFlags();
+			mm.parameters = new ArrayList<>();
+			mm.descriptor = DeobAnnotations.getObfuscatedSignature(m) != null ? DeobAnnotations.getObfuscatedSignature(m).toString() : m.getDescriptor().toString();
+
+			try
+			{
+				mm.garbageValue = Long.parseLong(DeobAnnotations.getDecoder(m));
+			}
+			catch (NumberFormatException e)
+			{
+				mm.garbageValue = null;
+			}
+
+			for (Parameter p : m.getParameters())
+			{
+				mm.parameters.add(p.getName());
+			}
+
+			if (m.getName().equals("<init>"))
+			{
+				mm.exportedName = null;
+				mc.constructors.add(mm);
+				continue;
+			}
+
+			if (m.isStatic())
+			{
+				dump.staticMethods.add(mm);
+				dump.totalNamedStaticMethods++;
+
+				int _index = mm.exportedName.indexOf('_');
+
+				if (_index != -1)
+				{
+					String className = mm.exportedName.substring(0, _index - 1);
+					MappedClass staticOwner = classMap.get(className);
+
+					if (staticOwner != null)
+					{
+						staticOwner.staticMethods.add(mm);
+					}
+				}
+			}
+			else
+			{
+				mc.methods.add(mm);
+			}
+		}
+	}
 
 	@Test
 	public void dump() throws IOException
@@ -126,7 +363,7 @@ public class MappingDumper
 
 				String methodName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
 				Signature signature = DeobAnnotations.getObfuscatedSignature(m);
-				String garbageValue = DeobAnnotations.getObfuscatedValue(m);
+				String garbageValue = DeobAnnotations.getDecoder(m);
 
 				if (signature == null)
 				{
@@ -238,7 +475,7 @@ public class MappingDumper
 
 				String methodName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
 				Signature obfSignature = DeobAnnotations.getObfuscatedSignature(m);
-				String predicate = DeobAnnotations.getObfuscatedValue(m);
+				String predicate = DeobAnnotations.getDecoder(m);
 
 				JsonObject jMethod = new JsonObject();
 

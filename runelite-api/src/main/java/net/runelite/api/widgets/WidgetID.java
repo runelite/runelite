@@ -152,6 +152,7 @@ public class WidgetID
 	public static final int SEED_BOX_GROUP_ID = 128;
 	public static final int ITEMS_KEPT_ON_DEATH_GROUP_ID = 4;
 	public static final int TRADING_SCREEN = 335;
+	public static final int SEED_VAULT_GROUP_ID = 631;
 
 	static class WorldMap
 	{
@@ -970,6 +971,7 @@ public class WidgetID
 
 	static class Pvp
 	{
+		static final int FOG_OVERLAY = 1;
 		static final int PVP_WIDGET_CONTAINER = 54;  // OUTDATED?
 		static final int SKULL = 56;  // OUTDATED?
 		static final int ATTACK_RANGE = 59;  // OUTDATED?
@@ -1120,5 +1122,10 @@ public class WidgetID
 		static final int BUTTON_8 = 30;
 		static final int BUTTON_9 = 32;
 		static final int BUTTON_0 = 34;
+	}
+
+	static class SeedVault
+	{
+		static final int TITLE_CONTAINER = 2;
 	}
 }

@@ -6,10 +6,10 @@ import net.runelite.mapping.Import;
 
 public interface RSWorldMap extends RenderOverview
 {
-	@Import("worldMapX")
+	@Import("centerTileX")
 	int getWorldMapX();
 
-	@Import("worldMapY")
+	@Import("centerTileY")
 	int getWorldMapY();
 
 	@Import("zoom")

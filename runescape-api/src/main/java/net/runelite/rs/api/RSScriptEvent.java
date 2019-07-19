@@ -6,10 +6,10 @@ import net.runelite.mapping.Import;
 
 public interface RSScriptEvent extends ScriptEvent
 {
-	@Import("args0")
+	@Import("args")
 	Object[] getArguments();
 
-	@Import("args0")
+	@Import("args")
 	void setArguments(Object[] args);
 
 	@Import("widget")

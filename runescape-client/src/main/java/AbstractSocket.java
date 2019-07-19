@@ -4,69 +4,57 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fu")
+@ObfuscatedName("ky")
 @Implements("AbstractSocket")
 public abstract class AbstractSocket {
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1765046516"
-   )
-   @Export("isAvailable")
-   public abstract boolean isAvailable(int length) throws IOException;
+	protected AbstractSocket() {
+	}
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1078471130"
-   )
-   @Export("available")
-   public abstract int available() throws IOException;
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1144636612"
+	)
+	@Export("close")
+	public abstract void close();
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "516705222"
-   )
-   @Export("readUnsignedByte")
-   public abstract int readUnsignedByte() throws IOException;
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(B)I",
+		garbageValue = "2"
+	)
+	@Export("readUnsignedByte")
+	public abstract int readUnsignedByte() throws IOException;
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "([BIII)I",
-      garbageValue = "-1089665746"
-   )
-   @Export("read")
-   public abstract int read(byte[] dst, int dstIndex, int length) throws IOException;
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(B)I",
+		garbageValue = "55"
+	)
+	@Export("available")
+	public abstract int available() throws IOException;
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "([BIIB)V",
-      garbageValue = "-86"
-   )
-   @Export("write")
-   public abstract void write(byte[] src, int srcIndex, int length) throws IOException;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(II)Z",
+		garbageValue = "1948150862"
+	)
+	@Export("isAvailable")
+	public abstract boolean isAvailable(int var1) throws IOException;
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1252618448"
-   )
-   @Export("close")
-   public abstract void close();
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "([BIIB)I",
+		garbageValue = "26"
+	)
+	@Export("read")
+	public abstract int read(byte[] var1, int var2, int var3) throws IOException;
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-15"
-   )
-   public static void method3488(int var0) {
-      class214.field1129 = 1;
-      class214.musicTrackArchive = null;
-      class30.musicTrackGroupId = -1;
-      GrandExchangeOffer.musicTrackFileId = -1;
-      WorldMapLabel.field1039 = 0;
-      RectangleMode.musicTrackBoolean = false;
-      FaceNormal.field344 = var0;
-   }
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "([BIII)V",
+		garbageValue = "-1696227994"
+	)
+	@Export("write")
+	public abstract void write(byte[] var1, int var2, int var3) throws IOException;
 }

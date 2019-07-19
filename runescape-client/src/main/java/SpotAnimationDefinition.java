@@ -4,239 +4,241 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("io")
+@ObfuscatedName("ib")
 @Implements("SpotAnimationDefinition")
 public class SpotAnimationDefinition extends DualNode {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lir;"
-   )
-   @Export("SpotAnimationDefinition_archive")
-   public static AbstractArchive SpotAnimationDefinition_archive;
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lir;"
-   )
-   @Export("SpotAnimationDefinition_modelArchive")
-   public static AbstractArchive SpotAnimationDefinition_modelArchive;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Ler;"
-   )
-   @Export("SpotAnimationDefinition_cached")
-   static EvictingDualNodeHashTable SpotAnimationDefinition_cached;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Ler;"
-   )
-   @Export("SpotAnimationDefinition_cachedModels")
-   static EvictingDualNodeHashTable SpotAnimationDefinition_cachedModels;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -713866165
-   )
-   @Export("id")
-   int id;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -2065492247
-   )
-   @Export("archive")
-   int archive;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1580078789
-   )
-   @Export("sequence")
-   public int sequence;
-   @ObfuscatedName("l")
-   @Export("recolorFrom")
-   short[] recolorFrom;
-   @ObfuscatedName("e")
-   @Export("recolorTo")
-   short[] recolorTo;
-   @ObfuscatedName("x")
-   @Export("retextureFrom")
-   short[] retextureFrom;
-   @ObfuscatedName("d")
-   @Export("retextureTo")
-   short[] retextureTo;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 680796997
-   )
-   @Export("widthScale")
-   int widthScale;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1199960995
-   )
-   @Export("heightScale")
-   int heightScale;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1650590363
-   )
-   @Export("orientation")
-   int orientation;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -20619847
-   )
-   int field876;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1866148625
-   )
-   int field877;
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "Lhp;"
+	)
+	@Export("SpotAnimationDefinition_archive")
+	public static AbstractArchive SpotAnimationDefinition_archive;
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "Lel;"
+	)
+	@Export("SpotAnimationDefinition_cached")
+	public static EvictingDualNodeHashTable SpotAnimationDefinition_cached;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "Lel;"
+	)
+	@Export("SpotAnimationDefinition_cachedModels")
+	public static EvictingDualNodeHashTable SpotAnimationDefinition_cachedModels;
+	@ObfuscatedName("j")
+	@ObfuscatedGetter(
+		intValue = -1614568549
+	)
+	static int field3248;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = 1856859661
+	)
+	@Export("id")
+	int id;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = -1484335723
+	)
+	@Export("archive")
+	int archive;
+	@ObfuscatedName("b")
+	@ObfuscatedGetter(
+		intValue = 106564223
+	)
+	@Export("sequence")
+	public int sequence;
+	@ObfuscatedName("i")
+	@Export("recolorFrom")
+	short[] recolorFrom;
+	@ObfuscatedName("c")
+	@Export("recolorTo")
+	short[] recolorTo;
+	@ObfuscatedName("f")
+	@Export("retextureFrom")
+	short[] retextureFrom;
+	@ObfuscatedName("m")
+	@Export("retextureTo")
+	short[] retextureTo;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = 537215933
+	)
+	@Export("widthScale")
+	int widthScale;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = -1285947315
+	)
+	@Export("heightScale")
+	int heightScale;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = 1550216449
+	)
+	@Export("orientation")
+	int orientation;
+	@ObfuscatedName("v")
+	@ObfuscatedGetter(
+		intValue = -1281395591
+	)
+	int field3251;
+	@ObfuscatedName("y")
+	@ObfuscatedGetter(
+		intValue = -499739553
+	)
+	int field3253;
 
-   SpotAnimationDefinition() {
-      this.sequence = -1;
-      this.widthScale = 128;
-      this.heightScale = 128;
-      this.orientation = 0;
-      this.field876 = 0;
-      this.field877 = 0;
-   }
+	static {
+		SpotAnimationDefinition_cached = new EvictingDualNodeHashTable(64);
+		SpotAnimationDefinition_cachedModels = new EvictingDualNodeHashTable(30);
+	}
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(Lgr;I)V",
-      garbageValue = "906815828"
-   )
-   @Export("decode")
-   void decode(Buffer buffer) {
-      while (true) {
-         int var2 = buffer.readUnsignedByte();
-         if (var2 == 0) {
-            return;
-         }
+	SpotAnimationDefinition() {
+		this.sequence = -1;
+		this.widthScale = 128;
+		this.heightScale = 128;
+		this.orientation = 0;
+		this.field3251 = 0;
+		this.field3253 = 0;
+	}
 
-         this.decodeNext(buffer, var2);
-      }
-   }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(Lkf;I)V",
+		garbageValue = "65111702"
+	)
+	@Export("decode")
+	void decode(Buffer var1) {
+		while (true) {
+			int var2 = var1.readUnsignedByte();
+			if (var2 == 0) {
+				return;
+			}
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lgr;II)V",
-      garbageValue = "2099681848"
-   )
-   @Export("decodeNext")
-   void decodeNext(Buffer buffer, int var2) {
-      if (var2 == 1) {
-         this.archive = buffer.readUnsignedShort();
-      } else if (var2 == 2) {
-         this.sequence = buffer.readUnsignedShort();
-      } else if (var2 == 4) {
-         this.widthScale = buffer.readUnsignedShort();
-      } else if (var2 == 5) {
-         this.heightScale = buffer.readUnsignedShort();
-      } else if (var2 == 6) {
-         this.orientation = buffer.readUnsignedShort();
-      } else if (var2 == 7) {
-         this.field876 = buffer.readUnsignedByte();
-      } else if (var2 == 8) {
-         this.field877 = buffer.readUnsignedByte();
-      } else {
-         int var3;
-         int var4;
-         if (var2 == 40) {
-            var3 = buffer.readUnsignedByte();
-            this.recolorFrom = new short[var3];
-            this.recolorTo = new short[var3];
+			this.decodeNext(var1, var2);
+		}
+	}
 
-            for (var4 = 0; var4 < var3; ++var4) {
-               this.recolorFrom[var4] = (short)buffer.readUnsignedShort();
-               this.recolorTo[var4] = (short)buffer.readUnsignedShort();
-            }
-         } else if (var2 == 41) {
-            var3 = buffer.readUnsignedByte();
-            this.retextureFrom = new short[var3];
-            this.retextureTo = new short[var3];
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(Lkf;II)V",
+		garbageValue = "-1978905591"
+	)
+	@Export("decodeNext")
+	void decodeNext(Buffer var1, int var2) {
+		if (var2 == 1) {
+			this.archive = var1.readUnsignedShort();
+		} else if (var2 == 2) {
+			this.sequence = var1.readUnsignedShort();
+		} else if (var2 == 4) {
+			this.widthScale = var1.readUnsignedShort();
+		} else if (var2 == 5) {
+			this.heightScale = var1.readUnsignedShort();
+		} else if (var2 == 6) {
+			this.orientation = var1.readUnsignedShort();
+		} else if (var2 == 7) {
+			this.field3251 = var1.readUnsignedByte();
+		} else if (var2 == 8) {
+			this.field3253 = var1.readUnsignedByte();
+		} else {
+			int var3;
+			int var4;
+			if (var2 == 40) {
+				var3 = var1.readUnsignedByte();
+				this.recolorFrom = new short[var3];
+				this.recolorTo = new short[var3];
 
-            for (var4 = 0; var4 < var3; ++var4) {
-               this.retextureFrom[var4] = (short)buffer.readUnsignedShort();
-               this.retextureTo[var4] = (short)buffer.readUnsignedShort();
-            }
-         }
-      }
+				for (var4 = 0; var4 < var3; ++var4) {
+					this.recolorFrom[var4] = (short)var1.readUnsignedShort();
+					this.recolorTo[var4] = (short)var1.readUnsignedShort();
+				}
+			} else if (var2 == 41) {
+				var3 = var1.readUnsignedByte();
+				this.retextureFrom = new short[var3];
+				this.retextureTo = new short[var3];
 
-   }
+				for (var4 = 0; var4 < var3; ++var4) {
+					this.retextureFrom[var4] = (short)var1.readUnsignedShort();
+					this.retextureTo[var4] = (short)var1.readUnsignedShort();
+				}
+			}
+		}
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)Ldu;",
-      garbageValue = "-77614529"
-   )
-   @Export("getModel")
-   public final Model getModel(int var1) {
-      Model var2 = (Model)SpotAnimationDefinition_cachedModels.get((long)this.id);
-      if (var2 == null) {
-         ModelData var3 = ModelData.method2788(SpotAnimationDefinition_modelArchive, this.archive, 0);
-         if (var3 == null) {
-            return null;
-         }
+	}
 
-         int var4;
-         if (this.recolorFrom != null) {
-            for (var4 = 0; var4 < this.recolorFrom.length; ++var4) {
-               var3.recolor(this.recolorFrom[var4], this.recolorTo[var4]);
-            }
-         }
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(II)Ldm;",
+		garbageValue = "1645713423"
+	)
+	@Export("getModel")
+	public final Model getModel(int var1) {
+		Model var2 = (Model)SpotAnimationDefinition_cachedModels.get((long)this.id);
+		if (var2 == null) {
+			ModelData var3 = ModelData.method2769(class43.SpotAnimationDefinition_modelArchive, this.archive, 0);
+			if (var3 == null) {
+				return null;
+			}
 
-         if (this.retextureFrom != null) {
-            for (var4 = 0; var4 < this.retextureFrom.length; ++var4) {
-               var3.retexture(this.retextureFrom[var4], this.retextureTo[var4]);
-            }
-         }
+			int var4;
+			if (this.recolorFrom != null) {
+				for (var4 = 0; var4 < this.recolorFrom.length; ++var4) {
+					var3.recolor(this.recolorFrom[var4], this.recolorTo[var4]);
+				}
+			}
 
-         var2 = var3.toModel(this.field876 + 64, this.field877 + 850, -30, -50, -30);
-         SpotAnimationDefinition_cachedModels.put(var2, (long)this.id);
-      }
+			if (this.retextureFrom != null) {
+				for (var4 = 0; var4 < this.retextureFrom.length; ++var4) {
+					var3.retexture(this.retextureFrom[var4], this.retextureTo[var4]);
+				}
+			}
 
-      Model var5;
-      if (this.sequence != -1 && var1 != -1) {
-         var5 = WorldMapAreaData.getSequenceDefinition(this.sequence).transformSpotAnimationModel(var2, var1);
-      } else {
-         var5 = var2.toSharedSpotAnimationModel(true);
-      }
+			var2 = var3.toModel(this.field3251 + 64, this.field3253 + 850, -30, -50, -30);
+			SpotAnimationDefinition_cachedModels.put(var2, (long)this.id);
+		}
 
-      if (this.widthScale != 128 || this.heightScale != 128) {
-         var5.scale(this.widthScale, this.heightScale, this.widthScale);
-      }
+		Model var5;
+		if (this.sequence != -1 && var1 != -1) {
+			var5 = GrandExchangeEvent.getSequenceDefinition(this.sequence).transformSpotAnimationModel(var2, var1);
+		} else {
+			var5 = var2.toSharedSpotAnimationModel(true);
+		}
 
-      if (this.orientation != 0) {
-         if (this.orientation == 90) {
-            var5.rotateY90Ccw();
-         }
+		if (this.widthScale != 128 || this.heightScale != 128) {
+			var5.scale(this.widthScale, this.heightScale, this.widthScale);
+		}
 
-         if (this.orientation == 180) {
-            var5.rotateY90Ccw();
-            var5.rotateY90Ccw();
-         }
+		if (this.orientation != 0) {
+			if (this.orientation == 90) {
+				var5.rotateY90Ccw();
+			}
 
-         if (this.orientation == 270) {
-            var5.rotateY90Ccw();
-            var5.rotateY90Ccw();
-            var5.rotateY90Ccw();
-         }
-      }
+			if (this.orientation == 180) {
+				var5.rotateY90Ccw();
+				var5.rotateY90Ccw();
+			}
 
-      return var5;
-   }
+			if (this.orientation == 270) {
+				var5.rotateY90Ccw();
+				var5.rotateY90Ccw();
+				var5.rotateY90Ccw();
+			}
+		}
 
-   @ObfuscatedName("gn")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "95"
-   )
-   @Export("getWindowedMode")
-   static int getWindowedMode() {
-      return Client.isResizable ? 2 : 1;
-   }
+		return var5;
+	}
 
-   static {
-      SpotAnimationDefinition_cached = new EvictingDualNodeHashTable(64);
-      SpotAnimationDefinition_cachedModels = new EvictingDualNodeHashTable(30);
-   }
+	@ObfuscatedName("fo")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1672246120"
+	)
+	static void method4415() {
+		if (BoundaryObject.worldMap != null) {
+			BoundaryObject.worldMap.method6309(class42.plane, MusicPatchNode2.baseX * 64 + (Client.localPlayer.x >> 7), class1.baseY * 64 + (Client.localPlayer.y >> 7), false);
+			BoundaryObject.worldMap.loadCache();
+		}
+
+	}
 }

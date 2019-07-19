@@ -9,10 +9,10 @@ public interface RSWorldMapManager extends WorldMapManager
 	@Override
 	boolean isLoaded();
 
-	@Import("surfaceOffsetX")
+	@Import("tileX")
 	int getSurfaceOffsetX();
 
-	@Import("surfaceOffsetY")
+	@Import("tileY")
 	int getSurfaceOffsetY();
 
 	@Import("getPixelsPerTile")
