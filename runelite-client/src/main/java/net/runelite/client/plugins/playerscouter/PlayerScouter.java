@@ -105,6 +105,7 @@ public class PlayerScouter extends Plugin
 	private int minimumRisk;
 	private int minimumValue;
 	private int timeout;
+	private boolean outputItems;
 
 	private static Map<WorldArea, String> getLocationMap()
 	{
@@ -165,6 +166,7 @@ public class PlayerScouter extends Plugin
 		{
 			return;
 		}
+
 		updateConfig();
 	}
 
@@ -293,7 +295,7 @@ public class PlayerScouter extends Plugin
 
 			if (player.getRisk() > this.minimumRisk)
 			{
-				Utils.scoutPlayer(player, url, DISCORD_CLIENT, itemManager, client, this.minimumValue);
+				Utils.scoutPlayer(player, url, DISCORD_CLIENT, itemManager, client, this.minimumValue, this.outputItems);
 			}
 		});
 	}
@@ -322,6 +324,7 @@ public class PlayerScouter extends Plugin
 		this.overlayEnabled = config.overlayEnabled();
 		this.timeout = config.timeout();
 		this.onlyWildy = config.onlyWildy();
+		this.outputItems = config.outputItems();
 	}
 
 	private boolean checkWildy()
