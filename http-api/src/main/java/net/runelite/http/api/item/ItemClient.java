@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Observer;
 import javax.imageio.ImageIO;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
@@ -134,7 +135,7 @@ public class ItemClient
 				if (!response.isSuccessful())
 				{
 					logger.debug("Error grabbing icon {}: {}", itemId, response);
-					return null;
+					return Observable.just(null);
 				}
 
 				InputStream in = response.body().byteStream();
@@ -167,7 +168,7 @@ public class ItemClient
 				if (!response.isSuccessful())
 				{
 					logger.debug("Error looking up item {}: {}", itemName, response);
-					return null;
+					return Observable.just(null);
 				}
 
 				InputStream in = response.body().byteStream();
@@ -202,7 +203,7 @@ public class ItemClient
 				if (!response.isSuccessful())
 				{
 					logger.warn("Error looking up prices: {}", response);
-					return null;
+					return Observable.just(null);
 				}
 
 				InputStream in = response.body().byteStream();
@@ -238,7 +239,7 @@ public class ItemClient
 				if (!response.isSuccessful())
 				{
 					logger.warn("Error looking up item stats: {}", response);
-					return null;
+					return Observable.just(null);
 				}
 
 				InputStream in = response.body().byteStream();
