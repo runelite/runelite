@@ -61,7 +61,7 @@ public class WorldClient
 				if (!response.isSuccessful())
 				{
 					logger.debug("Error looking up worlds: {}", response);
-					return null;
+					return Observable.just(null);
 				}
 
 				InputStream in = response.body().byteStream();
@@ -69,7 +69,7 @@ public class WorldClient
 			}
 			catch (JsonParseException ex)
 			{
-				throw new IOException(ex);
+				return Observable.error(ex);
 			}
 		});
 	}
