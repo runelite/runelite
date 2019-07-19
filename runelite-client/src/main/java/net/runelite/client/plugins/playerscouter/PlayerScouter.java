@@ -69,7 +69,8 @@ import okhttp3.HttpUrl;
 @PluginDescriptor(
 	name = "Player Scouter",
 	description = "Scout players and output them to your discord channel!",
-	type = PluginType.PVP
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
 @Slf4j
 public class PlayerScouter extends Plugin
