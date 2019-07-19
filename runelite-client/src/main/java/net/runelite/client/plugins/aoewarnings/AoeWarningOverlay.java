@@ -34,12 +34,14 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Set;
+import java.util.Iterator;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.Projectile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -90,35 +92,32 @@ public class AoeWarningOverlay extends Overlay
 		}
 
 		Instant now = Instant.now();
-		Set<ProjectileContainer> projectiles = plugin.getProjectiles();
-		projectiles.forEach(proj ->
+		Map<Projectile, AoeProjectile> projectiles = plugin.getProjectiles();
+		for (Iterator<AoeProjectile> it = projectiles.values().iterator(); it.hasNext(); )
 		{
-			if (proj.getTargetPoint() == null)
-			{
-				return;
-			}
-
+			AoeProjectile aoeProjectile = it.next();
 			Color color;
-
-			if (now.isAfter(proj.getStartTime().plus(Duration.ofMillis(proj.getLifetime()))))
+			if (now.isAfter(aoeProjectile.getStartTime().plus(Duration.ofMillis(aoeProjectile.getProjectileLifetime()))))
 			{
-				return;
+				it.remove();
+				continue;
 			}
 
-			final Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, proj.getTargetPoint(), proj.getAoeProjectileInfo().getAoeSize());
+			Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, aoeProjectile.getTargetPoint(), aoeProjectile.getAoeProjectileInfo().getAoeSize());
 			if (tilePoly == null)
 			{
-				return;
+				continue;
 			}
 
-			final double progress = (System.currentTimeMillis() - proj.getStartTime().toEpochMilli()) / (double) proj.getLifetime();
+			// how far through the projectiles lifetime between 0-1.
+			double progress = (System.currentTimeMillis() - aoeProjectile.getStartTime().toEpochMilli()) / (double) aoeProjectile.getProjectileLifetime();
 
-			final int tickProgress = proj.getFinalTick() - client.getTickCount();
+			int tickProgress = aoeProjectile.getFinalTick() - client.getTickCount();
 
 			int fillAlpha, outlineAlpha;
 			if (plugin.isConfigFadeEnabled())
 			{
-				fillAlpha = (int) ((1 - progress) * FILL_START_ALPHA);
+				fillAlpha = (int) ((1 - progress) * FILL_START_ALPHA);//alpha drop off over lifetime
 				outlineAlpha = (int) ((1 - progress) * OUTLINE_START_ALPHA);
 			}
 			else
@@ -166,8 +165,7 @@ public class AoeWarningOverlay extends Overlay
 
 			graphics.setColor(new Color(setAlphaComponent(plugin.getOverlayColor().getRGB(), fillAlpha), true));
 			graphics.fillPolygon(tilePoly);
-		});
-		projectiles.removeIf(proj -> now.isAfter(proj.getStartTime().plus(Duration.ofMillis(proj.getLifetime()))));
+		}
 		return null;
 	}
 
