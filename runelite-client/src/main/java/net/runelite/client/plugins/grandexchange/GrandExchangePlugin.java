@@ -544,12 +544,6 @@ public class GrandExchangePlugin extends Plugin
 
 		executorService.submit(() ->
 		{
-			if (geText.getText().contains(OSB_GE_TEXT))
-			{
-				// If there are multiple tasks queued and one of them have already added the price
-				return;
-			}
-
 			CLIENT.lookupItem(itemId)
 				.subscribeOn(Schedulers.io())
 				.observeOn(Schedulers.from(clientThread))
@@ -557,6 +551,11 @@ public class GrandExchangePlugin extends Plugin
 					(osbresult) ->
 					{
 						final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(osbresult.getOverall_average());
+						if (geText.getText().contains(OSB_GE_TEXT))
+						{
+						    // If there are multiple tasks queued and one of them have already added the price
+						    return;
+						}
 						geText.setText(text);
 					},
 					(e) -> log.debug("Error getting price of item {}", itemId, e)
