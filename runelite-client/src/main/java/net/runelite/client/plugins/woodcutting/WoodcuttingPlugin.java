@@ -27,9 +27,12 @@ package net.runelite.client.plugins.woodcutting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -87,6 +90,13 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter
 	private final Set<GameObject> treeObjects = new HashSet<>();
 
+	@Inject
+	private WoodcuttingTimersOverlay timersOverlay;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final List<TreeRespawn> respawns = new ArrayList<>();
+	private boolean recentlyLoggedIn;
+
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
 	{
@@ -98,6 +108,7 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(treesOverlay);
+		overlayManager.add(timersOverlay);
 	}
 
 	@Override
@@ -105,6 +116,8 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(treesOverlay);
+		overlayManager.remove(timersOverlay);
+		respawns.clear();
 		treeObjects.clear();
 		session = null;
 		axe = null;
@@ -113,6 +126,8 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		recentlyLoggedIn = false;
+
 		if (session == null || session.getLastLogCut() == null)
 		{
 			return;
@@ -165,6 +180,19 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectDespawned(final GameObjectDespawned event)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
+		{
+			return;
+		}
+
+		final GameObject object = event.getGameObject();
+
+		Tree tree = Tree.findTree(object.getId());
+		if (tree != null)
+		{
+			TreeRespawn treeRespawn = new TreeRespawn(tree, object.getWorldLocation(), Instant.now(), (int) tree.getRespawnTime().toMillis());
+			respawns.add(treeRespawn);
+		}
 		treeObjects.remove(event.getGameObject());
 	}
 
@@ -172,14 +200,25 @@ public class WoodcuttingPlugin extends Plugin
 	public void onGameObjectChanged(final GameObjectChanged event)
 	{
 		treeObjects.remove(event.getGameObject());
+		respawns.clear();
 	}
 
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{
-		if (event.getGameState() != GameState.LOGGED_IN)
+		switch (event.getGameState())
 		{
-			treeObjects.clear();
+			case LOADING:
+			case HOPPING:
+				respawns.clear();
+				treeObjects.clear();
+				break;
+			case LOGGED_IN:
+				// After login trees that are depleted will be changed,
+				// waits for the next game tick before watching for
+				// trees to deplete
+				recentlyLoggedIn = true;
+				break;
 		}
 	}
 

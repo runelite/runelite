@@ -25,20 +25,52 @@
 package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.collect.ImmutableMap;
+import java.time.Duration;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
+import static net.runelite.api.ObjectID.TREE;
+import static net.runelite.api.ObjectID.TREE_1277;
+import static net.runelite.api.ObjectID.TREE_1278;
+import static net.runelite.api.ObjectID.TREE_1279;
+import static net.runelite.api.ObjectID.TREE_1280;
+import static net.runelite.api.ObjectID.OAK_TREE;
+import static net.runelite.api.ObjectID.OAK_TREE_4540;
+import static net.runelite.api.ObjectID.OAK_10820;
+import static net.runelite.api.ObjectID.WILLOW;
+import static net.runelite.api.ObjectID.WILLOW_10833;
+import static net.runelite.api.ObjectID.WILLOW_10831;
+import static net.runelite.api.ObjectID.MAPLE_TREE;
+import static net.runelite.api.ObjectID.MAPLE_TREE_10832;
+import static net.runelite.api.ObjectID.TEAK;
+import static net.runelite.api.ObjectID.MAHOGANY;
+import static net.runelite.api.ObjectID.YEW;
+import static net.runelite.api.ObjectID.MAGIC_TREE_10834;
 import static net.runelite.api.ObjectID.REDWOOD;
+import static net.runelite.api.ObjectID.REDWOOD_29669;
+import static net.runelite.api.ObjectID.REDWOOD_29671;
 import static net.runelite.api.ObjectID.REDWOOD_29670;
 
 @Getter
 enum Tree
 {
-	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670);
+	REGULAR_TREES(Duration.ofSeconds(WoodcuttingTimersOverlay.TREE_MAX_RESPAWN_TIME), TREE, TREE_1277, TREE_1278, TREE_1279, TREE_1280),
+	OAK_TREES(Duration.ofMillis(8500), OAK_TREE, OAK_TREE_4540, OAK_10820),
+	WILLOW_TREES(Duration.ofMillis(8500), WILLOW, WILLOW_10833, WILLOW_10831),
+	MAPLE_TREES(Duration.ofSeconds(35), MAPLE_TREE, MAPLE_TREE_10832),
+	TEAK_TREES(Duration.ofMillis(8500), TEAK),
+	MAHOGANY_TREES(Duration.ofMillis(8500), MAHOGANY),
+	YEW_TREES(Duration.ofMinutes(1), YEW),
+	MAGIC_TREES(Duration.ofMinutes(2), MAGIC_TREE_10834),
+	REDWOODS(Duration.ofMinutes(2), REDWOOD, REDWOOD_29669, REDWOOD_29670, REDWOOD_29671);
 
+	private final Duration respawnTime;
+	@Getter(AccessLevel.PACKAGE)
 	private final int[] treeIds;
 
-	Tree(int... treeIds)
+	Tree(Duration respawnTime, int... treeIds)
 	{
+		this.respawnTime = respawnTime;
 		this.treeIds = treeIds;
 	}
 
