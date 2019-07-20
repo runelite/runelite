@@ -51,19 +51,26 @@ class WoodcuttingTimersOverlay extends Overlay
 
 	private final Client client;
 	private final WoodcuttingPlugin plugin;
+	private final WoodcuttingConfig config;
 
 	@Inject
-	private WoodcuttingTimersOverlay(Client client, WoodcuttingPlugin plugin)
+	private WoodcuttingTimersOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
 		this.client = client;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!config.showRespawnTimers())
+		{
+			return null;
+		}
+
 		List<TreeRespawn> respawns = plugin.getRespawns();
 		if (respawns.isEmpty())
 		{
