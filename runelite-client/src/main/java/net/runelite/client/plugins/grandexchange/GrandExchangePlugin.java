@@ -35,6 +35,7 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -99,6 +100,8 @@ import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 @Singleton
 public class GrandExchangePlugin extends Plugin
 {
+	static final String SEARCH_GRAND_EXCHANGE = "Search Grand Exchange";
+	private static final int OFFER_TYPE = 18;
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
@@ -109,9 +112,6 @@ public class GrandExchangePlugin extends Plugin
 	private static final TypeToken<Map<Integer, Integer>> BUY_LIMIT_TOKEN = new TypeToken<Map<Integer, Integer>>()
 	{
 	};
-
-	static final String SEARCH_GRAND_EXCHANGE = "Search Grand Exchange";
-
 	@Getter(AccessLevel.PACKAGE)
 	private NavigationButton button;
 
@@ -162,13 +162,26 @@ public class GrandExchangePlugin extends Plugin
 	private EventBus eventBus;
 
 	private Widget grandExchangeText;
+	private Widget grandExchangeOfferType;
 	private Widget grandExchangeItem;
 	private Map<Integer, Integer> itemGELimits;
 
 	private GrandExchangeClient grandExchangeClient;
 
 	private int coins = 0;
+	private boolean quickLookup;
+	private boolean enableNotifications;
+	private boolean enableOsbPrices;
+	private boolean enableGELimits;
+	private boolean enableAfford;
 
+	private static Map<Integer, Integer> loadGELimits()
+	{
+		final InputStream geLimitData = GrandExchangePlugin.class.getResourceAsStream("ge_limits.json");
+		final Map<Integer, Integer> itemGELimits = GSON.fromJson(new InputStreamReader(geLimitData), BUY_LIMIT_TOKEN.getType());
+		log.debug("Loaded {} limits", itemGELimits.size());
+		return itemGELimits;
+	}
 
 	private SavedOffer getOffer(int slot)
 	{
@@ -189,12 +202,6 @@ public class GrandExchangePlugin extends Plugin
 	{
 		configManager.unsetConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot));
 	}
-
-	private boolean quickLookup;
-	private boolean enableNotifications;
-	private boolean enableOsbPrices;
-	private boolean enableGELimits;
-	private boolean enableAfford;
 
 	@Provides
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
@@ -246,6 +253,7 @@ public class GrandExchangePlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 		grandExchangeText = null;
 		grandExchangeItem = null;
+		grandExchangeOfferType = null;
 		itemGELimits = null;
 		grandExchangeClient = null;
 	}
@@ -263,7 +271,6 @@ public class GrandExchangePlugin extends Plugin
 		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
 		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
 		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
 	private void onSessionOpen(SessionOpen sessionOpen)
@@ -459,14 +466,14 @@ public class GrandExchangePlugin extends Plugin
 	{
 		switch (event.getGroupId())
 		{
-			// Grand exchange was opened.
 			case WidgetID.GRAND_EXCHANGE_GROUP_ID:
 				Widget grandExchangeOffer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
 				grandExchangeText = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TEXT);
 				grandExchangeItem = grandExchangeOffer.getDynamicChildren()[OFFER_CONTAINER_ITEM];
+				grandExchangeOfferType = grandExchangeOffer.getDynamicChildren()[OFFER_TYPE];
 				break;
-			// Grand exchange was closed (if it was open before).
 			case WidgetID.INVENTORY_GROUP_ID:
+				grandExchangeOfferType = null;
 				grandExchangeText = null;
 				grandExchangeItem = null;
 				break;
@@ -508,7 +515,6 @@ public class GrandExchangePlugin extends Plugin
 
 		titleBuilder.append(')');
 
-		// Append to title
 		String[] stringStack = client.getStringStack();
 		int stringStackSize = client.getStringStackSize();
 
@@ -524,22 +530,21 @@ public class GrandExchangePlugin extends Plugin
 
 		final Widget geText = grandExchangeText;
 		final String geTextString = geText.getText();
+		final String offerType = grandExchangeOfferType.getText();
 		final int itemId = grandExchangeItem.getItemId();
 
 		if (itemId == OFFER_DEFAULT_ITEM_ID || itemId == -1)
 		{
-
-			// This item is invalid/nothing has been searched for
 			return;
 		}
 
 
 		final int currentItemPrice = client.getVar(Varbits.GRAND_EXCHANGE_PRICE_PER_ITEM);
 
-		if (this.enableAfford && itemGELimits != null && !geTextString.contains(AFFORD_GE_TEXT))
+		if (this.enableAfford && offerType.equals("Buy offer") && itemGELimits != null && !geTextString.contains(AFFORD_GE_TEXT))
 		{
 			final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
-			final Item[] items = itemContainer.getItems();
+			final Item[] items = Objects.requireNonNull(itemContainer).getItems();
 			for (Item item : items)
 			{
 				if (item.getId() == COINS_995)
@@ -599,13 +604,5 @@ public class GrandExchangePlugin extends Plugin
 					(e) -> log.debug("Error getting price of item {}", itemId, e)
 				);
 		});
-	}
-
-	private static Map<Integer, Integer> loadGELimits()
-	{
-		final InputStream geLimitData = GrandExchangePlugin.class.getResourceAsStream("ge_limits.json");
-		final Map<Integer, Integer> itemGELimits = GSON.fromJson(new InputStreamReader(geLimitData), BUY_LIMIT_TOKEN.getType());
-		log.debug("Loaded {} limits", itemGELimits.size());
-		return itemGELimits;
 	}
 }
