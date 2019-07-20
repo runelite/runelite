@@ -137,7 +137,6 @@ public class EquipmentInspectorPlugin extends Plugin
 			.panel(equipmentInspectorPanel)
 			.build();
 
-
 		pluginToolbar.addNavigation(navButton);
 
 	}
@@ -148,6 +147,7 @@ public class EquipmentInspectorPlugin extends Plugin
 		eventBus.unregister(this);
 
 		menuManager.removePlayerMenuItem(INSPECT_EQUIPMENT);
+		pluginToolbar.removeNavigation(navButton);
 	}
 
 	private void addSubscriptions()
@@ -160,8 +160,6 @@ public class EquipmentInspectorPlugin extends Plugin
 	{
 		if (event.getMenuOption().equals(INSPECT_EQUIPMENT))
 		{
-
-
 			executor.execute(() ->
 			{
 				try
