@@ -219,7 +219,7 @@ public class ReportButtonPlugin extends Plugin
 
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("regenmeter"))
+		if (event.getGroup().equals("reportButton"))
 		{
 			this.timeStyle = config.time();
 		}
