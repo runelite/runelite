@@ -56,10 +56,10 @@
       "size": "3168921"
     },
     {
-      "hash": "51657fe2d95044b916f216654658c36f26d6c0b7a7a24d2a5736ea5c007e0f72",
+      "hash": "0ee2a90d5f9b611b5a28cbf73b9ed5b04343d5ba6593798d343783f63e2071ad",
       "name": "client-1.5.30-SNAPSHOT.jar",
       "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/client-1.5.30-SNAPSHOT.jar",
-      "size": "6287293"
+      "size": "6291757"
     },
     {
       "hash": "18c4a0095d5c1da6b817592e767bb23d29dd2f560ad74df75ff3961dbde25b79",
@@ -248,10 +248,10 @@
       "size": "2327547"
     },
     {
-      "hash": "62e5ffeaef627f96c08f7ba203ac15bec1e6d1bc975e43f94b9fd0affe8fc53a",
+      "hash": "b157f7ff5f79a64a082df67358dc00f58d320d620fcb0fb09f7c69090d59e164",
       "name": "runelite-api-1.5.30-SNAPSHOT.jar",
       "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/runelite-api-1.5.30-SNAPSHOT.jar",
-      "size": "1033835"
+      "size": "1033870"
     },
     {
       "hash": "e8e743c2eb9e59f2990a5bdc48f061b7138890f065c0d603ecb8cdf0b0b158f7",
@@ -260,10 +260,10 @@
       "size": "58398"
     },
     {
-      "hash": "7118a5603b75b7c798e27099542d09a2fe266f0ae922f776c7056c599f11b856",
+      "hash": "4164ba6337441640f0a8e672bb930eaefddf6b0cb5a797588221fc4e1b9e5542",
       "name": "http-api-1.5.30-SNAPSHOT.jar",
       "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/http-api-1.5.30-SNAPSHOT.jar",
-      "size": "139678"
+      "size": "139679"
     },
     {
       "hash": "f55abda036da75e1af45bd43b9dfa79b2a3d90905be9cb38687c6621597a8165",
@@ -288,12 +288,6 @@
       "name": "discord-1.1.jar",
       "path": "https://repo.runelite.net/net/runelite/discord/1.1/discord-1.1.jar",
       "size": "617294"
-    },
-    {
-      "hash": "b7fe80082ff71bf87eff2dced205a2819373e635ea1a61d6f4ca8c9be981ccc5",
-      "name": "injected-client-1.5.30-SNAPSHOT.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/injected-client-1.5.30-SNAPSHOT.jar",
-      "size": "2253321"
     },
     {
       "hash": "21b5cac673a156cd8d6cf9efe15ff267b6353eeb129678aa4b39542683ba0dc2",
