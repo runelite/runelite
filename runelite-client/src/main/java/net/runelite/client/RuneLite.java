@@ -34,6 +34,7 @@ import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.Locale;
+import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -82,7 +83,9 @@ public class RuneLite
 	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	private static final File LOG_FILE = new File(LOGS_DIR, "client.log");
 	private static final RuneLiteProperties PROPERTIES = new RuneLiteProperties();
-	private static final String EXPECTED_LAUNCHER_VERSION = "Launcher 1.6.0";
+	// Launcher was updated to check it's own version starting at v2.
+	// If they are using a version below 2 (Launcher 1.X.X) the client needs to force them to dl the updated launcher
+	private static final Pattern OUTDATED_LAUNCHER_VERSION = Pattern.compile("Launcher 1\\..*");
 
 	@Getter
 	private static Injector injector;
@@ -219,7 +222,7 @@ public class RuneLite
 		setSplashMessage("Checking launcher version", 0);
 		final String launcherVersion = RuneLiteProperties.getLauncherVersion();
 		if (launcherVersion != null &&
-			!EXPECTED_LAUNCHER_VERSION.equalsIgnoreCase(launcherVersion))
+			OUTDATED_LAUNCHER_VERSION.matcher(launcherVersion).matches())
 		{
 			SwingUtilities.invokeAndWait(() ->
 			{
