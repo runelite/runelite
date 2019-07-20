@@ -89,6 +89,7 @@ public class RuneLite
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	private static final RuneLiteSplashScreen splashScreen = new RuneLiteSplashScreen();
+	public static boolean allowPrivateServer = false;
 
 	@Getter
 	private static Injector injector;
@@ -181,6 +182,7 @@ public class RuneLite
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("no-splash", "Do not show the splash screen");
 		parser.accepts("local-injected", "Use local injected-client");
+		parser.accepts("private-server", "Use a custom codebase");
 
 		final ArgumentAcceptingOptionSpec<String> proxyInfo = parser
 			.accepts("proxy")
@@ -262,6 +264,11 @@ public class RuneLite
 		if (options.has("local-injected"))
 		{
 			ClientLoader.useLocalInjected = true;
+		}
+
+		if (options.has("private-server"))
+		{
+			allowPrivateServer = true;
 		}
 
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
