@@ -26,22 +26,31 @@
  */
 package net.runelite.client.rs;
 
-import java.net.URLClassLoader;
 import java.applet.Applet;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLConnection;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLite;
+import net.runelite.http.api.RuneLiteAPI;
 
 @Slf4j
 @Singleton
 public class ClientLoader
 {
+	public static boolean useLocalInjected = false;
+	public static boolean usePrivateServer = false;
 	private final ClientConfigLoader clientConfigLoader;
 	private final ClientUpdateCheckMode updateCheckMode;
-	public static boolean useLocalInjected = false;
 
 	@Inject
 	private ClientLoader(
@@ -50,6 +59,120 @@ public class ClientLoader
 	{
 		this.updateCheckMode = updateCheckMode;
 		this.clientConfigLoader = clientConfigLoader;
+	}
+
+	private static Applet loadRLPlus(final RSConfig config) throws ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		if (useLocalInjected)
+		{
+			try
+			{
+				URL localInjected = new File("./injected-client/target/injected-client-" + RuneLiteAPI.getVersion() + ".jar").toURI().toURL();
+				log.info("Using local injected-client");
+				URLClassLoader classLoader = new URLClassLoader(new URL[]{localInjected});
+				Class<?> clientClass = classLoader.loadClass("client");
+				return loadFromClass(config, clientClass);
+			}
+			catch (MalformedURLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		try
+		{
+			File cachedInjected = new File(RuneLite.RUNELITE_DIR + "/injected-client-" + RuneLiteAPI.getVersion() + ".jar");
+			URL remoteInjected = new URL("https://github.com/runelite-extended/maven-repo/raw/master/live/injected-client-" + RuneLiteAPI.getVersion() + ".jar");
+			int remoteSize = getFileSize(remoteInjected);
+			URL cachedInjectedURL = cachedInjected.toURI().toURL();
+			int cachedSize = 0;
+			if (cachedInjected.exists())
+			{
+				cachedSize = getFileSize(cachedInjectedURL);
+			}
+
+			if (remoteSize != cachedSize)
+			{
+				log.info("Injected-client size mismatch, updating.");
+				try (BufferedInputStream in = new BufferedInputStream(remoteInjected.openStream()))
+				{
+					FileOutputStream fileOutputStream = new FileOutputStream(cachedInjected);
+					byte[] dataBuffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1)
+					{
+						fileOutputStream.write(dataBuffer, 0, bytesRead);
+					}
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+
+			}
+			URLClassLoader classLoader = new URLClassLoader(new URL[]{cachedInjectedURL});
+			Class<?> clientClass = classLoader.loadClass("client");
+			return loadFromClass(config, clientClass);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		log.error("Failed to load injected-client!");
+		return null;
+	}
+
+	private static Applet loadVanilla(final RSConfig config) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		final String codebase = config.getCodeBase();
+		final String initialJar = config.getInitialJar();
+		final String initialClass = config.getInitialClass();
+		final URL url = new URL(codebase + initialJar);
+
+		// Must set parent classloader to null, or it will pull from
+		// this class's classloader first
+		final URLClassLoader classloader = new URLClassLoader(new URL[]{url}, null);
+		final Class<?> clientClass = classloader.loadClass(initialClass);
+		return loadFromClass(config, clientClass);
+	}
+
+	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass) throws IllegalAccessException, InstantiationException
+	{
+		final Applet rs = (Applet) clientClass.newInstance();
+		if (usePrivateServer)
+		{
+			rs.setStub(new PrivateRSAppletStub());
+			return rs;
+		}
+		rs.setStub(new RSAppletStub(config));
+		return rs;
+	}
+
+	private static int getFileSize(URL url)
+	{
+		URLConnection conn = null;
+		try
+		{
+			conn = url.openConnection();
+			if (conn instanceof HttpURLConnection)
+			{
+				((HttpURLConnection) conn).setRequestMethod("HEAD");
+			}
+			conn.getInputStream();
+			return conn.getContentLength();
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+		finally
+		{
+			if (conn instanceof HttpURLConnection)
+			{
+				((HttpURLConnection) conn).disconnect();
+			}
+		}
 	}
 
 	public Applet load()
@@ -83,33 +206,5 @@ public class ClientLoader
 			log.error("Error loading RS!", e);
 			return null;
 		}
-	}
-
-	private static Applet loadRLPlus(final RSConfig config) throws ClassNotFoundException, InstantiationException, IllegalAccessException
-	{
-		// the injected client is a runtime scoped dependency
-		final Class<?> clientClass = ClientLoader.class.getClassLoader().loadClass(config.getInitialClass());
-		return loadFromClass(config, clientClass);
-	}
-
-	private static Applet loadVanilla(final RSConfig config) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
-	{
-		final String codebase = config.getCodeBase();
-		final String initialJar = config.getInitialJar();
-		final String initialClass = config.getInitialClass();
-		final URL url = new URL(codebase + initialJar);
-
-		// Must set parent classloader to null, or it will pull from
-		// this class's classloader first
-		final URLClassLoader classloader = new URLClassLoader(new URL[]{url}, null);
-		final Class<?> clientClass = classloader.loadClass(initialClass);
-		return loadFromClass(config, clientClass);
-	}
-
-	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass) throws IllegalAccessException, InstantiationException
-	{
-		final Applet rs = (Applet) clientClass.newInstance();
-		rs.setStub(new RSAppletStub(config));
-		return rs;
 	}
 }

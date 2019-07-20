@@ -201,12 +201,6 @@
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
-			<artifactId>injected-client</artifactId>
-			<version>${project.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite</groupId>
 			<artifactId>http-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
