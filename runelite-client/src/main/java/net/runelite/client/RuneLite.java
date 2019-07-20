@@ -86,6 +86,8 @@ public class RuneLite
 	// Launcher was updated to check it's own version starting at v2.
 	// If they are using a version below 2 (Launcher 1.X.X) the client needs to force them to dl the updated launcher
 	private static final Pattern OUTDATED_LAUNCHER_VERSION = Pattern.compile("Launcher 1\\..*");
+	@Nullable
+	private static RuneLiteSplashScreen SPLASH_SCREEN = null;
 
 	@Getter
 	private static Injector injector;
@@ -159,8 +161,6 @@ public class RuneLite
 	@Inject
 	@Nullable
 	private Client client;
-
-	private static RuneLiteSplashScreen SPLASH_SCREEN;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -369,6 +369,21 @@ public class RuneLite
 		{
 			SPLASH_SCREEN.setMessage(msg, value);
 		}
+	}
+
+	public static void displayErrorMessage(final String message)
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			if (SPLASH_SCREEN != null && SPLASH_SCREEN.isVisible())
+			{
+				SPLASH_SCREEN.errorMessage(message);
+				return;
+			}
+
+			// We can still use the SplashScreen to display the error message (and open log file) via the static method
+			RuneLiteSplashScreen.errorMessage(null, message, LOG_FILE);
+		});
 	}
 
 	@VisibleForTesting
