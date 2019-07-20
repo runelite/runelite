@@ -17,7 +17,7 @@
 ## Project Layout
 
 - [cache](cache/src/main/java/net/runelite/cache) - Libraries used for reading/writing cache files, as well as the data in it
-- [deobfuscator]{deobfuscator/src/main/java/net/runelite/deob) - Can decompile and cleanup gamepacks as well as map updates to newer revs
+- [deobfuscator](deobfuscator/src/main/java/net/runelite/deob) - Can decompile and cleanup gamepacks as well as map updates to newer revs
 - [http-api](http-api/src/main/java/net/runelite/http/api) - API for runelite and runeliteplus
 - [http-service](http-service/src/main/java/net/runelite/http/service) - Service for https://api.runelitepl.us
 - [injector-plugin](injector-plugin/src/main/java/net/runelite/injector) - Tool for implementing our modifications to the gamepack
