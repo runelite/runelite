@@ -1725,8 +1725,4 @@ public interface Client extends GameShell
 	BigInteger getModulus();
 
 	void setModulus(BigInteger modulus);
-
-	String getCodebase();
-
-	void setCodebase(String codebase);
 }

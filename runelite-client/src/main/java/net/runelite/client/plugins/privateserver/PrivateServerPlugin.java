@@ -35,8 +35,6 @@ import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
@@ -58,11 +56,7 @@ public class PrivateServerPlugin extends Plugin
 	@Inject
 	private Client client;
 	@Inject
-	private ClientThread clientThread;
-	@Inject
 	private PrivateServerConfig config;
-	@Inject
-	private ChatMessageManager chatMessageManager;
 	@Inject
 	private EventBus eventBus;
 
