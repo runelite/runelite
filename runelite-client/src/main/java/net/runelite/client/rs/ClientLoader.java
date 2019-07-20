@@ -110,7 +110,7 @@ public class ClientLoader
 				}
 
 			}
-			URLClassLoader classLoader = new URLClassLoader(new URL[]{cachedInjectedURL});
+			URLClassLoader classLoader = new URLClassLoader(new URL[]{cachedInjectedURL}, RuneLite.class.getClassLoader());
 			Class<?> clientClass = classLoader.loadClass("client");
 			return loadFromClass(config, clientClass);
 		}
