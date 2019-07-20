@@ -82,7 +82,7 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class RuneLite
 {
-	public static final String RUNELIT_VERSION = "2.0.4";
+	public static final String RUNELIT_VERSION = "2.0.5";
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
@@ -181,6 +181,7 @@ public class RuneLite
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("no-splash", "Do not show the splash screen");
 		parser.accepts("local-injected", "Use local injected-client");
+		parser.accepts("private-server", "Use a non official server to play");
 
 		final ArgumentAcceptingOptionSpec<String> proxyInfo = parser
 			.accepts("proxy")
@@ -249,6 +250,13 @@ public class RuneLite
 			{
 				java.util.logging.Logger.getAnonymousLogger().warning("Developers should enable assertions; Add `-ea` to your JVM arguments`");
 			}
+		}
+
+		final boolean privateServer = options.has("private-server");
+
+		if (privateServer)
+		{
+			ClientLoader.usePrivateServer = true;
 		}
 
 		PROFILES_DIR.mkdirs();

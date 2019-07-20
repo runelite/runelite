@@ -51,7 +51,7 @@ public interface ChatTranslationConfig extends Config
 	@ConfigItem(
 		keyName = "publicTargetLanguage",
 		name = "Target Language",
-		description = "Language to translate messages too.",
+		description = "Language to translate messages to.",
 		position = 2,
 		group = "Chat Translation",
 		hidden = true,
@@ -77,7 +77,7 @@ public interface ChatTranslationConfig extends Config
 	@ConfigItem(
 		keyName = "playerTargetLanguage",
 		name = "Target Language",
-		description = "Language to translate messages too.",
+		description = "Language to translate messages to.",
 		position = 4,
 		group = "Player Message Translation",
 		hidden = true,
