@@ -542,15 +542,14 @@ class Utils
 			.value(Integer.toString(player.getPlayer().getCombatLevel()))
 			.inline(true)
 			.build());
-
-		fieldList.add(FieldEmbed.builder()
-			.name("Wildy Level")
-			.value(Integer.toString(player.getWildyLevel()))
-			.inline(true)
-			.build());
-
 		if (client.getVar(Varbits.IN_WILDERNESS) == 1)
 		{
+			fieldList.add(FieldEmbed.builder()
+				.name("Wildy Level")
+				.value(Integer.toString(player.getWildyLevel()))
+				.inline(true)
+				.build());
+
 			fieldList.add(FieldEmbed.builder()
 				.name("Location")
 				.value(player.getLocation())
