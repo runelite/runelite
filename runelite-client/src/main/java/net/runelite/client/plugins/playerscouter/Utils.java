@@ -42,6 +42,7 @@ import net.runelite.api.ItemDefinition;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Prayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.kit.KitType;
@@ -521,19 +522,8 @@ class Utils
 		}
 
 		ThumbnailEmbed image = ThumbnailEmbed.builder()
-			.url("https://oldschool.runescape.wiki/images/a/a1/Skull_(status)_icon.png")
-			.height(50)
-			.width(50)
+			.url(ICONBASEURL + player.getWeapon() + ".png")
 			.build();
-
-		if (player.getPlayer().getSkullIcon() == null)
-		{
-			image = ThumbnailEmbed.builder()
-				.url(ICONBASEURL + player.getWeapon() + ".png")
-				.height(100)
-				.width(100)
-				.build();
-		}
 
 		fieldList.add(FieldEmbed.builder()
 			.name("Risk")
@@ -552,18 +542,20 @@ class Utils
 			.value(Integer.toString(player.getPlayer().getCombatLevel()))
 			.inline(true)
 			.build());
+		if (client.getVar(Varbits.IN_WILDERNESS) == 1)
+		{
+			fieldList.add(FieldEmbed.builder()
+				.name("Wildy Level")
+				.value(Integer.toString(player.getWildyLevel()))
+				.inline(true)
+				.build());
 
-		fieldList.add(FieldEmbed.builder()
-			.name("Wildy Level")
-			.value(Integer.toString(player.getWildyLevel()))
-			.inline(true)
-			.build());
-
-		fieldList.add(FieldEmbed.builder()
-			.name("Location")
-			.value(player.getLocation())
-			.inline(true)
-			.build());
+			fieldList.add(FieldEmbed.builder()
+				.name("Location")
+				.value(player.getLocation())
+				.inline(true)
+				.build());
+		}
 
 		fieldList.add(FieldEmbed.builder()
 			.name("Target")
@@ -613,7 +605,15 @@ class Utils
 			}
 		}
 
-		message(player.getPlayer().getName(), " ", ICONBASEURL + Objects.requireNonNull(getEntry(player.getGear())).getKey() + ".png", image, fieldList, url, discordClient, color);
+		String icon = ICONBASEURL + Objects.requireNonNull(getEntry(player.getGear())).getKey() + ".png";
+		String name = "☠️ " + player.getName() + " ☠️";
+
+		if (player.getPlayer().getSkullIcon() == null)
+		{
+			name = player.getName();
+		}
+
+		message(name, " ", icon, image, fieldList, url, discordClient, color);
 		player.setScouted(true);
 		fieldList.clear();
 	}
@@ -633,7 +633,7 @@ class Utils
 
 		DiscordEmbed discordEmbed = DiscordEmbed.builder()
 			.author(AuthorEmbed.builder()
-				.icon_url(iconUrl) // Icon of npc / player
+				.icon_url(iconUrl)
 				.name(name)
 				.build())
 			.thumbnail(thumbnail)
