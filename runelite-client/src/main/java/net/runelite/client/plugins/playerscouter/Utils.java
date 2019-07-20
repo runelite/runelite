@@ -521,19 +521,8 @@ class Utils
 		}
 
 		ThumbnailEmbed image = ThumbnailEmbed.builder()
-			.url("https://oldschool.runescape.wiki/images/a/a1/Skull_(status)_icon.png")
-			.height(50)
-			.width(50)
+			.url(ICONBASEURL + player.getWeapon() + ".png")
 			.build();
-
-		if (player.getPlayer().getSkullIcon() == null)
-		{
-			image = ThumbnailEmbed.builder()
-				.url(ICONBASEURL + player.getWeapon() + ".png")
-				.height(100)
-				.width(100)
-				.build();
-		}
 
 		fieldList.add(FieldEmbed.builder()
 			.name("Risk")
@@ -613,7 +602,15 @@ class Utils
 			}
 		}
 
-		message(player.getPlayer().getName(), " ", ICONBASEURL + Objects.requireNonNull(getEntry(player.getGear())).getKey() + ".png", image, fieldList, url, discordClient, color);
+		String icon = ICONBASEURL + Objects.requireNonNull(getEntry(player.getGear())).getKey() + ".png";
+		String name = "☠️ " + player.getName() + " ☠️";
+
+		if (player.getPlayer().getSkullIcon() == null)
+		{
+			name = player.getName();
+		}
+
+		message(name, " ", icon, image, fieldList, url, discordClient, color);
 		player.setScouted(true);
 		fieldList.clear();
 	}
@@ -633,7 +630,7 @@ class Utils
 
 		DiscordEmbed discordEmbed = DiscordEmbed.builder()
 			.author(AuthorEmbed.builder()
-				.icon_url(iconUrl) // Icon of npc / player
+				.icon_url(iconUrl)
 				.name(name)
 				.build())
 			.thumbnail(thumbnail)
