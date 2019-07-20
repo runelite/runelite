@@ -31,6 +31,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -57,6 +58,9 @@ public class SafeSpotPlugin extends Plugin
 
 	@Inject
 	private EventBus eventBus;
+
+	@Inject
+	private NPCManager npcManager;
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<Tile> safeSpotList;
@@ -126,8 +130,11 @@ public class SafeSpotPlugin extends Plugin
 			}
 			if (client.getLocalPlayer().getInteracting() instanceof NPC && this.npcSafeSpots)
 			{
-				safeSpotsRenderable = true;
-				updateSafeSpots();
+				if (npcManager.getStats(((NPC) client.getLocalPlayer().getInteracting()).getId()) != null)
+				{
+					safeSpotsRenderable = true;
+					updateSafeSpots();
+				}
 			}
 		}
 		else if (tickCount > 0)
