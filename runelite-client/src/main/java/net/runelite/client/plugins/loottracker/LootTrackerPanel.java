@@ -120,7 +120,8 @@ class LootTrackerPanel extends PluginPanel
 	private final LootTrackerConfig config;
 
 	private boolean groupLoot;
-	private LootRecordDateFilter dateFilter = LootRecordDateFilter.ALL;
+	// Set default date filter to session data
+	private LootRecordDateFilter dateFilter = LootRecordDateFilter.SESSION;
 	private boolean hideIgnoredItems;
 	private String currentView;
 
@@ -276,7 +277,7 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
-		dateFilterComboBox.setSelectedItem(LootRecordDateFilter.ALL);
+		dateFilterComboBox.setSelectedItem(this.dateFilter);
 		dateFilterComboBox.setToolTipText("Filter the displayed loot records by date");
 		dateFilterComboBox.setMaximumSize(new Dimension(15, 0));
 		dateFilterComboBox.setMaximumRowCount(3);
@@ -395,6 +396,7 @@ class LootTrackerPanel extends PluginPanel
 		// Add error pane
 		errorPanel.setContent("Loot tracker", "You have not received any loot yet.");
 		add(errorPanel);
+		actionsContainer.setVisible(true);
 	}
 
 	void loadHeaderIcon(BufferedImage img)
@@ -463,10 +465,7 @@ class LootTrackerPanel extends PluginPanel
 		boxes.clear();
 		logsContainer.removeAll();
 		logsContainer.repaint();
-		if (config.localPersistence())
-		{
-			plugin.deleteLocalRecords();
-		}
+		plugin.deleteLocalRecords();
 	}
 
 	/**
@@ -528,10 +527,24 @@ class LootTrackerPanel extends PluginPanel
 				buildBox(records.get(i));
 				continue;
 			}
-			if (Instant.now().toEpochMilli() - records.get(i).getTimestamp().toEpochMilli() <= this.dateFilter.getDuration().toMillis())
+			if (dateFilter.equals(LootRecordDateFilter.SESSION))
 			{
-				buildBox(records.get(i));
+				if (records.get(i).getTimestamp().toEpochMilli() > dateFilter.getDuration().toMillis())
+				{
+					buildBox(records.get(i));
+					continue;
+				}
 			}
+			else
+			{
+				if (Instant.now().toEpochMilli() - records.get(i).getTimestamp().toEpochMilli() <= this.dateFilter.getDuration().toMillis())
+				{
+					buildBox(records.get(i));
+				}
+			}
+
+
+
 
 		}
 		boxes.forEach(LootTrackerBox::rebuild);
@@ -686,10 +699,20 @@ class LootTrackerPanel extends PluginPanel
 			}
 			if (!dateFilter.equals(LootRecordDateFilter.ALL))
 			{
-				if (Instant.now().toEpochMilli() - record.getTimestamp().toEpochMilli()
-					> this.dateFilter.getDuration().toMillis())
+				if (dateFilter.equals(LootRecordDateFilter.SESSION))
 				{
-					continue;
+					if (!(record.getTimestamp().toEpochMilli() > dateFilter.getDuration().toMillis()))
+					{
+						continue;
+					}
+				}
+				else
+				{
+					if (Instant.now().toEpochMilli() - record.getTimestamp().toEpochMilli()
+						> this.dateFilter.getDuration().toMillis())
+					{
+						continue;
+					}
 				}
 			}
 

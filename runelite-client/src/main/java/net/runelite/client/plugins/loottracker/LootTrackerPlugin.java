@@ -146,6 +146,11 @@ public class LootTrackerPlugin extends Plugin
 		12342, // Edgeville
 		11062 // Camelot
 	);
+
+	// Instant for showing session loot. this gets set on plugin startup
+
+	public static final Instant SESSION_START_TIME = Instant.now();
+
 	@Inject
 	public Client client;
 	@VisibleForTesting
@@ -289,6 +294,7 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+
 		addSubscriptions();
 
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
@@ -690,7 +696,7 @@ public class LootTrackerPlugin extends Plugin
 					{
 						lootTrackerClient.submit(lootRecord);
 					}
-					if (this.localPersistence && lootTrackerClient == null)
+					if (this.localPersistence)
 					{
 						saveLocalLootRecord(lootRecord);
 					}
@@ -752,8 +758,8 @@ public class LootTrackerPlugin extends Plugin
 		}
 		catch (IOException e)
 		{
-			log.debug("Error deleting local loot records file.");
-			log.debug(Arrays.toString(e.getStackTrace()));
+			log.error("Error deleting local loot records file.");
+			log.error(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
