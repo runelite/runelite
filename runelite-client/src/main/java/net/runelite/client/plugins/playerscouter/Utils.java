@@ -42,6 +42,7 @@ import net.runelite.api.ItemDefinition;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Prayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.kit.KitType;
@@ -548,11 +549,14 @@ class Utils
 			.inline(true)
 			.build());
 
-		fieldList.add(FieldEmbed.builder()
-			.name("Location")
-			.value(player.getLocation())
-			.inline(true)
-			.build());
+		if (client.getVar(Varbits.IN_WILDERNESS) == 1)
+		{
+			fieldList.add(FieldEmbed.builder()
+				.name("Location")
+				.value(player.getLocation())
+				.inline(true)
+				.build());
+		}
 
 		fieldList.add(FieldEmbed.builder()
 			.name("Target")
