@@ -106,8 +106,6 @@ public class DailyTasksPlugin extends Plugin
 	public void startUp()
 	{
 		updateConfig();
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-
 		addSubscriptions();
 
 		loggingIn = true;
@@ -126,6 +124,7 @@ public class DailyTasksPlugin extends Plugin
 	{
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
 	private void onGameStateChanged(GameStateChanged event)
