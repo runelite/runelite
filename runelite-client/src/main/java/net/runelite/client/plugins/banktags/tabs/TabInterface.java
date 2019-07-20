@@ -1036,8 +1036,8 @@ public class TabInterface
 
 	private void openTag(final String tag)
 	{
-		bankSearch.search(InputType.SEARCH, TAG_SEARCH + tag, true);
 		activateTab(tabManager.find(tag));
+		bankSearch.search(InputType.SEARCH, TAG_SEARCH + tag, true);
 
 		// When tab is selected with search window open, the search window closes but the search button
 		// stays highlighted, this solves that issue
