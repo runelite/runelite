@@ -140,11 +140,6 @@ public class ClientLoader
 	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass) throws IllegalAccessException, InstantiationException
 	{
 		final Applet rs = (Applet) clientClass.newInstance();
-		if (usePrivateServer)
-		{
-			rs.setStub(new PrivateRSAppletStub());
-			return rs;
-		}
 		rs.setStub(new RSAppletStub(config));
 		return rs;
 	}
