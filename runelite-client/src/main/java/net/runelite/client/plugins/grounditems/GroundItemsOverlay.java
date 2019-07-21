@@ -363,7 +363,7 @@ public class GroundItemsOverlay extends Overlay
 
 	private void drawTimerOverlay(Graphics2D graphics, int textX, int textY, GroundItem groundItem)
 	{
-		// We can only accurately guess despawn times for our own pvm loot and drops
+		// We can only accurately guess despawn times for our own pvm loot and dropped items
 		if (!groundItem.isPvmLoot() && !groundItem.isDropped())
 		{
 			return;
@@ -384,16 +384,13 @@ public class GroundItemsOverlay extends Overlay
 		Color fillColor;
 		if (client.isInInstancedRegion())
 		{
-			// Items in the kraken instance last longer than other instances
+			// Items in the Kraken instance appear to never despawn?
 			if (isInKraken())
 			{
-				despawnTime = spawnTime.plus(1, ChronoUnit.HOURS);
-			}
-			else
-			{
-				despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
+				return;
 			}
 
+			despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
 			fillColor = PRIVATE_TIMER_COLOR;
 		}
 		else
