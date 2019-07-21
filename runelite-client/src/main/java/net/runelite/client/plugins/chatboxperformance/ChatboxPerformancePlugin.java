@@ -26,8 +26,8 @@ package net.runelite.client.plugins.chatboxperformance;
 
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.widgets.WidgetType;
-import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
@@ -46,7 +46,7 @@ public class ChatboxPerformancePlugin extends Plugin
 	private Client client;
 
 	@Subscribe
-	public void onWidgetPositioned(WidgetPositioned event)
+	public void onClientTick(ClientTick event)
 	{
 		if (!areWidgetsFixed())
 		{
