@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.raids;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
@@ -47,9 +46,9 @@ public class RaidsTimer extends InfoBox
 	@Setter
 	private boolean stopped;
 
-	public RaidsTimer(BufferedImage image, Plugin plugin, Instant startTime)
+	public RaidsTimer(Plugin plugin, Instant startTime)
 	{
-		super(image, plugin);
+		super(null, plugin);
 		this.startTime = startTime;
 		floorTime = startTime;
 		stopped = false;

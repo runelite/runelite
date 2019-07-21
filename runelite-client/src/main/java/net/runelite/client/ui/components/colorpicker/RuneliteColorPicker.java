@@ -39,6 +39,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Objects;
 import java.util.function.Consumer;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -53,12 +56,15 @@ import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ColorUtil;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 public class RuneliteColorPicker extends JDialog
 {
+	static final String CONFIG_GROUP = "colorpicker";
+
 	private final static int FRAME_WIDTH = 400;
 	private final static int FRAME_HEIGHT = 380;
 	private final static int TONE_PANEL_SIZE = 160;
@@ -84,16 +90,24 @@ public class RuneliteColorPicker extends JDialog
 	@Setter
 	private Consumer<Color> onColorChange;
 
-	public RuneliteColorPicker(Window parent, Color previousColor, String title, boolean alphaHidden)
+	@Setter
+	private Consumer<Color> onClose;
+
+	RuneliteColorPicker(Window parent, Color previousColor, String title, boolean alphaHidden,
+		final ConfigManager configManager, final ColorPickerManager colorPickerManager)
 	{
 		super(parent, "RuneLite Color Picker - " + title, ModalityType.MODELESS);
 
 		this.selectedColor = previousColor;
+		this.alphaHidden = alphaHidden;
+
+		RecentColors recentColors = new RecentColors(configManager);
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		setBackground(ColorScheme.PROGRESS_COMPLETE_COLOR);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		JPanel content = new JPanel(new BorderLayout());
 		content.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
@@ -108,7 +122,6 @@ public class RuneliteColorPicker extends JDialog
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new GridBagLayout());
 		GridBagConstraints cx = new GridBagConstraints();
-
 
 		cx.insets = new Insets(0, 0, 0, 0);
 		JLabel old = new JLabel("Previous");
@@ -140,11 +153,26 @@ public class RuneliteColorPicker extends JDialog
 		hexContainer.add(hexInput, cx);
 
 		cx.fill = GridBagConstraints.BOTH;
-		cx.gridwidth = GridBagConstraints.RELATIVE;
 		cx.weightx = 1;
 		cx.weighty = 1;
 		cx.gridy = 0;
 		cx.gridx = 0;
+
+		JPanel recentColorsContainer = recentColors.build(c ->
+		{
+			if (!alphaHidden)
+			{
+				alphaSlider.update(c.getAlpha());
+			}
+
+			colorChange(c);
+			updatePanels();
+		}, alphaHidden);
+
+		rightPanel.add(recentColorsContainer, cx);
+
+		cx.gridwidth = GridBagConstraints.RELATIVE;
+		cx.gridy++;
 		rightPanel.add(old, cx);
 
 		cx.gridx++;
@@ -176,7 +204,6 @@ public class RuneliteColorPicker extends JDialog
 		slidersContainer.add(blueSlider);
 		slidersContainer.add(alphaSlider);
 
-		this.alphaHidden = alphaHidden;
 		if (alphaHidden)
 		{
 			alphaSlider.setVisible(false);
@@ -265,6 +292,29 @@ public class RuneliteColorPicker extends JDialog
 
 		updatePanels();
 		updateText();
+
+		addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				if (onClose != null)
+				{
+					onClose.accept(selectedColor);
+				}
+
+				if (!Objects.equals(previousColor, selectedColor))
+				{
+					recentColors.add(selectedColor.getRGB() + "");
+				}
+
+				RuneliteColorPicker cp = colorPickerManager.getCurrentPicker();
+				if (Objects.equals(cp, RuneliteColorPicker.this))
+				{
+					colorPickerManager.setCurrentPicker(null);
+				}
+			}
+		});
 	}
 
 	private void updatePanels()

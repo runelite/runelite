@@ -173,10 +173,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showBellowCharges",
-			name = "Show Bellow Charges",
-			description = "Configures if ogre bellow item charge is shown",
-			position = 12
+		keyName = "showBellowCharges",
+		name = "Show Bellow Charges",
+		description = "Configures if ogre bellow item charge is shown",
+		position = 12
 	)
 	default boolean showBellowCharges()
 	{
@@ -184,10 +184,32 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showAbyssalBraceletCharges",
-			name = "Show Abyssal Bracelet Charges",
-			description = "Configures if abyssal bracelet item charge is shown",
-			position = 13
+		keyName = "showBasketCharges",
+		name = "Show Basket Charges",
+		description = "Configures if fruit basket item charge is shown",
+		position = 13
+	)
+	default boolean showBasketCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSackCharges",
+		name = "Show Sack Charges",
+		description = "Configures if sack item charge is shown",
+		position = 14
+	)
+	default boolean showSackCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showAbyssalBraceletCharges",
+		name = "Show Abyssal Bracelet Charges",
+		description = "Configures if abyssal bracelet item charge is shown",
+		position = 15
 	)
 	default boolean showAbyssalBraceletCharges()
 	{
@@ -198,7 +220,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "recoilNotification",
 		name = "Ring of Recoil Notification",
 		description = "Configures if the ring of recoil breaking notification is shown",
-		position = 14
+		position = 16
 	)
 	default boolean recoilNotification()
 	{
@@ -209,7 +231,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showBindingNecklaceCharges",
 		name = "Show Binding Necklace Charges",
 		description = "Configures if binding necklace item charge is shown",
-		position = 15
+		position = 17
 	)
 	default boolean showBindingNecklaceCharges()
 	{
@@ -238,7 +260,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "bindingNotification",
 		name = "Binding Necklace Notification",
 		description = "Configures if the binding necklace breaking notification is shown",
-		position = 16
+		position = 18
 	)
 	default boolean bindingNotification()
 	{
@@ -249,7 +271,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showExplorerRingCharges",
 		name = "Show Explorer's Ring Alch Charges",
 		description = "Configures if explorer's ring alchemy charges are shown",
-		position = 17
+		position = 19
 	)
 	default boolean showExplorerRingCharges()
 	{
@@ -278,7 +300,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 18
+		position = 20
 	)
 	default boolean showInfoboxes()
 	{

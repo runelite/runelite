@@ -118,7 +118,7 @@ public class GameEventManager
 
 				if (itemContainer != null)
 				{
-					eventBus.post(new ItemContainerChanged(itemContainer));
+					eventBus.post(new ItemContainerChanged(inventory.getId(), itemContainer));
 				}
 			}
 

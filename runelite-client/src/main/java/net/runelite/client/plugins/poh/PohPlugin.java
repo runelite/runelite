@@ -80,7 +80,7 @@ public class PohPlugin extends Plugin
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<Tile, IncenseBurner> incenseBurners =  new HashMap<>();
+	private final Map<Tile, IncenseBurner> incenseBurners = new HashMap<>();
 
 	@Inject
 	private OverlayManager overlayManager;
