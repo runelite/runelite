@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import java.time.Instant;
+import javax.annotation.Nullable;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
@@ -43,7 +45,16 @@ class GroundItem
 	private int gePrice;
 	private int offset;
 	private boolean tradeable;
+	/**
+	 * Is loot received from a drop
+	 */
 	private boolean isMine;
+	/**
+	 * Is dropped by me
+	 */
+	private boolean isDropped;
+	@Nullable
+	private Instant spawnTime;
 
 	int getHaPrice()
 	{
