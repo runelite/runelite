@@ -80,7 +80,7 @@ public class RaidsPlugin extends Plugin
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
-	private static final String SPLIT_REGEX = "\\s*,\\s*";
+	private static final Pattern SPLIT_REGEX = Pattern.compile("\\s*,\\s*");
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 
 	@Inject
@@ -368,14 +368,14 @@ public class RaidsPlugin extends Plugin
 		}
 		else
 		{
-			list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
+			list.addAll(Arrays.asList(SPLIT_REGEX.split(input.toLowerCase())));
 		}
 	}
 
 	int getRotationMatches()
 	{
 		String rotation = raid.getRotationString().toLowerCase();
-		String[] bosses = rotation.split(SPLIT_REGEX);
+		String[] bosses = SPLIT_REGEX.split(rotation);
 
 		if (rotationWhitelist.contains(rotation))
 		{
@@ -385,7 +385,7 @@ public class RaidsPlugin extends Plugin
 		for (String whitelisted : rotationWhitelist)
 		{
 			int matches = 0;
-			String[] whitelistedBosses = whitelisted.split(SPLIT_REGEX);
+			String[] whitelistedBosses = SPLIT_REGEX.split(whitelisted);
 
 			for (int i = 0; i < whitelistedBosses.length; i++)
 			{
