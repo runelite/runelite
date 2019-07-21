@@ -61,6 +61,7 @@ class ContainerCalculation
 
 		long ge = 0;
 		long alch = 0;
+		long max = 0;
 
 		for (final Item item : items)
 		{
@@ -77,22 +78,32 @@ class ContainerCalculation
 				case ItemID.COINS_995:
 					ge += qty;
 					alch += qty;
+					max += qty;
 					break;
 				case ItemID.PLATINUM_TOKEN:
 					ge += qty * 1000L;
 					alch += qty * 1000L;
+					max += qty * 1000L;
 					break;
 				default:
 					final long storePrice = itemManager.getItemComposition(id).getPrice();
 					final long alchPrice = (long) (storePrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
 					alch += alchPrice * qty;
 					ge += itemManager.getItemPrice(id) * qty;
+
+					if(alchPrice > itemManager.getItemPrice(id) ){
+						max += alchPrice * qty;
+					}
+					else{
+						max += itemManager.getItemPrice(id)  * qty;
+					}
+
 					break;
 			}
 
 		}
 
-		ContainerPrices prices = new ContainerPrices(ge, alch);
+		ContainerPrices prices = new ContainerPrices(ge, alch, max);
 		containerPrices = prices;
 
 		return prices;

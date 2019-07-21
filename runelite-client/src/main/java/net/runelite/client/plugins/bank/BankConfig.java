@@ -55,11 +55,23 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showMax",
+			name = "Show maximum price",
+			description = "Show maximum price total (GE, HA)",
+			position = 3
+	)
+	default boolean showMax()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showExact",
 		name = "Show exact bank value",
 		description = "Show exact bank value",
-		position = 3
+		position = 4
 	)
+
 	default boolean showExact()
 	{
 		return false;
@@ -69,7 +81,7 @@ public interface BankConfig extends Config
 		keyName = "rightClickBankInventory",
 		name = "Disable left click bank inventory",
 		description = "Configures whether the bank inventory button will bank your inventory on left click",
-		position = 4
+		position = 5
 	)
 	default boolean rightClickBankInventory()
 	{
@@ -80,7 +92,7 @@ public interface BankConfig extends Config
 		keyName = "rightClickBankEquip",
 		name = "Disable left click bank equipment",
 		description = "Configures whether the bank equipment button will bank your equipment on left click",
-		position = 5
+		position = 6
 	)
 	default boolean rightClickBankEquip()
 	{
@@ -91,7 +103,7 @@ public interface BankConfig extends Config
 		keyName = "rightClickBankLoot",
 		name = "Disable left click bank looting bag",
 		description = "Configures whether the bank looting bag button will bank your looting bag contents on left click",
-		position = 6
+		position = 7
 	)
 	default boolean rightClickBankLoot()
 	{
@@ -102,7 +114,7 @@ public interface BankConfig extends Config
 		keyName = "seedVaultValue",
 		name = "Show seed vault value",
 		description = "Adds the total value of all seeds inside the seed vault to the title",
-		position = 7
+		position = 8
 	)
 	default boolean seedVaultValue()
 	{

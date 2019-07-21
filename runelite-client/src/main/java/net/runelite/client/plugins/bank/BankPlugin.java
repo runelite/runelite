@@ -191,13 +191,14 @@ public class BankPlugin extends Plugin
 	{
 		final long gePrice = prices.getGePrice();
 		final long haPrice = prices.getHighAlchPrice();
+		final long maxPrice = prices.getMaxPrice();
 
 		String strCurrentTab = "";
 		if (config.showGE() && gePrice != 0)
 		{
 			strCurrentTab += " (";
 
-			if (config.showHA())
+			if (config.showHA() || config.showMax())
 			{
 				strCurrentTab += "EX: ";
 			}
@@ -216,7 +217,7 @@ public class BankPlugin extends Plugin
 		{
 			strCurrentTab += " (";
 
-			if (config.showGE())
+			if (config.showGE() || config.showMax())
 			{
 				strCurrentTab += "HA: ";
 			}
@@ -228,6 +229,25 @@ public class BankPlugin extends Plugin
 			else
 			{
 				strCurrentTab += StackFormatter.quantityToStackSize(haPrice) + ")";
+			}
+		}
+
+		if (config.showMax() && maxPrice != 0)
+		{
+			strCurrentTab += " (";
+
+			if (config.showGE() || config.showHA())
+			{
+				strCurrentTab += "Max: ";
+			}
+
+			if (config.showExact())
+			{
+				strCurrentTab += StackFormatter.formatNumber(maxPrice) + ")";
+			}
+			else
+			{
+				strCurrentTab += StackFormatter.quantityToStackSize(maxPrice) + ")";
 			}
 		}
 
