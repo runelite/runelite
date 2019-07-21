@@ -104,7 +104,7 @@ public class CacheService
 	{
 		String hashStr = BaseEncoding.base16().encode(archiveEntry.getHash());
 		String path = new StringBuilder()
-			.append(hashStr.substring(0, 2))
+			.append(hashStr, 0, 2)
 			.append('/')
 			.append(hashStr.substring(2))
 			.toString();

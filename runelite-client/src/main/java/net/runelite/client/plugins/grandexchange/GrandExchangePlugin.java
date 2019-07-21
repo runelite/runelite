@@ -60,6 +60,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -426,6 +427,49 @@ public class GrandExchangePlugin extends Plugin
 				grandExchangeItem = null;
 				break;
 		}
+	}
+
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	{
+		if (!event.getEventName().equals("setGETitle") || !config.showTotal())
+		{
+			return;
+		}
+
+		long total = 0;
+		GrandExchangeOffer[] offers = client.getGrandExchangeOffers();
+		for (GrandExchangeOffer offer : offers)
+		{
+			if (offer != null)
+			{
+				total += offer.getPrice() * offer.getTotalQuantity();
+			}
+		}
+
+		if (total == 0L)
+		{
+			return;
+		}
+
+		StringBuilder titleBuilder = new StringBuilder(" (");
+
+		if (config.showExact())
+		{
+			titleBuilder.append(StackFormatter.formatNumber(total));
+		}
+		else
+		{
+			titleBuilder.append(StackFormatter.quantityToStackSize(total));
+		}
+
+		titleBuilder.append(')');
+
+		// Append to title
+		String[] stringStack = client.getStringStack();
+		int stringStackSize = client.getStringStackSize();
+
+		stringStack[stringStackSize - 1] += titleBuilder.toString();
 	}
 
 	@Subscribe

@@ -96,6 +96,16 @@ public final class ScriptID
 	public static final int CHAT_PROMPT_INIT = 223;
 
 	/**
+	 * Displays the game messages when clicking on an item inside the Items Kept on Death interface
+	 * <ul>
+	 * <li> int (boolean) Item kept on death </li>
+	 * <li> int Item Quantity </li>
+	 * <li> String Item Name </li>
+	 * </ul>
+	 */
+	public static final int DEATH_KEEP_ITEM_EXAMINE = 1603;
+
+	/**
 	 * Checks the state of the given stash unit.
 	 * <ul>
 	 * <li>int (loc) The stash unit object id</li>
@@ -128,6 +138,17 @@ public final class ScriptID
 	 * </ul>
 	 */
 	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
+
+	/**
+	 * Handles zoom input
+	 *
+	 * Updates the VarClientInts (73, 74) to this same value
+	 * <ul>
+	 * <li> int  Reset zoom position </li>
+	 * <li> int  Reset zoom position </li>
+	 * </ul>
+	 */
+	public static final int CAMERA_DO_ZOOM = 42;
 
 	/**
 	 * Does nothing
