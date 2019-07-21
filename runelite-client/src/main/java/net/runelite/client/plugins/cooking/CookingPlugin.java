@@ -172,7 +172,8 @@ public class CookingPlugin extends Plugin
 			session.increaseCookAmount();
 
 		}
-		else if (message.startsWith("You accidentally burn"))
+		else if (message.startsWith("You accidentally burn")
+			|| message.startsWith("You accidentally spoil"))
 		{
 			if (session == null)
 			{

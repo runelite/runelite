@@ -51,6 +51,7 @@ public enum Quest
 	SHIELD_OF_ARRAV(316, "Shield of Arrav"),
 	VAMPIRE_SLAYER(317, "Vampire Slayer"),
 	WITCHS_POTION(318, "Witch's Potion"),
+	X_MARKS_THE_SPOT(550, "X Marks the Spot"),
 
 	//Members' Quests
 	ANIMAL_MAGNETISM(331, "Animal Magnetism"),

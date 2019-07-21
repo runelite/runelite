@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, William <https://github.com/WilliamCollishaw>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,32 +25,41 @@
 package net.runelite.client.plugins.emojis;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import net.runelite.client.config.ChatColorConfig;
+import net.runelite.api.GameState;
+import net.runelite.api.IndexedSprite;
+import net.runelite.api.MessageNode;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.chat.ChatMessageManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
-import javax.inject.Inject;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmojiPluginTest
 {
+	@Mock
+	@Bind
+	private Client client;
+
+	@Mock
+	@Bind
+	private ChatMessageManager chatMessageManager;
+
 	@Inject
-	EmojiPlugin emojiPlugin;
-
-	@Mock
-	@Bind
-	Client client;
-
-	@Mock
-	@Bind
-	ChatColorConfig chatColorConfig;
+	private EmojiPlugin emojiPlugin;
 
 	@Before
 	public void before()
@@ -58,18 +67,65 @@ public class EmojiPluginTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 	}
 
-	private String PARTY_POPPER = "<img=" + (-1 + Emoji.getEmoji("@@@").ordinal()) + '>';
-	private String OPEN_MOUTH = "<img=" + (-1 + Emoji.getEmoji(":O").ordinal()) + '>';
+	@Test
+	public void testOnChatMessage()
+	{
+		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
+		when(client.getModIcons()).thenReturn(new IndexedSprite[0]);
+		when(client.createIndexedSprite()).thenReturn(mock(IndexedSprite.class));
+
+		// Trip emoji loading
+		GameStateChanged gameStateChanged = new GameStateChanged();
+		gameStateChanged.setGameState(GameState.LOGGED_IN);
+		emojiPlugin.onGameStateChanged(gameStateChanged);
+
+		MessageNode messageNode = mock(MessageNode.class);
+		// With chat recolor, message may be wrapped in col tags
+		when(messageNode.getValue()).thenReturn("<col=ff0000>:) :) :)</col>");
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setMessageNode(messageNode);
+
+		emojiPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode).setRuneLiteFormatMessage("<col=ff0000><img=0> <img=0> <img=0></col>");
+	}
+
+	@Test
+	public void testGtLt()
+	{
+		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
+		when(client.getModIcons()).thenReturn(new IndexedSprite[0]);
+		when(client.createIndexedSprite()).thenReturn(mock(IndexedSprite.class));
+
+		// Trip emoji loading
+		GameStateChanged gameStateChanged = new GameStateChanged();
+		gameStateChanged.setGameState(GameState.LOGGED_IN);
+		emojiPlugin.onGameStateChanged(gameStateChanged);
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn("<gt>:D<lt>");
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setMessageNode(messageNode);
+
+		emojiPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode).setRuneLiteFormatMessage("<img=10>");
+	}
 
 	@Test
 	public void testEmojiUpdateMessage()
 	{
-		assertNull( emojiPlugin.updateMessage("@@@@@"));
-		assertEquals( PARTY_POPPER, emojiPlugin.updateMessage("@@@"));
-		assertEquals( PARTY_POPPER + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("@@@ @@@"));
-		assertEquals( PARTY_POPPER + ' ' + OPEN_MOUTH, emojiPlugin.updateMessage("@@@\u00A0:O"));
-		assertEquals( PARTY_POPPER + ' ' + OPEN_MOUTH + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0:O @@@"));
-		assertEquals( PARTY_POPPER + " Hello World " + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0Hello World\u00A0@@@"));
-
+		String PARTY_POPPER = "<img=" + (-1 + Emoji.getEmoji("@@@").ordinal()) + '>';
+		String OPEN_MOUTH = "<img=" + (-1 + Emoji.getEmoji(":O").ordinal()) + '>';
+		assertNull(emojiPlugin.updateMessage("@@@@@"));
+		assertEquals(PARTY_POPPER, emojiPlugin.updateMessage("@@@"));
+		assertEquals(PARTY_POPPER + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("@@@ @@@"));
+		assertEquals(PARTY_POPPER + ' ' + OPEN_MOUTH, emojiPlugin.updateMessage("@@@\u00A0:O"));
+		assertEquals(PARTY_POPPER + ' ' + OPEN_MOUTH + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0:O @@@"));
+		assertEquals(PARTY_POPPER + " Hello World " + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0Hello World\u00A0@@@"));
 	}
 }
