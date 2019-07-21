@@ -88,15 +88,11 @@ class ContainerCalculation
 				default:
 					final long storePrice = itemManager.getItemComposition(id).getPrice();
 					final long alchPrice = (long) (storePrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
-					alch += alchPrice * qty;
-					ge += itemManager.getItemPrice(id) * qty;
+					final long itemPrice = itemManager.getItemPrice(id);
 
-					if(alchPrice > itemManager.getItemPrice(id) ){
-						max += alchPrice * qty;
-					}
-					else{
-						max += itemManager.getItemPrice(id)  * qty;
-					}
+					alch += alchPrice * qty;
+					ge += itemPrice * qty;
+					max += alchPrice > itemPrice ? alchPrice * qty : itemPrice * qty;
 
 					break;
 			}
