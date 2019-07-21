@@ -75,7 +75,7 @@ public class MusicListPlugin extends Plugin
 
 	private Collection<Widget> tracks;
 
-	private MusicState currentMusicFilter;
+	private MusicState currentMusicFilter = MusicState.ALL;
 
 	@Override
 	protected void startUp()
@@ -100,6 +100,7 @@ public class MusicListPlugin extends Plugin
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
+			// Reset music filter on logout
 			currentMusicFilter = MusicState.ALL;
 			tracks = null;
 		}
@@ -110,6 +111,10 @@ public class MusicListPlugin extends Plugin
 	{
 		if (widgetLoaded.getGroupId() == WidgetID.MUSIC_GROUP_ID)
 		{
+			tracks = null;
+			// Reset filter state as the widget has been reloaded.
+			// It is too early here to call updateFilter()
+			currentMusicFilter = MusicState.ALL;
 			addMusicButtons();
 		}
 	}
@@ -140,7 +145,7 @@ public class MusicListPlugin extends Plugin
 		musicSearchButton.revalidate();
 
 		musicFilterButton = header.createChild(-1, WidgetType.GRAPHIC);
-		musicFilterButton.setSpriteId(SpriteID.MINIMAP_ORB_HITPOINTS);
+		musicFilterButton.setSpriteId(SpriteID.MINIMAP_ORB_PRAYER);
 		musicFilterButton.setOriginalWidth(15);
 		musicFilterButton.setOriginalHeight(15);
 		musicFilterButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);

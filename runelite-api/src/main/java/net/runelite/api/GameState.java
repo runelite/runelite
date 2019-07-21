@@ -42,6 +42,10 @@ public enum GameState
 	 */
 	LOGIN_SCREEN(10),
 	/**
+	 * The client is at the login screen entering authenticator code.
+	 */
+	LOGIN_SCREEN_AUTHENTICATOR(11),
+	/**
 	 * There is a player logging in.
 	 */
 	LOGGING_IN(20),

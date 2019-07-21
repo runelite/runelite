@@ -97,7 +97,7 @@ public class WorldHopperPlugin extends Plugin
 {
 	private static final int WORLD_FETCH_TIMER = 10;
 	private static final int WORLD_PING_TIMER = 10;
-	private static final int REFRESH_THROTTLE = 60_000;  // ms
+	private static final int REFRESH_THROTTLE = 60_000; // ms
 	private static final int TICK_THROTTLE = (int) Duration.ofMinutes(10).toMillis();
 
 	private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
@@ -327,6 +327,11 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
+		if (!config.menuOption())
+		{
+			return;
+		}
+
 		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 		String option = event.getOption();
 

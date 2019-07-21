@@ -43,6 +43,8 @@ import static net.runelite.api.widgets.WidgetID.GUIDE_PRICES_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SEED_VAULT_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SHOP_INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetInfo.BANK_CONTENT_CONTAINER;
+import static net.runelite.api.widgets.WidgetInfo.BANK_TAB_CONTAINER;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 
@@ -73,8 +75,10 @@ public abstract class WidgetItemOverlay extends Overlay
 			Widget widget = widgetItem.getWidget();
 			int interfaceGroup = TO_GROUP(widget.getId());
 
-			// Don't draw if this widget isn't one of the allowed
-			if (!interfaceGroups.contains(interfaceGroup))
+			// Don't draw if this widget isn't one of the allowed nor in tag tab/item tab
+			if (!interfaceGroups.contains(interfaceGroup) ||
+				(interfaceGroup == BANK_GROUP_ID
+					&& (widget.getParentId() == BANK_CONTENT_CONTAINER.getId() || widget.getParentId() == BANK_TAB_CONTAINER.getId())))
 			{
 				continue;
 			}

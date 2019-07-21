@@ -69,7 +69,7 @@ public class CacheUploader implements Runnable
 		archive.setHash(hash);
 
 		String path = new StringBuilder()
-			.append(hashStr.substring(0, 2))
+			.append(hashStr, 0, 2)
 			.append('/')
 			.append(hashStr.substring(2))
 			.toString();

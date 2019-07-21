@@ -30,7 +30,6 @@ import java.util.List;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -39,7 +38,12 @@ import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26667;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26668;
 import static net.runelite.api.ObjectID.EMPTY_WALL;
+import static net.runelite.api.ObjectID.ORE_VEIN_26661;
+import static net.runelite.api.ObjectID.ORE_VEIN_26662;
+import static net.runelite.api.ObjectID.ORE_VEIN_26663;
+import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -49,7 +53,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@Slf4j
 @PluginDescriptor(
 	name = "Mining",
 	description = "Show ore respawn timers",
@@ -124,7 +127,7 @@ public class MiningPlugin extends Plugin
 		Rock rock = Rock.getRock(object.getId());
 		if (rock != null)
 		{
-			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis());
+			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
 			respawns.add(rockRespawn);
 		}
 	}
@@ -144,7 +147,7 @@ public class MiningPlugin extends Plugin
 			case EMPTY_WALL:
 			{
 				Rock rock = Rock.AMETHYST;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis());
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
 				respawns.add(rockRespawn);
 				break;
 			}
@@ -154,8 +157,18 @@ public class MiningPlugin extends Plugin
 			case DEPLETED_VEIN_26668: // Depleted motherlode vein
 			{
 				Rock rock = Rock.ORE_VEIN;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis());
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
 				respawns.add(rockRespawn);
+				break;
+			}
+			case ORE_VEIN_26661: // Motherlode vein
+			case ORE_VEIN_26662: // Motherlode vein
+			case ORE_VEIN_26663: // Motherlode vein
+			case ORE_VEIN_26664: // Motherlode vein
+			{
+				// If the vein respawns before the timer is up, remove it
+				final WorldPoint point = object.getWorldLocation();
+				respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
 				break;
 			}
 		}
