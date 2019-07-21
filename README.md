@@ -25,9 +25,12 @@
 ## Private Servers
 Currently we support RSMod which can be found at: https://github.com/Tomm0017/rsmod
 ```
-Use -local-injected and -private-server args.  
+Use -private-server arg.  
+Set codebase in ./codebase.  
 Replace modulus in RSBufferMixin.  
-Set codebase in PrivateRSAppletStub.  
+  
+Use -local-injected if you make changes to mixins  
+  
 Disable Default World plugin if you have it enabled, this causes issues with codebase.
 ```  
 ## License
