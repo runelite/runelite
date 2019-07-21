@@ -56,6 +56,7 @@ import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class GroundItemsOverlay extends Overlay
 {
@@ -76,6 +77,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final Duration DESPAWN_TIME_INSTANCE = Duration.ofMinutes(30);
 	private static final Duration DESPAWN_TIME_LOOT = Duration.ofMinutes(2);
 	private static final Duration DESPAWN_TIME_DROP = Duration.ofMinutes(3);
+	private static final int KRAKEN_REGION = 9116;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -382,7 +384,16 @@ public class GroundItemsOverlay extends Overlay
 		Color fillColor;
 		if (client.isInInstancedRegion())
 		{
-			despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
+			// Items in the kraken instance last longer than other instances
+			if (isInKraken())
+			{
+				despawnTime = spawnTime.plus(1, ChronoUnit.HOURS);
+			}
+			else
+			{
+				despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
+			}
+
 			fillColor = PRIVATE_TIMER_COLOR;
 		}
 		else
@@ -461,6 +472,11 @@ public class GroundItemsOverlay extends Overlay
 				);
 		}
 
+	}
+
+	private boolean isInKraken()
+	{
+		return ArrayUtils.contains(client.getMapRegions(), KRAKEN_REGION);
 	}
 
 }
