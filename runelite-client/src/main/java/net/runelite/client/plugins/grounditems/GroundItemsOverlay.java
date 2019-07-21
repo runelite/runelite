@@ -361,8 +361,8 @@ public class GroundItemsOverlay extends Overlay
 
 	private void drawTimerOverlay(Graphics2D graphics, int textX, int textY, GroundItem groundItem)
 	{
-		// We can only accurately guess despawn times for our own loot and drops
-		if (!groundItem.isMine() && !groundItem.isDropped())
+		// We can only accurately guess despawn times for our own pvm loot and drops
+		if (!groundItem.isPvmLoot() && !groundItem.isDropped())
 		{
 			return;
 		}

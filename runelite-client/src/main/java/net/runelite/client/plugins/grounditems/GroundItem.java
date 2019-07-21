@@ -45,10 +45,8 @@ class GroundItem
 	private int gePrice;
 	private int offset;
 	private boolean tradeable;
-	/**
-	 * Is loot received from a drop
-	 */
-	private boolean isMine;
+	private boolean isPvpLoot;
+	private boolean isPvmLoot;
 	/**
 	 * Is dropped by me
 	 */
@@ -64,6 +62,11 @@ class GroundItem
 	int getGePrice()
 	{
 		return gePrice * quantity;
+	}
+
+	boolean isMine()
+	{
+		return isPvmLoot || isPvpLoot;
 	}
 
 	@Value

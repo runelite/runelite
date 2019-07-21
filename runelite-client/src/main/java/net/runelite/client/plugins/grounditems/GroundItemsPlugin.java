@@ -44,6 +44,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -293,14 +294,14 @@ public class GroundItemsPlugin extends Plugin
 	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
 	{
 		Collection<ItemStack> items = npcLootReceived.getItems();
-		lootReceived(items);
+		lootReceived(items, (groundItem) -> groundItem.setPvmLoot(true));
 	}
 
 	@Subscribe
 	public void onPlayerLootReceived(PlayerLootReceived playerLootReceived)
 	{
 		Collection<ItemStack> items = playerLootReceived.getItems();
-		lootReceived(items);
+		lootReceived(items, (groundItem) -> groundItem.setPvpLoot(true));
 	}
 
 	@Subscribe
@@ -351,7 +352,7 @@ public class GroundItemsPlugin extends Plugin
 		}).toArray(MenuEntry[]::new));
 	}
 
-	private void lootReceived(Collection<ItemStack> items)
+	private void lootReceived(Collection<ItemStack> items, Consumer<GroundItem> consumer)
 	{
 		for (ItemStack itemStack : items)
 		{
@@ -360,7 +361,7 @@ public class GroundItemsPlugin extends Plugin
 			GroundItem groundItem = collectedGroundItems.get(groundItemKey);
 			if (groundItem != null)
 			{
-				groundItem.setMine(true);
+				consumer.accept(groundItem);
 
 				boolean shouldNotify = config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
 					groundItem.getName(),
