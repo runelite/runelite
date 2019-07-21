@@ -26,8 +26,8 @@
 Currently we support RSMod which can be found at: https://github.com/Tomm0017/rsmod
 ```
 Use -private-server arg.  
-Set codebase in ./codebase.  
-Replace modulus in RSBufferMixin.  
+Set codebase in ./codebase or in Private Server plugin and restart.  
+Update modulus in Private Server plugin. 
   
 Use -local-injected if you make changes to mixins  
   
