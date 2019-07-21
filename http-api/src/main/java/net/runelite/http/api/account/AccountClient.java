@@ -96,7 +96,7 @@ public class AccountClient
 		}
 	}
 
-	public boolean sesssionCheck()
+	public boolean sessionCheck()
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("account")

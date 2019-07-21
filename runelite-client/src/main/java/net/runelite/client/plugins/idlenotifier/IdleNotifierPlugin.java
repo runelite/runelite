@@ -217,6 +217,11 @@ public class IdleNotifierPlugin extends Plugin
 			case USING_GILDED_ALTAR:
 			/* Farming */
 			case FARMING_MIX_ULTRACOMPOST:
+			case FARMING_HARVEST_BUSH:
+			case FARMING_HARVEST_HERB:
+			case FARMING_HARVEST_FRUIT_TREE:
+			case FARMING_HARVEST_FLOWER:
+			case FARMING_HARVEST_ALLOTMENT:
 			/* Misc */
 			case PISCARILIUS_CRANE_REPAIR:
 			case HOME_MAKE_TABLET:

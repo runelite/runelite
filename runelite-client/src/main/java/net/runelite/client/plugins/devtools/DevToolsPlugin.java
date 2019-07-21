@@ -101,6 +101,9 @@ public class DevToolsPlugin extends Plugin
 	private WorldMapRegionOverlay mapRegionOverlay;
 
 	@Inject
+	private SoundEffectOverlay soundEffectOverlay;
+
+	@Inject
 	private EventBus eventBus;
 
 	private DevToolsButton players;
@@ -119,13 +122,14 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton validMovement;
 	private DevToolsButton lineOfSight;
 	private DevToolsButton cameraPosition;
-	private DevToolsButton worldMapLocation ;
+	private DevToolsButton worldMapLocation;
 	private DevToolsButton tileLocation;
 	private DevToolsButton interacting;
 	private DevToolsButton examine;
 	private DevToolsButton detachedCamera;
 	private DevToolsButton widgetInspector;
 	private DevToolsButton varInspector;
+	private DevToolsButton soundEffects;
 	private NavigationButton navButton;
 
 	@Provides
@@ -166,6 +170,7 @@ public class DevToolsPlugin extends Plugin
 		detachedCamera = new DevToolsButton("Detached Camera");
 		widgetInspector = new DevToolsButton("Widget Inspector");
 		varInspector = new DevToolsButton("Var Inspector");
+		soundEffects = new DevToolsButton("Sound Effects");
 
 		overlayManager.add(overlay);
 		overlayManager.add(locationOverlay);
@@ -173,6 +178,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.add(cameraOverlay);
 		overlayManager.add(worldMapLocationOverlay);
 		overlayManager.add(mapRegionOverlay);
+		overlayManager.add(soundEffectOverlay);
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
@@ -186,17 +192,21 @@ public class DevToolsPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+
+		eventBus.register(soundEffectOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(soundEffectOverlay);
 		overlayManager.remove(overlay);
 		overlayManager.remove(locationOverlay);
 		overlayManager.remove(sceneOverlay);
 		overlayManager.remove(cameraOverlay);
 		overlayManager.remove(worldMapLocationOverlay);
 		overlayManager.remove(mapRegionOverlay);
+		overlayManager.remove(soundEffectOverlay);
 		clientToolbar.removeNavigation(navButton);
 	}
 
@@ -334,6 +344,12 @@ public class DevToolsPlugin extends Plugin
 				Player player = client.getLocalPlayer();
 				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = id + 512;
 				player.getPlayerComposition().setHash();
+				break;
+			}
+			case "sound":
+			{
+				int id = Integer.parseInt(args[0]);
+				client.playSoundEffect(id);
 				break;
 			}
 		}

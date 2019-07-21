@@ -46,6 +46,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -95,8 +96,6 @@ import net.runelite.client.util.Text;
 )
 public class GroundItemsPlugin extends Plugin
 {
-	// Used when getting High Alchemy value - multiplied by general store price.
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
 	// Ground item menu options
@@ -106,6 +105,9 @@ public class GroundItemsPlugin extends Plugin
 	private static final int FOURTH_OPTION = MenuAction.GROUND_ITEM_FOURTH_OPTION.getId();
 	private static final int FIFTH_OPTION = MenuAction.GROUND_ITEM_FIFTH_OPTION.getId();
 	private static final int EXAMINE_ITEM = MenuAction.EXAMINE_ITEM_GROUND.getId();
+	private static final int CAST_ON_ITEM = MenuAction.SPELL_CAST_ON_GROUND_ITEM.getId();
+
+	private static final String TELEGRAB_TEXT = ColorUtil.wrapWithColorTag("Telekinetic Grab", Color.GREEN) + ColorUtil.prependColorTag(" -> ", Color.WHITE);
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -369,7 +371,7 @@ public class GroundItemsPlugin extends Plugin
 		final int itemId = item.getId();
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+		final int alchPrice = Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -447,10 +449,14 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (config.itemHighlightMode() != OVERLAY
-			&& event.getOption().equals("Take")
-			&& event.getType() == THIRD_OPTION)
+		if (config.itemHighlightMode() != OVERLAY)
 		{
+			final boolean telegrabEntry = event.getOption().equals("Cast") && event.getTarget().startsWith(TELEGRAB_TEXT) && event.getType() == CAST_ON_ITEM;
+			if (!(event.getOption().equals("Take") && event.getType() == THIRD_OPTION) && !telegrabEntry)
+			{
+				return;
+			}
+
 			int itemId = event.getIdentifier();
 			Scene scene = client.getScene();
 			Tile tile = scene.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
@@ -481,7 +487,7 @@ public class GroundItemsPlugin extends Plugin
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
 			final int itemPrice = itemManager.getItemPrice(realItemId);
 			final int price = itemPrice <= 0 ? itemComposition.getPrice() : itemPrice;
-			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
+			final int haPrice = Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER) * quantity;
 			final int gePrice = quantity * price;
 			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
 			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
@@ -494,13 +500,27 @@ public class GroundItemsPlugin extends Plugin
 
 				if (mode == BOTH || mode == OPTION)
 				{
-					lastEntry.setOption(ColorUtil.prependColorTag("Take", color));
+					final String optionText = telegrabEntry ? "Cast" : "Take";
+					lastEntry.setOption(ColorUtil.prependColorTag(optionText, color));
 				}
 
 				if (mode == BOTH || mode == NAME)
 				{
-					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
-					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
+					String target = lastEntry.getTarget();
+
+					if (telegrabEntry)
+					{
+						target = target.substring(TELEGRAB_TEXT.length());
+					}
+
+					target = ColorUtil.prependColorTag(target.substring(target.indexOf('>') + 1), color);
+
+					if (telegrabEntry)
+					{
+						target = TELEGRAB_TEXT + target;
+					}
+
+					lastEntry.setTarget(target);
 				}
 			}
 

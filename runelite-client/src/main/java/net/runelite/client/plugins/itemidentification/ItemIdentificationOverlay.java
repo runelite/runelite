@@ -30,6 +30,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import static net.runelite.api.widgets.WidgetID.GUIDE_PRICE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KEPT_ON_DEATH_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.LOOTING_BAG_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.SEED_BOX_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -45,7 +48,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 		this.config = config;
 		showOnInventory();
 		showOnBank();
-		showOnInterfaces(KEPT_ON_DEATH_GROUP_ID, GUIDE_PRICE_GROUP_ID);
+		showOnInterfaces(KEPT_ON_DEATH_GROUP_ID, GUIDE_PRICE_GROUP_ID, LOOTING_BAG_GROUP_ID, SEED_BOX_GROUP_ID, KINGDOM_GROUP_ID);
 	}
 
 	@Override
@@ -77,6 +80,18 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case ORE:
+				if (!config.showOres())
+				{
+					return;
+				}
+				break;
+			case GEM:
+				if (!config.showGems())
+				{
+					return;
+				}
+				break;
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
@@ -87,7 +102,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 	private void renderText(Graphics2D graphics, Rectangle bounds, ItemIdentification iden)
 	{
 		final TextComponent textComponent = new TextComponent();
-		textComponent.setPosition(new Point(bounds.x, bounds.y + bounds.height));
+		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + bounds.height - 1));
 		textComponent.setColor(config.textColor());
 		switch (config.identificationType())
 		{

@@ -98,7 +98,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("HE DO POSE. IT IS CULTRRL, MK?", "Riki the sculptor's model", new WorldPoint(2904, 10206, 0), "East Keldagrim, south of kebab seller."),
 		new AnagramClue("HEORIC", "Eohric", new WorldPoint(2900, 3565, 0), "Top floor of Burthorpe Castle", "36"),
 		new AnagramClue("HIS PHOR", "Horphis", new WorldPoint(1639, 3812, 0), "Arceuus Library, Zeah", "1"),
-		new AnagramClue("I AM SIR", "Marisi", new WorldPoint(1813, 3488, 0), "Allotment patch, South coast Zeah", "5"),
+		new AnagramClue("I AM SIR", "Marisi", new WorldPoint(1737, 3557, 0), "Allotment patch, South of Hosidius chapel", "5"),
 		new AnagramClue("ICY FE", "Fycie", new WorldPoint(2630, 2997, 0), "East Feldip Hills"),
 		new AnagramClue("I DOOM ICON INN", "Dominic Onion", new WorldPoint(2609, 3116, 0), "Nightmare Zone", "9,500"),
 		new AnagramClue("I EAT ITS CHART HINTS DO U", "Shiratti the Custodian", new WorldPoint(3427, 2927, 0), "North of fountain, Nardah"),

@@ -41,7 +41,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
@@ -50,7 +49,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class ConfigService
 {
 	private final Gson GSON = RuneLiteAPI.GSON;
