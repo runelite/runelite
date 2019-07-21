@@ -422,7 +422,7 @@ public class GroundItemsOverlay extends Overlay
 		progressPieComponent.setPosition(new Point(x, y));
 		progressPieComponent.setFill(fillColor);
 		progressPieComponent.setBorderColor(fillColor);
-		progressPieComponent.setProgress(percent);
+		progressPieComponent.setProgress(1 - percent); // inverse so pie drains over time
 		progressPieComponent.render(graphics);
 	}
 
