@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2018-2019, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,10 +26,7 @@ package net.runelite.client.plugins.chatboxperformance;
 
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.widgets.WidgetType;
-import net.runelite.api.events.WidgetPositioned;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.client.eventbus.Subscribe;
@@ -42,117 +39,96 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class ChatboxPerformancePlugin extends Plugin
 {
+	private static final int CHATBOX_HEIGHT = 142;
+	private static final int CHATBOX_LINES_WIDTH = 505;
+
+	private int iteration;
+
 	@Inject
 	private Client client;
 
 	@Subscribe
-	public void onWidgetPositioned(WidgetPositioned event)
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		if (!areWidgetsFixed())
+		String eventName = event.getEventName();
+
+		int[] intStack = client.getIntStack();
+		int intStackSize = client.getIntStackSize();
+
+		switch (eventName)
 		{
-			fixChatbox();
-		}
-	}
-
-	private boolean areWidgetsFixed()
-	{
-		Widget widget = client.getWidget(WidgetInfo.CHATBOX_TRANSPARENT_BACKGROUND);
-		if (widget == null)
-		{
-			return true;
-		}
-
-		Widget[] widgets = widget.getChildren();
-
-		if (widgets != null && widgets.length > 0)
-		{
-			Widget last = widgets[widgets.length - 1];
-			return last != null && last.getOpacity() < 254;
-		}
-
-		return false;
-	}
-
-	private void fixChatbox()
-	{
-		fixDarkBackground();
-		fixWhiteLines(true);
-		fixWhiteLines(false);
-	}
-
-	private void fixDarkBackground()
-	{
-		int currOpacity = 256;
-		int prevY = 0;
-		Widget[] children = client.getWidget(WidgetInfo.CHATBOX_TRANSPARENT_BACKGROUND).getDynamicChildren();
-		Widget prev = null;
-		for (Widget w : children)
-		{
-			if (w.getType() != WidgetType.RECTANGLE)
+			case "transparentChatboxBgIteration":
 			{
-				continue;
+				iteration = intStack[intStackSize - 2];
+				break;
 			}
 
-			if (prev != null)
+			case "transparentChatboxBgSize":
 			{
-				int relY = w.getRelativeY();
-				prev.setHeightMode(WidgetSizeMode.ABSOLUTE);
-				prev.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-				prev.setRelativeY(prevY);
-				prev.setOriginalY(prev.getRelativeY());
-				prev.setHeight(relY - prevY);
-				prev.setOriginalHeight(prev.getHeight());
-				prev.setOpacity(currOpacity);
+				// Can't just set height = 16384 / 25 because rounding makes
+				// some segments 1 px higher than others.
+				int startY = (16384 / 25 * iteration) * CHATBOX_HEIGHT / 16384;
+				int endY = (16384 / 25 * (iteration + 1)) * CHATBOX_HEIGHT / 16384;
+				if (iteration == 19)
+				{
+					endY = CHATBOX_HEIGHT;
+				}
+				intStack[intStackSize - 3] = endY - startY; // Sets height
+				intStack[intStackSize - 1] = WidgetSizeMode.ABSOLUTE;
+				break;
 			}
 
-			prevY = w.getRelativeY();
-			currOpacity -= 3; // Rough number, can't get exactly the same as Jagex because of rounding
-			prev = w;
-		}
-		if (prev != null)
-		{
-			prev.setOpacity(currOpacity);
-		}
-	}
-
-	private void fixWhiteLines(boolean upperLine)
-	{
-		int currOpacity = 256;
-		int prevWidth = 0;
-		Widget[] children = client.getWidget(WidgetInfo.CHATBOX_TRANSPARENT_LINES).getDynamicChildren();
-		Widget prev = null;
-		for (Widget w : children)
-		{
-			if (w.getType() != WidgetType.RECTANGLE)
+			case "transparentChatboxBgPosition":
 			{
-				continue;
+				intStack[intStackSize - 3] = 16384 / 25 * iteration; // Sets Y-position
+				intStack[intStackSize - 1] = WidgetPositionMode.TOP_16384THS;
+				break;
 			}
 
-			if ((w.getRelativeY() == 0 && !upperLine) ||
-				(w.getRelativeY() != 0 && upperLine))
+			case "transparentChatboxBgOpacity":
 			{
-				continue;
+				// Rough number, can't get exactly the same as Jagex because their solution rounds it multiple times
+				intStack[intStackSize - 1] = 256 - (iteration + 1) * 3; // Sets opacity
+				break;
 			}
 
-			if (prev != null)
+			case "transparentChatboxLinesUpperSize":
+			case "transparentChatboxLinesLowerSize":
 			{
-				int width = w.getWidth();
-				prev.setWidthMode(WidgetSizeMode.ABSOLUTE);
-				prev.setRelativeX(width);
-				prev.setOriginalX(width);
-				prev.setWidth(prevWidth - width);
-				prev.setOriginalWidth(prev.getWidth());
-				prev.setOpacity(currOpacity);
+				// Can't just set width = 16384 / 25 because rounding makes
+				// some segments 1 px wider than others.
+				int startX = (16384 / 25 * iteration) * CHATBOX_LINES_WIDTH / 16384;
+				int endX = (16384 / 25 * (iteration + 1)) * CHATBOX_LINES_WIDTH / 16384;
+				if (iteration == 19)
+				{
+					endX = CHATBOX_LINES_WIDTH;
+				}
+				intStack[intStackSize - 4] = endX - startX; // Sets width
+				intStack[intStackSize - 2] = WidgetSizeMode.ABSOLUTE;
+				break;
 			}
 
-			prevWidth = w.getWidth();
+			case "transparentChatboxLinesUpperPosition":
+			case "transparentChatboxLinesLowerPosition":
+			{
+				intStack[intStackSize - 4] = 16384 / 25 * iteration; // Sets X-position
+				intStack[intStackSize - 2] = WidgetPositionMode.RIGHT_16384THS;
+				break;
+			}
 
-			currOpacity -= upperLine ? 3 : 4; // Rough numbers, can't get exactly the same as Jagex because of rounding
-			prev = w;
-		}
-		if (prev != null)
-		{
-			prev.setOpacity(currOpacity);
+			case "transparentChatboxLinesUpperOpacity":
+			{
+				// Rough number, can't get exactly the same as Jagex because their solution rounds it multiple times
+				intStack[intStackSize - 1] = 256 - (iteration + 1) * 3; // Sets opacity
+				break;
+			}
+
+			case "transparentChatboxLinesLowerOpacity":
+			{
+				// Rough number, can't get exactly the same as Jagex because their solution rounds it multiple times
+				intStack[intStackSize - 1] = 256 - (iteration + 1) * 4; // Sets opacity
+				break;
+			}
 		}
 	}
 }
