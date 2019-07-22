@@ -167,6 +167,8 @@ public class AoeWarningPlugin extends Plugin
 	private boolean configCerbFireNotifyEnabled;
 	private boolean configDemonicGorillaEnabled;
 	private boolean configDemonicGorillaNotifyEnabled;
+	private boolean configMarbleGargoyleEnabled;
+	private boolean configMarbleGargoyleNotifyEnabled;
 
 	@Override
 	protected void startUp() throws Exception
@@ -454,6 +456,8 @@ public class AoeWarningPlugin extends Plugin
 				return notify ? this.configCerbFireNotifyEnabled : this.configCerbFireEnabled;
 			case DEMONIC_GORILLA_BOULDER:
 				return notify ? this.configDemonicGorillaNotifyEnabled : this.configDemonicGorillaEnabled;
+			case MARBLE_GARGOYLE_AOE:
+				return notify ? this.configMarbleGargoyleNotifyEnabled : this.configMarbleGargoyleEnabled;
 		}
 
 		return false;
@@ -510,6 +514,8 @@ public class AoeWarningPlugin extends Plugin
 		this.configCerbFireNotifyEnabled = config.isCerbFireNotifyEnabled();
 		this.configDemonicGorillaEnabled = config.isDemonicGorillaEnabled();
 		this.configDemonicGorillaNotifyEnabled = config.isDemonicGorillaNotifyEnabled();
+		this.configMarbleGargoyleEnabled = config.isMarbleGargoyleEnabled();
+		this.configMarbleGargoyleNotifyEnabled = config.isMarbleGargoyleNotifyEnabled();
 	}
 
 	private void reset()
