@@ -32,6 +32,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -39,14 +40,17 @@ import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
 import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_BUY;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_SELL;
 import static net.runelite.api.GrandExchangeOfferState.EMPTY;
+import static net.runelite.client.plugins.grandexchange.GrandExchangeItemPanel.geLink;
 import net.runelite.api.ItemDefinition;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -75,6 +79,8 @@ class GrandExchangeOfferSlot extends JPanel
 	private final JLabel offerSpent = new JLabel();
 
 	private final ThinProgressBar progressBar = new ThinProgressBar();
+
+	private final JMenuItem geLink = new JMenuItem("Open in Grand Exchange");
 
 	private boolean showingFace = true;
 
@@ -108,14 +114,12 @@ class GrandExchangeOfferSlot extends JPanel
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
 				super.mouseEntered(mouseEvent);
-				container.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
 				super.mouseExited(mouseEvent);
-				container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			}
 		};
 
@@ -125,7 +129,6 @@ class GrandExchangeOfferSlot extends JPanel
 		JPanel faceCard = new JPanel();
 		faceCard.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		faceCard.setLayout(new BorderLayout());
-		faceCard.addMouseListener(ml);
 
 		itemIcon.setVerticalAlignment(JLabel.CENTER);
 		itemIcon.setHorizontalAlignment(JLabel.CENTER);
@@ -144,10 +147,15 @@ class GrandExchangeOfferSlot extends JPanel
 		switchFaceViewIcon.setVerticalAlignment(JLabel.CENTER);
 		switchFaceViewIcon.setHorizontalAlignment(JLabel.CENTER);
 		switchFaceViewIcon.setPreferredSize(new Dimension(30, 45));
+		switchFaceViewIcon.addMouseListener(ml);
+
+		JPopupMenu menu = new JPopupMenu();
+		menu.add(geLink);
 
 		JPanel offerFaceDetails = new JPanel();
 		offerFaceDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		offerFaceDetails.setLayout(new GridLayout(2, 1, 0, 2));
+		offerFaceDetails.setComponentPopupMenu(menu);
 
 		offerFaceDetails.add(itemName);
 		offerFaceDetails.add(offerInfo);
@@ -160,7 +168,7 @@ class GrandExchangeOfferSlot extends JPanel
 		detailsCard.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		detailsCard.setLayout(new BorderLayout());
 		detailsCard.setBorder(new EmptyBorder(0, 15, 0, 0));
-		detailsCard.addMouseListener(ml);
+		detailsCard.setComponentPopupMenu(menu);
 
 		itemPrice.setForeground(Color.WHITE);
 		itemPrice.setVerticalAlignment(JLabel.BOTTOM);
@@ -175,6 +183,7 @@ class GrandExchangeOfferSlot extends JPanel
 		switchDetailsViewIcon.setVerticalAlignment(JLabel.CENTER);
 		switchDetailsViewIcon.setHorizontalAlignment(JLabel.CENTER);
 		switchDetailsViewIcon.setPreferredSize(new Dimension(30, 45));
+		switchDetailsViewIcon.addMouseListener(ml);
 
 		JPanel offerDetails = new JPanel();
 		offerDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -207,6 +216,12 @@ class GrandExchangeOfferSlot extends JPanel
 
 			itemName.setText(offerItem.getName());
 			itemIcon.setIcon(new ImageIcon(itemImage));
+
+			for (ActionListener al : geLink.getActionListeners())
+			{
+				geLink.removeActionListener(al);
+			}
+			geLink.addActionListener(actionEvent -> geLink(offerItem.getName(), offerItem.getId()));
 
 			boolean buying = newOffer.getState() == GrandExchangeOfferState.BOUGHT
 				|| newOffer.getState() == GrandExchangeOfferState.BUYING
