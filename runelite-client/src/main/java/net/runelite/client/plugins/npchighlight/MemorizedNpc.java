@@ -34,33 +34,22 @@ import lombok.Setter;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.coords.WorldPoint;
-
+@Getter(AccessLevel.PACKAGE)
 class MemorizedNpc
 {
-	@Getter(AccessLevel.PACKAGE)
 	private int npcIndex;
-
-	@Getter(AccessLevel.PACKAGE)
 	private Set<String> npcNames;
-
-	@Getter(AccessLevel.PACKAGE)
 	private int npcSize;
-
 	/**
 	 * The time the npc died at, in game ticks, relative to the tick counter
 	 */
-	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private int diedOnTick;
-
 	/**
 	 * The time it takes for the npc to respawn, in game ticks
 	 */
-	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private int respawnTime;
-
-	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private List<WorldPoint> possibleRespawnLocations;
 
