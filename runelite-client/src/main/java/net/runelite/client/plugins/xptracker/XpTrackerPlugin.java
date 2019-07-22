@@ -40,6 +40,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
@@ -51,6 +52,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
@@ -113,6 +115,11 @@ public class XpTrackerPlugin extends Plugin
 	private final XpClient xpClient = new XpClient();
 	private final XpState xpState = new XpState();
 	private final XpPauseState xpPauseState = new XpPauseState();
+
+	public static final String OPTION_RESET = "Reset";
+	public static final String OPTION_REMOVE = "Remove";
+	public static final String OPTION_PAUSE = "Pause";
+	public static final String OPTION_RESUME = "Resume";
 
 	@Provides
 	XpTrackerConfig provideConfig(ConfigManager configManager)
@@ -221,7 +228,7 @@ public class XpTrackerPlugin extends Plugin
 	void addOverlay(Skill skill)
 	{
 		removeOverlay(skill);
-		overlayManager.add(new XpInfoBoxOverlay(this, xpTrackerConfig, skill, skillIconManager.getSkillImage(skill)));
+		overlayManager.add(new XpInfoBoxOverlay(this, xpTrackerConfig, xpPauseState, skill, skillIconManager.getSkillImage(skill)));
 	}
 
 	/**
@@ -559,6 +566,30 @@ public class XpTrackerPlugin extends Plugin
 		for (Skill skill : Skill.values())
 		{
 			pauseSkill(skill, pause);
+		}
+	}
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked event)
+	{
+		Skill skill = Skill.forName(event.getEntry().getTarget());
+		if (skill != null &&
+				event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
+				event.getEntry().getTarget() != null )
+		{
+			String option = event.getEntry().getOption();
+			if (option.equals(OPTION_RESET))
+			{
+				resetSkillState(skill);
+			}
+			else if (option.equals(OPTION_PAUSE) || option.equals(OPTION_RESUME))
+			{
+				pauseSkill(skill, !xpPauseState.isPaused(skill));
+			}
+			else if (option.equals(OPTION_REMOVE))
+			{
+				xpPanel.toggleCanvasItemText(skill);
+				removeOverlay(skill);
+			}
 		}
 	}
 }
