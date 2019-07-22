@@ -78,12 +78,8 @@ import org.apache.commons.lang3.ArrayUtils;
 public class PvpToolsPlugin extends Plugin
 {
 	@Inject
-	PvpToolsOverlay pvpToolsOverlay;
-
-	@Inject
 	PlayerCountOverlay playerCountOverlay;
 
-	boolean fallinHelperEnabled = false;
 	private PvpToolsPanel panel;
 	private MissingPlayersJFrame missingPlayersJFrame;
 	private CurrentPlayersJFrame currentPlayersJFrame;
@@ -154,7 +150,6 @@ public class PvpToolsPlugin extends Plugin
 	private boolean countPlayers;
 	private boolean countOverHeads;
 	@Getter(AccessLevel.PACKAGE)
-	private boolean fallInHelper;
 	private Keybind hotkey;
 	private Keybind renderSelf;
 	private boolean riskCalculatorEnabled;
@@ -174,17 +169,6 @@ public class PvpToolsPlugin extends Plugin
 
 	@Inject
 	private PvpToolsConfig config;
-
-	/**
-	 * The HotKeyListener for the hot key assigned in the config that triggers the Fall In Helper feature
-	 */
-	private final HotkeyListener fallinHotkeyListener = new HotkeyListener(() -> this.hotkey)
-	{
-		public void hotkeyPressed()
-		{
-			toggleFallinHelper();
-		}
-	};
 
 	private final HotkeyListener renderselfHotkeyListener = new HotkeyListener(() -> this.renderSelf)
 	{
@@ -252,9 +236,7 @@ public class PvpToolsPlugin extends Plugin
 		updateConfig();
 		addSubscriptions();
 
-		overlayManager.add(pvpToolsOverlay);
 		overlayManager.add(playerCountOverlay);
-		keyManager.registerKeyListener(fallinHotkeyListener);
 		keyManager.registerKeyListener(renderselfHotkeyListener);
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "skull.png");
 
@@ -293,9 +275,7 @@ public class PvpToolsPlugin extends Plugin
 	{
 		eventBus.unregister(this);
 
-		overlayManager.remove(pvpToolsOverlay);
 		overlayManager.remove(playerCountOverlay);
-		keyManager.unregisterKeyListener(fallinHotkeyListener);
 		keyManager.unregisterKeyListener(renderselfHotkeyListener);
 		clientToolbar.removeNavigation(navButton);
 
@@ -441,26 +421,6 @@ public class PvpToolsPlugin extends Plugin
 		{
 			countOverHeads();
 		}
-	}
-
-	/**
-	 * Enables or disables the fall in helper feature
-	 */
-	private void toggleFallinHelper()
-	{
-		if (!fallinHelperEnabled)
-		{
-			client.setIsHidingEntities(true);
-			client.setPlayersHidden(true);
-			fallinHelperEnabled = true;
-		}
-		else
-		{
-			client.setIsHidingEntities(false);
-			client.setPlayersHidden(false);
-			fallinHelperEnabled = false;
-		}
-
 	}
 
 	/**
@@ -724,7 +684,6 @@ public class PvpToolsPlugin extends Plugin
 	{
 		this.countPlayers = config.countPlayers();
 		this.countOverHeads = config.countOverHeads();
-		this.fallInHelper = config.fallInHelper();
 		this.hotkey = config.hotkey();
 		this.renderSelf = config.renderSelf();
 		this.riskCalculatorEnabled = config.riskCalculatorEnabled();
