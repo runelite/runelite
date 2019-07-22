@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -55,8 +56,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-
-
 
 @PluginDescriptor(
 	name = "Item Charges",
@@ -258,9 +257,13 @@ public class ItemChargePlugin extends Plugin
 				{
 					return;
 				}
-				else if (equipment.getItems()[EquipmentInventorySlot.RING.getSlotIdx()].getId() == ItemID.RING_OF_FORGING);
+
+				Item[] items = equipment.getItems();
+				if (EquipmentInventorySlot.RING.getSlotIdx() < items.length
+					&& items[EquipmentInventorySlot.RING.getSlotIdx()].getId() == ItemID.RING_OF_FORGING)
 				{
-					updateRingOfForgingCharges(config.ringOfForging() - 1);
+					int charges = Ints.constrainToRange(config.ringOfForging() - 1, 0, MAX_RING_OF_FORGING_CHARGES);
+					updateRingOfForgingCharges(charges);
 				}
 			}
 			else if (message.equals(RING_OF_FORGING_BREAK_TEXT))

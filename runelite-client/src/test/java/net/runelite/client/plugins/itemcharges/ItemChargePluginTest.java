@@ -29,8 +29,13 @@ import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
-
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
@@ -40,8 +45,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.Matchers.eq;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -123,9 +130,19 @@ public class ItemChargePluginTest
 		verify(config).ringOfForging(eq(140));
 		reset(config);
 
+		when(config.ringOfForging()).thenReturn(90);
+		// Create equipment inventory with ring of forging
+		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
+		when(client.getItemContainer(eq(InventoryID.EQUIPMENT))).thenReturn(equipmentItemContainer);
+		Item[] items = new Item[EquipmentInventorySlot.RING.getSlotIdx() + 1];
+		when(equipmentItemContainer.getItems()).thenReturn(items);
+		Item ring = mock(Item.class);
+		when(ring.getId()).thenReturn(ItemID.RING_OF_FORGING);
+		items[EquipmentInventorySlot.RING.getSlotIdx()] = ring;
+		// Run message
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).ringOfForging(eq(-1));
+		verify(config).ringOfForging(eq(89));
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
