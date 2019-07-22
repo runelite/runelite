@@ -23,10 +23,21 @@
  */
 package net.runelite.client.plugins.freezetimers;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+
 public enum TimerType
 {
-	FREEZE,
-	VENG,
-	TELEBLOCK,
-	THIS_SHIT_BROKE
+	FREEZE(3000),
+	VENG(0),
+	TELEBLOCK(45000),
+	THIS_SHIT_BROKE(-1);
+
+	@Getter(AccessLevel.PACKAGE)
+	private final int immunityTime;
+
+	TimerType(int immunityTime)
+	{
+		this.immunityTime = immunityTime;
+	}
 }

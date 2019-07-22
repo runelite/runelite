@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Constants;
 
-class MapLocations
+public class MapLocations
 {
 	private static final List<Shape>[] MULTICOMBAT = new List[Constants.MAX_Z];
 	private static final List<Shape>[] NOT_MULTICOMBAT = new List[Constants.MAX_Z];
