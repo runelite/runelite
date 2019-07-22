@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, ThatGamerBlue <thatgamerblue@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,6 +45,9 @@ public class ImageComponent implements LayoutableRenderableEntity
 
 	private Point preferredLocation = new Point();
 
+	private int xOffset = 0;
+	private int yOffset = 0;
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -51,6 +55,9 @@ public class ImageComponent implements LayoutableRenderableEntity
 		{
 			return null;
 		}
+
+		preferredLocation.x += xOffset;
+		preferredLocation.y += yOffset;
 
 		graphics.drawImage(image, preferredLocation.x, preferredLocation.y, null);
 		final Dimension dimension = new Dimension(image.getWidth(), image.getHeight());
@@ -63,5 +70,11 @@ public class ImageComponent implements LayoutableRenderableEntity
 	public void setPreferredSize(Dimension dimension)
 	{
 		// Just use image dimensions for now
+	}
+
+	public void translate(int x, int y)
+	{
+		xOffset = x;
+		yOffset = y;
 	}
 }

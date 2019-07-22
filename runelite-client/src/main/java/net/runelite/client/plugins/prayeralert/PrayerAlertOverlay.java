@@ -32,8 +32,8 @@ import net.runelite.client.plugins.itemstats.stats.Stat;
 import net.runelite.client.plugins.itemstats.stats.Stats;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
@@ -52,7 +52,7 @@ class PrayerAlertOverlay extends Overlay
 	private PrayerAlertOverlay(final Client client, final PrayerAlertPlugin plugin, final ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.TOP_RIGHT);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setPriority(OverlayPriority.LOW);
 		this.client = client;
 		this.plugin = plugin;
 		this.itemManager = itemManager;
@@ -163,13 +163,15 @@ class PrayerAlertOverlay extends Overlay
 
 	private void prayerRestorePanel(PanelComponent panelComponent, Graphics2D graphics)
 	{
-		panelComponent.getChildren().add(new ImageComponent(itemManager.getImage(ItemID.PRAYER_POTION4)));
+		ImageComponent component = new ImageComponent(itemManager.getImage(ItemID.PRAYER_POTION4));
+		component.translate(2, 0);
+		panelComponent.getChildren().add(component);
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text("Drink")
 			.color(Color.RED)
 			.build());
 		panelComponent.setPreferredSize(new Dimension(
-			graphics.getFontMetrics().stringWidth("Drink") + 12, 0));
+			graphics.getFontMetrics().stringWidth("Drink") + 14, 0));
 	}
 
 	private void oldPrayerRestorePanel(Graphics2D graphics)
