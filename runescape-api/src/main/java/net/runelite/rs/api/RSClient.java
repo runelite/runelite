@@ -28,6 +28,7 @@
 
 package net.runelite.rs.api;
 
+import java.math.BigInteger;
 import net.runelite.api.Client;
 import net.runelite.api.Sprite;
 import net.runelite.api.World;
@@ -1040,4 +1041,8 @@ public interface RSClient extends RSGameShell, Client
 	@Import("crossSprites")
 	@Override
 	RSSprite[] getCrossSprites();
+
+	BigInteger getModulus();
+
+	void setModulus(BigInteger modulus);
 }
