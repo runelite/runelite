@@ -23,7 +23,7 @@
 - [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
 
 ## Private Servers
-Currently we support RSMod which can be found at: https://github.com/Tomm0017/rsmod
+Currently we support RSMod which can be found at: https://github.com/Tomm0017/rsmod but should work with any server that follows osrs protocol.
 ```
 Use -private-server arg.  
 Set codebase in ./codebase or in Private Server plugin and restart.  
