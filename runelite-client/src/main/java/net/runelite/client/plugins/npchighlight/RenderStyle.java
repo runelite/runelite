@@ -33,5 +33,6 @@ public enum RenderStyle
 	THIN_OUTLINE,
 	OUTLINE,
 	THIN_GLOW,
-	GLOW
+	GLOW,
+	TRUE_LOCATIONS
 }

@@ -33,6 +33,7 @@ import java.awt.Polygon;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.Instant;
+import java.util.List;
 import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,6 +44,7 @@ import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.Overlay;
@@ -169,7 +171,7 @@ public class NpcSceneOverlay extends Overlay
 				break;
 			case TILE:
 				int size = 1;
-				final NPCDefinition composition = actor.getTransformedDefinition();
+				NPCDefinition composition = actor.getTransformedDefinition();
 				if (composition != null)
 				{
 					size = composition.getSize();
@@ -193,6 +195,23 @@ public class NpcSceneOverlay extends Overlay
 				break;
 			case GLOW:
 				modelOutliner.drawOutline(actor, 8, color, TRANSPARENT);
+				break;
+			case TRUE_LOCATIONS:
+				size = 1;
+				composition = actor.getTransformedDefinition();
+
+				if (composition != null)
+				{
+					size = composition.getSize();
+				}
+
+				final WorldPoint wp = actor.getWorldLocation();
+				final Color squareColor = color;
+
+				getSquare(wp, size).forEach(square ->
+				{
+					drawTile(graphics, square, squareColor, 1, 255, 50);
+				});
 				break;
 		}
 
@@ -230,5 +249,40 @@ public class NpcSceneOverlay extends Overlay
 			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
 			graphics.fill(polygon);
 		}
+	}
+
+	private List<WorldPoint> getSquare(WorldPoint npcLoc, int npcSize)
+	{
+		return new WorldArea(npcLoc.getX(), npcLoc.getY(), npcSize, npcSize, npcLoc.getPlane()).toWorldPointList();
+	}
+
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, int strokeWidth, int outlineAlpha, int fillAlpha)
+	{
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+
+		if (point.distanceTo(playerLocation) >= 32)
+		{
+			return;
+		}
+
+		LocalPoint lp = LocalPoint.fromWorld(client, point);
+
+		if (lp == null)
+		{
+			return;
+		}
+
+		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
+
+		if (poly == null)
+		{
+			return;
+		}
+
+		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
+		graphics.setStroke(new BasicStroke(strokeWidth));
+		graphics.draw(poly);
+		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
+		graphics.fill(poly);
 	}
 }
