@@ -25,7 +25,9 @@
 ## Private Servers
 Currently we support RSMod which can be found at: https://github.com/Tomm0017/rsmod but should work with any server that follows osrs protocol.
 ```
-Use -private-server arg.  
+Use -private-server arg if running from jar or intelliJ.
+Use --clientargs="--private-server" arg if running from exe (shortcut)
+
 Set codebase in ./codebase or in Private Server plugin and restart.  
 Update modulus in Private Server plugin. 
   
