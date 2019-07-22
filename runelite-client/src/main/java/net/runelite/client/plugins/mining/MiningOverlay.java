@@ -54,14 +54,16 @@ class MiningOverlay extends Overlay
 
 	private final Client client;
 	private final MiningPlugin plugin;
+	private final MiningConfig config;
 
 	@Inject
-	private MiningOverlay(final Client client, final MiningPlugin plugin)
+	private MiningOverlay(final Client client, final MiningPlugin plugin, final MiningConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
 		this.client = client;
+		this.config = config;
 	}
 
 	@Override
@@ -76,8 +78,8 @@ class MiningOverlay extends Overlay
 		Instant now = Instant.now();
 		for (Iterator<RockRespawn> it = respawns.iterator(); it.hasNext();)
 		{
-			Color pieFillColor = Color.YELLOW;
-			Color pieBorderColor = Color.ORANGE;
+			Color pieFillColor = config.progressPieColor();
+			Color pieBorderColor;
 			RockRespawn rockRespawn = it.next();
 			float percent = (now.toEpochMilli() - rockRespawn.getStartTime().toEpochMilli()) / (float) rockRespawn.getRespawnTime();
 			WorldPoint worldPoint = rockRespawn.getWorldPoint();
@@ -107,11 +109,18 @@ class MiningOverlay extends Overlay
 			// Recolour pie on motherlode veins during the portion of the timer where they may respawn
 			if (rock == Rock.ORE_VEIN && percent > ORE_VEIN_RANDOM_PERCENT_THRESHOLD)
 			{
-				pieFillColor = Color.GREEN;
-				pieBorderColor = DARK_GREEN;
+				pieFillColor = config.progressPieColorMotherlode();
 			}
 
+			if (config.progressPieInverted())
+			{
+				percent = 1.0f - percent;
+			}
+
+			pieBorderColor = pieFillColor.darker();
+
 			ProgressPieComponent ppc = new ProgressPieComponent();
+			ppc.setDiameter(config.progressPieDiameter());
 			ppc.setBorderColor(pieBorderColor);
 			ppc.setFill(pieFillColor);
 			ppc.setPosition(point);
