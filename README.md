@@ -25,14 +25,20 @@
 ## Private Servers
 Currently we support RSMod which can be found at: https://github.com/Tomm0017/rsmod but should work with any server that follows osrs protocol.
 ```
-Use -private-server arg if running from jar or intelliJ.
-Use --clientargs="--private-server" arg if running from exe (shortcut)
+Jar/IntelliJ
+Use -private-server arg.
+
+Exe
+Use --clientargs="--private-server" arg.
+
+Using modified mixins is possible using -local-injected arg, but it looks in a very specific location. 
+(./injected-client/target/injected-client-X.X.XX-SNAPSHOT.jar) (X.X.XX must match current API version)
+
+-----
 
 Set codebase in ./codebase or in Private Server plugin and restart.  
 Update modulus in Private Server plugin. 
-  
-Use -local-injected if you make changes to mixins  
-  
+    
 Disable Default World plugin if you have it enabled, this causes issues with codebase.
 ```  
 ## License
