@@ -186,8 +186,12 @@ public class PlayerIndicatorsOverlay extends Overlay
 			StringBuilder stringBuilder = new StringBuilder(" ");
 			for (KitType kitType : KitType.values())
 			{
-				ItemDefinition itemComposition =
-					itemManager.getItemDefinition(actor.getPlayerAppearance().getEquipmentId(kitType));
+				if (kitType == KitType.RING || kitType == KitType.AMMUNITION)
+				{
+					continue;
+				}
+
+				ItemDefinition itemComposition = itemManager.getItemDefinition(actor.getPlayerAppearance().getEquipmentId(kitType));
 				if (itemComposition != null && itemComposition.getName() != null)
 				{
 					totalValue = totalValue + itemComposition.getPrice();
