@@ -22,26 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stonedloottracker.ui;
+package net.runelite.client.plugins.stonedtracker.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.StackFormatter;
 
-@Singleton
-@Getter(AccessLevel.PACKAGE)
+@Getter
 class TextPanel extends JPanel
 {
 	private static final GridBagLayout LAYOUT = new GridBagLayout();
@@ -52,26 +48,26 @@ class TextPanel extends JPanel
 	private static final Border CONTAINER_BORDER = BorderFactory.createMatteBorder(0, 15, 0, 15, PANEL_BACKGROUND_COLOR);
 
 	// Long value should be for Total Value
-	TextPanel(String text, long totalValue)
+	TextPanel(final String text, final long totalValue)
 	{
 		this.setLayout(LAYOUT);
 		this.setBorder(PANEL_BORDER);
 		this.setBackground(PANEL_BACKGROUND_COLOR);
 
-		JLabel totalText = new JLabel(text, SwingConstants.LEFT);
+		final JLabel totalText = new JLabel(text, SwingConstants.LEFT);
 		totalText.setForeground(Color.WHITE);
 
 		// Item Values (Colored off Total Value of item)
-		JLabel total = new JLabel(StackFormatter.quantityToStackSize(totalValue) + " gp", SwingConstants.LEFT);
-		total.setBorder(new EmptyBorder(0, 5, 0, 0));
-		colorLabel(total, totalValue);
+		final JLabel total = new JLabel(StackFormatter.quantityToStackSize(totalValue) + " gp", SwingConstants.LEFT);
+		total.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		total.setForeground(getRSValueColor(totalValue));
 
-		JPanel panel = ItemPanel.createPanel();
+		final JPanel panel = createPanel();
 
 		panel.add(totalText, BorderLayout.LINE_START);
 		panel.add(total, BorderLayout.CENTER);
 
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
@@ -83,23 +79,23 @@ class TextPanel extends JPanel
 		this.add(panel, c);
 	}
 
-	TextPanel(String text, int value)
+	TextPanel(final String text, final int value)
 	{
 		this.setLayout(LAYOUT);
 		this.setBorder(PANEL_BORDER);
 		this.setBackground(PANEL_BACKGROUND_COLOR);
 
-		JLabel textLabel = new JLabel(text, SwingConstants.LEFT);
+		final JLabel textLabel = new JLabel(text, SwingConstants.LEFT);
 		textLabel.setForeground(Color.WHITE);
 
-		JLabel valueLabel = new JLabel(String.valueOf(value), SwingConstants.LEFT);
-		valueLabel.setBorder(new EmptyBorder(0, 5, 0, 0));
+		final JLabel valueLabel = new JLabel(String.valueOf(value), SwingConstants.LEFT);
+		valueLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
-		JPanel panel = ItemPanel.createPanel();
+		final JPanel panel = createPanel();
 		panel.add(textLabel, BorderLayout.LINE_START);
 		panel.add(valueLabel, BorderLayout.CENTER);
 
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
@@ -109,10 +105,18 @@ class TextPanel extends JPanel
 		this.add(panel, c);
 	}
 
-	// Color label to match RuneScape coloring
-	private void colorLabel(JLabel label, long val)
+	private static JPanel createPanel()
 	{
-		Color labelColor = (val >= 10000000) ? Color.GREEN : (val >= 100000) ? Color.WHITE : Color.YELLOW;
-		label.setForeground(labelColor);
+		final JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.setBorder(CONTAINER_BORDER);
+		panel.setBackground(PANEL_BACKGROUND_COLOR);
+
+		return panel;
+	}
+
+	private static Color getRSValueColor(long val)
+	{
+		return (val >= 10000000) ? Color.GREEN : (val >= 100000) ? Color.WHITE : Color.YELLOW;
 	}
 }

@@ -132,7 +132,7 @@ class LootTrackerPanel extends PluginPanel
 		final BufferedImage backArrowImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "back_icon.png");
 		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "visible_icon.png");
 		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "invisible_icon.png");
-		final BufferedImage resetImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "reset.png");
+		final BufferedImage resetImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "delete-white.png");
 
 		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
 		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -180));

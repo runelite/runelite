@@ -22,41 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stonedloottracker.data;
+package net.runelite.client.plugins.loottracker.localstorage.events;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.Data;
+import net.runelite.client.plugins.loottracker.localstorage.LTRecord;
 
-@Getter(AccessLevel.PUBLIC)
-@Deprecated
-public class LootRecord
+@Data
+public class LTRecordStored
 {
-	private final int id;
-	private final String name;
-	private final int level;
-	private final int killCount;
-	final Collection<LootTrackerItemEntry> drops;
-
-	public LootRecord(final int id, final String name, final int level, final int kc, final Collection<LootTrackerItemEntry> drops)
-	{
-		this.id = id;
-		this.name = name;
-		this.level = level;
-		this.killCount = kc;
-		this.drops = (drops == null ? new ArrayList<>() : drops);
-	}
-
-	LootRecordCustom toNewFormat()
-	{
-		List<LootTrackerItemEntry> drops = new ArrayList<>();
-		for (LootTrackerItemEntry e : this.getDrops())
-		{
-			drops.add(new LootTrackerItemEntry(e.getName(), e.getId(), e.getQuantity(), e.getPrice(), e.getHaPrice(), e.isStackable()));
-		}
-
-		return new LootRecordCustom(this.getId(), this.getName(), this.getLevel(), this.getKillCount(), drops);
-	}
+	private final LTRecord record;
 }

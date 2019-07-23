@@ -22,63 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stonedloottracker.ui;
+package net.runelite.client.plugins.stonedtracker.ui;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.Arrays;
-import java.util.List;
-import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.stonedloottracker.data.LootTrackerItemEntry;
+import net.runelite.client.plugins.loottracker.localstorage.LTItemEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.StackFormatter;
 
-@Singleton
 class LootGrid extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
 	private static final Dimension ITEM_SIZE = new Dimension(40, 40);
-	private final LootTrackerItemEntry[] itemsToDisplay;
-	private final ItemManager itemManager;
 
-	LootGrid(final LootTrackerItemEntry[] itemsToDisplay, final ItemManager itemManager)
+	LootGrid(final LTItemEntry[] itemsToDisplay, final ItemManager itemManager)
 	{
-		this.itemsToDisplay = itemsToDisplay;
-		this.itemManager = itemManager;
-
 		setBorder(new EmptyBorder(5, 0, 5, 0));
-
-		buildItems();
-	}
-
-	/**
-	 * This method creates stacked items from the item list, calculates total price and then
-	 * displays all the items in the UI.
-	 */
-	private void buildItems()
-	{
-		List<LootTrackerItemEntry> items = LootTrackerBox.dedupeClues(Arrays.asList(itemsToDisplay));
-
 		// Calculates how many rows need to be display to fit all items
-		final int rowSize = LootTrackerBox.rowSize(items.size());
-
-		removeAll();
+		final int rowSize = ((itemsToDisplay.length % ITEMS_PER_ROW == 0) ? 0 : 1) + itemsToDisplay.length / ITEMS_PER_ROW;
 		setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
+		// Create stacked items from the item list, calculates total price and then displays all the items in the UI.
 		for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++)
 		{
 			final JPanel slot = new JPanel();
 			slot.setLayout(new GridLayout(1, 1, 0, 0));
 			slot.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			slot.setPreferredSize(ITEM_SIZE);
-			if (i < items.size())
+			if (i < itemsToDisplay.length)
 			{
-				final LootTrackerItemEntry item = items.get(i);
+				final LTItemEntry item = itemsToDisplay[i];
 				if (item == null)
 				{
 					continue;
@@ -97,7 +75,7 @@ class LootGrid extends JPanel
 		repaint();
 	}
 
-	private static String buildToolTip(LootTrackerItemEntry item)
+	private static String buildToolTip(final LTItemEntry item)
 	{
 		final String name = item.getName();
 		final int quantity = item.getQuantity();
@@ -105,6 +83,6 @@ class LootGrid extends JPanel
 
 		return "<html>" + name + " x " + StackFormatter.formatNumber(quantity)
 			+ "<br/>Price: " + StackFormatter.quantityToStackSize(price)
-			+ "<br/>Total: " + StackFormatter.quantityToStackSize(quantity * price) + "</html";
+			+ "<br/>Total: " + StackFormatter.quantityToStackSize(quantity * price) + "</html>";
 	}
 }

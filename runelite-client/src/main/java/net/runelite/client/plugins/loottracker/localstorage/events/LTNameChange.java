@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018, TheStonedTurtle <www.github.com/TheStonedTurtle>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,38 +22,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stonedloottracker.data;
+package net.runelite.client.plugins.loottracker.localstorage.events;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-
-@Getter(AccessLevel.PUBLIC)
-public class LootTrackerItemEntry
+public class LTNameChange
 {
-	private final String name;
-	private final int id;
-	private int quantity;
-	private final long price;
-	private final long haPrice;
-	private long total;
-	private long haTotal;
-	private final boolean stackable;
-
-	public LootTrackerItemEntry(final String name, final int id, final int quantity, final long price, final long haPrice, final boolean stackable)
-	{
-		this.name = name;
-		this.id = id;
-		this.quantity = quantity;
-		this.price = price;
-		this.haPrice = haPrice;
-		this.stackable = stackable;
-		this.total = price * quantity;
-		this.haTotal = haPrice * quantity;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "LootTrackerItemEntry(name=" + name + ",id=" + id + ",quantity=" + quantity + ",price=" + price + ",haprice=" + haPrice + ",total=" + total + ",haTotal=" + haTotal + ",stackable=" + stackable + ")";
-	}
 }
