@@ -97,7 +97,8 @@ class ItemPricesOverlay extends Overlay
 		switch (action)
 		{
 			case ITEM_USE_ON_WIDGET:
-				if (!menuEntry.getTarget().contains("High Level Alchemy") || !config.showAlchProfit()) return null;
+				if (!menuEntry.getTarget().contains("High Level Alchemy") ||
+					!config.showAlchProfit()) break;
 			case WIDGET_DEFAULT:
 			case ITEM_USE:
 			case ITEM_FIRST_OPTION:
