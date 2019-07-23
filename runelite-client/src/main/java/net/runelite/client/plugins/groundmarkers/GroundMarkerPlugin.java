@@ -215,7 +215,7 @@ public class GroundMarkerPlugin extends Plugin
 
 			menuEntry.setOption(MARK);
 			menuEntry.setTarget(event.getTarget());
-			menuEntry.setType(MenuAction.CANCEL.getId());
+			menuEntry.setType(MenuAction.RUNELITE.getId());
 
 			client.setMenuEntries(menuEntries);
 		}
@@ -224,7 +224,7 @@ public class GroundMarkerPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals(MARK))
+		if (event.getMenuAction().getId() != MenuAction.RUNELITE.getId() || !event.getMenuOption().equals(MARK))
 		{
 			return;
 		}
