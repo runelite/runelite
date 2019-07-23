@@ -11,14 +11,14 @@ task assembleMojo(type:JavaExec) {
   classpath = sourceSets.main.runtimeClasspath
 
   main = "net.runelite.script.AssembleMojo"
-  args('../runelite-client/src/main/scripts,../runelite-client/build/classes/runelite'.split(','))
+  args('../runelite-client/src/main/scripts,../runelite-client/src/main/resources/runelite'.split(','))
 }
 
 task indexMojo(type:JavaExec) {
   classpath = sourceSets.main.runtimeClasspath
 
   main = "net.runelite.script.IndexMojo"
-  args('../runelite-client/build/classes/runelite,../runelite-client/build/classes/runelite/index'.split(','))
+  args('../runelite-client/src/main/resources/runelite,../runelite-client/src/main/resources/runelite/index'.split(','))
 }
 
 compileJava.doLast {

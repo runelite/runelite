@@ -114,10 +114,6 @@ public class AssembleMojo extends AbstractMojo
 		Assembler assembler = new Assembler(instructions);
 		ScriptSaver saver = new ScriptSaver();
 
-		System.out.println(outputDirectory);
-		System.out.println(scriptDirectory);
-		StringFileUtils.writeStringToFile("./Scriptstores.txt", outputDirectory + ":" + scriptDirectory);
-		System.exit(-1);
 		int count = 0;
 		File scriptOut = new File(outputDirectory, Integer.toString(IndexType.CLIENTSCRIPT.getNumber()));
 		scriptOut.mkdirs();

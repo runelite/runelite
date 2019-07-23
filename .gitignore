@@ -17,3 +17,4 @@ classes/artifacts/client_jar/client.jar
 */build/
 */out/
 .gradle/
+runelite-client/src/main/resources/runelite/*
