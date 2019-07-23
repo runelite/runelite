@@ -39,6 +39,7 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.slf4j.Logger;
 
 @Mojo(
 	name = "assemble",
@@ -54,6 +55,56 @@ public class AssembleMojo extends AbstractMojo
 
 	private final Log log = getLog();
 
+	public static void main(String args[])
+	{
+		File scriptDirectory = new File(args[0]);
+		File outputDirectory = new File(args[1]);
+
+		RuneLiteInstructions instructions = new RuneLiteInstructions();
+		instructions.init();
+
+		Assembler assembler = new Assembler(instructions);
+		ScriptSaver saver = new ScriptSaver();
+
+		int count = 0;
+		File scriptOut = new File(outputDirectory, Integer.toString(IndexType.CLIENTSCRIPT.getNumber()));
+		scriptOut.mkdirs();
+
+		for (File scriptFile : scriptDirectory.listFiles((dir, name) -> name.endsWith(".rs2asm")))
+		{
+			System.out.println("Assembling " + scriptFile);
+
+			try (FileInputStream fin = new FileInputStream(scriptFile))
+			{
+				ScriptDefinition script = assembler.assemble(fin);
+				byte[] packedScript = saver.save(script);
+
+				File targetFile = new File(scriptOut, Integer.toString(script.getId()));
+				Files.write(packedScript, targetFile);
+
+				// Copy hash file
+
+				File hashFile = new File(scriptDirectory, Files.getNameWithoutExtension(scriptFile.getName()) + ".hash");
+				if (hashFile.exists())
+				{
+					Files.copy(hashFile, new File(scriptOut, Integer.toString(script.getId()) + ".hash"));
+				}
+				else if (script.getId() < 10000) // Scripts >=10000 are RuneLite scripts, so they shouldn't have a .hash
+				{
+					System.out.println("Unable to find hash file for " + scriptFile);
+				}
+
+				++count;
+			}
+			catch (IOException ex)
+			{
+				System.out.println("unable to open file " + ex);
+			}
+		}
+
+		System.out.println("Assembled " + count + " scripts");
+	}
+
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
@@ -63,6 +114,10 @@ public class AssembleMojo extends AbstractMojo
 		Assembler assembler = new Assembler(instructions);
 		ScriptSaver saver = new ScriptSaver();
 
+		System.out.println(outputDirectory);
+		System.out.println(scriptDirectory);
+		StringFileUtils.writeStringToFile("./Scriptstores.txt", outputDirectory + ":" + scriptDirectory);
+		System.exit(-1);
 		int count = 0;
 		File scriptOut = new File(outputDirectory, Integer.toString(IndexType.CLIENTSCRIPT.getNumber()));
 		scriptOut.mkdirs();

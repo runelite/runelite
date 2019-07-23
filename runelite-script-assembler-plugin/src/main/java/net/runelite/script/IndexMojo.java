@@ -48,6 +48,40 @@ public class IndexMojo extends AbstractMojo
 	@Parameter(required = true)
 	private File indexFile;
 
+	public static void main(String args[])
+	{
+		try (DataOutputStream fout = new DataOutputStream(new FileOutputStream(args[1])))
+		{
+			for (File indexFolder : new File(args[0]).listFiles())
+			{
+				if (indexFolder.isDirectory())
+				{
+					int indexId = parseInt(indexFolder.getName());
+					for (File archiveFile : indexFolder.listFiles())
+					{
+						int archiveId;
+						try
+						{
+							archiveId = parseInt(archiveFile.getName());
+						}
+						catch (NumberFormatException ex)
+						{
+							continue;
+						}
+
+						fout.writeInt(indexId << 16 | archiveId);
+					}
+				}
+			}
+
+			fout.writeInt(-1);
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
