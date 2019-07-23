@@ -1564,7 +1564,10 @@ public final class SpriteID
 	public static final int MOBILE_FUNCTION_MODE_DISABLED = 1624;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_1 = 1625;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_2 = 1626;
-	/* Unmapped: 1627~1707 */
+	/* Unmapped: 1627~1701 */
+	public static final int BUTTON_FRIENDS = 1702;
+	public static final int BUTTON_IGNORES = 1703;
+	/* Unmapped: 1704~1707 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS_UNUSED = 1708;
 	/* Unmapped: 1709, 1710 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS = 1711;

@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +62,11 @@ import net.runelite.client.util.StackFormatter;
 class XpInfoBox extends JPanel
 {
 	private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
+
+	static
+	{
+		TWO_DECIMAL_FORMAT.setRoundingMode(RoundingMode.DOWN);
+	}
 
 	// Templates
 	private static final String HTML_TOOL_TIP_TEMPLATE =

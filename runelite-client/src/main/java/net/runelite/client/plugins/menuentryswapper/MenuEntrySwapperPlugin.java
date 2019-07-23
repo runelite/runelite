@@ -653,12 +653,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 		ItemDefinition itemComposition = client.getItemDefinition(itemId);
 		String itemName = itemComposition.getName();
 		String option = "Use";
-		int shiftClickActionindex = itemComposition.getShiftClickActionIndex();
+		int shiftClickActionIndex = itemComposition.getShiftClickActionIndex();
 		String[] inventoryActions = itemComposition.getInventoryActions();
 
-		if (shiftClickActionindex >= 0 && shiftClickActionindex < inventoryActions.length)
+		if (shiftClickActionIndex >= 0 && shiftClickActionIndex < inventoryActions.length)
 		{
-			option = inventoryActions[shiftClickActionindex];
+			option = inventoryActions[shiftClickActionIndex];
 		}
 
 		MenuEntry[] entries = event.getMenuEntries();
