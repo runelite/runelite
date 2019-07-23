@@ -1,10 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ll")
-public enum class323 implements Enumerated {
+@Implements("FillMode")
+public enum FillMode implements Enumerated {
 	@ObfuscatedName("q")
 	@ObfuscatedSignature(
 		signature = "Lll;"
@@ -15,12 +17,14 @@ public enum class323 implements Enumerated {
 	@ObfuscatedSignature(
 		signature = "Lll;"
 	)
-	field3887(1, 1),
+	@Export("GRADIENT")
+	GRADIENT(1, 1),
 	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		signature = "Lll;"
 	)
-	field3885(2, 2);
+	@Export("GRADIENTALPHA")
+	GRADIENTALPHA(2, 2);
 
 	@ObfuscatedName("ex")
 	@ObfuscatedGetter(
@@ -31,16 +35,18 @@ public enum class323 implements Enumerated {
 	@ObfuscatedGetter(
 		intValue = 215627811
 	)
-	public final int field3886;
+	@Export("value")
+	public final int value;
 	@ObfuscatedName("k")
 	@ObfuscatedGetter(
 		intValue = 198667019
 	)
-	final int field3889;
+	@Export("id")
+	final int id;
 
-	class323(int var3, int var4) {
-		this.field3886 = var3;
-		this.field3889 = var4;
+	FillMode(int var3, int var4) {
+		this.value = var3;
+		this.id = var4;
 	}
 
 	@ObfuscatedName("e")
@@ -50,6 +56,6 @@ public enum class323 implements Enumerated {
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
-		return this.field3889;
+		return this.id;
 	}
 }

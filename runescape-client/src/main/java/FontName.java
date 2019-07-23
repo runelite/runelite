@@ -512,7 +512,7 @@ public class FontName {
 									}
 
 									if (var10.fill) {
-										switch(var10.fillMode.field3886) {
+										switch(var10.fillMode.value) {
 										case 1:
 											Rasterizer2D.Rasterizer2D_fillRectangleGradient(var12, var13, var10.width, var10.height, var10.color, var10.color2);
 											break;
