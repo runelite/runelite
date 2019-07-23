@@ -709,7 +709,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	private void onExperienceChanged(ExperienceChanged event)
+	void onExperienceChanged(ExperienceChanged event)
 	{
 		if (event.getSkill() != SLAYER)
 		{
@@ -725,23 +725,34 @@ public class SlayerPlugin extends Plugin
 
 		if (cachedXp != 0)
 		{
-			// this is not the initial xp sent on login so these are new xp gains
-			int gains = slayerExp - cachedXp;
+			final int taskKillExp = Task.getTask(taskName).getExpectedKillExp();
 
-			// potential npcs to give xp drop are current highlighted npcs and the lingering presences
-			List<NPCPresence> potentialNPCs = new ArrayList<>(lingeringPresences);
-			for (NPC npc : highlightedTargets)
-			{
-				NPCPresence currentPresence = NPCPresence.buildPresence(npc);
-				potentialNPCs.add(currentPresence);
-			}
-
-			int killCount = estimateKillCount(potentialNPCs, gains);
-			for (int i = 0; i < killCount; i++)
+			// Only count exp gain as a kill if the task either has no expected exp for a kill, or if the exp gain is equal
+			// to the expected exp gain for the task.
+			if (taskKillExp == 0 || taskKillExp == slayerExp - cachedXp)
 			{
 				killedOne();
-				int delta = slayerExp - cachedXp;
-				currentTask.setElapsedXp(currentTask.getElapsedXp() + delta);
+			}
+			else
+			{
+				// this is not the initial xp sent on login so these are new xp gains
+				int gains = slayerExp - cachedXp;
+
+				// potential npcs to give xp drop are current highlighted npcs and the lingering presences
+				List<NPCPresence> potentialNPCs = new ArrayList<>(lingeringPresences);
+				for (NPC npc : highlightedTargets)
+				{
+					NPCPresence currentPresence = NPCPresence.buildPresence(npc);
+					potentialNPCs.add(currentPresence);
+				}
+
+				int killCount = estimateKillCount(potentialNPCs, gains);
+				for (int i = 0; i < killCount; i++)
+				{
+					killedOne();
+					int delta = slayerExp - cachedXp;
+					currentTask.setElapsedXp(currentTask.getElapsedXp() + delta);
+				}
 			}
 		}
 		cachedXp = slayerExp;
@@ -815,7 +826,10 @@ public class SlayerPlugin extends Plugin
 
 		config.amount(currentTask.getAmount()); // save changed value
 		currentTask.setPaused(false); // no longer paused since xp is gained
-		panel.updateCurrentTask(true, currentTask.isPaused(), currentTask, false);
+		if (panel != null)
+		{
+			panel.updateCurrentTask(true, currentTask.isPaused(), currentTask, false);
+		}
 
 		if (!this.showInfobox)
 		{
@@ -978,7 +992,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	private void setTask(String name, int amt, int initAmt, boolean isNewAssignment, int lastCertainAmt)
+	void setTask(String name, int amt, int initAmt, boolean isNewAssignment, int lastCertainAmt)
 	{
 		setTask(name, amt, initAmt, isNewAssignment, null, lastCertainAmt);
 	}
