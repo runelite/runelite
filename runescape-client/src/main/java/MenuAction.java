@@ -49,7 +49,7 @@ public class MenuAction {
 		signature = "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;Lgu;B)I",
 		garbageValue = "-1"
 	)
-	public static int method1993(CharSequence var0, CharSequence var1, class190 var2) {
+	public static int method1993(CharSequence var0, CharSequence var1, Language var2) {
 		int var3 = var0.length();
 		int var4 = var1.length();
 		int var5 = 0;
@@ -130,7 +130,7 @@ public class MenuAction {
 		int var17;
 		char var20;
 		for (var17 = 0; var17 < var16; ++var17) {
-			if (var2 == class190.field2347) {
+			if (var2 == Language.Language_FR) {
 				var5 = var3 - 1 - var17;
 				var6 = var4 - 1 - var17;
 			} else {

@@ -1585,9 +1585,9 @@ public final class Client extends GameShell implements Usernamed {
 			class189.ByteArrayPool_arrays = null;
 		}
 
-		class190.port1 = gameBuild == 0 ? 43594 : worldId + 40000;
+		Language.port1 = gameBuild == 0 ? 43594 : worldId + 40000;
 		Skeleton.port2 = gameBuild == 0 ? 443 : worldId + 50000;
-		Varcs.port3 = class190.port1;
+		Varcs.port3 = Language.port1;
 		ModelData0.field1870 = class215.field2540;
 		class247.field3291 = class215.field2541;
 		WorldMapCacheName.field309 = class215.field2542;
@@ -1880,8 +1880,8 @@ public final class Client extends GameShell implements Usernamed {
 			class80.pcmPlayer0.shutdown();
 		}
 
-		if (class190.pcmPlayer1 != null) {
-			class190.pcmPlayer1.shutdown();
+		if (Language.pcmPlayer1 != null) {
+			Language.pcmPlayer1.shutdown();
 		}
 
 		if (NetCache.NetCache_socket != null) {
@@ -1951,14 +1951,14 @@ public final class Client extends GameShell implements Usernamed {
 							break;
 						case 6:
 							int var6 = Integer.parseInt(var4);
-							class190 var11;
-							if (var6 >= 0 && var6 < class190.field2355.length) {
-								var11 = class190.field2355[var6];
+							Language var11;
+							if (var6 >= 0 && var6 < Language.Language_valuesOrdered.length) {
+								var11 = Language.Language_valuesOrdered[var6];
 							} else {
 								var11 = null;
 							}
 
-							ScriptFrame.field528 = var11;
+							ScriptFrame.clientLanguage = var11;
 							break;
 						case 7:
 							PacketBufferNode.field2337 = ServerBuild.valueOf(Integer.parseInt(var4));
@@ -2125,10 +2125,10 @@ public final class Client extends GameShell implements Usernamed {
 		class191.js5SocketTask = null;
 		HealthBarUpdate.js5Socket = null;
 		js5ConnectState = 0;
-		if (class190.port1 == Varcs.port3) {
+		if (Language.port1 == Varcs.port3) {
 			Varcs.port3 = Skeleton.port2;
 		} else {
-			Varcs.port3 = class190.port1;
+			Varcs.port3 = Language.port1;
 		}
 
 		++js5Errors;
@@ -2232,8 +2232,8 @@ public final class Client extends GameShell implements Usernamed {
 					class80.pcmPlayer0.method2407();
 				}
 
-				if (class190.pcmPlayer1 != null) {
-					class190.pcmPlayer1.method2407();
+				if (Language.pcmPlayer1 != null) {
+					Language.pcmPlayer1.method2407();
 				}
 
 				var14 = true;
@@ -2247,8 +2247,8 @@ public final class Client extends GameShell implements Usernamed {
 						class80.pcmPlayer0.method2407();
 					}
 
-					if (class190.pcmPlayer1 != null) {
-						class190.pcmPlayer1.method2407();
+					if (Language.pcmPlayer1 != null) {
+						Language.pcmPlayer1.method2407();
 					}
 
 					if (var15 != 0) {
@@ -2562,10 +2562,10 @@ public final class Client extends GameShell implements Usernamed {
 						++field687;
 						if (field687 > 2000) {
 							if (field688 < 1) {
-								if (class190.port1 == Varcs.port3) {
+								if (Language.port1 == Varcs.port3) {
 									Varcs.port3 = Skeleton.port2;
 								} else {
-									Varcs.port3 = class190.port1;
+									Varcs.port3 = Language.port1;
 								}
 
 								++field688;
@@ -2635,10 +2635,10 @@ public final class Client extends GameShell implements Usernamed {
 			}
 		} catch (IOException var22) {
 			if (field688 < 1) {
-				if (Varcs.port3 == class190.port1) {
+				if (Varcs.port3 == Language.port1) {
 					Varcs.port3 = Skeleton.port2;
 				} else {
-					Varcs.port3 = class190.port1;
+					Varcs.port3 = Language.port1;
 				}
 
 				++field688;
@@ -3203,7 +3203,7 @@ public final class Client extends GameShell implements Usernamed {
 															if (isCameraLocked) {
 																var4 = DevicePcmPlayerProvider.field412 * 16384 + 64;
 																var5 = class210.field2516 * 16384 + 64;
-																var6 = ScriptEvent.getTileHeight(var4, var5, class42.plane) - class190.field2345;
+																var6 = ScriptEvent.getTileHeight(var4, var5, class42.plane) - Language.field2345;
 																if (PacketBuffer.cameraX < var4) {
 																	PacketBuffer.cameraX = (var4 - PacketBuffer.cameraX) * class96.field1327 / 1000 + PacketBuffer.cameraX + class83.field1166;
 																	if (PacketBuffer.cameraX > var4) {
@@ -4202,13 +4202,13 @@ public final class Client extends GameShell implements Usernamed {
 				isCameraLocked = true;
 				DevicePcmPlayerProvider.field412 = var3.readUnsignedByte() * 128;
 				class210.field2516 = var3.readUnsignedByte() * 128;
-				class190.field2345 = var3.readUnsignedShort();
+				Language.field2345 = var3.readUnsignedShort();
 				class83.field1166 = var3.readUnsignedByte();
 				class96.field1327 = var3.readUnsignedByte();
 				if (class96.field1327 >= 100) {
 					PacketBuffer.cameraX = DevicePcmPlayerProvider.field412 * 16384 + 64;
 					class1.cameraZ = class210.field2516 * 16384 + 64;
-					class43.cameraY = ScriptEvent.getTileHeight(PacketBuffer.cameraX, class1.cameraZ, class42.plane) - class190.field2345;
+					class43.cameraY = ScriptEvent.getTileHeight(PacketBuffer.cameraX, class1.cameraZ, class42.plane) - Language.field2345;
 				}
 
 				var1.serverPacket = null;

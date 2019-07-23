@@ -26,7 +26,8 @@ public class ScriptFrame {
 	@ObfuscatedSignature(
 		signature = "Lgu;"
 	)
-	static class190 field528;
+	@Export("clientLanguage")
+	static Language clientLanguage;
 	@ObfuscatedName("q")
 	@ObfuscatedSignature(
 		signature = "Lcx;"

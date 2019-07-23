@@ -315,9 +315,9 @@ public class Timer {
 			class80.pcmPlayer0 = ArchiveDiskActionHandler.method4256(GameShell.taskHandler, 0, 22050);
 			class80.pcmPlayer0.setStream(var33);
 			ArchiveLoader.setAudioArchives(GrandExchangeOfferOwnWorldComparator.archive15, Tile.archive14, class13.archive4, var33);
-			class190.pcmPlayer1 = ArchiveDiskActionHandler.method4256(GameShell.taskHandler, 1, 2048);
+			Language.pcmPlayer1 = ArchiveDiskActionHandler.method4256(GameShell.taskHandler, 1, 2048);
 			SecureRandomCallable.pcmStreamMixer = new PcmStreamMixer();
-			class190.pcmPlayer1.setStream(SecureRandomCallable.pcmStreamMixer);
+			Language.pcmPlayer1.setStream(SecureRandomCallable.pcmStreamMixer);
 			AttackOption.decimator = new Decimator(22050, CollisionMap.PcmPlayer_sampleRate);
 			Login.Login_loadingText = "Prepared sound engine";
 			Login.Login_loadingPercent = 35;

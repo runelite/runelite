@@ -715,14 +715,14 @@ public class WorldMapArea {
 		signature = "(CLgu;I)I",
 		garbageValue = "-2081105774"
 	)
-	static int method387(char var0, class190 var1) {
+	static int method387(char var0, Language var1) {
 		int var2 = var0 << 4;
 		if (Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
 			var0 = Character.toLowerCase(var0);
 			var2 = (var0 << 4) + 1;
 		}
 
-		if (var0 == 241 && var1 == class190.field2350) {
+		if (var0 == 241 && var1 == Language.Language_ES) {
 			var2 = 1762;
 		}
 

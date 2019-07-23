@@ -1,11 +1,13 @@
 import java.util.Locale;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gu")
-public class class190 implements Enumerated {
+@Implements("Language")
+public class Language implements Enumerated {
 	@ObfuscatedName("qk")
 	@ObfuscatedSignature(
 		signature = "Ldn;"
@@ -21,42 +23,50 @@ public class class190 implements Enumerated {
 	@ObfuscatedSignature(
 		signature = "Lgu;"
 	)
-	public static final class190 field2348;
+	@Export("Language_EN")
+	public static final Language Language_EN;
 	@ObfuscatedName("w")
 	@ObfuscatedSignature(
 		signature = "Lgu;"
 	)
-	static final class190 field2351;
+	@Export("Language_DE")
+	static final Language Language_DE;
 	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		signature = "Lgu;"
 	)
-	public static final class190 field2347;
+	@Export("Language_FR")
+	public static final Language Language_FR;
 	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		signature = "Lgu;"
 	)
-	static final class190 field2352;
+	@Export("Language_PT")
+	static final Language Language_PT;
 	@ObfuscatedName("k")
 	@ObfuscatedSignature(
 		signature = "Lgu;"
 	)
-	static final class190 field2349;
+	@Export("Language_NL")
+	static final Language Language_NL;
 	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		signature = "Lgu;"
 	)
-	public static final class190 field2350;
+	@Export("Language_ES")
+	public static final Language Language_ES;
 	@ObfuscatedName("b")
 	@ObfuscatedSignature(
 		signature = "Lgu;"
 	)
-	static final class190 field2360;
+	@Export("Language_ES_MX")
+	static final Language Language_ES_MX;
 	@ObfuscatedName("m")
 	@ObfuscatedSignature(
 		signature = "[Lgu;"
 	)
-	public static final class190[] field2355;
+	@Export("Language_valuesOrdered")
+	public static final Language[] Language_valuesOrdered;
 	@ObfuscatedName("eg")
 	@ObfuscatedGetter(
 		intValue = -1179519055
@@ -66,32 +76,34 @@ public class class190 implements Enumerated {
 	@ObfuscatedName("i")
 	final String field2346;
 	@ObfuscatedName("c")
-	final String field2353;
+	@Export("language")
+	final String language;
 	@ObfuscatedName("f")
 	@ObfuscatedGetter(
 		intValue = 1003386863
 	)
-	final int field2354;
+	@Export("id")
+	final int id;
 
 	static {
-		field2348 = new class190("EN", "en", "English", class192.field2375, 0, "GB");
-		field2351 = new class190("DE", "de", "German", class192.field2375, 1, "DE");
-		field2347 = new class190("FR", "fr", "French", class192.field2375, 2, "FR");
-		field2352 = new class190("PT", "pt", "Portuguese", class192.field2375, 3, "BR");
-		field2349 = new class190("NL", "nl", "Dutch", class192.field2381, 4, "NL");
-		field2350 = new class190("ES", "es", "Spanish", class192.field2381, 5, "ES");
-		field2360 = new class190("ES_MX", "es-mx", "Spanish (Latin American)", class192.field2375, 6, "MX");
-		class190[] var0 = method3664();
-		field2355 = new class190[var0.length];
-		class190[] var1 = var0;
+		Language_EN = new Language("EN", "en", "English", class192.field2375, 0, "GB");
+		Language_DE = new Language("DE", "de", "German", class192.field2375, 1, "DE");
+		Language_FR = new Language("FR", "fr", "French", class192.field2375, 2, "FR");
+		Language_PT = new Language("PT", "pt", "Portuguese", class192.field2375, 3, "BR");
+		Language_NL = new Language("NL", "nl", "Dutch", class192.field2381, 4, "NL");
+		Language_ES = new Language("ES", "es", "Spanish", class192.field2381, 5, "ES");
+		Language_ES_MX = new Language("ES_MX", "es-mx", "Spanish (Latin American)", class192.field2375, 6, "MX");
+		Language[] var0 = Language_values();
+		Language_valuesOrdered = new Language[var0.length];
+		Language[] var1 = var0;
 
 		for (int var2 = 0; var2 < var1.length; ++var2) {
-			class190 var3 = var1[var2];
-			if (field2355[var3.field2354] != null) {
+			Language var3 = var1[var2];
+			if (Language_valuesOrdered[var3.id] != null) {
 				throw new IllegalStateException();
 			}
 
-			field2355[var3.field2354] = var3;
+			Language_valuesOrdered[var3.id] = var3;
 		}
 
 	}
@@ -99,14 +111,14 @@ public class class190 implements Enumerated {
 	@ObfuscatedSignature(
 		signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lgd;ILjava/lang/String;)V"
 	)
-	class190(String var1, String var2, String var3, class192 var4, int var5, String var6) {
+	Language(String var1, String language, String var3, class192 var4, int var5, String country) {
 		this.field2346 = var1;
-		this.field2353 = var2;
-		this.field2354 = var5;
-		if (var6 != null) {
-			new Locale(var2.substring(0, 2), var6);
+		this.language = language;
+		this.id = var5;
+		if (country != null) {
+			new Locale(language.substring(0, 2), country);
 		} else {
-			new Locale(var2.substring(0, 2));
+			new Locale(language.substring(0, 2));
 		}
 
 	}
@@ -116,8 +128,9 @@ public class class190 implements Enumerated {
 		signature = "(I)Ljava/lang/String;",
 		garbageValue = "1097353533"
 	)
-	String method3656() {
-		return this.field2353;
+	@Export("getLanguage")
+	String getLanguage() {
+		return this.language;
 	}
 
 	@ObfuscatedName("e")
@@ -127,11 +140,11 @@ public class class190 implements Enumerated {
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
-		return this.field2354;
+		return this.id;
 	}
 
 	public String toString() {
-		return this.method3656().toLowerCase(Locale.ENGLISH);
+		return this.getLanguage().toLowerCase(Locale.ENGLISH);
 	}
 
 	@ObfuscatedName("q")
@@ -139,8 +152,9 @@ public class class190 implements Enumerated {
 		signature = "(B)[Lgu;",
 		garbageValue = "99"
 	)
-	static class190[] method3664() {
-		return new class190[]{field2351, field2349, field2347, field2350, field2348, field2360, field2352};
+	@Export("Language_values")
+	static Language[] Language_values() {
+		return new Language[]{Language_DE, Language_NL, Language_FR, Language_ES, Language_EN, Language_ES_MX, Language_PT};
 	}
 
 	@ObfuscatedName("i")
@@ -199,6 +213,6 @@ public class class190 implements Enumerated {
 		}
 
 		String var4 = "runescape.com";
-		return var2 + var0 + "." + var4 + "/l=" + ScriptFrame.field528 + "/a=" + InvDefinition.field3199 + var3 + "/";
+		return var2 + var0 + "." + var4 + "/l=" + ScriptFrame.clientLanguage + "/a=" + InvDefinition.field3199 + var3 + "/";
 	}
 }

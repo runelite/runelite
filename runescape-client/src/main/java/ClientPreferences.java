@@ -356,7 +356,7 @@ public class ClientPreferences {
 			} else if (var14.startsWith("glow3:")) {
 				var17 = 11;
 				var3 = var3.substring("glow3:".length());
-			} else if (ScriptFrame.field528 != class190.field2348) {
+			} else if (ScriptFrame.clientLanguage != Language.Language_EN) {
 				if (var14.startsWith("yellow:")) {
 					var17 = 0;
 					var3 = var3.substring("yellow:".length());
@@ -413,7 +413,7 @@ public class ClientPreferences {
 			} else if (var14.startsWith("slide:")) {
 				var7 = 5;
 				var3 = var3.substring("slide:".length());
-			} else if (class190.field2348 != ScriptFrame.field528) {
+			} else if (Language.Language_EN != ScriptFrame.clientLanguage) {
 				if (var14.startsWith("wave:")) {
 					var7 = 1;
 					var3 = var3.substring("wave:".length());

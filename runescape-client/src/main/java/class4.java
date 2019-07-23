@@ -299,7 +299,7 @@ final class class4 implements class0 {
 			ViewportMouse.ViewportMouse_entityCount = 0;
 			ViewportMouse.ViewportMouse_false0 = false;
 		} else {
-			class190.method3665();
+			Language.method3665();
 		}
 
 		class186.playPcmPlayers();

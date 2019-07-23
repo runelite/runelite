@@ -207,7 +207,7 @@ public class VarbitDefinition extends DualNode {
 				}
 
 				long var11 = DirectByteArrayCopier.currentTimeMs();
-				if (class190.method3667() && -1L == Login.field1211) {
+				if (Language.method3667() && -1L == Login.field1211) {
 					Login.field1211 = var11;
 					if (Login.field1211 > Login.field1193) {
 						Login.field1193 = Login.field1211;
@@ -215,7 +215,7 @@ public class VarbitDefinition extends DualNode {
 				}
 
 				if (Client.gameState == 10 || Client.gameState == 11) {
-					if (class190.field2348 == ScriptFrame.field528) {
+					if (Language.Language_EN == ScriptFrame.clientLanguage) {
 						if (MouseHandler.MouseHandler_lastButton == 1 || !DevicePcmPlayerProvider.mouseCam && MouseHandler.MouseHandler_lastButton == 4) {
 							var3 = Login.xPadding + 5;
 							short var4 = 463;
@@ -258,7 +258,7 @@ public class VarbitDefinition extends DualNode {
 						var7 = ScriptEvent.loginBoxCenter - 80;
 						var8 = 291;
 						if (var3 == 1 && var15 >= var7 - 75 && var15 <= var7 + 75 && var16 >= var8 - 20 && var16 <= var8 + 20) {
-							GrandExchangeOfferWorldComparator.openURL(class190.method3666("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws", true, false);
+							GrandExchangeOfferWorldComparator.openURL(Language.method3666("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws", true, false);
 						}
 
 						var7 = ScriptEvent.loginBoxCenter + 80;
@@ -506,7 +506,7 @@ public class VarbitDefinition extends DualNode {
 									}
 
 									if (var3 == 1 && var15 >= Login.loginBoxX + 180 - 34 && var15 <= Login.loginBoxX + 34 + 180 && var16 >= 351 && var16 <= 363) {
-										GrandExchangeOfferWorldComparator.openURL(class190.method3666("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
+										GrandExchangeOfferWorldComparator.openURL(Language.method3666("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
 									}
 
 									var18 = Login.loginBoxX + 180 + 80;
@@ -576,7 +576,7 @@ public class VarbitDefinition extends DualNode {
 									if (WorldMapAreaData.field332 != null) {
 										var22 = WorldMapAreaData.field332.highX / 2;
 										if (var3 == 1 && var15 >= WorldMapAreaData.field332.lowX - var22 && var15 <= var22 + WorldMapAreaData.field332.lowX && var16 >= var8 - 15 && var16 < var8) {
-											GrandExchangeOfferWorldComparator.openURL(class190.method3666("secure", true) + "m=weblogin/g=oldscape/cant_log_in", true, false);
+											GrandExchangeOfferWorldComparator.openURL(Language.method3666("secure", true) + "m=weblogin/g=oldscape/cant_log_in", true, false);
 										}
 									}
 
@@ -626,7 +626,7 @@ public class VarbitDefinition extends DualNode {
 									var18 = Login.loginBoxX + 180 - 80;
 									var20 = 321;
 									if (var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
-										GrandExchangeOfferWorldComparator.openURL(class190.method3666("secure", true) + "m=dob/set_dob.ws", true, false);
+										GrandExchangeOfferWorldComparator.openURL(Language.method3666("secure", true) + "m=dob/set_dob.ws", true, false);
 										class268.setLoginResponseString("", "Page has opened in a new window.", "(Please check your popup blocker.)");
 										Login.loginIndex = 6;
 										return;

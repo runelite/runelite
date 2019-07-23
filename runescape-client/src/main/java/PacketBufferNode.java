@@ -80,7 +80,7 @@ public class PacketBufferNode extends Node {
 		signature = "(CLgu;I)C",
 		garbageValue = "1821592074"
 	)
-	static char method3623(char var0, class190 var1) {
+	static char method3623(char var0, Language var1) {
 		if (var0 >= 192 && var0 <= 255) {
 			if (var0 >= 192 && var0 <= 198) {
 				return 'A';
@@ -98,7 +98,7 @@ public class PacketBufferNode extends Node {
 				return 'I';
 			}
 
-			if (var0 == 209 && var1 != class190.field2350) {
+			if (var0 == 209 && var1 != Language.Language_ES) {
 				return 'N';
 			}
 
@@ -134,7 +134,7 @@ public class PacketBufferNode extends Node {
 				return 'i';
 			}
 
-			if (var0 == 241 && var1 != class190.field2350) {
+			if (var0 == 241 && var1 != Language.Language_ES) {
 				return 'n';
 			}
 

@@ -36,8 +36,8 @@ public class class186 {
 	)
 	@Export("playPcmPlayers")
 	static final void playPcmPlayers() {
-		if (class190.pcmPlayer1 != null) {
-			class190.pcmPlayer1.run();
+		if (Language.pcmPlayer1 != null) {
+			Language.pcmPlayer1.run();
 		}
 
 		if (class80.pcmPlayer0 != null) {

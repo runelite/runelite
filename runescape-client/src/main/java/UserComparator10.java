@@ -56,7 +56,7 @@ public class UserComparator10 extends AbstractUserComparator {
 		} else {
 			long var1;
 			try {
-				URL var3 = new URL(class190.method3666("services", false) + "m=accountappeal/login.ws");
+				URL var3 = new URL(Language.method3666("services", false) + "m=accountappeal/login.ws");
 				URLConnection var4 = var3.openConnection();
 				var4.setRequestProperty("connection", "close");
 				var4.setDoInput(true);
@@ -171,7 +171,7 @@ public class UserComparator10 extends AbstractUserComparator {
 
 				byte var30;
 				try {
-					URL var17 = new URL(class190.method3666("services", false) + "m=accountappeal/login.ws");
+					URL var17 = new URL(Language.method3666("services", false) + "m=accountappeal/login.ws");
 					URLConnection var18 = var17.openConnection();
 					var18.setDoInput(true);
 					var18.setDoOutput(true);
