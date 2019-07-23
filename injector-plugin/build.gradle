@@ -1,0 +1,13 @@
+group = 'net.runelite.rs'
+description = 'Injector'
+dependencies {
+  compile project(':deobfuscator')
+  compile project(':mixins')
+  compile project(':runelite-api')
+  compile project(':runescape-api')
+    compile group: 'org.apache.maven', name: 'maven-plugin-api', version:'3.6.1'
+  testCompile project(':deobfuscator')
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+    testCompile group: 'org.mockito', name: 'mockito-all', version:'1.10.19'
+    compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version:'3.6.0'
+}

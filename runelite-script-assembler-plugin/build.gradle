@@ -1,0 +1,8 @@
+
+description = 'Script Assembler Plugin'
+dependencies {
+  compile project(':cache')
+  compile project(':runelite-api')
+    compile group: 'org.apache.maven', name: 'maven-plugin-api', version:'3.6.1'
+    compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version:'3.6.0'
+}

@@ -1,0 +1,9 @@
+
+description = 'Cache Client'
+dependencies {
+  compile project(':cache')
+  compile project(':protocol')
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+    testCompile group: 'org.slf4j', name: 'slf4j-simple', version:'1.7.26'
+  testCompile project(':cache')
+}

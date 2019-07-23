@@ -1,0 +1,28 @@
+
+apply plugin: 'war'
+
+description = 'Web Service'
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'1.5.6.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version:'1.5.6.RELEASE'
+    compile group: 'org.springframework', name: 'spring-jdbc', version:'4.3.10.RELEASE'
+    compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version:'1.2.0.Final'
+  compile project(':http-api')
+  compile project(':cache')
+    compile group: 'org.sql2o', name: 'sql2o', version:'1.6.0'
+    compile group: 'com.google.guava', name: 'guava', version:'28.0-jre'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.25'
+    compile group: 'com.github.scribejava', name: 'scribejava-apis', version:'6.6.3'
+    compile group: 'io.minio', name: 'minio', version:'3.0.6'
+    compile(group: 'redis.clients', name: 'jedis', version:'3.0.1') {
+exclude(module: 'commons-pool2')
+    }
+    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'1.5.6.RELEASE') {
+exclude(module: 'commons-logging')
+    }
+    testCompile group: 'com.squareup.okhttp3', name: 'mockwebserver', version:'3.14.0'
+    testCompile group: 'com.h2database', name: 'h2', version:'1.4.196'
+    providedCompile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version:'1.5.6.RELEASE'
+    providedCompile group: 'org.projectlombok', name: 'lombok', version:'1.18.8'
+    providedCompile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version:'2.4.2'
+}

@@ -1,0 +1,6 @@
+
+description = 'Injected Client'
+dependencies {
+  compile project(':rs-client')
+    compile group: 'net.runelite.rs', name: 'vanilla', version:'181'
+}
