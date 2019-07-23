@@ -32,6 +32,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.client.util.Text;
 
 @AllArgsConstructor
 @Getter
@@ -93,11 +94,12 @@ public enum HotColdTemperature
 			return null;
 		}
 
+		final String messageStart = Text.fromCSV(message).get(0);
 		final List<HotColdTemperature> possibleTemperatures = new ArrayList<>();
 
 		for (final HotColdTemperature temperature : temperatureSet)
 		{
-			if (message.contains(temperature.getText()))
+			if (messageStart.contains(temperature.getText()))
 			{
 				possibleTemperatures.add(temperature);
 			}

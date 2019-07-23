@@ -73,5 +73,7 @@ public class HotColdTemperatureTest
 		assertEquals(HotColdTemperature.ICE_COLD, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES, "The device is ice cold."));
 		assertEquals(HotColdTemperature.VERY_COLD, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES, "The device is very cold."));
 		assertEquals(HotColdTemperature.VERY_HOT, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES, "The device is very hot."));
+		assertEquals(HotColdTemperature.COLD, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.BEGINNER_HOT_COLD_TEMPERATURES, "The device is cold, and warmer than last time."));
+		assertEquals(HotColdTemperature.WARM, HotColdTemperature.getFromTemperatureSet(HotColdTemperature.BEGINNER_HOT_COLD_TEMPERATURES, "The device is warm, but colder than last time."));
 	}
 }

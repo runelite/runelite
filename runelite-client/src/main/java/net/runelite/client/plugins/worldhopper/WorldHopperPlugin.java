@@ -327,6 +327,11 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
+		if (!config.menuOption())
+		{
+			return;
+		}
+
 		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 		String option = event.getOption();
 
