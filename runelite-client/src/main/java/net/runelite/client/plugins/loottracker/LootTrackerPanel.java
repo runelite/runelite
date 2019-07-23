@@ -38,6 +38,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -84,6 +85,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel overallKillsLabel = new JLabel();
 	private final JLabel overallGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
+	private final JButton collapseAllBtn = new JButton("Collapse All");
 
 	// Details and navigation
 	private final JPanel actionsContainer = new JPanel();
@@ -289,6 +291,25 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
+		collapseAllBtn.addActionListener(e ->
+		{
+			boolean isAllCollapsed = isAllCollapsed();
+			for (LootTrackerBox box : boxes)
+			{
+				if (isAllCollapsed)
+				{
+					box.collapse(false);
+				}
+				else if (!box.isCollapsed())
+				{
+					box.collapse(true);
+				}
+			}
+			updateCollapseText();
+		});
+		collapseAllBtn.setFocusPainted(false);
+		overallPanel.add(collapseAllBtn, BorderLayout.SOUTH);
+
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
@@ -323,6 +344,25 @@ class LootTrackerPanel extends PluginPanel
 		// Add error pane
 		errorPanel.setContent("Loot tracker", "You have not received any loot yet.");
 		add(errorPanel);
+	}
+
+	void updateCollapseText()
+	{
+		if (isAllCollapsed())
+		{
+			collapseAllBtn.setText("Un-Collapse All");
+		}
+		else
+		{
+			collapseAllBtn.setText("Collapse All");
+		}
+	}
+
+	private boolean isAllCollapsed()
+	{
+		return boxes.stream()
+			.filter(i -> i.isCollapsed())
+			.count() == boxes.size();
 	}
 
 	void loadHeaderIcon(BufferedImage img)
@@ -464,6 +504,20 @@ class LootTrackerPanel extends PluginPanel
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		box.setComponentPopupMenu(popupMenu);
 
+		// Create collapse event
+		box.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					box.collapse(!box.isCollapsed());
+					updateCollapseText();
+				}
+			}
+		});
+
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
@@ -541,6 +595,7 @@ class LootTrackerPanel extends PluginPanel
 
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
 		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
+		updateCollapseText();
 	}
 
 	private static String htmlLabel(String key, long value)
