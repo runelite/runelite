@@ -18,3 +18,4 @@ classes/artifacts/client_jar/client.jar
 */out/
 .gradle/
 runelite-client/src/main/resources/runelite/*
+.staging/
