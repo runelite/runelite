@@ -27,40 +27,37 @@ public class class65 extends RouteStrategy {
 	static File method1177(String var0) {
 		if (!class169.field2055) {
 			throw new RuntimeException("");
-		} else {
-			File var1 = (File)class169.field2052.get(var0);
-			if (var1 != null) {
-				return var1;
-			} else {
-				File var2 = new File(class169.field2050, var0);
-				RandomAccessFile var3 = null;
+		}
+		File var1 = (File)class169.field2052.get(var0);
+		if (var1 != null) {
+			return var1;
+		}
+		File var2 = new File(class169.field2050, var0);
+		RandomAccessFile var3 = null;
 
-				try {
-					File var4 = new File(var2.getParent());
-					if (!var4.exists()) {
-						throw new RuntimeException("");
-					} else {
-						var3 = new RandomAccessFile(var2, "rw");
-						int var5 = var3.read();
-						var3.seek(0L);
-						var3.write(var5);
-						var3.seek(0L);
-						var3.close();
-						class169.field2052.put(var0, var2);
-						return var2;
-					}
-				} catch (Exception var8) {
-					try {
-						if (var3 != null) {
-							var3.close();
-							var3 = null;
-						}
-					} catch (Exception var7) {
-					}
-
-					throw new RuntimeException();
-				}
+		try {
+			File var4 = new File(var2.getParent());
+			if (!var4.exists()) {
+				throw new RuntimeException("");
 			}
+			var3 = new RandomAccessFile(var2, "rw");
+			int var5 = var3.read();
+			var3.seek(0L);
+			var3.write(var5);
+			var3.seek(0L);
+			var3.close();
+			class169.field2052.put(var0, var2);
+			return var2;
+		} catch (Exception var8) {
+			try {
+				if (var3 != null) {
+					var3.close();
+					var3 = null;
+				}
+			} catch (Exception var7) {
+			}
+
+			throw new RuntimeException();
 		}
 	}
 
@@ -69,29 +66,28 @@ public class class65 extends RouteStrategy {
 		signature = "(Lhp;III)Lly;",
 		garbageValue = "300652258"
 	)
-	@Export("loadSprite")
-	public static Sprite loadSprite(AbstractArchive var0, int var1, int var2) {
-		if (!Friend.doesSpriteExist(var0, var1, var2)) {
+	@Export("SpriteBuffer_getSprite")
+	public static Sprite SpriteBuffer_getSprite(AbstractArchive var0, int var1, int var2) {
+		if (!Friend.SpriteBuffer_bufferFile(var0, var1, var2)) {
 			return null;
-		} else {
-			Sprite var4 = new Sprite();
-			var4.width = class326.SpriteBuffer_spriteWidth;
-			var4.height = class326.SpriteBuffer_spriteHeight;
-			var4.yOffset = Varps.SpriteBuffer_xOffsets[0];
-			var4.xOffset = class326.SpriteBuffer_yOffsets[0];
-			var4.subWidth = class326.SpriteBuffer_spriteWidths[0];
-			var4.subHeight = class216.SpriteBuffer_spriteHeights[0];
-			int var5 = var4.subHeight * var4.subWidth;
-			byte[] var6 = class326.SpriteBuffer_pixels[0];
-			var4.pixels = new int[var5];
-
-			for (int var7 = 0; var7 < var5; ++var7) {
-				var4.pixels[var7] = Frames.SpriteBuffer_spritePalette[var6[var7] & 255];
-			}
-
-			class16.method174();
-			return var4;
 		}
+		Sprite var4 = new Sprite();
+		var4.width = SpriteBuffer.SpriteBuffer_spriteWidth;
+		var4.height = SpriteBuffer.SpriteBuffer_spriteHeight;
+		var4.yOffset = Varps.SpriteBuffer_xOffsets[0];
+		var4.xOffset = SpriteBuffer.SpriteBuffer_yOffsets[0];
+		var4.subWidth = SpriteBuffer.SpriteBuffer_spriteWidths[0];
+		var4.subHeight = class216.SpriteBuffer_spriteHeights[0];
+		int var5 = var4.subHeight * var4.subWidth;
+		byte[] var6 = SpriteBuffer.SpriteBuffer_pixels[0];
+		var4.pixels = new int[var5];
+
+		for (int var7 = 0; var7 < var5; ++var7) {
+			var4.pixels[var7] = Frames.SpriteBuffer_spritePalette[var6[var7] & 255];
+		}
+
+		class16.SpriteBuffer_clear();
+		return var4;
 	}
 
 	@ObfuscatedName("aw")
@@ -124,16 +120,8 @@ public class class65 extends RouteStrategy {
 			}
 
 			return 1;
-		} else if (var0 != ScriptOpcodes.ENUM) {
-			if (var0 == ScriptOpcodes.ENUM_GETOUTPUTCOUNT) {
-				var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-				EnumDefinition var10 = BoundaryObject.getEnum(var3);
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var10.size();
-				return 1;
-			} else {
-				return 2;
-			}
-		} else {
+		}
+		if (var0 == ScriptOpcodes.ENUM) {
 			HealthBarUpdate.Interpreter_intStackSize -= 4;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
@@ -141,6 +129,7 @@ public class class65 extends RouteStrategy {
 			var6 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 3];
 			EnumDefinition var7 = BoundaryObject.getEnum(var9);
 			if (var3 == var7.inputType && var4 == var7.outputType) {
+
 				for (int var8 = 0; var8 < var7.outputCount; ++var8) {
 					if (var6 == var7.keys[var8]) {
 						if (var4 == 115) {
@@ -163,16 +152,22 @@ public class class65 extends RouteStrategy {
 				}
 
 				return 1;
-			} else {
-				if (var4 == 115) {
-					Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "null";
-				} else {
-					Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
-				}
-
-				return 1;
 			}
+			if (var4 == 115) {
+				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "null";
+			} else {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
+			}
+
+			return 1;
 		}
+		if (var0 == ScriptOpcodes.ENUM_GETOUTPUTCOUNT) {
+			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			EnumDefinition var10 = BoundaryObject.getEnum(var3);
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var10.size();
+			return 1;
+		}
+		return 2;
 	}
 
 	@ObfuscatedName("ee")

@@ -118,9 +118,8 @@ public class WorldMapLabel {
 	static String method417(int var0) {
 		if (var0 < 0) {
 			return "";
-		} else {
-			return Client.menuTargetNames[var0].length() > 0 ? Client.menuActions[var0] + " " + Client.menuTargetNames[var0] : Client.menuActions[var0];
 		}
+		return Client.menuTargetNames[var0].length() > 0 ? Client.menuActions[var0] + " " + Client.menuTargetNames[var0] : Client.menuActions[var0];
 	}
 
 	@ObfuscatedName("kz")

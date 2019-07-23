@@ -140,11 +140,10 @@ public final class ObjectSound extends Node {
 		Script var5 = class49.getWorldMapScript(var3, var0);
 		if (var5 != null) {
 			return var5;
-		} else {
-			int var4 = GraphicsDefaults.getWorldMapScriptIdCategory(var2, var0);
-			var5 = class49.getWorldMapScript(var4, var0);
-			return var5 != null ? var5 : null;
 		}
+		int var4 = GraphicsDefaults.getWorldMapScriptIdCategory(var2, var0);
+		var5 = class49.getWorldMapScript(var4, var0);
+		return var5 != null ? var5 : null;
 	}
 
 	@ObfuscatedName("ai")

@@ -89,13 +89,12 @@ public class HealthBarUpdate extends Node {
 	static boolean method1676(String var0) {
 		if (var0 == null) {
 			return false;
-		} else {
-			try {
-				new URL(var0);
-				return true;
-			} catch (MalformedURLException var2) {
-				return false;
-			}
+		}
+		try {
+			new URL(var0);
+			return true;
+		} catch (MalformedURLException var2) {
+			return false;
 		}
 	}
 
@@ -210,25 +209,24 @@ public class HealthBarUpdate extends Node {
 		int var3 = var1.readInt();
 		if (var3 < 0 || AbstractArchive.field3143 != 0 && var3 > AbstractArchive.field3143) {
 			throw new RuntimeException();
-		} else if (var2 == 0) {
+		}
+		if (var2 == 0) {
 			byte[] var4 = new byte[var3];
 			var1.readBytes(var4, 0, var3);
 			return var4;
-		} else {
-			int var6 = var1.readInt();
-			if (var6 < 0 || AbstractArchive.field3143 != 0 && var6 > AbstractArchive.field3143) {
-				throw new RuntimeException();
-			} else {
-				byte[] var5 = new byte[var6];
-				if (var2 == 1) {
-					BZip2Decompressor.BZip2Decompressor_decompress(var5, var6, var0, var3, 9);
-				} else {
-					AbstractArchive.gzipDecompressor.decompress(var1, var5);
-				}
-
-				return var5;
-			}
 		}
+		int var6 = var1.readInt();
+		if (var6 < 0 || AbstractArchive.field3143 != 0 && var6 > AbstractArchive.field3143) {
+			throw new RuntimeException();
+		}
+		byte[] var5 = new byte[var6];
+		if (var2 == 1) {
+			BZip2Decompressor.BZip2Decompressor_decompress(var5, var6, var0, var3, 9);
+		} else {
+			AbstractArchive.gzipDecompressor.decompress(var1, var5);
+		}
+
+		return var5;
 	}
 
 	@ObfuscatedName("fd")

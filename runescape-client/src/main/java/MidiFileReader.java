@@ -151,21 +151,20 @@ public class MidiFileReader {
 
 		if (var5 != 240 && var5 != 247) {
 			return this.method3840(var1, var5);
-		} else {
-			int var3 = this.buffer.readVarInt();
-			if (var5 == 247 && var3 > 0) {
-				int var4 = this.buffer.array[this.buffer.offset] & 255;
-				if (var4 >= 241 && var4 <= 243 || var4 == 246 || var4 == 248 || var4 >= 250 && var4 <= 252 || var4 == 254) {
-					++this.buffer.offset;
-					this.field2464[var1] = var4;
-					return this.method3840(var1, var4);
-				}
-			}
-
-			Buffer var10000 = this.buffer;
-			var10000.offset += var3;
-			return 0;
 		}
+		int var3 = this.buffer.readVarInt();
+		if (var5 == 247 && var3 > 0) {
+			int var4 = this.buffer.array[this.buffer.offset] & 255;
+			if (var4 >= 241 && var4 <= 243 || var4 == 246 || var4 == 248 || var4 >= 250 && var4 <= 252 || var4 == 254) {
+				++this.buffer.offset;
+				this.field2464[var1] = var4;
+				return this.method3840(var1, var4);
+			}
+		}
+
+		Buffer var10000 = this.buffer;
+		var10000.offset += var3;
+		return 0;
 	}
 
 	@ObfuscatedName("x")
@@ -179,7 +178,8 @@ public class MidiFileReader {
 				var10000 = this.buffer;
 				var10000.offset += var4;
 				return 1;
-			} else if (var7 == 81) {
+			}
+			if (var7 == 81) {
 				int var5 = this.buffer.readMedium();
 				var4 -= 3;
 				int var6 = this.trackLengths[var1];
@@ -188,24 +188,22 @@ public class MidiFileReader {
 				var10000 = this.buffer;
 				var10000.offset += var4;
 				return 2;
-			} else {
-				var10000 = this.buffer;
-				var10000.offset += var4;
-				return 3;
 			}
-		} else {
-			byte var3 = field2468[var2 - 128];
-			var4 = var2;
-			if (var3 >= 1) {
-				var4 = var2 | this.buffer.readUnsignedByte() << 8;
-			}
-
-			if (var3 >= 2) {
-				var4 |= this.buffer.readUnsignedByte() << 16;
-			}
-
-			return var4;
+			var10000 = this.buffer;
+			var10000.offset += var4;
+			return 3;
 		}
+		byte var3 = field2468[var2 - 128];
+		var4 = var2;
+		if (var3 >= 1) {
+			var4 = var2 | this.buffer.readUnsignedByte() << 8;
+		}
+
+		if (var3 >= 2) {
+			var4 |= this.buffer.readUnsignedByte() << 16;
+		}
+
+		return var4;
 	}
 
 	@ObfuscatedName("r")

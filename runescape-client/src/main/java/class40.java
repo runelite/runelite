@@ -79,9 +79,8 @@ public class class40 {
 	int method712(int var1) {
 		if (var1 != 9 && var1 != 10) {
 			return var1 == 11 ? 8 : var1;
-		} else {
-			return 1;
 		}
+		return 1;
 	}
 
 	@ObfuscatedName("p")

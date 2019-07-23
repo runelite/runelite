@@ -136,27 +136,26 @@ public class DynamicObject extends Entity {
 
 		if (var12 == null) {
 			return null;
-		} else {
-			int var2;
-			int var3;
-			if (this.orientation != 1 && this.orientation != 3) {
-				var2 = var12.sizeX;
-				var3 = var12.sizeY;
-			} else {
-				var2 = var12.sizeY;
-				var3 = var12.sizeX;
-			}
-
-			int var4 = (var2 >> 1) + this.x;
-			int var5 = (var2 + 1 >> 1) + this.x;
-			int var6 = (var3 >> 1) + this.y;
-			int var7 = (var3 + 1 >> 1) + this.y;
-			int[][] var8 = Tiles.Tiles_heights[this.plane];
-			int var9 = var8[var4][var6] + var8[var5][var6] + var8[var4][var7] + var8[var5][var7] >> 2;
-			int var10 = (this.x << 7) + (var2 << 6);
-			int var11 = (this.y << 7) + (var3 << 6);
-			return var12.getModelDynamic(this.type, this.orientation, var8, var10, var9, var11, this.sequenceDefinition, this.frame);
 		}
+		int var2;
+		int var3;
+		if (this.orientation != 1 && this.orientation != 3) {
+			var2 = var12.sizeX;
+			var3 = var12.sizeY;
+		} else {
+			var2 = var12.sizeY;
+			var3 = var12.sizeX;
+		}
+
+		int var4 = (var2 >> 1) + this.x;
+		int var5 = (var2 + 1 >> 1) + this.x;
+		int var6 = (var3 >> 1) + this.y;
+		int var7 = (var3 + 1 >> 1) + this.y;
+		int[][] var8 = Tiles.Tiles_heights[this.plane];
+		int var9 = var8[var4][var6] + var8[var5][var6] + var8[var4][var7] + var8[var5][var7] >> 2;
+		int var10 = (this.x << 7) + (var2 << 6);
+		int var11 = (this.y << 7) + (var3 << 6);
+		return var12.getModelDynamic(this.type, this.orientation, var8, var10, var9, var11, this.sequenceDefinition, this.frame);
 	}
 
 	@ObfuscatedName("w")
@@ -261,31 +260,35 @@ public class DynamicObject extends Entity {
 			}
 
 			return var4 - var5;
-		} else if (var2 == 2) {
+		}
+		if (var2 == 2) {
 			return var0.location - var1.location;
-		} else if (var2 == 3) {
+		}
+		if (var2 == 3) {
 			if (var0.activity.equals("-")) {
 				if (var1.activity.equals("-")) {
 					return 0;
-				} else {
-					return var3 ? -1 : 1;
 				}
-			} else if (var1.activity.equals("-")) {
-				return var3 ? 1 : -1;
-			} else {
-				return var0.activity.compareTo(var1.activity);
+				return var3 ? -1 : 1;
 			}
-		} else if (var2 == 4) {
-			return var0.method1698() ? (var1.method1698() ? 0 : 1) : (var1.method1698() ? -1 : 0);
-		} else if (var2 == 5) {
-			return var0.method1682() ? (var1.method1682() ? 0 : 1) : (var1.method1682() ? -1 : 0);
-		} else if (var2 == 6) {
-			return var0.isPvp() ? (var1.isPvp() ? 0 : 1) : (var1.isPvp() ? -1 : 0);
-		} else if (var2 == 7) {
-			return var0.isMembersOnly() ? (var1.isMembersOnly() ? 0 : 1) : (var1.isMembersOnly() ? -1 : 0);
-		} else {
-			return var0.id - var1.id;
+			if (var1.activity.equals("-")) {
+				return var3 ? 1 : -1;
+			}
+			return var0.activity.compareTo(var1.activity);
 		}
+		if (var2 == 4) {
+			return var0.method1698() ? (var1.method1698() ? 0 : 1) : (var1.method1698() ? -1 : 0);
+		}
+		if (var2 == 5) {
+			return var0.method1682() ? (var1.method1682() ? 0 : 1) : (var1.method1682() ? -1 : 0);
+		}
+		if (var2 == 6) {
+			return var0.isPvp() ? (var1.isPvp() ? 0 : 1) : (var1.isPvp() ? -1 : 0);
+		}
+		if (var2 == 7) {
+			return var0.isMembersOnly() ? (var1.isMembersOnly() ? 0 : 1) : (var1.isMembersOnly() ? -1 : 0);
+		}
+		return var0.id - var1.id;
 	}
 
 	@ObfuscatedName("b")

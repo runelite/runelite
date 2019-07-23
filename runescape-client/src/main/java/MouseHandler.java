@@ -161,9 +161,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 		int var2 = var1.getButton();
 		if (!var1.isAltDown() && var2 != 2) {
 			return !var1.isMetaDown() && var2 != 3 ? 1 : 2;
-		} else {
-			return 4;
 		}
+		return 4;
 	}
 
 	public final synchronized void mouseMoved(MouseEvent var1) {
@@ -258,9 +257,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 
 		if (var1 == 1) {
 			return var0 * var2;
-		} else {
-			return var2;
 		}
+		return var2;
 	}
 
 	@ObfuscatedName("e")
@@ -299,105 +297,101 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 		var0.exportIndex();
 		if (var1 != 0) {
 			throw new RuntimeException();
-		} else {
-			var0.importIndex();
+		}
+		var0.importIndex();
 
-			for (var2 = 0; var2 < Players.Players_count; ++var2) {
-				var3 = Players.Players_indices[var2];
-				if ((Players.field1252[var3] & 1) != 0) {
-					if (var1 > 0) {
-						--var1;
+		for (var2 = 0; var2 < Players.Players_count; ++var2) {
+			var3 = Players.Players_indices[var2];
+			if ((Players.field1252[var3] & 1) != 0) {
+				if (var1 > 0) {
+					--var1;
+					var10000 = Players.field1252;
+					var10000[var3] = (byte)(var10000[var3] | 2);
+				} else {
+					var4 = var0.readBits(1);
+					if (var4 == 0) {
+						var1 = World.method1686(var0);
 						var10000 = Players.field1252;
 						var10000[var3] = (byte)(var10000[var3] | 2);
 					} else {
-						var4 = var0.readBits(1);
-						if (var4 == 0) {
-							var1 = World.method1686(var0);
-							var10000 = Players.field1252;
-							var10000[var3] = (byte)(var10000[var3] | 2);
-						} else {
-							WorldMapIcon_0.method210(var0, var3);
-						}
-					}
-				}
-			}
-
-			var0.exportIndex();
-			if (var1 != 0) {
-				throw new RuntimeException();
-			} else {
-				var0.importIndex();
-
-				for (var2 = 0; var2 < Players.Players_emptyIdxCount; ++var2) {
-					var3 = Players.Players_emptyIndices[var2];
-					if ((Players.field1252[var3] & 1) != 0) {
-						if (var1 > 0) {
-							--var1;
-							var10000 = Players.field1252;
-							var10000[var3] = (byte)(var10000[var3] | 2);
-						} else {
-							var4 = var0.readBits(1);
-							if (var4 == 0) {
-								var1 = World.method1686(var0);
-								var10000 = Players.field1252;
-								var10000[var3] = (byte)(var10000[var3] | 2);
-							} else if (class226.updateExternalPlayer(var0, var3)) {
-								var10000 = Players.field1252;
-								var10000[var3] = (byte)(var10000[var3] | 2);
-							}
-						}
-					}
-				}
-
-				var0.exportIndex();
-				if (var1 != 0) {
-					throw new RuntimeException();
-				} else {
-					var0.importIndex();
-
-					for (var2 = 0; var2 < Players.Players_emptyIdxCount; ++var2) {
-						var3 = Players.Players_emptyIndices[var2];
-						if ((Players.field1252[var3] & 1) == 0) {
-							if (var1 > 0) {
-								--var1;
-								var10000 = Players.field1252;
-								var10000[var3] = (byte)(var10000[var3] | 2);
-							} else {
-								var4 = var0.readBits(1);
-								if (var4 == 0) {
-									var1 = World.method1686(var0);
-									var10000 = Players.field1252;
-									var10000[var3] = (byte)(var10000[var3] | 2);
-								} else if (class226.updateExternalPlayer(var0, var3)) {
-									var10000 = Players.field1252;
-									var10000[var3] = (byte)(var10000[var3] | 2);
-								}
-							}
-						}
-					}
-
-					var0.exportIndex();
-					if (var1 != 0) {
-						throw new RuntimeException();
-					} else {
-						Players.Players_count = 0;
-						Players.Players_emptyIdxCount = 0;
-
-						for (var2 = 1; var2 < 2048; ++var2) {
-							var10000 = Players.field1252;
-							var10000[var2] = (byte)(var10000[var2] >> 1);
-							Player var5 = Client.players[var2];
-							if (var5 != null) {
-								Players.Players_indices[++Players.Players_count - 1] = var2;
-							} else {
-								Players.Players_emptyIndices[++Players.Players_emptyIdxCount - 1] = var2;
-							}
-						}
-
+						WorldMapIcon_0.method210(var0, var3);
 					}
 				}
 			}
 		}
+
+		var0.exportIndex();
+		if (var1 != 0) {
+			throw new RuntimeException();
+		}
+		var0.importIndex();
+
+		for (var2 = 0; var2 < Players.Players_emptyIdxCount; ++var2) {
+			var3 = Players.Players_emptyIndices[var2];
+			if ((Players.field1252[var3] & 1) != 0) {
+				if (var1 > 0) {
+					--var1;
+					var10000 = Players.field1252;
+					var10000[var3] = (byte)(var10000[var3] | 2);
+				} else {
+					var4 = var0.readBits(1);
+					if (var4 == 0) {
+						var1 = World.method1686(var0);
+						var10000 = Players.field1252;
+						var10000[var3] = (byte)(var10000[var3] | 2);
+					} else if (class226.updateExternalPlayer(var0, var3)) {
+						var10000 = Players.field1252;
+						var10000[var3] = (byte)(var10000[var3] | 2);
+					}
+				}
+			}
+		}
+
+		var0.exportIndex();
+		if (var1 != 0) {
+			throw new RuntimeException();
+		}
+		var0.importIndex();
+
+		for (var2 = 0; var2 < Players.Players_emptyIdxCount; ++var2) {
+			var3 = Players.Players_emptyIndices[var2];
+			if ((Players.field1252[var3] & 1) == 0) {
+				if (var1 > 0) {
+					--var1;
+					var10000 = Players.field1252;
+					var10000[var3] = (byte)(var10000[var3] | 2);
+				} else {
+					var4 = var0.readBits(1);
+					if (var4 == 0) {
+						var1 = World.method1686(var0);
+						var10000 = Players.field1252;
+						var10000[var3] = (byte)(var10000[var3] | 2);
+					} else if (class226.updateExternalPlayer(var0, var3)) {
+						var10000 = Players.field1252;
+						var10000[var3] = (byte)(var10000[var3] | 2);
+					}
+				}
+			}
+		}
+
+		var0.exportIndex();
+		if (var1 != 0) {
+			throw new RuntimeException();
+		}
+		Players.Players_count = 0;
+		Players.Players_emptyIdxCount = 0;
+
+		for (var2 = 1; var2 < 2048; ++var2) {
+			var10000 = Players.field1252;
+			var10000[var2] = (byte)(var10000[var2] >> 1);
+			Player var5 = Client.players[var2];
+			if (var5 != null) {
+				Players.Players_indices[++Players.Players_count - 1] = var2;
+			} else {
+				Players.Players_emptyIndices[++Players.Players_emptyIdxCount - 1] = var2;
+			}
+		}
+
 	}
 
 	@ObfuscatedName("v")

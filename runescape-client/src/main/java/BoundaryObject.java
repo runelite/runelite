@@ -103,12 +103,11 @@ public final class BoundaryObject {
 
 		if (!var4) {
 			return null;
-		} else {
-			try {
-				return new Frames(var0, var1, var2, var3);
-			} catch (Exception var11) {
-				return null;
-			}
+		}
+		try {
+			return new Frames(var0, var1, var2, var3);
+		} catch (Exception var11) {
+			return null;
 		}
 	}
 
@@ -122,15 +121,14 @@ public final class BoundaryObject {
 		EnumDefinition var1 = (EnumDefinition)EnumDefinition.EnumDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
-		} else {
-			byte[] var2 = EnumDefinition.EnumDefinition_archive.takeFile(8, var0);
-			var1 = new EnumDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			EnumDefinition.EnumDefinition_cached.put(var1, (long)var0);
-			return var1;
 		}
+		byte[] var2 = EnumDefinition.EnumDefinition_archive.takeFile(8, var0);
+		var1 = new EnumDefinition();
+		if (var2 != null) {
+			var1.decode(new Buffer(var2));
+		}
+
+		EnumDefinition.EnumDefinition_cached.put(var1, (long)var0);
+		return var1;
 	}
 }

@@ -74,9 +74,8 @@ public class BufferedSink implements Runnable {
 			}
 
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@ObfuscatedName("w")
@@ -90,29 +89,27 @@ public class BufferedSink implements Runnable {
 			synchronized(this) {
 				if (this.exception != null) {
 					throw new IOException(this.exception.toString());
-				} else {
-					int var5;
-					if (this.position <= this.limit) {
-						var5 = this.capacity - this.limit + this.position - 1;
-					} else {
-						var5 = this.position - this.limit - 1;
-					}
-
-					if (var5 < var3) {
-						throw new IOException("");
-					} else {
-						if (var3 + this.limit <= this.capacity) {
-							System.arraycopy(var1, var2, this.buffer, this.limit, var3);
-						} else {
-							int var6 = this.capacity - this.limit;
-							System.arraycopy(var1, var2, this.buffer, this.limit, var6);
-							System.arraycopy(var1, var6 + var2, this.buffer, 0, var3 - var6);
-						}
-
-						this.limit = (var3 + this.limit) % this.capacity;
-						this.notifyAll();
-					}
 				}
+				int var5;
+				if (this.position <= this.limit) {
+					var5 = this.capacity - this.limit + this.position - 1;
+				} else {
+					var5 = this.position - this.limit - 1;
+				}
+
+				if (var5 < var3) {
+					throw new IOException("");
+				}
+				if (var3 + this.limit <= this.capacity) {
+					System.arraycopy(var1, var2, this.buffer, this.limit, var3);
+				} else {
+					int var6 = this.capacity - this.limit;
+					System.arraycopy(var1, var2, this.buffer, this.limit, var6);
+					System.arraycopy(var1, var6 + var2, this.buffer, 0, var3 - var6);
+				}
+
+				this.limit = (var3 + this.limit) % this.capacity;
+				this.notifyAll();
 			}
 		} else {
 			throw new IOException();

@@ -101,8 +101,8 @@ public final class GameObject {
 		signature = "(Lhp;Lhp;III)Lke;",
 		garbageValue = "-1252480817"
 	)
-	@Export("loadFont")
-	public static Font loadFont(AbstractArchive var0, AbstractArchive var1, int var2, int var3) {
-		return !Friend.doesSpriteExist(var0, var2, var3) ? null : WallDecoration.getWorldMapSprite(var1.takeFile(var2, var3));
+	@Export("SpriteBuffer_getFont")
+	public static Font SpriteBuffer_getFont(AbstractArchive var0, AbstractArchive var1, int var2, int var3) {
+		return !Friend.SpriteBuffer_bufferFile(var0, var2, var3) ? null : WallDecoration.SpriteBuffer_createFont(var1.takeFile(var2, var3));
 	}
 }

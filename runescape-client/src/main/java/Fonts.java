@@ -49,7 +49,7 @@ public class Fonts {
 			if (this.map.containsKey(var5)) {
 				var2.put(var5, this.map.get(var5));
 			} else {
-				Font var6 = class287.method5258(this.spritesArchive, this.fontsArchive, var5.name, "");
+				Font var6 = class287.SpriteBuffer_getFontByName(this.spritesArchive, this.fontsArchive, var5.name, "");
 				if (var6 != null) {
 					this.map.put(var5, var6);
 					var2.put(var5, var6);

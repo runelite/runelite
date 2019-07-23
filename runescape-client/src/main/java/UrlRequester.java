@@ -147,7 +147,8 @@ public class UrlRequester implements Runnable {
 			var3 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.itemId;
 			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETINVCOUNT) {
+		}
+		if (var0 == ScriptOpcodes.IF_GETINVCOUNT) {
 			var3 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
 			if (var3.itemId != -1) {
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.itemQuantity;
@@ -156,7 +157,8 @@ public class UrlRequester implements Runnable {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.IF_HASSUB) {
+		}
+		if (var0 == ScriptOpcodes.IF_HASSUB) {
 			int var5 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
 			InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var5);
 			if (var4 != null) {
@@ -166,11 +168,11 @@ public class UrlRequester implements Runnable {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETTOP) {
+		}
+		if (var0 == ScriptOpcodes.IF_GETTOP) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.rootInterface;
 			return 1;
-		} else {
-			return 2;
 		}
+		return 2;
 	}
 }

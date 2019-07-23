@@ -247,9 +247,8 @@ public abstract class AbstractWorldMapData {
 		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
 		if (var2 == null) {
 			return -1;
-		} else {
-			return var1 >= 0 && var1 < var2.ids.length ? var2.ids[var1] : -1;
 		}
+		return var1 >= 0 && var1 < var2.ids.length ? var2.ids[var1] : -1;
 	}
 
 	@ObfuscatedName("gj")

@@ -171,33 +171,39 @@ public class EnumDefinition extends DualNode {
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var4 + var3;
 			return 1;
-		} else if (var0 == ScriptOpcodes.SUB) {
+		}
+		if (var0 == ScriptOpcodes.SUB) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 - var4;
 			return 1;
-		} else if (var0 == ScriptOpcodes.MULTIPLY) {
+		}
+		if (var0 == ScriptOpcodes.MULTIPLY) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 * var4;
 			return 1;
-		} else if (var0 == ScriptOpcodes.DIV) {
+		}
+		if (var0 == ScriptOpcodes.DIV) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 / var4;
 			return 1;
-		} else if (var0 == ScriptOpcodes.RANDOM) {
+		}
+		if (var0 == ScriptOpcodes.RANDOM) {
 			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = (int)(Math.random() * (double)var3);
 			return 1;
-		} else if (var0 == ScriptOpcodes.RANDOMINC) {
+		}
+		if (var0 == ScriptOpcodes.RANDOMINC) {
 			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = (int)(Math.random() * (double)(var3 + 1));
 			return 1;
-		} else if (var0 == ScriptOpcodes.INTERPOLATE) {
+		}
+		if (var0 == ScriptOpcodes.INTERPOLATE) {
 			HealthBarUpdate.Interpreter_intStackSize -= 5;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
@@ -206,37 +212,43 @@ public class EnumDefinition extends DualNode {
 			int var7 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 4];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 + (var7 - var5) * (var4 - var3) / (var6 - var5);
 			return 1;
-		} else if (var0 == ScriptOpcodes.ADDPERCENT) {
+		}
+		if (var0 == ScriptOpcodes.ADDPERCENT) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 + var4 * var3 / 100;
 			return 1;
-		} else if (var0 == ScriptOpcodes.SETBIT) {
+		}
+		if (var0 == ScriptOpcodes.SETBIT) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 | 1 << var4;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CLEARBIT) {
+		}
+		if (var0 == ScriptOpcodes.CLEARBIT) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 & -1 - (1 << var4);
 			return 1;
-		} else if (var0 == ScriptOpcodes.TESTBIT) {
+		}
+		if (var0 == ScriptOpcodes.TESTBIT) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = (var3 & 1 << var4) != 0 ? 1 : 0;
 			return 1;
-		} else if (var0 == ScriptOpcodes.MOD) {
+		}
+		if (var0 == ScriptOpcodes.MOD) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 % var4;
 			return 1;
-		} else if (var0 == ScriptOpcodes.POW) {
+		}
+		if (var0 == ScriptOpcodes.POW) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
@@ -247,15 +259,16 @@ public class EnumDefinition extends DualNode {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.INVPOW) {
+		}
+		if (var0 == ScriptOpcodes.INVPOW) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			if (var3 == 0) {
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
 				return 1;
-			} else {
-				switch(var4) {
+			}
+			switch(var4) {
 				case 0:
 					Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Integer.MAX_VALUE;
 					break;
@@ -275,29 +288,30 @@ public class EnumDefinition extends DualNode {
 					Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = (int)Math.pow((double)var3, 1.0D / (double)var4);
 				}
 
-				return 1;
-			}
-		} else if (var0 == ScriptOpcodes.AND) {
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.AND) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 & var4;
 			return 1;
-		} else if (var0 == ScriptOpcodes.OR) {
+		}
+		if (var0 == ScriptOpcodes.OR) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 | var4;
 			return 1;
-		} else if (var0 == ScriptOpcodes.SCALE) {
+		}
+		if (var0 == ScriptOpcodes.SCALE) {
 			HealthBarUpdate.Interpreter_intStackSize -= 3;
 			long var9 = (long)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			long var11 = (long)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			long var13 = (long)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = (int)(var13 * var9 / var11);
 			return 1;
-		} else {
-			return 2;
 		}
+		return 2;
 	}
 }

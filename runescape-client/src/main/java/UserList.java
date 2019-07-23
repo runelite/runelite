@@ -105,9 +105,8 @@ public abstract class UserList {
 	public boolean contains(Username var1) {
 		if (!var1.hasCleanName()) {
 			return false;
-		} else {
-			return this.usernamesMap.containsKey(var1) ? true : this.previousUsernamesMap.containsKey(var1);
 		}
+		return this.usernamesMap.containsKey(var1) ? true : this.previousUsernamesMap.containsKey(var1);
 	}
 
 	@ObfuscatedName("g")
@@ -151,10 +150,9 @@ public abstract class UserList {
 		User var2 = this.getByCurrentUsername(var1);
 		if (var2 == null) {
 			return false;
-		} else {
-			this.remove(var2);
-			return true;
 		}
+		this.remove(var2);
+		return true;
 	}
 
 	@ObfuscatedName("d")
@@ -190,13 +188,12 @@ public abstract class UserList {
 	User addLast(Username var1, Username var2) {
 		if (this.getByCurrentUsername(var1) != null) {
 			throw new IllegalStateException();
-		} else {
-			User var3 = this.newInstance();
-			var3.set(var1, var2);
-			this.arrayAddLast(var3);
-			this.mapPut(var3);
-			return var3;
 		}
+		User var3 = this.newInstance();
+		var3.set(var1, var2);
+		this.arrayAddLast(var3);
+		this.mapPut(var3);
+		return var3;
 	}
 
 	@ObfuscatedName("al")
@@ -208,9 +205,8 @@ public abstract class UserList {
 	public final User get(int var1) {
 		if (var1 >= 0 && var1 < this.size) {
 			return this.array[var1];
-		} else {
-			throw new ArrayIndexOutOfBoundsException(var1);
 		}
+		throw new ArrayIndexOutOfBoundsException(var1);
 	}
 
 	@ObfuscatedName("av")
@@ -265,12 +261,11 @@ public abstract class UserList {
 	final void mapRemove(User var1) {
 		if (this.usernamesMap.remove(var1.username) == null) {
 			throw new IllegalStateException();
-		} else {
-			if (var1.previousUsername != null) {
-				this.previousUsernamesMap.remove(var1.previousUsername);
-			}
-
 		}
+		if (var1.previousUsername != null) {
+			this.previousUsernamesMap.remove(var1.previousUsername);
+		}
+
 	}
 
 	@ObfuscatedName("ag")

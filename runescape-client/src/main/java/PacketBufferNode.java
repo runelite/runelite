@@ -153,13 +153,14 @@ public class PacketBufferNode extends Node {
 
 		if (var0 == 338) {
 			return 'O';
-		} else if (var0 == 339) {
-			return 'o';
-		} else if (var0 == 376) {
-			return 'Y';
-		} else {
-			return var0;
 		}
+		if (var0 == 339) {
+			return 'o';
+		}
+		if (var0 == 376) {
+			return 'Y';
+		}
+		return var0;
 	}
 
 	@ObfuscatedName("gi")

@@ -427,52 +427,51 @@ public class StructDefinition extends DualNode {
 
 		if (var1 > Client.npcCount) {
 			throw new RuntimeException("");
-		} else {
-			Client.npcCount = 0;
+		}
+		Client.npcCount = 0;
 
-			for (var2 = 0; var2 < var1; ++var2) {
-				int var3 = Client.npcIndices[var2];
-				NPC var4 = Client.npcs[var3];
-				int var5 = var0.readBits(1);
-				if (var5 == 0) {
+		for (var2 = 0; var2 < var1; ++var2) {
+			int var3 = Client.npcIndices[var2];
+			NPC var4 = Client.npcs[var3];
+			int var5 = var0.readBits(1);
+			if (var5 == 0) {
+				Client.npcIndices[++Client.npcCount - 1] = var3;
+				var4.npcCycle = Client.cycle;
+			} else {
+				int var6 = var0.readBits(2);
+				if (var6 == 0) {
 					Client.npcIndices[++Client.npcCount - 1] = var3;
 					var4.npcCycle = Client.cycle;
+					Client.field859[++Client.field697 - 1] = var3;
 				} else {
-					int var6 = var0.readBits(2);
-					if (var6 == 0) {
+					int var7;
+					int var8;
+					if (var6 == 1) {
 						Client.npcIndices[++Client.npcCount - 1] = var3;
 						var4.npcCycle = Client.cycle;
-						Client.field859[++Client.field697 - 1] = var3;
-					} else {
-						int var7;
-						int var8;
-						if (var6 == 1) {
-							Client.npcIndices[++Client.npcCount - 1] = var3;
-							var4.npcCycle = Client.cycle;
-							var7 = var0.readBits(3);
-							var4.method1974(var7, (byte)1);
-							var8 = var0.readBits(1);
-							if (var8 == 1) {
-								Client.field859[++Client.field697 - 1] = var3;
-							}
-						} else if (var6 == 2) {
-							Client.npcIndices[++Client.npcCount - 1] = var3;
-							var4.npcCycle = Client.cycle;
-							var7 = var0.readBits(3);
-							var4.method1974(var7, (byte)2);
-							var8 = var0.readBits(3);
-							var4.method1974(var8, (byte)2);
-							int var9 = var0.readBits(1);
-							if (var9 == 1) {
-								Client.field859[++Client.field697 - 1] = var3;
-							}
-						} else if (var6 == 3) {
-							Client.field776[++Client.field775 - 1] = var3;
+						var7 = var0.readBits(3);
+						var4.method1974(var7, (byte)1);
+						var8 = var0.readBits(1);
+						if (var8 == 1) {
+							Client.field859[++Client.field697 - 1] = var3;
 						}
+					} else if (var6 == 2) {
+						Client.npcIndices[++Client.npcCount - 1] = var3;
+						var4.npcCycle = Client.cycle;
+						var7 = var0.readBits(3);
+						var4.method1974(var7, (byte)2);
+						var8 = var0.readBits(3);
+						var4.method1974(var8, (byte)2);
+						int var9 = var0.readBits(1);
+						if (var9 == 1) {
+							Client.field859[++Client.field697 - 1] = var3;
+						}
+					} else if (var6 == 3) {
+						Client.field776[++Client.field775 - 1] = var3;
 					}
 				}
 			}
-
 		}
+
 	}
 }

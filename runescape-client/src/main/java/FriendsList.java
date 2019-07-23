@@ -65,9 +65,8 @@ public class FriendsList extends UserList {
 		Friend var3 = (Friend)this.getByUsername(var1);
 		if (var3 == null) {
 			return false;
-		} else {
-			return !var2 || var3.world != 0;
 		}
+		return !var2 || var3.world != 0;
 	}
 
 	@ObfuscatedName("c")

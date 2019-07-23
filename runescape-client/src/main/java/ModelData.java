@@ -1046,81 +1046,79 @@ public class ModelData extends Entity {
 			var10 = var10 + 127 >> 7;
 			if (var3 == var1[var7][var9] && var3 == var1[var8][var9] && var3 == var1[var7][var10] && var3 == var1[var8][var10]) {
 				return this;
+			}
+			ModelData var11 = new ModelData();
+			var11.verticesCount = this.verticesCount;
+			var11.faceCount = this.faceCount;
+			var11.field1555 = this.field1555;
+			var11.verticesX = this.verticesX;
+			var11.verticesZ = this.verticesZ;
+			var11.indices1 = this.indices1;
+			var11.indices2 = this.indices2;
+			var11.indices3 = this.indices3;
+			var11.field1557 = this.field1557;
+			var11.field1559 = this.field1559;
+			var11.faceAlphas = this.faceAlphas;
+			var11.textureCoords = this.textureCoords;
+			var11.faceColors = this.faceColors;
+			var11.faceTextures = this.faceTextures;
+			var11.field1563 = this.field1563;
+			var11.textureRenderTypes = this.textureRenderTypes;
+			var11.texTriangleX = this.texTriangleX;
+			var11.texTriangleY = this.texTriangleY;
+			var11.texTriangleZ = this.texTriangleZ;
+			var11.field1569 = this.field1569;
+			var11.field1553 = this.field1553;
+			var11.vertexLabels = this.vertexLabels;
+			var11.faceLabelsAlpha = this.faceLabelsAlpha;
+			var11.field1580 = this.field1580;
+			var11.field1577 = this.field1577;
+			var11.verticesY = new int[var11.verticesCount];
+			int var12;
+			int var13;
+			int var14;
+			int var15;
+			int var16;
+			int var17;
+			int var18;
+			int var19;
+			int var20;
+			int var21;
+			if (var6 == 0) {
+				for (var12 = 0; var12 < var11.verticesCount; ++var12) {
+					var13 = var2 + this.verticesX[var12];
+					var14 = var4 + this.verticesZ[var12];
+					var15 = var13 & 127;
+					var16 = var14 & 127;
+					var17 = var13 >> 7;
+					var18 = var14 >> 7;
+					var19 = var1[var17][var18] * (128 - var15) + var1[var17 + 1][var18] * var15 >> 7;
+					var20 = var1[var17][var18 + 1] * (128 - var15) + var15 * var1[var17 + 1][var18 + 1] >> 7;
+					var21 = var19 * (128 - var16) + var20 * var16 >> 7;
+					var11.verticesY[var12] = var21 + this.verticesY[var12] - var3;
+				}
 			} else {
-				ModelData var11 = new ModelData();
-				var11.verticesCount = this.verticesCount;
-				var11.faceCount = this.faceCount;
-				var11.field1555 = this.field1555;
-				var11.verticesX = this.verticesX;
-				var11.verticesZ = this.verticesZ;
-				var11.indices1 = this.indices1;
-				var11.indices2 = this.indices2;
-				var11.indices3 = this.indices3;
-				var11.field1557 = this.field1557;
-				var11.field1559 = this.field1559;
-				var11.faceAlphas = this.faceAlphas;
-				var11.textureCoords = this.textureCoords;
-				var11.faceColors = this.faceColors;
-				var11.faceTextures = this.faceTextures;
-				var11.field1563 = this.field1563;
-				var11.textureRenderTypes = this.textureRenderTypes;
-				var11.texTriangleX = this.texTriangleX;
-				var11.texTriangleY = this.texTriangleY;
-				var11.texTriangleZ = this.texTriangleZ;
-				var11.field1569 = this.field1569;
-				var11.field1553 = this.field1553;
-				var11.vertexLabels = this.vertexLabels;
-				var11.faceLabelsAlpha = this.faceLabelsAlpha;
-				var11.field1580 = this.field1580;
-				var11.field1577 = this.field1577;
-				var11.verticesY = new int[var11.verticesCount];
-				int var12;
-				int var13;
-				int var14;
-				int var15;
-				int var16;
-				int var17;
-				int var18;
-				int var19;
-				int var20;
-				int var21;
-				if (var6 == 0) {
-					for (var12 = 0; var12 < var11.verticesCount; ++var12) {
-						var13 = var2 + this.verticesX[var12];
-						var14 = var4 + this.verticesZ[var12];
-						var15 = var13 & 127;
+				for (var12 = 0; var12 < var11.verticesCount; ++var12) {
+					var13 = (-this.verticesY[var12] << 16) / super.height;
+					if (var13 < var6) {
+						var14 = var2 + this.verticesX[var12];
+						var15 = var4 + this.verticesZ[var12];
 						var16 = var14 & 127;
-						var17 = var13 >> 7;
+						var17 = var15 & 127;
 						var18 = var14 >> 7;
-						var19 = var1[var17][var18] * (128 - var15) + var1[var17 + 1][var18] * var15 >> 7;
-						var20 = var1[var17][var18 + 1] * (128 - var15) + var15 * var1[var17 + 1][var18 + 1] >> 7;
-						var21 = var19 * (128 - var16) + var20 * var16 >> 7;
-						var11.verticesY[var12] = var21 + this.verticesY[var12] - var3;
-					}
-				} else {
-					for (var12 = 0; var12 < var11.verticesCount; ++var12) {
-						var13 = (-this.verticesY[var12] << 16) / super.height;
-						if (var13 < var6) {
-							var14 = var2 + this.verticesX[var12];
-							var15 = var4 + this.verticesZ[var12];
-							var16 = var14 & 127;
-							var17 = var15 & 127;
-							var18 = var14 >> 7;
-							var19 = var15 >> 7;
-							var20 = var1[var18][var19] * (128 - var16) + var1[var18 + 1][var19] * var16 >> 7;
-							var21 = var1[var18][var19 + 1] * (128 - var16) + var16 * var1[var18 + 1][var19 + 1] >> 7;
-							int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
-							var11.verticesY[var12] = (var6 - var13) * (var22 - var3) / var6 + this.verticesY[var12];
-						}
+						var19 = var15 >> 7;
+						var20 = var1[var18][var19] * (128 - var16) + var1[var18 + 1][var19] * var16 >> 7;
+						var21 = var1[var18][var19 + 1] * (128 - var16) + var16 * var1[var18 + 1][var19 + 1] >> 7;
+						int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
+						var11.verticesY[var12] = (var6 - var13) * (var22 - var3) / var6 + this.verticesY[var12];
 					}
 				}
-
-				var11.invalidate();
-				return var11;
 			}
-		} else {
-			return this;
+
+			var11.invalidate();
+			return var11;
 		}
+		return this;
 	}
 
 	@ObfuscatedName("b")

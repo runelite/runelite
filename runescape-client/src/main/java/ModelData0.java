@@ -88,7 +88,8 @@ public class ModelData0 {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_SETSIZE) {
+		}
+		if (var0 == ScriptOpcodes.CC_SETSIZE) {
 			HealthBarUpdate.Interpreter_intStackSize -= 4;
 			var4.rawWidth = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4.rawHeight = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
@@ -101,7 +102,8 @@ public class ModelData0 {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_SETHIDE) {
+		}
+		if (var0 == ScriptOpcodes.CC_SETHIDE) {
 			boolean var5 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
 			if (var5 != var4.isHidden) {
 				var4.isHidden = var5;
@@ -109,14 +111,15 @@ public class ModelData0 {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_SETNOCLICKTHROUGH) {
+		}
+		if (var0 == ScriptOpcodes.CC_SETNOCLICKTHROUGH) {
 			var4.noClickThrough = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_SETNOSCROLLTHROUGH) {
+		}
+		if (var0 == ScriptOpcodes.CC_SETNOSCROLLTHROUGH) {
 			var4.noScrollThrough = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
 			return 1;
-		} else {
-			return 2;
 		}
+		return 2;
 	}
 }

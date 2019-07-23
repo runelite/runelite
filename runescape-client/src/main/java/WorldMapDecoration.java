@@ -53,19 +53,7 @@ public class WorldMapDecoration {
 		}
 
 		Strings.method4120(var3);
-		if (var0 != ScriptOpcodes.CC_SETOBJECT && var0 != ScriptOpcodes.CC_SETOBJECT_NONUM && var0 != ScriptOpcodes.CC_SETOBJECT_ALWAYS_NUM) {
-			if (var0 == ScriptOpcodes.CC_SETNPCHEAD) {
-				var3.modelType = 2;
-				var3.modelId = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-				return 1;
-			} else if (var0 == ScriptOpcodes.CC_SETPLAYERHEAD_SELF) {
-				var3.modelType = 3;
-				var3.modelId = Client.localPlayer.appearance.getChatHeadId();
-				return 1;
-			} else {
-				return 2;
-			}
-		} else {
+		if (var0 == ScriptOpcodes.CC_SETOBJECT || var0 == ScriptOpcodes.CC_SETOBJECT_NONUM || var0 == ScriptOpcodes.CC_SETOBJECT_ALWAYS_NUM) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			int var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			int var5 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
@@ -94,6 +82,17 @@ public class WorldMapDecoration {
 
 			return 1;
 		}
+		if (var0 == ScriptOpcodes.CC_SETNPCHEAD) {
+			var3.modelType = 2;
+			var3.modelId = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.CC_SETPLAYERHEAD_SELF) {
+			var3.modelType = 3;
+			var3.modelId = Client.localPlayer.appearance.getChatHeadId();
+			return 1;
+		}
+		return 2;
 	}
 
 	@ObfuscatedName("kv")

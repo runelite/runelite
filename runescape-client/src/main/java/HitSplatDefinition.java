@@ -285,19 +285,17 @@ public class HitSplatDefinition extends DualNode {
 	public Sprite method4551() {
 		if (this.field3334 < 0) {
 			return null;
-		} else {
-			Sprite var1 = (Sprite)HitSplatDefinition_cachedSprites.get((long)this.field3334);
-			if (var1 != null) {
-				return var1;
-			} else {
-				var1 = class65.loadSprite(HitSplatDefinition_spritesArchive, this.field3334, 0);
-				if (var1 != null) {
-					HitSplatDefinition_cachedSprites.put(var1, (long)this.field3334);
-				}
-
-				return var1;
-			}
 		}
+		Sprite var1 = (Sprite)HitSplatDefinition_cachedSprites.get((long)this.field3334);
+		if (var1 != null) {
+			return var1;
+		}
+		var1 = class65.SpriteBuffer_getSprite(HitSplatDefinition_spritesArchive, this.field3334, 0);
+		if (var1 != null) {
+			HitSplatDefinition_cachedSprites.put(var1, (long)this.field3334);
+		}
+
+		return var1;
 	}
 
 	@ObfuscatedName("b")
@@ -308,19 +306,17 @@ public class HitSplatDefinition extends DualNode {
 	public Sprite method4557() {
 		if (this.field3336 < 0) {
 			return null;
-		} else {
-			Sprite var1 = (Sprite)HitSplatDefinition_cachedSprites.get((long)this.field3336);
-			if (var1 != null) {
-				return var1;
-			} else {
-				var1 = class65.loadSprite(HitSplatDefinition_spritesArchive, this.field3336, 0);
-				if (var1 != null) {
-					HitSplatDefinition_cachedSprites.put(var1, (long)this.field3336);
-				}
-
-				return var1;
-			}
 		}
+		Sprite var1 = (Sprite)HitSplatDefinition_cachedSprites.get((long)this.field3336);
+		if (var1 != null) {
+			return var1;
+		}
+		var1 = class65.SpriteBuffer_getSprite(HitSplatDefinition_spritesArchive, this.field3336, 0);
+		if (var1 != null) {
+			HitSplatDefinition_cachedSprites.put(var1, (long)this.field3336);
+		}
+
+		return var1;
 	}
 
 	@ObfuscatedName("i")
@@ -331,19 +327,17 @@ public class HitSplatDefinition extends DualNode {
 	public Sprite method4558() {
 		if (this.field3337 < 0) {
 			return null;
-		} else {
-			Sprite var1 = (Sprite)HitSplatDefinition_cachedSprites.get((long)this.field3337);
-			if (var1 != null) {
-				return var1;
-			} else {
-				var1 = class65.loadSprite(HitSplatDefinition_spritesArchive, this.field3337, 0);
-				if (var1 != null) {
-					HitSplatDefinition_cachedSprites.put(var1, (long)this.field3337);
-				}
-
-				return var1;
-			}
 		}
+		Sprite var1 = (Sprite)HitSplatDefinition_cachedSprites.get((long)this.field3337);
+		if (var1 != null) {
+			return var1;
+		}
+		var1 = class65.SpriteBuffer_getSprite(HitSplatDefinition_spritesArchive, this.field3337, 0);
+		if (var1 != null) {
+			HitSplatDefinition_cachedSprites.put(var1, (long)this.field3337);
+		}
+
+		return var1;
 	}
 
 	@ObfuscatedName("c")
@@ -354,19 +348,17 @@ public class HitSplatDefinition extends DualNode {
 	public Sprite method4583() {
 		if (this.field3338 < 0) {
 			return null;
-		} else {
-			Sprite var1 = (Sprite)HitSplatDefinition_cachedSprites.get((long)this.field3338);
-			if (var1 != null) {
-				return var1;
-			} else {
-				var1 = class65.loadSprite(HitSplatDefinition_spritesArchive, this.field3338, 0);
-				if (var1 != null) {
-					HitSplatDefinition_cachedSprites.put(var1, (long)this.field3338);
-				}
-
-				return var1;
-			}
 		}
+		Sprite var1 = (Sprite)HitSplatDefinition_cachedSprites.get((long)this.field3338);
+		if (var1 != null) {
+			return var1;
+		}
+		var1 = class65.SpriteBuffer_getSprite(HitSplatDefinition_spritesArchive, this.field3338, 0);
+		if (var1 != null) {
+			HitSplatDefinition_cachedSprites.put(var1, (long)this.field3338);
+		}
+
+		return var1;
 	}
 
 	@ObfuscatedName("u")
@@ -378,28 +370,26 @@ public class HitSplatDefinition extends DualNode {
 	public Font getFont() {
 		if (this.fontId == -1) {
 			return null;
-		} else {
-			Font var1 = (Font)HitSplatDefinition_cachedFonts.get((long)this.fontId);
-			if (var1 != null) {
-				return var1;
-			} else {
-				AbstractArchive var3 = HitSplatDefinition_spritesArchive;
-				AbstractArchive var4 = HitSplatDefinition_fontsArchive;
-				int var5 = this.fontId;
-				Font var2;
-				if (!Friend.doesSpriteExist(var3, var5, 0)) {
-					var2 = null;
-				} else {
-					var2 = WallDecoration.getWorldMapSprite(var4.takeFile(var5, 0));
-				}
-
-				if (var2 != null) {
-					HitSplatDefinition_cachedFonts.put(var2, (long)this.fontId);
-				}
-
-				return var2;
-			}
 		}
+		Font var1 = (Font)HitSplatDefinition_cachedFonts.get((long)this.fontId);
+		if (var1 != null) {
+			return var1;
+		}
+		AbstractArchive var3 = HitSplatDefinition_spritesArchive;
+		AbstractArchive var4 = HitSplatDefinition_fontsArchive;
+		int var5 = this.fontId;
+		Font var2;
+		if (!Friend.SpriteBuffer_bufferFile(var3, var5, 0)) {
+			var2 = null;
+		} else {
+			var2 = WallDecoration.SpriteBuffer_createFont(var4.takeFile(var5, 0));
+		}
+
+		if (var2 != null) {
+			HitSplatDefinition_cachedFonts.put(var2, (long)this.fontId);
+		}
+
+		return var2;
 	}
 
 	@ObfuscatedName("q")

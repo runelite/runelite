@@ -349,7 +349,7 @@ public class class189 {
 						var1.drawCentered("Click to switch", var27 / 2 + var23, var19 / 2 + var24 + 12, 16777215, 0);
 					}
 				} else {
-					class30.field264 = class215.loadIndexedSpriteByName(Client.archive8, "sl_button", "");
+					class30.field264 = class215.SpriteBuffer_getIndexedSpriteByName(Client.archive8, "sl_button", "");
 				}
 			}
 

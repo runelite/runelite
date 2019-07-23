@@ -46,9 +46,8 @@ public class class195 {
 			}
 
 			return var2;
-		} else {
-			return Integer.toString(var0);
 		}
+		return Integer.toString(var0);
 	}
 
 	@ObfuscatedName("i")

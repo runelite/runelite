@@ -146,9 +146,8 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 	public boolean isAvailable(int var1) throws IOException {
 		if (this.isClosed) {
 			return false;
-		} else {
-			return this.inputStream.available() >= var1;
 		}
+		return this.inputStream.available() >= var1;
 	}
 
 	@ObfuscatedName("k")
@@ -160,20 +159,19 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 	public int read(byte[] var1, int var2, int var3) throws IOException {
 		if (this.isClosed) {
 			return 0;
-		} else {
-			int var4;
-			int var5;
-			for (var4 = var3; var3 > 0; var3 -= var5) {
-				var5 = this.inputStream.read(var1, var2, var3);
-				if (var5 <= 0) {
-					throw new EOFException();
-				}
-
-				var2 += var5;
+		}
+		int var4;
+		int var5;
+		for (var4 = var3; var3 > 0; var3 -= var5) {
+			var5 = this.inputStream.read(var1, var2, var3);
+			if (var5 <= 0) {
+				throw new EOFException();
 			}
 
-			return var4;
+			var2 += var5;
 		}
+
+		return var4;
 	}
 
 	@ObfuscatedName("l")
@@ -187,26 +185,25 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 			if (this.exceptionWriting) {
 				this.exceptionWriting = false;
 				throw new IOException();
-			} else {
-				if (this.outBuffer == null) {
-					this.outBuffer = new byte[this.bufferLength];
+			}
+			if (this.outBuffer == null) {
+				this.outBuffer = new byte[this.bufferLength];
+			}
+
+			synchronized(this) {
+				for (int var5 = 0; var5 < var3; ++var5) {
+					this.outBuffer[this.outOffset] = var1[var5 + var2];
+					this.outOffset = (this.outOffset + 1) % this.bufferLength;
+					if ((this.outLength + this.maxPacketLength) % this.bufferLength == this.outOffset) {
+						throw new IOException();
+					}
 				}
 
-				synchronized(this) {
-					for (int var5 = 0; var5 < var3; ++var5) {
-						this.outBuffer[this.outOffset] = var1[var5 + var2];
-						this.outOffset = (this.outOffset + 1) % this.bufferLength;
-						if ((this.outLength + this.maxPacketLength) % this.bufferLength == this.outOffset) {
-							throw new IOException();
-						}
-					}
-
-					if (this.task == null) {
-						this.task = this.taskHandler.newThreadTask(this, 3);
-					}
-
-					this.notifyAll();
+				if (this.task == null) {
+					this.task = this.taskHandler.newThreadTask(this, 3);
 				}
+
+				this.notifyAll();
 			}
 		}
 	}
@@ -358,16 +355,15 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		InvDefinition var1 = (InvDefinition)InvDefinition.InvDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
-		} else {
-			byte[] var2 = InvDefinition.InvDefinition_archive.takeFile(5, var0);
-			var1 = new InvDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			InvDefinition.InvDefinition_cached.put(var1, (long)var0);
-			return var1;
 		}
+		byte[] var2 = InvDefinition.InvDefinition_archive.takeFile(5, var0);
+		var1 = new InvDefinition();
+		if (var2 != null) {
+			var1.decode(new Buffer(var2));
+		}
+
+		InvDefinition.InvDefinition_cached.put(var1, (long)var0);
+		return var1;
 	}
 
 	@ObfuscatedName("p")

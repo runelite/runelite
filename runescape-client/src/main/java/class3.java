@@ -111,9 +111,8 @@ public class class3 implements Enumerated {
 
 		if (var1 == null) {
 			throw new IllegalArgumentException();
-		} else {
-			return var1.field13;
 		}
+		return var1.field13;
 	}
 
 	@ObfuscatedName("e")

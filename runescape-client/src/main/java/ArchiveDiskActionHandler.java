@@ -99,7 +99,8 @@ public class ArchiveDiskActionHandler implements Runnable {
 	public static final PcmPlayer method4256(TaskHandler var0, int var1, int var2) {
 		if (CollisionMap.PcmPlayer_sampleRate == 0) {
 			throw new IllegalStateException();
-		} else if (var1 >= 0 && var1 < 2) {
+		}
+		if (var1 >= 0 && var1 < 2) {
 			if (var2 < 256) {
 				var2 = 256;
 			}
@@ -133,8 +134,7 @@ public class ArchiveDiskActionHandler implements Runnable {
 			} catch (Throwable var4) {
 				return new PcmPlayer();
 			}
-		} else {
-			throw new IllegalArgumentException();
 		}
+		throw new IllegalArgumentException();
 	}
 }

@@ -67,10 +67,9 @@ public final class AccessFile {
 			this.file.seek(this.maxSize);
 			this.file.write(1);
 			throw new EOFException();
-		} else {
-			this.file.write(var1, var2, var3);
-			this.offset += (long)var3;
 		}
+		this.file.write(var1, var2, var3);
+		this.offset += (long)var3;
 	}
 
 	@ObfuscatedName("e")

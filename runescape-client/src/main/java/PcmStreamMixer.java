@@ -93,6 +93,7 @@ public class PcmStreamMixer extends PcmStream {
 	@ObfuscatedSignature(
 		signature = "()Ldx;"
 	)
+	@Export("firstSubStream")
 	protected PcmStream firstSubStream() {
 		return (PcmStream)this.subStreams.last();
 	}
@@ -101,6 +102,7 @@ public class PcmStreamMixer extends PcmStream {
 	@ObfuscatedSignature(
 		signature = "()Ldx;"
 	)
+	@Export("nextSubStream")
 	protected PcmStream nextSubStream() {
 		return (PcmStream)this.subStreams.previous();
 	}

@@ -159,139 +159,138 @@ public class Huffman {
 	int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
 		if (var5 == 0) {
 			return 0;
-		} else {
-			int var6 = 0;
-			var5 += var4;
-			int var7 = var2;
+		}
+		int var6 = 0;
+		var5 += var4;
+		int var7 = var2;
 
-			while (true) {
-				byte var8 = var1[var7];
-				if (var8 < 0) {
-					var6 = this.keys[var6];
-				} else {
-					++var6;
-				}
-
-				int var9;
-				if ((var9 = this.keys[var6]) < 0) {
-					var3[var4++] = (byte)(~var9);
-					if (var4 >= var5) {
-						break;
-					}
-
-					var6 = 0;
-				}
-
-				if ((var8 & 64) != 0) {
-					var6 = this.keys[var6];
-				} else {
-					++var6;
-				}
-
-				if ((var9 = this.keys[var6]) < 0) {
-					var3[var4++] = (byte)(~var9);
-					if (var4 >= var5) {
-						break;
-					}
-
-					var6 = 0;
-				}
-
-				if ((var8 & 32) != 0) {
-					var6 = this.keys[var6];
-				} else {
-					++var6;
-				}
-
-				if ((var9 = this.keys[var6]) < 0) {
-					var3[var4++] = (byte)(~var9);
-					if (var4 >= var5) {
-						break;
-					}
-
-					var6 = 0;
-				}
-
-				if ((var8 & 16) != 0) {
-					var6 = this.keys[var6];
-				} else {
-					++var6;
-				}
-
-				if ((var9 = this.keys[var6]) < 0) {
-					var3[var4++] = (byte)(~var9);
-					if (var4 >= var5) {
-						break;
-					}
-
-					var6 = 0;
-				}
-
-				if ((var8 & 8) != 0) {
-					var6 = this.keys[var6];
-				} else {
-					++var6;
-				}
-
-				if ((var9 = this.keys[var6]) < 0) {
-					var3[var4++] = (byte)(~var9);
-					if (var4 >= var5) {
-						break;
-					}
-
-					var6 = 0;
-				}
-
-				if ((var8 & 4) != 0) {
-					var6 = this.keys[var6];
-				} else {
-					++var6;
-				}
-
-				if ((var9 = this.keys[var6]) < 0) {
-					var3[var4++] = (byte)(~var9);
-					if (var4 >= var5) {
-						break;
-					}
-
-					var6 = 0;
-				}
-
-				if ((var8 & 2) != 0) {
-					var6 = this.keys[var6];
-				} else {
-					++var6;
-				}
-
-				if ((var9 = this.keys[var6]) < 0) {
-					var3[var4++] = (byte)(~var9);
-					if (var4 >= var5) {
-						break;
-					}
-
-					var6 = 0;
-				}
-
-				if ((var8 & 1) != 0) {
-					var6 = this.keys[var6];
-				} else {
-					++var6;
-				}
-
-				if ((var9 = this.keys[var6]) < 0) {
-					var3[var4++] = (byte)(~var9);
-					if (var4 >= var5) {
-						break;
-					}
-
-					var6 = 0;
-				}
-
-				++var7;
+		while (true) {
+			byte var8 = var1[var7];
+			if (var8 < 0) {
+				var6 = this.keys[var6];
+			} else {
+				++var6;
 			}
 
-			return var7 + 1 - var2;
+			int var9;
+			if ((var9 = this.keys[var6]) < 0) {
+				var3[var4++] = (byte)(~var9);
+				if (var4 >= var5) {
+					break;
+				}
+
+				var6 = 0;
+			}
+
+			if ((var8 & 64) != 0) {
+				var6 = this.keys[var6];
+			} else {
+				++var6;
+			}
+
+			if ((var9 = this.keys[var6]) < 0) {
+				var3[var4++] = (byte)(~var9);
+				if (var4 >= var5) {
+					break;
+				}
+
+				var6 = 0;
+			}
+
+			if ((var8 & 32) != 0) {
+				var6 = this.keys[var6];
+			} else {
+				++var6;
+			}
+
+			if ((var9 = this.keys[var6]) < 0) {
+				var3[var4++] = (byte)(~var9);
+				if (var4 >= var5) {
+					break;
+				}
+
+				var6 = 0;
+			}
+
+			if ((var8 & 16) != 0) {
+				var6 = this.keys[var6];
+			} else {
+				++var6;
+			}
+
+			if ((var9 = this.keys[var6]) < 0) {
+				var3[var4++] = (byte)(~var9);
+				if (var4 >= var5) {
+					break;
+				}
+
+				var6 = 0;
+			}
+
+			if ((var8 & 8) != 0) {
+				var6 = this.keys[var6];
+			} else {
+				++var6;
+			}
+
+			if ((var9 = this.keys[var6]) < 0) {
+				var3[var4++] = (byte)(~var9);
+				if (var4 >= var5) {
+					break;
+				}
+
+				var6 = 0;
+			}
+
+			if ((var8 & 4) != 0) {
+				var6 = this.keys[var6];
+			} else {
+				++var6;
+			}
+
+			if ((var9 = this.keys[var6]) < 0) {
+				var3[var4++] = (byte)(~var9);
+				if (var4 >= var5) {
+					break;
+				}
+
+				var6 = 0;
+			}
+
+			if ((var8 & 2) != 0) {
+				var6 = this.keys[var6];
+			} else {
+				++var6;
+			}
+
+			if ((var9 = this.keys[var6]) < 0) {
+				var3[var4++] = (byte)(~var9);
+				if (var4 >= var5) {
+					break;
+				}
+
+				var6 = 0;
+			}
+
+			if ((var8 & 1) != 0) {
+				var6 = this.keys[var6];
+			} else {
+				++var6;
+			}
+
+			if ((var9 = this.keys[var6]) < 0) {
+				var3[var4++] = (byte)(~var9);
+				if (var4 >= var5) {
+					break;
+				}
+
+				var6 = 0;
+			}
+
+			++var7;
 		}
+
+		return var7 + 1 - var2;
 	}
 
 	@ObfuscatedName("k")

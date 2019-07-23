@@ -126,8 +126,7 @@ public class MilliClock extends Clock {
 	static int method3468(int var0, int var1, int var2) {
 		if ((Tiles.Tiles_renderFlags[var0][var1][var2] & 8) != 0) {
 			return 0;
-		} else {
-			return var0 > 0 && (Tiles.Tiles_renderFlags[1][var1][var2] & 2) != 0 ? var0 - 1 : var0;
 		}
+		return var0 > 0 && (Tiles.Tiles_renderFlags[1][var1][var2] & 2) != 0 ? var0 - 1 : var0;
 	}
 }

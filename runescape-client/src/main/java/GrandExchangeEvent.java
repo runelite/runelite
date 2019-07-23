@@ -95,17 +95,16 @@ public class GrandExchangeEvent {
 		SequenceDefinition var1 = (SequenceDefinition)SequenceDefinition.SequenceDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
-		} else {
-			byte[] var2 = SequenceDefinition.SequenceDefinition_archive.takeFile(12, var0);
-			var1 = new SequenceDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			var1.postDecode();
-			SequenceDefinition.SequenceDefinition_cached.put(var1, (long)var0);
-			return var1;
 		}
+		byte[] var2 = SequenceDefinition.SequenceDefinition_archive.takeFile(12, var0);
+		var1 = new SequenceDefinition();
+		if (var2 != null) {
+			var1.decode(new Buffer(var2));
+		}
+
+		var1.postDecode();
+		SequenceDefinition.SequenceDefinition_cached.put(var1, (long)var0);
+		return var1;
 	}
 
 	@ObfuscatedName("jj")

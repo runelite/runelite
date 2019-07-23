@@ -128,9 +128,8 @@ public class MusicPatchPcmStream extends PcmStream {
 		MusicPatchNode var1 = (MusicPatchNode)this.queue.last();
 		if (var1 == null) {
 			return null;
-		} else {
-			return (PcmStream)(var1.stream != null ? var1.stream : this.nextSubStream());
 		}
+		return (PcmStream)(var1.stream != null ? var1.stream : this.nextSubStream());
 	}
 
 	@ObfuscatedName("b")

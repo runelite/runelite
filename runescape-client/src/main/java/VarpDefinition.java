@@ -101,8 +101,7 @@ public class VarpDefinition extends DualNode {
 			}
 
 			return false;
-		} else {
-			return true;
 		}
+		return true;
 	}
 }

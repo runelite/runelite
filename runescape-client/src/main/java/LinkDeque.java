@@ -51,10 +51,9 @@ public class LinkDeque {
 		if (var1 == this.sentinel) {
 			this.current = null;
 			return null;
-		} else {
-			this.current = var1.previous;
-			return var1;
 		}
+		this.current = var1.previous;
+		return var1;
 	}
 
 	@ObfuscatedName("e")
@@ -67,9 +66,8 @@ public class LinkDeque {
 		if (var1 == this.sentinel) {
 			this.current = null;
 			return null;
-		} else {
-			this.current = var1.previous;
-			return var1;
 		}
+		this.current = var1.previous;
+		return var1;
 	}
 }

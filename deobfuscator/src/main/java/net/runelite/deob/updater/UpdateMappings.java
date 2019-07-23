@@ -74,6 +74,9 @@ public class UpdateMappings
 		ParameterRenamer pr = new ParameterRenamer(group1, group2, mapping);
 		pr.run();
 
+		AnnotationAdder ad = new AnnotationAdder(group2);
+		ad.run();
+
 		new ScriptOpcodesTransformer().transform(group2);
 	}
 

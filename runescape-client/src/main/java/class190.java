@@ -125,6 +125,7 @@ public class class190 implements Enumerated {
 		signature = "(I)I",
 		garbageValue = "320353268"
 	)
+	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.field2354;
 	}
@@ -169,9 +170,8 @@ public class class190 implements Enumerated {
 			}
 
 			return true;
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	@ObfuscatedName("ko")

@@ -65,8 +65,7 @@ public class MusicPatchNode2 {
 		Message var1 = (Message)Messages.Messages_hashTable.get((long)var0);
 		if (var1 == null) {
 			return -1;
-		} else {
-			return var1.previousDual == Messages.Messages_queue.sentinel ? -1 : ((Message)var1.previousDual).count;
 		}
+		return var1.previousDual == Messages.Messages_queue.sentinel ? -1 : ((Message)var1.previousDual).count;
 	}
 }

@@ -42,15 +42,14 @@ public class ArchiveDiskAction extends Node {
 		KitDefinition var1 = (KitDefinition)KitDefinition.KitDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
-		} else {
-			byte[] var2 = KitDefinition.KitDefinition_archive.takeFile(3, var0);
-			var1 = new KitDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			KitDefinition.KitDefinition_cached.put(var1, (long)var0);
-			return var1;
 		}
+		byte[] var2 = KitDefinition.KitDefinition_archive.takeFile(3, var0);
+		var1 = new KitDefinition();
+		if (var2 != null) {
+			var1.decode(new Buffer(var2));
+		}
+
+		KitDefinition.KitDefinition_cached.put(var1, (long)var0);
+		return var1;
 	}
 }

@@ -374,66 +374,64 @@ public final class Player extends Actor {
 	protected final Model getModel() {
 		if (this.appearance == null) {
 			return null;
-		} else {
-			SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? GrandExchangeEvent.getSequenceDefinition(super.sequence) : null;
-			SequenceDefinition var2 = super.movementSequence != -1 && !this.isUnanimated && (super.movementSequence != super.readySequence || var1 == null) ? GrandExchangeEvent.getSequenceDefinition(super.movementSequence) : null;
-			Model var3 = this.appearance.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
-			if (var3 == null) {
-				return null;
-			} else {
-				var3.calculateBoundsCylinder();
-				super.defaultHeight = var3.height;
-				Model var4;
-				Model[] var5;
-				if (!this.isUnanimated && super.spotAnimation != -1 && super.spotAnimationFrame != -1) {
-					var4 = MusicPatch.getSpotAnimationDefinition(super.spotAnimation).getModel(super.spotAnimationFrame);
-					if (var4 != null) {
-						var4.offsetBy(0, -super.heightOffset, 0);
-						var5 = new Model[]{var3, var4};
-						var3 = new Model(var5, 2);
-					}
-				}
-
-				if (!this.isUnanimated && this.model0 != null) {
-					if (Client.cycle >= this.animationCycleEnd) {
-						this.model0 = null;
-					}
-
-					if (Client.cycle >= this.animationCycleStart && Client.cycle < this.animationCycleEnd) {
-						var4 = this.model0;
-						var4.offsetBy(this.field633 * 4096 - super.x, this.tileHeight2 - this.tileHeight, this.field620 * 4096 - super.y);
-						if (super.orientation == 512) {
-							var4.rotateY90Ccw();
-							var4.rotateY90Ccw();
-							var4.rotateY90Ccw();
-						} else if (super.orientation == 1024) {
-							var4.rotateY90Ccw();
-							var4.rotateY90Ccw();
-						} else if (super.orientation == 1536) {
-							var4.rotateY90Ccw();
-						}
-
-						var5 = new Model[]{var3, var4};
-						var3 = new Model(var5, 2);
-						if (super.orientation == 512) {
-							var4.rotateY90Ccw();
-						} else if (super.orientation == 1024) {
-							var4.rotateY90Ccw();
-							var4.rotateY90Ccw();
-						} else if (super.orientation == 1536) {
-							var4.rotateY90Ccw();
-							var4.rotateY90Ccw();
-							var4.rotateY90Ccw();
-						}
-
-						var4.offsetBy(super.x - this.field633 * 4096, this.tileHeight - this.tileHeight2, super.y - this.field620 * 4096);
-					}
-				}
-
-				var3.isSingleTile = true;
-				return var3;
+		}
+		SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? GrandExchangeEvent.getSequenceDefinition(super.sequence) : null;
+		SequenceDefinition var2 = super.movementSequence != -1 && !this.isUnanimated && (super.movementSequence != super.readySequence || var1 == null) ? GrandExchangeEvent.getSequenceDefinition(super.movementSequence) : null;
+		Model var3 = this.appearance.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
+		if (var3 == null) {
+			return null;
+		}
+		var3.calculateBoundsCylinder();
+		super.defaultHeight = var3.height;
+		Model var4;
+		Model[] var5;
+		if (!this.isUnanimated && super.spotAnimation != -1 && super.spotAnimationFrame != -1) {
+			var4 = MusicPatch.getSpotAnimationDefinition(super.spotAnimation).getModel(super.spotAnimationFrame);
+			if (var4 != null) {
+				var4.offsetBy(0, -super.heightOffset, 0);
+				var5 = new Model[]{var3, var4};
+				var3 = new Model(var5, 2);
 			}
 		}
+
+		if (!this.isUnanimated && this.model0 != null) {
+			if (Client.cycle >= this.animationCycleEnd) {
+				this.model0 = null;
+			}
+
+			if (Client.cycle >= this.animationCycleStart && Client.cycle < this.animationCycleEnd) {
+				var4 = this.model0;
+				var4.offsetBy(this.field633 * 4096 - super.x, this.tileHeight2 - this.tileHeight, this.field620 * 4096 - super.y);
+				if (super.orientation == 512) {
+					var4.rotateY90Ccw();
+					var4.rotateY90Ccw();
+					var4.rotateY90Ccw();
+				} else if (super.orientation == 1024) {
+					var4.rotateY90Ccw();
+					var4.rotateY90Ccw();
+				} else if (super.orientation == 1536) {
+					var4.rotateY90Ccw();
+				}
+
+				var5 = new Model[]{var3, var4};
+				var3 = new Model(var5, 2);
+				if (super.orientation == 512) {
+					var4.rotateY90Ccw();
+				} else if (super.orientation == 1024) {
+					var4.rotateY90Ccw();
+					var4.rotateY90Ccw();
+				} else if (super.orientation == 1536) {
+					var4.rotateY90Ccw();
+					var4.rotateY90Ccw();
+					var4.rotateY90Ccw();
+				}
+
+				var4.offsetBy(super.x - this.field633 * 4096, this.tileHeight - this.tileHeight2, super.y - this.field620 * 4096);
+			}
+		}
+
+		var3.isSingleTile = true;
+		return var3;
 	}
 
 	@ObfuscatedName("u")
@@ -521,38 +519,41 @@ public final class Player extends Actor {
 			try {
 				if (!class51.field434.startsWith("win")) {
 					throw new Exception();
-				} else if (!var0.startsWith("http://") && !var0.startsWith("https://")) {
-					throw new Exception();
-				} else {
-					String var11 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
-
-					for (int var4 = 0; var4 < var0.length(); ++var4) {
-						if (var11.indexOf(var0.charAt(var4)) == -1) {
-							throw new Exception();
-						}
-					}
-
-					Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-					return true;
 				}
+				if (!var0.startsWith("http://") && !var0.startsWith("https://")) {
+					throw new Exception();
+				}
+				String var11 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
+
+				for (int var4 = 0; var4 < var0.length(); ++var4) {
+					if (var11.indexOf(var0.charAt(var4)) == -1) {
+						throw new Exception();
+					}
+				}
+
+				Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
+				return true;
 			} catch (Throwable var5) {
 				return false;
 			}
-		} else if (var1 == 1) {
+		}
+		if (var1 == 1) {
 			try {
 				Object var10 = class47.method806(class51.applet, var2, new Object[]{(new URL(class51.applet.getCodeBase(), var0)).toString()});
 				return var10 != null;
 			} catch (Throwable var6) {
 				return false;
 			}
-		} else if (var1 == 2) {
+		}
+		if (var1 == 2) {
 			try {
 				class51.applet.getAppletContext().showDocument(new URL(class51.applet.getCodeBase(), var0), "_blank");
 				return true;
 			} catch (Exception var7) {
 				return false;
 			}
-		} else if (var1 == 3) {
+		}
+		if (var1 == 3) {
 			try {
 				Applet var3 = class51.applet;
 				JSObject.getWindow(var3).call("loggedout", (Object[])null);
@@ -565,9 +566,8 @@ public final class Player extends Actor {
 			} catch (Exception var8) {
 				return false;
 			}
-		} else {
-			throw new IllegalArgumentException();
 		}
+		throw new IllegalArgumentException();
 	}
 
 	@ObfuscatedName("ff")

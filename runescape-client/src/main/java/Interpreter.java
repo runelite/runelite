@@ -102,14 +102,13 @@ public class Interpreter {
 	static final boolean method1936(int var0) {
 		if (var0 < 0) {
 			return false;
-		} else {
-			int var1 = Client.menuOpcodes[var0];
-			if (var1 >= 2000) {
-				var1 -= 2000;
-			}
-
-			return var1 == 1007;
 		}
+		int var1 = Client.menuOpcodes[var0];
+		if (var1 >= 2000) {
+			var1 -= 2000;
+		}
+
+		return var1 == 1007;
 	}
 
 	@ObfuscatedName("jo")

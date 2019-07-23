@@ -329,24 +329,23 @@ public final class WorldMapManager {
 		LinkedList var11 = new LinkedList();
 		if (!this.loaded) {
 			return var11;
-		} else {
-			WorldMapRectangle var12 = this.createWorldMapRectangle(var1, var2, var3, var4);
-			float var13 = this.getPixelsPerTile(var7, var3 - var1);
-			int var14 = (int)(64.0F * var13);
-			int var15 = this.tileX * 4096 + var1;
-			int var16 = this.tileY * 4096 + var2;
+		}
+		WorldMapRectangle var12 = this.createWorldMapRectangle(var1, var2, var3, var4);
+		float var13 = this.getPixelsPerTile(var7, var3 - var1);
+		int var14 = (int)(64.0F * var13);
+		int var15 = this.tileX * 4096 + var1;
+		int var16 = this.tileY * 4096 + var2;
 
-			for (int var17 = var12.x; var17 < var12.width + var12.x; ++var17) {
-				for (int var18 = var12.y; var18 < var12.y + var12.height; ++var18) {
-					List var19 = this.regions[var17][var18].method440(var5 + var14 * (this.regions[var17][var18].regionx * 64 - var15) / 64, var8 + var6 - var14 * (this.regions[var17][var18].regionY * 64 - var16 + 64) / 64, var14, var9, var10);
-					if (!var19.isEmpty()) {
-						var11.addAll(var19);
-					}
+		for (int var17 = var12.x; var17 < var12.width + var12.x; ++var17) {
+			for (int var18 = var12.y; var18 < var12.y + var12.height; ++var18) {
+				List var19 = this.regions[var17][var18].method440(var5 + var14 * (this.regions[var17][var18].regionx * 64 - var15) / 64, var8 + var6 - var14 * (this.regions[var17][var18].regionY * 64 - var16 + 64) / 64, var14, var9, var10);
+				if (!var19.isEmpty()) {
+					var11.addAll(var19);
 				}
 			}
-
-			return var11;
 		}
+
+		return var11;
 	}
 
 	@ObfuscatedName("b")
@@ -460,12 +459,12 @@ public final class WorldMapManager {
 		float var3 = (float)var1 / (float)var2;
 		if (var3 > 8.0F) {
 			return 8.0F;
-		} else if (var3 < 1.0F) {
-			return 1.0F;
-		} else {
-			int var4 = Math.round(var3);
-			return Math.abs((float)var4 - var3) < 0.05F ? (float)var4 : var3;
 		}
+		if (var3 < 1.0F) {
+			return 1.0F;
+		}
+		int var4 = Math.round(var3);
+		return Math.abs((float)var4 - var3) < 0.05F ? (float)var4 : var3;
 	}
 
 	@ObfuscatedName("w")
@@ -477,11 +476,11 @@ public final class WorldMapManager {
 		var2 &= 3;
 		if (var2 == 0) {
 			return var1;
-		} else if (var2 == 1) {
-			return 7 - var0;
-		} else {
-			return var2 == 2 ? 7 - var1 : var0;
 		}
+		if (var2 == 1) {
+			return 7 - var0;
+		}
+		return var2 == 2 ? 7 - var1 : var0;
 	}
 
 	@ObfuscatedName("u")

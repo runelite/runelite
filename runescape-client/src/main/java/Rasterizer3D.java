@@ -358,107 +358,104 @@ public class Rasterizer3D extends Rasterizer2D {
 								var6 += var20;
 								var0 += Rasterizer2D.Rasterizer2D_width;
 							}
-						} else {
-							var2 -= var1;
-							var1 -= var0;
-							var0 = Rasterizer3D_rowOffsets[var0];
+						}
+						var2 -= var1;
+						var1 -= var0;
+						var0 = Rasterizer3D_rowOffsets[var0];
 
+						while (true) {
+							--var1;
+							if (var1 < 0) {
+								while (true) {
+									--var2;
+									if (var2 < 0) {
+										return;
+									}
+
+									Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var5 >> 14, var4 >> 14, var6, var19);
+									var5 += var17;
+									var4 += var15;
+									var6 += var20;
+									var0 += Rasterizer2D.Rasterizer2D_width;
+								}
+							}
+
+							Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
+							var5 += var17;
+							var3 += var16;
+							var6 += var20;
+							var0 += Rasterizer2D.Rasterizer2D_width;
+						}
+					}
+					var4 = var3 <<= 14;
+					if (var0 < 0) {
+						var4 -= var0 * var17;
+						var3 -= var0 * var16;
+						var6 -= var0 * var20;
+						var0 = 0;
+					}
+
+					var5 <<= 14;
+					if (var2 < 0) {
+						var5 -= var15 * var2;
+						var2 = 0;
+					}
+
+					if (var0 != var2 && var17 < var16 || var0 == var2 && var15 > var16) {
+						var1 -= var2;
+						var2 -= var0;
+						var0 = Rasterizer3D_rowOffsets[var0];
+
+						while (true) {
+							--var2;
+							if (var2 < 0) {
+								while (true) {
+									--var1;
+									if (var1 < 0) {
+										return;
+									}
+
+									Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
+									var5 += var15;
+									var3 += var16;
+									var6 += var20;
+									var0 += Rasterizer2D.Rasterizer2D_width;
+								}
+							}
+
+							Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var4 >> 14, var3 >> 14, var6, var19);
+							var4 += var17;
+							var3 += var16;
+							var6 += var20;
+							var0 += Rasterizer2D.Rasterizer2D_width;
+						}
+					}
+					var1 -= var2;
+					var2 -= var0;
+					var0 = Rasterizer3D_rowOffsets[var0];
+
+					while (true) {
+						--var2;
+						if (var2 < 0) {
 							while (true) {
 								--var1;
 								if (var1 < 0) {
-									while (true) {
-										--var2;
-										if (var2 < 0) {
-											return;
-										}
-
-										Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var5 >> 14, var4 >> 14, var6, var19);
-										var5 += var17;
-										var4 += var15;
-										var6 += var20;
-										var0 += Rasterizer2D.Rasterizer2D_width;
-									}
+									return;
 								}
 
-								Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
-								var5 += var17;
+								Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var3 >> 14, var5 >> 14, var6, var19);
+								var5 += var15;
 								var3 += var16;
 								var6 += var20;
 								var0 += Rasterizer2D.Rasterizer2D_width;
 							}
 						}
-					} else {
-						var4 = var3 <<= 14;
-						if (var0 < 0) {
-							var4 -= var0 * var17;
-							var3 -= var0 * var16;
-							var6 -= var0 * var20;
-							var0 = 0;
-						}
 
-						var5 <<= 14;
-						if (var2 < 0) {
-							var5 -= var15 * var2;
-							var2 = 0;
-						}
-
-						if (var0 != var2 && var17 < var16 || var0 == var2 && var15 > var16) {
-							var1 -= var2;
-							var2 -= var0;
-							var0 = Rasterizer3D_rowOffsets[var0];
-
-							while (true) {
-								--var2;
-								if (var2 < 0) {
-									while (true) {
-										--var1;
-										if (var1 < 0) {
-											return;
-										}
-
-										Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
-										var5 += var15;
-										var3 += var16;
-										var6 += var20;
-										var0 += Rasterizer2D.Rasterizer2D_width;
-									}
-								}
-
-								Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var4 >> 14, var3 >> 14, var6, var19);
-								var4 += var17;
-								var3 += var16;
-								var6 += var20;
-								var0 += Rasterizer2D.Rasterizer2D_width;
-							}
-						} else {
-							var1 -= var2;
-							var2 -= var0;
-							var0 = Rasterizer3D_rowOffsets[var0];
-
-							while (true) {
-								--var2;
-								if (var2 < 0) {
-									while (true) {
-										--var1;
-										if (var1 < 0) {
-											return;
-										}
-
-										Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var3 >> 14, var5 >> 14, var6, var19);
-										var5 += var15;
-										var3 += var16;
-										var6 += var20;
-										var0 += Rasterizer2D.Rasterizer2D_width;
-									}
-								}
-
-								Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var3 >> 14, var4 >> 14, var6, var19);
-								var4 += var17;
-								var3 += var16;
-								var6 += var20;
-								var0 += Rasterizer2D.Rasterizer2D_width;
-							}
-						}
+						Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, 0, 0, var3 >> 14, var4 >> 14, var6, var19);
+						var4 += var17;
+						var3 += var16;
+						var6 += var20;
+						var0 += Rasterizer2D.Rasterizer2D_width;
 					}
 				}
 			} else if (var1 <= var2) {
@@ -515,107 +512,104 @@ public class Rasterizer3D extends Rasterizer2D {
 								var7 += var20;
 								var1 += Rasterizer2D.Rasterizer2D_width;
 							}
-						} else {
-							var0 -= var2;
-							var2 -= var1;
-							var1 = Rasterizer3D_rowOffsets[var1];
+						}
+						var0 -= var2;
+						var2 -= var1;
+						var1 = Rasterizer3D_rowOffsets[var1];
 
+						while (true) {
+							--var2;
+							if (var2 < 0) {
+								while (true) {
+									--var0;
+									if (var0 < 0) {
+										return;
+									}
+
+									Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var3 >> 14, var5 >> 14, var7, var19);
+									var3 += var16;
+									var5 += var17;
+									var7 += var20;
+									var1 += Rasterizer2D.Rasterizer2D_width;
+								}
+							}
+
+							Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
+							var3 += var16;
+							var4 += var15;
+							var7 += var20;
+							var1 += Rasterizer2D.Rasterizer2D_width;
+						}
+					}
+					var5 = var4 <<= 14;
+					if (var1 < 0) {
+						var5 -= var16 * var1;
+						var4 -= var15 * var1;
+						var7 -= var20 * var1;
+						var1 = 0;
+					}
+
+					var3 <<= 14;
+					if (var0 < 0) {
+						var3 -= var0 * var17;
+						var0 = 0;
+					}
+
+					if (var16 < var15) {
+						var2 -= var0;
+						var0 -= var1;
+						var1 = Rasterizer3D_rowOffsets[var1];
+
+						while (true) {
+							--var0;
+							if (var0 < 0) {
+								while (true) {
+									--var2;
+									if (var2 < 0) {
+										return;
+									}
+
+									Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
+									var3 += var17;
+									var4 += var15;
+									var7 += var20;
+									var1 += Rasterizer2D.Rasterizer2D_width;
+								}
+							}
+
+							Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var5 >> 14, var4 >> 14, var7, var19);
+							var5 += var16;
+							var4 += var15;
+							var7 += var20;
+							var1 += Rasterizer2D.Rasterizer2D_width;
+						}
+					}
+					var2 -= var0;
+					var0 -= var1;
+					var1 = Rasterizer3D_rowOffsets[var1];
+
+					while (true) {
+						--var0;
+						if (var0 < 0) {
 							while (true) {
 								--var2;
 								if (var2 < 0) {
-									while (true) {
-										--var0;
-										if (var0 < 0) {
-											return;
-										}
-
-										Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var3 >> 14, var5 >> 14, var7, var19);
-										var3 += var16;
-										var5 += var17;
-										var7 += var20;
-										var1 += Rasterizer2D.Rasterizer2D_width;
-									}
+									return;
 								}
 
-								Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
-								var3 += var16;
+								Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var4 >> 14, var3 >> 14, var7, var19);
+								var3 += var17;
 								var4 += var15;
 								var7 += var20;
 								var1 += Rasterizer2D.Rasterizer2D_width;
 							}
 						}
-					} else {
-						var5 = var4 <<= 14;
-						if (var1 < 0) {
-							var5 -= var16 * var1;
-							var4 -= var15 * var1;
-							var7 -= var20 * var1;
-							var1 = 0;
-						}
 
-						var3 <<= 14;
-						if (var0 < 0) {
-							var3 -= var0 * var17;
-							var0 = 0;
-						}
-
-						if (var16 < var15) {
-							var2 -= var0;
-							var0 -= var1;
-							var1 = Rasterizer3D_rowOffsets[var1];
-
-							while (true) {
-								--var0;
-								if (var0 < 0) {
-									while (true) {
-										--var2;
-										if (var2 < 0) {
-											return;
-										}
-
-										Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
-										var3 += var17;
-										var4 += var15;
-										var7 += var20;
-										var1 += Rasterizer2D.Rasterizer2D_width;
-									}
-								}
-
-								Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var5 >> 14, var4 >> 14, var7, var19);
-								var5 += var16;
-								var4 += var15;
-								var7 += var20;
-								var1 += Rasterizer2D.Rasterizer2D_width;
-							}
-						} else {
-							var2 -= var0;
-							var0 -= var1;
-							var1 = Rasterizer3D_rowOffsets[var1];
-
-							while (true) {
-								--var0;
-								if (var0 < 0) {
-									while (true) {
-										--var2;
-										if (var2 < 0) {
-											return;
-										}
-
-										Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var4 >> 14, var3 >> 14, var7, var19);
-										var3 += var17;
-										var4 += var15;
-										var7 += var20;
-										var1 += Rasterizer2D.Rasterizer2D_width;
-									}
-								}
-
-								Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var4 >> 14, var5 >> 14, var7, var19);
-								var5 += var16;
-								var4 += var15;
-								var7 += var20;
-								var1 += Rasterizer2D.Rasterizer2D_width;
-							}
-						}
+						Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, 0, 0, var4 >> 14, var5 >> 14, var7, var19);
+						var5 += var16;
+						var4 += var15;
+						var7 += var20;
+						var1 += Rasterizer2D.Rasterizer2D_width;
 					}
 				}
 			} else if (var2 < Rasterizer3D_clipHeight) {
@@ -671,107 +665,104 @@ public class Rasterizer3D extends Rasterizer2D {
 							var8 += var20;
 							var2 += Rasterizer2D.Rasterizer2D_width;
 						}
-					} else {
-						var1 -= var0;
-						var0 -= var2;
-						var2 = Rasterizer3D_rowOffsets[var2];
+					}
+					var1 -= var0;
+					var0 -= var2;
+					var2 = Rasterizer3D_rowOffsets[var2];
 
+					while (true) {
+						--var0;
+						if (var0 < 0) {
+							while (true) {
+								--var1;
+								if (var1 < 0) {
+									return;
+								}
+
+								Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, 0, 0, var3 >> 14, var4 >> 14, var8, var19);
+								var4 += var15;
+								var3 += var16;
+								var8 += var20;
+								var2 += Rasterizer2D.Rasterizer2D_width;
+							}
+						}
+
+						Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, 0, 0, var5 >> 14, var4 >> 14, var8, var19);
+						var4 += var15;
+						var5 += var17;
+						var8 += var20;
+						var2 += Rasterizer2D.Rasterizer2D_width;
+					}
+				}
+				var3 = var5 <<= 14;
+				if (var2 < 0) {
+					var3 -= var15 * var2;
+					var5 -= var17 * var2;
+					var8 -= var20 * var2;
+					var2 = 0;
+				}
+
+				var4 <<= 14;
+				if (var1 < 0) {
+					var4 -= var16 * var1;
+					var1 = 0;
+				}
+
+				if (var15 < var17) {
+					var0 -= var1;
+					var1 -= var2;
+					var2 = Rasterizer3D_rowOffsets[var2];
+
+					while (true) {
+						--var1;
+						if (var1 < 0) {
+							while (true) {
+								--var0;
+								if (var0 < 0) {
+									return;
+								}
+
+								Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, 0, 0, var4 >> 14, var5 >> 14, var8, var19);
+								var4 += var16;
+								var5 += var17;
+								var8 += var20;
+								var2 += Rasterizer2D.Rasterizer2D_width;
+							}
+						}
+
+						Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, 0, 0, var3 >> 14, var5 >> 14, var8, var19);
+						var3 += var15;
+						var5 += var17;
+						var8 += var20;
+						var2 += Rasterizer2D.Rasterizer2D_width;
+					}
+				}
+				var0 -= var1;
+				var1 -= var2;
+				var2 = Rasterizer3D_rowOffsets[var2];
+
+				while (true) {
+					--var1;
+					if (var1 < 0) {
 						while (true) {
 							--var0;
 							if (var0 < 0) {
-								while (true) {
-									--var1;
-									if (var1 < 0) {
-										return;
-									}
-
-									Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, 0, 0, var3 >> 14, var4 >> 14, var8, var19);
-									var4 += var15;
-									var3 += var16;
-									var8 += var20;
-									var2 += Rasterizer2D.Rasterizer2D_width;
-								}
+								return;
 							}
 
 							Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, 0, 0, var5 >> 14, var4 >> 14, var8, var19);
-							var4 += var15;
+							var4 += var16;
 							var5 += var17;
 							var8 += var20;
 							var2 += Rasterizer2D.Rasterizer2D_width;
 						}
 					}
-				} else {
-					var3 = var5 <<= 14;
-					if (var2 < 0) {
-						var3 -= var15 * var2;
-						var5 -= var17 * var2;
-						var8 -= var20 * var2;
-						var2 = 0;
-					}
 
-					var4 <<= 14;
-					if (var1 < 0) {
-						var4 -= var16 * var1;
-						var1 = 0;
-					}
-
-					if (var15 < var17) {
-						var0 -= var1;
-						var1 -= var2;
-						var2 = Rasterizer3D_rowOffsets[var2];
-
-						while (true) {
-							--var1;
-							if (var1 < 0) {
-								while (true) {
-									--var0;
-									if (var0 < 0) {
-										return;
-									}
-
-									Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, 0, 0, var4 >> 14, var5 >> 14, var8, var19);
-									var4 += var16;
-									var5 += var17;
-									var8 += var20;
-									var2 += Rasterizer2D.Rasterizer2D_width;
-								}
-							}
-
-							Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, 0, 0, var3 >> 14, var5 >> 14, var8, var19);
-							var3 += var15;
-							var5 += var17;
-							var8 += var20;
-							var2 += Rasterizer2D.Rasterizer2D_width;
-						}
-					} else {
-						var0 -= var1;
-						var1 -= var2;
-						var2 = Rasterizer3D_rowOffsets[var2];
-
-						while (true) {
-							--var1;
-							if (var1 < 0) {
-								while (true) {
-									--var0;
-									if (var0 < 0) {
-										return;
-									}
-
-									Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, 0, 0, var5 >> 14, var4 >> 14, var8, var19);
-									var4 += var16;
-									var5 += var17;
-									var8 += var20;
-									var2 += Rasterizer2D.Rasterizer2D_width;
-								}
-							}
-
-							Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, 0, 0, var5 >> 14, var3 >> 14, var8, var19);
-							var3 += var15;
-							var5 += var17;
-							var8 += var20;
-							var2 += Rasterizer2D.Rasterizer2D_width;
-						}
-					}
+					Rasterizer3D_vertAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, 0, 0, var5 >> 14, var3 >> 14, var8, var19);
+					var3 += var15;
+					var5 += var17;
+					var8 += var20;
+					var2 += Rasterizer2D.Rasterizer2D_width;
 				}
 			}
 		}
@@ -947,100 +938,97 @@ public class Rasterizer3D extends Rasterizer2D {
 							var3 += var7;
 							var0 += Rasterizer2D.Rasterizer2D_width;
 						}
-					} else {
-						var2 -= var1;
-						var1 -= var0;
-						var0 = Rasterizer3D_rowOffsets[var0];
+					}
+					var2 -= var1;
+					var1 -= var0;
+					var0 = Rasterizer3D_rowOffsets[var0];
 
+					while (true) {
+						--var1;
+						if (var1 < 0) {
+							while (true) {
+								--var2;
+								if (var2 < 0) {
+									return;
+								}
+
+								Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var4 >> 14, var5 >> 14);
+								var5 += var9;
+								var4 += var8;
+								var0 += Rasterizer2D.Rasterizer2D_width;
+							}
+						}
+
+						Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var3 >> 14, var5 >> 14);
+						var5 += var9;
+						var3 += var7;
+						var0 += Rasterizer2D.Rasterizer2D_width;
+					}
+				}
+				var4 = var3 <<= 14;
+				if (var0 < 0) {
+					var4 -= var0 * var9;
+					var3 -= var0 * var7;
+					var0 = 0;
+				}
+
+				var5 <<= 14;
+				if (var2 < 0) {
+					var5 -= var8 * var2;
+					var2 = 0;
+				}
+
+				if ((var0 == var2 || var9 >= var7) && (var0 != var2 || var8 <= var7)) {
+					var1 -= var2;
+					var2 -= var0;
+					var0 = Rasterizer3D_rowOffsets[var0];
+
+					while (true) {
+						--var2;
+						if (var2 < 0) {
+							while (true) {
+								--var1;
+								if (var1 < 0) {
+									return;
+								}
+
+								Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var3 >> 14, var5 >> 14);
+								var5 += var8;
+								var3 += var7;
+								var0 += Rasterizer2D.Rasterizer2D_width;
+							}
+						}
+
+						Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var3 >> 14, var4 >> 14);
+						var4 += var9;
+						var3 += var7;
+						var0 += Rasterizer2D.Rasterizer2D_width;
+					}
+				}
+				var1 -= var2;
+				var2 -= var0;
+				var0 = Rasterizer3D_rowOffsets[var0];
+
+				while (true) {
+					--var2;
+					if (var2 < 0) {
 						while (true) {
 							--var1;
 							if (var1 < 0) {
-								while (true) {
-									--var2;
-									if (var2 < 0) {
-										return;
-									}
-
-									Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var4 >> 14, var5 >> 14);
-									var5 += var9;
-									var4 += var8;
-									var0 += Rasterizer2D.Rasterizer2D_width;
-								}
+								return;
 							}
 
-							Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var3 >> 14, var5 >> 14);
-							var5 += var9;
+							Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var5 >> 14, var3 >> 14);
+							var5 += var8;
 							var3 += var7;
 							var0 += Rasterizer2D.Rasterizer2D_width;
 						}
 					}
-				} else {
-					var4 = var3 <<= 14;
-					if (var0 < 0) {
-						var4 -= var0 * var9;
-						var3 -= var0 * var7;
-						var0 = 0;
-					}
 
-					var5 <<= 14;
-					if (var2 < 0) {
-						var5 -= var8 * var2;
-						var2 = 0;
-					}
-
-					if ((var0 == var2 || var9 >= var7) && (var0 != var2 || var8 <= var7)) {
-						var1 -= var2;
-						var2 -= var0;
-						var0 = Rasterizer3D_rowOffsets[var0];
-
-						while (true) {
-							--var2;
-							if (var2 < 0) {
-								while (true) {
-									--var1;
-									if (var1 < 0) {
-										return;
-									}
-
-									Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var3 >> 14, var5 >> 14);
-									var5 += var8;
-									var3 += var7;
-									var0 += Rasterizer2D.Rasterizer2D_width;
-								}
-							}
-
-							Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var3 >> 14, var4 >> 14);
-							var4 += var9;
-							var3 += var7;
-							var0 += Rasterizer2D.Rasterizer2D_width;
-						}
-					} else {
-						var1 -= var2;
-						var2 -= var0;
-						var0 = Rasterizer3D_rowOffsets[var0];
-
-						while (true) {
-							--var2;
-							if (var2 < 0) {
-								while (true) {
-									--var1;
-									if (var1 < 0) {
-										return;
-									}
-
-									Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var5 >> 14, var3 >> 14);
-									var5 += var8;
-									var3 += var7;
-									var0 += Rasterizer2D.Rasterizer2D_width;
-								}
-							}
-
-							Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var4 >> 14, var3 >> 14);
-							var4 += var9;
-							var3 += var7;
-							var0 += Rasterizer2D.Rasterizer2D_width;
-						}
-					}
+					Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var0, var6, 0, var4 >> 14, var3 >> 14);
+					var4 += var9;
+					var3 += var7;
+					var0 += Rasterizer2D.Rasterizer2D_width;
 				}
 			}
 		} else if (var1 <= var2) {
@@ -1093,100 +1081,97 @@ public class Rasterizer3D extends Rasterizer2D {
 							var4 += var8;
 							var1 += Rasterizer2D.Rasterizer2D_width;
 						}
-					} else {
-						var0 -= var2;
-						var2 -= var1;
-						var1 = Rasterizer3D_rowOffsets[var1];
+					}
+					var0 -= var2;
+					var2 -= var1;
+					var1 = Rasterizer3D_rowOffsets[var1];
 
+					while (true) {
+						--var2;
+						if (var2 < 0) {
+							while (true) {
+								--var0;
+								if (var0 < 0) {
+									return;
+								}
+
+								Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, 0, var5 >> 14, var3 >> 14);
+								var3 += var7;
+								var5 += var9;
+								var1 += Rasterizer2D.Rasterizer2D_width;
+							}
+						}
+
+						Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, 0, var4 >> 14, var3 >> 14);
+						var3 += var7;
+						var4 += var8;
+						var1 += Rasterizer2D.Rasterizer2D_width;
+					}
+				}
+				var5 = var4 <<= 14;
+				if (var1 < 0) {
+					var5 -= var7 * var1;
+					var4 -= var8 * var1;
+					var1 = 0;
+				}
+
+				var3 <<= 14;
+				if (var0 < 0) {
+					var3 -= var0 * var9;
+					var0 = 0;
+				}
+
+				if (var7 < var8) {
+					var2 -= var0;
+					var0 -= var1;
+					var1 = Rasterizer3D_rowOffsets[var1];
+
+					while (true) {
+						--var0;
+						if (var0 < 0) {
+							while (true) {
+								--var2;
+								if (var2 < 0) {
+									return;
+								}
+
+								Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, 0, var3 >> 14, var4 >> 14);
+								var3 += var9;
+								var4 += var8;
+								var1 += Rasterizer2D.Rasterizer2D_width;
+							}
+						}
+
+						Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, 0, var5 >> 14, var4 >> 14);
+						var5 += var7;
+						var4 += var8;
+						var1 += Rasterizer2D.Rasterizer2D_width;
+					}
+				}
+				var2 -= var0;
+				var0 -= var1;
+				var1 = Rasterizer3D_rowOffsets[var1];
+
+				while (true) {
+					--var0;
+					if (var0 < 0) {
 						while (true) {
 							--var2;
 							if (var2 < 0) {
-								while (true) {
-									--var0;
-									if (var0 < 0) {
-										return;
-									}
-
-									Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, 0, var5 >> 14, var3 >> 14);
-									var3 += var7;
-									var5 += var9;
-									var1 += Rasterizer2D.Rasterizer2D_width;
-								}
+								return;
 							}
 
 							Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, 0, var4 >> 14, var3 >> 14);
-							var3 += var7;
+							var3 += var9;
 							var4 += var8;
 							var1 += Rasterizer2D.Rasterizer2D_width;
 						}
 					}
-				} else {
-					var5 = var4 <<= 14;
-					if (var1 < 0) {
-						var5 -= var7 * var1;
-						var4 -= var8 * var1;
-						var1 = 0;
-					}
 
-					var3 <<= 14;
-					if (var0 < 0) {
-						var3 -= var0 * var9;
-						var0 = 0;
-					}
-
-					if (var7 < var8) {
-						var2 -= var0;
-						var0 -= var1;
-						var1 = Rasterizer3D_rowOffsets[var1];
-
-						while (true) {
-							--var0;
-							if (var0 < 0) {
-								while (true) {
-									--var2;
-									if (var2 < 0) {
-										return;
-									}
-
-									Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, 0, var3 >> 14, var4 >> 14);
-									var3 += var9;
-									var4 += var8;
-									var1 += Rasterizer2D.Rasterizer2D_width;
-								}
-							}
-
-							Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, 0, var5 >> 14, var4 >> 14);
-							var5 += var7;
-							var4 += var8;
-							var1 += Rasterizer2D.Rasterizer2D_width;
-						}
-					} else {
-						var2 -= var0;
-						var0 -= var1;
-						var1 = Rasterizer3D_rowOffsets[var1];
-
-						while (true) {
-							--var0;
-							if (var0 < 0) {
-								while (true) {
-									--var2;
-									if (var2 < 0) {
-										return;
-									}
-
-									Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, 0, var4 >> 14, var3 >> 14);
-									var3 += var9;
-									var4 += var8;
-									var1 += Rasterizer2D.Rasterizer2D_width;
-								}
-							}
-
-							Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, 0, var4 >> 14, var5 >> 14);
-							var5 += var7;
-							var4 += var8;
-							var1 += Rasterizer2D.Rasterizer2D_width;
-						}
-					}
+					Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var1, var6, 0, var4 >> 14, var5 >> 14);
+					var5 += var7;
+					var4 += var8;
+					var1 += Rasterizer2D.Rasterizer2D_width;
 				}
 			}
 		} else if (var2 < Rasterizer3D_clipHeight) {
@@ -1238,100 +1223,97 @@ public class Rasterizer3D extends Rasterizer2D {
 						var5 += var9;
 						var2 += Rasterizer2D.Rasterizer2D_width;
 					}
-				} else {
-					var1 -= var0;
-					var0 -= var2;
-					var2 = Rasterizer3D_rowOffsets[var2];
+				}
+				var1 -= var0;
+				var0 -= var2;
+				var2 = Rasterizer3D_rowOffsets[var2];
 
+				while (true) {
+					--var0;
+					if (var0 < 0) {
+						while (true) {
+							--var1;
+							if (var1 < 0) {
+								return;
+							}
+
+							Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, var6, 0, var3 >> 14, var4 >> 14);
+							var4 += var8;
+							var3 += var7;
+							var2 += Rasterizer2D.Rasterizer2D_width;
+						}
+					}
+
+					Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, var6, 0, var5 >> 14, var4 >> 14);
+					var4 += var8;
+					var5 += var9;
+					var2 += Rasterizer2D.Rasterizer2D_width;
+				}
+			}
+			var3 = var5 <<= 14;
+			if (var2 < 0) {
+				var3 -= var8 * var2;
+				var5 -= var9 * var2;
+				var2 = 0;
+			}
+
+			var4 <<= 14;
+			if (var1 < 0) {
+				var4 -= var7 * var1;
+				var1 = 0;
+			}
+
+			if (var8 < var9) {
+				var0 -= var1;
+				var1 -= var2;
+				var2 = Rasterizer3D_rowOffsets[var2];
+
+				while (true) {
+					--var1;
+					if (var1 < 0) {
+						while (true) {
+							--var0;
+							if (var0 < 0) {
+								return;
+							}
+
+							Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, var6, 0, var4 >> 14, var5 >> 14);
+							var4 += var7;
+							var5 += var9;
+							var2 += Rasterizer2D.Rasterizer2D_width;
+						}
+					}
+
+					Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, var6, 0, var3 >> 14, var5 >> 14);
+					var3 += var8;
+					var5 += var9;
+					var2 += Rasterizer2D.Rasterizer2D_width;
+				}
+			}
+			var0 -= var1;
+			var1 -= var2;
+			var2 = Rasterizer3D_rowOffsets[var2];
+
+			while (true) {
+				--var1;
+				if (var1 < 0) {
 					while (true) {
 						--var0;
 						if (var0 < 0) {
-							while (true) {
-								--var1;
-								if (var1 < 0) {
-									return;
-								}
-
-								Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, var6, 0, var3 >> 14, var4 >> 14);
-								var4 += var8;
-								var3 += var7;
-								var2 += Rasterizer2D.Rasterizer2D_width;
-							}
+							return;
 						}
 
 						Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, var6, 0, var5 >> 14, var4 >> 14);
-						var4 += var8;
+						var4 += var7;
 						var5 += var9;
 						var2 += Rasterizer2D.Rasterizer2D_width;
 					}
 				}
-			} else {
-				var3 = var5 <<= 14;
-				if (var2 < 0) {
-					var3 -= var8 * var2;
-					var5 -= var9 * var2;
-					var2 = 0;
-				}
 
-				var4 <<= 14;
-				if (var1 < 0) {
-					var4 -= var7 * var1;
-					var1 = 0;
-				}
-
-				if (var8 < var9) {
-					var0 -= var1;
-					var1 -= var2;
-					var2 = Rasterizer3D_rowOffsets[var2];
-
-					while (true) {
-						--var1;
-						if (var1 < 0) {
-							while (true) {
-								--var0;
-								if (var0 < 0) {
-									return;
-								}
-
-								Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, var6, 0, var4 >> 14, var5 >> 14);
-								var4 += var7;
-								var5 += var9;
-								var2 += Rasterizer2D.Rasterizer2D_width;
-							}
-						}
-
-						Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, var6, 0, var3 >> 14, var5 >> 14);
-						var3 += var8;
-						var5 += var9;
-						var2 += Rasterizer2D.Rasterizer2D_width;
-					}
-				} else {
-					var0 -= var1;
-					var1 -= var2;
-					var2 = Rasterizer3D_rowOffsets[var2];
-
-					while (true) {
-						--var1;
-						if (var1 < 0) {
-							while (true) {
-								--var0;
-								if (var0 < 0) {
-									return;
-								}
-
-								Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, var6, 0, var5 >> 14, var4 >> 14);
-								var4 += var7;
-								var5 += var9;
-								var2 += Rasterizer2D.Rasterizer2D_width;
-							}
-						}
-
-						Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, var6, 0, var5 >> 14, var3 >> 14);
-						var3 += var8;
-						var5 += var9;
-						var2 += Rasterizer2D.Rasterizer2D_width;
-					}
-				}
+				Rasterizer3D_horizAlpha(Rasterizer2D.Rasterizer2D_pixels, var2, var6, 0, var5 >> 14, var3 >> 14);
+				var3 += var8;
+				var5 += var9;
+				var2 += Rasterizer2D.Rasterizer2D_width;
 			}
 		}
 	}
@@ -1374,41 +1356,14 @@ public class Rasterizer3D extends Rasterizer2D {
 						var0[var1++] = var0[var1];
 						var0[var1++] = var0[var1];
 					}
-				} else {
-					int var6 = Rasterizer3D_alpha;
-					int var7 = 256 - Rasterizer3D_alpha;
-					var2 = (var7 * (var2 & 65280) >> 8 & 65280) + (var7 * (var2 & 16711935) >> 8 & 16711935);
-
-					while (true) {
-						--var3;
-						int var8;
-						if (var3 < 0) {
-							var3 = var5 - var4 & 3;
-
-							while (true) {
-								--var3;
-								if (var3 < 0) {
-									return;
-								}
-
-								var8 = var0[var1];
-								var0[var1++] = ((var8 & 16711935) * var6 >> 8 & 16711935) + var2 + (var6 * (var8 & 65280) >> 8 & 65280);
-							}
-						}
-
-						var8 = var0[var1];
-						var0[var1++] = ((var8 & 16711935) * var6 >> 8 & 16711935) + var2 + (var6 * (var8 & 65280) >> 8 & 65280);
-						var8 = var0[var1];
-						var0[var1++] = ((var8 & 16711935) * var6 >> 8 & 16711935) + var2 + (var6 * (var8 & 65280) >> 8 & 65280);
-						var8 = var0[var1];
-						var0[var1++] = ((var8 & 16711935) * var6 >> 8 & 16711935) + var2 + (var6 * (var8 & 65280) >> 8 & 65280);
-						var8 = var0[var1];
-						var0[var1++] = ((var8 & 16711935) * var6 >> 8 & 16711935) + var2 + (var6 * (var8 & 65280) >> 8 & 65280);
-					}
 				}
-			} else {
+				int var6 = Rasterizer3D_alpha;
+				int var7 = 256 - Rasterizer3D_alpha;
+				var2 = (var7 * (var2 & 65280) >> 8 & 65280) + (var7 * (var2 & 16711935) >> 8 & 16711935);
+
 				while (true) {
 					--var3;
+					int var8;
 					if (var3 < 0) {
 						var3 = var5 - var4 & 3;
 
@@ -1418,15 +1373,40 @@ public class Rasterizer3D extends Rasterizer2D {
 								return;
 							}
 
-							var0[var1++] = var2;
+							var8 = var0[var1];
+							var0[var1++] = ((var8 & 16711935) * var6 >> 8 & 16711935) + var2 + (var6 * (var8 & 65280) >> 8 & 65280);
 						}
 					}
 
-					var0[var1++] = var2;
-					var0[var1++] = var2;
-					var0[var1++] = var2;
-					var0[var1++] = var2;
+					var8 = var0[var1];
+					var0[var1++] = ((var8 & 16711935) * var6 >> 8 & 16711935) + var2 + (var6 * (var8 & 65280) >> 8 & 65280);
+					var8 = var0[var1];
+					var0[var1++] = ((var8 & 16711935) * var6 >> 8 & 16711935) + var2 + (var6 * (var8 & 65280) >> 8 & 65280);
+					var8 = var0[var1];
+					var0[var1++] = ((var8 & 16711935) * var6 >> 8 & 16711935) + var2 + (var6 * (var8 & 65280) >> 8 & 65280);
+					var8 = var0[var1];
+					var0[var1++] = ((var8 & 16711935) * var6 >> 8 & 16711935) + var2 + (var6 * (var8 & 65280) >> 8 & 65280);
 				}
+			}
+			while (true) {
+				--var3;
+				if (var3 < 0) {
+					var3 = var5 - var4 & 3;
+
+					while (true) {
+						--var3;
+						if (var3 < 0) {
+							return;
+						}
+
+						var0[var1++] = var2;
+					}
+				}
+
+				var0[var1++] = var2;
+				var0[var1++] = var2;
+				var0[var1++] = var2;
+				var0[var1++] = var2;
 			}
 		}
 	}
@@ -1546,33 +1526,109 @@ public class Rasterizer3D extends Rasterizer2D {
 									var35 += var37;
 									var38 += var40;
 								}
-							} else {
-								var2 -= var1;
-								var1 -= var0;
-								var0 = Rasterizer3D_rowOffsets[var0];
+							}
+							var2 -= var1;
+							var1 -= var0;
+							var0 = Rasterizer3D_rowOffsets[var0];
 
+							while (true) {
+								--var1;
+								if (var1 < 0) {
+									while (true) {
+										--var2;
+										if (var2 < 0) {
+											return;
+										}
+
+										Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var4 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+										var5 += var28;
+										var4 += var27;
+										var6 += var31;
+										var0 += Rasterizer2D.Rasterizer2D_width;
+										var32 += var34;
+										var35 += var37;
+										var38 += var40;
+									}
+								}
+
+								Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+								var5 += var28;
+								var3 += var26;
+								var6 += var31;
+								var0 += Rasterizer2D.Rasterizer2D_width;
+								var32 += var34;
+								var35 += var37;
+								var38 += var40;
+							}
+						}
+						var4 = var3 <<= 14;
+						if (var0 < 0) {
+							var4 -= var0 * var28;
+							var3 -= var0 * var26;
+							var6 -= var0 * var31;
+							var0 = 0;
+						}
+
+						var5 <<= 14;
+						if (var2 < 0) {
+							var5 -= var27 * var2;
+							var2 = 0;
+						}
+
+						var41 = var0 - Rasterizer3D_clipMidY;
+						var32 += var34 * var41;
+						var35 += var37 * var41;
+						var38 += var40 * var41;
+						if (var0 != var2 && var28 < var26 || var0 == var2 && var27 > var26) {
+							var1 -= var2;
+							var2 -= var0;
+							var0 = Rasterizer3D_rowOffsets[var0];
+
+							while (true) {
+								--var2;
+								if (var2 < 0) {
+									while (true) {
+										--var1;
+										if (var1 < 0) {
+											return;
+										}
+
+										Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+										var5 += var27;
+										var3 += var26;
+										var6 += var31;
+										var0 += Rasterizer2D.Rasterizer2D_width;
+										var32 += var34;
+										var35 += var37;
+										var38 += var40;
+									}
+								}
+
+								Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var4 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+								var4 += var28;
+								var3 += var26;
+								var6 += var31;
+								var0 += Rasterizer2D.Rasterizer2D_width;
+								var32 += var34;
+								var35 += var37;
+								var38 += var40;
+							}
+						}
+						var1 -= var2;
+						var2 -= var0;
+						var0 = Rasterizer3D_rowOffsets[var0];
+
+						while (true) {
+							--var2;
+							if (var2 < 0) {
 								while (true) {
 									--var1;
 									if (var1 < 0) {
-										while (true) {
-											--var2;
-											if (var2 < 0) {
-												return;
-											}
-
-											Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var4 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-											var5 += var28;
-											var4 += var27;
-											var6 += var31;
-											var0 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
+										return;
 									}
 
 									Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-									var5 += var28;
+									var5 += var27;
 									var3 += var26;
 									var6 += var31;
 									var0 += Rasterizer2D.Rasterizer2D_width;
@@ -1581,94 +1637,15 @@ public class Rasterizer3D extends Rasterizer2D {
 									var38 += var40;
 								}
 							}
-						} else {
-							var4 = var3 <<= 14;
-							if (var0 < 0) {
-								var4 -= var0 * var28;
-								var3 -= var0 * var26;
-								var6 -= var0 * var31;
-								var0 = 0;
-							}
 
-							var5 <<= 14;
-							if (var2 < 0) {
-								var5 -= var27 * var2;
-								var2 = 0;
-							}
-
-							var41 = var0 - Rasterizer3D_clipMidY;
-							var32 += var34 * var41;
-							var35 += var37 * var41;
-							var38 += var40 * var41;
-							if (var0 != var2 && var28 < var26 || var0 == var2 && var27 > var26) {
-								var1 -= var2;
-								var2 -= var0;
-								var0 = Rasterizer3D_rowOffsets[var0];
-
-								while (true) {
-									--var2;
-									if (var2 < 0) {
-										while (true) {
-											--var1;
-											if (var1 < 0) {
-												return;
-											}
-
-											Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-											var5 += var27;
-											var3 += var26;
-											var6 += var31;
-											var0 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
-									}
-
-									Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var4 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-									var4 += var28;
-									var3 += var26;
-									var6 += var31;
-									var0 += Rasterizer2D.Rasterizer2D_width;
-									var32 += var34;
-									var35 += var37;
-									var38 += var40;
-								}
-							} else {
-								var1 -= var2;
-								var2 -= var0;
-								var0 = Rasterizer3D_rowOffsets[var0];
-
-								while (true) {
-									--var2;
-									if (var2 < 0) {
-										while (true) {
-											--var1;
-											if (var1 < 0) {
-												return;
-											}
-
-											Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-											var5 += var27;
-											var3 += var26;
-											var6 += var31;
-											var0 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
-									}
-
-									Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var3 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-									var4 += var28;
-									var3 += var26;
-									var6 += var31;
-									var0 += Rasterizer2D.Rasterizer2D_width;
-									var32 += var34;
-									var35 += var37;
-									var38 += var40;
-								}
-							}
+							Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var3 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+							var4 += var28;
+							var3 += var26;
+							var6 += var31;
+							var0 += Rasterizer2D.Rasterizer2D_width;
+							var32 += var34;
+							var35 += var37;
+							var38 += var40;
 						}
 					}
 				} else if (var1 <= var2) {
@@ -1735,33 +1712,109 @@ public class Rasterizer3D extends Rasterizer2D {
 									var35 += var37;
 									var38 += var40;
 								}
-							} else {
-								var0 -= var2;
-								var2 -= var1;
-								var1 = Rasterizer3D_rowOffsets[var1];
+							}
+							var0 -= var2;
+							var2 -= var1;
+							var1 = Rasterizer3D_rowOffsets[var1];
 
+							while (true) {
+								--var2;
+								if (var2 < 0) {
+									while (true) {
+										--var0;
+										if (var0 < 0) {
+											return;
+										}
+
+										Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var5 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+										var3 += var26;
+										var5 += var28;
+										var7 += var31;
+										var1 += Rasterizer2D.Rasterizer2D_width;
+										var32 += var34;
+										var35 += var37;
+										var38 += var40;
+									}
+								}
+
+								Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+								var3 += var26;
+								var4 += var27;
+								var7 += var31;
+								var1 += Rasterizer2D.Rasterizer2D_width;
+								var32 += var34;
+								var35 += var37;
+								var38 += var40;
+							}
+						}
+						var5 = var4 <<= 14;
+						if (var1 < 0) {
+							var5 -= var26 * var1;
+							var4 -= var27 * var1;
+							var7 -= var31 * var1;
+							var1 = 0;
+						}
+
+						var3 <<= 14;
+						if (var0 < 0) {
+							var3 -= var0 * var28;
+							var0 = 0;
+						}
+
+						var41 = var1 - Rasterizer3D_clipMidY;
+						var32 += var34 * var41;
+						var35 += var37 * var41;
+						var38 += var40 * var41;
+						if (var26 < var27) {
+							var2 -= var0;
+							var0 -= var1;
+							var1 = Rasterizer3D_rowOffsets[var1];
+
+							while (true) {
+								--var0;
+								if (var0 < 0) {
+									while (true) {
+										--var2;
+										if (var2 < 0) {
+											return;
+										}
+
+										Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+										var3 += var28;
+										var4 += var27;
+										var7 += var31;
+										var1 += Rasterizer2D.Rasterizer2D_width;
+										var32 += var34;
+										var35 += var37;
+										var38 += var40;
+									}
+								}
+
+								Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var5 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+								var5 += var26;
+								var4 += var27;
+								var7 += var31;
+								var1 += Rasterizer2D.Rasterizer2D_width;
+								var32 += var34;
+								var35 += var37;
+								var38 += var40;
+							}
+						}
+						var2 -= var0;
+						var0 -= var1;
+						var1 = Rasterizer3D_rowOffsets[var1];
+
+						while (true) {
+							--var0;
+							if (var0 < 0) {
 								while (true) {
 									--var2;
 									if (var2 < 0) {
-										while (true) {
-											--var0;
-											if (var0 < 0) {
-												return;
-											}
-
-											Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var5 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-											var3 += var26;
-											var5 += var28;
-											var7 += var31;
-											var1 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
+										return;
 									}
 
 									Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-									var3 += var26;
+									var3 += var28;
 									var4 += var27;
 									var7 += var31;
 									var1 += Rasterizer2D.Rasterizer2D_width;
@@ -1770,94 +1823,15 @@ public class Rasterizer3D extends Rasterizer2D {
 									var38 += var40;
 								}
 							}
-						} else {
-							var5 = var4 <<= 14;
-							if (var1 < 0) {
-								var5 -= var26 * var1;
-								var4 -= var27 * var1;
-								var7 -= var31 * var1;
-								var1 = 0;
-							}
 
-							var3 <<= 14;
-							if (var0 < 0) {
-								var3 -= var0 * var28;
-								var0 = 0;
-							}
-
-							var41 = var1 - Rasterizer3D_clipMidY;
-							var32 += var34 * var41;
-							var35 += var37 * var41;
-							var38 += var40 * var41;
-							if (var26 < var27) {
-								var2 -= var0;
-								var0 -= var1;
-								var1 = Rasterizer3D_rowOffsets[var1];
-
-								while (true) {
-									--var0;
-									if (var0 < 0) {
-										while (true) {
-											--var2;
-											if (var2 < 0) {
-												return;
-											}
-
-											Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-											var3 += var28;
-											var4 += var27;
-											var7 += var31;
-											var1 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
-									}
-
-									Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var5 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-									var5 += var26;
-									var4 += var27;
-									var7 += var31;
-									var1 += Rasterizer2D.Rasterizer2D_width;
-									var32 += var34;
-									var35 += var37;
-									var38 += var40;
-								}
-							} else {
-								var2 -= var0;
-								var0 -= var1;
-								var1 = Rasterizer3D_rowOffsets[var1];
-
-								while (true) {
-									--var0;
-									if (var0 < 0) {
-										while (true) {
-											--var2;
-											if (var2 < 0) {
-												return;
-											}
-
-											Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-											var3 += var28;
-											var4 += var27;
-											var7 += var31;
-											var1 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
-									}
-
-									Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var4 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-									var5 += var26;
-									var4 += var27;
-									var7 += var31;
-									var1 += Rasterizer2D.Rasterizer2D_width;
-									var32 += var34;
-									var35 += var37;
-									var38 += var40;
-								}
-							}
+							Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var4 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+							var5 += var26;
+							var4 += var27;
+							var7 += var31;
+							var1 += Rasterizer2D.Rasterizer2D_width;
+							var32 += var34;
+							var35 += var37;
+							var38 += var40;
 						}
 					}
 				} else if (var2 < Rasterizer3D_clipHeight) {
@@ -1923,33 +1897,109 @@ public class Rasterizer3D extends Rasterizer2D {
 								var35 += var37;
 								var38 += var40;
 							}
-						} else {
-							var1 -= var0;
-							var0 -= var2;
-							var2 = Rasterizer3D_rowOffsets[var2];
+						}
+						var1 -= var0;
+						var0 -= var2;
+						var2 = Rasterizer3D_rowOffsets[var2];
 
+						while (true) {
+							--var0;
+							if (var0 < 0) {
+								while (true) {
+									--var1;
+									if (var1 < 0) {
+										return;
+									}
+
+									Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var3 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+									var4 += var27;
+									var3 += var26;
+									var8 += var31;
+									var2 += Rasterizer2D.Rasterizer2D_width;
+									var32 += var34;
+									var35 += var37;
+									var38 += var40;
+								}
+							}
+
+							Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+							var4 += var27;
+							var5 += var28;
+							var8 += var31;
+							var2 += Rasterizer2D.Rasterizer2D_width;
+							var32 += var34;
+							var35 += var37;
+							var38 += var40;
+						}
+					}
+					var3 = var5 <<= 14;
+					if (var2 < 0) {
+						var3 -= var27 * var2;
+						var5 -= var28 * var2;
+						var8 -= var31 * var2;
+						var2 = 0;
+					}
+
+					var4 <<= 14;
+					if (var1 < 0) {
+						var4 -= var26 * var1;
+						var1 = 0;
+					}
+
+					var41 = var2 - Rasterizer3D_clipMidY;
+					var32 += var34 * var41;
+					var35 += var37 * var41;
+					var38 += var40 * var41;
+					if (var27 < var28) {
+						var0 -= var1;
+						var1 -= var2;
+						var2 = Rasterizer3D_rowOffsets[var2];
+
+						while (true) {
+							--var1;
+							if (var1 < 0) {
+								while (true) {
+									--var0;
+									if (var0 < 0) {
+										return;
+									}
+
+									Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+									var4 += var26;
+									var5 += var28;
+									var8 += var31;
+									var2 += Rasterizer2D.Rasterizer2D_width;
+									var32 += var34;
+									var35 += var37;
+									var38 += var40;
+								}
+							}
+
+							Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var3 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+							var3 += var27;
+							var5 += var28;
+							var8 += var31;
+							var2 += Rasterizer2D.Rasterizer2D_width;
+							var32 += var34;
+							var35 += var37;
+							var38 += var40;
+						}
+					}
+					var0 -= var1;
+					var1 -= var2;
+					var2 = Rasterizer3D_rowOffsets[var2];
+
+					while (true) {
+						--var1;
+						if (var1 < 0) {
 							while (true) {
 								--var0;
 								if (var0 < 0) {
-									while (true) {
-										--var1;
-										if (var1 < 0) {
-											return;
-										}
-
-										Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var3 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-										var4 += var27;
-										var3 += var26;
-										var8 += var31;
-										var2 += Rasterizer2D.Rasterizer2D_width;
-										var32 += var34;
-										var35 += var37;
-										var38 += var40;
-									}
+									return;
 								}
 
 								Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-								var4 += var27;
+								var4 += var26;
 								var5 += var28;
 								var8 += var31;
 								var2 += Rasterizer2D.Rasterizer2D_width;
@@ -1958,94 +2008,15 @@ public class Rasterizer3D extends Rasterizer2D {
 								var38 += var40;
 							}
 						}
-					} else {
-						var3 = var5 <<= 14;
-						if (var2 < 0) {
-							var3 -= var27 * var2;
-							var5 -= var28 * var2;
-							var8 -= var31 * var2;
-							var2 = 0;
-						}
 
-						var4 <<= 14;
-						if (var1 < 0) {
-							var4 -= var26 * var1;
-							var1 = 0;
-						}
-
-						var41 = var2 - Rasterizer3D_clipMidY;
-						var32 += var34 * var41;
-						var35 += var37 * var41;
-						var38 += var40 * var41;
-						if (var27 < var28) {
-							var0 -= var1;
-							var1 -= var2;
-							var2 = Rasterizer3D_rowOffsets[var2];
-
-							while (true) {
-								--var1;
-								if (var1 < 0) {
-									while (true) {
-										--var0;
-										if (var0 < 0) {
-											return;
-										}
-
-										Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-										var4 += var26;
-										var5 += var28;
-										var8 += var31;
-										var2 += Rasterizer2D.Rasterizer2D_width;
-										var32 += var34;
-										var35 += var37;
-										var38 += var40;
-									}
-								}
-
-								Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var3 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-								var3 += var27;
-								var5 += var28;
-								var8 += var31;
-								var2 += Rasterizer2D.Rasterizer2D_width;
-								var32 += var34;
-								var35 += var37;
-								var38 += var40;
-							}
-						} else {
-							var0 -= var1;
-							var1 -= var2;
-							var2 = Rasterizer3D_rowOffsets[var2];
-
-							while (true) {
-								--var1;
-								if (var1 < 0) {
-									while (true) {
-										--var0;
-										if (var0 < 0) {
-											return;
-										}
-
-										Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-										var4 += var26;
-										var5 += var28;
-										var8 += var31;
-										var2 += Rasterizer2D.Rasterizer2D_width;
-										var32 += var34;
-										var35 += var37;
-										var38 += var40;
-									}
-								}
-
-								Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var5 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-								var3 += var27;
-								var5 += var28;
-								var8 += var31;
-								var2 += Rasterizer2D.Rasterizer2D_width;
-								var32 += var34;
-								var35 += var37;
-								var38 += var40;
-							}
-						}
+						Rasterizer3D_iDontKnow(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var5 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+						var3 += var27;
+						var5 += var28;
+						var8 += var31;
+						var2 += Rasterizer2D.Rasterizer2D_width;
+						var32 += var34;
+						var35 += var37;
+						var38 += var40;
 					}
 				}
 			}
@@ -2588,33 +2559,109 @@ public class Rasterizer3D extends Rasterizer2D {
 									var35 += var37;
 									var38 += var40;
 								}
-							} else {
-								var2 -= var1;
-								var1 -= var0;
-								var0 = Rasterizer3D_rowOffsets[var0];
+							}
+							var2 -= var1;
+							var1 -= var0;
+							var0 = Rasterizer3D_rowOffsets[var0];
 
+							while (true) {
+								--var1;
+								if (var1 < 0) {
+									while (true) {
+										--var2;
+										if (var2 < 0) {
+											return;
+										}
+
+										Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var5 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+										var5 += var28;
+										var4 += var27;
+										var6 += var31;
+										var0 += Rasterizer2D.Rasterizer2D_width;
+										var32 += var34;
+										var35 += var37;
+										var38 += var40;
+									}
+								}
+
+								Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+								var5 += var28;
+								var3 += var26;
+								var6 += var31;
+								var0 += Rasterizer2D.Rasterizer2D_width;
+								var32 += var34;
+								var35 += var37;
+								var38 += var40;
+							}
+						}
+						var4 = var3 <<= 14;
+						if (var0 < 0) {
+							var4 -= var0 * var28;
+							var3 -= var0 * var26;
+							var6 -= var0 * var31;
+							var0 = 0;
+						}
+
+						var5 <<= 14;
+						if (var2 < 0) {
+							var5 -= var27 * var2;
+							var2 = 0;
+						}
+
+						var41 = var0 - Rasterizer3D_clipMidY;
+						var32 += var34 * var41;
+						var35 += var37 * var41;
+						var38 += var40 * var41;
+						if (var0 != var2 && var28 < var26 || var0 == var2 && var27 > var26) {
+							var1 -= var2;
+							var2 -= var0;
+							var0 = Rasterizer3D_rowOffsets[var0];
+
+							while (true) {
+								--var2;
+								if (var2 < 0) {
+									while (true) {
+										--var1;
+										if (var1 < 0) {
+											return;
+										}
+
+										Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+										var5 += var27;
+										var3 += var26;
+										var6 += var31;
+										var0 += Rasterizer2D.Rasterizer2D_width;
+										var32 += var34;
+										var35 += var37;
+										var38 += var40;
+									}
+								}
+
+								Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var4 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+								var4 += var28;
+								var3 += var26;
+								var6 += var31;
+								var0 += Rasterizer2D.Rasterizer2D_width;
+								var32 += var34;
+								var35 += var37;
+								var38 += var40;
+							}
+						}
+						var1 -= var2;
+						var2 -= var0;
+						var0 = Rasterizer3D_rowOffsets[var0];
+
+						while (true) {
+							--var2;
+							if (var2 < 0) {
 								while (true) {
 									--var1;
 									if (var1 < 0) {
-										while (true) {
-											--var2;
-											if (var2 < 0) {
-												return;
-											}
-
-											Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var5 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-											var5 += var28;
-											var4 += var27;
-											var6 += var31;
-											var0 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
+										return;
 									}
 
-									Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-									var5 += var28;
+									Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+									var5 += var27;
 									var3 += var26;
 									var6 += var31;
 									var0 += Rasterizer2D.Rasterizer2D_width;
@@ -2623,94 +2670,15 @@ public class Rasterizer3D extends Rasterizer2D {
 									var38 += var40;
 								}
 							}
-						} else {
-							var4 = var3 <<= 14;
-							if (var0 < 0) {
-								var4 -= var0 * var28;
-								var3 -= var0 * var26;
-								var6 -= var0 * var31;
-								var0 = 0;
-							}
 
-							var5 <<= 14;
-							if (var2 < 0) {
-								var5 -= var27 * var2;
-								var2 = 0;
-							}
-
-							var41 = var0 - Rasterizer3D_clipMidY;
-							var32 += var34 * var41;
-							var35 += var37 * var41;
-							var38 += var40 * var41;
-							if (var0 != var2 && var28 < var26 || var0 == var2 && var27 > var26) {
-								var1 -= var2;
-								var2 -= var0;
-								var0 = Rasterizer3D_rowOffsets[var0];
-
-								while (true) {
-									--var2;
-									if (var2 < 0) {
-										while (true) {
-											--var1;
-											if (var1 < 0) {
-												return;
-											}
-
-											Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-											var5 += var27;
-											var3 += var26;
-											var6 += var31;
-											var0 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
-									}
-
-									Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var4 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-									var4 += var28;
-									var3 += var26;
-									var6 += var31;
-									var0 += Rasterizer2D.Rasterizer2D_width;
-									var32 += var34;
-									var35 += var37;
-									var38 += var40;
-								}
-							} else {
-								var1 -= var2;
-								var2 -= var0;
-								var0 = Rasterizer3D_rowOffsets[var0];
-
-								while (true) {
-									--var2;
-									if (var2 < 0) {
-										while (true) {
-											--var1;
-											if (var1 < 0) {
-												return;
-											}
-
-											Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-											var5 += var27;
-											var3 += var26;
-											var6 += var31;
-											var0 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
-									}
-
-									Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var3 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
-									var4 += var28;
-									var3 += var26;
-									var6 += var31;
-									var0 += Rasterizer2D.Rasterizer2D_width;
-									var32 += var34;
-									var35 += var37;
-									var38 += var40;
-								}
-							}
+							Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var0, var3 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+							var4 += var28;
+							var3 += var26;
+							var6 += var31;
+							var0 += Rasterizer2D.Rasterizer2D_width;
+							var32 += var34;
+							var35 += var37;
+							var38 += var40;
 						}
 					}
 				} else if (var1 <= var2) {
@@ -2777,33 +2745,109 @@ public class Rasterizer3D extends Rasterizer2D {
 									var35 += var37;
 									var38 += var40;
 								}
-							} else {
-								var0 -= var2;
-								var2 -= var1;
-								var1 = Rasterizer3D_rowOffsets[var1];
+							}
+							var0 -= var2;
+							var2 -= var1;
+							var1 = Rasterizer3D_rowOffsets[var1];
 
+							while (true) {
+								--var2;
+								if (var2 < 0) {
+									while (true) {
+										--var0;
+										if (var0 < 0) {
+											return;
+										}
+
+										Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var3 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+										var3 += var26;
+										var5 += var28;
+										var7 += var31;
+										var1 += Rasterizer2D.Rasterizer2D_width;
+										var32 += var34;
+										var35 += var37;
+										var38 += var40;
+									}
+								}
+
+								Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+								var3 += var26;
+								var4 += var27;
+								var7 += var31;
+								var1 += Rasterizer2D.Rasterizer2D_width;
+								var32 += var34;
+								var35 += var37;
+								var38 += var40;
+							}
+						}
+						var5 = var4 <<= 14;
+						if (var1 < 0) {
+							var5 -= var26 * var1;
+							var4 -= var27 * var1;
+							var7 -= var31 * var1;
+							var1 = 0;
+						}
+
+						var3 <<= 14;
+						if (var0 < 0) {
+							var3 -= var0 * var28;
+							var0 = 0;
+						}
+
+						var41 = var1 - Rasterizer3D_clipMidY;
+						var32 += var34 * var41;
+						var35 += var37 * var41;
+						var38 += var40 * var41;
+						if (var26 < var27) {
+							var2 -= var0;
+							var0 -= var1;
+							var1 = Rasterizer3D_rowOffsets[var1];
+
+							while (true) {
+								--var0;
+								if (var0 < 0) {
+									while (true) {
+										--var2;
+										if (var2 < 0) {
+											return;
+										}
+
+										Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+										var3 += var28;
+										var4 += var27;
+										var7 += var31;
+										var1 += Rasterizer2D.Rasterizer2D_width;
+										var32 += var34;
+										var35 += var37;
+										var38 += var40;
+									}
+								}
+
+								Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var5 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+								var5 += var26;
+								var4 += var27;
+								var7 += var31;
+								var1 += Rasterizer2D.Rasterizer2D_width;
+								var32 += var34;
+								var35 += var37;
+								var38 += var40;
+							}
+						}
+						var2 -= var0;
+						var0 -= var1;
+						var1 = Rasterizer3D_rowOffsets[var1];
+
+						while (true) {
+							--var0;
+							if (var0 < 0) {
 								while (true) {
 									--var2;
 									if (var2 < 0) {
-										while (true) {
-											--var0;
-											if (var0 < 0) {
-												return;
-											}
-
-											Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var3 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-											var3 += var26;
-											var5 += var28;
-											var7 += var31;
-											var1 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
+										return;
 									}
 
-									Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-									var3 += var26;
+									Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+									var3 += var28;
 									var4 += var27;
 									var7 += var31;
 									var1 += Rasterizer2D.Rasterizer2D_width;
@@ -2812,94 +2856,15 @@ public class Rasterizer3D extends Rasterizer2D {
 									var38 += var40;
 								}
 							}
-						} else {
-							var5 = var4 <<= 14;
-							if (var1 < 0) {
-								var5 -= var26 * var1;
-								var4 -= var27 * var1;
-								var7 -= var31 * var1;
-								var1 = 0;
-							}
 
-							var3 <<= 14;
-							if (var0 < 0) {
-								var3 -= var0 * var28;
-								var0 = 0;
-							}
-
-							var41 = var1 - Rasterizer3D_clipMidY;
-							var32 += var34 * var41;
-							var35 += var37 * var41;
-							var38 += var40 * var41;
-							if (var26 < var27) {
-								var2 -= var0;
-								var0 -= var1;
-								var1 = Rasterizer3D_rowOffsets[var1];
-
-								while (true) {
-									--var0;
-									if (var0 < 0) {
-										while (true) {
-											--var2;
-											if (var2 < 0) {
-												return;
-											}
-
-											Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-											var3 += var28;
-											var4 += var27;
-											var7 += var31;
-											var1 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
-									}
-
-									Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var5 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-									var5 += var26;
-									var4 += var27;
-									var7 += var31;
-									var1 += Rasterizer2D.Rasterizer2D_width;
-									var32 += var34;
-									var35 += var37;
-									var38 += var40;
-								}
-							} else {
-								var2 -= var0;
-								var0 -= var1;
-								var1 = Rasterizer3D_rowOffsets[var1];
-
-								while (true) {
-									--var0;
-									if (var0 < 0) {
-										while (true) {
-											--var2;
-											if (var2 < 0) {
-												return;
-											}
-
-											Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-											var3 += var28;
-											var4 += var27;
-											var7 += var31;
-											var1 += Rasterizer2D.Rasterizer2D_width;
-											var32 += var34;
-											var35 += var37;
-											var38 += var40;
-										}
-									}
-
-									Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var4 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
-									var5 += var26;
-									var4 += var27;
-									var7 += var31;
-									var1 += Rasterizer2D.Rasterizer2D_width;
-									var32 += var34;
-									var35 += var37;
-									var38 += var40;
-								}
-							}
+							Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var1, var4 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+							var5 += var26;
+							var4 += var27;
+							var7 += var31;
+							var1 += Rasterizer2D.Rasterizer2D_width;
+							var32 += var34;
+							var35 += var37;
+							var38 += var40;
 						}
 					}
 				} else if (var2 < Rasterizer3D_clipHeight) {
@@ -2965,33 +2930,109 @@ public class Rasterizer3D extends Rasterizer2D {
 								var35 += var37;
 								var38 += var40;
 							}
-						} else {
-							var1 -= var0;
-							var0 -= var2;
-							var2 = Rasterizer3D_rowOffsets[var2];
+						}
+						var1 -= var0;
+						var0 -= var2;
+						var2 = Rasterizer3D_rowOffsets[var2];
 
+						while (true) {
+							--var0;
+							if (var0 < 0) {
+								while (true) {
+									--var1;
+									if (var1 < 0) {
+										return;
+									}
+
+									Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var3 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+									var4 += var27;
+									var3 += var26;
+									var8 += var31;
+									var2 += Rasterizer2D.Rasterizer2D_width;
+									var32 += var34;
+									var35 += var37;
+									var38 += var40;
+								}
+							}
+
+							Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+							var4 += var27;
+							var5 += var28;
+							var8 += var31;
+							var2 += Rasterizer2D.Rasterizer2D_width;
+							var32 += var34;
+							var35 += var37;
+							var38 += var40;
+						}
+					}
+					var3 = var5 <<= 14;
+					if (var2 < 0) {
+						var3 -= var27 * var2;
+						var5 -= var28 * var2;
+						var8 -= var31 * var2;
+						var2 = 0;
+					}
+
+					var4 <<= 14;
+					if (var1 < 0) {
+						var4 -= var26 * var1;
+						var1 = 0;
+					}
+
+					var41 = var2 - Rasterizer3D_clipMidY;
+					var32 += var34 * var41;
+					var35 += var37 * var41;
+					var38 += var40 * var41;
+					if (var27 < var28) {
+						var0 -= var1;
+						var1 -= var2;
+						var2 = Rasterizer3D_rowOffsets[var2];
+
+						while (true) {
+							--var1;
+							if (var1 < 0) {
+								while (true) {
+									--var0;
+									if (var0 < 0) {
+										return;
+									}
+
+									Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+									var4 += var26;
+									var5 += var28;
+									var8 += var31;
+									var2 += Rasterizer2D.Rasterizer2D_width;
+									var32 += var34;
+									var35 += var37;
+									var38 += var40;
+								}
+							}
+
+							Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var3 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+							var3 += var27;
+							var5 += var28;
+							var8 += var31;
+							var2 += Rasterizer2D.Rasterizer2D_width;
+							var32 += var34;
+							var35 += var37;
+							var38 += var40;
+						}
+					}
+					var0 -= var1;
+					var1 -= var2;
+					var2 = Rasterizer3D_rowOffsets[var2];
+
+					while (true) {
+						--var1;
+						if (var1 < 0) {
 							while (true) {
 								--var0;
 								if (var0 < 0) {
-									while (true) {
-										--var1;
-										if (var1 < 0) {
-											return;
-										}
-
-										Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var3 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-										var4 += var27;
-										var3 += var26;
-										var8 += var31;
-										var2 += Rasterizer2D.Rasterizer2D_width;
-										var32 += var34;
-										var35 += var37;
-										var38 += var40;
-									}
+									return;
 								}
 
 								Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-								var4 += var27;
+								var4 += var26;
 								var5 += var28;
 								var8 += var31;
 								var2 += Rasterizer2D.Rasterizer2D_width;
@@ -3000,94 +3041,15 @@ public class Rasterizer3D extends Rasterizer2D {
 								var38 += var40;
 							}
 						}
-					} else {
-						var3 = var5 <<= 14;
-						if (var2 < 0) {
-							var3 -= var27 * var2;
-							var5 -= var28 * var2;
-							var8 -= var31 * var2;
-							var2 = 0;
-						}
 
-						var4 <<= 14;
-						if (var1 < 0) {
-							var4 -= var26 * var1;
-							var1 = 0;
-						}
-
-						var41 = var2 - Rasterizer3D_clipMidY;
-						var32 += var34 * var41;
-						var35 += var37 * var41;
-						var38 += var40 * var41;
-						if (var27 < var28) {
-							var0 -= var1;
-							var1 -= var2;
-							var2 = Rasterizer3D_rowOffsets[var2];
-
-							while (true) {
-								--var1;
-								if (var1 < 0) {
-									while (true) {
-										--var0;
-										if (var0 < 0) {
-											return;
-										}
-
-										Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-										var4 += var26;
-										var5 += var28;
-										var8 += var31;
-										var2 += Rasterizer2D.Rasterizer2D_width;
-										var32 += var34;
-										var35 += var37;
-										var38 += var40;
-									}
-								}
-
-								Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var3 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-								var3 += var27;
-								var5 += var28;
-								var8 += var31;
-								var2 += Rasterizer2D.Rasterizer2D_width;
-								var32 += var34;
-								var35 += var37;
-								var38 += var40;
-							}
-						} else {
-							var0 -= var1;
-							var1 -= var2;
-							var2 = Rasterizer3D_rowOffsets[var2];
-
-							while (true) {
-								--var1;
-								if (var1 < 0) {
-									while (true) {
-										--var0;
-										if (var0 < 0) {
-											return;
-										}
-
-										Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-										var4 += var26;
-										var5 += var28;
-										var8 += var31;
-										var2 += Rasterizer2D.Rasterizer2D_width;
-										var32 += var34;
-										var35 += var37;
-										var38 += var40;
-									}
-								}
-
-								Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var5 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
-								var3 += var27;
-								var5 += var28;
-								var8 += var31;
-								var2 += Rasterizer2D.Rasterizer2D_width;
-								var32 += var34;
-								var35 += var37;
-								var38 += var40;
-							}
-						}
+						Rasterizer3D_textureAlpha(Rasterizer2D.Rasterizer2D_pixels, var19, 0, 0, var2, var5 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+						var3 += var27;
+						var5 += var28;
+						var8 += var31;
+						var2 += Rasterizer2D.Rasterizer2D_width;
+						var32 += var34;
+						var35 += var37;
+						var38 += var40;
 					}
 				}
 			}

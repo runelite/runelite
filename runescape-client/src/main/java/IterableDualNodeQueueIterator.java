@@ -56,9 +56,8 @@ public class IterableDualNodeQueueIterator implements Iterator {
 	public void remove() {
 		if (this.last == null) {
 			throw new IllegalStateException();
-		} else {
-			this.last.removeDual();
-			this.last = null;
 		}
+		this.last.removeDual();
+		this.last = null;
 	}
 }

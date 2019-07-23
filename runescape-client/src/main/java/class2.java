@@ -53,9 +53,8 @@ final class class2 implements class0 {
 		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
 		if (var2 == null) {
 			return 0;
-		} else {
-			return var1 >= 0 && var1 < var2.quantities.length ? var2.quantities[var1] : 0;
 		}
+		return var1 >= 0 && var1 < var2.quantities.length ? var2.quantities[var1] : 0;
 	}
 
 	@ObfuscatedName("an")

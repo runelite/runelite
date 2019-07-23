@@ -466,7 +466,8 @@ public class VarbitDefinition extends DualNode {
 
 									return;
 								}
-							} else if (Login.loginIndex == 3) {
+							}
+							if (Login.loginIndex == 3) {
 								var18 = Login.loginBoxX + 180;
 								var20 = 276;
 								if (var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {

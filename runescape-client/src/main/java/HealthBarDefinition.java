@@ -167,19 +167,17 @@ public class HealthBarDefinition extends DualNode {
 	public Sprite getFrontSprite() {
 		if (this.frontSpriteID < 0) {
 			return null;
-		} else {
-			Sprite var1 = (Sprite)HealthBarDefinition_cachedSprites.get((long)this.frontSpriteID);
-			if (var1 != null) {
-				return var1;
-			} else {
-				var1 = class65.loadSprite(HealthBarDefinition_spritesArchive, this.frontSpriteID, 0);
-				if (var1 != null) {
-					HealthBarDefinition_cachedSprites.put(var1, (long)this.frontSpriteID);
-				}
-
-				return var1;
-			}
 		}
+		Sprite var1 = (Sprite)HealthBarDefinition_cachedSprites.get((long)this.frontSpriteID);
+		if (var1 != null) {
+			return var1;
+		}
+		var1 = class65.SpriteBuffer_getSprite(HealthBarDefinition_spritesArchive, this.frontSpriteID, 0);
+		if (var1 != null) {
+			HealthBarDefinition_cachedSprites.put(var1, (long)this.frontSpriteID);
+		}
+
+		return var1;
 	}
 
 	@ObfuscatedName("k")
@@ -191,18 +189,16 @@ public class HealthBarDefinition extends DualNode {
 	public Sprite getBackSprite() {
 		if (this.backSpriteID < 0) {
 			return null;
-		} else {
-			Sprite var1 = (Sprite)HealthBarDefinition_cachedSprites.get((long)this.backSpriteID);
-			if (var1 != null) {
-				return var1;
-			} else {
-				var1 = class65.loadSprite(HealthBarDefinition_spritesArchive, this.backSpriteID, 0);
-				if (var1 != null) {
-					HealthBarDefinition_cachedSprites.put(var1, (long)this.backSpriteID);
-				}
-
-				return var1;
-			}
 		}
+		Sprite var1 = (Sprite)HealthBarDefinition_cachedSprites.get((long)this.backSpriteID);
+		if (var1 != null) {
+			return var1;
+		}
+		var1 = class65.SpriteBuffer_getSprite(HealthBarDefinition_spritesArchive, this.backSpriteID, 0);
+		if (var1 != null) {
+			HealthBarDefinition_cachedSprites.put(var1, (long)this.backSpriteID);
+		}
+
+		return var1;
 	}
 }

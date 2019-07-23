@@ -85,13 +85,11 @@ public class HealthBar extends Node {
 
 			if (this.definition.int5 + var2.cycle + var2.cycleOffset > var1) {
 				return var2;
-			} else {
-				var2.remove();
-				return null;
 			}
-		} else {
+			var2.remove();
 			return null;
 		}
+		return null;
 	}
 
 	@ObfuscatedName("e")

@@ -101,9 +101,8 @@ public class WorldMapSection2 implements WorldMapSection {
 	public boolean containsCoord(int var1, int var2, int var3) {
 		if (var1 >= this.minPlane && var1 < this.planes + this.minPlane) {
 			return var2 >> 6 >= this.regionStartX && var2 >> 6 <= this.regionEndX && var3 >> 6 >= this.regionStartY && var3 >> 6 <= this.regionEndY;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@ObfuscatedName("e")
@@ -125,10 +124,9 @@ public class WorldMapSection2 implements WorldMapSection {
 	public int[] getBorderTileLengths(int var1, int var2, int var3) {
 		if (!this.containsCoord(var1, var2, var3)) {
 			return null;
-		} else {
-			int[] var4 = new int[]{this.field202 * 64 - this.regionStartX * 64 + var2, var3 + (this.field203 * 64 - this.regionStartY * 64)};
-			return var4;
 		}
+		int[] var4 = new int[]{this.field202 * 64 - this.regionStartX * 64 + var2, var3 + (this.field203 * 64 - this.regionStartY * 64)};
+		return var4;
 	}
 
 	@ObfuscatedName("k")
@@ -140,11 +138,10 @@ public class WorldMapSection2 implements WorldMapSection {
 	public Coord coord(int var1, int var2) {
 		if (!this.containsPosition(var1, var2)) {
 			return null;
-		} else {
-			int var3 = this.regionStartX * 64 - this.field202 * 64 + var1;
-			int var4 = this.regionStartY * 64 - this.field203 * 64 + var2;
-			return new Coord(this.minPlane, var3, var4);
 		}
+		int var3 = this.regionStartX * 64 - this.field202 * 64 + var1;
+		int var4 = this.regionStartY * 64 - this.field203 * 64 + var2;
+		return new Coord(this.minPlane, var3, var4);
 	}
 
 	@ObfuscatedName("l")

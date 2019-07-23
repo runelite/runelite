@@ -138,24 +138,28 @@ public class ScriptEvent extends Node {
 		if (var0 == ScriptOpcodes.IF_GETX) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.x;
 			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETY) {
+		}
+		if (var0 == ScriptOpcodes.IF_GETY) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.y;
 			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETWIDTH) {
+		}
+		if (var0 == ScriptOpcodes.IF_GETWIDTH) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.width;
 			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETHEIGHT) {
+		}
+		if (var0 == ScriptOpcodes.IF_GETHEIGHT) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.height;
 			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETHIDE) {
+		}
+		if (var0 == ScriptOpcodes.IF_GETHIDE) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.isHidden ? 1 : 0;
 			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETLAYER) {
+		}
+		if (var0 == ScriptOpcodes.IF_GETLAYER) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.parentId;
 			return 1;
-		} else {
-			return 2;
 		}
+		return 2;
 	}
 
 	@ObfuscatedName("go")
@@ -178,9 +182,8 @@ public class ScriptEvent extends Node {
 			int var8 = (128 - var6) * Tiles.Tiles_heights[var5][var3][var4] + Tiles.Tiles_heights[var5][var3 + 1][var4] * var6 >> 7;
 			int var9 = Tiles.Tiles_heights[var5][var3 + 1][var4 + 1] * var6 + Tiles.Tiles_heights[var5][var3][var4 + 1] * (128 - var6) >> 7;
 			return var7 * var9 + var8 * (128 - var7) >> 7;
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
 	@ObfuscatedName("iq")

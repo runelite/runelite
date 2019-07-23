@@ -19,16 +19,15 @@ public class WorldMapData_0 extends AbstractWorldMapData {
 		int var2 = var1.readUnsignedByte();
 		if (var2 != WorldMapID.field272.value) {
 			throw new IllegalStateException("");
-		} else {
-			super.minPlane = var1.readUnsignedByte();
-			super.planes = var1.readUnsignedByte();
-			super.regionXLow = var1.readUnsignedShort() * 4096;
-			super.regionYLow = var1.readUnsignedShort() * 4096;
-			super.regionX = var1.readUnsignedShort();
-			super.regionY = var1.readUnsignedShort();
-			super.groupId = var1.method5511();
-			super.fileId = var1.method5511();
 		}
+		super.minPlane = var1.readUnsignedByte();
+		super.planes = var1.readUnsignedByte();
+		super.regionXLow = var1.readUnsignedShort() * 4096;
+		super.regionYLow = var1.readUnsignedShort() * 4096;
+		super.regionX = var1.readUnsignedShort();
+		super.regionY = var1.readUnsignedShort();
+		super.groupId = var1.method5511();
+		super.fileId = var1.method5511();
 	}
 
 	@ObfuscatedName("w")
@@ -47,29 +46,27 @@ public class WorldMapData_0 extends AbstractWorldMapData {
 		int var2 = var1.readUnsignedByte();
 		if (var2 != class30.field262.value) {
 			throw new IllegalStateException("");
-		} else {
-			int var3 = var1.readUnsignedByte();
-			int var4 = var1.readUnsignedByte();
-			if (var3 == super.regionX && var4 == super.regionY) {
-				for (int var5 = 0; var5 < 64; ++var5) {
-					for (int var6 = 0; var6 < 64; ++var6) {
-						this.readTile(var5, var6, var1);
-					}
+		}
+		int var3 = var1.readUnsignedByte();
+		int var4 = var1.readUnsignedByte();
+		if (var3 == super.regionX && var4 == super.regionY) {
+			for (int var5 = 0; var5 < 64; ++var5) {
+				for (int var6 = 0; var6 < 64; ++var6) {
+					this.readTile(var5, var6, var1);
 				}
-
-			} else {
-				throw new IllegalStateException("");
 			}
+
+		} else {
+			throw new IllegalStateException("");
 		}
 	}
 
 	public boolean equals(Object var1) {
 		if (!(var1 instanceof WorldMapData_0)) {
 			return false;
-		} else {
-			WorldMapData_0 var2 = (WorldMapData_0)var1;
-			return var2.regionX == super.regionX && super.regionY == var2.regionY;
 		}
+		WorldMapData_0 var2 = (WorldMapData_0)var1;
+		return var2.regionX == super.regionX && super.regionY == var2.regionY;
 	}
 
 	public int hashCode() {

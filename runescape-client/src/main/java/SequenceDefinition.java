@@ -249,11 +249,10 @@ public class SequenceDefinition extends DualNode {
 		var2 &= 65535;
 		if (var3 == null) {
 			return var1.toSharedSequenceModel(true);
-		} else {
-			Model var4 = var1.toSharedSequenceModel(!var3.hasAlphaTransform(var2));
-			var4.animate(var3, var2);
-			return var4;
 		}
+		Model var4 = var1.toSharedSequenceModel(!var3.hasAlphaTransform(var2));
+		var4.animate(var3, var2);
+		return var4;
 	}
 
 	@ObfuscatedName("l")
@@ -268,28 +267,27 @@ public class SequenceDefinition extends DualNode {
 		var2 &= 65535;
 		if (var4 == null) {
 			return var1.toSharedSequenceModel(true);
-		} else {
-			Model var5 = var1.toSharedSequenceModel(!var4.hasAlphaTransform(var2));
-			var3 &= 3;
-			if (var3 == 1) {
-				var5.rotateY270Ccw();
-			} else if (var3 == 2) {
-				var5.rotateY180();
-			} else if (var3 == 3) {
-				var5.rotateY90Ccw();
-			}
-
-			var5.animate(var4, var2);
-			if (var3 == 1) {
-				var5.rotateY90Ccw();
-			} else if (var3 == 2) {
-				var5.rotateY180();
-			} else if (var3 == 3) {
-				var5.rotateY270Ccw();
-			}
-
-			return var5;
 		}
+		Model var5 = var1.toSharedSequenceModel(!var4.hasAlphaTransform(var2));
+		var3 &= 3;
+		if (var3 == 1) {
+			var5.rotateY270Ccw();
+		} else if (var3 == 2) {
+			var5.rotateY180();
+		} else if (var3 == 3) {
+			var5.rotateY90Ccw();
+		}
+
+		var5.animate(var4, var2);
+		if (var3 == 1) {
+			var5.rotateY90Ccw();
+		} else if (var3 == 2) {
+			var5.rotateY180();
+		} else if (var3 == 3) {
+			var5.rotateY270Ccw();
+		}
+
+		return var5;
 	}
 
 	@ObfuscatedName("b")
@@ -304,11 +302,10 @@ public class SequenceDefinition extends DualNode {
 		var2 &= 65535;
 		if (var3 == null) {
 			return var1.toSharedSpotAnimationModel(true);
-		} else {
-			Model var4 = var1.toSharedSpotAnimationModel(!var3.hasAlphaTransform(var2));
-			var4.animate(var3, var2);
-			return var4;
 		}
+		Model var4 = var1.toSharedSpotAnimationModel(!var3.hasAlphaTransform(var2));
+		var4.animate(var3, var2);
+		return var4;
 	}
 
 	@ObfuscatedName("i")
@@ -323,21 +320,19 @@ public class SequenceDefinition extends DualNode {
 		var2 &= 65535;
 		if (var5 == null) {
 			return var3.transformActorModel(var1, var4);
-		} else {
-			var4 = var3.frameIds[var4];
-			Frames var6 = class30.getFrames(var4 >> 16);
-			var4 &= 65535;
-			Model var7;
-			if (var6 == null) {
-				var7 = var1.toSharedSequenceModel(!var5.hasAlphaTransform(var2));
-				var7.animate(var5, var2);
-				return var7;
-			} else {
-				var7 = var1.toSharedSequenceModel(!var5.hasAlphaTransform(var2) & !var6.hasAlphaTransform(var4));
-				var7.animate2(var5, var2, var6, var4, this.field3518);
-				return var7;
-			}
 		}
+		var4 = var3.frameIds[var4];
+		Frames var6 = class30.getFrames(var4 >> 16);
+		var4 &= 65535;
+		Model var7;
+		if (var6 == null) {
+			var7 = var1.toSharedSequenceModel(!var5.hasAlphaTransform(var2));
+			var7.animate(var5, var2);
+			return var7;
+		}
+		var7 = var1.toSharedSequenceModel(!var5.hasAlphaTransform(var2) & !var6.hasAlphaTransform(var4));
+		var7.animate2(var5, var2, var6, var4, this.field3518);
+		return var7;
 	}
 
 	@ObfuscatedName("c")
@@ -352,26 +347,24 @@ public class SequenceDefinition extends DualNode {
 		var3 &= 65535;
 		if (var4 == null) {
 			return var1.toSharedSequenceModel(true);
-		} else {
-			Frames var5 = null;
-			int var6 = 0;
-			if (this.chatFrameIds != null && var2 < this.chatFrameIds.length) {
-				var6 = this.chatFrameIds[var2];
-				var5 = class30.getFrames(var6 >> 16);
-				var6 &= 65535;
-			}
-
-			Model var7;
-			if (var5 != null && var6 != 65535) {
-				var7 = var1.toSharedSequenceModel(!var4.hasAlphaTransform(var3) & !var5.hasAlphaTransform(var6));
-				var7.animate(var4, var3);
-				var7.animate(var5, var6);
-				return var7;
-			} else {
-				var7 = var1.toSharedSequenceModel(!var4.hasAlphaTransform(var3));
-				var7.animate(var4, var3);
-				return var7;
-			}
 		}
+		Frames var5 = null;
+		int var6 = 0;
+		if (this.chatFrameIds != null && var2 < this.chatFrameIds.length) {
+			var6 = this.chatFrameIds[var2];
+			var5 = class30.getFrames(var6 >> 16);
+			var6 &= 65535;
+		}
+
+		Model var7;
+		if (var5 != null && var6 != 65535) {
+			var7 = var1.toSharedSequenceModel(!var4.hasAlphaTransform(var3) & !var5.hasAlphaTransform(var6));
+			var7.animate(var4, var3);
+			var7.animate(var5, var6);
+			return var7;
+		}
+		var7 = var1.toSharedSequenceModel(!var4.hasAlphaTransform(var3));
+		var7.animate(var4, var3);
+		return var7;
 	}
 }

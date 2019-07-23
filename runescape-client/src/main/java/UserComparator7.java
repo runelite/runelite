@@ -23,9 +23,8 @@ public class UserComparator7 extends AbstractUserComparator {
 	int compareBuddy(Buddy var1, Buddy var2) {
 		if (var1.world != 0 && var2.world != 0) {
 			return this.reversed ? var1.int2 - var2.int2 : var2.int2 - var1.int2;
-		} else {
-			return this.compareUser(var1, var2);
 		}
+		return this.compareUser(var1, var2);
 	}
 
 	public int compare(Object var1, Object var2) {

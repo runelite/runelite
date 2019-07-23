@@ -169,22 +169,21 @@ public class PacketBuffer extends Buffer {
 		signature = "(Lhp;III)Llx;",
 		garbageValue = "-1232611828"
 	)
-	@Export("loadIndexedSprite")
-	static IndexedSprite loadIndexedSprite(AbstractArchive var0, int var1, int var2) {
-		if (!Friend.doesSpriteExist(var0, var1, var2)) {
+	@Export("SpriteBuffer_getIndexedSprite")
+	static IndexedSprite SpriteBuffer_getIndexedSprite(AbstractArchive var0, int var1, int var2) {
+		if (!Friend.SpriteBuffer_bufferFile(var0, var1, var2)) {
 			return null;
-		} else {
-			IndexedSprite var4 = new IndexedSprite();
-			var4.width = class326.SpriteBuffer_spriteWidth;
-			var4.height = class326.SpriteBuffer_spriteHeight;
-			var4.xOffset = Varps.SpriteBuffer_xOffsets[0];
-			var4.yOffset = class326.SpriteBuffer_yOffsets[0];
-			var4.subWidth = class326.SpriteBuffer_spriteWidths[0];
-			var4.subHeight = class216.SpriteBuffer_spriteHeights[0];
-			var4.palette = Frames.SpriteBuffer_spritePalette;
-			var4.pixels = class326.SpriteBuffer_pixels[0];
-			class16.method174();
-			return var4;
 		}
+		IndexedSprite var4 = new IndexedSprite();
+		var4.width = SpriteBuffer.SpriteBuffer_spriteWidth;
+		var4.height = SpriteBuffer.SpriteBuffer_spriteHeight;
+		var4.xOffset = Varps.SpriteBuffer_xOffsets[0];
+		var4.yOffset = SpriteBuffer.SpriteBuffer_yOffsets[0];
+		var4.subWidth = SpriteBuffer.SpriteBuffer_spriteWidths[0];
+		var4.subHeight = class216.SpriteBuffer_spriteHeights[0];
+		var4.palette = Frames.SpriteBuffer_spritePalette;
+		var4.pixels = SpriteBuffer.SpriteBuffer_pixels[0];
+		class16.SpriteBuffer_clear();
+		return var4;
 	}
 }

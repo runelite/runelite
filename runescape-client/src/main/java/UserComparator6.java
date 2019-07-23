@@ -33,9 +33,8 @@ public class UserComparator6 extends AbstractUserComparator {
 	int compareBuddy(Buddy var1, Buddy var2) {
 		if (var1.world != 0 && var2.world != 0) {
 			return this.reversed ? var1.getUsername().compareToTyped(var2.getUsername()) : var2.getUsername().compareToTyped(var1.getUsername());
-		} else {
-			return this.compareUser(var1, var2);
 		}
+		return this.compareUser(var1, var2);
 	}
 
 	public int compare(Object var1, Object var2) {
@@ -126,47 +125,46 @@ public class UserComparator6 extends AbstractUserComparator {
 		class169.field2050 = var4;
 		if (!class169.field2050.exists()) {
 			throw new RuntimeException("");
-		} else {
-			class169.field2055 = true;
+		}
+		class169.field2055 = true;
 
-			try {
-				File var16 = new File(PlayerType.userHomeDirectory, "random.dat");
-				if (var16.exists()) {
-					class167.randomDat = new BufferedFile(new AccessFile(var16, "rw", 25L), 24, 0);
-				} else {
-					label115:
-					for (int var10 = 0; var10 < LoginPacket.field2309.length; ++var10) {
-						for (var7 = 0; var7 < class167.field2043.length; ++var7) {
-							var8 = new File(class167.field2043[var7] + LoginPacket.field2309[var10] + File.separatorChar + "random.dat");
-							if (var8.exists()) {
-								class167.randomDat = new BufferedFile(new AccessFile(var8, "rw", 25L), 24, 0);
-								break label115;
-							}
+		try {
+			File var16 = new File(PlayerType.userHomeDirectory, "random.dat");
+			if (var16.exists()) {
+				class167.randomDat = new BufferedFile(new AccessFile(var16, "rw", 25L), 24, 0);
+			} else {
+				label115:
+				for (int var10 = 0; var10 < LoginPacket.field2309.length; ++var10) {
+					for (var7 = 0; var7 < class167.field2043.length; ++var7) {
+						var8 = new File(class167.field2043[var7] + LoginPacket.field2309[var10] + File.separatorChar + "random.dat");
+						if (var8.exists()) {
+							class167.randomDat = new BufferedFile(new AccessFile(var8, "rw", 25L), 24, 0);
+							break label115;
 						}
 					}
 				}
-
-				if (class167.randomDat == null) {
-					RandomAccessFile var17 = new RandomAccessFile(var16, "rw");
-					var7 = var17.read();
-					var17.seek(0L);
-					var17.write(var7);
-					var17.seek(0L);
-					var17.close();
-					class167.randomDat = new BufferedFile(new AccessFile(var16, "rw", 25L), 24, 0);
-				}
-			} catch (IOException var15) {
 			}
 
-			class167.dat2File = new BufferedFile(new AccessFile(class65.method1177("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
-			class167.idx255File = new BufferedFile(new AccessFile(class65.method1177("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
-			class167.idxFiles = new BufferedFile[class40.idxCount];
-
-			for (int var11 = 0; var11 < class40.idxCount; ++var11) {
-				class167.idxFiles[var11] = new BufferedFile(new AccessFile(class65.method1177("main_file_cache.idx" + var11), "rw", 1048576L), 6000, 0);
+			if (class167.randomDat == null) {
+				RandomAccessFile var17 = new RandomAccessFile(var16, "rw");
+				var7 = var17.read();
+				var17.seek(0L);
+				var17.write(var7);
+				var17.seek(0L);
+				var17.close();
+				class167.randomDat = new BufferedFile(new AccessFile(var16, "rw", 25L), 24, 0);
 			}
-
+		} catch (IOException var15) {
 		}
+
+		class167.dat2File = new BufferedFile(new AccessFile(class65.method1177("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
+		class167.idx255File = new BufferedFile(new AccessFile(class65.method1177("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
+		class167.idxFiles = new BufferedFile[class40.idxCount];
+
+		for (int var11 = 0; var11 < class40.idxCount; ++var11) {
+			class167.idxFiles[var11] = new BufferedFile(new AccessFile(class65.method1177("main_file_cache.idx" + var11), "rw", 1048576L), 6000, 0);
+		}
+
 	}
 
 	@ObfuscatedName("ao")
@@ -178,34 +176,33 @@ public class UserComparator6 extends AbstractUserComparator {
 		if (var0 == ScriptOpcodes.GETWINDOWMODE) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = AbstractWorldMapIcon.getWindowedMode();
 			return 1;
-		} else {
-			int var3;
-			if (var0 == ScriptOpcodes.SETWINDOWMODE) {
-				var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-				if (var3 == 1 || var3 == 2) {
-					Clock.setWindowedMode(var3);
-				}
-
-				return 1;
-			} else if (var0 == ScriptOpcodes.GETDEFAULTWINDOWMODE) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapLabelSize.clientPreferences.windowMode;
-				return 1;
-			} else if (var0 != ScriptOpcodes.SETDEFAULTWINDOWMODE) {
-				if (var0 == 5310) {
-					--HealthBarUpdate.Interpreter_intStackSize;
-					return 1;
-				} else {
-					return 2;
-				}
-			} else {
-				var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-				if (var3 == 1 || var3 == 2) {
-					WorldMapLabelSize.clientPreferences.windowMode = var3;
-					ReflectionCheck.savePreferences();
-				}
-
-				return 1;
-			}
 		}
+		int var3;
+		if (var0 == ScriptOpcodes.SETWINDOWMODE) {
+			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			if (var3 == 1 || var3 == 2) {
+				Clock.setWindowedMode(var3);
+			}
+
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.GETDEFAULTWINDOWMODE) {
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapLabelSize.clientPreferences.windowMode;
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.SETDEFAULTWINDOWMODE) {
+			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			if (var3 == 1 || var3 == 2) {
+				WorldMapLabelSize.clientPreferences.windowMode = var3;
+				ReflectionCheck.savePreferences();
+			}
+
+			return 1;
+		}
+		if (var0 == 5310) {
+			--HealthBarUpdate.Interpreter_intStackSize;
+			return 1;
+		}
+		return 2;
 	}
 }

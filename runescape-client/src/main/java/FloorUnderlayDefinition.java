@@ -186,19 +186,8 @@ public class FloorUnderlayDefinition extends DualNode {
 		if (var0 == ScriptOpcodes.IF_GETTARGETMASK) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = HealthBar.method1957(class268.getWidgetClickMask(var3));
 			return 1;
-		} else if (var0 != ScriptOpcodes.IF_GETOP) {
-			if (var0 == ScriptOpcodes.IF_GETOPBASE) {
-				if (var3.dataText == null) {
-					Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "";
-				} else {
-					Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var3.dataText;
-				}
-
-				return 1;
-			} else {
-				return 2;
-			}
-		} else {
+		}
+		if (var0 == ScriptOpcodes.IF_GETOP) {
 			int var4 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
 			--var4;
 			if (var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
@@ -209,5 +198,15 @@ public class FloorUnderlayDefinition extends DualNode {
 
 			return 1;
 		}
+		if (var0 == ScriptOpcodes.IF_GETOPBASE) {
+			if (var3.dataText == null) {
+				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "";
+			} else {
+				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var3.dataText;
+			}
+
+			return 1;
+		}
+		return 2;
 	}
 }

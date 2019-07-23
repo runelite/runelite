@@ -53,10 +53,9 @@ public class IterableNodeDequeDescendingIterator implements Iterator {
 	public void remove() {
 		if (this.last == null) {
 			throw new IllegalStateException();
-		} else {
-			this.last.remove();
-			this.last = null;
 		}
+		this.last.remove();
+		this.last = null;
 	}
 
 	public Object next() {

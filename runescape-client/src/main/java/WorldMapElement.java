@@ -278,19 +278,17 @@ public class WorldMapElement extends DualNode {
 	Sprite getSprite(int var1) {
 		if (var1 < 0) {
 			return null;
-		} else {
-			Sprite var2 = (Sprite)WorldMapElement_cachedSprites.get((long)var1);
-			if (var2 != null) {
-				return var2;
-			} else {
-				var2 = class65.loadSprite(WorldMapElement_archive, var1, 0);
-				if (var2 != null) {
-					WorldMapElement_cachedSprites.put(var2, (long)var1);
-				}
-
-				return var2;
-			}
 		}
+		Sprite var2 = (Sprite)WorldMapElement_cachedSprites.get((long)var1);
+		if (var2 != null) {
+			return var2;
+		}
+		var2 = class65.SpriteBuffer_getSprite(WorldMapElement_archive, var1, 0);
+		if (var2 != null) {
+			WorldMapElement_cachedSprites.put(var2, (long)var1);
+		}
+
+		return var2;
 	}
 
 	@ObfuscatedName("b")

@@ -31,19 +31,18 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 	int compare_bridged(GrandExchangeEvent var1, GrandExchangeEvent var2) {
 		if (var2.world == var1.world) {
 			return 0;
-		} else {
-			if (this.filterWorlds) {
-				if (Client.worldId == var1.world) {
-					return -1;
-				}
-
-				if (var2.world == Client.worldId) {
-					return 1;
-				}
+		}
+		if (this.filterWorlds) {
+			if (Client.worldId == var1.world) {
+				return -1;
 			}
 
-			return var1.world < var2.world ? -1 : 1;
+			if (var2.world == Client.worldId) {
+				return 1;
+			}
 		}
+
+		return var1.world < var2.world ? -1 : 1;
 	}
 
 	public boolean equals(Object var1) {

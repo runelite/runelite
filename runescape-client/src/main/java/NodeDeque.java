@@ -80,10 +80,9 @@ public class NodeDeque {
 		Node var1 = this.sentinel.previous;
 		if (var1 == this.sentinel) {
 			return null;
-		} else {
-			var1.remove();
-			return var1;
 		}
+		var1.remove();
+		return var1;
 	}
 
 	@ObfuscatedName("l")
@@ -95,10 +94,9 @@ public class NodeDeque {
 		Node var1 = this.sentinel.next;
 		if (var1 == this.sentinel) {
 			return null;
-		} else {
-			var1.remove();
-			return var1;
 		}
+		var1.remove();
+		return var1;
 	}
 
 	@ObfuscatedName("b")
@@ -111,10 +109,9 @@ public class NodeDeque {
 		if (var1 == this.sentinel) {
 			this.current = null;
 			return null;
-		} else {
-			this.current = var1.previous;
-			return var1;
 		}
+		this.current = var1.previous;
+		return var1;
 	}
 
 	@ObfuscatedName("i")
@@ -127,10 +124,9 @@ public class NodeDeque {
 		if (var1 == this.sentinel) {
 			this.current = null;
 			return null;
-		} else {
-			this.current = var1.next;
-			return var1;
 		}
+		this.current = var1.next;
+		return var1;
 	}
 
 	@ObfuscatedName("c")
@@ -143,10 +139,9 @@ public class NodeDeque {
 		if (var1 == this.sentinel) {
 			this.current = null;
 			return null;
-		} else {
-			this.current = var1.previous;
-			return var1;
 		}
+		this.current = var1.previous;
+		return var1;
 	}
 
 	@ObfuscatedName("u")
@@ -159,10 +154,9 @@ public class NodeDeque {
 		if (var1 == this.sentinel) {
 			this.current = null;
 			return null;
-		} else {
-			this.current = var1.next;
-			return var1;
 		}
+		this.current = var1.next;
+		return var1;
 	}
 
 	@ObfuscatedName("p")

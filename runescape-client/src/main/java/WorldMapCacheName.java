@@ -70,12 +70,11 @@ public class WorldMapCacheName {
 	static final void method600(Widget var0, int var1) {
 		if (var0.field2650 == null) {
 			throw new RuntimeException();
-		} else {
-			if (var0.field2578 == null) {
-				var0.field2578 = new int[var0.field2650.length];
-			}
-
-			var0.field2578[var1] = Integer.MAX_VALUE;
 		}
+		if (var0.field2578 == null) {
+			var0.field2578 = new int[var0.field2650.length];
+		}
+
+		var0.field2578[var1] = Integer.MAX_VALUE;
 	}
 }

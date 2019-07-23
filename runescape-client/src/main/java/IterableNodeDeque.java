@@ -91,10 +91,9 @@ public class IterableNodeDeque implements Iterable, Collection {
 		if (var2 == this.sentinel) {
 			this.field3538 = null;
 			return null;
-		} else {
-			this.field3538 = var2.previous;
-			return var2;
 		}
+		this.field3538 = var2.previous;
+		return var2;
 	}
 
 	@ObfuscatedName("b")
@@ -107,10 +106,9 @@ public class IterableNodeDeque implements Iterable, Collection {
 		if (var1 == this.sentinel) {
 			this.field3538 = null;
 			return null;
-		} else {
-			this.field3538 = var1.previous;
-			return var1;
 		}
+		this.field3538 = var1.previous;
+		return var1;
 	}
 
 	@ObfuscatedName("i")
@@ -125,7 +123,7 @@ public class IterableNodeDeque implements Iterable, Collection {
 	}
 
 	@ObfuscatedName("c")
-	@Export("isEmpty")
+	@Export("rsIsEmpty")
 	public boolean rsIsEmpty() {
 		return this.sentinel.previous == this.sentinel;
 	}

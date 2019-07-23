@@ -59,7 +59,8 @@ public class class169 {
 		if (var0 == ScriptOpcodes.CC_GETINVOBJECT) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.itemId;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETINVCOUNT) {
+		}
+		if (var0 == ScriptOpcodes.CC_GETINVCOUNT) {
 			if (var3.itemId != -1) {
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.itemQuantity;
 			} else {
@@ -67,11 +68,11 @@ public class class169 {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETID) {
+		}
+		if (var0 == ScriptOpcodes.CC_GETID) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.childIndex;
 			return 1;
-		} else {
-			return 2;
 		}
+		return 2;
 	}
 }

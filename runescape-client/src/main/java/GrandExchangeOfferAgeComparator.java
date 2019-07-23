@@ -116,24 +116,28 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 		if (var0 == ScriptOpcodes.CC_GETX) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.x;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETY) {
+		}
+		if (var0 == ScriptOpcodes.CC_GETY) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.y;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETWIDTH) {
+		}
+		if (var0 == ScriptOpcodes.CC_GETWIDTH) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.width;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETHEIGHT) {
+		}
+		if (var0 == ScriptOpcodes.CC_GETHEIGHT) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.height;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETHIDE) {
+		}
+		if (var0 == ScriptOpcodes.CC_GETHIDE) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.isHidden ? 1 : 0;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETLAYER) {
+		}
+		if (var0 == ScriptOpcodes.CC_GETLAYER) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.parentId;
 			return 1;
-		} else {
-			return 2;
 		}
+		return 2;
 	}
 
 	@ObfuscatedName("hb")
@@ -175,37 +179,35 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 		if (var1 == 205) {
 			Client.field700 = 250;
 			return true;
-		} else {
-			int var2;
-			int var3;
-			if (var1 >= 300 && var1 <= 313) {
-				var2 = (var1 - 300) / 2;
-				var3 = var1 & 1;
-				Client.playerAppearance.method3992(var2, var3 == 1);
-			}
-
-			if (var1 >= 314 && var1 <= 323) {
-				var2 = (var1 - 314) / 2;
-				var3 = var1 & 1;
-				Client.playerAppearance.method3993(var2, var3 == 1);
-			}
-
-			if (var1 == 324) {
-				Client.playerAppearance.method4006(false);
-			}
-
-			if (var1 == 325) {
-				Client.playerAppearance.method4006(true);
-			}
-
-			if (var1 == 326) {
-				PacketBufferNode var4 = Archive.method4265(ClientPacket.field2215, Client.packetWriter.isaacCipher);
-				Client.playerAppearance.method3995(var4.packetBuffer);
-				Client.packetWriter.method2219(var4);
-				return true;
-			} else {
-				return false;
-			}
 		}
+		int var2;
+		int var3;
+		if (var1 >= 300 && var1 <= 313) {
+			var2 = (var1 - 300) / 2;
+			var3 = var1 & 1;
+			Client.playerAppearance.method3992(var2, var3 == 1);
+		}
+
+		if (var1 >= 314 && var1 <= 323) {
+			var2 = (var1 - 314) / 2;
+			var3 = var1 & 1;
+			Client.playerAppearance.method3993(var2, var3 == 1);
+		}
+
+		if (var1 == 324) {
+			Client.playerAppearance.method4006(false);
+		}
+
+		if (var1 == 325) {
+			Client.playerAppearance.method4006(true);
+		}
+
+		if (var1 == 326) {
+			PacketBufferNode var4 = Archive.method4265(ClientPacket.field2215, Client.packetWriter.isaacCipher);
+			Client.playerAppearance.method3995(var4.packetBuffer);
+			Client.packetWriter.method2219(var4);
+			return true;
+		}
+		return false;
 	}
 }

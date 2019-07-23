@@ -81,6 +81,7 @@ public class RawPcmStream extends PcmStream {
 	@ObfuscatedSignature(
 		signature = "()Ldx;"
 	)
+	@Export("firstSubStream")
 	protected PcmStream firstSubStream() {
 		return null;
 	}
@@ -89,6 +90,7 @@ public class RawPcmStream extends PcmStream {
 	@ObfuscatedSignature(
 		signature = "()Ldx;"
 	)
+	@Export("nextSubStream")
 	protected PcmStream nextSubStream() {
 		return null;
 	}
@@ -163,7 +165,8 @@ public class RawPcmStream extends PcmStream {
 						this.field1471 = var5 + var5 - 1 - this.field1471;
 						this.field1469 = -this.field1469;
 					}
-				} else if (this.field1469 < 0) {
+				}
+				if (this.field1469 < 0) {
 					while (true) {
 						var9 = this.method2641(var1, var9, var5, var3, var4.samples[this.end - 1]);
 						if (this.field1471 >= var5) {
@@ -172,111 +175,109 @@ public class RawPcmStream extends PcmStream {
 
 						this.field1471 = var6 - 1 - (var6 - 1 - this.field1471) % var8;
 					}
-				} else {
-					while (true) {
-						var9 = this.method2543(var1, var9, var6, var3, var4.samples[this.start]);
-						if (this.field1471 < var6) {
-							return;
-						}
-
-						this.field1471 = var5 + (this.field1471 - var5) % var8;
-					}
 				}
-			} else {
-				if (this.numLoops > 0) {
-					if (this.field1478) {
-						label119: {
-							if (this.field1469 < 0) {
-								var9 = this.method2641(var1, var2, var5, var3, var4.samples[this.start]);
-								if (this.field1471 >= var5) {
-									return;
-								}
+				while (true) {
+					var9 = this.method2543(var1, var9, var6, var3, var4.samples[this.start]);
+					if (this.field1471 < var6) {
+						return;
+					}
 
-								this.field1471 = var5 + var5 - 1 - this.field1471;
-								this.field1469 = -this.field1469;
-								if (--this.numLoops == 0) {
-									break label119;
-								}
+					this.field1471 = var5 + (this.field1471 - var5) % var8;
+				}
+			}
+			if (this.numLoops > 0) {
+				if (this.field1478) {
+					label119: {
+						if (this.field1469 < 0) {
+							var9 = this.method2641(var1, var2, var5, var3, var4.samples[this.start]);
+							if (this.field1471 >= var5) {
+								return;
 							}
 
-							do {
-								var9 = this.method2543(var1, var9, var6, var3, var4.samples[this.end - 1]);
-								if (this.field1471 < var6) {
-									return;
-								}
+							this.field1471 = var5 + var5 - 1 - this.field1471;
+							this.field1469 = -this.field1469;
+							if (--this.numLoops == 0) {
+								break label119;
+							}
+						}
 
-								this.field1471 = var6 + var6 - 1 - this.field1471;
-								this.field1469 = -this.field1469;
-								if (--this.numLoops == 0) {
-									break;
-								}
+						do {
+							var9 = this.method2543(var1, var9, var6, var3, var4.samples[this.end - 1]);
+							if (this.field1471 < var6) {
+								return;
+							}
 
-								var9 = this.method2641(var1, var9, var5, var3, var4.samples[this.start]);
-								if (this.field1471 >= var5) {
-									return;
-								}
+							this.field1471 = var6 + var6 - 1 - this.field1471;
+							this.field1469 = -this.field1469;
+							if (--this.numLoops == 0) {
+								break;
+							}
 
-								this.field1471 = var5 + var5 - 1 - this.field1471;
-								this.field1469 = -this.field1469;
-							} while(--this.numLoops != 0);
+							var9 = this.method2641(var1, var9, var5, var3, var4.samples[this.start]);
+							if (this.field1471 >= var5) {
+								return;
+							}
+
+							this.field1471 = var5 + var5 - 1 - this.field1471;
+							this.field1469 = -this.field1469;
+						} while(--this.numLoops != 0);
+					}
+				} else {
+					int var10;
+					if (this.field1469 < 0) {
+						while (true) {
+							var9 = this.method2641(var1, var9, var5, var3, var4.samples[this.end - 1]);
+							if (this.field1471 >= var5) {
+								return;
+							}
+
+							var10 = (var6 - 1 - this.field1471) / var8;
+							if (var10 >= this.numLoops) {
+								this.field1471 += var8 * this.numLoops;
+								this.numLoops = 0;
+								break;
+							}
+
+							this.field1471 += var8 * var10;
+							this.numLoops -= var10;
 						}
 					} else {
-						int var10;
-						if (this.field1469 < 0) {
-							while (true) {
-								var9 = this.method2641(var1, var9, var5, var3, var4.samples[this.end - 1]);
-								if (this.field1471 >= var5) {
-									return;
-								}
-
-								var10 = (var6 - 1 - this.field1471) / var8;
-								if (var10 >= this.numLoops) {
-									this.field1471 += var8 * this.numLoops;
-									this.numLoops = 0;
-									break;
-								}
-
-								this.field1471 += var8 * var10;
-								this.numLoops -= var10;
+						while (true) {
+							var9 = this.method2543(var1, var9, var6, var3, var4.samples[this.start]);
+							if (this.field1471 < var6) {
+								return;
 							}
-						} else {
-							while (true) {
-								var9 = this.method2543(var1, var9, var6, var3, var4.samples[this.start]);
-								if (this.field1471 < var6) {
-									return;
-								}
 
-								var10 = (this.field1471 - var5) / var8;
-								if (var10 >= this.numLoops) {
-									this.field1471 -= var8 * this.numLoops;
-									this.numLoops = 0;
-									break;
-								}
-
-								this.field1471 -= var8 * var10;
-								this.numLoops -= var10;
+							var10 = (this.field1471 - var5) / var8;
+							if (var10 >= this.numLoops) {
+								this.field1471 -= var8 * this.numLoops;
+								this.numLoops = 0;
+								break;
 							}
+
+							this.field1471 -= var8 * var10;
+							this.numLoops -= var10;
 						}
 					}
 				}
-
-				if (this.field1469 < 0) {
-					this.method2641(var1, var9, 0, var3, 0);
-					if (this.field1471 < 0) {
-						this.field1471 = -1;
-						this.method2647();
-						this.remove();
-					}
-				} else {
-					this.method2543(var1, var9, var7, var3, 0);
-					if (this.field1471 >= var7) {
-						this.field1471 = var7;
-						this.method2647();
-						this.remove();
-					}
-				}
-
 			}
+
+			if (this.field1469 < 0) {
+				this.method2641(var1, var9, 0, var3, 0);
+				if (this.field1471 < 0) {
+					this.field1471 = -1;
+					this.method2647();
+					this.remove();
+				}
+			} else {
+				this.method2543(var1, var9, var7, var3, 0);
+				if (this.field1471 >= var7) {
+					this.field1471 = var7;
+					this.method2647();
+					this.remove();
+				}
+			}
+
 		}
 	}
 
@@ -768,51 +769,49 @@ public class RawPcmStream extends PcmStream {
 				this.field1472 = 0;
 				this.remove();
 				return true;
-			} else {
-				this.method2525();
-				return false;
 			}
-		} else {
-			if (this.field1472 < var1) {
-				this.field1480 = 1;
-				this.field1479 = var1 - this.field1472;
-			} else if (this.field1472 > var1) {
-				this.field1480 = -1;
-				this.field1479 = this.field1472 - var1;
-			} else {
-				this.field1480 = 0;
-			}
-
-			if (this.field1482 < var2) {
-				this.field1481 = 1;
-				if (this.field1479 == 0 || this.field1479 > var2 - this.field1482) {
-					this.field1479 = var2 - this.field1482;
-				}
-			} else if (this.field1482 > var2) {
-				this.field1481 = -1;
-				if (this.field1479 == 0 || this.field1479 > this.field1482 - var2) {
-					this.field1479 = this.field1482 - var2;
-				}
-			} else {
-				this.field1481 = 0;
-			}
-
-			if (this.field1474 < var3) {
-				this.field1468 = 1;
-				if (this.field1479 == 0 || this.field1479 > var3 - this.field1474) {
-					this.field1479 = var3 - this.field1474;
-				}
-			} else if (this.field1474 > var3) {
-				this.field1468 = -1;
-				if (this.field1479 == 0 || this.field1479 > this.field1474 - var3) {
-					this.field1479 = this.field1474 - var3;
-				}
-			} else {
-				this.field1468 = 0;
-			}
-
+			this.method2525();
 			return false;
 		}
+		if (this.field1472 < var1) {
+			this.field1480 = 1;
+			this.field1479 = var1 - this.field1472;
+		} else if (this.field1472 > var1) {
+			this.field1480 = -1;
+			this.field1479 = this.field1472 - var1;
+		} else {
+			this.field1480 = 0;
+		}
+
+		if (this.field1482 < var2) {
+			this.field1481 = 1;
+			if (this.field1479 == 0 || this.field1479 > var2 - this.field1482) {
+				this.field1479 = var2 - this.field1482;
+			}
+		} else if (this.field1482 > var2) {
+			this.field1481 = -1;
+			if (this.field1479 == 0 || this.field1479 > this.field1482 - var2) {
+				this.field1479 = this.field1482 - var2;
+			}
+		} else {
+			this.field1481 = 0;
+		}
+
+		if (this.field1474 < var3) {
+			this.field1468 = 1;
+			if (this.field1479 == 0 || this.field1479 > var3 - this.field1474) {
+				this.field1479 = var3 - this.field1474;
+			}
+		} else if (this.field1474 > var3) {
+			this.field1468 = -1;
+			if (this.field1479 == 0 || this.field1479 > this.field1474 - var3) {
+				this.field1479 = this.field1474 - var3;
+			}
+		} else {
+			this.field1468 = 0;
+		}
+
+		return false;
 	}
 
 	@ObfuscatedName("ay")

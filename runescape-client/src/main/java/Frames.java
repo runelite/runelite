@@ -181,71 +181,73 @@ public class Frames extends DualNode {
 		boolean var4 = ViewportMouse.ViewportMouse_isInViewport;
 		if (!var4) {
 			return false;
-		} else {
-			int var5;
-			int var6;
-			int var7;
-			int var8;
-			int var11;
-			int var12;
-			int var13;
-			int var16;
-			int var17;
-			if (!ViewportMouse.ViewportMouse_false0) {
-				var5 = Scene.Scene_cameraPitchSine;
-				var6 = Scene.Scene_cameraPitchCosine;
-				var7 = Scene.Scene_cameraYawSine;
-				var8 = Scene.Scene_cameraYawCosine;
-				byte var9 = 50;
-				short var10 = 3500;
-				var11 = (ViewportMouse.ViewportMouse_x - Rasterizer3D.Rasterizer3D_clipMidX) * var9 / Rasterizer3D.Rasterizer3D_zoom;
-				var12 = (ViewportMouse.ViewportMouse_y - Rasterizer3D.Rasterizer3D_clipMidY) * var9 / Rasterizer3D.Rasterizer3D_zoom;
-				var13 = (ViewportMouse.ViewportMouse_x - Rasterizer3D.Rasterizer3D_clipMidX) * var10 / Rasterizer3D.Rasterizer3D_zoom;
-				int var14 = (ViewportMouse.ViewportMouse_y - Rasterizer3D.Rasterizer3D_clipMidY) * var10 / Rasterizer3D.Rasterizer3D_zoom;
-				int var15 = Rasterizer3D.rot1(var12, var9, var6, var5);
-				var16 = Rasterizer3D.rot2(var12, var9, var6, var5);
-				var12 = var15;
-				var15 = Rasterizer3D.rot1(var14, var10, var6, var5);
-				var17 = Rasterizer3D.rot2(var14, var10, var6, var5);
-				var14 = var15;
-				var15 = Rasterizer3D.rot3(var11, var16, var8, var7);
-				var16 = Rasterizer3D.rot4(var11, var16, var8, var7);
-				var11 = var15;
-				var15 = Rasterizer3D.rot3(var13, var17, var8, var7);
-				var17 = Rasterizer3D.rot4(var13, var17, var8, var7);
-				ModelData0.field1871 = (var11 + var15) / 2;
-				ViewportMouse.field1745 = (var12 + var14) / 2;
-				ViewportMouse.field1746 = (var16 + var17) / 2;
-				GroundItem.field1242 = (var15 - var11) / 2;
-				GrandExchangeEvent.field48 = (var14 - var12) / 2;
-				Canvas.field422 = (var17 - var16) / 2;
-				ScriptFrame.field527 = Math.abs(GroundItem.field1242);
-				ViewportMouse.field1741 = Math.abs(GrandExchangeEvent.field48);
-				MenuAction.field1160 = Math.abs(Canvas.field422);
-			}
-
-			var5 = var0.xMid + var1;
-			var6 = var2 + var0.yMid;
-			var7 = var3 + var0.zMid;
-			var8 = var0.xMidOffset;
-			var16 = var0.yMidOffset;
-			var17 = var0.zMidOffset;
-			var11 = ModelData0.field1871 - var5;
-			var12 = ViewportMouse.field1745 - var6;
-			var13 = ViewportMouse.field1746 - var7;
-			if (Math.abs(var11) > var8 + ScriptFrame.field527) {
-				return false;
-			} else if (Math.abs(var12) > var16 + ViewportMouse.field1741) {
-				return false;
-			} else if (Math.abs(var13) > var17 + MenuAction.field1160) {
-				return false;
-			} else if (Math.abs(var13 * GrandExchangeEvent.field48 - var12 * Canvas.field422) > var17 * ViewportMouse.field1741 + var16 * MenuAction.field1160) {
-				return false;
-			} else if (Math.abs(var11 * Canvas.field422 - var13 * GroundItem.field1242) > var8 * MenuAction.field1160 + var17 * ScriptFrame.field527) {
-				return false;
-			} else {
-				return Math.abs(var12 * GroundItem.field1242 - var11 * GrandExchangeEvent.field48) <= var16 * ScriptFrame.field527 + var8 * ViewportMouse.field1741;
-			}
 		}
+		int var5;
+		int var6;
+		int var7;
+		int var8;
+		int var11;
+		int var12;
+		int var13;
+		int var16;
+		int var17;
+		if (!ViewportMouse.ViewportMouse_false0) {
+			var5 = Scene.Scene_cameraPitchSine;
+			var6 = Scene.Scene_cameraPitchCosine;
+			var7 = Scene.Scene_cameraYawSine;
+			var8 = Scene.Scene_cameraYawCosine;
+			byte var9 = 50;
+			short var10 = 3500;
+			var11 = (ViewportMouse.ViewportMouse_x - Rasterizer3D.Rasterizer3D_clipMidX) * var9 / Rasterizer3D.Rasterizer3D_zoom;
+			var12 = (ViewportMouse.ViewportMouse_y - Rasterizer3D.Rasterizer3D_clipMidY) * var9 / Rasterizer3D.Rasterizer3D_zoom;
+			var13 = (ViewportMouse.ViewportMouse_x - Rasterizer3D.Rasterizer3D_clipMidX) * var10 / Rasterizer3D.Rasterizer3D_zoom;
+			int var14 = (ViewportMouse.ViewportMouse_y - Rasterizer3D.Rasterizer3D_clipMidY) * var10 / Rasterizer3D.Rasterizer3D_zoom;
+			int var15 = Rasterizer3D.rot1(var12, var9, var6, var5);
+			var16 = Rasterizer3D.rot2(var12, var9, var6, var5);
+			var12 = var15;
+			var15 = Rasterizer3D.rot1(var14, var10, var6, var5);
+			var17 = Rasterizer3D.rot2(var14, var10, var6, var5);
+			var14 = var15;
+			var15 = Rasterizer3D.rot3(var11, var16, var8, var7);
+			var16 = Rasterizer3D.rot4(var11, var16, var8, var7);
+			var11 = var15;
+			var15 = Rasterizer3D.rot3(var13, var17, var8, var7);
+			var17 = Rasterizer3D.rot4(var13, var17, var8, var7);
+			ModelData0.field1871 = (var11 + var15) / 2;
+			ViewportMouse.field1745 = (var12 + var14) / 2;
+			ViewportMouse.field1746 = (var16 + var17) / 2;
+			GroundItem.field1242 = (var15 - var11) / 2;
+			GrandExchangeEvent.field48 = (var14 - var12) / 2;
+			Canvas.field422 = (var17 - var16) / 2;
+			ScriptFrame.field527 = Math.abs(GroundItem.field1242);
+			ViewportMouse.field1741 = Math.abs(GrandExchangeEvent.field48);
+			MenuAction.field1160 = Math.abs(Canvas.field422);
+		}
+
+		var5 = var0.xMid + var1;
+		var6 = var2 + var0.yMid;
+		var7 = var3 + var0.zMid;
+		var8 = var0.xMidOffset;
+		var16 = var0.yMidOffset;
+		var17 = var0.zMidOffset;
+		var11 = ModelData0.field1871 - var5;
+		var12 = ViewportMouse.field1745 - var6;
+		var13 = ViewportMouse.field1746 - var7;
+		if (Math.abs(var11) > var8 + ScriptFrame.field527) {
+			return false;
+		}
+		if (Math.abs(var12) > var16 + ViewportMouse.field1741) {
+			return false;
+		}
+		if (Math.abs(var13) > var17 + MenuAction.field1160) {
+			return false;
+		}
+		if (Math.abs(var13 * GrandExchangeEvent.field48 - var12 * Canvas.field422) > var17 * ViewportMouse.field1741 + var16 * MenuAction.field1160) {
+			return false;
+		}
+		if (Math.abs(var11 * Canvas.field422 - var13 * GroundItem.field1242) > var8 * MenuAction.field1160 + var17 * ScriptFrame.field527) {
+			return false;
+		}
+		return Math.abs(var12 * GroundItem.field1242 - var11 * GrandExchangeEvent.field48) <= var16 * ScriptFrame.field527 + var8 * ViewportMouse.field1741;
 	}
 }

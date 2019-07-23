@@ -91,19 +91,18 @@ public class ArchiveLoader {
 		if (var0 == ScriptOpcodes.CC_CALLONRESIZE) {
 			if (Interpreter.field1106 >= 10) {
 				throw new RuntimeException();
-			} else if (var3.onResize == null) {
-				return 0;
-			} else {
-				ScriptEvent var4 = new ScriptEvent();
-				var4.widget = var3;
-				var4.args = var3.onResize;
-				var4.field583 = Interpreter.field1106 + 1;
-				Client.scriptEvents.addFirst(var4);
-				return 1;
 			}
-		} else {
-			return 2;
+			if (var3.onResize == null) {
+				return 0;
+			}
+			ScriptEvent var4 = new ScriptEvent();
+			var4.widget = var3;
+			var4.args = var3.onResize;
+			var4.field583 = Interpreter.field1106 + 1;
+			Client.scriptEvents.addFirst(var4);
+			return 1;
 		}
+		return 2;
 	}
 
 	@ObfuscatedName("jk")

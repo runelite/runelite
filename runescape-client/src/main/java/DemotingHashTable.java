@@ -48,29 +48,27 @@ public final class DemotingHashTable {
 		Wrapper var3 = (Wrapper)this.hashTable.get(var1);
 		if (var3 == null) {
 			return null;
-		} else {
-			Object var4 = var3.get();
-			if (var4 == null) {
-				var3.remove();
-				var3.removeDual();
-				this.remaining += var3.size;
-				return null;
-			} else {
-				if (var3.isSoft()) {
-					DirectWrapper var5 = new DirectWrapper(var4, var3.size);
-					this.hashTable.put(var5, var3.key);
-					this.queue.add(var5);
-					var5.keyDual = 0L;
-					var3.remove();
-					var3.removeDual();
-				} else {
-					this.queue.add(var3);
-					var3.keyDual = 0L;
-				}
-
-				return var4;
-			}
 		}
+		Object var4 = var3.get();
+		if (var4 == null) {
+			var3.remove();
+			var3.removeDual();
+			this.remaining += var3.size;
+			return null;
+		}
+		if (var3.isSoft()) {
+			DirectWrapper var5 = new DirectWrapper(var4, var3.size);
+			this.hashTable.put(var5, var3.key);
+			this.queue.add(var5);
+			var5.keyDual = 0L;
+			var3.remove();
+			var3.removeDual();
+		} else {
+			this.queue.add(var3);
+			var3.keyDual = 0L;
+		}
+
+		return var4;
 	}
 
 	@ObfuscatedName("w")
@@ -99,30 +97,29 @@ public final class DemotingHashTable {
 	public void put(Object var1, long var2, int var4) {
 		if (var4 > this.capacity) {
 			throw new IllegalStateException();
-		} else {
-			this.remove(var2);
-			this.remaining -= var4;
+		}
+		this.remove(var2);
+		this.remaining -= var4;
 
-			while (this.remaining < 0) {
-				Wrapper var5 = (Wrapper)this.queue.removeLast();
-				if (var5 == null) {
-					throw new RuntimeException("");
-				}
-
-				if (!var5.isSoft()) {
-				}
-
-				this.removeWrapper(var5);
-				if (this.field1966 != null) {
-					this.field1966.method3338(var5.get());
-				}
+		while (this.remaining < 0) {
+			Wrapper var5 = (Wrapper)this.queue.removeLast();
+			if (var5 == null) {
+				throw new RuntimeException("");
 			}
 
-			DirectWrapper var6 = new DirectWrapper(var1, var4);
-			this.hashTable.put(var6, var2);
-			this.queue.add(var6);
-			var6.keyDual = 0L;
+			if (!var5.isSoft()) {
+			}
+
+			this.removeWrapper(var5);
+			if (this.field1966 != null) {
+				this.field1966.method3338(var5.get());
+			}
 		}
+
+		DirectWrapper var6 = new DirectWrapper(var1, var4);
+		this.hashTable.put(var6, var2);
+		this.queue.add(var6);
+		var6.keyDual = 0L;
 	}
 
 	@ObfuscatedName("k")

@@ -113,20 +113,19 @@ public class Animation {
 
 		if (var1.length != var4.offset) {
 			throw new RuntimeException();
-		} else {
-			this.transformCount = var7;
-			this.transformSkeletonLabels = new int[var7];
-			this.transformXs = new int[var7];
-			this.transformYs = new int[var7];
-			this.transformZs = new int[var7];
-
-			for (var8 = 0; var8 < var7; ++var8) {
-				this.transformSkeletonLabels[var8] = field1638[var8];
-				this.transformXs[var8] = field1639[var8];
-				this.transformYs[var8] = field1636[var8];
-				this.transformZs[var8] = field1635[var8];
-			}
-
 		}
+		this.transformCount = var7;
+		this.transformSkeletonLabels = new int[var7];
+		this.transformXs = new int[var7];
+		this.transformYs = new int[var7];
+		this.transformZs = new int[var7];
+
+		for (var8 = 0; var8 < var7; ++var8) {
+			this.transformSkeletonLabels[var8] = field1638[var8];
+			this.transformXs[var8] = field1639[var8];
+			this.transformYs[var8] = field1636[var8];
+			this.transformZs[var8] = field1635[var8];
+		}
+
 	}
 }

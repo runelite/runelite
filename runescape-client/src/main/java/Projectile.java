@@ -231,10 +231,9 @@ public final class Projectile extends Entity {
 		Model var2 = var1.getModel(this.frame);
 		if (var2 == null) {
 			return null;
-		} else {
-			var2.rotateZ(this.pitch);
-			return var2;
 		}
+		var2.rotateZ(this.pitch);
+		return var2;
 	}
 
 	@ObfuscatedName("q")
@@ -247,15 +246,14 @@ public final class Projectile extends Entity {
 		HitSplatDefinition var1 = (HitSplatDefinition)HitSplatDefinition.HitSplatDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
-		} else {
-			byte[] var2 = HitSplatDefinition.HitSplatDefinition_archive.takeFile(32, var0);
-			var1 = new HitSplatDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			HitSplatDefinition.HitSplatDefinition_cached.put(var1, (long)var0);
-			return var1;
 		}
+		byte[] var2 = HitSplatDefinition.HitSplatDefinition_archive.takeFile(32, var0);
+		var1 = new HitSplatDefinition();
+		if (var2 != null) {
+			var1.decode(new Buffer(var2));
+		}
+
+		HitSplatDefinition.HitSplatDefinition_cached.put(var1, (long)var0);
+		return var1;
 	}
 }

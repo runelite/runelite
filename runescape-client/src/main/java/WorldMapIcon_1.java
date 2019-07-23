@@ -80,6 +80,7 @@ public class WorldMapIcon_1 extends AbstractWorldMapIcon {
 		signature = "(I)I",
 		garbageValue = "-229566020"
 	)
+	@Export("getElement")
 	public int getElement() {
 		return this.element;
 	}
@@ -99,6 +100,7 @@ public class WorldMapIcon_1 extends AbstractWorldMapIcon {
 		signature = "(B)I",
 		garbageValue = "14"
 	)
+	@Export("getSubWidth")
 	int getSubWidth() {
 		return this.subWidth;
 	}
@@ -108,6 +110,7 @@ public class WorldMapIcon_1 extends AbstractWorldMapIcon {
 		signature = "(B)I",
 		garbageValue = "1"
 	)
+	@Export("getSubHeight")
 	int getSubHeight() {
 		return this.subHeight;
 	}

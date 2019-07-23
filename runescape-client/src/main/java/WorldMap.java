@@ -793,19 +793,20 @@ public class WorldMap {
 	boolean method6318(int var1, int var2, int var3, int var4, int var5, int var6) {
 		if (this.sprite == null) {
 			return true;
-		} else if (this.sprite.subWidth == var1 && this.sprite.subHeight == var2) {
+		}
+		if (this.sprite.subWidth == var1 && this.sprite.subHeight == var2) {
 			if (this.worldMapManager.pixelsPerTile != this.cachedPixelsPerTile) {
 				return true;
-			} else if (this.field4030 != Client.field924) {
-				return true;
-			} else if (var3 <= 0 && var4 <= 0) {
-				return var3 + var1 < var5 || var2 + var4 < var6;
-			} else {
+			}
+			if (this.field4030 != Client.field924) {
 				return true;
 			}
-		} else {
+			if (var3 <= 0 && var4 <= 0) {
+				return var3 + var1 < var5 || var2 + var4 < var6;
+			}
 			return true;
 		}
+		return true;
 	}
 
 	@ObfuscatedName("al")
@@ -905,15 +906,17 @@ public class WorldMap {
 	float getZoomFromPercentage(int var1) {
 		if (var1 == 25) {
 			return 1.0F;
-		} else if (var1 == 37) {
-			return 1.5F;
-		} else if (var1 == 50) {
-			return 2.0F;
-		} else if (var1 == 75) {
-			return 3.0F;
-		} else {
-			return var1 == 100 ? 4.0F : 8.0F;
 		}
+		if (var1 == 37) {
+			return 1.5F;
+		}
+		if (var1 == 50) {
+			return 2.0F;
+		}
+		if (var1 == 75) {
+			return 3.0F;
+		}
+		return var1 == 100 ? 4.0F : 8.0F;
 	}
 
 	@ObfuscatedName("ag")
@@ -925,15 +928,17 @@ public class WorldMap {
 	public int getZoomLevel() {
 		if ((double)this.zoomTarget == 1.0D) {
 			return 25;
-		} else if (1.5D == (double)this.zoomTarget) {
-			return 37;
-		} else if (2.0D == (double)this.zoomTarget) {
-			return 50;
-		} else if ((double)this.zoomTarget == 3.0D) {
-			return 75;
-		} else {
-			return 4.0D == (double)this.zoomTarget ? 100 : 200;
 		}
+		if (1.5D == (double)this.zoomTarget) {
+			return 37;
+		}
+		if (2.0D == (double)this.zoomTarget) {
+			return 50;
+		}
+		if ((double)this.zoomTarget == 3.0D) {
+			return 75;
+		}
+		return 4.0D == (double)this.zoomTarget ? 100 : 200;
 	}
 
 	@ObfuscatedName("ar")
@@ -1317,42 +1322,42 @@ public class WorldMap {
 	public Coord method6352(int var1, Coord var2) {
 		if (!this.cacheLoader.getIsLoaded()) {
 			return null;
-		} else if (!this.worldMapManager.isLoaded()) {
+		}
+		if (!this.worldMapManager.isLoaded()) {
 			return null;
-		} else if (!this.currentMapArea.containsPosition(var2.x, var2.y)) {
+		}
+		if (!this.currentMapArea.containsPosition(var2.x, var2.y)) {
 			return null;
-		} else {
-			HashMap var3 = this.worldMapManager.buildIcons();
-			List var4 = (List)var3.get(var1);
-			if (var4 != null && !var4.isEmpty()) {
-				AbstractWorldMapIcon var5 = null;
-				int var6 = -1;
-				Iterator var7 = var4.iterator();
+		}
+		HashMap var3 = this.worldMapManager.buildIcons();
+		List var4 = (List)var3.get(var1);
+		if (var4 != null && !var4.isEmpty()) {
+			AbstractWorldMapIcon var5 = null;
+			int var6 = -1;
+			Iterator var7 = var4.iterator();
 
-				while (true) {
-					AbstractWorldMapIcon var8;
-					int var11;
-					do {
-						if (!var7.hasNext()) {
-							return var5.coord2;
-						}
+			while (true) {
+				AbstractWorldMapIcon var8;
+				int var11;
+				do {
+					if (!var7.hasNext()) {
+						return var5.coord2;
+					}
 
-						var8 = (AbstractWorldMapIcon)var7.next();
-						int var9 = var8.coord2.x - var2.x;
-						int var10 = var8.coord2.y - var2.y;
-						var11 = var9 * var9 + var10 * var10;
-						if (var11 == 0) {
-							return var8.coord2;
-						}
-					} while(var11 >= var6 && var5 != null);
+					var8 = (AbstractWorldMapIcon)var7.next();
+					int var9 = var8.coord2.x - var2.x;
+					int var10 = var8.coord2.y - var2.y;
+					var11 = var9 * var9 + var10 * var10;
+					if (var11 == 0) {
+						return var8.coord2;
+					}
+				} while(var11 >= var6 && var5 != null);
 
-					var5 = var8;
-					var6 = var11;
-				}
-			} else {
-				return null;
+				var5 = var8;
+				var6 = var11;
 			}
 		}
+		return null;
 	}
 
 	@ObfuscatedName("bo")
@@ -1394,21 +1399,21 @@ public class WorldMap {
 	public AbstractWorldMapIcon iconStart() {
 		if (!this.cacheLoader.getIsLoaded()) {
 			return null;
-		} else if (!this.worldMapManager.isLoaded()) {
-			return null;
-		} else {
-			HashMap var1 = this.worldMapManager.buildIcons();
-			this.field3972 = new LinkedList();
-			Iterator var2 = var1.values().iterator();
-
-			while (var2.hasNext()) {
-				List var3 = (List)var2.next();
-				this.field3972.addAll(var3);
-			}
-
-			this.iconIterator = this.field3972.iterator();
-			return this.iconNext();
 		}
+		if (!this.worldMapManager.isLoaded()) {
+			return null;
+		}
+		HashMap var1 = this.worldMapManager.buildIcons();
+		this.field3972 = new LinkedList();
+		Iterator var2 = var1.values().iterator();
+
+		while (var2.hasNext()) {
+			List var3 = (List)var2.next();
+			this.field3972.addAll(var3);
+		}
+
+		this.iconIterator = this.field3972.iterator();
+		return this.iconNext();
 	}
 
 	@ObfuscatedName("bs")
@@ -1420,17 +1425,16 @@ public class WorldMap {
 	public AbstractWorldMapIcon iconNext() {
 		if (this.iconIterator == null) {
 			return null;
-		} else {
-			AbstractWorldMapIcon var1;
-			do {
-				if (!this.iconIterator.hasNext()) {
-					return null;
-				}
-
-				var1 = (AbstractWorldMapIcon)this.iconIterator.next();
-			} while(var1.getElement() == -1);
-
-			return var1;
 		}
+		AbstractWorldMapIcon var1;
+		do {
+			if (!this.iconIterator.hasNext()) {
+				return null;
+			}
+
+			var1 = (AbstractWorldMapIcon)this.iconIterator.next();
+		} while(var1.getElement() == -1);
+
+		return var1;
 	}
 }

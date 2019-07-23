@@ -532,19 +532,20 @@ public class ObjectDefinition extends DualNode {
 			}
 
 			return true;
-		} else if (this.field3362 == null) {
-			return true;
-		} else if (var1 != 10) {
-			return true;
-		} else {
-			boolean var2 = true;
-
-			for (int var3 = 0; var3 < this.field3362.length; ++var3) {
-				var2 &= ObjectDefinition_modelsArchive.tryLoadFile(this.field3362[var3] & 65535, 0);
-			}
-
-			return var2;
 		}
+		if (this.field3362 == null) {
+			return true;
+		}
+		if (var1 != 10) {
+			return true;
+		}
+		boolean var2 = true;
+
+		for (int var3 = 0; var3 < this.field3362.length; ++var3) {
+			var2 &= ObjectDefinition_modelsArchive.tryLoadFile(this.field3362[var3] & 65535, 0);
+		}
+
+		return var2;
 	}
 
 	@ObfuscatedName("l")
@@ -555,15 +556,14 @@ public class ObjectDefinition extends DualNode {
 	public final boolean method4608() {
 		if (this.field3362 == null) {
 			return true;
-		} else {
-			boolean var1 = true;
-
-			for (int var2 = 0; var2 < this.field3362.length; ++var2) {
-				var1 &= ObjectDefinition_modelsArchive.tryLoadFile(this.field3362[var2] & 65535, 0);
-			}
-
-			return var1;
 		}
+		boolean var1 = true;
+
+		for (int var2 = 0; var2 < this.field3362.length; ++var2) {
+			var1 &= ObjectDefinition_modelsArchive.tryLoadFile(this.field3362[var2] & 65535, 0);
+		}
+
+		return var1;
 	}
 
 	@ObfuscatedName("b")
@@ -672,19 +672,18 @@ public class ObjectDefinition extends DualNode {
 
 		if (var7 == null && this.clipType * 256 == -1) {
 			return var11;
-		} else {
-			if (var7 != null) {
-				var11 = var7.transformObjectModel(var11, var8, var2);
-			} else {
-				var11 = var11.toSharedSequenceModel(true);
-			}
-
-			if (this.clipType * 256 >= 0) {
-				var11 = var11.contourGround(var3, var4, var5, var6, false, this.clipType * 256);
-			}
-
-			return var11;
 		}
+		if (var7 != null) {
+			var11 = var7.transformObjectModel(var11, var8, var2);
+		} else {
+			var11 = var11.toSharedSequenceModel(true);
+		}
+
+		if (this.clipType * 256 >= 0) {
+			var11 = var11.contourGround(var3, var4, var5, var6, false, this.clipType * 256);
+		}
+
+		return var11;
 	}
 
 	@ObfuscatedName("u")
@@ -893,17 +892,16 @@ public class ObjectDefinition extends DualNode {
 	public boolean method4598() {
 		if (this.transforms == null) {
 			return this.ambientSoundId != -1 || this.field3367 != null;
-		} else {
-			for (int var1 = 0; var1 < this.transforms.length; ++var1) {
-				if (this.transforms[var1] != -1) {
-					ObjectDefinition var2 = ViewportMouse.getObjectDefinition(this.transforms[var1]);
-					if (var2.ambientSoundId != -1 || var2.field3367 != null) {
-						return true;
-					}
+		}
+		for (int var1 = 0; var1 < this.transforms.length; ++var1) {
+			if (this.transforms[var1] != -1) {
+				ObjectDefinition var2 = ViewportMouse.getObjectDefinition(this.transforms[var1]);
+				if (var2.ambientSoundId != -1 || var2.field3367 != null) {
+					return true;
 				}
 			}
-
-			return false;
 		}
+
+		return false;
 	}
 }

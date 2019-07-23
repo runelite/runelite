@@ -190,8 +190,7 @@ public class Varps {
 			} catch (Exception var14) {
 				return -1;
 			}
-		} else {
-			return -2;
 		}
+		return -2;
 	}
 }

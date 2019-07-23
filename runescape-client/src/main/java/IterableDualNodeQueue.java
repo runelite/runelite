@@ -60,10 +60,9 @@ public class IterableDualNodeQueue implements Iterable {
 		DualNode var1 = this.sentinel.previousDual;
 		if (var1 == this.sentinel) {
 			return null;
-		} else {
-			var1.removeDual();
-			return var1;
 		}
+		var1.removeDual();
+		return var1;
 	}
 
 	@ObfuscatedName("k")
@@ -91,10 +90,9 @@ public class IterableDualNodeQueue implements Iterable {
 		if (var2 == this.sentinel) {
 			this.head = null;
 			return null;
-		} else {
-			this.head = var2.previousDual;
-			return var2;
 		}
+		this.head = var2.previousDual;
+		return var2;
 	}
 
 	@ObfuscatedName("b")
@@ -107,10 +105,9 @@ public class IterableDualNodeQueue implements Iterable {
 		if (var1 == this.sentinel) {
 			this.head = null;
 			return null;
-		} else {
-			this.head = var1.previousDual;
-			return var1;
 		}
+		this.head = var1.previousDual;
+		return var1;
 	}
 
 	public Iterator iterator() {

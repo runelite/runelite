@@ -94,35 +94,35 @@ public class class185 {
 	static void SpriteBuffer_decode(byte[] var0) {
 		Buffer var1 = new Buffer(var0);
 		var1.offset = var0.length - 2;
-		class326.SpriteBuffer_spriteCount = var1.readUnsignedShort();
-		Varps.SpriteBuffer_xOffsets = new int[class326.SpriteBuffer_spriteCount];
-		class326.SpriteBuffer_yOffsets = new int[class326.SpriteBuffer_spriteCount];
-		class326.SpriteBuffer_spriteWidths = new int[class326.SpriteBuffer_spriteCount];
-		class216.SpriteBuffer_spriteHeights = new int[class326.SpriteBuffer_spriteCount];
-		class326.SpriteBuffer_pixels = new byte[class326.SpriteBuffer_spriteCount][];
-		var1.offset = var0.length - 7 - class326.SpriteBuffer_spriteCount * 8;
-		class326.SpriteBuffer_spriteWidth = var1.readUnsignedShort();
-		class326.SpriteBuffer_spriteHeight = var1.readUnsignedShort();
+		SpriteBuffer.SpriteBuffer_spriteCount = var1.readUnsignedShort();
+		Varps.SpriteBuffer_xOffsets = new int[SpriteBuffer.SpriteBuffer_spriteCount];
+		SpriteBuffer.SpriteBuffer_yOffsets = new int[SpriteBuffer.SpriteBuffer_spriteCount];
+		SpriteBuffer.SpriteBuffer_spriteWidths = new int[SpriteBuffer.SpriteBuffer_spriteCount];
+		class216.SpriteBuffer_spriteHeights = new int[SpriteBuffer.SpriteBuffer_spriteCount];
+		SpriteBuffer.SpriteBuffer_pixels = new byte[SpriteBuffer.SpriteBuffer_spriteCount][];
+		var1.offset = var0.length - 7 - SpriteBuffer.SpriteBuffer_spriteCount * 8;
+		SpriteBuffer.SpriteBuffer_spriteWidth = var1.readUnsignedShort();
+		SpriteBuffer.SpriteBuffer_spriteHeight = var1.readUnsignedShort();
 		int var2 = (var1.readUnsignedByte() & 255) + 1;
 
 		int var3;
-		for (var3 = 0; var3 < class326.SpriteBuffer_spriteCount; ++var3) {
+		for (var3 = 0; var3 < SpriteBuffer.SpriteBuffer_spriteCount; ++var3) {
 			Varps.SpriteBuffer_xOffsets[var3] = var1.readUnsignedShort();
 		}
 
-		for (var3 = 0; var3 < class326.SpriteBuffer_spriteCount; ++var3) {
-			class326.SpriteBuffer_yOffsets[var3] = var1.readUnsignedShort();
+		for (var3 = 0; var3 < SpriteBuffer.SpriteBuffer_spriteCount; ++var3) {
+			SpriteBuffer.SpriteBuffer_yOffsets[var3] = var1.readUnsignedShort();
 		}
 
-		for (var3 = 0; var3 < class326.SpriteBuffer_spriteCount; ++var3) {
-			class326.SpriteBuffer_spriteWidths[var3] = var1.readUnsignedShort();
+		for (var3 = 0; var3 < SpriteBuffer.SpriteBuffer_spriteCount; ++var3) {
+			SpriteBuffer.SpriteBuffer_spriteWidths[var3] = var1.readUnsignedShort();
 		}
 
-		for (var3 = 0; var3 < class326.SpriteBuffer_spriteCount; ++var3) {
+		for (var3 = 0; var3 < SpriteBuffer.SpriteBuffer_spriteCount; ++var3) {
 			class216.SpriteBuffer_spriteHeights[var3] = var1.readUnsignedShort();
 		}
 
-		var1.offset = var0.length - 7 - class326.SpriteBuffer_spriteCount * 8 - (var2 - 1) * 3;
+		var1.offset = var0.length - 7 - SpriteBuffer.SpriteBuffer_spriteCount * 8 - (var2 - 1) * 3;
 		Frames.SpriteBuffer_spritePalette = new int[var2];
 
 		for (var3 = 1; var3 < var2; ++var3) {
@@ -134,12 +134,12 @@ public class class185 {
 
 		var1.offset = 0;
 
-		for (var3 = 0; var3 < class326.SpriteBuffer_spriteCount; ++var3) {
-			int var4 = class326.SpriteBuffer_spriteWidths[var3];
+		for (var3 = 0; var3 < SpriteBuffer.SpriteBuffer_spriteCount; ++var3) {
+			int var4 = SpriteBuffer.SpriteBuffer_spriteWidths[var3];
 			int var5 = class216.SpriteBuffer_spriteHeights[var3];
 			int var6 = var5 * var4;
 			byte[] var7 = new byte[var6];
-			class326.SpriteBuffer_pixels[var3] = var7;
+			SpriteBuffer.SpriteBuffer_pixels[var3] = var7;
 			int var8 = var1.readUnsignedByte();
 			int var9;
 			if (var8 == 0) {

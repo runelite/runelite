@@ -33,7 +33,7 @@ public class class188 {
 			var3 = Client.archive8;
 			var4 = var3.getGroupId("sl_back");
 			var5 = var3.getFileId(var4, "");
-			Sprite[] var2 = TilePaint.method3062(var3, var4, var5);
+			Sprite[] var2 = TilePaint.SpriteBuffer_getSpriteArray(var3, var4, var5);
 			WorldMapID.worldSelectBackSprites = var2;
 		}
 
@@ -42,7 +42,7 @@ public class class188 {
 			var3 = Client.archive8;
 			var4 = var3.getGroupId("sl_flags");
 			var5 = var3.getFileId(var4, "");
-			var25 = class289.method5281(var3, var4, var5);
+			var25 = class289.SpriteBuffer_getIndexedSpriteArray(var3, var4, var5);
 			SecureRandomCallable.worldSelectFlagSprites = var25;
 		}
 
@@ -50,7 +50,7 @@ public class class188 {
 			var3 = Client.archive8;
 			var4 = var3.getGroupId("sl_arrows");
 			var5 = var3.getFileId(var4, "");
-			var25 = class289.method5281(var3, var4, var5);
+			var25 = class289.SpriteBuffer_getIndexedSpriteArray(var3, var4, var5);
 			class225.worldSelectArrows = var25;
 		}
 
@@ -58,16 +58,16 @@ public class class188 {
 			var3 = Client.archive8;
 			var4 = var3.getGroupId("sl_stars");
 			var5 = var3.getFileId(var4, "");
-			var25 = class289.method5281(var3, var4, var5);
+			var25 = class289.SpriteBuffer_getIndexedSpriteArray(var3, var4, var5);
 			FriendSystem.worldSelectStars = var25;
 		}
 
 		if (Login.worldSelectLeftSprite == null) {
-			Login.worldSelectLeftSprite = class215.loadIndexedSpriteByName(Client.archive8, "leftarrow", "");
+			Login.worldSelectLeftSprite = class215.SpriteBuffer_getIndexedSpriteByName(Client.archive8, "leftarrow", "");
 		}
 
 		if (NPCDefinition.worldSelectRightSprite == null) {
-			NPCDefinition.worldSelectRightSprite = class215.loadIndexedSpriteByName(Client.archive8, "rightarrow", "");
+			NPCDefinition.worldSelectRightSprite = class215.SpriteBuffer_getIndexedSpriteByName(Client.archive8, "rightarrow", "");
 		}
 
 		Rasterizer2D.Rasterizer2D_fillRectangle(Login.xPadding, 23, 765, 480, 0);
@@ -300,8 +300,7 @@ public class class188 {
 
 		if (var1.length() > 9) {
 			return " " + ClientPreferences.colorStartTag(65408) + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>";
-		} else {
-			return var1.length() > 6 ? " " + ClientPreferences.colorStartTag(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>" : " " + ClientPreferences.colorStartTag(16776960) + var1 + "</col>";
 		}
+		return var1.length() > 6 ? " " + ClientPreferences.colorStartTag(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>" : " " + ClientPreferences.colorStartTag(16776960) + var1 + "</col>";
 	}
 }

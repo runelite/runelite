@@ -266,9 +266,8 @@ public abstract class AbstractArchive {
 			}
 
 			return var5;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@ObfuscatedName("k")
@@ -281,15 +280,14 @@ public abstract class AbstractArchive {
 		if (var1 >= 0 && var1 < this.files.length && this.files[var1] != null && var2 >= 0 && var2 < this.files[var1].length) {
 			if (this.files[var1][var2] != null) {
 				return true;
-			} else if (this.groups[var1] != null) {
-				return true;
-			} else {
-				this.loadGroup(var1);
-				return this.groups[var1] != null;
 			}
-		} else {
-			return false;
+			if (this.groups[var1] != null) {
+				return true;
+			}
+			this.loadGroup(var1);
+			return this.groups[var1] != null;
 		}
+		return false;
 	}
 
 	@ObfuscatedName("l")
@@ -300,11 +298,11 @@ public abstract class AbstractArchive {
 	public boolean method4147(int var1) {
 		if (this.files.length == 1) {
 			return this.tryLoadFile(0, var1);
-		} else if (this.files[var1].length == 1) {
-			return this.tryLoadFile(var1, 0);
-		} else {
-			throw new RuntimeException();
 		}
+		if (this.files[var1].length == 1) {
+			return this.tryLoadFile(var1, 0);
+		}
+		throw new RuntimeException();
 	}
 
 	@ObfuscatedName("b")
@@ -316,10 +314,9 @@ public abstract class AbstractArchive {
 	public boolean tryLoadGroup(int var1) {
 		if (this.groups[var1] != null) {
 			return true;
-		} else {
-			this.loadGroup(var1);
-			return this.groups[var1] != null;
 		}
+		this.loadGroup(var1);
+		return this.groups[var1] != null;
 	}
 
 	@ObfuscatedName("i")
@@ -363,11 +360,11 @@ public abstract class AbstractArchive {
 	public byte[] takeFileFlat(int var1) {
 		if (this.files.length == 1) {
 			return this.takeFile(0, var1);
-		} else if (this.files[var1].length == 1) {
-			return this.takeFile(var1, 0);
-		} else {
-			throw new RuntimeException();
 		}
+		if (this.files[var1].length == 1) {
+			return this.takeFile(var1, 0);
+		}
+		throw new RuntimeException();
 	}
 
 	@ObfuscatedName("x")
@@ -391,9 +388,8 @@ public abstract class AbstractArchive {
 
 			byte[] var4 = ArchiveDisk.byteArrayFromObject(this.files[var1][var2], false);
 			return var4;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@ObfuscatedName("r")
@@ -405,11 +401,11 @@ public abstract class AbstractArchive {
 	public byte[] getFileFlat(int var1) {
 		if (this.files.length == 1) {
 			return this.getFile(0, var1);
-		} else if (this.files[var1].length == 1) {
-			return this.getFile(var1, 0);
-		} else {
-			throw new RuntimeException();
 		}
+		if (this.files[var1].length == 1) {
+			return this.getFile(var1, 0);
+		}
+		throw new RuntimeException();
 	}
 
 	@ObfuscatedName("v")
@@ -503,120 +499,118 @@ public abstract class AbstractArchive {
 	boolean buildFiles(int var1, int[] var2) {
 		if (this.groups[var1] == null) {
 			return false;
-		} else {
-			int var3 = this.fileCounts[var1];
-			int[] var4 = this.fileIds[var1];
-			Object[] var5 = this.files[var1];
-			boolean var6 = true;
+		}
+		int var3 = this.fileCounts[var1];
+		int[] var4 = this.fileIds[var1];
+		Object[] var5 = this.files[var1];
+		boolean var6 = true;
 
-			for (int var7 = 0; var7 < var3; ++var7) {
-				if (var5[var4[var7]] == null) {
-					var6 = false;
-					break;
-				}
-			}
-
-			if (var6) {
-				return true;
-			} else {
-				byte[] var21;
-				if (var2 == null || var2[0] == 0 && var2[1] == 0 && var2[2] == 0 && var2[3] == 0) {
-					var21 = ArchiveDisk.byteArrayFromObject(this.groups[var1], false);
-				} else {
-					var21 = ArchiveDisk.byteArrayFromObject(this.groups[var1], true);
-					Buffer var8 = new Buffer(var21);
-					var8.xteaDecrypt(var2, 5, var8.array.length);
-				}
-
-				byte[] var25 = HealthBarUpdate.decompressBytes(var21);
-				if (this.releaseGroups) {
-					this.groups[var1] = null;
-				}
-
-				int var10;
-				if (var3 > 1) {
-					int var9 = var25.length;
-					--var9;
-					var10 = var25[var9] & 255;
-					var9 -= var10 * var3 * 4;
-					Buffer var11 = new Buffer(var25);
-					int[] var12 = new int[var3];
-					var11.offset = var9;
-
-					int var14;
-					int var15;
-					for (int var13 = 0; var13 < var10; ++var13) {
-						var14 = 0;
-
-						for (var15 = 0; var15 < var3; ++var15) {
-							var14 += var11.readInt();
-							var12[var15] += var14;
-						}
-					}
-
-					byte[][] var23 = new byte[var3][];
-
-					for (var14 = 0; var14 < var3; ++var14) {
-						var23[var14] = new byte[var12[var14]];
-						var12[var14] = 0;
-					}
-
-					var11.offset = var9;
-					var14 = 0;
-
-					int var17;
-					for (var15 = 0; var15 < var10; ++var15) {
-						int var16 = 0;
-
-						for (var17 = 0; var17 < var3; ++var17) {
-							var16 += var11.readInt();
-							System.arraycopy(var25, var14, var23[var17], var12[var17], var16);
-							var12[var17] += var16;
-							var14 += var16;
-						}
-					}
-
-					for (var15 = 0; var15 < var3; ++var15) {
-						if (!this.shallowFiles) {
-							var17 = var4[var15];
-							byte[] var19 = var23[var15];
-							Object var18;
-							if (var19 == null) {
-								var18 = null;
-							} else if (var19.length > 136) {
-								DirectByteArrayCopier var20 = new DirectByteArrayCopier();
-								var20.set(var19);
-								var18 = var20;
-							} else {
-								var18 = var19;
-							}
-
-							var5[var17] = var18;
-						} else {
-							var5[var4[var15]] = var23[var15];
-						}
-					}
-				} else if (!this.shallowFiles) {
-					var10 = var4[0];
-					Object var26;
-					if (var25 == null) {
-						var26 = null;
-					} else if (var25.length > 136) {
-						DirectByteArrayCopier var27 = new DirectByteArrayCopier();
-						var27.set(var25);
-						var26 = var27;
-					} else {
-						var26 = var25;
-					}
-
-					var5[var10] = var26;
-				} else {
-					var5[var4[0]] = var25;
-				}
-
-				return true;
+		for (int var7 = 0; var7 < var3; ++var7) {
+			if (var5[var4[var7]] == null) {
+				var6 = false;
+				break;
 			}
 		}
+
+		if (var6) {
+			return true;
+		}
+		byte[] var21;
+		if (var2 == null || var2[0] == 0 && var2[1] == 0 && var2[2] == 0 && var2[3] == 0) {
+			var21 = ArchiveDisk.byteArrayFromObject(this.groups[var1], false);
+		} else {
+			var21 = ArchiveDisk.byteArrayFromObject(this.groups[var1], true);
+			Buffer var8 = new Buffer(var21);
+			var8.xteaDecrypt(var2, 5, var8.array.length);
+		}
+
+		byte[] var25 = HealthBarUpdate.decompressBytes(var21);
+		if (this.releaseGroups) {
+			this.groups[var1] = null;
+		}
+
+		int var10;
+		if (var3 > 1) {
+			int var9 = var25.length;
+			--var9;
+			var10 = var25[var9] & 255;
+			var9 -= var10 * var3 * 4;
+			Buffer var11 = new Buffer(var25);
+			int[] var12 = new int[var3];
+			var11.offset = var9;
+
+			int var14;
+			int var15;
+			for (int var13 = 0; var13 < var10; ++var13) {
+				var14 = 0;
+
+				for (var15 = 0; var15 < var3; ++var15) {
+					var14 += var11.readInt();
+					var12[var15] += var14;
+				}
+			}
+
+			byte[][] var23 = new byte[var3][];
+
+			for (var14 = 0; var14 < var3; ++var14) {
+				var23[var14] = new byte[var12[var14]];
+				var12[var14] = 0;
+			}
+
+			var11.offset = var9;
+			var14 = 0;
+
+			int var17;
+			for (var15 = 0; var15 < var10; ++var15) {
+				int var16 = 0;
+
+				for (var17 = 0; var17 < var3; ++var17) {
+					var16 += var11.readInt();
+					System.arraycopy(var25, var14, var23[var17], var12[var17], var16);
+					var12[var17] += var16;
+					var14 += var16;
+				}
+			}
+
+			for (var15 = 0; var15 < var3; ++var15) {
+				if (!this.shallowFiles) {
+					var17 = var4[var15];
+					byte[] var19 = var23[var15];
+					Object var18;
+					if (var19 == null) {
+						var18 = null;
+					} else if (var19.length > 136) {
+						DirectByteArrayCopier var20 = new DirectByteArrayCopier();
+						var20.set(var19);
+						var18 = var20;
+					} else {
+						var18 = var19;
+					}
+
+					var5[var17] = var18;
+				} else {
+					var5[var4[var15]] = var23[var15];
+				}
+			}
+		} else if (!this.shallowFiles) {
+			var10 = var4[0];
+			Object var26;
+			if (var25 == null) {
+				var26 = null;
+			} else if (var25.length > 136) {
+				DirectByteArrayCopier var27 = new DirectByteArrayCopier();
+				var27.set(var25);
+				var26 = var27;
+			} else {
+				var26 = var25;
+			}
+
+			var5[var10] = var26;
+		} else {
+			var5[var4[0]] = var25;
+		}
+
+		return true;
 	}
 
 	@ObfuscatedName("z")
@@ -653,10 +647,9 @@ public abstract class AbstractArchive {
 		int var3 = this.groupNameHashTable.get(GrandExchangeOfferAgeComparator.hashString(var1));
 		if (var3 < 0) {
 			return false;
-		} else {
-			int var4 = this.fileNameHashTables[var3].get(GrandExchangeOfferAgeComparator.hashString(var2));
-			return var4 >= 0;
 		}
+		int var4 = this.fileNameHashTables[var3].get(GrandExchangeOfferAgeComparator.hashString(var2));
+		return var4 >= 0;
 	}
 
 	@ObfuscatedName("as")
@@ -744,15 +737,16 @@ public abstract class AbstractArchive {
 			HealthBarUpdate.Interpreter_intStackSize -= 3;
 			class81.queueSoundEffect(Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize], Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2]);
 			return 1;
-		} else if (var0 == ScriptOpcodes.SOUND_SONG) {
+		}
+		if (var0 == ScriptOpcodes.SOUND_SONG) {
 			GrandExchangeOfferTotalQuantityComparator.method93(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
 			return 1;
-		} else if (var0 == ScriptOpcodes.SOUND_JINGLE) {
+		}
+		if (var0 == ScriptOpcodes.SOUND_JINGLE) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			WorldMapLabelSize.method188(Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize], Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1]);
 			return 1;
-		} else {
-			return 2;
 		}
+		return 2;
 	}
 }

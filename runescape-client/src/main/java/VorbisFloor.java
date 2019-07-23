@@ -46,72 +46,71 @@ public class VorbisFloor {
 		int var1 = VorbisSample.readBits(16);
 		if (var1 != 1) {
 			throw new RuntimeException();
-		} else {
-			int var2 = VorbisSample.readBits(5);
-			int var3 = 0;
-			this.partitionClassList = new int[var2];
-
-			int var4;
-			int var5;
-			for (var4 = 0; var4 < var2; ++var4) {
-				var5 = VorbisSample.readBits(4);
-				this.partitionClassList[var4] = var5;
-				if (var5 >= var3) {
-					var3 = var5 + 1;
-				}
-			}
-
-			this.classDimensions = new int[var3];
-			this.classSubClasses = new int[var3];
-			this.classMasterbooks = new int[var3];
-			this.subclassBooks = new int[var3][];
-
-			int var7;
-			for (var4 = 0; var4 < var3; ++var4) {
-				this.classDimensions[var4] = VorbisSample.readBits(3) + 1;
-				var5 = this.classSubClasses[var4] = VorbisSample.readBits(2);
-				if (var5 != 0) {
-					this.classMasterbooks[var4] = VorbisSample.readBits(8);
-				}
-
-				var5 = 1 << var5;
-				int[] var6 = new int[var5];
-				this.subclassBooks[var4] = var6;
-
-				for (var7 = 0; var7 < var5; ++var7) {
-					var6[var7] = VorbisSample.readBits(8) - 1;
-				}
-			}
-
-			this.multiplier = VorbisSample.readBits(2) + 1;
-			var4 = VorbisSample.readBits(4);
-			var5 = 2;
-
-			int var9;
-			for (var9 = 0; var9 < var2; ++var9) {
-				var5 += this.classDimensions[this.partitionClassList[var9]];
-			}
-
-			this.field1396 = new int[var5];
-			this.field1396[0] = 0;
-			this.field1396[1] = 1 << var4;
-			var5 = 2;
-
-			for (var9 = 0; var9 < var2; ++var9) {
-				var7 = this.partitionClassList[var9];
-
-				for (int var8 = 0; var8 < this.classDimensions[var7]; ++var8) {
-					this.field1396[var5++] = VorbisSample.readBits(var4);
-				}
-			}
-
-			if (field1403 == null || field1403.length < var5) {
-				field1403 = new int[var5];
-				field1404 = new int[var5];
-				field1405 = new boolean[var5];
-			}
-
 		}
+		int var2 = VorbisSample.readBits(5);
+		int var3 = 0;
+		this.partitionClassList = new int[var2];
+
+		int var4;
+		int var5;
+		for (var4 = 0; var4 < var2; ++var4) {
+			var5 = VorbisSample.readBits(4);
+			this.partitionClassList[var4] = var5;
+			if (var5 >= var3) {
+				var3 = var5 + 1;
+			}
+		}
+
+		this.classDimensions = new int[var3];
+		this.classSubClasses = new int[var3];
+		this.classMasterbooks = new int[var3];
+		this.subclassBooks = new int[var3][];
+
+		int var7;
+		for (var4 = 0; var4 < var3; ++var4) {
+			this.classDimensions[var4] = VorbisSample.readBits(3) + 1;
+			var5 = this.classSubClasses[var4] = VorbisSample.readBits(2);
+			if (var5 != 0) {
+				this.classMasterbooks[var4] = VorbisSample.readBits(8);
+			}
+
+			var5 = 1 << var5;
+			int[] var6 = new int[var5];
+			this.subclassBooks[var4] = var6;
+
+			for (var7 = 0; var7 < var5; ++var7) {
+				var6[var7] = VorbisSample.readBits(8) - 1;
+			}
+		}
+
+		this.multiplier = VorbisSample.readBits(2) + 1;
+		var4 = VorbisSample.readBits(4);
+		var5 = 2;
+
+		int var9;
+		for (var9 = 0; var9 < var2; ++var9) {
+			var5 += this.classDimensions[this.partitionClassList[var9]];
+		}
+
+		this.field1396 = new int[var5];
+		this.field1396[0] = 0;
+		this.field1396[1] = 1 << var4;
+		var5 = 2;
+
+		for (var9 = 0; var9 < var2; ++var9) {
+			var7 = this.partitionClassList[var9];
+
+			for (int var8 = 0; var8 < this.classDimensions[var7]; ++var8) {
+				this.field1396[var5++] = VorbisSample.readBits(var4);
+			}
+		}
+
+		if (field1403 == null || field1403.length < var5) {
+			field1403 = new int[var5];
+			field1404 = new int[var5];
+			field1405 = new boolean[var5];
+		}
+
 	}
 
 	@ObfuscatedName("e")
@@ -189,39 +188,38 @@ public class VorbisFloor {
 		boolean var1 = VorbisSample.readBit() != 0;
 		if (!var1) {
 			return false;
-		} else {
-			int var2 = this.field1396.length;
-
-			int var3;
-			for (var3 = 0; var3 < var2; ++var3) {
-				field1403[var3] = this.field1396[var3];
-			}
-
-			var3 = field1402[this.multiplier - 1];
-			int var4 = UrlRequest.iLog(var3 - 1);
-			field1404[0] = VorbisSample.readBits(var4);
-			field1404[1] = VorbisSample.readBits(var4);
-			int var5 = 2;
-
-			for (int var6 = 0; var6 < this.partitionClassList.length; ++var6) {
-				int var7 = this.partitionClassList[var6];
-				int var8 = this.classDimensions[var7];
-				int var9 = this.classSubClasses[var7];
-				int var10 = (1 << var9) - 1;
-				int var11 = 0;
-				if (var9 > 0) {
-					var11 = VorbisSample.VorbisSample_codebooks[this.classMasterbooks[var7]].method2325();
-				}
-
-				for (int var12 = 0; var12 < var8; ++var12) {
-					int var13 = this.subclassBooks[var7][var11 & var10];
-					var11 >>>= var9;
-					field1404[var5++] = var13 >= 0 ? VorbisSample.VorbisSample_codebooks[var13].method2325() : 0;
-				}
-			}
-
-			return true;
 		}
+		int var2 = this.field1396.length;
+
+		int var3;
+		for (var3 = 0; var3 < var2; ++var3) {
+			field1403[var3] = this.field1396[var3];
+		}
+
+		var3 = field1402[this.multiplier - 1];
+		int var4 = UrlRequest.iLog(var3 - 1);
+		field1404[0] = VorbisSample.readBits(var4);
+		field1404[1] = VorbisSample.readBits(var4);
+		int var5 = 2;
+
+		for (int var6 = 0; var6 < this.partitionClassList.length; ++var6) {
+			int var7 = this.partitionClassList[var6];
+			int var8 = this.classDimensions[var7];
+			int var9 = this.classSubClasses[var7];
+			int var10 = (1 << var9) - 1;
+			int var11 = 0;
+			if (var9 > 0) {
+				var11 = VorbisSample.VorbisSample_codebooks[this.classMasterbooks[var7]].method2325();
+			}
+
+			for (int var12 = 0; var12 < var8; ++var12) {
+				int var13 = this.subclassBooks[var7][var11 & var10];
+				var11 >>>= var9;
+				field1404[var5++] = var13 >= 0 ? VorbisSample.VorbisSample_codebooks[var13].method2325() : 0;
+			}
+		}
+
+		return true;
 	}
 
 	@ObfuscatedName("b")

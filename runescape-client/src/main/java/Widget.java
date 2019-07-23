@@ -1195,21 +1195,20 @@ public class Widget extends Node {
 		int var2 = var1.readUnsignedByte();
 		if (var2 == 0) {
 			return null;
-		} else {
-			Object[] var3 = new Object[var2];
-
-			for (int var4 = 0; var4 < var2; ++var4) {
-				int var5 = var1.readUnsignedByte();
-				if (var5 == 0) {
-					var3[var4] = new Integer(var1.readInt());
-				} else if (var5 == 1) {
-					var3[var4] = var1.readStringCp1252NullTerminated();
-				}
-			}
-
-			this.hasListener = true;
-			return var3;
 		}
+		Object[] var3 = new Object[var2];
+
+		for (int var4 = 0; var4 < var2; ++var4) {
+			int var5 = var1.readUnsignedByte();
+			if (var5 == 0) {
+				var3[var4] = new Integer(var1.readInt());
+			} else if (var5 == 1) {
+				var3[var4] = var1.readStringCp1252NullTerminated();
+			}
+		}
+
+		this.hasListener = true;
+		return var3;
 	}
 
 	@ObfuscatedName("i")
@@ -1222,15 +1221,14 @@ public class Widget extends Node {
 		int var2 = var1.readUnsignedByte();
 		if (var2 == 0) {
 			return null;
-		} else {
-			int[] var3 = new int[var2];
-
-			for (int var4 = 0; var4 < var2; ++var4) {
-				var3[var4] = var1.readInt();
-			}
-
-			return var3;
 		}
+		int[] var3 = new int[var2];
+
+		for (int var4 = 0; var4 < var2; ++var4) {
+			var3[var4] = var1.readInt();
+		}
+
+		return var3;
 	}
 
 	@ObfuscatedName("c")
@@ -1265,46 +1263,43 @@ public class Widget extends Node {
 
 		if (var2 == -1) {
 			return null;
-		} else {
-			long var3 = ((this.spriteFlipV ? 1L : 0L) << 38) + ((long)this.outline << 36) + (long)var2 + ((this.spriteFlipH ? 1L : 0L) << 39) + ((long)this.spriteShadow << 40);
-			Sprite var5 = (Sprite)Widget_cachedSprites.get(var3);
-			if (var5 != null) {
-				return var5;
-			} else {
-				var5 = class65.loadSprite(class216.Widget_spritesArchive, var2, 0);
-				if (var5 == null) {
-					field2562 = true;
-					return null;
-				} else {
-					if (this.spriteFlipV) {
-						var5.method6128();
-					}
-
-					if (this.spriteFlipH) {
-						var5.method6117();
-					}
-
-					if (this.outline > 0) {
-						var5.method6115(this.outline);
-					}
-
-					if (this.outline >= 1) {
-						var5.outline(1);
-					}
-
-					if (this.outline >= 2) {
-						var5.outline(16777215);
-					}
-
-					if (this.spriteShadow != 0) {
-						var5.shadow(this.spriteShadow);
-					}
-
-					Widget_cachedSprites.put(var5, var3);
-					return var5;
-				}
-			}
 		}
+		long var3 = ((this.spriteFlipV ? 1L : 0L) << 38) + ((long)this.outline << 36) + (long)var2 + ((this.spriteFlipH ? 1L : 0L) << 39) + ((long)this.spriteShadow << 40);
+		Sprite var5 = (Sprite)Widget_cachedSprites.get(var3);
+		if (var5 != null) {
+			return var5;
+		}
+		var5 = class65.SpriteBuffer_getSprite(class216.Widget_spritesArchive, var2, 0);
+		if (var5 == null) {
+			field2562 = true;
+			return null;
+		}
+		if (this.spriteFlipV) {
+			var5.method6128();
+		}
+
+		if (this.spriteFlipH) {
+			var5.method6117();
+		}
+
+		if (this.outline > 0) {
+			var5.method6115(this.outline);
+		}
+
+		if (this.outline >= 1) {
+			var5.outline(1);
+		}
+
+		if (this.outline >= 2) {
+			var5.outline(16777215);
+		}
+
+		if (this.spriteShadow != 0) {
+			var5.shadow(this.spriteShadow);
+		}
+
+		Widget_cachedSprites.put(var5, var3);
+		return var5;
 	}
 
 	@ObfuscatedName("x")
@@ -1317,21 +1312,19 @@ public class Widget extends Node {
 		field2562 = false;
 		if (this.fontId == -1) {
 			return null;
-		} else {
-			Font var1 = (Font)Widget_cachedFonts.get((long)this.fontId);
-			if (var1 != null) {
-				return var1;
-			} else {
-				var1 = GameObject.loadFont(class216.Widget_spritesArchive, DirectByteArrayCopier.Widget_fontsArchive, this.fontId, 0);
-				if (var1 != null) {
-					Widget_cachedFonts.put(var1, (long)this.fontId);
-				} else {
-					field2562 = true;
-				}
-
-				return var1;
-			}
 		}
+		Font var1 = (Font)Widget_cachedFonts.get((long)this.fontId);
+		if (var1 != null) {
+			return var1;
+		}
+		var1 = GameObject.SpriteBuffer_getFont(class216.Widget_spritesArchive, DirectByteArrayCopier.Widget_fontsArchive, this.fontId, 0);
+		if (var1 != null) {
+			Widget_cachedFonts.put(var1, (long)this.fontId);
+		} else {
+			field2562 = true;
+		}
+
+		return var1;
 	}
 
 	@ObfuscatedName("r")
@@ -1346,24 +1339,21 @@ public class Widget extends Node {
 			int var2 = this.inventorySprites[var1];
 			if (var2 == -1) {
 				return null;
-			} else {
-				Sprite var3 = (Sprite)Widget_cachedSprites.get((long)var2);
-				if (var3 != null) {
-					return var3;
-				} else {
-					var3 = class65.loadSprite(class216.Widget_spritesArchive, var2, 0);
-					if (var3 != null) {
-						Widget_cachedSprites.put(var3, (long)var2);
-					} else {
-						field2562 = true;
-					}
-
-					return var3;
-				}
 			}
-		} else {
-			return null;
+			Sprite var3 = (Sprite)Widget_cachedSprites.get((long)var2);
+			if (var3 != null) {
+				return var3;
+			}
+			var3 = class65.SpriteBuffer_getSprite(class216.Widget_spritesArchive, var2, 0);
+			if (var3 != null) {
+				Widget_cachedSprites.put(var3, (long)var2);
+			} else {
+				field2562 = true;
+			}
+
+			return var3;
 		}
+		return null;
 	}
 
 	@ObfuscatedName("v")
@@ -1386,66 +1376,66 @@ public class Widget extends Node {
 
 		if (var5 == 0) {
 			return null;
-		} else if (var5 == 1 && var6 == -1) {
-			return null;
-		} else {
-			Model var7 = (Model)Widget_cachedModels.get((long)(var6 + (var5 << 16)));
-			if (var7 == null) {
-				ModelData var8;
-				if (var5 == 1) {
-					var8 = ModelData.method2769(ViewportMouse.Widget_modelsArchive, var6, 0);
-					if (var8 == null) {
-						field2562 = true;
-						return null;
-					}
-
-					var7 = var8.toModel(64, 768, -50, -10, -50);
-				}
-
-				if (var5 == 2) {
-					var8 = GameShell.getNpcDefinition(var6).getModelData();
-					if (var8 == null) {
-						field2562 = true;
-						return null;
-					}
-
-					var7 = var8.toModel(64, 768, -50, -10, -50);
-				}
-
-				if (var5 == 3) {
-					if (var4 == null) {
-						return null;
-					}
-
-					var8 = var4.getModelData();
-					if (var8 == null) {
-						field2562 = true;
-						return null;
-					}
-
-					var7 = var8.toModel(64, 768, -50, -10, -50);
-				}
-
-				if (var5 == 4) {
-					ItemDefinition var9 = WorldMapArea.getItemDefinition(var6);
-					var8 = var9.method4643(10);
-					if (var8 == null) {
-						field2562 = true;
-						return null;
-					}
-
-					var7 = var8.toModel(var9.ambient + 64, var9.contrast + 768, -50, -10, -50);
-				}
-
-				Widget_cachedModels.put(var7, (long)(var6 + (var5 << 16)));
-			}
-
-			if (var1 != null) {
-				var7 = var1.transformWidgetModel(var7, var2);
-			}
-
-			return var7;
 		}
+		if (var5 == 1 && var6 == -1) {
+			return null;
+		}
+		Model var7 = (Model)Widget_cachedModels.get((long)(var6 + (var5 << 16)));
+		if (var7 == null) {
+			ModelData var8;
+			if (var5 == 1) {
+				var8 = ModelData.method2769(ViewportMouse.Widget_modelsArchive, var6, 0);
+				if (var8 == null) {
+					field2562 = true;
+					return null;
+				}
+
+				var7 = var8.toModel(64, 768, -50, -10, -50);
+			}
+
+			if (var5 == 2) {
+				var8 = GameShell.getNpcDefinition(var6).getModelData();
+				if (var8 == null) {
+					field2562 = true;
+					return null;
+				}
+
+				var7 = var8.toModel(64, 768, -50, -10, -50);
+			}
+
+			if (var5 == 3) {
+				if (var4 == null) {
+					return null;
+				}
+
+				var8 = var4.getModelData();
+				if (var8 == null) {
+					field2562 = true;
+					return null;
+				}
+
+				var7 = var8.toModel(64, 768, -50, -10, -50);
+			}
+
+			if (var5 == 4) {
+				ItemDefinition var9 = WorldMapArea.getItemDefinition(var6);
+				var8 = var9.method4643(10);
+				if (var8 == null) {
+					field2562 = true;
+					return null;
+				}
+
+				var7 = var8.toModel(var9.ambient + 64, var9.contrast + 768, -50, -10, -50);
+			}
+
+			Widget_cachedModels.put(var7, (long)(var6 + (var5 << 16)));
+		}
+
+		if (var1 != null) {
+			var7 = var1.transformWidgetModel(var7, var2);
+		}
+
+		return var7;
 	}
 
 	@ObfuscatedName("y")
@@ -1462,49 +1452,46 @@ public class Widget extends Node {
 		int var2 = var1 ? this.spriteId : this.spriteId2;
 		if (var2 == -1) {
 			return null;
-		} else {
-			long var3 = ((this.spriteFlipV ? 1L : 0L) << 38) + (long)var2 + ((long)this.outline << 36) + ((this.spriteFlipH ? 1L : 0L) << 39) + ((long)this.spriteShadow << 40);
-			SpriteMask var5 = (SpriteMask)Widget_cachedSpriteMasks.get(var3);
-			if (var5 != null) {
-				return var5;
-			} else {
-				Sprite var6 = this.getSprite(var1);
-				if (var6 == null) {
-					return null;
-				} else {
-					Sprite var7 = var6.copyNormalized();
-					int[] var8 = new int[var7.subHeight];
-					int[] var9 = new int[var7.subHeight];
+		}
+		long var3 = ((this.spriteFlipV ? 1L : 0L) << 38) + (long)var2 + ((long)this.outline << 36) + ((this.spriteFlipH ? 1L : 0L) << 39) + ((long)this.spriteShadow << 40);
+		SpriteMask var5 = (SpriteMask)Widget_cachedSpriteMasks.get(var3);
+		if (var5 != null) {
+			return var5;
+		}
+		Sprite var6 = this.getSprite(var1);
+		if (var6 == null) {
+			return null;
+		}
+		Sprite var7 = var6.copyNormalized();
+		int[] var8 = new int[var7.subHeight];
+		int[] var9 = new int[var7.subHeight];
 
-					for (int var10 = 0; var10 < var7.subHeight; ++var10) {
-						int var11 = 0;
-						int var12 = var7.subWidth;
+		for (int var10 = 0; var10 < var7.subHeight; ++var10) {
+			int var11 = 0;
+			int var12 = var7.subWidth;
 
-						int var13;
-						for (var13 = 0; var13 < var7.subWidth; ++var13) {
-							if (var7.pixels[var13 + var10 * var7.subWidth] == 0) {
-								var11 = var13;
-								break;
-							}
-						}
-
-						for (var13 = var7.subWidth - 1; var13 >= var11; --var13) {
-							if (var7.pixels[var13 + var10 * var7.subWidth] == 0) {
-								var12 = var13 + 1;
-								break;
-							}
-						}
-
-						var8[var10] = var11;
-						var9[var10] = var12 - var11;
-					}
-
-					var5 = new SpriteMask(var7.subWidth, var7.subHeight, var9, var8, var2);
-					Widget_cachedSpriteMasks.put(var5, var3);
-					return var5;
+			int var13;
+			for (var13 = 0; var13 < var7.subWidth; ++var13) {
+				if (var7.pixels[var13 + var10 * var7.subWidth] == 0) {
+					var11 = var13;
+					break;
 				}
 			}
+
+			for (var13 = var7.subWidth - 1; var13 >= var11; --var13) {
+				if (var7.pixels[var13 + var10 * var7.subWidth] == 0) {
+					var12 = var13 + 1;
+					break;
+				}
+			}
+
+			var8[var10] = var11;
+			var9[var10] = var12 - var11;
 		}
+
+		var5 = new SpriteMask(var7.subWidth, var7.subHeight, var9, var8, var2);
+		Widget_cachedSpriteMasks.put(var5, var3);
+		return var5;
 	}
 
 	@ObfuscatedName("a")

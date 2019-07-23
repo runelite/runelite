@@ -67,81 +67,80 @@ public final class ArchiveDisk {
 				if (this.idxFile.length() < (long)(var1 * 6 + 6)) {
 					var10000 = null;
 					return (byte[])var10000;
-				} else {
-					this.idxFile.seek((long)(var1 * 6));
-					this.idxFile.read(ArchiveDisk_buffer, 0, 6);
-					int var3 = ((ArchiveDisk_buffer[0] & 255) << 16) + (ArchiveDisk_buffer[2] & 255) + ((ArchiveDisk_buffer[1] & 255) << 8);
-					int var4 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[3] & 255) << 16) + ((ArchiveDisk_buffer[4] & 255) << 8);
-					if (var3 < 0 || var3 > this.maxEntrySize) {
+				}
+				this.idxFile.seek((long)(var1 * 6));
+				this.idxFile.read(ArchiveDisk_buffer, 0, 6);
+				int var3 = ((ArchiveDisk_buffer[0] & 255) << 16) + (ArchiveDisk_buffer[2] & 255) + ((ArchiveDisk_buffer[1] & 255) << 8);
+				int var4 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[3] & 255) << 16) + ((ArchiveDisk_buffer[4] & 255) << 8);
+				if (var3 < 0 || var3 > this.maxEntrySize) {
+					var10000 = null;
+					return (byte[])var10000;
+				}
+				if (var4 <= 0 || (long)var4 > this.datFile.length() / 520L) {
+					var10000 = null;
+					return (byte[])var10000;
+				}
+				byte[] var5 = new byte[var3];
+				int var6 = 0;
+
+				for (int var7 = 0; var6 < var3; ++var7) {
+					if (var4 == 0) {
 						var10000 = null;
 						return (byte[])var10000;
-					} else if (var4 <= 0 || (long)var4 > this.datFile.length() / 520L) {
-						var10000 = null;
-						return (byte[])var10000;
-					} else {
-						byte[] var5 = new byte[var3];
-						int var6 = 0;
+					}
 
-						for (int var7 = 0; var6 < var3; ++var7) {
-							if (var4 == 0) {
-								var10000 = null;
-								return (byte[])var10000;
-							}
-
-							this.datFile.seek(520L * (long)var4);
-							int var8 = var3 - var6;
-							int var9;
-							int var10;
-							int var11;
-							int var12;
-							byte var13;
-							if (var1 > 65535) {
-								if (var8 > 510) {
-									var8 = 510;
-								}
-
-								var13 = 10;
-								this.datFile.read(ArchiveDisk_buffer, 0, var8 + var13);
-								var9 = ((ArchiveDisk_buffer[1] & 255) << 16) + ((ArchiveDisk_buffer[0] & 255) << 24) + (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
-								var10 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[4] & 255) << 8);
-								var11 = (ArchiveDisk_buffer[8] & 255) + ((ArchiveDisk_buffer[7] & 255) << 8) + ((ArchiveDisk_buffer[6] & 255) << 16);
-								var12 = ArchiveDisk_buffer[9] & 255;
-							} else {
-								if (var8 > 512) {
-									var8 = 512;
-								}
-
-								var13 = 8;
-								this.datFile.read(ArchiveDisk_buffer, 0, var13 + var8);
-								var9 = (ArchiveDisk_buffer[1] & 255) + ((ArchiveDisk_buffer[0] & 255) << 8);
-								var10 = (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
-								var11 = ((ArchiveDisk_buffer[5] & 255) << 8) + ((ArchiveDisk_buffer[4] & 255) << 16) + (ArchiveDisk_buffer[6] & 255);
-								var12 = ArchiveDisk_buffer[7] & 255;
-							}
-
-							if (var9 != var1 || var7 != var10 || var12 != this.archive) {
-								var10000 = null;
-								return (byte[])var10000;
-							}
-
-							if (var11 < 0 || (long)var11 > this.datFile.length() / 520L) {
-								var10000 = null;
-								return (byte[])var10000;
-							}
-
-							int var14 = var8 + var13;
-
-							for (int var15 = var13; var15 < var14; ++var15) {
-								var5[var6++] = ArchiveDisk_buffer[var15];
-							}
-
-							var4 = var11;
+					this.datFile.seek(520L * (long)var4);
+					int var8 = var3 - var6;
+					int var9;
+					int var10;
+					int var11;
+					int var12;
+					byte var13;
+					if (var1 > 65535) {
+						if (var8 > 510) {
+							var8 = 510;
 						}
 
-						byte[] var20 = var5;
-						return var20;
+						var13 = 10;
+						this.datFile.read(ArchiveDisk_buffer, 0, var8 + var13);
+						var9 = ((ArchiveDisk_buffer[1] & 255) << 16) + ((ArchiveDisk_buffer[0] & 255) << 24) + (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
+						var10 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[4] & 255) << 8);
+						var11 = (ArchiveDisk_buffer[8] & 255) + ((ArchiveDisk_buffer[7] & 255) << 8) + ((ArchiveDisk_buffer[6] & 255) << 16);
+						var12 = ArchiveDisk_buffer[9] & 255;
+					} else {
+						if (var8 > 512) {
+							var8 = 512;
+						}
+
+						var13 = 8;
+						this.datFile.read(ArchiveDisk_buffer, 0, var13 + var8);
+						var9 = (ArchiveDisk_buffer[1] & 255) + ((ArchiveDisk_buffer[0] & 255) << 8);
+						var10 = (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
+						var11 = ((ArchiveDisk_buffer[5] & 255) << 8) + ((ArchiveDisk_buffer[4] & 255) << 16) + (ArchiveDisk_buffer[6] & 255);
+						var12 = ArchiveDisk_buffer[7] & 255;
 					}
+
+					if (var9 != var1 || var7 != var10 || var12 != this.archive) {
+						var10000 = null;
+						return (byte[])var10000;
+					}
+
+					if (var11 < 0 || (long)var11 > this.datFile.length() / 520L) {
+						var10000 = null;
+						return (byte[])var10000;
+					}
+
+					int var14 = var8 + var13;
+
+					for (int var15 = var13; var15 < var14; ++var15) {
+						var5[var6++] = ArchiveDisk_buffer[var15];
+					}
+
+					var4 = var11;
 				}
+
+				byte[] var20 = var5;
+				return var20;
 			} catch (IOException var18) {
 				return null;
 			}
@@ -163,9 +162,8 @@ public final class ArchiveDisk {
 				}
 
 				return var5;
-			} else {
-				throw new IllegalArgumentException("" + this.archive + ',' + var1 + ',' + var3);
 			}
+			throw new IllegalArgumentException("" + this.archive + ',' + var1 + ',' + var3);
 		}
 	}
 
@@ -343,21 +341,21 @@ public final class ArchiveDisk {
 	public static byte[] byteArrayFromObject(Object var0, boolean var1) {
 		if (var0 == null) {
 			return null;
-		} else if (var0 instanceof byte[]) {
+		}
+		if (var0 instanceof byte[]) {
 			byte[] var6 = (byte[])((byte[])var0);
 			if (var1) {
 				int var4 = var6.length;
 				byte[] var5 = new byte[var4];
 				System.arraycopy(var6, 0, var5, 0, var4);
 				return var5;
-			} else {
-				return var6;
 			}
-		} else if (var0 instanceof AbstractByteArrayCopier) {
+			return var6;
+		}
+		if (var0 instanceof AbstractByteArrayCopier) {
 			AbstractByteArrayCopier var2 = (AbstractByteArrayCopier)var0;
 			return var2.get();
-		} else {
-			throw new IllegalArgumentException();
 		}
+		throw new IllegalArgumentException();
 	}
 }

@@ -33,33 +33,31 @@ public class class215 {
 		if (var0 > 0L && var0 < 6582952005840035281L) {
 			if (var0 % 37L == 0L) {
 				return null;
-			} else {
-				int var2 = 0;
-
-				for (long var3 = var0; 0L != var3; var3 /= 37L) {
-					++var2;
-				}
-
-				StringBuilder var5;
-				char var8;
-				for (var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
-					long var6 = var0;
-					var0 /= 37L;
-					var8 = class289.base37Table[(int)(var6 - var0 * 37L)];
-					if (var8 == '_') {
-						int var9 = var5.length() - 1;
-						var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
-						var8 = 160;
-					}
-				}
-
-				var5.reverse();
-				var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
-				return var5.toString();
 			}
-		} else {
-			return null;
+			int var2 = 0;
+
+			for (long var3 = var0; 0L != var3; var3 /= 37L) {
+				++var2;
+			}
+
+			StringBuilder var5;
+			char var8;
+			for (var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
+				long var6 = var0;
+				var0 /= 37L;
+				var8 = class289.base37Table[(int)(var6 - var0 * 37L)];
+				if (var8 == '_') {
+					int var9 = var5.length() - 1;
+					var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
+					var8 = 160;
+				}
+			}
+
+			var5.reverse();
+			var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
+			return var5.toString();
 		}
+		return null;
 	}
 
 	@ObfuscatedName("l")
@@ -67,11 +65,11 @@ public class class215 {
 		signature = "(Lhp;Ljava/lang/String;Ljava/lang/String;I)Llx;",
 		garbageValue = "-1167154349"
 	)
-	@Export("loadIndexedSpriteByName")
-	public static IndexedSprite loadIndexedSpriteByName(AbstractArchive var0, String var1, String var2) {
+	@Export("SpriteBuffer_getIndexedSpriteByName")
+	public static IndexedSprite SpriteBuffer_getIndexedSpriteByName(AbstractArchive var0, String var1, String var2) {
 		int var3 = var0.getGroupId(var1);
 		int var4 = var0.getFileId(var3, var2);
-		return PacketBuffer.loadIndexedSprite(var0, var3, var4);
+		return PacketBuffer.SpriteBuffer_getIndexedSprite(var0, var3, var4);
 	}
 
 	@ObfuscatedName("eg")

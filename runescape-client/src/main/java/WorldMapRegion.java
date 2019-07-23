@@ -287,30 +287,28 @@ public class WorldMapRegion {
 			if (this.worldMapData_0.isFullyLoaded()) {
 				this.getIconsForTiles(0, 0, 64, 64, this.worldMapData_0);
 				return true;
-			} else {
-				return false;
 			}
-		} else {
-			boolean var2 = true;
-
-			Iterator var3;
-			WorldMapData_1 var4;
-			for (var3 = this.worldMapData1List.iterator(); var3.hasNext(); var2 &= var4.isFullyLoaded()) {
-				var4 = (WorldMapData_1)var3.next();
-				var4.loadGeography(var1);
-			}
-
-			if (var2) {
-				var3 = this.worldMapData1List.iterator();
-
-				while (var3.hasNext()) {
-					var4 = (WorldMapData_1)var3.next();
-					this.getIconsForTiles(var4.getChunkX() * 8, var4.getChunkY() * 8, 8, 8, var4);
-				}
-			}
-
-			return var2;
+			return false;
 		}
+		boolean var2 = true;
+
+		Iterator var3;
+		WorldMapData_1 var4;
+		for (var3 = this.worldMapData1List.iterator(); var3.hasNext(); var2 &= var4.isFullyLoaded()) {
+			var4 = (WorldMapData_1)var3.next();
+			var4.loadGeography(var1);
+		}
+
+		if (var2) {
+			var3 = this.worldMapData1List.iterator();
+
+			while (var3.hasNext()) {
+				var4 = (WorldMapData_1)var3.next();
+				this.getIconsForTiles(var4.getChunkX() * 8, var4.getChunkY() * 8, 8, 8, var4);
+			}
+		}
+
+		return var2;
 	}
 
 	@ObfuscatedName("v")
@@ -978,32 +976,29 @@ public class WorldMapRegion {
 			WorldMapLabelSize var2 = WorldMapLabelSize.method177(var1.textSize);
 			if (var2 == null) {
 				return null;
-			} else {
-				Font var3 = (Font)this.fonts.get(var2);
-				if (var3 == null) {
-					return null;
-				} else {
-					int var4 = var3.lineCount(var1.name, 1000000);
-					String[] var5 = new String[var4];
-					var3.breakLines(var1.name, (int[])null, var5);
-					int var6 = var5.length * var3.ascent / 2;
-					int var7 = 0;
-					String[] var8 = var5;
+			}
+			Font var3 = (Font)this.fonts.get(var2);
+			if (var3 == null) {
+				return null;
+			}
+			int var4 = var3.lineCount(var1.name, 1000000);
+			String[] var5 = new String[var4];
+			var3.breakLines(var1.name, (int[])null, var5);
+			int var6 = var5.length * var3.ascent / 2;
+			int var7 = 0;
+			String[] var8 = var5;
 
-					for (int var9 = 0; var9 < var8.length; ++var9) {
-						String var10 = var8[var9];
-						int var11 = var3.stringWidth(var10);
-						if (var11 > var7) {
-							var7 = var11;
-						}
-					}
-
-					return new WorldMapLabel(var1.name, var7, var6, var2);
+			for (int var9 = 0; var9 < var8.length; ++var9) {
+				String var10 = var8[var9];
+				int var11 = var3.stringWidth(var10);
+				if (var11 > var7) {
+					var7 = var11;
 				}
 			}
-		} else {
-			return null;
+
+			return new WorldMapLabel(var1.name, var7, var6, var2);
 		}
+		return null;
 	}
 
 	@ObfuscatedName("ac")
@@ -1035,12 +1030,10 @@ public class WorldMapRegion {
 				}
 
 				return var6;
-			} else {
-				return var6;
 			}
-		} else {
 			return var6;
 		}
+		return var6;
 	}
 
 	@ObfuscatedName("ap")

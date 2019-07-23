@@ -91,8 +91,7 @@ public class Buddy extends User {
 			}
 
 			return var0 * 10000 / Client.field927;
-		} else {
-			return 10000;
 		}
+		return 10000;
 	}
 }

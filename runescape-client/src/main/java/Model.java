@@ -381,84 +381,82 @@ public class Model extends Entity {
 			var10 = var10 + 127 >> 7;
 			if (var3 == var1[var7][var9] && var3 == var1[var8][var9] && var3 == var1[var7][var10] && var3 == var1[var8][var10]) {
 				return this;
-			} else {
-				Model var11;
-				if (var5) {
-					var11 = new Model();
-					var11.verticesCount = this.verticesCount;
-					var11.indicesCount = this.indicesCount;
-					var11.field1691 = this.field1691;
-					var11.verticesX = this.verticesX;
-					var11.verticesZ = this.verticesZ;
-					var11.indices1 = this.indices1;
-					var11.indices2 = this.indices2;
-					var11.indices3 = this.indices3;
-					var11.faceColors1 = this.faceColors1;
-					var11.faceColors2 = this.faceColors2;
-					var11.faceColors3 = this.faceColors3;
-					var11.faceRenderPriorities = this.faceRenderPriorities;
-					var11.faceAlphas = this.faceAlphas;
-					var11.field1688 = this.field1688;
-					var11.faceTextures = this.faceTextures;
-					var11.field1690 = this.field1690;
-					var11.field1692 = this.field1692;
-					var11.field1693 = this.field1693;
-					var11.field1694 = this.field1694;
-					var11.vertexLabels = this.vertexLabels;
-					var11.faceLabelsAlpha = this.faceLabelsAlpha;
-					var11.isSingleTile = this.isSingleTile;
-					var11.verticesY = new int[var11.verticesCount];
-				} else {
-					var11 = this;
-				}
-
-				int var12;
-				int var13;
-				int var14;
-				int var15;
-				int var16;
-				int var17;
-				int var18;
-				int var19;
-				int var20;
-				int var21;
-				if (var6 == 0) {
-					for (var12 = 0; var12 < var11.verticesCount; ++var12) {
-						var13 = var2 + this.verticesX[var12];
-						var14 = var4 + this.verticesZ[var12];
-						var15 = var13 & 127;
-						var16 = var14 & 127;
-						var17 = var13 >> 7;
-						var18 = var14 >> 7;
-						var19 = var1[var17][var18] * (128 - var15) + var1[var17 + 1][var18] * var15 >> 7;
-						var20 = var1[var17][var18 + 1] * (128 - var15) + var15 * var1[var17 + 1][var18 + 1] >> 7;
-						var21 = var19 * (128 - var16) + var20 * var16 >> 7;
-						var11.verticesY[var12] = var21 + this.verticesY[var12] - var3;
-					}
-				} else {
-					for (var12 = 0; var12 < var11.verticesCount; ++var12) {
-						var13 = (-this.verticesY[var12] << 16) / super.height;
-						if (var13 < var6) {
-							var14 = var2 + this.verticesX[var12];
-							var15 = var4 + this.verticesZ[var12];
-							var16 = var14 & 127;
-							var17 = var15 & 127;
-							var18 = var14 >> 7;
-							var19 = var15 >> 7;
-							var20 = var1[var18][var19] * (128 - var16) + var1[var18 + 1][var19] * var16 >> 7;
-							var21 = var1[var18][var19 + 1] * (128 - var16) + var16 * var1[var18 + 1][var19 + 1] >> 7;
-							int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
-							var11.verticesY[var12] = (var6 - var13) * (var22 - var3) / var6 + this.verticesY[var12];
-						}
-					}
-				}
-
-				var11.resetBounds();
-				return var11;
 			}
-		} else {
-			return this;
+			Model var11;
+			if (var5) {
+				var11 = new Model();
+				var11.verticesCount = this.verticesCount;
+				var11.indicesCount = this.indicesCount;
+				var11.field1691 = this.field1691;
+				var11.verticesX = this.verticesX;
+				var11.verticesZ = this.verticesZ;
+				var11.indices1 = this.indices1;
+				var11.indices2 = this.indices2;
+				var11.indices3 = this.indices3;
+				var11.faceColors1 = this.faceColors1;
+				var11.faceColors2 = this.faceColors2;
+				var11.faceColors3 = this.faceColors3;
+				var11.faceRenderPriorities = this.faceRenderPriorities;
+				var11.faceAlphas = this.faceAlphas;
+				var11.field1688 = this.field1688;
+				var11.faceTextures = this.faceTextures;
+				var11.field1690 = this.field1690;
+				var11.field1692 = this.field1692;
+				var11.field1693 = this.field1693;
+				var11.field1694 = this.field1694;
+				var11.vertexLabels = this.vertexLabels;
+				var11.faceLabelsAlpha = this.faceLabelsAlpha;
+				var11.isSingleTile = this.isSingleTile;
+				var11.verticesY = new int[var11.verticesCount];
+			} else {
+				var11 = this;
+			}
+
+			int var12;
+			int var13;
+			int var14;
+			int var15;
+			int var16;
+			int var17;
+			int var18;
+			int var19;
+			int var20;
+			int var21;
+			if (var6 == 0) {
+				for (var12 = 0; var12 < var11.verticesCount; ++var12) {
+					var13 = var2 + this.verticesX[var12];
+					var14 = var4 + this.verticesZ[var12];
+					var15 = var13 & 127;
+					var16 = var14 & 127;
+					var17 = var13 >> 7;
+					var18 = var14 >> 7;
+					var19 = var1[var17][var18] * (128 - var15) + var1[var17 + 1][var18] * var15 >> 7;
+					var20 = var1[var17][var18 + 1] * (128 - var15) + var15 * var1[var17 + 1][var18 + 1] >> 7;
+					var21 = var19 * (128 - var16) + var20 * var16 >> 7;
+					var11.verticesY[var12] = var21 + this.verticesY[var12] - var3;
+				}
+			} else {
+				for (var12 = 0; var12 < var11.verticesCount; ++var12) {
+					var13 = (-this.verticesY[var12] << 16) / super.height;
+					if (var13 < var6) {
+						var14 = var2 + this.verticesX[var12];
+						var15 = var4 + this.verticesZ[var12];
+						var16 = var14 & 127;
+						var17 = var15 & 127;
+						var18 = var14 >> 7;
+						var19 = var15 >> 7;
+						var20 = var1[var18][var19] * (128 - var16) + var1[var18 + 1][var19] * var16 >> 7;
+						var21 = var1[var18][var19 + 1] * (128 - var16) + var16 * var1[var18 + 1][var19 + 1] >> 7;
+						int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
+						var11.verticesY[var12] = (var6 - var13) * (var22 - var3) / var6 + this.verticesY[var12];
+					}
+				}
+			}
+
+			var11.resetBounds();
+			return var11;
 		}
+		return this;
 	}
 
 	@ObfuscatedName("w")

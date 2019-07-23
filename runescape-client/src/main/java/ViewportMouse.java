@@ -83,23 +83,22 @@ public class ViewportMouse {
 		ObjectDefinition var1 = (ObjectDefinition)ObjectDefinition.ObjectDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
-		} else {
-			byte[] var2 = ObjectDefinition.ObjectDefinition_archive.takeFile(6, var0);
-			var1 = new ObjectDefinition();
-			var1.id = var0;
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			var1.postDecode();
-			if (var1.isSolid) {
-				var1.interactType = 0;
-				var1.boolean1 = false;
-			}
-
-			ObjectDefinition.ObjectDefinition_cached.put(var1, (long)var0);
-			return var1;
 		}
+		byte[] var2 = ObjectDefinition.ObjectDefinition_archive.takeFile(6, var0);
+		var1 = new ObjectDefinition();
+		var1.id = var0;
+		if (var2 != null) {
+			var1.decode(new Buffer(var2));
+		}
+
+		var1.postDecode();
+		if (var1.isSolid) {
+			var1.interactType = 0;
+			var1.boolean1 = false;
+		}
+
+		ObjectDefinition.ObjectDefinition_cached.put(var1, (long)var0);
+		return var1;
 	}
 
 	@ObfuscatedName("q")
@@ -112,16 +111,14 @@ public class ViewportMouse {
 		Script var1 = (Script)Script.Script_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
-		} else {
-			byte[] var2 = UserComparator4.archive12.takeFile(var0, 0);
-			if (var2 == null) {
-				return null;
-			} else {
-				var1 = World.newScript(var2);
-				Script.Script_cached.put(var1, (long)var0);
-				return var1;
-			}
 		}
+		byte[] var2 = UserComparator4.archive12.takeFile(var0, 0);
+		if (var2 == null) {
+			return null;
+		}
+		var1 = World.newScript(var2);
+		Script.Script_cached.put(var1, (long)var0);
+		return var1;
 	}
 
 	@ObfuscatedName("e")

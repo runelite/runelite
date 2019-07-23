@@ -338,14 +338,13 @@ public class ScriptFrame {
 
 		if (var1.offset != Client.packetWriter.serverPacketLength) {
 			throw new RuntimeException(var1.offset + "," + Client.packetWriter.serverPacketLength);
-		} else {
-			for (var2 = 0; var2 < Client.npcCount; ++var2) {
-				if (Client.npcs[Client.npcIndices[var2]] == null) {
-					throw new RuntimeException(var2 + "," + Client.npcCount);
-				}
-			}
-
 		}
+		for (var2 = 0; var2 < Client.npcCount; ++var2) {
+			if (Client.npcs[Client.npcIndices[var2]] == null) {
+				throw new RuntimeException(var2 + "," + Client.npcCount);
+			}
+		}
+
 	}
 
 	@ObfuscatedName("hf")

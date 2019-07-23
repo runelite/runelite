@@ -173,10 +173,9 @@ public class Buffer extends Node {
 		int var2 = var1.indexOf(0);
 		if (var2 >= 0) {
 			throw new IllegalArgumentException("");
-		} else {
-			this.offset += WorldMapSection0.encodeStringCp1252(var1, 0, var1.length(), this.array, this.offset);
-			this.array[++this.offset - 1] = 0;
 		}
+		this.offset += WorldMapSection0.encodeStringCp1252(var1, 0, var1.length(), this.array, this.offset);
+		this.array[++this.offset - 1] = 0;
 	}
 
 	@ObfuscatedName("bg")
@@ -189,11 +188,10 @@ public class Buffer extends Node {
 		int var2 = var1.indexOf(0);
 		if (var2 >= 0) {
 			throw new IllegalArgumentException("");
-		} else {
-			this.array[++this.offset - 1] = 0;
-			this.offset += WorldMapSection0.encodeStringCp1252(var1, 0, var1.length(), this.array, this.offset);
-			this.array[++this.offset - 1] = 0;
 		}
+		this.array[++this.offset - 1] = 0;
+		this.offset += WorldMapSection0.encodeStringCp1252(var1, 0, var1.length(), this.array, this.offset);
+		this.array[++this.offset - 1] = 0;
 	}
 
 	@ObfuscatedName("bh")
@@ -244,12 +242,11 @@ public class Buffer extends Node {
 	public void writeLengthInt(int var1) {
 		if (var1 < 0) {
 			throw new IllegalArgumentException();
-		} else {
-			this.array[this.offset - var1 - 4] = (byte)(var1 >> 24);
-			this.array[this.offset - var1 - 3] = (byte)(var1 >> 16);
-			this.array[this.offset - var1 - 2] = (byte)(var1 >> 8);
-			this.array[this.offset - var1 - 1] = (byte)var1;
 		}
+		this.array[this.offset - var1 - 4] = (byte)(var1 >> 24);
+		this.array[this.offset - var1 - 3] = (byte)(var1 >> 16);
+		this.array[this.offset - var1 - 2] = (byte)(var1 >> 8);
+		this.array[this.offset - var1 - 1] = (byte)var1;
 	}
 
 	@ObfuscatedName("bc")
@@ -424,9 +421,8 @@ public class Buffer extends Node {
 		if (this.array[this.offset] == 0) {
 			++this.offset;
 			return null;
-		} else {
-			return this.readStringCp1252NullTerminated();
 		}
+		return this.readStringCp1252NullTerminated();
 	}
 
 	@ObfuscatedName("br")
@@ -455,15 +451,14 @@ public class Buffer extends Node {
 		byte var1 = this.array[++this.offset - 1];
 		if (var1 != 0) {
 			throw new IllegalStateException("");
-		} else {
-			int var2 = this.offset;
-
-			while (this.array[++this.offset - 1] != 0) {
-			}
-
-			int var3 = this.offset - var2 - 1;
-			return var3 == 0 ? "" : FriendSystem.decodeStringCp1252(this.array, var2, var3);
 		}
+		int var2 = this.offset;
+
+		while (this.array[++this.offset - 1] != 0) {
+		}
+
+		int var3 = this.offset - var2 - 1;
+		return var3 == 0 ? "" : FriendSystem.decodeStringCp1252(this.array, var2, var3);
 	}
 
 	@ObfuscatedName("bf")
@@ -476,16 +471,14 @@ public class Buffer extends Node {
 		byte var1 = this.array[++this.offset - 1];
 		if (var1 != 0) {
 			throw new IllegalStateException("");
-		} else {
-			int var2 = this.readVarInt();
-			if (var2 + this.offset > this.array.length) {
-				throw new IllegalStateException("");
-			} else {
-				String var3 = ClientPreferences.method1755(this.array, this.offset, var2);
-				this.offset += var2;
-				return var3;
-			}
 		}
+		int var2 = this.readVarInt();
+		if (var2 + this.offset > this.array.length) {
+			throw new IllegalStateException("");
+		}
+		String var3 = ClientPreferences.method1755(this.array, this.offset, var2);
+		this.offset += var2;
+		return var3;
 	}
 
 	@ObfuscatedName("bv")
@@ -557,10 +550,9 @@ public class Buffer extends Node {
 	public int method5511() {
 		if (this.array[this.offset] < 0) {
 			return this.readInt() & Integer.MAX_VALUE;
-		} else {
-			int var1 = this.readUnsignedShort();
-			return var1 == 32767 ? -1 : var1;
 		}
+		int var1 = this.readUnsignedShort();
+		return var1 == 32767 ? -1 : var1;
 	}
 
 	@ObfuscatedName("cl")

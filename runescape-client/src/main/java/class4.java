@@ -185,39 +185,38 @@ final class class4 implements class0 {
 												}
 											}
 										}
-									} else {
-										if (var12 > 0) {
-											var13 = var11 * 65536 / var12;
-											var14 = 32768;
+									}
+									if (var12 > 0) {
+										var13 = var11 * 65536 / var12;
+										var14 = 32768;
 
-											while (var10 != var8) {
-												if (var10 < var8) {
-													++var10;
-												} else if (var10 > var8) {
-													--var10;
+										while (var10 != var8) {
+											if (var10 < var8) {
+												++var10;
+											} else if (var10 > var8) {
+												--var10;
+											}
+
+											if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
+												var6 = class42.plane;
+											}
+
+											var14 += var13;
+											if (var14 >= 65536) {
+												var14 -= 65536;
+												if (var9 < var7) {
+													++var9;
+												} else if (var9 > var7) {
+													--var9;
 												}
 
 												if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
 													var6 = class42.plane;
 												}
-
-												var14 += var13;
-												if (var14 >= 65536) {
-													var14 -= 65536;
-													if (var9 < var7) {
-														++var9;
-													} else if (var9 > var7) {
-														--var9;
-													}
-
-													if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
-														var6 = class42.plane;
-													}
-												}
 											}
 										}
-										break label559;
 									}
+									break label559;
 								}
 
 								var28 = class42.plane;

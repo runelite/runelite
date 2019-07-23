@@ -135,17 +135,16 @@ public class KitDefinition extends DualNode {
 	public boolean ready() {
 		if (this.models2 == null) {
 			return true;
-		} else {
-			boolean var1 = true;
-
-			for (int var2 = 0; var2 < this.models2.length; ++var2) {
-				if (!class288.KitDefinition_modelsArchive.tryLoadFile(this.models2[var2], 0)) {
-					var1 = false;
-				}
-			}
-
-			return var1;
 		}
+		boolean var1 = true;
+
+		for (int var2 = 0; var2 < this.models2.length; ++var2) {
+			if (!class288.KitDefinition_modelsArchive.tryLoadFile(this.models2[var2], 0)) {
+				var1 = false;
+			}
+		}
+
+		return var1;
 	}
 
 	@ObfuscatedName("l")
@@ -157,35 +156,34 @@ public class KitDefinition extends DualNode {
 	public ModelData getModelData() {
 		if (this.models2 == null) {
 			return null;
-		} else {
-			ModelData[] var1 = new ModelData[this.models2.length];
-
-			for (int var2 = 0; var2 < this.models2.length; ++var2) {
-				var1[var2] = ModelData.method2769(class288.KitDefinition_modelsArchive, this.models2[var2], 0);
-			}
-
-			ModelData var4;
-			if (var1.length == 1) {
-				var4 = var1[0];
-			} else {
-				var4 = new ModelData(var1, var1.length);
-			}
-
-			int var3;
-			if (this.recolorFrom != null) {
-				for (var3 = 0; var3 < this.recolorFrom.length; ++var3) {
-					var4.recolor(this.recolorFrom[var3], this.recolorTo[var3]);
-				}
-			}
-
-			if (this.retextureFrom != null) {
-				for (var3 = 0; var3 < this.retextureFrom.length; ++var3) {
-					var4.retexture(this.retextureFrom[var3], this.retextureTo[var3]);
-				}
-			}
-
-			return var4;
 		}
+		ModelData[] var1 = new ModelData[this.models2.length];
+
+		for (int var2 = 0; var2 < this.models2.length; ++var2) {
+			var1[var2] = ModelData.method2769(class288.KitDefinition_modelsArchive, this.models2[var2], 0);
+		}
+
+		ModelData var4;
+		if (var1.length == 1) {
+			var4 = var1[0];
+		} else {
+			var4 = new ModelData(var1, var1.length);
+		}
+
+		int var3;
+		if (this.recolorFrom != null) {
+			for (var3 = 0; var3 < this.recolorFrom.length; ++var3) {
+				var4.recolor(this.recolorFrom[var3], this.recolorTo[var3]);
+			}
+		}
+
+		if (this.retextureFrom != null) {
+			for (var3 = 0; var3 < this.retextureFrom.length; ++var3) {
+				var4.retexture(this.retextureFrom[var3], this.retextureTo[var3]);
+			}
+		}
+
+		return var4;
 	}
 
 	@ObfuscatedName("b")

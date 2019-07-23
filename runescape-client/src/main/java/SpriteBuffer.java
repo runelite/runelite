@@ -2,12 +2,14 @@ import java.awt.Desktop;
 import java.awt.Desktop.Action;
 import java.net.URI;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("lm")
-public class class326 {
+@Implements("SpriteBuffer")
+public class SpriteBuffer {
 	@ObfuscatedName("q")
 	@ObfuscatedGetter(
 		intValue = -180195353

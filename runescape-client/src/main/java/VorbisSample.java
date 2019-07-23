@@ -405,50 +405,49 @@ public class VorbisSample extends Node {
 	RawSound toRawSound(int[] var1) {
 		if (var1 != null && var1[0] <= 0) {
 			return null;
-		} else {
-			if (this.samples == null) {
-				this.field1374 = 0;
-				this.field1382 = new float[VorbisSample_blockSize1];
-				this.samples = new byte[this.sampleCount];
-				this.field1387 = 0;
-				this.field1381 = 0;
-			}
-
-			for (; this.field1381 < this.field1366.length; ++this.field1381) {
-				if (var1 != null && var1[0] <= 0) {
-					return null;
-				}
-
-				float[] var2 = this.method2348(this.field1381);
-				if (var2 != null) {
-					int var3 = this.field1387;
-					int var4 = var2.length;
-					if (var4 > this.sampleCount - var3) {
-						var4 = this.sampleCount - var3;
-					}
-
-					for (int var5 = 0; var5 < var4; ++var5) {
-						int var6 = (int)(128.0F + var2[var5] * 128.0F);
-						if ((var6 & -256) != 0) {
-							var6 = ~var6 >> 31;
-						}
-
-						this.samples[var3++] = (byte)(var6 - 128);
-					}
-
-					if (var1 != null) {
-						var1[0] -= var3 - this.field1387;
-					}
-
-					this.field1387 = var3;
-				}
-			}
-
-			this.field1382 = null;
-			byte[] var7 = this.samples;
-			this.samples = null;
-			return new RawSound(this.sampleRate, var7, this.start, this.end, this.field1364);
 		}
+		if (this.samples == null) {
+			this.field1374 = 0;
+			this.field1382 = new float[VorbisSample_blockSize1];
+			this.samples = new byte[this.sampleCount];
+			this.field1387 = 0;
+			this.field1381 = 0;
+		}
+
+		for (; this.field1381 < this.field1366.length; ++this.field1381) {
+			if (var1 != null && var1[0] <= 0) {
+				return null;
+			}
+
+			float[] var2 = this.method2348(this.field1381);
+			if (var2 != null) {
+				int var3 = this.field1387;
+				int var4 = var2.length;
+				if (var4 > this.sampleCount - var3) {
+					var4 = this.sampleCount - var3;
+				}
+
+				for (int var5 = 0; var5 < var4; ++var5) {
+					int var6 = (int)(128.0F + var2[var5] * 128.0F);
+					if ((var6 & -256) != 0) {
+						var6 = ~var6 >> 31;
+					}
+
+					this.samples[var3++] = (byte)(var6 - 128);
+				}
+
+				if (var1 != null) {
+					var1[0] -= var3 - this.field1387;
+				}
+
+				this.field1387 = var3;
+			}
+		}
+
+		this.field1382 = null;
+		byte[] var7 = this.samples;
+		this.samples = null;
+		return new RawSound(this.sampleRate, var7, this.start, this.end, this.field1364);
 	}
 
 	@ObfuscatedName("q")
@@ -639,9 +638,8 @@ public class VorbisSample extends Node {
 		if (!method2349(var0)) {
 			var0.tryLoadFile(var1, var2);
 			return null;
-		} else {
-			byte[] var3 = var0.takeFile(var1, var2);
-			return var3 == null ? null : new VorbisSample(var3);
 		}
+		byte[] var3 = var0.takeFile(var1, var2);
+		return var3 == null ? null : new VorbisSample(var3);
 	}
 }

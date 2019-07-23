@@ -38,10 +38,9 @@ public class class14 {
 	static final void method153(Widget var0, int var1, int var2, int var3) {
 		if (var0.field2641 == null) {
 			throw new RuntimeException();
-		} else {
-			var0.field2641[var1] = var2;
-			var0.field2588[var1] = var3;
 		}
+		var0.field2641[var1] = var2;
+		var0.field2588[var1] = var3;
 	}
 
 	@ObfuscatedName("s")

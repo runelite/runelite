@@ -80,111 +80,116 @@ public class FontName {
 			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
 			Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = WorldMapArea.getItemDefinition(var3).name;
 			return 1;
-		} else {
-			int var4;
-			ItemDefinition var5;
-			if (var0 == ScriptOpcodes.OC_OP) {
-				HealthBarUpdate.Interpreter_intStackSize -= 2;
-				var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-				var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-				var5 = WorldMapArea.getItemDefinition(var3);
-				if (var4 >= 1 && var4 <= 5 && var5.groundActions[var4 - 1] != null) {
-					Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var5.groundActions[var4 - 1];
-				} else {
-					Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "";
-				}
-
-				return 1;
-			} else if (var0 == ScriptOpcodes.OC_IOP) {
-				HealthBarUpdate.Interpreter_intStackSize -= 2;
-				var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-				var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-				var5 = WorldMapArea.getItemDefinition(var3);
-				if (var4 >= 1 && var4 <= 5 && var5.inventoryActions[var4 - 1] != null) {
-					Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var5.inventoryActions[var4 - 1];
-				} else {
-					Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "";
-				}
-
-				return 1;
-			} else if (var0 == ScriptOpcodes.OC_COST) {
-				var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapArea.getItemDefinition(var3).price;
-				return 1;
-			} else if (var0 == ScriptOpcodes.OC_STACKABLE) {
-				var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapArea.getItemDefinition(var3).isStackable == 1 ? 1 : 0;
-				return 1;
-			} else {
-				ItemDefinition var6;
-				if (var0 == ScriptOpcodes.OC_CERT) {
-					var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-					var6 = WorldMapArea.getItemDefinition(var3);
-					if (var6.noteTemplate == -1 && var6.note >= 0) {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.note;
-					} else {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_UNCERT) {
-					var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-					var6 = WorldMapArea.getItemDefinition(var3);
-					if (var6.noteTemplate >= 0 && var6.note >= 0) {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.note;
-					} else {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_MEMBERS) {
-					var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-					Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapArea.getItemDefinition(var3).isMembersOnly ? 1 : 0;
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_PLACEHOLDER) {
-					var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-					var6 = WorldMapArea.getItemDefinition(var3);
-					if (var6.placeholderTemplate == -1 && var6.placeholder >= 0) {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.placeholder;
-					} else {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_UNPLACEHOLDER) {
-					var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-					var6 = WorldMapArea.getItemDefinition(var3);
-					if (var6.placeholderTemplate >= 0 && var6.placeholder >= 0) {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.placeholder;
-					} else {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_FIND) {
-					String var7 = Interpreter.Interpreter_stringStack[--Skills.Interpreter_stringStackSize];
-					var4 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-					WorldMapDecoration.findItemDefinitions(var7, var4 == 1);
-					Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = FloorOverlayDefinition.foundItemIdCount;
-					return 1;
-				} else if (var0 != ScriptOpcodes.OC_FINDNEXT) {
-					if (var0 == ScriptOpcodes.OC_FINDRESET) {
-						class32.foundItemIndex = 0;
-						return 1;
-					} else {
-						return 2;
-					}
-				} else {
-					if (WorldMapData_1.foundItemIds != null && class32.foundItemIndex < FloorOverlayDefinition.foundItemIdCount) {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapData_1.foundItemIds[++class32.foundItemIndex - 1] & '\uffff';
-					} else {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = -1;
-					}
-
-					return 1;
-				}
-			}
 		}
+		int var4;
+		ItemDefinition var5;
+		if (var0 == ScriptOpcodes.OC_OP) {
+			HealthBarUpdate.Interpreter_intStackSize -= 2;
+			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
+			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
+			var5 = WorldMapArea.getItemDefinition(var3);
+			if (var4 >= 1 && var4 <= 5 && var5.groundActions[var4 - 1] != null) {
+				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var5.groundActions[var4 - 1];
+			} else {
+				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "";
+			}
+
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.OC_IOP) {
+			HealthBarUpdate.Interpreter_intStackSize -= 2;
+			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
+			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
+			var5 = WorldMapArea.getItemDefinition(var3);
+			if (var4 >= 1 && var4 <= 5 && var5.inventoryActions[var4 - 1] != null) {
+				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var5.inventoryActions[var4 - 1];
+			} else {
+				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "";
+			}
+
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.OC_COST) {
+			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapArea.getItemDefinition(var3).price;
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.OC_STACKABLE) {
+			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapArea.getItemDefinition(var3).isStackable == 1 ? 1 : 0;
+			return 1;
+		}
+		ItemDefinition var6;
+		if (var0 == ScriptOpcodes.OC_CERT) {
+			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			var6 = WorldMapArea.getItemDefinition(var3);
+			if (var6.noteTemplate == -1 && var6.note >= 0) {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.note;
+			} else {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
+			}
+
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.OC_UNCERT) {
+			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			var6 = WorldMapArea.getItemDefinition(var3);
+			if (var6.noteTemplate >= 0 && var6.note >= 0) {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.note;
+			} else {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
+			}
+
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.OC_MEMBERS) {
+			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapArea.getItemDefinition(var3).isMembersOnly ? 1 : 0;
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.OC_PLACEHOLDER) {
+			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			var6 = WorldMapArea.getItemDefinition(var3);
+			if (var6.placeholderTemplate == -1 && var6.placeholder >= 0) {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.placeholder;
+			} else {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
+			}
+
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.OC_UNPLACEHOLDER) {
+			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			var6 = WorldMapArea.getItemDefinition(var3);
+			if (var6.placeholderTemplate >= 0 && var6.placeholder >= 0) {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.placeholder;
+			} else {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
+			}
+
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.OC_FIND) {
+			String var7 = Interpreter.Interpreter_stringStack[--Skills.Interpreter_stringStackSize];
+			var4 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
+			WorldMapDecoration.findItemDefinitions(var7, var4 == 1);
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = FloorOverlayDefinition.foundItemIdCount;
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.OC_FINDNEXT) {
+			if (WorldMapData_1.foundItemIds != null && class32.foundItemIndex < FloorOverlayDefinition.foundItemIdCount) {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapData_1.foundItemIds[++class32.foundItemIndex - 1] & '\uffff';
+			} else {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = -1;
+			}
+
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.OC_FINDRESET) {
+			class32.foundItemIndex = 0;
+			return 1;
+		}
+		return 2;
 	}
 
 	@ObfuscatedName("ii")
@@ -826,8 +831,7 @@ public class FontName {
 	static String method5318(Widget var0) {
 		if (HealthBar.method1957(class268.getWidgetClickMask(var0)) == 0) {
 			return null;
-		} else {
-			return var0.spellActionName != null && var0.spellActionName.trim().length() != 0 ? var0.spellActionName : null;
 		}
+		return var0.spellActionName != null && var0.spellActionName.trim().length() != 0 ? var0.spellActionName : null;
 	}
 }

@@ -103,17 +103,16 @@ public final class NodeHashTable {
 			var1 = this.current;
 			this.current = var1.previous;
 			return var1;
-		} else {
-			do {
-				if (this.index >= this.size) {
-					return null;
-				}
-
-				var1 = this.buckets[this.index++].previous;
-			} while(var1 == this.buckets[this.index - 1]);
-
-			this.current = var1.previous;
-			return var1;
 		}
+		do {
+			if (this.index >= this.size) {
+				return null;
+			}
+
+			var1 = this.buckets[this.index++].previous;
+		} while(var1 == this.buckets[this.index - 1]);
+
+		this.current = var1.previous;
+		return var1;
 	}
 }

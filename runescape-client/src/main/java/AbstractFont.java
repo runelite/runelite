@@ -219,55 +219,54 @@ public abstract class AbstractFont extends Rasterizer2D {
 	public int stringWidth(String var1) {
 		if (var1 == null) {
 			return 0;
-		} else {
-			int var2 = -1;
-			int var3 = -1;
-			int var4 = 0;
+		}
+		int var2 = -1;
+		int var3 = -1;
+		int var4 = 0;
 
-			for (int var5 = 0; var5 < var1.length(); ++var5) {
-				char var6 = var1.charAt(var5);
-				if (var6 == '<') {
-					var2 = var5;
-				} else {
-					if (var6 == '>' && var2 != -1) {
-						String var7 = var1.substring(var2 + 1, var5);
-						var2 = -1;
-						if (var7.equals("lt")) {
-							var6 = '<';
-						} else {
-							if (!var7.equals("gt")) {
-								if (var7.startsWith("img=")) {
-									try {
-										int var8 = class3.parseInt(var7.substring(4));
-										var4 += AbstractFont_modIconSprites[var8].width;
-										var3 = -1;
-									} catch (Exception var10) {
-									}
+		for (int var5 = 0; var5 < var1.length(); ++var5) {
+			char var6 = var1.charAt(var5);
+			if (var6 == '<') {
+				var2 = var5;
+			} else {
+				if (var6 == '>' && var2 != -1) {
+					String var7 = var1.substring(var2 + 1, var5);
+					var2 = -1;
+					if (var7.equals("lt")) {
+						var6 = '<';
+					} else {
+						if (!var7.equals("gt")) {
+							if (var7.startsWith("img=")) {
+								try {
+									int var8 = class3.parseInt(var7.substring(4));
+									var4 += AbstractFont_modIconSprites[var8].width;
+									var3 = -1;
+								} catch (Exception var10) {
 								}
-								continue;
 							}
-
-							var6 = '>';
-						}
-					}
-
-					if (var6 == 160) {
-						var6 = ' ';
-					}
-
-					if (var2 == -1) {
-						var4 += this.advances[(char)(ItemDefinition.charToByteCp1252(var6) & 255)];
-						if (this.kerning != null && var3 != -1) {
-							var4 += this.kerning[var6 + (var3 << 8)];
+							continue;
 						}
 
-						var3 = var6;
+						var6 = '>';
 					}
 				}
-			}
 
-			return var4;
+				if (var6 == 160) {
+					var6 = ' ';
+				}
+
+				if (var2 == -1) {
+					var4 += this.advances[(char)(ItemDefinition.charToByteCp1252(var6) & 255)];
+					if (this.kerning != null && var3 != -1) {
+						var4 += this.kerning[var6 + (var3 << 8)];
+					}
+
+					var3 = var6;
+				}
+			}
 		}
+
+		return var4;
 	}
 
 	@ObfuscatedName("v")
@@ -275,104 +274,103 @@ public abstract class AbstractFont extends Rasterizer2D {
 	public int breakLines(String var1, int[] var2, String[] var3) {
 		if (var1 == null) {
 			return 0;
-		} else {
-			int var4 = 0;
-			int var5 = 0;
-			StringBuilder var6 = new StringBuilder(100);
-			int var7 = -1;
-			int var8 = 0;
-			byte var9 = 0;
-			int var10 = -1;
-			char var11 = 0;
-			int var12 = 0;
-			int var13 = var1.length();
+		}
+		int var4 = 0;
+		int var5 = 0;
+		StringBuilder var6 = new StringBuilder(100);
+		int var7 = -1;
+		int var8 = 0;
+		byte var9 = 0;
+		int var10 = -1;
+		char var11 = 0;
+		int var12 = 0;
+		int var13 = var1.length();
 
-			for (int var14 = 0; var14 < var13; ++var14) {
-				char var15 = var1.charAt(var14);
-				if (var15 == '<') {
-					var10 = var14;
-				} else {
-					if (var15 == '>' && var10 != -1) {
-						String var16 = var1.substring(var10 + 1, var14);
-						var10 = -1;
-						var6.append('<');
-						var6.append(var16);
-						var6.append('>');
-						if (var16.equals("br")) {
-							var3[var12] = var6.toString().substring(var5, var6.length());
-							++var12;
-							var5 = var6.length();
-							var4 = 0;
-							var7 = -1;
-							var11 = 0;
-						} else if (var16.equals("lt")) {
-							var4 += this.charWidth('<');
-							if (this.kerning != null && var11 != -1) {
-								var4 += this.kerning[(var11 << '\b') + 60];
-							}
-
-							var11 = '<';
-						} else if (var16.equals("gt")) {
-							var4 += this.charWidth('>');
-							if (this.kerning != null && var11 != -1) {
-								var4 += this.kerning[(var11 << '\b') + 62];
-							}
-
-							var11 = '>';
-						} else if (var16.startsWith("img=")) {
-							try {
-								int var17 = class3.parseInt(var16.substring(4));
-								var4 += AbstractFont_modIconSprites[var17].width;
-								var11 = 0;
-							} catch (Exception var20) {
-							}
+		for (int var14 = 0; var14 < var13; ++var14) {
+			char var15 = var1.charAt(var14);
+			if (var15 == '<') {
+				var10 = var14;
+			} else {
+				if (var15 == '>' && var10 != -1) {
+					String var16 = var1.substring(var10 + 1, var14);
+					var10 = -1;
+					var6.append('<');
+					var6.append(var16);
+					var6.append('>');
+					if (var16.equals("br")) {
+						var3[var12] = var6.toString().substring(var5, var6.length());
+						++var12;
+						var5 = var6.length();
+						var4 = 0;
+						var7 = -1;
+						var11 = 0;
+					} else if (var16.equals("lt")) {
+						var4 += this.charWidth('<');
+						if (this.kerning != null && var11 != -1) {
+							var4 += this.kerning[(var11 << '\b') + 60];
 						}
 
-						var15 = 0;
+						var11 = '<';
+					} else if (var16.equals("gt")) {
+						var4 += this.charWidth('>');
+						if (this.kerning != null && var11 != -1) {
+							var4 += this.kerning[(var11 << '\b') + 62];
+						}
+
+						var11 = '>';
+					} else if (var16.startsWith("img=")) {
+						try {
+							int var17 = class3.parseInt(var16.substring(4));
+							var4 += AbstractFont_modIconSprites[var17].width;
+							var11 = 0;
+						} catch (Exception var20) {
+						}
 					}
 
-					if (var10 == -1) {
-						if (var15 != 0) {
-							var6.append(var15);
-							var4 += this.charWidth(var15);
-							if (this.kerning != null && var11 != -1) {
-								var4 += this.kerning[var15 + (var11 << '\b')];
-							}
+					var15 = 0;
+				}
 
-							var11 = var15;
+				if (var10 == -1) {
+					if (var15 != 0) {
+						var6.append(var15);
+						var4 += this.charWidth(var15);
+						if (this.kerning != null && var11 != -1) {
+							var4 += this.kerning[var15 + (var11 << '\b')];
 						}
 
-						if (var15 == ' ') {
-							var7 = var6.length();
-							var8 = var4;
-							var9 = 1;
-						}
+						var11 = var15;
+					}
 
-						if (var2 != null && var4 > var2[var12 < var2.length ? var12 : var2.length - 1] && var7 >= 0) {
-							var3[var12] = var6.toString().substring(var5, var7 - var9);
-							++var12;
-							var5 = var7;
-							var7 = -1;
-							var4 -= var8;
-							var11 = 0;
-						}
+					if (var15 == ' ') {
+						var7 = var6.length();
+						var8 = var4;
+						var9 = 1;
+					}
 
-						if (var15 == '-') {
-							var7 = var6.length();
-							var8 = var4;
-							var9 = 0;
-						}
+					if (var2 != null && var4 > var2[var12 < var2.length ? var12 : var2.length - 1] && var7 >= 0) {
+						var3[var12] = var6.toString().substring(var5, var7 - var9);
+						++var12;
+						var5 = var7;
+						var7 = -1;
+						var4 -= var8;
+						var11 = 0;
+					}
+
+					if (var15 == '-') {
+						var7 = var6.length();
+						var8 = var4;
+						var9 = 0;
 					}
 				}
 			}
-
-			String var19 = var6.toString();
-			if (var19.length() > var5) {
-				var3[var12++] = var19.substring(var5, var19.length());
-			}
-
-			return var12;
 		}
+
+		String var19 = var6.toString();
+		if (var19.length() > var5) {
+			var3[var12++] = var19.substring(var5, var19.length());
+		}
+
+		return var12;
 	}
 
 	@ObfuscatedName("y")
@@ -439,60 +437,59 @@ public abstract class AbstractFont extends Rasterizer2D {
 	public int drawLines(String var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
 		if (var1 == null) {
 			return 0;
-		} else {
-			this.reset(var6, var7);
-			if (var10 == 0) {
-				var10 = this.ascent;
-			}
-
-			int[] var11 = new int[]{var4};
-			if (var5 < var10 + this.maxAscent + this.maxDescent && var5 < var10 + var10) {
-				var11 = null;
-			}
-
-			int var12 = this.breakLines(var1, var11, AbstractFont_lines);
-			if (var9 == 3 && var12 == 1) {
-				var9 = 1;
-			}
-
-			int var13;
-			int var14;
-			if (var9 == 0) {
-				var13 = var3 + this.maxAscent;
-			} else if (var9 == 1) {
-				var13 = var3 + (var5 - this.maxAscent - this.maxDescent - var10 * (var12 - 1)) / 2 + this.maxAscent;
-			} else if (var9 == 2) {
-				var13 = var3 + var5 - this.maxDescent - var10 * (var12 - 1);
-			} else {
-				var14 = (var5 - this.maxAscent - this.maxDescent - var10 * (var12 - 1)) / (var12 + 1);
-				if (var14 < 0) {
-					var14 = 0;
-				}
-
-				var13 = var3 + var14 + this.maxAscent;
-				var10 += var14;
-			}
-
-			for (var14 = 0; var14 < var12; ++var14) {
-				if (var8 == 0) {
-					this.draw0(AbstractFont_lines[var14], var2, var13);
-				} else if (var8 == 1) {
-					this.draw0(AbstractFont_lines[var14], var2 + (var4 - this.stringWidth(AbstractFont_lines[var14])) / 2, var13);
-				} else if (var8 == 2) {
-					this.draw0(AbstractFont_lines[var14], var2 + var4 - this.stringWidth(AbstractFont_lines[var14]), var13);
-				} else if (var14 == var12 - 1) {
-					this.draw0(AbstractFont_lines[var14], var2, var13);
-				} else {
-					this.calculateLineJustification(AbstractFont_lines[var14], var4);
-					this.draw0(AbstractFont_lines[var14], var2, var13);
-					AbstractFont_justificationTotal = 0;
-				}
-
-				var13 += var10;
-			}
-
-			return var12;
 		}
+		this.reset(var6, var7);
+		if (var10 == 0) {
+			var10 = this.ascent;
+		}
+
+		int[] var11 = new int[]{var4};
+		if (var5 < var10 + this.maxAscent + this.maxDescent && var5 < var10 + var10) {
+			var11 = null;
+		}
+
+		int var12 = this.breakLines(var1, var11, AbstractFont_lines);
+		if (var9 == 3 && var12 == 1) {
+			var9 = 1;
+		}
+
+		int var13;
+		int var14;
+		if (var9 == 0) {
+			var13 = var3 + this.maxAscent;
+		} else if (var9 == 1) {
+			var13 = var3 + (var5 - this.maxAscent - this.maxDescent - var10 * (var12 - 1)) / 2 + this.maxAscent;
+		} else if (var9 == 2) {
+			var13 = var3 + var5 - this.maxDescent - var10 * (var12 - 1);
+		} else {
+			var14 = (var5 - this.maxAscent - this.maxDescent - var10 * (var12 - 1)) / (var12 + 1);
+			if (var14 < 0) {
+				var14 = 0;
+			}
+
+			var13 = var3 + var14 + this.maxAscent;
+			var10 += var14;
+		}
+
+		for (var14 = 0; var14 < var12; ++var14) {
+			if (var8 == 0) {
+				this.draw0(AbstractFont_lines[var14], var2, var13);
+			} else if (var8 == 1) {
+				this.draw0(AbstractFont_lines[var14], var2 + (var4 - this.stringWidth(AbstractFont_lines[var14])) / 2, var13);
+			} else if (var8 == 2) {
+				this.draw0(AbstractFont_lines[var14], var2 + var4 - this.stringWidth(AbstractFont_lines[var14]), var13);
+			} else if (var14 == var12 - 1) {
+				this.draw0(AbstractFont_lines[var14], var2, var13);
+			} else {
+				this.calculateLineJustification(AbstractFont_lines[var14], var4);
+				this.draw0(AbstractFont_lines[var14], var2, var13);
+				AbstractFont_justificationTotal = 0;
+			}
+
+			var13 += var10;
+		}
+
+		return var12;
 	}
 
 	@ObfuscatedName("al")

@@ -77,11 +77,11 @@ public class Coord {
 	boolean equalsCoord(Coord var1) {
 		if (this.plane != var1.plane) {
 			return false;
-		} else if (this.x != var1.x) {
-			return false;
-		} else {
-			return this.y == var1.y;
 		}
+		if (this.x != var1.x) {
+			return false;
+		}
+		return this.y == var1.y;
 	}
 
 	@ObfuscatedName("e")
@@ -101,9 +101,8 @@ public class Coord {
 	public boolean equals(Object var1) {
 		if (this == var1) {
 			return true;
-		} else {
-			return !(var1 instanceof Coord) ? false : this.equalsCoord((Coord)var1);
 		}
+		return !(var1 instanceof Coord) ? false : this.equalsCoord((Coord)var1);
 	}
 
 	public String toString() {

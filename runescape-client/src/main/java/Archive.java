@@ -102,9 +102,8 @@ public class Archive extends AbstractArchive {
 	int groupLoadPercent(int var1) {
 		if (super.groups[var1] != null) {
 			return 100;
-		} else {
-			return this.validGroups[var1] ? 100 : Huffman.method3948(this.index, var1);
 		}
+		return this.validGroups[var1] ? 100 : Huffman.method3948(this.index, var1);
 	}
 
 	@ObfuscatedName("v")
@@ -140,16 +139,16 @@ public class Archive extends AbstractArchive {
 	public int percentage() {
 		if (this.field3155) {
 			return 100;
-		} else if (super.groups != null) {
-			return 99;
-		} else {
-			int var1 = Huffman.method3948(255, this.index);
-			if (var1 >= 100) {
-				var1 = 99;
-			}
-
-			return var1;
 		}
+		if (super.groups != null) {
+			return 99;
+		}
+		int var1 = Huffman.method3948(255, this.index);
+		if (var1 >= 100) {
+			var1 = 99;
+		}
+
+		return var1;
 	}
 
 	@ObfuscatedName("dt")
@@ -396,10 +395,9 @@ public class Archive extends AbstractArchive {
 
 		if (var1 == 0) {
 			return 100;
-		} else {
-			var3 = var2 * 100 / var1;
-			return var3;
 		}
+		var3 = var2 * 100 / var1;
+		return var3;
 	}
 
 	@ObfuscatedName("q")

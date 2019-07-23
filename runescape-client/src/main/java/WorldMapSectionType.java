@@ -121,13 +121,16 @@ public enum WorldMapSectionType implements Enumerated {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.CAM_GETANGLE_XA) {
+		}
+		if (var0 == ScriptOpcodes.CAM_GETANGLE_XA) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.camAngleX;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CAM_GETANGLE_YA) {
+		}
+		if (var0 == ScriptOpcodes.CAM_GETANGLE_YA) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.camAngleY;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CAM_SETFOLLOWHEIGHT) {
+		}
+		if (var0 == ScriptOpcodes.CAM_SETFOLLOWHEIGHT) {
 			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
 			if (var3 < 0) {
 				var3 = 0;
@@ -135,12 +138,12 @@ public enum WorldMapSectionType implements Enumerated {
 
 			Client.camFollowHeight = var3;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CAM_GETFOLLOWHEIGHT) {
+		}
+		if (var0 == ScriptOpcodes.CAM_GETFOLLOWHEIGHT) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.camFollowHeight;
 			return 1;
-		} else {
-			return 2;
 		}
+		return 2;
 	}
 
 	@ObfuscatedName("aq")
@@ -162,7 +165,8 @@ public enum WorldMapSectionType implements Enumerated {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.VIEWPORT_SETZOOM) {
+		}
+		if (var0 == ScriptOpcodes.VIEWPORT_SETZOOM) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			Client.field906 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			if (Client.field906 <= 0) {
@@ -175,7 +179,8 @@ public enum WorldMapSectionType implements Enumerated {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.VIEWPORT_CLAMPFOV) {
+		}
+		if (var0 == ScriptOpcodes.VIEWPORT_CLAMPFOV) {
 			HealthBarUpdate.Interpreter_intStackSize -= 4;
 			Client.field820 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			if (Client.field820 <= 0) {
@@ -202,7 +207,8 @@ public enum WorldMapSectionType implements Enumerated {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.VIEWPORT_GETEFFECTIVESIZE) {
+		}
+		if (var0 == ScriptOpcodes.VIEWPORT_GETEFFECTIVESIZE) {
 			if (Client.viewportWidget != null) {
 				UrlRequest.setViewportShape(0, 0, Client.viewportWidget.width, Client.viewportWidget.height, false);
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.viewportWidth;
@@ -213,16 +219,17 @@ public enum WorldMapSectionType implements Enumerated {
 			}
 
 			return 1;
-		} else if (var0 == ScriptOpcodes.VIEWPORT_GETZOOM) {
+		}
+		if (var0 == ScriptOpcodes.VIEWPORT_GETZOOM) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.field906;
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.field908;
 			return 1;
-		} else if (var0 == ScriptOpcodes.VIEWPORT_GETFOV) {
+		}
+		if (var0 == ScriptOpcodes.VIEWPORT_GETFOV) {
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = NetFileRequest.method4140(Client.field782);
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = NetFileRequest.method4140(Client.field651);
 			return 1;
-		} else {
-			return 2;
 		}
+		return 2;
 	}
 }

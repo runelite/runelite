@@ -150,90 +150,87 @@ public class Skeleton extends Node {
 			int var5 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
 			if (var4 == 0) {
 				throw new RuntimeException();
-			} else {
-				Widget var6 = class80.getWidget(var3);
-				if (var6.children == null) {
-					var6.children = new Widget[var5 + 1];
-				}
-
-				if (var6.children.length <= var5) {
-					Widget[] var7 = new Widget[var5 + 1];
-
-					for (int var8 = 0; var8 < var6.children.length; ++var8) {
-						var7[var8] = var6.children[var8];
-					}
-
-					var6.children = var7;
-				}
-
-				if (var5 > 0 && var6.children[var5 - 1] == null) {
-					throw new RuntimeException("" + (var5 - 1));
-				} else {
-					Widget var12 = new Widget();
-					var12.type = var4;
-					var12.parentId = var12.id = var6.id;
-					var12.childIndex = var5;
-					var12.isIf3 = true;
-					var6.children[var5] = var12;
-					if (var2) {
-						Interpreter.field1111 = var12;
-					} else {
-						Calendar.field2507 = var12;
-					}
-
-					Strings.method4120(var6);
-					return 1;
-				}
 			}
-		} else {
-			Widget var9;
-			if (var0 == ScriptOpcodes.CC_DELETE) {
-				var9 = var2 ? Interpreter.field1111 : Calendar.field2507;
-				Widget var10 = class80.getWidget(var9.id);
-				var10.children[var9.childIndex] = null;
-				Strings.method4120(var10);
-				return 1;
-			} else if (var0 == ScriptOpcodes.CC_DELETEALL) {
-				var9 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
-				var9.children = null;
-				Strings.method4120(var9);
-				return 1;
-			} else if (var0 != ScriptOpcodes.CC_FIND) {
-				if (var0 == ScriptOpcodes.IF_FIND) {
-					var9 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
-					if (var9 != null) {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 1;
-						if (var2) {
-							Interpreter.field1111 = var9;
-						} else {
-							Calendar.field2507 = var9;
-						}
-					} else {
-						Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
-					}
-
-					return 1;
-				} else {
-					return 2;
-				}
-			} else {
-				HealthBarUpdate.Interpreter_intStackSize -= 2;
-				var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-				var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-				Widget var11 = Client.getWidgetChild(var3, var4);
-				if (var11 != null && var4 != -1) {
-					Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 1;
-					if (var2) {
-						Interpreter.field1111 = var11;
-					} else {
-						Calendar.field2507 = var11;
-					}
-				} else {
-					Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
-				}
-
-				return 1;
+			Widget var6 = class80.getWidget(var3);
+			if (var6.children == null) {
+				var6.children = new Widget[var5 + 1];
 			}
+
+			if (var6.children.length <= var5) {
+				Widget[] var7 = new Widget[var5 + 1];
+
+				for (int var8 = 0; var8 < var6.children.length; ++var8) {
+					var7[var8] = var6.children[var8];
+				}
+
+				var6.children = var7;
+			}
+
+			if (var5 > 0 && var6.children[var5 - 1] == null) {
+				throw new RuntimeException("" + (var5 - 1));
+			}
+			Widget var12 = new Widget();
+			var12.type = var4;
+			var12.parentId = var12.id = var6.id;
+			var12.childIndex = var5;
+			var12.isIf3 = true;
+			var6.children[var5] = var12;
+			if (var2) {
+				Interpreter.field1111 = var12;
+			} else {
+				Calendar.field2507 = var12;
+			}
+
+			Strings.method4120(var6);
+			return 1;
 		}
+		Widget var9;
+		if (var0 == ScriptOpcodes.CC_DELETE) {
+			var9 = var2 ? Interpreter.field1111 : Calendar.field2507;
+			Widget var10 = class80.getWidget(var9.id);
+			var10.children[var9.childIndex] = null;
+			Strings.method4120(var10);
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.CC_DELETEALL) {
+			var9 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
+			var9.children = null;
+			Strings.method4120(var9);
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.CC_FIND) {
+			HealthBarUpdate.Interpreter_intStackSize -= 2;
+			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
+			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
+			Widget var11 = Client.getWidgetChild(var3, var4);
+			if (var11 != null && var4 != -1) {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 1;
+				if (var2) {
+					Interpreter.field1111 = var11;
+				} else {
+					Calendar.field2507 = var11;
+				}
+			} else {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
+			}
+
+			return 1;
+		}
+		if (var0 == ScriptOpcodes.IF_FIND) {
+			var9 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
+			if (var9 != null) {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 1;
+				if (var2) {
+					Interpreter.field1111 = var9;
+				} else {
+					Calendar.field2507 = var9;
+				}
+			} else {
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
+			}
+
+			return 1;
+		}
+		return 2;
 	}
 }

@@ -151,26 +151,24 @@ public final class Tile extends Node {
 		if (var0 > 0L && var0 < 6582952005840035281L) {
 			if (0L == var0 % 37L) {
 				return null;
-			} else {
-				int var2 = 0;
-
-				for (long var3 = var0; var3 != 0L; var3 /= 37L) {
-					++var2;
-				}
-
-				StringBuilder var5 = new StringBuilder(var2);
-
-				while (var0 != 0L) {
-					long var6 = var0;
-					var0 /= 37L;
-					var5.append(class289.base37Table[(int)(var6 - var0 * 37L)]);
-				}
-
-				return var5.reverse().toString();
 			}
-		} else {
-			return null;
+			int var2 = 0;
+
+			for (long var3 = var0; var3 != 0L; var3 /= 37L) {
+				++var2;
+			}
+
+			StringBuilder var5 = new StringBuilder(var2);
+
+			while (var0 != 0L) {
+				long var6 = var0;
+				var0 /= 37L;
+				var5.append(class289.base37Table[(int)(var6 - var0 * 37L)]);
+			}
+
+			return var5.reverse().toString();
 		}
+		return null;
 	}
 
 	@ObfuscatedName("b")

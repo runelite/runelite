@@ -389,68 +389,67 @@ public class NPCDefinition extends DualNode {
 		if (this.transforms != null) {
 			NPCDefinition var12 = this.transform();
 			return var12 == null ? null : var12.getModel(var1, var2, var3, var4);
-		} else {
-			Model var5 = (Model)NpcDefinition_cachedModels.get((long)this.id);
-			if (var5 == null) {
-				boolean var6 = false;
-
-				for (int var7 = 0; var7 < this.models.length; ++var7) {
-					if (!NpcDefinition_modelArchive.tryLoadFile(this.models[var7], 0)) {
-						var6 = true;
-					}
-				}
-
-				if (var6) {
-					return null;
-				}
-
-				ModelData[] var8 = new ModelData[this.models.length];
-
-				int var9;
-				for (var9 = 0; var9 < this.models.length; ++var9) {
-					var8[var9] = ModelData.method2769(NpcDefinition_modelArchive, this.models[var9], 0);
-				}
-
-				ModelData var11;
-				if (var8.length == 1) {
-					var11 = var8[0];
-				} else {
-					var11 = new ModelData(var8, var8.length);
-				}
-
-				if (this.recolorFrom != null) {
-					for (var9 = 0; var9 < this.recolorFrom.length; ++var9) {
-						var11.recolor(this.recolorFrom[var9], this.recolorTo[var9]);
-					}
-				}
-
-				if (this.retextureFrom != null) {
-					for (var9 = 0; var9 < this.retextureFrom.length; ++var9) {
-						var11.retexture(this.retextureFrom[var9], this.retextureTo[var9]);
-					}
-				}
-
-				var5 = var11.toModel(this.field3489 + 64, this.field3477 + 850, -30, -50, -30);
-				NpcDefinition_cachedModels.put(var5, (long)this.id);
-			}
-
-			Model var10;
-			if (var1 != null && var3 != null) {
-				var10 = var1.applyTransformations(var5, var2, var3, var4);
-			} else if (var1 != null) {
-				var10 = var1.transformActorModel(var5, var2);
-			} else if (var3 != null) {
-				var10 = var3.transformActorModel(var5, var4);
-			} else {
-				var10 = var5.toSharedSequenceModel(true);
-			}
-
-			if (this.widthScale != 128 || this.heightScale != 128) {
-				var10.scale(this.widthScale, this.heightScale, this.widthScale);
-			}
-
-			return var10;
 		}
+		Model var5 = (Model)NpcDefinition_cachedModels.get((long)this.id);
+		if (var5 == null) {
+			boolean var6 = false;
+
+			for (int var7 = 0; var7 < this.models.length; ++var7) {
+				if (!NpcDefinition_modelArchive.tryLoadFile(this.models[var7], 0)) {
+					var6 = true;
+				}
+			}
+
+			if (var6) {
+				return null;
+			}
+
+			ModelData[] var8 = new ModelData[this.models.length];
+
+			int var9;
+			for (var9 = 0; var9 < this.models.length; ++var9) {
+				var8[var9] = ModelData.method2769(NpcDefinition_modelArchive, this.models[var9], 0);
+			}
+
+			ModelData var11;
+			if (var8.length == 1) {
+				var11 = var8[0];
+			} else {
+				var11 = new ModelData(var8, var8.length);
+			}
+
+			if (this.recolorFrom != null) {
+				for (var9 = 0; var9 < this.recolorFrom.length; ++var9) {
+					var11.recolor(this.recolorFrom[var9], this.recolorTo[var9]);
+				}
+			}
+
+			if (this.retextureFrom != null) {
+				for (var9 = 0; var9 < this.retextureFrom.length; ++var9) {
+					var11.retexture(this.retextureFrom[var9], this.retextureTo[var9]);
+				}
+			}
+
+			var5 = var11.toModel(this.field3489 + 64, this.field3477 + 850, -30, -50, -30);
+			NpcDefinition_cachedModels.put(var5, (long)this.id);
+		}
+
+		Model var10;
+		if (var1 != null && var3 != null) {
+			var10 = var1.applyTransformations(var5, var2, var3, var4);
+		} else if (var1 != null) {
+			var10 = var1.transformActorModel(var5, var2);
+		} else if (var3 != null) {
+			var10 = var3.transformActorModel(var5, var4);
+		} else {
+			var10 = var5.toSharedSequenceModel(true);
+		}
+
+		if (this.widthScale != 128 || this.heightScale != 128) {
+			var10.scale(this.widthScale, this.heightScale, this.widthScale);
+		}
+
+		return var10;
 	}
 
 	@ObfuscatedName("b")
@@ -463,49 +462,48 @@ public class NPCDefinition extends DualNode {
 		if (this.transforms != null) {
 			NPCDefinition var1 = this.transform();
 			return var1 == null ? null : var1.getModelData();
-		} else if (this.field3463 == null) {
+		}
+		if (this.field3463 == null) {
 			return null;
-		} else {
-			boolean var5 = false;
+		}
+		boolean var5 = false;
 
-			for (int var2 = 0; var2 < this.field3463.length; ++var2) {
-				if (!NpcDefinition_modelArchive.tryLoadFile(this.field3463[var2], 0)) {
-					var5 = true;
-				}
-			}
-
-			if (var5) {
-				return null;
-			} else {
-				ModelData[] var6 = new ModelData[this.field3463.length];
-
-				for (int var3 = 0; var3 < this.field3463.length; ++var3) {
-					var6[var3] = ModelData.method2769(NpcDefinition_modelArchive, this.field3463[var3], 0);
-				}
-
-				ModelData var7;
-				if (var6.length == 1) {
-					var7 = var6[0];
-				} else {
-					var7 = new ModelData(var6, var6.length);
-				}
-
-				int var4;
-				if (this.recolorFrom != null) {
-					for (var4 = 0; var4 < this.recolorFrom.length; ++var4) {
-						var7.recolor(this.recolorFrom[var4], this.recolorTo[var4]);
-					}
-				}
-
-				if (this.retextureFrom != null) {
-					for (var4 = 0; var4 < this.retextureFrom.length; ++var4) {
-						var7.retexture(this.retextureFrom[var4], this.retextureTo[var4]);
-					}
-				}
-
-				return var7;
+		for (int var2 = 0; var2 < this.field3463.length; ++var2) {
+			if (!NpcDefinition_modelArchive.tryLoadFile(this.field3463[var2], 0)) {
+				var5 = true;
 			}
 		}
+
+		if (var5) {
+			return null;
+		}
+		ModelData[] var6 = new ModelData[this.field3463.length];
+
+		for (int var3 = 0; var3 < this.field3463.length; ++var3) {
+			var6[var3] = ModelData.method2769(NpcDefinition_modelArchive, this.field3463[var3], 0);
+		}
+
+		ModelData var7;
+		if (var6.length == 1) {
+			var7 = var6[0];
+		} else {
+			var7 = new ModelData(var6, var6.length);
+		}
+
+		int var4;
+		if (this.recolorFrom != null) {
+			for (var4 = 0; var4 < this.recolorFrom.length; ++var4) {
+				var7.recolor(this.recolorFrom[var4], this.recolorTo[var4]);
+			}
+		}
+
+		if (this.retextureFrom != null) {
+			for (var4 = 0; var4 < this.retextureFrom.length; ++var4) {
+				var7.retexture(this.retextureFrom[var4], this.retextureTo[var4]);
+			}
+		}
+
+		return var7;
 	}
 
 	@ObfuscatedName("i")
@@ -541,20 +539,18 @@ public class NPCDefinition extends DualNode {
 	public boolean transformIsVisible() {
 		if (this.transforms == null) {
 			return true;
-		} else {
-			int var1 = -1;
-			if (this.transformVarbit != -1) {
-				var1 = GrandExchangeOfferOwnWorldComparator.getVarbit(this.transformVarbit);
-			} else if (this.transformVarp != -1) {
-				var1 = Varps.Varps_main[this.transformVarp];
-			}
-
-			if (var1 >= 0 && var1 < this.transforms.length) {
-				return this.transforms[var1] != -1;
-			} else {
-				return this.transforms[this.transforms.length - 1] != -1;
-			}
 		}
+		int var1 = -1;
+		if (this.transformVarbit != -1) {
+			var1 = GrandExchangeOfferOwnWorldComparator.getVarbit(this.transformVarbit);
+		} else if (this.transformVarp != -1) {
+			var1 = Varps.Varps_main[this.transformVarp];
+		}
+
+		if (var1 >= 0 && var1 < this.transforms.length) {
+			return this.transforms[var1] != -1;
+		}
+		return this.transforms[this.transforms.length - 1] != -1;
 	}
 
 	@ObfuscatedName("u")

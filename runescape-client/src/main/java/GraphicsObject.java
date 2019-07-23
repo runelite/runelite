@@ -225,12 +225,10 @@ public final class GraphicsObject extends Entity {
 			var3.onStockTransmit = var8;
 		} else if (var0 == 1426) {
 			var3.field2681 = var8;
-		} else {
-			if (var0 != ScriptOpcodes.CC_SETONRESIZE) {
-				return 2;
-			}
-
+		} else if (var0 == ScriptOpcodes.CC_SETONRESIZE) {
 			var3.onResize = var8;
+		} else {
+			return 2;
 		}
 
 		var3.hasListener = true;
@@ -245,16 +243,15 @@ public final class GraphicsObject extends Entity {
 	static final int method1948(int var0, int var1) {
 		if (var0 == -1) {
 			return 12345678;
-		} else {
-			var1 = (var0 & 127) * var1 / 128;
-			if (var1 < 2) {
-				var1 = 2;
-			} else if (var1 > 126) {
-				var1 = 126;
-			}
-
-			return (var0 & 65408) + var1;
 		}
+		var1 = (var0 & 127) * var1 / 128;
+		if (var1 < 2) {
+			var1 = 2;
+		} else if (var1 > 126) {
+			var1 = 126;
+		}
+
+		return (var0 & 65408) + var1;
 	}
 
 	@ObfuscatedName("az")

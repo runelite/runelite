@@ -152,10 +152,7 @@ public class Reflection
 		{
 			return annotation.value();
 		}
-		else
-		{
-			return method.getName();
-		}
+		return method.getName();
 	}
 
 	public static Class<?>[] getParameterTypes(Method method)

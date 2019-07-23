@@ -65,44 +65,43 @@ public class AudioFilter {
 
 		if (this.pairs[var1] == 0) {
 			return 0;
-		} else {
-			var3 = this.method2668(var1, 0, var2);
-			field1488[var1][0] = -2.0F * var3 * (float)Math.cos((double)this.method2683(var1, 0, var2));
-			field1488[var1][1] = var3 * var3;
-
-			float[] var10000;
-			int var4;
-			for (var4 = 1; var4 < this.pairs[var1]; ++var4) {
-				var3 = this.method2668(var1, var4, var2);
-				float var5 = -2.0F * var3 * (float)Math.cos((double)this.method2683(var1, var4, var2));
-				float var6 = var3 * var3;
-				field1488[var1][var4 * 2 + 1] = field1488[var1][var4 * 2 - 1] * var6;
-				field1488[var1][var4 * 2] = field1488[var1][var4 * 2 - 1] * var5 + field1488[var1][var4 * 2 - 2] * var6;
-
-				for (int var7 = var4 * 2 - 1; var7 >= 2; --var7) {
-					var10000 = field1488[var1];
-					var10000[var7] += field1488[var1][var7 - 1] * var5 + field1488[var1][var7 - 2] * var6;
-				}
-
-				var10000 = field1488[var1];
-				var10000[1] += field1488[var1][0] * var5 + var6;
-				var10000 = field1488[var1];
-				var10000[0] += var5;
-			}
-
-			if (var1 == 0) {
-				for (var4 = 0; var4 < this.pairs[0] * 2; ++var4) {
-					var10000 = field1488[0];
-					var10000[var4] *= field1491;
-				}
-			}
-
-			for (var4 = 0; var4 < this.pairs[var1] * 2; ++var4) {
-				coefficients[var1][var4] = (int)(field1488[var1][var4] * 65536.0F);
-			}
-
-			return this.pairs[var1] * 2;
 		}
+		var3 = this.method2668(var1, 0, var2);
+		field1488[var1][0] = -2.0F * var3 * (float)Math.cos((double)this.method2683(var1, 0, var2));
+		field1488[var1][1] = var3 * var3;
+
+		float[] var10000;
+		int var4;
+		for (var4 = 1; var4 < this.pairs[var1]; ++var4) {
+			var3 = this.method2668(var1, var4, var2);
+			float var5 = -2.0F * var3 * (float)Math.cos((double)this.method2683(var1, var4, var2));
+			float var6 = var3 * var3;
+			field1488[var1][var4 * 2 + 1] = field1488[var1][var4 * 2 - 1] * var6;
+			field1488[var1][var4 * 2] = field1488[var1][var4 * 2 - 1] * var5 + field1488[var1][var4 * 2 - 2] * var6;
+
+			for (int var7 = var4 * 2 - 1; var7 >= 2; --var7) {
+				var10000 = field1488[var1];
+				var10000[var7] += field1488[var1][var7 - 1] * var5 + field1488[var1][var7 - 2] * var6;
+			}
+
+			var10000 = field1488[var1];
+			var10000[1] += field1488[var1][0] * var5 + var6;
+			var10000 = field1488[var1];
+			var10000[0] += var5;
+		}
+
+		if (var1 == 0) {
+			for (var4 = 0; var4 < this.pairs[0] * 2; ++var4) {
+				var10000 = field1488[0];
+				var10000[var4] *= field1491;
+			}
+		}
+
+		for (var4 = 0; var4 < this.pairs[var1] * 2; ++var4) {
+			coefficients[var1][var4] = (int)(field1488[var1][var4] * 65536.0F);
+		}
+
+		return this.pairs[var1] * 2;
 	}
 
 	@ObfuscatedName("k")
