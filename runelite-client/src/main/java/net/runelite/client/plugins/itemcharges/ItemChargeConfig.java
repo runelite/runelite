@@ -173,10 +173,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showBellowCharges",
-			name = "Show Bellow Charges",
-			description = "Configures if ogre bellow item charge is shown",
-			position = 12
+		keyName = "showBellowCharges",
+		name = "Show Bellow Charges",
+		description = "Configures if ogre bellow item charge is shown",
+		position = 12
 	)
 	default boolean showBellowCharges()
 	{
@@ -184,10 +184,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showAbyssalBraceletCharges",
-			name = "Show Abyssal Bracelet Charges",
-			description = "Configures if abyssal bracelet item charge is shown",
-			position = 13
+		keyName = "showAbyssalBraceletCharges",
+		name = "Show Abyssal Bracelet Charges",
+		description = "Configures if abyssal bracelet item charge is shown",
+		position = 13
 	)
 	default boolean showAbyssalBraceletCharges()
 	{
@@ -275,22 +275,10 @@ public interface ItemChargeConfig extends Config
 	void explorerRing(int explorerRing);
 
 	@ConfigItem(
-		keyName = "showInfoboxes",
-		name = "Show Infoboxes",
-		description = "Configures whether to show an infobox equipped charge items",
-		position = 18
-	)
-	default boolean showInfoboxes()
-	{
-		return false;
-	}
-
-
-	@ConfigItem(
 		keyName = "showSlayerBracelets",
 		name = "Show Slayer Bracelets Charges",
 		description = "Configures if slayer bracelets' item charges are shown",
-		position = 19
+		position = 18
 	)
 	default boolean showSlayerBracelets()
 	{
@@ -433,4 +421,54 @@ public interface ItemChargeConfig extends Config
 	)
 	void chronicle(int chronicle);
 
+	@ConfigItem(
+		keyName = "showRingOfForgingCount",
+		name = "Show Ring of Forging Charges",
+		description = "Configures if the Ring of Forging charge count is shown",
+		position = 23
+	)
+	default boolean showRingOfForgingCount()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "ringOfForging",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int ringOfForging()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "ringOfForging",
+		name = "",
+		description = ""
+	)
+	void ringOfForging(int ringOfForging);
+
+	@ConfigItem(
+		keyName = "ringOfForgingNotification",
+		name = "Ring of Forging Notification",
+		description = "Configures if the Ring of Forging breaking notification is enabled",
+		position = 24
+	)
+	default boolean ringOfForgingNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showInfoboxes",
+		name = "Show Infoboxes",
+		description = "Configures whether to show an infobox equipped charge items",
+		position = 25
+	)
+	default boolean showInfoboxes()
+	{
+		return false;
+	}
 }

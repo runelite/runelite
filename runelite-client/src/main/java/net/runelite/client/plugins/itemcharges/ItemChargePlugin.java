@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -121,12 +122,17 @@ public class ItemChargePlugin extends Plugin
 		"You have one charge left in your book\\.");
 	private static final Pattern CHRONICLE_OUT_OF_CHARGES_PATTERN = Pattern.compile(
 		"Your book has run out of charges\\.");
+	private static final Pattern RING_OF_FORGING_CHECK_PATTERN = Pattern.compile(
+		"You can smelt ([0-9+]+|one) more pieces? of iron ore before a ring melts\\.");
+	private static final String RING_OF_FORGING_USED_TEXT = "You retrieve a bar of iron.";
+	private static final String RING_OF_FORGING_BREAK_TEXT = "<col=7f007f>Your Ring of Forging has melted.</col>";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_SLAUGHTER_CHARGES = 30;
 	private static final int MAX_EXPEDITIOUS_CHARGES = 30;
 	private static final int MAX_BINDING_CHARGES = 16;
 	private static final int MAX_EXPLORER_RING_CHARGES = 30;
+	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean ringOfRecoilAvailable = false;
@@ -225,6 +231,10 @@ public class ItemChargePlugin extends Plugin
 	private boolean showrecoil;
 	@Getter(AccessLevel.PACKAGE)
 	private int chronicle;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showRingOfForgingCount;
+	@Getter(AccessLevel.PACKAGE)
+	private int ringOfForging;
 
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
@@ -310,6 +320,11 @@ public class ItemChargePlugin extends Plugin
 		{
 			removeInfobox(ItemWithSlot.EXPLORER_RING);
 		}
+
+		if (!this.showRingOfForgingCount)
+		{
+			removeInfobox(ItemWithSlot.RING_OF_FORGING);
+		}
 	}
 
 	void onChatMessage(ChatMessage event)
@@ -331,6 +346,7 @@ public class ItemChargePlugin extends Plugin
 		Matcher chronicleRechargeMatcher = CHRONICLE_ADD_CHARGE_PATTERN.matcher(message);
 		Matcher chronicleLastChargeMatcher = CHRONICLE_LAST_CHARGE_PATTERN.matcher(message);
 		Matcher chronicleOutOfChargesMatcher = CHRONICLE_OUT_OF_CHARGES_PATTERN.matcher(message);
+		Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
 
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
@@ -432,6 +448,44 @@ public class ItemChargePlugin extends Plugin
 				final int chronicleCharges = 0;
 				updateChronicleCharges(chronicleCharges);
 			}
+			else if (ringOfForgingCheckMatcher.find())
+			{
+				final String match = ringOfForgingCheckMatcher.group(1);
+
+				int charges = 1;
+				if (!match.equals("one"))
+				{
+					charges = Integer.parseInt(match);
+				}
+				updateRingOfForgingCharges(charges);
+			}
+			else if (message.equals(RING_OF_FORGING_USED_TEXT))
+			{
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+				// Determine if the player smelted with a Ring of Forging equipped.
+				if (equipment == null)
+				{
+					return;
+				}
+
+				Item[] items = equipment.getItems();
+				if (EquipmentInventorySlot.RING.getSlotIdx() < items.length
+					&& items[EquipmentInventorySlot.RING.getSlotIdx()].getId() == ItemID.RING_OF_FORGING)
+				{
+					int charges = Ints.constrainToRange(this.ringOfForging - 1, 0, MAX_RING_OF_FORGING_CHARGES);
+					updateRingOfForgingCharges(charges);
+				}
+			}
+			else if (message.equals(RING_OF_FORGING_BREAK_TEXT))
+			{
+				if (config.ringOfForgingNotification())
+				{
+					notifier.notify("Your ring of forging has melted.");
+				}
+
+				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);
+			}
 		}
 	}
 
@@ -473,6 +527,11 @@ public class ItemChargePlugin extends Plugin
 		if (this.showExplorerRingCharges)
 		{
 			updateJewelleryInfobox(ItemWithSlot.EXPLORER_RING, items);
+		}
+
+		if (this.showRingOfForgingCount)
+		{
+			updateJewelleryInfobox(ItemWithSlot.RING_OF_FORGING, items);
 		}
 	}
 
@@ -681,7 +740,7 @@ public class ItemChargePlugin extends Plugin
 			updateJewelleryInfobox(ItemWithSlot.BINDING_NECKLACE, itemContainer.getItems());
 		}
 	}
-	
+
 	private void updateXericCharges(int xericCharges)
 	{
 		config.xericTalisman(xericCharges);
@@ -699,7 +758,7 @@ public class ItemChargePlugin extends Plugin
 		config.chronicle(chronicleCharges);
 		this.chronicle = chronicleCharges;
 	}
-	
+
 	private void updateExplorerRingCharges(final int value)
 	{
 		// Note: Varbit counts upwards. We count down from the maximum charges.
@@ -808,6 +867,24 @@ public class ItemChargePlugin extends Plugin
 		final BufferedImage image = itemManager.getImage(id);
 		final ItemChargeInfobox infobox = new ItemChargeInfobox(this, image, name, charges, type, slot);
 		infoBoxManager.addInfoBox(infobox);
+	}
+
+	private void updateRingOfForgingCharges(final int value)
+	{
+		config.ringOfForging(value);
+		this.ringOfForging = value;
+
+		if (this.showInfoboxes && this.showRingOfForgingCount)
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.RING_OF_FORGING, itemContainer.getItems());
+		}
 	}
 
 	private void removeInfobox(final ItemWithSlot item)

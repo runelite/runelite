@@ -105,9 +105,9 @@ public interface ItemDefinition
 	/**
 	 * Sets the menu action index of the shift-click action.
 	 *
-	 * @param shiftclickActionIndex the new index of the shift-click action
+	 * @param shiftClickActionIndex the new index of the shift-click action
 	 */
-	void setShiftClickActionIndex(int shiftclickActionIndex);
+	void setShiftClickActionIndex(int shiftClickActionIndex);
 
 	/**
 	 * Resets the menu action index of the shift-click action to its
