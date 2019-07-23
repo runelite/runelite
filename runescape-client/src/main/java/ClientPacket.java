@@ -6,7 +6,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gx")
 @Implements("ClientPacket")
-public class ClientPacket implements class181 {
+public class ClientPacket implements ClientPacketMarker
+{
 	@ObfuscatedName("ng")
 	@ObfuscatedGetter(
 		intValue = -1373117165
