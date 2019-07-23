@@ -22,14 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stonedloottracker.data;
+package net.runelite.client.plugins.loottracker.localstorage;
 
-import lombok.Value;
+import java.util.ArrayList;
+import java.util.Collection;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Value
-public class UniqueItemPrepared
+@Data
+@AllArgsConstructor
+public class LTRecord
 {
-	private int linkedID;
-	private int price;
-	private UniqueItem uniqueItem;
+	private final int id;
+	private final String name;
+	private final int level;
+	private final int killCount;
+	final Collection<LTItemEntry> drops;
+
+	public void addDropEntry(LTItemEntry itemEntry)
+	{
+		drops.add(itemEntry);
+	}
+
+	public static Collection<LTItemEntry> consolidateLTItemEntries(final Collection<LTRecord> records)
+	{
+		final Collection<LTItemEntry> recordEntries = new ArrayList<>();
+		for (final LTRecord r : records)
+		{
+			recordEntries.addAll(r.getDrops());
+		}
+		return recordEntries;
+	}
 }

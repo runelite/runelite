@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stonedloottracker.ui;
+package net.runelite.client.plugins.stonedtracker.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,24 +30,21 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.stonedloottracker.data.LootTrackerItemEntry;
+import net.runelite.client.plugins.loottracker.localstorage.LTItemEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.StackFormatter;
 
-@Singleton
-@Getter(AccessLevel.PACKAGE)
+@Getter
 class ItemPanel extends JPanel
 {
 	private static final GridBagLayout LAYOUT = new GridBagLayout();
@@ -58,75 +55,81 @@ class ItemPanel extends JPanel
 
 	private static final Border CONTAINER_BORDER = BorderFactory.createMatteBorder(4, 15, 4, 15, PANEL_BACKGROUND_COLOR);
 
-	private LootTrackerItemEntry record;
+	private final LTItemEntry record;
+	private final long total;
 
-	ItemPanel(final LootTrackerItemEntry record, final ItemManager itemManager)
+	ItemPanel(final LTItemEntry record, final ItemManager itemManager)
 	{
+		setLayout(LAYOUT);
+		setBorder(PANEL_BORDER);
+		setBackground(PANEL_BACKGROUND_COLOR);
+		setPreferredSize(PANEL_SIZE);
+
 		this.record = record;
-		this.setLayout(LAYOUT);
-		this.setBorder(PANEL_BORDER);
-		this.setBackground(PANEL_BACKGROUND_COLOR);
-		this.setPreferredSize(PANEL_SIZE);
+		this.total = record.getPrice() * record.getQuantity();
 
 		// Item Image Icon
-		JLabel icon = new JLabel();
-		itemManager.getImage(record.getId(), record.getQuantity(), (record.isStackable() || record.getQuantity() > 1)).addTo(icon);
+		final JLabel icon = new JLabel();
+		final boolean stackable = record.getQuantity() > 1;
+		itemManager.getImage(record.getId(), record.getQuantity(), stackable).addTo(icon);
 		icon.setHorizontalAlignment(JLabel.CENTER);
 
 		// Container for Info
-		JPanel uiInfo = new JPanel(new GridLayout(2, 1));
+		final JPanel uiInfo = new JPanel(new GridLayout(2, 1));
 		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 		uiInfo.setBackground(PANEL_BACKGROUND_COLOR);
 
-		JShadowedLabel labelName = new JShadowedLabel(this.record.getName());
-		labelName.setForeground(Color.WHITE);
-		colorLabel(labelName, this.record.getPrice());
+		final JShadowedLabel labelName = new JShadowedLabel(this.record.getName());
+		labelName.setFont(FontManager.getRunescapeSmallFont());
+		labelName.setForeground(getRSValueColor(this.record.getPrice()));
 		labelName.setVerticalAlignment(SwingUtilities.BOTTOM);
 
-		String gpLabel = StackFormatter.quantityToStackSize(this.record.getTotal()) + " gp";
-
-		if (this.record.getHaTotal() > 0 && this.record.getHaPrice() > 1)
-		{
-			gpLabel += " (HA: " + StackFormatter.quantityToStackSize(this.record.getHaTotal()) + " gp)";
-		}
-
-		JShadowedLabel labelValue = new JShadowedLabel(gpLabel);
-		labelValue.setFont(FontManager.getSmallFont(getFont()));
-		colorLabel(labelValue, this.record.getTotal());
+		final JShadowedLabel labelValue = new JShadowedLabel(StackFormatter.quantityToStackSize(total) + " gp");
+		labelValue.setFont(FontManager.getRunescapeSmallFont());
+		labelValue.setForeground(getRSValueColor(total));
 		labelValue.setVerticalAlignment(SwingUtilities.TOP);
 
 		uiInfo.add(labelName);
 		uiInfo.add(labelValue);
 
 		// Create and append elements to container panel
-		JPanel panel = createPanel();
+		final JPanel panel = createPanel();
 		panel.add(icon, BorderLayout.LINE_START);
 		panel.add(uiInfo, BorderLayout.CENTER);
 
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
 		c.gridy = 0;
 
 		this.add(panel, c);
-		this.setToolTipText(UniqueItemPanel.tooltipText(this.record.getPrice(), this.record.getHaPrice(), this.record.getQuantity(), this.record.getName()));
+		this.setToolTipText(buildToolTip(this.record));
 	}
 
-	static JPanel createPanel()
+	private static String buildToolTip(final LTItemEntry record)
 	{
-		JPanel panel = new JPanel();
+		final String name = record.getName();
+		final int quantity = record.getQuantity();
+		final long price = record.getPrice();
+
+		return "<html>" + name + " x " + StackFormatter.formatNumber(quantity)
+			+ "<br/>Price: " + StackFormatter.quantityToStackSize(price)
+			+ "<br/>Total: " + StackFormatter.quantityToStackSize(quantity * price) + "</html>";
+	}
+
+	private static Color getRSValueColor(long val)
+	{
+		return (val >= 10000000) ? Color.GREEN : (val >= 100000) ? Color.WHITE : Color.YELLOW;
+	}
+
+	private JPanel createPanel()
+	{
+		final JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		panel.setBorder(CONTAINER_BORDER);
 		panel.setBackground(PANEL_BACKGROUND_COLOR);
 
 		return panel;
-	}
-
-	// Color label to match RuneScape coloring
-	private void colorLabel(JLabel label, long val)
-	{
-		Color labelColor = (val >= 10000000) ? Color.GREEN : (val >= 100000) ? Color.WHITE : Color.YELLOW;
-		label.setForeground(labelColor);
 	}
 }

@@ -22,47 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stonedloottracker.data;
+package net.runelite.client.plugins.stonedtracker.data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import lombok.AccessLevel;
+import javax.annotation.Nullable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
-@Getter(AccessLevel.PUBLIC)
+@Getter
+@AllArgsConstructor
 public enum BossTab
 {
 	// Chest Rewards
 	BARROWS("Barrows", ItemID.BARROWS_TELEPORT, "Other"),
-	RAIDS("Chambers of Xeric", ItemID.OLMLET, "Other"),
-	RAIDS_2("Theatre of Blood", ItemID.LIL_ZIK, "Other"),
+	CHAMBERS_OF_XERIC("Chambers of Xeric", ItemID.OLMLET, "Other"),
+	THEATRE_OF_BLOOD("Theatre of Blood", ItemID.LIL_ZIK, "Other"),
 
 	// Loot received on NPC death
 	ZULRAH("Zulrah", ItemID.PET_SNAKELING, "Other"),
 	VORKATH("Vorkath", ItemID.VORKI, "Other"),
 
 	// God wars dungeon
-	ARMADYL("Kree'arra", ItemID.PET_KREEARRA , "God Wars Dungeon"),
-	BANDOS("General Graardor", ItemID.PET_GENERAL_GRAARDOR , "God Wars Dungeon"),
-	SARADOMIN("Commander Zilyana", ItemID.PET_ZILYANA , "God Wars Dungeon"),
-	ZAMMY("K'ril Tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH , "God Wars Dungeon"),
+	KREEARRA("Kree'arra", ItemID.PET_KREEARRA, "God Wars Dungeon"),
+	GENERAL_GRAARDOR("General Graardor", ItemID.PET_GENERAL_GRAARDOR, "God Wars Dungeon"),
+	COMMANDER_ZILYANA("Commander Zilyana", ItemID.PET_ZILYANA, "God Wars Dungeon"),
+	KRIL_TSUTSAROTH("K'ril Tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH, "God Wars Dungeon"),
 
 	// Wildy Bosses
-	VETION("Vet'ion", ItemID.VETION_JR , "Wilderness"),
-	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING , "Wilderness"),
-	CALLISTO("Callisto", ItemID.CALLISTO_CUB , "Wilderness"),
-	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL , "Wilderness"),
+	VETION("Vet'ion Reborn", ItemID.VETION_JR, "Wilderness"),
+	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING, "Wilderness"),
+	CALLISTO("Callisto", ItemID.CALLISTO_CUB, "Wilderness"),
+	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL, "Wilderness"),
 	// Wildy Demi-Bosses
 	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING, "Wilderness"),
-	CHAOS_FANATIC("Chaos Fanatic", ItemID.ANCIENT_STAFF , "Wilderness"),
-	CRAZY_ARCHAEOLOGIST("Crazy Archaeologist", ItemID.FEDORA , "Wilderness"),
+	CHAOS_FANATIC("Chaos Fanatic", ItemID.ANCIENT_STAFF, "Wilderness"),
+	CRAZY_ARCHAEOLOGIST("Crazy Archaeologist", ItemID.FEDORA, "Wilderness"),
 	// Wildy Other
-	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON , "Wilderness"),
+	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON, "Wilderness"),
 
 	// Slayer Bosses
 	KALPHITE_QUEEN("Kalphite Queen", ItemID.KALPHITE_PRINCESS, "Other"),
@@ -71,7 +74,8 @@ public enum BossTab
 	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN, "Slayer"),
 	KRAKEN("Kraken", ItemID.PET_KRAKEN, "Slayer"),
 	CERBERUS("Cerberus", ItemID.HELLPUPPY, "Slayer"),
-	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL, "Slayer"),
+	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear smoke devil", ItemID.PET_SMOKE_DEVIL, "Slayer"),
+	ALCHEMICAL_HYDRA("Alchemical Hydra", ItemID.IKKLE_HYDRA, "Slayer"),
 
 	// Other Bosses
 	GIANT_MOLE("Giant Mole", ItemID.BABY_MOLE, "Other"),
@@ -87,65 +91,43 @@ public enum BossTab
 	CLUE_SCROLL_MEDIUM("Clue Scroll (Medium)", ItemID.CLUE_SCROLL_MEDIUM, "Clue Scrolls"),
 	CLUE_SCROLL_HARD("Clue Scroll (Hard)", ItemID.CLUE_SCROLL_HARD, "Clue Scrolls"),
 	CLUE_SCROLL_ELITE("Clue Scroll (Elite)", ItemID.CLUE_SCROLL_ELITE, "Clue Scrolls"),
-	CLUE_SCROLL_MASTER("Clue Scroll (Master)", ItemID.CLUE_SCROLL_MASTER, "Clue Scrolls"),
+	CLUE_SCROLL_MASTER("Clue Scroll (Master)", ItemID.CLUE_SCROLL_MASTER, "Clue Scrolls");
 
-	// Hunter
-	HERBIBOAR("Herbiboar", ItemID.HERBI, "Hunter");
+	private static final Map<String, BossTab> NAME_MAP;
+	private static final Multimap<String, BossTab> CATEGORY_MAP;
 
-	BossTab(String name, int iconItem, String category)
+	static
 	{
-		this.name = name;
-		this.itemID = iconItem;
-		this.category = category;
+		final ImmutableMap.Builder<String, BossTab> byName = ImmutableMap.builder();
+		final ImmutableMultimap.Builder<String, BossTab> categoryMap = ImmutableMultimap.builder();
+
+		for (BossTab tab : values())
+		{
+			byName.put(tab.getName().toUpperCase(), tab);
+			categoryMap.put(tab.getCategory(), tab);
+		}
+
+		NAME_MAP = byName.build();
+		CATEGORY_MAP = categoryMap.build();
 	}
 
 	private final String name;
 	private final int itemID;
 	private final String category;
 
-	// By Boss Name
-	private static final Map<String, BossTab> byName = buildMap();
-	public static BossTab getByName(String name)
+	@Nullable
+	public static BossTab getByName(final String name)
 	{
-		return byName.get(name.toUpperCase());
-	}
-	private static Map<String, BossTab> buildMap()
-	{
-		Map<String, BossTab> byName = new HashMap<>();
-		for (BossTab tab : values())
-		{
-			byName.put(tab.getName().toUpperCase(), tab);
-		}
-
-		return byName;
+		return NAME_MAP.get(name.toUpperCase());
 	}
 
-	// By Category Name
-	private static final Map<String, List<BossTab>> byCategoryName = buildCategoryMap();
-	public static List<BossTab> getByCategoryName(String name)
+	public static Collection<BossTab> getByCategoryName(final String name)
 	{
-		return byCategoryName.get(name.toUpperCase());
-	}
-	private static Map<String, List<BossTab>> buildCategoryMap()
-	{
-		Map<String, List<BossTab>> map = new HashMap<>();
-		for (BossTab tab : values())
-		{
-			map.computeIfAbsent(tab.getCategory().toUpperCase(), e -> new ArrayList<>()).add(tab);
-		}
-
-		return map;
+		return CATEGORY_MAP.get(name);
 	}
 
-	// All Categories
-	public static final Set<String> categories = getCategories();
-	private static Set<String> getCategories()
+	public static Set<String> getCategories()
 	{
-		Set<String> s = new TreeSet<>();
-		for (BossTab tab : values())
-		{
-			s.add(tab.getCategory());
-		}
-		return s;
+		return new TreeSet<>(CATEGORY_MAP.keySet());
 	}
 }

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stonedloottracker.data;
+package net.runelite.client.plugins.loottracker.localstorage;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -41,8 +41,8 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.client.RuneLite.RUNELITE_DIR;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.plugins.stonedloottracker.data.events.LootTrackerNameChange;
-import net.runelite.client.plugins.stonedloottracker.data.events.LootTrackerRecordStored;
+import net.runelite.client.plugins.loottracker.localstorage.events.LTNameChange;
+import net.runelite.client.plugins.loottracker.localstorage.events.LTRecordStored;
 import net.runelite.http.api.RuneLiteAPI;
 
 @Slf4j
@@ -52,38 +52,45 @@ public class LootRecordWriter
 	private static final String FILE_EXTENSION = ".log";
 	private static final File LOOT_RECORD_DIR = new File(RUNELITE_DIR, "loots");
 
+	private final EventBus bus;
+
 	// Data is stored in a folder with the players in-game username
 	private File playerFolder = LOOT_RECORD_DIR;
-
-	private final EventBus bus;
+	private String name;
 
 	@Inject
 	public LootRecordWriter(EventBus bus)
 	{
 		this.bus = bus;
-		playerFolder.mkdir();
+		LOOT_RECORD_DIR.mkdir();
 	}
 
-	private static String npcNameToFileName(String npcName)
+	private static String npcNameToFileName(final String npcName)
 	{
 		return npcName.toLowerCase().trim() + FILE_EXTENSION;
 	}
 
-	public void setPlayerUsername(String username)
+	public void setPlayerUsername(final String username)
 	{
+		if (username.equalsIgnoreCase(name))
+		{
+			return;
+		}
+
 		playerFolder = new File(LOOT_RECORD_DIR, username);
 		playerFolder.mkdir();
-		bus.post(LootTrackerNameChange.class, new LootTrackerNameChange());
+		name = username;
+		bus.post(LTNameChange.class, new LTNameChange());
 	}
 
 	public Set<String> getKnownFileNames()
 	{
-		Set<String> fileNames = new HashSet<>();
+		final Set<String> fileNames = new HashSet<>();
 
-		File[] files = playerFolder.listFiles((dir, name) -> name.endsWith(FILE_EXTENSION));
+		final File[] files = playerFolder.listFiles((dir, name) -> name.endsWith(FILE_EXTENSION));
 		if (files != null)
 		{
-			for (File f : files)
+			for (final File f : files)
 			{
 				fileNames.add(f.getName().replace(FILE_EXTENSION, ""));
 			}
@@ -92,25 +99,29 @@ public class LootRecordWriter
 		return fileNames;
 	}
 
-	public synchronized Collection<LootRecordCustom> loadLootTrackerRecords(String npcName)
+	public synchronized Collection<LTRecord> loadLootTrackerRecords(String npcName)
 	{
-		String fileName = npcNameToFileName(npcName);
-		File file = new File(playerFolder, fileName);
-		Collection<LootRecordCustom> data = new ArrayList<>();
+		final String fileName = npcNameToFileName(npcName);
+		final File file = new File(playerFolder, fileName);
+		final Collection<LTRecord> data = new ArrayList<>();
 
-		try (BufferedReader br = new BufferedReader(new FileReader(file)))
+		StringBuilder sb = new StringBuilder();
+
+		try (final BufferedReader br = new BufferedReader(new FileReader(file)))
 		{
+
+			// read line by line
 			String line;
 			while ((line = br.readLine()) != null)
 			{
-				// Skip empty line at end of file
-				if (line.length() > 0)
-				{
-					LootRecordCustom r = RuneLiteAPI.GSON.fromJson(line, LootRecordCustom.class);
-					data.add(r);
-				}
+				sb.append(line).append("\n");
 			}
 
+			if (sb.length() > 0)
+			{
+				final LTRecord r = RuneLiteAPI.GSON.fromJson(sb.toString(), LTRecord.class);
+				data.add(r);
+			}
 		}
 		catch (FileNotFoundException e)
 		{
@@ -124,135 +135,85 @@ public class LootRecordWriter
 		return data;
 	}
 
-	public synchronized void addLootTrackerRecord(LootRecordCustom rec)
+	public synchronized boolean addLootTrackerRecord(LTRecord rec)
 	{
 		// Grab file
-		String fileName = npcNameToFileName(rec.getName());
-		File lootFile = new File(playerFolder, fileName);
+		final String fileName = npcNameToFileName(rec.getName());
+		final File lootFile = new File(playerFolder, fileName);
 
 		// Convert entry to JSON
-		String dataAsString = RuneLiteAPI.GSON.toJson(rec);
+		final String dataAsString = RuneLiteAPI.GSON.toJson(rec);
 
 		// Open File in append mode and write new data
 		try
 		{
-			BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), true));
+			final BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), true));
 			file.append(dataAsString);
 			file.newLine();
 			file.close();
-			bus.post(LootTrackerRecordStored.class, new LootTrackerRecordStored(rec));
+			bus.post(LTRecordStored.class, new LTRecordStored(rec));
+			return true;
 		}
 		catch (IOException ioe)
 		{
 			log.warn("Error writing loot data to file {}: {}", fileName, ioe.getMessage());
+			return false;
 		}
 	}
 
 	// Mostly used to adjust previous loot entries such as adding pet drops/abyssal sire drops
-	public synchronized void writeLootTrackerFile(String npcName, Collection<LootRecordCustom> loots)
+	public synchronized boolean writeLootTrackerFile(String npcName, Collection<LTRecord> loots)
 	{
-		String fileName = npcNameToFileName(npcName);
-		File lootFile = new File(playerFolder, fileName);
+		final String fileName = npcNameToFileName(npcName);
+		final File lootFile = new File(playerFolder, fileName);
 
 		try
 		{
-			BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), false));
-			for (LootRecordCustom rec : loots)
+			final BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), false));
+			for (final LTRecord rec : loots)
 			{
 				// Convert entry to JSON
-				String dataAsString = RuneLiteAPI.GSON.toJson(rec);
+				final String dataAsString = RuneLiteAPI.GSON.toJson(rec);
 				file.append(dataAsString);
 				file.newLine();
 			}
 			file.close();
 
+			return true;
 		}
 		catch (IOException ioe)
 		{
 			log.warn("Error rewriting loot data to file {}: {}", fileName, ioe.getMessage());
+			return false;
 		}
 	}
 
-	public synchronized void deleteLootTrackerRecords(String npcName)
+	public synchronized boolean deleteLootTrackerRecords(String npcName)
 	{
-		String fileName = npcNameToFileName(npcName);
-
-		File lootFile = new File(playerFolder, fileName);
+		final String fileName = npcNameToFileName(npcName);
+		final File lootFile = new File(playerFolder, fileName);
 
 		if (lootFile.delete())
 		{
 			log.debug("Deleted loot file: {}", fileName);
+			return true;
 		}
 		else
 		{
 			log.debug("Couldn't delete file: {}", fileName);
+			return false;
 		}
 	}
 
-	public Collection<LootRecordCustom> loadAllLootTrackerRecords()
+	public Collection<LTRecord> loadAllLootTrackerRecords()
 	{
-		List<LootRecordCustom> recs = new ArrayList<>();
+		final List<LTRecord> recs = new ArrayList<>();
 
-		for (String n : getKnownFileNames())
+		for (final String n : getKnownFileNames())
 		{
 			recs.addAll(loadLootTrackerRecords(n));
 		}
 
 		return recs;
-	}
-
-	public void convertFileFormats()
-	{
-		for (String f : getKnownFileNames())
-		{
-			updateFileFormat(npcNameToFileName(f));
-		}
-		log.info("Done converting");
-	}
-
-	private void updateFileFormat(String fileName)
-	{
-		File lootFile = new File(playerFolder, fileName);
-		Collection<LootRecordCustom> data = new ArrayList<>();
-
-		try (BufferedReader br = new BufferedReader(new FileReader(lootFile)))
-		{
-			String line;
-			while ((line = br.readLine()) != null)
-			{
-				// Skip empty line at end of file
-				if (line.length() > 0)
-				{
-					LootRecordCustom r = RuneLiteAPI.GSON.fromJson(line, LootRecord.class).toNewFormat();
-					data.add(r);
-				}
-			}
-
-		}
-		catch (FileNotFoundException e)
-		{
-			log.info("File not found: {}", fileName);
-		}
-		catch (IOException e)
-		{
-			log.warn("IOException for file {}: {}", fileName, e.getMessage());
-		}
-
-		try
-		{
-			BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), false));
-			for (LootRecordCustom rec : data)
-			{
-				// Convert entry to JSON
-				String dataAsString = RuneLiteAPI.GSON.toJson(rec);
-				file.append(dataAsString);
-				file.newLine();
-			}
-			file.close();
-		}
-		catch (IOException ioe)
-		{
-			log.warn("Error rewriting loot data to file {}: {}", fileName, ioe.getMessage());
-		}
 	}
 }

@@ -22,8 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stonedloottracker.ui;
+package net.runelite.client.plugins.stonedtracker.ui;
 
+import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -33,37 +34,49 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.inject.Singleton;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.stonedloottracker.data.BossTab;
+import net.runelite.client.plugins.stonedtracker.data.BossTab;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
+import org.apache.commons.text.similarity.JaroWinklerDistance;
 
-@Singleton
 class SelectionPanel extends JPanel
 {
+	private final static Color BACKGROUND_COLOR = ColorScheme.DARK_GRAY_COLOR;
+	private final static Color BUTTON_COLOR = ColorScheme.DARKER_GRAY_COLOR;
+	private final static Color BUTTON_HOVER_COLOR = ColorScheme.DARKER_GRAY_HOVER_COLOR;
+	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
+
 	private final Set<String> names;
 	private final LootTrackerPanel parent;
 	private final ItemManager itemManager;
 
-	private final static Color BACKGROUND_COLOR = ColorScheme.DARK_GRAY_COLOR;
-	private final static Color BUTTON_COLOR = ColorScheme.DARKER_GRAY_COLOR;
-	private final static Color BUTTON_HOVER_COLOR = ColorScheme.DARKER_GRAY_HOVER_COLOR;
+	private final IconTextField searchBar = new IconTextField();
+	private final JPanel namePanel = new JPanel();
 
 	private final boolean configToggle;
 
-	SelectionPanel(final boolean configToggle, final Set<String> names, final LootTrackerPanel parent, final ItemManager itemManager)
+	SelectionPanel(
+		final boolean configToggle,
+		final Set<String> names,
+		final LootTrackerPanel parent,
+		final ItemManager itemManager)
 	{
 		this.names = names == null ? new TreeSet<>() : names;
 		this.parent = parent;
@@ -73,46 +86,121 @@ class SelectionPanel extends JPanel
 		this.setLayout(new GridBagLayout());
 		this.setBackground(BACKGROUND_COLOR);
 
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				onSearchBarChanged();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				onSearchBarChanged();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				onSearchBarChanged();
+			}
+		});
+
+		namePanel.setLayout(new GridBagLayout());
+
 		createPanel();
+	}
+
+	private static boolean matchesSearchTerm(final String name, final String[] terms)
+	{
+		for (final String term : terms)
+		{
+			if (Arrays.stream(name.toLowerCase().split(" ")).noneMatch((nameTerm ->
+				nameTerm.contains(term) || DISTANCE.apply(nameTerm, term) > 0.9)))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private void createPanel()
 	{
-		GridBagConstraints c = constrains();
+		final GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.gridy = 0;
 		c.insets = new Insets(5, 0, 0, 0);
 
 		// Add the bosses tabs, by category, to tabGroup
 		if (configToggle)
 		{
-			Set<String> categories = BossTab.categories;
-			JPanel container = new JPanel(new GridBagLayout());
-			container.setBorder(new EmptyBorder(0, 0, 10, 0));
-			int oldc = c.gridy;
-			c.gridy = 0;
-			for (String categoryName : categories)
-			{
-				container.add(createTabCategory(categoryName), c);
-				c.gridy++;
-			}
-			c.gridy = oldc;
-			this.add(container, c);
+			this.add(createBossTabPanel(), c);
 			c.gridy++;
 		}
 
-		// Add all other names
-		for (String name : this.names)
+		this.add(searchBar, c);
+		c.gridy++;
+
+		addNamesToPanel(this.names);
+		this.add(namePanel, c);
+	}
+
+	private JPanel createBossTabPanel()
+	{
+		final GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(5, 0, 0, 0);
+
+		final JPanel container = new JPanel(new GridBagLayout());
+		container.setBorder(new EmptyBorder(0, 0, 10, 0));
+
+		for (final String categoryName : BossTab.getCategories())
 		{
+			container.add(createTabCategory(categoryName), c);
+			c.gridy++;
+		}
+
+		return container;
+	}
+
+	private void addNamesToPanel(final Collection<String> names)
+	{
+		namePanel.removeAll();
+
+		final GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(5, 0, 0, 0);
+
+		for (final String name : names)
+		{
+			// Ignore boss tabs based on config
 			if (!configToggle || BossTab.getByName(name) == null)
 			{
-				this.add(createNamePanel(name), c);
+				namePanel.add(createNamePanel(name), c);
 				c.gridy++;
 			}
 		}
+
+		namePanel.revalidate();
 	}
 
-	private JPanel createNamePanel(String name)
+	private JPanel createNamePanel(final String name)
 	{
-		JPanel p = new JPanel();
+		final JPanel p = new JPanel();
 		p.add(new JLabel(name));
 		p.setBackground(BUTTON_COLOR);
 		p.addMouseListener(new MouseAdapter()
@@ -132,47 +220,40 @@ class SelectionPanel extends JPanel
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				SwingUtilities.invokeLater(() -> parent.showLootView(name));
+				parent.showLootView(name);
 			}
 		});
 
 		return p;
 	}
 
-	static GridBagConstraints constrains()
+	// Creates all tabs for a specific category
+	private JPanel createTabCategory(final String categoryName)
 	{
-		GridBagConstraints c = new GridBagConstraints();
+		final JPanel container = new JPanel();
+		container.setLayout(new GridBagLayout());
+		container.setBorder(new EmptyBorder(0, 5, 0, 5));
+
+		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 1;
 		c.gridx = 0;
 		c.gridy = 0;
 
-		return c;
-	}
-
-	// Creates all tabs for a specific category
-	private JPanel createTabCategory(String categoryName)
-	{
-		JPanel container = new JPanel();
-		container.setLayout(new GridBagLayout());
-		container.setBorder(new EmptyBorder(0, 5, 0, 5));
-
-		GridBagConstraints c = constrains();
-
-		MaterialTabGroup thisTabGroup = new MaterialTabGroup();
+		final MaterialTabGroup thisTabGroup = new MaterialTabGroup();
 		thisTabGroup.setLayout(new GridLayout(0, 4, 7, 7));
 		thisTabGroup.setBorder(new EmptyBorder(4, 0, 0, 0));
 
-		JLabel name = new JLabel(categoryName);
+		final JLabel name = new JLabel(categoryName);
 		name.setBorder(new EmptyBorder(8, 0, 0, 0));
 		name.setForeground(Color.WHITE);
 		name.setVerticalAlignment(SwingConstants.CENTER);
 
-		List<BossTab> categoryTabs = BossTab.getByCategoryName(categoryName);
-		for (BossTab tab : categoryTabs)
+		final Collection<BossTab> categoryTabs = BossTab.getByCategoryName(categoryName);
+		for (final BossTab tab : categoryTabs)
 		{
 			// Create tab (with hover effects/text)
-			MaterialTab materialTab = new MaterialTab("", thisTabGroup, null);
+			final MaterialTab materialTab = new MaterialTab("", thisTabGroup, null);
 			materialTab.setName(tab.getName());
 			materialTab.setToolTipText(tab.getName());
 			//materialTab.setSelectedBorder(new EmptyBorder(0, 0, 0, 0));
@@ -189,17 +270,17 @@ class SelectionPanel extends JPanel
 				{
 					materialTab.setBackground(BUTTON_COLOR);
 				}
+			});
 
-				@Override
-				public void mouseClicked(MouseEvent e)
-				{
-					SwingUtilities.invokeLater(() -> parent.showLootView(tab.getName()));
-				}
+			materialTab.setOnSelectEvent(() ->
+			{
+				parent.showLootView(tab.getName());
+				return true;
 			});
 
 			// Attach Icon to the Tab
-			AsyncBufferedImage image = itemManager.getImage(tab.getItemID());
-			Runnable resize = () ->
+			final AsyncBufferedImage image = itemManager.getImage(tab.getItemID());
+			final Runnable resize = () ->
 			{
 				materialTab.setIcon(new ImageIcon(image.getScaledInstance(35, 35, Image.SCALE_SMOOTH)));
 				materialTab.setOpaque(true);
@@ -219,5 +300,24 @@ class SelectionPanel extends JPanel
 		container.add(thisTabGroup, c);
 
 		return container;
+	}
+
+	private void onSearchBarChanged()
+	{
+		final String text = searchBar.getText();
+		if (Strings.isNullOrEmpty(text))
+		{
+			addNamesToPanel(this.names);
+		}
+		else
+		{
+			addNamesToPanel(filterNames(this.names, text));
+		}
+	}
+
+	private Collection<String> filterNames(final Collection<String> names, final String searchText)
+	{
+		final String[] searchTerms = searchText.toLowerCase().split(" ");
+		return names.stream().filter(name -> matchesSearchTerm(name, searchTerms)).collect(Collectors.toList());
 	}
 }

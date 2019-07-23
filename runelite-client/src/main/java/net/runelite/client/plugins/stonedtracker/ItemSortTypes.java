@@ -1,18 +1,16 @@
-package net.runelite.client.plugins.stonedloottracker;
+package net.runelite.client.plugins.stonedtracker;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter(AccessLevel.PACKAGE)
+@Getter
 @RequiredArgsConstructor
 public enum ItemSortTypes
 {
 	ALPHABETICAL("Alphabetical"),
 	ITEM_ID("Item ID"),
 	VALUE("Value"),
-	PRICE("Price"),
-	HAPRICE("HA Price");
+	PRICE("Price");
 
 	private final String name;
 

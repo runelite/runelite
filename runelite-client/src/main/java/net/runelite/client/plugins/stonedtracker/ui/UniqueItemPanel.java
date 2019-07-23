@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stonedloottracker.ui;
+package net.runelite.client.plugins.stonedtracker.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,29 +31,23 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
-import java.util.Map;
-import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.stonedloottracker.data.UniqueItemPrepared;
+import net.runelite.client.plugins.stonedtracker.data.UniqueItem;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
-@Singleton
-@Getter(AccessLevel.PACKAGE)
+@Getter
 class UniqueItemPanel extends JPanel
 {
-	private ItemManager itemManager;
-
 	private final static float alphaMissing = 0.35f;
 	private final static float alphaHas = 1.0f;
 
@@ -61,11 +55,9 @@ class UniqueItemPanel extends JPanel
 	private static final Border panelBorder = new EmptyBorder(3, 0, 3, 0);
 	private static final Color panelBackgroundColor = ColorScheme.DARK_GRAY_COLOR;
 
-	UniqueItemPanel(final Collection<UniqueItemPrepared> items, final Map<UniqueItemPrepared, Integer> uniqueMap, final ItemManager itemManager)
+	UniqueItemPanel(final Collection<UniqueItem> items, final ItemManager itemManager)
 	{
-		this.itemManager = itemManager;
-
-		JPanel panel = new JPanel();
+		final JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		panel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		panel.setBorder(new EmptyBorder(3, 0, 3, 0));
@@ -83,68 +75,52 @@ class UniqueItemPanel extends JPanel
 		c.ipady = 5;
 
 		// Add each Unique Item icon to the panel
-		for (UniqueItemPrepared l : items)
+		for (final UniqueItem l : items)
 		{
-			final int id = l.getUniqueItem().getItemID();
-			final int quantity = uniqueMap.getOrDefault(l, 0);
+			final int quantity = l.getQty();
 			final float alpha = (quantity > 0 ? alphaHas : alphaMissing);
-			AsyncBufferedImage image = itemManager.getImage(l.getUniqueItem().getItemID(), quantity, quantity > 1);
-			BufferedImage opaque = ImageUtil.alphaOffset(image, alpha);
+			final AsyncBufferedImage image = itemManager.getImage(l.getItemID(), quantity, quantity > 1);
+			final BufferedImage opaque = ImageUtil.alphaOffset(image, alpha);
 
-			final long price = itemManager.getItemPrice(id);
-			final long haPrice = itemManager.getAlchValue(id);
-
-			// Attach Image to Label and append label to Panel
-			ImageIcon o = new ImageIcon(opaque);
-			JLabel icon = new JLabel(o);
+			final JLabel icon = new JLabel();
+			icon.setToolTipText(buildToolTip(l, quantity));
+			icon.setIcon(new ImageIcon(opaque));
+			icon.setVerticalAlignment(SwingConstants.CENTER);
+			icon.setHorizontalAlignment(SwingConstants.CENTER);
 			panel.add(icon, c);
 			c.gridx++;
 
 			// in case the image is blank we will refresh it upon load
 			// Should only trigger if image hasn't been added
-			image.onChanged(() -> SwingUtilities.invokeLater(() -> refreshImage(icon, image, alpha)));
-
-			icon.setToolTipText(tooltipText(price, haPrice, quantity, l.getUniqueItem().getName()));
+			image.onChanged(() ->
+			{
+				icon.setIcon(new ImageIcon(ImageUtil.alphaOffset(image, alpha)));
+				icon.revalidate();
+				icon.repaint();
+			});
 		}
 
 		this.add(panel, BorderLayout.NORTH);
 	}
 
-	static String tooltipText(long price, long haPrice, int quantity, String name)
+	private static String buildToolTip(final UniqueItem item, final int qty)
 	{
-		String tooltipText = "<html>" + name;
-		if (quantity > 1)
+		String s = "<html>" + item.getName();
+		if (qty > 0)
 		{
-			tooltipText += "<br/>Price: " + StackFormatter.quantityToStackSize(price);
-
-			if (haPrice > 0)
+			s += " x " + StackFormatter.formatNumber(qty);
+		}
+		if (item.getPrice() > 0)
+		{
+			s += "<br/>Price: " + StackFormatter.quantityToStackSize(item.getPrice());
+			// Check for qty here as well as we should only show Total if the item has a value as well
+			if (qty > 0)
 			{
-				tooltipText += " (HA: " + StackFormatter.quantityToStackSize(haPrice) + ")";
+				s += "<br/>Total: " + StackFormatter.quantityToStackSize(qty * item.getPrice()) + "</html";
 			}
 		}
+		s += "</html>";
 
-		if (quantity > 0)
-		{
-			tooltipText += "<br/>Total: " + StackFormatter.quantityToStackSize(quantity * price);
-
-			if (haPrice > 0)
-			{
-				tooltipText += " (HA: " + StackFormatter.quantityToStackSize(quantity * haPrice) + ")";
-			}
-		}
-		tooltipText += "</html";
-
-		return tooltipText;
-	}
-
-	// Used to refresh the item icon if the image was still loading when attempting to create it earlier
-	private void refreshImage(JLabel label, AsyncBufferedImage image, float finalAlpha)
-	{
-		BufferedImage opaque = ImageUtil.alphaOffset(image, finalAlpha);
-		ImageIcon o = new ImageIcon(opaque);
-
-		label.setIcon(o);
-		label.revalidate();
-		label.repaint();
+		return s;
 	}
 }
