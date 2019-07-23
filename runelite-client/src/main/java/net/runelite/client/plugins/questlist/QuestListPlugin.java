@@ -71,8 +71,6 @@ public class QuestListPlugin extends Plugin
 	private static final String MENU_OPEN = "Open";
 	private static final String MENU_CLOSE = "Close";
 
-	private static final String MENU_TOGGLE = "Toggle";
-
 	private static final String MENU_SEARCH = "Search";
 	private static final String MENU_SHOW = "Show";
 
@@ -88,6 +86,7 @@ public class QuestListPlugin extends Plugin
 	private ChatboxTextInput searchInput;
 	private Widget questSearchButton;
 	private Widget questHideButton;
+	private Widget[] toggles = new Widget[5];
 
 	private EnumMap<QuestContainer, Collection<QuestWidget>> questSet;
 
@@ -129,6 +128,34 @@ public class QuestListPlugin extends Plugin
 		addQuestButtons();
 	}
 
+	/**
+	 *
+	 * @param questState The QuestState value the toggle button is for.
+	 * @return A new Widget that will switch the current filter to the QuestState param
+	 */
+
+	private Widget addToggleButton(QuestState questState)
+	{
+		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
+
+
+		// Note that these buttons are placed where the questHideButton is later placed.
+		// This means that they will be underneath the questHideButton, allowing them to form a right click menu.
+		Widget toggleButton = header.createChild(-1, WidgetType.GRAPHIC);
+
+		toggleButton.setOriginalWidth(13);
+		toggleButton.setOriginalHeight(13);
+		toggleButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
+		toggleButton.setOriginalX(24);
+		toggleButton.setOriginalY(2);
+		toggleButton.setHasListener(true);
+		toggleButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden(questState));
+		toggleButton.setAction(1, MENU_SHOW);
+		toggleButton.setName(questState.getName());
+		toggleButton.revalidate();
+		return toggleButton;
+	}
+
 	private void addQuestButtons()
 	{
 		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
@@ -149,6 +176,12 @@ public class QuestListPlugin extends Plugin
 			questSearchButton.setName(MENU_SEARCH);
 			questSearchButton.revalidate();
 
+			// Create all the toggle buttons to form a menu
+			// By default, the ALL filter is selected. It needs to be hidden from the menu so it doesn't appear twice.
+			for (int i = QuestState.values().length - 1; i >= 0; i--)
+				toggles[i] = addToggleButton(QuestState.values()[i]);
+			toggles[toggles.length - 1].setHidden(true);
+
 			questHideButton = header.createChild(-1, WidgetType.GRAPHIC);
 			redrawHideButton();
 
@@ -158,8 +191,8 @@ public class QuestListPlugin extends Plugin
 			questHideButton.setOriginalX(24);
 			questHideButton.setOriginalY(2);
 			questHideButton.setHasListener(true);
-			questHideButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden());
-			questHideButton.setAction(1, MENU_TOGGLE);
+			questHideButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden(null));
+			questHideButton.setAction(1, MENU_SHOW);
 			questHideButton.revalidate();
 
 			questSet = new EnumMap<>(QuestContainer.class);
@@ -189,11 +222,36 @@ public class QuestListPlugin extends Plugin
 		}
 	}
 
-	private void toggleHidden()
+	/**
+	 *
+	 * @param questState The QuestState of the toggle button pressed. If the questHideButton is clicked,
+	 *                   questState is null.
+	 */
+
+	private void toggleHidden(QuestState questState)
 	{
+		Widget[] header = client.getWidget(WidgetInfo.QUESTLIST_BOX).getChildren();
+
 		QuestState[] questStates = QuestState.values();
-		int nextState = (currentFilterState.ordinal() + 1) % questStates.length;
+		int nextState;
+
+		// If questState is null, just move on to the next filter state in the list.
+		// Otherwise, jump to the filter corresponding to the given questState.
+		if (questState == null)
+			nextState = (currentFilterState.ordinal() + 1) % questStates.length;
+		else
+			nextState = questState.ordinal();
 		currentFilterState = questStates[nextState];
+
+		// Hide the toggle button corresponding to the "next" filter state so it doesn't appear twice.
+		// This reduces the size of the menu when right clicking.
+		for (int i = 0; i < QuestState.values().length; i++)
+		{
+			if (i == nextState)
+				header[1 + (4 - i)].setHidden(true);
+			else
+				header[1 + (4 - i)].setHidden(false);
+		}
 
 		redrawHideButton();
 
@@ -203,8 +261,10 @@ public class QuestListPlugin extends Plugin
 
 	private void redrawHideButton()
 	{
+		// Set the questHideButton to indicate the current filter.
+
 		questHideButton.setSpriteId(currentFilterState.getSpriteId());
-		questHideButton.setName(MENU_SHOW + " " + currentFilterState.getName());
+		questHideButton.setName("Next");
 	}
 
 	private boolean isOnQuestTab()
@@ -357,7 +417,14 @@ public class QuestListPlugin extends Plugin
 			else
 			{
 				// Otherwise hide if it doesn't match the filter state
-				hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
+				if (currentFilterState != QuestState.NOT_COMPLETED)
+				{
+					hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
+				}
+				else
+				{
+					hidden = questState == QuestState.COMPLETE;
+				}
 			}
 
 			quest.setHidden(hidden);
@@ -388,8 +455,9 @@ public class QuestListPlugin extends Plugin
 	@Getter
 	private enum QuestState
 	{
-		NOT_STARTED(0xff0000, "Not started", SpriteID.MINIMAP_ORB_HITPOINTS),
-		IN_PROGRESS(0xffff00, "In progress", SpriteID.MINIMAP_ORB_HITPOINTS_DISEASE),
+		NOT_STARTED(0xff0000, "Not Started", SpriteID.MINIMAP_ORB_HITPOINTS),
+		IN_PROGRESS(0xffff00, "In Progress", SpriteID.MINIMAP_ORB_HITPOINTS_DISEASE),
+		NOT_COMPLETED(0, "Not Completed", SpriteID.MINIMAP_ORB_HITPOINTS_VENOM),
 		COMPLETE(0xdc10d, "Completed", SpriteID.MINIMAP_ORB_HITPOINTS_POISON),
 		ALL(0, "All", SpriteID.MINIMAP_ORB_PRAYER);
 
