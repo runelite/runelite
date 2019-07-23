@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 @Slf4j
 @Singleton
@@ -48,6 +49,7 @@ public class EventBus implements EventBusInterface
 			.subscribe(action, error ->
 			{
 				log.error("Error in eventbus: {}", error.getMessage());
+				log.error(ExceptionUtils.getStackTrace(error));
 			});
 
 		getCompositeDisposable(lifecycle).add(disposable);
