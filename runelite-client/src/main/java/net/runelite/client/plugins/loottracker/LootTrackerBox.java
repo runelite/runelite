@@ -29,6 +29,8 @@ import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -110,6 +112,18 @@ class LootTrackerBox extends JPanel
 
 		add(logTitle, BorderLayout.NORTH);
 		add(itemContainer, BorderLayout.CENTER);
+
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					collapse();
+				}
+			}
+		});
 	}
 
 	/**
@@ -180,6 +194,11 @@ class LootTrackerBox extends JPanel
 
 		validate();
 		repaint();
+	}
+
+	void collapse()
+	{
+		itemContainer.setVisible(!itemContainer.isVisible());
 	}
 
 	/**
