@@ -30,28 +30,35 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import com.google.inject.testing.fieldbinder.Bind;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.coords.WorldPoint;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mock;
 
 @Slf4j
 public class SkyboxTest
 {
+	@Mock
+	@Bind
+	private SkyboxConfig config;
+
 	@Test
 	public void testLoadSimple() throws IOException
 	{
-		Skybox skybox = new Skybox(CharSource.wrap("bounds 0 0 100 100 #00F // R 0 0 100 100\r\nr 99 99").openStream(), "simple");
-		Assert.assertEquals(0, skybox.getColorForPoint(0, 0, 0, 0, 0, 1, null));
+		Skybox skybox = new Skybox(CharSource.wrap("bounds 0 0 100 100 #00F // R 0 0 100 100\r\nr 99 99").openStream(), "simple", config);
+		Assert.assertEquals(0, skybox.getColorForPoint(0, 0, 0, 0, 0, WorldPoint.fromRegion(0, 0, 0, 0), 1, null));
 		int x = (99 * 64) + 32;
 		int y = (99 * 64) + 32;
-		Assert.assertEquals(0x0000FF, skybox.getColorForPoint(x, y, x, y, 0, 1, null));
+		Assert.assertEquals(0x0000FF, skybox.getColorForPoint(x, y, x, y, 0, WorldPoint.fromRegion(0, 0, 0, 0), 1, null));
 	}
 
 	@Test
 	public void testLoadActual() throws IOException
 	{
 		long start = System.nanoTime();
-		Skybox skybox = new Skybox(SkyboxPlugin.class.getResourceAsStream("skybox.txt"), "skybox.txt");
+		Skybox skybox = new Skybox(SkyboxPlugin.class.getResourceAsStream("skybox.txt"), "skybox.txt", config);
 		log.info("Parse took {}ms", (System.nanoTime() - start) / 1_000_000);
 
 		String skyboxFile = System.getProperty("skyboxExport");
@@ -65,6 +72,6 @@ public class SkyboxTest
 			ImageIO.write(img, "png", new File(skyboxFile));
 		}
 
-		Assert.assertNotEquals(skybox.getColorForPoint(3232, 3232, 3232, 3232, 0, .9, null), 0); // Lumbridge will never be black
+		Assert.assertNotEquals(skybox.getColorForPoint(3232, 3232, 3232, 3232, 0, WorldPoint.fromRegion(0, 0, 0, 0), .9, null), 0); // Lumbridge will never be black
 	}
 }

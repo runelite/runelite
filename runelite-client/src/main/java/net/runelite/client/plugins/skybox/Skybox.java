@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.Client;
+import net.runelite.api.coords.WorldPoint;
 
 class Skybox
 {
@@ -48,6 +49,8 @@ class Skybox
 		 */
 		int getTemplateChunk(int cx, int cy, int plane);
 	}
+
+	private final SkyboxConfig config;
 
 	private static final double SQRT2 = Math.sqrt(2);
 
@@ -86,13 +89,15 @@ class Skybox
 	private final int y2;
 	private final int stride;
 
-	public Skybox(InputStream is, String filename) throws IOException
+	public Skybox(InputStream is, String filename, SkyboxConfig config) throws IOException
 	{
-		this(new InputStreamReader(is), filename);
+		this(new InputStreamReader(is), filename, config);
 	}
 
-	public Skybox(Reader reader, String filename) throws IOException
+	public Skybox(Reader reader, String filename, SkyboxConfig config) throws IOException
 	{
+		this.config = config;
+
 		int[] chunks = null;
 		int[] planeOverrides = new int[64];
 		int planeOverrideEnd = 0;
@@ -372,7 +377,7 @@ class Skybox
 	 * @param y           Player Y coordinate in tiles
 	 * @param chunkMapper maps chunks to their instance templates, or null if not in an instance
 	 */
-	public int getColorForPoint(double x, double y, int px, int py, int plane, double brightness, ChunkMapper chunkMapper)
+	public int getColorForPoint(double x, double y, int px, int py, int plane, WorldPoint worldPoint, double brightness, ChunkMapper chunkMapper)
 	{
 		x /= 8.d;
 		y /= 8.d;
@@ -460,6 +465,23 @@ class Skybox
 
 		// increase brightness with HSB
 		float[] hsb = Color.RGBtoHSB(r, g, b, null);
+
+		if (config.overrideSkyboxHue())
+		{
+			int id = worldPoint.getRegionID();
+
+			int rx = (id >> 8) & 0xff;
+			int ry = (id & 0xFF);
+
+			// change the hue only for overworld region
+			if (rx > 17 && rx < 61 &&
+				ry > 38 && ry < 64)
+			{
+				Color color = config.skyboxHue();
+				hsb[0] = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null)[0];
+			}
+		}
+
 		hsb[2] = (float) Math.pow(hsb[2], brightness);
 
 		return 0xFFFFFF & Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]);
@@ -506,7 +528,7 @@ class Skybox
 				{
 					double fx = (x1 * 8) + (x / resolution);
 					double fy = (y1 * 8) + (y / resolution);
-					color = getColorForPoint(fx, fy, (int) fx, (int) fy, plane, .8, chunkMapper);
+					color = getColorForPoint(fx, fy, (int) fx, (int) fy, plane, WorldPoint.fromRegion(0, 0, 0, plane), .8, chunkMapper);
 				}
 				img.setRGB(x, h - 1 - y, color | 0xFF000000);
 			}

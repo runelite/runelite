@@ -26,12 +26,15 @@ package net.runelite.client.plugins.skybox;
 
 import com.google.inject.Inject;
 import java.io.IOException;
+import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -46,13 +49,15 @@ public class SkyboxPlugin extends Plugin
 {
 	@Inject
 	private Client client;
+	@Inject
+	private SkyboxConfig config;
 
 	private Skybox skybox;
 
 	@Override
 	public void startUp() throws IOException
 	{
-		skybox = new Skybox(SkyboxPlugin.class.getResourceAsStream("skybox.txt"), "skybox.txt");
+		skybox = new Skybox(SkyboxPlugin.class.getResourceAsStream("skybox.txt"), "skybox.txt", config);
 	}
 
 	@Override
@@ -60,6 +65,12 @@ public class SkyboxPlugin extends Plugin
 	{
 		client.setSkyboxColor(0);
 		skybox = null;
+	}
+
+	@Provides
+	private SkyboxConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SkyboxConfig.class);
 	}
 
 	private int mapChunk(int cx, int cy, int plane)
@@ -91,17 +102,22 @@ public class SkyboxPlugin extends Plugin
 			return;
 		}
 
+		int plane = client.getPlane();
 		int px, py;
+		WorldPoint worldPoint;
+
 		if (client.getOculusOrbState() == 1)
 		{
 			px = client.getOculusOrbFocalPointX();
 			py = client.getOculusOrbFocalPointY();
+			worldPoint = WorldPoint.fromLocal(client, px, py, plane);
 		}
 		else
 		{
 			LocalPoint p = client.getLocalPlayer().getLocalLocation();
 			px = p.getX();
 			py = p.getY();
+			worldPoint = WorldPoint.fromLocal(client, p);
 		}
 
 		// Inverse of camera location / 2
@@ -116,7 +132,8 @@ public class SkyboxPlugin extends Plugin
 			baseY + ((py + spy) / 128.f),
 			baseX + (px / 128),
 			baseY + (py / 128),
-			client.getPlane(),
+			plane,
+			worldPoint,
 			client.getTextureProvider().getBrightness(),
 			client.isInInstancedRegion() ? this::mapChunk : null
 		));
