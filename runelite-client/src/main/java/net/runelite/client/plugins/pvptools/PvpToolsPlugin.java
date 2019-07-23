@@ -150,7 +150,6 @@ public class PvpToolsPlugin extends Plugin
 	private boolean countPlayers;
 	private boolean countOverHeads;
 	@Getter(AccessLevel.PACKAGE)
-	private Keybind hotkey;
 	private Keybind renderSelf;
 	private boolean riskCalculatorEnabled;
 	private boolean missingPlayersEnabled;
@@ -684,7 +683,6 @@ public class PvpToolsPlugin extends Plugin
 	{
 		this.countPlayers = config.countPlayers();
 		this.countOverHeads = config.countOverHeads();
-		this.hotkey = config.hotkey();
 		this.renderSelf = config.renderSelf();
 		this.riskCalculatorEnabled = config.riskCalculatorEnabled();
 		this.missingPlayersEnabled = config.missingPlayersEnabled();
