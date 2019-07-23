@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ak")
 @Implements("DevicePcmPlayerProvider")
-public class DevicePcmPlayerProvider implements class99 {
+public class DevicePcmPlayerProvider implements PcmPlayerProvider {
 	@ObfuscatedName("pf")
 	@ObfuscatedSignature(
 		signature = "Ljx;"
