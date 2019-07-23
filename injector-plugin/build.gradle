@@ -11,3 +11,14 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-all', version:'1.10.19'
     compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version:'3.6.0'
 }
+
+task inject(type:JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+
+  main = "net.runelite.injector.Injector"
+  args('../runescape-client/build/libs/rs-client-1.5.30-SNAPSHOT.jar,./vanilla-181.jar,../injected-client/build/libs/injected-client-1.5.30-SNAPSHOT.jar'.split(','))
+}
+
+compileJava.doLast {
+  tasks.inject.execute()
+}
