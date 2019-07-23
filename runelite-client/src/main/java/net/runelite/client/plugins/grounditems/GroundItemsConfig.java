@@ -369,4 +369,15 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "inventoryStacks",
+		name = "Inventory Stacks",
+		description = "Highlights items already stacked in inventory",
+		position = 29
+	)
+	default boolean inventoryStacks()
+	{
+		return false;
+	}
 }
