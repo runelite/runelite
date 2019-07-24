@@ -121,6 +121,16 @@ public class ChatFilterPluginTest
 	}
 
 	@Test
+	public void testReplayedMessage()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+		when(chatFilterConfig.filteredWords()).thenReturn("hello osrs");
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertNull(chatFilterPlugin.censorMessage("hello\u00A0osrs"));
+	}
+
+	@Test
 	public void testMessageFromFriendIsFiltered()
 	{
 		when(client.isFriended("Iron Mammal", false)).thenReturn(true);
