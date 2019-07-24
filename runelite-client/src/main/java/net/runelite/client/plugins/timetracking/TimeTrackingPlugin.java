@@ -216,7 +216,10 @@ public class TimeTrackingPlugin extends Plugin
 	{
 		farmingTracker.loadCompletionTimes();
 		birdHouseTracker.loadFromConfig();
-		panel.update();
+		if (panel != null)
+		{
+			panel.update();
+		}
 	}
 
 	@Schedule(period = 10, unit = ChronoUnit.SECONDS)
