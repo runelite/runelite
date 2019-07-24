@@ -8,7 +8,8 @@ public class class226 {
 	@ObfuscatedSignature(
 		signature = "Lkl;"
 	)
-	static class310 field3072;
+	@Export("privateChatMode")
+	static class310 privateChatMode;
 	@ObfuscatedName("r")
 	@ObfuscatedSignature(
 		signature = "Lhq;"

@@ -23,7 +23,8 @@ public class WorldMapRegion {
 	@ObfuscatedSignature(
 		signature = "Lhl;"
 	)
-	static StudioGame field248;
+	@Export("studioGame")
+	static StudioGame studioGame;
 	@ObfuscatedName("du")
 	@ObfuscatedSignature(
 		signature = "Liu;"

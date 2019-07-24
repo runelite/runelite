@@ -49,7 +49,7 @@ public class UserComparator9 extends AbstractUserComparator {
 		RunException var2;
 		if (var0 instanceof RunException) {
 			var2 = (RunException)var0;
-			var2.string = var2.string + ' ' + var1;
+			var2.message = var2.message + ' ' + var1;
 		} else {
 			var2 = new RunException(var0, var1);
 		}

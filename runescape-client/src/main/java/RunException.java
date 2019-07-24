@@ -14,22 +14,23 @@ public class RunException extends RuntimeException {
 	@ObfuscatedGetter(
 		intValue = -345454085
 	)
-	@Export("revision")
-	public static int revision;
+	@Export("RunException_revision")
+	public static int RunException_revision;
 	@ObfuscatedName("p")
 	@ObfuscatedGetter(
 		intValue = 875770709
 	)
-	public static int field4066;
+	@Export("RunException_clientType")
+	public static int RunException_clientType;
 	@ObfuscatedName("k")
-	@Export("string")
-	String string;
+	@Export("message")
+	String message;
 	@ObfuscatedName("l")
 	@Export("throwable")
 	Throwable throwable;
 
 	RunException(Throwable var1, String var2) {
-		this.string = var2;
+		this.message = var2;
 		this.throwable = var1;
 	}
 }

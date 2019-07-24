@@ -58,7 +58,7 @@ public class ReflectionCheck extends Node {
 		AccessFile var0 = null;
 
 		try {
-			var0 = WorldMapIcon_0.getPreferencesFile("", WorldMapRegion.field248.name, true);
+			var0 = WorldMapIcon_0.getPreferencesFile("", WorldMapRegion.studioGame.name, true);
 			Buffer var1 = WorldMapLabelSize.clientPreferences.toBuffer();
 			var0.write(var1.array, 0, var1.offset);
 		} catch (Exception var3) {
