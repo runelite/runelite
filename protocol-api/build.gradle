@@ -1,7 +1,7 @@
 description = 'Protocol API'
 dependencies {
     compile project(':runelite-api')
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
     compile group: 'com.google.guava', name: 'guava', version: '28.0-jre'
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
