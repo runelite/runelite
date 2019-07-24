@@ -27,7 +27,7 @@ subprojects {
   checkstyle {
     toolVersion = '6.4.1'
     sourceSets = [sourceSets.main]
-    configFile = rootProject.file("/checkstyle/checkstyle.xml");
+    configFile = rootProject.file("./checkstyle/checkstyle.xml");
     showViolations = true
     ignoreFailures = true
   }
