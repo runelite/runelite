@@ -1,13 +1,18 @@
-install: gradle wrapper --gradle-version 5.5.1
-language: java
 sudo: false
 dist: trusty
+
+language: java
+jdk: oraclejdk8
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
     - $HOME/.m2
-jdk:
-- oraclejdk8
-script: ./travis/build.sh
-before_install:
-- chmod +x ./travis/build.sh
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+before_install: chmod +x ./gradlew
+script: ./gradlew clean build -x test
 
