@@ -66,9 +66,9 @@ enum Rock
 	ADAMANTITE(Duration.ofMinutes(4), 0, ROCKS_11374, ROCKS_11375)
 		{
 			@Override
-			Duration getRespawnTime(boolean inMiningGuild)
+			Duration getRespawnTime(boolean inMiningGuild, boolean inWildernessResourceArea)
 			{
-				return inMiningGuild ? Duration.ofMinutes(2) : super.respawnTime;
+				return inMiningGuild || inWildernessResourceArea ? Duration.ofMinutes(2) : super.respawnTime;
 			}
 		},
 	RUNITE(Duration.ofMinutes(12), 0, ROCKS_11376, ROCKS_11377)
@@ -109,6 +109,11 @@ enum Rock
 		this.respawnTime = respawnTime;
 		this.zOffset = zOffset;
 		this.ids = ids;
+	}
+
+	Duration getRespawnTime(boolean inMiningGuild, boolean inWildernessResourceArea)
+	{
+		return getRespawnTime(inMiningGuild);
 	}
 
 	Duration getRespawnTime(boolean inMiningGuild)

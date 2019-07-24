@@ -63,6 +63,7 @@ public class MiningPlugin extends Plugin
 {
 	private static final int ROCK_DISTANCE = 14;
 	private static final int MINING_GUILD_REGION = 12183;
+	private static final int WILDERNESS_RESOURCE_AREA_REGION = 12605;
 
 	@Inject
 	private Client client;
@@ -127,7 +128,7 @@ public class MiningPlugin extends Plugin
 		Rock rock = Rock.getRock(object.getId());
 		if (rock != null)
 		{
-			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
+			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild(), inWildernessResourceArea()).toMillis(), rock.getZOffset());
 			respawns.add(rockRespawn);
 		}
 	}
@@ -177,5 +178,10 @@ public class MiningPlugin extends Plugin
 	private boolean inMiningGuild()
 	{
 		return client.getLocalPlayer().getWorldLocation().getRegionID() == MINING_GUILD_REGION;
+	}
+
+	private boolean inWildernessResourceArea()
+	{
+		return client.getLocalPlayer().getWorldLocation().getRegionID() == WILDERNESS_RESOURCE_AREA_REGION;
 	}
 }
