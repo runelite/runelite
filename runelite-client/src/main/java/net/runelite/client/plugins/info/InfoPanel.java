@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.info;
 
-import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -123,6 +122,9 @@ public class InfoPanel extends PluginPanel
 		JLabel version = new JLabel(htmlLabel("RuneLite version: ", runeLiteProperties.getVersion()));
 		version.setFont(smallFont);
 
+		JLabel plusVersion = new JLabel(htmlLabel("RuneLitePlus version: ", runeLiteProperties.getPlusVersion()));
+		version.setFont(smallFont);
+
 		JLabel revision = new JLabel();
 		revision.setFont(smallFont);
 
@@ -133,10 +135,6 @@ public class InfoPanel extends PluginPanel
 		}
 
 		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
-
-		JLabel launcher = new JLabel(htmlLabel("Launcher version: ", MoreObjects
-			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
-		launcher.setFont(smallFont);
 
 		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		loggedLabel.setFont(smallFont);
@@ -153,8 +151,8 @@ public class InfoPanel extends PluginPanel
 		});
 
 		versionPanel.add(version);
+		versionPanel.add(plusVersion);
 		versionPanel.add(revision);
-		versionPanel.add(launcher);
 		versionPanel.add(Box.createGlue());
 		versionPanel.add(loggedLabel);
 		versionPanel.add(emailLabel);

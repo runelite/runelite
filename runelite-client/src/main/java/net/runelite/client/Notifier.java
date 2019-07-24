@@ -102,9 +102,7 @@ public class Notifier
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
 
 		// First check if we are running in launcher
-		this.terminalNotifierAvailable =
-			!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion())
-				&& isTerminalNotifierAvailable();
+		this.terminalNotifierAvailable = true;
 
 		storeIcon();
 	}

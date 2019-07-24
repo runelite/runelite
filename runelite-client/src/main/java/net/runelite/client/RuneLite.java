@@ -76,13 +76,14 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.ws.PartyService;
+import net.runelite.http.api.RuneLiteAPI;
 import org.slf4j.LoggerFactory;
 
 @Singleton
 @Slf4j
 public class RuneLite
 {
-	public static final String RUNELIT_VERSION = "2.0.5-2";
+	public static final String PLUS_VERSION = "2.1.0.0";
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
