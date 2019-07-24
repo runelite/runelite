@@ -18,7 +18,7 @@ public class class32 {
 		signature = "Lcm;"
 	)
 	@Export("pcmPlayerProvider")
-	public static class99 pcmPlayerProvider;
+	public static PcmPlayerProvider pcmPlayerProvider;
 	@ObfuscatedName("dq")
 	@ObfuscatedSignature(
 		signature = "Liu;"

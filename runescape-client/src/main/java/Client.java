@@ -2442,12 +2442,12 @@ public final class Client extends GameShell implements Usernamed {
 			}
 
 			if (loginState == 7 && ((AbstractSocket)var1).available() > 0) {
-				class323.field3884 = ((AbstractSocket)var1).readUnsignedByte();
+				FillMode.field3884 = ((AbstractSocket)var1).readUnsignedByte();
 				loginState = 8;
 			}
 
-			if (loginState == 8 && ((AbstractSocket)var1).available() >= class323.field3884) {
-				((AbstractSocket)var1).read(var2.array, 0, class323.field3884);
+			if (loginState == 8 && ((AbstractSocket)var1).available() >= FillMode.field3884) {
+				((AbstractSocket)var1).read(var2.array, 0, FillMode.field3884);
 				var2.offset = 0;
 				loginState = 6;
 			}

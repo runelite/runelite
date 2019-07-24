@@ -6,7 +6,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gh")
 @Implements("LoginPacket")
-public class LoginPacket implements class181 {
+public class LoginPacket implements ClientPacketMarker
+{
 	@ObfuscatedName("q")
 	@ObfuscatedSignature(
 		signature = "Lgh;"

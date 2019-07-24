@@ -246,7 +246,7 @@ public class class83 {
 		}
 		if (var0 == ScriptOpcodes.CC_SETFILLMODE) {
 			var8 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			class323 var6 = (class323)SoundSystem.findEnumerated(PcmPlayer.method2405(), var8);
+			FillMode var6 = (FillMode)SoundSystem.findEnumerated(PcmPlayer.method2405(), var8);
 			if (var6 != null) {
 				var3.fillMode = var6;
 				Strings.method4120(var3);
