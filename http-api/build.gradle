@@ -10,4 +10,5 @@ dependencies {
     testCompile group: 'org.slf4j', name: 'slf4j-simple', version:'1.7.26'
     testCompile group: 'com.squareup.okhttp3', name: 'mockwebserver', version:'3.14.0'
     compileOnly group: 'org.projectlombok', name: 'lombok', version:'1.18.8'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version:'1.18.8'
 }

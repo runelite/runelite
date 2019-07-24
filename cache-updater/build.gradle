@@ -9,4 +9,5 @@ dependencies {
     compile group: 'org.sql2o', name: 'sql2o', version:'1.6.0'
     compile group: 'io.minio', name: 'minio', version:'3.0.6'
     compileOnly group: 'org.projectlombok', name: 'lombok', version:'1.18.8'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version:'1.18.8'
 }

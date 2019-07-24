@@ -45,5 +45,6 @@ exclude(module: 'xz')
     testCompile group: 'com.google.inject.extensions', name: 'guice-testlib', version:'4.1.0'
     testCompile group: 'com.google.inject.extensions', name: 'guice-grapher', version:'4.1.0'
     compileOnly group: 'org.projectlombok', name: 'lombok', version:'1.18.8'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version:'1.18.8'
     compileOnly group: 'net.runelite', name: 'orange-extensions', version:'1.0'
 }

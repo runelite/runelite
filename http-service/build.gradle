@@ -24,5 +24,6 @@ exclude(module: 'commons-logging')
     testCompile group: 'com.h2database', name: 'h2', version:'1.4.196'
     providedCompile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version:'1.5.6.RELEASE'
     providedCompile group: 'org.projectlombok', name: 'lombok', version:'1.18.8'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version:'1.18.8'
     providedCompile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version:'2.4.2'
 }
