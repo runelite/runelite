@@ -37,6 +37,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
@@ -56,6 +57,7 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @Singleton
+@Slf4j
 public class OverlayRenderer extends MouseAdapter implements KeyListener
 {
 	private static final int BORDER = 5;
@@ -458,8 +460,23 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 
 		subGraphics.translate(point.x, point.y);
-		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());
-		subGraphics.dispose();
+
+		final Dimension overlayDimension;
+		try
+		{
+			overlayDimension = overlay.render(subGraphics);
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+			return;
+		}
+		finally
+		{
+			subGraphics.dispose();
+		}
+
+		final Dimension dimension = MoreObjects.firstNonNull(overlayDimension, new Dimension());
 		overlay.setBounds(new Rectangle(point, dimension));
 	}
 
