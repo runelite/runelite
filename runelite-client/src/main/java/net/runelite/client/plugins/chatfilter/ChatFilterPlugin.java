@@ -180,7 +180,8 @@ public class ChatFilterPlugin extends Plugin
 
 	String censorMessage(final String message)
 	{
-		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message.replace('\u00A0', ' '));
+		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
+			.replace('\u00A0', ' ');
 		boolean filtered = false;
 		for (Pattern pattern : filteredPatterns)
 		{
