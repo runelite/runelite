@@ -32,41 +32,22 @@ import net.runelite.client.plugins.raids.RaidRoom.Boss;
 
 public class RotationSolver
 {
-	private static class Rotation<E> extends ArrayList<E>
-	{
-		Rotation(Collection<? extends E> bosses)
-		{
-			super(bosses);
-		}
-
-		@Override
-		public E get(int index)
-		{
-			if (index < 0)
-			{
-				index = index + size();
-			}
-
-			return super.get(index % size());
-		}
-	}
-
 	private static final Rotation[] ROTATIONS =
-	{
+		{
 			new Rotation<>(Arrays.asList(Boss.TEKTON, Boss.VASA, Boss.GUARDIANS, Boss.MYSTICS, Boss.SHAMANS, Boss.MUTTADILES, Boss.VANGUARDS, Boss.VESPULA)),
 			new Rotation<>(Arrays.asList(Boss.TEKTON, Boss.MUTTADILES, Boss.GUARDIANS, Boss.VESPULA, Boss.SHAMANS, Boss.VASA, Boss.VANGUARDS, Boss.MYSTICS)),
 			new Rotation<>(Arrays.asList(Boss.VESPULA, Boss.VANGUARDS, Boss.MUTTADILES, Boss.SHAMANS, Boss.MYSTICS, Boss.GUARDIANS, Boss.VASA, Boss.TEKTON)),
 			new Rotation<>(Arrays.asList(Boss.MYSTICS, Boss.VANGUARDS, Boss.VASA, Boss.SHAMANS, Boss.VESPULA, Boss.GUARDIANS, Boss.MUTTADILES, Boss.TEKTON))
-	};
+		};
 
-	public static boolean solve(RaidRoom[] rooms)
+	public static void solve(RaidRoom[] rooms)
 	{
 		if (rooms == null)
 		{
-			return false;
+			return;
 		}
 
-		Rotation<Boss> match = null;
+		Rotation match = null;
 		Integer start = null;
 		Integer index = null;
 		int known = 0;
@@ -88,12 +69,12 @@ public class RotationSolver
 
 		if (known < 2)
 		{
-			return false;
+			return;
 		}
 
 		if (known == rooms.length)
 		{
-			return true;
+			return;
 		}
 
 		for (Rotation rotation : ROTATIONS)
@@ -116,9 +97,9 @@ public class RotationSolver
 						}
 					}
 
-					if (match != null && match != rotation)
+					if (match != null && match.equals(rotation))
 					{
-						return false;
+						return;
 					}
 
 					index = i - start;
@@ -129,7 +110,7 @@ public class RotationSolver
 
 		if (match == null)
 		{
-			return false;
+			return;
 		}
 
 		for (int i = 0; i < rooms.length; i++)
@@ -141,10 +122,28 @@ public class RotationSolver
 
 			if (rooms[i].getBoss() == null || rooms[i].getBoss() == Boss.UNKNOWN)
 			{
-				rooms[i].setBoss(match.get(index + i));
+				rooms[i].setBoss((Boss) match.get(index + i));
 			}
 		}
 
-		return true;
+	}
+
+	private static class Rotation<E> extends ArrayList<E>
+	{
+		Rotation(final Collection<? extends E> bosses)
+		{
+			super(bosses);
+		}
+
+		@Override
+		public E get(int index)
+		{
+			if (index < 0)
+			{
+				index = index + size();
+			}
+
+			return super.get(index % size());
+		}
 	}
 }

@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import static net.runelite.api.ItemID.SPADE;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
@@ -43,6 +44,7 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+@Singleton
 public class ClueScrollOverlay extends Overlay
 {
 	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(SPADE);
@@ -53,7 +55,7 @@ public class ClueScrollOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private ClueScrollOverlay(ClueScrollPlugin plugin)
+	private ClueScrollOverlay(final ClueScrollPlugin plugin)
 	{
 		super(plugin);
 		this.plugin = plugin;
@@ -76,13 +78,10 @@ public class ClueScrollOverlay extends Overlay
 
 		clue.makeOverlayHint(panelComponent, plugin);
 
-		if (clue.isRequiresSpade() && plugin.getInventoryItems() != null)
+		if (clue.isRequiresSpade() && plugin.getInventoryItems() != null && !HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
 		{
-			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
-			{
-				panelComponent.getChildren().add(LineComponent.builder().left("").build());
-				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
-			}
+			panelComponent.getChildren().add(LineComponent.builder().left("").build());
+			panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
 		}
 
 		return panelComponent.render(graphics);

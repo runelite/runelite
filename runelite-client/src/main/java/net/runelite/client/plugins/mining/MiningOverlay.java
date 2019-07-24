@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,99 +24,124 @@
  */
 package net.runelite.client.plugins.mining;
 
-import com.google.common.collect.ImmutableSet;
-import net.runelite.api.Client;
-import net.runelite.client.plugins.mining.MiningConfig;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
-
-import javax.inject.Inject;
-import java.awt.*;
-import java.time.Duration;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.time.Instant;
-import java.util.Set;
+import java.util.Iterator;
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.api.Client;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
-import static net.runelite.api.AnimationID.*;
-
+@Singleton
 class MiningOverlay extends Overlay
 {
-	private static final Set<Integer> MINING_ANIMATION_IDS = ImmutableSet.of(
-		MINING_MOTHERLODE_BRONZE, MINING_MOTHERLODE_IRON, MINING_MOTHERLODE_STEEL,
-		MINING_MOTHERLODE_BLACK, MINING_MOTHERLODE_MITHRIL, MINING_MOTHERLODE_ADAMANT,
-		MINING_MOTHERLODE_RUNE, MINING_MOTHERLODE_DRAGON, MINING_MOTHERLODE_DRAGON_ORN,
-		MINING_MOTHERLODE_INFERNAL
-	);
+	// Range of Motherlode vein respawn time - not 100% confirmed but based on observation
+	static final int ORE_VEIN_MAX_RESPAWN_TIME = 166;
+	private static final int ORE_VEIN_MIN_RESPAWN_TIME = 90;
+	private static final float ORE_VEIN_RANDOM_PERCENT_THRESHOLD = (float) ORE_VEIN_MIN_RESPAWN_TIME / ORE_VEIN_MAX_RESPAWN_TIME;
+	private static final Color DARK_GREEN = new Color(0, 100, 0);
+	private static final int MOTHERLODE_UPPER_FLOOR_HEIGHT = -500;
 
 	private final Client client;
 	private final MiningPlugin plugin;
 	private final MiningConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MiningOverlay(Client client, MiningPlugin plugin, MiningConfig config)
+	private MiningOverlay(final Client client, final MiningPlugin plugin, final MiningConfig config)
 	{
-		setPosition(OverlayPosition.TOP_LEFT);
-		this.client = client;
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
+		this.client = client;
 		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isInMlm() || !config.showMiningStats())
+		List<RockRespawn> respawns = plugin.getRespawns();
+		if (respawns.isEmpty())
 		{
 			return null;
 		}
 
-		MiningSession session = plugin.getSession();
-
-		if (session.getLastPayDirtMined() == null)
+		Instant now = Instant.now();
+		for (Iterator<RockRespawn> it = respawns.iterator(); it.hasNext();)
 		{
-			return null;
-		}
-
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastPayDirtMined(), Instant.now());
-
-		if (sinceCut.compareTo(statTimeout) >= 0)
-		{
-			return null;
-		}
-
-		panelComponent.getChildren().clear();
-
-		if (config.showMiningState())
-		{
-			if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
+			Color pieFillColor = config.progressPieColor();
+			Color pieBorderColor;
+			RockRespawn rockRespawn = it.next();
+			float percent = (now.toEpochMilli() - rockRespawn.getStartTime().toEpochMilli()) / (float) rockRespawn.getRespawnTime();
+			WorldPoint worldPoint = rockRespawn.getWorldPoint();
+			LocalPoint loc = LocalPoint.fromWorld(client, worldPoint);
+			if (loc == null || percent > 1.0f)
 			{
-				panelComponent.getChildren().add(TitleComponent.builder()
-					.text("Mining")
-					.color(Color.GREEN)
-					.build());
+				it.remove();
+				continue;
 			}
-			else
+
+			Point point = Perspective.localToCanvas(client, loc, client.getPlane(), rockRespawn.getZOffset());
+			if (point == null)
 			{
-				panelComponent.getChildren().add(TitleComponent.builder()
-					.text("NOT mining")
-					.color(Color.RED)
-					.build());
+				it.remove();
+				continue;
 			}
+
+			Rock rock = rockRespawn.getRock();
+
+			// Only draw timer for veins on the same level in motherlode mine
+			LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
+			if (rock == Rock.ORE_VEIN && isUpstairsMotherlode(localLocation) != isUpstairsMotherlode(loc))
+			{
+				continue;
+			}
+
+			// Recolour pie on motherlode veins during the portion of the timer where they may respawn
+			if (rock == Rock.ORE_VEIN && percent > ORE_VEIN_RANDOM_PERCENT_THRESHOLD)
+			{
+				pieFillColor = config.progressPieColorMotherlode();
+			}
+
+			if (config.progressPieInverted())
+			{
+				percent = 1.0f - percent;
+			}
+
+			pieBorderColor = pieFillColor.darker();
+
+			ProgressPieComponent ppc = new ProgressPieComponent();
+			ppc.setDiameter(config.progressPieDiameter());
+			ppc.setBorderColor(pieBorderColor);
+			ppc.setFill(pieFillColor);
+			ppc.setPosition(point);
+			ppc.setProgress(percent);
+			ppc.render(graphics);
 		}
+		return null;
+	}
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Pay-dirt mined:")
-			.right(Integer.toString(session.getTotalMined()))
-			.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Pay-dirt/hr:")
-			.right(session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "")
-			.build());
-
-		return panelComponent.render(graphics);
+	/**
+	 * Checks if the given point is "upstairs" in the mlm.
+	 * The upper floor is actually on z=0.
+	 *
+	 * This method assumes that the given point is already in the mlm
+	 * and is not meaningful when outside the mlm.
+	 *
+	 * @param localPoint the LocalPoint to be tested
+	 * @return true if localPoint is at same height as mlm upper floor
+	 */
+	private boolean isUpstairsMotherlode(LocalPoint localPoint)
+	{
+		return Perspective.getTileHeight(client, localPoint, 0) < MOTHERLODE_UPPER_FLOOR_HEIGHT;
 	}
 }

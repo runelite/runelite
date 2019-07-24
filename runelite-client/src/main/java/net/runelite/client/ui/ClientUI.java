@@ -35,14 +35,21 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import static java.awt.GraphicsDevice.WindowTranslucency.TRANSLUCENT;
+import java.awt.GraphicsEnvironment;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.Window;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -77,7 +84,7 @@ import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
@@ -101,11 +108,15 @@ import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 public class ClientUI
 {
 	private static final String CONFIG_GROUP = "runelite";
+	private static final String PLUS_CONFIG_GROUP = "runeliteplus";
 	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
+	private static final String CONFIG_OPACITY = "enableOpacity";
+	private static final String CONFIG_OPACITY_AMOUNT = "opacityPercentage";
 	private static final int CLIENT_WELL_HIDDEN_MARGIN = 160;
 	private static final int CLIENT_WELL_HIDDEN_MARGIN_TOP = 10;
 	public static boolean allowInput = false;
+	public static String currentPresenceName = "RuneLite";
 	public static final BufferedImage ICON = ImageUtil.getResourceStreamFromClass(ClientUI.class, "/runelite.png");
 
 	@Getter
@@ -135,6 +146,9 @@ public class ClientUI
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
 	private Dimension lastClientSize;
+	private Field opacityField;
+	private Field peerField;
+	private Method setOpacityMethod;
 
 	@Inject
 	private ClientUI(
@@ -144,7 +158,8 @@ public class ClientUI
 		MouseManager mouseManager,
 		@Nullable Applet client,
 		ConfigManager configManager,
-		Provider<ClientThread> clientThreadProvider)
+		Provider<ClientThread> clientThreadProvider,
+		EventBus eventbus)
 	{
 		this.properties = properties;
 		this.config = config;
@@ -153,12 +168,19 @@ public class ClientUI
 		this.client = client;
 		this.configManager = configManager;
 		this.clientThreadProvider = clientThreadProvider;
+
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(NavigationButtonAdded.class, this, this::onNavigationButtonAdded);
+		eventbus.subscribe(NavigationButtonRemoved.class, this, this::onNavigationButtonRemoved);
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("runelite") ||
+		if (!event.getGroup().equals(CONFIG_GROUP)
+			&& !(event.getGroup().equals(PLUS_CONFIG_GROUP)
+			&& event.getKey().equals(CONFIG_OPACITY) ||
+			event.getKey().equals(CONFIG_OPACITY_AMOUNT)) ||
 			event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
 			event.getKey().equals(CONFIG_CLIENT_BOUNDS))
 		{
@@ -168,8 +190,7 @@ public class ClientUI
 		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
 	}
 
-	@Subscribe
-	public void onNavigationButtonAdded(final NavigationButtonAdded event)
+	private void onNavigationButtonAdded(final NavigationButtonAdded event)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
@@ -235,8 +256,7 @@ public class ClientUI
 		});
 	}
 
-	@Subscribe
-	public void onNavigationButtonRemoved(final NavigationButtonRemoved event)
+	private void onNavigationButtonRemoved(final NavigationButtonRemoved event)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
@@ -253,15 +273,14 @@ public class ClientUI
 		});
 	}
 
-	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() != GameState.LOGGED_IN || !(client instanceof Client) || !config.usernameInTitle())
 		{
 			return;
 		}
 
-		final Client client = (Client)this.client;
+		final Client client = (Client) this.client;
 		final ClientThread clientThread = clientThreadProvider.get();
 
 		// Keep scheduling event until we get our name
@@ -286,7 +305,7 @@ public class ClientUI
 				return false;
 			}
 
-			frame.setTitle(properties.getTitle() + " - " + name);
+			frame.setTitle(currentPresenceName + " - " + name);
 			return true;
 		});
 	}
@@ -309,7 +328,7 @@ public class ClientUI
 			// Try to enable fullscreen on OSX
 			OSXUtil.tryEnableFullscreen(frame);
 
-			frame.setTitle(properties.getTitle());
+			frame.setTitle(ClientUI.currentPresenceName);
 			frame.setIconImage(ICON);
 			frame.getLayeredPane().setCursor(Cursor.getDefaultCursor()); // Prevent substance from using a resize cursor for pointing
 			frame.setLocationRelativeTo(frame.getOwner());
@@ -598,8 +617,9 @@ public class ClientUI
 	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#open(RuneLite)} to be called first.
 	 * FIXME: This is working properly only on Windows, Linux and Mac are displaying cursor incorrectly
+	 *
 	 * @param image cursor image
-	 * @param name cursor name
+	 * @param name  cursor name
 	 */
 	public void setCursor(final BufferedImage image, final String name)
 	{
@@ -615,6 +635,7 @@ public class ClientUI
 
 	/**
 	 * Resets client window cursor to default one.
+	 *
 	 * @see ClientUI#setCursor(BufferedImage, String)
 	 */
 	public void resetCursor()
@@ -649,6 +670,7 @@ public class ClientUI
 
 	/**
 	 * Paint UI related overlays to target graphics
+	 *
 	 * @param graphics target graphics
 	 */
 	public void paintOverlays(final Graphics2D graphics)
@@ -828,16 +850,16 @@ public class ClientUI
 
 		if (config.usernameInTitle() && (client instanceof Client))
 		{
-			final Player player = ((Client)client).getLocalPlayer();
+			final Player player = ((Client) client).getLocalPlayer();
 
 			if (player != null && player.getName() != null)
 			{
-				frame.setTitle(properties.getTitle() + " - " + player.getName());
+				frame.setTitle(currentPresenceName + " - " + player.getName());
 			}
 		}
 		else
 		{
-			frame.setTitle(properties.getTitle());
+			frame.setTitle(currentPresenceName);
 		}
 
 		if (frame.isAlwaysOnTopSupported())
@@ -851,12 +873,40 @@ public class ClientUI
 		}
 
 		frame.setExpandResizeType(config.automaticResizeType());
-		frame.setContainedInScreen(config.containInScreen() && withTitleBar);
+
+		ContainableFrame.Mode containMode = config.containInScreen();
+		if (containMode == ContainableFrame.Mode.ALWAYS && !withTitleBar)
+		{
+			// When native window decorations are enabled we don't have a way to receive window move events
+			// so we can't contain to screen always.
+			containMode = ContainableFrame.Mode.RESIZING;
+		}
+		frame.setContainedInScreen(containMode);
 
 		if (!config.rememberScreenBounds())
 		{
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS);
+		}
+
+		if (configManager.getConfiguration(PLUS_CONFIG_GROUP, CONFIG_OPACITY, boolean.class))
+		{
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			GraphicsDevice gd = ge.getDefaultScreenDevice();
+
+			if (gd.isWindowTranslucencySupported(TRANSLUCENT))
+			{
+				setOpacity();
+			}
+			else
+			{
+				log.warn("Opacity isn't supported on your system!");
+				configManager.setConfiguration(PLUS_CONFIG_GROUP, CONFIG_OPACITY, false);
+			}
+		}
+		else if (frame.getOpacity() != 1F)
+		{
+			frame.setOpacity(1F);
 		}
 
 		if (client == null)
@@ -914,5 +964,41 @@ public class ClientUI
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, bounds);
 		}
+	}
+
+	private void setOpacity()
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			try
+			{
+				if (opacityField == null)
+				{
+					opacityField = Window.class.getDeclaredField("opacity");
+					opacityField.setAccessible(true);
+				}
+				if (peerField == null)
+				{
+					peerField = Component.class.getDeclaredField("peer");
+					peerField.setAccessible(true);
+				}
+				if (setOpacityMethod == null)
+				{
+					setOpacityMethod = Class.forName("java.awt.peer.WindowPeer").getDeclaredMethod("setOpacity", float.class);
+				}
+
+
+				final float opacity = Float.parseFloat(configManager.getConfiguration(PLUS_CONFIG_GROUP, CONFIG_OPACITY_AMOUNT)) / 100F;
+				assert opacity > 0F && opacity <= 1F : "I don't know who you are, I don't know why you tried, and I don't know how you tried, but this is NOT what you're supposed to do and you should honestly feel terrible about what you did, so I want you to take a nice long amount of time to think about what you just tried to do so you are not gonna do this in the future.";
+
+				opacityField.setFloat(frame, opacity);
+				setOpacityMethod.invoke(peerField.get(frame), opacity);
+
+			}
+			catch (NoSuchFieldException | NoSuchMethodException | ClassNotFoundException | IllegalAccessException | InvocationTargetException e)
+			{
+				e.printStackTrace();
+			}
+		});
 	}
 }

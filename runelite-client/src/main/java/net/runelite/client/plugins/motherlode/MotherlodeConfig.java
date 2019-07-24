@@ -121,4 +121,35 @@ public interface MotherlodeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "notifyOnIdle",
+		name = "Idle notification",
+		description = "Sends a notification when the player stops mining"
+	)
+	default boolean notifyOnIdle()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showTargetVein",
+		name = "Show vein currently being mined",
+		description = "Highlights the vein currently being mined"
+	)
+	default boolean showTargetVein()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "payDirtMsg",
+		name = "Pay-dirt!",
+		description = "Send a public message saying \"Pay-dirt!\" every time a dwarf says \"Pay-dirt!\"",
+		position = 99
+	)
+	default boolean payDirtMsg()
+	{
+		return false;
+	}
 }

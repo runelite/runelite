@@ -166,6 +166,17 @@ public interface SlayerConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+			position = 14,
+			keyName = "pointsCommand",
+			name = "Points Command",
+			description = "Configures whether the slayer points command is enabled<br> !points"
+	)
+	default boolean pointsCommand()
+	{
+		return true;
+	}
+
 	// Stored data
 	@ConfigItem(
 		keyName = "taskName",

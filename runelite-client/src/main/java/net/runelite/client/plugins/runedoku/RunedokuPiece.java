@@ -24,7 +24,8 @@
 
 package net.runelite.client.plugins.runedoku;
 
-public enum RunedokuPiece {
+public enum RunedokuPiece
+{
 
 	NPC_PLACED_MIND_RUNE(6436, 1), //1
 	NPC_PLACED_FIRE_RUNE(6428, 2), //2
@@ -50,22 +51,28 @@ public enum RunedokuPiece {
 	private final int pieceID;
 	private final int pieceForSudoku;
 
-	RunedokuPiece (int pieceID, int pieceForSudoku) {
+	RunedokuPiece(final int pieceID, final int pieceForSudoku)
+	{
 		this.pieceID = pieceID;
 		this.pieceForSudoku = pieceForSudoku;
 	}
 
-	int getId () {
+	private int getId()
+	{
 		return pieceID;
 	}
 
-	int getPieceForSudoku() {
+	int getPieceForSudoku()
+	{
 		return pieceForSudoku;
 	}
 
-	static RunedokuPiece getById(int pieceID) {
-		for (RunedokuPiece e : RunedokuPiece.values()) {
-			if (e.getId() == pieceID) {
+	static RunedokuPiece getById(int pieceID)
+	{
+		for (RunedokuPiece e : RunedokuPiece.values())
+		{
+			if (e.getId() == pieceID)
+			{
 				return e;
 			}
 		}

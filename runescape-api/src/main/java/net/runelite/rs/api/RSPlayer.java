@@ -26,25 +26,24 @@ package net.runelite.rs.api;
 
 import net.runelite.api.Player;
 import net.runelite.mapping.Import;
-import net.runelite.mapping.Protect;
 
 public interface RSPlayer extends RSActor, Player
 {
-	@Import("name")
-	RSName getRsName();
+	@Import("username")
+	RSUsername getRsName();
 
-	@Import("playerId")
+	@Import("index")
 	int getPlayerId();
 
-	@Import("composition")
+	@Import("appearance")
 	@Override
-	RSPlayerComposition getPlayerComposition();
+	RSPlayerAppearance getPlayerAppearance();
 
 	@Import("combatLevel")
 	@Override
 	int getCombatLevel();
 
-	@Import("totalLevel")
+	@Import("skillLevel")
 	int getTotalLevel();
 
 	@Import("team")
@@ -59,10 +58,11 @@ public interface RSPlayer extends RSActor, Player
 	@Override
 	boolean isFriend();
 
-	@Import("overheadIcon")
+	boolean isFriended();
+
+	@Import("headIconPrayer")
 	int getRsOverheadIcon();
 
-	@Import("skullIcon")
-	@Protect
+	@Import("headIconPk")
 	int getRsSkullIcon();
 }

@@ -52,4 +52,37 @@ public interface PoisonConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showPlayers",
+		name = "Show for players",
+		description = "Show poison timers for other players",
+		position = 1
+	)
+	default boolean showForPlayers()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showNpcs",
+		name = "Show for NPCs",
+		description = "Show poison timers for NPCs",
+		position = 2
+	)
+	default boolean showForNpcs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "fontsize",
+		name = "Font size",
+		description = "The size the time left text for other players/npc's will be",
+		position = 3
+	)
+	default int fontSize()
+	{
+		return 8;
+	}
 }

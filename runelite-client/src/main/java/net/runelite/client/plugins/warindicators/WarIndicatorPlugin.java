@@ -24,15 +24,12 @@
  */
 package net.runelite.client.plugins.warindicators;
 
-import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.Collection;
 import javax.inject.Inject;
-
-import net.runelite.client.plugins.PluginType;
-import org.apache.commons.lang3.ArrayUtils;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.FOLLOW;
 import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
@@ -48,20 +45,24 @@ import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
 import static net.runelite.api.MenuAction.TRADE;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-        name = "War calling indicators",
-        description = "War War War.",
-        tags = {"skill", "total", "max", "PVP"},
-		type = PluginType.PVP,
-        enabledByDefault = false
+	name = "War calling indicators",
+	description = "War War War.",
+	tags = {"skill", "total", "max", "PVP"},
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
+@Singleton
 public class WarIndicatorPlugin extends Plugin
 {
 	@Inject
@@ -79,37 +80,70 @@ public class WarIndicatorPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highLightCallers;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getCallerColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean callerMinimap;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean callerTile;
+	@Getter(AccessLevel.PACKAGE)
+	private String getActiveCallers;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightSnipes;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getSnipeColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean snipeMinimap;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean snipeTile;
+	@Getter(AccessLevel.PACKAGE)
+	private String getTargetedSnipes;
+
 	@Provides
 	WarIndicatorConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(WarIndicatorConfig.class);
 	}
 
- @Override
-    protected void startUp() throws Exception
-    {
-        overlayManager.add(warIndicatorOverlay);
-        overlayManager.add(warIndicatorMiniMapOverlay);
-    }
-
-    @Override
-    protected void shutDown() throws Exception
-    {
-        overlayManager.remove(warIndicatorOverlay);
-        overlayManager.remove(warIndicatorMiniMapOverlay);
-    }
-
-	@Subscribe
-	public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded)
+	@Override
+	protected void startUp() throws Exception
 	{
-		int type = menuEntryAdded.getType();
+		updateConfig();
+		addSubscriptions();
+
+		overlayManager.add(warIndicatorOverlay);
+		overlayManager.add(warIndicatorMiniMapOverlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+		overlayManager.remove(warIndicatorOverlay);
+		overlayManager.remove(warIndicatorMiniMapOverlay);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+	}
+
+	private void onMenuEntryAdded(MenuEntryAdded onMenuEntryAdded)
+	{
+		int type = onMenuEntryAdded.getType();
 
 		if (type >= 2000)
 		{
 			type -= 2000;
 		}
 
-		int identifier = menuEntryAdded.getIdentifier();
+		int identifier = onMenuEntryAdded.getIdentifier();
 		if (type == FOLLOW.getId() || type == TRADE.getId()
 			|| type == SPELL_CAST_ON_PLAYER.getId()
 			|| type == ITEM_USE_ON_PLAYER.getId()
@@ -126,8 +160,8 @@ public class WarIndicatorPlugin extends Plugin
 			Player player = null;
 			String player2 = null;
 
-			String[] callers = config.getActiveCallers().split(", ");
-			String[] targets = config.getTargetedSnipes().split(", ");
+			String[] callers = this.getActiveCallers.split(", ");
+			String[] targets = this.getTargetedSnipes.split(", ");
 
 			if (identifier >= 0 && identifier < players.length)
 			{
@@ -142,14 +176,14 @@ public class WarIndicatorPlugin extends Plugin
 
 			Color color = null;
 
-			if (config.highLightCallers() && ArrayUtils.contains(callers, player2))
+			if (this.highLightCallers && ArrayUtils.contains(callers, player2))
 			{
-				color = config.getCallerColor();
+				color = this.getCallerColor;
 			}
 
-			if (config.highlightSnipes() && ArrayUtils.contains(targets, player2))
+			if (this.highlightSnipes && ArrayUtils.contains(targets, player2))
 			{
-				color = config.getSnipeColor();
+				color = this.getSnipeColor;
 			}
 
 			if (color != null)
@@ -169,5 +203,27 @@ public class WarIndicatorPlugin extends Plugin
 			}
 
 		}
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("warIndicators"))
+		{
+			updateConfig();
+		}
+	}
+
+	private void updateConfig()
+	{
+		this.highLightCallers = config.highLightCallers();
+		this.getCallerColor = config.getCallerColor();
+		this.callerMinimap = config.callerMinimap();
+		this.callerTile = config.callerTile();
+		this.getActiveCallers = config.getActiveCallers();
+		this.highlightSnipes = config.highlightSnipes();
+		this.getSnipeColor = config.getSnipeColor();
+		this.snipeMinimap = config.snipeMinimap();
+		this.snipeTile = config.snipeTile();
+		this.getTargetedSnipes = config.getTargetedSnipes();
 	}
 }

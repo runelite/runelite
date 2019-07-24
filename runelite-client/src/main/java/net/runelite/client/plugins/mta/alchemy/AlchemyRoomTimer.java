@@ -30,12 +30,12 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.util.ImageUtil;
 
-public class AlchemyRoomTimer extends Timer
+class AlchemyRoomTimer extends Timer
 {
 	private static final int RESET_PERIOD = 42;
 	private static BufferedImage image;
 
-	public AlchemyRoomTimer(Plugin plugin)
+	AlchemyRoomTimer(final Plugin plugin)
 	{
 		super(RESET_PERIOD, ChronoUnit.SECONDS, getResetImage(), plugin);
 		this.setTooltip("Time until items swap");

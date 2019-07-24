@@ -1,19 +1,15 @@
 package net.runelite.client.plugins.lootassist;
 
-import com.google.inject.Provides;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
-import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -26,51 +22,49 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
+@Singleton
 public class LootAssistPlugin extends Plugin
 {
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
-	private Client client;
+	private LootAssistOverlay lootAssistOverlay;
 
 	@Inject
-	OverlayManager overlayManager;
+	private EventBus eventBus;
 
-	@Inject
-	LootAssistOverlay lootAssistOverlay;
-
-	@Inject
-	private LootAssitConfig config;
-
-
-	public static ConcurrentHashMap<WorldPoint, LootPile> lootPiles = new ConcurrentHashMap<>();
-
-	@Provides
-	LootAssitConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(LootAssitConfig.class);
-	}
+	static final ConcurrentHashMap<WorldPoint, LootPile> lootPiles = new ConcurrentHashMap<>();
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		overlayManager.add(lootAssistOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		lootPiles.clear();
 		overlayManager.remove(lootAssistOverlay);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		lootPiles.clear();
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	private void onAnimationChanged(AnimationChanged event)
 	{
 		final Actor actor = event.getActor();
 		if (actor.getAnimation() == AnimationID.DEATH && actor instanceof Player)

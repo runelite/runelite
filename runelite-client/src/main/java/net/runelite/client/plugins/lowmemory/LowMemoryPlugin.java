@@ -25,10 +25,11 @@
 package net.runelite.client.plugins.lowmemory;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -38,14 +39,20 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"memory", "usage", "ground", "decorations"},
 	enabledByDefault = false
 )
+@Singleton
 public class LowMemoryPlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			client.changeMemoryMode(true);
@@ -55,10 +62,11 @@ public class LowMemoryPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		client.changeMemoryMode(false);
 	}
 
-	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)

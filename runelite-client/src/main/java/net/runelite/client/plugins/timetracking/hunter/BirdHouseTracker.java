@@ -50,7 +50,7 @@ public class BirdHouseTracker
 	// average time taken to harvest 10 birds, in seconds
 	static final int BIRD_HOUSE_DURATION = (int) Duration.ofMinutes(50).getSeconds();
 
-	private static ImmutableSet<Integer> FOSSIL_ISLAND_REGIONS = ImmutableSet.of(14650, 14651, 14652, 14906, 14907, 15162, 15163);
+	private static final ImmutableSet<Integer> FOSSIL_ISLAND_REGIONS = ImmutableSet.of(14650, 14651, 14652, 14906, 14907, 15162, 15163);
 
 	private final Client client;
 	private final ItemManager itemManager;
@@ -73,7 +73,7 @@ public class BirdHouseTracker
 
 	@Inject
 	private BirdHouseTracker(Client client, ItemManager itemManager, ConfigManager configManager,
-		TimeTrackingConfig config, Notifier notifier)
+							TimeTrackingConfig config, Notifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -195,6 +195,7 @@ public class BirdHouseTracker
 
 	/**
 	 * Updates the overall completion time of the bird houses.
+	 *
 	 * @see #completionTime
 	 */
 	private void updateCompletionTime()

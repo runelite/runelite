@@ -24,7 +24,6 @@
  */
 package net.runelite.client.util;
 
-import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
@@ -43,7 +42,7 @@ public class ColorUtil
 	 * Creates a color tag from the given color.
 	 *
 	 * @param color The Color to create a tag from.
-	 * @return      A string of the color tag for the given color.
+	 * @return A string of the color tag for the given color.
 	 */
 	public static String colorTag(Color color)
 	{
@@ -55,7 +54,7 @@ public class ColorUtil
 	 *
 	 * @param str   The string to be colorized.
 	 * @param color The color to be used in the color tag.
-	 * @return      The passed str with a prepended color tag.
+	 * @return The passed str with a prepended color tag.
 	 */
 	public static String prependColorTag(final String str, final Color color)
 	{
@@ -67,7 +66,7 @@ public class ColorUtil
 	 *
 	 * @param str   The string to be colorized.
 	 * @param color The color to be used in the color tag.
-	 * @return      The passed str wrapped with opening and closing color tags.
+	 * @return The passed str wrapped with opening and closing color tags.
 	 */
 	public static String wrapWithColorTag(final String str, final Color color)
 	{
@@ -78,7 +77,7 @@ public class ColorUtil
 	 * Converts a given color to it's hexidecimal equivalent.
 	 *
 	 * @param color Color to get hexidecimal string from.
-	 * @return      Hexidecimal string representing the given color, in the form "#abcdef".
+	 * @return Hexidecimal string representing the given color, in the form "#abcdef".
 	 */
 	public static String toHexColor(final Color color)
 	{
@@ -91,7 +90,7 @@ public class ColorUtil
 	 * @param a first color
 	 * @param b second color
 	 * @param t factor
-	 * @return  interpolated color
+	 * @return interpolated color
 	 */
 	public static Color colorLerp(final Color a, final Color b, final double t)
 	{
@@ -113,7 +112,7 @@ public class ColorUtil
 	 * Gets the RGB hex color code of the passed color.
 	 *
 	 * @param color The color to get a hex code from.
-	 * @return      A lower-cased string of the RGB hex code of color.
+	 * @return A lower-cased string of the RGB hex code of color.
 	 */
 	public static String colorToHexCode(final Color color)
 	{
@@ -124,7 +123,7 @@ public class ColorUtil
 	 * Gets the ARGB hex color code of the passed color.
 	 *
 	 * @param color The color to get a hex code from.
-	 * @return      A lower-cased string of the ARGB hex code of color.
+	 * @return A lower-cased string of the ARGB hex code of color.
 	 */
 	public static String colorToAlphaHexCode(final Color color)
 	{
@@ -145,7 +144,7 @@ public class ColorUtil
 	 * Determines if the passed hex string is an alpha hex color.
 	 *
 	 * @param hex The hex to test.
-	 * @return    boolean
+	 * @return boolean
 	 */
 	public static boolean isAlphaHex(String hex)
 	{
@@ -156,7 +155,7 @@ public class ColorUtil
 	 * Determines if the passed hex string is a hex color.
 	 *
 	 * @param hex The hex to test.
-	 * @return    boolean
+	 * @return boolean
 	 */
 	public static boolean isHex(String hex)
 	{
@@ -167,18 +166,18 @@ public class ColorUtil
 	 * Limits an int to the rgba value range (0-255)
 	 *
 	 * @param value The value for the r, g, b, or a.
-	 * @return      An int between 0 - 255.
+	 * @return An int between 0 - 255.
 	 */
 	public static int constrainValue(int value)
 	{
-		return Ints.constrainToRange(value, MIN_RGB_VALUE, MAX_RGB_VALUE);
+		return MiscUtils.clamp(value, MIN_RGB_VALUE, MAX_RGB_VALUE);
 	}
 
 	/**
 	 * Gets the Color from the passed int string.
 	 *
 	 * @param string The int to get a Color object from.
-	 * @return       A Color of the int of color.
+	 * @return A Color of the int of color.
 	 */
 	public static Color fromString(String string)
 	{
@@ -197,7 +196,7 @@ public class ColorUtil
 	 * Gets the Color from the passed hex string.
 	 *
 	 * @param hex The hex to get a Color object from.
-	 * @return    A Color of the hex code of color.
+	 * @return A Color of the hex code of color.
 	 */
 	public static Color fromHex(String hex)
 	{
@@ -230,6 +229,7 @@ public class ColorUtil
 
 	/**
 	 * Creates color from passed object hash code
+	 *
 	 * @param object object with hashCode
 	 * @return color
 	 */
@@ -238,5 +238,33 @@ public class ColorUtil
 		int i = object.hashCode();
 		float h = (i % 360) / 360f;
 		return Color.getHSBColor(h, 1, 1);
+	}
+
+	/**
+	 * Modifies the alpha component on a Color
+	 *
+	 * @param color The color to set the alpha value on
+	 * @param alpha The alpha value to set on the color
+	 * @return color
+	 */
+	public static int setAlphaComponent(Color color, int alpha)
+	{
+		return setAlphaComponent(color.getRGB(), alpha);
+	}
+
+	/**
+	 * Modifies the alpha component on a Color
+	 *
+	 * @param color The color to set the alpha value on
+	 * @param alpha The alpha value to set on the color
+	 * @return color
+	 */
+	public static int setAlphaComponent(int color, int alpha)
+	{
+		if (alpha < 0 || alpha > 255)
+		{
+			throw new IllegalArgumentException("alpha must be between 0 and 255.");
+		}
+		return (color & 0x00ffffff) | (alpha << 24);
 	}
 }

@@ -24,27 +24,36 @@
 
 package net.runelite.client.plugins.prayagainstplayer;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.util.ConcurrentModificationException;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.ui.overlay.*;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-import javax.inject.Inject;
-import java.awt.*;
-import java.util.ConcurrentModificationException;
-
-class PrayAgainstPlayerOverlayPrayerTab extends Overlay {
+@Singleton
+class PrayAgainstPlayerOverlayPrayerTab extends Overlay
+{
 
 	private final PrayAgainstPlayerPlugin plugin;
-	private final PrayAgainstPlayerConfig config;
 	private final Client client;
 
 	@Inject
-	private PrayAgainstPlayerOverlayPrayerTab (PrayAgainstPlayerPlugin plugin, PrayAgainstPlayerConfig config, Client client) {
+	private PrayAgainstPlayerOverlayPrayerTab(final PrayAgainstPlayerPlugin plugin, final Client client)
+	{
 		super(plugin);
 		this.plugin = plugin;
-		this.config = config;
 		this.client = client;
 
 		setPosition(OverlayPosition.DETACHED);
@@ -54,30 +63,43 @@ class PrayAgainstPlayerOverlayPrayerTab extends Overlay {
 
 
 	@Override
-	public Dimension render(Graphics2D graphics) {
-		if (plugin.getPlayersAttackingMe() == null || !plugin.getPlayersAttackingMe().isEmpty()) {
-			try {
-				for (PlayerContainer container : plugin.getPlayersAttackingMe()) {
-					if (plugin.getPlayersAttackingMe() != null && plugin.getPlayersAttackingMe().size() > 0) {
-						//no reason to show you what prayers to pray in your prayer tab if multiple people are attacking you
-						if ((plugin.getPlayersAttackingMe().size() == 1) && (config.drawTargetPrayAgainstPrayerTab())) {
+	public Dimension render(Graphics2D graphics)
+	{
+		if (plugin.getPlayersAttackingMe() == null || !plugin.getPlayersAttackingMe().isEmpty())
+		{
+			try
+			{
+				if (plugin.getPlayersAttackingMe() != null)
+				{
+					for (PlayerContainer container : plugin.getPlayersAttackingMe())
+					{
+						if (plugin.getPlayersAttackingMe() != null && plugin.getPlayersAttackingMe().size() == 1 &&
+							plugin.isDrawTargetPrayAgainstPrayerTab())
+						{
 							renderPrayerToClick(graphics, container.getPlayer());
 						}
 					}
 				}
-			} catch (ConcurrentModificationException e) {
+			}
+			catch (ConcurrentModificationException ignored)
+			{
 			}
 		}
 		return null;
 	}
 
-	private void renderPrayerToClick(Graphics2D graphics, Player player) {
+	private void renderPrayerToClick(Graphics2D graphics, Player player)
+	{
 		Widget PROTECT_FROM_MAGIC = client.getWidget(WidgetInfo.PRAYER_PROTECT_FROM_MAGIC);
 		Widget PROTECT_FROM_RANGED = client.getWidget(WidgetInfo.PRAYER_PROTECT_FROM_MISSILES);
 		Widget PROTECT_FROM_MELEE = client.getWidget(WidgetInfo.PRAYER_PROTECT_FROM_MELEE);
 		Color color = Color.RED;
-		if (PROTECT_FROM_MELEE.isHidden()) return;
-		switch (WeaponType.checkWeaponOnPlayer(client, player)) {
+		if (PROTECT_FROM_MELEE.isHidden())
+		{
+			return;
+		}
+		switch (WeaponType.checkWeaponOnPlayer(client, player))
+		{
 			case WEAPON_MAGIC:
 				OverlayUtil.renderPolygon(graphics, rectangleToPolygon(PROTECT_FROM_MAGIC.getBounds()), color);
 				break;
@@ -92,9 +114,11 @@ class PrayAgainstPlayerOverlayPrayerTab extends Overlay {
 		}
 	}
 
-	private static Polygon rectangleToPolygon(Rectangle rect) {
+	private static Polygon rectangleToPolygon(Rectangle rect)
+	{
 		int[] xpoints = {rect.x, rect.x + rect.width, rect.x + rect.width, rect.x};
 		int[] ypoints = {rect.y, rect.y, rect.y + rect.height, rect.y + rect.height};
+
 		return new Polygon(xpoints, ypoints, 4);
 	}
 

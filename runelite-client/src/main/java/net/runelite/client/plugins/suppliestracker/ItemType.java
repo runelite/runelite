@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.suppliestracker;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -41,11 +42,12 @@ public enum ItemType
 	AMMO("Ammo"),
 	TELEPORT("Teleports");
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private String label;
 
 	/**
 	 * Takes an item and determines what ItemType it should categorize into
+	 *
 	 * @param item the item to determine category for
 	 * @return our best guess for what category this item goes into
 	 * note that if the guess is wrong (per say) it won't break anything because it will be
@@ -58,13 +60,13 @@ public enum ItemType
 			return ItemType.POTION;
 		}
 		if (item.getName().toLowerCase().contains("bolt") || item.getName().toLowerCase().contains("dart")
-				|| item.getName().toLowerCase().contains("arrow") || item.getName().toLowerCase().contains("javelin")
-				|| item.getName().toLowerCase().contains("knive") || item.getName().toLowerCase().contains("throwing")
-				|| item.getName().toLowerCase().contains("zulrah's scale") || item.getName().toLowerCase().contains("cannonball"))
+			|| item.getName().toLowerCase().contains("arrow") || item.getName().toLowerCase().contains("javelin")
+			|| item.getName().toLowerCase().contains("knive") || item.getName().toLowerCase().contains("throwing")
+			|| item.getName().toLowerCase().contains("zulrah's scale") || item.getName().toLowerCase().contains("cannonball"))
 		{
 			return ItemType.AMMO;
 		}
-		if (item.getName().contains("rune"))
+		if (item.getName().toLowerCase().contains("rune"))
 		{
 			return ItemType.RUNE;
 		}

@@ -1,28 +1,32 @@
 package net.runelite.client.plugins.lootassist;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
-public class LootPile
+class LootPile
 {
-	private static final long TIME_UNTIL_VISIBLE = 60000;
-	private final long timeCreated;
-	@Getter
+	private static final long TIME_UNTIL_VISIBLE = 62400;
+
+	@Getter(AccessLevel.PACKAGE)
 	private final long timeAppearing;
-	@Getter
+
+	@Getter(AccessLevel.PACKAGE)
 	private final WorldPoint location;
-	@Getter
+
+	@Getter(AccessLevel.PACKAGE)
 	private final String playerName;
-	@Getter @Setter
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private boolean beingRendered = false;
 
-	public LootPile(WorldPoint location, String playerName)
+	LootPile(WorldPoint location, String playerName)
 	{
-		this.timeCreated = System.currentTimeMillis();
+		long timeCreated = System.currentTimeMillis();
 		this.location = location;
 		this.playerName = playerName;
-		this.timeAppearing = this.timeCreated + TIME_UNTIL_VISIBLE;
+		this.timeAppearing = timeCreated + TIME_UNTIL_VISIBLE;
 	}
 }

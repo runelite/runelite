@@ -27,13 +27,14 @@ package net.runelite.client.plugins.shayzieninfirmary;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -44,12 +45,14 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Shayzien Infirmary",
 	description = "Shows the status of wounded soldiers",
 	tags = {"shayzien", "infirmary", "soldiers"},
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+@Singleton
 public class ShayzienInfirmaryPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
-	private List<NPC> unhealedSoldiers = new ArrayList<NPC>();
+	private List<NPC> unhealedSoldiers = new ArrayList<>();
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -58,17 +61,24 @@ public class ShayzienInfirmaryPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private EventBus eventBus;
+
+	@Inject
 	private ShayzienInfirmaryOverlay overlay;
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+
 		loadPlugin();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		unloadPlugin();
 	}
 
@@ -82,10 +92,9 @@ public class ShayzienInfirmaryPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
-		if(!isAtInfirmary())
+		if (isNotAtInfirmary())
 		{
 			return;
 		}
@@ -101,23 +110,18 @@ public class ShayzienInfirmaryPlugin extends Plugin
 		}
 	}
 
-	public boolean isSoldierId(int npcId)
+	private boolean isSoldierId(int npcId)
 	{
 		return (npcId >= 6826 && npcId <= 6857);
 	}
 
-	public boolean isUnhealedSoldierId(int npcId)
+	private boolean isUnhealedSoldierId(int npcId)
 	{
 		return (isSoldierId(npcId) && npcId % 2 == 0);
 	}
 
-	public boolean isHealedSoldierId(int npcId)
+	boolean isNotAtInfirmary()
 	{
-		return (isSoldierId(npcId) && npcId % 2 == 1);
-	}
-
-	public boolean isAtInfirmary()
-	{
-		return client.getLocalPlayer().getWorldLocation().getRegionID() == 6200;
+		return client.getLocalPlayer().getWorldLocation().getRegionID() != 6200;
 	}
 }

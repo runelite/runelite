@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@Builder(toBuilder=true)
+@Builder(toBuilder = true)
 public class TaskData
 {
 	private long elapsedTime;

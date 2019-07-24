@@ -24,35 +24,40 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import static net.runelite.api.ObjectID.REDWOOD;
 import static net.runelite.api.ObjectID.REDWOOD_29670;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum Tree
 {
 	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670);
 
 	private final int[] treeIds;
 
-	Tree(int... treeIds)
+	Tree(final int... treeIds)
 	{
 		this.treeIds = treeIds;
 	}
 
-	private static final Map<Integer, Tree> TREES = new HashMap<>();
+	private static final Map<Integer, Tree> TREES;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, Tree> builder = new ImmutableMap.Builder<>();
+
 		for (Tree tree : values())
 		{
 			for (int treeId : tree.treeIds)
 			{
-				TREES.put(treeId, tree);
+				builder.put(treeId, tree);
 			}
 		}
+
+		TREES = builder.build();
 	}
 
 	static Tree findTree(int objectId)

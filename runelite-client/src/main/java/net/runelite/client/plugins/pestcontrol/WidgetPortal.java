@@ -24,13 +24,14 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import net.runelite.api.widgets.WidgetInfo;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @ToString
 enum WidgetPortal
 {

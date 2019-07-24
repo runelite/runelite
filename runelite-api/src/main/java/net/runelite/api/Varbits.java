@@ -50,6 +50,11 @@ public enum Varbits
 	CHAT_SCROLLBAR_ON_LEFT(6374),
 
 	/**
+	 * Grand Exchange
+	 */
+	GRAND_EXCHANGE_PRICE_PER_ITEM(4398),
+
+	/**
 	 * Runepouch
 	 */
 	RUNE_POUCH_RUNE1(29),
@@ -217,6 +222,7 @@ public enum Varbits
 	 * Barbarian Assault
 	 */
 	IN_GAME_BA(3923),
+	BA_GC(4768),
 
 	/**
 	 * 0 = Outside wilderness
@@ -292,6 +298,16 @@ public enum Varbits
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
 	 */
 	THEATRE_OF_BLOOD(6440),
+	BLOAT_DOOR(6447),
+
+	/**
+	 * Theatre of Blood orb varbits each number stands for the player's health on a scale of 1-27 (I think), 0 hides the orb
+	 */
+	THEATRE_OF_BLOOD_ORB_1(6442),
+	THEATRE_OF_BLOOD_ORB_2(6443),
+	THEATRE_OF_BLOOD_ORB_3(6444),
+	THEATRE_OF_BLOOD_ORB_4(6445),
+	THEATRE_OF_BLOOD_ORB_5(6446),
 
 	/**
 	 * Nightmare Zone
@@ -328,7 +344,7 @@ public enum Varbits
 	 * Pyramid plunder
 	 */
 	PYRAMID_PLUNDER_TIMER(2375),
-	PYRAMID_PLUNDER_ROOM(2377),
+	PYRAMID_PLUNDER_ROOM(2374),
 
 	/**
 	 * Barrows
@@ -523,6 +539,14 @@ public enum Varbits
 	QUEST_TAB(8168),
 
 	/**
+	 * Explorer ring
+	 */
+	EXPLORER_RING_ALCHTYPE(5398),
+	EXPLORER_RING_TELEPORTS(4552),
+	EXPLORER_RING_ALCHS(4554),
+	EXPLORER_RING_RUNENERGY(4553),
+
+	/**
 	 * Temple Trekking
 	 */
 	TREK_POINTS(1955),
@@ -558,7 +582,7 @@ public enum Varbits
 	QUEST_THE_EYES_OF_GLOUPHRIE(2497),
 	QUEST_FAIRYTALE_I_GROWING_PAINS(1803),
 	QUEST_FAIRYTALE_II_CURE_A_QUEEN(2326),
-	QUEST_THE_FEUD(334),
+	QUEST_THE_FEUD(334), // 14 = able to pickpocket
 	QUEST_FORGETTABLE_TALE(822),
 	QUEST_GARDEN_OF_TRANQUILLITY(961),
 	QUEST_GHOSTS_AHOY(217),
@@ -627,7 +651,39 @@ public enum Varbits
 	/**
 	 * Spellbook filtering (1 = unfiltered, 0 = filtered)
 	 */
-	FILTER_SPELLBOOK(6718);
+	FILTER_SPELLBOOK(6718),
+
+	/**
+	 * POH Building mode (1 = yes, 0 = no)
+	 */
+	BUILDING_MODE(2176),
+
+	WINTERTODT_TIMER(7980),
+
+	/**
+	 * 1 if in game, 0 if not
+	 */
+	LMS_IN_GAME(5314),
+
+	/**
+	 * Amount of pvp kills in current game
+	 */
+	LMS_KILLS(5315),
+
+	/**
+	 * The x coordinate of the final safespace (world coord)
+	 */
+	LMS_SAFE_X(5316),
+
+	/**
+	 * Starts at 100, counts down every 10 ticks (6 seconds)
+	 */
+	LMS_POISON_PROGRESS(5317),
+
+	/**
+	 * The y coordinate of the final safespace (world coord)
+	 */
+	LMS_SAFE_Y(5320);
 
 	/**
 	 * The raw varbit ID.

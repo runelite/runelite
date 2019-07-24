@@ -24,28 +24,33 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import net.runelite.api.HashTable;
 import net.runelite.api.Node;
 import net.runelite.api.Point;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetPositioned;
-import net.runelite.api.mixins.FieldHook;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.api.mixins.Shadow;
+import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Replace;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import net.runelite.api.mixins.FieldHook;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSHashTable;
+import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSNode;
+import net.runelite.rs.api.RSNodeHashTable;
+import net.runelite.rs.api.RSPlayerAppearance;
+import net.runelite.rs.api.RSSequenceDefinition;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSWidget.class)
@@ -53,7 +58,7 @@ public abstract class RSWidgetMixin implements RSWidget
 {
 	private static final int ITEM_SLOT_SIZE = 32;
 
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
@@ -153,7 +158,7 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		// also the widget may not have been drawn, yet
 		int groupId = TO_GROUP(getId());
-		RSHashTable componentTable = client.getComponentTable();
+		RSNodeHashTable componentTable = client.getComponentTable();
 		RSNode[] buckets = componentTable.getBuckets();
 		for (RSNode node : buckets)
 		{
@@ -258,6 +263,11 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		for (int i = 0; i < itemIds.length; ++i)
 		{
+			if (itemIds[i] <= 0)
+			{
+				continue;
+			}
+
 			WidgetItem item = getWidgetItem(i);
 
 			if (item != null)
@@ -287,19 +297,17 @@ public abstract class RSWidgetMixin implements RSWidget
 		int itemId = itemIds[index];
 		int itemQuantity = itemQuantities[index];
 
-		Point widgetCanvasLocation = getCanvasLocation();
-
-		if (itemId <= 0 || itemQuantity <= 0 || columns <= 0)
+		if (columns <= 0)
 		{
 			return null;
 		}
 
 		int row = index / columns;
 		int col = index % columns;
-		int itemX = widgetCanvasLocation.getX() + ((ITEM_SLOT_SIZE + xPitch) * col);
-		int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + yPitch) * row);
+		int itemX = rl$x + ((ITEM_SLOT_SIZE + xPitch) * col);
+		int itemY = rl$y + ((ITEM_SLOT_SIZE + yPitch) * row);
 
-		Rectangle bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
+		Rectangle bounds = new Rectangle(itemX, itemY, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
 		return new WidgetItem(itemId - 1, itemQuantity, index, bounds, this);
 	}
 
@@ -409,7 +417,7 @@ public abstract class RSWidgetMixin implements RSWidget
 		event.setWidget(this);
 		event.setHidden(hidden);
 
-		client.getCallbacks().post(event);
+		client.getCallbacks().post(WidgetHiddenChanged.class, event);
 
 		RSWidget[] children = getChildren();
 
@@ -473,7 +481,7 @@ public abstract class RSWidgetMixin implements RSWidget
 		broadcastHidden(isSelfHidden());
 	}
 
-	@FieldHook("relativeY")
+	@FieldHook("y")
 	@Inject
 	public void onPositionChanged(int idx)
 	{
@@ -493,8 +501,8 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		client.getLogger().trace("Posting widget position changed");
 
-		WidgetPositioned widgetPositioned = new WidgetPositioned();
-		client.getCallbacks().postDeferred(widgetPositioned);
+		WidgetPositioned widgetPositioned = WidgetPositioned.INSTANCE;
+		client.getCallbacks().postDeferred(WidgetPositioned.class, widgetPositioned);
 	}
 
 	@Inject
@@ -577,5 +585,18 @@ public abstract class RSWidgetMixin implements RSWidget
 		{
 			Arrays.fill(getChildren(), null);
 		}
+	}
+
+	@Copy("getModel")
+	public abstract RSModel rs$getModel(RSSequenceDefinition sequence, int frame, boolean alternate, RSPlayerAppearance playerComposition);
+
+	@Replace("getModel")
+	public RSModel rl$getModel(RSSequenceDefinition sequence, int frame, boolean alternate, RSPlayerAppearance playerComposition)
+	{
+		if (frame != -1 && client.isInterpolateWidgetAnimations())
+		{
+			frame = frame | getModelFrameCycle() << 16 | Integer.MIN_VALUE;
+		}
+		return rs$getModel(sequence, frame, alternate, playerComposition);
 	}
 }

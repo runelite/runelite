@@ -74,4 +74,37 @@ public interface GrandExchangeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "showTotal",
+		name = "Show grand exchange total",
+		description = "Show grand exchange total"
+	)
+	default boolean showTotal()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "showExact",
+		name = "Show exact total value",
+		description = "Show exact total value"
+	)
+	default boolean showExact()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "enableAfford",
+		name = "Enable Afford quantity on GE",
+		description = "Shows the quantity you can buy on the GE"
+	)
+	default boolean enableAfford()
+	{
+		return true;
+	}
 }

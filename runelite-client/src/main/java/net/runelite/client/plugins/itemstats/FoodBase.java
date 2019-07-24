@@ -28,7 +28,7 @@ import net.runelite.client.plugins.itemstats.stats.Stats;
 
 public abstract class FoodBase extends StatBoost
 {
-	public FoodBase()
+	protected FoodBase()
 	{
 		super(Stats.HITPOINTS, false);
 	}

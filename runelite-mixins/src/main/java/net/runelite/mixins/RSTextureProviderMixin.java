@@ -35,7 +35,7 @@ import net.runelite.rs.api.RSTextureProvider;
 @Mixin(RSTextureProvider.class)
 public abstract class RSTextureProviderMixin implements RSTextureProvider
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@MethodHook(value = "<init>", end = true)
@@ -49,7 +49,7 @@ public abstract class RSTextureProviderMixin implements RSTextureProvider
 		setSize(64);
 	}
 
-	@MethodHook(value = "checkTextures", end = true)
+	@MethodHook(value = "animate", end = true)
 	@Inject
 	public void checkTextures(int diff)
 	{

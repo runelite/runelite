@@ -24,12 +24,13 @@
  */
 package net.runelite.client.plugins.raidsthieving.BatSolver;
 
-import java.util.Map;
-import java.util.HashSet;
-import java.util.HashMap;
-import java.util.TreeSet;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import static net.runelite.client.plugins.raidsthieving.BatSolver.SolutionSet.SOLUTION_SETS;
 
 public class BatSolver
@@ -37,9 +38,9 @@ public class BatSolver
 	private Map<Integer, Integer> numberOfSolutionsWithPoison;
 	private final SolutionSet solution;
 
-	private final HashSet<Integer> grubsChests;
+	private final Set<Integer> grubsChests;
 
-	public BatSolver(ThievingRoomType roomType)
+	public BatSolver(final ThievingRoomType roomType)
 	{
 		solution = new SolutionSet(roomType);
 		grubsChests = new HashSet<>();
@@ -59,9 +60,9 @@ public class BatSolver
 		calculateChanceOfPoison();
 	}
 
-	public TreeSet<Integer> matchSolutions()
+	public Set<Integer> matchSolutions()
 	{
-		TreeSet<Integer> possibleEmptyChests = new TreeSet<>();
+		Set<Integer> possibleEmptyChests = new TreeSet<>();
 		for (SolutionSet knownSolution : SolutionSet.SOLUTION_SETS)
 		{
 			if (knownSolution.getType() == solution.getType() && matchSolution(knownSolution))
@@ -100,13 +101,13 @@ public class BatSolver
 		return matchesAll && everMatched;
 	}
 
-	public ThievingRoomType getType()
+	private ThievingRoomType getType()
 	{
 		return solution.getType();
 	}
 
 
-	public void calculateChanceOfPoison()
+	private void calculateChanceOfPoison()
 	{
 		if (getType() == null)
 		{
@@ -184,10 +185,5 @@ public class BatSolver
 		}
 		double chestChance = (double) (timesFound) / (double) (mostFrequentPoison);
 		return 1. / (1 + Math.exp(5 - 10 * chestChance));
-	}
-
-	public int getNumberOfEmptyChests()
-	{
-		return solution.getEmptyChests().size();
 	}
 }

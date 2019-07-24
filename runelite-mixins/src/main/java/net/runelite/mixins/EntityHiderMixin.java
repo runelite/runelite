@@ -31,16 +31,16 @@ import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSEntity;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSPlayer;
 import net.runelite.rs.api.RSProjectile;
 import net.runelite.rs.api.RSScene;
-import net.runelite.rs.api.RSRenderable;
 
 @Mixin(RSScene.class)
 public abstract class EntityHiderMixin implements RSScene
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Shadow("isHidingEntities")
@@ -67,6 +67,9 @@ public abstract class EntityHiderMixin implements RSScene
 	@Shadow("hideNPCs")
 	private static boolean hideNPCs;
 
+	@Shadow("hideNPCsNames")
+	private  static String hideNPCsNames;
+
 	@Shadow("hideNPCs2D")
 	private static boolean hideNPCs2D;
 
@@ -76,11 +79,11 @@ public abstract class EntityHiderMixin implements RSScene
 	@Shadow("hideProjectiles")
 	private static boolean hideProjectiles;
 
-	@Copy("addEntityMarker")
-	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSRenderable renderable, int var10, boolean var11, long var12, int var13);
+	@Copy("newGameObject")
+	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSEntity renderable, int var10, boolean var11, long var12, int var13);
 
-	@Replace("addEntityMarker")
-	boolean rl$addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSRenderable renderable, int var10, boolean var11, long var12, int var13)
+	@Replace("newGameObject")
+	boolean rl$addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSEntity renderable, int var10, boolean var11, long var12, int var13)
 	{
 		final boolean shouldDraw = shouldDraw(renderable, false);
 
@@ -98,13 +101,13 @@ public abstract class EntityHiderMixin implements RSScene
 		return shouldDraw && addEntityMarker(var1, var2, var3, var4, var5, x, y, var8, renderable, var10, var11, var12, var13);
 	}
 
-	@Copy("draw2DExtras")
+	@Copy("drawActor2d")
 	private static void draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("draw2DExtras")
+	@Replace("drawActor2d")
 	private static void rl$draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
 	{
 		if (shouldDraw(actor, true))
@@ -151,12 +154,27 @@ public abstract class EntityHiderMixin implements RSScene
 		else if (renderable instanceof RSNPC)
 		{
 			RSNPC npc = (RSNPC) renderable;
+			String[] names = hideNPCsNames.split(",");
 
 			if (!hideAttackers)
 			{
 				if (npc.getInteracting() == client.getLocalPlayer())
 				{
 					return true;
+				}
+			}
+
+			for (String name : names)
+			{
+				if (name != null && !name.equals(""))
+				{
+					if (npc.getName() != null)
+					{
+						if (npc.getName().startsWith(name))
+						{
+							return false;
+						}
+					}
 				}
 			}
 

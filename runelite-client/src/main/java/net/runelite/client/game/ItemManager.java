@@ -28,9 +28,14 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import io.reactivex.schedulers.Schedulers;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,51 +49,27 @@ import javax.inject.Singleton;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
+import static net.runelite.api.Constants.HIGH_ALCHEMY_MULTIPLIER;
 import net.runelite.api.GameState;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
-import net.runelite.api.SpritePixels;
+import net.runelite.api.Sprite;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.PostItemComposition;
+import net.runelite.api.events.PostItemDefinition;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemStats;
+import org.jetbrains.annotations.NotNull;
 
 @Singleton
 @Slf4j
 public class ItemManager
 {
-	@Value
-	private static class ImageKey
-	{
-		private final int itemId;
-		private final int itemQuantity;
-		private final boolean stackable;
-	}
-
-	@Value
-	private static class OutlineKey
-	{
-		private final int itemId;
-		private final int itemQuantity;
-		private final Color outlineColor;
-	}
-
-	private final Client client;
-	private final ScheduledExecutorService scheduledExecutorService;
-	private final ClientThread clientThread;
-
-	private final ItemClient itemClient = new ItemClient();
-	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
-	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
-	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
-	private final LoadingCache<Integer, ItemComposition> itemCompositions;
-	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
-
 	// Worn items with weight reducing property have a different worn and inventory ItemID
 	private static final ImmutableMap<Integer, Integer> WORN_ITEMS = ImmutableMap.<Integer, Integer>builder().
 		put(BOOTS_OF_LIGHTNESS_89, BOOTS_OF_LIGHTNESS).
@@ -151,9 +132,24 @@ public class ItemManager
 		put(AGILITY_CAPET_13341, AGILITY_CAPET).
 		put(AGILITY_CAPE_13340, AGILITY_CAPE).
 		build();
+	private final Client client;
+	private final ScheduledExecutorService scheduledExecutorService;
+	private final ClientThread clientThread;
+	private final ItemClient itemClient = new ItemClient();
+	private final ImmutableMap<Integer, ItemStats> itemStatMap;
+	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
+	private final LoadingCache<Integer, ItemDefinition> itemDefinitions;
+	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
+	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
+	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
 
 	@Inject
-	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
+	public ItemManager(
+		Client client,
+		ScheduledExecutorService executor,
+		ClientThread clientThread,
+		EventBus eventbus
+	)
 	{
 		this.client = client;
 		this.scheduledExecutorService = executor;
@@ -168,19 +164,19 @@ public class ItemManager
 			.build(new CacheLoader<ImageKey, AsyncBufferedImage>()
 			{
 				@Override
-				public AsyncBufferedImage load(ImageKey key) throws Exception
+				public AsyncBufferedImage load(@NotNull ImageKey key) throws Exception
 				{
 					return loadImage(key.itemId, key.itemQuantity, key.stackable);
 				}
 			});
 
-		itemCompositions = CacheBuilder.newBuilder()
+		itemDefinitions = CacheBuilder.newBuilder()
 			.maximumSize(1024L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<Integer, ItemComposition>()
+			.build(new CacheLoader<Integer, ItemDefinition>()
 			{
 				@Override
-				public ItemComposition load(Integer key) throws Exception
+				public ItemDefinition load(@NotNull Integer key) throws Exception
 				{
 					return client.getItemDefinition(key);
 				}
@@ -192,77 +188,88 @@ public class ItemManager
 			.build(new CacheLoader<OutlineKey, BufferedImage>()
 			{
 				@Override
-				public BufferedImage load(OutlineKey key) throws Exception
+				public BufferedImage load(@NotNull OutlineKey key) throws Exception
 				{
 					return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor);
 				}
 			});
+
+		final Gson gson = new Gson();
+
+		final Type typeToken = new TypeToken<Map<Integer, ItemStats>>()
+		{
+		}.getType();
+
+		final InputStream statsFile = getClass().getResourceAsStream("/item_stats.json");
+		final Map<Integer, ItemStats> stats = gson.fromJson(new InputStreamReader(statsFile), typeToken);
+		itemStatMap = ImmutableMap.copyOf(stats);
+
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventbus.subscribe(PostItemDefinition.class, this, this::onPostItemDefinition);
 	}
 
 	private void loadPrices()
 	{
-		try
-		{
-			ItemPrice[] prices = itemClient.getPrices();
-			if (prices != null)
-			{
-				ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
-				for (ItemPrice price : prices)
+		itemClient.getPrices()
+			.subscribeOn(Schedulers.io())
+			.subscribe(
+				(prices) ->
 				{
-					map.put(price.getId(), price);
-				}
-				itemPrices = map.build();
-			}
+					if (prices != null)
+					{
+						ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
+						for (ItemPrice price : prices)
+						{
+							map.put(price.getId(), price);
+						}
+						itemPrices = map.build();
+					}
 
-			log.debug("Loaded {} prices", itemPrices.size());
-		}
-		catch (IOException e)
-		{
-			log.warn("error loading prices!", e);
-		}
+					log.debug("Loaded {} prices", itemPrices.size());
+				},
+				(e) -> log.warn("error loading prices!", e)
+			);
 	}
 
 	private void loadStats()
 	{
-		try
-		{
-			final Map<Integer, ItemStats> stats = itemClient.getStats();
-			if (stats != null)
-			{
-				itemStats = ImmutableMap.copyOf(stats);
-			}
+		itemClient.getStats()
+			.subscribeOn(Schedulers.io())
+			.subscribe(
+				(stats) ->
+				{
+					if (stats != null)
+					{
+						itemStats = ImmutableMap.copyOf(stats);
+					}
 
-			log.debug("Loaded {} stats", itemStats.size());
-		}
-		catch (IOException e)
-		{
-			log.warn("error loading stats!", e);
-		}
+					log.debug("Loaded {} stats", itemStats.size());
+				},
+				(e) -> log.warn("error loading stats!", e)
+			);
 	}
 
-
-	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			itemCompositions.invalidateAll();
+			itemDefinitions.invalidateAll();
 		}
 	}
 
-	@Subscribe
-	public void onPostItemComposition(PostItemComposition event)
+	private void onPostItemDefinition(PostItemDefinition event)
 	{
-		itemCompositions.put(event.getItemComposition().getId(), event.getItemComposition());
+		itemDefinitions.put(event.getItemDefinition().getId(), event.getItemDefinition());
 	}
 
 	/**
 	 * Invalidates internal item manager item composition cache (but not client item composition cache)
-	 * @see Client#getItemCompositionCache()
+	 *
+	 * @see Client#getItemDefinitionCache()
 	 */
-	public void invalidateItemCompositionCache()
+	public void invalidateItemDefinitionCache()
 	{
-		itemCompositions.invalidateAll();
+		itemDefinitions.invalidateAll();
 	}
 
 	/**
@@ -273,6 +280,18 @@ public class ItemManager
 	 */
 	public int getItemPrice(int itemID)
 	{
+		return getItemPrice(itemID, false);
+	}
+
+	/**
+	 * Look up an item's price
+	 *
+	 * @param itemID               item id
+	 * @param ignoreUntradeableMap should the price returned ignore the {@link UntradeableItemMapping}
+	 * @return item price
+	 */
+	public int getItemPrice(int itemID, boolean ignoreUntradeableMap)
+	{
 		if (itemID == ItemID.COINS_995)
 		{
 			return 1;
@@ -282,10 +301,13 @@ public class ItemManager
 			return 1000;
 		}
 
-		UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
-		if (p != null)
+		if (!ignoreUntradeableMap)
 		{
-			return getItemPrice(p.getPriceID()) * p.getQuantity();
+			UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
+			if (p != null)
+			{
+				return getItemPrice(p.getPriceID()) * p.getQuantity();
+			}
 		}
 
 		int price = 0;
@@ -301,22 +323,63 @@ public class ItemManager
 		return price;
 	}
 
+	public int getAlchValue(ItemDefinition composition)
+	{
+		if (composition.getId() == ItemID.COINS_995)
+		{
+			return 1;
+		}
+		if (composition.getId() == ItemID.PLATINUM_TOKEN)
+		{
+			return 1000;
+		}
+
+		return (int) Math.max(1, composition.getPrice() * HIGH_ALCHEMY_MULTIPLIER);
+	}
+
+	public int getAlchValue(int itemID)
+	{
+		if (itemID == ItemID.COINS_995)
+		{
+			return 1;
+		}
+		if (itemID == ItemID.PLATINUM_TOKEN)
+		{
+			return 1000;
+		}
+
+		return (int) Math.max(1, getItemDefinition(itemID).getPrice() * HIGH_ALCHEMY_MULTIPLIER);
+	}
+
+	public int getBrokenValue(int itemId)
+	{
+		PvPValueBrokenItem b = PvPValueBrokenItem.of(itemId);
+
+		if (b != null)
+		{
+			return (int) (b.getValue() * (75.0f / 100.0f));
+		}
+
+		return 0;
+	}
+
 	/**
 	 * Look up an item's stats
+	 *
 	 * @param itemId item id
 	 * @return item stats
 	 */
 	@Nullable
 	public ItemStats getItemStats(int itemId, boolean allowNote)
 	{
-		ItemComposition itemComposition = getItemComposition(itemId);
+		ItemDefinition itemDefinition = getItemDefinition(itemId);
 
-		if (itemComposition == null || itemComposition.getName() == null || (!allowNote && itemComposition.getNote() != -1))
+		if (itemDefinition == null || itemDefinition.getName() == null || (!allowNote && itemDefinition.getNote() != -1))
 		{
 			return null;
 		}
 
-		return itemStats.get(canonicalize(itemId));
+		return itemStatMap.get(canonicalize(itemId));
 	}
 
 	/**
@@ -347,10 +410,10 @@ public class ItemManager
 	 * @param itemId item id
 	 * @return item composition
 	 */
-	public ItemComposition getItemComposition(int itemId)
+	public ItemDefinition getItemDefinition(int itemId)
 	{
-		assert client.isClientThread() : "getItemComposition must be called on client thread";
-		return itemCompositions.getUnchecked(itemId);
+		assert client.isClientThread() : "getItemDefinition must be called on client thread";
+		return itemDefinitions.getUnchecked(itemId);
 	}
 
 	/**
@@ -358,16 +421,16 @@ public class ItemManager
 	 */
 	public int canonicalize(int itemID)
 	{
-		ItemComposition itemComposition = getItemComposition(itemID);
+		ItemDefinition itemDefinition = getItemDefinition(itemID);
 
-		if (itemComposition.getNote() != -1)
+		if (itemDefinition.getNote() != -1)
 		{
-			return itemComposition.getLinkedNoteId();
+			return itemDefinition.getLinkedNoteId();
 		}
 
-		if (itemComposition.getPlaceholderTemplateId() != -1)
+		if (itemDefinition.getPlaceholderTemplateId() != -1)
 		{
-			return itemComposition.getPlaceholderId();
+			return itemDefinition.getPlaceholderId();
 		}
 
 		return WORN_ITEMS.getOrDefault(itemID, itemID);
@@ -381,14 +444,14 @@ public class ItemManager
 	 */
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		AsyncBufferedImage img = new AsyncBufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
+		AsyncBufferedImage img = new AsyncBufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		clientThread.invoke(() ->
 		{
 			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())
 			{
 				return false;
 			}
-			SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR,
+			Sprite sprite = client.createItemSprite(itemId, quantity, 1, Sprite.DEFAULT_SHADOW_COLOR,
 				stackable ? 1 : 0, false, CLIENT_DEFAULT_ZOOM);
 			if (sprite == null)
 			{
@@ -442,21 +505,21 @@ public class ItemManager
 	/**
 	 * Create item sprite and applies an outline.
 	 *
-	 * @param itemId item id
+	 * @param itemId       item id
 	 * @param itemQuantity item quantity
 	 * @param outlineColor outline color
 	 * @return image
 	 */
 	private BufferedImage loadItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
 	{
-		final SpritePixels itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, true, 710);
+		final Sprite itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, true, 710);
 		return itemSprite.toBufferedOutline(outlineColor);
 	}
 
 	/**
 	 * Get item outline with a specific color.
 	 *
-	 * @param itemId item id
+	 * @param itemId       item id
 	 * @param itemQuantity item quantity
 	 * @param outlineColor outline color
 	 * @return image
@@ -471,5 +534,21 @@ public class ItemManager
 		{
 			return null;
 		}
+	}
+
+	@Value
+	private static class ImageKey
+	{
+		private final int itemId;
+		private final int itemQuantity;
+		private final boolean stackable;
+	}
+
+	@Value
+	private static class OutlineKey
+	{
+		private final int itemId;
+		private final int itemQuantity;
+		private final Color outlineColor;
 	}
 }

@@ -29,7 +29,7 @@ import net.runelite.api.Item;
 
 public class AllRequirementsCollection implements ItemRequirement
 {
-	private ItemRequirement[] requirements;
+	private final ItemRequirement[] requirements;
 
 	public AllRequirementsCollection(ItemRequirement... requirements)
 	{

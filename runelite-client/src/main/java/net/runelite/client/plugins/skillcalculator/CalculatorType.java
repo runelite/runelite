@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
- * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,40 +30,26 @@ import net.runelite.api.Skill;
 
 @AllArgsConstructor
 @Getter
-public enum CalculatorType
+enum CalculatorType
 {
-	AGILITY(Skill.AGILITY, "skill_agility.json", false),
-	CONSTRUCTION(Skill.CONSTRUCTION, "skill_construction.json", true),
-	COOKING(Skill.COOKING, "skill_cooking.json", true),
-	CRAFTING(Skill.CRAFTING, "skill_crafting.json", true),
-	FARMING(Skill.FARMING, "skill_farming.json", true),
-	FIREMAKING(Skill.FIREMAKING, "skill_firemaking.json", false),
-	FLETCHING(Skill.FLETCHING, "skill_fletching.json", false),
-	FISHING(Skill.FISHING, "skill_fishing.json", false),
-	HERBLORE(Skill.HERBLORE, "skill_herblore.json", true),
-	HUNTER(Skill.HUNTER, "skill_hunter.json", false),
-	MAGIC(Skill.MAGIC, "skill_magic.json", false),
-	MINING(Skill.MINING, "skill_mining.json", false),
-	PRAYER(Skill.PRAYER, "skill_prayer.json", true),
-	RUNECRAFT(Skill.RUNECRAFT, "skill_runecraft.json", false),
-	SMITHING(Skill.SMITHING, "skill_smithing.json", true),
-	THIEVING(Skill.THIEVING, "skill_thieving.json", false),
-	WOODCUTTING(Skill.WOODCUTTING, "skill_woodcutting.json", false);
+	MINING(Skill.MINING, "skill_mining.json"),
+	AGILITY(Skill.AGILITY, "skill_agility.json"),
+	SMITHING(Skill.SMITHING, "skill_smithing.json"),
+	HERBLORE(Skill.HERBLORE, "skill_herblore.json"),
+	FISHING(Skill.FISHING, "skill_fishing.json"),
+	THIEVING(Skill.THIEVING, "skill_thieving.json"),
+	COOKING(Skill.COOKING, "skill_cooking.json"),
+	PRAYER(Skill.PRAYER, "skill_prayer.json"),
+	CRAFTING(Skill.CRAFTING, "skill_crafting.json"),
+	FIREMAKING(Skill.FIREMAKING, "skill_firemaking.json"),
+	MAGIC(Skill.MAGIC, "skill_magic.json"),
+	FLETCHING(Skill.FLETCHING, "skill_fletching.json"),
+	WOODCUTTING(Skill.WOODCUTTING, "skill_woodcutting.json"),
+	RUNECRAFT(Skill.RUNECRAFT, "skill_runecraft.json"),
+	FARMING(Skill.FARMING, "skill_farming.json"),
+	CONSTRUCTION(Skill.CONSTRUCTION, "skill_construction.json"),
+	HUNTER(Skill.HUNTER, "skill_hunter.json");
 
 	private final Skill skill;
 	private final String dataFile;
-	private final boolean bankedXpFlag;
-
-	public static CalculatorType getBySkill(Skill skill)
-	{
-		for (CalculatorType c : values())
-		{
-			if (c.getSkill().equals(skill))
-			{
-				return c;
-			}
-		}
-
-		return null;
-	}
 }

@@ -25,6 +25,12 @@
 
 package net.runelite.client.plugins.lootingbagviewer;
 
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -32,17 +38,15 @@ import net.runelite.api.ItemContainer;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-import javax.inject.Inject;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
-class LootingBagViewerOverlay extends Overlay
+@Singleton
+public class LootingBagViewerOverlay extends Overlay
 {
 	private static final int INVENTORY_SIZE = 28;
-	private static final int PLACEHOLDER_WIDTH = 36;
+	public static final int PLACEHOLDER_WIDTH = 36;
 	private static final int PLACEHOLDER_HEIGHT = 32;
 	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(new BufferedImage(PLACEHOLDER_WIDTH, PLACEHOLDER_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 
@@ -55,12 +59,12 @@ class LootingBagViewerOverlay extends Overlay
 	private Item[] items;
 
 	@Inject
-	private LootingBagViewerOverlay(Client client, ItemManager itemManager)
+	private LootingBagViewerOverlay(final Client client, final ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrapping(4);
 		panelComponent.setGap(new Point(6, 4));
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		this.itemManager = itemManager;
 		this.client = client;
 
@@ -71,22 +75,29 @@ class LootingBagViewerOverlay extends Overlay
 	{
 		if (itemContainer == null)
 		{
-			if(client.getItemContainer(InventoryID.LOOTING_BAG) != null) {
+			if (client.getItemContainer(InventoryID.LOOTING_BAG) != null)
+			{
 				itemContainer = client.getItemContainer(InventoryID.LOOTING_BAG);
-				items = itemContainer.getItems();
+				if (itemContainer != null)
+				{
+					items = itemContainer.getItems();
+				}
 			}
 			return null;
 		}
-		else if(itemContainer != null && client.getItemContainer(InventoryID.LOOTING_BAG) != null)
+		else if (items != null && client.getItemContainer(InventoryID.LOOTING_BAG) != null)
 		{
 			itemContainer = client.getItemContainer(InventoryID.LOOTING_BAG);
-			Item[] tempItems = itemContainer.getItems();
-
-			for(int i = 0; i < items.length; i++)
+			if (itemContainer != null)
 			{
-				if(!items[i].equals(tempItems[i]))
+				Item[] tempItems = itemContainer.getItems();
+
+				for (int i = 0; i < items.length; i++)
 				{
-					items = tempItems;
+					if (!items[i].equals(tempItems[i]))
+					{
+						items = tempItems;
+					}
 				}
 			}
 		}

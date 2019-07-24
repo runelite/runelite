@@ -35,9 +35,11 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.AnimationID.BLOWPIPE_ATTACK;
@@ -47,8 +49,8 @@ import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.Player;
@@ -60,7 +62,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -81,6 +83,7 @@ import net.runelite.http.api.item.ItemPrice;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
+@Singleton
 @Slf4j
 public class SuppliesTrackerPlugin extends Plugin
 {
@@ -112,13 +115,13 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	private static final Random random = new Random();
 
-	private static final int[] THROWING_IDS = new int[]{BRONZE_DART, IRON_DART, STEEL_DART, BLACK_DART, MITHRIL_DART, ADAMANT_DART, RUNE_DART, DRAGON_DART, BRONZE_KNIFE, IRON_KNIFE, STEEL_KNIFE, BLACK_KNIFE, MITHRIL_KNIFE, ADAMANT_KNIFE, RUNE_KNIFE, BRONZE_THROWNAXE, IRON_THROWNAXE, STEEL_THROWNAXE, MITHRIL_THROWNAXE, ADAMANT_THROWNAXE, RUNE_THROWNAXE, DRAGON_KNIFE, DRAGON_KNIFE_22812, DRAGON_KNIFE_22814, DRAGON_KNIFEP_22808, DRAGON_KNIFEP_22810, DRAGON_KNIFEP , DRAGON_THROWNAXE, CHINCHOMPA_10033, RED_CHINCHOMPA_10034, BLACK_CHINCHOMPA};
+	private static final int[] THROWING_IDS = new int[]{BRONZE_DART, IRON_DART, STEEL_DART, BLACK_DART, MITHRIL_DART, ADAMANT_DART, RUNE_DART, DRAGON_DART, BRONZE_KNIFE, IRON_KNIFE, STEEL_KNIFE, BLACK_KNIFE, MITHRIL_KNIFE, ADAMANT_KNIFE, RUNE_KNIFE, BRONZE_THROWNAXE, IRON_THROWNAXE, STEEL_THROWNAXE, MITHRIL_THROWNAXE, ADAMANT_THROWNAXE, RUNE_THROWNAXE, DRAGON_KNIFE, DRAGON_KNIFE_22812, DRAGON_KNIFE_22814, DRAGON_KNIFEP_22808, DRAGON_KNIFEP_22810, DRAGON_KNIFEP, DRAGON_THROWNAXE, CHINCHOMPA_10033, RED_CHINCHOMPA_10034, BLACK_CHINCHOMPA};
 	private static final int[] RUNE_IDS = new int[]{AIR_RUNE, WATER_RUNE, EARTH_RUNE, MIND_RUNE, BODY_RUNE, COSMIC_RUNE, CHAOS_RUNE, NATURE_RUNE, LAW_RUNE, DEATH_RUNE, ASTRAL_RUNE, BLOOD_RUNE, SOUL_RUNE, WRATH_RUNE, MIST_RUNE, DUST_RUNE, MUD_RUNE, SMOKE_RUNE, STEAM_RUNE, LAVA_RUNE};
 
 	//Hold Supply Data
-	private static HashMap<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
+	private static final Map<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
 	private ItemContainer old;
-	private Deque<MenuAction> actionStack = new ArrayDeque<>();
+	private final Deque<MenuAction> actionStack = new ArrayDeque<>();
 	private int ammoId = 0;
 	private int ammoAmount = 0;
 	private int thrownId = 0;
@@ -129,7 +132,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	private int mainHand = 0;
 	private SuppliesTrackerPanel panel;
 	private NavigationButton navButton;
-	private String[] RAIDS_CONSUMABLES = new String[]{"xeric's", "elder", "twisted", "revitalisation", "overload", "prayer enhance", "pysk", "suphi", "leckish", "brawk", "mycil", "roqed", "kyren", "guanic", "prael", "giral", "phluxia", "kryket", "murng", "psykk"};
+	private final String[] RAIDS_CONSUMABLES = new String[]{"xeric's", "elder", "twisted", "revitalisation", "overload", "prayer enhance", "pysk", "suphi", "leckish", "brawk", "mycil", "roqed", "kyren", "guanic", "prael", "giral", "phluxia", "kryket", "murng", "psykk"};
 
 	private int attackStyleVarbit = -1;
 	private int ticks = 0;
@@ -147,10 +150,14 @@ public class SuppliesTrackerPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	
+	@Inject
+	private EventBus eventBus;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		panel = new SuppliesTrackerPanel(itemManager, this);
 		final BufferedImage header = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 		panel.loadHeaderIcon(header);
@@ -169,7 +176,18 @@ public class SuppliesTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
 		clientToolbar.removeNavigation(navButton);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(CannonballFired.class, this, this::onCannonballFired);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
 	@Provides
@@ -178,8 +196,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		return configManager.getConfig(SuppliesTrackerConfig.class);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		Player player = client.getLocalPlayer();
 		if (player.getAnimation() == BLOWPIPE_ATTACK)
@@ -206,6 +223,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	/**
 	 * checks the player's cape slot to determine what percent of their darts are lost
 	 * - where lost means either break or drop to floor
+	 *
 	 * @return the percent lost
 	 */
 	private double getAccumulatorPercent()
@@ -235,8 +253,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		return percent;
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
 		{
@@ -245,7 +262,8 @@ public class SuppliesTrackerPlugin extends Plugin
 			{
 				ticksInAnimation = BLOWPIPE_TICKS_NORMAL_PVM;
 				if (client.getLocalPlayer() != null &&
-						client.getLocalPlayer().getInteracting() instanceof Player) {
+					client.getLocalPlayer().getInteracting() instanceof Player)
+				{
 					ticksInAnimation = BLOWPIPE_TICKS_NORMAL_PVP;
 				}
 			}
@@ -253,7 +271,8 @@ public class SuppliesTrackerPlugin extends Plugin
 			{
 				ticksInAnimation = BLOWPIPE_TICKS_RAPID_PVM;
 				if (client.getLocalPlayer() != null &&
-						client.getLocalPlayer().getInteracting() instanceof Player) {
+					client.getLocalPlayer().getInteracting() instanceof Player)
+				{
 					ticksInAnimation = BLOWPIPE_TICKS_RAPID_PVP;
 				}
 			}
@@ -263,11 +282,12 @@ public class SuppliesTrackerPlugin extends Plugin
 	/**
 	 * Checks for changes between the provided inventories in runes specifically to add those runes
 	 * to the supply tracker
-	 *
+	 * <p>
 	 * we can't in general just check for when inventory slots change but this method is only run
 	 * immediately after the player performs a cast animation or cast menu click/entry
+	 *
 	 * @param itemContainer the new inventory
-	 * @param oldInv the old inventory
+	 * @param oldInv        the old inventory
 	 */
 	private void checkUsedRunes(ItemContainer itemContainer, Item[] oldInv)
 	{
@@ -292,28 +312,34 @@ public class SuppliesTrackerPlugin extends Plugin
 					{
 						quantity -= newItem.getQuantity();
 					}
-					buildEntries(oldItem.getId(), quantity);
+					// ensure that only positive quantities are added since it is reported
+					// that sometimes checkUsedRunes is called on the same tick that a player
+					// gains runes in their inventory
+					if (quantity > 0)
+					{
+						buildEntries(oldItem.getId(), quantity);
+					}
 				}
 			}
 		}
-		catch (IndexOutOfBoundsException ignored) {}
+		catch (IndexOutOfBoundsException ignored)
+		{
+		}
 	}
 
-	@Subscribe
-	public void onCannonballFired(CannonballFired cannonballFired)
+	private void onCannonballFired(CannonballFired cannonballFired)
 	{
 		buildEntries(CANNONBALL);
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged animationChanged)
+	private void onAnimationChanged(AnimationChanged animationChanged)
 	{
 		if (animationChanged.getActor() == client.getLocalPlayer())
 		{
 			if (animationChanged.getActor().getAnimation() == HIGH_LEVEL_MAGIC_ATTACK)
 			{
 				//Trident of the seas
-				if (mainHand == TRIDENT_OF_THE_SEAS || mainHand == TRIDENT_OF_THE_SEAS_E || mainHand == TRIDENT_OF_THE_SEAS_FULL )
+				if (mainHand == TRIDENT_OF_THE_SEAS || mainHand == TRIDENT_OF_THE_SEAS_E || mainHand == TRIDENT_OF_THE_SEAS_FULL)
 				{
 					buildEntries(CHAOS_RUNE);
 					buildEntries(DEATH_RUNE);
@@ -359,8 +385,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
+	private void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
 		ItemContainer itemContainer = itemContainerChanged.getItemContainer();
 
@@ -406,7 +431,7 @@ public class SuppliesTrackerPlugin extends Plugin
 			{
 				mainHand = itemContainer.getItems()[EQUIPMENT_MAINHAND_SLOT].getId();
 				net.runelite.api.Item mainHandItem = itemContainer.getItems()[EQUIPMENT_MAINHAND_SLOT];
-				for (int throwingIDs: THROWING_IDS)
+				for (int throwingIDs : THROWING_IDS)
 				{
 					if (mainHand == throwingIDs)
 					{
@@ -486,41 +511,38 @@ public class SuppliesTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(final MenuOptionClicked event)
+	private void onMenuOptionClicked(final MenuOptionClicked event)
 	{
 		// Uses stacks to push/pop for tick eating
 		// Create pattern to find eat/drink at beginning
 		Pattern eatPattern = Pattern.compile(EAT_PATTERN);
 		Pattern drinkPattern = Pattern.compile(DRINK_PATTERN);
-		if (eatPattern.matcher(event.getMenuTarget().toLowerCase()).find() || drinkPattern.matcher(event.getMenuTarget().toLowerCase()).find())
-		{
-			if (actionStack.stream().noneMatch(a ->
+		if ((eatPattern.matcher(event.getTarget().toLowerCase()).find() || drinkPattern.matcher(event.getTarget().toLowerCase()).find()) &&
+			actionStack.stream().noneMatch(a ->
 			{
 				if (a instanceof MenuAction.ItemAction)
 				{
 					MenuAction.ItemAction i = (MenuAction.ItemAction) a;
-					return i.getItemID() == event.getId();
+					return i.getItemID() == event.getIdentifier();
 				}
 				return false;
 			}))
+		{
+			old = client.getItemContainer(InventoryID.INVENTORY);
+			int slot = event.getActionParam0();
+			if (old.getItems() != null)
 			{
-				old = client.getItemContainer(InventoryID.INVENTORY);
-				int slot = event.getActionParam();
-				if (old.getItems() != null)
-				{
-					int pushItem = old.getItems()[event.getActionParam()].getId();
-					MenuAction newAction = new MenuAction.ItemAction(CONSUMABLE, old.getItems(), pushItem, slot);
-					actionStack.push(newAction);
-				}
+				int pushItem = old.getItems()[event.getActionParam0()].getId();
+				MenuAction newAction = new MenuAction.ItemAction(CONSUMABLE, old.getItems(), pushItem, slot);
+				actionStack.push(newAction);
 			}
 		}
 
 		// Create pattern for teleport scrolls and tabs
 		Pattern teleportPattern = Pattern.compile(TELEPORT_PATTERN);
 		Pattern teletabPattern = Pattern.compile(TELETAB_PATTERN);
-		if (teleportPattern.matcher(event.getMenuTarget().toLowerCase()).find() ||
-				teletabPattern.matcher(event.getMenuTarget().toLowerCase()).find())
+		if (teleportPattern.matcher(event.getTarget().toLowerCase()).find() ||
+			teletabPattern.matcher(event.getTarget().toLowerCase()).find())
 		{
 			old = client.getItemContainer(InventoryID.INVENTORY);
 
@@ -528,17 +550,17 @@ public class SuppliesTrackerPlugin extends Plugin
 			if (old != null && old.getItems() != null && actionStack.stream().noneMatch(a ->
 				a.getType() == TELEPORT))
 			{
-				int teleid = event.getId();
-				MenuAction newAction = new MenuAction.ItemAction(TELEPORT, old.getItems(), teleid, event.getActionParam());
+				int teleid = event.getIdentifier();
+				MenuAction newAction = new MenuAction.ItemAction(TELEPORT, old.getItems(), teleid, event.getActionParam0());
 				actionStack.push(newAction);
 			}
 		}
 
 		// Create pattern for spell cast
 		Pattern spellPattern = Pattern.compile(SPELL_PATTERN);
-		// note that here we look at the menuOption not menuTarget b/c the option for all spells is cast
+		// note that here we look at the option not target b/c the option for all spells is cast
 		// but the target differs based on each spell name
-		if (spellPattern.matcher(event.getMenuOption().toLowerCase()).find())
+		if (spellPattern.matcher(event.getOption().toLowerCase()).find())
 		{
 			old = client.getItemContainer(InventoryID.INVENTORY);
 
@@ -553,6 +575,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * Checks if item name is potion
+	 *
 	 * @param name the name of the item
 	 * @return if the item is a potion - i.e. has a (1) (2) (3) or (4) in the name
 	 */
@@ -563,6 +586,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * Checks if item name is pizza or pie
+	 *
 	 * @param name the name of the item
 	 * @return if the item is a pizza or a pie - i.e. has pizza or pie in the name
 	 */
@@ -582,9 +606,10 @@ public class SuppliesTrackerPlugin extends Plugin
 	 * so must divide price by total amount of doses in each
 	 * this is necessary b/c the most correct/accurate price for these resources is the
 	 * full price not the 1-dose price
-	 * @param name the item name
+	 *
+	 * @param name   the item name
 	 * @param itemId the item id
-	 * @param price the current calculated price
+	 * @param price  the current calculated price
 	 * @return the price modified by the number of doses
 	 */
 	private long scalePriceByDoses(String name, int itemId, long price)
@@ -606,6 +631,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * Add an item to the supply tracker (with 1 count for that item)
+	 *
 	 * @param itemId the id of the item
 	 */
 	private void buildEntries(int itemId)
@@ -615,62 +641,66 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * Add an item to the supply tracker
+	 *
 	 * @param itemId the id of the item
-	 * @param count the amount of the item to add to the tracker
+	 * @param count  the amount of the item to add to the tracker
 	 */
 	private void buildEntries(int itemId, int count)
 	{
-			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-			String name = itemComposition.getName();
-			long calculatedPrice;
+		final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
+		String name = itemComposition.getName();
+		long calculatedPrice;
 
-			for (String raidsConsumables: RAIDS_CONSUMABLES)
+		for (String raidsConsumables : RAIDS_CONSUMABLES)
+		{
+			if (name.toLowerCase().contains(raidsConsumables))
 			{
-				if (name.toLowerCase().contains(raidsConsumables)) return;
+				return;
 			}
+		}
 
-			// convert potions, pizzas/pies, and cakes to their full equivalents
-			// e.g. a half pizza becomes full pizza, 3 dose potion becomes 4, etc...
-			if (isPotion(name))
-			{
-				name = name.replaceAll(POTION_PATTERN, "(4)");
-				itemId = getPotionID(name);
-			}
-			if (isPizzaPie(name))
-			{
-				itemId = getFullVersionItemID(itemId);
-				name = itemManager.getItemComposition(itemId).getName();
-			}
-			if (isCake(name, itemId))
-			{
-				itemId = getFullVersionItemID(itemId);
-				name = itemManager.getItemComposition(itemId).getName();
-			}
+		// convert potions, pizzas/pies, and cakes to their full equivalents
+		// e.g. a half pizza becomes full pizza, 3 dose potion becomes 4, etc...
+		if (isPotion(name))
+		{
+			name = name.replaceAll(POTION_PATTERN, "(4)");
+			itemId = getPotionID(name);
+		}
+		if (isPizzaPie(name))
+		{
+			itemId = getFullVersionItemID(itemId);
+			name = itemManager.getItemDefinition(itemId).getName();
+		}
+		if (isCake(name, itemId))
+		{
+			itemId = getFullVersionItemID(itemId);
+			name = itemManager.getItemDefinition(itemId).getName();
+		}
 
-			int newQuantity;
-			if (suppliesEntry.containsKey(itemId))
-			{
-				newQuantity = suppliesEntry.get(itemId).getQuantity() + count;
-			}
-			else
-			{
-				newQuantity = count;
-			}
+		int newQuantity;
+		if (suppliesEntry.containsKey(itemId))
+		{
+			newQuantity = suppliesEntry.get(itemId).getQuantity() + count;
+		}
+		else
+		{
+			newQuantity = count;
+		}
 
-			// calculate price for amount of doses used
-			calculatedPrice = ((long) itemManager.getItemPrice(itemId)) * ((long) newQuantity);
-			calculatedPrice = scalePriceByDoses(name, itemId, calculatedPrice);
+		// calculate price for amount of doses used
+		calculatedPrice = ((long) itemManager.getItemPrice(itemId)) * ((long) newQuantity);
+		calculatedPrice = scalePriceByDoses(name, itemId, calculatedPrice);
 
-			// write the new quantity and calculated price for this entry
-			SuppliesTrackerItem newEntry = new SuppliesTrackerItem(
-				itemId,
-				name,
-				newQuantity,
-				calculatedPrice);
+		// write the new quantity and calculated price for this entry
+		SuppliesTrackerItem newEntry = new SuppliesTrackerItem(
+			itemId,
+			name,
+			newQuantity,
+			calculatedPrice);
 
-			suppliesEntry.put(itemId, newEntry);
-			SwingUtilities.invokeLater(() ->
-				panel.addItem(newEntry));
+		suppliesEntry.put(itemId, newEntry);
+		SwingUtilities.invokeLater(() ->
+			panel.addItem(newEntry));
 	}
 
 	/**
@@ -683,6 +713,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * reset an individual item stack
+	 *
 	 * @param itemId the id of the item stack
 	 */
 	void clearItem(int itemId)
@@ -692,6 +723,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * Gets the item id that matches the provided name within the itemManager
+	 *
 	 * @param name the given name
 	 * @return the item id for this name
 	 */
@@ -700,7 +732,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		int itemId = 0;
 
 		List<ItemPrice> items = itemManager.search(name);
-		for (ItemPrice item: items)
+		for (ItemPrice item : items)
 		{
 			if (item.getName().contains(name))
 			{
@@ -713,6 +745,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	/**
 	 * Takes the item id of a partial item (e.g. 1 dose potion, 1/2 a pizza, etc...) and returns
 	 * the corresponding full item
+	 *
 	 * @param itemId the partial item id
 	 * @return the full item id
 	 */

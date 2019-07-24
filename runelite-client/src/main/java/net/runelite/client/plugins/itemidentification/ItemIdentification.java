@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.itemidentification;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
 
@@ -46,7 +46,7 @@ enum ItemIdentification
 	DWARF_WEED_SEED(Type.SEED, "Dwarf", "D", ItemID.DWARF_WEED_SEED),
 	TORSTOL_SEED(Type.SEED, "Torstol", "TOR", ItemID.TORSTOL_SEED),
 	POISON_IVY_SEED(Type.SEED, "Ivy", "I", ItemID.POISON_IVY_SEED),
-	WHITEBERRY_SEED( Type.SEED, "White", "W", ItemID.WHITEBERRY_SEED),
+	WHITEBERRY_SEED(Type.SEED, "White", "W", ItemID.WHITEBERRY_SEED),
 
 	//Herbs
 	GUAM(Type.HERB, "Guam", "G", ItemID.GUAM_LEAF, ItemID.GRIMY_GUAM_LEAF),
@@ -85,14 +85,48 @@ enum ItemIdentification
 	TEAK_SAPLING(Type.SAPLING, "Teak", "TEAK", ItemID.TEAK_SAPLING, ItemID.TEAK_SEEDLING, ItemID.TEAK_SEEDLING_W),
 	MAHOGANY_SAPLING(Type.SAPLING, "Mahog", "MAHOG", ItemID.MAHOGANY_SAPLING, ItemID.MAHOGANY_SEEDLING, ItemID.MAHOGANY_SEEDLING_W),
 	CALQUAT_SAPLING(Type.SAPLING, "Calquat", "CALQ", ItemID.CALQUAT_SAPLING, ItemID.CALQUAT_SEEDLING, ItemID.CALQUAT_SEEDLING_W),
-	CELASTRUS_SAPLING(Type.SAPLING, "Celas", "CEL", ItemID.CELASTRUS_SAPLING, ItemID.CELASTRUS_SEEDLING, ItemID.CELASTRUS_SEEDLING_W);
+	CELASTRUS_SAPLING(Type.SAPLING, "Celas", "CEL", ItemID.CELASTRUS_SAPLING, ItemID.CELASTRUS_SEEDLING, ItemID.CELASTRUS_SEEDLING_W),
+
+	//Ores
+	COPPER_ORE(Type.ORE, "Copper", "COP", ItemID.COPPER_ORE),
+	TIN_ORE(Type.ORE, "Tin", "TIN", ItemID.TIN_ORE),
+	IRON_ORE(Type.ORE, "Iron", "IRO", ItemID.IRON_ORE),
+	SILVER_ORE(Type.ORE, "Silver", "SIL", ItemID.SILVER_ORE),
+	COAL_ORE(Type.ORE, "Coal", "COA", ItemID.COAL),
+	GOLD_ORE(Type.ORE, "Gold", "GOL", ItemID.GOLD_ORE),
+	MITHRIL_ORE(Type.ORE, "Mithril", "MIT", ItemID.MITHRIL_ORE),
+	ADAMANTITE_ORE(Type.ORE, "Adaman", "ADA", ItemID.ADAMANTITE_ORE),
+	RUNITE_ORE(Type.ORE, "Runite", "RUN", ItemID.RUNITE_ORE),
+
+	RUNE_ESSENCE(Type.ORE, "R.Ess", "R.E.", ItemID.RUNE_ESSENCE),
+	PURE_ESSENCE(Type.ORE, "P.Ess", "P.E.", ItemID.PURE_ESSENCE),
+
+	PAYDIRT(Type.ORE, "Paydirt", "PAY", ItemID.PAYDIRT),
+	AMETHYST(Type.ORE, "Amethy", "AME", ItemID.AMETHYST),
+	LOVAKITE_ORE(Type.ORE, "Lovakit", "LOV", ItemID.LOVAKITE_ORE),
+	BLURITE_ORE(Type.ORE, "Blurite", "BLU", ItemID.BLURITE_ORE),
+	ELEMENTAL_ORE(Type.ORE, "Element", "ELE", ItemID.ELEMENTAL_ORE),
+	DAEYALT_ORE(Type.ORE, "Daeyalt", "DAE", ItemID.DAEYALT_ORE),
+	LUNAR_ORE(Type.ORE, "Lunar", "LUN", ItemID.LUNAR_ORE),
+
+	//Gems
+	SAPPHIRE(Type.GEM, "Sapphir", "S", ItemID.UNCUT_SAPPHIRE, ItemID.SAPPHIRE),
+	EMERALD(Type.GEM, "Emerald", "E", ItemID.UNCUT_EMERALD, ItemID.EMERALD),
+	RUBY(Type.GEM, "Ruby", "R", ItemID.UNCUT_RUBY, ItemID.RUBY),
+	DIAMOND(Type.GEM, "Diamon", "DI", ItemID.UNCUT_DIAMOND, ItemID.DIAMOND),
+	OPAL(Type.GEM, "Opal", "OP", ItemID.UNCUT_OPAL, ItemID.OPAL),
+	JADE(Type.GEM, "Jade", "J", ItemID.UNCUT_JADE, ItemID.JADE),
+	RED_TOPAZ(Type.GEM, "Topaz", "T", ItemID.UNCUT_RED_TOPAZ, ItemID.RED_TOPAZ),
+	DRAGONSTONE(Type.GEM, "Dragon", "DR", ItemID.UNCUT_DRAGONSTONE, ItemID.DRAGONSTONE),
+	ONYX(Type.GEM, "Onyx", "ON", ItemID.UNCUT_ONYX, ItemID.ONYX),
+	ZENYTE(Type.GEM, "Zenyte", "Z", ItemID.UNCUT_ZENYTE, ItemID.ZENYTE);
 
 	final Type type;
 	final String medName;
 	final String shortName;
-	final int[] itemIDs;
+	private final int[] itemIDs;
 
-	ItemIdentification(Type type, String medName, String shortName, int ... ids)
+	ItemIdentification(Type type, String medName, String shortName, int... ids)
 	{
 		this.type = type;
 		this.medName = medName;
@@ -100,17 +134,21 @@ enum ItemIdentification
 		this.itemIDs = ids;
 	}
 
-	private static final Map<Integer, ItemIdentification> itemIdentifications = new HashMap<>();
+	private static final Map<Integer, ItemIdentification> itemIdentifications;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, ItemIdentification> builder = new ImmutableMap.Builder<>();
+
 		for (ItemIdentification i : values())
 		{
 			for (int id : i.itemIDs)
 			{
-				itemIdentifications.put(id, i);
+				builder.put(id, i);
 			}
 		}
+
+		itemIdentifications = builder.build();
 	}
 
 	static ItemIdentification get(int id)
@@ -122,6 +160,8 @@ enum ItemIdentification
 	{
 		SEED,
 		HERB,
-		SAPLING
+		SAPLING,
+		ORE,
+		GEM
 	}
 }

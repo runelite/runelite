@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;
@@ -52,8 +52,22 @@ public class XteaPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	@Inject
+	private EventBus eventBus;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
@@ -80,6 +94,12 @@ public class XteaPlugin extends Plugin
 			sentRegions.add(region);
 
 			log.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
+
+			//Don't post non encrypted regions
+			if (keys[0] == 0 && keys[1] == 0 && keys[2] == 0 && keys[3] == 0)
+			{
+				continue;
+			}
 
 			XteaKey xteaKey = new XteaKey();
 			xteaKey.setRegion(region);

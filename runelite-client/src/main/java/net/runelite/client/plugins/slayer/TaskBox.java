@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.Collections;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,6 +21,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.StackFormatter;
 
+@Singleton
 class TaskBox extends JPanel
 {
 	private static final long MILLIS_PER_SECOND = 1000;
@@ -80,7 +82,8 @@ class TaskBox extends JPanel
 		container.setLayout(new BorderLayout());
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		SwingUtilities.invokeLater(() -> {
+		SwingUtilities.invokeLater(() ->
+		{
 			BufferedImage taskImg = slayerPlugin.getImageForTask(Task.getTask(taskData.getTaskName()));
 			JLabel taskIcon = new JLabel(new ImageIcon(taskImg));
 			taskIcon.setHorizontalAlignment(SwingConstants.CENTER);
@@ -274,8 +277,8 @@ class TaskBox extends JPanel
 			return Long.MAX_VALUE;
 		}
 		double timePerKill = ((double) taskData.getElapsedTime()) / ((double) killsInElapsedTime);
-		double remainingTime = timePerKill * taskData.getAmount();
-		return (long) remainingTime;
+
+		return (long) timePerKill * taskData.getAmount();
 	}
 
 	private static String htmlLabel(long timeMillis)

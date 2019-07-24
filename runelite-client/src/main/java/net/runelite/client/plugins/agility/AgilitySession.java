@@ -42,7 +42,7 @@ class AgilitySession
 	private int lapsTillLevel;
 	private int lapsTillGoal;
 
-	AgilitySession(Courses course)
+	AgilitySession(final Courses course)
 	{
 		this.course = course;
 	}

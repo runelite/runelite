@@ -36,7 +36,7 @@ public abstract class CameraMixin implements RSClient
 	private static final int STANDARD_PITCH_MAX = 383;
 	private static final int NEW_PITCH_MAX = 512;
 
-	@Shadow("clientInstance")
+	@Shadow("client")
 	static RSClient client;
 
 	@Inject
@@ -66,7 +66,7 @@ public abstract class CameraMixin implements RSClient
 		}
 	}
 
-	@FieldHook("cameraPitchTarget")
+	@FieldHook("camAngleX")
 	@Inject
 	static void onCameraPitchTargetChanged(int idx)
 	{

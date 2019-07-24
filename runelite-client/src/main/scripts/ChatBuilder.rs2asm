@@ -189,8 +189,10 @@ CHAT_FILTER:
    sload                  11                ; Load the message
    iconst                 1                 ; Gets changed to 0 if message is blocked
    iload                  10                ; Load the messageType
+   iload                  9                 ; Load the id of the messageNode
    sconst                 "chatFilterCheck"
    runelite_callback
+   pop_int                                  ; Pop the id of the messageNode
    pop_int                                  ; Pop the messageType
    iconst                 1                 ; 2nd half of conditional
    sstore                 11                ; Override the message with our filtered message

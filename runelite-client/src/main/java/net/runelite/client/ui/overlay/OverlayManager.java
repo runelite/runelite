@@ -41,13 +41,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.MenuAction;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
 
@@ -111,17 +110,18 @@ public class OverlayManager
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
+
+		eventBus.subscribe(PluginChanged.class, this, this::onPluginChanged);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
-	@Subscribe
-	public void onPluginChanged(final PluginChanged event)
+	private void onPluginChanged(final PluginChanged event)
 	{
 		overlays.forEach(this::loadOverlay);
 		rebuildOverlayLayers();
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE_OVERLAY)
 		{
@@ -130,18 +130,15 @@ public class OverlayManager
 
 		event.consume();
 
-		Optional<Overlay> optionalOverlay = overlays.stream().filter(o -> overlays.indexOf(o) == event.getId()).findAny();
+		Optional<Overlay> optionalOverlay = overlays.stream().filter(o -> overlays.indexOf(o) == event.getIdentifier()).findAny();
 		if (optionalOverlay.isPresent())
 		{
 			Overlay overlay = optionalOverlay.get();
 			List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
 			Optional<OverlayMenuEntry> optionalOverlayMenuEntry = menuEntries.stream()
-				.filter(me -> me.getOption().equals(event.getMenuOption()))
+				.filter(me -> me.getOption().equals(event.getOption()))
 				.findAny();
-			if (optionalOverlayMenuEntry.isPresent())
-			{
-				eventBus.post(new OverlayMenuClicked(optionalOverlayMenuEntry.get(), overlay));
-			}
+			optionalOverlayMenuEntry.ifPresent(overlayMenuEntry -> eventBus.post(OverlayMenuClicked.class, new OverlayMenuClicked(overlayMenuEntry, overlay)));
 		}
 	}
 

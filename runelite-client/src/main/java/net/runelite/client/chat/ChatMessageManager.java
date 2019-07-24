@@ -27,12 +27,14 @@ package net.runelite.client.chat;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
@@ -41,6 +43,7 @@ import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -49,13 +52,15 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @Singleton
 public class ChatMessageManager
 {
+	private static final Set<Integer> TUTORIAL_ISLAND_REGIONS = ImmutableSet.of(12336, 12335, 12592, 12080, 12079, 12436);
+
 	private final Multimap<ChatMessageType, ChatColor> colorCache = HashMultimap.create();
 	private final Client client;
 	private final ChatColorConfig chatColorConfig;
@@ -65,17 +70,23 @@ public class ChatMessageManager
 
 	@Inject
 	private ChatMessageManager(
-		Client client,
-		ChatColorConfig chatColorConfig,
-		ClientThread clientThread)
+		final Client client,
+		final ChatColorConfig chatColorConfig,
+		final ClientThread clientThread,
+		final EventBus eventbus)
 	{
 		this.client = client;
 		this.chatColorConfig = chatColorConfig;
 		this.clientThread = clientThread;
+
+		eventbus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventbus.subscribe(ResizeableChanged.class, this, this::onResizeableChanged);
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventbus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		int setting = client.getVar(Varbits.TRANSPARENT_CHATBOX);
 
@@ -86,14 +97,12 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe
-	public void onResizeableChanged(ResizeableChanged event)
+	private void onResizeableChanged(ResizeableChanged event)
 	{
 		refreshAll();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("textrecolor"))
 		{
@@ -102,15 +111,14 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		MessageNode messageNode = chatMessage.getMessageNode();
 		ChatMessageType chatMessageType = chatMessage.getType();
 
 		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
 		Color usernameColor = null;
-		Color senderColor = null;
+		Color senderColor;
 
 		switch (chatMessageType)
 		{
@@ -168,8 +176,7 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	private void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		final String eventName = scriptCallbackEvent.getEventName();
 
@@ -543,13 +550,26 @@ public class ChatMessageManager
 	{
 		if (!queuedMessages.isEmpty())
 		{
-			queuedMessages.forEach(this::add);
-			queuedMessages.clear();
+			try
+			{
+				queuedMessages.forEach(this::add);
+			}
+			finally
+			{
+				queuedMessages.clear();
+			}
 		}
 	}
 
 	private void add(QueuedMessage message)
 	{
+		// Do not send message if the player is on tutorial island
+		final Player player = client.getLocalPlayer();
+		if (player != null && TUTORIAL_ISLAND_REGIONS.contains(player.getWorldLocation().getRegionID()))
+		{
+			return;
+		}
+
 		// this updates chat cycle
 		client.addChatMessage(
 			message.getType(),

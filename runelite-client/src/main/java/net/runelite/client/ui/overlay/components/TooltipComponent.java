@@ -104,7 +104,7 @@ public class TooltipComponent implements RenderableEntity
 					textComponent.setColor(nextColor);
 					String text = line.substring(begin, j);
 					textComponent.setText(text);
-					textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
+					textComponent.setPosition(new Point(lineX, textY + (i + 1) * metrics.getMaxAscent() + i * metrics.getMaxDescent()));
 					textComponent.render(graphics);
 
 					lineX += metrics.stringWidth(text);
@@ -141,7 +141,7 @@ public class TooltipComponent implements RenderableEntity
 						textComponent.setColor(nextColor);
 						String text = line.substring(begin, j + 1);
 						textComponent.setText(text);
-						textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
+						textComponent.setPosition(new Point(lineX, textY + (i + 1) * metrics.getMaxAscent() + i * metrics.getMaxDescent()));
 						textComponent.render(graphics);
 
 						lineX += metrics.stringWidth(text);
@@ -154,8 +154,8 @@ public class TooltipComponent implements RenderableEntity
 			// Draw trailing text (after last tag)
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(nextColor);
-			textComponent.setText(line.substring(begin, line.length()));
-			textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
+			textComponent.setText(line.substring(begin));
+			textComponent.setPosition(new Point(lineX, textY + (i + 1) * metrics.getMaxAscent() + i * metrics.getMaxDescent()));
 			textComponent.render(graphics);
 		}
 
@@ -194,7 +194,7 @@ public class TooltipComponent implements RenderableEntity
 		}
 
 		// Include trailing text (after last tag)
-		textWidth += metrics.stringWidth(line.substring(begin, line.length()));
+		textWidth += metrics.stringWidth(line.substring(begin));
 
 		return textWidth;
 	}

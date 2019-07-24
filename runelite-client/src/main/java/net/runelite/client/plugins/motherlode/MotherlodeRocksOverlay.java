@@ -32,8 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
@@ -42,38 +41,43 @@ import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ImageUtil;
 
+@Singleton
 class MotherlodeRocksOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
 
 	private final Client client;
 	private final MotherlodePlugin plugin;
-	private final MotherlodeConfig config;
 
 	private final BufferedImage miningIcon;
+	private final BufferedImage targetMiningIcon;
+	private static final Color miningIconOldColor = new Color(117, 123, 124);
+	private static final Color miningIconNewColor = new Color(0, 150, 0);
 
 	@Inject
-	MotherlodeRocksOverlay(Client client, MotherlodePlugin plugin, MotherlodeConfig config, SkillIconManager iconManager)
+	MotherlodeRocksOverlay(final Client client, final MotherlodePlugin plugin, final SkillIconManager iconManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 
 		miningIcon = iconManager.getSkillImage(Skill.MINING);
+		targetMiningIcon = ImageUtil.recolorImage(miningIcon, miningIconNewColor, Color -> Color.getRGB() == miningIconOldColor.getRGB());
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if ((!config.showVeins() && !config.showRockFalls()) || !plugin.isInMlm())
+		if ((!plugin.isShowVeins() && !plugin.isShowRockFalls()) || !plugin.isInMlm())
 		{
 			return null;
 		}
@@ -88,24 +92,28 @@ class MotherlodeRocksOverlay extends Overlay
 	private void renderTiles(Graphics2D graphics, Player local)
 	{
 		LocalPoint localLocation = local.getLocalLocation();
-
-		if (config.showVeins())
+		if (plugin.isShowVeins())
 		{
 			for (WallObject vein : plugin.getVeins())
 			{
 				LocalPoint location = vein.getLocalLocation();
-				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+				if (localLocation.distanceTo(location) <= MAX_DISTANCE && plugin.isUpstairs(localLocation) == plugin.isUpstairs(vein.getLocalLocation()))
 				{
-					// Only draw veins on the same level
-					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(vein.getLocalLocation()))
+					if (WorldPoint.fromLocal(client, location).equals(plugin.getTargetVeinLocation())
+						&& plugin.isMining()
+						&& plugin.isShowTargetVein())
 					{
-						renderVein(graphics, vein);
+						renderVein(graphics, vein, true);
+					}
+					else
+					{
+						renderVein(graphics, vein, false);
 					}
 				}
 			}
 		}
 
-		if (config.showRockFalls())
+		if (plugin.isShowRockFalls())
 		{
 			for (GameObject rock : plugin.getRocks())
 			{
@@ -117,16 +125,19 @@ class MotherlodeRocksOverlay extends Overlay
 				}
 			}
 		}
-
 	}
 
-	private void renderVein(Graphics2D graphics, WallObject vein)
+	private void renderVein(Graphics2D graphics, WallObject vein, Boolean shouldRecolor)
 	{
 		Point canvasLoc = Perspective.getCanvasImageLocation(client, vein.getLocalLocation(), miningIcon, 150);
 
-		if (canvasLoc != null)
+		if (canvasLoc != null && !shouldRecolor)
 		{
 			graphics.drawImage(miningIcon, canvasLoc.getX(), canvasLoc.getY(), null);
+		}
+		else if (canvasLoc != null)
+		{
+			graphics.drawImage(targetMiningIcon, canvasLoc.getX(), canvasLoc.getY(), null);
 		}
 	}
 

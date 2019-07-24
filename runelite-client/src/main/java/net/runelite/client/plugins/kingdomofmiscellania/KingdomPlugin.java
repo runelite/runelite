@@ -26,6 +26,8 @@ package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -35,7 +37,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -48,6 +50,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	enabledByDefault = false
 )
 @Slf4j
+@Singleton
 public class KingdomPlugin extends Plugin
 {
 	private static final ImmutableSet<Integer> KINGDOM_REGION = ImmutableSet.of(10044, 10300);
@@ -61,26 +64,44 @@ public class KingdomPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	@Getter
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
 	private int favor = 0, coffer = 0;
 
 	private KingdomCounter counter;
 
 	@Override
+	protected void startUp() throws Exception
+	{
+		addSubscriptions();
+	}
+
+	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		removeKingdomInfobox();
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void addSubscriptions()
 	{
-		favor = client.getVar(Varbits.KINGDOM_FAVOR);
-		coffer = client.getVar(Varbits.KINGDOM_COFFER);
-		processInfobox();
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
-	@Subscribe
+	private void onVarbitChanged(VarbitChanged event)
+	{
+		if (isInKingdom())
+		{
+			favor = client.getVar(Varbits.KINGDOM_FAVOR);
+			coffer = client.getVar(Varbits.KINGDOM_COFFER);
+			processInfobox();
+		}
+	}
+
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)

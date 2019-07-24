@@ -25,30 +25,29 @@
 package net.runelite.client.plugins.smelting;
 
 import java.time.Instant;
-
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 
 class SmeltingSession
 {
-	@Getter(AccessLevel.PACKAGE)
-	@Setter
-	private Instant lastItemSmelted;
-
 	@Getter(AccessLevel.PACKAGE)
 	private int barsSmelted;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int cannonBallsSmelted;
 
+	@Getter(AccessLevel.PACKAGE)
+	private Instant lastItemSmelted;
+
 	void increaseBarsSmelted()
 	{
 		barsSmelted++;
+		lastItemSmelted = Instant.now();
 	}
 
 	void increaseCannonBallsSmelted()
 	{
 		cannonBallsSmelted += 4;
+		lastItemSmelted = Instant.now();
 	}
 }

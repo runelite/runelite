@@ -31,10 +31,10 @@ public interface ClanManModeConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "highlightattacked",
-			name = "Highlight clan targets",
-			description = "Highlights people being attacked by your clan"
+		position = 2,
+		keyName = "highlightattacked",
+		name = "Highlight clan targets",
+		description = "Highlights people being attacked by your clan"
 	)
 	default boolean highlightAttacked()
 	{
@@ -42,10 +42,10 @@ public interface ClanManModeConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 3,
-			keyName = "attackedcolor",
-			name = "Clan target color",
-			description = "Color of players being attacked by clan"
+		position = 3,
+		keyName = "attackedcolor",
+		name = "Clan target color",
+		description = "Color of players being attacked by clan"
 	)
 	default Color getClanAttackableColor()
 	{
@@ -86,10 +86,10 @@ public interface ClanManModeConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
-			keyName = "showtargets",
-			name = "Highlight My Attackers",
-			description = "Shows players interacting with you"
+		position = 7,
+		keyName = "showtargets",
+		name = "Highlight My Attackers",
+		description = "Shows players interacting with you"
 	)
 	default boolean showAttackers()
 	{
@@ -97,10 +97,10 @@ public interface ClanManModeConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 8,
-			keyName = "attackcolor",
-			name = "Attacker Color",
-			description = "Color of attackers"
+		position = 8,
+		keyName = "attackcolor",
+		name = "Attacker Color",
+		description = "Color of attackers"
 	)
 	default Color getAttackerColor()
 	{
@@ -108,58 +108,65 @@ public interface ClanManModeConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 9,
-			keyName = "showbold",
-			name = "Bold names of clan targets",
-			description = "Turns names of clan targets bold"
+		position = 9,
+		keyName = "showbold",
+		name = "Bold names of clan targets",
+		description = "Turns names of clan targets bold"
 	)
-	default boolean ShowBold() { return false; }
+	default boolean ShowBold()
+	{
+		return false;
+	}
 
 	@ConfigItem(
-			position = 10,
-			keyName = "hideafter",
-			name = "Hide attackable targets after login",
-			description = "Automatically disables attackable player highlighting after login"
+		position = 10,
+		keyName = "hideafter",
+		name = "Hide attackable targets after login",
+		description = "Automatically disables attackable player highlighting after login"
 	)
-	default boolean hideAttackable() { return false; }
+	default boolean hideAttackable()
+	{
+		return false;
+	}
 
 	@ConfigItem(
-			position = 11,
-			keyName = "hidetime",
-			name = "Ticks to hide",
-			description = "How many ticks after you are logged in that attackbles are hidden (1 tick = 0.6 seconds)"
+		position = 11,
+		keyName = "hidetime",
+		name = "Ticks to hide",
+		description = "How many ticks after you are logged in that attackbles are hidden (1 tick = 0.6 seconds)"
 	)
-	default int hideTime() { return 5; }
+	default int hideTime()
+	{
+		return 5;
+	}
 
 	@ConfigItem(
-			position = 12,
-			keyName = "mycblvl",
-			name = "Calc targets on my own combat level",
-			description = "Calculates potential targets based off your own combat lvl instead of clans"
+		position = 12,
+		keyName = "mycblvl",
+		name = "Calc targets on my own combat level",
+		description = "Calculates potential targets based off your own combat lvl instead of clans"
 	)
-	default boolean CalcSelfCB() { return false; }
+	default boolean CalcSelfCB()
+	{
+		return false;
+	}
 
 	@ConfigItem(
-			position = 13,
-			keyName = "hideatkopt",
-			name = "Hide attack option for clan members",
-			description = "Disables attack option for clan members"
+		position = 14,
+		keyName = "showclanmembers",
+		name = "Persistent Clan Members",
+		description = "Will highlight clan members even when not in clan chat"
 	)
-	default boolean hideAtkOpt() { return false; }
+	default boolean PersistentClan()
+	{
+		return false;
+	}
 
 	@ConfigItem(
-			position = 14,
-			keyName = "showclanmembers",
-			name = "Persistent Clan Members",
-			description = "Will highlight clan members even when not in clan chat"
-	)
-	default boolean PersistentClan() { return false; }
-
-	@ConfigItem(
-			position = 15,
-			keyName = "clancolor",
-			name = "Clan Member Color",
-			description = "Color of clan members"
+		position = 15,
+		keyName = "clancolor",
+		name = "Clan Member Color",
+		description = "Color of clan members"
 	)
 	default Color getClanMemberColor()
 	{

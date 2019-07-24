@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import net.runelite.api.vars.Autoweed;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.time.Instant;
@@ -34,7 +35,6 @@ import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.vars.Autoweed;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
@@ -59,8 +59,7 @@ public class FarmingTracker
 	private final Map<Tab, Long> completionTimes = new EnumMap<>(Tab.class);
 
 	@Inject
-	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager,
-		TimeTrackingConfig config, FarmingWorld farmingWorld)
+	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager, TimeTrackingConfig config, FarmingWorld farmingWorld)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -186,6 +185,11 @@ public class FarmingTracker
 		}
 
 		PatchState state = patch.getImplementation().forVarbitValue(value);
+
+		if (state == null)
+		{
+			return null;
+		}
 
 		int stage = state.getStage();
 		int stages = state.getStages();

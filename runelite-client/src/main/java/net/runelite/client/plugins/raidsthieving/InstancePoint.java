@@ -1,36 +1,36 @@
 package net.runelite.client.plugins.raidsthieving;
 
+import java.util.Objects;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 
-import java.util.Objects;
-
 /**
  * Represents a point in the instance chunk, invariant of rotation.
  */
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public class InstancePoint
 {
 	private static final int CHUNK_SIZE = 8;
 	private static final double CHUNK_OFFSET = 3.5;
 
-	public InstancePoint(int x, int y, int rot)
+	private InstancePoint(final int x, final int y, final int rot)
 	{
 		this.x = x;
 		this.y = y;
 		this.rot = rot;
 	}
 
-	public InstancePoint(int x, int y)
+	public InstancePoint(final int x, final int y)
 	{
 		this.x = x;
 		this.y = y;
 		this.rot = 0;
 	}
 
-	public static InstancePoint buildFromPoint(WorldPoint worldPoint, Client client)
+	static InstancePoint buildFromPoint(WorldPoint worldPoint, Client client)
 	{
 		Point point = new Point(worldPoint.getX(), worldPoint.getY());
 		Point base = new Point(client.getBaseX(), client.getBaseY());
@@ -49,7 +49,7 @@ public class InstancePoint
 		return buildFromTile(base, point, rotation, new Point(x, y));
 	}
 
-	public static InstancePoint buildFromTile(Point base, Point tile, int rot, Point chunkOrigin)
+	private static InstancePoint buildFromTile(Point base, Point tile, int rot, Point chunkOrigin)
 	{
 		int deltaX = tile.getX() - base.getX();
 		int deltaY = tile.getY() - base.getY();
@@ -79,8 +79,14 @@ public class InstancePoint
 	@Override
 	public boolean equals(Object o)
 	{
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+		{
+			return true;
+		}
+		if (o == null || getClass() != o.getClass())
+		{
+			return false;
+		}
 		InstancePoint that = (InstancePoint) o;
 		return x == that.x &&
 			y == that.y;
@@ -92,7 +98,9 @@ public class InstancePoint
 		return Objects.hash(x, y);
 	}
 
+	@Getter(AccessLevel.PUBLIC)
 	private int x;
+	@Getter(AccessLevel.PUBLIC)
 	private int y;
 	private int rot;
 }

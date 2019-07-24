@@ -24,26 +24,26 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.SpritePixels;
+import net.runelite.api.Sprite;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.LocalPlayerDeath;
+import net.runelite.api.events.SpotAnimationChanged;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.OverheadTextChanged;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.image.BufferedImage;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
@@ -51,60 +51,60 @@ import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSCombatInfo1;
 import net.runelite.rs.api.RSHealthBar;
-import net.runelite.rs.api.RSCombatInfoList;
-import net.runelite.rs.api.RSCombatInfoListHolder;
+import net.runelite.rs.api.RSHealthBarDefinition;
+import net.runelite.rs.api.RSHealthBarUpdate;
+import net.runelite.rs.api.RSIterableNodeDeque;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSNode;
 
 @Mixin(RSActor.class)
 public abstract class RSActorMixin implements RSActor
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
 	@Override
 	public Actor getInteracting()
 	{
-		int i = getRSInteracting();
-		if (i == -1 || i == 65535)
+		int index = getRSInteracting();
+		if (index == -1 || index == 65535)
 		{
 			return null;
 		}
 
-		if (i < 0x8000)
+		if (index < 32768)
 		{
 			NPC[] npcs = client.getCachedNPCs();
-			return npcs[i];
+			return npcs[index];
 		}
 
-		i -= 0x8000;
+		index -= 32768;
 		Player[] players = client.getCachedPlayers();
-		return players[i];
+		return players[index];
 	}
 
 	@Inject
 	@Override
 	public int getHealthRatio()
 	{
-		RSCombatInfoList combatInfoList = getCombatInfoList();
-		if (combatInfoList != null)
+		RSIterableNodeDeque healthBars = getHealthBars();
+		if (healthBars != null)
 		{
-			RSNode node = combatInfoList.getNode();
-			RSNode next = node.getNext();
-			if (next instanceof RSCombatInfoListHolder)
+			RSNode current = healthBars.getCurrent();
+			RSNode next = current.getNext();
+			if (next instanceof RSHealthBar)
 			{
-				RSCombatInfoListHolder combatInfoListWrapper = (RSCombatInfoListHolder) next;
-				RSCombatInfoList combatInfoList1 = combatInfoListWrapper.getCombatInfo1();
+				RSHealthBar wrapper = (RSHealthBar) next;
+				RSIterableNodeDeque updates = wrapper.getUpdates();
 
-				RSNode node2 = combatInfoList1.getNode();
-				RSNode next2 = node2.getNext();
-				if (next2 instanceof RSCombatInfo1)
+				RSNode currentUpdate = updates.getCurrent();
+				RSNode nextUpdate = currentUpdate.getNext();
+				if (nextUpdate instanceof RSHealthBarUpdate)
 				{
-					RSCombatInfo1 combatInfo = (RSCombatInfo1) next2;
-					return combatInfo.getHealthRatio();
+					RSHealthBarUpdate update = (RSHealthBarUpdate) nextUpdate;
+					return update.getHealthRatio();
 				}
 			}
 		}
@@ -115,29 +115,29 @@ public abstract class RSActorMixin implements RSActor
 	@Override
 	public int getHealth()
 	{
-		RSCombatInfoList combatInfoList = getCombatInfoList();
-		if (combatInfoList != null)
+		RSIterableNodeDeque healthBars = getHealthBars();
+		if (healthBars != null)
 		{
-			RSNode node = combatInfoList.getNode();
-			RSNode next = node.getNext();
-			if (next instanceof RSCombatInfoListHolder)
+			RSNode current = healthBars.getCurrent();
+			RSNode next = current.getNext();
+			if (next instanceof RSHealthBar)
 			{
-				RSCombatInfoListHolder combatInfoListWrapper = (RSCombatInfoListHolder) next;
-				RSHealthBar cf = combatInfoListWrapper.getHealthBar();
-				return cf.getHealthScale();
+				RSHealthBar wrapper = (RSHealthBar) next;
+				RSHealthBarDefinition definition = wrapper.getDefinition();
+				return definition.getHealthScale();
 			}
 		}
 		return -1;
 	}
 
-	@Override
 	@Inject
+	@Override
 	public WorldPoint getWorldLocation()
 	{
 		return WorldPoint.fromLocal(client,
-				this.getPathX()[0] * Perspective.LOCAL_TILE_SIZE + Perspective.LOCAL_TILE_SIZE / 2,
-				this.getPathY()[0] * Perspective.LOCAL_TILE_SIZE + Perspective.LOCAL_TILE_SIZE / 2,
-				client.getPlane());
+			this.getPathX()[0] * Perspective.LOCAL_TILE_SIZE + Perspective.LOCAL_TILE_SIZE / 2,
+			this.getPathY()[0] * Perspective.LOCAL_TILE_SIZE + Perspective.LOCAL_TILE_SIZE / 2,
+			client.getPlane());
 	}
 
 	@Inject
@@ -170,7 +170,7 @@ public abstract class RSActorMixin implements RSActor
 
 	@Inject
 	@Override
-	public Point getCanvasSpriteLocation(SpritePixels sprite, int zOffset)
+	public Point getCanvasSpriteLocation(Sprite sprite, int zOffset)
 	{
 		return Perspective.getCanvasSpriteLocation(client, getLocalLocation(), sprite, zOffset);
 	}
@@ -182,33 +182,33 @@ public abstract class RSActorMixin implements RSActor
 		return Perspective.localToMinimap(client, getLocalLocation());
 	}
 
-	@FieldHook("animation")
+	@FieldHook("sequence")
 	@Inject
 	public void animationChanged(int idx)
 	{
 		AnimationChanged animationChange = new AnimationChanged();
 		animationChange.setActor(this);
-		client.getCallbacks().post(animationChange);
+		client.getCallbacks().post(AnimationChanged.class, animationChange);
 	}
 
-	@FieldHook("graphic")
+	@FieldHook("spotAnimation")
 	@Inject
-	public void graphicChanged(int idx)
+	public void spotAnimationChanged(int idx)
 	{
-		GraphicChanged graphicChanged = new GraphicChanged();
-		graphicChanged.setActor(this);
-		client.getCallbacks().post(graphicChanged);
+		SpotAnimationChanged spotAnimationChanged = new SpotAnimationChanged();
+		spotAnimationChanged.setActor(this);
+		client.getCallbacks().post(SpotAnimationChanged.class, spotAnimationChanged);
 	}
 
-	@FieldHook("interacting")
+	@FieldHook("targetIndex")
 	@Inject
 	public void interactingChanged(int idx)
 	{
 		InteractingChanged interactingChanged = new InteractingChanged(this, getInteracting());
-		client.getCallbacks().post(interactingChanged);
+		client.getCallbacks().post(InteractingChanged.class, interactingChanged);
 	}
 
-	@FieldHook("overhead")
+	@FieldHook("overheadText")
 	@Inject
 	public void overheadTextChanged(int idx)
 	{
@@ -216,7 +216,7 @@ public abstract class RSActorMixin implements RSActor
 		if (overheadText != null)
 		{
 			OverheadTextChanged overheadTextChanged = new OverheadTextChanged(this, overheadText);
-			client.getCallbacks().post(overheadTextChanged);
+			client.getCallbacks().post(OverheadTextChanged.class, overheadTextChanged);
 		}
 	}
 
@@ -227,7 +227,7 @@ public abstract class RSActorMixin implements RSActor
 		int size = 1;
 		if (this instanceof NPC)
 		{
-			NPCComposition composition = ((NPC)this).getComposition();
+			NPCDefinition composition = ((NPC)this).getDefinition();
 			if (composition != null && composition.getConfigs() != null)
 			{
 				composition = composition.transform();
@@ -242,7 +242,7 @@ public abstract class RSActorMixin implements RSActor
 	}
 
 	@Inject
-	@MethodHook("setCombatInfo")
+	@MethodHook("addHealthBar")
 	public void setCombatInfo(int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
 	{
 		if (healthRatio == 0)
@@ -251,8 +251,8 @@ public abstract class RSActorMixin implements RSActor
 			{
 				client.getLogger().debug("You died!");
 
-				LocalPlayerDeath event = new LocalPlayerDeath();
-				client.getCallbacks().post(event);
+				LocalPlayerDeath event = LocalPlayerDeath.INSTANCE;
+				client.getCallbacks().post(LocalPlayerDeath.class, event);
 			}
 			else if (this instanceof RSNPC)
 			{
@@ -274,13 +274,13 @@ public abstract class RSActorMixin implements RSActor
 	 * @param duration The amount of gamecycles the hitsplat will last for
 	 */
 	@Inject
-	@MethodHook(value = "applyActorHitsplat", end = true)
+	@MethodHook(value = "addHitSplat", end = true)
 	public void applyActorHitsplat(int type, int value, int var3, int var4, int gameCycle, int duration)
 	{
 		final Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value, gameCycle + duration);
 		final HitsplatApplied event = new HitsplatApplied();
 		event.setActor(this);
 		event.setHitsplat(hitsplat);
-		client.getCallbacks().post(event);
+		client.getCallbacks().post(HitsplatApplied.class, event);
 	}
 }

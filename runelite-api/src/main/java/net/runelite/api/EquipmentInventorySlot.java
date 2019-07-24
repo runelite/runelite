@@ -29,7 +29,7 @@ package net.runelite.api;
  * <p>
  * These values are intended for use with the local players equipment
  * {@link ItemContainer} corresponding. For obtaining information about equipment
- * in the {@link PlayerComposition}, use {@link net.runelite.api.kit.KitType}.
+ * in the {@link PlayerAppearance}, use {@link net.runelite.api.kit.KitType}.
  *
  * @see Client#getItemContainer(InventoryID)
  * @see InventoryID#EQUIPMENT

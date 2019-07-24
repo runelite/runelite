@@ -24,74 +24,119 @@
  */
 package net.runelite.client.plugins.alchemicalhydra;
 
+import java.awt.image.BufferedImage;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.runelite.api.NPC;
 import net.runelite.api.Prayer;
 import net.runelite.api.ProjectileID;
+import net.runelite.api.SpriteID;
+import net.runelite.client.game.SpriteManager;
+import net.runelite.client.util.ImageUtil;
 
+@Getter(AccessLevel.PACKAGE)
+@RequiredArgsConstructor
 @Singleton
 class Hydra
 {
+	@Getter(AccessLevel.PACKAGE)
+	@RequiredArgsConstructor
 	enum AttackStyle
 	{
-		MAGIC(ProjectileID.HYDRA_MAGIC, Prayer.PROTECT_FROM_MAGIC),
-		RANGED(ProjectileID.HYDRA_RANGED, Prayer.PROTECT_FROM_MISSILES);
+		MAGIC(ProjectileID.HYDRA_MAGIC, Prayer.PROTECT_FROM_MAGIC, SpriteID.PRAYER_PROTECT_FROM_MAGIC),
+		RANGED(ProjectileID.HYDRA_RANGED, Prayer.PROTECT_FROM_MISSILES, SpriteID.PRAYER_PROTECT_FROM_MISSILES);
 
-		@Getter
-		private int projId;
+		private final int projectileID;
+		private final Prayer prayer;
+		private final int spriteID;
 
-		@Getter
-		private Prayer prayer;
+		@Getter(AccessLevel.NONE)
+		private BufferedImage image;
 
-		AttackStyle(int projId, Prayer prayer)
+		BufferedImage getImage(SpriteManager spriteManager)
 		{
-			this.projId = projId;
-			this.prayer = prayer;
+			if (image == null)
+			{
+				BufferedImage tmp = spriteManager.getSprite(spriteID, 0);
+				image = tmp == null ? null : ImageUtil.resizeImage(tmp, HydraOverlay.IMGSIZE, HydraOverlay.IMGSIZE);
+			}
+
+			return image;
 		}
 	}
 
-	@Getter
-	private NPC npc;
+	private final NPC npc;
 
-	@Getter
-	@Setter
-	private HydraPhase phase;
+	private HydraPhase phase = HydraPhase.ONE;
 
-	@Getter
-	@Setter
-	private int attackCount;
+	private int attackCount = 0;
+	private int nextSwitch = phase.getAttacksPerSwitch();
 
-	@Getter
-	@Setter
-	private int nextSwitch;
+	@Setter(AccessLevel.PACKAGE)
+	private int nextSpecial = 3;
 
-	@Getter
-	@Setter
-	private int nextSpecial;
+	private AttackStyle nextAttack = AttackStyle.MAGIC;
+	private AttackStyle lastAttack = AttackStyle.MAGIC;
 
-	@Getter
-	@Setter
-	private AttackStyle nextAttack;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean weakened = false;
 
-	@Getter
-	@Setter
-	private AttackStyle lastAttack;
-
-	@Getter
-	@Setter
-	private boolean weakened;
-
-	Hydra(NPC npc)
+	void changePhase(HydraPhase newPhase)
 	{
-		this.npc = npc;
-		this.phase = HydraPhase.ONE;
-		this.nextAttack = AttackStyle.MAGIC;
-		this.lastAttack = AttackStyle.MAGIC; // important, else we wouldn't switch if the first attack is ranged
-		this.nextSpecial = 3;
-		this.nextSwitch = phase.getAttacksPerSwitch();
-		this.attackCount = 0;
-		this.weakened = false;
+		phase = newPhase;
+		nextSpecial = 3;
+		attackCount = 0;
+		weakened = false;
+
+		if (newPhase == HydraPhase.FOUR)
+		{
+			weakened = true;
+			switchStyles();
+			nextSwitch = phase.getAttacksPerSwitch();
+		}
+	}
+
+	private void switchStyles()
+	{
+		nextAttack = lastAttack == Hydra.AttackStyle.MAGIC
+			? Hydra.AttackStyle.RANGED
+			: Hydra.AttackStyle.MAGIC;
+	}
+
+	void handleAttack(int id)
+	{
+		if (id != nextAttack.getProjectileID())
+		{
+			if (id == lastAttack.getProjectileID())
+			{
+				// If the current attack isn't what was expected and we accidentally counted 1 too much
+				return;
+			}
+
+			// If the current attack isn't what was expected and we should have switched prayers
+			switchStyles();
+			nextSwitch = phase.getAttacksPerSwitch() - 1;
+		}
+		else
+		{
+			nextSwitch--;
+		}
+
+		lastAttack = nextAttack;
+		attackCount++;
+
+		if (nextSwitch <= 0)
+		{
+			switchStyles();
+			nextSwitch = phase.getAttacksPerSwitch();
+		}
+	}
+
+	int getNextSpecialRelative()
+	{
+		return nextSpecial - attackCount;
 	}
 }

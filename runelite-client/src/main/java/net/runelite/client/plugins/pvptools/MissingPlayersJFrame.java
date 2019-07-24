@@ -10,30 +10,27 @@
 package net.runelite.client.plugins.pvptools;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Vector;
+import javax.inject.Singleton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import net.runelite.api.ClanMember;
 import net.runelite.api.Client;
 import net.runelite.client.ui.FontManager;
 
-public class MissingPlayersJFrame extends JFrame
+@Singleton
+class MissingPlayersJFrame extends JFrame
 {
 
-	public JList missingPlayersJList;
-
-	MissingPlayersJFrame(Client client, PvpToolsPlugin pvpToolsPlugin, List<String> list)
+	MissingPlayersJFrame(final Client client, final PvpToolsPlugin pvpToolsPlugin, final List<String> list)
 	{
 		super();
 		int x = client.getCanvas().getLocationOnScreen().x + client.getCanvas().getWidth();
@@ -44,7 +41,7 @@ public class MissingPlayersJFrame extends JFrame
 		JButton refreshJButton = new JButton("Refresh");
 		refreshJButton.addActionListener(pvpToolsPlugin.playersButtonActionListener);
 		JButton copyJButton = new JButton("Copy List");
-		missingPlayersJList = new JList(list.toArray());
+		JList<Object> missingPlayersJList = new JList<>(list.toArray());
 		ActionListener copyButtonActionListener = e ->
 		{
 			StringSelection stringSelection;

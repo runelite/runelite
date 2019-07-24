@@ -13,7 +13,7 @@ public enum RenderStyle
 
 	private final String name;
 
-	RenderStyle(String name)
+	RenderStyle(final String name)
 	{
 		this.name = name;
 	}

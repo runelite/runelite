@@ -30,7 +30,6 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import org.apache.commons.lang3.ArrayUtils;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
@@ -38,17 +37,18 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Singleton
 public class WarIndicatorOverlay extends Overlay
 {
 	private final WarIndicatorService warIndicatorService;
-	private final WarIndicatorConfig config;
+	private final WarIndicatorPlugin plugin;
 
 	@Inject
-	private WarIndicatorOverlay(WarIndicatorConfig config, WarIndicatorService warIndicatorService)
+	private WarIndicatorOverlay(final WarIndicatorPlugin plugin, final WarIndicatorService warIndicatorService)
 	{
-		this.config = config;
+		this.plugin = plugin;
 		this.warIndicatorService = warIndicatorService;
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -64,29 +64,23 @@ public class WarIndicatorOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		if (!config.highlightSnipes() && !config.highLightCallers())
+		if (!plugin.isHighlightSnipes() && !plugin.isHighLightCallers())
 		{
 			return;
 		}
 
 		Polygon poly = actor.getCanvasTilePoly();
-		String[] callers = config.getActiveCallers().split(", ");
-		String[] targets = config.getTargetedSnipes().split(", ");
+		String[] callers = plugin.getGetActiveCallers().split(", ");
+		String[] targets = plugin.getGetTargetedSnipes().split(", ");
 
-		if (config.callerTile() && ArrayUtils.contains(callers, actor.getName()))
+		if (plugin.isCallerTile() && ArrayUtils.contains(callers, actor.getName()) && poly != null)
 		{
-			if (poly != null)
-			{
-				OverlayUtil.renderPolygon(graphics, poly, color);
-			}
+			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
 
-		if (config.snipeTile() && ArrayUtils.contains(targets, actor.getName()))
+		if (plugin.isSnipeTile() && ArrayUtils.contains(targets, actor.getName()) && poly != null)
 		{
-			if (poly != null)
-			{
-				OverlayUtil.renderPolygon(graphics, poly, color);
-			}
+			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
 
 		String name = actor.getName().replace('\u00A0', ' ');

@@ -35,6 +35,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
@@ -48,11 +49,12 @@ import net.runelite.client.util.StackFormatter;
  * This panel displays an individual item result in the
  * Grand Exchange search plugin.
  */
+@Singleton
 class GrandExchangeItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, Double
+	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, int
 		haPrice, int geItemLimit)
 	{
 		BorderLayout layout = new BorderLayout();
@@ -139,7 +141,7 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
-		haPriceLabel.setText(StackFormatter.formatNumber(haPrice.intValue()) + " alch");
+		haPriceLabel.setText(StackFormatter.formatNumber(haPrice) + " alch");
 		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
 		alchAndLimitPanel.add(haPriceLabel, BorderLayout.WEST);
 
@@ -165,7 +167,7 @@ class GrandExchangeItemPanel extends JPanel
 		}
 	}
 
-	private static void geLink(String name, int itemID)
+	static void geLink(String name, int itemID)
 	{
 		final String url = "http://services.runescape.com/m=itemdb_oldschool/"
 			+ name.replaceAll(" ", "_")

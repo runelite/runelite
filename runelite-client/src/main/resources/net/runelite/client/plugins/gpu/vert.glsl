@@ -47,7 +47,9 @@ layout(std140) uniform uniforms {
 
 uniform float brightness;
 uniform int useFog;
-uniform int fogDepth;
+uniform float fogDepth;
+uniform float fogCornerRadius;
+uniform float fogDensity;
 uniform int drawDistance;
 
 out ivec3 vPosition;
@@ -58,8 +60,27 @@ out float vFogAmount;
 
 #include hsl_to_rgb.glsl
 
-float fogFactorLinear(const float dist, const float start, const float end) {
-  return 1.0 - clamp((dist - start) / (end - start), 0.0, 1.0);
+float fogFactorCurved(const float dist, const float start, const float end, const float accel) {
+  return 1.0 - pow(clamp((dist - start) / (end - start), 0.0, 1.0), accel);
+}
+
+// Returns the distance to the closest edge
+float minEdgeDistance(vec3 v1, vec4 bounds){
+  return min(min(v1.x - bounds.x, bounds.y - v1.x), min(v1.z - bounds.z, bounds.w - v1.z));
+}
+
+float roundedRectangleFunction(vec3 v1, vec4 bounds, float cornerRadius){
+  float minXDistance = min(v1.x - bounds.x, bounds.y - v1.x);
+  float minZDistance = min(v1.z - bounds.z, bounds.w - v1.z);
+
+  if (minXDistance < cornerRadius && minZDistance < cornerRadius)
+  {
+    return cornerRadius - sqrt( pow(minXDistance - cornerRadius, 2) + pow(minZDistance - cornerRadius, 2) );
+  }
+  else
+  {
+    return min(minXDistance, minZDistance);
+  }
 }
 
 void main()
@@ -81,8 +102,6 @@ void main()
   int fogSouth = max(FOG_SCENE_EDGE_MIN, cameraZ - drawDistance);
   int fogNorth = min(FOG_SCENE_EDGE_MAX, cameraZ + drawDistance - TILE_SIZE);
 
-  // Calculate distance from the scene edge
-  float fogDistance = min(min(vertex.x - fogWest, fogEast - vertex.x), min(vertex.z - fogSouth, fogNorth - vertex.z));
-
-  vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth * TILE_SIZE) * useFog;
+  float fogDistance = roundedRectangleFunction(vPosition, vec4(fogWest, fogEast, fogSouth, fogNorth), fogCornerRadius);
+  vFogAmount = fogFactorCurved(fogDistance, 0, fogDepth, fogDensity) * useFog;
 }

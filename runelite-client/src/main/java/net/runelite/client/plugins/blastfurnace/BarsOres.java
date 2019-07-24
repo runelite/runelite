@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.blastfurnace;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -50,14 +50,18 @@ public enum BarsOres
 	SILVER_BAR(Varbits.BLAST_FURNACE_SILVER_BAR, ItemID.SILVER_BAR),
 	GOLD_BAR(Varbits.BLAST_FURNACE_GOLD_BAR, ItemID.GOLD_BAR);
 
-	private static final Map<Varbits, BarsOres> VARBIT = new HashMap<>();
+	private static final Map<Varbits, BarsOres> VARBIT;
 
 	static
 	{
+		ImmutableMap.Builder<Varbits, BarsOres> builder = new ImmutableMap.Builder<>();
+
 		for (BarsOres s : values())
 		{
-			VARBIT.put(s.getVarbit(), s);
+			builder.put(s.getVarbit(), s);
 		}
+
+		VARBIT = builder.build();
 	}
 
 	@Getter

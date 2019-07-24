@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
@@ -42,7 +41,6 @@ import net.runelite.client.plugins.timetracking.TimeablePanel;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 
-@Slf4j
 public class FarmingTabPanel extends TabContentPanel
 {
 	private final FarmingTracker farmingTracker;
@@ -94,7 +92,7 @@ public class FarmingTabPanel extends TabContentPanel
 					groupLabel.setBorder(new EmptyBorder(15, 0, 0, 0));
 				}
 
-				groupLabel.setFont(FontManager.getRunescapeSmallFont());
+				groupLabel.setFont(FontManager.getSmallFont(getFont()));
 
 				add(groupLabel, c);
 				c.gridy++;

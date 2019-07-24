@@ -31,9 +31,9 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.CollisionData;
 import net.runelite.api.CollisionDataFlag;
-import net.runelite.api.Constants;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
+import net.runelite.api.Constants;
 
 /**
  * Represents an area on the world.
@@ -185,6 +185,25 @@ public class WorldArea
 	}
 
 	/**
+	 * Checks whether this area is within melee distance of another without blocking in-between.
+	 *
+	 * @param client the client to test in
+	 * @param other the other area
+	 * @return true if in melee distance without blocking, false otherwise
+	 */
+	public boolean canMelee(Client client, WorldArea other)
+	{
+		if (isInMeleeDistance(other))
+		{
+			Point p1 = this.getComparisonPoint(other);
+			Point p2 = other.getComparisonPoint(this);
+			WorldArea w1 = new WorldArea(p1.getX(), p1.getY() , 1, 1, this.getPlane());
+			return (w1.canTravelInDirection(client, p2.getX() - p1.getX(), p2.getY() - p1.getY()));
+		}
+		return false;
+	}
+
+	/**
 	 * Checks whether this area intersects with another.
 	 *
 	 * @param other the other area
@@ -208,7 +227,7 @@ public class WorldArea
 	 * Note that this method does not consider other actors as
 	 * a collision, but most non-boss NPCs do check for collision
 	 * with some actors. For actor collision checking, use the
-	 * {@link #canTravelInDirection(Client, int, int, Predicate)} method.
+	 * {@link #canTravelInDirection(Client, int, int, java.util.function.Predicate)} method.
 	 *
 	 * @param client the client to test in
 	 * @param dx the x-axis direction to travel (-1, 0, or 1)
@@ -252,8 +271,16 @@ public class WorldArea
 
 		LocalPoint lp = LocalPoint.fromWorld(client, x, y);
 
-		int startX = lp.getSceneX() + dx;
-		int startY = lp.getSceneY() + dy;
+		int startX = 0;
+		if (lp != null)
+		{
+			startX = lp.getSceneX() + dx;
+		}
+		int startY = 0;
+		if (lp != null)
+		{
+			startY = lp.getSceneY() + dy;
+		}
 		int checkX = startX + (dx > 0 ? width - 1 : 0);
 		int checkY = startY + (dy > 0 ? height - 1 : 0);
 		int endX = startX + width - 1;
@@ -408,11 +435,8 @@ public class WorldArea
 			}
 			if (height == 1)
 			{
-				if ((collisionDataFlags[checkX - dx][checkY] & yFlags) != 0 &&
-					extraCondition.test(WorldPoint.fromScene(client, startX, checkY, client.getPlane())))
-				{
-					return false;
-				}
+				return (collisionDataFlags[checkX - dx][checkY] & yFlags) == 0 ||
+					!extraCondition.test(WorldPoint.fromScene(client, startX, checkY, client.getPlane()));
 			}
 		}
 

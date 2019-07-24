@@ -32,35 +32,54 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+@Singleton
 class WaveOverlay extends Overlay
 {
 	private static final Color HEADER_COLOR = ColorScheme.BRAND_ORANGE;
 
 	private final FightCaveConfig config;
 	private final FightCavePlugin plugin;
-
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private WaveOverlay(FightCaveConfig config, FightCavePlugin plugin)
+	private WaveOverlay(final FightCaveConfig config, final FightCavePlugin plugin)
 	{
-		setPosition(OverlayPosition.TOP_RIGHT);
 		this.config = config;
 		this.plugin = plugin;
+		setPosition(OverlayPosition.TOP_RIGHT);
+	}
+
+	private static Collection<String> buildWaveLines(final Map<WaveMonster, Integer> wave)
+	{
+		final List<Map.Entry<WaveMonster, Integer>> monsters = new ArrayList<>(wave.entrySet());
+		monsters.sort(Map.Entry.comparingByKey());
+		final List<String> outputLines = new ArrayList<>();
+
+		for (Map.Entry<WaveMonster, Integer> monsterEntry : monsters)
+		{
+			final WaveMonster monster = monsterEntry.getKey();
+			final int quantity = monsterEntry.getValue();
+			final String line = FightCavePlugin.formatMonsterQuantity(monster, quantity);
+
+			outputLines.add(line);
+		}
+
+		return outputLines;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.inFightCave()
-			|| plugin.getCurrentWave() < 0)
+		if (!plugin.isValidRegion() || plugin.getCurrentWave() < 0)
 		{
 			return null;
 		}
@@ -89,6 +108,7 @@ class WaveOverlay extends Overlay
 
 		return panelComponent.render(graphics);
 	}
+
 	private void addWaveInfo(final String headerText, final Map<WaveMonster, Integer> waveContents)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder()
@@ -96,29 +116,18 @@ class WaveOverlay extends Overlay
 			.color(HEADER_COLOR)
 			.build());
 
-		for (LineComponent line : buildWaveLines(waveContents))
+
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.CENTER);
+
+		for (String line : buildWaveLines(waveContents))
 		{
-			panelComponent.getChildren().add(line);
-		}
-	}
-
-	private static Collection<LineComponent> buildWaveLines(final Map<WaveMonster, Integer> wave)
-	{
-		final List<Map.Entry<WaveMonster, Integer>> monsters = new ArrayList<>(wave.entrySet());
-		monsters.sort(Map.Entry.comparingByKey());
-		final List<LineComponent> outputLines = new ArrayList<>();
-
-		for (Map.Entry<WaveMonster, Integer> monsterEntry : monsters)
-		{
-			final WaveMonster monster = monsterEntry.getKey();
-			final int quantity = monsterEntry.getValue();
-			final LineComponent line = LineComponent.builder()
-				.left(FightCavePlugin.formatMonsterQuantity(monster, quantity))
-				.build();
-
-			outputLines.add(line);
+			tableComponent.addRow(line);
 		}
 
-		return outputLines;
+		if (!tableComponent.isEmpty())
+		{
+			panelComponent.getChildren().add(tableComponent);
+		}
 	}
 }

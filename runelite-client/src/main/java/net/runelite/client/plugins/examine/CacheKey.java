@@ -31,7 +31,7 @@ class CacheKey
 	private final ExamineType type;
 	private final int id;
 
-	public CacheKey(ExamineType type, int id)
+	CacheKey(final ExamineType type, final int id)
 	{
 		this.type = type;
 		this.id = id;
@@ -66,10 +66,6 @@ class CacheKey
 		{
 			return false;
 		}
-		if (this.type != other.type)
-		{
-			return false;
-		}
-		return true;
+		return this.type == other.type;
 	}
 }

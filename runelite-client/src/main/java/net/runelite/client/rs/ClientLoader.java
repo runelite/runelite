@@ -26,73 +26,31 @@
  */
 package net.runelite.client.rs;
 
-import com.google.common.hash.Hashing;
-import com.google.common.io.ByteStreams;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import io.sigpipe.jbsdiff.InvalidHeaderException;
-import io.sigpipe.jbsdiff.Patch;
 import java.applet.Applet;
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.jar.Attributes;
-import java.util.jar.JarEntry;
-import java.util.jar.JarInputStream;
-import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
-import java.util.logging.Logger;
+import java.net.URLConnection;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-
-import javassist.ClassPool;
-import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
-import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
-import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
-
 import net.runelite.client.RuneLite;
-import net.runelite.client.rs.bytecode.ByteCodeUtils;
-import net.runelite.client.rs.bytecode.ByteCodePatcher;
-import net.runelite.client.rs.bytecode.Hooks;
 import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.apache.commons.compress.compressors.CompressorException;
-import org.xeustechnologies.jcl.JarClassLoader;
 
 @Slf4j
 @Singleton
 public class ClientLoader
 {
-	public static File hooksFile = new File(RuneLite.RUNELITE_DIR+"/hooks-"+ RuneLiteAPI.getVersion() +"-.json");
+	public static boolean useLocalInjected = false;
+	public static boolean usePrivateServer = false;
 	private final ClientConfigLoader clientConfigLoader;
-	private ClientUpdateCheckMode updateCheckMode;
-	private JarOutputStream target;
-	private static String[] preotectedStuffs;
-	private static int stepCount;
+	private final ClientUpdateCheckMode updateCheckMode;
 
 	@Inject
 	private ClientLoader(
@@ -103,356 +61,145 @@ public class ClientLoader
 		this.clientConfigLoader = clientConfigLoader;
 	}
 
-	public Applet load()
+	private static Applet loadRLPlus(final RSConfig config) throws ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		if (updateCheckMode == NONE)
+		if (useLocalInjected)
 		{
-			return null;
+			try
+			{
+				URL localInjected = new File("./injected-client/target/injected-client-" + RuneLiteAPI.getVersion() + ".jar").toURI().toURL();
+				log.info("Using local injected-client");
+				URLClassLoader classLoader = new URLClassLoader(new URL[]{localInjected});
+				Class<?> clientClass = classLoader.loadClass("client");
+				return loadFromClass(config, clientClass);
+			}
+			catch (MalformedURLException e)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		try
 		{
-			File injectedClientFile = ByteCodeUtils.injectedClientFile;
-			File hijackedClientFile = ByteCodeUtils.hijackedClientFile;
-				Manifest manifest = new Manifest();
-				manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
-				target = new JarOutputStream(new FileOutputStream(injectedClientFile), manifest);
-			RSConfig config = clientConfigLoader.fetch();
-
-			Map<String, byte[]> zipFile = new HashMap<>();
+			File cachedInjected = new File(RuneLite.RUNELITE_DIR + "/injected-client-" + RuneLiteAPI.getVersion() + ".jar");
+			URL remoteInjected = new URL("https://github.com/runelite-extended/maven-repo/raw/master/live/injected-client-" + RuneLiteAPI.getVersion() + ".jar");
+			int remoteSize = getFileSize(remoteInjected);
+			URL cachedInjectedURL = cachedInjected.toURI().toURL();
+			int cachedSize = 0;
+			if (cachedInjected.exists())
 			{
-				Certificate[] jagexCertificateChain = getJagexCertificateChain();
-				String codebase = config.getCodeBase();
-				String initialJar = config.getInitialJar();
-				URL url = new URL(codebase + initialJar);
-				Request request = new Request.Builder()
-					.url(url)
-					.build();
-
-				try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-				{
-					JarInputStream jis;
-
-						jis = new JarInputStream(response.body().byteStream());
-
-					byte[] tmp = new byte[4096];
-					ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
-					for (; ; )
-					{
-						JarEntry metadata = jis.getNextJarEntry();
-						if (metadata == null)
-						{
-							break;
-						}
-
-						buffer.reset();
-						for (; ; )
-						{
-							int n = jis.read(tmp);
-							if (n <= -1)
-							{
-								break;
-							}
-							buffer.write(tmp, 0, n);
-						}
-
-						zipFile.put(metadata.getName(), buffer.toByteArray());
-					}
-				}
+				cachedSize = getFileSize(cachedInjectedURL);
 			}
 
-				if (updateCheckMode == AUTO)
-				{
-					Map<String, String> hashes;
-					try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/hashes.json"))
-					{
-						hashes = new Gson().fromJson(new InputStreamReader(is), new TypeToken<HashMap<String, String>>()
-						{
-						}.getType());
-					}
-
-					for (Map.Entry<String, String> file : hashes.entrySet())
-					{
-						byte[] bytes = zipFile.get(file.getKey());
-
-						String ourHash = null;
-						if (bytes != null)
-						{
-							ourHash = Hashing.sha512().hashBytes(bytes).toString();
-						}
-
-						if (!file.getValue().equals(ourHash))
-						{
-							if (hijackedClientFile.exists()) {
-								Logger.getAnonymousLogger().warning("[RuneLitePlus] Hash checking / Client patching skipped due to hijacked client.");
-								updateCheckMode = VANILLA;
-								break;
-							} else {
-								log.info("{} had a hash mismatch; falling back to vanilla. {} != {}", file.getKey(), file.getValue(), ourHash);
-								log.info("Client is outdated!");
-								updateCheckMode = VANILLA;
-								break;
-							}
-						}
-					}
-				}
-
-				if (updateCheckMode == AUTO)
-				{
-					ByteArrayOutputStream patchOs = new ByteArrayOutputStream(756 * 1024);
-					int patchCount = 0;
-
-					for (Map.Entry<String, byte[]> file : zipFile.entrySet())
-					{
-						byte[] bytes;
-						try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/" + file.getKey() + ".bs"))
-						{
-							if (is == null)
-							{
-								continue;
-							}
-
-							bytes = ByteStreams.toByteArray(is);
-						}
-
-						patchOs.reset();
-						Patch.patch(file.getValue(), bytes, patchOs);
-						file.setValue(patchOs.toByteArray());
-
-						++patchCount;
-
-							if (!file.getKey().startsWith("META")) {
-								add(file.getValue(), file.getKey(), target);
-							}
-					}
-					if (target!=null)
-						target.close();
-
-					log.info("Patched {} classes", patchCount);
-				}
-				if (hooksFile.exists()) {
-					ByteCodePatcher.classPool = new ClassPool(true);
-					ByteCodePatcher.classPool.appendClassPath(RuneLite.RUNELITE_DIR+"/injectedClient-"+ RuneLiteAPI.getVersion() +"-.jar");
-					Gson gson = new Gson();
-					Hooks hooks = gson.fromJson(new BufferedReader(new FileReader(hooksFile)), Hooks.class);
-
-					if (hooks.clientInstance.equals("")||
-						hooks.projectileClass.equals("") ||
-						hooks.actorClass.equals("") ||
-							hooks.playerClass.equals("")) {
-							System.out.println("[RuneLitePlus] Bad hooks, re-scraping.");
-						stepCount = getStepCount(ByteCodeUtils.injectedClientFile.getPath());
-						ByteCodePatcher.clientInstance = initHookScrape(ByteCodeUtils.injectedClientFile.getPath());
-						ByteCodePatcher.findHooks(injectedClientFile.getPath());
-					} else {
-						ByteCodePatcher.clientInstance = hooks.clientInstance;
-						ByteCodePatcher.applyHooks(ByteCodeUtils.injectedClientFile, hooks);
-						System.out.println("[RuneLitePlus] Loaded hooks");
-					}
-
-				} else {
-					System.out.println("[RuneLitePlus] Hooks file not found, scraping hooks.");
-					stepCount = getStepCount(ByteCodeUtils.injectedClientFile.getPath());
-					ByteCodePatcher.clientInstance = initHookScrape(ByteCodeUtils.injectedClientFile.getPath());
-					ByteCodePatcher.hooks.protectedStuff = preotectedStuffs;
-					ByteCodePatcher.findHooks(injectedClientFile.getPath());
-				}
-
-			Map<String, byte[]> zipFile2 = new HashMap<>();
-			JarInputStream jis = new JarInputStream(new FileInputStream(hijackedClientFile));
-
-			byte[] tmp = new byte[4096];
-			ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
-			for (; ; ) {
-				JarEntry metadata = jis.getNextJarEntry();
-				if (metadata == null) {
-					break;
-				}
-
-				buffer.reset();
-				for (; ; ) {
-					int n = jis.read(tmp);
-					if (n <= -1) {
-						break;
-					}
-					buffer.write(tmp, 0, n);
-				}
-
-				zipFile2.put(metadata.getName(), buffer.toByteArray());
-			}
-
-			String initialClass = config.getInitialClass();
-
-			ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
+			if (remoteSize != cachedSize)
 			{
-				@Override
-				protected Class<?> findClass(String name) throws ClassNotFoundException
+				log.info("Injected-client size mismatch, updating.");
+				try (BufferedInputStream in = new BufferedInputStream(remoteInjected.openStream()))
 				{
-					String path = name.replace('.', '/').concat(".class");
-					byte[] data = zipFile2.get(path);
-					if (data == null)
+					FileOutputStream fileOutputStream = new FileOutputStream(cachedInjected);
+					byte[] dataBuffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1)
 					{
-						throw new ClassNotFoundException(name);
+						fileOutputStream.write(dataBuffer, 0, bytesRead);
 					}
-
-					return defineClass(name, data, 0, data.length);
 				}
-			};
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
 
-			Class<?> clientClass = rsClassLoader.loadClass(initialClass);
-
-			Applet rs = (Applet) clientClass.newInstance();
-			rs.setStub(new RSAppletStub(config));
-			return rs;
+			}
+			URLClassLoader classLoader = new URLClassLoader(new URL[]{cachedInjectedURL}, RuneLite.class.getClassLoader());
+			Class<?> clientClass = classLoader.loadClass("client");
+			return loadFromClass(config, clientClass);
 		}
-		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
-			| CompressorException | InvalidHeaderException | CertificateException | SecurityException e)
+		catch (IOException e)
 		{
-			if (e instanceof ClassNotFoundException)
-			{
-				log.error("Unable to load client - class not found. This means you"
-					+ " are not running RuneLite with Maven as the client patch"
-					+ " is not in your classpath.");
-			}
-
-			log.error("Error loading RS!", e);
-			return null;
-		} catch (NotFoundException e) {
 			e.printStackTrace();
 		}
+
+		log.error("Failed to load injected-client!");
 		return null;
 	}
 
-	private void add(byte[] bytes, String entryName ,JarOutputStream target) throws IOException {
-		BufferedInputStream in = null;
-		try {
-			JarEntry entry = new JarEntry(entryName);
-			target.putNextEntry(entry);
-			target.write(bytes);
-			target.closeEntry();
-		} finally {
-			if (in != null)
-				in.close();
-		}
-	}
-
-	private static Certificate[] getJagexCertificateChain() throws CertificateException
+	private static Applet loadVanilla(final RSConfig config) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-		Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
-		return certificates.toArray(new Certificate[certificates.size()]);
+		final String codebase = config.getCodeBase();
+		final String initialJar = config.getInitialJar();
+		final String initialClass = config.getInitialClass();
+		final URL url = new URL(codebase + initialJar);
+
+		// Must set parent classloader to null, or it will pull from
+		// this class's classloader first
+		final URLClassLoader classloader = new URLClassLoader(new URL[]{url}, null);
+		final Class<?> clientClass = classloader.loadClass(initialClass);
+		return loadFromClass(config, clientClass);
 	}
 
-	public static int getStepCount(String jarFile) {
-		int stepCount = 0;
-		JarClassLoader jcl = new JarClassLoader();
-		try {
-			ClassPool classPool = new ClassPool(true);
-			classPool.appendClassPath(RuneLite.RUNELITE_DIR+"/injectedClient-"+ RuneLiteAPI.getVersion() +"-.jar");
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-		}
+	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass) throws IllegalAccessException, InstantiationException
+	{
+		final Applet rs = (Applet) clientClass.newInstance();
+		rs.setStub(new RSAppletStub(config));
+		return rs;
+	}
 
-		try {
-			jcl.add(new FileInputStream(jarFile));
-			try (JarInputStream in = new JarInputStream(new BufferedInputStream(new FileInputStream(jarFile)))) {
-				JarEntry entry;
-				while ((entry = in.getNextJarEntry()) != null) {
-					if (entry.getName().endsWith(".class")) {
-						stepCount++;
-					}
-				}
+	private static int getFileSize(URL url)
+	{
+		URLConnection conn = null;
+		try
+		{
+			conn = url.openConnection();
+			if (conn instanceof HttpURLConnection)
+			{
+				((HttpURLConnection) conn).setRequestMethod("HEAD");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			conn.getInputStream();
+			return conn.getContentLength();
 		}
-		return stepCount;
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+		finally
+		{
+			if (conn instanceof HttpURLConnection)
+			{
+				((HttpURLConnection) conn).disconnect();
+			}
+		}
 	}
 
-    public static String initHookScrape(String jarFile) {
-		int currentStep = 0;
-		RuneLite.splashScreen.setMessage("Analyzing injected client");
-		List protectedStuff = new ArrayList<String>();
-		String clientInstance = "";
-        JarClassLoader jcl = new JarClassLoader();
-        try {
-            ClassPool classPool = new ClassPool(true);
-            classPool.appendClassPath(RuneLite.RUNELITE_DIR+"/injectedClient-"+ RuneLiteAPI.getVersion() +"-.jar");
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }
+	public Applet load()
+	{
+		try
+		{
+			final RSConfig config = clientConfigLoader.fetch();
 
-        try {
-            jcl.add(new FileInputStream(jarFile));
-            try (JarInputStream in = new JarInputStream(new BufferedInputStream(new FileInputStream(jarFile)))) {
-                JarEntry entry;
-                while ((entry = in.getNextJarEntry()) != null) {
-                    if (entry.getName().endsWith(".class")) {
-                        File temp = new File(jarFile);
-                        ClassLoader cl = ClassLoader.getSystemClassLoader();
-                        try {
-                            URLClassLoader child = new URLClassLoader(
-                                    new URL[] {temp.toURI().toURL()},
-                                    cl
-                            );
-                            try {
-                                Class classToLoad = Class.forName(entry.getName().replace(".class", ""), false, child);
-                                RuneLite.splashScreen.setSubMessage(entry.getName());
-                                currentStep++;
-                                RuneLite.splashScreen.setProgress(currentStep, stepCount);
-                                JarClassLoader jcl2 = new JarClassLoader();
-                                try {
-                                    jcl2.add(new FileInputStream(ByteCodeUtils.injectedClientFile));
-                                    Field[] fields = classToLoad.getDeclaredFields();
-                                    Method[] methods = classToLoad.getDeclaredMethods();
-                                    for (Field f : fields) {
-                                        try {
-                                        	if (f.getName().contains("$")) {
-                                        		System.out.println(classToLoad.getName()+"."+f.getName());
-												protectedStuff.add(classToLoad.getName()+"."+f.getName());
-											}
-                                            if (f.getType().getName()=="client") {
-                                            	ByteCodePatcher.hooks.clientInstance = classToLoad.getName()+"."+f.getName();
-												clientInstance = classToLoad.getName()+"."+f.getName();
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                    for (Method m : methods) {
-										RuneLite.splashScreen.setSubMessage("Checked "+m.getName());
-										if (m.getName().contains("$")) {
-											protectedStuff.add(classToLoad.getName()+"."+m.getName());
-										}
-									}
-                                    RuneLite.splashScreen.setProgress(currentStep, stepCount);
-                                } catch (FileNotFoundException e) {
-                                    e.printStackTrace();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-							RuneLite.splashScreen.setProgress(2, 5);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            System.out.println("Class not found: "+entry.getName());
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        int i = 0;
-        for (Object o : protectedStuff) {
-			i++;
+			switch (updateCheckMode)
+			{
+				case AUTO:
+				default:
+					return loadRLPlus(config);
+				case VANILLA:
+					return loadVanilla(config);
+				case NONE:
+					return null;
+			}
 		}
-        preotectedStuffs = new String[i];
-        i = 0;
-		for (Object o : protectedStuff) {
-			preotectedStuffs[i] = (String) o;
-			i++;
+		catch (IOException | InstantiationException | IllegalAccessException e)
+		{
+			log.error("Error loading RS!", e);
+			return null;
 		}
-        return clientInstance;
-    }
+		catch (ClassNotFoundException e)
+		{
+			log.error("Unable to load client - class not found. This means you"
+				+ " are not running RuneLite with Maven as the injected client"
+				+ " is not in your classpath.");
+
+			log.error("Error loading RS!", e);
+			return null;
+		}
+	}
 }

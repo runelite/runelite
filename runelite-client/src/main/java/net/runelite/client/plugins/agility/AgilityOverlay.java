@@ -32,6 +32,7 @@ import java.awt.Polygon;
 import java.awt.geom.Area;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
@@ -42,6 +43,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 class AgilityOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
@@ -49,17 +51,15 @@ class AgilityOverlay extends Overlay
 
 	private final Client client;
 	private final AgilityPlugin plugin;
-	private final AgilityConfig config;
 
 	@Inject
-	private AgilityOverlay(Client client, AgilityPlugin plugin, AgilityConfig config)
+	private AgilityOverlay(final Client client, final AgilityPlugin plugin)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
@@ -70,15 +70,15 @@ class AgilityOverlay extends Overlay
 		final List<Tile> marksOfGrace = plugin.getMarksOfGrace();
 		plugin.getObstacles().forEach((object, obstacle) ->
 		{
-			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
-					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay())
+			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !plugin.isHighlightShortcuts() ||
+				Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !plugin.isShowTrapOverlay())
 			{
 				return;
 			}
 
 			Tile tile = obstacle.getTile();
-			if (tile.getPlane() == client.getPlane()
-				&& object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+
+			if (tile.getPlane() == client.getPlane() && checkDistance(object.getLocalLocation(), playerLocation))
 			{
 				// This assumes that the obstacle is not clickable.
 				if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
@@ -86,7 +86,7 @@ class AgilityOverlay extends Overlay
 					Polygon polygon = object.getCanvasTilePoly();
 					if (polygon != null)
 					{
-						OverlayUtil.renderPolygon(graphics, polygon, config.getTrapColor());
+						OverlayUtil.renderPolygon(graphics, polygon, plugin.getTrapColor());
 					}
 					return;
 				}
@@ -94,35 +94,24 @@ class AgilityOverlay extends Overlay
 				if (objectClickbox != null)
 				{
 					AgilityShortcut agilityShortcut = obstacle.getShortcut();
-					Color configColor = agilityShortcut == null || agilityShortcut.getLevel() <= plugin.getAgilityLevel() ? config.getOverlayColor() : SHORTCUT_HIGH_LEVEL_COLOR;
-					if (config.highlightMarks() && !marksOfGrace.isEmpty())
+					Color configColor = agilityShortcut == null || agilityShortcut.getLevel() <= plugin.getAgilityLevel() ? plugin.getOverlayColor() : SHORTCUT_HIGH_LEVEL_COLOR;
+					if (plugin.isHighlightMarks() && !marksOfGrace.isEmpty())
 					{
-						configColor = config.getMarkColor();
+						configColor = plugin.getMarkColor();
 					}
 
-					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
-					{
-						graphics.setColor(configColor.darker());
-					}
-					else
-					{
-						graphics.setColor(configColor);
-					}
-
-					graphics.draw(objectClickbox);
-					graphics.setColor(new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 50));
-					graphics.fill(objectClickbox);
+					OverlayUtil.renderClickBox(graphics, mousePosition, objectClickbox, configColor);
 				}
 			}
 
 		});
 
-		if (config.highlightMarks() && !marksOfGrace.isEmpty())
+		if (plugin.isHighlightMarks() && !marksOfGrace.isEmpty())
 		{
 			for (Tile markOfGraceTile : marksOfGrace)
 			{
 				if (markOfGraceTile.getPlane() == client.getPlane() && markOfGraceTile.getItemLayer() != null
-						&& markOfGraceTile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+					&& checkDistance(markOfGraceTile.getLocalLocation(), playerLocation))
 				{
 					final Polygon poly = markOfGraceTile.getItemLayer().getCanvasTilePoly();
 
@@ -131,11 +120,20 @@ class AgilityOverlay extends Overlay
 						continue;
 					}
 
-					OverlayUtil.renderPolygon(graphics, poly, config.getMarkColor());
+					OverlayUtil.renderPolygon(graphics, poly, plugin.getMarkColor());
 				}
 			}
 		}
 
 		return null;
+	}
+
+	private boolean checkDistance(LocalPoint localPoint, LocalPoint playerPoint)
+	{
+		if (plugin.isRemoveDistanceCap())
+		{
+			return true;
+		}
+		return localPoint.distanceTo(playerPoint) < MAX_DISTANCE;
 	}
 }

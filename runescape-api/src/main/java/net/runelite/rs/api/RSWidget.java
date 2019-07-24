@@ -1,27 +1,31 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * BSD 2-Clause License
+ *
+ * Copyright (c) 2019, ThatGamerBlue <thatgamerblue@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *  Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *  Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.rs.api;
 
 import net.runelite.api.widgets.Widget;
@@ -62,8 +66,8 @@ public interface RSWidget extends Widget
 	@Import("clickMask")
 	void setClickMask(int mask);
 
-	@Import("boundsIndex")
-	int getBoundsIndex();
+	//@Import("boundsIndex") -- unused for now
+	//int getBoundsIndex();
 
 	@Import("modelId")
 	@Override
@@ -85,45 +89,45 @@ public interface RSWidget extends Widget
 	@Import("text")
 	String getRSText();
 
-	@Import("name")
+	@Import("dataText")
 	String getRSName();
 
-	@Import("name")
+	@Import("dataText")
 	void setRSName(String name);
 
 	@Import("text")
 	@Override
 	void setText(String text);
 
-	@Import("textColor")
+	@Import("color")
 	@Override
 	int getTextColor();
 
-	@Import("textColor")
+	@Import("color")
 	@Override
 	void setTextColor(int textColor);
 
-	@Import("opacity")
+	@Import("transparencyTop")
 	@Override
 	int getOpacity();
 
-	@Import("opacity")
+	@Import("transparencyTop")
 	@Override
 	void setOpacity(int opacity);
 
-	@Import("relativeX")
+	@Import("x")
 	@Override
 	int getRelativeX();
 
-	@Import("relativeX")
+	@Import("x")
 	@Override
 	void setRelativeX(int x);
 
-	@Import("relativeY")
+	@Import("y")
 	@Override
 	int getRelativeY();
 
-	@Import("relativeY")
+	@Import("y")
 	@Override
 	void setRelativeY(int y);
 
@@ -150,20 +154,20 @@ public interface RSWidget extends Widget
 	@Import("isHidden")
 	void setHidden(boolean hidden);
 
-	@Import("index")
+	@Import("childIndex")
 	int getIndex();
 
-	@Import("index")
+	@Import("childIndex")
 	void setIndex(int index);
 
-	@Import("rotationX")
-	int getRotationX();
+	//@Import("rotationX")
+	//int getRotationX();
 
-	@Import("rotationY")
-	int getRotationY();
+	//@Import("rotationY") --- All unused
+	//int getRotationY();
 
-	@Import("rotationZ")
-	int getRotationZ();
+	//@Import("rotationZ")
+	//int getRotationZ();
 
 	@Import("contentType")
 	@Override
@@ -213,19 +217,19 @@ public interface RSWidget extends Widget
 	@Override
 	void setScrollHeight(int height);
 
-	@Import("spriteId")
+	@Import("spriteId2")
 	@Override
 	int getSpriteId();
 
-	@Import("spriteId")
+	@Import("spriteId2")
 	@Override
 	void setSpriteId(int spriteId);
 
-	@Import("borderType")
+	@Import("outline")
 	@Override
 	int getBorderType();
 
-	@Import("borderType")
+	@Import("outline")
 	@Override
 	void setBorderType(int type);
 
@@ -245,47 +249,47 @@ public interface RSWidget extends Widget
 	@Override
 	void setItemQuantity(int quantity);
 
-	@Import("originalX")
+	@Import("rawX")
 	@Override
 	int getOriginalX();
 
-	@Import("originalX")
+	@Import("rawX")
 	@Override
 	void setOriginalX(int originalX);
 
-	@Import("originalY")
+	@Import("rawY")
 	@Override
 	int getOriginalY();
 
-	@Import("originalY")
+	@Import("rawY")
 	@Override
 	void setOriginalY(int originalY);
 
-	@Import("originalHeight")
+	@Import("rawHeight")
 	@Override
 	int getOriginalHeight();
 
-	@Import("originalHeight")
+	@Import("rawHeight")
 	@Override
 	void setOriginalHeight(int originalHeight);
 
-	@Import("originalWidth")
+	@Import("rawWidth")
 	@Override
 	int getOriginalWidth();
 
-	@Import("originalWidth")
+	@Import("rawWidth")
 	@Override
 	void setOriginalWidth(int originalWidth);
 
-	@Import("xPitch")
+	@Import("paddingX")
 	int getXPitch();
 
-	@Import("yPitch")
+	@Import("paddingY")
 	int getYPitch();
 
 	void broadcastHidden(boolean hidden);
 
-	@Import("onOpListener")
+	@Import("onOp")
 	@Override
 	void setOnOpListener(Object... args);
 
@@ -308,43 +312,43 @@ public interface RSWidget extends Widget
 	@Override
 	void setHasListener(boolean hasListener);
 
-	@Import("onKeyListener")
+	@Import("onKey")
 	@Override
 	Object[] getOnKeyListener();
 
-	@Import("onLoadListener")
+	@Import("onLoad")
 	@Override
 	Object[] getOnLoadListener();
 
-	@Import("onDialogAbortListener")
+	@Import("onDialogAbort")
 	@Override
 	void setOnDialogAbortListener(Object... args);
 
-	@Import("onKeyListener")
+	@Import("onKey")
 	@Override
 	void setOnKeyListener(Object... args);
 
-	@Import("onMouseOverListener")
+	@Import("onMouseOver")
 	@Override
 	void setOnMouseOverListener(Object... args);
 
-	@Import("onMouseRepeatListener")
+	@Import("onMouseRepeat")
 	@Override
 	void setOnMouseRepeatListener(Object... args);
 
-	@Import("onMouseLeaveListener")
+	@Import("onMouseLeave")
 	@Override
 	void setOnMouseLeaveListener(Object... args);
 
-	@Import("onTimerListener")
+	@Import("onTimer")
 	@Override
 	void setOnTimerListener(Object... args);
 
-	@Import("onTargetEnterListener")
+	@Import("onTargetEnter")
 	@Override
 	void setOnTargetEnterListener(Object... args);
 
-	@Import("onTargetLeaveListener")
+	@Import("onTargetLeave")
 	@Override
 	void setOnTargetLeaveListener(Object... args);
 
@@ -364,19 +368,19 @@ public interface RSWidget extends Widget
 	@Override
 	void setTextShadowed(boolean shadowed);
 
-	@Import("dragDeadZone")
+	@Import("dragZoneSize")
 	@Override
 	int getDragDeadZone();
 
-	@Import("dragDeadZone")
+	@Import("dragZoneSize")
 	@Override
 	void setDragDeadZone(int deadZone);
 
-	@Import("dragDeadTime")
+	@Import("dragThreshold")
 	@Override
 	int getDragDeadTime();
 
-	@Import("dragDeadTime")
+	@Import("dragThreshold")
 	@Override
 	void setDragDeadTime(int deadTime);
 
@@ -388,71 +392,71 @@ public interface RSWidget extends Widget
 	@Override
 	void setItemQuantityMode(int itemQuantityMode);
 
-	@Import("xPositionMode")
+	@Import("xAlignment")
 	@Override
 	int getXPositionMode();
 
-	@Import("xPositionMode")
+	@Import("xAlignment")
 	@Override
 	void setXPositionMode(int xpm);
 
-	@Import("yPositionMode")
+	@Import("yAlignment")
 	@Override
 	int getYPositionMode();
 
-	@Import("yPositionMode")
+	@Import("yAlignment")
 	@Override
 	void setYPositionMode(int ypm);
 
-	@Import("xTextAlignment")
+	@Import("textXAlignment")
 	@Override
 	int getXTextAlignment();
 
-	@Import("xTextAlignment")
+	@Import("textXAlignment")
 	@Override
 	void setXTextAlignment(int xta);
 
-	@Import("yTextAlignment")
+	@Import("textYAlignment")
 	@Override
 	int getYTextAlignment();
 
-	@Import("yTextAlignment")
+	@Import("textYAlignment")
 	@Override
 	void setYTextAlignment(int yta);
 
-	@Import("widthMode")
+	@Import("widthAlignment")
 	@Override
 	int getWidthMode();
 
-	@Import("widthMode")
+	@Import("widthAlignment")
 	@Override
 	void setWidthMode(int widthMode);
-	
-	@Import("heightMode")
+
+	@Import("heightAlignment")
 	@Override
 	int getHeightMode();
 
-	@Import("heightMode")
+	@Import("heightAlignment")
 	@Override
 	void setHeightMode(int heightMode);
 
 	@Import("getFont")
 	@Override
-	RSFontTypeFace getFont();
+	RSAbstractFont getFont();
 
-	@Import("filled")
+	@Import("fill")
 	@Override
 	boolean isFilled();
 
-	@Import("filled")
+	@Import("fill")
 	@Override
 	void setFilled(boolean filled);
 
-	@Import("targetVerb")
+	@Import("spellActionName")
 	@Override
 	String getTargetVerb();
 
-	@Import("targetVerb")
+	@Import("spellActionName")
 	@Override
 	void setTargetVerb(String targetVerb);
 
@@ -471,4 +475,10 @@ public interface RSWidget extends Widget
 	@Import("noScrollThrough")
 	@Override
 	void setNoScrollThrough(boolean noScrollThrough);
+
+	@Import("modelFrame")
+	int getModelFrame();
+
+	@Import("modelFrameCycle")
+	int getModelFrameCycle();
 }

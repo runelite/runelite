@@ -25,25 +25,26 @@
 
 package net.runelite.client.plugins.playerindicators;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class PlayerIndicatorsTileOverlay extends Overlay
 {
 	private final PlayerIndicatorsService playerIndicatorsService;
-	private final PlayerIndicatorsConfig config;
 	private final PlayerIndicatorsPlugin playerIndicatorsPlugin;
 
 	@Inject
-	private PlayerIndicatorsTileOverlay(PlayerIndicatorsConfig config,
-			PlayerIndicatorsService playerIndicatorsService, PlayerIndicatorsPlugin plugin)
+	private PlayerIndicatorsTileOverlay(final PlayerIndicatorsService playerIndicatorsService, final PlayerIndicatorsPlugin plugin)
 	{
-		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
 		this.playerIndicatorsPlugin = plugin;
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -54,28 +55,11 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.drawPileHull())
-		{
-			playerIndicatorsService.forEachPlayer((player, color) ->
-			{
-				if (playerIndicatorsPlugin.isPile(player))
-				{
-					Polygon objectClickbox = player.getConvexHull();
-
-					renderPoly(graphics, config.pileColor(), objectClickbox);
-
-					if (objectClickbox != null)
-					{
-
-					}
-				}
-			});
-		}
-		if (!config.drawTiles() /*&& !config.drawPlayerHull()*/)
+		if (!playerIndicatorsPlugin.isDrawTiles() /*&& !config.drawPlayerHull()*/)
 		{
 			return null;
 		}
-		else if (config.drawTiles())
+		else
 		{
 			playerIndicatorsService.forEachPlayer((player, color) ->
 			{
@@ -90,15 +74,4 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 		return null;
 	}
 
-	private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
-	{
-		if (polygon != null)
-		{
-			graphics.setColor(color);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(polygon);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-			graphics.fill(polygon);
-		}
-	}
 }

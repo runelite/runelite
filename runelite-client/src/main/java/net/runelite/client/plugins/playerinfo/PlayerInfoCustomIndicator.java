@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.playerinfo;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -32,12 +35,10 @@ import net.runelite.api.VarPlayer;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.util.ColorUtil;
 
-import java.awt.*;
-
 public class PlayerInfoCustomIndicator extends InfoBox
 {
 	@AllArgsConstructor
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	enum IndicatorType
 	{
 		HEALTH("Current Hitpoints"),
@@ -49,14 +50,14 @@ public class PlayerInfoCustomIndicator extends InfoBox
 		private final String description;
 	}
 
-	private final PlayerInfoConfig config;
+	private final PlayerInfoPlugin plugin;
 	private final Client client;
 	private final IndicatorType type;
 
-	PlayerInfoCustomIndicator(Image image, PlayerInfoPlugin plugin, PlayerInfoConfig config, Client client, IndicatorType type)
+	PlayerInfoCustomIndicator(final BufferedImage image, final PlayerInfoPlugin plugin, final Client client, final IndicatorType type)
 	{
 		super(image, plugin);
-		this.config = config;
+		this.plugin = plugin;
 		this.client = client;
 		this.type = type;
 
@@ -100,21 +101,22 @@ public class PlayerInfoCustomIndicator extends InfoBox
 				break;
 			case SPECIAL:
 				currLvl = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) / 1000.0F;
+				break;
 			case WORLD:
 				currLvl = 1000; // hacky
 		}
 
 		if (currLvl > 1.0)
 		{
-			return config.colorHigh();
+			return plugin.getColorHigh();
 		}
 		else if (currLvl > 0.5)
 		{
-			return ColorUtil.colorLerp(config.colorMed(), config.colorHigh(), (currLvl * 2) - 1.0F);
+			return ColorUtil.colorLerp(plugin.getColorMed(), plugin.getColorHigh(), (currLvl * 2) - 1.0F);
 		}
 		else
 		{
-			return ColorUtil.colorLerp(config.colorLow(), config.colorMed(), (currLvl * 2));
+			return ColorUtil.colorLerp(plugin.getColorLow(), plugin.getColorMed(), (currLvl * 2));
 		}
 	}
 
@@ -124,15 +126,15 @@ public class PlayerInfoCustomIndicator extends InfoBox
 		switch (type)
 		{
 			case HEALTH:
-				return config.enableHealth();
+				return plugin.isEnableHealth();
 			case PRAYER:
-				return config.enablePrayer();
+				return plugin.isEnablePrayer();
 			case ENERGY:
-				return config.enableEnergy();
+				return plugin.isEnableEnergy();
 			case SPECIAL:
-				return config.enableSpec();
+				return plugin.isEnableSpec();
 			case WORLD:
-				return config.enableWorld();
+				return plugin.isEnableWorld();
 		}
 
 		return false;

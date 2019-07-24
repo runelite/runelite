@@ -24,20 +24,9 @@
  */
 package net.runelite.client.plugins.chatfilter;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public enum ChatFilterType
 {
-	CENSOR_WORDS("Censor words"),
-	CENSOR_MESSAGE("Censor message"),
-	REMOVE_MESSAGE("Remove message");
-
-	private final String name;
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	CENSOR_WORDS,
+	CENSOR_MESSAGE,
+	REMOVE_MESSAGE
 }

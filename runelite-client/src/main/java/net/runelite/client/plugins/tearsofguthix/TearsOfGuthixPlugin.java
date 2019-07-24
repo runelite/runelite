@@ -28,14 +28,18 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
+import net.runelite.api.GameState;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -45,6 +49,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show timers for the Tears Of Guthix streams",
 	tags = {"minigame", "overlay", "skilling", "timers", "tog"}
 )
+@Singleton
 public class TearsOfGuthixPlugin extends Plugin
 {
 	private static final int TOG_REGION = 12948;
@@ -58,24 +63,46 @@ public class TearsOfGuthixPlugin extends Plugin
 	@Inject
 	private TearsOfGuthixOverlay overlay;
 
-	@Getter
+	@Inject
+	private TearsOfGuthixExperienceOverlay experienceOverlay;
+
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Skill playerLowestSkill = null;
 
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
 		overlayManager.add(overlay);
+		overlayManager.add(experienceOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
+		overlayManager.remove(experienceOverlay);
 		streams.clear();
+		playerLowestSkill = null;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
+		eventBus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -84,25 +111,41 @@ public class TearsOfGuthixPlugin extends Plugin
 			case HOPPING:
 				streams.clear();
 		}
-	}
 
-	@Subscribe
-	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
-	{
-		DecorativeObject object = event.getDecorativeObject();
-
-		if (event.getDecorativeObject().getId() == ObjectID.BLUE_TEARS ||
-			event.getDecorativeObject().getId() == ObjectID.BLUE_TEARS_6665)
+		if (event.getGameState() == GameState.LOGGED_IN)
 		{
 			if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
 			{
-				streams.put(event.getDecorativeObject(), Instant.now());
+				if (playerLowestSkill != null)
+				{
+					return;
+				}
+
+				if (client.getSkillExperience(Skill.HITPOINTS) > 0)
+				{
+					playerLowestSkill = getLowestPlayerSkill();
+				}
+			}
+			else
+			{
+				playerLowestSkill = null;
 			}
 		}
 	}
 
-	@Subscribe
-	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	{
+		DecorativeObject object = event.getDecorativeObject();
+
+		if ((object.getId() == ObjectID.BLUE_TEARS ||
+			object.getId() == ObjectID.BLUE_TEARS_6665) &&
+			client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
+		{
+			streams.put(event.getDecorativeObject(), Instant.now());
+		}
+	}
+
+	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		if (streams.isEmpty())
 		{
@@ -111,5 +154,25 @@ public class TearsOfGuthixPlugin extends Plugin
 
 		DecorativeObject object = event.getDecorativeObject();
 		streams.remove(object);
+	}
+
+	private Skill getLowestPlayerSkill()
+	{
+		final Skill[] playerSkills = Skill.values();
+		Skill lowestExperienceSkill = null;
+		int lowestExperienceAmount = Integer.MAX_VALUE;
+
+		for (Skill skill : playerSkills)
+		{
+			int currentSkillExp = client.getSkillExperience(skill);
+
+			if (currentSkillExp < lowestExperienceAmount)
+			{
+				lowestExperienceAmount = currentSkillExp;
+				lowestExperienceSkill = skill;
+			}
+		}
+
+		return lowestExperienceSkill;
 	}
 }

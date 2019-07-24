@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * Copyright (c) 2019. PKLite
  *  Redistributions and modifications of this software are permitted as long as this notice remains in its original unmodified state at the top of this file.
@@ -15,6 +14,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -25,14 +25,15 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 /**
  * The overlay for the smiteable warning
  */
+@Singleton
 public class WhaleWatchersSmiteableOverlay extends Overlay
 {
-	private WhaleWatchersPlugin plugin;
-	private PanelComponent panelComponent;
+	private final WhaleWatchersPlugin plugin;
+	private final PanelComponent panelComponent;
 
 
 	@Inject
-	public WhaleWatchersSmiteableOverlay(WhaleWatchersPlugin plugin)
+	public WhaleWatchersSmiteableOverlay(final WhaleWatchersPlugin plugin)
 	{
 		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -59,7 +60,7 @@ public class WhaleWatchersSmiteableOverlay extends Overlay
 				.build());
 
 			panelComponent.setPreferredSize(new Dimension(graphics.getFontMetrics().stringWidth(subText)
-				+ 20 , 0));
+				+ 20, 0));
 		}
 		else
 		{

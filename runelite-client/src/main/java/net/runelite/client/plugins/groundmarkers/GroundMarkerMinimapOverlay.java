@@ -27,8 +27,10 @@ package net.runelite.client.plugins.groundmarkers;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.Collection;
+import static java.lang.Math.floor;
+import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -40,21 +42,19 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 class GroundMarkerMinimapOverlay extends Overlay
 {
-	private static final int MAX_DRAW_DISTANCE = 16;
 	private static final int TILE_WIDTH = 4;
 	private static final int TILE_HEIGHT = 4;
 
 	private final Client client;
-	private final GroundMarkerConfig config;
 	private final GroundMarkerPlugin plugin;
 
 	@Inject
-	private GroundMarkerMinimapOverlay(Client client, GroundMarkerConfig config, GroundMarkerPlugin plugin)
+	private GroundMarkerMinimapOverlay(final Client client, final GroundMarkerPlugin plugin)
 	{
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
@@ -64,13 +64,13 @@ class GroundMarkerMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.drawTileOnMinimmap())
+		if (!plugin.isShowMinimap())
 		{
 			return null;
 		}
 
-		final Collection<ColorTileMarker> points = plugin.getPoints();
-		for (final ColorTileMarker point : points)
+		final List<GroundMarkerWorldPoint> points = plugin.getPoints();
+		for (final GroundMarkerWorldPoint point : points)
 		{
 			WorldPoint worldPoint = point.getWorldPoint();
 			if (worldPoint.getPlane() != client.getPlane())
@@ -78,12 +78,21 @@ class GroundMarkerMinimapOverlay extends Overlay
 				continue;
 			}
 
-			Color tileColor = point.getColor();
-			if (tileColor == null || !config.rememberTileColors())
+			Color color = plugin.getMarkerColor();
+			switch (point.getGroundMarkerPoint().getGroup())
 			{
-				// If this is an old tile which has no color, or rememberTileColors is off, use marker color
-				tileColor = config.markerColor();
+				case 2:
+					color = plugin.getMarkerColor2();
+					break;
+				case 3:
+					color = plugin.getMarkerColor3();
+					break;
+				case 4:
+					color = plugin.getMarkerColor4();
 			}
+
+			int opacity = (int) floor(plugin.getMinimapOverlayOpacity() * 2.55);
+			Color tileColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
 
 			drawOnMinimap(graphics, worldPoint, tileColor);
 		}
@@ -93,12 +102,6 @@ class GroundMarkerMinimapOverlay extends Overlay
 
 	private void drawOnMinimap(Graphics2D graphics, WorldPoint point, Color color)
 	{
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-
-		if (point.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
-		{
-			return;
-		}
 
 		LocalPoint lp = LocalPoint.fromWorld(client, point);
 		if (lp == null)

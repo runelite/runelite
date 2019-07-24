@@ -182,6 +182,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showSkull",
+		name = "Skull timer",
+		description = "Configures whether skull timer is displayed"
+	)
+	default boolean showSkull()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showStaffOfTheDead",
 		name = "Staff of the Dead timer",
 		description = "Configures whether staff of the dead timer is displayed"
@@ -197,6 +207,16 @@ public interface TimersConfig extends Config
 		description = "Configures whether Abyssal Sire stun timer is displayed"
 	)
 	default boolean showAbyssalSireStun()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDfsSpecial",
+		name = "Dragonfire Shield special timer",
+		description = "Configures whether the special attack cooldown timer for the Dragonfire Shield is displayed"
+	)
+	default boolean showDFSSpecial()
 	{
 		return true;
 	}

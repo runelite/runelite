@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
- * Copyright (c) 2018, Lars <lars.oernlo@gmail.com>
+ * Copyright 2019 Jarred Vardy <jarredvardy@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,52 +24,88 @@
  */
 package net.runelite.client.plugins.mining;
 
+import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("mining")
 public interface MiningConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showMiningRocks",
-		name = "Show rock mining spots",
-		description = "Configures whether or not the mining spots are displayed."
+		keyName = "showCoalBagOverlay",
+		name = "Show coal bag overlay",
+		description = "Overlays how much coal is inside of your coal bag"
 	)
-	default boolean showMiningRocks()
+	default boolean showCoalBagOverlay()
 	{
 		return true;
 	}
 
-
 	@ConfigItem(
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistics are reset"
+		keyName = "amountOfCoalInCoalBag",
+		name = "",
+		description = "To store coal amount between sessions",
+		hidden = true
 	)
-	default int statTimeout()
+	default int amountOfCoalInCoalBag()
 	{
-		return 5;
+		return 0;
 	}
 
 	@ConfigItem(
-		keyName = "showMiningStats",
-		name = "Show mining session stats",
-		description = "Configures whether to display mining session stats"
+		keyName = "amountOfCoalInCoalBag",
+		name = "",
+		description = "Overload to set coal amount",
+		hidden = true
 	)
-	default boolean showMiningStats()
+	void amountOfCoalInCoalBag(int amount);
+
+	@Alpha
+	@ConfigItem(
+		keyName = "progressPieColor",
+		name = "Main progress pie color",
+		description = "Configures the color of the main progress pie"
+	)
+	default Color progressPieColor()
 	{
-		return true;
+		return Color.YELLOW;
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "progressPieColorMotherlode",
+		name = "Motherlode random respawn threshold progress pie color",
+		description = "Configures the color of the progress pie after Motherlode respawn threshold"
+	)
+	default Color progressPieColorMotherlode()
+	{
+		return Color.GREEN;
+	}
 
 	@ConfigItem(
-		keyName = "showMiningState",
-		name = "Show current mining state",
-		description = "Shows current mining state. 'You are currently mining' / 'You are currently NOT mining'"
+		keyName = "progressPieInverted",
+		name = "Invert progress pie",
+		description = "Configures whether the progress pie goes from empty to full or the other way around"
 	)
-	default boolean showMiningState()
+	default boolean progressPieInverted()
 	{
-		return true;
+		return false;
+	}
+
+	@Range(
+		min = 1,
+		max = 50
+	)
+	@ConfigItem(
+		keyName = "progressPieDiameter",
+		name = "Progress pie diameter",
+		description = "Configures how big the progress pie is"
+	)
+	default int progressPieDiameter()
+	{
+		return 1;
 	}
 }

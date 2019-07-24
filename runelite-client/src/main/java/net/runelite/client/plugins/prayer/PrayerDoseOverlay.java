@@ -32,9 +32,11 @@ import java.awt.Rectangle;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
@@ -48,15 +50,16 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.StringUtils;
 
+@Singleton
 class PrayerDoseOverlay extends Overlay
 {
-	private static final float PULSE_TIME = 1200f;
+	private static final float PULSE_TIME = 2f * Constants.GAME_TICK_LENGTH;
 
 	private static final Color START_COLOR = new Color(0, 255, 255);
 	private static final Color END_COLOR = new Color(0, 92, 92);
 
 	private final Client client;
-	private final PrayerConfig config;
+	private final PrayerPlugin plugin;
 	private final TooltipManager tooltipManager;
 	private Instant startOfLastTick = Instant.now();
 	private boolean trackTick = true;
@@ -71,11 +74,11 @@ class PrayerDoseOverlay extends Overlay
 	private boolean hasHolyWrench;
 
 	@Inject
-	private PrayerDoseOverlay(final Client client, final TooltipManager tooltipManager, final PrayerConfig config)
+	private PrayerDoseOverlay(final Client client, final TooltipManager tooltipManager, final PrayerPlugin plugin)
 	{
 		this.client = client;
 		this.tooltipManager = tooltipManager;
-		this.config = config;
+		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 	}
@@ -111,7 +114,7 @@ class PrayerDoseOverlay extends Overlay
 
 		final Point mousePosition = client.getMouseCanvasPosition();
 
-		if (config.showPrayerStatistics() && bounds.contains(mousePosition.getX(), mousePosition.getY()))
+		if (plugin.isShowPrayerStatistics() && bounds.contains(mousePosition.getX(), mousePosition.getY()))
 		{
 			final String tooltip = "Time Remaining: " + getEstimatedTimeRemaining() +
 				"</br>" +
@@ -120,7 +123,7 @@ class PrayerDoseOverlay extends Overlay
 			tooltipManager.add(new Tooltip(tooltip));
 		}
 
-		if (!config.showPrayerDoseIndicator() || !hasPrayerRestore)
+		if (!plugin.isShowPrayerDoseIndicator() || !hasPrayerRestore)
 		{
 			return null;
 		}
@@ -198,6 +201,6 @@ class PrayerDoseOverlay extends Overlay
 		final int seconds = (int) Math.floor(secondsLeft - (minutes * 60.0));
 
 		// Return the text
-		return Integer.toString(minutes) + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
+		return minutes + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
 	}
 }

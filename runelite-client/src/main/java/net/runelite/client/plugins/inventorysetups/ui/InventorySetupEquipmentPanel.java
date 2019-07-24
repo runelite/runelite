@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018-2019, Ethan <https://github.com/Wea1thRS/>
  * Copyright (c) 2018, https://runelitepl.us
  * All rights reserved.
  *
@@ -25,8 +26,10 @@
 package net.runelite.client.plugins.inventorysetups.ui;
 
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.inject.Singleton;
 import javax.swing.JPanel;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.client.game.ItemManager;
@@ -35,9 +38,10 @@ import net.runelite.client.plugins.inventorysetups.InventorySetupItem;
 import net.runelite.client.plugins.inventorysetups.InventorySetupPlugin;
 import net.runelite.client.ui.ColorScheme;
 
+@Singleton
 public class InventorySetupEquipmentPanel extends InventorySetupContainerPanel
 {
-	private HashMap<EquipmentInventorySlot, InventorySetupSlot> equipmentSlots;
+	private Map<EquipmentInventorySlot, InventorySetupSlot> equipmentSlots;
 
 	InventorySetupEquipmentPanel(final ItemManager itemManager, final InventorySetupPlugin plugin)
 	{
@@ -77,7 +81,7 @@ public class InventorySetupEquipmentPanel extends InventorySetupContainerPanel
 
 	void setEquipmentSetupSlots(final InventorySetup setup)
 	{
-		final ArrayList<InventorySetupItem> equipment = setup.getEquipment();
+		final List<InventorySetupItem> equipment = setup.getEquipment();
 
 		for (final EquipmentInventorySlot slot : EquipmentInventorySlot.values())
 		{
@@ -90,9 +94,9 @@ public class InventorySetupEquipmentPanel extends InventorySetupContainerPanel
 
 	}
 
-	void highlightDifferences(final ArrayList<InventorySetupItem> currEquipment, final InventorySetup inventorySetup)
+	void highlightDifferences(final List<InventorySetupItem> currEquipment, final InventorySetup inventorySetup)
 	{
-		final ArrayList<InventorySetupItem> equipToCheck = inventorySetup.getEquipment();
+		final List<InventorySetupItem> equipToCheck = inventorySetup.getEquipment();
 
 		assert currEquipment.size() == equipToCheck.size() : "size mismatch";
 

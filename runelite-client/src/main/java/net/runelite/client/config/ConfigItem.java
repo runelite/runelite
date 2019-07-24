@@ -49,4 +49,26 @@ public @interface ConfigItem
 
 	String group() default "";
 
+	String unhide() default "";
+
+	String unhideValue() default "";
+
+	String hide() default "";
+
+	String hideValue() default "";
+
+	String parent() default "";
+
+	String enabledBy() default "";
+
+	String enabledByValue() default "";
+
+	String disabledBy() default "";
+
+	String disabledByValue() default "";
+
+	boolean parse() default false;
+
+	Class<?> clazz() default void.class;
+	String method() default "";
 }

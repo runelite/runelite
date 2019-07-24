@@ -37,6 +37,9 @@ import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -48,6 +51,8 @@ import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
@@ -56,7 +61,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.input.KeyListener;
@@ -85,6 +90,7 @@ import net.runelite.http.api.ws.messages.party.UserSync;
 	description = "Shows useful information about current party"
 )
 @Slf4j
+@Singleton
 public class PartyPlugin extends Plugin implements KeyListener
 {
 	@Inject
@@ -120,15 +126,30 @@ public class PartyPlugin extends Plugin implements KeyListener
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	@Getter
+	@Inject
+	private EventBus eventBus;
+
+	@Inject
+	@Named("developerMode")
+	boolean developerMode;
+
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<UUID, PartyData> partyDataMap = Collections.synchronizedMap(new HashMap<>());
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<PartyTilePingData> pendingTilePings = Collections.synchronizedList(new ArrayList<>());
 
 	private int lastHp, lastPray;
 	private boolean hotkeyDown, doSync;
 	private boolean sendAlert;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean stats;
+	private boolean pings;
+	private boolean sounds;
+	private boolean messages;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean recolorNames;
 
 	@Override
 	public void configure(Binder binder)
@@ -139,6 +160,9 @@ public class PartyPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(partyStatsOverlay);
 		overlayManager.add(partyPingOverlay);
 		wsClient.registerMessage(SkillUpdate.class);
@@ -151,6 +175,8 @@ public class PartyPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		partyDataMap.clear();
 		pendingTilePings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
@@ -165,14 +191,30 @@ public class PartyPlugin extends Plugin implements KeyListener
 		sendAlert = false;
 	}
 
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(TilePing.class, this, this::onTilePing);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(SkillUpdate.class, this, this::onSkillUpdate);
+		eventBus.subscribe(LocationUpdate.class, this, this::onLocationUpdate);
+		eventBus.subscribe(UserJoin.class, this, this::onUserJoin);
+		eventBus.subscribe(UserSync.class, this, this::onUserSync);
+		eventBus.subscribe(UserPart.class, this, this::onUserPart);
+		eventBus.subscribe(PartyChanged.class, this, this::onPartyChanged);
+		eventBus.subscribe(CommandExecuted.class, this, this::onCommandExecuted);
+		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+	}
+
 	@Provides
 	public PartyConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PartyConfig.class);
 	}
 
-	@Subscribe
-	public void onOverlayMenuClicked(OverlayMenuClicked event)
+	private void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
 		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
 			event.getEntry().getTarget().equals("Party") &&
@@ -180,7 +222,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 		{
 			party.changeParty(null);
 
-			if (!config.messages())
+			if (!this.messages)
 			{
 				return;
 			}
@@ -197,10 +239,9 @@ public class PartyPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!hotkeyDown || client.isMenuOpen() || party.getMembers().isEmpty() || !config.pings())
+		if (!hotkeyDown || client.isMenuOpen() || party.getMembers().isEmpty() || !this.pings)
 		{
 			return;
 		}
@@ -237,17 +278,16 @@ public class PartyPlugin extends Plugin implements KeyListener
 		wsClient.send(tilePing);
 	}
 
-	@Subscribe
-	public void onTilePing(TilePing event)
+	private void onTilePing(TilePing event)
 	{
-		if (config.pings())
+		if (this.pings)
 		{
 			final PartyData partyData = getPartyData(event.getMemberId());
 			final Color color = partyData != null ? partyData.getColor() : Color.RED;
 			pendingTilePings.add(new PartyTilePingData(event.getPoint(), color));
 		}
 
-		if (config.sounds())
+		if (this.sounds)
 		{
 			WorldPoint point = event.getPoint();
 
@@ -283,8 +323,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 		wsClient.send(locationUpdate);
 	}
 
-	@Subscribe
-	public void onGameTick(final GameTick event)
+	private void onGameTick(final GameTick event)
 	{
 		if (sendAlert && client.getGameState() == GameState.LOGGED_IN)
 		{
@@ -329,8 +368,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 		lastPray = currentPrayer;
 	}
 
-	@Subscribe
-	public void onSkillUpdate(final SkillUpdate event)
+	private void onSkillUpdate(final SkillUpdate event)
 	{
 		final PartyData partyData = getPartyData(event.getMemberId());
 
@@ -351,8 +389,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onLocationUpdate(final LocationUpdate event)
+	private void onLocationUpdate(final LocationUpdate event)
 	{
 		final PartyData partyData = getPartyData(event.getMemberId());
 
@@ -364,12 +401,11 @@ public class PartyPlugin extends Plugin implements KeyListener
 		partyData.getWorldMapPoint().setWorldPoint(event.getWorldPoint());
 	}
 
-	@Subscribe
-	public void onUserJoin(final UserJoin event)
+	private void onUserJoin(final UserJoin event)
 	{
 		final PartyData partyData = getPartyData(event.getMemberId());
 
-		if (partyData == null || !config.messages())
+		if (partyData == null || !this.messages)
 		{
 			return;
 		}
@@ -393,8 +429,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onUserSync(final UserSync event)
+	private void onUserSync(final UserSync event)
 	{
 		final int currentHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
 		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
@@ -414,14 +449,13 @@ public class PartyPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onUserPart(final UserPart event)
+	private void onUserPart(final UserPart event)
 	{
 		final PartyData removed = partyDataMap.remove(event.getMemberId());
 
 		if (removed != null)
 		{
-			if (config.messages())
+			if (this.messages)
 			{
 				final String joinMessage = new ChatMessageBuilder()
 					.append(ChatColorType.HIGHLIGHT)
@@ -439,13 +473,28 @@ public class PartyPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onPartyChanged(final PartyChanged event)
+	private void onPartyChanged(final PartyChanged event)
 	{
 		// Reset party
 		partyDataMap.clear();
 		pendingTilePings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
+	}
+
+	private void onCommandExecuted(CommandExecuted commandExecuted)
+	{
+		if (!developerMode || !commandExecuted.getCommand().equals("partyinfo"))
+		{
+			return;
+		}
+
+		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Party " + party.getPartyId()).build());
+		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Local Party " + party.getLocalPartyId()).build());
+		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Local ID " + party.getLocalMember().getMemberId()).build());
+		for (PartyMember partyMember : party.getMembers())
+		{
+			chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value(" " + partyMember.getName() + " " + partyMember.getMemberId()).build());
+		}
 	}
 
 	@Nullable
@@ -478,8 +527,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 		});
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
 		{
@@ -522,5 +570,24 @@ public class PartyPlugin extends Plugin implements KeyListener
 			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 			.runeLiteFormattedMessage(helpMessage)
 			.build());
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("party"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.stats = config.stats();
+		this.pings = config.pings();
+		this.sounds = config.sounds();
+		this.messages = config.messages();
+		this.recolorNames = config.recolorNames();
 	}
 }

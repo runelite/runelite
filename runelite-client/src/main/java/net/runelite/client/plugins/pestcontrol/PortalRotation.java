@@ -41,7 +41,7 @@ enum PortalRotation
 
 	private final PortalColor[] portals;
 
-	PortalRotation(PortalColor first, PortalColor second, PortalColor third, PortalColor fourth)
+	PortalRotation(final PortalColor first, final PortalColor second, final PortalColor third, final PortalColor fourth)
 	{
 		portals = new PortalColor[]
 			{

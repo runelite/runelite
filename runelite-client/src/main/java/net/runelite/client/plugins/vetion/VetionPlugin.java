@@ -24,74 +24,67 @@
  */
 package net.runelite.client.plugins.vetion;
 
-import com.google.inject.Provides;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.Getter;
-import net.runelite.api.*;
+import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.inject.Inject;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-
 @PluginDescriptor(
-        name = "Vetion Helper",
-        description = "Tracks Vet'ion's special attacks",
-        tags = {"bosses", "combat", "pve", "overlay"},
-        type = PluginType.PVM
+	name = "Vetion Helper",
+	description = "Tracks Vet'ion's special attacks",
+	tags = {"bosses", "combat", "pve", "overlay"},
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
-public class VetionPlugin extends Plugin {
+@Singleton
+public class VetionPlugin extends Plugin
+{
 
-    @Inject
-    private Client client;
+	@Inject
+	private OverlayManager overlayManager;
 
-    @Inject
-    private VetionConfig config;
+	@Inject
+	private VetionOverlay overlay;
 
-    @Inject
-    private OverlayManager overlayManager;
+	@Inject
+	private EventBus eventBus;
 
-    @Inject
-    private VetionOverlay overlay;
+	@Getter
+	private Map<Actor, Instant> vetions;
 
-    @Getter
-    private Map<Actor, Instant> vetions;
+	@Override
+	protected void startUp()
+	{
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
 
-    @Provides
-    VetionConfig getConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(VetionConfig.class);
-    }
+		vetions = new HashMap<>();
+		overlayManager.add(overlay);
+	}
 
-    @Override
-    protected void startUp()
-    {
-        vetions = new HashMap<>();
-        overlayManager.add(overlay);
-    }
+	@Override
+	protected void shutDown()
+	{
+		overlayManager.remove(overlay);
+		vetions = null;
+	}
 
-    @Override
-    protected void shutDown()
-    {
-        overlayManager.remove(overlay);
-        vetions = null;
-    }
-
-
-    @Subscribe
-    public void onAnimationChanged(AnimationChanged event)
-    {
-        if (config.eartquakeTimerActive() && event.getActor().getAnimation() == AnimationID.VETION_EARTHQUAKE)
-        {
-            Actor vet = event.getActor();
-            vetions.remove(vet, Instant.now());
-            vetions.put(vet, Instant.now());
-        }
-    }
+	private void onAnimationChanged(AnimationChanged event)
+	{
+		if (event.getActor().getAnimation() == AnimationID.VETION_EARTHQUAKE)
+		{
+			Actor vet = event.getActor();
+			vetions.remove(vet, Instant.now());
+			vetions.put(vet, Instant.now());
+		}
+	}
 }

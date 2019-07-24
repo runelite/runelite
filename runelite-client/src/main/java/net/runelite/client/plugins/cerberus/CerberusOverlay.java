@@ -31,6 +31,7 @@ import javax.inject.Singleton;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
@@ -47,7 +48,7 @@ public class CerberusOverlay extends Overlay
 		this.plugin = plugin;
 		this.iconManager = iconManager;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 	}
 
 	@Override
@@ -62,13 +63,13 @@ public class CerberusOverlay extends Overlay
 
 		// Ghosts are already sorted
 		plugin.getGhosts().stream()
-				// Iterate only through the correct amount of ghosts
-				.limit(CerberusGhost.values().length)
-				.forEach(npc -> CerberusGhost
-						.fromNPC(npc)
-						.ifPresent(ghost -> panelComponent
-								.getChildren()
-								.add(new ImageComponent(iconManager.getSkillImage(ghost.getType())))));
+			// Iterate only through the correct amount of ghosts
+			.limit(CerberusGhost.values().length)
+			.forEach(npc -> CerberusGhost
+				.fromNPC(npc)
+				.ifPresent(ghost -> panelComponent
+					.getChildren()
+					.add(new ImageComponent(iconManager.getSkillImage(ghost.getType())))));
 
 
 		return panelComponent.render(graphics);

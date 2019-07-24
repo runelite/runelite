@@ -65,10 +65,10 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hidePlaceholders",
-			name = "Hide placeholders",
-			description = "Hide placeholders in tag tabs or tag search.",
-			position = 4
+		keyName = "hidePlaceholders",
+		name = "Hide placeholders",
+		description = "Hide placeholders in tag tabs or tag search.",
+		position = 4
 	)
 	default boolean hidePlaceholders()
 	{

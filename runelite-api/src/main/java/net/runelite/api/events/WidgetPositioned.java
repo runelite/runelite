@@ -24,13 +24,16 @@
  */
 package net.runelite.api.events;
 
-import lombok.Value;
-
 /**
  * An event where the position of a {@link net.runelite.api.widgets.Widget}
  * relative to its parent has changed.
  */
-@Value
 public class WidgetPositioned
 {
+	public static final WidgetPositioned INSTANCE = new WidgetPositioned();
+
+	private WidgetPositioned()
+	{
+		// noop
+	}
 }

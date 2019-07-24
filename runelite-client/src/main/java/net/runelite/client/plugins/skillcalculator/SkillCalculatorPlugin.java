@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
- * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,25 +32,23 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
-import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.skillcalculator.banked.CriticalItem;
+import net.runelite.client.plugins.skillcalculator.banked.BankedCalculatorPanel;
+import net.runelite.client.plugins.skillcalculator.banked.beans.Activity;
+import net.runelite.client.plugins.skillcalculator.banked.beans.CriticalItem;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -83,13 +81,14 @@ public class SkillCalculatorPlugin extends Plugin
 	@Inject
 	private SkillCalculatorConfig skillCalculatorConfig;
 
+	@Inject
+	private EventBus eventBus;
+
 	private NavigationButton uiNavigationButton;
-	private SkillCalculatorPanel uiPanel;
+	private NavigationButton bankedUiNavigationButton;
 
-	@Getter
-	private Map<Integer, Integer> bankMap = new HashMap<>();
-
-	private int bankHash;
+	private BankedCalculatorPanel bankedUiPanel;
+	private int bankHash = -1;
 
 	@Provides
 	SkillCalculatorConfig getConfig(ConfigManager configManager)
@@ -100,8 +99,10 @@ public class SkillCalculatorPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "calc.png");
-		this.uiPanel = new SkillCalculatorPanel(skillIconManager, client, skillCalculatorConfig, spriteManager, itemManager);
+		final SkillCalculatorPanel uiPanel = new SkillCalculatorPanel(skillIconManager, client, spriteManager, itemManager);
 
 		uiNavigationButton = NavigationButton.builder()
 			.tooltip("Skill Calculator")
@@ -112,56 +113,37 @@ public class SkillCalculatorPlugin extends Plugin
 
 		clientToolbar.addNavigation(uiNavigationButton);
 
-		clientThread.invokeLater(() ->
-		{
-			switch (client.getGameState())
-			{
-				case STARTING:
-				case UNKNOWN:
-					return false;
-			}
-
-			CriticalItem.prepareItemCompositions(itemManager);
-			return true;
-		});
+		toggleBankedXpPanel();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
 		clientToolbar.removeNavigation(uiNavigationButton);
-		bankMap.clear();
-		bankHash = -1;
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("skillCalculator"))
+		if (bankedUiNavigationButton != null)
 		{
-			if (event.getKey().equals("showBankedXp"))
-			{
-				bankMap.clear();
-				bankHash = -1;
-			}
-
-			SwingUtilities.invokeLater(() -> uiPanel.refreshPanel());
+			clientToolbar.removeNavigation(bankedUiNavigationButton);
 		}
 	}
 
-	// Pulled from bankvalue plugin to check if bank is open
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void addSubscriptions()
 	{
-		if (!skillCalculatorConfig.showBankedXp())
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("skillCalculator") && event.getKey().equals("enabledBankedXp"))
 		{
-			return;
+			toggleBankedXpPanel();
 		}
+	}
 
-		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-
-		// Don't update on a search because rs seems to constantly update the title
-		if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden() || widgetBankTitleBar.getText().contains("Showing"))
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	{
+		if (!event.getEventName().equals("setBankTitle") || !skillCalculatorConfig.showBankedXp())
 		{
 			return;
 		}
@@ -169,54 +151,80 @@ public class SkillCalculatorPlugin extends Plugin
 		updateBankItems();
 	}
 
+	private void toggleBankedXpPanel()
+	{
+		if (skillCalculatorConfig.showBankedXp())
+		{
+			final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "banked.png");
+
+			bankedUiPanel = new BankedCalculatorPanel(client, skillCalculatorConfig, skillIconManager, itemManager);
+			bankedUiNavigationButton = NavigationButton.builder()
+				.tooltip("Banked XP")
+				.icon(icon)
+				.priority(6)
+				.panel(bankedUiPanel)
+				.build();
+
+			clientToolbar.addNavigation(bankedUiNavigationButton);
+
+			clientThread.invoke(() ->
+			{
+				switch (client.getGameState())
+				{
+					case LOGIN_SCREEN:
+					case LOGIN_SCREEN_AUTHENTICATOR:
+					case LOGGING_IN:
+					case LOADING:
+					case LOGGED_IN:
+					case CONNECTION_LOST:
+					case HOPPING:
+						CriticalItem.prepareItemDefinitions(itemManager);
+						Activity.prepareItemDefinitions(itemManager);
+						return true;
+					default:
+						return false;
+				}
+			});
+		}
+		else
+		{
+			if (bankedUiNavigationButton == null)
+			{
+				return;
+			}
+
+			clientToolbar.removeNavigation(bankedUiNavigationButton);
+
+			bankedUiNavigationButton = null;
+		}
+	}
+
 	// Check if bank contents changed and if so send to UI
 	private void updateBankItems()
 	{
-		ItemContainer c = client.getItemContainer(InventoryID.BANK);
-		Item[] widgetItems = (c == null ? new Item[0] : c.getItems());
+		final ItemContainer c = client.getItemContainer(InventoryID.BANK);
+		if (c == null)
+		{
+			return;
+		}
 
-		// Couldn't find any items in bank, do nothing.
+		final Item[] widgetItems = c.getItems();
 		if (widgetItems == null || widgetItems.length == 0)
 		{
 			return;
 		}
 
-		Map<Integer, Integer> newBankMap = getBankMapIfDiff(widgetItems);
-
-		// Bank didn't change
-		if (newBankMap.size() == 0)
-		{
-			return;
-		}
-
-		bankMap = newBankMap;
-		// send updated bank map to ui
-		uiPanel.updateBankMap(bankMap);
-	}
-
-	// Recreates the bankMap and checks if the hashCode is different (the map has changed). Sends an empty map if no changes
-	private Map<Integer, Integer> getBankMapIfDiff(Item[] widgetItems)
-	{
-		Map<Integer, Integer> mapCheck = new HashMap<>();
+		final Map<Integer, Integer> m = new HashMap<>();
 		for (Item widgetItem : widgetItems)
 		{
-			mapCheck.put(widgetItem.getId(), widgetItem.getQuantity());
+			m.put(widgetItem.getId(), widgetItem.getQuantity());
 		}
 
-		int curHash = mapCheck.hashCode();
-
-		if (curHash != bankHash)
+		final int curHash = m.hashCode();
+		if (bankHash != curHash)
 		{
 			bankHash = curHash;
-			return mapCheck;
+			SwingUtilities.invokeLater(() -> bankedUiPanel.setBankMap(m));
 		}
-
-		return new HashMap<>();
-	}
-
-	@Subscribe
-	public void onExperienceChanged(ExperienceChanged changeEvent)
-	{
-		uiPanel.updateSkillCalculator(changeEvent.getSkill());
 	}
 }

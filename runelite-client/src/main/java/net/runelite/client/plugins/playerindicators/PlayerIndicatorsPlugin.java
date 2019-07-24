@@ -29,26 +29,35 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import javax.inject.Inject;
-
-import net.runelite.api.Actor;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ClanMember;
 import net.runelite.api.ClanMemberRank;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.*;
-
-import net.runelite.api.HeadIcon;
+import static net.runelite.api.MenuAction.FOLLOW;
+import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
+import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FOURTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SECOND_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
+import static net.runelite.api.MenuAction.RUNELITE;
+import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
+import static net.runelite.api.MenuAction.TRADE;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.events.ClanMemberJoined;
 import net.runelite.api.events.ClanMemberLeft;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -57,141 +66,189 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.PvPUtil;
 
 @PluginDescriptor(
-		name = "Player Indicators",
-		description = "Highlight players on-screen and/or on the minimap",
-		tags = {"highlight", "minimap", "overlay", "players", "pklite"}
+	name = "Player Indicators",
+	description = "Highlight players on-screen and/or on the minimap",
+	tags = {"highlight", "minimap", "overlay", "players", "pklite"}
 )
+@Singleton
 public class PlayerIndicatorsPlugin extends Plugin
 {
 	@Inject
 	private OverlayManager overlayManager;
-	
+
 	@Inject
 	private PlayerIndicatorsConfig config;
-	
+
 	@Inject
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
-	
+
 	@Inject
 	private PlayerIndicatorsTileOverlay playerIndicatorsTileOverlay;
-	
+
 	@Inject
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
-	
+
 	@Inject
 	private Client client;
-	
+
 	@Inject
 	private ClanManager clanManager;
-	
+
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightOwnPlayer;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getOwnPlayerColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightFriends;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getFriendColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawClanMemberNames;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getClanMemberColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightTeamMembers;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getTeamMemberColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightNonClanMembers;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getNonClanMemberColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawTiles;
+	@Getter(AccessLevel.PACKAGE)
+	private PlayerNameLocation playerNamePosition;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawMinimapNames;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawFriendMinimapNames;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawClanMinimapNames;
+	private boolean colorPlayerMenu;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showClanRanks;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightTargets;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getTargetColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showCombatLevel;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean playerSkull;
+	@Getter(AccessLevel.PACKAGE)
+	private PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean skulledTargetsOnly;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean targetRisk;
+	private boolean useClanchatRanks;
+	private ClanMemberRank callerRank;
+	@Getter(AccessLevel.PACKAGE)
+	private String configCallers;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightCallers;
+	@Getter(AccessLevel.PACKAGE)
+	private Color callerColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean unchargedGlory;
+
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PlayerIndicatorsConfig.class);
 	}
-	
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+		
 		overlayManager.add(playerIndicatorsOverlay);
 		overlayManager.add(playerIndicatorsTileOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
 		getCallerList();
 	}
-	
+
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(playerIndicatorsOverlay);
 		overlayManager.remove(playerIndicatorsTileOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
 	}
-	
-	private ArrayList<String> callers =	new ArrayList<>();
-	private List<String> pileList;
-	
-	@Subscribe
-	public void onConfigChanged(ConfigChanged e)
+
+	private void addSubscriptions()
 	{
-		if (config.callers() != null && !config.callers().trim().equals(""))
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ClanMemberJoined.class, this, this::onClanMemberJoined);
+		eventBus.subscribe(ClanMemberLeft.class, this, this::onClanMemberLeft);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+	}
+
+	private List<String> callers = new ArrayList<>();
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("playerindicators"))
+		{
+			return;
+		}
+
+		updateConfig();
+		
+		if (this.configCallers != null && !this.configCallers.trim().equals(""))
 		{
 			getCallerList();
 		}
 	}
-	
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
-	{
-		if (config.highlightPile() && callers != null)
-		{
-			for (Player p : client.getPlayers())
-			{
-				for (String name:callers)
-				{
-					Actor pile = null;
-					String finalName = name.toLowerCase().replace("_", " ");
-					if (p.getName().toLowerCase().replace("_", " ").equals(finalName))
-					{
-						pile = p.getInteracting();
-						if (pile != null)
-						{
-							pileList.set(callers.indexOf(name), pile.getName());
-							//pileList.add(pile.getName());
-						}
-						else
-						{
-							pileList.set(callers.indexOf(name), "");
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	@Subscribe
-	public void onClanMemberJoined(ClanMemberJoined event)
+
+	private void onClanMemberJoined(ClanMemberJoined event)
 	{
 		getCallerList();
 	}
-	
-	@Subscribe
-	public void onClanMemberLeft(ClanMemberLeft event)
+
+	private void onClanMemberLeft(ClanMemberLeft event)
 	{
 		getCallerList();
 	}
-	
-	public void getCallerList()
+
+	private void getCallerList()
 	{
 		callers.clear();
-		if (config.useClanchatRanks() && client.getClanMembers() != null)
+		if (this.useClanchatRanks && client.getClanMembers() != null)
 		{
 			for (ClanMember clanMember : client.getClanMembers())
 			{
-				if (clanMember.getRank().getValue() > config.callerRank().getValue())
+				if (clanMember.getRank().getValue() > this.callerRank.getValue())
 				{
 					callers.add(clanMember.getUsername());
 				}
 			}
 		}
-		if (config.callers().contains(","))
+		if (this.configCallers.contains(","))
 		{
-			callers.addAll(Arrays.asList(config.callers().split(",")));
+			callers.addAll(Arrays.asList(this.configCallers.split(",")));
 		}
 		else
 		{
-			if (!config.callers().equals("") || config.callers().length() > 1)
+			if (!this.configCallers.equals(""))
 			{
-				callers.add(config.callers());
+				callers.add(this.configCallers);
 			}
 		}
-		pileList = Arrays.asList(new String[callers.size()]);
 	}
-	
-	public boolean isCaller(Player player)
+
+	boolean isCaller(Player player)
 	{
 		if (callers != null)
 		{
-			for (String name:callers)
+			for (String name : callers)
 			{
 				String finalName = name.toLowerCase().replace("_", " ");
 				if (player.getName().toLowerCase().replace("_", " ").equals(finalName))
@@ -200,94 +257,81 @@ public class PlayerIndicatorsPlugin extends Plugin
 				}
 			}
 		}
-		else {return false;}
+
 		return false;
 	}
-	
-	public boolean isPile(Player player)
-	{
-		if (Objects.nonNull(pileList) && pileList.size() > 0)
-		{
-			if (pileList.contains(player.getName()))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+
+	private void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		int type = menuEntryAdded.getType();
-		
+
 		if (type >= 2000)
 		{
 			type -= 2000;
 		}
-		
+
 		int identifier = menuEntryAdded.getIdentifier();
 		if (type == FOLLOW.getId() || type == TRADE.getId()
-				|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
-				|| type == PLAYER_FIRST_OPTION.getId()
-				|| type == PLAYER_SECOND_OPTION.getId()
-				|| type == PLAYER_THIRD_OPTION.getId()
-				|| type == PLAYER_FOURTH_OPTION.getId()
-				|| type == PLAYER_FIFTH_OPTION.getId()
-				|| type == PLAYER_SIXTH_OPTION.getId()
-				|| type == PLAYER_SEVENTH_OPTION.getId()
-				|| type == PLAYER_EIGTH_OPTION.getId()
-				|| type == RUNELITE.getId())
+			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
+			|| type == PLAYER_FIRST_OPTION.getId()
+			|| type == PLAYER_SECOND_OPTION.getId()
+			|| type == PLAYER_THIRD_OPTION.getId()
+			|| type == PLAYER_FOURTH_OPTION.getId()
+			|| type == PLAYER_FIFTH_OPTION.getId()
+			|| type == PLAYER_SIXTH_OPTION.getId()
+			|| type == PLAYER_SEVENTH_OPTION.getId()
+			|| type == PLAYER_EIGTH_OPTION.getId()
+			|| type == RUNELITE.getId())
 		{
 			final Player localPlayer = client.getLocalPlayer();
 			Player[] players = client.getCachedPlayers();
 			Player player = null;
-			
+
 			if (identifier >= 0 && identifier < players.length)
 			{
 				player = players[identifier];
 			}
-			
+
 			if (player == null)
 			{
 				return;
 			}
-			
+
 			int image = -1;
 			int image2 = -1;
 			Color color = null;
-			
-			if (config.colorPlayerMenu() && client.isFriended(player.getName(), false))
+
+			if (this.colorPlayerMenu && client.isFriended(player.getName(), false))
 			{
-				color = config.getFriendColor();
+				color = this.getFriendColor;
 			}
-			else if (config.colorPlayerMenu() && player.isClanMember())
+			else if (this.colorPlayerMenu && player.isClanMember())
 			{
-				color = config.getClanMemberColor();
-				
+				color = this.getClanMemberColor;
+
 				ClanMemberRank rank = clanManager.getRank(player.getName());
 				if (rank != UNRANKED)
 				{
 					image = clanManager.getIconNumber(rank);
 				}
 			}
-			else if (config.colorPlayerMenu() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
-		{
-			color = config.getTeamMemberColor();
-		}
-		else if (!player.isClanMember() && !player.isFriend() && !PvPUtil.isAttackable(client, player))
-		{
-			color = config.getNonClanMemberColor();
-		}
-		else if (config.colorPlayerMenu() && !player.isClanMember() && client.isFriended(player.getName(), false) && PvPUtil.isAttackable(client, player))
-		{
-			color = config.getTargetColor();
-		}
-		else if (config.colorPlayerMenu() && PvPUtil.isAttackable(client, player) && !player.isClanMember() && !player.isFriend())
-		{
-			color = config.getTargetColor();
-		}
-			if (config.rightClickOverhead() && !player.isClanMember() && player.getOverheadIcon() != null)
+			else if (this.colorPlayerMenu && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+			{
+				color = this.getTeamMemberColor;
+			}
+			else if (this.highlightNonClanMembers && !player.isClanMember() && !player.isFriend() && !PvPUtil.isAttackable(client, player))
+			{
+				color = this.getNonClanMemberColor;
+			}
+			else if (this.colorPlayerMenu && !player.isClanMember() && client.isFriended(player.getName(), false) && PvPUtil.isAttackable(client, player))
+			{
+				color = this.getTargetColor;
+			}
+			else if (this.colorPlayerMenu && PvPUtil.isAttackable(client, player) && !player.isClanMember() && !player.isFriend())
+			{
+				color = this.getTargetColor;
+			}
+/*			if (config.rightClickOverhead() && !player.isClanMember() && player.getOverheadIcon() != null)
 			{
 				if (player.getOverheadIcon().equals(HeadIcon.MAGIC))
 				{
@@ -313,27 +357,22 @@ public class PlayerIndicatorsPlugin extends Plugin
 				{
 					image = 34;
 				}
-				
-			}
-			if (config.playerSkull() && !player.isClanMember() && player.getSkullIcon() != null)
+			}*/
+			if (this.playerSkull && !player.isClanMember() && player.getSkullIcon() != null)
 			{
 				image2 = 35;
 			}
-			if (config.colorPlayerMenu() && config.highlightCallers() && this.isCaller(player))
+			if (this.colorPlayerMenu && this.highlightCallers && this.isCaller(player))
 			{
-				color = config.callerColor();
-			}
-			if (config.colorPlayerMenu() && config.highlightPile() && this.isPile(player))
-			{
-				color = config.pileColor();
+				color = this.callerColor;
 			}
 			if (image != -1 || color != null)
 			{
 				MenuEntry[] menuEntries = client.getMenuEntries();
 				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-				
-				
-				if (color != null && config.colorPlayerMenu())
+
+
+				if (color != null && this.colorPlayerMenu)
 				{
 					// strip out existing <col...
 					String target = lastEntry.getTarget();
@@ -342,27 +381,61 @@ public class PlayerIndicatorsPlugin extends Plugin
 					{
 						target = target.substring(idx + 1);
 					}
-					
+
 					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
 				
-				if (image != -1 && config.showClanRanks() || image != -1 && config.rightClickOverhead())
+/*				if (image != -1 && config.showClanRanks() || image != -1 && config.rightClickOverhead())
 				{
 					lastEntry.setTarget(lastEntry.getTarget() + "<img=" + image + ">");
-				}
-				if (image2 != -1 && config.playerSkull())
+				}*/
+				if (image2 != -1 && this.playerSkull)
 				{
 					lastEntry.setTarget("<img=" + image2 + ">" + lastEntry.getTarget());
 				}
-				
+
 				client.setMenuEntries(menuEntries);
 			}
 		}
 	}
-	
-	public static enum minimapSkullLocations
+
+	public enum MinimapSkullLocations
 	{
 		BEFORE_NAME,
 		AFTER_NAME
+	}
+	
+	private void updateConfig()
+	{
+		this.highlightOwnPlayer = config.highlightOwnPlayer();
+		this.getOwnPlayerColor = config.getOwnPlayerColor();
+		this.highlightFriends = config.highlightFriends();
+		this.getFriendColor = config.getFriendColor();
+		this.drawClanMemberNames = config.drawClanMemberNames();
+		this.getClanMemberColor = config.getClanMemberColor();
+		this.highlightTeamMembers = config.highlightTeamMembers();
+		this.getTeamMemberColor = config.getTeamMemberColor();
+		this.highlightNonClanMembers = config.highlightNonClanMembers();
+		this.getNonClanMemberColor = config.getNonClanMemberColor();
+		this.drawTiles = config.drawTiles();
+		this.playerNamePosition = config.playerNamePosition();
+		this.drawMinimapNames = config.drawMinimapNames();
+		this.drawFriendMinimapNames = config.drawFriendMinimapNames();
+		this.drawClanMinimapNames = config.drawClanMinimapNames();
+		this.colorPlayerMenu = config.colorPlayerMenu();
+		this.showClanRanks = config.showClanRanks();
+		this.highlightTargets = config.highlightTargets();
+		this.getTargetColor = config.getTargetColor();
+		this.showCombatLevel = config.showCombatLevel();
+		this.playerSkull = config.playerSkull();
+		this.skullLocation = config.skullLocation();
+		this.skulledTargetsOnly = config.skulledTargetsOnly();
+		this.targetRisk = config.targetRisk();
+		this.useClanchatRanks = config.useClanchatRanks();
+		this.callerRank = config.callerRank();
+		this.configCallers = config.callers();
+		this.highlightCallers = config.highlightCallers();
+		this.callerColor = config.callerColor();
+		this.unchargedGlory = config.unchargedGlory();
 	}
 }

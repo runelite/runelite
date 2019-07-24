@@ -53,10 +53,7 @@ public class ConfigDescriptor
 		Collection<ConfigItemDescriptor> allItems = new ArrayList<>();
 		for (ConfigItemsGroup g : itemGroups)
 		{
-			for (ConfigItemDescriptor item : g.getItems())
-			{
-				allItems.add(item);
-			}
+			allItems.addAll(g.getItems());
 		}
 		return allItems;
 	}

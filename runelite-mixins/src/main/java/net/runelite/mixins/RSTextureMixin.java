@@ -35,7 +35,7 @@ import net.runelite.rs.api.RSTexture;
 @Mixin(RSTexture.class)
 public abstract class RSTextureMixin implements RSTexture
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject

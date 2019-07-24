@@ -24,7 +24,10 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -36,7 +39,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicProgressBarUI;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
@@ -51,19 +53,18 @@ import org.pushingpixels.substance.internal.SubstanceSynapse;
 @Singleton
 public class RuneLiteSplashScreen
 {
-	private RuneLiteProperties runeLiteProperties = new RuneLiteProperties();
+	private final RuneLiteProperties runeLiteProperties = new RuneLiteProperties();
 
-	public JFrame frame;
-	public JPanel panel = new JPanel();
-	public JLabel messageLabel;
-	public JLabel subMessageLabel;
-	public JProgressBar progressBar = new JProgressBar();
-
-	private int currentStep;
+	private JFrame frame;
+	private final JPanel panel = new JPanel();
+	private JLabel messageLabel;
+	private JLabel subMessageLabel;
+	private final JProgressBar progressBar = new JProgressBar();
 
 	/**
 	 * This is not done in the constructor in order to avoid processing in case the user chooses to not load
 	 * the splash screen.
+	 *
 	 * @param estimatedSteps steps until completion, used for the progress bar
 	 */
 	private void initLayout(final int estimatedSteps)
@@ -127,7 +128,7 @@ public class RuneLiteSplashScreen
 		panel.add(version, versionConstraints);
 
 		// version
-		final JLabel litVersion = new JLabel("Plus Version : PRE-" + RuneLite.RUNELIT_VERSION);
+		final JLabel litVersion = new JLabel("Plus Version : " + RuneLite.PLUS_VERSION);
 		litVersion.setForeground(Color.GREEN);
 		litVersion.setFont(FontManager.getRunescapeSmallFont());
 		litVersion.setForeground(litVersion.getForeground().darker());
@@ -183,6 +184,7 @@ public class RuneLiteSplashScreen
 
 	/**
 	 * Set the splash screen to be visible.
+	 *
 	 * @param estimatedSteps steps until completion, used for the progress bar
 	 */
 	public void open(final int estimatedSteps)
@@ -226,7 +228,8 @@ public class RuneLiteSplashScreen
 			{
 				return;
 			}
-			if (progressGoal!=progressBar.getMaximum()) {
+			if (progressGoal != progressBar.getMaximum())
+			{
 				panel.remove(progressBar);
 				panel.validate();
 				final GridBagConstraints progressConstraints = new GridBagConstraints();

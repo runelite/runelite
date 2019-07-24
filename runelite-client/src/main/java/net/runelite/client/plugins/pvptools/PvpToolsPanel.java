@@ -9,45 +9,41 @@
 
 package net.runelite.client.plugins.pvptools;
 
-import com.google.common.base.MoreObjects;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.plugins.info.JRichTextPane;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
-public class PvpToolsPanel extends PluginPanel
+@Singleton
+class PvpToolsPanel extends PluginPanel
 {
 
 	private final JLabel loggedLabel = new JLabel();
 	private final JRichTextPane emailLabel = new JRichTextPane();
-	public JLabel numCC = new JLabel();
-	public JLabel numOther = new JLabel();
-	public JLabel numMageJLabel = new JLabel(" ");
-	public JLabel numRangeJLabel = new JLabel(" ");
-	public JLabel numMeleeJLabel = new JLabel(" ");
-	public JLabel totalRiskLabel = new JLabel(" ");
-	public JLabel riskProtectingItem = new JLabel(" ");
-	public JLabel biggestItemLabel = new JLabel("Protected Item: ");
-	public JButton missingPlayers = new JButton("Show missing CC members");
-	public JButton currentPlayers = new JButton("Show current CC members");
-	public JLabel numBrews = new JLabel();
-	@Inject
-	private JPanel pvpToolsPanel = new JPanel(new GridLayout(11, 1));
-	private JPanel missingPlayersPanel = new JPanel();
-	private JPanel currentPlayersPanel = new JPanel();
+	final JLabel numCC = new JLabel();
+	final JLabel numOther = new JLabel();
+	final JLabel numMageJLabel = new JLabel(" ");
+	final JLabel numRangeJLabel = new JLabel(" ");
+	final JLabel numMeleeJLabel = new JLabel(" ");
+	final JLabel totalRiskLabel = new JLabel(" ");
+	final JLabel riskProtectingItem = new JLabel(" ");
+	final JLabel biggestItemLabel = new JLabel("Protected Item: ");
+	final JButton missingPlayers = new JButton("Show missing CC members");
+	final JButton currentPlayers = new JButton("Show current CC members");
+	private final JLabel numBrews = new JLabel();
+	private final JPanel missingPlayersPanel = new JPanel();
 
 
 	public static String htmlLabel(String key, String value)
@@ -60,7 +56,6 @@ public class PvpToolsPanel extends PluginPanel
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setBorder(new EmptyBorder(10, 10, 10, 10));
-
 
 
 		JPanel versionPanel = new JPanel();
@@ -97,10 +92,6 @@ public class PvpToolsPanel extends PluginPanel
 
 		revision.setText("Oldschool revision: ");
 
-		JLabel launcher = new JLabel(htmlLabel("Launcher version: ", MoreObjects
-			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
-		launcher.setFont(smallFont);
-
 		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		loggedLabel.setFont(smallFont);
 
@@ -136,7 +127,7 @@ public class PvpToolsPanel extends PluginPanel
 
 	}
 
-	public void disablePlayerCount()
+	void disablePlayerCount()
 	{
 		this.numOther.setText("Disabled");
 		this.numCC.setText("Disabled");
@@ -144,7 +135,7 @@ public class PvpToolsPanel extends PluginPanel
 		this.numOther.repaint();
 	}
 
-	public void disablePrayerCount()
+	void disablePrayerCount()
 	{
 		this.numMageJLabel.setText("disabled");
 		this.numRangeJLabel.setText("disabled");
@@ -154,7 +145,7 @@ public class PvpToolsPanel extends PluginPanel
 		this.numMeleeJLabel.repaint();
 	}
 
-	public void disableRiskCalculator()
+	void disableRiskCalculator()
 	{
 		this.totalRiskLabel.setText("disabled");
 		this.riskProtectingItem.setText("disabled");

@@ -25,18 +25,23 @@
 package net.runelite.client.plugins.agility;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import static net.runelite.api.Skill.AGILITY;
@@ -65,17 +70,14 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.api.MenuEntry;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.api.MenuAction;
-import java.awt.Color;
 
 @PluginDescriptor(
 	name = "Agility",
@@ -83,14 +85,15 @@ import java.awt.Color;
 	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
 @Slf4j
+@Singleton
 public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Obstacle> obstacles = new HashMap<>();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<Tile> marksOfGrace = new ArrayList<>();
 
 	@Inject
@@ -117,13 +120,16 @@ public class AgilityPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	@Getter
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
 	private AgilitySession session;
 
 	private int lastAgilityXp;
 	private WorldPoint lastArenaTicketPosition;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int agilityLevel;
 
 	@Provides
@@ -132,9 +138,39 @@ public class AgilityPlugin extends Plugin
 		return configManager.getConfig(AgilityConfig.class);
 	}
 
+	// Config values
+	@Getter(AccessLevel.PACKAGE)
+	private boolean removeDistanceCap;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showLapCount;
+	@Getter(AccessLevel.PACKAGE)
+	private int lapTimeout;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean lapsToLevel;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean lapsToGoal;
+	@Getter(AccessLevel.PACKAGE)
+	private Color overlayColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightMarks;
+	@Getter(AccessLevel.PACKAGE)
+	private Color markColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightShortcuts;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showTrapOverlay;
+	@Getter(AccessLevel.PACKAGE)
+	private Color trapColor;
+	private boolean notifyAgilityArena;
+	private boolean showAgilityArenaTimer;
+	private boolean showShortcutLevel;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(agilityOverlay);
 		overlayManager.add(lapCounterOverlay);
 		agilityLevel = client.getBoostedSkillLevel(Skill.AGILITY);
@@ -143,6 +179,8 @@ public class AgilityPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(agilityOverlay);
 		overlayManager.remove(lapCounterOverlay);
 		marksOfGrace.clear();
@@ -151,8 +189,31 @@ public class AgilityPlugin extends Plugin
 		agilityLevel = 0;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ExperienceChanged.class, this, this::onExperienceChanged);
+		eventBus.subscribe(BoostedLevelChanged.class, this, this::onBoostedLevelChanged);
+		eventBus.subscribe(ItemSpawned.class, this, this::onItemSpawned);
+		eventBus.subscribe(ItemDespawned.class, this, this::onItemDespawned);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventBus.subscribe(GameObjectChanged.class, this, this::onGameObjectChanged);
+		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventBus.subscribe(GroundObjectSpawned.class, this, this::onGroundObjectSpawned);
+		eventBus.subscribe(GroundObjectChanged.class, this, this::onGroundObjectChanged);
+		eventBus.subscribe(GroundObjectDespawned.class, this, this::onGroundObjectDespawned);
+		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
+		eventBus.subscribe(WallObjectChanged.class, this, this::onWallObjectChanged);
+		eventBus.subscribe(WallObjectDespawned.class, this, this::onWallObjectDespawned);
+		eventBus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
+		eventBus.subscribe(DecorativeObjectChanged.class, this, this::onDecorativeObjectChanged);
+		eventBus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -176,19 +237,42 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!config.showAgilityArenaTimer())
+		if (!event.getGroup().equals("agility"))
+		{
+			return;
+		}
+
+		updateConfig();
+
+		if (!this.showAgilityArenaTimer)
 		{
 			removeAgilityArenaTimer();
 		}
 	}
 
-	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	public void updateConfig()
 	{
-		if (event.getSkill() != AGILITY || !config.showLapCount())
+		this.removeDistanceCap = config.removeDistanceCap();
+		this.showLapCount = config.showLapCount();
+		this.lapTimeout = config.lapTimeout();
+		this.lapsToLevel = config.lapsToLevel();
+		this.lapsToGoal = config.lapsToGoal();
+		this.overlayColor = config.getOverlayColor();
+		this.highlightMarks = config.highlightMarks();
+		this.markColor = config.getMarkColor();
+		this.highlightShortcuts = config.highlightShortcuts();
+		this.showTrapOverlay = config.showTrapOverlay();
+		this.trapColor = config.getTrapColor();
+		this.notifyAgilityArena = config.notifyAgilityArena();
+		this.showAgilityArenaTimer = config.showAgilityArenaTimer();
+		this.showShortcutLevel = config.showShortcutLevel();
+	}
+
+	private void onExperienceChanged(ExperienceChanged event)
+	{
+		if (event.getSkill() != AGILITY || !this.showLapCount)
 		{
 			return;
 		}
@@ -221,9 +305,7 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
-
-	@Subscribe
-	public void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
+	private void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
 	{
 		Skill skill = boostedLevelChanged.getSkill();
 		if (skill == AGILITY)
@@ -232,8 +314,7 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemSpawned(ItemSpawned itemSpawned)
+	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		if (obstacles.isEmpty())
 		{
@@ -249,15 +330,13 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemDespawned(ItemDespawned itemDespawned)
+	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		final Tile tile = itemDespawned.getTile();
 		marksOfGrace.remove(tile);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		if (isInAgilityArena())
 		{
@@ -272,12 +351,12 @@ public class AgilityPlugin extends Plugin
 			{
 				log.debug("Ticked position moved from {} to {}", oldTickPosition, newTicketPosition);
 
-				if (config.notifyAgilityArena())
+				if (this.notifyAgilityArena)
 				{
 					notifier.notify("Ticket location changed");
 				}
 
-				if (config.showAgilityArenaTimer())
+				if (this.showAgilityArenaTimer)
 				{
 					showNewAgilityArenaTimer();
 				}
@@ -308,74 +387,62 @@ public class AgilityPlugin extends Plugin
 		infoBoxManager.addInfoBox(new AgilityArenaTimer(this, itemManager.getImage(AGILITY_ARENA_TICKET)));
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
 	}
 
-	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
+	private void onGameObjectChanged(GameObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGameObject());
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGameObject(), null);
 	}
 
-	@Subscribe
-	public void onGroundObjectSpawned(GroundObjectSpawned event)
+	private void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGroundObject());
 	}
 
-	@Subscribe
-	public void onGroundObjectChanged(GroundObjectChanged event)
+	private void onGroundObjectChanged(GroundObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGroundObject());
 	}
 
-	@Subscribe
-	public void onGroundObjectDespawned(GroundObjectDespawned event)
+	private void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGroundObject(), null);
 	}
 
-	@Subscribe
-	public void onWallObjectSpawned(WallObjectSpawned event)
+	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getWallObject());
 	}
 
-	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
+	private void onWallObjectChanged(WallObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
 	}
 
-	@Subscribe
-	public void onWallObjectDespawned(WallObjectDespawned event)
+	private void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getWallObject(), null);
 	}
 
-	@Subscribe
-	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getDecorativeObject());
 	}
 
-	@Subscribe
-	public void onDecorativeObjectChanged(DecorativeObjectChanged event)
+	private void onDecorativeObjectChanged(DecorativeObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getDecorativeObject());
 	}
 
-	@Subscribe
-	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getDecorativeObject(), null);
 	}
@@ -427,10 +494,9 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!config.showShortcutLevel())
+		if (!this.showShortcutLevel)
 		{
 			return;
 		}
@@ -447,7 +513,8 @@ public class AgilityPlugin extends Plugin
 		for (Obstacle nearbyObstacle : getObstacles().values())
 		{
 			AgilityShortcut shortcut = nearbyObstacle.getShortcut();
-			if (shortcut != null && Arrays.stream(shortcut.getObstacleIds()).anyMatch(i -> i == entryId)) {
+			if (shortcut != null && Arrays.stream(shortcut.getObstacleIds()).anyMatch(i -> i == entryId))
+			{
 				MenuEntry entry = menuEntries[menuEntries.length - 1];
 				int level = shortcut.getLevel();
 				Color color = level <= getAgilityLevel() ? Color.GREEN : Color.RED;

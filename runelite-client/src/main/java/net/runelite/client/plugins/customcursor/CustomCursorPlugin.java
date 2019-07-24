@@ -26,9 +26,10 @@ package net.runelite.client.plugins.customcursor;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
@@ -38,6 +39,7 @@ import net.runelite.client.ui.ClientUI;
 	description = "Replaces your mouse cursor image",
 	enabledByDefault = false
 )
+@Singleton
 public class CustomCursorPlugin extends Plugin
 {
 	@Inject
@@ -45,6 +47,9 @@ public class CustomCursorPlugin extends Plugin
 
 	@Inject
 	private CustomCursorConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Provides
 	CustomCursorConfig provideConfig(ConfigManager configManager)
@@ -55,17 +60,19 @@ public class CustomCursorPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		updateCursor();
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		clientUI.resetCursor();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("customcursor") && event.getKey().equals("cursorStyle"))
 		{

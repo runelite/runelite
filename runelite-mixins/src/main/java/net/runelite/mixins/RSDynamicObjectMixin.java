@@ -24,21 +24,27 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.events.DynamicObjectAnimationChanged;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDynamicObject;
+import net.runelite.rs.api.RSEntity;
 import net.runelite.rs.api.RSModel;
 
 @Mixin(RSDynamicObject.class)
 public abstract class RSDynamicObjectMixin implements RSDynamicObject
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
+
+	@Inject
+	public int animationID;
 
 	@Copy("getModel")
 	public abstract RSModel rs$getModel();
@@ -67,7 +73,7 @@ public abstract class RSDynamicObjectMixin implements RSDynamicObject
 		}
 	}
 
-	@FieldHook("animCycleCount")
+	@FieldHook("cycleStart")
 	@Inject
 	public void onAnimCycleCountChanged(int idx)
 	{
@@ -77,5 +83,27 @@ public abstract class RSDynamicObjectMixin implements RSDynamicObject
 			int objectFrameCycle = client.getGameCycle() - getAnimCycleCount();
 			setAnimFrame(Integer.MIN_VALUE | objectFrameCycle << 16 | getAnimFrame());
 		}
+	}
+
+	@MethodHook(value = "<init>", end = true)
+	@Inject
+	public void rl$init(int id, int type, int orientation, int plane, int x, int y, int animationID, boolean var8, RSEntity var9)
+	{
+		this.animationID = animationID;
+
+		if (animationID != -1)
+		{
+			DynamicObjectAnimationChanged dynamicObjectAnimationChanged = new DynamicObjectAnimationChanged();
+			dynamicObjectAnimationChanged.setObject(id);
+			dynamicObjectAnimationChanged.setAnimation(animationID);
+			client.getCallbacks().post(DynamicObjectAnimationChanged.class, dynamicObjectAnimationChanged);
+		}
+	}
+
+	@Inject
+	@Override
+	public int getAnimationID()
+	{
+		return animationID;
 	}
 }

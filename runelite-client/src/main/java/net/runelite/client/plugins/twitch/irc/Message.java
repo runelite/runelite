@@ -28,9 +28,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 class Message
 {
 	private final Map<String, String> tags = new HashMap<>();
@@ -48,7 +49,10 @@ class Message
 			for (String tag : tags)
 			{
 				int eq = tag.indexOf('=');
-				if (eq == -1) continue;
+				if (eq == -1)
+				{
+					continue;
+				}
 
 				String key = tag.substring(0, eq);
 				String value = tag.substring(eq + 1)

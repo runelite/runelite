@@ -48,30 +48,31 @@ import net.runelite.http.api.item.ItemStats;
 public class ItemStatOverlay extends Overlay
 {
 	// Unarmed attack speed is 6
-	private static final ItemStats UNARMED = new ItemStats(false, true, 0,
+	private static final ItemStats UNARMED = new ItemStats("", false, true, 0,
 		ItemEquipmentStats.builder()
 			.aspeed(6)
 			.build());
 
-	@Inject
-	private Client client;
+	private final Client client;
+	private final ItemManager itemManager;
+	private final TooltipManager tooltipManager;
+	private final ItemStatChanges statChanges;
+	private final ItemStatPlugin plugin;
 
 	@Inject
-	private ItemManager itemManager;
-
-	@Inject
-	private TooltipManager tooltipManager;
-
-	@Inject
-	private ItemStatChanges statChanges;
-
-	@Inject
-	private ItemStatConfig config;
+	ItemStatOverlay(Client client, ItemStatPlugin plugin, ItemManager itemManager, TooltipManager tooltipManager, ItemStatChanges itemStatChanges)
+	{
+		this.client = client;
+		this.itemManager = itemManager;
+		this.tooltipManager = tooltipManager;
+		this.statChanges = itemStatChanges;
+		this.plugin = plugin;
+	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.isMenuOpen() || (!config.relative() && !config.absolute() && !config.theoretical()))
+		if (client.isMenuOpen() || (!plugin.isRelative() && !plugin.isAbsolute() && !plugin.isTheoretical()))
 		{
 			return null;
 		}
@@ -115,7 +116,7 @@ public class ItemStatOverlay extends Overlay
 			}
 		}
 
-		if (config.consumableStats())
+		if (plugin.isConsumableStats())
 		{
 			final Effect change = statChanges.get(itemId);
 			if (change != null)
@@ -137,7 +138,7 @@ public class ItemStatOverlay extends Overlay
 			}
 		}
 
-		if (config.equipmentStats())
+		if (plugin.isEquipmentStats())
 		{
 			final ItemStats stats = itemManager.getItemStats(itemId, false);
 
@@ -161,8 +162,8 @@ public class ItemStatOverlay extends Overlay
 		final boolean inverse,
 		final boolean showPercent)
 	{
-		final Color plus = Positivity.getColor(config, Positivity.BETTER_UNCAPPED);
-		final Color minus = Positivity.getColor(config, Positivity.WORSE);
+		final Color plus = Positivity.getColor(plugin, Positivity.BETTER_UNCAPPED);
+		final Color minus = Positivity.getColor(plugin, Positivity.WORSE);
 
 		if (value == 0)
 		{
@@ -182,14 +183,17 @@ public class ItemStatOverlay extends Overlay
 
 		final String prefix = value > 0 ? "+" : "";
 		final String suffix = showPercent ? "%" : "";
-		final String valueString = (int)value == value ? String.valueOf((int)value) : String.valueOf(value);
+		final String valueString = (int) value == value ? String.valueOf((int) value) : String.valueOf(value);
 		return label + ": " + ColorUtil.wrapWithColorTag(prefix + valueString + suffix, color) + "</br>";
 	}
 
 	private String buildStatBonusString(ItemStats s)
 	{
 		final StringBuilder b = new StringBuilder();
-		b.append(getChangeString("Weight", s.getWeight(), true, false));
+		if (plugin.isShowWeight())
+		{
+			b.append(getChangeString("Weight", s.getWeight(), true, false));
+		}
 
 		ItemStats other = null;
 		final ItemEquipmentStats currentEquipment = s.getEquipment();
@@ -254,32 +258,32 @@ public class ItemStatOverlay extends Overlay
 	private String buildStatChangeString(StatChange c)
 	{
 		StringBuilder b = new StringBuilder();
-		b.append(ColorUtil.colorTag(Positivity.getColor(config, c.getPositivity())));
+		b.append(ColorUtil.colorTag(Positivity.getColor(plugin, c.getPositivity())));
 
-		if (config.relative())
+		if (plugin.isRelative())
 		{
 			b.append(c.getFormattedRelative());
 		}
 
-		if (config.theoretical())
+		if (plugin.isTheoretical())
 		{
-			if (config.relative())
+			if (plugin.isRelative())
 			{
 				b.append("/");
 			}
 			b.append(c.getFormattedTheoretical());
 		}
 
-		if (config.absolute() && (config.relative() || config.theoretical()))
+		if (plugin.isAbsolute() && (plugin.isRelative() || plugin.isTheoretical()))
 		{
 			b.append(" (");
 		}
-		if (config.absolute())
+		if (plugin.isAbsolute())
 		{
 			b.append(c.getAbsolute());
 		}
 
-		if (config.absolute() && (config.relative() || config.theoretical()))
+		if (plugin.isAbsolute() && (plugin.isRelative() || plugin.isTheoretical()))
 		{
 			b.append(")");
 		}

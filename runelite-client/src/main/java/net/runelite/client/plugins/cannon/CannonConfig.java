@@ -29,6 +29,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("cannon")
 public interface CannonConfig extends Config
@@ -84,6 +85,9 @@ public interface CannonConfig extends Config
 		return true;
 	}
 
+	@Range(
+		max = 29
+	)
 	@ConfigItem(
 		keyName = "ammoAmount",
 		name = "Ammo left",

@@ -26,23 +26,30 @@
 package net.runelite.client.plugins.idlenotifier;
 
 import com.google.inject.Provides;
-
-import java.awt.*;
+import java.awt.TrayIcon;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SkullIcon;
@@ -50,30 +57,40 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.game.Sound;
+import net.runelite.client.game.SoundManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.PvPUtil;
+
+//import java.io.IOException;
+//import javax.sound.sampled.LineUnavailableException;
+//import javax.sound.sampled.UnsupportedAudioFileException;
 
 @PluginDescriptor(
 	name = "Idle Notifier",
 	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
 	tags = {"health", "hitpoints", "notifications", "prayer", "pvp", "pker"}
 )
+@Singleton
 public class IdleNotifierPlugin extends Plugin
 {
 	// This must be more than 500 client ticks (10 seconds) before you get AFK kicked
-	private static final int LOGOUT_WARNING_CLIENT_TICKS = ((4 * 60) + 40) * 50;// 4 minutes and 40 seconds
+	private static final int LOGOUT_WARNING_MILLIS = (4 * 60 + 40) * 1000; // 4 minutes and 40 seconds
 	private static final int COMBAT_WARNING_MILLIS = 19 * 60 * 1000; // 19 minutes
-	private static final int COMBAT_WARNING_CLIENT_TICKS = COMBAT_WARNING_MILLIS / 20;
+	private static final int LOGOUT_WARNING_CLIENT_TICKS = LOGOUT_WARNING_MILLIS / Constants.CLIENT_TICK_LENGTH;
+	private static final int COMBAT_WARNING_CLIENT_TICKS = COMBAT_WARNING_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
 	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
@@ -87,7 +104,13 @@ public class IdleNotifierPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private SoundManager soundManager;
+
+	@Inject
 	private IdleNotifierConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	private Instant lastAnimating;
 	private int lastAnimation = AnimationID.IDLE;
@@ -102,9 +125,41 @@ public class IdleNotifierPlugin extends Plugin
 	private int lastCombatCountdown = 0;
 	private Instant sixHourWarningTime;
 	private boolean ready;
+	private Instant lastTimeItemsUsedUp;
+	private List<Integer> itemIdsPrevious = new ArrayList<>();
+	private List<Integer> itemQuantitiesPrevious = new ArrayList<>();
+	private final List<Integer> itemQuantitiesChange = new ArrayList<>();
 	private boolean lastInteractWasCombat;
+	private boolean interactingNotified;
 	private SkullIcon lastTickSkull = null;
 	private boolean isFirstTick = true;
+
+	@Setter(AccessLevel.PACKAGE)
+	private boolean animationIdle;
+	private boolean animationIdleSound;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean interactionIdle;
+	private boolean interactionIdleSound;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean logoutIdle;
+	private boolean outOfCombatSound;
+	private boolean showSkullNotification;
+	private boolean showUnskullNotification;
+	@Setter(AccessLevel.PACKAGE)
+	private int getIdleNotificationDelay;
+	@Setter(AccessLevel.PACKAGE)
+	private int getHitpointsThreshold;
+	private boolean getPlayHealthSound;
+	@Setter(AccessLevel.PACKAGE)
+	private int getPrayerThreshold;
+	private boolean getPlayPrayerSound;
+	private int getOxygenThreshold;
+	@Setter(AccessLevel.PACKAGE)
+	private int getSpecEnergyThreshold;
+	private boolean getSpecSound;
+	private boolean getOverSpecEnergy;
+	private boolean notifyPkers;
+	private boolean outOfItemsIdle;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -112,8 +167,7 @@ public class IdleNotifierPlugin extends Plugin
 		return configManager.getConfig(IdleNotifierConfig.class);
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	void onAnimationChanged(AnimationChanged event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -126,7 +180,7 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
-		int graphic = localPlayer.getGraphic();
+		int graphic = localPlayer.getSpotAnimation();
 		int animation = localPlayer.getAnimation();
 		switch (animation)
 		{
@@ -141,11 +195,11 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_DRAGON:
 			case WOODCUTTING_INFERNAL:
 			case WOODCUTTING_3A_AXE:
-			/* Cooking(Fire, Range) */
+				/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
 			case COOKING_WINE:
-			/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves, Pottery) */
+				/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves, Pottery) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -160,7 +214,7 @@ public class IdleNotifierPlugin extends Plugin
 			case CRAFTING_LEATHER:
 			case CRAFTING_POTTERS_WHEEL:
 			case CRAFTING_POTTERY_OVEN:
-			/* Fletching(Cutting, Stringing) */
+				/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
 			case FLETCHING_STRING_OAK_SHORTBOW:
@@ -174,14 +228,25 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_STRING_MAPLE_LONGBOW:
 			case FLETCHING_STRING_YEW_LONGBOW:
 			case FLETCHING_STRING_MAGIC_LONGBOW:
-			/* Smithing(Anvil, Furnace, Cannonballs */
+				/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
-			/* Fishing */
+				/* Fishing */
 			case FISHING_CRUSHING_INFERNAL_EELS:
 			case FISHING_CUTTING_SACRED_EELS:
-			/* Mining(Normal) */
+			case FISHING_BIG_NET:
+			case FISHING_NET:
+			case FISHING_POLE_CAST:
+			case FISHING_CAGE:
+			case FISHING_HARPOON:
+			case FISHING_BARBTAIL_HARPOON:
+			case FISHING_DRAGON_HARPOON:
+			case FISHING_INFERNAL_HARPOON:
+			case FISHING_OILY_ROD:
+			case FISHING_KARAMBWAN:
+			case FISHING_BAREHAND:
+				/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
 			case MINING_STEEL_PICKAXE:
@@ -195,41 +260,36 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_3A_PICKAXE:
 			case DENSE_ESSENCE_CHIPPING:
 			case DENSE_ESSENCE_CHISELING:
-			/* Mining(Motherlode) */
-			case MINING_MOTHERLODE_BRONZE:
-			case MINING_MOTHERLODE_IRON:
-			case MINING_MOTHERLODE_STEEL:
-			case MINING_MOTHERLODE_BLACK:
-			case MINING_MOTHERLODE_MITHRIL:
-			case MINING_MOTHERLODE_ADAMANT:
-			case MINING_MOTHERLODE_RUNE:
-			case MINING_MOTHERLODE_DRAGON:
-			case MINING_MOTHERLODE_DRAGON_ORN:
-			case MINING_MOTHERLODE_INFERNAL:
-			case MINING_MOTHERLODE_3A:
-			/* Herblore */
+				/* Herblore */
 			case HERBLORE_PESTLE_AND_MORTAR:
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
-			/* Magic */
+				/* Magic */
 			case MAGIC_CHARGING_ORBS:
+			case MAGIC_LUNAR_PLANK_MAKE:
 			case MAGIC_LUNAR_STRING_JEWELRY:
 			case MAGIC_MAKE_TABLET:
 			case MAGIC_ENCHANTING_JEWELRY:
 			case MAGIC_ENCHANTING_AMULET_1:
 			case MAGIC_ENCHANTING_AMULET_2:
 			case MAGIC_ENCHANTING_AMULET_3:
-			/* Prayer */
+				/* Prayer */
 			case USING_GILDED_ALTAR:
-			/* Farming */
+				/* Farming */
 			case FARMING_MIX_ULTRACOMPOST:
-			/* Misc */
+			case FARMING_HARVEST_BUSH:
+			case FARMING_HARVEST_HERB:
+			case FARMING_HARVEST_FRUIT_TREE:
+			case FARMING_HARVEST_FLOWER:
+			case FARMING_HARVEST_ALLOTMENT:
+				/* Misc */
 			case PISCARILIUS_CRANE_REPAIR:
 			case HOME_MAKE_TABLET:
 			case SAND_COLLECTION:
 				resetTimers();
 				lastAnimation = animation;
 				lastAnimating = Instant.now();
+				interactingNotified = false;
 				break;
 			case MAGIC_LUNAR_SHARED:
 				if (graphic == GraphicID.BAKE_PIE)
@@ -237,10 +297,12 @@ public class IdleNotifierPlugin extends Plugin
 					resetTimers();
 					lastAnimation = animation;
 					lastAnimating = Instant.now();
+					interactingNotified = false;
 					break;
 				}
 			case IDLE:
 				lastAnimating = Instant.now();
+				interactingNotified = false;
 				break;
 			default:
 				// On unknown animation simply assume the animation is invalid and dont throw notification
@@ -249,31 +311,98 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	private void onPlayerSpawned(PlayerSpawned event)
 	{
 		final Player p = event.getPlayer();
-		if (config.notifyPkers())
+		if (this.notifyPkers && p != null && p != client.getLocalPlayer()
+			&& PvPUtil.isAttackable(client, p) && !client.isFriended(p.getName(), false)
+			&& !client.isClanMember(p.getName()))
 		{
-			if (p != null)
-			{
-				if (p != client.getLocalPlayer())
-				{
-					if (PvPUtil.isAttackable(client, p) && !client.isFriended(p.getName(), false)
-						&& !client.isClanMember(p.getName()))
-					{
-						String playerName = p.getName();
-						int combat = p.getCombatLevel();
-						notifier.notify("PK'er warning! A level " + combat + " player named " + playerName +
-							" appeared!", TrayIcon.MessageType.WARNING);
-					}
-				}
-			}
+			String playerName = p.getName();
+			int combat = p.getCombatLevel();
+			notifier.notify("PK'er warning! A level " + combat + " player named " + playerName +
+				" appeared!", TrayIcon.MessageType.WARNING);
 		}
 	}
 
-	@Subscribe
-	public void onInteractingChanged(InteractingChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
+	{
+		ItemContainer itemContainer = event.getItemContainer();
+
+		if (itemContainer != client.getItemContainer(InventoryID.INVENTORY) || !config.outOfItemsIdle())
+		{
+			return;
+		}
+
+		Item[] items = itemContainer.getItems();
+		ArrayList<Integer> itemQuantities = new ArrayList<>();
+		ArrayList<Integer> itemIds = new ArrayList<>();
+
+		// Populate list of items in inventory without duplicates
+		for (Item value : items)
+		{
+			int itemId = OutOfItemsMapping.mapFirst(value.getId());
+			if (itemIds.indexOf(itemId) == -1) // -1 if item not yet in list
+			{
+				itemIds.add(itemId);
+			}
+		}
+
+		// Populate quantity of each item in inventory
+		for (int j = 0; j < itemIds.size(); j++)
+		{
+			itemQuantities.add(0);
+			for (Item item : items)
+			{
+				if (itemIds.get(j) == OutOfItemsMapping.mapFirst(item.getId()))
+				{
+					itemQuantities.set(j, itemQuantities.get(j) + item.getQuantity());
+				}
+			}
+		}
+
+		itemQuantitiesChange.clear();
+
+		// Calculate the quantity of each item consumed by the last action
+		if (!itemIdsPrevious.isEmpty())
+		{
+			for (int i = 0; i < itemIdsPrevious.size(); i++)
+			{
+				int id = itemIdsPrevious.get(i);
+				int currentIndex = itemIds.indexOf(id);
+				int currentQuantity;
+				if (currentIndex != -1) // -1 if item is no longer in inventory
+				{
+					currentQuantity = itemQuantities.get(currentIndex);
+				}
+				else
+				{
+					currentQuantity = 0;
+				}
+				itemQuantitiesChange.add(currentQuantity - itemQuantitiesPrevious.get(i));
+			}
+		}
+		else
+		{
+			itemIdsPrevious = itemIds;
+			itemQuantitiesPrevious = itemQuantities;
+			return;
+		}
+
+		// Check we have enough items left for another action.
+		for (int i = 0; i < itemQuantitiesPrevious.size(); i++)
+		{
+			if (-itemQuantitiesChange.get(i) * 2 > itemQuantitiesPrevious.get(i))
+			{
+				lastTimeItemsUsedUp = Instant.now();
+				return;
+			}
+		}
+		itemIdsPrevious = itemIds;
+		itemQuantitiesPrevious = itemQuantities;
+	}
+
+	void onInteractingChanged(InteractingChanged event)
 	{
 		final Actor source = event.getSource();
 		if (source != client.getLocalPlayer())
@@ -302,7 +431,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 
 		final NPC npc = (NPC) target;
-		final NPCComposition npcComposition = npc.getComposition();
+		final NPCDefinition npcComposition = npc.getDefinition();
 		final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
 
 		if (npcMenuActions.contains("Attack"))
@@ -323,8 +452,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		lastInteracting = null;
 
@@ -356,8 +484,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied event)
+	void onHitsplatApplied(HitsplatApplied event)
 	{
 		if (event.getActor() != client.getLocalPlayer())
 		{
@@ -373,8 +500,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGraphicChanged(GraphicChanged event)
+	private void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
 		Actor actor = event.getActor();
 
@@ -383,19 +509,18 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
-		if (actor.getGraphic() == GraphicID.SPLASH)
+		if (actor.getSpotAnimation() == GraphicID.SPLASH)
 		{
 			lastCombatCountdown = HIGHEST_MONSTER_ATTACK_SPEED;
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	void onGameTick(GameTick event)
 	{
 		skullNotifier();
 
 		final Player local = client.getLocalPlayer();
-		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
+		final Duration waitDuration = Duration.ofMillis(this.getIdleNotificationDelay);
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
 		if (client.getGameState() != GameState.LOGGED_IN
@@ -405,10 +530,11 @@ public class IdleNotifierPlugin extends Plugin
 			|| client.getKeyboardIdleTicks() < 10)
 		{
 			resetTimers();
+			resetOutOfItemsIdleChecks();
 			return;
 		}
 
-		if (config.logoutIdle() && checkIdleLogout())
+		if (this.logoutIdle && checkIdleLogout())
 		{
 			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!");
 		}
@@ -418,31 +544,59 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
 		}
 
-		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
+		if (this.outOfItemsIdle && checkOutOfItemsIdle(waitDuration))
 		{
-			notifier.notify("[" + local.getName() + "] is now idle!");
+			notifier.notify("[" + local.getName() + "] has run out of items!");
+			// If this triggers, don't also trigger animation idle notification afterwards.
+			lastAnimation = IDLE;
 		}
 
-		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
+		if (this.interactionIdle && checkInteractionIdle(waitDuration, local))
 		{
 			if (lastInteractWasCombat)
 			{
 				notifier.notify("[" + local.getName() + "] is now out of combat!");
+				if (this.outOfCombatSound)
+				{
+					soundManager.playSound(Sound.OUT_OF_COMBAT);
+				}
 			}
 			else
 			{
 				notifier.notify("[" + local.getName() + "] is now idle!");
+				if (this.interactionIdleSound)
+				{
+					soundManager.playSound(Sound.IDLE);
+				}
+			}
+			interactingNotified = true;
+		}
+
+		if (this.animationIdle && checkAnimationIdle(waitDuration, local))
+		{
+			notifier.notify("[" + local.getName() + "] is now idle!");
+			if (this.animationIdleSound)
+			{
+				soundManager.playSound(Sound.IDLE);
 			}
 		}
 
 		if (checkLowHitpoints())
 		{
 			notifier.notify("[" + local.getName() + "] has low hitpoints!");
+			if (this.getPlayHealthSound)
+			{
+				soundManager.playSound(Sound.LOW_HEATLH);
+			}
 		}
 
 		if (checkLowPrayer())
 		{
 			notifier.notify("[" + local.getName() + "] has low prayer!");
+			if (this.getPlayPrayerSound)
+			{
+				soundManager.playSound(Sound.LOW_PRAYER);
+			}
 		}
 
 		if (checkLowOxygen())
@@ -453,6 +607,10 @@ public class IdleNotifierPlugin extends Plugin
 		if (checkFullSpecEnergy())
 		{
 			notifier.notify("[" + local.getName() + "] has restored spec energy!");
+			if (this.getSpecSound)
+			{
+				soundManager.playSound(Sound.RESTORED_SPECIAL_ATTACK);
+			}
 		}
 	}
 
@@ -460,7 +618,7 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		int currentSpecEnergy = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
 
-		int threshold = config.getSpecEnergyThreshold() * 10;
+		int threshold = this.getSpecEnergyThreshold * 10;
 		if (threshold == 0)
 		{
 			lastSpecEnergy = currentSpecEnergy;
@@ -469,19 +627,21 @@ public class IdleNotifierPlugin extends Plugin
 
 		// Check if we have regenerated over the threshold, and that the
 		// regen was small enough.
-		boolean notify = lastSpecEnergy < threshold && currentSpecEnergy >= threshold
-			&& currentSpecEnergy - lastSpecEnergy <= 100;
+		boolean notify = lastSpecEnergy < threshold && currentSpecEnergy >= threshold && currentSpecEnergy - lastSpecEnergy <= 100;
+
+		notify = (notify) || ((this.getOverSpecEnergy) && (currentSpecEnergy >= threshold) && (currentSpecEnergy != lastSpecEnergy) && (currentSpecEnergy - lastSpecEnergy <= 100));
+
 		lastSpecEnergy = currentSpecEnergy;
 		return notify;
 	}
 
 	private boolean checkLowOxygen()
 	{
-		if (config.getOxygenThreshold() == 0)
+		if (this.getOxygenThreshold == 0)
 		{
 			return false;
 		}
-		if (config.getOxygenThreshold() >= client.getVar(Varbits.OXYGEN_LEVEL) * 0.1)
+		if (this.getOxygenThreshold >= client.getVar(Varbits.OXYGEN_LEVEL) * 0.1)
 		{
 			if (!notifyOxygen)
 			{
@@ -498,13 +658,13 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkLowHitpoints()
 	{
-		if (config.getHitpointsThreshold() == 0)
+		if (this.getHitpointsThreshold == 0)
 		{
 			return false;
 		}
-		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
+		if (client.getRealSkillLevel(Skill.HITPOINTS) > this.getHitpointsThreshold)
 		{
-			if (client.getBoostedSkillLevel(Skill.HITPOINTS) + client.getVar(Varbits.NMZ_ABSORPTION) <= config.getHitpointsThreshold())
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) + client.getVar(Varbits.NMZ_ABSORPTION) <= this.getHitpointsThreshold)
 			{
 				if (!notifyHitpoints)
 				{
@@ -523,13 +683,13 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkLowPrayer()
 	{
-		if (config.getPrayerThreshold() == 0)
+		if (this.getPrayerThreshold == 0)
 		{
 			return false;
 		}
-		if (client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
+		if (client.getRealSkillLevel(Skill.PRAYER) > this.getPrayerThreshold)
 		{
-			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())
+			if (client.getBoostedSkillLevel(Skill.PRAYER) <= this.getPrayerThreshold)
 			{
 				if (!notifyPrayer)
 				{
@@ -637,7 +797,7 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkAnimationIdle(Duration waitDuration, Player local)
 	{
-		if (lastAnimation == IDLE)
+		if (lastAnimation == IDLE || interactingNotified)
 		{
 			return false;
 		}
@@ -656,6 +816,23 @@ public class IdleNotifierPlugin extends Plugin
 		else
 		{
 			lastAnimating = Instant.now();
+		}
+
+		return false;
+	}
+
+	private boolean checkOutOfItemsIdle(Duration waitDuration)
+	{
+		if (lastTimeItemsUsedUp == null)
+		{
+			return false;
+		}
+
+		if (Instant.now().compareTo(lastTimeItemsUsedUp.plus(waitDuration)) >= 0)
+		{
+			resetTimers();
+			resetOutOfItemsIdleChecks();
+			return true;
 		}
 
 		return false;
@@ -680,6 +857,14 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
+	private void resetOutOfItemsIdleChecks()
+	{
+		lastTimeItemsUsedUp = null;
+		itemQuantitiesChange.clear();
+		itemIdsPrevious.clear();
+		itemQuantitiesPrevious.clear();
+	}
+
 	private void skullNotifier()
 	{
 		final Player local = client.getLocalPlayer();
@@ -689,11 +874,11 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			if (!isFirstTick)
 			{
-				if (config.showSkullNotification() && lastTickSkull == null && currentTickSkull == SkullIcon.SKULL)
+				if (this.showSkullNotification && lastTickSkull == null && currentTickSkull == SkullIcon.SKULL)
 				{
 					notifier.notify("[" + local.getName() + "] is now skulled!");
 				}
-				else if (config.showUnskullNotification() && lastTickSkull == SkullIcon.SKULL && currentTickSkull == null)
+				else if (this.showUnskullNotification && lastTickSkull == SkullIcon.SKULL && currentTickSkull == null)
 				{
 					notifier.notify("[" + local.getName() + "] is now unskulled!");
 				}
@@ -705,5 +890,64 @@ public class IdleNotifierPlugin extends Plugin
 
 			lastTickSkull = currentTickSkull;
 		}
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		updateConfig();
+		addSubscriptions();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
+		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("idlenotifier"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.animationIdle = config.animationIdle();
+		this.animationIdleSound = config.animationIdleSound();
+		this.interactionIdle = config.interactionIdle();
+		this.interactionIdleSound = config.interactionIdleSound();
+		this.logoutIdle = config.logoutIdle();
+		this.outOfCombatSound = config.outOfCombatSound();
+		this.showSkullNotification = config.showSkullNotification();
+		this.showUnskullNotification = config.showUnskullNotification();
+		this.getIdleNotificationDelay = config.getIdleNotificationDelay();
+		this.getHitpointsThreshold = config.getHitpointsThreshold();
+		this.getPlayHealthSound = config.getPlayHealthSound();
+		this.getPrayerThreshold = config.getPrayerThreshold();
+		this.getPlayPrayerSound = config.getPlayPrayerSound();
+		this.getOxygenThreshold = config.getOxygenThreshold();
+		this.getSpecEnergyThreshold = config.getSpecEnergyThreshold();
+		this.getSpecSound = config.getSpecSound();
+		this.getOverSpecEnergy = config.getOverSpecEnergy();
+		this.notifyPkers = config.notifyPkers();
+		this.outOfItemsIdle = config.outOfItemsIdle();
 	}
 }

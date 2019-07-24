@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
@@ -42,6 +43,7 @@ import net.runelite.client.ui.overlay.components.ProgressPieComponent;
  * Represents the overlay that shows timers on traps that are placed by the
  * player.
  */
+@Singleton
 public class TrapOverlay extends Overlay
 {
 	/**
@@ -51,7 +53,6 @@ public class TrapOverlay extends Overlay
 
 	private final Client client;
 	private final HunterPlugin plugin;
-	private final HunterConfig config;
 
 	private Color colorOpen, colorOpenBorder;
 	private Color colorEmpty, colorEmptyBorder;
@@ -59,12 +60,11 @@ public class TrapOverlay extends Overlay
 	private Color colorTrans, colorTransBorder;
 
 	@Inject
-	TrapOverlay(Client client, HunterPlugin plugin, HunterConfig config)
+	TrapOverlay(final Client client, final HunterPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
-		this.config = config;
 		this.client = client;
 	}
 
@@ -80,13 +80,13 @@ public class TrapOverlay extends Overlay
 	 */
 	public void updateConfig()
 	{
-		colorEmptyBorder = config.getEmptyTrapColor();
+		colorEmptyBorder = plugin.getGetEmptyTrapColor();
 		colorEmpty = new Color(colorEmptyBorder.getRed(), colorEmptyBorder.getGreen(), colorEmptyBorder.getBlue(), 100);
-		colorFullBorder = config.getFullTrapColor();
+		colorFullBorder = plugin.getGetFullTrapColor();
 		colorFull = new Color(colorFullBorder.getRed(), colorFullBorder.getGreen(), colorFullBorder.getBlue(), 100);
-		colorOpenBorder = config.getOpenTrapColor();
+		colorOpenBorder = plugin.getGetOpenTrapColor();
 		colorOpen = new Color(colorOpenBorder.getRed(), colorOpenBorder.getGreen(), colorOpenBorder.getBlue(), 100);
-		colorTransBorder = config.getTransTrapColor();
+		colorTransBorder = plugin.getGetTransTrapColor();
 		colorTrans = new Color(colorTransBorder.getRed(), colorTransBorder.getGreen(), colorTransBorder.getBlue(), 100);
 	}
 
@@ -124,10 +124,10 @@ public class TrapOverlay extends Overlay
 	 * Draws a timer on a given trap.
 	 *
 	 * @param graphics
-	 * @param trap The trap on which the timer needs to be drawn
-	 * @param fill The fill color of the timer
-	 * @param border The border color of the timer
-	 * @param fillTimeLow The fill color of the timer when it is low
+	 * @param trap          The trap on which the timer needs to be drawn
+	 * @param fill          The fill color of the timer
+	 * @param border        The border color of the timer
+	 * @param fillTimeLow   The fill color of the timer when it is low
 	 * @param borderTimeLow The border color of the timer when it is low
 	 */
 	private void drawTimerOnTrap(Graphics2D graphics, HunterTrap trap, Color fill, Color border, Color fillTimeLow, Color borderTimeLow)
@@ -162,9 +162,9 @@ public class TrapOverlay extends Overlay
 	 * Draws a timer on a given trap.
 	 *
 	 * @param graphics
-	 * @param trap The trap on which the timer needs to be drawn
-	 * @param fill The fill color of the timer
-	 * @param border The border color of the timer
+	 * @param trap     The trap on which the timer needs to be drawn
+	 * @param fill     The fill color of the timer
+	 * @param border   The border color of the timer
 	 */
 	private void drawCircleOnTrap(Graphics2D graphics, HunterTrap trap, Color fill, Color border)
 	{

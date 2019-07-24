@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.api.Constants;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
@@ -58,7 +59,7 @@ public class TimeablePanel<T> extends JPanel
 		topContainer.setLayout(new BorderLayout());
 		topContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		icon.setMinimumSize(new Dimension(36, 32));
+		icon.setMinimumSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
 
 		JPanel infoPanel = new JPanel();
 		infoPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -66,10 +67,10 @@ public class TimeablePanel<T> extends JPanel
 		infoPanel.setBorder(new EmptyBorder(4, 4, 4, 0));
 
 		final JLabel location = new JShadowedLabel(title);
-		location.setFont(FontManager.getRunescapeSmallFont());
+		location.setFont(FontManager.getSmallFont(getFont()));
 		location.setForeground(Color.WHITE);
 
-		estimate.setFont(FontManager.getRunescapeSmallFont());
+		estimate.setFont(FontManager.getSmallFont(getFont()));
 		estimate.setForeground(Color.GRAY);
 
 		infoPanel.add(location);

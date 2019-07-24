@@ -26,7 +26,12 @@ package net.runelite.client.plugins.itemprices;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -37,6 +42,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"bank", "inventory", "overlay", "high", "alchemy", "grand", "exchange", "tooltips"},
 	enabledByDefault = false
 )
+@Singleton
 public class ItemPricesPlugin extends Plugin
 {
 	@Inject
@@ -44,6 +50,23 @@ public class ItemPricesPlugin extends Plugin
 
 	@Inject
 	private ItemPricesOverlay overlay;
+
+	@Inject
+	private ItemPricesConfig config;
+
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showGEPrice;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showHAValue;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showEA;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean hideInventory;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showAlchProfit;
 
 	@Provides
 	ItemPricesConfig getConfig(ConfigManager configManager)
@@ -54,12 +77,35 @@ public class ItemPricesPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+
 		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
 		overlayManager.remove(overlay);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("itemprices"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.showGEPrice = config.showGEPrice();
+		this.showHAValue = config.showHAValue();
+		this.showEA = config.showEA();
+		this.hideInventory = config.hideInventory();
+		this.showAlchProfit = config.showAlchProfit();
 	}
 }

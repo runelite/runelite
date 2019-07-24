@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -43,7 +44,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
-import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -51,9 +52,10 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
@@ -66,6 +68,7 @@ import net.runelite.client.util.Text;
 	description = "Show the location of the fairy ring teleport",
 	tags = {"teleportation"}
 )
+@Singleton
 public class FairyRingPlugin extends Plugin
 {
 	private static final String[] leftDial = new String[]{"A", "D", "C", "B"};
@@ -89,9 +92,14 @@ public class FairyRingPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private EventBus eventBus;
+
 	private ChatboxTextInput searchInput = null;
 	private Widget searchBtn;
 	private Collection<CodeWidgets> codes = null;
+
+	private boolean autoOpen;
 
 	@Data
 	private static class CodeWidgets
@@ -106,20 +114,49 @@ public class FairyRingPlugin extends Plugin
 		private Widget description;
 	}
 
+	@Override
+	protected void startUp() throws Exception
+	{
+		this.autoOpen = config.autoOpen();
+		addSubscriptions();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("fairyrings"))
+		{
+			return;
+		}
+
+		this.autoOpen = config.autoOpen();
+	}
+
 	@Provides
 	FairyRingConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(FairyRingConfig.class);
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		setWidgetTextToDestination();
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() == WidgetID.FAIRY_RING_PANEL_GROUP_ID)
 		{
@@ -142,7 +179,7 @@ public class FairyRingPlugin extends Plugin
 
 				codes = null;
 
-				if (config.autoOpen())
+				if (this.autoOpen)
 				{
 					openSearch();
 				}
@@ -205,8 +242,7 @@ public class FairyRingPlugin extends Plugin
 			.build();
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick t)
+	private void onGameTick(GameTick t)
 	{
 		// This has to happen because the only widget that gets hidden is the tli one
 		Widget fairyRingTeleportButton = client.getWidget(WidgetInfo.FAIRY_RING_TELEPORT_BUTTON);
@@ -230,11 +266,10 @@ public class FairyRingPlugin extends Plugin
 			return;
 		}
 
-		if (codes != null)
-		{
+		if (codes != null &&
 			// Check to make sure the list hasn't been rebuild since we were last her
 			// Do this by making sure the list's dynamic children are the same as when we last saw them
-			if (codes.stream().noneMatch(w ->
+			codes.stream().noneMatch(w ->
 			{
 				Widget codeWidget = w.getCode();
 				if (codeWidget == null)
@@ -243,9 +278,8 @@ public class FairyRingPlugin extends Plugin
 				}
 				return list.getChild(codeWidget.getIndex()) == codeWidget;
 			}))
-			{
-				codes = null;
-			}
+		{
+			codes = null;
 		}
 
 		if (codes == null)

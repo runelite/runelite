@@ -26,6 +26,7 @@ package net.runelite.api.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import net.runelite.api.MenuEntry;
 
 /**
  * An event when a new entry is added to a right-click menu.
@@ -35,30 +36,42 @@ import lombok.Data;
 public class MenuEntryAdded
 {
 	/**
-	 * The option text added to the menu (ie. "Walk here", "Use").
+	 * The MenuEntry object that was actually added
 	 */
-	private final String option;
-	/**
-	 * The target of the action (ie. Item or Actor name).
-	 * <p>
-	 * If the option does not apply to any target, this field
-	 * will be set to empty string.
-	 */
-	private final String target;
-	/**
-	 * The action type that will be triggered.
-	 */
-	private final int type;
-	/**
-	 * An identifier value for the target of the action
-	 */
-	private final int identifier;
-	/**
-	 * An additional parameter for the action.
-	 */
-	private final int actionParam0;
-	/**
-	 * A second additional parameter for the action.
-	 */
-	private final int actionParam1;
+	private final MenuEntry menuEntry;
+
+	public String getOption()
+	{
+		return menuEntry.getOption();
+	}
+
+	public String getTarget()
+	{
+		return menuEntry.getTarget();
+	}
+
+	public int getType()
+	{
+		return menuEntry.getType();
+	}
+
+	public int getIdentifier()
+	{
+		return menuEntry.getIdentifier();
+	}
+
+	public int getActionParam0()
+	{
+		return menuEntry.getParam0();
+	}
+
+	public int getActionParam1()
+	{
+		return menuEntry.getParam1();
+	}
+
+	public boolean isForceLeftClick()
+	{
+		return menuEntry.isForceLeftClick();
+	}
 }

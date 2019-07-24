@@ -27,11 +27,12 @@ package net.runelite.client.plugins.stretchedmode;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -42,6 +43,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"resize", "ui", "interface", "stretch", "scaling", "fixed"},
 	enabledByDefault = false
 )
+@Singleton
 public class StretchedModePlugin extends Plugin
 {
 	@Inject
@@ -59,6 +61,9 @@ public class StretchedModePlugin extends Plugin
 	@Inject
 	private TranslateMouseWheelListener mouseWheelListener;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	StretchedModeConfig provideConfig(ConfigManager configManager)
 	{
@@ -68,6 +73,9 @@ public class StretchedModePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ResizeableChanged.class, this, this::onResizeableChanged);
+
 		mouseManager.registerMouseListener(0, mouseListener);
 		mouseManager.registerMouseWheelListener(0, mouseWheelListener);
 
@@ -78,6 +86,8 @@ public class StretchedModePlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		client.setStretchedEnabled(false);
 		client.invalidateStretching(true);
 
@@ -85,14 +95,12 @@ public class StretchedModePlugin extends Plugin
 		mouseManager.unregisterMouseWheelListener(mouseWheelListener);
 	}
 
-	@Subscribe
-	public void onResizeableChanged(ResizeableChanged event)
+	private void onResizeableChanged(ResizeableChanged event)
 	{
 		client.invalidateStretching(true);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("stretchedmode"))
 		{

@@ -27,7 +27,7 @@ package net.runelite.client.ui.overlay.arrow;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
-import java.util.HashSet;
+import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -44,15 +44,15 @@ public class ArrowPoint
 	@NonNull
 	private WorldPoint worldPoint;
 
-	private HashSet<Integer> npcIDs;
+	private Set<Integer> npcIDs;
 
-	private HashSet<Integer> objectIDs;
+	private Set<Integer> objectIDs;
 
 	/**
 	 * The regions that an NPC or Object has to be in to be marked (eg. Exam Centre locked chest Hard Clue requires
 	 * killing a Barbarian in Barbarian Village, or Konar Slayer requires killing monsters in a certain area)
 	 */
-	private HashSet<Integer> region;
+	private Set<Integer> region;
 
 	private BufferedImage worldImage;
 	@Builder.Default

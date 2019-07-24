@@ -28,40 +28,18 @@
 package net.runelite.client.plugins.aoewarnings;
 
 import java.time.Instant;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.runelite.api.coords.LocalPoint;
 
-public class AoeProjectile
+@Getter(AccessLevel.PACKAGE)
+@AllArgsConstructor
+class AoeProjectile
 {
 	private final Instant startTime;
 	private final LocalPoint targetPoint;
 	private final AoeProjectileInfo aoeProjectileInfo;
 	private final int projectileLifetime;
-
-	public AoeProjectile(Instant startTime, LocalPoint targetPoint, AoeProjectileInfo aoeProjectileInfo, int projectileLifetime)
-	{
-		this.startTime = startTime;
-		this.targetPoint = targetPoint;
-		this.aoeProjectileInfo = aoeProjectileInfo;
-		this.projectileLifetime = projectileLifetime;
-	}
-
-	public Instant getStartTime()
-	{
-		return startTime;
-	}
-
-	public LocalPoint getTargetPoint()
-	{
-		return targetPoint;
-	}
-
-	public AoeProjectileInfo getAoeProjectileInfo()
-	{
-		return aoeProjectileInfo;
-	}
-
-	public int getProjectileLifetime()
-	{
-		return projectileLifetime;
-	}
+	private final int finalTick;
 }

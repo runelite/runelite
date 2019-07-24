@@ -25,12 +25,10 @@
 package net.runelite.client.plugins.playerindicators;
 
 import java.awt.Color;
-
 import net.runelite.api.ClanMemberRank;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
 
 @ConfigGroup("playerindicators")
 public interface PlayerIndicatorsConfig extends Config
@@ -65,7 +63,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean highlightFriends()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -109,7 +107,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean highlightTeamMembers()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -166,14 +164,43 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return PlayerNameLocation.ABOVE_HEAD;
 	}
-
+	
 	@ConfigItem(
 		position = 12,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
-		description = "Configures whether or not minimap names for players with rendered names should be drawn"
+		description = "Configures whether or not minimap names for players with rendered names should be drawn",
+		group = "Minimap"
 	)
 	default boolean drawMinimapNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "drawFriendMinimapNames",
+		name = "Draw Friendnames on minimap",
+		description = "Configures whether or not minimap names for Friends with rendered names should be drawn",
+		group = "Minimap",
+		hidden = true,
+		unhide = "drawMinimapNames"
+	)
+	default boolean drawFriendMinimapNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "drawClanMinimapNames",
+		name = "Draw clan Friend names on minimap",
+		description = "Configures whether or not minimap names for Clan Members with rendered names should be drawn",
+		group = "Minimap",
+		hidden = true,
+		unhide = "drawMinimapNames"
+	)
+	default boolean drawClanMinimapNames()
 	{
 		return false;
 	}
@@ -186,7 +213,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean colorPlayerMenu()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -197,39 +224,39 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean showClanRanks()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
-			position = 15,
-			keyName = "highlightTargets",
-			name = "Highlight attackable players in wilderness on the minimap",
-			description = "Highlights players on the minimap that the current player can attack based on combat/wilderness levels",
-			group = "Target Indicator"
+		position = 15,
+		keyName = "highlightTargets",
+		name = "Highlight attackable players in wilderness on the minimap",
+		description = "Highlights players on the minimap that the current player can attack based on combat/wilderness levels",
+		group = "Target Indicator"
 	)
 	default boolean highlightTargets()
 	{
 		return false;
 	}
 
-	@ConfigItem(
-			position = 16,
-			keyName = "highlightOverheadTargets",
-			name = "Highlights attackable players over their head",
-			description = "Highlights players over their head that the current player can attack based on combat/wilderness levels",
-			group = "Target Indicator"
-	)
-	default boolean highlightOverheadTargets()
-	{
-		return false;
-	}
+//	@ConfigItem(
+//		position = 16,
+//		keyName = "highlightOverheadTargets",
+//		name = "Highlights attackable players over their head",
+//		description = "Highlights players over their head that the current player can attack based on combat/wilderness levels",
+//		group = "Target Indicator"
+//	)
+//	default boolean highlightOverheadTargets()
+//	{
+//		return false;
+//	}
 
 	@ConfigItem(
-			position = 17,
-			keyName = "targetColor",
-			name = "Target color",
-			description = "Color of attackable targets",
-			group = "Target Indicator"
+		position = 17,
+		keyName = "targetColor",
+		name = "Target color",
+		description = "Color of attackable targets",
+		group = "Target Indicator"
 	)
 	default Color getTargetColor()
 	{
@@ -237,11 +264,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 18,
-			keyName = "showCombat",
-			name = "Show Combat Levels",
-			description = "Show the combat level of attackable players next to their name.",
-			group = "Target Indicator"
+		position = 18,
+		keyName = "showCombat",
+		name = "Show Combat Levels",
+		description = "Show the combat level of attackable players next to their name.",
+		group = "Target Indicator"
 	)
 	default boolean showCombatLevel()
 	{
@@ -249,11 +276,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 19,
-			keyName = "playerSkull",
-			name = "Show Skull Information",
-			description = "Indicate of the player is skulled.",
-			group = "Target Indicator"
+		position = 19,
+		keyName = "playerSkull",
+		name = "Show Skull Information",
+		description = "Indicate of the player is skulled.",
+		group = "Target Indicator"
 	)
 	default boolean playerSkull()
 	{
@@ -267,17 +294,17 @@ public interface PlayerIndicatorsConfig extends Config
 		description = "The location of the skull icon for skulled players",
 		group = "Target Indicator"
 	)
-	default PlayerIndicatorsPlugin.minimapSkullLocations skullLocation()
+	default PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation()
 	{
-		return PlayerIndicatorsPlugin.minimapSkullLocations.AFTER_NAME;
+		return PlayerIndicatorsPlugin.MinimapSkullLocations.AFTER_NAME;
 	}
 
 	@ConfigItem(
-			position = 19,
-			keyName = "skulledTargetsOnly",
-			name = "Tag Skulls Only",
-			description = "Only indicate skulled targets (which are also attackable)",
-			group = "Target Indicator"
+		position = 19,
+		keyName = "skulledTargetsOnly",
+		name = "Tag Skulls Only",
+		description = "Only indicate skulled targets (which are also attackable)",
+		group = "Target Indicator"
 	)
 	default boolean skulledTargetsOnly()
 	{
@@ -285,18 +312,18 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 19,
-			keyName = "targetRisk",
-			name = "Indicate Target Risk",
-			description = "Indicates the risk (in K GP) of the target",
-			group = "Target Indicator"
+		position = 19,
+		keyName = "targetRisk",
+		name = "Indicate Target Risk",
+		description = "Indicates the risk (in K GP) of the target",
+		group = "Target Indicator"
 	)
 	default boolean targetRisk()
 	{
 		return false;
 	}
 	
-	@ConfigItem(
+/*	@ConfigItem(
 			position = 23,
 			keyName = "rightClickOverhead",
 			name = "Add Overheads to Right Click Menu",
@@ -305,14 +332,14 @@ public interface PlayerIndicatorsConfig extends Config
 	default boolean rightClickOverhead()
 	{
 		return false;
-	}
+	}*/
 
 	@ConfigItem(
-			keyName = "useClanchatRanks",
-			name = "Use Ranks as Callers",
-			description = "Uses clanchat ranks as the list of callers",
-			group = "Callers",
-			position = 24
+		keyName = "useClanchatRanks",
+		name = "Use Ranks as Callers",
+		description = "Uses clanchat ranks as the list of callers",
+		group = "Callers",
+		position = 24
 	)
 	default boolean useClanchatRanks()
 	{
@@ -320,11 +347,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "callerRank",
-			name = "Minimum rank for Clan Caller",
-			description = "Chooses the minimum rank to use as clanchat callers.",
-			group = "Callers",
-			position = 25
+		keyName = "callerRank",
+		name = "Minimum rank for Clan Caller",
+		description = "Chooses the minimum rank to use as clanchat callers.",
+		group = "Callers",
+		position = 25
 	)
 	default ClanMemberRank callerRank()
 	{
@@ -332,84 +359,49 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "callers",
-			name = "List of callers to highlight",
-			description = "Highlights callers, only highlights one at a time. Separate each entry with a comma and enter" +
-					" in the order you want them highlighted.",
-			group = "Callers"
+		keyName = "callers",
+		name = "List of callers to highlight",
+		description = "Highlights callers, only highlights one at a time. Separate each entry with a comma and enter" +
+			" in the order you want them highlighted.",
+		group = "Callers"
 	)
 	default String callers()
 	{
 		return " ";
 	}
+
 	@ConfigItem(
-			keyName = "highlightCallers",
-			name = "Highlight Callers",
-			description = "Highlights Callers Onscreen",
-			group = "Callers"
+		keyName = "highlightCallers",
+		name = "Highlight Callers",
+		description = "Highlights Callers Onscreen",
+		group = "Callers"
 	)
 	default boolean highlightCallers()
 	{
-		return true;
+		return false;
 	}
+
 	@ConfigItem(
-			position = 26,
-			keyName = "callerColor",
-			name = "Caller Color",
-			description = "Color of Indicated Callers",
-			group = "Callers"
+		position = 26,
+		keyName = "callerColor",
+		name = "Caller Color",
+		description = "Color of Indicated Callers",
+		group = "Callers"
 	)
 	default Color callerColor()
 	{
 		return Color.WHITE;
 	}
-	@ConfigItem(
-			position = 27,
-			keyName = "highlightPile",
-			name = "Highlight Pile",
-			description = "Highlights Pile Onscreen",
-			group = "Callers"
-	)
-	default boolean highlightPile()
-	{
-		return false;
-	}
-	@ConfigItem(
-			position = 29,
-			keyName = "drawPileHull",
-			name = "Draws the hull of the pile.",
-			description = "Draws the hull of the pile for best visibility.",
-			group = "Callers"
-	)
-	default boolean drawPileHull()
-	{
-		return false;
-	}
 
-	@Range(
-			min = 1,
-			max = 10
-	)
 	@ConfigItem(
-			position = 30,
-			keyName = "pileColor",
-			name = "Pile Color",
-			description = "Color of Indicated Pile",
-			group = "Callers"
-	)
-	default Color pileColor()
-	{
-		return Color.WHITE;
-	}
-	@ConfigItem(
-			position = 27,
-			keyName = "unchargedGlory",
-			name = "Uncharged Glory Indication",
-			description = "Indicates if players have an uncharged glory"
+		position = 27,
+		keyName = "unchargedGlory",
+		name = "Uncharged Glory Indication",
+		description = "Indicates if players have an uncharged glory"
 	)
 	default boolean unchargedGlory()
 	{
 		return false;
 	}
-	
+
 }

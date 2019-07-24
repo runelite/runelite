@@ -69,6 +69,7 @@ public class Opcodes
 	public static final int CC_SETSIZE = 1001;
 	public static final int CC_SETHIDE = 1003;
 	public static final int CC_SETNOCLICKTHROUGH = 1005;
+	public static final int CC_SETNOSCROLLTHROUGH = 1006;
 	public static final int CC_SETSCROLLPOS = 1100;
 	public static final int CC_SETCOLOUR = 1101;
 	public static final int CC_SETFILL = 1102;
@@ -93,6 +94,7 @@ public class Opcodes
 	public static final int CC_RESUME_PAUSEBUTTON = 1121;
 	public static final int CC_SETFILLCOLOUR = 1123;
 	public static final int CC_SETLINEDIRECTION = 1126;
+	public static final int CC_SETMODELTRANSPARENT = 1127;
 	public static final int CC_SETOBJECT = 1200;
 	public static final int CC_SETNPCHEAD = 1201;
 	public static final int CC_SETPLAYERHEAD_SELF = 1202;
@@ -106,6 +108,12 @@ public class Opcodes
 	public static final int CC_SETOPBASE = 1305;
 	public static final int CC_SETTARGETVERB = 1306;
 	public static final int CC_CLEAROPS = 1307;
+	public static final int CC_SETOPKEY = 1350;
+	public static final int CC_SETOPTKEY = 1351;
+	public static final int CC_SETOPKEYRATE = 1352;
+	public static final int CC_SETOPTKEYRATE = 1353;
+	public static final int CC_SETOPKEYIGNOREHELD = 1354;
+	public static final int CC_SETOPTKEYIGNOREHELD = 1355;
 	public static final int CC_SETONCLICK = 1400;
 	public static final int CC_SETONHOLD = 1401;
 	public static final int CC_SETONRELEASE = 1402;
@@ -150,6 +158,7 @@ public class Opcodes
 	public static final int CC_GETTRANS = 1609;
 	public static final int CC_GETCOLOUR = 1611;
 	public static final int CC_GETFILLCOLOUR = 1612;
+	public static final int CC_GETMODELTRANSPARENT = 1614;
 	public static final int CC_GETINVOBJECT = 1700;
 	public static final int CC_GETINVCOUNT = 1701;
 	public static final int CC_GETID = 1702;
@@ -185,6 +194,7 @@ public class Opcodes
 	public static final int IF_RESUME_PAUSEBUTTON = 2121;
 	public static final int IF_SETFILLCOLOUR = 2123;
 	public static final int IF_SETLINEDIRECTION = 2126;
+	public static final int IF_SETMODELTRANSPARENT = 2127;
 	public static final int IF_SETOBJECT = 2200;
 	public static final int IF_SETNPCHEAD = 2201;
 	public static final int IF_SETPLAYERHEAD_SELF = 2202;
@@ -248,6 +258,7 @@ public class Opcodes
 	public static final int IF_GETTRANS = 2609;
 	public static final int IF_GETCOLOUR = 2611;
 	public static final int IF_GETFILLCOLOUR = 2612;
+	public static final int IF_GETMODELTRANSPARENT = 2614;
 	public static final int IF_GETINVOBJECT = 2700;
 	public static final int IF_GETINVCOUNT = 2701;
 	public static final int IF_HASSUB = 2702;
@@ -278,11 +289,17 @@ public class Opcodes
 	public static final int SETSHOWLOADINGMESSAGES = 3126;
 	public static final int SETTAPTODROP = 3127;
 	public static final int GETTAPTODROP = 3128;
+	public static final int SETOCULUSORBSPEED = 3129;
 	public static final int GETCANVASSIZE = 3132;
+	public static final int MOBILE_SETFPS = 3133;
+	public static final int MOBILE_OPENSTORE = 3134;
+	public static final int MOBILE_OPENSTORECATEGORY = 3135;
 	public static final int SETHIDEUSERNAME = 3141;
 	public static final int GETHIDEUSERNAME = 3142;
 	public static final int SETREMEMBERUSERNAME = 3143;
 	public static final int GETREMEMBERUSERNAME = 3144;
+	public static final int SETTITLEMUSICENABLED = 3146;
+	public static final int GETTITLEMUSICENABLED = 3147;
 	public static final int SOUND_SYNTH = 3200;
 	public static final int SOUND_SONG = 3201;
 	public static final int SOUND_JINGLE = 3202;
@@ -402,6 +419,7 @@ public class Opcodes
 	public static final int REMOVETAGS = 4119;
 	public static final int STRING_INDEXOF_CHAR = 4120;
 	public static final int STRING_INDEXOF_STRING = 4121;
+	public static final int UPPERCASE = 4122;
 	public static final int OC_NAME = 4200;
 	public static final int OC_OP = 4201;
 	public static final int OC_IOP = 4202;
@@ -452,6 +470,7 @@ public class Opcodes
 	public static final int WORLDLIST_NEXT = 6502;
 	public static final int WORLDLIST_SPECIFIC = 6506;
 	public static final int WORLDLIST_SORT = 6507;
+	public static final int GETWORLDINFO = 6511;
 	public static final int SETFOLLOWEROPSLOWPRIORITY = 6512;
 	public static final int NC_PARAM = 6513;
 	public static final int LC_PARAM = 6514;
@@ -459,6 +478,7 @@ public class Opcodes
 	public static final int STRUCT_PARAM = 6516;
 	public static final int ON_MOBILE = 6518;
 	public static final int CLIENTTYPE = 6519;
+	public static final int MOBILE_KEYBOARDHIDE = 6521;
 	public static final int BATTERYLEVEL = 6524;
 	public static final int BATTERYCHARGING = 6525;
 	public static final int WIFIAVAILABLE = 6526;
@@ -496,4 +516,6 @@ public class Opcodes
 	public static final int MEC_TEXTSIZE = 6694;
 	public static final int MEC_CATEGORY = 6695;
 	public static final int MEC_SPRITE = 6696;
+	public static final int WORLDMAP_ELEMENT = 6697;
+	public static final int WORLDMAP_ELEMENTCOORD = 6699;
 }

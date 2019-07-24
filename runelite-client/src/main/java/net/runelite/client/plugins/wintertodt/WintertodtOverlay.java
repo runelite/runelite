@@ -29,22 +29,33 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.Skill;
+import static net.runelite.client.plugins.wintertodt.WintertodtPlugin.WINTERTODT_KINDLING_MULTIPLIER;
+import static net.runelite.client.plugins.wintertodt.WintertodtPlugin.WINTERTODT_ROOTS_MULTIPLIER;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 
+@Singleton
 class WintertodtOverlay extends Overlay
 {
+	@Inject
+	private Client client;
+
 	private final WintertodtPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private WintertodtOverlay(WintertodtPlugin plugin)
+	private WintertodtOverlay(final WintertodtPlugin plugin)
 	{
 		super(plugin);
 		this.plugin = plugin;
@@ -61,28 +72,32 @@ class WintertodtOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().clear();
-		panelComponent.setPreferredSize(new Dimension(150, 0));
+		panelComponent.setPreferredSize(new Dimension(180, 0));
 
 		panelComponent.getChildren().add(TitleComponent.builder()
-			.text(plugin.getCurrentActivity().getActionString())
-			.color(plugin.getCurrentActivity() == WintertodtActivity.IDLE ? Color.RED : Color.GREEN)
+			.text("Points in inventory")
+			.color(Color.WHITE)
 			.build());
 
-		String inventoryString = plugin.getNumLogs() > 0 ? plugin.getInventoryScore() + " (" + plugin.getTotalPotentialinventoryScore() + ") pts" : plugin.getInventoryScore() + " pts";
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Inventory:")
-			.leftColor(Color.WHITE)
-			.right(inventoryString)
-			.rightColor(plugin.getInventoryScore() > 0 ? Color.GREEN : Color.RED)
-			.build());
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
-		String kindlingString = plugin.getNumLogs() > 0 ? plugin.getNumKindling() + " (" + (plugin.getNumLogs() + plugin.getNumKindling()) + ")" : Integer.toString(plugin.getNumKindling());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Kindling:")
-			.leftColor(Color.WHITE)
-			.right(kindlingString)
-			.rightColor(plugin.getNumKindling() + plugin.getNumLogs() > 0 ? Color.GREEN : Color.RED)
-			.build());
+		tableComponent.addRow(ColorUtil.prependColorTag("Status:", Color.WHITE), ColorUtil.prependColorTag(plugin.getCurrentActivity().getActionString(), plugin.getCurrentActivity() == WintertodtActivity.IDLE ? Color.RED : Color.GREEN));
+
+		int firemakingLvl = client.getRealSkillLevel(Skill.FIREMAKING);
+
+		int rootsScore = plugin.getNumRoots() * WINTERTODT_ROOTS_MULTIPLIER;
+		int rootsXp = plugin.getNumRoots() * Math.round(2 + (3 * firemakingLvl));
+
+		tableComponent.addRow(ColorUtil.prependColorTag("Roots:", Color.WHITE), ColorUtil.prependColorTag(rootsScore + " pts (" + rootsXp + " xp)", plugin.getNumRoots() > 0 ? Color.GREEN : Color.RED));
+
+		int kindlingScore = plugin.getNumKindling() * WINTERTODT_KINDLING_MULTIPLIER;
+		long kindlingXp = plugin.getNumKindling() * Math.round(3.8 * firemakingLvl);
+
+		tableComponent.addRow(ColorUtil.prependColorTag("Kindling:", Color.WHITE), ColorUtil.prependColorTag(kindlingScore + " pts (" + kindlingXp + " xp)", plugin.getNumKindling() > 0 ? Color.GREEN : Color.RED));
+		tableComponent.addRow(ColorUtil.prependColorTag("Total:", Color.WHITE), ColorUtil.prependColorTag((rootsScore + kindlingScore) + " pts (" + (rootsXp + kindlingXp) + " xp)", (rootsScore + kindlingScore > 0) ? Color.GREEN : Color.RED));
+
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

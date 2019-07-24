@@ -24,17 +24,20 @@
  */
 package net.runelite.client.util;
 
+import io.reactivex.annotations.NonNull;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.client.eventbus.EventBus;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 @Singleton
 public class DeferredEventBus extends EventBus
 {
 	private final EventBus eventBus;
-	private final Queue<Object> pendingEvents = new ConcurrentLinkedQueue<>();
+	private final Queue<Pair<Class, Object>> pendingEvents = new ConcurrentLinkedQueue<>();
 
 	@Inject
 	private DeferredEventBus(EventBus eventBus)
@@ -43,21 +46,9 @@ public class DeferredEventBus extends EventBus
 	}
 
 	@Override
-	public void register(Object object)
+	public <T> void post(Class<T> eventClass, @NonNull Object event)
 	{
-		eventBus.register(object);
-	}
-
-	@Override
-	public void unregister(Object object)
-	{
-		eventBus.unregister(object);
-	}
-
-	@Override
-	public void post(Object object)
-	{
-		pendingEvents.add(object);
+		pendingEvents.add(new ImmutablePair<>(eventClass, event));
 	}
 
 	public void replay()
@@ -65,8 +56,11 @@ public class DeferredEventBus extends EventBus
 		int size = pendingEvents.size();
 		while (size-- > 0)
 		{
-			Object object = pendingEvents.poll();
-			eventBus.post(object);
+			Pair<Class, Object> eventPair = pendingEvents.poll();
+			if (eventPair != null)
+			{
+				eventBus.post(eventPair.getKey(), eventPair.getValue());
+			}
 		}
 	}
 }

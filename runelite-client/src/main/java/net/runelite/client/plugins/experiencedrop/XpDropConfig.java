@@ -32,6 +32,13 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("xpdrop")
 public interface XpDropConfig extends Config
 {
+	enum DamageMode
+	{
+		NONE,
+		ABOVE_OPPONENT,
+		IN_XP_DROP;
+	}
+
 	@ConfigItem(
 		keyName = "hideSkillIcons",
 		name = "Hide skill icons",
@@ -88,14 +95,14 @@ public interface XpDropConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showDamage",
-			name = "Show Damage on XP Drop",
-			description = "Show what you hit next to the XP drop",
-			position = 5
+		keyName = "showdamagedrops",
+		name = "Show Damage on XP Drop",
+		description = "Show what you hit next to the XP drop",
+		position = 5
 	)
-	default boolean showDamage()
+	default DamageMode showdamagedrops()
 	{
-		return false;
+		return DamageMode.NONE;
 	}
 
 	@ConfigItem(

@@ -29,9 +29,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.ui.FontManager;
@@ -39,7 +39,7 @@ import net.runelite.client.ui.FontManager;
 @Setter
 public class InfoBoxComponent implements LayoutableRenderableEntity
 {
-	private static final int SEPARATOR = 3;
+	private static final int SEPARATOR = 2;
 	private static final int DEFAULT_SIZE = 32;
 
 	@Getter
@@ -53,7 +53,7 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 	private String text;
 	private Color color = Color.WHITE;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
-	private Image image;
+	private BufferedImage image;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -63,7 +63,14 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 			return new Dimension();
 		}
 
-		graphics.setFont(getSize() < DEFAULT_SIZE ? FontManager.getRunescapeSmallFont() : FontManager.getRunescapeFont());
+		if (graphics.getFont().equals(FontManager.getRunescapeFont()) && getSize() > DEFAULT_SIZE)
+		{
+			graphics.setFont(FontManager.getRunescapeFont());
+		}
+		else
+		{
+			graphics.setFont(FontManager.getSmallFont(graphics.getFont()));
+		}
 
 		final int baseX = preferredLocation.x;
 		final int baseY = preferredLocation.y;
@@ -92,7 +99,7 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(color);
 			textComponent.setText(text);
-			textComponent.setPosition(new Point(baseX + ((size - metrics.stringWidth(text)) / 2), baseY + size - SEPARATOR));
+			textComponent.setPosition(new Point(baseX + ((size - metrics.stringWidth(text)) / 2), baseY + size - metrics.getMaxDescent() - SEPARATOR));
 			textComponent.render(graphics);
 		}
 

@@ -28,13 +28,15 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.BoostedLevelChanged;
@@ -43,7 +45,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -86,14 +88,18 @@ public class BoostsPlugin extends Plugin
 	@Inject
 	private BoostsOverlay boostsOverlay;
 
+	//made this a LinkedHashSet so the order stays consistent for my OCD
+	@Getter
+	private final Set<Skill> shownSkills = new LinkedHashSet<>();
 	@Inject
 	private BoostsConfig config;
 
 	@Inject
 	private SkillIconManager skillIconManager;
-
-	@Getter
-	private final Set<Skill> shownSkills = new HashSet<>();
+	@Inject
+	private CombatIconsOverlay combatIconsOverlay;
+	@Inject
+	private EventBus eventBus;
 
 	private boolean isChangedDown = false;
 	private boolean isChangedUp = false;
@@ -102,7 +108,22 @@ public class BoostsPlugin extends Plugin
 	private int lastChangeUp = -1;
 	private boolean preserveBeenActive = false;
 	private long lastTickMillis;
-	private List<String> boostedSkillsChanged = new ArrayList<>();
+	private final List<String> boostedSkillsChanged = new ArrayList<>();
+
+	private boolean enableSkill;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean useRelativeBoost;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean displayInfoboxes;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean displayIcons;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean boldIconFont;
+	private BoostsConfig.DisplayChangeMode displayNextBuffChange;
+	private BoostsConfig.DisplayChangeMode displayNextDebuffChange;
+	@Getter(AccessLevel.PACKAGE)
+	private int boostThreshold;
+	private boolean groupNotifications;
 
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
@@ -113,8 +134,11 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(boostsOverlay);
+		updateConfig();
+		addSubscriptions();
 
+		overlayManager.add(boostsOverlay);
+		overlayManager.add(combatIconsOverlay);
 		updateShownSkills();
 		updateBoostedStats();
 		Arrays.fill(lastSkillLevels, -1);
@@ -127,7 +151,7 @@ public class BoostsPlugin extends Plugin
 		{
 			if (skill != Skill.OVERALL)
 			{
-				infoBoxManager.addInfoBox(new BoostIndicator(skill, skillIconManager.getSkillImage(skill), this, client, config));
+				infoBoxManager.addInfoBox(new BoostIndicator(skill, skillIconManager.getSkillImage(skill), this, client));
 			}
 		}
 	}
@@ -135,7 +159,9 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
 		overlayManager.remove(boostsOverlay);
+		overlayManager.remove(combatIconsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
 		preserveBeenActive = false;
 		lastChangeDown = -1;
@@ -144,8 +170,15 @@ public class BoostsPlugin extends Plugin
 		isChangedDown = false;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(BoostedLevelChanged.class, this, this::onBoostedLevelChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -157,29 +190,28 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("boosts"))
 		{
 			return;
 		}
 
+		updateConfig();
 		updateShownSkills();
 
-		if (config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER)
+		if (this.displayNextBuffChange == BoostsConfig.DisplayChangeMode.NEVER)
 		{
 			lastChangeDown = -1;
 		}
 
-		if (config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER)
+		if (this.displayNextDebuffChange == BoostsConfig.DisplayChangeMode.NEVER)
 		{
 			lastChangeUp = -1;
 		}
 	}
 
-	@Subscribe
-	public void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
+	private void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
 	{
 		Skill skill = boostedLevelChanged.getSkill();
 
@@ -207,7 +239,7 @@ public class BoostsPlugin extends Plugin
 		lastSkillLevels[skillIdx] = cur;
 		updateBoostedStats();
 
-		int boostThreshold = config.boostThreshold();
+		int boostThreshold = this.boostThreshold;
 
 		if (boostThreshold != 0)
 		{
@@ -216,7 +248,7 @@ public class BoostsPlugin extends Plugin
 			int boost = cur - real;
 			if (boost <= boostThreshold && boostThreshold < lastBoost)
 			{
-				if (config.groupNotifications())
+				if (this.groupNotifications)
 				{
 					boostedSkillsChanged.add(skill.getName());
 				}
@@ -228,12 +260,11 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		lastTickMillis = System.currentTimeMillis();
 
-		if (config.groupNotifications() && !boostedSkillsChanged.isEmpty())
+		if (this.groupNotifications && !boostedSkillsChanged.isEmpty())
 		{
 			if (boostedSkillsChanged.size() == 1)
 			{
@@ -264,7 +295,7 @@ public class BoostsPlugin extends Plugin
 
 		if (getChangeUpTicks() <= 0)
 		{
-			switch (config.displayNextDebuffChange())
+			switch (this.displayNextDebuffChange)
 			{
 				case ALWAYS:
 					if (lastChangeUp != -1)
@@ -282,7 +313,7 @@ public class BoostsPlugin extends Plugin
 
 		if (getChangeDownTicks() <= 0)
 		{
-			switch (config.displayNextBuffChange())
+			switch (this.displayNextBuffChange)
 			{
 				case ALWAYS:
 					if (lastChangeDown != -1)
@@ -301,7 +332,7 @@ public class BoostsPlugin extends Plugin
 
 	private void updateShownSkills()
 	{
-		if (config.enableSkill())
+		if (this.enableSkill)
 		{
 			shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
 		}
@@ -355,7 +386,7 @@ public class BoostsPlugin extends Plugin
 	 * section it will "activate" adding an additional 15 second section
 	 * to the boost timing. If again the preserve prayer is active for that
 	 * entire section a second 15 second section will be added.
-	 *
+	 * <p>
 	 * Preserve is only required to be on for the 4th and 5th sections of the boost timer
 	 * to gain full effect (seconds 45-75).
 	 *
@@ -364,8 +395,8 @@ public class BoostsPlugin extends Plugin
 	int getChangeDownTicks()
 	{
 		if (lastChangeDown == -1 ||
-				config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
-				(config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedUp))
+			this.displayNextBuffChange == BoostsConfig.DisplayChangeMode.NEVER ||
+			(this.displayNextBuffChange == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedUp))
 		{
 			return -1;
 		}
@@ -392,8 +423,8 @@ public class BoostsPlugin extends Plugin
 	int getChangeUpTicks()
 	{
 		if (lastChangeUp == -1 ||
-				config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
-				(config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedDown))
+			this.displayNextDebuffChange == BoostsConfig.DisplayChangeMode.NEVER ||
+			(this.displayNextDebuffChange == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedDown))
 		{
 			return -1;
 		}
@@ -405,12 +436,26 @@ public class BoostsPlugin extends Plugin
 
 	/**
 	 * Converts tick-based time to accurate second time
+	 *
 	 * @param time tick-based time
 	 * @return second-based time
 	 */
 	int getChangeTime(final int time)
 	{
 		final long diff = System.currentTimeMillis() - lastTickMillis;
-		return time != -1 ? (int)(time * 0.6 - (diff / 1000d)) : time;
+		return time != -1 ? (int) ((time * Constants.GAME_TICK_LENGTH - diff) / 1000d) : time;
+	}
+
+	private void updateConfig()
+	{
+		this.enableSkill = config.enableSkill();
+		this.useRelativeBoost = config.useRelativeBoost();
+		this.displayInfoboxes = config.displayInfoboxes();
+		this.displayIcons = config.displayIcons();
+		this.boldIconFont = config.boldIconFont();
+		this.displayNextBuffChange = config.displayNextBuffChange();
+		this.displayNextDebuffChange = config.displayNextDebuffChange();
+		this.boostThreshold = config.boostThreshold();
+		this.groupNotifications = config.groupNotifications();
 	}
 }

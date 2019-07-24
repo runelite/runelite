@@ -25,7 +25,6 @@
  */
 package net.runelite.client.ui.components.colorpicker;
 
-import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
@@ -39,6 +38,7 @@ import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 import javax.swing.JPanel;
 import lombok.Setter;
+import net.runelite.client.util.MiscUtils;
 
 public class ColorPanel extends JPanel
 {
@@ -46,7 +46,7 @@ public class ColorPanel extends JPanel
 
 	private final int size;
 
-	private BufferedImage image;
+	private final BufferedImage image;
 	private Point targetPosition;
 	private int selectedY;
 	private boolean forceRedraw;
@@ -144,8 +144,8 @@ public class ColorPanel extends JPanel
 			return;
 		}
 
-		x = Ints.constrainToRange(x, 0, size - 1);
-		y = Ints.constrainToRange(y, 0, size - 1);
+		x = MiscUtils.clamp(x, 0, size - 1);
+		y = MiscUtils.clamp(y, 0, size - 1);
 
 		targetPosition = new Point(x, y);
 		paintImmediately(0, 0, size, size);
@@ -200,8 +200,8 @@ public class ColorPanel extends JPanel
 	 */
 	private Color colorAt(int x, int y)
 	{
-		x = Ints.constrainToRange(x, 0, size - 1);
-		y = Ints.constrainToRange(y, 0, size - 1);
+		x = MiscUtils.clamp(x, 0, size - 1);
+		y = MiscUtils.clamp(y, 0, size - 1);
 		return new Color(image.getRGB(x, y));
 	}
 }

@@ -31,8 +31,6 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("profiles")
 public interface ProfilesConfig extends Config
 {
-
-
 	@ConfigItem(
 		keyName = "profilesData",
 		name = "",
@@ -50,22 +48,22 @@ public interface ProfilesConfig extends Config
 		description = ""
 	)
 	void profilesData(String str);
-	
+
 	@ConfigItem(
-			keyName = "salt",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "salt",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default String salt()
 	{
 		return "";
 	}
-	
+
 	@ConfigItem(
-			keyName = "salt",
-			name = "",
-			description = ""
+		keyName = "salt",
+		name = "",
+		description = ""
 	)
 	void salt(String key);
 

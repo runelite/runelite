@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, Aleios <https://github.com/aleios>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,10 +27,11 @@ package net.runelite.client.plugins.itemcharges;
 
 import com.google.common.collect.Sets;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.EquipmentInventorySlot;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum ItemWithSlot
 {
 	ABYSSAL_BRACELET(ItemChargeType.ABYSSAL_BRACELET, EquipmentInventorySlot.GLOVES),
@@ -37,6 +39,8 @@ enum ItemWithSlot
 	EXPEDITIOUS_BRACELET(ItemChargeType.EXPEDITIOUS_BRACELET, EquipmentInventorySlot.GLOVES),
 	DODGY_NECKLACE(ItemChargeType.DODGY_NECKLACE, EquipmentInventorySlot.AMULET),
 	BINDING_NECKLACE(ItemChargeType.BINDING_NECKLACE, EquipmentInventorySlot.AMULET),
+	EXPLORER_RING(ItemChargeType.EXPLORER_RING, EquipmentInventorySlot.RING),
+	RING_OF_FORGING(ItemChargeType.RING_OF_FORGING, EquipmentInventorySlot.RING),
 	TELEPORT(ItemChargeType.TELEPORT, EquipmentInventorySlot.WEAPON, EquipmentInventorySlot.AMULET, EquipmentInventorySlot.GLOVES, EquipmentInventorySlot.RING);
 
 	private final ItemChargeType type;

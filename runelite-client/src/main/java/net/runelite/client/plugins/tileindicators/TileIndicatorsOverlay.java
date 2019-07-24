@@ -29,26 +29,28 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class TileIndicatorsOverlay extends Overlay
 {
 	private final Client client;
-	private final TileIndicatorsConfig config;
+	private final TileIndicatorsPlugin plugin;
 
 	@Inject
-	private TileIndicatorsOverlay(Client client, TileIndicatorsConfig config)
+	private TileIndicatorsOverlay(final Client client, final TileIndicatorsPlugin plugin)
 	{
 		this.client = client;
-		this.config = config;
+		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPriority(OverlayPriority.MED);
@@ -57,30 +59,33 @@ public class TileIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.highlightHoveredTile())
-		{
-			// Update selected scene tile
-			if (!client.isMenuOpen())
-			{
-				Point p = client.getMouseCanvasPosition();
-				p = new Point(
-					p.getX() - client.getViewportXOffset(),
-					p.getY() - client.getViewportYOffset());
-
-				client.setCheckClick(true);
-				client.setMouseCanvasHoverPosition(p);
-			}
-
+		if (plugin.isHighlightHoveredTile() &&
 			// If we have tile "selected" render it
-			if (client.getSelectedSceneTile() != null)
-			{
-				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), config.highlightHoveredColor());
-			}
+			client.getSelectedSceneTile() != null)
+		{
+			renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), plugin.getHighlightHoveredColor());
 		}
 
-		if (config.highlightDestinationTile())
+		if (plugin.isHighlightDestinationTile())
 		{
-			renderTile(graphics, client.getLocalDestinationLocation(), config.highlightDestinationColor());
+			renderTile(graphics, client.getLocalDestinationLocation(), plugin.getHighlightDestinationColor());
+		}
+
+		if (plugin.isHighlightCurrentTile())
+		{
+			final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
+			if (playerPos == null)
+			{
+				return null;
+			}
+
+			final LocalPoint playerPosLocal = LocalPoint.fromWorld(client, client.getLocalPlayer().getWorldLocation());
+			if (playerPosLocal == null)
+			{
+				return null;
+			}
+
+			renderTile(graphics, playerPosLocal, plugin.getHighlightCurrentColor());
 		}
 
 		return null;

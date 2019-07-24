@@ -24,9 +24,24 @@
  */
 package net.runelite.client.plugins.runecraft;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.Area;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
+import net.runelite.api.NPC;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
+import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.AIR_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.BLOOD_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.BODY_RIFT;
@@ -40,25 +55,12 @@ import static net.runelite.client.plugins.runecraft.AbyssRifts.MIND_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.NATURE_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.SOUL_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.WATER_RIFT;
-import com.google.inject.Inject;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import net.runelite.api.Client;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.NPC;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 class AbyssOverlay extends Overlay
 {
 	private static final Dimension IMAGE_SIZE = new Dimension(15, 14);
@@ -68,25 +70,23 @@ class AbyssOverlay extends Overlay
 
 	private final Client client;
 	private final RunecraftPlugin plugin;
-	private final RunecraftConfig config;
 
 	@Inject
 	private ItemManager itemManager;
 
 	@Inject
-	AbyssOverlay(Client client, RunecraftPlugin plugin, RunecraftConfig config)
+	AbyssOverlay(final Client client, final RunecraftPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.showRifts())
+		if (plugin.isShowRifts())
 		{
 			for (DecorativeObject object : plugin.getAbyssObjects())
 			{
@@ -94,7 +94,7 @@ class AbyssOverlay extends Overlay
 			}
 		}
 
-		if (config.hightlightDarkMage())
+		if (plugin.isHightlightDarkMage())
 		{
 			highlightDarkMage(graphics);
 		}
@@ -132,7 +132,7 @@ class AbyssOverlay extends Overlay
 			return;
 		}
 
-		if (config.showClickBox())
+		if (plugin.isShowClickBox())
 		{
 			//Draw clickbox
 			Point mousePosition = client.getMouseCanvasPosition();
@@ -163,7 +163,7 @@ class AbyssOverlay extends Overlay
 		}
 	}
 
-	public BufferedImage getImage(AbyssRifts rift)
+	private BufferedImage getImage(AbyssRifts rift)
 	{
 		BufferedImage image = abyssIcons.get(rift);
 		if (image != null)
@@ -185,55 +185,55 @@ class AbyssOverlay extends Overlay
 	public void updateConfig()
 	{
 		rifts.clear();
-		if (config.showAir())
+		if (plugin.isShowAir())
 		{
 			rifts.add(AIR_RIFT);
 		}
-		if (config.showBlood())
+		if (plugin.isShowBlood())
 		{
 			rifts.add(BLOOD_RIFT);
 		}
-		if (config.showBody())
+		if (plugin.isShowBody())
 		{
 			rifts.add(BODY_RIFT);
 		}
-		if (config.showChaos())
+		if (plugin.isShowChaos())
 		{
 			rifts.add(CHAOS_RIFT);
 		}
-		if (config.showCosmic())
+		if (plugin.isShowCosmic())
 		{
 			rifts.add(COSMIC_RIFT);
 		}
-		if (config.showDeath())
+		if (plugin.isShowDeath())
 		{
 			rifts.add(DEATH_RIFT);
 		}
-		if (config.showEarth())
+		if (plugin.isShowEarth())
 		{
 			rifts.add(EARTH_RIFT);
 		}
-		if (config.showFire())
+		if (plugin.isShowFire())
 		{
 			rifts.add(FIRE_RIFT);
 		}
-		if (config.showLaw())
+		if (plugin.isShowLaw())
 		{
 			rifts.add(LAW_RIFT);
 		}
-		if (config.showMind())
+		if (plugin.isShowMind())
 		{
 			rifts.add(MIND_RIFT);
 		}
-		if (config.showNature())
+		if (plugin.isShowNature())
 		{
 			rifts.add(NATURE_RIFT);
 		}
-		if (config.showSoul())
+		if (plugin.isShowSoul())
 		{
 			rifts.add(SOUL_RIFT);
 		}
-		if (config.showWater())
+		if (plugin.isShowWater())
 		{
 			rifts.add(WATER_RIFT);
 		}

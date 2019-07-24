@@ -34,8 +34,10 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 
 public class LocationOverlay extends Overlay
 {
@@ -66,11 +68,12 @@ public class LocationOverlay extends Overlay
 
 		int regionID = localWorld.getRegionID();
 
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
 		if (client.isInInstancedRegion())
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Instance")
-				.build());
+			tableComponent.addRow("Instance", "");
 
 			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
 			int z = client.getPlane();
@@ -80,42 +83,22 @@ public class LocationOverlay extends Overlay
 			int chunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
 			int chunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
 
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Chunk " + localPoint.getSceneX() / CHUNK_SIZE + "," + localPoint.getSceneY() / CHUNK_SIZE)
-				.right(rotation + " " + chunkX + " " + chunkY)
-				.build());
+			tableComponent.addRow("Chunk " + localPoint.getSceneX() / CHUNK_SIZE + "," + localPoint.getSceneY() / CHUNK_SIZE, rotation + " " + chunkX + " " + chunkY);
 		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Base")
-				.right(client.getBaseX() + ", " + client.getBaseY())
-				.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Local")
-				.right(localPoint.getX() + ", " + localPoint.getY())
-				.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Scene")
-				.right(localPoint.getSceneX() + ", " + localPoint.getSceneY())
-				.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Tile")
-			.right(localWorld.getX() + ", " + localWorld.getY() + ", " + client.getPlane())
-			.build());
+		tableComponent.addRow("Base", client.getBaseX() + ", " + client.getBaseY());
+		tableComponent.addRow("Local", localPoint.getX() + ", " + localPoint.getY());
+		tableComponent.addRow("Scene", localPoint.getSceneX() + ", " + localPoint.getSceneY());
+		tableComponent.addRow("Tile", localWorld.getX() + ", " + localWorld.getY() + ", " + client.getPlane());
 
 		for (int i = 0; i < client.getMapRegions().length; i++)
 		{
 			int region = client.getMapRegions()[i];
 
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left((i == 0) ? "Map regions" : " ")
-				.right(String.valueOf(region))
-				.rightColor((region == regionID) ? Color.GREEN : Color.WHITE)
-				.build());
+			tableComponent.addRow((i == 0) ? "Map regions" : " ", ColorUtil.prependColorTag(String.valueOf(region), (region == regionID) ? Color.GREEN : Color.WHITE));
 		}
+
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

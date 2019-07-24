@@ -35,7 +35,9 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "ignoredItems",
 		name = "Ignored items",
-		description = "Configures which items should be ignored when calculating loot prices."
+		description = "Configures which items should be ignored when calculating loot prices.",
+		position = 0,
+		group = "Filters"
 	)
 	default String getIgnoredItems()
 	{
@@ -50,6 +52,25 @@ public interface LootTrackerConfig extends Config
 	void setIgnoredItems(String key);
 
 	@ConfigItem(
+		keyName = "ignoredNPCs",
+		name = "Ignored NPCs",
+		description = "Configures which NPCs should be ignored ",
+		position = 1,
+		group = "Filters"
+	)
+	default String getIgnoredNPCs()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "ignoredNPCs",
+		name = "",
+		description = ""
+	)
+	void setIgnoredNPCs(String key);
+
+	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Submit loot tracker data",
 		description = "Submit loot tracker data (requires being logged in)"
@@ -60,9 +81,9 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "chestLootChat",
-			name = "Show chest loot value in chat",
-			description = "Show the value of items from CoX/ToB/Barrows chests in chat"
+		keyName = "chestLootChat",
+		name = "Show chest loot value in chat",
+		description = "Show the value of items from CoX/ToB/Barrows chests in chat"
 	)
 	default boolean chestLootChat()
 	{
@@ -80,4 +101,111 @@ public interface LootTrackerConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "localPersistence",
+		name = "Local Record Persistence",
+		description = "Stores/syncs loot records locally in the JSON format. Note: records will not be saved locally" +
+			" if they are successfully saved online. "
+	)
+	default boolean localPersistence()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "sortType",
+		name = "Sorting",
+		description = "The method for sorting Loot Tracker entries"
+	)
+	default LootRecordSortType sortType()
+	{
+		return LootRecordSortType.TIMESTAMP;
+	}
+
+	@ConfigItem(
+		keyName = "whitelistEnabled",
+		name = "NPC Whitelist",
+		description = "Only track drops from specific NPCs",
+		position = 1,
+		group = "Filters",
+		disabledBy = "blacklistEnabled"
+	)
+	default boolean whitelistEnabled()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "getWhitelist",
+		name = "Whitelist",
+		description = "Comma-separated list of NPCs to track drops from",
+		position = 2,
+		group = "Filters",
+		hidden = true,
+		unhide = "whitelistEnabled"
+	)
+	default String getWhitelist()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "blacklistEnabled",
+		name = "NPC Blacklist",
+		description = "Track drops from all NPCs except for specified ones",
+		position = 3,
+		group = "Filters",
+		disabledBy = "whitelistEnabled"
+	)
+	default boolean blacklistEnabled()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "getBlacklist",
+		name = "Blacklist",
+		description = "Comma-separated list of NPCs to not track drops from",
+		position = 4,
+		group = "Filters",
+		hidden = true,
+		unhide = "blacklistEnabled"
+	)
+	default String getBlacklist()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "lootValueMessage",
+		name = "Loot Value Messages",
+		description = "Sends a game message with the total value you of your loot when you get a kill",
+		position = 5
+	)
+	default boolean sendLootValueMessages()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDeaths",
+		name = "Show PvP Deaths",
+		description = "Shows your deaths to help you calculate PvP profit"
+	)
+	default boolean showDeaths()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "displayDate",
+		name = "Display Date",
+		description = "Displays the date the loot was received"
+	)
+	default boolean displayDate()
+	{
+		return true;
+	}
+
 }

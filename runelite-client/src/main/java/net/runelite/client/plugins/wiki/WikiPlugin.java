@@ -30,13 +30,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.NPCDefinition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -49,7 +50,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
@@ -64,6 +65,7 @@ import okhttp3.HttpUrl;
 	name = "Wiki",
 	description = "Adds a Wiki button that takes you to the OSRS Wiki"
 )
+@Singleton
 public class WikiPlugin extends Plugin
 {
 	private static final int[] QUESTLIST_WIDGET_IDS = new int[]
@@ -103,6 +105,9 @@ public class WikiPlugin extends Plugin
 	@Inject
 	private Provider<WikiSearchChatboxTextInput> wikiSearchChatboxTextInputProvider;
 
+	@Inject
+	private EventBus eventBus;
+
 	private Widget icon;
 
 	private boolean wikiSelected = false;
@@ -110,6 +115,8 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+		addSubscriptions();
+
 		spriteManager.addSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(this::addWidgets);
 	}
@@ -117,6 +124,8 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
+		eventBus.unregister(this);
+
 		spriteManager.removeSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(() ->
 		{
@@ -137,7 +146,13 @@ public class WikiPlugin extends Plugin
 		});
 	}
 
-	@Subscribe
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+	}
+
 	private void onWidgetLoaded(WidgetLoaded l)
 	{
 		if (l.getGroupId() == WidgetID.MINIMAP_GROUP_ID)
@@ -174,11 +189,9 @@ public class WikiPlugin extends Plugin
 		icon.setAction(5, "Search"); // Start at option 5 so the target op is ontop
 		icon.setOnOpListener((JavaScriptCallback) ev ->
 		{
-			switch (ev.getOp())
+			if (ev.getOp() == 6)
 			{
-				case 6:
-					openSearchInput();
-					break;
+				openSearchInput();
 			}
 		});
 		// This doesn't always run because we cancel the menuop
@@ -195,7 +208,6 @@ public class WikiPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked ev)
 	{
 		if (wikiSelected)
@@ -217,16 +229,16 @@ public class WikiPlugin extends Plugin
 				case SPELL_CAST_ON_GROUND_ITEM:
 				{
 					type = "item";
-					id = itemManager.canonicalize(ev.getId());
-					name = itemManager.getItemComposition(id).getName();
+					id = itemManager.canonicalize(ev.getIdentifier());
+					name = itemManager.getItemDefinition(id).getName();
 					location = null;
 					break;
 				}
 				case SPELL_CAST_ON_NPC:
 				{
 					type = "npc";
-					NPC npc = client.getCachedNPCs()[ev.getId()];
-					NPCComposition nc = npc.getTransformedComposition();
+					NPC npc = client.getCachedNPCs()[ev.getIdentifier()];
+					NPCDefinition nc = npc.getTransformedDefinition();
 					id = nc.getId();
 					name = nc.getName();
 					location = npc.getWorldLocation();
@@ -235,14 +247,14 @@ public class WikiPlugin extends Plugin
 				case SPELL_CAST_ON_GAME_OBJECT:
 				{
 					type = "object";
-					ObjectComposition lc = client.getObjectDefinition(ev.getId());
+					ObjectDefinition lc = client.getObjectDefinition(ev.getIdentifier());
 					if (lc.getImpostorIds() != null)
 					{
 						lc = lc.getImpostor();
 					}
 					id = lc.getId();
 					name = lc.getName();
-					location = WorldPoint.fromScene(client, ev.getActionParam(), ev.getWidgetId(), client.getPlane());
+					location = WorldPoint.fromScene(client, ev.getActionParam0(), ev.getActionParam1(), client.getPlane());
 					break;
 				}
 				default:
@@ -274,14 +286,14 @@ public class WikiPlugin extends Plugin
 		if (ev.getMenuAction() == MenuAction.RUNELITE)
 		{
 			boolean quickguide = false;
-			switch (ev.getMenuOption())
+			switch (ev.getOption())
 			{
 				case MENUOP_QUICKGUIDE:
 					quickguide = true;
 					//fallthrough;
 				case MENUOP_GUIDE:
 					ev.consume();
-					String quest = Text.removeTags(ev.getMenuTarget());
+					String quest = Text.removeTags(ev.getTarget());
 					HttpUrl.Builder ub = WIKI_BASE.newBuilder()
 						.addPathSegment("w")
 						.addPathSegment(quest)
@@ -293,8 +305,8 @@ public class WikiPlugin extends Plugin
 					LinkBrowser.browse(ub.build().toString());
 					break;
 				case MENUOP_WIKI:
-					Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
-					Matcher diaryRegex = WikiPlugin.DIARY_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
+					Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getTarget()));
+					Matcher diaryRegex = WikiPlugin.DIARY_REGEX.matcher(Text.removeTags(ev.getTarget()));
 
 					if (skillRegex.find())
 					{
@@ -322,8 +334,7 @@ public class WikiPlugin extends Plugin
 			.build();
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();

@@ -1,0 +1,34 @@
+allprojects  {
+  apply plugin: 'maven'
+  apply plugin: 'checkstyle'
+
+  group = 'net.runelite'
+version = '1.5.30-SNAPSHOT'
+}
+
+subprojects {
+  apply plugin: 'java'
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+  tasks.withType(JavaCompile) {
+  	options.encoding = 'UTF-8'
+  }
+
+  
+  repositories {
+    mavenLocal()
+    
+    maven { url "http://repo1.maven.org/maven2" }
+    maven { url "http://repo.runelite.net" }
+    maven { url "http://repo.maven.apache.org/maven2" }
+    maven { url "https://raw.githubusercontent.com/runelite-extended/maven-repo/master" }
+  }
+
+  checkstyle {
+    toolVersion = '6.4.1'
+    sourceSets = [sourceSets.main]
+    configFile = rootProject.file("./checkstyle/checkstyle.xml");
+    showViolations = true
+    ignoreFailures = false
+  }
+}

@@ -25,9 +25,12 @@
 package net.runelite.client.plugins.tithefarm;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
@@ -36,7 +39,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -47,6 +50,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show timers for the farming patches within the Tithe Farm minigame",
 	tags = {"farming", "minigame", "overlay", "skilling", "timers"}
 )
+@Singleton
 public class TitheFarmPlugin extends Plugin
 {
 	@Inject
@@ -55,8 +59,21 @@ public class TitheFarmPlugin extends Plugin
 	@Inject
 	private TitheFarmPlantOverlay titheFarmOverlay;
 
-	@Getter
+	@Inject
+	private TitheFarmPluginConfig config;
+
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
 	private final Set<TitheFarmPlant> plants = new HashSet<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Color getColorUnwatered;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getColorWatered;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getColorGrown;
 
 	@Provides
 	TitheFarmPluginConfig getConfig(ConfigManager configManager)
@@ -67,6 +84,9 @@ public class TitheFarmPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(titheFarmOverlay);
 		titheFarmOverlay.updateConfig();
 	}
@@ -74,26 +94,34 @@ public class TitheFarmPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(titheFarmOverlay);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("tithefarmplugin"))
 		{
+			updateConfig();
+
 			titheFarmOverlay.updateConfig();
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(final GameTick event)
+	private void onGameTick(final GameTick event)
 	{
 		plants.removeIf(plant -> plant.getPlantTimeRelative() == 1);
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 
@@ -151,5 +179,12 @@ public class TitheFarmPlugin extends Plugin
 			}
 		}
 		return null;
+	}
+
+	private void updateConfig()
+	{
+		this.getColorUnwatered = config.getColorUnwatered();
+		this.getColorWatered = config.getColorWatered();
+		this.getColorGrown = config.getColorGrown();
 	}
 }

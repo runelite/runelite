@@ -29,30 +29,30 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+@Singleton
 public class MotherlodeGemOverlay extends Overlay
 {
 	private final MotherlodePlugin plugin;
 	private final MotherlodeSession motherlodeSession;
-	private final MotherlodeConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MotherlodeGemOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config)
+	MotherlodeGemOverlay(final MotherlodePlugin plugin, final MotherlodeSession motherlodeSession)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
 		this.motherlodeSession = motherlodeSession;
-		this.config = config;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Gem overlay"));
 	}
 
@@ -61,12 +61,12 @@ public class MotherlodeGemOverlay extends Overlay
 	{
 		MotherlodeSession session = motherlodeSession;
 
-		if (session.getLastGemFound() == null || !plugin.isInMlm() || !config.showGemsFound())
+		if (session.getLastGemFound() == null || !plugin.isInMlm() || !plugin.isShowGemsFound())
 		{
 			return null;
 		}
 
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration statTimeout = Duration.ofMinutes(plugin.getStatTimeout());
 		Duration sinceCut = Duration.between(session.getLastGemFound(), Instant.now());
 
 		if (sinceCut.compareTo(statTimeout) >= 0)
@@ -82,37 +82,30 @@ public class MotherlodeGemOverlay extends Overlay
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(TitleComponent.builder().text("Gems found").build());
 
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
 		if (diamondsFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Diamonds:")
-				.right(Integer.toString(diamondsFound))
-				.build());
+			tableComponent.addRow("Diamonds:", Integer.toString(diamondsFound));
 		}
 
 		if (rubiesFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Rubies:")
-				.right(Integer.toString(rubiesFound))
-				.build());
+			tableComponent.addRow("Rubies:", Integer.toString(rubiesFound));
 		}
 
 		if (emeraldsFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Emeralds:")
-				.right(Integer.toString(emeraldsFound))
-				.build());
+			tableComponent.addRow("Emeralds:", Integer.toString(emeraldsFound));
 		}
 
 		if (sapphiresFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Sapphires:")
-				.right(Integer.toString(sapphiresFound))
-				.build());
+			tableComponent.addRow("Sapphires:", Integer.toString(sapphiresFound));
 		}
+
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

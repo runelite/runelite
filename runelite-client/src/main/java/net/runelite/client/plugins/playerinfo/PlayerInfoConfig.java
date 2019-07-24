@@ -24,11 +24,10 @@
  */
 package net.runelite.client.plugins.playerinfo;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-
-import java.awt.*;
 
 @ConfigGroup("playerinfo")
 public interface PlayerInfoConfig extends Config
@@ -56,10 +55,10 @@ public interface PlayerInfoConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "enableEnergy",
-			name = "Enable Run Energy Display",
-			description = "Configures whether or not to display run energy information",
-			position = 3
+		keyName = "enableEnergy",
+		name = "Enable Run Energy Display",
+		description = "Configures whether or not to display run energy information",
+		position = 3
 	)
 	default boolean enableEnergy()
 	{
@@ -78,10 +77,10 @@ public interface PlayerInfoConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "enableWorld",
-			name = "Enable World Display",
-			description = "Configures whether or not to display world information",
-			position = 4
+		keyName = "enableWorld",
+		name = "Enable World Display",
+		description = "Configures whether or not to display world information",
+		position = 4
 	)
 	default boolean enableWorld()
 	{

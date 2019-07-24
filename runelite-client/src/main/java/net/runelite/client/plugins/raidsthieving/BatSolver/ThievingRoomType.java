@@ -38,13 +38,13 @@ public enum ThievingRoomType
 	private final int x;
 	private final int y;
 
-	ThievingRoomType(int x, int y)
+	ThievingRoomType(final int x, final int y)
 	{
 		this.x = x;
 		this.y = y;
 	}
 
-	public static ThievingRoomType IdentifyByInstancePoint(InstancePoint point)
+	public static ThievingRoomType identifyByInstancePoint(InstancePoint point)
 	{
 		for (ThievingRoomType type : ThievingRoomType.values())
 		{

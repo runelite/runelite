@@ -25,11 +25,14 @@
 package net.runelite.client.plugins.hunter;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -45,7 +48,7 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -56,6 +59,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show the state of your traps",
 	tags = {"overlay", "skilling", "timers"}
 )
+@Singleton
 public class HunterPlugin extends Plugin
 {
 	@Inject
@@ -73,13 +77,26 @@ public class HunterPlugin extends Plugin
 	@Inject
 	private HunterConfig config;
 
-	@Getter
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Instant lastActionTime = Instant.ofEpochMilli(0);
 
 	private WorldPoint lastTickLocalPlayerLocation;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Color getOpenTrapColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getFullTrapColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getEmptyTrapColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getTransTrapColor;
+	private boolean maniacalMonkeyNotify;
 
 	@Provides
 	HunterConfig provideConfig(ConfigManager configManager)
@@ -90,6 +107,9 @@ public class HunterPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(overlay);
 		overlay.updateConfig();
 	}
@@ -97,13 +117,21 @@ public class HunterPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		lastActionTime = Instant.ofEpochMilli(0);
 		traps.clear();
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+	}
+
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();
 		final WorldPoint trapLocation = gameObject.getWorldLocation();
@@ -118,14 +146,6 @@ public class HunterPlugin extends Plugin
 			 * ------------------------------------------------------------------------------
 			 */
 			case ObjectID.DEADFALL: // Deadfall trap placed
-				if (localPlayer.getWorldLocation().distanceTo(trapLocation) <= 2)
-				{
-					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), trapLocation);
-					traps.put(trapLocation, new HunterTrap(gameObject));
-					lastActionTime = Instant.now();
-				}
-				break;
-
 			case ObjectID.MONKEY_TRAP: // Maniacal monkey trap placed
 				// If player is right next to "object" trap assume that player placed the trap
 				if (localPlayer.getWorldLocation().distanceTo(trapLocation) <= 2)
@@ -157,7 +177,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP_8992: // Net trap placed at red sallys
 			case ObjectID.NET_TRAP_9002: // Net trap placed at black sallys
 				if (lastTickLocalPlayerLocation != null
-						&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
+					&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
 				{
 					// Net traps facing to the north and east must have their tile translated.
 					// As otherwise, the wrong tile is stored.
@@ -210,7 +230,7 @@ public class HunterPlugin extends Plugin
 					myTrap.resetTimer();
 					lastActionTime = Instant.now();
 
-					if (config.maniacalMonkeyNotify() && myTrap.getObjectId() == ObjectID.MONKEY_TRAP)
+					if (this.maniacalMonkeyNotify && myTrap.getObjectId() == ObjectID.MONKEY_TRAP)
 					{
 						notifier.notify("You've caught part of a monkey's tail.");
 					}
@@ -241,25 +261,25 @@ public class HunterPlugin extends Plugin
 			// Imp entering box
 			case ObjectID.MAGIC_BOX_19225:
 
-			// Black chin shaking box
+				// Black chin shaking box
 			case ObjectID.BOX_TRAP:
 			case ObjectID.BOX_TRAP_2026:
 			case ObjectID.BOX_TRAP_2028:
 			case ObjectID.BOX_TRAP_2029:
 
-			// Red chin shaking box
+				// Red chin shaking box
 			case ObjectID.BOX_TRAP_9381:
 			case ObjectID.BOX_TRAP_9390:
 			case ObjectID.BOX_TRAP_9391:
 			case ObjectID.BOX_TRAP_9392:
 			case ObjectID.BOX_TRAP_9393:
 
-			// Grey chin shaking box
+				// Grey chin shaking box
 			case ObjectID.BOX_TRAP_9386:
 			case ObjectID.BOX_TRAP_9387:
 			case ObjectID.BOX_TRAP_9388:
 
-			// Bird traps
+				// Bird traps
 			case ObjectID.BIRD_SNARE_9346:
 			case ObjectID.BIRD_SNARE_9347:
 			case ObjectID.BIRD_SNARE_9349:
@@ -267,7 +287,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.BIRD_SNARE_9376:
 			case ObjectID.BIRD_SNARE_9378:
 
-			// Deadfall trap
+				// Deadfall trap
 			case ObjectID.DEADFALL_19218:
 			case ObjectID.DEADFALL_19851:
 			case ObjectID.DEADFALL_20128:
@@ -275,7 +295,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.DEADFALL_20130:
 			case ObjectID.DEADFALL_20131:
 
-			// Net trap
+				// Net trap
 			case ObjectID.NET_TRAP_9003:
 			case ObjectID.NET_TRAP_9005:
 			case ObjectID.NET_TRAP_8972:
@@ -285,7 +305,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP_8993:
 			case ObjectID.NET_TRAP_8997:
 
-			// Maniacal monkey boulder trap
+				// Maniacal monkey boulder trap
 			case ObjectID.MONKEY_TRAP_28828:
 			case ObjectID.MONKEY_TRAP_28829:
 				if (myTrap != null)
@@ -301,8 +321,7 @@ public class HunterPlugin extends Plugin
 	 * checks if the trap is still there. If the trap is gone, it removes
 	 * the trap from the local players trap collection.
 	 */
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		// Check if all traps are still there, and remove the ones that are not.
 		Iterator<Map.Entry<WorldPoint, HunterTrap>> it = traps.entrySet().iterator();
@@ -379,12 +398,21 @@ public class HunterPlugin extends Plugin
 		lastTickLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("hunterplugin"))
 		{
+			updateConfig();
 			overlay.updateConfig();
 		}
+	}
+
+	private void updateConfig()
+	{
+		this.getOpenTrapColor = config.getOpenTrapColor();
+		this.getFullTrapColor = config.getFullTrapColor();
+		this.getEmptyTrapColor = config.getEmptyTrapColor();
+		this.getTransTrapColor = config.getTransTrapColor();
+		this.maniacalMonkeyNotify = config.maniacalMonkeyNotify();
 	}
 }

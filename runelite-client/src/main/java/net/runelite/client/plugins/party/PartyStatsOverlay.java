@@ -32,6 +32,7 @@ import java.awt.Rectangle;
 import java.util.Map;
 import java.util.UUID;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.MenuAction;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.ui.overlay.Overlay;
@@ -42,6 +43,7 @@ import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ws.PartyService;
 
+@Singleton
 public class PartyStatsOverlay extends Overlay
 {
 	private static final Color HP_FG = new Color(0, 146, 54, 230);
@@ -51,7 +53,6 @@ public class PartyStatsOverlay extends Overlay
 
 	private final PartyPlugin plugin;
 	private final PartyService party;
-	private final PartyConfig config;
 	private final PanelComponent body = new PanelComponent();
 
 	@Inject
@@ -60,7 +61,6 @@ public class PartyStatsOverlay extends Overlay
 		super(plugin);
 		this.plugin = plugin;
 		this.party = party;
-		this.config = config;
 		body.setBorder(new Rectangle());
 		body.setGap(new Point(0, ComponentConstants.STANDARD_BORDER / 2));
 		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, "Leave", "Party"));
@@ -69,7 +69,7 @@ public class PartyStatsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.stats())
+		if (!plugin.isStats())
 		{
 			return null;
 		}
@@ -107,7 +107,7 @@ public class PartyStatsOverlay extends Overlay
 
 				final TitleComponent name = TitleComponent.builder()
 					.text(v.getName())
-					.color(config.recolorNames() ? v.getColor() : Color.WHITE)
+					.color(plugin.isRecolorNames() ? v.getColor() : Color.WHITE)
 					.build();
 
 				panel.getChildren().add(name);

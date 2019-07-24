@@ -89,7 +89,7 @@ public class BackgroundComponent implements RenderableEntity
 		final Rectangle insideStroke = new Rectangle();
 		insideStroke.setLocation(rectangle.x + BORDER_OFFSET / 2, rectangle.y + BORDER_OFFSET / 2);
 		insideStroke.setSize(rectangle.width - BORDER_OFFSET - BORDER_OFFSET / 2,
-				rectangle.height - BORDER_OFFSET - BORDER_OFFSET / 2);
+			rectangle.height - BORDER_OFFSET - BORDER_OFFSET / 2);
 		graphics.setColor(insideStrokeColor);
 		graphics.draw(insideStroke);
 

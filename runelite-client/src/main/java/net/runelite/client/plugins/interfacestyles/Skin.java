@@ -26,10 +26,11 @@
  */
 package net.runelite.client.plugins.interfacestyles;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 public enum Skin
 {

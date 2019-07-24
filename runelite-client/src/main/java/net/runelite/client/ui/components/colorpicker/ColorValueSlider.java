@@ -25,7 +25,6 @@
  */
 package net.runelite.client.ui.components.colorpicker;
 
-import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -35,6 +34,7 @@ import java.util.function.Consumer;
 import javax.swing.JPanel;
 import lombok.Setter;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.MiscUtils;
 
 public class ColorValueSlider extends JPanel
 {
@@ -83,7 +83,7 @@ public class ColorValueSlider extends JPanel
 
 	private void moveTarget(int x, boolean shouldUpdate)
 	{
-		value = Ints.constrainToRange(x, ColorUtil.MIN_RGB_VALUE + KNOB_WIDTH, ColorUtil.MAX_RGB_VALUE + KNOB_WIDTH);
+		value = MiscUtils.clamp(x, ColorUtil.MIN_RGB_VALUE + KNOB_WIDTH, ColorUtil.MAX_RGB_VALUE + KNOB_WIDTH);
 		paintImmediately(0, 0, this.getWidth(), this.getHeight());
 
 		if (shouldUpdate && onValueChanged != null)

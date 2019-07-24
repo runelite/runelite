@@ -31,9 +31,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -55,6 +54,7 @@ import net.runelite.client.ui.components.FlatTextField;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ImageUtil;
 
+@Singleton
 class ScreenMarkerPanel extends JPanel
 {
 	private static final int DEFAULT_FILL_OPACITY = 75;
@@ -144,7 +144,7 @@ class ScreenMarkerPanel extends JPanel
 		DELETE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(deleteImg, -100));
 	}
 
-	ScreenMarkerPanel(ScreenMarkerPlugin plugin, ScreenMarkerOverlay marker)
+	ScreenMarkerPanel(final ScreenMarkerPlugin plugin, final ScreenMarkerOverlay marker)
 	{
 		this.plugin = plugin;
 		this.marker = marker;
@@ -162,7 +162,7 @@ class ScreenMarkerPanel extends JPanel
 		nameActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		save.setVisible(false);
-		save.setFont(FontManager.getRunescapeSmallFont());
+		save.setFont(FontManager.getSmallFont(getFont()));
 		save.setForeground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 		save.addMouseListener(new MouseAdapter()
 		{
@@ -191,7 +191,7 @@ class ScreenMarkerPanel extends JPanel
 		});
 
 		cancel.setVisible(false);
-		cancel.setFont(FontManager.getRunescapeSmallFont());
+		cancel.setFont(FontManager.getSmallFont(getFont()));
 		cancel.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
 		cancel.addMouseListener(new MouseAdapter()
 		{
@@ -217,7 +217,7 @@ class ScreenMarkerPanel extends JPanel
 			}
 		});
 
-		rename.setFont(FontManager.getRunescapeSmallFont());
+		rename.setFont(FontManager.getSmallFont(getFont()));
 		rename.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
 		rename.addMouseListener(new MouseAdapter()
 		{
@@ -489,45 +489,35 @@ class ScreenMarkerPanel extends JPanel
 
 	private void openFillColorPicker()
 	{
-		RuneliteColorPicker colorPicker = new RuneliteColorPicker(SwingUtilities.windowForComponent(this),
-			marker.getMarker().getFill(), marker.getMarker().getName() + " Fill", false);
+		RuneliteColorPicker colorPicker = plugin.getColorPickerManager().create(
+			SwingUtilities.windowForComponent(this),
+			marker.getMarker().getFill(),
+			marker.getMarker().getName() + " Fill",
+			false);
 		colorPicker.setLocation(getLocationOnScreen());
 		colorPicker.setOnColorChange(c ->
 		{
 			marker.getMarker().setFill(c);
 			updateFill();
 		});
-
-		colorPicker.addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				plugin.updateConfig();
-			}
-		});
+		colorPicker.setOnClose(c -> plugin.updateConfig());
 		colorPicker.setVisible(true);
 	}
 
 	private void openBorderColorPicker()
 	{
-		RuneliteColorPicker colorPicker = new RuneliteColorPicker(SwingUtilities.windowForComponent(this),
-			marker.getMarker().getColor(), marker.getMarker().getName() + " Border", false);
+		RuneliteColorPicker colorPicker = plugin.getColorPickerManager().create(
+			SwingUtilities.windowForComponent(this),
+			marker.getMarker().getColor(),
+			marker.getMarker().getName() + " Border",
+			false);
 		colorPicker.setLocation(getLocationOnScreen());
 		colorPicker.setOnColorChange(c ->
 		{
 			marker.getMarker().setColor(c);
 			updateBorder();
 		});
-
-		colorPicker.addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				plugin.updateConfig();
-			}
-		});
+		colorPicker.setOnClose(c -> plugin.updateConfig());
 		colorPicker.setVisible(true);
 	}
 }

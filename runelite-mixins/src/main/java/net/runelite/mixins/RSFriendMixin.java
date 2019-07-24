@@ -27,7 +27,7 @@ package net.runelite.mixins;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.rs.api.RSFriend;
-import net.runelite.rs.api.RSName;
+import net.runelite.rs.api.RSUsername;
 
 @Mixin(RSFriend.class)
 public abstract class RSFriendMixin implements RSFriend
@@ -43,7 +43,7 @@ public abstract class RSFriendMixin implements RSFriend
 	@Inject
 	public String getPrevName()
 	{
-		RSName prevName = getRsPrevName();
+		RSUsername prevName = getRsPrevName();
 		return prevName == null ? null : prevName.getName();
 	}
 }

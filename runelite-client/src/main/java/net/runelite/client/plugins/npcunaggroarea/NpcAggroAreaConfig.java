@@ -106,12 +106,23 @@ public interface NpcAggroAreaConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "npcUnaggroShowNotWorkingOverlay",
+		keyName = "hideOverlayHint",
 		name = "Hide overlay hint",
 		description = "Hide overlay hint if plugin is enabled in unsupported area",
 		position = 6
 	)
 	default boolean hideOverlayHint()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "sendNotification",
+		name = "Send notification",
+		description = "Send a notification when the timer runs out",
+		position = 7
+	)
+	default boolean sendNotification()
 	{
 		return false;
 	}

@@ -28,22 +28,27 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
+import net.runelite.client.plugins.itemstats.BoostedStatBoost;
 import static net.runelite.client.plugins.itemstats.Builders.perc;
 import net.runelite.client.plugins.itemstats.Effect;
 import net.runelite.client.plugins.itemstats.SimpleStatBoost;
-import net.runelite.client.plugins.itemstats.BoostedStatBoost;
-import net.runelite.client.plugins.itemstats.stats.Stat;
 import net.runelite.client.plugins.itemstats.StatChange;
-import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 import net.runelite.client.plugins.itemstats.StatsChanges;
+import net.runelite.client.plugins.itemstats.stats.Stat;
+import static net.runelite.client.plugins.itemstats.stats.Stats.ATTACK;
+import static net.runelite.client.plugins.itemstats.stats.Stats.DEFENCE;
+import static net.runelite.client.plugins.itemstats.stats.Stats.HITPOINTS;
+import static net.runelite.client.plugins.itemstats.stats.Stats.MAGIC;
+import static net.runelite.client.plugins.itemstats.stats.Stats.RANGED;
+import static net.runelite.client.plugins.itemstats.stats.Stats.STRENGTH;
 
 @RequiredArgsConstructor
 public class SaradominBrew implements Effect
 {
 	private static final Stat[] saradominBrewStats = new Stat[]
-	{
-		ATTACK, STRENGTH, RANGED, MAGIC
-	};
+		{
+			ATTACK, STRENGTH, RANGED, MAGIC
+		};
 
 	private final double percH; //percentage heal
 	private final double percD; //percentage defence boost
@@ -61,18 +66,18 @@ public class SaradominBrew implements Effect
 		changes.setStatChanges(Stream.concat(
 			Stream.of(hitpoints.effect(client)),
 			Stream.concat(
-			Stream.of(defence.effect(client)),
-			Stream.of(saradominBrewStats)
-				.filter(stat -> 1 < stat.getValue(client))
-				.map(stat ->
-				{
-					calc.setStat(stat);
-					return calc.effect(client);
-				})
+				Stream.of(defence.effect(client)),
+				Stream.of(saradominBrewStats)
+					.filter(stat -> 1 < stat.getValue(client))
+					.map(stat ->
+					{
+						calc.setStat(stat);
+						return calc.effect(client);
+					})
 			)
 		).toArray(StatChange[]::new));
 		changes.setPositivity(Stream.of(changes.getStatChanges())
-			.map(sc -> sc.getPositivity())
+			.map(StatChange::getPositivity)
 			.max(Comparator.comparing(Enum::ordinal)).get());
 		return changes;
 	}

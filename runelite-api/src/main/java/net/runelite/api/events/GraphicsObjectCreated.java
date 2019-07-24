@@ -24,8 +24,8 @@
  */
 package net.runelite.api.events;
 
-import lombok.Value;
 import net.runelite.api.GraphicsObject;
+import lombok.Value;
 
 /**
  * An event where a new {@link GraphicsObject} has been created.

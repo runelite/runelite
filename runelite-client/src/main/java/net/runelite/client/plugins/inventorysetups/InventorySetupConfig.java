@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018-2019, Ethan <https://github.com/Wea1thRS/>
  * Copyright (c) 2018, https://runelitepl.us
  * All rights reserved.
  *

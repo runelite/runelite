@@ -31,12 +31,32 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("shiftwalkhere")
 public interface ShiftWalkerConfig extends Config
 {
+	@ConfigItem(
+		keyName = "shiftWalk",
+		name = "Shift to Walk",
+		description = "For when you want Walk here as a priority"
+	)
+	default boolean shiftWalk()
+	{
+		return false;
+	}
+	
+	@ConfigItem(
+		keyName = "shiftLoot",
+		name = "Shift to Loot",
+		description = "For when people stand on your loot"
+	)
+	default boolean shiftLoot()
+	{
+		return false;
+	}
+/*
 
 	@ConfigItem(
 		keyName = "shiftWalkEverything",
 		name = "Walk Under Everything",
 		description = "Enable this option when you do not want to interact with anything while Shift is pressed. " +
-				"If Walk Here is an option it will be the action taken."
+			"If Walk Here is an option it will be the action taken."
 	)
 	default boolean shiftWalkEverything()
 	{
@@ -62,5 +82,6 @@ public interface ShiftWalkerConfig extends Config
 	{
 		return true;
 	}
+*/
 
 }

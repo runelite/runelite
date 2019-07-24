@@ -24,6 +24,12 @@
  */
 package net.runelite.client.plugins.maxhit.config;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.ItemID;
@@ -34,8 +40,6 @@ import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
 import net.runelite.client.plugins.maxhit.requirements.AutocastSpellRequirement;
 import net.runelite.client.plugins.maxhit.requirements.Requirement;
 import net.runelite.client.plugins.maxhit.requirements.SpellBookRequirement;
-
-import java.util.*;
 
 
 public enum EquipmentBonusConfig
@@ -347,12 +351,14 @@ public enum EquipmentBonusConfig
 	private EquipmentCombatBonus equipmentCombatBonus;
 	private List<Requirement> requirements = new ArrayList<>();
 	private Operation operation = Operation.MULTIPLY;
+
 	EquipmentBonusConfig(BonusType bonusType, EquipmentItemset itemset, EquipmentCombatBonus equipmentCombatBonus)
 	{
 		this.bonusType = bonusType;
 		this.itemset = itemset;
 		this.equipmentCombatBonus = equipmentCombatBonus;
 	}
+
 	EquipmentBonusConfig(BonusType bonusType, EquipmentItemset itemset, EquipmentCombatBonus equipmentCombatBonus, List<Requirement> requirements)
 	{
 		this.bonusType = bonusType;
@@ -370,7 +376,7 @@ public enum EquipmentBonusConfig
 		this.operation = operation;
 	}
 
-	public static ArrayList<EquipmentBonusConfig> getBonusByType(BonusType bonusType)
+	public static List<EquipmentBonusConfig> getBonusByType(BonusType bonusType)
 	{
 		if (!bonusTypes.containsKey(bonusType))
 		{

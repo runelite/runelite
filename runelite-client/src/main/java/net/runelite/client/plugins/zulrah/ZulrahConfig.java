@@ -1,6 +1,7 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
- * Copyright (c) 2018, https://github.com/runeliteplusplus
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,37 +32,15 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("zulrah")
+
 public interface ZulrahConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "zulrahenable",
-		name = "Enable Zulrah Helper",
-		description = "Configures whether or not to enable Zulrah Helper."
+		keyName = "sounds",
+		name = "Sounds Enabled",
+		description = "Configures whether client sounds are enabled for zulrah"
 	)
-	default boolean EnableZulrah()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 1,
-		keyName = "zulrahprayenable",
-		name = "Show Prayer Helper",
-		description = "Configures whether or not to show when to pray at Zulrah."
-	)
-	default boolean EnableZulrahPrayerHelper()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "jadphasehelper",
-		name = "Jad Phase Helper",
-		description = "Tells you what to pray against Zulrah jad phase"
-	)
-	default boolean ZulrahJadHelper()
+	default boolean sounds()
 	{
 		return true;
 	}

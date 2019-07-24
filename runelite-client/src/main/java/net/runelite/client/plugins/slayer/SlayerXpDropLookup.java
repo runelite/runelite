@@ -31,14 +31,14 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-public class SlayerXpDropLookup
+class SlayerXpDropLookup
 {
 	private Map<String, List<Double>> xpMap;
 
 	// floating point math equality
 	private static final double EPSILON = 1e-6;
 
-	void loadXpJson()
+	private void loadXpJson()
 	{
 		final InputStream xpFile = getClass().getResourceAsStream("/slayer_xp.json");
 		Gson gson = new Gson();
@@ -52,31 +52,31 @@ public class SlayerXpDropLookup
 	 * Finds the xp for a given npc using the xp + combat level data provided
 	 * from the JSON - since scrapping from the wiki isn't perfectly accurate
 	 * we make some estimations
-	 *
+	 * <p>
 	 * precondition is that xpCombatLevel array is non-null - if it is null
 	 * we can simply return -1 to indicate no slayer xp because this npc
 	 * has no associated xpCombatLevel array
-	 *
+	 * <p>
 	 * 1. first check to see if anywhere in the xp + combat level data this
-	 *    creature name give slayer xp - if it doesn't just return -1 and
-	 *    be done with this - if it does give slayer xp then continue
+	 * creature name give slayer xp - if it doesn't just return -1 and
+	 * be done with this - if it does give slayer xp then continue
 	 * 2. now check to see if we can find the xp for this combat level where
-	 *    that xp is greater than 0. note that we don't just find the xp for
-	 *    this combat level - this is because for some monsters the wiki
-	 *    only has slayer xp data for some combat levels and has it unknown
-	 *    for the other combat levels. this way we only return the combat level
-	 *    related xp data for a monster if it is know
+	 * that xp is greater than 0. note that we don't just find the xp for
+	 * this combat level - this is because for some monsters the wiki
+	 * only has slayer xp data for some combat levels and has it unknown
+	 * for the other combat levels. this way we only return the combat level
+	 * related xp data for a monster if it is know
 	 * 3. finally if the slayer xp data for the monster was unknown for the given
-	 *    level we estimate the slayer xp by using one of the slayer xps for a level
-	 *    that does have xp given
+	 * level we estimate the slayer xp by using one of the slayer xps for a level
+	 * that does have xp given
 	 * 4. note that if a monster gives no slayer xp for any level it will return
-	 *    -1 so we don't accidentally misscount non-slayer targets dying as giving
-	 *    slayer xp
+	 * -1 so we don't accidentally misscount non-slayer targets dying as giving
+	 * slayer xp
 	 *
 	 * @param npc the npc we are estimating slayer xp for
 	 * @return our best guess for the slayer xp for this npc
 	 */
-	public double findXpForNpc(NPCPresence npc)
+	double findXpForNpc(NPCPresence npc)
 	{
 		List<Double> xpCombatLevel = xpMap.get(npc.getName());
 		if (xpCombatLevel == null)
@@ -99,7 +99,7 @@ public class SlayerXpDropLookup
 		for (int i = 0; i < xpCombatLevel.size() - 1; i += 2)
 		{
 			if (Math.abs(xpCombatLevel.get(i + 1) - npc.getCombatLevel()) < EPSILON
-					&& xpCombatLevel.get(i) > 0)
+				&& xpCombatLevel.get(i) > 0)
 			{
 				foundCombatLevel = true;
 			}
@@ -127,7 +127,7 @@ public class SlayerXpDropLookup
 		return -1;
 	}
 
-	public SlayerXpDropLookup()
+	SlayerXpDropLookup()
 	{
 		loadXpJson();
 	}

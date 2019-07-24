@@ -55,6 +55,7 @@ public enum VarPlayer
 	NMZ_REWARD_POINTS(1060),
 	
 	ATTACKING_PLAYER(1075),
+
 	/**
 	 * -1 : Poison immune
 	 *  Normal poison damage is ceil( this / 5.0f )
@@ -260,5 +261,5 @@ public enum VarPlayer
 
 
 
-	private final int id;
+	public final int id;
 }

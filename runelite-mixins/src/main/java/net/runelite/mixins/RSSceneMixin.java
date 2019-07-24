@@ -29,21 +29,20 @@ import net.runelite.api.Renderable;
 import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSBoundaryObject;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSDecorativeObject;
-import net.runelite.rs.api.RSGroundObject;
-import net.runelite.rs.api.RSItemLayer;
+import net.runelite.rs.api.RSFloorDecoration;
+import net.runelite.rs.api.RSGroundItemPile;
 import net.runelite.rs.api.RSScene;
-import net.runelite.rs.api.RSSceneTileModel;
 import net.runelite.rs.api.RSTile;
-import net.runelite.rs.api.RSWallObject;
+import net.runelite.rs.api.RSTileModel;
+import net.runelite.rs.api.RSWallDecoration;
 
 @Mixin(RSScene.class)
 public abstract class RSSceneMixin implements RSScene
@@ -56,7 +55,7 @@ public abstract class RSSceneMixin implements RSScene
 
 	private static final int MAX_TARGET_DISTANCE = 45;
 
-	@Shadow("clientInstance")
+	@Shadow("client")
 	static RSClient client;
 
 	@Shadow("pitchRelaxEnabled")
@@ -74,7 +73,7 @@ public abstract class RSSceneMixin implements RSScene
 	@Inject
 	private static int rl$drawDistance;
 
-	@Replace("drawScene")
+	@Replace("draw")
 	void rl$drawScene(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane)
 	{
 		final DrawCallbacks drawCallbacks = client.getDrawCallbacks();
@@ -84,12 +83,22 @@ public abstract class RSSceneMixin implements RSScene
 		}
 
 		final boolean isGpu = client.isGpu();
+		final boolean checkClick = client.isCheckClick();
+		if (!client.isMenuOpen())
+		{
+			// Force check click to update the selected tile
+			client.setCheckClick(true);
+			final int mouseX = client.getMouseX();
+			final int mouseY = client.getMouseY();
+			client.setMouseCanvasHoverPositionX(mouseX - client.getViewportXOffset());
+			client.setMouseCanvasHoverPositionY(mouseY - client.getViewportYOffset());
+		}
 
 		if (!isGpu)
 		{
 			if (skyboxColor != 0)
 			{
-				client.RasterizerFillRectangle(
+				client.rasterizerFillRectangle(
 					client.getViewportXOffset(),
 					client.getViewportYOffset(),
 					client.getViewportWidth(),
@@ -287,11 +296,11 @@ public abstract class RSSceneMixin implements RSScene
 
 						if (client.getTileUpdateCount() == 0)
 						{
-							if (!isGpu && client.getOculusOrbState() != 0)
-							{
-								client.setEntitiesAtMouseCount(0);
-							}
 							client.setCheckClick(false);
+							if (!checkClick)
+							{
+								client.setViewportWalking(false);
+							}
 							client.getCallbacks().drawScene();
 							return;
 						}
@@ -358,11 +367,11 @@ public abstract class RSSceneMixin implements RSScene
 
 						if (client.getTileUpdateCount() == 0)
 						{
-							if (!isGpu && client.getOculusOrbState() != 0)
-							{
-								client.setEntitiesAtMouseCount(0);
-							}
 							client.setCheckClick(false);
+							if (!checkClick)
+							{
+								client.setViewportWalking(false);
+							}
 							client.getCallbacks().drawScene();
 							return;
 						}
@@ -371,25 +380,27 @@ public abstract class RSSceneMixin implements RSScene
 			}
 		}
 
-		if (!isGpu && client.getOculusOrbState() != 0)
-		{
-			client.setEntitiesAtMouseCount(0);
-		}
 		client.setCheckClick(false);
+		if (!checkClick)
+		{
+			// If checkClick was false, then the selected tile wouldn't have existed next tick,
+			// so clear viewport walking in order to prevent it triggering a walk
+			client.setViewportWalking(false);
+		}
 		client.getCallbacks().drawScene();
 	}
 
-	@Copy("addBoundaryDecoration")
+	@Copy("newWallDecoration")
 	abstract public void rs$addBoundaryDecoration(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, long hash, int var12);
 
-	@Replace("addBoundaryDecoration")
+	@Replace("newWallDecoration")
 	public void rl$addBoundaryDecoration(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, long hash, int var12)
 	{
 		rs$addBoundaryDecoration(plane, x, y, floor, var5, var6, var7, var8, var9, var10, hash, var12);
 		Tile tile = getTiles()[plane][x][y];
 		if (tile != null)
 		{
-			RSDecorativeObject object = (RSDecorativeObject) tile.getDecorativeObject();
+			RSWallDecoration object = (RSWallDecoration) tile.getDecorativeObject();
 			if (object != null)
 			{
 				object.setPlane(plane);
@@ -397,17 +408,17 @@ public abstract class RSSceneMixin implements RSScene
 		}
 	}
 
-	@Copy("addItemPile")
+	@Copy("newGroundItemPile")
 	abstract public void rs$addItemPile(int plane, int x, int y, int hash, Renderable var5, long var6, Renderable var7, Renderable var8);
 
-	@Replace("addItemPile")
+	@Replace("newGroundItemPile")
 	public void rl$addItemPile(int plane, int x, int y, int hash, Renderable var5, long var6, Renderable var7, Renderable var8)
 	{
 		rs$addItemPile(plane, x, y, hash, var5, var6, var7, var8);
 		Tile tile = getTiles()[plane][x][y];
 		if (tile != null)
 		{
-			RSItemLayer itemLayer = (RSItemLayer) tile.getItemLayer();
+			RSGroundItemPile itemLayer = (RSGroundItemPile) tile.getItemLayer();
 			if (itemLayer != null)
 			{
 				itemLayer.setPlane(plane);
@@ -415,17 +426,17 @@ public abstract class RSSceneMixin implements RSScene
 		}
 	}
 
-	@Copy("groundObjectSpawned")
+	@Copy("newFloorDecoration")
 	abstract public void rs$groundObjectSpawned(int plane, int x, int y, int floor, Renderable var5, long hash, int var7);
 
-	@Replace("groundObjectSpawned")
+	@Replace("newFloorDecoration")
 	public void rl$groundObjectSpawned(int plane, int x, int y, int floor, Renderable var5, long hash, int var7)
 	{
 		rs$groundObjectSpawned(plane, x, y, floor, var5, hash, var7);
 		Tile tile = getTiles()[plane][x][y];
 		if (tile != null)
 		{
-			RSGroundObject groundObject = (RSGroundObject) tile.getGroundObject();
+			RSFloorDecoration groundObject = (RSFloorDecoration) tile.getGroundObject();
 			if (groundObject != null)
 			{
 				groundObject.setPlane(plane);
@@ -433,17 +444,17 @@ public abstract class RSSceneMixin implements RSScene
 		}
 	}
 
-	@Copy("addBoundary")
+	@Copy("newBoundaryObject")
 	abstract public void rs$addBoundary(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, long hash, int var10);
 
-	@Replace("addBoundary")
+	@Replace("newBoundaryObject")
 	public void rl$addBoundary(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, long hash, int var10)
 	{
 		rs$addBoundary(plane, x, y, floor, var5, var6, var7, var8, hash, var10);
 		Tile tile = getTiles()[plane][x][y];
 		if (tile != null)
 		{
-			RSWallObject wallObject = (RSWallObject) tile.getWallObject();
+			RSBoundaryObject wallObject = (RSBoundaryObject) tile.getWallObject();
 			if (wallObject != null)
 			{
 				wallObject.setPlane(plane);
@@ -616,7 +627,7 @@ public abstract class RSSceneMixin implements RSScene
 				return;
 			}
 
-			RSSceneTileModel sceneTileModel = (RSSceneTileModel) tile;
+			RSTileModel sceneTileModel = (RSTileModel) tile;
 
 			final int[] faceX = sceneTileModel.getFaceX();
 			final int[] faceY = sceneTileModel.getFaceY();
@@ -702,26 +713,7 @@ public abstract class RSSceneMixin implements RSScene
 	@Inject
 	static void setTargetTile(int targetX, int targetY)
 	{
-		final LocalPoint current = client.getLocalPlayer().getLocalLocation();
-
-		// Limit walk distance - https://math.stackexchange.com/a/85582
-		final int a = current.getSceneX();
-		final int b = current.getSceneY();
-		final int c = targetX;
-		final int d = targetY;
-
-		final int r = MAX_TARGET_DISTANCE;
-		final int t = (int) Math.hypot(a - c, b - d) - r;
-		int x = targetX;
-		int y = targetY;
-
-		if (t > 0)
-		{
-			x = (r * c + t * a) / (r + t);
-			y = (r * d + t * b) / (r + t);
-		}
-
-		client.setSelectedSceneTileX(x);
-		client.setSelectedSceneTileY(y);
+		client.setSelectedSceneTileX(targetX);
+		client.setSelectedSceneTileY(targetY);
 	}
 }

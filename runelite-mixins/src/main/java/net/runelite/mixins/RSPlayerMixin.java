@@ -24,9 +24,6 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Polygon;
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.api.HeadIcon;
 import static net.runelite.api.HeadIcon.MAGIC;
 import static net.runelite.api.HeadIcon.MELEE;
@@ -46,29 +43,36 @@ import static net.runelite.api.SkullIcon.DEAD_MAN_TWO;
 import static net.runelite.api.SkullIcon.SKULL;
 import static net.runelite.api.SkullIcon.SKULL_FIGHT_PIT;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.mixins.MethodHook;
+import net.runelite.api.model.Triangle;
+import net.runelite.api.model.Vertex;
+import java.awt.Polygon;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import net.runelite.api.model.Triangle;
-import net.runelite.api.model.Vertex;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSModel;
-import net.runelite.rs.api.RSName;
 import net.runelite.rs.api.RSPlayer;
+import net.runelite.rs.api.RSUsername;
 
 @Mixin(RSPlayer.class)
 public abstract class RSPlayerMixin implements RSPlayer
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
+
+	@Inject
+	private boolean friended;
 
 	@Inject
 	@Override
 	public String getName()
 	{
-		final RSName rsName = getRsName();
+		final RSUsername rsName = getRsName();
 
 		if (rsName == null)
 		{
@@ -112,12 +116,6 @@ public abstract class RSPlayerMixin implements RSPlayer
 	@Override
 	public SkullIcon getSkullIcon()
 	{
-		if (this != client.getLocalPlayer())
-		{
-			// prevent seeing skulls of other players.
-			return null;
-		}
-
 		switch (getRsSkullIcon())
 		{
 			case 0:
@@ -169,28 +167,28 @@ public abstract class RSPlayerMixin implements RSPlayer
 			Vertex vz = triangle.getC();
 
 			Point x = Perspective.localToCanvas(client,
-				localX - vx.getX(),
-				localY - vx.getZ(),
-				tileHeight + vx.getY());
+					localX - vx.getX(),
+					localY - vx.getZ(),
+					tileHeight + vx.getY());
 
 			Point y = Perspective.localToCanvas(client,
-				localX - vy.getX(),
-				localY - vy.getZ(),
-				tileHeight + vy.getY());
+					localX - vy.getX(),
+					localY - vy.getZ(),
+					tileHeight + vy.getY());
 
 			Point z = Perspective.localToCanvas(client,
-				localX - vz.getX(),
-				localY - vz.getZ(),
-				tileHeight + vz.getY());
+					localX - vz.getX(),
+					localY - vz.getZ(),
+					tileHeight + vz.getY());
 
 			int[] xx =
-			{
-				x.getX(), y.getX(), z.getX()
-			};
+					{
+						x.getX(), y.getX(), z.getX()
+					};
 			int[] yy =
-			{
-				x.getY(), y.getY(), z.getY()
-			};
+					{
+						x.getY(), y.getY(), z.getY()
+					};
 			polys.add(new Polygon(xx, yy, 3));
 		}
 
@@ -222,9 +220,9 @@ public abstract class RSPlayerMixin implements RSPlayer
 			Vertex c = triangle.getC();
 
 			Triangle rotatedTriangle = new Triangle(
-				a.rotate(orientation),
-				b.rotate(orientation),
-				c.rotate(orientation)
+					a.rotate(orientation),
+					b.rotate(orientation),
+					c.rotate(orientation)
 			);
 			rotatedTriangles.add(rotatedTriangle);
 		}
@@ -243,14 +241,14 @@ public abstract class RSPlayerMixin implements RSPlayer
 		}
 		int actionFrame = getActionFrame();
 		int poseFrame = getPoseFrame();
-		int spotAnimFrame = getSpotAnimFrame();
+		int spotAnimFrame = getSpotAnimationFrame();
 		try
 		{
 			// combine the frames with the frame cycle so we can access this information in the sequence methods
 			// without having to change method calls
 			setActionFrame(Integer.MIN_VALUE | getActionFrameCycle() << 16 | actionFrame);
 			setPoseFrame(Integer.MIN_VALUE | getPoseFrameCycle() << 16 | poseFrame);
-			setSpotAnimFrame(Integer.MIN_VALUE | getSpotAnimFrameCycle() << 16 | spotAnimFrame);
+			setSpotAnimationFrame(Integer.MIN_VALUE | getSpotAnimationFrameCycle() << 16 | spotAnimFrame);
 			return rs$getModel();
 		}
 		finally
@@ -258,7 +256,20 @@ public abstract class RSPlayerMixin implements RSPlayer
 			// reset frames
 			setActionFrame(actionFrame);
 			setPoseFrame(poseFrame);
-			setSpotAnimFrame(spotAnimFrame);
+			setSpotAnimationFrame(spotAnimFrame);
 		}
+	}
+
+	@Inject
+	public boolean isFriended()
+	{
+		return isFriend() || friended;
+	}
+
+	@Inject
+	@MethodHook(value = "checkIsFriend", end = true)
+	void updateFriended()
+	{
+		friended = client.getFriendManager().isFriended(getRsName(), false);
 	}
 }

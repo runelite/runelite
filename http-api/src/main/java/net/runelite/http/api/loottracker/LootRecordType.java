@@ -29,5 +29,6 @@ public enum LootRecordType
 	NPC,
 	PLAYER,
 	EVENT,
+	DEATH,
 	UNKNOWN
 }

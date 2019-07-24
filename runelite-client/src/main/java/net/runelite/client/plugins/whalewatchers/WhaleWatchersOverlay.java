@@ -12,6 +12,7 @@ package net.runelite.client.plugins.whalewatchers;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.client.ui.overlay.Overlay;
@@ -19,6 +20,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
@@ -26,28 +28,27 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
  * The overlay for the Damage Counter
  */
 
+@Singleton
 public class WhaleWatchersOverlay extends Overlay
 {
-	private Client client;
-	private final WhaleWatchersConfig config;
-	private WhaleWatchersPlugin plugin;
-	private PanelComponent panelComponent;
+	private final Client client;
+	private final WhaleWatchersPlugin plugin;
+	private final PanelComponent panelComponent;
 	private String lastOpponent = "-";
-	private final OverlayMenuEntry resetMenuEntry = new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY,
-		"Reset", "Damage Counter");
 
 
 	@Inject
-	public WhaleWatchersOverlay(WhaleWatchersConfig config, Client client, WhaleWatchersPlugin plugin)
+	public WhaleWatchersOverlay(final Client client, final WhaleWatchersPlugin plugin)
 	{
+		OverlayMenuEntry resetMenuEntry = new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY,
+			"Reset", "Damage Counter");
 		this.getMenuEntries().add(resetMenuEntry);
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGHEST);
-		setPosition(OverlayPosition.DYNAMIC);
-		this.setPreferredPosition(OverlayPosition.TOP_CENTER);
+		setPosition(OverlayPosition.TOP_LEFT);
+		this.setPreferredPosition(OverlayPosition.TOP_LEFT);
 		panelComponent = new PanelComponent();
 	}
 
@@ -56,16 +57,14 @@ public class WhaleWatchersOverlay extends Overlay
 	{
 		panelComponent.getChildren().clear();
 
-		if (plugin.inCombat && config.showDamageCounter())
+		if (plugin.inCombat && plugin.isShowDamageCounter())
 		{
-			panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+			panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 			panelComponent.setWrapping(5);
-			String opp = client.getLocalPlayer().getInteracting() != null ?
+
+			lastOpponent = client.getLocalPlayer().getInteracting() != null ?
 				client.getLocalPlayer().getInteracting().getName() : lastOpponent;
-			if (client.getLocalPlayer().getInteracting() != null)
-			{
-				lastOpponent = client.getLocalPlayer().getInteracting().getName();
-			}
+
 			String damageTaken = "Damage Taken: " + plugin.damageTaken;
 			String damageDealt = "Damage Dealt: " + plugin.damageDone;
 
@@ -84,8 +83,8 @@ public class WhaleWatchersOverlay extends Overlay
 		else
 		{
 			panelComponent.getChildren().clear();
-			
 		}
+
 		return panelComponent.render(graphics);
 	}
 }

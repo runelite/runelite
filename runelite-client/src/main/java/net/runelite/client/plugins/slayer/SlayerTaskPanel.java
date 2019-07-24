@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -23,6 +24,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
+@Singleton
 public class SlayerTaskPanel extends PluginPanel
 {
 	private static final long MILLIS_PER_SECOND = 1000;
@@ -102,7 +104,8 @@ public class SlayerTaskPanel extends PluginPanel
 
 		playBtn.setIcon(PLAY);
 		playBtn.setToolTipText("Resume the current slayer task");
-		playBtn.addMouseListener(new MouseAdapter() {
+		playBtn.addMouseListener(new MouseAdapter()
+		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
@@ -137,13 +140,15 @@ public class SlayerTaskPanel extends PluginPanel
 
 		pauseBtn.setIcon(PAUSE);
 		pauseBtn.setToolTipText("Pause the current slayer task");
-		pauseBtn.addMouseListener(new MouseAdapter() {
+		pauseBtn.addMouseListener(new MouseAdapter()
+		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				slayerPlugin.setPaused(true);
 				changePauseState(true);
 			}
+
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
@@ -190,8 +195,8 @@ public class SlayerTaskPanel extends PluginPanel
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallInfo.setLayout(new GridLayout(2, 1));
 		overallInfo.setBorder(new EmptyBorder(2, 10, 2, 0));
-		overallKillsLabel.setFont(FontManager.getRunescapeSmallFont());
-		overallTimeLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallKillsLabel.setFont(FontManager.getSmallFont(getFont()));
+		overallTimeLabel.setFont(FontManager.getSmallFont(getFont()));
 		overallInfo.add(overallKillsLabel);
 		overallInfo.add(overallTimeLabel);
 		overallPanel.add(overallIcon, BorderLayout.WEST);
@@ -298,7 +303,8 @@ public class SlayerTaskPanel extends PluginPanel
 		if (tasks.isEmpty() || isNewAssignment)
 		{
 			// new task so append it to the front of the list
-			SwingUtilities.invokeLater(() -> {
+			SwingUtilities.invokeLater(() ->
+			{
 				TaskBox newBox = buildBox(slayerPlugin, tasksContainer, newData);
 				newBox.update(true, newData.isPaused(), newData);
 			});
@@ -319,7 +325,8 @@ public class SlayerTaskPanel extends PluginPanel
 
 				// so this previous task is invalid so delete it then add in the new actually
 				// correct task
-				SwingUtilities.invokeLater(() -> {
+				SwingUtilities.invokeLater(() ->
+				{
 					tasksContainer.remove(tasks.get(0));
 					tasks.remove(0);
 					TaskBox newBox = buildBox(slayerPlugin, tasksContainer, newData);
@@ -338,7 +345,7 @@ public class SlayerTaskPanel extends PluginPanel
 		changePauseState(paused);
 	}
 
-	static String htmlLabel(String key, long timeMillis)
+	private static String htmlLabel(String key, long timeMillis)
 	{
 		if (timeMillis == Long.MAX_VALUE)
 		{
@@ -358,7 +365,7 @@ public class SlayerTaskPanel extends PluginPanel
 		}
 	}
 
-	static String htmlLabel(String key, int value)
+	private static String htmlLabel(String key, int value)
 	{
 		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR),

@@ -31,6 +31,7 @@ import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Singleton;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -46,7 +47,7 @@ import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
 
-
+@Singleton
 class SuppliesTrackerPanel extends PluginPanel
 {
 	private static final String HTML_LABEL_TEMPLATE =
@@ -89,8 +90,8 @@ class SuppliesTrackerPanel extends PluginPanel
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallInfo.setLayout(new GridLayout(2, 1));
 		overallInfo.setBorder(new EmptyBorder(0, 10, 0, 0));
-		overallSuppliesUsedLabel.setFont(FontManager.getRunescapeSmallFont());
-		overallCostLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallSuppliesUsedLabel.setFont(FontManager.getSmallFont(getFont()));
+		overallCostLabel.setFont(FontManager.getSmallFont(getFont()));
 		overallInfo.add(overallSuppliesUsedLabel);
 		overallInfo.add(overallCostLabel);
 		overallPanel.add(overallIcon, BorderLayout.WEST);
@@ -136,6 +137,7 @@ class SuppliesTrackerPanel extends PluginPanel
 
 	/**
 	 * loads an img to the icon on the header
+	 *
 	 * @param img the img for the header icon
 	 */
 	void loadHeaderIcon(BufferedImage img)
@@ -145,7 +147,8 @@ class SuppliesTrackerPanel extends PluginPanel
 
 	/**
 	 * convert key value pair to html formatting needed to display nicely
-	 * @param key key
+	 *
+	 * @param key   key
 	 * @param value value
 	 * @return key: value in html
 	 */
@@ -157,6 +160,7 @@ class SuppliesTrackerPanel extends PluginPanel
 
 	/**
 	 * Add an item to the supply panel by placing it into the correct box
+	 *
 	 * @param item the item to add
 	 */
 	void addItem(SuppliesTrackerItem item)

@@ -40,6 +40,7 @@ import net.runelite.client.plugins.timetracking.TimeTrackingPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.ImageUtil;
@@ -97,6 +98,13 @@ public class ClockTabPanel extends TabContentPanel
 		rebuild();
 	}
 
+	// The max panel width is 225 but the + sign gets cut off at 225 so we set it at 223
+	@Override
+	public Dimension getPreferredSize()
+	{
+		return new Dimension(PluginPanel.PANEL_WIDTH - 2, super.getPreferredSize().height);
+	}
+
 	/**
 	 * Clears and recreates the components of this panel.
 	 * This should be done whenever a clock is added or removed.
@@ -147,7 +155,7 @@ public class ClockTabPanel extends TabContentPanel
 
 		JLabel headerLabel = new JLabel(title);
 		headerLabel.setForeground(Color.WHITE);
-		headerLabel.setFont(FontManager.getRunescapeSmallFont());
+		headerLabel.setFont(FontManager.getSmallFont(getFont()));
 		panel.add(headerLabel, BorderLayout.CENTER);
 
 		IconButton addButton = new IconButton(ADD_ICON, ADD_ICON_HOVER);
@@ -167,7 +175,7 @@ public class ClockTabPanel extends TabContentPanel
 
 		JLabel infoLabel = new JShadowedLabel(text);
 		infoLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
-		infoLabel.setFont(FontManager.getRunescapeSmallFont());
+		infoLabel.setFont(FontManager.getSmallFont(getFont()));
 		panel.add(infoLabel);
 
 		return panel;

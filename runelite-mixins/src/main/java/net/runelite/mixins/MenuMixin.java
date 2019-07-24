@@ -50,36 +50,36 @@ public abstract class MenuMixin implements RSClient
 		int h = getMenuHeight();
 
 		// Outside border
-		RasterizerDrawHorizontalLine(x + 2, y, w - 4, MENU_BORDER_OUTER_2010);
-		RasterizerDrawHorizontalLine(x + 2, y + h - 1, w - 4, MENU_BORDER_OUTER_2010);
-		RasterizerDrawVerticalLine(x, y + 2, h - 4, MENU_BORDER_OUTER_2010);
-		RasterizerDrawVerticalLine(x + w - 1, y + 2, h - 4, MENU_BORDER_OUTER_2010);
+		rasterizerDrawHorizontalLine(x + 2, y, w - 4, MENU_BORDER_OUTER_2010);
+		rasterizerDrawHorizontalLine(x + 2, y + h - 1, w - 4, MENU_BORDER_OUTER_2010);
+		rasterizerDrawVerticalLine(x, y + 2, h - 4, MENU_BORDER_OUTER_2010);
+		rasterizerDrawVerticalLine(x + w - 1, y + 2, h - 4, MENU_BORDER_OUTER_2010);
 
 		// Padding
-		RasterizerDrawRectangle(x + 1, y + 5, w - 2, h - 6, MENU_PADDING_2010);
-		RasterizerDrawHorizontalLine(x + 1, y + 17, w - 2, MENU_PADDING_2010);
-		RasterizerDrawCircle(x + 2, y + h - 3, 0, MENU_PADDING_2010);
-		RasterizerDrawCircle(x + w - 3, y + h - 3, 0, MENU_PADDING_2010);
+		rasterizerDrawRectangle(x + 1, y + 5, w - 2, h - 6, MENU_PADDING_2010);
+		rasterizerDrawHorizontalLine(x + 1, y + 17, w - 2, MENU_PADDING_2010);
+		rasterizerDrawCircle(x + 2, y + h - 3, 0, MENU_PADDING_2010);
+		rasterizerDrawCircle(x + w - 3, y + h - 3, 0, MENU_PADDING_2010);
 
 		// Header
-		RasterizerDrawGradient(x + 2, y + 1, w - 4, 16, MENU_HEADER_GRADIENT_TOP_2010, MENU_HEADER_GRADIENT_BOTTOM_2010);
-		RasterizerFillRectangle(x + 1, y + 1, 2, 4, MENU_PADDING_2010);
-		RasterizerFillRectangle(x + w - 3, y + 1, 2, 4, MENU_PADDING_2010);
+		rasterizerDrawGradient(x + 2, y + 1, w - 4, 16, MENU_HEADER_GRADIENT_TOP_2010, MENU_HEADER_GRADIENT_BOTTOM_2010);
+		rasterizerFillRectangle(x + 1, y + 1, 2, 4, MENU_PADDING_2010);
+		rasterizerFillRectangle(x + w - 3, y + 1, 2, 4, MENU_PADDING_2010);
 
 		// Inside border
-		RasterizerDrawHorizontalLine(x + 2, y + 18, w - 4, MENU_BORDER_INNER_2010);
-		RasterizerDrawHorizontalLine(x + 3, y + h - 3, w - 6, MENU_BORDER_INNER_2010);
-		RasterizerDrawVerticalLine(x + 2, y + 18, h - 21, MENU_BORDER_INNER_2010);
-		RasterizerDrawVerticalLine(x + w - 3, y + 18, h - 21, MENU_BORDER_INNER_2010);
+		rasterizerDrawHorizontalLine(x + 2, y + 18, w - 4, MENU_BORDER_INNER_2010);
+		rasterizerDrawHorizontalLine(x + 3, y + h - 3, w - 6, MENU_BORDER_INNER_2010);
+		rasterizerDrawVerticalLine(x + 2, y + 18, h - 21, MENU_BORDER_INNER_2010);
+		rasterizerDrawVerticalLine(x + w - 3, y + 18, h - 21, MENU_BORDER_INNER_2010);
 
 		// Options background
-		RasterizerFillRectangle(x + 3, y + 19, w - 6, h - 22, MENU_BACKGROUND_2010);
+		rasterizerFillRectangle(x + 3, y + 19, w - 6, h - 22, MENU_BACKGROUND_2010);
 
 		// Corner insets
-		RasterizerDrawCircle(x + 1, y + 1, 0, MENU_BORDER_OUTER_2010);
-		RasterizerDrawCircle(x + w - 2, y + 1, 0, MENU_BORDER_OUTER_2010);
-		RasterizerDrawCircle(x + 1, y + h - 2, 0, MENU_BORDER_OUTER_2010);
-		RasterizerDrawCircle(x + w - 2, y + h - 2, 0, MENU_BORDER_OUTER_2010);
+		rasterizerDrawCircle(x + 1, y + 1, 0, MENU_BORDER_OUTER_2010);
+		rasterizerDrawCircle(x + w - 2, y + 1, 0, MENU_BORDER_OUTER_2010);
+		rasterizerDrawCircle(x + 1, y + h - 2, 0, MENU_BORDER_OUTER_2010);
+		rasterizerDrawCircle(x + w - 2, y + h - 2, 0, MENU_BORDER_OUTER_2010);
 
 		RSFont font = getFontBold12();
 		font.drawTextLeftAligned("Choose Option", x + 3, y + 14, MENU_TEXT_2010, -1);
@@ -105,7 +105,50 @@ public abstract class MenuMixin implements RSClient
 			// Highlight current option
 			if (mouseX > x && mouseX < w + x && mouseY > rowY - 13 && mouseY < rowY + 3)
 			{
-				RasterizerFillRectangleAlpha(x + 3, rowY - 12, w - 6, 15, 0xffffff, 80);
+				rasterizerFillRectangleAlpha(x + 3, rowY - 12, w - 6, 15, 0xffffff, 80);
+			}
+		}
+	}
+
+	@Inject
+	@Override
+	public void sortMenuEntries()
+	{
+		int count = getMenuOptionCount() - 1;
+		int[] menuOpcodes = getMenuTypes();
+		String[] menuTargetNames = getMenuTargets();
+		String[] menuActions = getMenuOptions();
+		int[] menuArguments0 = getMenuIdentifiers();
+		int[] menuArguments1 = getMenuActionParams0();
+		int[] menuArguments2 = getMenuActionParams1();
+		boolean[] menuShiftClick = getMenuForceLeftClick();
+
+		int tmp;
+		for (int i = 0; i < count; ++i)
+		{
+			if (menuOpcodes[i] < 1000 && menuOpcodes[i + 1] > 1000)
+			{
+				String var3 = menuTargetNames[i];
+				menuTargetNames[i] = menuTargetNames[i + 1];
+				menuTargetNames[i + 1] = var3;
+				String var4 = menuActions[i];
+				menuActions[i] = menuActions[i + 1];
+				menuActions[i + 1] = var4;
+				tmp = menuOpcodes[i];
+				menuOpcodes[i] = menuOpcodes[i + 1];
+				menuOpcodes[i + 1] = tmp;
+				tmp = menuArguments1[i];
+				menuArguments1[i] = menuArguments1[i + 1];
+				menuArguments1[i + 1] = tmp;
+				tmp = menuArguments2[i];
+				menuArguments2[i] = menuArguments2[i + 1];
+				menuArguments2[i + 1] = tmp;
+				tmp = menuArguments0[i];
+				menuArguments0[i] = menuArguments0[i + 1];
+				menuArguments0[i + 1] = tmp;
+				boolean var6 = menuShiftClick[i];
+				menuShiftClick[i] = menuShiftClick[i + 1];
+				menuShiftClick[i + 1] = var6;
 			}
 		}
 	}

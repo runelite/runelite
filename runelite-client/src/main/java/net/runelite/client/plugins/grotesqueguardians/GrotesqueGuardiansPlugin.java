@@ -25,21 +25,52 @@
 package net.runelite.client.plugins.grotesqueguardians;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
+import java.util.ArrayList;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.NPC;
+import javax.annotation.Nullable;
+import net.runelite.api.Client;
+
+import static net.runelite.api.NpcID.DUSK_7888;
+
 
 @PluginDescriptor(
 	name = "Grotesque Guardians",
-	description = "Display tile indicators for the Grotesque Guardian special attacks",
-	tags = {"grotesque", "guardians", "gargoyle", "garg"},
-		type = PluginType.PVM
+	description = "Show various helpful utitiles during the Grotesque Gaurdians (Gargoyles) fight",
+	tags = { "bosses", "combat", "gargs", "overlay", "grotesque", "pve", "pvm" },
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
+@Singleton
 public class GrotesqueGuardiansPlugin extends Plugin
 {
+	private static final int GARGOYLES_REGION = 6727;
+	@Inject
+	private Client client;
 	@Inject
 	private OverlayManager overlayManager;
+	@Inject
+	private GrotesqueGuardiansPrayerOverlay prayerOverlay;
+	@Inject
+	private EventBus eventBus;
+	@Nullable
+	private DuskAttack prayAgainst;
+	@Nullable
+	private NPC dusk;
+	private boolean inGargs;
+	private boolean needingToRun;
+
+	public GrotesqueGuardiansPlugin()
+	{
+		inGargs = false;
+		needingToRun = false;
+	}
 
 	@Inject
 	private GrotesqueGuardiansOverlay overlay;
@@ -47,12 +78,91 @@ public class GrotesqueGuardiansPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+
 		overlayManager.add(overlay);
+		overlayManager.add(prayerOverlay);
+		dusk = null;
+		prayAgainst = null;
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
+		overlayManager.remove(prayerOverlay);
+		dusk = null;
+		prayAgainst = null;
 	}
+
+	private void onGameTick(final GameTick event)
+	{
+		final ArrayList<Integer> regions = new ArrayList<>();
+		for (final int intValue : client.getMapRegions())
+		{
+			regions.add(intValue);
+		}
+		if (regions.contains(GARGOYLES_REGION))
+		{
+			dusk = null;
+			inGargs = true;
+			for (final NPC npc : client.getNpcs())
+			{
+				if (npc.getName() != null && npc.getName().contains("Dusk") && !npc.isDead())
+				{
+					dusk = npc;
+				}
+			}
+			if (inGargs && dusk != null)
+			{
+				if (dusk.getId() == DUSK_7888)
+				{
+					if (dusk.getAnimation() == DuskAttack.MELEE.getAnimation())
+					{
+						prayAgainst = DuskAttack.MELEE;
+					}
+					else if (dusk.getAnimation() == DuskAttack.RANGE.getAnimation())
+					{
+						prayAgainst = DuskAttack.RANGE;
+					}
+				}
+				else
+					{
+					prayAgainst = null;
+				}
+				needingToRun = dusk.getAnimation() == 7802;
+			}
+		}
+		else
+			{
+			inGargs = false;
+			prayAgainst = null;
+			dusk = null;
+		}
+	}
+
+	@Nullable
+	DuskAttack getPrayAgainst()
+	{
+		return prayAgainst;
+	}
+
+	@Nullable
+	NPC getDusk()
+	{
+		return dusk;
+	}
+
+	boolean isInGargs()
+	{
+		return inGargs;
+	}
+
+	boolean isNeedingToRun()
+	{
+		return needingToRun;
+	}
+
 }

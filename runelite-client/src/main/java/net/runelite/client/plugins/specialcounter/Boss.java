@@ -26,11 +26,12 @@ package net.runelite.client.plugins.specialcounter;
 
 import com.google.common.collect.Sets;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.ToString;
 import net.runelite.api.NpcID;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @ToString
 enum Boss
 {

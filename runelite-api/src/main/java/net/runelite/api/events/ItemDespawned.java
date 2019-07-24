@@ -24,9 +24,9 @@
  */
 package net.runelite.api.events;
 
-import lombok.Value;
 import net.runelite.api.Item;
 import net.runelite.api.Tile;
+import lombok.Value;
 
 /**
  * Called when an item pile despawns from the ground. When the client loads a new scene,

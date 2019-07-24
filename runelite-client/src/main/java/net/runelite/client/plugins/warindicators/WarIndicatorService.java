@@ -24,34 +24,34 @@
  */
 package net.runelite.client.plugins.warindicators;
 
-import net.runelite.api.Client;
-import net.runelite.api.Player;
+import java.awt.Color;
+import java.util.function.BiConsumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.awt.*;
-import java.util.function.BiConsumer;
+import net.runelite.api.Client;
+import net.runelite.api.Player;
 
 @Singleton
 public class WarIndicatorService
 {
 	private final Client client;
-	private final WarIndicatorConfig config;
+	private final WarIndicatorPlugin plugin;
 
 	@Inject
-	private WarIndicatorService(Client client, WarIndicatorConfig config)
+	private WarIndicatorService(final Client client, final WarIndicatorPlugin plugin)
 	{
-		this.config = config;
+		this.plugin = plugin;
 		this.client = client;
 	}
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
-		if (!config.highlightSnipes() && !config.highLightCallers())
+		if (!plugin.isHighlightSnipes() && !plugin.isHighLightCallers())
 		{
 			return;
 		}
 
-		if (config.highlightSnipes())
+		if (plugin.isHighlightSnipes())
 		{
 			for (Player player : client.getPlayers())
 			{
@@ -60,24 +60,19 @@ public class WarIndicatorService
 					continue;
 				}
 
-				String[] targets = config.getTargetedSnipes().split(", ");
+				String[] targets = plugin.getGetTargetedSnipes().split(", ");
 
-				if (targets == null)
+				for (String target : targets)
 				{
-					return;
-				}
-
-				for (int i = 0; i < targets.length; i++)
-				{
-					if (player.getName().equalsIgnoreCase(targets[i]))
+					if (player.getName().equalsIgnoreCase(target))
 					{
-						consumer.accept(player, config.getSnipeColor());
+						consumer.accept(player, plugin.getGetSnipeColor());
 					}
 				}
 			}
 		}
 
-		if (config.highLightCallers())
+		if (plugin.isHighLightCallers())
 		{
 			for (Player player : client.getPlayers())
 			{
@@ -86,18 +81,13 @@ public class WarIndicatorService
 					continue;
 				}
 
-				String[] callers = config.getActiveCallers().split(", ");
+				String[] callers = plugin.getGetActiveCallers().split(", ");
 
-				if (callers == null)
+				for (String caller : callers)
 				{
-					return;
-				}
-
-				for (int i = 0; i < callers.length; i++)
-				{
-					if (player.getName().equalsIgnoreCase(callers[i]))
+					if (player.getName().equalsIgnoreCase(caller))
 					{
-						consumer.accept(player, config.getCallerColor());
+						consumer.accept(player, plugin.getGetCallerColor());
 					}
 				}
 			}

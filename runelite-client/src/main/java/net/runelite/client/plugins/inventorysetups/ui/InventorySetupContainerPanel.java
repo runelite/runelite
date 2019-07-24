@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018-2019, Ethan <https://github.com/Wea1thRS/>
  * Copyright (c) 2018, https://runelitepl.us
  * All rights reserved.
  *
@@ -26,20 +27,21 @@ package net.runelite.client.plugins.inventorysetups.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
-import net.runelite.client.plugins.inventorysetups.InventorySetupConfig;
 import net.runelite.client.plugins.inventorysetups.InventorySetupItem;
 import net.runelite.client.plugins.inventorysetups.InventorySetupPlugin;
 import net.runelite.client.ui.ColorScheme;
 
-public abstract class InventorySetupContainerPanel extends JPanel
+@Singleton
+abstract class InventorySetupContainerPanel extends JPanel
 {
-	protected ItemManager itemManager;
+	private final ItemManager itemManager;
 
 	private final InventorySetupPlugin plugin;
 
@@ -70,8 +72,8 @@ public abstract class InventorySetupContainerPanel extends JPanel
 	}
 
 	void setContainerSlot(int index,
-						  final InventorySetupSlot containerSlot,
-						  final ArrayList<InventorySetupItem> items)
+						final InventorySetupSlot containerSlot,
+						final List<InventorySetupItem> items)
 	{
 		if (index >= items.size() || items.get(index).getId() == -1)
 		{
@@ -92,16 +94,15 @@ public abstract class InventorySetupContainerPanel extends JPanel
 	}
 
 	void highlightDifferentSlotColor(InventorySetupItem savedItem,
-									 InventorySetupItem currItem,
-									 final InventorySetupSlot containerSlot)
+									InventorySetupItem currItem,
+									final InventorySetupSlot containerSlot)
 	{
 		// important note: do not use item names for comparisons
 		// they are all empty to avoid clientThread usage when highlighting
 
-		final InventorySetupConfig config = plugin.getConfig();
-		final Color highlightColor = config.getHighlightColor();
+		final Color highlightColor = plugin.getGetHighlightColor();
 
-		if (config.getStackDifference() && currItem.getQuantity() != savedItem.getQuantity())
+		if (plugin.isGetStackDifference() && currItem.getQuantity() != savedItem.getQuantity())
 		{
 			containerSlot.setBackground(highlightColor);
 			return;
@@ -110,7 +111,7 @@ public abstract class InventorySetupContainerPanel extends JPanel
 		int currId = currItem.getId();
 		int checkId = savedItem.getId();
 
-		if (!config.getVariationDifference())
+		if (!plugin.isGetVariationDifference())
 		{
 			currId = ItemVariationMapping.map(currId);
 			checkId = ItemVariationMapping.map(checkId);
@@ -126,5 +127,5 @@ public abstract class InventorySetupContainerPanel extends JPanel
 		containerSlot.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 	}
 
-	abstract public void setupContainerPanel(final JPanel containerSlotsPanel);
+	protected abstract void setupContainerPanel(final JPanel containerSlotsPanel);
 }

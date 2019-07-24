@@ -32,7 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.api.Client;
+import javax.inject.Singleton;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
@@ -41,19 +41,18 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class ShayzienInfirmaryOverlay extends Overlay
 {
 	private final ShayzienInfirmaryPlugin plugin;
-	private final Client client;
 
 	private BufferedImage medPackImage;
 
 	@Inject
-	public ShayzienInfirmaryOverlay(ShayzienInfirmaryPlugin plugin, Client client, ItemManager itemManager)
+	public ShayzienInfirmaryOverlay(final ShayzienInfirmaryPlugin plugin, final ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.plugin = plugin;
-		this.client = client;
 
 		medPackImage = itemManager.getImage(ItemID.SHAYZIEN_MEDPACK);
 	}
@@ -61,7 +60,7 @@ public class ShayzienInfirmaryOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isAtInfirmary())
+		if (plugin.isNotAtInfirmary())
 		{
 			return null;
 		}

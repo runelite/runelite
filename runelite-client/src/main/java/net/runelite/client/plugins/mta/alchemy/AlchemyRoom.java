@@ -37,27 +37,13 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import static net.runelite.api.ObjectID.CUPBOARD_23678;
-import static net.runelite.api.ObjectID.CUPBOARD_23679;
-import static net.runelite.api.ObjectID.CUPBOARD_23680;
-import static net.runelite.api.ObjectID.CUPBOARD_23681;
-import static net.runelite.api.ObjectID.CUPBOARD_23682;
-import static net.runelite.api.ObjectID.CUPBOARD_23683;
-import static net.runelite.api.ObjectID.CUPBOARD_23684;
-import static net.runelite.api.ObjectID.CUPBOARD_23685;
-import static net.runelite.api.ObjectID.CUPBOARD_23686;
-import static net.runelite.api.ObjectID.CUPBOARD_23687;
-import static net.runelite.api.ObjectID.CUPBOARD_23688;
-import static net.runelite.api.ObjectID.CUPBOARD_23689;
-import static net.runelite.api.ObjectID.CUPBOARD_23690;
-import static net.runelite.api.ObjectID.CUPBOARD_23691;
-import static net.runelite.api.ObjectID.CUPBOARD_23692;
-import static net.runelite.api.ObjectID.CUPBOARD_23693;
+import static net.runelite.api.ObjectID.*;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -65,7 +51,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTAPlugin;
@@ -93,30 +79,46 @@ public class AlchemyRoom extends MTARoom
 	private final Client client;
 	private final ItemManager itemManager;
 	private final InfoBoxManager infoBoxManager;
+	private final EventBus eventBus;
 
 	private AlchemyItem best;
 	private Cupboard suggestion;
 
+	private boolean alchemy;
+
 	@Inject
-	private AlchemyRoom(Client client, MTAConfig config, MTAPlugin plugin, ItemManager itemManager, InfoBoxManager infoBoxManager)
+	private AlchemyRoom(final Client client, final MTAConfig config, final MTAPlugin plugin, final ItemManager itemManager, final InfoBoxManager infoBoxManager, final EventBus eventBus)
 	{
 		super(config);
 		this.client = client;
 		this.plugin = plugin;
 		this.itemManager = itemManager;
 		this.infoBoxManager = infoBoxManager;
+		this.eventBus = eventBus;
+
+		this.alchemy = config.alchemy();
+
+		addSubscriptions();
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void addSubscriptions()
 	{
-		if (!inside() || !config.alchemy())
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+	}
+
+	private void onGameTick(GameTick event)
+	{
+		if (!inside() || !this.alchemy)
 		{
 			return;
 		}
 
 		AlchemyItem bestItem = getBest();
-		if (best == null || best != bestItem)
+		if (best == null || !best.equals(bestItem))
 		{
 			if (best != null)
 			{
@@ -140,9 +142,7 @@ public class AlchemyRoom extends MTARoom
 		}
 	}
 
-
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		if (!inside())
 		{
@@ -213,8 +213,7 @@ public class AlchemyRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
@@ -225,8 +224,7 @@ public class AlchemyRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage wrapper)
+	private void onChatMessage(ChatMessage wrapper)
 	{
 		if (!inside() || !config.alchemy())
 		{
@@ -235,41 +233,48 @@ public class AlchemyRoom extends MTARoom
 
 		String message = wrapper.getMessage();
 
-		if (wrapper.getType() == ChatMessageType.GAMEMESSAGE)
+		if (wrapper.getType() == ChatMessageType.GAMEMESSAGE && message.contains(YOU_FOUND))
 		{
-			if (message.contains(YOU_FOUND))
+			String item = message.replace(YOU_FOUND, "").trim();
+			AlchemyItem alchemyItem = AlchemyItem.find(item);
+			Cupboard clicked = getClicked();
+			if (clicked.alchemyItem != alchemyItem && alchemyItem != null)
 			{
-				String item = message.replace(YOU_FOUND, "").trim();
-				AlchemyItem alchemyItem = AlchemyItem.find(item);
-				Cupboard clicked = getClicked();
-				if (clicked.alchemyItem != alchemyItem)
-				{
-					fill(clicked, alchemyItem);
-				}
-			}
-			else if (message.equals(EMPTY))
-			{
-				Cupboard clicked = getClicked();
-
-				int idx = Arrays.asList(cupboards).indexOf(clicked);
-				for (int i = -2; i <= 2; ++i)
-				{
-					int j = (idx + i) % 8;
-					if (j < 0)
-					{
-						j = 8 + j;
-					}
-
-					Cupboard cupboard = cupboards[j];
-					if (cupboard != null && cupboard.alchemyItem == AlchemyItem.UNKNOWN)
-					{
-						cupboard.alchemyItem = AlchemyItem.POSSIBLY_EMPTY;
-					}
-				}
-
-				clicked.alchemyItem = AlchemyItem.EMPTY;
+				fill(clicked, alchemyItem);
 			}
 		}
+		else if (message.equals(EMPTY))
+		{
+			Cupboard clicked = getClicked();
+
+			int idx = Arrays.asList(cupboards).indexOf(clicked);
+			for (int i = -2; i <= 2; ++i)
+			{
+				int j = (idx + i) % 8;
+				if (j < 0)
+				{
+					j = 8 + j;
+				}
+
+				Cupboard cupboard = cupboards[j];
+				if (cupboard != null && cupboard.alchemyItem == AlchemyItem.UNKNOWN)
+				{
+					cupboard.alchemyItem = AlchemyItem.POSSIBLY_EMPTY;
+				}
+			}
+
+			clicked.alchemyItem = AlchemyItem.EMPTY;
+		}
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("mta") || !event.getKey().equals("alchemy"))
+		{
+			return;
+		}
+
+		this.alchemy = config.alchemy();
 	}
 
 
@@ -377,7 +382,7 @@ public class AlchemyRoom extends MTARoom
 				continue;
 			}
 
-			if (alchemyItem == best)
+			if (alchemyItem.equals(best))
 			{
 				client.setHintArrow(object.getWorldLocation());
 				found = true;
@@ -460,14 +465,14 @@ public class AlchemyRoom extends MTARoom
 				continue;
 			}
 
-			drawItem(graphics, item, Color.GREEN);
+			drawItem(graphics, item);
 		}
 	}
 
-	private void drawItem(Graphics2D graphics, WidgetItem item, Color border)
+	private void drawItem(Graphics2D graphics, WidgetItem item)
 	{
 		Rectangle bounds = item.getCanvasBounds();
-		graphics.setColor(border);
+		graphics.setColor(Color.GREEN);
 		graphics.draw(bounds);
 	}
 

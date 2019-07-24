@@ -26,15 +26,16 @@ package net.runelite.client.plugins.ammo;
 
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -45,6 +46,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	description = "Shows the current ammo the player has equipped",
 	tags = {"bolts", "darts", "chinchompa", "equipment"}
 )
+@Singleton
 public class AmmoPlugin extends Plugin
 {
 	@Inject
@@ -59,11 +61,16 @@ public class AmmoPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private AmmoCounter counterBox;
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+
 		clientThread.invokeLater(() ->
 		{
 			final ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
@@ -78,12 +85,13 @@ public class AmmoPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		infoBoxManager.removeInfoBox(counterBox);
 		counterBox = null;
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
 		{
@@ -100,7 +108,7 @@ public class AmmoPlugin extends Plugin
 		if (items.length > EquipmentInventorySlot.WEAPON.getSlotIdx())
 		{
 			final Item weapon = items[EquipmentInventorySlot.WEAPON.getSlotIdx()];
-			final ItemComposition weaponComp = itemManager.getItemComposition(weapon.getId());
+			final ItemDefinition weaponComp = itemManager.getItemDefinition(weapon.getId());
 			if (weaponComp.isStackable())
 			{
 				updateInfobox(weapon, weaponComp);
@@ -115,7 +123,7 @@ public class AmmoPlugin extends Plugin
 		}
 
 		final Item ammo = items[EquipmentInventorySlot.AMMO.getSlotIdx()];
-		final ItemComposition comp = itemManager.getItemComposition(ammo.getId());
+		final ItemDefinition comp = itemManager.getItemDefinition(ammo.getId());
 
 		if (!comp.isStackable())
 		{
@@ -126,7 +134,7 @@ public class AmmoPlugin extends Plugin
 		updateInfobox(ammo, comp);
 	}
 
-	private void updateInfobox(final Item item, final ItemComposition comp)
+	private void updateInfobox(final Item item, final ItemDefinition comp)
 	{
 		if (counterBox != null && counterBox.getItemID() == item.getId())
 		{

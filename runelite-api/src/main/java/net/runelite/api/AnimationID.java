@@ -155,27 +155,38 @@ public final class AnimationID
 	public static final int SAND_COLLECTION = 895;
 	public static final int PISCARILIUS_CRANE_REPAIR = 7199;
 	public static final int HOME_MAKE_TABLET = 4067;
+	public static final int THIEVING_STALL = 832;
+	public static final int PICKPOCKET_SUCCESS = 881;
 
 	//block animations for players and perhaps npcs as well?
 	public static final int BLOCK_DEFENDER = 4177;
 	public static final int BLOCK_NO_SHIELD = 420;
 	public static final int BLOCK_SHIELD = 1156;
 	public static final int BLOCK_SWORD = 388;
-	public static final int BLOCK_UNARMED = 424;
+	public static final int BLOCK_UNARMED = 424; // Same Animation as failed pickpocked
+	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
 
 	// NPC animations
-	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
+	public static final int TZTOK_JAD_MELEE_ATTACK = 2655;
+	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
+	public static final int TOK_XIL_RANGE_ATTACK = 2633;
+	public static final int TOK_XIL_MELEE_ATTACK = 2628;
+	public static final int KET_ZEK_MELEE_ATTACK = 2644;
+	public static final int KET_ZEK_MAGE_ATTACK = 2647;
+	public static final int MEJ_KOT_MELEE_ATTACK = 2637;
+	public static final int MEJ_KOT_HEAL_ATTACK = 2639;
 	public static final int HELLHOUND_DEFENCE = 6566;
 	public static final int VORKATH_WAKE_UP = 7950;
 	public static final int VORKATH_DEATH = 7949;
 	public static final int VORKATH_SLASH_ATTACK = 7951;
 	public static final int VORKATH_ATTACK = 7952;
-	public static final int VORKATH_FIRE_BOMB_ATTACK = 7960;
+	public static final int VORKATH_FIRE_BOMB_OR_SPAWN_ATTACK = 7960;
 	public static final int VORKATH_ACID_ATTACK = 7957;
 	public static final int BLACKJACK_KO = 838;
 	public static final int VETION_EARTHQUAKE = 5507;
-	public static final int ZULRAH_DEATH = 5804;										 
+	public static final int ZULRAH_DEATH = 5804;
+	public static final int ZULRAH_PHASE = 5072;
 
 	// Farming
 	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;
@@ -186,12 +197,14 @@ public final class AnimationID
 	public static final int FARMING_PLANT_SEED = 2291;
 	public static final int FARMING_HARVEST_FLOWER = 2292;
 	public static final int FARMING_MIX_ULTRACOMPOST = 7699;
+	public static final int FARMING_HARVEST_ALLOTMENT = 830;
 
 	// Lunar spellbook
 	public static final int ENERGY_TRANSFER_VENGEANCE_OTHER = 4411;
 	public static final int MAGIC_LUNAR_SHARED = 4413; // Utilized by Fertile Soil, Boost/Stat Potion Share, NPC Contact, Bake Pie
 	public static final int MAGIC_LUNAR_CURE_PLANT = 4432;
 	public static final int MAGIC_LUNAR_GEOMANCY = 7118;
+	public static final int MAGIC_LUNAR_PLANK_MAKE = 6298;
 	public static final int MAGIC_LUNAR_STRING_JEWELRY = 4412;
 
 	// Arceuus spellbook
@@ -213,8 +226,19 @@ public final class AnimationID
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
 	public static final int LOW_LEVEL_MAGIC_ATTACK = 1162;
-    public static final int HIGH_LEVEL_MAGIC_ATTACK = 1167;
-    public static final int BLOWPIPE_ATTACK = 5061;
+	public static final int HIGH_LEVEL_MAGIC_ATTACK = 1167;
+	public static final int BLOWPIPE_ATTACK = 5061;
+
+	// Tekton
+	public static final int TEKTON_ANVIL = 7475;
+	public static final int TEKTON_AUTO1 = 7482;
+	public static final int TEKTON_AUTO2 = 7483;
+	public static final int TEKTON_AUTO3 = 7484;
+	public static final int TEKTON_FAST_AUTO1 = 7478;
+	public static final int TEKTON_FAST_AUTO2 = 7488;
+	public static final int TEKTON_ENRAGE_AUTO1 = 7492;
+	public static final int TEKTON_ENRAGE_AUTO2 = 7493;
+	public static final int TEKTON_ENRAGE_AUTO3 = 7494;
 
 	// Hydra
 	public static final int HYDRA_POISON_1 = 8234;
@@ -237,4 +261,64 @@ public final class AnimationID
 	public static final int HYDRA_RANGED_4 = 8255;
 	public static final int HYDRA_4_1 = 8257;
 	public static final int HYDRA_4_2 = 8258;
+
+	// INFERNO animations
+	public static final int JAL_NIB = 7574;
+	public static final int JAL_MEJRAH = 7578;
+	public static final int JAL_AK_RANGE_ATTACK = 7581;
+	public static final int JAL_AK_MELEE_ATTACK = 7582;
+	public static final int JAL_AK_MAGIC_ATTACK = 7583;
+	public static final int JAL_IMKOT = 7597;
+	public static final int JAL_XIL_MELEE_ATTACK = 7604;
+	public static final int JAL_XIL_RANGE_ATTACK = 7605;
+	public static final int JAL_ZEK_MAGE_ATTACK = 7610;
+	public static final int JAL_ZEK_MELEE_ATTACK = 7612;
+	public static final int JALTOK_JAD_MELEE_ATTACK = 7590;
+	public static final int JALTOK_JAD_MAGE_ATTACK = 7592;
+	public static final int JALTOK_JAD_RANGE_ATTACK = 7593;
+	public static final int TZKAL_ZUK = 7566;
+	public static final int JAL_MEJJAK = 2858;
+
+	//General Graardor
+	public static final int MINION_AUTO1 = 6154;
+	public static final int MINION_AUTO2 = 6156;
+	public static final int MINION_AUTO3 = 7071;
+	public static final int MINION_AUTO4 = 7073;
+	public static final int GENERAL_AUTO1 = 7018;
+	public static final int GENERAL_AUTO2 = 7020;
+	public static final int GENERAL_AUTO3 = 7021;
+
+	//Zammy-poo
+	public static final int ZAMMY_GENERIC_AUTO = 64;
+	public static final int KRIL_AUTO = 6948;
+	public static final int KRIL_SPEC = 6950;
+	public static final int ZAKL_AUTO = 7077;
+	public static final int BALFRUG_AUTO = 4630;
+
+	//Sara-Poo
+	public static final int ZILYANA_MELEE_AUTO = 6964;
+	public static final int ZILYANA_AUTO = 6967;
+	public static final int ZILYANA_SPEC = 6970;
+	public static final int STARLIGHT_AUTO = 6376;
+	public static final int BREE_AUTO = 7026;
+	public static final int GROWLER_AUTO = 7037;
+
+	//Arma-Poo
+	public static final int KREE_RANGED = 6978;
+	public static final int SKREE_AUTO = 6955;
+	public static final int GEERIN_AUTO = 6956;
+	public static final int GEERIN_FLINCH = 6958;
+	public static final int KILISA_AUTO = 6957;
+
+	//Dag Kings
+	public static final int DAG_REX = 2853;
+	public static final int DAG_PRIME = 2854;
+	public static final int DAG_SUPREME = 2855;
+
+	// Lizardman shaman
+	public static final int LIZARDMAN_SHAMAN_SPAWN = 7157;
+
+	// Combat counter
+	public static final int BARRAGE_ANIMATION = 1979;
+	public static final int CHIN_ANIMATION = 7618;
 }

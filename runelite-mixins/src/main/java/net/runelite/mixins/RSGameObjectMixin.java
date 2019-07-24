@@ -24,24 +24,24 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Polygon;
-import java.awt.geom.Area;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.Angle;
 import net.runelite.api.coords.LocalPoint;
+import java.awt.Polygon;
+import java.awt.geom.Area;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSEntity;
 import net.runelite.rs.api.RSGameObject;
 import net.runelite.rs.api.RSModel;
-import net.runelite.rs.api.RSRenderable;
 
 @Mixin(RSGameObject.class)
 public abstract class RSGameObjectMixin implements RSGameObject
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
@@ -59,9 +59,10 @@ public abstract class RSGameObjectMixin implements RSGameObject
 	}
 
 	@Inject
-	private RSModel getModel()
+	@Override
+	public RSModel getModel()
 	{
-		RSRenderable renderable = getRenderable();
+		RSEntity renderable = getRenderable();
 		if (renderable == null)
 		{
 			return null;

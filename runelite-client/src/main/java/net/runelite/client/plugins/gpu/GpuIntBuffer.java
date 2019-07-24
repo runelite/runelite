@@ -32,11 +32,6 @@ class GpuIntBuffer
 {
 	private IntBuffer buffer = allocateDirect(65536);
 
-	void put(int x, int y, int z)
-	{
-		buffer.put(x).put(y).put(z);
-	}
-
 	void put(int x, int y, int z, int c)
 	{
 		buffer.put(x).put(y).put(z).put(c);

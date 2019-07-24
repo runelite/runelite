@@ -140,6 +140,6 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING));
 		add("Pickpocket an Elf.",
 			new SkillRequirement(Skill.THIEVING, 85),
-			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_II));
+			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_I, true));
 	}
 }

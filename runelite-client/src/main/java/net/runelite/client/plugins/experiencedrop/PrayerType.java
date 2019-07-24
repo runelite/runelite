@@ -28,5 +28,5 @@ enum PrayerType
 {
 	MELEE,
 	RANGE,
-	MAGIC;
+	MAGIC
 }

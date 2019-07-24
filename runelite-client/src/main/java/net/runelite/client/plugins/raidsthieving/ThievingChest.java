@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.raidsthieving;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.GameObject;
@@ -32,32 +33,33 @@ import net.runelite.api.coords.WorldPoint;
 /**
  * Wrapper class for a GameObject that represents a chest in the thieving room of Chambers of Xeric.
  */
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public class ThievingChest
 {
 	/**
 	 * If the chest has never been opened, it could have bats.
 	 */
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private boolean everOpened;
 
 	/**
 	 * If the chest is empty, it could have bats.
 	 */
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private boolean empty;
 
 	/**
 	 * If the chest contains a poison trap instead.
 	 */
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private boolean poison;
 
 
-	@Setter
+	@Setter(AccessLevel.PUBLIC)
 	private int chestId;
 
 	private final WorldPoint localPoint;
+	@Getter(AccessLevel.PUBLIC)
 	private final InstancePoint instancePoint;
 
 	/**

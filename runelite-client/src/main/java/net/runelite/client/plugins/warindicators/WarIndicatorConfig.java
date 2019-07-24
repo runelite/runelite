@@ -34,10 +34,10 @@ import net.runelite.client.config.ConfigItem;
 public interface WarIndicatorConfig extends Config
 {
 	@ConfigItem(
-			position = 0,
-			keyName = "highLightCallers",
-			name = "Highlight Callers",
-			description = "Highlight listed caller(s)"
+		position = 0,
+		keyName = "highLightCallers",
+		name = "Highlight Callers",
+		description = "Highlight listed caller(s)"
 	)
 	default boolean highLightCallers()
 	{
@@ -45,10 +45,10 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 1,
-			keyName = "callerColor",
-			name = "Caller(s) Color",
-			description = "Color to highlight caller's name"
+		position = 1,
+		keyName = "callerColor",
+		name = "Caller(s) Color",
+		description = "Color to highlight caller's name"
 	)
 	default Color getCallerColor()
 	{
@@ -56,10 +56,10 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "callerMinimap",
-			name = "Callers on Minimap",
-			description = "Show your caller(s) on the minimap"
+		position = 2,
+		keyName = "callerMinimap",
+		name = "Callers on Minimap",
+		description = "Show your caller(s) on the minimap"
 	)
 	default boolean callerMinimap()
 	{
@@ -68,10 +68,10 @@ public interface WarIndicatorConfig extends Config
 
 
 	@ConfigItem(
-			position = 3,
-			keyName = "callerTile",
-			name = "Show Caller's Tile",
-			description = "Show the tile your target is standing on"
+		position = 3,
+		keyName = "callerTile",
+		name = "Show Caller's Tile",
+		description = "Show the tile your target is standing on"
 	)
 	default boolean callerTile()
 	{
@@ -79,10 +79,10 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 4,
-			keyName = "activeCallers",
-			name = "Callers",
-			description = "Adds a user to your caller list. Format: (caller), (caller)"
+		position = 4,
+		keyName = "activeCallers",
+		name = "Callers",
+		description = "Adds a user to your caller list. Format: (caller), (caller)"
 	)
 	default String getActiveCallers()
 	{
@@ -90,19 +90,18 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "activeCallers",
-			name = "",
-			description = ""
+		position = 5,
+		keyName = "activeCallers",
+		name = "",
+		description = ""
 	)
 	void setActiveCallers(String key);
 
-
 	@ConfigItem(
-			position = 6,
-			keyName = "highlightSnipes",
-			name = "Highlight Targets",
-			description = "Highlight listed target(s)"
+		position = 6,
+		keyName = "highlightSnipes",
+		name = "Highlight Targets",
+		description = "Highlight listed target(s)"
 	)
 	default boolean highlightSnipes()
 	{
@@ -110,10 +109,10 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
-			keyName = "snipeColor",
-			name = "Target(s) Color",
-			description = "Color to highlight target name"
+		position = 7,
+		keyName = "snipeColor",
+		name = "Target(s) Color",
+		description = "Color to highlight target name"
 	)
 	default Color getSnipeColor()
 	{
@@ -121,10 +120,10 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 8,
-			keyName = "snipeMinimap",
-			name = "Targets on Minimap",
-			description = "Show your target on the minimap"
+		position = 8,
+		keyName = "snipeMinimap",
+		name = "Targets on Minimap",
+		description = "Show your target on the minimap"
 	)
 	default boolean snipeMinimap()
 	{
@@ -132,10 +131,10 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 9,
-			keyName = "snipeTile",
-			name = "Show Target's Tile",
-			description = "Show the tile your target is standing on"
+		position = 9,
+		keyName = "snipeTile",
+		name = "Show Target's Tile",
+		description = "Show the tile your target is standing on"
 	)
 	default boolean snipeTile()
 	{
@@ -143,10 +142,10 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 10,
-			keyName = "targetedSnipes",
-			name = "Targets",
-			description = "Adds a user to your snipe list. Format: (target), (target)"
+		position = 10,
+		keyName = "targetedSnipes",
+		name = "Targets",
+		description = "Adds a user to your snipe list. Format: (target), (target)"
 	)
 	default String getTargetedSnipes()
 	{
@@ -154,11 +153,10 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 11,
-			keyName = "targetedSnipes",
-			name = "",
-			description = ""
+		position = 11,
+		keyName = "targetedSnipes",
+		name = "",
+		description = ""
 	)
-
 	void setTargetedSnipe(String key);
 }

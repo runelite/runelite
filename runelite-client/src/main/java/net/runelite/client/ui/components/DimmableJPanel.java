@@ -70,6 +70,7 @@ public class DimmableJPanel extends JPanel
 	 * Dimming sets all parts of this component with darker colors except for the central label
 	 * This is useful for showing that progress is paused
 	 * Setting dim to false will restore the original colors from before the component was dimmed.
+	 *
 	 * @param dimmed
 	 */
 	public void setDimmed(boolean dimmed)

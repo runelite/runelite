@@ -34,17 +34,28 @@ import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.Getter;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Hitsplat;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -59,11 +70,14 @@ import net.runelite.client.util.ImageUtil;
 	description = "Tracks current damage values for Poison and Venom",
 	tags = {"combat", "poison", "venom", "heart", "hp"}
 )
+@Singleton
 public class PoisonPlugin extends Plugin
 {
 	private static final int POISON_TICK_MILLIS = 18000;
-	private static final int VENOM_THRESHOLD = 1000000;
+	static final int VENOM_THRESHOLD = 1000000;
+	private static final int VENOM_UTILITY = 999997;
 	private static final int VENOM_MAXIMUM_DAMAGE = 20;
+	static final int POISON_TICK_TICKS = 30;
 
 	private static final BufferedImage HEART_DISEASE;
 	private static final BufferedImage HEART_POISON;
@@ -97,8 +111,15 @@ public class PoisonPlugin extends Plugin
 	@Inject
 	private PoisonConfig config;
 
+	@Inject
+	private PoisonActorOverlay actorOverlay;
+
+	@Inject
+	private EventBus eventBus;
+
 	@Getter
 	private int lastDamage;
+
 	private boolean envenomed;
 	private PoisonInfobox infobox;
 	private Instant nextPoisonTick;
@@ -106,6 +127,15 @@ public class PoisonPlugin extends Plugin
 	private int lastDiseaseValue = 0;
 	private BufferedImage heart;
 	private int nextTickCount;
+
+	@Getter
+	private Map<Actor, ActorPoisonInfo> poisonedActors = new HashMap<>();
+
+	private boolean showInfoboxes;
+	private boolean changeHealthIcon;
+	private boolean showForPlayers;
+	private boolean showForNpcs;
+	private int fontSize;
 
 	@Provides
 	PoisonConfig getConfig(ConfigManager configManager)
@@ -116,7 +146,16 @@ public class PoisonPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
+		actorOverlay.setFontSize(this.fontSize);
 		overlayManager.add(poisonOverlay);
+
+		if (this.showForNpcs || this.showForPlayers)
+		{
+			overlayManager.add(actorOverlay);
+		}
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
@@ -127,6 +166,8 @@ public class PoisonPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(poisonOverlay);
 
 		if (infobox != null)
@@ -140,12 +181,22 @@ public class PoisonPlugin extends Plugin
 		nextPoisonTick = null;
 		lastValue = 0;
 		lastDiseaseValue = 0;
+		overlayManager.remove(actorOverlay);
 
 		clientThread.invoke(this::resetHealthIcon);
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(PlayerDespawned.class, this, this::onPlayerDespawned);
+	}
+
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		final int poisonValue = client.getVar(VarPlayer.POISON);
 		if (poisonValue != lastValue)
@@ -162,7 +213,7 @@ public class PoisonPlugin extends Plugin
 			final int damage = nextDamage(poisonValue);
 			this.lastDamage = damage;
 
-			if (config.showInfoboxes())
+			if (this.showInfoboxes)
 			{
 				if (infobox != null)
 				{
@@ -193,21 +244,104 @@ public class PoisonPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onHitsplatApplied(HitsplatApplied event)
+	{
+		Hitsplat.HitsplatType type = event.getHitsplat().getHitsplatType();
+
+		if (type != Hitsplat.HitsplatType.POISON && type != Hitsplat.HitsplatType.VENOM)
+		{
+			return;
+		}
+
+		Actor actor = event.getActor();
+
+		if (actor == client.getLocalPlayer() ||
+			actor instanceof NPC && !this.showForNpcs ||
+			actor instanceof Player && !this.showForPlayers)
+		{
+			return;
+		}
+
+		int tickCount = client.getTickCount();
+		int damage = event.getHitsplat().getAmount();
+
+		ActorPoisonInfo info = poisonedActors.get(actor);
+
+		if (info == null)
+		{
+			info = new ActorPoisonInfo();
+			info.setAccurateDamage(-1);
+			info.setLastDamage(damage);
+
+			poisonedActors.put(actor, info);
+		}
+
+		if (info.getAccurateDamage() != -1)
+		{
+			int accurateDamage = info.getAccurateDamage();
+			accurateDamage -= 1;
+
+			if (accurateDamage == 0)
+			{
+				poisonedActors.remove(actor);
+				return;
+			}
+
+			info.setAccurateDamage(accurateDamage);
+		}
+
+		if (type == Hitsplat.HitsplatType.VENOM)
+		{
+			info.setAccurateDamage(damage / 2 + VENOM_UTILITY + 1);
+		}
+		else if (info.getLastDamage() != damage)
+		{
+			// The damage changed so we know the accurate value!
+			// This may of course not be 100% accurate
+			// (if someone gets repoisoned for instance)
+			info.setAccurateDamage(damage * 5 - 1);
+
+			info.setLastDamage(damage);
+		}
+
+		info.setCycle(tickCount % POISON_TICK_TICKS);
+		info.setLastDamageTick(tickCount);
+	}
+
+	private void onGameTick(GameTick event)
+	{
+		int tickCount = client.getTickCount();
+
+		// Remove the actor if the last damage tick was over 35 ticks ago.
+		poisonedActors.values().removeIf(info -> info.getLastDamageTick() + POISON_TICK_TICKS + 5 < tickCount);
+	}
+
+	private void onNpcDespawned(NpcDespawned event)
+	{
+		poisonedActors.remove(event.getNpc());
+	}
+
+	private void onPlayerDespawned(PlayerDespawned event)
+	{
+		poisonedActors.remove(event.getPlayer());
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(PoisonConfig.GROUP))
 		{
 			return;
 		}
 
-		if (!config.showInfoboxes() && infobox != null)
+		updateConfig();
+
+		if (!this.showInfoboxes && infobox != null)
 		{
 			infoBoxManager.removeInfoBox(infobox);
 			infobox = null;
 		}
 
-		if (config.changeHealthIcon())
+		if (this.changeHealthIcon)
 		{
 			clientThread.invoke(this::checkHealthIcon);
 		}
@@ -215,9 +349,38 @@ public class PoisonPlugin extends Plugin
 		{
 			clientThread.invoke(this::resetHealthIcon);
 		}
+
+		if (event.getKey().startsWith("show"))
+		{
+			overlayManager.remove(actorOverlay);
+
+			if (!this.showForPlayers && !this.showForNpcs)
+			{
+				poisonedActors.clear();
+			}
+			else
+			{
+				if (!this.showForNpcs)
+				{
+					poisonedActors.entrySet().removeIf(a -> a instanceof NPC);
+				}
+
+				if (!this.showForPlayers)
+				{
+					poisonedActors.entrySet().removeIf(a -> a instanceof Player);
+				}
+
+				overlayManager.add(actorOverlay);
+			}
+		}
+
+		if (event.getKey().equals("fontsize"))
+		{
+			actorOverlay.setFontSize(this.fontSize);
+		}
 	}
 
-	private static int nextDamage(int poisonValue)
+	static int nextDamage(int poisonValue)
 	{
 		int damage;
 
@@ -225,7 +388,7 @@ public class PoisonPlugin extends Plugin
 		{
 			//Venom Damage starts at 6, and increments in twos;
 			//The VarPlayer increments in values of 1, however.
-			poisonValue -= VENOM_THRESHOLD - 3;
+			poisonValue -= VENOM_UTILITY;
 			damage = poisonValue * 2;
 			//Venom Damage caps at 20, but the VarPlayer keeps increasing
 			if (damage > VENOM_MAXIMUM_DAMAGE)
@@ -241,7 +404,7 @@ public class PoisonPlugin extends Plugin
 		return damage;
 	}
 
-	private BufferedImage getSplat(int id, int damage)
+	BufferedImage getSplat(int id, int damage)
 	{
 		//Get a copy of the hitsplat to get a clean one each time
 		final BufferedImage rawSplat = spriteManager.getSprite(id, 0);
@@ -299,8 +462,8 @@ public class PoisonPlugin extends Plugin
 		}
 
 		String line1 = MessageFormat.format("Next {0} damage: {1}</br>Time until damage: {2}",
-			envenomed ? "venom" : "poison",	ColorUtil.wrapWithColorTag(String.valueOf(lastDamage), Color.RED),
-				getFormattedTime(Duration.between(Instant.now(), nextPoisonTick)));
+			envenomed ? "venom" : "poison", ColorUtil.wrapWithColorTag(String.valueOf(lastDamage), Color.RED),
+			getFormattedTime(Duration.between(Instant.now(), nextPoisonTick)));
 		String line2 = envenomed ? "" : MessageFormat.format("</br>Time until cure: {0}", getFormattedTime(timeLeft));
 
 		return line1 + line2;
@@ -308,7 +471,7 @@ public class PoisonPlugin extends Plugin
 
 	private void checkHealthIcon()
 	{
-		if (!config.changeHealthIcon())
+		if (!this.changeHealthIcon)
 		{
 			return;
 		}
@@ -335,11 +498,11 @@ public class PoisonPlugin extends Plugin
 		}
 
 		// Only update sprites when the heart icon actually changes
-		if (newHeart != heart)
+		if (newHeart != null && !newHeart.equals(heart))
 		{
 			heart = newHeart;
 			client.getWidgetSpriteCache().reset();
-			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, ImageUtil.getImageSpritePixels(heart, client));
+			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, ImageUtil.getImageSprite(heart, client));
 		}
 	}
 
@@ -353,5 +516,14 @@ public class PoisonPlugin extends Plugin
 		client.getWidgetSpriteCache().reset();
 		client.getSpriteOverrides().remove(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
 		heart = null;
+	}
+
+	private void updateConfig()
+	{
+		this.showInfoboxes = config.showInfoboxes();
+		this.changeHealthIcon = config.changeHealthIcon();
+		this.showForPlayers = config.showForPlayers();
+		this.showForNpcs = config.showForNpcs();
+		this.fontSize = config.fontSize();
 	}
 }

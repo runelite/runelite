@@ -28,6 +28,7 @@ package net.runelite.client.plugins.discord;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +38,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import javax.imageio.ImageIO;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -53,7 +56,7 @@ import net.runelite.client.discord.DiscordService;
 import net.runelite.client.discord.events.DiscordJoinGame;
 import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.discord.events.DiscordReady;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -80,6 +83,7 @@ import okhttp3.Response;
 	tags = {"action", "activity", "external", "integration", "status"}
 )
 @Slf4j
+@Singleton
 public class DiscordPlugin extends Plugin
 {
 	@Inject
@@ -106,9 +110,25 @@ public class DiscordPlugin extends Plugin
 	@Inject
 	private WSClient wsClient;
 
-	private Map<Skill, Integer> skillExp = new HashMap<>();
+	@Inject
+	private EventBus eventBus;
+
+	private final Map<Skill, Integer> skillExp = new HashMap<>();
 	private NavigationButton discordButton;
 	private boolean loginFlag;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int actionTimeout;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean hideElapsedTime;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean alwaysShowParty;
+	private boolean showSkillingActivity;
+	private boolean showBossActivity;
+	private boolean showCityActivity;
+	private boolean showDungeonActivity;
+	private boolean showMinigameActivity;
+	private boolean showRaidingActivity;
 
 	@Provides
 	private DiscordConfig provideConfig(ConfigManager configManager)
@@ -119,6 +139,9 @@ public class DiscordPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "discord.png");
 
 		discordButton = NavigationButton.builder()
@@ -143,14 +166,31 @@ public class DiscordPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		clientToolbar.removeNavigation(discordButton);
 		discordState.reset();
 		partyService.changeParty(null);
 		wsClient.unregisterMessage(DiscordUserInfo.class);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ExperienceChanged.class, this, this::onExperienceChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(DiscordReady.class, this, this::onDiscordReady);
+		eventBus.subscribe(DiscordJoinRequest.class, this, this::onDiscordJoinRequest);
+		eventBus.subscribe(DiscordJoinGame.class, this, this::onDiscordJoinGame);
+		eventBus.subscribe(DiscordUserInfo.class, this, this::onDiscordUserInfo);
+		eventBus.subscribe(UserJoin.class, this, this::onUserJoin);
+		eventBus.subscribe(UserSync.class, this, this::onUserSync);
+		eventBus.subscribe(UserPart.class, this, this::onUserPart);
+		eventBus.subscribe(PartyChanged.class, this, this::onPartyChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -173,18 +213,19 @@ public class DiscordPlugin extends Plugin
 		checkForAreaUpdate();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equalsIgnoreCase("discord"))
 		{
+			updateConfig();
+
 			checkForGameStateUpdate();
 			checkForAreaUpdate();
+			updatePresence();
 		}
 	}
 
-	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	private void onExperienceChanged(ExperienceChanged event)
 	{
 		final int exp = client.getSkillExperience(event.getSkill());
 		final Integer previous = skillExp.put(event.getSkill(), exp);
@@ -196,16 +237,15 @@ public class DiscordPlugin extends Plugin
 
 		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromSkill(event.getSkill());
 
-		if (discordGameEventType != null && config.showSkillingActivity())
+		if (discordGameEventType != null && this.showSkillingActivity)
 		{
 			discordState.triggerEvent(discordGameEventType);
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
-		if (!config.showRaidingActivity())
+		if (!this.showRaidingActivity)
 		{
 			return;
 		}
@@ -218,14 +258,12 @@ public class DiscordPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onDiscordReady(DiscordReady event)
+	private void onDiscordReady(DiscordReady event)
 	{
 		partyService.setUsername(event.getUsername() + "#" + event.getDiscriminator());
 	}
 
-	@Subscribe
-	public void onDiscordJoinRequest(DiscordJoinRequest request)
+	private void onDiscordJoinRequest(DiscordJoinRequest request)
 	{
 		log.debug("Got discord join request {}", request);
 		if (partyService.isOwner() && partyService.getMembers().isEmpty())
@@ -236,8 +274,7 @@ public class DiscordPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onDiscordJoinGame(DiscordJoinGame joinGame)
+	private void onDiscordJoinGame(DiscordJoinGame joinGame)
 	{
 		log.debug("Got discord join game {}", joinGame);
 		UUID partyId = UUID.fromString(joinGame.getJoinSecret());
@@ -245,8 +282,7 @@ public class DiscordPlugin extends Plugin
 		updatePresence();
 	}
 
-	@Subscribe
-	public void onDiscordUserInfo(final DiscordUserInfo event)
+	private void onDiscordUserInfo(final DiscordUserInfo event)
 	{
 		final PartyMember memberById = partyService.getMemberById(event.getMemberId());
 
@@ -305,39 +341,32 @@ public class DiscordPlugin extends Plugin
 		});
 	}
 
-	@Subscribe
-	public void onUserJoin(final UserJoin event)
+	private void onUserJoin(final UserJoin event)
 	{
 		updatePresence();
 	}
 
-	@Subscribe
-	public void onUserSync(final UserSync event)
+	private void onUserSync(final UserSync event)
 	{
 		final PartyMember localMember = partyService.getLocalMember();
 
-		if (localMember != null)
+		if (localMember != null && discordService.getCurrentUser() != null)
 		{
-			if (discordService.getCurrentUser() != null)
-			{
-				final DiscordUserInfo userInfo = new DiscordUserInfo(
-					discordService.getCurrentUser().userId,
-					discordService.getCurrentUser().avatar);
+			final DiscordUserInfo userInfo = new DiscordUserInfo(
+				discordService.getCurrentUser().userId,
+				discordService.getCurrentUser().avatar);
 
-				userInfo.setMemberId(localMember.getMemberId());
-				wsClient.send(userInfo);
-			}
+			userInfo.setMemberId(localMember.getMemberId());
+			wsClient.send(userInfo);
 		}
 	}
 
-	@Subscribe
-	public void onUserPart(final UserPart event)
+	private void onUserPart(final UserPart event)
 	{
 		updatePresence();
 	}
 
-	@Subscribe
-	public void onPartyChanged(final PartyChanged event)
+	private void onPartyChanged(final PartyChanged event)
 	{
 		updatePresence();
 	}
@@ -413,12 +442,29 @@ public class DiscordPlugin extends Plugin
 
 		switch (event.getDiscordAreaType())
 		{
-			case BOSSES: return config.showBossActivity();
-			case CITIES: return config.showCityActivity();
-			case DUNGEONS: return config.showDungeonActivity();
-			case MINIGAMES: return config.showMinigameActivity();
+			case BOSSES:
+				return this.showBossActivity;
+			case CITIES:
+				return this.showCityActivity;
+			case DUNGEONS:
+				return this.showDungeonActivity;
+			case MINIGAMES:
+				return this.showMinigameActivity;
 		}
 
 		return false;
+	}
+
+	private void updateConfig()
+	{
+		this.actionTimeout = config.actionTimeout();
+		this.hideElapsedTime = config.hideElapsedTime();
+		this.alwaysShowParty = config.alwaysShowParty();
+		this.showSkillingActivity = config.showSkillingActivity();
+		this.showBossActivity = config.showBossActivity();
+		this.showCityActivity = config.showCityActivity();
+		this.showDungeonActivity = config.showDungeonActivity();
+		this.showMinigameActivity = config.showMinigameActivity();
+		this.showRaidingActivity = config.showRaidingActivity();
 	}
 }

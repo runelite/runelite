@@ -66,6 +66,17 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
+		keyName = "interactingColor",
+		name = "Interacting Color",
+		description = "Color of the NPC highlight when targeting local player"
+	)
+	default Color getInteractingColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
 		position = 3,
 		keyName = "drawNames",
 		name = "Draw names above NPC",
@@ -78,6 +89,17 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
+		keyName = "drawInteracting",
+		name = "Draw target name above NPC",
+		description = "Configures whether the name of the NPC's target is drawn above it's head"
+	)
+	default boolean drawInteracting()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not NPC names should be drawn on the minimap"
@@ -88,7 +110,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "highlightMenuNames",
 		name = "Highlight menu names",
 		description = "Highlight NPC names in right click menu"
@@ -99,7 +121,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "showRespawnTimer",
 		name = "Show respawn timer",
 		description = "Show respawn timer of tagged NPCs")

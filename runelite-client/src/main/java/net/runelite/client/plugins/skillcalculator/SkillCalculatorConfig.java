@@ -29,27 +29,27 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("skillCalculator")
-public interface  SkillCalculatorConfig extends Config
+public interface SkillCalculatorConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showBankedXp",
-		name = "Show Banked xp Tab",
-		description = "Shows the Banked xp tab inside the Calculator Panel",
+		keyName = "enabledBankedXp",
+		name = "Add Banked XP Panel",
+		description = "Adds the Banked XP Panel to the side bar",
 		position = 0
 	)
 	default boolean showBankedXp()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
-		keyName = "limitedBankedSecondaries",
-		name = "Limit Banked xp to Secondaries",
-		description = "Limits the Banked xp shown based on secondaries banked as well",
+		keyName = "cascadeBankedXp",
+		name = "Include output items",
+		description = "Includes output items in the item quantity calculations",
 		position = 1
 	)
-	default boolean limitedBankedSecondaries()
+	default boolean cascadeBankedXp()
 	{
-		return false;
+		return true;
 	}
 }

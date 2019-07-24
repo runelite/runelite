@@ -28,6 +28,7 @@ import com.google.common.base.Strings;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -39,19 +40,20 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
+@Singleton
 class MouseHighlightOverlay extends Overlay
 {
 	private final TooltipManager tooltipManager;
 	private final Client client;
-	private final MouseHighlightConfig config;
+	private final MouseHighlightPlugin plugin;
 
 	@Inject
-	MouseHighlightOverlay(Client client, TooltipManager tooltipManager, MouseHighlightConfig config)
+	MouseHighlightOverlay(final Client client, final TooltipManager tooltipManager, final MouseHighlightPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.tooltipManager = tooltipManager;
-		this.config = config;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -75,9 +77,8 @@ class MouseHighlightOverlay extends Overlay
 		String option = menuEntry.getOption();
 		int type = menuEntry.getType();
 
-		if (type == MenuAction.RUNELITE_OVERLAY.getId() || type == MenuAction.EXAMINE_ITEM_BANK_EQ.getId())
+		if (shouldNotRenderMenuAction(type))
 		{
-			// These are always right click only
 			return null;
 		}
 
@@ -106,12 +107,12 @@ class MouseHighlightOverlay extends Overlay
 		final int childId = WidgetInfo.TO_CHILD(widgetId);
 		final Widget widget = client.getWidget(groupId, childId);
 
-		if (!config.uiTooltip() && widget != null)
+		if (!plugin.isUiTooltip() && widget != null)
 		{
 			return null;
 		}
 
-		if (!config.chatboxTooltip() && groupId == WidgetInfo.CHATBOX.getGroupId())
+		if (!plugin.isChatboxTooltip() && groupId == WidgetInfo.CHATBOX.getGroupId())
 		{
 			return null;
 		}
@@ -126,6 +127,11 @@ class MouseHighlightOverlay extends Overlay
 			}
 		}
 
+		if (widget == null && !plugin.isMainTooltip())
+		{
+			return null;
+		}
+
 		// If this varc is set, a tooltip is already being displayed
 		int tooltipDisplayed = client.getVar(VarClientInt.TOOLTIP_VISIBLE);
 		if (tooltipDisplayed == 1)
@@ -135,5 +141,16 @@ class MouseHighlightOverlay extends Overlay
 
 		tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
 		return null;
+	}
+
+	private boolean shouldNotRenderMenuAction(int type)
+	{
+		return type == MenuAction.RUNELITE_OVERLAY.getId()
+				|| (!plugin.isRightClickTooltipEnabled() && isMenuActionRightClickOnly(type));
+	}
+
+	private boolean isMenuActionRightClickOnly(int type)
+	{
+		return type == MenuAction.EXAMINE_ITEM_BANK_EQ.getId();
 	}
 }

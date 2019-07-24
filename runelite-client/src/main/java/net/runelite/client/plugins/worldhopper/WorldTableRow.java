@@ -32,6 +32,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -45,6 +46,7 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
 
+@Singleton
 class WorldTableRow extends JPanel
 {
 	private static final ImageIcon FLAG_AUS;
@@ -96,7 +98,6 @@ class WorldTableRow extends JPanel
 		this.world = world;
 		this.onFavorite = onFavorite;
 		this.updatedPlayerCount = world.getPlayers();
-		this.
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(2, 0, 2, 0));
@@ -272,7 +273,7 @@ class WorldTableRow extends JPanel
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
 		playerCountField = new JLabel(world.getPlayers() + "");
-		playerCountField.setFont(FontManager.getRunescapeSmallFont());
+		playerCountField.setFont(FontManager.getSmallFont(getFont()));
 
 		column.add(playerCountField, BorderLayout.WEST);
 
@@ -301,7 +302,7 @@ class WorldTableRow extends JPanel
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
 		activityField = new JLabel(world.getActivity());
-		activityField.setFont(FontManager.getRunescapeSmallFont());
+		activityField.setFont(FontManager.getSmallFont(getFont()));
 
 		column.add(activityField, BorderLayout.WEST);
 

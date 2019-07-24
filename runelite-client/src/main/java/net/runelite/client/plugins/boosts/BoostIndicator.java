@@ -26,6 +26,7 @@ package net.runelite.client.plugins.boosts;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
@@ -35,17 +36,15 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 public class BoostIndicator extends InfoBox
 {
 	private final BoostsPlugin plugin;
-	private final BoostsConfig config;
 	private final Client client;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Skill skill;
 
-	BoostIndicator(Skill skill, BufferedImage image, BoostsPlugin plugin, Client client, BoostsConfig config)
+	BoostIndicator(final Skill skill, final BufferedImage image, final BoostsPlugin plugin, final Client client)
 	{
 		super(image, plugin);
 		this.plugin = plugin;
-		this.config = config;
 		this.client = client;
 		this.skill = skill;
 		setTooltip(skill.getName() + " boost");
@@ -55,7 +54,7 @@ public class BoostIndicator extends InfoBox
 	@Override
 	public String getText()
 	{
-		if (!config.useRelativeBoost())
+		if (!plugin.isUseRelativeBoost())
 		{
 			return String.valueOf(client.getBoostedSkillLevel(skill));
 		}
@@ -81,13 +80,13 @@ public class BoostIndicator extends InfoBox
 			return new Color(238, 51, 51);
 		}
 
-		return boosted - base <= config.boostThreshold() ? Color.YELLOW : Color.GREEN;
+		return boosted - base <= plugin.getBoostThreshold() ? Color.YELLOW : Color.GREEN;
 	}
 
 	@Override
 	public boolean render()
 	{
-		if (config.displayInfoboxes() && plugin.canShowBoosts() && plugin.getShownSkills().contains(getSkill()))
+		if (plugin.isDisplayInfoboxes() && plugin.canShowBoosts() && plugin.getShownSkills().contains(getSkill()))
 		{
 			return client.getBoostedSkillLevel(skill) != client.getRealSkillLevel(skill);
 		}

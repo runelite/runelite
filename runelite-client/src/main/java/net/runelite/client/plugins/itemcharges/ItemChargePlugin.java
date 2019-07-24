@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * Copyright (c) 2018, Hydrox6 <ikada@protonmail.ch>
+ * Copyright (c) 2019, Aleios <https://github.com/aleios>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,12 +26,16 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -39,17 +44,19 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -57,11 +64,14 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
+import static net.runelite.api.ItemID.RING_OF_RECOIL;
+
 @PluginDescriptor(
 	name = "Item Charges",
 	description = "Show number of item charges remaining",
 	tags = {"inventory", "notifications", "overlay"}
 )
+@Singleton
 public class ItemChargePlugin extends Plugin
 {
 	private static final Pattern DODGY_CHECK_PATTERN = Pattern.compile(
@@ -79,7 +89,7 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern DODGY_BREAK_PATTERN = Pattern.compile(
 		"Your dodgy necklace protects you\\..*It then crumbles to dust\\.");
 	private static final String RING_OF_RECOIL_BREAK_MESSAGE = "<col=7f007f>Your Ring of Recoil has shattered.</col>";
-	private static Pattern BINDING_CHECK_PATTERN = Pattern.compile(
+	private static final Pattern BINDING_CHECK_PATTERN = Pattern.compile(
 		"You have ([0-9]+|one) charges? left before your Binding necklace disintegrates.");
 	private static final Pattern BINDING_USED_PATTERN = Pattern.compile(
 		"You bind the temple's power into (mud|lava|steam|dust|smoke|mist) runes\\.");
@@ -112,11 +122,26 @@ public class ItemChargePlugin extends Plugin
 		"You have one charge left in your book\\.");
 	private static final Pattern CHRONICLE_OUT_OF_CHARGES_PATTERN = Pattern.compile(
 		"Your book has run out of charges\\.");
+	private static final Pattern RING_OF_FORGING_CHECK_PATTERN = Pattern.compile(
+		"You can smelt ([0-9+]+|one) more pieces? of iron ore before a ring melts\\.");
+	private static final String RING_OF_FORGING_USED_TEXT = "You retrieve a bar of iron.";
+	private static final String RING_OF_FORGING_BREAK_TEXT = "<col=7f007f>Your Ring of Forging has melted.</col>";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_SLAUGHTER_CHARGES = 30;
 	private static final int MAX_EXPEDITIOUS_CHARGES = 30;
 	private static final int MAX_BINDING_CHARGES = 16;
+	private static final int MAX_EXPLORER_RING_CHARGES = 30;
+	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean ringOfRecoilAvailable = false;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean ringOfRecoilEquipped = false;
+
+	@Getter(AccessLevel.PACKAGE)
+	private BufferedImage recoilRingImage;
 
 	@Inject
 	private Client client;
@@ -126,6 +151,9 @@ public class ItemChargePlugin extends Plugin
 
 	@Inject
 	private ItemChargeOverlay overlay;
+
+	@Inject
+	private ItemRecoilOverlay recoilOverlay;
 
 	@Inject
 	private ItemManager itemManager;
@@ -139,8 +167,74 @@ public class ItemChargePlugin extends Plugin
 	@Inject
 	private ItemChargeConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	// Limits destroy callback to once per tick
 	private int lastCheckTick;
+
+	private Color veryLowWarningColor;
+	private Color lowWarningolor;
+	private int veryLowWarning;
+	private int lowWarning;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showTeleportCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showDodgyCount;
+	private boolean dodgyNotification;
+	@Getter(AccessLevel.PACKAGE)
+	private int dodgyNecklace;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showImpCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showFungicideCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showWateringCanCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showWaterskinCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showBellowCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showBasketCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showSackCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showAbyssalBraceletCharges;
+	private boolean recoilNotification;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showBindingNecklaceCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private int bindingNecklace;
+	private boolean bindingNotification;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showExplorerRingCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private int explorerRing;
+	private boolean showInfoboxes;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showSlayerBracelets;
+	@Getter(AccessLevel.PACKAGE)
+	private int expeditious;
+	@Getter(AccessLevel.PACKAGE)
+	private int slaughter;
+	@Getter(AccessLevel.PACKAGE)
+	private int xericTalisman;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showSoulBearerCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private int soulBearer;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showChronicleCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showXericTalismanCharges;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showrecoil;
+	@Getter(AccessLevel.PACKAGE)
+	private int chronicle;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showRingOfForgingCount;
+	@Getter(AccessLevel.PACKAGE)
+	private int ringOfForging;
 
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
@@ -151,60 +245,89 @@ public class ItemChargePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(overlay);
+		overlayManager.add(recoilOverlay);
+		recoilRingImage = itemManager.getImage(RING_OF_RECOIL);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
+		overlayManager.remove(recoilOverlay);
 		infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
 		lastCheckTick = -1;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("itemCharge"))
 		{
 			return;
 		}
 
-		if (!config.showInfoboxes())
+		updateConfig();
+
+		if (!this.showInfoboxes)
 		{
 			infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
 			return;
 		}
 
-		if (!config.showTeleportCharges())
+		if (!this.showTeleportCharges)
 		{
 			removeInfobox(ItemWithSlot.TELEPORT);
 		}
 
-		if (!config.showAbyssalBraceletCharges())
+		if (!this.showAbyssalBraceletCharges)
 		{
 			removeInfobox(ItemWithSlot.ABYSSAL_BRACELET);
 		}
 
-		if (!config.showDodgyCount())
+		if (!this.showDodgyCount)
 		{
 			removeInfobox(ItemWithSlot.DODGY_NECKLACE);
 		}
 
-		if (!config.showSlayerBracelets())
+		if (!this.showSlayerBracelets)
 		{
 			removeInfobox(ItemWithSlot.BRACELET_OF_SLAUGHTER);
 			removeInfobox(ItemWithSlot.EXPEDITIOUS_BRACELET);
 		}
 
-		if (!config.showBindingNecklaceCharges())
+		if (!this.showBindingNecklaceCharges)
 		{
 			removeInfobox(ItemWithSlot.BINDING_NECKLACE);
 		}
+
+		if (!this.showExplorerRingCharges)
+		{
+			removeInfobox(ItemWithSlot.EXPLORER_RING);
+		}
+
+		if (!this.showRingOfForgingCount)
+		{
+			removeInfobox(ItemWithSlot.RING_OF_FORGING);
+		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	void onChatMessage(ChatMessage event)
 	{
 		String message = event.getMessage();
 		Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);
@@ -223,10 +346,11 @@ public class ItemChargePlugin extends Plugin
 		Matcher chronicleRechargeMatcher = CHRONICLE_ADD_CHARGE_PATTERN.matcher(message);
 		Matcher chronicleLastChargeMatcher = CHRONICLE_LAST_CHARGE_PATTERN.matcher(message);
 		Matcher chronicleOutOfChargesMatcher = CHRONICLE_OUT_OF_CHARGES_PATTERN.matcher(message);
+		Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
 
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
-			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
+			if (this.recoilNotification && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
 				notifier.notify("Your Ring of Recoil has shattered");
 			}
@@ -256,7 +380,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (dodgyBreakMatcher.find())
 			{
-				if (config.dodgyNotification())
+				if (this.dodgyNotification)
 				{
 					notifier.notify("Your dodgy necklace has crumbled to dust.");
 				}
@@ -265,7 +389,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.contains(BINDING_BREAK_TEXT))
 			{
-				if (config.bindingNotification())
+				if (this.bindingNotification)
 				{
 					notifier.notify(BINDING_BREAK_TEXT);
 				}
@@ -275,7 +399,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (bindingNecklaceUsedMatcher.find())
 			{
-				updateBindingNecklaceCharges(config.bindingNecklace() - 1);
+				updateBindingNecklaceCharges(this.bindingNecklace - 1);
 			}
 			else if (bindingNecklaceCheckMatcher.find())
 			{
@@ -324,48 +448,94 @@ public class ItemChargePlugin extends Plugin
 				final int chronicleCharges = 0;
 				updateChronicleCharges(chronicleCharges);
 			}
+			else if (ringOfForgingCheckMatcher.find())
+			{
+				final String match = ringOfForgingCheckMatcher.group(1);
+
+				int charges = 1;
+				if (!match.equals("one"))
+				{
+					charges = Integer.parseInt(match);
+				}
+				updateRingOfForgingCharges(charges);
+			}
+			else if (message.equals(RING_OF_FORGING_USED_TEXT))
+			{
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+				// Determine if the player smelted with a Ring of Forging equipped.
+				if (equipment == null)
+				{
+					return;
+				}
+
+				Item[] items = equipment.getItems();
+				if (EquipmentInventorySlot.RING.getSlotIdx() < items.length
+					&& items[EquipmentInventorySlot.RING.getSlotIdx()].getId() == ItemID.RING_OF_FORGING)
+				{
+					int charges = Ints.constrainToRange(this.ringOfForging - 1, 0, MAX_RING_OF_FORGING_CHARGES);
+					updateRingOfForgingCharges(charges);
+				}
+			}
+			else if (message.equals(RING_OF_FORGING_BREAK_TEXT))
+			{
+				if (config.ringOfForgingNotification())
+				{
+					notifier.notify("Your ring of forging has melted.");
+				}
+
+				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);
+			}
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT) || !config.showInfoboxes())
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT) || !this.showInfoboxes)
 		{
 			return;
 		}
 
 		final Item[] items = event.getItemContainer().getItems();
 
-		if (config.showTeleportCharges())
+		if (this.showTeleportCharges)
 		{
 			updateJewelleryInfobox(ItemWithSlot.TELEPORT, items);
 		}
 
-		if (config.showDodgyCount())
+		if (this.showDodgyCount)
 		{
 			updateJewelleryInfobox(ItemWithSlot.DODGY_NECKLACE, items);
 		}
 
-		if (config.showAbyssalBraceletCharges())
+		if (this.showAbyssalBraceletCharges)
 		{
 			updateJewelleryInfobox(ItemWithSlot.ABYSSAL_BRACELET, items);
 		}
 
-		if (config.showSlayerBracelets())
+		if (this.showSlayerBracelets)
 		{
 			updateJewelleryInfobox(ItemWithSlot.BRACELET_OF_SLAUGHTER, items);
 			updateJewelleryInfobox(ItemWithSlot.EXPEDITIOUS_BRACELET, items);
 		}
 
-		if (config.showBindingNecklaceCharges())
+		if (this.showBindingNecklaceCharges)
 		{
 			updateJewelleryInfobox(ItemWithSlot.BINDING_NECKLACE, items);
 		}
+
+		if (this.showExplorerRingCharges)
+		{
+			updateJewelleryInfobox(ItemWithSlot.EXPLORER_RING, items);
+		}
+
+		if (this.showRingOfForgingCount)
+		{
+			updateJewelleryInfobox(ItemWithSlot.RING_OF_FORGING, items);
+		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		Widget braceletBreakWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
 
@@ -375,10 +545,41 @@ public class ItemChargePlugin extends Plugin
 			if (braceletText.contains("bracelet of slaughter"))
 			{
 				config.slaughter(MAX_SLAUGHTER_CHARGES);
+				this.slaughter = MAX_SLAUGHTER_CHARGES;
 			}
 			else if (braceletText.contains("expeditious bracelet"))
 			{
 				config.expeditious(MAX_EXPEDITIOUS_CHARGES);
+				this.expeditious = MAX_EXPEDITIOUS_CHARGES;
+			}
+		}
+
+		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		ringOfRecoilAvailable = false;
+		ringOfRecoilEquipped = false;
+
+		Item ring = null;
+		if (equipment != null && equipment.getItems().length >= EquipmentInventorySlot.RING.getSlotIdx())
+		{
+			ring = equipment.getItems()[EquipmentInventorySlot.RING.getSlotIdx()];
+		}
+		if (ring != null && ring.getId() == RING_OF_RECOIL)
+		{
+			ringOfRecoilEquipped = true;
+			ringOfRecoilAvailable = true;
+		}
+		Item[] items = new Item[0];
+		if (inventory != null)
+		{
+			items = inventory.getItems();
+		}
+		for (Item item : items)
+		{
+			if (item.getId() == RING_OF_RECOIL)
+			{
+				ringOfRecoilAvailable = true;
+				break;
 			}
 		}
 
@@ -435,20 +636,15 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGraphicChanged(GraphicChanged event)
+	private void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
-		if (event.getActor() == client.getLocalPlayer())
+		if (event.getActor() == client.getLocalPlayer() && client.getLocalPlayer().getSpotAnimation() == GraphicID.XERIC_TELEPORT)
 		{
-			if (client.getLocalPlayer().getGraphic() == GraphicID.XERIC_TELEPORT)
-			{
-				final int xericCharges = Math.max(config.xericTalisman() - 1, 0);
-				updateXericCharges(xericCharges);
-			}
+			final int xericCharges = Math.max(this.xericTalisman - 1, 0);
+			updateXericCharges(xericCharges);
 		}
 	}
 
-	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!"destroyOnOpKey".equals(event.getEventName()))
@@ -463,11 +659,22 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
+	private void onVarbitChanged(VarbitChanged event)
+	{
+		int explorerRingCharge = client.getVar(Varbits.EXPLORER_RING_ALCHS);
+		int lastExplorerRingCharge = -1;
+		if (lastExplorerRingCharge != explorerRingCharge)
+		{
+			updateExplorerRingCharges(explorerRingCharge);
+		}
+	}
+
 	private void updateDodgyNecklaceCharges(final int value)
 	{
 		config.dodgyNecklace(value);
+		this.dodgyNecklace = value;
 
-		if (config.showInfoboxes() && config.showDodgyCount())
+		if (this.showInfoboxes && this.showDodgyCount)
 		{
 			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
@@ -483,8 +690,9 @@ public class ItemChargePlugin extends Plugin
 	private void updateBraceletOfSlaughterCharges(final int value)
 	{
 		config.slaughter(value);
+		this.slaughter = value;
 
-		if (config.showInfoboxes() && config.showSlayerBracelets())
+		if (this.showInfoboxes && this.showSlayerBracelets)
 		{
 			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
@@ -500,8 +708,9 @@ public class ItemChargePlugin extends Plugin
 	private void updateExpeditiousCharges(final int value)
 	{
 		config.expeditious(value);
+		this.expeditious = value;
 
-		if (config.showInfoboxes() && config.showSlayerBracelets())
+		if (this.showInfoboxes && this.showSlayerBracelets)
 		{
 			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
@@ -517,8 +726,9 @@ public class ItemChargePlugin extends Plugin
 	private void updateBindingNecklaceCharges(final int value)
 	{
 		config.bindingNecklace(value);
+		this.bindingNecklace = value;
 
-		if (config.showInfoboxes() && config.showBindingNecklaceCharges())
+		if (this.showInfoboxes && this.showBindingNecklaceCharges)
 		{
 			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
@@ -534,16 +744,38 @@ public class ItemChargePlugin extends Plugin
 	private void updateXericCharges(int xericCharges)
 	{
 		config.xericTalisman(xericCharges);
+		this.xericTalisman = xericCharges;
 	}
 
 	private void updateSoulBearerCharges(int soulBearerCharges)
 	{
 		config.soulBearer(soulBearerCharges);
+		this.soulBearer = soulBearerCharges;
 	}
 
 	private void updateChronicleCharges(int chronicleCharges)
 	{
 		config.chronicle(chronicleCharges);
+		this.chronicle = chronicleCharges;
+	}
+
+	private void updateExplorerRingCharges(final int value)
+	{
+		// Note: Varbit counts upwards. We count down from the maximum charges.
+		config.explorerRing(MAX_EXPLORER_RING_CHARGES - value);
+		this.explorerRing = MAX_EXPLORER_RING_CHARGES - value;
+
+		if (this.showInfoboxes && this.showExplorerRingCharges)
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.EXPLORER_RING, itemContainer.getItems());
+		}
 	}
 
 	private void checkDestroyWidget()
@@ -602,19 +834,23 @@ public class ItemChargePlugin extends Plugin
 		{
 			if (id == ItemID.DODGY_NECKLACE && type == ItemWithSlot.DODGY_NECKLACE)
 			{
-				charges = config.dodgyNecklace();
+				charges = this.dodgyNecklace;
 			}
 			else if (id == ItemID.BRACELET_OF_SLAUGHTER && type == ItemWithSlot.BRACELET_OF_SLAUGHTER)
 			{
-				charges = config.slaughter();
+				charges = this.slaughter;
 			}
 			else if (id == ItemID.EXPEDITIOUS_BRACELET && type == ItemWithSlot.EXPEDITIOUS_BRACELET)
 			{
-				charges = config.expeditious();
+				charges = this.expeditious;
 			}
 			else if (id == ItemID.BINDING_NECKLACE && type == ItemWithSlot.BINDING_NECKLACE)
 			{
-				charges = config.bindingNecklace();
+				charges = this.bindingNecklace;
+			}
+			else if ((id >= ItemID.EXPLORERS_RING_1 && id <= ItemID.EXPLORERS_RING_4) && type == ItemWithSlot.EXPLORER_RING)
+			{
+				charges = this.explorerRing;
 			}
 		}
 		else if (itemWithCharge.getType() == type.getType())
@@ -627,10 +863,28 @@ public class ItemChargePlugin extends Plugin
 			return;
 		}
 
-		final String name = itemManager.getItemComposition(id).getName();
+		final String name = itemManager.getItemDefinition(id).getName();
 		final BufferedImage image = itemManager.getImage(id);
 		final ItemChargeInfobox infobox = new ItemChargeInfobox(this, image, name, charges, type, slot);
 		infoBoxManager.addInfoBox(infobox);
+	}
+
+	private void updateRingOfForgingCharges(final int value)
+	{
+		config.ringOfForging(value);
+		this.ringOfForging = value;
+
+		if (this.showInfoboxes && this.showRingOfForgingCount)
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.RING_OF_FORGING, itemContainer.getItems());
+		}
 	}
 
 	private void removeInfobox(final ItemWithSlot item)
@@ -647,7 +901,7 @@ public class ItemChargePlugin extends Plugin
 				return false;
 			}
 
-			final ItemChargeInfobox i = (ItemChargeInfobox)t;
+			final ItemChargeInfobox i = (ItemChargeInfobox) t;
 			return i.getItem() == item && i.getSlot() == slot;
 		});
 	}
@@ -655,14 +909,49 @@ public class ItemChargePlugin extends Plugin
 	Color getColor(int charges)
 	{
 		Color color = Color.WHITE;
-		if (charges <= config.veryLowWarning())
+		if (charges <= this.veryLowWarning)
 		{
-			color = config.veryLowWarningColor();
+			color = this.veryLowWarningColor;
 		}
-		else if (charges <= config.lowWarning())
+		else if (charges <= this.lowWarning)
 		{
-			color = config.lowWarningolor();
+			color = this.lowWarningolor;
 		}
 		return color;
+	}
+
+	private void updateConfig()
+	{
+		this.veryLowWarningColor = config.veryLowWarningColor();
+		this.lowWarningolor = config.lowWarningolor();
+		this.veryLowWarning = config.veryLowWarning();
+		this.lowWarning = config.lowWarning();
+		this.showTeleportCharges = config.showTeleportCharges();
+		this.showDodgyCount = config.showDodgyCount();
+		this.dodgyNotification = config.dodgyNotification();
+		this.dodgyNecklace = config.dodgyNecklace();
+		this.showImpCharges = config.showImpCharges();
+		this.showFungicideCharges = config.showFungicideCharges();
+		this.showWateringCanCharges = config.showWateringCanCharges();
+		this.showWaterskinCharges = config.showWaterskinCharges();
+		this.showBellowCharges = config.showBellowCharges();
+		this.showAbyssalBraceletCharges = config.showAbyssalBraceletCharges();
+		this.recoilNotification = config.recoilNotification();
+		this.showBindingNecklaceCharges = config.showBindingNecklaceCharges();
+		this.bindingNecklace = config.bindingNecklace();
+		this.bindingNotification = config.bindingNotification();
+		this.showExplorerRingCharges = config.showExplorerRingCharges();
+		this.explorerRing = config.explorerRing();
+		this.showInfoboxes = config.showInfoboxes();
+		this.showSlayerBracelets = config.showSlayerBracelets();
+		this.expeditious = config.expeditious();
+		this.slaughter = config.slaughter();
+		this.xericTalisman = config.xericTalisman();
+		this.showSoulBearerCharges = config.showSoulBearerCharges();
+		this.soulBearer = config.soulBearer();
+		this.showChronicleCharges = config.showChronicleCharges();
+		this.showXericTalismanCharges = config.showXericTalismanCharges();
+		this.showrecoil = config.showrecoil();
+		this.chronicle = config.chronicle();
 	}
 }

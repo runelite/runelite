@@ -26,6 +26,7 @@ package net.runelite.http.api.item;
 
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+import io.reactivex.Observable;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -112,7 +113,7 @@ public class ItemClient
 		}
 	}
 
-	public BufferedImage getIcon(int itemId) throws IOException
+	public Observable<BufferedImage> getIcon(int itemId)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("item")
@@ -126,23 +127,26 @@ public class ItemClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		return Observable.defer(() ->
 		{
-			if (!response.isSuccessful())
+			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 			{
-				logger.debug("Error grabbing icon {}: {}", itemId, response);
-				return null;
-			}
+				if (!response.isSuccessful())
+				{
+					logger.debug("Error grabbing icon {}: {}", itemId, response);
+					return Observable.just(null);
+				}
 
-			InputStream in = response.body().byteStream();
-			synchronized (ImageIO.class)
-			{
-				return ImageIO.read(in);
+				InputStream in = response.body().byteStream();
+				synchronized (ImageIO.class)
+				{
+					return Observable.just(ImageIO.read(in));
+				}
 			}
-		}
+		});
 	}
 
-	public SearchResult search(String itemName) throws IOException
+	public Observable<SearchResult> search(String itemName)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("item")
@@ -152,28 +156,31 @@ public class ItemClient
 
 		logger.debug("Built URI: {}", url);
 
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		return Observable.defer(() ->
 		{
-			if (!response.isSuccessful())
+			Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 			{
-				logger.debug("Error looking up item {}: {}", itemName, response);
-				return null;
-			}
+				if (!response.isSuccessful())
+				{
+					logger.debug("Error looking up item {}: {}", itemName, response);
+					return Observable.just(null);
+				}
 
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), SearchResult.class);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+				InputStream in = response.body().byteStream();
+				return Observable.just(RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), SearchResult.class));
+			}
+			catch (JsonParseException ex)
+			{
+				return Observable.error(ex);
+			}
+		});
 	}
 
-	public ItemPrice[] getPrices() throws IOException
+	public Observable<ItemPrice[]> getPrices()
 	{
 		HttpUrl.Builder urlBuilder = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("item")
@@ -183,28 +190,32 @@ public class ItemClient
 
 		logger.debug("Built URI: {}", url);
 
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		return Observable.defer(() ->
 		{
-			if (!response.isSuccessful())
+			Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 			{
-				logger.warn("Error looking up prices: {}", response);
-				return null;
-			}
+				if (!response.isSuccessful())
+				{
+					logger.warn("Error looking up prices: {}", response);
+					return Observable.just(null);
+				}
 
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice[].class);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+				InputStream in = response.body().byteStream();
+				return Observable.just(RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice[].class));
+			}
+			catch (JsonParseException ex)
+			{
+				return Observable.error(ex);
+			}
+		});
 	}
 
-	public Map<Integer, ItemStats> getStats() throws IOException
+	public Observable<Map<Integer, ItemStats>> getStats()
 	{
 		HttpUrl.Builder urlBuilder = RuneLiteAPI.getStaticBase().newBuilder()
 			.addPathSegment("item")
@@ -215,27 +226,31 @@ public class ItemClient
 
 		logger.debug("Built URI: {}", url);
 
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		return Observable.defer(() ->
 		{
-			if (!response.isSuccessful())
+			Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 			{
-				logger.warn("Error looking up item stats: {}", response);
-				return null;
+				if (!response.isSuccessful())
+				{
+					logger.warn("Error looking up item stats: {}", response);
+					return Observable.just(null);
+				}
+
+				InputStream in = response.body().byteStream();
+				final Type typeToken = new TypeToken<Map<Integer, ItemStats>>()
+				{
+				}.getType();
+				return Observable.just(RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), typeToken));
 			}
-
-			InputStream in = response.body().byteStream();
-			final Type typeToken = new TypeToken<Map<Integer, ItemStats>>()
+			catch (JsonParseException ex)
 			{
-			}.getType();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), typeToken);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+				return Observable.error(ex);
+			}
+		});
 	}
 }

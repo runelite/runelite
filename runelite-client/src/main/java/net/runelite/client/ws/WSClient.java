@@ -174,7 +174,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		}
 
 		log.debug("Got: {}", text);
-		eventBus.post(message);
+		eventBus.post(PartyMessage.class, message);
 	}
 
 	@Override

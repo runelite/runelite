@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.wiki;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.SpriteID;
@@ -36,9 +37,9 @@ public enum WikiSprite implements SpriteOverride
 	WIKI_SELECTED_ICON(-301, "wiki_selected.png"),
 	FIXED_MODE_MINIMAP_CLICKMASK(SpriteID.MINIMAP_CLICK_MASK, "fixed_mode_minimap_clickmask.png");
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final int spriteId;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final String fileName;
 }

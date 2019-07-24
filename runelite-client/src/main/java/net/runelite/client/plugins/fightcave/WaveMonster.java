@@ -29,12 +29,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 enum WaveMonster
 {
-	TZ_KIH("Tz-Kih", 22),
-	TZ_KEK("Tz-Kek", 45),
-	TOK_XIL("Tok-Xil", 90),
-	YT_MEJKOT("Yt-MejKot", 180),
-	KET_ZEK("Ket-Zek", 360),
-	TZKOK_JAD("TzTok-Jad", 702);
+	TZ_KIH("Drainer", 22),
+	TZ_KEK("Blob", 45),
+	TOK_XIL("Range", 90),
+	YT_MEJKOT("Melee", 180),
+	KET_ZEK("Mage", 360),
+	TZKOK_JAD("Jad", 702);
 
 	private final String name;
 	private final int level;

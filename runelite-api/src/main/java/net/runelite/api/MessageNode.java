@@ -116,4 +116,14 @@ public interface MessageNode
 	 * @param timestamp
 	 */
 	void setTimestamp(int timestamp);
+
+	/**
+	 * Returns yes if the message is from a friend
+	 */
+	boolean isFromFriend();
+
+	/**
+	 * Returns yes if the message is from a clanmate
+	 */
+	boolean isFromClanMate();
 }

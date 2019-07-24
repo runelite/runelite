@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
@@ -39,21 +40,19 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.util.Text;
 
+@Singleton
 class TargetWeaknessOverlay extends Overlay
 {
 	private final Client client;
-	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
 	private final ItemManager itemManager;
 	private final NPCManager npcManager;
 
 	@Inject
-	private TargetWeaknessOverlay(Client client, SlayerConfig config, SlayerPlugin plugin, ItemManager itemManager, NPCManager npcManager)
+	private TargetWeaknessOverlay(final Client client, final SlayerPlugin plugin, final ItemManager itemManager, final NPCManager npcManager)
 	{
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 		this.itemManager = itemManager;
 		this.npcManager = npcManager;
@@ -64,7 +63,7 @@ class TargetWeaknessOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.weaknessPrompt())
+		if (!plugin.isWeaknessPrompt())
 		{
 			return null;
 		}
@@ -99,15 +98,14 @@ class TargetWeaknessOverlay extends Overlay
 
 		final int healthScale = target.getHealth();
 		final int healthRatio = target.getHealthRatio();
-		final String targetName = Text.removeTags(target.getName());
-		final Integer maxHealth = npcManager.getHealth(targetName, target.getCombatLevel());
+		final int maxHealth = npcManager.getHealth(target.getId());
 
-		if (healthRatio < 0 || healthScale <= 0 || maxHealth == null)
+		if (healthRatio < 0 || healthScale <= 0 || maxHealth == -1)
 		{
 			return -1;
 		}
 
-		return (int)((maxHealth * healthRatio / healthScale) + 0.5f);
+		return (int) ((maxHealth * healthRatio / healthScale) + 0.5f);
 	}
 
 	private void renderTargetItem(Graphics2D graphics, NPC actor, BufferedImage image)

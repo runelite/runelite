@@ -65,4 +65,14 @@ public interface AnimationSmoothingConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "smoothWidgetAnimations",
+		name = "Smooth Widget Animations",
+		description = "Configures whether the widget animations are smooth or not",
+		position = 4
+	)
+	default boolean smoothWidgetAnimations()
+	{
+		return true;
+	}
 }

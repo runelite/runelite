@@ -27,7 +27,6 @@ package net.runelite.client.plugins.devtools;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -42,18 +41,20 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
+import net.runelite.api.DynamicObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Item;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Node;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
+import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
@@ -61,7 +62,6 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -75,9 +75,9 @@ class DevToolsOverlay extends Overlay
 	private static final int ITEM_EMPTY = 6512;
 	private static final int ITEM_FILLED = 20594;
 
-	private static final Font FONT = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
 	private static final Color RED = new Color(221, 44, 0);
 	private static final Color GREEN = new Color(0, 200, 83);
+	private static final Color TURQOISE = new Color(0, 200, 157);
 	private static final Color ORANGE = new Color(255, 109, 0);
 	private static final Color YELLOW = new Color(255, 214, 0);
 	private static final Color CYAN = new Color(0, 184, 212);
@@ -112,7 +112,6 @@ class DevToolsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		graphics.setFont(FONT);
 
 		if (plugin.getPlayers().isActive())
 		{
@@ -144,6 +143,11 @@ class DevToolsOverlay extends Overlay
 			renderGraphicsObjects(graphics);
 		}
 
+		if (plugin.getCursorPos().isActive())
+		{
+			renderCursorTooltip(graphics);
+		}
+
 		renderWidgets(graphics);
 
 		return null;
@@ -156,14 +160,14 @@ class DevToolsOverlay extends Overlay
 
 		for (Player p : players)
 		{
-			if (p != local)
+			if (!p.equals(local))
 			{
-				String text = p.getName() + " (A: " + p.getAnimation() + ") (G: " + p.getGraphic() + ")";
+				String text = p.getName() + " (A: " + p.getAnimation() + ") (G: " + p.getSpotAnimation() + ")";
 				OverlayUtil.renderActorOverlay(graphics, p, text, BLUE);
 			}
 		}
 
-		String text = local.getName() + " (A: " + local.getAnimation() + ") (G: " + local.getGraphic() + ")";
+		String text = local.getName() + " (A: " + local.getAnimation() + ") (G: " + local.getSpotAnimation() + ")";
 		OverlayUtil.renderActorOverlay(graphics, local, text, CYAN);
 		renderPlayerWireframe(graphics, local, CYAN);
 	}
@@ -173,11 +177,11 @@ class DevToolsOverlay extends Overlay
 		List<NPC> npcs = client.getNpcs();
 		for (NPC npc : npcs)
 		{
-			NPCComposition composition = npc.getComposition();
+			NPCDefinition composition = npc.getDefinition();
 			Color color = composition.getCombatLevel() > 1 ? YELLOW : ORANGE;
 			if (composition.getConfigs() != null)
 			{
-				NPCComposition transformedComposition = composition.transform();
+				NPCDefinition transformedComposition = composition.transform();
 				if (transformedComposition == null)
 				{
 					color = GRAY;
@@ -192,7 +196,7 @@ class DevToolsOverlay extends Overlay
 				composition.getName(),
 				composition.getId(),
 				npc.getAnimation(),
-				npc.getGraphic());
+				npc.getSpotAnimation());
 
 			OverlayUtil.renderActorOverlay(graphics, npc, text, color);
 		}
@@ -255,6 +259,14 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
+	private void renderCursorTooltip(Graphics2D graphics)
+	{
+		if (client.getMouseCanvasPosition().getX() >= 0 && client.getMouseCanvasPosition().getY() >= 0)
+		{
+			toolTipManager.add(new Tooltip("Cursor Point: " + client.getMouseCanvasPosition().getX() + ", " + client.getMouseCanvasPosition().getY()));
+		}
+	}
+
 	private void renderTileTooltip(Graphics2D graphics, Tile tile)
 	{
 		Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
@@ -294,7 +306,15 @@ class DevToolsOverlay extends Overlay
 				{
 					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
 					{
-						OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
+						Renderable renderable = gameObject.getRenderable();
+						if (renderable instanceof DynamicObject)
+						{
+							OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId() + " Anim: " + ((DynamicObject) renderable).getAnimationID(), TURQOISE);
+						}
+						else
+						{
+							OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
+						}
 					}
 
 					// Draw a polygon around the convex hull
@@ -374,7 +394,7 @@ class DevToolsOverlay extends Overlay
 			Rectangle2D textBounds = fm.getStringBounds(idText, graphics);
 
 			int textX = (int) (slotBounds.getX() + (slotBounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-			int textY = (int) (slotBounds.getY() + (slotBounds.getHeight() / 2) + (textBounds.getHeight() / 2));
+			int textY = (int) (slotBounds.getY() + (slotBounds.getHeight() / 2) + (fm.getHeight() / 2) - fm.getMaxDescent());
 
 			graphics.setColor(new Color(255, 255, 255, 65));
 			graphics.fill(slotBounds);
@@ -489,6 +509,7 @@ class DevToolsOverlay extends Overlay
 
 		WidgetItem widgetItem = widget.getWidgetItem(itemIndex);
 		if (widgetItem == null
+			|| widgetItem.getId() < 0
 			|| widgetItem.getId() == ITEM_EMPTY
 			|| widgetItem.getId() == ITEM_FILLED)
 		{
@@ -515,7 +536,7 @@ class DevToolsOverlay extends Overlay
 		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
 
 		int textX = (int) (bounds.getX() + (bounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-		int textY = (int) (bounds.getY() + (bounds.getHeight() / 2) + (textBounds.getHeight() / 2));
+		int textY = (int) (bounds.getY() + (bounds.getHeight() / 2) + (fm.getHeight() / 2) - fm.getMaxDescent());
 
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(text, textX + 1, textY + 1);

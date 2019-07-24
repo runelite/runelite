@@ -82,19 +82,18 @@ public enum ScriptVarType
 		}
 	}
 
-	public static ScriptVarType forCharKey(char key)
-	{
-		return keyToTypeMap.get(key);
-	}
-
 	/**
 	 * The character used when encoding or decoding types.
 	 */
 	private final char keyChar;
-
 	/**
 	 * The full name of the var type.
 	 */
 	private final String fullName;
+
+	public static ScriptVarType forCharKey(char key)
+	{
+		return keyToTypeMap.get(key);
+	}
 
 }

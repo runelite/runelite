@@ -50,10 +50,11 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
@@ -230,9 +231,9 @@ public class TabInterface
 			.filter(id -> id != -1)
 			.collect(Collectors.toList());
 
-		if (!Strings.isNullOrEmpty(event.getMenuTarget()))
+		if (!Strings.isNullOrEmpty(event.getTarget()))
 		{
-			if (activeTab != null && Text.removeTags(event.getMenuTarget()).equals(activeTab.getTag()))
+			if (activeTab != null && Text.removeTags(event.getTarget()).equals(activeTab.getTag()))
 			{
 				for (Integer item : items)
 				{
@@ -564,9 +565,17 @@ public class TabInterface
 			return;
 		}
 
-		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+		if (chatboxPanelManager.getCurrentInput() != null
+			&& event.getMenuAction() != MenuAction.CANCEL
+			&& !event.getMenuEntry().equals(SCROLL_UP)
+			&& !event.getMenuEntry().equals(SCROLL_DOWN))
+		{
+			chatboxPanelManager.close();
+		}
+
+		if (event.getIdentifier() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ
-			&& event.getMenuOption().equalsIgnoreCase("withdraw-x"))
+			&& event.getOption().equalsIgnoreCase("withdraw-x"))
 		{
 			waitSearchTick = true;
 			rememberedSearch = client.getVar(VarClientStr.INPUT_TEXT);
@@ -575,14 +584,17 @@ public class TabInterface
 
 		if (iconToSet != null)
 		{
-			if (event.getMenuOption().startsWith(CHANGE_ICON + " ("))
+			if (event.getOption().startsWith(CHANGE_ICON + " ("))
 			{
-				ItemComposition item = getItem(event.getActionParam());
-				int itemId = itemManager.canonicalize(item.getId());
-				iconToSet.setIconItemId(itemId);
-				iconToSet.getIcon().setItemId(itemId);
-				tabManager.setIcon(iconToSet.getTag(), itemId + "");
-				event.consume();
+				ItemDefinition item = getItem(event.getActionParam0());
+				if (item != null)
+				{
+					int itemId = itemManager.canonicalize(item.getId());
+					iconToSet.setIconItemId(itemId);
+					iconToSet.getIcon().setItemId(itemId);
+					tabManager.setIcon(iconToSet.getTag(), itemId + "");
+					event.consume();
+				}
 			}
 
 			// Reset icon selection even when we do not clicked item with icon
@@ -590,7 +602,7 @@ public class TabInterface
 		}
 
 		if (activeTab != null
-			&& event.getMenuOption().equals("Search")
+			&& event.getOption().equals("Search")
 			&& client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND).getSpriteId() != SpriteID.EQUIPMENT_SLOT_SELECTED)
 		{
 			activateTab(null);
@@ -600,27 +612,31 @@ public class TabInterface
 			client.setVar(VarClientInt.INPUT_TYPE, 0);
 		}
 		else if (activeTab != null
-			&& event.getMenuOption().startsWith("View tab"))
+			&& event.getOption().startsWith("View tab"))
 		{
 			activateTab(null);
 		}
 		else if (activeTab != null
-			&& event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.RUNELITE
-			&& event.getMenuOption().startsWith(REMOVE_TAG))
+			&& event.getOption().startsWith(REMOVE_TAG))
 		{
 			// Add "remove" menu entry to all items in bank while tab is selected
 			event.consume();
-			final ItemComposition item = getItem(event.getActionParam());
-			final int itemId = item.getId();
-			tagManager.removeTag(itemId, activeTab.getTag());
-			bankSearch.search(InputType.SEARCH, TAG_SEARCH + activeTab.getTag(), true);
+			final ItemDefinition item = getItem(event.getActionParam0());
+			final int itemId;
+			if (item != null)
+			{
+				itemId = item.getId();
+				tagManager.removeTag(itemId, activeTab.getTag());
+				bankSearch.search(InputType.SEARCH, TAG_SEARCH + activeTab.getTag(), true);
+			}
 		}
 		else if (event.getMenuAction() == MenuAction.RUNELITE
-			&& ((event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getMenuOption().equals(TAG_INVENTORY))
-			|| (event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId() && event.getMenuOption().equals(TAG_GEAR))))
+			&& ((event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getOption().equals(TAG_INVENTORY))
+			|| (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId() && event.getOption().equals(TAG_GEAR))))
 		{
-			handleDeposit(event, event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
+			handleDeposit(event, event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
 		}
 	}
 
@@ -668,15 +684,11 @@ public class TabInterface
 					updateTabIfActive(Lists.newArrayList(Text.standardize(draggedOn.getName())));
 				}
 			}
-			else if (parent.getId() == draggedOn.getId() && parent.getId() == draggedWidget.getId())
+			else if (parent.getId() == draggedOn.getId() && parent.getId() == draggedWidget.getId() && !Strings.isNullOrEmpty(draggedOn.getName()))
 			{
-				// Reorder tag tabs
-				if (!Strings.isNullOrEmpty(draggedOn.getName()))
-				{
-					tabManager.move(draggedWidget.getName(), draggedOn.getName());
-					tabManager.save();
-					updateTabs();
-				}
+				tabManager.move(draggedWidget.getName(), draggedOn.getName());
+				tabManager.save();
+				updateTabs();
 			}
 		}
 		else if (draggedWidget.getItemId() > 0)
@@ -730,7 +742,13 @@ public class TabInterface
 
 		if (tagTab.getIcon() == null)
 		{
-			Widget icon = createGraphic(ColorUtil.wrapWithColorTag(tagTab.getTag(), HILIGHT_COLOR), -1, tagTab.getIconItemId(), 36, 32, bounds.x + 3, 1, false);
+			Widget icon = createGraphic(
+				ColorUtil.wrapWithColorTag(tagTab.getTag(), HILIGHT_COLOR),
+				-1,
+				tagTab.getIconItemId(),
+				Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT,
+				bounds.x + 3, 1,
+				false);
 			int clickmask = icon.getClickMask();
 			clickmask |= WidgetConfig.DRAG;
 			clickmask |= WidgetConfig.DRAG_ON;
@@ -1000,17 +1018,26 @@ public class TabInterface
 	}
 
 
-	private ItemComposition getItem(int idx)
+	private ItemDefinition getItem(int idx)
 	{
 		ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
-		Item item = bankContainer.getItems()[idx];
-		return itemManager.getItemComposition(item.getId());
+		Item item = null;
+		if (bankContainer != null)
+		{
+			item = bankContainer.getItems()[idx];
+		}
+		if (item != null)
+		{
+			return itemManager.getItemDefinition(item.getId());
+		}
+
+		return null;
 	}
 
 	private void openTag(final String tag)
 	{
-		bankSearch.search(InputType.SEARCH, TAG_SEARCH + tag, true);
 		activateTab(tabManager.find(tag));
+		bankSearch.search(InputType.SEARCH, TAG_SEARCH + tag, true);
 
 		// When tab is selected with search window open, the search window closes but the search button
 		// stays highlighted, this solves that issue

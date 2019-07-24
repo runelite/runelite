@@ -31,6 +31,7 @@ import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
+import org.apache.commons.text.WordUtils;
 
 /**
  * A set of utilities to use when dealing with text.
@@ -80,8 +81,8 @@ public class Text
 
 	/**
 	 * In addition to removing all tags, replaces nbsp with space, trims string and lowercases it
-	 * @param str The string to standardize
 	 *
+	 * @param str The string to standardize
 	 * @return The given `str` that is standardized
 	 */
 	public static String standardize(String str)
@@ -158,5 +159,29 @@ public class Text
 	{
 		String cleaned = name.contains("<img") ? name.substring(name.lastIndexOf('>') + 1) : name;
 		return cleaned.replace('\u00A0', ' ');
+	}
+
+	/**
+	 * If passed in enum doesn't implement its own toString,
+	 * converts enum name format from THIS_FORMAT to This Format.
+	 *
+	 * @param o an enum
+	 * @return the enum's name in title case,
+	 * or if it overrides toString,
+	 * the value returned by toString
+	 */
+	public static String titleCase(Enum o)
+	{
+		String toString = o.toString();
+
+		// .toString() returns the value of .name() if not overridden
+		if (o.name().equals(toString))
+		{
+			return WordUtils
+				.capitalize(toString.toLowerCase(), '_')
+				.replace("_", " ");
+		}
+
+		return toString;
 	}
 }

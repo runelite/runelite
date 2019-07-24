@@ -24,12 +24,12 @@
  */
 package net.runelite.client.plugins.raidsthieving;
 
-public class RaidsThievingConstants
+class RaidsThievingConstants
 {
-	public static final int CLOSED_CHEST_ID = 29742;
-	public static final int OPEN_EMPTY_CHEST = 29743;
-	public static final int OPEN_FULL_CHEST_1 = 29744;
-	public static final int OPEN_FULL_CHEST_2 = 29745;
-	public static final int EMPTY_TROUGH = 29746;
+	static final int CLOSED_CHEST_ID = 29742;
+	static final int OPEN_EMPTY_CHEST = 29743;
+	static final int OPEN_FULL_CHEST_1 = 29744;
+	static final int OPEN_FULL_CHEST_2 = 29745;
+	static final int EMPTY_TROUGH = 29746;
 	public static final int[] STORAGE = {29769, 29770, 29771, 29772};
 }

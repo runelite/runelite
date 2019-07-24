@@ -76,7 +76,7 @@ public class SwingUtil
 	 * Sets some sensible defaults for swing.
 	 * IMPORTANT! Needs to be called before main frame creation
 	 */
-	public static void setupDefaults()
+	private static void setupDefaults()
 	{
 		// Force heavy-weight popups/tooltips.
 		// Prevents them from being obscured by the game applet.
@@ -117,7 +117,7 @@ public class SwingUtil
 	 *
 	 * @param laf the swing look and feel
 	 */
-	public static void setTheme(@Nonnull final LookAndFeel laf)
+	private static void setTheme(@Nonnull final LookAndFeel laf)
 	{
 		try
 		{
@@ -135,7 +135,7 @@ public class SwingUtil
 	 *
 	 * @param font the new font to use
 	 */
-	public static void setFont(@Nonnull final Font font)
+	private static void setFont(@Nonnull final Font font)
 	{
 		final FontUIResource f = new FontUIResource(font);
 		final Enumeration keys = UIManager.getDefaults().keys();
@@ -309,6 +309,8 @@ public class SwingUtil
 			// Use substance look and feel
 			SwingUtil.setTheme(new SubstanceRuneLiteLookAndFeel());
 			// Use custom UI font
+			//TODO : SUPPORT CUSTOM FONT?
+			//SwingUtil.setFont(FontManager.getFontOrDefault(config.clientFont()));
 			SwingUtil.setFont(FontManager.getRunescapeFont());
 		}
 	}

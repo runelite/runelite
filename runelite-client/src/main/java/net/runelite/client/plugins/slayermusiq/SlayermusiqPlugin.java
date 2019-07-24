@@ -51,37 +51,32 @@
  */
 package net.runelite.client.plugins.slayermusiq;
 
-import com.google.inject.Provides;
 import com.google.common.primitives.Ints;
-import java.awt.Dimension;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
-import lombok.Getter;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.client.plugins.PluginType;
-import net.runelite.client.util.Text;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Slayermusiq1 Guides",
 	description = "Adds a right-click option to go to Slayermusiq1's guides from the quest tab",
 	tags = {"quest", "guide", "slayermusiq"},
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+@Singleton
 @Slf4j
 public class SlayermusiqPlugin extends Plugin
 {
@@ -101,23 +96,27 @@ public class SlayermusiqPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Override
 	protected void startUp() throws Exception
 	{
-		//
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		//
+		eventBus.unregister(this);
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		int widgetID = event.getActionParam1();
-		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption())) {
+		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption()))
+		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 
 			MenuEntry newMenuEntry = createSlayermusiqOptionMenuEntry(event);
@@ -128,16 +127,18 @@ public class SlayermusiqPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	private void onMenuOptionClicked(MenuOptionClicked ev) {
-		if (ev.getMenuAction() == MenuAction.RUNELITE && ev.getMenuOption().equals(MENUOP_SLAYERMUSIQ)) {
+	private void onMenuOptionClicked(MenuOptionClicked ev)
+	{
+		if (ev.getMenuAction() == MenuAction.RUNELITE && ev.getOption().equals(MENUOP_SLAYERMUSIQ))
+		{
 			ev.consume();
-			String quest = Text.removeTags(ev.getMenuTarget());
+			String quest = Text.removeTags(ev.getTarget());
 			QuestGuideLinks.tryOpenGuide(quest, chatMessageManager);
 		}
 	}
 
-	private MenuEntry createSlayermusiqOptionMenuEntry(MenuEntryAdded event) {
+	private MenuEntry createSlayermusiqOptionMenuEntry(MenuEntryAdded event)
+	{
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
 

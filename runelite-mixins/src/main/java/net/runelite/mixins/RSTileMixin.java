@@ -24,14 +24,10 @@
  */
 package net.runelite.mixins;
 
-import java.util.ArrayList;
-import java.util.List;
-import net.runelite.api.Actor;
 import net.runelite.api.CollisionData;
 import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Item;
 import net.runelite.api.ItemLayer;
@@ -55,29 +51,36 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSDeque;
+import net.runelite.rs.api.RSEntity;
 import net.runelite.rs.api.RSGameObject;
-import net.runelite.rs.api.RSItem;
-import net.runelite.rs.api.RSItemLayer;
+import net.runelite.rs.api.RSGraphicsObject;
+import net.runelite.rs.api.RSGroundItem;
+import net.runelite.rs.api.RSGroundItemPile;
 import net.runelite.rs.api.RSNode;
+import net.runelite.rs.api.RSNodeDeque;
+import net.runelite.rs.api.RSProjectile;
 import net.runelite.rs.api.RSTile;
+import org.slf4j.Logger;
 
 @Mixin(RSTile.class)
 public abstract class RSTileMixin implements RSTile
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
-	private static GameObject lastGameObject;
+	private static RSGameObject lastGameObject;
 
 	@Inject
-	private static RSDeque[][][] lastGroundItems = new RSDeque[Constants.MAX_Z][Constants.SCENE_SIZE][Constants.SCENE_SIZE];
+	private static RSNodeDeque[][][] lastGroundItems = new RSNodeDeque[Constants.MAX_Z][Constants.SCENE_SIZE][Constants.SCENE_SIZE];
 
 	@Inject
 	private WallObject previousWallObject;
@@ -89,7 +92,7 @@ public abstract class RSTileMixin implements RSTile
 	private GroundObject previousGroundObject;
 
 	@Inject
-	private GameObject[] previousGameObjects;
+	private RSGameObject[] previousGameObjects;
 
 	@Inject
 	@Override
@@ -112,7 +115,7 @@ public abstract class RSTileMixin implements RSTile
 		return LocalPoint.fromScene(getX(), getY());
 	}
 
-	@FieldHook("wallObject")
+	@FieldHook("boundaryObject")
 	@Inject
 	public void wallObjectChanged(int idx)
 	{
@@ -126,26 +129,26 @@ public abstract class RSTileMixin implements RSTile
 			WallObjectDespawned wallObjectDespawned = new WallObjectDespawned();
 			wallObjectDespawned.setTile(this);
 			wallObjectDespawned.setWallObject(previous);
-			client.getCallbacks().post(wallObjectDespawned);
+			client.getCallbacks().post(WallObjectDespawned.class, wallObjectDespawned);
 		}
 		else if (current != null && previous == null)
 		{
 			WallObjectSpawned wallObjectSpawned = new WallObjectSpawned();
 			wallObjectSpawned.setTile(this);
 			wallObjectSpawned.setWallObject(current);
-			client.getCallbacks().post(wallObjectSpawned);
+			client.getCallbacks().post(WallObjectSpawned.class, wallObjectSpawned);
 		}
-		else if (current != null && previous != null)
+		else if (current != null)
 		{
 			WallObjectChanged wallObjectChanged = new WallObjectChanged();
 			wallObjectChanged.setTile(this);
 			wallObjectChanged.setPrevious(previous);
 			wallObjectChanged.setWallObject(current);
-			client.getCallbacks().post(wallObjectChanged);
+			client.getCallbacks().post(WallObjectChanged.class, wallObjectChanged);
 		}
 	}
 
-	@FieldHook("decorativeObject")
+	@FieldHook("wallDecoration")
 	@Inject
 	public void decorativeObjectChanged(int idx)
 	{
@@ -159,26 +162,26 @@ public abstract class RSTileMixin implements RSTile
 			DecorativeObjectDespawned decorativeObjectDespawned = new DecorativeObjectDespawned();
 			decorativeObjectDespawned.setTile(this);
 			decorativeObjectDespawned.setDecorativeObject(previous);
-			client.getCallbacks().post(decorativeObjectDespawned);
+			client.getCallbacks().post(DecorativeObjectDespawned.class, decorativeObjectDespawned);
 		}
 		else if (current != null && previous == null)
 		{
 			DecorativeObjectSpawned decorativeObjectSpawned = new DecorativeObjectSpawned();
 			decorativeObjectSpawned.setTile(this);
 			decorativeObjectSpawned.setDecorativeObject(current);
-			client.getCallbacks().post(decorativeObjectSpawned);
+			client.getCallbacks().post(DecorativeObjectSpawned.class, decorativeObjectSpawned);
 		}
-		else if (current != null && previous != null)
+		else if (current != null)
 		{
 			DecorativeObjectChanged decorativeObjectChanged = new DecorativeObjectChanged();
 			decorativeObjectChanged.setTile(this);
 			decorativeObjectChanged.setPrevious(previous);
 			decorativeObjectChanged.setDecorativeObject(current);
-			client.getCallbacks().post(decorativeObjectChanged);
+			client.getCallbacks().post(DecorativeObjectChanged.class, decorativeObjectChanged);
 		}
 	}
 
-	@FieldHook("groundObject")
+	@FieldHook("floorDecoration")
 	@Inject
 	public void groundObjectChanged(int idx)
 	{
@@ -192,26 +195,26 @@ public abstract class RSTileMixin implements RSTile
 			GroundObjectDespawned groundObjectDespawned = new GroundObjectDespawned();
 			groundObjectDespawned.setTile(this);
 			groundObjectDespawned.setGroundObject(previous);
-			client.getCallbacks().post(groundObjectDespawned);
+			client.getCallbacks().post(GroundObjectDespawned.class, groundObjectDespawned);
 		}
 		else if (current != null && previous == null)
 		{
 			GroundObjectSpawned groundObjectSpawned = new GroundObjectSpawned();
 			groundObjectSpawned.setTile(this);
 			groundObjectSpawned.setGroundObject(current);
-			client.getCallbacks().post(groundObjectSpawned);
+			client.getCallbacks().post(GroundObjectSpawned.class, groundObjectSpawned);
 		}
-		else if (current != null && previous != null)
+		else if (current != null)
 		{
 			GroundObjectChanged groundObjectChanged = new GroundObjectChanged();
 			groundObjectChanged.setTile(this);
 			groundObjectChanged.setPrevious(previous);
 			groundObjectChanged.setGroundObject(current);
-			client.getCallbacks().post(groundObjectChanged);
+			client.getCallbacks().post(GroundObjectChanged.class, groundObjectChanged);
 		}
 	}
 
-	@FieldHook("objects")
+	@FieldHook("gameObjects")
 	@Inject
 	public void gameObjectsChanged(int idx)
 	{
@@ -222,69 +225,110 @@ public abstract class RSTileMixin implements RSTile
 
 		if (previousGameObjects == null)
 		{
-			previousGameObjects = new GameObject[5];
+			previousGameObjects = new RSGameObject[5];
 		}
 
 		// Previous game object
-		GameObject previous = previousGameObjects[idx];
+		RSGameObject previous = previousGameObjects[idx];
 
 		// GameObject that was changed.
 		RSGameObject current = (RSGameObject) getGameObjects()[idx];
 
+		// Update previous object to current
+		previousGameObjects[idx] = current;
+
 		// Last game object
-		GameObject last = lastGameObject;
+		RSGameObject last = lastGameObject;
 
 		// Update last game object
 		lastGameObject = current;
 
-		// Update previous object to current
-		previousGameObjects[idx] = current;
-
 		// Duplicate event, return
-		if (current != null && current.equals(last))
+		if (current == previous)
 		{
 			return;
 		}
 
-		// Characters seem to generate a constant stream of new GameObjects
-		if (current == null || !(current.getRenderable() instanceof Actor))
+		if (current != null && current == last)
 		{
-			if (current == null && previous != null)
+			// When >1 tile objects are added to the scene, the same GameObject is added to
+			// multiple tiles. We keep lastGameObject to prevent duplicate spawn events from
+			// firing for these objects.
+			return;
+		}
+
+		// actors, projectiles, and graphics objects are added and removed from the scene each frame as GameObjects,
+		// so ignore them.
+		boolean currentInvalid = false, prevInvalid = false;
+		if (current != null)
+		{
+			RSEntity renderable = current.getRenderable();
+			currentInvalid = renderable instanceof RSActor || renderable instanceof RSProjectile || renderable instanceof RSGraphicsObject;
+		}
+
+		if (previous != null)
+		{
+			RSEntity renderable = previous.getRenderable();
+			prevInvalid = renderable instanceof RSActor || renderable instanceof RSProjectile || renderable instanceof RSGraphicsObject;
+		}
+
+		Logger logger = client.getLogger();
+		if (current == null)
+		{
+			if (prevInvalid)
 			{
-				GameObjectDespawned gameObjectDespawned = new GameObjectDespawned();
-				gameObjectDespawned.setTile(this);
-				gameObjectDespawned.setGameObject(previous);
-				client.getCallbacks().post(gameObjectDespawned);
+				return;
 			}
-			else if (current != null && previous == null)
+
+			logger.trace("Game object despawn: {}", previous.getId());
+
+			GameObjectDespawned gameObjectDespawned = new GameObjectDespawned();
+			gameObjectDespawned.setTile(this);
+			gameObjectDespawned.setGameObject(previous);
+			client.getCallbacks().post(GameObjectDespawned.class, gameObjectDespawned);
+		}
+		else if (previous == null)
+		{
+			if (currentInvalid)
 			{
-				GameObjectSpawned gameObjectSpawned = new GameObjectSpawned();
-				gameObjectSpawned.setTile(this);
-				gameObjectSpawned.setGameObject(current);
-				client.getCallbacks().post(gameObjectSpawned);
+				return;
 			}
-			else if (current != null && previous != null)
+
+			logger.trace("Game object spawn: {}", current.getId());
+
+			GameObjectSpawned gameObjectSpawned = new GameObjectSpawned();
+			gameObjectSpawned.setTile(this);
+			gameObjectSpawned.setGameObject(current);
+			client.getCallbacks().post(GameObjectSpawned.class, gameObjectSpawned);
+		}
+		else
+		{
+			if (currentInvalid && prevInvalid)
 			{
-				GameObjectChanged gameObjectsChanged = new GameObjectChanged();
-				gameObjectsChanged.setTile(this);
-				gameObjectsChanged.setPrevious(previous);
-				gameObjectsChanged.setGameObject(current);
-				client.getCallbacks().post(gameObjectsChanged);
+				return;
 			}
+
+			logger.trace("Game object change: {} -> {}", previous.getId(), current.getId());
+
+			GameObjectChanged gameObjectsChanged = new GameObjectChanged();
+			gameObjectsChanged.setTile(this);
+			gameObjectsChanged.setPrevious(previous);
+			gameObjectsChanged.setGameObject(current);
+			client.getCallbacks().post(GameObjectChanged.class, gameObjectsChanged);
 		}
 	}
 
-	@FieldHook("itemLayer")
+	@FieldHook("groundItemPile")
 	@Inject
 	public void itemLayerChanged(int idx)
 	{
 		int x = getX();
 		int y = getY();
 		int z = client.getPlane();
-		RSDeque[][][] groundItemDeque = client.getGroundItemDeque();
+		RSNodeDeque[][][] groundItemDeque = client.getGroundItemDeque();
 
-		RSDeque oldQueue = lastGroundItems[z][x][y];
-		RSDeque newQueue = groundItemDeque[z][x][y];
+		RSNodeDeque oldQueue = lastGroundItems[z][x][y];
+		RSNodeDeque newQueue = groundItemDeque[z][x][y];
 
 		if (oldQueue != newQueue)
 		{
@@ -294,39 +338,39 @@ public abstract class RSTileMixin implements RSTile
 				RSNode head = oldQueue.getHead();
 				for (RSNode cur = head.getNext(); cur != head; cur = cur.getNext())
 				{
-					RSItem item = (RSItem) cur;
+					RSGroundItem item = (RSGroundItem) cur;
 					ItemDespawned itemDespawned = new ItemDespawned(this, item);
-					client.getCallbacks().post(itemDespawned);
+					client.getCallbacks().post(ItemDespawned.class, itemDespawned);
 				}
 			}
 			lastGroundItems[z][x][y] = newQueue;
 		}
 
-		RSItem lastUnlink = client.getLastItemDespawn();
+		RSGroundItem lastUnlink = client.getLastItemDespawn();
 		if (lastUnlink != null)
 		{
 			client.setLastItemDespawn(null);
 		}
 
-		RSItemLayer itemLayer = (RSItemLayer) getItemLayer();
+		RSGroundItemPile itemLayer = (RSGroundItemPile) getItemLayer();
 		if (itemLayer == null)
 		{
 			if (lastUnlink != null)
 			{
 				ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
-				client.getCallbacks().post(itemDespawned);
+				client.getCallbacks().post(ItemDespawned.class, itemDespawned);
 			}
 			return;
 		}
 
-		RSDeque itemDeque = newQueue;
+		RSNodeDeque itemDeque = newQueue;
 
 		if (itemDeque == null)
 		{
 			if (lastUnlink != null)
 			{
 				ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
-				client.getCallbacks().post(itemDespawned);
+				client.getCallbacks().post(ItemDespawned.class, itemDespawned);
 			}
 			return;
 		}
@@ -338,7 +382,7 @@ public abstract class RSTileMixin implements RSTile
 		boolean forward = false;
 		if (head != previous)
 		{
-			RSItem prev = (RSItem) previous;
+			RSGroundItem prev = (RSGroundItem) previous;
 			if (x != prev.getX() || y != prev.getY())
 			{
 				current = prev;
@@ -348,7 +392,7 @@ public abstract class RSTileMixin implements RSTile
 		RSNode next = head.getNext();
 		if (current == null && head != next)
 		{
-			RSItem n = (RSItem) next;
+			RSGroundItem n = (RSGroundItem) next;
 			if (x != n.getX() || y != n.getY())
 			{
 				current = n;
@@ -359,7 +403,7 @@ public abstract class RSTileMixin implements RSTile
 		if (lastUnlink != null && lastUnlink != previous && lastUnlink != next)
 		{
 			ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
-			client.getCallbacks().post(itemDespawned);
+			client.getCallbacks().post(ItemDespawned.class, itemDespawned);
 		}
 
 		if (current == null)
@@ -369,18 +413,18 @@ public abstract class RSTileMixin implements RSTile
 
 		do
 		{
-			RSItem item = (RSItem) current;
+			RSGroundItem item = (RSGroundItem) current;
 			item.setX(x);
 			item.setY(y);
 
 			ItemSpawned itemSpawned = new ItemSpawned(this, item);
-			client.getCallbacks().post(itemSpawned);
+			client.getCallbacks().post(ItemSpawned.class, itemSpawned);
 
 			current = forward ? current.getNext() : current.getPrevious();
 
 			// Send spawn events for anything on this tile which is at the wrong location, which happens
 			// when the scene base changes
-		} while (current != head && (((RSItem) current).getX() != x || ((RSItem) current).getY() != y));
+		} while (current != head && (((RSGroundItem) current).getX() != x || ((RSGroundItem) current).getY() != y));
 	}
 
 	@Inject

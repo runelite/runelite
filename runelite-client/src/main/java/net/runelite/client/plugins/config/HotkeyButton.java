@@ -26,23 +26,24 @@ package net.runelite.client.plugins.config;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.inject.Singleton;
 import javax.swing.JButton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 
-public class HotkeyButton extends JButton
+@Singleton
+class HotkeyButton extends JButton
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Keybind value;
 
-	public HotkeyButton(Keybind value, boolean modifierless)
+	HotkeyButton(Keybind value, boolean modifierless)
 	{
 		setValue(value);
 		addActionListener(e ->
-		{
-			setValue(Keybind.NOT_SET);
-		});
+			setValue(Keybind.NOT_SET));
 		addKeyListener(new KeyAdapter()
 		{
 			@Override
@@ -60,7 +61,7 @@ public class HotkeyButton extends JButton
 		});
 	}
 
-	public void setValue(Keybind value)
+	private void setValue(Keybind value)
 	{
 		if (value == null)
 		{

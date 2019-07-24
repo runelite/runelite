@@ -26,8 +26,6 @@ package net.runelite.http.service;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.google.common.base.Strings;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.HashMap;
@@ -45,7 +43,6 @@ import okhttp3.OkHttpClient;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.impl.StaticLoggerBinder;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -73,7 +70,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 			@Override
 			public void contextInitialized(ServletContextEvent sce)
 			{
-				log.info("RuneLite API started");
+				log.info("RuneLitePlus API started");
 			}
 
 			@Override
@@ -129,7 +126,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		return getDataSource(dataSourceProperties);
 	}
 
-	@Bean(value = "runelite-cache", destroyMethod = "")
+	@Bean(value = "runelite-cache2", destroyMethod = "")
 	public DataSource runeliteCache2DataSource(@Qualifier("dataSourceRuneLiteCache") DataSourceProperties dataSourceProperties)
 	{
 		return getDataSource(dataSourceProperties);
@@ -148,7 +145,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	}
 
 	@Bean("Runelite Cache SQL2O")
-	public Sql2o cacheSql2o(@Qualifier("runelite-cache") DataSource dataSource)
+	public Sql2o cacheSql2o(@Qualifier("runelite-cache2") DataSource dataSource)
 	{
 		return createSql2oFromDataSource(dataSource);
 	}
@@ -157,12 +154,6 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	public Sql2o trackerSql2o(@Qualifier("runelite-tracker") DataSource dataSource)
 	{
 		return createSql2oFromDataSource(dataSource);
-	}
-
-	@Bean
-	public MongoClient mongoClient(@Value("${mongo.host}") String host)
-	{
-		return MongoClients.create(host);
 	}
 
 	private static DataSource getDataSource(DataSourceProperties dataSourceProperties)

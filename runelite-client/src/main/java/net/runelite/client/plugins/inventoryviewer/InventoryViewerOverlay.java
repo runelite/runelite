@@ -33,68 +33,72 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.VarClientInt;
 import net.runelite.client.game.ItemManager;
+import static net.runelite.client.plugins.lootingbagviewer.LootingBagViewerOverlay.PLACEHOLDER_WIDTH;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
+@Singleton
 class InventoryViewerOverlay extends Overlay
 {
 	private static final int INVENTORY_SIZE = 28;
-	private static final int PLACEHOLDER_WIDTH = 36;
-	private static final int PLACEHOLDER_HEIGHT = 32;
-	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(new BufferedImage(PLACEHOLDER_WIDTH, PLACEHOLDER_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
+	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(
+		new BufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 
 	private final Client client;
 	private final ItemManager itemManager;
-	private final InventoryViewerConfig config;
+	private final InventoryViewerPlugin plugin;
 
 	private final PanelComponent wrapperComponent = new PanelComponent();
 	private final PanelComponent inventoryComponent = new PanelComponent();
 	private final TitleComponent freeSlotsComponent = TitleComponent.builder().build();
 
 	@Inject
-	private InventoryViewerOverlay(Client client, ItemManager itemManager, InventoryViewerConfig config)
+	private InventoryViewerOverlay(final Client client, final ItemManager itemManager, final InventoryViewerPlugin plugin)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 
 		inventoryComponent.setWrapping(4);
 		inventoryComponent.setGap(new Point(6, 4));
-		inventoryComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		inventoryComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		inventoryComponent.setBackgroundColor(null);
 		inventoryComponent.setBorder(new Rectangle(
-				0,
-				ComponentConstants.STANDARD_BORDER,
-				0,
-				ComponentConstants.STANDARD_BORDER));
+			0,
+			ComponentConstants.STANDARD_BORDER,
+			0,
+			ComponentConstants.STANDARD_BORDER));
 
-		wrapperComponent.setOrientation(PanelComponent.Orientation.VERTICAL);
+		wrapperComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		wrapperComponent.setWrapping(2);
 		wrapperComponent.setBorder(new Rectangle(
-				ComponentConstants.STANDARD_BORDER * 2,
-				ComponentConstants.STANDARD_BORDER,
-				ComponentConstants.STANDARD_BORDER * 2,
-				ComponentConstants.STANDARD_BORDER));
+			ComponentConstants.STANDARD_BORDER * 2,
+			ComponentConstants.STANDARD_BORDER,
+			ComponentConstants.STANDARD_BORDER * 2,
+			ComponentConstants.STANDARD_BORDER));
 
 		this.itemManager = itemManager;
 		this.client = client;
-		this.config = config;
+		this.plugin = plugin;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.hideWhenInvOpen()
-				&& client.getVar(VarClientInt.PLAYER_INVENTORY_OPENED) == 3)
+		if (plugin.isHideWhenInvOpen()
+			&& client.getVar(VarClientInt.PLAYER_INVENTORY_OPENED) == 3)
 		{
 			return null;
 		}
@@ -111,7 +115,7 @@ class InventoryViewerOverlay extends Overlay
 
 		final Item[] items = itemContainer.getItems();
 
-		if (config.viewerMode() == InventoryViewerMode.GROUPED)
+		if (plugin.getViewerMode() == InventoryViewerMode.GROUPED)
 		{
 			Multiset<Integer> totals = HashMultiset.create();
 			for (Item item : items)
@@ -138,7 +142,7 @@ class InventoryViewerOverlay extends Overlay
 			}
 			wrapperComponent.getChildren().add(inventoryComponent);
 
-			if (config.showFreeSlots())
+			if (plugin.isShowFreeSlots())
 			{
 				freeSlotsComponent.setText(remaining + " free");
 				wrapperComponent.setPreferredSize(new Dimension(Math.min(totals.elementSet().size(), 4) * (PLACEHOLDER_WIDTH + 6) + ComponentConstants.STANDARD_BORDER * 2, 0));
@@ -173,7 +177,7 @@ class InventoryViewerOverlay extends Overlay
 
 		wrapperComponent.getChildren().add(inventoryComponent);
 
-		if (config.showFreeSlots())
+		if (plugin.isShowFreeSlots())
 		{
 			freeSlotsComponent.setText(remaining + " free");
 			wrapperComponent.setPreferredSize(new Dimension(4 * (PLACEHOLDER_WIDTH + 6) + ComponentConstants.STANDARD_BORDER * 2, 0));
@@ -185,7 +189,7 @@ class InventoryViewerOverlay extends Overlay
 
 	private BufferedImage getImage(Item item)
 	{
-		ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
+		ItemDefinition itemComposition = itemManager.getItemDefinition(item.getId());
 		return itemManager.getImage(item.getId(), item.getQuantity(), itemComposition.isStackable());
 	}
 }

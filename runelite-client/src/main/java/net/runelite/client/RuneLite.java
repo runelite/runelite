@@ -33,6 +33,8 @@ import com.google.inject.Injector;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.util.Locale;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
@@ -49,17 +51,14 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.menus.MenuManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.plugins.config.ConfigPanel;
+import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
@@ -81,22 +80,20 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class RuneLite
 {
-	public static final String RUNELIT_VERSION = "0.1.1";
+	public static final String PLUS_VERSION = "2.1.0.0";
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
-    public static RuneLiteSplashScreen splashScreen = new RuneLiteSplashScreen();
+	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
+	private static final RuneLiteSplashScreen splashScreen = new RuneLiteSplashScreen();
+	public static boolean allowPrivateServer = false;
 
-
-    @Getter
+	@Getter
 	private static Injector injector;
 
 	@Inject
 	private PluginManager pluginManager;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Inject
 	private ConfigManager configManager;
@@ -108,7 +105,7 @@ public class RuneLite
 	private SessionManager sessionManager;
 
 	@Inject
-	private DiscordService discordService;
+	public DiscordService discordService;
 
 	@Inject
 	private ClientSessionManager clientSessionManager;
@@ -182,6 +179,12 @@ public class RuneLite
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("no-splash", "Do not show the splash screen");
+		parser.accepts("local-injected", "Use local injected-client");
+		parser.accepts("private-server", "Use a custom codebase");
+
+		final ArgumentAcceptingOptionSpec<String> proxyInfo = parser
+			.accepts("proxy")
+			.withRequiredArg().ofType(String.class);
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
@@ -200,13 +203,43 @@ public class RuneLite
 		parser.accepts("help", "Show this text").forHelp();
 		OptionSet options = parser.parse(args);
 
+		if (options.has("proxy"))
+		{
+			String[] proxy = options.valueOf(proxyInfo).split(":");
+
+			if (proxy.length >= 2)
+			{
+				System.setProperty("socksProxyHost", proxy[0]);
+				System.setProperty("socksProxyPort", proxy[1]);
+			}
+
+			if (proxy.length >= 4)
+			{
+				System.setProperty("java.net.socks.username", proxy[2]);
+				System.setProperty("java.net.socks.password", proxy[3]);
+
+				final String user = proxy[2];
+				final char[] pass = proxy[3].toCharArray();
+
+				Authenticator.setDefault(new Authenticator()
+				{
+					private PasswordAuthentication auth = new PasswordAuthentication(user, pass);
+
+					protected PasswordAuthentication getPasswordAuthentication()
+					{
+						return auth;
+					}
+				});
+			}
+		}
+
 		if (options.has("help"))
 		{
 			parser.printHelpOn(System.out);
 			System.exit(0);
 		}
 
-		final boolean developerMode = true;
+		final boolean developerMode = options.has("developer-mode");
 
 		if (developerMode)
 		{
@@ -226,6 +259,16 @@ public class RuneLite
 			logger.setLevel(Level.DEBUG);
 		}
 
+		if (options.has("local-injected"))
+		{
+			ClientLoader.useLocalInjected = true;
+		}
+
+		if (options.has("private-server"))
+		{
+			allowPrivateServer = true;
+		}
+
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
 		{
 			log.error("Uncaught exception:", throwable);
@@ -242,13 +285,13 @@ public class RuneLite
 
 		// The submessage is shown in case the connection is slow
 		splashScreen.setMessage("Starting RuneLite Injector");
-		splashScreen.setSubMessage( " ");
+		splashScreen.setSubMessage(" ");
 
 		final long start = System.currentTimeMillis();
 
 		injector = Guice.createInjector(new RuneLiteModule(
 			options.valueOf(updateMode),
-			developerMode));
+			true));
 
 		injector.getInstance(RuneLite.class).start();
 		splashScreen.setProgress(1, 5);
@@ -309,30 +352,19 @@ public class RuneLite
 		// Close the splash screen
 		splashScreen.close();
 
-		// Initialize Discord service
-		discordService.init();
-
-		// Register event listeners
-		eventBus.register(clientUI);
-		eventBus.register(pluginManager);
-		eventBus.register(overlayManager);
-		eventBus.register(drawManager);
-		eventBus.register(infoBoxManager);
-		eventBus.register(partyService);
-
 		if (!isOutdated)
 		{
 			// Initialize chat colors
 			chatMessageManager.get().loadColors();
 
-			eventBus.register(overlayRenderer.get());
-			eventBus.register(clanManager.get());
-			eventBus.register(itemManager.get());
-			eventBus.register(menuManager.get());
-			eventBus.register(chatMessageManager.get());
-			eventBus.register(commandManager.get());
-			eventBus.register(lootManager.get());
-			eventBus.register(chatboxPanelManager.get());
+			overlayRenderer.get();
+			clanManager.get();
+			itemManager.get();
+			menuManager.get();
+			chatMessageManager.get();
+			commandManager.get();
+			lootManager.get();
+			chatboxPanelManager.get();
 
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
@@ -358,18 +390,6 @@ public class RuneLite
 		configManager.sendConfig();
 		clientSessionManager.shutdown();
 		discordService.close();
-
-		for (final Plugin plugin : pluginManager.getPlugins())
-		{
-			try
-			{
-				pluginManager.stopPlugin(plugin);
-			}
-			catch (PluginInstantiationException e)
-			{
-				log.warn("Failed to gracefully close plugin", e);
-			}
-		}
 	}
 
 	@VisibleForTesting

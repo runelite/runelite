@@ -49,7 +49,9 @@ public class ProjectileID
 	public static final int OLM_FALLING_CRYSTAL_TRAIL = 1352;
 	public static final int OLM_ACID_TRAIL = 1354;
 	public static final int OLM_FIRE_LINE = 1347;
-
+	public static final int OLM_MAGE_ATTACK = 1339;
+	public static final int OLM_RANGE_ATTACK = 1340;
+	
 	public static final int VORKATH_BOMB_AOE = 1481;
 	public static final int VORKATH_POISON_POOL_AOE = 1483;
 	public static final int VORKATH_TICK_FIRE_AOE = 1482;
@@ -80,9 +82,9 @@ public class ProjectileID
 	public static final int CERB_FIRE = 1247;
 
 	/**
-	 * missing: marble gargoyle, superior dark beast
+	 * missing: superior dark beast
 	 */
-
+	public static final int MARBLE_GARGOYLE_AOE = 1453;
 	/**
 	 * non AOE, regular projectiles
 	 */
@@ -91,12 +93,12 @@ public class ProjectileID
 	public static final int VORKATH_MAGIC = 1479;
 	public static final int VORKATH_PRAYER_DISABLE = 1471;
 	public static final int VORKATH_VENOM = 1470;
-	public static final int VORKATH_ICE = 350;
+	public static final int VORKATH_ICE = 395;
 
 	public static final int HYDRA_MAGIC = 1662;
 	public static final int HYDRA_RANGED = 1663;
 	public static final int HYDRA_POISON = 1644;
 	public static final int HYDRA_LIGHTNING = 1664;
 	public static final int HYDRA_LIGHTNING_2 = 1665;
-    	public static final int DRAKE_BREATH = 1637;
+	public static final int DRAKE_BREATH = 1637;
 }

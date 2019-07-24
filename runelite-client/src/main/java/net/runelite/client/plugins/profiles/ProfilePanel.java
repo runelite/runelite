@@ -32,6 +32,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -46,6 +47,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ImageUtil;
 
 @Slf4j
+@Singleton
 class ProfilePanel extends JPanel
 {
 	private static final ImageIcon DELETE_ICON;
@@ -59,12 +61,10 @@ class ProfilePanel extends JPanel
 	}
 
 	private final String loginText;
-	private final ProfilesPanel parent;
 	private String password = null;
 
-	ProfilePanel(final Client client, String data, ProfilesConfig config, ProfilesPanel parent)
+	ProfilePanel(final Client client, final String data, final ProfilesConfig config, final ProfilesPanel parent)
 	{
-		this.parent = parent;
 		String[] parts = data.split(":");
 		this.loginText = parts[1];
 		if (parts.length == 3)
@@ -103,7 +103,7 @@ class ProfilePanel extends JPanel
 				}
 				catch (InvalidKeySpecException | NoSuchAlgorithmException ex)
 				{
-					ex.printStackTrace();
+					log.error(e.toString());
 				}
 			}
 

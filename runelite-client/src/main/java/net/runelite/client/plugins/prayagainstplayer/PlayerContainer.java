@@ -31,26 +31,34 @@ import net.runelite.api.Player;
  * When they attacked me
  * And (in milliseconds) when to expire the overlay around them
  */
-public class PlayerContainer {
+public class PlayerContainer
+{
 
-	private Player player;
-	private long whenTheyAttackedMe;
-	private int millisToExpireHighlight;
+	private final Player player;
+	private final long whenTheyAttackedMe;
+	private final int millisToExpireHighlight;
 
-	public PlayerContainer(Player player, long whenTheyAttackedMe, int millisToExpireHighlight) {
+	PlayerContainer(final Player player, final long whenTheyAttackedMe, final int millisToExpireHighlight)
+	{
 		this.player = player;
 		this.whenTheyAttackedMe = whenTheyAttackedMe;
 		this.millisToExpireHighlight = millisToExpireHighlight;
 	}
 
-
 	//getters
-	public Player getPlayer() {
+	public Player getPlayer()
+	{
 		return player;
 	}
-	public long getWhenTheyAttackedMe() {
+
+	long getWhenTheyAttackedMe()
+	{
 		return whenTheyAttackedMe;
 	}
-	public int getMillisToExpireHighlight() { return millisToExpireHighlight; };
+
+	int getMillisToExpireHighlight()
+	{
+		return millisToExpireHighlight;
+	}
 
 }

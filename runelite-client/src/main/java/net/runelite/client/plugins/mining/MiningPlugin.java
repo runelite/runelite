@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Lars <lars.oernlo@gmail.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Anthony <cvballa3g0@gmail.com>
+ * Copyright (c) 2019, Jarred Vardy <jarred.vardy@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,334 +26,302 @@
  */
 package net.runelite.client.plugins.mining;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.*;
-import net.runelite.api.events.*;
-import net.runelite.client.callback.ClientThread;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
+import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
+import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
+import static net.runelite.api.ObjectID.DEPLETED_VEIN_26667;
+import static net.runelite.api.ObjectID.DEPLETED_VEIN_26668;
+import static net.runelite.api.ObjectID.EMPTY_WALL;
+import static net.runelite.api.ObjectID.ORE_VEIN_26661;
+import static net.runelite.api.ObjectID.ORE_VEIN_26662;
+import static net.runelite.api.ObjectID.ORE_VEIN_26663;
+import static net.runelite.api.ObjectID.ORE_VEIN_26664;
+import net.runelite.api.WallObject;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginType;
-import net.runelite.client.plugins.mining.MiningConfig;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
-import javax.inject.Inject;
-import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.Set;
-
-import static net.runelite.api.ObjectID.*;
 
 @PluginDescriptor(
 	name = "Mining",
-	description = "Show helpful information about Mining",
-	tags = {"mining", "skilling", "overlay"},
-	type = PluginType.UTILITY,
+	description = "Show ore respawn timers and coal bag overlay",
+	tags = {"overlay", "skilling", "timers", "coal", "coalbag", "coal bag"},
 	enabledByDefault = false
 )
+@Singleton
 public class MiningPlugin extends Plugin
 {
-	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
-	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ORE_VEIN_26661, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
-	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
-			ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
-	private static final Set<Integer> MINING_ROCKS = ImmutableSet.of(
-			// another website says depleted rocks are 7468, 7469
-			// website says stoney 2902, 2962, 2963, 2964,
-			2231, 2257, 2584, 2704, 3722, 3723, 3748, 3790, 3791, 3803, 3804, 3805, 3806, 3807, 3808, 4437, 4438, 4676, 6669, 6670, 6671, 6672, 6673, 7453, 7454, 7455, 7456, 7457, 7458, 7459, 7460, 7461, 7462, 7463, 7464, 7467, 7470, 7484, 7485, 7486, 7487, 7488, 7489, 7490, 7491, 7492, 7493, 7494, 7495, 8727, 8828, 8829, 8830, 10079, 10080, 10081, 11441, 11924, 12590, 15127, 15128, 15213, 16464, 16514, 16515, 16521, 16522, 16523, 16524, 16534, 16535, 16545, 16549, 16550, 16998, 16999, 17042, 17043, 17064, 17065, 18817, 18840, 18952, 18953, 18954, 18961, 19849, 19969, 19970, 19971, 19972, 19973, 22665, 22667, 23280, 23281, 23640, 24146, 24147, 24148, 24557, 26873, 26874, 27984, 27985, 27987, 27988, 28596, 28597, 28752, 28753, 28890
-			//2090,  2091,  2092,  2093,  2094,  2095,  2096,  2097,  2098,  2099,  2100,  2101,  2102,  2103,  2104,  2105,  2106,  2107,  2108,  2109,  2110,  2111,  2119,  2120,  2121,  2122,  2123,  2124,  2125,  2126,  2127,  2128,  2129,  2130,  2131,  2132,  2133,  2134,  2135,  2136,  2137,  2138,  2139,  2140,  2231,  2257,  2328,  3042,  3043,  3722,  3723,  3748,  3790,  3791,  3803,  3804,  4676,  6943,  6944,  6945,  6946,  6947,  6948,  9296,  9297,  9303,  9304,  9305,  9306,  9316,  9317,  9331,  9332,  9335,  9336,  9708,  9709,  9710,  9711,  9712,  9713,  9714,  9715,  9716,  9717,  9718,  9719,  9720,  9721,  9722,  9723,  9724,  9725,  9726,  9727,  9728,  9729,  9730,  9731,  9732,  9733,  9734,  9735,  9736,  9737,  10583, 10584, 10585, 10586, 10587, 10944, 10945, 10946, 10947, 10948, 10949, 11165, 11166, 11167, 11168, 11169, 11170, 11171, 11172, 11173, 11174, 11175, 11176, 11177, 11178, 11179, 11180, 11181, 11182, 11183, 11184, 11185, 11186, 11187, 11188, 11189, 11190, 11191, 11192, 11193, 11194, 11195, 11424, 11425, 11426, 11427, 11428, 11429, 11430, 11431, 11432, 11433, 11434, 11435, 11436, 11437, 11438, 11439, 11440, 11441, 11442, 11443, 11444, 11552, 11553, 11554, 11555, 11556, 11557, 11915, 11916, 11917, 11918, 11919, 11920, 11921, 11922, 11923, 11924, 11925, 11926, 11927, 11928, 11929, 11930, 11931, 11932, 11933, 11934, 11935, 11936, 11937, 11938, 11939, 11940, 11941, 11942, 11943, 11944, 11945, 11946, 11947, 11948, 11949, 11950, 11951, 11952, 11953, 11954, 11955, 11956, 11957, 11958, 11959, 11960, 11961, 11962, 11963, 11964, 11965
-			//968, 1480, 1855, 4043, 4487, 7533, 9716, 21250, 1997, 2581, 2582, 2694, 2695, 2696, 2697, 2835, 2836, 2837, 2901, 2965, 3339, 3364, 4526, 4552, 4553, 4554, 4555, 4556, 4557, 4558, 4887, 5604, 5605, 5606, 5844, 5845, 5896, 5985, 5987, 6622, 6623, 6707, 6708, 6709, 7466, 8725, 8726, 8950, 8951, 8952, 9031, 9032, 10036, 10782, 10783, 10784, 10785, 10786, 10787, 10788, 11097, 11098, 11182, 11183, 11424, 11425, 12564, 12565, 12566, 12567, 12588, 12589, 12774, 14814, 14815, 14816, 14817, 15198, 15199, 15217, 15218, 15219, 15410, 15536, 15537, 16077, 16078, 16079, 16080, 16115, 16136, 16284, 16303, 17350, 17351, 17352, 17353, 17354, 17355, 17356, 17357, 17358, 17364, 17365, 17366, 17679, 17958, 17959, 17960, 17970, 17971, 17972, 18871, 18872, 18873, 19131, 21571, 21572, 21573, 22549, 22550, 22551, 23124, 23125, 23126, 23127, 23165, 23976, 23977, 23978, 23979, 23980, 23981, 24693, 24694, 24695, 24696, 24697, 24698, 24699, 24700, 24701, 24781, 25158, 25159, 25160, 25422, 25423, 26372, 26373, 26376, 26377, 26850, 26856, 28580, 29102, 29883, 29884, 29885, 30344, 30519, 30521, 30522, 30857, 30858, 31045, 31781, 31782, 31783, 31784, 31785, 31786, 31787, 31788, 31789
-	);
-	private static final int MAX_INVENTORY_SIZE = 28;
+	// private static final int ROCK_DISTANCE = 14;
+	private static final int MINING_GUILD_REGION = 12183;
 
-//	private static final int SACK_LARGE_SIZE = 162;
-//	private static final int SACK_SIZE = 81;
-//
-//	private static final int UPPER_FLOOR_HEIGHT = -500;
+	private static final Pattern COAL_BAG_EMPTY_MESSAGE = Pattern.compile("^The coal bag is (now )?empty\\.$");
+	private static final Pattern COAL_BAG_ONE_MESSAGE = Pattern.compile("^The coal bag contains one piece of coal\\.$");
+	private static final Pattern COAL_BAG_AMOUNT_MESSAGE = Pattern.compile("^The coal bag contains (\\d+) pieces of coal\\.$");
 
-	@Inject
-	private OverlayManager overlayManager;
+	private static final int MAX_INVENTORY_SPACE = 28;
+	private static final int FULL_COAL_BAG_AMOUNT = 27;
 
-	@Inject
-	private MiningOverlay overlay;
-
-	@Inject
-	private MiningRocksOverlay rocksOverlay;
-
-	@Inject
-	private MiningConfig config;
+	private static final String FILL_OPTION = "fill";
+	private static final String EMPTY_OPTION = "empty";
 
 	@Inject
 	private Client client;
 
 	@Inject
-	private ClientThread clientThread;
+	private OverlayManager overlayManager;
+
+	@Inject
+	private MiningOverlay miningOverlay;
+
+	@Inject
+	private MiningCoalBagOverlay coalBagOverlay;
+
+	@Inject
+	private MiningConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
-	private boolean inMlm;
+	private final List<RockRespawn> respawns = new ArrayList<>();
+	private boolean recentlyLoggedIn;
 
 	@Getter(AccessLevel.PACKAGE)
-	private int curSackSize;
+	private boolean showCoalBagOverlay;
 	@Getter(AccessLevel.PACKAGE)
-	private int maxSackSize;
-	@Getter(AccessLevel.PACKAGE)
-	private Integer depositsLeft;
-
-	private MiningSession session;
-
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<WallObject> veins = new HashSet<>();
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<GameObject> rocks = new HashSet<>();
-
-	@Provides
-	MiningConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(MiningConfig.class);
-	}
+	private int amountOfCoalInCoalBag;
 
 	@Override
 	protected void startUp()
 	{
-		overlayManager.add(overlay);
-		overlayManager.add(rocksOverlay);
-//		overlayManager.add(motherlodeGemOverlay);
-//		overlayManager.add(motherlodeSackOverlay);
+		addSubscriptions();
 
-		session = new MiningSession();
-		//inMlm = checkInMlm();
+		this.showCoalBagOverlay = config.showCoalBagOverlay();
+		this.amountOfCoalInCoalBag = config.amountOfCoalInCoalBag();
 
-//		if (inMlm)
-//		{
-//			clientThread.invokeLater(this::refreshSackValues);
-//		}
+		overlayManager.add(miningOverlay);
+		overlayManager.add(coalBagOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
-		overlayManager.remove(rocksOverlay);
-//		overlayManager.remove(motherlodeGemOverlay);
-//		overlayManager.remove(motherlodeSackOverlay);
-		session = null;
-//		veins.clear();
-		rocks.clear();
+		eventBus.unregister(this);
 
-//		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
-
-//		clientThread.invokeLater(() ->
-//		{
-//			if (sack != null && sack.isHidden())
-//			{
-//				sack.setHidden(false);
-//			}
-//		});
+		overlayManager.remove(miningOverlay);
+		overlayManager.remove(coalBagOverlay);
+		respawns.clear();
 	}
 
-	public MiningSession getSession()
+	private void addSubscriptions()
 	{
-		return session;
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
 	}
 
-//	@Subscribe
-//	public void onVarbitChanged(VarbitChanged event)
-//	{
-//		if (inMlm)
-//		{
-//			refreshSackValues();
-//		}
-//	}
-
-//	@Subscribe
-//	public void onChatMessage(ChatMessage event)
-//	{
-//		if (!inMlm || event.getType() != ChatMessageType.FILTERED)
-//		{
-//			return;
-//		}
-//
-//		String chatMessage = event.getMessage();
-//
-//		switch (chatMessage)
-//		{
-//			case "You manage to mine some pay-dirt.":
-//				session.incrementPayDirtMined();
-//				break;
-//
-//			case "You just found a Diamond!":
-//				session.incrementGemFound(ItemID.UNCUT_DIAMOND);
-//				break;
-//
-//			case "You just found a Ruby!":
-//				session.incrementGemFound(ItemID.UNCUT_RUBY);
-//				break;
-//
-//			case "You just found an Emerald!":
-//				session.incrementGemFound(ItemID.UNCUT_EMERALD);
-//				break;
-//
-//			case "You just found a Sapphire!":
-//				session.incrementGemFound(ItemID.UNCUT_SAPPHIRE);
-//				break;
-//		}
-//	}
-
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-//	public void checkMining()
-//	{
-//		if (!inMlm)
-//		{
-//			return;
-//		}
-//
-//		depositsLeft = calculateDepositsLeft();
-//
-//		Instant lastPayDirtMined = session.getLastPayDirtMined();
-//		if (lastPayDirtMined == null)
-//		{
-//			return;
-//		}
-//
-//		// reset recentPayDirtMined if you haven't mined anything recently
-//		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-//		Duration sinceMined = Duration.between(lastPayDirtMined, Instant.now());
-//
-//		if (sinceMined.compareTo(statTimeout) >= 0)
-//		{
-//			session.resetRecent();
-//		}
-//	}
-
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	@Provides
+	MiningConfig provideConfig(ConfigManager configManager)
 	{
-		GameObject gameObject = event.getGameObject();
-		if (MINING_ROCKS.contains(gameObject.getId()))
+		return configManager.getConfig(MiningConfig.class);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
 		{
-			rocks.add(gameObject);
+			case LOADING:
+			case HOPPING:
+				respawns.clear();
+				break;
+			case LOGGED_IN:
+				// After login rocks that are depleted will be changed,
+				// so wait for the next game tick before watching for
+				// rocks to deplete
+				recentlyLoggedIn = true;
+				break;
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
+	private void onGameTick(GameTick gameTick)
 	{
-		GameObject previous = event.getPrevious();
-		GameObject gameObject = event.getGameObject();
-		System.out.println("Hey");
-		rocks.remove(previous);
-		if (MINING_ROCKS.contains(gameObject.getId()))
+		recentlyLoggedIn = false;
+	}
+
+	private void onGameObjectDespawned(GameObjectDespawned event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
 		{
-			rocks.add(gameObject);
+			return;
+		}
+
+		final GameObject object = event.getGameObject();
+
+		Rock rock = Rock.getRock(object.getId());
+		if (rock != null)
+		{
+			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
+			respawns.add(rockRespawn);
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
-		GameObject gameObject = event.getGameObject();
-		rocks.remove(gameObject);
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOADING)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
-			// on region changes the tiles get set to null
-			rocks.clear();
+			return;
+		}
+
+		final WallObject object = event.getWallObject();
+
+		switch (object.getId())
+		{
+			case EMPTY_WALL:
+			{
+				Rock rock = Rock.AMETHYST;
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
+				respawns.add(rockRespawn);
+				break;
+			}
+			case DEPLETED_VEIN_26665: // Depleted motherlode vein
+			case DEPLETED_VEIN_26666: // Depleted motherlode vein
+			case DEPLETED_VEIN_26667: // Depleted motherlode vein
+			case DEPLETED_VEIN_26668: // Depleted motherlode vein
+			{
+				Rock rock = Rock.ORE_VEIN;
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
+				respawns.add(rockRespawn);
+				break;
+			}
+			case ORE_VEIN_26661: // Motherlode vein
+			case ORE_VEIN_26662: // Motherlode vein
+			case ORE_VEIN_26663: // Motherlode vein
+			case ORE_VEIN_26664: // Motherlode vein
+			{
+				// If the vein respawns before the timer is up, remove it
+				final WorldPoint point = object.getWorldLocation();
+				respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
+				break;
+			}
 		}
 	}
 
-//	private Integer calculateDepositsLeft()
-//	{
-//		if (maxSackSize == 0) // check if maxSackSize has been initialized
-//		{
-//			refreshSackValues();
-//		}
-//
-//		double depositsLeft = 0;
-//		int nonPayDirtItems = 0;
-//
-//		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-//		if (inventory == null)
-//		{
-//			return null;
-//		}
-//
-//		Item[] result = inventory.getItems();
-//		assert result != null;
-//
-//		for (Item item : result)
-//		{
-//			// Assume that MLM ores are being banked and exclude them from the check,
-//			// so the user doesn't see the Overlay switch between deposits left and N/A.
-//			//
-//			// Count other items at nonPayDirtItems so depositsLeft is calculated accordingly.
-//			if (item.getId() != ItemID.PAYDIRT && item.getId() != -1 && !MLM_ORE_TYPES.contains(item.getId()))
-//			{
-//				nonPayDirtItems += 1;
-//			}
-//		}
-//
-//		double inventorySpace = MAX_INVENTORY_SIZE - nonPayDirtItems;
-//		double sackSizeRemaining = maxSackSize - curSackSize;
-//
-//		if (inventorySpace > 0 && sackSizeRemaining > 0)
-//		{
-//			depositsLeft = Math.ceil(sackSizeRemaining / inventorySpace);
-//		}
-//		else if (inventorySpace == 0)
-//		{
-//			return null;
-//		}
-//
-//		return (int) depositsLeft;
-//	}
-//
-//	private boolean checkInMlm()
-//	{
-//		if (client.getGameState() != GameState.LOGGED_IN)
-//		{
-//			return false;
-//		}
-//
-//		int[] currentMapRegions = client.getMapRegions();
-//
-//		// Verify that all regions exist in MOTHERLODE_MAP_REGIONS
-//		for (int region : currentMapRegions)
-//		{
-//			if (!MOTHERLODE_MAP_REGIONS.contains(region))
-//			{
-//				return false;
-//			}
-//		}
-//
-//		return true;
-//	}
-//
-//	private void refreshSackValues()
-//	{
-//		curSackSize = client.getVar(Varbits.SACK_NUMBER);
-//		boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
-//		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
-//	}
-//
-//	/**
-//	 * Checks if the given point is "upstairs" in the mlm.
-//	 * The upper floor is actually on z=0.
-//	 * @param localPoint
-//	 * @return
-//	 */
-//	boolean isUpstairs(LocalPoint localPoint)
-//	{
-//		return Perspective.getTileHeight(client, localPoint, 0) < UPPER_FLOOR_HEIGHT;
-//	}
+	private void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		//TODO: should work hopefully
+		if (event.getMenuAction() != MenuAction.RUNELITE || event.getActionParam1() != WidgetInfo.INVENTORY.getId())
+		{
+			return;
+		}
+
+		ItemContainer inventoryItemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		Item[] inventoryItems = new Item[0];
+		if (inventoryItemContainer != null)
+		{
+			inventoryItems = inventoryItemContainer.getItems();
+		}
+
+		switch (event.getOption().toLowerCase())
+		{
+			case FILL_OPTION:
+				int coalInInventoryCount = (int) Arrays.stream(inventoryItems).filter(i -> i.getId() == ItemID.COAL).count();
+				updateAmountOfCoalInBag(coalInInventoryCount);
+				break;
+
+			case EMPTY_OPTION:
+				int emptyInventorySpaceCount = (int) Arrays.stream(inventoryItems).filter(i -> i.getId() != -1).count();
+				int difference = MAX_INVENTORY_SPACE - emptyInventorySpaceCount;
+				updateAmountOfCoalInBag(-difference);
+				break;
+		}
+	}
+
+	private void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
+		{
+			return;
+		}
+
+		String chatMsg = event.getMessage();
+		if (COAL_BAG_EMPTY_MESSAGE.matcher(chatMsg).find())
+		{
+			updateAmountOfCoalInBag(0);
+		}
+		else if (COAL_BAG_ONE_MESSAGE.matcher(chatMsg).find())
+		{
+			updateAmountOfCoalInBag(1);
+		}
+		else
+		{
+			Matcher matcher = COAL_BAG_AMOUNT_MESSAGE.matcher(chatMsg);
+			if (matcher.find())
+			{
+				updateAmountOfCoalInBag(Integer.parseInt(matcher.group(1)) - this.amountOfCoalInCoalBag);
+			}
+		}
+	}
+
+	/**
+	 * Update the player's count of coal in their Coal Bag
+	 *
+	 * @param delta How much to add/subtract from the amount.
+	 *              Supply a negative number to subtract, or positive number to add.
+	 */
+	private void updateAmountOfCoalInBag(int delta)
+	{
+		// check for upper/lower bounds of amount of coal in a bag
+		// 0 <= X <= 27
+		int coalbagAmount = Math.max(0, Math.min(FULL_COAL_BAG_AMOUNT, this.amountOfCoalInCoalBag + delta));
+		config.amountOfCoalInCoalBag(coalbagAmount);
+		this.amountOfCoalInCoalBag = coalbagAmount;
+	}
+
+	private boolean inMiningGuild()
+	{
+		return client.getLocalPlayer().getWorldLocation().getRegionID() == MINING_GUILD_REGION;
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("mining"))
+		{
+			return;
+		}
+
+		this.showCoalBagOverlay = config.showCoalBagOverlay();
+		this.amountOfCoalInCoalBag = config.amountOfCoalInCoalBag();
+	}
 }

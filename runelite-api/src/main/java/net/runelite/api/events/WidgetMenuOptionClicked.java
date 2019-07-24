@@ -24,8 +24,8 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
 import net.runelite.api.widgets.WidgetInfo;
+import lombok.Data;
 
 /**
  * An event where an option has been clicked in a {@link net.runelite.api.widgets.Widget}s menu.

@@ -31,7 +31,7 @@ import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import static net.runelite.api.NullObjectID.NULL_1293;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.ObjectDefinition;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
@@ -80,7 +80,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Speak to the bartender of the Blue Moon Inn in Varrock.", "Bartender", new WorldPoint(3226, 3399, 0), "Talk to the bartender in Blue Moon Inn in Varrock."),
 		new CrypticClue("This aviator is at the peak of his profession.", "Captain Bleemadge", new WorldPoint(2846, 1749, 0), "Captain Bleemadge, the gnome glider pilot, is found at the top of White Wolf Mountain."),
 		new CrypticClue("Search the crates in the shed just north of East Ardougne.", CRATE_355, new WorldPoint(2617, 3347, 0), "The crates in the shed north of the northern Ardougne bank."),
-		new CrypticClue("I wouldn't wear this jean on my legs.", "Father Jean", new WorldPoint(1697, 3574, 0), "Talk to father Jean in the Hosidius church"),
+		new CrypticClue("I wouldn't wear this jean on my legs.", "Father Jean", new WorldPoint(1734, 3576, 0), "Talk to father Jean in the Hosidius church"),
 		new CrypticClue("Search the crate in the Toad and Chicken pub.", CRATE_354, new WorldPoint(2913, 3536, 0), "The Toad and Chicken pub is located in Burthorpe."),
 		new CrypticClue("Search chests found in the upstairs of shops in Port Sarim.", CLOSED_CHEST_375, new WorldPoint(3016, 3205, 1), "Search the chest in the upstairs of Wydin's Food Store, on the east wall."),
 		new CrypticClue("Right on the blessed border, cursed by the evil ones. On the spot inaccessible by both; I will be waiting. The bugs' imminent possession holds the answer.", new WorldPoint(3410, 3324, 0), "B I P. Dig right under the fairy ring."),
@@ -114,7 +114,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("I am the one who watches the giants. The giants in turn watch me. I watch with two while they watch with one. Come seek where I may be.", "Kamfreena", new WorldPoint(2845, 3539, 0), "Speak to Kamfreena on the top floor of the Warriors' Guild."),
 		new CrypticClue("In a town where wizards are known to gather, search upstairs in a large house to the north.", "Man", 375, new WorldPoint(2593, 3108, 1), "Search the chest upstairs in the house north of Yanille Wizard's Guild. Kill a man for the key."),
 		new CrypticClue("Probably filled with wizards socks.", "Wizard", DRAWERS_350, new WorldPoint(3116, 9562, 0), "Search the drawers in the basement of the Wizard's Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS"),
-		new CrypticClue("Even the seers say this clue goes right over their heads.", CRATE_26635, new WorldPoint(2707, 3488, 2), "Search the crate on the Seers Agility Course in Seers Village"),
+		new CrypticClue("Even the seers say this clue goes right over their heads.", CRATE_14934, new WorldPoint(2707, 3488, 2), "Search the crate on the Seers Agility Course in Seers Village"),
 		new CrypticClue("Speak to a Wyse man.", "Wyson the gardener", new WorldPoint(3026, 3378, 0), "Talk to Wyson the gardener at Falador Park."),
 		new CrypticClue("You'll need to look for a town with a central fountain. Look for a locked chest in the town's chapel.", "Monk" , CLOSED_CHEST_5108, new WorldPoint(3256, 3487, 0), "Search the chest by the stairs in the Varrock church. Kill a Monk in Ardougne Monastery to obtain the key."),
 		new CrypticClue("Talk to Ambassador Spanfipple in the White Knights Castle.", "Ambassador Spanfipple", new WorldPoint(2979, 3340, 0), "Ambassador Spanfipple can be found roaming on the first floor of the White Knights Castle."),
@@ -138,7 +138,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("46 is my number. My body is the colour of burnt orange and crawls among those with eight. Three mouths I have, yet I cannot eat. My blinking blue eye hides my grave.", new WorldPoint(3170, 3885, 0), "Sapphire respawn in the Spider's Nest, lvl 46 Wilderness. Dig under the sapphire spawn."),
 		new CrypticClue("Green is the colour of my death as the winter-guise, I swoop towards the ground.", new WorldPoint(2780, 3783, 0), "Players need to slide down to where Trollweiss grows on Trollweiss Mountain."),
 		new CrypticClue("Talk to a party-goer in Falador.", "Lucy", new WorldPoint(3046, 3382, 0), "Lucy is the bartender on the first floor of the party room."),
-		new CrypticClue("He knows just how easy it is to lose track of time.", "Brother Kojo", new WorldPoint(2570, 3250, 0), "Speak to brother Kojo in the Clock Tower. Answer: 22"),
+		new CrypticClue("He knows just how easy it is to lose track of time.", "Brother Kojo", new WorldPoint(2570, 3250, 0), "Speak to Brother Kojo in the Clock Tower. Answer: 22"),
 		new CrypticClue("A great view - watch the rapidly drying hides get splashed. Check the box you are sitting on.", BOXES, new WorldPoint(2523, 3493, 1), "Almera's House north of Baxtorian Falls, search boxes on the first floor."),
 		new CrypticClue("Search the Coffin in Edgeville.", COFFIN, new WorldPoint(3091, 3477, 0), "Search the coffin located by the Wilderness teleport lever."),
 		new CrypticClue("When no weapons are at hand, then is the time to reflect. In Saradomin's name, redemption draws closer...", DRAWERS_350, new WorldPoint(2818, 3351, 0), "On Entrana, search the southern drawer in the house with the cooking range."),
@@ -196,15 +196,15 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search a bookcase in Lumbridge swamp.", BOOKCASE_9523, new WorldPoint(3146, 3177, 0), "Located in Father Urhney's house."),
 		new CrypticClue("Surround my bones in fire, ontop the wooden pyre. Finally lay me to rest, before my one last test.", null, "Kill a confused/lost barbarian to receive mangled bones. Construct and burn a pyre ship. Kill the ferocious barbarian spirit that spawns to receive a clue casket."),
 		new CrypticClue("Fiendish cooks probably won't dig the dirty dishes.", new WorldPoint(3043, 4974, 1), "Dig by the fire in the Rogues' Den."),
-		new CrypticClue("My life was spared but these voices remain, now guarding these iron gates is my bane.",  "Key Master", new WorldPoint(1310, 1251, 0), "Speak to the Key Master in Cerberus' Lair."),
+		new CrypticClue("My life was spared but these voices remain, now guarding these iron gates is my bane.", "Key Master", new WorldPoint(1310, 1251, 0), "Speak to the Key Master in Cerberus' Lair."),
 		new CrypticClue("Search the boxes in one of the tents in Al Kharid.", BOXES_361, new WorldPoint(3308, 3206, 0), "Search the boxes in the tent east of the Silk trader."),
-		new CrypticClue("One of several rhyming brothers, in business attire with an obsession for paper work.",  "Piles", new WorldPoint(3186, 3936, 0), "Speak to Piles in the Wilderness Resource Area. An entry fee of 7,500 coins is required, or less if Wilderness Diaries have been completed."),
+		new CrypticClue("One of several rhyming brothers, in business attire with an obsession for paper work.", "Piles", new WorldPoint(3186, 3936, 0), "Speak to Piles in the Wilderness Resource Area. An entry fee of 7,500 coins is required, or less if Wilderness Diaries have been completed."),
 		new CrypticClue("Search the drawers on the first floor of a building overlooking Ardougne's Market.", DRAWERS_352, new WorldPoint(2657, 3322, 1), "Climb the ladder in the house north of the market."),
 		new CrypticClue("'A bag belt only?', he asked his balding brothers.", "Abbot Langley", new WorldPoint(3058, 3487, 0), "Talk-to Abbot Langley in Monastery west of Edgeville"),
 		new CrypticClue("Search the drawers upstairs in Falador's shield shop.", DRAWERS, new WorldPoint(2971, 3386, 1), "Cassie's Shield Shop at the northern Falador entrance."),
 		new CrypticClue("Go to this building to be illuminated, and check the drawers while you are there.", "Market Guard", DRAWERS_350 , new WorldPoint(2512, 3641, 1), "Search the drawers in the first floor of the Lighthouse. Kill a Rellekka marketplace guard to obtain the key."),
 		new CrypticClue("Dig near some giant mushrooms, behind the Grand Tree.", new WorldPoint(2458, 3504, 0), "Dig near the red mushrooms northwest of the Grand Tree."),
-		new CrypticClue("Pentagrams and demons, burnt bones and remains, I wonder what the blood contains.", new WorldPoint(3297, 3890, 0), "Dig under the blood rune spawn next the the Demonic Ruins."),
+		new CrypticClue("Pentagrams and demons, burnt bones and remains, I wonder what the blood contains.", new WorldPoint(3297, 3890, 0), "Dig under the blood rune spawn next to the Demonic Ruins."),
 		new CrypticClue("Search the drawers above Varrock's shops.", DRAWERS_7194, new WorldPoint(3206, 3419, 1), "Located upstairs in Thessalia's Fine Clothes shop in Varrock."),
 		new CrypticClue("Search the drawers in one of Gertrude's bedrooms.", DRAWERS_7194, new WorldPoint(3156, 3406, 0), "Kanel's bedroom (southeastern room), outside of west Varrock."),
 		new CrypticClue("Under a giant robotic bird that cannot fly.", new WorldPoint(1756, 4940, 0), "Dig next to the terrorbird display in the south exhibit of Varrock Museum's basement."),
@@ -223,7 +223,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Dig where only the skilled, the wealthy, or the brave can choose not to visit again.", new WorldPoint(3221, 3219, 0), "Dig at Lumbridge spawn"),
 		new CrypticClue("Scattered coins and gems fill the floor. The chest you seek is in the north east.", "King Black Dragon", CLOSED_CHEST_375, new WorldPoint(2288, 4702, 0), "Kill the King Black Dragon for a key (elite), and then open the closed chest in the NE corner of the lair."),
 		new CrypticClue("A ring of water surrounds 4 powerful rings, dig above the ladder located there.", new WorldPoint(1910, 4367, 0), "Dig by the ladder leading to the Dagannoth Kings room in the Waterbirth Island Dungeon."),
-		new CrypticClue("This place sure is a mess.", "Ewesey", new WorldPoint(1646, 3631, 0), "Ewesey is located in the Hosidius House mess hall in Great Kourend."),
+		new CrypticClue("This place sure is a mess.", "Ewesey", new WorldPoint(1646, 3631, 0), "Ewesey is located in the mess hall in Hosidius."),
 		new CrypticClue("Here, there are tears, but nobody is crying. Speak to the guardian and show off your alignment to balance.", "Juna", JUNA, new WorldPoint(3252, 9517, 2), "Talk to Juna while wearing three Guthix related items."),
 		new CrypticClue("You might have to turn over a few stones to progress.", null, "Kill a rock crab."),
 		new CrypticClue("Dig under Razorlor's toad batta.", new WorldPoint(3139, 4554, 0), "Dig on the toad batta spawn in Tarn's Lair."),
@@ -240,7 +240,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the crates in the guard house of the northern gate of East Ardougne.", CRATE_356, new WorldPoint(2645, 3338, 0), "The guard house is northeast of the Handelmort Mansion."),
 		new CrypticClue("Go to the village being attacked by trolls, search the drawers in one of the houses.", "Penda", DRAWERS_350, new WorldPoint(2921, 3577, 0), "Go to Dunstan's house in the northeast corner of Burthorpe. Kill Penda in the Toad and Chicken to obtain the key."),
 		new CrypticClue("You'll get licked.", null, "Kill a Bloodveld."),
-		new CrypticClue("She's small but can build both literally and figuratively, as long as you have their favour.", "Lovada", new WorldPoint(1486, 3834, 0), "Speak to Lovada south of the Lovakengj House blast mine"),
+		new CrypticClue("She's small but can build both literally and figuratively, as long as you have their favour.", "Lovada", new WorldPoint(1486, 3834, 0), "Speak to Lovada by the entrance to the blast mine in Lovakengj."),
 		new CrypticClue("Dig in front of the icy arena where 1 of 4 was fought.", new WorldPoint(2874, 3757, 0), "Where you fought Kamil from Desert Treasure."),
 		new CrypticClue("Speak to Roavar.", "Roavar", new WorldPoint(3494, 3474, 0), "Talk to Roavar in the Canifis tavern."),
 		new CrypticClue("Search the drawers upstairs of houses in the eastern part of Falador.", DRAWERS_350, new WorldPoint(3035, 3347, 1), "House is located east of the eastern Falador bank and south of the fountain. The house is indicated by the icon on the minimap."),
@@ -255,15 +255,15 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the chests upstairs in Al Kharid Palace.", CLOSED_CHEST_375, new WorldPoint(3301, 3169, 1), "The chest is located, in the northeast corner, on the first floor of the Al Kharid Palace"),
 		new CrypticClue("Search the boxes just outside the Armour shop in East Ardougne.", BOXES_361, new WorldPoint(2654, 3299, 0), "Outside Zenesha's Plate Mail Body Shop"),
 		new CrypticClue("Surrounded by white walls and gems.", "Herquin", new WorldPoint(2945, 3335, 0), "Talk to Herquin, the gem store owner in Falador."),
-		new CrypticClue("Monk's residence in the far west. See robe storage device.", DRAWERS_350, new WorldPoint(1742, 3490, 1), "Search the drawers upstairs in the chapel found on the southern coast of Great Kourend's Hosidius House. Directly south of the player-owned house portal."),
+		new CrypticClue("Monk's residence in the far west. See robe storage device.", DRAWERS_350, new WorldPoint(1742, 3490, 1), "Search the drawers upstairs in the chapel found on the southern coast of Hosidius, directly south of the player-owned house portal."),
 		new CrypticClue("Search the drawers in Catherby's Archery shop.", DRAWERS_350, new WorldPoint(2825, 3442, 0), "Hickton's Archery Emporium in Catherby."),
 		new CrypticClue("The hand ain't listening.", "The Face", new WorldPoint(3019, 3232, 0), "Talk to The Face located by the manhole just north of the Port Sarim fishing shop."),
 		new CrypticClue("Search the chest in the left-hand tower of Camelot Castle.", CLOSED_CHEST_25592, new WorldPoint(2748, 3495, 2), "Located on the second floor of the western tower of Camelot."),
-		new CrypticClue("Kill the spiritual, magic and godly whilst representing their own god", null, "Kill a spiritual mage while wearing a corresponding god item."),
+		new CrypticClue("Kill the spiritual, magic and godly whilst representing their own god.", null, "Kill a spiritual mage while wearing a corresponding god item."),
 		new CrypticClue("Anger those who adhere to Saradomin's edicts to prevent travel.", "Monk of Entrana", new WorldPoint(3042, 3236, 0), "Port Sarim Docks, try to charter a ship to Entrana with armour or weapons equipped."),
 		new CrypticClue("South of a river in a town surrounded by the undead, what lies beneath the furnace?", new WorldPoint(2857, 2966, 0), "Dig in front of the Shilo Village furnace."),
 		new CrypticClue("Talk to the Squire in the White Knights' castle in Falador.", "Squire", new WorldPoint(2977, 3343, 0), "The squire is located in the courtyard of the White Knights' Castle."),
-		new CrypticClue("Thanks, Grandma!", "Tynan", new WorldPoint(1836, 3786, 0), "Tynan can be found in the north-east corner of Piscarilius House in Great Kourend."),
+		new CrypticClue("Thanks, Grandma!", "Tynan", new WorldPoint(1836, 3786, 0), "Tynan can be found in the north-east corner of Port Piscarilius."),
 		new CrypticClue("In a town where everyone has perfect vision, seek some locked drawers in a house that sits opposite a workshop.", "Chicken", DRAWERS_25766, new WorldPoint(2709, 3478, 0), "The Seers' Village house south of the Elemental Workshop entrance. Kill any Chicken to obtain a key."),
 		new CrypticClue("The treasure is buried in a small building full of bones. Here is a hint: it's not near a graveyard.", new WorldPoint(3356, 3507, 0), "In the western building near the Limestone quarry east of Varrock. Dig south of the box of bones in the smaller building."),
 		new CrypticClue("Search the crates in East Ardougne's general store.", CRATE_357, new WorldPoint(2615, 3291, 0), "Located south of the Ardounge church."),
@@ -274,9 +274,9 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Impossible to make angry", "Abbot Langley", new WorldPoint(3059, 3486, 0), "Speak to Abbot Langley at the Edgeville Monastery."),
 		new CrypticClue("Search the crates in Horvik's armoury.", CRATE_5106, new WorldPoint(3228, 3433, 0), "Horvik's in Varrock"),
 		new CrypticClue("Ghommal wishes to be impressed by how strong your equipment is.", "Ghommal", new WorldPoint(2878, 3546, 0), "Speak to Ghommal at the Warriors' Guild with a total Melee Strength bonus of over 100."),
-		new CrypticClue("Shhhh!", "Logosia", new WorldPoint(1633, 3808, 0), "Speak to Logosia in the Arceuus House Library's ground floor."),
-		new CrypticClue("Salty peter.", "Konoo", new WorldPoint(1703, 3524, 0), "Talk to Konoo who is digging saltpeter in the Hosidius district in Zeah."),
-		new CrypticClue("Talk to Zeke in Al Kharid.", "Zeke", new WorldPoint(3287, 3190, 0),  "Zeke is the owner of the scimitar shop in Al Kharid."),
+		new CrypticClue("Shhhh!", "Logosia", new WorldPoint(1633, 3808, 0), "Speak to Logosia in the Arceuus Library's ground floor."),
+		new CrypticClue("Salty peter.", "Konoo", new WorldPoint(1703, 3524, 0), "Talk to Konoo who is digging saltpetre in Hosidius, south of the bank."),
+		new CrypticClue("Talk to Zeke in Al Kharid.", "Zeke", new WorldPoint(3287, 3190, 0), "Zeke is the owner of the scimitar shop in Al Kharid."),
 		new CrypticClue("Guthix left his mark in a fiery lake, dig at the tip of it.", new WorldPoint(3069, 3935, 0), "Dig at the tip of the lava lake that is shaped like a Guthixian symbol, west of the Mage Arena."),
 		new CrypticClue("Search the drawers in the upstairs of a house in Catherby.", DRAWERS_350, new WorldPoint(2809, 3451, 1), "Perdu's house in Catherby."),
 		new CrypticClue("Search a crate in the Haymaker's arms.", CRATE_27532, new WorldPoint(1720, 3652, 1), "Search the crate in the north-east corner of The Haymaker's Arms tavern east of Kourend Castle."),
@@ -294,11 +294,11 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Dig in the centre of a great kingdom of 5 cities.", new WorldPoint(1639, 3673, 0), "Dig in front of the large statue in the centre of Great Kourend."),
 		new CrypticClue("Hopefully this set of armour will help you to keep surviving.", "Sir Vyvin", new WorldPoint(2982, 3336, 2), "Speak to Sir Vyvin while wearing a white platebody, and platelegs."),
 		new CrypticClue("The beasts retreat, for their Queen is gone; the song of this town still plays on. Dig near the birthplace of a blade, be careful not to melt your spade.", new WorldPoint(2342, 3677, 0), "Dig in front of the small furnace in the Piscatoris Fishing Colony."),
-		new CrypticClue("Darkness wanders around me, but fills my mind with knowledge.", "Biblia",  new WorldPoint(1633, 3825, 2), "Speak to Biblia on the Arceuus House Library's top floor."),
+		new CrypticClue("Darkness wanders around me, but fills my mind with knowledge.", "Biblia", new WorldPoint(1633, 3825, 2), "Speak to Biblia on the Arceuus Library's top floor."),
 		new CrypticClue("I would make a chemistry joke, but I'm afraid I wouldn't get a reaction.", "Chemist", new WorldPoint(2932, 3212, 0), "Talk to the Chemist in Rimmington"),
-		new CrypticClue("Show this to Hazelmere.",  "Hazelmere", new WorldPoint(2677, 3088, 1), "Hazelmere is found upstairs on the island located just east of Yanille."),
+		new CrypticClue("Show this to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Hazelmere is found upstairs on the island located just east of Yanille."),
 		new CrypticClue("Does one really need a fire to stay warm here?", new WorldPoint(3816, 3810, 0), "Dig next to the fire near the Volcanic Mine entrance."),
-		new CrypticClue("Search the open crate found in a small farmhouse in Hosidius. Cabbages grow outside.", CRATE_27533, new WorldPoint(1687, 3628, 0), "The house is east of the Mess in Great Kourend."),
+		new CrypticClue("Search the open crate found in the Hosidius kitchens.", CRATE_27533, new WorldPoint(1683, 3616, 0), "The kitchens are north-west of the town in Hosidius."),
 		new CrypticClue("Dig under Ithoi's cabin.", new WorldPoint(2529, 2838, 0), "Dig under Ithoi's cabin in the Corsair Cove."),
 		new CrypticClue("Search the drawers, upstairs in the bank to the East of Varrock.", DRAWERS_7194, new WorldPoint(3250, 3420, 1), "Search the drawers upstairs in Varrock east bank."),
 		new CrypticClue("Speak to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Located upstairs in the house to the north of fairy ring CLS. Answer: 6859"),
@@ -371,7 +371,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 		if (objectId != -1)
 		{
-			ObjectComposition object = plugin.getClient().getObjectDefinition(objectId);
+			ObjectDefinition object = plugin.getClient().getObjectDefinition(objectId);
 
 			if (object != null && object.getImpostorIds() != null)
 			{

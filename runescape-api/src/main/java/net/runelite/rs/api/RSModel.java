@@ -24,11 +24,11 @@
  */
 package net.runelite.rs.api;
 
-import java.awt.Polygon;
 import net.runelite.api.Model;
+import java.awt.Polygon;
 import net.runelite.mapping.Import;
 
-public interface RSModel extends RSRenderable, Model
+public interface RSModel extends RSEntity, Model
 {
 	@Import("verticesCount")
 	@Override
@@ -74,7 +74,7 @@ public interface RSModel extends RSRenderable, Model
 	@Override
 	int[] getFaceColors3();
 
-	@Import("triangleTransparencies")
+	@Import("faceAlphas")
 	@Override
 	byte[] getTriangleTransparencies();
 
@@ -82,70 +82,67 @@ public interface RSModel extends RSRenderable, Model
 	@Override
 	byte[] getFaceRenderPriorities();
 
-	@Import("vertexGroups")
+	@Import("vertexLabels")
 	int[][] getVertexGroups();
 
-	@Import("modelHeight")
+	@Import("height")
 	@Override
 	int getModelHeight();
 
-	@Import("animate")
+	@Import("transform")
 	void animate(int type, int[] list, int x, int y, int z);
 
 	@Import("calculateBoundsCylinder")
 	@Override
 	void calculateBoundsCylinder();
 
-	@Import("calculateExtreme")
+	@Import("calculateBoundingBox")
 	@Override
 	void calculateExtreme(int orientation);
 
 	@Import("resetBounds")
 	void resetBounds();
 
-	@Import("toSharedModel")
+	@Import("toSharedSequenceModel")
 	RSModel toSharedModel(boolean b);
 
-	@Import("toSharedSpotAnimModel")
+	@Import("toSharedSpotAnimationModel")
 	RSModel toSharedSpotAnimModel(boolean b);
 
 	@Import("rotateY90Ccw")
 	void rotateY90Ccw();
 
-	@Import("rotateY180Ccw")
+	@Import("rotateY180")
 	void rotateY180Ccw();
 
 	@Import("rotateY270Ccw")
 	void rotateY270Ccw();
 
-	@Import("isClickable")
-	boolean isClickable();
-
 	@Import("radius")
 	@Override
 	int getRadius();
 
-	@Import("centerX")
+	@Import("xMid")
 	@Override
 	int getCenterX();
 
-	@Import("centerY")
+	@Import("yMid")
 	@Override
 	int getCenterY();
 
-	@Import("centerZ")
+	@Import("zMid")
 	@Override
 	int getCenterZ();
 
-	@Import("extremeX")
+	@Import("xMidOffset")
 	@Override
 	int getExtremeX();
 
-	@Import("extremeY")
+	@Import("yMidOffset")
 	@Override
 	int getExtremeY();
 
-	@Import("extremeZ")
+	@Import("zMidOffset")
 	@Override
 	int getExtremeZ();
 
@@ -153,12 +150,15 @@ public interface RSModel extends RSRenderable, Model
 	@Override
 	short[] getFaceTextures();
 
-	@Import("XYZMag")
+	@Import("xzRadius")
 	@Override
 	int getXYZMag();
 
-	void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval,
-								int intervalCount);
+	@Import("isSingleTile")
+	@Override
+	boolean isClickable();
+
+	void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval, int intervalCount);
 
 	/**
 	 * Compute the convex hull of this model

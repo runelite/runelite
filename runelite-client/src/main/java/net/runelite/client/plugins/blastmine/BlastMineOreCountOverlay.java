@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
@@ -36,28 +37,30 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+@Singleton
 class BlastMineOreCountOverlay extends Overlay
 {
 	private final Client client;
-	private final BlastMinePluginConfig config;
+	private final BlastMinePlugin plugin;
 	private final ItemManager itemManager;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private BlastMineOreCountOverlay(BlastMinePlugin plugin, Client client, BlastMinePluginConfig config, ItemManager itemManager)
+	private BlastMineOreCountOverlay(final BlastMinePlugin plugin, final Client client, final ItemManager itemManager)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
-		this.config = config;
+		this.plugin = plugin;
 		this.itemManager = itemManager;
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Blast mine overlay"));
 	}
 
@@ -73,7 +76,7 @@ class BlastMineOreCountOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
-		if (config.showOreOverlay())
+		if (plugin.isShowOreOverlay())
 		{
 			blastMineWidget.setHidden(true);
 			panelComponent.getChildren().add(new ImageComponent(getImage(ItemID.COAL, client.getVar(Varbits.BLAST_MINE_COAL))));

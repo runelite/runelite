@@ -25,9 +25,10 @@
 package net.runelite.client.plugins.runepouch;
 
 
+import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import static net.runelite.api.ItemID.AIR_RUNE;
@@ -76,26 +77,28 @@ public enum Runes
 	SMOKE(20, SMOKE_RUNE),
 	WRATH(21, WRATH_RUNE);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int id;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int itemId;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private BufferedImage image;
 
-	private static final Map<Integer, Runes> runes = new HashMap<>();
+	private static final Map<Integer, Runes> runes;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, Runes> builder = new ImmutableMap.Builder<>();
 		for (Runes rune : values())
 		{
-			runes.put(rune.getId(), rune);
+			builder.put(rune.getId(), rune);
 		}
+		runes = builder.build();
 	}
 
-	Runes(int id, int itemId)
+	Runes(final int id, final int itemId)
 	{
 		this.id = id;
 		this.itemId = itemId;
@@ -109,7 +112,7 @@ public enum Runes
 	public String getName()
 	{
 		String name = this.name();
-		name = name.substring(0, 1) + name.substring(1, name.length()).toLowerCase();
+		name = name.substring(0, 1) + name.substring(1).toLowerCase();
 		return name;
 	}
 }

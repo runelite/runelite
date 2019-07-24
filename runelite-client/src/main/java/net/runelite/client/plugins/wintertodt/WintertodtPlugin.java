@@ -26,29 +26,18 @@
 package net.runelite.client.plugins.wintertodt;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import static net.runelite.api.AnimationID.CONSTRUCTION;
-import static net.runelite.api.AnimationID.FIREMAKING;
-import static net.runelite.api.AnimationID.FLETCHING_BOW_CUTTING;
-import static net.runelite.api.AnimationID.IDLE;
-import static net.runelite.api.AnimationID.LOOKING_INTO;
-import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
-import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
-import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
-import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
-import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
-import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
-import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
-import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
-import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
+import static net.runelite.api.AnimationID.*;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import static net.runelite.api.GameState.LOADING;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -56,16 +45,21 @@ import static net.runelite.api.ItemID.BRUMA_KINDLING;
 import static net.runelite.api.ItemID.BRUMA_ROOT;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
@@ -75,9 +69,13 @@ import net.runelite.client.util.ColorUtil;
 	tags = {"minigame", "firemaking", "boss"}
 )
 @Slf4j
+@Singleton
 public class WintertodtPlugin extends Plugin
 {
 	private static final int WINTERTODT_REGION = 6462;
+
+	static final int WINTERTODT_ROOTS_MULTIPLIER = 10;
+	static final int WINTERTODT_KINDLING_MULTIPLIER = 25;
 
 	@Inject
 	private Notifier notifier;
@@ -97,17 +95,14 @@ public class WintertodtPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private WintertodtActivity currentActivity = WintertodtActivity.IDLE;
 
 	@Getter(AccessLevel.PACKAGE)
-	private int inventoryScore;
-
-	@Getter(AccessLevel.PACKAGE)
-	private int totalPotentialinventoryScore;
-
-	@Getter(AccessLevel.PACKAGE)
-	private int numLogs;
+	private int numRoots;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int numKindling;
@@ -116,6 +111,12 @@ public class WintertodtPlugin extends Plugin
 	private boolean isInWintertodt;
 
 	private Instant lastActionTime;
+
+	private int previousTimerValue;
+	private WintertodtNotifyMode notifyCondition;
+	private Color damageNotificationColor;
+
+	private boolean subscribed;
 
 	@Provides
 	WintertodtConfig getConfig(ConfigManager configManager)
@@ -126,22 +127,63 @@ public class WintertodtPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		this.notifyCondition = config.notifyCondition();
+		this.damageNotificationColor = config.damageNotificationColor();
+
+		addSubscriptions();
+
 		reset();
 		overlayManager.add(overlay);
+
+		handleWintertodtRegion();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+		eventBus.unregister("inside-wintertodt");
+
 		overlayManager.remove(overlay);
 		reset();
 	}
 
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+	}
+
+	private void wintertodtSubscriptions(boolean subscribe)
+	{
+		if (subscribe)
+		{
+			eventBus.subscribe(GameTick.class, "inside-wintertodt", this::onGameTick);
+			eventBus.subscribe(ChatMessage.class, "inside-wintertodt", this::onChatMessage);
+			eventBus.subscribe(AnimationChanged.class, "inside-wintertodt", this::onAnimationChanged);
+			eventBus.subscribe(ItemContainerChanged.class, "inside-wintertodt", this::onItemContainerChanged);
+		}
+		else
+		{
+			eventBus.unregister("inside-wintertodt");
+		}
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("wintertodt"))
+		{
+			return;
+		}
+
+		this.notifyCondition = config.notifyCondition();
+		this.damageNotificationColor = config.damageNotificationColor();
+	}
+
 	private void reset()
 	{
-		inventoryScore = 0;
-		totalPotentialinventoryScore = 0;
-		numLogs = 0;
+		numRoots = 0;
 		numKindling = 0;
 		currentActivity = WintertodtActivity.IDLE;
 		lastActionTime = null;
@@ -157,10 +199,24 @@ public class WintertodtPlugin extends Plugin
 		return false;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void handleWintertodtRegion()
 	{
-		if (!isInWintertodtRegion())
+		if (isInWintertodtRegion())
+		{
+			if (!isInWintertodt)
+			{
+				reset();
+				log.debug("Entered Wintertodt!");
+			}
+			isInWintertodt = true;
+
+			if (!subscribed)
+			{
+				wintertodtSubscriptions(true);
+				subscribed = true;
+			}
+		}
+		else
 		{
 			if (isInWintertodt)
 			{
@@ -169,17 +225,49 @@ public class WintertodtPlugin extends Plugin
 			}
 
 			isInWintertodt = false;
-			return;
-		}
 
-		if (!isInWintertodt)
+			if (subscribed)
+			{
+				wintertodtSubscriptions(false);
+				subscribed = false;
+			}
+		}
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == LOADING)
 		{
-			reset();
-			log.debug("Entered Wintertodt!");
+			handleWintertodtRegion();
 		}
-		isInWintertodt = true;
+	}
 
+	private void onGameTick(GameTick gameTick)
+	{
 		checkActionTimeout();
+	}
+
+	void onVarbitChanged(VarbitChanged varbitChanged)
+	{
+		int timerValue = client.getVar(Varbits.WINTERTODT_TIMER);
+		if (timerValue != previousTimerValue)
+		{
+			int timeToNotify = config.roundNotification();
+			if (timeToNotify > 0)
+			{
+				int timeInSeconds = timerValue * 30 / 50;
+				int prevTimeInSeconds = previousTimerValue * 30 / 50;
+
+				log.debug("Seconds left until round start: {}", timeInSeconds);
+
+				if (prevTimeInSeconds > timeToNotify && timeInSeconds <= timeToNotify)
+				{
+					notifier.notify("Wintertodt round is about to start");
+				}
+			}
+
+			previousTimerValue = timerValue;
+		}
 	}
 
 	private void checkActionTimeout()
@@ -205,14 +293,8 @@ public class WintertodtPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
-		if (!isInWintertodt)
-		{
-			return;
-		}
-
 		ChatMessageType chatMessageType = chatMessage.getType();
 
 		if (chatMessageType != ChatMessageType.GAMEMESSAGE && chatMessageType != ChatMessageType.SPAM)
@@ -272,7 +354,7 @@ public class WintertodtPlugin extends Plugin
 				wasDamaged = true;
 
 				// Recolor message for damage notification
-				messageNode.setRuneLiteFormatMessage(ColorUtil.wrapWithColorTag(messageNode.getValue(), config.damageNotificationColor()));
+				messageNode.setRuneLiteFormatMessage(ColorUtil.wrapWithColorTag(messageNode.getValue(), this.damageNotificationColor));
 				chatMessageManager.update(messageNode);
 				client.refreshChat();
 
@@ -299,7 +381,7 @@ public class WintertodtPlugin extends Plugin
 		{
 			boolean shouldNotify = false;
 
-			switch (config.notifyCondition())
+			switch (this.notifyCondition)
 			{
 				case ONLY_WHEN_INTERRUPTED:
 					if (wasInterrupted)
@@ -349,14 +431,8 @@ public class WintertodtPlugin extends Plugin
 		notifier.notify(notification);
 	}
 
-	@Subscribe
-	public void onAnimationChanged(final AnimationChanged event)
+	private void onAnimationChanged(final AnimationChanged event)
 	{
-		if (!isInWintertodt)
-		{
-			return;
-		}
-
 		final Player local = client.getLocalPlayer();
 
 		if (event.getActor() != local)
@@ -398,32 +474,26 @@ public class WintertodtPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();
 
-		if (!isInWintertodt || container != client.getItemContainer(InventoryID.INVENTORY))
+		if (container != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
 		}
 
 		final Item[] inv = container.getItems();
 
-		inventoryScore = 0;
-		totalPotentialinventoryScore = 0;
-		numLogs = 0;
+		numRoots = 0;
 		numKindling = 0;
 
 		for (Item item : inv)
 		{
-			inventoryScore += getPoints(item.getId());
-			totalPotentialinventoryScore += getPotentialPoints(item.getId());
-
 			switch (item.getId())
 			{
 				case BRUMA_ROOT:
-					++numLogs;
+					++numRoots;
 					break;
 				case BRUMA_KINDLING:
 					++numKindling;
@@ -431,13 +501,13 @@ public class WintertodtPlugin extends Plugin
 			}
 		}
 
-		//If we're currently fletching but there are no more logs, go ahead and abort fletching immediately
-		if (numLogs == 0 && currentActivity == WintertodtActivity.FLETCHING)
+		//If we're currently fletching but there are no more roots, go ahead and abort fletching immediately
+		if (numRoots == 0 && currentActivity == WintertodtActivity.FLETCHING)
 		{
 			currentActivity = WintertodtActivity.IDLE;
 		}
-		//Otherwise, if we're currently feeding the brazier but we've run out of both logs and kindling, abort the feeding activity
-		else if (numLogs == 0 && numKindling == 0 && currentActivity == WintertodtActivity.FEEDING_BRAZIER)
+		//Otherwise, if we're currently feeding the brazier but we've run out of both roots and kindling, abort the feeding activity
+		else if (numRoots == 0 && numKindling == 0 && currentActivity == WintertodtActivity.FEEDING_BRAZIER)
 		{
 			currentActivity = WintertodtActivity.IDLE;
 		}
@@ -447,30 +517,5 @@ public class WintertodtPlugin extends Plugin
 	{
 		currentActivity = action;
 		lastActionTime = Instant.now();
-	}
-
-	private static int getPoints(int id)
-	{
-		switch (id)
-		{
-			case BRUMA_ROOT:
-				return 10;
-			case BRUMA_KINDLING:
-				return 25;
-			default:
-				return 0;
-		}
-	}
-
-	private static int getPotentialPoints(int id)
-	{
-		switch (id)
-		{
-			case BRUMA_ROOT:
-			case BRUMA_KINDLING:
-				return 25;
-			default:
-				return 0;
-		}
 	}
 }

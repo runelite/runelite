@@ -101,10 +101,10 @@ public class ScreenshotPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-		when(screenshotConfig.screenshotRewards()).thenReturn(true);
-		when(screenshotConfig.screenshotLevels()).thenReturn(true);
-		when(screenshotConfig.screenshotValuableDrop()).thenReturn(true);
-		when(screenshotConfig.screenshotUntradeableDrop()).thenReturn(true);
+		screenshotPlugin.setScreenshotRewards(true);
+		screenshotPlugin.setScreenshotLevels(true);
+		screenshotPlugin.setScreenshotValuableDrop(true);
+		screenshotPlugin.setScreenshotUntradeableDrop(true);
 	}
 
 	@Test
@@ -179,7 +179,7 @@ public class ScreenshotPluginTest
 		event.setGroupId(LEVEL_UP_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(event);
 
-		GameTick tick = new GameTick();
+		GameTick tick = GameTick.INSTANCE;
 		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
@@ -202,7 +202,7 @@ public class ScreenshotPluginTest
 		event.setGroupId(LEVEL_UP_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(event);
 
-		GameTick tick = new GameTick();
+		GameTick tick = GameTick.INSTANCE;
 		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
@@ -225,7 +225,7 @@ public class ScreenshotPluginTest
 		event.setGroupId(LEVEL_UP_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(event);
 
-		GameTick tick = new GameTick();
+		GameTick tick = GameTick.INSTANCE;
 		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
@@ -248,7 +248,7 @@ public class ScreenshotPluginTest
 		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(event);
 
-		GameTick tick = new GameTick();
+		GameTick tick = GameTick.INSTANCE;
 		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));

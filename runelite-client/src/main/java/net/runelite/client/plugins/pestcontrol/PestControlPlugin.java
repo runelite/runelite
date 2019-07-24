@@ -27,12 +27,15 @@ package net.runelite.client.plugins.pestcontrol;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -55,7 +58,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -71,8 +74,11 @@ import net.runelite.client.util.Text;
 	description = "Show helpful information for the Pest Control minigame",
 	tags = {"minigame", "overlay"}
 )
+@Singleton
 public class PestControlPlugin extends Plugin
 {
+	private static final int VOID_KNIGHTS_OUTPOST = 10537;
+
 	private final int NOVICE_GANGPLANK = 14315; // Combat 40+ (3 points)
 	private final int INTERMEDIATE_GANGPLANK = 25631; // Combat 70+ (4 points)
 	private final int VETERAN_GANGPLANK = 25632; // Combat 100+ (5 points)
@@ -84,7 +90,7 @@ public class PestControlPlugin extends Plugin
 	private final Pattern PURCHASE_PATTERN = Pattern.compile("Remaining Void Knight Commendation Points: ([0-9]+)");
 
 	@Inject
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Client client;
 
 	@Inject
@@ -97,15 +103,15 @@ public class PestControlPlugin extends Plugin
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private ItemManager itemManager;
 
 	@Inject
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private PestControlConfig config;
 
 	@Inject
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private WidgetOverlay widgetOverlay;
 
 	@Inject
@@ -126,35 +132,51 @@ public class PestControlPlugin extends Plugin
 	@Inject
 	private PortalWeaknessOverlay portalWeaknessOverlay;
 
-	@Getter
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
 	private Game game;
 
-	@Getter
-	private HashMap<Integer, NpcHighlightContext> highlightedNpcList = new HashMap<Integer, NpcHighlightContext>();
+	@Getter(AccessLevel.PACKAGE)
+	private HashMap<Integer, NpcHighlightContext> highlightedNpcList = new HashMap<>();
 
-	@Getter
-	private List<TileObject> highlightedRepairList = new ArrayList<TileObject>();
+	@Getter(AccessLevel.PACKAGE)
+	private List<TileObject> highlightedRepairList = new ArrayList<>();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Tile noviceGangplankTile;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Tile intermediateGangplankTile;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Tile veteranGangplankTile;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Integer commendationPoints;
 
 	private String userConfigKey;
 
 	private boolean checkForPointWidgets;
 
-	private boolean pointsRewarded = false;
-
 	private PointsInfoboxCounter pointsInfoboxCounter;
 
+	private boolean showHintArrow;
+	private boolean showPortalWeakness;
+	private boolean highlightGangplanks;
+	private HighlightPortalOption portalHighlight;
+	private Color activePortalColor;
+	private Color shieldedPortalColor;
+	private NpcHighlightStyle highlightSpinners;
+	private Color spinnerColor;
+	private NpcHighlightStyle highlightBrawlers;
+	private Color brawlerColor;
+	private boolean highlightRepairables;
+	@Getter(AccessLevel.PACKAGE)
+	private Color repairableColor;
+	private boolean showPoints;
+	private boolean showTimeTillNextPortal;
 
 	@Provides
 	PestControlConfig provideConfig(ConfigManager configManager)
@@ -165,20 +187,38 @@ public class PestControlPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
 		loadPlugin();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
 		unloadPlugin();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configEvent)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventBus.subscribe(GameObjectChanged.class, this, this::onGameObjectChanged);
+		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventBus.subscribe(GroundObjectSpawned.class, this, this::onGroundObjectSpawned);
+		eventBus.subscribe(GroundObjectChanged.class, this, this::onGroundObjectChanged);
+		eventBus.subscribe(GroundObjectDespawned.class, this, this::onGroundObjectDespawned);
+	}
+
+	private void onConfigChanged(ConfigChanged configEvent)
 	{
 		if (configEvent.getGroup().equals("pestcontrol"))
 		{
+			updateConfig();
 			unloadPlugin();
 			loadPlugin();
 		}
@@ -210,53 +250,53 @@ public class PestControlPlugin extends Plugin
 
 		overlayManager.add(widgetOverlay);
 
-		if (config.highlightSpinners() != NpcHighlightStyle.OFF)
+		if (this.highlightSpinners != NpcHighlightStyle.OFF)
 		{
 			for (Integer npcId : PestControlNpc.getSpinnerIdSet())
 			{
 				highlightedNpcList.put(npcId, new NpcHighlightContext(
-					config.highlightSpinners(),
-					config.spinnerColor(),
+					this.highlightSpinners,
+					this.spinnerColor,
 					true
 				));
 			}
 		}
 
-		if (config.highlightBrawlers() != NpcHighlightStyle.OFF)
+		if (this.highlightBrawlers != NpcHighlightStyle.OFF)
 		{
 			for (Integer npcId : PestControlNpc.getBrawlerIdSet())
 			{
 				highlightedNpcList.put(npcId, new NpcHighlightContext(
-					config.highlightBrawlers(),
-					config.brawlerColor(),
+					this.highlightBrawlers,
+					this.brawlerColor,
 					false
 				));
 			}
 		}
 
-		if (config.portalHighlight() != HighlightPortalOption.OFF)
+		if (this.portalHighlight != HighlightPortalOption.OFF)
 		{
-			if (config.portalHighlight() == HighlightPortalOption.ACTIVE ||
-				config.portalHighlight() == HighlightPortalOption.ALL)
+			if (this.portalHighlight == HighlightPortalOption.ACTIVE ||
+				this.portalHighlight == HighlightPortalOption.ALL)
 			{
 				for (Integer portalNpcId : PestControlNpc.getActivePortalIdSet())
 				{
 					highlightedNpcList.put(portalNpcId, new NpcHighlightContext(
 						NpcHighlightStyle.HULL,
-						config.activePortalColor(),
+						this.activePortalColor,
 						false
 					));
 				}
 			}
 
-			if (config.portalHighlight() == HighlightPortalOption.SHIELDED ||
-				config.portalHighlight() == HighlightPortalOption.ALL)
+			if (this.portalHighlight == HighlightPortalOption.SHIELDED ||
+				this.portalHighlight == HighlightPortalOption.ALL)
 			{
 				for (Integer portalNpcId : PestControlNpc.getShieldedPortalIdSet())
 				{
 					highlightedNpcList.put(portalNpcId, new NpcHighlightContext(
 						NpcHighlightStyle.HULL,
-						config.shieldedPortalColor(),
+						this.shieldedPortalColor,
 						false
 					));
 				}
@@ -268,12 +308,12 @@ public class PestControlPlugin extends Plugin
 			overlayManager.add(npcHighlightOverlay);
 		}
 
-		if (config.highlightRepairables())
+		if (this.highlightRepairables)
 		{
 			overlayManager.add(repairOverlay);
 		}
 
-		if (config.showHintArrow())
+		if (this.showHintArrow)
 		{
 			overlayManager.add(hintArrowOverlay);
 
@@ -283,17 +323,17 @@ public class PestControlPlugin extends Plugin
 			}
 		}
 
-		if (config.highlightGangplanks())
+		if (this.highlightGangplanks)
 		{
 			overlayManager.add(gangplankOverlay);
 		}
 
-		if (config.showTimeTillNextPortal())
+		if (this.showTimeTillNextPortal)
 		{
 			overlayManager.add(timerOverlay);
 		}
 
-		if (config.showPortalWeakness())
+		if (this.showPortalWeakness)
 		{
 			overlayManager.add(portalWeaknessOverlay);
 		}
@@ -314,13 +354,12 @@ public class PestControlPlugin extends Plugin
 
 		highlightedNpcList.clear();
 
-		if (game != null && config.showHintArrow() && client.hasHintArrow())
+		if (game != null && this.showHintArrow && client.hasHintArrow())
 		{
 			client.clearHintArrow();
 		}
 	}
 
-	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		// LOGGED_IN also triggers when teleporting to the island
@@ -330,9 +369,9 @@ public class PestControlPlugin extends Plugin
 		}
 	}
 
-	public void handlePointsInfoboxCounter()
+	private void handlePointsInfoboxCounter()
 	{
-		if (!config.showPoints())
+		if (!this.showPoints)
 		{
 			return;
 		}
@@ -370,7 +409,7 @@ public class PestControlPlugin extends Plugin
 	}
 
 
-	public void getPointsFromWidgets()
+	private void getPointsFromWidgets()
 	{
 
 		// Get points from dialog after the game
@@ -396,7 +435,7 @@ public class PestControlPlugin extends Plugin
 		}
 
 		// Get points from dialog after purchase
-		Widget pestControlDialog = client.getWidget(WidgetInfo.PEST_CONTROL_DIALOG_TEXT);
+		Widget pestControlDialog = client.getWidget(WidgetInfo.MINIGAME_DIALOG_TEXT);
 		if (pestControlDialog != null)
 		{
 			String pestControlDialogText = Text.sanitizeMultilineText(pestControlDialog.getText());
@@ -444,7 +483,7 @@ public class PestControlPlugin extends Plugin
 		}
 	}
 
-	public void setCommendationPoints(int newPoints)
+	private void setCommendationPoints(int newPoints)
 	{
 		if (userConfigKey == null)
 		{
@@ -465,8 +504,7 @@ public class PestControlPlugin extends Plugin
 		handlePointsInfoboxCounter();
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTickEvent)
+	private void onGameTick(GameTick gameTickEvent)
 	{
 		// Check for widgets on main island
 		if (game == null && isOnPestControlMainIsland())
@@ -507,7 +545,6 @@ public class PestControlPlugin extends Plugin
 		{
 			log.debug("Pest control game has started");
 			game = new Game(client, this);
-			pointsRewarded = false;
 		}
 
 		// Check if we are in a game
@@ -531,8 +568,7 @@ public class PestControlPlugin extends Plugin
 		game.onGameTick(gameTickEvent);
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (game != null && chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
@@ -544,8 +580,7 @@ public class PestControlPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (game != null)
 		{
@@ -620,51 +655,67 @@ public class PestControlPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		handleTileObject(event.getTile(), event.getGameObject());
 	}
 
-	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
+	private void onGameObjectChanged(GameObjectChanged event)
 	{
 		unlistTileObject(event.getPrevious());
 		handleTileObject(event.getTile(), event.getGameObject());
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		unlistTileObject(event.getGameObject());
 	}
 
-	@Subscribe
-	public void onGroundObjectSpawned(GroundObjectSpawned event)
+	private void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		handleTileObject(event.getTile(), event.getGroundObject());
 	}
 
-	@Subscribe
-	public void onGroundObjectChanged(GroundObjectChanged event)
+	private void onGroundObjectChanged(GroundObjectChanged event)
 	{
 		unlistTileObject(event.getPrevious());
 		handleTileObject(event.getTile(), event.getGroundObject());
 	}
 
-	@Subscribe
-	public void onGroundObjectDespawned(GroundObjectDespawned event)
+	private void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		unlistTileObject(event.getGroundObject());
 	}
 
-	public boolean isInPestControlInstance()
+	private boolean isInPestControlInstance()
 	{
 		return client.getWidget(WidgetInfo.PEST_CONTROL_BLUE_SHIELD) != null;
 	}
 
-	public boolean isOnPestControlMainIsland()
+	boolean isOnPestControlMainIsland()
 	{
-		return client.getLocalPlayer().getWorldLocation().getRegionID() == 10537;
+		if (client.getLocalPlayer() != null)
+		{
+			return client.getLocalPlayer().getWorldLocation().getRegionID() == VOID_KNIGHTS_OUTPOST;
+		}
+		return false;
+	}
+
+	private void updateConfig()
+	{
+		this.showHintArrow = config.showHintArrow();
+		this.showPortalWeakness = config.showPortalWeakness();
+		this.highlightGangplanks = config.highlightGangplanks();
+		this.portalHighlight = config.portalHighlight();
+		this.activePortalColor = config.activePortalColor();
+		this.shieldedPortalColor = config.shieldedPortalColor();
+		this.highlightSpinners = config.highlightSpinners();
+		this.spinnerColor = config.spinnerColor();
+		this.highlightBrawlers = config.highlightBrawlers();
+		this.brawlerColor = config.brawlerColor();
+		this.highlightRepairables = config.highlightRepairables();
+		this.repairableColor = config.repairableColor();
+		this.showPoints = config.showPoints();
+		this.showTimeTillNextPortal = config.showTimeTillNextPortal();
 	}
 }

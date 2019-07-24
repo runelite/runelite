@@ -46,8 +46,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.Perspective;
-import net.runelite.api.Projectile;
-import net.runelite.api.ProjectileID;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.Angle;
 import net.runelite.api.coords.Direction;
@@ -61,7 +59,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.widgets.WidgetID;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTARoom;
 
@@ -83,12 +81,26 @@ public class TelekineticRoom extends MTARoom
 	private Rectangle bounds;
 	private NPC guardian;
 	private Maze maze;
+	private EventBus eventBus;
 
 	@Inject
-	private TelekineticRoom(MTAConfig config, Client client)
+	private TelekineticRoom(MTAConfig config, Client client, EventBus eventBus)
 	{
 		super(config);
 		this.client = client;
+		this.eventBus = eventBus;
+
+		addSubscriptions();
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GroundObjectSpawned.class, this, this::onGroundObjectSpawned);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
 	}
 
 	public void resetRoom()
@@ -97,7 +109,6 @@ public class TelekineticRoom extends MTARoom
 		telekineticWalls.clear();
 	}
 
-	@Subscribe
 	public void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		final WallObject wall = event.getWallObject();
@@ -109,7 +120,6 @@ public class TelekineticRoom extends MTARoom
 		telekineticWalls.add(wall);
 	}
 
-	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
@@ -120,8 +130,7 @@ public class TelekineticRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onGroundObjectSpawned(GroundObjectSpawned event)
+	private void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		final GroundObject object = event.getGroundObject();
 		if (object.getId() == TELEKINETIC_FINISH)
@@ -130,8 +139,7 @@ public class TelekineticRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (!config.telekinetic()
 				|| !inside()
@@ -178,14 +186,6 @@ public class TelekineticRoom extends MTARoom
 			}
 			else
 			{
-				for (Projectile projectile : client.getProjectiles())
-				{
-					if (projectile.getId() == ProjectileID.TELEKINETIC_SPELL)
-					{
-						return;
-					}
-				}
-
 				log.debug("Rebuilding moves due to guardian move");
 				this.moves = build();
 			}
@@ -198,8 +198,7 @@ public class TelekineticRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
 
@@ -209,8 +208,7 @@ public class TelekineticRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		NPC npc = event.getNpc();
 

@@ -24,26 +24,26 @@
  */
 package net.runelite.mixins;
 
+
+import net.runelite.api.Client;
+import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
+import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.widgets.JavaScriptCallback;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.runelite.api.Client;
-import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSScript;
 import net.runelite.rs.api.RSScriptEvent;
 
-import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
-
 @Mixin(RSClient.class)
 public abstract class ScriptVMMixin implements RSClient
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static Client client;
 
 	// This field is set by the ScriptVM raw injector
@@ -101,7 +101,7 @@ public abstract class ScriptVMMixin implements RSClient
 			ScriptCallbackEvent event = new ScriptCallbackEvent();
 			event.setScript(currentScript);
 			event.setEventName(stringOp);
-			client.getCallbacks().post(event);
+			client.getCallbacks().post(ScriptCallbackEvent.class, event);
 			return true;
 		}
 		return false;

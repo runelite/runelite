@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,22 +25,26 @@
  */
 package net.runelite.client.plugins.raids;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -47,8 +52,10 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
 import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
@@ -62,17 +69,16 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -80,114 +86,172 @@ import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.DrawManager;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import net.runelite.client.util.HotkeyListener;
 import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 @PluginDescriptor(
-	name = "Chambers Of Xeric",
+	name = "CoX Scouter",
 	description = "Show helpful information for the Chambers of Xeric raid",
-	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox", "olm"},
-	type = PluginType.PVM
+	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox", "olm", "scout"},
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
+@Singleton
 @Slf4j
+@Getter(AccessLevel.PACKAGE)
 public class RaidsPlugin extends Plugin
 {
-	private static final int LOBBY_PLANE = 3;
-	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
+	private static final int LOBBY_PLANE = 3;
+	private static final String RAID_START_MESSAGE = "The raid has begun!";
+	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
+	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
-	private static final int LINE_COMPONENT_HEIGHT = 16;
-
-	@Inject
-	private ItemManager itemManager;
-	private static final Pattern LEVEL_COMPLETE_REGEX = Pattern.compile("(.+) level complete! Duration: ([0-9:]+)");
 	private static final Pattern RAID_COMPLETE_REGEX = Pattern.compile("Congratulations - your raid is complete! Duration: ([0-9:]+)");
-
+	private static final ImmutableSet<String> GOOD_CRABS_FIRST = ImmutableSet.of(
+		"FSCCP.PCSCF - #WNWSWN#ESEENW", //both good crabs
+		"SCSPF.CCSPF - #ESWWNW#ESENES", //both good crabs
+		"SPCFC.CSPCF - #WWNEEE#WSWNWS", //both good crabs
+		"SCFCP.CSCFS - #ENEESW#ENWWSW", //good crabs
+		"SCPFC.CCSSF - #NEESEN#WSWWNE", //good crabs
+		"SCFPC.CSPCF - #WSWWNE#WSEENE" //good crabs first rare crabs second
+	);
+	private static final ImmutableSet<String> GOOD_CRABS_SECOND = ImmutableSet.of(
+		"FSCCP.PCSCF - #WNWSWN#ESEENW", //both good crabs
+		"SCSPF.CCSPF - #ESWWNW#ESENES", //both good crabs
+		"SPCFC.CSPCF - #WWNEEE#WSWNWS", //both good crabs
+		"SCPFC.CSPCF - #NEEESW#WWNEEE", //rare crabs first good crabs second
+		"SCFCP.CCSPF - #ESEENW#ESWWNW", //bad crabs first good crabs second
+		"SCPFC.CSPSF - #WWSEEE#NWSWWN", //bad crabs first good crabs second
+		"SFCCS.PCPSF - #ENWWSW#ENESEN", //bad crabs first good crabs second
+		"SPCFC.SCCPF - #ESENES#WWWNEE", //bad crabs first good crabs second
+		"SPSFP.CCCSF - #NWSWWN#ESEENW", //bad crabs first good crabs second
+		"FSCCP.PCSCF - #ENWWWS#NEESEN" //bad crabs first good crabs second
+	);
+	private static final ImmutableSet<String> RARE_CRABS_FIRST = ImmutableSet.of(
+		"SCPFC.CSPCF - #NEEESW#WWNEEE", //rare crabs first good crabs second
+		"SCPFC.PCSCF - #WNEEES#NWSWNW", //rare crabs first bad crabs second
+		"SCPFC.CCPSF - #NWWWSE#WNEESE" //both rare crabs
+	);
+	private static final ImmutableSet<String> RARE_CRABS_SECOND = ImmutableSet.of(
+		"SCPFC.CCPSF - #NWWWSE#WNEESE", //both rare crabs
+		"FSCPC.CSCPF - #WNWWSE#EENWWW", //bad crabs first rare crabs second
+		"SCFPC.PCCSF - #WSEENE#WWWSEE", //bad crabs first rare crabs second
+		"SCFPC.SCPCF - #NESENE#WSWWNE", //bad crabs first rare crabs second
+		"SFCCP.CSCPF - #WNEESE#NWSWWN", //bad crabs first rare crabs second
+		"SCFPC.CSPCF - #WSWWNE#WSEENE" //good crabs first rare crabs second
+	);
+	private static final Pattern PUZZLES = Pattern.compile("Puzzle - (\\w+)");
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private ChatMessageManager chatMessageManager;
-
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private InfoBoxManager infoBoxManager;
-
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private Client client;
-
-	@Inject
-	private DrawManager drawManager;
-
-	@Inject
-	private ScheduledExecutorService executor;
-
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private RaidsConfig config;
-
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private OverlayManager overlayManager;
-
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private RaidsOverlay overlay;
-
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private RaidsPointsOverlay pointsOverlay;
-
+	@Getter(AccessLevel.NONE)
+	@Inject
+	private RaidsPartyOverlay partyOverlay;
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private LayoutSolver layoutSolver;
-
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private SpriteManager spriteManager;
-
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private ClientThread clientThread;
-
-	@Inject
-	private KeyManager keyManager;
-
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private TooltipManager tooltipManager;
-
-	@Getter
-	private final ArrayList<String> roomWhitelist = new ArrayList<>();
-
-	@Getter
-	private final ArrayList<String> roomBlacklist = new ArrayList<>();
-
-	@Getter
-	private final ArrayList<String> rotationWhitelist = new ArrayList<>();
-
-	@Getter
-	private final ArrayList<String> layoutWhitelist = new ArrayList<>();
-
-	@Getter
-	private final Map<String, List<Integer>> recommendedItemsList = new HashMap<>();
-
-	@Getter
-	private Raid raid;
-
-	@Getter
-	private boolean inRaidChambers;
-
+	@Getter(AccessLevel.NONE)
 	@Inject
 	private ClientToolbar clientToolbar;
-	private RaidsPanel panel;
+	@Getter(AccessLevel.NONE)
+	@Inject
+	private ItemManager itemManager;
+	@Getter(AccessLevel.NONE)
+	@Inject
+	private EventBus eventBus;
+	private boolean raidStarted;
+	private boolean inRaidChambers;
+	private boolean enhanceScouterTitle;
+	private boolean hideBackground;
+	private boolean raidsTimer;
+	private boolean pointsMessage;
+	private boolean ptsHr;
+	private boolean scoutOverlay;
+	private boolean scoutOverlayAtBank;
+	private boolean scoutOverlayInRaid;
+	private boolean displayFloorBreak;
+	private boolean showRecommendedItems;
+	private boolean alwaysShowWorldAndCC;
+	private boolean layoutMessage;
+	private boolean colorTightrope;
+	private boolean crabHandler;
+	private boolean enableRotationWhitelist;
+	private boolean enableLayoutWhitelist;
+	private boolean showScavsFarms;
+	private boolean scavsBeforeIce;
+	private boolean scavsBeforeOlm;
+	private boolean hideRopeless;
+	private boolean hideVanguards;
+	private boolean hideUnknownCombat;
+	private boolean partyDisplay;
+	private int startPlayerCount;
 	private int upperTime = -1;
 	private int middleTime = -1;
 	private int lowerTime = -1;
 	private int raidTime = -1;
+	private Color goodCrabColor;
+	private Color rareCrabColor;
+	private Color scavPrepColor;
+	private Color tightropeColor;
+	private Raid raid;
+	private RaidsTimer timer;
 	private WidgetOverlay widgetOverlay;
-	private String tooltip;
-	public boolean canShow;
 	private NavigationButton navButton;
+	private String recommendedItems;
+	private String whitelistedRooms;
+	private String whitelistedRotations;
+	private String whitelistedLayouts;
+	private String blacklistedRooms;
+	private String tooltip;
+	private String goodCrabs;
+	private String layoutFullCode;
+	private List<String> roomWhitelist = new ArrayList<>();
+	private List<String> roomBlacklist = new ArrayList<>();
+	private List<String> rotationWhitelist = new ArrayList<>();
+	private List<String> layoutWhitelist = new ArrayList<>();
+	private List<String> partyMembers = new ArrayList<>();
+	private List<String> startingPartyMembers = new ArrayList<>();
+	private Map<String, List<Integer>> recommendedItemsList = new HashMap<>();
+	private Set<String> missingPartyMembers = new HashSet<>();
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -204,13 +268,20 @@ public class RaidsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(overlay);
 		overlayManager.add(pointsOverlay);
+		if (this.partyDisplay)
+		{
+			overlayManager.add(partyOverlay);
+		}
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 		widgetOverlay = overlayManager.getWidgetOverlay(WidgetInfo.RAIDS_POINTS_INFOBOX);
-		panel = injector.getInstance(RaidsPanel.class);
-		panel.init(config);
+		RaidsPanel panel = injector.getInstance(RaidsPanel.class);
+		panel.init();
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(this.getClass(), "instancereloadhelper.png");
 		navButton = NavigationButton.builder()
 			.tooltip("Raids Reload")
@@ -224,13 +295,16 @@ public class RaidsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		overlayManager.remove(pointsOverlay);
 		clientToolbar.removeNavigation(navButton);
-		inRaidChambers = false;
-		widgetOverlay = null;
-		raid = null;
-
+		if (this.partyDisplay)
+		{
+			overlayManager.remove(partyOverlay);
+		}
+		infoBoxManager.removeInfoBox(timer);
 		final Widget widget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX);
 		if (widget != null)
 		{
@@ -239,20 +313,48 @@ public class RaidsPlugin extends Plugin
 		reset();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(ClientTick.class, this, this::onClientTick);
+		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("raids"))
 		{
 			return;
 		}
 
+		updateConfig();
 		updateLists();
+
+		if (event.getKey().equals("raidsTimer"))
+		{
+			updateInfoBoxState();
+			return;
+		}
+
+		if (event.getKey().equals("partyDisplay"))
+		{
+			if (this.partyDisplay)
+			{
+				overlayManager.add(partyOverlay);
+			}
+			else
+			{
+				overlayManager.remove(partyOverlay);
+			}
+		}
+
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
 
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		if (!inRaidChambers || event.isHidden())
 		{
@@ -267,40 +369,60 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		checkRaidPresence(false);
+		if (this.partyDisplay)
+		{
+			updatePartyMembers(false);
+		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (inRaidChambers && event.getType() == ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
 			String message = Text.removeTags(event.getMessage());
 			Matcher matcher;
 
-			matcher = LEVEL_COMPLETE_REGEX.matcher(message);
-			if (matcher.find())
+			if (message.startsWith(RAID_START_MESSAGE))
 			{
-				String floor = matcher.group(1);
-				int time = timeToSeconds(matcher.group(2));
-				if (floor.equals("Upper"))
+				if (this.raidsTimer)
 				{
-					upperTime = time;
+					timer = new RaidsTimer(this, Instant.now());
+					spriteManager.getSpriteAsync(TAB_QUESTS_BROWN_RAIDING_PARTY, 0, timer);
+					infoBoxManager.addInfoBox(timer);
 				}
-				else if (floor.equals("Middle"))
+				if (this.partyDisplay)
 				{
-					middleTime = time;
+					// Base this on visible players since party size shows people outside the lobby
+					// and they did not get to come on the raid
+					List<Player> players = client.getPlayers();
+					startPlayerCount = players.size();
+
+					partyMembers.clear();
+					startingPartyMembers.clear();
+					missingPartyMembers.clear();
+
+					startingPartyMembers.addAll(Lists.transform(players, Player::getName));
+					partyMembers.addAll(startingPartyMembers);
 				}
-				else if (floor.equals("Lower"))
+			}
+
+			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
+			{
+				timer.timeFloor();
+			}
+
+			if (message.startsWith(RAID_COMPLETE_MESSAGE))
+			{
+				if (timer != null)
 				{
-					lowerTime = time;
+					timer.timeOlm();
+					timer.setStopped(true);
 				}
 				updateTooltip();
 			}
-
 			matcher = RAID_COMPLETE_REGEX.matcher(message);
 			if (matcher.find())
 			{
@@ -308,7 +430,7 @@ public class RaidsPlugin extends Plugin
 				int timesec = timeToSeconds(matcher.group(1));
 				updateTooltip();
 
-				if (config.pointsMessage())
+				if (this.pointsMessage)
 				{
 					int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
 					int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
@@ -337,7 +459,7 @@ public class RaidsPlugin extends Plugin
 						.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 						.runeLiteFormattedMessage(chatMessage)
 						.build());
-					if (config.ptsHr())
+					if (this.ptsHr)
 					{
 						String ptssolo;
 						{
@@ -351,7 +473,7 @@ public class RaidsPlugin extends Plugin
 
 						String ptssplit;
 						{
-							ptssplit = POINTS_FORMAT.format(((float) (totalPoints / (float) timesec) * 3600) / (partySize));
+							ptssplit = POINTS_FORMAT.format(((totalPoints / (float) timesec) * 3600) / (partySize));
 						}
 
 
@@ -388,12 +510,11 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onClientTick(ClientTick event)
+	private void onClientTick(ClientTick event)
 	{
-		if (!config.raidsTimer()
-				|| !client.getGameState().equals(GameState.LOGGED_IN)
-				|| tooltip == null)
+		if (!this.raidsTimer
+			|| !client.getGameState().equals(GameState.LOGGED_IN)
+			|| tooltip == null)
 		{
 			return;
 		}
@@ -405,7 +526,94 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	public void checkRaidPresence(boolean force)
+	private void onOverlayMenuClicked(OverlayMenuClicked event)
+	{
+		OverlayMenuEntry entry = event.getEntry();
+		if (entry.getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
+			entry.getTarget().equals("Raids party overlay"))
+		{
+			switch (entry.getOption())
+			{
+				case RaidsPartyOverlay.PARTY_OVERLAY_RESET:
+					startingPartyMembers.clear();
+					updatePartyMembers(true);
+					missingPartyMembers.clear();
+					break;
+				case RaidsPartyOverlay.PARTY_OVERLAY_REFRESH:
+					updatePartyMembers(true);
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	private void updatePartyMembers(boolean force)
+	{
+		int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
+		if (partySize <= 0)
+		{
+			return;
+		}
+
+		if (startingPartyMembers.size() == partySize && !force)
+		{
+			// Skip update if the part is as big as when we started
+			missingPartyMembers.clear(); // Clear missing members in case someone came back
+			return;
+		}
+
+		// Only update while in raid
+		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 || force)
+		{
+			Widget[] widgets;
+			try
+			{
+				widgets = client.getWidget(WidgetInfo.RAIDING_PARTY).getStaticChildren()[2].getStaticChildren()[3].getDynamicChildren();
+			}
+			catch (NullPointerException e)
+			{
+				return; // Raid widget not loaded
+			}
+
+			partyMembers.clear();
+			for (Widget widget : widgets)
+			{
+				if (widget == null || widget.getText() == null)
+				{
+					continue;
+				}
+
+				String name = widget.getName();
+
+				if (name.length() > 1)
+				{
+					partyMembers.add(name.substring(name.indexOf('>') + 1, name.indexOf('<', 1)));
+				}
+			}
+
+			// If we don't have any starting members, update starting members
+			if (startingPartyMembers.size() == 0 || force)
+			{
+				missingPartyMembers.clear();
+				startingPartyMembers.clear();
+				startingPartyMembers.addAll(partyMembers);
+			}
+			else
+			{
+
+				// Check if anyone left
+				if (startingPartyMembers.size() > partyMembers.size())
+				{
+					missingPartyMembers.clear();
+					missingPartyMembers.addAll(startingPartyMembers);
+					missingPartyMembers.removeAll(partyMembers);
+				}
+			}
+		}
+	}
+
+	void checkRaidPresence(boolean force)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -417,6 +625,7 @@ public class RaidsPlugin extends Plugin
 		if (force || inRaidChambers != setting)
 		{
 			inRaidChambers = setting;
+			updateInfoBoxState();
 
 			if (inRaidChambers)
 			{
@@ -436,32 +645,50 @@ public class RaidsPlugin extends Plugin
 					return;
 				}
 
+				layoutFullCode = layout.getCode();
 				raid.updateLayout(layout);
 				RotationSolver.solve(raid.getCombatRooms());
-				overlay.setScoutOverlayShown(true);
+				setOverlayStatus(true);
 				sendRaidLayoutMessage();
-			}
-			else
-			{
-				if (!config.scoutOverlayAtBank())
+				Matcher puzzleMatch = PUZZLES.matcher(raid.getFullRotationString());
+				final List<String> puzzles = new ArrayList<>();
+				while (puzzleMatch.find())
 				{
-					overlay.setScoutOverlayShown(false);
+					puzzles.add(puzzleMatch.group());
 				}
-
-				reset();
+				if (raid.getFullRotationString().contains("Crabs"))
+				{
+					switch (puzzles.size())
+					{
+						case 1:
+							goodCrabs = handleCrabs(puzzles.get(0));
+							break;
+						case 2:
+							goodCrabs = handleCrabs(puzzles.get(0), puzzles.get(1));
+							break;
+						case 3:
+							goodCrabs = handleCrabs(puzzles.get(0), puzzles.get(1), puzzles.get(2));
+							break;
+					}
+				}
+			}
+			else if (!this.scoutOverlayAtBank)
+			{
+				setOverlayStatus(false);
 			}
 		}
 
 		// If we left party raid was started or we left raid
-		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 && (!inRaidChambers || !config.scoutOverlayInRaid()))
+		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 && (!inRaidChambers || !this.scoutOverlayInRaid))
 		{
-			overlay.setScoutOverlayShown(false);
+			setOverlayStatus(false);
+			raidStarted = false;
 		}
 	}
 
 	private void sendRaidLayoutMessage()
 	{
-		if (!config.layoutMessage())
+		if (!this.layoutMessage)
 		{
 			return;
 		}
@@ -479,16 +706,59 @@ public class RaidsPlugin extends Plugin
 				.append(raidData)
 				.build())
 			.build());
+
+		if (recordRaid() != null)
+		{
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+				.runeLiteFormattedMessage(new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append("You have scouted a record raid, whilst this is a very good raid to do you will probably end up profiting more by selling this raid to a team looking for it.")
+					.build())
+				.build());
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+				.runeLiteFormattedMessage(new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append("The following are some places you can sell this raid: Scout Trading in We do Raids discord, and Buying Cox Rotations in Oblivion discord.")
+					.build())
+				.build());
+		}
 	}
 
+	private void updateInfoBoxState()
+	{
+		if (timer == null)
+		{
+			return;
+		}
+
+		if (inRaidChambers && this.raidsTimer)
+		{
+			if (!infoBoxManager.getInfoBoxes().contains(timer))
+			{
+				infoBoxManager.addInfoBox(timer);
+			}
+		}
+		else
+		{
+			infoBoxManager.removeInfoBox(timer);
+		}
+
+		if (!inRaidChambers)
+		{
+			timer = null;
+		}
+	}
 
 	private void updateLists()
 	{
-		updateList(roomWhitelist, config.whitelistedRooms());
-		updateList(roomBlacklist, config.blacklistedRooms());
-		updateList(rotationWhitelist, config.whitelistedRotations());
-		updateList(layoutWhitelist, config.whitelistedLayouts());
-		updateMap(recommendedItemsList, config.recommendedItems());
+		updateList(roomWhitelist, this.whitelistedRooms);
+		updateList(roomBlacklist, this.blacklistedRooms);
+		updateList(rotationWhitelist, this.whitelistedRotations);
+		updateList(layoutWhitelist, this.whitelistedLayouts);
+		updateMap(recommendedItemsList, this.recommendedItems);
 	}
 
 	private void updateMap(Map<String, List<Integer>> map, String input)
@@ -501,10 +771,14 @@ public class RaidsPlugin extends Plugin
 			String everything = m.group(1).toLowerCase();
 			int split = everything.indexOf(',');
 			if (split < 0)
+			{
 				continue;
+			}
 			String key = everything.substring(0, split);
 			if (key.length() < 1)
+			{
 				continue;
+			}
 			String[] itemNames = everything.substring(split).split(SPLIT_REGEX);
 
 			map.computeIfAbsent(key, k -> new ArrayList<>());
@@ -512,24 +786,34 @@ public class RaidsPlugin extends Plugin
 			for (String itemName : itemNames)
 			{
 				if (itemName.equals(""))
+				{
 					continue;
+				}
 				if (itemName.equals("ice barrage"))
+				{
 					map.get(key).add(SpriteID.SPELL_ICE_BARRAGE);
+				}
 				else if (itemName.startsWith("salve"))
+				{
 					map.get(key).add(ItemID.SALVE_AMULETEI);
+				}
 				else if (itemManager.search(itemName).size() > 0)
+				{
 					map.get(key).add(itemManager.search(itemName).get(0).getId());
+				}
 				else
+				{
 					log.info("RaidsPlugin: Could not find an item ID for item: " + itemName);
+				}
 			}
 		}
 	}
 
-	private void updateList(ArrayList<String> list, String input)
+	private void updateList(List<String> list, String input)
 	{
 		list.clear();
 
-		if (list == rotationWhitelist)
+		if (list == this.rotationWhitelist)
 		{
 			Matcher m = ROTATION_REGEX.matcher(input);
 			while (m.find())
@@ -788,6 +1072,10 @@ public class RaidsPlugin extends Plugin
 		lowerTime = -1;
 		raidTime = -1;
 		tooltip = null;
+		inRaidChambers = false;
+		widgetOverlay = null;
+		raidStarted = false;
+		timer = null;
 	}
 
 	private int timeToSeconds(String s)
@@ -810,16 +1098,16 @@ public class RaidsPlugin extends Plugin
 		StringBuilder builder = new StringBuilder();
 		if (seconds >= 3600)
 		{
-			builder.append((int)Math.floor(seconds / 3600) + ";");
+			builder.append((int) Math.floor(seconds / 3600)).append(";");
 		}
 		seconds %= 3600;
-		if (builder.toString().equals(""))
+		if (builder.length() == 0)
 		{
-			builder.append((int)Math.floor(seconds / 60));
+			builder.append((int) Math.floor(seconds / 60));
 		}
 		else
 		{
-			builder.append(StringUtils.leftPad(String.valueOf((int)Math.floor(seconds / 60)), 2, '0'));
+			builder.append(StringUtils.leftPad(String.valueOf((int) Math.floor(seconds / 60)), 2, '0'));
 		}
 		builder.append(":");
 		seconds %= 60;
@@ -835,7 +1123,7 @@ public class RaidsPlugin extends Plugin
 			tooltip = null;
 			return;
 		}
-		builder.append("Upper level: " + secondsToTime(upperTime));
+		builder.append("Upper level: ").append(secondsToTime(upperTime));
 		if (middleTime == -1)
 		{
 			if (lowerTime == -1)
@@ -845,12 +1133,12 @@ public class RaidsPlugin extends Plugin
 			}
 			else
 			{
-				builder.append("</br>Lower level: " + secondsToTime(lowerTime - upperTime));
+				builder.append("</br>Lower level: ").append(secondsToTime(lowerTime - upperTime));
 			}
 		}
 		else
 		{
-			builder.append("</br>Middle level: " + secondsToTime(middleTime - upperTime));
+			builder.append("</br>Middle level: ").append(secondsToTime(middleTime - upperTime));
 			if (lowerTime == -1)
 			{
 				tooltip = builder.toString();
@@ -858,7 +1146,7 @@ public class RaidsPlugin extends Plugin
 			}
 			else
 			{
-				builder.append("</br>Lower level: " + secondsToTime(lowerTime - middleTime));
+				builder.append("</br>Lower level: ").append(secondsToTime(lowerTime - middleTime));
 			}
 		}
 		if (raidTime == -1)
@@ -866,7 +1154,111 @@ public class RaidsPlugin extends Plugin
 			tooltip = builder.toString();
 			return;
 		}
-		builder.append("</br>Olm: " + secondsToTime(raidTime - lowerTime));
+		builder.append("</br>Olm: ").append(secondsToTime(raidTime - lowerTime));
 		tooltip = builder.toString();
+	}
+
+	private String handleCrabs(String firstGroup)
+	{
+		if (firstGroup.contains("Crabs") && GOOD_CRABS_FIRST.contains(layoutFullCode))
+		{
+			return "Good Crabs";
+		}
+		if (firstGroup.contains("Crabs") && RARE_CRABS_FIRST.contains(layoutFullCode))
+		{
+			return "Rare Crabs";
+		}
+		return null;
+	}
+
+	private String handleCrabs(String firstGroup, String secondGroup)
+	{
+		if (firstGroup.contains("Crabs") && GOOD_CRABS_FIRST.contains(layoutFullCode))
+		{
+			return "Good Crabs";
+		}
+		if (secondGroup.contains("Crabs") && GOOD_CRABS_SECOND.contains(layoutFullCode))
+		{
+			return "Good Crabs";
+		}
+		if (firstGroup.contains("Crabs") && RARE_CRABS_FIRST.contains(layoutFullCode))
+		{
+			return "Rare Crabs";
+		}
+		if (secondGroup.contains("Crabs") && RARE_CRABS_SECOND.contains(layoutFullCode))
+		{
+			return "Rare Crabs";
+		}
+		return null;
+	}
+
+	private String handleCrabs(String firstGroup, String secondGroup, String thirdGroup)
+	{
+		if (firstGroup.contains("Crabs"))
+		{
+			return "Good Crabs";
+		}
+		if (secondGroup.contains("Crabs"))
+		{
+			return "Rare Crabs";
+		}
+		if (thirdGroup.contains("Crabs"))
+		{
+			return "Rare Crabs";
+		}
+		return null;
+	}
+
+	String recordRaid()
+	{
+		if (raid.getRotationString().equalsIgnoreCase("vasa,tekton,vespula")
+			&& containsIgnoreCase(raid.getFullRotationString(), "crabs")
+			&& containsIgnoreCase(raid.getFullRotationString(), "tightrope")
+			&& goodCrabs != null)
+		{
+			return goodCrabs;
+		}
+		return null;
+	}
+
+	private void setOverlayStatus(boolean bool)
+	{
+		overlay.setScoutOverlayShown(bool);
+	}
+
+	private void updateConfig()
+	{
+		this.enhanceScouterTitle = config.enhanceScouterTitle();
+		this.hideBackground = config.hideBackground();
+		this.raidsTimer = config.raidsTimer();
+		this.pointsMessage = config.pointsMessage();
+		this.ptsHr = config.ptsHr();
+		this.scoutOverlay = config.scoutOverlay();
+		this.scoutOverlayAtBank = config.scoutOverlayAtBank();
+		this.scoutOverlayInRaid = config.scoutOverlayInRaid();
+		this.displayFloorBreak = config.displayFloorBreak();
+		this.showRecommendedItems = config.showRecommendedItems();
+		this.recommendedItems = config.recommendedItems();
+		this.alwaysShowWorldAndCC = config.alwaysShowWorldAndCC();
+		this.layoutMessage = config.layoutMessage();
+		this.colorTightrope = config.colorTightrope();
+		this.tightropeColor = config.tightropeColor();
+		this.crabHandler = config.crabHandler();
+		this.goodCrabColor = config.goodCrabColor();
+		this.rareCrabColor = config.rareCrabColor();
+		this.enableRotationWhitelist = config.enableRotationWhitelist();
+		this.whitelistedRotations = config.whitelistedRotations();
+		this.enableLayoutWhitelist = config.enableLayoutWhitelist();
+		this.whitelistedLayouts = config.whitelistedLayouts();
+		this.showScavsFarms = config.showScavsFarms();
+		this.scavsBeforeIce = config.scavsBeforeIce();
+		this.scavsBeforeOlm = config.scavsBeforeOlm();
+		this.scavPrepColor = config.scavPrepColor();
+		this.whitelistedRooms = config.whitelistedRooms();
+		this.blacklistedRooms = config.blacklistedRooms();
+		this.hideRopeless = config.hideRopeless();
+		this.hideVanguards = config.hideVanguards();
+		this.hideUnknownCombat = config.hideUnknownCombat();
+		this.partyDisplay = config.partyDisplay();
 	}
 }

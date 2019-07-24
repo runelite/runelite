@@ -43,11 +43,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -57,16 +62,15 @@ import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
@@ -90,7 +94,7 @@ public class PluginManager
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
 	private final String runeliteGroupName = RuneLiteConfig.class
-			.getAnnotation(ConfigGroup.class).value();
+		.getAnnotation(ConfigGroup.class).value();
 
 	@Inject
 	PluginWatcher pluginWatcher;
@@ -116,19 +120,17 @@ public class PluginManager
 		this.sceneTileManager = sceneTileManager;
 	}
 
-		public void watch()
+	public void watch()
 	{
 		pluginWatcher.start();
 	}
 
-	@Subscribe
-	public void onSessionOpen(SessionOpen event)
+	private void onSessionOpen(SessionOpen event)
 	{
 		refreshPlugins();
 	}
 
-	@Subscribe
-	public void onSessionClose(SessionClose event)
+	private void onSessionClose(SessionClose event)
 	{
 		refreshPlugins();
 	}
@@ -228,7 +230,6 @@ public class PluginManager
 			.directed()
 			.build();
 
-		List<Plugin> scannedPlugins = new ArrayList<>();
 		ClassPath classPath = ClassPath.from(classLoader);
 
 		ImmutableSet<ClassInfo> classes = packageName == null ? classPath.getAllClasses()
@@ -243,7 +244,7 @@ public class PluginManager
 				if (clazz.getSuperclass() == Plugin.class)
 				{
 					log.warn("Class {} is a plugin, but has no plugin descriptor",
-							clazz);
+						clazz);
 				}
 				continue;
 			}
@@ -251,7 +252,7 @@ public class PluginManager
 			if (clazz.getSuperclass() != Plugin.class)
 			{
 				log.warn("Class {} has plugin descriptor, but is not a plugin",
-						clazz);
+					clazz);
 				continue;
 			}
 
@@ -285,24 +286,47 @@ public class PluginManager
 			throw new RuntimeException("Plugin dependency graph contains a cycle!");
 		}
 
-		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(graph);
+		List<List<Class<? extends Plugin>>> sortedPlugins = topologicalGroupSort(graph);
 		sortedPlugins = Lists.reverse(sortedPlugins);
 
-		for (Class<? extends Plugin> pluginClazz : sortedPlugins)
-		{
-			Plugin plugin;
-			try
-			{
-				plugin = instantiate(scannedPlugins, (Class<Plugin>) pluginClazz);
-			}
-			catch (PluginInstantiationException ex)
-			{
-				log.warn("Error instantiating plugin!", ex);
-				continue;
-			}
+		final long start = System.currentTimeMillis();
 
-			scannedPlugins.add(plugin);
-		}
+		// some plugins get stuck on IO, so add some extra threads
+		ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+
+		List<Plugin> scannedPlugins = new CopyOnWriteArrayList<>();
+		sortedPlugins.forEach(group ->
+		{
+			List<Future<?>> curGroup = new ArrayList<>();
+			group.forEach(pluginClazz ->
+				curGroup.add(exec.submit(() ->
+				{
+					Plugin plugin;
+					try
+					{
+						plugin = instantiate(scannedPlugins, (Class<Plugin>) pluginClazz);
+					}
+					catch (PluginInstantiationException e)
+					{
+						log.warn("Error instantiating plugin!", e);
+						return;
+					}
+					scannedPlugins.add(plugin);
+				})));
+			curGroup.forEach(future ->
+			{
+				try
+				{
+					future.get();
+				}
+				catch (InterruptedException | ExecutionException e)
+				{
+					e.printStackTrace();
+				}
+			});
+		});
+
+		log.info("Plugin instantiation took {}ms", System.currentTimeMillis() - start);
 
 		return scannedPlugins;
 	}
@@ -341,9 +365,9 @@ public class PluginManager
 				}
 			}
 
-			eventBus.register(plugin);
+			// eventBus.register(plugin);
 			schedule(plugin);
-			eventBus.post(new PluginChanged(plugin, true));
+			eventBus.post(PluginChanged.class, new PluginChanged(plugin, true));
 		}
 		catch (InterruptedException | InvocationTargetException | IllegalArgumentException ex)
 		{
@@ -365,7 +389,6 @@ public class PluginManager
 		try
 		{
 			unschedule(plugin);
-			eventBus.unregister(plugin);
 
 			// plugins always stop in the event thread
 			SwingUtilities.invokeAndWait(() ->
@@ -381,7 +404,7 @@ public class PluginManager
 			});
 
 			log.debug("Plugin {} is now stopped", plugin.getClass().getSimpleName());
-			eventBus.post(new PluginChanged(plugin, false));
+			eventBus.post(PluginChanged.class, new PluginChanged(plugin, false));
 
 		}
 		catch (InterruptedException | InvocationTargetException ex)
@@ -515,39 +538,54 @@ public class PluginManager
 	}
 
 	/**
-	 * Topologically sort a graph. Uses Kahn's algorithm.
+	 * Topologically sort a graph into separate groups.
+	 * Each group represents the dependency level of the plugins.
+	 * Plugins in group (index) 0 has no dependents.
+	 * Plugins in group 1 has dependents in group 0.
+	 * Plugins in group 2 has dependents in group 1, etc.
+	 * This allows for loading dependent groups serially, starting from the last group,
+	 * while loading plugins within each group in parallel.
 	 * @param graph
 	 * @param <T>
 	 * @return
 	 */
-	private <T> List<T> topologicalSort(Graph<T> graph)
+	private <T> List<List<T>> topologicalGroupSort(Graph<T> graph)
 	{
-		MutableGraph<T> graphCopy = Graphs.copyOf(graph);
-		List<T> l = new ArrayList<>();
-		Set<T> s = graphCopy.nodes().stream()
-			.filter(node -> graphCopy.inDegree(node) == 0)
+		final Set<T> root = graph.nodes().stream()
+			.filter(node -> graph.inDegree(node) == 0)
 			.collect(Collectors.toSet());
-		while (!s.isEmpty())
-		{
-			Iterator<T> it = s.iterator();
-			T n = it.next();
-			it.remove();
+		final Map<T, Integer> dependencyCount = new HashMap<>();
 
-			l.add(n);
+		root.forEach(n -> dependencyCount.put(n, 0));
+		root.forEach(n -> graph.successors(n)
+			.forEach(m -> incrementChildren(graph, dependencyCount, m, dependencyCount.get(n) + 1)));
 
-			for (T m : graphCopy.successors(n))
+		// create list<list> dependency grouping
+		final List<List<T>> dependencyGroups = new ArrayList<>();
+		final int[] curGroup = {-1};
+
+		dependencyCount.entrySet().stream()
+			.sorted(Map.Entry.comparingByValue())
+			.forEach(entry ->
 			{
-				graphCopy.removeEdge(n, m);
-				if (graphCopy.inDegree(m) == 0)
+				if (entry.getValue() != curGroup[0])
 				{
-					s.add(m);
+					curGroup[0] = entry.getValue();
+					dependencyGroups.add(new ArrayList<>());
 				}
-			}
-		}
-		if (!graphCopy.edges().isEmpty())
+				dependencyGroups.get(dependencyGroups.size() - 1).add(entry.getKey());
+			});
+
+		return dependencyGroups;
+	}
+
+	private <T> void incrementChildren(Graph<T> graph, Map<T, Integer> dependencyCount, T n, int val)
+	{
+		if (!dependencyCount.containsKey(n) || dependencyCount.get(n) < val)
 		{
-			throw new RuntimeException("Graph has at least one cycle");
+			dependencyCount.put(n, val);
+			graph.successors(n).forEach(m ->
+				incrementChildren(graph, dependencyCount, m, val + 1));
 		}
-		return l;
 	}
 }

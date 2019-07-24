@@ -34,7 +34,7 @@ class WildcardMatchLoader extends CacheLoader<String, Boolean>
 {
 	private final List<String> nameFilters;
 
-	WildcardMatchLoader(List<String> nameFilters)
+	WildcardMatchLoader(final List<String> nameFilters)
 	{
 		this.nameFilters = nameFilters;
 	}

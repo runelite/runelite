@@ -62,7 +62,7 @@ public class SceneOverlay extends Overlay
 	private static final int MAP_SQUARE_SIZE = CHUNK_SIZE * CHUNK_SIZE; // 64
 	private static final int CULL_CHUNK_BORDERS_RANGE = 16;
 	private static final int STROKE_WIDTH = 4;
-	private static final int CULL_LINE_OF_SIGHT_RANGE = 10;
+	private static final int CULL_LINE_OF_SIGHT_RANGE = 20;
 	private static final int INTERACTING_SHIFT = -16;
 
 	private static final Polygon ARROW_HEAD = new Polygon(

@@ -32,15 +32,28 @@ import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.*;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.LAST_PIECE_COLUMN;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.LAST_PIECE_ROW;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_DOWN_LEFT;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_DOWN_RIGHT;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_LEFT_DOWN;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_LEFT_UP;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_RIGHT_DOWN;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_RIGHT_UP;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_UP_LEFT;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_UP_RIGHT;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.SHUFFLE_UP_ABOVE;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.SHUFFLE_UP_BELOW;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.SHUFFLE_UP_LEFT;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.SHUFFLE_UP_RIGHT;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 
 public class IDAStarMM extends IDAStar
 {
 	private PuzzleState currentState;
-	private List<PuzzleState> stateList = new ArrayList<>();
-	private List<List<Integer>> validRowNumbers = new ArrayList<>();
-	private List<List<Integer>> validColumnNumbers = new ArrayList<>();
+	private final List<PuzzleState> stateList = new ArrayList<>();
+	private final List<List<Integer>> validRowNumbers = new ArrayList<>();
+	private final List<List<Integer>> validColumnNumbers = new ArrayList<>();
 
 	public IDAStarMM(Heuristic heuristic)
 	{
@@ -90,7 +103,7 @@ public class IDAStarMM extends IDAStar
 
 			if (valCurrent != valTarget)
 			{
-				moveTowardsVal(valTarget, i, row,  true);
+				moveTowardsVal(valTarget, i, row, true);
 			}
 		}
 	}
@@ -107,7 +120,7 @@ public class IDAStarMM extends IDAStar
 
 			if (valCurrent != valTarget)
 			{
-				moveTowardsVal(valTarget, column, i,  false);
+				moveTowardsVal(valTarget, column, i, false);
 			}
 		}
 	}
@@ -213,7 +226,7 @@ public class IDAStarMM extends IDAStar
 							Point locSwap = new Point(locBlank.getX(), locBlank.getY() + 1);
 							swap(locBlank, locSwap);
 						}
-						else if (distY <= -1)
+						else
 						{
 							Point locSwap = new Point(locBlank.getX(), locBlank.getY() - 1);
 							swap(locBlank, locSwap);
@@ -239,7 +252,7 @@ public class IDAStarMM extends IDAStar
 							Point locSwap = new Point(locBlank.getX() + 1, locBlank.getY());
 							swap(locBlank, locSwap);
 						}
-						else if (distX <= -1)
+						else
 						{
 							Point locSwap = new Point(locBlank.getX() - 1, locBlank.getY());
 							swap(locBlank, locSwap);
@@ -632,7 +645,7 @@ public class IDAStarMM extends IDAStar
 
 	/**
 	 * Assumes locBlank is first point for swap and locVal is last point for swap
-	 *
+	 * <p>
 	 * swap(locBlank, loc1);
 	 * swap(loc1, loc2);
 	 * swap(loc2, locVal);

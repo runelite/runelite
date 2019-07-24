@@ -52,7 +52,7 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 	private long last;
 	private boolean pingSent;
 
-	public TwitchIRCClient(TwitchListener twitchListener, String username, String password, String channel)
+	public TwitchIRCClient(final TwitchListener twitchListener, final String username, final String password, final String channel)
 	{
 		setName("Twitch");
 		this.twitchListener = twitchListener;

@@ -24,8 +24,9 @@
  */
 package net.runelite.client.plugins.tithefarm;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ObjectID;
 
@@ -53,29 +54,31 @@ public enum TitheFarmPlantType
 		ObjectID.LOGAVANO_PLANT_27415, ObjectID.BLIGHTED_LOGAVANO_PLANT_27416
 	);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String name;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int baseId;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int[] objectIds;
 
-	private static final Map<Integer, TitheFarmPlantType> plantTypes = new HashMap<>();
+	private static final Map<Integer, TitheFarmPlantType> plantTypes;
 
 	static
 	{
-		TitheFarmPlantType[] types = values();
+		ImmutableMap.Builder<Integer, TitheFarmPlantType> builder = new ImmutableMap.Builder<>();
 
-		for (TitheFarmPlantType type : types)
+		for (TitheFarmPlantType type : values())
 		{
 			for (int spotId : type.getObjectIds())
 			{
-				plantTypes.put(spotId, type);
+				builder.put(spotId, type);
 			}
 		}
+
+		plantTypes = builder.build();
 	}
 
-	TitheFarmPlantType(String name, int baseId, int... objectIds)
+	TitheFarmPlantType(final String name, final int baseId, final int... objectIds)
 	{
 		this.name = name;
 		this.baseId = baseId;

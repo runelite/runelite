@@ -35,7 +35,7 @@ public enum TimeStyle
 
 	private final String name;
 
-	TimeStyle(String name)
+	TimeStyle(final String name)
 	{
 		this.name = name;
 	}

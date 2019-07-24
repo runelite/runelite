@@ -39,16 +39,16 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
+import net.runelite.rs.api.RSAnimation;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSFrame;
-import net.runelite.rs.api.RSFrameMap;
 import net.runelite.rs.api.RSFrames;
 import net.runelite.rs.api.RSModel;
+import net.runelite.rs.api.RSSkeleton;
 
 @Mixin(RSModel.class)
 public abstract class RSModelMixin implements RSModel
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
@@ -187,16 +187,15 @@ public abstract class RSModelMixin implements RSModel
 	}
 
 	@Inject
-	public void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval,
-										int intervalCount)
+	public void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval, int intervalCount)
 	{
 		if (getVertexGroups() != null)
 		{
 			if (frameId != -1)
 			{
-				RSFrame frame = frames.getFrames()[frameId];
-				RSFrameMap skin = frame.getSkin();
-				RSFrame nextFrame = null;
+				RSAnimation frame = frames.getFrames()[frameId];
+				RSSkeleton skin = frame.getSkin();
+				RSAnimation nextFrame = null;
 				if (nextFrames != null)
 				{
 					nextFrame = nextFrames.getFrames()[nextFrameId];
@@ -217,7 +216,7 @@ public abstract class RSModelMixin implements RSModel
 	}
 
 	@Inject
-	public void interpolateFrames(RSFrameMap skin, RSFrame frame, RSFrame nextFrame, int interval, int intervalCount)
+	public void interpolateFrames(RSSkeleton skin, RSAnimation frame, RSAnimation nextFrame, int interval, int intervalCount)
 	{
 		if (nextFrame == null || interval == 0)
 		{

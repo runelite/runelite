@@ -64,7 +64,12 @@ public enum InventoryID
 	/**
 	 * Theater of Blood reward chest inventory (Raids 2)
 	 */
-	THEATRE_OF_BLOOD_CHEST(612);
+	THEATRE_OF_BLOOD_CHEST(612),
+
+	/**
+	 * Seed vault located inside the Farming Guild
+	 */
+	SEED_VAULT(626);
 
 	private final int id;
 
@@ -81,5 +86,17 @@ public enum InventoryID
 	public int getId()
 	{
 		return id;
+	}
+
+	public static InventoryID getValue(int value)
+	{
+		for (InventoryID e: InventoryID.values())
+		{
+			if (e.id == value)
+			{
+				return e;
+			}
+		}
+		return null;
 	}
 }

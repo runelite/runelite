@@ -30,8 +30,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
@@ -59,24 +61,29 @@ class LootTrackerBox extends JPanel
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
+	private final JLabel dateLabel = new JLabel();
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<LootTrackerRecord> records = new ArrayList<>();
 
 	private long totalPrice;
 	private boolean hideIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;
+	private final long timeStamp;
 
 	LootTrackerBox(
+		final long timeStamp,
 		final ItemManager itemManager,
 		final String id,
 		@Nullable final String subtitle,
 		final boolean hideIgnoredItems,
+		@Nullable final Boolean showDate,
 		final BiConsumer<String, Boolean> onItemToggle)
 	{
+		this.timeStamp = timeStamp;
 		this.id = id;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
@@ -90,26 +97,37 @@ class LootTrackerBox extends JPanel
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
 		final JLabel titleLabel = new JLabel(Text.removeTags(id));
-		titleLabel.setFont(FontManager.getRunescapeSmallFont());
+		titleLabel.setFont(FontManager.getSmallFont(getFont()));
 		titleLabel.setForeground(Color.WHITE);
 
 		logTitle.add(titleLabel, BorderLayout.WEST);
 
-		subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
+		subTitleLabel.setFont(FontManager.getSmallFont(getFont()));
 		subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		logTitle.add(subTitleLabel, BorderLayout.CENTER);
+
+		dateLabel.setFont(FontManager.getRunescapeSmallFont().deriveFont(FontManager.getRunescapeSmallFont().getSize() - 2));
+		dateLabel.setForeground(Color.LIGHT_GRAY);
+		dateLabel.setText(DateFormat.getDateInstance().format(new Date(timeStamp)));
+
+		if (showDate)
+		{
+			logTitle.add(dateLabel, BorderLayout.SOUTH);
+		}
+
 
 		if (!Strings.isNullOrEmpty(subtitle))
 		{
 			subTitleLabel.setText(subtitle);
 		}
 
-		priceLabel.setFont(FontManager.getRunescapeSmallFont());
+		priceLabel.setFont(FontManager.getSmallFont(getFont()));
 		priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		logTitle.add(priceLabel, BorderLayout.EAST);
 
 		add(logTitle, BorderLayout.NORTH);
 		add(itemContainer, BorderLayout.CENTER);
+
 	}
 
 	/**
@@ -120,7 +138,8 @@ class LootTrackerBox extends JPanel
 	private long getTotalKills()
 	{
 		return hideIgnoredItems
-			? records.stream().filter(r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored)).count()
+			? records.stream().filter(
+				r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored)).count()
 			: records.size();
 	}
 
@@ -229,7 +248,7 @@ class LootTrackerBox extends JPanel
 				}
 			}
 
-			if (quantity > 0)
+			if (quantity != 0)
 			{
 				int newQuantity = entry.getQuantity() + quantity;
 				long pricePerItem = entry.getPrice() == 0 ? 0 : (entry.getPrice() / entry.getQuantity());
@@ -263,7 +282,7 @@ class LootTrackerBox extends JPanel
 				imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 				imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-				AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1);
+				AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), Math.abs(item.getQuantity()), Math.abs(item.getQuantity()) > 1);
 
 				if (item.isIgnored())
 				{

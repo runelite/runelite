@@ -14,13 +14,13 @@ import net.runelite.rs.api.RSModel;
 @Mixin(RSClient.class)
 public abstract class ClickboxMixin implements RSClient
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	private static final int MAX_ENTITES_AT_MOUSE = 1000;
 	private static final int CLICKBOX_CLOSE = 50;
-	private static final int CLICKBOX_FAR = 3500;
-	private static final int OBJECT_INTERACTION_FAR = 35; // Max distance, in tiles, from camera
+	private static final int CLICKBOX_FAR = 10000;
+	private static final int OBJECT_INTERACTION_FAR = 100; // Max distance, in tiles, from camera
 
 	@Inject
 	private static final int[] rl$modelViewportXs = new int[4700];
@@ -35,13 +35,12 @@ public abstract class ClickboxMixin implements RSClient
 		boolean hasFlag = hash != 0L && (int) (hash >>> 16 & 1L) != 1;
 		boolean viewportContainsMouse = client.getViewportContainsMouse();
 
-		if (!hasFlag || !viewportContainsMouse || client.getOculusOrbState() != 0)
+		if (!hasFlag || !viewportContainsMouse)
 		{
 			return;
 		}
 
-		boolean bb = boundingboxCheck(model, _x, _y, _z);
-		if (!bb)
+		if (!boundingboxCheck(model, _x, _y, _z))
 		{
 			return;
 		}

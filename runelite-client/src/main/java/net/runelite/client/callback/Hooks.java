@@ -42,6 +42,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.NullItemID;
 import net.runelite.api.RenderOverview;
@@ -79,15 +80,12 @@ import net.runelite.client.util.DeferredEventBus;
 @Slf4j
 public class Hooks implements Callbacks
 {
-	private static final long CHECK = 600; // ms - how often to run checks
+	private static final long CHECK = Constants.GAME_TICK_LENGTH; // ms - how often to run checks
 
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 	private static final OverlayManager overlayManager = injector.getInstance(OverlayManager.class);
-
-	private static final GameTick GAME_TICK = new GameTick();
-	private static final BeforeRender BEFORE_RENDER = new BeforeRender();
 
 	@Inject
 	private EventBus eventBus;
@@ -130,15 +128,15 @@ public class Hooks implements Callbacks
 	private boolean shouldProcessGameTick;
 
 	@Override
-	public void post(Object event)
+	public <T> void post(Class<T> eventClass, Object event)
 	{
-		eventBus.post(event);
+		eventBus.post(eventClass, event);
 	}
 
 	@Override
-	public void postDeferred(Object event)
+	public <T> void postDeferred(Class<T> eventClass, Object event)
 	{
-		deferredEventBus.post(event);
+		deferredEventBus.post(eventClass, event);
 	}
 
 	@Override
@@ -150,13 +148,13 @@ public class Hooks implements Callbacks
 
 			deferredEventBus.replay();
 
-			eventBus.post(GAME_TICK);
+			eventBus.post(GameTick.class, GameTick.INSTANCE);
 
 			int tick = client.getTickCount();
 			client.setTickCount(tick + 1);
 		}
 
-		eventBus.post(BEFORE_RENDER);
+		eventBus.post(BeforeRender.class, BeforeRender.INSTANCE);
 
 		clientThread.invoke();
 
@@ -373,8 +371,6 @@ public class Hooks implements Callbacks
 
 	/**
 	 * Copy an image
-	 * @param src
-	 * @return
 	 */
 	private static Image copy(Image src)
 	{
@@ -513,7 +509,7 @@ public class Hooks implements Callbacks
 	public static boolean drawMenu()
 	{
 		BeforeMenuRender event = new BeforeMenuRender();
-		client.getCallbacks().post(event);
+		client.getCallbacks().post(BeforeMenuRender.class, event);
 		return event.isConsumed();
 	}
 }

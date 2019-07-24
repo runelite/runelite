@@ -25,6 +25,14 @@
 package net.runelite.client.plugins.questlist;
 
 import com.google.common.collect.ImmutableList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -45,24 +53,18 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
-import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @PluginDescriptor(
 	name = "Quest List",
 	description = "Adds searching and filtering to the quest list"
 )
+@Singleton
 public class QuestListPlugin extends Plugin
 {
 	private static final int ENTRY_PADDING = 8;
@@ -85,6 +87,9 @@ public class QuestListPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private EventBus eventBus;
+
 	private ChatboxTextInput searchInput;
 	private Widget questSearchButton;
 	private Widget questHideButton;
@@ -93,8 +98,34 @@ public class QuestListPlugin extends Plugin
 
 	private QuestState currentFilterState;
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged e)
+	@Override
+	protected void startUp()
+	{
+		addSubscriptions();
+		clientThread.invoke(this::addQuestButtons);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		eventBus.unregister(this);
+
+		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
+		if (header != null)
+		{
+			header.deleteAllChildren();
+		}
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(VarClientIntChanged.class, this, this::onVarClientIntChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged e)
 	{
 		if (e.getGameState() == GameState.LOGGING_IN)
 		{
@@ -102,17 +133,23 @@ public class QuestListPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!event.getEventName().equals("questProgressUpdated"))
 		{
 			return;
 		}
 
+		addQuestButtons();
+	}
+
+	private void addQuestButtons()
+	{
 		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
 		if (header != null)
 		{
+			header.deleteAllChildren();
+
 			questSearchButton = header.createChild(-1, WidgetType.GRAPHIC);
 			questSearchButton.setSpriteId(SpriteID.GE_SEARCH);
 			questSearchButton.setOriginalWidth(18);
@@ -145,24 +182,19 @@ public class QuestListPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (isChatboxOpen() && !isOnQuestTab())
+		if (isChatboxOpen() && isNotOnQuestTab())
 		{
 			chatboxPanelManager.close();
 		}
 	}
 
-	@Subscribe
-	public void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
+	private void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
-		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex())
+		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex() && isChatboxOpen() && isNotOnQuestTab())
 		{
-			if (isChatboxOpen() && !isOnQuestTab())
-			{
-				chatboxPanelManager.close();
-			}
+			chatboxPanelManager.close();
 		}
 	}
 
@@ -184,9 +216,9 @@ public class QuestListPlugin extends Plugin
 		questHideButton.setName(MENU_SHOW + " " + currentFilterState.getName());
 	}
 
-	private boolean isOnQuestTab()
+	private boolean isNotOnQuestTab()
 	{
-		return client.getVar(Varbits.QUEST_TAB) == 0 && client.getVar(VarClientInt.INVENTORY_TAB) == 2;
+		return client.getVar(Varbits.QUEST_TAB) != 0 || client.getVar(VarClientInt.INVENTORY_TAB) != 2;
 	}
 
 	private boolean isChatboxOpen()
@@ -289,11 +321,10 @@ public class QuestListPlugin extends Plugin
 
 		Collection<QuestWidget> quests = questSet.get(questContainer);
 
-		if (quests != null)
-		{
+		if (quests != null &&
 			// Check to make sure the list hasn't been rebuild since we were last her
 			// Do this by making sure the list's dynamic children are the same as when we last saw them
-			if (quests.stream().noneMatch(w ->
+			quests.stream().noneMatch(w ->
 			{
 				Widget codeWidget = w.getQuest();
 				if (codeWidget == null)
@@ -302,9 +333,8 @@ public class QuestListPlugin extends Plugin
 				}
 				return list.getChild(codeWidget.getIndex()) == codeWidget;
 			}))
-			{
-				quests = null;
-			}
+		{
+			quests = null;
 		}
 
 		if (quests == null)
@@ -334,7 +364,7 @@ public class QuestListPlugin extends Plugin
 			else
 			{
 				// Otherwise hide if it doesn't match the filter state
-				hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
+				hidden = currentFilterState != QuestState.ALL && questState != null && !questState.equals(currentFilterState);
 			}
 
 			quest.setHidden(hidden);

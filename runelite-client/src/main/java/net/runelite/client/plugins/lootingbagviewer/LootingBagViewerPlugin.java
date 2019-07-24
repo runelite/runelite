@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 AWPH-I
+ * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,37 +26,164 @@
 
 package net.runelite.client.plugins.lootingbagviewer;
 
+import com.google.common.base.Strings;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.inject.Inject;
-
 @PluginDescriptor(
-	name = "PvP Looting Bag Viewer",
-	description = "Add an overlay showing the contents of your looting bag",
-	tags = {"alternate", "items", "overlay", "second"},
-	type = PluginType.PVP,
-	enabledByDefault = false
+		name = "PvP Looting Bag Viewer",
+		description = "Add an overlay showing the contents of your looting bag",
+		tags = {"alternate", "items", "overlay", "second"},
+		type = PluginType.PVP,
+		enabledByDefault = false
 )
+/**
+ * TODO: Remember current looting bag value when client restarts
+ * TODO: Write an event for picking up an item (with opened looting bag) and add its price to the current looting bag value
+ * TODO: Write something to capture adding items to a looting bag and add its price to the current looting bag value
+ */
+@Slf4j
+@Singleton // WHY IS THIS PLUGIN EVEN MERGED IT'S AGES FROM BEING DONE!?!?!?!?
 public class LootingBagViewerPlugin extends Plugin
 {
 	@Inject
-	private net.runelite.client.plugins.lootingbagviewer.LootingBagViewerOverlay overlay;
+	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private LootingBagViewerOverlay overlay;
+
+	@Inject
+	private LootingBagViewerWidgetOverlay widgetOverlay;
 
 	@Inject
 	private OverlayManager overlayManager;
 
+	@Inject
+	private LootingBagViewerConfig config;
+
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private int valueToShow = -1;
+
+	@Provides
+	LootingBagViewerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LootingBagViewerConfig.class);
+	}
+
 	@Override
 	public void startUp()
 	{
-		overlayManager.add(overlay);
+		addSubscriptions();
+
+		if (config.renderViewer())
+		{
+			overlayManager.add(overlay);
+		}
+
+		if (config.renderLootingBag())
+		{
+			overlayManager.add(widgetOverlay);
+		}
 	}
 
 	@Override
 	public void shutDown()
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
+		overlayManager.remove(widgetOverlay);
 	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
+	}
+
+	private void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (configChanged.getKey().equals("renderViewer"))
+		{
+			if (Boolean.parseBoolean(configChanged.getNewValue()))
+			{
+				overlayManager.add(overlay);
+			}
+			else
+			{
+				overlayManager.remove(overlay);
+			}
+		}
+		if (configChanged.getKey().equals("renderLootingBag"))
+		{
+			if (Boolean.parseBoolean(configChanged.getNewValue()))
+			{
+				overlayManager.add(widgetOverlay);
+			}
+			else
+			{
+				overlayManager.remove(widgetOverlay);
+			}
+		}
+	}
+
+
+	/**
+	 * @param widgetHiddenChanged
+	 */
+	private void onWidgetHiddenChanged(WidgetHiddenChanged widgetHiddenChanged)
+	{
+		Widget widget = widgetHiddenChanged.getWidget();
+		if (widget.getParentId() == 5308416 && !widget.isHidden())
+		{
+			clientThread.invokeLater(() ->
+			{
+				Widget value = client.getWidget(81, 6);
+				log.debug("val: {}", value.getText());
+
+				if (!Strings.isNullOrEmpty(value.getText()))
+				{
+					if (value.getText().equals("Value: -")) 
+					{
+						setValueToShow(-1);
+					} 
+					else 
+					{
+						String str = value.getText();
+						str = str.replace("Bag value: ", "")
+								.replace("Value: ", "")
+								.replace(" coins", "")
+								.replace(",", "");
+
+						int val = Integer.parseInt(str);
+						setValueToShow(Math.round(val) / 1000);
+					}
+				}
+			});
+		}
+	}
+
 } 

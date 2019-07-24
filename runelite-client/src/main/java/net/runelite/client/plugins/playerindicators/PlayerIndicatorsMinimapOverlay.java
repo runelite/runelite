@@ -30,10 +30,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.client.game.ItemManager;
+import net.runelite.api.SkullIcon;
 import net.runelite.client.plugins.friendtagging.FriendTaggingPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -46,18 +45,14 @@ import net.runelite.client.util.ImageUtil;
 public class PlayerIndicatorsMinimapOverlay extends Overlay
 {
 	private final PlayerIndicatorsService playerIndicatorsService;
-	private final PlayerIndicatorsConfig config;
+	private final PlayerIndicatorsPlugin plugin;
 	private final BufferedImage skullIcon = ImageUtil.getResourceStreamFromClass(PlayerIndicatorsPlugin.class,
 		"skull.png");
-	@Inject
-	private ItemManager itemManager;
-	@Inject
-	private Client client;
 
 	@Inject
-	private PlayerIndicatorsMinimapOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
+	private PlayerIndicatorsMinimapOverlay(final PlayerIndicatorsPlugin plugin, final PlayerIndicatorsService playerIndicatorsService)
 	{
-		this.config = config;
+		this.plugin = plugin;
 		this.playerIndicatorsService = playerIndicatorsService;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -67,13 +62,24 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		playerIndicatorsService.forEachPlayer((player, color) -> 
+		{
+			if (plugin.isDrawFriendMinimapNames() && !player.isFriend())
+			{
+				return;
+			}
+			if (plugin.isDrawClanMinimapNames() && !player.isClanMember())
+			{
+				return;
+			}
+			renderPlayerOverlay(graphics, player, color);
+		});
 		return null;
 	}
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		if (config.drawMinimapNames())
+		if (plugin.isDrawMinimapNames())
 		{
 			String name = actor.getName().replace('\u00A0', ' ');
 			String tag = "";
@@ -89,40 +95,30 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 
 			if (minimapLocation != null)
 			{
-				if (config.showCombatLevel())
+				if (plugin.isShowCombatLevel())
 				{
-					if (config.showCombatLevel())
-					{
-						name += "-(" + actor.getCombatLevel() + ")";
-					}
+					name += "-(" + actor.getCombatLevel() + ")";
 				}
-				if (config.drawMinimapNames())
+				if (plugin.isDrawMinimapNames())
 				{
-					if (actor.getSkullIcon() != null && config.playerSkull())
-					{
-						switch (actor.getSkullIcon())
-						{
-							case SKULL:
 
-								int width = graphics.getFontMetrics().stringWidth(name);
-								int height = graphics.getFontMetrics().getHeight();
-								if (config.skullLocation().equals(PlayerIndicatorsPlugin.minimapSkullLocations.AFTER_NAME))
-								{
-									OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX()
-											+ width, minimapLocation.getY() - height),
-										ImageUtil.resizeImage(skullIcon, height, height));
-								}
-								else
-								{
-									OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX(),
-											minimapLocation.getY() - height),
-										ImageUtil.resizeImage(skullIcon, height, height));
-									minimapLocation = new Point(minimapLocation.getX() + skullIcon.getWidth(),
-										minimapLocation.getY());
-								}
-								break;
-							default:
-								break;
+					if (actor.getSkullIcon() != null && plugin.isPlayerSkull() && actor.getSkullIcon() == SkullIcon.SKULL)
+					{
+						int width = graphics.getFontMetrics().stringWidth(name);
+						int height = graphics.getFontMetrics().getHeight();
+						if (plugin.getSkullLocation().equals(PlayerIndicatorsPlugin.MinimapSkullLocations.AFTER_NAME))
+						{
+							OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX()
+									+ width, minimapLocation.getY() - height),
+								ImageUtil.resizeImage(skullIcon, height, height));
+						}
+						else
+						{
+							OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX(),
+									minimapLocation.getY() - height),
+								ImageUtil.resizeImage(skullIcon, height, height));
+							minimapLocation = new Point(minimapLocation.getX() + skullIcon.getWidth(),
+								minimapLocation.getY());
 						}
 					}
 					OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);

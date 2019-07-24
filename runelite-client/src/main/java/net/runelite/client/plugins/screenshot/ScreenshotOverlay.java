@@ -38,6 +38,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.client.ui.DrawManager;
@@ -47,6 +48,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
+@Singleton
 class ScreenshotOverlay extends Overlay
 {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy");
@@ -59,7 +61,7 @@ class ScreenshotOverlay extends Overlay
 	private final Queue<Consumer<Image>> consumers = new ConcurrentLinkedQueue<>();
 
 	@Inject
-	private ScreenshotOverlay(Client client, DrawManager drawManager, ScreenshotPlugin plugin)
+	private ScreenshotOverlay(final Client client, final DrawManager drawManager, final ScreenshotPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);

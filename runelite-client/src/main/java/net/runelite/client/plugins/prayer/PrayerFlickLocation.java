@@ -26,23 +26,10 @@
 
 package net.runelite.client.plugins.prayer;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum PrayerFlickLocation
 {
-	NONE("Off"),
-	PRAYER_ORB("Prayer Orb"),
-	PRAYER_BAR("Prayer Bar"),
-	BOTH("Both");
-
-	private final String name;
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	NONE,
+	PRAYER_ORB,
+	PRAYER_BAR,
+	BOTH
 }

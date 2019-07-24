@@ -38,7 +38,7 @@ public abstract class RSNodeMixin implements RSNode
 	}
 
 	@Inject
-	@MethodHook("unlink")
+	@MethodHook("remove")
 	public void rl$unlink()
 	{
 		onUnlink();

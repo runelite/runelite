@@ -31,32 +31,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDefinitionChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-/**
- * @author robin
- */
 @PluginDescriptor(
 	name = "Implings",
 	description = "Highlight nearby implings on the minimap and on-screen",
-	tags = {"hunter", "minimap", "overlay"}
+	tags = {"hunter", "minimap", "overlay", "imp"}
 )
+@Singleton
 public class ImplingsPlugin extends Plugin
 {
 	private static final int DYNAMIC_SPAWN_NATURE_DRAGON = 1618;
 	private static final int DYNAMIC_SPAWN_ECLECTIC = 1633;
 	private static final int DYNAMIC_SPAWN_BABY_ESSENCE = 1634;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Map<ImplingType, Integer> implingCounterMap = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> implings = new ArrayList<>();
@@ -68,6 +73,9 @@ public class ImplingsPlugin extends Plugin
 	private ImplingsOverlay overlay;
 
 	@Inject
+	private ImplingCounterOverlay implingCounterOverlay;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -76,6 +84,40 @@ public class ImplingsPlugin extends Plugin
 	@Inject
 	private ImplingsConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
+	private boolean showBaby;
+	private Color getBabyColor;
+	private boolean showYoung;
+	private Color getYoungColor;
+	private boolean showGourmet;
+	private Color getGourmetColor;
+	private boolean showEarth;
+	private Color getEarthColor;
+	private boolean showEssence;
+	private Color getEssenceColor;
+	private boolean showEclectic;
+	private Color getEclecticColor;
+	private boolean showNature;
+	private Color getNatureColor;
+	private boolean showMagpie;
+	private Color getMagpieColor;
+	private boolean showNinja;
+	private Color getNinjaColor;
+	private boolean showDragon;
+	private Color getDragonColor;
+	private boolean showLucky;
+	private Color getLuckyColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showSpawn;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getSpawnColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showName;
+	@Getter(AccessLevel.PACKAGE)
+	private Color getDynamicSpawnColor;
+
 	@Provides
 	ImplingsConfig getConfig(ConfigManager configManager)
 	{
@@ -83,25 +125,66 @@ public class ImplingsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
+		updateConfig();
+		addSubscriptions();
+
 		dynamicSpawns.put(DYNAMIC_SPAWN_NATURE_DRAGON, "T3 Nature-Lucky Dynamic");
 		dynamicSpawns.put(DYNAMIC_SPAWN_ECLECTIC, "T2 Eclectic Dynamic");
 		dynamicSpawns.put(DYNAMIC_SPAWN_BABY_ESSENCE, "T1 Baby-Essence Dynamic");
 
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
+		overlayManager.add(implingCounterOverlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
+		implings.clear();
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
+		overlayManager.remove(implingCounterOverlay);
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned npcSpawned)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(NpcDefinitionChanged.class, this, this::onNpcDefinitionChanged);
+	}
+
+	private void onGameTick(GameTick event)
+	{
+		implingCounterMap.clear();
+		for (NPC npc : implings)
+		{
+			Impling impling = Impling.findImpling(npc.getId());
+
+			if (impling == null || impling.getImplingType() == null)
+			{
+				continue;
+			}
+
+			ImplingType type = impling.getImplingType();
+			if (implingCounterMap.containsKey(type))
+			{
+				implingCounterMap.put(type, implingCounterMap.get(type) + 1);
+			}
+			else
+			{
+				implingCounterMap.put(type, 1);
+			}
+		}
+	}
+
+	private void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
 		Impling impling = Impling.findImpling(npc.getId());
@@ -112,17 +195,27 @@ public class ImplingsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onNpcDefinitionChanged(NpcDefinitionChanged npcCompositionChanged)
+	{
+		NPC npc = npcCompositionChanged.getNpc();
+		Impling impling = Impling.findImpling(npc.getId());
+
+		if (impling != null && !implings.contains(npc))
+		{
+			implings.add(npc);
+		}
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
 		{
 			implings.clear();
+			implingCounterMap.clear();
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		if (implings.isEmpty())
 		{
@@ -131,6 +224,7 @@ public class ImplingsPlugin extends Plugin
 
 		NPC npc = npcDespawned.getNpc();
 		implings.remove(npc);
+
 	}
 
 	boolean showNpc(NPC npc)
@@ -138,10 +232,10 @@ public class ImplingsPlugin extends Plugin
 		Impling impling = Impling.findImpling(npc.getId());
 		if (impling == null)
 		{
-			return false;
+			return true;
 		}
 
-		return showImplingType(impling.getImplingType());
+		return !showImplingType(impling.getImplingType());
 	}
 
 	boolean showImplingType(ImplingType implingType)
@@ -149,27 +243,27 @@ public class ImplingsPlugin extends Plugin
 		switch (implingType)
 		{
 			case BABY:
-				return config.showBaby();
+				return this.showBaby;
 			case YOUNG:
-				return config.showYoung();
+				return this.showYoung;
 			case GOURMET:
-				return config.showGourmet();
+				return this.showGourmet;
 			case EARTH:
-				return config.showEarth();
+				return this.showEarth;
 			case ESSENCE:
-				return config.showEssence();
+				return this.showEssence;
 			case ECLECTIC:
-				return config.showEclectic();
+				return this.showEclectic;
 			case NATURE:
-				return config.showNature();
+				return this.showNature;
 			case MAGPIE:
-				return config.showMagpie();
+				return this.showMagpie;
 			case NINJA:
-				return config.showNinja();
+				return this.showNinja;
 			case DRAGON:
-				return config.showDragon();
+				return this.showDragon;
 			case LUCKY:
-				return config.showLucky();
+				return this.showLucky;
 			default:
 				return false;
 		}
@@ -183,33 +277,78 @@ public class ImplingsPlugin extends Plugin
 			return null;
 		}
 
-		switch (impling.getImplingType())
+		return typeToColor(impling.getImplingType());
+	}
+
+	private Color typeToColor(ImplingType type)
+	{
+		switch (type)
 		{
 
 			case BABY:
-				return config.getBabyColor();
+				return this.getBabyColor;
 			case YOUNG:
-				return config.getYoungColor();
+				return this.getYoungColor;
 			case GOURMET:
-				return config.getGourmetColor();
+				return this.getGourmetColor;
 			case EARTH:
-				return config.getEarthColor();
+				return this.getEarthColor;
 			case ESSENCE:
-				return config.getEssenceColor();
+				return this.getEssenceColor;
 			case ECLECTIC:
-				return config.getEclecticColor();
+				return this.getEclecticColor;
 			case NATURE:
-				return config.getNatureColor();
+				return this.getNatureColor;
 			case MAGPIE:
-				return config.getMagpieColor();
+				return this.getMagpieColor;
 			case NINJA:
-				return config.getNinjaColor();
+				return this.getNinjaColor;
 			case DRAGON:
-				return config.getDragonColor();
+				return this.getDragonColor;
 			case LUCKY:
-				return config.getLuckyColor();
+				return this.getLuckyColor;
 			default:
 				return null;
 		}
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("implings"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.showBaby = config.showBaby();
+		this.getBabyColor = config.getBabyColor();
+		this.showYoung = config.showYoung();
+		this.getYoungColor = config.getYoungColor();
+		this.showGourmet = config.showGourmet();
+		this.getGourmetColor = config.getGourmetColor();
+		this.showEarth = config.showEarth();
+		this.getEarthColor = config.getEarthColor();
+		this.showEssence = config.showEssence();
+		this.getEssenceColor = config.getEssenceColor();
+		this.showEclectic = config.showEclectic();
+		this.getEclecticColor = config.getEclecticColor();
+		this.showNature = config.showNature();
+		this.getNatureColor = config.getNatureColor();
+		this.showMagpie = config.showMagpie();
+		this.getMagpieColor = config.getMagpieColor();
+		this.showNinja = config.showNinja();
+		this.getNinjaColor = config.getNinjaColor();
+		this.showDragon = config.showDragon();
+		this.getDragonColor = config.getDragonColor();
+		this.showLucky = config.showLucky();
+		this.getLuckyColor = config.getLuckyColor();
+		this.showSpawn = config.showSpawn();
+		this.getSpawnColor = config.getSpawnColor();
+		this.showName = config.showName();
+		this.getDynamicSpawnColor = config.getDynamicSpawnColor();
 	}
 }

@@ -33,15 +33,14 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.SkullIcon;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.friendtagging.FriendTaggingPlugin;
-import net.runelite.client.plugins.pvptools.PvpToolsPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -58,25 +57,22 @@ public class PlayerIndicatorsOverlay extends Overlay
 	private static final int ACTOR_HORIZONTAL_TEXT_MARGIN = 10;
 
 	private final PlayerIndicatorsService playerIndicatorsService;
-	private final PlayerIndicatorsConfig config;
 	private final ClanManager clanManager;
+	private final PlayerIndicatorsPlugin plugin;
 	private final BufferedImage skullIcon = ImageUtil.getResourceStreamFromClass(PlayerIndicatorsPlugin.class,
 		"skull.png");
-	PvpToolsPlugin pvpToolsPlugin;
 	@Inject
 	private Client client;
-	@Inject
-	private SpriteManager spriteManager;
 	@Inject
 	private PlayerIndicatorsPlugin playerIndicatorsPlugin;
 	@Inject
 	private ItemManager itemManager;
 
 	@Inject
-	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
-		ClanManager clanManager)
+	private PlayerIndicatorsOverlay(final PlayerIndicatorsPlugin plugin, final PlayerIndicatorsService playerIndicatorsService,
+									final ClanManager clanManager)
 	{
-		this.config = config;
+		this.plugin = plugin;
 		this.playerIndicatorsService = playerIndicatorsService;
 		this.clanManager = clanManager;
 		setPosition(OverlayPosition.DYNAMIC);
@@ -92,7 +88,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		final PlayerNameLocation drawPlayerNamesConfig = config.playerNamePosition();
+		final PlayerNameLocation drawPlayerNamesConfig = plugin.getPlayerNamePosition();
 		if (drawPlayerNamesConfig == PlayerNameLocation.DISABLED)
 		{
 			return;
@@ -129,7 +125,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 			return;
 		}
 
-		if (config.showClanRanks() && actor.isClanMember())
+		if (plugin.isShowClanRanks() && actor.isClanMember())
 		{
 			final ClanMemberRank rank = clanManager.getRank(name);
 
@@ -164,7 +160,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 			}
 		}
 
-		String tag = "";
+		String tag;
 		String prefix = "tag_";
 		if (FriendTaggingPlugin.taggedFriends.containsKey(prefix + name.trim().toLowerCase()))
 		{
@@ -172,31 +168,31 @@ public class PlayerIndicatorsOverlay extends Overlay
 			name += tag;
 		}
 
-		if (config.highlightCallers() && playerIndicatorsPlugin.isCaller(actor))
+		if (plugin.isHighlightCallers() && playerIndicatorsPlugin.isCaller(actor))
 		{
 			name = "[C] " + name;
 		}
-		if (config.highlightPile() && playerIndicatorsPlugin.isPile(actor))
-		{
-			name = "[P] " + name;
-		}
-		if (config.showCombatLevel())
+		if (plugin.isShowCombatLevel())
 		{
 
 			OverlayUtil.renderTextLocation(graphics, textLocation, name + " (" + actor.getCombatLevel() + ")",
 				color);
 
 		}
-		if (config.targetRisk() && PvPUtil.isAttackable(client, actor) && actor.getPlayerComposition() != null)
+		if (plugin.isTargetRisk() && PvPUtil.isAttackable(client, actor) && actor.getPlayerAppearance() != null)
 		{
 			long totalValue = 0;
-			int newValue = 0;
+			int newValue;
 			StringBuilder stringBuilder = new StringBuilder(" ");
 			for (KitType kitType : KitType.values())
 			{
-				ItemComposition itemComposition =
-					itemManager.getItemComposition(actor.getPlayerComposition().getEquipmentId(kitType));
-				if (itemComposition != null || itemComposition.getName() != null)
+				if (kitType == KitType.RING || kitType == KitType.AMMUNITION)
+				{
+					continue;
+				}
+
+				ItemDefinition itemComposition = itemManager.getItemDefinition(actor.getPlayerAppearance().getEquipmentId(kitType));
+				if (itemComposition != null && itemComposition.getName() != null)
 				{
 					totalValue = totalValue + itemComposition.getPrice();
 				}
@@ -204,42 +200,36 @@ public class PlayerIndicatorsOverlay extends Overlay
 			newValue = (int) (totalValue / 1000);
 			if (newValue != 0)
 			{
-				stringBuilder.append("(" + formatNumber(newValue) + "K)");
+				stringBuilder.append("(").append(formatNumber(newValue)).append("K)");
 				name = name + stringBuilder;
 			}
 		}
-		if (config.unchargedGlory() && actor.getPlayerComposition() != null)
+		if (plugin.isUnchargedGlory() && actor.getPlayerAppearance() != null)
 		{
-			ItemComposition itemComposition = itemManager.getItemComposition(actor.getPlayerComposition().getEquipmentId(KitType.AMULET));
+			ItemDefinition itemComposition = itemManager.getItemDefinition(actor.getPlayerAppearance().getEquipmentId(KitType.AMULET));
 			if (itemComposition != null && itemComposition.getId() == 1704) //1704 is uncharged glory, to be certain
 			{
 				name = name + " cGLORY";
 			}
 		}
-		if (actor.getSkullIcon() != null && config.playerSkull())
+
+		if (actor.getSkullIcon() != null && plugin.isPlayerSkull() && actor.getSkullIcon() == SkullIcon.SKULL)
 		{
-			switch (actor.getSkullIcon())
+			int width = graphics.getFontMetrics().stringWidth(name);
+			int height = graphics.getFontMetrics().getHeight();
+			if (plugin.getSkullLocation().equals(PlayerIndicatorsPlugin.MinimapSkullLocations.AFTER_NAME))
 			{
-				case SKULL:
-					int width = graphics.getFontMetrics().stringWidth(name);
-					int height = graphics.getFontMetrics().getHeight();
-					if (config.skullLocation().equals(PlayerIndicatorsPlugin.minimapSkullLocations.AFTER_NAME))
-					{
-						OverlayUtil.renderImageLocation(graphics, new Point(textLocation.getX()
-								+ width, textLocation.getY() - height),
-							ImageUtil.resizeImage(skullIcon, height, height));
-					}
-					else
-					{
-						OverlayUtil.renderImageLocation(graphics, new Point(textLocation.getX(),
-								textLocation.getY() - height),
-							ImageUtil.resizeImage(skullIcon, height, height));
-						textLocation = new Point(textLocation.getX() + skullIcon.getWidth(),
-							textLocation.getY());
-					}
-					break;
-				default:
-					break;
+				OverlayUtil.renderImageLocation(graphics, new Point(textLocation.getX()
+						+ width, textLocation.getY() - height),
+					ImageUtil.resizeImage(skullIcon, height, height));
+			}
+			else
+			{
+				OverlayUtil.renderImageLocation(graphics, new Point(textLocation.getX(),
+						textLocation.getY() - height),
+					ImageUtil.resizeImage(skullIcon, height, height));
+				textLocation = new Point(textLocation.getX() + skullIcon.getWidth(),
+					textLocation.getY());
 			}
 		}
 		OverlayUtil.renderTextLocation(graphics, textLocation, name, color);

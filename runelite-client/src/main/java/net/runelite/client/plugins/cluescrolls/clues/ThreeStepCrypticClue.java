@@ -141,7 +141,7 @@ public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, 
 		final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
 
 		// If we have the part then that step is done
-		if (items.anyMatch(item -> itemManager.getItemComposition(item.getId()).getId() == clueScrollPart))
+		if (items.anyMatch(item -> itemManager.getItemDefinition(item.getId()).getId() == clueScrollPart))
 		{
 			final Map.Entry<CrypticClue, Boolean> entry = clueSteps.get(index);
 

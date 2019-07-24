@@ -36,5 +36,5 @@ public interface MainBufferProvider
 	 *
 	 * @return the loaded image
 	 */
-	Image getImage();
+	Image getImage(); //TODO
 }

@@ -31,17 +31,15 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.FontID;
-import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetTextAlignment;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.input.KeyListener;
 
-@Slf4j
 public class ChatboxTextMenuInput extends ChatboxInput implements KeyListener
 {
 	@Data

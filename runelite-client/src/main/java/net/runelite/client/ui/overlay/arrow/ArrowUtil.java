@@ -1,16 +1,17 @@
 package net.runelite.client.ui.overlay.arrow;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 
 class ArrowUtil
 {
-	static ArrayList<GameObject> getObjects(final Client client, HashSet<Integer> objectIDs)
+	static List<GameObject> getObjects(final Client client, Set<Integer> objectIDs)
 	{
 		final Scene scene = client.getScene();
 		final Tile[][] tiles = scene.getTiles()[client.getPlane()];
@@ -34,8 +35,8 @@ class ArrowUtil
 					}
 
 					// Check impostors
-					final ObjectComposition comp = client.getObjectDefinition(object.getId());
-					final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
+					final ObjectDefinition comp = client.getObjectDefinition(object.getId());
+					final ObjectDefinition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
 
 					if (impostor != null && objectIDs.contains(impostor.getId()))
 					{

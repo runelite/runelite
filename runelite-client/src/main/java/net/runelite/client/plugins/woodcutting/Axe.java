@@ -24,8 +24,9 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
@@ -50,7 +51,7 @@ import static net.runelite.api.ItemID.STEEL_AXE;
 import static net.runelite.api.ItemID._3RD_AGE_AXE;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum Axe
 {
 	BRONZE(WOODCUTTING_BRONZE, BRONZE_AXE),
@@ -67,14 +68,18 @@ enum Axe
 	private final Integer animId;
 	private final Integer itemId;
 
-	private static final Map<Integer, Axe> AXE_ANIM_IDS = new HashMap<>();
+	private static final Map<Integer, Axe> AXE_ANIM_IDS;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, Axe> builder = new ImmutableMap.Builder<>();
+
 		for (Axe axe : values())
 		{
-			AXE_ANIM_IDS.put(axe.animId, axe);
+			builder.put(axe.animId, axe);
 		}
+
+		AXE_ANIM_IDS = builder.build();
 	}
 
 	static Axe findAxeByAnimId(int animId)

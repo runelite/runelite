@@ -24,12 +24,13 @@
  */
 package net.runelite.client.plugins.shiftwalker;
 
+import java.awt.event.KeyEvent;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.input.KeyListener;
 
-import javax.inject.Inject;
-import java.awt.event.KeyEvent;
-
-public class ShiftWalkerInputListener implements KeyListener
+@Singleton
+class ShiftWalkerInputListener implements KeyListener
 {
 
 	@Inject
@@ -46,7 +47,7 @@ public class ShiftWalkerInputListener implements KeyListener
 	{
 		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
-			plugin.setHotKeyPressed(true);
+			plugin.startPrioritizing();
 		}
 	}
 
@@ -55,7 +56,7 @@ public class ShiftWalkerInputListener implements KeyListener
 	{
 		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
-			plugin.setHotKeyPressed(false);
+			plugin.stopPrioritizing();
 		}
 	}
 }

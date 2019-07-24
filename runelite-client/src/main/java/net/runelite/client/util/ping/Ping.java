@@ -52,13 +52,11 @@ public class Ping
 	{
 		try
 		{
-			switch (OSType.getOSType())
+			if (OSType.getOSType() == OSType.Windows)
 			{
-				case Windows:
-					return windowsPing(address);
-				default:
-					return tcpPing(address);
+				return windowsPing(address);
 			}
+			return tcpPing(address);
 		}
 		catch (IOException ex)
 		{

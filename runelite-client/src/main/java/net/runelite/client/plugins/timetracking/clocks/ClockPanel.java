@@ -242,7 +242,7 @@ abstract class ClockPanel extends JPanel
 		}
 	}
 
-	void updateActivityStatus()
+	private void updateActivityStatus()
 	{
 		boolean isActive = clock.isActive();
 

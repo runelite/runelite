@@ -25,14 +25,15 @@
 package net.runelite.client.plugins.chatboxperformance;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
-import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.api.widgets.WidgetType;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -40,13 +41,28 @@ import net.runelite.client.plugins.PluginDescriptor;
 	name = "Chatbox performance",
 	hidden = true
 )
+@Singleton
 public class ChatboxPerformancePlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
-	@Subscribe
-	public void onWidgetPositioned(WidgetPositioned event)
+	@Inject
+	private EventBus eventBus;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		eventBus.subscribe(WidgetPositioned.class, this, this::onWidgetPositioned);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void onWidgetPositioned(WidgetPositioned event)
 	{
 		if (!areWidgetsFixed())
 		{

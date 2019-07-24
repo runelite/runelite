@@ -24,22 +24,9 @@
  */
 package net.runelite.client.plugins.worldhopper;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum SubscriptionFilterMode
 {
-	BOTH("Both"),
-	FREE("Free"),
-	MEMBERS("Member");
-
-	private final String name;
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	BOTH,
+	FREE,
+	MEMBERS
 }

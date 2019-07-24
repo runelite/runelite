@@ -39,6 +39,9 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.Notifier;
+import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.config.RuneLiteConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -87,6 +90,18 @@ public class MotherlodePluginTest
 	@Bind
 	private ScheduledExecutorService scheduledExecutorService;
 
+	@Mock
+	@Bind
+	private ChatColorConfig chatColorConfig;
+
+	@Mock
+	@Bind
+	private RuneLiteConfig runeliteConfig;
+
+	@Mock
+	@Bind
+	private Notifier notifier;
+
 	@Before
 	public void before()
 	{
@@ -101,7 +116,7 @@ public class MotherlodePluginTest
 	{
 		// set inMlm
 		GameStateChanged gameStateChanged = new GameStateChanged();
-		gameStateChanged.setGameState(GameState.LOGGED_IN);
+		gameStateChanged.setGameState(GameState.LOADING);
 		motherlodePlugin.onGameStateChanged(gameStateChanged);
 
 		// Initial sack count
@@ -147,7 +162,7 @@ public class MotherlodePluginTest
 		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(inventory);
 
 		// Trigger comparison
-		motherlodePlugin.onItemContainerChanged(new ItemContainerChanged(inventory));
+		motherlodePlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), inventory));
 
 		verify(motherlodeSession).updateOreFound(ItemID.RUNITE_ORE, 1);
 		verify(motherlodeSession).updateOreFound(ItemID.GOLDEN_NUGGET, 4);

@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -38,26 +39,25 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
+@Singleton
 class BurnerOverlay extends Overlay
 {
 	private final Client client;
-	private final PohConfig config;
 	private final PohPlugin plugin;
 
 	@Inject
-	private BurnerOverlay(Client client, PohConfig config, PohPlugin plugin)
+	private BurnerOverlay(final Client client, final PohPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showBurner())
+		if (!plugin.isShowBurner())
 		{
 			return null;
 		}

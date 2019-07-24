@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -36,19 +37,18 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Singleton
 class PrayerFlickOverlay extends Overlay
 {
 	private final Client client;
-	private final PrayerConfig config;
 	private final PrayerPlugin plugin;
 
 	@Inject
-	private PrayerFlickOverlay(Client client, PrayerConfig config, PrayerPlugin plugin)
+	private PrayerFlickOverlay(Client client, PrayerPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 	}
 
@@ -56,9 +56,9 @@ class PrayerFlickOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		// If there are no prayers active or flick location is set to the prayer bar we don't require the flick helper
-		if ((!plugin.isPrayersActive() && !config.prayerFlickAlwaysOn())
-			|| config.prayerFlickLocation().equals(PrayerFlickLocation.NONE)
-			|| config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR))
+		if ((!plugin.isPrayersActive() && !plugin.isPrayerFlickAlwaysOn())
+			|| plugin.getPrayerFlickLocation().equals(PrayerFlickLocation.NONE)
+			|| plugin.getPrayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR))
 		{
 			return null;
 		}
@@ -77,14 +77,13 @@ class PrayerFlickOverlay extends Overlay
 
 		//Purposefully using height twice here as the bounds of the prayer orb includes the number sticking out the side
 		int orbInnerHeight = (int) bounds.getHeight();
-		int orbInnerWidth = orbInnerHeight;
 
 		int orbInnerX = (int) (bounds.getX() + 24);//x pos of the inside of the prayer orb
 		int orbInnerY = (int) (bounds.getY() - 1);//y pos of the inside of the prayer orb
 
 		double t = plugin.getTickProgress();
 
-		int xOffset = (int) (-Math.cos(t) * orbInnerWidth / 2) + orbInnerWidth / 2;
+		int xOffset = (int) (-Math.cos(t) * orbInnerHeight / 2) + orbInnerHeight / 2;
 		int indicatorHeight = (int) (Math.sin(t) * orbInnerHeight);
 
 		int yOffset = (orbInnerHeight / 2) - (indicatorHeight / 2);
