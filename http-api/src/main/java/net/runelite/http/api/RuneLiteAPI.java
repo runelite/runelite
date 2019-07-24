@@ -53,6 +53,10 @@ import java.util.concurrent.TimeUnit;
 
 public class RuneLiteAPI
 {
+	public static final String buildCommit = "6fe334c02648d3f8b38625e3175e3f547d54aa37";
+	private static final String version = "1.5.30-SNAPSHOT";
+	private static final int rsVersion = 181;
+
 	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
 	public static final OkHttpClient CLIENT;
 	public static final OkHttpClient RLP_CLIENT;
@@ -70,9 +74,6 @@ public class RuneLiteAPI
 	private static final Properties properties = new Properties();
 	private static String userAgent;
 	private static String rlpUserAgent;
-	private static String version;
-	private static String rlpVersion;
-	private static int rsVersion;
 
 	static
 	{
@@ -82,15 +83,12 @@ public class RuneLiteAPI
 			properties.load(in);
 
 			parseMavenVersion();
-			String commit = parseGithubCommit();
-
-			rlpVersion = properties.getProperty("runelite.version");
-			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
-			String rlpCommit = properties.getProperty("runelite.commit");
-			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
+			String commit = buildCommit;
+			String rlpCommit = "";
+			boolean dirty = false;
 
 			userAgent = "RuneLite/" + version + "-" + commit + (dirty ? "+" : "");
-			rlpUserAgent = "RuneLite/" + rlpVersion + "-" + rlpCommit + (dirty ? "+" : "");
+			rlpUserAgent = "RuneLite/" + version + "-" + rlpCommit + (dirty ? "+" : "");
 		}
 		catch (NumberFormatException e)
 		{
@@ -203,7 +201,7 @@ public class RuneLiteAPI
 
 	public static void setVersion(String version)
 	{
-		RuneLiteAPI.version = version;
+		//RuneLiteAPI.version = version;
 	}
 
 	public static int getRsVersion()
@@ -213,7 +211,7 @@ public class RuneLiteAPI
 
 	public static String getRlpVersion()
 	{
-		return rlpVersion;
+		return version;
 	}
 
 	private static byte[] downloadUrl(URL toDownload)
@@ -258,7 +256,7 @@ public class RuneLiteAPI
 				Node node = versionList.item(i);
 				if (node.getTextContent() != null)
 				{
-					version = node.getTextContent();
+					//version = node.getTextContent();
 				}
 			}
 		}

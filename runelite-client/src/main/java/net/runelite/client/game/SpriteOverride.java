@@ -24,14 +24,10 @@
  */
 package net.runelite.client.game;
 
-import net.runelite.api.SpriteID;
-
 public interface SpriteOverride
 {
 	/**
 	 * An ID for a sprite. Negative numbers are used by RuneLite specific sprites
-	 *
-	 * @see SpriteID
 	 */
 	int getSpriteId();
 

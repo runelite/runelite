@@ -25,13 +25,9 @@
 package net.runelite.client.plugins.itemstats.stats;
 
 import net.runelite.api.Client;
-import net.runelite.api.Skill;
 
 /**
  * Abstract stat of a player.
- * This includes {@link Skill}s and other player variables, such as <code>RUN_ENERGY</code>.
- *
- * @see Stats
  */
 public abstract class Stat
 {

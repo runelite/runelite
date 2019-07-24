@@ -29,7 +29,6 @@ import java.util.Collection;
 
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
-import net.runelite.api.SpriteID;
 
 /**
  * Represents an on-screen UI element that is drawn on the canvas.
@@ -254,7 +253,7 @@ public interface Widget
 	 * Gets the sprite ID displayed in the widget.
 	 *
 	 * @return the sprite ID
-	 * @see SpriteID
+	 * SpriteID
 	 */
 	int getSpriteId();
 
@@ -262,7 +261,7 @@ public interface Widget
 	 * Sets the sprite ID displayed in the widget.
 	 *
 	 * @param spriteId the sprite ID
-	 * @see SpriteID
+	 * SpriteID
 	 */
 	void setSpriteId(int spriteId);
 
