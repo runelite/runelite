@@ -1,3 +1,4 @@
+install: gradle wrapper --gradle-version 4.2
 language: java
 sudo: false
 dist: trusty
@@ -6,9 +7,7 @@ cache:
     - $HOME/.m2
 jdk:
 - oraclejdk8
-install: true
 script: ./travis/build.sh
 before_install:
 - chmod +x ./travis/build.sh
-- chmod +x ./gradlew
 
