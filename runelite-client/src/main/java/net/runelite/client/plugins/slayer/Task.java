@@ -155,7 +155,7 @@ enum Task
 	INFERNAL_MAGES("Infernal mages", ItemID.INFERNAL_MAGE,
 		asList("Malevolent mage"), Collections.emptyList()),
 	IRON_DRAGONS("Iron dragons", ItemID.IRON_DRAGON_MASK),
-	JAD("TzTok-Jad", ItemID.TZREKJAD),
+	JAD("TzTok-Jad", ItemID.TZREKJAD, 25250),
 	JELLIES("Jellies", ItemID.JELLY,
 		asList("Jelly"), Collections.emptyList()),
 	JUNGLE_HORROR("Jungle horrors", ItemID.ENSOULED_HORROR_HEAD),
@@ -237,7 +237,7 @@ enum Task
 	ZOMBIES("Zombies", ItemID.ZOMBIE_HEAD,
 		asList("Undead"), Collections.emptyList()),
 	ZULRAH("Zulrah", ItemID.PET_SNAKELING),
-	ZUK("TzKal-Zuk", ItemID.TZREKZUK);
+	ZUK("TzKal-Zuk", ItemID.TZREKZUK, 101890);
 	//</editor-fold>
 
 	private static final Map<String, Task> tasks;
@@ -250,6 +250,7 @@ enum Task
 	private final boolean checkAsTokens;
 	private final int weaknessThreshold;
 	private final int weaknessItem;
+	private final int expectedKillExp;
 
 	static
 	{
@@ -273,6 +274,7 @@ enum Task
 		this.targetNames = new ArrayList<>();
 		this.npcIds = new ArrayList<>();
 		this.checkAsTokens = true;
+		this.expectedKillExp = 0;
 	}
 
 	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem)
@@ -285,6 +287,7 @@ enum Task
 		this.targetNames = new ArrayList<>();
 		this.npcIds = new ArrayList<>();
 		this.checkAsTokens = true;
+		this.expectedKillExp = 0;
 	}
 
 	Task(String name, int itemSpriteId, boolean checkAsTokens)
@@ -297,6 +300,20 @@ enum Task
 		this.targetNames = new ArrayList<>();
 		this.npcIds = new ArrayList<>();
 		this.checkAsTokens = checkAsTokens;
+		this.expectedKillExp = 0;
+	}
+
+	Task(String name, int itemSpriteId, int expectedKillExp)
+	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
+		this.name = name;
+		this.itemSpriteId = itemSpriteId;
+		this.weaknessThreshold = -1;
+		this.weaknessItem = -1;
+		this.targetNames = new ArrayList<>();
+		this.npcIds = new ArrayList<>();
+		this.checkAsTokens = true;
+		this.expectedKillExp = expectedKillExp;
 	}
 
 	Task(String name, int itemSpriteId, List<String> targetNames, List<Integer> npcIds)
@@ -309,6 +326,7 @@ enum Task
 		this.targetNames = targetNames;
 		this.npcIds = npcIds;
 		this.checkAsTokens = true;
+		this.expectedKillExp = 0;
 	}
 
 	Task(String name, int itemSpriteId, List<String> targetNames, List<Integer> npcIds, int weaknessThreshold, int weaknessItem)
@@ -321,6 +339,7 @@ enum Task
 		this.targetNames = targetNames;
 		this.npcIds = npcIds;
 		this.checkAsTokens = true;
+		this.expectedKillExp = 0;
 	}
 
 	Task(String name, int itemSpriteId, List<String> targetNames, List<Integer> npcIds, boolean checkAsTokens)
@@ -333,6 +352,7 @@ enum Task
 		this.targetNames = targetNames;
 		this.npcIds = npcIds;
 		this.checkAsTokens = checkAsTokens;
+		this.expectedKillExp = 0;
 	}
 
 	static Task getTask(String taskName)

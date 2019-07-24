@@ -34,8 +34,10 @@ import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameTick;
@@ -452,5 +454,61 @@ public class SlayerPluginTest
 		{
 			assertEquals(name, name.toLowerCase());
 		}
+	}
+
+	@Test
+	public void testJadTaskKill()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		final ExperienceChanged experienceChanged = new ExperienceChanged();
+		experienceChanged.setSkill(Skill.SLAYER);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(100);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		slayerPlugin.setTask("TzTok-Jad", 1, 1, true, 0);
+
+		// One bat kill
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(110);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(1, slayerPlugin.getCurrentTask().getAmount());
+
+		// One Jad kill
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(25_360);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(0, slayerPlugin.getCurrentTask().getAmount());
+	}
+
+	@Test
+	public void testZukTaskKill()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		final ExperienceChanged experienceChanged = new ExperienceChanged();
+		experienceChanged.setSkill(Skill.SLAYER);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(100);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		slayerPlugin.setTask("TzKal-Zuk", 1, 1, true, 0);
+
+		// One bat kill
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(125);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(1, slayerPlugin.getCurrentTask().getAmount());
+
+		// One Zuk kill
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(102_015);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(0, slayerPlugin.getCurrentTask().getAmount());
 	}
 }
