@@ -61,6 +61,7 @@ import net.runelite.api.NPCDefinition;
 import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -140,6 +141,8 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern TASK_STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int TASK_STRING_MAX_LENGTH = 50;
 	private static final String POINTS_COMMAND_STRING = "!points";
+
+	private static final double DMM_MULTIPLIER_RATIO = 5;
 
 	// Superiors
 	@VisibleForTesting
@@ -486,6 +489,13 @@ public class SlayerPlugin extends Plugin
 		for (NPCPresence potentialDead : potentialKills)
 		{
 			double xp = slayerXpDropLookup.findXpForNpc(potentialDead);
+
+			// DeadMan mode has an XP modifier
+			if (client.getWorldType().contains(WorldType.DEADMAN))
+			{
+				xp = xp * DMM_MULTIPLIER_RATIO;
+			}
+
 			if (xp > 0)
 			{
 				potentialXpDrops.add(xp);
