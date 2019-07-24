@@ -48,38 +48,23 @@ public class IndexMojo extends AbstractMojo
 	@Parameter(required = true)
 	private File indexFile;
 
-	public static void main(String args[])
+	private IndexMojo(File archiveOverlayDirectory, File indexFile)
 	{
-		try (DataOutputStream fout = new DataOutputStream(new FileOutputStream(args[1])))
-		{
-			for (File indexFolder : new File(args[0]).listFiles())
-			{
-				if (indexFolder.isDirectory())
-				{
-					int indexId = parseInt(indexFolder.getName());
-					for (File archiveFile : indexFolder.listFiles())
-					{
-						int archiveId;
-						try
-						{
-							archiveId = parseInt(archiveFile.getName());
-						}
-						catch (NumberFormatException ex)
-						{
-							continue;
-						}
+		this.archiveOverlayDirectory = archiveOverlayDirectory;
+		this.indexFile = indexFile;
+	}
 
-						fout.writeInt(indexId << 16 | archiveId);
-					}
-				}
-			}
-
-			fout.writeInt(-1);
-		}
-		catch (IOException ex)
+	public static void main(String[] args) throws Exception
+	{
+		if (args.length < 2)
 		{
-			ex.printStackTrace();
+			throw new IllegalArgumentException("Usage: overlaydir indexfile");
 		}
+
+		File archiveOverlayDirectory = new File(args[0]);
+		File indexFile = new File(args[1]);
+
+		new IndexMojo(archiveOverlayDirectory, indexFile).execute();
 	}
 
 	@Override
@@ -113,7 +98,7 @@ public class IndexMojo extends AbstractMojo
 		}
 		catch (IOException ex)
 		{
-			throw new MojoExecutionException("error build index file", ex);
+			throw new MojoExecutionException("error building index file", ex);
 		}
 	}
 
