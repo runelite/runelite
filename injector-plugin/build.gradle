@@ -13,13 +13,14 @@ dependencies {
     annotationProcessor group: 'org.eclipse.sisu', name: 'org.eclipse.sisu.inject', version: '0.0.0.M2a'
 }
 
-task inject(type:JavaExec) {
-  classpath = sourceSets.main.runtimeClasspath
-
-  main = "net.runelite.injector.Injector"
-  args('../runescape-client/build/libs/rs-client-1.5.30-SNAPSHOT.jar,./vanilla-181.jar,../injected-client/build/libs/injected-client-1.5.30-SNAPSHOT.jar'.split(','))
-}
-
 compileJava.doLast {
-  tasks.inject.execute()
+  def path = sourceSets.main.runtimeClasspath
+  def loader = new URLClassLoader(path.collect {f -> f.toURL()} as URL[])
+  def inject = loader.loadClass('net.runelite.injector.Injector')
+  String[] jarPaths = [
+    "${project.rootDir}/runescape-client/build/libs/rs-client-1.5.30-SNAPSHOT.jar",
+    "${project.projectDir}/vanilla-181.jar",
+    "${project.rootDir}/injected-client/build/libs/injected-client-1.5.30-SNAPSHOT.jar"
+  ]
+  inject.main(jarPaths)
 }
