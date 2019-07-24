@@ -23,7 +23,8 @@ public class PacketBufferNode extends Node {
 	@ObfuscatedSignature(
 		signature = "Lht;"
 	)
-	static ServerBuild field2337;
+	@Export("serverBuild")
+	static ServerBuild serverBuild;
 	@ObfuscatedName("q")
 	@ObfuscatedSignature(
 		signature = "Lgx;"

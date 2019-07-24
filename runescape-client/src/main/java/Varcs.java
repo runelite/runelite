@@ -164,7 +164,7 @@ public class Varcs {
 	)
 	@Export("getPreferencesFile")
 	AccessFile getPreferencesFile(boolean var1) {
-		return WorldMapIcon_0.getPreferencesFile("2", WorldMapRegion.field248.name, var1);
+		return WorldMapIcon_0.getPreferencesFile("2", WorldMapRegion.studioGame.name, var1);
 	}
 
 	@ObfuscatedName("c")

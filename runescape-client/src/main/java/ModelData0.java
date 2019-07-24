@@ -34,7 +34,7 @@ public class ModelData0 {
 		ClientPreferences var1 = new ClientPreferences();
 
 		try {
-			var0 = WorldMapIcon_0.getPreferencesFile("", WorldMapRegion.field248.name, false);
+			var0 = WorldMapIcon_0.getPreferencesFile("", WorldMapRegion.studioGame.name, false);
 			byte[] var2 = new byte[(int)var0.length()];
 
 			int var4;

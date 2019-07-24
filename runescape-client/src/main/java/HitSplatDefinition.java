@@ -425,7 +425,7 @@ public class HitSplatDefinition extends DualNode {
 					return;
 				}
 
-				URL var3 = new URL(RunException.RunException_applet.getCodeBase(), "clienterror.ws?c=" + RunException.revision + "&u=" + GrandExchangeOfferUnitPriceComparator.localPlayerName + "&v1=" + TaskHandler.javaVendor + "&v2=" + TaskHandler.javaVersion + "&ct=" + RunException.field4066 + "&e=" + var2);
+				URL var3 = new URL(RunException.RunException_applet.getCodeBase(), "clienterror.ws?c=" + RunException.RunException_revision + "&u=" + GrandExchangeOfferUnitPriceComparator.localPlayerName + "&v1=" + TaskHandler.javaVendor + "&v2=" + TaskHandler.javaVersion + "&ct=" + RunException.RunException_clientType + "&e=" + var2);
 				DataInputStream var4 = new DataInputStream(var3.openStream());
 				var4.read();
 				var4.close();

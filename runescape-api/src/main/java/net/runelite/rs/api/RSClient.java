@@ -483,7 +483,7 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	RSIterableNodeHashTable getMessages();
 
-	@Import("revision")
+	@Import("RunException_revision")
 	@Override
 	int getRevision();
 

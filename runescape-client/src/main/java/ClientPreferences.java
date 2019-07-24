@@ -233,16 +233,16 @@ public class ClientPreferences {
 		if (var0 == ScriptOpcodes.CHAT_SETFILTER) {
 			HealthBarUpdate.Interpreter_intStackSize -= 3;
 			Client.publicChatMode = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			class226.field3072 = NetSocket.method3530(Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1]);
-			if (class226.field3072 == null) {
-				class226.field3072 = class310.field3816;
+			class226.privateChatMode = NetSocket.method3530(Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1]);
+			if (class226.privateChatMode == null) {
+				class226.privateChatMode = class310.field3816;
 			}
 
-			Client.field872 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
+			Client.tradeChatMode = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
 			PacketBufferNode var18 = Archive.method4265(ClientPacket.field2294, Client.packetWriter.isaacCipher);
 			var18.packetBuffer.writeByte(Client.publicChatMode);
-			var18.packetBuffer.writeByte(class226.field3072.field3815);
-			var18.packetBuffer.writeByte(Client.field872);
+			var18.packetBuffer.writeByte(class226.privateChatMode.field3815);
+			var18.packetBuffer.writeByte(Client.tradeChatMode);
 			Client.packetWriter.method2219(var18);
 			return 1;
 		}
@@ -307,10 +307,10 @@ public class ClientPreferences {
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.CHAT_GETFILTER_PRIVATE) {
-			if (class226.field3072 == null) {
+			if (class226.privateChatMode == null) {
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = -1;
 			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class226.field3072.field3815;
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class226.privateChatMode.field3815;
 			}
 
 			return 1;
@@ -467,7 +467,7 @@ public class ClientPreferences {
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.CHAT_GETFILTER_TRADE) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.field872;
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.tradeChatMode;
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.CHAT_GETHISTORYLENGTH) {

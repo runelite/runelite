@@ -12,32 +12,38 @@ public enum StudioGame implements Enumerated {
 	@ObfuscatedSignature(
 		signature = "Lhl;"
 	)
-	field3107("runescape", "RuneScape", 0),
+	@Export("runescape")
+	runescape("runescape", "RuneScape", 0),
 	@ObfuscatedName("w")
 	@ObfuscatedSignature(
 		signature = "Lhl;"
 	)
-	field3106("stellardawn", "Stellar Dawn", 1),
+	@Export("stellardawn")
+	stellardawn("stellardawn", "Stellar Dawn", 1),
 	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		signature = "Lhl;"
 	)
-	field3112("game3", "Game 3", 2),
+	@Export("game3")
+	game3("game3", "Game 3", 2),
 	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		signature = "Lhl;"
 	)
-	field3108("game4", "Game 4", 3),
+	@Export("game4")
+	game4("game4", "Game 4", 3),
 	@ObfuscatedName("k")
 	@ObfuscatedSignature(
 		signature = "Lhl;"
 	)
-	field3109("game5", "Game 5", 4),
+	@Export("game5")
+	game5("game5", "Game 5", 4),
 	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		signature = "Lhl;"
 	)
-	field3110("oldscape", "RuneScape 2007", 5);
+	@Export("oldscape")
+	oldscape("oldscape", "RuneScape 2007", 5);
 
 	@ObfuscatedName("b")
 	@Export("name")

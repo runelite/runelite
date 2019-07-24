@@ -77,7 +77,8 @@ public class class215 {
 		signature = "(I)V",
 		garbageValue = "-1461227743"
 	)
-	static final void method4022() {
+	@Export("setLowDetailOff")
+	static final void setLowDetailOff() {
 		Scene.Scene_isLowDetail = false;
 		Client.isLowDetail = false;
 	}

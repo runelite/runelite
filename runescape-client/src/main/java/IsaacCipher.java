@@ -247,8 +247,8 @@ public final class IsaacCipher {
 		signature = "(I)[Lht;",
 		garbageValue = "547339899"
 	)
-	@Export("values")
-	static ServerBuild[] values() {
+	@Export("ServerBuild_values")
+	static ServerBuild[] ServerBuild_values() {
 		return new ServerBuild[]{ServerBuild.RC, ServerBuild.LIVE, ServerBuild.WIP, ServerBuild.BUILDLIVE};
 	}
 }

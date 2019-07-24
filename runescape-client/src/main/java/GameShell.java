@@ -481,7 +481,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 			gameShell = this;
 			GrandExchangeEvent.canvasWidth = var1;
 			ParamDefinition.canvasHeight = var2;
-			RunException.revision = var3;
+			RunException.RunException_revision = var3;
 			RunException.RunException_applet = this;
 			if (taskHandler == null) {
 				taskHandler = new TaskHandler();
@@ -553,24 +553,24 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	@Export("checkHost")
 	protected final boolean checkHost() {
 		String var1 = this.getDocumentBase().getHost().toLowerCase();
-		if (!var1.equals("jagex.com") && !var1.endsWith(".jagex.com")) {
-			if (!var1.equals("runescape.com") && !var1.endsWith(".runescape.com")) {
-				if (var1.endsWith("127.0.0.1")) {
-					return true;
-				}
-				while (var1.length() > 0 && var1.charAt(var1.length() - 1) >= '0' && var1.charAt(var1.length() - 1) <= '9') {
-					var1 = var1.substring(0, var1.length() - 1);
-				}
-
-				if (var1.endsWith("192.168.1.")) {
-					return true;
-				}
-				this.error("invalidhost");
-				return false;
-			}
+		if (var1.equals("jagex.com") || var1.endsWith(".jagex.com")) {
 			return true;
 		}
-		return true;
+		if (var1.equals("runescape.com") || var1.endsWith(".runescape.com")) {
+			return true;
+		}
+		if (var1.endsWith("127.0.0.1")) {
+			return true;
+		}
+		while (var1.length() > 0 && var1.charAt(var1.length() - 1) >= '0' && var1.charAt(var1.length() - 1) <= '9') {
+			var1 = var1.substring(0, var1.length() - 1);
+		}
+
+		if (var1.endsWith("192.168.1.")) {
+			return true;
+		}
+		this.error("invalidhost");
+		return false;
 	}
 
 	@ObfuscatedName("j")

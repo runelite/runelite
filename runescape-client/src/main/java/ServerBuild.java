@@ -61,7 +61,7 @@ public class ServerBuild {
 	)
 	@Export("valueOf")
 	public static ServerBuild valueOf(int var0) {
-		ServerBuild[] var1 = IsaacCipher.values();
+		ServerBuild[] var1 = IsaacCipher.ServerBuild_values();
 
 		for (int var2 = 0; var2 < var1.length; ++var2) {
 			ServerBuild var3 = var1[var2];
