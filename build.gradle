@@ -32,3 +32,15 @@ subprojects {
     ignoreFailures = false
   }
 }
+
+wrapper {
+    gradleVersion = '5.5.1'
+
+    def jvmOpts = "-Xmx4g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+    inputs.property("jvmOpts", jvmOpts)
+    doLast {
+        def optsEnvVar = "DEFAULT_JVM_OPTS"
+        scriptFile.write scriptFile.text.replace("$optsEnvVar='\"-Xmx64m\" \"-Xms64m\"'", "$optsEnvVar='\"$jvmOpts\"'")
+        batchScript.write batchScript.text.replace("set $optsEnvVar=\"-Xmx64m\" \"-Xms64m\"", "set $optsEnvVar=\"$jvmOpts\"")
+    }
+}
