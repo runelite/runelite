@@ -1,5 +1,6 @@
 allprojects  {
   apply plugin: 'maven'
+  apply plugin: 'checkstyle'
 
   group = 'net.runelite'
 version = '1.5.30-SNAPSHOT'
@@ -23,7 +24,11 @@ subprojects {
     maven { url "https://raw.githubusercontent.com/runelite-extended/maven-repo/master" }
   }
 
-  
-  
-  
+  checkstyle {
+    toolVersion = '6.4.1'
+    sourceSets = [sourceSets.main]
+    configFile = rootProject.file("/checkstyle/checkstyle.xml");
+    showViolations = true
+    ignoreFailures = true
+  }
 }

@@ -29,4 +29,5 @@
 <suppressions>
 	<suppress files="RuntimeTypeAdapterFactory\.java" checks="[a-zA-Z0-9]*"/>
 	<suppress files="[\\/]runescape-client[\\/]" checks="[a-zA-Z0-9]*"/>
+	<suppress files="[\\/]cache[\\/]" checks="[a-zA-Z0-9]*"/>
 </suppressions>
