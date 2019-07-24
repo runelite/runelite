@@ -33,23 +33,21 @@ import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 
-public class MiningCoalBagOverlay extends WidgetItemOverlay
+class MiningCoalBagOverlay extends WidgetItemOverlay
 {
-	private final MiningPlugin plugin;
 	private final MiningConfig config;
 
 	@Inject
-	MiningCoalBagOverlay(MiningPlugin plugin, MiningConfig config)
+	MiningCoalBagOverlay(MiningConfig config)
 	{
-		showOnInventory();
-		this.plugin = plugin;
 		this.config = config;
+		showOnInventory();
 	}
 
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		if (!config.showCoalBagOverlay() || (itemId != ItemID.COAL_BAG && itemId != ItemID.COAL_BAG_12019))
+		if ((itemId != ItemID.COAL_BAG && itemId != ItemID.COAL_BAG_12019) || !config.showCoalBagOverlay())
 		{
 			return;
 		}

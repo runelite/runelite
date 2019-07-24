@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.mining;
 
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -79,11 +80,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class MiningPlugin extends Plugin
 {
-	private static final int ROCK_DISTANCE = 14;
 	private static final int MINING_GUILD_REGION = 12183;
 
 	private static final Pattern COAL_BAG_EMPTY_MESSAGE = Pattern.compile("^The coal bag is (now )?empty\\.$");
-	private static final Pattern COAL_BAG_ONE_MESSAGE = Pattern.compile("^The coal bag contains one piece of coal\\.$");
+	private static final String COAL_BAG_ONE_MESSAGE = "The coal bag contains one piece of coal.";
 	private static final Pattern COAL_BAG_AMOUNT_MESSAGE = Pattern.compile("^The coal bag contains (\\d+) pieces of coal\\.$");
 
 	private static final int MAX_INVENTORY_SPACE = 28;
@@ -91,7 +91,6 @@ public class MiningPlugin extends Plugin
 
 	private static final String FILL_OPTION = "fill";
 	private static final String EMPTY_OPTION = "empty";
-
 
 	@Inject
 	private Client client;
@@ -226,6 +225,11 @@ public class MiningPlugin extends Plugin
 		}
 
 		ItemContainer inventoryItemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		if (inventoryItemContainer == null)
+		{
+			return;
+		}
+
 		Item[] inventoryItems = inventoryItemContainer.getItems();
 
 		switch (event.getMenuOption().toLowerCase())
@@ -256,7 +260,7 @@ public class MiningPlugin extends Plugin
 		{
 			updateAmountOfCoalInBag(0);
 		}
-		else if (COAL_BAG_ONE_MESSAGE.matcher(chatMsg).find())
+		else if (COAL_BAG_ONE_MESSAGE.equals(chatMsg))
 		{
 			updateAmountOfCoalInBag(1);
 		}
@@ -276,11 +280,12 @@ public class MiningPlugin extends Plugin
 	 * @param delta How much to add/subtract from the amount.
 	 *              Supply a negative number to subtract, or positive number to add.
 	 */
-	protected void updateAmountOfCoalInBag(int delta)
+	private void updateAmountOfCoalInBag(int delta)
 	{
 		// check for upper/lower bounds of amount of coal in a bag
 		// 0 <= X <= 27
-		config.amountOfCoalInCoalBag(Math.max(0, Math.min(FULL_COAL_BAG_AMOUNT, config.amountOfCoalInCoalBag() + delta)));
+		int amount = Ints.constrainToRange(config.amountOfCoalInCoalBag() + delta, 0, FULL_COAL_BAG_AMOUNT);
+		config.amountOfCoalInCoalBag(amount);
 	}
 
 	private boolean inMiningGuild()

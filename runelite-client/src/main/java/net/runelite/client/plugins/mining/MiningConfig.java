@@ -32,9 +32,9 @@ import net.runelite.client.config.ConfigItem;
 public interface MiningConfig extends Config
 {
 	@ConfigItem(
-			keyName = "showCoalBagOverlay",
-			name = "Show coal bag overlay",
-			description = "Overlays how much coal is inside of your coal bag"
+		keyName = "showCoalBagOverlay",
+		name = "Show coal bag overlay",
+		description = "Overlays how much coal is inside of your coal bag"
 	)
 	default boolean showCoalBagOverlay()
 	{
@@ -42,10 +42,10 @@ public interface MiningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "amountOfCoalInCoalBag",
-			name = "",
-			description = "To store coal amount between sessions",
-			hidden = true
+		keyName = "amountOfCoalInCoalBag",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int amountOfCoalInCoalBag()
 	{
@@ -53,10 +53,10 @@ public interface MiningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "amountOfCoalInCoalBag",
-			name = "",
-			description = "Overload to set coal amount",
-			hidden = true
+		keyName = "amountOfCoalInCoalBag",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	void amountOfCoalInCoalBag(int amount);
 }
