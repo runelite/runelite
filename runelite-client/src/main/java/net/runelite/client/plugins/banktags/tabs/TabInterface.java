@@ -336,7 +336,7 @@ public class TabInterface
 				{
 					bankSearch.reset(true);
 
-					clientThread.invokeLater(() -> client.runScript(ScriptID.RESET_CHATBOX_INPUT));
+					clientThread.invokeLater(() -> client.runScript(ScriptID.RESET_CHATBOX_INPUT, 0, 0));
 				}
 				else
 				{
