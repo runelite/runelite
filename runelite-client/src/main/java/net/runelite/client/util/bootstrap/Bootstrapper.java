@@ -2,7 +2,6 @@ package net.runelite.client.util.bootstrap;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.File;
 import java.io.FileWriter;
 
@@ -15,7 +14,7 @@ public class Bootstrapper
 	public static void main(String[] args)
 	{
 
-		if (args.length>0)
+		if (args.length > 0)
 		{
 			remoteLocation = "/staging/";
 			localLocation = "./staging/";
@@ -30,7 +29,8 @@ public class Bootstrapper
 			{
 				e.printStackTrace();
 			}
-		} else
+		}
+		else
 		{
 			remoteLocation = "/live/";
 			localLocation = "./live/";

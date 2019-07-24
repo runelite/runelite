@@ -29,6 +29,6 @@ subprojects {
     sourceSets = [sourceSets.main]
     configFile = rootProject.file("./checkstyle/checkstyle.xml");
     showViolations = true
-    ignoreFailures = true
+    ignoreFailures = false
   }
 }

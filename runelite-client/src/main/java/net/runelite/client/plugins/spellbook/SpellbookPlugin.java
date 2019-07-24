@@ -57,11 +57,11 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
-import static net.runelite.client.util.MiscUtils.clamp;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.util.MiscUtils.clamp;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -87,15 +87,7 @@ public class SpellbookPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK, MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_MAGIC_TAB);
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK, MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK, MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
-
-	private enum WordFilterMode
-	{
-		CONTAINS,
-		EQUALS,
-		STARTSWITH,
-		ENDSWITH
-	}
-
+	private final Map<Integer, Spell> spells = new HashMap<>();
 	@Inject
 	private Client client;
 
@@ -131,18 +123,78 @@ public class SpellbookPlugin extends Plugin
 
 	@Getter
 	private Point draggingLocation;
-
-	private final Map<Integer, Spell> spells = new HashMap<>();
 	private Map<Integer, Spell> tmp = null;
 	private ImmutableSet<String> notFilteredSpells;
 	private Spellbook spellbook;
 	private SpellbookMouseListener mouseListener;
-
 	private boolean enableMobile;
 	private boolean dragSpells;
 	private boolean scroll;
 	private int size;
 	private String filter;
+
+	private static boolean isUnfiltered(String spell, Set<String> unfiltereds)
+	{
+		for (String str : unfiltereds)
+		{
+			WordFilterMode mode = getFilterMode(str);
+			str = removeFlyingComma(str).toLowerCase();
+			spell = spell.toLowerCase();
+
+			switch (mode)
+			{
+				case CONTAINS:
+					if (spell.contains(str))
+					{
+						return true;
+					}
+					break;
+				case STARTSWITH:
+					if (spell.startsWith(str))
+					{
+						return true;
+					}
+					break;
+				case ENDSWITH:
+					if (spell.endsWith(str))
+					{
+						return true;
+					}
+					break;
+				case EQUALS:
+					if (spell.equals(str))
+					{
+						return true;
+					}
+					break;
+			}
+		}
+
+		return false;
+	}
+
+	private static WordFilterMode getFilterMode(String s)
+	{
+		if (!s.contains("\""))
+		{
+			return WordFilterMode.CONTAINS;
+		}
+		if (s.startsWith("\""))
+		{
+			return s.endsWith("\"") ? WordFilterMode.EQUALS : WordFilterMode.STARTSWITH;
+		}
+		else if (s.endsWith("\""))
+		{
+			return WordFilterMode.ENDSWITH;
+		}
+
+		return WordFilterMode.CONTAINS; // but probably null soz
+	}
+
+	private static String removeFlyingComma(String s)
+	{
+		return s.replaceAll("\"", "");
+	}
 
 	@Provides
 	SpellbookConfig getConfig(ConfigManager configManager)
@@ -221,46 +273,6 @@ public class SpellbookPlugin extends Plugin
 		{
 			config.canDrag(client.getVar(Varbits.FILTER_SPELLBOOK) == 1 && client.getVar(VarClientInt.INVENTORY_TAB) == 6);
 		}
-	}
-
-	private static boolean isUnfiltered(String spell, Set<String> unfiltereds)
-	{
-		for (String str : unfiltereds)
-		{
-			WordFilterMode mode = getFilterMode(str);
-			str = removeFlyingComma(str).toLowerCase();
-			spell = spell.toLowerCase();
-
-			switch (mode)
-			{
-				case CONTAINS:
-					if (spell.contains(str))
-					{
-						return true;
-					}
-					break;
-				case STARTSWITH:
-					if (spell.startsWith(str))
-					{
-						return true;
-					}
-					break;
-				case ENDSWITH:
-					if (spell.endsWith(str))
-					{
-						return true;
-					}
-					break;
-				case EQUALS:
-					if (spell.equals(str))
-					{
-						return true;
-					}
-					break;
-			}
-		}
-
-		return false;
 	}
 
 	private void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
@@ -466,7 +478,9 @@ public class SpellbookPlugin extends Plugin
 		}
 
 		// CHECKSTYLE:OFF
-		Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>() {}.getType());
+		Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>()
+		{
+		}.getType());
 		// CHECKSTYLE:ON
 		gson.stream().filter(Objects::nonNull).forEach(s -> spells.put(s.getWidget(), s));
 
@@ -507,24 +521,6 @@ public class SpellbookPlugin extends Plugin
 		clientThread.invoke(() ->
 			client.runScript(2611, 14286851, 14287027, 14287036, 14286849, 14287033, 14287034, 14287035, 14286850, 14287029, 14287032, "Info", "Filters", false)
 		);
-	}
-
-	private static WordFilterMode getFilterMode(String s)
-	{
-		if (!s.contains("\""))
-		{
-			return WordFilterMode.CONTAINS;
-		}
-		if (s.startsWith("\""))
-		{
-			return s.endsWith("\"") ? WordFilterMode.EQUALS : WordFilterMode.STARTSWITH;
-		}
-		else if (s.endsWith("\""))
-		{
-			return WordFilterMode.ENDSWITH;
-		}
-
-		return WordFilterMode.CONTAINS; // but probably null soz
 	}
 
 	boolean isNotOnSpellWidget(java.awt.Point point)
@@ -712,11 +708,6 @@ public class SpellbookPlugin extends Plugin
 		runRebuild();
 	}
 
-	private static String removeFlyingComma(String s)
-	{
-		return s.replaceAll("\"", "");
-	}
-
 	private int trueSize(Spell s)
 	{
 		return s.getSize() * 2 + this.size;
@@ -729,5 +720,13 @@ public class SpellbookPlugin extends Plugin
 		this.scroll = config.scroll();
 		this.size = config.size();
 		this.filter = config.filter();
+	}
+
+	private enum WordFilterMode
+	{
+		CONTAINS,
+		EQUALS,
+		STARTSWITH,
+		ENDSWITH
 	}
 }

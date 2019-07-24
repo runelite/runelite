@@ -24,7 +24,6 @@
  */
 package net.runelite.client;
 
-import com.google.common.base.Strings;
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
 import com.google.inject.Inject;

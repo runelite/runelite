@@ -76,7 +76,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.ws.PartyService;
-import net.runelite.http.api.RuneLiteAPI;
 import org.slf4j.LoggerFactory;
 
 @Singleton

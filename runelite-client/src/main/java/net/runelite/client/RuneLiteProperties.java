@@ -24,10 +24,7 @@
  */
 package net.runelite.client;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;

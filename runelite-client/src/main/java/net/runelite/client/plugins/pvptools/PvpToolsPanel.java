@@ -9,7 +9,6 @@
 
 package net.runelite.client.plugins.pvptools;
 
-import com.google.common.base.MoreObjects;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -21,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.plugins.info.JRichTextPane;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;

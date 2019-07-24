@@ -26,7 +26,6 @@ package net.runelite.http.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import jdk.nashorn.internal.runtime.linker.Bootstrap;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
