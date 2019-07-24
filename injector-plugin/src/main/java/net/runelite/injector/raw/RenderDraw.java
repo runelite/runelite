@@ -35,7 +35,7 @@ public class RenderDraw
 	{
 		Stopwatch stopwatch = Stopwatch.createStarted();
 
-		net.runelite.asm.Method obmethod = findMethod(inject, "drawTile");
+		net.runelite.asm.Method obmethod = findMethod(inject, "drawTile", "Scene");
 		Method renderDraw = findMethod(inject, "draw", "Entity").getPoolMethod();
 
 		Instructions ins = obmethod.getCode().getInstructions();
@@ -65,10 +65,9 @@ public class RenderDraw
 
 		if (count < 21)
 		{
-			//TODO: Fix for travis
-			//throw new InjectionException("Not all renderDraws were found");
+			throw new InjectionException("Not all renderDraws were found");
 		}
-		else if (count != 21)
+		if (count != 21)
 		{
 			log.warn("Found {} draws while 21 were expected. Rev update?", count);
 		}
