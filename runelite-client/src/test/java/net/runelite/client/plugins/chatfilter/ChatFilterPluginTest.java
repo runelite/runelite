@@ -54,7 +54,6 @@ public class ChatFilterPluginTest
 	private ChatFilterConfig chatFilterConfig;
 
 	@Mock
-	@Bind
 	private Player localPlayer;
 
 	@Inject
