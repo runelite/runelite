@@ -61,6 +61,7 @@ public class DiscordEmbed
 	VideoEmbed video;
 	ProviderEmbed provider;
 	AuthorEmbed author;
+	@Builder.Default
 	List<FieldEmbed> fields = new ArrayList<>();
 
 	public DiscordEmbed()
