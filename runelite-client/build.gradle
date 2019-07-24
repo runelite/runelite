@@ -1,5 +1,10 @@
+plugins {
+  id 'com.github.johnrengelman.shadow' version '5.1.0'
+  id 'java'
+}
 
 description = 'RuneLite Client'
+
 dependencies {
     compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.25'
     compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'
@@ -48,3 +53,20 @@ exclude(module: 'xz')
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version:'1.18.8'
     compileOnly group: 'net.runelite', name: 'orange-extensions', version:'1.0'
 }
+
+tasks.withType(AbstractArchiveTask) {
+  preserveFileTimestamps = false
+  reproducibleFileOrder = true
+}
+
+jar {
+  manifest {
+    attributes 'Main-Class': 'net.runelite.client.RuneLite'
+  }
+}
+
+shadowJar {
+  classifier = "shaded"
+}
+
+tasks.build.dependsOn tasks.shadowJar
