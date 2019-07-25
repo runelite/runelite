@@ -293,6 +293,8 @@ public class SlayerPlugin extends Plugin
 	private int initialAmount;
 	private int lastCertainAmount;
 
+	private boolean weaknessOverlayAttached;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -301,8 +303,9 @@ public class SlayerPlugin extends Plugin
 
 		overlayManager.add(overlay);
 		overlayManager.add(targetClickboxOverlay);
-		overlayManager.add(targetWeaknessOverlay);
 		overlayManager.add(targetMinimapOverlay);
+
+		weaknessOverlayAttached = false;
 
 		if (slayerXpDropLookup == null)
 		{
@@ -1030,6 +1033,17 @@ public class SlayerPlugin extends Plugin
 		rebuildTargetIds(task);
 		rebuildCheckAsTokens(task);
 		rebuildTargetList();
+
+		if (weaknessOverlayAttached && task.getWeaknessItem() == -1 && task.getWeaknessThreshold() == -1)
+		{
+			overlayManager.remove(targetWeaknessOverlay);
+			weaknessOverlayAttached = false;
+		}
+		else if (!weaknessOverlayAttached && task.getWeaknessItem() > -1 && task.getWeaknessThreshold() > -1)
+		{
+			overlayManager.add(targetWeaknessOverlay);
+			weaknessOverlayAttached = true;
+		}
 	}
 
 	AsyncBufferedImage getImageForTask(Task task)
