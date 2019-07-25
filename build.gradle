@@ -1,5 +1,6 @@
 plugins {
     id "com.github.ben-manes.versions" version "0.21.0"
+    id "com.gradle.build-scan" version "2.3"
 }
 
 allprojects {
@@ -8,6 +9,12 @@ allprojects {
 
     group = 'net.runelite'
     version = '1.5.30-SNAPSHOT'
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:deprecation"
+        }
+    }
 }
 
 subprojects {
