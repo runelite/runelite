@@ -77,7 +77,10 @@ public class GroundMarkerPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
+<<<<<<< HEAD
 	private static final Pattern GROUP_MATCHER = Pattern.compile(".*ark tile \\(Group (\\d)\\)");
+=======
+>>>>>>> Upstream/master
 	private static final String UNMARK = "Unmark tile";
 	private static final String WALK_HERE = "Walk here";
 	private static final String REGION_PREFIX = "region_";
@@ -321,8 +324,18 @@ public class GroundMarkerPlugin extends Plugin
 				menuEntry.setTarget(event.getTarget());
 				menuEntry.setType(MenuAction.RUNELITE.getId());
 
+<<<<<<< HEAD
 				lastIndex++;
 			}
+=======
+			final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getSelectedSceneTile().getLocalLocation());
+			final int regionId = worldPoint.getRegionID();
+			final GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), config.markerColor());
+
+			menuEntry.setOption(getPoints(regionId).contains(point) ? UNMARK : MARK);
+			menuEntry.setTarget(event.getTarget());
+			menuEntry.setType(MenuAction.RUNELITE.getId());
+>>>>>>> Upstream/master
 
 			client.setMenuEntries(menuEntries);
 		}
@@ -330,7 +343,12 @@ public class GroundMarkerPlugin extends Plugin
 
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
+<<<<<<< HEAD
 		if (event.getMenuAction().getId() != MenuAction.RUNELITE.getId() || (!event.getOption().contains(MARK) && !event.getOption().contains(UNMARK)))
+=======
+		if (event.getMenuAction().getId() != MenuAction.RUNELITE.getId() ||
+			!(event.getMenuOption().equals(MARK) || event.getMenuOption().equals(UNMARK)))
+>>>>>>> Upstream/master
 		{
 			return;
 		}

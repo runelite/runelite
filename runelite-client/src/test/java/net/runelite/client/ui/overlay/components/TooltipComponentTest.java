@@ -22,13 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.ui.overlay.components;
 
-import lombok.Value;
+import java.awt.FontMetrics;
+import static net.runelite.client.ui.overlay.components.TooltipComponent.calculateTextWidth;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@Value
-public class Item
+public class TooltipComponentTest
 {
-	private final int id;
-	private final int quantity;
+	@Test
+	public void testCalculateTextWidth()
+	{
+		FontMetrics fontMetics = mock(FontMetrics.class);
+		when(fontMetics.stringWidth(anyString())).thenAnswer((invocation) -> ((String) invocation.getArguments()[0]).length());
+
+		assertEquals(11, calculateTextWidth(fontMetics, "line1<col=ff0000>>line2"));
+	}
 }

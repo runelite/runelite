@@ -160,7 +160,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		else
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Possible areas:")
+				.left("Possible locations:")
 				.build());
 
 			final Map<HotColdArea, Integer> locationCounts = new EnumMap<>(HotColdArea.class);

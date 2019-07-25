@@ -247,9 +247,12 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
+		final Tile tile = client.getScene().getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+<<<<<<< HEAD
 
 		String option = MARK;
 
@@ -288,6 +291,9 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 		menuEntry.setOption(option);
 
+=======
+		menuEntry.setOption(objects.contains(findTileObject(tile, event.getIdentifier())) ? UNMARK : MARK);
+>>>>>>> Upstream/master
 		menuEntry.setTarget(event.getTarget());
 		menuEntry.setParam0(event.getActionParam0());
 		menuEntry.setParam1(event.getActionParam1());
@@ -299,8 +305,12 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE
+<<<<<<< HEAD
 			|| (!event.getOption().equals(MARK)
 			&& !event.getOption().equals(UNMARK)))
+=======
+			|| !(event.getMenuOption().equals(MARK) || event.getMenuOption().equals(UNMARK)))
+>>>>>>> Upstream/master
 		{
 			return;
 		}

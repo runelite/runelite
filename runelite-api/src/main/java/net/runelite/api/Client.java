@@ -30,7 +30,11 @@ import java.math.BigInteger;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+<<<<<<< HEAD
 import java.util.Set;
+=======
+import javax.annotation.Nonnull;
+>>>>>>> Upstream/master
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -350,7 +354,12 @@ public interface Client extends GameShell
 	 * @return the corresponding item composition
 	 * @see ItemID
 	 */
+<<<<<<< HEAD
 	ItemDefinition getItemDefinition(int id);
+=======
+	@Nonnull
+	ItemComposition getItemDefinition(int id);
+>>>>>>> Upstream/master
 
 	/**
 	 * Creates an item icon sprite with passed variables.
@@ -1656,6 +1665,7 @@ public interface Client extends GameShell
 
 	void resetHealthBarCaches();
 
+<<<<<<< HEAD
 	boolean getRenderSelf();
 
 	void setRenderSelf(boolean enabled);
@@ -1725,4 +1735,10 @@ public interface Client extends GameShell
 	BigInteger getModulus();
 
 	void setModulus(BigInteger modulus);
+=======
+	/**
+	 * Returns the max item index + 1 from cache
+	 */
+	int getItemCount();
+>>>>>>> Upstream/master
 }
