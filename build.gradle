@@ -1,34 +1,55 @@
-allprojects  {
-  apply plugin: 'maven'
-  apply plugin: 'checkstyle'
+plugins {
+    id "com.github.ben-manes.versions" version "0.21.0"
+    id "com.gradle.build-scan" version "2.3"
+}
 
-  group = 'net.runelite'
-version = '1.5.30-SNAPSHOT'
+allprojects {
+    apply plugin: 'maven'
+    apply plugin: 'checkstyle'
+
+    group = 'net.runelite'
+    version = '1.5.30-SNAPSHOT'
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:deprecation"
+        }
+    }
 }
 
 subprojects {
-  apply plugin: 'java'
-  sourceCompatibility = 1.8
-  targetCompatibility = 1.8
-  tasks.withType(JavaCompile) {
-  	options.encoding = 'UTF-8'
-  }
+    apply plugin: 'java'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
 
-  
-  repositories {
-    mavenLocal()
-    
-    maven { url "http://repo1.maven.org/maven2" }
-    maven { url "http://repo.runelite.net" }
-    maven { url "http://repo.maven.apache.org/maven2" }
-    maven { url "https://raw.githubusercontent.com/runelite-extended/maven-repo/master" }
-  }
 
-  checkstyle {
-    toolVersion = '6.4.1'
-    sourceSets = [sourceSets.main]
-    configFile = rootProject.file("./checkstyle/checkstyle.xml");
-    showViolations = true
-    ignoreFailures = false
-  }
+    repositories {
+        mavenLocal()
+
+        maven { url "http://repo1.maven.org/maven2" }
+        maven { url "http://repo.runelite.net" }
+        maven { url "http://repo.maven.apache.org/maven2" }
+        maven { url "https://raw.githubusercontent.com/runelite-extended/maven-repo/master" }
+    }
+
+    checkstyle {
+        toolVersion = '6.4.1'
+        sourceSets = [sourceSets.main]
+        configFile = rootProject.file("./checkstyle/checkstyle.xml")
+        showViolations = true
+        ignoreFailures = false
+    }
+}
+
+wrapper {
+    gradleVersion = '5.5.1'
+
+    doLast {
+        def optsEnvVar = "DEFAULT_JVM_OPTS"
+        scriptFile.write scriptFile.text.replace("$optsEnvVar='\"-Xmx64m\" \"-Xms64m\"'", "$optsEnvVar='\"-Xmx4g\" \"-Xms2g\" \"-Dfile.encoding=UTF-8\"'")
+        batchScript.write batchScript.text.replace("set $optsEnvVar=\"-Xmx64m\" \"-Xms64m\"", "set $optsEnvVar=\"-Xmx4g\" \"-Xms2g\" \"-Dfile.encoding=UTF-8\"")
+    }
 }
