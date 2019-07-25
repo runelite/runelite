@@ -118,6 +118,9 @@ public class PluginManager
 		this.configManager = configManager;
 		this.executor = executor;
 		this.sceneTileManager = sceneTileManager;
+
+		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
+		eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
 	}
 
 	public void watch()
@@ -171,7 +174,7 @@ public class PluginManager
 		return null;
 	}
 
-	public List<Config> getPluginConfigProxies()
+	private List<Config> getPluginConfigProxies()
 	{
 		List<Injector> injectors = new ArrayList<>();
 		injectors.add(RuneLite.getInjector());
@@ -224,6 +227,7 @@ public class PluginManager
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	List<Plugin> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
 	{
 		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
@@ -266,7 +270,7 @@ public class PluginManager
 				continue;
 			}
 
-			Class<Plugin> pluginClass = (Class<Plugin>) clazz;
+			@SuppressWarnings("unchecked") Class<Plugin> pluginClass = (Class<Plugin>) clazz;
 			graph.addNode(pluginClass);
 		}
 
@@ -428,13 +432,14 @@ public class PluginManager
 
 		if (value != null)
 		{
-			return Boolean.valueOf(value);
+			return Boolean.parseBoolean(value);
 		}
 
 		final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
 		return pluginDescriptor == null || pluginDescriptor.enabledByDefault();
 	}
 
+	@SuppressWarnings("unchecked")
 	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz) throws PluginInstantiationException
 	{
 		PluginDependency[] pluginDependencies = clazz.getAnnotationsByType(PluginDependency.class);

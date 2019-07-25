@@ -219,6 +219,7 @@ public class ModifyPanel extends JPanel
 		labelContainer.repaint();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void updateAdjustContainer()
 	{
 		adjustContainer.removeAll();

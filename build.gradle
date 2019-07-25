@@ -12,7 +12,7 @@ allprojects {
 
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:deprecation"
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
         }
     }
 }
@@ -39,8 +39,10 @@ subprojects {
         toolVersion = '6.4.1'
         sourceSets = [sourceSets.main]
         configFile = rootProject.file("./checkstyle/checkstyle.xml")
+        configProperties = [ "suppressionFile" : rootProject.file("./checkstyle/suppressions.xml")]
         showViolations = true
         ignoreFailures = false
+        maxWarnings = 0
     }
 }
 

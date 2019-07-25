@@ -1410,7 +1410,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		// Get the message node which was added
-		Map<Integer, RSChatChannel> chatLineMap = client.getChatLineMap();
+		@SuppressWarnings("unchecked") Map<Integer, RSChatChannel> chatLineMap = client.getChatLineMap();
 		RSChatChannel chatLineBuffer = chatLineMap.get(type);
 		MessageNode messageNode = chatLineBuffer.getLines()[0];
 
@@ -1431,7 +1431,7 @@ public abstract class RSClientMixin implements RSClient
 	public static void renderWidgetLayer(Widget[] widgets, int parentId, int minX, int minY, int maxX, int maxY, int x, int y, int var8)
 	{
 		Callbacks callbacks = client.getCallbacks();
-		HashTable<WidgetNode> componentTable = client.getComponentTable();
+		@SuppressWarnings("unchecked") HashTable<WidgetNode> componentTable = client.getComponentTable();
 
 		for (Widget rlWidget : widgets)
 		{

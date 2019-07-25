@@ -24,6 +24,7 @@
  */
 package net.runelite.cache;
 
+import com.google.common.io.FileWriteMode;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -81,7 +82,7 @@ public class SoundEffectsDumperTest
 				SoundEffectTrackLoader setLoader = new SoundEffectTrackLoader();
 				SoundEffectTrackDefinition soundEffect = setLoader.load(contents);
 
-				Files.write(gson.toJson(soundEffect), new File(dumpDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(dumpDir, archive.getArchiveId() + ".json"), Charset.defaultCharset()).write(gson.toJson(soundEffect));
 				++count;
 			}
 		}

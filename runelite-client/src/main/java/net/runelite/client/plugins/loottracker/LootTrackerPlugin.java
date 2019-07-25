@@ -714,7 +714,7 @@ public class LootTrackerPlugin extends Plugin
 					break;
 			}
 
-			int killCount = Integer.valueOf(m.group(1));
+			int killCount = Integer.parseInt(m.group(1));
 			killCountMap.put(eventType.toUpperCase(), killCount);
 			return;
 		}
@@ -755,11 +755,12 @@ public class LootTrackerPlugin extends Plugin
 		if (boss.find())
 		{
 			String bossName = boss.group(1);
-			int killCount = Integer.valueOf(boss.group(2));
+			int killCount = Integer.parseInt(boss.group(2));
 			killCountMap.put(bossName.toUpperCase(), killCount);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (pvpDeath && RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID()))
@@ -849,7 +850,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	public void deleteLocalRecords()
+	void deleteLocalRecords()
 	{
 		try
 		{
@@ -960,7 +961,7 @@ public class LootTrackerPlugin extends Plugin
 	 * @param name - The String name of the record to toggle the hidden status of
 	 * @param ignore - true to ignore, false to remove
 	 */
-	public void toggleNPC(String name, boolean ignore)
+	void toggleNPC(String name, boolean ignore)
 	{
 		final Set<String> ignoredNPCSet = new HashSet<>(ignoredNPCs);
 		if (ignore)
@@ -981,7 +982,7 @@ public class LootTrackerPlugin extends Plugin
 	 * @param name - The String of the name to check
 	 * @return - true if it is being ignored, false otherwise
 	 */
-	public boolean isIgnoredNPC(String name)
+	boolean isIgnoredNPC(String name)
 	{
 		return ignoredNPCs.contains(name);
 	}

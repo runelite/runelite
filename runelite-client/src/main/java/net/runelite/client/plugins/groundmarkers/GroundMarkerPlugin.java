@@ -190,6 +190,7 @@ public class GroundMarkerPlugin extends Plugin
 	 * @param points
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private Collection<GroundMarkerWorldPoint> translateToWorld(Collection<GroundMarkerPoint> points)
 	{
 		if (points.isEmpty())

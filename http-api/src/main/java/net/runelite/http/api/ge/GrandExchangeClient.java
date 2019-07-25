@@ -53,9 +53,10 @@ public class GrandExchangeClient
 			.addPathSegment("ge")
 			.build();
 
+		RequestBody body = RequestBody.Companion.create(GSON.toJson(grandExchangeTrade), JSON);
 		Request request = new Request.Builder()
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.post(RequestBody.create(JSON, GSON.toJson(grandExchangeTrade)))
+			.post(body)
 			.url(url)
 			.build();
 

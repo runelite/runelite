@@ -526,6 +526,7 @@ public class ConfigPanel extends PluginPanel
 		openGroupConfigPanel(listItem, config, cd, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void openGroupConfigPanel(PluginListItem listItem, Config config, ConfigDescriptor cd, boolean refresh)
 	{
 		showingPluginList = false;
@@ -657,10 +658,10 @@ public class ConfigPanel extends PluginPanel
 							}
 							else if (cid2.getType().isEnum())
 							{
-								Class<? extends Enum> type = (Class<? extends Enum>) cid2.getType();
+								@SuppressWarnings("unchecked") Class<? extends Enum> type = (Class<? extends Enum>) cid2.getType();
 								try
 								{
-									Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid2.getItem().keyName()));
+									@SuppressWarnings("unchecked") Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid2.getItem().keyName()));
 									if (!cid.getItem().unhideValue().equals(""))
 									{
 										show = selectedItem.toString().equals(cid.getItem().unhideValue());
@@ -1307,7 +1308,7 @@ public class ConfigPanel extends PluginPanel
 		return new Dimension(PANEL_WIDTH + SCROLLBAR_WIDTH, super.getPreferredSize().height);
 	}
 
-	private class FixedWidthPanel extends JPanel
+	private static class FixedWidthPanel extends JPanel
 	{
 		@Override
 		public Dimension getPreferredSize()

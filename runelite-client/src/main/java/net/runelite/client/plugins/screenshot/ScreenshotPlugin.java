@@ -824,10 +824,11 @@ public class ScreenshotPlugin extends Plugin
 		Request request = null;
 		if (IMGUR_IMAGE_UPLOAD_URL != null)
 		{
+			RequestBody body = RequestBody.Companion.create(json, JSON);
 			request = new Request.Builder()
 					.url(IMGUR_IMAGE_UPLOAD_URL)
 					.addHeader("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
-					.post(RequestBody.create(JSON, json))
+					.post(body)
 					.build();
 		}
 
