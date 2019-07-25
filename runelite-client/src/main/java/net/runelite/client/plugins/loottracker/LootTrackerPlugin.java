@@ -105,6 +105,11 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HERBIBOAR_LOOTED_MESSAGE = "You harvest herbs from the herbiboar, whereupon it escapes.";
 	private static final String HERBIBOR_EVENT = "Herbiboar";
 
+	// Hespori loot handling
+	private static final String HESPORI_LOOTED_MESSAGE = "You have successfully cleared this patch for new crops.";
+	private static final String HESPORI_EVENT = "Hespori";
+	private static final int HESPORI_REGION = 5021;
+
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
@@ -432,6 +437,12 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		if (HESPORI_REGION == client.getLocalPlayer().getWorldLocation().getRegionID() && message.equals(HESPORI_LOOTED_MESSAGE))
+		{
+			eventType = HESPORI_EVENT;
+			takeInventorySnapshot();
+		}
+
 		// Check if message is for a clue scroll reward
 		final Matcher m = CLUE_SCROLL_PATTERN.matcher(Text.removeTags(message));
 		if (m.find())
@@ -464,7 +475,7 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOR_EVENT.equals(eventType)))
+		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOR_EVENT.equals(eventType) || HESPORI_EVENT.equals(eventType)))
 		{
 			if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 			{
