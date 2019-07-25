@@ -1,5 +1,15 @@
 group = 'net.runelite.rs'
 description = 'Injector'
+
+def osrsRevision = 181
+def deobfuscatedJar = "${project.rootDir}/runescape-client/build/libs/rs-client-"+project.version+".jar"
+def vanillaJar = "$buildDir/vanilla-"+osrsRevision+".jar"
+def injectedJar = "${project.rootDir}/injected-client/build/libs/injected-client-"+project.version+".jar"
+
+configurations {
+    vanilla
+}
+
 dependencies {
     compile project(':deobfuscator')
     compile project(':mixins')
@@ -13,16 +23,21 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version: '3.6.0'
     annotationProcessor group: 'org.eclipse.sisu', name: 'org.eclipse.sisu.inject', version: '0.3.3'
+    vanilla "net.runelite.rs:vanilla:"+osrsRevision
 }
 
-compileJava.doLast {
+compileJava.doLast() {
+    copy {
+        from configurations.vanilla
+        into "$buildDir"
+    }
     def path = sourceSets.main.runtimeClasspath
     def loader = new URLClassLoader(path.collect { f -> f.toURL() } as URL[])
     def inject = loader.loadClass('net.runelite.injector.Injector')
     String[] jarPaths = [
-            "${project.rootDir}/runescape-client/build/libs/rs-client-1.5.30-SNAPSHOT.jar",
-            "${project.projectDir}/vanilla-181.jar",
-            "${project.rootDir}/injected-client/build/libs/injected-client-1.5.30-SNAPSHOT.jar"
+            deobfuscatedJar,
+            vanillaJar,
+            injectedJar
     ]
     inject.main(jarPaths)
 }
