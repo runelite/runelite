@@ -340,7 +340,7 @@ public class class65 extends RouteStrategy {
 					if (var17 == 3) {
 						NodeDeque var33 = Client.groundItems[class42.plane][var15][var16];
 						if (var33 != null) {
-							for (GroundItem var37 = (GroundItem)var33.first(); var37 != null; var37 = (GroundItem)var33.next()) {
+							for (TileItem var37 = (TileItem)var33.first(); var37 != null; var37 = (TileItem)var33.next()) {
 								ItemDefinition var35 = WorldMapArea.getItemDefinition(var37.id);
 								if (Client.isItemSelected == 1) {
 									class188.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + ClientPreferences.colorStartTag(16748608) + var35.name, 16, var37.id, var15, var16);

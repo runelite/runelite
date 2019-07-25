@@ -52,8 +52,9 @@ public class DiscordClient
 
 	private void message(HttpUrl url, DiscordMessage discordMessage, int retryAttempt, int maxAttempts)
 	{
+		RequestBody body = RequestBody.Companion.create(gson.toJson(discordMessage), JSON);
 		Request request = new Request.Builder()
-			.post(RequestBody.create(JSON, gson.toJson(discordMessage)))
+			.post(body)
 			.url(url)
 			.build();
 

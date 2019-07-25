@@ -67,7 +67,7 @@ public class ClientLoader
 		{
 			try
 			{
-				URL localInjected = new File("./injected-client/target/injected-client-" + RuneLiteAPI.getVersion() + ".jar").toURI().toURL();
+				URL localInjected = new File("./injected-client/build/libs/injected-client-" + RuneLiteAPI.getVersion() + ".jar").toURI().toURL();
 				log.info("Using local injected-client");
 				URLClassLoader classLoader = new URLClassLoader(new URL[]{localInjected});
 				Class<?> clientClass = classLoader.loadClass("client");

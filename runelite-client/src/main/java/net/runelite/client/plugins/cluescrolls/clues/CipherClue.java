@@ -85,7 +85,7 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
-		panelComponent.getChildren().add(LineComponent.builder().left("Area:").build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(getArea())
 			.leftColor(TITLED_CONTENT_COLOR)

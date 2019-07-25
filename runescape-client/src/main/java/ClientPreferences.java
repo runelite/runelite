@@ -266,7 +266,7 @@ public class ClientPreferences {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var10 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Message var15 = GroundItem.method2049(var10, var4);
+			Message var15 = TileItem.method2049(var10, var4);
 			if (var15 != null) {
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var15.count;
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var15.cycle;

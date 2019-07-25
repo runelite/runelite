@@ -85,7 +85,7 @@ public class BankSearch
 			// selecting/changing tab
 			if (closeInput)
 			{
-				client.runScript(ScriptID.RESET_CHATBOX_INPUT);
+				client.runScript(ScriptID.RESET_CHATBOX_INPUT, 0, 0);
 			}
 
 			client.setVar(VarClientInt.INPUT_TYPE, inputType.getType());

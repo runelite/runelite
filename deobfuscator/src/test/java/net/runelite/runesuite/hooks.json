@@ -3673,7 +3673,7 @@
     "descriptor" : "(ILdy;Ldy;I)V"
   } ]
 }, {
-  "class" : "GroundItem",
+  "class" : "TileItem",
   "name" : "ck",
   "super" : "ex",
   "access" : 49,
@@ -3992,7 +3992,7 @@
     "descriptor" : "()V"
   } ]
 }, {
-  "class" : "GroundItemPile",
+  "class" : "TileItemPile",
   "name" : "dr",
   "super" : "java.lang.Object",
   "access" : 49,
@@ -10949,7 +10949,7 @@
     "descriptor" : "I",
     "decoder" : 1192947815
   }, {
-    "field" : "groundItemPile",
+    "field" : "tileItemPile",
     "owner" : "dj",
     "name" : "x",
     "access" : 0,

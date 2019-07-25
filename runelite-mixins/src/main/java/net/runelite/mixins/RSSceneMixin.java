@@ -38,7 +38,7 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSBoundaryObject;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSFloorDecoration;
-import net.runelite.rs.api.RSGroundItemPile;
+import net.runelite.rs.api.RSTileItemPile;
 import net.runelite.rs.api.RSScene;
 import net.runelite.rs.api.RSTile;
 import net.runelite.rs.api.RSTileModel;
@@ -418,7 +418,7 @@ public abstract class RSSceneMixin implements RSScene
 		Tile tile = getTiles()[plane][x][y];
 		if (tile != null)
 		{
-			RSGroundItemPile itemLayer = (RSGroundItemPile) tile.getItemLayer();
+			RSTileItemPile itemLayer = (RSTileItemPile) tile.getItemLayer();
 			if (itemLayer != null)
 			{
 				itemLayer.setPlane(plane);

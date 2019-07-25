@@ -56,7 +56,7 @@ public class ScriptLoader
 		int numSwitches = in.readUnsignedByte();
 		if (numSwitches > 0)
 		{
-			Map<Integer, Integer>[] switches = new Map[numSwitches];
+			@SuppressWarnings("unchecked") Map<Integer, Integer>[] switches = new Map[numSwitches];
 			def.setSwitches(switches);
 
 			for (int i = 0; i < numSwitches; ++i)

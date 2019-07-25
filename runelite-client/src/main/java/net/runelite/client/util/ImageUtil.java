@@ -52,6 +52,11 @@ import net.runelite.api.Sprite;
 @Slf4j
 public class ImageUtil
 {
+	static
+	{
+		ImageIO.setUseCache(false);
+	}
+
 	/**
 	 * Creates a {@link BufferedImage} from an {@link Image}.
 	 *

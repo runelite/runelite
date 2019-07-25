@@ -413,7 +413,7 @@ public class Messages {
 							var16 = Client.getWidgetChild(var1, var0);
 							if (var16 != null) {
 								WorldMapID.method542();
-								GroundItem.method2053(var1, var0, HealthBar.method1957(class268.getWidgetClickMask(var16)), var16.itemId);
+								TileItem.method2053(var1, var0, HealthBar.method1957(class268.getWidgetClickMask(var16)), var16.itemId);
 								Client.isItemSelected = 0;
 								Client.selectedSpellActionName = FontName.method5318(var16);
 								if (Client.selectedSpellActionName == null) {

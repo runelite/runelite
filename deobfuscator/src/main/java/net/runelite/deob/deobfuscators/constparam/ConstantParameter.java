@@ -171,6 +171,7 @@ public class ConstantParameter implements Deobfuscator
 		findConstantParameter(methods, ins);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<ConstantMethodParameter> findParametersForMethod(Method m)
 	{
 		Collection<ConstantMethodParameter> c = mparams.get(m);

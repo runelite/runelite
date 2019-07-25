@@ -150,7 +150,7 @@ public class VarbitDefinition extends DualNode {
 						Login.worldSelectOpen = false;
 						GrandExchangeOfferWorldComparator.leftTitleSprite.drawAt(Login.xPadding, 0);
 						NPC.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
-						GroundItem.logoSprite.drawAt(Login.xPadding + 382 - GroundItem.logoSprite.subWidth / 2, 18);
+						TileItem.logoSprite.drawAt(Login.xPadding + 382 - TileItem.logoSprite.subWidth / 2, 18);
 						break;
 					}
 
@@ -160,7 +160,7 @@ public class VarbitDefinition extends DualNode {
 						Login.worldSelectOpen = false;
 						GrandExchangeOfferWorldComparator.leftTitleSprite.drawAt(Login.xPadding, 0);
 						NPC.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
-						GroundItem.logoSprite.drawAt(Login.xPadding + 382 - GroundItem.logoSprite.subWidth / 2, 18);
+						TileItem.logoSprite.drawAt(Login.xPadding + 382 - TileItem.logoSprite.subWidth / 2, 18);
 					} else {
 						if (Login.worldSelectPage > 0 && Login.worldSelectLeftSprite != null && MouseHandler.MouseHandler_lastPressedX >= 0 && MouseHandler.MouseHandler_lastPressedX <= Login.worldSelectLeftSprite.subWidth && MouseHandler.MouseHandler_lastPressedY >= ParamDefinition.canvasHeight / 2 - 50 && MouseHandler.MouseHandler_lastPressedY <= ParamDefinition.canvasHeight / 2 + 50) {
 							--Login.worldSelectPage;
@@ -177,7 +177,7 @@ public class VarbitDefinition extends DualNode {
 					Login.worldSelectOpen = false;
 					GrandExchangeOfferWorldComparator.leftTitleSprite.drawAt(Login.xPadding, 0);
 					NPC.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
-					GroundItem.logoSprite.drawAt(Login.xPadding + 382 - GroundItem.logoSprite.subWidth / 2, 18);
+					TileItem.logoSprite.drawAt(Login.xPadding + 382 - TileItem.logoSprite.subWidth / 2, 18);
 					break;
 				}
 

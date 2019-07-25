@@ -52,7 +52,7 @@ public class CheckExports
 	@Before
 	public void before() throws MalformedURLException, ClassNotFoundException
 	{
-		ClassLoader loader = new URLClassLoader(new URL[]{CLIENT.toURL()});
+		ClassLoader loader = new URLClassLoader(new URL[]{CLIENT.toURI().toURL()});
 
 		Class c = loader.loadClass("net.runelite.rs.client.client");
 		classes.add(c);
@@ -70,6 +70,7 @@ public class CheckExports
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private Class<?> findClassWithObfuscatedName(String name)
 	{
 		for (Class c : classes)
