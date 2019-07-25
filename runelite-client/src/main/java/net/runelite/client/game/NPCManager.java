@@ -43,7 +43,7 @@ public class NPCManager
 	private NPCManager()
 	{
 		final Gson gson = new Gson();
-		final Type typeToken = new TypeToken<Map<String, Integer>>()
+		final Type typeToken = new TypeToken<Map<Integer, Integer>>()
 		{
 		}.getType();
 
@@ -52,14 +52,13 @@ public class NPCManager
 	}
 
 	/**
-	 * Returns health for target NPC based on it's combat level and name
-	 * @param name npc name
-	 * @param combatLevel npc combat level
+	 * Returns health for target NPC based on it's id
+	 * @param id npc id
 	 * @return health or null if HP is unknown
 	 */
 	@Nullable
-	public Integer getHealth(final String name, final int combatLevel)
+	public Integer getHealth(final int id)
 	{
-		return healthMap.get(name + "_" + combatLevel);
+		return healthMap.get(id);
 	}
 }
