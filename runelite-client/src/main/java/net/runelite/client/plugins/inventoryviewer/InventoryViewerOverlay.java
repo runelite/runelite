@@ -98,7 +98,7 @@ class InventoryViewerOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		if (plugin.isHideWhenInvOpen()
-			&& client.getVar(VarClientInt.PLAYER_INVENTORY_OPENED) == 3)
+			&& client.getVar(VarClientInt.PLAYER_INTERFACE_CONTAINER_OPENED) == 3)
 		{
 			return null;
 		}
