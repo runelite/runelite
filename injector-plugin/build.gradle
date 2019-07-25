@@ -5,6 +5,8 @@ dependencies {
     compile project(':mixins')
     compile project(':runelite-api')
     compile project(':runescape-api')
+    compile project(':rs-client')
+    compile project(':injected-client')
     compile group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.6.1'
     testCompile project(':deobfuscator')
     testCompile group: 'junit', name: 'junit', version: '4.12'
