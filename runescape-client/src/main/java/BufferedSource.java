@@ -255,9 +255,9 @@ public class BufferedSource implements Runnable {
 			GrandExchangeOfferWorldComparator.leftTitleSprite = BuddyRankComparator.convertJpgToSprite(var4);
 			NPC.rightTitleSprite = GrandExchangeOfferWorldComparator.leftTitleSprite.mirrorHorizontally();
 			if ((Client.worldProperties & 536870912) != 0) {
-				GroundItem.logoSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "logo_deadman_mode", "");
+				TileItem.logoSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "logo_deadman_mode", "");
 			} else {
-				GroundItem.logoSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "logo", "");
+				TileItem.logoSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "logo", "");
 			}
 
 			Login.titleboxSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "titlebox", "");
@@ -315,7 +315,7 @@ public class BufferedSource implements Runnable {
 			ScriptEvent.loginBoxCenter = Login.loginBoxX + 180;
 			GrandExchangeOfferWorldComparator.leftTitleSprite.drawAt(Login.xPadding, 0);
 			NPC.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
-			GroundItem.logoSprite.drawAt(Login.xPadding + 382 - GroundItem.logoSprite.subWidth / 2, 18);
+			TileItem.logoSprite.drawAt(Login.xPadding + 382 - TileItem.logoSprite.subWidth / 2, 18);
 		}
 	}
 }

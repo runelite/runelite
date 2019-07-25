@@ -3722,7 +3722,7 @@ public final class Client extends GameShell implements Usernamed {
 
 			if (ServerPacket.field2161 == var1.serverPacket) {
 				var16 = var3.method5532();
-				GroundItemPile.method2764(var16);
+				TileItemPile.method2764(var16);
 				field888[++field671 - 1 & 31] = var16 & 32767;
 				var1.serverPacket = null;
 				return true;

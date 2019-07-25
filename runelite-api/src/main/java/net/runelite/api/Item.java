@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,23 +24,11 @@
  */
 package net.runelite.api;
 
-/**
- * Represents an item inside an {@link ItemContainer}.
- */
-public interface Item extends Renderable
+public interface Item
 {
-	/**
-	 * Gets the items ID.
-	 *
-	 * @return the ID of the item
-	 * @see ItemID
-	 */
-	int getId();
+	int id = -1;
+	int quantity = -1;
 
-	/**
-	 * Gets the items quantity.
-	 *
-	 * @return the items quantity
-	 */
+	int getId();
 	int getQuantity();
 }

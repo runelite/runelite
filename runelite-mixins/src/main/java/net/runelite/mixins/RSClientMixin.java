@@ -122,7 +122,7 @@ import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSEnumDefinition;
 import net.runelite.rs.api.RSFriendSystem;
 import net.runelite.rs.api.RSFriendsList;
-import net.runelite.rs.api.RSGroundItem;
+import net.runelite.rs.api.RSTileItem;
 import net.runelite.rs.api.RSIgnoreList;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItemContainer;
@@ -180,7 +180,7 @@ public abstract class RSClientMixin implements RSClient
 	private static int oldMenuEntryCount;
 
 	@Inject
-	private static RSGroundItem lastItemDespawn;
+	private static RSTileItem lastItemDespawn;
 
 	@Inject
 	private boolean gpu;
@@ -1489,14 +1489,14 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public RSGroundItem getLastItemDespawn()
+	public RSTileItem getLastItemDespawn()
 	{
 		return lastItemDespawn;
 	}
 
 	@Inject
 	@Override
-	public void setLastItemDespawn(RSGroundItem lastItemDespawn)
+	public void setLastItemDespawn(RSTileItem lastItemDespawn)
 	{
 		RSClientMixin.lastItemDespawn = lastItemDespawn;
 	}

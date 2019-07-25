@@ -383,7 +383,7 @@ public class Scene {
 	)
 	@Export("newGroundItemPile")
 	public void newGroundItemPile(int var1, int var2, int var3, int var4, Entity var5, long var6, Entity var8, Entity var9) {
-		GroundItemPile var10 = new GroundItemPile();
+		TileItemPile var10 = new TileItemPile();
 		var10.first = var5;
 		var10.x = var2 * 128 + 64;
 		var10.y = var3 * 128 + 64;
@@ -410,7 +410,7 @@ public class Scene {
 			this.tiles[var1][var2][var3] = new Tile(var1, var2, var3);
 		}
 
-		this.tiles[var1][var2][var3].groundItemPile = var10;
+		this.tiles[var1][var2][var3].tileItemPile = var10;
 	}
 
 	@ObfuscatedName("c")
@@ -713,7 +713,7 @@ public class Scene {
 	public void removeGroundItemPile(int var1, int var2, int var3) {
 		Tile var4 = this.tiles[var1][var2][var3];
 		if (var4 != null) {
-			var4.groundItemPile = null;
+			var4.tileItemPile = null;
 		}
 	}
 
@@ -1470,7 +1470,7 @@ public class Scene {
 													var22.entity.draw(0, Scene_cameraPitchSine, Scene_cameraPitchCosine, Scene_cameraYawSine, Scene_cameraYawCosine, var22.x * 4096 - Scene_cameraX, var22.tileHeight - Scene_cameraY, var22.y * 4096 - Scene_cameraZ, var22.tag);
 												}
 
-												GroundItemPile var23 = var3.groundItemPile;
+												TileItemPile var23 = var3.tileItemPile;
 												if (var23 != null && var23.height == 0) {
 													if (var23.second != null) {
 														var23.second.draw(0, Scene_cameraPitchSine, Scene_cameraPitchCosine, Scene_cameraYawSine, Scene_cameraYawCosine, var23.x * 4096 - Scene_cameraX, var23.tileHeight - Scene_cameraY, var23.y * 4096 - Scene_cameraZ, var23.tag);
@@ -1688,7 +1688,7 @@ public class Scene {
 
 			var3.drawSecondary = false;
 			--tileUpdateCount;
-			GroundItemPile var32 = var3.groundItemPile;
+			TileItemPile var32 = var3.tileItemPile;
 			if (var32 != null && var32.height != 0) {
 				if (var32.second != null) {
 					var32.second.draw(0, Scene_cameraPitchSine, Scene_cameraPitchCosine, Scene_cameraYawSine, Scene_cameraYawCosine, var32.x * 4096 - Scene_cameraX, var32.tileHeight - Scene_cameraY - var32.height, var32.y * 4096 - Scene_cameraZ, var32.tag);

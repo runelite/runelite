@@ -281,6 +281,7 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
+
 	@ConfigItem(
 		keyName = "itemHighlightMode",
 		name = "Item Highlight Mode",
@@ -616,11 +617,11 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showTimer",
-			name = "Show ground item tick countdown timer",
-			description = "Shows how many ticks left until disappearing.",
-			position = 48,
-			parent = "miscStub"
+		keyName = "showTimer",
+		name = "Show ground item tick countdown timer",
+		description = "Shows how many ticks left until disappearing.",
+		position = 48,
+		parent = "miscStub"
 	)
 	default boolean showTimer()
 	{

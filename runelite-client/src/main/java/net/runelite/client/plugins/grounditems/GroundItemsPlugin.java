@@ -52,7 +52,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Item;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import net.runelite.api.ItemLayer;
@@ -62,16 +61,17 @@ import net.runelite.api.Node;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
+import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
@@ -105,9 +105,10 @@ import net.runelite.client.util.Text;
 @Singleton
 public class GroundItemsPlugin extends Plugin
 {
+	@Getter(AccessLevel.PUBLIC)
+	public static final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
-
 	// items stay on the ground for 30 mins in an instance
 	private static final int INSTANCE_DURATION_MILLIS = 45 * 60 * 1000;
 	private static final int INSTANCE_DURATION_TICKS = (int) floor(30 * 60 / 0.6);
@@ -119,7 +120,6 @@ public class GroundItemsPlugin extends Plugin
 	private static final int DEATH_DURATION_TICKS = (int) floor(60 * 60 / 0.6);
 	private static final int NORMAL_DURATION_MILLIS = 60 * 1000;
 	private static final int NORMAL_DURATION_TICKS = (int) floor(60 / 0.6);
-
 	// Ground item menu options
 	private static final int FIRST_OPTION = MenuAction.GROUND_ITEM_FIRST_OPTION.getId();
 	private static final int SECOND_OPTION = MenuAction.GROUND_ITEM_SECOND_OPTION.getId();
@@ -129,65 +129,45 @@ public class GroundItemsPlugin extends Plugin
 	private static final int EXAMINE_ITEM = MenuAction.EXAMINE_ITEM_GROUND.getId();
 	private static final int WALK = MenuAction.WALK.getId();
 	private static final int CAST_ON_ITEM = MenuAction.SPELL_CAST_ON_GROUND_ITEM.getId();
-
 	private static final String TELEGRAB_TEXT = ColorUtil.wrapWithColorTag("Telekinetic Grab", Color.GREEN) + ColorUtil.prependColorTag(" -> ", Color.WHITE);
-
+	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> textBoxBounds;
-
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> hiddenBoxBounds;
-
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> highlightBoxBounds;
-
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hotKeyPressed;
-
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hideAll;
-
 	private List<String> hiddenItemList = new CopyOnWriteArrayList<>();
 	private List<String> highlightedItemsList = new CopyOnWriteArrayList<>();
-
 	@Inject
 	private GroundItemInputListener inputListener;
-
 	@Inject
 	private MouseManager mouseManager;
-
 	@Inject
 	private KeyManager keyManager;
-
 	@Inject
 	private Client client;
-
 	@Inject
 	private ItemManager itemManager;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private GroundItemsConfig config;
-
 	@Inject
 	private GroundItemsOverlay overlay;
-
 	@Inject
 	private Notifier notifier;
-
 	@Inject
 	private EventBus eventBus;
-
-	@Getter(AccessLevel.PUBLIC)
-	public static final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
-	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
 
@@ -323,7 +303,7 @@ public class GroundItemsPlugin extends Plugin
 
 	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
-		Item item = itemSpawned.getItem();
+		TileItem item = itemSpawned.getItem();
 		Tile tile = itemSpawned.getTile();
 
 		GroundItem groundItem = buildGroundItem(tile, item);
@@ -348,7 +328,7 @@ public class GroundItemsPlugin extends Plugin
 
 	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		Item item = itemDespawned.getItem();
+		TileItem item = itemDespawned.getItem();
 		Tile tile = itemDespawned.getTile();
 
 		GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(item.getId(), tile.getWorldLocation());
@@ -370,7 +350,7 @@ public class GroundItemsPlugin extends Plugin
 
 	private void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
 	{
-		Item item = itemQuantityChanged.getItem();
+		TileItem item = itemQuantityChanged.getItem();
 		Tile tile = itemQuantityChanged.getTile();
 		int oldQuantity = itemQuantityChanged.getOldQuantity();
 		int newQuantity = itemQuantityChanged.getNewQuantity();
@@ -441,7 +421,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	private  void sendLootNotification(String itemName, String message)
+	private void sendLootNotification(String itemName, String message)
 	{
 		String notification = "[" + client.getLocalPlayer().getName() + "] " +
 			"Received a " + message + " item: " + itemName;
@@ -462,7 +442,7 @@ public class GroundItemsPlugin extends Plugin
 			{
 				int menuType = menuEntry.getType();
 				if (menuType == FIRST_OPTION || menuType == SECOND_OPTION || menuType == THIRD_OPTION
-						|| menuType == FOURTH_OPTION || menuType == FIFTH_OPTION || menuType == EXAMINE_ITEM)
+					|| menuType == FOURTH_OPTION || menuType == FIFTH_OPTION || menuType == EXAMINE_ITEM)
 				{
 					for (MenuEntryWithCount entryWCount : newEntries)
 					{
@@ -484,13 +464,13 @@ public class GroundItemsPlugin extends Plugin
 		{
 			final int aMenuType = a.getEntry().getType();
 			if (aMenuType == FIRST_OPTION || aMenuType == SECOND_OPTION || aMenuType == THIRD_OPTION
-					|| aMenuType == FOURTH_OPTION || aMenuType == FIFTH_OPTION || aMenuType == EXAMINE_ITEM
-					|| aMenuType == WALK)
+				|| aMenuType == FOURTH_OPTION || aMenuType == FIFTH_OPTION || aMenuType == EXAMINE_ITEM
+				|| aMenuType == WALK)
 			{ // only check for item related menu types, so we don't sort other stuff
 				final int bMenuType = b.getEntry().getType();
 				if (bMenuType == FIRST_OPTION || bMenuType == SECOND_OPTION || bMenuType == THIRD_OPTION
-						|| bMenuType == FOURTH_OPTION || bMenuType == FIFTH_OPTION || bMenuType == EXAMINE_ITEM
-						|| bMenuType == WALK)
+					|| bMenuType == FOURTH_OPTION || bMenuType == FIFTH_OPTION || bMenuType == EXAMINE_ITEM
+					|| bMenuType == WALK)
 				{
 					final MenuEntry aEntry = a.getEntry();
 					final int aId = aEntry.getIdentifier();
@@ -579,7 +559,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	private GroundItem buildGroundItem(final Tile tile, final Item item)
+	private GroundItem buildGroundItem(final Tile tile, final TileItem item)
 	{
 		// Collect the data for the item
 		final int itemId = item.getId();
@@ -711,9 +691,9 @@ public class GroundItemsPlugin extends Plugin
 			int quantity = 1;
 			Node current = itemLayer.getBottom();
 
-			while (current instanceof Item)
+			while (current instanceof TileItem)
 			{
-				Item item = (Item) current;
+				TileItem item = (TileItem) current;
 				if (item.getId() == itemId)
 				{
 					quantity = item.getQuantity();
@@ -878,8 +858,8 @@ public class GroundItemsPlugin extends Plugin
 
 		// Explicit highlight takes priority over implicit hide
 		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
-				? this.hiddenColor
-				: null;
+			? this.hiddenColor
+			: null;
 	}
 
 	private int getGePriceFromItemId(int itemId)

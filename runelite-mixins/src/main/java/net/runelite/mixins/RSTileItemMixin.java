@@ -7,10 +7,10 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSGroundItem;
+import net.runelite.rs.api.RSTileItem;
 
-@Mixin(RSGroundItem.class)
-public abstract class RSGroundItemMixin implements RSGroundItem
+@Mixin(RSTileItem.class)
+public abstract class RSTileItemMixin implements RSTileItem
 {
 	@Shadow("client")
 	private static RSClient client;
@@ -22,7 +22,7 @@ public abstract class RSGroundItemMixin implements RSGroundItem
 	private int rl$sceneY = -1;
 
 	@Inject
-	RSGroundItemMixin()
+	RSTileItemMixin()
 	{
 	}
 

@@ -31,6 +31,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -350,6 +351,7 @@ public interface Client extends GameShell
 	 * @return the corresponding item composition
 	 * @see ItemID
 	 */
+	@Nonnull
 	ItemDefinition getItemDefinition(int id);
 
 	/**
@@ -1725,4 +1727,9 @@ public interface Client extends GameShell
 	BigInteger getModulus();
 
 	void setModulus(BigInteger modulus);
+
+	/*
+	 * Returns the max item index + 1 from cache
+	 */
+	int getItemCount();
 }

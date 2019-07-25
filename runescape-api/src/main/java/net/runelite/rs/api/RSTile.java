@@ -16,7 +16,7 @@ public interface RSTile extends Tile
 	@Override
 	GameObject[] getGameObjects();
 
-	@Import("groundItemPile")
+	@Import("tileItemPile")
 	@Override
 	ItemLayer getItemLayer();
 

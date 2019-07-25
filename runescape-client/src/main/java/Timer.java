@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jr")
-@Implements("Timer")
+@Implements("Timer") //GroundItem
 public class Timer {
 	@ObfuscatedName("q")
 	@ObfuscatedGetter(
@@ -427,7 +427,7 @@ public class Timer {
 						ObjectDefinition.ObjectDefinition_modelsArchive = var2;
 						ObjectDefinition.ObjectDefinition_isLowDetail = var34;
 						FaceNormal.setNpcDefinitionArchives(class215.archive2, NPCDefinition.archive7);
-						GroundItem.method2054(class215.archive2);
+						TileItem.method2054(class215.archive2);
 						Archive var27 = class215.archive2;
 						Archive var5 = NPCDefinition.archive7;
 						boolean var6 = Client.isMembersWorld;

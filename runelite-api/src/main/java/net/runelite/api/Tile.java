@@ -130,7 +130,7 @@ public interface Tile
 	 *
 	 * @return the ground items
 	 */
-	List<Item> getGroundItems();
+	List<TileItem> getGroundItems();
 
 	/**
 	 * Return the tile under this one, if this tile is a bridge

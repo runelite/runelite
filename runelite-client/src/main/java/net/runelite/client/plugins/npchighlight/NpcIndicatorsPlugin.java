@@ -87,7 +87,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
-	private static final String UNTAG = "Untag";
+	private static final String UNTAG = "Un-tag";
 
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
@@ -316,7 +316,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			// Add tag option
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption(npcTags.contains(event.getIdentifier()) ? UNTAG : TAG);
+			tagEntry.setOption(highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()) ? UNTAG : TAG);
 			tagEntry.setTarget(event.getTarget());
 			tagEntry.setParam0(event.getActionParam0());
 			tagEntry.setParam1(event.getActionParam1());
@@ -328,9 +328,8 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private void onMenuOptionClicked(MenuOptionClicked click)
 	{
-		if (click.getMenuAction() != MenuAction.RUNELITE
-			|| (!click.getOption().equals(TAG)
-			&& !click.getOption().equals(UNTAG)))
+		if (click.getMenuAction() != MenuAction.RUNELITE ||
+			!(click.getOption().equals(TAG) || click.getOption().equals(UNTAG)))
 		{
 			return;
 		}

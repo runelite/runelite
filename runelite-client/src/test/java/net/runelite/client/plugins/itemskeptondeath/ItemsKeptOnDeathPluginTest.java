@@ -100,18 +100,13 @@ public class ItemsKeptOnDeathPluginTest
 		when(itemManager.canonicalize(id)).thenReturn(id);
 		when(itemManager.getItemPrice(id, true)).thenReturn(price);
 
-		return mockItem(id, qty);
+		return item(id, qty);
 	}
 
-	// Creates a mocked item
-	private Item mockItem(final int id, final int qty)
+	// Creates a new item
+	private static Item item(final int id, final int qty)
 	{
-		Item item = mock(Item.class);
-
-		when(item.getId()).thenReturn(id);
-		when(item.getQuantity()).thenReturn(qty);
-
-		return item;
+		return new Item(id, qty);
 	}
 
 	@Test

@@ -259,10 +259,10 @@ public class FloorOverlayDefinition extends DualNode {
 		int var4 = var0 & var2 - 1;
 		int var5 = var1 / var2;
 		int var6 = var1 & var2 - 1;
-		int var7 = GroundItemPile.method2765(var3, var5);
-		int var8 = GroundItemPile.method2765(var3 + 1, var5);
-		int var9 = GroundItemPile.method2765(var3, var5 + 1);
-		int var10 = GroundItemPile.method2765(var3 + 1, var5 + 1);
+		int var7 = TileItemPile.method2765(var3, var5);
+		int var8 = TileItemPile.method2765(var3 + 1, var5);
+		int var9 = TileItemPile.method2765(var3, var5 + 1);
+		int var10 = TileItemPile.method2765(var3 + 1, var5 + 1);
 		int var11 = class4.method49(var7, var8, var4, var2);
 		int var12 = class4.method49(var9, var10, var4, var2);
 		return class4.method49(var11, var12, var6, var2);

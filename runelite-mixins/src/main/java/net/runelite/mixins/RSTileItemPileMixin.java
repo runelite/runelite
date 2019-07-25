@@ -5,10 +5,10 @@ import net.runelite.api.Model;
 import net.runelite.api.Renderable;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
-import net.runelite.rs.api.RSGroundItemPile;
+import net.runelite.rs.api.RSTileItemPile;
 
-@Mixin(RSGroundItemPile.class)
-public abstract class RSGroundItemPileMixin implements RSGroundItemPile
+@Mixin(RSTileItemPile.class)
+public abstract class RSTileItemPileMixin implements RSTileItemPile
 {
 	@Inject
 	private int itemLayerPlane;
