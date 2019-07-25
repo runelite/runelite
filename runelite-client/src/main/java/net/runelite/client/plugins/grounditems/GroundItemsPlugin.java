@@ -44,7 +44,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -294,14 +293,14 @@ public class GroundItemsPlugin extends Plugin
 	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
 	{
 		Collection<ItemStack> items = npcLootReceived.getItems();
-		lootReceived(items, (groundItem) -> groundItem.setPvmLoot(true));
+		lootReceived(items, LootType.PVM);
 	}
 
 	@Subscribe
 	public void onPlayerLootReceived(PlayerLootReceived playerLootReceived)
 	{
 		Collection<ItemStack> items = playerLootReceived.getItems();
-		lootReceived(items, (groundItem) -> groundItem.setPvpLoot(true));
+		lootReceived(items, LootType.PVP);
 	}
 
 	@Subscribe
@@ -352,7 +351,7 @@ public class GroundItemsPlugin extends Plugin
 		}).toArray(MenuEntry[]::new));
 	}
 
-	private void lootReceived(Collection<ItemStack> items, Consumer<GroundItem> consumer)
+	private void lootReceived(Collection<ItemStack> items, LootType lootType)
 	{
 		for (ItemStack itemStack : items)
 		{
@@ -361,7 +360,7 @@ public class GroundItemsPlugin extends Plugin
 			GroundItem groundItem = collectedGroundItems.get(groundItemKey);
 			if (groundItem != null)
 			{
-				consumer.accept(groundItem);
+				groundItem.setLootType(lootType);
 
 				boolean shouldNotify = config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
 					groundItem.getName(),
@@ -394,6 +393,7 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
+			.lootType(LootType.UNKNOWN)
 			.isDropped(dropped)
 			.spawnTime(Instant.now())
 			.build();
