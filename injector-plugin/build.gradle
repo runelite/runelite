@@ -26,6 +26,8 @@ dependencies {
     vanilla "net.runelite.rs:vanilla:"+osrsRevision
 }
 
+compileJava.outputs.upToDateWhen {false}
+
 compileJava.doLast() {
     copy {
         from configurations.vanilla
