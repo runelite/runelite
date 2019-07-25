@@ -24,18 +24,16 @@
  */
 package net.runelite.api.events;
 
-import lombok.Value;
-import net.runelite.api.TileItem;
-import net.runelite.api.Tile;
-import lombok.Value;
-
 /**
- * Called when an item pile despawns from the ground. When the client loads a new scene,
- * all item piles are implicitly despawned, and despawn events will not be sent.
+ * An event where the position of a {@link net.runelite.api.widgets.Widget}
+ * relative to its parent has changed.
  */
-@Value
-public class ItemDespawned
+public class WidgetPositioned
 {
-	private final Tile tile;
-	private final TileItem item;
+	public static final WidgetPositioned INSTANCE = new WidgetPositioned();
+
+	private WidgetPositioned()
+	{
+		// noop
+	}
 }

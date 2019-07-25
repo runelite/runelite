@@ -22,25 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-<<<<<<< HEAD:runelite-api/src/main/java/net/runelite/api/events/WidgetPositioned.java
-package net.runelite.api.events;
-=======
 package net.runelite.api;
->>>>>>> Upstream/master:runelite-api/src/main/java/net/runelite/api/TileItem.java
 
 /**
  * Represents an item inside an {@link ItemLayer}.
  */
-<<<<<<< HEAD:runelite-api/src/main/java/net/runelite/api/events/WidgetPositioned.java
-public class WidgetPositioned
-{
-	public static final WidgetPositioned INSTANCE = new WidgetPositioned();
-
-	private WidgetPositioned()
-	{
-		// noop
-	}
-=======
 public interface TileItem extends Renderable
 {
 	/**
@@ -57,5 +43,4 @@ public interface TileItem extends Renderable
 	 * @return the items quantity
 	 */
 	int getQuantity();
->>>>>>> Upstream/master:runelite-api/src/main/java/net/runelite/api/TileItem.java
 }

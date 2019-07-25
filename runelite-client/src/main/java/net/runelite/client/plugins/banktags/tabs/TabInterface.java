@@ -114,6 +114,7 @@ public class TabInterface
 	private static final int SCROLL_TICK = 500;
 	private static final int INCINERATOR_WIDTH = 48;
 	private static final int INCINERATOR_HEIGHT = 39;
+	private static TagTab iconToSet;
 
 	private final Client client;
 	private final ClientThread clientThread;
@@ -592,7 +593,6 @@ public class TabInterface
 			bankSearch.search(InputType.NONE, rememberedSearch, true);
 		}
 
-<<<<<<< HEAD
 		if (iconToSet != null)
 		{
 			if (event.getOption().startsWith(CHANGE_ICON + " ("))
@@ -612,8 +612,6 @@ public class TabInterface
 			iconToSet = null;
 		}
 
-=======
->>>>>>> Upstream/master
 		if (activeTab != null
 			&& event.getOption().equals("Search")
 			&& client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND).getSpriteId() != SpriteID.EQUIPMENT_SLOT_SELECTED)

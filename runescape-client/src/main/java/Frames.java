@@ -216,10 +216,10 @@ public class Frames extends DualNode {
 			ModelData0.field1871 = (var11 + var15) / 2;
 			ViewportMouse.field1745 = (var12 + var14) / 2;
 			ViewportMouse.field1746 = (var16 + var17) / 2;
-			GroundItem.field1242 = (var15 - var11) / 2;
+			TileItem.field1242 = (var15 - var11) / 2;
 			GrandExchangeEvent.field48 = (var14 - var12) / 2;
 			Canvas.field422 = (var17 - var16) / 2;
-			ScriptFrame.field527 = Math.abs(GroundItem.field1242);
+			ScriptFrame.field527 = Math.abs(TileItem.field1242);
 			ViewportMouse.field1741 = Math.abs(GrandExchangeEvent.field48);
 			MenuAction.field1160 = Math.abs(Canvas.field422);
 		}
@@ -245,9 +245,9 @@ public class Frames extends DualNode {
 		if (Math.abs(var13 * GrandExchangeEvent.field48 - var12 * Canvas.field422) > var17 * ViewportMouse.field1741 + var16 * MenuAction.field1160) {
 			return false;
 		}
-		if (Math.abs(var11 * Canvas.field422 - var13 * GroundItem.field1242) > var8 * MenuAction.field1160 + var17 * ScriptFrame.field527) {
+		if (Math.abs(var11 * Canvas.field422 - var13 * TileItem.field1242) > var8 * MenuAction.field1160 + var17 * ScriptFrame.field527) {
 			return false;
 		}
-		return Math.abs(var12 * GroundItem.field1242 - var11 * GrandExchangeEvent.field48) <= var16 * ScriptFrame.field527 + var8 * ViewportMouse.field1741;
+		return Math.abs(var12 * TileItem.field1242 - var11 * GrandExchangeEvent.field48) <= var16 * ScriptFrame.field527 + var8 * ViewportMouse.field1741;
 	}
 }

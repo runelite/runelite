@@ -24,12 +24,8 @@
  */
 package net.runelite.api.events;
 
-<<<<<<< HEAD
-import net.runelite.api.Item;
-=======
 import lombok.Value;
 import net.runelite.api.TileItem;
->>>>>>> Upstream/master
 import net.runelite.api.Tile;
 import lombok.Value;
 

@@ -47,10 +47,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 public class GraveyardRoom extends MTARoom
 {
-	private static final int MTA_GRAVEYARD_REGION = 13462;
-
 	static final int MIN_SCORE = 16;
-
+	private static final int MTA_GRAVEYARD_REGION = 13462;
 	private final Client client;
 	private final MTAPlugin plugin;
 	private final ItemManager itemManager;

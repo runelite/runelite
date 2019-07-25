@@ -3,7 +3,7 @@ package net.runelite.rs.api;
 import net.runelite.api.ItemLayer;
 import net.runelite.mapping.Import;
 
-public interface RSGroundItemPile extends ItemLayer
+public interface RSTileItemPile extends ItemLayer
 {
 	@Import("x")
 	int getX();

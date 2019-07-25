@@ -77,10 +77,7 @@ public class GroundMarkerPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
-<<<<<<< HEAD
 	private static final Pattern GROUP_MATCHER = Pattern.compile(".*ark tile \\(Group (\\d)\\)");
-=======
->>>>>>> Upstream/master
 	private static final String UNMARK = "Unmark tile";
 	private static final String WALK_HERE = "Walk here";
 	private static final String REGION_PREFIX = "region_";
@@ -302,53 +299,38 @@ public class GroundMarkerPlugin extends Plugin
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
-			int lastIndex = menuEntries.length;
-			menuEntries = Arrays.copyOf(menuEntries, lastIndex + 4);
+		int lastIndex = menuEntries.length;
+		menuEntries = Arrays.copyOf(menuEntries, lastIndex + 4);
 
-			final Tile tile = client.getSelectedSceneTile();
-			if (tile == null)
-			{
-				return;
-			}
-			final WorldPoint loc = WorldPoint.fromLocalInstance(client, tile.getLocalLocation());
-			final int regionId = loc.getRegionID();
+		final Tile tile = client.getSelectedSceneTile();
+		if (tile == null)
+		{
+			return;
+		}
+		final WorldPoint loc = WorldPoint.fromLocalInstance(client, tile.getLocalLocation());
+		final int regionId = loc.getRegionID();
 
-			for (int i = 4; i > 0; i--)
-			{
-				MenuEntry menuEntry = menuEntries[lastIndex] = new MenuEntry();
+		for (int i = 4; i > 0; i--)
+		{
+			MenuEntry menuEntry = menuEntries[lastIndex] = new MenuEntry();
 
-				final GroundMarkerPoint point = new GroundMarkerPoint(regionId, loc.getRegionX(), loc.getRegionY(), client.getPlane(), i);
-				final Optional<GroundMarkerPoint> stream = getPoints(regionId).stream().filter(x -> x.equals(point)).findAny();
-				final String option = (stream.isPresent() && stream.get().getGroup() == i) ? UNMARK : MARK;
-				menuEntry.setOption(ColorUtil.prependColorTag(Text.removeTags(option + (i == 1 ? "" : " (Group " + i + ")")), getColor(i)));
-				menuEntry.setTarget(event.getTarget());
-				menuEntry.setType(MenuAction.RUNELITE.getId());
-
-<<<<<<< HEAD
-				lastIndex++;
-			}
-=======
-			final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getSelectedSceneTile().getLocalLocation());
-			final int regionId = worldPoint.getRegionID();
-			final GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), config.markerColor());
-
-			menuEntry.setOption(getPoints(regionId).contains(point) ? UNMARK : MARK);
+			final GroundMarkerPoint point = new GroundMarkerPoint(regionId, loc.getRegionX(), loc.getRegionY(), client.getPlane(), i);
+			final Optional<GroundMarkerPoint> stream = getPoints(regionId).stream().filter(x -> x.equals(point)).findAny();
+			final String option = (stream.isPresent() && stream.get().getGroup() == i) ? UNMARK : MARK;
+			menuEntry.setOption(ColorUtil.prependColorTag(Text.removeTags(option + (i == 1 ? "" : " (Group " + i + ")")), getColor(i)));
 			menuEntry.setTarget(event.getTarget());
 			menuEntry.setType(MenuAction.RUNELITE.getId());
->>>>>>> Upstream/master
 
+			lastIndex++;
+		}
 			client.setMenuEntries(menuEntries);
 		}
 	}
 
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
-<<<<<<< HEAD
-		if (event.getMenuAction().getId() != MenuAction.RUNELITE.getId() || (!event.getOption().contains(MARK) && !event.getOption().contains(UNMARK)))
-=======
 		if (event.getMenuAction().getId() != MenuAction.RUNELITE.getId() ||
-			!(event.getMenuOption().equals(MARK) || event.getMenuOption().equals(UNMARK)))
->>>>>>> Upstream/master
+			!(event.getOption().equals(MARK) || event.getOption().equals(UNMARK)))
 		{
 			return;
 		}

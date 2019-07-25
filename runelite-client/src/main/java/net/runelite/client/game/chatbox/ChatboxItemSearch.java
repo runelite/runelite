@@ -34,7 +34,7 @@ import java.util.function.Consumer;
 import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -59,7 +59,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	private final ItemManager itemManager;
 	private final Client client;
 
-	private Map<Integer, ItemComposition> results = new LinkedHashMap<>();
+	private Map<Integer, ItemDefinition> results = new LinkedHashMap<>();
 	private String tooltipText;
 	private int index = -1;
 
@@ -121,7 +121,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 		int x = PADDING;
 		int y = PADDING * 3;
 		int idx = 0;
-		for (ItemComposition itemComposition : results.values())
+		for (ItemDefinition itemDefinition : results.values())
 		{
 			Widget item = container.createChild(-1, WidgetType.GRAPHIC);
 			item.setXPositionMode(WidgetPositionMode.ABSOLUTE_LEFT);
@@ -130,8 +130,8 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			item.setOriginalY(y + FONT_SIZE * 2);
 			item.setOriginalHeight(ICON_HEIGHT);
 			item.setOriginalWidth(ICON_WIDTH);
-			item.setName("<col=ff9040>" + itemComposition.getName());
-			item.setItemId(itemComposition.getId());
+			item.setName("<col=ff9040>" + itemDefinition.getName());
+			item.setItemId(itemDefinition.getId());
 			item.setItemQuantity(10000);
 			item.setItemQuantityMode(ItemQuantityMode.NEVER);
 			item.setBorderType(1);
@@ -152,7 +152,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			{
 				if (onItemSelected != null)
 				{
-					onItemSelected.accept(itemComposition.getId());
+					onItemSelected.accept(itemDefinition.getId());
 				}
 
 				chatboxPanelManager.close();
@@ -289,7 +289,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 
 		for (int i = 0; i < client.getItemCount() && results.size() < MAX_RESULTS; i++)
 		{
-			ItemComposition itemComposition = itemManager.getItemComposition(itemManager.canonicalize(i));
+			ItemDefinition itemComposition = itemManager.getItemDefinition(itemManager.canonicalize(i));
 			String name = itemComposition.getName();
 			// The client assigns "null" to item names of items it doesn't know about
 			if (!name.equals("null") && name.toLowerCase().contains(search))

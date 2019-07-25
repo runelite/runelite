@@ -137,7 +137,7 @@ final class class1 implements class0 {
 			}
 
 		} else {
-			GroundItem var32;
+			TileItem var32;
 			if (class185.field2321 == var0) {
 				var2 = var1.method5722();
 				var3 = (var2 >> 4 & 7) + DefaultsGroup.field3819;
@@ -146,7 +146,7 @@ final class class1 implements class0 {
 				if (var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104) {
 					NodeDeque var31 = Client.groundItems[class42.plane][var3][var4];
 					if (var31 != null) {
-						for (var32 = (GroundItem)var31.last(); var32 != null; var32 = (GroundItem)var31.previous()) {
+						for (var32 = (TileItem)var31.last(); var32 != null; var32 = (TileItem)var31.previous()) {
 							if ((var5 & 32767) == var32.id) {
 								var32.remove();
 								break;
@@ -204,7 +204,7 @@ final class class1 implements class0 {
 					if (var6 >= 0 && var7 >= 0 && var6 < 104 && var7 < 104) {
 						NodeDeque var42 = Client.groundItems[class42.plane][var6][var7];
 						if (var42 != null) {
-							for (GroundItem var34 = (GroundItem)var42.last(); var34 != null; var34 = (GroundItem)var42.previous()) {
+							for (TileItem var34 = (TileItem)var42.last(); var34 != null; var34 = (TileItem)var42.previous()) {
 								if ((var2 & 32767) == var34.id && var4 == var34.quantity) {
 									var34.quantity = var3;
 									break;
@@ -222,7 +222,7 @@ final class class1 implements class0 {
 					var5 = (var4 >> 4 & 7) + DefaultsGroup.field3819;
 					var6 = (var4 & 7) + ChatChannel.field1306;
 					if (var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
-						var32 = new GroundItem();
+						var32 = new TileItem();
 						var32.id = var3;
 						var32.quantity = var2;
 						if (Client.groundItems[class42.plane][var5][var6] == null) {

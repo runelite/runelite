@@ -33,7 +33,7 @@ import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSGroundItem;
+import net.runelite.rs.api.RSTileItem;
 import net.runelite.rs.api.RSItemContainer;
 
 @Mixin(RSItemContainer.class)
@@ -58,7 +58,7 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 
 		for (int i = 0; i < itemIds.length; ++i)
 		{
-			RSGroundItem item = client.createItem();
+			RSTileItem item = client.createItem();
 			item.setId(itemIds[i]);
 			item.setQuantity(stackSizes[i]);
 			items[i] = item;

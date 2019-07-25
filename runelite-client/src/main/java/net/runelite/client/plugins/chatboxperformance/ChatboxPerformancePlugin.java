@@ -27,25 +27,16 @@ package net.runelite.client.plugins.chatboxperformance;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
-<<<<<<< HEAD
-import net.runelite.api.events.WidgetPositioned;
-=======
 import net.runelite.api.GameState;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.widgets.WidgetType;
->>>>>>> Upstream/master
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
-<<<<<<< HEAD
 import net.runelite.api.widgets.WidgetType;
-import net.runelite.client.eventbus.EventBus;
-=======
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
->>>>>>> Upstream/master
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -60,29 +51,15 @@ public class ChatboxPerformancePlugin extends Plugin
 	private Client client;
 
 	@Inject
-<<<<<<< HEAD
+	private ClientThread clientThread;
+
+	@Inject
 	private EventBus eventBus;
 
 	@Override
-	protected void startUp() throws Exception
-	{
-		eventBus.subscribe(WidgetPositioned.class, this, this::onWidgetPositioned);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		eventBus.unregister(this);
-	}
-
-	private void onWidgetPositioned(WidgetPositioned event)
-=======
-	private ClientThread clientThread;
-
-	@Override
 	public void startUp()
->>>>>>> Upstream/master
 	{
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			clientThread.invokeLater(() -> client.runScript(ScriptID.RESET_CHATBOX_INPUT));
@@ -96,9 +73,9 @@ public class ChatboxPerformancePlugin extends Plugin
 		{
 			clientThread.invokeLater(() -> client.runScript(ScriptID.RESET_CHATBOX_INPUT));
 		}
+		eventBus.unregister(this);
 	}
 
-	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent ev)
 	{
 		if (!"chatboxBackgroundBuilt".equals(ev.getEventName()))
