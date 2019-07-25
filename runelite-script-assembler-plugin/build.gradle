@@ -8,6 +8,8 @@ dependencies {
     annotationProcessor group: 'org.eclipse.sisu', name: 'org.eclipse.sisu.inject', version: '0.3.3'
 }
 
+compileJava.outputs.upToDateWhen {false}
+
 compileJava.doLast {
     def path = sourceSets.main.runtimeClasspath
     def loader = new URLClassLoader(path.collect { f -> f.toURL() } as URL[])
