@@ -110,7 +110,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.REGICIDE));
 		add("Check the health of your Palm tree in Lletya.",
 			new SkillRequirement(Skill.FARMING, 68),
-			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_I, true));
+			new QuestRequirement(Quest.MOURNINGS_END_PART_I, true));
 		add("Claim a Chompy bird hat from Rantz after registering at least 300 kills.",
 			new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING));
 		add("Build an Isafdar painting in your POH Quest hall.",
@@ -128,7 +128,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		// ELITE
 		add("Fletch a Magic Longbow in the Elven lands.",
 			new SkillRequirement(Skill.FLETCHING, 85),
-			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_I));
+			new QuestRequirement(Quest.MOURNINGS_END_PART_I));
 		add("Kill the Thermonuclear Smoke devil (Does not require task).",
 			new SkillRequirement(Skill.SLAYER, 93));
 		add("Have Prissy Scilla protect your Magic tree.",
@@ -140,6 +140,6 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING));
 		add("Pickpocket an Elf.",
 			new SkillRequirement(Skill.THIEVING, 85),
-			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_I, true));
+			new QuestRequirement(Quest.MOURNINGS_END_PART_I, true));
 	}
 }

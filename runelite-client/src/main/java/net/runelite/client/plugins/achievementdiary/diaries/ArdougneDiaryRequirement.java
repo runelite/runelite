@@ -109,7 +109,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.LEGENDS_QUEST));
 		add("Craft some Death runes.",
 			new SkillRequirement(Skill.RUNECRAFT, 65),
-			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_II));
+			new QuestRequirement(Quest.MOURNINGS_END_PART_II));
 
 		// ELITE
 		add("Catch a Manta ray in the Fishing Trawler and cook it in Port Khazard.",
