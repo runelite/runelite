@@ -1,24 +1,45 @@
 group = 'net.runelite.rs'
 description = 'Injector'
+
+def osrsRevision = 181
+def deobfuscatedJar = "${project.rootDir}/runescape-client/build/libs/rs-client-"+project.version+".jar"
+def vanillaJar = "$buildDir/vanilla-"+osrsRevision+".jar"
+def injectedJar = "${project.rootDir}/injected-client/build/libs/injected-client-"+project.version+".jar"
+
+configurations {
+    vanilla
+}
+
 dependencies {
-  compile project(':deobfuscator')
-  compile project(':mixins')
-  compile project(':runelite-api')
-  compile project(':runescape-api')
-    compile group: 'org.apache.maven', name: 'maven-plugin-api', version:'3.6.1'
-  testCompile project(':deobfuscator')
-    testCompile group: 'junit', name: 'junit', version:'4.12'
-    testCompile group: 'org.mockito', name: 'mockito-all', version:'1.10.19'
-    compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version:'3.6.0'
+    compile project(':deobfuscator')
+    compile project(':mixins')
+    compile project(':runelite-api')
+    compile project(':runescape-api')
+    compile project(':rs-client')
+    compile project(':injected-client')
+    compile group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.6.1'
+    testCompile project(':deobfuscator')
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version: '3.6.0'
+    annotationProcessor group: 'org.eclipse.sisu', name: 'org.eclipse.sisu.inject', version: '0.3.3'
+    vanilla "net.runelite.rs:vanilla:"+osrsRevision
 }
 
-task inject(type:JavaExec) {
-  classpath = sourceSets.main.runtimeClasspath
+compileJava.outputs.upToDateWhen {false}
 
-  main = "net.runelite.injector.Injector"
-  args('../runescape-client/build/libs/rs-client-1.5.30-SNAPSHOT.jar,./vanilla-181.jar,../injected-client/build/libs/injected-client-1.5.30-SNAPSHOT.jar'.split(','))
-}
-
-compileJava.doLast {
-  tasks.inject.execute()
+compileJava.doLast() {
+    copy {
+        from configurations.vanilla
+        into "$buildDir"
+    }
+    def path = sourceSets.main.runtimeClasspath
+    def loader = new URLClassLoader(path.collect { f -> f.toURL() } as URL[])
+    def inject = loader.loadClass('net.runelite.injector.Injector')
+    String[] jarPaths = [
+            deobfuscatedJar,
+            vanillaJar,
+            injectedJar
+    ]
+    inject.main(jarPaths)
 }
