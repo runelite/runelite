@@ -143,7 +143,7 @@ public abstract class RSWidgetMixin implements RSWidget
 			// parent id potentially incorrect
 
 			// check the parent in the component table
-			HashTable<WidgetNode> componentTable = client.getComponentTable();
+			@SuppressWarnings("unchecked") HashTable<WidgetNode> componentTable = client.getComponentTable();
 			WidgetNode widgetNode = componentTable.get(parentId);
 			if (widgetNode == null || widgetNode.getId() != TO_GROUP(id))
 			{
@@ -380,7 +380,7 @@ public abstract class RSWidgetMixin implements RSWidget
 			return new Widget[0];
 		}
 
-		HashTable<WidgetNode> componentTable = client.getComponentTable();
+		@SuppressWarnings("unchecked") HashTable<WidgetNode> componentTable = client.getComponentTable();
 
 		WidgetNode wn = componentTable.get(getId());
 		if (wn == null)

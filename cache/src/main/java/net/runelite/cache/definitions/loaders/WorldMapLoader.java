@@ -36,6 +36,7 @@ import net.runelite.cache.region.Position;
 
 public class WorldMapLoader
 {
+	@SuppressWarnings("unchecked")
 	public WorldMapDefinition load(byte[] b, int fileId)
 	{
 		WorldMapDefinition def = new WorldMapDefinition();

@@ -51,6 +51,7 @@ public class DeferredEventBus extends EventBus
 		pendingEvents.add(new ImmutablePair<>(eventClass, event));
 	}
 
+	@SuppressWarnings("unchecked")
 	public void replay()
 	{
 		int size = pendingEvents.size();

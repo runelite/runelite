@@ -167,7 +167,7 @@ public class ModArith implements Deobfuscator
 
 				FieldInfo fieldInfo = getFieldInfo(fi.getMyField());
 
-				List<InstructionContext> l = getInsInExpr(ctx, new HashSet(), false);
+				@SuppressWarnings("unchecked") List<InstructionContext> l = getInsInExpr(ctx, new HashSet(), false);
 				boolean other = false; // check if this contains another field
 				boolean getter = false, setter = false;
 				for (InstructionContext i : l)
@@ -272,7 +272,7 @@ public class ModArith implements Deobfuscator
 
 				// parse the full multiplication expression to
 				// get all associated constants
-				List<InstructionContext> insInExpr = getInsInExpr(ctx, new HashSet(), true);
+				@SuppressWarnings("unchecked") List<InstructionContext> insInExpr = getInsInExpr(ctx, new HashSet(), true);
 
 				for (InstructionContext ctx2 : insInExpr)
 				{

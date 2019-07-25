@@ -67,6 +67,7 @@ public class WidgetField<T>
 		return MessageFormatter.format("{}", value).getMessage();
 	}
 
+	@SuppressWarnings("unchecked")
 	void setValue(Widget widget, Object inValue)
 	{
 		Object value = null;
