@@ -442,7 +442,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	void onVarbitChanged(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		if (client.getVar(Varbits.SLAYER_REWARD_POINTS) == cachedPoints)
 		{
@@ -556,7 +556,7 @@ public class SlayerPlugin extends Plugin
 	private static final int FORCED_WAIT = 2;
 	private int forcedWait = -1;
 
-	void onGameTick(GameTick tick)
+	public void onGameTick(GameTick tick)
 	{
 		loginTick = false;
 
@@ -637,7 +637,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	void onChatMessage(ChatMessage event)
+	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
 		{
@@ -722,7 +722,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	void onExperienceChanged(ExperienceChanged event)
+	public void onExperienceChanged(ExperienceChanged event)
 	{
 		if (event.getSkill() != SLAYER)
 		{
@@ -1005,7 +1005,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	void setTask(String name, int amt, int initAmt, boolean isNewAssignment, int lastCertainAmt)
+	public void setTask(String name, int amt, int initAmt, boolean isNewAssignment, int lastCertainAmt)
 	{
 		setTask(name, amt, initAmt, isNewAssignment, null, lastCertainAmt);
 	}
