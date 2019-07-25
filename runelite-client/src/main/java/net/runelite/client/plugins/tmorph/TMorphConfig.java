@@ -96,7 +96,6 @@ public interface TMorphConfig extends Config
 		keyName = "globalAnimSwap",
 		name = "Global Animation Swap",
 		description = "DO NOT USE WITH ANIMATION SWAP BELOW",
-
 		group = "Experimental Functions",
 		hidden = true,
 		unhide = "experimentalFunctions"
@@ -128,6 +127,45 @@ public interface TMorphConfig extends Config
 		unhide = "experimentalFunctions"
 	)
 	default int animationTarget()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "globalGraphicSwap",
+		name = "Global Graphic Swap",
+		description = "DO NOT USE WITH GRAPHIC SWAP BELOW",
+		group = "Experimental Functions",
+		hidden = true,
+		unhide = "experimentalFunctions"
+	)
+	default int globalGraphicSwap()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "graphicSwap",
+		name = "Graphic Swap",
+		description = "ID",
+		group = "Experimental Functions",
+		hidden = true,
+		unhide = "experimentalFunctions"
+	)
+	default int graphicSwap()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "graphicTarget",
+		name = "Graphic Target",
+		description = "ID",
+		group = "Experimental Functions",
+		hidden = true,
+		unhide = "experimentalFunctions"
+	)
+	default int graphicTarget()
 	{
 		return 0;
 	}
