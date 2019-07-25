@@ -78,6 +78,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 {
 	private static final String CONFIG_GROUP = "objectindicators";
 	private static final String MARK = "Mark object";
+	private static final String UNMARK = "Unmark object";
 
 	private final Gson GSON = new Gson();
 	@Getter(AccessLevel.PACKAGE)
@@ -216,10 +217,12 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
+		final Tile tile = client.getScene().getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		menuEntry.setOption(MARK);
+		menuEntry.setOption(objects.contains(findTileObject(tile, event.getIdentifier())) ? UNMARK : MARK);
 		menuEntry.setTarget(event.getTarget());
 		menuEntry.setParam0(event.getActionParam0());
 		menuEntry.setParam1(event.getActionParam1());
@@ -231,7 +234,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE || !event.getMenuOption().equals(MARK))
+		if (event.getMenuAction() != MenuAction.RUNELITE
+			|| !(event.getMenuOption().equals(MARK) || event.getMenuOption().equals(UNMARK)))
 		{
 			return;
 		}

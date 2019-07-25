@@ -48,7 +48,6 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
-import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.ItemLayer;
@@ -58,6 +57,7 @@ import net.runelite.api.Node;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
+import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
@@ -216,7 +216,7 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
-		Item item = itemSpawned.getItem();
+		TileItem item = itemSpawned.getItem();
 		Tile tile = itemSpawned.getTile();
 
 		GroundItem groundItem = buildGroundItem(tile, item);
@@ -242,7 +242,7 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		Item item = itemDespawned.getItem();
+		TileItem item = itemDespawned.getItem();
 		Tile tile = itemDespawned.getTile();
 
 		GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(item.getId(), tile.getWorldLocation());
@@ -265,7 +265,7 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
 	{
-		Item item = itemQuantityChanged.getItem();
+		TileItem item = itemQuantityChanged.getItem();
 		Tile tile = itemQuantityChanged.getTile();
 		int oldQuantity = itemQuantityChanged.getOldQuantity();
 		int newQuantity = itemQuantityChanged.getNewQuantity();
@@ -365,7 +365,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	private GroundItem buildGroundItem(final Tile tile, final Item item)
+	private GroundItem buildGroundItem(final Tile tile, final TileItem item)
 	{
 		// Collect the data for the item
 		final int itemId = item.getId();
@@ -473,9 +473,9 @@ public class GroundItemsPlugin extends Plugin
 			int quantity = 1;
 			Node current = itemLayer.getBottom();
 
-			while (current instanceof Item)
+			while (current instanceof TileItem)
 			{
-				Item item = (Item) current;
+				TileItem item = (TileItem) current;
 				if (item.getId() == itemId)
 				{
 					quantity = item.getQuantity();

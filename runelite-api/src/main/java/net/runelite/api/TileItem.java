@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
-
-import lombok.Value;
+package net.runelite.api;
 
 /**
- * An event where the position of a {@link net.runelite.api.widgets.Widget}
- * relative to its parent has changed.
+ * Represents an item inside an {@link ItemLayer}.
  */
-@Value
-public class WidgetPositioned
+public interface TileItem extends Renderable
 {
+	/**
+	 * Gets the items ID.
+	 *
+	 * @return the ID of the item
+	 * @see ItemID
+	 */
+	int getId();
+
+	/**
+	 * Gets the items quantity.
+	 *
+	 * @return the items quantity
+	 */
+	int getQuantity();
 }

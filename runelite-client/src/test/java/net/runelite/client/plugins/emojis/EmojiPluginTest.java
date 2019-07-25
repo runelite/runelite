@@ -44,6 +44,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmojiPluginTest
@@ -112,5 +114,18 @@ public class EmojiPluginTest
 		emojiPlugin.onChatMessage(chatMessage);
 
 		verify(messageNode).setRuneLiteFormatMessage("<img=10>");
+	}
+
+	@Test
+	public void testEmojiUpdateMessage()
+	{
+		String PARTY_POPPER = "<img=" + (-1 + Emoji.getEmoji("@@@").ordinal()) + '>';
+		String OPEN_MOUTH = "<img=" + (-1 + Emoji.getEmoji(":O").ordinal()) + '>';
+		assertNull(emojiPlugin.updateMessage("@@@@@"));
+		assertEquals(PARTY_POPPER, emojiPlugin.updateMessage("@@@"));
+		assertEquals(PARTY_POPPER + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("@@@ @@@"));
+		assertEquals(PARTY_POPPER + ' ' + OPEN_MOUTH, emojiPlugin.updateMessage("@@@\u00A0:O"));
+		assertEquals(PARTY_POPPER + ' ' + OPEN_MOUTH + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0:O @@@"));
+		assertEquals(PARTY_POPPER + " Hello World " + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0Hello World\u00A0@@@"));
 	}
 }

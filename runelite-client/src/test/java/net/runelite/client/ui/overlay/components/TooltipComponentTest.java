@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.ui.overlay.components;
 
-import lombok.Value;
-import net.runelite.api.TileItem;
-import net.runelite.api.Tile;
+import java.awt.FontMetrics;
+import static net.runelite.client.ui.overlay.components.TooltipComponent.calculateTextWidth;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-/**
- * Called when an item pile despawns from the ground. When the client loads a new scene,
- * all item piles are implicitly despawned, and despawn events will not be sent.
- */
-@Value
-public class ItemDespawned
+public class TooltipComponentTest
 {
-	private final Tile tile;
-	private final TileItem item;
+	@Test
+	public void testCalculateTextWidth()
+	{
+		FontMetrics fontMetics = mock(FontMetrics.class);
+		when(fontMetics.stringWidth(anyString())).thenAnswer((invocation) -> ((String) invocation.getArguments()[0]).length());
+
+		assertEquals(11, calculateTextWidth(fontMetics, "line1<col=ff0000>>line2"));
+	}
 }
