@@ -41,7 +41,9 @@ enum AlwaysLostItem
 {
 	RUNE_POUCH(ItemID.RUNE_POUCH, true),
 	LOOTING_BAG(ItemID.LOOTING_BAG, false),
-	CLUE_BOX(ItemID.CLUE_BOX, false);
+	CLUE_BOX(ItemID.CLUE_BOX, false),
+	BRACELET_OF_ETHEREUM(ItemID.BRACELET_OF_ETHEREUM, false),
+	BRACELET_OF_ETHEREUM_UNCHARGED(ItemID.BRACELET_OF_ETHEREUM_UNCHARGED, false);
 
 	private final int itemID;
 	private final boolean keptOutsideOfWilderness;

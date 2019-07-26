@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
@@ -346,6 +347,7 @@ public interface Client extends GameEngine
 	 * @return the corresponding item composition
 	 * @see ItemID
 	 */
+	@Nonnull
 	ItemComposition getItemDefinition(int id);
 
 	/**
@@ -360,6 +362,7 @@ public interface Client extends GameEngine
 	 * @param scale the scale of the sprite
 	 * @return the created sprite
 	 */
+	@Nullable
 	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
 
 	/**
@@ -370,6 +373,7 @@ public interface Client extends GameEngine
 	 * @param fileId the sprites file ID
 	 * @return the sprite image of the file
 	 */
+	@Nullable
 	SpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId);
 
 	/**
@@ -1642,4 +1646,9 @@ public interface Client extends GameEngine
 	void draw2010Menu();
 
 	void resetHealthBarCaches();
+
+	/**
+	 * Returns the max item index + 1 from cache
+	 */
+	int getItemCount();
 }

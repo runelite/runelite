@@ -55,6 +55,7 @@ import net.runelite.client.util.ImageUtil;
 public class EmojiPlugin extends Plugin
 {
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
+	private static final Pattern WHITESPACE_REGEXP = Pattern.compile("[\\s\\u00A0]");
 
 	@Inject
 	private Client client;
@@ -166,9 +167,9 @@ public class EmojiPlugin extends Plugin
 	}
 
 	@Nullable
-	private String updateMessage(final String message)
+	String updateMessage(final String message)
 	{
-		final String[] messageWords = message.split(" ");
+		final String[] messageWords = WHITESPACE_REGEXP.split(message);
 
 		boolean editedMessage = false;
 		for (int i = 0; i < messageWords.length; i++)

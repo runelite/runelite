@@ -33,8 +33,8 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
+import net.runelite.api.TileItem;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
@@ -118,7 +118,7 @@ public class GameEventManager
 
 				if (itemContainer != null)
 				{
-					eventBus.post(new ItemContainerChanged(itemContainer));
+					eventBus.post(new ItemContainerChanged(inventory.getId(), itemContainer));
 				}
 			}
 
@@ -180,9 +180,9 @@ public class GameEventManager
 				{
 					Node current = itemLayer.getBottom();
 
-					while (current instanceof Item)
+					while (current instanceof TileItem)
 					{
-						final Item item = (Item) current;
+						final TileItem item = (TileItem) current;
 
 						current = current.getNext();
 

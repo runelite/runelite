@@ -94,6 +94,17 @@ public interface XpTrackerConfig extends Config
 
 	@ConfigItem(
 		position = 4,
+		keyName = "skillTabOverlayMenuOptions",
+		name = "Add skill tab canvas menu option",
+		description = "Configures whether a menu option to show/hide canvas XP trackers will be added to skills on the skill tab"
+	)
+	default boolean skillTabOverlayMenuOptions()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "onScreenDisplayMode",
 		name = "On-screen tracker display mode (top)",
 		description = "Configures the information displayed in the first line of on-screen XP overlays"
@@ -104,7 +115,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 6,
 		keyName = "onScreenDisplayModeBottom",
 		name = "On-screen tracker display mode (bottom)",
 		description = "Configures the information displayed in the second line of on-screen XP overlays"

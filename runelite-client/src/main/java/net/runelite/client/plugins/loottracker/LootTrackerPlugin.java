@@ -51,6 +51,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
@@ -60,6 +61,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -103,6 +105,11 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HERBIBOAR_LOOTED_MESSAGE = "You harvest herbs from the herbiboar, whereupon it escapes.";
 	private static final String HERBIBOR_EVENT = "Herbiboar";
 
+	// Hespori loot handling
+	private static final String HESPORI_LOOTED_MESSAGE = "You have successfully cleared this patch for new crops.";
+	private static final String HESPORI_EVENT = "Hespori";
+	private static final int HESPORI_REGION = 5021;
+
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
@@ -140,6 +147,7 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
+	private boolean chestLooted;
 
 	private List<String> ignoredItems = new ArrayList<>();
 
@@ -282,6 +290,16 @@ public class LootTrackerPlugin extends Plugin
 	{
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient = null;
+		chestLooted = false;
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOADING)
+		{
+			chestLooted = false;
+		}
 	}
 
 	@Subscribe
@@ -329,10 +347,19 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.BARROWS_REWARD);
 				break;
 			case (WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID):
+				if (chestLooted)
+				{
+					return;
+				}
 				eventType = "Chambers of Xeric";
 				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
+				chestLooted = true;
 				break;
 			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
+				if (chestLooted)
+				{
+					return;
+				}
 				int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
 				if (region != THEATRE_OF_BLOOD_REGION)
 				{
@@ -340,6 +367,7 @@ public class LootTrackerPlugin extends Plugin
 				}
 				eventType = "Theatre of Blood";
 				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
+				chestLooted = true;
 				break;
 			case (WidgetID.CLUE_SCROLL_REWARD_GROUP_ID):
 				// event type should be set via ChatMessage for clue scrolls.
@@ -409,6 +437,12 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		if (HESPORI_REGION == client.getLocalPlayer().getWorldLocation().getRegionID() && message.equals(HESPORI_LOOTED_MESSAGE))
+		{
+			eventType = HESPORI_EVENT;
+			takeInventorySnapshot();
+		}
+
 		// Check if message is for a clue scroll reward
 		final Matcher m = CLUE_SCROLL_PATTERN.matcher(Text.removeTags(message));
 		if (m.find())
@@ -441,7 +475,7 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOR_EVENT.equals(eventType)))
+		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOR_EVENT.equals(eventType) || HESPORI_EVENT.equals(eventType)))
 		{
 			if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 			{

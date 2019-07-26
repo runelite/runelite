@@ -88,7 +88,7 @@ public class FrameDumper
 
 					int framemapArchiveId = (contents[0] & 0xff) << 8 | contents[1] & 0xff;
 
-					Archive framemapArchive = framemapIndex.getArchives().get(framemapArchiveId);
+					Archive framemapArchive = framemapIndex.getArchive(framemapArchiveId);
 					archiveData = storage.loadArchive(framemapArchive);
 					byte[] framemapContents = framemapArchive.decompress(archiveData);
 
