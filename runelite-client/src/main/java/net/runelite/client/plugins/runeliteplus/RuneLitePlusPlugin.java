@@ -81,15 +81,8 @@ public class RuneLitePlusPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		addSubscriptions();
-
-		if (config.customPresence())
-		{
-			ClientUI.currentPresenceName = ("RuneLitePlus");
-			ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-		}
-
-		discordService.close();
-		discordService.init();
+		ClientUI.currentPresenceName = ("RuneLitePlus");
+		ClientUI.frame.setTitle(ClientUI.currentPresenceName);
 
 		entered = -1;
 		enterIdx = 0;
@@ -112,24 +105,6 @@ public class RuneLitePlusPlugin extends Plugin
 		if (!event.getGroup().equals("runeliteplus"))
 		{
 			return;
-		}
-
-		if (event.getKey().equals("customPresence"))
-		{
-			if (config.customPresence())
-			{
-				ClientUI.currentPresenceName = ("RuneLitePlus");
-				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-				discordService.close();
-				discordService.init();
-			}
-			else
-			{
-				ClientUI.currentPresenceName = ("RuneLite");
-				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-				discordService.close();
-				discordService.init();
-			}
 		}
 
 		else if (!config.keyboardPin())
