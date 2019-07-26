@@ -1091,6 +1091,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						}
 					}
 					break;
+				case "crystal impling jar":
 				case "dragon impling jar":
 					if (client.getItemContainer(InventoryID.INVENTORY) != null)
 					{
