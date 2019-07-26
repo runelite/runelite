@@ -59,6 +59,8 @@ class LootTrackerBox extends JPanel
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
+	private final JPanel logTitle = new JPanel(new BorderLayout(5, 0));
+	private final JLabel titleLabel = new JLabel();
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
@@ -85,11 +87,10 @@ class LootTrackerBox extends JPanel
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
 
-		final JPanel logTitle = new JPanel(new BorderLayout(5, 0));
 		logTitle.setBorder(new EmptyBorder(7, 7, 7, 7));
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
-		final JLabel titleLabel = new JLabel(Text.removeTags(id));
+		titleLabel.setText(Text.removeTags(id));
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
 		titleLabel.setForeground(Color.WHITE);
 
@@ -182,9 +183,58 @@ class LootTrackerBox extends JPanel
 		repaint();
 	}
 
-	void collapse(boolean isCollapsing)
+	void collapse()
 	{
-		itemContainer.setVisible(!isCollapsing);
+		if (itemContainer.isVisible())
+		{
+			itemContainer.setVisible(false);
+			makeDarker(logTitle);
+			makeDarker(titleLabel);
+			makeDarker(priceLabel);
+			makeDarker(subTitleLabel);
+		}
+	}
+
+	void expand()
+	{
+		if (!itemContainer.isVisible())
+		{
+			itemContainer.setVisible(true);
+			makeBrighter(logTitle);
+			makeBrighter(titleLabel);
+			makeBrighter(priceLabel);
+			makeBrighter(subTitleLabel);
+		}
+	}
+
+	private Color darker(Color color)
+	{
+		return color.darker().darker();
+	}
+
+	private void makeDarker(JLabel label)
+	{
+		label.setForeground(darker(label.getForeground()));
+	}
+
+	private void makeDarker(JPanel panel)
+	{
+		panel.setBackground(darker(panel.getBackground()));
+	}
+
+	private Color brighter(Color color)
+	{
+		return color.brighter().brighter();
+	}
+
+	private void makeBrighter(JLabel label)
+	{
+		label.setForeground(brighter(label.getForeground()));
+	}
+
+	private void makeBrighter(JPanel panel)
+	{
+		panel.setBackground(brighter(panel.getBackground()));
 	}
 
 	boolean isCollapsed()

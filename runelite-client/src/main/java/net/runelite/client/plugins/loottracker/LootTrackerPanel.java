@@ -38,7 +38,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -57,6 +56,7 @@ import net.runelite.http.api.loottracker.LootTrackerClient;
 class LootTrackerPanel extends PluginPanel
 {
 	private static final int MAX_LOOT_BOXES = 500;
+	private static final float NINETY_DEGREES_IN_RADIANS = 1.5708f;
 
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
@@ -70,6 +70,8 @@ class LootTrackerPanel extends PluginPanel
 	private static final ImageIcon VISIBLE_ICON_HOVER;
 	private static final ImageIcon INVISIBLE_ICON;
 	private static final ImageIcon INVISIBLE_ICON_HOVER;
+	private static final ImageIcon COLLAPSE_ICON;
+	private static final ImageIcon EXPAND_ICON;
 
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -85,7 +87,6 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel overallKillsLabel = new JLabel();
 	private final JLabel overallGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
-	private final JButton collapseAllBtn = new JButton("Collapse All");
 
 	// Details and navigation
 	private final JPanel actionsContainer = new JPanel();
@@ -94,6 +95,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel viewHiddenBtn = new JLabel();
 	private final JLabel singleLootBtn = new JLabel();
 	private final JLabel groupedLootBtn = new JLabel();
+	private final JLabel collapseBtn = new JLabel();
 
 	// Log collection
 	private final List<LootTrackerRecord> records = new ArrayList<>();
@@ -114,6 +116,8 @@ class LootTrackerPanel extends PluginPanel
 		final BufferedImage backArrowImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "back_icon.png");
 		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "visible_icon.png");
 		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "invisible_icon.png");
+		final BufferedImage collapseImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "collapsed.png");
+		final BufferedImage expandedImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "expanded.png");
 
 		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
 		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -180));
@@ -131,6 +135,9 @@ class LootTrackerPanel extends PluginPanel
 
 		INVISIBLE_ICON = new ImageIcon(invisibleImg);
 		INVISIBLE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -220));
+
+		COLLAPSE_ICON = new ImageIcon(collapseImg);
+		EXPAND_ICON = new ImageIcon(expandedImg);
 	}
 
 	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config)
@@ -157,6 +164,16 @@ class LootTrackerPanel extends PluginPanel
 
 		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
 		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		collapseBtn.setIcon(EXPAND_ICON);
+		collapseBtn.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				changeCollapse();
+			}
+		});
 
 		singleLootBtn.setIcon(SINGLE_LOOT_VIEW);
 		singleLootBtn.setToolTipText("Show each kill separately");
@@ -227,6 +244,7 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
+		viewControls.add(collapseBtn);
 		viewControls.add(groupedLootBtn);
 		viewControls.add(singleLootBtn);
 		viewControls.add(viewHiddenBtn);
@@ -267,8 +285,8 @@ class LootTrackerPanel extends PluginPanel
 		leftTitleContainer.add(backBtn, BorderLayout.WEST);
 		leftTitleContainer.add(detailsTitle, BorderLayout.CENTER);
 
-		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
 		actionsContainer.add(viewControls, BorderLayout.EAST);
+		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
 
 		// Create panel that will contain overall data
 		overallPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -290,25 +308,6 @@ class LootTrackerPanel extends PluginPanel
 		overallInfo.add(overallGpLabel);
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
-
-		collapseAllBtn.addActionListener(e ->
-		{
-			boolean isAllCollapsed = isAllCollapsed();
-			for (LootTrackerBox box : boxes)
-			{
-				if (isAllCollapsed)
-				{
-					box.collapse(false);
-				}
-				else if (!box.isCollapsed())
-				{
-					box.collapse(true);
-				}
-			}
-			updateCollapseText();
-		});
-		collapseAllBtn.setFocusPainted(false);
-		overallPanel.add(collapseAllBtn, BorderLayout.SOUTH);
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
@@ -350,11 +349,13 @@ class LootTrackerPanel extends PluginPanel
 	{
 		if (isAllCollapsed())
 		{
-			collapseAllBtn.setText("Un-Collapse All");
+			collapseBtn.setToolTipText("Un-Collapse All");
+			collapseBtn.setIcon(COLLAPSE_ICON);
 		}
 		else
 		{
-			collapseAllBtn.setText("Collapse All");
+			collapseBtn.setToolTipText("Collapse All");
+			collapseBtn.setIcon(EXPAND_ICON);
 		}
 	}
 
@@ -420,6 +421,28 @@ class LootTrackerPanel extends PluginPanel
 		hideIgnoredItems = hide;
 		rebuild();
 		viewHiddenBtn.setIcon(hideIgnoredItems ? VISIBLE_ICON : INVISIBLE_ICON);
+	}
+
+	/**
+	 * Changes the collapse status of loot entries
+	 */
+	private void changeCollapse()
+	{
+		boolean isAllCollapsed = isAllCollapsed();
+
+		for (LootTrackerBox box : boxes)
+		{
+			if (isAllCollapsed)
+			{
+				box.expand();
+			}
+			else if (!box.isCollapsed())
+			{
+				box.collapse();
+			}
+		}
+
+		updateCollapseText();
 	}
 
 	/**
@@ -512,7 +535,14 @@ class LootTrackerPanel extends PluginPanel
 			{
 				if (e.getButton() == MouseEvent.BUTTON1)
 				{
-					box.collapse(!box.isCollapsed());
+					if (box.isCollapsed())
+					{
+						box.expand();
+					}
+					else
+					{
+						box.collapse();
+					}
 					updateCollapseText();
 				}
 			}
