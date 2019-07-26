@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client;
 
-package net.runelite.client.rs;
-
-import java.io.IOException;
-import org.junit.Test;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import net.runelite.client.ui.FontManager;
 
 /**
- *
- * @author Adam
+ * Loads some slow to initialize classes (hopefully) before they are needed to streamline client startup
  */
-public class ClientConfigLoaderTest
+@SuppressWarnings({"ResultOfMethodCallIgnored", "unused"})
+class ClassPreloader
 {
-	@Test
-	public void test() throws IOException
+	static void preload()
 	{
-		final RSConfig config = ClientConfigLoader.fetch();
+		// This needs to enumerate the system fonts for some reason, and that takes a while
+		FontManager.getRunescapeSmallFont();
 
-		for (String key : config.getClassLoaderProperties().keySet())
-		{
-			System.out.println(key + ": " + config.getClassLoaderProperties().get(key));
-		}
+		// This needs to load a timezone database that is mildly large
+		ZoneId.of("Europe/London");
 
-		System.out.println("Applet properties:");
-
-		for (String key : config.getAppletProperties().keySet())
-		{
-			System.out.println(key + ": " + config.getAppletProperties().get(key));
-		}
+		// This just needs to call 20 different DateTimeFormatter constructors, which are slow
+		Object unused = DateTimeFormatter.BASIC_ISO_DATE;
 	}
-
 }
