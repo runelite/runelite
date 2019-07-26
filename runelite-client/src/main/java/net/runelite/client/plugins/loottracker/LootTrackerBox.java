@@ -28,6 +28,7 @@ package net.runelite.client.plugins.loottracker;
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -188,10 +189,7 @@ class LootTrackerBox extends JPanel
 		if (!isCollapsed())
 		{
 			itemContainer.setVisible(false);
-			makeDarker(logTitle);
-			makeDarker(titleLabel);
-			makeDarker(priceLabel);
-			makeDarker(subTitleLabel);
+			applyDimmer(false, logTitle);
 		}
 	}
 
@@ -200,10 +198,7 @@ class LootTrackerBox extends JPanel
 		if (isCollapsed())
 		{
 			itemContainer.setVisible(true);
-			makeBrighter(logTitle);
-			makeBrighter(titleLabel);
-			makeBrighter(priceLabel);
-			makeBrighter(subTitleLabel);
+			applyDimmer(true, logTitle);
 		}
 	}
 
@@ -212,34 +207,23 @@ class LootTrackerBox extends JPanel
 		return itemContainer.isVisible() == false;
 	}
 
-	private void makeDarker(JLabel label)
+	private void applyDimmer(boolean brighten, JPanel panel)
 	{
-		label.setForeground(darker(label.getForeground()));
-	}
+		for (Component component : panel.getComponents())
+		{
+			Color color = component.getForeground();
 
-	private void makeDarker(JPanel panel)
-	{
-		panel.setBackground(darker(panel.getBackground()));
-	}
+			if (brighten)
+			{
+				color = color.brighter();
+			}
+			else
+			{
+				color = color.darker();
+			}
 
-	private Color darker(Color color)
-	{
-		return color.darker();
-	}
-
-	private void makeBrighter(JLabel label)
-	{
-		label.setForeground(brighter(label.getForeground()));
-	}
-
-	private void makeBrighter(JPanel panel)
-	{
-		panel.setBackground(brighter(panel.getBackground()));
-	}
-
-	private Color brighter(Color color)
-	{
-		return color.brighter();
+			component.setForeground(color);
+		}
 	}
 
 	/**
