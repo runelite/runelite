@@ -37,7 +37,6 @@ import net.runelite.api.HeadIcon;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.Prayer;
-import net.runelite.api.Projectile;
 import net.runelite.api.ProjectileID;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.NpcDespawned;
@@ -62,7 +61,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class GauntletPlugin extends Plugin
 {
 
-	private static final Set<Integer> HUNLEFF_ATTACKS = ImmutableSet.of(AnimationID.HUNLEFF_ATTACK, AnimationID.HUNLEFF_TORNADO);
+	private static final Set<Integer> HUNLEFF_ANIMATIONS = ImmutableSet.of(AnimationID.HUNLEFF_ATTACK, AnimationID.HUNLEFF_TORNADO);
+	private static final Set<Integer> HUNLEFF_MAGE_PROJECTILES = ImmutableSet.of(ProjectileID.HUNLEFF_MAGE_ATTACK, ProjectileID.HUNLEFF_CORRUPTED_MAGE_ATTACK);
+	private static final Set<Integer> HUNLEFF_RANGE_PROJECTILES = ImmutableSet.of(ProjectileID.HUNLEFF_RANGE_ATTACK, ProjectileID.HUNLEFF_CORRUPTED_RANGE_ATTACK);
 	@Inject
 	private EventBus eventBus;
 	@Inject
@@ -140,14 +141,14 @@ public class GauntletPlugin extends Plugin
 			return;
 		}
 
-		final Projectile projectile = event.getProjectile();
+		final int projectileID = event.getProjectile().getId();
 
-		if (projectile.getId() == ProjectileID.HUNLEFF_MAGE_ATTACK)
+		if (HUNLEFF_MAGE_PROJECTILES.contains(projectileID))
 		{
 			setNextPrayer(Prayer.PROTECT_FROM_MAGIC);
 			setFirstHitDetected(true);
 		}
-		else if (projectile.getId() == ProjectileID.HUNLEFF_RANGE_ATTACK)
+		else if (HUNLEFF_RANGE_PROJECTILES.contains(projectileID))
 		{
 			setNextPrayer(Prayer.PROTECT_FROM_MISSILES);
 			setFirstHitDetected(true);
@@ -163,7 +164,7 @@ public class GauntletPlugin extends Plugin
 
 		final int anim = event.getActor().getAnimation();
 
-		if (!HUNLEFF_ATTACKS.contains(anim))
+		if (!HUNLEFF_ANIMATIONS.contains(anim))
 		{
 			return;
 		}
