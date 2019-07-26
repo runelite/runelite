@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemstats.Builders.*;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
+import net.runelite.client.plugins.itemstats.potions.GauntletPotion;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
 import net.runelite.client.plugins.itemstats.potions.SuperRestore;
@@ -197,6 +198,10 @@ public class ItemStatChanges
 		add(new SpicyStew(), SPICY_STEW);
 		add(boost(MAGIC, perc(.10, 1)), IMBUED_HEART);
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(DEFENCE, -1)), JANGERBERRIES);
+
+		// Gauntlet items
+		add(heal(HITPOINTS, 20), PADDLEFISH);
+		add(new GauntletPotion(), EGNIOL_POTION_1, EGNIOL_POTION_2, EGNIOL_POTION_3, EGNIOL_POTION_4);
 
 		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet<>(effects.values()).size());
 	}
