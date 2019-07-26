@@ -101,4 +101,7 @@ public class ProjectileID
 	public static final int HYDRA_LIGHTNING = 1664;
 	public static final int HYDRA_LIGHTNING_2 = 1665;
 	public static final int DRAKE_BREATH = 1637;
+
+	public static final int HUNLEFF_MAGE_ATTACK = 1707;
+	public static final int HUNLEFF_RANGE_ATTACK = 1711;
 }
