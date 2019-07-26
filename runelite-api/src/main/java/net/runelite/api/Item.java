@@ -26,9 +26,9 @@ package net.runelite.api;
 
 public interface Item
 {
-	int id = -1;
-	int quantity = -1;
-
 	int getId();
 	int getQuantity();
+
+	void setId(int id);
+	void setQuantity(int quantity);
 }
