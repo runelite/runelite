@@ -37,8 +37,11 @@ import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SkullIcon;
+import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.game.ClanManager;
+import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.friendtagging.FriendTaggingPlugin;
 import net.runelite.client.ui.overlay.Overlay;
@@ -47,6 +50,9 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.PvPUtil;
+import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.http.api.hiscore.HiscoreSkill;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import static net.runelite.client.util.StackFormatter.formatNumber;
 import net.runelite.client.util.Text;
 
@@ -58,7 +64,12 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final ClanManager clanManager;
+	private final HiscoreManager hiscoreManager;
 	private final PlayerIndicatorsPlugin plugin;
+	private final BufferedImage agilityIcon = ImageUtil.getResourceStreamFromClass(PlayerIndicatorsPlugin.class,
+		"agility.png");
+	private final BufferedImage noAgilityIcon = ImageUtil.getResourceStreamFromClass(PlayerIndicatorsPlugin.class,
+		"no-agility.png");
 	private final BufferedImage skullIcon = ImageUtil.getResourceStreamFromClass(PlayerIndicatorsPlugin.class,
 		"skull.png");
 	@Inject
@@ -70,11 +81,12 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	@Inject
 	private PlayerIndicatorsOverlay(final PlayerIndicatorsPlugin plugin, final PlayerIndicatorsService playerIndicatorsService,
-									final ClanManager clanManager)
+									final ClanManager clanManager, final HiscoreManager hiscoreManager)
 	{
 		this.plugin = plugin;
 		this.playerIndicatorsService = playerIndicatorsService;
 		this.clanManager = clanManager;
+		this.hiscoreManager = hiscoreManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
 	}
@@ -174,10 +186,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 		}
 		if (plugin.isShowCombatLevel())
 		{
-
-			OverlayUtil.renderTextLocation(graphics, textLocation, name + " (" + actor.getCombatLevel() + ")",
-				color);
-
+			name += " (" + actor.getCombatLevel() + ")";
 		}
 		if (plugin.isTargetRisk() && PvPUtil.isAttackable(client, actor) && actor.getPlayerAppearance() != null)
 		{
@@ -232,6 +241,58 @@ public class PlayerIndicatorsOverlay extends Overlay
 					textLocation.getY());
 			}
 		}
+
+		if (plugin.isShowAgilityLevel() && checkWildy())
+		{
+			final HiscoreResult hiscoreResult = hiscoreManager.lookupAsync(actor.getName(), HiscoreEndpoint.NORMAL);
+			if (hiscoreResult != null)
+			{
+				int level = hiscoreResult.getSkill(HiscoreSkill.AGILITY).getLevel();
+				if (plugin.getAgilityFormat() == PlayerIndicatorsPlugin.AgilityFormats.ICONS)
+				{
+					int width = graphics.getFontMetrics().stringWidth(name);
+					int height = graphics.getFontMetrics().getHeight();
+					if (level >= plugin.getAgilityFirstThreshold())
+					{
+						OverlayUtil.renderImageLocation(graphics,
+							new Point(textLocation.getX() + 5 + width,
+								textLocation.getY() - height),
+							ImageUtil.resizeImage(agilityIcon, height, height));
+					}
+					if (level >= plugin.getAgilitySecondThreshold())
+					{
+						OverlayUtil.renderImageLocation(graphics,
+							new Point(textLocation.getX() + agilityIcon.getWidth() + width,
+								textLocation.getY() - height),
+							ImageUtil.resizeImage(agilityIcon, height, height));
+					}
+					if (level < plugin.getAgilityFirstThreshold())
+					{
+						OverlayUtil.renderImageLocation(graphics,
+							new Point(textLocation.getX() + 5 + width,
+								textLocation.getY() - height),
+							ImageUtil.resizeImage(noAgilityIcon, height, height));
+					}
+				}
+				else
+				{
+					name += " " + level;
+
+					int width = graphics.getFontMetrics().stringWidth(name);
+					int height = graphics.getFontMetrics().getHeight();
+					OverlayUtil.renderImageLocation(graphics,
+						new Point(textLocation.getX() + 5 + width,
+							textLocation.getY() - height),
+						ImageUtil.resizeImage(agilityIcon, height, height));
+				}
+			}
+		}
+
 		OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+	}
+
+	private boolean checkWildy()
+	{
+		return client.getVar(Varbits.IN_WILDERNESS) == 1 || WorldType.isAllPvpWorld(client.getWorldType());
 	}
 }
