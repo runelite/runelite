@@ -209,7 +209,7 @@ class LootTrackerBox extends JPanel
 
 	private Color darker(Color color)
 	{
-		return color.darker().darker();
+		return color.darker();
 	}
 
 	private void makeDarker(JLabel label)
@@ -224,7 +224,7 @@ class LootTrackerBox extends JPanel
 
 	private Color brighter(Color color)
 	{
-		return color.brighter().brighter();
+		return color.brighter();
 	}
 
 	private void makeBrighter(JLabel label)
