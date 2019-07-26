@@ -58,7 +58,7 @@ public abstract class RouteStrategy {
 		class197.FloorUnderlayDefinition_clearCached();
 		FloorUnderlayDefinition.FloorUnderlayDefinition_cached.clear();
 		KitDefinition.KitDefinition_cached.clear();
-		GroundItemPile.ObjectDefinition_clearCached();
+		TileItemPile.ObjectDefinition_clearCached();
 		AbstractWorldMapIcon.NpcDefinition_clearCached();
 		ItemDefinition.ItemDefinition_cached.clear();
 		ItemDefinition.ItemDefinition_cachedModels.clear();

@@ -24,16 +24,18 @@
  */
 package net.runelite.mixins;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.CollisionData;
 import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GroundObject;
-import net.runelite.api.Item;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.Node;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
+import net.runelite.api.TileItem;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -51,8 +53,6 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -62,12 +62,12 @@ import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSEntity;
 import net.runelite.rs.api.RSGameObject;
 import net.runelite.rs.api.RSGraphicsObject;
-import net.runelite.rs.api.RSGroundItem;
-import net.runelite.rs.api.RSGroundItemPile;
+import net.runelite.rs.api.RSTileItemPile;
 import net.runelite.rs.api.RSNode;
 import net.runelite.rs.api.RSNodeDeque;
 import net.runelite.rs.api.RSProjectile;
 import net.runelite.rs.api.RSTile;
+import net.runelite.rs.api.RSTileItem;
 import org.slf4j.Logger;
 
 @Mixin(RSTile.class)
@@ -113,6 +113,142 @@ public abstract class RSTileMixin implements RSTile
 	public LocalPoint getLocalLocation()
 	{
 		return LocalPoint.fromScene(getX(), getY());
+	}
+
+	@Inject
+	@Override
+	public boolean hasLineOfSightTo(Tile other)
+	{
+		// Thanks to Henke for this method :)
+
+		if (this.getPlane() != other.getPlane())
+		{
+			return false;
+		}
+
+		CollisionData[] collisionData = client.getCollisionMaps();
+		if (collisionData == null)
+		{
+			return false;
+		}
+
+		int z = this.getPlane();
+		int[][] collisionDataFlags = collisionData[z].getFlags();
+
+		Point p1 = this.getSceneLocation();
+		Point p2 = other.getSceneLocation();
+		if (p1.getX() == p2.getX() && p1.getY() == p2.getY())
+		{
+			return true;
+		}
+
+		int dx = p2.getX() - p1.getX();
+		int dy = p2.getY() - p1.getY();
+		int dxAbs = Math.abs(dx);
+		int dyAbs = Math.abs(dy);
+
+		int xFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
+		int yFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
+		if (dx < 0)
+		{
+			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_EAST;
+		}
+		else
+		{
+			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_WEST;
+		}
+		if (dy < 0)
+		{
+			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_NORTH;
+		}
+		else
+		{
+			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_SOUTH;
+		}
+
+		if (dxAbs > dyAbs)
+		{
+			int x = p1.getX();
+			int yBig = p1.getY() << 16; // The y position is represented as a bigger number to handle rounding
+			int slope = (dy << 16) / dxAbs;
+			yBig += 0x8000; // Add half of a tile
+			if (dy < 0)
+			{
+				yBig--; // For correct rounding
+			}
+			int direction = dx < 0 ? -1 : 1;
+
+			while (x != p2.getX())
+			{
+				x += direction;
+				int y = yBig >>> 16;
+				if ((collisionDataFlags[x][y] & xFlags) != 0)
+				{
+					// Collision while traveling on the x axis
+					return false;
+				}
+				yBig += slope;
+				int nextY = yBig >>> 16;
+				if (nextY != y && (collisionDataFlags[x][nextY] & yFlags) != 0)
+				{
+					// Collision while traveling on the y axis
+					return false;
+				}
+			}
+		}
+		else
+		{
+			int y = p1.getY();
+			int xBig = p1.getX() << 16; // The x position is represented as a bigger number to handle rounding
+			int slope = (dx << 16) / dyAbs;
+			xBig += 0x8000; // Add half of a tile
+			if (dx < 0)
+			{
+				xBig--; // For correct rounding
+			}
+			int direction = dy < 0 ? -1 : 1;
+
+			while (y != p2.getY())
+			{
+				y += direction;
+				int x = xBig >>> 16;
+				if ((collisionDataFlags[x][y] & yFlags) != 0)
+				{
+					// Collision while traveling on the y axis
+					return false;
+				}
+				xBig += slope;
+				int nextX = xBig >>> 16;
+				if (nextX != x && (collisionDataFlags[nextX][y] & xFlags) != 0)
+				{
+					// Collision while traveling on the x axis
+					return false;
+				}
+			}
+		}
+
+		// No collision
+		return true;
+	}
+
+	@Inject
+	@Override
+	public List<TileItem> getGroundItems()
+	{
+		ItemLayer layer = this.getItemLayer();
+		if (layer == null)
+		{
+			return null;
+		}
+
+		List<TileItem> result = new ArrayList<TileItem>();
+		Node node = layer.getBottom();
+		while (node instanceof TileItem)
+		{
+			result.add((TileItem) node);
+			node = node.getNext();
+		}
+		return result;
 	}
 
 	@FieldHook("boundaryObject")
@@ -318,7 +454,7 @@ public abstract class RSTileMixin implements RSTile
 		}
 	}
 
-	@FieldHook("groundItemPile")
+	@FieldHook("tileItemPile")
 	@Inject
 	public void itemLayerChanged(int idx)
 	{
@@ -338,7 +474,7 @@ public abstract class RSTileMixin implements RSTile
 				RSNode head = oldQueue.getHead();
 				for (RSNode cur = head.getNext(); cur != head; cur = cur.getNext())
 				{
-					RSGroundItem item = (RSGroundItem) cur;
+					RSTileItem item = (RSTileItem) cur;
 					ItemDespawned itemDespawned = new ItemDespawned(this, item);
 					client.getCallbacks().post(ItemDespawned.class, itemDespawned);
 				}
@@ -346,13 +482,13 @@ public abstract class RSTileMixin implements RSTile
 			lastGroundItems[z][x][y] = newQueue;
 		}
 
-		RSGroundItem lastUnlink = client.getLastItemDespawn();
+		RSTileItem lastUnlink = client.getLastItemDespawn();
 		if (lastUnlink != null)
 		{
 			client.setLastItemDespawn(null);
 		}
 
-		RSGroundItemPile itemLayer = (RSGroundItemPile) getItemLayer();
+		RSTileItemPile itemLayer = (RSTileItemPile) getItemLayer();
 		if (itemLayer == null)
 		{
 			if (lastUnlink != null)
@@ -382,7 +518,7 @@ public abstract class RSTileMixin implements RSTile
 		boolean forward = false;
 		if (head != previous)
 		{
-			RSGroundItem prev = (RSGroundItem) previous;
+			RSTileItem prev = (RSTileItem) previous;
 			if (x != prev.getX() || y != prev.getY())
 			{
 				current = prev;
@@ -392,7 +528,7 @@ public abstract class RSTileMixin implements RSTile
 		RSNode next = head.getNext();
 		if (current == null && head != next)
 		{
-			RSGroundItem n = (RSGroundItem) next;
+			RSTileItem n = (RSTileItem) next;
 			if (x != n.getX() || y != n.getY())
 			{
 				current = n;
@@ -413,7 +549,7 @@ public abstract class RSTileMixin implements RSTile
 
 		do
 		{
-			RSGroundItem item = (RSGroundItem) current;
+			RSTileItem item = (RSTileItem) current;
 			item.setX(x);
 			item.setY(y);
 
@@ -424,142 +560,6 @@ public abstract class RSTileMixin implements RSTile
 
 			// Send spawn events for anything on this tile which is at the wrong location, which happens
 			// when the scene base changes
-		} while (current != head && (((RSGroundItem) current).getX() != x || ((RSGroundItem) current).getY() != y));
-	}
-
-	@Inject
-	@Override
-	public boolean hasLineOfSightTo(Tile other)
-	{
-		// Thanks to Henke for this method :)
-
-		if (this.getPlane() != other.getPlane())
-		{
-			return false;
-		}
-
-		CollisionData[] collisionData = client.getCollisionMaps();
-		if (collisionData == null)
-		{
-			return false;
-		}
-
-		int z = this.getPlane();
-		int[][] collisionDataFlags = collisionData[z].getFlags();
-
-		Point p1 = this.getSceneLocation();
-		Point p2 = other.getSceneLocation();
-		if (p1.getX() == p2.getX() && p1.getY() == p2.getY())
-		{
-			return true;
-		}
-
-		int dx = p2.getX() - p1.getX();
-		int dy = p2.getY() - p1.getY();
-		int dxAbs = Math.abs(dx);
-		int dyAbs = Math.abs(dy);
-
-		int xFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
-		int yFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
-		if (dx < 0)
-		{
-			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_EAST;
-		}
-		else
-		{
-			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_WEST;
-		}
-		if (dy < 0)
-		{
-			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_NORTH;
-		}
-		else
-		{
-			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_SOUTH;
-		}
-
-		if (dxAbs > dyAbs)
-		{
-			int x = p1.getX();
-			int yBig = p1.getY() << 16; // The y position is represented as a bigger number to handle rounding
-			int slope = (dy << 16) / dxAbs;
-			yBig += 0x8000; // Add half of a tile
-			if (dy < 0)
-			{
-				yBig--; // For correct rounding
-			}
-			int direction = dx < 0 ? -1 : 1;
-
-			while (x != p2.getX())
-			{
-				x += direction;
-				int y = yBig >>> 16;
-				if ((collisionDataFlags[x][y] & xFlags) != 0)
-				{
-					// Collision while traveling on the x axis
-					return false;
-				}
-				yBig += slope;
-				int nextY = yBig >>> 16;
-				if (nextY != y && (collisionDataFlags[x][nextY] & yFlags) != 0)
-				{
-					// Collision while traveling on the y axis
-					return false;
-				}
-			}
-		}
-		else
-		{
-			int y = p1.getY();
-			int xBig = p1.getX() << 16; // The x position is represented as a bigger number to handle rounding
-			int slope = (dx << 16) / dyAbs;
-			xBig += 0x8000; // Add half of a tile
-			if (dx < 0)
-			{
-				xBig--; // For correct rounding
-			}
-			int direction = dy < 0 ? -1 : 1;
-
-			while (y != p2.getY())
-			{
-				y += direction;
-				int x = xBig >>> 16;
-				if ((collisionDataFlags[x][y] & yFlags) != 0)
-				{
-					// Collision while traveling on the y axis
-					return false;
-				}
-				xBig += slope;
-				int nextX = xBig >>> 16;
-				if (nextX != x && (collisionDataFlags[nextX][y] & xFlags) != 0)
-				{
-					// Collision while traveling on the x axis
-					return false;
-				}
-			}
-		}
-
-		// No collision
-		return true;
-	}
-
-	@Inject
-	@Override
-	public List<Item> getGroundItems()
-	{
-		ItemLayer layer = this.getItemLayer();
-		if (layer == null)
-		{
-			return null;
-		}
-
-		List<Item> result = new ArrayList<Item>();
-		Node node = layer.getBottom();
-		while (node instanceof Item)
-		{
-			result.add((Item) node);
-			node = node.getNext();
-		}
-		return result;
+		} while (current != head && (((RSTileItem) current).getX() != x || ((RSTileItem) current).getY() != y));
 	}
 }

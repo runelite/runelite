@@ -35,6 +35,8 @@ import net.runelite.http.api.RuneLiteAPI;
 @Slf4j
 public class RuneLiteProperties
 {
+	private static final String DISCORD_APP_ID_PLUS = "560644885250572289";
+
 	private final Properties properties = new Properties();
 
 	private final RuneLitePlusConfig runeLitePlusConfig;
@@ -78,7 +80,7 @@ public class RuneLiteProperties
 
 	public String getDiscordAppId()
 	{
-		return "560644885250572289";
+		return DISCORD_APP_ID_PLUS;
 	}
 
 	public String getDiscordInvite()

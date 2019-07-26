@@ -34,5 +34,5 @@ public enum ValueCalculationMode
 {
 	HA, // calc highlight by HA value
 	GE, // calc by GE
-	HIGHEST;
+	HIGHEST
 }

@@ -70,6 +70,7 @@ public class MethodContext
 		return contexts.get(i);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Collection<InstructionContext> getInstructionContexts()
 	{
 		return (Collection) contexts.values();

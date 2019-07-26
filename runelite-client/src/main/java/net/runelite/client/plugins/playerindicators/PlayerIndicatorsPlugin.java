@@ -135,6 +135,14 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Color getTargetColor;
 	@Getter(AccessLevel.PACKAGE)
+	private boolean showAgilityLevel;
+	@Getter(AccessLevel.PACKAGE)
+	private int agilityFirstThreshold;
+	@Getter(AccessLevel.PACKAGE)
+	private int agilitySecondThreshold;
+	@Getter(AccessLevel.PACKAGE)
+	private PlayerIndicatorsPlugin.AgilityFormats agilityFormat;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean showCombatLevel;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean playerSkull;
@@ -404,6 +412,12 @@ public class PlayerIndicatorsPlugin extends Plugin
 		BEFORE_NAME,
 		AFTER_NAME
 	}
+
+	public enum AgilityFormats
+	{
+		TEXT,
+		ICONS
+	}
 	
 	private void updateConfig()
 	{
@@ -427,6 +441,10 @@ public class PlayerIndicatorsPlugin extends Plugin
 		this.highlightTargets = config.highlightTargets();
 		this.getTargetColor = config.getTargetColor();
 		this.showCombatLevel = config.showCombatLevel();
+		this.showAgilityLevel = config.showAgilityLevel();
+		this.agilityFirstThreshold = config.agilityFirstThreshold();
+		this.agilitySecondThreshold = config.agilitySecondThreshold();
+		this.agilityFormat = config.agilityFormat();
 		this.playerSkull = config.playerSkull();
 		this.skullLocation = config.skullLocation();
 		this.skulledTargetsOnly = config.skulledTargetsOnly();

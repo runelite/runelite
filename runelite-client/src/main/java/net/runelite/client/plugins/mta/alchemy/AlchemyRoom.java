@@ -291,6 +291,78 @@ public class AlchemyRoom extends MTARoom
 			&& player.getWorldLocation().getPlane() == 2;
 	}
 
+	@Override
+	public void under(Graphics2D graphics)
+	{
+		if (!getConfig().alchemy() || best == null || !inside())
+		{
+			return;
+		}
+
+		boolean found = false;
+
+		for (Cupboard cupboard : cupboards)
+		{
+			if (cupboard == null)
+			{
+				continue;
+			}
+
+			GameObject object = cupboard.gameObject;
+			AlchemyItem alchemyItem = cupboard.alchemyItem;
+
+			if (alchemyItem == AlchemyItem.EMPTY)
+			{
+				continue;
+			}
+
+			if (alchemyItem.equals(best))
+			{
+				client.setHintArrow(object.getWorldLocation());
+				found = true;
+			}
+
+			BufferedImage image = itemManager.getImage(alchemyItem.getId());
+			Point canvasLoc = Perspective.getCanvasImageLocation(client, object.getLocalLocation(), image, IMAGE_Z_OFFSET);
+
+			if (canvasLoc != null)
+			{
+				graphics.drawImage(image, canvasLoc.getX(), canvasLoc.getY(), null);
+			}
+		}
+
+		if (!found && suggestion != null)
+		{
+			client.setHintArrow(suggestion.gameObject.getWorldLocation());
+		}
+
+	}
+
+	@Override
+	public void over(Graphics2D graphics)
+	{
+		if (!inside() || !config.alchemy() || best == null)
+		{
+			return;
+		}
+
+		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
+		if (inventory.isHidden())
+		{
+			return;
+		}
+
+		for (WidgetItem item : inventory.getWidgetItems())
+		{
+			if (item.getId() != best.getId())
+			{
+				continue;
+			}
+
+			drawItem(graphics, item);
+		}
+	}
+
 	private AlchemyItem getBest()
 	{
 		for (int i = 0; i < INFO_LENGTH; i++)
@@ -357,53 +429,6 @@ public class AlchemyRoom extends MTARoom
 		}
 	}
 
-	@Override
-	public void under(Graphics2D graphics)
-	{
-		if (!getConfig().alchemy() || best == null || !inside())
-		{
-			return;
-		}
-
-		boolean found = false;
-
-		for (Cupboard cupboard : cupboards)
-		{
-			if (cupboard == null)
-			{
-				continue;
-			}
-
-			GameObject object = cupboard.gameObject;
-			AlchemyItem alchemyItem = cupboard.alchemyItem;
-
-			if (alchemyItem == AlchemyItem.EMPTY)
-			{
-				continue;
-			}
-
-			if (alchemyItem.equals(best))
-			{
-				client.setHintArrow(object.getWorldLocation());
-				found = true;
-			}
-
-			BufferedImage image = itemManager.getImage(alchemyItem.getId());
-			Point canvasLoc = Perspective.getCanvasImageLocation(client, object.getLocalLocation(), image, IMAGE_Z_OFFSET);
-
-			if (canvasLoc != null)
-			{
-				graphics.drawImage(image, canvasLoc.getX(), canvasLoc.getY(), null);
-			}
-		}
-
-		if (!found && suggestion != null)
-		{
-			client.setHintArrow(suggestion.gameObject.getWorldLocation());
-		}
-
-	}
-
 	private Cupboard getSuggestion()
 	{
 		// check if a cupboard has the best item in it
@@ -441,32 +466,6 @@ public class AlchemyRoom extends MTARoom
 		}
 
 		return nearest;
-	}
-
-
-	@Override
-	public void over(Graphics2D graphics)
-	{
-		if (!inside() || !config.alchemy() || best == null)
-		{
-			return;
-		}
-
-		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
-		if (inventory.isHidden())
-		{
-			return;
-		}
-
-		for (WidgetItem item : inventory.getWidgetItems())
-		{
-			if (item.getId() != best.getId())
-			{
-				continue;
-			}
-
-			drawItem(graphics, item);
-		}
 	}
 
 	private void drawItem(Graphics2D graphics, WidgetItem item)

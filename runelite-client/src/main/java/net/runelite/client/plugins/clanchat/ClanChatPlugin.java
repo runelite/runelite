@@ -119,6 +119,7 @@ public class ClanChatPlugin extends Plugin
 
 	private List<String> chats = new ArrayList<>();
 
+	@SuppressWarnings("unchecked")
 	public static CopyOnWriteArrayList<Player> getClanMembers()
 	{
 		return (CopyOnWriteArrayList<Player>) clanMembers.clone();

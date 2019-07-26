@@ -122,7 +122,7 @@ import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSEnumDefinition;
 import net.runelite.rs.api.RSFriendSystem;
 import net.runelite.rs.api.RSFriendsList;
-import net.runelite.rs.api.RSGroundItem;
+import net.runelite.rs.api.RSTileItem;
 import net.runelite.rs.api.RSIgnoreList;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItemContainer;
@@ -180,7 +180,7 @@ public abstract class RSClientMixin implements RSClient
 	private static int oldMenuEntryCount;
 
 	@Inject
-	private static RSGroundItem lastItemDespawn;
+	private static RSTileItem lastItemDespawn;
 
 	@Inject
 	private boolean gpu;
@@ -1410,7 +1410,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		// Get the message node which was added
-		Map<Integer, RSChatChannel> chatLineMap = client.getChatLineMap();
+		@SuppressWarnings("unchecked") Map<Integer, RSChatChannel> chatLineMap = client.getChatLineMap();
 		RSChatChannel chatLineBuffer = chatLineMap.get(type);
 		MessageNode messageNode = chatLineBuffer.getLines()[0];
 
@@ -1431,7 +1431,7 @@ public abstract class RSClientMixin implements RSClient
 	public static void renderWidgetLayer(Widget[] widgets, int parentId, int minX, int minY, int maxX, int maxY, int x, int y, int var8)
 	{
 		Callbacks callbacks = client.getCallbacks();
-		HashTable<WidgetNode> componentTable = client.getComponentTable();
+		@SuppressWarnings("unchecked") HashTable<WidgetNode> componentTable = client.getComponentTable();
 
 		for (Widget rlWidget : widgets)
 		{
@@ -1489,14 +1489,14 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public RSGroundItem getLastItemDespawn()
+	public RSTileItem getLastItemDespawn()
 	{
 		return lastItemDespawn;
 	}
 
 	@Inject
 	@Override
-	public void setLastItemDespawn(RSGroundItem lastItemDespawn)
+	public void setLastItemDespawn(RSTileItem lastItemDespawn)
 	{
 		RSClientMixin.lastItemDespawn = lastItemDespawn;
 	}

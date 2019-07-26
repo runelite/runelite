@@ -247,47 +247,13 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
+		final Tile tile = client.getScene().getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 
-		String option = MARK;
-
-		Scene scene = client.getScene();
-		Tile[][][] tiles = scene.getTiles();
-		final int x = event.getActionParam0();
-		final int y = event.getActionParam1();
-		final int z = client.getPlane();
-		final Tile tile = tiles[z][x][y];
-		final TileObject object = findTileObject(tile, event.getIdentifier());
-		if (object != null)
-		{
-			final ObjectDefinition objectDefinition = client.getObjectDefinition(object.getId());
-			final String name = objectDefinition.getName();
-
-			if (!Strings.isNullOrEmpty(name))
-			{
-				final WorldPoint loc = WorldPoint.fromLocalInstance(client, tile.getLocalLocation());
-				final int regionId = loc.getRegionID();
-
-				final ObjectPoint point = new ObjectPoint(
-					name,
-					regionId,
-					loc.getX() & (REGION_SIZE - 1),
-					loc.getY() & (REGION_SIZE - 1),
-					client.getPlane());
-
-				final Set<ObjectPoint> objectPoints = points.get(regionId);
-
-				if (objectPoints != null && objectPoints.contains(point))
-				{
-					option = UNMARK;
-				}
-			}
-		}
-
-		menuEntry.setOption(option);
-
+		menuEntry.setOption(objects.contains(findTileObject(tile, event.getIdentifier())) ? UNMARK : MARK);
 		menuEntry.setTarget(event.getTarget());
 		menuEntry.setParam0(event.getActionParam0());
 		menuEntry.setParam1(event.getActionParam1());
@@ -299,8 +265,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE
-			|| (!event.getOption().equals(MARK)
-			&& !event.getOption().equals(UNMARK)))
+			|| !(event.getOption().equals(MARK) || event.getOption().equals(UNMARK)))
 		{
 			return;
 		}

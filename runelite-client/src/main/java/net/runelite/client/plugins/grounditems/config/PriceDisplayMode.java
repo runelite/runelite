@@ -34,5 +34,5 @@ public enum PriceDisplayMode
 	HA,
 	GE,
 	BOTH,
-	OFF;
+	OFF
 }

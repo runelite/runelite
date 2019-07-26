@@ -57,8 +57,9 @@ public class AnimationClient
 
 		logger.debug("Built URI: {}", url);
 
+		RequestBody body = RequestBody.Companion.create(json, JSON);
 		Request request = new Request.Builder()
-			.post(RequestBody.create(JSON, json))
+			.post(body)
 			.url(url)
 			.build();
 

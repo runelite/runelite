@@ -23,7 +23,7 @@ public class class189 {
 		} else {
 			GrandExchangeOfferWorldComparator.leftTitleSprite.drawAt(Login.xPadding, 0);
 			NPC.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
-			GroundItem.logoSprite.drawAt(Login.xPadding + 382 - GroundItem.logoSprite.subWidth / 2, 18);
+			TileItem.logoSprite.drawAt(Login.xPadding + 382 - TileItem.logoSprite.subWidth / 2, 18);
 			int var4;
 			if (Client.gameState == 0 || Client.gameState == 5) {
 				byte var3 = 20;

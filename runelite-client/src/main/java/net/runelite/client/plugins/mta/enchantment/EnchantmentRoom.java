@@ -30,10 +30,10 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
+import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -121,7 +121,7 @@ public class EnchantmentRoom extends MTARoom
 
 	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
-		final Item item = itemSpawned.getItem();
+		final TileItem item = itemSpawned.getItem();
 		final Tile tile = itemSpawned.getTile();
 
 		if (item.getId() == ItemID.DRAGONSTONE_6903)
@@ -134,7 +134,7 @@ public class EnchantmentRoom extends MTARoom
 
 	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		final Item item = itemDespawned.getItem();
+		final TileItem item = itemDespawned.getItem();
 		final Tile tile = itemDespawned.getTile();
 
 		if (item.getId() == ItemID.DRAGONSTONE_6903)

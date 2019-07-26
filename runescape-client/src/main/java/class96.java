@@ -400,7 +400,7 @@ public class class96 {
 					Login.runesSprite = null;
 					GrandExchangeOfferWorldComparator.leftTitleSprite = null;
 					NPC.rightTitleSprite = null;
-					GroundItem.logoSprite = null;
+					TileItem.logoSprite = null;
 					Login.title_muteSprite = null;
 					Login.options_buttons_0Sprite = null;
 					Decimator.options_buttons_2Sprite = null;

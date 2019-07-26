@@ -66,6 +66,7 @@ public class InvokeDynamic extends Instruction implements InvokeInstruction
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<net.runelite.asm.Method> getMethods()
 	{
 		return Collections.EMPTY_LIST;

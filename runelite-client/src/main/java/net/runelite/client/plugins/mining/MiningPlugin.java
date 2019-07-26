@@ -150,6 +150,7 @@ public class MiningPlugin extends Plugin
 		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
 		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
 	@Provides

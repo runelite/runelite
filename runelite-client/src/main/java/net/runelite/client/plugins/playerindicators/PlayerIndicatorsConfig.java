@@ -277,6 +277,54 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 19,
+		keyName = "showAgility",
+		name = "Show Agility Levels",
+		description = "Show the agility level of attackable players next to their name while in the wilderness.",
+		group = "Target Indicator"
+	)
+	default boolean showAgilityLevel()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 20,
+		keyName = "agilityFormat",
+		name = "Format",
+		description = "Whether to show the agility level as text, or as icons (1 skull >= 1st threshold, 2 skulls >= 2nd threshold).",
+		group = "Target Indicator"
+	)
+	default PlayerIndicatorsPlugin.AgilityFormats agilityFormat()
+	{
+		return PlayerIndicatorsPlugin.AgilityFormats.TEXT;
+	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "agilityFirstThreshold",
+		name = "Format",
+		description = "When showing agility as icons, show one icon for agility >= this level.",
+		group = "Target Indicator"
+	)
+	default int agilityFirstThreshold()
+	{
+		return 70;
+	}
+
+	@ConfigItem(
+		position = 22,
+		keyName = "agilitySecondThreshold",
+		name = "Format",
+		description = "When showing agility as icons, show two icons for agility >= this level.",
+		group = "Target Indicator"
+	)
+	default int agilitySecondThreshold()
+	{
+		return 84;
+	}
+
+	@ConfigItem(
+		position = 23,
 		keyName = "playerSkull",
 		name = "Show Skull Information",
 		description = "Indicate of the player is skulled.",
@@ -288,7 +336,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 19,
+		position = 24,
 		keyName = "minimapSkullLocation",
 		name = "Skull Icon Location",
 		description = "The location of the skull icon for skulled players",
@@ -300,7 +348,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 19,
+		position = 25,
 		keyName = "skulledTargetsOnly",
 		name = "Tag Skulls Only",
 		description = "Only indicate skulled targets (which are also attackable)",
@@ -312,7 +360,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 19,
+		position = 26,
 		keyName = "targetRisk",
 		name = "Indicate Target Risk",
 		description = "Indicates the risk (in K GP) of the target",
@@ -335,11 +383,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}*/
 
 	@ConfigItem(
+		position = 27,
 		keyName = "useClanchatRanks",
 		name = "Use Ranks as Callers",
 		description = "Uses clanchat ranks as the list of callers",
-		group = "Callers",
-		position = 24
+		group = "Callers"
 	)
 	default boolean useClanchatRanks()
 	{
@@ -347,11 +395,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 28,
 		keyName = "callerRank",
 		name = "Minimum rank for Clan Caller",
 		description = "Chooses the minimum rank to use as clanchat callers.",
-		group = "Callers",
-		position = 25
+		group = "Callers"
 	)
 	default ClanMemberRank callerRank()
 	{
@@ -359,6 +407,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 29,
 		keyName = "callers",
 		name = "List of callers to highlight",
 		description = "Highlights callers, only highlights one at a time. Separate each entry with a comma and enter" +
@@ -371,6 +420,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 30,
 		keyName = "highlightCallers",
 		name = "Highlight Callers",
 		description = "Highlights Callers Onscreen",
@@ -382,7 +432,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 26,
+		position = 31,
 		keyName = "callerColor",
 		name = "Caller Color",
 		description = "Color of Indicated Callers",
@@ -394,7 +444,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 27,
+		position = 32,
 		keyName = "unchargedGlory",
 		name = "Uncharged Glory Indication",
 		description = "Indicates if players have an uncharged glory"

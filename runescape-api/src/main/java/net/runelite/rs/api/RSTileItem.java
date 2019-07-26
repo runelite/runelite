@@ -1,10 +1,10 @@
 package net.runelite.rs.api;
-
 import net.runelite.api.Item;
 import net.runelite.api.Tile;
+import net.runelite.api.TileItem;
 import net.runelite.mapping.Import;
 
-public interface RSGroundItem extends RSEntity, Item
+public interface RSTileItem extends RSEntity, TileItem, Item
 {
 	@Import("id")
 	@Override
