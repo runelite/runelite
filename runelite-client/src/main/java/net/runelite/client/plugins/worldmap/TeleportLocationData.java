@@ -169,7 +169,7 @@ enum TeleportLocationData
 
 	// Scrolls
 	DIGSITE_SCROLL(TeleportType.SCROLL, "Digsite Teleport", new WorldPoint(3324, 3412, 0), "scroll_teleport_icon.png"),
-	ELF_CAMP_SCROLL(TeleportType.SCROLL, "Elf Camp Teleport", new WorldPoint(2193, 3257, 0), "scroll_teleport_icon.png"),
+	IORWERTH_CAMP_SCROLL(TeleportType.SCROLL, "Iorwerth Camp Teleport", new WorldPoint(2193, 3257, 0), "scroll_teleport_icon.png"),
 	FELDIP_HILLS_SCROLL(TeleportType.SCROLL, "Feldip Hills Teleport", new WorldPoint(2542, 2925, 0), "scroll_teleport_icon.png"),
 	LUMBERYARD_SCROLL(TeleportType.SCROLL, "Lumberyard Teleport", new WorldPoint(3303, 3487, 0), "scroll_teleport_icon.png"),
 	LUNAR_ISLE_SCROLL(TeleportType.SCROLL, "Lunar Isle Teleport", new WorldPoint(2093, 3912, 0), "scroll_teleport_icon.png"),
