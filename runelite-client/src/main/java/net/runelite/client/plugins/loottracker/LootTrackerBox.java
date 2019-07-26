@@ -185,7 +185,7 @@ class LootTrackerBox extends JPanel
 
 	void collapse()
 	{
-		if (itemContainer.isVisible())
+		if (!isCollapsed())
 		{
 			itemContainer.setVisible(false);
 			makeDarker(logTitle);
@@ -197,7 +197,7 @@ class LootTrackerBox extends JPanel
 
 	void expand()
 	{
-		if (!itemContainer.isVisible())
+		if (isCollapsed())
 		{
 			itemContainer.setVisible(true);
 			makeBrighter(logTitle);
@@ -207,9 +207,9 @@ class LootTrackerBox extends JPanel
 		}
 	}
 
-	private Color darker(Color color)
+	boolean isCollapsed()
 	{
-		return color.darker();
+		return itemContainer.isVisible() == false;
 	}
 
 	private void makeDarker(JLabel label)
@@ -222,9 +222,9 @@ class LootTrackerBox extends JPanel
 		panel.setBackground(darker(panel.getBackground()));
 	}
 
-	private Color brighter(Color color)
+	private Color darker(Color color)
 	{
-		return color.brighter();
+		return color.darker();
 	}
 
 	private void makeBrighter(JLabel label)
@@ -237,9 +237,9 @@ class LootTrackerBox extends JPanel
 		panel.setBackground(brighter(panel.getBackground()));
 	}
 
-	boolean isCollapsed()
+	private Color brighter(Color color)
 	{
-		return itemContainer.isVisible() == false;
+		return color.brighter();
 	}
 
 	/**
