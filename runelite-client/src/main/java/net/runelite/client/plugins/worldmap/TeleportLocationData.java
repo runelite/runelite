@@ -139,6 +139,8 @@ enum TeleportLocationData
 	PHARAOHS_SCEPTRE_JALEUSTROPHOS(TeleportType.OTHER, "Pharaoh's Sceptre", "Jaleustrophos (Agility Pyramid)", new WorldPoint(3341, 2827, 0), "pharaohs_sceptre_teleport_icon.png"),
 	PHARAOHS_SCEPTRE_JALDRAOCHT(TeleportType.OTHER, "Pharaoh's Sceptre", "Jaldraocht (Desert Treasure Pyramid)", new WorldPoint(3232, 2897, 0), "pharaohs_sceptre_teleport_icon.png"),
 	CAMULET_TEMPLE(TeleportType.OTHER, "Camulet", "Enakhra's Temple", new WorldPoint(3190, 2923, 0), "camulet_teleport_icon.png"),
+	TELEPORT_CRYSTAL_LLETYA(TeleportType.OTHER, "Teleport crystal", "Lletya", new WorldPoint(2330, 3172, 0), "teleport_crystal_icon.png"),
+	TELEPORT_CRYSTAL_PRIFDDINAS(TeleportType.OTHER, "Teleport crystal", "Prifddinas", new WorldPoint(3264, 6065, 0), "teleport_crystal_icon.png"),
 
 	// Wilderness
 	OBELISK_13(TeleportType.OTHER, "Obelisk", "13", new WorldPoint(3156, 3620, 0), "obelisk_icon.png"),
