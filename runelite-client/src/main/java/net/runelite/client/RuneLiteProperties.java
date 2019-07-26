@@ -35,7 +35,6 @@ import net.runelite.http.api.RuneLiteAPI;
 @Slf4j
 public class RuneLiteProperties
 {
-	private static final String DISCORD_APP_ID = "409416265891971072";
 	private static final String DISCORD_APP_ID_PLUS = "560644885250572289";
 
 	private final Properties properties = new Properties();
@@ -81,19 +80,7 @@ public class RuneLiteProperties
 
 	public String getDiscordAppId()
 	{
-		if (this.runeLitePlusConfig == null)
-		{
-			return properties.getProperty(DISCORD_APP_ID);
-		}
-
-		if (this.runeLitePlusConfig.customPresence())
-		{
-			return properties.getProperty(DISCORD_APP_ID_PLUS);
-		}
-		else
-		{
-			return properties.getProperty(DISCORD_APP_ID);
-		}
+		return DISCORD_APP_ID_PLUS;
 	}
 
 	public String getDiscordInvite()

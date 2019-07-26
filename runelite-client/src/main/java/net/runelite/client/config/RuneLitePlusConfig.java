@@ -35,21 +35,10 @@ import net.runelite.client.config.Range;
 public interface RuneLitePlusConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "customPresence",
-		name = "RL+ Presence",
-		description = "Represent RL+ with a custom icon and discord presence."
-	)
-	default boolean customPresence()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "enableOpacity",
 		name = "Enable opacity",
 		description = "Enables opacity for the whole window.<br>NOTE: This only stays enabled if your pc supports this!",
-		position = 1
+		position = 0
 	)
 	default boolean enableOpacity()
 	{
@@ -64,7 +53,7 @@ public interface RuneLitePlusConfig extends Config
 		keyName = "opacityPercentage",
 		name = "Opacity percentage",
 		description = "Changes the opacity of the window if opacity is enabled",
-		position = 2
+		position = 1
 	)
 	default int opacityPercentage()
 	{
@@ -75,7 +64,7 @@ public interface RuneLitePlusConfig extends Config
 		keyName = "keyboardPin",
 		name = "Keyboard bank pin",
 		description = "Enables you to type your bank pin",
-		position = 3
+		position = 2
 	)
 	default boolean keyboardPin()
 	{

@@ -55,41 +55,7 @@ import net.runelite.client.ui.ClientUI;
 @Slf4j
 public class RuneLitePlusPlugin extends Plugin
 {
-	private class RuneLitePlusKeyListener implements KeyListener
-	{
-		private int lastKeyCycle;
-
-		@Override
-		public void keyTyped(KeyEvent keyEvent)
-		{
-			if (!Character.isDigit(keyEvent.getKeyChar()))
-			{
-				return;
-			}
-
-			if (client.getGameCycle() - lastKeyCycle <= 5)
-			{
-				keyEvent.consume();
-				return;
-			}
-
-			lastKeyCycle = client.getGameCycle();
-
-			clientThread.invoke(() -> handleKey(keyEvent.getKeyChar()));
-			keyEvent.consume();
-		}
-
-		@Override
-		public void keyPressed(KeyEvent keyEvent)
-		{
-		}
-
-		@Override
-		public void keyReleased(KeyEvent keyEvent)
-		{
-		}
-	}
-
+	private final RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
 	@Inject
 	private RuneLitePlusConfig config;
 
@@ -107,8 +73,6 @@ public class RuneLitePlusPlugin extends Plugin
 
 	@Inject
 	private EventBus eventbus;
-
-	private final RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
 	private int entered = -1;
 	private int enterIdx;
 	private boolean expectInput;
@@ -117,53 +81,12 @@ public class RuneLitePlusPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		addSubscriptions();
-
-		if (config.customPresence())
-		{
-			ClientUI.currentPresenceName = ("RuneLitePlus");
-			ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-		}
-
-		discordService.close();
-		discordService.init();
+		ClientUI.currentPresenceName = ("RuneLitePlus");
+		ClientUI.frame.setTitle(ClientUI.currentPresenceName);
 
 		entered = -1;
 		enterIdx = 0;
 		expectInput = false;
-	}
-
-	private void onConfigChanged(ConfigChanged event)
-	{
-		if (!event.getGroup().equals("runeliteplus"))
-		{
-			return;
-		}
-
-		if (event.getKey().equals("customPresence"))
-		{
-			if (config.customPresence())
-			{
-				ClientUI.currentPresenceName = ("RuneLitePlus");
-				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-				discordService.close();
-				discordService.init();
-			}
-			else
-			{
-				ClientUI.currentPresenceName = ("RuneLite");
-				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-				discordService.close();
-				discordService.init();
-			}
-		}
-
-		else if (!config.keyboardPin())
-		{
-			entered = 0;
-			enterIdx = 0;
-			expectInput = false;
-			keyManager.unregisterKeyListener(keyListener);
-		}
 	}
 
 	@Override
@@ -175,6 +98,22 @@ public class RuneLitePlusPlugin extends Plugin
 		enterIdx = 0;
 		expectInput = false;
 		keyManager.unregisterKeyListener(keyListener);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("runeliteplus"))
+		{
+			return;
+		}
+
+		else if (!config.keyboardPin())
+		{
+			entered = 0;
+			enterIdx = 0;
+			expectInput = false;
+			keyManager.unregisterKeyListener(keyListener);
+		}
 	}
 
 	private void addSubscriptions()
@@ -221,10 +160,10 @@ public class RuneLitePlusPlugin extends Plugin
 	private void handleKey(char c)
 	{
 		if (client.getWidget(WidgetID.BANK_PIN_GROUP_ID, BANK_PIN_INSTRUCTION_TEXT.getChildId()) == null
-				|| !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("First click the FIRST digit.")
-				&& !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("Now click the SECOND digit.")
-				&& !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("Time for the THIRD digit.")
-				&& !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("Finally, the FOURTH digit."))
+			|| !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("First click the FIRST digit.")
+			&& !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("Now click the SECOND digit.")
+			&& !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("Time for the THIRD digit.")
+			&& !client.getWidget(BANK_PIN_INSTRUCTION_TEXT).getText().equals("Finally, the FOURTH digit."))
 
 		{
 			entered = 0;
@@ -259,6 +198,41 @@ public class RuneLitePlusPlugin extends Plugin
 		else if (oldEnterIdx == 2)
 		{
 			entered += num * 10;
+		}
+	}
+
+	private class RuneLitePlusKeyListener implements KeyListener
+	{
+		private int lastKeyCycle;
+
+		@Override
+		public void keyTyped(KeyEvent keyEvent)
+		{
+			if (!Character.isDigit(keyEvent.getKeyChar()))
+			{
+				return;
+			}
+
+			if (client.getGameCycle() - lastKeyCycle <= 5)
+			{
+				keyEvent.consume();
+				return;
+			}
+
+			lastKeyCycle = client.getGameCycle();
+
+			clientThread.invoke(() -> handleKey(keyEvent.getKeyChar()));
+			keyEvent.consume();
+		}
+
+		@Override
+		public void keyPressed(KeyEvent keyEvent)
+		{
+		}
+
+		@Override
+		public void keyReleased(KeyEvent keyEvent)
+		{
 		}
 	}
 }
