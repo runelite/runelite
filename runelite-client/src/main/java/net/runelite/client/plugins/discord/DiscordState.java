@@ -216,7 +216,12 @@ class DiscordState
 
 		if (eventWithTime.getType().getState().equals(DiscordGameEventType.IN_MENU.getState()) && now.isAfter(eventWithTime.getStart().plus(actionTimeout)))
 		{
-			this.reset();
+			final DiscordPresence presence = lastPresence
+				.toBuilder()
+				.startTimestamp(null)
+				.build();
+			lastPresence = presence;
+			discordService.updatePresence(presence);
 		}
 	}
 }
