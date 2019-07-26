@@ -53,7 +53,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
@@ -518,10 +517,7 @@ public class ClientUI
 		// Show out of date dialog if needed
 		if (client == null)
 		{
-			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
-				"Error loading client! Check your logs for more details.",
-				"Unable to load client",
-				ERROR_MESSAGE));
+			SwingUtilities.invokeLater(() -> RuneLite.displayErrorMessage("Error loading client! Check your logs for more details."));
 		}
 		else if (!(client instanceof Client))
 		{
