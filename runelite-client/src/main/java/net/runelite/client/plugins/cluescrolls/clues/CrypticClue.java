@@ -266,7 +266,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Thanks, Grandma!", "Tynan", new WorldPoint(1836, 3786, 0), "Tynan can be found in the north-east corner of Port Piscarilius."),
 		new CrypticClue("In a town where everyone has perfect vision, seek some locked drawers in a house that sits opposite a workshop.", "Chicken", DRAWERS_25766, new WorldPoint(2709, 3478, 0), "The Seers' Village house south of the Elemental Workshop entrance. Kill any Chicken to obtain a key."),
 		new CrypticClue("The treasure is buried in a small building full of bones. Here is a hint: it's not near a graveyard.", new WorldPoint(3356, 3507, 0), "In the western building near the Limestone quarry east of Varrock. Dig south of the box of bones in the smaller building."),
-		new CrypticClue("Search the crates in East Ardougne's general store.", CRATE_357, new WorldPoint(2615, 3291, 0), "Located south of the Ardounge church."),
+		new CrypticClue("Search the crates in East Ardougne's general store.", CRATE_357, new WorldPoint(2615, 3291, 0), "Located south of the Ardougne church."),
 		new CrypticClue("Come brave adventurer, your sense is on fire. If you talk to me, it's an old god you desire.", "Viggora", null, "Speak to Viggora"),
 		new CrypticClue("2 musical birds. Dig in front of the spinning light.", new WorldPoint(2671, 10396, 0), "Dig in front of the spinning light in Ping and Pong's room inside the Iceberg"),
 		new CrypticClue("Search the wheelbarrow in Rimmington mine.", WHEELBARROW_9625, new WorldPoint(2978, 3239, 0), "The Rimmington mining site is located north of Rimmington."),
