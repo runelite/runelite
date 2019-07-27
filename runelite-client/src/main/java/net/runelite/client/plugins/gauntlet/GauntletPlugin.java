@@ -65,7 +65,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Setter(AccessLevel.PACKAGE)
 public class GauntletPlugin extends Plugin
 {
-	private static final Set<Integer> PLAYER_ANIMATIONS = ImmutableSet.of(426, 1167, 422, 423, 440);
+	private static final Set<Integer> PLAYER_ANIMATIONS = ImmutableSet.of(426, 1167, 422, 423, 440, 428);
 	private static final Set<Integer> HUNLEFF_ANIMATIONS = ImmutableSet.of(AnimationID.HUNLEFF_ATTACK, AnimationID.HUNLEFF_TORNADO);
 	private static final Set<Integer> HUNLEFF_MAGE_PROJECTILES = ImmutableSet.of(ProjectileID.HUNLEFF_MAGE_ATTACK, ProjectileID.HUNLEFF_CORRUPTED_MAGE_ATTACK);
 	private static final Set<Integer> HUNLEFF_RANGE_PROJECTILES = ImmutableSet.of(ProjectileID.HUNLEFF_RANGE_ATTACK, ProjectileID.HUNLEFF_CORRUPTED_RANGE_ATTACK);
