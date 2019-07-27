@@ -68,7 +68,7 @@ public class WorldMapOverlay extends Overlay
 		this.client = client;
 		this.worldMapPointManager = worldMapPointManager;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGHEST);
+		setPriority(OverlayPriority.LOW);
 		setLayer(OverlayLayer.ABOVE_MAP);
 		mouseManager.registerMouseListener(worldMapOverlayMouseListener);
 	}
