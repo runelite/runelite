@@ -41,6 +41,7 @@ public class WidgetID
 	public static final int LOGOUT_PANEL_ID = 182;
 	public static final int BANK_GROUP_ID = 12;
 	public static final int BANK_INVENTORY_GROUP_ID = 15;
+	public static final int BANK_PIN_GROUP_ID = 213;
 	public static final int GRAND_EXCHANGE_INVENTORY_GROUP_ID = 467;
 	public static final int GRAND_EXCHANGE_GROUP_ID = 465;
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
@@ -231,6 +232,20 @@ public class WidgetID
 		static final int DEPOSIT_EQUIPMENT = 44;
 		static final int INCINERATOR = 46;
 		static final int INCINERATOR_CONFIRM = 47;
+	}
+
+	static class BankPin
+	{
+		static final int BUTTON_1 = 16;
+		static final int BUTTON_2 = 18;
+		static final int BUTTON_3 = 20;
+		static final int BUTTON_4 = 22;
+		static final int BUTTON_5 = 24;
+		static final int BUTTON_6 = 26;
+		static final int BUTTON_7 = 28;
+		static final int BUTTON_8 = 30;
+		static final int BUTTON_9 = 32;
+		static final int BUTTON_10 = 34;
 	}
 
 	static class GrandExchange

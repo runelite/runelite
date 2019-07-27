@@ -108,4 +108,15 @@ public interface BankConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "largePinNumbers",
+		name = "Large bank pin numbers",
+		description = "Enlarges and centers the numbers inside the bank pin buttons",
+		position = 8
+	)
+	default boolean largePinNumbers()
+	{
+		return false;
+	}
 }

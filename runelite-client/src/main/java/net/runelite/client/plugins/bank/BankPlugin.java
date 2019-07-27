@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.FontID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -72,10 +73,24 @@ public class BankPlugin extends Plugin
 		Varbits.BANK_TAB_NINE_COUNT
 	);
 
+	private static final List<WidgetInfo> BANK_PINS = ImmutableList.of(
+		WidgetInfo.BANK_PIN_BUTTON_1,
+		WidgetInfo.BANK_PIN_BUTTON_2,
+		WidgetInfo.BANK_PIN_BUTTON_3,
+		WidgetInfo.BANK_PIN_BUTTON_4,
+		WidgetInfo.BANK_PIN_BUTTON_5,
+		WidgetInfo.BANK_PIN_BUTTON_6,
+		WidgetInfo.BANK_PIN_BUTTON_7,
+		WidgetInfo.BANK_PIN_BUTTON_8,
+		WidgetInfo.BANK_PIN_BUTTON_9,
+		WidgetInfo.BANK_PIN_BUTTON_10
+	);
+
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
 	private static final String DEPOSIT_LOOT = "Deposit loot";
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
+	private static final int PIN_FONT_OFFSET = 5;
 
 	@Inject
 	private Client client;
@@ -146,6 +161,11 @@ public class BankPlugin extends Plugin
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
+		if (event.getEventName().equals("bankPinButtons") && config.largePinNumbers())
+		{
+			updateBankPinSizes();
+		}
+
 		if (!event.getEventName().equals("setBankTitle"))
 		{
 			return;
@@ -296,5 +316,39 @@ public class BankPlugin extends Plugin
 		}
 
 		return itemContainer.getItems();
+	}
+
+	private void updateBankPinSizes()
+	{
+		for (final WidgetInfo widgetInfo : BANK_PINS)
+		{
+			final Widget pin = client.getWidget(widgetInfo);
+			if (pin == null)
+			{
+				continue;
+			}
+
+			final Widget[] children = pin.getDynamicChildren();
+			if (children.length < 2)
+			{
+				continue;
+			}
+
+			final Widget button = children[0];
+			final Widget number = children[1];
+
+			// Change to a bigger font size
+			number.setFontId(FontID.QUILL_CAPS_LARGE);
+			number.setYTextAlignment(0);
+
+			// Change size to match container widths
+			number.setOriginalWidth(button.getWidth());
+			// The large font id text isn't centered, we need to offset it slightly
+			number.setOriginalHeight(button.getHeight() + PIN_FONT_OFFSET);
+			number.setOriginalY(-PIN_FONT_OFFSET);
+			number.setOriginalX(0);
+
+			number.revalidate();
+		}
 	}
 }
