@@ -54,6 +54,8 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.SKOTIZO_CONTAINER, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.KOUREND_FAVOUR_OVERLAY, OverlayPosition.TOP_CENTER)
 		.put(WidgetInfo.PYRAMID_PLUNDER_DATA, OverlayPosition.TOP_CENTER)
+		.put(WidgetInfo.SOTE_BOSS_HEALTHBAR, OverlayPosition.TOP_CENTER)
+		.put(WidgetInfo.GAUNTLET_TIMER, OverlayPosition.TOP_LEFT)
 		.build();
 
 	public static Collection<WidgetOverlay> createOverlays(final Client client)
