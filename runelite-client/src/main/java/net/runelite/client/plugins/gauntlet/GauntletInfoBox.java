@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2019, lyzrds <https://discord.gg/5eb9Fe>
  * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
@@ -70,7 +69,7 @@ public class GauntletInfoBox extends Overlay
 	{
 		panelComponent.getChildren().clear();
 
-		if (plugin.getHunllef() == null)
+		if (plugin.getHunllef() == null || !plugin.isInRoom())
 		{
 			return null;
 		}
@@ -81,6 +80,7 @@ public class GauntletInfoBox extends Overlay
 		{
 			return null;
 		}
+
 		InfoBoxComponent prayComponent = new InfoBoxComponent();
 		BufferedImage prayImg = scaleImg(getPrayerImage(prayer));
 		prayComponent.setImage(prayImg);
