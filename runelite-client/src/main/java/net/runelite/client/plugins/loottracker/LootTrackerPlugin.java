@@ -105,7 +105,7 @@ public class LootTrackerPlugin extends Plugin
 
 	// Herbiboar loot handling
 	private static final String HERBIBOAR_LOOTED_MESSAGE = "You harvest herbs from the herbiboar, whereupon it escapes.";
-	private static final String HERBIBOR_EVENT = "Herbiboar";
+	private static final String HERBIBOAR_EVENT = "Herbiboar";
 
 	// Hespori loot handling
 	private static final String HESPORI_LOOTED_MESSAGE = "You have successfully cleared this patch for new crops.";
@@ -442,7 +442,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
 		{
-			eventType = HERBIBOR_EVENT;
+			eventType = HERBIBOAR_EVENT;
 			takeInventorySnapshot();
 
 			return;
@@ -486,7 +486,7 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOR_EVENT.equals(eventType) || HESPORI_EVENT.equals(eventType)))
+		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOAR_EVENT.equals(eventType) || HESPORI_EVENT.equals(eventType)))
 		{
 			if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 			{
