@@ -48,15 +48,15 @@ import net.runelite.client.game.SoundManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IdleNotifierPluginTest
@@ -204,10 +204,8 @@ public class IdleNotifierPluginTest
 		when(player.getInteracting()).thenReturn(monster);
 		plugin.onInteractingChanged(new InteractingChanged(player, monster));
 		plugin.onGameTick(GameTick.INSTANCE);
-		when(player.getInteracting()).thenReturn(randomEvent);
 		plugin.onInteractingChanged(new InteractingChanged(player, randomEvent));
 		plugin.onGameTick(GameTick.INSTANCE);
-		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(GameTick.INSTANCE);
 		verify(notifier, times(0)).notify(any());
@@ -232,7 +230,6 @@ public class IdleNotifierPluginTest
 		plugin.onGameStateChanged(gameStateChanged);
 
 		// Tick
-		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(GameTick.INSTANCE);
 		verify(notifier, times(0)).notify(any());
@@ -272,12 +269,12 @@ public class IdleNotifierPluginTest
 	{
 		plugin.setGetSpecEnergyThreshold(50);
 
-		when(client.getVar(Matchers.eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
+		when(client.getVar(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
 		plugin.onGameTick(GameTick.INSTANCE); // once to set lastSpecEnergy to 400
 		verify(notifier, never()).notify(any());
 
-		when(client.getVar(Matchers.eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
+		when(client.getVar(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
 		plugin.onGameTick(GameTick.INSTANCE);
-		verify(notifier).notify(Matchers.eq("[" + PLAYER_NAME + "] has restored spec energy!"));
+		verify(notifier).notify(eq("[" + PLAYER_NAME + "] has restored spec energy!"));
 	}
 }

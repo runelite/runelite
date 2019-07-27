@@ -33,10 +33,11 @@ import net.runelite.client.plugins.maxhit.calculators.testconfig.MaxHitConfig;
 import net.runelite.client.plugins.maxhit.calculators.testconfig.MeleeMaxHitConfig;
 import net.runelite.client.plugins.maxhit.calculators.testconfig.RangeMaxHitConfig;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MaxHitCalculatorTest
@@ -51,6 +52,7 @@ public class MaxHitCalculatorTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 	}
 
+	@Ignore
 	@Test
 	public void calculate()
 	{
