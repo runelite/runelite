@@ -1,12 +1,13 @@
 description = 'Cache Updater'
+
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.1.6.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.1.6.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.1.6.RELEASE'
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.17'
-    compile project(':cache-client')
-    compile group: 'org.sql2o', name: 'sql2o', version: '1.6.0'
-    compile group: 'io.minio', name: 'minio', version: '6.0.8'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.1.6.RELEASE'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.1.6.RELEASE'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.1.6.RELEASE'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.17'
+    implementation project(':cache-client')
+    implementation group: 'org.sql2o', name: 'sql2o', version: '1.6.0'
+    implementation group: 'io.minio', name: 'minio', version: '6.0.8'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
 }

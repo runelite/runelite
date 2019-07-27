@@ -1,9 +1,10 @@
 description = 'Script Assembler Plugin'
 dependencies {
-    compile project(':cache')
-    compile project(':runelite-api')
-    compile group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.6.1'
-    compile group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.26'
+    implementation project(':cache')
+    implementation project(':runelite-api')
+    implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+    implementation group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.6.1'
+    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.26'
     compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version: '3.6.0'
     annotationProcessor group: 'org.eclipse.sisu', name: 'org.eclipse.sisu.inject', version: '0.3.3'
 }

@@ -1034,6 +1034,11 @@ public class SlayerPlugin extends Plugin
 		rebuildCheckAsTokens(task);
 		rebuildTargetList();
 
+		if (task == null)
+		{
+			return;
+		}
+
 		if (!weaknessOverlayAttached && task.getWeaknessItem() != -1 && task.getWeaknessThreshold() != -1)
 		{
 			overlayManager.add(targetWeaknessOverlay);

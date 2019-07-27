@@ -147,8 +147,6 @@ public enum RangeMaxHitConfig implements MaxHitConfig
 
 			// Mock equipment container
 			ItemContainer equipmentContainer = mock(ItemContainer.class);
-			when(equipmentContainer.getItems())
-				.thenReturn(this.equipedItems);
 			when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentContainer);
 
 			// Mock equipment strength

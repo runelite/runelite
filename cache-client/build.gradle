@@ -1,8 +1,12 @@
 description = 'Cache Client'
+
 dependencies {
-    compile project(':cache')
-    compile project(':protocol')
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
-    testCompile project(':cache')
+    api project(':cache')
+    api project(':protocol')
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+    implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+    implementation group: 'io.netty', name: 'netty-all', version: '4.1.37.Final'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
+    testImplementation project(path: ':cache', configuration: 'testArchives')
 }
