@@ -2,9 +2,11 @@ group = 'net.runelite.rs'
 description = 'Injector'
 
 def osrsRevision = 181
-def deobfuscatedJar = [project.rootDir, 'runescape-client', 'build', 'libs', "rs-client-${project.version}.jar"].join(File.separator)
-def vanillaJar = [project.buildDir, "vanilla-${osrsRevision}.jar"].join(File.separator)
-def injectedJar = [project.rootDir, 'injected-client', 'build', 'libs', "injected-client-${project.version}.jar"].join(File.separator)
+def rootPath = project.rootDir.toString().replace('\\', '/')
+def buildPath = project.buildDir.toString().replace('\\', '/')
+def deobfuscatedJar = "${rootPath}/runescape-client/build/libs/rs-client-${project.version}.jar"
+def vanillaJar = "${buildPath}/vanilla-${osrsRevision}.jar"
+def injectedJar = "${rootPath}/injected-client/build/libs/injected-client-${project.version}.jar"
 
 configurations {
     vanilla

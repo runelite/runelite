@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id "com.github.hauner.jarTest" version "1.0.1"
 }
@@ -18,4 +20,18 @@ dependencies {
     testImplementation group: 'net.runelite.rs', name: 'cache', version: '165'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+}
+
+ext {
+    rsversion = 181
+    cacheversion = 165
+}
+
+processTestResources {
+    from file("src/test/resources/cache.properties"), {
+        filter(ReplaceTokens, tokens: [
+                "rs.version": rsversion.toString(),
+                "cache.version": cacheversion.toString()
+        ])
+    }
 }

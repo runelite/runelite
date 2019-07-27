@@ -1,8 +1,15 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id "com.github.hauner.jarTest" version "1.0.1"
 }
 
 description = 'Deobfuscator'
+
+def osrsRevision = 181
+def rootPath = project.rootDir.toString().replace('\\', '/')
+def deobfuscatedJar = "${rootPath}/runescape-client/build/libs/rs-client-${project.version}.jar"
+def vanillaJar = "${rootPath}/injector-plugin/vanilla-${osrsRevision}.jar"
 
 dependencies {
     implementation project(':runelite-api')
@@ -17,4 +24,18 @@ dependencies {
     testImplementation group: 'net.runelite.rs', name: 'vanilla', version: '181'
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.0.0'
+}
+
+ext {
+    rsversion = 181
+}
+
+processTestResources {
+    from file("src/test/resources/deob-test.properties"), {
+        filter(ReplaceTokens, tokens: [
+                "rs.client": deobfuscatedJar.toString(),
+                "rs.version": rsversion.toString(),
+                "vanilla.jar": vanillaJar.toString()
+        ])
+    }
 }
