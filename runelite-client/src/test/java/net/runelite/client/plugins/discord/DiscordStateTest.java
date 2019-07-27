@@ -37,8 +37,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.Matchers.any;
 import org.mockito.Mock;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
