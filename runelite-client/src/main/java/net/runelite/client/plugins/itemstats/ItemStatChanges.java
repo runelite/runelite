@@ -92,6 +92,7 @@ public class ItemStatChanges
 		add(combo(2, food(8), heal(RUN_ENERGY, 5)), PAPAYA_FRUIT);
 		add(range(food(5), food(7)), THIN_SNAIL_MEAT);
 		add(range(food(7), food(9)), FAT_SNAIL_MEAT);
+		add(range(food(7), food(10)), SPIDER_ON_STICK_6297, SPIDER_ON_SHAFT_6299);
 
 		// Dorgeshuun Cuisine
 		add(food(2), BAT_SHISH, COATED_FROGS_LEGS, FILLETS, FINGERS, FROGBURGER, FROGSPAWN_GUMBO, GREEN_GLOOP_SOUP,
