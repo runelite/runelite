@@ -1,10 +1,11 @@
 description = 'Protocol'
 dependencies {
-    compile project(':protocol-api')
-    compile project(':cache')
-    compile group: 'com.google.guava', name: 'guava', version: '28.0-jre'
-    compile group: 'io.netty', name: 'netty-all', version: '4.1.37.Final'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    api project(':protocol-api')
+    implementation project(':cache')
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+    implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+    implementation group: 'io.netty', name: 'netty-all', version: '4.1.37.Final'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
 }
