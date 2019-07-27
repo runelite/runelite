@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 ThatGamerBlue
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
 /**
- * Represents a pile of items held by a tile.
+ * @author ThatGamerBlue
+ *
+ * This file exists to force gradle to execute the compileJava task
+ * so we can hijack it and run the injector-plugin
  */
-public interface ItemLayer extends TileObject
+public class Placeholder
 {
-	/**
-	 * Gets the height of the layer.
-	 *
-	 * @return the height
-	 */
-	int getHeight();
-
-	/**
-	 * Gets the item at the bottom of the pile.
-	 *
-	 * @return the bottom item
-	 */
-	Renderable getBottom();
-
-	/**
-	 * Gets the item at the middle of the pile.
-	 *
-	 * @return the middle item
-	 */
-	Renderable getMiddle();
-
-	/**
-	 * Gets the item at the top of the pile.
-	 *
-	 * @return the top item
-	 */
-	Renderable getTop();
-
-	Model getModelBottom();
-	Model getModelMiddle();
-	Model getModelTop();
 }

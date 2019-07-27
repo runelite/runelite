@@ -1045,4 +1045,7 @@ public interface RSClient extends RSGameShell, Client
 	BigInteger getModulus();
 
 	void setModulus(BigInteger modulus);
+
+	@Import("ItemDefinition_fileCount")
+	int getItemCount();
 }

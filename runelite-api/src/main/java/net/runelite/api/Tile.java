@@ -52,7 +52,7 @@ public interface Tile
 	 *
 	 * @return the item
 	 */
-	ItemLayer getItemLayer();
+	TileItemPile getItemLayer();
 
 	/**
 	 * Gets the object on the ground layer of the tile.

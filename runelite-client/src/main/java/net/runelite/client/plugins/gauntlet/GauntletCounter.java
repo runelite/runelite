@@ -21,59 +21,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.playerscouter;
+package net.runelite.client.plugins.gauntlet;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.client.graphics.ModelOutlineRenderer;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 
 @Singleton
-public class AttackerOverlay extends Overlay
+@Slf4j
+public class GauntletCounter extends Overlay
 {
-	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
-
-	private final PlayerScouter plugin;
-	private final ModelOutlineRenderer outlineRenderer;
+	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
+	private final GauntletPlugin plugin;
+	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	public AttackerOverlay(final PlayerScouter plugin, final ModelOutlineRenderer outlineRenderer)
+	GauntletCounter(final GauntletPlugin plugin)
 	{
 		this.plugin = plugin;
-		this.outlineRenderer = outlineRenderer;
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
+		setPriority(OverlayPriority.HIGH);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isOverlayEnabled() || plugin.getPlayerContainer().isEmpty())
+		panelComponent.getChildren().clear();
+
+		if (plugin.getHunllef() == null || !plugin.isInRoom())
 		{
 			return null;
 		}
 
-		plugin.getPlayerContainer().forEach(player ->
-		{
-			if (!player.isTarget())
-			{
-				return;
-			}
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text("Hunllef")
+			.color(Color.pink)
+			.build());
 
-			final AttackStyle attackStyle = player.getAttackStyle();
+		Color color = plugin.getPlayerAttacks() == 1 ? Color.RED : Color.WHITE;
+		final String pHits = ColorUtil.prependColorTag(Integer.toString(plugin.getPlayerAttacks()), color);
 
-			if (attackStyle.getPrayer() == null)
-			{
-				return;
-			}
-
-			outlineRenderer.drawOutline(player.getPlayer(), 2, attackStyle.getColor(), TRANSPARENT);
-		});
-		return null;
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+		tableComponent.addRow("Hunllef Hits: ", Integer.toString(plugin.getAttacks()));
+		tableComponent.addRow("Player Hits Left: ", pHits);
+		panelComponent.getChildren().add(tableComponent);
+		return panelComponent.render(graphics);
 	}
 }

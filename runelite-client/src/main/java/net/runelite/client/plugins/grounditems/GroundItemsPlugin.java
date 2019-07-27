@@ -54,7 +54,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
-import net.runelite.api.ItemLayer;
+import net.runelite.api.TileItemPile;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Node;
@@ -678,9 +678,9 @@ public class GroundItemsPlugin extends Plugin
 			int itemId = event.getIdentifier();
 			Scene scene = client.getScene();
 			Tile tile = scene.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
-			ItemLayer itemLayer = tile.getItemLayer();
+			TileItemPile tileItemPile = tile.getItemLayer();
 
-			if (itemLayer == null)
+			if (tileItemPile == null)
 			{
 				return;
 			}
@@ -689,7 +689,7 @@ public class GroundItemsPlugin extends Plugin
 			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 
 			int quantity = 1;
-			Node current = itemLayer.getBottom();
+			Node current = tileItemPile.getBottom();
 
 			while (current instanceof TileItem)
 			{

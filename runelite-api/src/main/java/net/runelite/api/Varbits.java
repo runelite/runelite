@@ -683,7 +683,12 @@ public enum Varbits
 	/**
 	 * The y coordinate of the final safespace (world coord)
 	 */
-	LMS_SAFE_Y(5320);
+	LMS_SAFE_Y(5320),
+
+	/**
+	 * 1 is true, 0 is false.
+	 */
+	GAUNTLET_FINAL_ROOM_ENTERED(9177);
 
 	/**
 	 * The raw varbit ID.

@@ -1,12 +1,11 @@
 group = 'net.runelite.rs'
 description = 'Injector'
 
-def osrsRevision = 181
-def rootPath = project.rootDir.toString().replace('\\', '/')
-def buildPath = project.buildDir.toString().replace('\\', '/')
+def buildPath = buildDir.toString().replace('\\', '/') // this doesnt work in an ext block for some reason
+
 def deobfuscatedJar = "${rootPath}/runescape-client/build/libs/rs-client-${project.version}.jar"
-def vanillaJar = "${buildPath}/vanilla-${osrsRevision}.jar"
-def injectedJar = "${rootPath}/injected-client/build/libs/injected-client-${project.version}.jar"
+def vanillaJar = "${buildPath}/vanilla-${rsversion}.jar"
+
 
 configurations {
     vanilla
@@ -17,7 +16,6 @@ dependencies {
     implementation project(':mixins')
     implementation project(':runelite-api')
     implementation project(':runescape-api')
-    implementation project(':injected-client')
     implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
     implementation group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.6.1'
     implementation group: 'org.ow2.asm', name: 'asm-debug-all', version: '5.2'
@@ -26,14 +24,14 @@ dependencies {
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.0.0'
     compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version: '3.6.0'
     annotationProcessor group: 'org.eclipse.sisu', name: 'org.eclipse.sisu.inject', version: '0.3.3'
-    vanilla "net.runelite.rs:vanilla:"+osrsRevision
+    vanilla "net.runelite.rs:vanilla:${rsversion}"
 }
 
 compileJava {
     dependsOn ":rs-client:build"
 }
 
-compileJava.outputs.upToDateWhen {false}
+compileJava.outputs.upToDateWhen { false }
 
 compileJava.doLast() {
     copy {
@@ -46,7 +44,7 @@ compileJava.doLast() {
     String[] jarPaths = [
             deobfuscatedJar.toString(),
             vanillaJar.toString(),
-            injectedJar.toString()
+            injectedClassesPath.toString()
     ]
     inject.main(jarPaths)
 }

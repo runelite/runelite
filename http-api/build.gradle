@@ -1,3 +1,4 @@
+import org.apache.tools.ant.filters.ReplaceTokens
 description = 'Web API'
 dependencies {
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.0.1'
@@ -10,4 +11,15 @@ dependencies {
     testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '4.0.1'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+}
+
+processResources {
+    from file("src/main/resources/runelite.properties"), {
+        filter(ReplaceTokens, tokens: [
+                "projectver": project.version,
+                "rsver": rsversion.toString(),
+                "gitcommit": gitCommitShort,
+                "gitdirty": gitDirty.toString()
+        ])
+    }
 }

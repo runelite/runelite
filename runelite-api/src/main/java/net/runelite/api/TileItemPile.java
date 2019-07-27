@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, ganom <https://github.com/Ganom>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,6 +10,7 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -21,23 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.playerscouter;
+package net.runelite.api;
 
-import java.awt.Color;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.api.Prayer;
-
-@AllArgsConstructor
-@Getter
-public enum AttackStyle
+/**
+ * Represents a pile of items held by a tile.
+ */
+public interface TileItemPile extends TileObject
 {
-	MAGE("Mage", Color.CYAN, Prayer.PROTECT_FROM_MAGIC),
-	RANGE("Range", Color.GREEN, Prayer.PROTECT_FROM_MISSILES),
-	MELEE("Melee", Color.RED, Prayer.PROTECT_FROM_MELEE),
-	UNKNOWN("Unknown", Color.WHITE, null);
+	/**
+	 * Gets the height of the layer.
+	 *
+	 * @return the height
+	 */
+	int getHeight();
 
-	private String name;
-	private Color color;
-	private Prayer prayer;
+	/**
+	 * Gets the item at the bottom of the pile.
+	 *
+	 * @return the bottom item
+	 */
+	Renderable getBottom();
+
+	/**
+	 * Gets the item at the middle of the pile.
+	 *
+	 * @return the middle item
+	 */
+	Renderable getMiddle();
+
+	/**
+	 * Gets the item at the top of the pile.
+	 *
+	 * @return the top item
+	 */
+	Renderable getTop();
+
+	Model getModelBottom();
+	Model getModelMiddle();
+	Model getModelTop();
 }

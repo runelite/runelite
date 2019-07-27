@@ -31,7 +31,7 @@ import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
+import net.runelite.api.TileItemPile;
 import net.runelite.api.Node;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
@@ -235,7 +235,7 @@ public abstract class RSTileMixin implements RSTile
 	@Override
 	public List<TileItem> getGroundItems()
 	{
-		ItemLayer layer = this.getItemLayer();
+		TileItemPile layer = this.getItemLayer();
 		if (layer == null)
 		{
 			return null;
