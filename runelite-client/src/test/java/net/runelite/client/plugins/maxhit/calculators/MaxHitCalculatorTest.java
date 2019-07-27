@@ -52,7 +52,6 @@ public class MaxHitCalculatorTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 	}
 
-	@Ignore
 	@Test
 	public void calculate()
 	{

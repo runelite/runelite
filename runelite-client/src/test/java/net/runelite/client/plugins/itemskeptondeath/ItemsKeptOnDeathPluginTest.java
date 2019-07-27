@@ -90,21 +90,15 @@ public class ItemsKeptOnDeathPluginTest
 		when(itemManager.canonicalize(id)).thenReturn(id);
 		when(itemManager.getItemPrice(id, true)).thenReturn(price);
 
-		return mockItem(id, qty);
+		return item(id, qty);
 	}
 
-	// Creates a mocked item
-	private Item mockItem(final int id, final int qty)
+	// Creates a new item
+	private static Item item(final int id, final int qty)
 	{
-		Item item = mock(Item.class);
-
-//		when(item.getId()).thenReturn(id);
-//		when(item.getQuantity()).thenReturn(qty);
-
-		return item;
+		return new Item(id, qty);
 	}
 
-	@Ignore
 	@Test
 	public void deathPriceTestRegularItems()
 	{
@@ -118,7 +112,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertEquals(35000, plugin.getDeathPrice(defender));
 	}
 
-	@Ignore
 	@Test
 	public void deathPriceTestItemMapping()
 	{
@@ -134,7 +127,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertEquals(1000000, plugin.getDeathPrice(slayerHelm));
 	}
 
-	@Ignore
 	@Test
 	public void deathPriceTestFixedPriceItems()
 	{
@@ -159,7 +151,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertEquals(13500 + braceletOffset, plugin.getDeathPrice(brace));
 	}
 
-	@Ignore
 	@Test
 	public void deathPriceTestDynamicPriceItems()
 	{
@@ -193,7 +184,6 @@ public class ItemsKeptOnDeathPluginTest
 			};
 	}
 
-	@Ignore
 	@Test
 	public void alwaysLostTestRunePouch()
 	{
@@ -207,7 +197,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertFalse(deathItems.isHasAlwaysLost());
 	}
 
-	@Ignore
 	@Test
 	public void alwaysLostTestRunePouchWildy()
 	{
@@ -222,7 +211,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertTrue(deathItems.isHasAlwaysLost());
 	}
 
-	@Ignore
 	@Test
 	public void alwaysLostTestLootBag()
 	{
@@ -237,7 +225,6 @@ public class ItemsKeptOnDeathPluginTest
 
 	}
 
-	@Ignore
 	@Test
 	public void alwaysLostTestLootBagWildy()
 	{
@@ -296,7 +283,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertFalse(plugin.isClueBoxable(ItemID.SPADE));
 	}
 
-	@Ignore
 	@Test
 	public void clueBoxTestDefault()
 	{
@@ -321,7 +307,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertEquals((inv.length + equip.length) - expectedKept.size(), lost.size());
 	}
 
-	@Ignore
 	@Test
 	public void clueBoxTestDeepWildy()
 	{
@@ -346,7 +331,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertEquals((inv.length + equip.length) - keptOffset, lost.size());
 	}
 
-	@Ignore
 	@Test
 	public void clueBoxTestDeepWildyProtectItem()
 	{
@@ -373,7 +357,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertEquals((inv.length + equip.length) - keptOffset, lost.size());
 	}
 
-	@Ignore
 	@Test
 	public void clueBoxTestDeepWildySkulled()
 	{
@@ -396,7 +379,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertEquals(lost.size(), (inv.length + equip.length) - keptOffset);
 	}
 
-	@Ignore
 	@Test
 	public void clueBoxTestLowWildy()
 	{
@@ -422,7 +404,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertEquals(lost.size(), (inv.length + equip.length) - keptOffset);
 	}
 
-	@Ignore
 	@Test
 	public void clueBoxTestLowWildyProtectItem()
 	{
@@ -450,7 +431,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertEquals((inv.length + equip.length) - keptOffset, lost.size());
 	}
 
-	@Ignore
 	@Test
 	public void clueBoxTestLowWildySkulled()
 	{
@@ -499,7 +479,6 @@ public class ItemsKeptOnDeathPluginTest
 			};
 	}
 
-	@Ignore
 	@Test
 	public void clueBoxTestCasketProtect()
 	{
@@ -537,7 +516,6 @@ public class ItemsKeptOnDeathPluginTest
 			};
 	}
 
-	@Ignore
 	@Test
 	public void gracefulValueTest()
 	{
@@ -566,7 +544,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertEquals((inv.length + equip.length) - expectedKept.size(), lost.size());
 	}
 
-	@Ignore
 	@Test
 	public void gracefulValueTestWildy()
 	{
@@ -592,7 +569,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertEquals((inv.length + equip.length) - expectedKept.size(), lost.size());
 	}
 
-	@Ignore
 	@Test
 	public void lostIfNotProtectedTestLost()
 	{
@@ -608,7 +584,6 @@ public class ItemsKeptOnDeathPluginTest
 		assertTrue(lost.contains(new ItemStack(ItemID.SHADOW_SWORD, 1)));
 	}
 
-	@Ignore
 	@Test
 	public void lostIfNotProtectedTestKept()
 	{
