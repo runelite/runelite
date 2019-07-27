@@ -37,7 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
+import net.runelite.api.TileItemPile;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.Model;
 import net.runelite.api.NPC;
@@ -990,32 +990,32 @@ public class ModelOutlineRenderer
 		}
 	}
 
-	private void drawOutline(ItemLayer itemLayer, int outlineWidth, Color innerColor, Color outerColor)
+	private void drawOutline(TileItemPile tileItemPile, int outlineWidth, Color innerColor, Color outerColor)
 	{
-		LocalPoint lp = itemLayer.getLocalLocation();
+		LocalPoint lp = tileItemPile.getLocalLocation();
 		if (lp != null)
 		{
-			Model model = itemLayer.getModelBottom();
+			Model model = tileItemPile.getModelBottom();
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
-					Perspective.getTileHeight(client, lp, itemLayer.getPlane()),
+					Perspective.getTileHeight(client, lp, tileItemPile.getPlane()),
 					0, outlineWidth, innerColor, outerColor);
 			}
 
-			model = itemLayer.getModelMiddle();
+			model = tileItemPile.getModelMiddle();
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
-					Perspective.getTileHeight(client, lp, itemLayer.getPlane()),
+					Perspective.getTileHeight(client, lp, tileItemPile.getPlane()),
 					0, outlineWidth, innerColor, outerColor);
 			}
 
-			model = itemLayer.getModelTop();
+			model = tileItemPile.getModelTop();
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
-					Perspective.getTileHeight(client, lp, itemLayer.getPlane()),
+					Perspective.getTileHeight(client, lp, tileItemPile.getPlane()),
 					0, outlineWidth, innerColor, outerColor);
 			}
 		}
@@ -1086,9 +1086,9 @@ public class ModelOutlineRenderer
 		{
 			drawOutline((GroundObject) tileObject, outlineWidth, innerColor, outerColor);
 		}
-		else if (tileObject instanceof ItemLayer)
+		else if (tileObject instanceof TileItemPile)
 		{
-			drawOutline((ItemLayer) tileObject, outlineWidth, innerColor, outerColor);
+			drawOutline((TileItemPile) tileObject, outlineWidth, innerColor, outerColor);
 		}
 		else if (tileObject instanceof DecorativeObject)
 		{

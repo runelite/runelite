@@ -24,11 +24,11 @@
  */
 package net.runelite.api;
 
-public interface Item
-{
-	int getId();
-	int getQuantity();
+import lombok.Value;
 
-	void setId(int id);
-	void setQuantity(int quantity);
+@Value
+public class Item
+{
+	private final int id;
+	private final int quantity;
 }

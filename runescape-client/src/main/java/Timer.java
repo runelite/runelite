@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jr")
-@Implements("Timer") //GroundItem
+@Implements("Timer")
 public class Timer {
 	@ObfuscatedName("q")
 	@ObfuscatedGetter(

@@ -3,7 +3,7 @@ package net.runelite.rs.api;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
+import net.runelite.api.TileItemPile;
 import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
@@ -18,7 +18,7 @@ public interface RSTile extends Tile
 
 	@Import("tileItemPile")
 	@Override
-	ItemLayer getItemLayer();
+	TileItemPile getItemLayer();
 
 	@Import("wallDecoration")
 	@Override

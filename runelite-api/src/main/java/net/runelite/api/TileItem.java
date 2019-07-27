@@ -25,7 +25,7 @@
 package net.runelite.api;
 
 /**
- * Represents an item inside an {@link ItemLayer}.
+ * Represents an item inside an {@link TileItemPile}.
  */
 public interface TileItem extends Renderable
 {

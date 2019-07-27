@@ -27,7 +27,7 @@ package net.runelite.api;
 /**
  * Represents a pile of items held by a tile.
  */
-public interface ItemLayer extends TileObject
+public interface TileItemPile extends TileObject
 {
 	/**
 	 * Gets the height of the layer.
