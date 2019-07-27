@@ -32,7 +32,7 @@ import net.runelite.api.ItemDefinition;
  * its data is initialized.
  */
 @Data
-public class PostItemDefinition
+public class PostItemDefinition implements Event
 {
 	/**
 	 * The newly created item.

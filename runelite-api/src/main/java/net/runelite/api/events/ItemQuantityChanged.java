@@ -33,7 +33,7 @@ import lombok.Value;
  * Called when the quantity of an item pile changes.
  */
 @Value
-public class ItemQuantityChanged
+public class ItemQuantityChanged implements Event
 {
 	private final TileItem item;
 	private final Tile tile;

@@ -33,7 +33,7 @@ import net.runelite.api.MenuEntry;
  */
 @Data
 @AllArgsConstructor
-public class MenuEntryAdded
+public class MenuEntryAdded implements Event
 {
 	/**
 	 * The MenuEntry object that was actually added

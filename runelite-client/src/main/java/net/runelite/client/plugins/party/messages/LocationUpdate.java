@@ -27,11 +27,12 @@ package net.runelite.client.plugins.party.messages;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.Event;
 import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class LocationUpdate extends PartyMemberMessage
+public class LocationUpdate extends PartyMemberMessage implements Event
 {
 	private final WorldPoint worldPoint;
 }

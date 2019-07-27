@@ -27,7 +27,7 @@ package net.runelite.api.events;
 /**
  * Posted every client tick
  */
-public class ClientTick
+public class ClientTick implements Event
 {
 	public static final ClientTick INSTANCE = new ClientTick();
 

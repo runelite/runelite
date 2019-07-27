@@ -25,10 +25,11 @@
 package net.runelite.client.events;
 
 import lombok.Data;
+import net.runelite.api.events.Event;
 import net.runelite.client.plugins.Plugin;
 
 @Data
-public class PluginChanged
+public class PluginChanged implements Event
 {
 	private final Plugin plugin;
 	private final boolean loaded;

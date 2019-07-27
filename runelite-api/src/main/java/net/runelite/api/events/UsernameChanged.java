@@ -30,7 +30,7 @@ package net.runelite.api.events;
  * This event triggers for every character change to the username
  * in the login screen.
  */
-public class UsernameChanged
+public class UsernameChanged implements Event
 {
 	public static final UsernameChanged INSTANCE = new UsernameChanged();
 

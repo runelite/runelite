@@ -31,7 +31,7 @@ import lombok.Data;
  * An event where an option has been clicked in a {@link net.runelite.api.widgets.Widget}s menu.
  */
 @Data
-public class WidgetMenuOptionClicked
+public class WidgetMenuOptionClicked implements Event
 {
 	/**
 	 * The clicked menu option.

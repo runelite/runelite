@@ -28,7 +28,7 @@ package net.runelite.api.events;
  * An event where the position of a {@link net.runelite.api.widgets.Widget}
  * relative to its parent has changed.
  */
-public class WidgetPositioned
+public class WidgetPositioned implements Event
 {
 	public static final WidgetPositioned INSTANCE = new WidgetPositioned();
 

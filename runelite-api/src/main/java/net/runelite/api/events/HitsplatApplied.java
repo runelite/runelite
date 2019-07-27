@@ -36,7 +36,7 @@ import lombok.Data;
  * visible hitsplats.
  */
 @Data
-public class HitsplatApplied
+public class HitsplatApplied implements Event
 {
 	/**
 	 * The actor the hitsplat was applied to.
