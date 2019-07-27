@@ -323,6 +323,7 @@ public final class AnimationID
 	public static final int CHIN_ANIMATION = 7618;
 
 	// Gauntlet Hunleff
+	public static final int HUNLEFF_TRAMPLE = 8420;
 	public static final int HUNLEFF_ATTACK = 8419;
 	public static final int HUNLEFF_TORNADO = 8418;
 }
