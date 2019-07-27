@@ -50,3 +50,11 @@ compileJava.doLast() {
     ]
     inject.main(jarPaths)
 }
+
+test {
+    exclude '**/*'
+}
+
+compileTestJava {
+    exclude '**/*'
+}

@@ -27,6 +27,10 @@ ext {
     cacheversion = 165
 }
 
+test {
+    exclude '**/TitleDumper*'
+}
+
 processTestResources {
     from file("src/test/resources/cache.properties"), {
         filter(ReplaceTokens, tokens: [
