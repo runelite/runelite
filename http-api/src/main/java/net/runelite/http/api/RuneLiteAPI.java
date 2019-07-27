@@ -45,7 +45,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
@@ -53,9 +52,9 @@ import java.util.concurrent.TimeUnit;
 
 public class RuneLiteAPI
 {
-	public static final String buildCommit = "6fe334c02648d3f8b38625e3175e3f547d54aa37";
-	private static final String version = "1.5.30-SNAPSHOT";
-	private static final int rsVersion = 181;
+	private static String version;
+	private static String upstreamVersion;
+	private static int rsVersion;
 
 	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
 	public static final OkHttpClient CLIENT;
@@ -63,13 +62,12 @@ public class RuneLiteAPI
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Logger logger = LoggerFactory.getLogger(RuneLiteAPI.class);
 	private static final String BASE = "https://api.runelite.net";
-	private static final String PLUS_BASE = "https://api.runelitepl.us";
-	private static final String RLPLUS = "https://session.runelitepl.us";
+	private static final String RLPLUS_BASE = "https://api.runelitepl.us";
+	private static final String RLPLUS_SESSION = "https://session.runelitepl.us";
 	private static final String WSBASE = "https://api.runelite.net/ws";
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final String MAVEN_METADATA =
 		"http://repo.runelite.net/net/runelite/runelite-parent/maven-metadata.xml";
-	private static final String GITHUB_API = "https://api.github.com/repos/runelite/runelite/commits/master";
 	private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
 	private static final Properties properties = new Properties();
 	private static String userAgent;
@@ -83,15 +81,18 @@ public class RuneLiteAPI
 			properties.load(in);
 
 			parseMavenVersion();
-			String commit = buildCommit;
-			String rlpCommit = "";
-			boolean dirty = false;
+			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
+			String commit = randomAlphaNumeric(7);
+			String rlpCommit = properties.getProperty("runelite.commit");
+			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
+			version = properties.getProperty("runelite.version");
 
-			userAgent = "RuneLite/" + version + "-" + commit + (dirty ? "+" : "");
-			rlpUserAgent = "RuneLite/" + version + "-" + rlpCommit + (dirty ? "+" : "");
+			userAgent = "RuneLite/" + upstreamVersion + "-" + commit + (dirty ? "+" : "");
+			rlpUserAgent = "RuneLitePlus/" + version + "-" + rlpCommit + (dirty ? "+" : "");
 		}
 		catch (NumberFormatException e)
 		{
+			e.printStackTrace();
 			throw new RuntimeException("Version string has not been substituted; Re-run maven");
 		}
 		catch (IOException ex)
@@ -150,7 +151,7 @@ public class RuneLiteAPI
 
 	public static HttpUrl getRuneLitePlusSessionBase()
 	{
-		return HttpUrl.parse(RLPLUS);
+		return HttpUrl.parse(RLPLUS_SESSION);
 	}
 
 	public static HttpUrl getApiBase()
@@ -167,7 +168,7 @@ public class RuneLiteAPI
 
 	public static HttpUrl getPlusApiBase()
 	{
-		return HttpUrl.parse(PLUS_BASE + "/runelite-" + getRlpVersion());
+		return HttpUrl.parse(RLPLUS_BASE + "/runelite-" + getRlpVersion());
 	}
 
 	public static HttpUrl getStaticBase()
@@ -197,11 +198,6 @@ public class RuneLiteAPI
 	public static String getVersion()
 	{
 		return version;
-	}
-
-	public static void setVersion(String version)
-	{
-		//RuneLiteAPI.version = version;
 	}
 
 	public static int getRsVersion()
@@ -256,7 +252,7 @@ public class RuneLiteAPI
 				Node node = versionList.item(i);
 				if (node.getTextContent() != null)
 				{
-					//version = node.getTextContent();
+					upstreamVersion = node.getTextContent();
 				}
 			}
 		}
@@ -264,37 +260,6 @@ public class RuneLiteAPI
 		{
 			logger.error(null, ex);
 		}
-	}
-
-	private static String parseGithubCommit()
-	{
-		try
-		{
-			byte[] commits = downloadUrl(new URL(GITHUB_API));
-
-			if (commits == null)
-			{
-				return null;
-			}
-
-			String jsonData = new String(commits);
-
-			for (String s : jsonData.split("\n"))
-			{
-				if (s.startsWith("\"sha\":"))
-				{
-					s = s.replace(",", "");
-					s = s.replace(" ", "");
-					s = s.replace("\"", "");
-					return s.split(":")[1];
-				}
-			}
-		}
-		catch (MalformedURLException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	private static String randomAlphaNumeric(int count)

@@ -22,11 +22,6 @@ dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
 }
 
-ext {
-    rsversion = 181
-    cacheversion = 165
-}
-
 test {
     exclude '**/TitleDumper*'
 }

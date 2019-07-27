@@ -1,11 +1,43 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.ajoberstar.grgit:grgit-gradle:3.1.1"
+    }
+}
+
 plugins {
     id "com.github.ben-manes.versions" version "0.21.0"
     id "com.gradle.build-scan" version "2.3"
 }
 
+apply plugin: 'application'
+
+ext {
+    grgit = org.ajoberstar.grgit.Grgit.open(dir: '.')
+    localGitCommit = grgit.head().id
+    localGitCommitShort = grgit.head().getAbbreviatedId(7)
+    localGitDirty = !grgit.status().clean
+}
+
 allprojects {
     apply plugin: 'maven'
     apply plugin: 'checkstyle'
+
+    ext {
+        rsversion = 181
+        cacheversion = 165
+
+        gitCommit = localGitCommit
+        gitCommitShort = localGitCommitShort
+        gitDirty = localGitDirty
+
+        rootPath = rootDir.toString().replace('\\', '/')
+        injectedClassesPath = rootPath + "/injector-plugin/out/injected-client/"
+    }
 
     group = 'net.runelite'
     version = '1.5.30-SNAPSHOT'
@@ -54,4 +86,10 @@ wrapper {
         scriptFile.write scriptFile.text.replace("$optsEnvVar='\"-Xmx64m\" \"-Xms64m\"'", "$optsEnvVar='\"-Xmx4g\" \"-Xms2g\" \"-Dfile.encoding=UTF-8\"'")
         batchScript.write batchScript.text.replace("set $optsEnvVar=\"-Xmx64m\" \"-Xms64m\"", "set $optsEnvVar=\"-Xmx4g\" \"-Xms2g\" \"-Dfile.encoding=UTF-8\"")
     }
+}
+
+run {
+    classpath = childProjects.client.sourceSets.main.runtimeClasspath
+    mainClassName = "net.runelite.client.RuneLite"
+    args += "--local-injected"
 }
