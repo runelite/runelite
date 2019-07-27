@@ -96,7 +96,6 @@ import org.apache.commons.lang3.ArrayUtils;
 public class WorldHopperPlugin extends Plugin
 {
 	private static final int WORLD_FETCH_TIMER = 10;
-	private static final int WORLD_PING_TIMER = 10;
 	private static final int REFRESH_THROTTLE = 60_000; // ms
 	private static final int TICK_THROTTLE = (int) Duration.ofMinutes(10).toMillis();
 
@@ -146,6 +145,7 @@ public class WorldHopperPlugin extends Plugin
 
 	private ScheduledFuture<?> worldResultFuture, pingFuture;
 	private WorldResult worldResult;
+	private int currentWorld;
 	private Instant lastFetch;
 	private boolean firstRun;
 
@@ -201,10 +201,14 @@ public class WorldHopperPlugin extends Plugin
 		}
 
 		panel.setFilterMode(config.subscriptionFilter());
+
+		// The plugin has its own executor for pings, as it blocks for a long time
+		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
+		// On first run this schedules an initial ping on hopperExecutorService
 		worldResultFuture = executorService.scheduleAtFixedRate(this::tick, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
 
-		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
-		pingFuture = hopperExecutorService.scheduleAtFixedRate(this::pingWorlds, WORLD_PING_TIMER, WORLD_PING_TIMER, TimeUnit.MINUTES);
+		// Give some initial delay - this won't run until after pingInitialWorlds finishes from tick() anyway
+		pingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingNextWorld, 15, 3, TimeUnit.SECONDS);
 	}
 
 	@Override
@@ -459,7 +463,8 @@ public class WorldHopperPlugin extends Plugin
 		if (firstRun)
 		{
 			firstRun = false;
-			hopperExecutorService.execute(this::pingWorlds);
+			// On first run we ping all of the worlds at once to initialize the ping values
+			hopperExecutorService.execute(this::pingInitialWorlds);
 		}
 	}
 
@@ -755,7 +760,10 @@ public class WorldHopperPlugin extends Plugin
 		return null;
 	}
 
-	private void pingWorlds()
+	/**
+	 * Ping all worlds. This takes a long time and is only run on first run.
+	 */
+	private void pingInitialWorlds()
 	{
 		if (worldResult == null || !config.showSidebar() || !config.ping())
 		{
@@ -773,5 +781,34 @@ public class WorldHopperPlugin extends Plugin
 		stopwatch.stop();
 
 		log.debug("Done pinging worlds in {}", stopwatch.elapsed());
+	}
+
+	/**
+	 * Ping the next world
+	 */
+	private void pingNextWorld()
+	{
+		if (worldResult == null || !config.showSidebar() || !config.ping())
+		{
+			return;
+		}
+
+		List<World> worlds = worldResult.getWorlds();
+		if (worlds.isEmpty())
+		{
+			return;
+		}
+
+		if (currentWorld >= worlds.size())
+		{
+			// Wrap back around
+			currentWorld = 0;
+		}
+
+		World world = worlds.get(currentWorld++);
+
+		int ping = Ping.ping(world);
+		log.trace("Ping for world {} is: {}", world.getId(), ping);
+		SwingUtilities.invokeLater(() -> panel.updatePing(world.getId(), ping));
 	}
 }
