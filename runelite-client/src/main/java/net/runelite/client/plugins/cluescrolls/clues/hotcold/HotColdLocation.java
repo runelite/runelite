@@ -158,7 +158,7 @@ public enum HotColdLocation
 	WILDERNESS_54(new WorldPoint(2983, 3946, 0), WILDERNESS, "West of the Wilderness Agility Course, level 54 Wilderness."),
 	ZEAH_BLASTMINE_BANK(new WorldPoint(1507, 3856, 0), ZEAH, "Next to the bank in the Lovakengj blast mine."),
 	ZEAH_BLASTMINE_NORTH(new WorldPoint(1490, 3883, 0), ZEAH, "Northern part of the Lovakengj blast mine."),
-	ZEAH_LOVAKITE_FURNACE(new WorldPoint(1505, 3814, 0), ZEAH, "Next to the lovakite furnace in Lovakengj."),
+	ZEAH_LOVAKITE_FURNACE(new WorldPoint(1507, 3819, 0), ZEAH, "Next to the lovakite furnace in Lovakengj."),
 	ZEAH_LOVAKENGJ_MINE(new WorldPoint(1477, 3779, 0), ZEAH, "Next to mithril rock in the Lovakengj mine."),
 	ZEAH_SULPHR_MINE(new WorldPoint(1428, 3866, 0), ZEAH, "Western entrance in the Lovakengj sulphur mine."),
 	ZEAH_SHAYZIEN_BANK(new WorldPoint(1517, 3603, 0), ZEAH, "South-east of the bank in Shayzien."),
