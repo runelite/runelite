@@ -27,10 +27,12 @@ package net.runelite.client.plugins.grounditems;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.EvictingQueue;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,6 +40,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
@@ -67,6 +70,7 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -164,6 +168,7 @@ public class GroundItemsPlugin extends Plugin
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
+	private final Queue<Integer> droppedItemQueue = EvictingQueue.create(16); // recently dropped items
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -226,6 +231,7 @@ public class GroundItemsPlugin extends Plugin
 		if (existing != null)
 		{
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
+			// The spawn time remains set at the oldest spawn
 		}
 
 		boolean shouldNotify = !config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
@@ -259,6 +265,10 @@ public class GroundItemsPlugin extends Plugin
 		else
 		{
 			groundItem.setQuantity(groundItem.getQuantity() - item.getQuantity());
+			// When picking up an item when multiple stacks appear on the ground,
+			// it is not known which item is picked up, so we invalidate the spawn
+			// time
+			groundItem.setSpawnTime(null);
 		}
 	}
 
@@ -283,14 +293,14 @@ public class GroundItemsPlugin extends Plugin
 	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
 	{
 		Collection<ItemStack> items = npcLootReceived.getItems();
-		lootReceived(items);
+		lootReceived(items, LootType.PVM);
 	}
 
 	@Subscribe
 	public void onPlayerLootReceived(PlayerLootReceived playerLootReceived)
 	{
 		Collection<ItemStack> items = playerLootReceived.getItems();
-		lootReceived(items);
+		lootReceived(items, LootType.PVP);
 	}
 
 	@Subscribe
@@ -341,7 +351,7 @@ public class GroundItemsPlugin extends Plugin
 		}).toArray(MenuEntry[]::new));
 	}
 
-	private void lootReceived(Collection<ItemStack> items)
+	private void lootReceived(Collection<ItemStack> items, LootType lootType)
 	{
 		for (ItemStack itemStack : items)
 		{
@@ -350,7 +360,7 @@ public class GroundItemsPlugin extends Plugin
 			GroundItem groundItem = collectedGroundItems.get(groundItemKey);
 			if (groundItem != null)
 			{
-				groundItem.setMine(true);
+				groundItem.setLootType(lootType);
 
 				boolean shouldNotify = config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
 					groundItem.getName(),
@@ -372,6 +382,7 @@ public class GroundItemsPlugin extends Plugin
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
+		final boolean dropped = tile.getWorldLocation().equals(client.getLocalPlayer().getWorldLocation()) && droppedItemQueue.remove(itemId);
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -382,6 +393,9 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
+			.lootType(LootType.UNKNOWN)
+			.isDropped(dropped)
+			.spawnTime(Instant.now())
 			.build();
 
 
@@ -666,5 +680,17 @@ public class GroundItemsPlugin extends Plugin
 
 		notificationStringBuilder.append("!");
 		notifier.notify(notificationStringBuilder.toString());
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	{
+		if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_DROP)
+		{
+			int itemId = menuOptionClicked.getId();
+			// Keep a queue of recently dropped items to better detect
+			// item spawns that are drops
+			droppedItemQueue.add(itemId);
+		}
 	}
 }

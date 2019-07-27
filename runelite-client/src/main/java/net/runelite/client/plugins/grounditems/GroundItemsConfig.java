@@ -358,4 +358,15 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "groundItemTimers",
+		name = "Show despawn timers",
+		description = "Shows despawn timers for items you've dropped and received as loot",
+		position = 28
+	)
+	default boolean groundItemTimers()
+	{
+		return false;
+	}
 }
