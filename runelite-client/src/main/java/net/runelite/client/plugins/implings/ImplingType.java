@@ -41,7 +41,8 @@ enum ImplingType
 	MAGPIE("Magpie"),
 	NINJA("Ninja"),
 	DRAGON("Dragon"),
-	LUCKY("Lucky");
+	LUCKY("Lucky"),
+	CRYSTAL("Crystal");
 
 	private final String name;
 }

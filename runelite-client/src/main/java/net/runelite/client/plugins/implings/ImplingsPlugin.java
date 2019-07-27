@@ -168,6 +168,8 @@ public class ImplingsPlugin extends Plugin
 				return config.showDragon();
 			case LUCKY:
 				return config.showLucky();
+			case CRYSTAL:
+				return config.showCrystal();
 			default:
 				return false;
 		}
@@ -206,6 +208,8 @@ public class ImplingsPlugin extends Plugin
 				return config.getDragonColor();
 			case LUCKY:
 				return config.getLuckyColor();
+			case CRYSTAL:
+				return config.getCrystalColor();
 			default:
 				return null;
 		}
