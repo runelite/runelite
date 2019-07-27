@@ -302,7 +302,7 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 21,
 		keyName = "agilityFirstThreshold",
-		name = "Format",
+		name = "First Threshold",
 		description = "When showing agility as icons, show one icon for agility >= this level.",
 		group = "Target Indicator"
 	)
@@ -314,7 +314,7 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 22,
 		keyName = "agilitySecondThreshold",
-		name = "Format",
+		name = "Second Threshold",
 		description = "When showing agility as icons, show two icons for agility >= this level.",
 		group = "Target Indicator"
 	)
