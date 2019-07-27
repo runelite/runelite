@@ -45,7 +45,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TimersPluginTest
@@ -114,7 +114,6 @@ public class TimersPluginTest
 	public void testDmmHalfTb()
 	{
 		timersPlugin.setShowTeleblock(true);
-		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.DEADMAN));
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", DMM_HALF_TELEBLOCK_MESSAGE, "", 0);
 		timersPlugin.onChatMessage(chatMessage);
 

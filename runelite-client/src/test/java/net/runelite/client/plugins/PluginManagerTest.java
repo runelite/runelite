@@ -58,7 +58,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PluginManagerTest
@@ -110,6 +110,7 @@ public class PluginManagerTest
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testLoadPlugins() throws Exception
 	{
@@ -145,10 +146,7 @@ public class PluginManagerTest
 
 		PluginManager pluginManager = new PluginManager(true, null, null, null, null, null);
 		pluginManager.loadCorePlugins();
-		for (Plugin p : pluginManager.getPlugins())
-		{
-			modules.add(p);
-		}
+		modules.addAll(pluginManager.getPlugins());
 
 		File file = folder.newFile();
 		try (PrintWriter out = new PrintWriter(file, "UTF-8"))

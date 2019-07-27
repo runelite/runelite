@@ -6,34 +6,35 @@ plugins {
 description = 'RuneLite Client'
 
 dependencies {
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-    compile group: 'net.sf.jopt-simple', name: 'jopt-simple', version: '5.0.4'
-    compile group: 'com.google.guava', name: 'guava', version: '28.0-jre'
-    compile group: 'com.google.inject', name: 'guice', version: '4.2.2', classifier: 'no_aop'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
-    compile group: 'net.runelite.pushingpixels', name: 'substance', version: '8.0.02'
-    compile group: 'org.apache.commons', name: 'commons-text', version: '1.7'
-    compile group: 'org.jogamp.jogl', name: 'jogl-all', version: '2.3.2'
-    compile group: 'org.jogamp.gluegen', name: 'gluegen-rt', version: '2.3.2'
-    compile(group: 'io.sigpipe', name: 'jbsdiff', version: '1.0') {
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.0.1'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    implementation group: 'net.sf.jopt-simple', name: 'jopt-simple', version: '5.0.4'
+    implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+    implementation group: 'com.google.inject', name: 'guice', version: '4.2.2', classifier: 'no_aop'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+    implementation group: 'net.runelite.pushingpixels', name: 'substance', version: '8.0.02'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.7'
+    implementation group: 'org.jogamp.jogl', name: 'jogl-all', version: '2.3.2'
+    implementation group: 'org.jogamp.gluegen', name: 'gluegen-rt', version: '2.3.2'
+    implementation(group: 'io.sigpipe', name: 'jbsdiff', version: '1.0') {
         exclude(module: 'xz')
     }
-    compile group: 'net.java.dev.jna', name: 'jna', version: '5.4.0'
-    compile group: 'net.java.dev.jna', name: 'jna-platform', version: '5.4.0'
-    compile project(':runelite-api')
-    compile project(':http-api')
-    compile group: 'net.runelite', name: 'discord', version: '1.1'
-    compile group: 'org.javassist', name: 'javassist', version: '3.25.0-GA'
-    compile group: 'org.xeustechnologies', name: 'jcl-core', version: '2.8'
-    compile group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
-    compile group: 'com.github.joonasvali.naturalmouse', name: 'naturalmouse', version: '[1.0.0,)'
-    compile group: 'org.ow2.asm', name: 'asm-all', version: '6.0_BETA'
-    compile group: 'org.codehaus.plexus', name: 'plexus-utils', version: '3.2.1'
-    compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.11'
-    compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.9'
-    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.10'
-    compile group: 'com.jakewharton.rxrelay2', name: 'rxrelay', version: '2.1.0'
+    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.4.0'
+    implementation group: 'net.java.dev.jna', name: 'jna-platform', version: '5.4.0'
+    implementation project(':runelite-api')
+    implementation project(':http-api')
+    implementation group: 'net.runelite', name: 'discord', version: '1.1'
+    implementation group: 'org.javassist', name: 'javassist', version: '3.25.0-GA'
+    implementation group: 'org.xeustechnologies', name: 'jcl-core', version: '2.8'
+    implementation group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
+    implementation group: 'com.github.joonasvali.naturalmouse', name: 'naturalmouse', version: '[1.0.0,)'
+    implementation group: 'org.ow2.asm', name: 'asm-all', version: '6.0_BETA'
+    implementation group: 'org.codehaus.plexus', name: 'plexus-utils', version: '3.2.1'
+    implementation group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.11'
+    implementation group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.9'
+    implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.10'
+    implementation group: 'com.jakewharton.rxrelay2', name: 'rxrelay', version: '2.1.0'
     runtime group: 'net.runelite.pushingpixels', name: 'trident', version: '1.5.00'
     runtime group: 'org.jogamp.jogl', name: 'jogl-all', version: '2.3.2', classifier: 'natives-windows-amd64'
     runtime group: 'org.jogamp.jogl', name: 'jogl-all', version: '2.3.2', classifier: 'natives-windows-i586'
@@ -44,13 +45,17 @@ dependencies {
     runtime group: 'org.jogamp.gluegen', name: 'gluegen-rt', version: '2.3.2', classifier: 'natives-linux-amd64'
     runtime group: 'org.jogamp.gluegen', name: 'gluegen-rt', version: '2.3.2', classifier: 'natives-linux-i586'
     runtime project(':runescape-api')
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '2.1'
-    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
-    testCompile group: 'com.google.inject.extensions', name: 'guice-testlib', version: '4.2.2'
-    testCompile group: 'com.google.inject.extensions', name: 'guice-grapher', version: '4.2.2'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+    testImplementation group: 'org.hamcrest', name: 'hamcrest-library', version: '2.1'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.0.0'
+    testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.0.0'
+    testImplementation group: 'com.google.inject.extensions', name: 'guice-testlib', version: '4.2.2'
+    testImplementation group: 'com.google.inject.extensions', name: 'guice-grapher', version: '4.2.2'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     compileOnly group: 'net.runelite', name: 'orange-extensions', version: '1.0'
 }
 
@@ -66,7 +71,7 @@ jar {
 }
 
 shadowJar {
-    classifier = "shaded"
+    archiveClassifier.set("shaded")
 }
 
 tasks.build.dependsOn tasks.shadowJar

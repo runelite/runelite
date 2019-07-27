@@ -13,5 +13,5 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
-script: ./gradlew clean build -x test
+script: ./gradlew build -x test --rerun-tasks
 

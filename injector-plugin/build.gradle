@@ -2,28 +2,35 @@ group = 'net.runelite.rs'
 description = 'Injector'
 
 def osrsRevision = 181
-def deobfuscatedJar = "${project.rootDir}/runescape-client/build/libs/rs-client-"+project.version+".jar"
-def vanillaJar = "$buildDir/vanilla-"+osrsRevision+".jar"
-def injectedJar = "${project.rootDir}/injected-client/build/libs/injected-client-"+project.version+".jar"
+def rootPath = project.rootDir.toString().replace('\\', '/')
+def buildPath = project.buildDir.toString().replace('\\', '/')
+def deobfuscatedJar = "${rootPath}/runescape-client/build/libs/rs-client-${project.version}.jar"
+def vanillaJar = "${buildPath}/vanilla-${osrsRevision}.jar"
+def injectedJar = "${rootPath}/injected-client/build/libs/injected-client-${project.version}.jar"
 
 configurations {
     vanilla
 }
 
 dependencies {
-    compile project(':deobfuscator')
-    compile project(':mixins')
-    compile project(':runelite-api')
-    compile project(':runescape-api')
-    compile project(':rs-client')
-    compile project(':injected-client')
-    compile group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.6.1'
-    testCompile project(':deobfuscator')
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    implementation project(':deobfuscator')
+    implementation project(':mixins')
+    implementation project(':runelite-api')
+    implementation project(':runescape-api')
+    implementation project(':injected-client')
+    implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+    implementation group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.6.1'
+    implementation group: 'org.ow2.asm', name: 'asm-debug-all', version: '5.2'
+    testImplementation project(':deobfuscator')
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.0.0'
     compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version: '3.6.0'
     annotationProcessor group: 'org.eclipse.sisu', name: 'org.eclipse.sisu.inject', version: '0.3.3'
     vanilla "net.runelite.rs:vanilla:"+osrsRevision
+}
+
+compileJava {
+    dependsOn ":rs-client:build"
 }
 
 compileJava.outputs.upToDateWhen {false}
@@ -37,9 +44,17 @@ compileJava.doLast() {
     def loader = new URLClassLoader(path.collect { f -> f.toURL() } as URL[])
     def inject = loader.loadClass('net.runelite.injector.Injector')
     String[] jarPaths = [
-            deobfuscatedJar,
-            vanillaJar,
-            injectedJar
+            deobfuscatedJar.toString(),
+            vanillaJar.toString(),
+            injectedJar.toString()
     ]
     inject.main(jarPaths)
+}
+
+test {
+    exclude '**/*'
+}
+
+compileTestJava {
+    exclude '**/*'
 }
