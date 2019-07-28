@@ -105,6 +105,8 @@ public class ImplingsPlugin extends Plugin
 	private Color getMagpieColor;
 	private boolean showNinja;
 	private Color getNinjaColor;
+	private boolean showCrystal;
+	private Color getCrystalColor;
 	private boolean showDragon;
 	private Color getDragonColor;
 	private boolean showLucky;
@@ -260,6 +262,8 @@ public class ImplingsPlugin extends Plugin
 				return this.showMagpie;
 			case NINJA:
 				return this.showNinja;
+			case CRYSTAL:
+				return this.showCrystal;
 			case DRAGON:
 				return this.showDragon;
 			case LUCKY:
@@ -303,6 +307,8 @@ public class ImplingsPlugin extends Plugin
 				return this.getMagpieColor;
 			case NINJA:
 				return this.getNinjaColor;
+			case CRYSTAL:
+				return this.getCrystalColor;
 			case DRAGON:
 				return this.getDragonColor;
 			case LUCKY:
@@ -342,6 +348,8 @@ public class ImplingsPlugin extends Plugin
 		this.getMagpieColor = config.getMagpieColor();
 		this.showNinja = config.showNinja();
 		this.getNinjaColor = config.getNinjaColor();
+		this.showCrystal = config.showCrystal();
+		this.getCrystalColor = config.getCrystalColor();
 		this.showDragon = config.showDragon();
 		this.getDragonColor = config.getDragonColor();
 		this.showLucky = config.showLucky();
