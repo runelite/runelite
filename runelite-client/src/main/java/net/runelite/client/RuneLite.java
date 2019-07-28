@@ -377,6 +377,8 @@ public class RuneLite
 		// Start plugins
 		pluginManager.startCorePlugins();
 
+		discordService.init();
+
 		// Register additional schedulers
 		if (this.client != null)
 		{
