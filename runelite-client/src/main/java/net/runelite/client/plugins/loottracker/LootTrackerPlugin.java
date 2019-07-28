@@ -124,7 +124,8 @@ public class LootTrackerPlugin extends Plugin
 		5179, "Brimstone Chest",
 		11573, "Crystal Chest",
 		12093, "Larran's big chest",
-		13113, "Larran's small chest"
+		13113, "Larran's small chest",
+		13151, "Elven Crystal Chest"
 	);
 
 	// Last man standing map regions
