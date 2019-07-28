@@ -48,7 +48,6 @@ public class DiscordMessage
 	String avatarUrl;
 	@SerializedName("tts")
 	boolean textToSpeech;
-	@Builder.Default
 	List<DiscordEmbed> embeds = new ArrayList<>();
 
 	public DiscordMessage()
