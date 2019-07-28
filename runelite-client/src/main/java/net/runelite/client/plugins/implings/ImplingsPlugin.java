@@ -164,12 +164,12 @@ public class ImplingsPlugin extends Plugin
 				return config.showMagpie();
 			case NINJA:
 				return config.showNinja();
+			case CRYSTAL:
+				return config.showCrystal();
 			case DRAGON:
 				return config.showDragon();
 			case LUCKY:
 				return config.showLucky();
-			case CRYSTAL:
-				return config.showCrystal();
 			default:
 				return false;
 		}
@@ -204,12 +204,12 @@ public class ImplingsPlugin extends Plugin
 				return config.getMagpieColor();
 			case NINJA:
 				return config.getNinjaColor();
+			case CRYSTAL:
+				return config.getCrystalColor();
 			case DRAGON:
 				return config.getDragonColor();
 			case LUCKY:
 				return config.getLuckyColor();
-			case CRYSTAL:
-				return config.getCrystalColor();
 			default:
 				return null;
 		}

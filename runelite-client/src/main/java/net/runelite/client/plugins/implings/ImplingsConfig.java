@@ -236,50 +236,6 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 19,
-		keyName = "showdragon",
-		name = "Show Dragon implings",
-		description = "Configures whether or not Dragon impling tags are displayed"
-	)
-	default boolean showDragon()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 20,
-		keyName = "dragonColor",
-		name = "Dragon impling color",
-		description = "Text color for Dragon implings"
-	)
-	default Color getDragonColor()
-	{
-		return new Color(210, 85, 75);
-	}
-
-	@ConfigItem(
-		position = 21,
-		keyName = "showlucky",
-		name = "Show Lucky implings",
-		description = "Configures whether or not Lucky impling tags are displayed"
-	)
-	default boolean showLucky()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 22,
-		keyName = "luckyColor",
-		name = "Lucky impling color",
-		description = "Text color for Lucky implings"
-	)
-	default Color getLuckyColor()
-	{
-		return new Color(102, 7, 101);
-	}
-
-	@ConfigItem(
-		position = 23,
 		keyName = "showCrystal",
 		name = "Show Crystal implings",
 		description = "Configures whether or not Crystal implings are displayed"
@@ -290,7 +246,7 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 24,
+		position = 20,
 		keyName = "crystalColor",
 		name = "Crystal impling color",
 		description = "Text color for Crystal implings"
@@ -298,6 +254,50 @@ public interface ImplingsConfig extends Config
 	default Color getCrystalColor()
 	{
 		return new Color(93, 188, 210);
+	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "showdragon",
+		name = "Show Dragon implings",
+		description = "Configures whether or not Dragon impling tags are displayed"
+	)
+	default boolean showDragon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 22,
+		keyName = "dragonColor",
+		name = "Dragon impling color",
+		description = "Text color for Dragon implings"
+	)
+	default Color getDragonColor()
+	{
+		return new Color(210, 85, 75);
+	}
+
+	@ConfigItem(
+		position = 23,
+		keyName = "showlucky",
+		name = "Show Lucky implings",
+		description = "Configures whether or not Lucky impling tags are displayed"
+	)
+	default boolean showLucky()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 24,
+		keyName = "luckyColor",
+		name = "Lucky impling color",
+		description = "Text color for Lucky implings"
+	)
+	default Color getLuckyColor()
+	{
+		return new Color(102, 7, 101);
 	}
 
 	@ConfigItem(
