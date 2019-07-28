@@ -56,7 +56,9 @@ class RSAppletStub implements AppletStub
 		try
 		{
 			if (RuneLite.allowPrivateServer)
-			return new URL(StringFileUtils.readStringFromFile("./codebase"));
+			{
+				return new URL(StringFileUtils.readStringFromFile("./codebase"));
+			}
 
 			return new URL(config.getCodeBase());
 		}

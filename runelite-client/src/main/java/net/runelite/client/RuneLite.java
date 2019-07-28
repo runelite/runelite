@@ -58,7 +58,6 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
@@ -179,8 +178,8 @@ public class RuneLite
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("no-splash", "Do not show the splash screen");
-		parser.accepts("local-injected", "Use local injected-client");
-		parser.accepts("private-server", "Use a custom codebase");
+		parser.accepts("local-injected", "Use local injected-client - DEPRECATED");
+		parser.accepts("private-server", "Use a custom codebase - DEPRECATED: Use --rs=RSPS");
 
 		final ArgumentAcceptingOptionSpec<String> proxyInfo = parser
 			.accepts("proxy")
@@ -261,7 +260,7 @@ public class RuneLite
 
 		if (options.has("local-injected"))
 		{
-			ClientLoader.useLocalInjected = true;
+			log.warn("--local-injected has been deprecated and may get removed soon");
 		}
 
 		if (options.has("private-server"))

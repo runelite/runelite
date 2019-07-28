@@ -27,6 +27,9 @@ allprojects {
     apply plugin: 'maven'
     apply plugin: 'checkstyle'
 
+    group = 'net.runelite'
+    version = '1.5.30-SNAPSHOT'
+
     ext {
         rsversion = 181
         cacheversion = 165
@@ -36,11 +39,8 @@ allprojects {
         gitDirty = localGitDirty
 
         rootPath = rootDir.toString().replace('\\', '/')
-        injectedClassesPath = rootPath + "/injector-plugin/out/injected-client/"
+        injectedClassesPath = rootPath + "/injected-client/build/libs/injected-client-" + version + ".jar"
     }
-
-    group = 'net.runelite'
-    version = '1.5.30-SNAPSHOT'
 
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
