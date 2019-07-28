@@ -261,6 +261,8 @@ public class GrandExchangePlugin extends Plugin
 					keyManager.unregisterKeyListener(inputListener);
 				}
 			}
+
+			updateTopText(); //add others in need of change
 		}
 	}
 
@@ -437,13 +439,18 @@ public class GrandExchangePlugin extends Plugin
 			return;
 		}
 
+		updateTopText();
+	}
+
+	private void updateTopText()
+	{
 		long total = 0;
 		GrandExchangeOffer[] offers = client.getGrandExchangeOffers();
 		for (GrandExchangeOffer offer : offers)
 		{
 			if (offer != null)
 			{
-				total += offer.getPrice() * offer.getTotalQuantity();
+				total += offer.getPrice() * (offer.getTotalQuantity() - offer.getQuantitySold());
 			}
 		}
 
@@ -471,7 +478,6 @@ public class GrandExchangePlugin extends Plugin
 
 		stringStack[stringStackSize - 1] += titleBuilder.toString();
 	}
-
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
