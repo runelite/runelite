@@ -26,23 +26,19 @@
  */
 package net.runelite.client.rs;
 
-import com.google.common.io.ByteStreams;
-import lombok.extern.slf4j.Slf4j;
-
+import java.net.URLClassLoader;
+import java.applet.Applet;
+import java.io.IOException;
+import java.net.URL;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import java.applet.Applet;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
 public class ClientLoader
 {
-	public static boolean useLocalInjected = false;
 	private final ClientConfigLoader clientConfigLoader;
 	private final ClientUpdateCheckMode updateCheckMode;
 
@@ -53,60 +49,6 @@ public class ClientLoader
 	{
 		this.updateCheckMode = updateCheckMode;
 		this.clientConfigLoader = clientConfigLoader;
-	}
-
-	private static Applet loadRLPlus(final RSConfig config)
-	throws ClassNotFoundException, InstantiationException, IllegalAccessException
-	{
-		ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
-		{
-			@Override
-			protected Class<?> findClass(String name) throws ClassNotFoundException
-			{
-				String path = "/injected-client/".concat(name.replace('.', '/')).concat(".class");
-				InputStream inputStream = ClientLoader.class.getResourceAsStream(path);
-				if (inputStream == null)
-				{
-					throw new ClassNotFoundException(name + " " + path);
-				}
-				byte[] data;
-				try
-				{
-					data = ByteStreams.toByteArray(inputStream);
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-					throw new RuntimeException("Failed to load class: " + name + " " + path);
-				}
-				return defineClass(name, data, 0, data.length);
-			}
-		};
-		Class<?> clientClass = rsClassLoader.loadClass("client");
-		return loadFromClass(config, clientClass);
-	}
-
-	private static Applet loadVanilla(final RSConfig config)
-	throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
-	{
-		final String codebase = config.getCodeBase();
-		final String initialJar = config.getInitialJar();
-		final String initialClass = config.getInitialClass();
-		final URL url = new URL(codebase + initialJar);
-
-		// Must set parent classloader to null, or it will pull from
-		// this class's classloader first
-		final URLClassLoader classloader = new URLClassLoader(new URL[]{url}, null);
-		final Class<?> clientClass = classloader.loadClass(initialClass);
-		return loadFromClass(config, clientClass);
-	}
-
-	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass)
-	throws IllegalAccessException, InstantiationException
-	{
-		final Applet rs = (Applet) clientClass.newInstance();
-		rs.setStub(new RSAppletStub(config));
-		return rs;
 	}
 
 	public Applet load()
@@ -140,5 +82,35 @@ public class ClientLoader
 			log.error("Error loading RS!", e);
 			return null;
 		}
+	}
+
+	private static Applet loadRLPlus(final RSConfig config)
+	throws ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		final Class<?> clientClass = ClientLoader.class.getClassLoader().loadClass(config.getInitialClass());
+		return loadFromClass(config, clientClass);
+	}
+
+	private static Applet loadVanilla(final RSConfig config)
+	throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		final String codebase = config.getCodeBase();
+		final String initialJar = config.getInitialJar();
+		final String initialClass = config.getInitialClass();
+		final URL url = new URL(codebase + initialJar);
+
+		// Must set parent classloader to null, or it will pull from
+		// this class's classloader first
+		final URLClassLoader classloader = new URLClassLoader(new URL[]{url}, null);
+		final Class<?> clientClass = classloader.loadClass(initialClass);
+		return loadFromClass(config, clientClass);
+	}
+
+	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass)
+	throws IllegalAccessException, InstantiationException
+	{
+		final Applet rs = (Applet) clientClass.newInstance();
+		rs.setStub(new RSAppletStub(config));
+		return rs;
 	}
 }
