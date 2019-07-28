@@ -226,4 +226,22 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setConfiguration("killcount.adam", "duel arena losses", 999);
 	}
+
+	@Test
+	public void testAgilityLap()
+	{
+		final String NEW_PB = "Lap duration: <col=ff0000>1:01</col> (new personal best).";
+
+		when(client.getUsername()).thenReturn("Adam");
+
+		// This sets lastBoss
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Prifddinas Agility Course lap count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", NEW_PB, null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("prifddinas agility course"), eq(61));
+		verify(configManager).setConfiguration(eq("killcount.adam"), eq("prifddinas agility course"), eq(2));
+	}
 }
