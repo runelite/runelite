@@ -300,38 +300,38 @@ public class GroundMarkerPlugin extends Plugin
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
-		int lastIndex = menuEntries.length;
-		menuEntries = Arrays.copyOf(menuEntries, lastIndex + 4);
+			int lastIndex = menuEntries.length;
+			menuEntries = Arrays.copyOf(menuEntries, lastIndex + 4);
 
-		final Tile tile = client.getSelectedSceneTile();
-		if (tile == null)
-		{
-			return;
-		}
-		final WorldPoint loc = WorldPoint.fromLocalInstance(client, tile.getLocalLocation());
-		final int regionId = loc.getRegionID();
+			final Tile tile = client.getSelectedSceneTile();
+			if (tile == null)
+			{
+				return;
+			}
+			final WorldPoint loc = WorldPoint.fromLocalInstance(client, tile.getLocalLocation());
+			final int regionId = loc.getRegionID();
 
-		for (int i = 4; i > 0; i--)
-		{
-			MenuEntry menuEntry = menuEntries[lastIndex] = new MenuEntry();
+			for (int i = 4; i > 0; i--)
+			{
+				MenuEntry menuEntry = menuEntries[lastIndex] = new MenuEntry();
 
-			final GroundMarkerPoint point = new GroundMarkerPoint(regionId, loc.getRegionX(), loc.getRegionY(), client.getPlane(), i);
-			final Optional<GroundMarkerPoint> stream = getPoints(regionId).stream().filter(x -> x.equals(point)).findAny();
-			final String option = (stream.isPresent() && stream.get().getGroup() == i) ? UNMARK : MARK;
-			menuEntry.setOption(ColorUtil.prependColorTag(Text.removeTags(option + (i == 1 ? "" : " (Group " + i + ")")), getColor(i)));
-			menuEntry.setTarget(event.getTarget());
-			menuEntry.setType(MenuAction.RUNELITE.getId());
+				final GroundMarkerPoint point = new GroundMarkerPoint(regionId, loc.getRegionX(), loc.getRegionY(), client.getPlane(), i);
+				final Optional<GroundMarkerPoint> stream = getPoints(regionId).stream().filter(x -> x.equals(point)).findAny();
+				final String option = (stream.isPresent() && stream.get().getGroup() == i) ? UNMARK : MARK;
+				menuEntry.setOption(ColorUtil.prependColorTag(Text.removeTags(option + (i == 1 ? "" : " (Group " + i + ")")), getColor(i)));
+				menuEntry.setTarget(event.getTarget());
+				menuEntry.setType(MenuAction.RUNELITE.getId());
 
-			lastIndex++;
-		}
+				lastIndex++;
+			}
+
 			client.setMenuEntries(menuEntries);
 		}
 	}
 
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction().getId() != MenuAction.RUNELITE.getId() ||
-			!(event.getOption().equals(MARK) || event.getOption().equals(UNMARK)))
+		if (!event.getOption().contains(MARK) && !event.getOption().contains(UNMARK))
 		{
 			return;
 		}
