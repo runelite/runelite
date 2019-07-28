@@ -227,7 +227,6 @@ public class ChatCommandsPluginTest
 		verify(configManager).setConfiguration("killcount.adam", "duel arena losses", 999);
 	}
 
-
 	@Test
 	public void testAgilityLap()
 	{
