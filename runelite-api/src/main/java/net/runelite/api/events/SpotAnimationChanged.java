@@ -19,7 +19,7 @@ import net.runelite.api.Actor;
  * @see net.runelite.api.GraphicID
  */
 @Data
-public class SpotAnimationChanged
+public class SpotAnimationChanged implements Event
 {
 	/**
 	 * The actor that has had their graphic changed.

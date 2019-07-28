@@ -11,12 +11,14 @@ import java.util.Map;
 import java.util.Objects;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.Event;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 @Slf4j
 @Singleton
 public class EventBus implements EventBusInterface
 {
+	private Map<Object, Object> subscriptionList = new HashMap<>();
 	private Map<Class<?>, Relay<Object>> subjectList = new HashMap<>();
 	private Map<Object, CompositeDisposable> subscriptionsMap = new HashMap<>();
 
@@ -43,6 +45,11 @@ public class EventBus implements EventBusInterface
 	// Subscribe on lifecycle (for example from plugin startUp -> shutdown)
 	public <T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action)
 	{
+		if (subscriptionList.containsKey(lifecycle) && eventClass.equals(subscriptionList.get(lifecycle)))
+		{
+			return;
+		}
+
 		Disposable disposable = getSubject(eventClass)
 			.filter(Objects::nonNull) // Filter out null objects, better safe than sorry
 			.cast(eventClass) // Cast it for easier usage
@@ -53,6 +60,7 @@ public class EventBus implements EventBusInterface
 			});
 
 		getCompositeDisposable(lifecycle).add(disposable);
+		subscriptionList.put(lifecycle, eventClass);
 	}
 
 	@Override
@@ -60,6 +68,7 @@ public class EventBus implements EventBusInterface
 	{
 		//We have to remove the composition from the map, because once you dispose it can't be used anymore
 		CompositeDisposable compositeDisposable = subscriptionsMap.remove(lifecycle);
+		subscriptionList.remove(lifecycle);
 		if (compositeDisposable != null)
 		{
 			compositeDisposable.dispose();
@@ -67,7 +76,7 @@ public class EventBus implements EventBusInterface
 	}
 
 	@Override
-	public <T> void post(Class<T> eventClass, @NonNull Object event)
+	public <T> void post(Class<T> eventClass, @NonNull Event event)
 	{
 		getSubject(eventClass).accept(event);
 	}

@@ -27,7 +27,7 @@ package net.runelite.api.events;
 import lombok.Data;
 
 @Data
-public class AreaSoundEffectPlayed
+public class AreaSoundEffectPlayed implements Event
 {
 	private int soundId;
 	private int sceneX;

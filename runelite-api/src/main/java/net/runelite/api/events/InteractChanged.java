@@ -28,7 +28,7 @@ import net.runelite.api.Actor;
 import lombok.Data;
 
 @Data
-public class InteractChanged
+public class InteractChanged implements Event
 {
 	private Actor actor;
 }

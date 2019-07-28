@@ -31,7 +31,7 @@ import lombok.Data;
  * An event where a menu has been opened.
  */
 @Data
-public class MenuOpened
+public class MenuOpened implements Event
 {
 	/**
 	 * The menu entries in the newly opened menu.

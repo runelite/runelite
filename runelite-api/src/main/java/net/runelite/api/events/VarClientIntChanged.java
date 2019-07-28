@@ -31,7 +31,7 @@ import lombok.Value;
  * An event where a varbit integer has changed.
  */
 @Value
-public class VarClientIntChanged
+public class VarClientIntChanged implements Event
 {
 	private int index;
 }

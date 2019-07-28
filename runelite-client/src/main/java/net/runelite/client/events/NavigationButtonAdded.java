@@ -25,10 +25,11 @@
 package net.runelite.client.events;
 
 import lombok.Value;
+import net.runelite.api.events.Event;
 import net.runelite.client.ui.NavigationButton;
 
 @Value
-public class NavigationButtonAdded
+public class NavigationButtonAdded implements Event
 {
 	private NavigationButton button;
 }

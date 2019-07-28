@@ -33,7 +33,7 @@ import lombok.Data;
  * is removed.
  */
 @Data
-public class DecorativeObjectDespawned
+public class DecorativeObjectDespawned implements Event
 {
 	/**
 	 * The affected tile.

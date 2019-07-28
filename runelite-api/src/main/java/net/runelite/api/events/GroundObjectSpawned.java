@@ -32,7 +32,7 @@ import lombok.Data;
  * An event where a {@link GroundObject} is added to a {@link Tile}.
  */
 @Data
-public class GroundObjectSpawned
+public class GroundObjectSpawned implements Event
 {
 	/**
 	 * The affected tile.

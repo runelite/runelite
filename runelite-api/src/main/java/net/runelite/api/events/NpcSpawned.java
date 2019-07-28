@@ -32,7 +32,7 @@ import lombok.Value;
  * An event where an {@link NPC} has spawned.
  */
 @Value
-public class NpcSpawned
+public class NpcSpawned implements Event
 {
 	/**
 	 * The spawned NPC.

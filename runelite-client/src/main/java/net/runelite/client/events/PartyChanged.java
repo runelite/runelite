@@ -26,9 +26,10 @@ package net.runelite.client.events;
 
 import java.util.UUID;
 import lombok.Value;
+import net.runelite.api.events.Event;
 
 @Value
-public class PartyChanged
+public class PartyChanged implements Event
 {
 	private final UUID partyId;
 }

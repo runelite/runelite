@@ -41,7 +41,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatMessage
+public class ChatMessage implements Event
 {
 	/**
 	 * The underlying MessageNode for the message.

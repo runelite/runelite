@@ -31,7 +31,7 @@ import lombok.Data;
  * An event where the hidden state of a {@link Widget} has been modified.
  */
 @Data
-public class WidgetHiddenChanged
+public class WidgetHiddenChanged implements Event
 {
 	/**
 	 * The affected widget.

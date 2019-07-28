@@ -42,7 +42,7 @@ import lombok.Data;
  * retrieve the newly boosted skill level.
  */
 @Data
-public class BoostedLevelChanged
+public class BoostedLevelChanged implements Event
 {
 	/**
 	 * The skill that has had its level modified.

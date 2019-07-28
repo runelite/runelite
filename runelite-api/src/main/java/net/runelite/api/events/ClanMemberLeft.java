@@ -28,7 +28,7 @@ import net.runelite.api.ClanMember;
 import lombok.Value;
 
 @Value
-public class ClanMemberLeft
+public class ClanMemberLeft implements Event
 {
 	/**
 	 * The ClanMember that left

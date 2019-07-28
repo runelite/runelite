@@ -50,6 +50,7 @@ import net.runelite.api.Renderable;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.Event;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
@@ -128,13 +129,13 @@ public class Hooks implements Callbacks
 	private boolean shouldProcessGameTick;
 
 	@Override
-	public <T> void post(Class<T> eventClass, Object event)
+	public <T> void post(Class<T> eventClass, Event event)
 	{
 		eventBus.post(eventClass, event);
 	}
 
 	@Override
-	public <T> void postDeferred(Class<T> eventClass, Object event)
+	public <T> void postDeferred(Class<T> eventClass, Event event)
 	{
 		deferredEventBus.post(eventClass, event);
 	}

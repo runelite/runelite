@@ -31,7 +31,7 @@ import lombok.Value;
  * An event where a {@link Nameable} has had their name changed.
  */
 @Value
-public class NameableNameChanged
+public class NameableNameChanged implements Event
 {
 	/**
 	 * The nameable that changed names.

@@ -32,7 +32,7 @@ import lombok.Value;
  * An event where an {@link NPC} has despawned.
  */
 @Value
-public class NpcDespawned
+public class NpcDespawned implements Event
 {
 	/**
 	 * The despawned NPC.

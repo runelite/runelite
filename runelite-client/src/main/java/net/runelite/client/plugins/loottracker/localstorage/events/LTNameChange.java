@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.loottracker.localstorage.events;
 
-public class LTNameChange
+import net.runelite.api.events.Event;
+
+public class LTNameChange implements Event
 {
 }
