@@ -41,7 +41,7 @@ public interface AoeWarningConfig extends Config
 {
 	@Getter
 	@AllArgsConstructor
-	public enum FontStyle
+	enum FontStyle
 	{
 		BOLD("Bold", Font.BOLD),
 		ITALIC("Italic", Font.ITALIC),
@@ -945,43 +945,6 @@ public interface AoeWarningConfig extends Config
 		hide = "aoeNotifyAll"
 	)
 	default boolean isDemonicGorillaNotifyEnabled()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			keyName = "marbleGargoyleStub",
-			name = "Marble Gargoyle",
-			description = "",
-			position = 72,
-			parent = "npcStub"
-	)
-	default Stub marbleGarboyleStub()
-	{
-		return new Stub();
-	}
-
-	@ConfigItem(
-			keyName = "marbleGargoyle",
-			name = "MarbleGargoyle",
-			description = "Configures if Marble Gargoyle ranged attack tile markers are displayed",
-			parent = "marbleGargoyleStub",
-			position = 73
-	)
-	default boolean isMarbleGargoyleEnabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-			keyName = "marbleGargoyleNotify",
-			name = "Marble Gargoyle Notify",
-			description = "Configures whether or not AoE Projectile Warnings for Marble Gargoyle range attack should trigger a notification",
-			parent = "marbleGargoyleStub",
-			position = 73,
-			hide = "aoeNotifyAll"
-	)
-	default boolean isMarbleGargoyleNotifyEnabled()
 	{
 		return false;
 	}
