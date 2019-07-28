@@ -564,16 +564,18 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
 				chestLooted = true;
 				break;
-			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
+			case (WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID):
 				if (chestLooted)
 				{
 					return;
 				}
-				int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-				if (region != THEATRE_OF_BLOOD_REGION)
+				
+				if (WorldPoint.fromLocalInstance(client, client.getLocalPlayer()
+					.getLocalLocation()).getRegionID() != THEATRE_OF_BLOOD_REGION)
 				{
 					return;
 				}
+
 				eventType = "Theatre of Blood";
 				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
 				chestLooted = true;
