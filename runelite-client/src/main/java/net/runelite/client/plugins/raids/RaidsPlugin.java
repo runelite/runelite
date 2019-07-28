@@ -29,7 +29,7 @@ import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -83,8 +83,7 @@ public class RaidsPlugin extends Plugin
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
-	private static final String SPLIT_REGEX = "\\s*,\\s*";
+	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 
 	@Inject
@@ -391,28 +390,28 @@ public class RaidsPlugin extends Plugin
 		}
 		else
 		{
-			list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
+			list.addAll(Text.fromCSV(input.toLowerCase()));
 		}
 	}
 
 	int getRotationMatches()
 	{
 		String rotation = raid.getRotationString().toLowerCase();
-		String[] bosses = rotation.split(SPLIT_REGEX);
+		List<String> bosses = Text.fromCSV(rotation);
 
 		if (rotationWhitelist.contains(rotation))
 		{
-			return bosses.length;
+			return bosses.size();
 		}
 
 		for (String whitelisted : rotationWhitelist)
 		{
 			int matches = 0;
-			String[] whitelistedBosses = whitelisted.split(SPLIT_REGEX);
+			List<String> whitelistedBosses = Text.fromCSV(whitelisted);
 
-			for (int i = 0; i < whitelistedBosses.length; i++)
+			for (int i = 0; i < whitelistedBosses.size(); i++)
 			{
-				if (i < bosses.length && whitelistedBosses[i].equals(bosses[i]))
+				if (i < bosses.size() && whitelistedBosses.get(i).equals(bosses.get(i)))
 				{
 					matches++;
 				}
