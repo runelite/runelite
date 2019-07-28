@@ -10,11 +10,11 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.xml.bind.DatatypeConverter;
-import net.runelite.http.api.RuneLiteAPI;
 import org.codehaus.plexus.util.FileUtils;
 
 public class Bootstrap
 {
+	private String projectVersion = "1.5.30-SNAPSHOT";
 	String buildCommit = "6fe334c02648d3f8b38625e3175e3f547d54aa37";
 	Client client = new Client();
 	String[] clientJvm9Arguments = new String[]{
@@ -45,6 +45,7 @@ public class Bootstrap
 		"-XX:+UseParNewGC",
 		"-Djna.nosys=true"};
 	private Artifact[] artifacts = getArtifacts();
+
 	Bootstrap()
 	{
 	}
@@ -106,7 +107,7 @@ public class Bootstrap
 	{
 		try
 		{
-			artifacts = new Artifact[45];
+			artifacts = new Artifact[47];
 
 			//Static artifacts
 			artifacts[0] = new Artifact();
@@ -115,19 +116,19 @@ public class Bootstrap
 			artifacts[0].path = "https://mvn.runelite.net/org/ow2/asm/asm-all/6.0_BETA/asm-all-6.0_BETA.jar";
 			artifacts[0].size = "265176";
 			artifacts[1] = new Artifact();
-			artifacts[1].hash = "37abf0103ce5318bfda004fabc004c75ed0dc6d392a8459175692ab7eac97083";
-			artifacts[1].name = "naturalmouse-2.0.0.jar";
-			artifacts[1].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/naturalmouse-2.0.0.jar";
+			artifacts[1].hash = "7f0f013961c81d7069d0c0afc569de9ef4791b700be37fab417b0f5352294b73";
+			artifacts[1].name = "naturalmouse-2.0.1.jar";
+			artifacts[1].path = "https://repo1.maven.org/maven2/com/github/joonasvali/naturalmouse/naturalmouse/2.0.1/naturalmouse-2.0.1.jar";
 			artifacts[1].size = "3168921";
 			artifacts[2] = new Artifact();
-			artifacts[2].hash = "50d1e07f11827672249dee9ce8a23691fc59f663deed084bb7b52a4f778d5fbc";
-			artifacts[2].name = "jcl-core-2.9-SNAPSHOT.jar";
-			artifacts[2].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/jcl-core-2.9-SNAPSHOT.jar";
+			artifacts[2].hash = "72c88d597188ab386ec4de598203675d6286de569812454d732e379c9ecb0ed7";
+			artifacts[2].name = "jcl-core-2.8jar";
+			artifacts[2].path = "https://repo1.maven.org/maven2/org/xeustechnologies/jcl-core/2.8/jcl-core-2.8.jar";
 			artifacts[2].size = "3168921";
 			artifacts[4] = new Artifact();
-			artifacts[4].hash = "18c4a0095d5c1da6b817592e767bb23d29dd2f560ad74df75ff3961dbde25b79";
-			artifacts[4].name = "slf4j-api-1.7.25.jar";
-			artifacts[4].path = "https://mvn.runelite.net/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar";
+			artifacts[4].hash = "6d9e5b86cfd1dd44c676899285b5bb4fa0d371cf583e8164f9c8a0366553242b";
+			artifacts[4].name = "slf4j-api-1.7.26.jar";
+			artifacts[4].path = "https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.26/slf4j-api-1.7.26.jar";
 			artifacts[4].size = "41203";
 			artifacts[5] = new Artifact();
 			artifacts[5].hash = "fb53f8539e7fcb8f093a56e138112056ec1dc809ebb020b59d8a36a5ebac37e0";
@@ -140,19 +141,19 @@ public class Bootstrap
 			artifacts[6].path = "https://mvn.runelite.net/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar";
 			artifacts[6].size = "471901";
 			artifacts[7] = new Artifact();
-			artifacts[7].hash = "9f0c8d50fa4b79b6ff1502dbec8502179d6b9497cacbe17a13074001aed537ec";
-			artifacts[7].name = "jopt-simple-5.0.1.jar";
-			artifacts[7].path = "https://mvn.runelite.net/net/sf/jopt-simple/jopt-simple/5.0.1/jopt-simple-5.0.1.jar";
+			artifacts[7].hash = "df26cc58f235f477db07f753ba5a3ab243ebe5789d9f89ecf68dd62ea9a66c28";
+			artifacts[7].name = "jopt-simple-5.0.4.jar";
+			artifacts[7].path = "https://repo1.maven.org/maven2/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar";
 			artifacts[7].size = "78826";
 			artifacts[8] = new Artifact();
-			artifacts[8].hash = "5be9a7d05ba0ccd74708bc8018ae412255f85843c0b92302e9b9befa6ed52564";
-			artifacts[8].name = "guava-23.2-jre.jar";
-			artifacts[8].path = "https://mvn.runelite.net/com/google/guava/guava/23.2-jre/guava-23.2-jre.jar";
+			artifacts[8].hash = "73e4d6ae5f0e8f9d292a4db83a2479b5468f83d972ac1ff36d6d0b43943b4f91";
+			artifacts[8].name = "guava-28.0-jre.jar";
+			artifacts[8].path = "https://repo1.maven.org/maven2/com/google/guava/guava/28.0-jre/guava-28.0-jre.jar";
 			artifacts[8].size = "2649860";
 			artifacts[9] = new Artifact();
-			artifacts[9].hash = "905721a0eea90a81534abb7ee6ef4ea2e5e645fa1def0a5cd88402df1b46c9ed";
-			artifacts[9].name = "jsr305-1.3.9.jar";
-			artifacts[9].path = "https://mvn.runelite.net/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar";
+			artifacts[9].hash = "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7";
+			artifacts[9].name = "jsr305-3.0.2.jar";
+			artifacts[9].path = "https://repo1.maven.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar";
 			artifacts[9].size = "33015";
 			artifacts[10] = new Artifact();
 			artifacts[10].hash = "cb4cfad870bf563a07199f3ebea5763f0dec440fcda0b318640b1feaa788656b";
@@ -170,9 +171,9 @@ public class Bootstrap
 			artifacts[12].path = "https://mvn.runelite.net/org/codehaus/mojo/animal-sniffer-annotations/1.14/animal-sniffer-annotations-1.14.jar";
 			artifacts[12].size = "3482";
 			artifacts[13] = new Artifact();
-			artifacts[13].hash = "9264c6931c431e928dc64adc842584d5f57d17b2f3aff29221f2b3fdea673dad";
-			artifacts[13].name = "guice-4.1.0-no_aop.jar";
-			artifacts[13].path = "https://mvn.runelite.net/com/google/inject/guice/4.1.0/guice-4.1.0-no_aop.jar";
+			artifacts[13].hash = "d258ff1bd9b8b527872f8402648226658ad3149f1f40e74b0566d69e7e042fbc";
+			artifacts[13].name = "guice-4.2.2-no_aop.jar";
+			artifacts[13].path = "https://repo1.maven.org/maven2/com/google/inject/guice/4.2.2/guice-4.2.2.jar";
 			artifacts[13].size = "428603";
 			artifacts[14] = new Artifact();
 			artifacts[14].hash = "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff";
@@ -275,19 +276,19 @@ public class Bootstrap
 			artifacts[33].path = "https://mvn.runelite.net/net/java/dev/jna/jna/4.5.1/jna-4.5.1.jar";
 			artifacts[33].size = "1440662";
 			artifacts[34] = new Artifact();
-			artifacts[34].hash = "84c8667555ee8dd91fef44b451419f6f16f71f727d5fc475a10c2663eba83abb";
-			artifacts[34].name = "jna-platform-4.5.1.jar";
-			artifacts[34].path = "https://mvn.runelite.net/net/java/dev/jna/jna-platform/4.5.1/jna-platform-4.5.1.jar";
+			artifacts[34].hash = "890391047a225a7a599f33e665f9bedaee2037d9fe6f1b23d9d2369d69f0f28f";
+			artifacts[34].name = "jna-platform-5.4.0.jar";
+			artifacts[34].path = "https://repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.4.0/jna-platform-5.4.0.jar";
 			artifacts[34].size = "2327547";
 			artifacts[38] = new Artifact();
-			artifacts[38].hash = "f55abda036da75e1af45bd43b9dfa79b2a3d90905be9cb38687c6621597a8165";
-			artifacts[38].name = "okhttp-3.7.0.jar";
-			artifacts[38].path = "https://mvn.runelite.net/com/squareup/okhttp3/okhttp/3.7.0/okhttp-3.7.0.jar";
+			artifacts[38].hash = "0e0392ea5c0d303bca20e13b2340086d7a347b22ad625f967989ee8723b6ac3c";
+			artifacts[38].name = "okhttp-4.0.1.jar";
+			artifacts[38].path = "https://repo1.maven.org/maven2/com/squareup/okhttp3/okhttp/4.0.1/okhttp-4.0.1.jar";
 			artifacts[38].size = "394987";
 			artifacts[39] = new Artifact();
-			artifacts[39].hash = "bfe7dfe483c37137966a1690f0c7d0b448ba217902c1fed202aaffdbba3291ae";
-			artifacts[39].name = "okio-1.12.0.jar";
-			artifacts[39].path = "https://mvn.runelite.net/com/squareup/okio/okio/1.12.0/okio-1.12.0.jar";
+			artifacts[39].hash = "e58c97406a6bb1138893750299ac63c6aa04b38b6b49eae1bfcad1a63ef9ba1b";
+			artifacts[39].name = "okio-2.2.2.jar";
+			artifacts[39].path = "https://repo1.maven.org/maven2/com/squareup/okio/okio/2.2.2/okio-2.2.2.jar";
 			artifacts[39].size = "81088";
 			artifacts[40] = new Artifact();
 			artifacts[40].hash = "9d4924588d6280c7516db3a4b7298306db5b6f0d1cdf568ce738309b5660f008";
@@ -314,33 +315,43 @@ public class Bootstrap
 			artifacts[44].name = "reactive-streams-1.0.2.jar";
 			artifacts[44].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/" + artifacts[44].name;
 			artifacts[44].size = "27750";
+			artifacts[45] = new Artifact();
+			artifacts[45].hash = "f76f9812a703ba5085af8f51769e60e8ecd5e99b55b2ced097cf2343e972ad7b";
+			artifacts[45].name = "kotlin-stdlib-1.3.40.jar";
+			artifacts[45].path = "https://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.3.40/kotlin-stdlib-1.3.40.jar";
+			artifacts[45].size = "27750";
+			artifacts[46] = new Artifact();
+			artifacts[46].hash = "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26";
+			artifacts[46].name = "failureaccess-1.0.1.jar";
+			artifacts[46].path = "https://repo1.maven.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar";
+			artifacts[46].size = "27750";
 
 			//Dynamic artifacts
 			artifacts[3] = new Artifact();
-			artifacts[3].name = "client-" + RuneLiteAPI.getVersion() + ".jar";
+			artifacts[3].name = "client-" + projectVersion + ".jar";
 			artifacts[3].hash = getChecksumFile("./runelite-client/build/libs/" + artifacts[3].name);
 			artifacts[3].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master" + Bootstrapper.remoteLocation + artifacts[3].name;
 			artifacts[3].size = Long.toString(getFileSize("./runelite-client/target/" + artifacts[3].name));
 			copyTodir("./runelite-client/build/libs/" + artifacts[3].name, Bootstrapper.localLocation);
 			artifacts[35] = new Artifact();
-			artifacts[35].name = "runelite-api-" + RuneLiteAPI.getVersion() + ".jar";
+			artifacts[35].name = "runelite-api-" + projectVersion + ".jar";
 			artifacts[35].hash = getChecksumFile("./runelite-api/build/libs/" + artifacts[35].name);
 			artifacts[35].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[35].name;
 			artifacts[35].size = Long.toString(getFileSize("./runelite-api/target/" + artifacts[35].name));
 			copyTodir("./runelite-api/build/libs/" + artifacts[35].name, Bootstrapper.localLocation);
 			artifacts[36] = new Artifact();
-			artifacts[36].name = "runescape-api-" + RuneLiteAPI.getVersion() + ".jar";
+			artifacts[36].name = "runescape-api-" + projectVersion + ".jar";
 			artifacts[36].hash = getChecksumFile("./runescape-api/build/libs/" + artifacts[36].name);
 			artifacts[36].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[36].name;
 			artifacts[36].size = Long.toString(getFileSize("./runescape-api/target/" + artifacts[36].name));
 			copyTodir("./runescape-api/build/libs/" + artifacts[36].name, Bootstrapper.localLocation);
 			artifacts[37] = new Artifact();
-			artifacts[37].name = "http-api-" + RuneLiteAPI.getVersion() + ".jar";
+			artifacts[37].name = "http-api-" + projectVersion + ".jar";
 			artifacts[37].hash = getChecksumFile("./http-api/build/libs/" + artifacts[37].name);
 			artifacts[37].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[37].name;
 			artifacts[37].size = Long.toString(getFileSize("./http-api/target/" + artifacts[37].name));
 			copyTodir("./http-api/build/libs/" + artifacts[37].name, Bootstrapper.localLocation);
-			copyTodir("./injected-client/build/libs/injected-client-" + RuneLiteAPI.getVersion() + ".jar", Bootstrapper.localLocation);
+			copyTodir("./injected-client/build/libs/injected-client-" + projectVersion + ".jar", Bootstrapper.localLocation);
 		}
 		catch (IOException | NoSuchAlgorithmException e)
 		{
