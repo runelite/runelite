@@ -229,7 +229,8 @@ enum Task
 		this.expectedKillExp = expectedKillExp;
 	}
 
-	static Task getTask(@Nullable String taskName)
+	@Nullable
+	static Task getTask(String taskName)
 	{
 		return tasks.get(taskName.toLowerCase());
 	}
