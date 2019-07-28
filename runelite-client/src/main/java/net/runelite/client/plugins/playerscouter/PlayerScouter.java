@@ -63,12 +63,12 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.PvPValueBrokenItem;
+import net.runelite.client.game.WorldLocation;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.PvPUtil;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.client.util.WildernessLocation;
 import net.runelite.http.api.discord.DiscordClient;
 import net.runelite.http.api.discord.DiscordEmbed;
 import net.runelite.http.api.discord.DiscordMessage;
@@ -92,7 +92,7 @@ public class PlayerScouter extends Plugin
 {
 	private static final HiscoreClient HISCORE_CLIENT = new HiscoreClient();
 	private static final DiscordClient DISCORD_CLIENT = new DiscordClient();
-	private static final Map<WorldArea, String> WILD_LOCS = getLocationMap();
+	private static final Map<WorldArea, String> WILD_LOCS = WorldLocation.getLocationMap();
 	private static final SimpleDateFormat SDF = new SimpleDateFormat("MMM dd h:mm a z");
 	private static final String ICONBASEURL = "https://www.osrsbox.com/osrsbox-db/items-icons/"; // Add item id + ".png"
 	@Inject
@@ -114,13 +114,6 @@ public class PlayerScouter extends Plugin
 	private boolean onlyWildy;
 	private boolean outputItems;
 
-	private static Map<WorldArea, String> getLocationMap()
-	{
-		Map<WorldArea, String> hashMap = new HashMap<>();
-		Arrays.stream(WildernessLocation.values()).forEach(wildernessLocation ->
-			hashMap.put(wildernessLocation.getWorldArea(), wildernessLocation.getName()));
-		return hashMap;
-	}
 
 	@Provides
 	PlayerScouterConfig provideConfig(ConfigManager configManager)
