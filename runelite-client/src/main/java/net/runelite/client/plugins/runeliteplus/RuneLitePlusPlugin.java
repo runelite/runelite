@@ -38,7 +38,6 @@ import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLitePlusConfig;
-import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -58,9 +57,6 @@ public class RuneLitePlusPlugin extends Plugin
 	private final RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
 	@Inject
 	private RuneLitePlusConfig config;
-
-	@Inject
-	private DiscordService discordService;
 
 	@Inject
 	private KeyManager keyManager;
