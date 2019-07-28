@@ -34,7 +34,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
-import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginManager;
@@ -101,12 +100,6 @@ public class ConfigPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(navButton);
-	}
-
-	@Subscribe
-	public void onPluginChanged(PluginChanged event)
-	{
-		SwingUtilities.invokeLater(configPanel::refreshPluginList);
 	}
 
 	@Subscribe

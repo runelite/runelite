@@ -617,8 +617,6 @@ public class ConfigPanel extends PluginPanel
 			{
 				log.warn("Error when starting plugin {}", plugin.getClass().getSimpleName(), ex);
 			}
-
-			listItem.setPluginEnabled(true);
 		});
 	}
 
@@ -636,8 +634,6 @@ public class ConfigPanel extends PluginPanel
 			{
 				log.warn("Error when stopping plugin {}", plugin.getClass().getSimpleName(), ex);
 			}
-
-			listItem.setPluginEnabled(false);
 		});
 	}
 

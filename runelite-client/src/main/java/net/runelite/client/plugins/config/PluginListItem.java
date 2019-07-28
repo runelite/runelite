@@ -55,6 +55,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconButton;
+import net.runelite.client.ui.components.ToggleSwitch;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
@@ -66,8 +67,6 @@ class PluginListItem extends JPanel
 
 	private static final ImageIcon CONFIG_ICON;
 	private static final ImageIcon CONFIG_ICON_HOVER;
-	private static final ImageIcon ON_SWITCHER;
-	private static final ImageIcon OFF_SWITCHER;
 	private static final ImageIcon ON_STAR;
 	private static final ImageIcon OFF_STAR;
 
@@ -95,7 +94,7 @@ class PluginListItem extends JPanel
 
 	private final IconButton pinButton = new IconButton(OFF_STAR);
 	private final IconButton configButton = new IconButton(CONFIG_ICON, CONFIG_ICON_HOVER);
-	private final IconButton toggleButton = new IconButton(OFF_SWITCHER);
+	private final ToggleSwitch toggleButton = new ToggleSwitch(false);
 
 	private boolean isPluginEnabled = false;
 
@@ -105,21 +104,11 @@ class PluginListItem extends JPanel
 	static
 	{
 		BufferedImage configIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_edit_icon.png");
-		BufferedImage onSwitcher = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "switcher_on.png");
 		BufferedImage onStar = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "star_on.png");
 		CONFIG_ICON = new ImageIcon(configIcon);
-		ON_SWITCHER = new ImageIcon(onSwitcher);
 		ON_STAR = new ImageIcon(onStar);
 		CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(configIcon, -100));
-		BufferedImage offSwitcherImage = ImageUtil.flipImage(
-			ImageUtil.grayscaleOffset(
-				ImageUtil.grayscaleImage(onSwitcher),
-				0.61f
-			),
-			true,
-			false
-		);
-		OFF_SWITCHER = new ImageIcon(offSwitcherImage);
+
 		BufferedImage offStar = ImageUtil.grayscaleOffset(
 			ImageUtil.grayscaleImage(onStar),
 			0.77f
@@ -220,44 +209,50 @@ class PluginListItem extends JPanel
 		buttonPanel.add(toggleButton);
 	}
 
-	private void attachToggleButtonListener(IconButton button)
+	private void attachToggleButtonListener(ToggleSwitch toggleSwitch)
 	{
 		// no need for a listener if there is no plugin to enable / disable
 		if (plugin == null)
 		{
-			button.setVisible(false);
+			toggleSwitch.setVisible(false);
 			return;
 		}
 
-		button.addActionListener(e ->
+		toggleSwitch.addMouseListener(new MouseAdapter()
 		{
-			if (isPluginEnabled)
+			@Override
+			public void mouseClicked(MouseEvent e)
 			{
-				configPanel.stopPlugin(plugin, PluginListItem.this);
-			}
-			else
-			{
-				configPanel.startPlugin(plugin, PluginListItem.this);
-			}
+				if (isPluginEnabled)
+				{
+					configPanel.stopPlugin(plugin, PluginListItem.this);
+					toggleSwitch.toggle(false);
+				}
+				else
+				{
+					configPanel.startPlugin(plugin, PluginListItem.this);
+					toggleSwitch.toggle(true);
+				}
 
-			setPluginEnabled(!isPluginEnabled);
-			updateToggleButton(button);
+				isPluginEnabled = !isPluginEnabled;
+				updateToggleButtonToolTipText(toggleSwitch);
+			}
 		});
 	}
 
-	IconButton createToggleButton()
+	ToggleSwitch createToggleButton()
 	{
-		IconButton button = new IconButton(OFF_SWITCHER);
-		button.setPreferredSize(new Dimension(25, 0));
-		updateToggleButton(button);
-		attachToggleButtonListener(button);
-		return button;
+		ToggleSwitch toggleSwitch = new ToggleSwitch(false);
+		toggleSwitch.setPreferredSize(new Dimension(25, 0));
+		attachToggleButtonListener(toggleSwitch);
+		return toggleSwitch;
 	}
 
 	void setPluginEnabled(boolean enabled)
 	{
 		isPluginEnabled = enabled;
-		updateToggleButton(toggleButton);
+		toggleButton.setStateWithoutPerformingAnimation(enabled);
+		updateToggleButtonToolTipText(toggleButton);
 	}
 
 	void setPinned(boolean pinned)
@@ -267,9 +262,8 @@ class PluginListItem extends JPanel
 		pinButton.setToolTipText(pinned ? "Unpin plugin" : "Pin plugin");
 	}
 
-	private void updateToggleButton(IconButton button)
+	private void updateToggleButtonToolTipText(ToggleSwitch button)
 	{
-		button.setIcon(isPluginEnabled ? ON_SWITCHER : OFF_SWITCHER);
 		button.setToolTipText(isPluginEnabled ? "Disable plugin" : "Enable plugin");
 	}
 
