@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client;
+package net.runelite.client.util;
 
-import com.google.inject.Guice;
-import net.runelite.client.rs.ClientUpdateCheckMode;
-import org.junit.Test;
+import com.google.common.base.CharMatcher;
 
-public class RuneLiteModuleTest
+class JagexPrintableCharMatcher extends CharMatcher
 {
-	@Test
-	public void testConfigure()
+	@Override
+	public boolean matches(char c)
 	{
-		Guice.createInjector(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true));
+		// Characters which are printable
+		return (c >= 32 && c <= 126)
+			|| c == 128
+			|| (c >= 160 && c <= 255);
 	}
 }

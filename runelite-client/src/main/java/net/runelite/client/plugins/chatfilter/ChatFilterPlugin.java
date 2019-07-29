@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.chatfilter;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.inject.Provides;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class ChatFilterPlugin extends Plugin
 
 	private static final String CENSOR_MESSAGE = "Hey, everyone, I just tried to say something very silly!";
 
-	private final JagexPrintableCharMatcher jagexPrintableCharMatcher = new JagexPrintableCharMatcher();
+	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private final List<Pattern> filteredPatterns = new ArrayList<>();
 
 	@Inject

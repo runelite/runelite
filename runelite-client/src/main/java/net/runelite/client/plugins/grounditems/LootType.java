@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,65 +24,9 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import java.time.Instant;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
-import net.runelite.api.coords.WorldPoint;
-
-@Data
-@Builder
-public
-class GroundItem
+enum LootType
 {
-	private int id;
-	private int itemId;
-	private String name;
-	private int quantity;
-	private WorldPoint location;
-	private int height;
-	private int haPrice;
-	private int gePrice;
-	private int offset;
-	private boolean tradeable;
-	private boolean isMine;
-	private int ticks;
-	private int durationMillis;
-	private boolean isAlwaysPrivate;
-	private boolean isOwnedByPlayer;
-	private Instant droppedInstant;
-	
-	@Nonnull
-	private LootType lootType;
-	/**
-	 * Is dropped by me
-	 */
-	private boolean isDropped;
-	
-	@Nullable
-	private Instant spawnTime;
-
-	int getHaPrice()
-	{
-		return haPrice * quantity;
-	}
-
-	int getGePrice()
-	{
-		return gePrice * quantity;
-	}
-
-	boolean isMine()
-	{
-		return lootType != LootType.UNKNOWN;
-	}
-
-	@Value
-	static class GroundItemKey
-	{
-		private int itemId;
-		private WorldPoint location;
-	}
+	UNKNOWN,
+	PVP,
+	PVM;
 }
