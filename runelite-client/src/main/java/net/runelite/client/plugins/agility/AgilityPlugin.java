@@ -86,9 +86,6 @@ public class AgilityPlugin extends Plugin
 	private final Map<TileObject, Obstacle> obstacles = new HashMap<>();
 
 	@Getter
-	private final Map<TileObject, Obstacle> portals = new HashMap<>();
-
-	@Getter
 	private final List<Tile> marksOfGrace = new ArrayList<>();
 
 	@Inject
