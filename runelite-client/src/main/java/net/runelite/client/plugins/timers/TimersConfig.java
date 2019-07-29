@@ -92,6 +92,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showDivine",
+		name = "Divine potion timer",
+		description = "Configures whether divine potion timer is displayed"
+	)
+	default boolean showDivine()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showCannon",
 		name = "Cannon timer",
 		description = "Configures whether cannon timer is displayed"
