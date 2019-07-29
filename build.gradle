@@ -91,5 +91,4 @@ wrapper {
 run {
     classpath = childProjects.client.sourceSets.main.runtimeClasspath
     mainClassName = "net.runelite.client.RuneLite"
-    args += "--local-injected"
 }
