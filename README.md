@@ -22,6 +22,9 @@
 - [runescape-api](runescape-api/src/main/java/net/runelite) - Mappings correspond to these interfaces, runelite-api is a subset of this
 - [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
 
+## Building
+We have migrated the project to Gradle. Information on how to setup and build the project can be found at https://github.com/runelite-extended/runelite/wiki/Building-with-IntelliJ-IDEA
+
 ## Private Servers
 Currently we support RSMod which can be found at: https://github.com/Tomm0017/rsmod but should work with any server that follows osrs protocol.
 ```
