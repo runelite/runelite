@@ -7,24 +7,26 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public enum AnimationAttackStyle
 {
-    // None: Common non-attack animations. This enum value says they aren't attacking.
+    // None: Common non-attack animations seen during combat. This enum value says they aren't attacking.
     None(null,
         AnimationID.IDLE,
-        AnimationID.CONSUMING
+        AnimationID.CONSUMING,
+        AnimationID.COMBAT_SHIELD_BLOCK,
+        AnimationID.COMBAT_DEFENDER_BLOCK
     ),
     // Melee attack animations
     Melee(HeadIcon.MELEE,
-        1
+        AnimationID.MELEE_DRAGON_DAGGER_SPEC,
+        AnimationID.MELEE_ABYSSAL_WHIP,
+        AnimationID.MELEE_ELDER_MAUL
     ),
     // Magic attack/casting animations
     Magic(HeadIcon.MAGIC,
-        2,
-        3
+        AnimationID.MAGIC_ANCIENT_BARRAGE
     ),
     // Ranged attack animations
     Ranged(HeadIcon.RANGED,
-        4,
-        5
+        AnimationID.RANGED_RUNE_CROSSBOW
     );
 
     @Getter

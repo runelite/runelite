@@ -155,7 +155,6 @@ public final class AnimationID
 	public static final int SAND_COLLECTION = 895;
 	public static final int PISCARILIUS_CRANE_REPAIR = 7199;
 	public static final int HOME_MAKE_TABLET = 4067;
-	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
@@ -199,4 +198,21 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+
+	// Combat Animations
+	public static final int COMBAT_SHIELD_BLOCK = 1156;
+	public static final int COMBAT_DEFENDER_BLOCK = 4177; // Not certain about being used only with defender
+	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
+
+	// Melee Attack Animations
+	public static final int MELEE_DRAGON_DAGGER_SPEC = 1062;
+	public static final int MELEE_ABYSSAL_WHIP = 1658;
+	public static final int MELEE_ELDER_MAUL = 7516; // Only tested 1 style, think they're all the same.
+
+	// Magic Attack/Casting Animations
+	public static final int MAGIC_ANCIENT_BARRAGE = 1979; // Confirmed the same for Ice & Blood w/ diff weapons.
+
+	// Ranged Attack Animations
+	public static final int RANGED_RUNE_CROSSBOW = 4230;
+
 }
