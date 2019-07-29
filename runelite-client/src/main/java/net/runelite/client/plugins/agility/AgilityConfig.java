@@ -77,10 +77,10 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "markHighlight",
-			name = "Mark Highlight Color",
-			description = "Color of highlighted Marks of Grace",
-			position = 5
+		keyName = "markHighlight",
+		name = "Mark Highlight Color",
+		description = "Color of highlighted Marks of Grace",
+		position = 5
 	)
 	default Color getMarkColor()
 	{
@@ -88,10 +88,10 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "highlightShortcuts",
-			name = "Highlight Agility Shortcuts",
-			description = "Enable/disable the highlighting of Agility shortcuts",
-			position = 6
+		keyName = "highlightShortcuts",
+		name = "Highlight Agility Shortcuts",
+		description = "Enable/disable the highlighting of Agility shortcuts",
+		position = 6
 	)
 	default boolean highlightShortcuts()
 	{
@@ -99,10 +99,10 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "portalHighlight",
-			name = "Prifddinas Portal Highlight Color",
-			description = "Color of portals for Prifddinas course",
-			position = 7
+		keyName = "portalHighlight",
+		name = "Prifddinas Portal Highlight Color",
+		description = "Color of portals for Prifddinas course",
+		position = 7
 	)
 	default Color getPortalColor()
 	{
@@ -110,10 +110,10 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "highlightPortals",
-			name = "Highlight Prifddinas Portals",
-			description = "Enable/disable the highlighting of Prifddinas portals",
-			position = 8
+		keyName = "highlightPortals",
+		name = "Highlight Prifddinas Portals",
+		description = "Enable/disable the highlighting of Prifddinas portals",
+		position = 8
 	)
 	default boolean highlightPortals()
 	{
