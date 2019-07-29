@@ -143,6 +143,28 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testGauntlet()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage gauntletMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Gauntlet completion count is: <col=ff0000>123</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(gauntletMessage);
+
+		verify(configManager).setConfiguration("killcount.adam", "gauntlet", 123);
+	}
+
+	@Test
+	public void testCorruptedGauntlet()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage corruptedGauntletMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Corrupted Gauntlet completion count is: <col=ff0000>4729</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(corruptedGauntletMessage);
+
+		verify(configManager).setConfiguration("killcount.adam", "corrupted gauntlet", 4729);
+	}
+
+	@Test
 	public void testPersonalBest()
 	{
 		final String FIGHT_DURATION = "Fight duration: <col=ff0000>2:06</col>. Personal best: 1:19.";
