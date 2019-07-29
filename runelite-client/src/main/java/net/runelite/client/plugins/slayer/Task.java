@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import lombok.AccessLevel;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -355,6 +356,7 @@ enum Task
 		this.expectedKillExp = 0;
 	}
 
+	@Nullable
 	static Task getTask(String taskName)
 	{
 		return tasks.get(taskName.toLowerCase());
