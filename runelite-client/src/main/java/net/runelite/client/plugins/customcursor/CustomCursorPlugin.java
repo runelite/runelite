@@ -33,6 +33,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+
 @PluginDescriptor(
 	name = "Custom Cursor",
 	description = "Replaces your mouse cursor image",
@@ -67,7 +71,7 @@ public class CustomCursorPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("customcursor") && event.getKey().equals("cursorStyle"))
+		if (event.getGroup().equals("customcursor") && (event.getKey().equals("cursorStyle") || event.getKey().equals("bigScreenStyle")))
 		{
 			updateCursor();
 		}
@@ -76,6 +80,27 @@ public class CustomCursorPlugin extends Plugin
 	private void updateCursor()
 	{
 		CustomCursor selectedCursor = config.selectedCursor();
-		clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+
+		if (config.bigScreenMode() && (clientUI.getWidth() >= 1600) && (clientUI.getHeight() >= 900)) //slightly lower to avoid OS buffers
+		{
+			clientUI.setCursor(upscaleCursor(selectedCursor.getCursorImage()), selectedCursor.toString());
+		}
+		else
+		{
+			clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+		}
+	}
+
+	//Helper function to upscale the selected cursor (double in size)
+	private BufferedImage upscaleCursor(BufferedImage cursor)
+	{
+		int w = cursor.getWidth();
+		int h = cursor.getHeight();
+		BufferedImage after = new BufferedImage(w * 2, h * 2, BufferedImage.TYPE_INT_ARGB);
+		AffineTransform at = new AffineTransform();
+		at.scale(2.0, 2.0);
+		AffineTransformOp scaleOp =
+				new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+		return scaleOp.filter(cursor, after);
 	}
 }
