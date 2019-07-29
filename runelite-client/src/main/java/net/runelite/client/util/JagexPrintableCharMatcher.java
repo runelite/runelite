@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.util;
 
-import lombok.Value;
+import com.google.common.base.CharMatcher;
 
-/**
- * An event where the position of a {@link net.runelite.api.widgets.Widget}
- * relative to its parent has changed.
- */
-@Value
-public class WidgetPositioned
+class JagexPrintableCharMatcher extends CharMatcher
 {
+	@Override
+	public boolean matches(char c)
+	{
+		// Characters which are printable
+		return (c >= 32 && c <= 126)
+			|| c == 128
+			|| (c >= 160 && c <= 255);
+	}
 }

@@ -136,8 +136,7 @@ public class ItemChargePluginTest
 		when(client.getItemContainer(eq(InventoryID.EQUIPMENT))).thenReturn(equipmentItemContainer);
 		Item[] items = new Item[EquipmentInventorySlot.RING.getSlotIdx() + 1];
 		when(equipmentItemContainer.getItems()).thenReturn(items);
-		Item ring = mock(Item.class);
-		when(ring.getId()).thenReturn(ItemID.RING_OF_FORGING);
+		Item ring = new Item(ItemID.RING_OF_FORGING, 1);
 		items[EquipmentInventorySlot.RING.getSlotIdx()] = ring;
 		// Run message
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);

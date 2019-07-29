@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.timers;
 
 import com.google.inject.Provides;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -104,10 +105,12 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
+	private static final String KILLED_TELEBLOCK_OPPONENT_TEXT = "<col=4f006f>Your Tele Block has been removed because you killed ";
 
-	private static final Pattern DEADMAN_HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+). It will expire in 1 minute, 15 seconds.</col>");
-	private static final Pattern FULL_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+). It will expire in 5 minutes, 0 seconds.</col>");
-	private static final Pattern HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+). It will expire in 2 minutes, 30 seconds.</col>");
+	private static final Pattern DEADMAN_HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 1 minute, 15 seconds\\.</col>");
+	private static final Pattern FULL_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 5 minutes, 0 seconds\\.</col>");
+	private static final Pattern HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 2 minutes, 30 seconds\\.</col>");
+	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
@@ -268,6 +271,16 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(PRAYER_ENHANCE);
 		}
 
+		if (!config.showDivine())
+		{
+			removeGameTimer(DIVINE_SUPER_ATTACK);
+			removeGameTimer(DIVINE_SUPER_STRENGTH);
+			removeGameTimer(DIVINE_SUPER_DEFENCE);
+			removeGameTimer(DIVINE_SUPER_COMBAT);
+			removeGameTimer(DIVINE_RANGING);
+			removeGameTimer(DIVINE_MAGIC);
+		}
+
 		if (!config.showCannon())
 		{
 			removeGameTimer(CANNON);
@@ -381,7 +394,11 @@ public class TimersPlugin extends Plugin
 		if (config.showStamina()
 			&& event.getMenuOption().contains("Drink")
 			&& (event.getId() == ItemID.STAMINA_MIX1
-			|| event.getId() == ItemID.STAMINA_MIX2))
+			|| event.getId() == ItemID.STAMINA_MIX2
+			|| event.getId() == ItemID.EGNIOL_POTION_1
+			|| event.getId() == ItemID.EGNIOL_POTION_2
+			|| event.getId() == ItemID.EGNIOL_POTION_3
+			|| event.getId() == ItemID.EGNIOL_POTION_4))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(STAMINA);
@@ -542,6 +559,10 @@ public class TimersPlugin extends Plugin
 			{
 				createGameTimer(DMM_HALFTB);
 			}
+			else if (event.getMessage().startsWith(KILLED_TELEBLOCK_OPPONENT_TEXT))
+			{
+				removeTbTimers();
+			}
 		}
 
 		if (config.showAntiFire() && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
@@ -599,6 +620,40 @@ public class TimersPlugin extends Plugin
 		{
 			freezeTimer = createGameTimer(ICEBARRAGE);
 			freezeTime = client.getTickCount();
+		}
+
+		if (config.showDivine())
+		{
+			Matcher mDivine = DIVINE_POTION_PATTERN.matcher(event.getMessage());
+			if (mDivine.find())
+			{
+				switch (mDivine.group(1))
+				{
+					case "super attack":
+						createGameTimer(DIVINE_SUPER_ATTACK);
+						break;
+
+					case "super strength":
+						createGameTimer(DIVINE_SUPER_STRENGTH);
+						break;
+
+					case "super defence":
+						createGameTimer(DIVINE_SUPER_DEFENCE);
+						break;
+
+					case "combat":
+						createGameTimer(DIVINE_SUPER_COMBAT);
+						break;
+
+					case "ranging":
+						createGameTimer(DIVINE_RANGING);
+						break;
+
+					case "magic":
+						createGameTimer(DIVINE_MAGIC);
+						break;
+				}
+			}
 		}
 	}
 

@@ -535,7 +535,14 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		final int taskKillExp = Task.getTask(taskName).getExpectedKillExp();
+		final Task task = Task.getTask(taskName);
+
+		if (task == null)
+		{
+			return;
+		}
+
+		final int taskKillExp = task.getExpectedKillExp();
 
 		// Only count exp gain as a kill if the task either has no expected exp for a kill, or if the exp gain is equal
 		// to the expected exp gain for the task.
@@ -595,7 +602,7 @@ public class SlayerPlugin extends Plugin
 	private boolean doubleTroubleExtraKill()
 	{
 		return WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == GROTESQUE_GUARDIANS_REGION &&
-				SlayerUnlock.GROTESQUE_GUARDIAN_DOUBLE_COUNT.isEnabled(client);
+			SlayerUnlock.GROTESQUE_GUARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
 	private boolean isTarget(NPC npc)

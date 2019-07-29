@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
-
-import lombok.Value;
-import net.runelite.api.TileItem;
-import net.runelite.api.Tile;
+package net.runelite.api;
 
 /**
- * Called when an item pile despawns from the ground. When the client loads a new scene,
- * all item piles are implicitly despawned, and despawn events will not be sent.
+ * Represents an item inside an {@link ItemLayer}.
  */
-@Value
-public class ItemDespawned
+public interface TileItem extends Renderable
 {
-	private final Tile tile;
-	private final TileItem item;
+	/**
+	 * Gets the items ID.
+	 *
+	 * @return the ID of the item
+	 * @see ItemID
+	 */
+	int getId();
+
+	/**
+	 * Gets the items quantity.
+	 *
+	 * @return the items quantity
+	 */
+	int getQuantity();
 }
