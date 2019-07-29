@@ -106,7 +106,7 @@ public interface AgilityConfig extends Config
 	)
 	default Color getPortalColor()
 	{
-		return Color.RED;
+		return Color.GREEN;
 	}
 
 	@ConfigItem(
