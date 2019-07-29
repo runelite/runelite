@@ -37,18 +37,18 @@ public interface PvpPerformanceTrackerConfig extends Config
 		description = "Restricts use within the LMS map & lobby. WARNING: cannot guarantee accuracy outside LMS, as we must specify each weapon's combat style.",
 		position = 0
 	)
-	default boolean getRestrictToLms()
+	default boolean restrictToLms()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-			keyName = "currentFightOverlay",
+			keyName = "showCurrentFightOverlay",
 			name = "Current Fight Overlay",
 			description = "Display an overlay of statistics while fighting.",
 			position = 1
 	)
-	default boolean getCurrentFightOverlay()
+	default boolean showCurrentFightOverlay()
 	{
 		return false;
 	}
@@ -56,10 +56,10 @@ public interface PvpPerformanceTrackerConfig extends Config
 	@ConfigItem(
 			keyName = "saveFightHistory",
 			name = "Save Fight History",
-			description = "Keep fight statistics saved through client restarts.",
+			description = "Enables the Panel & keeps fight statistics saved through client restarts.",
 			position = 2
 	)
-	default boolean getSaveFightHistory()
+	default boolean saveFightHistory()
 	{
 		return true;
 	}

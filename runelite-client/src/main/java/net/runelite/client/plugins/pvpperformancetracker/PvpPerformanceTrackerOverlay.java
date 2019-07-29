@@ -24,19 +24,15 @@
  */
 package net.runelite.client.plugins.pvpperformancetracker;
 
-import net.runelite.api.ItemID;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.*;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
-import net.runelite.client.ui.overlay.components.ImageComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
 import javax.inject.Inject;
 import java.awt.*;
-import java.util.Map;
 
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -46,57 +42,37 @@ public class PvpPerformanceTrackerOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 	private final PvpPerformanceTrackerPlugin plugin;
 	private final PvpPerformanceTrackerConfig config;
-	private final ItemManager manager;
 
 	@Inject
-	private PvpPerformanceTrackerOverlay(PvpPerformanceTrackerPlugin plugin, PvpPerformanceTrackerConfig config, ItemManager manager)
+	private PvpPerformanceTrackerOverlay(PvpPerformanceTrackerPlugin plugin, PvpPerformanceTrackerConfig config)
 	{
 		super(plugin);
-		setPosition(OverlayPosition.TOP_LEFT);
+		setPosition(OverlayPosition.TOP_RIGHT);
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
 		this.config = config;
-		this.manager = manager;
 		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		panelComponent.setWrapping(4);
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Teamcapes overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "PvP Performance overlay"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Map<Integer, Integer> teams = plugin.getTeams();
-		if (teams.isEmpty())
+		PvpPerformanceStats currentFight = plugin.getCurrentFight();
+		if (currentFight == null || !config.showCurrentFightOverlay() || config.restrictToLms())
 		{
 			return null;
 		}
 
 		panelComponent.getChildren().clear();
 
-		for (Map.Entry<Integer, Integer> team : teams.entrySet())
-		{
-			// Only display team capes that have a count greater than the configured minimum
-//			if (team.getValue() < config.getRestrictToLms())
-//			{
-//				continue;
-//			}
-
-			// Make the number 0 based
-			final int teamcapeNumber = team.getKey() - 1;
-			final int itemID;
-			if (teamcapeNumber < 50)
-			{
-				// The team cape is every 2nd item id based on tc number
-				itemID = 2 * teamcapeNumber + ItemID.TEAM1_CAPE;
-			}
-			else
-			{
-				// The team cape is every 3rd item id based on tc number starting from 0
-				itemID = 3 * (teamcapeNumber - 50) + ItemID.TEAM_CAPE_ZERO;
-			}
-
-			panelComponent.getChildren().add(new ImageComponent(manager.getImage(itemID, team.getValue(), true)));
-		}
+		panelComponent.getChildren().add(TitleComponent.builder()
+				.text(currentFight.getPlayerDisplayString())
+				.build());
+		panelComponent.getChildren().add(TitleComponent.builder()
+				.text(currentFight.getOpponentDisplayString())
+				.build());
 
 		return panelComponent.render(graphics);
 	}

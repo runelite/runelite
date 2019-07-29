@@ -210,7 +210,7 @@ public final class AnimationID
 	public static final int MELEE_ELDER_MAUL = 7516; // Only tested 1 style, think they're all the same.
 
 	// Magic Attack/Casting Animations
-	public static final int MAGIC_ANCIENT_BARRAGE = 1979; // Confirmed the same for Ice & Blood w/ diff weapons.
+	public static final int MAGIC_ANCIENT_BARRAGE = 1979; // Confirmed the same for Ice & Blood w/ diff weapons. Possibly also bursting.
 
 	// Ranged Attack Animations
 	public static final int RANGED_RUNE_CROSSBOW = 4230;

@@ -47,6 +47,16 @@ public class PvpPerformanceStats
         opponentSuccessCount = 0;
     }
 
+    PvpPerformanceStats(boolean debug)
+    {
+        this.playerName = "Matsyir";
+        this.opponentName = "Tester";
+        playerAttackCount = 55;
+        playerSuccessCount = 32;
+        opponentAttackCount = 57;
+        opponentSuccessCount = 43;
+    }
+
 
     public void addAttack(String playerName, boolean success)
     {
@@ -66,5 +76,23 @@ public class PvpPerformanceStats
                 opponentSuccessCount++;
             }
         }
+    }
+
+    // Return a simple string to display the current player's success rate.
+    public String getPlayerDisplayString()
+    {
+        // The success rate is the percentage of successful attacks, rounded to 1 decimal place.
+        double playerSuccessRate = Math.round((double)playerSuccessCount /
+                (double)playerAttackCount * 10.0) / 10.0;
+        return playerName + ": " + playerSuccessCount + "/" + playerAttackCount + "(" + playerSuccessRate + "%)";
+    }
+
+    // Return a simple string to display the current opponent's success rate.
+    public String getOpponentDisplayString()
+    {
+        // The success rate is the percentage of successful attacks, rounded to 1 decimal place.
+        double opponentSuccessRate = Math.round((double)opponentSuccessCount /
+                (double)opponentAttackCount * 10.0) / 10.0;
+        return opponentName + ": " + opponentSuccessCount + "/" + opponentAttackCount + "(" + opponentSuccessRate + "%)";
     }
 }

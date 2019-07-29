@@ -34,7 +34,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import sun.tools.jconsole.JConsole;
 
 import javax.inject.Inject;
 import java.time.Duration;
@@ -87,7 +86,7 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 		lastFightTime = Instant.MIN;
 		playerAttacking = false;
 		opponentAttacking = false;
-
+		currentFight = new PvpPerformanceStats(true);
 		overlayManager.add(overlay);
 	}
 
