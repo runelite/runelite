@@ -319,6 +319,8 @@ import static net.runelite.api.ItemID.SLICE_OF_CAKE;
 import static net.runelite.api.ItemID.SPICY_CRUNCHIES;
 import static net.runelite.api.ItemID.SPICY_SAUCE;
 import static net.runelite.api.ItemID.SPICY_STEW;
+import static net.runelite.api.ItemID.SPIDER_ON_SHAFT_6299;
+import static net.runelite.api.ItemID.SPIDER_ON_STICK_6297;
 import static net.runelite.api.ItemID.SPINACH_ROLL;
 import static net.runelite.api.ItemID.SPRING_SQIRKJUICE;
 import static net.runelite.api.ItemID.SQUARE_SANDWICH;

@@ -214,6 +214,10 @@ import static net.runelite.api.ObjectID.STRANGE_FLOOR;
 import static net.runelite.api.ObjectID.STRANGE_FLOOR_16544;
 import static net.runelite.api.ObjectID.STRONG_TREE_17074;
 import static net.runelite.api.ObjectID.TIGHTGAP;
+import static net.runelite.api.ObjectID.TIGHT_GAP;
+import static net.runelite.api.ObjectID.TIGHT_GAP_36693;
+import static net.runelite.api.ObjectID.TIGHT_GAP_36694;
+import static net.runelite.api.ObjectID.TIGHT_GAP_36695;
 import static net.runelite.api.ObjectID.TRELLIS_20056;
 import static net.runelite.api.ObjectID.TRIPWIRE;
 import static net.runelite.api.ObjectID.TUNNEL_30174;
@@ -232,7 +236,6 @@ import static net.runelite.api.ObjectID.WALL_17049;
 import static net.runelite.api.ObjectID.WALL_17050;
 import static net.runelite.api.ObjectID.WEATHERED_WALL;
 import static net.runelite.api.ObjectID.WEATHERED_WALL_16526;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
