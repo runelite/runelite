@@ -16,7 +16,7 @@ public class Bootstrapper
 
 		if (args.length > 0)
 		{
-			remoteLocation = "/staging/";
+			remoteLocation = "staging/";
 			localLocation = "./staging/";
 			Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 			File dir = new File("./staging/");

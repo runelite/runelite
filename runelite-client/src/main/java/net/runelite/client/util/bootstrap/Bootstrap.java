@@ -107,7 +107,7 @@ public class Bootstrap
 	{
 		try
 		{
-			artifacts = new Artifact[47];
+			artifacts = new Artifact[48];
 
 			//Static artifacts
 			artifacts[0] = new Artifact();
@@ -330,7 +330,7 @@ public class Bootstrap
 			artifacts[3] = new Artifact();
 			artifacts[3].name = "client-" + projectVersion + ".jar";
 			artifacts[3].hash = getChecksumFile("./runelite-client/build/libs/" + artifacts[3].name);
-			artifacts[3].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master" + Bootstrapper.remoteLocation + artifacts[3].name;
+			artifacts[3].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[3].name;
 			artifacts[3].size = Long.toString(getFileSize("./runelite-client/target/" + artifacts[3].name));
 			copyTodir("./runelite-client/build/libs/" + artifacts[3].name, Bootstrapper.localLocation);
 			artifacts[35] = new Artifact();
@@ -351,7 +351,12 @@ public class Bootstrap
 			artifacts[37].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[37].name;
 			artifacts[37].size = Long.toString(getFileSize("./http-api/target/" + artifacts[37].name));
 			copyTodir("./http-api/build/libs/" + artifacts[37].name, Bootstrapper.localLocation);
-			copyTodir("./injected-client/build/libs/injected-client-" + projectVersion + ".jar", Bootstrapper.localLocation);
+			artifacts[47] = new Artifact();
+			artifacts[47].name = "injected-client-" + projectVersion + ".jar";
+			artifacts[47].hash = getChecksumFile("./injected-client/build/libs/" + artifacts[47].name);
+			artifacts[47].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[47].name;
+			artifacts[47].size = Long.toString(getFileSize("./http-api/target/" + artifacts[47].name));
+			copyTodir("./injected-client/build/libs/" + artifacts[47].name, Bootstrapper.localLocation);
 		}
 		catch (IOException | NoSuchAlgorithmException e)
 		{
