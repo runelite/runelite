@@ -78,7 +78,13 @@ enum GameTimer
 	ABYSSAL_SIRE_STUN(ItemID.ABYSSAL_ORPHAN, GameTimerImageType.ITEM, "Abyssal Sire Stun", 30, ChronoUnit.SECONDS, true),
 	HOME_TELEPORT(SpriteID.SPELL_LUMBRIDGE_HOME_TELEPORT, GameTimerImageType.SPRITE, "Home Teleport", 30, ChronoUnit.MINUTES),
 	MINIGAME_TELEPORT(SpriteID.TAB_QUESTS_RED_MINIGAMES, GameTimerImageType.SPRITE, "Minigame Teleport", 20, ChronoUnit.MINUTES),
-	DRAGON_FIRE_SHIELD(ItemID.DRAGONFIRE_SHIELD_11284, GameTimerImageType.ITEM, "Dragonfire Shield Special", 2, ChronoUnit.MINUTES);
+	DRAGON_FIRE_SHIELD(ItemID.DRAGONFIRE_SHIELD_11284, GameTimerImageType.ITEM, "Dragonfire Shield Special", 2, ChronoUnit.MINUTES),
+	DIVINE_SUPER_ATTACK(ItemID.DIVINE_SUPER_ATTACK_POTION4, GameTimerImageType.ITEM, "Divine Super Attack", 5, ChronoUnit.MINUTES, true),
+	DIVINE_SUPER_STRENGTH(ItemID.DIVINE_SUPER_STRENGTH_POTION4, GameTimerImageType.ITEM, "Divine Super Strength", 5, ChronoUnit.MINUTES, true),
+	DIVINE_SUPER_DEFENCE(ItemID.DIVINE_SUPER_DEFENCE_POTION4, GameTimerImageType.ITEM, "Divine Super Defence", 5, ChronoUnit.MINUTES, true),
+	DIVINE_SUPER_COMBAT(ItemID.DIVINE_SUPER_COMBAT_POTION4, GameTimerImageType.ITEM, "Divine Super Combat", 5, ChronoUnit.MINUTES, true),
+	DIVINE_RANGING(ItemID.DIVINE_RANGING_POTION4, GameTimerImageType.ITEM, "Divine Ranging", 5, ChronoUnit.MINUTES, true),
+	DIVINE_MAGIC(ItemID.DIVINE_MAGIC_POTION4, GameTimerImageType.ITEM, "Divine Magic", 5, ChronoUnit.MINUTES, true);
 
 	private final Duration duration;
 	private final Integer graphicId;
