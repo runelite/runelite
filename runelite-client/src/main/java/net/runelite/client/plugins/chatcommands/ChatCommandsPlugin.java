@@ -87,8 +87,9 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>");
-	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?:Fight|Lap) duration: <col=ff0000>[0-9:]+</col>. Personal best: ([0-9:]+)");
-	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?:Fight|Lap) duration: <col=ff0000>([0-9:]+)</col> \\(new personal best\\)");
+	private static final Pattern GAUNTLET_PATTERN = Pattern.compile("(Corrupted challenge|Challenge) duration:"); // TODO: replace with proper kc pattern
+	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile(".* duration: <col=ff0000>[0-9:]+</col>. Personal best: ([0-9:]+)");
+	private static final Pattern NEW_PB_PATTERN = Pattern.compile(".* duration: <col=ff0000>([0-9:]+)</col> \\(new personal best\\)");
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won (\\d+) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost (\\d+) duels?");
 
@@ -289,6 +290,13 @@ public class ChatCommandsPlugin extends Plugin
 			int kc = Integer.parseInt(matcher.group(1));
 
 			setKc("Barrows Chests", kc);
+		}
+		
+		matcher = GAUNTLET_PATTERN.matcher(message);
+		// TODO: set lastBossKill in kc command instead
+		if (matcher.find())
+		{
+			lastBossKill = message.startsWith("Corrupted") ? "Corrupted Gauntlet" : "Gauntlet";
 		}
 
 		if (lastBossKill != null)
@@ -1345,6 +1353,19 @@ public class ChatCommandsPlugin extends Plugin
 			case "verzik vitur":
 			case "raids 2":
 				return "Theatre of Blood";
+			
+			case "gaunt":
+			case "hunllef":
+				return "Gauntlet";
+			
+			case "hard gaunt":
+			case "hard gauntlet":
+			case "challenge gaunt":
+			case "challenge gauntlet":
+			case "corrupt gaunt":
+			case "corrupt gauntlet":
+			case "corrupted gaunt":
+				return "Corrupted Gauntlet";
 
 			// agility course
 			case "prif":
