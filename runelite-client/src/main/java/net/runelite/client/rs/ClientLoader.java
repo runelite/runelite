@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLite;
 
 @Slf4j
 @Singleton
@@ -66,6 +67,9 @@ public class ClientLoader
 					return loadVanilla(config);
 				case NONE:
 					return null;
+				case RSPS:
+					RuneLite.allowPrivateServer = true;
+					return loadRLPlus(config);
 			}
 		}
 		catch (IOException | InstantiationException | IllegalAccessException e)
