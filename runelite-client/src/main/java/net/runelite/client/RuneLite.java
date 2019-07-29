@@ -178,8 +178,6 @@ public class RuneLite
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("no-splash", "Do not show the splash screen");
-		parser.accepts("local-injected", "Use local injected-client - DEPRECATED");
-		parser.accepts("private-server", "Use a custom codebase - DEPRECATED: Use --rs=RSPS");
 
 		final ArgumentAcceptingOptionSpec<String> proxyInfo = parser
 			.accepts("proxy")
@@ -256,16 +254,6 @@ public class RuneLite
 		{
 			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 			logger.setLevel(Level.DEBUG);
-		}
-
-		if (options.has("local-injected"))
-		{
-			log.warn("--local-injected has been deprecated and may get removed soon");
-		}
-
-		if (options.has("private-server"))
-		{
-			allowPrivateServer = true;
 		}
 
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->

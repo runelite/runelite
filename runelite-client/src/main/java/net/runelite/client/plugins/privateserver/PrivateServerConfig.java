@@ -17,7 +17,7 @@ public interface PrivateServerConfig extends Config
 	)
 	default String codebase()
 	{
-		return "http://oldschool17.runescape.com/";
+		return "http://127.0.0.1";
 	}
 
 	@ConfigItem(
