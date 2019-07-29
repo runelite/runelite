@@ -33,8 +33,10 @@ import java.awt.geom.Area;
 import java.util.List;
 import javax.inject.Inject;
 
-import net.runelite.api.*;
-import static net.runelite.api.ObjectID.LADDER_36232;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.Point;
+import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.ui.overlay.Overlay;
@@ -98,9 +100,9 @@ class AgilityOverlay extends Overlay
 					final Polygon polygon = ((GameObject) object).getConvexHull();
 					if (polygon != null)
 					{
-						boolean isHovered = object.getClickbox().contains(mousePosition.getX(), mousePosition.getY());
 						Color portalColor = config.getPortalColor();
 						Color fillColor = new Color(portalColor.getRed(), portalColor.getGreen(), portalColor.getBlue(), 50);
+						boolean isHovered = object.getClickbox().contains(mousePosition.getX(), mousePosition.getY());
 						graphics.setColor(isHovered ? portalColor.darker() : portalColor);
 						graphics.drawPolygon(polygon);
 						graphics.setColor(fillColor);
