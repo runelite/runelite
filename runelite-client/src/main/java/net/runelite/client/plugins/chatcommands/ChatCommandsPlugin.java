@@ -83,7 +83,7 @@ import org.apache.commons.text.WordUtils;
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
-	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) (?:kill|harvest|lap) count is: <col=ff0000>(\\d+)</col>");
+	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) (?:kill|harvest|lap|completion) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>");
@@ -1350,6 +1350,16 @@ public class ChatCommandsPlugin extends Plugin
 			case "prif":
 			case "prifddinas":
 				return "Prifddinas Agility Course";
+
+			// The Gauntlet
+			case "gaunt":
+			case "gauntlet":
+				return "Gauntlet";
+
+			// Corrupted Gauntlet
+			case "cgaunt":
+			case "cgauntlet":
+				return "Corrupted Gauntlet";
 
 			default:
 				return WordUtils.capitalize(boss);
