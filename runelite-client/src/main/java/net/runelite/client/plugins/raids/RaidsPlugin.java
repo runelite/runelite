@@ -210,16 +210,16 @@ public class RaidsPlugin extends Plugin
 	private WSClient ws;
 
 	@Getter
-	private final ArrayList<String> roomWhitelist = new ArrayList<>();
+	private final List<String> roomWhitelist = new ArrayList<>();
 
 	@Getter
-	private final ArrayList<String> roomBlacklist = new ArrayList<>();
+	private final List<String> roomBlacklist = new ArrayList<>();
 
 	@Getter
-	private final ArrayList<String> rotationWhitelist = new ArrayList<>();
+	private final List<String> rotationWhitelist = new ArrayList<>();
 
 	@Getter
-	private final ArrayList<String> layoutWhitelist = new ArrayList<>();
+	private final List<String> layoutWhitelist = new ArrayList<>();
 
 	@Getter
 	private Raid raid;

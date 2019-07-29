@@ -274,7 +274,7 @@ public class GroundItemsPlugin extends Plugin
 		eventBus.subscribe(ClientTick.class, this, this::onClientTick);
 		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
 		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
-				eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
 	private void onGameTick(GameTick event)
