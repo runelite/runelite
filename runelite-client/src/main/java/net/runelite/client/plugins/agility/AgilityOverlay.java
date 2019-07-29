@@ -32,9 +32,9 @@ import java.awt.Polygon;
 import java.awt.geom.Area;
 import java.util.List;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Point;
-import net.runelite.api.Tile;
+
+import net.runelite.api.*;
+import static net.runelite.api.ObjectID.LADDER_36232;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.ui.overlay.Overlay;
@@ -71,7 +71,8 @@ class AgilityOverlay extends Overlay
 		plugin.getObstacles().forEach((object, obstacle) ->
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
-					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay())
+					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
+					Obstacles.PORTAL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightPortals())
 			{
 				return;
 			}
@@ -90,6 +91,24 @@ class AgilityOverlay extends Overlay
 					}
 					return;
 				}
+
+				// A Portal is visible if it has a clickbox
+				if (Obstacles.PORTAL_OBSTACLE_IDS.contains(object.getId()) && object.getClickbox() != null)
+				{
+					final Polygon polygon = ((GameObject) object).getConvexHull();
+					if (polygon != null)
+					{
+						boolean isHovered = object.getClickbox().contains(mousePosition.getX(), mousePosition.getY());
+						Color portalColor = config.getPortalColor();
+						Color fillColor = new Color(portalColor.getRed(), portalColor.getGreen(), portalColor.getBlue(), 50);
+						graphics.setColor(isHovered ? portalColor.darker() : portalColor);
+						graphics.drawPolygon(polygon);
+						graphics.setColor(fillColor);
+						graphics.fillPolygon(polygon);
+					}
+					return;
+				}
+
 				Area objectClickbox = object.getClickbox();
 				if (objectClickbox != null)
 				{
