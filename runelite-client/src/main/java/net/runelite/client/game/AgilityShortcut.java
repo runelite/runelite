@@ -38,200 +38,7 @@ import static net.runelite.api.NullObjectID.NULL_31823;
 import static net.runelite.api.NullObjectID.NULL_31849;
 import static net.runelite.api.NullObjectID.NULL_33327;
 import static net.runelite.api.NullObjectID.NULL_33328;
-import static net.runelite.api.ObjectID.A_WOODEN_LOG;
-import static net.runelite.api.ObjectID.BALANCING_LEDGE_23548;
-import static net.runelite.api.ObjectID.BIG_WINDOW;
-import static net.runelite.api.ObjectID.BOULDER_27990;
-import static net.runelite.api.ObjectID.BROKEN_FENCE;
-import static net.runelite.api.ObjectID.BROKEN_FENCE_2618;
-import static net.runelite.api.ObjectID.BROKEN_RAFT;
-import static net.runelite.api.ObjectID.BROKEN_WALL_33344;
-import static net.runelite.api.ObjectID.CASTLE_WALL;
-import static net.runelite.api.ObjectID.CLIMBING_ROCKS;
-import static net.runelite.api.ObjectID.CLIMBING_ROCKS_11948;
-import static net.runelite.api.ObjectID.CLIMBING_ROCKS_11949;
-import static net.runelite.api.ObjectID.CREVICE_16465;
-import static net.runelite.api.ObjectID.CREVICE_16539;
-import static net.runelite.api.ObjectID.CREVICE_16543;
-import static net.runelite.api.ObjectID.CREVICE_19043;
-import static net.runelite.api.ObjectID.CREVICE_30198;
-import static net.runelite.api.ObjectID.CREVICE_9739;
-import static net.runelite.api.ObjectID.CREVICE_9740;
-import static net.runelite.api.ObjectID.CROSSBOW_TREE_17062;
-import static net.runelite.api.ObjectID.CRUMBLING_WALL_24222;
-import static net.runelite.api.ObjectID.DARK_TUNNEL_10047;
-import static net.runelite.api.ObjectID.DENSE_FOREST;
-import static net.runelite.api.ObjectID.DENSE_FOREST_3938;
-import static net.runelite.api.ObjectID.DENSE_FOREST_3939;
-import static net.runelite.api.ObjectID.DENSE_FOREST_3998;
-import static net.runelite.api.ObjectID.DENSE_FOREST_3999;
-import static net.runelite.api.ObjectID.FALLEN_TREE_33192;
-import static net.runelite.api.ObjectID.FENCE_16518;
-import static net.runelite.api.ObjectID.GAP;
-import static net.runelite.api.ObjectID.GAP_2831;
-import static net.runelite.api.ObjectID.GAP_29326;
-import static net.runelite.api.ObjectID.HOLE_16520;
-import static net.runelite.api.ObjectID.HOLE_30966;
-import static net.runelite.api.ObjectID.HOLE_31481;
-import static net.runelite.api.ObjectID.HOLE_31482;
-import static net.runelite.api.ObjectID.ICE_CHUNKS_31822;
-import static net.runelite.api.ObjectID.ICE_CHUNKS_31990;
-import static net.runelite.api.ObjectID.JUTTING_WALL_17002;
-import static net.runelite.api.ObjectID.LADDER_30938;
-import static net.runelite.api.ObjectID.LADDER_30939;
-import static net.runelite.api.ObjectID.LADDER_30940;
-import static net.runelite.api.ObjectID.LADDER_30941;
-import static net.runelite.api.ObjectID.LEAVES;
-import static net.runelite.api.ObjectID.LEAVES_3924;
-import static net.runelite.api.ObjectID.LEAVES_3925;
-import static net.runelite.api.ObjectID.LEDGE_33190;
-import static net.runelite.api.ObjectID.LITTLE_BOULDER;
-import static net.runelite.api.ObjectID.LOG_BALANCE_16540;
-import static net.runelite.api.ObjectID.LOG_BALANCE_16541;
-import static net.runelite.api.ObjectID.LOG_BALANCE_16542;
-import static net.runelite.api.ObjectID.LOG_BALANCE_16546;
-import static net.runelite.api.ObjectID.LOG_BALANCE_16547;
-import static net.runelite.api.ObjectID.LOG_BALANCE_16548;
-import static net.runelite.api.ObjectID.LOG_BALANCE_20882;
-import static net.runelite.api.ObjectID.LOG_BALANCE_20884;
-import static net.runelite.api.ObjectID.LOG_BALANCE_23274;
-import static net.runelite.api.ObjectID.LOG_BALANCE_3929;
-import static net.runelite.api.ObjectID.LOG_BALANCE_3930;
-import static net.runelite.api.ObjectID.LOG_BALANCE_3931;
-import static net.runelite.api.ObjectID.LOG_BALANCE_3932;
-import static net.runelite.api.ObjectID.LOG_BALANCE_3933;
-import static net.runelite.api.ObjectID.LOOSE_RAILING;
-import static net.runelite.api.ObjectID.LOOSE_RAILING_2186;
-import static net.runelite.api.ObjectID.LOOSE_RAILING_28849;
-import static net.runelite.api.ObjectID.LOW_FENCE;
-import static net.runelite.api.ObjectID.MONKEYBARS_23566;
-import static net.runelite.api.ObjectID.MONKEYBARS_23567;
-import static net.runelite.api.ObjectID.MYSTERIOUS_PIPE;
-import static net.runelite.api.ObjectID.OBSTACLE;
-import static net.runelite.api.ObjectID.OBSTACLE_30767;
-import static net.runelite.api.ObjectID.OBSTACLE_30962;
-import static net.runelite.api.ObjectID.OBSTACLE_30964;
-import static net.runelite.api.ObjectID.OBSTACLE_PIPE_16509;
-import static net.runelite.api.ObjectID.OBSTACLE_PIPE_16511;
-import static net.runelite.api.ObjectID.OBSTACLE_PIPE_23140;
-import static net.runelite.api.ObjectID.ORNATE_RAILING;
-import static net.runelite.api.ObjectID.ORNATE_RAILING_17000;
-import static net.runelite.api.ObjectID.PILE_OF_RUBBLE_23563;
-import static net.runelite.api.ObjectID.PILE_OF_RUBBLE_23564;
-import static net.runelite.api.ObjectID.PILLAR_31561;
-import static net.runelite.api.ObjectID.PILLAR_31809;
-import static net.runelite.api.ObjectID.PIPE_21727;
-import static net.runelite.api.ObjectID.PIPE_21728;
-import static net.runelite.api.ObjectID.ROCKS;
-import static net.runelite.api.ObjectID.ROCKSLIDE_33184;
-import static net.runelite.api.ObjectID.ROCKSLIDE_33185;
-import static net.runelite.api.ObjectID.ROCKSLIDE_33191;
-import static net.runelite.api.ObjectID.ROCKS_14106;
-import static net.runelite.api.ObjectID.ROCKS_16464;
-import static net.runelite.api.ObjectID.ROCKS_16514;
-import static net.runelite.api.ObjectID.ROCKS_16515;
-import static net.runelite.api.ObjectID.ROCKS_16521;
-import static net.runelite.api.ObjectID.ROCKS_16522;
-import static net.runelite.api.ObjectID.ROCKS_16523;
-import static net.runelite.api.ObjectID.ROCKS_16524;
-import static net.runelite.api.ObjectID.ROCKS_16534;
-import static net.runelite.api.ObjectID.ROCKS_16535;
-import static net.runelite.api.ObjectID.ROCKS_16545;
-import static net.runelite.api.ObjectID.ROCKS_16549;
-import static net.runelite.api.ObjectID.ROCKS_16550;
-import static net.runelite.api.ObjectID.ROCKS_16998;
-import static net.runelite.api.ObjectID.ROCKS_16999;
-import static net.runelite.api.ObjectID.ROCKS_17042;
-import static net.runelite.api.ObjectID.ROCKS_19849;
-import static net.runelite.api.ObjectID.ROCKS_2231;
-import static net.runelite.api.ObjectID.ROCKS_27984;
-import static net.runelite.api.ObjectID.ROCKS_27985;
-import static net.runelite.api.ObjectID.ROCKS_27987;
-import static net.runelite.api.ObjectID.ROCKS_27988;
-import static net.runelite.api.ObjectID.ROCKS_31757;
-import static net.runelite.api.ObjectID.ROCKS_31758;
-import static net.runelite.api.ObjectID.ROCKS_31759;
-import static net.runelite.api.ObjectID.ROCKS_34396;
-import static net.runelite.api.ObjectID.ROCKS_34397;
-import static net.runelite.api.ObjectID.ROCKS_34741;
-import static net.runelite.api.ObjectID.ROCKS_3748;
-import static net.runelite.api.ObjectID.ROCKS_3790;
-import static net.runelite.api.ObjectID.ROCKS_3791;
-import static net.runelite.api.ObjectID.ROCKS_3803;
-import static net.runelite.api.ObjectID.ROCKS_3804;
-import static net.runelite.api.ObjectID.ROCKS_6673;
-import static net.runelite.api.ObjectID.ROCKY_HANDHOLDS_26400;
-import static net.runelite.api.ObjectID.ROCKY_HANDHOLDS_26401;
-import static net.runelite.api.ObjectID.ROCKY_HANDHOLDS_26402;
-import static net.runelite.api.ObjectID.ROCKY_HANDHOLDS_26404;
-import static net.runelite.api.ObjectID.ROCKY_HANDHOLDS_26405;
-import static net.runelite.api.ObjectID.ROCKY_HANDHOLDS_26406;
-import static net.runelite.api.ObjectID.ROCK_16115;
-import static net.runelite.api.ObjectID.ROPESWING_23568;
-import static net.runelite.api.ObjectID.ROPESWING_23569;
-import static net.runelite.api.ObjectID.ROPE_ANCHOR;
-import static net.runelite.api.ObjectID.ROPE_ANCHOR_30917;
-import static net.runelite.api.ObjectID.ROPE_BRIDGE_21306;
-import static net.runelite.api.ObjectID.ROPE_BRIDGE_21307;
-import static net.runelite.api.ObjectID.ROPE_BRIDGE_21308;
-import static net.runelite.api.ObjectID.ROPE_BRIDGE_21309;
-import static net.runelite.api.ObjectID.ROPE_BRIDGE_21310;
-import static net.runelite.api.ObjectID.ROPE_BRIDGE_21311;
-import static net.runelite.api.ObjectID.ROPE_BRIDGE_21312;
-import static net.runelite.api.ObjectID.ROPE_BRIDGE_21313;
-import static net.runelite.api.ObjectID.ROPE_BRIDGE_21314;
-import static net.runelite.api.ObjectID.ROPE_BRIDGE_21315;
-import static net.runelite.api.ObjectID.RUBBER_CAP_MUSHROOM;
-import static net.runelite.api.ObjectID.SPIKEY_CHAIN;
-import static net.runelite.api.ObjectID.SPIKEY_CHAIN_16538;
-import static net.runelite.api.ObjectID.STAIRS_31485;
-import static net.runelite.api.ObjectID.STEPPING_STONES;
-import static net.runelite.api.ObjectID.STEPPING_STONES_23646;
-import static net.runelite.api.ObjectID.STEPPING_STONES_23647;
-import static net.runelite.api.ObjectID.STEPPING_STONE_10663;
-import static net.runelite.api.ObjectID.STEPPING_STONE_11768;
-import static net.runelite.api.ObjectID.STEPPING_STONE_13504;
-import static net.runelite.api.ObjectID.STEPPING_STONE_14917;
-import static net.runelite.api.ObjectID.STEPPING_STONE_14918;
-import static net.runelite.api.ObjectID.STEPPING_STONE_16466;
-import static net.runelite.api.ObjectID.STEPPING_STONE_16513;
-import static net.runelite.api.ObjectID.STEPPING_STONE_16533;
-import static net.runelite.api.ObjectID.STEPPING_STONE_19040;
-import static net.runelite.api.ObjectID.STEPPING_STONE_19042;
-import static net.runelite.api.ObjectID.STEPPING_STONE_21738;
-import static net.runelite.api.ObjectID.STEPPING_STONE_21739;
-import static net.runelite.api.ObjectID.STEPPING_STONE_29728;
-import static net.runelite.api.ObjectID.STEPPING_STONE_29729;
-import static net.runelite.api.ObjectID.STEPPING_STONE_29730;
-import static net.runelite.api.ObjectID.STEPPING_STONE_5948;
-import static net.runelite.api.ObjectID.STEPPING_STONE_5949;
-import static net.runelite.api.ObjectID.STEPS;
-import static net.runelite.api.ObjectID.STEPS_29993;
-import static net.runelite.api.ObjectID.STICKS;
-import static net.runelite.api.ObjectID.STILE;
-import static net.runelite.api.ObjectID.STILE_12982;
-import static net.runelite.api.ObjectID.STRANGE_FLOOR;
-import static net.runelite.api.ObjectID.STRANGE_FLOOR_16544;
-import static net.runelite.api.ObjectID.STRONG_TREE_17074;
-import static net.runelite.api.ObjectID.TIGHTGAP;
-import static net.runelite.api.ObjectID.TRELLIS_20056;
-import static net.runelite.api.ObjectID.TRIPWIRE;
-import static net.runelite.api.ObjectID.TUNNEL_30174;
-import static net.runelite.api.ObjectID.TUNNEL_30175;
-import static net.runelite.api.ObjectID.TUNNEL_30959;
-import static net.runelite.api.ObjectID.UNDERWALL_TUNNEL;
-import static net.runelite.api.ObjectID.UNDERWALL_TUNNEL_16528;
-import static net.runelite.api.ObjectID.UNDERWALL_TUNNEL_16529;
-import static net.runelite.api.ObjectID.UNDERWALL_TUNNEL_16530;
-import static net.runelite.api.ObjectID.UNDERWALL_TUNNEL_19032;
-import static net.runelite.api.ObjectID.UNDERWALL_TUNNEL_19036;
-import static net.runelite.api.ObjectID.VINE_26880;
-import static net.runelite.api.ObjectID.VINE_26882;
-import static net.runelite.api.ObjectID.WALL_17047;
-import static net.runelite.api.ObjectID.WALL_17049;
-import static net.runelite.api.ObjectID.WALL_17050;
-import static net.runelite.api.ObjectID.WEATHERED_WALL;
-import static net.runelite.api.ObjectID.WEATHERED_WALL_16526;
+import static net.runelite.api.ObjectID.*;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
@@ -347,6 +154,7 @@ public enum AgilityShortcut
 	YANILLE_DUNGEON_MONKEY_BARS(57, "Monkey Bars", null, MONKEYBARS_23567),
 	PHASMATYS_ECTOPOOL_SHORTCUT(58, "Weathered Wall", null, WEATHERED_WALL, WEATHERED_WALL_16526),
 	ELVEN_OVERPASS_CLIFF_SCRAMBLE(59, "Rocks", new WorldPoint(2345, 3300, 0), ROCKS_16514, ROCKS_16515),
+	ELVEN_OVERPASS_CLIFF_SCRAMBLE_PRIFDDINAS(59, "Rocks", new WorldPoint(3369, 6052, 0), ROCKS_16514, ROCKS_16515),
 	WILDERNESS_GWD_CLIMB_EAST(60, "Rocks", new WorldPoint(2943, 3770, 0), ROCKY_HANDHOLDS_26400, ROCKY_HANDHOLDS_26401, ROCKY_HANDHOLDS_26402, ROCKY_HANDHOLDS_26404, ROCKY_HANDHOLDS_26405, ROCKY_HANDHOLDS_26406),
 	WILDERNESS_GWD_CLIMB_WEST(60, "Rocks", new WorldPoint(2928, 3760, 0), ROCKY_HANDHOLDS_26400, ROCKY_HANDHOLDS_26401, ROCKY_HANDHOLDS_26402, ROCKY_HANDHOLDS_26404, ROCKY_HANDHOLDS_26405, ROCKY_HANDHOLDS_26406),
 	MOS_LEHARMLESS_STEPPING_STONE(60, "Stepping Stone", new WorldPoint(3710, 2970, 0), STEPPING_STONE_19042),
@@ -368,6 +176,7 @@ public enum AgilityShortcut
 	HEROES_GUILD_TUNNEL_WEST(67, "Crevice", new WorldPoint(2913, 9895, 0), CREVICE_9739, CREVICE_9740),
 	YANILLE_DUNGEON_RUBBLE_CLIMB(67, "Pile of Rubble", null, PILE_OF_RUBBLE_23563, PILE_OF_RUBBLE_23564),
 	ELVEN_OVERPASS_MEDIUM_CLIFF(68, "Rocks", new WorldPoint(2337, 3288, 0), ROCKS_16514, ROCKS_16515),
+	ELVEN_OVERPASS_MEDIUM_CLIFF_PRIFDDINAS(68, "Rocks", new WorldPoint(3361, 6040, 0), ROCKS_16514, ROCKS_16515),
 	WEISS_OBSTACLES(68, "Shortcut", null, LITTLE_BOULDER, ROCKSLIDE_33184, ROCKSLIDE_33185, NULL_33327, NULL_33328, LEDGE_33190, ROCKSLIDE_33191, FALLEN_TREE_33192),
 	ARCEUUS_ESSENSE_NORTH(69, "Rock Climb", new WorldPoint(1761, 3873, 0), ROCKS_34741),
 	TAVERLEY_DUNGEON_PIPE_BLUE_DRAGON(70, "Pipe Squeeze", new WorldPoint(2886, 9798, 0), OBSTACLE_PIPE_16509),
@@ -388,14 +197,19 @@ public enum AgilityShortcut
 	REVENANT_CAVES_ANKOU_EAST(75, "Jump", new WorldPoint(3201, 10195, 0), PILLAR_31561),
 	REVENANT_CAVES_ANKOU_NORTH(75, "Jump", new WorldPoint(3180, 10209, 0), PILLAR_31561),
 	ZUL_ANDRA_ISLAND_CROSSING(76, "Stepping Stone", new WorldPoint(2156, 3073, 0), STEPPING_STONE_10663),
-	SHILO_VILLAGE_STEPPING_STONES(77, "Stepping Stones", new WorldPoint(2863, 2974, 0), STEPPING_STONE_16466),
+	SHILO_VILLAGE_STEPPING_STONES( 77, "Stepping Stones", new WorldPoint(2863, 2974, 0), STEPPING_STONE_16466),
+	IORWERTHS_DUNGEON_NORTHERN_SHORTCUT_EAST(78, "Tight Gap", new WorldPoint(3221, 12441, 0), TIGHT_GAP),
+	IORWERTHS_DUNGEON_NORTHERN_SHORTCUT_WEST(78, "Tight Gap", new WorldPoint(3215, 12441, 0), TIGHT_GAP_36693),
 	KHARAZI_JUNGLE_VINE_CLIMB(79, "Vine", new WorldPoint(2897, 2939, 0), NULL_26884, NULL_26886),
 	TAVERLEY_DUNGEON_SPIKED_BLADES(80, "Strange Floor", new WorldPoint(2877, 9813, 0), STRANGE_FLOOR),
 	SLAYER_DUNGEON_CHASM_JUMP(81, "Spiked Blades", new WorldPoint(2770, 10003, 0), STRANGE_FLOOR_16544),
 	LAVA_MAZE_NORTH_JUMP(82, "Stepping Stone", new WorldPoint(3092, 3880, 0), STEPPING_STONE_14917),
 	BRIMHAVEN_DUNGEON_EAST_STEPPING_STONES_NORTH(83, "Stepping Stones", new WorldPoint(2685, 9547, 0), STEPPING_STONE_19040),
 	BRIMHAVEN_DUNGEON_EAST_STEPPING_STONES_SOUTH(83, "Stepping Stones", new WorldPoint(2693, 9529, 0), STEPPING_STONE_19040),
+	IORWERTHS_DUNGEON_SOUTHERN_SHORTCUT_EAST(84, "Tight Gap", new WorldPoint(3241, 12420, 0), TIGHT_GAP_36694),
+	IORWERTHS_DUNGEON_SOUTHERN_SHORTCUT_WEST(84, "Tight Gap", new WorldPoint(3231, 12420, 0), TIGHT_GAP_36695),
 	ELVEN_ADVANCED_CLIFF_SCRAMBLE(85, "Rocks", new WorldPoint(2337, 3253, 0), ROCKS_16514, ROCKS_16514),
+	ELVEN_ADVANCED_CLIFF_SCRAMBLE_PRIFDDINAS(85, "Rocks", new WorldPoint(3361, 6005, 0), ROCKS_16514, ROCKS_16514),
 	KALPHITE_WALL(86, "Crevice", new WorldPoint(3214, 9508, 0), CREVICE_16465),
 	BRIMHAVEN_DUNGEON_VINE_EAST(87, "Vine", new WorldPoint(2672, 9582, 0), VINE_26880, VINE_26882),
 	BRIMHAVEN_DUNGEON_VINE_WEST(87, "Vine", new WorldPoint(2606, 9584, 0), VINE_26880, VINE_26882),

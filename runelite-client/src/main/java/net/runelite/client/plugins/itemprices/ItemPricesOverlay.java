@@ -97,9 +97,9 @@ class ItemPricesOverlay extends Overlay
 		switch (action)
 		{
 			case ITEM_USE_ON_WIDGET:
-				if (!client.getSelectedSpellName().equalsIgnoreCase("high level alchemy")  || !plugin.isShowAlchProfit())
+				if (!menuEntry.getTarget().contains("High Level Alchemy") || !plugin.isShowAlchProfit())
 				{
-					return null;
+					break;
 				}
 			case WIDGET_DEFAULT:
 			case ITEM_USE:

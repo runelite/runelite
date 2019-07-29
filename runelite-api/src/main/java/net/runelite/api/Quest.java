@@ -173,6 +173,7 @@ public enum Quest
 	ZOGRE_FLESH_EATERS(449, "Zogre Flesh Eaters", Varbits.QUEST_ZOGRE_FLESH_EATERS),
 	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus", Varbits.QUEST_THE_ASCENT_OF_ARCEUUS),
 	THE_FORSAKEN_TOWER(543, "The Forsaken Tower", Varbits.QUEST_THE_FORSAKEN_TOWER),
+	SONG_OF_THE_ELVES(603, "Song of the Elves", Varbits.QUEST_SONG_OF_THE_ELVES),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss", VarPlayer.QUEST_ENTER_THE_ABYSS),
@@ -186,7 +187,8 @@ public enum Quest
 	THE_MAGE_ARENA(327, "The Mage Arena", VarPlayer.QUEST_THE_MAGE_ARENA),
 	LAIR_OF_TARN_RAZORLOR(328, "Lair of Tarn Razorlor", Varbits.QUEST_LAIR_OF_TARN_RAZORLOR),
 	FAMILY_PEST(329, "Family Pest", Varbits.QUEST_FAMILY_PEST),
-	THE_MAGE_ARENA_II(330, "The Mage Arena II", Varbits.QUEST_THE_MAGE_ARENA_II);
+	THE_MAGE_ARENA_II(330, "The Mage Arena II", Varbits.QUEST_THE_MAGE_ARENA_II),
+	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge", Varbits.QUEST_IN_SEARCH_OF_KNOWLEDGE);
 
 	@Getter
 	private final int id;

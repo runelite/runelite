@@ -49,7 +49,7 @@ import net.runelite.client.ui.overlay.components.table.TableComponent;
 @Singleton
 class SmeltingOverlay extends Overlay
 {
-	private static final int SMELT_TIMEOUT = 5;
+	private static final int SMELT_TIMEOUT = 7;
 
 	private final Client client;
 	private final SmeltingPlugin plugin;

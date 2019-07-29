@@ -31,6 +31,7 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +43,8 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
@@ -51,7 +54,11 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.widgets.WidgetID;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.NPCManager;
@@ -64,6 +71,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
@@ -78,6 +86,9 @@ public class XpTrackerPlugin extends Plugin
 	 * Amount of EXP that must be gained for an update to be submitted.
 	 */
 	private static final int XP_THRESHOLD = 10_000;
+
+	private static final String MENUOP_ADD_CANVAS_TRACKER = "Add to canvas";
+	private static final String MENUOP_REMOVE_CANVAS_TRACKER = "Remove from canvas";
 
 	static final List<Skill> COMBAT = ImmutableList.of(
 		Skill.ATTACK,
@@ -178,6 +189,8 @@ public class XpTrackerPlugin extends Plugin
 		eventBus.subscribe(ExperienceChanged.class, this, this::onExperienceChanged);
 		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
 	private void onGameStateChanged(GameStateChanged event)
@@ -402,6 +415,64 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
+	private void onMenuEntryAdded(final MenuEntryAdded event)
+	{
+		int widgetID = event.getActionParam1();
+
+		if (TO_GROUP(widgetID) != WidgetID.SKILLS_GROUP_ID
+			|| !event.getOption().startsWith("View")
+			|| !xpTrackerConfig.skillTabOverlayMenuOptions())
+		{
+			return;
+		}
+
+		// Get skill from menu option, eg. "View <col=ff981f>Attack</col> guide"
+		final String skillText = event.getOption().split(" ")[1];
+		final Skill skill = Skill.valueOf(Text.removeTags(skillText).toUpperCase());
+
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
+		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+		menuEntry.setTarget(skillText);
+		menuEntry.setOption(hasOverlay(skill) ? MENUOP_REMOVE_CANVAS_TRACKER : MENUOP_ADD_CANVAS_TRACKER);
+		menuEntry.setParam0(event.getActionParam0());
+		menuEntry.setParam1(widgetID);
+		menuEntry.setType(MenuAction.RUNELITE.getId());
+
+		client.setMenuEntries(menuEntries);
+	}
+
+	private void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getMenuAction().getId() != MenuAction.RUNELITE.getId()
+			|| TO_GROUP(event.getIdentifier()) != WidgetID.SKILLS_GROUP_ID)
+		{
+			return;
+		}
+
+		final Skill skill;
+		try
+		{
+			skill = Skill.valueOf(Text.removeTags(event.getTarget()).toUpperCase());
+		}
+		catch (IllegalArgumentException ex)
+		{
+			log.debug(null, ex);
+			return;
+		}
+
+		switch (event.getOption())
+		{
+			case MENUOP_ADD_CANVAS_TRACKER:
+				addOverlay(skill);
+				break;
+			case MENUOP_REMOVE_CANVAS_TRACKER:
+				removeOverlay(skill);
+				break;
+		}
+	}
+
 	XpSnapshotSingle getSkillSnapshot(Skill skill)
 	{
 		return xpState.getSkillSnapshot(skill);
@@ -589,6 +660,11 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
+	private boolean hasOverlay(final Skill skill)
+	{
+		return overlayManager.anyMatch(o -> o instanceof XpInfoBoxOverlay && ((XpInfoBoxOverlay) o).getSkill() == skill);
+	}
+	
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("xpTracker"))

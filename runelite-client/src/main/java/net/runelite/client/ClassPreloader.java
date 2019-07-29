@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,15 +24,25 @@
  */
 package net.runelite.client;
 
-import com.google.inject.Guice;
-import net.runelite.client.rs.ClientUpdateCheckMode;
-import org.junit.Test;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import net.runelite.client.ui.FontManager;
 
-public class RuneLiteModuleTest
+/**
+ * Loads some slow to initialize classes (hopefully) before they are needed to streamline client startup
+ */
+@SuppressWarnings({"ResultOfMethodCallIgnored", "unused"})
+class ClassPreloader
 {
-	@Test
-	public void testConfigure()
+	static void preload()
 	{
-		Guice.createInjector(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true));
+		// This needs to enumerate the system fonts for some reason, and that takes a while
+		FontManager.getRunescapeSmallFont();
+
+		// This needs to load a timezone database that is mildly large
+		ZoneId.of("Europe/London");
+
+		// This just needs to call 20 different DateTimeFormatter constructors, which are slow
+		Object unused = DateTimeFormatter.BASIC_ISO_DATE;
 	}
 }

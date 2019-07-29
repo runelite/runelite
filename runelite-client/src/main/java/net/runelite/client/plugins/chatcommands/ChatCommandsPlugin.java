@@ -87,12 +87,12 @@ import org.apache.commons.text.WordUtils;
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
-	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) (?:kill|harvest) count is: <col=ff0000>(\\d+)</col>");
+	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) (?:kill|harvest|lap) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>");
-	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("Fight duration: <col=ff0000>[0-9:]+</col>. Personal best: ([0-9:]+)");
-	private static final Pattern NEW_PB_PATTERN = Pattern.compile("Fight duration: <col=ff0000>([0-9:]+)</col> \\(new personal best\\)");
+	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?:Fight|Lap) duration: <col=ff0000>[0-9:]+</col>. Personal best: ([0-9:]+)");
+	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?:Fight|Lap) duration: <col=ff0000>([0-9:]+)</col> \\(new personal best\\)");
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won (\\d+) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost (\\d+) duels?");
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
@@ -1376,6 +1376,11 @@ public class ChatCommandsPlugin extends Plugin
 			case "verzik vitur":
 			case "raids 2":
 				return "Theatre of Blood";
+
+			// agility course
+			case "prif":
+			case "prifddinas":
+				return "Prifddinas Agility Course";
 
 			default:
 				return WordUtils.capitalize(boss);

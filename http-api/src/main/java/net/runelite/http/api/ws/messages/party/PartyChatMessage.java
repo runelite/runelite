@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.chatfilter;
+package net.runelite.http.api.ws.messages.party;
 
-import com.google.common.base.CharMatcher;
+import lombok.Value;
 
-class JagexPrintableCharMatcher extends CharMatcher
+@Value
+public class PartyChatMessage extends PartyMemberMessage
 {
-	@Override
-	public boolean matches(char c)
-	{
-		// Characters which are printable
-		return (c >= 32 && c <= 126)
-			|| c == 128
-			|| (c >= 160 && c <= 255);
-	}
+	private final String value;
 }
